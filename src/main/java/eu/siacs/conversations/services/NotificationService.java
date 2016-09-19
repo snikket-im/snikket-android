@@ -297,11 +297,11 @@ public class NotificationService {
 					modifyForTextOnly(mBuilder, messages);
 				}
 				RemoteInput remoteInput = new RemoteInput.Builder("text_reply").setLabel(UIHelper.getMessageHint(mXmppConnectionService, conversation)).build();
-				NotificationCompat.Action action = new NotificationCompat.Action.Builder(R.drawable.ic_send_text_offline, "Reply", createReplyIntent(conversation)).addRemoteInput(remoteInput).build();
+				NotificationCompat.Action replyAction = new NotificationCompat.Action.Builder(R.drawable.ic_send_text_offline, "Reply", createReplyIntent(conversation, false)).addRemoteInput(remoteInput).build();
+				NotificationCompat.Action wearReplyAction = new NotificationCompat.Action.Builder(R.drawable.ic_send_text_offline, "Reply", createReplyIntent(conversation, true)).addRemoteInput(remoteInput).build();
+				mBuilder.extend(new NotificationCompat.WearableExtender().addAction(wearReplyAction));
 				if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-					mBuilder.addAction(action);
-				} else {
-					mBuilder.extend(new NotificationCompat.WearableExtender().addAction(action));
+					mBuilder.addAction(replyAction);
 				}
 				if ((message = getFirstDownloadableMessage(messages)) != null) {
 					mBuilder.addAction(
@@ -474,11 +474,13 @@ public class NotificationService {
 		return PendingIntent.getService(mXmppConnectionService, 0, intent, 0);
 	}
 
-	private PendingIntent createReplyIntent(Conversation conversation) {
+	private PendingIntent createReplyIntent(Conversation conversation, boolean dismissAfterReply) {
 		final Intent intent = new Intent(mXmppConnectionService, XmppConnectionService.class);
 		intent.setAction(XmppConnectionService.ACTION_REPLY_TO_CONVERSATION);
 		intent.putExtra("uuid",conversation.getUuid());
-		return PendingIntent.getService(mXmppConnectionService, conversation.getUuid().hashCode() % 402361, intent, 0);
+		intent.putExtra("dismiss_notification",dismissAfterReply);
+		int id =  conversation.getUuid().hashCode() % (dismissAfterReply ? 402359 : 426583);
+		return PendingIntent.getService(mXmppConnectionService, id, intent, 0);
 	}
 
 	private PendingIntent createDisableForeground() {
