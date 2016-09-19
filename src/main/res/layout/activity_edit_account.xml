@@ -221,6 +221,7 @@
                 <TableLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:shrinkColumns="0"
                     android:stretchColumns="1">
 
                     <TableRow
@@ -233,13 +234,16 @@
                             android:layout_height="wrap_content"
                             android:text="@string/server_info_session_established"
                             android:textColor="?attr/color_text_primary"
-                            android:textSize="?attr/TextSizeBody"/>
+                            android:textSize="?attr/TextSizeBody"
+                            android:singleLine="true"
+                            android:ellipsize="end"/>
 
                         <TextView
                             android:id="@+id/session_est"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="right"
+                            android:paddingLeft="4dp"
                             android:textColor="?attr/color_text_primary"
                             android:textSize="?attr/TextSizeBody"
                             tools:ignore="RtlHardcoded"/>
@@ -250,6 +254,7 @@
                     android:id="@+id/server_info_more"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:shrinkColumns="0"
                     android:stretchColumns="1"
                     android:visibility="gone">
 
@@ -262,13 +267,16 @@
                             android:layout_height="wrap_content"
                             android:text="@string/server_info_pep"
                             android:textColor="?attr/color_text_primary"
-                            android:textSize="?attr/TextSizeBody"/>
+                            android:textSize="?attr/TextSizeBody"
+                            android:singleLine="true"
+                            android:ellipsize="end"/>
 
                         <TextView
                             android:id="@+id/server_info_pep"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="right"
+                            android:paddingLeft="4dp"
                             android:textColor="?attr/color_text_primary"
                             android:textSize="?attr/TextSizeBody"
                             tools:ignore="RtlHardcoded"/>
@@ -283,13 +291,16 @@
                             android:layout_height="wrap_content"
                             android:text="@string/server_info_blocking"
                             android:textColor="?attr/color_text_primary"
-                            android:textSize="?attr/TextSizeBody"/>
+                            android:textSize="?attr/TextSizeBody"
+                            android:singleLine="true"
+                            android:ellipsize="end"/>
 
                         <TextView
                             android:id="@+id/server_info_blocking"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="right"
+                            android:paddingLeft="4dp"
                             android:textColor="?attr/color_text_primary"
                             android:textSize="?attr/TextSizeBody"
                             tools:ignore="RtlHardcoded"/>
@@ -304,13 +315,16 @@
                             android:layout_height="wrap_content"
                             android:text="@string/server_info_stream_management"
                             android:textColor="?attr/color_text_primary"
-                            android:textSize="?attr/TextSizeBody"/>
+                            android:textSize="?attr/TextSizeBody"
+                            android:singleLine="true"
+                            android:ellipsize="end"/>
 
                         <TextView
                             android:id="@+id/server_info_sm"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="right"
+                            android:paddingLeft="4dp"
                             android:textColor="?attr/color_text_primary"
                             android:textSize="?attr/TextSizeBody"
                             tools:ignore="RtlHardcoded"/>
@@ -325,13 +339,16 @@
                             android:layout_height="wrap_content"
                             android:text="@string/server_info_roster_version"
                             android:textColor="?attr/color_text_primary"
-                            android:textSize="?attr/TextSizeBody"/>
+                            android:textSize="?attr/TextSizeBody"
+                            android:singleLine="true"
+                            android:ellipsize="end"/>
 
                         <TextView
                             android:id="@+id/server_info_roster_version"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="right"
+                            android:paddingLeft="4dp"
                             android:textColor="?attr/color_text_primary"
                             android:textSize="?attr/TextSizeBody"
                             tools:ignore="RtlHardcoded"/>
@@ -346,13 +363,16 @@
                             android:layout_height="wrap_content"
                             android:text="@string/server_info_carbon_messages"
                             android:textColor="?attr/color_text_primary"
-                            android:textSize="?attr/TextSizeBody"/>
+                            android:textSize="?attr/TextSizeBody"
+                            android:singleLine="true"
+                            android:ellipsize="end"/>
 
                         <TextView
                             android:id="@+id/server_info_carbons"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="right"
+                            android:paddingLeft="4dp"
                             android:textColor="?attr/color_text_primary"
                             android:textSize="?attr/TextSizeBody"
                             tools:ignore="RtlHardcoded"/>
@@ -367,13 +387,16 @@
                             android:layout_height="wrap_content"
                             android:text="@string/server_info_mam"
                             android:textColor="?attr/color_text_primary"
-                            android:textSize="?attr/TextSizeBody"/>
+                            android:textSize="?attr/TextSizeBody"
+                            android:singleLine="true"
+                            android:ellipsize="end"/>
 
                         <TextView
                             android:id="@+id/server_info_mam"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="right"
+                            android:paddingLeft="4dp"
                             android:textColor="?attr/color_text_primary"
                             android:textSize="?attr/TextSizeBody"
                             tools:ignore="RtlHardcoded"/>
@@ -388,13 +411,16 @@
                             android:layout_height="wrap_content"
                             android:text="@string/server_info_csi"
                             android:textColor="?attr/color_text_primary"
-                            android:textSize="?attr/TextSizeBody"/>
+                            android:textSize="?attr/TextSizeBody"
+                            android:singleLine="true"
+                            android:ellipsize="end"/>
 
                         <TextView
                             android:id="@+id/server_info_csi"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="right"
+                            android:paddingLeft="4dp"
                             android:textColor="?attr/color_text_primary"
                             android:textSize="?attr/TextSizeBody"
                             tools:ignore="RtlHardcoded"/>
@@ -409,13 +435,16 @@
                             android:layout_height="wrap_content"
                             android:text="@string/server_info_push"
                             android:textColor="?attr/color_text_primary"
-                            android:textSize="?attr/TextSizeBody"/>
+                            android:textSize="?attr/TextSizeBody"
+                            android:singleLine="true"
+                            android:ellipsize="end"/>
 
                         <TextView
                             android:id="@+id/server_info_push"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="right"
+                            android:paddingLeft="4dp"
                             android:textColor="?attr/color_text_primary"
                             android:textSize="?attr/TextSizeBody"/>
                     </TableRow>
@@ -428,13 +457,16 @@
                             android:layout_height="wrap_content"
                             android:text="@string/server_info_http_upload"
                             android:textColor="?attr/color_text_primary"
-                            android:textSize="?attr/TextSizeBody"/>
+                            android:textSize="?attr/TextSizeBody"
+                            android:singleLine="true"
+                            android:ellipsize="end"/>
 
                         <TextView
                             android:id="@+id/server_info_http_upload"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="right"
+                            android:paddingLeft="4dp"
                             android:textColor="?attr/color_text_primary"
                             android:textSize="?attr/TextSizeBody"/>
                     </TableRow>
