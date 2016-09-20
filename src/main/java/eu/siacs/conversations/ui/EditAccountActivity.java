@@ -519,6 +519,9 @@ public class EditAccountActivity extends XmppActivity implements OnAccountUpdate
 		this.mSaveButton.setOnClickListener(this.mSaveButtonClickListener);
 		this.mCancelButton.setOnClickListener(this.mCancelButtonClickListener);
 		this.mMoreTable = (TableLayout) findViewById(R.id.server_info_more);
+		if (savedInstanceState != null && savedInstanceState.getBoolean("showMoreTable")) {
+			changeMoreTableVisibility(true);
+		}
 		final OnCheckedChangeListener OnCheckedShowConfirmPassword = new OnCheckedChangeListener() {
 			@Override
 			public void onCheckedChanged(final CompoundButton buttonView,
@@ -585,6 +588,15 @@ public class EditAccountActivity extends XmppActivity implements OnAccountUpdate
 	}
 
 	@Override
+	public boolean onPrepareOptionsMenu(Menu menu) {
+		final MenuItem showMoreInfo = menu.findItem(R.id.action_server_info_show_more);
+		if (showMoreInfo.isVisible()) {
+			showMoreInfo.setChecked(mMoreTable.getVisibility() == View.VISIBLE);
+		}
+		return super.onPrepareOptionsMenu(menu);
+	}
+
+	@Override
 	protected void onStart() {
 		super.onStart();
 		final int theme = findTheme();
@@ -628,6 +640,7 @@ public class EditAccountActivity extends XmppActivity implements OnAccountUpdate
 		if (mAccount != null) {
 			savedInstanceState.putString("account", mAccount.getJid().toBareJid().toString());
 			savedInstanceState.putBoolean("initMode", mInitMode);
+			savedInstanceState.putBoolean("showMoreTable", mMoreTable.getVisibility() == View.VISIBLE);
 		}
 		super.onSaveInstanceState(savedInstanceState);
 	}
@@ -695,8 +708,7 @@ public class EditAccountActivity extends XmppActivity implements OnAccountUpdate
 				startActivity(showBlocklistIntent);
 				break;
 			case R.id.action_server_info_show_more:
-				mMoreTable.setVisibility(item.isChecked() ? View.GONE : View.VISIBLE);
-				item.setChecked(!item.isChecked());
+				changeMoreTableVisibility(!item.isChecked());
 				break;
 			case R.id.action_change_password_on_server:
 				gotoChangePassword(null);
@@ -718,6 +730,10 @@ public class EditAccountActivity extends XmppActivity implements OnAccountUpdate
 				break;
 		}
 		return super.onOptionsItemSelected(item);
+	}
+
+	private void changeMoreTableVisibility(boolean visible) {
+		mMoreTable.setVisibility(visible ? View.VISIBLE : View.GONE);
 	}
 
 	private void gotoChangePassword(String newPassword) {
