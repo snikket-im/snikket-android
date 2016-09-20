@@ -128,8 +128,8 @@
   <string name="error_decrypting_file">Error descifrando archivo</string>
   <string name="accept">Aceptar</string>
   <string name="error">Ha ocurrido un error</string>
-  <string name="pref_grant_presence_updates">Suscripción de presencia</string>
-  <string name="pref_grant_presence_updates_summary">De forma automática solicitar y conceder suscripciones de presencia de los contactos que has creado</string>
+  <string name="pref_grant_presence_updates">Suscripción de presencia automática</string>
+  <string name="pref_grant_presence_updates_summary">De forma automática solicitar y conceder la suscripción de presencia de los contactos que has creado</string>
   <string name="subscriptions">Suscripciones</string>
   <string name="your_account">Tu cuenta</string>
   <string name="keys">Claves</string>
@@ -282,13 +282,13 @@
   <string name="enable">Habilitar</string>
   <string name="conference_requires_password">Esta conversación requiere contraseña</string>
   <string name="enter_password">Introduce la contraseña</string>
-  <string name="missing_presence_updates">Suscripción de actualizaciones de presencia del contacto perdida</string>
-  <string name="request_presence_updates">Por favor, solicita la suscripción de presencia a tu contacto primero.\n\n<small>Esto será usado para determinar qué cliente(s) está usando tu contacto.</small></string>
+  <string name="missing_presence_updates">Se ha perdido la suscripción de presencia del contacto</string>
+  <string name="request_presence_updates">Por favor, solicita la suscripción de presencia a tu contacto primero.\n\n<small>Esto se usará para determinar qué cliente(s) está usando tu contacto.</small></string>
   <string name="request_now">Solicitar ahora</string>
   <string name="delete_fingerprint">Eliminar huella digital OTR</string>
   <string name="sure_delete_fingerprint">¿Estás seguro de que quieres eliminar esta huella digital OTR?</string>
   <string name="ignore">Ignorar</string>
-  <string name="without_mutual_presence_updates"><b>Aviso:</b> Enviando esto sin suscripción de presencia por ambas partes podría causar problemas inesperados.\n\n<small>Verficia la suscripción de presencia en detalles del contacto.</small></string>
+  <string name="without_mutual_presence_updates"><b>Aviso:</b> Si envías esto sin suscripción de presencia con tu contacto se podrían producir problemas inesperados.\n\n<small>Verifica la suscripción de presencia en detalles del contacto.</small></string>
   <string name="pref_security_settings">Seguridad</string>
   <string name="pref_force_encryption">Forzar cifrado end-to-end</string>
   <string name="pref_force_encryption_summary">Siempre enviar mensajes cifrados (excepto para conversaciones en grupo)</string>
@@ -648,4 +648,9 @@
   <string name="allow">Permitir</string>
   <string name="no_permission_to_access_x">Sin permiso de acceso a %s</string>
   <string name="remote_server_not_found">Servidor no encontrado</string>
+  <string name="unable_to_update_account">No se ha podido actualizar la cuenta</string>
+  <string name="missing_presence_subscription_with_x">Se ha perdido la suscripción de presencia con %s.</string>
+  <string name="missing_keys_from_x">Se ha perdido la clave OMEMO de %s.</string>
+  <string name="wrong_conference_configuration">Ésta no es una conversación privada no anónima.</string>
+  <string name="this_conference_has_no_members">No hay miembros en esta conversación.</string>
 </resources>

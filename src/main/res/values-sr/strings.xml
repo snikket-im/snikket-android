@@ -651,4 +651,9 @@
   <string name="allow">Дозволи</string>
   <string name="no_permission_to_access_x">Нема дозвола за приступ %s</string>
   <string name="remote_server_not_found">Удаљени сервер није нађен</string>
+  <string name="unable_to_update_account">Не могох да се ажурирам налог</string>
+  <string name="missing_presence_subscription_with_x">Нема претплате на присутност са %s.</string>
+  <string name="missing_keys_from_x">Нема ОМЕМО кључева у %s.</string>
+  <string name="wrong_conference_configuration">Ово није приватно, неанонимно групно ћаскање.</string>
+  <string name="this_conference_has_no_members">Нема учесника у овом групном ћаскању.</string>
 </resources>
