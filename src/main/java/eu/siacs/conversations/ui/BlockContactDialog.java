@@ -3,6 +3,9 @@ package eu.siacs.conversations.ui;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.text.SpannableString;
+import android.text.Spanned;
+import android.text.style.TypefaceSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.CheckBox;
@@ -28,15 +31,23 @@ public final class BlockContactDialog {
 		report.setVisibility(!isBlocked && reporting ? View.VISIBLE : View.GONE);
 		builder.setView(view);
 
+		String value;
+		SpannableString spannable;
 		if (blockable.getJid().isDomainJid() || blockable.getAccount().isBlocked(blockable.getJid().toDomainJid())) {
 			builder.setTitle(isBlocked ? R.string.action_unblock_domain : R.string.action_block_domain);
-			message.setText(context.getResources().getString(isBlocked ? R.string.unblock_domain_text : R.string.block_domain_text,
-						blockable.getJid().toDomainJid()));
+			value = blockable.getJid().toDomainJid().toString();
+			spannable = new SpannableString(context.getString(isBlocked ? R.string.unblock_domain_text : R.string.block_domain_text, value));
+			message.setText(spannable);
 		} else {
 			builder.setTitle(isBlocked ? R.string.action_unblock_contact : R.string.action_block_contact);
-			message.setText(context.getResources().getString(isBlocked ? R.string.unblock_contact_text : R.string.block_contact_text,
-						blockable.getJid().toBareJid()));
+			value = blockable.getJid().toBareJid().toString();
+			spannable = new SpannableString(context.getString(isBlocked ? R.string.unblock_contact_text : R.string.block_contact_text, value));
 		}
+		int start = spannable.toString().indexOf(value);
+		if (start >= 0) {
+			spannable.setSpan(new TypefaceSpan("monospace"),start,start + value.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+		}
+		message.setText(spannable);
 		builder.setPositiveButton(isBlocked ? R.string.unblock : R.string.block, new DialogInterface.OnClickListener() {
 
 			@Override
