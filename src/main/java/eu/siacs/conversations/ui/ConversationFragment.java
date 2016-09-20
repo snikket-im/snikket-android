@@ -573,9 +573,10 @@ public class ConversationFragment extends Fragment implements EditMessage.Keyboa
 				downloadFile.setVisible(true);
 				downloadFile.setTitle(activity.getString(R.string.download_x_file,UIHelper.getFileDescriptionString(activity, m)));
 			}
-			if ((t != null && !(t instanceof TransferablePlaceholder))
-					|| (m.isFileOrImage() && (m.getStatus() == Message.STATUS_WAITING
-					|| m.getStatus() == Message.STATUS_OFFERED))) {
+			boolean waitingOfferedSending = m.getStatus() == Message.STATUS_WAITING
+					|| m.getStatus() == Message.STATUS_UNSEND
+					|| m.getStatus() == Message.STATUS_OFFERED;
+			if ((t != null && !(t instanceof TransferablePlaceholder)) || waitingOfferedSending && m.needsUploading()) {
 				cancelTransmission.setVisible(true);
 			}
 			if (treatAsFile) {

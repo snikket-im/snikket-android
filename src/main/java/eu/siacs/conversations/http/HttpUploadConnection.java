@@ -171,10 +171,12 @@ public class HttpUploadConnection implements Transferable {
 				connection.setRequestProperty("Content-Type", mime == null ? "application/octet-stream" : mime);
 				connection.setRequestProperty("User-Agent",mXmppConnectionService.getIqGenerator().getIdentityName());
 				connection.setDoOutput(true);
+				connection.setConnectTimeout(Config.SOCKET_TIMEOUT * 1000);
+				connection.setReadTimeout(Config.SOCKET_TIMEOUT * 1000);
 				connection.connect();
 				os = connection.getOutputStream();
 				transmitted = 0;
-				int count = -1;
+				int count;
 				byte[] buffer = new byte[4096];
 				while (((count = mFileInputStream.read(buffer)) != -1) && !canceled) {
 					transmitted += count;
