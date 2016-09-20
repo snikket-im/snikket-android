@@ -1,5 +1,9 @@
 ###Changelog
 
+####Version 1.14.3
+* XEP-0377: Spam Reporting
+* fix rare start up crashes
+
 ####Version 1.14.2
 * support ANONYMOUS SASL
 * bug fixes
