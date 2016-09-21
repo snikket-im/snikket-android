@@ -573,9 +573,10 @@ public class XmppConnectionService extends Service {
 				case ACTION_REPLY_TO_CONVERSATION:
 					Bundle remoteInput = RemoteInput.getResultsFromIntent(intent);
 					if (remoteInput != null && c != null) {
-
-						String body = remoteInput.getString("text_reply");
-						directReply(c,body);
+						final CharSequence body = remoteInput.getCharSequence("text_reply");
+						if (body != null && body.length() > 0) {
+							directReply(c, body.toString());
+						}
 					}
 					break;
 				case AudioManager.RINGER_MODE_CHANGED_ACTION:
