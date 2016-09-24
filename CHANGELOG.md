@@ -1,5 +1,8 @@
 ###Changelog
 
+####Version 1.14.4
+* bug fixes
+
 ####Version 1.14.3
 * XEP-0377: Spam Reporting
 * fix rare start up crashes
