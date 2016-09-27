@@ -12,6 +12,8 @@ import eu.siacs.conversations.Config;
 
 public class SocksSocketFactory {
 
+	private static final byte[] LOCALHOST = new byte[]{127,0,0,1};
+
 	public static void createSocksConnection(Socket socket, String destination, int port) throws IOException {
 		InputStream proxyIs = socket.getInputStream();
 		OutputStream proxyOs = socket.getOutputStream();
@@ -44,7 +46,7 @@ public class SocksSocketFactory {
 	}
 
 	public static Socket createSocketOverTor(String destination, int port) throws IOException {
-		return createSocket(new InetSocketAddress(InetAddress.getLocalHost(), 9050), destination, port);
+		return createSocket(new InetSocketAddress(InetAddress.getByAddress(LOCALHOST), 9050), destination, port);
 	}
 
 	static class SocksConnectionException extends IOException {
