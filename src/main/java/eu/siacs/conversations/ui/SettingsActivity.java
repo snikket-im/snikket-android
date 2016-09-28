@@ -149,7 +149,9 @@ public class SettingsActivity extends XmppActivity implements
 		exportLogsPreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
 			@Override
 			public boolean onPreferenceClick(Preference preference) {
-				hasStoragePermission(REQUEST_WRITE_LOGS);
+				if (hasStoragePermission(REQUEST_WRITE_LOGS)) {
+					startExport();
+				}
 				return true;
 			}
 		});
@@ -273,11 +275,15 @@ public class SettingsActivity extends XmppActivity implements
 		if (grantResults.length > 0)
 			if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
 				if (requestCode == REQUEST_WRITE_LOGS) {
-					getApplicationContext().startService(new Intent(getApplicationContext(), ExportLogsService.class));
+					startExport();
 				}
 			} else {
 				Toast.makeText(this, R.string.no_storage_permission, Toast.LENGTH_SHORT).show();
 			}
+	}
+
+	private void startExport() {
+		startService(new Intent(getApplicationContext(), ExportLogsService.class));
 	}
 
 	private void displayToast(final String msg) {
