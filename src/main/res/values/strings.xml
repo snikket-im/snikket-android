@@ -248,7 +248,7 @@
 	<string name="contact_already_exists">The contact already exists</string>
 	<string name="join">Join</string>
 	<string name="conference_address">Conference address</string>
-	<string name="conference_address_example">room@conference.example.com</string>
+	<string name="conference_address_example">room@conference.example.com/nick</string>
 	<string name="save_as_bookmark">Save as bookmark</string>
 	<string name="delete_bookmark">Delete bookmark</string>
 	<string name="bookmark_already_exists">This bookmark already exists</string>
