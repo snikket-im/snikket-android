@@ -687,4 +687,7 @@
 	<string name="wrong_conference_configuration">This is not a private, non-anonymous conference.</string>
 	<string name="this_conference_has_no_members">There are no members in this conference.</string>
 	<string name="report_jid_as_spammer">Report this JID as sending unwanted messages.</string>
+	<string name="pref_delete_omemo_identities">Delete OMEMO identities</string>
+	<string name="pref_delete_omemo_identities_summary">Regenerate your OMEMO keys. All your contacts will have to verify you again. Use this only as a last resort.</string>
+	<string name="delete_selected_keys">Delete selected keys</string>
 </resources>

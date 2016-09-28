@@ -1184,9 +1184,6 @@ public class DatabaseBackend extends SQLiteOpenHelper {
 		storeIdentityKey(account, account.getJid().toBareJid().toString(), true, identityKeyPair.getPublicKey().getFingerprint().replaceAll("\\s", ""), Base64.encodeToString(identityKeyPair.serialize(), Base64.DEFAULT), XmppAxolotlSession.Trust.TRUSTED);
 	}
 
-	public void recreateAxolotlDb() {
-		recreateAxolotlDb(getWritableDatabase());
-	}
 
 	public void recreateAxolotlDb(SQLiteDatabase db) {
 		Log.d(Config.LOGTAG, AxolotlService.LOGPREFIX + " : " + ">>> (RE)CREATING AXOLOTL DATABASE <<<");

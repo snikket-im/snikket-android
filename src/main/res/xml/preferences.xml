@@ -183,6 +183,10 @@
                     android:key="allow_message_correction"
                     android:title="@string/pref_allow_message_correction"
                     android:summary="@string/pref_allow_message_correction_summary"/>
+                <Preference
+                    android:key="delete_omemo_identities"
+                    android:title="@string/pref_delete_omemo_identities"
+                    android:summary="@string/pref_delete_omemo_identities_summary"/>
             </PreferenceCategory>
             <PreferenceCategory
                 android:key="connection_options"
