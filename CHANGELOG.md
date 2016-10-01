@@ -1,5 +1,9 @@
 ###Changelog
 
+####Version 1.14.5
+* expert setting to delete OMEMO identities
+* bug fixes
+
 ####Version 1.14.4
 * bug fixes
 
