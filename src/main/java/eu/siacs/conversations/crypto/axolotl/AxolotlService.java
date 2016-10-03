@@ -660,24 +660,24 @@ public class AxolotlService implements OnAdvancedStreamFeaturesLoaded {
 	}
 
 	public Pair<AxolotlCapability,Jid> isConversationAxolotlCapableDetailed(Conversation conversation) {
-		final List<Jid> jids = getCryptoTargets(conversation);
-		for(Jid jid : jids) {
-			if (!hasAny(jid) && (!deviceIds.containsKey(jid) || deviceIds.get(jid).isEmpty())) {
-				if (conversation.getAccount().getRoster().getContact(jid).trusted()) {
-					return new Pair<>(AxolotlCapability.MISSING_KEYS,jid);
-				} else {
-					return new Pair<>(AxolotlCapability.MISSING_PRESENCE,jid);
+		if (conversation.getMucOptions().membersOnly() && conversation.getMucOptions().nonanonymous()) {
+			final List<Jid> jids = getCryptoTargets(conversation);
+			for(Jid jid : jids) {
+				if (!hasAny(jid) && (!deviceIds.containsKey(jid) || deviceIds.get(jid).isEmpty())) {
+					if (conversation.getAccount().getRoster().getContact(jid).trusted()) {
+						return new Pair<>(AxolotlCapability.MISSING_KEYS,jid);
+					} else {
+						return new Pair<>(AxolotlCapability.MISSING_PRESENCE,jid);
+					}
 				}
 			}
-		}
-		if (jids.size() > 0) {
-			return new Pair<>(AxolotlCapability.FULL, null);
-		} else {
-			if (conversation.getMucOptions().membersOnly() && conversation.getMucOptions().nonanonymous()) {
-				return new Pair<>(AxolotlCapability.NO_MEMBERS, null);
+			if (jids.size() > 0) {
+				return new Pair<>(AxolotlCapability.FULL, null);
 			} else {
-				return new Pair<>(AxolotlCapability.WRONG_CONFIGURATION, null);
+				return new Pair<>(AxolotlCapability.NO_MEMBERS, null);
 			}
+		} else {
+			return new Pair<>(AxolotlCapability.WRONG_CONFIGURATION, null);
 		}
 	}
 
