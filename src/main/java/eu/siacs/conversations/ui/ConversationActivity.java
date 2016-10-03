@@ -181,6 +181,7 @@ public class ConversationActivity extends XmppActivity
 			}
 			String pending = savedInstanceState.getString(STATE_PENDING_URI, null);
 			if (pending != null) {
+				Log.d(Config.LOGTAG,"ConversationsActivity.onCreate() - restoring pending image uri");
 				mPendingImageUris.clear();
 				mPendingImageUris.add(Uri.parse(pending));
 			}
@@ -1146,6 +1147,7 @@ public class ConversationActivity extends XmppActivity
 		}
 		savedInstanceState.putBoolean(STATE_PANEL_OPEN, isConversationsOverviewVisable());
 		if (this.mPendingImageUris.size() >= 1) {
+			Log.d(Config.LOGTAG,"ConversationsActivity.onSaveInstanceState() - saving pending image uri");
 			savedInstanceState.putString(STATE_PENDING_URI, this.mPendingImageUris.get(0).toString());
 		} else {
 			savedInstanceState.remove(STATE_PENDING_URI);
@@ -1233,13 +1235,22 @@ public class ConversationActivity extends XmppActivity
 			this.onActivityResult(mPostponedActivityResult.first, RESULT_OK, mPostponedActivityResult.second);
 		}
 
+		final boolean stopping;
+		if (Build.VERSION.SDK_INT >= 17) {
+			stopping = isFinishing() || isDestroyed();
+		} else {
+			stopping = isFinishing();
+		}
+
 		if (!forbidProcessingPendings) {
 			for (Iterator<Uri> i = mPendingImageUris.iterator(); i.hasNext(); i.remove()) {
 				Uri foo = i.next();
+				Log.d(Config.LOGTAG,"ConversationsActivity.onBackendConnected() - attaching image to conversations. stopping="+Boolean.toString(stopping));
 				attachImageToConversation(getSelectedConversation(), foo);
 			}
 
 			for (Iterator<Uri> i = mPendingFileUris.iterator(); i.hasNext(); i.remove()) {
+				Log.d(Config.LOGTAG,"ConversationsActivity.onBackendConnected() - attaching file to conversations. stopping="+Boolean.toString(stopping));
 				attachFileToConversation(getSelectedConversation(), i.next());
 			}
 
@@ -1364,6 +1375,7 @@ public class ConversationActivity extends XmppActivity
 				mPendingImageUris.addAll(extractUriFromIntent(data));
 				if (xmppConnectionServiceBound) {
 					for (Iterator<Uri> i = mPendingImageUris.iterator(); i.hasNext(); i.remove()) {
+						Log.d(Config.LOGTAG,"ConversationsActivity.onActivityResult() - attaching image to conversations. CHOOSE_IMAGE");
 						attachImageToConversation(getSelectedConversation(), i.next());
 					}
 				}
@@ -1377,6 +1389,7 @@ public class ConversationActivity extends XmppActivity
 						mPendingFileUris.addAll(uris);
 						if (xmppConnectionServiceBound) {
 							for (Iterator<Uri> i = mPendingFileUris.iterator(); i.hasNext(); i.remove()) {
+								Log.d(Config.LOGTAG,"ConversationsActivity.onActivityResult() - attaching file to conversations. CHOOSE_FILE/RECORD_VOICE");
 								attachFileToConversation(c, i.next());
 							}
 						}
@@ -1393,6 +1406,7 @@ public class ConversationActivity extends XmppActivity
 				if (mPendingImageUris.size() == 1) {
 					Uri uri = mPendingImageUris.get(0);
 					if (xmppConnectionServiceBound) {
+						Log.d(Config.LOGTAG,"ConversationsActivity.onActivityResult() - attaching image to conversations. TAKE_PHOTO");
 						attachImageToConversation(getSelectedConversation(), uri);
 						mPendingImageUris.clear();
 					}
