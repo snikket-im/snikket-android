@@ -1404,14 +1404,15 @@ public class ConversationActivity extends XmppActivity
 				}
 			} else if (requestCode == ATTACHMENT_CHOICE_TAKE_PHOTO) {
 				if (mPendingImageUris.size() == 1) {
-					Uri uri = mPendingImageUris.get(0);
+					Uri uri = FileBackend.getIndexableTakePhotoUri(mPendingImageUris.get(0));
+					mPendingImageUris.set(0, uri);
 					if (xmppConnectionServiceBound) {
 						Log.d(Config.LOGTAG,"ConversationsActivity.onActivityResult() - attaching image to conversations. TAKE_PHOTO");
 						attachImageToConversation(getSelectedConversation(), uri);
 						mPendingImageUris.clear();
 					}
 					Intent intent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
-					intent.setData(FileBackend.getIndexableTakePhotoUri(uri));
+					intent.setData(uri);
 					sendBroadcast(intent);
 				} else {
 					mPendingImageUris.clear();

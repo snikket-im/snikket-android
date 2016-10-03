@@ -14,7 +14,6 @@ import android.media.MediaMetadataRetriever;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
-import android.os.FileObserver;
 import android.os.ParcelFileDescriptor;
 import android.provider.MediaStore;
 import android.provider.OpenableColumns;
@@ -58,7 +57,7 @@ import eu.siacs.conversations.utils.FileUtils;
 import eu.siacs.conversations.xmpp.pep.Avatar;
 
 public class FileBackend {
-	private final SimpleDateFormat imageDateFormat = new SimpleDateFormat("yyyyMMdd_HHmmssSSS", Locale.US);
+	private static final SimpleDateFormat IMAGE_DATE_FORMAT = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.US);
 
 	private XmppConnectionService mXmppConnectionService;
 
@@ -437,7 +436,7 @@ public class FileBackend {
 	}
 
 	public Uri getTakePhotoUri() {
-		File file = new File(getTakePhotoPath()+"IMG_" + this.imageDateFormat.format(new Date()) + ".jpg");
+		File file = new File(getTakePhotoPath()+"IMG_" + this.IMAGE_DATE_FORMAT.format(new Date()) + ".jpg");
 		file.getParentFile().mkdirs();
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
 			return FileProvider.getUriForFile(mXmppConnectionService, "eu.siacs.conversations.files", file);
