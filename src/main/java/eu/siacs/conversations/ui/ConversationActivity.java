@@ -451,14 +451,15 @@ public class ConversationActivity extends XmppActivity
 
 	private boolean quickOmemoDebugger(Conversation c) {
 		if (c != null) {
+			boolean single = c.getMode() == Conversation.MODE_SINGLE;
 			AxolotlService axolotlService = c.getAccount().getAxolotlService();
 			Pair<AxolotlService.AxolotlCapability,Jid> capabilityJidPair = axolotlService.isConversationAxolotlCapableDetailed(c);
 			switch (capabilityJidPair.first) {
 				case MISSING_PRESENCE:
-					Toast.makeText(ConversationActivity.this,getString(R.string.missing_presence_subscription_with_x,capabilityJidPair.second.toBareJid().toString()),Toast.LENGTH_SHORT).show();
+					Toast.makeText(ConversationActivity.this,single ? getString(R.string.missing_presence_subscription) : getString(R.string.missing_presence_subscription_with_x,capabilityJidPair.second.toBareJid().toString()),Toast.LENGTH_SHORT).show();
 					return true;
 				case MISSING_KEYS:
-					Toast.makeText(ConversationActivity.this,getString(R.string.missing_keys_from_x,capabilityJidPair.second.toBareJid().toString()),Toast.LENGTH_SHORT).show();
+					Toast.makeText(ConversationActivity.this,single ? getString(R.string.missing_omemo_keys) : getString(R.string.missing_keys_from_x,capabilityJidPair.second.toBareJid().toString()),Toast.LENGTH_SHORT).show();
 					return true;
 				case WRONG_CONFIGURATION:
 					Toast.makeText(ConversationActivity.this,R.string.wrong_conference_configuration, Toast.LENGTH_SHORT).show();

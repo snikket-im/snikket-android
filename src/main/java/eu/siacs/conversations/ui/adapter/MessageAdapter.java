@@ -51,6 +51,7 @@ import eu.siacs.conversations.entities.DownloadableFile;
 import eu.siacs.conversations.entities.Message;
 import eu.siacs.conversations.entities.Message.FileParams;
 import eu.siacs.conversations.entities.Transferable;
+import eu.siacs.conversations.persistance.FileBackend;
 import eu.siacs.conversations.ui.ConversationActivity;
 import eu.siacs.conversations.ui.widget.ClickableMovementMethod;
 import eu.siacs.conversations.utils.CryptoHelper;
@@ -698,7 +699,7 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 		Uri uri;
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
 			try {
-				uri = FileProvider.getUriForFile(activity, "eu.siacs.conversations.files", file);
+				uri = FileProvider.getUriForFile(activity, FileBackend.CONVERSATIONS_FILE_PROVIDER, file);
 			} catch (IllegalArgumentException e) {
 				Toast.makeText(activity,activity.getString(R.string.no_permission_to_access_x,file.getAbsolutePath()), Toast.LENGTH_SHORT).show();
 				return;

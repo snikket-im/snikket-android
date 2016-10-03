@@ -660,7 +660,8 @@ public class AxolotlService implements OnAdvancedStreamFeaturesLoaded {
 	}
 
 	public Pair<AxolotlCapability,Jid> isConversationAxolotlCapableDetailed(Conversation conversation) {
-		if (conversation.getMucOptions().membersOnly() && conversation.getMucOptions().nonanonymous()) {
+		if (conversation.getMode() == Conversation.MODE_SINGLE
+				|| (conversation.getMucOptions().membersOnly() && conversation.getMucOptions().nonanonymous())) {
 			final List<Jid> jids = getCryptoTargets(conversation);
 			for(Jid jid : jids) {
 				if (!hasAny(jid) && (!deviceIds.containsKey(jid) || deviceIds.get(jid).isEmpty())) {

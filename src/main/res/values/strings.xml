@@ -284,6 +284,7 @@
 	<string name="conference_requires_password">Conference requires password</string>
 	<string name="enter_password">Enter password</string>
 	<string name="missing_presence_updates">Missing presence updates from contact</string>
+	<string name="missing_presence_subscription">Missing presence subscription</string>
 	<string name="request_presence_updates">Please request presence updates from your contact first.\n\n<small>This will be used to determine what client(s) your contact is using.</small></string>
 	<string name="request_now">Request now</string>
 	<string name="delete_fingerprint">Delete Fingerprint</string>
@@ -684,6 +685,7 @@
 	<string name="unable_to_update_account">Unable to update account</string>
 	<string name="missing_presence_subscription_with_x">Missing presence subscription with %s.</string>
 	<string name="missing_keys_from_x">Missing OMEMO keys from %s.</string>
+	<string name="missing_omemo_keys">Missing OMEMO keys</string>
 	<string name="wrong_conference_configuration">This is not a private, non-anonymous conference.</string>
 	<string name="this_conference_has_no_members">There are no members in this conference.</string>
 	<string name="report_jid_as_spammer">Report this JID as sending unwanted messages.</string>
