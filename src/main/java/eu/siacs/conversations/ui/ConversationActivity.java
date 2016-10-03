@@ -153,11 +153,7 @@ public class ConversationActivity extends XmppActivity
 	}
 
 	public boolean isConversationsOverviewHideable() {
-		if (mContentView instanceof SlidingPaneLayout) {
-			return true;
-		} else {
-			return false;
-		}
+		return mContentView instanceof SlidingPaneLayout;
 	}
 
 	public boolean isConversationsOverviewVisable() {

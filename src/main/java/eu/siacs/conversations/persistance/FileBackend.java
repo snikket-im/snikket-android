@@ -226,6 +226,7 @@ public class FileBackend {
 	}
 
 	public void copyFileToPrivateStorage(File file, Uri uri) throws FileCopyException {
+		Log.d(Config.LOGTAG,"copy file ("+uri.toString()+") to private storage "+file.getAbsolutePath());
 		file.getParentFile().mkdirs();
 		OutputStream os = null;
 		InputStream is = null;
@@ -248,7 +249,6 @@ public class FileBackend {
 			close(os);
 			close(is);
 		}
-		Log.d(Config.LOGTAG, "output file name " + file.getAbsolutePath());
 	}
 
 	public void copyFileToPrivateStorage(Message message, Uri uri) throws FileCopyException {
@@ -338,6 +338,7 @@ public class FileBackend {
 	}
 
 	public void copyImageToPrivateStorage(File file, Uri image) throws FileCopyException {
+		Log.d(Config.LOGTAG,"copy image ("+image.toString()+") to private storage "+file.getAbsolutePath());
 		copyImageToPrivateStorage(file, image, 0);
 	}
 
