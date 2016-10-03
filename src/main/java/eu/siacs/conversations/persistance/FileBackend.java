@@ -432,19 +432,26 @@ public class FileBackend {
 		return frame;
 	}
 
+	private static String getTakePhotoPath() {
+		return Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM)+"/Camera/";
+	}
+
 	public Uri getTakePhotoUri() {
-		StringBuilder pathBuilder = new StringBuilder();
-		pathBuilder.append(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM));
-		pathBuilder.append('/');
-		pathBuilder.append("Camera");
-		pathBuilder.append('/');
-		pathBuilder.append("IMG_" + this.imageDateFormat.format(new Date()) + ".jpg");
-		File file = new File(pathBuilder.toString());
+		File file = new File(getTakePhotoPath()+"IMG_" + this.imageDateFormat.format(new Date()) + ".jpg");
 		file.getParentFile().mkdirs();
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
 			return FileProvider.getUriForFile(mXmppConnectionService, "eu.siacs.conversations.files", file);
 		} else {
 			return Uri.fromFile(file);
+		}
+	}
+
+	public static Uri getIndexableTakePhotoUri(Uri original) {
+		if ("file".equals(original.getScheme())) {
+			return original;
+		} else {
+			List<String> segments = original.getPathSegments();
+			return Uri.parse("file://"+getTakePhotoPath()+segments.get(segments.size() - 1));
 		}
 	}
 

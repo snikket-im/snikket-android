@@ -1411,7 +1411,7 @@ public class ConversationActivity extends XmppActivity
 						mPendingImageUris.clear();
 					}
 					Intent intent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
-					intent.setData(uri);
+					intent.setData(FileBackend.getIndexableTakePhotoUri(uri));
 					sendBroadcast(intent);
 				} else {
 					mPendingImageUris.clear();
