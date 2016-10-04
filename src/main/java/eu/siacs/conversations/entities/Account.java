@@ -91,6 +91,17 @@ public class Account extends AbstractEntity {
 		return pgpDecryptionService != null && pgpDecryptionService.isConnected();
 	}
 
+	public boolean setShowErrorNotification(boolean newValue) {
+		boolean oldValue = showErrorNotification();
+		setKey("show_error",Boolean.toString(newValue));
+		return newValue != oldValue;
+	}
+
+	public boolean showErrorNotification() {
+		String key = getKey("show_error");
+		return key == null || Boolean.parseBoolean(key);
+	}
+
 	public enum State {
 		DISABLED,
 		OFFLINE,

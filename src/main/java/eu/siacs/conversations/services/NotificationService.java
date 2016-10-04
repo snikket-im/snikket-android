@@ -2,7 +2,6 @@ package eu.siacs.conversations.services;
 
 import android.app.Notification;
 import android.app.PendingIntent;
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
@@ -14,18 +13,13 @@ import android.support.v4.app.NotificationCompat.BigPictureStyle;
 import android.support.v4.app.NotificationCompat.Builder;
 import android.support.v4.app.NotificationManagerCompat;
 import android.support.v4.app.RemoteInput;
-import android.support.v4.app.TaskStackBuilder;
 import android.text.Html;
 import android.util.DisplayMetrics;
 import android.util.Log;
 
-import org.json.JSONArray;
-import org.json.JSONObject;
-
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -496,11 +490,10 @@ public class NotificationService {
 		return PendingIntent.getService(mXmppConnectionService, 45, intent, 0);
 	}
 
-	private PendingIntent createDisableAccountIntent(final Account account) {
+	private PendingIntent createDismissErrorIntent() {
 		final Intent intent = new Intent(mXmppConnectionService, XmppConnectionService.class);
-		intent.setAction(XmppConnectionService.ACTION_DISABLE_ACCOUNT);
-		intent.putExtra("account", account.getJid().toBareJid().toString());
-		return PendingIntent.getService(mXmppConnectionService, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+		intent.setAction(XmppConnectionService.ACTION_DISMISS_ERROR_NOTIFICATIONS);
+		return PendingIntent.getService(mXmppConnectionService, 69, intent, 0);
 	}
 
 	private boolean wasHighlightedOrPrivate(final Message message) {
@@ -594,7 +587,7 @@ public class NotificationService {
 		final NotificationManagerCompat notificationManager = NotificationManagerCompat.from(mXmppConnectionService);
 		final List<Account> errors = new ArrayList<>();
 		for (final Account account : mXmppConnectionService.getAccounts()) {
-			if (account.hasErrorStatus()) {
+			if (account.hasErrorStatus() && account.showErrorNotification()) {
 				errors.add(account);
 			}
 		}
@@ -615,27 +608,17 @@ public class NotificationService {
 		mBuilder.addAction(R.drawable.ic_autorenew_white_24dp,
 				mXmppConnectionService.getString(R.string.try_again),
 				createTryAgainIntent());
-		if (errors.size() == 1) {
-			mBuilder.addAction(R.drawable.ic_block_white_24dp,
-					mXmppConnectionService.getString(R.string.disable_account),
-					createDisableAccountIntent(errors.get(0)));
-		}
-		mBuilder.setOngoing(true);
-		//mBuilder.setLights(0xffffffff, 2000, 4000);
+		mBuilder.setDeleteIntent(createDismissErrorIntent());
+		mBuilder.setVisibility(NotificationCompat.VISIBILITY_PUBLIC);
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
 			mBuilder.setSmallIcon(R.drawable.ic_warning_white_24dp);
 		} else {
 			mBuilder.setSmallIcon(R.drawable.ic_stat_alert_warning);
 		}
-		final TaskStackBuilder stackBuilder = TaskStackBuilder.create(mXmppConnectionService);
-		stackBuilder.addParentStack(ConversationActivity.class);
-
-		final Intent manageAccountsIntent = new Intent(mXmppConnectionService, ManageAccountActivity.class);
-		stackBuilder.addNextIntent(manageAccountsIntent);
-
-		final PendingIntent resultPendingIntent = stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
-
-		mBuilder.setContentIntent(resultPendingIntent);
+		mBuilder.setContentIntent(PendingIntent.getActivity(mXmppConnectionService,
+				145,
+				new Intent(mXmppConnectionService,ManageAccountActivity.class),
+				PendingIntent.FLAG_UPDATE_CURRENT));
 		notificationManager.notify(ERROR_NOTIFICATION_ID, mBuilder.build());
 	}
 }
