@@ -139,7 +139,11 @@ public class IqParser extends AbstractParser implements OnIqPacketReceived {
 		if(signedPreKeyPublic == null) {
 			return null;
 		}
-		return Integer.valueOf(signedPreKeyPublic.getAttribute("signedPreKeyId"));
+		try {
+			return Integer.valueOf(signedPreKeyPublic.getAttribute("signedPreKeyId"));
+		} catch (NumberFormatException e) {
+			return null;
+		}
 	}
 
 	public ECPublicKey signedPreKeyPublic(final Element bundle) {
@@ -255,7 +259,7 @@ public class IqParser extends AbstractParser implements OnIqPacketReceived {
 		Integer signedPreKeyId = signedPreKeyId(bundleElement);
 		byte[] signedPreKeySignature = signedPreKeySignature(bundleElement);
 		IdentityKey identityKey = identityKey(bundleElement);
-		if(signedPreKeyPublic == null || identityKey == null) {
+		if(signedPreKeyId == null || signedPreKeyPublic == null || identityKey == null) {
 			return null;
 		}
 

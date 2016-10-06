@@ -91,7 +91,11 @@ public class XmppAxolotlMessage {
 	private XmppAxolotlMessage(final Element axolotlMessage, final Jid from) throws IllegalArgumentException {
 		this.from = from;
 		Element header = axolotlMessage.findChild(HEADER);
-		this.sourceDeviceId = Integer.parseInt(header.getAttribute(SOURCEID));
+		try {
+			this.sourceDeviceId = Integer.parseInt(header.getAttribute(SOURCEID));
+		} catch (NumberFormatException e) {
+			throw new IllegalArgumentException("invalid source id");
+		}
 		List<Element> keyElements = header.getChildren();
 		this.keys = new HashMap<>(keyElements.size());
 		for (Element keyElement : keyElements) {
@@ -102,7 +106,7 @@ public class XmppAxolotlMessage {
 						byte[] key = Base64.decode(keyElement.getContent().trim(), Base64.DEFAULT);
 						this.keys.put(recipientId, key);
 					} catch (NumberFormatException e) {
-						throw new IllegalArgumentException(e);
+						throw new IllegalArgumentException("invalid remote id");
 					}
 					break;
 				case IVTAG:
