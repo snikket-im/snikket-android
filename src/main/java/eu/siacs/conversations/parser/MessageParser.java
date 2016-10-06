@@ -333,7 +333,7 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
 		}
 
 		if (timestamp == null) {
-			timestamp = AbstractParser.parseTimestamp(packet);
+			timestamp = AbstractParser.parseTimestamp(original,AbstractParser.parseTimestamp(packet));
 		}
 		final String body = packet.getBody();
 		final Element mucUserElement = packet.findChild("x", "http://jabber.org/protocol/muc#user");
