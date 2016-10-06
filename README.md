@@ -329,6 +329,14 @@ feature is regarded experimental. Conversations is the only client that uses
 XEP-0027 with conferences. (The XEP neither specifically allows nor disallows
 this.)
 
+### What clients do I use on other platforms
+There are XMPP Clients available for all major platforms.
+####Windows / Linux
+For your desktop computer we recommand that you use [Gajim](https://gajim.org). You need to install the plugins `OMEMO`, `HTTP Upload` and `URL image preview` to get the best compatibiltiy with Conversations. Plugins can be installed from withhin the app.
+####iOS
+Unfortunatly we don‘t have a recommandation for iPhones right now. There are two clients available [ChatSecure](https://chatsecure.org/) and [Monal](https://monal.im/). Both with their own pros and cons.
+
+
 ### Development
 
 <a name="beta"></a>
