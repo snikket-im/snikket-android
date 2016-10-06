@@ -1066,6 +1066,7 @@ public class XmppConnection implements Runnable {
 				mStanzaQueue.clear();
 			}
 		}
+		mXmppConnectionService.resetSendingToWaiting(account);
 		features.carbonsEnabled = false;
 		features.blockListRequested = false;
 		synchronized (this.disco) {

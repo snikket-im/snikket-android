@@ -326,7 +326,7 @@ public class XmppConnectionService extends Service {
 				}
 				account.pendingConferenceJoins.clear();
 				scheduleWakeUpCall(Config.PUSH_MODE ? Config.PING_MIN_INTERVAL : Config.PING_MAX_INTERVAL, account.getUuid().hashCode());
-			} else if (account.getStatus() == Account.State.OFFLINE) {
+			} else if (account.getStatus() == Account.State.OFFLINE || account.getStatus() == Account.State.DISABLED) {
 				resetSendingToWaiting(account);
 				final boolean disabled = account.isOptionSet(Account.OPTION_DISABLED);
 				final boolean listeners = checkListeners();
@@ -2891,6 +2891,7 @@ public class XmppConnectionService extends Service {
 	}
 
 	public void resetSendingToWaiting(Account account) {
+		Log.d(Config.LOGTAG,account.getJid().toBareJid()+": reset 'sending' messages to 'waiting'");
 		for (Conversation conversation : getConversations()) {
 			if (conversation.getAccount() == account) {
 				conversation.findUnsentTextMessages(new Conversation.OnMessageFound() {
