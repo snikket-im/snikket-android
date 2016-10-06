@@ -25,6 +25,7 @@ import java.util.regex.Pattern;
 
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
+import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.entities.Message;
 import eu.siacs.conversations.xmpp.jid.InvalidJidException;
 import eu.siacs.conversations.xmpp.jid.Jid;
@@ -202,6 +203,15 @@ public final class CryptoHelper {
 		MessageDigest md = MessageDigest.getInstance("SHA-1");
 		byte[] fingerprint = md.digest(input);
 		return prettifyFingerprintCert(bytesToHex(fingerprint));
+	}
+
+	public static String getAccountFingerprint(Account account) {
+		try {
+			MessageDigest md = MessageDigest.getInstance("SHA256");
+			return bytesToHex(md.digest(account.getJid().toBareJid().toString().getBytes("UTF-8")));
+		} catch (Exception e) {
+			return "";
+		}
 	}
 
 	public static int encryptionTypeToText(int encryption) {

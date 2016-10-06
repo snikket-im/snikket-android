@@ -529,6 +529,7 @@ public class XmppConnectionService extends Service {
 	@Override
 	public int onStartCommand(Intent intent, int flags, int startId) {
 		final String action = intent == null ? null : intent.getAction();
+		String pushedAccountHash = null;
 		boolean interactive = false;
 		if (action != null) {
 			final Conversation c = findConversationByUuid(intent.getStringExtra("uuid"));
@@ -596,6 +597,7 @@ public class XmppConnectionService extends Service {
 					break;
 				case ACTION_GCM_MESSAGE_RECEIVED:
 					Log.d(Config.LOGTAG,"gcm push message arrived in service. extras="+intent.getExtras());
+					pushedAccountHash = intent.getStringExtra("account");
 					break;
 			}
 		}
@@ -634,7 +636,7 @@ public class XmppConnectionService extends Service {
 							}
 						} else {
 							pingCandidates.add(account);
-							if (msToNextPing <= 0) {
+							if (msToNextPing <= 0 || CryptoHelper.getAccountFingerprint(account).equals(pushedAccountHash)) {
 								pingNow = true;
 							} else {
 								this.scheduleWakeUpCall((int) (msToNextPing / 1000), account.getUuid().hashCode());
