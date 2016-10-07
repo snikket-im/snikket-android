@@ -343,6 +343,7 @@ public class XmppConnectionService extends Service {
 				reconnectAccount(account, true, false);
 			} else if ((account.getStatus() != Account.State.CONNECTING)
 					&& (account.getStatus() != Account.State.NO_INTERNET)) {
+				resetSendingToWaiting(account);
 				if (connection != null) {
 					int next = connection.getTimeToNextAttempt();
 					Log.d(Config.LOGTAG, account.getJid().toBareJid()
@@ -1312,6 +1313,13 @@ public class XmppConnectionService extends Service {
 					for (Conversation conversation : conversations) {
 						conversation.addAll(0, databaseBackend.getMessages(conversation, Config.PAGE_SIZE));
 						checkDeletedFiles(conversation);
+						conversation.findUnsentTextMessages(new Conversation.OnMessageFound() {
+
+							@Override
+							public void onMessageFound(Message message) {
+								markMessage(message, Message.STATUS_WAITING);
+							}
+						});
 						conversation.findUnreadMessages(new Conversation.OnMessageFound() {
 							@Override
 							public void onMessageFound(Message message) {
@@ -2894,7 +2902,6 @@ public class XmppConnectionService extends Service {
 	}
 
 	public void resetSendingToWaiting(Account account) {
-		Log.d(Config.LOGTAG,account.getJid().toBareJid()+": reset 'sending' messages to 'waiting'");
 		for (Conversation conversation : getConversations()) {
 			if (conversation.getAccount() == account) {
 				conversation.findUnsentTextMessages(new Conversation.OnMessageFound() {

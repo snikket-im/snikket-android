@@ -244,6 +244,9 @@ public class XmppConnection implements Runnable {
 	}
 
 	protected void connect() {
+		if (mXmppConnectionService.areMessagesInitialized()) {
+			mXmppConnectionService.resetSendingToWaiting(account);
+		}
 		Log.d(Config.LOGTAG, account.getJid().toBareJid().toString() + ": connecting");
 		features.encryptionEnabled = false;
 		this.attempt++;
@@ -1069,7 +1072,6 @@ public class XmppConnection implements Runnable {
 				mStanzaQueue.clear();
 			}
 		}
-		mXmppConnectionService.resetSendingToWaiting(account);
 		features.carbonsEnabled = false;
 		features.blockListRequested = false;
 		synchronized (this.disco) {
