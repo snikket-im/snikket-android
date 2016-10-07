@@ -207,7 +207,7 @@ public final class CryptoHelper {
 
 	public static String getAccountFingerprint(Account account) {
 		try {
-			MessageDigest md = MessageDigest.getInstance("SHA256");
+			MessageDigest md = MessageDigest.getInstance("SHA-256");
 			return bytesToHex(md.digest(account.getJid().toBareJid().toString().getBytes("UTF-8")));
 		} catch (Exception e) {
 			return "";
