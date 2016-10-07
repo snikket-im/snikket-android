@@ -136,7 +136,7 @@ public class XmppConnection implements Runnable {
 
 	private SaslMechanism saslMechanism;
 
-	private X509KeyManager mKeyManager = new X509KeyManager() {
+	private class MyKeyManager implements X509KeyManager {
 		@Override
 		public String chooseClientAlias(String[] strings, Principal[] principals, Socket socket) {
 			return account.getPrivateKeyAlias();
@@ -149,9 +149,11 @@ public class XmppConnection implements Runnable {
 
 		@Override
 		public X509Certificate[] getCertificateChain(String alias) {
+			Log.d(Config.LOGTAG,"getting certificate chain");
 			try {
 				return KeyChain.getCertificateChain(mXmppConnectionService, alias);
 			} catch (Exception e) {
+				Log.d(Config.LOGTAG,e.getMessage());
 				return new X509Certificate[0];
 			}
 		}
@@ -174,7 +176,8 @@ public class XmppConnection implements Runnable {
 				return null;
 			}
 		}
-	};
+	}
+
 	private Identity mServerIdentity = Identity.UNKNOWN;
 
 	public final OnIqPacketReceived registrationResponseListener =  new OnIqPacketReceived() {
@@ -458,7 +461,7 @@ public class XmppConnection implements Runnable {
 		MemorizingTrustManager trustManager = this.mXmppConnectionService.getMemorizingTrustManager();
 		KeyManager[] keyManager;
 		if (account.getPrivateKeyAlias() != null && account.getPassword().isEmpty()) {
-			keyManager = new KeyManager[]{mKeyManager};
+			keyManager = new KeyManager[]{new MyKeyManager()};
 		} else {
 			keyManager = null;
 		}
