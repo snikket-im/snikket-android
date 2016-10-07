@@ -539,7 +539,11 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
 				mXmppConnectionService.updateConversationUi();
 			}
 
-			if (mXmppConnectionService.confirmMessages() && remoteMsgId != null && !isForwarded && !isTypeGroupChat) {
+			if (mXmppConnectionService.confirmMessages()
+					&& message.trusted()
+					&& remoteMsgId != null
+					&& !isForwarded
+					&& !isTypeGroupChat) {
 				sendMessageReceipts(account, packet);
 			}
 

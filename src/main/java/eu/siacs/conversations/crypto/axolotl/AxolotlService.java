@@ -665,7 +665,7 @@ public class AxolotlService implements OnAdvancedStreamFeaturesLoaded {
 			final List<Jid> jids = getCryptoTargets(conversation);
 			for(Jid jid : jids) {
 				if (!hasAny(jid) && (!deviceIds.containsKey(jid) || deviceIds.get(jid).isEmpty())) {
-					if (conversation.getAccount().getRoster().getContact(jid).trusted()) {
+					if (conversation.getAccount().getRoster().getContact(jid).mutualPresenceSubscription()) {
 						return new Pair<>(AxolotlCapability.MISSING_KEYS,jid);
 					} else {
 						return new Pair<>(AxolotlCapability.MISSING_PRESENCE,jid);

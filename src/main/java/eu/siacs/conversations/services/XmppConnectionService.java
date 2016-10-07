@@ -3115,7 +3115,10 @@ public class XmppConnectionService extends Service {
 		if (this.markRead(conversation)) {
 			updateConversationUi();
 		}
-		if (confirmMessages() && markable != null && markable.getRemoteMsgId() != null) {
+		if (confirmMessages()
+				&& markable != null
+				&& markable.trusted()
+				&& markable.getRemoteMsgId() != null) {
 			Log.d(Config.LOGTAG, conversation.getAccount().getJid().toBareJid() + ": sending read marker to " + markable.getCounterpart().toString());
 			Account account = conversation.getAccount();
 			final Jid to = markable.getCounterpart();

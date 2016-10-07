@@ -118,7 +118,7 @@ public class Contact implements ListItem, Blockable {
 			return this.systemName;
 		} else if (this.serverName != null) {
 			return this.serverName;
-		} else if (this.presenceName != null && trusted()) {
+		} else if (this.presenceName != null && mutualPresenceSubscription()) {
 			return this.presenceName;
 		} else if (jid.hasLocalpart()) {
 			return jid.getLocalpart();
@@ -487,7 +487,7 @@ public class Contact implements ListItem, Blockable {
 		}
 	}
 
-	public boolean trusted() {
+	public boolean mutualPresenceSubscription() {
 		return getOption(Options.FROM) && getOption(Options.TO);
 	}
 
