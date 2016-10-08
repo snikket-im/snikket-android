@@ -587,26 +587,27 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
 				}
 			}
 			if (conversation != null && mucUserElement != null && from.isBareJid()) {
-				if (mucUserElement.hasChild("status")) {
-					for (Element child : mucUserElement.getChildren()) {
-						if (child.getName().equals("status")
-								&& MucOptions.STATUS_CODE_ROOM_CONFIG_CHANGED.equals(child.getAttribute("code"))) {
-							mXmppConnectionService.fetchConferenceConfiguration(conversation);
-						}
-					}
-				} else if (mucUserElement.hasChild("item")) {
-					for(Element child : mucUserElement.getChildren()) {
-						if ("item".equals(child.getName())) {
-							MucOptions.User user = AbstractParser.parseItem(conversation,child);
-							Log.d(Config.LOGTAG,account.getJid()+": changing affiliation for "
-									+user.getRealJid()+" to "+user.getAffiliation()+" in "
-									+conversation.getJid().toBareJid());
-							if (!user.realJidMatchesAccount()) {
-								conversation.getMucOptions().addUser(user);
-								mXmppConnectionService.getAvatarService().clear(conversation);
-								mXmppConnectionService.updateMucRosterUi();
-								mXmppConnectionService.updateConversationUi();
+				for (Element child : mucUserElement.getChildren()) {
+					if ("status".equals(child.getName())) {
+						try {
+							int code = Integer.parseInt(child.getAttribute("code"));
+							if ((code >= 170 && code <= 174) || (code >= 102 && code <= 104)) {
+								mXmppConnectionService.fetchConferenceConfiguration(conversation);
+								break;
 							}
+						} catch (Exception e) {
+							//ignored
+						}
+					} else if ("item".equals(child.getName())) {
+						MucOptions.User user = AbstractParser.parseItem(conversation,child);
+						Log.d(Config.LOGTAG,account.getJid()+": changing affiliation for "
+								+user.getRealJid()+" to "+user.getAffiliation()+" in "
+								+conversation.getJid().toBareJid());
+						if (!user.realJidMatchesAccount()) {
+							conversation.getMucOptions().addUser(user);
+							mXmppConnectionService.getAvatarService().clear(conversation);
+							mXmppConnectionService.updateMucRosterUi();
+							mXmppConnectionService.updateConversationUi();
 						}
 					}
 				}
