@@ -1,5 +1,6 @@
 package eu.siacs.conversations.ui;
 
+import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
@@ -15,6 +16,11 @@ public class WelcomeActivity extends Activity {
 	protected void onCreate(final Bundle savedInstanceState) {
 		if (getResources().getBoolean(R.bool.portrait_only)) {
 			setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+		}
+		final ActionBar ab = getActionBar();
+		if (ab != null) {
+			ab.setDisplayShowHomeEnabled(false);
+			ab.setDisplayHomeAsUpEnabled(false);
 		}
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.welcome);
