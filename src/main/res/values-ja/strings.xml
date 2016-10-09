@@ -283,6 +283,7 @@
   <string name="conference_requires_password">会議はパスワードが必要です</string>
   <string name="enter_password">パスワードを入力してください</string>
   <string name="missing_presence_updates">連絡先からの参加アップデートがありません</string>
+  <string name="missing_presence_subscription">参加サブスクリプションが見つかりません</string>
   <string name="request_presence_updates">最初に連絡先から参加アップデートを要求してください。\n\n<small>これは、連絡先が何のクライアントを使用しているかを決めるために使用されます。</small></string>
   <string name="request_now">今すぐ要求</string>
   <string name="delete_fingerprint">フィンガープリントを削除</string>
@@ -593,6 +594,7 @@
   <string name="no_application_to_share_uri">URI を共有するアプリケーションが見つかりません</string>
   <string name="share_uri_with">…で URI を共有</string>
   <string name="welcome_text">XMPPはプロバイダーに依存しないプロトコルです。これまであなたが選択したどのXMPPサーバーでも、このクライアントを使用することができます。\nしかしあなたが便利なように、Conversationsで使用するのに最適なプロバイダーconversations.im¹で簡単にアカウントを作成することができるようにしています。</string>
+  <string name="magic_create_text">conversations.imのアカウントを作成する手順をガイドします。\nプロバイダーとしてconversations.imを選択すると、あなたの完全なJabber IDを指定することによって、他のプロバイダーのユーザと通信することができるようになります。</string>
   <string name="your_full_jid_will_be">あなたの完全な Jabber ID は: %s</string>
   <string name="create_account">アカウントを作成</string>
   <string name="use_own_provider">独自のプロバイダーを使用する</string>
@@ -647,10 +649,12 @@
   <string name="unable_to_update_account">アカウントを更新できません</string>
   <string name="missing_presence_subscription_with_x">%s の、参加サブスクリプションが見つかりません。</string>
   <string name="missing_keys_from_x">%s からの OMEMO 鍵が見つかりません。</string>
+  <string name="missing_omemo_keys">OMEMO 鍵が見つかりません</string>
   <string name="wrong_conference_configuration">これはプライベートではない、非匿名の会議です。</string>
   <string name="this_conference_has_no_members">この会議にメンバーはいません</string>
   <string name="report_jid_as_spammer">この JID を不要なメッセージ送信として報告します。</string>
   <string name="pref_delete_omemo_identities">OMEMO ID を削除</string>
   <string name="pref_delete_omemo_identities_summary">OMEMO 鍵を再生成します。すべての連絡先を再度確認する必要があります。最後の手段としてのみ使用してください。</string>
   <string name="delete_selected_keys">選択した鍵を削除</string>
+  <string name="error_publish_avatar_offline">アバターを公開するには接続する必要があります。</string>
 </resources>

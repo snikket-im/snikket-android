@@ -283,6 +283,7 @@
   <string name="conference_requires_password">La conferenza richiede una password</string>
   <string name="enter_password">Inserisci la password</string>
   <string name="missing_presence_updates">Aggiornamenti della presenza del contatto mancanti</string>
+  <string name="missing_presence_subscription">Sottoiscrizione alla presenza mancante</string>
   <string name="request_presence_updates">Richiedi gli aggiornamenti della presenza dal tuo contatto.\n\n<small>Questo verrà usato per determinare quali client sta usando il tuo contatto.</small></string>
   <string name="request_now">Rechiedi adesso</string>
   <string name="delete_fingerprint">Elimina Impronta</string>
@@ -651,10 +652,12 @@
   <string name="unable_to_update_account">Impossibile aggiornare l\'account</string>
   <string name="missing_presence_subscription_with_x">Sottoscrizione della presenza con %s mancante.</string>
   <string name="missing_keys_from_x">Chiavi OMEMO da %s mancanti.</string>
+  <string name="missing_omemo_keys">Chiave OMEMO mancante</string>
   <string name="wrong_conference_configuration">Questa non è un conferenza privata/anonima.</string>
   <string name="this_conference_has_no_members">Non ci sono membri in questa conferenza.</string>
   <string name="report_jid_as_spammer">Questo JID invia messaggi non richiesti.</string>
   <string name="pref_delete_omemo_identities">Elimina identità OMEMO</string>
   <string name="pref_delete_omemo_identities_summary">Rigenera le tue chiavi OMEMO. I tuoi contatti dovranno verificare un\'altra volta la tua identità. Solo come ultima possibilità.</string>
   <string name="delete_selected_keys">Cancella le chiavi selezionate</string>
+  <string name="error_publish_avatar_offline">Devi essere connesso per pubblicare l\'avatar.</string>
 </resources>
