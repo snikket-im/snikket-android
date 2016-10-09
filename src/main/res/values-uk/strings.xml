@@ -246,7 +246,6 @@
   <string name="contact_already_exists">Контакт уже існує</string>
   <string name="join">Долучитися</string>
   <string name="conference_address">Адреса конференції</string>
-  <string name="conference_address_example">room@conference.example.com</string>
   <string name="save_as_bookmark">Зберегти як закладку</string>
   <string name="delete_bookmark">Видалити закладку</string>
   <string name="bookmark_already_exists">Ця закладка вже існує</string>
@@ -595,8 +594,6 @@
   <string name="security_error_invalid_file_access">Помилка безпеки: Недійсний доступ до файлу</string>
   <string name="no_application_to_share_uri">Не знайдено програми, щоб поділитися URI</string>
   <string name="share_uri_with">Поділитися URI з…</string>
-  <string name="welcome_text">XMPP надає незалежний протокол. Ви можете використати цей клієнт з будь-яким XMPP сервером на Ваш вибір.\nДля Вашої зручності, ми зробили так, що Ви можете просто створити обліковий запис на conversations.im; це один із провайдерів, який спеціально підходящий для використання з програмою.</string>
-  <string name="magic_create_text">Ми проведемо Вас через процес створення облікового запису на conversations.im.\nУ разі вибору conversations.im у якості провайдера, Ви зможете спілкуватися з користувачами інших провайдерів, надавши їм Ваш повний Jabber ID.</string>
   <string name="your_full_jid_will_be">Ваш повний Jabber ID буде: %s</string>
   <string name="create_account">Створити обліковий запис</string>
   <string name="use_own_provider">Використати мого власного провайдера</string>

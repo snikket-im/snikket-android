@@ -247,7 +247,7 @@
   <string name="contact_already_exists">El contacto ya existe</string>
   <string name="join">Unirse</string>
   <string name="conference_address">Dirección</string>
-  <string name="conference_address_example">nombre@salas.ejemplo.com</string>
+  <string name="conference_address_example">sala@salas.ejemplo.com/nick</string>
   <string name="save_as_bookmark">Guardar en marcadores</string>
   <string name="delete_bookmark">Eliminar marcador</string>
   <string name="bookmark_already_exists">Este marcador ya existe</string>
@@ -283,6 +283,7 @@
   <string name="conference_requires_password">Esta conversación requiere contraseña</string>
   <string name="enter_password">Introduce la contraseña</string>
   <string name="missing_presence_updates">Se ha perdido la suscripción de presencia del contacto</string>
+  <string name="missing_presence_subscription">Se ha perdido la suscripción de presencia</string>
   <string name="request_presence_updates">Por favor, solicita la suscripción de presencia a tu contacto primero.\n\n<small>Esto se usará para determinar qué cliente(s) está usando tu contacto.</small></string>
   <string name="request_now">Solicitar ahora</string>
   <string name="delete_fingerprint">Eliminar huella digital OTR</string>
@@ -595,8 +596,8 @@
   <string name="security_error_invalid_file_access">Error de seguridad: Acceso a fichero inválido</string>
   <string name="no_application_to_share_uri">No se ha encontrado ninguna aplicación para compartir la URI</string>
   <string name="share_uri_with">Compartir URI con...</string>
-  <string name="welcome_text">XMPP es un protocolo independiente del proveedor. Puedes usar este cliente con cualquier servidor de XMPP que elijas.\nDe todas formas, para tu comodidad, hemos facilitado la creación de una cuenta en conversations.im; un proveedor alojado especialmente para su uso con Conversations.</string>
-  <string name="magic_create_text">Te guiaremos durante el proceso de creación de la cuenta en conversations.im.\nCuando selecciones conversations.im como proveedor, podrás comunicarte con usuarios de otros servidores mediante tu identificador Jabber.</string>
+  <string name="welcome_text">XMPP es un protocolo independiente del proveedor. Puedes usar este cliente con cualquier servidor de XMPP que elijas.\nDe todas formas, para tu comodidad, hemos facilitado la creación de una cuenta en conversations.im¹; un proveedor alojado especialmente para su uso con Conversations.</string>
+  <string name="magic_create_text">Te guiaremos durante el proceso de creación de la cuenta en conversations.im.¹\nCuando selecciones conversations.im como proveedor, podrás comunicarte con usuarios de otros servidores mediante tu identificador Jabber.</string>
   <string name="your_full_jid_will_be">Tu identificador Jabber será: %s</string>
   <string name="create_account">Crear cuenta</string>
   <string name="use_own_provider">Usar otro proveedor de mi elección</string>
@@ -651,6 +652,12 @@
   <string name="unable_to_update_account">No se ha podido actualizar la cuenta</string>
   <string name="missing_presence_subscription_with_x">Se ha perdido la suscripción de presencia con %s.</string>
   <string name="missing_keys_from_x">Se ha perdido la clave OMEMO de %s.</string>
+  <string name="missing_omemo_keys">Se han perdido las claves OMEMO</string>
   <string name="wrong_conference_configuration">Ésta no es una conversación privada no anónima.</string>
   <string name="this_conference_has_no_members">No hay miembros en esta conversación.</string>
+  <string name="report_jid_as_spammer">Reportar a este Id Jabber por enviar mensajes no deseados</string>
+  <string name="pref_delete_omemo_identities">Eliminar identidades OMEMO</string>
+  <string name="pref_delete_omemo_identities_summary">Regenerar tus clave OMEMO. Todos tus contactos tendrán que verificarte de nuevo. Usa esta opción como último recurso.</string>
+  <string name="delete_selected_keys">Eliminar claves seleccionadas</string>
+  <string name="error_publish_avatar_offline">Debes estar conectado para publicar la imagen de perfil</string>
 </resources>

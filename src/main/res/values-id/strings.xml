@@ -222,7 +222,6 @@
   <string name="contact_already_exists">Kontak ini sudah ada</string>
   <string name="join">Gabung</string>
   <string name="conference_address">Alamat conference</string>
-  <string name="conference_address_example">room@conference.example.com</string>
   <string name="save_as_bookmark">Simpan sebagai bookmark</string>
   <string name="delete_bookmark">Hapus bookmark</string>
   <string name="bookmark_already_exists">Bookmark ini sudah ada</string>

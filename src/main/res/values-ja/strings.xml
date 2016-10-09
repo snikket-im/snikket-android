@@ -247,7 +247,7 @@
   <string name="contact_already_exists">連絡先はすでに存在します</string>
   <string name="join">参加</string>
   <string name="conference_address">会議アドレス</string>
-  <string name="conference_address_example">room@conference.example.com</string>
+  <string name="conference_address_example">room@conference.example.com/nick</string>
   <string name="save_as_bookmark">ブックマークとして保存</string>
   <string name="delete_bookmark">ブックマークを削除</string>
   <string name="bookmark_already_exists">このブックマークはすでに存在します</string>
@@ -390,7 +390,7 @@
   <string name="account_image_description">アカウント アバター</string>
   <string name="copy_otr_clipboard_description">OTR フィンガープリントをクリップボードにコピー</string>
   <string name="copy_omemo_clipboard_description">OMEMO フィンガープリントをクリップボードにコピー</string>
-  <string name="regenerate_omemo_key">OMEMO キーを再生成</string>
+  <string name="regenerate_omemo_key">OMEMO 鍵を再生成</string>
   <string name="wipe_omemo_pep">PEP から他のデバイスを消去</string>
   <string name="clear_other_devices">デバイスをクリア</string>
   <string name="clear_other_devices_desc">OMEMO のアナウンスから他のすべてのデバイスをクリアしてもよろしいですか? お使いのデバイスが次回接続したとき、それらは自分自身を再アナウンスしますが、それらはその間に送信されたメッセージを受信できない場合があります。</string>
@@ -592,8 +592,7 @@
   <string name="security_error_invalid_file_access">セキュリティエラー: 不正なファイルアクセス</string>
   <string name="no_application_to_share_uri">URI を共有するアプリケーションが見つかりません</string>
   <string name="share_uri_with">…で URI を共有</string>
-  <string name="welcome_text">XMPPはプロバイダーに依存しないプロトコルです。これまであなたが選択したどのXMPPサーバーでも、このクライアントを使用することができます。\nしかしあなたが便利なように、Conversationsで使用するのに最適なプロバイダーconversations.imで簡単にアカウントを作成することができるようにしています。</string>
-  <string name="magic_create_text">conversations.imのアカウントを作成する手順をガイドします。\nプロバイダーとしてconversations.imを選択すると、あなたの完全なJabber IDを指定することによって、他のプロバイダーのユーザと通信することができるようになります。</string>
+  <string name="welcome_text">XMPPはプロバイダーに依存しないプロトコルです。これまであなたが選択したどのXMPPサーバーでも、このクライアントを使用することができます。\nしかしあなたが便利なように、Conversationsで使用するのに最適なプロバイダーconversations.im¹で簡単にアカウントを作成することができるようにしています。</string>
   <string name="your_full_jid_will_be">あなたの完全な Jabber ID は: %s</string>
   <string name="create_account">アカウントを作成</string>
   <string name="use_own_provider">独自のプロバイダーを使用する</string>
@@ -650,4 +649,8 @@
   <string name="missing_keys_from_x">%s からの OMEMO 鍵が見つかりません。</string>
   <string name="wrong_conference_configuration">これはプライベートではない、非匿名の会議です。</string>
   <string name="this_conference_has_no_members">この会議にメンバーはいません</string>
+  <string name="report_jid_as_spammer">この JID を不要なメッセージ送信として報告します。</string>
+  <string name="pref_delete_omemo_identities">OMEMO ID を削除</string>
+  <string name="pref_delete_omemo_identities_summary">OMEMO 鍵を再生成します。すべての連絡先を再度確認する必要があります。最後の手段としてのみ使用してください。</string>
+  <string name="delete_selected_keys">選択した鍵を削除</string>
 </resources>

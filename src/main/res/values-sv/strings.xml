@@ -247,7 +247,7 @@
   <string name="contact_already_exists">Kontakten finns redan</string>
   <string name="join">Gå med</string>
   <string name="conference_address">Konferensadress</string>
-  <string name="conference_address_example">rum@conference.exempel.se</string>
+  <string name="conference_address_example">room@conference.example.com/nick</string>
   <string name="save_as_bookmark">Spara som bokmärke</string>
   <string name="delete_bookmark">Ta bort bokmärke</string>
   <string name="bookmark_already_exists">Detta bokmärke finns redan</string>
@@ -283,6 +283,7 @@
   <string name="conference_requires_password">Konferensen kräver lösenord</string>
   <string name="enter_password">Fyll i lösenord</string>
   <string name="missing_presence_updates">Saknar tillgänglighetsuppdateringar från kontakt</string>
+  <string name="missing_presence_subscription">Saknar tillgänglighetsuppdateringar</string>
   <string name="request_presence_updates">Begär tillgänglighetsuppdateringar från din kontakt först.\n\n<small>Detta används för att se vilken klient/klienter din kontakt använder.</small></string>
   <string name="request_now">Begär nu</string>
   <string name="delete_fingerprint">Ta bort fingeravtryck</string>
@@ -595,8 +596,6 @@
   <string name="security_error_invalid_file_access">Säkerhetsfel: Ogiltig filaccess</string>
   <string name="no_application_to_share_uri">Ingen applikation kunde hittas för att dela URI</string>
   <string name="share_uri_with">Dela URI med...</string>
-  <string name="welcome_text">XMPP är ett leverantörsoberoende protokoll. Du kan använda denna klient med vilken XMPP server du vill.\nFör din bekvämlighet har vi gjort det enkelt att skapa ett konto hos conversations.im; en leverantör speciellt anpassad för att användas med Conversations.</string>
-  <string name="magic_create_text">Du kommer nu att få hjälp med att skapa ett konto på conversations.im.\nNär conversations.im väljs som leverantör kommer du kunna kommunicera med användare hos andra leverantörer genom att ge dem ditt Jabber ID.</string>
   <string name="your_full_jid_will_be">Ditt jabber ID blir: %s</string>
   <string name="create_account">Skapa konto</string>
   <string name="use_own_provider">Använd min egen leverantör</string>
@@ -651,6 +650,12 @@
   <string name="unable_to_update_account">Kan inte uppdatera konto</string>
   <string name="missing_presence_subscription_with_x">Saknar tillgänglighetsuppdateringar från %s.</string>
   <string name="missing_keys_from_x">Saknar OMEMO nyckel från %s.</string>
+  <string name="missing_omemo_keys">Saknar OMEMO nycklar</string>
   <string name="wrong_conference_configuration">Detta är inte en privat, icke-anonym konferens.</string>
   <string name="this_conference_has_no_members">Det finns inga medlemmar i denna konferens.</string>
+  <string name="report_jid_as_spammer">Rapportera detta JID för skickande av oönskade meddelanden.</string>
+  <string name="pref_delete_omemo_identities">Ta bort OMEMO identiteter</string>
+  <string name="pref_delete_omemo_identities_summary">Regenerera din OMEMO-nyckel. Alla dina kontakter kommer att behöva verifiera dig igen. Använd detta endast som en sista utväg.</string>
+  <string name="delete_selected_keys">Ta bort valda nycklar</string>
+  <string name="error_publish_avatar_offline">Du måste vara ansluten för att publicera din avatarbild</string>
 </resources>

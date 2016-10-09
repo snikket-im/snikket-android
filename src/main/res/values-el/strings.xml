@@ -199,7 +199,6 @@
   <string name="contact_already_exists">Η επαφή υπάρχει ήδη</string>
   <string name="join">Συμμετοχή</string>
   <string name="conference_address">Διεύθυνση συνδιάσκεψης</string>
-  <string name="conference_address_example">room@conference.example.com</string>
   <string name="save_as_bookmark">Αποθήκευση σαν σελιδοδείκτη</string>
   <string name="delete_bookmark">Διαγραφή σελιδοδείκτη</string>
   <string name="bookmark_already_exists">Αυτός ο σελιδοδείκτης υπάρχει ήδη</string>

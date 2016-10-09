@@ -199,7 +199,6 @@
   <string name="contact_already_exists">El contacte ja existeix</string>
   <string name="join">Unir-se</string>
   <string name="conference_address">Direcció de la sala</string>
-  <string name="conference_address_example">room@conference.example.com</string>
   <string name="save_as_bookmark">Guardar com a favorits</string>
   <string name="delete_bookmark">Eliminar de favorits</string>
   <string name="bookmark_already_exists">Aquesta llista de favorits ja existeix</string>

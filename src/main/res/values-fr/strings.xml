@@ -247,7 +247,7 @@
   <string name="contact_already_exists">Le contact existe déjà.</string>
   <string name="join">Rejoindre</string>
   <string name="conference_address">Adresse de la conférence</string>
-  <string name="conference_address_example">salle@conference.exemple.com</string>
+  <string name="conference_address_example">room@conference.example.com/nick</string>
   <string name="save_as_bookmark">Enregistrer comme favori</string>
   <string name="delete_bookmark">Supprimer le favori</string>
   <string name="bookmark_already_exists">Le favori existe déjà</string>
@@ -595,8 +595,8 @@
   <string name="security_error_invalid_file_access">Erreur de sécurité : accès fichier non-valide</string>
   <string name="no_application_to_share_uri">Aucune application trouvée pour partager l\'URI</string>
   <string name="share_uri_with">Partager l\'URI avec...</string>
-  <string name="welcome_text">XMPP est un protocole indépendant. Vous pouvez utiliser ce client avec le serveur XMPP de votre choix.\nCependant, pour votre confort, vous pouvez créer un compte sur conversations.im, un fournisseur spécialement approprié pour Conversations.</string>
-  <string name="magic_create_text">Nous vous guiderons pendant toute la procédure de création d\'un compte utilisateur sur conversations.im.\nEn choisissant conversations.im comme fournisseur, vous pourrez communiquer avec les utilisateurs d\'autres fournisseurs en leur transmettant votre Jabber ID complet. </string>
+  <string name="welcome_text">XMPP est un protocole indépendant. Vous pouvez utiliser ce client avec le serveur XMPP de votre choix.\nCependant, pour votre confort, vous pouvez créer un compte sur conversations.im¹, un fournisseur spécialement approprié pour Conversations.</string>
+  <string name="magic_create_text">Nous vous guiderons pendant toute la procédure de création d\'un compte utilisateur sur conversations.im.¹\nEn choisissant conversations.im comme fournisseur, vous pourrez communiquer avec les utilisateurs d\'autres fournisseurs en leur transmettant votre Jabber ID complet. </string>
   <string name="your_full_jid_will_be">Votre Jabber ID complet sera : %s</string>
   <string name="create_account">Créer un compte</string>
   <string name="use_own_provider">Utiliser votre propre fournisseur</string>
@@ -643,4 +643,18 @@
   <string name="type_console">Console</string>
   <string name="payment_required">Paiement Obligatoire</string>
   <string name="missing_internet_permission">Permission Internet Manquante</string>
+  <string name="me">Moi</string>
+  <string name="contact_asks_for_presence_subscription">Le contact demande la notification de présence</string>
+  <string name="allow">Autoriser</string>
+  <string name="no_permission_to_access_x">Permission d\'accès refusée à %s</string>
+  <string name="remote_server_not_found">Serveur distant non trouvé</string>
+  <string name="unable_to_update_account">Mise à jour du compte impossible</string>
+  <string name="missing_presence_subscription_with_x">La notification de présence est manquante avec %s</string>
+  <string name="missing_keys_from_x">La clef OMEMO de %s est manquante</string>
+  <string name="wrong_conference_configuration">La conférence n\'est ni privée, ni anonyme</string>
+  <string name="this_conference_has_no_members">Aucun membre dans cette conférence</string>
+  <string name="report_jid_as_spammer">Signaler ce JID comme envoyant des messages non sollicités</string>
+  <string name="pref_delete_omemo_identities">Effacer les identités OMEMO</string>
+  <string name="pref_delete_omemo_identities_summary">Régénérer vos clef OMEMO. Tous vos contacts devront les vérifier à nouveau. A n\'utiliser qu\'en dernier recours.</string>
+  <string name="delete_selected_keys">Supprimer les clefs sélectionnées</string>
 </resources>

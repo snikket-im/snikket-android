@@ -223,7 +223,6 @@
   <string name="contact_already_exists">이미 존재하는 연락처입니다 </string>
   <string name="join">참석 </string>
   <string name="conference_address">회의 주소 </string>
-  <string name="conference_address_example">room@conference.example.com</string>
   <string name="save_as_bookmark">즐겨찾기로 저장 </string>
   <string name="delete_bookmark">즐겨찾기 삭제 </string>
   <string name="bookmark_already_exists">즐겨찾기가 이미 존재합니다 </string>

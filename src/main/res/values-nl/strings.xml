@@ -168,9 +168,9 @@
   <string name="mgmt_account_delete">Account verwijderen</string>
   <string name="mgmt_account_disable">Tijdelijk uitschakelen</string>
   <string name="mgmt_account_publish_avatar">Avatar publiceren</string>
-  <string name="mgmt_account_publish_pgp">Publiceer OpenPGP publieke sleutel</string>
-  <string name="openpgp_has_been_published">Publieke OpenPGP-sleutel is gepubliceerd.</string>
-  <string name="republish_pgp_keys">Vergeet niet je publieke OpenPGP-sleutels opnieuw te publiceren!</string>
+  <string name="mgmt_account_publish_pgp">OpenPGP-publieke sleutel publiceren</string>
+  <string name="openpgp_has_been_published">OpenPGP-publieke sleutel is gepubliceerd.</string>
+  <string name="republish_pgp_keys">Vergeet niet je OpenPGP-publieke sleutels opnieuw te publiceren!</string>
   <string name="mgmt_account_enable">Account inschakelen</string>
   <string name="mgmt_account_are_you_sure">Ben je zeker?</string>
   <string name="mgmt_account_delete_confirm_text">Als je je account verwijdert wordt je volledige gespreksgeschiedenis gewist</string>
@@ -247,7 +247,7 @@
   <string name="contact_already_exists">Het contact bestaat al</string>
   <string name="join">Deelnemen</string>
   <string name="conference_address">Gespreksadres</string>
-  <string name="conference_address_example">kamer@groepsgesprek.voorbeeld.be</string>
+  <string name="conference_address_example">ruimte@groepsgesprek.voorbeeld.be/naam</string>
   <string name="save_as_bookmark">Opslaan als bladwijzer</string>
   <string name="delete_bookmark">Bladwijzer verwijderen</string>
   <string name="bookmark_already_exists">Deze bladwijzer bestaat al</string>
@@ -283,6 +283,7 @@
   <string name="conference_requires_password">Wachtwoord nodig voor toegang tot groepsgesprek</string>
   <string name="enter_password">Wachtwoord invoeren</string>
   <string name="missing_presence_updates">Ontbrekende aanwezigheidsupdates van contact</string>
+  <string name="missing_presence_subscription">Geen aanwezigheidsupdates</string>
   <string name="request_presence_updates">Vraag eerst aanwezigheidsupdates van je contact aan.\n\n<small>Dit wordt gebruikt om te bepalen welke client(s) je contact gebruikt.</small></string>
   <string name="request_now">Nu aanvragen</string>
   <string name="delete_fingerprint">Vingerafdruk verwijderen</string>
@@ -563,7 +564,7 @@
   <string name="shared_text_with_x">Tekst gedeeld met %s</string>
   <string name="no_storage_permission">Conversations heeft toegang nodig tot de externe opslag</string>
   <string name="sync_with_contacts">Synchroniseer met contacten</string>
-  <string name="sync_with_contacts_long">Conversations wil je XMPP-rooster met je contacten vergelijken om hun volledige namen en profielfoto\'s te tonen.\n\nConversations zal je contacten enkel lokaal lezen en vergelijken zonder ze te uploaden naar je server.\n\nJe zal nu gevraagd worden Conversations toegang te verlenen tot je contacten.</string>
+  <string name="sync_with_contacts_long">Conversations wil je XMPP-rooster met je contacten vergelijken om hun volledige namen en avatars te tonen.\n\nConversations zal je contacten enkel lokaal lezen en vergelijken zonder ze te uploaden naar je server.\n\nJe zal nu gevraagd worden Conversations toegang te verlenen tot je contacten.</string>
   <string name="certificate_information">Certificaatinformatie</string>
   <string name="certificate_subject">Onderwerp</string>
   <string name="certificate_issuer">Uitgever</string>
@@ -595,8 +596,8 @@
   <string name="security_error_invalid_file_access">Beveiligingsfout: Ongeldige bestandstoegang</string>
   <string name="no_application_to_share_uri">Geen applicatie om URI te delen</string>
   <string name="share_uri_with">URI delen met…</string>
-  <string name="welcome_text">XMPP is een protocol onafhankelijk van de providers. Je kan deze toepassing gebruiken met eender welke XMPP-server.\nOm het eenvoudig te houden hebben we het makkelijk gemaakt een account aan te maken op conversations.im; een provider speciaal geschikt voor Conversations.</string>
-  <string name="magic_create_text">We zullen je helpen een account op conversations.im aan te maken.\nWanneer je conversations.im als je provider kiest kan je met gebruikers van andere providers communiceren door hen je volledige Jabber-ID te geven.</string>
+  <string name="welcome_text">XMPP is een protocol onafhankelijk van de providers. Je kan deze cliënt gebruiken met eender welke XMPP-server.\nOm het eenvoudig te houden hebben we het makkelijk gemaakt een account aan te maken op conversations.im¹; een provider speciaal geschikt voor Conversations.</string>
+  <string name="magic_create_text">We zullen je helpen een account op conversations.im¹ aan te maken.\nWanneer je conversations.im als je provider kiest kan je met gebruikers van andere providers communiceren door hen je volledige Jabber-ID te geven.</string>
   <string name="your_full_jid_will_be">Je volledige Jabber-ID zal %s zijn</string>
   <string name="create_account">Account aanmaken</string>
   <string name="use_own_provider">Gebruik mijn eigen provider</string>
@@ -650,7 +651,13 @@
   <string name="remote_server_not_found">Externe server niet gevonden</string>
   <string name="unable_to_update_account">Kan account niet bijwerken</string>
   <string name="missing_presence_subscription_with_x">Geen aanwezigheidsupdates van %s.</string>
-  <string name="missing_keys_from_x">Geen OMEMO sleutels van %s.</string>
+  <string name="missing_keys_from_x">Geen OMEMO-sleutels van %s.</string>
+  <string name="missing_omemo_keys">Geen OMEMO-sleutels</string>
   <string name="wrong_conference_configuration">Dit is geen privé, niet-anoniem groepsgesprek.</string>
   <string name="this_conference_has_no_members">Er neemt niemand deel aan dit groepsgesprek.</string>
+  <string name="report_jid_as_spammer">Rapporteer deze JID voor het sturen van ongewenste berichten</string>
+  <string name="pref_delete_omemo_identities">OMEMO-identiteiten verwijderen</string>
+  <string name="pref_delete_omemo_identities_summary">Maak je OMEMO-sleutels opnieuw aan. Al je contacten zullen je opnieuw moeten verifiëren. Gebruik dit enkel als een laatste reddingsmiddel.</string>
+  <string name="delete_selected_keys">Geselecteerde sleutels verwijderen</string>
+  <string name="error_publish_avatar_offline">Je moet verbonden zijn om je avatar te kunnen publiceren.</string>
 </resources>

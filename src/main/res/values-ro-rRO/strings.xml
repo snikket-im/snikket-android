@@ -247,7 +247,7 @@
   <string name="contact_already_exists">Contactul exista deja</string>
   <string name="join">Alatura-te</string>
   <string name="conference_address">Adresa conferinta</string>
-  <string name="conference_address_example">room@conference.example.com</string>
+  <string name="conference_address_example">camera@conferinta.exemplu.ro/nume_utilizator</string>
   <string name="save_as_bookmark">Salveaza semn de carte</string>
   <string name="delete_bookmark">Sterge semn de carte</string>
   <string name="bookmark_already_exists">Acest semn de carte exista</string>
@@ -283,6 +283,7 @@
   <string name="conference_requires_password">Conferinta necesita parola</string>
   <string name="enter_password">Introdu parola</string>
   <string name="missing_presence_updates">Au lipsit actualizarile de prezenta de la contact</string>
+  <string name="missing_presence_subscription">Lipseste abonarea de la actualizarea prezentei</string>
   <string name="request_presence_updates">Te rog mai intai cere actualizari de prezente de la contact.\n\n<small>Asta va fi folosita pentru a determina ce aplicatii client foloseste contactul tau</small></string>
   <string name="request_now">Cere acum</string>
   <string name="delete_fingerprint">Sterge amprenta</string>
@@ -550,7 +551,7 @@
   <string name="pref_use_tor_summary">Trimite toate conexiunile prin reteaua Tor. Necesita Orbot</string>
   <string name="account_settings_hostname">Nume gazda</string>
   <string name="account_settings_port">Port</string>
-  <string name="hostname_or_onion">Adresa server- sau .onion</string>
+  <string name="hostname_or_onion">Adresa server sau .onion</string>
   <string name="not_a_valid_port">Acesta nu este un numar de port valabil</string>
   <string name="not_valid_hostname">Acesta nu este un nume de gazda valabila</string>
   <string name="connected_accounts">%1$d din %2$d conturi conectate</string>
@@ -599,8 +600,8 @@ Emitent</string>
   <string name="security_error_invalid_file_access">Eroare de securitate.: Acces fisier invalid</string>
   <string name="no_application_to_share_uri">Nu s-a gasit nici o aplicatie care sa partajeze URI</string>
   <string name="share_uri_with">Partajeaza URI cu...</string>
-  <string name="welcome_text">XMPP este un protocol independent ce nu depinde de un anume furnizor. Aveți posibilitatea sa utilizati acest client cu orice server XMPP doriti.\nTotusi pentru confortul dumneavoastra am facilitat crearea unui cont pe conversations.im; un furnizor potrivit pentru utilizarea cu aplicatia Conversations.</string>
-  <string name="magic_create_text">Va vom ghida prin procesul de creare al unui cont pe conversations.im.\nCand alegeti conversations.im ca furnizor veti putea comunica cu utilizatorii altor furnizori oferindu-le ID-ul dumneavoastra Jabber.</string>
+  <string name="welcome_text">XMPP este un protocol independent ce nu depinde de un anume furnizor. Aveți posibilitatea sa utilizati acest client cu orice server XMPP doriti.\nTotusi pentru confortul dumneavoastra am facilitat crearea unui cont pe conversations.im¹; un furnizor potrivit pentru utilizarea cu aplicatia Conversations.</string>
+  <string name="magic_create_text">Va vom ghida prin procesul de creare al unui cont pe conversations.im.¹\nCand alegeti conversations.im ca furnizor veti putea comunica cu utilizatorii altor furnizori oferindu-le ID-ul dumneavoastra Jabber.</string>
   <string name="your_full_jid_will_be">ID-ul Jabber va fi: %s</string>
   <string name="create_account">Creeaza cont</string>
   <string name="use_own_provider">Foloseste furnizorul meu</string>
@@ -655,6 +656,12 @@ Emitent</string>
   <string name="unable_to_update_account">Nu se poate actualiza contul</string>
   <string name="missing_presence_subscription_with_x">Lipsesc actualizarile de prezenta cu %s.</string>
   <string name="missing_keys_from_x">Cheie OMEMO lipsa din %s.</string>
+  <string name="missing_omemo_keys">Chei OMEMO lipsa</string>
   <string name="wrong_conference_configuration">Aceasta este o conferinta care nu este privata si nu este anonima.</string>
   <string name="this_conference_has_no_members">Conferinta nu are nici un membru.</string>
+  <string name="report_jid_as_spammer">Raporteaza ca aceasta identitate (JID) trimite mesaje nedorite.</string>
+  <string name="pref_delete_omemo_identities">Sterge identitatile OMEMO</string>
+  <string name="pref_delete_omemo_identities_summary">Regenereaza cheile personale OMEMO. Toate contactele vor fi obligate sa verifice cheile tale din nou. Foloseste asta ca o ultima optiune.</string>
+  <string name="delete_selected_keys">Sterge cheile selectate</string>
+  <string name="error_publish_avatar_offline">Pentru a putea publica avatarul trebuie sa existe o conexiune.</string>
 </resources>

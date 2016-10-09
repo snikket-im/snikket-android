@@ -247,7 +247,7 @@
   <string name="contact_already_exists">Der Kontakt existiert bereits</string>
   <string name="join">Beitreten</string>
   <string name="conference_address">Konferenz-Adresse</string>
-  <string name="conference_address_example">raum@conference.domain.de</string>
+  <string name="conference_address_example">raum@conference.beispiel.de/Nickname</string>
   <string name="save_as_bookmark">Zur Kontaktliste hinzufügen</string>
   <string name="delete_bookmark">Von Kontaktliste entfernen</string>
   <string name="bookmark_already_exists">Die Konferenz befindet sich bereits auf deiner Kontaktliste</string>
@@ -283,6 +283,7 @@
   <string name="conference_requires_password">Konferenz ist passwortgeschützt</string>
   <string name="enter_password">Passwort eingeben</string>
   <string name="missing_presence_updates">Fehlender Online-Status des Kontakts</string>
+  <string name="missing_presence_subscription">Online-Status nicht vorhanden</string>
   <string name="request_presence_updates">Bitte erst Online-Status vom Kontakt anfragen.\n\n<small>Dies wird verwendet, um festzustellen, welche Client(s) der Kontakt benutzt.</small></string>
   <string name="request_now">Jetzt anfordern</string>
   <string name="delete_fingerprint">Fingerabdruck löschen</string>
@@ -516,7 +517,7 @@
   <string name="pref_use_white_background_summary">Empfangene Nachrichten als schwarzen Text auf weißem Hintergrund anzeigen</string>
   <string name="account_status_tor_unavailable">Tor-Netzwerk nicht verfügbar</string>
   <string name="account_status_bind_failure">Bindungsfehler</string>
-  <string name="account_status_host_unknown">Server haftet nicht für die Domain</string>
+  <string name="account_status_host_unknown">Unbekannte Domain</string>
   <string name="server_info_broken">Fehlerhaft</string>
   <string name="pref_presence_settings">Status</string>
   <string name="pref_away_when_screen_off">Abwesend bei abgeschaltetem Bildschirm</string>
@@ -595,8 +596,8 @@
   <string name="security_error_invalid_file_access">Sicherheitsfehler: Dateizugriff nicht erlaubt</string>
   <string name="no_application_to_share_uri">Keine Anwendung zum Teilen der URI gefunden</string>
   <string name="share_uri_with">Teile URI mit…</string>
-  <string name="welcome_text">XMPP ist ein providerunabhängiges Protokoll. Du kannst diesen Client mit jedem beliebigen XMPP-Server benutzen.\nUm es Dir leicht zu machen haben wir die Möglichkeit geschaffen, ein Konto auf conversations.im anzulegen. Dieser Provider ist besonders gut für Conversations geeignet. </string>
-  <string name="magic_create_text">Wir führen dich durch den Prozess der Kontoerstellung auf conversations.im.\nWenn du conversations.im als Provider wählst, kannst du mit Nutzern anderer Anbieter kommunizieren, indem du ihnen deine vollständige Jabber-ID gibst.</string>
+  <string name="welcome_text">XMPP ist ein providerunabhängiges Protokoll. Du kannst diesen Client mit jedem beliebigen XMPP-Server benutzen.\nUm es Dir leicht zu machen haben wir die Möglichkeit geschaffen, ein Konto auf conversations.im¹ anzulegen. Dieser Provider ist besonders gut für Conversations geeignet. </string>
+  <string name="magic_create_text">Wir führen dich durch den Prozess der Kontoerstellung auf conversations.im.¹\nWenn du conversations.im als Provider wählst, kannst du mit Nutzern anderer Anbieter kommunizieren, indem du ihnen deine vollständige Jabber-ID gibst.</string>
   <string name="your_full_jid_will_be">Deine vollständige Jabber ID lautet: %s</string>
   <string name="create_account">Konto erstellen</string>
   <string name="use_own_provider">Nutze eigenen Provider</string>
@@ -651,6 +652,12 @@
   <string name="unable_to_update_account">Konto kann nicht aktualisiert werden.</string>
   <string name="missing_presence_subscription_with_x">Fehlender Online-Status von %s.</string>
   <string name="missing_keys_from_x">OMEMO-Schlüssel von %s fehlen.</string>
+  <string name="missing_omemo_keys">OMEMO-Schlüssel fehlen</string>
   <string name="wrong_conference_configuration">Dies ist keine private, nicht-anonyme Konferenz.</string>
   <string name="this_conference_has_no_members">Diese Konferenz enthält keine Teilnehmer.</string>
+  <string name="report_jid_as_spammer">Melde die JID als Sender unerwünschter Nachrichten.</string>
+  <string name="pref_delete_omemo_identities">OMEMO Identitäten zurücksetzen</string>
+  <string name="pref_delete_omemo_identities_summary">Regeneriere deine OMEMO-Schlüssel. Alle deine Kontakte müssen dich neu verifizieren. Nutze dies als letzten Ausweg.</string>
+  <string name="delete_selected_keys">Ausgewählte Schlüssel löschen</string>
+  <string name="error_publish_avatar_offline">Du musst verbunden sein um deinen Avatar zu veröffentlichen</string>
 </resources>

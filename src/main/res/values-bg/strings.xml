@@ -247,7 +247,7 @@
   <string name="contact_already_exists">Контактът вече съществува</string>
   <string name="join">Присъединяване</string>
   <string name="conference_address">Адрес на беседата</string>
-  <string name="conference_address_example">room@conference.example.com</string>
+  <string name="conference_address_example">стая@беседа.сървър.com/псевдоним</string>
   <string name="save_as_bookmark">Запазване като отметка</string>
   <string name="delete_bookmark">Изтриване на отметка</string>
   <string name="bookmark_already_exists">Вече съществува такава отметка</string>
@@ -313,7 +313,7 @@
   <string name="pref_use_send_button_to_indicate_status_summary">Оцветяване на бутона за изпращане в зависимост от състоянието на контакта</string>
   <string name="pref_expert_options_other">Други</string>
   <string name="pref_conference_name">Име на беседата</string>
-  <string name="pref_conference_name_summary">Използване на темата на стаята вместо JID идентификатора за беседите</string>
+  <string name="pref_conference_name_summary">Използване на темата на стаята вместо идентификатора JID за беседите</string>
   <string name="pref_autojoin">Автоматично присъединяване към беседите</string>
   <string name="pref_autojoin_summary">Спазване на флага за автоматично присъединяване в отметките на беседите</string>
   <string name="toast_message_otr_fingerprint">Отпечатъкът OTR е копиран!</string>
@@ -595,8 +595,8 @@
   <string name="security_error_invalid_file_access">Грешка в сигурността: неправилен достъп до файл</string>
   <string name="no_application_to_share_uri">Няма намерено приложение за споделяне на адреса</string>
   <string name="share_uri_with">Споделяне на адреса с…</string>
-  <string name="welcome_text">XMPP е протокол, който не е обвързан с конкретен доставчик. Можете да използвате клиента с всеки сървър, който работи с протокола XMPP.\nЗа Ваше удобство, ние предоставяме лесен начин да си създадете профил в conversations.im — сървър, пригоден да работи добре с Conversations.</string>
-  <string name="magic_create_text">Ще преминем заедно с Вас през процеса за създаване на профил в conversations.im.\nАко изберете да използвате conversations.im, ще можете да общувате с потребители, използващи други сървъри, като им дадете своя пълен Jabber идентификатор.</string>
+  <string name="welcome_text">XMPP е протокол, който не е обвързан с конкретен доставчик. Можете да използвате клиента с всеки сървър, който работи с протокола XMPP.\nЗа Ваше удобство, ние предоставяме лесен начин да си създадете профил в conversations.im¹ — сървър, пригоден да работи добре с Conversations.</string>
+  <string name="magic_create_text">Ще преминем заедно с Вас през процеса за създаване на профил в conversations.im.¹\nАко изберете да използвате conversations.im, ще можете да общувате с потребители, използващи други сървъри, като им дадете своя пълен Jabber идентификатор.</string>
   <string name="your_full_jid_will_be">Вашият пълен Jabber идентификатор ще бъде: %s</string>
   <string name="create_account">Създаване на профил</string>
   <string name="use_own_provider">Използване на собствен сървър</string>
@@ -653,4 +653,8 @@
   <string name="missing_keys_from_x">Липсват ключове OMEMO от %s.</string>
   <string name="wrong_conference_configuration">Това не е лична, не-анонимна беседа.</string>
   <string name="this_conference_has_no_members">Няма участници в тази беседа.</string>
+  <string name="report_jid_as_spammer">Докладване на този JID за изпращане на нежелани съобщения.</string>
+  <string name="pref_delete_omemo_identities">Изтриване на идентификаторите OMEMO</string>
+  <string name="pref_delete_omemo_identities_summary">Пресъздайте своите ключове OMEMO. Всички Ваши контакти ще трябва да Ви потвърдят отново. Използвайте това само в краен случай.</string>
+  <string name="delete_selected_keys">Изтриване на избраните ключове.</string>
 </resources>

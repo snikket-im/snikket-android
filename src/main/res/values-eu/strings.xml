@@ -247,7 +247,6 @@
   <string name="contact_already_exists">Kontaktua existitzen da dagoeneko</string>
   <string name="join">Batu</string>
   <string name="conference_address">Konferentziaren helbidea</string>
-  <string name="conference_address_example">gela@conference.example.com</string>
   <string name="save_as_bookmark">Gorde laster-marka bezala</string>
   <string name="delete_bookmark">Laster-marka ezabatu</string>
   <string name="bookmark_already_exists">Laster-marka hau existitzen da dagoeneko</string>
@@ -595,8 +594,8 @@
   <string name="security_error_invalid_file_access">Segurtasun akatsa: fitxategi sarrera baliogabea</string>
   <string name="no_application_to_share_uri">Ez da aplikaziorik aurkitu URIa partekatzeko</string>
   <string name="share_uri_with">URIa honekin partekatu...</string>
-  <string name="welcome_text">XMPP hornitzaleez independiente den protokolo bat da. Bezero hau aukeratzen duzun edozein XMPP zerbitzariarekin erabili dezakezu.\nHala ere zure erosotasunerako conversations.im-en, Conversationsekin bereziki erabiltzeko egokia den hornitzaile batean, kontu bat sortzea erraz egin dugu.</string>
-  <string name="magic_create_text">conversations.im-en kontu bat sortzeko prozesuan zehar gidatuko zaitugu.\nconversations.im hornitzaile bezala aukeratzerakoan beste hornitzaileen erabiltzaileekin komunikatzeko gai izango zara haiei zure Jabber ID osoa emanez.</string>
+  <string name="welcome_text">XMPP hornitzaleez independiente den protokolo bat da. Bezero hau aukeratzen duzun edozein XMPP zerbitzariarekin erabili dezakezu.\nHala ere zure erosotasunerako conversations.im¹-en, Conversationsekin bereziki erabiltzeko egokia den hornitzaile batean, kontu bat sortzea erraz egin dugu.</string>
+  <string name="magic_create_text">conversations.im-en kontu bat sortzeko prozesuan zehar gidatuko zaitugu.\nconversations.im¹ hornitzaile bezala aukeratzerakoan beste hornitzaileen erabiltzaileekin komunikatzeko gai izango zara haiei zure Jabber ID osoa emanez.</string>
   <string name="your_full_jid_will_be">Zure Jabber ID osoa %s izango da</string>
   <string name="create_account">Kontua sortu</string>
   <string name="use_own_provider">Nire hornitzale propioa erabili</string>
@@ -643,4 +642,14 @@
   <string name="type_console">Kontsola</string>
   <string name="payment_required">Ordainketa beharrezkoa da</string>
   <string name="missing_internet_permission">Interneterako baimena falta da</string>
+  <string name="me">Ni</string>
+  <string name="contact_asks_for_presence_subscription">Kontaktuak presentzia harpidetza eskatzen du</string>
+  <string name="allow">Baimendu</string>
+  <string name="no_permission_to_access_x">%s(e)ra sartzeko baimenik ez</string>
+  <string name="remote_server_not_found">Urruneko zerbitzaria ez da aurkitu</string>
+  <string name="unable_to_update_account">Ezin izan da kontua eguneratu</string>
+  <string name="missing_presence_subscription_with_x">%s(r)ekin presentzia harpidetza falta da</string>
+  <string name="missing_keys_from_x">%s(r)en OMEMO gakoak falta dira.</string>
+  <string name="wrong_conference_configuration">Hau ez da konferentzia pribatu, ez anonimo bat.</string>
+  <string name="this_conference_has_no_members">Ez dago kiderik konferentzia honetan.</string>
 </resources>

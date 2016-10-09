@@ -247,7 +247,7 @@
   <string name="contact_already_exists">Контакт већ постоји</string>
   <string name="join">Придружи се</string>
   <string name="conference_address">Адреса групног ћаскања</string>
-  <string name="conference_address_example">soba@konferencija.primer.com</string>
+  <string name="conference_address_example">soba@konferencija.primer.com/nadimak</string>
   <string name="save_as_bookmark">Сачувај као обележивач</string>
   <string name="delete_bookmark">Обриши обележивач</string>
   <string name="bookmark_already_exists">Овај обележивач већ постоји</string>
@@ -283,6 +283,7 @@
   <string name="conference_requires_password">Групно ћаскање захтева лозинку</string>
   <string name="enter_password">Унесите лозинку</string>
   <string name="missing_presence_updates">Нема ажуриране присутности од контакта</string>
+  <string name="missing_presence_subscription">Нема претплате на присутност</string>
   <string name="request_presence_updates">Најпре захтевајте ажурирање присутности од вашег контакта.\n\n<small>Ово ће омогућити да се одреди којег клијента ваш контакт користи.</small></string>
   <string name="request_now">Захтевај одмах</string>
   <string name="delete_fingerprint">Обриши отисак</string>
@@ -598,8 +599,6 @@
   <string name="security_error_invalid_file_access">Безбедносна грешка: неисправан приступ фајлу</string>
   <string name="no_application_to_share_uri">Нема апликације за дељење веза</string>
   <string name="share_uri_with">Подели везу помоћу…</string>
-  <string name="welcome_text">ИксМПП је протокол независан од провајдера. Можете да користите овог клијента са било којим ИксМПП сервером.\nИпак, због погодности смо олакшали стварање налога на conversations.im, провајдер посебно прилагођен за коришћење са Конверзацијом.</string>
-  <string name="magic_create_text">Водићемо вас кроз процес прављења налога на conversations.im.\nАко изаберете conversations.im за даваоца услуге моћи ћете да комуницирате са другим корисницима ако им дате ваш Џабер ИД.</string>
   <string name="your_full_jid_will_be">Ваш пуни Џабер ИД ће бити: %s</string>
   <string name="create_account">Направи налог</string>
   <string name="use_own_provider">Користићу сопствени провајдер</string>
@@ -654,6 +653,12 @@
   <string name="unable_to_update_account">Не могох да се ажурирам налог</string>
   <string name="missing_presence_subscription_with_x">Нема претплате на присутност са %s.</string>
   <string name="missing_keys_from_x">Нема ОМЕМО кључева у %s.</string>
+  <string name="missing_omemo_keys">Нема ОМЕМО кључева</string>
   <string name="wrong_conference_configuration">Ово није приватно, неанонимно групно ћаскање.</string>
   <string name="this_conference_has_no_members">Нема учесника у овом групном ћаскању.</string>
+  <string name="report_jid_as_spammer">Пријави да овај ЈИД шаље нежељене поруке.</string>
+  <string name="pref_delete_omemo_identities">Обриши ОМЕМО идентитете</string>
+  <string name="pref_delete_omemo_identities_summary">Поновно генерисање ОМЕМО кључева. Сви ваши контакти ће морати поново да вас овере. Користите ово само у крајњем случају.</string>
+  <string name="delete_selected_keys">Обриши изабране кључеве</string>
+  <string name="error_publish_avatar_offline">Морате бити повезани да бисте објавили ваш аватар.</string>
 </resources>

@@ -215,7 +215,6 @@
   <string name="contact_already_exists">איש קשר כבר קיים</string>
   <string name="join">הצטרף</string>
   <string name="conference_address">כתובת ועידה</string>
-  <string name="conference_address_example">room@conference.example.com</string>
   <string name="save_as_bookmark">שמור בתור סימנייה</string>
   <string name="delete_bookmark">מחק סימנייה</string>
   <string name="bookmark_already_exists">סימנייה זו כבר קיימת</string>

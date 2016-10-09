@@ -247,7 +247,7 @@
   <string name="contact_already_exists">Kontakt již existuje</string>
   <string name="join">Vstoupit</string>
   <string name="conference_address">Adresa konference</string>
-  <string name="conference_address_example">mistnost@konference.server.cz</string>
+  <string name="conference_address_example">room@conference.example.com/nick</string>
   <string name="save_as_bookmark">Uložit jako záložku</string>
   <string name="delete_bookmark">Smazat záložku</string>
   <string name="bookmark_already_exists">Tato záložka již existuje</string>
@@ -283,6 +283,7 @@
   <string name="conference_requires_password">Konference vyžaduje heslo</string>
   <string name="enter_password">Vložit heslo</string>
   <string name="missing_presence_updates">Chybí informace o změnách stavu kontaktu</string>
+  <string name="missing_presence_subscription">Chybí informace o změnách stavu</string>
   <string name="request_presence_updates">Nejdříve si prosím vyžádejte povolení o zasílání změn stavu kontaktu.\n\n<small>To bude poté použito pro zjištění jakou aplikaci tento kontakt používá.</small></string>
   <string name="request_now">Ihned vyžádat</string>
   <string name="delete_fingerprint">Smazat identifikátor</string>
@@ -598,8 +599,8 @@
   <string name="security_error_invalid_file_access">Chyba zabezpečení: Neplatný přístup k souboru</string>
   <string name="no_application_to_share_uri">Nebyla nalezena aplikace pro sdílení URI</string>
   <string name="share_uri_with">Sdílet URI s...</string>
-  <string name="welcome_text">XMPP je protokol nezávislý na poskytovateli. Tohoto klienta můžete použít s jakýmkoliv XMPP serverem dle svého výběru.\nPro lepší uživatelskou přívětivost jsme připravili možnost vytvořit účet u conversations.im; speciálné připraveného poskytovatele pro použití s aplikací Conversations.</string>
-  <string name="magic_create_text">Provedeme vás procesem založení uživatelského účtu u conversations.im.\nVybráním conversations.im za svého poskytovatele budete moci komunikovat s uživateli u jiných poskytovatelů poté co jim sdělíte své Jabber ID.</string>
+  <string name="welcome_text">XMPP je protokol nezávislý na poskytovateli. Tohoto klienta můžete použít s jakýmkoliv XMPP serverem dle svého výběru.\nPro lepší uživatelskou přívětivost jsme připravili možnost vytvořit účet u conversations.im¹; poskytovatele speciálné připraveného pro použití s aplikací Conversations.</string>
+  <string name="magic_create_text">Provedeme vás procesem založení uživatelského účtu u conversations.im.¹\nVybráním conversations.im za svého poskytovatele budete moci komunikovat s uživateli u jiných poskytovatelů, poté co jim sdělíte své Jabber ID.</string>
   <string name="your_full_jid_will_be">Vaše celé Jabber ID bude: %s</string>
   <string name="create_account">Vytvořit účet</string>
   <string name="use_own_provider">Použít vlastního provozovatele</string>
@@ -654,6 +655,12 @@
   <string name="unable_to_update_account">Nelze aktualizovat účet</string>
   <string name="missing_presence_subscription_with_x">Chybí informace o změnách stavu od %s.</string>
   <string name="missing_keys_from_x">Chybí OMEMO klíče od %s.</string>
+  <string name="missing_omemo_keys">Chybí OMEMO klíče</string>
   <string name="wrong_conference_configuration">Toto není soukromá, neanonymní  konference.</string>
   <string name="this_conference_has_no_members">V této konferenci nejsou žádní členové.</string>
+  <string name="report_jid_as_spammer">Nahlásit toto JID jako odesilatele nevyžádaného obsahu.</string>
+  <string name="pref_delete_omemo_identities">Smazat OMEMO identity</string>
+  <string name="pref_delete_omemo_identities_summary">Znovu vygenerovat OMEMO klíče. Vyžaduje potvrzení od všech vašich kontaktů. POužijte pouze jako poslední řešení.</string>
+  <string name="delete_selected_keys">Smazat vybrané klíče</string>
+  <string name="error_publish_avatar_offline">Pro zveřejnění svého avatara musíte být online.</string>
 </resources>

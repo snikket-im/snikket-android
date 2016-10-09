@@ -174,7 +174,6 @@
   <string name="contact_already_exists">聯絡人已存在</string>
   <string name="join">加入</string>
   <string name="conference_address">群組地址</string>
-  <string name="conference_address_example">room@conference.example.com</string>
   <string name="save_as_bookmark">儲存為書籤</string>
   <string name="delete_bookmark">刪除書籤</string>
   <string name="bookmark_already_exists">該書籤已存在</string>

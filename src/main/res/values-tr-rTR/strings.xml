@@ -247,7 +247,7 @@
   <string name="contact_already_exists">Kişi zaten mevcut</string>
   <string name="join">Katıl</string>
   <string name="conference_address">Grup sohbet adresi</string>
-  <string name="conference_address_example">oda@conference.ornek.com</string>
+  <string name="conference_address_example">oda@conference.ornek.com/nick</string>
   <string name="save_as_bookmark">Yer imi olarak kaydet</string>
   <string name="delete_bookmark">Yer imini sil</string>
   <string name="bookmark_already_exists">Bu yer imi zaten mevcut</string>
@@ -283,6 +283,7 @@
   <string name="conference_requires_password">Grup sohbet için parola gerekiyor</string>
   <string name="enter_password">Parolayı gir</string>
   <string name="missing_presence_updates">Kişinin çevrimiçi durum bildirimi güncellemesi kayıp</string>
+  <string name="missing_presence_subscription">Durum bildirimi aboneliği eksik.</string>
   <string name="request_presence_updates">Lütfen öncelikle kişiden çevrimiçi durum güncellemelerini isteyin.\n\n<small>Bu bilgi kişinin kullandığı istemcinin belirlenmesinde kullanılacaktır.</small></string>
   <string name="request_now">Şimdi iste</string>
   <string name="delete_fingerprint">Parmak izini sil</string>
@@ -592,7 +593,7 @@
   <string name="security_error_invalid_file_access">Güvenlik hatası: Geçersiz dosya erişimi</string>
   <string name="no_application_to_share_uri">URI paylaşmak için uygulama bulunamadı</string>
   <string name="share_uri_with">URI paylaş ile...</string>
-  <string name="welcome_text">XMPP sağlayıcıdan bağımsız bir protokoldür. Bu istemciyi tercih ettiğiniz herhangi bir  XMMP sunucusuyla kullanabilirsiniz.\n Kullanılabilirlik sağlamak için conversation.im sağlayıcısında hesap oluşturmayı daha kolay hale getirdik; Conversation için özelleşmiş bir servis sağlayıcı. </string>
+  <string name="welcome_text">XMPP servis sağlayıcısından bağımsız bir protokoldür. Bu istemciyi dilediğiniz XMMPP sunucularıyla birlikte kullanabilirsiniz\n Lakin sizin rahat etmeniz için Conversations istemcisiyle kullanmanız için oluşturduğumuz conversation.im sunucusu üzerinde hesap açmayı kolaylaştırdık.</string>
   <string name="magic_create_text">conversation.im sağlayıcısında hesap açma sürecinde size yol göstereceğiz.\nconversation.im i bir servis sağlayıcı olarak kullandığınızda diğer sağlayıcıları kullanan kullanıcılar tam Jabber kimliğinizi vererek iletişim kurabilirsiniz. </string>
   <string name="your_full_jid_will_be">Tam Jabber kimliğiniz %s olacak</string>
   <string name="create_account">Hesap Oluştur</string>
@@ -648,6 +649,12 @@
   <string name="unable_to_update_account">Hesap güncellenemiyor</string>
   <string name="missing_presence_subscription_with_x">%s ile durum bildirimi aboneliği eksik.</string>
   <string name="missing_keys_from_x">%s den eksik OMEMO anahtarları var.</string>
+  <string name="missing_omemo_keys">Eksik OMEMO anahtarları var.</string>
   <string name="wrong_conference_configuration">Bu özel ve anonim olmayan bir sohbet.</string>
   <string name="this_conference_has_no_members">Bu konferansta herhangi bir üye yok. </string>
+  <string name="report_jid_as_spammer">Bu kişiyi istenmeyen ileti gönderen olarak rapor et.</string>
+  <string name="pref_delete_omemo_identities">OMEMO kimiliğini sil</string>
+  <string name="pref_delete_omemo_identities_summary">OMEMO anahtarını tekrar oluştur. Tüm kişilerinizin sizi tekrar doğrulaması gerekecek. Bunu sadece son çare olarak kullanın.</string>
+  <string name="delete_selected_keys">Seçilen anahtarları sil</string>
+  <string name="error_publish_avatar_offline">Avatarınızı yayınlamak için bağlı olmalısınız.</string>
 </resources>

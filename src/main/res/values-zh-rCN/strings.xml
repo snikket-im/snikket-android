@@ -78,6 +78,7 @@
   <string name="clear_histor_msg">删除该会话中所有信息？\n\n<b>注:</b> 该操作不会影响其他设备或服务器保存的信息。</string>
   <string name="delete_messages">删除消息</string>
   <string name="also_end_conversation">结束此会话以后</string>
+  <string name="choose_presence">选择设备</string>
   <string name="send_unencrypted_message">发送未加密的信息</string>
   <string name="send_message_to_x">发信息给 %s</string>
   <string name="send_otr_message">发送 OTR 加密信息</string>
@@ -217,6 +218,8 @@
   <string name="reception_failed">接收失败</string>
   <string name="your_fingerprint">你的指纹</string>
   <string name="otr_fingerprint">OTR 指纹</string>
+  <string name="otr_fingerprint_selected_message">消息的 OTR 指纹</string>
+  <string name="openpgp_key_id">OpenPGP 密钥 ID</string>
   <string name="omemo_fingerprint">OMEMO 指纹</string>
   <string name="omemo_fingerprint_x509">v\\OMEMO 指纹</string>
   <string name="omemo_fingerprint_selected_message">消息的 OMEMO 指纹</string>
@@ -242,7 +245,7 @@
   <string name="contact_already_exists">联系人已存在</string>
   <string name="join">加入</string>
   <string name="conference_address">讨论组地址</string>
-  <string name="conference_address_example">room@conference.example.com</string>
+  <string name="conference_address_example">room@conference.example.com/nick</string>
   <string name="save_as_bookmark">保存为书签</string>
   <string name="delete_bookmark">删除书签</string>
   <string name="bookmark_already_exists">该书签已存在</string>
@@ -355,6 +358,8 @@
   <string name="conversations_foreground_service">Conversations</string>
   <string name="pref_keep_foreground_service">保持前台服务</string>
   <string name="pref_keep_foreground_service_summary">防止操作系统中断你的连接</string>
+  <string name="pref_export_logs">导出历史记录</string>
+  <string name="pref_export_logs_summary">将 conversations 的历史日志写到 SD 卡</string>
   <string name="notification_export_logs_title">正在将日志写入 SD 卡</string>
   <string name="choose_file">选择文件</string>
   <string name="receiving_x_file">接收中 %1$s (已完成 %2$d%%)</string>
@@ -586,8 +591,6 @@
   <string name="security_error_invalid_file_access">安全错误：文件访问权限无效</string>
   <string name="no_application_to_share_uri">没有可以分享此链接的应用</string>
   <string name="share_uri_with">分享链接...</string>
-  <string name="welcome_text">XMPP 是一种独立于服务端的协议。你可以选择任何 XMPP 服务器来使用本客户端。\n当然为了方便您的使用，我们可以为您在 conversations.im ——一个特别为 Conversations 设计的服务端——上创建一个账户。</string>
-  <string name="magic_create_text">我们将指导您在 conversations.im 上创建一个账户。\n当您选择 conversations.im 作为服务端后，您将可以通过提供您完整的 Jabber ID 来与他人进行会话。</string>
   <string name="your_full_jid_will_be">您完整的 Jabble ID 是：%s </string>
   <string name="create_account">创建账户</string>
   <string name="use_own_provider">使用我自己的服务端</string>
@@ -606,6 +609,7 @@
   <string name="device_does_not_support_battery_op">该设备不支持禁用电池优化</string>
   <string name="show_password">显示密码</string>
   <string name="registration_please_wait">注册失败：请重试</string>
+  <string name="registration_password_too_weak">注册失败：密码太弱</string>
   <string name="create_conference">创建讨论组</string>
   <string name="join_or_create_conference">加入创建讨论组</string>
   <string name="conference_subject">主题</string>
@@ -624,4 +628,23 @@
   <string name="pref_theme_dark">黑暗主题</string>
   <string name="pref_use_green_background">绿色背景</string>
   <string name="pref_use_green_background_summary">接收到的消息使用绿色背景</string>
+  <string name="unable_to_connect_to_keychain">无法连接到 OpenKeychain</string>
+  <string name="this_device_is_no_longer_in_use">此设备不再使用</string>
+  <string name="type_pc">计算机</string>
+  <string name="type_phone">移动电话</string>
+  <string name="type_tablet">平板</string>
+  <string name="type_web">浏览器</string>
+  <string name="type_console">控制台</string>
+  <string name="payment_required">需要付款</string>
+  <string name="allow">允许</string>
+  <string name="no_permission_to_access_x">没有访问 %s 的许可</string>
+  <string name="remote_server_not_found">找不到远程服务器</string>
+  <string name="unable_to_update_account">无法更新账户</string>
+  <string name="missing_keys_from_x">缺少来自 %s 的 OMEMO 密钥。</string>
+  <string name="wrong_conference_configuration">这不是一个私密，非匿名的会议室。</string>
+  <string name="this_conference_has_no_members">这个会议室中没有成员。</string>
+  <string name="report_jid_as_spammer">报告这个 JID 发送不想要的消息。</string>
+  <string name="pref_delete_omemo_identities">删除 OMEMO 身份</string>
+  <string name="pref_delete_omemo_identities_summary">重新生成你的 OMEMO 密钥。你的所有联系人不得不对你进行再认证。请将此作为最后的办法。</string>
+  <string name="delete_selected_keys">删除选择的密钥</string>
 </resources>

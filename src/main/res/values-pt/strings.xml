@@ -237,7 +237,6 @@
   <string name="contact_already_exists">O contacto já existe</string>
   <string name="join">Juntar</string>
   <string name="conference_address">Endereço da conferência</string>
-  <string name="conference_address_example">sala@conferencia.example.com</string>
   <string name="save_as_bookmark">Guardar como favorito</string>
   <string name="delete_bookmark">Apagar favorito</string>
   <string name="bookmark_already_exists">O favorito já existe</string>
