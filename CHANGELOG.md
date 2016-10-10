@@ -1,5 +1,10 @@
 ###Changelog
 
+####Version 1.14.6
+* make error notification dismissable
+* bug fixes
+
+
 ####Version 1.14.5
 * expert setting to delete OMEMO identities
 * bug fixes
