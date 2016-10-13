@@ -80,13 +80,13 @@
                 android:src="@drawable/main_logo"/>
         </RelativeLayout>
         <TextView
-            android:paddingLeft="16dp"
-            android:paddingRight="16dp"
+            android:paddingLeft="8dp"
+            android:paddingRight="8dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:textColor="?attr/color_text_secondary"
-            android:textSize="12sp"
+            android:textSize="@dimen/fineprint_size"
             android:maxLines="1"
             android:text="@string/free_for_six_month"
             android:layout_centerHorizontal="true"/>

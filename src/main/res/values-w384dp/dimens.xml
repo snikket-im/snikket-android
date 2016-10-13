@@ -1,3 +1,4 @@
 <resources>
 	<dimen name="conversations_overview_width">336dp</dimen>
+	<dimen name="fineprint_size">12sp</dimen>
 </resources>
