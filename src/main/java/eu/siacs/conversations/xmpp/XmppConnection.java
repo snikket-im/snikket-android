@@ -852,18 +852,13 @@ public class XmppConnection implements Runnable {
 			saslMechanism = new Anonymous(tagWriter, account, mXmppConnectionService.getRNG());
 		}
 		if (saslMechanism != null) {
-			final JSONObject keys = account.getKeys();
-			try {
-				if (keys.has(Account.PINNED_MECHANISM_KEY) &&
-						keys.getInt(Account.PINNED_MECHANISM_KEY) > saslMechanism.getPriority()) {
-					Log.e(Config.LOGTAG, "Auth failed. Authentication mechanism " + saslMechanism.getMechanism() +
-							" has lower priority (" + String.valueOf(saslMechanism.getPriority()) +
-							") than pinned priority (" + keys.getInt(Account.PINNED_MECHANISM_KEY) +
-							"). Possible downgrade attack?");
-					throw new SecurityException();
-				}
-			} catch (final JSONException e) {
-				Log.d(Config.LOGTAG, "Parse error while checking pinned auth mechanism");
+			final int pinnedMechanism = account.getKeyAsInt(Account.PINNED_MECHANISM_KEY, -1);
+			if (pinnedMechanism > saslMechanism.getPriority()) {
+				Log.e(Config.LOGTAG, "Auth failed. Authentication mechanism " + saslMechanism.getMechanism() +
+						" has lower priority (" + String.valueOf(saslMechanism.getPriority()) +
+						") than pinned priority (" + pinnedMechanism +
+						"). Possible downgrade attack?");
+				throw new SecurityException();
 			}
 			Log.d(Config.LOGTAG, account.getJid().toString() + ": Authenticating with " + saslMechanism.getMechanism());
 			auth.setAttribute("mechanism", saslMechanism.getMechanism());

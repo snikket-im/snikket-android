@@ -53,28 +53,30 @@ public class OtrService extends OtrCryptoEngineImpl implements OtrEngineHost {
 		this.mXmppConnectionService = service;
 	}
 
-	private KeyPair loadKey(JSONObject keys) {
+	private KeyPair loadKey(final JSONObject keys) {
 		if (keys == null) {
 			return null;
 		}
-		try {
-			BigInteger x = new BigInteger(keys.getString("otr_x"), 16);
-			BigInteger y = new BigInteger(keys.getString("otr_y"), 16);
-			BigInteger p = new BigInteger(keys.getString("otr_p"), 16);
-			BigInteger q = new BigInteger(keys.getString("otr_q"), 16);
-			BigInteger g = new BigInteger(keys.getString("otr_g"), 16);
-			KeyFactory keyFactory = KeyFactory.getInstance("DSA");
-			DSAPublicKeySpec pubKeySpec = new DSAPublicKeySpec(y, p, q, g);
-			DSAPrivateKeySpec privateKeySpec = new DSAPrivateKeySpec(x, p, q, g);
-			PublicKey publicKey = keyFactory.generatePublic(pubKeySpec);
-			PrivateKey privateKey = keyFactory.generatePrivate(privateKeySpec);
-			return new KeyPair(publicKey, privateKey);
-		} catch (JSONException e) {
-			return null;
-		} catch (NoSuchAlgorithmException e) {
-			return null;
-		} catch (InvalidKeySpecException e) {
-			return null;
+		synchronized (keys) {
+			try {
+				BigInteger x = new BigInteger(keys.getString("otr_x"), 16);
+				BigInteger y = new BigInteger(keys.getString("otr_y"), 16);
+				BigInteger p = new BigInteger(keys.getString("otr_p"), 16);
+				BigInteger q = new BigInteger(keys.getString("otr_q"), 16);
+				BigInteger g = new BigInteger(keys.getString("otr_g"), 16);
+				KeyFactory keyFactory = KeyFactory.getInstance("DSA");
+				DSAPublicKeySpec pubKeySpec = new DSAPublicKeySpec(y, p, q, g);
+				DSAPrivateKeySpec privateKeySpec = new DSAPrivateKeySpec(x, p, q, g);
+				PublicKey publicKey = keyFactory.generatePublic(pubKeySpec);
+				PrivateKey privateKey = keyFactory.generatePrivate(privateKeySpec);
+				return new KeyPair(publicKey, privateKey);
+			} catch (JSONException e) {
+				return null;
+			} catch (NoSuchAlgorithmException e) {
+				return null;
+			} catch (InvalidKeySpecException e) {
+				return null;
+			}
 		}
 	}
 
