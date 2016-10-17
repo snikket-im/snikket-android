@@ -134,9 +134,10 @@ public class PgpDecryptionService {
                         break;
                     case OpenPgpApi.RESULT_CODE_USER_INTERACTION_REQUIRED:
                         synchronized (PgpDecryptionService.this) {
+                            PendingIntent pendingIntent = result.getParcelableExtra(OpenPgpApi.RESULT_INTENT);
                             messages.addFirst(message);
                             currentMessage = null;
-                            storePendingIntent((PendingIntent) result.getParcelableExtra(OpenPgpApi.RESULT_INTENT));
+                            storePendingIntent(pendingIntent);
                         }
                         break;
                     case OpenPgpApi.RESULT_CODE_ERROR:
@@ -164,9 +165,10 @@ public class PgpDecryptionService {
                             break;
                         case OpenPgpApi.RESULT_CODE_USER_INTERACTION_REQUIRED:
                             synchronized (PgpDecryptionService.this) {
+                                PendingIntent pendingIntent = result.getParcelableExtra(OpenPgpApi.RESULT_INTENT);
                                 messages.addFirst(message);
                                 currentMessage = null;
-                                storePendingIntent((PendingIntent) result.getParcelableExtra(OpenPgpApi.RESULT_INTENT));
+                                storePendingIntent(pendingIntent);
                             }
                             break;
                         case OpenPgpApi.RESULT_CODE_ERROR:
