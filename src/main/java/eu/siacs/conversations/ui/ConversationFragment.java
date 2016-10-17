@@ -62,6 +62,7 @@ import eu.siacs.conversations.ui.XmppActivity.OnValueEdited;
 import eu.siacs.conversations.ui.adapter.MessageAdapter;
 import eu.siacs.conversations.ui.adapter.MessageAdapter.OnContactPictureClicked;
 import eu.siacs.conversations.ui.adapter.MessageAdapter.OnContactPictureLongClicked;
+import eu.siacs.conversations.ui.widget.ListSelectionManager;
 import eu.siacs.conversations.utils.GeoHelper;
 import eu.siacs.conversations.utils.UIHelper;
 import eu.siacs.conversations.xmpp.XmppConnection;
@@ -536,6 +537,7 @@ public class ConversationFragment extends Fragment implements EditMessage.Keyboa
 			activity.getMenuInflater().inflate(R.menu.message_context, menu);
 			menu.setHeaderTitle(R.string.message_options);
 			MenuItem copyText = menu.findItem(R.id.copy_text);
+			MenuItem selectText = menu.findItem(R.id.select_text);
 			MenuItem retryDecryption = menu.findItem(R.id.retry_decryption);
 			MenuItem correctMessage = menu.findItem(R.id.correct_message);
 			MenuItem shareWith = menu.findItem(R.id.share_with);
@@ -548,6 +550,7 @@ public class ConversationFragment extends Fragment implements EditMessage.Keyboa
 					&& !GeoHelper.isGeoUri(m.getBody())
 					&& m.treatAsDownloadable() != Message.Decision.MUST) {
 				copyText.setVisible(true);
+				selectText.setVisible(ListSelectionManager.isSupported());
 			}
 			if (m.getEncryption() == Message.ENCRYPTION_DECRYPTION_FAILED) {
 				retryDecryption.setVisible(true);
@@ -597,6 +600,9 @@ public class ConversationFragment extends Fragment implements EditMessage.Keyboa
 				return true;
 			case R.id.copy_text:
 				copyText(selectedMessage);
+				return true;
+			case R.id.select_text:
+				selectText(selectedMessage);
 				return true;
 			case R.id.correct_message:
 				correctMessage(selectedMessage);
@@ -654,6 +660,24 @@ public class ConversationFragment extends Fragment implements EditMessage.Keyboa
 				R.string.message_text)) {
 			Toast.makeText(activity, R.string.message_copied_to_clipboard,
 					Toast.LENGTH_SHORT).show();
+		}
+	}
+
+	private void selectText(Message message) {
+		final int index;
+		synchronized (this.messageList) {
+			index = this.messageList.indexOf(message);
+		}
+		if (index >= 0) {
+			final int first = this.messagesView.getFirstVisiblePosition();
+			final int last = first + this.messagesView.getChildCount();
+			if (index >= first && index < last)	{
+				final View view = this.messagesView.getChildAt(index - first);
+				final TextView messageBody = this.messageListAdapter.getMessageBody(view);
+				if (messageBody != null) {
+					ListSelectionManager.startSelection(messageBody);
+				}
+			}
 		}
 	}
 
