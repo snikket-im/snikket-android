@@ -1610,7 +1610,7 @@ public class XmppConnectionService extends Service {
 					);
 				}
 			}
-			this.databaseBackend.updateConversation(conversation);
+			updateConversation(conversation);
 			this.conversations.remove(conversation);
 			updateConversationUi();
 		}
@@ -2140,7 +2140,7 @@ public class XmppConnectionService extends Service {
 				}
 				pushBookmarks(conversation.getAccount());
 			}
-			databaseBackend.updateConversation(conversation);
+			updateConversation(conversation);
 			joinMuc(conversation);
 		}
 	}
@@ -2860,8 +2860,13 @@ public class XmppConnectionService extends Service {
 		}
 	}
 
-	public void updateConversation(Conversation conversation) {
-		this.databaseBackend.updateConversation(conversation);
+	public void updateConversation(final Conversation conversation) {
+		mDatabaseExecutor.execute(new Runnable() {
+			@Override
+			public void run() {
+				databaseBackend.updateConversation(conversation);
+			}
+		});
 	}
 
 	private void reconnectAccount(final Account account, final boolean force, final boolean interactive) {

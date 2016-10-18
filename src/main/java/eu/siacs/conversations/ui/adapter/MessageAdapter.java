@@ -450,7 +450,7 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 
 	private void loadMoreMessages(Conversation conversation) {
 		conversation.setLastClearHistory(0);
-		activity.xmppConnectionService.databaseBackend.updateConversation(conversation);
+		activity.xmppConnectionService.updateConversation(conversation);
 		conversation.setHasMessagesLeftOnServer(true);
 		conversation.setFirstMamReference(null);
 		long timestamp = conversation.getLastMessageTransmitted();

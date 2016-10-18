@@ -574,7 +574,7 @@ public abstract class XmppActivity extends Activity {
 					xmppConnectionService.sendPresence(account);
 					if (conversation != null) {
 						conversation.setNextEncryption(Message.ENCRYPTION_PGP);
-						xmppConnectionService.databaseBackend.updateConversation(conversation);
+						xmppConnectionService.updateConversation(conversation);
 						refreshUi();
 					}
 					if (onSuccess != null) {

@@ -611,10 +611,8 @@ public class ConversationActivity extends XmppActivity
 									@Override
 									public void onClick(DialogInterface dialog,
 														int which) {
-										conversation
-												.setNextEncryption(Message.ENCRYPTION_NONE);
-										xmppConnectionService.databaseBackend
-												.updateConversation(conversation);
+										conversation.setNextEncryption(Message.ENCRYPTION_NONE);
+										xmppConnectionService.updateConversation(conversation);
 										selectPresenceToAttachFile(attachmentChoice, Message.ENCRYPTION_NONE);
 									}
 								});
@@ -888,7 +886,7 @@ public class ConversationActivity extends XmppActivity
 							conversation.setNextEncryption(Message.ENCRYPTION_NONE);
 							break;
 					}
-					xmppConnectionService.databaseBackend.updateConversation(conversation);
+					xmppConnectionService.updateConversation(conversation);
 					fragment.updateChatMsgHint();
 					invalidateOptionsMenu();
 					refreshUi();
@@ -947,8 +945,7 @@ public class ConversationActivity extends XmppActivity
 							till = System.currentTimeMillis() + (durations[which] * 1000);
 						}
 						conversation.setMutedTill(till);
-						ConversationActivity.this.xmppConnectionService.databaseBackend
-								.updateConversation(conversation);
+						ConversationActivity.this.xmppConnectionService.updateConversation(conversation);
 						updateConversationList();
 						ConversationActivity.this.mConversationFragment.updateMessages();
 						invalidateOptionsMenu();
@@ -959,7 +956,7 @@ public class ConversationActivity extends XmppActivity
 
 	public void unmuteConversation(final Conversation conversation) {
 		conversation.setMutedTill(0);
-		this.xmppConnectionService.databaseBackend.updateConversation(conversation);
+		this.xmppConnectionService.updateConversation(conversation);
 		updateConversationList();
 		ConversationActivity.this.mConversationFragment.updateMessages();
 		invalidateOptionsMenu();
