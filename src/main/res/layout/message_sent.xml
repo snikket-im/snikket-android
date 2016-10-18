@@ -47,6 +47,7 @@
                 android:layout_marginBottom="4dp"
                 android:adjustViewBounds="true"
                 android:background="@color/black87"
+                android:longClickable="true"
                 android:scaleType="centerCrop" />
 
             <TextView
@@ -54,6 +55,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:autoLink="web"
+                android:longClickable="true"
                 android:textColorLink="@color/black87"
                 android:textColor="?attr/color_text_primary"
                 android:textColorHighlight="@color/grey500"
@@ -64,6 +66,7 @@
                 style="?android:attr/buttonStyleSmall"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:longClickable="true"
                 android:visibility="gone" />
 
             <LinearLayout
