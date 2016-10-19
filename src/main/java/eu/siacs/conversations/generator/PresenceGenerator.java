@@ -38,13 +38,17 @@ public class PresenceGenerator extends AbstractGenerator {
 	}
 
 	public PresencePacket selfPresence(Account account, Presence.Status status) {
+		return selfPresence(account, status, true);
+	}
+
+	public PresencePacket selfPresence(Account account, Presence.Status status, boolean includePgpAnnouncement) {
 		PresencePacket packet = new PresencePacket();
 		if(status.toShowString() != null) {
 			packet.addChild("show").setContent(status.toShowString());
 		}
 		packet.setFrom(account.getJid());
 		String sig = account.getPgpSignature();
-		if (sig != null && mXmppConnectionService.getPgpEngine() != null) {
+		if (includePgpAnnouncement && sig != null && mXmppConnectionService.getPgpEngine() != null) {
 			packet.addChild("x", "jabber:x:signed").setContent(sig);
 		}
 		String capHash = getCapHash();

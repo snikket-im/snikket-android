@@ -2037,11 +2037,11 @@ public class XmppConnectionService extends Service {
 					final MucOptions mucOptions = conversation.getMucOptions();
 					final Jid joinJid = mucOptions.getSelf().getFullJid();
 					Log.d(Config.LOGTAG, account.getJid().toBareJid().toString() + ": joining conversation " + joinJid.toString());
-					PresencePacket packet = mPresenceGenerator.selfPresence(account, Presence.Status.ONLINE);
+					PresencePacket packet = mPresenceGenerator.selfPresence(account, Presence.Status.ONLINE, mucOptions.nonanonymous());
 					packet.setTo(joinJid);
 					Element x = packet.addChild("x", "http://jabber.org/protocol/muc");
 					if (conversation.getMucOptions().getPassword() != null) {
-						x.addChild("password").setContent(conversation.getMucOptions().getPassword());
+						x.addChild("password").setContent(mucOptions.getPassword());
 					}
 
 					if (mucOptions.mamSupport()) {
