@@ -1,7 +1,11 @@
 package eu.siacs.conversations.ui;
 
 import android.content.Context;
+import android.os.Build;
 import android.os.Handler;
+import android.text.Editable;
+import android.text.InputFilter;
+import android.text.Spanned;
 import android.util.AttributeSet;
 import android.view.KeyEvent;
 import android.widget.EditText;
@@ -89,4 +93,36 @@ public class EditMessage extends EditText {
 		boolean onTabPressed(boolean repeated);
 	}
 
+	private static final InputFilter SPAN_FILTER = new InputFilter() {
+
+		@Override
+		public CharSequence filter(CharSequence source, int start, int end, Spanned dest, int dstart, int dend) {
+			return source instanceof Spanned ? source.toString() : source;
+		}
+	};
+
+	@Override
+	public boolean onTextContextMenuItem(int id) {
+		if (id == android.R.id.paste) {
+			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+				return super.onTextContextMenuItem(android.R.id.pasteAsPlainText);
+			} else {
+				Editable editable = getEditableText();
+				InputFilter[] filters = editable.getFilters();
+				InputFilter[] tempFilters = new InputFilter[filters != null ? filters.length + 1 : 1];
+				if (filters != null) {
+					System.arraycopy(filters, 0, tempFilters, 1, filters.length);
+				}
+				tempFilters[0] = SPAN_FILTER;
+				editable.setFilters(tempFilters);
+				try {
+					return super.onTextContextMenuItem(id);
+				} finally {
+					editable.setFilters(filters);
+				}
+			}
+		} else {
+			return super.onTextContextMenuItem(id);
+		}
+	}
 }
