@@ -584,7 +584,14 @@ public abstract class XmppActivity extends Activity {
 
 				@Override
 				public void error(int error, Account account) {
-					displayErrorDialog(error);
+					if (error == 0 && account != null) {
+						account.setPgpSignId(0);
+						account.unsetPgpSignature();
+						xmppConnectionService.databaseBackend.updateAccount(account);
+						choosePgpSignId(account);
+					} else {
+						displayErrorDialog(error);
+					}
 				}
 			});
 		}

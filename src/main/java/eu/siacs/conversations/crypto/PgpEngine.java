@@ -259,8 +259,13 @@ public class PgpEngine {
 							account);
 					return;
 				case OpenPgpApi.RESULT_CODE_ERROR:
-					logError(account, (OpenPgpError) result.getParcelableExtra(OpenPgpApi.RESULT_ERROR));
-					callback.error(R.string.unable_to_connect_to_keychain, account);
+					OpenPgpError error = result.getParcelableExtra(OpenPgpApi.RESULT_ERROR);
+					if (error != null && "signing subkey not found!".equals(error.getMessage())) {
+						callback.error(0,account);
+					} else {
+						logError(account, error);
+						callback.error(R.string.unable_to_connect_to_keychain, null);
+					}
                 }
 			}
 		});
