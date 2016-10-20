@@ -636,9 +636,6 @@ public class XmppConnectionService extends Service {
 							} else {
 								int secs = (int) (pingTimeoutIn / 1000);
 								this.scheduleWakeUpCall(secs, account.getUuid().hashCode());
-								if (mLowPingTimeoutMode.remove(account.getJid().toBareJid())) {
-									Log.d(Config.LOGTAG,account.getJid().toBareJid()+": leaving low ping timeout mode");
-								}
 							}
 						} else {
 							pingCandidates.add(account);
@@ -651,6 +648,9 @@ public class XmppConnectionService extends Service {
 								pingNow = true;
 							} else {
 								this.scheduleWakeUpCall((int) (msToNextPing / 1000), account.getUuid().hashCode());
+								if (mLowPingTimeoutMode.remove(account.getJid().toBareJid())) {
+									Log.d(Config.LOGTAG,account.getJid().toBareJid()+": leaving low ping timeout mode");
+								}
 							}
 						}
 					} else if (account.getStatus() == Account.State.OFFLINE) {
