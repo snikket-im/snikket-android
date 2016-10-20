@@ -656,7 +656,7 @@ public class ConversationFragment extends Fragment implements EditMessage.Keyboa
 	}
 
 	private void copyText(Message message) {
-		if (activity.copyTextToClipboard(message.getMergedBody(),
+		if (activity.copyTextToClipboard(message.getMergedBody().toString(),
 				R.string.message_text)) {
 			Toast.makeText(activity, R.string.message_copied_to_clipboard,
 					Toast.LENGTH_SHORT).show();

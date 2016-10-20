@@ -304,32 +304,30 @@ public class MessageAdapter extends ArrayAdapter<Message> implements CopyTextVie
 		viewHolder.messageBody.setIncludeFontPadding(true);
 		if (message.getBody() != null) {
 			final String nick = UIHelper.getMessageDisplayName(message);
-			String body;
-			try {
-				body = message.getMergedBody().replaceAll("^" + Message.ME_COMMAND, nick + " ");
-			} catch (ArrayIndexOutOfBoundsException e) {
-				body = message.getMergedBody();
+			SpannableStringBuilder body = message.getMergedBody();
+			boolean hasMeCommand = message.hasMeCommand();
+			if (hasMeCommand) {
+				body = body.replace(0, Message.ME_COMMAND.length(), nick + " ");
 			}
 			if (body.length() > Config.MAX_DISPLAY_MESSAGE_CHARS) {
-				body = body.substring(0, Config.MAX_DISPLAY_MESSAGE_CHARS)+"\u2026";
+				body = new SpannableStringBuilder(body, 0, Config.MAX_DISPLAY_MESSAGE_CHARS);
+				body.append("\u2026");
 			}
-			Spannable formattedBody = new SpannableString(body);
-			int i = body.indexOf(Message.MERGE_SEPARATOR);
-			while(i >= 0) {
-				final int end = i + Message.MERGE_SEPARATOR.length();
-				formattedBody.setSpan(new RelativeSizeSpan(0.3f),i,end,Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-				i = body.indexOf(Message.MERGE_SEPARATOR,end);
+			Message.MergeSeparator[] mergeSeparators = body.getSpans(0, body.length(), Message.MergeSeparator.class);
+			for (Message.MergeSeparator mergeSeparator : mergeSeparators) {
+				int start = body.getSpanStart(mergeSeparator);
+				int end = body.getSpanEnd(mergeSeparator);
+				body.setSpan(new RelativeSizeSpan(0.3f), start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 			}
 			if (message.getType() != Message.TYPE_PRIVATE) {
-				if (message.hasMeCommand()) {
-					formattedBody.setSpan(new StyleSpan(Typeface.BOLD_ITALIC), 0, nick.length(),
+				if (hasMeCommand) {
+					body.setSpan(new StyleSpan(Typeface.BOLD_ITALIC), 0, nick.length(),
 							Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 				}
 			} else {
 				String privateMarker;
 				if (message.getStatus() <= Message.STATUS_RECEIVED) {
-					privateMarker = activity
-						.getString(R.string.private_message);
+					privateMarker = activity.getString(R.string.private_message);
 				} else {
 					final String to;
 					if (message.getCounterpart() != null) {
@@ -339,23 +337,23 @@ public class MessageAdapter extends ArrayAdapter<Message> implements CopyTextVie
 					}
 					privateMarker = activity.getString(R.string.private_message_to, to);
 				}
-				formattedBody = new SpannableStringBuilder().append(privateMarker).append(' ').append(formattedBody);
-				formattedBody.setSpan(new ForegroundColorSpan(getMessageTextColor(darkBackground,false)), 0, privateMarker
-						.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-				formattedBody.setSpan(new StyleSpan(Typeface.BOLD), 0,
-						privateMarker.length(),
-						Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-				if (message.hasMeCommand()) {
-					formattedBody.setSpan(new StyleSpan(Typeface.BOLD_ITALIC), privateMarker.length() + 1,
-							privateMarker.length() + 1 + nick.length(),
-							Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+				body.insert(0, privateMarker);
+				int privateMarkerIndex = privateMarker.length();
+				body.insert(privateMarkerIndex, " ");
+				body.setSpan(new ForegroundColorSpan(getMessageTextColor(darkBackground, false)),
+						0, privateMarkerIndex, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+				body.setSpan(new StyleSpan(Typeface.BOLD),
+						0, privateMarkerIndex, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+				if (hasMeCommand) {
+					body.setSpan(new StyleSpan(Typeface.BOLD_ITALIC), privateMarkerIndex + 1,
+							privateMarkerIndex + 1 + nick.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 				}
 			}
-			Linkify.addLinks(formattedBody, Linkify.WEB_URLS);
-			Linkify.addLinks(formattedBody, XMPP_PATTERN, "xmpp");
-			Linkify.addLinks(formattedBody, GeoHelper.GEO_URI, "geo");
+			Linkify.addLinks(body, Linkify.WEB_URLS);
+			Linkify.addLinks(body, XMPP_PATTERN, "xmpp");
+			Linkify.addLinks(body, GeoHelper.GEO_URI, "geo");
 			viewHolder.messageBody.setAutoLinkMask(0);
-			viewHolder.messageBody.setText(formattedBody);
+			viewHolder.messageBody.setText(body);
 			viewHolder.messageBody.setTextIsSelectable(true);
 			viewHolder.messageBody.setMovementMethod(ClickableMovementMethod.getInstance());
 			listSelectionManager.onUpdate(viewHolder.messageBody, message);
