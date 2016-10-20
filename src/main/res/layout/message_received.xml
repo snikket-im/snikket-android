@@ -49,7 +49,7 @@
                 android:background="@color/black87"
                 android:scaleType="centerCrop" />
 
-            <TextView
+            <eu.siacs.conversations.ui.widget.CopyTextView
                 android:id="@+id/message_body"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
