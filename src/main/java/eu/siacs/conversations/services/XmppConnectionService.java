@@ -145,6 +145,7 @@ public class XmppConnectionService extends Service {
 	private final List<Conversation> conversations = new CopyOnWriteArrayList<>();
 	private final IqGenerator mIqGenerator = new IqGenerator(this);
 	private final List<String> mInProgressAvatarFetches = new ArrayList<>();
+	private final HashSet<Jid> mLowPingTimeoutMode = new HashSet<>();
 
 	private long mLastActivity = 0;
 
@@ -626,7 +627,8 @@ public class XmppConnectionService extends Service {
 						long lastSent = account.getXmppConnection().getLastPingSent();
 						long pingInterval = (Config.PUSH_MODE || "ui".equals(action)) ? Config.PING_MIN_INTERVAL * 1000 : Config.PING_MAX_INTERVAL * 1000;
 						long msToNextPing = (Math.max(lastReceived, lastSent) + pingInterval) - SystemClock.elapsedRealtime();
-						long pingTimeoutIn = (lastSent + Config.PING_TIMEOUT * 1000) - SystemClock.elapsedRealtime();
+						int pingTimeout = mLowPingTimeoutMode.contains(account.getJid().toBareJid()) ? Config.LOW_PING_TIMEOUT * 1000 : Config.PING_TIMEOUT * 1000;
+						long pingTimeoutIn = (lastSent + pingTimeout) - SystemClock.elapsedRealtime();
 						if (lastSent > lastReceived) {
 							if (pingTimeoutIn < 0) {
 								Log.d(Config.LOGTAG, account.getJid().toBareJid() + ": ping timeout");
@@ -634,10 +636,18 @@ public class XmppConnectionService extends Service {
 							} else {
 								int secs = (int) (pingTimeoutIn / 1000);
 								this.scheduleWakeUpCall(secs, account.getUuid().hashCode());
+								if (mLowPingTimeoutMode.remove(account.getJid().toBareJid())) {
+									Log.d(Config.LOGTAG,account.getJid().toBareJid()+": leaving low ping timeout mode");
+								}
 							}
 						} else {
 							pingCandidates.add(account);
-							if (msToNextPing <= 0 || CryptoHelper.getAccountFingerprint(account).equals(pushedAccountHash)) {
+							if (CryptoHelper.getAccountFingerprint(account).equals(pushedAccountHash)) {
+								pingNow = true;
+								if (mLowPingTimeoutMode.add(account.getJid().toBareJid())) {
+									Log.d(Config.LOGTAG, account.getJid().toBareJid() + ": entering low ping timeout mode");
+								}
+							} else if (msToNextPing <= 0) {
 								pingNow = true;
 							} else {
 								this.scheduleWakeUpCall((int) (msToNextPing / 1000), account.getUuid().hashCode());
