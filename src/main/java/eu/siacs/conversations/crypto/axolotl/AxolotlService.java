@@ -185,8 +185,8 @@ public class AxolotlService implements OnAdvancedStreamFeaturesLoaded {
 		}
 
 		private void fillMap(SQLiteAxolotlStore store) {
-			List<Integer> deviceIds = store.getSubDeviceSessions(account.getJid().toBareJid().toString());
-			putDevicesForJid(account.getJid().toBareJid().toString(), deviceIds, store);
+			List<Integer> deviceIds = store.getSubDeviceSessions(account.getJid().toBareJid().toPreppedString());
+			putDevicesForJid(account.getJid().toBareJid().toPreppedString(), deviceIds, store);
 			for (Contact contact : account.getRoster().getContacts()) {
 				Jid bareJid = contact.getJid().toBareJid();
 				String address = bareJid.toString();
@@ -220,7 +220,7 @@ public class AxolotlService implements OnAdvancedStreamFeaturesLoaded {
 
 		public void clearErrorFor(Jid jid) {
 			synchronized (MAP_LOCK) {
-				Map<Integer, FetchStatus> devices = this.map.get(jid.toBareJid().toString());
+				Map<Integer, FetchStatus> devices = this.map.get(jid.toBareJid().toPreppedString());
 				if (devices == null) {
 					return;
 				}
@@ -257,28 +257,28 @@ public class AxolotlService implements OnAdvancedStreamFeaturesLoaded {
 	}
 
 	public Set<IdentityKey> getKeysWithTrust(XmppAxolotlSession.Trust trust) {
-		return axolotlStore.getContactKeysWithTrust(account.getJid().toBareJid().toString(), trust);
+		return axolotlStore.getContactKeysWithTrust(account.getJid().toBareJid().toPreppedString(), trust);
 	}
 
 	public Set<IdentityKey> getKeysWithTrust(XmppAxolotlSession.Trust trust, Jid jid) {
-		return axolotlStore.getContactKeysWithTrust(jid.toBareJid().toString(), trust);
+		return axolotlStore.getContactKeysWithTrust(jid.toBareJid().toPreppedString(), trust);
 	}
 
 	public Set<IdentityKey> getKeysWithTrust(XmppAxolotlSession.Trust trust, List<Jid> jids) {
 		Set<IdentityKey> keys = new HashSet<>();
 		for(Jid jid : jids) {
-			keys.addAll(axolotlStore.getContactKeysWithTrust(jid.toString(), trust));
+			keys.addAll(axolotlStore.getContactKeysWithTrust(jid.toPreppedString(), trust));
 		}
 		return keys;
 	}
 
 	public long getNumTrustedKeys(Jid jid) {
-		return axolotlStore.getContactNumTrustedKeys(jid.toBareJid().toString());
+		return axolotlStore.getContactNumTrustedKeys(jid.toBareJid().toPreppedString());
 	}
 
 	public boolean anyTargetHasNoTrustedKeys(List<Jid> jids) {
 		for(Jid jid : jids) {
-			if (axolotlStore.getContactNumTrustedKeys(jid.toBareJid().toString()) == 0) {
+			if (axolotlStore.getContactNumTrustedKeys(jid.toBareJid().toPreppedString()) == 0) {
 				return true;
 			}
 		}
@@ -286,7 +286,7 @@ public class AxolotlService implements OnAdvancedStreamFeaturesLoaded {
 	}
 
 	private AxolotlAddress getAddressForJid(Jid jid) {
-		return new AxolotlAddress(jid.toString(), 0);
+		return new AxolotlAddress(jid.toPreppedString(), 0);
 	}
 
 	private Set<XmppAxolotlSession> findOwnSessions() {
@@ -359,7 +359,7 @@ public class AxolotlService implements OnAdvancedStreamFeaturesLoaded {
 	                                final XmppAxolotlSession.Trust from,
 	                                final XmppAxolotlSession.Trust to) {
 		for (Integer deviceId : deviceIds) {
-			AxolotlAddress address = new AxolotlAddress(jid.toBareJid().toString(), deviceId);
+			AxolotlAddress address = new AxolotlAddress(jid.toBareJid().toPreppedString(), deviceId);
 			XmppAxolotlSession session = sessions.get(address);
 			if (session != null && session.getFingerprint() != null
 					&& session.getTrust() == from) {
@@ -381,13 +381,13 @@ public class AxolotlService implements OnAdvancedStreamFeaturesLoaded {
 				publishOwnDeviceId(deviceIds);
 			}
 			for (Integer deviceId : deviceIds) {
-				AxolotlAddress ownDeviceAddress = new AxolotlAddress(jid.toBareJid().toString(), deviceId);
+				AxolotlAddress ownDeviceAddress = new AxolotlAddress(jid.toBareJid().toPreppedString(), deviceId);
 				if (sessions.get(ownDeviceAddress) == null) {
 					buildSessionFromPEP(ownDeviceAddress);
 				}
 			}
 		}
-		Set<Integer> expiredDevices = new HashSet<>(axolotlStore.getSubDeviceSessions(jid.toBareJid().toString()));
+		Set<Integer> expiredDevices = new HashSet<>(axolotlStore.getSubDeviceSessions(jid.toBareJid().toPreppedString()));
 		expiredDevices.removeAll(deviceIds);
 		setTrustOnSessions(jid, expiredDevices, XmppAxolotlSession.Trust.TRUSTED,
 				XmppAxolotlSession.Trust.INACTIVE_TRUSTED);
@@ -759,7 +759,7 @@ public class AxolotlService implements OnAdvancedStreamFeaturesLoaded {
 	}
 
 	private void finishBuildingSessionsFromPEP(final AxolotlAddress address) {
-		AxolotlAddress ownAddress = new AxolotlAddress(account.getJid().toBareJid().toString(), 0);
+		AxolotlAddress ownAddress = new AxolotlAddress(account.getJid().toBareJid().toPreppedString(), 0);
 		if (!fetchStatusMap.getAll(ownAddress).containsValue(FetchStatus.PENDING)
 				&& !fetchStatusMap.getAll(address).containsValue(FetchStatus.PENDING)) {
 			FetchStatus report = null;
@@ -873,7 +873,7 @@ public class AxolotlService implements OnAdvancedStreamFeaturesLoaded {
 		}
 		if (deviceIds.get(account.getJid().toBareJid()) != null) {
 			for (Integer ownId : this.deviceIds.get(account.getJid().toBareJid())) {
-				AxolotlAddress address = new AxolotlAddress(account.getJid().toBareJid().toString(), ownId);
+				AxolotlAddress address = new AxolotlAddress(account.getJid().toBareJid().toPreppedString(), ownId);
 				if (sessions.get(address) == null) {
 					IdentityKey identityKey = axolotlStore.loadSession(address).getSessionState().getRemoteIdentityKey();
 					if (identityKey != null) {
@@ -933,12 +933,12 @@ public class AxolotlService implements OnAdvancedStreamFeaturesLoaded {
 	}
 
 	public boolean hasPendingKeyFetches(Account account, List<Jid> jids) {
-		AxolotlAddress ownAddress = new AxolotlAddress(account.getJid().toBareJid().toString(), 0);
+		AxolotlAddress ownAddress = new AxolotlAddress(account.getJid().toBareJid().toPreppedString(), 0);
 		if (fetchStatusMap.getAll(ownAddress).containsValue(FetchStatus.PENDING)) {
 			return true;
 		}
 		for(Jid jid : jids) {
-			AxolotlAddress foreignAddress = new AxolotlAddress(jid.toBareJid().toString(), 0);
+			AxolotlAddress foreignAddress = new AxolotlAddress(jid.toBareJid().toPreppedString(), 0);
 			if (fetchStatusMap.getAll(foreignAddress).containsValue(FetchStatus.PENDING)) {
 				return true;
 			}

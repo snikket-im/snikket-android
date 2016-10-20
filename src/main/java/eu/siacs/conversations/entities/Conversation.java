@@ -506,7 +506,7 @@ public class Conversation extends AbstractEntity implements Blockable, Comparabl
 		values.put(NAME, name);
 		values.put(CONTACT, contactUuid);
 		values.put(ACCOUNT, accountUuid);
-		values.put(CONTACTJID, contactJid.toString());
+		values.put(CONTACTJID, contactJid.toPreppedString());
 		values.put(CREATED, created);
 		values.put(STATUS, status);
 		values.put(MODE, mode);

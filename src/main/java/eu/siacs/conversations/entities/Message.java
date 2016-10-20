@@ -205,12 +205,12 @@ public class Message extends AbstractEntity {
 		if (counterpart == null) {
 			values.putNull(COUNTERPART);
 		} else {
-			values.put(COUNTERPART, counterpart.toString());
+			values.put(COUNTERPART, counterpart.toPreppedString());
 		}
 		if (trueCounterpart == null) {
 			values.putNull(TRUE_COUNTERPART);
 		} else {
-			values.put(TRUE_COUNTERPART, trueCounterpart.toString());
+			values.put(TRUE_COUNTERPART, trueCounterpart.toPreppedString());
 		}
 		values.put(BODY, body);
 		values.put(TIME_SENT, timeSent);
