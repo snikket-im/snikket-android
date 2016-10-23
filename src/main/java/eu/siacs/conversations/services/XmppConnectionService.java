@@ -336,8 +336,13 @@ public class XmppConnectionService extends Service {
 						&& listeners;
 				Log.d(Config.LOGTAG,account.getJid().toBareJid()+": push mode="+Boolean.toString(pushMode)+" listeners="+Boolean.toString(listeners));
 				if (!disabled && !pushMode) {
-					int timeToReconnect = mRandom.nextInt(20) + 10;
-					scheduleWakeUpCall(timeToReconnect, account.getUuid().hashCode());
+					if (mLowPingTimeoutMode.contains(account.getJid().toBareJid())) {
+						Log.d(Config.LOGTAG,account.getJid().toBareJid()+": went into offline state during low ping mode. reconnecting now");
+						reconnectAccount(account,true,false);
+					} else {
+						int timeToReconnect = mRandom.nextInt(20) + 10;
+						scheduleWakeUpCall(timeToReconnect, account.getUuid().hashCode());
+					}
 				}
 			} else if (account.getStatus() == Account.State.REGISTRATION_SUCCESSFUL) {
 				databaseBackend.updateAccount(account);
