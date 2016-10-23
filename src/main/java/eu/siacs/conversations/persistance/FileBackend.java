@@ -440,7 +440,7 @@ public class FileBackend {
 	public Uri getTakePhotoUri() {
 		File file = new File(getTakePhotoPath()+"IMG_" + this.IMAGE_DATE_FORMAT.format(new Date()) + ".jpg");
 		file.getParentFile().mkdirs();
-		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
 			return FileProvider.getUriForFile(mXmppConnectionService, CONVERSATIONS_FILE_PROVIDER, file);
 		} else {
 			return Uri.fromFile(file);

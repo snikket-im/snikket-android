@@ -703,7 +703,7 @@ public class MessageAdapter extends ArrayAdapter<Message> implements CopyTextVie
 			mime = "*/*";
 		}
 		Uri uri;
-		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
 			try {
 				uri = FileProvider.getUriForFile(activity, FileBackend.CONVERSATIONS_FILE_PROVIDER, file);
 			} catch (IllegalArgumentException e) {
