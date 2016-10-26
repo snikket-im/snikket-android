@@ -1,5 +1,10 @@
 ###Changelog
 
+####Version 1.14.7
+* error message accessible via context menu for failed messages
+* don't include pgp signature in anonymous mucs
+* bug fixes
+
 ####Version 1.14.6
 * make error notification dismissable
 * bug fixes
