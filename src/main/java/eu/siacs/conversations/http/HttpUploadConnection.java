@@ -20,6 +20,7 @@ import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.entities.DownloadableFile;
 import eu.siacs.conversations.entities.Message;
 import eu.siacs.conversations.entities.Transferable;
+import eu.siacs.conversations.parser.IqParser;
 import eu.siacs.conversations.persistance.FileBackend;
 import eu.siacs.conversations.services.AbstractConnectionManager;
 import eu.siacs.conversations.services.XmppConnectionService;
@@ -86,10 +87,10 @@ public class HttpUploadConnection implements Transferable {
 		this.canceled = true;
 	}
 
-	private void fail() {
+	private void fail(String errorMessage) {
 		mHttpConnectionManager.finishUploadConnection(this);
 		message.setTransferable(null);
-		mXmppConnectionService.markMessage(message, Message.STATUS_SEND_FAILED);
+		mXmppConnectionService.markMessage(message, Message.STATUS_SEND_FAILED, errorMessage);
 		FileBackend.close(mFileInputStream);
 	}
 
@@ -111,7 +112,7 @@ public class HttpUploadConnection implements Transferable {
 			pair = AbstractConnectionManager.createInputStream(file, true);
 		} catch (FileNotFoundException e) {
 			Log.d(Config.LOGTAG,account.getJid().toBareJid()+": could not find file to upload - "+e.getMessage());
-			fail();
+			fail(e.getMessage());
 			return;
 		}
 		this.file.setExpectedSize(pair.second);
@@ -137,7 +138,7 @@ public class HttpUploadConnection implements Transferable {
 					}
 				}
 				Log.d(Config.LOGTAG,account.getJid().toString()+": invalid response to slot request "+packet);
-				fail();
+				fail(IqParser.extractErrorMessage(packet));
 			}
 		});
 		message.setTransferable(this);
@@ -206,12 +207,12 @@ public class HttpUploadConnection implements Transferable {
 							@Override
 							public void error(int errorCode, Message object) {
 								Log.d(Config.LOGTAG,"pgp encryption failed");
-								fail();
+								fail("pgp encryption failed");
 							}
 
 							@Override
 							public void userInputRequried(PendingIntent pi, Message object) {
-								fail();
+								fail("pgp encryption failed");
 							}
 						});
 					} else {
@@ -219,12 +220,12 @@ public class HttpUploadConnection implements Transferable {
 					}
 				} else {
 					Log.d(Config.LOGTAG,"http upload failed because response code was "+code);
-					fail();
+					fail("http upload failed because response code was "+code);
 				}
 			} catch (IOException e) {
 				e.printStackTrace();
 				Log.d(Config.LOGTAG,"http upload failed "+e.getMessage());
-				fail();
+				fail(e.getMessage());
 			} finally {
 				FileBackend.close(mFileInputStream);
 				FileBackend.close(os);

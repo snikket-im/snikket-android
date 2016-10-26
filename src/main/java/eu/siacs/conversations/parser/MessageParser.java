@@ -266,19 +266,15 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
 		if (packet.getType() == MessagePacket.TYPE_ERROR) {
 			Jid from = packet.getFrom();
 			if (from != null) {
-				Element error = packet.findChild("error");
-				String text = error == null ? null : error.findChildContent("text");
-				if (text != null) {
-					Log.d(Config.LOGTAG, account.getJid().toBareJid() + ": sending message to "+ from+ " failed - " + text);
-				} else if (error != null) {
-					Log.d(Config.LOGTAG, account.getJid().toBareJid() + ": sending message to "+ from+ " failed - " + error);
-				}
 				Message message = mXmppConnectionService.markMessage(account,
 						from.toBareJid(),
 						packet.getId(),
-						Message.STATUS_SEND_FAILED);
-				if (message != null && message.getEncryption() == Message.ENCRYPTION_OTR) {
-					message.getConversation().endOtrIfNeeded();
+						Message.STATUS_SEND_FAILED,
+						extractErrorMessage(packet));
+				if (message != null) {
+					if (message.getEncryption() == Message.ENCRYPTION_OTR) {
+						message.getConversation().endOtrIfNeeded();
+					}
 				}
 			}
 			return true;

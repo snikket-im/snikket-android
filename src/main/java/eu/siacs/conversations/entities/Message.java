@@ -58,6 +58,7 @@ public class Message extends AbstractEntity {
 	public static final String RELATIVE_FILE_PATH = "relativeFilePath";
 	public static final String FINGERPRINT = "axolotl_fingerprint";
 	public static final String READ = "read";
+	public static final String ERROR_MESSAGE = "errorMsg";
 	public static final String ME_COMMAND = "/me ";
 
 
@@ -83,6 +84,7 @@ public class Message extends AbstractEntity {
 	private Message mNextMessage = null;
 	private Message mPreviousMessage = null;
 	private String axolotlFingerprint = null;
+	private String errorMessage = null;
 
 	private Message() {
 
@@ -109,7 +111,8 @@ public class Message extends AbstractEntity {
 				null,
 				true,
 				null,
-				false);
+				false,
+				null);
 		this.conversation = conversation;
 	}
 
@@ -118,7 +121,7 @@ public class Message extends AbstractEntity {
 					final int encryption, final int status, final int type, final boolean carbon,
 					final String remoteMsgId, final String relativeFilePath,
 					final String serverMsgId, final String fingerprint, final boolean read,
-					final String edited, final boolean oob) {
+					final String edited, final boolean oob, final String errorMessage) {
 		this.uuid = uuid;
 		this.conversationUuid = conversationUUid;
 		this.counterpart = counterpart;
@@ -136,6 +139,7 @@ public class Message extends AbstractEntity {
 		this.read = read;
 		this.edited = edited;
 		this.oob = oob;
+		this.errorMessage = errorMessage;
 	}
 
 	public static Message fromCursor(Cursor cursor) {
@@ -177,7 +181,8 @@ public class Message extends AbstractEntity {
 				cursor.getString(cursor.getColumnIndex(FINGERPRINT)),
 				cursor.getInt(cursor.getColumnIndex(READ)) > 0,
 				cursor.getString(cursor.getColumnIndex(EDITED)),
-				cursor.getInt(cursor.getColumnIndex(OOB)) > 0);
+				cursor.getInt(cursor.getColumnIndex(OOB)) > 0,
+				cursor.getString(cursor.getColumnIndex(ERROR_MESSAGE)));
 	}
 
 	public static Message createStatusMessage(Conversation conversation, String body) {
@@ -224,6 +229,7 @@ public class Message extends AbstractEntity {
 		values.put(READ,read ? 1 : 0);
 		values.put(EDITED, edited);
 		values.put(OOB, oob ? 1 : 0);
+		values.put(ERROR_MESSAGE,errorMessage);
 		return values;
 	}
 
@@ -269,6 +275,17 @@ public class Message extends AbstractEntity {
 			throw new Error("You should not set the message body to null");
 		}
 		this.body = body;
+	}
+
+	public String getErrorMessage() {
+		return errorMessage;
+	}
+
+	public boolean setErrorMessage(String message) {
+		boolean changed = (message != null && !message.equals(errorMessage))
+				|| (message == null && errorMessage != null);
+		this.errorMessage = message;
+		return changed;
 	}
 
 	public long getTimeSent() {

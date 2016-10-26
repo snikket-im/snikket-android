@@ -92,4 +92,18 @@ public abstract class AbstractParser {
 		user.setRole(role);
 		return user;
 	}
+
+	public static String extractErrorMessage(Element packet) {
+		final Element error = packet.findChild("error");
+		if (error != null && error.getChildren().size() > 0) {
+			final String text = error.findChildContent("text");
+			if (text != null && !text.trim().isEmpty()) {
+				return text;
+			} else {
+				return error.getChildren().get(0).getName().replace("-"," ");
+			}
+		} else {
+			return null;
+		}
+	}
 }
