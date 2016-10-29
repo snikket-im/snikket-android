@@ -695,9 +695,10 @@ public class XmppConnectionService extends Service {
 					account.getXmppConnection().waitForPush();
 					cancelWakeUpCall(account.getUuid().hashCode());
 				} else {
+					final boolean lowTimeout = mLowPingTimeoutMode.contains(account.getJid().toBareJid());
 					account.getXmppConnection().sendPing();
-					Log.d(Config.LOGTAG, account.getJid().toBareJid() + " send ping (action=" + action + ",listeners="+Boolean.toString(listeners)+")");
-					scheduleWakeUpCall(Config.PING_TIMEOUT, account.getUuid().hashCode());
+					Log.d(Config.LOGTAG, account.getJid().toBareJid() + " send ping (action=" + action + ",listeners="+Boolean.toString(listeners)+",lowTimeout="+Boolean.toString(lowTimeout)+")");
+					scheduleWakeUpCall(lowTimeout ? Config.LOW_PING_TIMEOUT: Config.PING_TIMEOUT, account.getUuid().hashCode());
 				}
 			}
 		}
