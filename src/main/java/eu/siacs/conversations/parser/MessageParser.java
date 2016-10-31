@@ -31,6 +31,7 @@ import eu.siacs.conversations.http.HttpConnectionManager;
 import eu.siacs.conversations.services.MessageArchiveService;
 import eu.siacs.conversations.services.XmppConnectionService;
 import eu.siacs.conversations.utils.CryptoHelper;
+import eu.siacs.conversations.utils.Xmlns;
 import eu.siacs.conversations.xml.Element;
 import eu.siacs.conversations.xmpp.OnMessagePacketReceived;
 import eu.siacs.conversations.xmpp.chatstate.ChatState;
@@ -208,7 +209,7 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
 	private static String extractStanzaId(Element packet, Jid by) {
 		for(Element child : packet.getChildren()) {
 			if (child.getName().equals("stanza-id")
-					&& "urn:xmpp:sid:0".equals(child.getNamespace())
+					&& Xmlns.STANZA_IDS.equals(child.getNamespace())
 					&& by.equals(child.getAttributeAsJid("by"))) {
 				return child.getAttribute("id");
 			}
@@ -430,7 +431,18 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
 			}
 
 			if (serverMsgId == null) {
-				serverMsgId = extractStanzaId(packet, isTypeGroupChat ? conversation.getJid().toBareJid() : account.getServer());
+				final Jid by;
+				final boolean safeToExtract;
+				if (isTypeGroupChat) {
+					by = conversation.getJid().toBareJid();
+					safeToExtract = true; //conversation.getMucOptions().hasFeature(Xmlns.STANZA_IDS);
+				} else {
+					by = account.getJid().toBareJid();
+					safeToExtract = true; //account.getXmppConnection().getFeatures().stanzaIds();
+				}
+				if (safeToExtract) {
+					serverMsgId = extractStanzaId(packet, by);
+				}
 			}
 
 			message.setCounterpart(counterpart);
