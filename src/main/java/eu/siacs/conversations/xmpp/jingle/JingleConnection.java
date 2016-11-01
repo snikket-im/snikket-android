@@ -620,6 +620,10 @@ public class JingleConnection implements Transferable {
 				if (cid != null) {
 					Log.d(Config.LOGTAG, "candidate used by counterpart:" + cid);
 					JingleCandidate candidate = getCandidate(cid);
+					if (candidate == null) {
+						Log.d(Config.LOGTAG,"could not find candidate with cid="+cid);
+						return false;
+					}
 					candidate.flagAsUsedByCounterpart();
 					this.receivedCandidate = true;
 					if ((mJingleStatus == JINGLE_STATUS_ACCEPTED)
