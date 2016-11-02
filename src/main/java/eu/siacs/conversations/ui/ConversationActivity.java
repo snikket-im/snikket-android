@@ -64,6 +64,7 @@ import eu.siacs.conversations.services.XmppConnectionService.OnRosterUpdate;
 import eu.siacs.conversations.ui.adapter.ConversationAdapter;
 import eu.siacs.conversations.utils.ExceptionHelper;
 import eu.siacs.conversations.xmpp.OnUpdateBlocklist;
+import eu.siacs.conversations.xmpp.XmppConnection;
 import eu.siacs.conversations.xmpp.jid.InvalidJidException;
 import eu.siacs.conversations.xmpp.jid.Jid;
 
@@ -1446,7 +1447,8 @@ public class ConversationActivity extends XmppActivity
 	}
 
 	private long getMaxHttpUploadSize(Conversation conversation) {
-		return conversation.getAccount().getXmppConnection().getFeatures().getMaxHttpUploadSize();
+		final XmppConnection connection = conversation.getAccount().getXmppConnection();
+		return connection == null ? -1 : connection.getFeatures().getMaxHttpUploadSize();
 	}
 
 	private void setNeverAskForBatteryOptimizationsAgain() {
