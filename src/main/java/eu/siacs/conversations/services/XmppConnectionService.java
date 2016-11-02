@@ -331,16 +331,10 @@ public class XmppConnectionService extends Service {
 					joinMuc(conversation);
 				}
 				account.pendingConferenceJoins.clear();
-				scheduleWakeUpCall(Config.PUSH_MODE ? Config.PING_MIN_INTERVAL : Config.PING_MAX_INTERVAL, account.getUuid().hashCode());
+				scheduleWakeUpCall(Config.PING_MAX_INTERVAL, account.getUuid().hashCode());
 			} else if (account.getStatus() == Account.State.OFFLINE || account.getStatus() == Account.State.DISABLED) {
 				resetSendingToWaiting(account);
-				final boolean disabled = account.isOptionSet(Account.OPTION_DISABLED);
-				final boolean listeners = checkListeners();
-				final boolean pushMode = Config.PUSH_MODE
-						&& mPushManagementService.available(account)
-						&& listeners;
-				Log.d(Config.LOGTAG,account.getJid().toBareJid()+": push mode="+Boolean.toString(pushMode)+" listeners="+Boolean.toString(listeners));
-				if (!disabled && !pushMode) {
+				if (!account.isOptionSet(Account.OPTION_DISABLED)) {
 					synchronized (mLowPingTimeoutMode) {
 						if (mLowPingTimeoutMode.contains(account.getJid().toBareJid())) {
 							Log.d(Config.LOGTAG, account.getJid().toBareJid() + ": went into offline state during low ping mode. reconnecting now");
@@ -604,8 +598,7 @@ public class XmppConnectionService extends Service {
 					refreshAllGcmTokens();
 					break;
 				case ACTION_IDLE_PING:
-					if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M
-							&& !Config.PUSH_MODE) {
+					if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
 						scheduleNextIdlePing();
 					}
 					break;
@@ -638,7 +631,7 @@ public class XmppConnectionService extends Service {
 						synchronized (mLowPingTimeoutMode) {
 							long lastReceived = account.getXmppConnection().getLastPacketReceived();
 							long lastSent = account.getXmppConnection().getLastPingSent();
-							long pingInterval = (Config.PUSH_MODE || "ui".equals(action)) ? Config.PING_MIN_INTERVAL * 1000 : Config.PING_MAX_INTERVAL * 1000;
+							long pingInterval = "ui".equals(action) ? Config.PING_MIN_INTERVAL * 1000 : Config.PING_MAX_INTERVAL * 1000;
 							long msToNextPing = (Math.max(lastReceived, lastSent) + pingInterval) - SystemClock.elapsedRealtime();
 							int pingTimeout = mLowPingTimeoutMode.contains(account.getJid().toBareJid()) ? Config.LOW_PING_TIMEOUT * 1000 : Config.PING_TIMEOUT * 1000;
 							long pingTimeoutIn = (lastSent + pingTimeout) - SystemClock.elapsedRealtime();
@@ -696,20 +689,12 @@ public class XmppConnectionService extends Service {
 			}
 		}
 		if (pingNow) {
-			final boolean listeners = checkListeners();
 			for (Account account : pingCandidates) {
-				if (listeners
-						&& Config.PUSH_MODE
-						&& mPushManagementService.available(account)) {
-					account.getXmppConnection().waitForPush();
-					cancelWakeUpCall(account.getUuid().hashCode());
-				} else {
-					synchronized (mLowPingTimeoutMode) {
-						final boolean lowTimeout = mLowPingTimeoutMode.contains(account.getJid().toBareJid());
-						account.getXmppConnection().sendPing();
-						Log.d(Config.LOGTAG, account.getJid().toBareJid() + " send ping (action=" + action + ",listeners=" + Boolean.toString(listeners) + ",lowTimeout=" + Boolean.toString(lowTimeout) + ")");
-						scheduleWakeUpCall(lowTimeout ? Config.LOW_PING_TIMEOUT : Config.PING_TIMEOUT, account.getUuid().hashCode());
-					}
+				synchronized (mLowPingTimeoutMode) {
+					final boolean lowTimeout = mLowPingTimeoutMode.contains(account.getJid().toBareJid());
+					account.getXmppConnection().sendPing();
+					Log.d(Config.LOGTAG, account.getJid().toBareJid() + " send ping (action=" + action + ",lowTimeout=" + Boolean.toString(lowTimeout) + ")");
+					scheduleWakeUpCall(lowTimeout ? Config.LOW_PING_TIMEOUT : Config.PING_TIMEOUT, account.getUuid().hashCode());
 				}
 			}
 		}
@@ -912,7 +897,7 @@ public class XmppConnectionService extends Service {
 		toggleForegroundService();
 		updateUnreadCountBadge();
 		toggleScreenEventReceiver();
-		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && !Config.PUSH_MODE) {
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
 			scheduleNextIdlePing();
 		}
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
@@ -2022,10 +2007,6 @@ public class XmppConnectionService extends Service {
 					}
 					if (connection.getFeatures().csi()) {
 						connection.sendInactive();
-					}
-					if (Config.PUSH_MODE && mPushManagementService.available(account)) {
-						connection.waitForPush();
-						cancelWakeUpCall(account.getUuid().hashCode());
 					}
 				}
 			}
