@@ -383,11 +383,22 @@ To add a new dependency to the `libs/` directory (replacing "name", "branch" and
 
 If something goes wrong Conversations usually exposes very little information in
 the UI (other than the fact that something didn't work). However with adb
-(android debug bridge) you squeeze some more information out of Conversations.
+(android debug bridge) you can squeeze some more information out of Conversations.
 These information are especially useful if you are experiencing trouble with
 your connection or with file transfer.
 
+To use adb you have to connect your mobile phone to your computer with an USB cable
+and install `adb`. Most Linux systems have prebuilt packages for that tool. On
+Debian/Ubuntu for example it is called `android-tools-adb`.
+
+Furthermore you might have to enable 'USB debugging' in the Developer options of your
+phone. After that you can just execute the following on your computer:
+
     adb -d logcat -v time -s conversations
+
+If need be there are also some Apps on the PlayStore that can be used to show the logcat
+directly on your rooted phone. (Search for logcat). However in regards to further processing
+(for example to create an issue here on Github) it is more convenient to just use your PC.
 
 #### I found a bug
 
