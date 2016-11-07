@@ -2980,8 +2980,7 @@ public class XmppConnectionService extends Service {
 	public void markMessage(Message message, int status, String errorMessage) {
 		if (status == Message.STATUS_SEND_FAILED
 				&& (message.getStatus() == Message.STATUS_SEND_RECEIVED || message
-				.getStatus() == Message.STATUS_SEND_DISPLAYED)
-				&& errorMessage == null) {
+				.getStatus() == Message.STATUS_SEND_DISPLAYED)) {
 			return;
 		}
 		message.setErrorMessage(errorMessage);
