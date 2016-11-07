@@ -163,7 +163,7 @@
             </RelativeLayout>
 
             <RelativeLayout
-                android:id="@+id/battery_optimization"
+                android:id="@+id/os_optimization"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/activity_vertical_margin"
@@ -175,7 +175,7 @@
                 android:padding="@dimen/infocard_padding"
                 android:visibility="gone">
                 <TextView
-                    android:id="@+id/batt_op_headline"
+                    android:id="@+id/os_optimization_headline"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/battery_optimizations_enabled"
@@ -183,25 +183,27 @@
                     android:textSize="?attr/TextSizeHeadline"
                     android:textStyle="bold"/>
                 <TextView
-                    android:id="@+id/batt_op_body"
+                    android:id="@+id/os_optimization_body"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/batt_op_headline"
+                    android:layout_below="@+id/os_optimization_headline"
                     android:layout_marginBottom="8dp"
                     android:layout_marginTop="8dp"
                     android:text="@string/battery_optimizations_enabled_explained"
                     android:textColor="?attr/color_text_primary"
                     android:textSize="?attr/TextSizeBody"/>
                 <Button
-                    android:id="@+id/batt_op_disable"
+                    android:id="@+id/os_optimization_disable"
                     style="?android:attr/borderlessButtonStyle"
                     android:layout_marginRight="-8dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentBottom="true"
                     android:layout_alignParentEnd="true"
-                    android:layout_alignParentRight="true" android:layout_below="@+id/batt_op_body"
-                    android:text="@string/disable" android:textColor="@color/accent"/>
+                    android:layout_alignParentRight="true"
+                    android:layout_below="@+id/os_optimization_body"
+                    android:text="@string/disable"
+                    android:textColor="@color/accent"/>
             </RelativeLayout>
 
 

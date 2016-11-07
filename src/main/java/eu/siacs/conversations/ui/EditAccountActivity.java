@@ -35,8 +35,6 @@ import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import android.util.Log;
-
 import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
@@ -64,17 +62,20 @@ import eu.siacs.conversations.xmpp.pep.Avatar;
 public class EditAccountActivity extends XmppActivity implements OnAccountUpdate,
 		OnKeyStatusUpdated, OnCaptchaRequested, KeyChainAliasCallback, XmppConnectionService.OnShowErrorToast, XmppConnectionService.OnMamPreferencesFetched {
 
+	private static final int REQUEST_DATA_SAVER = 0x37af244;
 	private AutoCompleteTextView mAccountJid;
 	private EditText mPassword;
 	private EditText mPasswordConfirm;
 	private CheckBox mRegisterNew;
 	private Button mCancelButton;
 	private Button mSaveButton;
-	private Button mDisableBatterOptimizations;
+	private Button mDisableOsOptimizationsButton;
+	private TextView mDisableOsOptimizationsHeadline;
+	private TextView getmDisableOsOptimizationsBody;
 	private TableLayout mMoreTable;
 
 	private LinearLayout mStats;
-	private RelativeLayout mBatteryOptimizations;
+	private RelativeLayout mOsOptimizations;
 	private TextView mServerInfoSm;
 	private TextView mServerInfoRosterVersion;
 	private TextView mServerInfoCarbons;
@@ -373,7 +374,7 @@ public class EditAccountActivity extends XmppActivity implements OnAccountUpdate
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
-		if (requestCode == REQUEST_BATTERY_OP) {
+		if (requestCode == REQUEST_BATTERY_OP || requestCode == REQUEST_DATA_SAVER) {
 			updateAccountInformation(mAccount == null);
 		}
 	}
@@ -472,21 +473,10 @@ public class EditAccountActivity extends XmppActivity implements OnAccountUpdate
 		this.mAvatar.setOnClickListener(this.mAvatarClickListener);
 		this.mRegisterNew = (CheckBox) findViewById(R.id.account_register_new);
 		this.mStats = (LinearLayout) findViewById(R.id.stats);
-		this.mBatteryOptimizations = (RelativeLayout) findViewById(R.id.battery_optimization);
-		this.mDisableBatterOptimizations = (Button) findViewById(R.id.batt_op_disable);
-		this.mDisableBatterOptimizations.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				Intent intent = new Intent(Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS);
-				Uri uri = Uri.parse("package:"+getPackageName());
-				intent.setData(uri);
-				try {
-					startActivityForResult(intent, REQUEST_BATTERY_OP);
-				} catch (ActivityNotFoundException e) {
-					Toast.makeText(EditAccountActivity.this, R.string.device_does_not_support_battery_op, Toast.LENGTH_SHORT).show();
-				}
-			}
-		});
+		this.mOsOptimizations = (RelativeLayout) findViewById(R.id.os_optimization);
+		this.mDisableOsOptimizationsButton = (Button) findViewById(R.id.os_optimization_disable);
+		this.mDisableOsOptimizationsHeadline = (TextView) findViewById(R.id.os_optimization_headline);
+		this.getmDisableOsOptimizationsBody = (TextView) findViewById(R.id.os_optimization_body);
 		this.mSessionEst = (TextView) findViewById(R.id.session_est);
 		this.mServerInfoRosterVersion = (TextView) findViewById(R.id.server_info_roster_version);
 		this.mServerInfoCarbons = (TextView) findViewById(R.id.server_info_carbons);
@@ -796,8 +786,9 @@ public class EditAccountActivity extends XmppActivity implements OnAccountUpdate
 		if (this.mAccount.isOnlineAndConnected() && !this.mFetchingAvatar) {
 			Features features = this.mAccount.getXmppConnection().getFeatures();
 			this.mStats.setVisibility(View.VISIBLE);
-			boolean showOptimizingWarning = !xmppConnectionService.getPushManagementService().available(mAccount) && isOptimizingBattery();
-			this.mBatteryOptimizations.setVisibility(showOptimizingWarning ? View.VISIBLE : View.GONE);
+			boolean showBatteryWarning = !xmppConnectionService.getPushManagementService().available(mAccount) && isOptimizingBattery();
+			boolean showDataSaverWarning = isAffectedByDataSaver();
+			showOsOptimizationWarning(showBatteryWarning,showDataSaverWarning);
 			this.mSessionEst.setText(UIHelper.readableTimeDifferenceFull(this, this.mAccount.getXmppConnection()
 					.getLastSessionEstablished()));
 			if (features.rosterVersioning()) {
@@ -953,6 +944,45 @@ public class EditAccountActivity extends XmppActivity implements OnAccountUpdate
 				this.mHostname.setError(null);
 			}
 			this.mStats.setVisibility(View.GONE);
+		}
+	}
+
+	private void showOsOptimizationWarning(boolean showBatteryWarning, boolean showDataSaverWarning) {
+		this.mOsOptimizations.setVisibility(showBatteryWarning || showDataSaverWarning ? View.VISIBLE : View.GONE);
+		if (showDataSaverWarning) {
+			this.mDisableOsOptimizationsHeadline.setText(R.string.data_saver_enabled);
+			this.getmDisableOsOptimizationsBody.setText(R.string.data_saver_enabled_explained);
+			this.mDisableOsOptimizationsButton.setText(R.string.allow);
+			this.mDisableOsOptimizationsButton.setOnClickListener(new OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					Intent intent = new Intent(Settings.ACTION_IGNORE_BACKGROUND_DATA_RESTRICTIONS_SETTINGS);
+					Uri uri = Uri.parse("package:"+getPackageName());
+					intent.setData(uri);
+					try {
+						startActivityForResult(intent, REQUEST_DATA_SAVER);
+					} catch (ActivityNotFoundException e) {
+						Toast.makeText(EditAccountActivity.this, R.string.device_does_not_support_data_saver, Toast.LENGTH_SHORT).show();
+					}
+				}
+			});
+		} else if (showBatteryWarning) {
+			this.mDisableOsOptimizationsButton.setText(R.string.disable);
+			this.mDisableOsOptimizationsHeadline.setText(R.string.battery_optimizations_enabled);
+			this.getmDisableOsOptimizationsBody.setText(R.string.battery_optimizations_enabled_explained);
+			this.mDisableOsOptimizationsButton.setOnClickListener(new OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					Intent intent = new Intent(Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS);
+					Uri uri = Uri.parse("package:"+getPackageName());
+					intent.setData(uri);
+					try {
+						startActivityForResult(intent, REQUEST_BATTERY_OP);
+					} catch (ActivityNotFoundException e) {
+						Toast.makeText(EditAccountActivity.this, R.string.device_does_not_support_battery_op, Toast.LENGTH_SHORT).show();
+					}
+				}
+			});
 		}
 	}
 
