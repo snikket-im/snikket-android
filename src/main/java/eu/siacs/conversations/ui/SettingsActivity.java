@@ -249,6 +249,10 @@ public class SettingsActivity extends XmppActivity implements
 				}
 			}
 		} else if (name.equals("keep_foreground_service")) {
+			boolean foreground_service = preferences.getBoolean("keep_foreground_service",false);
+			if (!foreground_service) {
+				xmppConnectionService.clearStartTimeCounter();
+			}
 			xmppConnectionService.toggleForegroundService();
 		} else if (resendPresence.contains(name)) {
 			if (xmppConnectionServiceBound) {

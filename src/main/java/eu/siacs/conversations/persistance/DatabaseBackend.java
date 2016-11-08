@@ -139,7 +139,9 @@ public class DatabaseBackend extends SQLiteOpenHelper {
 			+ ") ON CONFLICT IGNORE"
 			+ ");";
 
-	private static String CREATE_START_TIMES_TABLE = "create table start_times (timestamp NUMBER);";
+	private static String START_TIMES_TABLE = "start_times";
+
+	private static String CREATE_START_TIMES_TABLE = "create table "+START_TIMES_TABLE+" (timestamp NUMBER);";
 
 	private DatabaseBackend(Context context) {
 		super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -1232,16 +1234,24 @@ public class DatabaseBackend extends SQLiteOpenHelper {
 	public boolean startTimeCountExceedsThreshold() {
 		SQLiteDatabase db = this.getWritableDatabase();
 		long cleanBeforeTimestamp = System.currentTimeMillis() - Config.FREQUENT_RESTARTS_DETECTION_WINDOW;
-		db.execSQL("delete from start_times where timestamp < "+cleanBeforeTimestamp);
+		db.execSQL("delete from "+START_TIMES_TABLE+" where timestamp < "+cleanBeforeTimestamp);
 		ContentValues values = new ContentValues();
 		values.put("timestamp",System.currentTimeMillis());
-		db.insert("start_times",null,values);
+		db.insert(START_TIMES_TABLE,null,values);
 		String[] columns = new String[]{"count(timestamp)"};
-		Cursor cursor = db.query("start_times",columns,null,null,null,null,null);
+		Cursor cursor = db.query(START_TIMES_TABLE,columns,null,null,null,null,null);
+		int count;
 		if (cursor.moveToFirst()) {
-			return cursor.getInt(0) >= Config.FREQUENT_RESTARTS_THRESHOLD;
+			count = cursor.getInt(0);
 		} else {
-			return false;
+			count = 0;
 		}
+		cursor.close();
+		return count >= Config.FREQUENT_RESTARTS_THRESHOLD;
+	}
+
+	public void clearStartTimeCounter() {
+		SQLiteDatabase db = this.getWritableDatabase();
+		db.execSQL("delete from "+START_TIMES_TABLE);
 	}
 }

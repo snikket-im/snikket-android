@@ -3605,6 +3605,15 @@ public class XmppConnectionService extends Service {
 		conversation.setBookmark(bookmark);
 	}
 
+	public void clearStartTimeCounter() {
+		mDatabaseExecutor.execute(new Runnable() {
+			@Override
+			public void run() {
+				databaseBackend.clearStartTimeCounter();
+			}
+		});
+	}
+
 	public interface OnMamPreferencesFetched {
 		void onPreferencesFetched(Element prefs);
 		void onPreferencesFetchFailed();
