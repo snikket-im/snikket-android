@@ -331,6 +331,7 @@
   <string name="check_x_filesize_on_host">%1$s-Größe auf %2$s prüfen</string>
   <string name="message_options">Nachrichtenoptionen</string>
   <string name="copy_text">Text kopieren</string>
+  <string name="select_text">Text markieren</string>
   <string name="copy_original_url">Original-URL kopieren</string>
   <string name="send_again">Erneut senden</string>
   <string name="file_url">Datei-URL</string>
@@ -596,7 +597,7 @@
   <string name="security_error_invalid_file_access">Sicherheitsfehler: Dateizugriff nicht erlaubt</string>
   <string name="no_application_to_share_uri">Keine Anwendung zum Teilen der URI gefunden</string>
   <string name="share_uri_with">Teile URI mit…</string>
-  <string name="welcome_text">XMPP ist ein providerunabhängiges Protokoll. Du kannst diesen Client mit jedem beliebigen XMPP-Server benutzen.\nUm es Dir leicht zu machen haben wir die Möglichkeit geschaffen, ein Konto auf conversations.im¹ anzulegen. Dieser Provider ist besonders gut für Conversations geeignet. </string>
+  <string name="welcome_text">XMPP ist ein providerunabhängiges Protokoll. Du kannst diesen Client mit jedem beliebigen XMPP-Server benutzen.\nUm es dir leicht zu machen haben wir die Möglichkeit geschaffen, ein Konto auf conversations.im¹ anzulegen. Dieser Provider ist besonders gut für Conversations geeignet. </string>
   <string name="magic_create_text">Wir führen dich durch den Prozess der Kontoerstellung auf conversations.im.¹\nWenn du conversations.im als Provider wählst, kannst du mit Nutzern anderer Anbieter kommunizieren, indem du ihnen deine vollständige Jabber-ID gibst.</string>
   <string name="your_full_jid_will_be">Deine vollständige Jabber ID lautet: %s</string>
   <string name="create_account">Konto erstellen</string>
@@ -660,4 +661,9 @@
   <string name="pref_delete_omemo_identities_summary">Regeneriere deine OMEMO-Schlüssel. Alle deine Kontakte müssen dich neu verifizieren. Nutze dies als letzten Ausweg.</string>
   <string name="delete_selected_keys">Ausgewählte Schlüssel löschen</string>
   <string name="error_publish_avatar_offline">Du musst verbunden sein um deinen Avatar zu veröffentlichen</string>
+  <string name="show_error_message">Zeige Fehlermeldung</string>
+  <string name="error_message">Fehlermeldung</string>
+  <string name="data_saver_enabled">Datensparmodus aktiv</string>
+  <string name="data_saver_enabled_explained">Dein Betriebssystem verbietet Conversations im Hintergrund den Zugang zum Internet. Um Benachrichtigungen erhalten zu können, solltest du Conversations den Zugang erlauben, wenn der Datensparmodus aktiv ist. Conversations wird dennoch versuchen, so viel Daten wie möglich einzusparen.</string>
+  <string name="device_does_not_support_data_saver">Dein Gerät unterstützt den Datensparmodus für Conversations nicht.</string>
 </resources>

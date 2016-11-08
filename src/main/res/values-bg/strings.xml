@@ -283,6 +283,7 @@
   <string name="conference_requires_password">Беседата изисква парола</string>
   <string name="enter_password">Въведете парола</string>
   <string name="missing_presence_updates">Липсват актуализации за присъствието на контакта</string>
+  <string name="missing_presence_subscription">Липсва абонамент за присъствието</string>
   <string name="request_presence_updates">Моля, първо помолете контакта за актуализации на присъствието му.\n\n<small>Това ще бъде използвано, за да се провери какъв клиент (или клиенти) използва контакта.</small></string>
   <string name="request_now">Поискване сега</string>
   <string name="delete_fingerprint">Изтриване на отпечатъка</string>
@@ -330,6 +331,7 @@
   <string name="check_x_filesize_on_host">Проверете размера на %1$s на %2$s</string>
   <string name="message_options">Настройки за съобщенята</string>
   <string name="copy_text">Копиране на текста</string>
+  <string name="select_text">Избиране на текста</string>
   <string name="copy_original_url">Копиране на оригиналния адрес</string>
   <string name="send_again">Повторно изпращане</string>
   <string name="file_url">Адрес на файла</string>
@@ -651,10 +653,17 @@
   <string name="unable_to_update_account">Неуспешно обновяване на профила</string>
   <string name="missing_presence_subscription_with_x">Липсва абонамент за присъствието на %s.</string>
   <string name="missing_keys_from_x">Липсват ключове OMEMO от %s.</string>
+  <string name="missing_omemo_keys">Липсват ключове OMEMO</string>
   <string name="wrong_conference_configuration">Това не е лична, не-анонимна беседа.</string>
   <string name="this_conference_has_no_members">Няма участници в тази беседа.</string>
   <string name="report_jid_as_spammer">Докладване на този JID за изпращане на нежелани съобщения.</string>
   <string name="pref_delete_omemo_identities">Изтриване на идентификаторите OMEMO</string>
   <string name="pref_delete_omemo_identities_summary">Пресъздайте своите ключове OMEMO. Всички Ваши контакти ще трябва да Ви потвърдят отново. Използвайте това само в краен случай.</string>
   <string name="delete_selected_keys">Изтриване на избраните ключове.</string>
+  <string name="error_publish_avatar_offline">Трябва да бъдете свързан(а), за да публикувате аватара си.</string>
+  <string name="show_error_message">Показване на грешка</string>
+  <string name="error_message">Съобщение за грешка</string>
+  <string name="data_saver_enabled">Съхранението на данни е включено</string>
+  <string name="data_saver_enabled_explained">Операционната Ви система не позволява на Conversations да се свързва с Интернет когато работи на заден фон. За да получавате известия за новите съобщения, трябва да дадете на Conversations неограничен достъп когато съхранението на данни е включено.\nConversations ще продължи да се опитва да записва данните когато е възможно.</string>
+  <string name="device_does_not_support_data_saver">Устройството Ви не поддържа изключването на съхранението на данни за Conversations.</string>
 </resources>

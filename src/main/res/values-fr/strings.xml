@@ -283,6 +283,7 @@
   <string name="conference_requires_password">La conférence nécessite un mot de passe</string>
   <string name="enter_password">Entrer le mot de passe</string>
   <string name="missing_presence_updates">Mises à jour de disponibilité manquantes pour ce contact</string>
+  <string name="missing_presence_subscription">La notification de présence est manquante </string>
   <string name="request_presence_updates">Veuillez demander à votre contact de partager ses mises à jour de disponibilité.\n\n<small>Elles seront utilisées pour déterminer son client.</small></string>
   <string name="request_now">Demander maintenant</string>
   <string name="delete_fingerprint">Supprimer l\'empreinte</string>
@@ -330,6 +331,7 @@
   <string name="check_x_filesize_on_host">Vérification de la taille de %1$s sur %2$s</string>
   <string name="message_options">Options du message</string>
   <string name="copy_text">Copier le texte</string>
+  <string name="select_text">Sélectionnez le texte</string>
   <string name="copy_original_url">Copier l\'URL</string>
   <string name="send_again">Envoyer de nouveau</string>
   <string name="file_url">URL du fichier</string>
@@ -651,10 +653,16 @@
   <string name="unable_to_update_account">Mise à jour du compte impossible</string>
   <string name="missing_presence_subscription_with_x">La notification de présence est manquante avec %s</string>
   <string name="missing_keys_from_x">La clef OMEMO de %s est manquante</string>
+  <string name="missing_omemo_keys">Clefs OMEMO manquantes</string>
   <string name="wrong_conference_configuration">La conférence n\'est ni privée, ni anonyme</string>
   <string name="this_conference_has_no_members">Aucun membre dans cette conférence</string>
   <string name="report_jid_as_spammer">Signaler ce JID comme envoyant des messages non sollicités</string>
   <string name="pref_delete_omemo_identities">Effacer les identités OMEMO</string>
   <string name="pref_delete_omemo_identities_summary">Régénérer vos clef OMEMO. Tous vos contacts devront les vérifier à nouveau. A n\'utiliser qu\'en dernier recours.</string>
   <string name="delete_selected_keys">Supprimer les clefs sélectionnées</string>
+  <string name="error_publish_avatar_offline">Vous devez être connecté pour publier votre avatar</string>
+  <string name="show_error_message">Afficher le message d\'erreur</string>
+  <string name="error_message">Message d\'erreur</string>
+  <string name="data_saver_enabled">Économie de données activée</string>
+  <string name="data_saver_enabled_explained">Votre système d\'exploitation empêche Conversations d’accéder à Internet en arrière plan. Pour recevoir les notifications de nouveaux messages, vous devez autoriser, quand le mode d\'économie de données est actif, à ce que Conversations ai un plein accès au réseau.\n Conversations essaiera autant que possible d\'économiser la data.</string>
 </resources>

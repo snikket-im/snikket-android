@@ -331,6 +331,7 @@
   <string name="check_x_filesize_on_host">%2$s で %1$s のサイズを確認</string>
   <string name="message_options">メッセージオプション</string>
   <string name="copy_text">テキストをコピー</string>
+  <string name="select_text">テキストを選択</string>
   <string name="copy_original_url">元の URL をコピー</string>
   <string name="send_again">再送</string>
   <string name="file_url">ファイル URL</string>
@@ -657,4 +658,9 @@
   <string name="pref_delete_omemo_identities_summary">OMEMO 鍵を再生成します。すべての連絡先を再度確認する必要があります。最後の手段としてのみ使用してください。</string>
   <string name="delete_selected_keys">選択した鍵を削除</string>
   <string name="error_publish_avatar_offline">アバターを公開するには接続する必要があります。</string>
+  <string name="show_error_message">エラーメッセージを表示</string>
+  <string name="error_message">エラーメッセージ</string>
+  <string name="data_saver_enabled">データセーバーを有効にしました</string>
+  <string name="data_saver_enabled_explained">お使いのオペレーティングシステムは、Conversationsがバックグラウンドのときにインターネットにアクセスすることを制限しています。新しいメッセージの通知を受信するには、データセーバーがオンになっているとき、Conversationsに無制限のアクセスを許可する必要があります。\nConversationsは可能なときにデータを保存するための努力をします。</string>
+  <string name="device_does_not_support_data_saver">お使いのデバイスは、Conversationsのデータセーバーを無効にすることはできません。</string>
 </resources>

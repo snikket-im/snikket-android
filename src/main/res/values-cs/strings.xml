@@ -331,6 +331,7 @@
   <string name="check_x_filesize_on_host">Kontrola %1$s velikosti na %2$s</string>
   <string name="message_options">Možnosti zpráv</string>
   <string name="copy_text">Zkopírovat text</string>
+  <string name="select_text">Vybrat text</string>
   <string name="copy_original_url">Kopírovat originální URL</string>
   <string name="send_again">Poslat znovu</string>
   <string name="file_url">URL souboru</string>
@@ -663,4 +664,8 @@
   <string name="pref_delete_omemo_identities_summary">Znovu vygenerovat OMEMO klíče. Vyžaduje potvrzení od všech vašich kontaktů. POužijte pouze jako poslední řešení.</string>
   <string name="delete_selected_keys">Smazat vybrané klíče</string>
   <string name="error_publish_avatar_offline">Pro zveřejnění svého avatara musíte být online.</string>
+  <string name="show_error_message">Zobrazit chybovou zprávu</string>
+  <string name="error_message">Chybová zpráva</string>
+  <string name="data_saver_enabled">Zapnuta úspora dat</string>
+  <string name="data_saver_enabled_explained">Váš operační systém zabraňuje aplikaci Conversations v přístupu na Internet, pokud tato běží na pozadí. Pro příjem upozornění na nové zprávy musíte Conversations povolit neomezený přístup při zapnuté úspoře dat.\nConversations se bude i přesto snažit omezovat přenos dat.</string>
 </resources>

@@ -29,7 +29,7 @@
   <string name="unread_conversations">сообщен. не прочитано</string>
   <string name="sending">отправка…</string>
   <string name="message_decrypting">Расшифровка сообщения. Подождите…</string>
-  <string name="pgp_message">OpenPGP зашифрованное сообщение</string>
+  <string name="pgp_message">OpenPGP зашифр. сообщение</string>
   <string name="nick_in_use">Имя уже используется</string>
   <string name="admin">Администратор</string>
   <string name="owner">Владелец</string>
@@ -81,10 +81,10 @@
   <string name="choose_presence">Выберите устройство</string>
   <string name="send_unencrypted_message">Нешифрованное сообщение</string>
   <string name="send_message_to_x">Сообщение для %s</string>
-  <string name="send_otr_message">OTR зашифрованное сообщение</string>
-  <string name="send_omemo_message">OMEMO зашифрованное сообщение</string>
-  <string name="send_omemo_x509_message">v\\OMEMO зашифрованное сообщение</string>
-  <string name="send_pgp_message">OpenPGP зашифрованное сообщение</string>
+  <string name="send_otr_message">OTR зашифр. сообщение</string>
+  <string name="send_omemo_message">OMEMO зашифр. сообщение</string>
+  <string name="send_omemo_x509_message">v\\OMEMO зашифр. сообщение</string>
+  <string name="send_pgp_message">OpenPGP зашифр. сообщение</string>
   <string name="your_nick_has_been_changed">Ваш псевдоним был изменён</string>
   <string name="send_unencrypted">Отправить в незашифрованном виде</string>
   <string name="decryption_failed">Расшифровка не удалась. Вероятно, что у вас нет надлежащего ключа.</string>
@@ -270,7 +270,7 @@
   <string name="error_publish_avatar_no_server_support">Ваш сервер не поддерживает публикацию аватаров</string>
   <string name="private_message">шёпот</string>
   <string name="private_message_to">отправить %s</string>
-  <string name="send_private_message_to">Отправить личное сообщение для %s</string>
+  <string name="send_private_message_to">Приватное сообщение %s</string>
   <string name="connect">Подключиться</string>
   <string name="account_already_exists">Аккаунт уже существует</string>
   <string name="next">Далее</string>
@@ -331,7 +331,6 @@
   <string name="check_x_filesize_on_host">Проверить размер %1$s на %2$s</string>
   <string name="message_options">Опции сообщения</string>
   <string name="copy_text">Копировать текст</string>
-  <string name="select_text">Выбрать текст</string>
   <string name="copy_original_url">Копировать адрес ссылки</string>
   <string name="send_again">Отправить ещё раз</string>
   <string name="file_url">URL файла</string>
@@ -354,7 +353,7 @@
   <string name="respond">Ответ</string>
   <string name="failed">Не удалось</string>
   <string name="secrets_do_not_match">Ключи не совпадают</string>
-  <string name="try_again">Попробуйте ещё раз</string>
+  <string name="try_again">Повторить</string>
   <string name="finish">Завершить</string>
   <string name="verified">Подтверждён!</string>
   <string name="smp_requested">Контакт запросил подтверждение SMP</string>
@@ -480,7 +479,7 @@
   <string name="location">Местоположение</string>
   <string name="received_location">Получено местоположение</string>
   <string name="title_undo_swipe_out_conversation">Беседа окончена</string>
-  <string name="title_undo_swipe_out_muc">Выход из конференции</string>
+  <string name="title_undo_swipe_out_muc">Выход из чата</string>
   <string name="pref_dont_trust_system_cas_title">Не доверять системным УЦ</string>
   <string name="pref_dont_trust_system_cas_summary">Все сертификаты должны быть подтверждены вручную</string>
   <string name="pref_remove_trusted_certificates_title">Удалить сертификаты</string>

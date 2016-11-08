@@ -247,6 +247,7 @@
   <string name="contact_already_exists">Kontaktua existitzen da dagoeneko</string>
   <string name="join">Batu</string>
   <string name="conference_address">Konferentziaren helbidea</string>
+  <string name="conference_address_example">gela@konferentzia.adibidea.eus/ezizena</string>
   <string name="save_as_bookmark">Gorde laster-marka bezala</string>
   <string name="delete_bookmark">Laster-marka ezabatu</string>
   <string name="bookmark_already_exists">Laster-marka hau existitzen da dagoeneko</string>
@@ -282,6 +283,7 @@
   <string name="conference_requires_password">Konferentziak pasahitza behar du</string>
   <string name="enter_password">Sartu pasahitza</string>
   <string name="missing_presence_updates">Kontaktuaren presentzia eguneraketak falta dira</string>
+  <string name="missing_presence_subscription">Presentzia harpidetza falta da</string>
   <string name="request_presence_updates">Mesedez eskatu lehenago zure kontaktuaren presentzia eguneraketak.\n\n<small>Kontaktuak erabiltzen ari den bezeroa(k) zehazteko erabilika da hau.</small></string>
   <string name="request_now">Eskatu orain</string>
   <string name="delete_fingerprint">Hatz-marka ezabatu</string>
@@ -650,6 +652,12 @@
   <string name="unable_to_update_account">Ezin izan da kontua eguneratu</string>
   <string name="missing_presence_subscription_with_x">%s(r)ekin presentzia harpidetza falta da</string>
   <string name="missing_keys_from_x">%s(r)en OMEMO gakoak falta dira.</string>
+  <string name="missing_omemo_keys">OMEMO gakoak falta dira</string>
   <string name="wrong_conference_configuration">Hau ez da konferentzia pribatu, ez anonimo bat.</string>
   <string name="this_conference_has_no_members">Ez dago kiderik konferentzia honetan.</string>
+  <string name="report_jid_as_spammer">JIDa nahi gabeko mezuen bidaltzaile gisa salatu</string>
+  <string name="pref_delete_omemo_identities">OMEMO nortasunak ezabatu</string>
+  <string name="pref_delete_omemo_identities_summary">Zure OMEMO gakoak birsortu. Zure kontaktu guztiak zu egiaztatu beharko zaituzte berriz. Soilik azken aukera bezala erabili hau.</string>
+  <string name="delete_selected_keys">Hautatutako gakoak ezabatu</string>
+  <string name="error_publish_avatar_offline">Konektatuta egon behar zara zure profileko argazkia argitaratzeko.</string>
 </resources>

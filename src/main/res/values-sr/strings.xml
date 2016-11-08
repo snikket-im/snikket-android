@@ -331,6 +331,7 @@
   <string name="check_x_filesize_on_host">Провери величину %1$s na %2$s</string>
   <string name="message_options">Опције поруке</string>
   <string name="copy_text">Копирај текст</string>
+  <string name="select_text">Изабери текст</string>
   <string name="copy_original_url">Копирај изворни УРЛ</string>
   <string name="send_again">Пошаљи поново</string>
   <string name="file_url">УРЛ фајла</string>
@@ -599,6 +600,8 @@
   <string name="security_error_invalid_file_access">Безбедносна грешка: неисправан приступ фајлу</string>
   <string name="no_application_to_share_uri">Нема апликације за дељење веза</string>
   <string name="share_uri_with">Подели везу помоћу…</string>
+  <string name="welcome_text">ИксМПП је протокол независан од провајдера. Можете да користите овог клијента са било којим ИксМПП сервером.\nИпак, због погодности омогућили смо једноставно прављење налога на conversations.im¹, сервер посебно прилагођен за коришћење са Конверзацијом.</string>
+  <string name="magic_create_text">Водићемо вас кроз процес прављења налога на conversations.im.¹\nАко изаберете conversations.im за даваоца услуге моћи ћете да комуницирате са корисницима других сервера ако им дате ваш Џабер ИД.</string>
   <string name="your_full_jid_will_be">Ваш пуни Џабер ИД ће бити: %s</string>
   <string name="create_account">Направи налог</string>
   <string name="use_own_provider">Користићу сопствени провајдер</string>
@@ -661,4 +664,6 @@
   <string name="pref_delete_omemo_identities_summary">Поновно генерисање ОМЕМО кључева. Сви ваши контакти ће морати поново да вас овере. Користите ово само у крајњем случају.</string>
   <string name="delete_selected_keys">Обриши изабране кључеве</string>
   <string name="error_publish_avatar_offline">Морате бити повезани да бисте објавили ваш аватар.</string>
+  <string name="show_error_message">Прикажи поруку грешке</string>
+  <string name="error_message">Порука грешке</string>
 </resources>

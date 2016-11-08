@@ -331,6 +331,7 @@
   <string name="check_x_filesize_on_host">%2$s üzerindeki %1$s boyutunu kontrol edin</string>
   <string name="message_options">İleti seçenekleri</string>
   <string name="copy_text">Metni kopyala</string>
+  <string name="select_text">Metni seç</string>
   <string name="copy_original_url">Orijinal URL\'i kopyala</string>
   <string name="send_again">Yeniden gönder</string>
   <string name="file_url">Dosya URL</string>
@@ -657,4 +658,8 @@
   <string name="pref_delete_omemo_identities_summary">OMEMO anahtarını tekrar oluştur. Tüm kişilerinizin sizi tekrar doğrulaması gerekecek. Bunu sadece son çare olarak kullanın.</string>
   <string name="delete_selected_keys">Seçilen anahtarları sil</string>
   <string name="error_publish_avatar_offline">Avatarınızı yayınlamak için bağlı olmalısınız.</string>
+  <string name="show_error_message">Hata mesajını göster</string>
+  <string name="error_message">Hata mesajı</string>
+  <string name="data_saver_enabled">Veri tasarrufu aktif</string>
+  <string name="data_saver_enabled_explained">İşletim sisteminiz Conversations arka planda çalışırken Internet erişimini sınırlıyor. Yeni ileti alındığında uyarı gelmesi için Conversations\'a veri tasarrufu aktif durumdayken  sınırsız erişim vermeniz gerekiyor.\nConversations mümkün olan durumlarda veri tasarrufu için çaba harcar.</string>
 </resources>

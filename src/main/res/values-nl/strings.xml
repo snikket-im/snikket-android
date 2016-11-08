@@ -331,6 +331,7 @@
   <string name="check_x_filesize_on_host">Bestandsgrootte van %1$s op %2$s controleren</string>
   <string name="message_options">Berichtopties</string>
   <string name="copy_text">Tekst kopiëren</string>
+  <string name="select_text">Tekst selecteren</string>
   <string name="copy_original_url">Oorspronkelijke URL kopiëren</string>
   <string name="send_again">Opnieuw versturen</string>
   <string name="file_url">Bestands-URL</string>
@@ -660,4 +661,9 @@
   <string name="pref_delete_omemo_identities_summary">Maak je OMEMO-sleutels opnieuw aan. Al je contacten zullen je opnieuw moeten verifiëren. Gebruik dit enkel als een laatste reddingsmiddel.</string>
   <string name="delete_selected_keys">Geselecteerde sleutels verwijderen</string>
   <string name="error_publish_avatar_offline">Je moet verbonden zijn om je avatar te kunnen publiceren.</string>
+  <string name="show_error_message">Toon foutbericht</string>
+  <string name="error_message">Foutbericht</string>
+  <string name="data_saver_enabled">Gegevensbesparing ingeschakeld</string>
+  <string name="data_saver_enabled_explained">Je besturingssysteem verhindert Conversations toegang tot het internet wanneer Conversations zich in de achtergrond bevindt. Om meldingen van nieuwe berichten te krijgen moet je Conversations onbeperkte toegang geven wanneer gegevensbesparing is ingeschakeld.\nConversations zal nog steeds proberen wanneer mogelijk gegevens te besparen.</string>
+  <string name="device_does_not_support_data_saver">Je apparaat ondersteunt het uitschakelen van gegevensbesparing voor Conversations niet.</string>
 </resources>

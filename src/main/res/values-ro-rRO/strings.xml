@@ -3,7 +3,7 @@
   <string name="action_settings">Setari</string>
   <string name="action_add">Conversatie noua</string>
   <string name="action_accounts">Configureaza conturi</string>
-  <string name="action_end_conversation">Termina conversatia</string>
+  <string name="action_end_conversation">Inchide conversatia</string>
   <string name="action_contact_details">Detalii contact</string>
   <string name="action_muc_details">Detalii conferinta</string>
   <string name="action_secure">Securizeaza conferinta</string>
@@ -20,7 +20,7 @@
   <string name="title_activity_conference_details">Detalii conferinta</string>
   <string name="title_activity_contact_details">Detalii contact</string>
   <string name="title_activity_sharewith">Distribuie catre Conversations</string>
-  <string name="title_activity_start_conversation">Porneste conversatie</string>
+  <string name="title_activity_start_conversation">Porneste o conversatie</string>
   <string name="title_activity_choose_contact">Alege contact</string>
   <string name="title_activity_block_list">Blocheaza lista</string>
   <string name="just_now">in acest moment</string>
@@ -46,7 +46,7 @@
   <string name="register_account">Inregistreaza un cont nou pe server</string>
   <string name="change_password_on_server">Schimba parola pe server</string>
   <string name="share_with">Partajeaza cu...</string>
-  <string name="start_conversation">Porneste conversatie</string>
+  <string name="start_conversation">Porneste o conversatie</string>
   <string name="invite_contact">Invita contact</string>
   <string name="contacts">Contacte</string>
   <string name="cancel">Anuleaza</string>
@@ -103,15 +103,15 @@
   <string name="pref_xmpp_resource">Nume client XMPP</string>
   <string name="pref_xmpp_resource_summary">Identificatorul acestui client</string>
   <string name="pref_accept_files">Accepta fisiere</string>
-  <string name="pref_accept_files_summary">Accepta automat fisiere mai mici decat...</string>
+  <string name="pref_accept_files_summary">Mai mici decat...</string>
   <string name="pref_attachments">Atasamente</string>
   <string name="pref_return_to_previous">Partajare rapida</string>
-  <string name="pref_return_to_previous_summary">Intoarcere la activitatea precedenta in loc sa deschizi conversatia, dupa ce ai partajat ceva</string>
+  <string name="pref_return_to_previous_summary">Dupa ce ai partajat ceva, intoarce-te la activitatea precedenta in loc sa deschizi conversatia</string>
   <string name="pref_notification_settings">Notificare</string>
   <string name="pref_notifications">Notificari</string>
-  <string name="pref_notifications_summary">Notifica cand un nou mesaj este primit</string>
+  <string name="pref_notifications_summary">Atunci cand un nou mesaj este primit</string>
   <string name="pref_vibrate">Vibreaza</string>
-  <string name="pref_vibrate_summary">Vibreaza cand un nou mesaj este primit</string>
+  <string name="pref_vibrate_summary">Atunci cand un nou mesaj este primit</string>
   <string name="pref_led">Notificare LED</string>
   <string name="pref_led_summary">Clipeste lumina de notificare atunci cand un nou mesaj este primit</string>
   <string name="pref_sound">Ton de apel</string>
@@ -122,7 +122,7 @@
   <string name="pref_never_send_crash">Nu trimite rapoarte de erori</string>
   <string name="pref_never_send_crash_summary">Trimitand date ajuti la dezvoltarea aplicatiei Conversations\n<b>Atentie:</b> Se va utiliza contul XMPP pentru a trimite informatii catre programatori.</string>
   <string name="pref_confirm_messages">Confirma mesaje</string>
-  <string name="pref_confirm_messages_summary">Notifica contactul cand ai primit un mesaj si l-ai citit</string>
+  <string name="pref_confirm_messages_summary">Contactul este notificat atunci cand ai primit un mesaj si l-ai citit</string>
   <string name="pref_ui_options">Optiuni interfata</string>
   <string name="openpgp_error">OpenKeychain a raportat o eroare</string>
   <string name="error_decrypting_file">Eroare I/O la decriptarea fisierului</string>
@@ -294,7 +294,7 @@
   <string name="pref_force_encryption">Forteaza criptarea conexiunii de la un capat la altul</string>
   <string name="pref_force_encryption_summary">Trimite mereu mesajele criptate (exceptand conferintele)</string>
   <string name="pref_allow_message_correction">Permite corectia mesajelor</string>
-  <string name="pref_allow_message_correction_summary">Permite contactelor sa isi editeze mesajele din trecut</string>
+  <string name="pref_allow_message_correction_summary">Contactele pot sa isi editeze mesajele din trecut</string>
   <string name="pref_dont_save_encrypted">Nu salva mesaje criptate</string>
   <string name="pref_dont_save_encrypted_summary">Atentie: Asta poate duce la pierderea de mesaje</string>
   <string name="pref_expert_options">Optiuni expert</string>
@@ -306,15 +306,15 @@
   <string name="title_pref_quiet_hours_end_time">Ora de oprire</string>
   <string name="title_pref_enable_quiet_hours">Activeaza orar de liniste</string>
   <string name="pref_quiet_hours_summary">Notificarile vor fi reduse la tacere in timpul orelor de liniste</string>
-  <string name="pref_use_larger_font">Mareste marimea literelor</string>
+  <string name="pref_use_larger_font">Mareste fontul</string>
   <string name="pref_use_larger_font_summary">Foloseste marimea mai mare de text in toata aplicatia</string>
   <string name="pref_use_send_button_to_indicate_status">Butonul de trimitere indica starea</string>
   <string name="pref_use_indicate_received">Cere raport de primire</string>
-  <string name="pref_use_indicate_received_summary">Mesajele primite vor fi marcate cu un semn verde daca este suportat</string>
+  <string name="pref_use_indicate_received_summary">Mesajele primite vor fi marcate cu o bifa verde daca este suportat</string>
   <string name="pref_use_send_button_to_indicate_status_summary">Coloreaza butonul de trimitere pentru a indica starea contactului</string>
   <string name="pref_expert_options_other">Altele</string>
   <string name="pref_conference_name">Titlu conferinta</string>
-  <string name="pref_conference_name_summary">Foloseste subiectul camerei in locul JID pentru a identifica conferinta</string>
+  <string name="pref_conference_name_summary">Foloseste subiectul camerei pentru a identifica conferinta</string>
   <string name="pref_autojoin">Alatura-te automat conferintelor</string>
   <string name="pref_autojoin_summary">Respecta setarea de alaturare automata la o conferinta conform semnului de carte</string>
   <string name="toast_message_otr_fingerprint">Amprenta OTR copiata in memorie</string>
@@ -331,6 +331,7 @@
   <string name="check_x_filesize_on_host">Verifica marimea %1$s pe %2$s</string>
   <string name="message_options">Optiuni mesaje</string>
   <string name="copy_text">Copiaza text</string>
+  <string name="select_text">Selecteaza text</string>
   <string name="copy_original_url">Copiaza URL original</string>
   <string name="send_again">Trimite din nou</string>
   <string name="file_url">URL fisier</string>
@@ -380,8 +381,8 @@
   <string name="could_not_verify_fingerprint">Nu s-a putut verifica amprenta</string>
   <string name="manually_verify">Verifica manual</string>
   <string name="are_you_sure_verify_fingerprint">Sigur vrei sa verifici amprenta OTR a persoanei de contact?</string>
-  <string name="pref_show_dynamic_tags">Arata etichetele dinamice</string>
-  <string name="pref_show_dynamic_tags_summary">Arata etichete de stare sub contacte </string>
+  <string name="pref_show_dynamic_tags">Arata etichetele de stare</string>
+  <string name="pref_show_dynamic_tags_summary">Sub contacte arata etichete dinamice</string>
   <string name="enable_notifications">Activeaza notificari</string>
   <string name="conference_with">Creeaza conferinta cu...</string>
   <string name="no_conference_server_found">Serverul conferintei nu a fost gasita</string>
@@ -638,7 +639,7 @@ Emitent</string>
   <string name="pref_theme_light">Tema luminoasa</string>
   <string name="pref_theme_dark">Tema intunecata</string>
   <string name="pref_use_green_background">Fundal verde</string>
-  <string name="pref_use_green_background_summary">Foloseste la mesajele primite un fundal verde</string>
+  <string name="pref_use_green_background_summary">Pentru mesajele primite</string>
   <string name="unable_to_connect_to_keychain">Nu s-a putut contacta OpenKeychain</string>
   <string name="this_device_is_no_longer_in_use">Acest dispozitiv nu mai este in uz</string>
   <string name="type_pc">PC</string>
@@ -659,9 +660,13 @@ Emitent</string>
   <string name="missing_omemo_keys">Chei OMEMO lipsa</string>
   <string name="wrong_conference_configuration">Aceasta este o conferinta care nu este privata si nu este anonima.</string>
   <string name="this_conference_has_no_members">Conferinta nu are nici un membru.</string>
-  <string name="report_jid_as_spammer">Raporteaza ca aceasta identitate (JID) trimite mesaje nedorite.</string>
+  <string name="report_jid_as_spammer">Raporteaza ca aceasta identitate trimite mesaje nedorite.</string>
   <string name="pref_delete_omemo_identities">Sterge identitatile OMEMO</string>
   <string name="pref_delete_omemo_identities_summary">Regenereaza cheile personale OMEMO. Toate contactele vor fi obligate sa verifice cheile tale din nou. Foloseste asta ca o ultima optiune.</string>
   <string name="delete_selected_keys">Sterge cheile selectate</string>
   <string name="error_publish_avatar_offline">Pentru a putea publica avatarul trebuie sa existe o conexiune.</string>
+  <string name="show_error_message">Arata mesaj de eroare</string>
+  <string name="error_message">Mesaj de eroare</string>
+  <string name="data_saver_enabled">Economizorul de date este activat</string>
+  <string name="data_saver_enabled_explained">Sistemul de operare restrictioneaza accesul la Internet pentru Conversations atunci cand este in fundal. Pentru a primi in continuare notificari de mesaje noi trebuie sa acordati acces ne restrictionat pentru Conversations atunci cand Economizorul de date este activ.\nConversations totusi face eforturi sa economiseasca datele atunci cand este posibil.</string>
 </resources>

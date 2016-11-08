@@ -157,7 +157,9 @@
   <string name="account_status_regis_success">注册完成</string>
   <string name="account_status_regis_not_sup">服务器不支持注册</string>
   <string name="account_status_security_error">安全错误</string>
+  <string name="account_status_policy_violation">违反政策</string>
   <string name="account_status_incompatible_server">服务器不兼容</string>
+  <string name="account_status_stream_error">流错误</string>
   <string name="encryption_choice_unencrypted">未加密</string>
   <string name="encryption_choice_otr">OTR</string>
   <string name="encryption_choice_pgp">OpenPGP</string>
@@ -281,6 +283,7 @@
   <string name="conference_requires_password">讨论组设有密码</string>
   <string name="enter_password">输入密码</string>
   <string name="missing_presence_updates">缺少在线联系人更新</string>
+  <string name="missing_presence_subscription">缺少在线订阅</string>
   <string name="request_presence_updates">请先发送更新在线联系人的请求。\n\n<small>以判断您的联系人所用的客户端类型。</small></string>
   <string name="request_now">现在发送请求</string>
   <string name="delete_fingerprint">删除指纹</string>
@@ -512,6 +515,7 @@
   <string name="pref_use_white_background_summary">收到的消息将显示为白底黑字</string>
   <string name="account_status_tor_unavailable">Tor network 不可用</string>
   <string name="account_status_bind_failure">绑定失败</string>
+  <string name="account_status_host_unknown">服务器不能为域名做出响应</string>
   <string name="server_info_broken">损坏</string>
   <string name="pref_presence_settings">存在</string>
   <string name="pref_away_when_screen_off">关闭屏幕时离开</string>
@@ -591,6 +595,8 @@
   <string name="security_error_invalid_file_access">安全错误：文件访问权限无效</string>
   <string name="no_application_to_share_uri">没有可以分享此链接的应用</string>
   <string name="share_uri_with">分享链接...</string>
+  <string name="welcome_text">XMPP 是一个独立协议的提供者。你可以用这个客户端连接任何你选择的 XMPP 服务器。\n为了让你更便捷，我们让你可以在 conversations.im¹ 上方便的注册账号；特意为使用 Conversations 的人准备。</string>
+  <string name="magic_create_text">我们将会引导你完成在 conversations.im¹ 上注册账号的过程。\n当获得了 conversations.im 提供的账号以后，你可以通过添加使用其他提供商的好友的完整 Jabber ID 来与他们联络。</string>
   <string name="your_full_jid_will_be">您完整的 Jabble ID 是：%s </string>
   <string name="create_account">创建账户</string>
   <string name="use_own_provider">使用我自己的服务端</string>
@@ -636,15 +642,21 @@
   <string name="type_web">浏览器</string>
   <string name="type_console">控制台</string>
   <string name="payment_required">需要付款</string>
+  <string name="missing_internet_permission">缺少互联网权限</string>
+  <string name="me">我</string>
+  <string name="contact_asks_for_presence_subscription">联系人请求在线订阅</string>
   <string name="allow">允许</string>
   <string name="no_permission_to_access_x">没有访问 %s 的许可</string>
   <string name="remote_server_not_found">找不到远程服务器</string>
   <string name="unable_to_update_account">无法更新账户</string>
+  <string name="missing_presence_subscription_with_x">缺少与 %s 的在线订阅。</string>
   <string name="missing_keys_from_x">缺少来自 %s 的 OMEMO 密钥。</string>
+  <string name="missing_omemo_keys">缺少 OMEMO 密钥</string>
   <string name="wrong_conference_configuration">这不是一个私密，非匿名的会议室。</string>
   <string name="this_conference_has_no_members">这个会议室中没有成员。</string>
   <string name="report_jid_as_spammer">报告这个 JID 发送不想要的消息。</string>
   <string name="pref_delete_omemo_identities">删除 OMEMO 身份</string>
   <string name="pref_delete_omemo_identities_summary">重新生成你的 OMEMO 密钥。你的所有联系人不得不对你进行再认证。请将此作为最后的办法。</string>
   <string name="delete_selected_keys">删除选择的密钥</string>
+  <string name="error_publish_avatar_offline">你需要连接才能发布头像</string>
 </resources>

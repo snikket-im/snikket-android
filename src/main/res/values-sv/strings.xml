@@ -331,6 +331,7 @@
   <string name="check_x_filesize_on_host">Kontrollera filstorlek för %1$s på %2$s</string>
   <string name="message_options">Meddelandealternativ</string>
   <string name="copy_text">Kopiera text</string>
+  <string name="select_text">Markera text</string>
   <string name="copy_original_url">Kopiera orginal-URL</string>
   <string name="send_again">Skicka igen</string>
   <string name="file_url">Fil-URL</string>
@@ -596,6 +597,8 @@
   <string name="security_error_invalid_file_access">Säkerhetsfel: Ogiltig filaccess</string>
   <string name="no_application_to_share_uri">Ingen applikation kunde hittas för att dela URI</string>
   <string name="share_uri_with">Dela URI med...</string>
+  <string name="welcome_text">XMPP är ett leverantörsoberoende protokoll. Du kan använda denna klient med vilken XMPP server du vill.\nFör din bekvämlighet har vi gjort det enkelt att skapa ett konto hos conversations.im¹; en leverantör speciellt anpassad för att användas med Conversations.</string>
+  <string name="magic_create_text">Du kommer nu att få hjälp med att skapa ett konto på conversations.im.¹\nNär conversations.im väljs som leverantör kommer du kunna kommunicera med användare hos andra leverantörer genom att ge dem ditt Jabber ID.</string>
   <string name="your_full_jid_will_be">Ditt jabber ID blir: %s</string>
   <string name="create_account">Skapa konto</string>
   <string name="use_own_provider">Använd min egen leverantör</string>
@@ -658,4 +661,9 @@
   <string name="pref_delete_omemo_identities_summary">Regenerera din OMEMO-nyckel. Alla dina kontakter kommer att behöva verifiera dig igen. Använd detta endast som en sista utväg.</string>
   <string name="delete_selected_keys">Ta bort valda nycklar</string>
   <string name="error_publish_avatar_offline">Du måste vara ansluten för att publicera din avatarbild</string>
+  <string name="show_error_message">Visa felmeddelande</string>
+  <string name="error_message">Felmeddelande</string>
+  <string name="data_saver_enabled">Databesparing</string>
+  <string name="data_saver_enabled_explained">Ditt operativsystem begränsar Internet-access för Conversations i när den är i bakgrunden. För att få notifieringar vid nya meddelanden behöver du ge Conversations obegränsad access när databesparing är påslaget.\nConversations kommer ändå försöka minska dataanvändningen när det är möjligt.</string>
+  <string name="device_does_not_support_data_saver">Din enhet stödjer inte att deaktivera databesparing för Conversations.</string>
 </resources>
