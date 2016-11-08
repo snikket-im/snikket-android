@@ -151,14 +151,26 @@ public class FileBackend {
 		return true;
 	}
 
-	public static String getConversationsFileDirectory() {
-		return  Environment.getExternalStorageDirectory().getAbsolutePath()+"/Conversations/";
+	public String getConversationsFileDirectory() {
+		if (Config.ONLY_INTERNAL_STORAGE) {
+			return mXmppConnectionService.getFilesDir().getAbsolutePath() + "/Files/";
+		} else {
+			return Environment.getExternalStorageDirectory().getAbsolutePath() + "/Conversations/";
+		}
 	}
 
-	public static String getConversationsImageDirectory() {
-		return Environment.getExternalStoragePublicDirectory(
-				Environment.DIRECTORY_PICTURES).getAbsolutePath()
-			+ "/Conversations/";
+	public String getConversationsImageDirectory() {
+		if (Config.ONLY_INTERNAL_STORAGE) {
+			return mXmppConnectionService.getFilesDir().getAbsolutePath()+"/Pictures/";
+		} else {
+			return Environment.getExternalStoragePublicDirectory(
+					Environment.DIRECTORY_PICTURES).getAbsolutePath()
+					+ "/Conversations/";
+		}
+	}
+
+	public static String getConversationsLogsDirectory() {
+		return  Environment.getExternalStorageDirectory().getAbsolutePath()+"/Conversations/";
 	}
 
 	public Bitmap resize(Bitmap originalBitmap, int size) {
@@ -438,9 +450,14 @@ public class FileBackend {
 	}
 
 	public Uri getTakePhotoUri() {
-		File file = new File(getTakePhotoPath()+"IMG_" + this.IMAGE_DATE_FORMAT.format(new Date()) + ".jpg");
+		File file;
+		if (Config.ONLY_INTERNAL_STORAGE) {
+			file = new File(mXmppConnectionService.getCacheDir().getAbsolutePath(), "Camera/IMG_" + this.IMAGE_DATE_FORMAT.format(new Date()) + ".jpg");
+		} else {
+			file = new File(getTakePhotoPath() + "IMG_" + this.IMAGE_DATE_FORMAT.format(new Date()) + ".jpg");
+		}
 		file.getParentFile().mkdirs();
-		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N || Config.ONLY_INTERNAL_STORAGE) {
 			return FileProvider.getUriForFile(mXmppConnectionService, CONVERSATIONS_FILE_PROVIDER, file);
 		} else {
 			return Uri.fromFile(file);
@@ -448,7 +465,7 @@ public class FileBackend {
 	}
 
 	public static Uri getIndexableTakePhotoUri(Uri original) {
-		if ("file".equals(original.getScheme())) {
+		if (Config.ONLY_INTERNAL_STORAGE || "file".equals(original.getScheme())) {
 			return original;
 		} else {
 			List<String> segments = original.getPathSegments();
@@ -695,7 +712,8 @@ public class FileBackend {
 
 	public Uri getJingleFileUri(Message message) {
 		File file = getFile(message);
-		return Uri.parse("file://" + file.getAbsolutePath());
+		return FileProvider.getUriForFile(mXmppConnectionService,
+				CONVERSATIONS_FILE_PROVIDER, file);
 	}
 
 	public void updateFileParams(Message message) {
