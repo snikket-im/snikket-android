@@ -1,5 +1,10 @@
 ###Changelog
 
+####Version 1.14.9
+* warn in account details when data saver is enabled
+* automatically enable foreground service after detecting frequent restarts
+* bug fixes
+
 ####Version 1.14.8
 * bug fixes
 
