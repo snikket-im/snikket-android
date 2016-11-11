@@ -669,4 +669,5 @@ Emitent</string>
   <string name="error_message">Mesaj de eroare</string>
   <string name="data_saver_enabled">Economizorul de date este activat</string>
   <string name="data_saver_enabled_explained">Sistemul de operare restrictioneaza accesul la Internet pentru Conversations atunci cand este in fundal. Pentru a primi in continuare notificari de mesaje noi trebuie sa acordati acces ne restrictionat pentru Conversations atunci cand Economizorul de date este activ.\nConversations totusi face eforturi sa economiseasca datele atunci cand este posibil.</string>
+  <string name="device_does_not_support_data_saver">Dispozitivul nu suporta dezactivarea Economizorului de date pentru Conversations.</string>
 </resources>

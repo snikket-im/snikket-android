@@ -330,6 +330,7 @@
   <string name="check_x_filesize_on_host">Verifique o tamanho de %1$s em %2$s</string>
   <string name="message_options">Opções da mensagem</string>
   <string name="copy_text">Copiar o texto</string>
+  <string name="select_text">Selecionar o texto</string>
   <string name="copy_original_url">Copiar a URL original</string>
   <string name="send_again">Enviar novamente</string>
   <string name="file_url">URL do arquivo</string>
@@ -651,10 +652,14 @@
   <string name="unable_to_update_account">Não foi possível atualizar a conta</string>
   <string name="missing_presence_subscription_with_x">Sem permissão para atualizações de presença de %s.</string>
   <string name="missing_keys_from_x">Sem chaves OMEMO para %s.</string>
+  <string name="missing_omemo_keys">Chaves OMEMO ausentes</string>
   <string name="wrong_conference_configuration">Essa conferência não é privada nem anônima.</string>
   <string name="this_conference_has_no_members">Não existem ninguém nessa conferência.</string>
   <string name="report_jid_as_spammer">Informe que esse JID está enviando mensagens indesejáveis</string>
   <string name="pref_delete_omemo_identities">Excluir identidades OMEMO</string>
   <string name="pref_delete_omemo_identities_summary">Regerar suas chaves OMEMO. Todos os seus contatos terão que verificá-lo novamente. Utilize isso somente como último recurso.</string>
   <string name="delete_selected_keys">Excluir as chaves selecionadas</string>
+  <string name="error_publish_avatar_offline">É necessário estar conectado para publicar o avatar.</string>
+  <string name="show_error_message">Exibir a mensagem de erro</string>
+  <string name="error_message">Mensagem de erro</string>
 </resources>

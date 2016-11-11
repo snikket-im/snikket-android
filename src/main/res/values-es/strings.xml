@@ -662,6 +662,8 @@
   <string name="delete_selected_keys">Eliminar claves seleccionadas</string>
   <string name="error_publish_avatar_offline">Debes estar conectado para publicar la imagen de perfil</string>
   <string name="show_error_message">Mostrar mensaje de error</string>
+  <string name="error_message">Mensaje de error</string>
   <string name="data_saver_enabled">Optimización de datos habilitado</string>
   <string name="data_saver_enabled_explained">Tu sistema operativo está restringiendo a Conversations acceder a internet cuando está en segundo plano. Para recibir notificaciones de nuevos mensajes deberías permitir a Conversations acceder a internet cuando la optimización de datos está habilitada.\nConversations realizará igualmente optimizaciones para ahorrar datos cuando sea posible.</string>
+  <string name="device_does_not_support_data_saver">Tu dispositivo no soporta la opción de deshabilitar la optimización de datos para Conversations</string>
 </resources>
