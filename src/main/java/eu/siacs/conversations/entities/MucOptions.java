@@ -435,7 +435,10 @@ public class MucOptions {
 			if (old != null) {
 				users.remove(old);
 			}
-			this.users.add(user);
+			if ((!membersOnly() || user.getAffiliation().ranks(Affiliation.MEMBER))
+					&& user.getAffiliation().outranks(Affiliation.OUTCAST)){
+				this.users.add(user);
+			}
 		}
 	}
 
