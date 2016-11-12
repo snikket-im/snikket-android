@@ -558,7 +558,7 @@ public class ConversationFragment extends Fragment implements EditMessage.Keyboa
 			}
 			if (relevantForCorrection.getType() == Message.TYPE_TEXT
 					&& relevantForCorrection.isLastCorrectableMessage()
-					&& m.getConversation().getMucOptions().nonanonymous()) {
+					&& (m.getConversation().getMucOptions().nonanonymous() || m.getConversation().getMode() == Conversation.MODE_SINGLE)) {
 				correctMessage.setVisible(true);
 			}
 			if (treatAsFile || (GeoHelper.isGeoUri(m.getBody()))) {
