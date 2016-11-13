@@ -697,36 +697,7 @@ public class Conversation extends AbstractEntity implements Blockable, Comparabl
 	}
 
 	public int getNextEncryption() {
-		final AxolotlService axolotlService = getAccount().getAxolotlService();
-		int next = this.getIntAttribute(ATTRIBUTE_NEXT_ENCRYPTION, -1);
-		if (next == -1) {
-			if (Config.supportOmemo()
-					&& axolotlService != null
-					&& mode == MODE_SINGLE
-					&& axolotlService.isConversationAxolotlCapable(this)
-					&& getAccount().getSelfContact().getPresences().allOrNonSupport(AxolotlService.PEP_DEVICE_LIST_NOTIFY)
-					&& getContact().getPresences().allOrNonSupport(AxolotlService.PEP_DEVICE_LIST_NOTIFY)) {
-				return Message.ENCRYPTION_AXOLOTL;
-			} else {
-				next = this.getMostRecentlyUsedIncomingEncryption();
-			}
-		}
-
-		if (!Config.supportUnencrypted() && next <= 0) {
-			if (Config.supportOmemo()
-					&& ((axolotlService != null && axolotlService.isConversationAxolotlCapable(this)) || !Config.multipleEncryptionChoices())) {
-				return Message.ENCRYPTION_AXOLOTL;
-			} else if (Config.supportOtr() && mode == MODE_SINGLE) {
-				return Message.ENCRYPTION_OTR;
-			} else if (Config.supportOpenPgp()
-					&& (mode == MODE_SINGLE) || !Config.multipleEncryptionChoices()) {
-				return Message.ENCRYPTION_PGP;
-			}
-		} else if (next == Message.ENCRYPTION_AXOLOTL
-				&& (!Config.supportOmemo() || axolotlService == null || !axolotlService.isConversationAxolotlCapable(this))) {
-			next = Message.ENCRYPTION_NONE;
-		}
-		return next;
+		return this.getIntAttribute(ATTRIBUTE_NEXT_ENCRYPTION, Message.ENCRYPTION_NONE);
 	}
 
 	public void setNextEncryption(int encryption) {
