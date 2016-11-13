@@ -331,6 +331,7 @@
   <string name="check_x_filesize_on_host">Проверить размер %1$s на %2$s</string>
   <string name="message_options">Опции сообщения</string>
   <string name="copy_text">Копировать текст</string>
+  <string name="select_text">Выбрать текст</string>
   <string name="copy_original_url">Копировать адрес ссылки</string>
   <string name="send_again">Отправить ещё раз</string>
   <string name="file_url">URL файла</string>
@@ -666,4 +667,6 @@
   <string name="pref_delete_omemo_identities_summary">Создать заново OMEMO ключи. Необходимо повторное подтверждение. Используйте только в крайнем случае.</string>
   <string name="delete_selected_keys">Удалить отмеченные</string>
   <string name="error_publish_avatar_offline">Вы должны подключиться для публикации аватара.</string>
+  <string name="show_error_message">Текст ошибки</string>
+  <string name="error_message">Текст ошибки</string>
 </resources>
