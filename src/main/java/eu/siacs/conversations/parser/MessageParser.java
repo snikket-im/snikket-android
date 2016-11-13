@@ -612,7 +612,7 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
 								+user.getRealJid()+" to "+user.getAffiliation()+" in "
 								+conversation.getJid().toBareJid());
 						if (!user.realJidMatchesAccount()) {
-							conversation.getMucOptions().addUser(user);
+							conversation.getMucOptions().updateUser(user);
 							mXmppConnectionService.getAvatarService().clear(conversation);
 							mXmppConnectionService.updateMucRosterUi();
 							mXmppConnectionService.updateConversationUi();

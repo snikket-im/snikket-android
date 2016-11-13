@@ -2127,7 +2127,7 @@ public class XmppConnectionService extends Service {
 						if ("item".equals(child.getName())) {
 							MucOptions.User user = AbstractParser.parseItem(conversation,child);
 							if (!user.realJidMatchesAccount()) {
-								conversation.getMucOptions().addUser(user);
+								conversation.getMucOptions().updateUser(user);
 							}
 						}
 					}

@@ -38,7 +38,7 @@ public class PresenceParser extends AbstractParser implements
 			boolean before = mucOptions.online();
 			int count = mucOptions.getUserCount();
 			final List<MucOptions.User> tileUserBefore = mucOptions.getUsers(5);
-			processConferencePresence(packet, mucOptions);
+			processConferencePresence(packet, conversation);
 			final List<MucOptions.User> tileUserAfter = mucOptions.getUsers(5);
 			if (!tileUserAfter.equals(tileUserBefore)) {
 				mXmppConnectionService.getAvatarService().clear(mucOptions);
@@ -51,7 +51,8 @@ public class PresenceParser extends AbstractParser implements
 		}
 	}
 
-	private void processConferencePresence(PresencePacket packet, MucOptions mucOptions) {
+	private void processConferencePresence(PresencePacket packet, Conversation conversation) {
+		MucOptions mucOptions = conversation.getMucOptions();
 		final Jid from = packet.getFrom();
 		if (!from.isBareJid()) {
 			final String type = packet.getAttribute("type");
@@ -63,10 +64,7 @@ public class PresenceParser extends AbstractParser implements
 					Element item = x.findChild("item");
 					if (item != null && !from.isBareJid()) {
 						mucOptions.setError(MucOptions.Error.NONE);
-						MucOptions.User user = new MucOptions.User(mucOptions, from);
-						user.setAffiliation(item.getAttribute("affiliation"));
-						user.setRole(item.getAttribute("role"));
-						user.setRealJid(item.getAttributeAsJid("jid"));
+						MucOptions.User user = parseItem(conversation, item, from);
 						if (codes.contains(MucOptions.STATUS_CODE_SELF_PRESENCE) || packet.getFrom().equals(mucOptions.getConversation().getJid())) {
 							mucOptions.setOnline();
 							mucOptions.setSelf(user);
@@ -77,7 +75,7 @@ public class PresenceParser extends AbstractParser implements
 								mucOptions.mNickChangingInProgress = false;
 							}
 						} else {
-							mucOptions.addUser(user);
+							mucOptions.updateUser(user);
 						}
 						if (codes.contains(MucOptions.STATUS_CODE_ROOM_CREATED) && mucOptions.autoPushConfiguration()) {
 							Log.d(Config.LOGTAG,mucOptions.getAccount().getJid().toBareJid()
@@ -131,6 +129,10 @@ public class PresenceParser extends AbstractParser implements
 						Log.d(Config.LOGTAG, "unknown error in conference: " + packet);
 					}
 				} else if (!from.isBareJid()){
+					Element item = x.findChild("item");
+					if (item != null) {
+						mucOptions.updateUser(parseItem(conversation, item, from));
+					}
 					MucOptions.User user = mucOptions.deleteUser(from);
 					if (user != null) {
 						mXmppConnectionService.getAvatarService().clear(user);

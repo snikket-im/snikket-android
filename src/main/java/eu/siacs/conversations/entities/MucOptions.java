@@ -409,7 +409,7 @@ public class MucOptions {
 		return user;
 	}
 
-	public void addUser(User user) {
+	public void updateUser(User user) {
 		User old;
 		if (user.fullJid == null && user.realJid != null) {
 			old = findUserByRealJid(user.realJid);
