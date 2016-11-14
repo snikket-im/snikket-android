@@ -256,18 +256,18 @@ public class AxolotlService implements OnAdvancedStreamFeaturesLoaded {
 		return axolotlStore.getIdentityKeyPair().getPublicKey().getFingerprint().replaceAll("\\s", "");
 	}
 
-	public Set<IdentityKey> getKeysWithTrust(XmppAxolotlSession.Trust trust) {
-		return axolotlStore.getContactKeysWithTrust(account.getJid().toBareJid().toPreppedString(), trust);
+	public Set<IdentityKey> getKeysWithTrust(FingerprintStatus status) {
+		return axolotlStore.getContactKeysWithTrust(account.getJid().toBareJid().toPreppedString(), status);
 	}
 
-	public Set<IdentityKey> getKeysWithTrust(XmppAxolotlSession.Trust trust, Jid jid) {
-		return axolotlStore.getContactKeysWithTrust(jid.toBareJid().toPreppedString(), trust);
+	public Set<IdentityKey> getKeysWithTrust(FingerprintStatus status, Jid jid) {
+		return axolotlStore.getContactKeysWithTrust(jid.toBareJid().toPreppedString(), status);
 	}
 
-	public Set<IdentityKey> getKeysWithTrust(XmppAxolotlSession.Trust trust, List<Jid> jids) {
+	public Set<IdentityKey> getKeysWithTrust(FingerprintStatus status, List<Jid> jids) {
 		Set<IdentityKey> keys = new HashSet<>();
 		for(Jid jid : jids) {
-			keys.addAll(axolotlStore.getContactKeysWithTrust(jid.toPreppedString(), trust));
+			keys.addAll(axolotlStore.getContactKeysWithTrust(jid.toPreppedString(), status));
 		}
 		return keys;
 	}
@@ -355,19 +355,6 @@ public class AxolotlService implements OnAdvancedStreamFeaturesLoaded {
 		return this.deviceIds.get(account.getJid().toBareJid());
 	}
 
-	private void setTrustOnSessions(final Jid jid, @NonNull final Set<Integer> deviceIds,
-	                                final XmppAxolotlSession.Trust from,
-	                                final XmppAxolotlSession.Trust to) {
-		for (Integer deviceId : deviceIds) {
-			AxolotlAddress address = new AxolotlAddress(jid.toBareJid().toPreppedString(), deviceId);
-			XmppAxolotlSession session = sessions.get(address);
-			if (session != null && session.getFingerprint() != null
-					&& session.getTrust() == from) {
-				session.setTrust(to);
-			}
-		}
-	}
-
 	public void registerDevices(final Jid jid, @NonNull final Set<Integer> deviceIds) {
 		if (jid.toBareJid().equals(account.getJid().toBareJid())) {
 			if (!deviceIds.isEmpty()) {
@@ -389,23 +376,25 @@ public class AxolotlService implements OnAdvancedStreamFeaturesLoaded {
 		}
 		Set<Integer> expiredDevices = new HashSet<>(axolotlStore.getSubDeviceSessions(jid.toBareJid().toPreppedString()));
 		expiredDevices.removeAll(deviceIds);
-		setTrustOnSessions(jid, expiredDevices, XmppAxolotlSession.Trust.TRUSTED,
-				XmppAxolotlSession.Trust.INACTIVE_TRUSTED);
-		setTrustOnSessions(jid, expiredDevices, XmppAxolotlSession.Trust.TRUSTED_X509,
-				XmppAxolotlSession.Trust.INACTIVE_TRUSTED_X509);
-		setTrustOnSessions(jid, expiredDevices, XmppAxolotlSession.Trust.UNDECIDED,
-				XmppAxolotlSession.Trust.INACTIVE_UNDECIDED);
-		setTrustOnSessions(jid, expiredDevices, XmppAxolotlSession.Trust.UNTRUSTED,
-				XmppAxolotlSession.Trust.INACTIVE_UNTRUSTED);
+		for (Integer deviceId : expiredDevices) {
+			AxolotlAddress address = new AxolotlAddress(jid.toBareJid().toPreppedString(), deviceId);
+			XmppAxolotlSession session = sessions.get(address);
+			if (session != null && session.getFingerprint() != null) {
+				if (session.getTrust().isActive()) {
+					session.setTrust(session.getTrust().toInactive());
+				}
+			}
+		}
 		Set<Integer> newDevices = new HashSet<>(deviceIds);
-		setTrustOnSessions(jid, newDevices, XmppAxolotlSession.Trust.INACTIVE_TRUSTED,
-				XmppAxolotlSession.Trust.TRUSTED);
-		setTrustOnSessions(jid, newDevices, XmppAxolotlSession.Trust.INACTIVE_TRUSTED_X509,
-				XmppAxolotlSession.Trust.TRUSTED_X509);
-		setTrustOnSessions(jid, newDevices, XmppAxolotlSession.Trust.INACTIVE_UNDECIDED,
-				XmppAxolotlSession.Trust.UNDECIDED);
-		setTrustOnSessions(jid, newDevices, XmppAxolotlSession.Trust.INACTIVE_UNTRUSTED,
-				XmppAxolotlSession.Trust.UNTRUSTED);
+		for (Integer deviceId : newDevices) {
+			AxolotlAddress address = new AxolotlAddress(jid.toBareJid().toPreppedString(), deviceId);
+			XmppAxolotlSession session = sessions.get(address);
+			if (session != null && session.getFingerprint() != null) {
+				if (!session.getTrust().isActive()) {
+					session.setTrust(session.getTrust().toActive());
+				}
+			}
+		}
 		this.deviceIds.put(jid, deviceIds);
 		mXmppConnectionService.keyStatusUpdated(null);
 	}
@@ -428,7 +417,7 @@ public class AxolotlService implements OnAdvancedStreamFeaturesLoaded {
 	}
 
 	public void purgeKey(final String fingerprint) {
-		axolotlStore.setFingerprintTrust(fingerprint.replaceAll("\\s", ""), XmppAxolotlSession.Trust.COMPROMISED);
+		axolotlStore.setFingerprintTrust(fingerprint.replaceAll("\\s", ""), FingerprintStatus.createCompromised());
 	}
 
 	public void publishOwnDeviceIdIfNeeded() {
@@ -692,16 +681,16 @@ public class AxolotlService implements OnAdvancedStreamFeaturesLoaded {
 		return jids;
 	}
 
-	public XmppAxolotlSession.Trust getFingerprintTrust(String fingerprint) {
-		return axolotlStore.getFingerprintTrust(fingerprint);
+	public FingerprintStatus getFingerprintTrust(String fingerprint) {
+		return axolotlStore.getFingerprintStatus(fingerprint);
 	}
 
 	public X509Certificate getFingerprintCertificate(String fingerprint) {
 		return axolotlStore.getFingerprintCertificate(fingerprint);
 	}
 
-	public void setFingerprintTrust(String fingerprint, XmppAxolotlSession.Trust trust) {
-		axolotlStore.setFingerprintTrust(fingerprint, trust);
+	public void setFingerprintTrust(String fingerprint, FingerprintStatus status) {
+		axolotlStore.setFingerprintTrust(fingerprint, status);
 	}
 
 	private void verifySessionWithPEP(final XmppAxolotlSession session) {
@@ -724,7 +713,7 @@ public class AxolotlService implements OnAdvancedStreamFeaturesLoaded {
 									mXmppConnectionService.getMemorizingTrustManager().getNonInteractive().checkClientTrusted(verification.first, "RSA");
 									String fingerprint = session.getFingerprint();
 									Log.d(Config.LOGTAG, "verified session with x.509 signature. fingerprint was: "+fingerprint);
-									setFingerprintTrust(fingerprint, XmppAxolotlSession.Trust.TRUSTED_X509);
+									setFingerprintTrust(fingerprint, FingerprintStatus.createActiveVerified(true));
 									axolotlStore.setFingerprintCertificate(fingerprint, verification.first[0]);
 									fetchStatusMap.put(address, FetchStatus.SUCCESS_VERIFIED);
 									Bundle information = CryptoHelper.extractCertificateInformation(verification.first[0]);
@@ -921,8 +910,8 @@ public class AxolotlService implements OnAdvancedStreamFeaturesLoaded {
 		sessions.addAll(findOwnSessions());
 		boolean verified = false;
 		for(XmppAxolotlSession session : sessions) {
-			if (session.getTrust().trusted()) {
-				if (session.getTrust() == XmppAxolotlSession.Trust.TRUSTED_X509) {
+			if (session.getTrust().isTrustedAndActive()) {
+				if (session.getTrust().getTrust() == FingerprintStatus.Trust.VERIFIED_X509) {
 					verified = true;
 				} else {
 					return false;

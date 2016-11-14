@@ -44,6 +44,7 @@ import java.util.regex.Pattern;
 
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
+import eu.siacs.conversations.crypto.axolotl.FingerprintStatus;
 import eu.siacs.conversations.crypto.axolotl.XmppAxolotlSession;
 import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.entities.Conversation;
@@ -203,11 +204,11 @@ public class MessageAdapter extends ArrayAdapter<Message> implements CopyTextVie
 			viewHolder.indicator.setImageResource(darkBackground ? R.drawable.ic_lock_white_18dp : R.drawable.ic_lock_black_18dp);
 			viewHolder.indicator.setVisibility(View.VISIBLE);
 			if (message.getEncryption() == Message.ENCRYPTION_AXOLOTL) {
-				XmppAxolotlSession.Trust trust = message.getConversation()
+				FingerprintStatus status = message.getConversation()
 						.getAccount().getAxolotlService().getFingerprintTrust(
 								message.getFingerprint());
 
-				if(trust == null || (!trust.trusted() && !trust.trustedInactive())) {
+				if(status == null || (!status.isTrustedAndActive())) {
 					viewHolder.indicator.setColorFilter(activity.getWarningTextColor());
 					viewHolder.indicator.setAlpha(1.0f);
 				} else {

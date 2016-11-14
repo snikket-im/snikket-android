@@ -8,6 +8,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 
 import eu.siacs.conversations.Config;
+import eu.siacs.conversations.crypto.axolotl.FingerprintStatus;
 import eu.siacs.conversations.crypto.axolotl.XmppAxolotlSession;
 import eu.siacs.conversations.utils.CryptoHelper;
 import eu.siacs.conversations.utils.GeoHelper;
@@ -811,8 +812,8 @@ public class Message extends AbstractEntity {
 	}
 
 	public boolean isTrusted() {
-		XmppAxolotlSession.Trust t = conversation.getAccount().getAxolotlService().getFingerprintTrust(axolotlFingerprint);
-		return t != null && t.trusted();
+		FingerprintStatus s = conversation.getAccount().getAxolotlService().getFingerprintTrust(axolotlFingerprint);
+		return s != null && s.isTrustedAndActive();
 	}
 
 	private  int getPreviousEncryption() {

@@ -49,6 +49,7 @@ import de.timroes.android.listview.EnhancedListView;
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.crypto.axolotl.AxolotlService;
+import eu.siacs.conversations.crypto.axolotl.FingerprintStatus;
 import eu.siacs.conversations.crypto.axolotl.XmppAxolotlSession;
 import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.entities.Blockable;
@@ -1677,8 +1678,8 @@ public class ConversationActivity extends XmppActivity
 		AxolotlService axolotlService = mSelectedConversation.getAccount().getAxolotlService();
 		final List<Jid> targets = axolotlService.getCryptoTargets(mSelectedConversation);
 		boolean hasUnaccepted = !mSelectedConversation.getAcceptedCryptoTargets().containsAll(targets);
-		boolean hasUndecidedOwn = !axolotlService.getKeysWithTrust(XmppAxolotlSession.Trust.UNDECIDED).isEmpty();
-		boolean hasUndecidedContacts = !axolotlService.getKeysWithTrust(XmppAxolotlSession.Trust.UNDECIDED, targets).isEmpty();
+		boolean hasUndecidedOwn = !axolotlService.getKeysWithTrust(FingerprintStatus.createActiveUndecided()).isEmpty();
+		boolean hasUndecidedContacts = !axolotlService.getKeysWithTrust(FingerprintStatus.createActiveUndecided(), targets).isEmpty();
 		boolean hasPendingKeys = !axolotlService.findDevicesWithoutSession(mSelectedConversation).isEmpty();
 		boolean hasNoTrustedKeys = axolotlService.anyTargetHasNoTrustedKeys(targets);
 		if(hasUndecidedOwn || hasUndecidedContacts || hasPendingKeys || hasNoTrustedKeys || hasUnaccepted) {

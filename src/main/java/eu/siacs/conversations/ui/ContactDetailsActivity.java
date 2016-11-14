@@ -39,6 +39,7 @@ import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.crypto.PgpEngine;
 import eu.siacs.conversations.crypto.axolotl.AxolotlService;
+import eu.siacs.conversations.crypto.axolotl.FingerprintStatus;
 import eu.siacs.conversations.crypto.axolotl.XmppAxolotlSession;
 import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.entities.Contact;
@@ -509,8 +510,8 @@ public class ContactDetailsActivity extends XmppActivity implements OnAccountUpd
 	}
 
 	private void onOmemoKeyClicked(Account account, String fingerprint) {
-		final XmppAxolotlSession.Trust trust = account.getAxolotlService().getFingerprintTrust(fingerprint);
-		if (Config.X509_VERIFICATION && trust != null && trust == XmppAxolotlSession.Trust.TRUSTED_X509) {
+		FingerprintStatus status = account.getAxolotlService().getFingerprintTrust(fingerprint);
+		if (Config.X509_VERIFICATION && status != null && status.getTrust() == FingerprintStatus.Trust.VERIFIED_X509) {
 			X509Certificate x509Certificate = account.getAxolotlService().getFingerprintCertificate(fingerprint);
 			if (x509Certificate != null) {
 				showCertificateInformationDialog(CryptoHelper.extractCertificateInformation(x509Certificate));

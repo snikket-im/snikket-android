@@ -35,7 +35,9 @@ public class SQLiteAxolotlStore implements AxolotlStore {
 	public static final String KEY = "key";
 	public static final String FINGERPRINT = "fingerprint";
 	public static final String NAME = "name";
-	public static final String TRUSTED = "trusted";
+	public static final String TRUSTED = "trusted"; //no longer used
+	public static final String TRUST = "trust";
+	public static final String ACTIVE = "active";
 	public static final String OWN = "ownkey";
 	public static final String CERTIFICATE = "certificate";
 
@@ -51,11 +53,11 @@ public class SQLiteAxolotlStore implements AxolotlStore {
 	private int localRegistrationId;
 	private int currentPreKeyId = 0;
 
-	private final LruCache<String, XmppAxolotlSession.Trust> trustCache =
-			new LruCache<String, XmppAxolotlSession.Trust>(NUM_TRUSTS_TO_CACHE) {
+	private final LruCache<String, FingerprintStatus> trustCache =
+			new LruCache<String, FingerprintStatus>(NUM_TRUSTS_TO_CACHE) {
 				@Override
-				protected XmppAxolotlSession.Trust create(String fingerprint) {
-					return mXmppConnectionService.databaseBackend.isIdentityKeyTrusted(account, fingerprint);
+				protected FingerprintStatus create(String fingerprint) {
+					return mXmppConnectionService.databaseBackend.getFingerprintStatus(account, fingerprint);
 				}
 			};
 
@@ -208,12 +210,12 @@ public class SQLiteAxolotlStore implements AxolotlStore {
 		return true;
 	}
 
-	public XmppAxolotlSession.Trust getFingerprintTrust(String fingerprint) {
+	public FingerprintStatus getFingerprintStatus(String fingerprint) {
 		return (fingerprint == null)? null : trustCache.get(fingerprint);
 	}
 
-	public void setFingerprintTrust(String fingerprint, XmppAxolotlSession.Trust trust) {
-		mXmppConnectionService.databaseBackend.setIdentityKeyTrust(account, fingerprint, trust);
+	public void setFingerprintTrust(String fingerprint, FingerprintStatus status) {
+		mXmppConnectionService.databaseBackend.setIdentityKeyTrust(account, fingerprint, status);
 		trustCache.remove(fingerprint);
 	}
 
@@ -225,8 +227,8 @@ public class SQLiteAxolotlStore implements AxolotlStore {
 		return mXmppConnectionService.databaseBackend.getIdentityKeyCertifcate(account, fingerprint);
 	}
 
-	public Set<IdentityKey> getContactKeysWithTrust(String bareJid, XmppAxolotlSession.Trust trust) {
-		return mXmppConnectionService.databaseBackend.loadIdentityKeys(account, bareJid, trust);
+	public Set<IdentityKey> getContactKeysWithTrust(String bareJid, FingerprintStatus status) {
+		return mXmppConnectionService.databaseBackend.loadIdentityKeys(account, bareJid, status);
 	}
 
 	public long getContactNumTrustedKeys(String bareJid) {
