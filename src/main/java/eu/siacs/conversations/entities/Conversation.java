@@ -697,7 +697,7 @@ public class Conversation extends AbstractEntity implements Blockable, Comparabl
 	}
 
 	public int getNextEncryption() {
-		return this.getIntAttribute(ATTRIBUTE_NEXT_ENCRYPTION, Message.ENCRYPTION_NONE);
+		return Math.max(this.getIntAttribute(ATTRIBUTE_NEXT_ENCRYPTION, Message.ENCRYPTION_NONE), Message.ENCRYPTION_NONE);
 	}
 
 	public void setNextEncryption(int encryption) {
