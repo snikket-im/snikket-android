@@ -74,7 +74,11 @@ public class FingerprintStatus {
     }
 
     public boolean isTrusted() {
-        return trust == Trust.TRUSTED || trust == Trust.VERIFIED || trust == Trust.VERIFIED_X509;
+        return trust == Trust.TRUSTED || isVerified();
+    }
+
+    public boolean isVerified() {
+        return trust == Trust.VERIFIED || trust == Trust.VERIFIED_X509;
     }
 
     public boolean isCompromised() {
