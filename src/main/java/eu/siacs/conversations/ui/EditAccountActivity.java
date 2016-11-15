@@ -41,6 +41,7 @@ import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import eu.siacs.conversations.Config;
+import eu.siacs.conversations.OmemoActivity;
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.crypto.axolotl.AxolotlService;
 import eu.siacs.conversations.entities.Account;
@@ -59,7 +60,7 @@ import eu.siacs.conversations.xmpp.jid.InvalidJidException;
 import eu.siacs.conversations.xmpp.jid.Jid;
 import eu.siacs.conversations.xmpp.pep.Avatar;
 
-public class EditAccountActivity extends XmppActivity implements OnAccountUpdate,
+public class EditAccountActivity extends OmemoActivity implements OnAccountUpdate,
 		OnKeyStatusUpdated, OnCaptchaRequested, KeyChainAliasCallback, XmppConnectionService.OnShowErrorToast, XmppConnectionService.OnMamPreferencesFetched {
 
 	private static final int REQUEST_DATA_SAVER = 0x37af244;
@@ -635,7 +636,6 @@ public class EditAccountActivity extends XmppActivity implements OnAccountUpdate
 		super.onSaveInstanceState(savedInstanceState);
 	}
 
-	@Override
 	protected void onBackendConnected() {
 		boolean init = true;
 		if (mSavedInstanceAccount != null) {
@@ -884,13 +884,7 @@ public class EditAccountActivity extends XmppActivity implements OnAccountUpdate
 
 							@Override
 							public void onClick(final View v) {
-
-								if (copyTextToClipboard(ownAxolotlFingerprint.substring(2), R.string.omemo_fingerprint)) {
-									Toast.makeText(
-											EditAccountActivity.this,
-											R.string.toast_message_omemo_fingerprint,
-											Toast.LENGTH_SHORT).show();
-								}
+								copyOmemoFingerprint(ownAxolotlFingerprint);
 							}
 						});
 				if (Config.SHOW_REGENERATE_AXOLOTL_KEYS_BUTTON) {
@@ -915,7 +909,7 @@ public class EditAccountActivity extends XmppActivity implements OnAccountUpdate
 					continue;
 				}
 				boolean highlight = fingerprint.equals(messageFingerprint);
-				hasKeys |= addFingerprintRow(keys, mAccount, fingerprint, highlight, null);
+				hasKeys |= addFingerprintRow(keys, mAccount, fingerprint, highlight);
 			}
 			if (hasKeys && Config.supportOmemo()) {
 				keysCard.setVisibility(View.VISIBLE);

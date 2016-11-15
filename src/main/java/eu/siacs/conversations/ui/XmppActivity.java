@@ -49,11 +49,8 @@ import android.util.Pair;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.zxing.BarcodeFormat;
@@ -69,7 +66,6 @@ import java.io.FileNotFoundException;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.List;
 import java.util.Map;
@@ -78,20 +74,15 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
-import eu.siacs.conversations.crypto.axolotl.FingerprintStatus;
-import eu.siacs.conversations.crypto.axolotl.XmppAxolotlSession;
 import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.entities.Contact;
 import eu.siacs.conversations.entities.Conversation;
 import eu.siacs.conversations.entities.Message;
 import eu.siacs.conversations.entities.MucOptions;
-import eu.siacs.conversations.entities.Presence;
 import eu.siacs.conversations.entities.Presences;
-import eu.siacs.conversations.entities.ServiceDiscoveryResult;
 import eu.siacs.conversations.services.AvatarService;
 import eu.siacs.conversations.services.XmppConnectionService;
 import eu.siacs.conversations.services.XmppConnectionService.XmppConnectionBinder;
-import eu.siacs.conversations.ui.widget.Switch;
 import eu.siacs.conversations.utils.CryptoHelper;
 import eu.siacs.conversations.utils.ExceptionHelper;
 import eu.siacs.conversations.utils.UIHelper;
@@ -777,132 +768,6 @@ public abstract class XmppActivity extends Activity {
 		}
 		builder.setView(view);
 		builder.setNegativeButton(R.string.cancel, null);
-		builder.create().show();
-	}
-
-	protected boolean addFingerprintRow(LinearLayout keys, final Account account, final String fingerprint, boolean highlight, View.OnClickListener onKeyClickedListener) {
-		final FingerprintStatus status = account.getAxolotlService().getFingerprintTrust(fingerprint);
-		if (status == null) {
-			return false;
-		}
-		return addFingerprintRowWithListeners(keys, account, fingerprint, highlight, status, true,
-				new CompoundButton.OnCheckedChangeListener() {
-					@Override
-					public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-						account.getAxolotlService().setFingerprintTrust(fingerprint,FingerprintStatus.createActive(isChecked));
-					}
-				},
-				new View.OnClickListener() {
-					@Override
-					public void onClick(View v) {
-						account.getAxolotlService().setFingerprintTrust(fingerprint,FingerprintStatus.createActive(false));
-						v.setEnabled(true);
-					}
-				},
-				onKeyClickedListener
-
-		);
-	}
-
-	protected boolean addFingerprintRowWithListeners(LinearLayout keys, final Account account,
-	                                                 final String fingerprint,
-	                                                 boolean highlight,
-	                                                 FingerprintStatus status,
-	                                                 boolean showTag,
-	                                                 CompoundButton.OnCheckedChangeListener
-			                                                 onCheckedChangeListener,
-	                                                 View.OnClickListener onClickListener,
-													 View.OnClickListener onKeyClickedListener) {
-		if (status.isCompromised()) {
-			return false;
-		}
-		View view = getLayoutInflater().inflate(R.layout.contact_key, keys, false);
-		TextView key = (TextView) view.findViewById(R.id.key);
-		key.setOnClickListener(onKeyClickedListener);
-		TextView keyType = (TextView) view.findViewById(R.id.key_type);
-		keyType.setOnClickListener(onKeyClickedListener);
-		Switch trustToggle = (Switch) view.findViewById(R.id.tgl_trust);
-		trustToggle.setVisibility(View.VISIBLE);
-		final View.OnLongClickListener purge = new View.OnLongClickListener() {
-			@Override
-			public boolean onLongClick(View v) {
-				showPurgeKeyDialog(account, fingerprint);
-				return true;
-			}
-		};
-		view.setOnLongClickListener(purge);
-		key.setOnLongClickListener(purge);
-		keyType.setOnLongClickListener(purge);
-		boolean x509 = Config.X509_VERIFICATION && status.getTrust() == FingerprintStatus.Trust.VERIFIED_X509;
-		final View.OnClickListener toast;
-		trustToggle.setChecked(status.isTrusted(), false);
-		if (status.isActive()) {
-			key.setTextColor(getPrimaryTextColor());
-			keyType.setTextColor(getSecondaryTextColor());
-			trustToggle.setOnCheckedChangeListener(onCheckedChangeListener);
-			if (status.getTrust() == FingerprintStatus.Trust.UNDECIDED) {
-				trustToggle.setOnClickListener(onClickListener);
-				trustToggle.setEnabled(false);
-			} else {
-				trustToggle.setOnClickListener(null);
-				trustToggle.setEnabled(true);
-			}
-			toast = new View.OnClickListener() {
-				@Override
-				public void onClick(View v) {
-					hideToast();
-				}
-			};
-		} else {
-			key.setTextColor(getTertiaryTextColor());
-			keyType.setTextColor(getTertiaryTextColor());
-			trustToggle.setOnClickListener(null);
-			trustToggle.setEnabled(false);
-			toast = new View.OnClickListener() {
-				@Override
-				public void onClick(View v) {
-					replaceToast(getString(R.string.this_device_is_no_longer_in_use), false);
-				}
-			};
-			trustToggle.setOnClickListener(toast);
-		}
-		view.setOnClickListener(toast);
-		key.setOnClickListener(toast);
-		keyType.setOnClickListener(toast);
-		if (showTag) {
-			keyType.setText(getString(x509 ? R.string.omemo_fingerprint_x509 : R.string.omemo_fingerprint));
-		} else {
-			keyType.setVisibility(View.GONE);
-		}
-		if (highlight) {
-			keyType.setTextColor(getResources().getColor(R.color.accent));
-			keyType.setText(getString(x509 ? R.string.omemo_fingerprint_x509_selected_message : R.string.omemo_fingerprint_selected_message));
-		} else {
-			keyType.setText(getString(x509 ? R.string.omemo_fingerprint_x509 : R.string.omemo_fingerprint));
-		}
-
-		key.setText(CryptoHelper.prettifyFingerprint(fingerprint.substring(2)));
-
-		keys.addView(view);
-		return true;
-	}
-
-	public void showPurgeKeyDialog(final Account account, final String fingerprint) {
-		Builder builder = new Builder(this);
-		builder.setTitle(getString(R.string.purge_key));
-		builder.setIconAttribute(android.R.attr.alertDialogIcon);
-		builder.setMessage(getString(R.string.purge_key_desc_part1)
-				+ "\n\n" + CryptoHelper.prettifyFingerprint(fingerprint.substring(2))
-				+ "\n\n" + getString(R.string.purge_key_desc_part2));
-		builder.setNegativeButton(getString(R.string.cancel), null);
-		builder.setPositiveButton(getString(R.string.purge_key),
-				new DialogInterface.OnClickListener() {
-					@Override
-					public void onClick(DialogInterface dialog, int which) {
-						account.getAxolotlService().purgeKey(fingerprint);
-						refreshUi();
-					}
-				});
 		builder.create().show();
 	}
 

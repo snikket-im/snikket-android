@@ -18,6 +18,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import eu.siacs.conversations.OmemoActivity;
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.crypto.axolotl.AxolotlService;
 import eu.siacs.conversations.crypto.axolotl.FingerprintStatus;
@@ -28,7 +29,7 @@ import eu.siacs.conversations.xmpp.OnKeyStatusUpdated;
 import eu.siacs.conversations.xmpp.jid.InvalidJidException;
 import eu.siacs.conversations.xmpp.jid.Jid;
 
-public class TrustKeysActivity extends XmppActivity implements OnKeyStatusUpdated {
+public class TrustKeysActivity extends OmemoActivity implements OnKeyStatusUpdated {
 	private List<Jid> contactJids;
 
 	private Account mAccount;
@@ -109,16 +110,14 @@ public class TrustKeysActivity extends XmppActivity implements OnKeyStatusUpdate
 		for(final String fingerprint : ownKeysToTrust.keySet()) {
 			hasOwnKeys = true;
 			addFingerprintRowWithListeners(ownKeys, mAccount, fingerprint, false,
-					FingerprintStatus.createActive(ownKeysToTrust.get(fingerprint)), false,
+					FingerprintStatus.createActive(ownKeysToTrust.get(fingerprint)), false, false,
 					new CompoundButton.OnCheckedChangeListener() {
 						@Override
 						public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 							ownKeysToTrust.put(fingerprint, isChecked);
 							// own fingerprints have no impact on locked status.
 						}
-					},
-					null,
-					null
+					}
 			);
 		}
 
@@ -134,16 +133,14 @@ public class TrustKeysActivity extends XmppActivity implements OnKeyStatusUpdate
 				final Map<String, Boolean> fingerprints = entry.getValue();
 				for (final String fingerprint : fingerprints.keySet()) {
 					addFingerprintRowWithListeners(keysContainer, mAccount, fingerprint, false,
-							FingerprintStatus.createActive(fingerprints.get(fingerprint)), false,
+							FingerprintStatus.createActive(fingerprints.get(fingerprint)), false, false,
 							new CompoundButton.OnCheckedChangeListener() {
 								@Override
 								public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 									fingerprints.put(fingerprint, isChecked);
 									lockOrUnlockAsNeeded();
 								}
-							},
-							null,
-							null
+							}
 					);
 				}
 				if (fingerprints.size() == 0) {
@@ -212,7 +209,6 @@ public class TrustKeysActivity extends XmppActivity implements OnKeyStatusUpdate
 		return ownKeysSet.size() + foreignKeysToTrust.size() > 0;
 	}
 
-	@Override
 	public void onBackendConnected() {
 		Intent intent = getIntent();
 		this.mAccount = extractAccount(intent);

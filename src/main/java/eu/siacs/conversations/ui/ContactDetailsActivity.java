@@ -36,15 +36,14 @@ import java.security.cert.X509Certificate;
 import java.util.List;
 
 import eu.siacs.conversations.Config;
+import eu.siacs.conversations.OmemoActivity;
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.crypto.PgpEngine;
 import eu.siacs.conversations.crypto.axolotl.AxolotlService;
 import eu.siacs.conversations.crypto.axolotl.FingerprintStatus;
-import eu.siacs.conversations.crypto.axolotl.XmppAxolotlSession;
 import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.entities.Contact;
 import eu.siacs.conversations.entities.ListItem;
-import eu.siacs.conversations.entities.Presence;
 import eu.siacs.conversations.services.XmppConnectionService.OnAccountUpdate;
 import eu.siacs.conversations.services.XmppConnectionService.OnRosterUpdate;
 import eu.siacs.conversations.utils.CryptoHelper;
@@ -55,7 +54,7 @@ import eu.siacs.conversations.xmpp.XmppConnection;
 import eu.siacs.conversations.xmpp.jid.InvalidJidException;
 import eu.siacs.conversations.xmpp.jid.Jid;
 
-public class ContactDetailsActivity extends XmppActivity implements OnAccountUpdate, OnRosterUpdate, OnUpdateBlocklist, OnKeyStatusUpdated {
+public class ContactDetailsActivity extends OmemoActivity implements OnAccountUpdate, OnRosterUpdate, OnUpdateBlocklist, OnKeyStatusUpdated {
 	public static final String ACTION_VIEW_CONTACT = "view_contact";
 
 	private Contact contact;
@@ -448,12 +447,7 @@ public class ContactDetailsActivity extends XmppActivity implements OnAccountUpd
 		if (Config.supportOmemo()) {
 			for (final String fingerprint : contact.getAccount().getAxolotlService().getFingerprintsForContact(contact)) {
 				boolean highlight = fingerprint.equals(messageFingerprint);
-				hasKeys |= addFingerprintRow(keys, contact.getAccount(), fingerprint, highlight, new OnClickListener() {
-					@Override
-					public void onClick(View v) {
-						onOmemoKeyClicked(contact.getAccount(), fingerprint);
-					}
-				});
+				hasKeys |= addFingerprintRow(keys, contact.getAccount(), fingerprint, highlight);
 			}
 		}
 		if (Config.supportOpenPgp() && contact.getPgpKeyId() != 0) {
@@ -509,40 +503,6 @@ public class ContactDetailsActivity extends XmppActivity implements OnAccountUpd
 		}
 	}
 
-	private void onOmemoKeyClicked(Account account, String fingerprint) {
-		FingerprintStatus status = account.getAxolotlService().getFingerprintTrust(fingerprint);
-		if (Config.X509_VERIFICATION && status != null && status.getTrust() == FingerprintStatus.Trust.VERIFIED_X509) {
-			X509Certificate x509Certificate = account.getAxolotlService().getFingerprintCertificate(fingerprint);
-			if (x509Certificate != null) {
-				showCertificateInformationDialog(CryptoHelper.extractCertificateInformation(x509Certificate));
-			} else {
-				Toast.makeText(this,R.string.certificate_not_found, Toast.LENGTH_SHORT).show();
-			}
-		}
-	}
-
-	private void showCertificateInformationDialog(Bundle bundle) {
-		View view = getLayoutInflater().inflate(R.layout.certificate_information, null);
-		final String not_available = getString(R.string.certicate_info_not_available);
-		TextView subject_cn = (TextView) view.findViewById(R.id.subject_cn);
-		TextView subject_o = (TextView) view.findViewById(R.id.subject_o);
-		TextView issuer_cn = (TextView) view.findViewById(R.id.issuer_cn);
-		TextView issuer_o = (TextView) view.findViewById(R.id.issuer_o);
-		TextView sha1 = (TextView) view.findViewById(R.id.sha1);
-
-		subject_cn.setText(bundle.getString("subject_cn", not_available));
-		subject_o.setText(bundle.getString("subject_o", not_available));
-		issuer_cn.setText(bundle.getString("issuer_cn", not_available));
-		issuer_o.setText(bundle.getString("issuer_o", not_available));
-		sha1.setText(bundle.getString("sha1", not_available));
-
-		AlertDialog.Builder builder = new AlertDialog.Builder(this);
-		builder.setTitle(R.string.certificate_information);
-		builder.setView(view);
-		builder.setPositiveButton(R.string.ok, null);
-		builder.create().show();
-	}
-
 	protected void confirmToDeleteFingerprint(final String fingerprint) {
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
 		builder.setTitle(R.string.delete_fingerprint);
@@ -563,7 +523,6 @@ public class ContactDetailsActivity extends XmppActivity implements OnAccountUpd
 		builder.create().show();
 	}
 
-	@Override
 	public void onBackendConnected() {
 		if ((accountJid != null) && (contactJid != null)) {
 			Account account = xmppConnectionService

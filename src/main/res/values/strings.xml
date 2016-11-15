@@ -699,4 +699,7 @@
 	<string name="data_saver_enabled">Data saver enabled</string>
 	<string name="data_saver_enabled_explained">Your operating system is restricting Conversations from accessing the Internet when in background. To receive notifications of new messages you should allow Conversations unrestricted access when Data saver is on.\nConversations will still make an effort to save data when possible.</string>
 	<string name="device_does_not_support_data_saver">Your device does not support disabling Data saver for Conversations.</string>
+	<string name="error_unable_to_create_temporary_file">Unable to create temporary file</string>
+	<string name="this_device_has_been_verified">This device has been verified</string>
+	<string name="copy_fingerprint">Copy fingerprint</string>
 </resources>
