@@ -109,6 +109,7 @@ public abstract class OmemoActivity extends XmppActivity {
             keyType.setTextColor(getSecondaryTextColor());
             if (status.isVerified()) {
                 verifiedFingerprintSymbol.setVisibility(View.VISIBLE);
+                verifiedFingerprintSymbol.setAlpha(1.0f);
                 trustToggle.setVisibility(View.GONE);
                 verifiedFingerprintSymbol.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -154,6 +155,7 @@ public abstract class OmemoActivity extends XmppActivity {
             if (status.isVerified()) {
                 trustToggle.setVisibility(View.GONE);
                 verifiedFingerprintSymbol.setVisibility(View.VISIBLE);
+                verifiedFingerprintSymbol.setAlpha(0.4368f);
                 verifiedFingerprintSymbol.setOnClickListener(toast);
             } else {
                 trustToggle.setVisibility(View.VISIBLE);
