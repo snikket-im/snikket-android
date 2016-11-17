@@ -187,7 +187,15 @@ public class SQLiteAxolotlStore implements AxolotlStore {
 	@Override
 	public void saveIdentity(String name, IdentityKey identityKey) {
 		if (!mXmppConnectionService.databaseBackend.loadIdentityKeys(account, name).contains(identityKey)) {
-			mXmppConnectionService.databaseBackend.storeIdentityKey(account, name, identityKey);
+			String fingerprint = identityKey.getFingerprint().replaceAll("\\s", "");
+			FingerprintStatus status = getFingerprintStatus(fingerprint);
+			if (status == null) {
+				status = FingerprintStatus.createActiveUndecided(); //default for new keys
+			} else {
+				status = status.toActive();
+			}
+			mXmppConnectionService.databaseBackend.storeIdentityKey(account, name, identityKey, status);
+			trustCache.remove(fingerprint);
 		}
 	}
 
@@ -214,7 +222,7 @@ public class SQLiteAxolotlStore implements AxolotlStore {
 		return (fingerprint == null)? null : trustCache.get(fingerprint);
 	}
 
-	public void setFingerprintTrust(String fingerprint, FingerprintStatus status) {
+	public void setFingerprintStatus(String fingerprint, FingerprintStatus status) {
 		mXmppConnectionService.databaseBackend.setIdentityKeyTrust(account, fingerprint, status);
 		trustCache.remove(fingerprint);
 	}
@@ -429,5 +437,9 @@ public class SQLiteAxolotlStore implements AxolotlStore {
 	@Override
 	public void removeSignedPreKey(int signedPreKeyId) {
 		mXmppConnectionService.databaseBackend.deleteSignedPreKey(account, signedPreKeyId);
+	}
+
+	public void preVerifyFingerprint(Account account, String name, String fingerprint) {
+		mXmppConnectionService.databaseBackend.storePreVerification(account,name,fingerprint,FingerprintStatus.createInactiveVerified());
 	}
 }

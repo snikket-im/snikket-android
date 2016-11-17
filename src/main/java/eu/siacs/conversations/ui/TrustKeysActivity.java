@@ -18,6 +18,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import eu.siacs.conversations.Config;
 import eu.siacs.conversations.OmemoActivity;
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.crypto.axolotl.AxolotlService;
@@ -245,7 +246,9 @@ public class TrustKeysActivity extends OmemoActivity implements OnKeyStatusUpdat
 							Toast.makeText(TrustKeysActivity.this,R.string.error_fetching_omemo_key,Toast.LENGTH_SHORT).show();
 							break;
 						case SUCCESS_VERIFIED:
-							Toast.makeText(TrustKeysActivity.this,R.string.verified_omemo_key_with_certificate,Toast.LENGTH_LONG).show();
+							Toast.makeText(TrustKeysActivity.this,
+									Config.X509_VERIFICATION ? R.string.verified_omemo_key_with_certificate : R.string.all_omemo_keys_have_been_verified,
+									Toast.LENGTH_LONG).show();
 							break;
 					}
 				}

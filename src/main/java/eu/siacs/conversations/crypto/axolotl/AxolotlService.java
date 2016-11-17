@@ -98,6 +98,10 @@ public class AxolotlService implements OnAdvancedStreamFeaturesLoaded {
 		return false;
 	}
 
+	public void preVerifyFingerprint(Contact contact, String fingerprint) {
+		axolotlStore.preVerifyFingerprint(contact.getAccount(), contact.getJid().toBareJid().toPreppedString(), fingerprint);
+	}
+
 	private static class AxolotlAddressMap<T> {
 		protected Map<String, Map<Integer, T>> map;
 		protected final Object MAP_LOCK = new Object();
@@ -200,7 +204,7 @@ public class AxolotlService implements OnAdvancedStreamFeaturesLoaded {
 		public void put(AxolotlAddress address, XmppAxolotlSession value) {
 			super.put(address, value);
 			value.setNotFresh();
-			xmppConnectionService.syncRosterToDisk(account);
+			xmppConnectionService.syncRosterToDisk(account); //TODO why?
 		}
 
 		public void put(XmppAxolotlSession session) {
@@ -417,7 +421,7 @@ public class AxolotlService implements OnAdvancedStreamFeaturesLoaded {
 	}
 
 	public void purgeKey(final String fingerprint) {
-		axolotlStore.setFingerprintTrust(fingerprint.replaceAll("\\s", ""), FingerprintStatus.createCompromised());
+		axolotlStore.setFingerprintStatus(fingerprint.replaceAll("\\s", ""), FingerprintStatus.createCompromised());
 	}
 
 	public void publishOwnDeviceIdIfNeeded() {
@@ -690,7 +694,7 @@ public class AxolotlService implements OnAdvancedStreamFeaturesLoaded {
 	}
 
 	public void setFingerprintTrust(String fingerprint, FingerprintStatus status) {
-		axolotlStore.setFingerprintTrust(fingerprint, status);
+		axolotlStore.setFingerprintStatus(fingerprint, status);
 	}
 
 	private void verifySessionWithPEP(final XmppAxolotlSession session) {
@@ -749,14 +753,15 @@ public class AxolotlService implements OnAdvancedStreamFeaturesLoaded {
 
 	private void finishBuildingSessionsFromPEP(final AxolotlAddress address) {
 		AxolotlAddress ownAddress = new AxolotlAddress(account.getJid().toBareJid().toPreppedString(), 0);
-		if (!fetchStatusMap.getAll(ownAddress).containsValue(FetchStatus.PENDING)
-				&& !fetchStatusMap.getAll(address).containsValue(FetchStatus.PENDING)) {
+		Map<Integer, FetchStatus> own = fetchStatusMap.getAll(ownAddress);
+		Map<Integer, FetchStatus> remote = fetchStatusMap.getAll(address);
+		if (!own.containsValue(FetchStatus.PENDING) && !remote.containsValue(FetchStatus.PENDING)) {
 			FetchStatus report = null;
-			if (fetchStatusMap.getAll(ownAddress).containsValue(FetchStatus.SUCCESS_VERIFIED)
-					| fetchStatusMap.getAll(address).containsValue(FetchStatus.SUCCESS_VERIFIED)) {
+			if (own.containsValue(FetchStatus.SUCCESS) || remote.containsValue(FetchStatus.SUCCESS)) {
+				report = FetchStatus.SUCCESS;
+			} else if (own.containsValue(FetchStatus.SUCCESS_VERIFIED) || remote.containsValue(FetchStatus.SUCCESS_VERIFIED)) {
 				report = FetchStatus.SUCCESS_VERIFIED;
-			} else if (fetchStatusMap.getAll(ownAddress).containsValue(FetchStatus.ERROR)
-					|| fetchStatusMap.getAll(address).containsValue(FetchStatus.ERROR)) {
+			} else if (own.containsValue(FetchStatus.ERROR) || remote.containsValue(FetchStatus.ERROR)) {
 				report = FetchStatus.ERROR;
 			}
 			mXmppConnectionService.keyStatusUpdated(report);
@@ -812,7 +817,9 @@ public class AxolotlService implements OnAdvancedStreamFeaturesLoaded {
 							if (Config.X509_VERIFICATION) {
 								verifySessionWithPEP(session);
 							} else {
-								fetchStatusMap.put(address, FetchStatus.SUCCESS);
+								FingerprintStatus status = getFingerprintTrust(bundle.getIdentityKey().getFingerprint().replaceAll("\\s",""));
+								boolean verified = status != null && status.isVerified();
+								fetchStatusMap.put(address, verified ? FetchStatus.SUCCESS_VERIFIED : FetchStatus.SUCCESS);
 								finishBuildingSessionsFromPEP(address);
 							}
 						} catch (UntrustedIdentityException | InvalidKeyException e) {

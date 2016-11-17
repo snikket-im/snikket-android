@@ -702,4 +702,5 @@
 	<string name="error_unable_to_create_temporary_file">Unable to create temporary file</string>
 	<string name="this_device_has_been_verified">This device has been verified</string>
 	<string name="copy_fingerprint">Copy fingerprint</string>
+	<string name="all_omemo_keys_have_been_verified">All OMEMO keys have been verified</string>
 </resources>

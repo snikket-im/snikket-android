@@ -1106,7 +1106,12 @@ public class DatabaseBackend extends SQLiteOpenHelper {
 				continue;
 			}
 			try {
-				identityKeys.add(new IdentityKey(Base64.decode(cursor.getString(cursor.getColumnIndex(SQLiteAxolotlStore.KEY)), Base64.DEFAULT), 0));
+				String key = cursor.getString(cursor.getColumnIndex(SQLiteAxolotlStore.KEY));
+				if (key != null) {
+					identityKeys.add(new IdentityKey(Base64.decode(key, Base64.DEFAULT), 0));
+				} else {
+					Log.d(Config.LOGTAG, AxolotlService.getLogprefix(account) + "Missing key (possibly preverified) in database for account" + account.getJid().toBareJid() + ", address: " + name);
+				}
 			} catch (InvalidKeyException e) {
 				Log.d(Config.LOGTAG, AxolotlService.getLogprefix(account) + "Encountered invalid IdentityKey in database for account" + account.getJid().toBareJid() + ", address: " + name);
 			}
@@ -1134,10 +1139,6 @@ public class DatabaseBackend extends SQLiteOpenHelper {
 		);
 	}
 
-	private void storeIdentityKey(Account account, String name, boolean own, String fingerprint, String base64Serialized) {
-		storeIdentityKey(account, name, own, fingerprint, base64Serialized, FingerprintStatus.createActiveUndecided());
-	}
-
 	private void storeIdentityKey(Account account, String name, boolean own, String fingerprint, String base64Serialized, FingerprintStatus status) {
 		SQLiteDatabase db = this.getWritableDatabase();
 		ContentValues values = new ContentValues();
@@ -1146,6 +1147,22 @@ public class DatabaseBackend extends SQLiteOpenHelper {
 		values.put(SQLiteAxolotlStore.OWN, own ? 1 : 0);
 		values.put(SQLiteAxolotlStore.FINGERPRINT, fingerprint);
 		values.put(SQLiteAxolotlStore.KEY, base64Serialized);
+		values.putAll(status.toContentValues());
+		String where = SQLiteAxolotlStore.ACCOUNT+"=? AND "+SQLiteAxolotlStore.NAME+"=? AND "+SQLiteAxolotlStore.FINGERPRINT+" =?";
+		String[] whereArgs = {account.getUuid(),name,fingerprint};
+		int rows = db.update(SQLiteAxolotlStore.IDENTITIES_TABLENAME,values,where,whereArgs);
+		if (rows == 0) {
+			db.insert(SQLiteAxolotlStore.IDENTITIES_TABLENAME, null, values);
+		}
+	}
+
+	public void storePreVerification(Account account, String name, String fingerprint, FingerprintStatus status) {
+		SQLiteDatabase db = this.getWritableDatabase();
+		ContentValues values = new ContentValues();
+		values.put(SQLiteAxolotlStore.ACCOUNT, account.getUuid());
+		values.put(SQLiteAxolotlStore.NAME, name);
+		values.put(SQLiteAxolotlStore.OWN, 0);
+		values.put(SQLiteAxolotlStore.FINGERPRINT, fingerprint);
 		values.putAll(status.toContentValues());
 		db.insert(SQLiteAxolotlStore.IDENTITIES_TABLENAME, null, values);
 	}
@@ -1227,8 +1244,8 @@ public class DatabaseBackend extends SQLiteOpenHelper {
 		}
 	}
 
-	public void storeIdentityKey(Account account, String name, IdentityKey identityKey) {
-		storeIdentityKey(account, name, false, identityKey.getFingerprint().replaceAll("\\s", ""), Base64.encodeToString(identityKey.serialize(), Base64.DEFAULT));
+	public void storeIdentityKey(Account account, String name, IdentityKey identityKey, FingerprintStatus status) {
+		storeIdentityKey(account, name, false, identityKey.getFingerprint().replaceAll("\\s", ""), Base64.encodeToString(identityKey.serialize(), Base64.DEFAULT), status);
 	}
 
 	public void storeOwnIdentityKeyPair(Account account, IdentityKeyPair identityKeyPair) {

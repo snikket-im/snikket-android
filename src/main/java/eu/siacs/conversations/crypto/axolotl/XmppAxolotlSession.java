@@ -73,7 +73,7 @@ public class XmppAxolotlSession {
 	}
 
 	protected void setTrust(FingerprintStatus status) {
-		sqLiteAxolotlStore.setFingerprintTrust(getFingerprint(), status);
+		sqLiteAxolotlStore.setFingerprintStatus(getFingerprint(), status);
 	}
 
 	protected FingerprintStatus getTrust() {

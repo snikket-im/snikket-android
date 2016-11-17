@@ -173,11 +173,10 @@ public class VerifyOTRActivity extends XmppActivity implements XmppConnectionSer
 
 	protected boolean verifyWithUri(XmppUri uri) {
 		Contact contact = mConversation.getContact();
-		if (this.mConversation.getContact().getJid().equals(uri.getJid()) && uri.getFingerprint() != null) {
-			contact.addOtrFingerprint(uri.getFingerprint());
+		if (this.mConversation.getContact().getJid().equals(uri.getJid()) && uri.hasFingerprints()) {
+			xmppConnectionService.verifyFingerprints(contact,uri.getFingerprints());
 			Toast.makeText(this,R.string.verified,Toast.LENGTH_SHORT).show();
 			updateView();
-			xmppConnectionService.syncRosterToDisk(contact.getAccount());
 			return true;
 		} else {
 			Toast.makeText(this,R.string.could_not_verify_fingerprint,Toast.LENGTH_SHORT).show();

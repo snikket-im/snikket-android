@@ -114,6 +114,20 @@ public class FingerprintStatus {
         return status;
     }
 
+    public FingerprintStatus toVerified() {
+        FingerprintStatus status = new FingerprintStatus();
+        status.active = active;
+        status.trust = Trust.VERIFIED;
+        return status;
+    }
+
+    public static FingerprintStatus createInactiveVerified() {
+        final FingerprintStatus status = new FingerprintStatus();
+        status.trust = Trust.VERIFIED;
+        status.active = false;
+        return status;
+    }
+
     public enum Trust {
         COMPROMISED,
         UNDECIDED,
