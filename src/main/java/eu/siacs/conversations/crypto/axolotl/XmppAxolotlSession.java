@@ -76,7 +76,7 @@ public class XmppAxolotlSession {
 		sqLiteAxolotlStore.setFingerprintStatus(getFingerprint(), status);
 	}
 
-	protected FingerprintStatus getTrust() {
+	public FingerprintStatus getTrust() {
 		FingerprintStatus status = sqLiteAxolotlStore.getFingerprintStatus(getFingerprint());
 		return (status == null) ? FingerprintStatus.createActiveUndecided() : status;
 	}

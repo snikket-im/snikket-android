@@ -17,7 +17,8 @@ public class XmppUri {
 	protected boolean muc;
 	protected List<Fingerprint> fingerprints = new ArrayList<>();
 
-	private static final String OMEMO_URI_PARAM = "omemo-sid-";
+	public static final String OMEMO_URI_PARAM = "omemo-sid-";
+	public static final String OTR_URI_PARAM = "otr-fingerprint";
 
 	public XmppUri(String uri) {
 		try {
@@ -85,7 +86,7 @@ public class XmppUri {
 			if (parts.length == 2) {
 				String key = parts[0].toLowerCase(Locale.US);
 				String value = parts[1];
-				if ("otr-fingerprint".equals(key)) {
+				if (OTR_URI_PARAM.equals(key)) {
 					fingerprints.add(new Fingerprint(FingerprintType.OTR,value));
 				}
 				if (key.startsWith(OMEMO_URI_PARAM)) {

@@ -842,9 +842,13 @@ public class StartConversationActivity extends XmppActivity implements OnRosterU
     }
 
     private boolean handleJid(Invite invite) {
-        Log.d(Config.LOGTAG,"handling invite for "+invite.getJid());
-        for(XmppUri.Fingerprint fp : invite.getFingerprints()) {
-            Log.d(Config.LOGTAG,fp.toString());
+        Account account = xmppConnectionService.findAccountByJid(invite.getJid());
+        if (account != null && invite.hasFingerprints()) {
+            if (xmppConnectionService.verifyFingerprints(account,invite.getFingerprints())) {
+                switchToAccount(account);
+                finish();
+                return true;
+            }
         }
         List<Contact> contacts = xmppConnectionService.findContacts(invite.getJid());
         if (invite.isMuc()) {
@@ -864,12 +868,6 @@ public class StartConversationActivity extends XmppActivity implements OnRosterU
             if (invite.hasFingerprints()) {
                 xmppConnectionService.verifyFingerprints(contact,invite.getFingerprints());
             }
-            /*if (invite.getFingerprint() != null) {
-                if (contact.addOtrFingerprint(invite.getFingerprint())) {
-                    Log.d(Config.LOGTAG, "added new fingerprint");
-                    xmppConnectionService.syncRosterToDisk(contact.getAccount());
-                }
-            }*/
             switchToConversation(contact);
             return true;
         } else {

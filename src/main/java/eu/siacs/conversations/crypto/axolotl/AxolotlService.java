@@ -102,6 +102,10 @@ public class AxolotlService implements OnAdvancedStreamFeaturesLoaded {
 		axolotlStore.preVerifyFingerprint(contact.getAccount(), contact.getJid().toBareJid().toPreppedString(), fingerprint);
 	}
 
+	public void preVerifyFingerprint(Account account, String fingerprint) {
+		axolotlStore.preVerifyFingerprint(account, account.getJid().toBareJid().toPreppedString(), fingerprint);
+	}
+
 	private static class AxolotlAddressMap<T> {
 		protected Map<String, Map<Integer, T>> map;
 		protected final Object MAP_LOCK = new Object();
@@ -293,10 +297,12 @@ public class AxolotlService implements OnAdvancedStreamFeaturesLoaded {
 		return new AxolotlAddress(jid.toPreppedString(), 0);
 	}
 
-	private Set<XmppAxolotlSession> findOwnSessions() {
+	public Set<XmppAxolotlSession> findOwnSessions() {
 		AxolotlAddress ownAddress = getAddressForJid(account.getJid().toBareJid());
 		return new HashSet<>(this.sessions.getAll(ownAddress).values());
 	}
+
+
 
 	private Set<XmppAxolotlSession> findSessionsForContact(Contact contact) {
 		AxolotlAddress contactAddress = getAddressForJid(contact.getJid());
