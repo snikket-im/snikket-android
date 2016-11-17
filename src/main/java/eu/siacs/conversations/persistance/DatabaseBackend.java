@@ -1285,10 +1285,12 @@ public class DatabaseBackend extends SQLiteOpenHelper {
 			count = 0;
 		}
 		cursor.close();
+		Log.d(Config.LOGTAG,"start time counter reached "+count);
 		return count >= Config.FREQUENT_RESTARTS_THRESHOLD;
 	}
 
 	public void clearStartTimeCounter() {
+		Log.d(Config.LOGTAG,"resetting start time counter");
 		SQLiteDatabase db = this.getWritableDatabase();
 		db.execSQL("delete from "+START_TIMES_TABLE);
 	}
