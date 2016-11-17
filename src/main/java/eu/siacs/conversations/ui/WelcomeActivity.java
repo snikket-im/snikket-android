@@ -8,22 +8,35 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
-import eu.siacs.conversations.R;
+import java.util.List;
 
-public class WelcomeActivity extends Activity {
+import eu.siacs.conversations.R;
+import eu.siacs.conversations.entities.Account;
+
+public class WelcomeActivity extends XmppActivity {
+
+	@Override
+	protected void refreshUiReal() {
+
+	}
+
+	@Override
+	void onBackendConnected() {
+
+	}
 
 	@Override
 	protected void onCreate(final Bundle savedInstanceState) {
 		if (getResources().getBoolean(R.bool.portrait_only)) {
 			setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 		}
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.welcome);
 		final ActionBar ab = getActionBar();
 		if (ab != null) {
 			ab.setDisplayShowHomeEnabled(false);
 			ab.setDisplayHomeAsUpEnabled(false);
 		}
-		super.onCreate(savedInstanceState);
-		setContentView(R.layout.welcome);
 		final Button createAccount = (Button) findViewById(R.id.create_account);
 		createAccount.setOnClickListener(new View.OnClickListener() {
 			@Override
@@ -37,7 +50,15 @@ public class WelcomeActivity extends Activity {
 		useOwnProvider.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				startActivity(new Intent(WelcomeActivity.this, EditAccountActivity.class));
+				List<Account> accounts = xmppConnectionService.getAccounts();
+				Intent intent = new Intent(WelcomeActivity.this, EditAccountActivity.class);
+				if (accounts.size() == 1) {
+					intent.putExtra("jid",accounts.get(0).getJid().toBareJid().toString());
+					intent.putExtra("init",true);
+				} else if (accounts.size() >= 1) {
+					intent = new Intent(WelcomeActivity.this, ManageAccountActivity.class);
+				}
+				startActivity(intent);
 			}
 		});
 
