@@ -44,6 +44,7 @@ import eu.siacs.conversations.Config;
 import eu.siacs.conversations.OmemoActivity;
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.crypto.axolotl.AxolotlService;
+import eu.siacs.conversations.crypto.axolotl.XmppAxolotlSession;
 import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.services.XmppConnectionService.OnCaptchaRequested;
 import eu.siacs.conversations.services.XmppConnectionService;
@@ -251,6 +252,7 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
 	private TableRow mPushRow;
 	private String mSavedInstanceAccount;
 	private boolean mSavedInstanceInit = false;
+	private Button mClearDevicesButton;
 
 	public void refreshUiReal() {
 		invalidateOptionsMenu();
@@ -502,6 +504,13 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
 		this.mNamePort = (LinearLayout) findViewById(R.id.name_port);
 		this.mHostname = (EditText) findViewById(R.id.hostname);
 		this.mHostname.addTextChangedListener(mTextWatcher);
+		this.mClearDevicesButton = (Button) findViewById(R.id.clear_devices);
+		this.mClearDevicesButton.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				showWipePepDialog();
+			}
+		});
 		this.mPort = (EditText) findViewById(R.id.port);
 		this.mPort.setText("5222");
 		this.mPort.addTextChangedListener(mTextWatcher);
@@ -540,7 +549,6 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
 		final MenuItem showMoreInfo = menu.findItem(R.id.action_server_info_show_more);
 		final MenuItem changePassword = menu.findItem(R.id.action_change_password_on_server);
 		final MenuItem showPassword = menu.findItem(R.id.action_show_password);
-		final MenuItem clearDevices = menu.findItem(R.id.action_clear_devices);
 		final MenuItem renewCertificate = menu.findItem(R.id.action_renew_certificate);
 		final MenuItem mamPrefs = menu.findItem(R.id.action_mam_prefs);
 		final MenuItem changePresence = menu.findItem(R.id.action_change_presence);
@@ -554,17 +562,12 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
 				changePassword.setVisible(false);
 			}
 			mamPrefs.setVisible(mAccount.getXmppConnection().getFeatures().mam());
-			Set<Integer> otherDevices = mAccount.getAxolotlService().getOwnDeviceIds();
-			if (otherDevices == null || otherDevices.isEmpty() || !Config.supportOmemo()) {
-				clearDevices.setVisible(false);
-			}
 			changePresence.setVisible(manuallyChangePresence());
 		} else {
 			showQrCode.setVisible(false);
 			showBlocklist.setVisible(false);
 			showMoreInfo.setVisible(false);
 			changePassword.setVisible(false);
-			clearDevices.setVisible(false);
 			mamPrefs.setVisible(false);
 			changePresence.setVisible(false);
 		}
@@ -705,9 +708,6 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
 				break;
 			case R.id.action_mam_prefs:
 				editMamPrefs();
-				break;
-			case R.id.action_clear_devices:
-				showWipePepDialog();
 				break;
 			case R.id.action_renew_certificate:
 				renewCertificate();
@@ -904,15 +904,21 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
 			}
 			boolean hasKeys = false;
 			keys.removeAllViews();
-			for (final String fingerprint : mAccount.getAxolotlService().getFingerprintsForOwnSessions()) {
-				if (ownAxolotlFingerprint.equals(fingerprint)) {
-					continue;
+			for(XmppAxolotlSession session : mAccount.getAxolotlService().findOwnSessions()) {
+				if (!session.getTrust().isCompromised()) {
+					boolean highlight = session.getFingerprint().equals(messageFingerprint);
+					addFingerprintRow(keys,session,highlight);
+					hasKeys = true;
 				}
-				boolean highlight = fingerprint.equals(messageFingerprint);
-				hasKeys |= addFingerprintRow(keys, mAccount, fingerprint, highlight);
 			}
 			if (hasKeys && Config.supportOmemo()) {
 				keysCard.setVisibility(View.VISIBLE);
+				Set<Integer> otherDevices = mAccount.getAxolotlService().getOwnDeviceIds();
+				if (otherDevices == null || otherDevices.isEmpty()) {
+					mClearDevicesButton.setVisibility(View.GONE);
+				} else {
+					mClearDevicesButton.setVisibility(View.VISIBLE);
+				}
 			} else {
 				keysCard.setVisibility(View.GONE);
 			}

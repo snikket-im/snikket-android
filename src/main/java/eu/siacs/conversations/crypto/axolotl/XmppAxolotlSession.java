@@ -132,4 +132,8 @@ public class XmppAxolotlSession {
 			return null;
 		}
 	}
+
+	public Account getAccount() {
+		return account;
+	}
 }

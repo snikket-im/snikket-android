@@ -41,6 +41,7 @@ import eu.siacs.conversations.R;
 import eu.siacs.conversations.crypto.PgpEngine;
 import eu.siacs.conversations.crypto.axolotl.AxolotlService;
 import eu.siacs.conversations.crypto.axolotl.FingerprintStatus;
+import eu.siacs.conversations.crypto.axolotl.XmppAxolotlSession;
 import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.entities.Contact;
 import eu.siacs.conversations.entities.ListItem;
@@ -445,9 +446,12 @@ public class ContactDetailsActivity extends OmemoActivity implements OnAccountUp
 			}
 		}
 		if (Config.supportOmemo()) {
-			for (final String fingerprint : contact.getAccount().getAxolotlService().getFingerprintsForContact(contact)) {
-				boolean highlight = fingerprint.equals(messageFingerprint);
-				hasKeys |= addFingerprintRow(keys, contact.getAccount(), fingerprint, highlight);
+			for (final XmppAxolotlSession session : contact.getAccount().getAxolotlService().findSessionsForContact(contact)) {
+				if (!session.getTrust().isCompromised()) {
+					boolean highlight = session.getFingerprint().equals(messageFingerprint);
+					hasKeys = true;
+					addFingerprintRow(keys, session, highlight);
+				}
 			}
 		}
 		if (Config.supportOpenPgp() && contact.getPgpKeyId() != 0) {

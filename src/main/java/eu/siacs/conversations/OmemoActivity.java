@@ -15,6 +15,7 @@ import android.widget.Toast;
 import java.security.cert.X509Certificate;
 
 import eu.siacs.conversations.crypto.axolotl.FingerprintStatus;
+import eu.siacs.conversations.crypto.axolotl.XmppAxolotlSession;
 import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.ui.XmppActivity;
 import eu.siacs.conversations.ui.widget.Switch;
@@ -60,9 +61,17 @@ public abstract class OmemoActivity extends XmppActivity {
         }
     }
 
-    protected boolean addFingerprintRow(LinearLayout keys, final Account account, final String fingerprint, boolean highlight) {
-        final FingerprintStatus status = account.getAxolotlService().getFingerprintTrust(fingerprint);
-        return status != null && addFingerprintRowWithListeners(keys, account, fingerprint, highlight, status, true, true, new CompoundButton.OnCheckedChangeListener() {
+    protected void addFingerprintRow(LinearLayout keys, final XmppAxolotlSession session, boolean highlight) {
+        final Account account = session.getAccount();
+        final String fingerprint = session.getFingerprint();
+        addFingerprintRowWithListeners(keys,
+                session.getAccount(),
+                session.getFingerprint(),
+                highlight,
+                session.getTrust(),
+                true,
+                true,
+                new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 account.getAxolotlService().setFingerprintTrust(fingerprint, FingerprintStatus.createActive(isChecked));
@@ -70,7 +79,7 @@ public abstract class OmemoActivity extends XmppActivity {
         });
     }
 
-    protected boolean addFingerprintRowWithListeners(LinearLayout keys, final Account account,
+    protected void addFingerprintRowWithListeners(LinearLayout keys, final Account account,
                                                      final String fingerprint,
                                                      boolean highlight,
                                                      FingerprintStatus status,
@@ -78,9 +87,6 @@ public abstract class OmemoActivity extends XmppActivity {
                                                      boolean undecidedNeedEnablement,
                                                      CompoundButton.OnCheckedChangeListener
                                                              onCheckedChangeListener) {
-        if (status.isCompromised()) {
-            return false;
-        }
         View view = getLayoutInflater().inflate(R.layout.contact_key, keys, false);
         TextView key = (TextView) view.findViewById(R.id.key);
         TextView keyType = (TextView) view.findViewById(R.id.key_type);
@@ -184,7 +190,6 @@ public abstract class OmemoActivity extends XmppActivity {
         key.setText(CryptoHelper.prettifyFingerprint(fingerprint.substring(2)));
 
         keys.addView(view);
-        return true;
     }
 
     public void showPurgeKeyDialog(final Account account, final String fingerprint) {

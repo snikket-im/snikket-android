@@ -591,7 +591,7 @@
                 android:background="?attr/infocard_border"
                 android:orientation="vertical"
                 android:padding="@dimen/infocard_padding"
-                android:visibility="gone">
+                android:visibility="visible">
 
                 <TextView
                     android:id="@+id/other_device_keys_title"
@@ -610,6 +610,14 @@
                     android:orientation="vertical"
                     android:showDividers="middle">
                 </LinearLayout>
+                <Button
+                    android:id="@+id/clear_devices"
+                    style="?android:attr/borderlessButtonStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/clear_other_devices"
+                    android:layout_gravity="center_horizontal"
+                    android:textColor="@color/accent"/>
             </LinearLayout>
         </LinearLayout>
     </ScrollView>
