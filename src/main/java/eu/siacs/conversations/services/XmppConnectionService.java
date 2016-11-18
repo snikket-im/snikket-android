@@ -547,7 +547,7 @@ public class XmppConnectionService extends Service {
 			switch (action) {
 				case ConnectivityManager.CONNECTIVITY_ACTION:
 					if (hasInternetConnection() && Config.RESET_ATTEMPT_COUNT_ON_NETWORK_CHANGE) {
-						resetAllAttemptCounts(true);
+						resetAllAttemptCounts(true, false);
 					}
 					break;
 				case ACTION_MERGE_PHONE_CONTACTS:
@@ -573,7 +573,7 @@ public class XmppConnectionService extends Service {
 					dismissErrorNotifications();
 					break;
 				case ACTION_TRY_AGAIN:
-					resetAllAttemptCounts(false);
+					resetAllAttemptCounts(false, true);
 					interactive = true;
 					break;
 				case ACTION_REPLY_TO_CONVERSATION:
@@ -672,7 +672,7 @@ public class XmppConnectionService extends Service {
 						long timeout = Config.CONNECT_TIMEOUT - secondsSinceLastConnect;
 						if (timeout < 0) {
 							Log.d(Config.LOGTAG, account.getJid() + ": time out during connect reconnecting");
-							account.getXmppConnection().resetAttemptCount();
+							account.getXmppConnection().resetAttemptCount(false);
 							reconnectAccount(account, true, interactive);
 						} else if (discoTimeout < 0) {
 							account.getXmppConnection().sendDiscoTimeout();
@@ -814,13 +814,13 @@ public class XmppConnectionService extends Service {
 		}
 	}
 
-	private void resetAllAttemptCounts(boolean reallyAll) {
+	private void resetAllAttemptCounts(boolean reallyAll, boolean retryImmediately) {
 		Log.d(Config.LOGTAG, "resetting all attempt counts");
 		for (Account account : accounts) {
 			if (account.hasErrorStatus() || reallyAll) {
 				final XmppConnection connection = account.getXmppConnection();
 				if (connection != null) {
-					connection.resetAttemptCount();
+					connection.resetAttemptCount(retryImmediately);
 				}
 			}
 			if (account.setShowErrorNotification(true)) {
