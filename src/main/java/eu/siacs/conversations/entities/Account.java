@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Locale;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.CopyOnWriteArraySet;
 
@@ -489,7 +490,7 @@ public class Account extends AbstractEntity {
 				if (publicKey == null || !(publicKey instanceof DSAPublicKey)) {
 					return null;
 				}
-				this.otrFingerprint = new OtrCryptoEngineImpl().getFingerprint(publicKey);
+				this.otrFingerprint = new OtrCryptoEngineImpl().getFingerprint(publicKey).toLowerCase(Locale.US);
 				return this.otrFingerprint;
 			} catch (final OtrCryptoException ignored) {
 				return null;
