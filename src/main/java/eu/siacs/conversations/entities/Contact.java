@@ -301,7 +301,7 @@ public class Contact implements ListItem, Blockable {
 					for (int i = 0; i < prints.length(); ++i) {
 						final String print = prints.isNull(i) ? null : prints.getString(i);
 						if (print != null && !print.isEmpty()) {
-							fingerprints.add(prints.getString(i));
+							fingerprints.add(prints.getString(i).toLowerCase(Locale.US));
 						}
 					}
 				}

@@ -20,6 +20,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Locale;
 
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.crypto.PgpDecryptionService;
@@ -627,7 +628,7 @@ public class Conversation extends AbstractEntity implements Blockable, Comparabl
 					return null;
 				}
 				DSAPublicKey remotePubKey = (DSAPublicKey) getOtrSession().getRemotePublicKey();
-				this.otrFingerprint = getAccount().getOtrService().getFingerprint(remotePubKey);
+				this.otrFingerprint = getAccount().getOtrService().getFingerprint(remotePubKey).toLowerCase(Locale.US);
 			} catch (final OtrCryptoException | UnsupportedOperationException ignored) {
 				return null;
 			}
