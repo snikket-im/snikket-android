@@ -957,14 +957,10 @@ public class AxolotlService implements OnAdvancedStreamFeaturesLoaded {
 		if (remoteSessions.isEmpty()) {
 			return null;
 		}
-		Log.d(Config.LOGTAG, AxolotlService.getLogprefix(account) + "Building axolotl foreign keyElements...");
 		for (XmppAxolotlSession session : remoteSessions) {
-			Log.v(Config.LOGTAG, AxolotlService.getLogprefix(account) + session.getRemoteAddress().toString());
 			axolotlMessage.addDevice(session);
 		}
-		Log.d(Config.LOGTAG, AxolotlService.getLogprefix(account) + "Building axolotl own keyElements...");
 		for (XmppAxolotlSession session : ownSessions) {
-			Log.v(Config.LOGTAG, AxolotlService.getLogprefix(account) + session.getRemoteAddress().toString());
 			axolotlMessage.addDevice(session);
 		}
 
