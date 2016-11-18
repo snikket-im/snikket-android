@@ -344,7 +344,7 @@ public class XmppConnectionService extends Service {
 								Log.d(Config.LOGTAG, account.getJid().toBareJid() + ": went into offline state during low ping mode. reconnecting now");
 								reconnectAccount(account, true, false);
 							} else {
-								int timeToReconnect = mRandom.nextInt(20) + 10;
+								int timeToReconnect = mRandom.nextInt(10) + 2;
 								scheduleWakeUpCall(timeToReconnect, account.getUuid().hashCode());
 							}
 						}
