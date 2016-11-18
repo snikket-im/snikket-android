@@ -950,7 +950,7 @@ public class XmppConnection implements Runnable {
 	}
 
 	public void resetEverything() {
-		resetAttemptCount();
+		resetAttemptCount(true);
 		resetStreamId();
 		clearIqCallbacks();
 		mStanzaQueue.clear();

@@ -615,7 +615,7 @@ public class XmppConnectionService extends Service {
 		}
 		synchronized (this) {
 			this.wakeLock.acquire();
-			boolean pingNow = false;
+			boolean pingNow = ConnectivityManager.CONNECTIVITY_ACTION.equals(action);
 			HashSet<Account> pingCandidates = new HashSet<>();
 			for (Account account : accounts) {
 				pingNow |= processAccountState(account,
@@ -698,7 +698,7 @@ public class XmppConnectionService extends Service {
 					long discoTimeout = Config.CONNECT_DISCO_TIMEOUT - secondsSinceLastDisco;
 					long timeout = Config.CONNECT_TIMEOUT - secondsSinceLastConnect;
 					if (timeout < 0) {
-						Log.d(Config.LOGTAG, account.getJid() + ": time out during connect reconnecting");
+						Log.d(Config.LOGTAG, account.getJid() + ": time out during connect reconnecting (secondsSinceLast="+secondsSinceLastConnect+")");
 						account.getXmppConnection().resetAttemptCount(false);
 						reconnectAccount(account, true, interactive);
 					} else if (discoTimeout < 0) {
