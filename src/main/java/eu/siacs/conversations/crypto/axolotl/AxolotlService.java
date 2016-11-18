@@ -172,7 +172,6 @@ public class AxolotlService implements OnAdvancedStreamFeaturesLoaded {
 		private void putDevicesForJid(String bareJid, List<Integer> deviceIds, SQLiteAxolotlStore store) {
 			for (Integer deviceId : deviceIds) {
 				AxolotlAddress axolotlAddress = new AxolotlAddress(bareJid, deviceId);
-				Log.d(Config.LOGTAG, AxolotlService.getLogprefix(account) + "Building session for remote address: " + axolotlAddress.toString());
 				IdentityKey identityKey = store.loadSession(axolotlAddress).getSessionState().getRemoteIdentityKey();
 				if(Config.X509_VERIFICATION) {
 					X509Certificate certificate = store.getFingerprintCertificate(identityKey.getFingerprint().replaceAll("\\s", ""));
