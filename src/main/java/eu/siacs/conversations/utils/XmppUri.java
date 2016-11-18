@@ -85,7 +85,7 @@ public class XmppUri {
 			String[] parts = pair.split("=",2);
 			if (parts.length == 2) {
 				String key = parts[0].toLowerCase(Locale.US);
-				String value = parts[1];
+				String value = parts[1].toLowerCase(Locale.US);
 				if (OTR_URI_PARAM.equals(key)) {
 					fingerprints.add(new Fingerprint(FingerprintType.OTR,value));
 				}
