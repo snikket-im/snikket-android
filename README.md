@@ -329,6 +329,11 @@ feature is regarded experimental. Conversations is the only client that uses
 XEP-0027 with conferences. (The XEP neither specifically allows nor disallows
 this.)
 
+#### Why is Conversations not end-to-end encrypted by default
+We briefly had OMEMO as the default E2EE but it turned out to be a usabilty nightmare and thus we reverted that. You can find more information in [the commit message](https://github.com/siacs/Conversations/commit/035d0c79572d5981c53d1bff7f30b484c6542f17) of that change.
+
+Quick reminder that Conversations **always** uses TLS to connect to your server. It won‘t even connect to a server without TLS.
+
 ### What clients do I use on other platforms
 There are XMPP Clients available for all major platforms.
 ####Windows / Linux
