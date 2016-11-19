@@ -396,8 +396,11 @@ public class XmppConnection implements Runnable {
 								throw new SecurityException();
 							}
 						}
-						if (startXmpp(localSocket))
+						if (startXmpp(localSocket)) {
 							break; // successfully connected to server that speaks xmpp
+						} else {
+							localSocket.close();
+						}
 					} catch (final SecurityException e) {
 						throw e;
 					} catch (InterruptedException e) {
