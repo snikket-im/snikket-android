@@ -591,7 +591,7 @@
                 android:background="?attr/infocard_border"
                 android:orientation="vertical"
                 android:padding="@dimen/infocard_padding"
-                android:visibility="visible">
+                android:visibility="gone">
 
                 <TextView
                     android:id="@+id/other_device_keys_title"
