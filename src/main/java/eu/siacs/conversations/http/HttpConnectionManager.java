@@ -24,6 +24,7 @@ import eu.siacs.conversations.services.AbstractConnectionManager;
 import eu.siacs.conversations.services.XmppConnectionService;
 import eu.siacs.conversations.utils.CryptoHelper;
 import eu.siacs.conversations.utils.SSLSocketHelper;
+import eu.siacs.conversations.utils.TLSSocketFactory;
 
 public class HttpConnectionManager extends AbstractConnectionManager {
 
@@ -77,18 +78,7 @@ public class HttpConnectionManager extends AbstractConnectionManager {
 							new StrictHostnameVerifier());
 		}
 		try {
-			final SSLContext sc = SSLSocketHelper.getSSLContext();
-			sc.init(null, new X509TrustManager[]{trustManager},
-					mXmppConnectionService.getRNG());
-
-			final SSLSocketFactory sf = sc.getSocketFactory();
-			final String[] cipherSuites = CryptoHelper.getOrderedCipherSuites(
-					sf.getSupportedCipherSuites());
-			if (cipherSuites.length > 0) {
-				sc.getDefaultSSLParameters().setCipherSuites(cipherSuites);
-
-			}
-
+			final SSLSocketFactory sf = new TLSSocketFactory(new X509TrustManager[]{trustManager}, mXmppConnectionService.getRNG());
 			connection.setSSLSocketFactory(sf);
 			connection.setHostnameVerifier(hostnameVerifier);
 		} catch (final KeyManagementException | NoSuchAlgorithmException ignored) {
