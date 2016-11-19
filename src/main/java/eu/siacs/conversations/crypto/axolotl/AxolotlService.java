@@ -25,7 +25,11 @@ import java.security.PrivateKey;
 import java.security.Security;
 import java.security.Signature;
 import java.security.cert.X509Certificate;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -296,16 +300,20 @@ public class AxolotlService implements OnAdvancedStreamFeaturesLoaded {
 		return new AxolotlAddress(jid.toPreppedString(), 0);
 	}
 
-	public Set<XmppAxolotlSession> findOwnSessions() {
+	public Collection<XmppAxolotlSession> findOwnSessions() {
 		AxolotlAddress ownAddress = getAddressForJid(account.getJid().toBareJid());
-		return new HashSet<>(this.sessions.getAll(ownAddress).values());
+		ArrayList<XmppAxolotlSession> s = new ArrayList<>(this.sessions.getAll(ownAddress).values());
+		Collections.sort(s);
+		return s;
 	}
 
 
 
-	public Set<XmppAxolotlSession> findSessionsForContact(Contact contact) {
+	public Collection<XmppAxolotlSession> findSessionsForContact(Contact contact) {
 		AxolotlAddress contactAddress = getAddressForJid(contact.getJid());
-		return new HashSet<>(this.sessions.getAll(contactAddress).values());
+		ArrayList<XmppAxolotlSession> s = new ArrayList<>(this.sessions.getAll(contactAddress).values());
+		Collections.sort(s);
+		return s;
 	}
 
 	private Set<XmppAxolotlSession> findSessionsForConversation(Conversation conversation) {
@@ -932,7 +940,7 @@ public class AxolotlService implements OnAdvancedStreamFeaturesLoaded {
 				account.getJid().toBareJid(), getOwnDeviceId());
 
 		Set<XmppAxolotlSession> remoteSessions = findSessionsForConversation(conversation);
-		Set<XmppAxolotlSession> ownSessions = findOwnSessions();
+		Collection<XmppAxolotlSession> ownSessions = findOwnSessions();
 		if (remoteSessions.isEmpty()) {
 			return null;
 		}

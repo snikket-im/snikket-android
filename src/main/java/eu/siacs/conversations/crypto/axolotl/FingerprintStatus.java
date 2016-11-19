@@ -3,10 +3,13 @@ package eu.siacs.conversations.crypto.axolotl;
 import android.content.ContentValues;
 import android.database.Cursor;
 
-public class FingerprintStatus {
+public class FingerprintStatus implements Comparable<FingerprintStatus> {
+
+    private static final long DO_NOT_OVERWRITE = -1;
 
     private Trust trust = Trust.UNTRUSTED;
     private boolean active = false;
+    private long lastActivation = DO_NOT_OVERWRITE;
 
     @Override
     public boolean equals(Object o) {
@@ -34,6 +37,9 @@ public class FingerprintStatus {
         final ContentValues contentValues = new ContentValues();
         contentValues.put(SQLiteAxolotlStore.TRUST,trust.toString());
         contentValues.put(SQLiteAxolotlStore.ACTIVE,active ? 1 : 0);
+        if (lastActivation != DO_NOT_OVERWRITE) {
+            contentValues.put(SQLiteAxolotlStore.LAST_ACTIVATION,lastActivation);
+        }
         return contentValues;
     }
 
@@ -45,6 +51,7 @@ public class FingerprintStatus {
             status.trust = Trust.UNTRUSTED;
         }
         status.active = cursor.getInt(cursor.getColumnIndex(SQLiteAxolotlStore.ACTIVE)) > 0;
+        status.lastActivation = cursor.getLong(cursor.getColumnIndex(SQLiteAxolotlStore.LAST_ACTIVATION));
         return status;
     }
 
@@ -52,6 +59,7 @@ public class FingerprintStatus {
         final FingerprintStatus status = new FingerprintStatus();
         status.trust = Trust.UNDECIDED;
         status.active = true;
+        status.lastActivation = System.currentTimeMillis();
         return status;
     }
 
@@ -92,6 +100,9 @@ public class FingerprintStatus {
     public FingerprintStatus toActive() {
         FingerprintStatus status = new FingerprintStatus();
         status.trust = trust;
+        if (!status.active) {
+            status.lastActivation = System.currentTimeMillis();
+        }
         status.active = true;
         return status;
     }
@@ -126,6 +137,23 @@ public class FingerprintStatus {
         status.trust = Trust.VERIFIED;
         status.active = false;
         return status;
+    }
+
+    @Override
+    public int compareTo(FingerprintStatus o) {
+        if (active == o.active) {
+            if (lastActivation > o.lastActivation) {
+                return -1;
+            } else if (lastActivation < o.lastActivation) {
+                return 1;
+            } else {
+                return 0;
+            }
+        } else if (active){
+            return -1;
+        } else {
+            return 1;
+        }
     }
 
     public enum Trust {

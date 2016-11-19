@@ -38,6 +38,7 @@ public class SQLiteAxolotlStore implements AxolotlStore {
 	public static final String TRUSTED = "trusted"; //no longer used
 	public static final String TRUST = "trust";
 	public static final String ACTIVE = "active";
+	public static final String LAST_ACTIVATION = "last_activation";
 	public static final String OWN = "ownkey";
 	public static final String CERTIFICATE = "certificate";
 

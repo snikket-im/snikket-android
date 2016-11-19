@@ -55,7 +55,7 @@ public class DatabaseBackend extends SQLiteOpenHelper {
 	private static DatabaseBackend instance = null;
 
 	private static final String DATABASE_NAME = "history";
-	private static final int DATABASE_VERSION = 31;
+	private static final int DATABASE_VERSION = 32;
 
 	private static String CREATE_CONTATCS_STATEMENT = "create table "
 			+ Contact.TABLENAME + "(" + Contact.ACCOUNT + " TEXT, "
@@ -132,6 +132,7 @@ public class DatabaseBackend extends SQLiteOpenHelper {
 			+ SQLiteAxolotlStore.CERTIFICATE + " BLOB, "
 			+ SQLiteAxolotlStore.TRUST + " TEXT, "
 			+ SQLiteAxolotlStore.ACTIVE + " NUMBER, "
+			+ SQLiteAxolotlStore.LAST_ACTIVATION + " NUMBER,"
 			+ SQLiteAxolotlStore.KEY + " TEXT, FOREIGN KEY("
 			+ SQLiteAxolotlStore.ACCOUNT
 			+ ") REFERENCES " + Account.TABLENAME + "(" + Account.UUID + ") ON DELETE CASCADE, "
@@ -376,6 +377,12 @@ public class DatabaseBackend extends SQLiteOpenHelper {
 				db.update(SQLiteAxolotlStore.IDENTITIES_TABLENAME,entry.getValue(),whereClause,where);
 			}
 
+		}
+		if (oldVersion < 32 && newVersion >= 32) {
+			db.execSQL("ALTER TABLE "+ SQLiteAxolotlStore.IDENTITIES_TABLENAME + " ADD COLUMN "+SQLiteAxolotlStore.LAST_ACTIVATION + " NUMBER");
+			ContentValues defaults = new ContentValues();
+			defaults.put(SQLiteAxolotlStore.LAST_ACTIVATION,System.currentTimeMillis());
+			db.update(SQLiteAxolotlStore.IDENTITIES_TABLENAME,defaults,null,null);
 		}
 	}
 
@@ -1046,6 +1053,7 @@ public class DatabaseBackend extends SQLiteOpenHelper {
 	private Cursor getIdentityKeyCursor(SQLiteDatabase db, Account account, String name, Boolean own, String fingerprint) {
 		String[] columns = {SQLiteAxolotlStore.TRUST,
 				SQLiteAxolotlStore.ACTIVE,
+				SQLiteAxolotlStore.LAST_ACTIVATION,
 				SQLiteAxolotlStore.KEY};
 		ArrayList<String> selectionArgs = new ArrayList<>(4);
 		selectionArgs.add(account.getUuid());
