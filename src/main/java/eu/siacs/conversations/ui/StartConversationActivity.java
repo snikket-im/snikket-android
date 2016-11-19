@@ -401,7 +401,7 @@ public class StartConversationActivity extends XmppActivity implements OnRosterU
         EnterJidDialog dialog = new EnterJidDialog(
                 this, mKnownHosts, mActivatedAccounts,
                 getString(R.string.create_contact), getString(R.string.create),
-                prefilledJid, null, !invite.hasFingerprints()
+                prefilledJid, null, invite == null || !invite.hasFingerprints()
         );
 
         dialog.setOnEnterJidDialogPositiveListener(new EnterJidDialog.OnEnterJidDialogPositiveListener() {
@@ -420,8 +420,10 @@ public class StartConversationActivity extends XmppActivity implements OnRosterU
                 if (contact.showInRoster()) {
                     throw new EnterJidDialog.JidError(getString(R.string.contact_already_exists));
                 } else {
-                    //contact.addOtrFingerprint(fingerprint);
                     xmppConnectionService.createContact(contact);
+                    if (invite != null && invite.hasFingerprints()) {
+                        xmppConnectionService.verifyFingerprints(contact,invite.getFingerprints());
+                    }
                     switchToConversation(contact);
                     return true;
                 }
