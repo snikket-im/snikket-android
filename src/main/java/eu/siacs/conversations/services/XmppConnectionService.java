@@ -2897,8 +2897,6 @@ public class XmppConnectionService extends Service {
 			if (connection == null) {
 				connection = createConnection(account);
 				account.setXmppConnection(connection);
-			} else {
-				connection.interrupt();
 			}
 			if (!account.isOptionSet(Account.OPTION_DISABLED)) {
 				if (!force) {
@@ -2907,6 +2905,7 @@ public class XmppConnectionService extends Service {
 				Thread thread = new Thread(connection);
 				connection.setInteractive(interactive);
 				connection.prepareNewConnection();
+				connection.interrupt();
 				thread.start();
 				scheduleWakeUpCall(Config.CONNECT_DISCO_TIMEOUT, account.getUuid().hashCode());
 			} else {
