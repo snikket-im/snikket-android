@@ -787,6 +787,20 @@ public class DatabaseBackend extends SQLiteOpenHelper {
 		}
 	}
 
+	public long getLastTimeFingerprintUsed(Account account, String fingerprint) {
+		String SQL = "select messages.timeSent from accounts join conversations on accounts.uuid=conversations.accountUuid join messages on conversations.uuid=messages.conversationUuid where accounts.uuid=? and messages.axolotl_fingerprint=? order by messages.timesent desc limit 1";
+		String[] args = {account.getUuid(), fingerprint};
+		Cursor cursor = getReadableDatabase().rawQuery(SQL,args);
+		long time;
+		if (cursor.moveToFirst()) {
+			time = cursor.getLong(0);
+		} else {
+			time = 0;
+		}
+		cursor.close();
+		return time;
+	}
+
 	public Pair<Long,String> getLastClearDate(Account account) {
 		SQLiteDatabase db = this.getReadableDatabase();
 		String[] columns = {Conversation.ATTRIBUTES};

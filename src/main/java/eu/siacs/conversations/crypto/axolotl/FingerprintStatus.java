@@ -156,6 +156,10 @@ public class FingerprintStatus implements Comparable<FingerprintStatus> {
         }
     }
 
+    public long getLastActivation() {
+        return lastActivation;
+    }
+
     public enum Trust {
         COMPROMISED,
         UNDECIDED,
