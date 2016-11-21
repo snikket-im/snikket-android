@@ -35,6 +35,11 @@ import eu.siacs.conversations.xmpp.jid.Jid;
 public class SettingsActivity extends XmppActivity implements
 		OnSharedPreferenceChangeListener {
 
+	public static final String KEEP_FOREGROUND_SERVICE = "keep_foreground_service";
+	public static final String AWAY_WHEN_SCREEN_IS_OFF = "away_when_screen_off";
+	public static final String TREAT_VIBRATE_AS_SILENT = "treat_vibrate_as_silent";
+	public static final String MANUALLY_CHANGE_PRESENCE = "manually_change_presence";
+
 	public static final int REQUEST_WRITE_LOGS = 0xbf8701;
 	private SettingsFragment mSettingsFragment;
 
@@ -227,10 +232,10 @@ public class SettingsActivity extends XmppActivity implements
 		final List<String> resendPresence = Arrays.asList(
 				"confirm_messages",
 				"xa_on_silent_mode",
-				"away_when_screen_off",
+				AWAY_WHEN_SCREEN_IS_OFF,
 				"allow_message_correction",
-				"treat_vibrate_as_silent",
-				"manually_change_presence",
+				TREAT_VIBRATE_AS_SILENT,
+				MANUALLY_CHANGE_PRESENCE,
 				"last_activity");
 		if (name.equals("resource")) {
 			String resource = preferences.getString("resource", "mobile")
@@ -248,19 +253,18 @@ public class SettingsActivity extends XmppActivity implements
 					}
 				}
 			}
-		} else if (name.equals("keep_foreground_service")) {
-			boolean foreground_service = preferences.getBoolean("keep_foreground_service",false);
+		} else if (name.equals(KEEP_FOREGROUND_SERVICE)) {
+			boolean foreground_service = preferences.getBoolean(KEEP_FOREGROUND_SERVICE,false);
 			if (!foreground_service) {
 				xmppConnectionService.clearStartTimeCounter();
 			}
 			xmppConnectionService.toggleForegroundService();
 		} else if (resendPresence.contains(name)) {
 			if (xmppConnectionServiceBound) {
-				if (name.equals("away_when_screen_off")
-						|| name.equals("manually_change_presence")) {
+				if (name.equals(AWAY_WHEN_SCREEN_IS_OFF) || name.equals(MANUALLY_CHANGE_PRESENCE)) {
 					xmppConnectionService.toggleScreenEventReceiver();
 				}
-				if (name.equals("manually_change_presence") && !noAccountUsesPgp()) {
+				if (name.equals(MANUALLY_CHANGE_PRESENCE) && !noAccountUsesPgp()) {
 					Toast.makeText(this, R.string.republish_pgp_keys, Toast.LENGTH_LONG).show();
 				}
 				xmppConnectionService.refreshAllPresences();

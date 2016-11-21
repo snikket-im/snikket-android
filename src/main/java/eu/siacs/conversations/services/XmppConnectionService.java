@@ -93,6 +93,7 @@ import eu.siacs.conversations.parser.MessageParser;
 import eu.siacs.conversations.parser.PresenceParser;
 import eu.siacs.conversations.persistance.DatabaseBackend;
 import eu.siacs.conversations.persistance.FileBackend;
+import eu.siacs.conversations.ui.SettingsActivity;
 import eu.siacs.conversations.ui.UiCallback;
 import eu.siacs.conversations.utils.ConversationsFileObserver;
 import eu.siacs.conversations.utils.CryptoHelper;
@@ -567,7 +568,7 @@ public class XmppConnectionService extends Service {
 					}
 					break;
 				case ACTION_DISABLE_FOREGROUND:
-					getPreferences().edit().putBoolean("keep_foreground_service", false).commit();
+					getPreferences().edit().putBoolean(SettingsActivity.KEEP_FOREGROUND_SERVICE, false).commit();
 					toggleForegroundService();
 					break;
 				case ACTION_DISMISS_ERROR_NOTIFICATIONS:
@@ -767,15 +768,15 @@ public class XmppConnectionService extends Service {
 	}
 
 	private boolean manuallyChangePresence() {
-		return getPreferences().getBoolean("manually_change_presence", false);
+		return getPreferences().getBoolean(SettingsActivity.MANUALLY_CHANGE_PRESENCE, false);
 	}
 
 	private boolean treatVibrateAsSilent() {
-		return getPreferences().getBoolean("treat_vibrate_as_silent", false);
+		return getPreferences().getBoolean(SettingsActivity.TREAT_VIBRATE_AS_SILENT, false);
 	}
 
 	private boolean awayWhenScreenOff() {
-		return getPreferences().getBoolean("away_when_screen_off", false);
+		return getPreferences().getBoolean(SettingsActivity.AWAY_WHEN_SCREEN_IS_OFF, false);
 	}
 
 	private String getCompressPicturesPreference() {
@@ -874,7 +875,7 @@ public class XmppConnectionService extends Service {
 		this.accounts = databaseBackend.getAccounts();
 
 		if (!keepForegroundService() && databaseBackend.startTimeCountExceedsThreshold()) {
-			getPreferences().edit().putBoolean("keep_foreground_service",true).commit();
+			getPreferences().edit().putBoolean(SettingsActivity.KEEP_FOREGROUND_SERVICE,true).commit();
 			Log.d(Config.LOGTAG,"number of restarts exceeds threshold. enabling foreground service");
 		}
 
@@ -963,7 +964,7 @@ public class XmppConnectionService extends Service {
 	}
 
 	private boolean keepForegroundService() {
-		return getPreferences().getBoolean("keep_foreground_service",false);
+		return getPreferences().getBoolean(SettingsActivity.KEEP_FOREGROUND_SERVICE,false);
 	}
 
 	@Override
