@@ -978,7 +978,7 @@ public class XmppConnectionService extends Service {
 
 	private void logoutAndSave(boolean stop) {
 		int activeAccounts = 0;
-		databaseBackend.clearStartTimeCounter(); // regular swipes don't count towards restart counter
+		databaseBackend.clearStartTimeCounter(true); // regular swipes don't count towards restart counter
 		for (final Account account : accounts) {
 			if (account.getStatus() != Account.State.DISABLED) {
 				activeAccounts++;
@@ -3611,7 +3611,7 @@ public class XmppConnectionService extends Service {
 		mDatabaseExecutor.execute(new Runnable() {
 			@Override
 			public void run() {
-				databaseBackend.clearStartTimeCounter();
+				databaseBackend.clearStartTimeCounter(false);
 			}
 		});
 	}

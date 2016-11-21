@@ -1328,9 +1328,14 @@ public class DatabaseBackend extends SQLiteOpenHelper {
 		return count >= Config.FREQUENT_RESTARTS_THRESHOLD;
 	}
 
-	public void clearStartTimeCounter() {
-		Log.d(Config.LOGTAG,"resetting start time counter");
+	public void clearStartTimeCounter(boolean justOne) {
 		SQLiteDatabase db = this.getWritableDatabase();
-		db.execSQL("delete from "+START_TIMES_TABLE);
+		if (justOne) {
+			db.execSQL("delete from "+START_TIMES_TABLE+" where timestamp in (select timestamp from "+START_TIMES_TABLE+" order by timestamp desc limit 1)");
+			Log.d(Config.LOGTAG,"do not count start up after being swiped away");
+		} else {
+			Log.d(Config.LOGTAG,"resetting start time counter");
+			db.execSQL("delete from " + START_TIMES_TABLE);
+		}
 	}
 }
