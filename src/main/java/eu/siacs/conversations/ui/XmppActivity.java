@@ -44,7 +44,6 @@ import android.os.SystemClock;
 import android.preference.PreferenceManager;
 import android.text.InputType;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.util.Pair;
 import android.view.MenuItem;
 import android.view.View;
@@ -55,10 +54,8 @@ import android.widget.Toast;
 
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.EncodeHintType;
-import com.google.zxing.WriterException;
+import com.google.zxing.aztec.AztecWriter;
 import com.google.zxing.common.BitMatrix;
-import com.google.zxing.qrcode.QRCodeWriter;
-import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel;
 
 import net.java.otr4j.session.SessionID;
 
@@ -1072,12 +1069,11 @@ public abstract class XmppActivity extends Activity {
 	}
 
 	protected Bitmap createQrCodeBitmap(String input, int size) {
-		Log.d(Config.LOGTAG,"qr code requested size: "+size);
 		try {
-			final QRCodeWriter QR_CODE_WRITER = new QRCodeWriter();
+			final AztecWriter AZTEC_WRITER = new AztecWriter();
 			final Hashtable<EncodeHintType, Object> hints = new Hashtable<>();
-			hints.put(EncodeHintType.ERROR_CORRECTION, ErrorCorrectionLevel.M);
-			final BitMatrix result = QR_CODE_WRITER.encode(input, BarcodeFormat.QR_CODE, size, size, hints);
+			hints.put(EncodeHintType.ERROR_CORRECTION, 10);
+			final BitMatrix result = AZTEC_WRITER.encode(input, BarcodeFormat.AZTEC, size, size, hints);
 			final int width = result.getWidth();
 			final int height = result.getHeight();
 			final int[] pixels = new int[width * height];
@@ -1088,10 +1084,9 @@ public abstract class XmppActivity extends Activity {
 				}
 			}
 			final Bitmap bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
-			Log.d(Config.LOGTAG,"output size: "+width+"x"+height);
 			bitmap.setPixels(pixels, 0, width, 0, 0, width, height);
 			return bitmap;
-		} catch (final WriterException e) {
+		} catch (final Exception e) {
 			return null;
 		}
 	}
