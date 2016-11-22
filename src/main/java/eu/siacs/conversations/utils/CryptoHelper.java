@@ -206,9 +206,13 @@ public final class CryptoHelper {
 	}
 
 	public static String getAccountFingerprint(Account account) {
+		return getFingerprint(account.getJid().toBareJid().toString());
+	}
+
+	public static String getFingerprint(String value) {
 		try {
 			MessageDigest md = MessageDigest.getInstance("SHA-256");
-			return bytesToHex(md.digest(account.getJid().toBareJid().toString().getBytes("UTF-8")));
+			return bytesToHex(md.digest(value.getBytes("UTF-8")));
 		} catch (Exception e) {
 			return "";
 		}

@@ -707,4 +707,7 @@
 	<string name="verified_fingerprints">Verified fingerprints</string>
 	<string name="use_camera_icon_to_scan_barcode">Use the camera to scan a contacts barcode</string>
 	<string name="please_wait_for_keys_to_be_fetched">Please wait for keys to be fetched</string>
+	<string name="share_as_barcode">Share as Barcode</string>
+	<string name="share_as_uri">Share as XMPP URI</string>
+	<string name="share_as_http">Share as HTTP link</string>
 </resources>

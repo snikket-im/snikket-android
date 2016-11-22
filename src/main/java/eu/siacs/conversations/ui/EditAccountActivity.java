@@ -46,6 +46,7 @@ import eu.siacs.conversations.R;
 import eu.siacs.conversations.crypto.axolotl.AxolotlService;
 import eu.siacs.conversations.crypto.axolotl.XmppAxolotlSession;
 import eu.siacs.conversations.entities.Account;
+import eu.siacs.conversations.services.BarcodeProvider;
 import eu.siacs.conversations.services.XmppConnectionService.OnCaptchaRequested;
 import eu.siacs.conversations.services.XmppConnectionService;
 import eu.siacs.conversations.services.XmppConnectionService.OnAccountUpdate;
@@ -703,6 +704,15 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
 			case R.id.action_server_info_show_more:
 				changeMoreTableVisibility(!item.isChecked());
 				break;
+			case R.id.action_share_barcode:
+				shareBarcode();
+				break;
+			case R.id.action_share_http:
+				shareLink(true);
+				break;
+			case R.id.action_share_uri:
+				shareLink(false);
+				break;
 			case R.id.action_change_password_on_server:
 				gotoChangePassword(null);
 				break;
@@ -720,6 +730,27 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
 				break;
 		}
 		return super.onOptionsItemSelected(item);
+	}
+
+	private void shareLink(boolean http) {
+		Intent intent = new Intent(Intent.ACTION_SEND);
+		intent.setType("text/plain");
+		String text;
+		if (http) {
+			text = "https://conversations.im/i/"+mAccount.getJid().toBareJid().toString();
+		} else {
+			text = mAccount.getShareableUri();
+		}
+		intent.putExtra(Intent.EXTRA_TEXT,text);
+		startActivity(Intent.createChooser(intent, getText(R.string.share_with)));
+	}
+
+	private void shareBarcode() {
+		Intent intent = new Intent(Intent.ACTION_SEND);
+		intent.putExtra(Intent.EXTRA_STREAM,BarcodeProvider.getUriForAccount(mAccount));
+		intent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+		intent.setType("image/png");
+		startActivity(Intent.createChooser(intent, getText(R.string.share_with)));
 	}
 
 	private void changeMoreTableVisibility(boolean visible) {

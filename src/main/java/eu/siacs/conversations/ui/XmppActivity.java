@@ -78,6 +78,7 @@ import eu.siacs.conversations.entities.Message;
 import eu.siacs.conversations.entities.MucOptions;
 import eu.siacs.conversations.entities.Presences;
 import eu.siacs.conversations.services.AvatarService;
+import eu.siacs.conversations.services.BarcodeProvider;
 import eu.siacs.conversations.services.XmppConnectionService;
 import eu.siacs.conversations.services.XmppConnectionService.XmppConnectionBinder;
 import eu.siacs.conversations.utils.CryptoHelper;
@@ -1058,36 +1059,13 @@ public abstract class XmppActivity extends Activity {
 			Point size = new Point();
 			getWindowManager().getDefaultDisplay().getSize(size);
 			final int width = (size.x < size.y ? size.x : size.y);
-			Bitmap bitmap = createQrCodeBitmap(uri, width);
+			Bitmap bitmap = BarcodeProvider.createAztecBitmap(uri, width);
 			ImageView view = new ImageView(this);
 			view.setBackgroundColor(Color.WHITE);
 			view.setImageBitmap(bitmap);
 			AlertDialog.Builder builder = new AlertDialog.Builder(this);
 			builder.setView(view);
 			builder.create().show();
-		}
-	}
-
-	protected Bitmap createQrCodeBitmap(String input, int size) {
-		try {
-			final AztecWriter AZTEC_WRITER = new AztecWriter();
-			final Hashtable<EncodeHintType, Object> hints = new Hashtable<>();
-			hints.put(EncodeHintType.ERROR_CORRECTION, 10);
-			final BitMatrix result = AZTEC_WRITER.encode(input, BarcodeFormat.AZTEC, size, size, hints);
-			final int width = result.getWidth();
-			final int height = result.getHeight();
-			final int[] pixels = new int[width * height];
-			for (int y = 0; y < height; y++) {
-				final int offset = y * width;
-				for (int x = 0; x < width; x++) {
-					pixels[offset + x] = result.get(x, y) ? Color.BLACK : Color.TRANSPARENT;
-				}
-			}
-			final Bitmap bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
-			bitmap.setPixels(pixels, 0, width, 0, 0, width, height);
-			return bitmap;
-		} catch (final Exception e) {
-			return null;
 		}
 	}
 

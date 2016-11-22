@@ -1,5 +1,21 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
+    <item android:id="@+id/action_share"
+        android:title="@string/share_uri_with"
+        android:icon="?attr/icon_share"
+        android:showAsAction="always">
+        <menu>
+            <item
+                android:id="@+id/action_share_barcode"
+                android:title="@string/share_as_barcode"/>
+            <item
+                android:id="@+id/action_share_uri"
+                android:title="@string/share_as_uri"/>
+            <item android:id="@+id/action_share_http"
+                android:title="@string/share_as_http"/>
+        </menu>
+    </item>
+
     <item
         android:id="@+id/action_change_presence"
         android:showAsAction="always"
