@@ -57,6 +57,7 @@
         <item name="attr/icon_settings">@drawable/ic_action_settings</item>
         <item name="attr/icon_import_export">@drawable/ic_stat_communication_import_export</item>
         <item name="attr/icon_share">@drawable/ic_action_share</item>
+        <item name="attr/icon_scan_qr_code">@drawable/ic_action_camera</item>
 
         <item name="attr/icon_notifications">@drawable/ic_notifications_black54_24dp</item>
         <item name="attr/icon_notifications_off">@drawable/ic_notifications_off_black54_24dp</item>
@@ -120,6 +121,7 @@
         <item name="attr/icon_settings">@drawable/ic_action_settings_white</item>
         <item name="attr/icon_import_export">@drawable/ic_stat_communication_import_export</item>
         <item name="attr/icon_share">@drawable/ic_action_share</item>
+        <item name="attr/icon_scan_qr_code">@drawable/ic_action_camera</item>
 
         <item name="attr/icon_notifications">@drawable/ic_notifications_white80</item>
         <item name="attr/icon_notifications_off">@drawable/ic_notifications_off_white80</item>

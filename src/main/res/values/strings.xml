@@ -703,4 +703,8 @@
 	<string name="this_device_has_been_verified">This device has been verified</string>
 	<string name="copy_fingerprint">Copy fingerprint</string>
 	<string name="all_omemo_keys_have_been_verified">All OMEMO keys have been verified</string>
+	<string name="barcode_does_not_contain_fingerprints_for_this_conversation">Barcode does not contain fingerprints for this conversation.</string>
+	<string name="verified_fingerprints">Verified fingerprints</string>
+	<string name="use_camera_icon_to_scan_barcode">Use the camera to scan a contacts barcode</string>
+	<string name="please_wait_for_keys_to_be_fetched">Please wait for keys to be fetched</string>
 </resources>

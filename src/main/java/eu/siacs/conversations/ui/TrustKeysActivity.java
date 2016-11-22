@@ -1,7 +1,12 @@
 package eu.siacs.conversations.ui;
 
+import android.app.ActionBar;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.Gravity;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -9,6 +14,9 @@ import android.widget.CompoundButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.google.zxing.integration.android.IntentIntegrator;
+import com.google.zxing.integration.android.IntentResult;
 
 import org.whispersystems.libaxolotl.IdentityKey;
 
@@ -23,9 +31,9 @@ import eu.siacs.conversations.OmemoActivity;
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.crypto.axolotl.AxolotlService;
 import eu.siacs.conversations.crypto.axolotl.FingerprintStatus;
-import eu.siacs.conversations.crypto.axolotl.XmppAxolotlSession;
 import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.entities.Conversation;
+import eu.siacs.conversations.utils.XmppUri;
 import eu.siacs.conversations.xmpp.OnKeyStatusUpdated;
 import eu.siacs.conversations.xmpp.jid.InvalidJidException;
 import eu.siacs.conversations.xmpp.jid.Jid;
@@ -64,6 +72,7 @@ public class TrustKeysActivity extends OmemoActivity implements OnKeyStatusUpdat
 			finish();
 		}
 	};
+	private XmppUri mPendingFingerprintVerificationUri = null;
 
 	@Override
 	protected void refreshUiReal() {
@@ -99,6 +108,64 @@ public class TrustKeysActivity extends OmemoActivity implements OnKeyStatusUpdat
 		if (getActionBar() != null) {
 			getActionBar().setHomeButtonEnabled(true);
 			getActionBar().setDisplayHomeAsUpEnabled(true);
+		}
+	}
+
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		getMenuInflater().inflate(R.menu.trust_keys, menu);
+		Toast toast = Toast.makeText(this,R.string.use_camera_icon_to_scan_barcode,Toast.LENGTH_LONG);
+		ActionBar actionBar = getActionBar();
+		toast.setGravity(Gravity.TOP | Gravity.END, 0 ,actionBar == null ? 0 : actionBar.getHeight());
+		toast.show();
+		return super.onCreateOptionsMenu(menu);
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+			case R.id.action_scan_qr_code:
+				if (hasPendingKeyFetches()) {
+					Toast.makeText(this, R.string.please_wait_for_keys_to_be_fetched, Toast.LENGTH_SHORT).show();
+				} else {
+					new IntentIntegrator(this).initiateScan();
+					return true;
+				}
+		}
+		return super.onOptionsItemSelected(item);
+	}
+
+	@Override
+	public void onActivityResult(int requestCode, int resultCode, Intent intent) {
+		IntentResult scanResult = IntentIntegrator.parseActivityResult(requestCode, resultCode, intent);
+		if (scanResult != null && scanResult.getFormatName() != null) {
+			String data = scanResult.getContents();
+			XmppUri uri = new XmppUri(data);
+			if (xmppConnectionServiceBound) {
+				processFingerprintVerification(uri);
+				populateView();
+			} else {
+				this.mPendingFingerprintVerificationUri =uri;
+			}
+		}
+	}
+
+	private void processFingerprintVerification(XmppUri uri) {
+		if (mConversation != null
+				&& mAccount != null
+				&& uri.hasFingerprints()
+				&& mAccount.getAxolotlService().getCryptoTargets(mConversation).contains(uri.getJid())) {
+			boolean performedVerification = xmppConnectionService.verifyFingerprints(mAccount.getRoster().getContact(uri.getJid()),uri.getFingerprints());
+			boolean keys = reloadFingerprints();
+			if (performedVerification && !keys && !hasNoOtherTrustedKeys() && !hasPendingKeyFetches()) {
+				Toast.makeText(this,R.string.all_omemo_keys_have_been_verified, Toast.LENGTH_SHORT).show();
+				finishOk();
+			} else if (performedVerification) {
+				Toast.makeText(this,R.string.verified_fingerprints,Toast.LENGTH_SHORT).show();
+			}
+		} else {
+			Log.d(Config.LOGTAG,"xmpp uri was: "+uri.getJid()+" has Fingerprints: "+Boolean.toString(uri.hasFingerprints()));
+			Toast.makeText(this,R.string.barcode_does_not_contain_fingerprints_for_this_conversation,Toast.LENGTH_SHORT).show();
 		}
 	}
 
@@ -216,6 +283,10 @@ public class TrustKeysActivity extends OmemoActivity implements OnKeyStatusUpdat
 		if (this.mAccount != null && intent != null) {
 			String uuid = intent.getStringExtra("conversation");
 			this.mConversation = xmppConnectionService.findConversationByUuid(uuid);
+			if (this.mPendingFingerprintVerificationUri != null) {
+				processFingerprintVerification(this.mPendingFingerprintVerificationUri);
+				this.mPendingFingerprintVerificationUri = null;
+			}
 			reloadFingerprints();
 			populateView();
 		}

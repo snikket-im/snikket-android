@@ -3617,17 +3617,20 @@ public class XmppConnectionService extends Service {
 		});
 	}
 
-	public void verifyFingerprints(Contact contact, List<XmppUri.Fingerprint> fingerprints) {
+	public boolean verifyFingerprints(Contact contact, List<XmppUri.Fingerprint> fingerprints) {
 		boolean needsRosterWrite = false;
+		boolean performedVerification = false;
 		final AxolotlService axolotlService = contact.getAccount().getAxolotlService();
 		for(XmppUri.Fingerprint fp : fingerprints) {
 			if (fp.type == XmppUri.FingerprintType.OTR) {
-				needsRosterWrite |= contact.addOtrFingerprint(fp.fingerprint);
+				performedVerification |= contact.addOtrFingerprint(fp.fingerprint);
+				needsRosterWrite |= performedVerification;
 			} else if (fp.type == XmppUri.FingerprintType.OMEMO) {
 				String fingerprint = "05"+fp.fingerprint.replaceAll("\\s","");
 				FingerprintStatus fingerprintStatus = axolotlService.getFingerprintTrust(fingerprint);
 				if (fingerprintStatus != null) {
 					if (!fingerprintStatus.isVerified()) {
+						performedVerification = true;
 						axolotlService.setFingerprintTrust(fingerprint,fingerprintStatus.toVerified());
 					}
 				} else {
@@ -3638,6 +3641,7 @@ public class XmppConnectionService extends Service {
 		if (needsRosterWrite) {
 			syncRosterToDisk(contact.getAccount());
 		}
+		return performedVerification;
 	}
 
 	public boolean verifyFingerprints(Account account, List<XmppUri.Fingerprint> fingerprints) {

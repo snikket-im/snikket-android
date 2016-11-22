@@ -47,6 +47,7 @@
     <attr name="icon_settings" format="reference"/>
     <attr name="icon_share" format="reference"/>
     <attr name="icon_import_export" format="reference"/>
+    <attr name="icon_scan_qr_code" format="reference"/>
 
     <attr name="icon_notifications" format="reference"/>
     <attr name="icon_notifications_off" format="reference"/>
