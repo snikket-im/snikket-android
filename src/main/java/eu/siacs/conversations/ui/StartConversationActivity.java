@@ -626,7 +626,7 @@ public class StartConversationActivity extends XmppActivity implements OnRosterU
                 showCreateConferenceDialog();
                 return true;
             case R.id.action_scan_qr_code:
-                new IntentIntegrator(this).initiateScan();
+                new IntentIntegrator(this).initiateScan(Arrays.asList("AZTEC","QR_CODE"));
                 return true;
             case R.id.action_hide_offline:
                 mHideOfflineContacts = !item.isChecked();

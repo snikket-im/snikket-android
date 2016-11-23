@@ -21,6 +21,7 @@ import com.google.zxing.integration.android.IntentResult;
 import org.whispersystems.libaxolotl.IdentityKey;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -129,7 +130,7 @@ public class TrustKeysActivity extends OmemoActivity implements OnKeyStatusUpdat
 				if (hasPendingKeyFetches()) {
 					Toast.makeText(this, R.string.please_wait_for_keys_to_be_fetched, Toast.LENGTH_SHORT).show();
 				} else {
-					new IntentIntegrator(this).initiateScan();
+					new IntentIntegrator(this).initiateScan(Arrays.asList("AZTEC","QR_CODE"));
 					return true;
 				}
 		}
