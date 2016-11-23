@@ -21,7 +21,10 @@ import java.util.Set;
 
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.entities.Account;
+import eu.siacs.conversations.entities.Contact;
 import eu.siacs.conversations.services.XmppConnectionService;
+import eu.siacs.conversations.xmpp.jid.InvalidJidException;
+import eu.siacs.conversations.xmpp.jid.Jid;
 
 public class SQLiteAxolotlStore implements AxolotlStore {
 
@@ -191,7 +194,12 @@ public class SQLiteAxolotlStore implements AxolotlStore {
 			String fingerprint = identityKey.getFingerprint().replaceAll("\\s", "");
 			FingerprintStatus status = getFingerprintStatus(fingerprint);
 			if (status == null) {
-				status = FingerprintStatus.createActiveUndecided(); //default for new keys
+				if (mXmppConnectionService.blindTrustBeforeVerification() && !account.getAxolotlService().hasVerifiedKeys(name)) {
+					Log.d(Config.LOGTAG,account.getJid().toBareJid()+": blindly trusted "+fingerprint+" of "+name);
+					status = FingerprintStatus.createActiveTrusted();
+				} else {
+					status = FingerprintStatus.createActiveUndecided();
+				}
 			} else {
 				status = status.toActive();
 			}

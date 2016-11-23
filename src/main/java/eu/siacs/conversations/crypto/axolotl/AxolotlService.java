@@ -112,6 +112,15 @@ public class AxolotlService implements OnAdvancedStreamFeaturesLoaded {
 		axolotlStore.preVerifyFingerprint(account, account.getJid().toBareJid().toPreppedString(), fingerprint);
 	}
 
+	public boolean hasVerifiedKeys(String name) {
+		for(XmppAxolotlSession session : this.sessions.getAll(new AxolotlAddress(name,0)).values()) {
+			if (session.getTrust().isVerified()) {
+				return true;
+			}
+		}
+		return false;
+	}
+
 	private static class AxolotlAddressMap<T> {
 		protected Map<String, Map<Integer, T>> map;
 		protected final Object MAP_LOCK = new Object();
@@ -226,6 +235,7 @@ public class AxolotlService implements OnAdvancedStreamFeaturesLoaded {
 		SUCCESS,
 		SUCCESS_VERIFIED,
 		TIMEOUT,
+		SUCCESS_TRUSTED,
 		ERROR
 	}
 
@@ -779,6 +789,8 @@ public class AxolotlService implements OnAdvancedStreamFeaturesLoaded {
 				report = FetchStatus.SUCCESS;
 			} else if (own.containsValue(FetchStatus.SUCCESS_VERIFIED) || remote.containsValue(FetchStatus.SUCCESS_VERIFIED)) {
 				report = FetchStatus.SUCCESS_VERIFIED;
+			} else if (own.containsValue(FetchStatus.SUCCESS_TRUSTED) || remote.containsValue(FetchStatus.SUCCESS_TRUSTED)) {
+				report = FetchStatus.SUCCESS_TRUSTED;
 			} else if (own.containsValue(FetchStatus.ERROR) || remote.containsValue(FetchStatus.ERROR)) {
 				report = FetchStatus.ERROR;
 			}
@@ -836,8 +848,15 @@ public class AxolotlService implements OnAdvancedStreamFeaturesLoaded {
 								verifySessionWithPEP(session);
 							} else {
 								FingerprintStatus status = getFingerprintTrust(bundle.getIdentityKey().getFingerprint().replaceAll("\\s",""));
-								boolean verified = status != null && status.isVerified();
-								fetchStatusMap.put(address, verified ? FetchStatus.SUCCESS_VERIFIED : FetchStatus.SUCCESS);
+								FetchStatus fetchStatus;
+								if (status != null && status.isVerified()) {
+									fetchStatus = FetchStatus.SUCCESS_VERIFIED;
+								} else if (status != null && status.isTrusted()) {
+									fetchStatus = FetchStatus.SUCCESS_TRUSTED;
+								} else {
+									fetchStatus = FetchStatus.SUCCESS;
+								}
+								fetchStatusMap.put(address, fetchStatus);
 								finishBuildingSessionsFromPEP(address);
 							}
 						} catch (UntrustedIdentityException | InvalidKeyException e) {

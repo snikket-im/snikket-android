@@ -3666,6 +3666,10 @@ public class XmppConnectionService extends Service {
 		return verifiedSomething;
 	}
 
+	public boolean blindTrustBeforeVerification() {
+		return getPreferences().getBoolean(SettingsActivity.BLIND_TRUST_BEFORE_VERIFICATION, true);
+	}
+
 	public interface OnMamPreferencesFetched {
 		void onPreferencesFetched(Element prefs);
 		void onPreferencesFetchFailed();

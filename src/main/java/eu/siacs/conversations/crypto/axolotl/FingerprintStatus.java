@@ -63,6 +63,14 @@ public class FingerprintStatus implements Comparable<FingerprintStatus> {
         return status;
     }
 
+    public static FingerprintStatus createActiveTrusted() {
+        final FingerprintStatus status = new FingerprintStatus();
+        status.trust = Trust.TRUSTED;
+        status.active = true;
+        status.lastActivation = System.currentTimeMillis();
+        return status;
+    }
+
     public static FingerprintStatus createActiveVerified(boolean x509) {
         final FingerprintStatus status = new FingerprintStatus();
         status.trust = x509 ? Trust.VERIFIED_X509 : Trust.VERIFIED;
