@@ -2909,7 +2909,7 @@ public class XmppConnectionService extends Service {
 				thread.start();
 				scheduleWakeUpCall(Config.CONNECT_DISCO_TIMEOUT, account.getUuid().hashCode());
 			} else {
-				disconnect(account, force);
+				disconnect(account, force || account.getTrueStatus().isError());
 				account.getRoster().clearPresences();
 				connection.resetEverything();
 				account.getAxolotlService().resetBrokenness();
