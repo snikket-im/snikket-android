@@ -334,6 +334,10 @@ We briefly had OMEMO as the default E2EE but it turned out to be a usabilty nigh
 
 Quick reminder that Conversations **always** uses TLS to connect to your server. It won‘t even connect to a server without TLS.
 
+#### What is Blind Trust Before Verification / why are messages marked with a red lock?
+
+Read more about the concept on https://gultsch.de/trust.html
+
 ### What clients do I use on other platforms
 There are XMPP Clients available for all major platforms.
 ####Windows / Linux
