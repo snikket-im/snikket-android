@@ -1,5 +1,12 @@
 ###Changelog
 
+####Version 1.15.0
+* New [Blind Trust Before Verification](https://gultsch.de/trust.html) mode
+* Easily share Barcode and XMPP uri from Account details
+* Automatically deactivate own devices after 7 day of inactivity
+* Improvements fo doze/push mode
+* bug fixes
+
 ####Version 1.14.9
 * warn in account details when data saver is enabled
 * automatically enable foreground service after detecting frequent restarts
