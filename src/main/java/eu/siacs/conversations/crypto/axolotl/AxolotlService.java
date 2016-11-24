@@ -415,6 +415,7 @@ public class AxolotlService implements OnAdvancedStreamFeaturesLoaded {
 			}
 		}
 		this.deviceIds.put(jid, deviceIds);
+		mXmppConnectionService.updateConversationUi(); //update the lock icon
 		mXmppConnectionService.keyStatusUpdated(null);
 	}
 
