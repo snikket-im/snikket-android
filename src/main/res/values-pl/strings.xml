@@ -118,14 +118,12 @@
   <string name="pref_never_send_crash">Nie wysyłaj raportów awarii</string>
   <string name="pref_never_send_crash_summary">Wysyłając ślady stosu pomagasz rozwijać Conversations</string>
   <string name="pref_confirm_messages">Potwierdzenia wiadomości</string>
-  <string name="pref_confirm_messages_summary">Powiadamiaj kontakty o otrzymaniu lub przeczytaniu wiadomości</string>
   <string name="pref_ui_options">UI</string>
   <string name="openpgp_error">Wystąpił błąd OpenKeychain</string>
   <string name="error_decrypting_file">Błąd podczas deszyfrowania pliku</string>
   <string name="accept">Akceptuj</string>
   <string name="error">Wystąpił błąd</string>
   <string name="pref_grant_presence_updates">Zezwól na powiadomienia obecności</string>
-  <string name="pref_grant_presence_updates_summary">Automatycznie zezwalaj i pytaj o powiadomienia obecności, kiedy utworzysz kontakt</string>
   <string name="subscriptions">Subskrypcje</string>
   <string name="your_account">Twoje konto</string>
   <string name="keys">Klucze</string>
@@ -326,8 +324,6 @@
   <string name="url_copied_to_clipboard">URL obrazu został skopiowany do schowka</string>
   <string name="message_copied_to_clipboard">Wiadomość została skopiowana do schowka</string>
   <string name="image_transmission_failed">Błąd podczas przesyłania obrazu</string>
-  <string name="scan_qr_code">Zeskanuj kod QR</string>
-  <string name="show_qr_code">Pokaż kod QR</string>
   <string name="show_block_list">Wyświetl listę banów</string>
   <string name="account_details">Szczegóły konta</string>
   <string name="verify_otr">Weryfikuj OTR</string>
@@ -457,7 +453,6 @@
   <string name="contact_is_typing">%s pisze...</string>
   <string name="contact_has_stopped_typing">%s przestał(a) pisać</string>
   <string name="pref_chat_states">Powiadomienia pisania</string>
-  <string name="pref_chat_states_summary">Powiadamiaj rozmówcę, kiedy rozpoczynasz nową wiadomość</string>
   <string name="send_location">Wyślij lokalizację</string>
   <string name="show_location">Pokaż lokalizację</string>
   <string name="no_application_found_to_display_location">Nie odnaleziono aplikacji do wyświetlenia lokalizacji</string>

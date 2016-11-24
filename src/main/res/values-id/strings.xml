@@ -113,14 +113,12 @@
   <string name="pref_never_send_crash">Jangan kirim laporan kerusakan</string>
   <string name="pref_never_send_crash_summary">Dengan mengirimkan kesalahan Anda membantu pengembangan Aplikasi Conversations</string>
   <string name="pref_confirm_messages">Konfirmasi Pesan</string>
-  <string name="pref_confirm_messages_summary">Biarkan kontak Anda tahu kapan Anda telah menerima dan membaca pesan</string>
   <string name="pref_ui_options">UI</string>
   <string name="openpgp_error">OpenKeychain melaporkan kesalahan</string>
   <string name="error_decrypting_file">I/O Error menerjemahkan berkas</string>
   <string name="accept">Terima</string>
   <string name="error">Sebuah kesalahan terjadi</string>
   <string name="pref_grant_presence_updates">Memberikan perubahan kehadiran</string>
-  <string name="pref_grant_presence_updates_summary">Terlebih dahulu meminta dan berlangganan kehadiran untuk kontak Anda buat</string>
   <string name="subscriptions">Langganan</string>
   <string name="your_account">Akun anda</string>
   <string name="keys">Kunci</string>
@@ -298,8 +296,6 @@
   <string name="url_copied_to_clipboard">URL disalin ke clipboard</string>
   <string name="message_copied_to_clipboard">Pesan disalin ke clipboard</string>
   <string name="image_transmission_failed">pengiriman gambar gagal</string>
-  <string name="scan_qr_code">Pindai kode QR</string>
-  <string name="show_qr_code">Tampilkan kode QR</string>
   <string name="show_block_list">Tampilkan daftar blokir</string>
   <string name="account_details">Detil akun</string>
   <string name="verify_otr">Verifikasi OTR</string>
@@ -418,7 +414,6 @@
   <string name="contact_is_typing">%s sedang mengetik…</string>
   <string name="contact_has_stopped_typing">%s telah berhenti mengetik</string>
   <string name="pref_chat_states">Notifikasi ketik pesan</string>
-  <string name="pref_chat_states_summary">Biarkan kontak Anda tahu ketika Anda sedang menulis pesan baru</string>
   <string name="send_location">Kirim lokasi</string>
   <string name="show_location">Tampilkan lokasi</string>
   <string name="no_application_found_to_display_location">Tidak ada aplikasi ditemukan untuk menampilkan lokasi</string>

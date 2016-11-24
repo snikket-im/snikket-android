@@ -62,8 +62,8 @@
   <string name="crash_report_message">Слањем контратрага помажете текући развој Конверзације\n<b>Упозорење:</b> Ово ће да искористи ваш ИксМПП налог за слање контратрага програмеру.</string>
   <string name="send_now">Пошаљи одмах</string>
   <string name="send_never">Не питај више</string>
-  <string name="problem_connecting_to_account">Не могох да се повежем са налогом</string>
-  <string name="problem_connecting_to_accounts">Не могох да се повежем са више налога</string>
+  <string name="problem_connecting_to_account">Не могу да се повежем са налогом</string>
+  <string name="problem_connecting_to_accounts">Не могу да се повежем са више налога</string>
   <string name="touch_to_fix">Тапните овде да бисте управљали вашим налозима</string>
   <string name="attach_file">Приложи фајл</string>
   <string name="not_in_roster">Контакт није на вашем списку контаката. Желите ли да га додате?</string>
@@ -122,14 +122,12 @@
   <string name="pref_never_send_crash">Никад не шаљи извештаје о паду</string>
   <string name="pref_never_send_crash_summary">Слањем контратрага помажете текући развој Конверзације</string>
   <string name="pref_confirm_messages">Потврди поруке</string>
-  <string name="pref_confirm_messages_summary">Обзнаните контакту кад примите и прочитате поруку</string>
   <string name="pref_ui_options">Сучеље</string>
   <string name="openpgp_error">Отворени кључарник је пријавио грешку</string>
   <string name="error_decrypting_file">У/И грешка дешифровања фајла</string>
   <string name="accept">Прихвати</string>
   <string name="error">Десила се грешка</string>
   <string name="pref_grant_presence_updates">Дозволи ажурирања присутности</string>
-  <string name="pref_grant_presence_updates_summary">Унапред дозволи и питај за претплату на присутност за контакте које направите</string>
   <string name="subscriptions">Претплате</string>
   <string name="your_account">Ваш налог</string>
   <string name="keys">Кључеви</string>
@@ -339,8 +337,6 @@
   <string name="url_copied_to_clipboard">УРЛ је копиран на клипборд</string>
   <string name="message_copied_to_clipboard">Порука је копирана на клипборд</string>
   <string name="image_transmission_failed">Пренос слике није успео</string>
-  <string name="scan_qr_code">Очитај бар-кôд</string>
-  <string name="show_qr_code">Прикажи бар-кôд</string>
   <string name="show_block_list">Прикажи списак блокираних</string>
   <string name="account_details">Детаљи налога</string>
   <string name="verify_otr">Овери ОТР</string>
@@ -473,7 +469,6 @@
   <string name="contact_is_typing">%s куца…</string>
   <string name="contact_has_stopped_typing">%s престаде да куца</string>
   <string name="pref_chat_states">Обавештења о куцању</string>
-  <string name="pref_chat_states_summary">Обзнаните контакту кад куцате нову поруку</string>
   <string name="send_location">Пошаљи локацију</string>
   <string name="show_location">Прикажи локацију</string>
   <string name="no_application_found_to_display_location">Нема апликације за приказ локације</string>
@@ -533,12 +528,12 @@
   <string name="pref_show_connection_options_summary">Приказ домаћина и порта у поставкама налога</string>
   <string name="hostname_example">xmpp.primer.com</string>
   <string name="action_add_account_with_certificate">Додај налог сертификатом</string>
-  <string name="unable_to_parse_certificate">Не могох да рашчланим сертификат</string>
+  <string name="unable_to_parse_certificate">Не могу да рашчланим сертификат</string>
   <string name="authenticate_with_certificate">Оставите празно за аутентификацију сертификатом</string>
   <string name="mam_prefs">Поставке архивисања</string>
   <string name="server_side_mam_prefs">Серверске поставке архивисања</string>
   <string name="fetching_mam_prefs">Добављам поставке архивисања, сачекајте…</string>
-  <string name="unable_to_fetch_mam_prefs">Не могох да добавим поставке архивисања</string>
+  <string name="unable_to_fetch_mam_prefs">Не могу да добавим поставке архивисања</string>
   <string name="captcha_required">Потребна стопка</string>
   <string name="captcha_hint">Унесите текст са слике изнад</string>
   <string name="certificate_chain_is_not_trusted">Ланац сертификата није поуздан</string>
@@ -639,7 +634,7 @@
   <string name="pref_theme_dark">Тамна тема</string>
   <string name="pref_use_green_background">Зелена позадина</string>
   <string name="pref_use_green_background_summary">Зелена позадина за примљене поруке</string>
-  <string name="unable_to_connect_to_keychain">Не могох да се повежем са Отвореним кључарником</string>
+  <string name="unable_to_connect_to_keychain">Не могу да се повежем са Отвореним кључарником</string>
   <string name="this_device_is_no_longer_in_use">Овај уређај више није у употреби</string>
   <string name="type_pc">Рачунар</string>
   <string name="type_phone">Мобилни телефон</string>
@@ -653,7 +648,7 @@
   <string name="allow">Дозволи</string>
   <string name="no_permission_to_access_x">Нема дозвола за приступ %s</string>
   <string name="remote_server_not_found">Удаљени сервер није нађен</string>
-  <string name="unable_to_update_account">Не могох да се ажурирам налог</string>
+  <string name="unable_to_update_account">Не могу да ажурирам налог</string>
   <string name="missing_presence_subscription_with_x">Нема претплате на присутност са %s.</string>
   <string name="missing_keys_from_x">Нема ОМЕМО кључева у %s.</string>
   <string name="missing_omemo_keys">Нема ОМЕМО кључева</string>
@@ -666,4 +661,8 @@
   <string name="error_publish_avatar_offline">Морате бити повезани да бисте објавили ваш аватар.</string>
   <string name="show_error_message">Прикажи поруку грешке</string>
   <string name="error_message">Порука грешке</string>
+  <string name="error_unable_to_create_temporary_file">Не могу да направим привремени фајл</string>
+  <string name="this_device_has_been_verified">Овај уређај је оверен.</string>
+  <string name="copy_fingerprint">Копирај отисак</string>
+  <string name="all_omemo_keys_have_been_verified">Сви ОМЕМО кључеви су оверени</string>
 </resources>

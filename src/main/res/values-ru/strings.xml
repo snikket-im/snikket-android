@@ -122,14 +122,12 @@
   <string name="pref_never_send_crash">Не отправлять отчёты об ошибках</string>
   <string name="pref_never_send_crash_summary">Отправляя отчёты об ошибках, вы помогаете исправить и улучшить Conversations</string>
   <string name="pref_confirm_messages">Отчёты о получении</string>
-  <string name="pref_confirm_messages_summary">Разрешить уведомлять отправителя, когда вы получили и прочитали сообщение</string>
   <string name="pref_ui_options">Интерфейс</string>
   <string name="openpgp_error">Возникла ошибка в OpenKeychain</string>
   <string name="error_decrypting_file">Ошибка расшифровки файла</string>
   <string name="accept">Принять</string>
   <string name="error">Произошла ошибка</string>
   <string name="pref_grant_presence_updates">Предоставлять обновления</string>
-  <string name="pref_grant_presence_updates_summary">Разрешить и запрашивать статус присутствия для созданных вами контактов</string>
   <string name="subscriptions">Подписки</string>
   <string name="your_account">Ваш аккаунт</string>
   <string name="keys">Ключи</string>
@@ -339,8 +337,6 @@
   <string name="url_copied_to_clipboard">Ссылка скопирована в буфер обмена</string>
   <string name="message_copied_to_clipboard">Сообщение скопировано в буфер обмена</string>
   <string name="image_transmission_failed">Передача изображения не удалась</string>
-  <string name="scan_qr_code">Поиск QR-кода</string>
-  <string name="show_qr_code">Показать QR-код</string>
   <string name="show_block_list">Показать чёрный список</string>
   <string name="account_details">Сведения об учётной записи</string>
   <string name="verify_otr">Подтвердить OTR</string>
@@ -473,7 +469,6 @@
   <string name="contact_is_typing">%s печатает…</string>
   <string name="contact_has_stopped_typing">%s прекратил набор</string>
   <string name="pref_chat_states">Оповещения о наборе</string>
-  <string name="pref_chat_states_summary">Позволяет вашим контактам видеть когда вы пишете новое сообщение</string>
   <string name="send_location">Отправить местоположение</string>
   <string name="show_location">Показать местоположение</string>
   <string name="no_application_found_to_display_location">Не найдено приложений для отображения местоположения</string>
@@ -669,4 +664,7 @@
   <string name="error_publish_avatar_offline">Вы должны подключиться для публикации аватара.</string>
   <string name="show_error_message">Текст ошибки</string>
   <string name="error_message">Текст ошибки</string>
+  <string name="this_device_has_been_verified">Это устройство было подтверждено</string>
+  <string name="copy_fingerprint">Копировать отпечаток</string>
+  <string name="all_omemo_keys_have_been_verified">Все OMEMO-ключи были подтверждены</string>
 </resources>

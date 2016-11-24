@@ -67,7 +67,6 @@
   <string name="accept">Aceptar</string>
   <string name="error">Produciuse un erro</string>
   <string name="pref_grant_presence_updates">Suscripción de presencia</string>
-  <string name="pref_grant_presence_updates_summary">Por defecto otorgar e pedir suscripcións de presencia dos contactos que creaches</string>
   <string name="subscriptions">Suscripcións</string>
   <string name="your_account">A túa conta</string>
   <string name="keys">Chaves</string>

@@ -100,7 +100,6 @@
   <string name="accept">قبول</string>
   <string name="error">حدث خطأ ما</string>
   <string name="pref_grant_presence_updates">منح تحديثات الظهور</string>
-  <string name="pref_grant_presence_updates_summary">اسأل واقبل السؤال عن تحديثات الظهور</string>
   <string name="your_account">حسابك</string>
   <string name="keys">مفاتيح</string>
   <string name="send_presence_updates">ارسال تحديثات الظهور</string>

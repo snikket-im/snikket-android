@@ -122,14 +122,12 @@
   <string name="pref_never_send_crash">Nunca informar de errores</string>
   <string name="pref_never_send_crash_summary">Si envías registros de error ayudas al desarrollo de Conversations</string>
   <string name="pref_confirm_messages">Confirmar mensajes</string>
-  <string name="pref_confirm_messages_summary">Permitir a tus contactos saber cuando recibes y lees un mensaje</string>
   <string name="pref_ui_options">Pantalla</string>
   <string name="openpgp_error">OpenKeychain reportó un error</string>
   <string name="error_decrypting_file">Error descifrando archivo</string>
   <string name="accept">Aceptar</string>
   <string name="error">Ha ocurrido un error</string>
   <string name="pref_grant_presence_updates">Suscripción de presencia automática</string>
-  <string name="pref_grant_presence_updates_summary">De forma automática solicitar y conceder la suscripción de presencia de los contactos que has creado</string>
   <string name="subscriptions">Suscripciones</string>
   <string name="your_account">Tu cuenta</string>
   <string name="keys">Claves</string>
@@ -339,8 +337,6 @@
   <string name="url_copied_to_clipboard">URL copiada al portapapeles</string>
   <string name="message_copied_to_clipboard">Mensaje copiado al portapapeles</string>
   <string name="image_transmission_failed">Falló la transferencia de la imagen</string>
-  <string name="scan_qr_code">Escanear código QR</string>
-  <string name="show_qr_code">Mostrar código QR</string>
   <string name="show_block_list">Mostrar contactos bloqueados</string>
   <string name="account_details">Detalles de la cuenta</string>
   <string name="verify_otr">Verificar OTR</string>
@@ -473,7 +469,6 @@
   <string name="contact_is_typing">%s está escribiendo...</string>
   <string name="contact_has_stopped_typing">%s ha dejado de escribir</string>
   <string name="pref_chat_states">Notificación de escritura</string>
-  <string name="pref_chat_states_summary">Permitir a tus contactos saber cuando estás escribiendo un nuevo mensaje</string>
   <string name="send_location">Enviar ubicación</string>
   <string name="show_location">Mostrar ubicación</string>
   <string name="no_application_found_to_display_location">No se ha encontrado ninguna aplicación para mostrar la ubicación</string>
@@ -666,4 +661,8 @@
   <string name="data_saver_enabled">Optimización de datos habilitado</string>
   <string name="data_saver_enabled_explained">Tu sistema operativo está restringiendo a Conversations acceder a internet cuando está en segundo plano. Para recibir notificaciones de nuevos mensajes deberías permitir a Conversations acceder a internet cuando la optimización de datos está habilitada.\nConversations realizará igualmente optimizaciones para ahorrar datos cuando sea posible.</string>
   <string name="device_does_not_support_data_saver">Tu dispositivo no soporta la opción de deshabilitar la optimización de datos para Conversations</string>
+  <string name="error_unable_to_create_temporary_file">No se ha podido crear el fichero temporal</string>
+  <string name="this_device_has_been_verified">Este dispositivo ha sido verificado</string>
+  <string name="copy_fingerprint">Copiar huella digital</string>
+  <string name="all_omemo_keys_have_been_verified">Todas las huellas digitales OMEMO han sido verificadas</string>
 </resources>

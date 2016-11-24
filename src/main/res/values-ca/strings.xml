@@ -98,13 +98,11 @@
   <string name="pref_never_send_crash">Mai enviïs informes d\'errors</string>
   <string name="pref_never_send_crash_summary">Enviant traces d\'execució d\'ajudes al futur desenvolupament del Conversations.</string>
   <string name="pref_confirm_messages">Confirmant missatges</string>
-  <string name="pref_confirm_messages_summary">Deixeu que el seu contacte sàpiga quan heu rebut i llegit un missatge</string>
   <string name="openpgp_error">OpenKeychain ha reportat un error</string>
   <string name="error_decrypting_file">I/O Error al desxifrar un arxiu</string>
   <string name="accept">Acceptar</string>
   <string name="error">Un error ha passat</string>
   <string name="pref_grant_presence_updates">Concedir actualitzacions</string>
-  <string name="pref_grant_presence_updates_summary">Preventivament atorgar i preguntar per les subscripcions als contactes creats</string>
   <string name="subscriptions">Subscripcions</string>
   <string name="your_account">El teu compte</string>
   <string name="keys">Claus</string>
@@ -273,8 +271,6 @@
   <string name="url_copied_to_clipboard">URL copiada al portapapers</string>
   <string name="message_copied_to_clipboard">Missatge copiat al portapapers</string>
   <string name="image_transmission_failed">Transmissió de l\'imatge fallada</string>
-  <string name="scan_qr_code">Escanejar el codi QR</string>
-  <string name="show_qr_code">Mostrar el codi QR</string>
   <string name="show_block_list">Mostra la llista de bloqueig</string>
   <string name="account_details">Detalls del compte</string>
   <string name="verify_otr">Verificar OTR</string>
@@ -386,7 +382,6 @@
   <string name="disable_account">Deshabilita el compte</string>
   <string name="contact_has_stopped_typing">%s ha deixat d\'escriure</string>
   <string name="pref_chat_states">Notificacions d\'escriptura</string>
-  <string name="pref_chat_states_summary">Permet el teu contacte saber quan estàs escrivint un missatge nou</string>
   <string name="send_location">Enviar localització</string>
   <string name="show_location">Mostrar localització</string>
   <string name="no_application_found_to_display_location">No s\'ha trobat cap aplicació per mostrar la localització</string>

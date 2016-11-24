@@ -122,14 +122,12 @@
   <string name="pref_never_send_crash">Nu trimite rapoarte de erori</string>
   <string name="pref_never_send_crash_summary">Trimitand date ajuti la dezvoltarea aplicatiei Conversations\n<b>Atentie:</b> Se va utiliza contul XMPP pentru a trimite informatii catre programatori.</string>
   <string name="pref_confirm_messages">Confirma mesaje</string>
-  <string name="pref_confirm_messages_summary">Contactul este notificat atunci cand ai primit un mesaj si l-ai citit</string>
   <string name="pref_ui_options">Optiuni interfata</string>
   <string name="openpgp_error">OpenKeychain a raportat o eroare</string>
   <string name="error_decrypting_file">Eroare I/O la decriptarea fisierului</string>
   <string name="accept">Accepta</string>
   <string name="error">A aparut o eroare</string>
   <string name="pref_grant_presence_updates">Trimite actualizari de prezenta</string>
-  <string name="pref_grant_presence_updates_summary">Acorda si cere anticipat abonarea la actualizarile de prezenta pentru contactele create de tine</string>
   <string name="subscriptions">Abonari</string>
   <string name="your_account">Contul tau</string>
   <string name="keys">Chei</string>
@@ -339,8 +337,6 @@
   <string name="url_copied_to_clipboard">URL copiat in memorie</string>
   <string name="message_copied_to_clipboard">Mesaj copiat in memorie</string>
   <string name="image_transmission_failed">Transmisia imaginii a esuat</string>
-  <string name="scan_qr_code">Scaneaza cod QR</string>
-  <string name="show_qr_code">Arata codul QR</string>
   <string name="show_block_list">Arata lista blocata</string>
   <string name="account_details">Detalii cont</string>
   <string name="verify_otr">Verifica OTR</string>
@@ -473,7 +469,6 @@
   <string name="contact_is_typing">%s tasteaza...</string>
   <string name="contact_has_stopped_typing">%s s-a oprit din scris</string>
   <string name="pref_chat_states">Notificari cand cineva scrie</string>
-  <string name="pref_chat_states_summary">Anunta contactul cand scrii un nou mesaj</string>
   <string name="send_location">Trimite locatia</string>
   <string name="show_location">Arata locatia</string>
   <string name="no_application_found_to_display_location">Nu s-a gasit nici o aplicatie care sa afiseze locatia</string>
@@ -670,4 +665,8 @@ Emitent</string>
   <string name="data_saver_enabled">Economizorul de date este activat</string>
   <string name="data_saver_enabled_explained">Sistemul de operare restrictioneaza accesul la Internet pentru Conversations atunci cand este in fundal. Pentru a primi in continuare notificari de mesaje noi trebuie sa acordati acces ne restrictionat pentru Conversations atunci cand Economizorul de date este activ.\nConversations totusi face eforturi sa economiseasca datele atunci cand este posibil.</string>
   <string name="device_does_not_support_data_saver">Dispozitivul nu suporta dezactivarea Economizorului de date pentru Conversations.</string>
+  <string name="error_unable_to_create_temporary_file">Nu se poate crea un fisier temporar</string>
+  <string name="this_device_has_been_verified">Acest dispozitiv a fost verificat</string>
+  <string name="copy_fingerprint">Copiaza amprenta</string>
+  <string name="all_omemo_keys_have_been_verified">Toate cheile OMEMO au fost verificate</string>
 </resources>

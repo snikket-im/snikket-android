@@ -121,21 +121,19 @@
   <string name="pref_advanced_options">Avançado</string>
   <string name="pref_never_send_crash">Nunca enviar relatórios de erros</string>
   <string name="pref_never_send_crash_summary">Ao enviar os stack traces você está colaborando com o desenvolvimento do Conversations.</string>
-  <string name="pref_confirm_messages">Confirmação de mensangens</string>
-  <string name="pref_confirm_messages_summary">Permite que um contato saiba quando você recebeu e leu uma mensagem.</string>
+  <string name="pref_confirm_messages">Confirmação de mensagens</string>
   <string name="pref_ui_options">IU</string>
   <string name="openpgp_error">O OpenKeychain informou um erro</string>
   <string name="error_decrypting_file">Ocorreu um erro de E/S na descriptografia o arquivo</string>
   <string name="accept">Aceitar</string>
   <string name="error">Ocorreu um erro</string>
-  <string name="pref_grant_presence_updates">Permitir atualizações de presença</string>
-  <string name="pref_grant_presence_updates_summary">Permite e solicita atualizações de presença aos contatos que você criar</string>
+  <string name="pref_grant_presence_updates">Fornecer atualizações de presença</string>
   <string name="subscriptions">Inscrições</string>
   <string name="your_account">Sua conta</string>
   <string name="keys">Chaves</string>
   <string name="send_presence_updates">Enviar atualizações de presença</string>
   <string name="receive_presence_updates">Receber atualizações de presença</string>
-  <string name="ask_for_presence_updates">Pedir por atualizações de presença</string>
+  <string name="ask_for_presence_updates">Solicitar atualizações de presença</string>
   <string name="attach_choose_picture">Selecionar uma imagem</string>
   <string name="attach_take_picture">Tirar uma foto</string>
   <string name="preemptively_grant">Autorizar antecipadamente as solicitações de inscrição</string>
@@ -283,6 +281,7 @@
   <string name="conference_requires_password">Essa conferencia requer uma senha</string>
   <string name="enter_password">Digite a senha</string>
   <string name="missing_presence_updates">Sem atualizações de presença do contato</string>
+  <string name="missing_presence_subscription">Sem requisição de presença</string>
   <string name="request_presence_updates">Por favor, primeiro solicite atualizações de presençado seu contato.\n\n<small>Isso determinará qual(is) cliente(s) o seu contato está usando.</small></string>
   <string name="request_now">Solicitar agora</string>
   <string name="delete_fingerprint">Excluir impressão digital</string>
@@ -338,8 +337,6 @@
   <string name="url_copied_to_clipboard">A URL foi copiada para a área de transferência</string>
   <string name="message_copied_to_clipboard">A mensagem foi copiada para a área de transferência</string>
   <string name="image_transmission_failed">Não foi possível enviar a imagem</string>
-  <string name="scan_qr_code">Escanear QR code</string>
-  <string name="show_qr_code">Exibir QR code</string>
   <string name="show_block_list">Exibir a lista de bloqueios</string>
   <string name="account_details">Detalhes da conta</string>
   <string name="verify_otr">Verificar OTR</string>
@@ -472,7 +469,6 @@
   <string name="contact_is_typing">%s está digitando...</string>
   <string name="contact_has_stopped_typing">%s parou de digitar</string>
   <string name="pref_chat_states">Notificações de digitação</string>
-  <string name="pref_chat_states_summary">Permite que seus contatos vejam quando você estiver digitando uma nova mensagem.</string>
   <string name="send_location">Enviar localização</string>
   <string name="show_location">Exibir localização</string>
   <string name="no_application_found_to_display_location">Não foi encontrado nenhum aplicativo para exibir a localização</string>
@@ -645,12 +641,12 @@
   <string name="payment_required">É necessário efetuar pagamento</string>
   <string name="missing_internet_permission">Permissões de Internet ausentes</string>
   <string name="me">Eu</string>
-  <string name="contact_asks_for_presence_subscription">O contato está solicitando atualizações de presença</string>
+  <string name="contact_asks_for_presence_subscription">O contato está requisitando acompanhar sua presença</string>
   <string name="allow">Permitir</string>
   <string name="no_permission_to_access_x">Sem permissão para acessar %s</string>
   <string name="remote_server_not_found">O servidor remoto não foi encontrado</string>
   <string name="unable_to_update_account">Não foi possível atualizar a conta</string>
-  <string name="missing_presence_subscription_with_x">Sem permissão para atualizações de presença de %s.</string>
+  <string name="missing_presence_subscription_with_x">Sem requisição de atualizações de presença com %s.</string>
   <string name="missing_keys_from_x">Sem chaves OMEMO para %s.</string>
   <string name="missing_omemo_keys">Chaves OMEMO ausentes</string>
   <string name="wrong_conference_configuration">Essa conferência não é privada nem anônima.</string>
@@ -662,4 +658,11 @@
   <string name="error_publish_avatar_offline">É necessário estar conectado para publicar o avatar.</string>
   <string name="show_error_message">Exibir a mensagem de erro</string>
   <string name="error_message">Mensagem de erro</string>
+  <string name="data_saver_enabled">Economia de dados habilitada</string>
+  <string name="data_saver_enabled_explained">O seu sistema operacional está restringindo o acesso à internet em segundo plano pelo Conversations. Para receber notificações de novas mensagens você deve permitir que o Conversations tenha acesso irrestrito quando a economia de dados estiver ativada.\nO Conversations fará um esforço para economizar dados sempre que possível.</string>
+  <string name="device_does_not_support_data_saver">O seu dispositivo não permite que a economia de dados seja desativada para o Conversations.</string>
+  <string name="error_unable_to_create_temporary_file">Não foi possível criar o arquivo temporário</string>
+  <string name="this_device_has_been_verified">Este dispositivo foi verificado</string>
+  <string name="copy_fingerprint">Copiar impressão digital</string>
+  <string name="all_omemo_keys_have_been_verified">Todas as chaves OMEMO foram verificadas</string>
 </resources>

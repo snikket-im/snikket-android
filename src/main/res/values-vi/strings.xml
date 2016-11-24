@@ -106,13 +106,11 @@
   <string name="pref_never_send_crash">Không bao giờ gửi báo cáo dừng chạy</string>
   <string name="pref_never_send_crash_summary">Bằng việc gửi báo cáo hoạt động, bạn đang hỗ trợ nhóm phát triển của Conversations</string>
   <string name="pref_confirm_messages">Xác nhận tin nhắn</string>
-  <string name="pref_confirm_messages_summary">Báo cho liên hệ của bạn biết khi bạn đã nhận và đọc tin nhắn</string>
   <string name="openpgp_error">OpenKeychain đã báo cáo một lỗi</string>
   <string name="error_decrypting_file">Tập tin giải mã lỗi I/O</string>
   <string name="accept">Chấp thuận</string>
   <string name="error">Đã có lỗi xảy ra</string>
   <string name="pref_grant_presence_updates">Trao quyền cập nhật hiện diện</string>
-  <string name="pref_grant_presence_updates_summary">Ưu tiên trao quyền và hỏi đăng ký hiện diện cho các liên hệ bạn đã tạo</string>
   <string name="subscriptions">Đăng ký</string>
   <string name="your_account">Tài khoản của bạn</string>
   <string name="keys">Các khoá</string>
@@ -301,8 +299,6 @@
   <string name="url_copied_to_clipboard">Đã chép URL vào clipboard</string>
   <string name="message_copied_to_clipboard">Đã chép tin nhắn vào clipboard</string>
   <string name="image_transmission_failed">Thất bại khi chuyển hình</string>
-  <string name="scan_qr_code">Quét mã QR</string>
-  <string name="show_qr_code">Hiện mã QR</string>
   <string name="show_block_list">Quét danh sách chặn</string>
   <string name="account_details">Chi tiết tài khoản</string>
   <string name="verify_otr">Xác minh OTR</string>
@@ -430,7 +426,6 @@
   <string name="contact_is_typing">%s đang gõ...</string>
   <string name="contact_has_stopped_typing">%s đã ngừng gõ</string>
   <string name="pref_chat_states">Thông báo đang gõ</string>
-  <string name="pref_chat_states_summary">Báo cho liên hệ biết khi bạn đang viết tin nhắn mới</string>
   <string name="send_location">Gửi vị trí</string>
   <string name="show_location">Hiện vị trí</string>
   <string name="no_application_found_to_display_location">Không thấy ứng dụng nào có thể hiện vị trí</string>

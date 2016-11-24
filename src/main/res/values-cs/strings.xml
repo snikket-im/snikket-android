@@ -122,14 +122,12 @@
   <string name="pref_never_send_crash">Neodesílat detaily o pádu aplikace</string>
   <string name="pref_never_send_crash_summary">Zasláním detailů o důvodu selhání pomůžete dalšímu vývoji aplikace Konverzace</string>
   <string name="pref_confirm_messages">Potvrzovat zprávy</string>
-  <string name="pref_confirm_messages_summary">Oznamovat kontaktům, že zpráva byla přijata a přečtena</string>
   <string name="pref_ui_options">UI</string>
   <string name="openpgp_error">OpenKeychain nahlásil chybu</string>
   <string name="error_decrypting_file">I/O chyba dešifrování souboru</string>
   <string name="accept">Přijmout</string>
   <string name="error">Došlo k chybě</string>
   <string name="pref_grant_presence_updates">Povolit aktualizace stavu</string>
-  <string name="pref_grant_presence_updates_summary">Aktivně povolovat a žádat o zasílání změn stavu pro vytvářené kontakty</string>
   <string name="subscriptions">Odběry</string>
   <string name="your_account">Váš účet</string>
   <string name="keys">Klíče</string>
@@ -339,8 +337,6 @@
   <string name="url_copied_to_clipboard">URL zkopírováno do schránky</string>
   <string name="message_copied_to_clipboard">Zpráva zkopírována do schránky</string>
   <string name="image_transmission_failed">Přenos obrázku selhal</string>
-  <string name="scan_qr_code">Skenovat QR kód</string>
-  <string name="show_qr_code">Zobrazit QR kód</string>
   <string name="show_block_list">Zobrazit seznam blokovaných</string>
   <string name="account_details">Detaily účtu</string>
   <string name="verify_otr">Ověřit OTR</string>
@@ -473,7 +469,6 @@
   <string name="contact_is_typing">%s píše...</string>
   <string name="contact_has_stopped_typing">%s přestal(a) psát</string>
   <string name="pref_chat_states">Upozornění při psaní</string>
-  <string name="pref_chat_states_summary">Oznamovat kontaktům že píšete novou zprávu</string>
   <string name="send_location">Poslat pozici</string>
   <string name="show_location">Zobrazit pozici</string>
   <string name="no_application_found_to_display_location">Nebyla nalezena aplikace pro zobrazení pozice</string>
@@ -668,4 +663,9 @@
   <string name="error_message">Chybová zpráva</string>
   <string name="data_saver_enabled">Zapnuta úspora dat</string>
   <string name="data_saver_enabled_explained">Váš operační systém zabraňuje aplikaci Conversations v přístupu na Internet, pokud tato běží na pozadí. Pro příjem upozornění na nové zprávy musíte Conversations povolit neomezený přístup při zapnuté úspoře dat.\nConversations se bude i přesto snažit omezovat přenos dat.</string>
+  <string name="device_does_not_support_data_saver">Tento přístroj nepodporuje vypnutí šetření dat pro aplikaci Conversations.</string>
+  <string name="error_unable_to_create_temporary_file">Nelze vytvořit dočasný soubor</string>
+  <string name="this_device_has_been_verified">Tento přístroj byl ověřen</string>
+  <string name="copy_fingerprint">Kopírovat identifikátor</string>
+  <string name="all_omemo_keys_have_been_verified">Všechny OMEMO klíče byly ověřeny</string>
 </resources>

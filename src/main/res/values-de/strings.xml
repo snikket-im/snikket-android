@@ -122,14 +122,12 @@
   <string name="pref_never_send_crash">Niemals Absturzberichte senden</string>
   <string name="pref_never_send_crash_summary">Wenn du Absturzberichte einschickst, hilfst du Conversations stetig zu verbessern</string>
   <string name="pref_confirm_messages">Lese- und Empfangsbestätigung senden</string>
-  <string name="pref_confirm_messages_summary">Informiere deine Kontakte, wenn du eine Nachricht empfangen und gelesen hast</string>
   <string name="pref_ui_options">Benutzeroberfläche</string>
   <string name="openpgp_error">Fehler mit OpenKeychain</string>
   <string name="error_decrypting_file">Fehler beim Entschlüsseln der Datei</string>
   <string name="accept">Annehmen</string>
   <string name="error">Ein Fehler ist aufgetreten</string>
   <string name="pref_grant_presence_updates">Online-Status</string>
-  <string name="pref_grant_presence_updates_summary">Erlaube neu hinzugefügten Kontakten meinen Online-Status zu sehen und frage um Erlaubnis, ihren sehen zu dürfen</string>
   <string name="subscriptions">Abonnements</string>
   <string name="your_account">Dein Konto</string>
   <string name="keys">Schlüssel</string>
@@ -339,8 +337,6 @@
   <string name="url_copied_to_clipboard">URL in Zwischenablage kopiert</string>
   <string name="message_copied_to_clipboard">Nachricht in Zwischenablage kopiert</string>
   <string name="image_transmission_failed">Bild-Übertragung fehlgeschlagen</string>
-  <string name="scan_qr_code">QR-Code scannen</string>
-  <string name="show_qr_code">QR-Code anzeigen</string>
   <string name="show_block_list">Sperrliste anzeigen</string>
   <string name="account_details">Konto-Details</string>
   <string name="verify_otr">OTR prüfen</string>
@@ -473,7 +469,6 @@
   <string name="contact_is_typing">%s schreibt…</string>
   <string name="contact_has_stopped_typing">%s schreibt nicht mehr</string>
   <string name="pref_chat_states">Tipp-Benachrichtigung</string>
-  <string name="pref_chat_states_summary">Informiere deine Kontakte, wenn du eine Nachricht eintippst.</string>
   <string name="send_location">Standort senden</string>
   <string name="show_location">Standort anzeigen</string>
   <string name="no_application_found_to_display_location">Keine App für die Standort-Anzeige gefunden</string>
@@ -666,4 +661,8 @@
   <string name="data_saver_enabled">Datensparmodus aktiv</string>
   <string name="data_saver_enabled_explained">Dein Betriebssystem verbietet Conversations im Hintergrund den Zugang zum Internet. Um Benachrichtigungen erhalten zu können, solltest du Conversations den Zugang erlauben, wenn der Datensparmodus aktiv ist. Conversations wird dennoch versuchen, so viel Daten wie möglich einzusparen.</string>
   <string name="device_does_not_support_data_saver">Dein Gerät unterstützt den Datensparmodus für Conversations nicht.</string>
+  <string name="error_unable_to_create_temporary_file">Temporäre Datei kann nicht erstellt werden</string>
+  <string name="this_device_has_been_verified">Dieses Gerät wurde verifiziert</string>
+  <string name="copy_fingerprint">Kopiere Fingerabdruck</string>
+  <string name="all_omemo_keys_have_been_verified">Alle OMEMO Schlüssel wurden verifiziert</string>
 </resources>

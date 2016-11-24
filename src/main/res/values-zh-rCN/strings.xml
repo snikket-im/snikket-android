@@ -122,14 +122,12 @@
   <string name="pref_never_send_crash">总不发送崩溃报告</string>
   <string name="pref_never_send_crash_summary">发送堆栈跟踪帮助 Conversations 开发人员</string>
   <string name="pref_confirm_messages">确认消息</string>
-  <string name="pref_confirm_messages_summary">当你已收到消息并且已阅时通知好友</string>
   <string name="pref_ui_options">UI</string>
   <string name="openpgp_error">OpenKeychain 报告了一个错误</string>
   <string name="error_decrypting_file">解密文件时出现 I/O 错误</string>
   <string name="accept">接受</string>
   <string name="error">产生了一个错误</string>
   <string name="pref_grant_presence_updates">同意更新在线联系人</string>
-  <string name="pref_grant_presence_updates_summary">预先同意并请求更新您的联系人</string>
   <string name="subscriptions">关注</string>
   <string name="your_account">你的账号</string>
   <string name="keys">密钥</string>
@@ -331,6 +329,7 @@
   <string name="check_x_filesize_on_host">在 %2$s 上检查 %1$s 的大小</string>
   <string name="message_options">消息选项</string>
   <string name="copy_text">拷贝文本</string>
+  <string name="select_text">选择文本</string>
   <string name="copy_original_url">拷贝原始URL</string>
   <string name="send_again">再次发送</string>
   <string name="file_url">文件  </string>
@@ -338,8 +337,6 @@
   <string name="url_copied_to_clipboard">已经拷贝 URL 到剪贴板</string>
   <string name="message_copied_to_clipboard">消息已经拷贝到剪贴板</string>
   <string name="image_transmission_failed">图片传送失败</string>
-  <string name="scan_qr_code">扫描二维码</string>
-  <string name="show_qr_code">显示二维码</string>
   <string name="show_block_list">显示屏蔽列表</string>
   <string name="account_details">账户详情</string>
   <string name="verify_otr">验证 OTR</string>
@@ -472,7 +469,6 @@
   <string name="contact_is_typing">%s 正在输入</string>
   <string name="contact_has_stopped_typing">%s 已停止输入</string>
   <string name="pref_chat_states">键盘输入通知</string>
-  <string name="pref_chat_states_summary">让对方知道你正在输入新消息</string>
   <string name="send_location">发送位置</string>
   <string name="show_location">显示位置</string>
   <string name="no_application_found_to_display_location">无法找到显示位置的应用</string>
@@ -659,4 +655,9 @@
   <string name="pref_delete_omemo_identities_summary">重新生成你的 OMEMO 密钥。你的所有联系人不得不对你进行再认证。请将此作为最后的办法。</string>
   <string name="delete_selected_keys">删除选择的密钥</string>
   <string name="error_publish_avatar_offline">你需要连接才能发布头像</string>
+  <string name="show_error_message">显示出错消息</string>
+  <string name="error_message">出错消息</string>
+  <string name="data_saver_enabled">省流量模式已激活</string>
+  <string name="data_saver_enabled_explained">您的操作系统禁止本程序在后台运行时访问互联网。为了收到新消息提示，您需要在省流量模式下允许本程序不受限制地访问互联网。\n本程序仍会尽可能节省流量。</string>
+  <string name="device_does_not_support_data_saver">该设备不支持禁用省流量模式</string>
 </resources>

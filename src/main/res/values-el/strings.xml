@@ -98,13 +98,11 @@
   <string name="pref_never_send_crash">Να μην αποστέλλονται αναφορές λαθών</string>
   <string name="pref_never_send_crash_summary">Στέλνοντας ίχνη στοίβας βοηθάτε την συνεχόμενη ανάπτυξη του Conversations</string>
   <string name="pref_confirm_messages">Επιβεβαίωση μηνυμάτων</string>
-  <string name="pref_confirm_messages_summary">Επιτρέψτε στην επαφή σας να ειδοποιείται όταν έχετε λάβει και διαβάσει ένα μήνυμα</string>
   <string name="openpgp_error">Το OpenKeychain ανέφερε κάποιο σφάλμα</string>
   <string name="error_decrypting_file">Σφάλμα εισόδου/εξόδου κατά την αποκρυπτογράφηση αρχείου</string>
   <string name="accept">Αποδοχή</string>
   <string name="error">Έχει συμβεί κάποιο σφάλμα</string>
   <string name="pref_grant_presence_updates">Χορήγηση ενημερώσεων παρουσίας</string>
-  <string name="pref_grant_presence_updates_summary">Ερήμην χορήγηση και παράκληση για συνδρομή παρουσίας στις επαφές που δημιουργείτε</string>
   <string name="subscriptions">Συνδρομές</string>
   <string name="your_account">Ο λογαριασμός σας</string>
   <string name="keys">Κλειδιά</string>
@@ -273,8 +271,6 @@
   <string name="url_copied_to_clipboard">Η διεύθυνση URL αντιγράφηκε στο πρόχειρο</string>
   <string name="message_copied_to_clipboard">Το μήνυμα αντιγράφηκε στο πρόχειρο</string>
   <string name="image_transmission_failed">Η μετάδοση της εικόνας απέτυχε</string>
-  <string name="scan_qr_code">Σάρωση κωδικού QR</string>
-  <string name="show_qr_code">Εμφάνιση κωδικού QR</string>
   <string name="show_block_list">Εμφάνιση λίστας αποκλεισμένων</string>
   <string name="account_details">Λεπτομέρειες λογαριασμού</string>
   <string name="verify_otr">Επαλήθευση OTR</string>
@@ -386,7 +382,6 @@
   <string name="disable_account">Απενεργοποίηση λογαριασμού</string>
   <string name="contact_has_stopped_typing">Ο χρήστης %s σταμάτησε να γράφει</string>
   <string name="pref_chat_states">Ειδοποιήσεις πληκτρολόγησης</string>
-  <string name="pref_chat_states_summary">Επιτρέψτε στην επαφή σας να γνωρίζει πότε γράφετε ένα νέο μήνυμα</string>
   <string name="send_location">Αποστολή τοποθεσίας</string>
   <string name="show_location">Εμφάνιση τοποθεσίας</string>
   <string name="no_application_found_to_display_location">Δεν βρέθηκε εφαρμογή για την απεικόνιση τοποθεσίας</string>

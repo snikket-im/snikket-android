@@ -101,13 +101,11 @@
   <string name="pref_never_send_crash">Neodosielať detaily o zlyhaní aplikácie</string>
   <string name="pref_never_send_crash_summary">Zaslaním detailov o dôvode zlyhania pomáhate ďalšiemu vývoju aplikácie Conversations</string>
   <string name="pref_confirm_messages">Potvrdzovať správy</string>
-  <string name="pref_confirm_messages_summary">Oznámi kontaktom, že správa bola prijatá a prečítaná</string>
   <string name="openpgp_error">OpenKeychain nahlásil chybu</string>
   <string name="error_decrypting_file">I/O chyba dešifrovania súboru</string>
   <string name="accept">Prijať</string>
   <string name="error">Došlo k chybe</string>
   <string name="pref_grant_presence_updates">Povoliť aktualizáciu stavu</string>
-  <string name="pref_grant_presence_updates_summary">Aktívne povoliť a žiadať o zasielanie zmien stavu pre vytvorené kontakty</string>
   <string name="subscriptions">Odbery</string>
   <string name="your_account">Váš účet</string>
   <string name="keys">Kľúče</string>
@@ -289,8 +287,6 @@
   <string name="url_copied_to_clipboard">URL skopírovaný do schránky</string>
   <string name="message_copied_to_clipboard">Správa skopírovaná do schránky</string>
   <string name="image_transmission_failed">Zlyhal prenos obrázku</string>
-  <string name="scan_qr_code">Skenovať kód QR</string>
-  <string name="show_qr_code">Zobraziť kód QR</string>
   <string name="show_block_list">Zobraziť zoznam blokovaných</string>
   <string name="account_details">Detaily účtu</string>
   <string name="verify_otr">Overiť OTR</string>
@@ -405,7 +401,6 @@
   <string name="disable_account">Vypnúť účet</string>
   <string name="contact_has_stopped_typing">%s prestal písať</string>
   <string name="pref_chat_states">Upozornenia pri písaní</string>
-  <string name="pref_chat_states_summary">Upozorniť kontakt, keď píšete novú správu</string>
   <string name="send_location">Poslať polohu</string>
   <string name="show_location">Zobraziť polohu</string>
   <string name="no_application_found_to_display_location">Nenašla sa aplikácia na zobrazenie polohy</string>

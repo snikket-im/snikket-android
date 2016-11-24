@@ -104,13 +104,11 @@
   <string name="pref_never_send_crash">לעולם אל תשלח דיווחי קריסה</string>
   <string name="pref_never_send_crash_summary">על ידי שליחת עקבות מחסנית אתה עוזר להתקדמות הפיתוח של Conversations</string>
   <string name="pref_confirm_messages">אשר הודעות</string>
-  <string name="pref_confirm_messages_summary">אפשר לאיש קשר שלך לדעת מתי קיבלת וקראת הודעה</string>
   <string name="openpgp_error">אפליקציית OpenKeychain דיווחה על שגיאה</string>
   <string name="error_decrypting_file">שגיאת I/O פענוח קובץ</string>
   <string name="accept">קבל</string>
   <string name="error">אירעה שגיאה</string>
   <string name="pref_grant_presence_updates">הענק עדכוני נוכחות</string>
-  <string name="pref_grant_presence_updates_summary">הענק ובקש הרשמות נוכחות מראש עבור אנשי קשר שיצרת</string>
   <string name="subscriptions">הרשמות</string>
   <string name="your_account">החשבון שלך</string>
   <string name="keys">מפתחות</string>
@@ -291,8 +289,6 @@
   <string name="url_copied_to_clipboard">הקישור הועתק</string>
   <string name="message_copied_to_clipboard">ההודעה הועתקה</string>
   <string name="image_transmission_failed">שליחת התמונה נכשלה</string>
-  <string name="scan_qr_code">סרוק ברקוד QR</string>
-  <string name="show_qr_code">הראה ברקוד QR</string>
   <string name="show_block_list">הראה רשימת חסומים</string>
   <string name="account_details">פרטי חשבון</string>
   <string name="verify_otr">אמת OTR</string>
@@ -417,7 +413,6 @@
   <string name="contact_is_typing">%s מקליד/ה כעת…</string>
   <string name="contact_has_stopped_typing">%s הפסיק/ה להקליד</string>
   <string name="pref_chat_states">התראות הקלדה</string>
-  <string name="pref_chat_states_summary">אפשר לאנשי הקשר שלך לדעת כאשר אתה מקליד הודעה חדשה</string>
   <string name="send_location">שלח מיקום</string>
   <string name="show_location">הראה מיקום</string>
   <string name="no_application_found_to_display_location">לא נמצאה אפליקציית המראה את המיקום</string>

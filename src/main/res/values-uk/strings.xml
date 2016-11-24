@@ -121,14 +121,12 @@
   <string name="pref_never_send_crash">Ніколи не надсилати звіти про збої</string>
   <string name="pref_never_send_crash_summary">Надсилаючи траси стеку викликів Ви допомагаєте розробці Розмов, яка продовжується</string>
   <string name="pref_confirm_messages">Повідомлення-підтвердження</string>
-  <string name="pref_confirm_messages_summary">Дозволити Вашим контактам знати, коли Ви отримали та прочитали повідомлення</string>
   <string name="pref_ui_options">Інтерфейс користувача</string>
   <string name="openpgp_error">OpenKeychain відзвітував про помилку</string>
   <string name="error_decrypting_file">Помилка вводу-виводу при розшифруванні файлу</string>
   <string name="accept">Прийняти</string>
   <string name="error">Сталася помилка</string>
   <string name="pref_grant_presence_updates">Давати оновлення про присутність</string>
-  <string name="pref_grant_presence_updates_summary">Попередньо давати та запитувати підписку на присутність для контактів, які Ви створюєте</string>
   <string name="subscriptions">Підписки</string>
   <string name="your_account">Ваш обліковий запис</string>
   <string name="keys">Ключі</string>
@@ -335,8 +333,6 @@
   <string name="url_copied_to_clipboard">URL скопійовано до комірки обміну</string>
   <string name="message_copied_to_clipboard">Повідомлення скопійовано до комірки обміну</string>
   <string name="image_transmission_failed">Передача зображення не відбулася</string>
-  <string name="scan_qr_code">Сканувати QR код</string>
-  <string name="show_qr_code">Показати QR код</string>
   <string name="show_block_list">Показати список блокування</string>
   <string name="account_details">Деталі облікового запису</string>
   <string name="verify_otr">Перевірити OTR</string>
@@ -467,7 +463,6 @@
   <string name="contact_is_typing">%s друкує…</string>
   <string name="contact_has_stopped_typing">%s припинив друкувати</string>
   <string name="pref_chat_states">Сповіщення про набір</string>
-  <string name="pref_chat_states_summary">Дозволити вашим контактам знати, коли Ви пишете нове повідомлення</string>
   <string name="send_location">Відправити місцезнаходження</string>
   <string name="show_location">Показати місцезнаходження</string>
   <string name="no_application_found_to_display_location">Не знайдено програми, щоб показати місцезнаходження</string>

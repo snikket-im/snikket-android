@@ -78,7 +78,9 @@
   <string name="clear_histor_msg">Deseja remover todas as mensagens nesta conversa?\n\n&lt;b&gt;Aviso:&lt;b&gt; Isto não irá influenciar mensagens guardadas noutros dispositivos ou servidores.</string>
   <string name="delete_messages">Remover mensagens</string>
   <string name="also_end_conversation">Terminar esta conversa depois</string>
+  <string name="choose_presence">Escolher dispositivo</string>
   <string name="send_unencrypted_message">Enviar mensagem não cifrada</string>
+  <string name="send_message_to_x">Enviar mensagem para %s</string>
   <string name="send_otr_message">Enviar mensagem cifrada com OTR</string>
   <string name="send_omemo_message">Enviar mensagem cifrada com OMEMO</string>
   <string name="send_omemo_x509_message">Enviar mensagem cifrada com v\\OMEMO</string>
@@ -118,14 +120,12 @@
   <string name="pref_never_send_crash">Nunca enviar relatórios de falhas</string>
   <string name="pref_never_send_crash_summary">Ao enviar os stack traces você está a ajudar ao desenvolvimento contínuo de Conversations</string>
   <string name="pref_confirm_messages">Confirmar mensagens</string>
-  <string name="pref_confirm_messages_summary">Permitir que um contacto saiba quando você recebeu e leu uma mensagem</string>
   <string name="pref_ui_options">Interface do Utilizador</string>
   <string name="openpgp_error">O OpenKeychain reportou um erro</string>
   <string name="error_decrypting_file">Erro de I/O ao decifrar o ficheiro</string>
   <string name="accept">Aceitar</string>
   <string name="error">Ocorreu um erro</string>
   <string name="pref_grant_presence_updates">Permitir atualizações de presença</string>
-  <string name="pref_grant_presence_updates_summary">Conceder ou pedir subscrição de presença antecipadamente para contactos que tenha criado.</string>
   <string name="subscriptions">Subscrições</string>
   <string name="your_account">A sua conta</string>
   <string name="keys">Chaves</string>
@@ -318,6 +318,7 @@
   <string name="check_x_filesize_on_host">Verifique o tamanho de %1$s em %2$s</string>
   <string name="message_options">Opções de mensagem</string>
   <string name="copy_text">Copiar texto</string>
+  <string name="select_text">Selecionar texto</string>
   <string name="copy_original_url">Copiar o URL original</string>
   <string name="send_again">Enviar novamente</string>
   <string name="file_url">URL do ficheiro</string>
@@ -325,8 +326,6 @@
   <string name="url_copied_to_clipboard">URL copiado para a área de transferência</string>
   <string name="message_copied_to_clipboard">Mensagem copiada para a área de transferência</string>
   <string name="image_transmission_failed">A transmissão da imagem falhou</string>
-  <string name="scan_qr_code">Ler código QR</string>
-  <string name="show_qr_code">Mostrar código QR</string>
   <string name="show_block_list">Mostar lista de bloqueios</string>
   <string name="account_details">Detalhes da conta</string>
   <string name="verify_otr">Verificar OTR</string>
@@ -348,6 +347,7 @@
   <string name="conversations_foreground_service">Conversations</string>
   <string name="pref_keep_foreground_service">Manter o serviço em primeiro plano</string>
   <string name="pref_keep_foreground_service_summary">Previne o sistema operativo de terminar a sua conexão</string>
+  <string name="pref_export_logs">Exportar histórico</string>
   <string name="notification_export_logs_title">A escrever os logs para o cartão SD</string>
   <string name="choose_file">Escolher ficheiro</string>
   <string name="receiving_x_file">A receber %1$s (%2$d%% concluído)</string>
@@ -456,7 +456,6 @@
   <string name="contact_is_typing">%s está a escrever...</string>
   <string name="contact_has_stopped_typing">%s parou de escrever</string>
   <string name="pref_chat_states">Notificações de escrita</string>
-  <string name="pref_chat_states_summary">Permitir que um contacto saiba quando está a escrever uma nova mensagem</string>
   <string name="send_location">Enviar localização</string>
   <string name="show_location">Exibir localização</string>
   <string name="no_application_found_to_display_location">Não foi encontrada nenhuma aplicação para mostrar a localização</string>
@@ -576,4 +575,5 @@
   <string name="security_error_invalid_file_access">Erro de segurança: Acesso ao ficheiro inválido</string>
   <string name="no_application_to_share_uri">Não foi encontrada nenhuma aplicação para partilhar o URI</string>
   <string name="share_uri_with">Partilhar URI com...</string>
+  <string name="create_account">Criar conta</string>
 </resources>

@@ -122,14 +122,12 @@
   <string name="pref_never_send_crash">Ne pas envoyer de rapports d\'erreurs</string>
   <string name="pref_never_send_crash_summary">En envoyant des logs vous aidez le développement de Conversations.</string>
   <string name="pref_confirm_messages">Confirmation de lecture</string>
-  <string name="pref_confirm_messages_summary">Informer le contact lorsque vous avez reçu et lu un message.</string>
   <string name="pref_ui_options">Interface</string>
   <string name="openpgp_error">OpenKeychain a signalé une erreur</string>
   <string name="error_decrypting_file">Erreur d\'E/S lors du déchiffrement du fichier</string>
   <string name="accept">Accepter</string>
   <string name="error">Une erreur s\'est produite</string>
   <string name="pref_grant_presence_updates">Autoriser les màj de disponibilité</string>
-  <string name="pref_grant_presence_updates_summary">Autoriser et demander par avance les mises à jour de disponibilité des contacts ajoutés.</string>
   <string name="subscriptions">Publications</string>
   <string name="your_account">Votre compte</string>
   <string name="keys">Clefs</string>
@@ -339,8 +337,6 @@
   <string name="url_copied_to_clipboard">URL copiée dans le presse-papier</string>
   <string name="message_copied_to_clipboard">Message copié dans le presse-papier</string>
   <string name="image_transmission_failed">Échec lors de l\'envoi de l\'image</string>
-  <string name="scan_qr_code">Scanner un code QR</string>
-  <string name="show_qr_code">Afficher le code QR</string>
   <string name="show_block_list">Afficher la liste des contacts bloqués</string>
   <string name="account_details">Détails du compte</string>
   <string name="verify_otr">Vérifier l\'OTR</string>
@@ -473,7 +469,6 @@
   <string name="contact_is_typing">%s est en train d\'écrire</string>
   <string name="contact_has_stopped_typing">%s a arrêté d\'écrire</string>
   <string name="pref_chat_states">Notifications d\'écriture</string>
-  <string name="pref_chat_states_summary">Informer votre contact lorsque vous êtes en train d\'écrire un message.</string>
   <string name="send_location">Envoyer la position</string>
   <string name="show_location">Afficher la position</string>
   <string name="no_application_found_to_display_location">Aucune application trouvée pour afficher la position</string>
