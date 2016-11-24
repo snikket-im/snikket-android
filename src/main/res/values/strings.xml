@@ -412,7 +412,7 @@
 	<string name="no_application_found_to_open_file">No application found to open file</string>
 	<string name="could_not_verify_fingerprint">Could not verify fingerprint</string>
 	<string name="manually_verify">Manually verify</string>
-	<string name="are_you_sure_verify_fingerprint">Are you sure that you want to verify your contacts OTR fingerprint?</string>
+	<string name="are_you_sure_verify_fingerprint">Are you sure that you want to verify your contact’s OTR fingerprint?</string>
 	<string name="pref_show_dynamic_tags">Show dynamic tags</string>
 	<string name="pref_show_dynamic_tags_summary">Display read-only tags underneath contacts</string>
 	<string name="enable_notifications">Enable notifications</string>
@@ -705,13 +705,13 @@
 	<string name="all_omemo_keys_have_been_verified">All OMEMO keys have been verified</string>
 	<string name="barcode_does_not_contain_fingerprints_for_this_conversation">Barcode does not contain fingerprints for this conversation.</string>
 	<string name="verified_fingerprints">Verified fingerprints</string>
-	<string name="use_camera_icon_to_scan_barcode">Use the camera to scan a contacts barcode</string>
+	<string name="use_camera_icon_to_scan_barcode">Use the camera to scan a contact’s barcode</string>
 	<string name="please_wait_for_keys_to_be_fetched">Please wait for keys to be fetched</string>
 	<string name="share_as_barcode">Share as Barcode</string>
 	<string name="share_as_uri">Share as XMPP URI</string>
 	<string name="share_as_http">Share as HTTP link</string>
 	<string name="pref_blind_trust_before_verification">Blind Trust Before Verification</string>
-	<string name="pref_blind_trust_before_verification_summary">Automatically trust all new devices from contacts that haven’t been verified before.</string>
+	<string name="pref_blind_trust_before_verification_summary">Automatically trust all new devices of contacts that haven’t been verified before, and prompt for manual confirmation each time a verified contact adds a new device.</string>
 	<string name="blindly_trusted_omemo_keys">Blindly trusted OMEMO keys</string>
 	<string name="not_trusted">Untrusted</string>
 </resources>
