@@ -69,8 +69,8 @@ public class ListSelectionManager {
 	private int futureSelectionStart;
 	private int futureSelectionEnd;
 
-	public void onCreate(TextView textView) {
-		final CustomCallback callback = new CustomCallback(textView);
+	public void onCreate(TextView textView, ActionMode.Callback additionalCallback) {
+		final CustomCallback callback = new CustomCallback(textView, additionalCallback);
 		textView.setCustomSelectionActionModeCallback(callback);
 	}
 
@@ -112,10 +112,12 @@ public class ListSelectionManager {
 	private class CustomCallback implements ActionMode.Callback {
 
 		private final TextView textView;
+		private final ActionMode.Callback additionalCallback;
 		public Object identifier;
 
-		public CustomCallback(TextView textView) {
+		public CustomCallback(TextView textView, ActionMode.Callback additionalCallback) {
 			this.textView = textView;
+			this.additionalCallback = additionalCallback;
 		}
 
 		@Override
@@ -123,21 +125,33 @@ public class ListSelectionManager {
 			selectionActionMode = mode;
 			selectionIdentifier = identifier;
 			selectionTextView = textView;
+			if (additionalCallback != null) {
+				additionalCallback.onCreateActionMode(mode, menu);
+			}
 			return true;
 		}
 
 		@Override
 		public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
+			if (additionalCallback != null) {
+				additionalCallback.onPrepareActionMode(mode, menu);
+			}
 			return true;
 		}
 
 		@Override
 		public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
+			if (additionalCallback != null && additionalCallback.onActionItemClicked(mode, item)) {
+				return true;
+			}
 			return false;
 		}
 
 		@Override
 		public void onDestroyActionMode(ActionMode mode) {
+			if (additionalCallback != null) {
+				additionalCallback.onDestroyActionMode(mode);
+			}
 			if (selectionActionMode == mode) {
 				selectionActionMode = null;
 				selectionIdentifier = null;

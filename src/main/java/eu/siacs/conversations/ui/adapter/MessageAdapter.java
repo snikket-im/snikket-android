@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.content.res.Resources;
+import android.content.res.TypedArray;
 import android.graphics.Bitmap;
 import android.graphics.Typeface;
 import android.graphics.drawable.BitmapDrawable;
@@ -23,6 +24,9 @@ import android.text.style.StyleSpan;
 import android.text.util.Linkify;
 import android.util.DisplayMetrics;
 import android.util.Patterns;
+import android.view.ActionMode;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnLongClickListener;
@@ -38,8 +42,6 @@ import java.lang.ref.WeakReference;
 import java.net.URL;
 import java.util.List;
 import java.util.concurrent.RejectedExecutionException;
-import java.util.regex.MatchResult;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import eu.siacs.conversations.Config;
@@ -54,6 +56,8 @@ import eu.siacs.conversations.entities.Message.FileParams;
 import eu.siacs.conversations.entities.Transferable;
 import eu.siacs.conversations.persistance.FileBackend;
 import eu.siacs.conversations.ui.ConversationActivity;
+import eu.siacs.conversations.ui.text.DividerSpan;
+import eu.siacs.conversations.ui.text.QuoteSpan;
 import eu.siacs.conversations.ui.widget.ClickableMovementMethod;
 import eu.siacs.conversations.ui.widget.CopyTextView;
 import eu.siacs.conversations.ui.widget.ListSelectionManager;
@@ -82,6 +86,8 @@ public class MessageAdapter extends ArrayAdapter<Message> implements CopyTextVie
 	private boolean mIndicateReceived = false;
 	private boolean mUseGreenBackground = false;
 
+	private OnQuoteListener onQuoteListener;
+
 	private final ListSelectionManager listSelectionManager = new ListSelectionManager();
 
 	public MessageAdapter(ConversationActivity activity, List<Message> messages) {
@@ -99,6 +105,10 @@ public class MessageAdapter extends ArrayAdapter<Message> implements CopyTextVie
 			OnContactPictureLongClicked listener) {
 		this.mOnContactPictureLongClickedListener = listener;
 			}
+
+	public void setOnQuoteListener(OnQuoteListener listener) {
+		this.onQuoteListener = listener;
+	}
 
 	@Override
 	public int getViewTypeCount() {
@@ -292,8 +302,76 @@ public class MessageAdapter extends ArrayAdapter<Message> implements CopyTextVie
 		viewHolder.messageBody.setIncludeFontPadding(false);
 		Spannable span = new SpannableString(body);
 		span.setSpan(new RelativeSizeSpan(4.0f), 0, body.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-		span.setSpan(new ForegroundColorSpan(activity.getWarningTextColor()), 0, body.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+		span.setSpan(new ForegroundColorSpan(activity.getWarningTextColor()), 0, body.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 		viewHolder.messageBody.setText(span);
+	}
+
+	private int applyQuoteSpan(SpannableStringBuilder body, int start, int end, boolean darkBackground) {
+		if (start > 1 && !"\n\n".equals(body.subSequence(start - 2, start).toString())) {
+			body.insert(start++, "\n");
+			body.setSpan(new DividerSpan(false), start - 2, start, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+			end++;
+		}
+		if (end < body.length() - 1 && !"\n\n".equals(body.subSequence(end, end + 2).toString())) {
+			body.insert(end, "\n");
+			body.setSpan(new DividerSpan(false), end, end + 2, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+		}
+		int color = darkBackground ? this.getMessageTextColor(darkBackground, false)
+				: getContext().getResources().getColor(R.color.bubble);
+		DisplayMetrics metrics = getContext().getResources().getDisplayMetrics();
+		body.setSpan(new QuoteSpan(color, metrics), start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+		return 0;
+	}
+
+	/**
+	 * Applies QuoteSpan to group of lines which starts with > or » characters.
+	 * Appends likebreaks and applies DividerSpan to them to show a padding between quote and text.
+	 */
+	private boolean handleTextQuotes(SpannableStringBuilder body, boolean darkBackground) {
+		boolean startsWithQuote = false;
+		char previous = '\n';
+		int lineStart = -1;
+		int lineTextStart = -1;
+		int quoteStart = -1;
+		for (int i = 0; i <= body.length(); i++) {
+			char current = body.length() > i ? body.charAt(i) : '\n';
+			if (lineStart == -1) {
+				if (previous == '\n') {
+					if (current == '>' || current == '\u00bb') {
+						// Line start with quote
+						lineStart = i;
+						if (quoteStart == -1) quoteStart = i;
+						if (i == 0) startsWithQuote = true;
+					} else if (quoteStart >= 0) {
+						// Line start without quote, apply spans there
+						applyQuoteSpan(body, quoteStart, i - 1, darkBackground);
+						quoteStart = -1;
+					}
+				}
+			} else {
+				// Remove extra spaces between > and first character in the line
+				// > character will be removed too
+				if (current != ' ' && lineTextStart == -1) {
+					lineTextStart = i;
+				}
+				if (current == '\n') {
+					body.delete(lineStart, lineTextStart);
+					i -= lineTextStart - lineStart;
+					if (i == lineStart) {
+						// Avoid empty lines because span over empty line can be hidden
+						body.insert(i++, " ");
+					}
+					lineStart = -1;
+					lineTextStart = -1;
+				}
+			}
+			previous = current;
+		}
+		if (quoteStart >= 0) {
+			// Apply spans to finishing open quote
+			applyQuoteSpan(body, quoteStart, body.length(), darkBackground);
+		}
+		return startsWithQuote;
 	}
 
 	private void displayTextMessage(final ViewHolder viewHolder, final Message message, boolean darkBackground, int type) {
@@ -318,8 +396,9 @@ public class MessageAdapter extends ArrayAdapter<Message> implements CopyTextVie
 			for (Message.MergeSeparator mergeSeparator : mergeSeparators) {
 				int start = body.getSpanStart(mergeSeparator);
 				int end = body.getSpanEnd(mergeSeparator);
-				body.setSpan(new RelativeSizeSpan(0.3f), start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+				body.setSpan(new DividerSpan(true), start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 			}
+			boolean startsWithQuote = handleTextQuotes(body, darkBackground);
 			if (message.getType() != Message.TYPE_PRIVATE) {
 				if (hasMeCommand) {
 					body.setSpan(new StyleSpan(Typeface.BOLD_ITALIC), 0, nick.length(),
@@ -340,7 +419,13 @@ public class MessageAdapter extends ArrayAdapter<Message> implements CopyTextVie
 				}
 				body.insert(0, privateMarker);
 				int privateMarkerIndex = privateMarker.length();
-				body.insert(privateMarkerIndex, " ");
+				if (startsWithQuote) {
+					body.insert(privateMarkerIndex, "\n\n");
+					body.setSpan(new DividerSpan(false), privateMarkerIndex, privateMarkerIndex + 2,
+							Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+				} else {
+					body.insert(privateMarkerIndex, " ");
+				}
 				body.setSpan(new ForegroundColorSpan(getMessageTextColor(darkBackground, false)),
 						0, privateMarkerIndex, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 				body.setSpan(new StyleSpan(Typeface.BOLD),
@@ -364,7 +449,8 @@ public class MessageAdapter extends ArrayAdapter<Message> implements CopyTextVie
 		}
 		viewHolder.messageBody.setTextColor(this.getMessageTextColor(darkBackground, true));
 		viewHolder.messageBody.setLinkTextColor(this.getMessageTextColor(darkBackground, true));
-		viewHolder.messageBody.setHighlightColor(activity.getResources().getColor(darkBackground ? (type == SENT || !mUseGreenBackground ? R.color.black26 : R.color.grey800) : R.color.grey500));
+		viewHolder.messageBody.setHighlightColor(activity.getResources().getColor(darkBackground
+				? (type == SENT || !mUseGreenBackground ? R.color.black26 : R.color.grey800) : R.color.grey500));
 		viewHolder.messageBody.setTypeface(null, Typeface.NORMAL);
 	}
 
@@ -527,7 +613,8 @@ public class MessageAdapter extends ArrayAdapter<Message> implements CopyTextVie
 					break;
 			}
 			if (viewHolder.messageBody != null) {
-				listSelectionManager.onCreate(viewHolder.messageBody);
+				listSelectionManager.onCreate(viewHolder.messageBody,
+						new MessageBodyActionModeCallback(viewHolder.messageBody));
 				viewHolder.messageBody.setCopyHandler(this);
 			}
 			view.setTag(viewHolder);
@@ -687,9 +774,84 @@ public class MessageAdapter extends ArrayAdapter<Message> implements CopyTextVie
 		listSelectionManager.onAfterNotifyDataSetChanged();
 	}
 
+	private String transformText(CharSequence text, int start, int end, boolean forCopy) {
+		SpannableStringBuilder builder = new SpannableStringBuilder(text);
+		Object copySpan = new Object();
+		builder.setSpan(copySpan, start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+		DividerSpan[] dividerSpans = builder.getSpans(0, builder.length(), DividerSpan.class);
+		for (DividerSpan dividerSpan : dividerSpans) {
+			builder.replace(builder.getSpanStart(dividerSpan), builder.getSpanEnd(dividerSpan),
+					dividerSpan.isLarge() ? "\n\n" : "\n");
+		}
+		start = builder.getSpanStart(copySpan);
+		end = builder.getSpanEnd(copySpan);
+		if (start == -1 || end == -1) return "";
+		builder = new SpannableStringBuilder(builder, start, end);
+		if (forCopy) {
+			QuoteSpan[] quoteSpans = builder.getSpans(0, builder.length(), QuoteSpan.class);
+			for (QuoteSpan quoteSpan : quoteSpans) {
+				builder.insert(builder.getSpanStart(quoteSpan), "> ");
+			}
+		}
+		return builder.toString();
+	}
+
 	@Override
 	public String transformTextForCopy(CharSequence text, int start, int end) {
-		return text.toString().substring(start, end);
+		if (text instanceof Spanned) {
+			return transformText(text, start, end, true);
+		} else {
+			return text.toString().substring(start, end);
+		}
+	}
+
+	public interface OnQuoteListener {
+		public void onQuote(String text);
+	}
+
+	private class MessageBodyActionModeCallback implements ActionMode.Callback {
+
+		private final TextView textView;
+
+		public MessageBodyActionModeCallback(TextView textView) {
+			this.textView = textView;
+		}
+
+		@Override
+		public boolean onCreateActionMode(ActionMode mode, Menu menu) {
+			if (onQuoteListener != null) {
+				int quoteResId = activity.getThemeResource(R.attr.icon_quote, R.drawable.ic_action_reply);
+				// 3rd item is placed after "copy" item
+				menu.add(0, android.R.id.button1, 3, R.string.quote).setIcon(quoteResId)
+						.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS | MenuItem.SHOW_AS_ACTION_WITH_TEXT);
+			}
+			return false;
+		}
+
+		@Override
+		public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
+			return false;
+		}
+
+		@Override
+		public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
+			if (item.getItemId() == android.R.id.button1) {
+				int start = textView.getSelectionStart();
+				int end = textView.getSelectionEnd();
+				if (end > start) {
+					String text = transformText(textView.getText(), start, end, false);
+					if (onQuoteListener != null) {
+						onQuoteListener.onQuote(text);
+					}
+					mode.finish();
+				}
+				return true;
+			}
+			return false;
+		}
+
+		@Override
+		public void onDestroyActionMode(ActionMode mode) {}
 	}
 
 	public void openDownloadable(Message message) {

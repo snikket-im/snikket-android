@@ -51,6 +51,7 @@
         <item name="attr/icon_done">@drawable/ic_done_black_24dp</item>
         <item name="attr/icon_group">@drawable/ic_group_white_24dp</item>
         <item name="attr/icon_new">@drawable/ic_add_white_24dp</item>
+        <item name="attr/icon_quote">@drawable/ic_reply_white_24dp</item>
         <item name="attr/icon_refresh">@drawable/ic_refresh_black_24dp</item>
         <item name="attr/icon_new_attachment">@drawable/ic_attach_file_white_24dp</item>
         <item name="attr/icon_not_secure">@drawable/ic_lock_open_white_24dp</item>
@@ -117,6 +118,7 @@
         <item name="attr/icon_done">@drawable/ic_done_black_24dp</item>
         <item name="attr/icon_group">@drawable/ic_group_white_24dp</item>
         <item name="attr/icon_new">@drawable/ic_add_white_24dp</item>
+        <item name="attr/icon_quote">@drawable/ic_reply_white_24dp</item>
         <item name="attr/icon_refresh">@drawable/ic_refresh_white_24dp</item>
         <item name="attr/icon_new_attachment">@drawable/ic_attach_file_white_24dp</item>
         <item name="attr/icon_not_secure">@drawable/ic_lock_open_white_24dp</item>
