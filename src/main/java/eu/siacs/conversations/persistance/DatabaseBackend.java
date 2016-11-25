@@ -55,7 +55,7 @@ public class DatabaseBackend extends SQLiteOpenHelper {
 	private static DatabaseBackend instance = null;
 
 	private static final String DATABASE_NAME = "history";
-	private static final int DATABASE_VERSION = 32;
+	private static final int DATABASE_VERSION = 33;
 
 	private static String CREATE_CONTATCS_STATEMENT = "create table "
 			+ Contact.TABLENAME + "(" + Contact.ACCOUNT + " TEXT, "
@@ -362,12 +362,12 @@ public class DatabaseBackend extends SQLiteOpenHelper {
 			db.execSQL("ALTER TABLE "+ SQLiteAxolotlStore.IDENTITIES_TABLENAME + " ADD COLUMN "+SQLiteAxolotlStore.TRUST + " TEXT");
 			db.execSQL("ALTER TABLE "+ SQLiteAxolotlStore.IDENTITIES_TABLENAME + " ADD COLUMN "+SQLiteAxolotlStore.ACTIVE + " NUMBER");
 			HashMap<Integer,ContentValues> migration = new HashMap<>();
-			migration.put(0,createFingerprintStatusContentValues(FingerprintStatus.Trust.UNDECIDED,true));
+			migration.put(0,createFingerprintStatusContentValues(FingerprintStatus.Trust.TRUSTED,true));
 			migration.put(1,createFingerprintStatusContentValues(FingerprintStatus.Trust.TRUSTED, true));
 			migration.put(2,createFingerprintStatusContentValues(FingerprintStatus.Trust.UNTRUSTED, true));
 			migration.put(3,createFingerprintStatusContentValues(FingerprintStatus.Trust.COMPROMISED, false));
 			migration.put(4,createFingerprintStatusContentValues(FingerprintStatus.Trust.TRUSTED, false));
-			migration.put(5,createFingerprintStatusContentValues(FingerprintStatus.Trust.UNDECIDED, false));
+			migration.put(5,createFingerprintStatusContentValues(FingerprintStatus.Trust.TRUSTED, false));
 			migration.put(6,createFingerprintStatusContentValues(FingerprintStatus.Trust.UNTRUSTED, false));
 			migration.put(7,createFingerprintStatusContentValues(FingerprintStatus.Trust.VERIFIED_X509, true));
 			migration.put(8,createFingerprintStatusContentValues(FingerprintStatus.Trust.VERIFIED_X509, false));
@@ -383,6 +383,10 @@ public class DatabaseBackend extends SQLiteOpenHelper {
 			ContentValues defaults = new ContentValues();
 			defaults.put(SQLiteAxolotlStore.LAST_ACTIVATION,System.currentTimeMillis());
 			db.update(SQLiteAxolotlStore.IDENTITIES_TABLENAME,defaults,null,null);
+		}
+		if (oldVersion < 33 && newVersion >= 33) {
+			String whereClause = SQLiteAxolotlStore.OWN+"=1";
+			db.update(SQLiteAxolotlStore.IDENTITIES_TABLENAME,createFingerprintStatusContentValues(FingerprintStatus.Trust.VERIFIED,true),whereClause,null);
 		}
 	}
 
