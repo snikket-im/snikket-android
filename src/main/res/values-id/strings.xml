@@ -332,7 +332,6 @@
   <string name="no_application_found_to_open_file">Tidak ditemukan aplikasi untuk membuka berkas</string>
   <string name="could_not_verify_fingerprint">Tidak dapat verifikasi fingerprint</string>
   <string name="manually_verify">Verifikasi secara manual</string>
-  <string name="are_you_sure_verify_fingerprint">Yakin untuk memferifikasi OTR fingerprint kontak Anda?</string>
   <string name="pref_show_dynamic_tags">Tampilkan tag dinamis</string>
   <string name="pref_show_dynamic_tags_summary">Tampilan read-only tag di bawah kontak</string>
   <string name="enable_notifications">Aktifkan notifikasi</string>

@@ -370,7 +370,6 @@
   <string name="no_application_found_to_open_file">Не знайдено програми для відкриття файла</string>
   <string name="could_not_verify_fingerprint">Не можу перевірити відбиток</string>
   <string name="manually_verify">Перевірити вручну</string>
-  <string name="are_you_sure_verify_fingerprint">Ви впевнені, що хочете перевірити OTR відбитки Ваших контактів?</string>
   <string name="pref_show_dynamic_tags">Показати динамічні мітки</string>
   <string name="pref_show_dynamic_tags_summary">Показувати мітки \"лише для читання\" під контактами</string>
   <string name="enable_notifications">Увікнути сповіщення</string>

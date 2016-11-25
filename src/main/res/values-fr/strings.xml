@@ -376,7 +376,6 @@
   <string name="no_application_found_to_open_file">Aucune application disponible pour ouvrir le fichier</string>
   <string name="could_not_verify_fingerprint">Impossible de vérifier l\'empreinte</string>
   <string name="manually_verify">Vérifier manuellement</string>
-  <string name="are_you_sure_verify_fingerprint">Êtes-vous sûr de vouloir vérifier l\'empreinte OTR de vos contacts ?</string>
   <string name="pref_show_dynamic_tags">Afficher les tags dynamiques</string>
   <string name="pref_show_dynamic_tags_summary">Afficher des tags en lecture seule en dessous des contacts.</string>
   <string name="enable_notifications">Activer les notifications</string>

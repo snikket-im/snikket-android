@@ -122,12 +122,14 @@
   <string name="pref_never_send_crash">Никога да не се изпращат доклади за сривове</string>
   <string name="pref_never_send_crash_summary">Изпращайки проследявания на стека, Вие помагате за непрекъснатото развитие на Conversations</string>
   <string name="pref_confirm_messages">Потвърждаване на съобщенията</string>
+  <string name="pref_confirm_messages_summary">Така контактите Ви ще разбират, че сте получили и прочели съобщенията им</string>
   <string name="pref_ui_options">Потр. интерфейс</string>
   <string name="openpgp_error">OpenKeychain докладва за грешка</string>
   <string name="error_decrypting_file">В/И грешка при дешифроването на файла</string>
   <string name="accept">Приемане</string>
   <string name="error">Възникна грешка</string>
   <string name="pref_grant_presence_updates">Позволяване на актуализации на присъствието</string>
+  <string name="pref_grant_presence_updates_summary">Предварително позволяване и изискване на абонамент за присъствието за контактите, създадени от Вас</string>
   <string name="subscriptions">Абонаменти</string>
   <string name="your_account">Вашият профил</string>
   <string name="keys">Ключове</string>
@@ -337,6 +339,8 @@
   <string name="url_copied_to_clipboard">Адресът е копиран</string>
   <string name="message_copied_to_clipboard">Съобщението е копирано</string>
   <string name="image_transmission_failed">Неуспешно прехвърляне на изображението</string>
+  <string name="scan_qr_code">Сканиране на 2-измерен баркод</string>
+  <string name="show_qr_code">Показване на 2-измерен баркод</string>
   <string name="show_block_list">Показване на списъка с блокирани</string>
   <string name="account_details">Подробности за профила</string>
   <string name="verify_otr">Проверка на OTR</string>
@@ -376,7 +380,7 @@
   <string name="no_application_found_to_open_file">Няма намерено приложение за отваряне на файла</string>
   <string name="could_not_verify_fingerprint">Неуспешна проверка на отпечатъка</string>
   <string name="manually_verify">Ръчна проверка</string>
-  <string name="are_you_sure_verify_fingerprint">Сигурни ли сте, че искате да проверите отпечатъка OTR на контактите си?</string>
+  <string name="are_you_sure_verify_fingerprint">Наистина ли искате да потвърдите отпечатъка OTR на контакта си?</string>
   <string name="pref_show_dynamic_tags">Динамични етикети</string>
   <string name="pref_show_dynamic_tags_summary">Показване на етикети, предназначени само за четене под контактите</string>
   <string name="enable_notifications">Включване на известията</string>
@@ -469,6 +473,7 @@
   <string name="contact_is_typing">%s пише…</string>
   <string name="contact_has_stopped_typing">%s спря да пише</string>
   <string name="pref_chat_states">Известия за писането</string>
+  <string name="pref_chat_states_summary">Така контактите Ви ще разбират, когато им пишете съобщения</string>
   <string name="send_location">Изпращане на местоположението</string>
   <string name="show_location">Показване на местоположението</string>
   <string name="no_application_found_to_display_location">Няма намерено приложение за показване на местоположението</string>
@@ -665,4 +670,14 @@
   <string name="this_device_has_been_verified">Това устройство е потвърдено</string>
   <string name="copy_fingerprint">Копиране на отпечатъка</string>
   <string name="all_omemo_keys_have_been_verified">Всички ключове OMEMO са потвърдени</string>
+  <string name="barcode_does_not_contain_fingerprints_for_this_conversation">Баркодът не съдържа отпечатъци за този разговор.</string>
+  <string name="verified_fingerprints">Потвърдени отпечатъци</string>
+  <string name="use_camera_icon_to_scan_barcode">Използвайте камерата, за да сканирате баркода на контакт</string>
+  <string name="please_wait_for_keys_to_be_fetched">Моля, изчакайте получаването на ключовете</string>
+  <string name="share_as_barcode">Споделяне като баркод</string>
+  <string name="share_as_uri">Споделяне като адрес на XMPP</string>
+  <string name="share_as_http">Споделяне като връзка в Интернет</string>
+  <string name="pref_blind_trust_before_verification">Доверяване на сляпо преди потвърждение</string>
+  <string name="blindly_trusted_omemo_keys">Приети на сляпо ключове OMEMO</string>
+  <string name="not_trusted">Неприети</string>
 </resources>

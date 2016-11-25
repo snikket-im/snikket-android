@@ -376,7 +376,6 @@
   <string name="no_application_found_to_open_file">Не найдено приложения для открытия файла</string>
   <string name="could_not_verify_fingerprint">Не удалось подтвердить отпечаток</string>
   <string name="manually_verify">Ручная проверка</string>
-  <string name="are_you_sure_verify_fingerprint">Вы точно хотите подтвердить OTR-отпечатки ваших контактов?</string>
   <string name="pref_show_dynamic_tags">Показывать динамические тэги</string>
   <string name="pref_show_dynamic_tags_summary">Отображать теги только для чтения под контактами</string>
   <string name="enable_notifications">Включить уведомления</string>

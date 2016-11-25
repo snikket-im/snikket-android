@@ -349,7 +349,6 @@
   <string name="no_application_found_to_open_file">파일을 열기 위한 앱이 발견되지 않았습니다 </string>
   <string name="could_not_verify_fingerprint">핑거프린트를 검증할 수 없습니다 </string>
   <string name="manually_verify">수동 검증 </string>
-  <string name="are_you_sure_verify_fingerprint">연락처의 OTR 핑거프린트를 검증하시겠습니까? </string>
   <string name="pref_show_dynamic_tags">동적 태그 표시 </string>
   <string name="pref_show_dynamic_tags_summary">연락처 밑에 읽기 전용 태그 표시 </string>
   <string name="enable_notifications">알림 사용 </string>

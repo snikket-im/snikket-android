@@ -324,7 +324,6 @@
   <string name="no_application_found_to_open_file">אין אפליקציה מתאימה לפתיחת הקובץ</string>
   <string name="could_not_verify_fingerprint">אימות טביעת האצבע נכשל</string>
   <string name="manually_verify">אימות ידני</string>
-  <string name="are_you_sure_verify_fingerprint">האם אתה בטוח שברצונך לאמת טביעת אצבע OTR זו?</string>
   <string name="pref_show_dynamic_tags">הראה תגים דומיים</string>
   <string name="pref_show_dynamic_tags_summary">הראה תגי read-only מתחת לאנשי הקשר</string>
   <string name="enable_notifications">אפשר התראות</string>

@@ -122,12 +122,14 @@
   <string name="pref_never_send_crash">Skicka aldrig krasch-rapporter</string>
   <string name="pref_never_send_crash_summary">Genom att skicka in stack traces hjälper du utvecklarna av Conversations</string>
   <string name="pref_confirm_messages">Bekräfta meddelanden</string>
+  <string name="pref_confirm_messages_summary">Låt dina kontakter veta när du har mottagit och läst deras meddelanden</string>
   <string name="pref_ui_options">Gränssnitt</string>
   <string name="openpgp_error">OpenKeychain rapporterade ett fel</string>
   <string name="error_decrypting_file">I/O-fel vid avkryptering av fil</string>
   <string name="accept">Acceptera</string>
   <string name="error">Ett fel har inträffat</string>
   <string name="pref_grant_presence_updates">Tillåt tillänglighetsuppdateringar</string>
+  <string name="pref_grant_presence_updates_summary">Tillåt och be om abonnemangsbegäran i förväg för kontakter du har skapat</string>
   <string name="subscriptions">Abonnemang</string>
   <string name="your_account">Ditt konto</string>
   <string name="keys">Nycklar</string>
@@ -337,6 +339,8 @@
   <string name="url_copied_to_clipboard">URL kopierad till urklipp</string>
   <string name="message_copied_to_clipboard">Meddelande kopierat till urklipp</string>
   <string name="image_transmission_failed">Bildöverföring lyckades inte</string>
+  <string name="scan_qr_code">Scanna 2D streckkod</string>
+  <string name="show_qr_code">Visa 2D streckkod</string>
   <string name="show_block_list">Visa blockeringslista</string>
   <string name="account_details">Kontodetaljer</string>
   <string name="verify_otr">Verifiera OTR</string>
@@ -376,7 +380,7 @@
   <string name="no_application_found_to_open_file">Ingen applikation kunde hittas för att öppna filen</string>
   <string name="could_not_verify_fingerprint">Kunde inte verifiera fingeravtryck</string>
   <string name="manually_verify">Verifiera manuellt</string>
-  <string name="are_you_sure_verify_fingerprint">Är du säker på att du vill verifiera din kontakts OTR-fingeravtryck</string>
+  <string name="are_you_sure_verify_fingerprint">Är du säker på att du vill verifiera din kontakts OTR-fingeravtryck?</string>
   <string name="pref_show_dynamic_tags">Visa dynamiska taggar</string>
   <string name="pref_show_dynamic_tags_summary">Visa skrivskyddade taggar under kontakter</string>
   <string name="enable_notifications">Aktivera notifieringar</string>
@@ -469,6 +473,7 @@
   <string name="contact_is_typing">%s skriver...</string>
   <string name="contact_has_stopped_typing">%s har slutat skriva</string>
   <string name="pref_chat_states">Skriv-notifieringar</string>
+  <string name="pref_chat_states_summary">Låt dina kontakter veta när du skriver meddelande till dem</string>
   <string name="send_location">Skicka position</string>
   <string name="show_location">Visa position</string>
   <string name="no_application_found_to_display_location">Kunde inte hitta applikation för att visa position</string>
@@ -665,4 +670,14 @@
   <string name="this_device_has_been_verified">Denna enhet har verifierats</string>
   <string name="copy_fingerprint">Kopiera fingeravtryck</string>
   <string name="all_omemo_keys_have_been_verified">Alla OMEMO nycklar har verifierats</string>
+  <string name="barcode_does_not_contain_fingerprints_for_this_conversation">Streckkoden innehåller inte fingeravtryck för den här konversationen.</string>
+  <string name="verified_fingerprints">Verifierade fingeravtryck</string>
+  <string name="use_camera_icon_to_scan_barcode">Använd kameran för att scanna en kontakts streckkod</string>
+  <string name="please_wait_for_keys_to_be_fetched">Vänta medans nycklar hämtas</string>
+  <string name="share_as_barcode">Dela som streckkod</string>
+  <string name="share_as_uri">Dela som XMPP URI</string>
+  <string name="share_as_http">Dela som HTTP länk</string>
+  <string name="pref_blind_trust_before_verification">Blint förtroende före verifiering</string>
+  <string name="blindly_trusted_omemo_keys">Lita blint på OMEMO-nycklar</string>
+  <string name="not_trusted">Ej betrodd</string>
 </resources>

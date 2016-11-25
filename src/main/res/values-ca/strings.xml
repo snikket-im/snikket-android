@@ -306,7 +306,6 @@
   <string name="no_application_found_to_open_file">Cap aplicació trobada a l\'obrir l\'arxiu</string>
   <string name="could_not_verify_fingerprint">No s\'ha pogut verificar l\'empremta dactilar</string>
   <string name="manually_verify">Verificat manualment</string>
-  <string name="are_you_sure_verify_fingerprint">Estàs segur que vols verificar l\'empremta digital OTR dels teus contactes?</string>
   <string name="pref_show_dynamic_tags">Mostrar etiquetes dinàmiques</string>
   <string name="pref_show_dynamic_tags_summary">Mostra etiquetes de nomès lectura per sota dels noms dels contactes</string>
   <string name="enable_notifications">Habilitar notificació</string>

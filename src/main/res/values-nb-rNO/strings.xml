@@ -335,7 +335,6 @@
   <string name="no_application_found_to_open_file">Fant inget program til åpning av fil</string>
   <string name="could_not_verify_fingerprint">Kunne ikke bekrefte fingeravtrykk</string>
   <string name="manually_verify">Bekreft manuelt</string>
-  <string name="are_you_sure_verify_fingerprint">Bekreft verifisering av din kontakts OTR-fingeravtrykk.</string>
   <string name="pref_show_dynamic_tags">Vis dynamiske merkelapper</string>
   <string name="pref_show_dynamic_tags_summary">Vis \"bare-les\"-merkelapper under kontakter</string>
   <string name="enable_notifications">Aktiver varslinger</string>

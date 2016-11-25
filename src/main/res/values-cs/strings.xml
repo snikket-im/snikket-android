@@ -376,7 +376,6 @@
   <string name="no_application_found_to_open_file">Nebyla nalezena aplikace umožňující otevření souboru</string>
   <string name="could_not_verify_fingerprint">Ověření otisku se nezdařilo</string>
   <string name="manually_verify">Ruční ověření</string>
-  <string name="are_you_sure_verify_fingerprint">Opravdu si přejete ověřit OTR otisk kontaktu?</string>
   <string name="pref_show_dynamic_tags">Zobrazit dynamické tagy</string>
   <string name="pref_show_dynamic_tags_summary">Zobrazit tagy pro čtení pod kontakty</string>
   <string name="enable_notifications">Povolit upozornění</string>

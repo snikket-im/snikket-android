@@ -122,12 +122,14 @@
   <string name="pref_never_send_crash">Nunca informar de errores</string>
   <string name="pref_never_send_crash_summary">Si envías registros de error ayudas al desarrollo de Conversations</string>
   <string name="pref_confirm_messages">Confirmar mensajes</string>
+  <string name="pref_confirm_messages_summary">Permitir a tus contactos saber cuando has recibido y leído sus mensajes</string>
   <string name="pref_ui_options">Pantalla</string>
   <string name="openpgp_error">OpenKeychain reportó un error</string>
   <string name="error_decrypting_file">Error descifrando archivo</string>
   <string name="accept">Aceptar</string>
   <string name="error">Ha ocurrido un error</string>
   <string name="pref_grant_presence_updates">Suscripción de presencia automática</string>
+  <string name="pref_grant_presence_updates_summary">De forma automática solicitar y conceder la suscripción de presencia de los contactos que has creado</string>
   <string name="subscriptions">Suscripciones</string>
   <string name="your_account">Tu cuenta</string>
   <string name="keys">Claves</string>
@@ -337,6 +339,8 @@
   <string name="url_copied_to_clipboard">URL copiada al portapapeles</string>
   <string name="message_copied_to_clipboard">Mensaje copiado al portapapeles</string>
   <string name="image_transmission_failed">Falló la transferencia de la imagen</string>
+  <string name="scan_qr_code">Escanear código QR</string>
+  <string name="show_qr_code">Mostrar código QR</string>
   <string name="show_block_list">Mostrar contactos bloqueados</string>
   <string name="account_details">Detalles de la cuenta</string>
   <string name="verify_otr">Verificar OTR</string>
@@ -376,7 +380,7 @@
   <string name="no_application_found_to_open_file">No se ha encontrado ninguna aplicación para abrir el archivo</string>
   <string name="could_not_verify_fingerprint">No se puede verificar el contacto</string>
   <string name="manually_verify">Verificar manualmente</string>
-  <string name="are_you_sure_verify_fingerprint">¿Estás seguro de que quieres verificar el contacto?</string>
+  <string name="are_you_sure_verify_fingerprint">¿Estás seguro de que quieres verificar la huella digital OTR de tu contacto?</string>
   <string name="pref_show_dynamic_tags">Mostrar etiquetas</string>
   <string name="pref_show_dynamic_tags_summary">Mostrar información en forma de etiquetas debajo de los contactos</string>
   <string name="enable_notifications">Habilitar notificaciones</string>
@@ -469,6 +473,7 @@
   <string name="contact_is_typing">%s está escribiendo...</string>
   <string name="contact_has_stopped_typing">%s ha dejado de escribir</string>
   <string name="pref_chat_states">Notificación de escritura</string>
+  <string name="pref_chat_states_summary">Permitir a tus contactos saber cuando estás escribiendo un mensaje</string>
   <string name="send_location">Enviar ubicación</string>
   <string name="show_location">Mostrar ubicación</string>
   <string name="no_application_found_to_display_location">No se ha encontrado ninguna aplicación para mostrar la ubicación</string>
@@ -665,4 +670,15 @@
   <string name="this_device_has_been_verified">Este dispositivo ha sido verificado</string>
   <string name="copy_fingerprint">Copiar huella digital</string>
   <string name="all_omemo_keys_have_been_verified">Todas las huellas digitales OMEMO han sido verificadas</string>
+  <string name="barcode_does_not_contain_fingerprints_for_this_conversation">El código QR no contiene huellas digitales para esta conversación.</string>
+  <string name="verified_fingerprints">Huellas digitales verificadas</string>
+  <string name="use_camera_icon_to_scan_barcode">Usa la cámara para escanear el código QR del contacto</string>
+  <string name="please_wait_for_keys_to_be_fetched">Por favor, espera a que las claves sean recuperadas</string>
+  <string name="share_as_barcode">Compartir como código QR</string>
+  <string name="share_as_uri">Compartir como XMPP URI</string>
+  <string name="share_as_http">Compartir como link HTTP</string>
+  <string name="pref_blind_trust_before_verification">Confianza ciega antes de verificación</string>
+  <string name="pref_blind_trust_before_verification_summary">Automáticamente confiar en los nuevos dispositivos de tus contactos que no han sido verificados antes y solicita confirmación manual cada vez que un contacto verificado añade un dispositivo nuevo.</string>
+  <string name="blindly_trusted_omemo_keys">Huellas digitales OMEMO de confianza ciega</string>
+  <string name="not_trusted">No confiables</string>
 </resources>

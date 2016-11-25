@@ -361,7 +361,6 @@
   <string name="no_application_found_to_open_file">Nie odnaleziono aplikacji skojarzonej z typem pliku</string>
   <string name="could_not_verify_fingerprint">Weryfikacja odcisku klucza nieudana</string>
   <string name="manually_verify">Weryfikuj ręcznie</string>
-  <string name="are_you_sure_verify_fingerprint">Czy na pewno chcesz zweryfikować odcisk klucza OTR kontaktu?</string>
   <string name="pref_show_dynamic_tags">Etykiety kontaktów</string>
   <string name="pref_show_dynamic_tags_summary">Wyświetlaj etykiety pod kontaktami</string>
   <string name="enable_notifications">Włącz powiadomienia</string>

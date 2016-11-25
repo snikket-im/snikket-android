@@ -335,7 +335,6 @@
   <string name="no_application_found_to_open_file">Không tìm thấy ứng dụng nào để mở tập tin</string>
   <string name="could_not_verify_fingerprint">Không thể xác minh dấu vân tay</string>
   <string name="manually_verify">Xác minh thủ công</string>
-  <string name="are_you_sure_verify_fingerprint">Có chắc là bạn muốn xác minh dấu vân tay OTR của liên hệ không?</string>
   <string name="pref_show_dynamic_tags">Hiện các nhãn động</string>
   <string name="pref_show_dynamic_tags_summary">Hiện nhãn chỉ đọc bên dưới các liên hệ</string>
   <string name="enable_notifications">Bật thông báo</string>

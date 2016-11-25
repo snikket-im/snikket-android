@@ -337,6 +337,8 @@
   <string name="url_copied_to_clipboard">УРЛ је копиран на клипборд</string>
   <string name="message_copied_to_clipboard">Порука је копирана на клипборд</string>
   <string name="image_transmission_failed">Пренос слике није успео</string>
+  <string name="scan_qr_code">Очитај 2Д бар-кôд</string>
+  <string name="show_qr_code">Прикажи 2Д бар-кôд</string>
   <string name="show_block_list">Прикажи списак блокираних</string>
   <string name="account_details">Детаљи налога</string>
   <string name="verify_otr">Овери ОТР</string>
@@ -376,7 +378,6 @@
   <string name="no_application_found_to_open_file">Нема апликације која може да отвори фајл</string>
   <string name="could_not_verify_fingerprint">Не могох да оверим отисак</string>
   <string name="manually_verify">Овери ручно</string>
-  <string name="are_you_sure_verify_fingerprint">Желите ли заиста да оверите ОТР отисак вашег контакта?</string>
   <string name="pref_show_dynamic_tags">Прикажи динамичке ознаке</string>
   <string name="pref_show_dynamic_tags_summary">Приказ ознака испод контаката</string>
   <string name="enable_notifications">Укључи обавештења</string>
@@ -665,4 +666,7 @@
   <string name="this_device_has_been_verified">Овај уређај је оверен.</string>
   <string name="copy_fingerprint">Копирај отисак</string>
   <string name="all_omemo_keys_have_been_verified">Сви ОМЕМО кључеви су оверени</string>
+  <string name="share_as_barcode">Подели као бар-кôд</string>
+  <string name="share_as_uri">Подели као ИксМПП УРИ</string>
+  <string name="share_as_http">Подели као ХТТП везу</string>
 </resources>

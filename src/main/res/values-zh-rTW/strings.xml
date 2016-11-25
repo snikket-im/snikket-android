@@ -376,7 +376,6 @@
   <string name="no_application_found_to_open_file">沒有可以打開此檔的應用</string>
   <string name="could_not_verify_fingerprint">不能驗證指紋</string>
   <string name="manually_verify">手工驗證</string>
-  <string name="are_you_sure_verify_fingerprint">你確認驗證你的連絡人的 OTR 指紋？</string>
   <string name="pref_show_dynamic_tags">顯示動態標籤</string>
   <string name="pref_show_dynamic_tags_summary">在連絡人下方顯示唯讀標籤</string>
   <string name="enable_notifications">啟用通知</string>

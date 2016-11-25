@@ -306,7 +306,6 @@
   <string name="no_application_found_to_open_file">Δεν βρέθηκε εφαρμογή για να ανοίξει το αρχείο</string>
   <string name="could_not_verify_fingerprint">Δεν ήταν δυνατή η επαλήθευση του αποτυπώματος</string>
   <string name="manually_verify">Χειροκίνητη επαλήθευση</string>
-  <string name="are_you_sure_verify_fingerprint">Είστε βέβαιοι ότι θέλετε να επαληθεύσετε το αποτύπωμα OTR της επαφής σας;</string>
   <string name="pref_show_dynamic_tags">Εμφάνιση δυναμικών ετικετών</string>
   <string name="pref_show_dynamic_tags_summary">Εμφάνιση ετικετών μόνο για ανάγνωση κάτω από τις επαφές</string>
   <string name="enable_notifications">Ενεργοποίηση ειδοποιήσεων</string>

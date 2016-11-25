@@ -376,7 +376,6 @@
   <string name="no_application_found_to_open_file">Não foi encontrado nenhum aplicativo para abrir o arquivo</string>
   <string name="could_not_verify_fingerprint">Não foi possível verificar a impressão digital</string>
   <string name="manually_verify">Verificado manualmente</string>
-  <string name="are_you_sure_verify_fingerprint">Deseja realmente verificar as impressões digitais OTR dos seus contatos?</string>
   <string name="pref_show_dynamic_tags">Exibir etiquetas dinâmicas</string>
   <string name="pref_show_dynamic_tags_summary">Exibe etiquetas de somente-leitura abaixo dos contatos.</string>
   <string name="enable_notifications">Habilitar notificações</string>

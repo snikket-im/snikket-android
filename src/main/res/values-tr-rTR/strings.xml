@@ -376,7 +376,6 @@
   <string name="no_application_found_to_open_file">Dosyayı açacak bir uygulama bulunamadı</string>
   <string name="could_not_verify_fingerprint">Parmak izi doğrulanamadı</string>
   <string name="manually_verify">Bizzat doğrula</string>
-  <string name="are_you_sure_verify_fingerprint">Kişilerin OTR parmak izlerini doğrulamak istediğinizden emin misiniz?</string>
   <string name="pref_show_dynamic_tags">Canlı etiketleri göster</string>
   <string name="pref_show_dynamic_tags_summary">Kişilerin görünmeyen salt okunur etiketlerini göster</string>
   <string name="enable_notifications">Bildirimleri etkinleştir</string>
