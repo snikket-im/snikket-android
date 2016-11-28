@@ -678,6 +678,7 @@
   <string name="share_as_uri">Споделяне като адрес на XMPP</string>
   <string name="share_as_http">Споделяне като връзка в Интернет</string>
   <string name="pref_blind_trust_before_verification">Доверяване на сляпо преди потвърждение</string>
+  <string name="pref_blind_trust_before_verification_summary">Автоматично доверяване на всички нови устройства на контактите, които не са били потвърдени преди, и питане за ръчно одобрение всеки път, когато потвърден контакт добави ново устройство.</string>
   <string name="blindly_trusted_omemo_keys">Приети на сляпо ключове OMEMO</string>
   <string name="not_trusted">Неприети</string>
 </resources>

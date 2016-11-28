@@ -122,12 +122,14 @@
   <string name="pref_never_send_crash">Nunca enviar relatórios de erros</string>
   <string name="pref_never_send_crash_summary">Ao enviar os stack traces você está colaborando com o desenvolvimento do Conversations.</string>
   <string name="pref_confirm_messages">Confirmação de mensagens</string>
+  <string name="pref_confirm_messages_summary">Permite que seus contatos saibam quando você recebeu e leu as mensagens deles.</string>
   <string name="pref_ui_options">IU</string>
   <string name="openpgp_error">O OpenKeychain informou um erro</string>
   <string name="error_decrypting_file">Ocorreu um erro de E/S na descriptografia o arquivo</string>
   <string name="accept">Aceitar</string>
   <string name="error">Ocorreu um erro</string>
   <string name="pref_grant_presence_updates">Fornecer atualizações de presença</string>
+  <string name="pref_grant_presence_updates_summary">Permite e solicita, antecipadamente, atualizações de presença aos contatos que você criou</string>
   <string name="subscriptions">Inscrições</string>
   <string name="your_account">Sua conta</string>
   <string name="keys">Chaves</string>
@@ -337,6 +339,8 @@
   <string name="url_copied_to_clipboard">A URL foi copiada para a área de transferência</string>
   <string name="message_copied_to_clipboard">A mensagem foi copiada para a área de transferência</string>
   <string name="image_transmission_failed">Não foi possível enviar a imagem</string>
+  <string name="scan_qr_code">Capturar código de barras 2D</string>
+  <string name="show_qr_code">Exibir código de barras 2D</string>
   <string name="show_block_list">Exibir a lista de bloqueios</string>
   <string name="account_details">Detalhes da conta</string>
   <string name="verify_otr">Verificar OTR</string>
@@ -376,6 +380,7 @@
   <string name="no_application_found_to_open_file">Não foi encontrado nenhum aplicativo para abrir o arquivo</string>
   <string name="could_not_verify_fingerprint">Não foi possível verificar a impressão digital</string>
   <string name="manually_verify">Verificado manualmente</string>
+  <string name="are_you_sure_verify_fingerprint">Tem certeza que deseja verificar as impressões digitais OTR do seu contato?</string>
   <string name="pref_show_dynamic_tags">Exibir etiquetas dinâmicas</string>
   <string name="pref_show_dynamic_tags_summary">Exibe etiquetas de somente-leitura abaixo dos contatos.</string>
   <string name="enable_notifications">Habilitar notificações</string>
@@ -468,6 +473,7 @@
   <string name="contact_is_typing">%s está digitando...</string>
   <string name="contact_has_stopped_typing">%s parou de digitar</string>
   <string name="pref_chat_states">Notificações de digitação</string>
+  <string name="pref_chat_states_summary">Permite aos seus usuários saberem quando você está escrevendo mensagens para eles</string>
   <string name="send_location">Enviar localização</string>
   <string name="show_location">Exibir localização</string>
   <string name="no_application_found_to_display_location">Não foi encontrado nenhum aplicativo para exibir a localização</string>
@@ -664,4 +670,11 @@
   <string name="this_device_has_been_verified">Este dispositivo foi verificado</string>
   <string name="copy_fingerprint">Copiar impressão digital</string>
   <string name="all_omemo_keys_have_been_verified">Todas as chaves OMEMO foram verificadas</string>
+  <string name="barcode_does_not_contain_fingerprints_for_this_conversation">O código de barras não contém impressões digitais para esta conversa.</string>
+  <string name="verified_fingerprints">Impressões digitais verificadas</string>
+  <string name="use_camera_icon_to_scan_barcode">Use a câmera para capturar o código de barras de um contato</string>
+  <string name="share_as_barcode">Compartilhar como código de barras</string>
+  <string name="share_as_uri">Compartilhar como uma URI XMPP</string>
+  <string name="share_as_http">Compartilhar como um link HTTP</string>
+  <string name="not_trusted">Não confiável</string>
 </resources>
