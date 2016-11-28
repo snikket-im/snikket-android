@@ -49,6 +49,7 @@ import eu.siacs.conversations.services.XmppConnectionService.OnAccountUpdate;
 import eu.siacs.conversations.services.XmppConnectionService.OnRosterUpdate;
 import eu.siacs.conversations.utils.CryptoHelper;
 import eu.siacs.conversations.utils.UIHelper;
+import eu.siacs.conversations.utils.XmppUri;
 import eu.siacs.conversations.xmpp.OnKeyStatusUpdated;
 import eu.siacs.conversations.xmpp.OnUpdateBlocklist;
 import eu.siacs.conversations.xmpp.XmppConnection;
@@ -528,13 +529,16 @@ public class ContactDetailsActivity extends OmemoActivity implements OnAccountUp
 	}
 
 	public void onBackendConnected() {
-		if ((accountJid != null) && (contactJid != null)) {
-			Account account = xmppConnectionService
-				.findAccountByJid(accountJid);
+		if (accountJid != null && contactJid != null) {
+			Account account = xmppConnectionService.findAccountByJid(accountJid);
 			if (account == null) {
 				return;
 			}
 			this.contact = account.getRoster().getContact(contactJid);
+			if (mPendingFingerprintVerificationUri != null) {
+				processFingerprintVerification(mPendingFingerprintVerificationUri);
+				mPendingFingerprintVerificationUri = null;
+			}
 			populateView();
 		}
 	}
@@ -542,5 +546,16 @@ public class ContactDetailsActivity extends OmemoActivity implements OnAccountUp
 	@Override
 	public void onKeyStatusUpdated(AxolotlService.FetchStatus report) {
 		refreshUi();
+	}
+
+	@Override
+	protected void processFingerprintVerification(XmppUri uri) {
+		if (contact != null && contact.getJid().toBareJid().equals(uri.getJid()) && uri.hasFingerprints()) {
+			if (xmppConnectionService.verifyFingerprints(contact,uri.getFingerprints())) {
+				Toast.makeText(this,R.string.verified_fingerprints,Toast.LENGTH_SHORT).show();
+			}
+		} else {
+			Toast.makeText(this,R.string.invalid_barcode,Toast.LENGTH_SHORT).show();
+		}
 	}
 }

@@ -2,4 +2,5 @@
 <resources>
     <item type="id" name="TAG_ACCOUNT"/>
     <item type="id" name="TAG_FINGERPRINT"/>
+    <item type="id" name="TAG_FINGERPRINT_STATUS"/>
 </resources>

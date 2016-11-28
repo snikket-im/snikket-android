@@ -714,4 +714,5 @@
 	<string name="pref_blind_trust_before_verification_summary">Automatically trust all new devices of contacts that haven’t been verified before, and prompt for manual confirmation each time a verified contact adds a new device.</string>
 	<string name="blindly_trusted_omemo_keys">Blindly trusted OMEMO keys</string>
 	<string name="not_trusted">Untrusted</string>
+	<string name="invalid_barcode">Invalid 2D barcode</string>
 </resources>
