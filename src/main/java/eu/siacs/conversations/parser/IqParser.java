@@ -26,6 +26,7 @@ import eu.siacs.conversations.Config;
 import eu.siacs.conversations.crypto.axolotl.AxolotlService;
 import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.entities.Contact;
+import eu.siacs.conversations.entities.Conversation;
 import eu.siacs.conversations.services.XmppConnectionService;
 import eu.siacs.conversations.utils.Xmlns;
 import eu.siacs.conversations.xml.Element;
@@ -319,6 +320,14 @@ public class IqParser extends AbstractParser implements OnIqPacketReceived {
 					}
 				}
 				account.getBlocklist().addAll(jids);
+				if (packet.getType() == IqPacket.TYPE.SET) {
+					for(Jid jid : jids) {
+						Conversation conversation = mXmppConnectionService.find(account,jid);
+						if (conversation != null) {
+							mXmppConnectionService.markRead(conversation);
+						}
+					}
+				}
 			}
 			// Update the UI
 			mXmppConnectionService.updateBlocklistUi(OnUpdateBlocklist.Status.BLOCKED);
