@@ -424,7 +424,7 @@ public class StartConversationActivity extends XmppActivity implements OnRosterU
                     if (invite != null && invite.hasFingerprints()) {
                         xmppConnectionService.verifyFingerprints(contact,invite.getFingerprints());
                     }
-                    switchToConversation(contact);
+                    switchToConversation(contact, invite == null ? null : invite.getBody());
                     return true;
                 }
             }
@@ -563,11 +563,11 @@ public class StartConversationActivity extends XmppActivity implements OnRosterU
         return xmppConnectionService.findAccountByJid(jid);
     }
 
-    protected void switchToConversation(Contact contact) {
+    protected void switchToConversation(Contact contact, String body) {
         Conversation conversation = xmppConnectionService
                 .findOrCreateConversation(contact.getAccount(),
                         contact.getJid(), false);
-        switchToConversation(conversation);
+        switchToConversation(conversation, body, false);
     }
 
     public static void populateAccountSpinner(Context context, List<String> accounts, Spinner spinner) {
@@ -856,7 +856,7 @@ public class StartConversationActivity extends XmppActivity implements OnRosterU
         if (invite.isMuc()) {
             Conversation muc = xmppConnectionService.findFirstMuc(invite.getJid());
             if (muc != null) {
-                switchToConversation(muc);
+                switchToConversation(muc,invite.getBody(),false);
                 return true;
             } else {
                 showJoinConferenceDialog(invite.getJid().toBareJid().toString());
@@ -870,7 +870,7 @@ public class StartConversationActivity extends XmppActivity implements OnRosterU
             if (invite.hasFingerprints()) {
                 xmppConnectionService.verifyFingerprints(contact,invite.getFingerprints());
             }
-            switchToConversation(contact);
+            switchToConversation(contact,invite.getBody());
             return true;
         } else {
             if (mMenuSearchView != null) {
