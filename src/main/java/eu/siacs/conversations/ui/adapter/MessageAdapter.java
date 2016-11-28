@@ -208,7 +208,7 @@ public class MessageAdapter extends ArrayAdapter<Message> implements CopyTextVie
 						.getAccount().getAxolotlService().getFingerprintTrust(
 								message.getFingerprint());
 
-				if(status == null || (!status.isVerified() && inValidSession)) {
+				if(status == null || (type == SENT ? !status.isTrusted() : (!status.isVerified() && inValidSession))) {
 					viewHolder.indicator.setColorFilter(0xffc64545);
 					viewHolder.indicator.setAlpha(1.0f);
 				} else {
