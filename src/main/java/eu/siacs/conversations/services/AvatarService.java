@@ -172,7 +172,7 @@ public class AvatarService implements OnAdvancedStreamFeaturesLoaded {
 		if (bitmap != null || cachedOnly) {
 			return bitmap;
 		}
-		final List<MucOptions.User> users = mucOptions.getUsers();
+		final List<MucOptions.User> users = mucOptions.getUsers(5);
 		int count = users.size();
 		bitmap = Bitmap.createBitmap(size, size, Bitmap.Config.ARGB_8888);
 		Canvas canvas = new Canvas(bitmap);

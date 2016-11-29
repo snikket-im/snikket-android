@@ -3,7 +3,6 @@ package eu.siacs.conversations.entities;
 import android.annotation.SuppressLint;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -395,10 +394,18 @@ public class MucOptions {
 		if (user != null) {
 			synchronized (users) {
 				users.remove(user);
-				if (membersOnly() &&
-						nonanonymous() &&
-						user.affiliation.ranks(Affiliation.MEMBER) &&
-						user.realJid != null) {
+				boolean realJidInMuc = false;
+				for (User u : users) {
+					if (user.realJid != null && user.realJid.equals(u.realJid)) {
+						realJidInMuc = true;
+						break;
+					}
+				}
+				if (membersOnly()
+						&& nonanonymous()
+						&& user.affiliation.ranks(Affiliation.MEMBER)
+						&& user.realJid != null
+						&& !realJidInMuc) {
 					user.role = Role.NONE;
 					user.avatar = null;
 					user.fullJid = null;
@@ -508,8 +515,19 @@ public class MucOptions {
 	}
 
 	public List<User> getUsers(int max) {
-		ArrayList<User> users = getUsers();
-		return users.subList(0, Math.min(max, users.size()));
+		ArrayList<User> subset = new ArrayList<>();
+		HashSet<Jid> jids = new HashSet<>();
+		synchronized (users) {
+			for(User user : users) {
+				if (user.getRealJid() == null || jids.add(user.getRealJid())) {
+					subset.add(user);
+				}
+				if (subset.size() >= max) {
+					break;
+				}
+			}
+		}
+		return subset;
 	}
 
 	public int getUserCount() {
