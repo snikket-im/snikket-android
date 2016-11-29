@@ -678,4 +678,5 @@
   <string name="pref_blind_trust_before_verification_summary">以前に確認されていない連絡先の新しいデバイスをすべて自動的に信頼し、確認済の連絡先が新しいデバイスを追加するたびに手動で確認するよう促します。</string>
   <string name="blindly_trusted_omemo_keys">OMEMO 鍵を白紙信託しました</string>
   <string name="not_trusted">信頼されていない</string>
+  <string name="invalid_barcode">不正な 2D バーコード</string>
 </resources>

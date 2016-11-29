@@ -681,4 +681,5 @@
   <string name="pref_blind_trust_before_verification_summary">Automáticamente confiar en los nuevos dispositivos de tus contactos que no han sido verificados antes y solicita confirmación manual cada vez que un contacto verificado añade un dispositivo nuevo.</string>
   <string name="blindly_trusted_omemo_keys">Huellas digitales OMEMO de confianza ciega</string>
   <string name="not_trusted">No confiables</string>
+  <string name="invalid_barcode">Código QR inválido</string>
 </resources>

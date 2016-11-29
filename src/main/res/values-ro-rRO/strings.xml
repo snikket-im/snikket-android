@@ -682,6 +682,8 @@ Emitent</string>
   <string name="share_as_uri">Partajeaza ca adresa XMPP</string>
   <string name="share_as_http">Partajeaza ca legatura HTTP</string>
   <string name="pref_blind_trust_before_verification">Incredere Oarba Inainte de Verificare</string>
+  <string name="pref_blind_trust_before_verification_summary">Ai incredere in toate dispozitivele noi ale contactelor care nu au fost verificate anterior, si cere confirmare manuala de fiecare data cand un contact adauga un dispozitiv nou.</string>
   <string name="blindly_trusted_omemo_keys">Incredere oarba in aceste chei OMEMO</string>
   <string name="not_trusted">De neincredere</string>
+  <string name="invalid_barcode">Cod de bare 2D invalid</string>
 </resources>
