@@ -339,8 +339,8 @@
   <string name="url_copied_to_clipboard">URL kopierad till urklipp</string>
   <string name="message_copied_to_clipboard">Meddelande kopierat till urklipp</string>
   <string name="image_transmission_failed">Bildöverföring lyckades inte</string>
-  <string name="scan_qr_code">Scanna 2D streckkod</string>
-  <string name="show_qr_code">Visa 2D streckkod</string>
+  <string name="scan_qr_code">Scanna 2D-streckkod</string>
+  <string name="show_qr_code">Visa 2D-streckkod</string>
   <string name="show_block_list">Visa blockeringslista</string>
   <string name="account_details">Kontodetaljer</string>
   <string name="verify_otr">Verifiera OTR</string>
@@ -678,6 +678,8 @@
   <string name="share_as_uri">Dela som XMPP URI</string>
   <string name="share_as_http">Dela som HTTP länk</string>
   <string name="pref_blind_trust_before_verification">Blint förtroende före verifiering</string>
+  <string name="pref_blind_trust_before_verification_summary">Lita automatiskt på alla nya enheter för kontakter som inte har blivit verifierade tidigare, och be om manuell bekräftelse varje gång en verifierad kontakt lägger till en ny enhet.</string>
   <string name="blindly_trusted_omemo_keys">Lita blint på OMEMO-nycklar</string>
   <string name="not_trusted">Ej betrodd</string>
+  <string name="invalid_barcode">Ogiltig 2D-streckkod</string>
 </resources>

@@ -122,12 +122,14 @@
   <string name="pref_never_send_crash">Ne pas envoyer de rapports d\'erreurs</string>
   <string name="pref_never_send_crash_summary">En envoyant des logs vous aidez le développement de Conversations.</string>
   <string name="pref_confirm_messages">Confirmation de lecture</string>
+  <string name="pref_confirm_messages_summary">Faites savoir à vos contacts quand vous avez reçu et lu leurs messages</string>
   <string name="pref_ui_options">Interface</string>
   <string name="openpgp_error">OpenKeychain a signalé une erreur</string>
   <string name="error_decrypting_file">Erreur d\'E/S lors du déchiffrement du fichier</string>
   <string name="accept">Accepter</string>
   <string name="error">Une erreur s\'est produite</string>
   <string name="pref_grant_presence_updates">Autoriser les màj de disponibilité</string>
+  <string name="pref_grant_presence_updates_summary">Accordez et demandez par avance les abonnements de présence aux contacts que vous avez ajoutés</string>
   <string name="subscriptions">Publications</string>
   <string name="your_account">Votre compte</string>
   <string name="keys">Clefs</string>
@@ -337,6 +339,8 @@
   <string name="url_copied_to_clipboard">URL copiée dans le presse-papier</string>
   <string name="message_copied_to_clipboard">Message copié dans le presse-papier</string>
   <string name="image_transmission_failed">Échec lors de l\'envoi de l\'image</string>
+  <string name="scan_qr_code">Scanner le Code-barres 2D</string>
+  <string name="show_qr_code">Montrer le Code-barres 2D</string>
   <string name="show_block_list">Afficher la liste des contacts bloqués</string>
   <string name="account_details">Détails du compte</string>
   <string name="verify_otr">Vérifier l\'OTR</string>
@@ -376,6 +380,7 @@
   <string name="no_application_found_to_open_file">Aucune application disponible pour ouvrir le fichier</string>
   <string name="could_not_verify_fingerprint">Impossible de vérifier l\'empreinte</string>
   <string name="manually_verify">Vérifier manuellement</string>
+  <string name="are_you_sure_verify_fingerprint">Êtes-vous sûr de vouloir vérifier l\'empreinte OTR de votre contact?</string>
   <string name="pref_show_dynamic_tags">Afficher les tags dynamiques</string>
   <string name="pref_show_dynamic_tags_summary">Afficher des tags en lecture seule en dessous des contacts.</string>
   <string name="enable_notifications">Activer les notifications</string>
@@ -468,6 +473,7 @@
   <string name="contact_is_typing">%s est en train d\'écrire</string>
   <string name="contact_has_stopped_typing">%s a arrêté d\'écrire</string>
   <string name="pref_chat_states">Notifications d\'écriture</string>
+  <string name="pref_chat_states_summary">Faites savoir à vos contacts quand vous leur écrivez des message</string>
   <string name="send_location">Envoyer la position</string>
   <string name="show_location">Afficher la position</string>
   <string name="no_application_found_to_display_location">Aucune application trouvée pour afficher la position</string>
@@ -659,4 +665,21 @@
   <string name="error_message">Message d\'erreur</string>
   <string name="data_saver_enabled">Économie de données activée</string>
   <string name="data_saver_enabled_explained">Votre système d\'exploitation empêche Conversations d’accéder à Internet en arrière plan. Pour recevoir les notifications de nouveaux messages, vous devez autoriser, quand le mode d\'économie de données est actif, à ce que Conversations ai un plein accès au réseau.\n Conversations essaiera autant que possible d\'économiser la data.</string>
+  <string name="device_does_not_support_data_saver">Votre appareil ne prend pas en charge la désactivation de l\'économiseur de données pour Conversations.</string>
+  <string name="error_unable_to_create_temporary_file">Impossible de créer un fichier temporaire</string>
+  <string name="this_device_has_been_verified">Cet appareil a été vérifié</string>
+  <string name="copy_fingerprint">Copier l\'empreinte</string>
+  <string name="all_omemo_keys_have_been_verified">Toutes les clés OMEMO ont étés vérifiées</string>
+  <string name="barcode_does_not_contain_fingerprints_for_this_conversation">Le Code-barres ne contient pas d\'empreintes pour cette conversation.</string>
+  <string name="verified_fingerprints">Empreintes vérifiées</string>
+  <string name="use_camera_icon_to_scan_barcode">Utilisez l\'appareil photo pour scanner le code-barres d\'un contact</string>
+  <string name="please_wait_for_keys_to_be_fetched">Veuillez attendre que les clés soient récupérées</string>
+  <string name="share_as_barcode">Partager par Code-barres</string>
+  <string name="share_as_uri">Partager par URI XMPP</string>
+  <string name="share_as_http">Partager par lien HTTP</string>
+  <string name="pref_blind_trust_before_verification">Faire Aveuglement Confiance Avant La Vérification</string>
+  <string name="pref_blind_trust_before_verification_summary">Faire automatiquement confiance à tous les nouveaux appareils des contacts qui n\'ont pas étés vérifiés avant et demandez une confirmation manuelle à chaque fois qu\'un contact vérifié ajoute un nouveau appareil.</string>
+  <string name="blindly_trusted_omemo_keys">Faire aveuglement confiance aux clés OMEMO</string>
+  <string name="not_trusted">Non approuvée</string>
+  <string name="invalid_barcode">Code-barres 2D invalide</string>
 </resources>

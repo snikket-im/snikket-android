@@ -129,6 +129,7 @@
   <string name="accept">Kabul et</string>
   <string name="error">Bir hata oluştu</string>
   <string name="pref_grant_presence_updates">Durum güncelleme bildirimlerine izin ver</string>
+  <string name="pref_grant_presence_updates_summary">Eklediğiniz kişilerin durum bildirimlerine abone olmayı isteyin ve peşinen kabul edin.</string>
   <string name="subscriptions">Abonelikler</string>
   <string name="your_account">Hesabınız</string>
   <string name="keys">Anahtarlar</string>
@@ -677,4 +678,5 @@
   <string name="pref_blind_trust_before_verification_summary">Kişilerin daha önce doğrulanmamış tüm yeni aygıtlarına kendiliğinden güven ve doğrulanmış kişi her yeni aygıt eklediğinde elle doğrulama iste.</string>
   <string name="blindly_trusted_omemo_keys">Körü körüne güvenilen OMEMO anahtarları</string>
   <string name="not_trusted">Güvenilmeyen</string>
+  <string name="invalid_barcode">Geçersiz 2D barkod</string>
 </resources>

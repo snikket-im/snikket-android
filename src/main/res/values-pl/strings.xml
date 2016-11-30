@@ -78,7 +78,9 @@
   <string name="clear_histor_msg">Czy na pewno usunąć wszystkie wiadomości powiązane z konwersacją?\n\n<b>Uwaga:</b> Działanie nie wpływa na wiadomości przechowywane na innych urządzeniach lub serwerach.</string>
   <string name="delete_messages">Usuń wiadomości</string>
   <string name="also_end_conversation">po czym zakończ tę rozmowę</string>
+  <string name="choose_presence">Wybierz urządzenie</string>
   <string name="send_unencrypted_message">Wyślij wiadomość bez szyfrowania</string>
+  <string name="send_message_to_x">Wyślij wiadomość do %s</string>
   <string name="send_otr_message">Wyślij zaszyfrowaną wiadomość (OTR)</string>
   <string name="send_omemo_message">Wyślij wiadomość zaszyfrowaną OMEMO</string>
   <string name="send_omemo_x509_message">Wyślij wiadomość zaszyfrowaną v\\OMEMO</string>
@@ -114,6 +116,7 @@
   <string name="pref_led_summary">Migaj lampką powiadamiającą gdy nadejdzie wiadomość</string>
   <string name="pref_sound">Dzwonek</string>
   <string name="pref_sound_summary">Odtwórz dźwięk gdy nadejdzie wiadomość</string>
+  <string name="pref_notification_grace_period">Czas Bez Powiadomień</string>
   <string name="pref_advanced_options">Zaawansowane</string>
   <string name="pref_never_send_crash">Nie wysyłaj raportów awarii</string>
   <string name="pref_never_send_crash_summary">Wysyłając ślady stosu pomagasz rozwijać Conversations</string>
@@ -236,6 +239,7 @@
   <string name="contact_already_exists">Kontakt już istnieje</string>
   <string name="join">Dołącz</string>
   <string name="conference_address">Adres konferencji</string>
+  <string name="conference_address_example">konferencja@konferencje.example.com/nick</string>
   <string name="save_as_bookmark">Dodaj jako zakładkę</string>
   <string name="delete_bookmark">Usuń zakładkę</string>
   <string name="bookmark_already_exists">Zakładka już istnieje</string>
@@ -270,6 +274,7 @@
   <string name="conference_requires_password">Konferencja jest zabezpieczona hasłem</string>
   <string name="enter_password">Wprowadź hasło</string>
   <string name="missing_presence_updates">Kontakt nie udostępnia powiadomień o obecności</string>
+  <string name="missing_presence_subscription">Brakuje subskrypcji obecności</string>
   <string name="request_presence_updates">Poproś kontakt o udostępnienie powiadomień o obecności.\n\n<small>Pozwoli to na ustalenie klienta, z którego korzysta rozmówca.</small></string>
   <string name="request_now">Zażądaj teraz</string>
   <string name="delete_fingerprint">Usuń odcisk klucza</string>
@@ -317,6 +322,7 @@
   <string name="check_x_filesize_on_host">Sprawdź wielkość %1$s na %2$s</string>
   <string name="message_options">Opcje wiadomości</string>
   <string name="copy_text">Skopiuj tekst</string>
+  <string name="select_text">Zaznacz tekst</string>
   <string name="copy_original_url">Skopiuj oryginalny URL</string>
   <string name="send_again">Wyślij ponownie</string>
   <string name="file_url">URL pliku</string>
@@ -593,4 +599,29 @@
   <string name="secure_password_generated">Zostało wygenerowane bezpieczne hasło</string>
   <string name="device_does_not_support_battery_op">Twoje urządzenie nie pozwala na wyłączenie optymalizacji baterii</string>
   <string name="show_password">Pokaż hasło</string>
+  <string name="pref_delete_omemo_identities_summary">Wygeneruj jeszcze raz klucze OMEMO. Wszystkie Twoje kontakty będą musiały zweryfikować Twoje nowe klucze. Użyj tego tylko w ostateczności.</string>
+  <string name="delete_selected_keys">Usuń zaznaczone klucze</string>
+  <string name="error_publish_avatar_offline">Musisz być połączony/na, aby opublikować swój awatar.</string>
+  <string name="show_error_message">Pokaż komunikaty błędów</string>
+  <string name="error_message">Komunikat o Błędzie</string>
+  <string name="data_saver_enabled">Oszczędzanie danych jest włączone</string>
+  <string name="data_saver_enabled_explained">Twój system operacyjny blokuje dostęp do internetu Conversations, kiedy jest w tle. Aby dostawać powiadomienia dla nowych wiadomości powinieneś/powinnaś dać Conversations nieograniczony dostęp do internetu, kiedy Oszczędzanie danych jest włączone.
+Conversations będzie wciąż ograniczał transfer danych, kiedy tylko to jest możliwe.</string>
+  <string name="device_does_not_support_data_saver">Twoje urządzenie nie wspiera wyłączenia Oszczędzania danych dla Conversations.</string>
+  <string name="error_unable_to_create_temporary_file">Niemożna utworzyć pliku tymczasowego</string>
+  <string name="this_device_has_been_verified">To urządzenie zostało zweryfikowane</string>
+  <string name="copy_fingerprint">Skopiuj odcisk</string>
+  <string name="all_omemo_keys_have_been_verified">Wszystkie odciski OMEMO zostały zweryfikowane</string>
+  <string name="barcode_does_not_contain_fingerprints_for_this_conversation">Kod kreskowy nie zawiera odcisków dla tej rozmowy.</string>
+  <string name="verified_fingerprints">Zaufane odciski</string>
+  <string name="use_camera_icon_to_scan_barcode">Użyj aparatu, aby zeskanować kod kreskowy kontaktu.</string>
+  <string name="please_wait_for_keys_to_be_fetched">Proszę czekać na ściągnięcie kluczy</string>
+  <string name="share_as_barcode">Udostępnij przez Kod Kreskowy</string>
+  <string name="share_as_uri">Udostępnij przez URI XMPP</string>
+  <string name="share_as_http">Udostępnij przez link HTTP</string>
+  <string name="pref_blind_trust_before_verification">Ślepo Ufaj Przed Weryfikacją</string>
+  <string name="pref_blind_trust_before_verification_summary">Automatycznie ufaj wszystkim nowym urządzeniom kontaktów, którzy nie zostali zweryfikowani wcześniej, i poproś o ręczne potwierdzenie za każdym, kiedy zweryfikowany kontakt dodaje nowe urządzenie.</string>
+  <string name="blindly_trusted_omemo_keys">Ślepo ufaj kluczom OMEMO</string>
+  <string name="not_trusted">Niezaufane</string>
+  <string name="invalid_barcode">Nieprawidłowy kod kreskowy 2D</string>
 </resources>
