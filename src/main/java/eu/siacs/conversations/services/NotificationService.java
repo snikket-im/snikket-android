@@ -34,6 +34,7 @@ import eu.siacs.conversations.entities.Conversation;
 import eu.siacs.conversations.entities.Message;
 import eu.siacs.conversations.ui.ConversationActivity;
 import eu.siacs.conversations.ui.ManageAccountActivity;
+import eu.siacs.conversations.ui.SettingsActivity;
 import eu.siacs.conversations.ui.TimePreference;
 import eu.siacs.conversations.utils.GeoHelper;
 import eu.siacs.conversations.utils.UIHelper;
@@ -591,7 +592,7 @@ public class NotificationService {
 				errors.add(account);
 			}
 		}
-		if (mXmppConnectionService.getPreferences().getBoolean("keep_foreground_service", false)) {
+		if (mXmppConnectionService.getPreferences().getBoolean(SettingsActivity.KEEP_FOREGROUND_SERVICE, false)) {
 			notificationManager.notify(FOREGROUND_NOTIFICATION_ID, createForegroundNotification());
 		}
 		final NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(mXmppConnectionService);

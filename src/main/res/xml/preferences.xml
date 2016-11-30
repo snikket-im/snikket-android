@@ -259,7 +259,7 @@
                     android:title="@string/pref_use_indicate_received"/>
                 <CheckBoxPreference
                     android:defaultValue="false"
-                    android:key="keep_foreground_service"
+                    android:key="enable_foreground_service"
                     android:summary="@string/pref_keep_foreground_service_summary"
                     android:title="@string/pref_keep_foreground_service"/>
                 <Preference

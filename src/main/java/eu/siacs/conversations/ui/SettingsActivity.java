@@ -35,7 +35,7 @@ import eu.siacs.conversations.xmpp.jid.Jid;
 public class SettingsActivity extends XmppActivity implements
 		OnSharedPreferenceChangeListener {
 
-	public static final String KEEP_FOREGROUND_SERVICE = "keep_foreground_service";
+	public static final String KEEP_FOREGROUND_SERVICE = "enable_foreground_service";
 	public static final String AWAY_WHEN_SCREEN_IS_OFF = "away_when_screen_off";
 	public static final String TREAT_VIBRATE_AS_SILENT = "treat_vibrate_as_silent";
 	public static final String MANUALLY_CHANGE_PRESENCE = "manually_change_presence";
