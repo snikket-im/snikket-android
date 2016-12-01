@@ -565,7 +565,10 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
 		final MenuItem renewCertificate = menu.findItem(R.id.action_renew_certificate);
 		final MenuItem mamPrefs = menu.findItem(R.id.action_mam_prefs);
 		final MenuItem changePresence = menu.findItem(R.id.action_change_presence);
+		final MenuItem share = menu.findItem(R.id.action_share);
 		renewCertificate.setVisible(mAccount != null && mAccount.getPrivateKeyAlias() != null);
+
+		share.setVisible(mAccount != null && !mInitMode);
 
 		if (mAccount != null && mAccount.isOnlineAndConnected()) {
 			if (!mAccount.getXmppConnection().getFeatures().blocking()) {
