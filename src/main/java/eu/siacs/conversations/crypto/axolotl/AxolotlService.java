@@ -94,7 +94,7 @@ public class AxolotlService implements OnAdvancedStreamFeaturesLoaded {
 		for(Jid jid : jids) {
 			if (deviceIds.get(jid) != null) {
 				for (Integer foreignId : this.deviceIds.get(jid)) {
-					AxolotlAddress address = new AxolotlAddress(jid.toString(), foreignId);
+					AxolotlAddress address = new AxolotlAddress(jid.toPreppedString(), foreignId);
 					if (fetchStatusMap.getAll(address).containsValue(FetchStatus.ERROR)) {
 						return true;
 					}
@@ -884,7 +884,7 @@ public class AxolotlService implements OnAdvancedStreamFeaturesLoaded {
 			Log.d(Config.LOGTAG, AxolotlService.getLogprefix(account) + "Finding devices without session for " + jid);
 			if (deviceIds.get(jid) != null) {
 				for (Integer foreignId : this.deviceIds.get(jid)) {
-					AxolotlAddress address = new AxolotlAddress(jid.toString(), foreignId);
+					AxolotlAddress address = new AxolotlAddress(jid.toPreppedString(), foreignId);
 					if (sessions.get(address) == null) {
 						IdentityKey identityKey = axolotlStore.loadSession(address).getSessionState().getRemoteIdentityKey();
 						if (identityKey != null) {
@@ -1068,7 +1068,7 @@ public class AxolotlService implements OnAdvancedStreamFeaturesLoaded {
 	}
 
 	private XmppAxolotlSession getReceivingSession(XmppAxolotlMessage message) {
-		AxolotlAddress senderAddress = new AxolotlAddress(message.getFrom().toString(),
+		AxolotlAddress senderAddress = new AxolotlAddress(message.getFrom().toPreppedString(),
 				message.getSenderDeviceId());
 		XmppAxolotlSession session = sessions.get(senderAddress);
 		if (session == null) {
