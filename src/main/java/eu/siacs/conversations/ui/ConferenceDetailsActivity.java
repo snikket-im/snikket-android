@@ -380,7 +380,7 @@ public class ConferenceDetailsActivity extends XmppActivity implements OnConvers
 				MenuItem invite = menu.findItem(R.id.invite);
 				startConversation.setVisible(true);
 				if (contact != null) {
-					showContactDetails.setVisible(true);
+					showContactDetails.setVisible(!contact.isSelf());
 				}
 				if (user.getRole() == MucOptions.Role.NONE) {
 					invite.setVisible(true);
