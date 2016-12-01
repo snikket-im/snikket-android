@@ -763,7 +763,7 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
 
 	private void shareBarcode() {
 		Intent intent = new Intent(Intent.ACTION_SEND);
-		intent.putExtra(Intent.EXTRA_STREAM,BarcodeProvider.getUriForAccount(mAccount));
+		intent.putExtra(Intent.EXTRA_STREAM,BarcodeProvider.getUriForAccount(this,mAccount));
 		intent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
 		intent.setType("image/png");
 		startActivity(Intent.createChooser(intent, getText(R.string.share_with)));

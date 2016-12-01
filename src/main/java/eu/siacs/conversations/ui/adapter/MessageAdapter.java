@@ -711,7 +711,7 @@ public class MessageAdapter extends ArrayAdapter<Message> implements CopyTextVie
 		Uri uri;
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
 			try {
-				uri = FileProvider.getUriForFile(activity, FileBackend.CONVERSATIONS_FILE_PROVIDER, file);
+				uri = FileBackend.getUriForFile(activity, file);
 			} catch (IllegalArgumentException e) {
 				Toast.makeText(activity,activity.getString(R.string.no_permission_to_access_x,file.getAbsolutePath()), Toast.LENGTH_SHORT).show();
 				return;

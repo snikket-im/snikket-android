@@ -197,7 +197,7 @@
 
         <provider
             android:name="android.support.v4.content.FileProvider"
-            android:authorities="eu.siacs.conversations.files"
+            android:authorities="${applicationId}.files"
             android:exported="false"
             android:grantUriPermissions="true">
             <meta-data
@@ -205,7 +205,7 @@
                 android:resource="@xml/file_paths" />
         </provider>
         <provider
-            android:authorities="eu.siacs.conversations.barcodes"
+            android:authorities="${applicationId}.barcodes"
             android:name=".services.BarcodeProvider"
             android:exported="false"
             android:grantUriPermissions="true"/>

@@ -60,7 +60,7 @@ import eu.siacs.conversations.xmpp.pep.Avatar;
 public class FileBackend {
 	private static final SimpleDateFormat IMAGE_DATE_FORMAT = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.US);
 
-	public static final String CONVERSATIONS_FILE_PROVIDER = "eu.siacs.conversations.files";
+	private static final String FILE_PROVIDER = ".files";
 
 	private XmppConnectionService mXmppConnectionService;
 
@@ -454,10 +454,15 @@ public class FileBackend {
 		File file = new File(getTakePhotoPath()+"IMG_" + this.IMAGE_DATE_FORMAT.format(new Date()) + ".jpg");
 		file.getParentFile().mkdirs();
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-			return FileProvider.getUriForFile(mXmppConnectionService, CONVERSATIONS_FILE_PROVIDER, file);
+			return getUriForFile(mXmppConnectionService,file);
 		} else {
 			return Uri.fromFile(file);
 		}
+	}
+
+	public static Uri getUriForFile(Context context, File file) {
+		String packageId = context.getPackageName();
+		return FileProvider.getUriForFile(context, packageId + FILE_PROVIDER, file);
 	}
 
 	public static Uri getIndexableTakePhotoUri(Uri original) {
