@@ -401,11 +401,13 @@ public class MucOptions {
 						break;
 					}
 				}
+				boolean self = user.realJid != null && user.realJid.equals(account.getJid().toBareJid());
 				if (membersOnly()
 						&& nonanonymous()
 						&& user.affiliation.ranks(Affiliation.MEMBER)
 						&& user.realJid != null
-						&& !realJidInMuc) {
+						&& !realJidInMuc
+						&& !self) {
 					user.role = Role.NONE;
 					user.avatar = null;
 					user.fullJid = null;
@@ -517,6 +519,7 @@ public class MucOptions {
 	public List<User> getUsers(int max) {
 		ArrayList<User> subset = new ArrayList<>();
 		HashSet<Jid> jids = new HashSet<>();
+		jids.add(account.getJid().toBareJid());
 		synchronized (users) {
 			for(User user : users) {
 				if (user.getRealJid() == null || jids.add(user.getRealJid())) {
