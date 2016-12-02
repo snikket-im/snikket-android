@@ -11,6 +11,7 @@ import android.content.Intent;
 import android.content.IntentSender.SendIntentException;
 import android.os.Bundle;
 import android.os.Handler;
+import android.text.Editable;
 import android.text.InputType;
 import android.util.Log;
 import android.util.Pair;
@@ -506,6 +507,34 @@ public class ConversationFragment extends Fragment implements EditMessage.Keyboa
 						}
 					}
 				});
+		messageListAdapter.setOnQuoteListener(new MessageAdapter.OnQuoteListener() {
+
+			@Override
+			public void onQuote(String text) {
+				if (mEditMessage.isEnabled()) {
+					text = text.replaceAll("(\n *){2,}", "\n").replaceAll("(^|\n)", "$1> ").replaceAll("\n$", "");
+					Editable editable = mEditMessage.getEditableText();
+					int position = mEditMessage.getSelectionEnd();
+					if (position == -1) position = editable.length();
+					if (position > 0 && editable.charAt(position - 1) != '\n') {
+						editable.insert(position++, "\n");
+					}
+					editable.insert(position, text);
+					position += text.length();
+					editable.insert(position++, "\n");
+					if (position < editable.length() && editable.charAt(position) != '\n') {
+						editable.insert(position, "\n");
+					}
+					mEditMessage.setSelection(position);
+					mEditMessage.requestFocus();
+					InputMethodManager inputMethodManager = (InputMethodManager) getActivity()
+							.getSystemService(Context.INPUT_METHOD_SERVICE);
+					if (inputMethodManager != null) {
+						inputMethodManager.showSoftInput(mEditMessage, InputMethodManager.SHOW_IMPLICIT);
+					}
+				}
+			}
+		});
 		messagesView.setAdapter(messageListAdapter);
 
 		registerForContextMenu(messagesView);

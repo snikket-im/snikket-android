@@ -50,6 +50,7 @@
         <item name="attr/icon_new">@drawable/ic_action_new</item>
         <item name="attr/icon_new_attachment">@drawable/ic_action_new_attachment</item>
         <item name="attr/icon_not_secure">@drawable/ic_action_not_secure</item>
+        <item name="attr/icon_quote">@drawable/ic_action_reply</item>
         <item name="attr/icon_refresh">@drawable/ic_action_refresh</item>
         <item name="attr/icon_remove">@drawable/ic_action_remove</item>
         <item name="attr/icon_search">@drawable/ic_action_search</item>
@@ -114,6 +115,7 @@
         <item name="attr/icon_new">@drawable/ic_action_new</item>
         <item name="attr/icon_new_attachment">@drawable/ic_action_new_attachment</item>
         <item name="attr/icon_not_secure">@drawable/ic_action_not_secure</item>
+        <item name="attr/icon_quote">@drawable/ic_action_reply</item>
         <item name="attr/icon_refresh">@drawable/ic_action_refresh_white</item>
         <item name="attr/icon_remove">@drawable/ic_action_remove_white</item>
         <item name="attr/icon_search">@drawable/ic_action_search</item>
