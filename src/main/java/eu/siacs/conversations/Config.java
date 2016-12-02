@@ -97,6 +97,8 @@ public final class Config {
 
 	public static final boolean X509_VERIFICATION = false; //use x509 certificates to verify OMEMO keys
 
+	public static final boolean ONLY_INTERNAL_STORAGE = true; //use internal storage instead of sdcard to save attachments
+
 	public static final boolean IGNORE_ID_REWRITE_IN_MUC = true;
 
 	public static final boolean PARSE_REAL_JID_FROM_MUC_MAM = false; //dangerous if server doesn’t filter

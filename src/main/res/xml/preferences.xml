@@ -163,7 +163,8 @@
             android:key="expert"
             android:summary="@string/pref_expert_options_summary"
             android:title="@string/pref_expert_options">
-            <PreferenceCategory android:title="@string/pref_security_settings">
+            <PreferenceCategory android:title="@string/pref_security_settings"
+                android:key="security_options">
                 <CheckBoxPreference
                     android:defaultValue="true"
                     android:key="btbv"
@@ -188,6 +189,14 @@
                     android:key="allow_message_correction"
                     android:title="@string/pref_allow_message_correction"
                     android:summary="@string/pref_allow_message_correction_summary"/>
+                <Preference
+                    android:key="clean_cache"
+                    android:summary="@string/pref_clean_cache_summary"
+                    android:title="@string/pref_clean_cache"/>
+                <Preference
+                    android:key="clean_private_storage"
+                    android:summary="@string/pref_clean_private_storage_summary"
+                    android:title="@string/pref_clean_private_storage"/>
                 <Preference
                     android:key="delete_omemo_identities"
                     android:title="@string/pref_delete_omemo_identities"

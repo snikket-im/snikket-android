@@ -715,4 +715,8 @@
 	<string name="blindly_trusted_omemo_keys">Blindly trusted OMEMO keys</string>
 	<string name="not_trusted">Untrusted</string>
 	<string name="invalid_barcode">Invalid 2D barcode</string>
+	<string name="pref_clean_cache_summary">Clean cache folder (used by Camera Application)</string>
+	<string name="pref_clean_cache">Clean cache</string>
+	<string name="pref_clean_private_storage">Clean private storage</string>
+	<string name="pref_clean_private_storage_summary">Clean private storage where files are kept (They can be re-downloaded from the server)</string>
 </resources>

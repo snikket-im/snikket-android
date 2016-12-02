@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.ListPreference;
@@ -14,8 +15,10 @@ import android.preference.Preference;
 import android.preference.PreferenceCategory;
 import android.preference.PreferenceManager;
 import android.preference.PreferenceScreen;
+import android.util.Log;
 import android.widget.Toast;
 
+import java.io.File;
 import java.security.KeyStoreException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -162,6 +165,26 @@ public class SettingsActivity extends XmppActivity implements
 			}
 		});
 
+		if (Config.ONLY_INTERNAL_STORAGE) {
+			final Preference cleanCachePreference = mSettingsFragment.findPreference("clean_cache");
+			cleanCachePreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+				@Override
+				public boolean onPreferenceClick(Preference preference) {
+					cleanCache();
+					return true;
+				}
+			});
+
+			final Preference cleanPrivateStoragePreference = mSettingsFragment.findPreference("clean_private_storage");
+			cleanPrivateStoragePreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+				@Override
+				public boolean onPreferenceClick(Preference preference) {
+					cleanPrivateStorage();
+					return true;
+				}
+			});
+		}
+
 		final Preference deleteOmemoPreference = mSettingsFragment.findPreference("delete_omemo_identities");
 		deleteOmemoPreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
 			@Override
@@ -170,6 +193,57 @@ public class SettingsActivity extends XmppActivity implements
 				return true;
 			}
 		});
+	}
+
+	private void cleanCache() {
+		Intent intent = new Intent(android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+		intent.setData(Uri.parse("package:" + getPackageName()));
+		startActivity(intent);
+	}
+
+	private void cleanPrivateStorage() {
+		cleanPrivatePictures();
+		cleanPrivateFiles();
+	}
+
+	private void cleanPrivatePictures() {
+		try {
+			File dir = new File(getFilesDir().getAbsolutePath(), "/Pictures/");
+			File[] array = dir.listFiles();
+			if (array != null) {
+				for (int b = 0; b < array.length; b++) {
+					String name = array[b].getName().toLowerCase();
+					if (name.equals(".nomedia")) {
+						continue;
+					}
+					if (array[b].isFile()) {
+						array[b].delete();
+					}
+				}
+			}
+		} catch (Throwable e) {
+			Log.e("CleanCache", e.toString());
+		}
+	}
+
+	private void cleanPrivateFiles() {
+		try {
+			File dir = new File(getFilesDir().getAbsolutePath(), "/Files/");
+			File[] array = dir.listFiles();
+			if (array != null) {
+				for (int b = 0; b < array.length; b++) {
+					String name = array[b].getName().toLowerCase();
+					if (name.equals(".nomedia")) {
+						continue;
+					}
+					if (array[b].isFile()) {
+						array[b].delete();
+					}
+				}
+			}
+		} catch (Throwable e) {
+			Log.e("CleanCache", e.toString());
+		}
 	}
 
 	private void deleteOmemoIdentities() {

@@ -654,8 +654,7 @@ public class ConversationFragment extends Fragment implements EditMessage.Keyboa
 			shareIntent.setType("text/plain");
 		} else {
 			shareIntent.putExtra(Intent.EXTRA_STREAM,
-					activity.xmppConnectionService.getFileBackend()
-							.getJingleFileUri(message));
+					activity.xmppConnectionService.getFileBackend().getJingleFileUri(message));
 			shareIntent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
 			String mime = message.getMimeType();
 			if (mime == null) {

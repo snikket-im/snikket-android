@@ -497,6 +497,7 @@ public class ConversationActivity extends XmppActivity
 					case ATTACHMENT_CHOICE_TAKE_PHOTO:
 						Uri uri = xmppConnectionService.getFileBackend().getTakePhotoUri();
 						intent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+						intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
 						intent.setAction(MediaStore.ACTION_IMAGE_CAPTURE);
 						intent.putExtra(MediaStore.EXTRA_OUTPUT, uri);
 						mPendingImageUris.clear();
@@ -551,7 +552,7 @@ public class ConversationActivity extends XmppActivity
 
 	public void attachFile(final int attachmentChoice) {
 		if (attachmentChoice != ATTACHMENT_CHOICE_LOCATION) {
-			if (!hasStoragePermission(attachmentChoice)) {
+			if (!Config.ONLY_INTERNAL_STORAGE && !hasStoragePermission(attachmentChoice)) {
 				return;
 			}
 		}
@@ -648,7 +649,7 @@ public class ConversationActivity extends XmppActivity
 	}
 
 	public void startDownloadable(Message message) {
-		if (!hasStoragePermission(ConversationActivity.REQUEST_START_DOWNLOAD)) {
+		if (!Config.ONLY_INTERNAL_STORAGE && !hasStoragePermission(ConversationActivity.REQUEST_START_DOWNLOAD)) {
 			this.mPendingDownloadableMessage = message;
 			return;
 		}
@@ -1417,9 +1418,11 @@ public class ConversationActivity extends XmppActivity
 						attachImageToConversation(getSelectedConversation(), uri);
 						mPendingImageUris.clear();
 					}
-					Intent intent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
-					intent.setData(uri);
-					sendBroadcast(intent);
+					if (!Config.ONLY_INTERNAL_STORAGE) {
+						Intent intent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
+						intent.setData(uri);
+						sendBroadcast(intent);
+					}
 				} else {
 					mPendingImageUris.clear();
 				}

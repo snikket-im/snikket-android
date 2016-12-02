@@ -709,12 +709,16 @@ public class MessageAdapter extends ArrayAdapter<Message> implements CopyTextVie
 			mime = "*/*";
 		}
 		Uri uri;
-		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N || Config.ONLY_INTERNAL_STORAGE) {
 			try {
 				uri = FileBackend.getUriForFile(activity, file);
 			} catch (IllegalArgumentException e) {
-				Toast.makeText(activity,activity.getString(R.string.no_permission_to_access_x,file.getAbsolutePath()), Toast.LENGTH_SHORT).show();
-				return;
+				if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+					Toast.makeText(activity, activity.getString(R.string.no_permission_to_access_x, file.getAbsolutePath()), Toast.LENGTH_SHORT).show();
+					return;
+				} else {
+					uri = Uri.fromFile(file);
+				}
 			}
 			openIntent.setDataAndType(uri, mime);
 			openIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
