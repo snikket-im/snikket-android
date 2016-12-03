@@ -56,6 +56,7 @@ import eu.siacs.conversations.utils.UIHelper;
 import eu.siacs.conversations.utils.XmppUri;
 import eu.siacs.conversations.xml.Element;
 import eu.siacs.conversations.xmpp.OnKeyStatusUpdated;
+import eu.siacs.conversations.xmpp.OnUpdateBlocklist;
 import eu.siacs.conversations.xmpp.XmppConnection;
 import eu.siacs.conversations.xmpp.XmppConnection.Features;
 import eu.siacs.conversations.xmpp.forms.Data;
@@ -63,7 +64,7 @@ import eu.siacs.conversations.xmpp.jid.InvalidJidException;
 import eu.siacs.conversations.xmpp.jid.Jid;
 import eu.siacs.conversations.xmpp.pep.Avatar;
 
-public class EditAccountActivity extends OmemoActivity implements OnAccountUpdate,
+public class EditAccountActivity extends OmemoActivity implements OnAccountUpdate, OnUpdateBlocklist,
 		OnKeyStatusUpdated, OnCaptchaRequested, KeyChainAliasCallback, XmppConnectionService.OnShowErrorToast, XmppConnectionService.OnMamPreferencesFetched {
 
 	private static final int REQUEST_DATA_SAVER = 0x37af244;
@@ -573,6 +574,8 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
 		if (mAccount != null && mAccount.isOnlineAndConnected()) {
 			if (!mAccount.getXmppConnection().getFeatures().blocking()) {
 				showBlocklist.setVisible(false);
+			} else {
+				showBlocklist.setEnabled(mAccount.getBlocklist().size() > 0);
 			}
 			if (!mAccount.getXmppConnection().getFeatures().register()) {
 				changePassword.setVisible(false);
@@ -1198,5 +1201,10 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
 				Toast.makeText(EditAccountActivity.this,R.string.unable_to_fetch_mam_prefs,Toast.LENGTH_LONG).show();
 			}
 		});
+	}
+
+	@Override
+	public void OnUpdateBlocklist(Status status) {
+		refreshUi();
 	}
 }
