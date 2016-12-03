@@ -64,6 +64,7 @@ public class XmppUri {
 				jid = segments.get(1) + "@" + segments.get(2);
 			}
 			muc = segments.size() > 1 && "j".equalsIgnoreCase(segments.get(0));
+			fingerprints = parseFingerprints(uri.getQuery(),'&');
 		} else if ("xmpp".equalsIgnoreCase(scheme)) {
 			// sample: xmpp:foo@bar.com
 			muc = isMuc(uri.getQuery());
@@ -164,6 +165,26 @@ public class XmppUri {
 	public enum FingerprintType {
 		OMEMO,
 		OTR
+	}
+
+	public static String getFingerprintUri(String base, List<XmppUri.Fingerprint> fingerprints, char seperator) {
+		StringBuilder builder = new StringBuilder(base);
+		builder.append('?');
+		for(int i = 0; i < fingerprints.size(); ++i) {
+			XmppUri.FingerprintType type = fingerprints.get(i).type;
+			if (type == XmppUri.FingerprintType.OMEMO) {
+				builder.append(XmppUri.OMEMO_URI_PARAM);
+				builder.append(fingerprints.get(i).deviceId);
+			} else if (type == XmppUri.FingerprintType.OTR) {
+				builder.append(XmppUri.OTR_URI_PARAM);
+			}
+			builder.append('=');
+			builder.append(fingerprints.get(i).fingerprint);
+			if (i != fingerprints.size() -1) {
+				builder.append(seperator);
+			}
+		}
+		return builder.toString();
 	}
 
 	public static class Fingerprint {
