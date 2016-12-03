@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:paddingLeft="?attr/dialog_horizontal_padding"
+    android:paddingRight="?attr/dialog_horizontal_padding"
+    android:paddingBottom="?attr/dialog_vertical_padding"
+    android:paddingTop="?attr/dialog_vertical_padding">
+
+    <TextView
+        android:id="@+id/warning"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="?attr/TextSizeBody"
+        android:textColor="?attr/color_text_primary"/>
+    <CheckBox
+        android:layout_marginTop="8dp"
+        android:id="@+id/trusted_source"
+        android:layout_width="wrap_content"
+        android:textColor="?attr/color_text_primary"
+        android:layout_height="wrap_content"
+        android:text="@string/i_followed_this_link_from_a_trusted_source" />
+
+</LinearLayout>
