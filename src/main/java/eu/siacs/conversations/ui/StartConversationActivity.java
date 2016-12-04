@@ -28,7 +28,10 @@ import android.os.Parcelable;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.text.Editable;
+import android.text.SpannableString;
+import android.text.Spanned;
 import android.text.TextWatcher;
+import android.text.style.TypefaceSpan;
 import android.util.Pair;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
@@ -893,7 +896,13 @@ public class StartConversationActivity extends XmppActivity implements OnRosterU
         View view = getLayoutInflater().inflate(R.layout.dialog_verify_fingerprints, null);
         final CheckBox isTrustedSource = (CheckBox) view.findViewById(R.id.trusted_source);
         TextView warning = (TextView) view.findViewById(R.id.warning);
-        warning.setText(getString(R.string.verifying_omemo_keys_trusted_source,contact.getJid().toBareJid().toString(),contact.getDisplayName()));
+        String jid = contact.getJid().toBareJid().toString();
+        SpannableString spannable = new SpannableString(getString(R.string.verifying_omemo_keys_trusted_source,jid,contact.getDisplayName()));
+        int start = spannable.toString().indexOf(jid);
+        if (start >= 0) {
+            spannable.setSpan(new TypefaceSpan("monospace"),start,start + jid.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        }
+        warning.setText(spannable);
         builder.setView(view);
         builder.setPositiveButton(R.string.confirm, new OnClickListener() {
             @Override

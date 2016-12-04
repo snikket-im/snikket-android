@@ -37,7 +37,6 @@ public final class BlockContactDialog {
 			builder.setTitle(isBlocked ? R.string.action_unblock_domain : R.string.action_block_domain);
 			value = blockable.getJid().toDomainJid().toString();
 			spannable = new SpannableString(context.getString(isBlocked ? R.string.unblock_domain_text : R.string.block_domain_text, value));
-			message.setText(spannable);
 		} else {
 			builder.setTitle(isBlocked ? R.string.action_unblock_contact : R.string.action_block_contact);
 			value = blockable.getJid().toBareJid().toString();
