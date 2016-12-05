@@ -1666,7 +1666,7 @@ public class XmppConnectionService extends Service {
 						callback.onAccountCreated(account);
 						if (Config.X509_VERIFICATION) {
 							try {
-								getMemorizingTrustManager().getNonInteractive().checkClientTrusted(chain, "RSA");
+								getMemorizingTrustManager().getNonInteractive(account.getJid().getDomainpart()).checkClientTrusted(chain, "RSA");
 							} catch (CertificateException e) {
 								callback.informUser(R.string.certificate_chain_is_not_trusted);
 							}
@@ -1694,7 +1694,7 @@ public class XmppConnectionService extends Service {
 				databaseBackend.updateAccount(account);
 				if (Config.X509_VERIFICATION) {
 					try {
-						getMemorizingTrustManager().getNonInteractive().checkClientTrusted(chain, "RSA");
+						getMemorizingTrustManager().getNonInteractive(account.getJid().getDomainpart()).checkClientTrusted(chain, "RSA");
 					} catch (CertificateException e) {
 						showErrorToastInUi(R.string.certificate_chain_is_not_trusted);
 					}

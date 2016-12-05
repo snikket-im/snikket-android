@@ -7,14 +7,14 @@ buildscript {
 	}
 }
 
-apply plugin: 'android-library'
+apply plugin: 'com.android.library'
 
 android {
-	compileSdkVersion 19
-	buildToolsVersion "19.1"
+	compileSdkVersion 24
+	buildToolsVersion "23.0.3"
 	defaultConfig {
-        	minSdkVersion 7
-		targetSdkVersion 19
+		minSdkVersion 14
+		targetSdkVersion 24
 	}
 
 	sourceSets {
