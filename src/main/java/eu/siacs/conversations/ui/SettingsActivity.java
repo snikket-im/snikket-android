@@ -15,6 +15,7 @@ import android.preference.Preference;
 import android.preference.PreferenceCategory;
 import android.preference.PreferenceManager;
 import android.preference.PreferenceScreen;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -90,6 +91,27 @@ public class SettingsActivity extends XmppActivity implements
 			if (connectionOptions != null) {
 				expert.removePreference(connectionOptions);
 			}
+		}
+
+		boolean removeLocation = new Intent("eu.siacs.conversations.location.request").resolveActivity(getPackageManager()) == null;
+		boolean removeVoice = new Intent(MediaStore.Audio.Media.RECORD_SOUND_ACTION).resolveActivity(getPackageManager()) == null;
+
+		ListPreference quickAction = (ListPreference) mSettingsFragment.findPreference("quick_action");
+		if (quickAction != null && (removeLocation || removeVoice)) {
+			ArrayList<CharSequence> entries = new ArrayList<>(Arrays.asList(quickAction.getEntries()));
+			ArrayList<CharSequence> entryValues = new ArrayList<>(Arrays.asList(quickAction.getEntryValues()));
+			int index = entryValues.indexOf("location");
+			if (index > 0 && removeLocation) {
+				entries.remove(index);
+				entryValues.remove(index);
+			}
+			index = entryValues.indexOf("voice");
+			if (index > 0 && removeVoice) {
+				entries.remove(index);
+				entryValues.remove(index);
+			}
+			quickAction.setEntries(entries.toArray(new CharSequence[entries.size()]));
+			quickAction.setEntryValues(entryValues.toArray(new CharSequence[entryValues.size()]));
 		}
 
 		final Preference removeCertsPreference = mSettingsFragment.findPreference("remove_trusted_certificates");
