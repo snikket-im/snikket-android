@@ -273,16 +273,18 @@ public class HttpDownloadConnection implements Transferable {
 				}
 				connection.setRequestProperty("User-Agent",mXmppConnectionService.getIqGenerator().getIdentityName());
 				final boolean tryResume = file.exists() && file.getKey() == null;
+				long resumeSize = 0;
 				if (tryResume) {
 					Log.d(Config.LOGTAG,"http download trying resume");
-					long size = file.getSize();
-					connection.setRequestProperty("Range", "bytes="+size+"-");
+					resumeSize = file.getSize();
+					connection.setRequestProperty("Range", "bytes="+resumeSize+"-");
 				}
 				connection.setConnectTimeout(Config.SOCKET_TIMEOUT * 1000);
 				connection.setReadTimeout(Config.SOCKET_TIMEOUT * 1000);
 				connection.connect();
 				is = new BufferedInputStream(connection.getInputStream());
-				boolean serverResumed = "bytes".equals(connection.getHeaderField("Accept-Ranges"));
+				final String contentRange = connection.getHeaderField("Content-Range");
+				boolean serverResumed = tryResume && contentRange != null && contentRange.startsWith("bytes "+resumeSize+"-");
 				long transmitted = 0;
 				long expected = file.getExpectedSize();
 				if (tryResume && serverResumed) {
@@ -290,9 +292,14 @@ public class HttpDownloadConnection implements Transferable {
 					transmitted = file.getSize();
 					updateProgress((int) ((((double) transmitted) / expected) * 100));
 					os = AbstractConnectionManager.createAppendedOutputStream(file);
+					if (os == null) {
+						throw new FileWriterException();
+					}
 				} else {
 					file.getParentFile().mkdirs();
-					file.createNewFile();
+					if (!file.exists() && !file.createNewFile()) {
+						throw new FileWriterException();
+					}
 					os = AbstractConnectionManager.createOutputStream(file, true);
 				}
 				int count;
