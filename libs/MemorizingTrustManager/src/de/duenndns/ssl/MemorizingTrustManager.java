@@ -68,6 +68,7 @@ import java.util.Collection;
 import java.util.Enumeration;
 import java.util.List;
 import java.util.Locale;
+import java.util.regex.Pattern;
 
 import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.HttpsURLConnection;
@@ -87,6 +88,14 @@ import javax.net.ssl.X509TrustManager;
  * opening sockets!
  */
 public class MemorizingTrustManager {
+
+
+	private static final Pattern PATTERN_IPV4 = Pattern.compile("\\A(25[0-5]|2[0-4]\\d|[0-1]?\\d?\\d)(\\.(25[0-5]|2[0-4]\\d|[0-1]?\\d?\\d)){3}\\z");
+	private static final Pattern PATTERN_IPV6_HEX4DECCOMPRESSED = Pattern.compile("\\A((?:[0-9A-Fa-f]{1,4}(?::[0-9A-Fa-f]{1,4})*)?) ::((?:[0-9A-Fa-f]{1,4}:)*)(25[0-5]|2[0-4]\\d|[0-1]?\\d?\\d)(\\.(25[0-5]|2[0-4]\\d|[0-1]?\\d?\\d)){3}\\z");
+	private static final Pattern PATTERN_IPV6_6HEX4DEC = Pattern.compile("\\A((?:[0-9A-Fa-f]{1,4}:){6,6})(25[0-5]|2[0-4]\\d|[0-1]?\\d?\\d)(\\.(25[0-5]|2[0-4]\\d|[0-1]?\\d?\\d)){3}\\z");
+	private static final Pattern PATTERN_IPV6_HEXCOMPRESSED = Pattern.compile("\\A((?:[0-9A-Fa-f]{1,4}(?::[0-9A-Fa-f]{1,4})*)?)::((?:[0-9A-Fa-f]{1,4}(?::[0-9A-Fa-f]{1,4})*)?)\\z");
+	private static final Pattern PATTERN_IPV6 = Pattern.compile("\\A(?:[0-9a-fA-F]{1,4}:){7}[0-9a-fA-F]{1,4}\\z");
+
 	final static String DECISION_INTENT = "de.duenndns.ssl.DECISION";
 	final static String DECISION_INTENT_ID     = DECISION_INTENT + ".decisionId";
 	final static String DECISION_INTENT_CERT   = DECISION_INTENT + ".cert";
@@ -421,7 +430,7 @@ public class MemorizingTrustManager {
 				else
 					defaultTrustManager.checkClientTrusted(chain, authType);
 			} catch (CertificateException e) {
-				if (domain != null && isServer) {
+				if (domain != null && isServer && !isIp(domain)) {
 					String hash = getBase64Hash(chain[0],"SHA-256");
 					List<String> fingerprints = getPoshFingerprints(domain);
 					if (hash != null && fingerprints.contains(hash)) {
@@ -453,6 +462,8 @@ public class MemorizingTrustManager {
 			List<String> results = new ArrayList<>();
 			URL url = new URL("https://"+domain+"/.well-known/posh/xmpp-client.json");
 			HttpsURLConnection connection = (HttpsURLConnection) url.openConnection();
+			connection.setConnectTimeout(5000);
+			connection.setReadTimeout(5000);
 			BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
 			String inputLine;
 			StringBuilder builder = new StringBuilder();
@@ -540,6 +551,15 @@ public class MemorizingTrustManager {
 			file.delete();
 			return null;
 		}
+	}
+
+	private static boolean isIp(final String server) {
+		return server != null && (
+				PATTERN_IPV4.matcher(server).matches()
+						|| PATTERN_IPV6.matcher(server).matches()
+						|| PATTERN_IPV6_6HEX4DEC.matcher(server).matches()
+						|| PATTERN_IPV6_HEX4DECCOMPRESSED.matcher(server).matches()
+						|| PATTERN_IPV6_HEXCOMPRESSED.matcher(server).matches());
 	}
 
 	private static String getBase64Hash(X509Certificate certificate, String digest) throws CertificateEncodingException {
