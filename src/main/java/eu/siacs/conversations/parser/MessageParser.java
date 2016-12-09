@@ -484,7 +484,8 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
 							|| replacedMessage.getFingerprint().equals(message.getFingerprint());
 					final boolean trueCountersMatch = replacedMessage.getTrueCounterpart() != null
 							&& replacedMessage.getTrueCounterpart().equals(message.getTrueCounterpart());
-					if (fingerprintsMatch && (trueCountersMatch || !conversationMultiMode)) {
+					final boolean duplicate = conversation.hasDuplicateMessage(message);
+					if (fingerprintsMatch && (trueCountersMatch || !conversationMultiMode) && !duplicate) {
 						Log.d(Config.LOGTAG, "replaced message '" + replacedMessage.getBody() + "' with '" + message.getBody() + "'");
 						synchronized (replacedMessage) {
 							final String uuid = replacedMessage.getUuid();
