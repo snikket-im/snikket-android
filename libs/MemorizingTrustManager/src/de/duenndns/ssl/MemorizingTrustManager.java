@@ -36,6 +36,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.SystemClock;
+import android.preference.PreferenceManager;
 import android.util.Base64;
 import android.util.Log;
 import android.util.SparseArray;
@@ -430,7 +431,8 @@ public class MemorizingTrustManager {
 				else
 					defaultTrustManager.checkClientTrusted(chain, authType);
 			} catch (CertificateException e) {
-				if (domain != null && isServer && !isIp(domain)) {
+				boolean trustSystemCAs = !PreferenceManager.getDefaultSharedPreferences(master).getBoolean("dont_trust_system_cas", false);
+				if (domain != null && isServer && trustSystemCAs && !isIp(domain)) {
 					String hash = getBase64Hash(chain[0],"SHA-256");
 					List<String> fingerprints = getPoshFingerprints(domain);
 					if (hash != null && fingerprints.contains(hash)) {
