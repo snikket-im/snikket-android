@@ -2898,7 +2898,8 @@ public class XmppConnectionService extends Service {
 				connection = createConnection(account);
 				account.setXmppConnection(connection);
 			}
-			if (!account.isOptionSet(Account.OPTION_DISABLED)) {
+			boolean hasInternet = hasInternetConnection();
+			if (!account.isOptionSet(Account.OPTION_DISABLED) && hasInternet) {
 				if (!force) {
 					disconnect(account, false);
 				}
@@ -2909,10 +2910,13 @@ public class XmppConnectionService extends Service {
 				thread.start();
 				scheduleWakeUpCall(Config.CONNECT_DISCO_TIMEOUT, account.getUuid().hashCode());
 			} else {
-				disconnect(account, force || account.getTrueStatus().isError());
+				disconnect(account, force || account.getTrueStatus().isError() || !hasInternet);
 				account.getRoster().clearPresences();
 				connection.resetEverything();
 				account.getAxolotlService().resetBrokenness();
+				if (!hasInternet) {
+					account.setStatus(Account.State.NO_INTERNET);
+				}
 			}
 		}
 	}
