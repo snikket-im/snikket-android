@@ -32,15 +32,12 @@ import com.wefika.flowlayout.FlowLayout;
 
 import org.openintents.openpgp.util.OpenPgpUtils;
 
-import java.security.cert.X509Certificate;
 import java.util.List;
 
 import eu.siacs.conversations.Config;
-import eu.siacs.conversations.OmemoActivity;
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.crypto.PgpEngine;
 import eu.siacs.conversations.crypto.axolotl.AxolotlService;
-import eu.siacs.conversations.crypto.axolotl.FingerprintStatus;
 import eu.siacs.conversations.crypto.axolotl.XmppAxolotlSession;
 import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.entities.Contact;

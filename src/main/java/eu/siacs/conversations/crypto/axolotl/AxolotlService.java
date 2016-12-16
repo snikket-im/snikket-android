@@ -395,7 +395,7 @@ public class AxolotlService implements OnAdvancedStreamFeaturesLoaded {
 			XmppAxolotlSession session = sessions.get(address);
 			if (session != null && session.getFingerprint() != null) {
 				if (!session.getTrust().isActive()) {
-					Log.d(Config.LOGTAG,"reactivating device with fingprint "+session.getFingerprint());
+					Log.d(Config.LOGTAG,"reactivating device with fingerprint "+session.getFingerprint());
 					session.setTrust(session.getTrust().toActive());
 				}
 			}
@@ -407,7 +407,11 @@ public class AxolotlService implements OnAdvancedStreamFeaturesLoaded {
 			for (Integer deviceId : deviceIds) {
 				AxolotlAddress ownDeviceAddress = new AxolotlAddress(jid.toBareJid().toPreppedString(), deviceId);
 				if (sessions.get(ownDeviceAddress) == null) {
-					buildSessionFromPEP(ownDeviceAddress);
+					FetchStatus status = fetchStatusMap.get(ownDeviceAddress);
+					if (status == null || status == FetchStatus.TIMEOUT) {
+						fetchStatusMap.put(ownDeviceAddress, FetchStatus.PENDING);
+						this.buildSessionFromPEP(ownDeviceAddress);
+					}
 				}
 			}
 			if (needsPublishing) {
@@ -462,10 +466,13 @@ public class AxolotlService implements OnAdvancedStreamFeaturesLoaded {
 				long diff = System.currentTimeMillis() - session.getTrust().getLastActivation();
 				if (diff > Config.OMEMO_AUTO_EXPIRY) {
 					long lastMessageDiff = System.currentTimeMillis() - mXmppConnectionService.databaseBackend.getLastTimeFingerprintUsed(account,session.getFingerprint());
+					long hours = Math.round(lastMessageDiff/(1000*60.0*60.0));
 					if (lastMessageDiff > Config.OMEMO_AUTO_EXPIRY) {
 						devices.add(session.getRemoteAddress().getDeviceId());
 						session.setTrust(session.getTrust().toInactive());
-						Log.d(Config.LOGTAG, "added own device " + session.getFingerprint() + " to list of expired devices. Last message received "+(lastMessageDiff/1000)+"s ago");
+						Log.d(Config.LOGTAG,account.getJid().toBareJid()+": added own device " + session.getFingerprint() + " to list of expired devices. Last message received "+hours+" hours ago");
+					} else {
+						Log.d(Config.LOGTAG,account.getJid().toBareJid()+": own device "+session.getFingerprint()+" was active "+hours+" hours ago");
 					}
 				}
 			}
@@ -475,34 +482,32 @@ public class AxolotlService implements OnAdvancedStreamFeaturesLoaded {
 
 	public void publishOwnDeviceId(Set<Integer> deviceIds) {
 		Set<Integer> deviceIdsCopy = new HashSet<>(deviceIds);
-		if (!deviceIdsCopy.contains(getOwnDeviceId())) {
-			Log.d(Config.LOGTAG, AxolotlService.getLogprefix(account) + "Own device " + getOwnDeviceId() + " not in PEP devicelist.");
-			if (deviceIdsCopy.isEmpty()) {
-				if (numPublishTriesOnEmptyPep >= publishTriesThreshold) {
-					Log.w(Config.LOGTAG, getLogprefix(account) + "Own device publish attempt threshold exceeded, aborting...");
-					pepBroken = true;
-					return;
-				} else {
-					numPublishTriesOnEmptyPep++;
-					Log.w(Config.LOGTAG, getLogprefix(account) + "Own device list empty, attempting to publish (try " + numPublishTriesOnEmptyPep + ")");
-				}
+		Log.d(Config.LOGTAG, AxolotlService.getLogprefix(account) + "publishing own device ids");
+		if (deviceIdsCopy.isEmpty()) {
+			if (numPublishTriesOnEmptyPep >= publishTriesThreshold) {
+				Log.w(Config.LOGTAG, getLogprefix(account) + "Own device publish attempt threshold exceeded, aborting...");
+				pepBroken = true;
+				return;
 			} else {
-				numPublishTriesOnEmptyPep = 0;
+				numPublishTriesOnEmptyPep++;
+				Log.w(Config.LOGTAG, getLogprefix(account) + "Own device list empty, attempting to publish (try " + numPublishTriesOnEmptyPep + ")");
 			}
-			deviceIdsCopy.add(getOwnDeviceId());
-			IqPacket publish = mXmppConnectionService.getIqGenerator().publishDeviceIds(deviceIdsCopy);
-			ownPushPending.set(true);
-			mXmppConnectionService.sendIqPacket(account, publish, new OnIqPacketReceived() {
-				@Override
-				public void onIqPacketReceived(Account account, IqPacket packet) {
-					ownPushPending.set(false);
-					if (packet.getType() == IqPacket.TYPE.ERROR) {
-						pepBroken = true;
-						Log.d(Config.LOGTAG, getLogprefix(account) + "Error received while publishing own device id" + packet.findChild("error"));
-					}
-				}
-			});
+		} else {
+			numPublishTriesOnEmptyPep = 0;
 		}
+		deviceIdsCopy.add(getOwnDeviceId());
+		IqPacket publish = mXmppConnectionService.getIqGenerator().publishDeviceIds(deviceIdsCopy);
+		ownPushPending.set(true);
+		mXmppConnectionService.sendIqPacket(account, publish, new OnIqPacketReceived() {
+			@Override
+			public void onIqPacketReceived(Account account, IqPacket packet) {
+				ownPushPending.set(false);
+				if (packet.getType() == IqPacket.TYPE.ERROR) {
+					pepBroken = true;
+					Log.d(Config.LOGTAG, getLogprefix(account) + "Error received while publishing own device id" + packet.findChild("error"));
+				}
+			}
+		});
 	}
 
 	public void publishDeviceVerificationAndBundle(final SignedPreKeyRecord signedPreKeyRecord,
@@ -797,10 +802,21 @@ public class AxolotlService implements OnAdvancedStreamFeaturesLoaded {
 			}
 			mXmppConnectionService.keyStatusUpdated(report);
 		}
+		Set<Integer> ownDeviceIds = new HashSet<>(getOwnDeviceIds());
+		boolean publish = false;
+		for(Map.Entry<Integer,FetchStatus> entry : own.entrySet()) {
+			if (entry.getValue() == FetchStatus.ERROR && ownDeviceIds.remove(entry.getKey())) {
+				publish = true;
+				Log.d(Config.LOGTAG,account.getJid().toBareJid()+": error fetching own device with id "+entry.getKey()+". removing from annoucement");
+			}
+		}
+		if (publish) {
+			publishOwnDeviceId(ownDeviceIds);
+		}
 	}
 
 	private void buildSessionFromPEP(final AxolotlAddress address) {
-		Log.i(Config.LOGTAG, AxolotlService.getLogprefix(account) + "Building new sesstion for " + address.toString());
+		Log.i(Config.LOGTAG, AxolotlService.getLogprefix(account) + "Building new session for " + address.toString());
 		if (address.getDeviceId() == getOwnDeviceId()) {
 			throw new AssertionError("We should NEVER build a session with ourselves. What happened here?!");
 		}

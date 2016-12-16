@@ -1,4 +1,4 @@
-package eu.siacs.conversations;
+package eu.siacs.conversations.ui;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -19,6 +19,8 @@ import com.google.zxing.integration.android.IntentResult;
 import java.security.cert.X509Certificate;
 import java.util.Arrays;
 
+import eu.siacs.conversations.Config;
+import eu.siacs.conversations.R;
 import eu.siacs.conversations.crypto.axolotl.FingerprintStatus;
 import eu.siacs.conversations.crypto.axolotl.XmppAxolotlSession;
 import eu.siacs.conversations.entities.Account;
