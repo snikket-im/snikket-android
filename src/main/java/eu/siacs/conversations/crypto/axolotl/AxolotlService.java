@@ -785,6 +785,8 @@ public class AxolotlService implements OnAdvancedStreamFeaturesLoaded {
 		}
 	}
 
+	private final Set<Integer> PREVIOUSLY_REMOVED_FROM_ANNOUNCEMENT = new HashSet<>();
+
 	private void finishBuildingSessionsFromPEP(final AxolotlAddress address) {
 		AxolotlAddress ownAddress = new AxolotlAddress(account.getJid().toBareJid().toPreppedString(), 0);
 		Map<Integer, FetchStatus> own = fetchStatusMap.getAll(ownAddress);
@@ -805,9 +807,10 @@ public class AxolotlService implements OnAdvancedStreamFeaturesLoaded {
 		Set<Integer> ownDeviceIds = new HashSet<>(getOwnDeviceIds());
 		boolean publish = false;
 		for(Map.Entry<Integer,FetchStatus> entry : own.entrySet()) {
-			if (entry.getValue() == FetchStatus.ERROR && ownDeviceIds.remove(entry.getKey())) {
+			int id = entry.getKey();
+			if (entry.getValue() == FetchStatus.ERROR && PREVIOUSLY_REMOVED_FROM_ANNOUNCEMENT.add(id) && ownDeviceIds.remove(id)) {
 				publish = true;
-				Log.d(Config.LOGTAG,account.getJid().toBareJid()+": error fetching own device with id "+entry.getKey()+". removing from annoucement");
+				Log.d(Config.LOGTAG,account.getJid().toBareJid()+": error fetching own device with id "+id+". removing from announcement");
 			}
 		}
 		if (publish) {
