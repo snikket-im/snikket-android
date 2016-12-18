@@ -804,17 +804,19 @@ public class AxolotlService implements OnAdvancedStreamFeaturesLoaded {
 			}
 			mXmppConnectionService.keyStatusUpdated(report);
 		}
-		Set<Integer> ownDeviceIds = new HashSet<>(getOwnDeviceIds());
-		boolean publish = false;
-		for(Map.Entry<Integer,FetchStatus> entry : own.entrySet()) {
-			int id = entry.getKey();
-			if (entry.getValue() == FetchStatus.ERROR && PREVIOUSLY_REMOVED_FROM_ANNOUNCEMENT.add(id) && ownDeviceIds.remove(id)) {
-				publish = true;
-				Log.d(Config.LOGTAG,account.getJid().toBareJid()+": error fetching own device with id "+id+". removing from announcement");
+		if (Config.REMOVE_BROKEN_DEVICES) {
+			Set<Integer> ownDeviceIds = new HashSet<>(getOwnDeviceIds());
+			boolean publish = false;
+			for (Map.Entry<Integer, FetchStatus> entry : own.entrySet()) {
+				int id = entry.getKey();
+				if (entry.getValue() == FetchStatus.ERROR && PREVIOUSLY_REMOVED_FROM_ANNOUNCEMENT.add(id) && ownDeviceIds.remove(id)) {
+					publish = true;
+					Log.d(Config.LOGTAG, account.getJid().toBareJid() + ": error fetching own device with id " + id + ". removing from announcement");
+				}
 			}
-		}
-		if (publish) {
-			publishOwnDeviceId(ownDeviceIds);
+			if (publish) {
+				publishOwnDeviceId(ownDeviceIds);
+			}
 		}
 	}
 

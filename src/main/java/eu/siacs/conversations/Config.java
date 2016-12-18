@@ -81,6 +81,8 @@ public final class Config {
 	public static final long MILLISECONDS_IN_DAY = 24 * 60 * 60 * 1000;
 
 	public static final long OMEMO_AUTO_EXPIRY = 7 * MILLISECONDS_IN_DAY;
+	public static final boolean REMOVE_BROKEN_DEVICES = false;
+
 
 	public static final boolean DISABLE_PROXY_LOOKUP = false; //useful to debug ibb
 	public static final boolean DISABLE_HTTP_UPLOAD = false;
