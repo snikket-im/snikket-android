@@ -162,12 +162,28 @@ public class XmppAxolotlMessage {
 			IvParameterSpec ivSpec = new IvParameterSpec(iv);
 			Cipher cipher = Cipher.getInstance(CIPHERMODE, PROVIDER);
 			cipher.init(Cipher.ENCRYPT_MODE, secretKey, ivSpec);
-			this.ciphertext = cipher.doFinal(plaintext.getBytes());
+			this.ciphertext = cipher.doFinal(Config.OMEMO_PADDING ? getPaddedBytes(plaintext) : plaintext.getBytes());
 		} catch (NoSuchAlgorithmException | NoSuchPaddingException | InvalidKeyException
 				| IllegalBlockSizeException | BadPaddingException | NoSuchProviderException
 				| InvalidAlgorithmParameterException e) {
 			throw new CryptoFailedException(e);
 		}
+	}
+
+	private static byte[] getPaddedBytes(String plaintext) {
+		int plainLength = plaintext.getBytes().length;
+		int pad = Math.max(64,(plainLength / 32 + 1) * 32) - plainLength;
+		SecureRandom random = new SecureRandom();
+		int left = random.nextInt(pad);
+		int right = pad - left;
+		StringBuilder builder = new StringBuilder(plaintext);
+		for(int i = 0; i < left; ++i) {
+			builder.insert(0,random.nextBoolean() ? "\t" : " ");
+		}
+		for(int i = 0; i < right; ++i) {
+			builder.append(random.nextBoolean() ? "\t" : " ");
+		}
+		return builder.toString().getBytes();
 	}
 
 	public Jid getFrom() {
@@ -239,7 +255,7 @@ public class XmppAxolotlMessage {
 				cipher.init(Cipher.DECRYPT_MODE, keySpec, ivSpec);
 
 				String plaintext = new String(cipher.doFinal(ciphertext));
-				plaintextMessage = new XmppAxolotlPlaintextMessage(plaintext, session.getFingerprint());
+				plaintextMessage = new XmppAxolotlPlaintextMessage(Config.OMEMO_PADDING ? plaintext.trim() : plaintext, session.getFingerprint());
 
 			} catch (NoSuchAlgorithmException | NoSuchPaddingException | InvalidKeyException
 					| InvalidAlgorithmParameterException | IllegalBlockSizeException
