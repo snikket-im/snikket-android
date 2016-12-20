@@ -180,10 +180,7 @@ public class UIHelper {
 				return new Pair<>(getFileDescriptionString(context,message),true);
 			}
 		} else {
-			String body = message.getBody();
-			if (body.length() > 256) {
-				body = body.substring(0,256);
-			}
+			final String body = message.getBody();
 			if (body.startsWith(Message.ME_COMMAND)) {
 				return new Pair<>(body.replaceAll("^" + Message.ME_COMMAND,
 						UIHelper.getMessageDisplayName(message) + " "), false);
@@ -196,8 +193,29 @@ public class UIHelper {
 			} else if (message.treatAsDownloadable() == Message.Decision.MUST) {
 				return new Pair<>(context.getString(R.string.x_file_offered_for_download,
 						getFileDescriptionString(context,message)),true);
-			} else{
-				return new Pair<>(body.trim(), false);
+			} else {
+				String[] lines = body.split("\n");
+				StringBuilder builder = new StringBuilder();
+				for(String l : lines) {
+					if (l.length() > 0) {
+						char first = l.charAt(0);
+						if (first != '>' && first != '\u00bb') {
+							String line = l.trim();
+							char last = line.charAt(line.length()-1);
+							if (builder.length() != 0) {
+								builder.append(' ');
+							}
+							builder.append(line);
+							if (last != '.' && last != '!' && last != '?' && last != ',') {
+								break;
+							}
+						}
+					}
+				}
+				if (builder.length() == 0) {
+					builder.append(body.trim());
+				}
+				return new Pair<>(builder.length() > 256 ? builder.substring(0,256) : builder.toString(), false);
 			}
 		}
 	}
