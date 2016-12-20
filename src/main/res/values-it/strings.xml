@@ -122,12 +122,14 @@
   <string name="pref_never_send_crash">Non inviare mai segnalazioni di errore</string>
   <string name="pref_never_send_crash_summary">Se scegli di inviare una segnalazione dell’errore aiuterai lo sviluppo di Conversations</string>
   <string name="pref_confirm_messages">Conferma Messaggi</string>
+  <string name="pref_confirm_messages_summary">Fai sapere ai tuoi contatti quando hai ricevuto e letto i loro messaggi</string>
   <string name="pref_ui_options">Interfaccia Utente</string>
   <string name="openpgp_error">OpenKeychain ha riportato un errore</string>
   <string name="error_decrypting_file">Errore di I/O nel decifrare il file</string>
   <string name="accept">Accetta</string>
   <string name="error">Si è verificato un errore</string>
   <string name="pref_grant_presence_updates">Concedi aggiornamenti della presenza</string>
+  <string name="pref_grant_presence_updates_summary">Concedi e richiedi preventivamente le sottoscrizioni sulla presenza ai contatti che hai creato</string>
   <string name="subscriptions">Sottoscrizioni</string>
   <string name="your_account">Il tuo utente</string>
   <string name="keys">Chiavi</string>
@@ -337,6 +339,8 @@
   <string name="url_copied_to_clipboard">URL copiato</string>
   <string name="message_copied_to_clipboard">Messaggio copiato</string>
   <string name="image_transmission_failed">Trasmissione dell’immagine fallita</string>
+  <string name="scan_qr_code">Scansiona codice a barre 2D</string>
+  <string name="show_qr_code">Mostra codice a barre 2D</string>
   <string name="show_block_list">Mostra la black list</string>
   <string name="account_details">Dettagli utente</string>
   <string name="verify_otr">Verifica OTR</string>
@@ -376,6 +380,7 @@
   <string name="no_application_found_to_open_file">Nessuna applicazione trovata per aprire il file</string>
   <string name="could_not_verify_fingerprint">Impronta non verificata</string>
   <string name="manually_verify">Verifica manuale</string>
+  <string name="are_you_sure_verify_fingerprint">Sei sicuro di voler verificare l\'impronta OTR del tuo contatto?</string>
   <string name="pref_show_dynamic_tags">Mostra tag dinamici</string>
   <string name="pref_show_dynamic_tags_summary">Mostra tag in sola lettura sotto i contatti</string>
   <string name="enable_notifications">Abilita le notifiche</string>
@@ -468,6 +473,7 @@
   <string name="contact_is_typing">%s sta digitando...</string>
   <string name="contact_has_stopped_typing">%s ha smesso di digitare</string>
   <string name="pref_chat_states">Notifiche di composizione</string>
+  <string name="pref_chat_states_summary">Fai sapere ai tuoi contatti quando stai scrivendo loro un messaggio</string>
   <string name="send_location">Invia la posizione</string>
   <string name="show_location">Mostra la posizione</string>
   <string name="no_application_found_to_display_location">Non è stata trovata alcuna applicazione per mostrare la posizione</string>
@@ -660,4 +666,20 @@
   <string name="data_saver_enabled">Risparmio dati attivato</string>
   <string name="data_saver_enabled_explained">Il tuo sistema operativo sta limitando l\'accesso internet a Conversations quando è in background. Per ricevere le notifiche di nuovi messaggi dovresti consentire l\'accesso senza limiti a Conversations quando il Risparmio dati è attivo.\nConversations cercherà comunque di risparmiare dati quando possibile.</string>
   <string name="device_does_not_support_data_saver">Il tuo dispositivo non supporta la disattivazione del Risparmio dati per Conversations.</string>
+  <string name="error_unable_to_create_temporary_file">Impossibile creare file temporaneo</string>
+  <string name="this_device_has_been_verified">Questo dispositivo è stato verificato</string>
+  <string name="copy_fingerprint">Copia impronta</string>
+  <string name="all_omemo_keys_have_been_verified">Tutte le chiavi OMEMO sono state verificate</string>
+  <string name="barcode_does_not_contain_fingerprints_for_this_conversation">Il codice a barre non contiene impronte per questa conversazione.</string>
+  <string name="verified_fingerprints">Impronte verificate</string>
+  <string name="use_camera_icon_to_scan_barcode">Usa la fotocamera per scansionare il codice a barre di un contatto</string>
+  <string name="please_wait_for_keys_to_be_fetched">Attendi la ricezione delle chiavi</string>
+  <string name="share_as_barcode">Condividi come codice a barre</string>
+  <string name="share_as_uri">Condividi come URI XMPP</string>
+  <string name="share_as_http">Condividi come link HTTP</string>
+  <string name="pref_blind_trust_before_verification">Fiducia cieca prima della verifica</string>
+  <string name="pref_blind_trust_before_verification_summary">Fidati automaticamente di tutti i nuovi dispositivi di contatti che non sono stati verificati e chiedi una conferma manuale ogni volta che un contatto verificato aggiunge un dispositivo.</string>
+  <string name="blindly_trusted_omemo_keys">Chiavi OMEMO fidate ciecamente</string>
+  <string name="not_trusted">Non fidato</string>
+  <string name="invalid_barcode">Codice a barre 2D non valido</string>
 </resources>

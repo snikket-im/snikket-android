@@ -673,8 +673,10 @@
   <string name="barcode_does_not_contain_fingerprints_for_this_conversation">O código de barras não contém impressões digitais para esta conversa.</string>
   <string name="verified_fingerprints">Impressões digitais verificadas</string>
   <string name="use_camera_icon_to_scan_barcode">Use a câmera para capturar o código de barras de um contato</string>
+  <string name="please_wait_for_keys_to_be_fetched">Por favor, aguarde a obtenção das chaves</string>
   <string name="share_as_barcode">Compartilhar como código de barras</string>
   <string name="share_as_uri">Compartilhar como uma URI XMPP</string>
   <string name="share_as_http">Compartilhar como um link HTTP</string>
   <string name="not_trusted">Não confiável</string>
+  <string name="invalid_barcode">Código de barras 2D inválido</string>
 </resources>

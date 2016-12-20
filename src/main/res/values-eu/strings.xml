@@ -122,12 +122,14 @@
   <string name="pref_never_send_crash">Gelditze txostenik ez bidali inoiz</string>
   <string name="pref_never_send_crash_summary">Akats harraskak bidaliz Conversationsen garapenean laguntzen duzu</string>
   <string name="pref_confirm_messages">Mezuak egiaztatu</string>
+  <string name="pref_confirm_messages_summary">Zure kontaktuak haien mezuak noiz jaso eta irakurri dituzun jakin dezaten baimendu</string>
   <string name="pref_ui_options">Erabiltzaile-interfazea</string>
   <string name="openpgp_error">OpenKeychainek akats baten berri eman du</string>
   <string name="error_decrypting_file">Sarrera/Irteera akatsa fitxategia desenkriptatzerakoan</string>
   <string name="accept">Onartu</string>
   <string name="error">Akats bat gertatu da</string>
   <string name="pref_grant_presence_updates">Presentzia eguneraketak eman</string>
+  <string name="pref_grant_presence_updates_summary">Prebentiboki presentzia eguneraketak eman eta eskatu sortu dituzun kontaktuetarako</string>
   <string name="subscriptions">Harpidetzak</string>
   <string name="your_account">Zure kontua</string>
   <string name="keys">Gakoak</string>
@@ -337,6 +339,8 @@
   <string name="url_copied_to_clipboard">URLa arbelera kopiatu da</string>
   <string name="message_copied_to_clipboard">Mezua arbelera kopiatu da</string>
   <string name="image_transmission_failed">Irudiaren transmisioak huts egin du</string>
+  <string name="scan_qr_code">2D barra kodea eskaneatu</string>
+  <string name="show_qr_code">2D barra kodea erakutsi</string>
   <string name="show_block_list">Blokeatutakoen zerrenda ikusi</string>
   <string name="account_details">Kontuaren xehetasunak</string>
   <string name="verify_otr">OTR egiaztatu</string>
@@ -376,6 +380,7 @@
   <string name="no_application_found_to_open_file">Fitxategia ireki dezakeen aplikaziorik ez da aurkitu</string>
   <string name="could_not_verify_fingerprint">Hatz-marka ezin izan da egiaztatu</string>
   <string name="manually_verify">Eskuz egiaztatu</string>
+  <string name="are_you_sure_verify_fingerprint">Ziur al zaude zure kontaktuaren OTR hatz-marka egiaztatu nahi duzulaz?</string>
   <string name="pref_show_dynamic_tags">Etiketa dinamikoak erakutsi</string>
   <string name="pref_show_dynamic_tags_summary">Irakurtzeko soilik diren etiketak erakutsi kontaktuen azpian</string>
   <string name="enable_notifications">Jakinarazpenak gaitu</string>
@@ -468,6 +473,7 @@
   <string name="contact_is_typing">%s idazten ari da...</string>
   <string name="contact_has_stopped_typing">%s(e)k idazteari utzi dio</string>
   <string name="pref_chat_states">Idazketa jakinarazpenak</string>
+  <string name="pref_chat_states_summary">Zure kontaktuak mezu berri bat noiz idazten ari zaren jakin dezaten baimendu</string>
   <string name="send_location">Kokapena partekatu</string>
   <string name="show_location">Kokapena erakutsi</string>
   <string name="no_application_found_to_display_location">Kokapena erakutsi dezakeen aplikaziorik ez da aurkitu</string>
@@ -660,4 +666,20 @@
   <string name="data_saver_enabled">Datuen aurreztailea gaituta</string>
   <string name="data_saver_enabled_explained">Zure sistema eragileak Conversations atzeko planoan dagoenean Internetera konekta dadin mugatzen ari da. Mezu berrien jakinarazpenak jasotzeko Conversationsi mugagabeko sarrera eman beharko zenioke Datuen aurreztailea piztuta dagoenean.\nConversationsek datuak aurrezteko esfortzua egiten jarraituko du ahal duenean.</string>
   <string name="device_does_not_support_data_saver">Zure gailuak ez du Datuen aurreztailea ezgaitzea baimentzen Conversationserako</string>
+  <string name="error_unable_to_create_temporary_file">Ezin izan da aldi baterako fitxategia sortu</string>
+  <string name="this_device_has_been_verified">Gailu hau egiaztatu da</string>
+  <string name="copy_fingerprint">Hatz-marka kopiatu</string>
+  <string name="all_omemo_keys_have_been_verified">OMEMO gako guztiak egiaztatu dira</string>
+  <string name="barcode_does_not_contain_fingerprints_for_this_conversation">Barra kodeak ez du hatz-markarik elkarrizketa honetarako.</string>
+  <string name="verified_fingerprints">Egiaztatutako hatz-markak</string>
+  <string name="use_camera_icon_to_scan_barcode">Kamera erabili kontaktuaren barra kodea eskaneatzeko</string>
+  <string name="please_wait_for_keys_to_be_fetched">Mesedez itxaron gakoak ekarri arte</string>
+  <string name="share_as_barcode">Barra kode bezala partekatu</string>
+  <string name="share_as_uri">XMPP URI bezala partekatu</string>
+  <string name="share_as_http">HTTP link bezala partekatu</string>
+  <string name="pref_blind_trust_before_verification">Egiaztatu aurreko fidagarritasun itsua</string>
+  <string name="pref_blind_trust_before_verification_summary">Aurretik egiaztatu ez diren kontaktuen gailu berri guztietaz automatikoki fidatu, eta eskuzko baieztapen bila galdetu egiaztatutako kontaktuek gailu berri bat gehitzen duten bakoitzean.</string>
+  <string name="blindly_trusted_omemo_keys">Itsuki fidatutako OMEMO gakoak</string>
+  <string name="not_trusted">Ez fidagarria</string>
+  <string name="invalid_barcode">2D barra kodea baliogabea</string>
 </resources>

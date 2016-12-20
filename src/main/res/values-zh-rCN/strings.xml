@@ -122,6 +122,7 @@
   <string name="pref_never_send_crash">总不发送崩溃报告</string>
   <string name="pref_never_send_crash_summary">发送堆栈跟踪帮助 Conversations 开发人员</string>
   <string name="pref_confirm_messages">确认消息</string>
+  <string name="pref_confirm_messages_summary">让对方知道你收到并阅读了他们的消息</string>
   <string name="pref_ui_options">UI</string>
   <string name="openpgp_error">OpenKeychain 报告了一个错误</string>
   <string name="error_decrypting_file">解密文件时出现 I/O 错误</string>
@@ -337,6 +338,8 @@
   <string name="url_copied_to_clipboard">已经拷贝 URL 到剪贴板</string>
   <string name="message_copied_to_clipboard">消息已经拷贝到剪贴板</string>
   <string name="image_transmission_failed">图片传送失败</string>
+  <string name="scan_qr_code">扫描二维码</string>
+  <string name="show_qr_code">显示二维码</string>
   <string name="show_block_list">显示屏蔽列表</string>
   <string name="account_details">账户详情</string>
   <string name="verify_otr">验证 OTR</string>
@@ -376,6 +379,7 @@
   <string name="no_application_found_to_open_file">没有可以打开此文件的应用</string>
   <string name="could_not_verify_fingerprint">不能验证指纹</string>
   <string name="manually_verify">手工验证</string>
+  <string name="are_you_sure_verify_fingerprint">是否确定要验证你的联系人的 OTR 指纹？</string>
   <string name="pref_show_dynamic_tags">显示动态标签</string>
   <string name="pref_show_dynamic_tags_summary">在联系人下方显示只读标签</string>
   <string name="enable_notifications">启用通知</string>
@@ -468,6 +472,7 @@
   <string name="contact_is_typing">%s 正在输入</string>
   <string name="contact_has_stopped_typing">%s 已停止输入</string>
   <string name="pref_chat_states">键盘输入通知</string>
+  <string name="pref_chat_states_summary">让对方知道你正在向他们写消息</string>
   <string name="send_location">发送位置</string>
   <string name="show_location">显示位置</string>
   <string name="no_application_found_to_display_location">无法找到显示位置的应用</string>
@@ -659,4 +664,16 @@
   <string name="data_saver_enabled">省流量模式已激活</string>
   <string name="data_saver_enabled_explained">您的操作系统禁止本程序在后台运行时访问互联网。为了收到新消息提示，您需要在省流量模式下允许本程序不受限制地访问互联网。\n本程序仍会尽可能节省流量。</string>
   <string name="device_does_not_support_data_saver">该设备不支持禁用省流量模式</string>
+  <string name="error_unable_to_create_temporary_file">无法创建临时文件</string>
+  <string name="this_device_has_been_verified">此设备已经验证</string>
+  <string name="copy_fingerprint">复制指纹</string>
+  <string name="all_omemo_keys_have_been_verified">所有的 OMEMO 密钥已经验证</string>
+  <string name="barcode_does_not_contain_fingerprints_for_this_conversation">条码不包含用于这个会话的指纹。</string>
+  <string name="verified_fingerprints">已验证的指纹</string>
+  <string name="use_camera_icon_to_scan_barcode">使用相机扫描一个联系人的条码</string>
+  <string name="please_wait_for_keys_to_be_fetched">请等待密钥被获取</string>
+  <string name="share_as_barcode">以条码的形式分享</string>
+  <string name="share_as_uri">以 XMPP URI 的形式分享</string>
+  <string name="share_as_http">以 HTTP 链接的形式分享</string>
+  <string name="invalid_barcode">非法的二维码</string>
 </resources>

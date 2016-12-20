@@ -232,7 +232,7 @@
   <string name="fetching_keys">Anahtarları alıyor…</string>
   <string name="done">Tamam</string>
   <string name="verify">Doğrula</string>
-  <string name="decrypt">Deşifre et</string>
+  <string name="decrypt">Şifreyi çöz</string>
   <string name="conferences">Toplantılar</string>
   <string name="search">Ara</string>
   <string name="create_contact">Kişi Oluştur</string>
@@ -278,7 +278,7 @@
   <string name="additional_information">Ek bilgi</string>
   <string name="skip">Atla</string>
   <string name="disable_notifications">Bildirimleri kapat</string>
-  <string name="disable_notifications_for_this_conversation">Bu sohbet için bildirimleri kapat</string>
+  <string name="disable_notifications_for_this_conversation">Bu konuşma için bildirimleri kapat</string>
   <string name="enable">Etkinleştir</string>
   <string name="conference_requires_password">Toplantı için parola gerekiyor</string>
   <string name="enter_password">Parolayı gir</string>
@@ -479,7 +479,7 @@
   <string name="no_application_found_to_display_location">Yer bildirimi için bir uygulama bulunamadı</string>
   <string name="location">Yer</string>
   <string name="received_location">Bildirilen yer</string>
-  <string name="title_undo_swipe_out_conversation">Sohbet sonlandı</string>
+  <string name="title_undo_swipe_out_conversation">Konuşma sonlandı</string>
   <string name="title_undo_swipe_out_muc">Toplantıdan ayrıldı</string>
   <string name="pref_dont_trust_system_cas_title">Sistem sertifikalarına güvenmeyin</string>
   <string name="pref_dont_trust_system_cas_summary">Tüm sertifikalar bizzat onaylanmalıdır</string>
@@ -562,7 +562,7 @@
   <string name="shared_text_with_x">%s ile paylaşılan metin</string>
   <string name="no_storage_permission">Conversations’ın harici depolama alanına erişmesi gerek </string>
   <string name="sync_with_contacts">Kişilerle senkronize et</string>
-  <string name="sync_with_contacts_long">Conversations XMPP listenizi telefon rehberinizle eşleştirerek kişilerin tam isimlerini ve avatarlarını göstermek istiyor.\n\nConversations telefon rehberinizi yalnızca okuyacak ve onları sunucunuza yüklemeden eşleştirecek.\n\nŞimdi telefon rehberinize erişilmesine izin vermeniz istenecek.</string>
+  <string name="sync_with_contacts_long">Conversations XMPP listenizi telefon rehberinizle eşleştirerek kişilerin tam adlarını ve avatarlarını göstermek istiyor.\n\nConversations telefon rehberinizi yalnızca okuyacak ve onları sunucunuza yüklemeden eşleştirecek.\n\nŞimdi telefon rehberinize erişilmesine izin vermeniz istenecek.</string>
   <string name="certificate_information">Sertifika Bilgisi</string>
   <string name="certificate_subject">Konu</string>
   <string name="certificate_issuer">Veren</string>
@@ -605,7 +605,7 @@
   <string name="change_presence">Durum Değiştir</string>
   <string name="status_message">Durum iletisi</string>
   <string name="all_accounts_on_this_device">Bu aygıttaki tüm hesaplara uygula</string>
-  <string name="presence_chat">Sohbet için uygun</string>
+  <string name="presence_chat">Konuşmak için uygun</string>
   <string name="presence_online">Çevrim içi</string>
   <string name="presence_away">Uzakta</string>
   <string name="presence_xa">Mevcut Değil</string>

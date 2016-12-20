@@ -678,7 +678,7 @@
   <string name="share_as_uri">Compartir como XMPP URI</string>
   <string name="share_as_http">Compartir como link HTTP</string>
   <string name="pref_blind_trust_before_verification">Confianza ciega antes de verificación</string>
-  <string name="pref_blind_trust_before_verification_summary">Automáticamente confiar en los nuevos dispositivos de tus contactos que no han sido verificados antes y solicita confirmación manual cada vez que un contacto verificado añade un dispositivo nuevo.</string>
+  <string name="pref_blind_trust_before_verification_summary">Automáticamente confiar en los nuevos dispositivos de tus contactos que no han sido verificados todavía, y solicitar confirmación manual cada vez que un contacto verificado añade un dispositivo nuevo.</string>
   <string name="blindly_trusted_omemo_keys">Huellas digitales OMEMO de confianza ciega</string>
   <string name="not_trusted">No confiables</string>
   <string name="invalid_barcode">Código QR inválido</string>

@@ -122,12 +122,14 @@
   <string name="pref_never_send_crash">Никад не шаљи извештаје о паду</string>
   <string name="pref_never_send_crash_summary">Слањем контратрага помажете текући развој Конверзације</string>
   <string name="pref_confirm_messages">Потврди поруке</string>
+  <string name="pref_confirm_messages_summary">Обзнаните контактима када примите и прочитате њихове поруке</string>
   <string name="pref_ui_options">Сучеље</string>
   <string name="openpgp_error">Отворени кључарник је пријавио грешку</string>
   <string name="error_decrypting_file">У/И грешка дешифровања фајла</string>
   <string name="accept">Прихвати</string>
   <string name="error">Десила се грешка</string>
   <string name="pref_grant_presence_updates">Дозволи ажурирања присутности</string>
+  <string name="pref_grant_presence_updates_summary">Унапред дозволи и питај за претплату на присутност за контакте које направите</string>
   <string name="subscriptions">Претплате</string>
   <string name="your_account">Ваш налог</string>
   <string name="keys">Кључеви</string>
@@ -378,6 +380,7 @@
   <string name="no_application_found_to_open_file">Нема апликације која може да отвори фајл</string>
   <string name="could_not_verify_fingerprint">Не могох да оверим отисак</string>
   <string name="manually_verify">Овери ручно</string>
+  <string name="are_you_sure_verify_fingerprint">Желите ли заиста да оверите ОТР отисак вашег контакта?</string>
   <string name="pref_show_dynamic_tags">Прикажи динамичке ознаке</string>
   <string name="pref_show_dynamic_tags_summary">Приказ ознака испод контаката</string>
   <string name="enable_notifications">Укључи обавештења</string>
@@ -470,6 +473,7 @@
   <string name="contact_is_typing">%s куца…</string>
   <string name="contact_has_stopped_typing">%s престаде да куца</string>
   <string name="pref_chat_states">Обавештења о куцању</string>
+  <string name="pref_chat_states_summary">Обзнаните контактима када им куцате поруке</string>
   <string name="send_location">Пошаљи локацију</string>
   <string name="show_location">Прикажи локацију</string>
   <string name="no_application_found_to_display_location">Нема апликације за приказ локације</string>
@@ -666,7 +670,12 @@
   <string name="this_device_has_been_verified">Овај уређај је оверен.</string>
   <string name="copy_fingerprint">Копирај отисак</string>
   <string name="all_omemo_keys_have_been_verified">Сви ОМЕМО кључеви су оверени</string>
+  <string name="barcode_does_not_contain_fingerprints_for_this_conversation">Бар-кôд не садржи отиске за ову преписку.</string>
+  <string name="verified_fingerprints">Оверени отисци</string>
+  <string name="use_camera_icon_to_scan_barcode">Користи камеру за очитавање контактова бар-кôда</string>
+  <string name="please_wait_for_keys_to_be_fetched">Сачекајте на добављање кључева</string>
   <string name="share_as_barcode">Подели као бар-кôд</string>
   <string name="share_as_uri">Подели као ИксМПП УРИ</string>
   <string name="share_as_http">Подели као ХТТП везу</string>
+  <string name="invalid_barcode">Неисправан 2Д бар-кôд</string>
 </resources>
