@@ -1,5 +1,10 @@
 ###Changelog
 
+####Version 1.15.1
+* support for POSH (RFC7711)
+* support for quoting messages (via select text)
+* verified messages show shield icon. unverified messages show lock
+
 ####Version 1.15.0
 * New [Blind Trust Before Verification](https://gultsch.de/trust.html) mode
 * Easily share Barcode and XMPP uri from Account details
