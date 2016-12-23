@@ -201,6 +201,9 @@ public class UIHelper {
 						char first = l.charAt(0);
 						if (first != '>' && first != '\u00bb') {
 							String line = l.trim();
+							if (line.isEmpty()) {
+								continue;
+							}
 							char last = line.charAt(line.length()-1);
 							if (builder.length() != 0) {
 								builder.append(' ');
