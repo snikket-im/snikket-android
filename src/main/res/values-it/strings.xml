@@ -311,7 +311,7 @@
   <string name="pref_use_send_button_to_indicate_status">Il pulsante di invio indica lo stato</string>
   <string name="pref_use_indicate_received">Richiedi la ricevuta di ritorno</string>
   <string name="pref_use_indicate_received_summary">I messaggi ricevuti verranno contrassegnati con una spunta verde se supportato</string>
-  <string name="pref_use_send_button_to_indicate_status_summary">Colora il pulsante di invio per indicare lo stato di un contatto</string>
+  <string name="pref_use_send_button_to_indicate_status_summary">Colora il pulsante di invio per indicare lo stato del contatto</string>
   <string name="pref_expert_options_other">Altro</string>
   <string name="pref_conference_name">Nome della conferenza</string>
   <string name="pref_conference_name_summary">Usa il soggetto della stanza al posto del JID per identificare le conferenze</string>
@@ -455,7 +455,7 @@
   <string name="pref_enter_is_send">Invio spedisce</string>
   <string name="pref_enter_is_send_summary">Il tasto invio spedisce il messaggio</string>
   <string name="pref_display_enter_key">Mostra il tasto invio</string>
-  <string name="pref_display_enter_key_summary">Cambia il tasto delle faccine nel tastodi invio</string>
+  <string name="pref_display_enter_key_summary">Cambia il tasto delle faccine nel tasto di invio</string>
   <string name="audio">audio</string>
   <string name="video">video</string>
   <string name="image">immagine</string>

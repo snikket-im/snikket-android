@@ -20,7 +20,7 @@
   <string name="title_activity_conference_details">Konferencia részletek</string>
   <string name="title_activity_contact_details">Kapcsolat részletek</string>
   <string name="title_activity_sharewith">Megosztás Conversation-nel</string>
-  <string name="title_activity_start_conversation">Beszélgetés kezdeményezése</string>
+  <string name="title_activity_start_conversation">Beszélgetésbe kezd</string>
   <string name="title_activity_choose_contact">Névjegy kiválasztása</string>
   <string name="title_activity_block_list">Tiltólista</string>
   <string name="just_now">Éppen most</string>

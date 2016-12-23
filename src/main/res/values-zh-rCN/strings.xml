@@ -129,6 +129,7 @@
   <string name="accept">接受</string>
   <string name="error">产生了一个错误</string>
   <string name="pref_grant_presence_updates">同意更新在线联系人</string>
+  <string name="pref_grant_presence_updates_summary">预先向您创建的联系人授予和请求状态订阅</string>
   <string name="subscriptions">关注</string>
   <string name="your_account">你的账号</string>
   <string name="keys">密钥</string>
@@ -675,5 +676,9 @@
   <string name="share_as_barcode">以条码的形式分享</string>
   <string name="share_as_uri">以 XMPP URI 的形式分享</string>
   <string name="share_as_http">以 HTTP 链接的形式分享</string>
+  <string name="pref_blind_trust_before_verification">验证前盲目信任</string>
+  <string name="pref_blind_trust_before_verification_summary">自动信任之前未经过验证的联系人的所有新设备，并在每次验证的联系人添加新设备时提示手动确认。</string>
+  <string name="blindly_trusted_omemo_keys">盲目信任的 OMEMO 密钥</string>
+  <string name="not_trusted">不可信的</string>
   <string name="invalid_barcode">非法的二维码</string>
 </resources>
