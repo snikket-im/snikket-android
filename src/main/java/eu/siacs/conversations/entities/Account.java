@@ -632,6 +632,9 @@ public class Account extends AbstractEntity {
 		if (otr != null) {
 			fingerprints.add(new XmppUri.Fingerprint(XmppUri.FingerprintType.OTR,otr));
 		}
+		if (axolotlService == null) {
+			return fingerprints;
+		}
 		fingerprints.add(new XmppUri.Fingerprint(XmppUri.FingerprintType.OMEMO,axolotlService.getOwnFingerprint().substring(2),axolotlService.getOwnDeviceId()));
 		for(XmppAxolotlSession session : axolotlService.findOwnSessions()) {
 			if (session.getTrust().isVerified() && session.getTrust().isActive()) {
