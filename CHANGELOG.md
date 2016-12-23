@@ -1,5 +1,8 @@
 ###Changelog
 
+####Version 1.15.2
+* bug fixes
+
 ####Version 1.15.1
 * support for POSH (RFC7711)
 * support for quoting messages (via select text)
