@@ -411,15 +411,18 @@ public class Message extends AbstractEntity {
 				body = this.body;
 				otherBody = message.body;
 			}
+			final boolean matchingCounterpart = this.counterpart.equals(message.getCounterpart());
 			if (message.getRemoteMsgId() != null) {
+				final boolean hasUuid = CryptoHelper.UUID_PATTERN.matcher(message.getRemoteMsgId()).matches();
+				if (hasUuid && this.edited != null && matchingCounterpart && this.edited.equals(message.getRemoteMsgId())) {
+					return true;
+				}
 				return (message.getRemoteMsgId().equals(this.remoteMsgId) || message.getRemoteMsgId().equals(this.uuid))
-						&& this.counterpart.equals(message.getCounterpart())
-						&& (body.equals(otherBody)
-						||(message.getEncryption() == Message.ENCRYPTION_PGP
-						&& CryptoHelper.UUID_PATTERN.matcher(message.getRemoteMsgId()).matches()));
+						&& matchingCounterpart
+						&& (body.equals(otherBody) ||(message.getEncryption() == Message.ENCRYPTION_PGP && hasUuid));
 			} else {
 				return this.remoteMsgId == null
-						&& this.counterpart.equals(message.getCounterpart())
+						&& matchingCounterpart
 						&& body.equals(otherBody)
 						&& Math.abs(this.getTimeSent() - message.getTimeSent()) < Config.MESSAGE_MERGE_WINDOW * 1000;
 			}
