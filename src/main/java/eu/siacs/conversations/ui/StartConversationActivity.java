@@ -846,12 +846,13 @@ public class StartConversationActivity extends XmppActivity implements OnRosterU
 
     private boolean handleJid(Invite invite) {
         Account account = xmppConnectionService.findAccountByJid(invite.getJid());
-        if (account != null && !account.isOptionSet(Account.OPTION_DISABLED) && invite.hasFingerprints()) {
-            if (xmppConnectionService.verifyFingerprints(account,invite.getFingerprints())) {
-                switchToAccount(account);
-                finish();
-                return true;
+        if (account != null && !account.isOptionSet(Account.OPTION_DISABLED)) {
+            if (invite.hasFingerprints() && xmppConnectionService.verifyFingerprints(account,invite.getFingerprints())) {
+                Toast.makeText(this,R.string.verified_fingerprints,Toast.LENGTH_SHORT).show();
             }
+            switchToAccount(account);
+            finish();
+            return true;
         }
         List<Contact> contacts = xmppConnectionService.findContacts(invite.getJid());
         if (invite.isMuc()) {
@@ -872,7 +873,9 @@ public class StartConversationActivity extends XmppActivity implements OnRosterU
                 displayVerificationWarningDialog(contact,invite);
             } else {
                 if (invite.hasFingerprints()) {
-                    xmppConnectionService.verifyFingerprints(contact, invite.getFingerprints());
+                    if(xmppConnectionService.verifyFingerprints(contact, invite.getFingerprints())) {
+                        Toast.makeText(this,R.string.verified_fingerprints,Toast.LENGTH_SHORT).show();
+                    }
                 }
                 switchToConversation(contact, invite.getBody());
             }
