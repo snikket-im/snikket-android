@@ -109,7 +109,6 @@
         </RelativeLayout>
 
         <LinearLayout
-            android:id="@+id/details_contact_keys"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/activity_horizontal_margin"
@@ -117,10 +116,30 @@
             android:layout_marginTop="@dimen/activity_vertical_margin"
             android:layout_marginBottom="@dimen/activity_vertical_margin"
             android:background="?attr/infocard_border"
-            android:divider="?android:dividerHorizontal"
             android:orientation="vertical"
-            android:padding="@dimen/infocard_padding"
-            android:showDividers="middle" >
+            android:padding="@dimen/infocard_padding">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+                <LinearLayout
+                    android:id="@+id/details_contact_keys"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:divider="?android:dividerHorizontal"
+                    android:orientation="vertical"
+                    android:showDividers="middle" >
+                </LinearLayout>
+                <Button
+                    android:layout_marginTop="8dp"
+                    android:id="@+id/show_inactive_devices"
+                    style="?android:attr/borderlessButtonStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/show_inactive_devices"
+                    android:layout_gravity="center_horizontal"
+                    android:textColor="@color/accent"/>
+            </LinearLayout>
         </LinearLayout>
     </LinearLayout>
 
