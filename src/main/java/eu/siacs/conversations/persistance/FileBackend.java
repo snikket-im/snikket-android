@@ -55,6 +55,7 @@ import eu.siacs.conversations.utils.CryptoHelper;
 import eu.siacs.conversations.utils.ExifHelper;
 import eu.siacs.conversations.utils.FileUtils;
 import eu.siacs.conversations.utils.FileWriterException;
+import eu.siacs.conversations.utils.MimeUtils;
 import eu.siacs.conversations.xmpp.pep.Avatar;
 
 public class FileBackend {
@@ -276,7 +277,7 @@ public class FileBackend {
 	}
 
 	public void copyFileToPrivateStorage(Message message, Uri uri) throws FileCopyException {
-		String mime = mXmppConnectionService.getContentResolver().getType(uri);
+		String mime = MimeUtils.guessMimeTypeFromUri(mXmppConnectionService, uri);
 		Log.d(Config.LOGTAG, "copy " + uri.toString() + " to private storage (mime="+mime+")");
 		String extension = MimeTypeMap.getSingleton().getExtensionFromMimeType(mime);
 		if (extension == null) {

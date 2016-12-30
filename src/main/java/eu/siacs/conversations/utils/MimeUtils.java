@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 package eu.siacs.conversations.utils;
+import android.content.Context;
+import android.net.Uri;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -483,5 +486,23 @@ public final class MimeUtils {
             return null;
         }
         return mimeTypeToExtensionMap.get(mimeType);
+    }
+
+    public static String guessMimeTypeFromUri(Context context, Uri uri) {
+        // try the content resolver
+        String mimeType = context.getContentResolver().getType(uri);
+        // try the extension
+        if (mimeType == null && uri.getPath() != null) {
+            String path = uri.getPath();
+            int start = path.lastIndexOf('.') + 1;
+            if (start < path.length()) {
+                mimeType = MimeUtils.guessMimeTypeFromExtension(path.substring(start));
+            }
+        }
+        // sometimes this works (as with the commit content api)
+        if (mimeType == null) {
+            mimeType = uri.getQueryParameter("mimeType");
+        }
+        return mimeType;
     }
 }
