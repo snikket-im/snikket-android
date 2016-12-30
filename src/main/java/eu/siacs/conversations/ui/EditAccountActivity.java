@@ -99,7 +99,6 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
 	private RelativeLayout mAxolotlFingerprintBox;
 	private ImageButton mOtrFingerprintToClipboardButton;
 	private ImageButton mAxolotlFingerprintToClipboardButton;
-	private ImageButton mRegenerateAxolotlKeyButton;
 	private LinearLayout keys;
 	private LinearLayout keysCard;
 	private LinearLayout mNamePort;
@@ -510,7 +509,6 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
 		this.mAxolotlFingerprint = (TextView) findViewById(R.id.axolotl_fingerprint);
 		this.mAxolotlFingerprintBox = (RelativeLayout) findViewById(R.id.axolotl_fingerprint_box);
 		this.mAxolotlFingerprintToClipboardButton = (ImageButton) findViewById(R.id.action_copy_axolotl_to_clipboard);
-		this.mRegenerateAxolotlKeyButton = (ImageButton) findViewById(R.id.action_regenerate_axolotl_key);
 		this.mOwnFingerprintDesc = (TextView) findViewById(R.id.own_fingerprint_desc);
 		this.keysCard = (LinearLayout) findViewById(R.id.other_device_keys_card);
 		this.keys = (LinearLayout) findViewById(R.id.other_device_keys);
@@ -939,18 +937,6 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
 								copyOmemoFingerprint(ownAxolotlFingerprint);
 							}
 						});
-				if (Config.SHOW_REGENERATE_AXOLOTL_KEYS_BUTTON) {
-					this.mRegenerateAxolotlKeyButton
-							.setVisibility(View.VISIBLE);
-					this.mRegenerateAxolotlKeyButton
-							.setOnClickListener(new View.OnClickListener() {
-
-								@Override
-								public void onClick(final View v) {
-									showRegenerateAxolotlKeyDialog();
-								}
-							});
-				}
 			} else {
 				this.mAxolotlFingerprintBox.setVisibility(View.GONE);
 			}
@@ -1036,22 +1022,6 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
 				}
 			});
 		}
-	}
-
-	public void showRegenerateAxolotlKeyDialog() {
-		Builder builder = new Builder(this);
-		builder.setTitle("Regenerate Key");
-		builder.setIconAttribute(android.R.attr.alertDialogIcon);
-		builder.setMessage("Are you sure you want to regenerate your Identity Key? (This will also wipe all established sessions and contact Identity Keys)");
-		builder.setNegativeButton(getString(R.string.cancel), null);
-		builder.setPositiveButton("Yes",
-				new DialogInterface.OnClickListener() {
-					@Override
-					public void onClick(DialogInterface dialog, int which) {
-						mAccount.getAxolotlService().regenerateKeys(false);
-					}
-				});
-		builder.create().show();
 	}
 
 	public void showWipePepDialog() {
