@@ -874,7 +874,10 @@ public class XmppConnectionService extends Service {
 		this.databaseBackend = DatabaseBackend.getInstance(getApplicationContext());
 		this.accounts = databaseBackend.getAccounts();
 
-		if (!keepForegroundService() && databaseBackend.startTimeCountExceedsThreshold()) {
+		if (Config.FREQUENT_RESTARTS_THRESHOLD != 0
+				&& Config.FREQUENT_RESTARTS_DETECTION_WINDOW != 0
+				&& !keepForegroundService()
+				&& databaseBackend.startTimeCountExceedsThreshold()) {
 			getPreferences().edit().putBoolean(SettingsActivity.KEEP_FOREGROUND_SERVICE,true).commit();
 			Log.d(Config.LOGTAG,"number of restarts exceeds threshold. enabling foreground service");
 		}
