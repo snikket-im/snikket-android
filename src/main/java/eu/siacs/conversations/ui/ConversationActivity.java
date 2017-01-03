@@ -1560,6 +1560,10 @@ public class ConversationActivity extends XmppActivity
 		});
 	}
 
+	public void attachImageToConversation(Uri uri) {
+		this.attachImageToConversation(getSelectedConversation(), uri);
+	}
+
 	private void attachImageToConversation(Conversation conversation, Uri uri) {
 		if (conversation == null) {
 			return;
