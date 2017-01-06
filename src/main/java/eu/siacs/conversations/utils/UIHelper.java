@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 
 import eu.siacs.conversations.Config;
@@ -29,9 +30,9 @@ public class UIHelper {
 	private static String HEAVY_BLACK_HEART_SUIT = "\u2764";
 	private static String WHITE_HEART_SUIT = "\u2661";
 
-	public static final ArrayList<String> HEARTS = new ArrayList<>(Arrays.asList(BLACK_HEART_SUIT,HEAVY_BLACK_HEART_SUIT,WHITE_HEART_SUIT));
+	public static final List<String> HEARTS = Arrays.asList(BLACK_HEART_SUIT,HEAVY_BLACK_HEART_SUIT,WHITE_HEART_SUIT);
 
-	private static final ArrayList<String> LOCATION_QUESTIONS = new ArrayList<>(Arrays.asList(
+	private static final List<String> LOCATION_QUESTIONS = Arrays.asList(
 			"where are you", //en
 			"where are you now", //en
 			"where are you right now", //en
@@ -49,7 +50,9 @@ public class UIHelper {
 			"wo seid ihr gerade", //de
 			"dónde estás", //es
 			"donde estas" //es
-		));
+		);
+
+	private static final List<Character> PUNCTIONATION = Arrays.asList('.',',','?','!',';',':');
 
 	private static final int SHORT_DATE_FLAGS = DateUtils.FORMAT_SHOW_DATE
 		| DateUtils.FORMAT_NO_YEAR | DateUtils.FORMAT_ABBREV_ALL;
@@ -209,7 +212,7 @@ public class UIHelper {
 								builder.append(' ');
 							}
 							builder.append(line);
-							if (last != '.' && last != '!' && last != '?' && last != ',') {
+							if (!PUNCTIONATION.contains(last)) {
 								break;
 							}
 						}
