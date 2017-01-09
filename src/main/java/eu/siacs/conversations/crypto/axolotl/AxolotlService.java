@@ -1007,14 +1007,11 @@ public class AxolotlService implements OnAdvancedStreamFeaturesLoaded {
 	}
 
 	@Nullable
-	private XmppAxolotlMessage buildHeader(Conversation conversation) {
-		final XmppAxolotlMessage axolotlMessage = new XmppAxolotlMessage(
-				account.getJid().toBareJid(), getOwnDeviceId());
-
+	private boolean buildHeader(XmppAxolotlMessage axolotlMessage, Conversation conversation) {
 		Set<XmppAxolotlSession> remoteSessions = findSessionsForConversation(conversation);
 		Collection<XmppAxolotlSession> ownSessions = findOwnSessions();
 		if (remoteSessions.isEmpty()) {
-			return null;
+			return false;
 		}
 		for (XmppAxolotlSession session : remoteSessions) {
 			axolotlMessage.addDevice(session);
@@ -1023,26 +1020,26 @@ public class AxolotlService implements OnAdvancedStreamFeaturesLoaded {
 			axolotlMessage.addDevice(session);
 		}
 
-		return axolotlMessage;
+		return true;
 	}
 
 	@Nullable
 	public XmppAxolotlMessage encrypt(Message message) {
-		XmppAxolotlMessage axolotlMessage = buildHeader(message.getConversation());
-
-		if (axolotlMessage != null) {
-			final String content;
-			if (message.hasFileOnRemoteHost()) {
-				content = message.getFileParams().url.toString();
-			} else {
-				content = message.getBody();
-			}
-			try {
-				axolotlMessage.encrypt(content);
-			} catch (CryptoFailedException e) {
-				Log.w(Config.LOGTAG, getLogprefix(account) + "Failed to encrypt message: " + e.getMessage());
-				return null;
-			}
+		final XmppAxolotlMessage axolotlMessage = new XmppAxolotlMessage(account.getJid().toBareJid(), getOwnDeviceId());
+		final String content;
+		if (message.hasFileOnRemoteHost()) {
+			content = message.getFileParams().url.toString();
+		} else {
+			content = message.getBody();
+		}
+		try {
+			axolotlMessage.encrypt(content);
+		} catch (CryptoFailedException e) {
+			Log.w(Config.LOGTAG, getLogprefix(account) + "Failed to encrypt message: " + e.getMessage());
+			return null;
+		}
+		if (!buildHeader(axolotlMessage,message.getConversation())) {
+			return null;
 		}
 
 		return axolotlMessage;
@@ -1069,8 +1066,12 @@ public class AxolotlService implements OnAdvancedStreamFeaturesLoaded {
 		executor.execute(new Runnable() {
 			@Override
 			public void run() {
-				XmppAxolotlMessage axolotlMessage = buildHeader(conversation);
-				onMessageCreatedCallback.run(axolotlMessage);
+				final XmppAxolotlMessage axolotlMessage = new XmppAxolotlMessage(account.getJid().toBareJid(), getOwnDeviceId());
+				if (buildHeader(axolotlMessage,conversation)) {
+					onMessageCreatedCallback.run(axolotlMessage);
+				} else {
+					onMessageCreatedCallback.run(null);
+				}
 			}
 		});
 	}
