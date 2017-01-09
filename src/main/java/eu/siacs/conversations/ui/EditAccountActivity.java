@@ -907,7 +907,7 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
 							@Override
 							public void onClick(final View v) {
 
-								if (copyTextToClipboard(otrFingerprint, R.string.otr_fingerprint)) {
+								if (copyTextToClipboard(CryptoHelper.prettifyFingerprint(otrFingerprint), R.string.otr_fingerprint)) {
 									Toast.makeText(
 											EditAccountActivity.this,
 											R.string.toast_message_otr_fingerprint,
