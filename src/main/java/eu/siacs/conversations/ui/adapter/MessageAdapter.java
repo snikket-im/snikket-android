@@ -23,7 +23,6 @@ import android.text.style.RelativeSizeSpan;
 import android.text.style.StyleSpan;
 import android.text.util.Linkify;
 import android.util.DisplayMetrics;
-import android.util.Patterns;
 import android.view.ActionMode;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -41,7 +40,9 @@ import android.widget.Toast;
 import java.lang.ref.WeakReference;
 import java.net.URL;
 import java.util.List;
+import java.util.Locale;
 import java.util.concurrent.RejectedExecutionException;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import eu.siacs.conversations.Config;
@@ -63,6 +64,7 @@ import eu.siacs.conversations.ui.widget.CopyTextView;
 import eu.siacs.conversations.ui.widget.ListSelectionManager;
 import eu.siacs.conversations.utils.CryptoHelper;
 import eu.siacs.conversations.utils.GeoHelper;
+import eu.siacs.conversations.utils.Patterns;
 import eu.siacs.conversations.utils.UIHelper;
 
 public class MessageAdapter extends ArrayAdapter<Message> implements CopyTextView.CopyHandler {
@@ -75,6 +77,21 @@ public class MessageAdapter extends ArrayAdapter<Message> implements CopyTextVie
 					+ Patterns.GOOD_IRI_CHAR
 					+ "\\;\\/\\?\\@\\&\\=\\#\\~\\-\\.\\+\\!\\*\\'\\(\\)\\,\\_])"
 					+ "|(?:\\%[a-fA-F0-9]{2}))+");
+
+	private static final Linkify.TransformFilter WEBURL_TRANSOFRM_FILTER = new Linkify.TransformFilter() {
+		@Override
+		public String transformUrl(Matcher matcher, String url) {
+			if (url == null) {
+				return null;
+			}
+			final String lcUrl = url.toLowerCase(Locale.US);
+			if (lcUrl.startsWith("http://") || lcUrl.startsWith("https://")) {
+				return url;
+			} else {
+				return "http://"+url;
+			}
+		}
+	};
 
 	private ConversationActivity activity;
 
@@ -429,7 +446,7 @@ public class MessageAdapter extends ArrayAdapter<Message> implements CopyTextVie
 							privateMarkerIndex + 1 + nick.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 				}
 			}
-			Linkify.addLinks(body, Linkify.WEB_URLS);
+			Linkify.addLinks(body, Patterns.AUTOLINK_WEB_URL, "http", null, WEBURL_TRANSOFRM_FILTER);
 			Linkify.addLinks(body, XMPP_PATTERN, "xmpp");
 			Linkify.addLinks(body, GeoHelper.GEO_URI, "geo");
 			viewHolder.messageBody.setAutoLinkMask(0);
