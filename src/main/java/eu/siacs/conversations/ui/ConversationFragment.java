@@ -9,6 +9,8 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentSender.SendIntentException;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v13.view.inputmethod.InputConnectionCompat;
@@ -58,6 +60,7 @@ import eu.siacs.conversations.entities.Presence;
 import eu.siacs.conversations.entities.Transferable;
 import eu.siacs.conversations.entities.TransferablePlaceholder;
 import eu.siacs.conversations.http.HttpDownloadConnection;
+import eu.siacs.conversations.persistance.FileBackend;
 import eu.siacs.conversations.services.MessageArchiveService;
 import eu.siacs.conversations.services.XmppConnectionService;
 import eu.siacs.conversations.ui.XmppActivity.OnPresenceSelected;
@@ -718,8 +721,13 @@ public class ConversationFragment extends Fragment implements EditMessage.Keyboa
 			shareIntent.putExtra(Intent.EXTRA_TEXT, message.getBody());
 			shareIntent.setType("text/plain");
 		} else {
-			shareIntent.putExtra(Intent.EXTRA_STREAM,
-					activity.xmppConnectionService.getFileBackend().getJingleFileUri(message));
+			final DownloadableFile file = activity.xmppConnectionService.getFileBackend().getFile(message);
+			try {
+				shareIntent.putExtra(Intent.EXTRA_STREAM, FileBackend.getUriForFile(activity, file));
+			} catch (SecurityException e) {
+				Toast.makeText(activity, activity.getString(R.string.no_permission_to_access_x, file.getAbsolutePath()), Toast.LENGTH_SHORT).show();
+				return;
+			}
 			shareIntent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
 			String mime = message.getMimeType();
 			if (mime == null) {

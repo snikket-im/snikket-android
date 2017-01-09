@@ -10,7 +10,6 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Matrix;
 import android.graphics.Paint;
-import android.graphics.Rect;
 import android.graphics.RectF;
 import android.media.MediaMetadataRetriever;
 import android.net.Uri;
@@ -491,16 +490,24 @@ public class FileBackend {
 			file = new File(getTakePhotoPath() + "IMG_" + this.IMAGE_DATE_FORMAT.format(new Date()) + ".jpg");
 		}
 		file.getParentFile().mkdirs();
-		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N || Config.ONLY_INTERNAL_STORAGE) {
-			return getUriForFile(mXmppConnectionService,file);
-		} else {
-			return Uri.fromFile(file);
-		}
+		return getUriForFile(mXmppConnectionService,file);
 	}
 
 	public static Uri getUriForFile(Context context, File file) {
-		String packageId = context.getPackageName();
-		return FileProvider.getUriForFile(context, packageId + FILE_PROVIDER, file);
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N || Config.ONLY_INTERNAL_STORAGE) {
+			try {
+				String packageId = context.getPackageName();
+				return FileProvider.getUriForFile(context, packageId + FILE_PROVIDER, file);
+			} catch(IllegalArgumentException e) {
+				if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+					throw new SecurityException();
+				} else {
+					return Uri.fromFile(file);
+				}
+			}
+		} else {
+			return Uri.fromFile(file);
+		}
 	}
 
 	public static Uri getIndexableTakePhotoUri(Uri original) {
@@ -747,10 +754,6 @@ public class FileBackend {
 			}
 		}
 		return inSampleSize;
-	}
-
-	public Uri getJingleFileUri(Message message) {
-		return getUriForFile(mXmppConnectionService,getFile(message));
 	}
 
 	public void updateFileParams(Message message) {

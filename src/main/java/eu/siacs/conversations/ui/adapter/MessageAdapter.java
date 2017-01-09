@@ -865,27 +865,18 @@ public class MessageAdapter extends ArrayAdapter<Message> implements CopyTextVie
 			mime = "*/*";
 		}
 		Uri uri;
-		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N || Config.ONLY_INTERNAL_STORAGE) {
-			try {
-				uri = FileBackend.getUriForFile(activity, file);
-			} catch (IllegalArgumentException e) {
-				if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-					Toast.makeText(activity, activity.getString(R.string.no_permission_to_access_x, file.getAbsolutePath()), Toast.LENGTH_SHORT).show();
-					return;
-				} else {
-					uri = Uri.fromFile(file);
-				}
-			}
-			openIntent.setDataAndType(uri, mime);
-			openIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-		} else {
-			uri = Uri.fromFile(file);
+		try {
+			uri = FileBackend.getUriForFile(activity, file);
+		} catch (SecurityException e) {
+			Toast.makeText(activity, activity.getString(R.string.no_permission_to_access_x, file.getAbsolutePath()), Toast.LENGTH_SHORT).show();
+			return;
 		}
 		openIntent.setDataAndType(uri, mime);
+		openIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
 		PackageManager manager = activity.getPackageManager();
 		List<ResolveInfo> info = manager.queryIntentActivities(openIntent, 0);
 		if (info.size() == 0) {
-			openIntent.setDataAndType(Uri.fromFile(file),"*/*");
+			openIntent.setDataAndType(uri,"*/*");
 		}
 		try {
 			getContext().startActivity(openIntent);
