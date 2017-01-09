@@ -76,7 +76,9 @@
   <string name="clear_histor_msg">Ønsker du å slette alle meldinger i denne samtalen?\n\n<b>Advarsel:</b> Dette har ingen innvirkning på meldinger lagret på andre enheter eller tjenere.</string>
   <string name="delete_messages">Slett meldinger</string>
   <string name="also_end_conversation">Avslutt denne samtalen etterpå</string>
+  <string name="choose_presence">Velg enhet</string>
   <string name="send_unencrypted_message">Send ukryptert melding</string>
+  <string name="send_message_to_x">Send melding til %s</string>
   <string name="send_otr_message">Send OTR-kryptert melding</string>
   <string name="send_omemo_message">Send OMEMO-kryptert melding</string>
   <string name="send_omemo_x509_message">Send \\OMEMO-kryptert melding</string>
@@ -100,9 +102,12 @@
   <string name="pref_xmpp_resource_summary">Navnet denne klienten identifiserer seg med</string>
   <string name="pref_accept_files">Godta filer</string>
   <string name="pref_accept_files_summary">Automatisk godkjenning av filer mindre enn...</string>
+  <string name="pref_attachments">Vedlegg</string>
   <string name="pref_notifications">Varslinger</string>
   <string name="pref_notifications_summary">Varsle når en ny melding ankommer</string>
   <string name="pref_vibrate">Vibrer</string>
+  <string name="pref_sound">Ringetone</string>
+  <string name="pref_advanced_options">Avansert</string>
   <string name="pref_never_send_crash">Aldri send feilrettingsrapporter</string>
   <string name="pref_never_send_crash_summary">Ved å sende inn stabelsporinger hjelper du den pågående utviklingen av Conversations</string>
   <string name="pref_confirm_messages">Bekreft meldinger</string>
@@ -292,6 +297,7 @@
   <string name="check_x_filesize">Sjekk %s størrelse</string>
   <string name="message_options">Meldingsvalg</string>
   <string name="copy_text">Kopier tekst</string>
+  <string name="select_text">Velg tekst</string>
   <string name="copy_original_url">Kopier orginal nettadresse</string>
   <string name="send_again">Send igjen</string>
   <string name="file_url">Filens nettadresse</string>

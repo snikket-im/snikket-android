@@ -153,6 +153,7 @@
   <string name="account_status_regis_not_sup">서버가 등록을 지원하지 않습니다</string>
   <string name="account_status_security_error">보안 오류 </string>
   <string name="account_status_incompatible_server">호환되지 않는 서버 </string>
+  <string name="account_status_stream_error">스트림 오류</string>
   <string name="encryption_choice_unencrypted">암호화되지 않음</string>
   <string name="encryption_choice_otr">OTR</string>
   <string name="encryption_choice_pgp">OpenPGP </string>
@@ -210,6 +211,7 @@
   <string name="reception_failed">접수 실패 </string>
   <string name="your_fingerprint">당신의 핑거프린트</string>
   <string name="otr_fingerprint">OTR 핑거프린트</string>
+  <string name="openpgp_key_id">OpenPGP 키ID</string>
   <string name="omemo_fingerprint">OMEMO 핑거프린트</string>
   <string name="omemo_fingerprint_x509">v\\OMEMO 핑거프린트</string>
   <string name="omemo_fingerprint_selected_message">메세지의 OMEMO 핑거프린트</string>
@@ -274,10 +276,12 @@
   <string name="sure_delete_fingerprint">이 핑거프린트를 삭제하시겠습니까? </string>
   <string name="ignore">무시 </string>
   <string name="without_mutual_presence_updates">경고: 상호간의 프레즌스 업데이트 없이 이것을 보내면 예기치 못한 문제를 발생시킬 수 있습니다. 당신의 프레즌스 구독을 검증하기 위해 연락처 상세 정보로 가세요. </string>
+  <string name="pref_security_settings">보안</string>
   <string name="pref_force_encryption">강제적인 종단간 암호화</string>
   <string name="pref_force_encryption_summary">언제나 암호화 메세지로 전송 (회의 제외) </string>
   <string name="pref_dont_save_encrypted">암호화된 메세지 저장하지 않음 </string>
   <string name="pref_dont_save_encrypted_summary">경고: 메세지가 손실될 수 있습니다 </string>
+  <string name="pref_expert_options">전문가 설정</string>
   <string name="pref_expert_options_summary">설정시 주의하시기 바랍니다</string>
   <string name="title_activity_about">Conversations에 대해서 </string>
   <string name="pref_about_conversations_summary">빌드 및 라이센스 정보 </string>
@@ -306,6 +310,7 @@
   <string name="check_x_filesize">%s 크기 확인</string>
   <string name="message_options">메세지 설정 </string>
   <string name="copy_text">텍스트 복사 </string>
+  <string name="select_text">텍스트를 선택</string>
   <string name="copy_original_url">원본 URL 복사 </string>
   <string name="send_again">다시 보내기 </string>
   <string name="file_url">파일 URL</string>
@@ -338,6 +343,7 @@
   <string name="choose_file">파일 선택 </string>
   <string name="receiving_x_file">수신중 %1$s (%2$d%% 완료) </string>
   <string name="download_x_file">%s 다운로드 </string>
+  <string name="delete_x_file">%s 삭제</string>
   <string name="file">파일 </string>
   <string name="open_x_file">%s 열기 </string>
   <string name="sending_file">전송중 (%1$d%% 완료) </string>
@@ -349,6 +355,7 @@
   <string name="no_application_found_to_open_file">파일을 열기 위한 앱이 발견되지 않았습니다 </string>
   <string name="could_not_verify_fingerprint">핑거프린트를 검증할 수 없습니다 </string>
   <string name="manually_verify">수동 검증 </string>
+  <string name="are_you_sure_verify_fingerprint">정말로 주소록의 OTR 핑거프린트를 확인하시겠습니까?</string>
   <string name="pref_show_dynamic_tags">동적 태그 표시 </string>
   <string name="pref_show_dynamic_tags_summary">연락처 밑에 읽기 전용 태그 표시 </string>
   <string name="enable_notifications">알림 사용 </string>
@@ -390,6 +397,7 @@
   <string name="disable_all_accounts">모든 계정 해제 </string>
   <string name="perform_action_with">다음으로 동작을 수행 </string>
   <string name="no_affiliation">관련 없음 </string>
+  <string name="no_role">오프라인</string>
   <string name="outcast">추방됨 </string>
   <string name="member">멤버 </string>
   <string name="advanced_mode">고급 모드 </string>
@@ -482,6 +490,7 @@
   <string name="pref_away_when_screen_off_summary">화면이 꺼져있을 경우에 자리 비움으로 상태를 표시함</string>
   <string name="pref_xa_on_silent_mode">음소거 모드에서는 사용할 수 없음</string>
   <string name="pref_xa_on_silent_mode_summary">기기가 음소거 모드일때는 사용할 수 없음으로 상태를 표시함</string>
+  <string name="hostname_example">xmpp.example.com</string>
   <string name="action_add_account_with_certificate">인증서가 있는 계정 추가</string>
   <string name="unable_to_parse_certificate">인증서를 분석할 수 없음</string>
   <string name="captcha_required">Captcha가 필요함</string>
@@ -491,6 +500,7 @@
   <string name="error_fetching_omemo_key">OMEMO key를 가져오는 도중 오류가 발생했습니다</string>
   <string name="verified_omemo_key_with_certificate">OMEMO 키와 인증서 검증됨</string>
   <string name="device_does_not_support_certificates">기기가 선택된 클라이언트 인증서를 지원하지 않습니다</string>
+  <string name="pref_connection_options">연결</string>
   <string name="pref_use_tor">Tor를 통해 접속</string>
   <string name="pref_use_tor_summary">모든 연결을 Tor 네트워크를 통하도록 유도함. Orbot이 필요합니다</string>
   <string name="account_settings_hostname">호스트 이름</string>
@@ -502,6 +512,7 @@
   <plurals name="x_messages">
     <item quantity="other">%d 메세지</item>
   </plurals>
+  <string name="load_more_messages">메세지 더 불러오기</string>
   <string name="shared_file_with_x">파일을 %s와 공유함</string>
   <string name="shared_image_with_x">이미지를 %s와 공유함</string>
   <string name="no_storage_permission">Conversations는 외부 저장소로의 접근을 필요로 합니다</string>
@@ -512,6 +523,7 @@
   <string name="certificate_issuer">발행자</string>
   <string name="certificate_cn">이름</string>
   <string name="certificate_o">단체</string>
+  <string name="certificate_sha1">SHA-1</string>
   <string name="certicate_info_not_available">(사용할 수 없음)</string>
   <string name="certificate_not_found">인증서가 발견되지 않았습니다</string>
   <string name="notify_on_all_messages">모든 메세지를 알림</string>
@@ -526,4 +538,45 @@
   <string name="battery_optimizations_enabled_dialog">당신의 기기는 메세지를 받지 못하게 되거나 알림을 지연시킬 수도 있는 고강도의 배터리 최적화를 Conversations에 하고 있습니다.\n이것을 해제할 것인지 물어볼 것입니다.</string>
   <string name="disable">해제</string>
   <string name="selection_too_large">선택된 영역이 너무 큽니다</string>
+  <string name="correct_message">메세지 정정</string>
+  <string name="send_corrected_message">정정한 메세지 전송</string>
+  <string name="select_image_and_crop">이미지 선택 후 자르기</string>
+  <string name="your_full_jid_will_be">나의 전체 Jabber ID: %s</string>
+  <string name="create_account">계정 생성</string>
+  <string name="use_own_provider">다른 서버 이용</string>
+  <string name="pick_your_username">유저네임을 고르세요</string>
+  <string name="status_message">상태 메세지</string>
+  <string name="presence_chat">대화 가능 </string>
+  <string name="presence_online">접속중 </string>
+  <string name="presence_away">자리 비움 </string>
+  <string name="presence_xa">사용할 수 없음</string>
+  <string name="presence_dnd">바쁨</string>
+  <string name="secure_password_generated">안전한 비밀번호가 생성되었습니다</string>
+  <string name="show_password">패스워드 보이기</string>
+  <string name="create_conference">회의 개설</string>
+  <string name="join_or_create_conference">회의에 참여하거나 하나를 개설하세요</string>
+  <string name="type_pc">컴퓨터</string>
+  <string name="type_phone">휴대폰</string>
+  <string name="type_tablet">태블릿</string>
+  <string name="type_web">웹 브라우저</string>
+  <string name="type_console">콘솔</string>
+  <string name="payment_required">지불 필요</string>
+  <string name="missing_internet_permission">인터넷 권한이 없음</string>
+  <string name="me">나</string>
+  <string name="allow">허가</string>
+  <string name="no_permission_to_access_x">%s에 접근할 권한이 없음</string>
+  <string name="remote_server_not_found">원격 서버 찾을 수 없음</string>
+  <string name="unable_to_update_account">계정을 업데이트 할수없음</string>
+  <string name="error_publish_avatar_offline">아바타를 게시하려면 연결된 상태여야 합니다.</string>
+  <string name="show_error_message">에러 메세지 보이기</string>
+  <string name="error_message">에러 메세지</string>
+  <string name="data_saver_enabled">데이터 서버 활성화됨</string>
+  <string name="this_device_has_been_verified">해당 장치가 인증되었습니다</string>
+  <string name="copy_fingerprint">핑거프린트 복사</string>
+  <string name="verified_fingerprints">인증된 핑거프린트</string>
+  <string name="share_as_barcode">바코드로 공유</string>
+  <string name="share_as_uri">XMPP URI로 공유</string>
+  <string name="share_as_http">HTTP 링크로 공유</string>
+  <string name="not_trusted">신뢰되지 않음</string>
+  <string name="invalid_barcode">잘못된 2D 바코드</string>
 </resources>

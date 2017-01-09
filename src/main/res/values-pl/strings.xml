@@ -121,6 +121,7 @@
   <string name="pref_never_send_crash">Nie wysyłaj raportów awarii</string>
   <string name="pref_never_send_crash_summary">Wysyłając ślady stosu pomagasz rozwijać Conversations</string>
   <string name="pref_confirm_messages">Potwierdzenia wiadomości</string>
+  <string name="pref_confirm_messages_summary">Zezwól na wysyłanie do osób z twojej listy kontaktów informacji o tym, kiedy otrzymałeś i przeczytałeś wiadomość od nich</string>
   <string name="pref_ui_options">UI</string>
   <string name="openpgp_error">Wystąpił błąd OpenKeychain</string>
   <string name="error_decrypting_file">Błąd podczas deszyfrowania pliku</string>

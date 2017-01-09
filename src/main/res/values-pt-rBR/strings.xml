@@ -677,6 +677,9 @@
   <string name="share_as_barcode">Compartilhar como código de barras</string>
   <string name="share_as_uri">Compartilhar como uma URI XMPP</string>
   <string name="share_as_http">Compartilhar como um link HTTP</string>
+  <string name="pref_blind_trust_before_verification">Confiar cegamente antes de verificar</string>
+  <string name="pref_blind_trust_before_verification_summary">Confiar automaticamente em todos os novos dispositivos de contatos que ainda não foram verificados e solicitar confirmação manual a cada vez que um contato verificado adicionar um novo dispositivo.</string>
+  <string name="blindly_trusted_omemo_keys">Chaves OMEMO aceitas cegamente</string>
   <string name="not_trusted">Não confiável</string>
   <string name="invalid_barcode">Código de barras 2D inválido</string>
 </resources>

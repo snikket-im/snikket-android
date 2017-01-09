@@ -669,6 +669,9 @@
   <string name="error_publish_avatar_offline">Вы должны подключиться для публикации аватара.</string>
   <string name="show_error_message">Текст ошибки</string>
   <string name="error_message">Текст ошибки</string>
+  <string name="data_saver_enabled">Режим экономии трафика включен</string>
+  <string name="data_saver_enabled_explained">Ваша операционная система не позволяет Conversations получать доступ в Интернет в фоновом режиме. Для получения уведомлений вы должны разрешить Conversations неограниченный доступ когда режим экономии трафика включен.\nConversations постарается сохранить трафик когда это возможно.</string>
+  <string name="device_does_not_support_data_saver">Ваше устройство не поддерживает отключение режима экономии трафика для Conversations.</string>
   <string name="error_unable_to_create_temporary_file">Не удалось создать временный файл</string>
   <string name="this_device_has_been_verified">Это устройство было подтверждено</string>
   <string name="copy_fingerprint">Копировать отпечаток</string>
