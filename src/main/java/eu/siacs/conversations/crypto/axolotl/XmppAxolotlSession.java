@@ -82,13 +82,13 @@ public class XmppAxolotlSession implements Comparable<XmppAxolotlSession> {
 	}
 
 	@Nullable
-	public byte[] processReceiving(byte[] encryptedKey) {
+	public byte[] processReceiving(AxolotlKey encryptedKey) {
 		byte[] plaintext = null;
 		FingerprintStatus status = getTrust();
 		if (!status.isCompromised()) {
 			try {
 				try {
-					PreKeyWhisperMessage message = new PreKeyWhisperMessage(encryptedKey);
+					PreKeyWhisperMessage message = new PreKeyWhisperMessage(encryptedKey.key);
 					if (!message.getPreKeyId().isPresent()) {
 						Log.w(Config.LOGTAG, AxolotlService.getLogprefix(account) + "PreKeyWhisperMessage did not contain a PreKeyId");
 						return null;
@@ -104,7 +104,7 @@ public class XmppAxolotlSession implements Comparable<XmppAxolotlSession> {
 					}
 				} catch (InvalidMessageException | InvalidVersionException e) {
 					Log.i(Config.LOGTAG, AxolotlService.getLogprefix(account) + "WhisperMessage received");
-					WhisperMessage message = new WhisperMessage(encryptedKey);
+					WhisperMessage message = new WhisperMessage(encryptedKey.key);
 					plaintext = cipher.decrypt(message);
 				} catch (InvalidKeyException | InvalidKeyIdException | UntrustedIdentityException e) {
 					Log.w(Config.LOGTAG, AxolotlService.getLogprefix(account) + "Error decrypting axolotl header, " + e.getClass().getName() + ": " + e.getMessage());
@@ -123,11 +123,11 @@ public class XmppAxolotlSession implements Comparable<XmppAxolotlSession> {
 	}
 
 	@Nullable
-	public byte[] processSending(@NonNull byte[] outgoingMessage) {
+	public AxolotlKey processSending(@NonNull byte[] outgoingMessage) {
 		FingerprintStatus status = getTrust();
 		if (status.isTrustedAndActive()) {
 			CiphertextMessage ciphertextMessage = cipher.encrypt(outgoingMessage);
-			return ciphertextMessage.serialize();
+			return new AxolotlKey(ciphertextMessage.serialize(),ciphertextMessage.getType() == CiphertextMessage.PREKEY_TYPE);
 		} else {
 			return null;
 		}
@@ -140,5 +140,17 @@ public class XmppAxolotlSession implements Comparable<XmppAxolotlSession> {
 	@Override
 	public int compareTo(XmppAxolotlSession o) {
 		return getTrust().compareTo(o.getTrust());
+	}
+
+	public static class AxolotlKey {
+
+
+		public final byte[] key;
+		public final boolean prekey;
+
+		public AxolotlKey(byte[] key, boolean prekey) {
+			this.key = key;
+			this.prekey = prekey;
+		}
 	}
 }

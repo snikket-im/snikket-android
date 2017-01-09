@@ -3,6 +3,8 @@ package eu.siacs.conversations.crypto.axolotl;
 import android.util.Base64;
 import android.util.Log;
 
+import org.whispersystems.libaxolotl.protocol.CiphertextMessage;
+
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
@@ -41,7 +43,7 @@ public class XmppAxolotlMessage {
 	private byte[] innerKey;
 	private byte[] ciphertext = null;
 	private byte[] iv = null;
-	private final Map<Integer, byte[]> keys;
+	private final Map<Integer, XmppAxolotlSession.AxolotlKey> keys;
 	private final Jid from;
 	private final int sourceDeviceId;
 
@@ -104,7 +106,8 @@ public class XmppAxolotlMessage {
 					try {
 						Integer recipientId = Integer.parseInt(keyElement.getAttribute(REMOTEID));
 						byte[] key = Base64.decode(keyElement.getContent().trim(), Base64.DEFAULT);
-						this.keys.put(recipientId, key);
+						boolean isPreKey =keyElement.getAttributeAsBoolean("prekey");
+						this.keys.put(recipientId, new XmppAxolotlSession.AxolotlKey(key,isPreKey));
 					} catch (NumberFormatException e) {
 						throw new IllegalArgumentException("invalid remote id");
 					}
@@ -199,7 +202,7 @@ public class XmppAxolotlMessage {
 	}
 
 	public void addDevice(XmppAxolotlSession session) {
-		byte[] key = session.processSending(innerKey);
+		XmppAxolotlSession.AxolotlKey key = session.processSending(innerKey);
 		if (key != null) {
 			keys.put(session.getRemoteAddress().getDeviceId(), key);
 		}
@@ -217,10 +220,13 @@ public class XmppAxolotlMessage {
 		Element encryptionElement = new Element(CONTAINERTAG, AxolotlService.PEP_PREFIX);
 		Element headerElement = encryptionElement.addChild(HEADER);
 		headerElement.setAttribute(SOURCEID, sourceDeviceId);
-		for (Map.Entry<Integer, byte[]> keyEntry : keys.entrySet()) {
+		for (Map.Entry<Integer, XmppAxolotlSession.AxolotlKey> keyEntry : keys.entrySet()) {
 			Element keyElement = new Element(KEYTAG);
 			keyElement.setAttribute(REMOTEID, keyEntry.getKey());
-			keyElement.setContent(Base64.encodeToString(keyEntry.getValue(), Base64.NO_WRAP));
+			if (keyEntry.getValue().prekey) {
+				keyElement.setAttribute("prekey","true");
+			}
+			keyElement.setContent(Base64.encodeToString(keyEntry.getValue().key, Base64.NO_WRAP));
 			headerElement.addChild(keyElement);
 		}
 		headerElement.addChild(IVTAG).setContent(Base64.encodeToString(iv, Base64.NO_WRAP));
@@ -232,7 +238,7 @@ public class XmppAxolotlMessage {
 	}
 
 	private byte[] unpackKey(XmppAxolotlSession session, Integer sourceDeviceId) {
-		byte[] encryptedKey = keys.get(sourceDeviceId);
+		XmppAxolotlSession.AxolotlKey encryptedKey = keys.get(sourceDeviceId);
 		return (encryptedKey != null) ? session.processReceiving(encryptedKey) : null;
 	}
 
