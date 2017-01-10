@@ -29,3 +29,4 @@
 * XEP-0363: HTTP File Upload
 * XEP-0368: SRV records for XMPP over TLS
 * XEP-0377: Spam Reporting 
+* XEP-0384: OMEMO Encryption
