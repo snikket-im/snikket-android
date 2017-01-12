@@ -396,9 +396,6 @@
   <string name="wipe_omemo_pep">PEP’teki diğer aygıtları sil</string>
   <string name="clear_other_devices">Aygıtları sil</string>
   <string name="clear_other_devices_desc">OMEMO bildirimindeki diğer aygıtların hepsini silmek istediğinizden emin misiniz? Aygıtlarınız yeniden bağlandıklarında kendilerini yeniden bildirecekler ama bu süre zarfındaki iletileri alamayabilirler.</string>
-  <string name="purge_key">Anahtarı sil</string>
-  <string name="purge_key_desc_part1">Bu anahtarı silmek istediğinizden emin misiniz?</string>
-  <string name="purge_key_desc_part2">Anahtar geri dönüşü olmayacak şekilde zedelenmiş kabul edilecek bir daha onunla bir oturum başlatamayacaksınız.</string>
   <string name="error_no_keys_to_trust_server_error">Bu kişi için kullanılabilr anahtar mevcut değil\nSunucudan yeni anahtarlar alınamadı. Sunucunuzla ilgili bir sorun olabilir.</string>
   <string name="error_no_keys_to_trust">Bu kişi için kullanılabilecek bir anahtar bulunmuyor. Eğer anahtarlarını sildiyseniz, yeni anahtar oluşturmaları gerekiyor.</string>
   <string name="error_trustkeys_title">Hata</string>

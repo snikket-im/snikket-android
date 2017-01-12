@@ -396,9 +396,6 @@
   <string name="wipe_omemo_pep">Effacer les autres appareils de PEP</string>
   <string name="clear_other_devices">Supprimer les appareils</string>
   <string name="clear_other_devices_desc">Êtes-vous sûr de vouloir supprimer les autres appareils de l\'annonce OMEMO ? Ils s\'annonceront de nouveau à leur prochaine connexion, mais ils peuvent ne pas recevoir les messages envoyés entre temps.</string>
-  <string name="purge_key">Supprimer la clef</string>
-  <string name="purge_key_desc_part1">Êtes-vous sûr de vouloir supprimer cette clef ?</string>
-  <string name="purge_key_desc_part2">Elle sera considérée compromise de manière irréversible, et vous ne pourrez plus générer de session avec.</string>
   <string name="error_no_keys_to_trust_server_error">Il n\'y a aucune clef utilisable disponible pour ce contact.\nLa récupération de nouvelles clefs sur le serveur a échoué. Peut-être y a-t-il un problème avec votre serveur de contacts ?</string>
   <string name="error_no_keys_to_trust">il n\'y a pas de clef disponible pour ce contact. Si vous avez purgé toutes ses clefs, il doit en générer de nouvelles.</string>
   <string name="error_trustkeys_title">Erreur</string>

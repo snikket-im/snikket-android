@@ -391,9 +391,6 @@
   <string name="wipe_omemo_pep">Smazat ostatní přístroje z PEP</string>
   <string name="clear_other_devices">Smazat přístroje</string>
   <string name="clear_other_devices_desc">Opravdu chcete vymazat ostatní přístroje z OMEMO upozornění? Až se příště tyto přístroje připojí, znovu se ohlásí, ale pravděpodobně neobdrží zprávy odeslané v mezičase mezi přihlášeními.</string>
-  <string name="purge_key">Vymazat klíč</string>
-  <string name="purge_key_desc_part1">Opravdu si přejete vymazat tento klíč?</string>
-  <string name="purge_key_desc_part2">Bude neodvolatelně pokládán jako kompromitovaný a již s jeho pomocí nebudete moci nikdy spustit jiné sezení.</string>
   <string name="error_no_keys_to_trust_server_error">Pro tento kontakt nejsou dostupné žádné použitelné klíče.\nNahrání klíčů ze serveru nebylo úspěšné. Možná je něco špatně se serverem vašeho kontaktu.</string>
   <string name="error_no_keys_to_trust">Pro tento kontakt nejsou dostupné žádné použitelné klíče. Pokud jste smazali jakýkoliv z jeho klíčů bude třeba vygenerovat nové.</string>
   <string name="error_trustkeys_title">Chyba</string>

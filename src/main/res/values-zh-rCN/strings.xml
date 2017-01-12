@@ -396,9 +396,6 @@
   <string name="wipe_omemo_pep">从 PEP 中清除其他设备</string>
   <string name="clear_other_devices">清除设备</string>
   <string name="clear_other_devices_desc">你想清除所有其他设备的 OMEMO 通告？下次你的设备连接，将会重新收到通告，但也许将不会收到当时你发送的消息。</string>
-  <string name="purge_key">清除密钥</string>
-  <string name="purge_key_desc_part1">是否确认清除该密钥？</string>
-  <string name="purge_key_desc_part2">这是不可逆的损坏，你不能用此再建立一个会话了。</string>
   <string name="error_no_keys_to_trust_server_error">此联系人没有可用的密钥。\n从服务器获取密钥失败。也许你的联系人所在服务器发生问题。</string>
   <string name="error_no_keys_to_trust">此联系人没有可用的密钥。如果你曾经清除过他们的密钥，那么需要他们生成新的密钥。</string>
   <string name="error_trustkeys_title">错误</string>

@@ -396,9 +396,6 @@
   <string name="wipe_omemo_pep">Rensa andra enheter från PEP</string>
   <string name="clear_other_devices">Rensa enheter</string>
   <string name="clear_other_devices_desc">Är du säker på att du vill rensa alla andra enheter från OMEMO-annonsering? Nästa gång dina enheter ansluter kommer de att återannonsera sig, men de kanske inte tar emot enheter under tiden.</string>
-  <string name="purge_key">Rensa nyckel</string>
-  <string name="purge_key_desc_part1">Är du säker på att du vill rensa denna nyckel?</string>
-  <string name="purge_key_desc_part2">Den kommer att antas oåterkalleligt komprometterat och du kommer aldrig kunna bygga en session med den igen.</string>
   <string name="error_no_keys_to_trust_server_error">Det finns inga användbara nycklar tillgängliga för den här kontakten.\nHämtning av nya nyckar från servern har inte lyckats. Kanske är det något fel på din kontakts server.</string>
   <string name="error_no_keys_to_trust">Det finns inga användbara nycklar tillgängliga för den här kontakten. Om du har rensat någon av dennes nycklar behöver de generera nya.</string>
   <string name="error_trustkeys_title">Fel</string>

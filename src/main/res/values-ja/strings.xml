@@ -396,9 +396,6 @@
   <string name="wipe_omemo_pep">PEP から他のデバイスを消去</string>
   <string name="clear_other_devices">デバイスをクリア</string>
   <string name="clear_other_devices_desc">OMEMO のアナウンスから他のすべてのデバイスをクリアしてもよろしいですか? お使いのデバイスが次回接続したとき、それらは自分自身を再アナウンスしますが、それらはその間に送信されたメッセージを受信できない場合があります。</string>
-  <string name="purge_key">鍵を消去</string>
-  <string name="purge_key_desc_part1">この鍵を消去してもよろしいですか?</string>
-  <string name="purge_key_desc_part2">これは不可逆的に侵害とみなされ、あなたは再びそのセッションを構築することはできません。</string>
   <string name="error_no_keys_to_trust_server_error">この連絡先で利用可能な鍵がありません。\nサーバーから新しい鍵の取得に失敗しました。おそらく、お使いの連絡先サーバーに何か問題があります。</string>
   <string name="error_no_keys_to_trust">この連絡先で利用可能な鍵はありません。あなたがその鍵を消去している場合は、新しいものを生成してもらう必要があります。</string>
   <string name="error_trustkeys_title">エラー</string>

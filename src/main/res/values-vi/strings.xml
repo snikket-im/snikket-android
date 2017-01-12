@@ -350,9 +350,6 @@
   <string name="wipe_omemo_pep">Xoá các thiết bị khác khỏi PEP</string>
   <string name="clear_other_devices">Xoá các thiết bị</string>
   <string name="clear_other_devices_desc">Có chắc là bạn muốn xoá toàn bộ các thiết bị khác khỏi thông báo OMEMO? Lần sau khi kết nối, các thiết bị sẽ tự thông báo lại nhưng có khả năng chúng sẽ không nhận được tin nhắn đã gửi trong khoảng thời gian đó.</string>
-  <string name="purge_key">Xoá khoá</string>
-  <string name="purge_key_desc_part1">Có chắc là bạn muốn xoá khoá này không?</string>
-  <string name="purge_key_desc_part2">Nó sẽ bị xem là hỏng mãi mãi và bạn sẽ không thể dựng một phiên khác với nó nữa.</string>
   <string name="error_no_keys_to_trust_server_error">Không có khoá nào dùng được cho liên hệ này.\nViệc nhận khoá mới từ máy chủ cũng thất bại. Có lẽ là máy chủ dành cho các liên hệ đã gặp sự cố gì đó.</string>
   <string name="error_no_keys_to_trust">Không còn khoá nào sẵn có cho liên hệ này. Nếu bạn đã xoá bất kỳ khoá nào, họ phải tạo khoá mới.</string>
   <string name="error_trustkeys_title">Lỗi</string>

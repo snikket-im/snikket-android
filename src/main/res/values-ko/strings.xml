@@ -371,9 +371,6 @@
   <string name="wipe_omemo_pep">PEP로부터 다른 기기들 제거</string>
   <string name="clear_other_devices">기기 제거</string>
   <string name="clear_other_devices_desc">OMEMO 선언으로부터 모든 기기를 지우시겠습니까? 다음에 기기들이 접속할 때, 기기들이 스스로 다시 선언하지만, 그 동안에 보내진 메세지는 받지 못할수도 있습니다.</string>
-  <string name="purge_key">키 제거</string>
-  <string name="purge_key_desc_part1">이 키를 제거하시겠습니까?</string>
-  <string name="purge_key_desc_part2">이것은 되돌릴 수 없으며 훼손된 것으로 간주됩니다. 이것으로는 다시는 세션을 만들 수 없게 됩니다.</string>
   <string name="error_no_keys_to_trust_server_error">이 연락처에 사용할 수 있는 키가 없습니다. \n서버로부터 새로운 키를 가져올 수 없습니다. 아마 연락처의 서버에 오류가 있는 것 같습니다.</string>
   <string name="error_no_keys_to_trust">이 연락처에 사용할 수 있는 키가 없습니다. 당신이 그들의 키 중에서 어떤 것이든 제거했다면, 그들이 새로운 키를 만들어야 합니다.</string>
   <string name="error_trustkeys_title">오류</string>

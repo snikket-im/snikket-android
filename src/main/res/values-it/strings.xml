@@ -396,9 +396,6 @@
   <string name="wipe_omemo_pep">Cancella altri dispositivi da PEP</string>
   <string name="clear_other_devices">Pulisci dispositivi</string>
   <string name="clear_other_devices_desc">Sei sicuro/a di voler rimuovere tutti gli altri dispositivi dall\'annuncio OMEMO? La prossima volta che si connetteranno si riannunceranno, ma potrebbero non ricevere i messaggi inviati nel frattempo.</string>
-  <string name="purge_key">Elimina chiave</string>
-  <string name="purge_key_desc_part1">Sei sicuro/a di voler cancellare questa chiave?</string>
-  <string name="purge_key_desc_part2">Verrà considerata irreversibilmente compromessa, e non potrai più creare una sessione con essa.</string>
   <string name="error_no_keys_to_trust_server_error">Non ci sono chiavi utilizzabili per questo contatto.\nLa raccolta di nuove chiavi dal server è fallita. Forse qualcosa non va con il tuo server dei contatti.</string>
   <string name="error_no_keys_to_trust">Non ci sono chiavi usabili per questo contatto. Se hai cancellato qualsiasi loro chiave, devono generarne di nuove.</string>
   <string name="error_trustkeys_title">Errore</string>

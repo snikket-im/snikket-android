@@ -396,9 +396,6 @@
   <string name="wipe_omemo_pep">Andere Geräte von PEP entfernen</string>
   <string name="clear_other_devices">Geräte entfernen</string>
   <string name="clear_other_devices_desc">Alle anderen Geräte aus der OMEMO-Bekanntmachung entfernen? Die Bekanntmachung wird bei der nächsten Verbindung erneuert, möglicherweise werden aber nicht alle Nachrichten empfangen, die in der Zwischenzeit versendet wurden.</string>
-  <string name="purge_key">Schlüssel löschen</string>
-  <string name="purge_key_desc_part1">Soll dieser Schlüssel gelöscht werden?</string>
-  <string name="purge_key_desc_part2">Dieser Vorgang kann nicht rückgängig gemacht werden und es kann nie wieder eine Verbindung mit diesem Schlüssel hergestellt werden.</string>
   <string name="error_no_keys_to_trust_server_error">Für diesen Kontakt sind keine benutzbaren Schlüssel verfügbar.\nNeue Schlüssel vom Server herunterzuladen war nicht erfolgreich. Vielleicht stimmt etwas mit dem Server deines Kontakts nicht.</string>
   <string name="error_no_keys_to_trust">Es sind keine Schlüssel für diesen Kontakt verfügbar. Falls sie gelöscht wurden, müssen diese neu erstellt werden.</string>
   <string name="error_trustkeys_title">Fehler</string>

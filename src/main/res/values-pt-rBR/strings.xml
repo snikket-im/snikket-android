@@ -396,9 +396,6 @@
   <string name="wipe_omemo_pep">Remover outros dispositivos do PEP</string>
   <string name="clear_other_devices">Remover dispositivos</string>
   <string name="clear_other_devices_desc">Deseja realmente remover todos os outros dispositivos dos anúncios OMEMO? Na próxima vez que seus dispositivos conectarem eles se reanunciarão, entretanto, eles podem não receber mensagens nesse intervalo de tempo.</string>
-  <string name="purge_key">Expurgar a chave</string>
-  <string name="purge_key_desc_part1">Deseja realmente expurgar essa chave?</string>
-  <string name="purge_key_desc_part2">Ela será considerada irreversivelmente comprometida e você nunca mais conseguirá estabelecer uma sessão com ela.</string>
   <string name="error_no_keys_to_trust_server_error">Não existe nenhuma chave utilizável para esse contato.\nNão foi possível obter nenhuma chave nova do servidor. Pode haver alguma coisa errada com o seu servidor de contatos.</string>
   <string name="error_no_keys_to_trust">Não existe nenhuma chave utilizável para esse contato. Caso você tenha expurgado alguma chave dele, ele terá que gerar uma nova.</string>
   <string name="error_trustkeys_title">Erro</string>

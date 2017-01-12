@@ -396,9 +396,6 @@
   <string name="wipe_omemo_pep">Sterge alte dispozitive din PEP</string>
   <string name="clear_other_devices">Curata lista dispozitive</string>
   <string name="clear_other_devices_desc">Sigur vrei sa inlaturi toate celelalte dispozitive din mesajul de anunt OMEMO? Data viitoare cand dispozitivele se vor conecta, se vor anunta din nou, dar se poate ca ele sa nu fi primit mesajele trimise intre timp.</string>
-  <string name="purge_key">Sterge cheia</string>
-  <string name="purge_key_desc_part1">Sigur vrei sa stergi aceasta cheie?</string>
-  <string name="purge_key_desc_part2">Va fi considera compromisa ireversibil si nu vei mai putea crea o sesiune cu ea niciodata.</string>
   <string name="error_no_keys_to_trust_server_error">Nu exista chei utilizabile pentru acest contact.\nIncercarea de a descarca o cheie de pe server a esuat. Se poate sa fie o problema cu serverul de contacte.</string>
   <string name="error_no_keys_to_trust">Nu exista chei disponibile si utilizabile pentru acest contact. Daca ai sters vreuna din cheile contactului, trebuie sa generezi o alta noua.</string>
   <string name="error_trustkeys_title">Eroare</string>

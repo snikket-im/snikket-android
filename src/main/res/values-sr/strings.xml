@@ -396,9 +396,6 @@
   <string name="wipe_omemo_pep">Уклони остале уређаје са ПЕП-а</string>
   <string name="clear_other_devices">Очисти уређаје</string>
   <string name="clear_other_devices_desc">Желите ли заиста да уклоните све остале уређаје са ОМЕМО објаве? Када се ваши уређаји следећи пут повежу, објавиће се сами, али у међувремену можда неће примати поруке.</string>
-  <string name="purge_key">Очисти кључ</string>
-  <string name="purge_key_desc_part1">Желите ли заиста да очистите овај кључ?</string>
-  <string name="purge_key_desc_part2">Неповратно ће бити сматран компровитованим, и њиме више никад нећете моћи да успоставите сесију.</string>
   <string name="error_no_keys_to_trust_server_error">Нема употребљивих кључева за овај контакт.\nДобављање нових кључева са сервера није било успешно. Можда нешто није у реду са сервером ваших контаката.</string>
   <string name="error_no_keys_to_trust">Нема употребљивих кључева за овај контакт. Ако сте очистили било који од тих кључева, контакт мора да генерише нови.</string>
   <string name="error_trustkeys_title">Грешка</string>
