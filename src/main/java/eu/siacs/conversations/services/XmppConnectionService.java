@@ -2639,14 +2639,13 @@ public class XmppConnectionService extends Service {
 	}
 
 	public void publishAvatar(Account account, final Avatar avatar, final UiCallback<Avatar> callback) {
-		final IqPacket packet = this.mIqGenerator.publishAvatar(avatar);
+		IqPacket packet = this.mIqGenerator.publishAvatar(avatar);
 		this.sendIqPacket(account, packet, new OnIqPacketReceived() {
 
 			@Override
 			public void onIqPacketReceived(Account account, IqPacket result) {
 				if (result.getType() == IqPacket.TYPE.RESULT) {
-					final IqPacket packet = XmppConnectionService.this.mIqGenerator
-							.publishAvatarMetadata(avatar);
+					final IqPacket packet = XmppConnectionService.this.mIqGenerator.publishAvatarMetadata(avatar);
 					sendIqPacket(account, packet, new OnIqPacketReceived() {
 						@Override
 						public void onIqPacketReceived(Account account, IqPacket result) {
@@ -2655,25 +2654,22 @@ public class XmppConnectionService extends Service {
 									getAvatarService().clear(account);
 									databaseBackend.updateAccount(account);
 								}
+								Log.d(Config.LOGTAG,account.getJid().toBareJid()+": published avatar "+(avatar.size/1024)+"KiB");
 								if (callback != null) {
 									callback.success(avatar);
-								} else {
-									Log.d(Config.LOGTAG,account.getJid().toBareJid()+": published avatar");
 								}
 							} else {
 								if (callback != null) {
-									callback.error(
-											R.string.error_publish_avatar_server_reject,
-											avatar);
+									callback.error(R.string.error_publish_avatar_server_reject,avatar);
 								}
 							}
 						}
 					});
 				} else {
+					Element error = result.findChild("error");
+					Log.d(Config.LOGTAG,account.getJid().toBareJid()+": server rejected avatar "+(avatar.size/1024)+"KiB "+(error!=null?error.toString():""));
 					if (callback != null) {
-						callback.error(
-								R.string.error_publish_avatar_server_reject,
-								avatar);
+						callback.error(R.string.error_publish_avatar_server_reject, avatar);
 					}
 				}
 			}
