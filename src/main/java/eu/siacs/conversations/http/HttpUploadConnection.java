@@ -182,7 +182,7 @@ public class HttpUploadConnection implements Transferable {
 				while (((count = mFileInputStream.read(buffer)) != -1) && !canceled) {
 					transmitted += count;
 					os.write(buffer, 0, count);
-					mXmppConnectionService.updateConversationUi();
+					mHttpConnectionManager.updateConversationUi(false);
 				}
 				os.flush();
 				os.close();
