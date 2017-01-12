@@ -439,8 +439,10 @@ public class AxolotlService implements OnAdvancedStreamFeaturesLoaded {
 		mXmppConnectionService.sendIqPacket(account, publish, null);
 	}
 
-	public void purgeKey(final String fingerprint) {
-		axolotlStore.setFingerprintStatus(fingerprint.replaceAll("\\s", ""), FingerprintStatus.createCompromised());
+	public void distrustFingerprint(final String fingerprint) {
+		final String fp = fingerprint.replaceAll("\\s", "");
+		final FingerprintStatus fingerprintStatus = axolotlStore.getFingerprintStatus(fp);
+		axolotlStore.setFingerprintStatus(fp,fingerprintStatus.toUntrusted());
 	}
 
 	public void publishOwnDeviceIdIfNeeded() {

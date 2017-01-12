@@ -5,8 +5,8 @@
         android:title="@string/scan_qr_code"
         />
     <item
-        android:id="@+id/purge_omemo_key"
-        android:title="@string/purge_key"/>
+        android:id="@+id/distrust_key"
+        android:title="@string/distrust_omemo_key"/>
     <item
         android:id="@+id/copy_omemo_key"
         android:title="@string/copy_fingerprint"/>

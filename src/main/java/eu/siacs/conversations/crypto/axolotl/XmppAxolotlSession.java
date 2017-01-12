@@ -118,6 +118,8 @@ public class XmppAxolotlSession implements Comparable<XmppAxolotlSession> {
 					setTrust(status.toActive());
 				}
 			}
+		} else {
+			Log.d(Config.LOGTAG,account.getJid().toBareJid()+" not encrypting omemo message from fingerprint "+getFingerprint()+" because it was marked as compromised");
 		}
 		return plaintext;
 	}
