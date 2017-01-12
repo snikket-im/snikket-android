@@ -21,4 +21,8 @@ public class PushManagementService {
 	public boolean isStub() {
 		return true;
 	}
+
+	public boolean availableAndUseful(Account account) {
+		return false;
+	}
 }

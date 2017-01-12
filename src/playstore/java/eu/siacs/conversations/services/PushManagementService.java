@@ -106,6 +106,10 @@ public class PushManagementService {
 		return connection != null && connection.getFeatures().push() && playServicesAvailable();
 	}
 
+	public boolean availableAndUseful(Account account) {
+		return account.getServerIdentity() == XmppConnection.Identity.EJABBERD && available(account);
+	}
+
 	private boolean playServicesAvailable() {
 		return GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(mXmppConnectionService) == ConnectionResult.SUCCESS;
 	}
