@@ -111,7 +111,9 @@ public class MessageArchiveService implements OnAdvancedStreamFeaturesLoaded {
 				return null;
 			}
 			final Query query = new Query(conversation, start, end,PagingOrder.REVERSE);
-			query.reference = conversation.getFirstMamReference();
+			if (start==0) {
+				query.reference = conversation.getFirstMamReference();
+			}
 			this.queries.add(query);
 			this.execute(query);
 			return query;
