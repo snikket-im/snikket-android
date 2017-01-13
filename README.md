@@ -120,8 +120,13 @@ My Bitcoin Address is: `1NxSU1YxYzJVDpX1rcESAA3NJki7kRgeeu`
 #### How do I create an account?
 XMPP, like email, is a federated protocol, which means that there is not one company you can create an *official XMPP account* with. Instead there are hundreds, or even thousands, of providers out there. One of those providers is our very own [conversations.im](https://account.conversations.im). If you don’t like to use *conversations.im* use a web search engine of your choice to find another provider. Or maybe your university has one. Or you can run your own. Or ask a friend to run one. Once you've found one, you can use Conversations to create an account. Just select *register new account* on server within the create account dialog.
 
+#### Domain hosting
+Using your own domain not only gives you a more recognizable Jabber ID, it also gives you the flexibilty to migrate your account between different XMPP providers. This is a good compromise between the responsibilities of having to operate your own server and the downsides of being dependent on a single provider.
+
+Learn more about [conversations.im Jabber/XMPP domain hosting](https://account.conversations.im/domain/). 
+
 ##### Running your own
-If you have a server somewhere and are willing to put some work in, the best alternative-in the spirit of federation-is to run your own. We recommend either [Prosody](https://prosody.im/) or [ejabberd](https://www.ejabberd.im/). Both of which have their own strengths. Ejabberd is slightly more mature nowadays but Prosody is arguably easier to set up.
+If you already have a server somewhere and are willing and able to put the necessary work in, one alternative-in the spirit of federation-is to run your own. We recommend either [Prosody](https://prosody.im/) or [ejabberd](https://www.ejabberd.im/). Both of which have their own strengths. Ejabberd is slightly more mature nowadays but Prosody is arguably easier to set up.
 
 For Prosody you need a couple of so called [community modules](https://modules.prosody.im/) most of which are maintained by the same people that develop Prosody.
 
