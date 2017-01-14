@@ -332,6 +332,7 @@
   <string name="message_options">İleti seçenekleri</string>
   <string name="copy_text">Metni kopyala</string>
   <string name="select_text">Metni seç</string>
+  <string name="quote">Alıntı</string>
   <string name="copy_original_url">Orijinal URL\'i kopyala</string>
   <string name="send_again">Yeniden gönder</string>
   <string name="file_url">Dosya URL</string>
@@ -676,4 +677,15 @@
   <string name="blindly_trusted_omemo_keys">Körü körüne güvenilen OMEMO anahtarları</string>
   <string name="not_trusted">Güvenilmeyen</string>
   <string name="invalid_barcode">Geçersiz 2D barkod</string>
+  <string name="pref_clean_cache_summary">Önbellek dizinini temizle (Kamera uygulamasının kullandığı)</string>
+  <string name="pref_clean_cache">Önbelleği temizle</string>
+  <string name="pref_clean_private_storage">Özel depolama alanını temizle</string>
+  <string name="pref_clean_private_storage_summary">Dosyaların tutulduğu özel depolama alanını temizle (Sunucu üzerinden tekrar indirilebilir)</string>
+  <string name="i_followed_this_link_from_a_trusted_source">Bu bağlantıyı güvenilir bir kaynaktan takip ettim</string>
+  <string name="verifying_omemo_keys_trusted_source">Bir bağlantıyı tıkladıktan sonra %1$s in OMEMO anahtarını doğrulamış olacaksınız.  Bu yalnızca  bağlantının %2$s  tarafından yayınladığından eminseniz güvenlidir.</string>
+  <string name="verify_omemo_keys">OMEMO anahtarlarını doğrula</string>
+  <string name="show_inactive_devices">Aktif olmayan cihazları göster</string>
+  <string name="hide_inactive_devices">Aktif olmayan cihazları gizle</string>
+  <string name="distrust_omemo_key">Güvensiz aygıt</string>
+  <string name="distrust_omemo_key_text">Bu cihazın doğrulamasını kaldırmak istediğinizden emin misiniz? \ Bu cihaz ve cihazdan gelen mesajlar güvenilmez olarak işaretlenecektir.</string>
 </resources>

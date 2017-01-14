@@ -332,6 +332,7 @@
   <string name="message_options">Настройки за съобщенята</string>
   <string name="copy_text">Копиране на текста</string>
   <string name="select_text">Избиране на текста</string>
+  <string name="quote">Цитат</string>
   <string name="copy_original_url">Копиране на оригиналния адрес</string>
   <string name="send_again">Повторно изпращане</string>
   <string name="file_url">Адрес на файла</string>
@@ -679,4 +680,15 @@
   <string name="blindly_trusted_omemo_keys">Приети на сляпо ключове OMEMO</string>
   <string name="not_trusted">Неприети</string>
   <string name="invalid_barcode">Грешен 2-измерен баркод</string>
+  <string name="pref_clean_cache_summary">Изчистване на папката с кеша (използвана от камерата)</string>
+  <string name="pref_clean_cache">Изчистване на кеша</string>
+  <string name="pref_clean_private_storage">Изчистване на личното място за съхранение</string>
+  <string name="pref_clean_private_storage_summary">Изчистване на мястото, където се съхраняват личните файлове. (Те могат да бъдат повторно изтеглени от сървъра.)</string>
+  <string name="i_followed_this_link_from_a_trusted_source">Последвах тази връзка от доверено място</string>
+  <string name="verifying_omemo_keys_trusted_source">На път сте да потвърдите ключовете OMEMO на %1$s, след като сте щракнали връзка. Това е безопасна операция, само ако сте последвали тази връзка от доверено място, където само %2$s би могъл да я публикува.</string>
+  <string name="verify_omemo_keys">Потвърждаване на ключове OMEMO</string>
+  <string name="show_inactive_devices">Показване на неактивните устройства</string>
+  <string name="hide_inactive_devices">Скриване на неактивните устройства</string>
+  <string name="distrust_omemo_key">Сваляне на доверието</string>
+  <string name="distrust_omemo_key_text">Наистина ли искате да заличите потвърждението на това устройство?\nТова устройство и съобщенията, идващи от него, ще бъдат отбелязани като „непроверени“.</string>
 </resources>

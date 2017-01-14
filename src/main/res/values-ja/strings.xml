@@ -332,6 +332,7 @@
   <string name="message_options">メッセージオプション</string>
   <string name="copy_text">テキストをコピー</string>
   <string name="select_text">テキストを選択</string>
+  <string name="quote">引用</string>
   <string name="copy_original_url">元の URL をコピー</string>
   <string name="send_again">再送</string>
   <string name="file_url">ファイル URL</string>
@@ -676,4 +677,15 @@
   <string name="blindly_trusted_omemo_keys">OMEMO 鍵を白紙信託しました</string>
   <string name="not_trusted">信頼されていない</string>
   <string name="invalid_barcode">不正な 2D バーコード</string>
+  <string name="pref_clean_cache_summary">キャッシュフォルダーをクリアします (カメラアプリケーションで使用)</string>
+  <string name="pref_clean_cache">キャッシュをクリア</string>
+  <string name="pref_clean_private_storage">プライベートストレージをクリア</string>
+  <string name="pref_clean_private_storage_summary">ファイルが保存されているプライベートストレージをクリアします (サーバーから再ダウンロードできます)</string>
+  <string name="i_followed_this_link_from_a_trusted_source">信頼できるソースからこのリンクをたどりました</string>
+  <string name="verifying_omemo_keys_trusted_source">リンクをクリックした後、%1$s の OMEMO 鍵を検証しようとしています。 これは、%2$s がこのリンクを公開した、信頼できるソースからこのリンクをたどった場合にのみ安全です。</string>
+  <string name="verify_omemo_keys">OMEMO 鍵を検証</string>
+  <string name="show_inactive_devices">非アクティブのデバイスを表示</string>
+  <string name="hide_inactive_devices">非アクティブのデバイスを非表示</string>
+  <string name="distrust_omemo_key">信頼できないデバイス</string>
+  <string name="distrust_omemo_key_text">このデバイスの検証を削除してもよろしいですか?\nこのデバイスと、そのデバイスからのメッセージは信頼できないとマークされます。</string>
 </resources>

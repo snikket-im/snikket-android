@@ -332,6 +332,7 @@
   <string name="message_options">Opções da mensagem</string>
   <string name="copy_text">Copiar o texto</string>
   <string name="select_text">Selecionar o texto</string>
+  <string name="quote">Citar</string>
   <string name="copy_original_url">Copiar a URL original</string>
   <string name="send_again">Enviar novamente</string>
   <string name="file_url">URL do arquivo</string>
@@ -679,4 +680,7 @@
   <string name="blindly_trusted_omemo_keys">Chaves OMEMO aceitas cegamente</string>
   <string name="not_trusted">Não confiável</string>
   <string name="invalid_barcode">Código de barras 2D inválido</string>
+  <string name="pref_clean_cache_summary">Limpar a pasta de cache (usado pela aplicação de câmera)</string>
+  <string name="pref_clean_cache">Limpar o cache</string>
+  <string name="pref_clean_private_storage">Limpar o armazenamento privado</string>
 </resources>

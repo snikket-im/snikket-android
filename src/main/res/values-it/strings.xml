@@ -332,6 +332,7 @@
   <string name="message_options">Opzioni del messaggio</string>
   <string name="copy_text">Copia testo</string>
   <string name="select_text">Seleziona testo</string>
+  <string name="quote">Quota</string>
   <string name="copy_original_url">Copia URL originale</string>
   <string name="send_again">Invia di nuovo</string>
   <string name="file_url">URL del file</string>
@@ -679,4 +680,15 @@
   <string name="blindly_trusted_omemo_keys">Chiavi OMEMO fidate ciecamente</string>
   <string name="not_trusted">Non fidato</string>
   <string name="invalid_barcode">Codice a barre 2D non valido</string>
+  <string name="pref_clean_cache_summary">Svuota la cartella della cache (usata dall\'app fotocamera)</string>
+  <string name="pref_clean_cache">Svuota cache</string>
+  <string name="pref_clean_private_storage">Svuota archivio privato</string>
+  <string name="pref_clean_private_storage_summary">Svuota l\'archivio privato nella quale sono memorizzati i file (possono essere riscaricati dal server)</string>
+  <string name="i_followed_this_link_from_a_trusted_source">Ho seguito questo link da una fonte fidata</string>
+  <string name="verifying_omemo_keys_trusted_source">Stai per verificare le chiavi OMEMO di %1$s cliccando un link. Questo metodo è sicuro solo se hai seguito il link da una fonte fidata dove solo %2$s può averlo pubblicato.</string>
+  <string name="verify_omemo_keys">Verifica chiavi OMEMO</string>
+  <string name="show_inactive_devices">Mostra dispositivi inattivi</string>
+  <string name="hide_inactive_devices">Nascondi dispositivi inattivi</string>
+  <string name="distrust_omemo_key">Diffida il dispositvo</string>
+  <string name="distrust_omemo_key_text">Sei sicuro di volere rimuovere la verifica per questo dispositivo?\nIl dispositivo e i messaggi provenienti da esso verranno segnati come non fidati.</string>
 </resources>

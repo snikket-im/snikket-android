@@ -332,6 +332,7 @@
   <string name="message_options">Optiuni mesaje</string>
   <string name="copy_text">Copiaza text</string>
   <string name="select_text">Selecteaza text</string>
+  <string name="quote">Citeaza</string>
   <string name="copy_original_url">Copiaza URL original</string>
   <string name="send_again">Trimite din nou</string>
   <string name="file_url">URL fisier</string>
@@ -683,4 +684,15 @@ Emitent</string>
   <string name="blindly_trusted_omemo_keys">Incredere oarba in aceste chei OMEMO</string>
   <string name="not_trusted">De neincredere</string>
   <string name="invalid_barcode">Cod de bare 2D invalid</string>
+  <string name="pref_clean_cache_summary">Locul unde sunt pozele temporar salvate (folosit de aplicatia camera foto)</string>
+  <string name="pref_clean_cache">Curata memoria temporara</string>
+  <string name="pref_clean_private_storage">Curata stocarea privata</string>
+  <string name="pref_clean_private_storage_summary">Locul unde sunt fisierele pastrate (pot fi descarcate de pe server din nou)</string>
+  <string name="i_followed_this_link_from_a_trusted_source">Am urmat aceasta legatura de la o sursa de incredere</string>
+  <string name="verifying_omemo_keys_trusted_source">Urmeaza sa verificati cheile OMEMO pentru %1$s dupa ce veti deschide legatura. Acest lucru se poate face in siguranta doar daca ati primit legatura de la o sursa de incredere unde doar %2$s putea publica.</string>
+  <string name="verify_omemo_keys">Verifica cheile OMEMO</string>
+  <string name="show_inactive_devices">Arata dispozitivele inactive</string>
+  <string name="hide_inactive_devices">Ascunde dispozitivele inactive</string>
+  <string name="distrust_omemo_key">Pierde increderea in acest dispozitiv</string>
+  <string name="distrust_omemo_key_text">Sigur doriti sa stergeti datele de verificare pentru acest dispozitiv?\nAcest dispozitiv precum si mesajele venind de la el vor fi marcate ca ne fiind de incredere.</string>
 </resources>

@@ -332,6 +332,7 @@
   <string name="message_options">Nachrichtenoptionen</string>
   <string name="copy_text">Text kopieren</string>
   <string name="select_text">Text markieren</string>
+  <string name="quote">Zitat</string>
   <string name="copy_original_url">Original-URL kopieren</string>
   <string name="send_again">Erneut senden</string>
   <string name="file_url">Datei-URL</string>
@@ -478,7 +479,7 @@
   <string name="received_location">Standort empfangen</string>
   <string name="title_undo_swipe_out_conversation">Unterhaltung beendet</string>
   <string name="title_undo_swipe_out_muc">Konferenz verlassen</string>
-  <string name="pref_dont_trust_system_cas_title">Zertifizierungsstellen misstrauen</string>
+  <string name="pref_dont_trust_system_cas_title">Zertifizierungsstellen nicht vertrauen</string>
   <string name="pref_dont_trust_system_cas_summary">Alle Zertifikate müssen manuell bestätigt werden</string>
   <string name="pref_remove_trusted_certificates_title">Zertifikate löschen</string>
   <string name="pref_remove_trusted_certificates_summary">Als vertrauenswürdig bestätigte Zertifikate löschen</string>
@@ -496,9 +497,9 @@
   </plurals>
   <string name="pref_quick_action_summary">Ersetze Absende-Knopf durch Schnell-Tasten</string>
   <string name="pref_quick_action">Schnell-Tasten</string>
-  <string name="none">keine</string>
-  <string name="recently_used">zuletzt verwendet</string>
-  <string name="choose_quick_action">wähle Schnell-Taste</string>
+  <string name="none">Keine</string>
+  <string name="recently_used">Zuletzt verwendet</string>
+  <string name="choose_quick_action">Wähle Schnell-Taste</string>
   <string name="search_for_contacts_or_groups">Nach Kontakten oder Konferenzen suchen</string>
   <string name="send_private_message">Private Nachricht senden</string>
   <string name="user_has_left_conference">%s hat die Konferenz verlassen!</string>
@@ -540,7 +541,7 @@
   <string name="jid_does_not_match_certificate">Jabber-ID stimmt nicht dem Zertifikat überein</string>
   <string name="action_renew_certificate">Zertifikat erneuern</string>
   <string name="error_fetching_omemo_key">Kann OMEMO-Schlüssel nicht empfangen!</string>
-  <string name="verified_omemo_key_with_certificate">OMEMO-Schlüssel mit Zertifikat bestätigt!</string>
+  <string name="verified_omemo_key_with_certificate">Überprüfter OMEMO-Schlüssel mit Zertifikat!</string>
   <string name="device_does_not_support_certificates">Dein Gerät unterstützt das Auswählen von Client-Zertifikaten nicht!</string>
   <string name="pref_connection_options">Verbindung</string>
   <string name="pref_use_tor">Über Tor verbinden</string>
@@ -654,7 +655,7 @@
   <string name="wrong_conference_configuration">Dies ist keine private, nicht-anonyme Konferenz.</string>
   <string name="this_conference_has_no_members">Diese Konferenz enthält keine Teilnehmer.</string>
   <string name="report_jid_as_spammer">Melde die JID als Sender unerwünschter Nachrichten.</string>
-  <string name="pref_delete_omemo_identities">OMEMO Identitäten zurücksetzen</string>
+  <string name="pref_delete_omemo_identities">OMEMO-Identitäten zurücksetzen</string>
   <string name="pref_delete_omemo_identities_summary">Regeneriere deine OMEMO-Schlüssel. Alle deine Kontakte müssen dich neu verifizieren. Nutze dies als letzten Ausweg.</string>
   <string name="delete_selected_keys">Ausgewählte Schlüssel löschen</string>
   <string name="error_publish_avatar_offline">Du musst verbunden sein um deinen Avatar zu veröffentlichen</string>
@@ -664,9 +665,9 @@
   <string name="data_saver_enabled_explained">Dein Betriebssystem verbietet Conversations im Hintergrund den Zugang zum Internet. Um Benachrichtigungen erhalten zu können, solltest du Conversations den Zugang erlauben, wenn der Datensparmodus aktiv ist. Conversations wird dennoch versuchen, so viele Daten wie möglich einzusparen.</string>
   <string name="device_does_not_support_data_saver">Dein Gerät unterstützt den Datensparmodus für Conversations nicht.</string>
   <string name="error_unable_to_create_temporary_file">Temporäre Datei kann nicht erstellt werden</string>
-  <string name="this_device_has_been_verified">Dieses Gerät wurde verifiziert</string>
+  <string name="this_device_has_been_verified">Dieses Gerät wurde überprüft</string>
   <string name="copy_fingerprint">Fingerabdruck kopieren</string>
-  <string name="all_omemo_keys_have_been_verified">Alle OMEMO-Schlüssel wurden verifiziert</string>
+  <string name="all_omemo_keys_have_been_verified">Alle OMEMO-Schlüssel wurden überprüft</string>
   <string name="barcode_does_not_contain_fingerprints_for_this_conversation">Barcode enthält keine Fingerabdrücke für diese Unterhaltung.</string>
   <string name="verified_fingerprints">Überprüfte Fingerabdrücke</string>
   <string name="use_camera_icon_to_scan_barcode">Nutze Kamera, um Barcodes deiner Kontakte zu scannen</string>
@@ -675,8 +676,19 @@
   <string name="share_as_uri">Als XMPP URI teilen</string>
   <string name="share_as_http">Als HTTP Link teilen</string>
   <string name="pref_blind_trust_before_verification">Blind vertrauen vor der Überprüfung</string>
-  <string name="pref_blind_trust_before_verification_summary">Vertraue automatisch allen neuen Geräten von Kontakten, die noch nicht überprüft wurden und zeige eine Aufforderung zur manuellen Bestätigung an, wenn ein verifizierter Kontakt ein neues Gerät hinzufügt.</string>
+  <string name="pref_blind_trust_before_verification_summary">Vertraue automatisch allen neuen Geräten von Kontakten, die noch nicht überprüft wurden und zeige eine Aufforderung zur manuellen Bestätigung an, wenn ein bereits überprüfter Kontakt ein neues Gerät hinzufügt.</string>
   <string name="blindly_trusted_omemo_keys">Blind vertraute OMEMO-Schlüssel</string>
   <string name="not_trusted">Nicht vertraut</string>
   <string name="invalid_barcode">Ungültiger Barcode</string>
+  <string name="pref_clean_cache_summary">Lösche Cache-Ordner (wurde von der Kamera benutzt)</string>
+  <string name="pref_clean_cache">Lösche Cache</string>
+  <string name="pref_clean_private_storage">Lösche privaten Speicher</string>
+  <string name="pref_clean_private_storage_summary">Lösche privaten Speicher, in dem die Dateien gespeichert werden (sie können erneut vom Server heruntergeladen werden)</string>
+  <string name="i_followed_this_link_from_a_trusted_source">Ich habe diesen Link aus einer vertrauenswürdigen Quelle erhalten</string>
+  <string name="verifying_omemo_keys_trusted_source">Du bist dabei, die OMEMO-Schlüssel von %1$s nach dem Klick auf diesen Link zu überprüfen. Dies ist nur sicher, wenn du diesen Link von einer vertrauenswürdigen Quelle erhalten hast, der nur von %2$s veröffentlicht werden konnte.</string>
+  <string name="verify_omemo_keys">Überprüfe OMEMO-Schlüssel</string>
+  <string name="show_inactive_devices">Inaktive Geräte anzeigen</string>
+  <string name="hide_inactive_devices">Inaktive Geräte nicht anzeigen</string>
+  <string name="distrust_omemo_key">Gerät nicht mehr vertrauen</string>
+  <string name="distrust_omemo_key_text">Möchtest du die vorhandene Überprüfung für dieses Gerät löschen?\nDas Gerät und gesendete Nachrichten von diesem Gerät werden als nicht vertrauenswürdig markiert.</string>
 </resources>

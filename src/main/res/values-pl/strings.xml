@@ -625,6 +625,9 @@
   <string name="choose_participants">Wybierz członków</string>
   <string name="creating_conference">Tworzenie konferencji...</string>
   <string name="invite_again">Zaproś ponownie</string>
+  <string name="gp_short">Krótki</string>
+  <string name="gp_medium">Średni</string>
+  <string name="gp_long">Długi</string>
   <string name="pref_broadcast_last_activity">Dziel się ostatnią interakcją.</string>
   <string name="pref_broadcast_last_activity_summary">Powiadamiaj kontakty, że używasz Conversations</string>
   <string name="pref_privacy">Prywatność</string>
@@ -681,4 +684,15 @@ Conversations będzie wciąż ograniczał transfer danych, kiedy tylko to jest m
   <string name="blindly_trusted_omemo_keys">Ślepo ufaj kluczom OMEMO</string>
   <string name="not_trusted">Niezaufane</string>
   <string name="invalid_barcode">Nieprawidłowy kod kreskowy 2D</string>
+  <string name="pref_clean_cache_summary">Wyczyść cache (używane przez kamerę)</string>
+  <string name="pref_clean_cache">Wyczyść cache</string>
+  <string name="pref_clean_private_storage">Wyczyść prywatny magazyn</string>
+  <string name="pref_clean_private_storage_summary">Wyczyść prywatny magazyn gdzie trzymane są pliki (mogą zostać pobrane ponownie z serwera)</string>
+  <string name="i_followed_this_link_from_a_trusted_source">Trafiłem na ten link w zaufanym źródle</string>
+  <string name="verifying_omemo_keys_trusted_source">Zaraz zweryfikujesz klucz OMEMO %1$s klikając w link. Jest to bezpieczne jedynie, kiedy link pochodzi z zaufanego źródła gdzie tylko %2$s mógł go opublikować.</string>
+  <string name="verify_omemo_keys">Zweryfikuj klucze OMEMO</string>
+  <string name="show_inactive_devices">Pokaż nieaktywne urządzenia</string>
+  <string name="hide_inactive_devices">Ukryj nieaktywne urządzenia</string>
+  <string name="distrust_omemo_key">Przestań ufać urządzeniu</string>
+  <string name="distrust_omemo_key_text">Czy jesteś pewien, że chcesz cofnąć weryfikację tego urządzenia?\nUrządzenie to, i wiadomości z niego przychodzące będą oznaczane jako niezaufane.</string>
 </resources>
