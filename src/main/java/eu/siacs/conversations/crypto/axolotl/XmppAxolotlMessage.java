@@ -250,16 +250,16 @@ public class XmppAxolotlMessage {
 		return encryptionElement;
 	}
 
-	private byte[] unpackKey(XmppAxolotlSession session, Integer sourceDeviceId) {
+	private byte[] unpackKey(XmppAxolotlSession session, Integer sourceDeviceId) throws CryptoFailedException {
 		XmppAxolotlSession.AxolotlKey encryptedKey = keys.get(sourceDeviceId);
-		return (encryptedKey != null) ? session.processReceiving(encryptedKey) : null;
+		if (encryptedKey == null) {
+			throw new CryptoFailedException("Message was not encrypted for this device");
+		}
+		return session.processReceiving(encryptedKey);
 	}
 
-	public XmppAxolotlKeyTransportMessage getParameters(XmppAxolotlSession session, Integer sourceDeviceId) {
-		byte[] key = unpackKey(session, sourceDeviceId);
-		return (key != null)
-				? new XmppAxolotlKeyTransportMessage(session.getFingerprint(), key, getIV())
-				: null;
+	public XmppAxolotlKeyTransportMessage getParameters(XmppAxolotlSession session, Integer sourceDeviceId) throws CryptoFailedException {
+		return new XmppAxolotlKeyTransportMessage(session.getFingerprint(), unpackKey(session, sourceDeviceId), getIV());
 	}
 
 	public XmppAxolotlPlaintextMessage decrypt(XmppAxolotlSession session, Integer sourceDeviceId) throws CryptoFailedException {

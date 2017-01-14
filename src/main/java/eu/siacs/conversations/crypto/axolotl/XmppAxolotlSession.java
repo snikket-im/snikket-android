@@ -82,7 +82,7 @@ public class XmppAxolotlSession implements Comparable<XmppAxolotlSession> {
 	}
 
 	@Nullable
-	public byte[] processReceiving(AxolotlKey encryptedKey) {
+	public byte[] processReceiving(AxolotlKey encryptedKey) throws CryptoFailedException {
 		byte[] plaintext = null;
 		FingerprintStatus status = getTrust();
 		if (!status.isCompromised()) {
@@ -90,8 +90,7 @@ public class XmppAxolotlSession implements Comparable<XmppAxolotlSession> {
 				try {
 					PreKeyWhisperMessage message = new PreKeyWhisperMessage(encryptedKey.key);
 					if (!message.getPreKeyId().isPresent()) {
-						Log.w(Config.LOGTAG, AxolotlService.getLogprefix(account) + "PreKeyWhisperMessage did not contain a PreKeyId");
-						return null;
+						throw new CryptoFailedException("PreKeyWhisperMessage did not contain a PreKeyId");
 					}
 					Log.i(Config.LOGTAG, AxolotlService.getLogprefix(account) + "PreKeyWhisperMessage received, new session ID:" + message.getSignedPreKeyId() + "/" + message.getPreKeyId());
 					IdentityKey msgIdentityKey = message.getIdentityKey();
@@ -107,19 +106,19 @@ public class XmppAxolotlSession implements Comparable<XmppAxolotlSession> {
 					WhisperMessage message = new WhisperMessage(encryptedKey.key);
 					plaintext = cipher.decrypt(message);
 				} catch (InvalidKeyException | InvalidKeyIdException | UntrustedIdentityException e) {
-					Log.w(Config.LOGTAG, AxolotlService.getLogprefix(account) + "Error decrypting axolotl header, " + e.getClass().getName() + ": " + e.getMessage());
+					throw new CryptoFailedException("Error decrypting axolotl header, \" + e.getClass().getName() + \": \" + e.getMessage()");
 				}
 			} catch (LegacyMessageException | InvalidMessageException | DuplicateMessageException | NoSessionException e) {
-				Log.w(Config.LOGTAG, AxolotlService.getLogprefix(account) + "Error decrypting axolotl header, " + e.getClass().getName() + ": " + e.getMessage());
+				throw new CryptoFailedException("Error decrypting axolotl header, \" + e.getClass().getName() + \": \" + e.getMessage()");
 			}
-
-			if (plaintext != null) {
-				if (!status.isActive()) {
-					setTrust(status.toActive());
-				}
+			if (plaintext==null) {
+				throw new CryptoFailedException("plaintext unexpectedly null");
+			}
+			if (!status.isActive()) {
+				setTrust(status.toActive());
 			}
 		} else {
-			Log.d(Config.LOGTAG,account.getJid().toBareJid()+" not encrypting omemo message from fingerprint "+getFingerprint()+" because it was marked as compromised");
+			throw new CryptoFailedException("not encrypting omemo message from fingerprint "+getFingerprint()+" because it was marked as compromised");
 		}
 		return plaintext;
 	}
