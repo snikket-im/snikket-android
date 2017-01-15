@@ -4,6 +4,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
+import org.bouncycastle.math.ec.PreCompInfo;
 import org.whispersystems.libaxolotl.AxolotlAddress;
 import org.whispersystems.libaxolotl.DuplicateMessageException;
 import org.whispersystems.libaxolotl.IdentityKey;
@@ -18,9 +19,11 @@ import org.whispersystems.libaxolotl.UntrustedIdentityException;
 import org.whispersystems.libaxolotl.protocol.CiphertextMessage;
 import org.whispersystems.libaxolotl.protocol.PreKeyWhisperMessage;
 import org.whispersystems.libaxolotl.protocol.WhisperMessage;
+import org.whispersystems.libaxolotl.util.guava.Optional;
 
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.entities.Account;
+import eu.siacs.conversations.utils.CryptoHelper;
 
 public class XmppAxolotlSession implements Comparable<XmppAxolotlSession> {
 	private final SessionCipher cipher;
@@ -83,36 +86,36 @@ public class XmppAxolotlSession implements Comparable<XmppAxolotlSession> {
 
 	@Nullable
 	public byte[] processReceiving(AxolotlKey encryptedKey) throws CryptoFailedException {
-		byte[] plaintext = null;
+		byte[] plaintext;
 		FingerprintStatus status = getTrust();
 		if (!status.isCompromised()) {
 			try {
+				CiphertextMessage ciphertextMessage;
 				try {
-					PreKeyWhisperMessage message = new PreKeyWhisperMessage(encryptedKey.key);
-					if (!message.getPreKeyId().isPresent()) {
+					ciphertextMessage = new PreKeyWhisperMessage(encryptedKey.key);
+					Optional<Integer> optionalPreKeyId = ((PreKeyWhisperMessage) ciphertextMessage).getPreKeyId();
+					IdentityKey identityKey = ((PreKeyWhisperMessage) ciphertextMessage).getIdentityKey();
+					if (!optionalPreKeyId.isPresent()) {
 						throw new CryptoFailedException("PreKeyWhisperMessage did not contain a PreKeyId");
 					}
-					Log.i(Config.LOGTAG, AxolotlService.getLogprefix(account) + "PreKeyWhisperMessage received, new session ID:" + message.getSignedPreKeyId() + "/" + message.getPreKeyId());
-					IdentityKey msgIdentityKey = message.getIdentityKey();
-					if (this.identityKey != null && !this.identityKey.equals(msgIdentityKey)) {
-						Log.e(Config.LOGTAG, AxolotlService.getLogprefix(account) + "Had session with fingerprint " + this.getFingerprint() + ", received message with fingerprint " + msgIdentityKey.getFingerprint());
-					} else {
-						this.identityKey = msgIdentityKey;
-						plaintext = cipher.decrypt(message);
-						preKeyId = message.getPreKeyId().get();
+					preKeyId = optionalPreKeyId.get();
+					if (this.identityKey != null && !this.identityKey.equals(identityKey)) {
+						throw new CryptoFailedException("Received PreKeyWhisperMessage but preexisting identity key changed.");
 					}
-				} catch (InvalidMessageException | InvalidVersionException e) {
-					Log.i(Config.LOGTAG, AxolotlService.getLogprefix(account) + "WhisperMessage received");
-					WhisperMessage message = new WhisperMessage(encryptedKey.key);
-					plaintext = cipher.decrypt(message);
-				} catch (InvalidKeyException | InvalidKeyIdException | UntrustedIdentityException e) {
-					throw new CryptoFailedException("Error decrypting axolotl header, \" + e.getClass().getName() + \": \" + e.getMessage()");
+					this.identityKey = identityKey;
+				} catch (InvalidVersionException | InvalidMessageException e) {
+					ciphertextMessage = new WhisperMessage(encryptedKey.key);
 				}
-			} catch (LegacyMessageException | InvalidMessageException | DuplicateMessageException | NoSessionException e) {
-				throw new CryptoFailedException("Error decrypting axolotl header, \" + e.getClass().getName() + \": \" + e.getMessage()");
-			}
-			if (plaintext==null) {
-				throw new CryptoFailedException("plaintext unexpectedly null");
+				if (ciphertextMessage instanceof PreKeyWhisperMessage) {
+					plaintext = cipher.decrypt((PreKeyWhisperMessage) ciphertextMessage);
+				} else {
+					plaintext = cipher.decrypt((WhisperMessage) ciphertextMessage);
+				}
+			} catch (InvalidKeyException | LegacyMessageException | InvalidMessageException | DuplicateMessageException | NoSessionException | InvalidKeyIdException | UntrustedIdentityException e) {
+				if (!(e instanceof DuplicateMessageException)) {
+					e.printStackTrace();
+				}
+				throw new CryptoFailedException("Error decrypting WhisperMessage " + e.getClass().getSimpleName() + ": " + e.getMessage());
 			}
 			if (!status.isActive()) {
 				setTrust(status.toActive());
