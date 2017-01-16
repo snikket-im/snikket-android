@@ -1,5 +1,8 @@
 ###Changelog
 
+####Version 1.15.4
+* bug fixes
+
 ####Version 1.15.3
 * show offline contacts in MUC as grayed-out
 * don't transcode gifs. add overlay indication to gifs
