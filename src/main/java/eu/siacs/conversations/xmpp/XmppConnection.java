@@ -13,8 +13,6 @@ import android.util.Log;
 import android.util.Pair;
 import android.util.SparseArray;
 
-import org.json.JSONException;
-import org.json.JSONObject;
 import org.xmlpull.v1.XmlPullParserException;
 
 import java.io.ByteArrayInputStream;
@@ -26,8 +24,8 @@ import java.net.IDN;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.net.Socket;
-import java.net.UnknownHostException;
 import java.net.URL;
+import java.net.UnknownHostException;
 import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
 import java.security.Principal;
@@ -61,6 +59,7 @@ import eu.siacs.conversations.crypto.sasl.External;
 import eu.siacs.conversations.crypto.sasl.Plain;
 import eu.siacs.conversations.crypto.sasl.SaslMechanism;
 import eu.siacs.conversations.crypto.sasl.ScramSha1;
+import eu.siacs.conversations.crypto.sasl.ScramSha256;
 import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.entities.Message;
 import eu.siacs.conversations.entities.ServiceDiscoveryResult;
@@ -855,6 +854,8 @@ public class XmppConnection implements Runnable {
 		auth.setAttribute("xmlns", "urn:ietf:params:xml:ns:xmpp-sasl");
 		if (mechanisms.contains("EXTERNAL") && account.getPrivateKeyAlias() != null) {
 			saslMechanism = new External(tagWriter, account, mXmppConnectionService.getRNG());
+		} else if (mechanisms.contains("SCRAM-SHA-256")) {
+			saslMechanism = new ScramSha256(tagWriter, account, mXmppConnectionService.getRNG());
 		} else if (mechanisms.contains("SCRAM-SHA-1")) {
 			saslMechanism = new ScramSha1(tagWriter, account, mXmppConnectionService.getRNG());
 		} else if (mechanisms.contains("PLAIN")) {
