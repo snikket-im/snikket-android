@@ -680,25 +680,41 @@ public class Conversation extends AbstractEntity implements Blockable, Comparabl
 		return this.nextCounterpart;
 	}
 
-	private int getMostRecentlyUsedIncomingEncryption() {
-		synchronized (this.messages) {
-			for(int i = this.messages.size() -1; i >= 0; --i) {
-				final Message m = this.messages.get(i);
-				if (m.getStatus() == Message.STATUS_RECEIVED) {
-					final int e = m.getEncryption();
-					if (e == Message.ENCRYPTION_DECRYPTED || e == Message.ENCRYPTION_DECRYPTION_FAILED) {
-						return Message.ENCRYPTION_PGP;
-					} else {
-						return e;
-					}
-				}
-			}
-		}
-		return Message.ENCRYPTION_NONE;
+	public int getNextEncryption() {
+		return fixAvailableEncryption(this.getIntAttribute(ATTRIBUTE_NEXT_ENCRYPTION, getDefaultEncryption()));
 	}
 
-	public int getNextEncryption() {
-		return Math.max(this.getIntAttribute(ATTRIBUTE_NEXT_ENCRYPTION, Message.ENCRYPTION_NONE), Message.ENCRYPTION_NONE);
+	private int fixAvailableEncryption(int selectedEncryption) {
+		switch(selectedEncryption) {
+			case Message.ENCRYPTION_NONE:
+				return Config.supportUnencrypted() ? selectedEncryption : getDefaultEncryption();
+			case Message.ENCRYPTION_AXOLOTL:
+				return Config.supportOmemo() ? selectedEncryption : getDefaultEncryption();
+			case Message.ENCRYPTION_OTR:
+				return Config.supportOtr() ? selectedEncryption : getDefaultEncryption();
+			case Message.ENCRYPTION_PGP:
+			case Message.ENCRYPTION_DECRYPTED:
+			case Message.ENCRYPTION_DECRYPTION_FAILED:
+				return Config.supportOpenPgp() ? Message.ENCRYPTION_PGP : getDefaultEncryption();
+			default:
+				return getDefaultEncryption();
+		}
+	}
+
+	private int getDefaultEncryption() {
+		AxolotlService axolotlService = account.getAxolotlService();
+		if (Config.supportUnencrypted()) {
+			return Message.ENCRYPTION_NONE;
+		} else if (Config.supportOmemo()
+				&& (axolotlService != null && axolotlService.isConversationAxolotlCapable(this) || !Config.multipleEncryptionChoices())) {
+			return Message.ENCRYPTION_AXOLOTL;
+		} else if (Config.supportOtr() && mode == MODE_SINGLE) {
+			return Message.ENCRYPTION_OTR;
+		} else if (Config.supportOpenPgp()) {
+			return Message.ENCRYPTION_PGP;
+		} else {
+			return Message.ENCRYPTION_NONE;
+		}
 	}
 
 	public void setNextEncryption(int encryption) {
