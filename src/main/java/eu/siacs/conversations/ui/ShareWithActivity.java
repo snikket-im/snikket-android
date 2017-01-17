@@ -310,15 +310,61 @@ public class ShareWithActivity extends XmppActivity implements XmppConnectionSer
 		} else {
 			if (mReturnToPrevious && this.share.text != null && !this.share.text.isEmpty() ) {
 				final OnPresenceSelected callback = new OnPresenceSelected() {
-					@Override
-					public void onPresenceSelected() {
-						Message message = new Message(conversation,share.text, conversation.getNextEncryption());
-						if (conversation.getNextEncryption() == Message.ENCRYPTION_OTR) {
-							message.setCounterpart(conversation.getNextCounterpart());
-						}
+
+					private void finishAndSend(Message message) {
 						xmppConnectionService.sendMessage(message);
 						replaceToast(getString(R.string.shared_text_with_x, conversation.getName()));
 						finish();
+					}
+
+					private UiCallback<Message> messageEncryptionCallback = new UiCallback<Message>() {
+						@Override
+						public void success(final Message message) {
+							message.setEncryption(Message.ENCRYPTION_DECRYPTED);
+							runOnUiThread(new Runnable() {
+								@Override
+								public void run() {
+									finishAndSend(message);
+								}
+							});
+						}
+
+						@Override
+						public void error(final int errorCode, Message object) {
+							runOnUiThread(new Runnable() {
+								@Override
+								public void run() {
+									replaceToast(getString(errorCode));
+									finish();
+								}
+							});
+						}
+
+						@Override
+						public void userInputRequried(PendingIntent pi, Message object) {
+							finish();
+						}
+					};
+
+					@Override
+					public void onPresenceSelected() {
+
+						final int encryption = conversation.getNextEncryption();
+
+						Message message = new Message(conversation,share.text, encryption);
+
+						Log.d(Config.LOGTAG,"on presence selected encrpytion="+encryption);
+
+						if (encryption == Message.ENCRYPTION_PGP) {
+							replaceToast(getString(R.string.encrypting_message));
+							xmppConnectionService.getPgpEngine().encrypt(message,messageEncryptionCallback);
+							return;
+						}
+
+						if (encryption == Message.ENCRYPTION_OTR) {
+							message.setCounterpart(conversation.getNextCounterpart());
+						}
+						finishAndSend(message);
 					}
 				};
 				if (conversation.getNextEncryption() == Message.ENCRYPTION_OTR) {

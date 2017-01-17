@@ -724,4 +724,5 @@
 	<string name="hide_inactive_devices">Hide inactive devices</string>
 	<string name="distrust_omemo_key">Distrust device</string>
 	<string name="distrust_omemo_key_text">Are you sure you want to remove the verification for this device?\nThis device and messages coming from that device will be marked as untrusted.</string>
+	<string name="encrypting_message">Encrypting message</string>
 </resources>
