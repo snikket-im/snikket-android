@@ -522,7 +522,7 @@ public class NotificationService {
 		return (m.find() || message.getType() == Message.TYPE_PRIVATE);
 	}
 
-	private static Pattern generateNickHighlightPattern(final String nick) {
+	public static Pattern generateNickHighlightPattern(final String nick) {
 		// We expect a word boundary, i.e. space or start of string, followed by
 		// the
 		// nick (matched in case-insensitive manner), followed by optional
