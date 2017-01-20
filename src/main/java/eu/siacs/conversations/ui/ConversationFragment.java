@@ -34,6 +34,7 @@ import android.widget.AbsListView;
 import android.widget.AbsListView.OnScrollListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.AdapterContextMenuInfo;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
@@ -849,16 +850,22 @@ public class ConversationFragment extends Fragment implements EditMessage.Keyboa
 	}
 
 	protected void highlightInConference(String nick) {
-		String oldString = mEditMessage.getText().toString().trim();
-		if (oldString.isEmpty() || mEditMessage.getSelectionStart() == 0) {
+		final Editable editable = mEditMessage.getText();
+		String oldString = editable.toString().trim();
+		final int pos = mEditMessage.getSelectionStart();
+		if (oldString.isEmpty() || pos == 0) {
 			mEditMessage.getText().insert(0, nick + ": ");
 		} else {
-			if (mEditMessage.getText().charAt(
-					mEditMessage.getSelectionStart() - 1) != ' ') {
-				nick = " " + nick;
+			final char before = editable.charAt(pos - 1);
+			final char after = editable.length() > pos ? editable.charAt(pos) : '\0';
+			if (before == '\n') {
+				editable.insert(pos, nick + ": ");
+			} else {
+				editable.insert(pos,(Character.isWhitespace(before)? "" : " ") + nick + (Character.isWhitespace(after) ? "" : " "));
+				if (Character.isWhitespace(after)) {
+					mEditMessage.setSelection(mEditMessage.getSelectionStart()+1);
+				}
 			}
-			mEditMessage.getText().insert(mEditMessage.getSelectionStart(),
-					nick + " ");
 		}
 	}
 
