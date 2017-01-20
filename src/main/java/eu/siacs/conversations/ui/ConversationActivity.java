@@ -99,6 +99,7 @@ public class ConversationActivity extends XmppActivity
 
 	private String mOpenConversation = null;
 	private boolean mPanelOpen = true;
+	private AtomicBoolean mShouldPanelBeOpen = new AtomicBoolean(false);
 	private Pair<Integer,Integer> mScrollPosition = null;
 	final private List<Uri> mPendingImageUris = new ArrayList<>();
 	final private List<Uri> mPendingFileUris = new ArrayList<>();
@@ -134,6 +135,7 @@ public class ConversationActivity extends XmppActivity
 	public void showConversationsOverview() {
 		if (mContentView instanceof SlidingPaneLayout) {
 			SlidingPaneLayout mSlidingPaneLayout = (SlidingPaneLayout) mContentView;
+			mShouldPanelBeOpen.set(true);
 			mSlidingPaneLayout.openPane();
 		}
 	}
@@ -151,6 +153,7 @@ public class ConversationActivity extends XmppActivity
 	public void hideConversationsOverview() {
 		if (mContentView instanceof SlidingPaneLayout) {
 			SlidingPaneLayout mSlidingPaneLayout = (SlidingPaneLayout) mContentView;
+			mShouldPanelBeOpen.set(false);
 			mSlidingPaneLayout.closePane();
 		}
 	}
@@ -161,8 +164,7 @@ public class ConversationActivity extends XmppActivity
 
 	public boolean isConversationsOverviewVisable() {
 		if (mContentView instanceof SlidingPaneLayout) {
-			SlidingPaneLayout mSlidingPaneLayout = (SlidingPaneLayout) mContentView;
-			return mSlidingPaneLayout.isOpen();
+			return mShouldPanelBeOpen.get();
 		} else {
 			return true;
 		}
@@ -1129,6 +1131,7 @@ public class ConversationActivity extends XmppActivity
 
 
 		if (!isConversationsOverviewVisable() || !isConversationsOverviewHideable()) {
+			Conversation c = getSelectedConversation();
 			sendReadMarkerIfNecessary(getSelectedConversation());
 		}
 
