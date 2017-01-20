@@ -1,5 +1,9 @@
 ###Changelog
 
+####Version 1.15.5
+* show nick as bold text when mentioned in conference
+* bug fixes
+
 ####Version 1.15.4
 * bug fixes
 
