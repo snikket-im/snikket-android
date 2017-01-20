@@ -304,18 +304,19 @@ public class ConversationActivity extends XmppActivity
 
 				@Override
 				public void onPanelOpened(View arg0) {
+					mShouldPanelBeOpen.set(true);
 					updateActionBarTitle();
 					invalidateOptionsMenu();
 					hideKeyboard();
 					if (xmppConnectionServiceBound) {
-						xmppConnectionService.getNotificationService()
-								.setOpenConversation(null);
+						xmppConnectionService.getNotificationService().setOpenConversation(null);
 					}
 					closeContextMenu();
 				}
 
 				@Override
 				public void onPanelClosed(View arg0) {
+					mShouldPanelBeOpen.set(false);
 					listView.discardUndo();
 					openConversation();
 				}
@@ -1131,7 +1132,6 @@ public class ConversationActivity extends XmppActivity
 
 
 		if (!isConversationsOverviewVisable() || !isConversationsOverviewHideable()) {
-			Conversation c = getSelectedConversation();
 			sendReadMarkerIfNecessary(getSelectedConversation());
 		}
 
@@ -1268,6 +1268,9 @@ public class ConversationActivity extends XmppActivity
 
 		if (!ExceptionHelper.checkForCrash(this, this.xmppConnectionService)) {
 			openBatteryOptimizationDialogIfNeeded();
+		}
+		if (isConversationsOverviewVisable() && isConversationsOverviewHideable()) {
+			xmppConnectionService.getNotificationService().setOpenConversation(null);
 		}
 	}
 
