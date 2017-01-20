@@ -756,7 +756,7 @@ public class JingleConnection implements Transferable {
 	}
 
 	private void sendFallbackToIbb() {
-		Log.d(Config.LOGTAG, "sending fallback to ibb");
+		Log.d(Config.LOGTAG, account.getJid().toBareJid()+": sending fallback to ibb");
 		JinglePacket packet = this.bootstrapPacket("transport-replace");
 		Content content = new Content(this.contentCreator, this.contentName);
 		this.transportId = this.mJingleConnectionManager.nextRandomId();
@@ -766,6 +766,18 @@ public class JingleConnection implements Transferable {
 		packet.setContent(content);
 		this.sendJinglePacket(packet);
 	}
+
+	OnTransportConnected onIbbTransportConnected = new OnTransportConnected() {
+		@Override
+		public void failed() {
+			Log.d(Config.LOGTAG, "ibb open failed");
+		}
+
+		@Override
+		public void established() {
+			JingleConnection.this.transport.send(file, onFileTransmissionSatusChanged);
+		}
+	};
 
 	private boolean receiveFallbackToIbb(JinglePacket packet) {
 		Log.d(Config.LOGTAG, "receiving fallack to ibb");
@@ -779,13 +791,28 @@ public class JingleConnection implements Transferable {
 		}
 		this.transportId = packet.getJingleContent().getTransportId();
 		this.transport = new JingleInbandTransport(this, this.transportId, this.ibbBlockSize);
-		this.transport.receive(file, onFileTransmissionSatusChanged);
+
 		JinglePacket answer = bootstrapPacket("transport-accept");
 		Content content = new Content("initiator", "a-file-offer");
 		content.setTransportId(this.transportId);
 		content.ibbTransport().setAttribute("block-size",this.ibbBlockSize);
 		answer.setContent(content);
-		this.sendJinglePacket(answer);
+
+
+		if (initiator.equals(account.getJid())) {
+			this.sendJinglePacket(answer, new OnIqPacketReceived() {
+				@Override
+				public void onIqPacketReceived(Account account, IqPacket packet) {
+					if (packet.getType() == IqPacket.TYPE.RESULT) {
+						Log.d(Config.LOGTAG, account.getJid().toBareJid() + " recipient ACKed our transport-accept. creating ibb");
+						transport.connect(onIbbTransportConnected);
+					}
+				}
+			});
+		} else {
+			this.transport.receive(file, onFileTransmissionSatusChanged);
+			this.sendJinglePacket(answer);
+		}
 		return true;
 	}
 
@@ -800,19 +827,13 @@ public class JingleConnection implements Transferable {
 				}
 			}
 			this.transport = new JingleInbandTransport(this, this.transportId, this.ibbBlockSize);
-			this.transport.connect(new OnTransportConnected() {
 
-				@Override
-				public void failed() {
-					Log.d(Config.LOGTAG, "ibb open failed");
-				}
-
-				@Override
-				public void established() {
-					JingleConnection.this.transport.send(file,
-							onFileTransmissionSatusChanged);
-				}
-			});
+			//might be receive instead if we are not initiating
+			if (initiator.equals(account.getJid())) {
+				this.transport.connect(onIbbTransportConnected);
+			} else {
+				this.transport.receive(file,onFileTransmissionSatusChanged);
+			}
 			return true;
 		} else {
 			return false;

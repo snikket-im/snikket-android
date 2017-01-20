@@ -142,6 +142,9 @@ public class JingleConnectionManager extends AbstractConnectionManager {
 		} else if (packet.hasChild("data", "http://jabber.org/protocol/ibb")) {
 			payload = packet.findChild("data", "http://jabber.org/protocol/ibb");
 			sid = payload.getAttribute("sid");
+		} else if (packet.hasChild("close","http://jabber.org/protocol/ibb")) {
+			payload = packet.findChild("close", "http://jabber.org/protocol/ibb");
+			sid = payload.getAttribute("sid");
 		}
 		if (sid != null) {
 			for (JingleConnection connection : connections) {

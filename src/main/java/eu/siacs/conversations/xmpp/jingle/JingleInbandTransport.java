@@ -47,7 +47,9 @@ public class JingleInbandTransport extends JingleTransport {
 		@Override
 		public void onIqPacketReceived(Account account, IqPacket packet) {
 			if (connected && packet.getType() == IqPacket.TYPE.RESULT) {
-				sendNextBlock();
+				if (remainingSize > 0) {
+					sendNextBlock();
+				}
 			}
 		}
 	};
@@ -58,6 +60,14 @@ public class JingleInbandTransport extends JingleTransport {
 		this.counterpart = connection.getCounterPart();
 		this.blockSize = blocksize;
 		this.sessionId = sid;
+	}
+
+	private void sendClose() {
+		IqPacket iq = new IqPacket(IqPacket.TYPE.SET);
+		iq.setTo(this.counterpart);
+		Element close = iq.addChild("close", "http://jabber.org/protocol/ibb");
+		close.setAttribute("sid", this.sessionId);
+		this.account.getXmppConnection().sendIqPacket(iq, null);
 	}
 
 	public void connect(final OnTransportConnected callback) {
@@ -155,6 +165,7 @@ public class JingleInbandTransport extends JingleTransport {
 		try {
 			int count = fileInputStream.read(buffer);
 			if (count == -1) {
+				sendClose();
 				file.setSha1Sum(CryptoHelper.bytesToHex(digest.digest()));
 				this.onFileTransmissionStatusChanged.onFileTransmitted(file);
 				fileInputStream.close();
@@ -181,12 +192,13 @@ public class JingleInbandTransport extends JingleTransport {
 			if (this.remainingSize > 0) {
 				connection.updateProgress((int) ((((double) (this.fileSize - this.remainingSize)) / this.fileSize) * 100));
 			} else {
+				sendClose();
 				file.setSha1Sum(CryptoHelper.bytesToHex(digest.digest()));
 				this.onFileTransmissionStatusChanged.onFileTransmitted(file);
 				fileInputStream.close();
 			}
 		} catch (IOException e) {
-			Log.d(Config.LOGTAG,account.getJid().toBareJid()+": "+e.getMessage());
+			Log.d(Config.LOGTAG,account.getJid().toBareJid()+": io exception during sendNextBlock() "+e.getMessage());
 			FileBackend.close(fileInputStream);
 			this.onFileTransmissionStatusChanged.onFileTransferAborted();
 		}
@@ -232,7 +244,13 @@ public class JingleInbandTransport extends JingleTransport {
 			this.receiveNextBlock(payload.getContent());
 			this.account.getXmppConnection().sendIqPacket(
 					packet.generateResponse(IqPacket.TYPE.RESULT), null);
+		} else if (connected && payload.getName().equals("close")) {
+			this.connected = false;
+			this.account.getXmppConnection().sendIqPacket(
+					packet.generateResponse(IqPacket.TYPE.RESULT), null);
+			Log.d(Config.LOGTAG,account.getJid().toBareJid()+": received ibb close");
 		} else {
+			Log.d(Config.LOGTAG,payload.toString());
 			// TODO some sort of exception
 		}
 	}
