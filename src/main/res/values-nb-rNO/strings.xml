@@ -119,7 +119,7 @@
   <string name="pref_notification_grace_period">Fristperiode</string>
   <string name="pref_notification_grace_period_summary">Mengden tid Conversations forholder seg rolig i, etter å ha sett aktivitet på en annen enhet</string>
   <string name="pref_advanced_options">Avansert</string>
-  <string name="pref_never_send_crash">Aldri send feilrettingsrapporter</string>
+  <string name="pref_never_send_crash">Aldri send kræsjrapporter</string>
   <string name="pref_never_send_crash_summary">Ved å sende inn stabelsporinger hjelper du den pågående utviklingen av Conversations</string>
   <string name="pref_confirm_messages">Bekreft meldinger</string>
   <string name="pref_confirm_messages_summary">Lar dine kontakter vite når du har mottatt og lest deres meldinger</string>
@@ -128,7 +128,7 @@
   <string name="error_decrypting_file">I/O-feil ved dekryptering av fil</string>
   <string name="accept">Godta</string>
   <string name="error">En feil har inntruffet</string>
-  <string name="pref_grant_presence_updates">Tillat oppdateringer for tilstedeværelse</string>
+  <string name="pref_grant_presence_updates">Tilstedeværelsesoppdateringer</string>
   <string name="pref_grant_presence_updates_summary">Gi oppdatering for tilstedeværelse på forhånd til kontakter du har lagt til</string>
   <string name="subscriptions">Abonnement</string>
   <string name="your_account">Din konto</string>
@@ -138,7 +138,7 @@
   <string name="ask_for_presence_updates">Etterspør oppdateringer for tilstedeværelse</string>
   <string name="attach_choose_picture">Velg bilde</string>
   <string name="attach_take_picture">Ta bilde</string>
-  <string name="preemptively_grant">Tillat abbonnementsforespørsel på forhånd</string>
+  <string name="preemptively_grant">Tillat abonnementsforespørsel på forhånd</string>
   <string name="error_not_an_image_file">Filen du valgte er ikke et bilde</string>
   <string name="error_compressing_image">Feil ved konvertering av bildefila</string>
   <string name="error_file_not_found">Finner ikke filen</string>
@@ -308,8 +308,8 @@
   <string name="pref_quiet_hours_summary">Varslinger blir ikke spilt under stilletid</string>
   <string name="pref_use_larger_font">Øk tekststørrelse</string>
   <string name="pref_use_larger_font_summary">Bruk større tekststørrelser i hele programmet</string>
-  <string name="pref_use_send_button_to_indicate_status">Forsendelsesknappen indikerer status</string>
-  <string name="pref_use_indicate_received">Forespørr meldingskvitteringer</string>
+  <string name="pref_use_send_button_to_indicate_status">Forsendelsesknappstatus</string>
+  <string name="pref_use_indicate_received">Forespør meldingskvitteringer</string>
   <string name="pref_use_indicate_received_summary">Mottatte meldinger vil bli avmerket i grønt hvis støttet</string>
   <string name="pref_use_send_button_to_indicate_status_summary">Fargelegg send-knapp for å indikere kontakt-status</string>
   <string name="pref_expert_options_other">Annet</string>
@@ -360,7 +360,7 @@
   <string name="smp_requested">Kontakt forespurte SMP-verifisering</string>
   <string name="no_otr_session_found">Ingen gyldig OTR-økt funnet!</string>
   <string name="conversations_foreground_service">Conversations</string>
-  <string name="pref_keep_foreground_service">Behold tjenesten i forgrunnen</string>
+  <string name="pref_keep_foreground_service">Forgrunnstjeneste</string>
   <string name="pref_keep_foreground_service_summary">Forhindrer operativsystemet fra å drepe tilkoblingen din</string>
   <string name="pref_export_logs">Eksporter historikk</string>
   <string name="pref_export_logs_summary">Skriv loggføring av samtalehistorikk til SD-kort</string>
@@ -624,7 +624,7 @@
   <string name="gp_short">Kort</string>
   <string name="gp_medium">Middels</string>
   <string name="gp_long">Lang</string>
-  <string name="pref_broadcast_last_activity">Kringkast siste brukerhandling</string>
+  <string name="pref_broadcast_last_activity">Kringkast bruk</string>
   <string name="pref_broadcast_last_activity_summary">La alle dine kontakter vite når du bruker Conversations</string>
   <string name="pref_privacy">Personvern</string>
   <string name="pref_theme_options">Drakt</string>
@@ -679,4 +679,9 @@
   <string name="blindly_trusted_omemo_keys">OMEMO-nøkler du stoler blindt på</string>
   <string name="not_trusted">Ikke betrodd</string>
   <string name="invalid_barcode">Ugyldig 2D-strekkode</string>
+  <string name="verify_omemo_keys">Bekreft OMEMO-nøkler</string>
+  <string name="show_inactive_devices">Vis inaktive enheter</string>
+  <string name="hide_inactive_devices">Skjul inaktive enheter</string>
+  <string name="distrust_omemo_key">Fjern tiltro til enhet</string>
+  <string name="distrust_omemo_key_text">Er du sikker på at du vil fjerne bekreftelsen av denne enheten?\nDenne eneheten og meldinger fra den vil bli vises som \'Ikke betrodd\'.</string>
 </resources>

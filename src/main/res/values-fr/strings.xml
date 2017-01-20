@@ -332,6 +332,7 @@
   <string name="message_options">Options du message</string>
   <string name="copy_text">Copier le texte</string>
   <string name="select_text">Sélectionnez le texte</string>
+  <string name="quote">Citation</string>
   <string name="copy_original_url">Copier l\'URL</string>
   <string name="send_again">Envoyer de nouveau</string>
   <string name="file_url">URL du fichier</string>
@@ -655,7 +656,7 @@
   <string name="this_conference_has_no_members">Aucun membre dans cette conférence.</string>
   <string name="report_jid_as_spammer">Signaler ce JID comme envoyant des messages non sollicités.</string>
   <string name="pref_delete_omemo_identities">Effacer les identités OMEMO</string>
-  <string name="pref_delete_omemo_identities_summary">Régénérer vos clef OMEMO. Tous vos contacts devront vous vérifier à nouveau. À n\'utiliser qu\'en dernier recours.</string>
+  <string name="pref_delete_omemo_identities_summary">Régénérer vos clefs OMEMO. Tous vos contacts devront vous vérifier à nouveau. À n\'utiliser qu\'en dernier recours.</string>
   <string name="delete_selected_keys">Supprimer les clefs sélectionnées</string>
   <string name="error_publish_avatar_offline">Vous devez être connecté pour publier votre avatar.</string>
   <string name="show_error_message">Afficher le message d\'erreur</string>
@@ -679,4 +680,15 @@
   <string name="blindly_trusted_omemo_keys">Faire aveuglément confiance aux clefs OMEMO</string>
   <string name="not_trusted">Non approuvée</string>
   <string name="invalid_barcode">Code-barres 2D invalide</string>
+  <string name="pref_clean_cache_summary">Vide le dossier de cache (utilisé par l\'app Camera)</string>
+  <string name="pref_clean_cache">Vider le cache</string>
+  <string name="pref_clean_private_storage">Vider le stockage privé</string>
+  <string name="pref_clean_private_storage_summary">Vide le stockage privé, où les fichiers sont conservés (ils peuvent être re-téléchargés depuis le serveur)</string>
+  <string name="i_followed_this_link_from_a_trusted_source">J\'ai obtenu ce lien d\'une source de confiance</string>
+  <string name="verifying_omemo_keys_trusted_source">Vous êtes sur le point de vérifier les clefs OMEMO de %1$s en cliquant sur un lien. Cette procédure n\'est sécurisée que si le lien en question n\'a pu être publié que par %2$s et que vous l\'avez obtenu d\'une source digne de confiance.</string>
+  <string name="verify_omemo_keys">Vérifier les clefs OMEMO</string>
+  <string name="show_inactive_devices">Montrer les appareils inactifs</string>
+  <string name="hide_inactive_devices">Masquer les appareils inactifs</string>
+  <string name="distrust_omemo_key">Ne plus faire confiance à cet appareil</string>
+  <string name="distrust_omemo_key_text">Êtes-vous sûr de vouloir supprimer la vérification pour cet appareil ?\nCet appareil et les messages qui en proviennent seront marqués comme n\'étant pas dignes de confiance.</string>
 </resources>
