@@ -109,7 +109,7 @@ public final class Config {
 	public static final int MAM_MAX_MESSAGES = 500;
 
 	public static final long FREQUENT_RESTARTS_DETECTION_WINDOW = 12 * 60 * 60 * 1000; // 10 hours
-	public static final long FREQUENT_RESTARTS_THRESHOLD = 16;
+	public static final long FREQUENT_RESTARTS_THRESHOLD = 0; // previous value was 16;
 
 	public static final ChatState DEFAULT_CHATSTATE = ChatState.ACTIVE;
 	public static final int TYPING_TIMEOUT = 8;
