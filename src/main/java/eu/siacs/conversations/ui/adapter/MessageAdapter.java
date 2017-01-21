@@ -351,7 +351,7 @@ public class MessageAdapter extends ArrayAdapter<Message> implements CopyTextVie
 			char current = body.length() > i ? body.charAt(i) : '\n';
 			if (lineStart == -1) {
 				if (previous == '\n') {
-					if (current == '>' || current == '\u00bb') {
+					if ((current == '>' && !UIHelper.isPositionFollowedByNumber(body,i)) || current == '\u00bb') {
 						// Line start with quote
 						lineStart = i;
 						if (quoteStart == -1) quoteStart = i;

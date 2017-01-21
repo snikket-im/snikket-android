@@ -202,7 +202,7 @@ public class UIHelper {
 				for(String l : lines) {
 					if (l.length() > 0) {
 						char first = l.charAt(0);
-						if (first != '>' && first != '\u00bb') {
+						if ((first != '>' || isPositionFollowedByNumber(l,0)) && first != '\u00bb') {
 							String line = l.trim();
 							if (line.isEmpty()) {
 								continue;
@@ -224,6 +224,21 @@ public class UIHelper {
 				return new Pair<>(builder.length() > 256 ? builder.substring(0,256) : builder.toString(), false);
 			}
 		}
+	}
+
+	public static boolean isPositionFollowedByNumber(CharSequence body, int pos) {
+		boolean previousWasNumber = false;
+		for (int i = pos +1; i < body.length(); i++) {
+			char c = body.charAt(i);
+			if (Character.isDigit(body.charAt(i))) {
+				previousWasNumber = true;
+			} else if (previousWasNumber && (c == '.' || c == ',')) {
+				previousWasNumber = false;
+			} else {
+				return Character.isWhitespace(c) && previousWasNumber;
+			}
+		}
+		return previousWasNumber;
 	}
 
 	public static String getFileDescriptionString(final Context context, final Message message) {
