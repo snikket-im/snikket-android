@@ -624,6 +624,15 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
 							mXmppConnectionService.getAvatarService().clear(conversation);
 							mXmppConnectionService.updateMucRosterUi();
 							mXmppConnectionService.updateConversationUi();
+							if (!user.getAffiliation().ranks(MucOptions.Affiliation.MEMBER)) {
+								Jid jid = user.getRealJid();
+								List<Jid> cryptoTargets = conversation.getAcceptedCryptoTargets();
+								if (cryptoTargets.remove(user.getRealJid())) {
+									Log.d(Config.LOGTAG,account.getJid().toBareJid()+": removed "+jid+" from crypto targets of "+conversation.getName());
+									conversation.setAcceptedCryptoTargets(cryptoTargets);
+									mXmppConnectionService.updateConversation(conversation);
+								}
+							}
 						}
 					}
 				}

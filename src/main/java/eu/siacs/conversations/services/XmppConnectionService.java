@@ -55,6 +55,7 @@ import java.util.HashSet;
 import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
+import java.util.ListIterator;
 import java.util.Locale;
 import java.util.Map;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -2140,6 +2141,7 @@ public class XmppConnectionService extends Service {
 		OnIqPacketReceived callback = new OnIqPacketReceived() {
 
 			private int i = 0;
+			private boolean success = true;
 
 			@Override
 			public void onIqPacketReceived(Account account, IqPacket packet) {
@@ -2155,10 +2157,28 @@ public class XmppConnectionService extends Service {
 						}
 					}
 				} else {
+					success = false;
 					Log.d(Config.LOGTAG,account.getJid().toBareJid()+": could not request affiliation "+affiliations[i]+" in "+conversation.getJid().toBareJid());
 				}
 				++i;
 				if (i >= affiliations.length) {
+					List<Jid> members = conversation.getMucOptions().getMembers();
+					if (success) {
+						List<Jid> cryptoTargets = conversation.getAcceptedCryptoTargets();
+						boolean changed = false;
+						for(ListIterator<Jid> iterator = cryptoTargets.listIterator(); iterator.hasNext();) {
+							Jid jid = iterator.next();
+							if (!members.contains(jid)) {
+								iterator.remove();
+								Log.d(Config.LOGTAG,account.getJid().toBareJid()+": removed "+jid+" from crypto targets of "+conversation.getName());
+								changed = true;
+							}
+						}
+						if (changed) {
+							conversation.setAcceptedCryptoTargets(cryptoTargets);
+							updateConversation(conversation);
+						}
+					}
 					Log.d(Config.LOGTAG,account.getJid().toBareJid()+": retrieved members for "+conversation.getJid().toBareJid()+": "+conversation.getMucOptions().getMembers());
 					getAvatarService().clear(conversation);
 					updateMucRosterUi();
