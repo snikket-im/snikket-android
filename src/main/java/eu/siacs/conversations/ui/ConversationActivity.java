@@ -972,7 +972,7 @@ public class ConversationActivity extends XmppActivity
 		if (!isConversationsOverviewVisable()) {
 			showConversationsOverview();
 		} else {
-			moveTaskToBack(true);
+			super.onBackPressed();
 		}
 	}
 
@@ -994,6 +994,7 @@ public class ConversationActivity extends XmppActivity
 				upKey = KeyEvent.KEYCODE_DPAD_RIGHT;
 				downKey = KeyEvent.KEYCODE_DPAD_LEFT;
 				break;
+			case Surface.ROTATION_0:
 			default:
 				upKey = KeyEvent.KEYCODE_DPAD_UP;
 				downKey = KeyEvent.KEYCODE_DPAD_DOWN;
