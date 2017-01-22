@@ -99,6 +99,13 @@ public class TagWriter {
 
 	public void forceClose() {
 		finish();
+		if (outputStream != null) {
+			try {
+				outputStream.close();
+			} catch (IOException e) {
+				//ignoring
+			}
+		}
 		outputStream = null;
 	}
 }
