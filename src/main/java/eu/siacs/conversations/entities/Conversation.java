@@ -20,6 +20,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
+import java.util.ListIterator;
 import java.util.Locale;
 
 import eu.siacs.conversations.Config;
@@ -928,6 +929,17 @@ public class Conversation extends AbstractEntity implements Blockable, Comparabl
 			this.messages.addAll(index, messages);
 		}
 		account.getPgpDecryptionService().decrypt(messages);
+	}
+
+	public void expireOldMessages(long timestamp) {
+		synchronized (this.messages) {
+			for(ListIterator<Message> iterator = this.messages.listIterator(); iterator.hasNext();) {
+				if (iterator.next().getTimeSent() < timestamp) {
+					iterator.remove();
+				}
+			}
+			untieMessages();
+		}
 	}
 
 	public void sort() {

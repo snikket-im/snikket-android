@@ -724,5 +724,12 @@
 	<string name="hide_inactive_devices">Hide inactive devices</string>
 	<string name="distrust_omemo_key">Distrust device</string>
 	<string name="distrust_omemo_key_text">Are you sure you want to remove the verification for this device?\nThis device and messages coming from that device will be marked as untrusted.</string>
+	<string name="timeout_24_hours">24 hours</string>
+	<string name="timeout_7_days">7 days</string>
+	<string name="timeout_30_days">30 days</string>
+	<string name="timeout_6_months">6 months</string>
+	<string name="pref_automatically_delete_messages">Automatic message deletion</string>
+	<string name="pref_automatically_delete_messages_description">Automatically delete messages from this device that are older than the configured time frame.</string>
 	<string name="encrypting_message">Encrypting message</string>
+	<string name="not_fetching_history_retention_period">Overstepping local retention period.</string>
 </resources>

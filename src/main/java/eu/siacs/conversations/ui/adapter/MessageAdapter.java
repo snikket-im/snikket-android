@@ -52,6 +52,7 @@ import eu.siacs.conversations.entities.Message;
 import eu.siacs.conversations.entities.Message.FileParams;
 import eu.siacs.conversations.entities.Transferable;
 import eu.siacs.conversations.persistance.FileBackend;
+import eu.siacs.conversations.services.MessageArchiveService;
 import eu.siacs.conversations.services.NotificationService;
 import eu.siacs.conversations.ui.ConversationActivity;
 import eu.siacs.conversations.ui.text.DividerSpan;
@@ -565,8 +566,12 @@ public class MessageAdapter extends ArrayAdapter<Message> implements CopyTextVie
 			timestamp = System.currentTimeMillis();
 		}
 		activity.setMessagesLoaded();
-		activity.xmppConnectionService.getMessageArchiveService().query(conversation, 0, timestamp);
-		Toast.makeText(activity, R.string.fetching_history_from_server,Toast.LENGTH_LONG).show();
+		MessageArchiveService.Query query = activity.xmppConnectionService.getMessageArchiveService().query(conversation, 0, timestamp);
+		if (query != null) {
+			Toast.makeText(activity, R.string.fetching_history_from_server, Toast.LENGTH_LONG).show();
+		} else {
+			Toast.makeText(activity,R.string.not_fetching_history_retention_period, Toast.LENGTH_SHORT).show();
+		}
 	}
 
 	@Override

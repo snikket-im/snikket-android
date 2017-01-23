@@ -56,6 +56,7 @@ public class MessageArchiveService implements OnAdvancedStreamFeaturesLoaded {
 			startCatchup = lastClearDate.first;
 			reference = null;
 		}
+		startCatchup = Math.max(startCatchup,mXmppConnectionService.getAutomaticMessageDeletionDate());
 		long endCatchup = account.getXmppConnection().getLastSessionEstablished();
 		final Query query;
 		if (startCatchup == 0) {
@@ -107,12 +108,15 @@ public class MessageArchiveService implements OnAdvancedStreamFeaturesLoaded {
 
 	public Query query(Conversation conversation, long start, long end) {
 		synchronized (this.queries) {
-			if (start > end) {
-				return null;
-			}
 			final Query query = new Query(conversation, start, end,PagingOrder.REVERSE);
 			if (start==0) {
 				query.reference = conversation.getFirstMamReference();
+				Log.d(Config.LOGTAG,"setting mam reference");
+			}
+			Log.d(Config.LOGTAG,"checking max of "+start+" end "+mXmppConnectionService.getAutomaticMessageDeletionDate());
+			query.start = Math.max(start,mXmppConnectionService.getAutomaticMessageDeletionDate());
+			if (start > end) {
+				return null;
 			}
 			this.queries.add(query);
 			this.execute(query);
@@ -222,7 +226,7 @@ public class MessageArchiveService implements OnAdvancedStreamFeaturesLoaded {
 			query.getConversation().setFirstMamReference(first == null ? null : first.getContent());
 		}
 		if (complete || relevant == null || abort) {
-			final boolean done = (complete || query.getMessageCount() == 0) && query.getStart() == 0;
+			final boolean done = (complete || query.getMessageCount() == 0) && query.getStart() <= mXmppConnectionService.getAutomaticMessageDeletionDate();
 			this.finalizeQuery(query, done);
 			Log.d(Config.LOGTAG,query.getAccount().getJid().toBareJid()+": finished mam after "+query.getTotalCount()+" messages. messages left="+Boolean.toString(!done));
 			if (query.getWith() == null && query.getMessageCount() > 0) {

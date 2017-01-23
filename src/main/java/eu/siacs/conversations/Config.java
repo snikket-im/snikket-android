@@ -114,6 +114,8 @@ public final class Config {
 	public static final ChatState DEFAULT_CHATSTATE = ChatState.ACTIVE;
 	public static final int TYPING_TIMEOUT = 8;
 
+	public static final int EXPIRY_INTERVAL = 30 * 60 * 1000; // 30 minutes
+
 	public static final String ENABLED_CIPHERS[] = {
 		"TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256",
 		"TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA384",

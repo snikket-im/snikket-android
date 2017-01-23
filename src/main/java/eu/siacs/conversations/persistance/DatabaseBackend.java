@@ -769,6 +769,13 @@ public class DatabaseBackend extends SQLiteOpenHelper {
 		db.delete(Message.TABLENAME, Message.CONVERSATION + "=?", args);
 	}
 
+	public boolean expireOldMessages(long timestamp) {
+		String where = Message.TIME_SENT+"<?";
+		String[] whereArgs = {String.valueOf(timestamp)};
+		SQLiteDatabase db = this.getReadableDatabase();
+		return db.delete(Message.TABLENAME,where,whereArgs) > 0;
+	}
+
 	public Pair<Long, String> getLastMessageReceived(Account account) {
 		Cursor cursor = null;
 		try {

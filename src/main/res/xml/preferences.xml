@@ -170,11 +170,13 @@
                     android:key="btbv"
                     android:title="@string/pref_blind_trust_before_verification"
                     android:summary="@string/pref_blind_trust_before_verification_summary"/>
-                <CheckBoxPreference
-                    android:defaultValue="false"
-                    android:key="dont_save_encrypted"
-                    android:summary="@string/pref_dont_save_encrypted_summary"
-                    android:title="@string/pref_dont_save_encrypted"/>
+                <ListPreference
+                    android:key="automatic_message_deletion"
+                    android:title="@string/pref_automatically_delete_messages"
+                    android:summary="@string/pref_automatically_delete_messages_description"
+                    android:defaultValue="0"
+                    android:entries="@array/automatic_message_deletion"
+                    android:entryValues="@array/automatic_message_deletion_values" />
                 <CheckBoxPreference
                     android:defaultValue="false"
                     android:key="dont_trust_system_cas"
