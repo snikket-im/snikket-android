@@ -13,6 +13,7 @@ import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.app.ListFragment;
 import android.app.PendingIntent;
+import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
@@ -322,6 +323,23 @@ public class StartConversationActivity extends XmppActivity implements OnRosterU
     protected void openConversationForBookmark(int position) {
         Bookmark bookmark = (Bookmark) conferences.get(position);
         openConversationsForBookmark(bookmark);
+    }
+
+    protected void shareBookmarkUri() {
+        shareBookmarkUri(conference_context_id);
+    }
+
+    protected void shareBookmarkUri(int position) {
+        Bookmark bookmark = (Bookmark) conferences.get(position);
+        Intent shareIntent = new Intent();
+        shareIntent.setAction(Intent.ACTION_SEND);
+        shareIntent.putExtra(Intent.EXTRA_TEXT, "xmpp:"+bookmark.getJid().toBareJid().toString()+"?join");
+        shareIntent.setType("text/plain");
+        try {
+            startActivity(Intent.createChooser(shareIntent, getText(R.string.share_uri_with)));
+        } catch (ActivityNotFoundException e) {
+            Toast.makeText(this, R.string.no_application_to_share_uri, Toast.LENGTH_SHORT).show();
+        }
     }
 
     protected void openConversationsForBookmark(Bookmark bookmark) {
@@ -1141,6 +1159,9 @@ public class StartConversationActivity extends XmppActivity implements OnRosterU
                     break;
                 case R.id.context_join_conference:
                     activity.openConversationForBookmark();
+                    break;
+                case R.id.context_share_uri:
+                    activity.shareBookmarkUri();
                     break;
                 case R.id.context_delete_conference:
                     activity.deleteConference();
