@@ -20,6 +20,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.IBinder;
+import android.os.ParcelFileDescriptor;
 import android.os.PowerManager;
 import android.os.PowerManager.WakeLock;
 import android.os.SystemClock;
@@ -37,11 +38,15 @@ import net.java.otr4j.session.Session;
 import net.java.otr4j.session.SessionID;
 import net.java.otr4j.session.SessionImpl;
 import net.java.otr4j.session.SessionStatus;
+import net.ypresto.androidtranscoder.MediaTranscoder;
+import net.ypresto.androidtranscoder.format.MediaFormatStrategyPresets;
 
 import org.openintents.openpgp.IOpenPgpService2;
 import org.openintents.openpgp.util.OpenPgpApi;
 import org.openintents.openpgp.util.OpenPgpServiceConnection;
 
+import java.io.FileDescriptor;
+import java.io.FileNotFoundException;
 import java.math.BigInteger;
 import java.security.SecureRandom;
 import java.security.cert.CertificateException;
@@ -59,6 +64,7 @@ import java.util.ListIterator;
 import java.util.Locale;
 import java.util.Map;
 import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.atomic.AtomicLong;
 
 import de.duenndns.ssl.MemorizingTrustManager;
@@ -97,6 +103,7 @@ import eu.siacs.conversations.persistance.DatabaseBackend;
 import eu.siacs.conversations.persistance.FileBackend;
 import eu.siacs.conversations.ui.SettingsActivity;
 import eu.siacs.conversations.ui.UiCallback;
+import eu.siacs.conversations.ui.UiInformableCallback;
 import eu.siacs.conversations.utils.ConversationsFileObserver;
 import eu.siacs.conversations.utils.CryptoHelper;
 import eu.siacs.conversations.utils.ExceptionHelper;
@@ -457,10 +464,10 @@ public class XmppConnectionService extends Service {
 		}
 		message.setCounterpart(conversation.getNextCounterpart());
 		message.setType(Message.TYPE_FILE);
-		final String path = getFileBackend().getOriginalPath(uri);
 		mFileAddingExecutor.execute(new Runnable() {
-			@Override
-			public void run() {
+
+			private void processAsFile() {
+				final String path = getFileBackend().getOriginalPath(uri);
 				if (path != null) {
 					message.setRelativeFilePath(path);
 					getFileBackend().updateFileParams(message);
@@ -487,6 +494,72 @@ public class XmppConnectionService extends Service {
 						callback.error(e.getResId(), message);
 					}
 				}
+			}
+
+			private void processAsVideo() throws FileNotFoundException {
+				Log.d(Config.LOGTAG,"processing file as video");
+				message.setRelativeFilePath(message.getUuid() + ".mp4");
+				final DownloadableFile file = getFileBackend().getFile(message);
+				file.getParentFile().mkdirs();
+				ParcelFileDescriptor parcelFileDescriptor = getContentResolver().openFileDescriptor(uri, "r");
+				FileDescriptor fileDescriptor = parcelFileDescriptor.getFileDescriptor();
+				final ArrayList<Integer> progressTracker = new ArrayList<>();
+				final UiInformableCallback<Message> informableCallback;
+				if (callback instanceof UiInformableCallback) {
+					informableCallback = (UiInformableCallback<Message>) callback;
+				} else {
+					informableCallback = null;
+				}
+				MediaTranscoder.Listener listener = new MediaTranscoder.Listener() {
+					@Override
+					public void onTranscodeProgress(double progress) {
+						int p = ((int) Math.round(progress * 100) / 20) * 20;
+						if (!progressTracker.contains(p) && p != 100 && p != 0) {
+							progressTracker.add(p);
+							if (informableCallback != null) {
+
+								informableCallback.inform(getString(R.string.transcoding_video_progress, p));
+							}
+						}
+					}
+
+					@Override
+					public void onTranscodeCompleted() {
+						if (message.getEncryption() == Message.ENCRYPTION_DECRYPTED) {
+							getPgpEngine().encrypt(message, callback);
+						} else {
+							callback.success(message);
+						}
+					}
+
+					@Override
+					public void onTranscodeCanceled() {
+						processAsFile();
+					}
+
+					@Override
+					public void onTranscodeFailed(Exception e) {
+						Log.d(Config.LOGTAG,"video transcoding failed "+e.getMessage());
+						processAsFile();
+					}
+				};
+				MediaTranscoder.getInstance().transcodeVideo(fileDescriptor, file.getAbsolutePath(),
+						MediaFormatStrategyPresets.createAndroid720pStrategy(), listener);
+			}
+
+			@Override
+			public void run() {
+				final String mimeType = MimeUtils.guessMimeTypeFromUri(XmppConnectionService.this, uri);
+				if (mimeType != null && mimeType.startsWith("video/") && Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2) {
+					try {
+						processAsVideo();
+					} catch (Throwable e) {
+						processAsFile();
+					}
+				} else {
+					processAsFile();
+				}
+
 			}
 		});
 	}

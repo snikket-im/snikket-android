@@ -59,7 +59,17 @@ public class ShareWithActivity extends XmppActivity implements XmppConnectionSer
 	private Toast mToast;
 	private AtomicInteger attachmentCounter = new AtomicInteger(0);
 
-	private UiCallback<Message> attachFileCallback = new UiCallback<Message>() {
+	private UiInformableCallback<Message> attachFileCallback = new UiInformableCallback<Message>() {
+
+		@Override
+		public void inform(final String text) {
+			runOnUiThread(new Runnable() {
+				@Override
+				public void run() {
+					replaceToast(text);
+				}
+			});
+		}
 
 		@Override
 		public void userInputRequried(PendingIntent pi, Message object) {
@@ -293,8 +303,7 @@ public class ShareWithActivity extends XmppActivity implements XmppConnectionSer
 					} else {
 						replaceToast(getString(R.string.preparing_file));
 						ShareWithActivity.this.xmppConnectionService
-								.attachFileToConversation(conversation, share.uris.get(0),
-										attachFileCallback);
+								.attachFileToConversation(conversation, share.uris.get(0), attachFileCallback);
 					}
 				}
 			};

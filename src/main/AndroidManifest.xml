@@ -19,6 +19,8 @@
         android:name="android.permission.READ_PHONE_STATE"
         tools:node="remove" />
 
+    <uses-sdk tools:overrideLibrary="net.ypresto.androidtranscoder" />
+
     <application
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"

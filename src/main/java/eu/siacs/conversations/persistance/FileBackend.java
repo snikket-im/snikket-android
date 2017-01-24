@@ -71,7 +71,7 @@ public class FileBackend {
 	}
 
 	private void createNoMedia() {
-		final File nomedia = new File(getConversationsFileDirectory()+".nomedia");
+		final File nomedia = new File(getConversationsDirectory("Files")+".nomedia");
 		if (!nomedia.exists()) {
 			try {
 				nomedia.createNewFile();
@@ -82,7 +82,9 @@ public class FileBackend {
 	}
 
 	public void updateMediaScanner(File file) {
-		if (file.getAbsolutePath().startsWith(getConversationsImageDirectory())) {
+		String path = file.getAbsolutePath();
+		if (!path.startsWith(getConversationsDirectory("Files"))) {
+			new File(Environment.getExternalStorageDirectory()+"/Conversations/.nomedia").delete();
 			Intent intent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
 			intent.setData(Uri.fromFile(file));
 			mXmppConnectionService.sendBroadcast(intent);
@@ -118,14 +120,16 @@ public class FileBackend {
 			file = new DownloadableFile(path);
 		} else {
 			String mime = message.getMimeType();
-			if (mime != null && mime.startsWith("image")) {
-				file = new DownloadableFile(getConversationsImageDirectory() + path);
+			if (mime != null && mime.startsWith("image/")) {
+				file = new DownloadableFile(getConversationsDirectory("Images") + path);
+			} else if (mime != null && mime.startsWith("video/")) {
+				file = new DownloadableFile(getConversationsDirectory("Videos") + path);
 			} else {
-				file = new DownloadableFile(getConversationsFileDirectory() + path);
+				file = new DownloadableFile(getConversationsDirectory("Files") + path);
 			}
 		}
 		if (encrypted) {
-			return new DownloadableFile(getConversationsFileDirectory() + file.getName() + ".pgp");
+			return new DownloadableFile(getConversationsDirectory("Files") + file.getName() + ".pgp");
 		} else {
 			return file;
 		}
@@ -154,21 +158,11 @@ public class FileBackend {
 		return true;
 	}
 
-	public String getConversationsFileDirectory() {
+	public String getConversationsDirectory(final String type) {
 		if (Config.ONLY_INTERNAL_STORAGE) {
-			return mXmppConnectionService.getFilesDir().getAbsolutePath() + "/Files/";
+			return mXmppConnectionService.getFilesDir().getAbsolutePath()+"/"+type+"/";
 		} else {
-			return Environment.getExternalStorageDirectory().getAbsolutePath() + "/Conversations/";
-		}
-	}
-
-	public String getConversationsImageDirectory() {
-		if (Config.ONLY_INTERNAL_STORAGE) {
-			return mXmppConnectionService.getFilesDir().getAbsolutePath()+"/Pictures/";
-		} else {
-			return Environment.getExternalStoragePublicDirectory(
-					Environment.DIRECTORY_PICTURES).getAbsolutePath()
-					+ "/Conversations/";
+			return Environment.getExternalStorageDirectory() +"/Conversations/Media/Conversations "+type+"/";
 		}
 	}
 

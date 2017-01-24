@@ -1543,9 +1543,26 @@ public class ConversationActivity extends XmppActivity
 		}
 		final Toast prepareFileToast = Toast.makeText(getApplicationContext(),getText(R.string.preparing_file), Toast.LENGTH_LONG);
 		prepareFileToast.show();
-		xmppConnectionService.attachFileToConversation(conversation, uri, new UiCallback<Message>() {
+		xmppConnectionService.attachFileToConversation(conversation, uri, new UiInformableCallback<Message>() {
+			@Override
+			public void inform(final String text) {
+				hidePrepareFileToast(prepareFileToast);
+				runOnUiThread(new Runnable() {
+					@Override
+					public void run() {
+						replaceToast(text);
+					}
+				});
+			}
+
 			@Override
 			public void success(Message message) {
+				runOnUiThread(new Runnable() {
+					@Override
+					public void run() {
+						hideToast();
+					}
+				});
 				hidePrepareFileToast(prepareFileToast);
 				xmppConnectionService.sendMessage(message);
 			}

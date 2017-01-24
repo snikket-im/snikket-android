@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <paths>
     <external-path name="external" path="/"/>
-    <files-path path="Pictures/" name="pics" />
+    <files-path path="Images/" name="pictures" />
+    <files-path path="Videos" name="videos"/>
     <files-path path="Files/" name="files" />
-    <cache-path path="Camera/" name="cam" />
+    <cache-path path="Camera/" name="camera" />
 </paths>
