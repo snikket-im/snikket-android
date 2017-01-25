@@ -113,7 +113,6 @@ public class MessageArchiveService implements OnAdvancedStreamFeaturesLoaded {
 				query.reference = conversation.getFirstMamReference();
 				Log.d(Config.LOGTAG,"setting mam reference");
 			}
-			Log.d(Config.LOGTAG,"checking max of "+start+" end "+mXmppConnectionService.getAutomaticMessageDeletionDate());
 			query.start = Math.max(start,mXmppConnectionService.getAutomaticMessageDeletionDate());
 			if (start > end) {
 				return null;

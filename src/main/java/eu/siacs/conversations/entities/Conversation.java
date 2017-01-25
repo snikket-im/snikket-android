@@ -22,6 +22,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.Locale;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.crypto.PgpDecryptionService;
@@ -91,6 +92,7 @@ public class Conversation extends AbstractEntity implements Blockable, Comparabl
 	private String mLastReceivedOtrMessageId = null;
 	private String mFirstMamReference = null;
 	private Message correctingMessage;
+	public AtomicBoolean messagesLoaded = new AtomicBoolean(true);
 
 	public boolean hasMessagesLeftOnServer() {
 		return messagesLeftOnServer;

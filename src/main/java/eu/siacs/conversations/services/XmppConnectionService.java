@@ -933,6 +933,10 @@ public class XmppConnectionService extends Service {
 	}
 
 	private void expireOldMessages() {
+		expireOldMessages(false);
+	}
+
+	public void expireOldMessages(final boolean resetHasMessagesLeftOnServer) {
 		mLastExpiryRun.set(SystemClock.elapsedRealtime());
 		mDatabaseExecutor.execute(new Runnable() {
 			@Override
@@ -943,6 +947,10 @@ public class XmppConnectionService extends Service {
 					synchronized (XmppConnectionService.this.conversations) {
 						for (Conversation conversation : XmppConnectionService.this.conversations) {
 							conversation.expireOldMessages(timestamp);
+							if (resetHasMessagesLeftOnServer) {
+								conversation.messagesLoaded.set(true);
+								conversation.setHasMessagesLeftOnServer(true);
+							}
 						}
 					}
 					updateConversationUi();

@@ -1787,11 +1787,4 @@ public class ConversationActivity extends XmppActivity
 	public boolean highlightSelectedConversations() {
 		return !isConversationsOverviewHideable() || this.conversationWasSelectedByKeyboard;
 	}
-
-	public void setMessagesLoaded() {
-		if (mConversationFragment != null) {
-			mConversationFragment.setMessagesLoaded();
-			mConversationFragment.updateMessages();
-		}
-	}
 }

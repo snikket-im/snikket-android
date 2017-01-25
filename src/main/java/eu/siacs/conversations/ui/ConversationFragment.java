@@ -120,7 +120,6 @@ public class ConversationFragment extends Fragment implements EditMessage.Keyboa
 	private RelativeLayout snackbar;
 	private TextView snackbarMessage;
 	private TextView snackbarAction;
-	private boolean messagesLoaded = true;
 	private Toast messageLoaderToast;
 
 	private OnScrollListener mOnScrollListener = new OnScrollListener() {
@@ -135,14 +134,13 @@ public class ConversationFragment extends Fragment implements EditMessage.Keyboa
 		public void onScroll(AbsListView view, int firstVisibleItem,
 							 int visibleItemCount, int totalItemCount) {
 			synchronized (ConversationFragment.this.messageList) {
-				if (firstVisibleItem < 5 && messagesLoaded && messageList.size() > 0) {
+				if (firstVisibleItem < 5 && conversation != null && conversation.messagesLoaded.compareAndSet(true,false) && messageList.size() > 0) {
 					long timestamp;
 					if (messageList.get(0).getType() == Message.TYPE_STATUS && messageList.size() >= 2) {
 						timestamp = messageList.get(1).getTimeSent();
 					} else {
 						timestamp = messageList.get(0).getTimeSent();
 					}
-					messagesLoaded = false;
 					activity.xmppConnectionService.loadMoreMessages(conversation, timestamp, new XmppConnectionService.OnMoreMessagesLoaded() {
 						@Override
 						public void onMoreMessagesLoaded(final int c, Conversation conversation) {
@@ -171,7 +169,6 @@ public class ConversationFragment extends Fragment implements EditMessage.Keyboa
 									messageListAdapter.notifyDataSetChanged();
 									int pos = Math.max(getIndexOf(uuid,messageList),0);
 									messagesView.setSelectionFromTop(pos, pxOffset);
-									messagesLoaded = true;
 									if (messageLoaderToast != null) {
 										messageLoaderToast.cancel();
 									}
@@ -375,10 +372,6 @@ public class ConversationFragment extends Fragment implements EditMessage.Keyboa
 	};
 	private ConversationActivity activity;
 	private Message selectedMessage;
-
-	public void setMessagesLoaded() {
-		this.messagesLoaded = true;
-	}
 
 	private void sendMessage() {
 		final String body = mEditMessage.getText().toString();
@@ -913,7 +906,7 @@ public class ConversationFragment extends Fragment implements EditMessage.Keyboa
 		messageListAdapter.updatePreferences();
 		this.messagesView.setAdapter(messageListAdapter);
 		updateMessages();
-		this.messagesLoaded = true;
+		this.conversation.messagesLoaded.set(true);
 		synchronized (this.messageList) {
 			final Message first = conversation.getFirstUnreadMessage();
 			final int bottom = Math.max(0, this.messageList.size() - 1);
