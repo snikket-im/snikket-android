@@ -934,16 +934,21 @@ public class XmppConnectionService extends Service {
 
 	private void expireOldMessages() {
 		mLastExpiryRun.set(SystemClock.elapsedRealtime());
-		synchronized (this.conversations) {
-			long timestamp = getAutomaticMessageDeletionDate();
-			if (timestamp > 0) {
-				databaseBackend.expireOldMessages(timestamp);
-				for (Conversation conversation : this.conversations) {
-					conversation.expireOldMessages(timestamp);
+		mDatabaseExecutor.execute(new Runnable() {
+			@Override
+			public void run() {
+				long timestamp = getAutomaticMessageDeletionDate();
+				if (timestamp > 0) {
+					databaseBackend.expireOldMessages(timestamp);
+					synchronized (XmppConnectionService.this.conversations) {
+						for (Conversation conversation : XmppConnectionService.this.conversations) {
+							conversation.expireOldMessages(timestamp);
+						}
+					}
+					updateConversationUi();
 				}
-				updateConversationUi();
 			}
-		}
+		});
 	}
 
 	public boolean hasInternetConnection() {

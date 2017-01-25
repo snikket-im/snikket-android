@@ -7,6 +7,7 @@ import android.database.DatabaseUtils;
 import android.database.sqlite.SQLiteCantOpenDatabaseException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.os.Environment;
 import android.util.Base64;
 import android.util.Log;
 import android.util.Pair;
@@ -21,6 +22,7 @@ import org.whispersystems.libaxolotl.state.SessionRecord;
 import org.whispersystems.libaxolotl.state.SignedPreKeyRecord;
 
 import java.io.ByteArrayInputStream;
+import java.io.File;
 import java.io.IOException;
 import java.security.cert.CertificateEncodingException;
 import java.security.cert.CertificateException;
@@ -47,6 +49,7 @@ import eu.siacs.conversations.entities.Message;
 import eu.siacs.conversations.entities.PresenceTemplate;
 import eu.siacs.conversations.entities.Roster;
 import eu.siacs.conversations.entities.ServiceDiscoveryResult;
+import eu.siacs.conversations.utils.MimeUtils;
 import eu.siacs.conversations.xmpp.jid.InvalidJidException;
 import eu.siacs.conversations.xmpp.jid.Jid;
 
@@ -55,7 +58,7 @@ public class DatabaseBackend extends SQLiteOpenHelper {
 	private static DatabaseBackend instance = null;
 
 	private static final String DATABASE_NAME = "history";
-	private static final int DATABASE_VERSION = 33;
+	private static final int DATABASE_VERSION = 34;
 
 	private static String CREATE_CONTATCS_STATEMENT = "create table "
 			+ Contact.TABLENAME + "(" + Contact.ACCOUNT + " TEXT, "
@@ -146,6 +149,8 @@ public class DatabaseBackend extends SQLiteOpenHelper {
 
 	private static String CREATE_START_TIMES_TABLE = "create table "+START_TIMES_TABLE+" (timestamp NUMBER);";
 
+	private static String CREATE_MESSAGE_TIME_INDEX = "create INDEX message_time_index ON "+Message.TABLENAME+"("+Message.TIME_SENT+")";
+
 	private DatabaseBackend(Context context) {
 		super(context, DATABASE_NAME, null, DATABASE_VERSION);
 	}
@@ -193,7 +198,7 @@ public class DatabaseBackend extends SQLiteOpenHelper {
 				+ Message.CONVERSATION + ") REFERENCES "
 				+ Conversation.TABLENAME + "(" + Conversation.UUID
 				+ ") ON DELETE CASCADE);");
-
+		db.execSQL(CREATE_MESSAGE_TIME_INDEX);
 		db.execSQL(CREATE_CONTATCS_STATEMENT);
 		db.execSQL(CREATE_DISCOVERY_RESULTS_STATEMENT);
 		db.execSQL(CREATE_SESSIONS_STATEMENT);
@@ -387,6 +392,45 @@ public class DatabaseBackend extends SQLiteOpenHelper {
 		if (oldVersion < 33 && newVersion >= 33) {
 			String whereClause = SQLiteAxolotlStore.OWN+"=1";
 			db.update(SQLiteAxolotlStore.IDENTITIES_TABLENAME,createFingerprintStatusContentValues(FingerprintStatus.Trust.VERIFIED,true),whereClause,null);
+		}
+
+		if (oldVersion < 34 && newVersion >= 34) {
+			db.execSQL(CREATE_MESSAGE_TIME_INDEX);
+
+			final File oldPicturesDirectory = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES)+"/Conversations/");
+			final File oldFilesDirectory = new File(Environment.getExternalStorageDirectory() + "/Conversations/");
+			final File newFilesDirectory = new File(Environment.getExternalStorageDirectory() + "/Conversations/Media/Conversations Files/");
+			final File newVideosDirectory = new File(Environment.getExternalStorageDirectory() + "/Conversations/Media/Conversations Videos/");
+			if (oldPicturesDirectory.exists() && oldPicturesDirectory.isDirectory()) {
+				final File newPicturesDirectory = new File(Environment.getExternalStorageDirectory() + "/Conversations/Media/Conversations Images/");
+				newPicturesDirectory.getParentFile().mkdirs();
+				if (oldPicturesDirectory.renameTo(newPicturesDirectory)) {
+					Log.d(Config.LOGTAG,"moved "+oldPicturesDirectory.getAbsolutePath()+" to "+newPicturesDirectory.getAbsolutePath());
+				}
+			}
+			if (oldFilesDirectory.exists() && oldFilesDirectory.isDirectory()) {
+				newFilesDirectory.mkdirs();
+				newVideosDirectory.mkdirs();
+				for(File file : oldFilesDirectory.listFiles()) {
+					if (file.getName().equals(".nomedia")) {
+						if (file.delete()) {
+							Log.d(Config.LOGTAG,"deleted nomedia file in "+oldFilesDirectory.getAbsolutePath());
+						}
+					} else if (file.isFile()) {
+						final String name = file.getName();
+						boolean isVideo = false;
+						int start = name.lastIndexOf('.') + 1;
+						if (start < name.length()) {
+							String mime=  MimeUtils.guessMimeTypeFromExtension(name.substring(start));
+							isVideo = mime != null && mime.startsWith("video/");
+						}
+						File dst = new File((isVideo ? newVideosDirectory : newFilesDirectory).getAbsolutePath()+"/"+file.getName());
+						if (file.renameTo(dst)) {
+							Log.d(Config.LOGTAG, "moved " + file + " to " + dst);
+						}
+					}
+				}
+			}
 		}
 	}
 

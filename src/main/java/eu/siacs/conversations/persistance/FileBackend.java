@@ -84,7 +84,6 @@ public class FileBackend {
 	public void updateMediaScanner(File file) {
 		String path = file.getAbsolutePath();
 		if (!path.startsWith(getConversationsDirectory("Files"))) {
-			new File(Environment.getExternalStorageDirectory()+"/Conversations/.nomedia").delete();
 			Intent intent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
 			intent.setData(Uri.fromFile(file));
 			mXmppConnectionService.sendBroadcast(intent);
