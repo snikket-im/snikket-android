@@ -194,8 +194,9 @@ public class OtrService extends OtrCryptoEngineImpl implements OtrEngineHost {
 		} catch (final InvalidJidException ignored) {
 
 		}
-
 		packet.setType(MessagePacket.TYPE_CHAT);
+		packet.addChild("encryption","urn:xmpp:eme:0")
+				.setAttribute("namespace","urn:xmpp:otr:0");
 		account.getXmppConnection().sendMessagePacket(packet);
 	}
 
