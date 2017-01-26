@@ -541,7 +541,7 @@
   <string name="jid_does_not_match_certificate">Jabber-ID stimmt nicht dem Zertifikat überein</string>
   <string name="action_renew_certificate">Zertifikat erneuern</string>
   <string name="error_fetching_omemo_key">Kann OMEMO-Schlüssel nicht empfangen!</string>
-  <string name="verified_omemo_key_with_certificate">Überprüfter OMEMO-Schlüssel mit Zertifikat!</string>
+  <string name="verified_omemo_key_with_certificate">OMEMO-Schlüssel mit Zertifikat bestätigt!</string>
   <string name="device_does_not_support_certificates">Dein Gerät unterstützt das Auswählen von Client-Zertifikaten nicht!</string>
   <string name="pref_connection_options">Verbindung</string>
   <string name="pref_use_tor">Über Tor verbinden</string>

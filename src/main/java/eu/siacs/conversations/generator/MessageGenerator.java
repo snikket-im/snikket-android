@@ -79,6 +79,9 @@ public class MessageGenerator extends AbstractGenerator {
 			packet.setBody(OMEMO_FALLBACK_MESSAGE);
 		}
 		packet.addChild("store", "urn:xmpp:hints");
+		packet.addChild("encryption","urn:xmpp:eme:0")
+				.setAttribute("name","OMEMO")
+				.setAttribute("namespace",AxolotlService.PEP_PREFIX);
 		return packet;
 	}
 
@@ -109,6 +112,8 @@ public class MessageGenerator extends AbstractGenerator {
 				content = message.getBody();
 			}
 			packet.setBody(otrSession.transformSending(content)[0]);
+			packet.addChild("encryption","urn:xmpp:eme:0")
+					.setAttribute("namespace","urn:xmpp:otr:0");
 			return packet;
 		} catch (OtrException e) {
 			return null;
@@ -139,6 +144,8 @@ public class MessageGenerator extends AbstractGenerator {
 		} else if (message.getEncryption() == Message.ENCRYPTION_PGP) {
 			packet.addChild("x", "jabber:x:encrypted").setContent(message.getBody());
 		}
+		packet.addChild("encryption","urn:xmpp:eme:0")
+				.setAttribute("namespace","jabber:x:encrypted");
 		return packet;
 	}
 

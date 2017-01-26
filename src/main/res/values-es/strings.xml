@@ -332,6 +332,7 @@
   <string name="message_options">Opciones de mensaje</string>
   <string name="copy_text">Copiar texto</string>
   <string name="select_text">Seleccionar texto</string>
+  <string name="quote">Citar</string>
   <string name="copy_original_url">Copiar URL original</string>
   <string name="send_again">Volver a enviar</string>
   <string name="file_url">URL de archivo</string>
@@ -679,4 +680,15 @@
   <string name="blindly_trusted_omemo_keys">Huellas digitales OMEMO de confianza ciega</string>
   <string name="not_trusted">No confiables</string>
   <string name="invalid_barcode">Código QR inválido</string>
+  <string name="pref_clean_cache_summary">Limpiar caché de datos (usado por la aplicación de la cámara)</string>
+  <string name="pref_clean_cache">Limpiar caché</string>
+  <string name="pref_clean_private_storage">Limpiar datos privados</string>
+  <string name="pref_clean_private_storage_summary">Limpiar datos privados de ficheros descargados (Pueden volver a descargarse desde el servidor)</string>
+  <string name="i_followed_this_link_from_a_trusted_source">Enlace desde una fuente de confianza</string>
+  <string name="verifying_omemo_keys_trusted_source">Vas a verificar las claves OMEMO de %1$s después de hacer click en el enlace. Esto solo es seguro si conseguiste este enlace desde una fuente de confianza donde solo %2$s pudo haber publicado el enlace</string>
+  <string name="verify_omemo_keys">Verificar claves OMEMO</string>
+  <string name="show_inactive_devices">Mostrar dispositivos inactivos</string>
+  <string name="hide_inactive_devices">Ocultar dispositivos inactivos</string>
+  <string name="distrust_omemo_key">Desconfiar de este dispositivo</string>
+  <string name="distrust_omemo_key_text">¿Estás seguro que quieres eliminar la verificación de este dispositivo?\nEste dispositivo y los mensajes que lleguen desde allí serán marcados como no confiables.</string>
 </resources>

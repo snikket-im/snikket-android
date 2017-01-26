@@ -1255,7 +1255,7 @@ public class XmppConnection implements Runnable {
 	}
 
 	private String nextRandomId() {
-		return new BigInteger(50, mXmppConnectionService.getRNG()).toString(32);
+		return new BigInteger(50, mXmppConnectionService.getRNG()).toString(36);
 	}
 
 	public String sendIqPacket(final IqPacket packet, final OnIqPacketReceived callback) {

@@ -332,6 +332,7 @@
   <string name="message_options">Mezuaren aukerak</string>
   <string name="copy_text">Testua kopiatu</string>
   <string name="select_text">Testua hautatu</string>
+  <string name="quote">Aipatu</string>
   <string name="copy_original_url">Jatorrizko URLa kopiatu</string>
   <string name="send_again">Berriro bidali</string>
   <string name="file_url">Fitxategiaren URLa</string>
@@ -679,4 +680,15 @@
   <string name="blindly_trusted_omemo_keys">Itsuki fidatutako OMEMO gakoak</string>
   <string name="not_trusted">Ez fidagarria</string>
   <string name="invalid_barcode">2D barra kodea baliogabea</string>
+  <string name="pref_clean_cache_summary">Cachearen karpeta garbitu (kameraren aplikazioak erabiltzen du)</string>
+  <string name="pref_clean_cache">Cachea garbitu</string>
+  <string name="pref_clean_private_storage">Biltegi pribatua garbitu</string>
+  <string name="pref_clean_private_storage_summary">Fitxategiak gordetzeko erabiltzen den biltegi pribatua garbitu (zerbitzaritik berriro deskargatu daitezke)</string>
+  <string name="i_followed_this_link_from_a_trusted_source">Lotura hau jatorri fidagarri batetik jarraitu dut</string>
+  <string name="verifying_omemo_keys_trusted_source">%1$s(r)en OMEMO gakoak egiaztatuko dira lotura batean sakatu ondoren. Hau segurua da soilik lotura hau jatorri fidagarri batetik jarraitu baduzu eta soilik %2$s(e)k argitaratu izan ahal badu.</string>
+  <string name="verify_omemo_keys">OMEMO gakoak egiaztatu</string>
+  <string name="show_inactive_devices">Erabiltzen ez diren gailuak erakutsi</string>
+  <string name="hide_inactive_devices">Erabiltzen ez diren gailuak ezkutatu</string>
+  <string name="distrust_omemo_key">Gailu ez fidagarria</string>
+  <string name="distrust_omemo_key_text">Gailu honen egiaztapena ezabatu nahi duzulaz ziur al zaude?\nGailu hau eta beregandik datozen mezuak ez fidagarriak bezala markatuko dira.</string>
 </resources>
