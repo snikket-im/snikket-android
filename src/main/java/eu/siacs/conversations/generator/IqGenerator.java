@@ -10,12 +10,15 @@ import org.whispersystems.libaxolotl.ecc.ECPublicKey;
 import org.whispersystems.libaxolotl.state.PreKeyRecord;
 import org.whispersystems.libaxolotl.state.SignedPreKeyRecord;
 
+import java.math.BigInteger;
+import java.nio.ByteBuffer;
 import java.security.cert.CertificateEncodingException;
 import java.security.cert.X509Certificate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.TimeZone;
+import java.util.UUID;
 
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
@@ -315,12 +318,29 @@ public class IqGenerator extends AbstractGenerator {
 		IqPacket packet = new IqPacket(IqPacket.TYPE.GET);
 		packet.setTo(host);
 		Element request = packet.addChild("request", Xmlns.HTTP_UPLOAD);
-		request.addChild("filename").setContent(file.getName());
+		request.addChild("filename").setContent(convertFilename(file.getName()));
 		request.addChild("size").setContent(String.valueOf(file.getExpectedSize()));
 		if (mime != null) {
 			request.addChild("content-type").setContent(mime);
 		}
 		return packet;
+	}
+
+	private static String convertFilename(String name) {
+		int pos = name.indexOf('.');
+		if (pos != -1) {
+			try {
+				UUID uuid = UUID.fromString(name.substring(0, pos));
+				ByteBuffer bb = ByteBuffer.wrap(new byte[16]);
+				bb.putLong(uuid.getMostSignificantBits());
+				bb.putLong(uuid.getLeastSignificantBits());
+				return Base64.encodeToString(bb.array(), Base64.URL_SAFE) + name.substring(pos, name.length());
+			} catch (Exception e) {
+				return name;
+			}
+		} else {
+			return name;
+		}
 	}
 
 	public IqPacket generateCreateAccountWithCaptcha(Account account, String id, Data data) {
