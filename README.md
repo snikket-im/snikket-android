@@ -298,7 +298,7 @@ To use OpenPGP you have to install the open source app
 manage accounts and choose renew PGP announcement from the contextual menu.
 
 #### OMEMO is grayed out. What do I do?
-OMEMO has two requirements: Your server and the server of your contact need to support PEP. Both of you can verify that individually by opening your account details and selecting ```Server info``` from the menu. The appearing table should list PEP as available. The second requirement is mutual presence subscription. You can verify that be opening the contact details and see if the both check boxes *Send presence updates* and *Receive presence updates* are checked.
+OMEMO has two requirements: Your server and the server of your contact need to support PEP. Both of you can verify that individually by opening your account details and selecting ```Server info``` from the menu. The appearing table should list PEP as available. The second requirement is mutual presence subscription. You can verify that by opening the contact details and see if the both check boxes *Send presence updates* and *Receive presence updates* are checked.
 
 #### How does the encryption for conferences work?
 
