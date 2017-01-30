@@ -154,6 +154,8 @@ public class Message extends AbstractEntity {
 			}
 		} catch (InvalidJidException e) {
 			jid = null;
+		} catch (IllegalStateException e) {
+			return null; // message too long?
 		}
 		Jid trueCounterpart;
 		try {

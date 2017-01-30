@@ -84,6 +84,8 @@ public class ExportLogsService extends Service {
 		BufferedWriter bw = null;
 		try {
 			for (Message message : mDatabaseBackend.getMessagesIterable(conversation)) {
+				if (message == null)
+					continue;
 				if (message.getType() == Message.TYPE_TEXT || message.hasFileOnRemoteHost()) {
 					String date = simpleDateFormat.format(new Date(message.getTimeSent()));
 					if (bw == null) {
