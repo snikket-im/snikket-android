@@ -691,4 +691,12 @@
   <string name="hide_inactive_devices">Ocultar dispositivos inactivos</string>
   <string name="distrust_omemo_key">Desconfiar de este dispositivo</string>
   <string name="distrust_omemo_key_text">¿Estás seguro que quieres eliminar la verificación de este dispositivo?\nEste dispositivo y los mensajes que lleguen desde allí serán marcados como no confiables.</string>
+  <string name="timeout_24_hours">24 horas</string>
+  <string name="timeout_7_days">7 días</string>
+  <string name="timeout_30_days">30 días</string>
+  <string name="timeout_6_months">6 meses</string>
+  <string name="pref_automatically_delete_messages">Borrado automático de mensajes</string>
+  <string name="pref_automatically_delete_messages_description">Automáticamente borrar mensajes del dispositivo más antiguos que el configurado en el marco de tiempo.</string>
+  <string name="encrypting_message">Cifrando mensaje</string>
+  <string name="transcoding_video_progress">Comprimiendo vídeo (%s%% completado)</string>
 </resources>

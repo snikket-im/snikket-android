@@ -20,7 +20,7 @@
   <string name="title_activity_conference_details">Toplantı bilgileri</string>
   <string name="title_activity_contact_details">Kişi bilgileri</string>
   <string name="title_activity_sharewith">Konuşmayla paylaş</string>
-  <string name="title_activity_start_conversation">Konuşmayı başlat</string>
+  <string name="title_activity_start_conversation">Konuşma Başlat</string>
   <string name="title_activity_choose_contact">Kişi seç</string>
   <string name="title_activity_block_list">Listeyi blokla</string>
   <string name="just_now">şimdi</string>
@@ -112,7 +112,7 @@
   <string name="pref_notifications_summary">Yeni ileti geldiğinde bildir</string>
   <string name="pref_vibrate">Titreşim</string>
   <string name="pref_vibrate_summary">Yeni ileti geldiğinde titret</string>
-  <string name="pref_led">LED Bildirim</string>
+  <string name="pref_led">LED Bildirimi</string>
   <string name="pref_led_summary">Yeni bir ileti geldiğinde bildirim ışığı yanıp sönsün</string>
   <string name="pref_sound">Zil sesi</string>
   <string name="pref_sound_summary">Yeni bir ileti geldiğinde sesli bildir</string>
@@ -120,7 +120,7 @@
   <string name="pref_notification_grace_period_summary">Başka bir aygıt üstünde etkinlik algılandığında Conversations\'ın sessiz kalma süresi</string>
   <string name="pref_advanced_options">Gelişmiş</string>
   <string name="pref_never_send_crash">Asla çöküş raporu gönderme</string>
-  <string name="pref_never_send_crash_summary">Çöküş raporu göndermeniz Conversations\n’ın geliştirilmesine katkıda bulunacaktır.</string>
+  <string name="pref_never_send_crash_summary">Çöküş raporu göndermeniz Conversations’ın geliştirilmesine katkıda bulunacaktır.</string>
   <string name="pref_confirm_messages">İletileri onayla</string>
   <string name="pref_confirm_messages_summary">Onların iletilerini aldığınızda ve okuduğunuzda, kişilerinizin bunu bilmesini sağlayın</string>
   <string name="pref_ui_options">Arabirim</string>
@@ -451,9 +451,9 @@
   <string name="until_further_notice">İkinci bildirime kadar</string>
   <string name="pref_input_options">Girdi</string>
   <string name="pref_enter_is_send">Enter=gönder</string>
-  <string name="pref_enter_is_send_summary">İleti göndermek için \"enter\" tuşunu kullanın</string>
+  <string name="pref_enter_is_send_summary">İleti göndermek için \"enter\" tuşunu kullan</string>
   <string name="pref_display_enter_key">\"Enter\" tuşunu göster</string>
-  <string name="pref_display_enter_key_summary">İfade ikonu tuşunu \"enter\" tuşu olarak değiştirin</string>
+  <string name="pref_display_enter_key_summary">İfade simgesi tuşunu \"enter\" tuşu olarak değiştir</string>
   <string name="audio">ses</string>
   <string name="video">video</string>
   <string name="image">görüntü</string>
@@ -519,12 +519,12 @@
   <string name="pref_presence_settings">Durum</string>
   <string name="pref_away_when_screen_off">Ekran kapandığında uzakta</string>
   <string name="pref_away_when_screen_off_summary">Ekran kapandığında çevrim içi durum bildiriminizi uzakta olarak değiştirir</string>
-  <string name="pref_xa_on_silent_mode">Sessiz moddayken erişilemez</string>
+  <string name="pref_xa_on_silent_mode">Sessiz kipteyken erişilemez</string>
   <string name="pref_xa_on_silent_mode_summary">Telefonunuz sessizdeyken, durum bildiriminizi müsait değil olarak değiştirir</string>
-  <string name="pref_treat_vibrate_as_silent">titreş modunu sessiz mod olarak değerlendir</string>
+  <string name="pref_treat_vibrate_as_silent">Titreşim kipini sessiz kip olarak değerlendir</string>
   <string name="pref_treat_vibrate_as_silent_summary">Aygıtınız titreşim kipindeyken durum bildiriminizi uygun değil olarak değiştirir</string>
   <string name="pref_show_connection_options">Genişletilmiş bağlantı seçenekleri</string>
-  <string name="pref_show_connection_options_summary">Hesap oluştururken sunucu adıyla port seçeneğini göster</string>
+  <string name="pref_show_connection_options_summary">Hesap oluştururken sunucu adıyla bağlantı noktası seçeneğini göster</string>
   <string name="hostname_example">xmpp.ornek.com</string>
   <string name="action_add_account_with_certificate">Sertifikalı hesap ekle</string>
   <string name="unable_to_parse_certificate">Sertifika çözümlenemedi</string>
@@ -545,9 +545,9 @@
   <string name="pref_use_tor">Tor üzerinden bağlan</string>
   <string name="pref_use_tor_summary">Tüm bağlantıları Tor ağı üzerinden aktar. Orbot gerekir.</string>
   <string name="account_settings_hostname">Sunucu adı</string>
-  <string name="account_settings_port">Port</string>
+  <string name="account_settings_port">Bağlantı noktası</string>
   <string name="hostname_or_onion">Sunucu- veya .onion-Address</string>
-  <string name="not_a_valid_port">Bu port numarası geçerli değil</string>
+  <string name="not_a_valid_port">Bu bağlantı noktası geçerli değil</string>
   <string name="not_valid_hostname">Bu sunucu geçerli değil</string>
   <string name="connected_accounts"> %2$d hesabın %1$ kadarı bağlandı</string>
   <plurals name="x_messages">
@@ -592,8 +592,8 @@
   <string name="security_error_invalid_file_access">Güvenlik hatası: Geçersiz dosya erişimi</string>
   <string name="no_application_to_share_uri">URI paylaşmak için uygulama bulunamadı</string>
   <string name="share_uri_with">URI paylaş ile...</string>
-  <string name="welcome_text">XMPP servis sağlayıcısından bağımsız bir protokoldür. Bu istemciyi dilediğiniz XMMPP sunucularıyla birlikte kullanabilirsiniz\n Lakin sizin rahat etmeniz için Conversations istemcisiyle kullanmanız için oluşturduğumuz conversation.im sunucusu üzerinde hesap açmayı kolaylaştırdık.</string>
-  <string name="magic_create_text">conversation.im sağlayıcısında hesap açma sürecinde size yol göstereceğiz.\nconversation.im i bir servis sağlayıcı olarak kullandığınızda diğer sağlayıcıları kullanan kullanıcılar tam Jabber kimliğinizi vererek iletişim kurabilirsiniz. </string>
+  <string name="welcome_text">XMPP servis sağlayıcısından bağımsız bir iletişim kuralıdır. Bu istemciyi dilediğiniz XMPP sunucusuyla birlikte kullanabilirsiniz\nLakin rahat etmeniz için Conversations istemcisiyle kullanmanız için oluşturduğumuz conversation.im¹ sunucusu üzerinde hesap açmayı kolaylaştırdık.</string>
+  <string name="magic_create_text">conversation.im sağlayıcısında hesap açma sürecinde size yol göstereceğiz.\nconversation.im\'i bir servis sağlayıcı olarak kullandığınızda diğer sağlayıcıları kullananlarla tam Jabber kimliğinizi vererek iletişim kurabilirsiniz.</string>
   <string name="your_full_jid_will_be">Tam Jabber kimliğiniz %s olacak</string>
   <string name="create_account">Hesap Oluştur</string>
   <string name="use_own_provider">Kendi sağlayıcımı kullan</string>
@@ -624,7 +624,7 @@
   <string name="gp_long">Uzun</string>
   <string name="pref_broadcast_last_activity">Son kullanıcı etkileşimini yayımla</string>
   <string name="pref_broadcast_last_activity_summary">Tüm kişileriniz ne zaman Conversations kullandığınızı görsün</string>
-  <string name="pref_privacy">Mahremiyet</string>
+  <string name="pref_privacy">Gizlilik</string>
   <string name="pref_theme_options">Gövde</string>
   <string name="pref_theme_options_summary">Renk paletini seçin</string>
   <string name="pref_theme_light">Açık gövde</string>
@@ -652,7 +652,7 @@
   <string name="wrong_conference_configuration">Bu özel ve adsız olmayan bir toplantı.</string>
   <string name="this_conference_has_no_members">Bu toplantıda herhangi bir üye yok.</string>
   <string name="report_jid_as_spammer">Bu kişiyi istenmeyen ileti gönderen olarak rapor et.</string>
-  <string name="pref_delete_omemo_identities">OMEMO kimiliğini sil</string>
+  <string name="pref_delete_omemo_identities">OMEMO kimliğini sil</string>
   <string name="pref_delete_omemo_identities_summary">OMEMO anahtarını yeniden oluştur. Tüm kişilerinizin sizi yeniden doğrulaması gerekecek. Bunu yalnızca son çare olarak kullanın.</string>
   <string name="delete_selected_keys">Seçilen anahtarları sil</string>
   <string name="error_publish_avatar_offline">Avatarınızı yayımlamak için bağlı olmalısınız.</string>
@@ -688,4 +688,12 @@
   <string name="hide_inactive_devices">Aktif olmayan cihazları gizle</string>
   <string name="distrust_omemo_key">Güvensiz aygıt</string>
   <string name="distrust_omemo_key_text">Bu cihazın doğrulamasını kaldırmak istediğinizden emin misiniz? \ Bu cihaz ve cihazdan gelen mesajlar güvenilmez olarak işaretlenecektir.</string>
+  <string name="timeout_24_hours">24 saat</string>
+  <string name="timeout_7_days">7 gün</string>
+  <string name="timeout_30_days">30 gün</string>
+  <string name="timeout_6_months">6 ay</string>
+  <string name="pref_automatically_delete_messages">Otomatik ileti silmek</string>
+  <string name="pref_automatically_delete_messages_description">Bu cihazdan, ayarlanmış zaman aralığından eski olan mesajları otomatik olarak silin.</string>
+  <string name="encrypting_message">İletiyi şifrelemek</string>
+  <string name="transcoding_video_progress">Video sıkıştırılıyor (%s%% tamamlandı)</string>
 </resources>

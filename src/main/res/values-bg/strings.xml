@@ -691,4 +691,12 @@
   <string name="hide_inactive_devices">Скриване на неактивните устройства</string>
   <string name="distrust_omemo_key">Сваляне на доверието</string>
   <string name="distrust_omemo_key_text">Наистина ли искате да заличите потвърждението на това устройство?\nТова устройство и съобщенията, идващи от него, ще бъдат отбелязани като „непроверени“.</string>
+  <string name="timeout_24_hours">24 часа</string>
+  <string name="timeout_7_days">7 дни</string>
+  <string name="timeout_30_days">30 дни</string>
+  <string name="timeout_6_months">6 месеца</string>
+  <string name="pref_automatically_delete_messages">Автоматично изтриване на съобщенията</string>
+  <string name="pref_automatically_delete_messages_description">Автоматично изтриване на съобщенията от това устройство, които са по-стари от зададеното време.</string>
+  <string name="encrypting_message">Шифроване на съобщението</string>
+  <string name="transcoding_video_progress">Компресиране на видеото (%s%%)</string>
 </resources>

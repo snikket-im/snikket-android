@@ -691,4 +691,12 @@
   <string name="hide_inactive_devices">Inaktive Geräte nicht anzeigen</string>
   <string name="distrust_omemo_key">Gerät nicht mehr vertrauen</string>
   <string name="distrust_omemo_key_text">Möchtest du die vorhandene Überprüfung für dieses Gerät löschen?\nDas Gerät und gesendete Nachrichten von diesem Gerät werden als nicht vertrauenswürdig markiert.</string>
+  <string name="timeout_24_hours">24 Stunden</string>
+  <string name="timeout_7_days">7 Tage</string>
+  <string name="timeout_30_days">30 Tage</string>
+  <string name="timeout_6_months">6 Monate</string>
+  <string name="pref_automatically_delete_messages">Automatische Nachrichtenlöschung</string>
+  <string name="pref_automatically_delete_messages_description">Lösche Nachrichten automatisch, wenn diese älter sind als die eingestellte Zeit.</string>
+  <string name="encrypting_message">Nachricht wird verschlüsselt</string>
+  <string name="transcoding_video_progress">Video wird komprimiert (%s%% abgeschlossen)</string>
 </resources>

@@ -688,4 +688,12 @@
   <string name="hide_inactive_devices">非アクティブのデバイスを非表示</string>
   <string name="distrust_omemo_key">信頼できないデバイス</string>
   <string name="distrust_omemo_key_text">このデバイスの検証を削除してもよろしいですか?\nこのデバイスと、そのデバイスからのメッセージは信頼できないとマークされます。</string>
+  <string name="timeout_24_hours">24 時間</string>
+  <string name="timeout_7_days">7 日</string>
+  <string name="timeout_30_days">30 日</string>
+  <string name="timeout_6_months">6 ヶ月</string>
+  <string name="pref_automatically_delete_messages">自動メッセージ削除</string>
+  <string name="pref_automatically_delete_messages_description">設定された期間よりも古いメッセージを、このデバイスから自動的に削除します。</string>
+  <string name="encrypting_message">メッセージの暗号化中</string>
+  <string name="transcoding_video_progress">ビデオの圧縮中 (%s%% 完了)</string>
 </resources>

@@ -695,4 +695,12 @@ Emitent</string>
   <string name="hide_inactive_devices">Ascunde dispozitivele inactive</string>
   <string name="distrust_omemo_key">Pierde increderea in acest dispozitiv</string>
   <string name="distrust_omemo_key_text">Sigur doriti sa stergeti datele de verificare pentru acest dispozitiv?\nAcest dispozitiv precum si mesajele venind de la el vor fi marcate ca ne fiind de incredere.</string>
+  <string name="timeout_24_hours">24 ore</string>
+  <string name="timeout_7_days">7 zile</string>
+  <string name="timeout_30_days">30 zile</string>
+  <string name="timeout_6_months">6 luni</string>
+  <string name="pref_automatically_delete_messages">Ștergerea automată a mesajelor</string>
+  <string name="pref_automatically_delete_messages_description">De pe acest dispozitiv se vor șterge dacă sunt mai vechi de perioada selectată.</string>
+  <string name="encrypting_message">Mesajul se criptează</string>
+  <string name="transcoding_video_progress">Se comprimă clipul video (%s%% gata)</string>
 </resources>

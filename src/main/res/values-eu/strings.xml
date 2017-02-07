@@ -691,4 +691,12 @@
   <string name="hide_inactive_devices">Erabiltzen ez diren gailuak ezkutatu</string>
   <string name="distrust_omemo_key">Gailu ez fidagarria</string>
   <string name="distrust_omemo_key_text">Gailu honen egiaztapena ezabatu nahi duzulaz ziur al zaude?\nGailu hau eta beregandik datozen mezuak ez fidagarriak bezala markatuko dira.</string>
+  <string name="timeout_24_hours">24 ordu</string>
+  <string name="timeout_7_days">7 egun</string>
+  <string name="timeout_30_days">30 egun</string>
+  <string name="timeout_6_months">6 hilabete</string>
+  <string name="pref_automatically_delete_messages">Mezuen ezabatze automatikoa</string>
+  <string name="pref_automatically_delete_messages_description">Ezarritako denbora tartea baino zaharragoak diren mezuak gailu honetatik automatikoki ezabatu.</string>
+  <string name="encrypting_message">Mezua enkriptatzen</string>
+  <string name="transcoding_video_progress">Bideoa konprimatzen (%s%% osatua)</string>
 </resources>

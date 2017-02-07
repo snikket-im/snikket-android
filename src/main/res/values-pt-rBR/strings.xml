@@ -683,4 +683,20 @@
   <string name="pref_clean_cache_summary">Limpar a pasta de cache (usado pela aplicação de câmera)</string>
   <string name="pref_clean_cache">Limpar o cache</string>
   <string name="pref_clean_private_storage">Limpar o armazenamento privado</string>
+  <string name="pref_clean_private_storage_summary">Limpar o armazenamento privado onde os arquivos são mantidos (eles podem ser baixados do servidor novamente)</string>
+  <string name="i_followed_this_link_from_a_trusted_source">Eu segui este link a partir de uma fonte segura</string>
+  <string name="verifying_omemo_keys_trusted_source">Você está prestes a verificar as chaves OMEMO de %1$s após ter clicado em um link. Isso só é seguro se você acesso esse link a partir de uma fonte segura, onde somente %2$s poderia tê-lo publicado.</string>
+  <string name="verify_omemo_keys">Verificar chaves OMEMO</string>
+  <string name="show_inactive_devices">Exibir dispositivos inativos</string>
+  <string name="hide_inactive_devices">Esconder dispositivos inativos</string>
+  <string name="distrust_omemo_key">Remover a confiança do dispositivo</string>
+  <string name="distrust_omemo_key_text">Tem certeza que deseja remover a verificação para este dispositivo?\nEste dispositivo e as mensagens oriundas dele serão marcadas como não confáveis.</string>
+  <string name="timeout_24_hours">24 horas</string>
+  <string name="timeout_7_days">7 dias</string>
+  <string name="timeout_30_days">30 dias</string>
+  <string name="timeout_6_months">6 meses</string>
+  <string name="pref_automatically_delete_messages">Exclusão automática de mensagens</string>
+  <string name="pref_automatically_delete_messages_description">Excluir automaticamente as mensagens deste dispositivo que sejam mais antigas do que o tempo estipulado.</string>
+  <string name="encrypting_message">Criptografar a mensagem</string>
+  <string name="transcoding_video_progress">Comprimindo o vídeo (%s%% efetuado)</string>
 </resources>

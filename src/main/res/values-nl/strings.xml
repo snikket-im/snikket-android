@@ -691,4 +691,12 @@
   <string name="hide_inactive_devices">Verberg niet-actieve apparaten</string>
   <string name="distrust_omemo_key">Apparaat niet meer vertrouwen</string>
   <string name="distrust_omemo_key_text">Weet je zeker dat je de verificatie voor dit apparaat wil verwijderen?\nHet apparaat en alle berichten die het verstuurt zullen als niet-vertrouwd worden weergegeven.</string>
+  <string name="timeout_24_hours">24 uur</string>
+  <string name="timeout_7_days">7 dagen</string>
+  <string name="timeout_30_days">30 dagen</string>
+  <string name="timeout_6_months">6 maand</string>
+  <string name="pref_automatically_delete_messages">Automatisch berichten verwijderen</string>
+  <string name="pref_automatically_delete_messages_description">Verwijder automatisch berichten van dit apparaat ouder dan de ingestelde tijdsperiode.</string>
+  <string name="encrypting_message">Bericht wordt versleuteld</string>
+  <string name="transcoding_video_progress">Video wordt gecomprimeerd (%s%% voltooid)</string>
 </resources>

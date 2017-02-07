@@ -332,6 +332,7 @@
   <string name="message_options">Meddelandealternativ</string>
   <string name="copy_text">Kopiera text</string>
   <string name="select_text">Markera text</string>
+  <string name="quote">Citera</string>
   <string name="copy_original_url">Kopiera orginal-URL</string>
   <string name="send_again">Skicka igen</string>
   <string name="file_url">Fil-URL</string>
@@ -679,4 +680,23 @@
   <string name="blindly_trusted_omemo_keys">Lita blint på OMEMO-nycklar</string>
   <string name="not_trusted">Ej betrodd</string>
   <string name="invalid_barcode">Ogiltig 2D-streckkod</string>
+  <string name="pref_clean_cache_summary">Rensa cachefolder (används av Kameraapplikation)</string>
+  <string name="pref_clean_cache">Rensa cache</string>
+  <string name="pref_clean_private_storage">Rensa private lagring</string>
+  <string name="pref_clean_private_storage_summary">Rensa privat lagring där filer lagras (De kan om-laddas från servern)</string>
+  <string name="i_followed_this_link_from_a_trusted_source">Jag följde denna länk från en trovärdig källa</string>
+  <string name="verifying_omemo_keys_trusted_source">Du håller på att verifiera OMEMO-nyckeln för %1$s efter att du följt en länk. Detta är endast säkert om du följde länken från en trovärdig källa där endast %2$s kan ha publiserat denna länk.</string>
+  <string name="verify_omemo_keys">Verifiera OMEMO-nycklar</string>
+  <string name="show_inactive_devices">Visa inaktiva enheter</string>
+  <string name="hide_inactive_devices">Göm inaktiva enheter</string>
+  <string name="distrust_omemo_key">Lita ej på enhet</string>
+  <string name="distrust_omemo_key_text">Är du säker på att du vill ta bort verifieringen av denna enhet?\nDenna enhet och meddelanden som kommer från enheten kommer att markeras som ej pålitliga.</string>
+  <string name="timeout_24_hours">24 timmar</string>
+  <string name="timeout_7_days">7 dagar</string>
+  <string name="timeout_30_days">30 dagar</string>
+  <string name="timeout_6_months">6 månader</string>
+  <string name="pref_automatically_delete_messages">Automatisk borttagning av meddelanden</string>
+  <string name="pref_automatically_delete_messages_description">Ta automatiskt bort meddelanden från denna enhet som är äldre än den konfigurerade tidsramen.</string>
+  <string name="encrypting_message">Krypterar meddelande</string>
+  <string name="transcoding_video_progress">Komprimerar video (%s%% klar)</string>
 </resources>
