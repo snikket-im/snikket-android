@@ -490,7 +490,12 @@ public final class MimeUtils {
 
     public static String guessMimeTypeFromUri(Context context, Uri uri) {
         // try the content resolver
-        String mimeType = context.getContentResolver().getType(uri);
+        String mimeType;
+        try {
+            mimeType = context.getContentResolver().getType(uri);
+        } catch (Throwable throwable) {
+            mimeType = null;
+        }
         // try the extension
         if (mimeType == null && uri.getPath() != null) {
             String path = uri.getPath();
