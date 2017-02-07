@@ -48,6 +48,7 @@ import org.openintents.openpgp.util.OpenPgpServiceConnection;
 import java.io.FileDescriptor;
 import java.io.FileNotFoundException;
 import java.math.BigInteger;
+import java.net.URL;
 import java.security.SecureRandom;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
@@ -95,6 +96,7 @@ import eu.siacs.conversations.generator.IqGenerator;
 import eu.siacs.conversations.generator.MessageGenerator;
 import eu.siacs.conversations.generator.PresenceGenerator;
 import eu.siacs.conversations.http.HttpConnectionManager;
+import eu.siacs.conversations.http.OmemoURLStreamHandlerFactory;
 import eu.siacs.conversations.parser.AbstractParser;
 import eu.siacs.conversations.parser.IqParser;
 import eu.siacs.conversations.parser.MessageParser;
@@ -141,6 +143,10 @@ import eu.siacs.conversations.xmpp.stanzas.PresencePacket;
 import me.leolin.shortcutbadger.ShortcutBadger;
 
 public class XmppConnectionService extends Service {
+
+	static {
+		URL.setURLStreamHandlerFactory(new OmemoURLStreamHandlerFactory());
+	}
 
 	public static final String ACTION_REPLY_TO_CONVERSATION = "reply_to_conversations";
 	public static final String ACTION_CLEAR_NOTIFICATION = "clear_notification";
