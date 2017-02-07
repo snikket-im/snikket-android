@@ -731,6 +731,6 @@
 	<string name="pref_automatically_delete_messages">Automatic message deletion</string>
 	<string name="pref_automatically_delete_messages_description">Automatically delete messages from this device that are older than the configured time frame.</string>
 	<string name="encrypting_message">Encrypting message</string>
-	<string name="not_fetching_history_retention_period">Overstepping local retention period.</string>
+	<string name="not_fetching_history_retention_period">Not fetching messages due to local retention period.</string>
 	<string name="transcoding_video_progress">Compressing video (%s%% completed)</string>
 </resources>
