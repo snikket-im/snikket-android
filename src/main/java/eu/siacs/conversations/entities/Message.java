@@ -9,7 +9,7 @@ import java.net.URL;
 
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.crypto.axolotl.FingerprintStatus;
-import eu.siacs.conversations.crypto.axolotl.XmppAxolotlSession;
+import eu.siacs.conversations.http.AesGcmURLStreamHandler;
 import eu.siacs.conversations.utils.CryptoHelper;
 import eu.siacs.conversations.utils.GeoHelper;
 import eu.siacs.conversations.utils.MimeUtils;
@@ -660,7 +660,7 @@ public class Message extends AbstractEntity {
 			String ref = url.getRef();
 			final String protocol = url.getProtocol();
 			final boolean encrypted = ref != null && ref.matches("([A-Fa-f0-9]{2}){48}");
-			if ("omemo".equalsIgnoreCase(protocol) && encrypted) {
+			if (AesGcmURLStreamHandler.PROTOCOL_NAME.equalsIgnoreCase(protocol) && encrypted) {
 				return Decision.MUST;
 			}
 			if (!url.getProtocol().equalsIgnoreCase("http") && !url.getProtocol().equalsIgnoreCase("https")) {

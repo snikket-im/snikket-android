@@ -65,7 +65,6 @@ import java.util.ListIterator;
 import java.util.Locale;
 import java.util.Map;
 import java.util.concurrent.CopyOnWriteArrayList;
-import java.util.concurrent.ExecutionException;
 import java.util.concurrent.atomic.AtomicLong;
 
 import de.duenndns.ssl.MemorizingTrustManager;
@@ -96,7 +95,7 @@ import eu.siacs.conversations.generator.IqGenerator;
 import eu.siacs.conversations.generator.MessageGenerator;
 import eu.siacs.conversations.generator.PresenceGenerator;
 import eu.siacs.conversations.http.HttpConnectionManager;
-import eu.siacs.conversations.http.OmemoURLStreamHandlerFactory;
+import eu.siacs.conversations.http.AesGcmURLStreamHandlerFactory;
 import eu.siacs.conversations.parser.AbstractParser;
 import eu.siacs.conversations.parser.IqParser;
 import eu.siacs.conversations.parser.MessageParser;
@@ -145,7 +144,7 @@ import me.leolin.shortcutbadger.ShortcutBadger;
 public class XmppConnectionService extends Service {
 
 	static {
-		URL.setURLStreamHandlerFactory(new OmemoURLStreamHandlerFactory());
+		URL.setURLStreamHandlerFactory(new AesGcmURLStreamHandlerFactory());
 	}
 
 	public static final String ACTION_REPLY_TO_CONVERSATION = "reply_to_conversations";

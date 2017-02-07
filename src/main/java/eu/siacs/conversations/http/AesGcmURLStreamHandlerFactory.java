@@ -3,11 +3,11 @@ package eu.siacs.conversations.http;
 import java.net.URLStreamHandler;
 import java.net.URLStreamHandlerFactory;
 
-public class OmemoURLStreamHandlerFactory implements URLStreamHandlerFactory {
+public class AesGcmURLStreamHandlerFactory implements URLStreamHandlerFactory {
     @Override
     public URLStreamHandler createURLStreamHandler(String protocol) {
-        if ("omemo".equals(protocol)) {
-            return new OmemoURLStreamHandler();
+        if (AesGcmURLStreamHandler.PROTOCOL_NAME.equals(protocol)) {
+            return new AesGcmURLStreamHandler();
         } else {
             return null;
         }

@@ -6,9 +6,12 @@ import java.net.URLConnection;
 import java.net.URLStreamHandler;
 
 
-public class OmemoURLStreamHandler extends URLStreamHandler {
+public class AesGcmURLStreamHandler extends URLStreamHandler {
+
+    public static final String PROTOCOL_NAME = "aesgcm";
+
     @Override
     protected URLConnection openConnection(URL url) throws IOException {
-        return new URL("https"+url.toString().substring(5)).openConnection();
+        return new URL("https"+url.toString().substring(url.getProtocol().length())).openConnection();
     }
 }
