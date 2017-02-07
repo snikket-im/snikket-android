@@ -121,7 +121,7 @@ My Bitcoin Address is: `1NxSU1YxYzJVDpX1rcESAA3NJki7kRgeeu`
 XMPP, like email, is a federated protocol, which means that there is not one company you can create an *official XMPP account* with. Instead there are hundreds, or even thousands, of providers out there. One of those providers is our very own [conversations.im](https://account.conversations.im). If you don’t like to use *conversations.im* use a web search engine of your choice to find another provider. Or maybe your university has one. Or you can run your own. Or ask a friend to run one. Once you've found one, you can use Conversations to create an account. Just select *register new account* on server within the create account dialog.
 
 ##### Domain hosting
-Using your own domain not only gives you a more recognizable Jabber ID, it also gives you the flexibilty to migrate your account between different XMPP providers. This is a good compromise between the responsibilities of having to operate your own server and the downsides of being dependent on a single provider.
+Using your own domain not only gives you a more recognizable Jabber ID, it also gives you the flexibility to migrate your account between different XMPP providers. This is a good compromise between the responsibilities of having to operate your own server and the downsides of being dependent on a single provider.
 
 Learn more about [conversations.im Jabber/XMPP domain hosting](https://account.conversations.im/domain/). 
 
@@ -250,7 +250,7 @@ other clients.
 #### How do I backup / move Conversations to a new device?
 On the one hand Conversations supports Message Archive Management to keep a server side history of your messages so when migrating to a new device that device can display your entire history. However that does not work if you enable OMEMO due to its forward secrecy. (Read [The State of Mobile XMPP in 2016](https://gultsch.de/xmpp_2016.html) especially the section on encryption.)
 
-If you migrate to a new device and would still like to keep your history please use a third party backup tool like [oandbackup](https://github.com/jensstein/oandbackup) or ```adb backup``` from your computer.  It is important that your deactivate your account before backup and activate it only after a succesful restore. Otherwise OMEMO might not work afterwards. 
+If you migrate to a new device and would still like to keep your history please use a third party backup tool like [oandbackup](https://github.com/jensstein/oandbackup) or ```adb backup``` from your computer.  It is important that your deactivate your account before backup and activate it only after a successful restore. Otherwise OMEMO might not work afterwards. 
 
 #### Conversations is missing a certain feature
 
@@ -298,7 +298,7 @@ To use OpenPGP you have to install the open source app
 manage accounts and choose renew PGP announcement from the contextual menu.
 
 #### OMEMO is grayed out. What do I do?
-OMEMO has two requirments: Your server and the server of your contact need to support PEP. Both of you can verify that indivually by opening your account details and selecting ```Server info``` from the menu. The appearing table should list PEP as available. The second requirement is mutal presence subscription. You can verify that be going into the contact details and see if the both check boxes *Send presence updates* and *Receive presence updates* are checked.
+OMEMO has two requirements: Your server and the server of your contact need to support PEP. Both of you can verify that individually by opening your account details and selecting ```Server info``` from the menu. The appearing table should list PEP as available. The second requirement is mutual presence subscription. You can verify that by opening the contact details and see if both check boxes *Send presence updates* and *Receive presence updates* are checked.
 
 #### How does the encryption for conferences work?
 
@@ -325,7 +325,7 @@ is disabled.
 Every participant has to announce their OpenPGP key (see answer above).
 If you would like to send encrypted messages to a conference you have to make
 sure that you have every participant's public key in your OpenKeychain.
-Right now there is no check in Conversations to ensurethat.
+Right now there is no check in Conversations to ensure that.
 You have to take care of that yourself. Go to the conference details and
 touch every key id (The hexadecimal number below a contact). This will send you
 to OpenKeychain which will assist you on adding the key.  This works best in
@@ -335,7 +335,7 @@ XEP-0027 with conferences. (The XEP neither specifically allows nor disallows
 this.)
 
 #### Why is Conversations not end-to-end encrypted by default
-We briefly had OMEMO as the default E2EE but it turned out to be a usabilty nightmare and thus we reverted that. You can find more information in [the commit message](https://github.com/siacs/Conversations/commit/035d0c79572d5981c53d1bff7f30b484c6542f17) of that change.
+We briefly had OMEMO as the default E2EE but it turned out to be a usability nightmare and thus we reverted that. You can find more information in [the commit message](https://github.com/siacs/Conversations/commit/035d0c79572d5981c53d1bff7f30b484c6542f17) of that change.
 
 Quick reminder that Conversations **always** uses TLS to connect to your server. It won‘t even connect to a server without TLS.
 
@@ -346,9 +346,9 @@ Read more about the concept on https://gultsch.de/trust.html
 ### What clients do I use on other platforms
 There are XMPP Clients available for all major platforms.
 ####Windows / Linux
-For your desktop computer we recommend that you use [Gajim](https://gajim.org). You need to install the plugins `OMEMO`, `HTTP Upload` and `URL image preview` to get the best compatibiltiy with Conversations. Plugins can be installed from within the app.
+For your desktop computer we recommend that you use [Gajim](https://gajim.org). You need to install the plugins `OMEMO`, `HTTP Upload` and `URL image preview` to get the best compatibility with Conversations. Plugins can be installed from within the app.
 ####iOS
-Unfortunatly we don‘t have a recommendation for iPhones right now. There are two clients available [ChatSecure](https://chatsecure.org/) and [Monal](https://monal.im/). Both with their own pros and cons.
+Unfortunately we don‘t have a recommendation for iPhones right now. There are two clients available [ChatSecure](https://chatsecure.org/) and [Monal](https://monal.im/). Both with their own pros and cons.
 
 
 ### Development
