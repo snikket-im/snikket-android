@@ -1687,6 +1687,7 @@ public class XmppConnectionService extends Service {
 				return conversation;
 			}
 			conversation = databaseBackend.findConversation(account, jid);
+			final boolean loadMessagesFromDb;
 			if (conversation != null) {
 				conversation.setStatus(Conversation.STATUS_AVAILABLE);
 				conversation.setAccount(account);
@@ -1697,8 +1698,8 @@ public class XmppConnectionService extends Service {
 					conversation.setMode(Conversation.MODE_SINGLE);
 					conversation.setContactJid(jid.toBareJid());
 				}
-				conversation.addAll(0, databaseBackend.getMessages(conversation, Config.PAGE_SIZE));
-				this.databaseBackend.updateConversation(conversation);
+				databaseBackend.updateConversation(conversation);
+				loadMessagesFromDb = conversation.messagesLoaded.compareAndSet(true,false);
 			} else {
 				String conversationName;
 				Contact contact = account.getRoster().getContact(jid);
@@ -1715,19 +1716,31 @@ public class XmppConnectionService extends Service {
 							Conversation.MODE_SINGLE);
 				}
 				this.databaseBackend.createConversation(conversation);
+				loadMessagesFromDb = false;
 			}
-			if (account.getXmppConnection() != null
-					&& account.getXmppConnection().getFeatures().mam()
-					&& !muc) {
-				if (query == null) {
-					this.mMessageArchiveService.query(conversation);
-				} else {
-					if (query.getConversation() == null) {
-						this.mMessageArchiveService.query(conversation, query.getStart());
+			final Conversation c = conversation;
+			mDatabaseExecutor.execute(new Runnable() {
+				@Override
+				public void run() {
+					if (loadMessagesFromDb) {
+						c.addAll(0, databaseBackend.getMessages(c, Config.PAGE_SIZE));
+						updateConversationUi();
+						c.messagesLoaded.set(true);
 					}
+					if (account.getXmppConnection() != null
+							&& account.getXmppConnection().getFeatures().mam()
+							&& !muc) {
+						if (query == null) {
+							mMessageArchiveService.query(c);
+						} else {
+							if (query.getConversation() == null) {
+								mMessageArchiveService.query(c, query.getStart());
+							}
+						}
+					}
+					checkDeletedFiles(c);
 				}
-			}
-			checkDeletedFiles(conversation);
+			});
 			this.conversations.add(conversation);
 			updateConversationUi();
 			return conversation;

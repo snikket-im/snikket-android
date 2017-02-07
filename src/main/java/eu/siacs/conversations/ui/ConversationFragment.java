@@ -143,8 +143,9 @@ public class ConversationFragment extends Fragment implements EditMessage.Keyboa
 					}
 					activity.xmppConnectionService.loadMoreMessages(conversation, timestamp, new XmppConnectionService.OnMoreMessagesLoaded() {
 						@Override
-						public void onMoreMessagesLoaded(final int c, Conversation conversation) {
+						public void onMoreMessagesLoaded(final int c, final Conversation conversation) {
 							if (ConversationFragment.this.conversation != conversation) {
+								conversation.messagesLoaded.set(true);
 								return;
 							}
 							activity.runOnUiThread(new Runnable() {
@@ -172,6 +173,7 @@ public class ConversationFragment extends Fragment implements EditMessage.Keyboa
 									if (messageLoaderToast != null) {
 										messageLoaderToast.cancel();
 									}
+									conversation.messagesLoaded.set(true);
 								}
 							});
 						}
@@ -1263,7 +1265,7 @@ public class ConversationFragment extends Fragment implements EditMessage.Keyboa
 	private boolean showLoadMoreMessages(final Conversation c) {
 		final boolean mam = hasMamSupport(c);
 		final MessageArchiveService service = activity.xmppConnectionService.getMessageArchiveService();
-		return mam && (c.getLastClearHistory() != 0  || (c.countMessages() == 0 && c.hasMessagesLeftOnServer()  && !service.queryInProgress(c)));
+		return mam && (c.getLastClearHistory() != 0  || (c.countMessages() == 0 && c.messagesLoaded.get() && c.hasMessagesLeftOnServer()  && !service.queryInProgress(c)));
 	}
 
 	private boolean hasMamSupport(final Conversation c) {
