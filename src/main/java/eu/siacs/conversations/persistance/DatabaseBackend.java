@@ -411,7 +411,11 @@ public class DatabaseBackend extends SQLiteOpenHelper {
 			if (oldFilesDirectory.exists() && oldFilesDirectory.isDirectory()) {
 				newFilesDirectory.mkdirs();
 				newVideosDirectory.mkdirs();
-				for(File file : oldFilesDirectory.listFiles()) {
+				final File[] files = oldFilesDirectory.listFiles();
+				if (files == null) {
+					return;
+				}
+				for(File file : files) {
 					if (file.getName().equals(".nomedia")) {
 						if (file.delete()) {
 							Log.d(Config.LOGTAG,"deleted nomedia file in "+oldFilesDirectory.getAbsolutePath());
