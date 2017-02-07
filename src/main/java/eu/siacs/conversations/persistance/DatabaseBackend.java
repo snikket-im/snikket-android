@@ -640,8 +640,10 @@ public class DatabaseBackend extends SQLiteOpenHelper {
 			cursor.moveToLast();
 			do {
 				Message message = Message.fromCursor(cursor);
-				message.setConversation(conversation);
-				list.add(message);
+				if (message != null) {
+					message.setConversation(conversation);
+					list.add(message);
+				}
 			} while (cursor.moveToPrevious());
 		}
 		cursor.close();
