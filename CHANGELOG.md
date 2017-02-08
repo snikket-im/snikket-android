@@ -1,5 +1,9 @@
 ###Changelog
 
+####Version 1.16.0
+* configurable client side message retention period
+* compress videos before sending them
+
 ####Version 1.15.5
 * show nick as bold text when mentioned in conference
 * bug fixes
