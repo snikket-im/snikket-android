@@ -103,7 +103,10 @@ public class PushManagementService {
 
 	public boolean available(Account account) {
 		final XmppConnection connection = account.getXmppConnection();
-		return connection != null && connection.getFeatures().push() && playServicesAvailable();
+		return connection != null
+				&& connection.getFeatures().sm()
+				&& connection.getFeatures().push()
+				&& playServicesAvailable();
 	}
 
 	public boolean availableAndUseful(Account account) {
