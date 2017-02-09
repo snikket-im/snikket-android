@@ -60,6 +60,9 @@ import eu.siacs.conversations.utils.MimeUtils;
 import eu.siacs.conversations.xmpp.pep.Avatar;
 
 public class FileBackend {
+
+	private static final Object THUMBNAIL_LOCK = new Object();
+
 	private static final SimpleDateFormat IMAGE_DATE_FORMAT = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.US);
 
 	private static final String FILE_PROVIDER = ".files";
@@ -400,7 +403,7 @@ public class FileBackend {
 		final LruCache<String,Bitmap> cache = mXmppConnectionService.getBitmapCache();
 		Bitmap thumbnail = cache.get(uuid);
 		if ((thumbnail == null) && (!cacheOnly)) {
-			synchronized (cache) {
+			synchronized (THUMBNAIL_LOCK) {
 				thumbnail = cache.get(uuid);
 				if (thumbnail != null) {
 					return thumbnail;
