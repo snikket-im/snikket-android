@@ -691,4 +691,13 @@
   <string name="hide_inactive_devices">Masquer les appareils inactifs</string>
   <string name="distrust_omemo_key">Ne plus faire confiance à cet appareil</string>
   <string name="distrust_omemo_key_text">Êtes-vous sûr de vouloir supprimer la vérification pour cet appareil ?\nCet appareil et les messages qui en proviennent seront marqués comme n\'étant pas dignes de confiance.</string>
+  <string name="timeout_24_hours">24 heures</string>
+  <string name="timeout_7_days">7 jours</string>
+  <string name="timeout_30_days">30 jours</string>
+  <string name="timeout_6_months">6 mois</string>
+  <string name="pref_automatically_delete_messages">Suppression messages auto</string>
+  <string name="pref_automatically_delete_messages_description">Efface automatiquement de cet appareil les messages plus anciens que l\'intervalle choisi.</string>
+  <string name="encrypting_message">Chiffrement du message en cours</string>
+  <string name="not_fetching_history_retention_period">Aucun message récupéré, en raison de la configuration de rétention de l\'appareil.</string>
+  <string name="transcoding_video_progress">Compression de la vidéo en cours (%s%% effectués)</string>
 </resources>

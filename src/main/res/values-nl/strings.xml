@@ -698,5 +698,6 @@
   <string name="pref_automatically_delete_messages">Automatisch berichten verwijderen</string>
   <string name="pref_automatically_delete_messages_description">Verwijder automatisch berichten van dit apparaat ouder dan de ingestelde tijdsperiode.</string>
   <string name="encrypting_message">Bericht wordt versleuteld</string>
+  <string name="not_fetching_history_retention_period">Berichten worden niet opgehaald wegens lokale bewaarperiode.</string>
   <string name="transcoding_video_progress">Video wordt gecomprimeerd (%s%% voltooid)</string>
 </resources>

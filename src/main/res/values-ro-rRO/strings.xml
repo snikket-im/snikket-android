@@ -702,5 +702,6 @@ Emitent</string>
   <string name="pref_automatically_delete_messages">Ștergerea automată a mesajelor</string>
   <string name="pref_automatically_delete_messages_description">De pe acest dispozitiv se vor șterge dacă sunt mai vechi de perioada selectată.</string>
   <string name="encrypting_message">Mesajul se criptează</string>
+  <string name="not_fetching_history_retention_period">Politica de retenție locală împiedică descărcarea altor mesaje.</string>
   <string name="transcoding_video_progress">Se comprimă clipul video (%s%% gata)</string>
 </resources>

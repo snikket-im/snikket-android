@@ -698,5 +698,6 @@
   <string name="pref_automatically_delete_messages">Автоматично изтриване на съобщенията</string>
   <string name="pref_automatically_delete_messages_description">Автоматично изтриване на съобщенията от това устройство, които са по-стари от зададеното време.</string>
   <string name="encrypting_message">Шифроване на съобщението</string>
+  <string name="not_fetching_history_retention_period">Съобщенията не се изтеглят поради местния период на задържане.</string>
   <string name="transcoding_video_progress">Компресиране на видеото (%s%%)</string>
 </resources>

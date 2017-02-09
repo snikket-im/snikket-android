@@ -52,7 +52,7 @@
   <string name="cancel">Mégse</string>
   <string name="set">Beállít</string>
   <string name="add">Hozzáad</string>
-  <string name="edit">Szerkeszt</string>
+  <string name="edit">Kész</string>
   <string name="delete">Töröl</string>
   <string name="block">Tilt</string>
   <string name="unblock">Tiltás vége</string>
@@ -148,7 +148,7 @@
   <string name="account_status_not_found">Szerver nem található</string>
   <string name="account_status_no_internet">Nincs kapcsolat</string>
   <string name="account_status_regis_fail">Regisztráció nem sikerült</string>
-  <string name="account_status_regis_conflict">Felhasználónév már foglalt</string>
+  <string name="account_status_regis_conflict">Ez a felhasználónév már foglalt</string>
   <string name="account_status_regis_success">Sikeres regisztráció</string>
   <string name="account_status_regis_not_sup">A szerver nem támogatja a regisztrációt</string>
   <string name="account_status_security_error">Biztonsági hiba</string>
@@ -251,8 +251,8 @@
   <string name="edit_subject_hint">A konferencia témája</string>
   <string name="joining_conference">Konferenciához csatlakozás...</string>
   <string name="leave">Távozás</string>
-  <string name="contact_added_you">Felhasználó hozzáadott a névjegyzékéhez</string>
-  <string name="add_back">Te is hozzáadod</string>
+  <string name="contact_added_you">Ez a felhasználó hozzáadott téged a névjegyeihez</string>
+  <string name="add_back">Én is hozzáadom</string>
   <string name="contact_has_read_up_to_this_point">%s eddig olvasta el</string>
   <string name="publish">Közzétesz</string>
   <string name="touch_to_choose_picture">Érintsd meg a piktogramot kép kiválasztásához </string>

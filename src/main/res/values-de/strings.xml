@@ -698,5 +698,6 @@
   <string name="pref_automatically_delete_messages">Automatische Nachrichtenlöschung</string>
   <string name="pref_automatically_delete_messages_description">Lösche Nachrichten automatisch, wenn diese älter sind als die eingestellte Zeit.</string>
   <string name="encrypting_message">Nachricht wird verschlüsselt</string>
+  <string name="not_fetching_history_retention_period">Nachrichten werden aufgrund der eingestellten lokalen Speicherfrist nicht abgerufen. </string>
   <string name="transcoding_video_progress">Video wird komprimiert (%s%% abgeschlossen)</string>
 </resources>

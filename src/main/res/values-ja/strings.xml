@@ -695,5 +695,6 @@
   <string name="pref_automatically_delete_messages">自動メッセージ削除</string>
   <string name="pref_automatically_delete_messages_description">設定された期間よりも古いメッセージを、このデバイスから自動的に削除します。</string>
   <string name="encrypting_message">メッセージの暗号化中</string>
+  <string name="not_fetching_history_retention_period">ローカル保存期間のためにメッセージを取得しません。</string>
   <string name="transcoding_video_progress">ビデオの圧縮中 (%s%% 完了)</string>
 </resources>

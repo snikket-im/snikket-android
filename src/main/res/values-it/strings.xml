@@ -698,5 +698,6 @@
   <string name="pref_automatically_delete_messages">Eliminazione automatica messaggi</string>
   <string name="pref_automatically_delete_messages_description">Elimina automaticamente da questo dispositivo i messaggi più vecchi del lasso di tempo configurato.</string>
   <string name="encrypting_message">Cifratura del messaggio</string>
+  <string name="not_fetching_history_retention_period">Nessun recupero di messaggi a causa del periodo di conservazione locale.</string>
   <string name="transcoding_video_progress">Compressione del video (%s%% completato)</string>
 </resources>
