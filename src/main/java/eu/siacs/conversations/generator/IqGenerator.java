@@ -334,7 +334,7 @@ public class IqGenerator extends AbstractGenerator {
 				ByteBuffer bb = ByteBuffer.wrap(new byte[16]);
 				bb.putLong(uuid.getMostSignificantBits());
 				bb.putLong(uuid.getLeastSignificantBits());
-				return Base64.encodeToString(bb.array(), Base64.URL_SAFE) + name.substring(pos, name.length());
+				return Base64.encodeToString(bb.array(), Base64.URL_SAFE | Base64.NO_PADDING | Base64.NO_WRAP) + name.substring(pos, name.length());
 			} catch (Exception e) {
 				return name;
 			}
