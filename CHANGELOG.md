@@ -1,5 +1,9 @@
 ###Changelog
 
+####Version 1.16.1
+* UI performance fixes
+* bug fixes
+
 ####Version 1.16.0
 * configurable client side message retention period
 * compress videos before sending them
