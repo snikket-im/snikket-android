@@ -1518,16 +1518,18 @@ public class XmppConnectionService extends Service {
 										+ "#"
 										+ phoneContact.getString("lookup");
 								contact.setSystemAccount(systemAccount);
-								if (contact.setPhotoUri(phoneContact.getString("photouri"))) {
+								boolean needsCacheClean = contact.setPhotoUri(phoneContact.getString("photouri"));
+								needsCacheClean |= contact.setSystemName(phoneContact.getString("displayname"));
+								if (needsCacheClean) {
 									getAvatarService().clear(contact);
 								}
-								contact.setSystemName(phoneContact.getString("displayname"));
 								withSystemAccounts.remove(contact);
 							}
 							for (Contact contact : withSystemAccounts) {
 								contact.setSystemAccount(null);
-								contact.setSystemName(null);
-								if (contact.setPhotoUri(null)) {
+								boolean needsCacheClean = contact.setPhotoUri(null);
+								needsCacheClean |= contact.setSystemName(null);
+								if (needsCacheClean) {
 									getAvatarService().clear(contact);
 								}
 							}

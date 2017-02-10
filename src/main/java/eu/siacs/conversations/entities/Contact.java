@@ -255,8 +255,10 @@ public class Contact implements ListItem, Blockable {
 		this.serverName = serverName;
 	}
 
-	public void setSystemName(String systemName) {
+	public boolean setSystemName(String systemName) {
+		String old = this.systemName;
 		this.systemName = systemName;
+		return (old == null && systemName != null) || (old != null && !old.equals(systemName));
 	}
 
 	public void setPresenceName(String presenceName) {
