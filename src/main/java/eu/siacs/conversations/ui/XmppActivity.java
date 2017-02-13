@@ -1116,8 +1116,7 @@ public abstract class XmppActivity extends Activity {
 				return false;
 			} else {
 				jids.add(conversation.getJid().toBareJid());
-				service.createAdhocConference(conversation.getAccount(), null, jids, activity.adhocCallback);
-				return true;
+				return service.createAdhocConference(conversation.getAccount(), null, jids, activity.adhocCallback);
 			}
 		}
 	}

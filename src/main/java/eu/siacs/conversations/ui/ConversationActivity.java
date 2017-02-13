@@ -426,6 +426,7 @@ public class ConversationActivity extends XmppActivity
 					menuContactDetails.setVisible(!this.getSelectedConversation().withSelf());
 					menuMucDetails.setVisible(false);
 					menuSecure.setVisible(Config.multipleEncryptionChoices());
+					menuInviteContact.setVisible(xmppConnectionService != null && xmppConnectionService.findConferenceServer(getSelectedConversation().getAccount()) != null);
 				}
 				if (this.getSelectedConversation().isMuted()) {
 					menuMute.setVisible(false);

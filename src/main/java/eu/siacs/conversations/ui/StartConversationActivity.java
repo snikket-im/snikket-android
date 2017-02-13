@@ -719,9 +719,10 @@ public class StartConversationActivity extends XmppActivity implements OnRosterU
                         }
                     }
                     if (account != null && jids.size() > 0) {
-                        xmppConnectionService.createAdhocConference(account, subject, jids, mAdhocConferenceCallback);
-                        mToast = Toast.makeText(this, R.string.creating_conference, Toast.LENGTH_LONG);
-                        mToast.show();
+                        if (xmppConnectionService.createAdhocConference(account, subject, jids, mAdhocConferenceCallback)) {
+                            mToast = Toast.makeText(this, R.string.creating_conference, Toast.LENGTH_LONG);
+                            mToast.show();
+                        }
                     }
                 }
             } else {

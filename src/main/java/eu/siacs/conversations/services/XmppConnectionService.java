@@ -2410,7 +2410,7 @@ public class XmppConnectionService extends Service {
 		}
 	}
 
-	private String findConferenceServer(final Account account) {
+	public String findConferenceServer(final Account account) {
 		String server;
 		if (account.getXmppConnection() != null) {
 			server = account.getXmppConnection().getMucServer();
@@ -2429,7 +2429,7 @@ public class XmppConnectionService extends Service {
 		return null;
 	}
 
-	public void createAdhocConference(final Account account,
+	public boolean createAdhocConference(final Account account,
 									  final String subject,
 									  final Iterable<Jid> jids,
 									  final UiCallback<Conversation> callback) {
@@ -2441,7 +2441,7 @@ public class XmppConnectionService extends Service {
 					if (callback != null) {
 						callback.error(R.string.no_conference_server_found, null);
 					}
-					return;
+					return false;
 				}
 				final Jid jid = Jid.fromParts(new BigInteger(64, getRNG()).toString(Character.MAX_RADIX), server, null);
 				final Conversation conversation = findOrCreateConversation(account, jid, true);
@@ -2476,15 +2476,18 @@ public class XmppConnectionService extends Service {
 						});
 					}
 				});
+				return true;
 			} catch (InvalidJidException e) {
 				if (callback != null) {
 					callback.error(R.string.conference_creation_failed, null);
 				}
+				return false;
 			}
 		} else {
 			if (callback != null) {
 				callback.error(R.string.not_connected_try_again, null);
 			}
+			return false;
 		}
 	}
 
