@@ -211,7 +211,6 @@ public class XmppConnection implements Runnable {
 		this.account = account;
 		this.wakeLock = service.getPowerManager().newWakeLock(
 				PowerManager.PARTIAL_WAKE_LOCK, account.getJid().toBareJid().toString());
-		tagWriter = new TagWriter();
 		mXmppConnectionService = service;
 	}
 
@@ -253,8 +252,6 @@ public class XmppConnection implements Runnable {
 		try {
 			Socket localSocket;
 			shouldAuthenticate = needsBinding = !account.isOptionSet(Account.OPTION_REGISTER);
-			tagReader = new XmlReader(wakeLock);
-			tagWriter = new TagWriter();
 			this.changeStatus(Account.State.CONNECTING);
 			final boolean useTor = mXmppConnectionService.useTorToConnect() || account.isOnion();
 			final boolean extended = mXmppConnectionService.showExtendedConnectionOptions();
@@ -451,6 +448,9 @@ public class XmppConnection implements Runnable {
 			throw new InterruptedException();
 		}
 		this.socket = socket;
+		tagReader = new XmlReader(wakeLock);
+		if (tagWriter != null) tagWriter.forceClose();
+		tagWriter = new TagWriter();
 		tagWriter.setOutputStream(socket.getOutputStream());
 		tagReader.setInputStream(socket.getInputStream());
 		tagWriter.beginDocument();
@@ -1356,9 +1356,6 @@ public class XmppConnection implements Runnable {
 	}
 
 	private void forceCloseSocket() {
-		if (tagWriter != null) {
-			tagWriter.forceClose();
-		}
 		if (socket != null) {
 			try {
 				socket.close();

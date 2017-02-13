@@ -1,10 +1,13 @@
 package eu.siacs.conversations.xml;
 
+import android.util.Log;
+
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.util.concurrent.LinkedBlockingQueue;
 
+import eu.siacs.conversations.Config;
 import eu.siacs.conversations.xmpp.stanzas.AbstractStanza;
 
 public class TagWriter {
@@ -71,6 +74,7 @@ public class TagWriter {
 
 	public TagWriter writeStanzaAsync(AbstractStanza stanza) {
 		if (finshed) {
+			Log.d(Config.LOGTAG,"attempting to write stanza to finished TagWriter");
 			return this;
 		} else {
 			if (!asyncStanzaWriter.isAlive()) {
