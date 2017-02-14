@@ -437,10 +437,10 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
 				final boolean safeToExtract;
 				if (isTypeGroupChat) {
 					by = conversation.getJid().toBareJid();
-					safeToExtract = true; //conversation.getMucOptions().hasFeature(Xmlns.STANZA_IDS);
+					safeToExtract = conversation.getMucOptions().hasFeature(Xmlns.STANZA_IDS);
 				} else {
 					by = account.getJid().toBareJid();
-					safeToExtract = true; //account.getXmppConnection().getFeatures().stanzaIds();
+					safeToExtract = account.getXmppConnection().getFeatures().stanzaIds();
 				}
 				if (safeToExtract) {
 					serverMsgId = extractStanzaId(packet, by);
