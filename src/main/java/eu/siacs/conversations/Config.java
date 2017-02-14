@@ -106,8 +106,8 @@ public final class Config {
 
 	public static final boolean PARSE_REAL_JID_FROM_MUC_MAM = false; //dangerous if server doesn’t filter
 
-	public static final long MAM_MAX_CATCHUP =  MILLISECONDS_IN_DAY / 2;
-	public static final int MAM_MAX_MESSAGES = 500;
+	public static final long MAM_MAX_CATCHUP =  MILLISECONDS_IN_DAY * 5;
+	public static final int MAM_MAX_MESSAGES = 750;
 
 	public static final long FREQUENT_RESTARTS_DETECTION_WINDOW = 12 * 60 * 60 * 1000; // 10 hours
 	public static final long FREQUENT_RESTARTS_THRESHOLD = 0; // previous value was 16;

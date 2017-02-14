@@ -382,7 +382,7 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
 		}
 
 		if ((body != null || pgpEncrypted != null || axolotlEncrypted != null) && !isMucStatusMessage) {
-			Conversation conversation = mXmppConnectionService.findOrCreateConversation(account, counterpart.toBareJid(), isTypeGroupChat, query);
+			Conversation conversation = mXmppConnectionService.findOrCreateConversation(account, counterpart.toBareJid(), isTypeGroupChat, false, query);
 			final boolean conversationMultiMode = conversation.getMode() == Conversation.MODE_MULTI;
 			if (isTypeGroupChat) {
 				if (counterpart.getResourcepart().equals(conversation.getMucOptions().getActualNick())) {
@@ -540,8 +540,11 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
 			} else {
 				conversation.add(message);
 			}
+			if (query != null) {
+				query.incrementActualMessageCount();
+			}
 
-			if (query == null || query.getWith() == null) { //either no mam or catchup
+			if (query == null || !query.isCatchup()) { //either no mam or catchup
 				if (status == Message.STATUS_SEND || status == Message.STATUS_SEND_RECEIVED) {
 					mXmppConnectionService.markRead(conversation);
 					if (query == null) {
