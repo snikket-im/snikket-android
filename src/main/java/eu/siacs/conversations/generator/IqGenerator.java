@@ -230,10 +230,10 @@ public class IqGenerator extends AbstractGenerator {
 
 	public IqPacket queryMessageArchiveManagement(final MessageArchiveService.Query mam) {
 		final IqPacket packet = new IqPacket(IqPacket.TYPE.SET);
-		final Element query = packet.query("urn:xmpp:mam:0");
+		final Element query = packet.query(Xmlns.MAM);
 		query.setAttribute("queryid", mam.getQueryId());
 		final Data data = new Data();
-		data.setFormType("urn:xmpp:mam:0");
+		data.setFormType(Xmlns.MAM);
 		if (mam.muc()) {
 			packet.setTo(mam.getWith());
 		} else if (mam.getWith()!=null) {

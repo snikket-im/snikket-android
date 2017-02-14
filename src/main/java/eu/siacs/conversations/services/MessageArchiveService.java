@@ -14,6 +14,7 @@ import eu.siacs.conversations.R;
 import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.entities.Conversation;
 import eu.siacs.conversations.generator.AbstractGenerator;
+import eu.siacs.conversations.utils.Xmlns;
 import eu.siacs.conversations.xml.Element;
 import eu.siacs.conversations.xmpp.OnAdvancedStreamFeaturesLoaded;
 import eu.siacs.conversations.xmpp.OnIqPacketReceived;
@@ -155,6 +156,7 @@ public class MessageArchiveService implements OnAdvancedStreamFeaturesLoaded {
 			this.mXmppConnectionService.sendIqPacket(account, packet, new OnIqPacketReceived() {
 				@Override
 				public void onIqPacketReceived(Account account, IqPacket packet) {
+					Element fin = packet.findChild("fin", Xmlns.MAM);
 					if (packet.getType() == IqPacket.TYPE.TIMEOUT) {
 						synchronized (MessageArchiveService.this.queries) {
 							MessageArchiveService.this.queries.remove(query);
@@ -162,7 +164,9 @@ public class MessageArchiveService implements OnAdvancedStreamFeaturesLoaded {
 								query.callback(false);
 							}
 						}
-					} else if (packet.getType() != IqPacket.TYPE.RESULT) {
+					} else if (packet.getType() == IqPacket.TYPE.RESULT && fin != null) {
+						processFin(fin);
+					} else {
 						Log.d(Config.LOGTAG, account.getJid().toBareJid().toString() + ": error executing mam: " + packet.toString());
 						finalizeQuery(query, true);
 					}
@@ -215,12 +219,9 @@ public class MessageArchiveService implements OnAdvancedStreamFeaturesLoaded {
 		return queryInProgress(conversation, null);
 	}
 
-	public void processFin(Element fin, Jid from) {
-		if (fin == null) {
-			return;
-		}
+	public void processFin(Element fin) {
 		Query query = findQuery(fin.getAttribute("queryid"));
-		if (query == null || !query.validFrom(from)) {
+		if (query == null) {
 			return;
 		}
 		boolean complete = fin.getAttributeAsBoolean("complete");

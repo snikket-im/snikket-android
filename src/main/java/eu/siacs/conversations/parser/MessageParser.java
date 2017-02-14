@@ -300,15 +300,10 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
 		final boolean isForwarded;
 		boolean isCarbon = false;
 		String serverMsgId = null;
-		final Element fin = original.findChild("fin", "urn:xmpp:mam:0");
-		if (fin != null) {
-			mXmppConnectionService.getMessageArchiveService().processFin(fin,original.getFrom());
-			return;
-		}
-		final Element result = original.findChild("result","urn:xmpp:mam:0");
+		final Element result = original.findChild("result",Xmlns.MAM);
 		final MessageArchiveService.Query query = result == null ? null : mXmppConnectionService.getMessageArchiveService().findQuery(result.getAttribute("queryid"));
 		if (query != null && query.validFrom(original.getFrom())) {
-			Pair<MessagePacket, Long> f = original.getForwardedMessagePacket("result", "urn:xmpp:mam:0");
+			Pair<MessagePacket, Long> f = original.getForwardedMessagePacket("result", Xmlns.MAM);
 			if (f == null) {
 				return;
 			}
