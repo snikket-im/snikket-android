@@ -10,7 +10,6 @@ import org.whispersystems.libaxolotl.ecc.ECPublicKey;
 import org.whispersystems.libaxolotl.state.PreKeyRecord;
 import org.whispersystems.libaxolotl.state.SignedPreKeyRecord;
 
-import java.math.BigInteger;
 import java.nio.ByteBuffer;
 import java.security.cert.CertificateEncodingException;
 import java.security.cert.X509Certificate;
@@ -230,10 +229,10 @@ public class IqGenerator extends AbstractGenerator {
 
 	public IqPacket queryMessageArchiveManagement(final MessageArchiveService.Query mam) {
 		final IqPacket packet = new IqPacket(IqPacket.TYPE.SET);
-		final Element query = packet.query(Xmlns.MAM);
+		final Element query = packet.query(mam.isLegacy() ? Xmlns.MAM_LAGECY : Xmlns.MAM);
 		query.setAttribute("queryid", mam.getQueryId());
 		final Data data = new Data();
-		data.setFormType(Xmlns.MAM);
+		data.setFormType(mam.isLegacy() ? Xmlns.MAM_LAGECY : Xmlns.MAM);
 		if (mam.muc()) {
 			packet.setTo(mam.getWith());
 		} else if (mam.getWith()!=null) {

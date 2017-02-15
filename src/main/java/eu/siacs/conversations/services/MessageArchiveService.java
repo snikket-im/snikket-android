@@ -164,8 +164,10 @@ public class MessageArchiveService implements OnAdvancedStreamFeaturesLoaded {
 								query.callback(false);
 							}
 						}
-					} else if (packet.getType() == IqPacket.TYPE.RESULT && fin != null) {
+					} else if (packet.getType() == IqPacket.TYPE.RESULT && fin != null ) {
 						processFin(fin);
+					} else if (packet.getType() == IqPacket.TYPE.RESULT && query.isLegacy()) {
+						//do nothing
 					} else {
 						Log.d(Config.LOGTAG, account.getJid().toBareJid().toString() + ": error executing mam: " + packet.toString());
 						finalizeQuery(query, true);
@@ -217,6 +219,13 @@ public class MessageArchiveService implements OnAdvancedStreamFeaturesLoaded {
 
 	public boolean queryInProgress(Conversation conversation) {
 		return queryInProgress(conversation, null);
+	}
+
+	public void processFinLagecy(Element fin, Jid from) {
+		Query query = findQuery(fin.getAttribute("queryid"));
+		if (query != null && query.validFrom(from)) {
+			processFin(fin);
+		}
 	}
 
 	public void processFin(Element fin) {
@@ -317,6 +326,14 @@ public class MessageArchiveService implements OnAdvancedStreamFeaturesLoaded {
 			query.callback = callback;
 			query.catchup = catchup;
 			return query;
+		}
+
+		public boolean isLegacy() {
+			if (conversation == null || conversation.getMode() == Conversation.MODE_SINGLE) {
+				return account.getXmppConnection().getFeatures().mamLegacy();
+			} else {
+				return conversation.getMucOptions().mamLegacy();
+			}
 		}
 
 		public Query next(String reference) {
