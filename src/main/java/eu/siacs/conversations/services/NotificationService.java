@@ -230,6 +230,8 @@ public class NotificationService {
 				final int dat = 70;
 				final long[] pattern = {0, 3 * dat, dat, dat};
 				mBuilder.setVibrate(pattern);
+			} else {
+				mBuilder.setVibrate(new long[]{0});
 			}
 			if (ringtone != null) {
 				mBuilder.setSound(Uri.parse(ringtone));
