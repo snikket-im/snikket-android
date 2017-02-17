@@ -38,7 +38,7 @@ public class TagWriter {
 	public TagWriter() {
 	}
 
-	public void setOutputStream(OutputStream out) throws IOException {
+	public synchronized void setOutputStream(OutputStream out) throws IOException {
 		if (out == null) {
 			throw new IOException();
 		}
@@ -54,7 +54,7 @@ public class TagWriter {
 		return this;
 	}
 
-	public TagWriter writeTag(Tag tag) throws IOException {
+	public synchronized  TagWriter writeTag(Tag tag) throws IOException {
 		if (outputStream == null) {
 			throw new IOException("output stream was null");
 		}
@@ -63,7 +63,7 @@ public class TagWriter {
 		return this;
 	}
 
-	public TagWriter writeElement(Element element) throws IOException {
+	public synchronized TagWriter writeElement(Element element) throws IOException {
 		if (outputStream == null) {
 			throw new IOException("output stream was null");
 		}
@@ -101,7 +101,7 @@ public class TagWriter {
 		return outputStream != null;
 	}
 
-	public void forceClose() {
+	public synchronized void forceClose() {
 		finish();
 		if (outputStream != null) {
 			try {
