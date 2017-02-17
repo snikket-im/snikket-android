@@ -100,7 +100,7 @@ public class XmppConnection implements Runnable {
 	private final WakeLock wakeLock;
 	private Socket socket;
 	private XmlReader tagReader;
-	private TagWriter tagWriter;
+	private TagWriter tagWriter = new TagWriter();
 	private final Features features = new Features(this);
 	private boolean needsBinding = true;
 	private boolean shouldAuthenticate = true;
@@ -449,7 +449,9 @@ public class XmppConnection implements Runnable {
 		}
 		this.socket = socket;
 		tagReader = new XmlReader(wakeLock);
-		if (tagWriter != null) tagWriter.forceClose();
+		if (tagWriter != null) {
+			tagWriter.forceClose();
+		}
 		tagWriter = new TagWriter();
 		tagWriter.setOutputStream(socket.getOutputStream());
 		tagReader.setInputStream(socket.getInputStream());
