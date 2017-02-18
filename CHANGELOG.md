@@ -1,5 +1,10 @@
 ###Changelog
 
+####Version 1.16.2
+* change mam catchup strategie. support mam:1
+* bug fixes
+
+
 ####Version 1.16.1
 * UI performance fixes
 * bug fixes
