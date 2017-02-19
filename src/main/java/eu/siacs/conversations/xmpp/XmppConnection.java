@@ -1088,10 +1088,15 @@ public class XmppConnection implements Runnable {
 		synchronized (this.disco) {
 			this.disco.clear();
 		}
-		mPendingServiceDiscoveries.set(0);
-		mWaitForDisco.set(smVersion != 0 && !account.getJid().getDomainpart().equalsIgnoreCase("nimbuzz.com"));
-		lastDiscoStarted = SystemClock.elapsedRealtime();
 		Log.d(Config.LOGTAG, account.getJid().toBareJid() + ": starting service discovery");
+		mPendingServiceDiscoveries.set(0);
+		if (smVersion == 0 || Patches.DISCO_EXCEPTIONS.contains(account.getJid().getDomainpart())) {
+			Log.d(Config.LOGTAG,account.getJid().toBareJid()+": do not wait for service discovery");
+			mWaitForDisco.set(false);
+		} else {
+			mWaitForDisco.set(true);
+		}
+		lastDiscoStarted = SystemClock.elapsedRealtime();
 		mXmppConnectionService.scheduleWakeUpCall(Config.CONNECT_DISCO_TIMEOUT, account.getUuid().hashCode());
 		Element caps = streamFeatures.findChild("c");
 		final String hash = caps == null ? null : caps.getAttribute("hash");

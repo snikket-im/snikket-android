@@ -126,6 +126,7 @@ import eu.siacs.conversations.xmpp.OnMessagePacketReceived;
 import eu.siacs.conversations.xmpp.OnPresencePacketReceived;
 import eu.siacs.conversations.xmpp.OnStatusChanged;
 import eu.siacs.conversations.xmpp.OnUpdateBlocklist;
+import eu.siacs.conversations.xmpp.Patches;
 import eu.siacs.conversations.xmpp.XmppConnection;
 import eu.siacs.conversations.xmpp.chatstate.ChatState;
 import eu.siacs.conversations.xmpp.forms.Data;
@@ -1200,7 +1201,7 @@ public class XmppConnectionService extends Service {
 		account.deactivateGracePeriod();
 		MessagePacket packet = null;
 		final boolean addToConversation = (conversation.getMode() != Conversation.MODE_MULTI
-				|| account.getServerIdentity() != XmppConnection.Identity.SLACK)
+				|| !Patches.BAD_MUC_REFLECTION.contains(account.getServerIdentity()))
 				&& !message.edited();
 		boolean saveInDb = addToConversation;
 		message.setStatus(Message.STATUS_WAITING);

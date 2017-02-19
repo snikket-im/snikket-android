@@ -15,6 +15,7 @@ import eu.siacs.conversations.R;
 import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.xml.Element;
 import eu.siacs.conversations.xmpp.OnIqPacketReceived;
+import eu.siacs.conversations.xmpp.Patches;
 import eu.siacs.conversations.xmpp.XmppConnection;
 import eu.siacs.conversations.xmpp.forms.Data;
 import eu.siacs.conversations.xmpp.jid.InvalidJidException;
@@ -110,7 +111,7 @@ public class PushManagementService {
 	}
 
 	public boolean availableAndUseful(Account account) {
-		return account.getServerIdentity() == XmppConnection.Identity.EJABBERD && available(account);
+		return Patches.SUFFICIENT_PUSH.contains(account.getServerIdentity()) && available(account);
 	}
 
 	private boolean playServicesAvailable() {
