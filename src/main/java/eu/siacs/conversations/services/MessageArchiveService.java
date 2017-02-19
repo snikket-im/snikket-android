@@ -221,7 +221,7 @@ public class MessageArchiveService implements OnAdvancedStreamFeaturesLoaded {
 		return queryInProgress(conversation, null);
 	}
 
-	public void processFinLagecy(Element fin, Jid from) {
+	public void processFinLegacy(Element fin, Jid from) {
 		Query query = findQuery(fin.getAttribute("queryid"));
 		if (query != null && query.validFrom(from)) {
 			processFin(fin);

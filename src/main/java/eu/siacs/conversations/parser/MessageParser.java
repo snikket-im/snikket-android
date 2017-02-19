@@ -300,16 +300,16 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
 		final boolean isForwarded;
 		boolean isCarbon = false;
 		String serverMsgId = null;
-		final Element fin = original.findChild("fin", Xmlns.MAM_LAGECY);
+		final Element fin = original.findChild("fin", Xmlns.MAM_LEGACY);
 		if (fin != null) {
-			mXmppConnectionService.getMessageArchiveService().processFinLagecy(fin,original.getFrom());
+			mXmppConnectionService.getMessageArchiveService().processFinLegacy(fin,original.getFrom());
 			return;
 		}
-		final boolean mamLagecy = original.hasChild("result",Xmlns.MAM_LAGECY);
-		final Element result = original.findChild("result",mamLagecy ? Xmlns.MAM_LAGECY : Xmlns.MAM);
+		final boolean mamLegacy = original.hasChild("result",Xmlns.MAM_LEGACY);
+		final Element result = original.findChild("result",mamLegacy ? Xmlns.MAM_LEGACY : Xmlns.MAM);
 		final MessageArchiveService.Query query = result == null ? null : mXmppConnectionService.getMessageArchiveService().findQuery(result.getAttribute("queryid"));
 		if (query != null && query.validFrom(original.getFrom())) {
-			Pair<MessagePacket, Long> f = original.getForwardedMessagePacket("result", mamLagecy ? Xmlns.MAM_LAGECY : Xmlns.MAM);
+			Pair<MessagePacket, Long> f = original.getForwardedMessagePacket("result", mamLegacy ? Xmlns.MAM_LEGACY : Xmlns.MAM);
 			if (f == null) {
 				return;
 			}

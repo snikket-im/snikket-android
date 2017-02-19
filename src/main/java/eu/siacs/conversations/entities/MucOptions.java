@@ -374,11 +374,11 @@ public class MucOptions {
 	}
 
 	public boolean mamSupport() {
-		return hasFeature(Xmlns.MAM) || hasFeature(Xmlns.MAM_LAGECY);
+		return hasFeature(Xmlns.MAM) || hasFeature(Xmlns.MAM_LEGACY);
 	}
 
 	public boolean mamLegacy() {
-		return hasFeature(Xmlns.MAM_LAGECY) && !hasFeature(Xmlns.MAM);
+		return hasFeature(Xmlns.MAM_LEGACY) && !hasFeature(Xmlns.MAM);
 	}
 
 	public boolean nonanonymous() {
