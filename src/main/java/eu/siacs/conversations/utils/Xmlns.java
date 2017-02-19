@@ -8,5 +8,5 @@ public final class Xmlns {
 	public static final String HTTP_UPLOAD = "urn:xmpp:http:upload";
 	public static final String STANZA_IDS = "urn:xmpp:sid:0";
 	public static final String MAM = "urn:xmpp:mam:1";
-	public static final String MAM_LAGECY = "urn:xmpp:mam:0";
+	public static final String MAM_LEGACY = "urn:xmpp:mam:0";
 }

@@ -3714,13 +3714,13 @@ public class XmppConnectionService extends Service {
 	}
 
 	public void fetchMamPreferences(Account account, final OnMamPreferencesFetched callback) {
-		final boolean lagecy = account.getXmppConnection().getFeatures().mamLegacy();
+		final boolean legacy = account.getXmppConnection().getFeatures().mamLegacy();
 		IqPacket request = new IqPacket(IqPacket.TYPE.GET);
-		request.addChild("prefs",lagecy ? Xmlns.MAM_LAGECY : Xmlns.MAM);
+		request.addChild("prefs",legacy ? Xmlns.MAM_LEGACY : Xmlns.MAM);
 		sendIqPacket(account, request, new OnIqPacketReceived() {
 			@Override
 			public void onIqPacketReceived(Account account, IqPacket packet) {
-				Element prefs = packet.findChild("prefs",lagecy ? Xmlns.MAM_LAGECY : Xmlns.MAM);
+				Element prefs = packet.findChild("prefs",legacy ? Xmlns.MAM_LEGACY : Xmlns.MAM);
 				if (packet.getType() == IqPacket.TYPE.RESULT && prefs != null) {
 					callback.onPreferencesFetched(prefs);
 				} else {
