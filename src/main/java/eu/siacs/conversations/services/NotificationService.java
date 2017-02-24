@@ -240,6 +240,7 @@ public class NotificationService {
 		if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
 			mBuilder.setCategory(Notification.CATEGORY_MESSAGE);
 		}
+		mBuilder.setPriority(NotificationCompat.PRIORITY_HIGH);
 		setNotificationColor(mBuilder);
 		mBuilder.setDefaults(0);
 		if (led) {
