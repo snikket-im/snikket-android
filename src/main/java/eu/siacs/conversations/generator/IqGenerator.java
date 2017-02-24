@@ -396,4 +396,23 @@ public class IqGenerator extends AbstractGenerator {
 		options.putString("muc#roomconfig_whois", "anyone");
 		return options;
 	}
+
+	public IqPacket requestPubsubConfiguration(Jid jid, String node) {
+		return pubsubConfiguration(jid, node, null);
+	}
+
+	public IqPacket publishPubsubConfiguration(Jid jid, String node, Data data) {
+		return pubsubConfiguration(jid,node,data);
+	}
+
+	private IqPacket pubsubConfiguration(Jid jid, String node, Data data) {
+		IqPacket packet = new IqPacket(data == null ? IqPacket.TYPE.GET : IqPacket.TYPE.SET);
+		packet.setTo(jid);
+		Element pubsub = packet.addChild("pubsub","http://jabber.org/protocol/pubsub#owner");
+		Element configure = pubsub.addChild("configure").setAttribute("node",node);
+		if (data != null) {
+			configure.addChild(data);
+		}
+		return packet;
+	}
 }

@@ -1,5 +1,7 @@
 package eu.siacs.conversations.xmpp.forms;
 
+import android.os.Bundle;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
@@ -55,6 +57,15 @@ public class Data extends Element {
 		field.setValues(values);
 	}
 
+	public void submit(Bundle options) {
+		for (Field field : getFields()) {
+			if (options.containsKey(field.getFieldName())) {
+				field.setValue(options.getString(field.getFieldName()));
+			}
+		}
+		submit();
+	}
+
 	public void submit() {
 		this.setAttribute("type","submit");
 		removeUnnecessaryChildren();
@@ -96,4 +107,5 @@ public class Data extends Element {
 	public String getTitle() {
 		return findChildContent("title");
 	}
+
 }

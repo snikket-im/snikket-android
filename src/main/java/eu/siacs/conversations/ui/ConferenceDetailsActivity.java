@@ -40,7 +40,7 @@ import eu.siacs.conversations.services.XmppConnectionService.OnConversationUpdat
 import eu.siacs.conversations.services.XmppConnectionService.OnMucRosterUpdate;
 import eu.siacs.conversations.xmpp.jid.Jid;
 
-public class ConferenceDetailsActivity extends XmppActivity implements OnConversationUpdate, OnMucRosterUpdate, XmppConnectionService.OnAffiliationChanged, XmppConnectionService.OnRoleChanged, XmppConnectionService.OnConferenceOptionsPushed {
+public class ConferenceDetailsActivity extends XmppActivity implements OnConversationUpdate, OnMucRosterUpdate, XmppConnectionService.OnAffiliationChanged, XmppConnectionService.OnRoleChanged, XmppConnectionService.OnConfigurationPushed {
 	public static final String ACTION_VIEW_MUC = "view_muc";
 
 	private static final float INACTIVE_ALPHA = 0.4684f; //compromise between dark and light theme

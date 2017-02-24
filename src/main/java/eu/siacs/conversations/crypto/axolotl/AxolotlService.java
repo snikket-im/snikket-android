@@ -533,8 +533,23 @@ public class AxolotlService implements OnAdvancedStreamFeaturesLoaded {
 			Log.d(Config.LOGTAG, AxolotlService.getLogprefix(account) + ": publish verification for device "+getOwnDeviceId());
 			mXmppConnectionService.sendIqPacket(account, packet, new OnIqPacketReceived() {
 				@Override
-				public void onIqPacketReceived(Account account, IqPacket packet) {
-					publishDeviceBundle(signedPreKeyRecord, preKeyRecords, announceAfter, wipe);
+				public void onIqPacketReceived(final Account account, IqPacket packet) {
+					String node = AxolotlService.PEP_VERIFICATION+":"+getOwnDeviceId();
+					Bundle pubsubOptions = new Bundle();
+					pubsubOptions.putString("pubsub#access_model","open");
+					mXmppConnectionService.pushNodeConfiguration(account, account.getJid().toBareJid(), node, pubsubOptions, new XmppConnectionService.OnConfigurationPushed() {
+						@Override
+						public void onPushSucceeded() {
+							Log.d(Config.LOGTAG,getLogprefix(account) + "configured verification node to be world readable");
+							publishDeviceBundle(signedPreKeyRecord, preKeyRecords, announceAfter, wipe);
+						}
+
+						@Override
+						public void onPushFailed() {
+							Log.d(Config.LOGTAG,getLogprefix(account) + "unable to set access model on verification node");
+							publishDeviceBundle(signedPreKeyRecord, preKeyRecords, announceAfter, wipe);
+						}
+					});
 				}
 			});
 		} catch (Exception  e) {
@@ -661,7 +676,7 @@ public class AxolotlService implements OnAdvancedStreamFeaturesLoaded {
 		IqPacket publish = mXmppConnectionService.getIqGenerator().publishBundles(
 				signedPreKeyRecord, axolotlStore.getIdentityKeyPair().getPublicKey(),
 				preKeyRecords, getOwnDeviceId());
-		Log.d(Config.LOGTAG, AxolotlService.getLogprefix(account) + ": Bundle " + getOwnDeviceId() + " in PEP not current. Publishing: " + publish);
+		Log.d(Config.LOGTAG, AxolotlService.getLogprefix(account) + ": Bundle " + getOwnDeviceId() + " in PEP not current. Publishing...");
 		mXmppConnectionService.sendIqPacket(account, publish, new OnIqPacketReceived() {
 			@Override
 			public void onIqPacketReceived(Account account, IqPacket packet) {

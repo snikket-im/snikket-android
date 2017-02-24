@@ -1831,9 +1831,10 @@ public class XmppConnectionService extends Service {
 	}
 
 	public void updateKeyInAccount(final Account account, final String alias) {
-		Log.d(Config.LOGTAG, "update key in account " + alias);
+		Log.d(Config.LOGTAG, account.getJid().toBareJid()+": update key in account " + alias);
 		try {
 			X509Certificate[] chain = KeyChain.getCertificateChain(XmppConnectionService.this, alias);
+			Log.d(Config.LOGTAG,account.getJid().toBareJid()+" loaded certificate chain");
 			Pair<Jid, String> info = CryptoHelper.extractJidAndName(chain[0]);
 			if (account.getJid().toBareJid().equals(info.first)) {
 				account.setPrivateKeyAlias(alias);
@@ -1841,7 +1842,7 @@ public class XmppConnectionService extends Service {
 				databaseBackend.updateAccount(account);
 				if (Config.X509_VERIFICATION) {
 					try {
-						getMemorizingTrustManager().getNonInteractive(account.getJid().getDomainpart()).checkClientTrusted(chain, "RSA");
+						getMemorizingTrustManager().getNonInteractive().checkClientTrusted(chain, "RSA");
 					} catch (CertificateException e) {
 						showErrorToastInUi(R.string.certificate_chain_is_not_trusted);
 					}
@@ -2454,7 +2455,7 @@ public class XmppConnectionService extends Service {
 				joinMuc(conversation, new OnConferenceJoined() {
 					@Override
 					public void onConferenceJoined(final Conversation conversation) {
-						pushConferenceConfiguration(conversation, IqGenerator.defaultRoomConfiguration(), new OnConferenceOptionsPushed() {
+						pushConferenceConfiguration(conversation, IqGenerator.defaultRoomConfiguration(), new OnConfigurationPushed() {
 							@Override
 							public void onPushSucceeded() {
 								if (subject != null && !subject.trim().isEmpty()) {
@@ -2538,7 +2539,38 @@ public class XmppConnectionService extends Service {
 		});
 	}
 
-	public void pushConferenceConfiguration(final Conversation conversation, final Bundle options, final OnConferenceOptionsPushed callback) {
+	public void pushNodeConfiguration(Account account, final Jid jid, final String node, final Bundle options, final OnConfigurationPushed callback) {
+		sendIqPacket(account, mIqGenerator.requestPubsubConfiguration(jid,node), new OnIqPacketReceived() {
+			@Override
+			public void onIqPacketReceived(Account account, IqPacket packet) {
+				if (packet.getType() == IqPacket.TYPE.RESULT) {
+					Element pubsub = packet.findChild("pubsub","http://jabber.org/protocol/pubsub#owner");
+					Element configuration = pubsub == null ? null : pubsub.findChild("configure");
+					Element x = configuration == null ? null : configuration.findChild("x","jabber:x:data");
+					if (x != null) {
+						Data data = Data.parse(x);
+						data.submit(options);
+						sendIqPacket(account, mIqGenerator.publishPubsubConfiguration(jid, node, data), new OnIqPacketReceived() {
+							@Override
+							public void onIqPacketReceived(Account account, IqPacket packet) {
+								if (packet.getType() == IqPacket.TYPE.RESULT) {
+									callback.onPushSucceeded();
+								} else {
+									Log.d(Config.LOGTAG,packet.toString());
+								}
+							}
+						});
+					} else {
+						callback.onPushFailed();
+					}
+				} else {
+					callback.onPushFailed();
+				}
+			}
+		});
+	}
+
+	public void pushConferenceConfiguration(final Conversation conversation, final Bundle options, final OnConfigurationPushed callback) {
 		IqPacket request = new IqPacket(IqPacket.TYPE.GET);
 		request.setTo(conversation.getJid().toBareJid());
 		request.query("http://jabber.org/protocol/muc#owner");
@@ -2547,12 +2579,7 @@ public class XmppConnectionService extends Service {
 			public void onIqPacketReceived(Account account, IqPacket packet) {
 				if (packet.getType() == IqPacket.TYPE.RESULT) {
 					Data data = Data.parse(packet.query().findChild("x", "jabber:x:data"));
-					for (Field field : data.getFields()) {
-						if (options.containsKey(field.getFieldName())) {
-							field.setValue(options.getString(field.getFieldName()));
-						}
-					}
-					data.submit();
+					data.submit(options);
 					IqPacket set = new IqPacket(IqPacket.TYPE.SET);
 					set.setTo(conversation.getJid().toBareJid());
 					set.query("http://jabber.org/protocol/muc#owner").addChild(data);
@@ -3933,7 +3960,7 @@ public class XmppConnectionService extends Service {
 		void onConferenceJoined(Conversation conversation);
 	}
 
-	public interface OnConferenceOptionsPushed {
+	public interface OnConfigurationPushed {
 		void onPushSucceeded();
 
 		void onPushFailed();
