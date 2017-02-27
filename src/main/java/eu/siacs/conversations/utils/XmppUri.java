@@ -78,7 +78,7 @@ public class XmppUri {
 		} else if ("imto".equalsIgnoreCase(scheme)) {
 			// sample: imto://xmpp/foo@bar.com
 			try {
-				jid = URLDecoder.decode(uri.getEncodedPath(), "UTF-8").split("/")[1];
+				jid = URLDecoder.decode(uri.getEncodedPath(), "UTF-8").split("/")[1].trim();
 			} catch (final UnsupportedEncodingException ignored) {
 				jid = null;
 			}
