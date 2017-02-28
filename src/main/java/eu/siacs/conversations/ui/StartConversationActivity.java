@@ -299,6 +299,15 @@ public class StartConversationActivity extends XmppActivity implements OnRosterU
         super.onStop();
     }
 
+    @Override
+    public void onNewIntent(Intent intent) {
+        if (xmppConnectionServiceBound) {
+            handleIntent(intent);
+        } else {
+            setIntent(intent);
+        }
+    }
+
     protected void openConversationForContact(int position) {
         Contact contact = (Contact) contacts.get(position);
         openConversationForContact(contact);
