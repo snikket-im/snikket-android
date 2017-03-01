@@ -468,6 +468,7 @@ public class ContactDetailsActivity extends OmemoActivity implements OnAccountUp
 			boolean showsInactive = false;
 			for (final XmppAxolotlSession session : contact.getAccount().getAxolotlService().findSessionsForContact(contact)) {
 				final FingerprintStatus trust = session.getTrust();
+				hasKeys |= !trust.isCompromised();
 				if (!trust.isActive()) {
 					if (showInactiveOmemo) {
 						showsInactive = true;
@@ -478,7 +479,6 @@ public class ContactDetailsActivity extends OmemoActivity implements OnAccountUp
 				}
 				if (!trust.isCompromised()) {
 					boolean highlight = session.getFingerprint().equals(messageFingerprint);
-					hasKeys = true;
 					addFingerprintRow(keys, session, highlight);
 				}
 			}
