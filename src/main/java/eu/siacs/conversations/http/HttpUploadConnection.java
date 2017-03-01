@@ -26,7 +26,7 @@ import eu.siacs.conversations.services.AbstractConnectionManager;
 import eu.siacs.conversations.services.XmppConnectionService;
 import eu.siacs.conversations.ui.UiCallback;
 import eu.siacs.conversations.utils.CryptoHelper;
-import eu.siacs.conversations.utils.Xmlns;
+import eu.siacs.conversations.xml.Namespace;
 import eu.siacs.conversations.xml.Element;
 import eu.siacs.conversations.xmpp.OnIqPacketReceived;
 import eu.siacs.conversations.xmpp.jid.Jid;
@@ -117,13 +117,13 @@ public class HttpUploadConnection implements Transferable {
 		}
 		this.file.setExpectedSize(pair.second);
 		this.mFileInputStream = pair.first;
-		Jid host = account.getXmppConnection().findDiscoItemByFeature(Xmlns.HTTP_UPLOAD);
+		Jid host = account.getXmppConnection().findDiscoItemByFeature(Namespace.HTTP_UPLOAD);
 		IqPacket request = mXmppConnectionService.getIqGenerator().requestHttpUploadSlot(host,file,mime);
 		mXmppConnectionService.sendIqPacket(account, request, new OnIqPacketReceived() {
 			@Override
 			public void onIqPacketReceived(Account account, IqPacket packet) {
 				if (packet.getType() == IqPacket.TYPE.RESULT) {
-					Element slot = packet.findChild("slot",Xmlns.HTTP_UPLOAD);
+					Element slot = packet.findChild("slot", Namespace.HTTP_UPLOAD);
 					if (slot != null) {
 						try {
 							mGetUrl = new URL(slot.findChildContent("get"));

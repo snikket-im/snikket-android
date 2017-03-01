@@ -28,7 +28,7 @@ import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.entities.Contact;
 import eu.siacs.conversations.entities.Conversation;
 import eu.siacs.conversations.services.XmppConnectionService;
-import eu.siacs.conversations.utils.Xmlns;
+import eu.siacs.conversations.xml.Namespace;
 import eu.siacs.conversations.xml.Element;
 import eu.siacs.conversations.xmpp.OnIqPacketReceived;
 import eu.siacs.conversations.xmpp.OnUpdateBlocklist;
@@ -287,19 +287,19 @@ public class IqParser extends AbstractParser implements OnIqPacketReceived {
 		final boolean isGet = packet.getType() == IqPacket.TYPE.GET;
 		if (packet.getType() == IqPacket.TYPE.ERROR || packet.getType() == IqPacket.TYPE.TIMEOUT) {
 			return;
-		} else if (packet.hasChild("query", Xmlns.ROSTER) && packet.fromServer(account)) {
+		} else if (packet.hasChild("query", Namespace.ROSTER) && packet.fromServer(account)) {
 			final Element query = packet.findChild("query");
 			// If this is in response to a query for the whole roster:
 			if (packet.getType() == IqPacket.TYPE.RESULT) {
 				account.getRoster().markAllAsNotInRoster();
 			}
 			this.rosterItems(account, query);
-		} else if ((packet.hasChild("block", Xmlns.BLOCKING) || packet.hasChild("blocklist", Xmlns.BLOCKING)) &&
+		} else if ((packet.hasChild("block", Namespace.BLOCKING) || packet.hasChild("blocklist", Namespace.BLOCKING)) &&
 				packet.fromServer(account)) {
 			// Block list or block push.
 			Log.d(Config.LOGTAG, "Received blocklist update from server");
-			final Element blocklist = packet.findChild("blocklist", Xmlns.BLOCKING);
-			final Element block = packet.findChild("block", Xmlns.BLOCKING);
+			final Element blocklist = packet.findChild("blocklist", Namespace.BLOCKING);
+			final Element block = packet.findChild("block", Namespace.BLOCKING);
 			final Collection<Element> items = blocklist != null ? blocklist.getChildren() :
 				(block != null ? block.getChildren() : null);
 			// If this is a response to a blocklist query, clear the block list and replace with the new one.
@@ -335,10 +335,10 @@ public class IqParser extends AbstractParser implements OnIqPacketReceived {
 				final IqPacket response = packet.generateResponse(IqPacket.TYPE.RESULT);
 				mXmppConnectionService.sendIqPacket(account, response, null);
 			}
-		} else if (packet.hasChild("unblock", Xmlns.BLOCKING) &&
+		} else if (packet.hasChild("unblock", Namespace.BLOCKING) &&
 				packet.fromServer(account) && packet.getType() == IqPacket.TYPE.SET) {
 			Log.d(Config.LOGTAG, "Received unblock update from server");
-			final Collection<Element> items = packet.findChild("unblock", Xmlns.BLOCKING).getChildren();
+			final Collection<Element> items = packet.findChild("unblock", Namespace.BLOCKING).getChildren();
 			if (items.size() == 0) {
 				// No children to unblock == unblock all
 				account.getBlocklist().clear();

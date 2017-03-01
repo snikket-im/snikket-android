@@ -14,7 +14,7 @@ import eu.siacs.conversations.R;
 import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.entities.Conversation;
 import eu.siacs.conversations.generator.AbstractGenerator;
-import eu.siacs.conversations.utils.Xmlns;
+import eu.siacs.conversations.xml.Namespace;
 import eu.siacs.conversations.xml.Element;
 import eu.siacs.conversations.xmpp.OnAdvancedStreamFeaturesLoaded;
 import eu.siacs.conversations.xmpp.OnIqPacketReceived;
@@ -156,7 +156,7 @@ public class MessageArchiveService implements OnAdvancedStreamFeaturesLoaded {
 			this.mXmppConnectionService.sendIqPacket(account, packet, new OnIqPacketReceived() {
 				@Override
 				public void onIqPacketReceived(Account account, IqPacket packet) {
-					Element fin = packet.findChild("fin", Xmlns.MAM);
+					Element fin = packet.findChild("fin", Namespace.MAM);
 					if (packet.getType() == IqPacket.TYPE.TIMEOUT) {
 						synchronized (MessageArchiveService.this.queries) {
 							MessageArchiveService.this.queries.remove(query);

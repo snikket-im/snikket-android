@@ -15,7 +15,7 @@ import eu.siacs.conversations.entities.Message;
 import eu.siacs.conversations.entities.Transferable;
 import eu.siacs.conversations.services.AbstractConnectionManager;
 import eu.siacs.conversations.services.XmppConnectionService;
-import eu.siacs.conversations.utils.Xmlns;
+import eu.siacs.conversations.xml.Namespace;
 import eu.siacs.conversations.xml.Element;
 import eu.siacs.conversations.xmpp.OnIqPacketReceived;
 import eu.siacs.conversations.xmpp.jid.Jid;
@@ -88,16 +88,16 @@ public class JingleConnectionManager extends AbstractConnectionManager {
 			return;
 		}
 		if (!this.primaryCandidates.containsKey(account.getJid().toBareJid())) {
-			final Jid proxy = account.getXmppConnection().findDiscoItemByFeature(Xmlns.BYTE_STREAMS);
+			final Jid proxy = account.getXmppConnection().findDiscoItemByFeature(Namespace.BYTE_STREAMS);
 			if (proxy != null) {
 				IqPacket iq = new IqPacket(IqPacket.TYPE.GET);
 				iq.setTo(proxy);
-				iq.query(Xmlns.BYTE_STREAMS);
+				iq.query(Namespace.BYTE_STREAMS);
 				account.getXmppConnection().sendIqPacket(iq,new OnIqPacketReceived() {
 
 					@Override
 					public void onIqPacketReceived(Account account, IqPacket packet) {
-						Element streamhost = packet.query().findChild("streamhost",Xmlns.BYTE_STREAMS);
+						Element streamhost = packet.query().findChild("streamhost", Namespace.BYTE_STREAMS);
 						final String host = streamhost == null ? null : streamhost.getAttribute("host");
 						final String port = streamhost == null ? null : streamhost.getAttribute("port");
 						if (host != null && port != null) {

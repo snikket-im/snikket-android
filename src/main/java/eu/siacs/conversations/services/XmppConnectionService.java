@@ -114,7 +114,7 @@ import eu.siacs.conversations.utils.PRNGFixes;
 import eu.siacs.conversations.utils.PhoneHelper;
 import eu.siacs.conversations.utils.ReplacingSerialSingleThreadExecutor;
 import eu.siacs.conversations.utils.SerialSingleThreadExecutor;
-import eu.siacs.conversations.utils.Xmlns;
+import eu.siacs.conversations.xml.Namespace;
 import eu.siacs.conversations.utils.XmppUri;
 import eu.siacs.conversations.xml.Element;
 import eu.siacs.conversations.xmpp.OnBindListener;
@@ -130,7 +130,6 @@ import eu.siacs.conversations.xmpp.Patches;
 import eu.siacs.conversations.xmpp.XmppConnection;
 import eu.siacs.conversations.xmpp.chatstate.ChatState;
 import eu.siacs.conversations.xmpp.forms.Data;
-import eu.siacs.conversations.xmpp.forms.Field;
 import eu.siacs.conversations.xmpp.jid.InvalidJidException;
 import eu.siacs.conversations.xmpp.jid.Jid;
 import eu.siacs.conversations.xmpp.jingle.JingleConnectionManager;
@@ -1385,7 +1384,7 @@ public class XmppConnectionService extends Service {
 		} else {
 			Log.d(Config.LOGTAG, account.getJid().toBareJid() + ": fetching roster");
 		}
-		iqPacket.query(Xmlns.ROSTER).setAttribute("ver", account.getRosterVersion());
+		iqPacket.query(Namespace.ROSTER).setAttribute("ver", account.getRosterVersion());
 		sendIqPacket(account, iqPacket, mIqParser);
 	}
 
@@ -2789,7 +2788,7 @@ public class XmppConnectionService extends Service {
 					.getOption(Contact.Options.PENDING_SUBSCRIPTION_REQUEST)
 					&& contact.getOption(Contact.Options.PREEMPTIVE_GRANT);
 			final IqPacket iq = new IqPacket(IqPacket.TYPE.SET);
-			iq.query(Xmlns.ROSTER).addChild(contact.asElement());
+			iq.query(Namespace.ROSTER).addChild(contact.asElement());
 			account.getXmppConnection().sendIqPacket(iq, mDefaultIqHandler);
 			if (sendUpdates) {
 				sendPresencePacket(account,
@@ -3078,7 +3077,7 @@ public class XmppConnectionService extends Service {
 		Account account = contact.getAccount();
 		if (account.getStatus() == Account.State.ONLINE) {
 			IqPacket iq = new IqPacket(IqPacket.TYPE.SET);
-			Element item = iq.query(Xmlns.ROSTER).addChild("item");
+			Element item = iq.query(Namespace.ROSTER).addChild("item");
 			item.setAttribute("jid", contact.getJid().toString());
 			item.setAttribute("subscription", "remove");
 			account.getXmppConnection().sendIqPacket(iq, mDefaultIqHandler);
@@ -3744,11 +3743,11 @@ public class XmppConnectionService extends Service {
 	public void fetchMamPreferences(Account account, final OnMamPreferencesFetched callback) {
 		final boolean legacy = account.getXmppConnection().getFeatures().mamLegacy();
 		IqPacket request = new IqPacket(IqPacket.TYPE.GET);
-		request.addChild("prefs",legacy ? Xmlns.MAM_LEGACY : Xmlns.MAM);
+		request.addChild("prefs",legacy ? Namespace.MAM_LEGACY : Namespace.MAM);
 		sendIqPacket(account, request, new OnIqPacketReceived() {
 			@Override
 			public void onIqPacketReceived(Account account, IqPacket packet) {
-				Element prefs = packet.findChild("prefs",legacy ? Xmlns.MAM_LEGACY : Xmlns.MAM);
+				Element prefs = packet.findChild("prefs",legacy ? Namespace.MAM_LEGACY : Namespace.MAM);
 				if (packet.getType() == IqPacket.TYPE.RESULT && prefs != null) {
 					callback.onPreferencesFetched(prefs);
 				} else {

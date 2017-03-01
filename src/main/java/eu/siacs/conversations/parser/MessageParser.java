@@ -31,7 +31,7 @@ import eu.siacs.conversations.http.HttpConnectionManager;
 import eu.siacs.conversations.services.MessageArchiveService;
 import eu.siacs.conversations.services.XmppConnectionService;
 import eu.siacs.conversations.utils.CryptoHelper;
-import eu.siacs.conversations.utils.Xmlns;
+import eu.siacs.conversations.xml.Namespace;
 import eu.siacs.conversations.xml.Element;
 import eu.siacs.conversations.xmpp.OnMessagePacketReceived;
 import eu.siacs.conversations.xmpp.chatstate.ChatState;
@@ -215,7 +215,7 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
 	private static String extractStanzaId(Element packet, Jid by) {
 		for(Element child : packet.getChildren()) {
 			if (child.getName().equals("stanza-id")
-					&& Xmlns.STANZA_IDS.equals(child.getNamespace())
+					&& Namespace.STANZA_IDS.equals(child.getNamespace())
 					&& by.equals(child.getAttributeAsJid("by"))) {
 				return child.getAttribute("id");
 			}
@@ -300,16 +300,16 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
 		final boolean isForwarded;
 		boolean isCarbon = false;
 		String serverMsgId = null;
-		final Element fin = original.findChild("fin", Xmlns.MAM_LEGACY);
+		final Element fin = original.findChild("fin", Namespace.MAM_LEGACY);
 		if (fin != null) {
 			mXmppConnectionService.getMessageArchiveService().processFinLegacy(fin,original.getFrom());
 			return;
 		}
-		final boolean mamLegacy = original.hasChild("result",Xmlns.MAM_LEGACY);
-		final Element result = original.findChild("result",mamLegacy ? Xmlns.MAM_LEGACY : Xmlns.MAM);
+		final boolean mamLegacy = original.hasChild("result", Namespace.MAM_LEGACY);
+		final Element result = original.findChild("result",mamLegacy ? Namespace.MAM_LEGACY : Namespace.MAM);
 		final MessageArchiveService.Query query = result == null ? null : mXmppConnectionService.getMessageArchiveService().findQuery(result.getAttribute("queryid"));
 		if (query != null && query.validFrom(original.getFrom())) {
-			Pair<MessagePacket, Long> f = original.getForwardedMessagePacket("result", mamLegacy ? Xmlns.MAM_LEGACY : Xmlns.MAM);
+			Pair<MessagePacket, Long> f = original.getForwardedMessagePacket("result", mamLegacy ? Namespace.MAM_LEGACY : Namespace.MAM);
 			if (f == null) {
 				return;
 			}
@@ -443,7 +443,7 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
 				final boolean safeToExtract;
 				if (isTypeGroupChat) {
 					by = conversation.getJid().toBareJid();
-					safeToExtract = conversation.getMucOptions().hasFeature(Xmlns.STANZA_IDS);
+					safeToExtract = conversation.getMucOptions().hasFeature(Namespace.STANZA_IDS);
 				} else {
 					by = account.getJid().toBareJid();
 					safeToExtract = account.getXmppConnection().getFeatures().stanzaIds();

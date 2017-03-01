@@ -27,7 +27,7 @@ import eu.siacs.conversations.entities.Conversation;
 import eu.siacs.conversations.entities.DownloadableFile;
 import eu.siacs.conversations.services.MessageArchiveService;
 import eu.siacs.conversations.services.XmppConnectionService;
-import eu.siacs.conversations.utils.Xmlns;
+import eu.siacs.conversations.xml.Namespace;
 import eu.siacs.conversations.xml.Element;
 import eu.siacs.conversations.xmpp.forms.Data;
 import eu.siacs.conversations.xmpp.jid.Jid;
@@ -229,10 +229,10 @@ public class IqGenerator extends AbstractGenerator {
 
 	public IqPacket queryMessageArchiveManagement(final MessageArchiveService.Query mam) {
 		final IqPacket packet = new IqPacket(IqPacket.TYPE.SET);
-		final Element query = packet.query(mam.isLegacy() ? Xmlns.MAM_LEGACY : Xmlns.MAM);
+		final Element query = packet.query(mam.isLegacy() ? Namespace.MAM_LEGACY : Namespace.MAM);
 		query.setAttribute("queryid", mam.getQueryId());
 		final Data data = new Data();
-		data.setFormType(mam.isLegacy() ? Xmlns.MAM_LEGACY : Xmlns.MAM);
+		data.setFormType(mam.isLegacy() ? Namespace.MAM_LEGACY : Namespace.MAM);
 		if (mam.muc()) {
 			packet.setTo(mam.getWith());
 		} else if (mam.getWith()!=null) {
@@ -251,14 +251,14 @@ public class IqGenerator extends AbstractGenerator {
 	}
 	public IqPacket generateGetBlockList() {
 		final IqPacket iq = new IqPacket(IqPacket.TYPE.GET);
-		iq.addChild("blocklist", Xmlns.BLOCKING);
+		iq.addChild("blocklist", Namespace.BLOCKING);
 
 		return iq;
 	}
 
 	public IqPacket generateSetBlockRequest(final Jid jid, boolean reportSpam) {
 		final IqPacket iq = new IqPacket(IqPacket.TYPE.SET);
-		final Element block = iq.addChild("block", Xmlns.BLOCKING);
+		final Element block = iq.addChild("block", Namespace.BLOCKING);
 		final Element item = block.addChild("item").setAttribute("jid", jid.toBareJid().toString());
 		if (reportSpam) {
 			item.addChild("report", "urn:xmpp:reporting:0").addChild("spam");
@@ -269,7 +269,7 @@ public class IqGenerator extends AbstractGenerator {
 
 	public IqPacket generateSetUnblockRequest(final Jid jid) {
 		final IqPacket iq = new IqPacket(IqPacket.TYPE.SET);
-		final Element block = iq.addChild("unblock", Xmlns.BLOCKING);
+		final Element block = iq.addChild("unblock", Namespace.BLOCKING);
 		block.addChild("item").setAttribute("jid", jid.toBareJid().toString());
 		return iq;
 	}
@@ -277,7 +277,7 @@ public class IqGenerator extends AbstractGenerator {
 	public IqPacket generateSetPassword(final Account account, final String newPassword) {
 		final IqPacket packet = new IqPacket(IqPacket.TYPE.SET);
 		packet.setTo(account.getServer());
-		final Element query = packet.addChild("query", Xmlns.REGISTER);
+		final Element query = packet.addChild("query", Namespace.REGISTER);
 		final Jid jid = account.getJid();
 		query.addChild("username").setContent(jid.getLocalpart());
 		query.addChild("password").setContent(newPassword);
@@ -316,7 +316,7 @@ public class IqGenerator extends AbstractGenerator {
 	public IqPacket requestHttpUploadSlot(Jid host, DownloadableFile file, String mime) {
 		IqPacket packet = new IqPacket(IqPacket.TYPE.GET);
 		packet.setTo(host);
-		Element request = packet.addChild("request", Xmlns.HTTP_UPLOAD);
+		Element request = packet.addChild("request", Namespace.HTTP_UPLOAD);
 		request.addChild("filename").setContent(convertFilename(file.getName()));
 		request.addChild("size").setContent(String.valueOf(file.getExpectedSize()));
 		if (mime != null) {

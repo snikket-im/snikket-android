@@ -1,6 +1,6 @@
-package eu.siacs.conversations.utils;
+package eu.siacs.conversations.xml;
 
-public final class Xmlns {
+public final class Namespace {
 	public static final String BLOCKING = "urn:xmpp:blocking";
 	public static final String ROSTER = "jabber:iq:roster";
 	public static final String REGISTER = "jabber:iq:register";
