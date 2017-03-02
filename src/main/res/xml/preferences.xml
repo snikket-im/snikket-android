@@ -220,7 +220,7 @@
             </PreferenceCategory>
             <PreferenceCategory android:title="@string/pref_input_options">
                 <CheckBoxPreference
-                    android:defaultValue="false"
+                    android:defaultValue="@bool/enter_is_send"
                     android:key="enter_is_send"
                     android:summary="@string/pref_enter_is_send_summary"
                     android:title="@string/pref_enter_is_send"/>
