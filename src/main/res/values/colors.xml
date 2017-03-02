@@ -22,4 +22,6 @@
 	<color name="orange500">#ffff9800</color>
 	<color name="green500">#ff259b24</color>
 	<color name="bubble">#ff4b9b4a</color>
+	<color name="unreadcountlight">#ff4b9b4a</color>
+	<color name="unreadcountdark">#ff326130</color>
 </resources>

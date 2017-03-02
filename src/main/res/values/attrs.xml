@@ -31,6 +31,8 @@
     <attr name="message_bubble_sent" format="reference"/>
     <attr name="message_bubble_received_green" format="reference"/>
 
+    <attr name="unread_count" format="reference|color" />
+
     <attr name="conversations_overview_background" format="reference|color"/>
 
     <attr name="icon_alpha" format="float"/>
@@ -65,5 +67,9 @@
 
     <attr name="dialog_horizontal_padding" format="dimension"/>
     <attr name="dialog_vertical_padding" format="dimension"/>
+
+    <declare-styleable name="UnreadCountCustomView">
+        <attr name="backgroundColor" format="reference|color"/>
+    </declare-styleable>
 
 </resources>
