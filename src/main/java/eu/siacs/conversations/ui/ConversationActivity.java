@@ -7,13 +7,11 @@ import android.app.FragmentTransaction;
 import android.app.PendingIntent;
 import android.content.ActivityNotFoundException;
 import android.content.ClipData;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
 import android.content.IntentSender.SendIntentException;
 import android.content.pm.PackageManager;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -22,8 +20,6 @@ import android.provider.MediaStore;
 import android.provider.Settings;
 import android.support.v4.widget.SlidingPaneLayout;
 import android.support.v4.widget.SlidingPaneLayout.PanelSlideListener;
-import android.text.SpannableStringBuilder;
-import android.text.style.ImageSpan;
 import android.util.Log;
 import android.util.Pair;
 import android.view.Gravity;
@@ -44,6 +40,8 @@ import net.java.otr4j.session.SessionStatus;
 
 import org.openintents.openpgp.util.OpenPgpApi;
 
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -68,6 +66,7 @@ import eu.siacs.conversations.services.XmppConnectionService.OnConversationUpdat
 import eu.siacs.conversations.services.XmppConnectionService.OnRosterUpdate;
 import eu.siacs.conversations.ui.adapter.ConversationAdapter;
 import eu.siacs.conversations.utils.ExceptionHelper;
+import eu.siacs.conversations.utils.UIHelper;
 import eu.siacs.conversations.xmpp.OnUpdateBlocklist;
 import eu.siacs.conversations.xmpp.XmppConnection;
 import eu.siacs.conversations.xmpp.jid.InvalidJidException;
@@ -779,24 +778,6 @@ public class ConversationActivity extends XmppActivity
 		builder.create().show();
 	}
 
-	/**
-	 * Moves icons from the PopupMenu's MenuItems' icon fields into the menu title as a Spannable with the icon and title text.
-	 */
-	public static void insertMenuItemIcons(Context context, PopupMenu popupMenu) {
-		Menu menu = popupMenu.getMenu();
-		for (int i = 0; i < menu.size(); i++) {
-			MenuItem menuItem = menu.getItem(i);
-			Drawable icon = menuItem.getIcon();
-			int iconSize = context.getResources().getDimensionPixelSize(R.dimen.menu_item_icon_size);
-			icon.setBounds(0, 0, iconSize, iconSize);
-			ImageSpan imageSpan = new ImageSpan(icon);
-			SpannableStringBuilder ssb = new SpannableStringBuilder("   " + menuItem.getTitle());
-			ssb.setSpan(imageSpan, 0, 1, 0);
-			menuItem.setTitle(ssb);
-			menuItem.setIcon(null);
-		}
-	}
-
 	protected void attachFileDialog() {
 		View menuAttachFile = findViewById(R.id.action_attach_file);
 		if (menuAttachFile == null) {
@@ -834,7 +815,7 @@ public class ConversationActivity extends XmppActivity
 				return false;
 			}
 		});
-		insertMenuItemIcons(getApplicationContext(), attachFilePopup);
+		UIHelper.showIconsInPopup(attachFilePopup);
 		attachFilePopup.show();
 	}
 

@@ -4,7 +4,10 @@ import android.content.Context;
 import android.text.format.DateFormat;
 import android.text.format.DateUtils;
 import android.util.Pair;
+import android.widget.PopupMenu;
 
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
@@ -362,6 +365,21 @@ public class UIHelper {
 				return context.getString(R.string.type_console);
 			default:
 				return type;
+		}
+	}
+
+	public static boolean showIconsInPopup(PopupMenu attachFilePopup) {
+		try {
+			Field field = attachFilePopup.getClass().getDeclaredField("mPopup");
+			field.setAccessible(true);
+			Object menuPopupHelper = field.get(attachFilePopup);
+			Class<?> cls = Class.forName("com.android.internal.view.menu.MenuPopupHelper");
+			Method method = cls.getDeclaredMethod("setForceShowIcon", new Class[]{boolean.class});
+			method.setAccessible(true);
+			method.invoke(menuPopupHelper, new Object[]{true});
+			return true;
+		} catch (Exception e) {
+			return false;
 		}
 	}
 }
