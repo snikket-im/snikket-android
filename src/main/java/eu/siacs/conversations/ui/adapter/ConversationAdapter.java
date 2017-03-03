@@ -25,6 +25,7 @@ import eu.siacs.conversations.entities.Message;
 import eu.siacs.conversations.entities.Transferable;
 import eu.siacs.conversations.ui.ConversationActivity;
 import eu.siacs.conversations.ui.XmppActivity;
+import eu.siacs.conversations.ui.widget.UnreadCountCustomView;
 import eu.siacs.conversations.utils.UIHelper;
 
 public class ConversationAdapter extends ArrayAdapter<Conversation> {
@@ -62,6 +63,7 @@ public class ConversationAdapter extends ArrayAdapter<Conversation> {
 		ImageView notificationStatus = (ImageView) view.findViewById(R.id.notification_status);
 
 		Message message = conversation.getLatestMessage();
+		int unreadCount = conversation.unreadCount();
 
 		if (!conversation.isRead()) {
 			convName.setTypeface(null, Typeface.BOLD);
@@ -79,6 +81,13 @@ public class ConversationAdapter extends ArrayAdapter<Conversation> {
 			Pair<String,Boolean> preview = UIHelper.getMessagePreview(activity,message);
 			mLastMessage.setVisibility(View.VISIBLE);
 			imagePreview.setVisibility(View.GONE);
+			UnreadCountCustomView unreadCountCustomView = (UnreadCountCustomView) view.findViewById(R.id.unread_count);
+			if (unreadCount > 0) {
+				unreadCountCustomView.setVisibility(View.VISIBLE);
+				unreadCountCustomView.setUnreadCount(unreadCount);
+			} else {
+				unreadCountCustomView.setVisibility(View.GONE);
+			}
 			mLastMessage.setText(preview.first);
 			if (preview.second) {
 				if (conversation.isRead()) {
