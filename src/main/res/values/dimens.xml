@@ -6,4 +6,5 @@
 	<dimen name="conversations_overview_width">288dp</dimen>
 	<dimen name="image_button_padding">8dp</dimen>
 	<dimen name="fineprint_size">11sp</dimen>
+	<dimen name="menu_item_icon_size">24dp</dimen>
 </resources>
