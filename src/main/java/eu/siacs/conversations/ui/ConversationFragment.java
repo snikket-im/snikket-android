@@ -48,6 +48,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
@@ -1071,6 +1072,7 @@ public class ConversationFragment extends Fragment implements EditMessage.Keyboa
 	}
 
 	protected void messageSent() {
+		mSendingPgpMessage.set(false);
 		mEditMessage.setText("");
 		updateChatMsgHint();
 		new Handler().post(new Runnable() {
@@ -1084,6 +1086,10 @@ public class ConversationFragment extends Fragment implements EditMessage.Keyboa
 
 	public void setFocusOnInputField() {
 		mEditMessage.requestFocus();
+	}
+
+	public void doneSendingPgpMessage() {
+		mSendingPgpMessage.set(false);
 	}
 
 	enum SendButtonAction {TEXT, TAKE_PHOTO, SEND_LOCATION, RECORD_VOICE, CANCEL, CHOOSE_PICTURE}
@@ -1299,6 +1305,8 @@ public class ConversationFragment extends Fragment implements EditMessage.Keyboa
 		messageSent();
 	}
 
+	private AtomicBoolean mSendingPgpMessage = new AtomicBoolean(false);
+
 	protected void sendPgpMessage(final Message message) {
 		final ConversationActivity activity = (ConversationActivity) getActivity();
 		final XmppConnectionService xmppService = activity.xmppConnectionService;
@@ -1310,6 +1318,9 @@ public class ConversationFragment extends Fragment implements EditMessage.Keyboa
 		if (conversation.getAccount().getPgpSignature() == null) {
 			activity.announcePgp(conversation.getAccount(), conversation, activity.onOpenPGPKeyPublished);
 			return;
+		}
+		if (!mSendingPgpMessage.compareAndSet(false,true)) {
+			Log.d(Config.LOGTAG,"sending pgp message already in progress");
 		}
 		if (conversation.getMode() == Conversation.MODE_SINGLE) {
 			if (contact.getPgpKeyId() != 0) {
@@ -1340,6 +1351,7 @@ public class ConversationFragment extends Fragment implements EditMessage.Keyboa
 										).show();
 									}
 								});
+								mSendingPgpMessage.set(false);
 							}
 						});
 
