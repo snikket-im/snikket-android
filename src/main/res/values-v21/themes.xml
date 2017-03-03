@@ -29,6 +29,12 @@
         <item name="attr/ic_send_text_offline">@drawable/ic_send_text_offline</item>
         <item name="attr/ic_send_voice_offline">@drawable/ic_send_voice_offline</item>
 
+        <item name="attr/ic_attach_camera">@drawable/ic_attach_camera</item>
+        <item name="attr/ic_attach_document">@drawable/ic_attach_document</item>
+        <item name="attr/ic_attach_location">@drawable/ic_attach_location</item>
+        <item name="attr/ic_attach_photo">@drawable/ic_attach_photo</item>
+        <item name="attr/ic_attach_record">@drawable/ic_attach_record</item>
+
         <item name="attr/message_bubble_received_monochrome">@drawable/message_bubble_received_white</item>
         <item name="attr/message_bubble_sent">@drawable/message_bubble_sent</item>
         <item name="attr/message_bubble_received_green">@drawable/message_bubble_received</item>
@@ -96,6 +102,12 @@
         <item name="attr/ic_send_picture_offline">@drawable/ic_send_picture_offline_white</item>
         <item name="attr/ic_send_text_offline">@drawable/ic_send_text_offline_white</item>
         <item name="attr/ic_send_voice_offline">@drawable/ic_send_voice_offline_white</item>
+
+        <item name="attr/ic_attach_camera">@drawable/ic_attach_camera_white</item>
+        <item name="attr/ic_attach_document">@drawable/ic_attach_document_white</item>
+        <item name="attr/ic_attach_location">@drawable/ic_attach_location_white</item>
+        <item name="attr/ic_attach_photo">@drawable/ic_attach_photo_white</item>
+        <item name="attr/ic_attach_record">@drawable/ic_attach_record_white</item>
 
         <item name="attr/message_bubble_received_monochrome">@drawable/message_bubble_received_grey</item>
         <item name="attr/message_bubble_sent">@drawable/message_bubble_sent_grey</item>
