@@ -17,6 +17,7 @@
 
         <item name="TextSizeInfo">12sp</item>
         <item name="TextSizeBody">14sp</item>
+        <item name="IconSize">18sp</item>
         <item name="TextSizeHeadline">20sp</item>
 
         <item name="attr/infocard_border">@drawable/infocard_border</item>
@@ -85,6 +86,7 @@
 
         <item name="TextSizeInfo">12sp</item>
         <item name="TextSizeBody">14sp</item>
+        <item name="IconSize">18sp</item>
         <item name="TextSizeHeadline">20sp</item>
 
         <item name="attr/infocard_border">@drawable/infocard_border_dark</item>

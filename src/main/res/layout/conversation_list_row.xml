@@ -67,6 +67,8 @@
                             android:id="@+id/conversation_lastmsg"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:minHeight="?attr/IconSize"
+                            android:gravity="center_vertical"
                             android:scrollHorizontally="false"
                             android:singleLine="true"
                             android:text="This is a placeholder text to show the last messages"
@@ -83,9 +85,10 @@
                             app:riv_corner_radius="2dp"/>
                     </LinearLayout>
                     <ImageView
+                        android:visibility="visible"
                         android:id="@+id/notification_status"
-                        android:layout_width="16sp"
-                        android:layout_height="16sp"
+                        android:layout_width="?attr/IconSize"
+                        android:layout_height="?attr/IconSize"
                         android:layout_alignParentRight="true"
                         android:layout_centerVertical="true"
                         android:layout_marginLeft="4dp"

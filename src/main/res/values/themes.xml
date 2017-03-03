@@ -8,6 +8,7 @@
         <item name="TextSizeInfo">12sp</item>
         <item name="TextSizeBody">14sp</item>
         <item name="TextSizeHeadline">20sp</item>
+        <item name="IconSize">18sp</item>
 
         <item name="attr/color_text_primary">@color/black87</item>
         <item name="attr/color_text_secondary">@color/black54</item>
@@ -72,6 +73,7 @@
         <item name="android:actionBarTabStyle">@style/ConversationsActionBarTabs</item>
         <item name="TextSizeInfo">12sp</item>
         <item name="TextSizeBody">14sp</item>
+        <item name="IconSize">18sp</item>
         <item name="TextSizeHeadline">20sp</item>
 
         <item name="attr/color_text_primary">@color/white</item>
@@ -134,12 +136,14 @@
     <style name="ConversationsTheme.LargerText" parent="ConversationsTheme">
         <item name="TextSizeInfo">14sp</item>
         <item name="TextSizeBody">16sp</item>
+        <item name="IconSize">20sp</item>
         <item name="TextSizeHeadline">22sp</item>
     </style>
 
     <style name="ConversationsTheme.Dark.LargerText" parent="ConversationsTheme.Dark">
         <item name="TextSizeInfo">14sp</item>
         <item name="TextSizeBody">16sp</item>
+        <item name="IconSize">20sp</item>
         <item name="TextSizeHeadline">22sp</item>
     </style>
 

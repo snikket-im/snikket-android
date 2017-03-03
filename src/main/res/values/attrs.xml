@@ -5,6 +5,8 @@
     <attr name="TextSizeBody" format="dimension" />
     <attr name="TextSizeHeadline" format="dimension" />
 
+    <attr name="IconSize" format="dimension"/>
+
     <attr name="color_text_primary" format="reference|color" />
     <attr name="color_text_secondary" format="reference|color" />
 
