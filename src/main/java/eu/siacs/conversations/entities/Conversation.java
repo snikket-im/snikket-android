@@ -356,8 +356,10 @@ public class Conversation extends AbstractEntity implements Blockable, Comparabl
 		setAttribute(ATTRIBUTE_CRYPTO_TARGETS, acceptedTargets);
 	}
 
-	public void setCorrectingMessage(Message correctingMessage) {
+	public boolean setCorrectingMessage(Message correctingMessage) {
+		boolean corrected = this.correctingMessage != null && correctingMessage == null;
 		this.correctingMessage = correctingMessage;
+		return corrected;
 	}
 
 	public Message getCorrectingMessage() {
