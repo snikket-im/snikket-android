@@ -3,8 +3,8 @@
 	<dimen name="activity_horizontal_margin">8dp</dimen>
 	<dimen name="activity_vertical_margin">8dp</dimen>
 	<dimen name="infocard_padding">16dp</dimen>
-	<dimen name="conversations_overview_width">288dp</dimen>
 	<dimen name="image_button_padding">8dp</dimen>
 	<dimen name="fineprint_size">11sp</dimen>
 	<dimen name="menu_item_icon_size">24dp</dimen>
+	<dimen name="swipe_handle_size">24dp</dimen>
 </resources>

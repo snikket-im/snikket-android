@@ -1,4 +1,6 @@
 <resources>
-	<dimen name="conversations_overview_width">336dp</dimen>
+	<!-- 384dp is the screen width of the Nexus 4. Something like a Moto G is smaller but a Nexus 5X is larger -->
+	<!-- https://material.io/devices/ -->
 	<dimen name="fineprint_size">12sp</dimen>
+	<dimen name="swipe_handle_size">48dp</dimen>
 </resources>
