@@ -58,6 +58,7 @@ public class Conversation extends AbstractEntity implements Blockable, Comparabl
 	public static final String ATTRIBUTE_CRYPTO_TARGETS = "crypto_targets";
 	public static final String ATTRIBUTE_LAST_CLEAR_HISTORY = "last_clear_history";
 
+	private String draftMessage;
 	private String name;
 	private String contactUuid;
 	private String accountUuid;
@@ -357,9 +358,8 @@ public class Conversation extends AbstractEntity implements Blockable, Comparabl
 	}
 
 	public boolean setCorrectingMessage(Message correctingMessage) {
-		boolean corrected = this.correctingMessage != null && correctingMessage == null;
 		this.correctingMessage = correctingMessage;
-		return corrected;
+		return correctingMessage == null && draftMessage != null;
 	}
 
 	public Message getCorrectingMessage() {
@@ -381,6 +381,14 @@ public class Conversation extends AbstractEntity implements Blockable, Comparabl
 		} else {
 			return 0;
 		}
+	}
+
+	public void setDraftMessage(String draftMessage) {
+		this.draftMessage = draftMessage;
+	}
+
+	public String getDraftMessage() {
+		return draftMessage;
 	}
 
 	public interface OnMessageFound {
