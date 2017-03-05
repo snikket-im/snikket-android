@@ -21,7 +21,9 @@
 
     <uses-sdk tools:overrideLibrary="net.ypresto.androidtranscoder" />
 
+
     <application
+        android:networkSecurityConfig="@xml/network_security_configuration"
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
