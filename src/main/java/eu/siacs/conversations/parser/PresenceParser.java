@@ -65,18 +65,15 @@ public class PresenceParser extends AbstractParser implements
 					if (item != null && !from.isBareJid()) {
 						mucOptions.setError(MucOptions.Error.NONE);
 						MucOptions.User user = parseItem(conversation, item, from);
-						if (codes.contains(MucOptions.STATUS_CODE_SELF_PRESENCE) || packet.getFrom().equals(mucOptions.getConversation().getJid())) {
+						if (codes.contains(MucOptions.STATUS_CODE_SELF_PRESENCE)) {
 							mucOptions.setOnline();
 							mucOptions.setSelf(user);
-							if (mucOptions.mNickChangingInProgress) {
-								if (mucOptions.onRenameListener != null) {
-									mucOptions.onRenameListener.onSuccess();
-								}
-								mucOptions.mNickChangingInProgress = false;
+							if (mucOptions.onRenameListener != null) {
+								mucOptions.onRenameListener.onSuccess();
+								mucOptions.onRenameListener = null;
 							}
-						} else {
-							mucOptions.updateUser(user);
 						}
+						mucOptions.updateUser(user);
 						if (codes.contains(MucOptions.STATUS_CODE_ROOM_CREATED) && mucOptions.autoPushConfiguration()) {
 							Log.d(Config.LOGTAG,mucOptions.getAccount().getJid().toBareJid()
 									+": room '"
@@ -112,9 +109,7 @@ public class PresenceParser extends AbstractParser implements
 			} else if (type.equals("unavailable")) {
 				if (codes.contains(MucOptions.STATUS_CODE_SELF_PRESENCE) ||
 						packet.getFrom().equals(mucOptions.getConversation().getJid())) {
-					if (codes.contains(MucOptions.STATUS_CODE_CHANGED_NICK)) {
-						mucOptions.mNickChangingInProgress = true;
-					} else if (codes.contains(MucOptions.STATUS_CODE_KICKED)) {
+					if (codes.contains(MucOptions.STATUS_CODE_KICKED)) {
 						mucOptions.setError(MucOptions.Error.KICKED);
 					} else if (codes.contains(MucOptions.STATUS_CODE_BANNED)) {
 						mucOptions.setError(MucOptions.Error.BANNED);
@@ -124,7 +119,7 @@ public class PresenceParser extends AbstractParser implements
 						mucOptions.setError(MucOptions.Error.MEMBERS_ONLY);
 					} else if (codes.contains(MucOptions.STATUS_CODE_SHUTDOWN)) {
 						mucOptions.setError(MucOptions.Error.SHUTDOWN);
-					} else {
+					} else if (!codes.contains(MucOptions.STATUS_CODE_CHANGED_NICK)) {
 						mucOptions.setError(MucOptions.Error.UNKNOWN);
 						Log.d(Config.LOGTAG, "unknown error in conference: " + packet);
 					}
@@ -144,6 +139,7 @@ public class PresenceParser extends AbstractParser implements
 					if (mucOptions.online()) {
 						if (mucOptions.onRenameListener != null) {
 							mucOptions.onRenameListener.onFailure();
+							mucOptions.onRenameListener = null;
 						}
 					} else {
 						mucOptions.setError(MucOptions.Error.NICK_IN_USE);

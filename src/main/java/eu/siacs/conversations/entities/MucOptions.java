@@ -332,7 +332,6 @@ public class MucOptions {
 	private User self;
 	private String subject = null;
 	private String password = null;
-	public boolean mNickChangingInProgress = false;
 
 	public MucOptions(Conversation conversation) {
 		this.account = conversation.getAccount();
@@ -448,8 +447,10 @@ public class MucOptions {
 			if (old != null) {
 				users.remove(old);
 			}
+			boolean fullJidIsSelf = isOnline && user.getFullJid() != null && user.getFullJid().equals(self.getFullJid());
 			if ((!membersOnly() || user.getAffiliation().ranks(Affiliation.MEMBER))
-					&& user.getAffiliation().outranks(Affiliation.OUTCAST)){
+					&& user.getAffiliation().outranks(Affiliation.OUTCAST)
+					&& !fullJidIsSelf){
 				this.users.add(user);
 			}
 		}
