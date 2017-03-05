@@ -177,6 +177,7 @@
 	<string name="mgmt_account_delete_confirm_text">If you delete your account your entire conversation history will be lost</string>
 	<string name="attach_record_voice">Record voice</string>
 	<string name="account_settings_jabber_id">Jabber ID</string>
+	<string name="block_jabber_id">Block Jabber ID</string>
 	<string name="account_settings_password">Password</string>
 	<string name="account_settings_example_jabber_id">username@example.com</string>
 	<string name="account_settings_confirm_password">Confirm password</string>
