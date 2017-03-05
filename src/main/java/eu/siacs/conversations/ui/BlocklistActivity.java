@@ -68,14 +68,14 @@ public class BlocklistActivity extends AbstractSearchableListItemActivity implem
 	@Override
 	public boolean onCreateOptionsMenu(final Menu menu) {
 		super.onCreateOptionsMenu(menu);
-		menu.findItem(R.id.action_add_contact).setVisible(true);
+		menu.findItem(R.id.action_block_jid).setVisible(true);
 		return true;
 	}
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
-			case R.id.action_add_contact:
+			case R.id.action_block_jid:
 				showEnterJidDialog();
 				return true;
 		}

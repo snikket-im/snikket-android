@@ -16,7 +16,7 @@
         android:visible="false"/>
 
     <item
-        android:id="@+id/action_add_contact"
+        android:id="@+id/action_block_jid"
         android:icon="?attr/icon_add_person"
         android:showAsAction="always"
         android:title="@string/block_jabber_id"
