@@ -59,8 +59,10 @@ public class ConversationAdapter extends ArrayAdapter<Conversation> {
 		}
 		TextView mLastMessage = (TextView) view.findViewById(R.id.conversation_lastmsg);
 		TextView mTimestamp = (TextView) view.findViewById(R.id.conversation_lastupdate);
+		TextView mSenderName = (TextView) view.findViewById(R.id.sender_name);
 		ImageView imagePreview = (ImageView) view.findViewById(R.id.conversation_lastimage);
 		ImageView notificationStatus = (ImageView) view.findViewById(R.id.notification_status);
+		UnreadCountCustomView unreadCountCustomView = (UnreadCountCustomView) view.findViewById(R.id.unread_count);
 
 		Message message = conversation.getLatestMessage();
 		int unreadCount = conversation.unreadCount();
@@ -81,7 +83,6 @@ public class ConversationAdapter extends ArrayAdapter<Conversation> {
 			Pair<String,Boolean> preview = UIHelper.getMessagePreview(activity,message);
 			mLastMessage.setVisibility(View.VISIBLE);
 			imagePreview.setVisibility(View.GONE);
-			UnreadCountCustomView unreadCountCustomView = (UnreadCountCustomView) view.findViewById(R.id.unread_count);
 			if (unreadCount > 0) {
 				unreadCountCustomView.setVisibility(View.VISIBLE);
 				unreadCountCustomView.setUnreadCount(unreadCount);
@@ -92,15 +93,30 @@ public class ConversationAdapter extends ArrayAdapter<Conversation> {
 			if (preview.second) {
 				if (conversation.isRead()) {
 					mLastMessage.setTypeface(null, Typeface.ITALIC);
+					mSenderName.setTypeface(null, Typeface.NORMAL);
 				} else {
 					mLastMessage.setTypeface(null,Typeface.BOLD_ITALIC);
+					mSenderName.setTypeface(null,Typeface.BOLD);
 				}
 			} else {
 				if (conversation.isRead()) {
 					mLastMessage.setTypeface(null,Typeface.NORMAL);
+					mSenderName.setTypeface(null,Typeface.NORMAL);
 				} else {
 					mLastMessage.setTypeface(null,Typeface.BOLD);
+					mSenderName.setTypeface(null,Typeface.BOLD);
 				}
+			}
+			if (message.getStatus() == Message.STATUS_RECEIVED) {
+				if (conversation.getMode() == Conversation.MODE_MULTI) {
+					mSenderName.setVisibility(View.VISIBLE);
+					mSenderName.setText(UIHelper.getMessageDisplayName(message));
+				} else {
+					mSenderName.setVisibility(View.GONE);
+				}
+			} else {
+				mSenderName.setVisibility(View.VISIBLE);
+				mSenderName.setText(activity.getString(R.string.me));
 			}
 		}
 

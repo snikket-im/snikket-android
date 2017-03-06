@@ -57,11 +57,25 @@
                     android:layout_below="@id/conversation_name"
                     android:layout_marginTop="4dp">
 
+                    <TextView
+                        android:id="@+id/sender_name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:minHeight="?attr/IconSize"
+                        android:layout_centerVertical="true"
+                        android:gravity="center_vertical"
+                        android:layout_alignParentLeft="true"
+                        android:text="@string/me"
+                        android:layout_marginRight="3sp"
+                        android:textColor="?attr/color_text_secondary"
+                        android:visibility="visible"/>
+
                     <LinearLayout android:layout_width="match_parent"
                                   android:layout_height="wrap_content"
                                   android:layout_centerVertical="true"
                                   android:orientation="vertical"
-                                  android:layout_alignParentLeft="true"
+                                  android:layout_toRightOf="@id/sender_name"
+                                  android:layout_alignWithParentIfMissing="true"
                                   android:layout_toLeftOf="@+id/notification_status"
                                   android:id="@+id/txt_img_wrapper">
                         <TextView
