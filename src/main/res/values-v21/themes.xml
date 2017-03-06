@@ -17,6 +17,7 @@
 
         <item name="TextSizeInfo">12sp</item>
         <item name="TextSizeBody">14sp</item>
+        <item name="TextSeparation">5sp</item>
         <item name="IconSize">18sp</item>
         <item name="TextSizeHeadline">20sp</item>
 
@@ -94,6 +95,7 @@
 
         <item name="TextSizeInfo">12sp</item>
         <item name="TextSizeBody">14sp</item>
+        <item name="TextSeparation">5sp</item>
         <item name="IconSize">18sp</item>
         <item name="TextSizeHeadline">20sp</item>
 

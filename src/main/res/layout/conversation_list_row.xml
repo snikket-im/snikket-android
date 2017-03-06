@@ -66,9 +66,10 @@
                         android:gravity="center_vertical"
                         android:layout_alignParentLeft="true"
                         android:text="@string/me"
-                        android:layout_marginRight="3sp"
+                        android:layout_marginRight="?attr/TextSeparation"
                         android:textColor="?attr/color_text_secondary"
-                        android:visibility="visible"/>
+                        android:visibility="visible"
+                        android:textSize="?attr/TextSizeBody"/>
 
                     <LinearLayout android:layout_width="match_parent"
                                   android:layout_height="wrap_content"

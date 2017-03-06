@@ -76,6 +76,7 @@ public class ConversationAdapter extends ArrayAdapter<Conversation> {
 		if (message.getFileParams().width > 0
 				&& (message.getTransferable() == null
 				|| message.getTransferable().getStatus() != Transferable.STATUS_DELETED)) {
+			mSenderName.setVisibility(View.GONE);
 			mLastMessage.setVisibility(View.GONE);
 			imagePreview.setVisibility(View.VISIBLE);
 			activity.loadBitmap(message, imagePreview);
@@ -110,13 +111,13 @@ public class ConversationAdapter extends ArrayAdapter<Conversation> {
 			if (message.getStatus() == Message.STATUS_RECEIVED) {
 				if (conversation.getMode() == Conversation.MODE_MULTI) {
 					mSenderName.setVisibility(View.VISIBLE);
-					mSenderName.setText(UIHelper.getMessageDisplayName(message));
+					mSenderName.setText(UIHelper.getMessageDisplayName(message).split("\\s+")[0]+':');
 				} else {
 					mSenderName.setVisibility(View.GONE);
 				}
 			} else {
 				mSenderName.setVisibility(View.VISIBLE);
-				mSenderName.setText(activity.getString(R.string.me));
+				mSenderName.setText(activity.getString(R.string.me)+':');
 			}
 		}
 
