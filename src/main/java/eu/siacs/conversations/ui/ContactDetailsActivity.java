@@ -296,10 +296,10 @@ public class ContactDetailsActivity extends OmemoActivity implements OnAccountUp
 				}
 				break;
 			case R.id.action_block:
-				BlockContactDialog.show(this, xmppConnectionService, contact);
+				BlockContactDialog.show(this, contact);
 				break;
 			case R.id.action_unblock:
-				BlockContactDialog.show(this, xmppConnectionService, contact);
+				BlockContactDialog.show(this, contact);
 				break;
 		}
 		return super.onOptionsItemSelected(menuItem);

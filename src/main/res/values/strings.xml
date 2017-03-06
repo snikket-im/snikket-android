@@ -734,4 +734,6 @@
 	<string name="encrypting_message">Encrypting message</string>
 	<string name="not_fetching_history_retention_period">Not fetching messages due to local retention period.</string>
 	<string name="transcoding_video_progress">Compressing video (%s%% completed)</string>
+	<string name="corresponding_conversations_closed">Corresponding conversations closed.</string>
+	<string name="contact_blocked_past_tense">Contact blocked.</string>
 </resources>

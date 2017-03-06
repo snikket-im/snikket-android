@@ -374,7 +374,7 @@ public class StartConversationActivity extends XmppActivity implements OnRosterU
 
     protected void toggleContactBlock() {
         final int position = contact_context_id;
-        BlockContactDialog.show(this, xmppConnectionService, (Contact) contacts.get(position));
+        BlockContactDialog.show(this, (Contact) contacts.get(position));
     }
 
     protected void deleteContact() {

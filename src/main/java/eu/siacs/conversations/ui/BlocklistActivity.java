@@ -6,6 +6,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -32,7 +33,7 @@ public class BlocklistActivity extends AbstractSearchableListItemActivity implem
 					final View view,
 					final int position,
 					final long id) {
-				BlockContactDialog.show(parent.getContext(), xmppConnectionService,(Contact) getListItems().get(position));
+				BlockContactDialog.show(BlocklistActivity.this, (Contact) getListItems().get(position));
 				return true;
 			}
 		});
@@ -93,7 +94,9 @@ public class BlocklistActivity extends AbstractSearchableListItemActivity implem
 			@Override
 			public boolean onEnterJidDialogPositive(Jid accountJid, Jid contactJid) throws EnterJidDialog.JidError {
 				Contact contact = account.getRoster().getContact(contactJid);
-                xmppConnectionService.sendBlockRequest(contact, false);
+                if (xmppConnectionService.sendBlockRequest(contact, false)) {
+					Toast.makeText(BlocklistActivity.this,R.string.corresponding_conversations_closed,Toast.LENGTH_SHORT).show();
+				}
 				return true;
 			}
 		});

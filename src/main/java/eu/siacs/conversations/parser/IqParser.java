@@ -321,11 +321,12 @@ public class IqParser extends AbstractParser implements OnIqPacketReceived {
 				}
 				account.getBlocklist().addAll(jids);
 				if (packet.getType() == IqPacket.TYPE.SET) {
+					boolean removed = false;
 					for(Jid jid : jids) {
-						Conversation conversation = mXmppConnectionService.find(account,jid);
-						if (conversation != null) {
-							mXmppConnectionService.markRead(conversation);
-						}
+						removed |= mXmppConnectionService.removeBlockedConversations(account,jid);
+					}
+					if (removed) {
+						mXmppConnectionService.updateConversationUi();
 					}
 				}
 			}

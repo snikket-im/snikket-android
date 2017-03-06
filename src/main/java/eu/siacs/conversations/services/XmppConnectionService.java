@@ -3643,7 +3643,7 @@ public class XmppConnectionService extends Service {
 		mDatabaseExecutor.execute(runnable);
 	}
 
-	public void sendBlockRequest(final Blockable blockable, boolean reportSpam) {
+	public boolean sendBlockRequest(final Blockable blockable, boolean reportSpam) {
 		if (blockable != null && blockable.getBlockedJid() != null) {
 			final Jid jid = blockable.getBlockedJid();
 			this.sendIqPacket(blockable.getAccount(), getIqGenerator().generateSetBlockRequest(jid, reportSpam), new OnIqPacketReceived() {
@@ -3656,7 +3656,37 @@ public class XmppConnectionService extends Service {
 					}
 				}
 			});
+			if (removeBlockedConversations(blockable.getAccount(),jid)) {
+				updateConversationUi();
+				return true;
+			} else {
+				return false;
+			}
+		} else {
+			return false;
 		}
+	}
+
+	public boolean removeBlockedConversations(final Account account, final Jid blockedJid) {
+		boolean removed = false;
+		synchronized (this.conversations) {
+			boolean domainJid = blockedJid.isDomainJid();
+			for(Conversation conversation : this.conversations) {
+				boolean jidMatches = (domainJid && blockedJid.getDomainpart().equals(conversation.getJid().getDomainpart()))
+						|| blockedJid.equals(conversation.getJid().toBareJid());
+				if (conversation.getAccount() == account
+						&& conversation.getMode() == Conversation.MODE_SINGLE
+						&& jidMatches) {
+					this.conversations.remove(conversation);
+					markRead(conversation);
+					conversation.setStatus(Conversation.STATUS_ARCHIVED);
+					Log.d(Config.LOGTAG,account.getJid().toBareJid()+": archiving conversation "+conversation.getJid().toBareJid()+" because jid was blocked");
+					updateConversation(conversation);
+					removed = true;
+				}
+			}
+		}
+		return removed;
 	}
 
 	public void sendUnblockRequest(final Blockable blockable) {
