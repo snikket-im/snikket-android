@@ -3180,12 +3180,15 @@ public class XmppConnectionService extends Service {
 		return null;
 	}
 
-	public boolean markMessage(Conversation conversation, String uuid, int status) {
+	public boolean markMessage(Conversation conversation, String uuid, int status, String serverMessageId) {
 		if (uuid == null) {
 			return false;
 		} else {
 			Message message = conversation.findSentMessageWithUuid(uuid);
 			if (message != null) {
+				if (message.getServerMsgId() == null) {
+					message.setServerMsgId(serverMessageId);
+				}
 				markMessage(message, status);
 				return true;
 			} else {

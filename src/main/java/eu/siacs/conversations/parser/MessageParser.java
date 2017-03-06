@@ -212,6 +212,20 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
 		return null;
 	}
 
+	private static String extractStanzaid(Element packet, boolean isTypeGroupChat, Conversation conversation) {
+		final Jid by;
+		final boolean safeToExtract;
+		if (isTypeGroupChat) {
+			by = conversation.getJid().toBareJid();
+			safeToExtract = conversation.getMucOptions().hasFeature(Namespace.STANZA_IDS);
+		} else {
+			Account account = conversation.getAccount();
+			by = account.getJid().toBareJid();
+			safeToExtract = account.getXmppConnection().getFeatures().stanzaIds();
+		}
+		return safeToExtract ? extractStanzaId(packet, by) : null;
+	}
+
 	private static String extractStanzaId(Element packet, Jid by) {
 		for(Element child : packet.getChildren()) {
 			if (child.getName().equals("stanza-id")
@@ -385,11 +399,16 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
 		if ((body != null || pgpEncrypted != null || axolotlEncrypted != null) && !isMucStatusMessage) {
 			Conversation conversation = mXmppConnectionService.findOrCreateConversation(account, counterpart.toBareJid(), isTypeGroupChat, false, query);
 			final boolean conversationMultiMode = conversation.getMode() == Conversation.MODE_MULTI;
+
+			if (serverMsgId == null) {
+				extractStanzaid(packet, isTypeGroupChat, conversation);
+			}
+
 			if (isTypeGroupChat) {
 				if (counterpart.getResourcepart().equals(conversation.getMucOptions().getActualNick())) {
 					status = Message.STATUS_SEND_RECEIVED;
 					isCarbon = true; //not really carbon but received from another resource
-					if (mXmppConnectionService.markMessage(conversation, remoteMsgId, status)) {
+					if (mXmppConnectionService.markMessage(conversation, remoteMsgId, status, serverMsgId)) {
 						return;
 					} else if (remoteMsgId == null || Config.IGNORE_ID_REWRITE_IN_MUC) {
 						Message message = conversation.findSentMessageWithBody(packet.getBody());
@@ -436,21 +455,6 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
 				}
 			} else {
 				message = new Message(conversation, body, Message.ENCRYPTION_NONE, status);
-			}
-
-			if (serverMsgId == null) {
-				final Jid by;
-				final boolean safeToExtract;
-				if (isTypeGroupChat) {
-					by = conversation.getJid().toBareJid();
-					safeToExtract = conversation.getMucOptions().hasFeature(Namespace.STANZA_IDS);
-				} else {
-					by = account.getJid().toBareJid();
-					safeToExtract = account.getXmppConnection().getFeatures().stanzaIds();
-				}
-				if (safeToExtract) {
-					serverMsgId = extractStanzaId(packet, by);
-				}
 			}
 
 			message.setCounterpart(counterpart);
