@@ -532,9 +532,9 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
 				return;
 			}
 
-			boolean checkForDuplicates = query != null
-					|| (isTypeGroupChat && packet.hasChild("delay","urn:xmpp:delay"))
-					|| message.getType() == Message.TYPE_PRIVATE;
+			boolean checkForDuplicates = (isTypeGroupChat && packet.hasChild("delay","urn:xmpp:delay"))
+					|| message.getType() == Message.TYPE_PRIVATE
+					|| message.getServerMsgId() != null;
 			if (checkForDuplicates && conversation.hasDuplicateMessage(message)) {
 				Log.d(Config.LOGTAG,"skipping duplicate message from "+message.getCounterpart().toString()+" "+message.getBody());
 				return;
