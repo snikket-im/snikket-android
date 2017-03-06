@@ -598,20 +598,16 @@ public class MucOptions {
 
 	public String createNameFromParticipants() {
 		if (getUserCount() >= 2) {
-			List<String> names = new ArrayList<>();
+			StringBuilder builder = new StringBuilder();
 			for (User user : getUsers(5)) {
+				if (builder.length() != 0) {
+					builder.append(", ");
+				}
 				Contact contact = user.getContact();
 				if (contact != null && !contact.getDisplayName().isEmpty()) {
-					names.add(contact.getDisplayName().split("\\s+")[0]);
+					builder.append(contact.getDisplayName().split("\\s+")[0]);
 				} else if (user.getName() != null){
-					names.add(user.getName());
-				}
-			}
-			StringBuilder builder = new StringBuilder();
-			for (int i = 0; i < names.size(); ++i) {
-				builder.append(names.get(i));
-				if (i != names.size() - 1) {
-					builder.append(", ");
+					builder.append(user.getName());
 				}
 			}
 			return builder.toString();
