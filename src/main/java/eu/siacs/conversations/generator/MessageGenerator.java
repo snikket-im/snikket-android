@@ -155,7 +155,7 @@ public class MessageGenerator extends AbstractGenerator {
 	public MessagePacket generateChatState(Conversation conversation) {
 		final Account account = conversation.getAccount();
 		MessagePacket packet = new MessagePacket();
-		packet.setType(MessagePacket.TYPE_CHAT);
+		packet.setType(conversation.getMode() == Conversation.MODE_MULTI ? MessagePacket.TYPE_GROUPCHAT : MessagePacket.TYPE_CHAT);
 		packet.setTo(conversation.getJid().toBareJid());
 		packet.setFrom(account.getJid());
 		packet.addChild(ChatState.toElement(conversation.getOutgoingChatState()));

@@ -7,8 +7,10 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.xml.Namespace;
+import eu.siacs.conversations.xmpp.chatstate.ChatState;
 import eu.siacs.conversations.xmpp.forms.Data;
 import eu.siacs.conversations.xmpp.forms.Field;
 import eu.siacs.conversations.xmpp.jid.InvalidJidException;
@@ -47,6 +49,18 @@ public class MucOptions {
 
 	public boolean autoPushConfiguration() {
 		return mAutoPushConfiguration;
+	}
+
+	public boolean isSelf(Jid counterpart) {
+		return counterpart.getResourcepart().equals(getActualNick());
+	}
+
+	public void resetChatState() {
+		synchronized (users) {
+			for(User user : users) {
+				user.chatState = Config.DEFAULT_CHATSTATE;
+			}
+		}
 	}
 
 	public enum Affiliation {
@@ -154,6 +168,7 @@ public class MucOptions {
 		private long pgpKeyId = 0;
 		private Avatar avatar;
 		private MucOptions options;
+		private ChatState chatState = Config.DEFAULT_CHATSTATE;
 
 		public User(MucOptions options, Jid from) {
 			this.options = options;
@@ -318,6 +333,14 @@ public class MucOptions {
 
 		public Jid getRealJid() {
 			return realJid;
+		}
+
+		public boolean setChatState(ChatState chatState) {
+			if (this.chatState == chatState) {
+				return false;
+			}
+			this.chatState = chatState;
+			return true;
 		}
 	}
 
@@ -518,6 +541,18 @@ public class MucOptions {
 				}
 				return onlineUsers;
 			}
+		}
+	}
+
+	public ArrayList<User> getUsersWithChatState(ChatState state) {
+		synchronized (users) {
+			ArrayList<User> list = new ArrayList<>();
+			for(User user : users) {
+				if (user.chatState == state) {
+					list.add(user);
+				}
+			}
+			return list;
 		}
 	}
 

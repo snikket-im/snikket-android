@@ -828,7 +828,10 @@ public class ConversationFragment extends Fragment implements EditMessage.Keyboa
 	}
 
 	protected void privateMessageWith(final Jid counterpart) {
-		this.mEditMessage.setText("");
+		if (conversation.setOutgoingChatState(Config.DEFAULT_CHATSTATE)) {
+			activity.xmppConnectionService.sendChatState(conversation);
+		}
+		this.mEditMessage.getEditableText().clear();
 		this.conversation.setNextCounterpart(counterpart);
 		updateChatMsgHint();
 		updateSendButton();

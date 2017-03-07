@@ -2138,7 +2138,11 @@ public class XmppConnectionService extends Service {
 	private void switchToForeground() {
 		final boolean broadcastLastActivity = broadcastLastActivity();
 		for (Conversation conversation : getConversations()) {
-			conversation.setIncomingChatState(ChatState.ACTIVE);
+			if (conversation.getMode() == Conversation.MODE_MULTI) {
+				conversation.getMucOptions().resetChatState();
+			} else {
+				conversation.setIncomingChatState(Config.DEFAULT_CHATSTATE);
+			}
 		}
 		for (Account account : getAccounts()) {
 			if (account.getStatus() == Account.State.ONLINE) {
