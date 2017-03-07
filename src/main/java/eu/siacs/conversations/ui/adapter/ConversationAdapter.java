@@ -115,9 +115,11 @@ public class ConversationAdapter extends ArrayAdapter<Conversation> {
 				} else {
 					mSenderName.setVisibility(View.GONE);
 				}
-			} else {
+			} else if (message.getType() != Message.TYPE_STATUS) {
 				mSenderName.setVisibility(View.VISIBLE);
 				mSenderName.setText(activity.getString(R.string.me)+':');
+			} else {
+				mSenderName.setVisibility(View.GONE);
 			}
 		}
 
