@@ -691,4 +691,13 @@
   <string name="hide_inactive_devices">Skjul inaktive enheter</string>
   <string name="distrust_omemo_key">Fjern tiltro til enhet</string>
   <string name="distrust_omemo_key_text">Er du sikker på at du vil fjerne bekreftelsen av denne enheten?\nDenne eneheten og meldinger fra den vil bli vises som \'Ikke betrodd\'.</string>
+  <string name="timeout_24_hours">et døgn</string>
+  <string name="timeout_7_days">ei uke</string>
+  <string name="timeout_30_days">30 dager</string>
+  <string name="timeout_6_months">et halvt år</string>
+  <string name="pref_automatically_delete_messages">Automatisk meldingssletting</string>
+  <string name="pref_automatically_delete_messages_description">Slett meldinger fra denne enheten automatisk hvis de er eldre enn oppsatt tidsramme.</string>
+  <string name="encrypting_message">Krypterer melding</string>
+  <string name="not_fetching_history_retention_period">Henter ikke inn meldinger på grunn av lokal oppbevaringsperiode.</string>
+  <string name="transcoding_video_progress">Komprimerer video (%s%% fullført)</string>
 </resources>

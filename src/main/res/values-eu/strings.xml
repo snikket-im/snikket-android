@@ -268,7 +268,7 @@
   <string name="error_saving_avatar">Ezin izan da profileko argazkia diskoan gorde</string>
   <string name="or_long_press_for_default">(Edo sakatu luze lehenetsira bueltatzeko)</string>
   <string name="error_publish_avatar_no_server_support">Zure zerbitzariak ez du profileko argazkien argitarapena onartzen</string>
-  <string name="private_message">xuxurlatu</string>
+  <string name="private_message">xuxurlatu du</string>
   <string name="private_message_to">%s(r)i</string>
   <string name="send_private_message_to">%s(r)i mezu pribatua bidali</string>
   <string name="connect">Konektatu</string>
@@ -576,8 +576,8 @@
   <string name="notify_only_when_highlighted">Jakinarazi nabarmentzerakoan soilik</string>
   <string name="notify_never">Jakinarazpenak ezgaituta</string>
   <string name="notify_paused">Jakinarazpenak gelditu dira</string>
-  <string name="pref_picture_compression">Irudiak konprimitu</string>
-  <string name="pref_picture_compression_summary">Irudiak konprimitu eta neurriz aldatu</string>
+  <string name="pref_picture_compression">Irudiak konprimatu</string>
+  <string name="pref_picture_compression_summary">Irudiak konprimatu eta neurriz aldatu</string>
   <string name="always">Beti</string>
   <string name="automatically">Automatikoki</string>
   <string name="battery_optimizations_enabled">Bateriaren optimizazioak gaituta</string>
@@ -698,5 +698,6 @@
   <string name="pref_automatically_delete_messages">Mezuen ezabatze automatikoa</string>
   <string name="pref_automatically_delete_messages_description">Ezarritako denbora tartea baino zaharragoak diren mezuak gailu honetatik automatikoki ezabatu.</string>
   <string name="encrypting_message">Mezua enkriptatzen</string>
+  <string name="not_fetching_history_retention_period">Mezurik ez eskuratzen gelditze tarte lokalarengatik.</string>
   <string name="transcoding_video_progress">Bideoa konprimatzen (%s%% osatua)</string>
 </resources>

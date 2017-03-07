@@ -490,11 +490,13 @@
   <plurals name="toast_delete_certificates">
     <item quantity="one">Usunięto %d certyfikat</item>
     <item quantity="few">Usunięto %d certyfikaty</item>
+    <item quantity="many">Usunięto %d certyfikatów</item>
     <item quantity="other">Usunięto %d certyfikatów</item>
   </plurals>
   <plurals name="select_contact">
     <item quantity="one">%d kontakt wybrany</item>
     <item quantity="few">%d kontakty wybrane</item>
+    <item quantity="many">%d kontaktów wybranych</item>
     <item quantity="other">%d kontaktów wybranych</item>
   </plurals>
   <string name="pref_quick_action_summary">Zastąp przycisk wysyłania szybką akcją</string>
@@ -557,6 +559,7 @@
   <plurals name="x_messages">
     <item quantity="one">%d wiadomość</item>
     <item quantity="few">%d wiadomości</item>
+    <item quantity="many">%d wiadomości</item>
     <item quantity="other">%d wiadomości</item>
   </plurals>
   <string name="load_more_messages">Załaduj wiecej wiadomości</string>

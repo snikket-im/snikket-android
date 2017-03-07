@@ -74,7 +74,7 @@
   <string name="preparing_images">Bilder werden für Übertragung vorbereitet</string>
   <string name="sharing_files_please_wait">Teile Dateien. Bitte warten…</string>
   <string name="action_clear_history">Verlauf löschen</string>
-  <string name="clear_conversation_history">Verlauf löschen</string>
+  <string name="clear_conversation_history">Unterhaltungsverlauf löschen</string>
   <string name="clear_histor_msg">Möchtest du alle Nachrichten in dieser Unterhaltung löschen?\n\n<b>Achtung:</b> Dies beeinflusst nicht Nachrichten, die auf anderen Geräten oder Servern gespeichert sind.</string>
   <string name="delete_messages">Nachrichten löschen</string>
   <string name="also_end_conversation">Diese Unterhaltung danach beenden</string>
@@ -294,7 +294,7 @@
   <string name="pref_force_encryption">Ende-zu-Ende-Verschlüsselung erzwingen</string>
   <string name="pref_force_encryption_summary">Nachrichten immer verschlüsseln (außer für Konferenzen)</string>
   <string name="pref_allow_message_correction">Nachrichtenkorrektur erlauben</string>
-  <string name="pref_allow_message_correction_summary">Erlaube Deinen Kontakten das nachträgliche Korrigieren ihrer Nachrichten</string>
+  <string name="pref_allow_message_correction_summary">Erlaube deinen Kontakten das nachträgliche Korrigieren ihrer Nachrichten</string>
   <string name="pref_dont_save_encrypted">Verschlüsselte Nachrichten nicht speichern</string>
   <string name="pref_dont_save_encrypted_summary">Achtung: kann zu Nachrichtenverlust führen</string>
   <string name="pref_expert_options">Experteneinstellungen</string>
@@ -349,12 +349,12 @@
   <string name="scan">Scannen</string>
   <string name="smp">Socialist Millionaire Protocol</string>
   <string name="shared_secret_hint">Hinweis oder Frage</string>
-  <string name="shared_secret_secret">Gemeinsamer Schlüssel</string>
+  <string name="shared_secret_secret">Gemeinsames Geheimnis</string>
   <string name="confirm">Bestätigen</string>
   <string name="in_progress">In Bearbeitung</string>
   <string name="respond">Antworten</string>
   <string name="failed">Fehlgeschlagen</string>
-  <string name="secrets_do_not_match">Schlüssel stimmen nicht überein</string>
+  <string name="secrets_do_not_match">Geheimnis stimmt nicht überein</string>
   <string name="try_again">Erneut versuchen</string>
   <string name="finish">Fertig</string>
   <string name="verified">Überprüft!</string>
@@ -388,7 +388,7 @@
   <string name="conference_with">Konferenz erstellen mit…</string>
   <string name="no_conference_server_found">Kein Konferenzserver gefunden</string>
   <string name="conference_creation_failed">Erstellen der Konferenz fehlgeschlagen!</string>
-  <string name="secret_accepted">Schlüssel akzeptiert!</string>
+  <string name="secret_accepted">Geheimnis akzeptiert!</string>
   <string name="reset">Zurücksetzen</string>
   <string name="account_image_description">Konto-Avatar</string>
   <string name="copy_otr_clipboard_description">OTR-Fingerabdruck in Zwischenablage kopieren</string>
@@ -410,7 +410,7 @@
   <string name="smp_explain_question">Falls du mit deinem Kontakt ein gemeinsames Geheimnis hast (z.B. ein Insider-Witz oder was ihr zuletzt gemeinsam zum Mittag gegessen habt), kann dies zur gegenseitigen Überprüfung des Fingerabdrucks genutzt werden.\n\nDu stellst eine Frage oder gibst einen Hinweis und dein Kontakt gibt eine eindeutige Antwort.</string>
   <string name="smp_explain_answer">Dein Kontakt möchte deinen Fingerabdruck mit Hilfe eines gemeinsamen Geheimnisses überprüfen. Dein Kontakt hat dazu folgende Frage gestellt.</string>
   <string name="shared_secret_hint_should_not_be_empty">Deine Frage darf nicht leer sein.</string>
-  <string name="shared_secret_can_not_be_empty">Dein gemeinsamer Schlüssel darf nicht leer sein</string>
+  <string name="shared_secret_can_not_be_empty">Dein gemeinsames Geheimnis darf nicht leer sein</string>
   <string name="manual_verification_explanation">Vergleiche den angezeigten Fingerabdruck sorgfältig mit dem deines Kontakts.\nDu kannst dazu einen sicheren Kommunikationsweg (z.B. verschlüsselte E-Mail oder Telefonanruf) zum Austausch nutzen.</string>
   <string name="change_password">Passwort ändern</string>
   <string name="current_password">Aktuelles Passwort</string>
@@ -696,7 +696,7 @@
   <string name="timeout_30_days">30 Tage</string>
   <string name="timeout_6_months">6 Monate</string>
   <string name="pref_automatically_delete_messages">Automatische Nachrichtenlöschung</string>
-  <string name="pref_automatically_delete_messages_description">Lösche Nachrichten automatisch, wenn diese älter sind als die eingestellte Zeit.</string>
+  <string name="pref_automatically_delete_messages_description">Lösche Nachrichten automatisch, wenn diese älter als die eingestellte Zeit sind.</string>
   <string name="encrypting_message">Nachricht wird verschlüsselt</string>
   <string name="not_fetching_history_retention_period">Nachrichten werden aufgrund der eingestellten lokalen Speicherfrist nicht abgerufen. </string>
   <string name="transcoding_video_progress">Video wird komprimiert (%s%% abgeschlossen)</string>

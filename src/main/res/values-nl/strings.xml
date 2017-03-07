@@ -684,8 +684,8 @@
   <string name="pref_clean_cache">Cache wissen</string>
   <string name="pref_clean_private_storage">Privéopslag wissen</string>
   <string name="pref_clean_private_storage_summary">Privéopslag waar bestanden worden bijgehouden wissen (de bestanden kunnen opnieuw gedownload worden van de server)</string>
-  <string name="i_followed_this_link_from_a_trusted_source">Ik heb deze koppeling gevolgd van een vertrouwde bron</string>
-  <string name="verifying_omemo_keys_trusted_source">Je staat op het punt de OMEMO-sleutels van %1$s te verifiëren door op een koppeling te klikken. Dit is enkel veilig als je de koppeling van een vertrouwde bron hebt gevolgd, waarbij enkel %2$s de koppeling gepubliceerd kan hebben.</string>
+  <string name="i_followed_this_link_from_a_trusted_source">Ik heb deze link gevolgd vanuit een betrouwbare bron</string>
+  <string name="verifying_omemo_keys_trusted_source">Je staat op het punt de OMEMO-sleutels van %1$s te verifiëren door op een link te klikken. Dit is enkel veilig als je de link van een betrouwbare bron hebt gevolgd, waarbij enkel %2$s de link gepubliceerd kan hebben.</string>
   <string name="verify_omemo_keys">OMEMO-sleutels verifiëren</string>
   <string name="show_inactive_devices">Toon niet-actieve apparaten</string>
   <string name="hide_inactive_devices">Verberg niet-actieve apparaten</string>
@@ -694,7 +694,7 @@
   <string name="timeout_24_hours">24 uur</string>
   <string name="timeout_7_days">7 dagen</string>
   <string name="timeout_30_days">30 dagen</string>
-  <string name="timeout_6_months">6 maand</string>
+  <string name="timeout_6_months">6 maanden</string>
   <string name="pref_automatically_delete_messages">Automatisch berichten verwijderen</string>
   <string name="pref_automatically_delete_messages_description">Verwijder automatisch berichten van dit apparaat ouder dan de ingestelde tijdsperiode.</string>
   <string name="encrypting_message">Bericht wordt versleuteld</string>

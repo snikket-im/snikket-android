@@ -695,5 +695,6 @@
   <string name="pref_automatically_delete_messages">Otomatik ileti silmek</string>
   <string name="pref_automatically_delete_messages_description">Bu cihazdan, ayarlanmış zaman aralığından eski olan mesajları otomatik olarak silin.</string>
   <string name="encrypting_message">İletiyi şifrelemek</string>
+  <string name="not_fetching_history_retention_period">Yerel saklama süresi nedeniyle ileti getirilmiyor.</string>
   <string name="transcoding_video_progress">Video sıkıştırılıyor (%s%% tamamlandı)</string>
 </resources>

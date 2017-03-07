@@ -573,7 +573,7 @@
   <string name="certicate_info_not_available">(No disponible)</string>
   <string name="certificate_not_found">Certificado no encontrado</string>
   <string name="notify_on_all_messages">Notificar para todos los mensajes</string>
-  <string name="notify_only_when_highlighted">Notificar solo cuando se recibe un mensjae resaltado</string>
+  <string name="notify_only_when_highlighted">Notificar solo cuando se recibe un mensaje resaltado</string>
   <string name="notify_never">Notificaciones deshabilitadas</string>
   <string name="notify_paused">Notificaciones pausadas</string>
   <string name="pref_picture_compression">Comprimir imágenes</string>
@@ -698,5 +698,6 @@
   <string name="pref_automatically_delete_messages">Borrado automático de mensajes</string>
   <string name="pref_automatically_delete_messages_description">Automáticamente borrar mensajes del dispositivo más antiguos que el configurado en el marco de tiempo.</string>
   <string name="encrypting_message">Cifrando mensaje</string>
+  <string name="not_fetching_history_retention_period">No buscar mensajes más antiguos que el establecido en el marco de tiempo.</string>
   <string name="transcoding_video_progress">Comprimiendo vídeo (%s%% completado)</string>
 </resources>

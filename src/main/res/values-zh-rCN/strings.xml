@@ -690,4 +690,13 @@
   <string name="hide_inactive_devices">隐藏非活跃设备</string>
   <string name="distrust_omemo_key">不信任的设备</string>
   <string name="distrust_omemo_key_text">你确认要移除此设备的验证吗？\n此设备及从其发送的信息将会被标识为不可信。</string>
+  <string name="timeout_24_hours">24 个小时</string>
+  <string name="timeout_7_days">7 天</string>
+  <string name="timeout_30_days">30 天</string>
+  <string name="timeout_6_months">6 个月</string>
+  <string name="pref_automatically_delete_messages">自动删除消息</string>
+  <string name="pref_automatically_delete_messages_description">自动从此设备上删除超过配置时间段的消息</string>
+  <string name="encrypting_message">消息加密中</string>
+  <string name="not_fetching_history_retention_period">由于本地保留期限，因此无法提取消息。</string>
+  <string name="transcoding_video_progress">正在压缩视频 (已完成 %s%% )</string>
 </resources>
