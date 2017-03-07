@@ -992,6 +992,26 @@ public class Conversation extends AbstractEntity implements Blockable, Comparabl
 		}
 	}
 
+	private int sentMessagesCount() {
+		int count = 0;
+		synchronized (this.messages) {
+			for(Message message : messages) {
+				if (message.getStatus() != Message.STATUS_RECEIVED) {
+					++count;
+				}
+			}
+		}
+		return count;
+	}
+
+	public boolean isWithStranger() {
+		if (mode == MODE_SINGLE) {
+			return !getContact().mutualPresenceSubscription() && sentMessagesCount() == 0;
+		} else {
+			return false;
+		}
+	}
+
 	public class Smp {
 		public static final int STATUS_NONE = 0;
 		public static final int STATUS_CONTACT_REQUESTED = 1;

@@ -42,6 +42,12 @@
             android:summary="@string/pref_notifications_summary"
             android:title="@string/pref_notifications"/>
         <CheckBoxPreference
+            android:defaultValue="@bool/notifications_from_strangers"
+            android:key="notifications_from_strangers"
+            android:dependency="show_notification"
+            android:title="@string/pref_notifications_from_strangers"
+            android:summary="@string/pref_notifications_from_strangers_summary"/>
+        <CheckBoxPreference
             android:defaultValue="true"
             android:dependency="show_notification"
             android:key="vibrate_on_notification"

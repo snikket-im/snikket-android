@@ -59,15 +59,21 @@ public class NotificationService {
 	}
 
 	public boolean notify(final Message message) {
-		return (message.getStatus() == Message.STATUS_RECEIVED)
+		return message.getStatus() == Message.STATUS_RECEIVED
 				&& notificationsEnabled()
 				&& !message.getConversation().isMuted()
-				&& (message.getConversation().alwaysNotify() || wasHighlightedOrPrivate(message)
-		);
+				&& (message.getConversation().alwaysNotify() || wasHighlightedOrPrivate(message))
+				&& (!message.getConversation().isWithStranger() || notificationsFromStrangers())
+		;
 	}
 
 	public boolean notificationsEnabled() {
 		return mXmppConnectionService.getPreferences().getBoolean("show_notification", true);
+	}
+
+	private boolean notificationsFromStrangers() {
+		return mXmppConnectionService.getPreferences().getBoolean("notifications_from_strangers",
+				mXmppConnectionService.getResources().getBoolean(R.bool.notifications_from_strangers));
 	}
 
 	public boolean isQuietHours() {

@@ -736,4 +736,6 @@
 	<string name="transcoding_video_progress">Compressing video (%s%% completed)</string>
 	<string name="corresponding_conversations_closed">Corresponding conversations closed.</string>
 	<string name="contact_blocked_past_tense">Contact blocked.</string>
+	<string name="pref_notifications_from_strangers">Notifications from strangers</string>
+	<string name="pref_notifications_from_strangers_summary">Notify for messages received from strangers.</string>
 </resources>
