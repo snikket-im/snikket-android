@@ -954,6 +954,13 @@ public class ConversationFragment extends Fragment implements EditMessage.Keyboa
 		}
 	};
 
+	private OnClickListener mBlockClickListener = new OnClickListener() {
+		@Override
+		public void onClick(final View v) {
+			BlockContactDialog.show(activity, conversation);
+		}
+	};
+
 	private OnClickListener mAddBackClickListener = new OnClickListener() {
 
 		@Override
@@ -1047,6 +1054,8 @@ public class ConversationFragment extends Fragment implements EditMessage.Keyboa
 				&& (conversation.getOtrSession().getSessionStatus() == SessionStatus.ENCRYPTED)
 				&& (!conversation.isOtrFingerprintVerified())) {
 			showSnackbar(R.string.unknown_otr_fingerprint, R.string.verify, clickToVerify);
+		} else if (conversation.isWithStranger() && !conversation.isBlocked()) {
+			showSnackbar(R.string.received_message_from_stranger,R.string.block, mBlockClickListener);
 		} else {
 			hideSnackbar();
 		}
