@@ -667,19 +667,28 @@ public class MessageAdapter extends ArrayAdapter<Message> implements CopyTextVie
 				});
 			} else {
 				viewHolder.status_message.setVisibility(View.VISIBLE);
-				viewHolder.contact_picture.setVisibility(View.VISIBLE);
 				viewHolder.load_more_messages.setVisibility(View.GONE);
-				if (conversation.getMode() == Conversation.MODE_SINGLE) {
-					viewHolder.contact_picture.setImageBitmap(activity
-							.avatarService().get(conversation.getContact(),
-									activity.getPixel(32)));
-					viewHolder.contact_picture.setAlpha(0.5f);
-				}
 				viewHolder.status_message.setText(message.getBody());
+				boolean showAvatar;
+				if (conversation.getMode() == Conversation.MODE_SINGLE) {
+					showAvatar = true;
+					loadAvatar(message,viewHolder.contact_picture,activity.getPixel(32));
+				} else if (message.getCounterpart() != null ){
+					showAvatar = true;
+					loadAvatar(message,viewHolder.contact_picture,activity.getPixel(32));
+				} else {
+					showAvatar = false;
+				}
+				if (showAvatar) {
+					viewHolder.contact_picture.setAlpha(0.5f);
+					viewHolder.contact_picture.setVisibility(View.VISIBLE);
+				} else {
+					viewHolder.contact_picture.setVisibility(View.GONE);
+				}
 			}
 			return view;
 		} else {
-			loadAvatar(message, viewHolder.contact_picture);
+			loadAvatar(message, viewHolder.contact_picture,activity.getPixel(48));
 		}
 
 		viewHolder.contact_picture
@@ -968,14 +977,16 @@ public class MessageAdapter extends ArrayAdapter<Message> implements CopyTextVie
 	class BitmapWorkerTask extends AsyncTask<Message, Void, Bitmap> {
 		private final WeakReference<ImageView> imageViewReference;
 		private Message message = null;
+		private final int size;
 
-		public BitmapWorkerTask(ImageView imageView) {
+		public BitmapWorkerTask(ImageView imageView, int size) {
 			imageViewReference = new WeakReference<>(imageView);
+			this.size = size;
 		}
 
 		@Override
 		protected Bitmap doInBackground(Message... params) {
-			return activity.avatarService().get(params[0], activity.getPixel(48), isCancelled());
+			return activity.avatarService().get(params[0], size, isCancelled());
 		}
 
 		@Override
@@ -990,9 +1001,9 @@ public class MessageAdapter extends ArrayAdapter<Message> implements CopyTextVie
 		}
 	}
 
-	public void loadAvatar(Message message, ImageView imageView) {
+	public void loadAvatar(Message message, ImageView imageView, int size) {
 		if (cancelPotentialWork(message, imageView)) {
-			final Bitmap bm = activity.avatarService().get(message, activity.getPixel(48), true);
+			final Bitmap bm = activity.avatarService().get(message, size, true);
 			if (bm != null) {
 				cancelPotentialWork(message, imageView);
 				imageView.setImageBitmap(bm);
@@ -1000,7 +1011,7 @@ public class MessageAdapter extends ArrayAdapter<Message> implements CopyTextVie
 			} else {
 				imageView.setBackgroundColor(UIHelper.getColorForName(UIHelper.getMessageDisplayName(message)));
 				imageView.setImageDrawable(null);
-				final BitmapWorkerTask task = new BitmapWorkerTask(imageView);
+				final BitmapWorkerTask task = new BitmapWorkerTask(imageView, size);
 				final AsyncDrawable asyncDrawable = new AsyncDrawable(activity.getResources(), null, task);
 				imageView.setImageDrawable(asyncDrawable);
 				try {

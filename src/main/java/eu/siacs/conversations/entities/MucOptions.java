@@ -544,12 +544,15 @@ public class MucOptions {
 		}
 	}
 
-	public ArrayList<User> getUsersWithChatState(ChatState state) {
+	public ArrayList<User> getUsersWithChatState(ChatState state, int max) {
 		synchronized (users) {
 			ArrayList<User> list = new ArrayList<>();
 			for(User user : users) {
 				if (user.chatState == state) {
 					list.add(user);
+					if (list.size() >= max) {
+						break;
+					}
 				}
 			}
 			return list;

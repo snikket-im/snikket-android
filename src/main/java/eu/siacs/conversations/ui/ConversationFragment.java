@@ -1284,6 +1284,36 @@ public class ConversationFragment extends Fragment implements EditMessage.Keyboa
 						}
 					}
 				}
+			} else {
+				ChatState state = ChatState.COMPOSING;
+				List<MucOptions.User> users = conversation.getMucOptions().getUsersWithChatState(state,5);
+				if (users.size() == 0) {
+					state = ChatState.PAUSED;
+					users = conversation.getMucOptions().getUsersWithChatState(state, 5);
+
+				}
+				if (users.size() > 0) {
+					Message statusMessage;
+					if (users.size() == 1) {
+						MucOptions.User user = users.get(0);
+						int id = state == ChatState.COMPOSING ? R.string.contact_is_typing : R.string.contact_has_stopped_typing;
+						statusMessage = Message.createStatusMessage(conversation, getString(id, UIHelper.getDisplayName(user)));
+						statusMessage.setTrueCounterpart(user.getRealJid());
+						statusMessage.setCounterpart(user.getFullJid());
+					} else {
+						StringBuilder builder = new StringBuilder();
+						for(MucOptions.User user : users) {
+							if (builder.length() != 0) {
+								builder.append(", ");
+							}
+							builder.append(UIHelper.getDisplayName(user));
+						}
+						int id = state == ChatState.COMPOSING ? R.string.contacts_are_typing : R.string.contacts_have_stopped_typing;
+						statusMessage = Message.createStatusMessage(conversation, getString(id, builder.toString()));
+					}
+					this.messageList.add(statusMessage);
+				}
+
 			}
 		}
 	}

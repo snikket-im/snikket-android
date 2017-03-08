@@ -22,6 +22,7 @@ import eu.siacs.conversations.entities.Contact;
 import eu.siacs.conversations.entities.Conversation;
 import eu.siacs.conversations.entities.ListItem;
 import eu.siacs.conversations.entities.Message;
+import eu.siacs.conversations.entities.MucOptions;
 import eu.siacs.conversations.entities.Presence;
 import eu.siacs.conversations.entities.Transferable;
 import eu.siacs.conversations.ui.XmppActivity;
@@ -251,7 +252,16 @@ public class UIHelper {
 
 	private static boolean isPositionFollowedByBigGrin(CharSequence body, int pos) {
 		return body.length() <= pos + 1
-				|| ((body.charAt(pos+1) == '<') && (body.length() == pos+2 || Character.isWhitespace(body.charAt(pos+2))));
+				|| ((body.charAt(pos + 1) == '<') && (body.length() == pos + 2 || Character.isWhitespace(body.charAt(pos + 2))));
+	}
+
+	public static String getDisplayName(MucOptions.User user) {
+		Contact contact = user.getContact();
+		if (contact != null) {
+			return contact.getDisplayName();
+		} else {
+			return user.getName();
+		}
 	}
 
 	public static String getFileDescriptionString(final Context context, final Message message) {

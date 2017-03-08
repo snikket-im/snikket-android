@@ -503,6 +503,8 @@
 	<string name="disable_account">Disable Account</string>
 	<string name="contact_is_typing">%s is typing…</string>
 	<string name="contact_has_stopped_typing">%s has stopped typing</string>
+	<string name="contacts_are_typing">%s are typing…</string>
+	<string name="contacts_have_stopped_typing">%s have stopped typing</string>
 	<string name="pref_chat_states">Typing notifications</string>
 	<string name="pref_chat_states_summary">Let your contacts know when you are writing messages to them</string>
 	<string name="send_location">Send location</string>
