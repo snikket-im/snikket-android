@@ -1054,7 +1054,9 @@ public class ConversationFragment extends Fragment implements EditMessage.Keyboa
 				&& (conversation.getOtrSession().getSessionStatus() == SessionStatus.ENCRYPTED)
 				&& (!conversation.isOtrFingerprintVerified())) {
 			showSnackbar(R.string.unknown_otr_fingerprint, R.string.verify, clickToVerify);
-		} else if (conversation.isWithStranger() && !conversation.isBlocked()) {
+		} else if (conversation.countMessages() != 0
+				&& !conversation.isBlocked()
+				&& conversation.isWithStranger()) {
 			showSnackbar(R.string.received_message_from_stranger,R.string.block, mBlockClickListener);
 		} else {
 			hideSnackbar();
