@@ -18,6 +18,7 @@ import eu.siacs.conversations.entities.Conversation;
 import eu.siacs.conversations.entities.Message;
 import eu.siacs.conversations.services.XmppConnectionService;
 import eu.siacs.conversations.xml.Element;
+import eu.siacs.conversations.xml.Namespace;
 import eu.siacs.conversations.xmpp.chatstate.ChatState;
 import eu.siacs.conversations.xmpp.jid.Jid;
 import eu.siacs.conversations.xmpp.stanzas.MessagePacket;
@@ -54,6 +55,7 @@ public class MessageGenerator extends AbstractGenerator {
 		}
 		packet.setFrom(account.getJid());
 		packet.setId(message.getUuid());
+		packet.addChild("origin-id", Namespace.STANZA_IDS).setAttribute("id",message.getUuid());
 		if (message.edited()) {
 			packet.addChild("replace","urn:xmpp:message-correct:0").setAttribute("id",message.getEditedId());
 		}

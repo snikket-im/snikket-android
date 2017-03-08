@@ -366,7 +366,13 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
 		final Jid counterpart;
 		final Jid to = packet.getTo();
 		final Jid from = packet.getFrom();
-		final String remoteMsgId = packet.getId();
+		final Element originId = packet.findChild("origin-id",Namespace.STANZA_IDS);
+		final String remoteMsgId;
+		if (originId != null && originId.getAttribute("id") != null) {
+			remoteMsgId = originId.getAttribute("id");
+		} else {
+			remoteMsgId = packet.getId();
+		}
 		boolean notify = false;
 
 		if (from == null) {
