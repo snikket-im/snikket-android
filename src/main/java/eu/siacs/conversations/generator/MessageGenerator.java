@@ -46,6 +46,7 @@ public class MessageGenerator extends AbstractGenerator {
 		} else if (message.getType() == Message.TYPE_PRIVATE) {
 			packet.setTo(message.getCounterpart());
 			packet.setType(MessagePacket.TYPE_CHAT);
+			packet.addChild("x","http://jabber.org/protocol/muc#user");
 			if (this.mXmppConnectionService.indicateReceived()) {
 				packet.addChild("request", "urn:xmpp:receipts");
 			}
