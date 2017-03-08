@@ -212,7 +212,7 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
 		return null;
 	}
 
-	private static String extractStanzaid(Element packet, boolean isTypeGroupChat, Conversation conversation) {
+	private static String extractStanzaId(Element packet, boolean isTypeGroupChat, Conversation conversation) {
 		final Jid by;
 		final boolean safeToExtract;
 		if (isTypeGroupChat) {
@@ -401,7 +401,7 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
 			final boolean conversationMultiMode = conversation.getMode() == Conversation.MODE_MULTI;
 
 			if (serverMsgId == null) {
-				extractStanzaid(packet, isTypeGroupChat, conversation);
+				serverMsgId = extractStanzaId(packet, isTypeGroupChat, conversation);
 			}
 
 			if (isTypeGroupChat) {
