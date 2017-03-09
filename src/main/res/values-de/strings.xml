@@ -176,6 +176,7 @@
   <string name="mgmt_account_delete_confirm_text">Wenn du dein Konto löschst, gehen alle Gesprächsverläufe verloren</string>
   <string name="attach_record_voice">Sprache aufzeichnen</string>
   <string name="account_settings_jabber_id">Jabber-ID</string>
+  <string name="block_jabber_id">Sperre Jabber-ID</string>
   <string name="account_settings_password">Passwort</string>
   <string name="account_settings_example_jabber_id">benutzer@domain.de</string>
   <string name="account_settings_confirm_password">Passwort bestätigen</string>
@@ -700,4 +701,9 @@
   <string name="encrypting_message">Nachricht wird verschlüsselt</string>
   <string name="not_fetching_history_retention_period">Nachrichten werden aufgrund der eingestellten lokalen Speicherfrist nicht abgerufen. </string>
   <string name="transcoding_video_progress">Video wird komprimiert (%s%% abgeschlossen)</string>
+  <string name="corresponding_conversations_closed">Zugehörige Unterhaltung beendet.</string>
+  <string name="contact_blocked_past_tense">Kontakt gesperrt.</string>
+  <string name="pref_notifications_from_strangers">Benachrichtigungen von Unbekannten</string>
+  <string name="pref_notifications_from_strangers_summary">Benachrichtigen bei Erhalt einer neuen Nachricht von Unbekannten.</string>
+  <string name="received_message_from_stranger">Erhaltene Nachricht von einem Unbekannten</string>
 </resources>
