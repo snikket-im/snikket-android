@@ -353,6 +353,7 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
 
 			@Override
 			public void run() {
+				hideKeyboard();
 				final Intent intent;
 				final XmppConnection connection = mAccount.getXmppConnection();
 				final boolean wasFirstAccount = xmppConnectionService != null && xmppConnectionService.getAccounts().size() == 1;
