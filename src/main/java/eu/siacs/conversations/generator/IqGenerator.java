@@ -15,6 +15,7 @@ import java.security.cert.CertificateEncodingException;
 import java.security.cert.X509Certificate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Set;
 import java.util.TimeZone;
 import java.util.UUID;
@@ -77,9 +78,16 @@ public class IqGenerator extends AbstractGenerator {
 		time.addChild("utc").setContent(getTimestamp(now));
 		TimeZone ourTimezone = TimeZone.getDefault();
 		long offsetSeconds = ourTimezone.getOffset(now) / 1000;
-		long offsetMinutes = offsetSeconds % (60 * 60);
-		long offsetHours = offsetSeconds / (60 * 60);
-		time.addChild("tzo").setContent(String.format("%02d",offsetHours)+":"+String.format("%02d",offsetMinutes));
+		long offsetMinutes = Math.abs((offsetSeconds % 3600) / 60);
+		long offsetHours = offsetSeconds / 3600;
+		String hours;
+		if (offsetHours<0) {
+			hours = String.format(Locale.US,"%03d",offsetHours);
+		} else {
+			hours = String.format(Locale.US,"%02d",offsetHours);
+		}
+		String minutes = String.format(Locale.US,"%02d",offsetMinutes);
+		time.addChild("tzo").setContent(hours+":"+minutes);
 		return packet;
 	}
 
