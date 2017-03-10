@@ -176,6 +176,7 @@
   <string name="mgmt_account_delete_confirm_text">Si vous supprimez votre compte, votre historique de conversations sera perdu !</string>
   <string name="attach_record_voice">Enregistrer un son</string>
   <string name="account_settings_jabber_id">Identifiant</string>
+  <string name="block_jabber_id">Bloquer l\'ID Jabber</string>
   <string name="account_settings_password">Mot de passe</string>
   <string name="account_settings_example_jabber_id">nom@exemple.com</string>
   <string name="account_settings_confirm_password">Confirmer le mot de passe</string>
@@ -700,4 +701,9 @@
   <string name="encrypting_message">Chiffrement du message en cours</string>
   <string name="not_fetching_history_retention_period">Aucun message récupéré, en raison de la configuration de rétention de l\'appareil.</string>
   <string name="transcoding_video_progress">Compression de la vidéo en cours (%s%% effectués)</string>
+  <string name="corresponding_conversations_closed">Conversations correspondantes fermées.</string>
+  <string name="contact_blocked_past_tense">Contact bloqué.</string>
+  <string name="pref_notifications_from_strangers">Notifications d\'inconnus</string>
+  <string name="pref_notifications_from_strangers_summary">Notifier pour les messages envoyés par des personnes inconnues</string>
+  <string name="received_message_from_stranger">Message d\'un inconnu reçu</string>
 </resources>

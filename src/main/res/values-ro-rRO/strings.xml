@@ -471,6 +471,8 @@
   <string name="disable_account">Dezactiveaza cont</string>
   <string name="contact_is_typing">%s tasteaza...</string>
   <string name="contact_has_stopped_typing">%s s-a oprit din scris</string>
+  <string name="contacts_are_typing">%s tastează...</string>
+  <string name="contacts_have_stopped_typing">%s s-a oprit din scris</string>
   <string name="pref_chat_states">Notificari cand cineva scrie</string>
   <string name="pref_chat_states_summary">Anunta contactul cand scrii un nou mesaj</string>
   <string name="send_location">Trimite locatia</string>

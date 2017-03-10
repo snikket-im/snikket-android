@@ -471,6 +471,8 @@
   <string name="disable_account">Деактивиране на профила</string>
   <string name="contact_is_typing">%s пише…</string>
   <string name="contact_has_stopped_typing">%s спря да пише</string>
+  <string name="contacts_are_typing">%s пишат…</string>
+  <string name="contacts_have_stopped_typing">%s спряха да пишат</string>
   <string name="pref_chat_states">Известия за писането</string>
   <string name="pref_chat_states_summary">Така контактите Ви ще разбират, когато им пишете съобщения</string>
   <string name="send_location">Изпращане на местоположението</string>
