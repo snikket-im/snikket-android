@@ -5,6 +5,7 @@
 * Blocking a JID closes the corresponding conversation
 * Show message sender in conversation overview
 * Show unread counter for every conversation
+* Send typing notifications in private, non-anonymous MUCs
 * Support for the latest MAM namespace
 * Icons for attach menu
 
