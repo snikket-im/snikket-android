@@ -1005,11 +1005,10 @@ public class Conversation extends AbstractEntity implements Blockable, Comparabl
 	}
 
 	public boolean isWithStranger() {
-		if (mode == MODE_SINGLE) {
-			return !getContact().mutualPresenceSubscription() && sentMessagesCount() == 0;
-		} else {
-			return false;
-		}
+		return mode == MODE_SINGLE
+				&& !getJid().equals(account.getJid().toDomainJid())
+				&& !getContact().mutualPresenceSubscription()
+				&& sentMessagesCount() == 0;
 	}
 
 	public class Smp {
