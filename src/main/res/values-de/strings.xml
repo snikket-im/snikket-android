@@ -471,6 +471,8 @@
   <string name="disable_account">Konto abschalten</string>
   <string name="contact_is_typing">%s schreibt…</string>
   <string name="contact_has_stopped_typing">%s schreibt nicht mehr</string>
+  <string name="contacts_are_typing">%s schreiben...</string>
+  <string name="contacts_have_stopped_typing">%s schreiben nicht mehr</string>
   <string name="pref_chat_states">Tipp-Benachrichtigung</string>
   <string name="pref_chat_states_summary">Informiere deine Kontakte, wenn du eine Nachricht schreibst</string>
   <string name="send_location">Standort senden</string>

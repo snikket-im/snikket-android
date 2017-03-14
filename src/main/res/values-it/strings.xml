@@ -471,6 +471,8 @@
   <string name="disable_account">Disabilita l\'account</string>
   <string name="contact_is_typing">%s sta digitando...</string>
   <string name="contact_has_stopped_typing">%s ha smesso di digitare</string>
+  <string name="contacts_are_typing">%s stanno scrivendo…</string>
+  <string name="contacts_have_stopped_typing">%s hanno smesso di scrivere</string>
   <string name="pref_chat_states">Notifiche di composizione</string>
   <string name="pref_chat_states_summary">Fai sapere ai tuoi contatti quando stai scrivendo loro un messaggio</string>
   <string name="send_location">Invia la posizione</string>

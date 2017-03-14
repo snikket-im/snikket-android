@@ -176,6 +176,7 @@
   <string name="mgmt_account_delete_confirm_text">Hesabınızı silerseniz tüm konuşma geçmişiniz silinecek</string>
   <string name="attach_record_voice">Ses kaydet</string>
   <string name="account_settings_jabber_id">Jabber ID</string>
+  <string name="block_jabber_id">Jabber ID engelle</string>
   <string name="account_settings_password">Parola</string>
   <string name="account_settings_example_jabber_id">kullanıcıadı@ornek.com</string>
   <string name="account_settings_confirm_password">Parolayı doğrula</string>
@@ -470,6 +471,8 @@
   <string name="disable_account">Hesabı devre dışı bırak</string>
   <string name="contact_is_typing">%s yazıyor…</string>
   <string name="contact_has_stopped_typing">%s yazmayı bıraktı</string>
+  <string name="contacts_are_typing">%s yazıyor…</string>
+  <string name="contacts_have_stopped_typing">%s yazmayı bıraktı</string>
   <string name="pref_chat_states">Yazma bildirimleri</string>
   <string name="pref_chat_states_summary">Siz onlara ileti yazarken kişilerinizin bunu bilmesini sağlayın</string>
   <string name="send_location">Yer bildirimi gönder</string>
@@ -697,4 +700,6 @@
   <string name="encrypting_message">İletiyi şifrelemek</string>
   <string name="not_fetching_history_retention_period">Yerel saklama süresi nedeniyle ileti getirilmiyor.</string>
   <string name="transcoding_video_progress">Video sıkıştırılıyor (%s%% tamamlandı)</string>
+  <string name="corresponding_conversations_closed">Konuşma sonlandı</string>
+  <string name="contact_blocked_past_tense">Kişi engellendi.</string>
 </resources>

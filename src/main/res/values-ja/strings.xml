@@ -471,6 +471,8 @@
   <string name="disable_account">アカウントを無効にする</string>
   <string name="contact_is_typing">%s は入力中…</string>
   <string name="contact_has_stopped_typing">%s は入力を停止しました</string>
+  <string name="contacts_are_typing">%s さんが入力中…</string>
+  <string name="contacts_have_stopped_typing">%s さんが入力を止めました</string>
   <string name="pref_chat_states">入力中通知</string>
   <string name="pref_chat_states_summary">あなたがメッセージを書いているときに、連絡先に知らせます</string>
   <string name="send_location">位置を送信</string>

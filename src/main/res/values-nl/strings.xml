@@ -471,6 +471,8 @@
   <string name="disable_account">Account uitschakelen</string>
   <string name="contact_is_typing">%s is aan het typen…</string>
   <string name="contact_has_stopped_typing">%s is gestopt met typen</string>
+  <string name="contacts_are_typing">%s zijn aan het typen…</string>
+  <string name="contacts_have_stopped_typing">%s zijn gestopt met typen</string>
   <string name="pref_chat_states">Aan-het-typen-meldingen</string>
   <string name="pref_chat_states_summary">Laat je contacten weten wanneer je ze een nieuw bericht schrijft</string>
   <string name="send_location">Locatie versturen</string>

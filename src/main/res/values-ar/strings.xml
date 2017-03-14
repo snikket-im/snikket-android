@@ -192,6 +192,7 @@
   <string name="last_seen_day">آخر ظهور منذ 1 يوم</string>
   <string name="last_seen_days">آخر ظهور منذ %d يوم</string>
   <string name="never_seen">لم يظهر متصلا حتى الآن</string>
+  <string name="install_openkeychain">هذه الرسالة مشفرة. قم بتثبيت OpenKeychain لفك الشيفرة.</string>
   <string name="unknown_otr_fingerprint">بصمة OTR مجهولة</string>
   <string name="openpgp_messages_found">تم العثور على رسائل مشفرة بال OpenPGP</string>
   <string name="reception_failed">خطأ في التلقي</string>
@@ -199,8 +200,10 @@
   <string name="otr_fingerprint">بصمة OTR</string>
   <string name="openpgp_key_id">معرف ID مفتاح ال OpenPGP</string>
   <string name="omemo_fingerprint">بصمة OMEMO</string>
+  <string name="omemo_fingerprint_x509">بصمة v\\OMEMO</string>
   <string name="this_device_omemo_fingerprint">بصمة OMEMO الخاصة بك</string>
   <string name="other_devices">أجهزة أخرى</string>
+  <string name="trust_omemo_fingerprints">ثق في بصمات أوميمو OMEMO</string>
   <string name="done">تم</string>
   <string name="verify">تأكيد</string>
   <string name="decrypt">فك الشيفرة</string>

@@ -176,6 +176,7 @@
   <string name="mgmt_account_delete_confirm_text">Ако обришете ваш налог изгубићете сав историјат преписке</string>
   <string name="attach_record_voice">Сними глас</string>
   <string name="account_settings_jabber_id">Џабер ИД</string>
+  <string name="block_jabber_id">Блокирај Џабер ИД</string>
   <string name="account_settings_password">Лозинка</string>
   <string name="account_settings_example_jabber_id">korisnickoime@primer.com</string>
   <string name="account_settings_confirm_password">Потврди лозинку</string>
@@ -469,6 +470,8 @@
   <string name="disable_account">Искључи налог</string>
   <string name="contact_is_typing">%s куца…</string>
   <string name="contact_has_stopped_typing">%s престаде да куца</string>
+  <string name="contacts_are_typing">%s куцају…</string>
+  <string name="contacts_have_stopped_typing">%s престаше да куцају</string>
   <string name="pref_chat_states">Обавештења о куцању</string>
   <string name="pref_chat_states_summary">Обзнаните контактима када им куцате поруке</string>
   <string name="send_location">Пошаљи локацију</string>
@@ -675,4 +678,23 @@
   <string name="share_as_uri">Подели као ИксМПП УРИ</string>
   <string name="share_as_http">Подели као ХТТП везу</string>
   <string name="invalid_barcode">Неисправан 2Д бар-кôд</string>
+  <string name="pref_clean_cache">Очисти кеш</string>
+  <string name="pref_clean_private_storage">Очисти лично складиште</string>
+  <string name="verify_omemo_keys">Овери ОМЕМО кључеве</string>
+  <string name="show_inactive_devices">Прикажи неактивне уређаје</string>
+  <string name="hide_inactive_devices">Сакриј неактивне уређаје</string>
+  <string name="distrust_omemo_key_text">Желите ли заиста да уклоните оверу за овај уређај?\nПоруке које долазе са тог уређаја ће бити означене као непоуздане.</string>
+  <string name="timeout_24_hours">24 сата</string>
+  <string name="timeout_7_days">7 дана</string>
+  <string name="timeout_30_days">30 дана</string>
+  <string name="timeout_6_months">6 месеци</string>
+  <string name="pref_automatically_delete_messages">Аутоматско брисање порука</string>
+  <string name="pref_automatically_delete_messages_description">Аутоматско брисање порука са овог уређаја које су старије од постављеног времена.</string>
+  <string name="encrypting_message">Шифрујем поруку</string>
+  <string name="transcoding_video_progress">Компресујем видео (%s%% завршено)</string>
+  <string name="corresponding_conversations_closed">Одговарајуће преписке затворене.</string>
+  <string name="contact_blocked_past_tense">Контакт блокиран.</string>
+  <string name="pref_notifications_from_strangers">Обавештења од непознатих</string>
+  <string name="pref_notifications_from_strangers_summary">Обавештења за поруке од непознатих.</string>
+  <string name="received_message_from_stranger">Примљена порука од незнанца</string>
 </resources>
