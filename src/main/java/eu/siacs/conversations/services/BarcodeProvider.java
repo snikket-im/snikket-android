@@ -18,8 +18,9 @@ import android.util.Log;
 
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.EncodeHintType;
-import com.google.zxing.aztec.AztecWriter;
 import com.google.zxing.common.BitMatrix;
+import com.google.zxing.qrcode.QRCodeWriter;
+import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -106,7 +107,7 @@ public class BarcodeProvider extends ContentProvider implements ServiceConnectio
                         if (!file.exists()) {
                             file.getParentFile().mkdirs();
                             file.createNewFile();
-                            Bitmap bitmap = createAztecBitmap(account.getShareableUri(), 1024);
+                            Bitmap bitmap = create2dBarcodeBitmap(account.getShareableUri(), 1024);
                             OutputStream outputStream = new FileOutputStream(file);
                             bitmap.compress(Bitmap.CompressFormat.PNG, 100, outputStream);
                             outputStream.close();
@@ -181,12 +182,12 @@ public class BarcodeProvider extends ContentProvider implements ServiceConnectio
         return Uri.parse("content://" + packageId + AUTHORITY + "/" + account.getJid().toBareJid() + ".png");
     }
 
-    public static Bitmap createAztecBitmap(String input, int size) {
+    public static Bitmap create2dBarcodeBitmap(String input, int size) {
         try {
-            final AztecWriter AZTEC_WRITER = new AztecWriter();
+            final QRCodeWriter barcodeWriter = new QRCodeWriter();
             final Hashtable<EncodeHintType, Object> hints = new Hashtable<>();
-            hints.put(EncodeHintType.ERROR_CORRECTION, 10);
-            final BitMatrix result = AZTEC_WRITER.encode(input, BarcodeFormat.AZTEC, size, size, hints);
+            hints.put(EncodeHintType.ERROR_CORRECTION, ErrorCorrectionLevel.M);
+            final BitMatrix result = barcodeWriter.encode(input, BarcodeFormat.QR_CODE, size, size, hints);
             final int width = result.getWidth();
             final int height = result.getHeight();
             final int[] pixels = new int[width * height];
@@ -200,6 +201,7 @@ public class BarcodeProvider extends ContentProvider implements ServiceConnectio
             bitmap.setPixels(pixels, 0, width, 0, 0, width, height);
             return bitmap;
         } catch (final Exception e) {
+            e.printStackTrace();
             return null;
         }
     }

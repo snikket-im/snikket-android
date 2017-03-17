@@ -52,18 +52,12 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import com.google.zxing.BarcodeFormat;
-import com.google.zxing.EncodeHintType;
-import com.google.zxing.aztec.AztecWriter;
-import com.google.zxing.common.BitMatrix;
-
 import net.java.otr4j.session.SessionID;
 
 import java.io.FileNotFoundException;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Hashtable;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.RejectedExecutionException;
@@ -1059,7 +1053,7 @@ public abstract class XmppActivity extends Activity {
 			Point size = new Point();
 			getWindowManager().getDefaultDisplay().getSize(size);
 			final int width = (size.x < size.y ? size.x : size.y);
-			Bitmap bitmap = BarcodeProvider.createAztecBitmap(uri, width);
+			Bitmap bitmap = BarcodeProvider.create2dBarcodeBitmap(uri, width);
 			ImageView view = new ImageView(this);
 			view.setBackgroundColor(Color.WHITE);
 			view.setImageBitmap(bitmap);
