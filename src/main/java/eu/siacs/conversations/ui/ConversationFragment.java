@@ -345,8 +345,8 @@ public class ConversationFragment extends Fragment implements EditMessage.Keyboa
 					case CANCEL:
 						if (conversation != null) {
 							if(conversation.setCorrectingMessage(null)) {
-								mEditMessage.getEditableText().clear();
-								mEditMessage.getEditableText().append(conversation.getDraftMessage());
+								mEditMessage.setText("");
+								mEditMessage.append(conversation.getDraftMessage());
 								conversation.setDraftMessage(null);
 							} else if (conversation.getMode() == Conversation.MODE_MULTI) {
 								conversation.setNextCounterpart(null);
@@ -829,7 +829,7 @@ public class ConversationFragment extends Fragment implements EditMessage.Keyboa
 		if (conversation.setOutgoingChatState(Config.DEFAULT_CHATSTATE)) {
 			activity.xmppConnectionService.sendChatState(conversation);
 		}
-		this.mEditMessage.getEditableText().clear();
+		this.mEditMessage.setText("");
 		this.conversation.setNextCounterpart(counterpart);
 		updateChatMsgHint();
 		updateSendButton();
@@ -842,8 +842,8 @@ public class ConversationFragment extends Fragment implements EditMessage.Keyboa
 		this.conversation.setCorrectingMessage(message);
 		final Editable editable = mEditMessage.getText();
 		this.conversation.setDraftMessage(editable.toString());
-		this.mEditMessage.getEditableText().clear();
-		this.mEditMessage.getEditableText().append(message.getBody());
+		this.mEditMessage.setText("");
+		this.mEditMessage.append(message.getBody());
 
 	}
 
@@ -1086,10 +1086,9 @@ public class ConversationFragment extends Fragment implements EditMessage.Keyboa
 
 	protected void messageSent() {
 		mSendingPgpMessage.set(false);
-		Editable editable = mEditMessage.getEditableText();
-		editable.clear();
+		mEditMessage.setText("");
 		if (conversation.setCorrectingMessage(null)) {
-			editable.append(conversation.getDraftMessage());
+			mEditMessage.append(conversation.getDraftMessage());
 			conversation.setDraftMessage(null);
 		}
 		updateChatMsgHint();
