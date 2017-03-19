@@ -815,8 +815,6 @@ public class ConversationFragment extends Fragment implements EditMessage.Keyboa
 		Transferable transferable = message.getTransferable();
 		if (transferable != null) {
 			transferable.cancel();
-		} else {
-			activity.xmppConnectionService.markMessage(message, Message.STATUS_SEND_FAILED);
 		}
 	}
 
