@@ -743,4 +743,5 @@
 	<string name="received_message_from_stranger">Received message from stranger</string>
 	<string name="block_stranger">Block stranger</string>
 	<string name="block_entire_domain">Block entire domain</string>
+	<string name="online_right_now">online right now</string>
 </resources>

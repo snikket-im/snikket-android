@@ -48,6 +48,7 @@ import eu.siacs.conversations.services.XmppConnectionService.OnRosterUpdate;
 import eu.siacs.conversations.utils.CryptoHelper;
 import eu.siacs.conversations.utils.UIHelper;
 import eu.siacs.conversations.utils.XmppUri;
+import eu.siacs.conversations.xml.Namespace;
 import eu.siacs.conversations.xmpp.OnKeyStatusUpdated;
 import eu.siacs.conversations.xmpp.OnUpdateBlocklist;
 import eu.siacs.conversations.xmpp.XmppConnection;
@@ -410,7 +411,9 @@ public class ContactDetailsActivity extends OmemoActivity implements OnAccountUp
 			lastseen.setVisibility(View.VISIBLE);
 			lastseen.setText(R.string.contact_blocked);
 		} else {
-			if (showLastSeen && contact.getLastseen() > 0) {
+			if (showLastSeen
+					&& contact.getLastseen() > 0
+					&& contact.getPresences().allOrNonSupport(Namespace.IDLE)) {
 				lastseen.setVisibility(View.VISIBLE);
 				lastseen.setText(UIHelper.lastseen(getApplicationContext(), contact.isActive(), contact.getLastseen()));
 			} else {

@@ -17,6 +17,7 @@ import eu.siacs.conversations.R;
 import eu.siacs.conversations.crypto.axolotl.AxolotlService;
 import eu.siacs.conversations.services.XmppConnectionService;
 import eu.siacs.conversations.utils.PhoneHelper;
+import eu.siacs.conversations.xml.Namespace;
 import eu.siacs.conversations.xmpp.jingle.stanzas.Content;
 
 public abstract class AbstractGenerator {
@@ -117,6 +118,9 @@ public abstract class AbstractGenerator {
 		}
 		if (Config.supportOtr()) {
 			features.addAll(Arrays.asList(OTR));
+		}
+		if (mXmppConnectionService.broadcastLastActivity()) {
+			features.add(Namespace.IDLE);
 		}
 		Collections.sort(features);
 		return features;

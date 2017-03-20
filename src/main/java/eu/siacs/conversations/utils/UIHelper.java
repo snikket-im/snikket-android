@@ -115,8 +115,9 @@ public class UIHelper {
 
 	public static String lastseen(Context context, boolean active, long time) {
 		long difference = (System.currentTimeMillis() - time) / 1000;
-		active = active && difference <= 300;
-		if (active || difference < 60) {
+		if (active) {
+			return context.getString(R.string.online_right_now);
+		} else if (difference < 60) {
 			return context.getString(R.string.last_seen_now);
 		} else if (difference < 60 * 2) {
 			return context.getString(R.string.last_seen_min);

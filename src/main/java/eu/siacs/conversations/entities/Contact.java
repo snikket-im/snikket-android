@@ -528,8 +528,13 @@ public class Contact implements ListItem, Blockable {
 		return this.mActive;
 	}
 
-	public void setLastseen(long timestamp) {
-		this.mLastseen = Math.max(timestamp, mLastseen);
+	public boolean setLastseen(long timestamp) {
+		if (timestamp > this.mLastseen) {
+			this.mLastseen = timestamp;
+			return true;
+		} else {
+			return false;
+		}
 	}
 
 	public long getLastseen() {

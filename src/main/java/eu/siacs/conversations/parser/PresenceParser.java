@@ -19,6 +19,7 @@ import eu.siacs.conversations.generator.IqGenerator;
 import eu.siacs.conversations.generator.PresenceGenerator;
 import eu.siacs.conversations.services.XmppConnectionService;
 import eu.siacs.conversations.xml.Element;
+import eu.siacs.conversations.xml.Namespace;
 import eu.siacs.conversations.xmpp.OnPresencePacketReceived;
 import eu.siacs.conversations.xmpp.jid.Jid;
 import eu.siacs.conversations.xmpp.pep.Avatar;
@@ -211,18 +212,19 @@ public class PresenceParser extends AbstractParser implements
 				mXmppConnectionService.fetchCaps(account, from, presence);
 			}
 
-			final Element idle = packet.findChild("idle","urn:xmpp:idle:1");
+			final Element idle = packet.findChild("idle", Namespace.IDLE);
 			if (idle != null) {
 				contact.flagInactive();
-				String since = idle.getAttribute("since");
+				final String since = idle.getAttribute("since");
 				try {
 					contact.setLastseen(AbstractParser.parseTimestamp(since));
 				} catch (NullPointerException | ParseException e) {
 					contact.setLastseen(System.currentTimeMillis());
 				}
 			} else {
-				contact.flagActive();
-				contact.setLastseen(AbstractParser.parseTimestamp(packet));
+				if (contact.setLastseen(AbstractParser.parseTimestamp(packet))) {
+					contact.flagActive();
+				}
 			}
 
 			PgpEngine pgp = mXmppConnectionService.getPgpEngine();
@@ -235,6 +237,9 @@ public class PresenceParser extends AbstractParser implements
 			boolean online = sizeBefore < contact.getPresences().size();
 			mXmppConnectionService.onContactStatusChanged.onContactStatusChanged(contact, online);
 		} else if (type.equals("unavailable")) {
+			if (contact.setLastseen(AbstractParser.parseTimestamp(packet))) {
+				contact.flagInactive();
+			}
 			if (from.isBareJid()) {
 				contact.clearPresences();
 			} else {
