@@ -1001,6 +1001,7 @@ public class ConversationFragment extends Fragment implements EditMessage.Keyboa
 
 	private void updateSnackBar(final Conversation conversation) {
 		final Account account = conversation.getAccount();
+		final XmppConnection connection = account.getXmppConnection();
 		final int mode = conversation.getMode();
 		final Contact contact = mode == Conversation.MODE_SINGLE ? conversation.getContact() : null;
 		if (account.getStatus() == Account.State.DISABLED) {
@@ -1055,7 +1056,9 @@ public class ConversationFragment extends Fragment implements EditMessage.Keyboa
 				&& (conversation.getOtrSession().getSessionStatus() == SessionStatus.ENCRYPTED)
 				&& (!conversation.isOtrFingerprintVerified())) {
 			showSnackbar(R.string.unknown_otr_fingerprint, R.string.verify, clickToVerify);
-		} else if (conversation.countMessages() != 0
+		} else if (connection != null
+				&& connection.getFeatures().blocking()
+				&& conversation.countMessages() != 0
 				&& !conversation.isBlocked()
 				&& conversation.isWithStranger()) {
 			showSnackbar(R.string.received_message_from_stranger,R.string.block, mBlockClickListener);
