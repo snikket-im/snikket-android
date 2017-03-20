@@ -15,6 +15,7 @@ import android.widget.Toast;
 
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.entities.Blockable;
+import eu.siacs.conversations.entities.Conversation;
 
 public final class BlockContactDialog {
 	public static void show(final XmppActivity xmppActivity,
@@ -37,7 +38,8 @@ public final class BlockContactDialog {
 			value = blockable.getJid().toDomainJid().toString();
 			spannable = new SpannableString(xmppActivity.getString(isBlocked ? R.string.unblock_domain_text : R.string.block_domain_text, value));
 		} else {
-			builder.setTitle(isBlocked ? R.string.action_unblock_contact : R.string.action_block_contact);
+			int resBlockAction = blockable instanceof Conversation && ((Conversation) blockable).isWithStranger() ? R.string.block_stranger : R.string.action_block_contact;
+			builder.setTitle(isBlocked ? R.string.action_unblock_contact : resBlockAction);
 			value = blockable.getJid().toBareJid().toString();
 			spannable = new SpannableString(xmppActivity.getString(isBlocked ? R.string.unblock_contact_text : R.string.block_contact_text, value));
 		}

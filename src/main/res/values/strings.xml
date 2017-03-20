@@ -741,4 +741,6 @@
 	<string name="pref_notifications_from_strangers">Notifications from strangers</string>
 	<string name="pref_notifications_from_strangers_summary">Notify for messages received from strangers.</string>
 	<string name="received_message_from_stranger">Received message from stranger</string>
+	<string name="block_stranger">Block stranger</string>
+	<string name="block_entire_domain">Block entire domain</string>
 </resources>
