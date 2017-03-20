@@ -481,6 +481,8 @@ public class Conversation extends AbstractEntity implements Blockable, Comparabl
 					return getJid().getUnescapedLocalpart();
 				}
 			}
+		} else if (isWithStranger()) {
+			return contactJid.toBareJid().toString();
 		} else {
 			return this.getContact().getDisplayName();
 		}
