@@ -1,5 +1,9 @@
 ###Changelog
 
+####Version 1.17.1
+* Switch Aztec to QR for faster scans
+* Fixed unread counter for image messages
+
 ####Version 1.17.0
 * Do not notify for messages from strangers by default
 * Blocking a JID closes the corresponding conversation
