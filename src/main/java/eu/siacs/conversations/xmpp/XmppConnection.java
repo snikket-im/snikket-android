@@ -581,6 +581,7 @@ public class XmppConnection implements Runnable {
 				final RequestPacket r = new RequestPacket(smVersion);
 				tagWriter.writeStanzaAsync(r);
 			} else if (nextTag.isStart("resumed")) {
+				this.tagWriter.writeStanzaAsync(new RequestPacket(smVersion));
 				lastPacketReceived = SystemClock.elapsedRealtime();
 				final Element resumed = tagReader.readElement(nextTag);
 				final String h = resumed.getAttribute("h");
@@ -860,7 +861,6 @@ public class XmppConnection implements Runnable {
 			this.mSmCatchupMessageCounter.set(0);
 			this.mWaitingForSmCatchup.set(true);
 			this.tagWriter.writeStanzaAsync(resume);
-			this.tagWriter.writeStanzaAsync(new RequestPacket(smVersion));
 		} else if (needsBinding) {
 			if (this.streamFeatures.hasChild("bind")) {
 				sendBindRequest();
