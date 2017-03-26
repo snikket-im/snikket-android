@@ -23,7 +23,7 @@ public final class Jid {
 
 	private static final char[] JID_ESCAPING_CHARS = {' ','"','&','\'','/',':','<','>','@','\\'};
 
-	// It's much more efficient to store the ful JID as well as the parts instead of figuring them
+	// It's much more efficient to store the full JID as well as the parts instead of figuring them
 	// all out every time (since some characters are displayed but aren't used for comparisons).
 	private final String displayjid;
 
