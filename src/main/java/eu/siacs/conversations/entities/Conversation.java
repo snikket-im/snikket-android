@@ -346,7 +346,7 @@ public class Conversation extends AbstractEntity implements Blockable, Comparabl
 
 	public List<Jid> getAcceptedCryptoTargets() {
 		if (mode == MODE_SINGLE) {
-			return Arrays.asList(getJid().toBareJid());
+			return Collections.singletonList(getJid().toBareJid());
 		} else {
 			return getJidListAttribute(ATTRIBUTE_CRYPTO_TARGETS);
 		}
