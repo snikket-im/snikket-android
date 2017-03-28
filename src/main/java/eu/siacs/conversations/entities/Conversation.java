@@ -37,7 +37,6 @@ public class Conversation extends AbstractEntity implements Blockable, Comparabl
 
 	public static final int STATUS_AVAILABLE = 0;
 	public static final int STATUS_ARCHIVED = 1;
-	public static final int STATUS_DELETED = 2;
 
 	public static final int MODE_MULTI = 1;
 	public static final int MODE_SINGLE = 0;
