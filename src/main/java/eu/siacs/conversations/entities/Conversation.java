@@ -2,6 +2,7 @@ package eu.siacs.conversations.entities;
 
 import android.content.ContentValues;
 import android.database.Cursor;
+import android.support.annotation.NonNull;
 
 import net.java.otr4j.OtrException;
 import net.java.otr4j.crypto.OtrCryptoException;
@@ -15,7 +16,6 @@ import org.json.JSONObject;
 
 import java.security.interfaces.DSAPublicKey;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Iterator;
@@ -370,7 +370,7 @@ public class Conversation extends AbstractEntity implements Blockable, Comparabl
 	}
 
 	@Override
-	public int compareTo(Conversation another) {
+	public int compareTo(@NonNull Conversation another) {
 		final Message left = getLatestMessage();
 		final Message right = another.getLatestMessage();
 		if (left.getTimeSent() > right.getTimeSent()) {
