@@ -50,12 +50,14 @@ public class Conversation extends AbstractEntity implements Blockable, Comparabl
 	public static final String MODE = "mode";
 	public static final String ATTRIBUTES = "attributes";
 
-	public static final String ATTRIBUTE_NEXT_ENCRYPTION = "next_encryption";
-	public static final String ATTRIBUTE_MUC_PASSWORD = "muc_password";
 	public static final String ATTRIBUTE_MUTED_TILL = "muted_till";
 	public static final String ATTRIBUTE_ALWAYS_NOTIFY = "always_notify";
-	public static final String ATTRIBUTE_CRYPTO_TARGETS = "crypto_targets";
 	public static final String ATTRIBUTE_LAST_CLEAR_HISTORY = "last_clear_history";
+
+	private static final String ATTRIBUTE_CRYPTO_TARGETS = "crypto_targets";
+
+	private static final String ATTRIBUTE_NEXT_ENCRYPTION = "next_encryption";
+	static final String ATTRIBUTE_MUC_PASSWORD = "muc_password";
 
 	private String draftMessage;
 	private String name;
@@ -870,7 +872,7 @@ public class Conversation extends AbstractEntity implements Blockable, Comparabl
 		}
 	}
 
-	public List<Jid> getJidListAttribute(String key) {
+	private List<Jid> getJidListAttribute(String key) {
 		ArrayList<Jid> list = new ArrayList<>();
 		synchronized (this.attributes) {
 			try {
@@ -889,7 +891,7 @@ public class Conversation extends AbstractEntity implements Blockable, Comparabl
 		return list;
 	}
 
-	public int getIntAttribute(String key, int defaultValue) {
+	private int getIntAttribute(String key, int defaultValue) {
 		String value = this.getAttribute(key);
 		if (value == null) {
 			return defaultValue;
@@ -915,7 +917,7 @@ public class Conversation extends AbstractEntity implements Blockable, Comparabl
 		}
 	}
 
-	public boolean getBooleanAttribute(String key, boolean defaultValue) {
+	private boolean getBooleanAttribute(String key, boolean defaultValue) {
 		String value = this.getAttribute(key);
 		if (value == null) {
 			return defaultValue;
