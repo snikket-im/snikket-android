@@ -42,6 +42,7 @@ import android.os.IBinder;
 import android.os.PowerManager;
 import android.os.SystemClock;
 import android.preference.PreferenceManager;
+import android.support.v4.content.ContextCompat;
 import android.text.InputType;
 import android.util.DisplayMetrics;
 import android.util.Pair;
@@ -379,22 +380,22 @@ public abstract class XmppActivity extends Activity {
 		metrics = getResources().getDisplayMetrics();
 		ExceptionHelper.init(getApplicationContext());
 
-		mPrimaryTextColor = getResources().getColor(R.color.black87);
-		mSecondaryTextColor = getResources().getColor(R.color.black54);
-		mTertiaryTextColor = getResources().getColor(R.color.black12);
-		mColorRed = getResources().getColor(R.color.red800);
-		mColorOrange = getResources().getColor(R.color.orange500);
-		mColorGreen = getResources().getColor(R.color.green500);
-		mPrimaryColor = getResources().getColor(R.color.primary500);
-		mPrimaryBackgroundColor = getResources().getColor(R.color.grey50);
-		mSecondaryBackgroundColor = getResources().getColor(R.color.grey200);
+		mPrimaryTextColor = ContextCompat.getColor(this, R.color.black87);
+		mSecondaryTextColor = ContextCompat.getColor(this, R.color.black54);
+		mTertiaryTextColor = ContextCompat.getColor(this, R.color.black12);
+		mColorRed = ContextCompat.getColor(this, R.color.red800);
+		mColorOrange = ContextCompat.getColor(this, R.color.orange500);
+		mColorGreen = ContextCompat.getColor(this, R.color.green500);
+		mPrimaryColor = ContextCompat.getColor(this, R.color.primary500);
+		mPrimaryBackgroundColor = ContextCompat.getColor(this, R.color.grey50);
+		mSecondaryBackgroundColor = ContextCompat.getColor(this, R.color.grey200);
 
 		if(isDarkTheme()) {
-			mPrimaryTextColor = getResources().getColor(R.color.white);
-			mSecondaryTextColor = getResources().getColor(R.color.white70);
-			mTertiaryTextColor = getResources().getColor(R.color.white12);
-			mPrimaryBackgroundColor = getResources().getColor(R.color.grey800);
-			mSecondaryBackgroundColor = getResources().getColor(R.color.grey900);
+			mPrimaryTextColor = ContextCompat.getColor(this, R.color.white);
+			mSecondaryTextColor = ContextCompat.getColor(this, R.color.white70);
+			mTertiaryTextColor = ContextCompat.getColor(this, R.color.white12);
+			mPrimaryBackgroundColor = ContextCompat.getColor(this, R.color.grey800);
+			mSecondaryBackgroundColor = ContextCompat.getColor(this, R.color.grey900);
 		}
 
 		this.mTheme = findTheme();

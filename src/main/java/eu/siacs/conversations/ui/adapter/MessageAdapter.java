@@ -11,6 +11,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.support.v4.content.ContextCompat;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.SpannableStringBuilder;
@@ -153,9 +154,9 @@ public class MessageAdapter extends ArrayAdapter<Message> implements CopyTextVie
 
 	private int getMessageTextColor(boolean onDark, boolean primary) {
 		if (onDark) {
-			return activity.getResources().getColor(primary ? R.color.white : R.color.white70);
+			return ContextCompat.getColor(activity, primary ? R.color.white : R.color.white70);
 		} else {
-			return activity.getResources().getColor(primary ? R.color.black87 : R.color.black54);
+			return ContextCompat.getColor(activity, primary ? R.color.black87 : R.color.black54);
 		}
 	}
 
@@ -332,7 +333,7 @@ public class MessageAdapter extends ArrayAdapter<Message> implements CopyTextVie
 			body.setSpan(new DividerSpan(false), end, end + 2, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 		}
 		int color = darkBackground ? this.getMessageTextColor(darkBackground, false)
-				: getContext().getResources().getColor(R.color.bubble);
+				: ContextCompat.getColor(activity, R.color.bubble);
 		DisplayMetrics metrics = getContext().getResources().getDisplayMetrics();
 		body.setSpan(new QuoteSpan(color, metrics), start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 		return 0;
@@ -472,7 +473,7 @@ public class MessageAdapter extends ArrayAdapter<Message> implements CopyTextVie
 		}
 		viewHolder.messageBody.setTextColor(this.getMessageTextColor(darkBackground, true));
 		viewHolder.messageBody.setLinkTextColor(this.getMessageTextColor(darkBackground, true));
-		viewHolder.messageBody.setHighlightColor(activity.getResources().getColor(darkBackground
+		viewHolder.messageBody.setHighlightColor(ContextCompat.getColor(activity, darkBackground
 				? (type == SENT || !mUseGreenBackground ? R.color.black26 : R.color.grey800) : R.color.grey500));
 		viewHolder.messageBody.setTypeface(null, Typeface.NORMAL);
 	}

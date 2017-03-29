@@ -14,6 +14,7 @@ import android.os.Bundle;
 import android.provider.Settings;
 import android.security.KeyChain;
 import android.security.KeyChainAliasCallback;
+import android.support.v4.content.ContextCompat;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.Menu;
@@ -922,7 +923,7 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
 			if (ownAxolotlFingerprint != null && Config.supportOmemo()) {
 				this.mAxolotlFingerprintBox.setVisibility(View.VISIBLE);
 				if (ownAxolotlFingerprint.equals(messageFingerprint)) {
-					this.mOwnFingerprintDesc.setTextColor(getResources().getColor(R.color.accent));
+					this.mOwnFingerprintDesc.setTextColor(ContextCompat.getColor(this, R.color.accent));
 				} else {
 					this.mOwnFingerprintDesc.setTextColor(getSecondaryTextColor());
 				}

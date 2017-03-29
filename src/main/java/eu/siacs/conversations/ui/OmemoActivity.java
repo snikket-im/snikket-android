@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.view.ContextMenu;
 import android.view.MenuItem;
 import android.view.View;
@@ -228,7 +229,7 @@ public abstract class OmemoActivity extends XmppActivity {
             keyType.setVisibility(View.GONE);
         }
         if (highlight) {
-            keyType.setTextColor(getResources().getColor(R.color.accent));
+            keyType.setTextColor(ContextCompat.getColor(this, R.color.accent));
             keyType.setText(getString(x509 ? R.string.omemo_fingerprint_x509_selected_message : R.string.omemo_fingerprint_selected_message));
         } else {
             keyType.setText(getString(x509 ? R.string.omemo_fingerprint_x509 : R.string.omemo_fingerprint));
