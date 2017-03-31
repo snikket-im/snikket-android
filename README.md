@@ -345,9 +345,9 @@ Read more about the concept on https://gultsch.de/trust.html
 
 ### What clients do I use on other platforms
 There are XMPP Clients available for all major platforms.
-####Windows / Linux
+#### Windows / Linux
 For your desktop computer we recommend that you use [Gajim](https://gajim.org). You need to install the plugins `OMEMO`, `HTTP Upload` and `URL image preview` to get the best compatibility with Conversations. Plugins can be installed from within the app.
-####iOS
+#### iOS
 Unfortunately we don‘t have a recommendation for iPhones right now. There are two clients available [ChatSecure](https://chatsecure.org/) and [Monal](https://monal.im/). Both with their own pros and cons.
 
 
