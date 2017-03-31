@@ -1487,7 +1487,7 @@ public class ConversationActivity extends XmppActivity
 	}
 
 	private void setNeverAskForBatteryOptimizationsAgain() {
-		getPreferences().edit().putBoolean("show_battery_optimization", false).commit();
+		getPreferences().edit().putBoolean("show_battery_optimization", false).apply();
 	}
 
 	private void openBatteryOptimizationDialogIfNeeded() {
