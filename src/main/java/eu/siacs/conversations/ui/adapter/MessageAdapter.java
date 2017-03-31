@@ -159,7 +159,7 @@ public class MessageAdapter extends ArrayAdapter<Message> implements CopyTextVie
 		}
 	}
 
-	private void displayStatus(ViewHolder viewHolder, Message message, int type, boolean darkBackground, boolean inValidSession) {
+	private void displayStatus(ViewHolder viewHolder, Message message, int type, boolean darkBackground) {
 		String filesize = null;
 		String info = null;
 		boolean error = false;
@@ -182,8 +182,10 @@ public class MessageAdapter extends ArrayAdapter<Message> implements CopyTextVie
 			FileParams params = message.getFileParams();
 			if (params.size > (1.5 * 1024 * 1024)) {
 				filesize = params.size / (1024 * 1024)+ " MiB";
-			} else if (params.size > 0) {
+			} else if (params.size >= 1024) {
 				filesize = params.size / 1024 + " KiB";
+			} else {
+				filesize = params.size + " B";
 			}
 			if (message.getTransferable() != null && message.getTransferable().getStatus() == Transferable.STATUS_FAILED) {
 				error = true;
@@ -803,7 +805,7 @@ public class MessageAdapter extends ArrayAdapter<Message> implements CopyTextVie
 			}
 		}
 
-		displayStatus(viewHolder, message, type, darkBackground, isInValidSession);
+		displayStatus(viewHolder, message, type, darkBackground);
 
 		return view;
 	}
