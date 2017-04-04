@@ -665,16 +665,15 @@ public class Message extends AbstractEntity {
 			}
 			if (!url.getProtocol().equalsIgnoreCase("http") && !url.getProtocol().equalsIgnoreCase("https")) {
 				return Decision.NEVER;
-			} else if (oob) {
+			} else if (oob || encrypted) {
 				return Decision.MUST;
 			}
-			String extension = extractRelevantExtension(url);
-			if (extension == null) {
-				return Decision.NEVER;
-			}
+			final String extension = extractRelevantExtension(url);
 
-			if (encrypted) {
-				return Decision.MUST;
+			if (extension == null
+					|| encryption == Message.ENCRYPTION_OTR
+					|| encryption == Message.ENCRYPTION_AXOLOTL) {
+				return Decision.NEVER;
 			} else if (Transferable.VALID_IMAGE_EXTENSIONS.contains(extension)
 					|| Transferable.WELL_KNOWN_EXTENSIONS.contains(extension)) {
 				return Decision.SHOULD;
