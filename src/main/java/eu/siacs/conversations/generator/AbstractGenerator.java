@@ -29,6 +29,7 @@ public abstract class AbstractGenerator {
 			"urn:xmpp:jingle:transports:ibb:1",
 			"http://jabber.org/protocol/muc",
 			"jabber:x:conference",
+			Namespace.OOB,
 			"http://jabber.org/protocol/caps",
 			"http://jabber.org/protocol/disco#info",
 			"urn:xmpp:avatar:metadata+notify",

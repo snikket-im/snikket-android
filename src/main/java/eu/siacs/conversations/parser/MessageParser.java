@@ -372,8 +372,8 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
 		final Element mucUserElement = packet.findChild("x", "http://jabber.org/protocol/muc#user");
 		final String pgpEncrypted = packet.findChildContent("x", "jabber:x:encrypted");
 		final Element replaceElement = packet.findChild("replace", "urn:xmpp:message-correct:0");
-		final Element oob = packet.findChild("x", "jabber:x:oob");
-		final boolean isOob = oob!= null && body != null && body.equals(oob.findChildContent("url"));
+		final Element oob = packet.findChild("x", Namespace.OOB);
+		final String oobUrl = oob != null ? oob.findChildContent("url") : null;
 		final String replacementId = replaceElement == null ? null : replaceElement.getAttribute("id");
 		final Element axolotlEncrypted = packet.findChild(XmppAxolotlMessage.CONTAINERTAG, AxolotlService.PEP_PREFIX);
 		int status;
@@ -414,7 +414,7 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
 			mXmppConnectionService.updateConversationUi();
 		}
 
-		if ((body != null || pgpEncrypted != null || axolotlEncrypted != null) && !isMucStatusMessage) {
+		if ((body != null || pgpEncrypted != null || axolotlEncrypted != null || oobUrl != null) && !isMucStatusMessage) {
 			Conversation conversation = mXmppConnectionService.findOrCreateConversation(account, counterpart.toBareJid(), isTypeGroupChat, false, query);
 			final boolean conversationMultiMode = conversation.getMode() == Conversation.MODE_MULTI;
 
@@ -458,7 +458,7 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
 					final Jid fallback = conversation.getMucOptions().getTrueCounterpart(counterpart);
 					origin = getTrueCounterpart(query != null ? mucUserElement : null, fallback);
 					if (origin == null) {
-						Log.d(Config.LOGTAG,"axolotl message in non anonymous conference received");
+						Log.d(Config.LOGTAG, "axolotl message in non anonymous conference received");
 						return;
 					}
 				} else {
@@ -471,6 +471,9 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
 				if (conversationMultiMode) {
 					message.setTrueCounterpart(origin);
 				}
+			} else if (body == null && oobUrl != null) {
+				message = new Message(conversation, oobUrl, Message.ENCRYPTION_NONE, status);
+				message.setOob(true);
 			} else {
 				message = new Message(conversation, body, Message.ENCRYPTION_NONE, status);
 			}
@@ -480,7 +483,7 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
 			message.setServerMsgId(serverMsgId);
 			message.setCarbon(isCarbon);
 			message.setTime(timestamp);
-			message.setOob(isOob);
+			message.setOob(body != null && body.equals(oobUrl));
 			message.markable = packet.hasChild("markable", "urn:xmpp:chat-markers:0");
 			if (conversationMultiMode) {
 				final Jid fallback = conversation.getMucOptions().getTrueCounterpart(counterpart);

@@ -10,4 +10,5 @@ public final class Namespace {
 	public static final String MAM = "urn:xmpp:mam:2";
 	public static final String MAM_LEGACY = "urn:xmpp:mam:0";
 	public static final String IDLE = "urn:xmpp:idle:1";
+	public static final String OOB = "jabber:x:oob";
 }
