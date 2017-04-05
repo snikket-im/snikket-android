@@ -61,7 +61,7 @@ public class UnreadCountCustomView extends View {
         float textOffset = canvas.getWidth() / 6.0f;
         textPaint.setTextSize(0.95f * radius);
         canvas.drawCircle(midx, midy, radius * 0.94f, paint);
-        canvas.drawText(String.valueOf(unreadCount), midx, midy + textOffset, textPaint);
+        canvas.drawText(unreadCount > 999 ? "\u221E" : String.valueOf(unreadCount), midx, midy + textOffset, textPaint);
 
     }
 
