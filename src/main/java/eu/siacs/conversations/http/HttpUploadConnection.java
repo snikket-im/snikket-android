@@ -197,27 +197,7 @@ public class HttpUploadConnection implements Transferable {
 					mXmppConnectionService.getFileBackend().updateMediaScanner(file);
 					message.setTransferable(null);
 					message.setCounterpart(message.getConversation().getJid().toBareJid());
-					if (message.getEncryption() == Message.ENCRYPTION_DECRYPTED) {
-						mXmppConnectionService.getPgpEngine().encrypt(message, new UiCallback<Message>() {
-							@Override
-							public void success(Message message) {
-								mXmppConnectionService.resendMessage(message,delayed);
-							}
-
-							@Override
-							public void error(int errorCode, Message object) {
-								Log.d(Config.LOGTAG,"pgp encryption failed");
-								fail("pgp encryption failed");
-							}
-
-							@Override
-							public void userInputRequried(PendingIntent pi, Message object) {
-								fail("pgp encryption failed");
-							}
-						});
-					} else {
-						mXmppConnectionService.resendMessage(message, delayed);
-					}
+					mXmppConnectionService.resendMessage(message, delayed);
 				} else {
 					Log.d(Config.LOGTAG,"http upload failed because response code was "+code);
 					fail("http upload failed because response code was "+code);

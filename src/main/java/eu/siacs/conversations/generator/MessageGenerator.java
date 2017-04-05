@@ -139,16 +139,22 @@ public class MessageGenerator extends AbstractGenerator {
 
 	public MessagePacket generatePgpChat(Message message) {
 		MessagePacket packet = preparePacket(message);
-		if (Config.supportUnencrypted()) {
-			packet.setBody(PGP_FALLBACK_MESSAGE);
+		if (message.hasFileOnRemoteHost()) {
+			final String url = message.getFileParams().url.toString();
+			packet.setBody(url);
+			packet.addChild("x",Namespace.OOB).addChild("url").setContent(url);
+		} else {
+			if (Config.supportUnencrypted()) {
+				packet.setBody(PGP_FALLBACK_MESSAGE);
+			}
+			if (message.getEncryption() == Message.ENCRYPTION_DECRYPTED) {
+				packet.addChild("x", "jabber:x:encrypted").setContent(message.getEncryptedBody());
+			} else if (message.getEncryption() == Message.ENCRYPTION_PGP) {
+				packet.addChild("x", "jabber:x:encrypted").setContent(message.getBody());
+			}
+			packet.addChild("encryption", "urn:xmpp:eme:0")
+					.setAttribute("namespace", "jabber:x:encrypted");
 		}
-		if (message.getEncryption() == Message.ENCRYPTION_DECRYPTED) {
-			packet.addChild("x", "jabber:x:encrypted").setContent(message.getEncryptedBody());
-		} else if (message.getEncryption() == Message.ENCRYPTION_PGP) {
-			packet.addChild("x", "jabber:x:encrypted").setContent(message.getBody());
-		}
-		packet.addChild("encryption","urn:xmpp:eme:0")
-				.setAttribute("namespace","jabber:x:encrypted");
 		return packet;
 	}
 

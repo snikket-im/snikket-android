@@ -185,7 +185,7 @@ public class MessageAdapter extends ArrayAdapter<Message> implements CopyTextVie
 				filesize = params.size / (1024 * 1024)+ " MiB";
 			} else if (params.size >= 1024) {
 				filesize = params.size / 1024 + " KiB";
-			} else {
+			} else if (params.size > 0){
 				filesize = params.size + " B";
 			}
 			if (message.getTransferable() != null && message.getTransferable().getStatus() == Transferable.STATUS_FAILED) {

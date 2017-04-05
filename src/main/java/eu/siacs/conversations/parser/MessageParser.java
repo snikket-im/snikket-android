@@ -415,7 +415,7 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
 		}
 
 		if ((body != null || pgpEncrypted != null || axolotlEncrypted != null || oobUrl != null) && !isMucStatusMessage) {
-			Conversation conversation = mXmppConnectionService.findOrCreateConversation(account, counterpart.toBareJid(), isTypeGroupChat, false, query);
+			final Conversation conversation = mXmppConnectionService.findOrCreateConversation(account, counterpart.toBareJid(), isTypeGroupChat, false, query);
 			final boolean conversationMultiMode = conversation.getMode() == Conversation.MODE_MULTI;
 
 			if (serverMsgId == null) {
@@ -474,6 +474,9 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
 			} else if (body == null && oobUrl != null) {
 				message = new Message(conversation, oobUrl, Message.ENCRYPTION_NONE, status);
 				message.setOob(true);
+				if (CryptoHelper.isPgpEncryptedUrl(oobUrl)) {
+					message.setEncryption(Message.ENCRYPTION_DECRYPTED);
+				}
 			} else {
 				message = new Message(conversation, body, Message.ENCRYPTION_NONE, status);
 			}
@@ -483,7 +486,12 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
 			message.setServerMsgId(serverMsgId);
 			message.setCarbon(isCarbon);
 			message.setTime(timestamp);
-			message.setOob(body != null && body.equals(oobUrl));
+			if (body != null && body.equals(oobUrl)) {
+				message.setOob(true);
+				if (CryptoHelper.isPgpEncryptedUrl(oobUrl)) {
+					message.setEncryption(Message.ENCRYPTION_DECRYPTED);
+				}
+			}
 			message.markable = packet.hasChild("markable", "urn:xmpp:chat-markers:0");
 			if (conversationMultiMode) {
 				final Jid fallback = conversation.getMucOptions().getTrueCounterpart(counterpart);
@@ -624,7 +632,7 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
 				}
 			}
 		} else if (!packet.hasChild("body")){ //no body
-			Conversation conversation = mXmppConnectionService.find(account, from.toBareJid());
+			final Conversation conversation = mXmppConnectionService.find(account, from.toBareJid());
 			if (isTypeGroupChat) {
 				if (packet.hasChild("subject")) {
 					if (conversation != null && conversation.getMode() == Conversation.MODE_MULTI) {

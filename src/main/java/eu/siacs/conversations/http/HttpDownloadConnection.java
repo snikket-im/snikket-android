@@ -100,7 +100,7 @@ public class HttpDownloadConnection implements Transferable {
 					|| this.message.getEncryption() == Message.ENCRYPTION_AXOLOTL)
 					&& this.file.getKey() == null) {
 				this.message.setEncryption(Message.ENCRYPTION_NONE);
-					}
+			}
 			checkFileSize(interactive);
 		} catch (MalformedURLException e) {
 			this.cancel();
