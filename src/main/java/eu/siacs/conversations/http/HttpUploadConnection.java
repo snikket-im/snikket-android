@@ -191,7 +191,7 @@ public class HttpUploadConnection implements Transferable {
 				if (code == 200 || code == 201) {
 					Log.d(Config.LOGTAG, "finished uploading file");
 					if (key != null) {
-						mGetUrl = new URL(mGetUrl.toString() + "#" + CryptoHelper.bytesToHex(key));
+						mGetUrl = CryptoHelper.toAesGcmUrl(new URL(mGetUrl.toString() + "#" + CryptoHelper.bytesToHex(key)));
 					}
 					mXmppConnectionService.getFileBackend().updateFileParams(message, mGetUrl);
 					mXmppConnectionService.getFileBackend().updateMediaScanner(file);
