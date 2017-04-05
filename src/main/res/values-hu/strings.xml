@@ -26,7 +26,7 @@
   <string name="just_now">Éppen most</string>
   <string name="minute_ago">1 perce</string>
   <string name="minutes_ago">%d perce</string>
-  <string name="unread_conversations">Olvasatlan beszélgetések</string>
+  <string name="unread_conversations">olvasatlan beszélgetés</string>
   <string name="sending">küldés...</string>
   <string name="message_decrypting">Üzenet dekódolása. Kérem várjon...</string>
   <string name="pgp_message">OpenPGP kódolású üzenet</string>
@@ -58,7 +58,7 @@
   <string name="unblock">Tiltás vége</string>
   <string name="save">Mentés</string>
   <string name="ok">Rendben</string>
-  <string name="crash_report_title">Conversations összeomlott</string>
+  <string name="crash_report_title">A Conversations összeomlott</string>
   <string name="crash_report_message">Veremkövetések beküldésével segítesz a Conversations folyamatos fejlesztésében\n&lt;b&gt;Figyelem:&lt;/ b&gt; Ez a XMPP fiókodat fogja használni az adatküldéshez.</string>
   <string name="send_now">Elküldi most</string>
   <string name="send_never">Ne kérdezze többször</string>
@@ -79,7 +79,7 @@
   <string name="delete_messages">Üzenetek törlése</string>
   <string name="also_end_conversation">A beszélgetést is fejezze be</string>
   <string name="choose_presence">Eszköz kiválasztása</string>
-  <string name="send_unencrypted_message">Kódolatlan üzenet küldése</string>
+  <string name="send_unencrypted_message">Titkosítatlan üzenetküldés</string>
   <string name="send_message_to_x">Üzenet elküldése %s számára</string>
   <string name="send_otr_message">OTR titkosított üzenet küldése</string>
   <string name="send_omemo_message">OMEMO titkosított üzenetet küldése</string>
@@ -176,7 +176,7 @@
   <string name="account_settings_jabber_id">Jabber ID</string>
   <string name="block_jabber_id">Jabber ID blokkolása</string>
   <string name="account_settings_password">Jelszó</string>
-  <string name="account_settings_example_jabber_id">username@example.com</string>
+  <string name="account_settings_example_jabber_id">felhasznalo@peldaoldal.com</string>
   <string name="account_settings_confirm_password">Erősítsd meg a jelszót</string>
   <string name="password">Jelszó</string>
   <string name="confirm_password">Erősítsd meg a jelszót</string>
@@ -345,7 +345,7 @@
   <string name="remote_fingerprint">Távoli Ujlenyomat</string>
   <string name="scan">beolvas</string>
   <string name="smp_requested">Az ismerős SMP ellenőrzést kért</string>
-  <string name="conversations_foreground_service">Conversations</string>
+  <string name="conversations_foreground_service">Beszélgetések</string>
   <string name="pref_keep_foreground_service">Előtérben futtassa a programot</string>
   <string name="pref_keep_foreground_service_summary">Megakadályozza az operációs rendszert abban, hogy megszakítsa a kapcsolatot a szerverrel a háttérben</string>
   <string name="pref_export_logs">Előzmények mentése</string>
@@ -438,7 +438,7 @@
   <string name="vcard">Névjegy</string>
   <string name="received_x_file">Fogadott fájl: %s</string>
   <string name="disable_foreground_service">Előtérben futó szolgáltatás letiltása</string>
-  <string name="touch_to_open_conversations">Megnyitásához érintse meg a Conversations-t</string>
+  <string name="touch_to_open_conversations">A Conversations megnyitásához érintse meg</string>
   <string name="avatar_has_been_published">A önarckép publikálva lett!</string>
   <string name="sending_x_file">Küldés alatt: %s</string>
   <string name="offering_x_file">Felajánlás alatt: %s</string>

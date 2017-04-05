@@ -333,6 +333,7 @@
   <string name="message_options">Опције поруке</string>
   <string name="copy_text">Копирај текст</string>
   <string name="select_text">Изабери текст</string>
+  <string name="quote">Цитирај</string>
   <string name="copy_original_url">Копирај изворни УРЛ</string>
   <string name="send_again">Пошаљи поново</string>
   <string name="file_url">УРЛ фајла</string>
@@ -666,6 +667,9 @@
   <string name="error_publish_avatar_offline">Морате бити повезани да бисте објавили ваш аватар.</string>
   <string name="show_error_message">Прикажи поруку грешке</string>
   <string name="error_message">Порука грешке</string>
+  <string name="data_saver_enabled">Чувар протока укључен</string>
+  <string name="data_saver_enabled_explained">Ваш оперативни систем ограничава Конверзацији приступ интернету када ради у позадини. Да бисте примали обавештења за нове поруке, треба да дозволите приступ Конверзацији и када је чувар протока укључен.\nКонверзација ће и даље водити рачуна да троши само колико је неопходно.</string>
+  <string name="device_does_not_support_data_saver">Ваш уређај не подржава искључење Чувара протока за Конверзацију.</string>
   <string name="error_unable_to_create_temporary_file">Не могу да направим привремени фајл</string>
   <string name="this_device_has_been_verified">Овај уређај је оверен.</string>
   <string name="copy_fingerprint">Копирај отисак</string>
@@ -677,6 +681,10 @@
   <string name="share_as_barcode">Подели као бар-кôд</string>
   <string name="share_as_uri">Подели као ИксМПП УРИ</string>
   <string name="share_as_http">Подели као ХТТП везу</string>
+  <string name="pref_blind_trust_before_verification">Слепо веруј и пре провере</string>
+  <string name="pref_blind_trust_before_verification_summary">Аутоматски веруј свим новим уређајима особе и који нису раније оверени и питај за ручну потврду сваки пут када проверена особа дода нови уређај.</string>
+  <string name="blindly_trusted_omemo_keys">Слепо веруј ОМЕМО кључевима</string>
+  <string name="not_trusted">Непоуздан</string>
   <string name="invalid_barcode">Неисправан 2Д бар-кôд</string>
   <string name="pref_clean_cache">Очисти кеш</string>
   <string name="pref_clean_private_storage">Очисти лично складиште</string>

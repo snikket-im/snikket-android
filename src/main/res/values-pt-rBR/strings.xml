@@ -471,6 +471,8 @@
   <string name="disable_account">Desabilitar a conta</string>
   <string name="contact_is_typing">%s está digitando...</string>
   <string name="contact_has_stopped_typing">%s parou de digitar</string>
+  <string name="contacts_are_typing">%s estão digitando...</string>
+  <string name="contacts_have_stopped_typing">%s pararam de digitar</string>
   <string name="pref_chat_states">Notificações de digitação</string>
   <string name="pref_chat_states_summary">Permite aos seus usuários saberem quando você está escrevendo mensagens para eles</string>
   <string name="send_location">Enviar localização</string>

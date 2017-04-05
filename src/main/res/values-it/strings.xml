@@ -2,12 +2,12 @@
 <resources>
   <string name="action_settings">Impostazioni</string>
   <string name="action_add">Nuova conversazione</string>
-  <string name="action_accounts">Gestisci utenti</string>
+  <string name="action_accounts">Gestisci account</string>
   <string name="action_end_conversation">Termina questa conversazione</string>
   <string name="action_contact_details">Dettagli del contatto</string>
   <string name="action_muc_details">Dettagli conferenza</string>
   <string name="action_secure">Conversazione sicura</string>
-  <string name="action_add_account">Aggiungi utente</string>
+  <string name="action_add_account">Aggiungi account</string>
   <string name="action_edit_contact">Modifica il nome</string>
   <string name="action_add_phone_book">Aggiungi alla rubrica</string>
   <string name="action_delete_contact">Cancella dalla lista</string>
@@ -15,12 +15,12 @@
   <string name="action_unblock_contact">Sblocca contatto</string>
   <string name="action_block_domain">Blocca dominio</string>
   <string name="action_unblock_domain">Sblocca dominio</string>
-  <string name="title_activity_manage_accounts">Gestisci Utenti</string>
+  <string name="title_activity_manage_accounts">Gestisci account</string>
   <string name="title_activity_settings">Impostazioni</string>
   <string name="title_activity_conference_details">Dettagli conferenza</string>
   <string name="title_activity_contact_details">Dettagli del contatto</string>
   <string name="title_activity_sharewith">Condividi con Conversation</string>
-  <string name="title_activity_start_conversation">Inizia una Conversazione</string>
+  <string name="title_activity_start_conversation">Inizia una conversazione</string>
   <string name="title_activity_choose_contact">Scegli contatto</string>
   <string name="title_activity_block_list">Lista nera</string>
   <string name="just_now">adesso</string>
@@ -46,8 +46,8 @@
   <string name="register_account">Registra un nuovo account sul server</string>
   <string name="change_password_on_server">Cambia la password sul server</string>
   <string name="share_with">Condividi con</string>
-  <string name="start_conversation">Inizia Conversazione</string>
-  <string name="invite_contact">Invita Contatto</string>
+  <string name="start_conversation">Inizia conversazione</string>
+  <string name="invite_contact">Invita contatto</string>
   <string name="contacts">Contatti</string>
   <string name="cancel">Annulla</string>
   <string name="set">Imposta</string>
@@ -74,7 +74,7 @@
   <string name="preparing_images">Preparazione immagini per la trasmissione</string>
   <string name="sharing_files_please_wait">Condivisione file. Attendere prego...</string>
   <string name="action_clear_history">Pulisci la cronologia</string>
-  <string name="clear_conversation_history">Pulisci la cronologia della Conversazione</string>
+  <string name="clear_conversation_history">Pulisci la cronologia della conversazione</string>
   <string name="clear_histor_msg">Vuoi cancellare tutti i messaggi di questa Conversazione?\n\n<b>Attenzione:</b> Questo non influenzerà i messaggi presenti su altri dispositivi o server.</string>
   <string name="delete_messages">Elimina messaggi</string>
   <string name="also_end_conversation">Termina questa conversazione successivamente</string>
@@ -121,9 +121,9 @@
   <string name="pref_advanced_options">Avanzate</string>
   <string name="pref_never_send_crash">Non inviare mai segnalazioni di errore</string>
   <string name="pref_never_send_crash_summary">Se scegli di inviare una segnalazione dell’errore aiuterai lo sviluppo di Conversations</string>
-  <string name="pref_confirm_messages">Conferma Messaggi</string>
+  <string name="pref_confirm_messages">Conferma messaggi</string>
   <string name="pref_confirm_messages_summary">Fai sapere ai tuoi contatti quando hai ricevuto e letto i loro messaggi</string>
-  <string name="pref_ui_options">Interfaccia Utente</string>
+  <string name="pref_ui_options">Interfaccia utente</string>
   <string name="openpgp_error">OpenKeychain ha riportato un errore</string>
   <string name="error_decrypting_file">Errore di I/O nel decifrare il file</string>
   <string name="accept">Accetta</string>
@@ -131,7 +131,7 @@
   <string name="pref_grant_presence_updates">Concedi aggiornamenti della presenza</string>
   <string name="pref_grant_presence_updates_summary">Concedi e richiedi preventivamente le sottoscrizioni sulla presenza ai contatti che hai creato</string>
   <string name="subscriptions">Sottoscrizioni</string>
-  <string name="your_account">Il tuo utente</string>
+  <string name="your_account">Il tuo account</string>
   <string name="keys">Chiavi</string>
   <string name="send_presence_updates">Invia aggiornamenti della presenza</string>
   <string name="receive_presence_updates">Ricevi aggiornamenti della presenza</string>
@@ -187,13 +187,13 @@
   <string name="error_out_of_memory">Memoria esaurita. L’immagine è tropppo grande</string>
   <string name="add_phone_book_text">Vuoi aggiungere %s alla tua rubrica?</string>
   <string name="contact_status_online">online</string>
-  <string name="contact_status_free_to_chat">vuole chattare</string>
+  <string name="contact_status_free_to_chat">disponibile a chattare</string>
   <string name="contact_status_away">assente</string>
   <string name="contact_status_extended_away">assenza prolungata</string>
   <string name="contact_status_do_not_disturb">non disturbare</string>
   <string name="contact_status_offline">offline</string>
   <string name="muc_details_conference">Conferenza</string>
-  <string name="muc_details_other_members">Altri Membri</string>
+  <string name="muc_details_other_members">Altri membri</string>
   <string name="server_info_show_more">Info server</string>
   <string name="server_info_mam">XEP-0313: MAM</string>
   <string name="server_info_carbon_messages">XEP-0280: Message Carbons</string>
@@ -236,10 +236,10 @@
   <string name="decrypt">Decripta</string>
   <string name="conferences">Conferenze</string>
   <string name="search">Cerca</string>
-  <string name="create_contact">Crea Contatto</string>
+  <string name="create_contact">Crea contatto</string>
   <string name="enter_contact">Inserisci contatto</string>
-  <string name="join_conference">Entra in Conferenza</string>
-  <string name="delete_contact">Elimina Contatto</string>
+  <string name="join_conference">Entra in conferenza</string>
+  <string name="delete_contact">Elimina contatto</string>
   <string name="view_contact_details">Mostra dettagli contatto</string>
   <string name="block_contact">Blocca contatto</string>
   <string name="unblock_contact">Sblocca contatto</string>
@@ -248,7 +248,7 @@
   <string name="contact_already_exists">Il contatto esiste già</string>
   <string name="join">Entra</string>
   <string name="conference_address">Indirizzo conferenza</string>
-  <string name="conference_address_example">room@conference.example.com/nick</string>
+  <string name="conference_address_example">stanza@conferenza.esempio.com/nick</string>
   <string name="save_as_bookmark">Salva come segnalibro</string>
   <string name="delete_bookmark">Elimina segnalibro</string>
   <string name="bookmark_already_exists">Questo segnalibro esiste già</string>
@@ -258,7 +258,7 @@
   <string name="joining_conference">Entro in conferenza...</string>
   <string name="leave">Abbandona</string>
   <string name="contact_added_you">Il contatto ti ha aggiunto alla sua lista contatti</string>
-  <string name="add_back">Add back</string>
+  <string name="add_back">Aggiungi anche tu</string>
   <string name="contact_has_read_up_to_this_point">%s ha letto fino a questo punto</string>
   <string name="publish">Pubblica</string>
   <string name="touch_to_choose_picture">Tocca l’avatar per selezionare l’immagine dalla galleria</string>
@@ -276,7 +276,7 @@
   <string name="account_already_exists">Questo utente esiste già</string>
   <string name="next">Successivo</string>
   <string name="server_info_session_established">Sessione corrente stabilita</string>
-  <string name="additional_information">Informazioni Aggiuntive</string>
+  <string name="additional_information">Informazioni aggiuntive</string>
   <string name="skip">Salta</string>
   <string name="disable_notifications">Disabilita le notifiche</string>
   <string name="disable_notifications_for_this_conversation">Disabilita le notifiche per questa conversazione</string>
@@ -287,7 +287,7 @@
   <string name="missing_presence_subscription">Sottoiscrizione alla presenza mancante</string>
   <string name="request_presence_updates">Richiedi gli aggiornamenti della presenza dal tuo contatto.\n\n<small>Questo verrà usato per determinare quali client sta usando il tuo contatto.</small></string>
   <string name="request_now">Rechiedi adesso</string>
-  <string name="delete_fingerprint">Elimina Impronta</string>
+  <string name="delete_fingerprint">Elimina impronta</string>
   <string name="sure_delete_fingerprint">Sei sicuro di voler eliminare questa impronta?</string>
   <string name="ignore">Ignora</string>
   <string name="without_mutual_presence_updates"><b>Attenzione:</b> Inviando questo messaggio senza aggiornamenti della presenza reciproci potrebbe causare problemi inaspettati.\n\n<small>Vai nei dettagli del contatto per verificare le tue sottoscrizioni alla presenza.</small></string>
@@ -302,7 +302,7 @@
   <string name="pref_expert_options_summary">Fai attenzione con queste impostazioni</string>
   <string name="title_activity_about">Info su Conversations</string>
   <string name="pref_about_conversations_summary">Informazioni sulla licenza</string>
-  <string name="title_pref_quiet_hours">Ore di Quiete</string>
+  <string name="title_pref_quiet_hours">Ore di quiete</string>
   <string name="title_pref_quiet_hours_start_time">Orario inizio</string>
   <string name="title_pref_quiet_hours_end_time">Orario fine</string>
   <string name="title_pref_enable_quiet_hours">Abilita ore di quiete</string>
@@ -325,7 +325,7 @@
   <string name="conference_kicked">Sei stato buttato fuori dalla conferenza</string>
   <string name="conference_shutdown">La conferenza è stata chiusa</string>
   <string name="conference_unknown_error">Non sei più in questa conferenza</string>
-  <string name="using_account">usando l’utente %s</string>
+  <string name="using_account">usando l’account %s</string>
   <string name="checking_x">Controllo %s su host HTTP</string>
   <string name="not_connected_try_again">Non sei connesso. Riprova più tardi</string>
   <string name="check_x_filesize">Controllo dimensione %s</string>
@@ -343,13 +343,13 @@
   <string name="image_transmission_failed">Trasmissione dell’immagine fallita</string>
   <string name="scan_qr_code">Scansiona codice a barre 2D</string>
   <string name="show_qr_code">Mostra codice a barre 2D</string>
-  <string name="show_block_list">Mostra la black list</string>
-  <string name="account_details">Dettagli utente</string>
+  <string name="show_block_list">Mostra la lista nera</string>
+  <string name="account_details">Dettagli account</string>
   <string name="verify_otr">Verifica OTR</string>
   <string name="remote_fingerprint">Impronta remota</string>
-  <string name="scan">scan</string>
+  <string name="scan">scansiona</string>
   <string name="smp">Socialist Millionaire Protocol</string>
-  <string name="shared_secret_hint">Suggerimento o Domanda</string>
+  <string name="shared_secret_hint">Suggerimento o domanda</string>
   <string name="shared_secret_secret">Segreto condiviso</string>
   <string name="confirm">Conferma</string>
   <string name="in_progress">In corso</string>
@@ -366,7 +366,7 @@
   <string name="pref_keep_foreground_service_summary">Evita che il sistema operativo chiuda la connessione</string>
   <string name="pref_export_logs">Esporta la cronologia</string>
   <string name="pref_export_logs_summary">Scrivi la cronologia delle conversazioni nella scheda SD</string>
-  <string name="notification_export_logs_title">Scrittura log su card SD</string>
+  <string name="notification_export_logs_title">Scrittura log su scheda SD</string>
   <string name="choose_file">Scegli file</string>
   <string name="receiving_x_file">Ricezione di %1$s file (%2$d%% completato)</string>
   <string name="download_x_file">Scarica %s</string>
@@ -417,10 +417,10 @@
   <string name="current_password">Password attuale</string>
   <string name="new_password">Nuova password</string>
   <string name="password_should_not_be_empty">La password non dovrebbe essere vuota</string>
-  <string name="enable_all_accounts">Abilita tutti gli utenti</string>
-  <string name="disable_all_accounts">Disabilita tutti gli utenti</string>
-  <string name="perform_action_with">Perform action with</string>
-  <string name="no_affiliation">No affiliazione</string>
+  <string name="enable_all_accounts">Abilita tutti gli account</string>
+  <string name="disable_all_accounts">Disabilita tutti gli account</string>
+  <string name="perform_action_with">Esegui azione con</string>
+  <string name="no_affiliation">Nessuna affiliazione</string>
   <string name="no_role">Offline</string>
   <string name="outcast">Emarginato</string>
   <string name="member">Membro</string>
@@ -462,11 +462,11 @@
   <string name="apk">Applicazione Android</string>
   <string name="vcard">Contatto</string>
   <string name="received_x_file">Ricevuto %s</string>
-  <string name="disable_foreground_service">Disabilita i servizi in background</string>
+  <string name="disable_foreground_service">Disabilita servizio in primo piano</string>
   <string name="touch_to_open_conversations">Tocca per avviare Conversations</string>
   <string name="avatar_has_been_published">Il tuo avatar è stato pubblicato!</string>
   <string name="sending_x_file">Invio %s</string>
-  <string name="offering_x_file">Inviando %s</string>
+  <string name="offering_x_file">Offrendo %s</string>
   <string name="hide_offline">Nascondi i contatti offline</string>
   <string name="disable_account">Disabilita l\'account</string>
   <string name="contact_is_typing">%s sta digitando...</string>
@@ -499,7 +499,7 @@
     <item quantity="other">Selezionati %d contatti</item>
   </plurals>
   <string name="pref_quick_action_summary">Sostituisci il tasto invio con un\'azione rapida</string>
-  <string name="pref_quick_action">Azione Rapida</string>
+  <string name="pref_quick_action">Azione rapida</string>
   <string name="none">Nessuno</string>
   <string name="recently_used">Usati recentemente</string>
   <string name="choose_quick_action">Scegli azione rapida</string>
@@ -538,7 +538,7 @@
   <string name="server_side_mam_prefs">Preferenze di archiviazione lato server</string>
   <string name="fetching_mam_prefs">Raccolta preferenze di archiviazione. Attendere prego...</string>
   <string name="unable_to_fetch_mam_prefs">Impossibile raccogliere le preferenze di archiviazione</string>
-  <string name="captcha_required">Captcha richiest</string>
+  <string name="captcha_required">Captcha richiesto</string>
   <string name="captcha_hint">Inserisci il testo dell\'immagine soprastante</string>
   <string name="certificate_chain_is_not_trusted">Catena di certificati non affidabile</string>
   <string name="jid_does_not_match_certificate">L\'ID Jabber non corrisponde al certificato</string>
@@ -609,7 +609,7 @@
   <string name="change_presence">Cambia la presenza</string>
   <string name="status_message">Messaggio di stato</string>
   <string name="all_accounts_on_this_device">Imposta per tutti gli account del dispositivo</string>
-  <string name="presence_chat">Libero di chattare</string>
+  <string name="presence_chat">Disponibile a chattare</string>
   <string name="presence_online">Online</string>
   <string name="presence_away">Assente</string>
   <string name="presence_xa">Non disponibile</string>
