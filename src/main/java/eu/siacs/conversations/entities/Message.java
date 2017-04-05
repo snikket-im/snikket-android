@@ -492,8 +492,8 @@ public class Message extends AbstractEntity {
 						this.getBody().length() + message.getBody().length() <= Config.MAX_DISPLAY_MESSAGE_CHARS &&
 						!GeoHelper.isGeoUri(message.getBody()) &&
 						!GeoHelper.isGeoUri(this.body) &&
-						message.treatAsDownloadable() == Decision.NEVER &&
-						this.treatAsDownloadable() == Decision.NEVER &&
+						!message.treatAsDownloadable() &&
+						!this.treatAsDownloadable() &&
 						!message.getBody().startsWith(ME_COMMAND) &&
 						!this.getBody().startsWith(ME_COMMAND) &&
 						!this.bodyIsHeart() &&
@@ -603,12 +603,6 @@ public class Message extends AbstractEntity {
 		this.oob = isOob;
 	}
 
-	public enum Decision {
-		MUST,
-		SHOULD,
-		NEVER,
-	}
-
 	private static String extractRelevantExtension(URL url) {
 		String path = url.getPath();
 		return extractRelevantExtension(path);
@@ -651,38 +645,20 @@ public class Message extends AbstractEntity {
 		}
 	}
 
-	public Decision treatAsDownloadable() {
+	public boolean treatAsDownloadable() {
 		if (body.trim().contains(" ")) {
-			return Decision.NEVER;
+			return false;
 		}
 		try {
-			URL url = new URL(body);
-			String ref = url.getRef();
+			final URL url = new URL(body);
+			final String ref = url.getRef();
 			final String protocol = url.getProtocol();
 			final boolean encrypted = ref != null && ref.matches("([A-Fa-f0-9]{2}){48}");
-			if (AesGcmURLStreamHandler.PROTOCOL_NAME.equalsIgnoreCase(protocol) && encrypted) {
-				return Decision.MUST;
-			}
-			if (!url.getProtocol().equalsIgnoreCase("http") && !url.getProtocol().equalsIgnoreCase("https")) {
-				return Decision.NEVER;
-			} else if (oob || encrypted) {
-				return Decision.MUST;
-			}
-			final String extension = extractRelevantExtension(url);
-
-			if (extension == null
-					|| encryption == Message.ENCRYPTION_OTR
-					|| encryption == Message.ENCRYPTION_AXOLOTL) {
-				return Decision.NEVER;
-			} else if (Transferable.VALID_IMAGE_EXTENSIONS.contains(extension)
-					|| Transferable.WELL_KNOWN_EXTENSIONS.contains(extension)) {
-				return Decision.SHOULD;
-			} else {
-				return Decision.NEVER;
-			}
+			return (AesGcmURLStreamHandler.PROTOCOL_NAME.equalsIgnoreCase(protocol) && encrypted)
+					|| ((protocol.equalsIgnoreCase("http") || protocol.equalsIgnoreCase("https")) && (oob || encrypted));
 
 		} catch (MalformedURLException e) {
-			return Decision.NEVER;
+			return false;
 		}
 	}
 

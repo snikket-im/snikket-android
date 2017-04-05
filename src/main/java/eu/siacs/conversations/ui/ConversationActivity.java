@@ -665,7 +665,7 @@ public class ConversationActivity extends XmppActivity
 			if (!transferable.start()) {
 				Toast.makeText(this, R.string.not_connected_try_again, Toast.LENGTH_SHORT).show();
 			}
-		} else if (message.treatAsDownloadable() != Message.Decision.NEVER) {
+		} else if (message.treatAsDownloadable()) {
 			xmppConnectionService.getHttpConnectionManager().createNewDownloadConnection(message, true);
 		}
 	}

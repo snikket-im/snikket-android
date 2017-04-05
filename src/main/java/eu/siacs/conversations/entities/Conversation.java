@@ -167,7 +167,7 @@ public class Conversation extends AbstractEntity implements Blockable, Comparabl
 			for (final Message message : this.messages) {
 				if (message.getUuid().equals(uuid)
 						&& message.getEncryption() != Message.ENCRYPTION_PGP
-						&& (message.getType() == Message.TYPE_IMAGE || message.getType() == Message.TYPE_FILE || message.treatAsDownloadable() != Message.Decision.NEVER)) {
+						&& (message.getType() == Message.TYPE_IMAGE || message.getType() == Message.TYPE_FILE || message.treatAsDownloadable())) {
 					return message;
 				}
 			}

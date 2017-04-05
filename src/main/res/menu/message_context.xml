@@ -34,10 +34,6 @@
         android:title="@string/send_again"
         android:visible="false"/>
     <item
-        android:id="@+id/download_file"
-        android:title="@string/download_x_file"
-        android:visible="false"/>
-    <item
         android:id="@+id/cancel_transmission"
         android:title="@string/cancel_transmission"
         android:visible="false"/>

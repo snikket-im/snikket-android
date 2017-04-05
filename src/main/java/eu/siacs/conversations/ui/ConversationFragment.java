@@ -609,13 +609,12 @@ public class ConversationFragment extends Fragment implements EditMessage.Keyboa
 			MenuItem shareWith = menu.findItem(R.id.share_with);
 			MenuItem sendAgain = menu.findItem(R.id.send_again);
 			MenuItem copyUrl = menu.findItem(R.id.copy_url);
-			MenuItem downloadFile = menu.findItem(R.id.download_file);
 			MenuItem cancelTransmission = menu.findItem(R.id.cancel_transmission);
 			MenuItem deleteFile = menu.findItem(R.id.delete_file);
 			MenuItem showErrorMessage = menu.findItem(R.id.show_error_message);
 			if (!treatAsFile
 					&& !GeoHelper.isGeoUri(m.getBody())
-					&& m.treatAsDownloadable() != Message.Decision.MUST) {
+					&& !m.treatAsDownloadable()) {
 				copyText.setVisible(true);
 				selectText.setVisible(ListSelectionManager.isSupported());
 			}
@@ -635,14 +634,9 @@ public class ConversationFragment extends Fragment implements EditMessage.Keyboa
 			}
 			if (m.hasFileOnRemoteHost()
 					|| GeoHelper.isGeoUri(m.getBody())
-					|| m.treatAsDownloadable() == Message.Decision.MUST
+					|| m.treatAsDownloadable()
 					|| (t != null && t instanceof HttpDownloadConnection)) {
 				copyUrl.setVisible(true);
-			}
-			if ((m.getType() == Message.TYPE_TEXT && t == null && m.treatAsDownloadable() != Message.Decision.NEVER)
-					|| (m.isFileOrImage() && t instanceof TransferablePlaceholder && m.hasFileOnRemoteHost())){
-				downloadFile.setVisible(true);
-				downloadFile.setTitle(activity.getString(R.string.download_x_file,UIHelper.getFileDescriptionString(activity, m)));
 			}
 			boolean waitingOfferedSending = m.getStatus() == Message.STATUS_WAITING
 					|| m.getStatus() == Message.STATUS_UNSEND
@@ -683,9 +677,6 @@ public class ConversationFragment extends Fragment implements EditMessage.Keyboa
 				return true;
 			case R.id.copy_url:
 				copyUrl(selectedMessage);
-				return true;
-			case R.id.download_file:
-				downloadFile(selectedMessage);
 				return true;
 			case R.id.cancel_transmission:
 				cancelTransmission(selectedMessage);
@@ -806,11 +797,6 @@ public class ConversationFragment extends Fragment implements EditMessage.Keyboa
 			Toast.makeText(activity, R.string.url_copied_to_clipboard,
 					Toast.LENGTH_SHORT).show();
 		}
-	}
-
-	private void downloadFile(Message message) {
-		activity.xmppConnectionService.getHttpConnectionManager()
-				.createNewDownloadConnection(message,true);
 	}
 
 	private void cancelTransmission(Message message) {

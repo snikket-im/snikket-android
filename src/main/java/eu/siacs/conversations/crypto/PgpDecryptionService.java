@@ -123,7 +123,7 @@ public class PgpDecryptionService {
                             message.setEncryption(Message.ENCRYPTION_DECRYPTED);
                             final HttpConnectionManager manager = mXmppConnectionService.getHttpConnectionManager();
                             if (message.trusted()
-                                    && message.treatAsDownloadable() != Message.Decision.NEVER
+                                    && message.treatAsDownloadable()
                                     && manager.getAutoAcceptFileSize() > 0) {
                                 manager.createNewDownloadConnection(message);
                             }
