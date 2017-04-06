@@ -708,4 +708,7 @@
   <string name="pref_notifications_from_strangers">Benachrichtigungen von Unbekannten</string>
   <string name="pref_notifications_from_strangers_summary">Benachrichtigen bei Erhalt einer neuen Nachricht von Unbekannten.</string>
   <string name="received_message_from_stranger">Erhaltene Nachricht von einem Unbekannten</string>
+  <string name="block_stranger">Unbekannten sperren</string>
+  <string name="block_entire_domain">Gesamte Domain sperren</string>
+  <string name="online_right_now">aktuell online</string>
 </resources>
