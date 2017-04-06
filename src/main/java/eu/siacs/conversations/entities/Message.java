@@ -655,7 +655,7 @@ public class Message extends AbstractEntity {
 			final String protocol = url.getProtocol();
 			final boolean encrypted = ref != null && ref.matches("([A-Fa-f0-9]{2}){48}");
 			return (AesGcmURLStreamHandler.PROTOCOL_NAME.equalsIgnoreCase(protocol) && encrypted)
-					|| ((protocol.equalsIgnoreCase("http") || protocol.equalsIgnoreCase("https")) && (oob || encrypted));
+					|| (("http".equalsIgnoreCase(protocol) || "https".equalsIgnoreCase(protocol)) && (oob || encrypted));
 
 		} catch (MalformedURLException e) {
 			return false;
