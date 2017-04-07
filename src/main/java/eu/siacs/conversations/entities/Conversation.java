@@ -289,6 +289,17 @@ public class Conversation extends AbstractEntity implements Blockable, Comparabl
 		return null;
 	}
 
+	public boolean hasMessageWithCounterpart(Jid counterpart) {
+		synchronized (this.messages) {
+			for(Message message : this.messages) {
+				if (counterpart.equals(message.getCounterpart())) {
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+
 	public void populateWithMessages(final List<Message> messages) {
 		synchronized (this.messages) {
 			messages.clear();

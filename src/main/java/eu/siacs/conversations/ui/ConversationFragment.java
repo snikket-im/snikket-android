@@ -43,8 +43,11 @@ import android.widget.Toast;
 import net.java.otr4j.session.SessionStatus;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -71,6 +74,7 @@ import eu.siacs.conversations.ui.adapter.MessageAdapter.OnContactPictureClicked;
 import eu.siacs.conversations.ui.adapter.MessageAdapter.OnContactPictureLongClicked;
 import eu.siacs.conversations.ui.widget.ListSelectionManager;
 import eu.siacs.conversations.utils.GeoHelper;
+import eu.siacs.conversations.utils.NickValidityChecker;
 import eu.siacs.conversations.utils.UIHelper;
 import eu.siacs.conversations.xmpp.XmppConnection;
 import eu.siacs.conversations.xmpp.chatstate.ChatState;
@@ -845,12 +849,14 @@ public class ConversationFragment extends Fragment implements EditMessage.Keyboa
 				editable.insert(pos, nick + ": ");
 			} else {
 				if (pos > 2 && editable.subSequence(pos-2,pos).toString().equals(": ")) {
-					editable.insert(pos-2,", "+nick);
-				} else {
-					editable.insert(pos, (Character.isWhitespace(before) ? "" : " ") + nick + (Character.isWhitespace(after) ? "" : " "));
-					if (Character.isWhitespace(after)) {
-						mEditMessage.setSelection(mEditMessage.getSelectionStart() + 1);
+					if (NickValidityChecker.check(conversation,Arrays.asList(editable.subSequence(0,pos-2).toString().split(", ")))) {
+						editable.insert(pos - 2, ", " + nick);
+						return;
 					}
+				}
+				editable.insert(pos, (Character.isWhitespace(before) ? "" : " ") + nick + (Character.isWhitespace(after) ? "" : " "));
+				if (Character.isWhitespace(after)) {
+					mEditMessage.setSelection(mEditMessage.getSelectionStart() + 1);
 				}
 			}
 		}
