@@ -94,7 +94,7 @@ public class MessageAdapter extends ArrayAdapter<Message> implements CopyTextVie
 	private static final Linkify.MatchFilter WEBURL_MATCH_FILTER = new Linkify.MatchFilter() {
 		@Override
 		public boolean acceptMatch(CharSequence cs, int start, int end) {
-			return start < 1 || (cs.charAt(start-1) != '@' && !cs.subSequence(Math.max(0,start - 3),start).equals("://"));
+			return start < 1 || (cs.charAt(start-1) != '@' && cs.charAt(start-1) != '.' && !cs.subSequence(Math.max(0,start - 3),start).equals("://"));
 		}
 	};
 
