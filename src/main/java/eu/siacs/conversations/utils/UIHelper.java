@@ -231,7 +231,8 @@ public class UIHelper {
 
 	public static boolean isPositionFollowedByQuoteableCharacter(CharSequence body, int pos) {
 		return !isPositionFollowedByNumber(body, pos)
-				&& !isPositionFollowedByEmoticon(body,pos);
+				&& !isPositionFollowedByEmoticon(body,pos)
+				&& !isPositionFollowedByEquals(body,pos);
 	}
 
 	private static boolean isPositionFollowedByNumber(CharSequence body, int pos) {
@@ -247,6 +248,10 @@ public class UIHelper {
 			}
 		}
 		return previousWasNumber;
+	}
+
+	private static boolean isPositionFollowedByEquals(CharSequence body, int pos) {
+		return body.length() > pos + 1 && body.charAt(pos+1) == '=';
 	}
 
 	private static boolean isPositionFollowedByEmoticon(CharSequence body, int pos) {
