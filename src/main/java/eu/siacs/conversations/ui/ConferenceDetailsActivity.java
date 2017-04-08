@@ -305,7 +305,7 @@ public class ConferenceDetailsActivity extends XmppActivity implements OnConvers
 			case R.id.action_advanced_mode:
 				this.mAdvancedMode = !menuItem.isChecked();
 				menuItem.setChecked(this.mAdvancedMode);
-				getPreferences().edit().putBoolean("advanced_muc_mode", mAdvancedMode).commit();
+				getPreferences().edit().putBoolean("advanced_muc_mode", mAdvancedMode).apply();
 				mConferenceInfoTable.setVisibility(this.mAdvancedMode ? View.VISIBLE : View.GONE);
 				invalidateOptionsMenu();
 				updateView();

@@ -19,7 +19,7 @@ import eu.siacs.conversations.xmpp.OnUpdateBlocklist;
 import eu.siacs.conversations.xmpp.jid.Jid;
 
 public class BlocklistActivity extends AbstractSearchableListItemActivity implements OnUpdateBlocklist {
-	private List<String> mKnownHosts = new ArrayList<String>();
+	private List<String> mKnownHosts = new ArrayList<>();
 
 	private Account account = null;
 
