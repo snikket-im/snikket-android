@@ -42,7 +42,7 @@ public abstract class OmemoActivity extends XmppActivity {
         super.onCreateContextMenu(menu,v,menuInfo);
         Object account = v.getTag(R.id.TAG_ACCOUNT);
         Object fingerprint = v.getTag(R.id.TAG_FINGERPRINT);
-        Object fingerprintStatus = v.getTag(R.id.TAG_FINGERPRINT_STATUS);;
+        Object fingerprintStatus = v.getTag(R.id.TAG_FINGERPRINT_STATUS);
         if (account != null
                 && fingerprint != null
                 && account instanceof Account
