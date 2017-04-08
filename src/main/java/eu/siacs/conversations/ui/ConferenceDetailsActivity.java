@@ -637,12 +637,8 @@ public class ConferenceDetailsActivity extends XmppActivity implements OnConvers
 
 	private String getStatus(User user) {
 		if (mAdvancedMode) {
-			StringBuilder builder = new StringBuilder();
-			builder.append(getString(user.getAffiliation().getResId()));
-			builder.append(" (");
-			builder.append(getString(user.getRole().getResId()));
-			builder.append(')');
-			return builder.toString();
+			return getString(user.getAffiliation().getResId()) +
+					" (" + getString(user.getRole().getResId()) + ')';
 		} else {
 			return getString(user.getAffiliation().getResId());
 		}
