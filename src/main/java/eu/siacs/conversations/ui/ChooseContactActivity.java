@@ -29,7 +29,7 @@ import eu.siacs.conversations.entities.ListItem;
 import eu.siacs.conversations.xmpp.jid.Jid;
 
 public class ChooseContactActivity extends AbstractSearchableListItemActivity {
-	private List<String> mActivatedAccounts = new ArrayList<String>();
+	private List<String> mActivatedAccounts = new ArrayList<>();
 	private List<String> mKnownHosts;
 
 	private Set<Contact> selected;
@@ -61,7 +61,7 @@ public class ChooseContactActivity extends AbstractSearchableListItemActivity {
 							InputMethodManager.HIDE_IMPLICIT_ONLY);
 					MenuInflater inflater = getMenuInflater();
 					inflater.inflate(R.menu.select_multiple, menu);
-					selected = new HashSet<Contact>();
+					selected = new HashSet<>();
 					return true;
 				}
 

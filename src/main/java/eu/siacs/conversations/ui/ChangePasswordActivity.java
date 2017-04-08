@@ -11,8 +11,6 @@ import android.widget.Toast;
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.services.XmppConnectionService;
-import eu.siacs.conversations.xmpp.jid.InvalidJidException;
-import eu.siacs.conversations.xmpp.jid.Jid;
 
 public class ChangePasswordActivity extends XmppActivity implements XmppConnectionService.OnAccountPasswordChanged {
 
