@@ -55,8 +55,6 @@ public class ConferenceDetailsActivity extends XmppActivity implements OnConvers
 	};
 	private TextView mYourNick;
 	private ImageView mYourPhoto;
-	private ImageButton mEditNickButton;
-	private TextView mRoleAffiliaton;
 	private TextView mFullJid;
 	private TextView mAccountJid;
 	private LinearLayout membersView;
@@ -232,7 +230,7 @@ public class ConferenceDetailsActivity extends XmppActivity implements OnConvers
 		setContentView(R.layout.activity_muc_details);
 		mYourNick = (TextView) findViewById(R.id.muc_your_nick);
 		mYourPhoto = (ImageView) findViewById(R.id.your_photo);
-		mEditNickButton = (ImageButton) findViewById(R.id.edit_nick_button);
+		ImageButton mEditNickButton = (ImageButton) findViewById(R.id.edit_nick_button);
 		mFullJid = (TextView) findViewById(R.id.muc_jabberid);
 		membersView = (LinearLayout) findViewById(R.id.muc_members);
 		mAccountJid = (TextView) findViewById(R.id.details_account);
@@ -534,7 +532,7 @@ public class ConferenceDetailsActivity extends XmppActivity implements OnConvers
 		setTitle(mConversation.getName());
 		mFullJid.setText(mConversation.getJid().toBareJid().toString());
 		mYourNick.setText(mucOptions.getActualNick());
-		mRoleAffiliaton = (TextView) findViewById(R.id.muc_role);
+		TextView mRoleAffiliaton = (TextView) findViewById(R.id.muc_role);
 		if (mucOptions.online()) {
 			mMoreDetails.setVisibility(View.VISIBLE);
 			final String status = getStatus(self);
