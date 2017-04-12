@@ -100,7 +100,7 @@ public class ExceptionHelper {
 							Conversation conversation = null;
 							try {
 								conversation = service.findOrCreateConversation(finalAccount,
-										Jid.fromString(Config.BUG_REPORTS), false);
+										Jid.fromString(Config.BUG_REPORTS), false, true);
 							} catch (final InvalidJidException ignored) {
 							}
 							Message message = new Message(conversation, report

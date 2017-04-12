@@ -316,7 +316,7 @@ public class StartConversationActivity extends XmppActivity implements OnRosterU
     protected void openConversationForContact(Contact contact) {
         Conversation conversation = xmppConnectionService
                 .findOrCreateConversation(contact.getAccount(),
-                        contact.getJid(), false);
+                        contact.getJid(), false, true);
         switchToConversation(conversation);
     }
 
@@ -357,7 +357,7 @@ public class StartConversationActivity extends XmppActivity implements OnRosterU
             Toast.makeText(this, R.string.invalid_jid, Toast.LENGTH_SHORT).show();
             return;
         }
-        Conversation conversation = xmppConnectionService.findOrCreateConversation(bookmark.getAccount(), jid, true, true);
+        Conversation conversation = xmppConnectionService.findOrCreateConversation(bookmark.getAccount(), jid, true, true, true);
         conversation.setBookmark(bookmark);
         if (!bookmark.autojoin() && getPreferences().getBoolean("autojoin", true)) {
             bookmark.setAutojoin(true);
@@ -513,7 +513,7 @@ public class StartConversationActivity extends XmppActivity implements OnRosterU
                                 account.getBookmarks().add(bookmark);
                                 xmppConnectionService.pushBookmarks(account);
                                 final Conversation conversation = xmppConnectionService
-                                        .findOrCreateConversation(account, conferenceJid, true, true);
+                                        .findOrCreateConversation(account, conferenceJid, true, true, true);
                                 conversation.setBookmark(bookmark);
                                 dialog.dismiss();
                                 mCurrentDialog = null;
@@ -521,7 +521,7 @@ public class StartConversationActivity extends XmppActivity implements OnRosterU
                             }
                         } else {
                             final Conversation conversation = xmppConnectionService
-                                    .findOrCreateConversation(account,conferenceJid, true, true);
+                                    .findOrCreateConversation(account,conferenceJid, true, true, true);
                             dialog.dismiss();
                             mCurrentDialog = null;
                             switchToConversation(conversation);
@@ -582,7 +582,7 @@ public class StartConversationActivity extends XmppActivity implements OnRosterU
     protected void switchToConversation(Contact contact, String body) {
         Conversation conversation = xmppConnectionService
                 .findOrCreateConversation(contact.getAccount(),
-                        contact.getJid(),false);
+                        contact.getJid(),false,true);
         switchToConversation(conversation, body, false);
     }
 

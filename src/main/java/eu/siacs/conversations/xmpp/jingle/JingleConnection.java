@@ -313,7 +313,7 @@ public class JingleConnection implements Transferable {
 		this.mJingleStatus = JINGLE_STATUS_INITIATED;
 		Conversation conversation = this.mXmppConnectionService
 				.findOrCreateConversation(account,
-						packet.getFrom().toBareJid(), false);
+						packet.getFrom().toBareJid(), false, false);
 		this.message = new Message(conversation, "", Message.ENCRYPTION_NONE);
 		this.message.setStatus(Message.STATUS_RECEIVED);
 		this.mStatus = Transferable.STATUS_OFFER;

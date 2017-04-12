@@ -192,7 +192,7 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
 
 		public boolean execute(Account account) {
 			if (jid != null) {
-				Conversation conversation = mXmppConnectionService.findOrCreateConversation(account, jid, true);
+				Conversation conversation = mXmppConnectionService.findOrCreateConversation(account, jid, true, false);
 				if (!conversation.getMucOptions().online()) {
 					conversation.getMucOptions().setPassword(password);
 					mXmppConnectionService.databaseBackend.updateConversation(conversation);
@@ -415,7 +415,7 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
 		}
 
 		if ((body != null || pgpEncrypted != null || axolotlEncrypted != null || oobUrl != null) && !isMucStatusMessage) {
-			final Conversation conversation = mXmppConnectionService.findOrCreateConversation(account, counterpart.toBareJid(), isTypeGroupChat, false, query);
+			final Conversation conversation = mXmppConnectionService.findOrCreateConversation(account, counterpart.toBareJid(), isTypeGroupChat, false, query, false);
 			final boolean conversationMultiMode = conversation.getMode() == Conversation.MODE_MULTI;
 
 			if (serverMsgId == null) {

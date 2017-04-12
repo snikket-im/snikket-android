@@ -253,7 +253,7 @@ public class PresenceParser extends AbstractParser implements
 			} else {
 				contact.setOption(Contact.Options.PENDING_SUBSCRIPTION_REQUEST);
 				final Conversation conversation = mXmppConnectionService.findOrCreateConversation(
-						account, contact.getJid().toBareJid(), false);
+						account, contact.getJid().toBareJid(), false, false);
 				final String statusMessage = packet.findChildContent("status");
 				if (statusMessage != null
 						&& !statusMessage.isEmpty()
