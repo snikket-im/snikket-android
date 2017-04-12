@@ -2,9 +2,6 @@ package eu.siacs.conversations.utils;
 
 import android.content.Context;
 
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.io.Writer;
