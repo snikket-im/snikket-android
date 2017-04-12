@@ -2,9 +2,7 @@ package eu.siacs.conversations.crypto.axolotl;
 
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.util.Log;
 
-import org.bouncycastle.math.ec.PreCompInfo;
 import org.whispersystems.libaxolotl.AxolotlAddress;
 import org.whispersystems.libaxolotl.DuplicateMessageException;
 import org.whispersystems.libaxolotl.IdentityKey;
@@ -21,9 +19,7 @@ import org.whispersystems.libaxolotl.protocol.PreKeyWhisperMessage;
 import org.whispersystems.libaxolotl.protocol.WhisperMessage;
 import org.whispersystems.libaxolotl.util.guava.Optional;
 
-import eu.siacs.conversations.Config;
 import eu.siacs.conversations.entities.Account;
-import eu.siacs.conversations.utils.CryptoHelper;
 
 public class XmppAxolotlSession implements Comparable<XmppAxolotlSession> {
 	private final SessionCipher cipher;
