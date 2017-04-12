@@ -506,10 +506,9 @@ public class Message extends AbstractEntity {
 		return a == b || (
 				(a == Message.STATUS_SEND_RECEIVED && b == Message.STATUS_UNSEND)
 						|| (a == Message.STATUS_SEND_RECEIVED && b == Message.STATUS_SEND)
-						|| (a == Message.STATUS_UNSEND && b == Message.STATUS_SEND)
-						|| (a == Message.STATUS_UNSEND && b == Message.STATUS_SEND_RECEIVED)
+						|| (a == Message.STATUS_SEND_RECEIVED && b == Message.STATUS_WAITING)
 						|| (a == Message.STATUS_SEND && b == Message.STATUS_UNSEND)
-						|| (a == Message.STATUS_SEND && b == Message.STATUS_SEND_RECEIVED)
+						|| (a == Message.STATUS_SEND && b == Message.STATUS_WAITING)
 		);
 	}
 
