@@ -167,5 +167,6 @@ public class Bookmark extends Element implements ListItem {
 		if (this.mJoinedConversation != null) {
 			this.mJoinedConversation.deregisterWithBookmark();
 		}
+		this.mJoinedConversation = null;
 	}
 }

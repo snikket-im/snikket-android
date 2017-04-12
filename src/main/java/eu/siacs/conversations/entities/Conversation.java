@@ -782,6 +782,7 @@ public class Conversation extends AbstractEntity implements Blockable, Comparabl
 		if (this.bookmark != null) {
 			this.bookmark.setConversation(null);
 		}
+		this.bookmark = null;
 	}
 
 	public Bookmark getBookmark() {
