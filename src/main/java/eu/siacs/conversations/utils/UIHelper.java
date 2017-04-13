@@ -244,7 +244,7 @@ public class UIHelper {
 			} else if (previousWasNumber && (c == '.' || c == ',')) {
 				previousWasNumber = false;
 			} else {
-				return Character.isWhitespace(c) && previousWasNumber;
+				return (Character.isWhitespace(c) || c == '%' || c == '+') && previousWasNumber;
 			}
 		}
 		return previousWasNumber;
