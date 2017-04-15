@@ -1038,7 +1038,11 @@ public class ConversationFragment extends Fragment implements EditMessage.Keyboa
 					showSnackbar(R.string.joining_conference, 0, null);
 					break;
 				case SERVER_NOT_FOUND:
-					showSnackbar(R.string.remote_server_not_found,R.string.leave, leaveMuc);
+					if (conversation.receivedMessagesCount() > 0) {
+						showSnackbar(R.string.remote_server_not_found,R.string.try_again, joinMuc);
+					} else {
+						showSnackbar(R.string.remote_server_not_found, R.string.leave, leaveMuc);
+					}
 					break;
 				case PASSWORD_REQUIRED:
 					showSnackbar(R.string.conference_requires_password, R.string.enter_password, enterPassword);
@@ -1059,6 +1063,7 @@ public class ConversationFragment extends Fragment implements EditMessage.Keyboa
 					showSnackbar(R.string.conference_shutdown, R.string.join, joinMuc);
 					break;
 				default:
+					hideSnackbar();
 					break;
 			}
 		} else if (account.hasPendingPgpIntent(conversation)) {

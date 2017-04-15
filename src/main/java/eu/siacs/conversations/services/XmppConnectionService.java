@@ -2267,6 +2267,7 @@ public class XmppConnectionService extends Service {
 				public void onFetchFailed(final Conversation conversation, Element error) {
 					if (error != null && "remote-server-not-found".equals(error.getName())) {
 						conversation.getMucOptions().setError(MucOptions.Error.SERVER_NOT_FOUND);
+						updateConversationUi();
 					} else {
 						join(conversation);
 						fetchConferenceConfiguration(conversation);

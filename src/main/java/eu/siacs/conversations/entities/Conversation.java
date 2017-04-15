@@ -1007,6 +1007,18 @@ public class Conversation extends AbstractEntity implements Blockable, Comparabl
 		}
 	}
 
+	public int receivedMessagesCount() {
+		int count = 0;
+		synchronized (this.messages) {
+			for(Message message : messages) {
+				if (message.getStatus() == Message.STATUS_RECEIVED) {
+					++count;
+				}
+			}
+		}
+		return count;
+	}
+
 	private int sentMessagesCount() {
 		int count = 0;
 		synchronized (this.messages) {
