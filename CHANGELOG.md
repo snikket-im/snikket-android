@@ -1,5 +1,8 @@
 ###Changelog
 
+####Version 1.18.1
+* bug fixes
+
 ####Version 1.18.0
 * Conversations <1.16.0 will be unable to receive OMEMO encrypted messages
 * OMEMO: put auth tag into key (verify auth tag as well)
