@@ -176,6 +176,7 @@
   <string name="mgmt_account_delete_confirm_text">Om du tar bort kontot kommer all konversationshistorik att försvinna</string>
   <string name="attach_record_voice">Spela in röst</string>
   <string name="account_settings_jabber_id">Jabber-ID</string>
+  <string name="block_jabber_id">Blockera Jabber-ID</string>
   <string name="account_settings_password">Lösenord</string>
   <string name="account_settings_example_jabber_id">användarnamn@exempel.se</string>
   <string name="account_settings_confirm_password">Bekräfta lösenord</string>
@@ -470,6 +471,8 @@
   <string name="disable_account">Deaktivera konton</string>
   <string name="contact_is_typing">%s skriver...</string>
   <string name="contact_has_stopped_typing">%s har slutat skriva</string>
+  <string name="contacts_are_typing">%s skriver...</string>
+  <string name="contacts_have_stopped_typing">%s har slutat skriva</string>
   <string name="pref_chat_states">Skriv-notifieringar</string>
   <string name="pref_chat_states_summary">Låt dina kontakter veta när du skriver meddelande till dem</string>
   <string name="send_location">Skicka position</string>
@@ -700,4 +703,12 @@
   <string name="encrypting_message">Krypterar meddelande</string>
   <string name="not_fetching_history_retention_period">Hämtar inte meddelanden på grund av inställningen för borttagning av gamla meddelanden.</string>
   <string name="transcoding_video_progress">Komprimerar video (%s%% klar)</string>
+  <string name="corresponding_conversations_closed">Motsvarande konversationer är stängda.</string>
+  <string name="contact_blocked_past_tense">Kontakt blockerad.</string>
+  <string name="pref_notifications_from_strangers">Notifieringar från främlingar</string>
+  <string name="pref_notifications_from_strangers_summary">Notifiera för meddelanden från främlingar.</string>
+  <string name="received_message_from_stranger">Mottagna meddelanden från främlingar</string>
+  <string name="block_stranger">Blockera främling</string>
+  <string name="block_entire_domain">Blockera hel domän</string>
+  <string name="online_right_now">online just nu</string>
 </resources>

@@ -708,4 +708,7 @@
   <string name="pref_notifications_from_strangers">Notifiche da sconosciuti</string>
   <string name="pref_notifications_from_strangers_summary">Notifica i messaggi ricevuti da sconosciuti.</string>
   <string name="received_message_from_stranger">Ricevuto messaggio da uno sconosciuto</string>
+  <string name="block_stranger">Blocca sconosciuto</string>
+  <string name="block_entire_domain">Blocca intero dominio</string>
+  <string name="online_right_now">in linea adesso</string>
 </resources>

@@ -708,4 +708,7 @@
   <string name="pref_notifications_from_strangers">Ezezagunen jakinarazpenak</string>
   <string name="pref_notifications_from_strangers_summary">Ezezagunen mezuak jasotzerakoan jakinarazi.</string>
   <string name="received_message_from_stranger">Ezezagun baten mezu bat jaso duzu</string>
+  <string name="block_stranger">Ezezaguna blokeatu</string>
+  <string name="block_entire_domain">Domeinu osoa blokeatu</string>
+  <string name="online_right_now">orain konektatuta</string>
 </resources>
