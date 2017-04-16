@@ -29,6 +29,7 @@ import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.entities.Message;
+import eu.siacs.conversations.http.AesGcmURLStreamHandler;
 import eu.siacs.conversations.xmpp.jid.InvalidJidException;
 import eu.siacs.conversations.xmpp.jid.Jid;
 
@@ -238,7 +239,18 @@ public final class CryptoHelper {
 			return url;
 		}
 		try {
-			return new URL("aesgcm"+url.toString().substring(url.getProtocol().length()));
+			return new URL(AesGcmURLStreamHandler.PROTOCOL_NAME+url.toString().substring(url.getProtocol().length()));
+		} catch (MalformedURLException e) {
+			return url;
+		}
+	}
+
+	public static URL toHttpsUrl(URL url) {
+		if (!url.getProtocol().equalsIgnoreCase(AesGcmURLStreamHandler.PROTOCOL_NAME)) {
+			return url;
+		}
+		try {
+			return new URL("https"+url.toString().substring(url.getProtocol().length()));
 		} catch (MalformedURLException e) {
 			return url;
 		}
