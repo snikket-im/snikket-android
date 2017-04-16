@@ -57,7 +57,8 @@
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:background="?attr/color_background_primary"
-            android:src="?attr/ic_send_text_offline" />
+            android:src="?attr/ic_send_text_offline"
+            android:contentDescription="@string/send_message"/>
     </RelativeLayout>
 
     <RelativeLayout
