@@ -352,7 +352,7 @@ public class NotificationService {
 				}
 				RemoteInput remoteInput = new RemoteInput.Builder("text_reply").setLabel(UIHelper.getMessageHint(mXmppConnectionService, conversation)).build();
 				NotificationCompat.Action replyAction = new NotificationCompat.Action.Builder(R.drawable.ic_send_text_offline, "Reply", createReplyIntent(conversation, false)).addRemoteInput(remoteInput).build();
-				NotificationCompat.Action wearReplyAction = new NotificationCompat.Action.Builder(R.drawable.ic_send_text_offline, "Reply", createReplyIntent(conversation, true)).addRemoteInput(remoteInput).build();
+				NotificationCompat.Action wearReplyAction = new NotificationCompat.Action.Builder(R.drawable.ic_wear_reply, "Reply", createReplyIntent(conversation, true)).addRemoteInput(remoteInput).build();
 				mBuilder.extend(new NotificationCompat.WearableExtender().addAction(wearReplyAction));
 				if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
 					mBuilder.addAction(replyAction);
