@@ -29,6 +29,10 @@
         android:label="@string/app_name"
         android:theme="@style/ConversationsTheme"
         tools:replace="android:label">
+
+        <meta-data android:name="com.google.android.gms.car.application"
+            android:resource="@xml/automotive_app_desc" />
+
         <service android:name=".services.XmppConnectionService" />
 
         <receiver android:name=".services.EventReceiver">
