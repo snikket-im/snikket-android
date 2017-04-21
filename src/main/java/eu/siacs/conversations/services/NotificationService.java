@@ -53,9 +53,11 @@ public class NotificationService {
 
 	private final LinkedHashMap<String, ArrayList<Message>> notifications = new LinkedHashMap<>();
 
-	public static final int NOTIFICATION_ID = 0x2342;
-	public static final int FOREGROUND_NOTIFICATION_ID = 0x8899;
-	public static final int ERROR_NOTIFICATION_ID = 0x5678;
+	private static final int NOTIFICATION_ID_MULTIPLIER = 1024 * 1024;
+
+	public static final int NOTIFICATION_ID = 2 * NOTIFICATION_ID_MULTIPLIER;
+	public static final int FOREGROUND_NOTIFICATION_ID = NOTIFICATION_ID_MULTIPLIER * 4;
+	public static final int ERROR_NOTIFICATION_ID = NOTIFICATION_ID_MULTIPLIER * 6;
 
 	private Conversation mOpenConversation;
 	private boolean mIsInForeground;
@@ -524,12 +526,12 @@ public class NotificationService {
 		if (downloadMessageUuid != null) {
 			viewConversationIntent.putExtra(ConversationActivity.EXTRA_DOWNLOAD_UUID, downloadMessageUuid);
 			return PendingIntent.getActivity(mXmppConnectionService,
-					conversationUuid.hashCode() % 389782,
+					(conversationUuid.hashCode() % NOTIFICATION_ID_MULTIPLIER) + 8 * NOTIFICATION_ID_MULTIPLIER,
 					viewConversationIntent,
 					PendingIntent.FLAG_UPDATE_CURRENT);
 		} else {
 			return PendingIntent.getActivity(mXmppConnectionService,
-					conversationUuid.hashCode() % 936236,
+					(conversationUuid.hashCode() % NOTIFICATION_ID_MULTIPLIER) + 10 * NOTIFICATION_ID_MULTIPLIER,
 					viewConversationIntent,
 					PendingIntent.FLAG_UPDATE_CURRENT);
 		}
@@ -548,7 +550,7 @@ public class NotificationService {
 		intent.setAction(XmppConnectionService.ACTION_CLEAR_NOTIFICATION);
 		if (conversation != null) {
 			intent.putExtra("uuid", conversation.getUuid());
-			return PendingIntent.getService(mXmppConnectionService, conversation.getUuid().hashCode() % 247527, intent, 0);
+			return PendingIntent.getService(mXmppConnectionService, (conversation.getUuid().hashCode() % NOTIFICATION_ID_MULTIPLIER) + 12 * NOTIFICATION_ID_MULTIPLIER, intent, 0);
 		}
 		return PendingIntent.getService(mXmppConnectionService, 0, intent, 0);
 	}
@@ -558,7 +560,7 @@ public class NotificationService {
 		intent.setAction(XmppConnectionService.ACTION_REPLY_TO_CONVERSATION);
 		intent.putExtra("uuid",conversation.getUuid());
 		intent.putExtra("dismiss_notification",dismissAfterReply);
-		int id =  conversation.getUuid().hashCode() % (dismissAfterReply ? 402359 : 426583);
+		int id =  (conversation.getUuid().hashCode() % NOTIFICATION_ID_MULTIPLIER) + (dismissAfterReply ? 12 : 14) * NOTIFICATION_ID_MULTIPLIER;
 		return PendingIntent.getService(mXmppConnectionService, id, intent, 0);
 	}
 
@@ -567,7 +569,7 @@ public class NotificationService {
 		intent.setAction(XmppConnectionService.ACTION_MARK_AS_READ);
 		intent.putExtra("uuid", conversation.getUuid());
 		intent.setPackage(mXmppConnectionService.getPackageName());
-		return PendingIntent.getService(mXmppConnectionService, conversation.getUuid().hashCode() % 247527, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+		return PendingIntent.getService(mXmppConnectionService, (conversation.getUuid().hashCode() % NOTIFICATION_ID_MULTIPLIER) + 16 * NOTIFICATION_ID_MULTIPLIER, intent, PendingIntent.FLAG_UPDATE_CURRENT);
 	}
 
 	private PendingIntent createDisableForeground() {
