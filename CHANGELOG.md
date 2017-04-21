@@ -1,5 +1,10 @@
 ###Changelog
 
+####Version 1.18.2
+* added support for Android Auto
+* fixed HTTP Download over Tor
+* work around for nimbuzz.com MUCs
+
 ####Version 1.18.1
 * bug fixes
 
