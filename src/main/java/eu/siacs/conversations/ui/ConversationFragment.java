@@ -1131,6 +1131,7 @@ public class ConversationFragment extends Fragment implements EditMessage.Keyboa
 			mEditMessage.append(conversation.getDraftMessage());
 			conversation.setDraftMessage(null);
 		}
+		conversation.setNextMessage(mEditMessage.getText().toString());
 		updateChatMsgHint();
 		new Handler().post(new Runnable() {
 			@Override
