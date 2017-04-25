@@ -242,7 +242,13 @@ public class MucOptions {
 		}
 
 		public long getPgpKeyId() {
-			return this.pgpKeyId;
+			if (this.pgpKeyId != 0) {
+				return this.pgpKeyId;
+			} else if (realJid != null) {
+				return getAccount().getRoster().getContact(realJid).getPgpKeyId();
+			} else {
+				return 0;
+			}
 		}
 
 		public Contact getContact() {
