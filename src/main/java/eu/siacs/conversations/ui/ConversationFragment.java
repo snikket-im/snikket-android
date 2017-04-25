@@ -903,9 +903,11 @@ public class ConversationFragment extends Fragment implements EditMessage.Keyboa
 				updateChatState(this.conversation, msg);
 			}
 			this.conversation.trim();
-			this.mSendButton.setContentDescription(this.getActivity().getApplicationContext().getString(R.string.send_message_to_x,conversation.getName()));
-		} else {
-			this.mSendButton.setContentDescription(this.getActivity().getApplicationContext().getString(R.string.send_message));
+
+		}
+
+		if (activity != null) {
+			this.mSendButton.setContentDescription(activity.getString(R.string.send_message_to_x,conversation.getName()));
 		}
 
 		this.conversation = conversation;
