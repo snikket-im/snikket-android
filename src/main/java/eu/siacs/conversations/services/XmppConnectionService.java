@@ -1450,9 +1450,15 @@ public class XmppConnectionService extends Service {
 				accountLookupTable.put(account.getUuid(), account);
 			}
 			this.conversations.addAll(databaseBackend.getConversations(Conversation.STATUS_AVAILABLE));
-			for (Conversation conversation : this.conversations) {
+			for(Iterator<Conversation> iterator = conversations.listIterator(); iterator.hasNext();) {
+				Conversation conversation = iterator.next();
 				Account account = accountLookupTable.get(conversation.getAccountUuid());
-				conversation.setAccount(account);
+				if (account != null) {
+					conversation.setAccount(account);
+				} else {
+					Log.e(Config.LOGTAG,"unable to restore Conversations with "+conversation.getJid());
+					iterator.remove();
+				}
 			}
 			Runnable runnable = new Runnable() {
 				@Override
