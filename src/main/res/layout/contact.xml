@@ -50,7 +50,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="?attr/color_text_primary"
-            android:textSize="?attr/TextSizeHeadline"
+            android:textSize="?attr/TextSizeBody"
             android:typeface="monospace"
             android:fontFamily="monospace"
             android:visibility="gone" />

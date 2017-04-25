@@ -23,7 +23,8 @@
             android:textColor="?attr/color_text_primary"
             android:textSize="?attr/TextSizeBody"
             android:typeface="monospace"
-            android:longClickable="true"/>
+            android:longClickable="true"
+            android:clickable="true"/>
 
         <TextView
             android:id="@+id/key_type"
@@ -34,7 +35,8 @@
             android:maxLines="1"
             android:textColor="?attr/color_text_secondary"
             android:textSize="?attr/TextSizeInfo"
-            android:longClickable="true"/>
+            android:longClickable="true"
+            android:clickable="true"/>
 
         <TextView
             android:id="@+id/key_trust"

@@ -505,26 +505,23 @@ public class ContactDetailsActivity extends OmemoActivity implements OnAccountUp
 				keyType.setTextColor(ContextCompat.getColor(this, R.color.accent));
 			}
 			key.setText(OpenPgpUtils.convertKeyIdToHex(contact.getPgpKeyId()));
-			view.setOnClickListener(new OnClickListener() {
+			final OnClickListener openKey = new OnClickListener() {
 
 				@Override
 				public void onClick(View v) {
-					PgpEngine pgp = ContactDetailsActivity.this.xmppConnectionService
-						.getPgpEngine();
-					if (pgp != null) {
-						PendingIntent intent = pgp.getIntentForKey(contact);
-						if (intent != null) {
-							try {
-								startIntentSenderForResult(
-										intent.getIntentSender(), 0, null, 0,
-										0, 0);
-							} catch (SendIntentException e) {
-
-							}
-						}
+					PgpEngine pgp = ContactDetailsActivity.this.xmppConnectionService.getPgpEngine();
+					try {
+						startIntentSenderForResult(
+								pgp.getIntentForKey(contact).getIntentSender(), 0, null, 0,
+								0, 0);
+					} catch (Throwable e) {
+						Toast.makeText(ContactDetailsActivity.this,R.string.openpgp_error,Toast.LENGTH_SHORT).show();
 					}
 				}
-			});
+			};
+			view.setOnClickListener(openKey);
+			key.setOnClickListener(openKey);
+			keyType.setOnClickListener(openKey);
 			keys.addView(view);
 		}
 		keysWrapper.setVisibility(hasKeys ? View.VISIBLE : View.GONE);
