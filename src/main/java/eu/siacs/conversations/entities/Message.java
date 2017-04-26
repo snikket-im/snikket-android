@@ -80,15 +80,15 @@ public class Message extends AbstractEntity {
 	protected boolean read = true;
 	protected String remoteMsgId = null;
 	protected String serverMsgId = null;
-	protected Conversation conversation = null;
+	private final Conversation conversation;
 	protected Transferable transferable = null;
 	private Message mNextMessage = null;
 	private Message mPreviousMessage = null;
 	private String axolotlFingerprint = null;
 	private String errorMessage = null;
 
-	private Message() {
-
+	private Message(Conversation conversation) {
+		this.conversation = conversation;
 	}
 
 	public Message(Conversation conversation, String body, int encryption) {
@@ -96,7 +96,7 @@ public class Message extends AbstractEntity {
 	}
 
 	public Message(Conversation conversation, String body, int encryption, int status) {
-		this(java.util.UUID.randomUUID().toString(),
+		this(conversation, java.util.UUID.randomUUID().toString(),
 				conversation.getUuid(),
 				conversation.getJid() == null ? null : conversation.getJid().toBareJid(),
 				null,
@@ -114,15 +114,15 @@ public class Message extends AbstractEntity {
 				null,
 				false,
 				null);
-		this.conversation = conversation;
 	}
 
-	private Message(final String uuid, final String conversationUUid, final Jid counterpart,
+	private Message(final Conversation conversation, final String uuid, final String conversationUUid, final Jid counterpart,
 					final Jid trueCounterpart, final String body, final long timeSent,
 					final int encryption, final int status, final int type, final boolean carbon,
 					final String remoteMsgId, final String relativeFilePath,
 					final String serverMsgId, final String fingerprint, final boolean read,
 					final String edited, final boolean oob, final String errorMessage) {
+		this.conversation = conversation;
 		this.uuid = uuid;
 		this.conversationUuid = conversationUUid;
 		this.counterpart = counterpart;
@@ -143,7 +143,7 @@ public class Message extends AbstractEntity {
 		this.errorMessage = errorMessage;
 	}
 
-	public static Message fromCursor(Cursor cursor) {
+	public static Message fromCursor(Cursor cursor, Conversation conversation) {
 		Jid jid;
 		try {
 			String value = cursor.getString(cursor.getColumnIndex(COUNTERPART));
@@ -168,7 +168,8 @@ public class Message extends AbstractEntity {
 		} catch (InvalidJidException e) {
 			trueCounterpart = null;
 		}
-		return new Message(cursor.getString(cursor.getColumnIndex(UUID)),
+		return new Message(conversation,
+				cursor.getString(cursor.getColumnIndex(UUID)),
 				cursor.getString(cursor.getColumnIndex(CONVERSATION)),
 				jid,
 				trueCounterpart,
@@ -189,17 +190,15 @@ public class Message extends AbstractEntity {
 	}
 
 	public static Message createStatusMessage(Conversation conversation, String body) {
-		final Message message = new Message();
+		final Message message = new Message(conversation);
 		message.setType(Message.TYPE_STATUS);
-		message.setConversation(conversation);
 		message.setBody(body);
 		return message;
 	}
 
 	public static Message createLoadMoreMessage(Conversation conversation) {
-		final Message message = new Message();
+		final Message message = new Message(conversation);
 		message.setType(Message.TYPE_STATUS);
-		message.setConversation(conversation);
 		message.setBody("LOAD_MORE");
 		return message;
 	}
@@ -242,10 +241,6 @@ public class Message extends AbstractEntity {
 
 	public Conversation getConversation() {
 		return this.conversation;
-	}
-
-	public void setConversation(Conversation conv) {
-		this.conversation = conv;
 	}
 
 	public Jid getCounterpart() {

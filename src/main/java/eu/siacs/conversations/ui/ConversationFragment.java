@@ -379,7 +379,8 @@ public class ConversationFragment extends Fragment implements EditMessage.Keyboa
 
 	private void sendMessage() {
 		final String body = mEditMessage.getText().toString();
-		if (body.length() == 0 || this.conversation == null) {
+		final Conversation conversation = this.conversation;
+		if (body.length() == 0 || conversation == null) {
 			return;
 		}
 		final Message message;
@@ -397,7 +398,7 @@ public class ConversationFragment extends Fragment implements EditMessage.Keyboa
 			message.setEdited(message.getUuid());
 			message.setUuid(UUID.randomUUID().toString());
 		}
-		switch (conversation.getNextEncryption()) {
+		switch (message.getConversation().getNextEncryption()) {
 			case Message.ENCRYPTION_OTR:
 				sendOtrMessage(message);
 				break;
