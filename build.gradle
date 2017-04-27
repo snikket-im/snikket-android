@@ -23,10 +23,10 @@ configurations {
 
 dependencies {
     compile project(':libs:MemorizingTrustManager')
-    playstoreCompile 'com.google.android.gms:play-services-gcm:10.0.1'
+    playstoreCompile 'com.google.android.gms:play-services-gcm:10.2.1'
     compile 'org.sufficientlysecure:openpgp-api:10.0'
     compile 'com.soundcloud.android:android-crop:1.0.1@aar'
-    compile 'com.android.support:support-v13:25.1.1'
+    compile 'com.android.support:support-v13:25.3.1'
     compile 'org.bouncycastle:bcprov-jdk15on:1.52'
     compile 'org.bouncycastle:bcmail-jdk15on:1.52'
     compile 'org.jitsi:org.otr4j:0.22'
@@ -56,8 +56,8 @@ android {
     defaultConfig {
         minSdkVersion 14
         targetSdkVersion 25
-        versionCode 211
-        versionName "1.18.2"
+        versionCode 212
+        versionName "1.18.3"
         archivesBaseName += "-$versionName"
         applicationId "eu.siacs.conversations"
     }

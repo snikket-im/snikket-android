@@ -1,5 +1,8 @@
 ###Changelog
 
+####Version 1.18.3
+* limited GPG encryption for MUC offline members
+
 ####Version 1.18.2
 * added support for Android Auto
 * fixed HTTP Download over Tor
