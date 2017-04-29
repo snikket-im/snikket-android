@@ -20,6 +20,7 @@ import android.text.SpannableString;
 import android.text.style.StyleSpan;
 import android.util.DisplayMetrics;
 import android.util.Log;
+import android.util.Pair;
 
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
@@ -433,8 +434,6 @@ public class NotificationService {
 			for (Message message : messages) {
 				String sender = message.getStatus() == Message.STATUS_RECEIVED ? UIHelper.getMessageDisplayName(message) : null;
 				messagingStyle.addMessage(UIHelper.getMessagePreview(mXmppConnectionService,message).first, message.getTimeSent(), sender);
-				uBuilder.addMessage(UIHelper.getMessagePreview(mXmppConnectionService,message).first);
-				uBuilder.setLatestTimestamp(message.getTimeSent());
 			}
 			builder.setStyle(messagingStyle);
 		} else {
@@ -460,6 +459,15 @@ public class NotificationService {
 				} else {
 					builder.setContentText(mXmppConnectionService.getResources().getQuantityString(R.plurals.x_messages,count,count));
 				}
+			}
+		}
+		/** message preview for Android Auto **/
+		for (Message message : messages) {
+			Pair<String,Boolean> preview = UIHelper.getMessagePreview(mXmppConnectionService, message);
+			// only show user written text
+			if (preview.second == false) {
+				uBuilder.addMessage(preview.first);
+				uBuilder.setLatestTimestamp(message.getTimeSent());
 			}
 		}
 	}
