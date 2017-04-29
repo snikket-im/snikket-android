@@ -219,6 +219,7 @@ public class HttpDownloadConnection implements Transferable {
 				}
 				return Long.parseLong(contentLength, 10);
 			} catch (IOException e) {
+				Log.d(Config.LOGTAG,"io exception during HEAD "+e.getMessage());
 				throw e;
 			} catch (NumberFormatException e) {
 				throw new IOException();
@@ -259,10 +260,10 @@ public class HttpDownloadConnection implements Transferable {
 
 		private void download()  throws Exception {
 			InputStream is = null;
+			HttpURLConnection connection = null;
 			PowerManager.WakeLock wakeLock = mHttpConnectionManager.createWakeLock("http_download_"+message.getUuid());
 			try {
 				wakeLock.acquire();
-				HttpURLConnection connection;
 				if (mUseTor) {
 					connection = (HttpURLConnection) mUrl.openConnection(mHttpConnectionManager.getProxy());
 				} else {
@@ -322,10 +323,14 @@ public class HttpDownloadConnection implements Transferable {
 					throw new FileWriterException();
 				}
 			} catch (CancellationException | IOException e) {
+				Log.d(Config.LOGTAG,"http download failed "+e.getMessage());
 				throw e;
 			} finally {
 				FileBackend.close(os);
 				FileBackend.close(is);
+				if (connection != null) {
+					connection.disconnect();
+				}
 				wakeLock.release();
 			}
 		}
