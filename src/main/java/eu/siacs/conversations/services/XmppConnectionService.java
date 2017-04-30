@@ -675,7 +675,7 @@ public class XmppConnectionService extends Service {
 					}
 					break;
 				case ACTION_MARK_AS_READ:
-					markRead(c, true);
+					sendReadMarker(c);
 					break;
 				case AudioManager.RINGER_MODE_CHANGED_ACTION:
 					if (xaOnSilentMode()) {
