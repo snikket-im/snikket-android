@@ -25,6 +25,7 @@ public abstract class AbstractGenerator {
 			"urn:xmpp:jingle:1",
 			Content.Version.FT_3.getNamespace(),
 			Content.Version.FT_4.getNamespace(),
+			Content.Version.FT_5.getNamespace(),
 			"urn:xmpp:jingle:transports:s5b:1",
 			"urn:xmpp:jingle:transports:ibb:1",
 			"http://jabber.org/protocol/muc",

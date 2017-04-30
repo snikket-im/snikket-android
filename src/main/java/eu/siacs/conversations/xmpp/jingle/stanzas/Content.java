@@ -7,7 +7,8 @@ public class Content extends Element {
 
 	public enum Version {
 		FT_3("urn:xmpp:jingle:apps:file-transfer:3"),
-		FT_4("urn:xmpp:jingle:apps:file-transfer:4");
+		FT_4("urn:xmpp:jingle:apps:file-transfer:4"),
+		FT_5("urn:xmpp:jingle:apps:file-transfer:5");
 
 		private final String namespace;
 
@@ -37,6 +38,8 @@ public class Content extends Element {
 			return Version.FT_3;
 		} else if (hasChild("description" , Version.FT_4.namespace)) {
 			return Version.FT_4;
+		} else if (hasChild("description" , Version.FT_5.namespace)) {
+			return Version.FT_5;
 		}
 		return null;
 	}

@@ -302,7 +302,9 @@ public class JingleConnection implements Transferable {
 			ServiceDiscoveryResult result = presence != null ? presence.getServiceDiscoveryResult() : null;
 			if (result != null) {
 				List<String> features = result.getFeatures();
-				if (features.contains(Content.Version.FT_4.getNamespace())) {
+				if (features.contains(Content.Version.FT_5.getNamespace())) {
+					this.ftVersion = Content.Version.FT_5;
+				} else if (features.contains(Content.Version.FT_4.getNamespace())) {
 					this.ftVersion = Content.Version.FT_4;
 				}
 			}
