@@ -602,7 +602,6 @@ public class ConversationFragment extends Fragment implements EditMessage.Keyboa
 					&& t == null;
 			activity.getMenuInflater().inflate(R.menu.message_context, menu);
 			menu.setHeaderTitle(R.string.message_options);
-			MenuItem copyText = menu.findItem(R.id.copy_text);
 			MenuItem selectText = menu.findItem(R.id.select_text);
 			MenuItem retryDecryption = menu.findItem(R.id.retry_decryption);
 			MenuItem correctMessage = menu.findItem(R.id.correct_message);
@@ -613,12 +612,6 @@ public class ConversationFragment extends Fragment implements EditMessage.Keyboa
 			MenuItem cancelTransmission = menu.findItem(R.id.cancel_transmission);
 			MenuItem deleteFile = menu.findItem(R.id.delete_file);
 			MenuItem showErrorMessage = menu.findItem(R.id.show_error_message);
-			if (!treatAsFile
-					&& !GeoHelper.isGeoUri(m.getBody())
-					&& !m.treatAsDownloadable()) {
-				copyText.setVisible(true);
-				selectText.setVisible(ListSelectionManager.isSupported());
-			}
 			if (m.getEncryption() == Message.ENCRYPTION_DECRYPTION_FAILED) {
 				retryDecryption.setVisible(true);
 			}
@@ -627,7 +620,7 @@ public class ConversationFragment extends Fragment implements EditMessage.Keyboa
 					&& (m.getConversation().getMucOptions().nonanonymous() || m.getConversation().getMode() == Conversation.MODE_SINGLE)) {
 				correctMessage.setVisible(true);
 			}
-			if (treatAsFile || (GeoHelper.isGeoUri(m.getBody()))) {
+			if (treatAsFile || (m.getType() == Message.TYPE_TEXT && !m.treatAsDownloadable())) {
 				shareWith.setVisible(true);
 			}
 			if (m.getStatus() == Message.STATUS_SEND_FAILED) {
@@ -667,9 +660,6 @@ public class ConversationFragment extends Fragment implements EditMessage.Keyboa
 		switch (item.getItemId()) {
 			case R.id.share_with:
 				shareWith(selectedMessage);
-				return true;
-			case R.id.copy_text:
-				copyText(selectedMessage);
 				return true;
 			case R.id.select_text:
 				selectText(selectedMessage);
@@ -717,6 +707,9 @@ public class ConversationFragment extends Fragment implements EditMessage.Keyboa
 		if (GeoHelper.isGeoUri(message.getBody())) {
 			shareIntent.putExtra(Intent.EXTRA_TEXT, message.getBody());
 			shareIntent.setType("text/plain");
+		} else if (!message.isFileOrImage()) {
+			shareIntent.putExtra(Intent.EXTRA_TEXT, message.getMergedBody().toString());
+			shareIntent.setType("text/plain");
 		} else {
 			final DownloadableFile file = activity.xmppConnectionService.getFileBackend().getFile(message);
 			try {
@@ -737,14 +730,6 @@ public class ConversationFragment extends Fragment implements EditMessage.Keyboa
 		} catch (ActivityNotFoundException e) {
 			//This should happen only on faulty androids because normally chooser is always available
 			Toast.makeText(activity,R.string.no_application_found_to_open_file,Toast.LENGTH_SHORT).show();
-		}
-	}
-
-	private void copyText(Message message) {
-		if (activity.copyTextToClipboard(message.getMergedBody().toString(),
-				R.string.message_text)) {
-			Toast.makeText(activity, R.string.message_copied_to_clipboard,
-					Toast.LENGTH_SHORT).show();
 		}
 	}
 

@@ -364,7 +364,6 @@
 	<string name="check_x_filesize">Check %s size</string>
 	<string name="check_x_filesize_on_host">Check %1$s size on %2$s</string>
 	<string name="message_options">Message options</string>
-	<string name="copy_text">Copy text</string>
 	<string name="select_text">Select text</string>
 	<string name="quote">Quote</string>
 	<string name="copy_original_url">Copy original URL</string>
