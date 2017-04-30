@@ -46,6 +46,7 @@ import eu.siacs.conversations.ui.SettingsActivity;
 import eu.siacs.conversations.ui.TimePreference;
 import eu.siacs.conversations.utils.GeoHelper;
 import eu.siacs.conversations.utils.UIHelper;
+import eu.siacs.conversations.xmpp.XmppConnection;
 
 public class NotificationService {
 
@@ -170,6 +171,18 @@ public class NotificationService {
 	}
 
 	public void push(final Message message) {
+		synchronized (message.getConversation().getAccount()) {
+			final XmppConnection connection = message.getConversation().getAccount().getXmppConnection();
+			if (connection.isWaitingForSmCatchup()) {
+				connection.incrementSmCatchupMessageCounter();
+				pushFromBacklog(message);
+			} else {
+				pushNow(message);
+			}
+		}
+	}
+
+	private void pushNow(final Message message) {
 		mXmppConnectionService.updateUnreadCountBadge();
 		if (!notify(message)) {
 			Log.d(Config.LOGTAG,message.getConversation().getAccount().getJid().toBareJid()+": suppressing notification because turned off");

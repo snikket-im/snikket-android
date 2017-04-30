@@ -624,9 +624,6 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
 			} else if (notify) {
 				if (query != null && query.isCatchup()) {
 					mXmppConnectionService.getNotificationService().pushFromBacklog(message);
-				} else if (account.getXmppConnection().isWaitingForSmCatchup()) {
-					account.getXmppConnection().incrementSmCatchupMessageCounter();
-					mXmppConnectionService.getNotificationService().pushFromBacklog(message);
 				} else {
 					mXmppConnectionService.getNotificationService().push(message);
 				}
@@ -700,7 +697,7 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
 		if (displayed != null) {
 			if (packet.fromAccount(account)) {
 				Conversation conversation = mXmppConnectionService.find(account,counterpart.toBareJid());
-				if (conversation != null) {
+				if (conversation != null && (query == null || query.isCatchup())) {
 					mXmppConnectionService.markRead(conversation);
 				}
 			} else {
