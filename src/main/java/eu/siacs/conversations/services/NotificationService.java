@@ -233,6 +233,7 @@ public class NotificationService {
 	}
 
 	public void updateNotification(final boolean notify) {
+		Log.d(Config.LOGTAG,"updateNotification("+Boolean.toString(notify)+")");
 		final NotificationManagerCompat notificationManager = NotificationManagerCompat.from(mXmppConnectionService);
 		final SharedPreferences preferences = mXmppConnectionService.getPreferences();
 
@@ -250,13 +251,13 @@ public class NotificationService {
 			} else {
 				mBuilder = buildMultipleConversation();
 				modifyForSoundVibrationAndLight(mBuilder, notify, preferences);
-				notificationManager.notify(NOTIFICATION_ID, mBuilder.build());
 				for(Map.Entry<String,ArrayList<Message>> entry : notifications.entrySet()) {
 					Builder singleBuilder = buildSingleConversations(entry.getValue());
 					singleBuilder.setGroup(CONVERSATIONS_GROUP);
 					modifyForSoundVibrationAndLight(singleBuilder,notify,preferences);
 					notificationManager.notify(entry.getKey(), NOTIFICATION_ID ,singleBuilder.build());
 				}
+				notificationManager.notify(NOTIFICATION_ID, mBuilder.build());
 			}
 		}
 	}
