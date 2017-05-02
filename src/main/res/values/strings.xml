@@ -744,4 +744,5 @@
 	<string name="block_stranger">Block stranger</string>
 	<string name="block_entire_domain">Block entire domain</string>
 	<string name="online_right_now">online right now</string>
+	<string name="retry_decryption">Retry decryption</string>
 </resources>

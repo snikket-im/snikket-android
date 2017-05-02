@@ -6,16 +6,16 @@
         android:title="@string/select_text"
         android:visible="false"/>
     <item
+        android:id="@+id/share_with"
+        android:title="@string/share_with"
+        android:visible="false"/>
+    <item
         android:id="@+id/retry_decryption"
-        android:title="Retry decryption"
+        android:title="@string/retry_decryption"
         android:visible="false"/>
     <item
         android:id="@+id/correct_message"
         android:title="@string/correct_message"
-        android:visible="false"/>
-    <item
-        android:id="@+id/share_with"
-        android:title="@string/share_with"
         android:visible="false"/>
     <item
         android:id="@+id/copy_url"

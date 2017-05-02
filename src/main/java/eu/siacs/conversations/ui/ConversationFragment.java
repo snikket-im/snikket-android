@@ -612,6 +612,9 @@ public class ConversationFragment extends Fragment implements EditMessage.Keyboa
 			MenuItem cancelTransmission = menu.findItem(R.id.cancel_transmission);
 			MenuItem deleteFile = menu.findItem(R.id.delete_file);
 			MenuItem showErrorMessage = menu.findItem(R.id.show_error_message);
+			if (!treatAsFile && !GeoHelper.isGeoUri(m.getBody()) && !m.treatAsDownloadable()) {
+				selectText.setVisible(ListSelectionManager.isSupported());
+			}
 			if (m.getEncryption() == Message.ENCRYPTION_DECRYPTION_FAILED) {
 				retryDecryption.setVisible(true);
 			}
