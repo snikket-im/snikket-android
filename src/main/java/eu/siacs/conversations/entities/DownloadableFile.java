@@ -9,7 +9,7 @@ public class DownloadableFile extends File {
 	private static final long serialVersionUID = 2247012619505115863L;
 
 	private long expectedSize = 0;
-	private String sha1sum;
+	private byte[] sha1sum;
 	private byte[] aeskey;
 
 	private byte[] iv = { 0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08,
@@ -42,11 +42,11 @@ public class DownloadableFile extends File {
 		this.expectedSize = size;
 	}
 
-	public String getSha1Sum() {
+	public byte[] getSha1Sum() {
 		return this.sha1sum;
 	}
 
-	public void setSha1Sum(String sum) {
+	public void setSha1Sum(byte[] sum) {
 		this.sha1sum = sum;
 	}
 

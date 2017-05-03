@@ -112,7 +112,7 @@ public class JingleSocks5Transport extends JingleTransport {
 						connection.updateProgress((int) ((((double) transmitted) / size) * 100));
 					}
 					outputStream.flush();
-					file.setSha1Sum(CryptoHelper.bytesToHex(digest.digest()));
+					file.setSha1Sum(digest.digest());
 					if (callback != null) {
 						callback.onFileTransmitted(file);
 					}
@@ -168,7 +168,7 @@ public class JingleSocks5Transport extends JingleTransport {
 					}
 					fileOutputStream.flush();
 					fileOutputStream.close();
-					file.setSha1Sum(CryptoHelper.bytesToHex(digest.digest()));
+					file.setSha1Sum(digest.digest());
 					callback.onFileTransmitted(file);
 				} catch (Exception e) {
 					Log.d(Config.LOGTAG, connection.getAccount().getJid().toBareJid() + ": "+e.getMessage());

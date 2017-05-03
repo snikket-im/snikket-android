@@ -166,7 +166,7 @@ public class JingleInbandTransport extends JingleTransport {
 			int count = fileInputStream.read(buffer);
 			if (count == -1) {
 				sendClose();
-				file.setSha1Sum(CryptoHelper.bytesToHex(digest.digest()));
+				file.setSha1Sum(digest.digest());
 				this.onFileTransmissionStatusChanged.onFileTransmitted(file);
 				fileInputStream.close();
 				return;
@@ -193,7 +193,7 @@ public class JingleInbandTransport extends JingleTransport {
 				connection.updateProgress((int) ((((double) (this.fileSize - this.remainingSize)) / this.fileSize) * 100));
 			} else {
 				sendClose();
-				file.setSha1Sum(CryptoHelper.bytesToHex(digest.digest()));
+				file.setSha1Sum(digest.digest());
 				this.onFileTransmissionStatusChanged.onFileTransmitted(file);
 				fileInputStream.close();
 			}
@@ -214,7 +214,7 @@ public class JingleInbandTransport extends JingleTransport {
 			this.fileOutputStream.write(buffer);
 			this.digest.update(buffer);
 			if (this.remainingSize <= 0) {
-				file.setSha1Sum(CryptoHelper.bytesToHex(digest.digest()));
+				file.setSha1Sum(digest.digest());
 				fileOutputStream.flush();
 				fileOutputStream.close();
 				this.onFileTransmissionStatusChanged.onFileTransmitted(file);

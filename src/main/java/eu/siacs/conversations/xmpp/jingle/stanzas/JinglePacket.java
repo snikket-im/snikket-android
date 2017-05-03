@@ -1,5 +1,7 @@
 package eu.siacs.conversations.xmpp.jingle.stanzas;
 
+import android.util.Base64;
+
 import eu.siacs.conversations.xml.Element;
 import eu.siacs.conversations.xmpp.jid.Jid;
 import eu.siacs.conversations.xmpp.stanzas.IqPacket;
@@ -7,6 +9,7 @@ import eu.siacs.conversations.xmpp.stanzas.IqPacket;
 public class JinglePacket extends IqPacket {
 	Content content = null;
 	Reason reason = null;
+	Element checksum = null;
 	Element jingle = new Element("jingle");
 
 	@Override
@@ -24,6 +27,7 @@ public class JinglePacket extends IqPacket {
 				this.reason.setChildren(reasonElement.getChildren());
 				this.reason.setAttributes(reasonElement.getAttributes());
 			}
+			this.checksum = child.findChild("checksum");
 			this.jingle.setAttributes(child.getAttributes());
 		}
 		return child;
@@ -50,6 +54,10 @@ public class JinglePacket extends IqPacket {
 		return this.reason;
 	}
 
+	public Element getChecksum() {
+		return this.checksum;
+	}
+
 	private void build() {
 		this.children.clear();
 		this.jingle.clearChildren();
@@ -59,6 +67,9 @@ public class JinglePacket extends IqPacket {
 		}
 		if (this.reason != null) {
 			jingle.addChild(this.reason);
+		}
+		if (this.checksum != null) {
+			jingle.addChild(checksum);
 		}
 		this.children.add(jingle);
 		this.setAttribute("type", "set");
@@ -92,5 +103,13 @@ public class JinglePacket extends IqPacket {
 
 	public boolean isAction(String action) {
 		return action.equalsIgnoreCase(this.getAction());
+	}
+
+	public void addChecksum(byte[] sha1Sum, String namespace) {
+		this.checksum = new Element("checksum",namespace);
+		checksum.setAttribute("creator","initiator");
+		checksum.setAttribute("name","a-file-offer");
+		Element hash = checksum.addChild("file").addChild("hash","urn:xmpp:hashes:2");
+		hash.setAttribute("algo","sha-1").setContent(Base64.encodeToString(sha1Sum,Base64.NO_WRAP));
 	}
 }
