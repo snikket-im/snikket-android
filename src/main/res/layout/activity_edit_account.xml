@@ -475,7 +475,7 @@
                 </TableLayout>
 
                 <RelativeLayout
-                    android:id="@+id/otr_fingerprint_box"
+                    android:id="@+id/pgp_fingerprint_box"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_marginTop="32dp">
@@ -484,6 +484,52 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentLeft="true"
+                        android:layout_centerVertical="true"
+                        android:layout_toLeftOf="@+id/action_delete_pgp"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/pgp_fingerprint"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="monospace"
+                            android:textColor="?attr/color_text_primary"
+                            android:textSize="?attr/TextSizeBody"
+                            android:typeface="monospace"/>
+
+                        <TextView
+                            android:id="@+id/pgp_fingerprint_desc"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/openpgp_key_id"
+                            android:textColor="?attr/color_text_secondary"
+                            android:textSize="?attr/TextSizeInfo"/>
+                    </LinearLayout>
+
+                    <ImageButton
+                        android:id="@+id/action_delete_pgp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:background="?android:selectableItemBackground"
+                        android:padding="@dimen/image_button_padding"
+                        android:src="?attr/icon_remove"
+                        android:alpha="?attr/icon_alpha"
+                        android:visibility="visible"/>
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/otr_fingerprint_box"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="24dp">
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_centerVertical="true"
                         android:layout_toLeftOf="@+id/action_copy_to_clipboard"
                         android:orientation="vertical">
 
@@ -497,6 +543,7 @@
                             android:typeface="monospace"/>
 
                         <TextView
+                            android:id="@+id/otr_fingerprint_desc"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/otr_fingerprint"
@@ -521,12 +568,13 @@
                     android:id="@+id/axolotl_fingerprint_box"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:layout_marginTop="32dp">
+                    android:layout_marginTop="24dp">
 
                     <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentLeft="true"
+                        android:layout_centerVertical="true"
                         android:layout_toLeftOf="@+id/axolotl_actions"
                         android:orientation="vertical">
 

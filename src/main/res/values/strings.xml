@@ -171,6 +171,8 @@
 	<string name="mgmt_account_disable">Temporarily disable</string>
 	<string name="mgmt_account_publish_avatar">Publish avatar</string>
 	<string name="mgmt_account_publish_pgp">Publish OpenPGP public key</string>
+	<string name="unpublish_pgp">Remove OpenPGP public key</string>
+	<string name="unpublish_pgp_message">Are you sure you want to remove your OpenPGP public key from your presence announcement?\nYour contacts will no longer be able to send you OpenPGP encrypted messages.</string>
 	<string name="openpgp_has_been_published">OpenPGP public key has been published.</string>
 	<string name="republish_pgp_keys">Remember to republish your OpenPGP public keys!</string>
 	<string name="mgmt_account_enable">Enable account</string>

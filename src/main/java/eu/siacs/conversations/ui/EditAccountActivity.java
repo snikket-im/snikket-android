@@ -36,6 +36,8 @@ import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.openintents.openpgp.util.OpenPgpUtils;
+
 import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
@@ -93,13 +95,18 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
 	private TextView mSessionEst;
 	private TextView mOtrFingerprint;
 	private TextView mAxolotlFingerprint;
+	private TextView mPgpFingerprint;
 	private TextView mOwnFingerprintDesc;
+	private TextView mOtrFingerprintDesc;
+	private TextView getmPgpFingerprintDesc;
 	private TextView mAccountJidLabel;
 	private ImageView mAvatar;
 	private RelativeLayout mOtrFingerprintBox;
 	private RelativeLayout mAxolotlFingerprintBox;
+	private RelativeLayout mPgpFingerprintBox;
 	private ImageButton mOtrFingerprintToClipboardButton;
 	private ImageButton mAxolotlFingerprintToClipboardButton;
+	private ImageButton mPgpDeleteFingerprintButton;
 	private LinearLayout keys;
 	private LinearLayout keysCard;
 	private LinearLayout mNamePort;
@@ -505,7 +512,12 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
 		this.mServerInfoHttpUpload = (TextView) findViewById(R.id.server_info_http_upload);
 		this.mPushRow = (TableRow) findViewById(R.id.push_row);
 		this.mServerInfoPush = (TextView) findViewById(R.id.server_info_push);
+		this.mPgpFingerprintBox = (RelativeLayout) findViewById(R.id.pgp_fingerprint_box);
+		this.mPgpFingerprint = (TextView) findViewById(R.id.pgp_fingerprint);
+		this.getmPgpFingerprintDesc = (TextView) findViewById(R.id.pgp_fingerprint_desc);
+		this.mPgpDeleteFingerprintButton = (ImageButton) findViewById(R.id.action_delete_pgp);
 		this.mOtrFingerprint = (TextView) findViewById(R.id.otr_fingerprint);
+		this.mOtrFingerprintDesc = (TextView) findViewById(R.id.otr_fingerprint_desc);
 		this.mOtrFingerprintBox = (RelativeLayout) findViewById(R.id.otr_fingerprint_box);
 		this.mOtrFingerprintToClipboardButton = (ImageButton) findViewById(R.id.action_copy_to_clipboard);
 		this.mAxolotlFingerprint = (TextView) findViewById(R.id.axolotl_fingerprint);
@@ -896,8 +908,36 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
 			} else {
 				this.mServerInfoPush.setText(R.string.server_info_unavailable);
 			}
+			final long pgpKeyId = this.mAccount.getPgpId();
+			if (pgpKeyId != 0 && Config.supportOpenPgp()) {
+				OnClickListener openPgp = new OnClickListener() {
+					@Override
+					public void onClick(View view) {
+						launchOpenKeyChain(pgpKeyId);
+					}
+				};
+				OnClickListener delete = new OnClickListener() {
+					@Override
+					public void onClick(View view) {
+						showDeletePgpDialog();
+					}
+				};
+				this.mPgpFingerprintBox.setVisibility(View.VISIBLE);
+				this.mPgpFingerprint.setText(OpenPgpUtils.convertKeyIdToHex(pgpKeyId));
+				this.mPgpFingerprint.setOnClickListener(openPgp);
+				if ("pgp".equals(messageFingerprint)) {
+					this.getmPgpFingerprintDesc.setTextColor(ContextCompat.getColor(this, R.color.accent));
+				}
+				this.getmPgpFingerprintDesc.setOnClickListener(openPgp);
+				this.mPgpDeleteFingerprintButton.setOnClickListener(delete);
+			} else {
+				this.mPgpFingerprintBox.setVisibility(View.GONE);
+			}
 			final String otrFingerprint = this.mAccount.getOtrFingerprint();
 			if (otrFingerprint != null && Config.supportOtr()) {
+				if ("otr".equals(messageFingerprint)) {
+					this.mOtrFingerprintDesc.setTextColor(ContextCompat.getColor(this, R.color.accent));
+				}
 				this.mOtrFingerprintBox.setVisibility(View.VISIBLE);
 				this.mOtrFingerprint.setText(CryptoHelper.prettifyFingerprint(otrFingerprint));
 				this.mOtrFingerprintToClipboardButton
@@ -984,6 +1024,24 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
 			}
 			this.mStats.setVisibility(View.GONE);
 		}
+	}
+
+	private void showDeletePgpDialog() {
+		AlertDialog.Builder builder = new AlertDialog.Builder(this);
+		builder.setTitle(R.string.unpublish_pgp);
+		builder.setMessage(R.string.unpublish_pgp_message);
+		builder.setNegativeButton(R.string.cancel,null);
+		builder.setPositiveButton(R.string.confirm, new DialogInterface.OnClickListener() {
+			@Override
+			public void onClick(DialogInterface dialogInterface, int i) {
+				mAccount.setPgpSignId(0);
+				mAccount.unsetPgpSignature();
+				xmppConnectionService.databaseBackend.updateAccount(mAccount);
+				xmppConnectionService.sendPresence(mAccount);
+				refreshUiReal();
+			}
+		});
+		builder.create().show();
 	}
 
 	private void showOsOptimizationWarning(boolean showBatteryWarning, boolean showDataSaverWarning) {

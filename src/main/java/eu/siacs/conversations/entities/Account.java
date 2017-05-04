@@ -551,7 +551,11 @@ public class Account extends AbstractEntity {
 	public boolean setPgpSignId(long pgpID) {
 		synchronized (this.keys) {
 			try {
-				keys.put(KEY_PGP_ID, pgpID);
+				if (pgpID == 0) {
+					keys.remove(KEY_PGP_ID);
+				} else {
+					keys.put(KEY_PGP_ID, pgpID);
+				}
 			} catch (JSONException e) {
 				return false;
 			}

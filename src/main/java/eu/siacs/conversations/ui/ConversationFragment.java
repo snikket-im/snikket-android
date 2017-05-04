@@ -514,6 +514,8 @@ public class ConversationFragment extends Fragment implements EditMessage.Keyboa
 						if (message.getEncryption() == Message.ENCRYPTION_PGP
 								|| message.getEncryption() == Message.ENCRYPTION_DECRYPTED) {
 							fingerprint = "pgp";
+						} else if (message.getEncryption() == Message.ENCRYPTION_OTR) {
+							fingerprint = "otr";
 						} else {
 							fingerprint = message.getFingerprint();
 						}

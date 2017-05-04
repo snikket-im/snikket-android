@@ -66,6 +66,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
+import eu.siacs.conversations.crypto.PgpEngine;
 import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.entities.Contact;
 import eu.siacs.conversations.entities.Conversation;
@@ -1014,6 +1015,17 @@ public abstract class XmppActivity extends Activity {
 			startActivity(Intent.createChooser(shareIntent, getText(R.string.share_uri_with)));
 		} catch (ActivityNotFoundException e) {
 			Toast.makeText(this, R.string.no_application_to_share_uri, Toast.LENGTH_SHORT).show();
+		}
+	}
+
+	protected void launchOpenKeyChain(long keyId) {
+		PgpEngine pgp = XmppActivity.this.xmppConnectionService.getPgpEngine();
+		try {
+			startIntentSenderForResult(
+					pgp.getIntentForKey(keyId).getIntentSender(), 0, null, 0,
+					0, 0);
+		} catch (Throwable e) {
+			Toast.makeText(XmppActivity.this,R.string.openpgp_error,Toast.LENGTH_SHORT).show();
 		}
 	}
 
