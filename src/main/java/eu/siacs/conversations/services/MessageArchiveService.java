@@ -67,7 +67,7 @@ public class MessageArchiveService implements OnAdvancedStreamFeaturesLoaded {
 			List<Conversation> conversations = mXmppConnectionService.getConversations();
 			for (Conversation conversation : conversations) {
 				if (conversation.getMode() == Conversation.MODE_SINGLE && conversation.getAccount() == account && startCatchup > conversation.getLastMessageTransmitted()) {
-					this.query(conversation,startCatchup);
+					this.query(conversation,startCatchup,true);
 				}
 			}
 			query = new Query(account, startCatchup, endCatchup);
@@ -83,11 +83,13 @@ public class MessageArchiveService implements OnAdvancedStreamFeaturesLoaded {
 		if (conversation.getLastMessageTransmitted() < 0 && conversation.countMessages() == 0) {
 			query(conversation,
 					0,
-					System.currentTimeMillis());
+					System.currentTimeMillis(),
+					true);
 		} else {
 			query(conversation,
 					conversation.getLastMessageTransmitted(),
-					System.currentTimeMillis());
+					System.currentTimeMillis(),
+					true);
 		}
 	}
 
@@ -95,19 +97,21 @@ public class MessageArchiveService implements OnAdvancedStreamFeaturesLoaded {
 		if (conversation.getLastMessageTransmitted() < 0 && conversation.countMessages() == 0) {
 			return query(conversation,
 					0,
-					System.currentTimeMillis());
+					System.currentTimeMillis(),
+					false);
 		} else {
 			return query(conversation,
 					conversation.getLastMessageTransmitted(),
-					conversation.getAccount().getXmppConnection().getLastSessionEstablished());
+					conversation.getAccount().getXmppConnection().getLastSessionEstablished(),
+					false);
 		}
 	}
 
-	public Query query(final Conversation conversation, long end) {
-		return this.query(conversation,conversation.getLastMessageTransmitted(),end);
+	public Query query(final Conversation conversation, long end, boolean allowCatchup) {
+		return this.query(conversation,conversation.getLastMessageTransmitted(),end, allowCatchup);
 	}
 
-	public Query query(Conversation conversation, long start, long end) {
+	public Query query(Conversation conversation, long start, long end, boolean allowCatchup) {
 		synchronized (this.queries) {
 			final Query query;
 			final long startActual = Math.max(start,mXmppConnectionService.getAutomaticMessageDeletionDate());
@@ -121,7 +125,7 @@ public class MessageArchiveService implements OnAdvancedStreamFeaturesLoaded {
 					this.queries.add(reverseCatchup);
 					this.execute(reverseCatchup);
 				}
-				query = new Query(conversation, maxCatchup, end);
+				query = new Query(conversation, maxCatchup, end, allowCatchup);
 			}
 			if (start > end) {
 				return null;

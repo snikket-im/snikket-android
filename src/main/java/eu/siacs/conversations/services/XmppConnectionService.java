@@ -1647,7 +1647,7 @@ public class XmppConnectionService extends Service {
 						&& conversation.getLastClearHistory() == 0) {
 					if ((conversation.getMode() == Conversation.MODE_SINGLE && account.getXmppConnection().getFeatures().mam())
 							|| (conversation.getMode() == Conversation.MODE_MULTI && conversation.getMucOptions().mamSupport())) {
-						MessageArchiveService.Query query = getMessageArchiveService().query(conversation, 0, timestamp);
+						MessageArchiveService.Query query = getMessageArchiveService().query(conversation, 0, timestamp, false);
 						if (query != null) {
 							query.setCallback(callback);
 							callback.informUser(R.string.fetching_history_from_server);
@@ -1761,7 +1761,7 @@ public class XmppConnectionService extends Service {
 							mMessageArchiveService.query(c);
 						} else {
 							if (query.getConversation() == null) {
-								mMessageArchiveService.query(c, query.getStart());
+								mMessageArchiveService.query(c, query.getStart(),query.isCatchup());
 							}
 						}
 					}

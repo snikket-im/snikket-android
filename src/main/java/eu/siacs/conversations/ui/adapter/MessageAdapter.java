@@ -570,7 +570,7 @@ public class MessageAdapter extends ArrayAdapter<Message> implements CopyTextVie
 			timestamp = System.currentTimeMillis();
 		}
 		conversation.messagesLoaded.set(true);
-		MessageArchiveService.Query query = activity.xmppConnectionService.getMessageArchiveService().query(conversation, 0, timestamp);
+		MessageArchiveService.Query query = activity.xmppConnectionService.getMessageArchiveService().query(conversation, 0, timestamp, false);
 		if (query != null) {
 			Toast.makeText(activity, R.string.fetching_history_from_server, Toast.LENGTH_LONG).show();
 		} else {
