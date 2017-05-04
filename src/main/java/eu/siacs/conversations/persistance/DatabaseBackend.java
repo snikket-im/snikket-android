@@ -1086,6 +1086,25 @@ public class DatabaseBackend extends SQLiteOpenHelper {
 		return prekeys;
 	}
 
+	public int getSignedPreKeysCount(Account account) {
+		String[] columns = {"count("+SQLiteAxolotlStore.KEY+")"};
+		String[] selectionArgs = {account.getUuid()};
+		SQLiteDatabase db = this.getReadableDatabase();
+		Cursor cursor = db.query(SQLiteAxolotlStore.SIGNED_PREKEY_TABLENAME,
+				columns,
+				SQLiteAxolotlStore.ACCOUNT + "=?",
+				selectionArgs,
+				null, null, null);
+		final int count;
+		if (cursor.moveToFirst()) {
+			count = cursor.getInt(0);
+		} else {
+			count = 0;
+		}
+		cursor.close();
+		return count;
+	}
+
 	public boolean containsSignedPreKey(Account account, int signedPreKeyId) {
 		Cursor cursor = getCursorForPreKey(account, signedPreKeyId);
 		int count = cursor.getCount();

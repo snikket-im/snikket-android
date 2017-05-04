@@ -79,9 +79,6 @@ public class SQLiteAxolotlStore implements AxolotlStore {
 		this.mXmppConnectionService = service;
 		this.localRegistrationId = loadRegistrationId();
 		this.currentPreKeyId = loadCurrentPreKeyId();
-		for (SignedPreKeyRecord record : loadSignedPreKeys()) {
-			Log.d(Config.LOGTAG, AxolotlService.getLogprefix(account) + "Got Axolotl signed prekey record:" + record.getId());
-		}
 	}
 
 	public int getCurrentPreKeyId() {
@@ -413,6 +410,10 @@ public class SQLiteAxolotlStore implements AxolotlStore {
 	@Override
 	public List<SignedPreKeyRecord> loadSignedPreKeys() {
 		return mXmppConnectionService.databaseBackend.loadSignedPreKeys(account);
+	}
+
+	public int getSignedPreKeysCount() {
+		return mXmppConnectionService.databaseBackend.getSignedPreKeysCount(account);
 	}
 
 	/**

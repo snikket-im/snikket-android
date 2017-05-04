@@ -602,7 +602,7 @@ public class AxolotlService implements OnAdvancedStreamFeaturesLoaded {
 
 					// Validate signedPreKeyRecord + ID
 					SignedPreKeyRecord signedPreKeyRecord;
-					int numSignedPreKeys = axolotlStore.loadSignedPreKeys().size();
+					int numSignedPreKeys = axolotlStore.getSignedPreKeysCount();
 					try {
 						signedPreKeyRecord = axolotlStore.loadSignedPreKey(bundle.getSignedPreKeyId());
 						if (flush
