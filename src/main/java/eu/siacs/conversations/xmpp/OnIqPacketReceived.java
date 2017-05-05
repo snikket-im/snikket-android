@@ -4,5 +4,5 @@ import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.xmpp.stanzas.IqPacket;
 
 public interface OnIqPacketReceived extends PacketReceived {
-	public void onIqPacketReceived(Account account, IqPacket packet);
+	void onIqPacketReceived(Account account, IqPacket packet);
 }

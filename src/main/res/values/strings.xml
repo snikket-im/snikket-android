@@ -158,7 +158,7 @@
 	<string name="account_status_regis_conflict">Username already in use</string>
 	<string name="account_status_regis_success">Registration completed</string>
 	<string name="account_status_regis_not_sup">Server does not support registration</string>
-	<string name="account_status_security_error">Security error</string>
+	<string name="account_status_tls_error">TLS error</string>
 	<string name="account_status_policy_violation">Policy violation</string>
 	<string name="account_status_incompatible_server">Incompatible server</string>
 	<string name="account_status_stream_error">Stream error</string>
@@ -747,4 +747,6 @@
 	<string name="block_entire_domain">Block entire domain</string>
 	<string name="online_right_now">online right now</string>
 	<string name="retry_decryption">Retry decryption</string>
+	<string name="session_failure">Session failure</string>
+	<string name="downgrade_attack">Downgrade attack</string>
 </resources>
