@@ -156,7 +156,6 @@
   <string name="account_status_regis_conflict">Erabiltzaile izena dagoeneko erabilita</string>
   <string name="account_status_regis_success">Erregistroa burutu da</string>
   <string name="account_status_regis_not_sup">Zerbitzariak ez du erregistratzea onartzen</string>
-  <string name="account_status_security_error">Segurtasun akatsa</string>
   <string name="account_status_policy_violation">Politikaren urraketa</string>
   <string name="account_status_incompatible_server">Zerbitzari ez bateragarria</string>
   <string name="account_status_stream_error">Akatsa korrontean</string>
@@ -173,7 +172,6 @@
   <string name="republish_pgp_keys">Gogoratu ezazu zure OpenPGP gako publikoak birrargitaratzeaz!</string>
   <string name="mgmt_account_enable">Kontua gaitu</string>
   <string name="mgmt_account_are_you_sure">Ziur al zaude?</string>
-  <string name="mgmt_account_delete_confirm_text">Zure kontua ezabatzen baduzu zure elkarrizketa historia guztia galduko da</string>
   <string name="attach_record_voice">Ahotsa grabatu</string>
   <string name="account_settings_jabber_id">Jabber IDa</string>
   <string name="block_jabber_id">Jabber IDa blokeatu</string>
@@ -331,7 +329,6 @@
   <string name="check_x_filesize">Egiaztatu %sren neurria</string>
   <string name="check_x_filesize_on_host">Egiaztatu %1$sren neurria %2$s ostalarian</string>
   <string name="message_options">Mezuaren aukerak</string>
-  <string name="copy_text">Testua kopiatu</string>
   <string name="select_text">Testua hautatu</string>
   <string name="quote">Aipatu</string>
   <string name="copy_original_url">Jatorrizko URLa kopiatu</string>

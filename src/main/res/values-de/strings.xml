@@ -80,6 +80,7 @@
   <string name="also_end_conversation">Diese Unterhaltung danach beenden</string>
   <string name="choose_presence">Gerät auswählen</string>
   <string name="send_unencrypted_message">Unverschlüsselt schreiben…</string>
+  <string name="send_message">Nachricht senden</string>
   <string name="send_message_to_x">Sende Nachricht an %s</string>
   <string name="send_otr_message">OTR-verschlüsselt schreiben…</string>
   <string name="send_omemo_message">OMEMO-verschlüsselt schreiben…</string>
@@ -156,7 +157,7 @@
   <string name="account_status_regis_conflict">Benutzername wird bereits verwendet</string>
   <string name="account_status_regis_success">Registrierung abgeschlossen</string>
   <string name="account_status_regis_not_sup">Der Server unterstützt keine Registrierung</string>
-  <string name="account_status_security_error">Sicherheitsfehler</string>
+  <string name="account_status_tls_error">TLS Fehler</string>
   <string name="account_status_policy_violation">Verstoß gegen die Richtlinien</string>
   <string name="account_status_incompatible_server">Inkompatibler Server</string>
   <string name="account_status_stream_error">Datenstromfehler</string>
@@ -169,6 +170,8 @@
   <string name="mgmt_account_disable">Vorübergehend abschalten</string>
   <string name="mgmt_account_publish_avatar">Avatar veröffentlichen</string>
   <string name="mgmt_account_publish_pgp">Öffentlichen OpenPGP-Schlüssel veröffentlichen</string>
+  <string name="unpublish_pgp">Öffentlichen OpenPGP-Schlüssel verwerfen</string>
+  <string name="unpublish_pgp_message">Bist du sicher, dass du deinen öffentlichen OpenPGP-Schlüssel aus deiner Anwesenheitsmitteilung entfernen möchtest?\nDeine Kontakte können dir dann keine OpenPGP-verschlüsselten Nachrichten senden.</string>
   <string name="openpgp_has_been_published">Öffentlicher OpenPGP-Schlüssel wurde veröffentlicht.</string>
   <string name="republish_pgp_keys">Deine öffentliche OpenPGP-Schlüssel müssen veröffentlicht werden!</string>
   <string name="mgmt_account_enable">Konto aktivieren </string>
@@ -331,7 +334,6 @@
   <string name="check_x_filesize">%s-Größe prüfen</string>
   <string name="check_x_filesize_on_host">%1$s-Größe auf %2$s prüfen</string>
   <string name="message_options">Nachrichtenoptionen</string>
-  <string name="copy_text">Text kopieren</string>
   <string name="select_text">Text markieren</string>
   <string name="quote">Zitat</string>
   <string name="copy_original_url">Original-URL kopieren</string>
@@ -711,4 +713,7 @@
   <string name="block_stranger">Unbekannten sperren</string>
   <string name="block_entire_domain">Gesamte Domain sperren</string>
   <string name="online_right_now">aktuell online</string>
+  <string name="retry_decryption">Entschlüsseln wiederholen</string>
+  <string name="session_failure">Sitzungsfehler</string>
+  <string name="downgrade_attack">Downgrade Angriff</string>
 </resources>

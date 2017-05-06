@@ -154,7 +154,6 @@
   <string name="account_status_regis_conflict">Uživatelské jméno se již používá</string>
   <string name="account_status_regis_success">Registrace dokončena</string>
   <string name="account_status_regis_not_sup">Server nepodporuje registrace</string>
-  <string name="account_status_security_error">Bezpečnostní chyba</string>
   <string name="account_status_policy_violation">Porušení podmínek</string>
   <string name="account_status_incompatible_server">Nekompatibilní server</string>
   <string name="account_status_stream_error">Chyba přenosu</string>
@@ -171,7 +170,6 @@
   <string name="republish_pgp_keys">Nezapomeňte znovuzveřejnit své veřejné OpenPGP klíče!</string>
   <string name="mgmt_account_enable">Povolit účet</string>
   <string name="mgmt_account_are_you_sure">Jste si jisti?</string>
-  <string name="mgmt_account_delete_confirm_text">Pokud smažete svůj účet celá historie konverzací bude ztracena</string>
   <string name="attach_record_voice">Nahrát hlas</string>
   <string name="account_settings_jabber_id">Jabber ID</string>
   <string name="account_settings_password">Heslo</string>
@@ -328,7 +326,6 @@
   <string name="check_x_filesize">Ověřit %s velikost</string>
   <string name="check_x_filesize_on_host">Kontrola %1$s velikosti na %2$s</string>
   <string name="message_options">Možnosti zpráv</string>
-  <string name="copy_text">Zkopírovat text</string>
   <string name="select_text">Vybrat text</string>
   <string name="copy_original_url">Kopírovat originální URL</string>
   <string name="send_again">Poslat znovu</string>

@@ -156,7 +156,6 @@
   <string name="account_status_regis_conflict">Tên người dùng đã được sử dụng</string>
   <string name="account_status_regis_success">Đăng ký hoàn tất</string>
   <string name="account_status_regis_not_sup">Máy chủ không hỗ trợ việc đăng ký</string>
-  <string name="account_status_security_error">Lỗi bảo mật</string>
   <string name="account_status_policy_violation">Vi phạm chính sách</string>
   <string name="account_status_incompatible_server">Máy chủ không tương thích</string>
   <string name="account_status_stream_error">Lỗi truyền phát</string>
@@ -173,7 +172,6 @@
   <string name="republish_pgp_keys">Nhớ phát hành lại các khoá công cộng OpenPGP!</string>
   <string name="mgmt_account_enable">Bật tài khoản</string>
   <string name="mgmt_account_are_you_sure">Bạn chắc chứ?</string>
-  <string name="mgmt_account_delete_confirm_text">Nếu xoá tài khoản, toàn bộ lịch sử hội thoại của bạn sẽ bị mất</string>
   <string name="attach_record_voice">Ghi âm</string>
   <string name="account_settings_jabber_id">ID Jabber</string>
   <string name="account_settings_password">Mật khẩu</string>
@@ -320,7 +318,6 @@
   <string name="not_connected_try_again">Bạn chưa kết nối mạng. Xin thử lại sau</string>
   <string name="check_x_filesize">Kiểm tra kích cỡ %s</string>
   <string name="message_options">Tuỳ chọn tin nhắn</string>
-  <string name="copy_text">Sao chép văn bản</string>
   <string name="copy_original_url">Sao chép URL gốc</string>
   <string name="send_again">Gửi lại</string>
   <string name="file_url">URL tập tin</string>

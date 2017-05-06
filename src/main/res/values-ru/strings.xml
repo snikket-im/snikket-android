@@ -156,7 +156,6 @@
   <string name="account_status_regis_conflict">Имя пользователя уже используется</string>
   <string name="account_status_regis_success">Регистрация завершена</string>
   <string name="account_status_regis_not_sup">Сервер не поддерживает регистрацию</string>
-  <string name="account_status_security_error">Ошибка безопасности</string>
   <string name="account_status_policy_violation">Нарушение правил</string>
   <string name="account_status_incompatible_server">Несовместимый сервер</string>
   <string name="account_status_stream_error">Ошибка потока</string>
@@ -173,7 +172,6 @@
   <string name="republish_pgp_keys">Не забудьте повторно анонсировать свои OpenPGP ключи!</string>
   <string name="mgmt_account_enable">Включить аккаунт</string>
   <string name="mgmt_account_are_you_sure">Вы уверены?</string>
-  <string name="mgmt_account_delete_confirm_text">Если вы удалите свой аккаунт, вся ваша история будет потеряна</string>
   <string name="attach_record_voice">Запись голоса</string>
   <string name="account_settings_jabber_id">Jabber ID</string>
   <string name="account_settings_password">Пароль</string>
@@ -330,7 +328,6 @@
   <string name="check_x_filesize">Проверить размер %s</string>
   <string name="check_x_filesize_on_host">Проверить размер %1$s на %2$s</string>
   <string name="message_options">Опции сообщения</string>
-  <string name="copy_text">Копировать текст</string>
   <string name="select_text">Выбрать текст</string>
   <string name="copy_original_url">Копировать адрес ссылки</string>
   <string name="send_again">Отправить ещё раз</string>

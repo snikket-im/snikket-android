@@ -156,7 +156,6 @@
   <string name="account_status_regis_conflict">Användarnamn används redan</string>
   <string name="account_status_regis_success">Registrering klar</string>
   <string name="account_status_regis_not_sup">Servern stödjer inte registrering</string>
-  <string name="account_status_security_error">Säkerhetsfel</string>
   <string name="account_status_policy_violation">Kränkning av policy</string>
   <string name="account_status_incompatible_server">Inkompatibel server</string>
   <string name="account_status_stream_error">Strömningsfel</string>
@@ -173,7 +172,6 @@
   <string name="republish_pgp_keys">Kom ihåg att återpublicera dina publika OpenPGP nycklar.</string>
   <string name="mgmt_account_enable">Aktivera konto</string>
   <string name="mgmt_account_are_you_sure">Är du säker?</string>
-  <string name="mgmt_account_delete_confirm_text">Om du tar bort kontot kommer all konversationshistorik att försvinna</string>
   <string name="attach_record_voice">Spela in röst</string>
   <string name="account_settings_jabber_id">Jabber-ID</string>
   <string name="block_jabber_id">Blockera Jabber-ID</string>
@@ -331,7 +329,6 @@
   <string name="check_x_filesize">Kontrollera filstorleken på %s</string>
   <string name="check_x_filesize_on_host">Kontrollera filstorlek för %1$s på %2$s</string>
   <string name="message_options">Meddelandealternativ</string>
-  <string name="copy_text">Kopiera text</string>
   <string name="select_text">Markera text</string>
   <string name="quote">Citera</string>
   <string name="copy_original_url">Kopiera orginal-URL</string>

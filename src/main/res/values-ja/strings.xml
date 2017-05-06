@@ -80,6 +80,7 @@
   <string name="also_end_conversation">その後、この会話を終了</string>
   <string name="choose_presence">デバイスを選択</string>
   <string name="send_unencrypted_message">暗号化されていないメッセージを送信</string>
+  <string name="send_message">メッセージを送信</string>
   <string name="send_message_to_x">メッセージを %s に送信</string>
   <string name="send_otr_message">OTR 暗号化メッセージを送信</string>
   <string name="send_omemo_message">OMEMO 暗号化メッセージを送信</string>
@@ -156,7 +157,7 @@
   <string name="account_status_regis_conflict">ユーザー名はすでに使用されています</string>
   <string name="account_status_regis_success">登録が完了しました</string>
   <string name="account_status_regis_not_sup">サーバーが登録をサポートしていません</string>
-  <string name="account_status_security_error">セキュリティ エラー</string>
+  <string name="account_status_tls_error">TLS エラー</string>
   <string name="account_status_policy_violation">ポリシー違反</string>
   <string name="account_status_incompatible_server">互換性のないサーバー</string>
   <string name="account_status_stream_error">ストリーム エラー</string>
@@ -169,11 +170,12 @@
   <string name="mgmt_account_disable">一時的に無効にする</string>
   <string name="mgmt_account_publish_avatar">アバターを公開</string>
   <string name="mgmt_account_publish_pgp">OpenPGP 公開鍵を公開</string>
+  <string name="unpublish_pgp">OpenPGP 公開鍵を削除</string>
   <string name="openpgp_has_been_published">OpenPGP 公開鍵を公開しました。</string>
   <string name="republish_pgp_keys">OpenPGP 公開鍵を再公開するのをお忘れなく!</string>
   <string name="mgmt_account_enable">アカウントを有効にする</string>
   <string name="mgmt_account_are_you_sure">よろしいですか?</string>
-  <string name="mgmt_account_delete_confirm_text">アカウントを削除するとあなたの会話履歴がすべて失われます</string>
+  <string name="mgmt_account_delete_confirm_text">アカウントを削除すると、会話履歴すべてが失われます</string>
   <string name="attach_record_voice">音声を録音</string>
   <string name="account_settings_jabber_id">Jabber ID</string>
   <string name="block_jabber_id">Jabber ID をブロック</string>
@@ -331,7 +333,6 @@
   <string name="check_x_filesize">%s サイズを確認</string>
   <string name="check_x_filesize_on_host">%2$s で %1$s のサイズを確認</string>
   <string name="message_options">メッセージオプション</string>
-  <string name="copy_text">テキストをコピー</string>
   <string name="select_text">テキストを選択</string>
   <string name="quote">引用</string>
   <string name="copy_original_url">元の URL をコピー</string>
@@ -708,4 +709,7 @@
   <string name="block_stranger">見知らぬ人をブロック</string>
   <string name="block_entire_domain">ドメイン全体をブロック</string>
   <string name="online_right_now">今すぐオンライン</string>
+  <string name="retry_decryption">復号化を再試行</string>
+  <string name="session_failure">セッション失敗</string>
+  <string name="downgrade_attack">ダウングレード攻撃</string>
 </resources>

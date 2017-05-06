@@ -156,7 +156,6 @@
   <string name="account_status_regis_conflict"> 用户名已存在</string>
   <string name="account_status_regis_success">注册完成</string>
   <string name="account_status_regis_not_sup">服务器不支持注册</string>
-  <string name="account_status_security_error">安全错误</string>
   <string name="account_status_policy_violation">违反政策</string>
   <string name="account_status_incompatible_server">服务器不兼容</string>
   <string name="account_status_stream_error">流错误</string>
@@ -173,7 +172,6 @@
   <string name="republish_pgp_keys">记得重新发布OpenPGP公钥</string>
   <string name="mgmt_account_enable">启用账户</string>
   <string name="mgmt_account_are_you_sure">确定?</string>
-  <string name="mgmt_account_delete_confirm_text">如果删除用户，所有会话信息将会丢失</string>
   <string name="attach_record_voice">录音</string>
   <string name="account_settings_jabber_id">Jabber ID</string>
   <string name="account_settings_password">密码</string>
@@ -330,7 +328,6 @@
   <string name="check_x_filesize">检查 %s 大小</string>
   <string name="check_x_filesize_on_host">在 %2$s 上检查 %1$s 的大小</string>
   <string name="message_options">消息选项</string>
-  <string name="copy_text">拷贝文本</string>
   <string name="select_text">选择文本</string>
   <string name="quote">引用</string>
   <string name="copy_original_url">拷贝原始URL</string>

@@ -132,7 +132,6 @@
   <string name="account_status_regis_conflict">Užívateľské meno už existuje</string>
   <string name="account_status_regis_success">Registrácia ukončená</string>
   <string name="account_status_regis_not_sup">Server nepodporuje registráciu</string>
-  <string name="account_status_security_error">Bezpečnostná chyba</string>
   <string name="account_status_incompatible_server">Nekompatibilný server</string>
   <string name="encryption_choice_unencrypted">Nezašifrovaný</string>
   <string name="encryption_choice_otr">OTR</string>
@@ -145,7 +144,6 @@
   <string name="mgmt_account_publish_pgp">Zverejniť OpenPGP kľúč</string>
   <string name="mgmt_account_enable">Povoliť účet</string>
   <string name="mgmt_account_are_you_sure">Ste si istý?</string>
-  <string name="mgmt_account_delete_confirm_text">Ak vymažete svoj účet, stratí sa celá história konverzácií</string>
   <string name="attach_record_voice">Nahrať hlas</string>
   <string name="account_settings_jabber_id">Jabber ID</string>
   <string name="account_settings_password">Heslo</string>
@@ -279,7 +277,6 @@
   <string name="not_connected_try_again">Nie ste pripojený. Skúste to neskôr</string>
   <string name="check_x_filesize">Overiť %s veľkosť</string>
   <string name="message_options">Možnosti správy</string>
-  <string name="copy_text">Skopírovať text</string>
   <string name="copy_original_url">Skopírovať originálny URL</string>
   <string name="send_again">Poslať znova</string>
   <string name="file_url">URL súbor</string>

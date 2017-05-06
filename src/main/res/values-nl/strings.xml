@@ -80,6 +80,7 @@
   <string name="also_end_conversation">Dit gesprek na afloop beëindigen</string>
   <string name="choose_presence">Apparaat kiezen</string>
   <string name="send_unencrypted_message">Verstuur onversleuteld bericht</string>
+  <string name="send_message">Verstuur bericht</string>
   <string name="send_message_to_x">Bericht sturen naar %s</string>
   <string name="send_otr_message">Verstuur OTR-versleuteld bericht</string>
   <string name="send_omemo_message">Verstuur OMEMO-versleuteld bericht</string>
@@ -156,7 +157,7 @@
   <string name="account_status_regis_conflict">Gebruikersnaam is al in gebruik</string>
   <string name="account_status_regis_success">Registratie voltooid</string>
   <string name="account_status_regis_not_sup">Server ondersteunt geen registratie</string>
-  <string name="account_status_security_error">Fout bij beveiliging</string>
+  <string name="account_status_tls_error">TLS-fout</string>
   <string name="account_status_policy_violation">Beleidsschending</string>
   <string name="account_status_incompatible_server">Incompatibele server</string>
   <string name="account_status_stream_error">Fout bij stream</string>
@@ -169,6 +170,8 @@
   <string name="mgmt_account_disable">Tijdelijk uitschakelen</string>
   <string name="mgmt_account_publish_avatar">Avatar publiceren</string>
   <string name="mgmt_account_publish_pgp">OpenPGP-publieke sleutel publiceren</string>
+  <string name="unpublish_pgp">OpenPGP-publieke sleutel verwijderen</string>
+  <string name="unpublish_pgp_message">Weet je zeker dat je je OpenPGP-publieke sleutel uit je aanwezigheidsaankondiging wil verwijderen?\nJe contacten zullen je geen OpenPGP-versleutelde berichten meer kunnen sturen.</string>
   <string name="openpgp_has_been_published">OpenPGP-publieke sleutel is gepubliceerd.</string>
   <string name="republish_pgp_keys">Vergeet niet je OpenPGP-publieke sleutels opnieuw te publiceren!</string>
   <string name="mgmt_account_enable">Account inschakelen</string>
@@ -331,7 +334,6 @@
   <string name="check_x_filesize">Bestandsgrootte van %s controleren</string>
   <string name="check_x_filesize_on_host">Bestandsgrootte van %1$s op %2$s controleren</string>
   <string name="message_options">Berichtopties</string>
-  <string name="copy_text">Tekst kopiëren</string>
   <string name="select_text">Tekst selecteren</string>
   <string name="quote">Citeren</string>
   <string name="copy_original_url">Oorspronkelijke URL kopiëren</string>
@@ -711,4 +713,7 @@
   <string name="block_stranger">Vreemde blokkeren</string>
   <string name="block_entire_domain">Volledig domein blokkeren</string>
   <string name="online_right_now">nu online</string>
+  <string name="retry_decryption">Ontsleutelen opnieuw proberen</string>
+  <string name="session_failure">Sessiefout</string>
+  <string name="downgrade_attack">Downgrade-aanval</string>
 </resources>

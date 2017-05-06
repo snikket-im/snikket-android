@@ -156,7 +156,6 @@
   <string name="account_status_regis_conflict">Kullanıcı adı kullanılıyor</string>
   <string name="account_status_regis_success">Hesap oluşturuldu</string>
   <string name="account_status_regis_not_sup">Sunucu hesap oluşturma işlemini desteklemiyor</string>
-  <string name="account_status_security_error">Güvenlik hatası</string>
   <string name="account_status_policy_violation">Politika ihlali</string>
   <string name="account_status_incompatible_server">Sunucu uyuşmazlığı</string>
   <string name="account_status_stream_error">Akış hatası</string>
@@ -173,7 +172,6 @@
   <string name="republish_pgp_keys">OpenPGP genel anahtarınızı yeniden yayımlamayı unutmayın!</string>
   <string name="mgmt_account_enable">Hesabı etkinleştir</string>
   <string name="mgmt_account_are_you_sure">Emin misiniz?</string>
-  <string name="mgmt_account_delete_confirm_text">Hesabınızı silerseniz tüm konuşma geçmişiniz silinecek</string>
   <string name="attach_record_voice">Ses kaydet</string>
   <string name="account_settings_jabber_id">Jabber ID</string>
   <string name="block_jabber_id">Jabber ID engelle</string>
@@ -331,7 +329,6 @@
   <string name="check_x_filesize">%s boyutunu denetle</string>
   <string name="check_x_filesize_on_host">%2$s üzerindeki %1$s boyutunu denetle</string>
   <string name="message_options">İleti seçenekleri</string>
-  <string name="copy_text">Metni kopyala</string>
   <string name="select_text">Metni seç</string>
   <string name="quote">Alıntı</string>
   <string name="copy_original_url">Orijinal URL\'i kopyala</string>

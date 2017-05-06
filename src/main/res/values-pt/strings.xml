@@ -152,7 +152,6 @@
   <string name="account_status_regis_conflict">O nome de utilizador já está em uso</string>
   <string name="account_status_regis_success">Registo efetuado com sucesso</string>
   <string name="account_status_regis_not_sup">O servidor não aceita o registo</string>
-  <string name="account_status_security_error">Erro de segurança</string>
   <string name="account_status_incompatible_server">Servidor incompatível</string>
   <string name="encryption_choice_unencrypted">Não cifrado</string>
   <string name="encryption_choice_otr">OTR</string>
@@ -165,7 +164,6 @@
   <string name="mgmt_account_publish_pgp">Publicar chave pública OpenPGP</string>
   <string name="mgmt_account_enable">Ativar conta</string>
   <string name="mgmt_account_are_you_sure">Tem a certeza?</string>
-  <string name="mgmt_account_delete_confirm_text">Se apagar a sua conta o histórico completo das suas conversas será perdido</string>
   <string name="attach_record_voice">Gravar voz</string>
   <string name="account_settings_jabber_id">ID Jabber</string>
   <string name="account_settings_password">Palavra-passe</string>
@@ -317,7 +315,6 @@
   <string name="check_x_filesize">Verifique o tamanho de %s</string>
   <string name="check_x_filesize_on_host">Verifique o tamanho de %1$s em %2$s</string>
   <string name="message_options">Opções de mensagem</string>
-  <string name="copy_text">Copiar texto</string>
   <string name="select_text">Selecionar texto</string>
   <string name="copy_original_url">Copiar o URL original</string>
   <string name="send_again">Enviar novamente</string>

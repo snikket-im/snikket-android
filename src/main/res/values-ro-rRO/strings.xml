@@ -80,6 +80,7 @@
   <string name="also_end_conversation">După, încheie conversația</string>
   <string name="choose_presence">Alege dispozitiv</string>
   <string name="send_unencrypted_message">Trimite mesaje necriptate</string>
+  <string name="send_message">Trimite mesaj</string>
   <string name="send_message_to_x">Trimite mesaj către %s</string>
   <string name="send_otr_message">Trimite mesaj criptat cu OTR</string>
   <string name="send_omemo_message">Trimite mesaj criptat cu OMEMO</string>
@@ -156,7 +157,7 @@
   <string name="account_status_regis_conflict">Nume de utilizator deja alocat</string>
   <string name="account_status_regis_success">Înregistrare completă</string>
   <string name="account_status_regis_not_sup">Acest server nu permite înregistrarea</string>
-  <string name="account_status_security_error">Eroare de securitate</string>
+  <string name="account_status_tls_error">Eroare TLS</string>
   <string name="account_status_policy_violation">Incălcare condiții serviciu</string>
   <string name="account_status_incompatible_server">Server incompatibil</string>
   <string name="account_status_stream_error">Eroare de date</string>
@@ -169,6 +170,8 @@
   <string name="mgmt_account_disable">Dezactivare temporară</string>
   <string name="mgmt_account_publish_avatar">Publică avatar</string>
   <string name="mgmt_account_publish_pgp">Publică cheia publică OpenPGP</string>
+  <string name="unpublish_pgp">Șterge cheia publică OpenPGP</string>
+  <string name="unpublish_pgp_message">Sigur doriți să vă ștergeți cheia publică OpenPGP din mesajele de prezență?\nContactele dumneavoastră nu vor mai putea să vă trimită mesaje criptate cu OpenPGP.</string>
   <string name="openpgp_has_been_published">Cheia publică OpenPGP a fost publicată.</string>
   <string name="republish_pgp_keys">Amintiți-vă să vă republicați cheile publice OpenPGP!</string>
   <string name="mgmt_account_enable">Activează cont</string>
@@ -331,14 +334,13 @@
   <string name="check_x_filesize">Verifica marimea %s</string>
   <string name="check_x_filesize_on_host">Verifica marimea %1$s pe %2$s</string>
   <string name="message_options">Optiuni mesaje</string>
-  <string name="copy_text">Copiaza text</string>
   <string name="select_text">Selecteaza text</string>
   <string name="quote">Citeaza</string>
-  <string name="copy_original_url">Copiaza URL original</string>
+  <string name="copy_original_url">Copiază adresa originală</string>
   <string name="send_again">Trimite din nou</string>
-  <string name="file_url">URL fisier</string>
+  <string name="file_url">Adresă fișier</string>
   <string name="message_text">Mesaj text</string>
-  <string name="url_copied_to_clipboard">URL copiat in memorie</string>
+  <string name="url_copied_to_clipboard">Adresă copiată în memorie</string>
   <string name="message_copied_to_clipboard">Mesaj copiat in memorie</string>
   <string name="image_transmission_failed">Transmisia imaginii a esuat</string>
   <string name="scan_qr_code">Scaneaza cod de bare 2D</string>
@@ -601,7 +603,7 @@ Emitent</string>
   <string name="this_account_is_disabled">Ai dezactivat acest cont</string>
   <string name="security_error_invalid_file_access">Eroare de securitate.: Acces fisier invalid</string>
   <string name="no_application_to_share_uri">Nu s-a gasit nici o aplicatie care sa partajeze URI</string>
-  <string name="share_uri_with">Partajeaza URI cu...</string>
+  <string name="share_uri_with">Partajează adresa cu...</string>
   <string name="welcome_text">XMPP este un protocol independent ce nu depinde de un anume furnizor. Aveți posibilitatea sa utilizati acest client cu orice server XMPP doriti.\nTotusi pentru confortul dumneavoastra am facilitat crearea unui cont pe conversations.im¹; un furnizor potrivit pentru utilizarea cu aplicatia Conversations.</string>
   <string name="magic_create_text">Va vom ghida prin procesul de creare al unui cont pe conversations.im.¹\nCand alegeti conversations.im ca furnizor veti putea comunica cu utilizatorii altor furnizori oferindu-le ID-ul dumneavoastra Jabber.</string>
   <string name="your_full_jid_will_be">ID-ul Jabber va fi: %s</string>
@@ -715,4 +717,7 @@ Emitent</string>
   <string name="block_stranger">Blocare străin</string>
   <string name="block_entire_domain">Blocare tot domeniu</string>
   <string name="online_right_now">online acum</string>
+  <string name="retry_decryption">Reîncearcă decriptarea</string>
+  <string name="session_failure">Sesiune eșuată</string>
+  <string name="downgrade_attack">Atac retrogradat</string>
 </resources>

@@ -129,7 +129,6 @@
   <string name="account_status_regis_conflict">El seu nom d\'usuari ja està en ús</string>
   <string name="account_status_regis_success">Registre completat</string>
   <string name="account_status_regis_not_sup">El servidor no admet el registre</string>
-  <string name="account_status_security_error">Error de seguretat</string>
   <string name="account_status_incompatible_server">Servidor incompatible</string>
   <string name="encryption_choice_otr">OTR</string>
   <string name="encryption_choice_pgp">OpenPGP</string>
@@ -140,7 +139,6 @@
   <string name="mgmt_account_publish_pgp">Publicar clau OpenPGP pública</string>
   <string name="mgmt_account_enable">Habilitar compte</string>
   <string name="mgmt_account_are_you_sure">Estàs segur?</string>
-  <string name="mgmt_account_delete_confirm_text">Si vosté elimina el  seu compte tot el seu historial de les conversacions és perdràn</string>
   <string name="attach_record_voice">Registre de veu</string>
   <string name="account_settings_jabber_id">Identificació de Jabber</string>
   <string name="account_settings_password">Contrasenya</string>
@@ -264,7 +262,6 @@
   <string name="using_account">Utlitzant el compte %s</string>
   <string name="not_connected_try_again">No estàs connectat. Intenta-ho més tard</string>
   <string name="message_options">Opcions del missatge</string>
-  <string name="copy_text">Copiar el text</string>
   <string name="copy_original_url">Copiar la URL original</string>
   <string name="send_again">Envia una altra vegada</string>
   <string name="message_text">Missatge de text</string>

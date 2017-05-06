@@ -153,7 +153,6 @@
   <string name="account_status_regis_conflict">Ім\'я користувача вже використовується</string>
   <string name="account_status_regis_success">Реєстрацію виконано</string>
   <string name="account_status_regis_not_sup">Сервер не підтримує режстрацію</string>
-  <string name="account_status_security_error">Помилка безпеки</string>
   <string name="account_status_policy_violation">Порушення політики</string>
   <string name="account_status_incompatible_server">Несумісний сервер</string>
   <string name="account_status_stream_error">Помилка потоку</string>
@@ -170,7 +169,6 @@
   <string name="republish_pgp_keys">Не забудьте переопублікувати Ваші публічні ключі OpenPGP!</string>
   <string name="mgmt_account_enable">Увімкнути обліковий запис</string>
   <string name="mgmt_account_are_you_sure">Ви впевнені?</string>
-  <string name="mgmt_account_delete_confirm_text">Якщо Ви видалите Ваш обліковий запис, усю історію розмов буде втрачено</string>
   <string name="attach_record_voice">Записати голос</string>
   <string name="account_settings_jabber_id">Jabber ID</string>
   <string name="account_settings_password">Пароль</string>
@@ -325,7 +323,6 @@
   <string name="check_x_filesize">Перевірити %s розмір</string>
   <string name="check_x_filesize_on_host">Перевірити %1$s розмір на %2$s</string>
   <string name="message_options">Налаштування повідомлення</string>
-  <string name="copy_text">Скопіювати текст</string>
   <string name="copy_original_url">Скопіювати оригінальний URL</string>
   <string name="send_again">Надіслати знову</string>
   <string name="file_url">URL файла</string>

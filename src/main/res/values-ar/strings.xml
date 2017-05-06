@@ -147,7 +147,6 @@
   <string name="account_status_regis_conflict">اسم المستخدم مستخدم من قبل</string>
   <string name="account_status_regis_success">تم تسجيل حسابك بنجاح</string>
   <string name="account_status_regis_not_sup">تسجيل الحسابات غير متاح على هذا السرفر</string>
-  <string name="account_status_security_error">خطأ أمني</string>
   <string name="account_status_policy_violation">خرق للقواعد</string>
   <string name="account_status_incompatible_server">لا يتوافق مع السيرفر</string>
   <string name="encryption_choice_unencrypted">غير مشفر</string>
@@ -163,7 +162,6 @@
   <string name="republish_pgp_keys">تذكر إعادة نشر مفاتيح OpenPGP العمومية الخاصة بك !</string>
   <string name="mgmt_account_enable">تفعيل الحساب</string>
   <string name="mgmt_account_are_you_sure">هل أنت متأكد ؟</string>
-  <string name="mgmt_account_delete_confirm_text">اذا حذفت حسابك ستفقد جميع الرسائل المحفوظة</string>
   <string name="attach_record_voice">تسجيل صوت</string>
   <string name="account_settings_jabber_id">حساب جابر</string>
   <string name="account_settings_password">كلمة السر</string>
@@ -289,7 +287,6 @@
   <string name="using_account">أنت تستعمل حساب %s</string>
   <string name="not_connected_try_again">انقطع الإتصال .. حاول مرة أخرى</string>
   <string name="message_options">خيارات الرساله</string>
-  <string name="copy_text">نسخ النص</string>
   <string name="select_text">حدد النص</string>
   <string name="quote">إقتبس</string>
   <string name="copy_original_url">أنسخ الرابط الأصلي</string>

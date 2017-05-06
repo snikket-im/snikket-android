@@ -145,7 +145,6 @@
   <string name="account_status_regis_conflict">Username telah digunakan</string>
   <string name="account_status_regis_success">Registrasi berhasil</string>
   <string name="account_status_regis_not_sup">Server tidak mendukung pendaftaran akun.</string>
-  <string name="account_status_security_error">Kesalahan keamanan</string>
   <string name="account_status_incompatible_server">Server tidak cocok</string>
   <string name="encryption_choice_otr">OTR</string>
   <string name="encryption_choice_pgp">OpenPGP</string>
@@ -157,7 +156,6 @@
   <string name="mgmt_account_publish_pgp">Publikasikan kunci OpenPGP</string>
   <string name="mgmt_account_enable">Aktifkan Akun</string>
   <string name="mgmt_account_are_you_sure">Apakah Anda yakin.?</string>
-  <string name="mgmt_account_delete_confirm_text">Jika Anda menghapus akun, semua data percakapan Anda di Conversation akan hilang.</string>
   <string name="attach_record_voice">Rekam suara</string>
   <string name="account_settings_jabber_id">Jabber ID</string>
   <string name="account_settings_password">Password</string>
@@ -288,7 +286,6 @@
   <string name="not_connected_try_again">Anda tidak terhubung. Coba lagi nanti</string>
   <string name="check_x_filesize">Cek %s ukuran</string>
   <string name="message_options">Opsi pesan</string>
-  <string name="copy_text">Salin teks</string>
   <string name="copy_original_url">Salin URL asli</string>
   <string name="send_again">Kirim lagi</string>
   <string name="file_url">URL Berkas</string>

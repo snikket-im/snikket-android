@@ -129,7 +129,6 @@
   <string name="account_status_regis_conflict">Το όνομα χρησιμοποιείται ήδη</string>
   <string name="account_status_regis_success">Ολοκλήρωση εγγραφής</string>
   <string name="account_status_regis_not_sup">Ο διακομιστής δεν υποστηρίζει εγγραφή</string>
-  <string name="account_status_security_error">Σφάλμα ασφάλειας</string>
   <string name="account_status_incompatible_server">Μη συμβατός διακομιστής</string>
   <string name="encryption_choice_otr">OTR</string>
   <string name="encryption_choice_pgp">OpenPGP</string>
@@ -140,7 +139,6 @@
   <string name="mgmt_account_publish_pgp">Δημοσίευση του δημόσιου κλειδιού OpenPGP</string>
   <string name="mgmt_account_enable">Ενεργοποίηση λογαριασμού</string>
   <string name="mgmt_account_are_you_sure">Είστε βέβαιοι;</string>
-  <string name="mgmt_account_delete_confirm_text">Αν διαγράψετε τον λογαριασμό σας, θα χαθεί όλο το ιστορικό συζητήσεών σας</string>
   <string name="attach_record_voice">Εγγραφή φωνής</string>
   <string name="account_settings_jabber_id">ταυτότητα Jabber</string>
   <string name="account_settings_password">Συνθηματικό</string>
@@ -264,7 +262,6 @@
   <string name="using_account">χρήση λογαριασμού %s</string>
   <string name="not_connected_try_again">Δεν είστε συνδεμένοι. Δοκιμάστε ξανά αργότερα</string>
   <string name="message_options">Επιλογές μηνυμάτων</string>
-  <string name="copy_text">Αντιγραφή κειμένου</string>
   <string name="copy_original_url">Αντιγραφή αρχικής διεύθυνσης URL</string>
   <string name="send_again">Αποστολή ξανά</string>
   <string name="message_text">Κείμενο μηνύματος</string>

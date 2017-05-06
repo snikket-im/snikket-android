@@ -80,6 +80,7 @@
   <string name="also_end_conversation">Además, terminar esta conversación</string>
   <string name="choose_presence">Seleccionar dispositivo</string>
   <string name="send_unencrypted_message">Enviar mensaje sin cifrar</string>
+  <string name="send_message">Enviar mensaje</string>
   <string name="send_message_to_x">Enviar mensaje a %s</string>
   <string name="send_otr_message">Enviar mensaje cifrado con OTR</string>
   <string name="send_omemo_message">Enviar mensaje cifrado con OMEMO </string>
@@ -156,7 +157,7 @@
   <string name="account_status_regis_conflict">El identificador ya está en uso</string>
   <string name="account_status_regis_success">Registro completado</string>
   <string name="account_status_regis_not_sup">El servidor no soporta registros</string>
-  <string name="account_status_security_error">Error de seguridad</string>
+  <string name="account_status_tls_error">TLS error</string>
   <string name="account_status_policy_violation">Policy violation</string>
   <string name="account_status_incompatible_server">Servidor incompatible</string>
   <string name="account_status_stream_error">Stream error</string>
@@ -169,11 +170,13 @@
   <string name="mgmt_account_disable">Deshabilitar temporalmente</string>
   <string name="mgmt_account_publish_avatar">Imagen de perfil</string>
   <string name="mgmt_account_publish_pgp">Publicar clave pública OpenPGP</string>
+  <string name="unpublish_pgp">Eliminar la clave pública OpenPGP</string>
+  <string name="unpublish_pgp_message">¿Estás seguro de que quieres eliminar tu clave pública OpenPGP de tu anuncio de presencia?\nTus contactos no podrán enviarte mensajes cifrados con OpenPGP.</string>
   <string name="openpgp_has_been_published">Clave pública OpenPGP ha sido publicada.</string>
   <string name="republish_pgp_keys">¡Recuerda republicar tus claves públicas OpenPGP!</string>
   <string name="mgmt_account_enable">Habilitar</string>
   <string name="mgmt_account_are_you_sure">¿Estás seguro?</string>
-  <string name="mgmt_account_delete_confirm_text">Si eliminas tu cuenta tu historial completo de conversaciones se perderá</string>
+  <string name="mgmt_account_delete_confirm_text">Si borras tu cuenta, tu historial de conversaciones también se perderá</string>
   <string name="attach_record_voice">Grabar audio</string>
   <string name="account_settings_jabber_id">Identificador Jabber</string>
   <string name="block_jabber_id">Bloquear Identificador Jabber</string>
@@ -331,7 +334,6 @@
   <string name="check_x_filesize">Comprobar tamaño de %s</string>
   <string name="check_x_filesize_on_host">Comprobar tamaño de %1$s en %2$s</string>
   <string name="message_options">Opciones de mensaje</string>
-  <string name="copy_text">Copiar texto</string>
   <string name="select_text">Seleccionar texto</string>
   <string name="quote">Citar</string>
   <string name="copy_original_url">Copiar URL original</string>
@@ -711,4 +713,7 @@
   <string name="block_stranger">Bloquear desconocido</string>
   <string name="block_entire_domain">Bloquear el dominio completo</string>
   <string name="online_right_now">Conectado ahora mismo</string>
+  <string name="retry_decryption">Reintentar descifrado</string>
+  <string name="session_failure">Fallo de sesión</string>
+  <string name="downgrade_attack">Downgrade attack</string>
 </resources>

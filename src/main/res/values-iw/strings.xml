@@ -135,7 +135,6 @@
   <string name="account_status_regis_conflict">שם משתמש כבר בשימוש</string>
   <string name="account_status_regis_success">הרשמה הושלמה</string>
   <string name="account_status_regis_not_sup">השרת לא תומך בהרשמת משתמשים חדשים</string>
-  <string name="account_status_security_error">שגיאת אבטחה</string>
   <string name="account_status_incompatible_server">שרת לא מתאים</string>
   <string name="encryption_choice_unencrypted">לא מוצפן</string>
   <string name="encryption_choice_otr">OTR</string>
@@ -148,7 +147,6 @@
   <string name="mgmt_account_publish_pgp">פרסם מפתח ציבורי של OpenPGP</string>
   <string name="mgmt_account_enable">הפעל חשבון</string>
   <string name="mgmt_account_are_you_sure">האם אתה בטוח?</string>
-  <string name="mgmt_account_delete_confirm_text">אם אתה מוחק את חשבונך כל היסטוריית הדיון שלך תאבד</string>
   <string name="attach_record_voice">הקלט קול</string>
   <string name="account_settings_jabber_id">מזהה Jabber</string>
   <string name="account_settings_password">סיסמה</string>
@@ -281,7 +279,6 @@
   <string name="not_connected_try_again">אינך מחובר. נסה שוב אחר כך</string>
   <string name="check_x_filesize">בדוק גודל %s</string>
   <string name="message_options">הגדרות הודעה</string>
-  <string name="copy_text">העתק טקסט</string>
   <string name="copy_original_url">העתק קישור</string>
   <string name="send_again">שלח שוב</string>
   <string name="file_url">קישור קובץ</string>

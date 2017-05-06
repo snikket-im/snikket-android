@@ -80,6 +80,7 @@
   <string name="also_end_conversation">Termina questa conversazione successivamente</string>
   <string name="choose_presence">Scegli un dispositivo</string>
   <string name="send_unencrypted_message">Invia messaggio non cifrato</string>
+  <string name="send_message">Invia messaggio</string>
   <string name="send_message_to_x">Invia messaggio a %s</string>
   <string name="send_otr_message">Messaggio OTR</string>
   <string name="send_omemo_message">Invia messaggio cifrato OMEMO</string>
@@ -156,7 +157,7 @@
   <string name="account_status_regis_conflict">Nome utente già in uso</string>
   <string name="account_status_regis_success">Registrazione completata</string>
   <string name="account_status_regis_not_sup">Il Server non supporta la registrazione</string>
-  <string name="account_status_security_error">Errore di sicurezza</string>
+  <string name="account_status_tls_error">errore TLS</string>
   <string name="account_status_policy_violation">Violazione della policy</string>
   <string name="account_status_incompatible_server">Server non compatibile</string>
   <string name="account_status_stream_error">Errore di stream</string>
@@ -169,11 +170,13 @@
   <string name="mgmt_account_disable">Disabilita temporaneamente</string>
   <string name="mgmt_account_publish_avatar">Pubblica avatar</string>
   <string name="mgmt_account_publish_pgp">Pubblica chiave pubblica OpenPGP</string>
+  <string name="unpublish_pgp">Rimuovi chiave pubblica OpenPGP</string>
+  <string name="unpublish_pgp_message">Sei sicuro di volere rimuovere la tua chiave pubblica OpenPGP dalla dichiarazione di presenza?\nI tuoi contatti non potranno più inviarti messaggi cifrati con OpenPGP.</string>
   <string name="openpgp_has_been_published">La chiave pubblica OpenPGP è stata pubblicata.</string>
   <string name="republish_pgp_keys">Ricorda di ripubblicare le tue chiavi pubbliche OpenPGP!</string>
   <string name="mgmt_account_enable">Abilita utente</string>
   <string name="mgmt_account_are_you_sure">Sei sicuro?</string>
-  <string name="mgmt_account_delete_confirm_text">Se cancelli il tuo utente la cronologia delle tue conversazioni verrà persa</string>
+  <string name="mgmt_account_delete_confirm_text">Se elimini il tuo account perderai tutta la cronologia delle conversazioni</string>
   <string name="attach_record_voice">Registra la voce</string>
   <string name="account_settings_jabber_id">ID Jabber</string>
   <string name="block_jabber_id">Blocca ID Jabber</string>
@@ -331,7 +334,6 @@
   <string name="check_x_filesize">Controllo dimensione %s</string>
   <string name="check_x_filesize_on_host">Controlla %1$s dimensione su %2$s</string>
   <string name="message_options">Opzioni del messaggio</string>
-  <string name="copy_text">Copia testo</string>
   <string name="select_text">Seleziona testo</string>
   <string name="quote">Quota</string>
   <string name="copy_original_url">Copia URL originale</string>
@@ -711,4 +713,7 @@
   <string name="block_stranger">Blocca sconosciuto</string>
   <string name="block_entire_domain">Blocca intero dominio</string>
   <string name="online_right_now">in linea adesso</string>
+  <string name="retry_decryption">Ritenta decifrazione</string>
+  <string name="session_failure">Sessione fallita</string>
+  <string name="downgrade_attack">Attacco downgrade</string>
 </resources>

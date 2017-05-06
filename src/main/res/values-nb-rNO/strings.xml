@@ -80,6 +80,7 @@
   <string name="also_end_conversation">Avslutt denne samtalen etterpå</string>
   <string name="choose_presence">Velg enhet</string>
   <string name="send_unencrypted_message">Send ukryptert melding</string>
+  <string name="send_message">Send melding</string>
   <string name="send_message_to_x">Send melding til %s</string>
   <string name="send_otr_message">Send OTR-kryptert melding</string>
   <string name="send_omemo_message">Send OMEMO-kryptert melding</string>
@@ -156,7 +157,7 @@
   <string name="account_status_regis_conflict">Brukernavn allerede i bruk</string>
   <string name="account_status_regis_success">Registrering fullført</string>
   <string name="account_status_regis_not_sup">Tjeneren støtter ikke registrering</string>
-  <string name="account_status_security_error">Sikkerhetsfeil</string>
+  <string name="account_status_tls_error">TLS-feil</string>
   <string name="account_status_policy_violation">Praksisbrudd</string>
   <string name="account_status_incompatible_server">Ukompatibel tjener</string>
   <string name="account_status_stream_error">Strømmingsfeil</string>
@@ -169,13 +170,16 @@
   <string name="mgmt_account_disable">Skru av midlertidig</string>
   <string name="mgmt_account_publish_avatar">Publiser avatar</string>
   <string name="mgmt_account_publish_pgp">Publiser OpenPGP offentlig nøkkel</string>
+  <string name="unpublish_pgp">Fjern offentlig OpenPGP-nøkkel</string>
+  <string name="unpublish_pgp_message">Er du sikker på at du vil fjerne din offentlige OpenPGP-nøkkel fra din tilstedeværelseskunngjøring?\nDine kontakter vil ikke lenger kunne sende deg OpenPGP-krypterte meldinger.</string>
   <string name="openpgp_has_been_published">Offentlig OpenPGP-nøkkel har blitt offentliggjort.</string>
   <string name="republish_pgp_keys">Husk å offentliggjøre dine offentlige OpenPGP nøkler igjen!</string>
   <string name="mgmt_account_enable">Skru på konto</string>
   <string name="mgmt_account_are_you_sure">Bekreft.</string>
-  <string name="mgmt_account_delete_confirm_text">Hvis du sletter din konto vil hele din konversasjonshistorikk gå tapt</string>
+  <string name="mgmt_account_delete_confirm_text">Hvis du sletter kontoen din, vil hele samtalehistorikken gå tapt.</string>
   <string name="attach_record_voice">Ta opp stemme</string>
   <string name="account_settings_jabber_id">Jabber-ID</string>
+  <string name="block_jabber_id">Blokker XMPP-ID</string>
   <string name="account_settings_password">Passord</string>
   <string name="account_settings_example_jabber_id">brukernavn@eksempel.no</string>
   <string name="account_settings_confirm_password">Bekreft passord</string>
@@ -330,7 +334,6 @@
   <string name="check_x_filesize">Sjekk %s størrelse</string>
   <string name="check_x_filesize_on_host">Sjekk %1$s størrelse på %2$s</string>
   <string name="message_options">Meldingsvalg</string>
-  <string name="copy_text">Kopier tekst</string>
   <string name="select_text">Velg tekst</string>
   <string name="quote">Sitat</string>
   <string name="copy_original_url">Kopier orginal nettadresse</string>
@@ -470,6 +473,8 @@
   <string name="disable_account">Deaktiver konto</string>
   <string name="contact_is_typing">%s skriver…</string>
   <string name="contact_has_stopped_typing">%s har sluttet å skrive</string>
+  <string name="contacts_are_typing">%s skriver…</string>
+  <string name="contacts_have_stopped_typing">%s har sluttet å skrive</string>
   <string name="pref_chat_states">Varsler for skriving</string>
   <string name="pref_chat_states_summary">Lar dine kontakter få nyss om at du skriver til dem</string>
   <string name="send_location">Send plasseringsdata</string>
@@ -700,4 +705,15 @@
   <string name="encrypting_message">Krypterer melding</string>
   <string name="not_fetching_history_retention_period">Henter ikke inn meldinger på grunn av lokal oppbevaringsperiode.</string>
   <string name="transcoding_video_progress">Komprimerer video (%s%% fullført)</string>
+  <string name="corresponding_conversations_closed">Samsvarende samtaler lukket.</string>
+  <string name="contact_blocked_past_tense">Kontakt blokkert.</string>
+  <string name="pref_notifications_from_strangers">Varslinger fra fremmede</string>
+  <string name="pref_notifications_from_strangers_summary">Vis varsel for meldinger mottatt fra fremmede.</string>
+  <string name="received_message_from_stranger">Mottok melding fra fremmed</string>
+  <string name="block_stranger">Blokker fremmed</string>
+  <string name="block_entire_domain">Blokker hele domenet</string>
+  <string name="online_right_now">pålogget akkurat nå</string>
+  <string name="retry_decryption">Prøv å dekryptere igjen</string>
+  <string name="session_failure">Økt-feil</string>
+  <string name="downgrade_attack">Nedgrader angrep</string>
 </resources>

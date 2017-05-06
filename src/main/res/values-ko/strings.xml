@@ -155,7 +155,6 @@
   <string name="account_status_regis_conflict">사용자 이름이 이미 사용중입니다 </string>
   <string name="account_status_regis_success">등록 성공 </string>
   <string name="account_status_regis_not_sup">서버가 등록을 지원하지 않습니다</string>
-  <string name="account_status_security_error">보안 오류 </string>
   <string name="account_status_policy_violation">정책 위반</string>
   <string name="account_status_incompatible_server">호환되지 않는 서버 </string>
   <string name="account_status_stream_error">스트림 오류</string>
@@ -172,9 +171,9 @@
   <string name="republish_pgp_keys">OpenPGP 공개 키를 다시 공개하는 것을 잊지 마세요!</string>
   <string name="mgmt_account_enable">계정 사용 </string>
   <string name="mgmt_account_are_you_sure">확실합니까? </string>
-  <string name="mgmt_account_delete_confirm_text">계정을 삭제하면 당신의 모든 대화 기록이 사라집니다 </string>
   <string name="attach_record_voice">녹음 </string>
   <string name="account_settings_jabber_id">Jabber ID</string>
+  <string name="block_jabber_id">Jabber ID 차단</string>
   <string name="account_settings_password">비밀번호 </string>
   <string name="account_settings_example_jabber_id">username@example.com</string>
   <string name="account_settings_confirm_password">암호 확인 </string>
@@ -329,8 +328,8 @@
   <string name="check_x_filesize">%s 크기 확인</string>
   <string name="check_x_filesize_on_host">%2$s의 %1$s 크기 확인</string>
   <string name="message_options">메세지 설정 </string>
-  <string name="copy_text">텍스트 복사 </string>
   <string name="select_text">텍스트를 선택</string>
+  <string name="quote">인용</string>
   <string name="copy_original_url">원본 URL 복사 </string>
   <string name="send_again">다시 보내기 </string>
   <string name="file_url">파일 URL</string>
@@ -468,6 +467,8 @@
   <string name="disable_account">계정 해제 </string>
   <string name="contact_is_typing">%s 이(가) 입력중입니다...</string>
   <string name="contact_has_stopped_typing">%s 이(가) 입력을 중단했습니다 </string>
+  <string name="contacts_are_typing">%s 이(가) 입력중입니다...</string>
+  <string name="contacts_have_stopped_typing">%s 이(가) 입력을 중단했습니다 </string>
   <string name="pref_chat_states">입력 알림 </string>
   <string name="pref_chat_states_summary">메세지를 쓸 때 친구들이 알게 합니다</string>
   <string name="send_location">위치 전송 </string>
@@ -526,6 +527,7 @@
   <string name="hostname_example">xmpp.example.com</string>
   <string name="action_add_account_with_certificate">인증서가 있는 계정 추가</string>
   <string name="unable_to_parse_certificate">인증서를 분석할 수 없음</string>
+  <string name="authenticate_with_certificate">공란으로 두면 인증서로 인증합니다</string>
   <string name="mam_prefs">보관 설정</string>
   <string name="server_side_mam_prefs">서버 사이드의 보관 설정</string>
   <string name="fetching_mam_prefs">보관 설정을 얻고 있습니다. 잠시 기다려주십시오 ...</string>
@@ -643,6 +645,13 @@
   <string name="no_permission_to_access_x">%s에 접근할 권한이 없음</string>
   <string name="remote_server_not_found">원격 서버 찾을 수 없음</string>
   <string name="unable_to_update_account">계정을 업데이트 할수없음</string>
+  <string name="missing_presence_subscription_with_x">%s의 참가 구독을 찾을 수 없습니다.</string>
+  <string name="missing_keys_from_x">%s에서 OMEMO 키를 찾을 수 없습니다.</string>
+  <string name="missing_omemo_keys">OMEMO 키가 없습니다</string>
+  <string name="wrong_conference_configuration">공개적이며 익명이 아닌 회의 입니다.</string>
+  <string name="this_conference_has_no_members">회의에 아무도 없습니다.</string>
+  <string name="report_jid_as_spammer">이 JID를 원치 않는 메시지 전송으로 보고합니다.</string>
+  <string name="pref_delete_omemo_identities">OMEMO ID를 삭제</string>
   <string name="pref_delete_omemo_identities_summary">OMEMO 키를 다시 생성합니다. 모든 연락처를 다시 확인해야합니다. 최후의 수단으로만 사용하십시오.</string>
   <string name="error_publish_avatar_offline">아바타를 게시하려면 연결된 상태여야 합니다.</string>
   <string name="show_error_message">에러 메세지 보이기</string>
@@ -659,4 +668,12 @@
   <string name="pref_blind_trust_before_verification_summary">이전에 확인되지 않은 연락처의 새로운 장치를 자동으로 신뢰하고, 신속히 연락처가 새로운 장치를 추가 할 때마다 수동으로 확인하도록 요청합니다.</string>
   <string name="not_trusted">신뢰되지 않음</string>
   <string name="invalid_barcode">잘못된 2D 바코드</string>
+  <string name="pref_clean_cache_summary">캐시 폴더를 삭제합니다 (카메라에서 사용)</string>
+  <string name="pref_clean_private_storage_summary">파일이 저장되어있는 개인 스토리지를 정리합니다 (서버에서 다시 다운로드 할 수 있습니다)</string>
+  <string name="i_followed_this_link_from_a_trusted_source">신뢰할 수 있는 소스에서 해당 링크를 따라갑니다</string>
+  <string name="verifying_omemo_keys_trusted_source">링크를 클릭 한 후 %1$s의 OMEMO 키를 확인하려고 합니다. 이것은 %2$s이 링크를 공개한 신뢰할 수 있는 소스에서 따라가고 있을 때만 안전합니다.</string>
+  <string name="verify_omemo_keys">OMEMO 키를 검증</string>
+  <string name="distrust_omemo_key_text">이 장치의 자격 증명을 삭제 하시겠습니까?\n장치와 해당 장치에서 메시지는 신뢰할 수없는 것으로 표시됩니다.</string>
+  <string name="pref_automatically_delete_messages_description">설정된 기간보다 오래된 메시지를 장치에서 자동으로 삭제합니다.</string>
+  <string name="pref_notifications_from_strangers_summary">모르는 사람으로부터 받은 메시지를 알립니다.</string>
 </resources>

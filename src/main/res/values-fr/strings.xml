@@ -156,7 +156,6 @@
   <string name="account_status_regis_conflict">Identifiant déjà utilisé</string>
   <string name="account_status_regis_success">Enregistrement réussi</string>
   <string name="account_status_regis_not_sup">Le serveur ne permet pas l\'enregistrement</string>
-  <string name="account_status_security_error">Erreur de sécurité</string>
   <string name="account_status_policy_violation">Violation de politique</string>
   <string name="account_status_incompatible_server">Serveur incompatible</string>
   <string name="account_status_stream_error">Erreur de flux</string>
@@ -173,7 +172,6 @@
   <string name="republish_pgp_keys">N\'oubliez pas de republier votre clef publique OpenPGP !</string>
   <string name="mgmt_account_enable">Activer</string>
   <string name="mgmt_account_are_you_sure">Êtes-vous sûr ?</string>
-  <string name="mgmt_account_delete_confirm_text">Si vous supprimez votre compte, votre historique de conversations sera perdu !</string>
   <string name="attach_record_voice">Enregistrer un son</string>
   <string name="account_settings_jabber_id">Identifiant</string>
   <string name="block_jabber_id">Bloquer l\'ID Jabber</string>
@@ -331,7 +329,6 @@
   <string name="check_x_filesize">Vérification de la taille de %s</string>
   <string name="check_x_filesize_on_host">Vérification de la taille de %1$s sur %2$s</string>
   <string name="message_options">Options du message</string>
-  <string name="copy_text">Copier le texte</string>
   <string name="select_text">Sélectionnez le texte</string>
   <string name="quote">Citation</string>
   <string name="copy_original_url">Copier l\'URL</string>

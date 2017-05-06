@@ -156,7 +156,6 @@
   <string name="account_status_regis_conflict">Nazwa jest już w użyciu</string>
   <string name="account_status_regis_success">Zarejestrowano pomyślnie</string>
   <string name="account_status_regis_not_sup">Serwer nie umożliwia rejestracji</string>
-  <string name="account_status_security_error">Błąd zabezpieczeń</string>
   <string name="account_status_policy_violation">Naruszenie zasad</string>
   <string name="account_status_incompatible_server">Serwer niekompatybilny</string>
   <string name="account_status_stream_error">Błąd strumienia</string>
@@ -173,7 +172,6 @@
   <string name="republish_pgp_keys">Pamiętaj, by ponownie opublikować swoje klucze publiczne OpenPGP!</string>
   <string name="mgmt_account_enable">Włącz konto</string>
   <string name="mgmt_account_are_you_sure">Czy na pewno?</string>
-  <string name="mgmt_account_delete_confirm_text">Wraz z kontem zostanie nieodwracalnie usunięta powiązana historia konwersacji.</string>
   <string name="attach_record_voice">Nagraj głos</string>
   <string name="account_settings_jabber_id">Jabber ID</string>
   <string name="account_settings_password">Hasło</string>
@@ -330,7 +328,6 @@
   <string name="check_x_filesize">Sprawdź rozmiar %s</string>
   <string name="check_x_filesize_on_host">Sprawdź wielkość %1$s na %2$s</string>
   <string name="message_options">Opcje wiadomości</string>
-  <string name="copy_text">Skopiuj tekst</string>
   <string name="select_text">Zaznacz tekst</string>
   <string name="copy_original_url">Skopiuj oryginalny URL</string>
   <string name="send_again">Wyślij ponownie</string>
