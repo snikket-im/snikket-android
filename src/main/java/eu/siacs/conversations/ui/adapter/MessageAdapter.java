@@ -65,6 +65,7 @@ import eu.siacs.conversations.utils.CryptoHelper;
 import eu.siacs.conversations.utils.GeoHelper;
 import eu.siacs.conversations.utils.Patterns;
 import eu.siacs.conversations.utils.UIHelper;
+import eu.siacs.conversations.xmpp.mam.MamReference;
 
 public class MessageAdapter extends ArrayAdapter<Message> implements CopyTextView.CopyHandler {
 
@@ -561,16 +562,16 @@ public class MessageAdapter extends ArrayAdapter<Message> implements CopyTextVie
 	}
 
 	private void loadMoreMessages(Conversation conversation) {
-		conversation.setLastClearHistory(0);
+		conversation.setLastClearHistory(0,null);
 		activity.xmppConnectionService.updateConversation(conversation);
 		conversation.setHasMessagesLeftOnServer(true);
 		conversation.setFirstMamReference(null);
-		long timestamp = conversation.getLastMessageTransmitted();
+		long timestamp = conversation.getLastMessageTransmitted().getTimestamp();
 		if (timestamp == 0) {
 			timestamp = System.currentTimeMillis();
 		}
 		conversation.messagesLoaded.set(true);
-		MessageArchiveService.Query query = activity.xmppConnectionService.getMessageArchiveService().query(conversation, 0, timestamp, false);
+		MessageArchiveService.Query query = activity.xmppConnectionService.getMessageArchiveService().query(conversation, new MamReference(0), timestamp, false);
 		if (query != null) {
 			Toast.makeText(activity, R.string.fetching_history_from_server, Toast.LENGTH_LONG).show();
 		} else {

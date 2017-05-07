@@ -246,7 +246,9 @@ public class IqGenerator extends AbstractGenerator {
 		} else if (mam.getWith()!=null) {
 			data.put("with", mam.getWith().toString());
 		}
-		data.put("start", getTimestamp(mam.getStart()));
+		if (mam.getStart() != 0) {
+			data.put("start", getTimestamp(mam.getStart()));
+		}
 		data.put("end", getTimestamp(mam.getEnd()));
 		data.submit();
 		query.addChild(data);

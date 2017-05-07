@@ -30,6 +30,7 @@ import eu.siacs.conversations.crypto.axolotl.AxolotlService;
 import eu.siacs.conversations.xmpp.chatstate.ChatState;
 import eu.siacs.conversations.xmpp.jid.InvalidJidException;
 import eu.siacs.conversations.xmpp.jid.Jid;
+import eu.siacs.conversations.xmpp.mam.MamReference;
 
 
 public class Conversation extends AbstractEntity implements Blockable, Comparable<Conversation> {
@@ -349,12 +350,16 @@ public class Conversation extends AbstractEntity implements Blockable, Comparabl
 		return this.mFirstMamReference;
 	}
 
-	public void setLastClearHistory(long time) {
-		setAttribute(ATTRIBUTE_LAST_CLEAR_HISTORY,String.valueOf(time));
+	public void setLastClearHistory(long time,String reference) {
+		if (reference != null) {
+			setAttribute(ATTRIBUTE_LAST_CLEAR_HISTORY, String.valueOf(time) + ":" + reference);
+		} else {
+			setAttribute(ATTRIBUTE_LAST_CLEAR_HISTORY, String.valueOf(time));
+		}
 	}
 
-	public long getLastClearHistory() {
-		return getLongAttribute(ATTRIBUTE_LAST_CLEAR_HISTORY, 0);
+	public MamReference getLastClearHistory() {
+		return MamReference.fromAttribute(getAttribute(ATTRIBUTE_LAST_CLEAR_HISTORY));
 	}
 
 	public List<Jid> getAcceptedCryptoTargets() {
@@ -468,11 +473,10 @@ public class Conversation extends AbstractEntity implements Blockable, Comparabl
 		if (this.messages.size() == 0) {
 			Message message = new Message(this, "", Message.ENCRYPTION_NONE);
 			message.setType(Message.TYPE_STATUS);
-			message.setTime(Math.max(getCreated(),getLastClearHistory()));
+			message.setTime(Math.max(getCreated(),getLastClearHistory().getTimestamp()));
 			return message;
 		} else {
-			Message message = this.messages.get(this.messages.size() - 1);
-			return message;
+			return this.messages.get(this.messages.size() - 1);
 		}
 	}
 
@@ -819,19 +823,19 @@ public class Conversation extends AbstractEntity implements Blockable, Comparabl
 		}
 	}
 
-	public long getLastMessageTransmitted() {
-		final long last_clear = getLastClearHistory();
-		long last_received = 0;
+	public MamReference getLastMessageTransmitted() {
+		final MamReference lastClear = getLastClearHistory();
+		MamReference lastReceived = new MamReference(0);
 		synchronized (this.messages) {
 			for(int i = this.messages.size() - 1; i >= 0; --i) {
 				Message message = this.messages.get(i);
 				if (message.getStatus() == Message.STATUS_RECEIVED || message.isCarbon()) {
-					last_received = message.getTimeSent();
+					lastReceived = new MamReference(message.getTimeSent(),message.getServerMsgId());
 					break;
 				}
 			}
 		}
-		return Math.max(last_clear,last_received);
+		return MamReference.max(lastClear,lastReceived);
 	}
 
 	public void setMutedTill(long value) {

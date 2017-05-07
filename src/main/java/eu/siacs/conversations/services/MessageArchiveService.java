@@ -19,6 +19,7 @@ import eu.siacs.conversations.xml.Element;
 import eu.siacs.conversations.xmpp.OnAdvancedStreamFeaturesLoaded;
 import eu.siacs.conversations.xmpp.OnIqPacketReceived;
 import eu.siacs.conversations.xmpp.jid.Jid;
+import eu.siacs.conversations.xmpp.mam.MamReference;
 import eu.siacs.conversations.xmpp.stanzas.IqPacket;
 
 public class MessageArchiveService implements OnAdvancedStreamFeaturesLoaded {
@@ -46,34 +47,26 @@ public class MessageArchiveService implements OnAdvancedStreamFeaturesLoaded {
 				}
 			}
 		}
-		final Pair<Long,String> lastMessageReceived = mXmppConnectionService.databaseBackend.getLastMessageReceived(account);
-		final Pair<Long,String> lastClearDate = mXmppConnectionService.databaseBackend.getLastClearDate(account);
-		long startCatchup;
-		final String reference;
-		if (lastMessageReceived != null && lastMessageReceived.first >= lastClearDate.first) {
-			startCatchup = lastMessageReceived.first;
-			reference = lastMessageReceived.second;
-		} else {
-			startCatchup = lastClearDate.first;
-			reference = null;
-		}
-		startCatchup = Math.max(startCatchup,mXmppConnectionService.getAutomaticMessageDeletionDate());
+		MamReference mamReference = MamReference.max(
+				mXmppConnectionService.databaseBackend.getLastMessageReceived(account),
+				mXmppConnectionService.databaseBackend.getLastClearDate(account)
+		);
+		mamReference = MamReference.max(mamReference,mXmppConnectionService.getAutomaticMessageDeletionDate());
 		long endCatchup = account.getXmppConnection().getLastSessionEstablished();
 		final Query query;
-		if (startCatchup == 0) {
+		if (mamReference.getTimestamp() == 0) {
 			return;
-		} else if (endCatchup - startCatchup >= Config.MAM_MAX_CATCHUP) {
-			startCatchup = endCatchup - Config.MAM_MAX_CATCHUP;
+		} else if (endCatchup - mamReference.getTimestamp() >= Config.MAM_MAX_CATCHUP) {
+			long startCatchup = endCatchup - Config.MAM_MAX_CATCHUP;
 			List<Conversation> conversations = mXmppConnectionService.getConversations();
 			for (Conversation conversation : conversations) {
-				if (conversation.getMode() == Conversation.MODE_SINGLE && conversation.getAccount() == account && startCatchup > conversation.getLastMessageTransmitted()) {
+				if (conversation.getMode() == Conversation.MODE_SINGLE && conversation.getAccount() == account && startCatchup > conversation.getLastMessageTransmitted().getTimestamp()) {
 					this.query(conversation,startCatchup,true);
 				}
 			}
-			query = new Query(account, startCatchup, endCatchup);
+			query = new Query(account, new MamReference(startCatchup), endCatchup);
 		} else {
-			query = new Query(account, startCatchup, endCatchup);
-			query.reference = reference;
+			query = new Query(account, mamReference, endCatchup);
 		}
 		synchronized (this.queries) {
 			this.queries.add(query);
@@ -82,9 +75,9 @@ public class MessageArchiveService implements OnAdvancedStreamFeaturesLoaded {
 	}
 
 	public void catchupMUC(final Conversation conversation) {
-		if (conversation.getLastMessageTransmitted() < 0 && conversation.countMessages() == 0) {
+		if (conversation.getLastMessageTransmitted().getTimestamp() < 0 && conversation.countMessages() == 0) {
 			query(conversation,
-					0,
+					new MamReference(0),
 					System.currentTimeMillis(),
 					true);
 		} else {
@@ -96,9 +89,9 @@ public class MessageArchiveService implements OnAdvancedStreamFeaturesLoaded {
 	}
 
 	public Query query(final Conversation conversation) {
-		if (conversation.getLastMessageTransmitted() < 0 && conversation.countMessages() == 0) {
+		if (conversation.getLastMessageTransmitted().getTimestamp() < 0 && conversation.countMessages() == 0) {
 			return query(conversation,
-					0,
+					new MamReference(0),
 					System.currentTimeMillis(),
 					false);
 		} else {
@@ -113,23 +106,27 @@ public class MessageArchiveService implements OnAdvancedStreamFeaturesLoaded {
 		return this.query(conversation,conversation.getLastMessageTransmitted(),end, allowCatchup);
 	}
 
-	public Query query(Conversation conversation, long start, long end, boolean allowCatchup) {
+	public Query query(Conversation conversation, MamReference start, long end, boolean allowCatchup) {
 		synchronized (this.queries) {
 			final Query query;
-			final long startActual = Math.max(start,mXmppConnectionService.getAutomaticMessageDeletionDate());
-			if (start==0) {
+			final MamReference startActual = MamReference.max(start,mXmppConnectionService.getAutomaticMessageDeletionDate());
+			if (start.getTimestamp() == 0) {
 				query = new Query(conversation, startActual, end, false);
 				query.reference = conversation.getFirstMamReference();
 			} else {
-				long maxCatchup = Math.max(startActual,System.currentTimeMillis() - Config.MAM_MAX_CATCHUP);
-				if (maxCatchup > startActual) {
-					Query reverseCatchup = new Query(conversation,startActual,maxCatchup,false);
-					this.queries.add(reverseCatchup);
-					this.execute(reverseCatchup);
+				if (allowCatchup) {
+					MamReference maxCatchup = MamReference.max(startActual, System.currentTimeMillis() - Config.MAM_MAX_CATCHUP);
+					if (maxCatchup.greaterThan(startActual)) {
+						Query reverseCatchup = new Query(conversation, startActual, maxCatchup.getTimestamp(), false);
+						this.queries.add(reverseCatchup);
+						this.execute(reverseCatchup);
+					}
+					query = new Query(conversation, maxCatchup, end, allowCatchup);
+				} else {
+					query = new Query(conversation, startActual, end, false);
 				}
-				query = new Query(conversation, maxCatchup, end, allowCatchup);
 			}
-			if (start > end) {
+			if (start.greaterThan(end)) {
 				return null;
 			}
 			this.queries.add(query);
@@ -305,27 +302,26 @@ public class MessageArchiveService implements OnAdvancedStreamFeaturesLoaded {
 		private boolean catchup = true;
 
 
-		public Query(Conversation conversation, long start, long end) {
-			this(conversation.getAccount(), start, end);
+		public Query(Conversation conversation, MamReference start, long end, boolean catchup) {
+			this(conversation.getAccount(),catchup ? start : start.timeOnly(),end);
 			this.conversation = conversation;
-		}
-
-		public Query(Conversation conversation, long start, long end, boolean catchup) {
-			this(conversation,start,end);
 			this.pagingOrder = catchup ? PagingOrder.NORMAL : PagingOrder.REVERSE;
 			this.catchup = catchup;
 		}
 
-		public Query(Account account, long start, long end) {
+		public Query(Account account, MamReference start, long end) {
 			this.account = account;
-			this.start = start;
+			if (start.getReference() != null) {
+				this.reference = start.getReference();
+			} else {
+				this.start = start.getTimestamp();
+			}
 			this.end = end;
 			this.queryId = new BigInteger(50, mXmppConnectionService.getRNG()).toString(32);
 		}
 		
 		private Query page(String reference) {
-			Query query = new Query(this.account,this.start,this.end);
-			query.reference = reference;
+			Query query = new Query(this.account,new MamReference(this.start,reference),this.end);
 			query.conversation = conversation;
 			query.totalCount = totalCount;
 			query.actualCount = actualCount;
@@ -445,8 +441,10 @@ public class MessageArchiveService implements OnAdvancedStreamFeaturesLoaded {
 					builder.append(getWith().toString());
 				}
 			}
-			builder.append(", start=");
-			builder.append(AbstractGenerator.getTimestamp(this.start));
+			if (this.start != 0) {
+				builder.append(", start=");
+				builder.append(AbstractGenerator.getTimestamp(this.start));
+			}
 			builder.append(", end=");
 			builder.append(AbstractGenerator.getTimestamp(this.end));
 			builder.append(", order="+pagingOrder.toString());
