@@ -75,7 +75,9 @@ public class MessageArchiveService implements OnAdvancedStreamFeaturesLoaded {
 			query = new Query(account, startCatchup, endCatchup);
 			query.reference = reference;
 		}
-		this.queries.add(query);
+		synchronized (this.queries) {
+			this.queries.add(query);
+		}
 		this.execute(query);
 	}
 
