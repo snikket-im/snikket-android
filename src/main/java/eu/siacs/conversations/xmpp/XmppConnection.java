@@ -531,21 +531,25 @@ public class XmppConnection implements Runnable {
 				break;
 			} else if (nextTag.isStart("failure")) {
 				final Element failure = tagReader.readElement(nextTag);
-				final String text = failure.findChildContent("text");
-				if (failure.hasChild("account-disabled")
-						&& text != null
-						&& text.contains("renew")
-						&& Config.MAGIC_CREATE_DOMAIN != null
-						&& text.contains(Config.MAGIC_CREATE_DOMAIN)) {
-					throw new StateChangingException(Account.State.PAYMENT_REQUIRED);
+				if (Namespace.SASL.equals(failure.getNamespace())) {
+					final String text = failure.findChildContent("text");
+					if (failure.hasChild("account-disabled")
+							&& text != null
+							&& text.contains("renew")
+							&& Config.MAGIC_CREATE_DOMAIN != null
+							&& text.contains(Config.MAGIC_CREATE_DOMAIN)) {
+						throw new StateChangingException(Account.State.PAYMENT_REQUIRED);
+					} else {
+						throw new StateChangingException(Account.State.UNAUTHORIZED);
+					}
+				} else if (Namespace.TLS.equals(failure.getNamespace())) {
+					throw new StateChangingException(Account.State.TLS_ERROR);
 				} else {
-					throw new StateChangingException(Account.State.UNAUTHORIZED);
+					throw new StateChangingException(Account.State.INCOMPATIBLE_SERVER);
 				}
 			} else if (nextTag.isStart("challenge")) {
 				final String challenge = tagReader.readElement(nextTag).getContent();
-				final Element response = new Element("response");
-				response.setAttribute("xmlns",
-						"urn:ietf:params:xml:ns:xmpp-sasl");
+				final Element response = new Element("response",Namespace.SASL);
 				try {
 					response.setContent(saslMechanism.getResponse(challenge));
 				} catch (final SaslMechanism.AuthenticationException e) {
@@ -781,7 +785,7 @@ public class XmppConnection implements Runnable {
 
 	private void sendStartTLS() throws IOException {
 		final Tag startTLS = Tag.empty("starttls");
-		startTLS.setAttribute("xmlns", "urn:ietf:params:xml:ns:xmpp-tls");
+		startTLS.setAttribute("xmlns", Namespace.TLS);
 		tagWriter.writeTag(startTLS);
 	}
 
@@ -864,8 +868,7 @@ public class XmppConnection implements Runnable {
 	private void authenticate() throws IOException {
 		final List<String> mechanisms = extractMechanisms(streamFeatures
 				.findChild("mechanisms"));
-		final Element auth = new Element("auth");
-		auth.setAttribute("xmlns", "urn:ietf:params:xml:ns:xmpp-sasl");
+		final Element auth = new Element("auth",Namespace.SASL);
 		if (mechanisms.contains("EXTERNAL") && account.getPrivateKeyAlias() != null) {
 			saslMechanism = new External(tagWriter, account, mXmppConnectionService.getRNG());
 		} else if (mechanisms.contains("SCRAM-SHA-256")) {
