@@ -22,6 +22,7 @@ import android.util.DisplayMetrics;
 import android.util.Log;
 import android.util.Pair;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -40,6 +41,7 @@ import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.entities.Contact;
 import eu.siacs.conversations.entities.Conversation;
 import eu.siacs.conversations.entities.Message;
+import eu.siacs.conversations.persistance.FileBackend;
 import eu.siacs.conversations.ui.ConversationActivity;
 import eu.siacs.conversations.ui.ManageAccountActivity;
 import eu.siacs.conversations.ui.SettingsActivity;
@@ -288,7 +290,12 @@ public class NotificationService {
 				mBuilder.setVibrate(new long[]{0});
 			}
 			if (ringtone != null) {
-				mBuilder.setSound(Uri.parse(ringtone));
+				Uri uri = Uri.parse(ringtone);
+				try {
+					mBuilder.setSound(fixRingtoneUri(uri));
+				} catch (SecurityException e) {
+					Log.d(Config.LOGTAG,"unable to use custom notification sound "+uri.toString());
+				}
 			}
 		}
 		if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
@@ -299,6 +306,14 @@ public class NotificationService {
 		mBuilder.setDefaults(0);
 		if (led) {
 			mBuilder.setLights(0xff00FF00, 2000, 3000);
+		}
+	}
+
+	private Uri fixRingtoneUri(Uri uri) {
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N && "file".equals(uri.getScheme())) {
+			return FileBackend.getUriForFile(mXmppConnectionService,new File(uri.getPath()));
+		} else {
+			return uri;
 		}
 	}
 

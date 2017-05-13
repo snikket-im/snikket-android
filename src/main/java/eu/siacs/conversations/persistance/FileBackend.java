@@ -65,7 +65,7 @@ public class FileBackend {
 
 	private static final SimpleDateFormat IMAGE_DATE_FORMAT = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.US);
 
-	private static final String FILE_PROVIDER = ".files";
+	public static final String FILE_PROVIDER = ".files";
 
 	private XmppConnectionService mXmppConnectionService;
 
