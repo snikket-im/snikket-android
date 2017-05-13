@@ -1186,7 +1186,8 @@ public class XmppConnectionService extends Service {
 	private void sendFileMessage(final Message message, final boolean delay) {
 		Log.d(Config.LOGTAG, "send file message");
 		final Account account = message.getConversation().getAccount();
-		if (account.httpUploadAvailable(fileBackend.getFile(message,false).getSize())) {
+		if (account.httpUploadAvailable(fileBackend.getFile(message,false).getSize())
+				|| message.getConversation().getMode() == Conversation.MODE_MULTI) {
 			mHttpConnectionManager.createNewUploadConnection(message, delay);
 		} else {
 			mJingleConnectionManager.createNewConnection(message);
