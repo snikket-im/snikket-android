@@ -161,7 +161,8 @@ public class XmppConnection implements Runnable {
 
 		@Override
 		public String[] getClientAliases(String s, Principal[] principals) {
-			return new String[0];
+			final String alias = account.getPrivateKeyAlias();
+			return alias != null ? new String[]{alias} : new String[0];
 		}
 
 		@Override
