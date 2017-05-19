@@ -218,25 +218,29 @@ public class XmppConnection implements Runnable {
 		mXmppConnectionService = service;
 	}
 
-	protected synchronized void changeStatus(final Account.State nextStatus) {
-		if (Thread.currentThread().isInterrupted()) {
-			Log.d(Config.LOGTAG,account.getJid().toBareJid()+": not changing status to "+nextStatus+" because thread was interrupted");
-			return;
-		}
-		if (account.getStatus() != nextStatus) {
-			if ((nextStatus == Account.State.OFFLINE)
-					&& (account.getStatus() != Account.State.CONNECTING)
-					&& (account.getStatus() != Account.State.ONLINE)
-					&& (account.getStatus() != Account.State.DISABLED)) {
+	protected void changeStatus(final Account.State nextStatus) {
+		synchronized (this) {
+			if (Thread.currentThread().isInterrupted()) {
+				Log.d(Config.LOGTAG, account.getJid().toBareJid() + ": not changing status to " + nextStatus + " because thread was interrupted");
 				return;
-					}
-			if (nextStatus == Account.State.ONLINE) {
-				this.attempt = 0;
 			}
-			account.setStatus(nextStatus);
-			if (statusListener != null) {
-				statusListener.onStatusChanged(account);
+			if (account.getStatus() != nextStatus) {
+				if ((nextStatus == Account.State.OFFLINE)
+						&& (account.getStatus() != Account.State.CONNECTING)
+						&& (account.getStatus() != Account.State.ONLINE)
+						&& (account.getStatus() != Account.State.DISABLED)) {
+					return;
+				}
+				if (nextStatus == Account.State.ONLINE) {
+					this.attempt = 0;
+				}
+				account.setStatus(nextStatus);
+			} else {
+				return;
 			}
+		}
+		if (statusListener != null) {
+			statusListener.onStatusChanged(account);
 		}
 	}
 
