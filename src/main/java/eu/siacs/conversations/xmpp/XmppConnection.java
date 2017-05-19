@@ -64,6 +64,7 @@ import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.entities.Message;
 import eu.siacs.conversations.entities.ServiceDiscoveryResult;
 import eu.siacs.conversations.generator.IqGenerator;
+import eu.siacs.conversations.services.NotificationService;
 import eu.siacs.conversations.services.XmppConnectionService;
 import eu.siacs.conversations.utils.DNSHelper;
 import eu.siacs.conversations.utils.SSLSocketHelper;
@@ -617,14 +618,19 @@ public class XmppConnection implements Runnable {
 				final AckPacket ack = new AckPacket(this.stanzasReceived, smVersion);
 				tagWriter.writeStanzaAsync(ack);
 			} else if (nextTag.isStart("a")) {
-				synchronized (account) {
+				boolean accountUiNeedsRefresh = false;
+				synchronized (NotificationService.CATCHUP_LOCK) {
 					if (mWaitingForSmCatchup.compareAndSet(true, false)) {
 						int count = mSmCatchupMessageCounter.get();
 						Log.d(Config.LOGTAG, account.getJid().toBareJid() + ": SM catchup complete (" + count + ")");
+						accountUiNeedsRefresh = true;
 						if (count > 0) {
 							mXmppConnectionService.getNotificationService().finishBacklog(true, account);
 						}
 					}
+				}
+				if (accountUiNeedsRefresh) {
+					mXmppConnectionService.updateAccountUi();
 				}
 				final Element ack = tagReader.readElement(nextTag);
 				lastPacketReceived = SystemClock.elapsedRealtime();

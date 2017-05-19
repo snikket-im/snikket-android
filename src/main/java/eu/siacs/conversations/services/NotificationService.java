@@ -52,6 +52,8 @@ import eu.siacs.conversations.xmpp.XmppConnection;
 
 public class NotificationService {
 
+	public static final Object CATCHUP_LOCK = new Object();
+
 	private static final String CONVERSATIONS_GROUP = "eu.siacs.conversations";
 	private final XmppConnectionService mXmppConnectionService;
 
@@ -173,7 +175,7 @@ public class NotificationService {
 	}
 
 	public void push(final Message message) {
-		synchronized (message.getConversation().getAccount()) {
+		synchronized (CATCHUP_LOCK) {
 			final XmppConnection connection = message.getConversation().getAccount().getXmppConnection();
 			if (connection.isWaitingForSmCatchup()) {
 				connection.incrementSmCatchupMessageCounter();
