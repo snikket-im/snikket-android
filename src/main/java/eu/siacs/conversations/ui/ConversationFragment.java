@@ -1275,9 +1275,10 @@ public class ConversationFragment extends Fragment implements EditMessage.Keyboa
 				action = SendButtonAction.TEXT;
 			}
 		}
-		if (activity.useSendButtonToIndicateStatus() && c != null
-				&& c.getAccount().getStatus() == Account.State.ONLINE) {
-			if (c.getMode() == Conversation.MODE_SINGLE) {
+		if (activity.useSendButtonToIndicateStatus() && c.getAccount().getStatus() == Account.State.ONLINE) {
+			if (activity.xmppConnectionService != null && activity.xmppConnectionService.getMessageArchiveService().isCatchingUp(c)) {
+				status = Presence.Status.OFFLINE;
+			} else if (c.getMode() == Conversation.MODE_SINGLE) {
 				status = c.getContact().getShownStatus();
 			} else {
 				status = c.getMucOptions().online() ? Presence.Status.ONLINE : Presence.Status.OFFLINE;

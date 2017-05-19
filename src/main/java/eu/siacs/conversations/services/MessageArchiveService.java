@@ -102,6 +102,22 @@ public class MessageArchiveService implements OnAdvancedStreamFeaturesLoaded {
 		}
 	}
 
+	public boolean isCatchingUp(Conversation conversation) {
+		final Account account = conversation.getAccount();
+		if (account.getXmppConnection().isWaitingForSmCatchup()) {
+			return true;
+		} else {
+			synchronized (this.queries) {
+				for(Query query : this.queries) {
+					if (query.getAccount() == account && query.isCatchup() && ((conversation.getMode() == Conversation.MODE_SINGLE && query.getWith() == null) || query.getConversation() == conversation)) {
+						return true;
+					}
+				}
+			}
+			return false;
+		}
+	}
+
 	public Query query(final Conversation conversation, long end, boolean allowCatchup) {
 		return this.query(conversation,conversation.getLastMessageTransmitted(),end, allowCatchup);
 	}
