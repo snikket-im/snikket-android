@@ -157,7 +157,6 @@
   <string name="account_status_regis_conflict">Gebruikersnaam is al in gebruik</string>
   <string name="account_status_regis_success">Registratie voltooid</string>
   <string name="account_status_regis_not_sup">Server ondersteunt geen registratie</string>
-  <string name="account_status_tls_error">TLS-fout</string>
   <string name="account_status_policy_violation">Beleidsschending</string>
   <string name="account_status_incompatible_server">Incompatibele server</string>
   <string name="account_status_stream_error">Fout bij stream</string>
@@ -715,5 +714,4 @@
   <string name="online_right_now">nu online</string>
   <string name="retry_decryption">Ontsleutelen opnieuw proberen</string>
   <string name="session_failure">Sessiefout</string>
-  <string name="downgrade_attack">Downgrade-aanval</string>
 </resources>

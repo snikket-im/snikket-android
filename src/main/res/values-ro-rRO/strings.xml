@@ -157,7 +157,6 @@
   <string name="account_status_regis_conflict">Nume de utilizator deja alocat</string>
   <string name="account_status_regis_success">Înregistrare completă</string>
   <string name="account_status_regis_not_sup">Acest server nu permite înregistrarea</string>
-  <string name="account_status_tls_error">Eroare TLS</string>
   <string name="account_status_policy_violation">Incălcare condiții serviciu</string>
   <string name="account_status_incompatible_server">Server incompatibil</string>
   <string name="account_status_stream_error">Eroare de date</string>
@@ -719,5 +718,4 @@ Emitent</string>
   <string name="online_right_now">online acum</string>
   <string name="retry_decryption">Reîncearcă decriptarea</string>
   <string name="session_failure">Sesiune eșuată</string>
-  <string name="downgrade_attack">Atac retrogradat</string>
 </resources>

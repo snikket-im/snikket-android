@@ -80,6 +80,7 @@
   <string name="also_end_conversation">Avsluta denna konversation efteråt</string>
   <string name="choose_presence">Välj enhet</string>
   <string name="send_unencrypted_message">Skicka okrypterat meddelande</string>
+  <string name="send_message">Skicka meddelande</string>
   <string name="send_message_to_x">Skicka meddelande till %s</string>
   <string name="send_otr_message">Skicka OTR-krypterat meddelande</string>
   <string name="send_omemo_message">Skicka OMEMO-krypterat meddelande</string>
@@ -168,10 +169,13 @@
   <string name="mgmt_account_disable">Inaktivera tillfälligt</string>
   <string name="mgmt_account_publish_avatar">Publicera avatarbild</string>
   <string name="mgmt_account_publish_pgp">Publicera OpenPGP publik nyckel</string>
+  <string name="unpublish_pgp">Ta bort OpenPGP publik nyckel</string>
+  <string name="unpublish_pgp_message">Är du säker på att du vill ta bort din OpenPGP publik nyckel från din tillgänglighetsuppdatering?\nDina kontakter kommer inte längre att kunna skicka dig OpenPGP-krypterade meddelande.</string>
   <string name="openpgp_has_been_published">OpenPGP-nyckel har publicerats.</string>
   <string name="republish_pgp_keys">Kom ihåg att återpublicera dina publika OpenPGP nycklar.</string>
   <string name="mgmt_account_enable">Aktivera konto</string>
   <string name="mgmt_account_are_you_sure">Är du säker?</string>
+  <string name="mgmt_account_delete_confirm_text">Om du tar bort ditt konto kommer hela konversationshistoriken att försvinna</string>
   <string name="attach_record_voice">Spela in röst</string>
   <string name="account_settings_jabber_id">Jabber-ID</string>
   <string name="block_jabber_id">Blockera Jabber-ID</string>
@@ -708,4 +712,6 @@
   <string name="block_stranger">Blockera främling</string>
   <string name="block_entire_domain">Blockera hel domän</string>
   <string name="online_right_now">online just nu</string>
+  <string name="retry_decryption">Försök dekryptera igen</string>
+  <string name="session_failure">Sessionsfel</string>
 </resources>

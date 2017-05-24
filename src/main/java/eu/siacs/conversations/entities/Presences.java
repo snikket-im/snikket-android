@@ -125,6 +125,6 @@ public class Presences {
 				}
 			}
 		}
-		return new Pair(typeMap,nameMap);
+		return new Pair<>(typeMap,nameMap);
 	}
 }

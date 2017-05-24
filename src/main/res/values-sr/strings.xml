@@ -157,7 +157,6 @@
   <string name="account_status_regis_conflict">Корисничко име је већ у употреби</string>
   <string name="account_status_regis_success">Регистрација завршена</string>
   <string name="account_status_regis_not_sup">Сервер не подржава регистрацију</string>
-  <string name="account_status_tls_error">ТЛС грешка</string>
   <string name="account_status_policy_violation">Нарушавање полисе</string>
   <string name="account_status_incompatible_server">Некомпатибилан сервер</string>
   <string name="account_status_stream_error">Грешка тока</string>

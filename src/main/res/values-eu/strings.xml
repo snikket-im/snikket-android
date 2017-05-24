@@ -80,6 +80,7 @@
   <string name="also_end_conversation">Elkarrizketa hau jarraian amaitu</string>
   <string name="choose_presence">Gailua aukeratu</string>
   <string name="send_unencrypted_message">Enkriptatu gabeko mezua bidali</string>
+  <string name="send_message">Mezua bidali</string>
   <string name="send_message_to_x">%s(r)i mezua bidali</string>
   <string name="send_otr_message">OTRz enkriptatutako mezua bidali</string>
   <string name="send_omemo_message">OMEMOz enkriptatutako mezua bidali</string>
@@ -168,10 +169,13 @@
   <string name="mgmt_account_disable">Aldi baterako ezgaitu</string>
   <string name="mgmt_account_publish_avatar">Profileko argazkia argitaratu</string>
   <string name="mgmt_account_publish_pgp">OpenPGP gako publikoa argitaratu</string>
+  <string name="unpublish_pgp">OpenPGP gako publikoa kendu</string>
+  <string name="unpublish_pgp_message">Ziur zure OpenPGP gako publikoa zure presentzia eguneraketetatik kendu nahi duzula?\nZure kontaktuek ezin dizute gehiago OpenPGPz enkriptatutako mezuak bidali.</string>
   <string name="openpgp_has_been_published">OpenPGP gako publikoa argitaratu da.</string>
   <string name="republish_pgp_keys">Gogoratu ezazu zure OpenPGP gako publikoak birrargitaratzeaz!</string>
   <string name="mgmt_account_enable">Kontua gaitu</string>
   <string name="mgmt_account_are_you_sure">Ziur al zaude?</string>
+  <string name="mgmt_account_delete_confirm_text">Zure kontua ezabatzen baduzu, zure elkarrizketen historia guztia galduko da</string>
   <string name="attach_record_voice">Ahotsa grabatu</string>
   <string name="account_settings_jabber_id">Jabber IDa</string>
   <string name="block_jabber_id">Jabber IDa blokeatu</string>
@@ -708,4 +712,6 @@
   <string name="block_stranger">Ezezaguna blokeatu</string>
   <string name="block_entire_domain">Domeinu osoa blokeatu</string>
   <string name="online_right_now">orain konektatuta</string>
+  <string name="retry_decryption">Saiatu berriz desenkriptatzen</string>
+  <string name="session_failure">Saioaren akatsa</string>
 </resources>

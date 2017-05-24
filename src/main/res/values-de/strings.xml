@@ -157,7 +157,6 @@
   <string name="account_status_regis_conflict">Benutzername wird bereits verwendet</string>
   <string name="account_status_regis_success">Registrierung abgeschlossen</string>
   <string name="account_status_regis_not_sup">Der Server unterstützt keine Registrierung</string>
-  <string name="account_status_tls_error">TLS Fehler</string>
   <string name="account_status_policy_violation">Verstoß gegen die Richtlinien</string>
   <string name="account_status_incompatible_server">Inkompatibler Server</string>
   <string name="account_status_stream_error">Datenstromfehler</string>
@@ -715,5 +714,4 @@
   <string name="online_right_now">aktuell online</string>
   <string name="retry_decryption">Entschlüsseln wiederholen</string>
   <string name="session_failure">Sitzungsfehler</string>
-  <string name="downgrade_attack">Downgrade Angriff</string>
 </resources>

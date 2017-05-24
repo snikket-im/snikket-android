@@ -157,7 +157,6 @@
   <string name="account_status_regis_conflict">ユーザー名はすでに使用されています</string>
   <string name="account_status_regis_success">登録が完了しました</string>
   <string name="account_status_regis_not_sup">サーバーが登録をサポートしていません</string>
-  <string name="account_status_tls_error">TLS エラー</string>
   <string name="account_status_policy_violation">ポリシー違反</string>
   <string name="account_status_incompatible_server">互換性のないサーバー</string>
   <string name="account_status_stream_error">ストリーム エラー</string>
@@ -171,6 +170,7 @@
   <string name="mgmt_account_publish_avatar">アバターを公開</string>
   <string name="mgmt_account_publish_pgp">OpenPGP 公開鍵を公開</string>
   <string name="unpublish_pgp">OpenPGP 公開鍵を削除</string>
+  <string name="unpublish_pgp_message">在席通知から OpenPGP 公開鍵を削除してもよろしいですか?\n連絡先はあなたに OpenPGP 暗号化メッセージを送信できなくなります。</string>
   <string name="openpgp_has_been_published">OpenPGP 公開鍵を公開しました。</string>
   <string name="republish_pgp_keys">OpenPGP 公開鍵を再公開するのをお忘れなく!</string>
   <string name="mgmt_account_enable">アカウントを有効にする</string>
@@ -711,5 +711,4 @@
   <string name="online_right_now">今すぐオンライン</string>
   <string name="retry_decryption">復号化を再試行</string>
   <string name="session_failure">セッション失敗</string>
-  <string name="downgrade_attack">ダウングレード攻撃</string>
 </resources>

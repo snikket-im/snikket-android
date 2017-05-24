@@ -157,7 +157,6 @@
   <string name="account_status_regis_conflict">El identificador ya está en uso</string>
   <string name="account_status_regis_success">Registro completado</string>
   <string name="account_status_regis_not_sup">El servidor no soporta registros</string>
-  <string name="account_status_tls_error">TLS error</string>
   <string name="account_status_policy_violation">Policy violation</string>
   <string name="account_status_incompatible_server">Servidor incompatible</string>
   <string name="account_status_stream_error">Stream error</string>
@@ -715,5 +714,4 @@
   <string name="online_right_now">Conectado ahora mismo</string>
   <string name="retry_decryption">Reintentar descifrado</string>
   <string name="session_failure">Fallo de sesión</string>
-  <string name="downgrade_attack">Downgrade attack</string>
 </resources>

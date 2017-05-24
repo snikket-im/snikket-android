@@ -157,7 +157,6 @@
   <string name="account_status_regis_conflict">Nome utente già in uso</string>
   <string name="account_status_regis_success">Registrazione completata</string>
   <string name="account_status_regis_not_sup">Il Server non supporta la registrazione</string>
-  <string name="account_status_tls_error">errore TLS</string>
   <string name="account_status_policy_violation">Violazione della policy</string>
   <string name="account_status_incompatible_server">Server non compatibile</string>
   <string name="account_status_stream_error">Errore di stream</string>
@@ -715,5 +714,4 @@
   <string name="online_right_now">in linea adesso</string>
   <string name="retry_decryption">Ritenta decifrazione</string>
   <string name="session_failure">Sessione fallita</string>
-  <string name="downgrade_attack">Attacco downgrade</string>
 </resources>

@@ -80,6 +80,7 @@
   <string name="also_end_conversation">Fermer cette conversation ensuite</string>
   <string name="choose_presence">Choisir l\'appareil</string>
   <string name="send_unencrypted_message">Envoyer un message non chiffré</string>
+  <string name="send_message">Envoyer le message</string>
   <string name="send_message_to_x">Envoyer un message à %s</string>
   <string name="send_otr_message">Envoyer un message chiffré avec OTR</string>
   <string name="send_omemo_message">Envoyer un message chiffré avec OMEMO</string>
@@ -168,10 +169,13 @@
   <string name="mgmt_account_disable">Désactiver temporairement</string>
   <string name="mgmt_account_publish_avatar">Publier un avatar</string>
   <string name="mgmt_account_publish_pgp">Publier la clef publique OpenPGP</string>
+  <string name="unpublish_pgp">Supprimer la clef publique OpenPGP</string>
+  <string name="unpublish_pgp_message">Êtes vous sûr de vouloir supprimer votre clef publique OpenPGP de votre annonce de présence ?\nVos contacts ne pourront plus vous envoyer de message chiffrés avec OpenPGP.</string>
   <string name="openpgp_has_been_published">La clef publique OpenPGP a été publiée</string>
   <string name="republish_pgp_keys">N\'oubliez pas de republier votre clef publique OpenPGP !</string>
   <string name="mgmt_account_enable">Activer</string>
   <string name="mgmt_account_are_you_sure">Êtes-vous sûr ?</string>
+  <string name="mgmt_account_delete_confirm_text">Si vous supprimez votre compte ainsi que tout votre historique de conversation sera perdu</string>
   <string name="attach_record_voice">Enregistrer un son</string>
   <string name="account_settings_jabber_id">Identifiant</string>
   <string name="block_jabber_id">Bloquer l\'ID Jabber</string>
@@ -468,8 +472,8 @@
   <string name="disable_account">Désactiver le compte</string>
   <string name="contact_is_typing">%s est en train d\'écrire</string>
   <string name="contact_has_stopped_typing">%s a arrêté d\'écrire</string>
-  <string name="contacts_are_typing">%s est en train d\'écrire...</string>
-  <string name="contacts_have_stopped_typing">%s a cessé d\'écrire</string>
+  <string name="contacts_are_typing">%s sont en train d\'écrire...</string>
+  <string name="contacts_have_stopped_typing">%s ont cessé d\'écrire</string>
   <string name="pref_chat_states">Notifications d\'écriture</string>
   <string name="pref_chat_states_summary">Informer vos contacts quand vous leur écrivez des messages</string>
   <string name="send_location">Envoyer la position</string>
@@ -708,4 +712,6 @@
   <string name="block_stranger">Bloquer l\'inconnu</string>
   <string name="block_entire_domain">Bloquer le domaine entier</string>
   <string name="online_right_now">En ligne actuellement</string>
+  <string name="retry_decryption">Nouvelle tentative de déchiffrement</string>
+  <string name="session_failure">Échec de la session</string>
 </resources>

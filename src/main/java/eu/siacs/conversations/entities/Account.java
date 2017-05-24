@@ -181,7 +181,7 @@ public class Account extends AbstractEntity {
 				case SESSION_FAILURE:
 					return R.string.session_failure;
 				case DOWNGRADE_ATTACK:
-					return R.string.downgrade_attack;
+					return R.string.sasl_downgrade;
 				case HOST_UNKNOWN:
 					return R.string.account_status_host_unknown;
 				case POLICY_VIOLATION:

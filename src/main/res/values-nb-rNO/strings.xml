@@ -157,7 +157,6 @@
   <string name="account_status_regis_conflict">Brukernavn allerede i bruk</string>
   <string name="account_status_regis_success">Registrering fullført</string>
   <string name="account_status_regis_not_sup">Tjeneren støtter ikke registrering</string>
-  <string name="account_status_tls_error">TLS-feil</string>
   <string name="account_status_policy_violation">Praksisbrudd</string>
   <string name="account_status_incompatible_server">Ukompatibel tjener</string>
   <string name="account_status_stream_error">Strømmingsfeil</string>
@@ -715,5 +714,4 @@
   <string name="online_right_now">pålogget akkurat nå</string>
   <string name="retry_decryption">Prøv å dekryptere igjen</string>
   <string name="session_failure">Økt-feil</string>
-  <string name="downgrade_attack">Nedgrader angrep</string>
 </resources>

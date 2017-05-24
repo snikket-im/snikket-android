@@ -157,7 +157,6 @@
   <string name="account_status_regis_conflict">Esse nome de usuário já está em uso</string>
   <string name="account_status_regis_success">Registro efetuado com sucesso</string>
   <string name="account_status_regis_not_sup">O servidor não aceita o registro</string>
-  <string name="account_status_tls_error">Erro de TLS</string>
   <string name="account_status_policy_violation">Violação de política</string>
   <string name="account_status_incompatible_server">Servidor incompatível</string>
   <string name="account_status_stream_error">Erro de fluxo</string>
