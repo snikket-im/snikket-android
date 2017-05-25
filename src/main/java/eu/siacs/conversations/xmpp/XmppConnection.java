@@ -1044,7 +1044,13 @@ public class XmppConnection implements Runnable {
 				} else {
 					Log.d(Config.LOGTAG, account.getJid() + ": disconnecting because of bind failure (" + packet.toString());
 				}
-				account.setResource(account.getResource().split("\\.")[0]);
+				final Element error = packet.findChild("error");
+				final String resource = account.getResource().split("\\.")[0];
+				if (packet.getType() == IqPacket.TYPE.ERROR && error != null && error.hasChild("conflict")) {
+					account.setResource(resource + "." + nextRandomId());
+				} else {
+					account.setResource(resource);
+				}
 				throw new StateChangingError(Account.State.BIND_FAILURE);
 			}
 		});
