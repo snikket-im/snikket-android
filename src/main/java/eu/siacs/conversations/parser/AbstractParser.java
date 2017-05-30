@@ -22,18 +22,26 @@ public abstract class AbstractParser {
 	}
 
 	public static Long parseTimestamp(Element element, Long d) {
-		Element delay = element.findChild("delay","urn:xmpp:delay");
-		if (delay != null) {
-			String stamp = delay.getAttribute("stamp");
-			if (stamp != null) {
-				try {
-					return AbstractParser.parseTimestamp(delay.getAttribute("stamp"));
-				} catch (ParseException e) {
-					return d;
+		long min = Long.MAX_VALUE;
+		boolean returnDefault = true;
+		for(Element child : element.getChildren()) {
+			if ("delay".equals(child.getName()) && "urn:xmpp:delay".equals(child.getNamespace())) {
+				String stamp = child.getAttribute("stamp");
+				if (stamp != null) {
+					try {
+						min = Math.min(min,AbstractParser.parseTimestamp(stamp));
+						returnDefault = false;
+					} catch (ParseException e) {
+						//ignore
+					}
 				}
 			}
 		}
-		return d;
+		if (returnDefault) {
+			return d;
+		} else {
+			return min;
+		}
 	}
 
 	public static long parseTimestamp(Element element) {

@@ -215,12 +215,14 @@ public class PresenceParser extends AbstractParser implements
 
 			final Element idle = packet.findChild("idle", Namespace.IDLE);
 			if (idle != null) {
-				contact.flagInactive();
-				final String since = idle.getAttribute("since");
 				try {
+					final String since = idle.getAttribute("since");
 					contact.setLastseen(AbstractParser.parseTimestamp(since));
+					contact.flagInactive();
 				} catch (NullPointerException | ParseException e) {
-					contact.setLastseen(System.currentTimeMillis());
+					if (contact.setLastseen(AbstractParser.parseTimestamp(packet))) {
+						contact.flagActive();
+					}
 				}
 			} else {
 				if (contact.setLastseen(AbstractParser.parseTimestamp(packet))) {
