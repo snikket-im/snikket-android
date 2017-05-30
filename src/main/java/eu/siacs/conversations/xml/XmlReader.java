@@ -65,11 +65,17 @@ public class XmlReader {
 				wakeLock.acquire();
 				if (parser.getEventType() == XmlPullParser.START_TAG) {
 					Tag tag = Tag.start(parser.getName());
+					final String xmlns = parser.getNamespace();
 					for (int i = 0; i < parser.getAttributeCount(); ++i) {
-						tag.setAttribute(parser.getAttributeName(i),
-								parser.getAttributeValue(i));
+						final String prefix = parser.getAttributePrefix(i);
+						String name;
+						if (prefix != null && !prefix.isEmpty() && !prefix.equals(xmlns)) {
+							name = prefix+":"+parser.getAttributeName(i);
+						} else {
+							name = parser.getAttributeName(i);
+						}
+						tag.setAttribute(name,parser.getAttributeValue(i));
 					}
-					String xmlns = parser.getNamespace();
 					if (xmlns != null) {
 						tag.setAttribute("xmlns", xmlns);
 					}
