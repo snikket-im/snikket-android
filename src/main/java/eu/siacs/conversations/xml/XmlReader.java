@@ -69,7 +69,7 @@ public class XmlReader {
 					for (int i = 0; i < parser.getAttributeCount(); ++i) {
 						final String prefix = parser.getAttributePrefix(i);
 						String name;
-						if (prefix != null && !prefix.isEmpty() && !prefix.equals(xmlns)) {
+						if (prefix != null && !prefix.isEmpty()) {
 							name = prefix+":"+parser.getAttributeName(i);
 						} else {
 							name = parser.getAttributeName(i);
