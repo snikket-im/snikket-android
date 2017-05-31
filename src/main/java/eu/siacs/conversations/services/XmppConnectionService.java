@@ -65,6 +65,7 @@ import java.util.ListIterator;
 import java.util.Locale;
 import java.util.Map;
 import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicLong;
 
 import de.duenndns.ssl.MemorizingTrustManager;
@@ -182,8 +183,9 @@ public class XmppConnectionService extends Service {
 	};
 	private FileBackend fileBackend = new FileBackend(this);
 	private MemorizingTrustManager mMemorizingTrustManager;
-	private NotificationService mNotificationService = new NotificationService(
-			this);
+	private NotificationService mNotificationService = new NotificationService(this);
+	private ShortcutService mShortcutService = new ShortcutService(this);
+	private AtomicBoolean mInitialAddressbookSyncCompleted = new AtomicBoolean(false);
 	private OnMessagePacketReceived mMessageParser = new MessageParser(this);
 	private OnPresencePacketReceived mPresenceParser = new PresenceParser(this);
 	private IqParser mIqParser = new IqParser(this);
@@ -1553,6 +1555,7 @@ public class XmppConnectionService extends Service {
 							}
 						}
 						Log.d(Config.LOGTAG, "finished merging phone contacts");
+						mShortcutService.refresh(mInitialAddressbookSyncCompleted.compareAndSet(false,true));
 						updateAccountUi();
 					}
 				});
@@ -3616,10 +3619,11 @@ public class XmppConnectionService extends Service {
 		return this.mMessageArchiveService;
 	}
 
-	public List<Contact> findContacts(Jid jid) {
+	public List<Contact> findContacts(Jid jid, String accountJid) {
 		ArrayList<Contact> contacts = new ArrayList<>();
 		for (Account account : getAccounts()) {
-			if (!account.isOptionSet(Account.OPTION_DISABLED)) {
+			if (!account.isOptionSet(Account.OPTION_DISABLED)
+					&& (accountJid == null || accountJid.equals(account.getJid().toBareJid().toString()))) {
 				Contact contact = account.getRoster().getContactFromRoster(jid);
 				if (contact != null) {
 					contacts.add(contact);
@@ -3962,6 +3966,10 @@ public class XmppConnectionService extends Service {
 
 	public boolean blindTrustBeforeVerification() {
 		return getPreferences().getBoolean(SettingsActivity.BLIND_TRUST_BEFORE_VERIFICATION, true);
+	}
+
+	public ShortcutService getShortcutService() {
+		return mShortcutService;
 	}
 
 	public interface OnMamPreferencesFetched {

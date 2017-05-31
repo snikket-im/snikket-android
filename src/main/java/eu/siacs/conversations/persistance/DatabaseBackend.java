@@ -49,6 +49,7 @@ import eu.siacs.conversations.entities.Message;
 import eu.siacs.conversations.entities.PresenceTemplate;
 import eu.siacs.conversations.entities.Roster;
 import eu.siacs.conversations.entities.ServiceDiscoveryResult;
+import eu.siacs.conversations.services.ShortcutService;
 import eu.siacs.conversations.utils.MimeUtils;
 import eu.siacs.conversations.xmpp.jid.InvalidJidException;
 import eu.siacs.conversations.xmpp.jid.Jid;
@@ -1422,5 +1423,22 @@ public class DatabaseBackend extends SQLiteOpenHelper {
 			Log.d(Config.LOGTAG,"resetting start time counter");
 			db.execSQL("delete from " + START_TIMES_TABLE);
 		}
+	}
+
+	public List<ShortcutService.FrequentContact> getFrequentContacts(int days) {
+		SQLiteDatabase db = this.getReadableDatabase();
+		final String SQL = "select "+Conversation.TABLENAME+"."+Conversation.ACCOUNT+","+Conversation.TABLENAME+"."+Conversation.CONTACTJID+" from "+Conversation.TABLENAME+" join "+Message.TABLENAME+" on conversations.uuid=messages.conversationUuid where messages.status!=0 and carbon==0  and conversations.mode=0 and messages.timeSent>=? group by conversations.uuid order by count(body) desc limit 4;";
+		String[] whereArgs = new String[]{String.valueOf(System.currentTimeMillis() - (Config.MILLISECONDS_IN_DAY * days))};
+		Cursor cursor = db.rawQuery(SQL,whereArgs);
+		ArrayList<ShortcutService.FrequentContact> contacts = new ArrayList<>();
+		while(cursor.moveToNext()) {
+			try {
+				contacts.add(new ShortcutService.FrequentContact(cursor.getString(0), Jid.fromString(cursor.getString(1))));
+			} catch (Exception e) {
+				Log.d(Config.LOGTAG,e.getMessage());
+			}
+		}
+		cursor.close();
+		return contacts;
 	}
 }

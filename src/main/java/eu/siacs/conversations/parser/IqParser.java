@@ -83,6 +83,7 @@ public class IqParser extends AbstractParser implements OnIqPacketReceived {
 		}
 		mXmppConnectionService.updateConversationUi();
 		mXmppConnectionService.updateRosterUi();
+		mXmppConnectionService.getShortcutService().refresh();
 	}
 
 	public String avatarData(final IqPacket packet) {
