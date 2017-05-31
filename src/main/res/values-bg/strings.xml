@@ -157,6 +157,7 @@
   <string name="account_status_regis_conflict">Потребителското име е заето</string>
   <string name="account_status_regis_success">Регистрацията е завършена</string>
   <string name="account_status_regis_not_sup">Сървърът не поддържа регистриране</string>
+  <string name="account_status_tls_error">Договарянето чрез TLS беше неуспешно</string>
   <string name="account_status_policy_violation">Нарушение на политиката</string>
   <string name="account_status_incompatible_server">Несъвместим сървър</string>
   <string name="account_status_stream_error">Поточна грешка</string>
@@ -577,7 +578,6 @@
   <string name="certicate_info_not_available">(Няма)</string>
   <string name="certificate_not_found">Няма намерен сертификат</string>
   <string name="notify_on_all_messages">Известяване за всички съобщения</string>
-  <string name="notify_only_when_highlighted">Известяване само на осветените</string>
   <string name="notify_never">Известията са изключени</string>
   <string name="notify_paused">Известията са спрени временно</string>
   <string name="pref_picture_compression">Компресиране на снимките</string>
@@ -714,4 +714,5 @@
   <string name="online_right_now">на линия в момента</string>
   <string name="retry_decryption">Повторен опит за дешифроване</string>
   <string name="session_failure">Грешка в сесията</string>
+  <string name="sasl_downgrade">Механизмът на SASL е понижен</string>
 </resources>

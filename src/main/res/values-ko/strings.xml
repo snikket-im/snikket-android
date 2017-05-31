@@ -569,7 +569,6 @@
   <string name="certicate_info_not_available">(사용할 수 없음)</string>
   <string name="certificate_not_found">인증서가 발견되지 않았습니다</string>
   <string name="notify_on_all_messages">모든 메세지를 알림</string>
-  <string name="notify_only_when_highlighted">중요 표시를 했을 때만 알림</string>
   <string name="notify_never">알림 해제됨</string>
   <string name="notify_paused">알림 일시중지됨</string>
   <string name="pref_picture_compression">사진 압축</string>

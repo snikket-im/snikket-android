@@ -525,7 +525,6 @@
   <string name="certicate_info_not_available">(Không sẵn sàng)</string>
   <string name="certificate_not_found">Không thấy chứng nhận nào</string>
   <string name="notify_on_all_messages">Thông báo tất cả tin nhắn</string>
-  <string name="notify_only_when_highlighted">Thông báo chỉ khi được làm nổi bật</string>
   <string name="notify_never">Đã tắt thông báo</string>
   <string name="notify_paused">Đã dừng thông báo</string>
   <string name="pref_picture_compression">Nén hình ảnh</string>

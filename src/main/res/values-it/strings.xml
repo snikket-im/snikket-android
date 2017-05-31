@@ -157,6 +157,7 @@
   <string name="account_status_regis_conflict">Nome utente già in uso</string>
   <string name="account_status_regis_success">Registrazione completata</string>
   <string name="account_status_regis_not_sup">Il Server non supporta la registrazione</string>
+  <string name="account_status_tls_error">Negoziazione TLS fallita</string>
   <string name="account_status_policy_violation">Violazione della policy</string>
   <string name="account_status_incompatible_server">Server non compatibile</string>
   <string name="account_status_stream_error">Errore di stream</string>
@@ -577,7 +578,6 @@
   <string name="certicate_info_not_available">(Non disponibile)</string>
   <string name="certificate_not_found">Nessun certificato trovato</string>
   <string name="notify_on_all_messages">Notifica per tutti i messaggi</string>
-  <string name="notify_only_when_highlighted">Notifica solo quando evidenziato</string>
   <string name="notify_never">Notifiche disabilitate</string>
   <string name="notify_paused">Notifiche in pausa</string>
   <string name="pref_picture_compression">Comprimi immagini</string>
@@ -714,4 +714,5 @@
   <string name="online_right_now">in linea adesso</string>
   <string name="retry_decryption">Ritenta decifrazione</string>
   <string name="session_failure">Sessione fallita</string>
+  <string name="sasl_downgrade">Meccanismo SASL degradato</string>
 </resources>

@@ -546,7 +546,6 @@
   <string name="certicate_info_not_available">(Não disponível)</string>
   <string name="certificate_not_found">Nenhum certificado encontrado</string>
   <string name="notify_on_all_messages">Notificar em todas as mensagens</string>
-  <string name="notify_only_when_highlighted">Notificar apenas quando destacado</string>
   <string name="notify_never">Notificações desativadas</string>
   <string name="notify_paused">Notificações interrompidas</string>
   <string name="pref_picture_compression">Comprimir Imagens</string>

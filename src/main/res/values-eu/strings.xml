@@ -577,7 +577,6 @@
   <string name="certicate_info_not_available">(Ez eskuragarri)</string>
   <string name="certificate_not_found">Ez da ziurtagiririk aurkitu</string>
   <string name="notify_on_all_messages">Mezu guztiak jakinarazi</string>
-  <string name="notify_only_when_highlighted">Jakinarazi nabarmentzerakoan soilik</string>
   <string name="notify_never">Jakinarazpenak ezgaituta</string>
   <string name="notify_paused">Jakinarazpenak gelditu dira</string>
   <string name="pref_picture_compression">Irudiak konprimatu</string>

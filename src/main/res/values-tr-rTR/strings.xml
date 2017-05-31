@@ -570,7 +570,6 @@
   <string name="certicate_info_not_available">(mevcut değil)</string>
   <string name="certificate_not_found">Sertifika bulunamadı</string>
   <string name="notify_on_all_messages">Tüm iletilerde uyar</string>
-  <string name="notify_only_when_highlighted">Yalnızca vurguluysa uyar</string>
   <string name="notify_never">Uyarılar devre dışı</string>
   <string name="notify_paused">Uyarılar geçici olarak durduruldu</string>
   <string name="pref_picture_compression">Resimleri sıkıştır</string>

@@ -560,7 +560,6 @@
   <string name="certicate_info_not_available">(Не доступно)</string>
   <string name="certificate_not_found">Не знайдено сертифікатів</string>
   <string name="notify_on_all_messages">Сповіщати про всі повідомлення</string>
-  <string name="notify_only_when_highlighted">Сповіщати, лише коли виділено</string>
   <string name="notify_never">Сповіщення вимкнено</string>
   <string name="notify_paused">Сповіщення призупинено</string>
   <string name="pref_picture_compression">Стискати зображення</string>

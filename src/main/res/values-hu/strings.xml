@@ -157,6 +157,7 @@
   <string name="account_status_regis_conflict">Ez a felhasználónév már foglalt</string>
   <string name="account_status_regis_success">Sikeres regisztráció</string>
   <string name="account_status_regis_not_sup">A szerver nem támogatja a regisztrációt</string>
+  <string name="account_status_tls_error">A TLS-tárgyalás sikertelen</string>
   <string name="account_status_policy_violation">Irányelv megsértése</string>
   <string name="account_status_incompatible_server">Nem kompatibilis szerver</string>
   <string name="account_status_stream_error">Adatfolyam hiba</string>
@@ -577,7 +578,6 @@
   <string name="certicate_info_not_available">(Nem elérhető)</string>
   <string name="certificate_not_found">Nem talált tanúsítványt</string>
   <string name="notify_on_all_messages">Értesítsen minden üzenetnél</string>
-  <string name="notify_only_when_highlighted">Akkor értesítsen csak ha kiemelt</string>
   <string name="notify_never">Értesítések letiltva</string>
   <string name="notify_paused">Értesítések szüneteltetve</string>
   <string name="pref_picture_compression">Képek tömörítése</string>
@@ -585,8 +585,8 @@
   <string name="always">Mindig</string>
   <string name="automatically">Automatikusan</string>
   <string name="battery_optimizations_enabled">Akkumulátor optimalizációk engedélyezve</string>
-  <string name="battery_optimizations_enabled_explained">A készülék erős akkumulátor optimalizálást végez a Conversations programon, ami késleltetett értesítésekhez, vagy akár üzenetet elvesztéséhet is vezethet.\nJavasolt kikapcsolni ezeket az optimalizálásokat.</string>
-  <string name="battery_optimizations_enabled_dialog">A készülék erős akkumulátor optimalizálást végez a Conversations programon, ami késleltetett értesítésekhez, vagy akár üzenetet elvesztéséhet is vezethet.\nMost meg lesz kérve arra, hogy tiltsa le azokat.</string>
+  <string name="battery_optimizations_enabled_explained">A készülék erős akkumulátor optimalizálást végez a Conversations programon, ami késleltetett értesítésekhez, vagy akár üzenetek elvesztéséhet is vezethet.\nJavasolt kikapcsolni ezt.</string>
+  <string name="battery_optimizations_enabled_dialog">A készülék erős akkumulátor optimalizálást végez a Conversations programon, ami késleltetett értesítésekhez, vagy akár üzenetek elvesztéséhet is vezethet.\nMost meg lesz kérve az optimalizáció letiltására.</string>
   <string name="disable">Letilt</string>
   <string name="selection_too_large">A kiválasztott terület túl nagy</string>
   <string name="no_accounts">(Nincs aktivált fiók)</string>
@@ -714,4 +714,5 @@
   <string name="online_right_now">online most</string>
   <string name="retry_decryption">Próbálja újra a dekódolást</string>
   <string name="session_failure">Munkamenet hiba</string>
+  <string name="sasl_downgrade">Csökkentett SASL mechanizmus</string>
 </resources>

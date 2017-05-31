@@ -610,7 +610,7 @@
 	<string name="certicate_info_not_available">(Not available)</string>
 	<string name="certificate_not_found">No certificate found</string>
 	<string name="notify_on_all_messages">Notify on all messages</string>
-	<string name="notify_only_when_highlighted">Notify only when highlighted</string>
+	<string name="notify_only_when_highlighted">Notify only when mentioned</string>
 	<string name="notify_never">Notifications disabled</string>
 	<string name="notify_paused">Notifications paused</string>
 	<string name="pref_picture_compression">Compress Pictures</string>

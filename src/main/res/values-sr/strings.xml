@@ -577,7 +577,6 @@
   <string name="certicate_info_not_available">(није доступно)</string>
   <string name="certificate_not_found">Сертификат није нађен</string>
   <string name="notify_on_all_messages">Обавештења за све поруке</string>
-  <string name="notify_only_when_highlighted">Обавештења само за означене поруке</string>
   <string name="notify_never">Обавештења искључена</string>
   <string name="notify_paused">Обавештења паузирана</string>
   <string name="pref_picture_compression">Компресуј слике</string>
@@ -705,6 +704,7 @@
   <string name="received_message_from_stranger">Примљена порука од незнанца</string>
   <string name="block_stranger">Блокирај странца</string>
   <string name="block_entire_domain">Блокирај читав домен</string>
+  <string name="online_right_now">на вези сада</string>
   <string name="retry_decryption">Покушај дешифровање поново</string>
   <string name="session_failure">Неуспех сесије</string>
 </resources>

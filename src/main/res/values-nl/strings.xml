@@ -157,6 +157,7 @@
   <string name="account_status_regis_conflict">Gebruikersnaam is al in gebruik</string>
   <string name="account_status_regis_success">Registratie voltooid</string>
   <string name="account_status_regis_not_sup">Server ondersteunt geen registratie</string>
+  <string name="account_status_tls_error">TLS-onderhandeling mislukt</string>
   <string name="account_status_policy_violation">Beleidsschending</string>
   <string name="account_status_incompatible_server">Incompatibele server</string>
   <string name="account_status_stream_error">Fout bij stream</string>
@@ -577,7 +578,6 @@
   <string name="certicate_info_not_available">(Niet beschikbaar)</string>
   <string name="certificate_not_found">Geen certificaat gevonden</string>
   <string name="notify_on_all_messages">Melding bij alle berichten</string>
-  <string name="notify_only_when_highlighted">Melding enkel wanneer je aangesproken wordt</string>
   <string name="notify_never">Meldingen uitgeschakeld</string>
   <string name="notify_paused">Meldingen gepauzeerd</string>
   <string name="pref_picture_compression">Afbeeldingen comprimeren</string>
@@ -714,4 +714,5 @@
   <string name="online_right_now">nu online</string>
   <string name="retry_decryption">Ontsleutelen opnieuw proberen</string>
   <string name="session_failure">Sessiefout</string>
+  <string name="sasl_downgrade">SASL-mechanisme neergewaardeerd</string>
 </resources>

@@ -157,6 +157,7 @@
   <string name="account_status_regis_conflict">ユーザー名はすでに使用されています</string>
   <string name="account_status_regis_success">登録が完了しました</string>
   <string name="account_status_regis_not_sup">サーバーが登録をサポートしていません</string>
+  <string name="account_status_tls_error">TLS ネゴシエーションに失敗しました</string>
   <string name="account_status_policy_violation">ポリシー違反</string>
   <string name="account_status_incompatible_server">互換性のないサーバー</string>
   <string name="account_status_stream_error">ストリーム エラー</string>
@@ -574,7 +575,6 @@
   <string name="certicate_info_not_available">(利用不可)</string>
   <string name="certificate_not_found">証明書がありません</string>
   <string name="notify_on_all_messages">すべてのメッセージで通知</string>
-  <string name="notify_only_when_highlighted">ハイライトされたときにのみ通知</string>
   <string name="notify_never">通知は無効</string>
   <string name="notify_paused">通知は一時停止</string>
   <string name="pref_picture_compression">写真を圧縮</string>
@@ -711,4 +711,5 @@
   <string name="online_right_now">今すぐオンライン</string>
   <string name="retry_decryption">復号化を再試行</string>
   <string name="session_failure">セッション失敗</string>
+  <string name="sasl_downgrade">ダウングレードされた SASL メカニズム</string>
 </resources>

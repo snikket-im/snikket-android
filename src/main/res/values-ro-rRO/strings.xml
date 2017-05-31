@@ -157,6 +157,7 @@
   <string name="account_status_regis_conflict">Nume de utilizator deja alocat</string>
   <string name="account_status_regis_success">Înregistrare completă</string>
   <string name="account_status_regis_not_sup">Acest server nu permite înregistrarea</string>
+  <string name="account_status_tls_error">Negociere TLS eşuată</string>
   <string name="account_status_policy_violation">Incălcare condiții serviciu</string>
   <string name="account_status_incompatible_server">Server incompatibil</string>
   <string name="account_status_stream_error">Eroare de date</string>
@@ -581,7 +582,6 @@ Emitent</string>
   <string name="certicate_info_not_available">(Indisponibil)</string>
   <string name="certificate_not_found">Certificat inexistent</string>
   <string name="notify_on_all_messages">Notifica la toate mesajele</string>
-  <string name="notify_only_when_highlighted">Notifica numai la evidentiere</string>
   <string name="notify_never">Notificari dezactivate</string>
   <string name="notify_paused">Notificari suspendate</string>
   <string name="pref_picture_compression">Comprima imaginile</string>
@@ -718,4 +718,5 @@ Emitent</string>
   <string name="online_right_now">online acum</string>
   <string name="retry_decryption">Reîncearcă decriptarea</string>
   <string name="session_failure">Sesiune eșuată</string>
+  <string name="sasl_downgrade">Mecanism SASL degradat</string>
 </resources>

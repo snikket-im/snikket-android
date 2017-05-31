@@ -157,6 +157,7 @@
   <string name="account_status_regis_conflict">Benutzername wird bereits verwendet</string>
   <string name="account_status_regis_success">Registrierung abgeschlossen</string>
   <string name="account_status_regis_not_sup">Der Server unterstützt keine Registrierung</string>
+  <string name="account_status_tls_error">TLS-Aushandlung fehlgeschlagen</string>
   <string name="account_status_policy_violation">Verstoß gegen die Richtlinien</string>
   <string name="account_status_incompatible_server">Inkompatibler Server</string>
   <string name="account_status_stream_error">Datenstromfehler</string>
@@ -577,7 +578,6 @@
   <string name="certicate_info_not_available">(Nicht verfügbar)</string>
   <string name="certificate_not_found">Kein Zertifikat gefunden</string>
   <string name="notify_on_all_messages">Bei allen Nachrichten benachrichtigen</string>
-  <string name="notify_only_when_highlighted">Nur benachrichtigen, wenn ich angesprochen werde</string>
   <string name="notify_never">Benachrichtigungen deaktiviert</string>
   <string name="notify_paused">Benachrichtigungen pausiert</string>
   <string name="pref_picture_compression">Bilder komprimieren</string>
@@ -714,4 +714,5 @@
   <string name="online_right_now">aktuell online</string>
   <string name="retry_decryption">Entschlüsseln wiederholen</string>
   <string name="session_failure">Sitzungsfehler</string>
+  <string name="sasl_downgrade">SASL-Mechanismus zurückgestuft</string>
 </resources>

@@ -157,6 +157,7 @@
   <string name="account_status_regis_conflict">El identificador ya está en uso</string>
   <string name="account_status_regis_success">Registro completado</string>
   <string name="account_status_regis_not_sup">El servidor no soporta registros</string>
+  <string name="account_status_tls_error">Error de negociación TLS</string>
   <string name="account_status_policy_violation">Policy violation</string>
   <string name="account_status_incompatible_server">Servidor incompatible</string>
   <string name="account_status_stream_error">Stream error</string>
@@ -577,7 +578,6 @@
   <string name="certicate_info_not_available">(No disponible)</string>
   <string name="certificate_not_found">Certificado no encontrado</string>
   <string name="notify_on_all_messages">Notificar para todos los mensajes</string>
-  <string name="notify_only_when_highlighted">Notificar solo cuando se recibe un mensaje resaltado</string>
   <string name="notify_never">Notificaciones deshabilitadas</string>
   <string name="notify_paused">Notificaciones pausadas</string>
   <string name="pref_picture_compression">Comprimir imágenes</string>

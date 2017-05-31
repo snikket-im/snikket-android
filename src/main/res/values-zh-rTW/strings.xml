@@ -574,7 +574,6 @@
   <string name="certicate_info_not_available">(不可用）</string>
   <string name="certificate_not_found">未發現證書</string>
   <string name="notify_on_all_messages">為所有資訊顯示通知</string>
-  <string name="notify_only_when_highlighted">僅當高亮時顯示通知</string>
   <string name="notify_never">關閉通知</string>
   <string name="notify_paused">暫停通知</string>
   <string name="pref_picture_compression">壓縮圖片</string>
