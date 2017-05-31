@@ -1,5 +1,9 @@
 # Changelog
 
+### Version 1.18.5
+* colorize send button only after history is caught up
+* improved MAM catchup strategy
+
 ### Version 1.18.4
 * fixed UI freezes during connection timeout
 * fixed notification sound playing twice
