@@ -240,7 +240,7 @@ public class PresenceParser extends AbstractParser implements
 			boolean online = sizeBefore < contact.getPresences().size();
 			mXmppConnectionService.onContactStatusChanged.onContactStatusChanged(contact, online);
 		} else if (type.equals("unavailable")) {
-			if (contact.setLastseen(AbstractParser.parseTimestamp(packet))) {
+			if (contact.setLastseen(AbstractParser.parseTimestamp(packet,0L,true))) {
 				contact.flagInactive();
 			}
 			if (from.isBareJid()) {
