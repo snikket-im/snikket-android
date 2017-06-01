@@ -3506,7 +3506,8 @@ public class XmppConnectionService extends Service {
 					mucServers.add(server);
 				}
 				for(Bookmark bookmark : account.getBookmarks()) {
-					final String s = bookmark.getJid().getDomainpart();
+					final Jid jid = bookmark.getJid();
+					final String s = jid == null ? null : jid.getDomainpart();
 					if (s != null && !mucServers.contains(s)) {
 						mucServers.add(s);
 					}
