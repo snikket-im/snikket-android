@@ -96,7 +96,11 @@ public class HttpUploadConnection implements Transferable {
 		this.message = message;
 		this.account = message.getConversation().getAccount();
 		this.file = mXmppConnectionService.getFileBackend().getFile(message, false);
-		this.mime = this.file.getMimeType();
+		if (message.getEncryption() == Message.ENCRYPTION_PGP || message.getEncryption() == Message.ENCRYPTION_DECRYPTED) {
+			this.mime = "application/pgp-encrypted";
+		} else {
+			this.mime = this.file.getMimeType();
+		}
 		this.delayed = delay;
 		if (Config.ENCRYPT_ON_HTTP_UPLOADED
 				|| message.getEncryption() == Message.ENCRYPTION_AXOLOTL
