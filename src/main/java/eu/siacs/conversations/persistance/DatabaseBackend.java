@@ -1394,37 +1394,6 @@ public class DatabaseBackend extends SQLiteOpenHelper {
 				deleteArgs);
 	}
 
-	public boolean startTimeCountExceedsThreshold() {
-		SQLiteDatabase db = this.getWritableDatabase();
-		long cleanBeforeTimestamp = System.currentTimeMillis() - Config.FREQUENT_RESTARTS_DETECTION_WINDOW;
-		db.execSQL("delete from "+START_TIMES_TABLE+" where timestamp < "+cleanBeforeTimestamp);
-		ContentValues values = new ContentValues();
-		values.put("timestamp",System.currentTimeMillis());
-		db.insert(START_TIMES_TABLE,null,values);
-		String[] columns = new String[]{"count(timestamp)"};
-		Cursor cursor = db.query(START_TIMES_TABLE,columns,null,null,null,null,null);
-		int count;
-		if (cursor.moveToFirst()) {
-			count = cursor.getInt(0);
-		} else {
-			count = 0;
-		}
-		cursor.close();
-		Log.d(Config.LOGTAG,"start time counter reached "+count);
-		return count >= Config.FREQUENT_RESTARTS_THRESHOLD;
-	}
-
-	public void clearStartTimeCounter(boolean justOne) {
-		SQLiteDatabase db = this.getWritableDatabase();
-		if (justOne) {
-			db.execSQL("delete from "+START_TIMES_TABLE+" where timestamp in (select timestamp from "+START_TIMES_TABLE+" order by timestamp desc limit 1)");
-			Log.d(Config.LOGTAG,"do not count start up after being swiped away");
-		} else {
-			Log.d(Config.LOGTAG,"resetting start time counter");
-			db.execSQL("delete from " + START_TIMES_TABLE);
-		}
-	}
-
 	public List<ShortcutService.FrequentContact> getFrequentContacts(int days) {
 		SQLiteDatabase db = this.getReadableDatabase();
 		final String SQL = "select "+Conversation.TABLENAME+"."+Conversation.ACCOUNT+","+Conversation.TABLENAME+"."+Conversation.CONTACTJID+" from "+Conversation.TABLENAME+" join "+Message.TABLENAME+" on conversations.uuid=messages.conversationUuid where messages.status!=0 and carbon==0  and conversations.mode=0 and messages.timeSent>=? group by conversations.uuid order by count(body) desc limit 4;";

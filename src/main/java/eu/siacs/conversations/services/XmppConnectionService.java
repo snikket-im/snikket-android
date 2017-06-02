@@ -999,12 +999,9 @@ public class XmppConnectionService extends Service {
 		Log.d(Config.LOGTAG,"restoring accounts...");
 		this.accounts = databaseBackend.getAccounts();
 
-		if (Config.FREQUENT_RESTARTS_THRESHOLD != 0
-				&& Config.FREQUENT_RESTARTS_DETECTION_WINDOW != 0
-				&& !keepForegroundService()
-				&& databaseBackend.startTimeCountExceedsThreshold()) {
+		if (this.accounts.size() == 0 && Arrays.asList("Sony","Sony Ericsson").contains(Build.MANUFACTURER)) {
 			getPreferences().edit().putBoolean(SettingsActivity.KEEP_FOREGROUND_SERVICE,true).commit();
-			Log.d(Config.LOGTAG,"number of restarts exceeds threshold. enabling foreground service");
+			Log.d(Config.LOGTAG,Build.MANUFACTURER+" is on blacklist. enabling foreground service");
 		}
 
 		restoreFromDatabase();
@@ -1107,7 +1104,6 @@ public class XmppConnectionService extends Service {
 
 	private void logoutAndSave(boolean stop) {
 		int activeAccounts = 0;
-		databaseBackend.clearStartTimeCounter(true); // regular swipes don't count towards restart counter
 		for (final Account account : accounts) {
 			if (account.getStatus() != Account.State.DISABLED) {
 				activeAccounts++;
@@ -3905,15 +3901,6 @@ public class XmppConnectionService extends Service {
 		account.getBookmarks().add(bookmark);
 		pushBookmarks(account);
 		conversation.setBookmark(bookmark);
-	}
-
-	public void clearStartTimeCounter() {
-		mDatabaseExecutor.execute(new Runnable() {
-			@Override
-			public void run() {
-				databaseBackend.clearStartTimeCounter(false);
-			}
-		});
 	}
 
 	public boolean verifyFingerprints(Contact contact, List<XmppUri.Fingerprint> fingerprints) {
