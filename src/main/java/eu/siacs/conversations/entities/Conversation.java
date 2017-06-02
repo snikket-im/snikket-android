@@ -268,7 +268,7 @@ public class Conversation extends AbstractEntity implements Blockable, Comparabl
 				if (counterpart.equals(message.getCounterpart())
 						&& ((message.getStatus() == Message.STATUS_RECEIVED) == received)
 						&& (carbon == message.isCarbon() || received) ) {
-					if (id.equals(message.getRemoteMsgId())) {
+					if (id.equals(message.getRemoteMsgId()) && !message.isFileOrImage() && !message.treatAsDownloadable()) {
 						return message;
 					} else {
 						return null;
