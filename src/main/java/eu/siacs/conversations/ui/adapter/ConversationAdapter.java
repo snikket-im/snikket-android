@@ -126,17 +126,17 @@ public class ConversationAdapter extends ArrayAdapter<Conversation> {
 		long muted_till = conversation.getLongAttribute(Conversation.ATTRIBUTE_MUTED_TILL,0);
 		if (muted_till == Long.MAX_VALUE) {
 			notificationStatus.setVisibility(View.VISIBLE);
-			int ic_notifications_off = 	  activity.getThemeResource(R.attr.icon_notifications_off, R.drawable.ic_notifications_off_black54_24dp);
+			int ic_notifications_off = 	  activity.getThemeResource(R.attr.icon_notifications_off, R.drawable.ic_notifications_off_black_24dp);
 			notificationStatus.setImageResource(ic_notifications_off);
 		} else if (muted_till >= System.currentTimeMillis()) {
 			notificationStatus.setVisibility(View.VISIBLE);
-			int ic_notifications_paused = activity.getThemeResource(R.attr.icon_notifications_paused, R.drawable.ic_notifications_paused_black54_24dp);
+			int ic_notifications_paused = activity.getThemeResource(R.attr.icon_notifications_paused, R.drawable.ic_notifications_paused_black_24dp);
 			notificationStatus.setImageResource(ic_notifications_paused);
 		} else if (conversation.alwaysNotify()) {
 			notificationStatus.setVisibility(View.GONE);
 		} else {
 			notificationStatus.setVisibility(View.VISIBLE);
-			int ic_notifications_none =	  activity.getThemeResource(R.attr.icon_notifications_none, R.drawable.ic_notifications_none_black54_24dp);
+			int ic_notifications_none =	  activity.getThemeResource(R.attr.icon_notifications_none, R.drawable.ic_notifications_none_black_24dp);
 			notificationStatus.setImageResource(ic_notifications_none);
 		}
 

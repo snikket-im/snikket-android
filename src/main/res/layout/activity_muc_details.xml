@@ -134,6 +134,7 @@
 					android:layout_centerVertical="true"
 					android:background="?android:selectableItemBackground"
 					android:padding="@dimen/image_button_padding"
+					android:alpha="?attr/icon_alpha"
 					android:src="?attr/icon_notifications"/>
 			</RelativeLayout>
 

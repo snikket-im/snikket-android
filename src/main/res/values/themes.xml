@@ -70,10 +70,10 @@
         <item name="attr/icon_share">@drawable/ic_action_share</item>
         <item name="attr/icon_scan_qr_code">@drawable/ic_action_camera</item>
 
-        <item name="attr/icon_notifications">@drawable/ic_notifications_black54_24dp</item>
-        <item name="attr/icon_notifications_off">@drawable/ic_notifications_off_black54_24dp</item>
-        <item name="attr/icon_notifications_paused">@drawable/ic_notifications_paused_black54_24dp</item>
-        <item name="attr/icon_notifications_none">@drawable/ic_notifications_none_black54_24dp</item>
+        <item name="attr/icon_notifications">@drawable/ic_notifications_black_24dp</item>
+        <item name="attr/icon_notifications_off">@drawable/ic_notifications_off_black_24dp</item>
+        <item name="attr/icon_notifications_paused">@drawable/ic_notifications_paused_black_24dp</item>
+        <item name="attr/icon_notifications_none">@drawable/ic_notifications_none_black_24dp</item>
     </style>
 
     <style name="ConversationsTheme.Dark" parent="@android:style/Theme.Holo">
