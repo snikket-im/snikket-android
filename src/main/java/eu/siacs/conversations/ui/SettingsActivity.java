@@ -46,6 +46,8 @@ public class SettingsActivity extends XmppActivity implements
 	public static final String BLIND_TRUST_BEFORE_VERIFICATION = "btbv";
 	public static final String AUTOMATIC_MESSAGE_DELETION = "automatic_message_deletion";
 	public static final String BROADCAST_LAST_ACTIVITY = "last_activity";
+	public static final String THEME = "theme";
+	public static final String SHOW_DYNAMIC_TAGS = "show_dynamic_tags";
 
 	public static final int REQUEST_WRITE_LOGS = 0xbf8701;
 	private SettingsFragment mSettingsFragment;
@@ -371,6 +373,11 @@ public class SettingsActivity extends XmppActivity implements
 			reconnectAccounts();
 		} else if (name.equals(AUTOMATIC_MESSAGE_DELETION)) {
 			xmppConnectionService.expireOldMessages(true);
+		} else if (name.equals(THEME)) {
+			final int theme = findTheme();
+			if (this.mTheme != theme) {
+				recreate();
+			}
 		}
 
 	}

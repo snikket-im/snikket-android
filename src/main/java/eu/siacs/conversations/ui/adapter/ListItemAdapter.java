@@ -23,6 +23,7 @@ import java.util.concurrent.RejectedExecutionException;
 
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.entities.ListItem;
+import eu.siacs.conversations.ui.SettingsActivity;
 import eu.siacs.conversations.ui.XmppActivity;
 import eu.siacs.conversations.utils.UIHelper;
 
@@ -45,8 +46,11 @@ public class ListItemAdapter extends ArrayAdapter<ListItem> {
 	public ListItemAdapter(XmppActivity activity, List<ListItem> objects) {
 		super(activity, 0, objects);
 		this.activity = activity;
+	}
+
+	public void refreshSettings() {
 		SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(activity);
-		this.showDynamicTags = preferences.getBoolean("show_dynamic_tags",false);
+		this.showDynamicTags = preferences.getBoolean(SettingsActivity.SHOW_DYNAMIC_TAGS,false);
 	}
 
 	@Override

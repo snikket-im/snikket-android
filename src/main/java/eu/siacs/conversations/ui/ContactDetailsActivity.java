@@ -250,7 +250,7 @@ public class ContactDetailsActivity extends OmemoActivity implements OnAccountUp
 			recreate();
 		} else {
 			final SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
-			this.showDynamicTags = preferences.getBoolean("show_dynamic_tags", false);
+			this.showDynamicTags = preferences.getBoolean(SettingsActivity.SHOW_DYNAMIC_TAGS, false);
 			this.showLastSeen = preferences.getBoolean("last_activity", false);
 		}
 	}
