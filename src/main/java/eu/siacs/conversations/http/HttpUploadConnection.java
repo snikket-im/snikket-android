@@ -160,7 +160,9 @@ public class HttpUploadConnection implements Transferable {
 			PowerManager.WakeLock wakeLock = mHttpConnectionManager.createWakeLock("http_upload_"+message.getUuid());
 			try {
 				wakeLock.acquire();
-				Log.d(Config.LOGTAG, "uploading to " + mPutUrl.toString());
+				final int expectedFileSize = (int) file.getExpectedSize();
+				final int readTimeout = Math.max(Config.SOCKET_TIMEOUT,expectedFileSize / 2048); //assuming a minimum transfer speed of 16kbit/s
+				Log.d(Config.LOGTAG, "uploading to " + mPutUrl.toString()+ " w/ read timeout of "+readTimeout+"s");
 				if (mUseTor) {
 					connection = (HttpURLConnection) mPutUrl.openConnection(mHttpConnectionManager.getProxy());
 				} else {
@@ -170,12 +172,12 @@ public class HttpUploadConnection implements Transferable {
 					mHttpConnectionManager.setupTrustManager((HttpsURLConnection) connection, true);
 				}
 				connection.setRequestMethod("PUT");
-				connection.setFixedLengthStreamingMode((int) file.getExpectedSize());
+				connection.setFixedLengthStreamingMode(expectedFileSize);
 				connection.setRequestProperty("Content-Type", mime == null ? "application/octet-stream" : mime);
 				connection.setRequestProperty("User-Agent",mXmppConnectionService.getIqGenerator().getIdentityName());
 				connection.setDoOutput(true);
 				connection.setConnectTimeout(Config.SOCKET_TIMEOUT * 1000);
-				connection.setReadTimeout(Config.SOCKET_TIMEOUT * 1000);
+				connection.setReadTimeout(readTimeout * 1000);
 				connection.connect();
 				os = connection.getOutputStream();
 				transmitted = 0;
