@@ -292,18 +292,11 @@ public class MemorizingTrustManager {
 	 *
 	 * @throws IllegalArgumentException if the defaultVerifier parameter is null
 	 */
-	public HostnameVerifier wrapHostnameVerifier(final HostnameVerifier defaultVerifier) {
+	public DomainHostnameVerifier wrapHostnameVerifier(final HostnameVerifier defaultVerifier, final boolean interactive) {
 		if (defaultVerifier == null)
 			throw new IllegalArgumentException("The default verifier may not be null");
 		
-		return new MemorizingHostnameVerifier(defaultVerifier);
-	}
-	
-	public HostnameVerifier wrapHostnameVerifierNonInteractive(final HostnameVerifier defaultVerifier) {
-		if (defaultVerifier == null)
-			throw new IllegalArgumentException("The default verifier may not be null");
-		
-		return new NonInteractiveMemorizingHostnameVerifier(defaultVerifier);
+		return new MemorizingHostnameVerifier(defaultVerifier, interactive);
 	}
 	
 	X509TrustManager getTrustManager(KeyStore ks) {
@@ -781,31 +774,41 @@ public class MemorizingTrustManager {
 		}
 	}
 	
-	class MemorizingHostnameVerifier implements HostnameVerifier {
-		private HostnameVerifier defaultVerifier;
+	class MemorizingHostnameVerifier implements DomainHostnameVerifier {
+		private final HostnameVerifier defaultVerifier;
+		private final boolean interactive;
 		
-		public MemorizingHostnameVerifier(HostnameVerifier wrapped) {
-			defaultVerifier = wrapped;
+		public MemorizingHostnameVerifier(HostnameVerifier wrapped, boolean interactive) {
+			this.defaultVerifier = wrapped;
+			this.interactive = interactive;
 		}
 
-		protected boolean verify(String hostname, SSLSession session, boolean interactive) {
-			LOGGER.log(Level.FINE, "hostname verifier for " + hostname + ", trying default verifier first");
+		@Override
+		public boolean verify(String domain, String hostname, SSLSession session) {
+			LOGGER.log(Level.FINE, "hostname verifier for " + domain + ", trying default verifier first");
 			// if the default verifier accepts the hostname, we are done
-			if (defaultVerifier.verify(hostname, session)) {
-				LOGGER.log(Level.FINE, "default verifier accepted " + hostname);
-				return true;
+			if (defaultVerifier instanceof DomainHostnameVerifier) {
+				if (((DomainHostnameVerifier) defaultVerifier).verify(domain,hostname, session)) {
+					return true;
+				}
+			} else {
+				if (defaultVerifier.verify(domain, session)) {
+					return true;
+				}
 			}
+
+
 			// otherwise, we check if the hostname is an alias for this cert in our keystore
 			try {
 				X509Certificate cert = (X509Certificate)session.getPeerCertificates()[0];
 				//Log.d(TAG, "cert: " + cert);
-				if (cert.equals(appKeyStore.getCertificate(hostname.toLowerCase(Locale.US)))) {
-					LOGGER.log(Level.FINE, "certificate for " + hostname + " is in our keystore. accepting.");
+				if (cert.equals(appKeyStore.getCertificate(domain.toLowerCase(Locale.US)))) {
+					LOGGER.log(Level.FINE, "certificate for " + domain + " is in our keystore. accepting.");
 					return true;
 				} else {
-					LOGGER.log(Level.FINE, "server " + hostname + " provided wrong certificate, asking user.");
+					LOGGER.log(Level.FINE, "server " + domain + " provided wrong certificate, asking user.");
 					if (interactive) {
-						return interactHostname(cert, hostname);
+						return interactHostname(cert, domain);
 					} else {
 						return false;
 					}
@@ -815,25 +818,13 @@ public class MemorizingTrustManager {
 				return false;
 			}
 		}
-		
-		@Override
-		public boolean verify(String hostname, SSLSession session) {
-			return verify(hostname, session, true);
-		}
-	}
-	
-	class NonInteractiveMemorizingHostnameVerifier extends MemorizingHostnameVerifier {
 
-		public NonInteractiveMemorizingHostnameVerifier(HostnameVerifier wrapped) {
-			super(wrapped);
-		}
 		@Override
-		public boolean verify(String hostname, SSLSession session) {
-			return verify(hostname, session, false);
+		public boolean verify(String domain, SSLSession sslSession) {
+			return verify(domain,null,sslSession);
 		}
-		
-		
 	}
+
 	
 	public X509TrustManager getNonInteractive(String domain) {
 		return new NonInteractiveMemorizingTrustManager(domain);

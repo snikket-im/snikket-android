@@ -24,7 +24,9 @@ import java.util.List;
 import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.SSLSession;
 
-public class XmppDomainVerifier implements HostnameVerifier {
+import de.duenndns.ssl.DomainHostnameVerifier;
+
+public class XmppDomainVerifier implements DomainHostnameVerifier {
 
 	private static final String LOGTAG = "XmppDomainVerifier";
 
@@ -32,7 +34,7 @@ public class XmppDomainVerifier implements HostnameVerifier {
 	private final String xmppAddr = "1.3.6.1.5.5.7.8.5";
 
 	@Override
-	public boolean verify(String domain, SSLSession sslSession) {
+	public boolean verify(String domain, String hostname, SSLSession sslSession) {
 		try {
 			Certificate[] chain = sslSession.getPeerCertificates();
 			if (chain.length == 0 || !(chain[0] instanceof X509Certificate)) {
@@ -76,7 +78,13 @@ public class XmppDomainVerifier implements HostnameVerifier {
 				}
 			}
 			Log.d(LOGTAG, "searching for " + domain + " in srvNames: " + srvNames + " xmppAddrs: " + xmppAddrs + " domains:" + domains);
-			return xmppAddrs.contains(domain) || srvNames.contains("_xmpp-client." + domain) || matchDomain(domain, domains);
+			if (hostname != null) {
+				Log.d(LOGTAG,"also trying to verify hostname "+hostname);
+			}
+			return xmppAddrs.contains(domain)
+					|| srvNames.contains("_xmpp-client." + domain)
+					|| matchDomain(domain, domains)
+					|| (hostname != null && matchDomain(hostname,domains));
 		} catch (Exception e) {
 			return false;
 		}
@@ -123,5 +131,10 @@ public class XmppDomainVerifier implements HostnameVerifier {
 			}
 		}
 		return false;
+	}
+
+	@Override
+	public boolean verify(String domain, SSLSession sslSession) {
+		return verify(domain,null,sslSession);
 	}
 }

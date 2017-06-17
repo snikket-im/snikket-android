@@ -58,19 +58,11 @@ public class HttpConnectionManager extends AbstractConnectionManager {
 
 	public void setupTrustManager(final HttpsURLConnection connection, final boolean interactive) {
 		final X509TrustManager trustManager;
-		final HostnameVerifier hostnameVerifier;
+		final HostnameVerifier hostnameVerifier = mXmppConnectionService.getMemorizingTrustManager().wrapHostnameVerifier(new StrictHostnameVerifier(), interactive);
 		if (interactive) {
 			trustManager = mXmppConnectionService.getMemorizingTrustManager().getInteractive();
-			hostnameVerifier = mXmppConnectionService
-					.getMemorizingTrustManager().wrapHostnameVerifier(
-							new StrictHostnameVerifier());
 		} else {
-			trustManager = mXmppConnectionService.getMemorizingTrustManager()
-					.getNonInteractive();
-			hostnameVerifier = mXmppConnectionService
-					.getMemorizingTrustManager()
-					.wrapHostnameVerifierNonInteractive(
-							new StrictHostnameVerifier());
+			trustManager = mXmppConnectionService.getMemorizingTrustManager().getNonInteractive();
 		}
 		try {
 			final SSLSocketFactory sf = new TLSSocketFactory(new X509TrustManager[]{trustManager}, mXmppConnectionService.getRNG());
