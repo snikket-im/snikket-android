@@ -13,13 +13,13 @@ import android.util.Log;
 import android.util.Pair;
 
 import org.json.JSONObject;
-import org.whispersystems.libaxolotl.AxolotlAddress;
-import org.whispersystems.libaxolotl.IdentityKey;
-import org.whispersystems.libaxolotl.IdentityKeyPair;
-import org.whispersystems.libaxolotl.InvalidKeyException;
-import org.whispersystems.libaxolotl.state.PreKeyRecord;
-import org.whispersystems.libaxolotl.state.SessionRecord;
-import org.whispersystems.libaxolotl.state.SignedPreKeyRecord;
+import org.whispersystems.libsignal.SignalProtocolAddress;
+import org.whispersystems.libsignal.IdentityKey;
+import org.whispersystems.libsignal.IdentityKeyPair;
+import org.whispersystems.libsignal.InvalidKeyException;
+import org.whispersystems.libsignal.state.PreKeyRecord;
+import org.whispersystems.libsignal.state.SessionRecord;
+import org.whispersystems.libsignal.state.SignedPreKeyRecord;
 
 import java.io.ByteArrayInputStream;
 import java.io.File;
@@ -305,7 +305,7 @@ public class DatabaseBackend extends SQLiteOpenHelper {
 					continue;
 				}
 				int ownDeviceId = Integer.valueOf(ownDeviceIdString);
-				AxolotlAddress ownAddress = new AxolotlAddress(account.getJid().toBareJid().toPreppedString(), ownDeviceId);
+				SignalProtocolAddress ownAddress = new SignalProtocolAddress(account.getJid().toBareJid().toPreppedString(), ownDeviceId);
 				deleteSession(db, account, ownAddress);
 				IdentityKeyPair identityKeyPair = loadOwnIdentityKeyPair(db, account);
 				if (identityKeyPair != null) {
@@ -887,7 +887,7 @@ public class DatabaseBackend extends SQLiteOpenHelper {
 		return maxClearDate;
 	}
 
-	private Cursor getCursorForSession(Account account, AxolotlAddress contact) {
+	private Cursor getCursorForSession(Account account, SignalProtocolAddress contact) {
 		final SQLiteDatabase db = this.getReadableDatabase();
 		String[] selectionArgs = {account.getUuid(),
 				contact.getName(),
@@ -901,7 +901,7 @@ public class DatabaseBackend extends SQLiteOpenHelper {
 				null, null, null);
 	}
 
-	public SessionRecord loadSession(Account account, AxolotlAddress contact) {
+	public SessionRecord loadSession(Account account, SignalProtocolAddress contact) {
 		SessionRecord session = null;
 		Cursor cursor = getCursorForSession(account, contact);
 		if (cursor.getCount() != 0) {
@@ -917,12 +917,12 @@ public class DatabaseBackend extends SQLiteOpenHelper {
 		return session;
 	}
 
-	public List<Integer> getSubDeviceSessions(Account account, AxolotlAddress contact) {
+	public List<Integer> getSubDeviceSessions(Account account, SignalProtocolAddress contact) {
 		final SQLiteDatabase db = this.getReadableDatabase();
 		return getSubDeviceSessions(db, account, contact);
 	}
 
-	private List<Integer> getSubDeviceSessions(SQLiteDatabase db, Account account, AxolotlAddress contact) {
+	private List<Integer> getSubDeviceSessions(SQLiteDatabase db, Account account, SignalProtocolAddress contact) {
 		List<Integer> devices = new ArrayList<>();
 		String[] columns = {SQLiteAxolotlStore.DEVICE_ID};
 		String[] selectionArgs = {account.getUuid(),
@@ -943,14 +943,14 @@ public class DatabaseBackend extends SQLiteOpenHelper {
 		return devices;
 	}
 
-	public boolean containsSession(Account account, AxolotlAddress contact) {
+	public boolean containsSession(Account account, SignalProtocolAddress contact) {
 		Cursor cursor = getCursorForSession(account, contact);
 		int count = cursor.getCount();
 		cursor.close();
 		return count != 0;
 	}
 
-	public void storeSession(Account account, AxolotlAddress contact, SessionRecord session) {
+	public void storeSession(Account account, SignalProtocolAddress contact, SessionRecord session) {
 		SQLiteDatabase db = this.getWritableDatabase();
 		ContentValues values = new ContentValues();
 		values.put(SQLiteAxolotlStore.NAME, contact.getName());
@@ -960,12 +960,12 @@ public class DatabaseBackend extends SQLiteOpenHelper {
 		db.insert(SQLiteAxolotlStore.SESSION_TABLENAME, null, values);
 	}
 
-	public void deleteSession(Account account, AxolotlAddress contact) {
+	public void deleteSession(Account account, SignalProtocolAddress contact) {
 		SQLiteDatabase db = this.getWritableDatabase();
 		deleteSession(db, account, contact);
 	}
 
-	private void deleteSession(SQLiteDatabase db, Account account, AxolotlAddress contact) {
+	private void deleteSession(SQLiteDatabase db, Account account, SignalProtocolAddress contact) {
 		String[] args = {account.getUuid(),
 				contact.getName(),
 				Integer.toString(contact.getDeviceId())};
@@ -976,7 +976,7 @@ public class DatabaseBackend extends SQLiteOpenHelper {
 				args);
 	}
 
-	public void deleteAllSessions(Account account, AxolotlAddress contact) {
+	public void deleteAllSessions(Account account, SignalProtocolAddress contact) {
 		SQLiteDatabase db = this.getWritableDatabase();
 		String[] args = {account.getUuid(), contact.getName()};
 		db.delete(SQLiteAxolotlStore.SESSION_TABLENAME,

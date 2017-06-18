@@ -5,10 +5,10 @@ import android.util.Base64;
 import android.util.Log;
 import android.util.Pair;
 
-import org.whispersystems.libaxolotl.IdentityKey;
-import org.whispersystems.libaxolotl.ecc.Curve;
-import org.whispersystems.libaxolotl.ecc.ECPublicKey;
-import org.whispersystems.libaxolotl.state.PreKeyBundle;
+import org.whispersystems.libsignal.IdentityKey;
+import org.whispersystems.libsignal.ecc.Curve;
+import org.whispersystems.libsignal.ecc.ECPublicKey;
+import org.whispersystems.libsignal.state.PreKeyBundle;
 
 import java.io.ByteArrayInputStream;
 import java.security.cert.CertificateException;

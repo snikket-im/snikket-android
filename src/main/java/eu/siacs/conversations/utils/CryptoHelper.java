@@ -103,7 +103,7 @@ public final class CryptoHelper {
 		} else if (fingerprint.length() < 40) {
 			return fingerprint;
 		}
-		StringBuilder builder = new StringBuilder(fingerprint.toLowerCase(Locale.US).replaceAll("\\s", ""));
+		StringBuilder builder = new StringBuilder(fingerprint);
 		for(int i=8;i<builder.length();i+=9) {
 			builder.insert(i, ' ');
 		}
