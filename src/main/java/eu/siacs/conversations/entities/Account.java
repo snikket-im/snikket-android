@@ -115,6 +115,7 @@ public class Account extends AbstractEntity {
 		UNAUTHORIZED(true),
 		SERVER_NOT_FOUND(true),
 		REGISTRATION_FAILED(true),
+		REGISTRATION_WEB(true),
 		REGISTRATION_CONFLICT(true),
 		REGISTRATION_SUCCESSFUL,
 		REGISTRATION_NOT_SUPPORTED(true),
@@ -164,6 +165,8 @@ public class Account extends AbstractEntity {
 					return R.string.account_status_no_internet;
 				case REGISTRATION_FAILED:
 					return R.string.account_status_regis_fail;
+				case REGISTRATION_WEB:
+					return R.string.account_status_regis_web;
 				case REGISTRATION_CONFLICT:
 					return R.string.account_status_regis_conflict;
 				case REGISTRATION_SUCCESSFUL:

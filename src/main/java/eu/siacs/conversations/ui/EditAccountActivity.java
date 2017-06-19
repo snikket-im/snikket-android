@@ -129,6 +129,7 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
 		public void onClick(final View v) {
 			final String password = mPassword.getText().toString();
 			final String passwordConfirm = mPasswordConfirm.getText().toString();
+			final boolean wasDisabled = mAccount != null && mAccount.getStatus() == Account.State.DISABLED;
 
 			if (!mInitMode && passwordChangedInMagicCreateMode()) {
 				gotoChangePassword(password);
@@ -150,6 +151,19 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
 				mAccountJid.requestFocus();
 				return;
 			}
+
+			XmppConnection connection = mAccount == null ? null : mAccount.getXmppConnection();
+			String url = connection != null && mAccount.getStatus() == Account.State.REGISTRATION_WEB ? connection.getWebRegistrationUrl() : null;
+			if (url != null && registerNewAccount && !wasDisabled) {
+				try {
+					startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(url)));
+					return;
+				} catch (ActivityNotFoundException e) {
+					Toast.makeText(EditAccountActivity.this,R.string.application_found_to_open_website,Toast.LENGTH_SHORT);
+					return;
+				}
+			}
+
 			final Jid jid;
 			try {
 				if (mUsernameMode) {
@@ -437,7 +451,13 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
 					this.mSaveButton.setText(R.string.connect);
 				}
 			} else {
-				this.mSaveButton.setText(R.string.next);
+				XmppConnection connection = mAccount == null ? null : mAccount.getXmppConnection();
+				String url = connection != null && mAccount.getStatus() == Account.State.REGISTRATION_WEB ? connection.getWebRegistrationUrl() : null;
+				if (url != null && mRegisterNew.isChecked()) {
+					this.mSaveButton.setText(R.string.open_website);
+				} else {
+					this.mSaveButton.setText(R.string.next);
+				}
 			}
 		}
 	}
