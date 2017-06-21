@@ -56,9 +56,9 @@ public class AndroidUsingLinkProperties extends AbstractDNSServerLookupMechanism
         List<String> out = new ArrayList<>();
         for(InetAddress addr : in) {
             if (addr instanceof Inet4Address) {
-                out.add(0, addr.toString());
+                out.add(0, addr.getHostAddress());
             } else {
-                out.add(addr.toString());
+                out.add(addr.getHostAddress());
             }
         }
         return out;

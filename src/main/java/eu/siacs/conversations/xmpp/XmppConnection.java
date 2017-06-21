@@ -366,7 +366,7 @@ public class XmppConnection implements Runnable {
 							addr = new InetSocketAddress(result.getIp(), result.getPort());
 							Log.d(Config.LOGTAG, account.getJid().toBareJid().toString()
 									+ ": using values from dns " + result.getHostname().toString()
-									+ "[" + result.getIp().toString() + "]:" + result.getPort() + " tls: " + features.encryptionEnabled);
+									+ "/" + result.getIp().getHostAddress() + ":" + result.getPort() + " tls: " + features.encryptionEnabled);
 						} else {
 							addr = new InetSocketAddress(result.getHostname().toString(), result.getPort());
 							Log.d(Config.LOGTAG, account.getJid().toBareJid().toString()
