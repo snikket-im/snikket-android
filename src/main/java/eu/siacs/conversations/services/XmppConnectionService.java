@@ -114,6 +114,7 @@ import eu.siacs.conversations.utils.OnPhoneContactsLoadedListener;
 import eu.siacs.conversations.utils.PRNGFixes;
 import eu.siacs.conversations.utils.PhoneHelper;
 import eu.siacs.conversations.utils.ReplacingSerialSingleThreadExecutor;
+import eu.siacs.conversations.utils.Resolver;
 import eu.siacs.conversations.utils.SerialSingleThreadExecutor;
 import eu.siacs.conversations.xml.Namespace;
 import eu.siacs.conversations.utils.XmppUri;
@@ -983,6 +984,7 @@ public class XmppConnectionService extends Service {
 	public void onCreate() {
 		ExceptionHelper.init(getApplicationContext());
 		PRNGFixes.apply();
+		Resolver.registerLookupMechanism(this);
 		this.mRandom = new SecureRandom();
 		updateMemorizingTrustmanager();
 		final int maxMemory = (int) (Runtime.getRuntime().maxMemory() / 1024);

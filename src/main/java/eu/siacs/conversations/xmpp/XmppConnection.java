@@ -2,8 +2,6 @@ package eu.siacs.conversations.xmpp;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.os.Bundle;
-import android.os.Parcelable;
 import android.os.PowerManager;
 import android.os.PowerManager.WakeLock;
 import android.os.SystemClock;
@@ -20,7 +18,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.math.BigInteger;
 import java.net.ConnectException;
-import java.net.IDN;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.net.Socket;
@@ -67,8 +64,9 @@ import eu.siacs.conversations.entities.ServiceDiscoveryResult;
 import eu.siacs.conversations.generator.IqGenerator;
 import eu.siacs.conversations.services.NotificationService;
 import eu.siacs.conversations.services.XmppConnectionService;
-import eu.siacs.conversations.utils.DNSHelper;
+import eu.siacs.conversations.utils.IP;
 import eu.siacs.conversations.utils.Patterns;
+import eu.siacs.conversations.utils.Resolver;
 import eu.siacs.conversations.utils.SSLSocketHelper;
 import eu.siacs.conversations.utils.SocksSocketFactory;
 import eu.siacs.conversations.xml.Element;
@@ -329,7 +327,7 @@ public class XmppConnection implements Runnable {
 				} catch (Exception e) {
 					throw new IOException(e.getMessage());
 				}
-			} else if (DNSHelper.isIp(account.getServer().toString())) {
+			} else if (IP.matches(account.getServer().toString())) {
 				localSocket = new Socket();
 				try {
 					localSocket.connect(new InetSocketAddress(account.getServer().toString(), 5222), Config.SOCKET_TIMEOUT * 1000);
@@ -345,37 +343,28 @@ public class XmppConnection implements Runnable {
 					throw new IOException(e.getMessage());
 				}
 			} else {
-				final Bundle result = DNSHelper.getSRVRecord(account.getServer(), mXmppConnectionService);
-				final ArrayList<Parcelable> values = result.getParcelableArrayList("values");
-				for (Iterator<Parcelable> iterator = values.iterator(); iterator.hasNext(); ) {
+				List<Resolver.Result> results = Resolver.resolve(account.getJid().getDomainpart());
+				Log.d(Config.LOGTAG,"results: "+results);
+				for (Iterator<Resolver.Result> iterator = results.iterator(); iterator.hasNext(); ) {
+					final Resolver.Result result = iterator.next();
 					if (Thread.currentThread().isInterrupted()) {
 						Log.d(Config.LOGTAG, account.getJid().toBareJid() + ": Thread was interrupted");
 						return;
 					}
-					final Bundle namePort = (Bundle) iterator.next();
 					try {
-						String srvRecordServer;
-						try {
-							srvRecordServer = IDN.toASCII(namePort.getString("name"));
-						} catch (final IllegalArgumentException e) {
-							// TODO: Handle me?`
-							srvRecordServer = "";
-						}
-						final int srvRecordPort = namePort.getInt("port");
-						final String srvIpServer = namePort.getString("ip");
 						// if tls is true, encryption is implied and must not be started
-						features.encryptionEnabled = namePort.getBoolean("tls");
+						features.encryptionEnabled = result.isDirectTls();
 						final InetSocketAddress addr;
-						if (srvIpServer != null) {
-							addr = new InetSocketAddress(srvIpServer, srvRecordPort);
+						if (result.getIp() != null) {
+							addr = new InetSocketAddress(result.getIp(), result.getPort());
 							Log.d(Config.LOGTAG, account.getJid().toBareJid().toString()
-									+ ": using values from dns " + srvRecordServer
-									+ "[" + srvIpServer + "]:" + srvRecordPort + " tls: " + features.encryptionEnabled);
+									+ ": using values from dns " + result.getHostname().toString()
+									+ "[" + result.getIp().toString() + "]:" + result.getPort() + " tls: " + features.encryptionEnabled);
 						} else {
-							addr = new InetSocketAddress(srvRecordServer, srvRecordPort);
+							addr = new InetSocketAddress(result.getHostname().toString(), result.getPort());
 							Log.d(Config.LOGTAG, account.getJid().toBareJid().toString()
 									+ ": using values from dns "
-									+ srvRecordServer + ":" + srvRecordPort + " tls: " + features.encryptionEnabled);
+									+ result.getHostname().toString() + ":" + result.getPort() + " tls: " + features.encryptionEnabled);
 						}
 
 						if (!features.encryptionEnabled) {
