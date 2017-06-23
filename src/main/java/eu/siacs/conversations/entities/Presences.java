@@ -120,11 +120,31 @@ public class Presences {
 						typeMap.put(resource,type);
 					}
 					if (name != null) {
-						nameMap.put(resource, name);
+						nameMap.put(resource, nameWithoutVersion(name));
 					}
 				}
 			}
 		}
 		return new Pair<>(typeMap,nameMap);
+	}
+
+	private static String nameWithoutVersion(String name) {
+		String[] parts = name.split(" ");
+		if (parts.length <= 1) {
+			return name;
+		} else {
+			if (Character.isDigit(parts[parts.length -1].charAt(0))) {
+				StringBuilder output = new StringBuilder();
+				for(int i = 0; i < parts.length -1; ++i) {
+					if (output.length() != 0) {
+						output.append(' ');
+					}
+					output.append(parts[i]);
+				}
+				return output.toString();
+			} else {
+				return name;
+			}
+		}
 	}
 }
