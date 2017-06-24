@@ -130,21 +130,17 @@ public class Presences {
 
 	private static String nameWithoutVersion(String name) {
 		String[] parts = name.split(" ");
-		if (parts.length <= 1) {
-			return name;
-		} else {
-			if (Character.isDigit(parts[parts.length -1].charAt(0))) {
-				StringBuilder output = new StringBuilder();
-				for(int i = 0; i < parts.length -1; ++i) {
-					if (output.length() != 0) {
-						output.append(' ');
-					}
-					output.append(parts[i]);
+		if (parts.length > 1 && Character.isDigit(parts[parts.length -1].charAt(0))) {
+			StringBuilder output = new StringBuilder();
+			for(int i = 0; i < parts.length -1; ++i) {
+				if (output.length() != 0) {
+					output.append(' ');
 				}
-				return output.toString();
-			} else {
-				return name;
+				output.append(parts[i]);
 			}
+			return output.toString();
+		} else {
+			return name;
 		}
 	}
 }
