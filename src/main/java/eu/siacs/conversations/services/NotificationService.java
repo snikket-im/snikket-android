@@ -283,6 +283,7 @@ public class NotificationService {
 		final String ringtone = preferences.getString("notification_ringtone", null);
 		final boolean vibrate = preferences.getBoolean("vibrate_on_notification", true);
 		final boolean led = preferences.getBoolean("led", true);
+		final boolean headsup = preferences.getBoolean("notification_headsup", mXmppConnectionService.getResources().getBoolean(R.bool.headsup_notifications));
 		if (notify && !isQuietHours()) {
 			if (vibrate) {
 				final int dat = 70;
@@ -303,7 +304,7 @@ public class NotificationService {
 		if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
 			mBuilder.setCategory(Notification.CATEGORY_MESSAGE);
 		}
-		mBuilder.setPriority(notify ? NotificationCompat.PRIORITY_DEFAULT : NotificationCompat.PRIORITY_LOW);
+		mBuilder.setPriority(notify ? (headsup ? NotificationCompat.PRIORITY_HIGH : NotificationCompat.PRIORITY_DEFAULT) : NotificationCompat.PRIORITY_LOW);
 		setNotificationColor(mBuilder);
 		mBuilder.setDefaults(0);
 		if (led) {
