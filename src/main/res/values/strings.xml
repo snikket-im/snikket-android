@@ -752,4 +752,6 @@
 	<string name="account_status_regis_web">Server requires registration on website</string>
 	<string name="open_website">Open website</string>
 	<string name="application_found_to_open_website">No application found to open website</string>
+	<string name="pref_headsup_notifications">Heads-up Notifications</string>
+	<string name="pref_headsup_notifications_summary">Show Heads-up Notifications</string>
 </resources>

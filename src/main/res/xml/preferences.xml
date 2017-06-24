@@ -66,6 +66,12 @@
             android:ringtoneType="notification"
             android:summary="@string/pref_sound_summary"
             android:title="@string/pref_sound"/>
+        <CheckBoxPreference
+            android:defaultValue="@bool/headsup_notifications"
+            android:dependency="show_notification"
+            android:key="notification_headsup"
+            android:title="@string/pref_headsup_notifications"
+            android:summary="@string/pref_headsup_notifications_summary"/>
         <PreferenceScreen
             android:dependency="show_notification"
             android:key="quiet_hours"
