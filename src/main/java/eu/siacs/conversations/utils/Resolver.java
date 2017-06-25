@@ -14,7 +14,9 @@ import de.measite.minidns.DNSClient;
 import de.measite.minidns.DNSName;
 import de.measite.minidns.Question;
 import de.measite.minidns.Record;
+import de.measite.minidns.dnssec.DNSSECValidationFailedException;
 import de.measite.minidns.hla.DnssecResolverApi;
+import de.measite.minidns.hla.ResolverApi;
 import de.measite.minidns.hla.ResolverResult;
 import de.measite.minidns.record.A;
 import de.measite.minidns.record.AAAA;
@@ -39,13 +41,13 @@ public class Resolver {
         List<Result> results = new ArrayList<>();
         try {
             results.addAll(resolveSrv(domain,true));
-        } catch (IOException e) {
-            //ignore
+        } catch (Throwable t) {
+            Log.d(Config.LOGTAG,Resolver.class.getSimpleName()+": "+t.getMessage());
         }
         try {
             results.addAll(resolveSrv(domain,false));
-        } catch (IOException e) {
-            //ignore
+        } catch (Throwable t) {
+            Log.d(Config.LOGTAG,Resolver.class.getSimpleName()+": "+t.getMessage());
         }
         if (results.size() == 0) {
             results.add(Result.createDefault(domain));
@@ -56,7 +58,13 @@ public class Resolver {
 
     private static List<Result> resolveSrv(String domain, final boolean directTls) throws IOException {
         Question question = new Question((directTls ? DIRECT_TLS_SERVICE : STARTTLS_SERICE)+"._tcp."+domain,Record.TYPE.SRV);
-        ResolverResult<Data> result = DnssecResolverApi.INSTANCE.resolve(question);
+        ResolverResult<Data> result;
+        try {
+            result = DnssecResolverApi.INSTANCE.resolve(question);
+        } catch (DNSSECValidationFailedException e) {
+            Log.d(Config.LOGTAG,Resolver.class.getSimpleName()+": error resolving SRV record with DNSSEC. Trying DNS instead "+e.getMessage());
+            result = ResolverApi.INSTANCE.resolve(question);
+        }
         List<Result> results = new ArrayList<>();
         for(Data record : result.getAnswersOrEmptySet()) {
             if (record instanceof SRV) {
@@ -76,16 +84,21 @@ public class Resolver {
     private static <D extends InternetAddressRR> List<Result> resolveIp(SRV srv, Class<D> type, boolean authenticated, boolean directTls) {
         List<Result> list = new ArrayList<>();
         try {
-            ResolverResult<D> results = DnssecResolverApi.INSTANCE.resolve(srv.name, type);
+            ResolverResult<D> results;
+            try {
+                results = DnssecResolverApi.INSTANCE.resolve(srv.name, type);
+            } catch (DNSSECValidationFailedException e) {
+                Log.d(Config.LOGTAG,Resolver.class.getSimpleName()+": error resolving "+type.getSimpleName()+" with DNSSEC. Trying DNS instead "+e.getMessage());
+                results = ResolverApi.INSTANCE.resolve(srv.name,type);
+            }
             for (D record : results.getAnswersOrEmptySet()) {
                 Result resolverResult = Result.fromRecord(srv, directTls);
                 resolverResult.authenticated = results.isAuthenticData() && authenticated;
                 resolverResult.ip = record.getInetAddress();
                 list.add(resolverResult);
             }
-        } catch (IOException e) {
-            Log.d(Config.LOGTAG,e.getMessage());
-           //ignore. will add default record later
+        } catch (Throwable t) {
+            Log.d(Config.LOGTAG,Resolver.class.getSimpleName()+": error resolving "+type.getSimpleName()+" "+t.getMessage());
         }
         return list;
     }
