@@ -12,10 +12,14 @@ import java.util.List;
 
 import de.measite.minidns.DNSClient;
 import de.measite.minidns.DNSName;
+import de.measite.minidns.dnssec.DNSSECResultNotAuthenticException;
+import de.measite.minidns.dnssec.DNSSECValidationFailedException;
 import de.measite.minidns.hla.DnssecResolverApi;
+import de.measite.minidns.hla.ResolverApi;
 import de.measite.minidns.hla.ResolverResult;
 import de.measite.minidns.record.A;
 import de.measite.minidns.record.AAAA;
+import de.measite.minidns.record.Data;
 import de.measite.minidns.record.InternetAddressRR;
 import de.measite.minidns.record.SRV;
 import eu.siacs.conversations.Config;
@@ -26,8 +30,6 @@ public class Resolver {
     private static final String STARTTLS_SERICE = "_xmpp-client";
 
 
-
-
     public static void registerLookupMechanism(Context context) {
         DNSClient.addDnsServerLookupMechanism(new AndroidUsingLinkProperties(context));
     }
@@ -36,29 +38,33 @@ public class Resolver {
         List<Result> results = new ArrayList<>();
         try {
             results.addAll(resolveSrv(domain,true));
-        } catch (Throwable t) {
-            Log.d(Config.LOGTAG,Resolver.class.getSimpleName()+": "+t.getMessage());
+        } catch (IOException e) {
+            Log.d(Config.LOGTAG,Resolver.class.getSimpleName()+": "+e.getMessage());
         }
         try {
             results.addAll(resolveSrv(domain,false));
-        } catch (Throwable t) {
-            Log.d(Config.LOGTAG,Resolver.class.getSimpleName()+": "+t.getMessage());
+        } catch (IOException e) {
+            Log.d(Config.LOGTAG,Resolver.class.getSimpleName()+": "+e.getMessage());
         }
         if (results.size() == 0) {
             results.add(Result.createDefault(domain));
         }
         Collections.sort(results);
+        Log.d(Config.LOGTAG,Resolver.class.getSimpleName()+": "+results.toString());
         return results;
     }
 
     private static List<Result> resolveSrv(String domain, final boolean directTls) throws IOException {
+        if (Thread.interrupted()) {
+            return Collections.emptyList();
+        }
         DNSName dnsName = DNSName.from((directTls ? DIRECT_TLS_SERVICE : STARTTLS_SERICE)+"._tcp."+domain);
-        ResolverResult<SRV> result = DnssecResolverApi.INSTANCE.resolveDnssecReliable(dnsName,SRV.class);
+        ResolverResult<SRV> result = resolveWithFallback(dnsName,SRV.class);
         List<Result> results = new ArrayList<>();
         for(SRV record : result.getAnswersOrEmptySet()) {
-            boolean added = results.addAll(resolveIp(record,A.class,result.isAuthenticData(),directTls));
-            added |= results.addAll(resolveIp(record,AAAA.class,result.isAuthenticData(),directTls));
-            if (!added) {
+            final boolean addedIPv4 = results.addAll(resolveIp(record,A.class,result.isAuthenticData(),directTls));
+            results.addAll(resolveIp(record,AAAA.class,result.isAuthenticData(),directTls));
+            if (!addedIPv4 && !Thread.interrupted()) {
                 Result resolverResult = Result.fromRecord(record, directTls);
                 resolverResult.authenticated = resolverResult.isAuthenticated();
                 results.add(resolverResult);
@@ -68,9 +74,12 @@ public class Resolver {
     }
 
     private static <D extends InternetAddressRR> List<Result> resolveIp(SRV srv, Class<D> type, boolean authenticated, boolean directTls) {
+        if (Thread.interrupted()) {
+            return Collections.emptyList();
+        }
         List<Result> list = new ArrayList<>();
         try {
-            ResolverResult<D> results = DnssecResolverApi.INSTANCE.resolveDnssecReliable(srv.name, type);
+            ResolverResult<D> results = resolveWithFallback(srv.name,type);
             for (D record : results.getAnswersOrEmptySet()) {
                 Result resolverResult = Result.fromRecord(srv, directTls);
                 resolverResult.authenticated = results.isAuthenticData() && authenticated;
@@ -81,6 +90,15 @@ public class Resolver {
             Log.d(Config.LOGTAG,Resolver.class.getSimpleName()+": error resolving "+type.getSimpleName()+" "+t.getMessage());
         }
         return list;
+    }
+
+    private static <D extends Data> ResolverResult<D> resolveWithFallback(DNSName dnsName, Class<D> type) throws IOException {
+        try {
+            return DnssecResolverApi.INSTANCE.resolveDnssecReliable(dnsName, type);
+        } catch (DNSSECValidationFailedException | DNSSECResultNotAuthenticException e) {
+            Log.d(Config.LOGTAG,Resolver.class.getSimpleName()+": error resolving "+type.getSimpleName()+" with DNSSEC. Trying DNS instead "+e.getMessage());
+            return ResolverApi.INSTANCE.resolve(dnsName, type);
+        }
     }
 
     public static class Result implements Comparable<Result> {
@@ -127,9 +145,13 @@ public class Resolver {
         public int compareTo(@NonNull Result result) {
             if (result.priority == priority) {
                 if (directTls == result.directTls) {
-                    return 0;
+                    if (ip == null && result.ip == null) {
+                        return 0;
+                    } else {
+                        return ip != null ? -1 : 1;
+                    }
                 } else {
-                    return directTls ? 1 : -1;
+                    return directTls ? -1 : 1;
                 }
             } else {
                 return priority - result.priority;
