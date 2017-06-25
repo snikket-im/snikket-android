@@ -575,6 +575,7 @@
   <string name="certicate_info_not_available">(利用不可)</string>
   <string name="certificate_not_found">証明書がありません</string>
   <string name="notify_on_all_messages">すべてのメッセージで通知</string>
+  <string name="notify_only_when_highlighted">メンションされたときにのみ通知</string>
   <string name="notify_never">通知は無効</string>
   <string name="notify_paused">通知は一時停止</string>
   <string name="pref_picture_compression">写真を圧縮</string>

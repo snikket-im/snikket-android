@@ -157,6 +157,7 @@
   <string name="account_status_regis_conflict">Erabiltzaile izena dagoeneko erabilita</string>
   <string name="account_status_regis_success">Erregistroa burutu da</string>
   <string name="account_status_regis_not_sup">Zerbitzariak ez du erregistratzea onartzen</string>
+  <string name="account_status_tls_error">TLN negoziazioak huts egin du</string>
   <string name="account_status_policy_violation">Politikaren urraketa</string>
   <string name="account_status_incompatible_server">Zerbitzari ez bateragarria</string>
   <string name="account_status_stream_error">Akatsa korrontean</string>
@@ -577,6 +578,7 @@
   <string name="certicate_info_not_available">(Ez eskuragarri)</string>
   <string name="certificate_not_found">Ez da ziurtagiririk aurkitu</string>
   <string name="notify_on_all_messages">Mezu guztiak jakinarazi</string>
+  <string name="notify_only_when_highlighted">Jakinarazi aipatua izaterakoan soilik</string>
   <string name="notify_never">Jakinarazpenak ezgaituta</string>
   <string name="notify_paused">Jakinarazpenak gelditu dira</string>
   <string name="pref_picture_compression">Irudiak konprimatu</string>
@@ -713,4 +715,5 @@
   <string name="online_right_now">orain konektatuta</string>
   <string name="retry_decryption">Saiatu berriz desenkriptatzen</string>
   <string name="session_failure">Saioaren akatsa</string>
+  <string name="sasl_downgrade">SASL mekanismoa beheratua</string>
 </resources>

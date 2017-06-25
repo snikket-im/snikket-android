@@ -157,6 +157,7 @@
   <string name="account_status_regis_conflict">Brukernavn allerede i bruk</string>
   <string name="account_status_regis_success">Registrering fullført</string>
   <string name="account_status_regis_not_sup">Tjeneren støtter ikke registrering</string>
+  <string name="account_status_tls_error">TLS-forhandling mislyktes</string>
   <string name="account_status_policy_violation">Praksisbrudd</string>
   <string name="account_status_incompatible_server">Ukompatibel tjener</string>
   <string name="account_status_stream_error">Strømmingsfeil</string>
@@ -577,6 +578,7 @@
   <string name="certicate_info_not_available">(Ikke tilgjengelig)</string>
   <string name="certificate_not_found">Fant ikke noe sertifikat</string>
   <string name="notify_on_all_messages">Varsle ved alle meldinger</string>
+  <string name="notify_only_when_highlighted">Varsle bare når fremhevet</string>
   <string name="notify_never">Varslinger deaktivert</string>
   <string name="notify_paused">Varslinger pauset</string>
   <string name="pref_picture_compression">Komprimer bilder</string>
@@ -713,4 +715,5 @@
   <string name="online_right_now">pålogget akkurat nå</string>
   <string name="retry_decryption">Prøv å dekryptere igjen</string>
   <string name="session_failure">Økt-feil</string>
+  <string name="sasl_downgrade">Nedgradert SASL-mekanisme</string>
 </resources>

@@ -79,7 +79,7 @@
   <string name="delete_messages">Supprimer les messages</string>
   <string name="also_end_conversation">Fermer cette conversation ensuite</string>
   <string name="choose_presence">Choisir l\'appareil</string>
-  <string name="send_unencrypted_message">Envoyer un message non chiffré</string>
+  <string name="send_unencrypted_message">Envoyer un message en clair</string>
   <string name="send_message">Envoyer le message</string>
   <string name="send_message_to_x">Envoyer un message à %s</string>
   <string name="send_otr_message">Envoyer un message chiffré avec OTR</string>
@@ -157,6 +157,7 @@
   <string name="account_status_regis_conflict">Identifiant déjà utilisé</string>
   <string name="account_status_regis_success">Enregistrement réussi</string>
   <string name="account_status_regis_not_sup">Le serveur ne permet pas l\'enregistrement</string>
+  <string name="account_status_tls_error">La négociation TLS a echoué</string>
   <string name="account_status_policy_violation">Violation de politique</string>
   <string name="account_status_incompatible_server">Serveur incompatible</string>
   <string name="account_status_stream_error">Erreur de flux</string>
@@ -577,6 +578,7 @@
   <string name="certicate_info_not_available">(Non disponible)</string>
   <string name="certificate_not_found">Aucun certificat trouvé</string>
   <string name="notify_on_all_messages">Notifier pour tous les messages</string>
+  <string name="notify_only_when_highlighted">Notifier seulement en cas de mention</string>
   <string name="notify_never">Notifications désactivées</string>
   <string name="notify_paused">Notifications en pause</string>
   <string name="pref_picture_compression">Compresser images</string>
@@ -713,4 +715,5 @@
   <string name="online_right_now">En ligne actuellement</string>
   <string name="retry_decryption">Nouvelle tentative de déchiffrement</string>
   <string name="session_failure">Échec de la session</string>
+  <string name="sasl_downgrade">Mécanisme SASL dégradé</string>
 </resources>

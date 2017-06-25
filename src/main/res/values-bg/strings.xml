@@ -578,6 +578,7 @@
   <string name="certicate_info_not_available">(Няма)</string>
   <string name="certificate_not_found">Няма намерен сертификат</string>
   <string name="notify_on_all_messages">Известяване за всички съобщения</string>
+  <string name="notify_only_when_highlighted">Известяване само при споменаване</string>
   <string name="notify_never">Известията са изключени</string>
   <string name="notify_paused">Известията са спрени временно</string>
   <string name="pref_picture_compression">Компресиране на снимките</string>

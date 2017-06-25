@@ -80,6 +80,7 @@
   <string name="also_end_conversation">之后结束此会话</string>
   <string name="choose_presence">选择设备</string>
   <string name="send_unencrypted_message">发送未加密的信息</string>
+  <string name="send_message">发送信息</string>
   <string name="send_message_to_x">发信息给 %s</string>
   <string name="send_otr_message">发送 OTR 加密信息</string>
   <string name="send_omemo_message">发送 OMEMO 加密信息</string>
@@ -156,6 +157,7 @@
   <string name="account_status_regis_conflict"> 用户名已存在</string>
   <string name="account_status_regis_success">注册完成</string>
   <string name="account_status_regis_not_sup">服务器不支持注册</string>
+  <string name="account_status_tls_error">TLS 协商失败</string>
   <string name="account_status_policy_violation">违反政策</string>
   <string name="account_status_incompatible_server">服务器不兼容</string>
   <string name="account_status_stream_error">流错误</string>
@@ -168,12 +170,16 @@
   <string name="mgmt_account_disable">暂时不可用</string>
   <string name="mgmt_account_publish_avatar">发布头像</string>
   <string name="mgmt_account_publish_pgp">发布 OpenPGP 公钥</string>
+  <string name="unpublish_pgp">移除 OpenPGP 公钥</string>
+  <string name="unpublish_pgp_message">您确定要从在线通知中移除 OpenPGP 公钥吗？\n您的联系人将无法再向您发送 OpenPGP 加密信息。</string>
   <string name="openpgp_has_been_published">OpenPGP 公钥已发布</string>
   <string name="republish_pgp_keys">记得重新发布OpenPGP公钥</string>
   <string name="mgmt_account_enable">启用账户</string>
   <string name="mgmt_account_are_you_sure">确定?</string>
+  <string name="mgmt_account_delete_confirm_text">如果您删除帐户，您的整个聊天记录将会丢失</string>
   <string name="attach_record_voice">录音</string>
   <string name="account_settings_jabber_id">Jabber ID</string>
+  <string name="block_jabber_id">屏蔽 Jabber ID</string>
   <string name="account_settings_password">密码</string>
   <string name="account_settings_example_jabber_id">username@example.com</string>
   <string name="account_settings_confirm_password">确认密码</string>
@@ -467,6 +473,8 @@
   <string name="disable_account">禁用账户</string>
   <string name="contact_is_typing">%s 正在输入</string>
   <string name="contact_has_stopped_typing">%s 已停止输入</string>
+  <string name="contacts_are_typing">%s 正在输入</string>
+  <string name="contacts_have_stopped_typing">%s 已停止输入</string>
   <string name="pref_chat_states">键盘输入通知</string>
   <string name="pref_chat_states_summary">让对方知道你正在向他们写消息</string>
   <string name="send_location">发送位置</string>
@@ -567,6 +575,7 @@
   <string name="certicate_info_not_available">(不可用）</string>
   <string name="certificate_not_found">未发现证书</string>
   <string name="notify_on_all_messages">为所有信息显示通知</string>
+  <string name="notify_only_when_highlighted">只在被提到时通知</string>
   <string name="notify_never">禁用通知</string>
   <string name="notify_paused">暂停通知</string>
   <string name="pref_picture_compression">压缩图片</string>
@@ -695,4 +704,15 @@
   <string name="encrypting_message">消息加密中</string>
   <string name="not_fetching_history_retention_period">由于本地保留期限，因此无法提取消息。</string>
   <string name="transcoding_video_progress">正在压缩视频 (已完成 %s%% )</string>
+  <string name="corresponding_conversations_closed">相应的对话已关闭。</string>
+  <string name="contact_blocked_past_tense">联系人已屏蔽</string>
+  <string name="pref_notifications_from_strangers">陌生人也通知</string>
+  <string name="pref_notifications_from_strangers_summary">收到陌生人信息时通知</string>
+  <string name="received_message_from_stranger">已收到陌生人的信息</string>
+  <string name="block_stranger">屏蔽陌生人</string>
+  <string name="block_entire_domain">屏蔽整个域名</string>
+  <string name="online_right_now">当前在线</string>
+  <string name="retry_decryption">重试解密</string>
+  <string name="session_failure">会话失败</string>
+  <string name="sasl_downgrade">已降级的 SASL 机制</string>
 </resources>

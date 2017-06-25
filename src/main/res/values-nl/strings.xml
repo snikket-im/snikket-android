@@ -578,6 +578,7 @@
   <string name="certicate_info_not_available">(Niet beschikbaar)</string>
   <string name="certificate_not_found">Geen certificaat gevonden</string>
   <string name="notify_on_all_messages">Melding bij alle berichten</string>
+  <string name="notify_only_when_highlighted">Melding enkel wanneer aangesproken</string>
   <string name="notify_never">Meldingen uitgeschakeld</string>
   <string name="notify_paused">Meldingen gepauzeerd</string>
   <string name="pref_picture_compression">Afbeeldingen comprimeren</string>

@@ -70,7 +70,7 @@
   <string name="add_contact">Aggiungi contatto</string>
   <string name="send_failed">Invio fallito</string>
   <string name="send_rejected">rifiutato</string>
-  <string name="preparing_image">Preparazioone immagine per la trasmissione</string>
+  <string name="preparing_image">Preparazione immagine per la trasmissione</string>
   <string name="preparing_images">Preparazione immagini per la trasmissione</string>
   <string name="sharing_files_please_wait">Condivisione file. Attendere prego...</string>
   <string name="action_clear_history">Pulisci la cronologia</string>
@@ -578,6 +578,7 @@
   <string name="certicate_info_not_available">(Non disponibile)</string>
   <string name="certificate_not_found">Nessun certificato trovato</string>
   <string name="notify_on_all_messages">Notifica per tutti i messaggi</string>
+  <string name="notify_only_when_highlighted">Notifica solo quando menzionato</string>
   <string name="notify_never">Notifiche disabilitate</string>
   <string name="notify_paused">Notifiche in pausa</string>
   <string name="pref_picture_compression">Comprimi immagini</string>

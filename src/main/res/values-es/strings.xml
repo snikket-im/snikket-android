@@ -578,6 +578,7 @@
   <string name="certicate_info_not_available">(No disponible)</string>
   <string name="certificate_not_found">Certificado no encontrado</string>
   <string name="notify_on_all_messages">Notificar para todos los mensajes</string>
+  <string name="notify_only_when_highlighted">Notificar solo cuando eres mencionado</string>
   <string name="notify_never">Notificaciones deshabilitadas</string>
   <string name="notify_paused">Notificaciones pausadas</string>
   <string name="pref_picture_compression">Comprimir imágenes</string>
@@ -714,4 +715,5 @@
   <string name="online_right_now">Conectado ahora mismo</string>
   <string name="retry_decryption">Reintentar descifrado</string>
   <string name="session_failure">Fallo de sesión</string>
+  <string name="sasl_downgrade">Downgraded SASL mechanism</string>
 </resources>
