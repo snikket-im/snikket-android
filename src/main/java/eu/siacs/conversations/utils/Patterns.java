@@ -14,7 +14,8 @@
  * limitations under the License.
  *
  *
- * Download latest version here: https://android.googlesource.com/platform/frameworks/base.git/+/master
+ * Download latest version here:
+ * https://android.googlesource.com/platform/frameworks/base.git/+/master/core/java/android/util/Patterns.java
  *
  *
  */
