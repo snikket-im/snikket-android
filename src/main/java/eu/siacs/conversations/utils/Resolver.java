@@ -12,15 +12,10 @@ import java.util.List;
 
 import de.measite.minidns.DNSClient;
 import de.measite.minidns.DNSName;
-import de.measite.minidns.Question;
-import de.measite.minidns.Record;
-import de.measite.minidns.dnssec.DNSSECValidationFailedException;
 import de.measite.minidns.hla.DnssecResolverApi;
-import de.measite.minidns.hla.ResolverApi;
 import de.measite.minidns.hla.ResolverResult;
 import de.measite.minidns.record.A;
 import de.measite.minidns.record.AAAA;
-import de.measite.minidns.record.Data;
 import de.measite.minidns.record.InternetAddressRR;
 import de.measite.minidns.record.SRV;
 import eu.siacs.conversations.Config;
@@ -57,25 +52,16 @@ public class Resolver {
     }
 
     private static List<Result> resolveSrv(String domain, final boolean directTls) throws IOException {
-        Question question = new Question((directTls ? DIRECT_TLS_SERVICE : STARTTLS_SERICE)+"._tcp."+domain,Record.TYPE.SRV);
-        ResolverResult<Data> result;
-        try {
-            result = DnssecResolverApi.INSTANCE.resolve(question);
-        } catch (DNSSECValidationFailedException e) {
-            Log.d(Config.LOGTAG,Resolver.class.getSimpleName()+": error resolving SRV record with DNSSEC. Trying DNS instead "+e.getMessage());
-            result = ResolverApi.INSTANCE.resolve(question);
-        }
+        DNSName dnsName = DNSName.from((directTls ? DIRECT_TLS_SERVICE : STARTTLS_SERICE)+"._tcp."+domain);
+        ResolverResult<SRV> result = DnssecResolverApi.INSTANCE.resolveDnssecReliable(dnsName,SRV.class);
         List<Result> results = new ArrayList<>();
-        for(Data record : result.getAnswersOrEmptySet()) {
-            if (record instanceof SRV) {
-                SRV srvRecord = (SRV) record;
-                boolean added = results.addAll(resolveIp(srvRecord,A.class,result.isAuthenticData(),directTls));
-                added |= results.addAll(resolveIp(srvRecord,AAAA.class,result.isAuthenticData(),directTls));
-                if (!added) {
-                    Result resolverResult = Result.fromRecord(srvRecord, directTls);
-                    resolverResult.authenticated = resolverResult.isAuthenticated();
-                    results.add(resolverResult);
-                }
+        for(SRV record : result.getAnswersOrEmptySet()) {
+            boolean added = results.addAll(resolveIp(record,A.class,result.isAuthenticData(),directTls));
+            added |= results.addAll(resolveIp(record,AAAA.class,result.isAuthenticData(),directTls));
+            if (!added) {
+                Result resolverResult = Result.fromRecord(record, directTls);
+                resolverResult.authenticated = resolverResult.isAuthenticated();
+                results.add(resolverResult);
             }
         }
         return results;
@@ -84,13 +70,7 @@ public class Resolver {
     private static <D extends InternetAddressRR> List<Result> resolveIp(SRV srv, Class<D> type, boolean authenticated, boolean directTls) {
         List<Result> list = new ArrayList<>();
         try {
-            ResolverResult<D> results;
-            try {
-                results = DnssecResolverApi.INSTANCE.resolve(srv.name, type);
-            } catch (DNSSECValidationFailedException e) {
-                Log.d(Config.LOGTAG,Resolver.class.getSimpleName()+": error resolving "+type.getSimpleName()+" with DNSSEC. Trying DNS instead "+e.getMessage());
-                results = ResolverApi.INSTANCE.resolve(srv.name,type);
-            }
+            ResolverResult<D> results = DnssecResolverApi.INSTANCE.resolveDnssecReliable(srv.name, type);
             for (D record : results.getAnswersOrEmptySet()) {
                 Result resolverResult = Result.fromRecord(srv, directTls);
                 resolverResult.authenticated = results.isAuthenticData() && authenticated;
@@ -134,7 +114,7 @@ public class Resolver {
         @Override
         public String toString() {
             return "Result{" +
-                    "ip='" + ip + '\'' +
+                    "ip='" + (ip==null?null:ip.getHostAddress()) + '\'' +
                     ", hostame='" + hostname.toString() + '\'' +
                     ", port=" + port +
                     ", directTls=" + directTls +
