@@ -189,7 +189,7 @@ public class AxolotlService implements OnAdvancedStreamFeaturesLoaded {
 				SignalProtocolAddress axolotlAddress = new SignalProtocolAddress(bareJid, deviceId);
 				IdentityKey identityKey = store.loadSession(axolotlAddress).getSessionState().getRemoteIdentityKey();
 				if(Config.X509_VERIFICATION) {
-					X509Certificate certificate = store.getFingerprintCertificate(identityKey.getFingerprint().replaceAll("\\s", ""));
+					X509Certificate certificate = store.getFingerprintCertificate(CryptoHelper.bytesToHex(identityKey.getPublicKey().serialize()));
 					if (certificate != null) {
 						Bundle information = CryptoHelper.extractCertificateInformation(certificate);
 						try {
@@ -891,7 +891,7 @@ public class AxolotlService implements OnAdvancedStreamFeaturesLoaded {
 							if (Config.X509_VERIFICATION) {
 								verifySessionWithPEP(session);
 							} else {
-								FingerprintStatus status = getFingerprintTrust(bundle.getIdentityKey().getFingerprint().replaceAll("\\s",""));
+								FingerprintStatus status = getFingerprintTrust(CryptoHelper.bytesToHex(bundle.getIdentityKey().getPublicKey().serialize()));
 								FetchStatus fetchStatus;
 								if (status != null && status.isVerified()) {
 									fetchStatus = FetchStatus.SUCCESS_VERIFIED;

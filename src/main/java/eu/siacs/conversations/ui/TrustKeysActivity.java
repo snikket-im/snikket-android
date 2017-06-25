@@ -32,6 +32,7 @@ import eu.siacs.conversations.crypto.axolotl.AxolotlService;
 import eu.siacs.conversations.crypto.axolotl.FingerprintStatus;
 import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.entities.Conversation;
+import eu.siacs.conversations.utils.CryptoHelper;
 import eu.siacs.conversations.utils.XmppUri;
 import eu.siacs.conversations.xmpp.OnKeyStatusUpdated;
 import eu.siacs.conversations.xmpp.jid.InvalidJidException;
@@ -248,8 +249,9 @@ public class TrustKeysActivity extends OmemoActivity implements OnKeyStatusUpdat
 		AxolotlService service = this.mAccount.getAxolotlService();
 		Set<IdentityKey> ownKeysSet = service.getKeysWithTrust(FingerprintStatus.createActiveUndecided());
 		for(final IdentityKey identityKey : ownKeysSet) {
-			if(!ownKeysToTrust.containsKey(identityKey)) {
-				ownKeysToTrust.put(identityKey.getFingerprint().replaceAll("\\s", ""), false);
+			final String fingerprint = CryptoHelper.bytesToHex(identityKey.getPublicKey().serialize());
+			if(!ownKeysToTrust.containsKey(fingerprint)) {
+				ownKeysToTrust.put(fingerprint, false);
 			}
 		}
 		synchronized (this.foreignKeysToTrust) {
@@ -261,8 +263,9 @@ public class TrustKeysActivity extends OmemoActivity implements OnKeyStatusUpdat
 				}
 				Map<String, Boolean> foreignFingerprints = new HashMap<>();
 				for (final IdentityKey identityKey : foreignKeysSet) {
-					if (!foreignFingerprints.containsKey(identityKey)) {
-						foreignFingerprints.put(identityKey.getFingerprint().replaceAll("\\s", ""), false);
+					final String fingerprint = CryptoHelper.bytesToHex(identityKey.getPublicKey().serialize());
+					if (!foreignFingerprints.containsKey(fingerprint)) {
+						foreignFingerprints.put(fingerprint, false);
 					}
 				}
 				if (foreignFingerprints.size() > 0 || !acceptedTargets.contains(jid)) {

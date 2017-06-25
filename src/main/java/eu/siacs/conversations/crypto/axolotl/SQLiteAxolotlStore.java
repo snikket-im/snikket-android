@@ -22,6 +22,7 @@ import java.util.Set;
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.services.XmppConnectionService;
+import eu.siacs.conversations.utils.CryptoHelper;
 
 public class SQLiteAxolotlStore implements SignalProtocolStore {
 
@@ -186,7 +187,7 @@ public class SQLiteAxolotlStore implements SignalProtocolStore {
 	@Override
 	public boolean saveIdentity(SignalProtocolAddress address, IdentityKey identityKey) {
 		if (!mXmppConnectionService.databaseBackend.loadIdentityKeys(account, address.getName()).contains(identityKey)) {
-			String fingerprint = identityKey.getFingerprint().replaceAll("\\s", "");
+			String fingerprint = CryptoHelper.bytesToHex(identityKey.getPublicKey().serialize());
 			FingerprintStatus status = getFingerprintStatus(fingerprint);
 			if (status == null) {
 				if (mXmppConnectionService.blindTrustBeforeVerification() && !account.getAxolotlService().hasVerifiedKeys(address.getName())) {

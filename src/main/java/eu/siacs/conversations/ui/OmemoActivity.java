@@ -113,7 +113,7 @@ public abstract class OmemoActivity extends XmppActivity {
         final String fingerprint = session.getFingerprint();
         addFingerprintRowWithListeners(keys,
                 session.getAccount(),
-                session.getFingerprint(),
+                fingerprint,
                 highlight,
                 session.getTrust(),
                 true,

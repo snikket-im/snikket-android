@@ -50,6 +50,7 @@ import eu.siacs.conversations.entities.PresenceTemplate;
 import eu.siacs.conversations.entities.Roster;
 import eu.siacs.conversations.entities.ServiceDiscoveryResult;
 import eu.siacs.conversations.services.ShortcutService;
+import eu.siacs.conversations.utils.CryptoHelper;
 import eu.siacs.conversations.utils.MimeUtils;
 import eu.siacs.conversations.xmpp.jid.InvalidJidException;
 import eu.siacs.conversations.xmpp.jid.Jid;
@@ -311,7 +312,7 @@ public class DatabaseBackend extends SQLiteOpenHelper {
 				if (identityKeyPair != null) {
 					String[] selectionArgs = {
 							account.getUuid(),
-							identityKeyPair.getPublicKey().getFingerprint().replaceAll("\\s", "")
+							CryptoHelper.bytesToHex(identityKeyPair.getPublicKey().serialize())
 					};
 					ContentValues values = new ContentValues();
 					values.put(SQLiteAxolotlStore.TRUSTED, 2);
@@ -1353,11 +1354,11 @@ public class DatabaseBackend extends SQLiteOpenHelper {
 	}
 
 	public void storeIdentityKey(Account account, String name, IdentityKey identityKey, FingerprintStatus status) {
-		storeIdentityKey(account, name, false, identityKey.getFingerprint().replaceAll("\\s", ""), Base64.encodeToString(identityKey.serialize(), Base64.DEFAULT), status);
+		storeIdentityKey(account, name, false, CryptoHelper.bytesToHex(identityKey.getPublicKey().serialize()), Base64.encodeToString(identityKey.serialize(), Base64.DEFAULT), status);
 	}
 
 	public void storeOwnIdentityKeyPair(Account account, IdentityKeyPair identityKeyPair) {
-		storeIdentityKey(account, account.getJid().toBareJid().toPreppedString(), true, identityKeyPair.getPublicKey().getFingerprint().replaceAll("\\s", ""), Base64.encodeToString(identityKeyPair.serialize(), Base64.DEFAULT), FingerprintStatus.createActiveVerified(false));
+		storeIdentityKey(account, account.getJid().toBareJid().toPreppedString(), true, CryptoHelper.bytesToHex(identityKeyPair.getPublicKey().serialize()), Base64.encodeToString(identityKeyPair.serialize(), Base64.DEFAULT), FingerprintStatus.createActiveVerified(false));
 	}
 
 
