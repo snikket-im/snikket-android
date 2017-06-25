@@ -48,6 +48,12 @@
             android:title="@string/pref_notifications_from_strangers"
             android:summary="@string/pref_notifications_from_strangers_summary"/>
         <CheckBoxPreference
+            android:defaultValue="@bool/headsup_notifications"
+            android:dependency="show_notification"
+            android:key="notification_headsup"
+            android:title="@string/pref_headsup_notifications"
+            android:summary="@string/pref_headsup_notifications_summary"/>
+        <CheckBoxPreference
             android:defaultValue="true"
             android:dependency="show_notification"
             android:key="vibrate_on_notification"
@@ -66,12 +72,6 @@
             android:ringtoneType="notification"
             android:summary="@string/pref_sound_summary"
             android:title="@string/pref_sound"/>
-        <CheckBoxPreference
-            android:defaultValue="@bool/headsup_notifications"
-            android:dependency="show_notification"
-            android:key="notification_headsup"
-            android:title="@string/pref_headsup_notifications"
-            android:summary="@string/pref_headsup_notifications_summary"/>
         <PreferenceScreen
             android:dependency="show_notification"
             android:key="quiet_hours"
