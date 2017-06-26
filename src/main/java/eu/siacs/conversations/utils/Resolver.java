@@ -13,7 +13,6 @@ import java.util.List;
 import de.measite.minidns.DNSClient;
 import de.measite.minidns.DNSName;
 import de.measite.minidns.dnssec.DNSSECResultNotAuthenticException;
-import de.measite.minidns.dnssec.DNSSECValidationFailedException;
 import de.measite.minidns.hla.DnssecResolverApi;
 import de.measite.minidns.hla.ResolverApi;
 import de.measite.minidns.hla.ResolverResult;
@@ -95,8 +94,13 @@ public class Resolver {
     private static <D extends Data> ResolverResult<D> resolveWithFallback(DNSName dnsName, Class<D> type) throws IOException {
         try {
             return DnssecResolverApi.INSTANCE.resolveDnssecReliable(dnsName, type);
-        } catch (DNSSECValidationFailedException | DNSSECResultNotAuthenticException e) {
-            Log.d(Config.LOGTAG,Resolver.class.getSimpleName()+": error resolving "+type.getSimpleName()+" with DNSSEC. Trying DNS instead "+e.getMessage());
+        } catch (DNSSECResultNotAuthenticException e) {
+            Log.d(Config.LOGTAG,Resolver.class.getSimpleName()+": error resolving "+type.getSimpleName()+" with DNSSEC. Trying DNS instead.",e);
+            return ResolverApi.INSTANCE.resolve(dnsName, type);
+        } catch (IOException e) {
+            throw e;
+        } catch (Throwable throwable) {
+            Log.d(Config.LOGTAG,Resolver.class.getSimpleName()+": error resolving "+type.getSimpleName()+" with DNSSEC. Trying DNS instead.",throwable);
             return ResolverApi.INSTANCE.resolve(dnsName, type);
         }
     }
