@@ -682,7 +682,7 @@ public class XmppConnectionService extends Service {
 					sendReadMarker(c);
 					break;
 				case AudioManager.RINGER_MODE_CHANGED_ACTION:
-					if (xaOnSilentMode()) {
+					if (dndOnSilentMode()) {
 						refreshAllPresences();
 					}
 					break;
@@ -860,8 +860,8 @@ public class XmppConnectionService extends Service {
 		}
 	}
 
-	private boolean xaOnSilentMode() {
-		return getPreferences().getBoolean("xa_on_silent_mode", false);
+	private boolean dndOnSilentMode() {
+		return getPreferences().getBoolean(SettingsActivity.DND_ON_SILENT_MODE, getResources().getBoolean(R.bool.dnd_on_silent_mode));
 	}
 
 	private boolean manuallyChangePresence() {
@@ -869,7 +869,7 @@ public class XmppConnectionService extends Service {
 	}
 
 	private boolean treatVibrateAsSilent() {
-		return getPreferences().getBoolean(SettingsActivity.TREAT_VIBRATE_AS_SILENT, false);
+		return getPreferences().getBoolean(SettingsActivity.TREAT_VIBRATE_AS_SILENT, getResources().getBoolean(R.bool.treat_vibrate_as_silent));
 	}
 
 	private boolean awayWhenScreenOff() {
@@ -881,8 +881,8 @@ public class XmppConnectionService extends Service {
 	}
 
 	private Presence.Status getTargetPresence() {
-		if (xaOnSilentMode() && isPhoneSilenced()) {
-			return Presence.Status.XA;
+		if (dndOnSilentMode() && isPhoneSilenced()) {
+			return Presence.Status.DND;
 		} else if (awayWhenScreenOff() && !isInteractive()) {
 			return Presence.Status.AWAY;
 		} else {

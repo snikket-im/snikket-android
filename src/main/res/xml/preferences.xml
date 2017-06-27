@@ -256,17 +256,17 @@
                     android:title="@string/pref_away_when_screen_off"
                     android:dependency="manually_change_presence"/>
                 <CheckBoxPreference
-                    android:defaultValue="false"
-                    android:key="xa_on_silent_mode"
-                    android:summary="@string/pref_xa_on_silent_mode_summary"
-                    android:title="@string/pref_xa_on_silent_mode"
+                    android:defaultValue="@bool/dnd_on_silent_mode"
+                    android:key="dnd_on_silent_mode"
+                    android:summary="@string/pref_dnd_on_silent_mode_summary"
+                    android:title="@string/pref_dnd_on_silent_mode"
                     android:dependency="manually_change_presence"/>
                 <CheckBoxPreference
-                    android:dependency="xa_on_silent_mode"
-                    android:defaultValue="false"
+                    android:dependency="dnd_on_silent_mode"
+                    android:defaultValue="@bool/treat_vibrate_as_silent"
                     android:key="treat_vibrate_as_silent"
                     android:title="@string/pref_treat_vibrate_as_silent"
-                    android:summary="@string/pref_treat_vibrate_as_silent_summary"/>
+                    android:summary="@string/pref_treat_vibrate_as_dnd_summary"/>
             </PreferenceCategory>
             <PreferenceCategory android:title="@string/pref_expert_options_other">
                 <CheckBoxPreference

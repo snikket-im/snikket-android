@@ -558,10 +558,10 @@
 	<string name="pref_presence_settings">Presence</string>
 	<string name="pref_away_when_screen_off">Away when screen is off</string>
 	<string name="pref_away_when_screen_off_summary">Marks your resource as away when the screen is turned off</string>
-	<string name="pref_xa_on_silent_mode">Not available in silent mode</string>
-	<string name="pref_xa_on_silent_mode_summary">Marks your resource as not available when device is in silent mode</string>
+	<string name="pref_dnd_on_silent_mode">“Do not disturb” in silent mode</string>
+	<string name="pref_dnd_on_silent_mode_summary">Marks your resource as “Do not disturb” when device is in silent mode</string>
 	<string name="pref_treat_vibrate_as_silent">Treat vibrate as silent mode</string>
-	<string name="pref_treat_vibrate_as_silent_summary">Marks your resource as not available when device is on vibrate</string>
+	<string name="pref_treat_vibrate_as_dnd_summary">Marks your resource as “Do not disturb” when device is on vibrate</string>
 	<string name="pref_show_connection_options">Extended connection settings</string>
 	<string name="pref_show_connection_options_summary">Show hostname and port settings when setting up an account</string>
 	<string name="hostname_example">xmpp.example.com</string>

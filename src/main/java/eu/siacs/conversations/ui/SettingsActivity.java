@@ -42,6 +42,7 @@ public class SettingsActivity extends XmppActivity implements
 	public static final String KEEP_FOREGROUND_SERVICE = "enable_foreground_service";
 	public static final String AWAY_WHEN_SCREEN_IS_OFF = "away_when_screen_off";
 	public static final String TREAT_VIBRATE_AS_SILENT = "treat_vibrate_as_silent";
+	public static final String DND_ON_SILENT_MODE = "dnd_on_silent_mode";
 	public static final String MANUALLY_CHANGE_PRESENCE = "manually_change_presence";
 	public static final String BLIND_TRUST_BEFORE_VERIFICATION = "btbv";
 	public static final String AUTOMATIC_MESSAGE_DELETION = "automatic_message_deletion";
@@ -332,7 +333,7 @@ public class SettingsActivity extends XmppActivity implements
 	public void onSharedPreferenceChanged(SharedPreferences preferences, String name) {
 		final List<String> resendPresence = Arrays.asList(
 				"confirm_messages",
-				"xa_on_silent_mode",
+				DND_ON_SILENT_MODE,
 				AWAY_WHEN_SCREEN_IS_OFF,
 				"allow_message_correction",
 				TREAT_VIBRATE_AS_SILENT,
