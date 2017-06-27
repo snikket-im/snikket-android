@@ -2569,6 +2569,10 @@ public class XmppConnectionService extends Service {
 		});
 	}
 
+	public void pushNodeConfiguration(Account account, final String node, final Bundle options, final OnConfigurationPushed callback) {
+		pushNodeConfiguration(account,account.getJid().toBareJid(),node,options,callback);
+	}
+
 	public void pushNodeConfiguration(Account account, final Jid jid, final String node, final Bundle options, final OnConfigurationPushed callback) {
 		sendIqPacket(account, mIqGenerator.requestPubsubConfiguration(jid,node), new OnIqPacketReceived() {
 			@Override
