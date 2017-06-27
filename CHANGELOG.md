@@ -1,5 +1,10 @@
 # Changelog
 
+### Version 1.19.0
+* Added 'App Shortcuts' to quickly access frequent contacts
+* Use DNSSEC to verify hostname instead of domain in certificate
+* Setting to enable Heads-up notifications
+
 ### Version 1.18.5
 * colorize send button only after history is caught up
 * improved MAM catchup strategy
