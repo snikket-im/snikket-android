@@ -865,7 +865,15 @@ public class AxolotlService implements OnAdvancedStreamFeaturesLoaded {
 		return !hasAny(jid) && (!deviceIds.containsKey(jid) || deviceIds.get(jid).isEmpty());
 	}
 
+	public interface OnDeviceIdsFetched {
+		void fetched(Set<Integer> deviceIds);
+	}
+
 	public void fetchDeviceIds(final Jid jid) {
+		fetchDeviceIds(jid,null);
+	}
+
+	public void fetchDeviceIds(final Jid jid, final OnDeviceIdsFetched callback) {
 		Log.d(Config.LOGTAG,"fetching device ids for "+jid);
 		IqPacket packet = mXmppConnectionService.getIqGenerator().retrieveDeviceIds(jid);
 		mXmppConnectionService.sendIqPacket(account, packet, new OnIqPacketReceived() {
@@ -875,9 +883,16 @@ public class AxolotlService implements OnAdvancedStreamFeaturesLoaded {
 					Element item = mXmppConnectionService.getIqParser().getItem(packet);
 					Set<Integer> deviceIds = mXmppConnectionService.getIqParser().deviceIds(item);
 					registerDevices(jid,deviceIds);
+					if (callback != null) {
+						callback.fetched(deviceIds);
+					}
 				} else {
 					Log.d(Config.LOGTAG,packet.toString());
+					if (callback != null) {
+						callback.fetched(null);
+					}
 				}
+
 			}
 		});
 	}
@@ -1013,6 +1028,28 @@ public class AxolotlService implements OnAdvancedStreamFeaturesLoaded {
 	}
 
 	public boolean createSessionsIfNeeded(final Conversation conversation) {
+		final Jid jid = conversation.getJid().toBareJid();
+		if (conversation.getMode() == Conversation.MODE_SINGLE && hasEmptyDeviceList(jid)) {
+			final SignalProtocolAddress placeholder = new SignalProtocolAddress(jid.toPreppedString(), Integer.MIN_VALUE);
+			FetchStatus status = fetchStatusMap.get(placeholder);
+			if (status == null || status == FetchStatus.TIMEOUT) {
+				fetchStatusMap.put(placeholder, FetchStatus.PENDING);
+			}
+			fetchDeviceIds(conversation.getJid().toBareJid(), new OnDeviceIdsFetched() {
+				@Override
+				public void fetched(Set<Integer> deviceIds) {
+					createSessionsIfNeededActual(conversation);
+					fetchStatusMap.put(placeholder,deviceIds != null && !deviceIds.isEmpty() ? FetchStatus.SUCCESS : FetchStatus.ERROR);
+					finishBuildingSessionsFromPEP(placeholder);
+				}
+			});
+			return true;
+		} else {
+			return createSessionsIfNeededActual(conversation);
+		}
+	}
+
+	private boolean createSessionsIfNeededActual(final Conversation conversation) {
 		Log.i(Config.LOGTAG, AxolotlService.getLogprefix(account) + "Creating axolotl sessions if needed...");
 		boolean newSessions = false;
 		Set<SignalProtocolAddress> addresses = findDevicesWithoutSession(conversation);
