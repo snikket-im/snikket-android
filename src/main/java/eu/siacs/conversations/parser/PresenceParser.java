@@ -9,6 +9,7 @@ import java.util.List;
 
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.crypto.PgpEngine;
+import eu.siacs.conversations.crypto.axolotl.AxolotlService;
 import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.entities.Contact;
 import eu.siacs.conversations.entities.Conversation;
@@ -76,7 +77,11 @@ public class PresenceParser extends AbstractParser implements
 								mucOptions.onRenameListener = null;
 							}
 						}
-						mucOptions.updateUser(user);
+						boolean isNew = mucOptions.updateUser(user);
+						final AxolotlService axolotlService = conversation.getAccount().getAxolotlService();
+						if (isNew && user.getRealJid() != null && mucOptions.membersOnly() && mucOptions.nonanonymous() && axolotlService.hasEmptyDeviceList(user.getRealJid())) {
+							axolotlService.fetchDeviceIds(user.getRealJid());
+						}
 						if (codes.contains(MucOptions.STATUS_CODE_ROOM_CREATED) && mucOptions.autoPushConfiguration()) {
 							Log.d(Config.LOGTAG,mucOptions.getAccount().getJid().toBareJid()
 									+": room '"

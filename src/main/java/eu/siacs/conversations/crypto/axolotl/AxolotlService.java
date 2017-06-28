@@ -211,7 +211,7 @@ public class AxolotlService implements OnAdvancedStreamFeaturesLoaded {
 			putDevicesForJid(account.getJid().toBareJid().toPreppedString(), deviceIds, store);
 			for (Contact contact : account.getRoster().getContacts()) {
 				Jid bareJid = contact.getJid().toBareJid();
-				String address = bareJid.toString();
+				String address = bareJid.toPreppedString();
 				deviceIds = store.getSubDeviceSessions(address);
 				putDevicesForJid(address, deviceIds, store);
 			}
@@ -840,6 +840,27 @@ public class AxolotlService implements OnAdvancedStreamFeaturesLoaded {
 				publishOwnDeviceId(ownDeviceIds);
 			}
 		}
+	}
+
+	public boolean hasEmptyDeviceList(Jid jid) {
+		return !hasAny(jid) && (!deviceIds.containsKey(jid) || deviceIds.get(jid).isEmpty());
+	}
+
+	public void fetchDeviceIds(final Jid jid) {
+		Log.d(Config.LOGTAG,"fetching device ids for "+jid);
+		IqPacket packet = mXmppConnectionService.getIqGenerator().retrieveDeviceIds(jid);
+		mXmppConnectionService.sendIqPacket(account, packet, new OnIqPacketReceived() {
+			@Override
+			public void onIqPacketReceived(Account account, IqPacket packet) {
+				if (packet.getType() == IqPacket.TYPE.RESULT) {
+					Element item = mXmppConnectionService.getIqParser().getItem(packet);
+					Set<Integer> deviceIds = mXmppConnectionService.getIqParser().deviceIds(item);
+					registerDevices(jid,deviceIds);
+				} else {
+					Log.d(Config.LOGTAG,packet.toString());
+				}
+			}
+		});
 	}
 
 	private void buildSessionFromPEP(final SignalProtocolAddress address) {

@@ -2313,6 +2313,7 @@ public class XmppConnectionService extends Service {
 
 	private void fetchConferenceMembers(final Conversation conversation) {
 		final Account account = conversation.getAccount();
+		final AxolotlService axolotlService = account.getAxolotlService();
 		final String[] affiliations = {"member","admin","owner"};
 		OnIqPacketReceived callback = new OnIqPacketReceived() {
 
@@ -2328,7 +2329,10 @@ public class XmppConnectionService extends Service {
 						if ("item".equals(child.getName())) {
 							MucOptions.User user = AbstractParser.parseItem(conversation,child);
 							if (!user.realJidMatchesAccount()) {
-								conversation.getMucOptions().updateUser(user);
+								boolean isNew = conversation.getMucOptions().updateUser(user);
+								if (isNew && user.getRealJid() != null && axolotlService.hasEmptyDeviceList(user.getRealJid())) {
+									axolotlService.fetchDeviceIds(user.getRealJid());
+								}
 							}
 						}
 					}

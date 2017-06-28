@@ -667,7 +667,7 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
 								+user.getRealJid()+" to "+user.getAffiliation()+" in "
 								+conversation.getJid().toBareJid());
 						if (!user.realJidMatchesAccount()) {
-							conversation.getMucOptions().updateUser(user);
+							boolean isNew =conversation.getMucOptions().updateUser(user);
 							mXmppConnectionService.getAvatarService().clear(conversation);
 							mXmppConnectionService.updateMucRosterUi();
 							mXmppConnectionService.updateConversationUi();
@@ -679,6 +679,8 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
 									conversation.setAcceptedCryptoTargets(cryptoTargets);
 									mXmppConnectionService.updateConversation(conversation);
 								}
+							} else if (isNew && user.getRealJid() != null && account.getAxolotlService().hasEmptyDeviceList(user.getRealJid())) {
+								account.getAxolotlService().fetchDeviceIds(user.getRealJid());
 							}
 						}
 					}
