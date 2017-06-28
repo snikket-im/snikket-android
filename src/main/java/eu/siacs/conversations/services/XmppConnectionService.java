@@ -2607,17 +2607,17 @@ public class XmppConnectionService extends Service {
 						sendIqPacket(account, mIqGenerator.publishPubsubConfiguration(jid, node, data), new OnIqPacketReceived() {
 							@Override
 							public void onIqPacketReceived(Account account, IqPacket packet) {
-								if (packet.getType() == IqPacket.TYPE.RESULT) {
+								if (packet.getType() == IqPacket.TYPE.RESULT && callback != null) {
 									callback.onPushSucceeded();
 								} else {
 									Log.d(Config.LOGTAG,packet.toString());
 								}
 							}
 						});
-					} else {
+					} else if (callback !=null) {
 						callback.onPushFailed();
 					}
-				} else {
+				} else if (callback != null){
 					callback.onPushFailed();
 				}
 			}
