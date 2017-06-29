@@ -25,6 +25,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
@@ -51,6 +52,8 @@ public class TrustKeysActivity extends OmemoActivity implements OnKeyStatusUpdat
 	private LinearLayout foreignKeys;
 	private Button mSaveButton;
 	private Button mCancelButton;
+
+	private AtomicBoolean mUseCameraHintShown = new AtomicBoolean(false);
 
 	private AxolotlService.FetchStatus lastFetchReport = AxolotlService.FetchStatus.SUCCESS;
 
@@ -114,11 +117,16 @@ public class TrustKeysActivity extends OmemoActivity implements OnKeyStatusUpdat
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		getMenuInflater().inflate(R.menu.trust_keys, menu);
+		MenuItem scanQrCode = menu.findItem(R.id.action_scan_qr_code);
+		scanQrCode.setVisible(ownKeysToTrust.size() > 0 || foreignActuallyHasKeys());
+		return super.onCreateOptionsMenu(menu);
+	}
+
+	private void showCameraToast() {
 		mUseCameraHintToast = Toast.makeText(this,R.string.use_camera_icon_to_scan_barcode,Toast.LENGTH_LONG);
 		ActionBar actionBar = getActionBar();
 		mUseCameraHintToast.setGravity(Gravity.TOP | Gravity.END, 0 ,actionBar == null ? 0 : actionBar.getHeight());
 		mUseCameraHintToast.show();
-		return super.onCreateOptionsMenu(menu);
 	}
 
 	@Override
@@ -218,6 +226,10 @@ public class TrustKeysActivity extends OmemoActivity implements OnKeyStatusUpdat
 			}
 		}
 
+		if ((hasOwnKeys || foreignActuallyHasKeys()) && mUseCameraHintShown.compareAndSet(false,true)) {
+			showCameraToast();
+		}
+
 		ownKeysTitle.setText(mAccount.getJid().toBareJid().toString());
 		ownKeysCard.setVisibility(hasOwnKeys ? View.VISIBLE : View.GONE);
 		foreignKeys.setVisibility(hasForeignKeys ? View.VISIBLE : View.GONE);
@@ -241,6 +253,17 @@ public class TrustKeysActivity extends OmemoActivity implements OnKeyStatusUpdat
 			lockOrUnlockAsNeeded();
 			setDone();
 		}
+	}
+
+	private boolean foreignActuallyHasKeys() {
+		synchronized (this.foreignKeysToTrust) {
+			for (Map.Entry<Jid, Map<String, Boolean>> entry : foreignKeysToTrust.entrySet()) {
+				if (entry.getValue().size() > 0) {
+					return true;
+				}
+			}
+		}
+		return false;
 	}
 
 	private boolean reloadFingerprints() {
