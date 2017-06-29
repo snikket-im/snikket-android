@@ -1138,10 +1138,12 @@ public class AxolotlService implements OnAdvancedStreamFeaturesLoaded {
 		if (fetchStatusMap.getAll(ownAddress.getName()).containsValue(FetchStatus.PENDING)) {
 			return true;
 		}
-		for(Jid jid : jids) {
-			SignalProtocolAddress foreignAddress = new SignalProtocolAddress(jid.toBareJid().toPreppedString(), 0);
-			if (fetchStatusMap.getAll(foreignAddress.getName()).containsValue(FetchStatus.PENDING)) {
-				return true;
+		synchronized (this.fetchDeviceIdsMap) {
+			for (Jid jid : jids) {
+				SignalProtocolAddress foreignAddress = new SignalProtocolAddress(jid.toBareJid().toPreppedString(), 0);
+				if (fetchStatusMap.getAll(foreignAddress.getName()).containsValue(FetchStatus.PENDING) || this.fetchDeviceIdsMap.containsKey(jid)) {
+					return true;
+				}
 			}
 		}
 		return false;
