@@ -946,6 +946,23 @@ public class DatabaseBackend extends SQLiteOpenHelper {
 		return devices;
 	}
 
+	public List<String> getKnownSignalAddresses(Account account) {
+		List<String> addresses = new ArrayList<>();
+		String[] colums = {SQLiteAxolotlStore.NAME};
+		String[] selectionArgs = {account.getUuid()};
+		Cursor cursor = getReadableDatabase().query(SQLiteAxolotlStore.SESSION_TABLENAME,
+				colums,
+				SQLiteAxolotlStore.ACCOUNT + " = ?",
+				selectionArgs,
+				null,null,null
+				);
+		while (cursor.moveToNext()) {
+			addresses.add(cursor.getString(cursor.getColumnIndex(SQLiteAxolotlStore.NAME)));
+		}
+		cursor.close();
+		return addresses;
+	}
+
 	public boolean containsSession(Account account, SignalProtocolAddress contact) {
 		Cursor cursor = getCursorForSession(account, contact);
 		int count = cursor.getCount();

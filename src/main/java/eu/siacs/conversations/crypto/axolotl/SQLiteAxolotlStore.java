@@ -283,6 +283,10 @@ public class SQLiteAxolotlStore implements SignalProtocolStore {
 				new SignalProtocolAddress(name, 0));
 	}
 
+
+	public List<String> getKnownAddresses() {
+		return mXmppConnectionService.databaseBackend.getKnownSignalAddresses(account);
+	}
 	/**
 	 * Commit to storage the {@link SessionRecord} for a given recipientId + deviceId tuple.
 	 *
