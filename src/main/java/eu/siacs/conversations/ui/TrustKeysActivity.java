@@ -112,6 +112,16 @@ public class TrustKeysActivity extends OmemoActivity implements OnKeyStatusUpdat
 			getActionBar().setHomeButtonEnabled(true);
 			getActionBar().setDisplayHomeAsUpEnabled(true);
 		}
+
+		if (savedInstanceState != null) {
+			mUseCameraHintShown.set(savedInstanceState.getBoolean("camera_hint_shown",false));
+		}
+	}
+
+	@Override
+	public void onSaveInstanceState(Bundle savedInstanceState) {
+		savedInstanceState.putBoolean("camera_hint_shown", mUseCameraHintShown.get());
+		super.onSaveInstanceState(savedInstanceState);
 	}
 
 	@Override
@@ -311,6 +321,7 @@ public class TrustKeysActivity extends OmemoActivity implements OnKeyStatusUpdat
 			} else {
 				reloadFingerprints();
 				populateView();
+				invalidateOptionsMenu();
 			}
 		}
 	}
