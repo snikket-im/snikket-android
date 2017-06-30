@@ -39,6 +39,15 @@ public class MagicCreateActivity extends XmppActivity implements TextWatcher {
 	}
 
 	@Override
+	public void onStart() {
+		super.onStart();
+		final int theme = findTheme();
+		if (this.mTheme != theme) {
+			recreate();
+		}
+	}
+
+	@Override
 	protected void onCreate(final Bundle savedInstanceState) {
 		if (getResources().getBoolean(R.bool.portrait_only)) {
 			setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);

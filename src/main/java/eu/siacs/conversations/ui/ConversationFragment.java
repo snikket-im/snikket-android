@@ -1249,7 +1249,7 @@ public class ConversationFragment extends Fragment implements EditMessage.Keyboa
 				if (conference && c.getNextCounterpart() != null) {
 					action = SendButtonAction.CANCEL;
 				} else {
-					String setting = activity.getPreferences().getString("quick_action", "recent");
+					String setting = activity.getPreferences().getString("quick_action", activity.getResources().getString(R.string.quick_action));
 					if (!setting.equals("none") && UIHelper.receivedLocationQuestion(conversation.getLatestMessage())) {
 						setting = "location";
 					} else if (setting.equals("recent")) {

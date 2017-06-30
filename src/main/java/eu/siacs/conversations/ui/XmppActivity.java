@@ -403,7 +403,7 @@ public abstract class XmppActivity extends Activity {
 		setTheme(this.mTheme);
 
 		this.mUsingEnterKey = usingEnterKey();
-		mUseSubject = getPreferences().getBoolean("use_subject", true);
+		mUseSubject = getPreferences().getBoolean("use_subject", getResources().getBoolean(R.bool.use_subject));
 		final ActionBar ab = getActionBar();
 		if (ab!=null) {
 			ab.setDisplayHomeAsUpEnabled(true);
@@ -411,7 +411,7 @@ public abstract class XmppActivity extends Activity {
 	}
 
 	public boolean isDarkTheme() {
-		return getPreferences().getString("theme", "light").equals("dark");
+		return getPreferences().getString("theme", getResources().getString(R.string.theme)).equals("dark");
 	}
 
 	public int getThemeResource(int r_attr_name, int r_drawable_def) {
@@ -444,7 +444,7 @@ public abstract class XmppActivity extends Activity {
 	}
 
 	protected boolean usingEnterKey() {
-		return getPreferences().getBoolean("display_enter_key", false);
+		return getPreferences().getBoolean("display_enter_key", getResources().getBoolean(R.bool.display_enter_key));
 	}
 
 	protected SharedPreferences getPreferences() {
@@ -984,11 +984,11 @@ public abstract class XmppActivity extends Activity {
 	}
 
 	protected boolean neverCompressPictures() {
-		return getPreferences().getString("picture_compression", "auto").equals("never");
+		return getPreferences().getString("picture_compression", getResources().getString(R.string.picture_compression)).equals("never");
 	}
 
 	protected boolean manuallyChangePresence() {
-		return getPreferences().getBoolean(SettingsActivity.MANUALLY_CHANGE_PRESENCE, false);
+		return getPreferences().getBoolean(SettingsActivity.MANUALLY_CHANGE_PRESENCE, getResources().getBoolean(R.bool.manually_change_presence));
 	}
 
 	protected void unregisterNdefPushMessageCallback() {
@@ -1038,8 +1038,8 @@ public abstract class XmppActivity extends Activity {
 	}
 
 	protected int findTheme() {
-		Boolean dark   = getPreferences().getString(SettingsActivity.THEME, "light").equals("dark");
-		Boolean larger = getPreferences().getBoolean("use_larger_font", false);
+		Boolean dark   = getPreferences().getString(SettingsActivity.THEME, getResources().getString(R.string.theme)).equals("dark");
+		Boolean larger = getPreferences().getBoolean("use_larger_font", getResources().getBoolean(R.bool.use_larger_font));
 
 		if(dark) {
 			if(larger)

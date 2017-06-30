@@ -33,6 +33,7 @@ import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 
 import eu.siacs.conversations.Config;
+import eu.siacs.conversations.R;
 import eu.siacs.conversations.entities.DownloadableFile;
 
 public class AbstractConnectionManager {
@@ -50,12 +51,13 @@ public class AbstractConnectionManager {
 	}
 
 	public long getAutoAcceptFileSize() {
+		long defaultValue = this.getXmppConnectionService().getResources().getInteger(R.integer.auto_accept_filesize);
 		String config = this.mXmppConnectionService.getPreferences().getString(
-				"auto_accept_file_size", "524288");
+				"auto_accept_file_size", String.valueOf(defaultValue));
 		try {
 			return Long.parseLong(config);
 		} catch (NumberFormatException e) {
-			return 524288;
+			return defaultValue;
 		}
 	}
 
