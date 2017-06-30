@@ -31,6 +31,7 @@ import java.security.cert.X509Certificate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
@@ -1092,6 +1093,7 @@ public class XmppConnection implements Runnable {
 
 	public void sendDiscoTimeout() {
 		if (mWaitForDisco.compareAndSet(true, false)) {
+			Log.d(Config.LOGTAG,account.getJid().toBareJid()+": finalizing bind after disco timeout");
 			finalizeBind();
 		}
 	}
@@ -1231,14 +1233,18 @@ public class XmppConnection implements Runnable {
 			@Override
 			public void onIqPacketReceived(final Account account, final IqPacket packet) {
 				if (packet.getType() == IqPacket.TYPE.RESULT) {
+					HashSet<Jid> items = new HashSet<Jid>();
 					final List<Element> elements = packet.query().getChildren();
 					for (final Element element : elements) {
 						if (element.getName().equals("item")) {
 							final Jid jid = element.getAttributeAsJid("jid");
 							if (jid != null && !jid.equals(account.getServer())) {
-								sendServiceDiscoveryInfo(jid);
+								items.add(jid);
 							}
 						}
+					}
+					for(Jid jid : items) {
+						sendServiceDiscoveryInfo(jid);
 					}
 				} else {
 					Log.d(Config.LOGTAG, account.getJid().toBareJid() + ": could not query disco items of " + server);
