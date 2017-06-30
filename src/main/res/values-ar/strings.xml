@@ -445,7 +445,6 @@
   <string name="server_info_broken">مكسر</string>
   <string name="pref_presence_settings">الحضور</string>
   <string name="pref_away_when_screen_off">غائب عند إطفاء الشاشة</string>
-  <string name="pref_xa_on_silent_mode">مشعول في موضع السكون</string>
   <string name="hostname_example">xmpp.example.com</string>
   <string name="action_add_account_with_certificate">أضف حساباً مرفوقاً بشهادة</string>
   <string name="mam_prefs">إعدادت الأرشيف</string>

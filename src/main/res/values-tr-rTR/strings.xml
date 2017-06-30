@@ -519,10 +519,7 @@
   <string name="pref_presence_settings">Durum</string>
   <string name="pref_away_when_screen_off">Ekran kapandığında uzakta</string>
   <string name="pref_away_when_screen_off_summary">Ekran kapandığında çevrim içi durum bildiriminizi uzakta olarak değiştirir</string>
-  <string name="pref_xa_on_silent_mode">Sessiz kipteyken erişilemez</string>
-  <string name="pref_xa_on_silent_mode_summary">Telefonunuz sessizdeyken, durum bildiriminizi müsait değil olarak değiştirir</string>
   <string name="pref_treat_vibrate_as_silent">Titreşim kipini sessiz kip olarak değerlendir</string>
-  <string name="pref_treat_vibrate_as_silent_summary">Aygıtınız titreşim kipindeyken durum bildiriminizi uygun değil olarak değiştirir</string>
   <string name="pref_show_connection_options">Genişletilmiş bağlantı seçenekleri</string>
   <string name="pref_show_connection_options_summary">Hesap oluştururken sunucu adıyla bağlantı noktası seçeneğini göster</string>
   <string name="hostname_example">xmpp.ornek.com</string>

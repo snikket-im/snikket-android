@@ -526,10 +526,7 @@
   <string name="pref_presence_settings">Tilstedeværelse</string>
   <string name="pref_away_when_screen_off">Borte når skjermen er av</string>
   <string name="pref_away_when_screen_off_summary">Markerer din ressurs som borte når skjermen er avskrudd</string>
-  <string name="pref_xa_on_silent_mode">Stille-tilgjengelighet</string>
-  <string name="pref_xa_on_silent_mode_summary">Markerer din ressurs som \'ikke tilgjengelig\' når enheten er i stille-modus.</string>
   <string name="pref_treat_vibrate_as_silent">Behandle vibrering som stille-modus</string>
-  <string name="pref_treat_vibrate_as_silent_summary">Markerer din ressurs som ikke tilgjengelig når enheten er skrudd til vibrering</string>
   <string name="pref_show_connection_options">Utvidede tilkoblingsinnst.</string>
   <string name="pref_show_connection_options_summary">Vis vertsnavn og portinnstillinger når du setter opp en ny konto</string>
   <string name="hostname_example">xmpp.eksempel.no</string>

@@ -495,10 +495,7 @@
   <string name="pref_presence_settings">Presença</string>
   <string name="pref_away_when_screen_off">Ausente quando o ecrã está desligado</string>
   <string name="pref_away_when_screen_off_summary">Define o seu recurso como ausente quando o ecrã está desligado</string>
-  <string name="pref_xa_on_silent_mode">Não disponível no modo silencioso</string>
-  <string name="pref_xa_on_silent_mode_summary">Define o seu recurso como não disponível quando o dispositivo está em modo silencioso</string>
   <string name="pref_treat_vibrate_as_silent">Tratar vibrar como modo silencioso</string>
-  <string name="pref_treat_vibrate_as_silent_summary">Define o seu recurso como não disponível quando o dispositivo está em modo vibrar</string>
   <string name="pref_show_connection_options">Definições de conexão</string>
   <string name="pref_show_connection_options_summary">Mostrar as definições do hostname e do porto ao configurar uma conta</string>
   <string name="hostname_example">xmpp.exemplo.com</string>

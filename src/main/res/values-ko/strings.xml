@@ -518,10 +518,7 @@
   <string name="pref_presence_settings">참가</string>
   <string name="pref_away_when_screen_off">화면이 꺼져있을 경우 자리 비움으로 표시</string>
   <string name="pref_away_when_screen_off_summary">화면이 꺼져있을 경우에 자리 비움으로 상태를 표시함</string>
-  <string name="pref_xa_on_silent_mode">음소거 모드에서는 사용할 수 없음</string>
-  <string name="pref_xa_on_silent_mode_summary">기기가 음소거 모드일때는 사용할 수 없음으로 상태를 표시함</string>
   <string name="pref_treat_vibrate_as_silent">진동을 자동으로 처리</string>
-  <string name="pref_treat_vibrate_as_silent_summary">장치가 진동 할 때 자원을 사용할 수없는 것으로 표시합니다</string>
   <string name="pref_show_connection_options">확장 연결 설정</string>
   <string name="pref_show_connection_options_summary">계정을 설정할 때 호스트 이름과 포트 설정을 표시합니다</string>
   <string name="hostname_example">xmpp.example.com</string>

@@ -507,10 +507,7 @@
   <string name="pref_presence_settings">Присутність</string>
   <string name="pref_away_when_screen_off">Відійшов, якщо екран викнуто</string>
   <string name="pref_away_when_screen_off_summary">Показувати стан як відійшов, якщо екран вимкнуто</string>
-  <string name="pref_xa_on_silent_mode">Не доступний у безшумному режимі</string>
-  <string name="pref_xa_on_silent_mode_summary">Показувати статус як недоступний, коли пристрій у безшумному режимі</string>
   <string name="pref_treat_vibrate_as_silent">Вважати вібро за безшумний режим</string>
-  <string name="pref_treat_vibrate_as_silent_summary">Позначати статус як недоступний, коли пристрій у вібро режимі</string>
   <string name="pref_show_connection_options">Розширені налаштування з\'єднання</string>
   <string name="pref_show_connection_options_summary">Показати налаштування імені хосту та порту при налаштуванні облікового запису</string>
   <string name="hostname_example">xmpp.example.com</string>

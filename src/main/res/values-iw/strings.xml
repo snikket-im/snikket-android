@@ -448,7 +448,6 @@
   <string name="server_info_broken">לא עובד</string>
   <string name="pref_away_when_screen_off">העבר למצב \"לא נמצא\" כאשר המסך כבוי</string>
   <string name="pref_away_when_screen_off_summary">מעביר את המכשיר לסטטוס \"לא נמצא\" כאשר המסך כבוי</string>
-  <string name="pref_xa_on_silent_mode">העבר למצב \"לא זמין\" כאשר במצב שקט</string>
   <string name="action_add_account_with_certificate">הוסף חשבון עם תעודה</string>
   <string name="unable_to_parse_certificate">תקלה בפענוח תעודה</string>
   <string name="authenticate_with_certificate">השאר ריק כדי להזדהות בלי תעודה</string>

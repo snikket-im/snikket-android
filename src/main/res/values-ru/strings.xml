@@ -521,10 +521,7 @@
   <string name="pref_presence_settings">Присутствие</string>
   <string name="pref_away_when_screen_off">Вышел когда экран выключен</string>
   <string name="pref_away_when_screen_off_summary">Отмечает ваш ресурс как «вышел» когда экран выключен</string>
-  <string name="pref_xa_on_silent_mode">Не доступен в режиме без звука</string>
-  <string name="pref_xa_on_silent_mode_summary">Отмечает ваш ресурс как «не доступен», когда телефон в беззвучном режиме</string>
   <string name="pref_treat_vibrate_as_silent">Не доступен в режиме вибрации</string>
-  <string name="pref_treat_vibrate_as_silent_summary">Отмечает ваш ресурс как «не доступен», когда телефон в режиме вибрации</string>
   <string name="pref_show_connection_options">Расширенные настройки подключения</string>
   <string name="pref_show_connection_options_summary">Показывать имя сервера и порт в настройках аккаунтов</string>
   <string name="hostname_example">xmpp.example.com</string>

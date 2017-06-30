@@ -528,10 +528,10 @@
   <string name="pref_presence_settings">Setari de prezenta</string>
   <string name="pref_away_when_screen_off">Plecat cand ecranul este oprit</string>
   <string name="pref_away_when_screen_off_summary">Declara clientul drept plecat cand ecranul este oprit</string>
-  <string name="pref_xa_on_silent_mode">Indisponibil in mod silentios</string>
-  <string name="pref_xa_on_silent_mode_summary">Declara clientul drept indisponibil atunci cand dispozitivul este in mod silentios</string>
+  <string name="pref_dnd_on_silent_mode">\"Nu deranja\" în modul silenţios</string>
+  <string name="pref_dnd_on_silent_mode_summary">Prezintă clientul drept \"Nu deranja\" atunci când dispozitivul este in mod silențios</string>
   <string name="pref_treat_vibrate_as_silent">Trateaza modul vibratie ca silentios</string>
-  <string name="pref_treat_vibrate_as_silent_summary">Declara clientul drept indisponibil atunci cand dispozitivul este in mod vibratie</string>
+  <string name="pref_treat_vibrate_as_dnd_summary">Prezintă clientul drept \"Nu deranja\" atunci când dispozitivul este în mod vibrație</string>
   <string name="pref_show_connection_options">Optiuni avansate conexiune</string>
   <string name="pref_show_connection_options_summary">Arata optiunea de setare a numelui de gazda si a portului atunci cand se configureaza un cont</string>
   <string name="hostname_example">xmpp.example.com</string>
@@ -720,4 +720,9 @@ Emitent</string>
   <string name="retry_decryption">Reîncearcă decriptarea</string>
   <string name="session_failure">Sesiune eșuată</string>
   <string name="sasl_downgrade">Mecanism SASL degradat</string>
+  <string name="account_status_regis_web">Serverul necesită înregistrarea pe website</string>
+  <string name="open_website">Deschide website</string>
+  <string name="application_found_to_open_website">Nu s-a găsit nici o aplicație care să poată deschide siteul</string>
+  <string name="pref_headsup_notifications">Notificare heads-up</string>
+  <string name="pref_headsup_notifications_summary">Arată o notificare în prim-plan la primirea unui mesaj</string>
 </resources>

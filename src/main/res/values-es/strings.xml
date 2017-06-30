@@ -526,10 +526,10 @@
   <string name="pref_presence_settings">Presencia</string>
   <string name="pref_away_when_screen_off">Ausente con pantalla apagada</string>
   <string name="pref_away_when_screen_off_summary">Cambia tu estado a ausente cuando la pantalla está apagada</string>
-  <string name="pref_xa_on_silent_mode">No disponible en modo silencio</string>
-  <string name="pref_xa_on_silent_mode_summary">Cambia tu estado a no disponible cuando el dispositivo está en modo silencio</string>
+  <string name="pref_dnd_on_silent_mode">\"No molestar\" en modo silencio</string>
+  <string name="pref_dnd_on_silent_mode_summary">Cambia tu estado a \"no molestar\" cuando el dispositivo está en modo silencio</string>
   <string name="pref_treat_vibrate_as_silent">Modo vibración como modo silencio</string>
-  <string name="pref_treat_vibrate_as_silent_summary">Cambia tu estado a no disponible cuando el dispositivo está en modo vibración</string>
+  <string name="pref_treat_vibrate_as_dnd_summary">Cambia tu estado a \"no molestar\" cuando el dispositivo está en modo vibración</string>
   <string name="pref_show_connection_options">Opciones de conexión</string>
   <string name="pref_show_connection_options_summary">Mostrar el hostname y el puerto cuando se está creando una cuenta</string>
   <string name="hostname_example">xmpp.ejemplo.com</string>
@@ -716,4 +716,9 @@
   <string name="retry_decryption">Reintentar descifrado</string>
   <string name="session_failure">Fallo de sesión</string>
   <string name="sasl_downgrade">Downgraded SASL mechanism</string>
+  <string name="account_status_regis_web">El servidor requiere registro en su página web</string>
+  <string name="open_website">Abrir página web</string>
+  <string name="application_found_to_open_website">No se ha encontrado aplicación para abrir la página web</string>
+  <string name="pref_headsup_notifications">Notificaciones emergentes</string>
+  <string name="pref_headsup_notifications_summary">Mostrar ventana emergente al recibir una notificación</string>
 </resources>

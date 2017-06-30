@@ -526,10 +526,7 @@
   <string name="pref_presence_settings">Presentzia</string>
   <string name="pref_away_when_screen_off">Urrun pantaila itzalita dagoenean</string>
   <string name="pref_away_when_screen_off_summary">Zure baliabidea urrun bezala markatzen du pantaila itzalita dagoenean</string>
-  <string name="pref_xa_on_silent_mode">Ez eskuragarri modu isilean</string>
-  <string name="pref_xa_on_silent_mode_summary">Zure baliabidea ez eskuragarri bezala markatzen du gailua modu isilean dagoenean</string>
   <string name="pref_treat_vibrate_as_silent">Dardara modu isila bezala tratatu</string>
-  <string name="pref_treat_vibrate_as_silent_summary">Zure baliabidea ez eskuragarri bezala markatzen du gailua dardara moduan dagoenean</string>
   <string name="pref_show_connection_options">Konexioaren ezarpen luzatuak</string>
   <string name="pref_show_connection_options_summary">Ostalariaren izena eta ataka ezarpenak erakutsi kontu bat ezartzerakoan</string>
   <string name="hostname_example">xmpp.adibidea.com</string>

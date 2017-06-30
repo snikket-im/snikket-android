@@ -513,10 +513,7 @@
   <string name="pref_presence_settings">Stav</string>
   <string name="pref_away_when_screen_off">Pryč při vypnuté obrazovce</string>
   <string name="pref_away_when_screen_off_summary">Při vypnuté obrazovce označí váš stav jako pryč</string>
-  <string name="pref_xa_on_silent_mode">Nedostupný při vypnutém zvuku</string>
-  <string name="pref_xa_on_silent_mode_summary">Při tichém módu označí váš stav jako nedostupný</string>
   <string name="pref_treat_vibrate_as_silent">Vibrační mód brát stejně jako tichý</string>
-  <string name="pref_treat_vibrate_as_silent_summary">Označí vaše zdroje jako nedostupné při přepnutí do vibračního módu</string>
   <string name="pref_show_connection_options">Rozšířená nastavení připojení</string>
   <string name="pref_show_connection_options_summary">Zobrazovat nastavení hostname a port  při vytváření účtu</string>
   <string name="hostname_example">xmpp.server.cz</string>

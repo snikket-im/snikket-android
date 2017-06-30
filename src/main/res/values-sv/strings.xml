@@ -525,10 +525,7 @@
   <string name="pref_presence_settings">Tillgänglighet</string>
   <string name="pref_away_when_screen_off">Status borta när skärmen är av</string>
   <string name="pref_away_when_screen_off_summary">Sätter din tillgänglighet till borta när skrämen är av</string>
-  <string name="pref_xa_on_silent_mode">Status ej tillgänglig i tyst läge</string>
-  <string name="pref_xa_on_silent_mode_summary">Sätter din tillgänglighet till ej tillgänglig när enheten är i tyst läge</string>
   <string name="pref_treat_vibrate_as_silent">Hantera vibrationsläge som tyst läge</string>
-  <string name="pref_treat_vibrate_as_silent_summary">Sätter din tillgänglighet till ej tillgänglig när enheten är i vibratorläge</string>
   <string name="pref_show_connection_options">Utökade anslutningsinställningar</string>
   <string name="pref_show_connection_options_summary">Visa val av servernamn och port vid inställning av konto</string>
   <string name="hostname_example">xmpp.example.com</string>

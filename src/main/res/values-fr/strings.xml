@@ -526,10 +526,7 @@
   <string name="pref_presence_settings">Disponibilité</string>
   <string name="pref_away_when_screen_off">Absent quand l\'écran est éteint</string>
   <string name="pref_away_when_screen_off_summary">Marquer cette ressource comme absente quand l\'écran est éteint.</string>
-  <string name="pref_xa_on_silent_mode">Indisponible en mode silencieux</string>
-  <string name="pref_xa_on_silent_mode_summary">Marque cette ressource comme indisponible quand l\'appareil est en mode silencieux</string>
   <string name="pref_treat_vibrate_as_silent">Indisponible en mode vibreur</string>
-  <string name="pref_treat_vibrate_as_silent_summary">Marque cette ressource comme indisponible quand l\'appareil est en mode vibreur</string>
   <string name="pref_show_connection_options">Paramètres de connexion avancés</string>
   <string name="pref_show_connection_options_summary">Montrer le nom d\'hôte et le port lors du paramétrage d\'un compte</string>
   <string name="hostname_example">xmpp.example.com</string>

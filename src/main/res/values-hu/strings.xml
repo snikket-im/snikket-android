@@ -526,10 +526,7 @@
   <string name="pref_presence_settings">Jelenlét</string>
   <string name="pref_away_when_screen_off">\"Távol\" állapot lezárt telefonnál</string>
   <string name="pref_away_when_screen_off_summary">Kikapcsolt képernyőnél a neved alatt egy \"távol\" címke látható</string>
-  <string name="pref_xa_on_silent_mode">Csöndes módban ne legyen elérhető</string>
-  <string name="pref_xa_on_silent_mode_summary">Csöndes módban a neved alatt egy \"nem elérhető\" címke legyen látható</string>
   <string name="pref_treat_vibrate_as_silent">A rezgést kezelje úgy mint csöndes módot</string>
-  <string name="pref_treat_vibrate_as_silent_summary">Rezgő módban a neved alatt egy \"nem elérhető\" címke legyen látható</string>
   <string name="pref_show_connection_options">Kiterjesztett kapcsolat beállítások</string>
   <string name="pref_show_connection_options_summary">Mutassa a nevet és a port beállításokat amikor egy új fiókot hozol létre</string>
   <string name="hostname_example">xmpp.example.com</string>

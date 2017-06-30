@@ -433,7 +433,6 @@
   <string name="username">Užívateľské meno</string>
   <string name="username_hint">Užívateľské meno</string>
   <string name="invalid_username">Toto nie je platné užívateľské meno</string>
-  <string name="pref_xa_on_silent_mode">Nedostupný v tichom režime</string>
   <string name="action_add_account_with_certificate">Pridať účet s certifikátom</string>
   <string name="unable_to_parse_certificate">Neschopný analyzovať certifikát</string>
   <string name="captcha_required">Potrebný CAPTCHA</string>

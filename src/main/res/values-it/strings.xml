@@ -526,10 +526,7 @@
   <string name="pref_presence_settings">Presenza</string>
   <string name="pref_away_when_screen_off">\"Non disponibile\" a schermo spento</string>
   <string name="pref_away_when_screen_off_summary">Imposta la tua risorsa come non disponibile quando lo schermo è spento</string>
-  <string name="pref_xa_on_silent_mode">Non disponibile in modalità silenzioso</string>
-  <string name="pref_xa_on_silent_mode_summary">Imposta la tua risorsa come non disponibile quando il dispositivo è in modalità silenziosa</string>
   <string name="pref_treat_vibrate_as_silent">Tratta vibrazione come modalità silenziosa</string>
-  <string name="pref_treat_vibrate_as_silent_summary">Segna la tua risorsa come non disponibile quando il dispositivo ha solo la vibrazione</string>
   <string name="pref_show_connection_options">Impostazioni estese di connessione</string>
   <string name="pref_show_connection_options_summary">Mostra nome host e impostazioni della porta quando configuri un account</string>
   <string name="hostname_example">xmpp.esempio.it</string>
@@ -716,4 +713,9 @@
   <string name="retry_decryption">Ritenta decifrazione</string>
   <string name="session_failure">Sessione fallita</string>
   <string name="sasl_downgrade">Meccanismo SASL degradato</string>
+  <string name="account_status_regis_web">Il server richiede la registrazione sul sito</string>
+  <string name="open_website">Apri sito</string>
+  <string name="application_found_to_open_website">Nessuna applicazione trovata per aprire il sito</string>
+  <string name="pref_headsup_notifications">Notifiche avvisi</string>
+  <string name="pref_headsup_notifications_summary">Mostra notifiche su avvisi</string>
 </resources>

@@ -524,10 +524,7 @@
   <string name="pref_presence_settings">Присутност</string>
   <string name="pref_away_when_screen_off">Одсутан кад је екран искључен</string>
   <string name="pref_away_when_screen_off_summary">Означавање вашег ресурса одсутним кад је екран искључен</string>
-  <string name="pref_xa_on_silent_mode">Недоступан у нечујном режиму</string>
-  <string name="pref_xa_on_silent_mode_summary">Означавање вашег ресурса недоступним кад је уређај у нечујном режиму</string>
   <string name="pref_treat_vibrate_as_silent">Вибрација је нечујни режим</string>
-  <string name="pref_treat_vibrate_as_silent_summary">Означавање вашег ресурса недоступним кад је уређај у режиму вибрирања</string>
   <string name="pref_show_connection_options">Проширене поставке повезивања</string>
   <string name="pref_show_connection_options_summary">Приказ домаћина и порта у поставкама налога</string>
   <string name="hostname_example">xmpp.primer.com</string>

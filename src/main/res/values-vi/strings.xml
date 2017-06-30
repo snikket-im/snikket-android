@@ -489,8 +489,6 @@
   <string name="server_info_broken">Bị hỏng</string>
   <string name="pref_away_when_screen_off">Vắng mặt khi màn hình tắt</string>
   <string name="pref_away_when_screen_off_summary">Hiện ứng dụng là \'vắng mặt\' khi màn hình tắt</string>
-  <string name="pref_xa_on_silent_mode">Không sẵn sàng trong chế độ yên lặng</string>
-  <string name="pref_xa_on_silent_mode_summary">Hiện ứng dụng là \'không sẵn sàng\' khi thiết bị ở chế độ yên lặng</string>
   <string name="action_add_account_with_certificate">Thêm tài khoản với chứng nhận</string>
   <string name="unable_to_parse_certificate">Không thể phân tích chứng nhận</string>
   <string name="authenticate_with_certificate">Bỏ trống để xác minh với chứng nhận</string>
