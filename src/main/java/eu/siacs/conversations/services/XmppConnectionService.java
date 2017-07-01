@@ -1231,6 +1231,7 @@ public class XmppConnectionService extends Service {
 				case Message.ENCRYPTION_NONE:
 					if (message.needsUploading()) {
 						if (account.httpUploadAvailable(fileBackend.getFile(message,false).getSize())
+								|| conversation.getMode() == Conversation.MODE_MULTI
 								|| message.fixCounterpart()) {
 							this.sendFileMessage(message, delay);
 						} else {
@@ -1244,6 +1245,7 @@ public class XmppConnectionService extends Service {
 				case Message.ENCRYPTION_DECRYPTED:
 					if (message.needsUploading()) {
 						if (account.httpUploadAvailable(fileBackend.getFile(message,false).getSize())
+								|| conversation.getMode() == Conversation.MODE_MULTI
 								|| message.fixCounterpart()) {
 							this.sendFileMessage(message, delay);
 						} else {
@@ -1281,6 +1283,7 @@ public class XmppConnectionService extends Service {
 					message.setFingerprint(account.getAxolotlService().getOwnFingerprint());
 					if (message.needsUploading()) {
 						if (account.httpUploadAvailable(fileBackend.getFile(message,false).getSize())
+								|| conversation.getMode() == Conversation.MODE_MULTI
 								|| message.fixCounterpart()) {
 							this.sendFileMessage(message, delay);
 						} else {
