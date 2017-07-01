@@ -27,6 +27,8 @@ import android.os.SystemClock;
 import android.preference.PreferenceManager;
 import android.provider.ContactsContract;
 import android.security.KeyChain;
+import android.support.annotation.BoolRes;
+import android.support.annotation.IntegerRes;
 import android.support.v4.app.RemoteInput;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -861,19 +863,19 @@ public class XmppConnectionService extends Service {
 	}
 
 	private boolean dndOnSilentMode() {
-		return getPreferences().getBoolean(SettingsActivity.DND_ON_SILENT_MODE, getResources().getBoolean(R.bool.dnd_on_silent_mode));
+		return getBooleanPreference(SettingsActivity.DND_ON_SILENT_MODE, R.bool.dnd_on_silent_mode);
 	}
 
 	private boolean manuallyChangePresence() {
-		return getPreferences().getBoolean(SettingsActivity.MANUALLY_CHANGE_PRESENCE, getResources().getBoolean(R.bool.manually_change_presence));
+		return getBooleanPreference(SettingsActivity.MANUALLY_CHANGE_PRESENCE, R.bool.manually_change_presence);
 	}
 
 	private boolean treatVibrateAsSilent() {
-		return getPreferences().getBoolean(SettingsActivity.TREAT_VIBRATE_AS_SILENT, getResources().getBoolean(R.bool.treat_vibrate_as_silent));
+		return getBooleanPreference(SettingsActivity.TREAT_VIBRATE_AS_SILENT, R.bool.treat_vibrate_as_silent);
 	}
 
 	private boolean awayWhenScreenOff() {
-		return getPreferences().getBoolean(SettingsActivity.AWAY_WHEN_SCREEN_IS_OFF, getResources().getBoolean(R.bool.away_when_screen_off));
+		return getBooleanPreference(SettingsActivity.AWAY_WHEN_SCREEN_IS_OFF,R.bool.away_when_screen_off);
 	}
 
 	private String getCompressPicturesPreference() {
@@ -1090,8 +1092,8 @@ public class XmppConnectionService extends Service {
 		}
 	}
 
-	private boolean keepForegroundService() {
-		return getPreferences().getBoolean(SettingsActivity.KEEP_FOREGROUND_SERVICE,getResources().getBoolean(R.bool.enable_foreground_service));
+	public boolean keepForegroundService() {
+		return getBooleanPreference(SettingsActivity.KEEP_FOREGROUND_SERVICE,R.bool.enable_foreground_service);
 	}
 
 	@Override
@@ -2746,7 +2748,7 @@ public class XmppConnectionService extends Service {
 	}
 
 	public void createContact(Contact contact) {
-		boolean autoGrant = getPreferences().getBoolean("grant_new_contacts", getResources().getBoolean(R.bool.grant_new_contacts));
+		boolean autoGrant = getBooleanPreference("grant_new_contacts", R.bool.grant_new_contacts);
 		if (autoGrant) {
 			contact.setOption(Contact.Options.PREEMPTIVE_GRANT);
 			contact.setOption(Contact.Options.ASKING);
@@ -3249,50 +3251,58 @@ public class XmppConnectionService extends Service {
 		updateConversationUi();
 	}
 
-	public SharedPreferences getPreferences() {
-		return PreferenceManager
-				.getDefaultSharedPreferences(getApplicationContext());
+	private SharedPreferences getPreferences() {
+		return PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
 	}
 
 	public long getAutomaticMessageDeletionDate() {
+		final long timeout = getLongPreference(SettingsActivity.AUTOMATIC_MESSAGE_DELETION,R.integer.automatic_message_deletion);
+		return timeout == 0 ? timeout : (System.currentTimeMillis() - (timeout * 1000));
+	}
+
+	public long getLongPreference(String name, @IntegerRes int res) {
+		long defaultValue = getResources().getInteger(res);
 		try {
-			final long timeout = Long.parseLong(getPreferences().getString(SettingsActivity.AUTOMATIC_MESSAGE_DELETION, String.valueOf(getResources().getInteger(R.integer.automatic_message_deletion)))) * 1000;
-			return timeout == 0 ? timeout : System.currentTimeMillis() - timeout;
+			return Long.parseLong(getPreferences().getString(name,String.valueOf(defaultValue)));
 		} catch (NumberFormatException e) {
-			return 0;
+			return defaultValue;
 		}
 	}
 
+	public boolean getBooleanPreference(String name, @BoolRes int res) {
+		return getPreferences().getBoolean(name,getResources().getBoolean(res));
+	}
+
 	public boolean confirmMessages() {
-		return getPreferences().getBoolean("confirm_messages", getResources().getBoolean(R.bool.confirm_messages));
+		return getBooleanPreference("confirm_messages", R.bool.confirm_messages);
 	}
 
 	public boolean allowMessageCorrection() {
-		return getPreferences().getBoolean("allow_message_correction", getResources().getBoolean(R.bool.allow_message_correction));
+		return getBooleanPreference("allow_message_correction", R.bool.allow_message_correction);
 	}
 
 	public boolean sendChatStates() {
-		return getPreferences().getBoolean("chat_states", getResources().getBoolean(R.bool.chat_states));
+		return getBooleanPreference("chat_states", R.bool.chat_states);
 	}
 
 	private boolean respectAutojoin() {
-		return getPreferences().getBoolean("autojoin", getResources().getBoolean(R.bool.autojoin));
+		return getBooleanPreference("autojoin", R.bool.autojoin);
 	}
 
 	public boolean indicateReceived() {
-		return getPreferences().getBoolean("indicate_received", getResources().getBoolean(R.bool.indicate_received));
+		return getBooleanPreference("indicate_received", R.bool.indicate_received);
 	}
 
 	public boolean useTorToConnect() {
-		return Config.FORCE_ORBOT || getPreferences().getBoolean("use_tor", getResources().getBoolean(R.bool.use_tor));
+		return Config.FORCE_ORBOT || getBooleanPreference("use_tor", R.bool.use_tor);
 	}
 
 	public boolean showExtendedConnectionOptions() {
-		return getPreferences().getBoolean("show_connection_options", getResources().getBoolean(R.bool.show_connection_options));
+		return getBooleanPreference("show_connection_options", R.bool.show_connection_options);
 	}
 
 	public boolean broadcastLastActivity() {
-		return getPreferences().getBoolean(SettingsActivity.BROADCAST_LAST_ACTIVITY, getResources().getBoolean(R.bool.last_activity));
+		return getBooleanPreference(SettingsActivity.BROADCAST_LAST_ACTIVITY, R.bool.last_activity);
 	}
 
 	public int unreadCount() {
@@ -3446,7 +3456,7 @@ public class XmppConnectionService extends Service {
 
 	public void updateMemorizingTrustmanager() {
 		final MemorizingTrustManager tm;
-		final boolean dontTrustSystemCAs = getPreferences().getBoolean("dont_trust_system_cas", getResources().getBoolean(R.bool.dont_trust_system_cas));
+		final boolean dontTrustSystemCAs = getBooleanPreference("dont_trust_system_cas", R.bool.dont_trust_system_cas);
 		if (dontTrustSystemCAs) {
 			tm = new MemorizingTrustManager(getApplicationContext(), null);
 		} else {
@@ -3959,7 +3969,7 @@ public class XmppConnectionService extends Service {
 	}
 
 	public boolean blindTrustBeforeVerification() {
-		return getPreferences().getBoolean(SettingsActivity.BLIND_TRUST_BEFORE_VERIFICATION, getResources().getBoolean(R.bool.btbv));
+		return getBooleanPreference(SettingsActivity.BLIND_TRUST_BEFORE_VERIFICATION,R.bool.btbv);
 	}
 
 	public ShortcutService getShortcutService() {

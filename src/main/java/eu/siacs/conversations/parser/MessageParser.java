@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.Set;
 import java.util.UUID;
 
@@ -748,18 +749,11 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
 		}
 	}
 
-	private static SimpleDateFormat TIME_FORMAT = new SimpleDateFormat("HH:mm:ss");
+	private static final SimpleDateFormat TIME_FORMAT = new SimpleDateFormat("HH:mm:ss", Locale.ENGLISH);
 
 	private void activateGracePeriod(Account account) {
-
-		long duration;
-		long defaultValue = mXmppConnectionService.getResources().getInteger(R.integer.grace_period);
-		try {
-			duration = Long.parseLong(mXmppConnectionService.getPreferences().getString("grace_period_length", String.valueOf(defaultValue))) * 1000;
-		} catch (NumberFormatException e) {
-			duration = defaultValue * 1000;
-		}
-		Log.d(Config.LOGTAG,account.getJid().toBareJid()+": activating grace period ("+duration+") till "+TIME_FORMAT.format(new Date(System.currentTimeMillis() + duration)));
+		long duration = mXmppConnectionService.getLongPreference("grace_period_length",R.integer.grace_period) * 1000;
+		Log.d(Config.LOGTAG,account.getJid().toBareJid()+": activating grace period till "+TIME_FORMAT.format(new Date(System.currentTimeMillis() + duration)));
 		account.activateGracePeriod(duration);
 	}
 }

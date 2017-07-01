@@ -51,14 +51,7 @@ public class AbstractConnectionManager {
 	}
 
 	public long getAutoAcceptFileSize() {
-		long defaultValue = this.getXmppConnectionService().getResources().getInteger(R.integer.auto_accept_filesize);
-		String config = this.mXmppConnectionService.getPreferences().getString(
-				"auto_accept_file_size", String.valueOf(defaultValue));
-		try {
-			return Long.parseLong(config);
-		} catch (NumberFormatException e) {
-			return defaultValue;
-		}
+		return this.mXmppConnectionService.getLongPreference("auto_accept_file_size",R.integer.auto_accept_filesize);
 	}
 
 	public boolean hasStoragePermission() {
