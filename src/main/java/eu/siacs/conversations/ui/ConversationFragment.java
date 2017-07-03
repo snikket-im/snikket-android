@@ -354,6 +354,7 @@ public class ConversationFragment extends Fragment implements EditMessage.Keyboa
 							}
 							updateChatMsgHint();
 							updateSendButton();
+							updateEditablity();
 						}
 						break;
 					default:
@@ -825,6 +826,7 @@ public class ConversationFragment extends Fragment implements EditMessage.Keyboa
 		this.conversation.setNextCounterpart(counterpart);
 		updateChatMsgHint();
 		updateSendButton();
+		updateEditablity();
 	}
 
 	private void correctMessage(Message message) {
@@ -1228,7 +1230,7 @@ public class ConversationFragment extends Fragment implements EditMessage.Keyboa
 	}
 
 	private void updateEditablity() {
-		boolean canWrite = this.conversation.getMode() == Conversation.MODE_SINGLE || this.conversation.getMucOptions().participating();
+		boolean canWrite = this.conversation.getMode() == Conversation.MODE_SINGLE || this.conversation.getMucOptions().participating() || this.conversation.getNextCounterpart() != null;
 		this.mEditMessage.setFocusable(canWrite);
 		this.mEditMessage.setFocusableInTouchMode(canWrite);
 		this.mSendButton.setEnabled(canWrite);
