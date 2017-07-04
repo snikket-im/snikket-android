@@ -46,6 +46,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.ListIterator;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -154,14 +155,16 @@ public class ConversationFragment extends Fragment implements EditMessage.Keyboa
 								@Override
 								public void run() {
 									final int oldPosition = messagesView.getFirstVisiblePosition();
-									final Message message;
-									if (oldPosition < messageList.size()) {
-										message = messageList.get(oldPosition);
-									}  else {
-										message = null;
+									Message message = null;
+									int childPos;
+									for(childPos = 0; childPos + oldPosition < messageList.size(); ++childPos) {
+										message =  messageList.get(oldPosition + childPos);
+										if (message.getType() != Message.TYPE_STATUS) {
+											break;
+										}
 									}
-									String uuid = message != null ? message.getUuid() : null;
-									View v = messagesView.getChildAt(0);
+									final String uuid = message != null ? message.getUuid() : null;
+									View v = messagesView.getChildAt(childPos);
 									final int pxOffset = (v == null) ? 0 : v.getTop();
 									ConversationFragment.this.conversation.populateWithMessages(ConversationFragment.this.messageList);
 									try {
@@ -1300,7 +1303,20 @@ public class ConversationFragment extends Fragment implements EditMessage.Keyboa
 		this.mSendButton.setImageResource(getSendButtonImageResource(action, status));
 	}
 
+	protected void updateDateSeparators() {
+		synchronized (this.messageList) {
+			for(int i = 0; i < this.messageList.size(); ++i) {
+				final Message current = this.messageList.get(i);
+				if (i == 0 || !UIHelper.sameDay(this.messageList.get(i-1).getTimeSent(),current.getTimeSent())) {
+					this.messageList.add(i,Message.createDateSeparator(current));
+					i++;
+				}
+			}
+		}
+	}
+
 	protected void updateStatusMessages() {
+		updateDateSeparators();
 		synchronized (this.messageList) {
 			if (showLoadMoreMessages(conversation)) {
 				this.messageList.add(0, Message.createLoadMoreMessage(conversation));

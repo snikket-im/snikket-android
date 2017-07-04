@@ -10,6 +10,7 @@ import java.net.URL;
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.crypto.axolotl.FingerprintStatus;
 import eu.siacs.conversations.http.AesGcmURLStreamHandler;
+import eu.siacs.conversations.ui.adapter.MessageAdapter;
 import eu.siacs.conversations.utils.CryptoHelper;
 import eu.siacs.conversations.utils.GeoHelper;
 import eu.siacs.conversations.utils.MimeUtils;
@@ -201,6 +202,14 @@ public class Message extends AbstractEntity {
 		message.setType(Message.TYPE_STATUS);
 		message.setBody("LOAD_MORE");
 		return message;
+	}
+
+	public static Message createDateSeparator(Message message) {
+		final Message separator = new Message(message.getConversation());
+		separator.setType(Message.TYPE_STATUS);
+		separator.setBody(MessageAdapter.DATE_SEPARATOR_BODY);
+		separator.setTime(message.getTimeSent());
+		return separator;
 	}
 
 	@Override
@@ -493,7 +502,8 @@ public class Message extends AbstractEntity {
 						!this.getBody().startsWith(ME_COMMAND) &&
 						!this.bodyIsHeart() &&
 						!message.bodyIsHeart() &&
-						((this.axolotlFingerprint == null && message.axolotlFingerprint == null) || this.axolotlFingerprint.equals(message.getFingerprint()))
+						((this.axolotlFingerprint == null && message.axolotlFingerprint == null) || this.axolotlFingerprint.equals(message.getFingerprint())) &&
+						UIHelper.sameDay(message.getTimeSent(),this.getTimeSent())
 				);
 	}
 

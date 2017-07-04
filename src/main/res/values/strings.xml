@@ -754,4 +754,6 @@
 	<string name="application_found_to_open_website">No application found to open website</string>
 	<string name="pref_headsup_notifications">Heads-up Notifications</string>
 	<string name="pref_headsup_notifications_summary">Show Heads-up Notifications</string>
+	<string name="today">Today</string>
+	<string name="yesterday">Yesterday</string>
 </resources>

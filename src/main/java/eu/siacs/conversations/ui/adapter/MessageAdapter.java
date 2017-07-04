@@ -16,6 +16,7 @@ import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.SpannableStringBuilder;
 import android.text.Spanned;
+import android.text.format.DateUtils;
 import android.text.style.ForegroundColorSpan;
 import android.text.style.RelativeSizeSpan;
 import android.text.style.StyleSpan;
@@ -72,6 +73,10 @@ public class MessageAdapter extends ArrayAdapter<Message> implements CopyTextVie
 	private static final int SENT = 0;
 	private static final int RECEIVED = 1;
 	private static final int STATUS = 2;
+	private static final int DATE_SEPARATOR = 3;
+
+	public static final String DATE_SEPARATOR_BODY = "DATE_SEPARATOR";
+
 	private static final Pattern XMPP_PATTERN = Pattern
 			.compile("xmpp\\:(?:(?:["
 					+ Patterns.GOOD_IRI_CHAR
@@ -135,12 +140,16 @@ public class MessageAdapter extends ArrayAdapter<Message> implements CopyTextVie
 
 	@Override
 	public int getViewTypeCount() {
-		return 3;
+		return 4;
 	}
 
 	public int getItemViewType(Message message) {
 		if (message.getType() == Message.TYPE_STATUS) {
-			return STATUS;
+			if (DATE_SEPARATOR_BODY.equals(message.getBody())) {
+				return DATE_SEPARATOR;
+			} else {
+				return STATUS;
+			}
 		} else if (message.getStatus() <= Message.STATUS_RECEIVED) {
 			return RECEIVED;
 		}
@@ -591,6 +600,11 @@ public class MessageAdapter extends ArrayAdapter<Message> implements CopyTextVie
 		if (view == null) {
 			viewHolder = new ViewHolder();
 			switch (type) {
+				case DATE_SEPARATOR:
+					view = activity.getLayoutInflater().inflate(R.layout.message_date_bubble, parent, false);
+					viewHolder.status_message = (TextView) view.findViewById(R.id.message_body);
+					viewHolder.message_box = (LinearLayout) view.findViewById(R.id.message_box);
+					break;
 				case SENT:
 					view = activity.getLayoutInflater().inflate(
 							R.layout.message_sent, parent, false);
@@ -659,7 +673,18 @@ public class MessageAdapter extends ArrayAdapter<Message> implements CopyTextVie
 
 		boolean darkBackground = type == RECEIVED && (!isInValidSession || mUseGreenBackground) || activity.isDarkTheme();
 
-		if (type == STATUS) {
+		if (type == DATE_SEPARATOR) {
+			if (UIHelper.today(message.getTimeSent())) {
+				viewHolder.status_message.setText(R.string.today);
+			} else if (UIHelper.yesterday(message.getTimeSent())) {
+				viewHolder.status_message.setText(R.string.yesterday);
+			} else {
+				viewHolder.status_message.setText(DateUtils.formatDateTime(activity,message.getTimeSent(),DateUtils.FORMAT_SHOW_DATE | DateUtils.FORMAT_SHOW_YEAR));
+			}
+			viewHolder.message_box.setBackgroundResource(activity.isDarkTheme() ? R.drawable.date_bubble_grey : R.drawable.date_bubble_white);
+			viewHolder.status_message.setTextColor(activity.getSecondaryTextColor());
+			return view;
+		} else if (type == STATUS) {
 			if ("LOAD_MORE".equals(message.getBody())) {
 				viewHolder.status_message.setVisibility(View.GONE);
 				viewHolder.contact_picture.setVisibility(View.GONE);

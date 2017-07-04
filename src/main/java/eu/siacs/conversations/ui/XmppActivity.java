@@ -391,6 +391,7 @@ public abstract class XmppActivity extends Activity {
 		mPrimaryBackgroundColor = ContextCompat.getColor(this, R.color.grey50);
 		mSecondaryBackgroundColor = ContextCompat.getColor(this, R.color.grey200);
 
+		this.mTheme = findTheme();
 		if(isDarkTheme()) {
 			mPrimaryTextColor = ContextCompat.getColor(this, R.color.white);
 			mSecondaryTextColor = ContextCompat.getColor(this, R.color.white70);
@@ -398,8 +399,6 @@ public abstract class XmppActivity extends Activity {
 			mPrimaryBackgroundColor = ContextCompat.getColor(this, R.color.grey800);
 			mSecondaryBackgroundColor = ContextCompat.getColor(this, R.color.grey900);
 		}
-
-		this.mTheme = findTheme();
 		setTheme(this.mTheme);
 
 		this.mUsingEnterKey = usingEnterKey();
@@ -411,7 +410,7 @@ public abstract class XmppActivity extends Activity {
 	}
 
 	public boolean isDarkTheme() {
-		return getPreferences().getString("theme", getResources().getString(R.string.theme)).equals("dark");
+		return this.mTheme == R.style.ConversationsTheme_Dark || this.mTheme == R.style.ConversationsTheme_Dark_LargerText;
 	}
 
 	public int getThemeResource(int r_attr_name, int r_drawable_def) {
