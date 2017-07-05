@@ -4,6 +4,7 @@
 * Added 'App Shortcuts' to quickly access frequent contacts
 * Use DNSSEC to verify hostname instead of domain in certificate
 * Setting to enable Heads-up notifications
+* Added date separators in message view
 
 ### Version 1.18.5
 * colorize send button only after history is caught up
