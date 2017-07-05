@@ -157,6 +157,7 @@
   <string name="account_status_regis_conflict">Esse nome de usuário já está em uso</string>
   <string name="account_status_regis_success">Registro efetuado com sucesso</string>
   <string name="account_status_regis_not_sup">O servidor não aceita o registro</string>
+  <string name="account_status_tls_error">Não foi possível efetuar a negociação TLS</string>
   <string name="account_status_policy_violation">Violação de política</string>
   <string name="account_status_incompatible_server">Servidor incompatível</string>
   <string name="account_status_stream_error">Erro de fluxo</string>
@@ -525,7 +526,10 @@
   <string name="pref_presence_settings">Presença</string>
   <string name="pref_away_when_screen_off">Afastado quando a tela estiver desligada</string>
   <string name="pref_away_when_screen_off_summary">Define o seu status como afastado quando a tela estiver desligada.</string>
+  <string name="pref_dnd_on_silent_mode">\"Não perturbe\" em modo silencioso</string>
+  <string name="pref_dnd_on_silent_mode_summary">Define o seu status como \"Não perturbe\" quando o dispositivo estiver em modo silencioso</string>
   <string name="pref_treat_vibrate_as_silent">Considerar o modo de vibração como silencioso</string>
+  <string name="pref_treat_vibrate_as_dnd_summary">Define o seu status como \"Não perturbe\" quando o dispositivo estiver no modo de vibração</string>
   <string name="pref_show_connection_options">Configurações detalhadas da conexão</string>
   <string name="pref_show_connection_options_summary">Exibe o nome de host e configurações da porta ao configurar uma conta.</string>
   <string name="hostname_example">xmpp.example.com</string>
@@ -574,6 +578,7 @@
   <string name="certicate_info_not_available">(Indisponível)</string>
   <string name="certificate_not_found">Não foi encontrado nenhum certificado</string>
   <string name="notify_on_all_messages">Notificar em todas as mensagens</string>
+  <string name="notify_only_when_highlighted">Notificar somente quando for mencionado</string>
   <string name="notify_never">Notificações desabilitadas</string>
   <string name="notify_paused">Notificações pausadas</string>
   <string name="pref_picture_compression">Comprimir imagens</string>
@@ -593,7 +598,7 @@
   <string name="select_image_and_crop">Selecione e recorte a imagem</string>
   <string name="this_account_is_disabled">Você desabilitou essa conta</string>
   <string name="security_error_invalid_file_access">Erro de segurança: Acesso inválido ao arquivo</string>
-  <string name="no_application_to_share_uri">Não foi encontrada nenhuma aplicação para compartilhar a URI</string>
+  <string name="no_application_to_share_uri">Não foi encontrado nenhum aplicativo para compartilhar a URI</string>
   <string name="share_uri_with">Compartilhar a URI com...</string>
   <string name="welcome_text">O XMPP é um protocolo independente de provedor. Você pode usar esse cliente com qualquer servidor que você escolher.\nEntretanto, para sua conveniência, nós simplificamos o processo de criação de uma conta em conversations.im¹, um provedor especialmente configurado para usar com o Conversations.</string>
   <string name="magic_create_text">Nós guiaremos você ao longo do processo de criar uma conta em conversations.im.¹\nAo usar esse provedor você também poderá se comunicar com usuários de outros provedores. Basta fornecê-los a sua identificação Jabber completa.</string>
@@ -680,7 +685,7 @@
   <string name="blindly_trusted_omemo_keys">Chaves OMEMO aceitas cegamente</string>
   <string name="not_trusted">Não confiável</string>
   <string name="invalid_barcode">Código de barras 2D inválido</string>
-  <string name="pref_clean_cache_summary">Limpar a pasta de cache (usado pela aplicação de câmera)</string>
+  <string name="pref_clean_cache_summary">Limpar a pasta de cache (usada pela aplicativo da câmera)</string>
   <string name="pref_clean_cache">Limpar o cache</string>
   <string name="pref_clean_private_storage">Limpar o armazenamento privado</string>
   <string name="pref_clean_private_storage_summary">Limpar o armazenamento privado onde os arquivos são mantidos (eles podem ser baixados do servidor novamente)</string>
@@ -705,8 +710,15 @@
   <string name="pref_notifications_from_strangers">Notificações de desconhecidos</string>
   <string name="pref_notifications_from_strangers_summary">Notificar ao receber mensagens de desconhecidos.</string>
   <string name="received_message_from_stranger">Foi recebida uma mensagem de um desconhecido</string>
+  <string name="block_stranger">Bloquear os desconhecidos</string>
   <string name="block_entire_domain">Bloquear o domínio inteiro</string>
   <string name="online_right_now">conectado(a) agora</string>
   <string name="retry_decryption">Tentar novamente a descriptografia</string>
   <string name="session_failure">Falha na sessão</string>
+  <string name="sasl_downgrade">O mecanismo SASL foi desatualizado</string>
+  <string name="account_status_regis_web">O servidor exige um registro no site web</string>
+  <string name="open_website">Abrir site web</string>
+  <string name="application_found_to_open_website">Não foi encontrado nenhum aplicativo para abrir o site web</string>
+  <string name="pref_headsup_notifications">Notificações Heads-up</string>
+  <string name="pref_headsup_notifications_summary">Exibe as notificações Heads-up</string>
 </resources>

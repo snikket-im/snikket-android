@@ -721,4 +721,6 @@
   <string name="application_found_to_open_website">Няма намерено приложение за отваряне на уеб сайта</string>
   <string name="pref_headsup_notifications">Изскачащи известия</string>
   <string name="pref_headsup_notifications_summary">Показване на изскачащи известия</string>
+  <string name="today">Днес</string>
+  <string name="yesterday">Вчера</string>
 </resources>

@@ -721,4 +721,6 @@
   <string name="application_found_to_open_website">No se ha encontrado aplicación para abrir la página web</string>
   <string name="pref_headsup_notifications">Notificaciones emergentes</string>
   <string name="pref_headsup_notifications_summary">Mostrar ventana emergente al recibir una notificación</string>
+  <string name="today">Hoy</string>
+  <string name="yesterday">Ayer</string>
 </resources>

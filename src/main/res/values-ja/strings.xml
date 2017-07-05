@@ -524,7 +524,10 @@
   <string name="pref_presence_settings">参加</string>
   <string name="pref_away_when_screen_off">画面がオフのときは離席</string>
   <string name="pref_away_when_screen_off_summary">画面がオフになっているとき、リソースを離席としてマークします</string>
+  <string name="pref_dnd_on_silent_mode">サイレントモード時 “邪魔しないで”</string>
+  <string name="pref_dnd_on_silent_mode_summary">デバイスがサイレントモードの時に、リソースを “邪魔しないで” としてマークします</string>
   <string name="pref_treat_vibrate_as_silent">バイブレートをサイレントモードとして扱う</string>
+  <string name="pref_treat_vibrate_as_dnd_summary">デバイスがバイブレートの時に、リソースを “邪魔しないで” としてマークします</string>
   <string name="pref_show_connection_options">拡張接続設定</string>
   <string name="pref_show_connection_options_summary">アカウントを設定するときにホスト名とポートの設定を表示します</string>
   <string name="hostname_example">xmpp.example.com</string>

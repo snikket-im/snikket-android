@@ -526,7 +526,10 @@
   <string name="pref_presence_settings">Presenza</string>
   <string name="pref_away_when_screen_off">\"Non disponibile\" a schermo spento</string>
   <string name="pref_away_when_screen_off_summary">Imposta la tua risorsa come non disponibile quando lo schermo è spento</string>
+  <string name="pref_dnd_on_silent_mode">\"Non disturbare\" in modalità silenziosa</string>
+  <string name="pref_dnd_on_silent_mode_summary">Segna la tua risorsa come \"Non disturbare\" quando il dispositivo è in modalità silenziosa</string>
   <string name="pref_treat_vibrate_as_silent">Tratta vibrazione come modalità silenziosa</string>
+  <string name="pref_treat_vibrate_as_dnd_summary">Segna la tua risorsa come \"Non disturbare\" quando il dispositivo ha solo la vibrazione</string>
   <string name="pref_show_connection_options">Impostazioni estese di connessione</string>
   <string name="pref_show_connection_options_summary">Mostra nome host e impostazioni della porta quando configuri un account</string>
   <string name="hostname_example">xmpp.esempio.it</string>

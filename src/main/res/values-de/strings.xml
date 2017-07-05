@@ -721,4 +721,6 @@
   <string name="application_found_to_open_website">Keine Anwendung zum Öffnen der Website gefunden</string>
   <string name="pref_headsup_notifications">Benachrichtigungsvorschau</string>
   <string name="pref_headsup_notifications_summary">Zeige Benachrichtigungsvorschau am oberen Bildschirmrand an</string>
+  <string name="today">Heute</string>
+  <string name="yesterday">Gestern</string>
 </resources>

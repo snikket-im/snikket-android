@@ -725,4 +725,6 @@ Emitent</string>
   <string name="application_found_to_open_website">Nu s-a găsit nici o aplicație care să poată deschide siteul</string>
   <string name="pref_headsup_notifications">Notificare heads-up</string>
   <string name="pref_headsup_notifications_summary">Arată o notificare în prim-plan la primirea unui mesaj</string>
+  <string name="today">Azi</string>
+  <string name="yesterday">Ieri</string>
 </resources>
