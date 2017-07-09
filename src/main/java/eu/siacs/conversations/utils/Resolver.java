@@ -93,16 +93,22 @@ public class Resolver {
 
     private static <D extends Data> ResolverResult<D> resolveWithFallback(DNSName dnsName, Class<D> type) throws IOException {
         try {
-            return DnssecResolverApi.INSTANCE.resolveDnssecReliable(dnsName, type);
+            final ResolverResult<D> r = DnssecResolverApi.INSTANCE.resolveDnssecReliable(dnsName, type);
+            if (r.wasSuccessful()) {
+                if (r.getAnswers().isEmpty() && type.equals(SRV.class)) {
+                    Log.d(Config.LOGTAG,Resolver.class.getSimpleName()+": resolving  SRV records of "+dnsName.toString()+" with DNSSEC yielded empty result");
+                }
+                return r;
+            }
+            Log.d(Config.LOGTAG,Resolver.class.getSimpleName()+": error resolving "+type.getSimpleName()+" with DNSSEC. Trying DNS instead.",r.getResolutionUnsuccessfulException());
         } catch (DNSSECResultNotAuthenticException e) {
             Log.d(Config.LOGTAG,Resolver.class.getSimpleName()+": error resolving "+type.getSimpleName()+" with DNSSEC. Trying DNS instead.",e);
-            return ResolverApi.INSTANCE.resolve(dnsName, type);
         } catch (IOException e) {
             throw e;
         } catch (Throwable throwable) {
             Log.d(Config.LOGTAG,Resolver.class.getSimpleName()+": error resolving "+type.getSimpleName()+" with DNSSEC. Trying DNS instead.",throwable);
-            return ResolverApi.INSTANCE.resolve(dnsName, type);
         }
+        return ResolverApi.INSTANCE.resolve(dnsName, type);
     }
 
     public static class Result implements Comparable<Result> {
