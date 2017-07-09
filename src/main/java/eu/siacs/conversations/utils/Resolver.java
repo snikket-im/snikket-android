@@ -5,6 +5,7 @@ import android.support.annotation.NonNull;
 import android.util.Log;
 
 import java.io.IOException;
+import java.net.Inet4Address;
 import java.net.InetAddress;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -157,6 +158,12 @@ public class Resolver {
                 if (directTls == result.directTls) {
                     if (ip == null && result.ip == null) {
                         return 0;
+                    } else if (ip != null && result.ip != null) {
+                        if (ip instanceof Inet4Address && result.ip instanceof Inet4Address) {
+                            return 0;
+                        } else {
+                            return ip instanceof Inet4Address ? -1 : 1;
+                        }
                     } else {
                         return ip != null ? -1 : 1;
                     }
