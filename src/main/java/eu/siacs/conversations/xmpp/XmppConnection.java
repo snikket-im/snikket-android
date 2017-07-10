@@ -18,6 +18,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.math.BigInteger;
 import java.net.ConnectException;
+import java.net.IDN;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.net.Socket;
@@ -369,7 +370,7 @@ public class XmppConnection implements Runnable {
 									+ ": using values from dns " + result.getHostname().toString()
 									+ "/" + result.getIp().getHostAddress() + ":" + result.getPort() + " tls: " + features.encryptionEnabled);
 						} else {
-							addr = new InetSocketAddress(result.getHostname().toString(), result.getPort());
+							addr = new InetSocketAddress(IDN.toASCII(result.getHostname().toString()), result.getPort());
 							Log.d(Config.LOGTAG, account.getJid().toBareJid().toString()
 									+ ": using values from dns "
 									+ result.getHostname().toString() + ":" + result.getPort() + " tls: " + features.encryptionEnabled);
