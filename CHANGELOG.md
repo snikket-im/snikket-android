@@ -1,5 +1,8 @@
 # Changelog
 
+### Version 1.19.2
+* bug fixes
+
 ### Version 1.19.1
 * Made DNSSEC hostname validation opt-in
 
