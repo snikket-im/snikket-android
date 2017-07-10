@@ -718,4 +718,6 @@
   <string name="application_found_to_open_website">Webサイトを開くアプリケーションが見つかりません</string>
   <string name="pref_headsup_notifications">Heads-up 通知</string>
   <string name="pref_headsup_notifications_summary">Heads-up 通知を表示</string>
+  <string name="today">今日</string>
+  <string name="yesterday">昨日</string>
 </resources>

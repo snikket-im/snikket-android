@@ -526,7 +526,10 @@
   <string name="pref_presence_settings">Tilstedeværelse</string>
   <string name="pref_away_when_screen_off">Borte når skjermen er av</string>
   <string name="pref_away_when_screen_off_summary">Markerer din ressurs som borte når skjermen er avskrudd</string>
+  <string name="pref_dnd_on_silent_mode">“Ikke forstyrr” i stillemodus.</string>
+  <string name="pref_dnd_on_silent_mode_summary">Merker din ressurs som \"Ikke forstyrr\" når enheten er i stillemodus.</string>
   <string name="pref_treat_vibrate_as_silent">Behandle vibrering som stille-modus</string>
+  <string name="pref_treat_vibrate_as_dnd_summary">Merker din ressurs som \"Ikke forstyrr\" når enheten er skrudd til vibrering</string>
   <string name="pref_show_connection_options">Utvidede tilkoblingsinnst.</string>
   <string name="pref_show_connection_options_summary">Vis vertsnavn og portinnstillinger når du setter opp en ny konto</string>
   <string name="hostname_example">xmpp.eksempel.no</string>
@@ -713,4 +716,9 @@
   <string name="retry_decryption">Prøv å dekryptere igjen</string>
   <string name="session_failure">Økt-feil</string>
   <string name="sasl_downgrade">Nedgradert SASL-mekanisme</string>
+  <string name="account_status_regis_web">Tjeneren krever registrering på nettsiden</string>
+  <string name="open_website">Åpne nettside</string>
+  <string name="application_found_to_open_website">Fant inget program til åpning av nettside</string>
+  <string name="today">I dag</string>
+  <string name="yesterday">I går</string>
 </resources>

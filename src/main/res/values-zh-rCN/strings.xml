@@ -524,7 +524,10 @@
   <string name="pref_presence_settings">存在</string>
   <string name="pref_away_when_screen_off">关闭屏幕时离开</string>
   <string name="pref_away_when_screen_off_summary">当屏幕关闭时将标记您的资源为离开状态</string>
+  <string name="pref_dnd_on_silent_mode">静音模式时设为“请勿打扰”</string>
+  <string name="pref_dnd_on_silent_mode_summary">当设备进入静音模式时把资源标识改为“请勿打扰”</string>
   <string name="pref_treat_vibrate_as_silent">静音模式开启振动</string>
+  <string name="pref_treat_vibrate_as_dnd_summary">当设备进入震动模式时把资源标识改为“请勿打扰”</string>
   <string name="pref_show_connection_options">高级连接设置</string>
   <string name="pref_show_connection_options_summary">注册账户时显示主机名和端口</string>
   <string name="hostname_example">xmpp.example.com</string>
@@ -712,4 +715,11 @@
   <string name="retry_decryption">重试解密</string>
   <string name="session_failure">会话失败</string>
   <string name="sasl_downgrade">已降级的 SASL 机制</string>
+  <string name="account_status_regis_web">服务器要求在网站上注册</string>
+  <string name="open_website">打开网站</string>
+  <string name="application_found_to_open_website">没有可以打开网站的应用</string>
+  <string name="pref_headsup_notifications">顶部通知</string>
+  <string name="pref_headsup_notifications_summary">显示顶部通知</string>
+  <string name="today">今天</string>
+  <string name="yesterday">昨天</string>
 </resources>
