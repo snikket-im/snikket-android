@@ -57,7 +57,7 @@ public class Resolver {
             Log.d(Config.LOGTAG,Resolver.class.getSimpleName()+": "+e.getMessage());
         }
         if (results.size() == 0) {
-            results.addAll(resolveFallback(DNSName.from(domain),true));
+            results.addAll(resolveNoSrvRecords(DNSName.from(domain),true));
         }
         Collections.sort(results);
         Log.d(Config.LOGTAG,Resolver.class.getSimpleName()+": "+results.toString());
@@ -102,7 +102,7 @@ public class Resolver {
         return list;
     }
 
-    private static List<Result> resolveFallback(DNSName dnsName, boolean withCnames) {
+    private static List<Result> resolveNoSrvRecords(DNSName dnsName, boolean withCnames) {
         List<Result> results = new ArrayList<>();
         try {
             for(A a : resolveWithFallback(dnsName,A.class,false).getAnswersOrEmptySet()) {
@@ -111,13 +111,13 @@ public class Resolver {
             for(AAAA aaaa : resolveWithFallback(dnsName,AAAA.class,false).getAnswersOrEmptySet()) {
                 results.add(Result.createDefault(dnsName,aaaa.getInetAddress()));
             }
-            if (results.size() == 0) {
+            if (results.size() == 0 && withCnames) {
                 for (CNAME cname : resolveWithFallback(dnsName, CNAME.class, false).getAnswersOrEmptySet()) {
-                    results.addAll(resolveFallback(cname.name, false));
+                    results.addAll(resolveNoSrvRecords(cname.name, false));
                 }
             }
-        } catch (IOException e) {
-            Log.d(Config.LOGTAG,"error resolving fallback records "+e);
+        } catch (Throwable throwable) {
+            Log.d(Config.LOGTAG, Resolver.class.getSimpleName() + "error resolving fallback records",throwable);
         }
         if (results.size() == 0) {
             results.add(Result.createDefault(dnsName));
