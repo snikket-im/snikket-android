@@ -19,6 +19,7 @@ import de.measite.minidns.hla.ResolverApi;
 import de.measite.minidns.hla.ResolverResult;
 import de.measite.minidns.record.A;
 import de.measite.minidns.record.AAAA;
+import de.measite.minidns.record.CNAME;
 import de.measite.minidns.record.Data;
 import de.measite.minidns.record.InternetAddressRR;
 import de.measite.minidns.record.SRV;
@@ -47,7 +48,7 @@ public class Resolver {
             Log.d(Config.LOGTAG,Resolver.class.getSimpleName()+": "+e.getMessage());
         }
         if (results.size() == 0) {
-            results.add(Result.createDefault(domain));
+            results.addAll(resolveFallback(DNSName.from(domain)));
         }
         Collections.sort(results);
         Log.d(Config.LOGTAG,Resolver.class.getSimpleName()+": "+results.toString());
@@ -55,7 +56,7 @@ public class Resolver {
     }
 
     private static List<Result> resolveSrv(String domain, final boolean directTls) throws IOException {
-        if (Thread.interrupted()) {
+        if (Thread.currentThread().isInterrupted()) {
             return Collections.emptyList();
         }
         DNSName dnsName = DNSName.from((directTls ? DIRECT_TLS_SERVICE : STARTTLS_SERICE)+"._tcp."+domain);
@@ -64,7 +65,7 @@ public class Resolver {
         for(SRV record : result.getAnswersOrEmptySet()) {
             final boolean addedIPv4 = results.addAll(resolveIp(record,A.class,result.isAuthenticData(),directTls));
             results.addAll(resolveIp(record,AAAA.class,result.isAuthenticData(),directTls));
-            if (!addedIPv4 && !Thread.interrupted()) {
+            if (!addedIPv4 && !Thread.currentThread().isInterrupted()) {
                 Result resolverResult = Result.fromRecord(record, directTls);
                 resolverResult.authenticated = resolverResult.isAuthenticated();
                 results.add(resolverResult);
@@ -74,12 +75,12 @@ public class Resolver {
     }
 
     private static <D extends InternetAddressRR> List<Result> resolveIp(SRV srv, Class<D> type, boolean authenticated, boolean directTls) {
-        if (Thread.interrupted()) {
+        if (Thread.currentThread().isInterrupted()) {
             return Collections.emptyList();
         }
         List<Result> list = new ArrayList<>();
         try {
-            ResolverResult<D> results = resolveWithFallback(srv.name,type);
+            ResolverResult<D> results = resolveWithFallback(srv.name,type, !authenticated);
             for (D record : results.getAnswersOrEmptySet()) {
                 Result resolverResult = Result.fromRecord(srv, directTls);
                 resolverResult.authenticated = results.isAuthenticData() && authenticated;
@@ -92,22 +93,52 @@ public class Resolver {
         return list;
     }
 
+    private static List<Result> resolveFallback(DNSName dnsName) {
+        List<Result> results = new ArrayList<>();
+        try {
+            for(A a : resolveWithFallback(dnsName,A.class,true).getAnswersOrEmptySet()) {
+                results.add(Result.createDefault(dnsName,a.getInetAddress()));
+            }
+            for(AAAA aaaa : resolveWithFallback(dnsName,AAAA.class,true).getAnswersOrEmptySet()) {
+                results.add(Result.createDefault(dnsName,aaaa.getInetAddress()));
+            }
+            if (results.size() == 0) {
+                for (CNAME cname : resolveWithFallback(dnsName, CNAME.class, true).getAnswersOrEmptySet()) {
+                    results.addAll(resolveFallback(cname.name));
+                }
+            }
+        } catch (IOException e) {
+            Log.d(Config.LOGTAG,"error resolving fallback records "+e);
+        }
+        if (results.size() == 0) {
+            results.add(Result.createDefault(dnsName));
+        }
+        return results;
+    }
+
     private static <D extends Data> ResolverResult<D> resolveWithFallback(DNSName dnsName, Class<D> type) throws IOException {
+        return resolveWithFallback(dnsName,type,false);
+    }
+
+    private static <D extends Data> ResolverResult<D> resolveWithFallback(DNSName dnsName, Class<D> type, boolean skipDnssec) throws IOException {
+        if (skipDnssec) {
+            return ResolverApi.INSTANCE.resolve(dnsName, type);
+        }
         try {
             final ResolverResult<D> r = DnssecResolverApi.INSTANCE.resolveDnssecReliable(dnsName, type);
             if (r.wasSuccessful()) {
                 if (r.getAnswers().isEmpty() && type.equals(SRV.class)) {
-                    Log.d(Config.LOGTAG,Resolver.class.getSimpleName()+": resolving  SRV records of "+dnsName.toString()+" with DNSSEC yielded empty result");
+                    Log.d(Config.LOGTAG, Resolver.class.getSimpleName() + ": resolving  SRV records of " + dnsName.toString() + " with DNSSEC yielded empty result");
                 }
                 return r;
             }
-            Log.d(Config.LOGTAG,Resolver.class.getSimpleName()+": error resolving "+type.getSimpleName()+" with DNSSEC. Trying DNS instead.",r.getResolutionUnsuccessfulException());
+            Log.d(Config.LOGTAG, Resolver.class.getSimpleName() + ": error resolving " + type.getSimpleName() + " with DNSSEC. Trying DNS instead.", r.getResolutionUnsuccessfulException());
         } catch (DNSSECResultNotAuthenticException e) {
-            Log.d(Config.LOGTAG,Resolver.class.getSimpleName()+": error resolving "+type.getSimpleName()+" with DNSSEC. Trying DNS instead.",e);
+            Log.d(Config.LOGTAG, Resolver.class.getSimpleName() + ": error resolving " + type.getSimpleName() + " with DNSSEC. Trying DNS instead.", e);
         } catch (IOException e) {
             throw e;
         } catch (Throwable throwable) {
-            Log.d(Config.LOGTAG,Resolver.class.getSimpleName()+": error resolving "+type.getSimpleName()+" with DNSSEC. Trying DNS instead.",throwable);
+            Log.d(Config.LOGTAG, Resolver.class.getSimpleName() + ": error resolving " + type.getSimpleName() + " with DNSSEC. Trying DNS instead.", throwable);
         }
         return ResolverApi.INSTANCE.resolve(dnsName, type);
     }
@@ -184,11 +215,16 @@ public class Resolver {
             return result;
         }
 
-        public static Result createDefault(String domain) {
+        public static Result createDefault(DNSName hostname, InetAddress ip) {
             Result result = new Result();
             result.port = 5222;
-            result.hostname = DNSName.from(domain);
+            result.hostname = hostname;
+            result.ip = ip;
             return result;
+        }
+
+        public static Result createDefault(DNSName hostname) {
+            return createDefault(hostname,null);
         }
     }
 
