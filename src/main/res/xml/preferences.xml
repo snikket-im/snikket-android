@@ -194,6 +194,11 @@
                     android:key="dont_trust_system_cas"
                     android:summary="@string/pref_dont_trust_system_cas_summary"
                     android:title="@string/pref_dont_trust_system_cas_title"/>
+                <CheckBoxPreference
+                    android:defaultValue="@bool/validate_hostname"
+                    android:key="validate_hostname"
+                    android:summary="@string/pref_validate_hostname_summary"
+                    android:title="@string/pref_validate_hostname"/>
                 <Preference
                     android:key="remove_trusted_certificates"
                     android:summary="@string/pref_remove_trusted_certificates_summary"

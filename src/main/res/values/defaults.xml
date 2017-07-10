@@ -40,4 +40,5 @@
     <bool name="enable_foreground_service">false</bool>
     <bool name="never_send">false</bool>
     <bool name="return_to_previous">false</bool>
+    <bool name="validate_hostname">false</bool>
 </resources>

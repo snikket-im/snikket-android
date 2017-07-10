@@ -24,14 +24,23 @@ import de.measite.minidns.record.Data;
 import de.measite.minidns.record.InternetAddressRR;
 import de.measite.minidns.record.SRV;
 import eu.siacs.conversations.Config;
+import eu.siacs.conversations.R;
+import eu.siacs.conversations.services.XmppConnectionService;
 
 public class Resolver {
 
     private static final String DIRECT_TLS_SERVICE = "_xmpps-client";
     private static final String STARTTLS_SERICE = "_xmpp-client";
 
+    private static XmppConnectionService SERVICE = null;
 
-    public static void registerLookupMechanism(Context context) {
+
+    public static void registerXmppConnectionService(XmppConnectionService service) {
+        Resolver.SERVICE = service;
+        registerLookupMechanism(service);
+    }
+
+    private static void registerLookupMechanism(Context context) {
         DNSClient.addDnsServerLookupMechanism(new AndroidUsingLinkProperties(context));
     }
 
@@ -48,7 +57,7 @@ public class Resolver {
             Log.d(Config.LOGTAG,Resolver.class.getSimpleName()+": "+e.getMessage());
         }
         if (results.size() == 0) {
-            results.addAll(resolveFallback(DNSName.from(domain)));
+            results.addAll(resolveFallback(DNSName.from(domain),true));
         }
         Collections.sort(results);
         Log.d(Config.LOGTAG,Resolver.class.getSimpleName()+": "+results.toString());
@@ -80,7 +89,7 @@ public class Resolver {
         }
         List<Result> list = new ArrayList<>();
         try {
-            ResolverResult<D> results = resolveWithFallback(DNSName.from(srv.name.toString()),type, !authenticated);
+            ResolverResult<D> results = resolveWithFallback(DNSName.from(srv.name.toString()),type, authenticated);
             for (D record : results.getAnswersOrEmptySet()) {
                 Result resolverResult = Result.fromRecord(srv, directTls);
                 resolverResult.authenticated = results.isAuthenticData() && authenticated;
@@ -93,18 +102,18 @@ public class Resolver {
         return list;
     }
 
-    private static List<Result> resolveFallback(DNSName dnsName) {
+    private static List<Result> resolveFallback(DNSName dnsName, boolean withCnames) {
         List<Result> results = new ArrayList<>();
         try {
-            for(A a : resolveWithFallback(dnsName,A.class,true).getAnswersOrEmptySet()) {
+            for(A a : resolveWithFallback(dnsName,A.class,false).getAnswersOrEmptySet()) {
                 results.add(Result.createDefault(dnsName,a.getInetAddress()));
             }
-            for(AAAA aaaa : resolveWithFallback(dnsName,AAAA.class,true).getAnswersOrEmptySet()) {
+            for(AAAA aaaa : resolveWithFallback(dnsName,AAAA.class,false).getAnswersOrEmptySet()) {
                 results.add(Result.createDefault(dnsName,aaaa.getInetAddress()));
             }
             if (results.size() == 0) {
-                for (CNAME cname : resolveWithFallback(dnsName, CNAME.class, true).getAnswersOrEmptySet()) {
-                    results.addAll(resolveFallback(cname.name));
+                for (CNAME cname : resolveWithFallback(dnsName, CNAME.class, false).getAnswersOrEmptySet()) {
+                    results.addAll(resolveFallback(cname.name, false));
                 }
             }
         } catch (IOException e) {
@@ -117,11 +126,11 @@ public class Resolver {
     }
 
     private static <D extends Data> ResolverResult<D> resolveWithFallback(DNSName dnsName, Class<D> type) throws IOException {
-        return resolveWithFallback(dnsName,type,false);
+        return resolveWithFallback(dnsName,type,validateHostname());
     }
 
-    private static <D extends Data> ResolverResult<D> resolveWithFallback(DNSName dnsName, Class<D> type, boolean skipDnssec) throws IOException {
-        if (skipDnssec) {
+    private static <D extends Data> ResolverResult<D> resolveWithFallback(DNSName dnsName, Class<D> type, boolean validateHostname) throws IOException {
+        if (!validateHostname) {
             return ResolverApi.INSTANCE.resolve(dnsName, type);
         }
         try {
@@ -141,6 +150,10 @@ public class Resolver {
             Log.d(Config.LOGTAG, Resolver.class.getSimpleName() + ": error resolving " + type.getSimpleName() + " with DNSSEC. Trying DNS instead.", throwable);
         }
         return ResolverApi.INSTANCE.resolve(dnsName, type);
+    }
+
+    private static boolean validateHostname() {
+        return SERVICE != null && SERVICE.getBooleanPreference("validate_hostname", R.bool.validate_hostname);
     }
 
     public static class Result implements Comparable<Result> {
