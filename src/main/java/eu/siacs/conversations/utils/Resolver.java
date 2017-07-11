@@ -48,13 +48,13 @@ public class Resolver {
         List<Result> results = new ArrayList<>();
         try {
             results.addAll(resolveSrv(domain,true));
-        } catch (IOException e) {
-            Log.d(Config.LOGTAG,Resolver.class.getSimpleName()+": "+e.getMessage());
+        } catch (Throwable throwable) {
+            Log.d(Config.LOGTAG,Resolver.class.getSimpleName()+": error resolving SRV record (direct TLS)",throwable);
         }
         try {
             results.addAll(resolveSrv(domain,false));
-        } catch (IOException e) {
-            Log.d(Config.LOGTAG,Resolver.class.getSimpleName()+": "+e.getMessage());
+        } catch (Throwable throwable) {
+            Log.d(Config.LOGTAG,Resolver.class.getSimpleName()+": error resolving SRV record (STARTTLS)",throwable);
         }
         if (results.size() == 0) {
             results.addAll(resolveNoSrvRecords(DNSName.from(domain),true));
