@@ -395,7 +395,9 @@ public class XmppConnection implements Runnable {
 
 							if (!tlsFactoryVerifier.verifier.verify(account.getServer().getDomainpart(), ((SSLSocket) localSocket).getSession())) {
 								Log.d(Config.LOGTAG, account.getJid().toBareJid() + ": TLS certificate verification failed");
-								throw new StateChangingException(Account.State.TLS_ERROR);
+								if (!iterator.hasNext()) {
+									throw new StateChangingException(Account.State.TLS_ERROR);
+								}
 							}
 						}
 						if (startXmpp(localSocket)) {
