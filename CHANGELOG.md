@@ -1,5 +1,9 @@
 # Changelog
 
+## Version 1.19.3
+* Do not create foreground service when all accounts are disabled
+* bug fixes
+
 ### Version 1.19.2
 * bug fixes
 
