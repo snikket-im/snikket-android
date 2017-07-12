@@ -48,6 +48,7 @@ import eu.siacs.conversations.services.XmppConnectionService;
 import eu.siacs.conversations.utils.CryptoHelper;
 import eu.siacs.conversations.utils.SerialSingleThreadExecutor;
 import eu.siacs.conversations.xml.Element;
+import eu.siacs.conversations.xml.Namespace;
 import eu.siacs.conversations.xmpp.OnAdvancedStreamFeaturesLoaded;
 import eu.siacs.conversations.xmpp.OnIqPacketReceived;
 import eu.siacs.conversations.xmpp.jid.InvalidJidException;
@@ -214,7 +215,6 @@ public class AxolotlService implements OnAdvancedStreamFeaturesLoaded {
 			putDevicesForJid(account.getJid().toBareJid().toPreppedString(), deviceIds, store);
 			for (String  address : store.getKnownAddresses()) {
 				deviceIds = store.getSubDeviceSessions(address);
-				Log.d(Config.LOGTAG,account.getJid().toBareJid()+" adding device ids for "+address+" "+deviceIds);
 				putDevicesForJid(address, deviceIds, store);
 			}
 
@@ -437,16 +437,7 @@ public class AxolotlService implements OnAdvancedStreamFeaturesLoaded {
 		}
 		Set<Integer> deviceIds = new HashSet<>();
 		deviceIds.add(getOwnDeviceId());
-		IqPacket publish = mXmppConnectionService.getIqGenerator().publishDeviceIds(deviceIds);
-		Log.d(Config.LOGTAG, AxolotlService.getLogprefix(account) + "Wiping all other devices from Pep:" + publish);
-		mXmppConnectionService.sendIqPacket(account, publish, new OnIqPacketReceived() {
-			@Override
-			public void onIqPacketReceived(Account account, IqPacket packet) {
-				if (packet.getType() == IqPacket.TYPE.RESULT) {
-					mXmppConnectionService.pushNodeConfiguration(account, AxolotlService.PEP_DEVICE_LIST, PublishOptions.openAccess(), null);
-				}
-			}
-		});
+		publishDeviceIdsAndRefineAccessModel(deviceIds);
 	}
 
 	public void distrustFingerprint(final String fingerprint) {
@@ -513,17 +504,40 @@ public class AxolotlService implements OnAdvancedStreamFeaturesLoaded {
 			numPublishTriesOnEmptyPep = 0;
 		}
 		deviceIdsCopy.add(getOwnDeviceId());
-		IqPacket publish = mXmppConnectionService.getIqGenerator().publishDeviceIds(deviceIdsCopy);
+		publishDeviceIdsAndRefineAccessModel(deviceIdsCopy);
+	}
+
+	private void publishDeviceIdsAndRefineAccessModel(Set<Integer> ids) {
+		publishDeviceIdsAndRefineAccessModel(ids,true);
+	}
+
+	private void publishDeviceIdsAndRefineAccessModel(final Set<Integer> ids, final boolean firstAttempt) {
+		final Bundle publishOptions = account.getXmppConnection().getFeatures().pepPublishOptions() ? PublishOptions.openAccess() : null;
+		IqPacket publish = mXmppConnectionService.getIqGenerator().publishDeviceIds(ids, publishOptions);
 		ownPushPending.set(true);
 		mXmppConnectionService.sendIqPacket(account, publish, new OnIqPacketReceived() {
 			@Override
 			public void onIqPacketReceived(Account account, IqPacket packet) {
-				ownPushPending.set(false);
-				if (packet.getType() == IqPacket.TYPE.ERROR) {
-					pepBroken = true;
-					Log.d(Config.LOGTAG, getLogprefix(account) + "Error received while publishing own device id" + packet.findChild("error"));
-				} else if (packet.getType() != IqPacket.TYPE.TIMEOUT) {
-					mXmppConnectionService.pushNodeConfiguration(account, AxolotlService.PEP_DEVICE_LIST, PublishOptions.openAccess(), null);
+				Element error = packet.getType() == IqPacket.TYPE.ERROR ? packet.findChild("error") : null;
+				if (firstAttempt && error != null && error.hasChild("precondition-not-met",Namespace.PUBSUB_ERROR)) {
+					Log.d(Config.LOGTAG,account.getJid().toBareJid()+": precondition wasn't met for device list. pushing node configuration");
+					mXmppConnectionService.pushNodeConfiguration(account, AxolotlService.PEP_DEVICE_LIST, publishOptions, new XmppConnectionService.OnConfigurationPushed() {
+						@Override
+						public void onPushSucceeded() {
+							publishDeviceIdsAndRefineAccessModel(ids, false);
+						}
+
+						@Override
+						public void onPushFailed() {
+							publishDeviceIdsAndRefineAccessModel(ids, false);
+						}
+					});
+				} else {
+					ownPushPending.set(false);
+					if (packet.getType() == IqPacket.TYPE.ERROR) {
+						pepBroken = true;
+						Log.d(Config.LOGTAG, getLogprefix(account) + "Error received while publishing own device id" + packet.findChild("error"));
+					}
 				}
 			}
 		});
@@ -683,32 +697,45 @@ public class AxolotlService implements OnAdvancedStreamFeaturesLoaded {
 									 Set<PreKeyRecord> preKeyRecords,
 									 final boolean announceAfter,
 									 final boolean wipe) {
+		publishDeviceBundle(signedPreKeyRecord,preKeyRecords,announceAfter,wipe,true);
+	}
+
+	private void publishDeviceBundle(final SignedPreKeyRecord signedPreKeyRecord,
+									 final Set<PreKeyRecord> preKeyRecords,
+									 final boolean announceAfter,
+									 final boolean wipe,
+									 final boolean firstAttempt) {
+		final Bundle publishOptions = account.getXmppConnection().getFeatures().pepPublishOptions() ? PublishOptions.openAccess() : null;
 		IqPacket publish = mXmppConnectionService.getIqGenerator().publishBundles(
 				signedPreKeyRecord, axolotlStore.getIdentityKeyPair().getPublicKey(),
-				preKeyRecords, getOwnDeviceId());
+				preKeyRecords, getOwnDeviceId(),publishOptions);
 		Log.d(Config.LOGTAG, AxolotlService.getLogprefix(account) + ": Bundle " + getOwnDeviceId() + " in PEP not current. Publishing...");
 		mXmppConnectionService.sendIqPacket(account, publish, new OnIqPacketReceived() {
 			@Override
 			public void onIqPacketReceived(final Account account, IqPacket packet) {
-				if (packet.getType() == IqPacket.TYPE.RESULT) {
+				Element error = packet.getType() == IqPacket.TYPE.ERROR ? packet.findChild("error") : null;
+				if (firstAttempt && error != null && error.hasChild("precondition-not-met", Namespace.PUBSUB_ERROR)) {
+					Log.d(Config.LOGTAG,account.getJid().toBareJid()+": precondition wasn't met for bundle. pushing node configuration");
 					final String node = AxolotlService.PEP_BUNDLES + ":" + getOwnDeviceId();
-					mXmppConnectionService.pushNodeConfiguration(account, node, PublishOptions.openAccess(), new XmppConnectionService.OnConfigurationPushed() {
+					mXmppConnectionService.pushNodeConfiguration(account, node, publishOptions, new XmppConnectionService.OnConfigurationPushed() {
 						@Override
 						public void onPushSucceeded() {
-							Log.d(Config.LOGTAG, AxolotlService.getLogprefix(account) + "Successfully published bundle. ");
-							if (wipe) {
-								wipeOtherPepDevices();
-							} else if (announceAfter) {
-								Log.d(Config.LOGTAG, getLogprefix(account) + "Announcing device " + getOwnDeviceId());
-								publishOwnDeviceIdIfNeeded();
-							}
+							publishDeviceBundle(signedPreKeyRecord,preKeyRecords, announceAfter, wipe, false);
 						}
 
 						@Override
 						public void onPushFailed() {
-							Log.d(Config.LOGTAG,"unable to change access model for pubsub node");
+							publishDeviceBundle(signedPreKeyRecord,preKeyRecords, announceAfter, wipe, false);
 						}
 					});
+				} if (packet.getType() == IqPacket.TYPE.RESULT) {
+					Log.d(Config.LOGTAG, AxolotlService.getLogprefix(account) + "Successfully published bundle. ");
+					if (wipe) {
+						wipeOtherPepDevices();
+					} else if (announceAfter) {
+						Log.d(Config.LOGTAG, getLogprefix(account) + "Announcing device " + getOwnDeviceId());
+						publishOwnDeviceIdIfNeeded();
+					}
 				} else if (packet.getType() == IqPacket.TYPE.ERROR) {
 					pepBroken = true;
 					Log.d(Config.LOGTAG, getLogprefix(account) + "Error received while publishing bundle: " + packet.findChild("error"));

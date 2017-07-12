@@ -39,13 +39,14 @@ public class Data extends Element {
 		return null;
 	}
 
-	public void put(String name, String value) {
+	public Field put(String name, String value) {
 		Field field = getFieldByName(name);
 		if (field == null) {
 			field = new Field(name);
 			this.addChild(field);
 		}
 		field.setValue(value);
+		return field;
 	}
 
 	public void put(String name, Collection<String> values) {
@@ -91,7 +92,8 @@ public class Data extends Element {
 	}
 
 	public void setFormType(String formType) {
-		this.put(FORM_TYPE, formType);
+		Field field = this.put(FORM_TYPE, formType);
+		field.setAttribute("type","hidden");
 	}
 
 	public String getFormType() {
@@ -106,6 +108,17 @@ public class Data extends Element {
 
 	public String getTitle() {
 		return findChildContent("title");
+	}
+
+
+	public static Data create(String type, Bundle bundle) {
+		Data data = new Data();
+		data.setFormType(type);
+		data.setAttribute("type","submit");
+		for(String key : bundle.keySet()) {
+			data.put(key,bundle.getString(key));
+		}
+		return data;
 	}
 
 }

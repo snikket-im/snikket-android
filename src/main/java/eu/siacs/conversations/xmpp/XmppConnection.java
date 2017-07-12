@@ -1671,6 +1671,13 @@ public class XmppConnection implements Runnable {
 			}
 		}
 
+		public boolean pepPublishOptions() {
+			synchronized (XmppConnection.this.disco) {
+				ServiceDiscoveryResult info = disco.get(account.getJid().toBareJid());
+				return info != null && info.getFeatures().contains(Namespace.PUBSUB_PUBLISH_OPTIONS);
+			}
+		}
+
 		public boolean mam() {
 			return hasDiscoFeature(account.getJid().toBareJid(), Namespace.MAM)
 					|| hasDiscoFeature(account.getJid().toBareJid(), Namespace.MAM_LEGACY);
