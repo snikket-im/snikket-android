@@ -61,7 +61,7 @@ public class DatabaseBackend extends SQLiteOpenHelper {
 	private static DatabaseBackend instance = null;
 
 	private static final String DATABASE_NAME = "history";
-	private static final int DATABASE_VERSION = 35;
+	private static final int DATABASE_VERSION = 36;
 
 	private static String CREATE_CONTATCS_STATEMENT = "create table "
 			+ Contact.TABLENAME + "(" + Contact.ACCOUNT + " TEXT, "
@@ -445,6 +445,14 @@ public class DatabaseBackend extends SQLiteOpenHelper {
 		}
 		if (oldVersion < 35 && newVersion >= 35) {
 			db.execSQL(CREATE_MESSAGE_CONVERSATION_INDEX);
+		}
+		if (oldVersion < 36 && newVersion >= 36) {
+			List<Account> accounts = getAccounts(db);
+			for (Account account : accounts) {
+				account.setOption(Account.OPTION_REQURIES_ACCESS_MODE_CHANGE,true);
+				db.update(Account.TABLENAME, account.getContentValues(), Account.UUID
+						+ "=?", new String[]{account.getUuid()});
+			}
 		}
 	}
 

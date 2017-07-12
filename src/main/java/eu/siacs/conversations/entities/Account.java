@@ -57,6 +57,7 @@ public class Account extends AbstractEntity {
 	public static final int OPTION_REGISTER = 2;
 	public static final int OPTION_USECOMPRESSION = 3;
 	public static final int OPTION_MAGIC_CREATE = 4;
+	public static final int OPTION_REQURIES_ACCESS_MODE_CHANGE = 5;
 	public final HashSet<Pair<String, String>> inProgressDiscoFetches = new HashSet<>();
 
 	public boolean httpUploadAvailable(long filesize) {

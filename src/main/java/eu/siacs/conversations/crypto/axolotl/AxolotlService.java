@@ -82,6 +82,7 @@ public class AxolotlService implements OnAdvancedStreamFeaturesLoaded {
 	private boolean pepBroken = false;
 
 	private AtomicBoolean ownPushPending = new AtomicBoolean(false);
+	private AtomicBoolean changeAccessMode = new AtomicBoolean(false);
 
 	@Override
 	public void onAdvancedStreamFeaturesAvailable(Account account) {
@@ -411,6 +412,7 @@ public class AxolotlService implements OnAdvancedStreamFeaturesLoaded {
 			if (Config.OMEMO_AUTO_EXPIRY != 0) {
 				needsPublishing |= deviceIds.removeAll(getExpiredDevices());
 			}
+			needsPublishing |= this.changeAccessMode.get();
 			for (Integer deviceId : deviceIds) {
 				SignalProtocolAddress ownDeviceAddress = new SignalProtocolAddress(jid.toBareJid().toPreppedString(), deviceId);
 				if (sessions.get(ownDeviceAddress) == null) {
@@ -533,6 +535,11 @@ public class AxolotlService implements OnAdvancedStreamFeaturesLoaded {
 						}
 					});
 				} else {
+					if (AxolotlService.this.changeAccessMode.compareAndSet(true,false)) {
+						Log.d(Config.LOGTAG,account.getJid().toBareJid()+": done changing access mode");
+						account.setOption(Account.OPTION_REQURIES_ACCESS_MODE_CHANGE,false);
+						mXmppConnectionService.databaseBackend.updateAccount(account);
+					}
 					ownPushPending.set(false);
 					if (packet.getType() == IqPacket.TYPE.ERROR) {
 						pepBroken = true;
@@ -585,6 +592,10 @@ public class AxolotlService implements OnAdvancedStreamFeaturesLoaded {
 		if (pepBroken) {
 			Log.d(Config.LOGTAG, getLogprefix(account) + "publishBundlesIfNeeded called, but PEP is broken. Ignoring... ");
 			return;
+		}
+		this.changeAccessMode.set(account.isOptionSet(Account.OPTION_REQURIES_ACCESS_MODE_CHANGE) && account.getXmppConnection().getFeatures().pepPublishOptions());
+		if (this.changeAccessMode.get()) {
+			Log.d(Config.LOGTAG, account.getJid().toBareJid() + ": server gained publish-options capabilities. changing access model");
 		}
 		IqPacket packet = mXmppConnectionService.getIqGenerator().retrieveBundlesForDevice(account.getJid().toBareJid(), getOwnDeviceId());
 		mXmppConnectionService.sendIqPacket(account, packet, new OnIqPacketReceived() {
@@ -670,7 +681,7 @@ public class AxolotlService implements OnAdvancedStreamFeaturesLoaded {
 					}
 
 
-					if (changed) {
+					if (changed || changeAccessMode.get()) {
 						if (account.getPrivateKeyAlias() != null && Config.X509_VERIFICATION) {
 							mXmppConnectionService.publishDisplayName(account);
 							publishDeviceVerificationAndBundle(signedPreKeyRecord, preKeyRecords, announce, wipe);
@@ -728,7 +739,7 @@ public class AxolotlService implements OnAdvancedStreamFeaturesLoaded {
 							publishDeviceBundle(signedPreKeyRecord,preKeyRecords, announceAfter, wipe, false);
 						}
 					});
-				} if (packet.getType() == IqPacket.TYPE.RESULT) {
+				} else if (packet.getType() == IqPacket.TYPE.RESULT) {
 					Log.d(Config.LOGTAG, AxolotlService.getLogprefix(account) + "Successfully published bundle. ");
 					if (wipe) {
 						wipeOtherPepDevices();
