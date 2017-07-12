@@ -723,4 +723,6 @@
   <string name="pref_headsup_notifications_summary">Zeige Benachrichtigungsvorschau am oberen Bildschirmrand an</string>
   <string name="today">Heute</string>
   <string name="yesterday">Gestern</string>
+  <string name="pref_validate_hostname">Überprüfe den Hostnamen mit DNSSEC</string>
+  <string name="pref_validate_hostname_summary">Serverzertifikate, die den überprüften Hostnamen enthalten, werden als verifiziert betrachtet</string>
 </resources>

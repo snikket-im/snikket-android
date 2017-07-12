@@ -719,6 +719,8 @@
   <string name="account_status_regis_web">Tjeneren krever registrering på nettsiden</string>
   <string name="open_website">Åpne nettside</string>
   <string name="application_found_to_open_website">Fant inget program til åpning av nettside</string>
+  <string name="pref_headsup_notifications">Oppsprettsmerknader</string>
+  <string name="pref_headsup_notifications_summary">Vis oppsprettsmerknader</string>
   <string name="today">I dag</string>
   <string name="yesterday">I går</string>
 </resources>

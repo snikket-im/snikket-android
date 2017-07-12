@@ -727,4 +727,6 @@ Emitent</string>
   <string name="pref_headsup_notifications_summary">Arată o notificare în prim-plan la primirea unui mesaj</string>
   <string name="today">Azi</string>
   <string name="yesterday">Ieri</string>
+  <string name="pref_validate_hostname">Validează numele domeniului cu ajutorul DNSSEC</string>
+  <string name="pref_validate_hostname_summary">Certificatele serverelor care conțin nume de domenii validate sunt considerate verificate</string>
 </resources>

@@ -723,4 +723,6 @@
   <string name="pref_headsup_notifications_summary">Heads-up-meldingen weergeven</string>
   <string name="today">Vandaag</string>
   <string name="yesterday">Gisteren</string>
+  <string name="pref_validate_hostname">Valideer hostnaam met DNSSEC</string>
+  <string name="pref_validate_hostname_summary">Servercertificaten die de gevalideerde hostnaam bevatten worden beschouwd als geverifieerd</string>
 </resources>

@@ -723,4 +723,6 @@
   <string name="pref_headsup_notifications_summary">Mostrar ventana emergente al recibir una notificación</string>
   <string name="today">Hoy</string>
   <string name="yesterday">Ayer</string>
+  <string name="pref_validate_hostname">Validar hostname con DNSSEC</string>
+  <string name="pref_validate_hostname_summary">Los certificados del servidor que contienen el hostname validado son considerados verificados</string>
 </resources>

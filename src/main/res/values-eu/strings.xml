@@ -526,7 +526,10 @@
   <string name="pref_presence_settings">Presentzia</string>
   <string name="pref_away_when_screen_off">Urrun pantaila itzalita dagoenean</string>
   <string name="pref_away_when_screen_off_summary">Zure baliabidea urrun bezala markatzen du pantaila itzalita dagoenean</string>
+  <string name="pref_dnd_on_silent_mode">\"Ez gogaitu\" modu isilean</string>
+  <string name="pref_dnd_on_silent_mode_summary">Zure baliabidea \"Ez gogaitu\" bezala markatzen du gailua modu isilean dagoenean</string>
   <string name="pref_treat_vibrate_as_silent">Dardara modu isila bezala tratatu</string>
+  <string name="pref_treat_vibrate_as_dnd_summary">Zure baliabidea \"Ez gogaitu\" bezala markatzen du gailua dardara moduan dagoenean</string>
   <string name="pref_show_connection_options">Konexioaren ezarpen luzatuak</string>
   <string name="pref_show_connection_options_summary">Ostalariaren izena eta ataka ezarpenak erakutsi kontu bat ezartzerakoan</string>
   <string name="hostname_example">xmpp.adibidea.com</string>
@@ -713,4 +716,13 @@
   <string name="retry_decryption">Saiatu berriz desenkriptatzen</string>
   <string name="session_failure">Saioaren akatsa</string>
   <string name="sasl_downgrade">SASL mekanismoa beheratua</string>
+  <string name="account_status_regis_web">Zerbitzariak webgunean izena ematea eskatzen du</string>
+  <string name="open_website">Webgunea ireki</string>
+  <string name="application_found_to_open_website">Webgunea irekitzeko aplikaziorik ez da aurkitu</string>
+  <string name="pref_headsup_notifications">Goranzko jakinarazpenak</string>
+  <string name="pref_headsup_notifications_summary">Goranzko jakinarazpenak erakutsi</string>
+  <string name="today">Gaur</string>
+  <string name="yesterday">Atzo</string>
+  <string name="pref_validate_hostname">Ostalariaren izena DNSSECekin balioztatu</string>
+  <string name="pref_validate_hostname_summary">Ostalariaren izena balioztatuta daukaten zerbitzarien ziurtagiriak egiaztatutzat hartzen dira</string>
 </resources>

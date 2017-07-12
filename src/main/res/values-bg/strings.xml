@@ -723,4 +723,6 @@
   <string name="pref_headsup_notifications_summary">Показване на изскачащи известия</string>
   <string name="today">Днес</string>
   <string name="yesterday">Вчера</string>
+  <string name="pref_validate_hostname">Проверка на името на сървъра чрез DNSSEC</string>
+  <string name="pref_validate_hostname_summary">Сървърните сертификати, които съдържат проверено име на сървъра, се смятат за потвърдени</string>
 </resources>

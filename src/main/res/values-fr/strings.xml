@@ -526,7 +526,10 @@
   <string name="pref_presence_settings">Disponibilité</string>
   <string name="pref_away_when_screen_off">Absent quand l\'écran est éteint</string>
   <string name="pref_away_when_screen_off_summary">Marquer cette ressource comme absente quand l\'écran est éteint.</string>
+  <string name="pref_dnd_on_silent_mode">Indisponible en mode silencieux</string>
+  <string name="pref_dnd_on_silent_mode_summary">Marquer cette ressource comme Indisponible quand l\'appareil est en mode silencieux</string>
   <string name="pref_treat_vibrate_as_silent">Indisponible en mode vibreur</string>
+  <string name="pref_treat_vibrate_as_dnd_summary">Marquer cette ressource comme Indisponible quand l\'appareil est en mode vibreur</string>
   <string name="pref_show_connection_options">Paramètres de connexion avancés</string>
   <string name="pref_show_connection_options_summary">Montrer le nom d\'hôte et le port lors du paramétrage d\'un compte</string>
   <string name="hostname_example">xmpp.example.com</string>
@@ -713,4 +716,11 @@
   <string name="retry_decryption">Nouvelle tentative de déchiffrement</string>
   <string name="session_failure">Échec de la session</string>
   <string name="sasl_downgrade">Mécanisme SASL dégradé</string>
+  <string name="account_status_regis_web">Le serveur nécessite une identification sur son site web </string>
+  <string name="open_website">Ouvrir le site web</string>
+  <string name="application_found_to_open_website">Aucune application trouvée pour afficher le site web</string>
+  <string name="today">Aujourd\'hui</string>
+  <string name="yesterday">Hier</string>
+  <string name="pref_validate_hostname">Valider le nom de domaine avec DNSSEC</string>
+  <string name="pref_validate_hostname_summary">Les certificats serveur qui comportent le nom de domaine validé sont considérés comme validés</string>
 </resources>

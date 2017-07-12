@@ -720,4 +720,6 @@
   <string name="pref_headsup_notifications_summary">Heads-up 通知を表示</string>
   <string name="today">今日</string>
   <string name="yesterday">昨日</string>
+  <string name="pref_validate_hostname">DNSSEC でホスト名を検証</string>
+  <string name="pref_validate_hostname_summary">検証されたホスト名を含むサーバー証明書は検証済みと見なされます</string>
 </resources>
