@@ -1085,7 +1085,7 @@ public class XmppConnectionService extends Service {
 	}
 
 	public void toggleForegroundService() {
-		if (keepForegroundService()) {
+		if (keepForegroundService() && hasEnabledAccounts()) {
 			startForeground(NotificationService.FOREGROUND_NOTIFICATION_ID, this.mNotificationService.createForegroundNotification());
 		} else {
 			stopForeground(true);
@@ -1825,6 +1825,7 @@ public class XmppConnectionService extends Service {
 		this.accounts.add(account);
 		this.reconnectAccountInBackground(account);
 		updateAccountUi();
+		toggleForegroundService();
 	}
 
 	public void createAccountFromKey(final String alias, final OnAccountCreated callback) {
@@ -1894,6 +1895,7 @@ public class XmppConnectionService extends Service {
 			reconnectAccountInBackground(account);
 			updateAccountUi();
 			getNotificationService().updateErrorNotification();
+			toggleForegroundService();
 			return true;
 		} else {
 			return false;
@@ -2199,7 +2201,7 @@ public class XmppConnectionService extends Service {
 				XmppConnection connection = account.getXmppConnection();
 				if (connection != null) {
 					if (broadcastLastActivity) {
-						sendPresence(account, broadcastLastActivity);
+						sendPresence(account, true);
 					}
 					if (connection.getFeatures().csi()) {
 						connection.sendInactive();
@@ -2378,6 +2380,15 @@ public class XmppConnectionService extends Service {
 			updateConversation(conversation);
 			joinMuc(conversation);
 		}
+	}
+
+	private boolean hasEnabledAccounts() {
+		for(Account account : this.accounts) {
+			if (!account.isOptionSet(Account.OPTION_DISABLED)) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 	public void renameInMuc(final Conversation conversation, final String nick, final UiCallback<Conversation> callback) {
