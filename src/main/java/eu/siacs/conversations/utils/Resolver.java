@@ -119,9 +119,7 @@ public class Resolver {
         } catch (Throwable throwable) {
             Log.d(Config.LOGTAG, Resolver.class.getSimpleName() + "error resolving fallback records",throwable);
         }
-        if (results.size() == 0) {
-            results.add(Result.createDefault(dnsName));
-        }
+        results.add(Result.createDefault(dnsName));
         return results;
     }
 

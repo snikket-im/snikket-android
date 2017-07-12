@@ -5,6 +5,7 @@ import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.LinkProperties;
 import android.net.Network;
+import android.net.NetworkInfo;
 import android.net.RouteInfo;
 import android.os.Build;
 
@@ -39,11 +40,17 @@ public class AndroidUsingLinkProperties extends AbstractDNSServerLookupMechanism
             return new String[0];
         }
         List<String> servers = new ArrayList<>();
+        int vpnOffset = 0;
         for(Network network : networks) {
             LinkProperties linkProperties = connectivityManager.getLinkProperties(network);
+            NetworkInfo networkInfo = connectivityManager.getNetworkInfo(network);
             if (linkProperties != null) {
-                if (hasDefaultRoute(linkProperties)) {
-                    servers.addAll(0, getIPv4First(linkProperties.getDnsServers()));
+                if (networkInfo != null && networkInfo.getType() == ConnectivityManager.TYPE_VPN) {
+                    final List<String> tmp = getIPv4First(linkProperties.getDnsServers());
+                    servers.addAll(0, tmp);
+                    vpnOffset += tmp.size();
+                } else if (hasDefaultRoute(linkProperties)) {
+                    servers.addAll(vpnOffset, getIPv4First(linkProperties.getDnsServers()));
                 } else {
                     servers.addAll(getIPv4First(linkProperties.getDnsServers()));
                 }
