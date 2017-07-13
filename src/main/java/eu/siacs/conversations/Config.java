@@ -12,7 +12,7 @@ public final class Config {
 	private static final int OTR = 4;
 	private static final int OMEMO = 8;
 
-	private static final int ENCRYPTION_MASK = OMEMO;
+	private static final int ENCRYPTION_MASK = UNENCRYPTED | OPENPGP | OTR | OMEMO;
 
 	public static boolean supportUnencrypted() {
 		return (ENCRYPTION_MASK & UNENCRYPTED) != 0;
