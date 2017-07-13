@@ -277,8 +277,6 @@ public class DatabaseBackend extends SQLiteOpenHelper {
 			recreateAxolotlDb(db);
 			db.execSQL("ALTER TABLE " + Message.TABLENAME + " ADD COLUMN "
 					+ Message.FINGERPRINT + " TEXT");
-		} else if (oldVersion < 22 && newVersion >= 22) {
-			db.execSQL("ALTER TABLE " + SQLiteAxolotlStore.IDENTITIES_TABLENAME + " ADD COLUMN " + SQLiteAxolotlStore.CERTIFICATE);
 		}
 		if (oldVersion < 16 && newVersion >= 16) {
 			db.execSQL("ALTER TABLE " + Message.TABLENAME + " ADD COLUMN "
@@ -338,6 +336,10 @@ public class DatabaseBackend extends SQLiteOpenHelper {
 			}
 		}
 
+		if (oldVersion >= 15 && oldVersion < 22 && newVersion >= 22) {
+			db.execSQL("ALTER TABLE " + SQLiteAxolotlStore.IDENTITIES_TABLENAME + " ADD COLUMN " + SQLiteAxolotlStore.CERTIFICATE);
+		}
+
 		if (oldVersion < 23 && newVersion >= 23) {
 			db.execSQL(CREATE_DISCOVERY_RESULTS_STATEMENT);
 		}
@@ -368,7 +370,7 @@ public class DatabaseBackend extends SQLiteOpenHelper {
 		if (oldVersion < 30 && newVersion >= 30) {
 			db.execSQL(CREATE_START_TIMES_TABLE);
 		}
-		if (oldVersion < 31 && newVersion >= 31) {
+		if (oldVersion >= 15 && oldVersion < 31 && newVersion >= 31) {
 			db.execSQL("ALTER TABLE "+ SQLiteAxolotlStore.IDENTITIES_TABLENAME + " ADD COLUMN "+SQLiteAxolotlStore.TRUST + " TEXT");
 			db.execSQL("ALTER TABLE "+ SQLiteAxolotlStore.IDENTITIES_TABLENAME + " ADD COLUMN "+SQLiteAxolotlStore.ACTIVE + " NUMBER");
 			HashMap<Integer,ContentValues> migration = new HashMap<>();
@@ -388,13 +390,13 @@ public class DatabaseBackend extends SQLiteOpenHelper {
 			}
 
 		}
-		if (oldVersion < 32 && newVersion >= 32) {
+		if (oldVersion >= 15 && oldVersion < 32 && newVersion >= 32) {
 			db.execSQL("ALTER TABLE "+ SQLiteAxolotlStore.IDENTITIES_TABLENAME + " ADD COLUMN "+SQLiteAxolotlStore.LAST_ACTIVATION + " NUMBER");
 			ContentValues defaults = new ContentValues();
 			defaults.put(SQLiteAxolotlStore.LAST_ACTIVATION,System.currentTimeMillis());
 			db.update(SQLiteAxolotlStore.IDENTITIES_TABLENAME,defaults,null,null);
 		}
-		if (oldVersion < 33 && newVersion >= 33) {
+		if (oldVersion >= 15 && oldVersion < 33 && newVersion >= 33) {
 			String whereClause = SQLiteAxolotlStore.OWN+"=1";
 			db.update(SQLiteAxolotlStore.IDENTITIES_TABLENAME,createFingerprintStatusContentValues(FingerprintStatus.Trust.VERIFIED,true),whereClause,null);
 		}
