@@ -41,7 +41,6 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.regex.Matcher;
 
-import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.KeyManager;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLSession;
@@ -393,7 +392,7 @@ public class XmppConnection implements Runnable {
 
 							localSocket.connect(addr, Config.SOCKET_TIMEOUT * 1000);
 
-							if (!tlsFactoryVerifier.verifier.verify(account.getServer().getDomainpart(), ((SSLSocket) localSocket).getSession())) {
+							if (!tlsFactoryVerifier.verifier.verify(account.getServer().getDomainpart(), verifiedHostname, ((SSLSocket) localSocket).getSession())) {
 								Log.d(Config.LOGTAG, account.getJid().toBareJid() + ": TLS certificate verification failed");
 								if (!iterator.hasNext()) {
 									throw new StateChangingException(Account.State.TLS_ERROR);
