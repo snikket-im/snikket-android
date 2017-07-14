@@ -296,7 +296,7 @@ public class DatabaseBackend extends SQLiteOpenHelper {
 		/* Any migrations that alter the Account table need to happen BEFORE this migration, as it
 		 * depends on account de-serialization.
 		 */
-		if (oldVersion < 17 && newVersion >= 17) {
+		if (oldVersion < 17 && newVersion >= 17 && newVersion < 31) {
 			List<Account> accounts = getAccounts(db);
 			for (Account account : accounts) {
 				String ownDeviceIdString = account.getKey(SQLiteAxolotlStore.JSONKEY_REGISTRATION_ID);
