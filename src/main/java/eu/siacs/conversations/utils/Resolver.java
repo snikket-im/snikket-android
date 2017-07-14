@@ -89,6 +89,7 @@ public class Resolver {
         }
         List<Result> list = new ArrayList<>();
         try {
+            //TODO fix the DNSName.from(srv.name.toString() workaround once minidns 0.2.2 is out
             ResolverResult<D> results = resolveWithFallback(DNSName.from(srv.name.toString()),type, authenticated);
             for (D record : results.getAnswersOrEmptySet()) {
                 Result resolverResult = Result.fromRecord(srv, directTls);
