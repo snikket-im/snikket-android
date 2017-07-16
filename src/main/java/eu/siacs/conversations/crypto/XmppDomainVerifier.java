@@ -16,12 +16,12 @@ import org.bouncycastle.cert.jcajce.JcaX509CertificateHolder;
 
 import java.io.IOException;
 import java.security.cert.Certificate;
+import java.security.cert.CertificateEncodingException;
 import java.security.cert.X509Certificate;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.SSLSession;
 
 import de.duenndns.ssl.DomainHostnameVerifier;
@@ -41,6 +41,13 @@ public class XmppDomainVerifier implements DomainHostnameVerifier {
 				return false;
 			}
 			X509Certificate certificate = (X509Certificate) chain[0];
+			if (isSelfSigned(certificate)) {
+				List<String> domains = getCommonNames(certificate);
+				if (domains.size() == 1 && domains.get(0).equals(domain)) {
+					Log.d(LOGTAG,"accepted CN in cert self signed cert for "+domain);
+					return true;
+				}
+			}
 			Collection<List<?>> alternativeNames = certificate.getSubjectAlternativeNames();
 			List<String> xmppAddrs = new ArrayList<>();
 			List<String> srvNames = new ArrayList<>();
@@ -71,11 +78,7 @@ public class XmppDomainVerifier implements DomainHostnameVerifier {
 				}
 			}
 			if (srvNames.size() == 0 && xmppAddrs.size() == 0 && domains.size() == 0) {
-				X500Name x500name = new JcaX509CertificateHolder(certificate).getSubject();
-				RDN[] rdns = x500name.getRDNs(BCStyle.CN);
-				for (int i = 0; i < rdns.length; ++i) {
-					domains.add(IETFUtils.valueToString(x500name.getRDNs(BCStyle.CN)[i].getFirst().getValue()));
-				}
+				domains.addAll(domains);
 			}
 			Log.d(LOGTAG, "searching for " + domain + " in srvNames: " + srvNames + " xmppAddrs: " + xmppAddrs + " domains:" + domains);
 			if (hostname != null) {
@@ -87,6 +90,20 @@ public class XmppDomainVerifier implements DomainHostnameVerifier {
 					|| (hostname != null && matchDomain(hostname,domains));
 		} catch (Exception e) {
 			return false;
+		}
+	}
+
+	private static List<String> getCommonNames(X509Certificate certificate) {
+		List<String> domains = new ArrayList<>();
+		try {
+			X500Name x500name = new JcaX509CertificateHolder(certificate).getSubject();
+			RDN[] rdns = x500name.getRDNs(BCStyle.CN);
+			for (int i = 0; i < rdns.length; ++i) {
+				domains.add(IETFUtils.valueToString(x500name.getRDNs(BCStyle.CN)[i].getFirst().getValue()));
+			}
+			return domains;
+		} catch (CertificateEncodingException e) {
+			return domains;
 		}
 	}
 
@@ -131,6 +148,15 @@ public class XmppDomainVerifier implements DomainHostnameVerifier {
 			}
 		}
 		return false;
+	}
+
+	private boolean isSelfSigned(X509Certificate certificate) {
+		try {
+			certificate.verify(certificate.getPublicKey());
+			return true;
+		} catch (Exception e) {
+			return false;
+		}
 	}
 
 	@Override
