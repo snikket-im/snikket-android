@@ -68,7 +68,7 @@ public abstract class AbstractParser {
 		timestamp = timestamp.replace("Z", "+0000");
 		SimpleDateFormat dateFormat;
 		long ms;
-		if (timestamp.charAt(19) == '.' && timestamp.length() >= 25) {
+		if (timestamp.length() >= 25 && timestamp.charAt(19) == '.') {
 			String millis = timestamp.substring(19,timestamp.length() - 5);
 			try {
 				double fractions = Double.parseDouble("0" + millis);
