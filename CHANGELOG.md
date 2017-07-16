@@ -1,6 +1,10 @@
 # Changelog
 
-## Version 1.19.3
+### Version 1.19.4
+* work around for OpensFire’s self signed certs
+* use VPN’s DNS servers first
+
+### Version 1.19.3
 * Do not create foreground service when all accounts are disabled
 * bug fixes
 
