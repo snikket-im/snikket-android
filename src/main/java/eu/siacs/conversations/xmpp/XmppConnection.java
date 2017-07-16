@@ -300,11 +300,9 @@ public class XmppConnection implements Runnable {
 
 				this.verifiedHostname = account.getHostname();
 
-				InetSocketAddress address = new InetSocketAddress(this.verifiedHostname, account.getPort());
-
-				features.encryptionEnabled = account.getPort() == 5223;
-
 				try {
+					InetSocketAddress address = new InetSocketAddress(this.verifiedHostname, account.getPort());
+					features.encryptionEnabled = address.getPort() == 5223;
 					if (features.encryptionEnabled) {
 						try {
 							final TlsFactoryVerifier tlsFactoryVerifier = getTlsFactoryVerifier();
@@ -317,14 +315,13 @@ public class XmppConnection implements Runnable {
 								throw new StateChangingException(Account.State.TLS_ERROR);
 							}
 						} catch (KeyManagementException e) {
-							features.encryptionEnabled = false;
-							localSocket = new Socket();
+							throw new StateChangingException(Account.State.TLS_ERROR);
 						}
 					} else {
 						localSocket = new Socket();
 						localSocket.connect(address, Config.SOCKET_TIMEOUT * 1000);
 					}
-				} catch (IOException e) {
+				} catch (IOException | IllegalArgumentException e) {
 					throw new UnknownHostException();
 				}
 				try {
