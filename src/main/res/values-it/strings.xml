@@ -721,4 +721,8 @@
   <string name="application_found_to_open_website">Nessuna applicazione trovata per aprire il sito</string>
   <string name="pref_headsup_notifications">Notifiche avvisi</string>
   <string name="pref_headsup_notifications_summary">Mostra notifiche su avvisi</string>
+  <string name="today">Oggi</string>
+  <string name="yesterday">Ieri</string>
+  <string name="pref_validate_hostname">Convalida hostname con DNSSEC</string>
+  <string name="pref_validate_hostname_summary">I certificati dei server che contengono l\'hostname convalidato sono considerati verificati</string>
 </resources>
