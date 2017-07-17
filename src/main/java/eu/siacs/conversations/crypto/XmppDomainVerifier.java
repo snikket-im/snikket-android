@@ -30,8 +30,8 @@ public class XmppDomainVerifier implements DomainHostnameVerifier {
 
 	private static final String LOGTAG = "XmppDomainVerifier";
 
-	private final String SRVName = "1.3.6.1.5.5.7.8.7";
-	private final String xmppAddr = "1.3.6.1.5.5.7.8.5";
+	private static final String SRV_NAME = "1.3.6.1.5.5.7.8.7";
+	private static final String XMPP_ADDR = "1.3.6.1.5.5.7.8.5";
 
 	@Override
 	public boolean verify(String domain, String hostname, SSLSession sslSession) {
@@ -41,9 +41,9 @@ public class XmppDomainVerifier implements DomainHostnameVerifier {
 				return false;
 			}
 			X509Certificate certificate = (X509Certificate) chain[0];
+			final List<String> commonNames = getCommonNames(certificate);
 			if (isSelfSigned(certificate)) {
-				List<String> domains = getCommonNames(certificate);
-				if (domains.size() == 1 && domains.get(0).equals(domain)) {
+				if (commonNames.size() == 1 && commonNames.get(0).equals(domain)) {
 					Log.d(LOGTAG,"accepted CN in cert self signed cert for "+domain);
 					return true;
 				}
@@ -59,10 +59,10 @@ public class XmppDomainVerifier implements DomainHostnameVerifier {
 						Pair<String, String> otherName = parseOtherName((byte[]) san.get(1));
 						if (otherName != null) {
 							switch (otherName.first) {
-								case SRVName:
+								case SRV_NAME:
 									srvNames.add(otherName.second);
 									break;
-								case xmppAddr:
+								case XMPP_ADDR:
 									xmppAddrs.add(otherName.second);
 									break;
 								default:
@@ -78,7 +78,7 @@ public class XmppDomainVerifier implements DomainHostnameVerifier {
 				}
 			}
 			if (srvNames.size() == 0 && xmppAddrs.size() == 0 && domains.size() == 0) {
-				domains.addAll(domains);
+				domains.addAll(commonNames);
 			}
 			Log.d(LOGTAG, "searching for " + domain + " in srvNames: " + srvNames + " xmppAddrs: " + xmppAddrs + " domains:" + domains);
 			if (hostname != null) {
