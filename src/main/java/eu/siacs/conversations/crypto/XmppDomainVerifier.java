@@ -1,5 +1,6 @@
 package eu.siacs.conversations.crypto;
 
+import android.os.Build;
 import android.util.Log;
 import android.util.Pair;
 
@@ -42,9 +43,10 @@ public class XmppDomainVerifier implements DomainHostnameVerifier {
 			}
 			X509Certificate certificate = (X509Certificate) chain[0];
 			final List<String> commonNames = getCommonNames(certificate);
-			if (isSelfSigned(certificate)) {
+			final boolean isSelfSignedCertificate = isSelfSigned(certificate);
+			if (Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT || isSelfSignedCertificate) {
 				if (commonNames.size() == 1 && commonNames.get(0).equals(domain)) {
-					Log.d(LOGTAG,"accepted CN in cert self signed cert for "+domain);
+					Log.d(LOGTAG,"accepted CN in cert as work around for "+domain+" isSelfSigned="+Boolean.toString(isSelfSignedCertificate)+", sdkInt="+Build.VERSION.SDK_INT);
 					return true;
 				}
 			}
