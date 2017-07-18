@@ -81,8 +81,7 @@ public class AbstractConnectionManager {
 				Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
 				cipher.init(Cipher.ENCRYPT_MODE, new SecretKeySpec(file.getKey(), "AES"), ips);
 				Log.d(Config.LOGTAG, "opening encrypted input stream");
-				final int s = Config.REPORT_WRONG_FILESIZE_IN_OTR_JINGLE ? size : (size / 16 + 1) * 16;
-				return new Pair<InputStream,Integer>(new CipherInputStream(is, cipher),s);
+				return new Pair<InputStream,Integer>(new CipherInputStream(is, cipher),(size / 16 + 1) * 16);
 			}
 		} catch (InvalidKeyException e) {
 			return null;
