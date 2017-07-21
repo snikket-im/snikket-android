@@ -495,7 +495,13 @@ public class XmppConnection implements Runnable {
 
 	@Override
 	public void run() {
-		forceCloseSocket();
+		synchronized (this) {
+			if (Thread.currentThread().isInterrupted()) {
+				Log.d(Config.LOGTAG,account.getJid().toBareJid()+": aborting connect because thread was interrupted");
+				return;
+			}
+			forceCloseSocket();
+		}
 		connect();
 	}
 
