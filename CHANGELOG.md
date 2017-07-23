@@ -1,5 +1,8 @@
 # Changelog
 
+### Version 1.19.5
+* fixed connection loop on Android <4.4
+
 ### Version 1.19.4
 * work around for OpensFire’s self signed certs
 * use VPN’s DNS servers first
