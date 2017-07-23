@@ -1658,6 +1658,11 @@ public class ConversationFragment extends Fragment implements EditMessage.Keyboa
 				int choice = data.getIntExtra("choice", ConversationActivity.ATTACHMENT_CHOICE_INVALID);
 				activity.selectPresenceToAttachFile(choice, conversation.getNextEncryption());
 			}
+		} else if (resultCode == Activity.RESULT_CANCELED) {
+			if (requestCode == ConversationActivity.REQUEST_DECRYPT_PGP) {
+				// discard the message to prevent decryption being blocked
+				conversation.getAccount().getPgpDecryptionService().giveUpCurrentDecryption();
+			}
 		}
 	}
 
