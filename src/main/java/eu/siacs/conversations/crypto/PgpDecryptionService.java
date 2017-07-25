@@ -69,6 +69,27 @@ public class PgpDecryptionService {
         this.pendingNotifications.remove(message);
     }
 
+    public void giveUpCurrentDecryption(){
+        Message message;
+        synchronized (this) {
+            if(currentMessage != null) {
+                return;
+            }
+            message = messages.peekFirst();
+            if (message == null) {
+                return;
+            }
+            discard(message);
+        }
+        synchronized (message){
+            if (message.getEncryption() == Message.ENCRYPTION_PGP) {
+                message.setEncryption(Message.ENCRYPTION_DECRYPTION_FAILED);
+            }
+        }
+        mXmppConnectionService.updateMessage(message);
+        continueDecryption(true);
+    }
+
 	protected synchronized void decryptNext() {
 		if (pendingIntent == null
                 && getOpenPgpApi() != null
