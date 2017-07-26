@@ -526,9 +526,12 @@
   <string name="pref_presence_settings">Jelenlét</string>
   <string name="pref_away_when_screen_off">\"Távol\" állapot lezárt telefonnál</string>
   <string name="pref_away_when_screen_off_summary">Kikapcsolt képernyőnél a neved alatt egy \"távol\" címke látható</string>
+  <string name="pref_dnd_on_silent_mode">\"Ne zavarjon\" csöndes módban</string>
+  <string name="pref_dnd_on_silent_mode_summary">Az eszközt \"Ne zavarjon\" jelzéssel jelöli, ha csendes üzemmódban van</string>
   <string name="pref_treat_vibrate_as_silent">A rezgést kezelje úgy mint csöndes módot</string>
+  <string name="pref_treat_vibrate_as_dnd_summary">Az eszközt \"Ne zavarjon\" jelzéssel jelöli, ha rezgő módban van</string>
   <string name="pref_show_connection_options">Kiterjesztett kapcsolat beállítások</string>
-  <string name="pref_show_connection_options_summary">Mutassa a nevet és a port beállításokat amikor egy új fiókot hozol létre</string>
+  <string name="pref_show_connection_options_summary">Mutassa a gazdanevet és a port beállításokat új fiók létrehozásakor</string>
   <string name="hostname_example">xmpp.example.com</string>
   <string name="action_add_account_with_certificate">Fiók hozzáadása tanúsítvánnyal</string>
   <string name="unable_to_parse_certificate">A tanúsítvány nem értelmezhető</string>
@@ -548,11 +551,11 @@
   <string name="pref_connection_options">Kapcsolat</string>
   <string name="pref_use_tor">Kapcsolódás a Tor hálózatán keresztül</string>
   <string name="pref_use_tor_summary">Minden kapcsolat átvezetése a Tor hálózatán. Szükséges hozzá az Orbot</string>
-  <string name="account_settings_hostname">Hostnév</string>
+  <string name="account_settings_hostname">Gazdanév</string>
   <string name="account_settings_port">Port</string>
   <string name="hostname_or_onion">Szerver vagy .onion Cím</string>
   <string name="not_a_valid_port">Ez nem egy érvényes portszám</string>
-  <string name="not_valid_hostname">Ez nem egy érvényes név</string>
+  <string name="not_valid_hostname">Ez nem egy érvényes gazdanév</string>
   <string name="connected_accounts">%1$d a %2$d fiókból csatlakozott</string>
   <plurals name="x_messages">
     <item quantity="one">%d üzenet</item>
@@ -575,6 +578,7 @@
   <string name="certicate_info_not_available">(Nem elérhető)</string>
   <string name="certificate_not_found">Nem talált tanúsítványt</string>
   <string name="notify_on_all_messages">Értesítsen minden üzenetnél</string>
+  <string name="notify_only_when_highlighted">Csak akkor értesítsen, ha megemlítenek</string>
   <string name="notify_never">Értesítések letiltva</string>
   <string name="notify_paused">Értesítések szüneteltetve</string>
   <string name="pref_picture_compression">Képek tömörítése</string>
@@ -712,4 +716,13 @@
   <string name="retry_decryption">Próbálja újra a dekódolást</string>
   <string name="session_failure">Munkamenet hiba</string>
   <string name="sasl_downgrade">Csökkentett SASL mechanizmus</string>
+  <string name="account_status_regis_web">A szervernek regisztrációra van szüksége a weboldalon</string>
+  <string name="open_website">Weboldal megnyitása</string>
+  <string name="application_found_to_open_website">Nem található alkalmazás a weboldal megnyitásához</string>
+  <string name="pref_headsup_notifications">Figyelmeztető értesítések</string>
+  <string name="pref_headsup_notifications_summary">Figyelmeztető értesítéseket mutat</string>
+  <string name="today">Ma</string>
+  <string name="yesterday">Tegnap</string>
+  <string name="pref_validate_hostname">Gazdanév validálása DNSSEC-el</string>
+  <string name="pref_validate_hostname_summary">A hitelesített gazdanevet tartalmazó kiszolgálói tanúsítványok hitelesek</string>
 </resources>
