@@ -23,7 +23,7 @@ configurations {
 
 dependencies {
     compile project(':libs:MemorizingTrustManager')
-    playstoreCompile 'com.google.android.gms:play-services-gcm:10.2.6'
+    playstoreCompile 'com.google.android.gms:play-services-gcm:11.0.2'
     compile 'org.sufficientlysecure:openpgp-api:10.0'
     compile 'com.soundcloud.android:android-crop:1.0.1@aar'
     compile 'com.android.support:support-v13:25.3.1'
@@ -35,9 +35,9 @@ dependencies {
     compile 'com.google.zxing:android-integration:3.2.1'
     compile 'de.measite.minidns:minidns-hla:0.2.1'
     compile 'de.timroes.android:EnhancedListView:0.3.4'
-    compile 'me.leolin:ShortcutBadger:1.1.12@aar'
+    compile 'me.leolin:ShortcutBadger:1.1.17@aar'
     compile 'com.kyleduo.switchbutton:library:1.2.8'
-    compile 'org.whispersystems:signal-protocol-java:2.5.3'
+    compile 'org.whispersystems:signal-protocol-java:2.6.2'
     compile 'com.makeramen:roundedimageview:2.2.0'
     compile "com.wefika:flowlayout:0.4.1"
     compile 'net.ypresto.androidtranscoder:android-transcoder:0.2.0'
