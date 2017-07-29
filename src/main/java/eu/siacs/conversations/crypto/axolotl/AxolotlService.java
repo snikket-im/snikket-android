@@ -218,14 +218,12 @@ public class AxolotlService implements OnAdvancedStreamFeaturesLoaded {
 				deviceIds = store.getSubDeviceSessions(address);
 				putDevicesForJid(address, deviceIds, store);
 			}
-
 		}
 
 		@Override
 		public void put(SignalProtocolAddress address, XmppAxolotlSession value) {
 			super.put(address, value);
 			value.setNotFresh();
-			xmppConnectionService.syncRosterToDisk(account); //TODO why?
 		}
 
 		public void put(XmppAxolotlSession session) {
