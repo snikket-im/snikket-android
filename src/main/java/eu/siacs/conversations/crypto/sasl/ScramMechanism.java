@@ -70,7 +70,7 @@ abstract class ScramMechanism extends SaslMechanism {
 		super(tagWriter, account, rng);
 
 		// This nonce should be different for each authentication attempt.
-		clientNonce = new BigInteger(100, this.rng).toString(32);
+		clientNonce = CryptoHelper.random(100,rng);
 		clientFirstMessageBare = "";
 	}
 
@@ -93,7 +93,12 @@ abstract class ScramMechanism extends SaslMechanism {
 				if (challenge == null) {
 					throw new AuthenticationException("challenge can not be null");
 				}
-				byte[] serverFirstMessage = Base64.decode(challenge, Base64.DEFAULT);
+				byte[] serverFirstMessage;
+				try {
+					serverFirstMessage = Base64.decode(challenge, Base64.DEFAULT);
+				} catch (IllegalArgumentException e) {
+					throw new AuthenticationException("Unable to decode server challenge",e);
+				}
 				final Tokenizer tokenizer = new Tokenizer(serverFirstMessage);
 				String nonce = "";
 				int iterationCount = -1;

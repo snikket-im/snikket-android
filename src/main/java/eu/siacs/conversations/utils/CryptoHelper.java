@@ -1,6 +1,7 @@
 package eu.siacs.conversations.utils;
 
 import android.os.Bundle;
+import android.util.Base64;
 import android.util.Pair;
 
 import org.bouncycastle.asn1.x500.X500Name;
@@ -12,6 +13,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.security.SecureRandom;
 import java.security.cert.CertificateEncodingException;
 import java.security.cert.CertificateParsingException;
 import java.security.cert.X509Certificate;
@@ -95,6 +97,12 @@ public final class CryptoHelper {
 
 	public static String saslPrep(final String s) {
 		return Normalizer.normalize(s, Normalizer.Form.NFKC);
+	}
+
+	public static String random(int length, SecureRandom random) {
+		final byte[] bytes = new byte[length];
+		random.nextBytes(bytes);
+		return Base64.encodeToString(bytes,Base64.NO_PADDING|Base64.NO_WRAP);
 	}
 
 	public static String prettifyFingerprint(String fingerprint) {

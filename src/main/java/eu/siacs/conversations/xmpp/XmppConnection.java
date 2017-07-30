@@ -66,6 +66,7 @@ import eu.siacs.conversations.entities.ServiceDiscoveryResult;
 import eu.siacs.conversations.generator.IqGenerator;
 import eu.siacs.conversations.services.NotificationService;
 import eu.siacs.conversations.services.XmppConnectionService;
+import eu.siacs.conversations.utils.CryptoHelper;
 import eu.siacs.conversations.utils.IP;
 import eu.siacs.conversations.utils.Patterns;
 import eu.siacs.conversations.utils.Resolver;
@@ -1322,7 +1323,7 @@ public class XmppConnection implements Runnable {
 	}
 
 	private String nextRandomId() {
-		return new BigInteger(50, mXmppConnectionService.getRNG()).toString(36);
+		return CryptoHelper.random(50,mXmppConnectionService.getRNG());
 	}
 
 	public String sendIqPacket(final IqPacket packet, final OnIqPacketReceived callback) {

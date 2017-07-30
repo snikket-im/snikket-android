@@ -26,6 +26,10 @@ public abstract class SaslMechanism {
 		public AuthenticationException(final Exception inner) {
 			super(inner);
 		}
+
+		public AuthenticationException(final String message, final Exception exception) {
+			super(message,exception);
+		}
 	}
 
 	public static class InvalidStateException extends AuthenticationException {
