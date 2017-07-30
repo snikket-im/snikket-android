@@ -4,6 +4,8 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.text.SpannableStringBuilder;
 
+import com.vdurmont.emoji.EmojiManager;
+
 import java.net.MalformedURLException;
 import java.net.URL;
 
@@ -500,8 +502,8 @@ public class Message extends AbstractEntity {
 						!this.treatAsDownloadable() &&
 						!message.getBody().startsWith(ME_COMMAND) &&
 						!this.getBody().startsWith(ME_COMMAND) &&
-						!this.bodyIsHeart() &&
-						!message.bodyIsHeart() &&
+						!this.bodyIsOnlyEmojis() &&
+						!message.bodyIsOnlyEmojis() &&
 						((this.axolotlFingerprint == null && message.axolotlFingerprint == null) || this.axolotlFingerprint.equals(message.getFingerprint())) &&
 						UIHelper.sameDay(message.getTimeSent(),this.getTimeSent())
 				);
@@ -666,8 +668,8 @@ public class Message extends AbstractEntity {
 		}
 	}
 
-	public boolean bodyIsHeart() {
-		return body != null && UIHelper.HEARTS.contains(body.trim());
+	public boolean bodyIsOnlyEmojis() {
+		return EmojiManager.isOnlyEmojis(body.trim());
 	}
 
 	public FileParams getFileParams() {

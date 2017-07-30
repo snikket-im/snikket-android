@@ -41,6 +41,9 @@ dependencies {
     compile 'com.makeramen:roundedimageview:2.2.0'
     compile "com.wefika:flowlayout:0.4.1"
     compile 'net.ypresto.androidtranscoder:android-transcoder:0.2.0'
+    compile ('com.vdurmont:emoji-java:3.3.0') {
+        exclude group: 'org.json', module: 'json'
+    }
 }
 
 ext {

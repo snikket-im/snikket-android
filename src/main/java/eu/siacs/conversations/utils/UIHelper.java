@@ -28,12 +28,6 @@ import eu.siacs.conversations.xmpp.jid.Jid;
 
 public class UIHelper {
 
-	private static String BLACK_HEART_SUIT = "\u2665";
-	private static String HEAVY_BLACK_HEART_SUIT = "\u2764";
-	private static String WHITE_HEART_SUIT = "\u2661";
-
-	public static final List<String> HEARTS = Arrays.asList(BLACK_HEART_SUIT,HEAVY_BLACK_HEART_SUIT,WHITE_HEART_SUIT);
-
 	private static final List<String> LOCATION_QUESTIONS = Arrays.asList(
 			"where are you", //en
 			"where are you now", //en
