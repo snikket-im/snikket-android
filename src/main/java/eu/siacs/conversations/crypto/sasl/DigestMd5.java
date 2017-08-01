@@ -2,7 +2,6 @@ package eu.siacs.conversations.crypto.sasl;
 
 import android.util.Base64;
 
-import java.math.BigInteger;
 import java.nio.charset.Charset;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -52,7 +51,7 @@ public class DigestMd5 extends SaslMechanism {
 						+ account.getPassword();
 					final MessageDigest md = MessageDigest.getInstance("MD5");
 					final byte[] y = md.digest(x.getBytes(Charset.defaultCharset()));
-					final String cNonce = new BigInteger(100, rng).toString(32);
+					final String cNonce = CryptoHelper.random(100,rng);
 					final byte[] a1 = CryptoHelper.concatenateByteArrays(y,
 							(":" + nonce + ":" + cNonce).getBytes(Charset.defaultCharset()));
 					final String a2 = "AUTHENTICATE:" + digestUri;
