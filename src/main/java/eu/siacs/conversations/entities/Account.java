@@ -132,7 +132,8 @@ public class Account extends AbstractEntity {
 		POLICY_VIOLATION(true),
 		REGISTRATION_PASSWORD_TOO_WEAK(true),
 		PAYMENT_REQUIRED(true),
-		MISSING_INTERNET_PERMISSION(true);
+		MISSING_INTERNET_PERMISSION(true),
+		NETWORK_IS_UNREACHABLE(false);
 
 		private final boolean isError;
 
@@ -200,6 +201,8 @@ public class Account extends AbstractEntity {
 					return R.string.payment_required;
 				case MISSING_INTERNET_PERMISSION:
 					return R.string.missing_internet_permission;
+				case NETWORK_IS_UNREACHABLE:
+					return R.string.network_is_unreachable;
 				default:
 					return R.string.account_status_unknown;
 			}

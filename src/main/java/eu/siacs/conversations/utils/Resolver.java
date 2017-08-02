@@ -9,6 +9,7 @@ import java.net.Inet4Address;
 import java.net.InetAddress;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 
 import de.measite.minidns.DNSClient;
@@ -23,6 +24,7 @@ import de.measite.minidns.record.CNAME;
 import de.measite.minidns.record.Data;
 import de.measite.minidns.record.InternetAddressRR;
 import de.measite.minidns.record.SRV;
+import de.measite.minidns.util.MultipleIoException;
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.services.XmppConnectionService;
@@ -31,6 +33,8 @@ public class Resolver {
 
     private static final String DIRECT_TLS_SERVICE = "_xmpps-client";
     private static final String STARTTLS_SERICE = "_xmpp-client";
+
+    private static final String NETWORK_IS_UNREACHABLE = "Network is unreachable";
 
     private static XmppConnectionService SERVICE = null;
 
@@ -44,24 +48,44 @@ public class Resolver {
         DNSClient.addDnsServerLookupMechanism(new AndroidUsingLinkProperties(context));
     }
 
-    public static List<Result> resolve(String domain) {
+    public static List<Result> resolve(String domain) throws NetworkIsUnreachableException {
         List<Result> results = new ArrayList<>();
+        HashSet<String> messages = new HashSet<>();
         try {
-            results.addAll(resolveSrv(domain,true));
+            results.addAll(resolveSrv(domain, true));
+        } catch (MultipleIoException e) {
+            messages.addAll(extractMessages(e));
         } catch (Throwable throwable) {
             Log.d(Config.LOGTAG,Resolver.class.getSimpleName()+": error resolving SRV record (direct TLS)",throwable);
         }
         try {
-            results.addAll(resolveSrv(domain,false));
+            results.addAll(resolveSrv(domain, false));
+        } catch (MultipleIoException e) {
+            messages.addAll(extractMessages(e));
         } catch (Throwable throwable) {
             Log.d(Config.LOGTAG,Resolver.class.getSimpleName()+": error resolving SRV record (STARTTLS)",throwable);
         }
         if (results.size() == 0) {
+            if (messages.size() == 1 && messages.contains(NETWORK_IS_UNREACHABLE)) {
+                throw new NetworkIsUnreachableException();
+            }
             results.addAll(resolveNoSrvRecords(DNSName.from(domain),true));
         }
         Collections.sort(results);
         Log.d(Config.LOGTAG,Resolver.class.getSimpleName()+": "+results.toString());
         return results;
+    }
+
+    private static HashSet<String> extractMessages(MultipleIoException e) {
+        HashSet<String> messages = new HashSet<>();
+        for(Exception inner : e.getExceptions()) {
+            if (inner instanceof MultipleIoException) {
+                messages.addAll(extractMessages((MultipleIoException) inner));
+            } else {
+                messages.add(inner.getMessage());
+            }
+        }
+        return messages;
     }
 
     private static List<Result> resolveSrv(String domain, final boolean directTls) throws IOException {
@@ -238,6 +262,9 @@ public class Resolver {
         public static Result createDefault(DNSName hostname) {
             return createDefault(hostname,null);
         }
+    }
+    public static class NetworkIsUnreachableException extends Exception {
+
     }
 
 }
