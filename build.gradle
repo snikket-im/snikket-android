@@ -23,10 +23,11 @@ configurations {
 
 dependencies {
     compile project(':libs:MemorizingTrustManager')
-    playstoreCompile 'com.google.android.gms:play-services-gcm:11.0.2'
+    playstoreCompile 'com.google.android.gms:play-services-gcm:11.0.4'
     compile 'org.sufficientlysecure:openpgp-api:10.0'
     compile 'com.soundcloud.android:android-crop:1.0.1@aar'
     compile 'com.android.support:support-v13:25.3.1'
+    compile 'com.android.support:appcompat-v7:25.3.1'
     compile 'org.bouncycastle:bcprov-jdk15on:1.52'
     compile 'org.bouncycastle:bcmail-jdk15on:1.52'
     compile 'org.jitsi:org.otr4j:0.22'
@@ -38,7 +39,7 @@ dependencies {
     compile 'me.leolin:ShortcutBadger:1.1.17@aar'
     compile 'com.kyleduo.switchbutton:library:1.2.8'
     compile 'org.whispersystems:signal-protocol-java:2.6.2'
-    compile 'com.makeramen:roundedimageview:2.2.0'
+    compile 'com.makeramen:roundedimageview:2.3.0'
     compile "com.wefika:flowlayout:0.4.1"
     compile 'net.ypresto.androidtranscoder:android-transcoder:0.2.0'
     compile ('com.vdurmont:emoji-java:3.3.0') {
@@ -48,13 +49,12 @@ dependencies {
 
 ext {
     travisBuild = System.getenv("TRAVIS") == "true"
-    // allows for -Dpre-dex=false to be set
-    preDexEnabled = "true".equals(System.getProperty("pre-dex", "true"))
+    preDexEnabled = System.getProperty("pre-dex", "true")
 }
 
 android {
     compileSdkVersion 25
-    buildToolsVersion "25.0.3"
+    buildToolsVersion "26.0.1"
 
     defaultConfig {
         minSdkVersion 14
@@ -68,6 +68,7 @@ android {
     dexOptions {
         // Skip pre-dexing when running on Travis CI or when disabled via -Dpre-dex=false.
         preDexLibraries = preDexEnabled && !travisBuild
+        jumboMode true
     }
 
     compileOptions {
