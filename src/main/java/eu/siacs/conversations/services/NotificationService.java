@@ -531,7 +531,7 @@ public class NotificationService {
 
 	private Message getFirstLocationMessage(final Iterable<Message> messages) {
 		for (final Message message : messages) {
-			if (GeoHelper.isGeoUri(message.getBody())) {
+			if (message.isGeoUri()) {
 				return message;
 			}
 		}

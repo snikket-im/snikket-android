@@ -618,7 +618,7 @@ public class ConversationFragment extends Fragment implements EditMessage.Keyboa
 			MenuItem cancelTransmission = menu.findItem(R.id.cancel_transmission);
 			MenuItem deleteFile = menu.findItem(R.id.delete_file);
 			MenuItem showErrorMessage = menu.findItem(R.id.show_error_message);
-			if (!treatAsFile && !GeoHelper.isGeoUri(m.getBody()) && !m.treatAsDownloadable()) {
+			if (!treatAsFile && !m.isGeoUri() && !m.treatAsDownloadable()) {
 				selectText.setVisible(ListSelectionManager.isSupported());
 			}
 			if (m.getEncryption() == Message.ENCRYPTION_DECRYPTION_FAILED) {
@@ -636,7 +636,7 @@ public class ConversationFragment extends Fragment implements EditMessage.Keyboa
 				sendAgain.setVisible(true);
 			}
 			if (m.hasFileOnRemoteHost()
-					|| GeoHelper.isGeoUri(m.getBody())
+					|| m.isGeoUri()
 					|| m.treatAsDownloadable()
 					|| (t != null && t instanceof HttpDownloadConnection)) {
 				copyUrl.setVisible(true);
@@ -713,7 +713,7 @@ public class ConversationFragment extends Fragment implements EditMessage.Keyboa
 	private void shareWith(Message message) {
 		Intent shareIntent = new Intent();
 		shareIntent.setAction(Intent.ACTION_SEND);
-		if (GeoHelper.isGeoUri(message.getBody())) {
+		if (message.isGeoUri()) {
 			shareIntent.putExtra(Intent.EXTRA_TEXT, message.getBody());
 			shareIntent.setType("text/plain");
 		} else if (!message.isFileOrImage()) {
@@ -785,7 +785,7 @@ public class ConversationFragment extends Fragment implements EditMessage.Keyboa
 	private void copyUrl(Message message) {
 		final String url;
 		final int resId;
-		if (GeoHelper.isGeoUri(message.getBody())) {
+		if (message.isGeoUri()) {
 			resId = R.string.location;
 			url = message.getBody();
 		} else if (message.hasFileOnRemoteHost()) {

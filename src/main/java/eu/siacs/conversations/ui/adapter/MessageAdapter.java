@@ -790,7 +790,7 @@ public class MessageAdapter extends ArrayAdapter<Message> implements CopyTextVie
 		} else if (message.getEncryption() == Message.ENCRYPTION_DECRYPTION_FAILED) {
 			displayDecryptionFailed(viewHolder,darkBackground);
 		} else {
-			if (GeoHelper.isGeoUri(message.getBody())) {
+			if (message.isGeoUri()) {
 				displayLocationMessage(viewHolder,message);
 			} else if (message.bodyIsOnlyEmojis()) {
 				displayEmojiMessage(viewHolder, message.getBody().replaceAll("\\s",""));
