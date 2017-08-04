@@ -460,6 +460,7 @@ public class JingleConnection implements Transferable {
 				}
 				this.mFileOutputStream = AbstractConnectionManager.createOutputStream(this.file,message.getEncryption() == Message.ENCRYPTION_AXOLOTL);
 				this.file.setExpectedSize(size);
+				message.resetFileParams();
 				Log.d(Config.LOGTAG, "receiving file: expecting size of " + this.file.getExpectedSize());
 			} else {
 				this.sendCancel();
@@ -504,6 +505,7 @@ public class JingleConnection implements Transferable {
 				cancel();
 				return;
 			}
+			message.resetFileParams();
 			this.mFileInputStream = pair.first;
 			content.setTransportId(this.transportId);
 			content.socks5transport().setChildren(getCandidatesAsElements());

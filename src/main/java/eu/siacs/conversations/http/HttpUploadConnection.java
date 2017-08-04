@@ -118,6 +118,7 @@ public class HttpUploadConnection implements Transferable {
 			return;
 		}
 		this.file.setExpectedSize(pair.second);
+		message.resetFileParams();
 		this.mFileInputStream = pair.first;
 		Jid host = account.getXmppConnection().findDiscoItemByFeature(Namespace.HTTP_UPLOAD);
 		IqPacket request = mXmppConnectionService.getIqGenerator().requestHttpUploadSlot(host,file,mime);
