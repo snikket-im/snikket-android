@@ -1,8 +1,32 @@
-# Conversations
+<h1 align="center">Conversations</h1>
 
-Conversations: the very last word in instant messaging
+<p align="center">Conversations: the very last word in instant messaging</p>
 
-[![Google Play](https://conversations.im/images/en-play-badge.png)](https://play.google.com/store/apps/details?id=eu.siacs.conversations&referrer=utm_source%3Dgithub) [![Amazon App Store](https://images-na.ssl-images-amazon.com/images/G/01/AmazonMobileApps/amazon-apps-store-us-black.png)](http://www.amazon.com/dp/B00WD35AAC/)
+<p align="center">
+    <a href="https://conversations.im/j/conversations@conference.siacs.eu">
+        <img src="https://camo.githubusercontent.com/a839cc0a3d4dac7ec82237381b165dd144365b6d/68747470733a2f2f74696e7975726c2e636f6d2f6a6f696e7468656d7563"
+             alt="chat on our conference room">
+    </a>
+    <a href="https://travis-ci.org/siacs/Conversations">
+        <img src="https://travis-ci.org/siacs/Conversations.svg?branch=development"
+             alt="build status">
+    </a>
+    <a href="https://bountysource.com/teams/siacs">
+        <img src="https://img.shields.io/bountysource/team/siacs/activity.svg"
+             alt="Bountysource">
+    </a>
+</p>
+
+<p align="center">
+    <a href="https://play.google.com/store/apps/details?id=eu.siacs.conversations&amp;referrer=utm_source%3Dgithub">
+       <img src="https://conversations.im/images/en-play-badge.png"
+            alt="Google Play">
+            </a>
+    <a href="http://www.amazon.com/dp/B00WD35AAC/">
+        <img src="https://images-na.ssl-images-amazon.com/images/G/01/AmazonMobileApps/amazon-apps-store-us-black.png"
+             alt="Amazon App Store">
+    </a>
+</p>
 
 ![screenshots](https://raw.githubusercontent.com/siacs/Conversations/master/screenshots.png)
 
