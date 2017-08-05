@@ -36,7 +36,7 @@ public abstract class ConversationsFileObserver {
                 continue;
             }
             for(File file : files) {
-                if (file.isDirectory() && !file.getName().equals(".") && !file.getName().equals("..")) {
+                if (file.isDirectory() && file.getName().charAt(0) != '.') {
                     final String currentPath = file.getAbsolutePath();
                     if (depth(file) <= 8 && !stack.contains(currentPath) && !observing(currentPath)) {
                         stack.push(currentPath);
