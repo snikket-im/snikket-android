@@ -12,8 +12,7 @@
              alt="build status">
     </a>
     <a href="https://bountysource.com/teams/siacs">
-        <img src="https://img.shields.io/bountysource/team/siacs/activity.svg"
-             alt="Bountysource">
+        <img src="https://api.bountysource.com/badge/tracker?tracker_id=519483" alt="Bountysource">
     </a>
 </p>
 
