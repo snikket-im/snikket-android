@@ -113,8 +113,7 @@ public class Resolver {
         }
         List<Result> list = new ArrayList<>();
         try {
-            //TODO fix the DNSName.from(srv.name.toString() workaround once minidns 0.2.2 is out
-            ResolverResult<D> results = resolveWithFallback(DNSName.from(srv.name.toString()),type, authenticated);
+            ResolverResult<D> results = resolveWithFallback(srv.name,type, authenticated);
             for (D record : results.getAnswersOrEmptySet()) {
                 Result resolverResult = Result.fromRecord(srv, directTls);
                 resolverResult.authenticated = results.isAuthenticData() && authenticated;
