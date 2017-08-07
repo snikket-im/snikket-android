@@ -161,15 +161,23 @@ public final class CryptoHelper {
 			}
 		}
 		X500Name x500name = new JcaX509CertificateHolder(certificate).getSubject();
-		if (emails.size() == 0) {
+		if (emails.size() == 0 && x500name.getRDNs(BCStyle.EmailAddress).length > 0) {
 			emails.add(IETFUtils.valueToString(x500name.getRDNs(BCStyle.EmailAddress)[0].getFirst().getValue()));
 		}
-		String name = IETFUtils.valueToString(x500name.getRDNs(BCStyle.CN)[0].getFirst().getValue());
+		String name = x500name.getRDNs(BCStyle.CN).length > 0 ? IETFUtils.valueToString(x500name.getRDNs(BCStyle.CN)[0].getFirst().getValue()) : null;
 		if (emails.size() >= 1) {
 			return new Pair<>(Jid.fromString(emails.get(0)), name);
-		} else {
-			return null;
+		} else if (name != null){
+			try {
+				Jid jid = Jid.fromString(name);
+				if (jid.isBareJid() && !jid.isDomainJid()) {
+					return new Pair<>(jid,null);
+				}
+			} catch (InvalidJidException e) {
+				return null;
+			}
 		}
+		return null;
 	}
 
 	public static Bundle extractCertificateInformation(X509Certificate certificate) {
