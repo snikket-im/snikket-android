@@ -1275,7 +1275,7 @@ public class XmppConnectionService extends Service {
 						if (message.fixCounterpart()) {
 							conversation.startOtrSession(message.getCounterpart().getResourcepart(), true);
 						} else {
-							Log.d(Config.LOGTAG,account.getJid().toBareJid()+": could not fix counterpart for OTR message to contact "+message.getContact().getJid());
+							Log.d(Config.LOGTAG,account.getJid().toBareJid()+": could not fix counterpart for OTR message to contact "+message.getCounterpart());
 							break;
 						}
 					} else {
@@ -1838,6 +1838,10 @@ public class XmppConnectionService extends Service {
 				try {
 					X509Certificate[] chain = KeyChain.getCertificateChain(XmppConnectionService.this, alias);
 					Pair<Jid, String> info = CryptoHelper.extractJidAndName(chain[0]);
+					if (info == null) {
+						callback.informUser(R.string.certificate_does_not_contain_jid);
+						return;
+					}
 					if (findAccountByJid(info.first) == null) {
 						Account account = new Account(info.first, "");
 						account.setPrivateKeyAlias(alias);
