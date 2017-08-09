@@ -456,15 +456,13 @@ public class Conversation extends AbstractEntity implements Blockable, Comparabl
 	}
 
 	public Message getLatestMarkableMessage() {
-		for (int i = this.messages.size() - 1; i >= 0; --i) {
-			if (this.messages.get(i).getStatus() <= Message.STATUS_RECEIVED
-					&& this.messages.get(i).markable) {
-				if (this.messages.get(i).isRead()) {
-					return null;
-				} else {
-					return this.messages.get(i);
+		synchronized (this.messages) {
+			for (int i = this.messages.size() - 1; i >= 0; --i) {
+				final Message message = this.messages.get(i);
+				if (message.getStatus() <= Message.STATUS_RECEIVED && message.markable) {
+					return message.isRead() ? null : message;
 				}
-					}
+			}
 		}
 		return null;
 	}
