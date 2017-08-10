@@ -312,8 +312,17 @@ public class Account extends AbstractEntity {
 
 	public boolean setJid(final Jid next) {
 		final Jid prev = this.jid != null ? this.jid.toBareJid() : null;
+		final boolean changed = prev == null || (next != null && !prev.equals(next.toBareJid()));
+		if (changed) {
+			final AxolotlService oldAxolotlService = this.axolotlService;
+			if (oldAxolotlService != null) {
+				oldAxolotlService.destroy();
+				this.jid = next;
+				this.axolotlService = oldAxolotlService.makeNew();
+			}
+		}
 		this.jid = next;
-		return prev == null || (next != null && !prev.equals(next.toBareJid()));
+		return changed;
 	}
 
 	public Jid getServer() {

@@ -1389,7 +1389,7 @@ public class DatabaseBackend extends SQLiteOpenHelper {
 	}
 
 
-	public void recreateAxolotlDb(SQLiteDatabase db) {
+	private void recreateAxolotlDb(SQLiteDatabase db) {
 		Log.d(Config.LOGTAG, AxolotlService.LOGPREFIX + " : " + ">>> (RE)CREATING AXOLOTL DATABASE <<<");
 		db.execSQL("DROP TABLE IF EXISTS " + SQLiteAxolotlStore.SESSION_TABLENAME);
 		db.execSQL(CREATE_SESSIONS_STATEMENT);

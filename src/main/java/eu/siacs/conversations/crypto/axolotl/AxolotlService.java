@@ -263,6 +263,9 @@ public class AxolotlService implements OnAdvancedStreamFeaturesLoaded {
 	}
 
 	public AxolotlService(Account account, XmppConnectionService connectionService) {
+		if (account == null || connectionService == null) {
+			throw new IllegalArgumentException("account and service cannot be null");
+		}
 		if (Security.getProvider("BC") == null) {
 			Security.addProvider(new BouncyCastleProvider());
 		}
@@ -360,6 +363,16 @@ public class AxolotlService implements OnAdvancedStreamFeaturesLoaded {
 		fetchStatusMap.clear();
 		fetchDeviceIdsMap.clear();
 		publishBundlesIfNeeded(true, wipeOther);
+	}
+
+	public void destroy() {
+		Log.d(Config.LOGTAG,account.getJid().toBareJid()+": destroying old axolotl service. no longer in use");
+		mXmppConnectionService.databaseBackend.wipeAxolotlDb(account);
+	}
+
+	public AxolotlService makeNew() {
+		Log.d(Config.LOGTAG,account.getJid().toBareJid()+": make new axolotl service");
+		return new AxolotlService(this.account,this.mXmppConnectionService);
 	}
 
 	public int getOwnDeviceId() {
