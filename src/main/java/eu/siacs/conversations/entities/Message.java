@@ -670,7 +670,7 @@ public class Message extends AbstractEntity {
 				final URL url = new URL(body);
 				final String ref = url.getRef();
 				final String protocol = url.getProtocol();
-				final boolean encrypted = ref != null && ref.matches("([A-Fa-f0-9]{2}){48}");
+				final boolean encrypted = ref != null && AesGcmURLStreamHandler.IV_KEY.matcher(ref).matches();
 				treatAsDownloadable = (AesGcmURLStreamHandler.PROTOCOL_NAME.equalsIgnoreCase(protocol) && encrypted)
 						|| (("http".equalsIgnoreCase(protocol) || "https".equalsIgnoreCase(protocol)) && (oob || encrypted));
 

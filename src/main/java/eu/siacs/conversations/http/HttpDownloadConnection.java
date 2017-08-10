@@ -92,7 +92,7 @@ public class HttpDownloadConnection implements Transferable {
 			message.setRelativeFilePath(message.getUuid() + "." + extension);
 			this.file = mXmppConnectionService.getFileBackend().getFile(message, false);
 			final String reference = mUrl.getRef();
-			if (reference != null && reference.matches("([A-Fa-f0-9]{2}){48}")) {
+			if (reference != null && AesGcmURLStreamHandler.IV_KEY.matcher(reference).matches()) {
 				this.file.setKeyAndIv(CryptoHelper.hexToBytes(reference));
 			}
 
@@ -373,7 +373,7 @@ public class HttpDownloadConnection implements Transferable {
 			message.setType(Message.TYPE_FILE);
 			final URL url;
 			final String ref = mUrl.getRef();
-			if (ref != null && ref.matches("([A-Fa-f0-9]{2}){48}")) {
+			if (ref != null && AesGcmURLStreamHandler.IV_KEY.matcher(ref).matches()) {
 				url = CryptoHelper.toAesGcmUrl(mUrl);
 			} else {
 				url = mUrl;
