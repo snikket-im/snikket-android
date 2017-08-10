@@ -2,6 +2,7 @@ package eu.siacs.conversations.generator;
 
 import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.entities.Contact;
+import eu.siacs.conversations.entities.MucOptions;
 import eu.siacs.conversations.entities.Presence;
 import eu.siacs.conversations.services.XmppConnectionService;
 import eu.siacs.conversations.xml.Element;
@@ -60,6 +61,14 @@ public class PresenceGenerator extends AbstractGenerator {
 			cap.setAttribute("ver", capHash);
 		}
 		return packet;
+	}
+
+	public PresencePacket leave(final MucOptions mucOptions) {
+		PresencePacket presencePacket = new PresencePacket();
+		presencePacket.setTo(mucOptions.getSelf().getFullJid());
+		presencePacket.setFrom(mucOptions.getAccount().getJid());
+		presencePacket.setAttribute("type", "unavailable");
+		return presencePacket;
 	}
 
 	public PresencePacket sendOfflinePresence(Account account) {
