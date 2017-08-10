@@ -843,7 +843,8 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
 			} else {
 				this.mAccountJid.getEditableText().append(this.mAccount.getJid().toBareJid().toString());
 			}
-			this.mPassword.setText(this.mAccount.getPassword());
+			this.mPassword.getEditableText().clear();
+			this.mPassword.getEditableText().append(this.mAccount.getPassword());
 			this.mHostname.setText("");
 			this.mHostname.getEditableText().append(this.mAccount.getHostname());
 			this.mPort.setText("");
@@ -851,6 +852,11 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
 			this.mNamePort.setVisibility(mShowOptions ? View.VISIBLE : View.GONE);
 
 		}
+
+		final boolean editable = !mAccount.isOptionSet(Account.OPTION_LOGGED_IN_SUCCESSFULLY);
+		this.mAccountJid.setEnabled(editable);
+		this.mAccountJid.setFocusable(editable);
+		this.mAccountJid.setFocusableInTouchMode(editable);
 
 		if (!mInitMode) {
 			this.mAvatar.setVisibility(View.VISIBLE);

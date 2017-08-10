@@ -57,7 +57,8 @@ public class Account extends AbstractEntity {
 	public static final int OPTION_REGISTER = 2;
 	public static final int OPTION_USECOMPRESSION = 3;
 	public static final int OPTION_MAGIC_CREATE = 4;
-	public static final int OPTION_REQURIES_ACCESS_MODE_CHANGE = 5;
+	public static final int OPTION_REQUIRES_ACCESS_MODE_CHANGE = 5;
+	public static final int OPTION_LOGGED_IN_SUCCESSFULLY = 6;
 	public final HashSet<Pair<String, String>> inProgressDiscoFetches = new HashSet<>();
 
 	public boolean httpUploadAvailable(long filesize) {
@@ -295,12 +296,14 @@ public class Account extends AbstractEntity {
 		return ((options & (1 << option)) != 0);
 	}
 
-	public void setOption(final int option, final boolean value) {
+	public boolean setOption(final int option, final boolean value) {
+		final int before = this.options;
 		if (value) {
 			this.options |= 1 << option;
 		} else {
 			this.options &= ~(1 << option);
 		}
+		return before != this.options;
 	}
 
 	public String getUsername() {

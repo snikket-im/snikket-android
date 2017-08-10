@@ -300,6 +300,9 @@ public class XmppConnectionService extends Service {
 					}
 				}
 			}
+			if (account.setOption(Account.OPTION_LOGGED_IN_SUCCESSFULLY,true)) {
+				databaseBackend.updateAccount(account);
+			}
 			account.getRoster().clearPresences();
 			mJingleConnectionManager.cancelInTransmission();
 			fetchRosterFromServer(account);

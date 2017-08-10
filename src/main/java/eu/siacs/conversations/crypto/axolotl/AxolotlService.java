@@ -535,7 +535,7 @@ public class AxolotlService implements OnAdvancedStreamFeaturesLoaded {
 				} else {
 					if (AxolotlService.this.changeAccessMode.compareAndSet(true,false)) {
 						Log.d(Config.LOGTAG,account.getJid().toBareJid()+": done changing access mode");
-						account.setOption(Account.OPTION_REQURIES_ACCESS_MODE_CHANGE,false);
+						account.setOption(Account.OPTION_REQUIRES_ACCESS_MODE_CHANGE,false);
 						mXmppConnectionService.databaseBackend.updateAccount(account);
 					}
 					ownPushPending.set(false);
@@ -591,7 +591,7 @@ public class AxolotlService implements OnAdvancedStreamFeaturesLoaded {
 			Log.d(Config.LOGTAG, getLogprefix(account) + "publishBundlesIfNeeded called, but PEP is broken. Ignoring... ");
 			return;
 		}
-		this.changeAccessMode.set(account.isOptionSet(Account.OPTION_REQURIES_ACCESS_MODE_CHANGE) && account.getXmppConnection().getFeatures().pepPublishOptions());
+		this.changeAccessMode.set(account.isOptionSet(Account.OPTION_REQUIRES_ACCESS_MODE_CHANGE) && account.getXmppConnection().getFeatures().pepPublishOptions());
 		if (this.changeAccessMode.get()) {
 			Log.d(Config.LOGTAG, account.getJid().toBareJid() + ": server gained publish-options capabilities. changing access model");
 		}
