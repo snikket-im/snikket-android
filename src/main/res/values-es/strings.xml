@@ -725,4 +725,5 @@
   <string name="yesterday">Ayer</string>
   <string name="pref_validate_hostname">Validar hostname con DNSSEC</string>
   <string name="pref_validate_hostname_summary">Los certificados del servidor que contienen el hostname validado son considerados verificados</string>
+  <string name="network_is_unreachable">La red es inaccesible</string>
 </resources>

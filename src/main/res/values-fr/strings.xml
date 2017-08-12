@@ -719,8 +719,11 @@
   <string name="account_status_regis_web">Le serveur nécessite une identification sur son site web </string>
   <string name="open_website">Ouvrir le site web</string>
   <string name="application_found_to_open_website">Aucune application trouvée pour afficher le site web</string>
+  <string name="pref_headsup_notifications">Notifications \"pop-up\"</string>
+  <string name="pref_headsup_notifications_summary">Afficher les notifications \"pop-up\"</string>
   <string name="today">Aujourd\'hui</string>
   <string name="yesterday">Hier</string>
   <string name="pref_validate_hostname">Valider le nom de domaine avec DNSSEC</string>
   <string name="pref_validate_hostname_summary">Les certificats serveur qui comportent le nom de domaine validé sont considérés comme validés</string>
+  <string name="network_is_unreachable">Réseau inaccessible</string>
 </resources>

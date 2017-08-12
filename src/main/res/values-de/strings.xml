@@ -725,4 +725,5 @@
   <string name="yesterday">Gestern</string>
   <string name="pref_validate_hostname">Überprüfe den Hostnamen mit DNSSEC</string>
   <string name="pref_validate_hostname_summary">Serverzertifikate, die den überprüften Hostnamen enthalten, werden als verifiziert betrachtet</string>
+  <string name="network_is_unreachable">Netzwerk nicht verfügbar</string>
 </resources>

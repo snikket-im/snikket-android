@@ -722,4 +722,5 @@
   <string name="yesterday">昨日</string>
   <string name="pref_validate_hostname">DNSSEC でホスト名を検証</string>
   <string name="pref_validate_hostname_summary">検証されたホスト名を含むサーバー証明書は検証済みと見なされます</string>
+  <string name="network_is_unreachable">ネットワークが到達できません</string>
 </resources>

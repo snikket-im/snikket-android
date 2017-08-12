@@ -725,4 +725,5 @@
   <string name="yesterday">Atzo</string>
   <string name="pref_validate_hostname">Ostalariaren izena DNSSECekin balioztatu</string>
   <string name="pref_validate_hostname_summary">Ostalariaren izena balioztatuta daukaten zerbitzarien ziurtagiriak egiaztatutzat hartzen dira</string>
+  <string name="network_is_unreachable">Ezin da sarera heldu</string>
 </resources>
