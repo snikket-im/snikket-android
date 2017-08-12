@@ -31,6 +31,7 @@ import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.services.XmppConnectionService;
 import eu.siacs.conversations.services.XmppConnectionService.OnAccountUpdate;
 import eu.siacs.conversations.ui.adapter.AccountAdapter;
+import eu.siacs.conversations.xmpp.XmppConnection;
 import eu.siacs.conversations.xmpp.jid.InvalidJidException;
 import eu.siacs.conversations.xmpp.jid.Jid;
 
@@ -334,6 +335,10 @@ public class ManageAccountActivity extends XmppActivity implements OnAccountUpda
 
 	private void enableAccount(Account account) {
 		account.setOption(Account.OPTION_DISABLED, false);
+		final XmppConnection connection = account.getXmppConnection();
+		if (connection != null) {
+			connection.resetEverything();
+		}
 		if (!xmppConnectionService.updateAccount(account)) {
 			Toast.makeText(this,R.string.unable_to_update_account,Toast.LENGTH_SHORT).show();
 		}
