@@ -375,7 +375,7 @@ public class XmppConnectionService extends Service {
 				reconnectAccount(account, true, false);
 			} else if (account.getStatus() != Account.State.CONNECTING && account.getStatus() != Account.State.NO_INTERNET) {
 				resetSendingToWaiting(account);
-				if (connection != null) {
+				if (connection != null && account.getStatus().isAttemptReconnect()) {
 					final int next = connection.getTimeToNextAttempt();
 					final boolean lowPingTimeoutMode = isInLowPingTimeoutMode(account);
 					if (next <= 0) {
@@ -749,7 +749,7 @@ public class XmppConnectionService extends Service {
 
 	private boolean processAccountState(Account account, boolean interactive, boolean isUiAction, boolean isAccountPushed, HashSet<Account> pingCandidates) {
 		boolean pingNow = false;
-		if (!account.isOptionSet(Account.OPTION_DISABLED)) {
+		if (account.getStatus().isAttemptReconnect()) {
 			if (!hasInternetConnection()) {
 				account.setStatus(Account.State.NO_INTERNET);
 				if (statusListener != null) {

@@ -109,45 +109,55 @@ public class Account extends AbstractEntity {
 	}
 
 	public enum State {
-		DISABLED,
-		OFFLINE,
-		CONNECTING,
-		ONLINE,
-		NO_INTERNET,
-		UNAUTHORIZED(true),
-		SERVER_NOT_FOUND(true),
-		REGISTRATION_FAILED(true),
-		REGISTRATION_WEB(true),
-		REGISTRATION_CONFLICT(true),
-		REGISTRATION_SUCCESSFUL,
-		REGISTRATION_NOT_SUPPORTED(true),
-		TLS_ERROR(true),
-		INCOMPATIBLE_SERVER(true),
-		TOR_NOT_AVAILABLE(true),
-		DOWNGRADE_ATTACK(true),
-		SESSION_FAILURE(true),
-		BIND_FAILURE(true),
-		HOST_UNKNOWN(true),
-		REGISTRATION_PLEASE_WAIT(true),
-		STREAM_ERROR(true),
-		POLICY_VIOLATION(true),
-		REGISTRATION_PASSWORD_TOO_WEAK(true),
-		PAYMENT_REQUIRED(true),
-		MISSING_INTERNET_PERMISSION(true),
+		DISABLED(false,false),
+		OFFLINE(false),
+		CONNECTING(false),
+		ONLINE(false),
+		NO_INTERNET(false),
+		UNAUTHORIZED,
+		SERVER_NOT_FOUND,
+		REGISTRATION_SUCCESSFUL(false),
+		REGISTRATION_FAILED(true,false),
+		REGISTRATION_WEB(true,false),
+		REGISTRATION_CONFLICT(true,false),
+		REGISTRATION_NOT_SUPPORTED(true,false),
+		REGISTRATION_PLEASE_WAIT(true,false),
+		REGISTRATION_PASSWORD_TOO_WEAK(true,false),
+		TLS_ERROR,
+		INCOMPATIBLE_SERVER,
+		TOR_NOT_AVAILABLE,
+		DOWNGRADE_ATTACK,
+		SESSION_FAILURE,
+		BIND_FAILURE,
+		HOST_UNKNOWN,
+		STREAM_ERROR,
+		POLICY_VIOLATION,
+		PAYMENT_REQUIRED,
+		MISSING_INTERNET_PERMISSION(false),
 		NETWORK_IS_UNREACHABLE(false);
 
 		private final boolean isError;
+		private final boolean attemptReconnect;
 
 		public boolean isError() {
 			return this.isError;
 		}
 
+		public boolean isAttemptReconnect() {
+			return this.attemptReconnect;
+		}
+
 		State(final boolean isError) {
+			this(isError,true);
+		}
+
+		State(final boolean isError, final boolean reconnect) {
 			this.isError = isError;
+			this.attemptReconnect = reconnect;
 		}
 
 		State() {
-			this(false);
+			this(true,true);
 		}
 
 		public int getReadableId() {
