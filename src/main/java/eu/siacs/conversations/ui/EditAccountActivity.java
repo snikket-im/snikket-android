@@ -16,6 +16,7 @@ import android.security.KeyChain;
 import android.security.KeyChainAliasCallback;
 import android.support.v4.content.ContextCompat;
 import android.text.Editable;
+import android.text.InputType;
 import android.text.TextWatcher;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -1159,6 +1160,7 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
 				final View view = getLayoutInflater().inflate(R.layout.captcha, null);
 				final ImageView imageView = (ImageView) view.findViewById(R.id.captcha);
 				final EditText input = (EditText) view.findViewById(R.id.input);
+				input.setInputType(InputType.TYPE_CLASS_NUMBER);
 				imageView.setImageBitmap(captcha);
 
 				builder.setTitle(getString(R.string.captcha_required));
@@ -1199,6 +1201,7 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
 				});
 				mCaptchaDialog = builder.create();
 				mCaptchaDialog.show();
+				input.requestFocus();
 			}
 		});
 	}
