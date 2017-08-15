@@ -656,8 +656,14 @@ public class MucOptions {
 				Contact contact = user.getContact();
 				if (contact != null && !contact.getDisplayName().isEmpty()) {
 					builder.append(contact.getDisplayName().split("\\s+")[0]);
-				} else if (user.getName() != null){
-					builder.append(user.getName());
+				} else {
+					final String name = user.getName();
+					final Jid jid = user.getRealJid();
+					if (name != null){
+						builder.append(name.split("\\s+")[0]);
+					} else if (jid != null) {
+						builder.append(jid.getLocalpart());
+					}
 				}
 			}
 			return builder.toString();
