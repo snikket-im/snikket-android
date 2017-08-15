@@ -730,4 +730,5 @@ Emitent</string>
   <string name="pref_validate_hostname">Validează numele domeniului cu ajutorul DNSSEC</string>
   <string name="pref_validate_hostname_summary">Certificatele serverelor care conțin nume de domenii validate sunt considerate verificate</string>
   <string name="network_is_unreachable">Rețeaua nu este accesibilă </string>
+  <string name="certificate_does_not_contain_jid">Certificatul nu conține un ID Jabber</string>
 </resources>
