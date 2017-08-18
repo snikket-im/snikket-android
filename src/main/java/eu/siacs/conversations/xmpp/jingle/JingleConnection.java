@@ -45,6 +45,7 @@ public class JingleConnection implements Transferable {
 	private JingleConnectionManager mJingleConnectionManager;
 	private XmppConnectionService mXmppConnectionService;
 
+	private static final int JINGLE_STATUS_OFFERED = -1;
 	protected static final int JINGLE_STATUS_INITIATED = 0;
 	protected static final int JINGLE_STATUS_ACCEPTED = 1;
 	protected static final int JINGLE_STATUS_FINISHED = 4;
@@ -55,7 +56,7 @@ public class JingleConnection implements Transferable {
 
 	private int ibbBlockSize = 8192;
 
-	private int mJingleStatus = -1;
+	private int mJingleStatus = JINGLE_STATUS_OFFERED;
 	private int mStatus = Transferable.STATUS_UNKNOWN;
 	private Message message;
 	private String sessionId;
@@ -516,8 +517,12 @@ public class JingleConnection implements Transferable {
 				public void onIqPacketReceived(Account account, IqPacket packet) {
 					if (packet.getType() == IqPacket.TYPE.RESULT) {
 						Log.d(Config.LOGTAG,account.getJid().toBareJid()+": other party received offer");
-						mJingleStatus = JINGLE_STATUS_INITIATED;
-						mXmppConnectionService.markMessage(message, Message.STATUS_OFFERED);
+						if (mJingleStatus == JINGLE_STATUS_OFFERED) {
+							mJingleStatus = JINGLE_STATUS_INITIATED;
+							mXmppConnectionService.markMessage(message, Message.STATUS_OFFERED);
+						} else {
+							Log.d(Config.LOGTAG,"received ack for offer when status was "+mJingleStatus);
+						}
 					} else {
 						fail(IqParser.extractErrorMessage(packet));
 					}
@@ -645,8 +650,7 @@ public class JingleConnection implements Transferable {
 			} else if (content.socks5transport().hasChild("candidate-error")) {
 				Log.d(Config.LOGTAG, "received candidate error");
 				this.receivedCandidate = true;
-				if ((mJingleStatus == JINGLE_STATUS_ACCEPTED)
-						&& (this.sentCandidate)) {
+				if (mJingleStatus == JINGLE_STATUS_ACCEPTED && this.sentCandidate) {
 					this.connect();
 				}
 				return true;
@@ -662,12 +666,10 @@ public class JingleConnection implements Transferable {
 					}
 					candidate.flagAsUsedByCounterpart();
 					this.receivedCandidate = true;
-					if ((mJingleStatus == JINGLE_STATUS_ACCEPTED)
-							&& (this.sentCandidate)) {
+					if (mJingleStatus == JINGLE_STATUS_ACCEPTED && this.sentCandidate) {
 						this.connect();
 					} else {
-						Log.d(Config.LOGTAG,
-								"ignoring because file is already in transmission or we haven't sent our candidate yet");
+						Log.d(Config.LOGTAG, "ignoring because file is already in transmission or we haven't sent our candidate yet status="+mJingleStatus+" sentCandidate="+Boolean.toString(sentCandidate));
 					}
 					return true;
 				} else {
@@ -1007,8 +1009,7 @@ public class JingleConnection implements Transferable {
 		JinglePacket packet = bootstrapPacket("transport-info");
 		Content content = new Content(this.contentCreator, this.contentName);
 		content.setTransportId(this.transportId);
-		content.socks5transport().addChild("candidate-used")
-				.setAttribute("cid", cid);
+		content.socks5transport().addChild("candidate-used").setAttribute("cid", cid);
 		packet.setContent(content);
 		this.sentCandidate = true;
 		if ((receivedCandidate) && (mJingleStatus == JINGLE_STATUS_ACCEPTED)) {
@@ -1024,7 +1025,7 @@ public class JingleConnection implements Transferable {
 		content.socks5transport().addChild("candidate-error");
 		packet.setContent(content);
 		this.sentCandidate = true;
-		if ((receivedCandidate) && (mJingleStatus == JINGLE_STATUS_ACCEPTED)) {
+		if (receivedCandidate && mJingleStatus == JINGLE_STATUS_ACCEPTED) {
 			connect();
 		}
 		this.sendJinglePacket(packet);

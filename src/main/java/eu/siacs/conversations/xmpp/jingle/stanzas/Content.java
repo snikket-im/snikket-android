@@ -30,6 +30,7 @@ public class Content extends Element {
 	public Content(String creator, String name) {
 		super("content");
 		this.setAttribute("creator", creator);
+		this.setAttribute("senders", creator);
 		this.setAttribute("name", name);
 	}
 
