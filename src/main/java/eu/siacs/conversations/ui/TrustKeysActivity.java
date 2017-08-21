@@ -228,7 +228,15 @@ public class TrustKeysActivity extends OmemoActivity implements OnKeyStatusUpdat
 				}
 				if (fingerprints.size() == 0) {
 					informNoKeys.setVisibility(View.VISIBLE);
-					informNoKeys.setText(getString(R.string.no_keys_just_confirm,mAccount.getRoster().getContact(jid).getDisplayName()));
+					if (hasNoOtherTrustedKeys(jid)) {
+						if (!mAccount.getRoster().getContact(jid).mutualPresenceSubscription()) {
+							informNoKeys.setText(R.string.error_no_keys_to_trust_presence);
+						} else {
+							informNoKeys.setText(R.string.error_no_keys_to_trust_server_error);
+						}
+					} else {
+						informNoKeys.setText(getString(R.string.no_keys_just_confirm, mAccount.getRoster().getContact(jid).getDisplayName()));
+					}
 				} else {
 					informNoKeys.setVisibility(View.GONE);
 				}
@@ -251,7 +259,11 @@ public class TrustKeysActivity extends OmemoActivity implements OnKeyStatusUpdat
 				keyErrorMessageCard.setVisibility(View.VISIBLE);
 				if (lastFetchReport == AxolotlService.FetchStatus.ERROR
 						|| mAccount.getAxolotlService().fetchMapHasErrors(contactJids)) {
-					keyErrorMessage.setText(R.string.error_no_keys_to_trust_server_error);
+					if (anyWithoutMutualPresenceSubscription(contactJids)) {
+						keyErrorMessage.setText(R.string.error_no_keys_to_trust_presence);
+					} else {
+						keyErrorMessage.setText(R.string.error_no_keys_to_trust_server_error);
+					}
 				} else {
 					keyErrorMessage.setText(R.string.error_no_keys_to_trust);
 				}
@@ -263,6 +275,15 @@ public class TrustKeysActivity extends OmemoActivity implements OnKeyStatusUpdat
 			lockOrUnlockAsNeeded();
 			setDone();
 		}
+	}
+
+	private boolean anyWithoutMutualPresenceSubscription(List<Jid> contactJids){
+		for(Jid jid : contactJids) {
+			if (!mAccount.getRoster().getContact(jid).mutualPresenceSubscription()) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 	private boolean foreignActuallyHasKeys() {
