@@ -377,7 +377,7 @@
   <string name="open_x_file">Deschide %s</string>
   <string name="sending_file">trimit (%1$d%% complet)</string>
   <string name="preparing_file">Pregatire fisier pentru transmisie</string>
-  <string name="x_file_offered_for_download">%s oferit spre descarcare</string>
+  <string name="x_file_offered_for_download">%s - fișier oferit spre descărcare</string>
   <string name="cancel_transmission">Anuleaza transmisiunea</string>
   <string name="file_transmission_failed">transmisie fisier esuata</string>
   <string name="file_deleted">Fisierul a fost sters</string>
@@ -401,6 +401,7 @@
   <string name="clear_other_devices">Curata lista dispozitive</string>
   <string name="clear_other_devices_desc">Sigur vrei sa inlaturi toate celelalte dispozitive din mesajul de anunt OMEMO? Data viitoare cand dispozitivele se vor conecta, se vor anunta din nou, dar se poate ca ele sa nu fi primit mesajele trimise intre timp.</string>
   <string name="error_no_keys_to_trust_server_error">Nu exista chei utilizabile pentru acest contact.\nIncercarea de a descarca o cheie de pe server a esuat. Se poate sa fie o problema cu serverul de contacte.</string>
+  <string name="error_no_keys_to_trust_presence">Nu există chei disponibile ce pot fi folosite pentru acest contact.\nAsigurați-vă că ați activat trimiterea de actualizări de prezență reciproce.</string>
   <string name="error_no_keys_to_trust">Nu exista chei disponibile si utilizabile pentru acest contact. Daca ai sters vreuna din cheile contactului, trebuie sa generezi o alta noua.</string>
   <string name="error_trustkeys_title">Eroare</string>
   <string name="fetching_history_from_server">Descarc istoric de pe server</string>

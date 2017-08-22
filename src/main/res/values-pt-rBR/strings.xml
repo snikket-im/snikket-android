@@ -401,6 +401,7 @@
   <string name="clear_other_devices">Remover dispositivos</string>
   <string name="clear_other_devices_desc">Deseja realmente remover todos os outros dispositivos dos anúncios OMEMO? Na próxima vez que seus dispositivos conectarem eles se reanunciarão, entretanto, eles podem não receber mensagens nesse intervalo de tempo.</string>
   <string name="error_no_keys_to_trust_server_error">Não existe nenhuma chave utilizável para esse contato.\nNão foi possível obter nenhuma chave nova do servidor. Pode haver alguma coisa errada com o seu servidor de contatos.</string>
+  <string name="error_no_keys_to_trust_presence">Não existem chaves em condições de uso para esse contato.\nCertifique-se de que existem requisições de presença mútuas.</string>
   <string name="error_no_keys_to_trust">Não existe nenhuma chave utilizável para esse contato. Caso você tenha expurgado alguma chave dele, ele terá que gerar uma nova.</string>
   <string name="error_trustkeys_title">Erro</string>
   <string name="fetching_history_from_server">Obtendo histórico do servidor</string>
@@ -726,4 +727,5 @@
   <string name="pref_validate_hostname">Validar o nome do host com o DNSSEC</string>
   <string name="pref_validate_hostname_summary">Certificados do servidor que contenham o nome de host validade são considerados verificados</string>
   <string name="network_is_unreachable">A rede está fora de alcance</string>
+  <string name="certificate_does_not_contain_jid">O certificado não contém uma ID Jabber</string>
 </resources>

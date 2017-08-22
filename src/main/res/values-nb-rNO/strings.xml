@@ -401,6 +401,7 @@
   <string name="clear_other_devices">Rens enheter</string>
   <string name="clear_other_devices_desc">Bekreft rensinga av alla andre enheter fra OMEMO-kunngjøringen. Neste gang dine enheter kobler til, vil de tilkjennegi seg på ny, men det kan hende de ikke mottar meldinger sendt i mellomtiden.</string>
   <string name="error_no_keys_to_trust_server_error">Ingen brukbare nøkler tilgjengelige for denne kontakten.\nInnhenting av nye nøkler fra tjeneren var ikke vellykket. Kanskje det er noe galt med tjeneren kontakten din bruker?</string>
+  <string name="error_no_keys_to_trust_presence">Det er ingen brukvare knapper tilgjengelig for denne kontakten.\nForsikre deg om at dere begge abonnerer på hverandres tilstedeværelse.</string>
   <string name="error_no_keys_to_trust">Ingen brukbare nøkler tilgjengelige for denne kontakten. Hvis du har tilintetgjort noen av nøklene deres, må de generere nye.</string>
   <string name="error_trustkeys_title">Feil</string>
   <string name="fetching_history_from_server">Henter inn historikk fra tjener</string>
@@ -723,4 +724,8 @@
   <string name="pref_headsup_notifications_summary">Vis oppsprettsmerknader</string>
   <string name="today">I dag</string>
   <string name="yesterday">I går</string>
+  <string name="pref_validate_hostname">Gyldig vertsnavn med DNSSEC</string>
+  <string name="pref_validate_hostname_summary">Tjenersertifikat som inneholder gyldige vertsnavn anses som bekreftet</string>
+  <string name="network_is_unreachable">Nettverket kan ikke nås</string>
+  <string name="certificate_does_not_contain_jid">Tjenersertifikatet inneholder ikke en Jabber-ID</string>
 </resources>

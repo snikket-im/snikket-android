@@ -178,15 +178,15 @@
   <string name="mgmt_account_are_you_sure">Biztos vagy ebben?</string>
   <string name="mgmt_account_delete_confirm_text">Ha törli fiókját, az egész beszélgetési előzménye elvész</string>
   <string name="attach_record_voice">Hang felvétele</string>
-  <string name="account_settings_jabber_id">Jabber ID</string>
-  <string name="block_jabber_id">Jabber ID blokkolása</string>
+  <string name="account_settings_jabber_id">Jabber azonosító</string>
+  <string name="block_jabber_id">Jabber azonosító blokkolása</string>
   <string name="account_settings_password">Jelszó</string>
   <string name="account_settings_example_jabber_id">felhasznalo@peldaoldal.com</string>
   <string name="account_settings_confirm_password">Erősítsd meg a jelszót</string>
   <string name="password">Jelszó</string>
   <string name="confirm_password">Erősítsd meg a jelszót</string>
   <string name="passwords_do_not_match">Jelszók nem egyeznek</string>
-  <string name="invalid_jid">Nem érvényes Jabber ID</string>
+  <string name="invalid_jid">Nem érvényes Jabber azonosító</string>
   <string name="error_out_of_memory">Nincs elég memória. Képfájl túl nagy</string>
   <string name="add_phone_book_text">Szeretnéd %s nevű személyt hozzáadni a névjegyzékhez?</string>
   <string name="contact_status_online">elérhető</string>
@@ -601,8 +601,8 @@
   <string name="no_application_to_share_uri">Nem találtunk URI-t használó alkalmazást</string>
   <string name="share_uri_with">Megosztás URI-ként</string>
   <string name="welcome_text">Az XMPP egy szolgáltató független protokoll. Ezt az ügyfél programot bármelyik XMPP szerverhez használhatja.\nDe a könnyebbség kedvéért létrehozhat egy fiókot a conversations.im¹ szolgáltatón is; ami kifejezetten a Conversations programmal való használatra lett tervezve.</string>
-  <string name="magic_create_text">Végigvezetjük a fiók létrehozás folyamatán a conversations.im-en.¹ \ nHa a conversations.im-et választja szolgáltatójának, akkor képes lesz kommunikálni a más szolgáltatóknál lévő felhasználókkal, ha megadja nekik a teljes Jabber ID-jét.</string>
-  <string name="your_full_jid_will_be">A teljes Jabber ID-d ez lesz: %s</string>
+  <string name="magic_create_text">Végigvezetjük a fiók létrehozás folyamatán a conversations.im-en.¹ \ nHa a conversations.im-et választja szolgáltatójának, akkor képes lesz kommunikálni a más szolgáltatóknál lévő felhasználókkal, ha megadja nekik a teljes Jabber azonosítóját.</string>
+  <string name="your_full_jid_will_be">A teljes Jabber azonosítód ez lesz: %s</string>
   <string name="create_account">Fiók létrehozása</string>
   <string name="use_own_provider">Saját szolgáltató használata</string>
   <string name="pick_your_username">Válassz felhasználónevet</string>
@@ -725,4 +725,6 @@
   <string name="yesterday">Tegnap</string>
   <string name="pref_validate_hostname">Gazdanév validálása DNSSEC-el</string>
   <string name="pref_validate_hostname_summary">A hitelesített gazdanevet tartalmazó kiszolgálói tanúsítványok hitelesek</string>
+  <string name="network_is_unreachable">A hálózat elérhetetlen</string>
+  <string name="certificate_does_not_contain_jid">A tanúsítvány nem tartalmaz Jabber azonosítót</string>
 </resources>
