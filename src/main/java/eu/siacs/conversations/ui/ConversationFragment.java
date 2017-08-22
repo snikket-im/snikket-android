@@ -312,17 +312,11 @@ public class ConversationFragment extends Fragment implements EditMessage.Keyboa
 					return false;
 				}
 			}
-
-			// send the image
-			activity.attachImageToConversation(inputContentInfo.getContentUri());
-
-			// TODO: revoke permissions?
-			// since uploading an image is async its tough to wire a callback to when
-			// the image has finished uploading.
-			// According to the docs: "calling IC#releasePermission() is just to be a
-			// good citizen. Even if we failed to call that method, the system would eventually revoke
-			// the permission sometime after inputContentInfo object gets garbage-collected."
-			// See: https://developer.android.com/samples/CommitContentSampleApp/src/com.example.android.commitcontent.app/MainActivity.html#l164
+			if (activity.hasStoragePermission(ConversationActivity.REQUEST_ADD_EDITOR_CONTENT)) {
+				activity.attachImageToConversation(inputContentInfo.getContentUri());
+			} else {
+				activity.mPendingEditorContent = inputContentInfo.getContentUri();
+			}
 			return true;
 		}
 	};
@@ -455,7 +449,6 @@ public class ConversationFragment extends Fragment implements EditMessage.Keyboa
 		final View view = inflater.inflate(R.layout.fragment_conversation, container, false);
 		view.setOnClickListener(null);
 
-		String[] allImagesMimeType = {"image/*"};
 		mEditMessage = (EditMessage) view.findViewById(R.id.textinput);
 		mEditMessage.setOnClickListener(new OnClickListener() {
 
@@ -466,8 +459,9 @@ public class ConversationFragment extends Fragment implements EditMessage.Keyboa
 				}
 			}
 		});
+
 		mEditMessage.setOnEditorActionListener(mEditorActionListener);
-		mEditMessage.setRichContentListener(allImagesMimeType, mEditorContentListener);
+		mEditMessage.setRichContentListener(new String[]{"image/*"}, mEditorContentListener);
 
 		mSendButton = (ImageButton) view.findViewById(R.id.textSendButton);
 		mSendButton.setOnClickListener(this.mSendButtonListener);
