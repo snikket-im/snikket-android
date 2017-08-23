@@ -3,6 +3,7 @@ package eu.siacs.conversations.entities;
 import android.annotation.SuppressLint;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -19,6 +20,8 @@ import eu.siacs.conversations.xmpp.pep.Avatar;
 
 @SuppressLint("DefaultLocale")
 public class MucOptions {
+
+	private static List<String> LOCALPART_BLACKLIST = Arrays.asList("xmpp","jabber");
 
 	private boolean mAutoPushConfiguration = true;
 
@@ -594,7 +597,7 @@ public class MucOptions {
 		}
 	}
 
-	public String getProposedNick() {
+	private String getProposedNick() {
 		if (conversation.getBookmark() != null
 				&& conversation.getBookmark().getNick() != null
 				&& !conversation.getBookmark().getNick().trim().isEmpty()) {
@@ -602,7 +605,14 @@ public class MucOptions {
 		} else if (!conversation.getJid().isBareJid()) {
 			return conversation.getJid().getResourcepart();
 		} else {
-			return account.getUsername();
+			Jid jid = account.getJid();
+			if (LOCALPART_BLACKLIST.contains(jid.getLocalpart())) {
+				final String domain = jid.getDomainpart();
+				final int index = domain.lastIndexOf('.');
+				return index > 1 ? domain.substring(0,index) : domain;
+			} else {
+				return jid.getLocalpart();
+			}
 		}
 	}
 
