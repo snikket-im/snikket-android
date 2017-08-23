@@ -187,7 +187,9 @@ public class PresenceParser extends AbstractParser implements
 		final Contact contact = account.getRoster().getContact(from);
 		if (type == null) {
 			final String resource = from.isBareJid() ? "" : from.getResourcepart();
-			contact.setPresenceName(packet.findChildContent("nick", "http://jabber.org/protocol/nick"));
+			if (contact.setPresenceName(packet.findChildContent("nick", Namespace.NICK))) {
+				mXmppConnectionService.getAvatarService().clear(contact);
+			}
 			Avatar avatar = Avatar.parsePresence(packet.findChild("x", "vcard-temp:x:update"));
 			if (avatar != null && (!contact.isSelf() || account.getAvatar() == null)) {
 				avatar.owner = from.toBareJid();

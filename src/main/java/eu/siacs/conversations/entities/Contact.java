@@ -256,13 +256,15 @@ public class Contact implements ListItem, Blockable {
 	}
 
 	public boolean setSystemName(String systemName) {
-		String old = this.systemName;
+		final String old = getDisplayName();
 		this.systemName = systemName;
-		return (old == null && systemName != null) || (old != null && !old.equals(systemName));
+		return !old.equals(getDisplayName());
 	}
 
-	public void setPresenceName(String presenceName) {
+	public boolean setPresenceName(String presenceName) {
+		final String old = getDisplayName();
 		this.presenceName = presenceName;
+		return !old.equals(getDisplayName());
 	}
 
 	public Uri getSystemAccount() {

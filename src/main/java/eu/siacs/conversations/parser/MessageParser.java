@@ -280,12 +280,13 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
 				}
 			}
 		} else if ("http://jabber.org/protocol/nick".equals(node)) {
-			Element i = items.findChild("item");
-			Element nick = i == null ? null : i.findChild("nick", "http://jabber.org/protocol/nick");
-			if (nick != null && nick.getContent() != null) {
+			final Element i = items.findChild("item");
+			final String nick = i == null ? null : i.findChildContent("nick", Namespace.NICK);
+			if (nick != null) {
 				Contact contact = account.getRoster().getContact(from);
-				contact.setPresenceName(nick.getContent());
-				mXmppConnectionService.getAvatarService().clear(account);
+				if (contact.setPresenceName(nick)) {
+					mXmppConnectionService.getAvatarService().clear(contact);
+				}
 				mXmppConnectionService.updateConversationUi();
 				mXmppConnectionService.updateAccountUi();
 			}
@@ -721,10 +722,12 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
 			parseEvent(event, original.getFrom(), account);
 		}
 
-		String nick = packet.findChildContent("nick", "http://jabber.org/protocol/nick");
+		final String nick = packet.findChildContent("nick", Namespace.NICK);
 		if (nick != null) {
 			Contact contact = account.getRoster().getContact(from);
-			contact.setPresenceName(nick);
+			if (contact.setPresenceName(nick)) {
+				mXmppConnectionService.getAvatarService().clear(contact);
+			}
 		}
 	}
 
