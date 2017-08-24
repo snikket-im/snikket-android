@@ -213,6 +213,12 @@ public class TrustKeysActivity extends OmemoActivity implements OnKeyStatusUpdat
 				final LinearLayout keysContainer = (LinearLayout) layout.findViewById(R.id.foreign_keys_details);
 				final TextView informNoKeys = (TextView) layout.findViewById(R.id.no_keys_to_accept);
 				header.setText(jid.toString());
+				header.setOnClickListener(new OnClickListener() {
+					@Override
+					public void onClick(View v) {
+						switchToContactDetails(mAccount.getRoster().getContact(jid));
+					}
+				});
 				final Map<String, Boolean> fingerprints = entry.getValue();
 				for (final String fingerprint : fingerprints.keySet()) {
 					addFingerprintRowWithListeners(keysContainer, mAccount, fingerprint, false,
