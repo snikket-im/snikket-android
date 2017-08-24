@@ -1,5 +1,8 @@
 # Changelog
 
+### Version 1.20.1
+* fixed OTR encrypted file transfer
+
 ### Version 1.20.0
 * presence subscription no longer required for OMEMO on compatible servers
 * display emoji-only messages slightly larger
