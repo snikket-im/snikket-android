@@ -230,7 +230,6 @@
   <string name="omemo_fingerprint_x509">v\\OMEMO ujjlenyomat</string>
   <string name="omemo_fingerprint_selected_message">Az üzenet OMEMO ujjlenyomata</string>
   <string name="omemo_fingerprint_x509_selected_message">v\\OMEMO ujjlenyomata az üzenetnek</string>
-  <string name="this_device_omemo_fingerprint">Saját OMEMO ujjlenyomat</string>
   <string name="other_devices">Más eszközök</string>
   <string name="trust_omemo_fingerprints">OMEMO ujjlenyomatokban megbízik</string>
   <string name="fetching_keys">Kulcsok beszerzése...</string>

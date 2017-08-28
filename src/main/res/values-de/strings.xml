@@ -230,7 +230,6 @@
   <string name="omemo_fingerprint_x509">v\\OMEMO-Fingerabdruck</string>
   <string name="omemo_fingerprint_selected_message">OMEMO-Fingerabdruck der Nachricht</string>
   <string name="omemo_fingerprint_x509_selected_message">v\\OMEMO-Fingerabdruck der Nachricht</string>
-  <string name="this_device_omemo_fingerprint">Eigener OMEMO-Fingerabdruck</string>
   <string name="other_devices">Andere Geräte</string>
   <string name="trust_omemo_fingerprints">OMEMO-Fingerabdruck vertrauen</string>
   <string name="fetching_keys">Schlüssel werden abgerufen …</string>

@@ -230,7 +230,6 @@
   <string name="omemo_fingerprint_x509">v\\OMEMO impronta</string>
   <string name="omemo_fingerprint_selected_message">Impronta OMEMO del messaggio</string>
   <string name="omemo_fingerprint_x509_selected_message">Impronta v\\OMEMO del messaggio</string>
-  <string name="this_device_omemo_fingerprint">Propria impronta OMEMO</string>
   <string name="other_devices">Altri dispositivi</string>
   <string name="trust_omemo_fingerprints">Fidati delle impronte OMEMO</string>
   <string name="fetching_keys">Ricezione chiavi...</string>

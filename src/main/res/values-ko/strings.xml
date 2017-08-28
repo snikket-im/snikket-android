@@ -224,7 +224,6 @@
   <string name="omemo_fingerprint_x509">v\\OMEMO 핑거프린트</string>
   <string name="omemo_fingerprint_selected_message">메세지의 OMEMO 핑거프린트</string>
   <string name="omemo_fingerprint_x509_selected_message">메세지의 v\\OMEMO 핑거프린트</string>
-  <string name="this_device_omemo_fingerprint">OMEMO 핑거프린트 소유</string>
   <string name="other_devices">다른 기기들</string>
   <string name="trust_omemo_fingerprints">OMEMO 핑거프린트 신뢰</string>
   <string name="fetching_keys">키 가져오는 중...</string>

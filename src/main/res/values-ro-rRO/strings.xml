@@ -230,7 +230,6 @@
   <string name="omemo_fingerprint_x509">Amprenta v\\OMEMO</string>
   <string name="omemo_fingerprint_selected_message">Amprenta OMEMO a mesajului</string>
   <string name="omemo_fingerprint_x509_selected_message">Amprenta v\\OMEMO a mesajului</string>
-  <string name="this_device_omemo_fingerprint">Amprenta OMEMO proprie</string>
   <string name="other_devices">Alte dispozitive</string>
   <string name="trust_omemo_fingerprints">Amprente OMEMO de incredere</string>
   <string name="fetching_keys">Se preiau cheile...</string>

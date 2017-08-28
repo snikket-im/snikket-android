@@ -230,7 +230,6 @@
   <string name="omemo_fingerprint_x509">Відбиток v\\OMEMO</string>
   <string name="omemo_fingerprint_selected_message">Відбиток OMEMO повідомлення</string>
   <string name="omemo_fingerprint_x509_selected_message">Відбиток v\\OMEMO повідомлення</string>
-  <string name="this_device_omemo_fingerprint">Власний відбиток OMEMO</string>
   <string name="other_devices">Інші пристрої</string>
   <string name="trust_omemo_fingerprints">Довіряти відбиткам OMEMO</string>
   <string name="fetching_keys">Отримую ключі…</string>

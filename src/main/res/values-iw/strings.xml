@@ -193,7 +193,6 @@
   <string name="otr_fingerprint">טביעת אצבע של OTR</string>
   <string name="omemo_fingerprint">טביעת אצבע של OMEMO</string>
   <string name="omemo_fingerprint_selected_message">טביעת אצבע OMEMO של ההודעה</string>
-  <string name="this_device_omemo_fingerprint">טביעת אצבע OMEMO שלי</string>
   <string name="other_devices">מכשירים אחרים</string>
   <string name="trust_omemo_fingerprints">סמוך על טביעות אצבע OMEMO</string>
   <string name="done">בוצע</string>

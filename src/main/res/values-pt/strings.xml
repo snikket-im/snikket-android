@@ -214,7 +214,6 @@
   <string name="omemo_fingerprint_x509">Impressão digital v\\OMEMO</string>
   <string name="omemo_fingerprint_selected_message">Impressão digital OMEMO da mensagem</string>
   <string name="omemo_fingerprint_x509_selected_message">Impressão digital v\\OMEMO da mensagem</string>
-  <string name="this_device_omemo_fingerprint">Impressão digital OMEMO própria</string>
   <string name="other_devices">Outros dispositivos</string>
   <string name="trust_omemo_fingerprints">Confiar nas impressões digitais OMEMO</string>
   <string name="fetching_keys">Obtendo as chaves...</string>

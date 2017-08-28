@@ -229,7 +229,6 @@
   <string name="omemo_fingerprint_x509">v\\OMEMO 指紋</string>
   <string name="omemo_fingerprint_selected_message">消息的 OMEMO 指紋</string>
   <string name="omemo_fingerprint_x509_selected_message">消息的 OMEMO 指紋</string>
-  <string name="this_device_omemo_fingerprint">自己的 OMEMO 指紋</string>
   <string name="other_devices">其他設備</string>
   <string name="trust_omemo_fingerprints">信任的 OMEMO 指紋</string>
   <string name="fetching_keys">獲取金鑰中</string>

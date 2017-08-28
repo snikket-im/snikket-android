@@ -229,7 +229,6 @@
   <string name="omemo_fingerprint_x509">v\\OMEMO-fingeravtryck</string>
   <string name="omemo_fingerprint_selected_message">Meddelandets OMEMO-fingeravtryck</string>
   <string name="omemo_fingerprint_x509_selected_message">Meddelandets v\\OMEMO-fingeravtryck</string>
-  <string name="this_device_omemo_fingerprint">Eget OMEMO-fingeravtryck</string>
   <string name="other_devices">Andra enheter</string>
   <string name="trust_omemo_fingerprints">Lita på OMEMO-fingeravtryck</string>
   <string name="fetching_keys">Hämtar nycklar...</string>

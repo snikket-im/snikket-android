@@ -168,12 +168,14 @@
   <string name="mgmt_account_disable">Временно отключить</string>
   <string name="mgmt_account_publish_avatar">Разместить аватар</string>
   <string name="mgmt_account_publish_pgp">Анонсировать OpenPGP ключ</string>
+  <string name="unpublish_pgp">Удалить открытый OpenPGP ключ</string>
   <string name="openpgp_has_been_published">Открытый ключ OpenPGP был опубликован.</string>
   <string name="republish_pgp_keys">Не забудьте повторно анонсировать свои OpenPGP ключи!</string>
   <string name="mgmt_account_enable">Включить аккаунт</string>
   <string name="mgmt_account_are_you_sure">Вы уверены?</string>
   <string name="attach_record_voice">Запись голоса</string>
   <string name="account_settings_jabber_id">Jabber ID</string>
+  <string name="block_jabber_id">Заблокировать Jabber ID</string>
   <string name="account_settings_password">Пароль</string>
   <string name="account_settings_example_jabber_id">username@example.com</string>
   <string name="account_settings_confirm_password">Подтвердите пароль</string>
@@ -224,7 +226,6 @@
   <string name="omemo_fingerprint_x509">v\\OMEMO отпечаток</string>
   <string name="omemo_fingerprint_selected_message">OMEMO отпечаток сообщения</string>
   <string name="omemo_fingerprint_x509_selected_message">v\\OMEMO отпечаток сообщения</string>
-  <string name="this_device_omemo_fingerprint">Собственный OMEMO отпечаток</string>
   <string name="other_devices">Другие устройства</string>
   <string name="trust_omemo_fingerprints">Доверенные отпечатки OMEMO</string>
   <string name="fetching_keys">Получение ключей…</string>
@@ -329,6 +330,7 @@
   <string name="check_x_filesize_on_host">Проверить размер %1$s на %2$s</string>
   <string name="message_options">Опции сообщения</string>
   <string name="select_text">Выбрать текст</string>
+  <string name="quote">Цитировать</string>
   <string name="copy_original_url">Копировать адрес ссылки</string>
   <string name="send_again">Отправить ещё раз</string>
   <string name="file_url">URL файла</string>
@@ -466,6 +468,7 @@
   <string name="disable_account">Отключить аккаунт</string>
   <string name="contact_is_typing">%s печатает…</string>
   <string name="contact_has_stopped_typing">%s прекратил набор</string>
+  <string name="contacts_are_typing">%s набирает...</string>
   <string name="pref_chat_states">Оповещения о наборе</string>
   <string name="pref_chat_states_summary">Позволяет вашим контактам видеть когда вы пишете им новое сообщение</string>
   <string name="send_location">Отправить местоположение</string>
@@ -678,4 +681,24 @@
   <string name="blindly_trusted_omemo_keys">Слепо доверенные OMEMO ключи</string>
   <string name="not_trusted">Недоверенный</string>
   <string name="invalid_barcode">Некорректный 2D штрихкод</string>
+  <string name="pref_clean_cache">Очистить кэш</string>
+  <string name="pref_clean_private_storage">Очистить приватное хранилище.</string>
+  <string name="verify_omemo_keys">Проверить OMEMO ключ</string>
+  <string name="show_inactive_devices">Показать неактивные устройста</string>
+  <string name="hide_inactive_devices">Спрятать неактивные устройства</string>
+  <string name="timeout_24_hours">24 часа</string>
+  <string name="timeout_7_days">7 дней</string>
+  <string name="timeout_30_days">30 дней</string>
+  <string name="timeout_6_months">6 месяцев</string>
+  <string name="pref_automatically_delete_messages">Автоматическое удаление сообщений</string>
+  <string name="transcoding_video_progress">Сжатие видео (%s %% завершено)</string>
+  <string name="contact_blocked_past_tense">Контакт заблокирован</string>
+  <string name="block_entire_domain">Заблокировать весь домен</string>
+  <string name="account_status_regis_web">Сервер требует регистрации на сайте</string>
+  <string name="open_website">Открыть сайт</string>
+  <string name="today">Сегодня</string>
+  <string name="yesterday">Вчера</string>
+  <string name="pref_validate_hostname">Проверить имя сервера с помощью DNSSEC</string>
+  <string name="network_is_unreachable">Сеть недоступна</string>
+  <string name="certificate_does_not_contain_jid">Сертификат не содержит Jabber ID</string>
 </resources>

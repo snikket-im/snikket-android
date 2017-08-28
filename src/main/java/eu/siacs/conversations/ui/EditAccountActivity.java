@@ -991,8 +991,10 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
 				this.mAxolotlFingerprintBox.setVisibility(View.VISIBLE);
 				if (ownAxolotlFingerprint.equals(messageFingerprint)) {
 					this.mOwnFingerprintDesc.setTextColor(ContextCompat.getColor(this, R.color.accent));
+					this.mOwnFingerprintDesc.setText(R.string.omemo_fingerprint_selected_message);
 				} else {
 					this.mOwnFingerprintDesc.setTextColor(getSecondaryTextColor());
+					this.mOwnFingerprintDesc.setText(R.string.omemo_fingerprint);
 				}
 				this.mAxolotlFingerprint.setText(CryptoHelper.prettifyFingerprint(ownAxolotlFingerprint.substring(2)));
 				this.mAxolotlFingerprintToClipboardButton

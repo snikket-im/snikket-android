@@ -190,7 +190,6 @@
   <string name="otr_fingerprint">OTR identifikátor</string>
   <string name="omemo_fingerprint">OMEMO identifikátor</string>
   <string name="omemo_fingerprint_selected_message">OMEMO identifkátor správy</string>
-  <string name="this_device_omemo_fingerprint">Vlastný OMEMO identifikátor</string>
   <string name="other_devices">Ostatné zariadenia</string>
   <string name="trust_omemo_fingerprints">Dôverovať OMEMO identifikátoru</string>
   <string name="done">Dokončený</string>

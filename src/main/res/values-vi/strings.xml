@@ -224,7 +224,6 @@
   <string name="omemo_fingerprint_x509">Dấu vân tay v\\OMEMO</string>
   <string name="omemo_fingerprint_selected_message">Dấu vân tay OMEMO của tin nhắn</string>
   <string name="omemo_fingerprint_x509_selected_message">Dấu vân tay v\\OMEMO của tin nhắn</string>
-  <string name="this_device_omemo_fingerprint">Dấu vân tay OMEMO thiết bị</string>
   <string name="other_devices">Các thiết bị khác</string>
   <string name="trust_omemo_fingerprints">Tin tưởng các dấu vân tay OMEMO</string>
   <string name="fetching_keys">Đang nhận khoá...</string>

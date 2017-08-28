@@ -226,7 +226,6 @@
   <string name="omemo_fingerprint_x509">v\\ОМЕМО отисак</string>
   <string name="omemo_fingerprint_selected_message">ОМЕМО отисак поруке</string>
   <string name="omemo_fingerprint_x509_selected_message">v\\ОМЕМО отисак поруке</string>
-  <string name="this_device_omemo_fingerprint">Сопствени ОМЕМО отисак</string>
   <string name="other_devices">Остали уређаји</string>
   <string name="trust_omemo_fingerprints">Поуздај се у ОМЕМО отиске</string>
   <string name="fetching_keys">Добављам кључеве…</string>

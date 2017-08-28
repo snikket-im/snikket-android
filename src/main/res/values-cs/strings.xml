@@ -222,7 +222,6 @@
   <string name="omemo_fingerprint_x509">v\\OMEMO otisk</string>
   <string name="omemo_fingerprint_selected_message">OMEMO otisk zprávy</string>
   <string name="omemo_fingerprint_x509_selected_message">v\\OMEMO otisk zprávy</string>
-  <string name="this_device_omemo_fingerprint">Můj OMEMO otisk</string>
   <string name="other_devices">Ostatní přístroje</string>
   <string name="trust_omemo_fingerprints">Věřit OMEMO otiskům</string>
   <string name="fetching_keys">Získávání klíčů...</string>

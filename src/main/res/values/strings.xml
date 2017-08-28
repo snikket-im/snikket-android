@@ -231,7 +231,6 @@
 	<string name="omemo_fingerprint_x509">v\\OMEMO fingerprint</string>
 	<string name="omemo_fingerprint_selected_message">OMEMO fingerprint of message</string>
 	<string name="omemo_fingerprint_x509_selected_message">v\\OMEMO fingerprint of message</string>
-	<string name="this_device_omemo_fingerprint">Own OMEMO fingerprint</string>
 	<string name="other_devices">Other devices</string>
 	<string name="trust_omemo_fingerprints">Trust OMEMO Fingerprints</string>
 	<string name="fetching_keys">Fetching keys…</string>

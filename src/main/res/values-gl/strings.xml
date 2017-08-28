@@ -223,7 +223,6 @@
   <string name="omemo_fingerprint_x509">v\\pegada OMEMO </string>
   <string name="omemo_fingerprint_selected_message">Pegada OMEMO da mensaxe</string>
   <string name="omemo_fingerprint_x509_selected_message">v\\Pegada OMEMO da mensaxe</string>
-  <string name="this_device_omemo_fingerprint">Pegada OMEMO propia</string>
   <string name="other_devices">Outros dispositivos</string>
   <string name="trust_omemo_fingerprints">Confiar en pegadas OMEMO</string>
   <string name="fetching_keys">Obtendo chaves...</string>

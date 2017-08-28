@@ -230,7 +230,6 @@
   <string name="omemo_fingerprint_x509">Huella digital v\\OMEMO</string>
   <string name="omemo_fingerprint_selected_message">Huella digital OMEMO del mensaje</string>
   <string name="omemo_fingerprint_x509_selected_message">huella digital v\\OMEMO del mensaje</string>
-  <string name="this_device_omemo_fingerprint">Tu huella digital OMEMO</string>
   <string name="other_devices">Otros dispositivos</string>
   <string name="trust_omemo_fingerprints">Huellas digitales OMEMO de confianza</string>
   <string name="fetching_keys">Buscando claves...</string>
