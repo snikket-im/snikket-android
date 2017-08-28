@@ -112,7 +112,12 @@ public abstract class AbstractSearchableListItemActivity extends XmppActivity {
 	}
 
 	protected void filterContacts() {
-		filterContacts(null);
+		final String needle = mSearchEditText != null ? mSearchEditText.getText().toString() : null;
+		if (needle != null && !needle.isEmpty()) {
+			filterContacts(needle);
+		} else {
+			filterContacts(null);
+		}
 	}
 
 	protected abstract void filterContacts(final String needle);

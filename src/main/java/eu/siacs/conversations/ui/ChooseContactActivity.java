@@ -161,6 +161,10 @@ public class ChooseContactActivity extends AbstractSearchableListItemActivity {
 
 	protected void filterContacts(final String needle) {
 		getListItems().clear();
+		if (xmppConnectionService == null) {
+			getListItemAdapter().notifyDataSetChanged();
+			return;
+		}
 		for (final Account account : xmppConnectionService.getAccounts()) {
 			if (account.getStatus() != Account.State.DISABLED) {
 				for (final Contact contact : account.getRoster().getContacts()) {
@@ -230,7 +234,6 @@ public class ChooseContactActivity extends AbstractSearchableListItemActivity {
 	@Override
 	void onBackendConnected() {
 		filterContacts();
-
 		this.mActivatedAccounts.clear();
 		for (Account account : xmppConnectionService.getAccounts()) {
 			if (account.getStatus() != Account.State.DISABLED) {
