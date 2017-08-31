@@ -388,6 +388,7 @@ public class NotificationService {
 					modifyForTextOnly(mBuilder, mUnreadBuilder, messages);
 				}
 				RemoteInput remoteInput = new RemoteInput.Builder("text_reply").setLabel(UIHelper.getMessageHint(mXmppConnectionService, conversation)).build();
+				NotificationCompat.Action markReadAction = new NotificationCompat.Action.Builder(R.drawable.ic_send_text_offline, "Mark As Read", createReadPendingIntent(conversation)).build();
 				NotificationCompat.Action replyAction = new NotificationCompat.Action.Builder(R.drawable.ic_send_text_offline, "Reply", createReplyIntent(conversation, false)).addRemoteInput(remoteInput).build();
 				NotificationCompat.Action wearReplyAction = new NotificationCompat.Action.Builder(R.drawable.ic_wear_reply, "Reply", createReplyIntent(conversation, true)).addRemoteInput(remoteInput).build();
 				mBuilder.extend(new NotificationCompat.WearableExtender().addAction(wearReplyAction));
@@ -395,6 +396,7 @@ public class NotificationService {
 				mUnreadBuilder.setReadPendingIntent(createReadPendingIntent(conversation));
 				mBuilder.extend(new NotificationCompat.CarExtender().setUnreadConversation(mUnreadBuilder.build()));
 				if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+					mBuilder.addAction(markReadAction);
 					mBuilder.addAction(replyAction);
 				}
 				if ((message = getFirstDownloadableMessage(messages)) != null) {
