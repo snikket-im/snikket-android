@@ -400,6 +400,7 @@
   <string name="clear_other_devices">Gailuak garbitu</string>
   <string name="clear_other_devices_desc">Ziur al zaude OMEMO iragarpenetik beste gailu guztiak garbitu nahi dituzulaz? Zure gailuak konektatzen diren hurrengoan, beraiek berriragarriko dira, baina agian ez dute mezurik jasoko bitartean.</string>
   <string name="error_no_keys_to_trust_server_error">Ez dago gako erabilgarririk kontaktu honetarako.\nEzin izan da zerbitzaritik gako berririk eskuratu. Agian akatsen bat dago zure kontaktuen zerbitzariarekin.</string>
+  <string name="error_no_keys_to_trust_presence">Ez dago gako erabilgarririk kontaktu honetarako.\nEgiaztatu ezazu bien arteko presentzia harpidetza duzuela.</string>
   <string name="error_no_keys_to_trust">Kontaktu honetarako gako erabilgarririk ez dago. Bere gakoak purgatu badituzu, berri batzuk sortu behar dituzte.</string>
   <string name="error_trustkeys_title">Akatsa</string>
   <string name="fetching_history_from_server">Mezuak zerbitzaritik eskuratzen</string>
@@ -725,4 +726,5 @@
   <string name="pref_validate_hostname">Ostalariaren izena DNSSECekin balioztatu</string>
   <string name="pref_validate_hostname_summary">Ostalariaren izena balioztatuta daukaten zerbitzarien ziurtagiriak egiaztatutzat hartzen dira</string>
   <string name="network_is_unreachable">Ezin da sarera heldu</string>
+  <string name="certificate_does_not_contain_jid">Ziurtagiriak ez dauka Jabber ID baliodun bat</string>
 </resources>

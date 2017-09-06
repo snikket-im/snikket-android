@@ -400,7 +400,7 @@
   <string name="clear_other_devices">Supprimer les appareils</string>
   <string name="clear_other_devices_desc">Êtes-vous sûr de vouloir supprimer les autres appareils de l\'annonce OMEMO ? Ils s\'annonceront de nouveau à leur prochaine connexion, mais ils peuvent ne pas recevoir les messages envoyés entre temps.</string>
   <string name="error_no_keys_to_trust_server_error">Il n\'y a aucune clef utilisable disponible pour ce contact.\nLa récupération de nouvelles clefs sur le serveur a échoué. Peut-être y a-t-il un problème avec votre serveur de contacts ?</string>
-  <string name="error_no_keys_to_trust_presence">Il n\'y a aucune clé utilisable disponible pour ce contact.\Assurez-vous d\'avoir un abonnement de présence mutuelle.</string>
+  <string name="error_no_keys_to_trust_presence">Il n\'y a aucune clé utilisable disponible pour ce contact.\nAssurez-vous d\'avoir un abonnement de présence mutuelle.</string>
   <string name="error_no_keys_to_trust">il n\'y a pas de clef disponible pour ce contact. Si vous avez purgé toutes ses clefs, il doit en générer de nouvelles.</string>
   <string name="error_trustkeys_title">Erreur</string>
   <string name="fetching_history_from_server">Récupération de l\'historique sur le serveur</string>
