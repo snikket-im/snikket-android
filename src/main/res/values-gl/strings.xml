@@ -68,7 +68,6 @@
   <string name="not_in_roster">O contacto non está na túa lista. ¿Queres engadilo?</string>
   <string name="add_contact">Engadir contacto</string>
   <string name="send_failed">Erro ao enviar</string>
-  <string name="send_rejected">rechazado</string>
   <string name="preparing_image">Preparando imaxe para enviar</string>
   <string name="preparing_images">Preparando as imaxes para transmitilas</string>
   <string name="sharing_files_please_wait">Compartindo ficheiros. Por favor agarde...</string>
@@ -124,13 +123,10 @@
   <string name="pref_confirm_messages_summary">Permitir aos seus contactos saber si recibeu e leu as súas mensaxes</string>
   <string name="pref_ui_options">IU</string>
   <string name="openpgp_error">OpenKeychain reportou un erro</string>
-  <string name="error_decrypting_file">I/O Erro descifrando arquivo</string>
   <string name="accept">Aceptar</string>
   <string name="error">Produciuse un erro</string>
   <string name="pref_grant_presence_updates">Suscripción de presencia</string>
-  <string name="subscriptions">Suscripcións</string>
   <string name="your_account">A túa conta</string>
-  <string name="keys">Chaves</string>
   <string name="send_presence_updates">Enviar actualizacións de presencia</string>
   <string name="receive_presence_updates">Recibir actualizacións de presencia</string>
   <string name="ask_for_presence_updates">Solicitar actualizacións de presencia</string>
@@ -162,7 +158,6 @@
   <string name="encryption_choice_otr">OTR</string>
   <string name="encryption_choice_pgp">OpenPGP</string>
   <string name="encryption_choice_omemo">OMEMO</string>
-  <string name="mgmt_account_edit">Editar conta</string>
   <string name="mgmt_account_delete">Eliminar conta</string>
   <string name="mgmt_account_disable">Deshabilitar temporalmente</string>
   <string name="mgmt_account_publish_avatar">Publicar avatar</string>
@@ -186,14 +181,6 @@
   <string name="invalid_jid">O identificador non é un identificador de Jabber válido</string>
   <string name="error_out_of_memory">Exceso de memoria. A imaxe é demasiado grande</string>
   <string name="add_phone_book_text">Quere engadir a 1%s a súa libreta de enderezos?</string>
-  <string name="contact_status_online">en liña</string>
-  <string name="contact_status_free_to_chat">libre para conversar</string>
-  <string name="contact_status_away">non dispoñible</string>
-  <string name="contact_status_extended_away">hai moito que non está dispoñible</string>
-  <string name="contact_status_do_not_disturb">non molestar</string>
-  <string name="contact_status_offline">fora de liña</string>
-  <string name="muc_details_conference">Conferencia</string>
-  <string name="muc_details_other_members">Outros membros</string>
   <string name="server_info_show_more">Info do servidor</string>
   <string name="server_info_mam">XEP-0313: MAM</string>
   <string name="server_info_carbon_messages">XEP-0280: Copia de mensaxes</string>
@@ -210,11 +197,9 @@
   <string name="last_seen_hours">visto hai 1%d horas</string>
   <string name="last_seen_day">última vez hai 1 día</string>
   <string name="last_seen_days">última conexión hai 1%d días</string>
-  <string name="never_seen">nunca conectado</string>
   <string name="install_openkeychain">Mensaxe cifrada. Por favor instale OpenKeychain para descifrala.</string>
   <string name="unknown_otr_fingerprint">Pegada OTR descoñecida</string>
   <string name="openpgp_messages_found">Atopáronse mensaxes cifradas con OpenPGP</string>
-  <string name="reception_failed">Erro ao recibir</string>
   <string name="your_fingerprint">A súa pegada</string>
   <string name="otr_fingerprint">Pegada OTR</string>
   <string name="otr_fingerprint_selected_message">Pegada OTR da mensaxe</string>
@@ -247,7 +232,6 @@
   <string name="save_as_bookmark">Gardar como marcador</string>
   <string name="delete_bookmark">Eliminar marcador</string>
   <string name="bookmark_already_exists">Este marcador xa existe</string>
-  <string name="you">Vostede</string>
   <string name="action_edit_subject">Editar o tema da conferencia</string>
   <string name="edit_subject_hint">O tema de esta conferencia</string>
   <string name="joining_conference">Uníndose a conferencia...</string>
