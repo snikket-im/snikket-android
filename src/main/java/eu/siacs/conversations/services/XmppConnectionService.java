@@ -155,7 +155,6 @@ public class XmppConnectionService extends Service {
 	public static final String ACTION_REPLY_TO_CONVERSATION = "reply_to_conversations";
 	public static final String ACTION_MARK_AS_READ = "mark_as_read";
 	public static final String ACTION_CLEAR_NOTIFICATION = "clear_notification";
-	public static final String ACTION_DISABLE_FOREGROUND = "disable_foreground";
 	public static final String ACTION_DISMISS_ERROR_NOTIFICATIONS = "dismiss_error";
 	public static final String ACTION_TRY_AGAIN = "try_again";
 	public static final String ACTION_IDLE_PING = "idle_ping";
@@ -666,10 +665,6 @@ public class XmppConnectionService extends Service {
 					} else {
 						mNotificationService.clear();
 					}
-					break;
-				case ACTION_DISABLE_FOREGROUND:
-					getPreferences().edit().putBoolean(SettingsActivity.KEEP_FOREGROUND_SERVICE, false).commit();
-					toggleForegroundService();
 					break;
 				case ACTION_DISMISS_ERROR_NOTIFICATIONS:
 					dismissErrorNotifications();
