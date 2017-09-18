@@ -11,6 +11,8 @@ import net.ypresto.androidtranscoder.format.MediaFormatStrategyPresets;
 
 import java.io.FileDescriptor;
 import java.io.FileNotFoundException;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Future;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import eu.siacs.conversations.Config;
@@ -78,11 +80,15 @@ public class AttachFileToConversationRunnable implements Runnable, MediaTranscod
 		final DownloadableFile file = mXmppConnectionService.getFileBackend().getFile(message);
 		final int runtime = mXmppConnectionService.getFileBackend().getMediaRuntime(uri);
 		MediaFormatStrategy formatStrategy = runtime >= 8000 ? MediaFormatStrategyPresets.createExportPreset960x540Strategy() : MediaFormatStrategyPresets.createAndroid720pStrategy();
-		Log.d(Config.LOGTAG,"runtime "+runtime);
 		file.getParentFile().mkdirs();
 		ParcelFileDescriptor parcelFileDescriptor = mXmppConnectionService.getContentResolver().openFileDescriptor(uri, "r");
 		FileDescriptor fileDescriptor = parcelFileDescriptor.getFileDescriptor();
-		MediaTranscoder.getInstance().transcodeVideo(fileDescriptor, file.getAbsolutePath(), formatStrategy, this);
+		Future<Void> future = MediaTranscoder.getInstance().transcodeVideo(fileDescriptor, file.getAbsolutePath(), formatStrategy, this);
+		try {
+			future.get();
+		} catch (Exception e) {
+			throw new AssertionError(e);
+		}
 	}
 
 	@Override
@@ -114,7 +120,7 @@ public class AttachFileToConversationRunnable implements Runnable, MediaTranscod
 	@Override
 	public void onTranscodeFailed(Exception e) {
 		mXmppConnectionService.stopForcingForegroundNotification();
-		Log.d(Config.LOGTAG,"video transcoding failed "+e.getMessage());
+		Log.d(Config.LOGTAG,"video transcoding failed",e);
 		processAsFile();
 	}
 
