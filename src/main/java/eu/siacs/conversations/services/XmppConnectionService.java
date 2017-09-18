@@ -41,6 +41,7 @@ import net.java.otr4j.session.SessionID;
 import net.java.otr4j.session.SessionImpl;
 import net.java.otr4j.session.SessionStatus;
 import net.ypresto.androidtranscoder.MediaTranscoder;
+import net.ypresto.androidtranscoder.format.MediaFormatStrategy;
 import net.ypresto.androidtranscoder.format.MediaFormatStrategyPresets;
 
 import org.openintents.openpgp.IOpenPgpService2;
@@ -518,6 +519,9 @@ public class XmppConnectionService extends Service {
 				Log.d(Config.LOGTAG,"processing file as video");
 				message.setRelativeFilePath(message.getUuid() + ".mp4");
 				final DownloadableFile file = getFileBackend().getFile(message);
+				final int runtime = getFileBackend().getMediaRuntime(uri);
+				MediaFormatStrategy formatStrategy = runtime >= 8000 ? MediaFormatStrategyPresets.createExportPreset960x540Strategy() : MediaFormatStrategyPresets.createAndroid720pStrategy();
+				Log.d(Config.LOGTAG,"runtime "+runtime);
 				file.getParentFile().mkdirs();
 				ParcelFileDescriptor parcelFileDescriptor = getContentResolver().openFileDescriptor(uri, "r");
 				FileDescriptor fileDescriptor = parcelFileDescriptor.getFileDescriptor();
@@ -560,8 +564,7 @@ public class XmppConnectionService extends Service {
 						processAsFile();
 					}
 				};
-				MediaTranscoder.getInstance().transcodeVideo(fileDescriptor, file.getAbsolutePath(),
-						MediaFormatStrategyPresets.createAndroid720pStrategy(), listener);
+				MediaTranscoder.getInstance().transcodeVideo(fileDescriptor, file.getAbsolutePath(), formatStrategy, listener);
 			}
 
 			@Override

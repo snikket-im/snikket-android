@@ -787,6 +787,16 @@ public class FileBackend {
 
 	}
 
+	public int getMediaRuntime(Uri uri) {
+		try {
+			MediaMetadataRetriever mediaMetadataRetriever = new MediaMetadataRetriever();
+			mediaMetadataRetriever.setDataSource(mXmppConnectionService,uri);
+			return Integer.parseInt(mediaMetadataRetriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION));
+		} catch (IllegalArgumentException e) {
+			return 0;
+		}
+	}
+
 	private Dimensions getImageDimensions(File file) {
 		BitmapFactory.Options options = new BitmapFactory.Options();
 		options.inJustDecodeBounds = true;
