@@ -7,11 +7,13 @@ import java.util.Queue;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
+import eu.siacs.conversations.services.AttachFileToConversationRunnable;
+
 public class SerialSingleThreadExecutor implements Executor {
 
 	final Executor executor = Executors.newSingleThreadExecutor();
-	protected final Queue<Runnable> tasks = new ArrayDeque();
-	Runnable active;
+	protected final ArrayDeque<Runnable> tasks = new ArrayDeque<>();
+	private Runnable active;
 
 	public SerialSingleThreadExecutor() {
 		this(false);

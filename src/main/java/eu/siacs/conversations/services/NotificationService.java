@@ -739,4 +739,16 @@ public class NotificationService {
 				PendingIntent.FLAG_UPDATE_CURRENT));
 		notificationManager.notify(ERROR_NOTIFICATION_ID, mBuilder.build());
 	}
+
+	public Notification updateFileAddingNotification(int current, Message message) {
+		final NotificationManagerCompat notificationManager = NotificationManagerCompat.from(mXmppConnectionService);
+		NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(mXmppConnectionService);
+		mBuilder.setContentTitle(mXmppConnectionService.getString(R.string.transcoding_video));
+		mBuilder.setProgress(100, current, false);
+		mBuilder.setSmallIcon(R.drawable.ic_hourglass_empty_white_24dp);
+		mBuilder.setContentIntent(createContentIntent(message.getConversation()));
+		Notification notification = mBuilder.build();
+		notificationManager.notify(FOREGROUND_NOTIFICATION_ID, notification);
+		return notification;
+	}
 }
