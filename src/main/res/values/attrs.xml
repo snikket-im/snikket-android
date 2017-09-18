@@ -20,9 +20,11 @@
     <attr name="ic_send_photo_offline" format="reference"/>
     <attr name="ic_send_picture_offline" format="reference"/>
     <attr name="ic_send_text_offline" format="reference"/>
+    <attr name="ic_send_videocam_offline" format="reference"/>
     <attr name="ic_send_voice_offline" format="reference"/>
 
     <attr name="ic_attach_camera" format="reference"/>
+    <attr name="ic_attach_videocam" format="reference"/>
     <attr name="ic_attach_document" format="reference"/>
     <attr name="ic_attach_location" format="reference"/>
     <attr name="ic_attach_photo" format="reference"/>

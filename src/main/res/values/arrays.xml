@@ -52,6 +52,7 @@
 		<item>@string/none</item>
 		<item>@string/recently_used</item>
 		<item>@string/attach_take_picture</item>
+		<item>@string/attach_record_video</item>
 		<item>@string/attach_choose_picture</item>
 		<item>@string/attach_record_voice</item>
 		<item>@string/send_location</item>
@@ -60,10 +61,11 @@
 	<string-array name="quick_action_values">
 		<item>none</item>
 		<item>recent</item>
-		<item>photo</item>
-		<item>picture</item>
-		<item>voice</item>
-		<item>location</item>
+		<item>TAKE_PHOTO</item>
+		<item>RECORD_VIDEO</item>
+		<item>CHOOSE_PICTURE</item>
+		<item>RECORD_VOICE</item>
+		<item>SEND_LOCATION</item>
 	</string-array>
 
 	<string-array name="picture_compression_values">

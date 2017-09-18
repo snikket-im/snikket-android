@@ -25,9 +25,11 @@
         <item name="attr/ic_send_photo_offline">@drawable/ic_send_photo_offline</item>
         <item name="attr/ic_send_picture_offline">@drawable/ic_send_picture_offline</item>
         <item name="attr/ic_send_text_offline">@drawable/ic_send_text_offline</item>
+        <item name="attr/ic_send_videocam_offline">@drawable/ic_send_videocam_offline</item>
         <item name="attr/ic_send_voice_offline">@drawable/ic_send_voice_offline</item>
 
         <item name="attr/ic_attach_camera">@drawable/ic_attach_camera</item>
+        <item name="attr/ic_attach_videocam">@drawable/ic_attach_videocam</item>
         <item name="attr/ic_attach_document">@drawable/ic_attach_document</item>
         <item name="attr/ic_attach_location">@drawable/ic_attach_location</item>
         <item name="attr/ic_attach_photo">@drawable/ic_attach_photo</item>
@@ -100,9 +102,11 @@
         <item name="attr/ic_send_photo_offline">@drawable/ic_send_photo_offline_white</item>
         <item name="attr/ic_send_picture_offline">@drawable/ic_send_picture_offline_white</item>
         <item name="attr/ic_send_text_offline">@drawable/ic_send_text_offline_white</item>
+        <item name="attr/ic_send_videocam_offline">@drawable/ic_send_videocam_offline_white</item>
         <item name="attr/ic_send_voice_offline">@drawable/ic_send_voice_offline_white</item>
 
         <item name="attr/ic_attach_camera">@drawable/ic_attach_camera_white</item>
+        <item name="attr/ic_attach_videocam">@drawable/ic_attach_videocam_white</item>
         <item name="attr/ic_attach_document">@drawable/ic_attach_document_white</item>
         <item name="attr/ic_attach_location">@drawable/ic_attach_location_white</item>
         <item name="attr/ic_attach_photo">@drawable/ic_attach_photo_white</item>
