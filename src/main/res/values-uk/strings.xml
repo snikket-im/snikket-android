@@ -367,6 +367,7 @@
   <string name="clear_other_devices">Стерти пристрої</string>
   <string name="clear_other_devices_desc">Ви певні, що хочете стерти всі інші пристрої з OMEMO-оголошення? Наступного разу, коли Ваші пристрої приєднаються, вони знову оголосять про себе, але вони можуть не отримати повідомлення, які можуть бути надіслані тим часом. </string>
   <string name="error_no_keys_to_trust_server_error">Немає ключів, які би можна було використати для цього контакта.\nОтримання нових ключів із сервера не вдалося. Можливо, щось пішло не так з Вашим сервером контактів.</string>
+  <string name="error_no_keys_to_trust_presence">Немає ключів для цього контакту.\nПеревірте, що ви взаємно підписані на присутність.</string>
   <string name="error_no_keys_to_trust">Немає ключів, які би можна було використати для цього контакта. Якщо ви очистили які-небудь з їх ключів, їм потрібно згенерувати нові.</string>
   <string name="error_trustkeys_title">Помилка</string>
   <string name="fetching_history_from_server">Отримую історію з сервера</string>
@@ -668,7 +669,6 @@
   <string name="pref_automatically_delete_messages_description">Автоматично видаляти повідомлення з цього пристрою, старіші за вказаний часовий проміжок.</string>
   <string name="encrypting_message">Зашифровую повідомлення</string>
   <string name="not_fetching_history_retention_period">Повідомлення не завантажуються з огляду на локально встановлений строк зберігання.</string>
-  <string name="transcoding_video_progress">Стискаю відео (%s%% завершено)</string>
   <string name="corresponding_conversations_closed">Відповідні розмови закрито.</string>
   <string name="contact_blocked_past_tense">Контакт заблоковано.</string>
   <string name="pref_notifications_from_strangers">Сповіщення від незнайомців</string>
@@ -689,4 +689,7 @@
   <string name="yesterday">Учора</string>
   <string name="pref_validate_hostname">Перевіряти адресу з допомогою DNSSEC</string>
   <string name="pref_validate_hostname_summary">Сертифікати, які містять завірену адресу, вважаються засвідченими</string>
+  <string name="network_is_unreachable">Мережа недоступна.</string>
+  <string name="certificate_does_not_contain_jid">Сертифікат не містить ідентифікатора Jabber ID</string>
+  <string name="server_info_partial">частково</string>
 </resources>

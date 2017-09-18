@@ -666,7 +666,6 @@
   <string name="pref_automatically_delete_messages_description">Lösche Nachrichten automatisch, wenn diese älter als die eingestellte Zeit sind.</string>
   <string name="encrypting_message">Nachricht wird verschlüsselt</string>
   <string name="not_fetching_history_retention_period">Nachrichten werden aufgrund der eingestellten lokalen Speicherfrist nicht abgerufen. </string>
-  <string name="transcoding_video_progress">Video wird komprimiert (%s%% abgeschlossen)</string>
   <string name="corresponding_conversations_closed">Zugehörige Unterhaltung beendet.</string>
   <string name="contact_blocked_past_tense">Kontakt gesperrt.</string>
   <string name="pref_notifications_from_strangers">Benachrichtigungen von Unbekannten</string>

@@ -670,7 +670,6 @@ Conversations będzie wciąż ograniczał transfer danych, kiedy tylko to jest m
   <string name="pref_automatically_delete_messages_description">Automatycznie usuwaj z tego urządzenia wiadomości starsze niż skonfigurowany okres czasu.</string>
   <string name="encrypting_message">Szyfrowanie wiadomości</string>
   <string name="not_fetching_history_retention_period">Nie pobieram wiadomości przez lokalny okres retencji</string>
-  <string name="transcoding_video_progress">Kompresowanie wideo (ukończono 1%s 2%%)</string>
   <string name="corresponding_conversations_closed">Odpowiadające rozmowy zostały zamknięte.</string>
   <string name="contact_blocked_past_tense">Kontakt zablokowany</string>
   <string name="pref_notifications_from_strangers">Powiadomienia od nieznajomych</string>

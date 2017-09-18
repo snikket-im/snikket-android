@@ -666,7 +666,6 @@
   <string name="pref_automatically_delete_messages_description">Автоматично изтриване на съобщенията от това устройство, които са по-стари от зададеното време.</string>
   <string name="encrypting_message">Шифроване на съобщението</string>
   <string name="not_fetching_history_retention_period">Съобщенията не се изтеглят поради местния период на задържане.</string>
-  <string name="transcoding_video_progress">Компресиране на видеото (%s%%)</string>
   <string name="corresponding_conversations_closed">Съответстващите разговори са затворени.</string>
   <string name="contact_blocked_past_tense">Контактът е блокиран.</string>
   <string name="pref_notifications_from_strangers">Известия от непознати</string>

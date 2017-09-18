@@ -236,7 +236,7 @@
   <string name="join">Alatura-te</string>
   <string name="conference_address">Adresă conferință</string>
   <string name="conference_address_example">camera@conferinta.exemplu.ro/nume_utilizator</string>
-  <string name="save_as_bookmark">Salveaza semn de carte</string>
+  <string name="save_as_bookmark">Salvează semn de carte</string>
   <string name="delete_bookmark">Șterge semn de carte</string>
   <string name="bookmark_already_exists">Acest semn de carte exista</string>
   <string name="action_edit_subject">Editează titlul conferinței</string>
@@ -262,7 +262,7 @@
   <string name="account_already_exists">Acest cont exista deja</string>
   <string name="next">Următoarea</string>
   <string name="server_info_session_established">Sesiune curentă stabilită</string>
-  <string name="skip">Sari</string>
+  <string name="skip">Sări</string>
   <string name="disable_notifications">Dezactivează notificările</string>
   <string name="enable">Activează</string>
   <string name="conference_requires_password">Conferința necesită o parolă</string>
@@ -309,7 +309,7 @@
   <string name="not_connected_try_again">Nu ești conectat/ă. Încearcă din nou mai târziu.</string>
   <string name="check_x_filesize">Verifica marimea %s</string>
   <string name="check_x_filesize_on_host">Verifica marimea %1$s pe %2$s</string>
-  <string name="message_options">Optiuni mesaje</string>
+  <string name="message_options">Opțiuni mesaje</string>
   <string name="select_text">Selecteaza text</string>
   <string name="quote">Citează</string>
   <string name="copy_original_url">Copiază adresa originală</string>
@@ -385,7 +385,7 @@
   <string name="change_password">Schimbare parola</string>
   <string name="current_password">Parola curentă</string>
   <string name="new_password">Parolă nouă</string>
-  <string name="password_should_not_be_empty">Parola nu poate sa fie goală</string>
+  <string name="password_should_not_be_empty">Parola nu poate să fie goală</string>
   <string name="enable_all_accounts">Activează toate conturile</string>
   <string name="disable_all_accounts">Dezactivează toate conturile</string>
   <string name="perform_action_with">Efectuaza actiune cu</string>
@@ -421,7 +421,7 @@
   <string name="until_further_notice">Până la noi ordine</string>
   <string name="pref_input_options">Opțiuni introducere text</string>
   <string name="pref_enter_is_send">ENTER trimite</string>
-  <string name="pref_enter_is_send_summary">Apasa tasta ENTER pentru a trimite mesajul</string>
+  <string name="pref_enter_is_send_summary">Apasă tasta ENTER pentru a trimite mesajul</string>
   <string name="pref_display_enter_key">Arată tasta ENTER</string>
   <string name="pref_display_enter_key_summary">Preschimbă tasta emoticon în ENTER</string>
   <string name="audio">audio</string>
@@ -499,7 +499,7 @@
   <string name="hostname_example">xmpp.example.com</string>
   <string name="action_add_account_with_certificate">Adaugă un cont cu certificat</string>
   <string name="unable_to_parse_certificate">Nu se poate analiza certificatul</string>
-  <string name="authenticate_with_certificate">Lasa gol pentru a autentifica cu un certificat</string>
+  <string name="authenticate_with_certificate">Lăsați gol pentru a autentifica cu un certificat</string>
   <string name="mam_prefs">Preferințe arhivare</string>
   <string name="server_side_mam_prefs">Preferințe arhivare pe server</string>
   <string name="fetching_mam_prefs">Se descarcă preferințe arhivare. Vă rugăm să așteptați...</string>
@@ -568,7 +568,7 @@ sau chiar pierderea mesajelor.\nÎn continuare veți fi rugați să dezactivați
   <string name="security_error_invalid_file_access">Eroare de securitate.: Acces fișier invalid</string>
   <string name="no_application_to_share_uri">Nu s-a găsit nici o aplicație care să partajeze adresa</string>
   <string name="share_uri_with">Partajează adresa cu...</string>
-  <string name="welcome_text">XMPP este un protocol independent ce nu depinde de un anume furnizor. Aveți posibilitatea sa utilizați acest client cu orice server XMPP doriți.\nTotuși, pentru confortul dumneavoastră, am facilitat crearea unui cont pe conversations.im¹; un furnizor potrivit pentru utilizarea cu aplicația Conversations.</string>
+  <string name="welcome_text">XMPP este un protocol independent ce nu depinde de un anume furnizor. Aveți posibilitatea să utilizați acest client cu orice server XMPP doriți.\nTotuși, pentru confortul dumneavoastră, am facilitat crearea unui cont pe conversations.im¹; un furnizor potrivit pentru utilizarea cu aplicația Conversations.</string>
   <string name="magic_create_text">Vă vom ghida prin procesul de creare al unui cont pe conversations.im.¹\nCând alegeți conversations.im ca furnizor veți putea comunica cu utilizatorii altor furnizori oferindu-le ID-ul dumneavoastră Jabber.</string>
   <string name="your_full_jid_will_be">ID-ul Jabber va fi: %s</string>
   <string name="create_account">Creeaza cont</string>
@@ -592,7 +592,7 @@ sau chiar pierderea mesajelor.\nÎn continuare veți fi rugați să dezactivați
   <string name="create_conference">Creează conferința</string>
   <string name="join_or_create_conference">Alătură-te sau creează conferința</string>
   <string name="conference_subject">Subiect</string>
-  <string name="choose_participants">Alege participanti</string>
+  <string name="choose_participants">Alege participanți</string>
   <string name="creating_conference">Se creează conferința...</string>
   <string name="invite_again">Trimite din nou invitația</string>
   <string name="gp_short">Scurt</string>
@@ -614,7 +614,7 @@ sau chiar pierderea mesajelor.\nÎn continuare veți fi rugați să dezactivați
   <string name="type_tablet">Tableta</string>
   <string name="type_web">Navigator internet</string>
   <string name="type_console">Consola</string>
-  <string name="payment_required">Este necesara o plata</string>
+  <string name="payment_required">Este necesar să efectuați o plată</string>
   <string name="missing_internet_permission">Permisiuni internet lipsă</string>
   <string name="me">Eu</string>
   <string name="contact_asks_for_presence_subscription">Contactul cere actualizări de prezență</string>
@@ -624,14 +624,14 @@ sau chiar pierderea mesajelor.\nÎn continuare veți fi rugați să dezactivați
   <string name="unable_to_update_account">Nu se poate actualiza contul</string>
   <string name="missing_presence_subscription_with_x">Lipsesc actualizările de prezență cu %s.</string>
   <string name="missing_keys_from_x">Cheie OMEMO lipsă de la %s.</string>
-  <string name="missing_omemo_keys">Chei OMEMO lipsa</string>
+  <string name="missing_omemo_keys">Chei OMEMO lipsă</string>
   <string name="wrong_conference_configuration">Aceasta este o conferința care nu este privata și nu este anonimă.</string>
   <string name="this_conference_has_no_members">Conferința nu are nici un membru.</string>
   <string name="report_jid_as_spammer">Raportează că această identitate trimite mesaje nedorite.</string>
   <string name="pref_delete_omemo_identities">Șterge identitățile OEMO</string>
   <string name="pref_delete_omemo_identities_summary">Regenerează cheile personale OMEMO. Toate contactele vor fi obligate să verifice cheile dumneavoastră din nou. Folosește asta doar ca o ultimă opțiune.</string>
   <string name="delete_selected_keys">Șterge cheile selectate</string>
-  <string name="error_publish_avatar_offline">Pentru a putea publica avatarul trebuie sa existe o conexiune.</string>
+  <string name="error_publish_avatar_offline">Pentru a putea publica avatarul trebuie să existe o conexiune.</string>
   <string name="show_error_message">Arată mesaj de eroare</string>
   <string name="error_message">Mesaj de eroare</string>
   <string name="data_saver_enabled">Economizorul de date este activat</string>
@@ -672,7 +672,6 @@ sau chiar pierderea mesajelor.\nÎn continuare veți fi rugați să dezactivați
   <string name="pref_automatically_delete_messages_description">De pe acest dispozitiv se vor șterge dacă sunt mai vechi de perioada selectată.</string>
   <string name="encrypting_message">Mesajul se criptează</string>
   <string name="not_fetching_history_retention_period">Politica de retenție locală împiedică descărcarea altor mesaje.</string>
-  <string name="transcoding_video_progress">Se comprimă clipul video (%s%% gata)</string>
   <string name="corresponding_conversations_closed">Conversațiile corespunzătoare au fost închise</string>
   <string name="contact_blocked_past_tense">Contact blocat</string>
   <string name="pref_notifications_from_strangers">Notificări de la persoane necunoscute</string>

@@ -663,7 +663,6 @@
   <string name="pref_automatically_delete_messages_description">設定された期間よりも古いメッセージを、このデバイスから自動的に削除します。</string>
   <string name="encrypting_message">メッセージの暗号化中</string>
   <string name="not_fetching_history_retention_period">ローカル保存期間のためにメッセージを取得しません。</string>
-  <string name="transcoding_video_progress">ビデオの圧縮中 (%s%% 完了)</string>
   <string name="corresponding_conversations_closed">対応する会話が閉じられました。</string>
   <string name="contact_blocked_past_tense">連絡先をブロックしました</string>
   <string name="pref_notifications_from_strangers">知らない人からの通知</string>
@@ -686,4 +685,5 @@
   <string name="pref_validate_hostname_summary">検証されたホスト名を含むサーバー証明書は検証済みと見なされます</string>
   <string name="network_is_unreachable">ネットワークが到達できません</string>
   <string name="certificate_does_not_contain_jid">証明書に Jabber ID が含まれていません</string>
+  <string name="server_info_partial">一時的</string>
 </resources>

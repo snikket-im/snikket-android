@@ -666,7 +666,6 @@
   <string name="pref_automatically_delete_messages_description">Automáticamente borrar mensajes del dispositivo más antiguos que el configurado en el marco de tiempo.</string>
   <string name="encrypting_message">Cifrando mensaje</string>
   <string name="not_fetching_history_retention_period">No buscar mensajes más antiguos que el establecido en el marco de tiempo.</string>
-  <string name="transcoding_video_progress">Comprimiendo vídeo (%s%% completado)</string>
   <string name="corresponding_conversations_closed">Conversación correspondiente cerrada.</string>
   <string name="contact_blocked_past_tense">Contacto bloqueado.</string>
   <string name="pref_notifications_from_strangers">Notificaciones de desconocidos</string>
@@ -689,4 +688,5 @@
   <string name="pref_validate_hostname_summary">Los certificados del servidor que contienen el hostname validado son considerados verificados</string>
   <string name="network_is_unreachable">La red es inaccesible</string>
   <string name="certificate_does_not_contain_jid">El certificado no contiene un identificador Jabber</string>
+  <string name="server_info_partial">Parcial</string>
 </resources>

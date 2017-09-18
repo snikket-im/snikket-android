@@ -245,7 +245,7 @@
   <string name="leave">Távozás</string>
   <string name="contact_added_you">Ez a felhasználó hozzáadott téged a névjegyeihez</string>
   <string name="add_back">Én is hozzáadom</string>
-  <string name="contact_has_read_up_to_this_point">%s eddig olvasta el</string>
+  <string name="contact_has_read_up_to_this_point">%s eddig olvasta</string>
   <string name="publish">Közzétesz</string>
   <string name="touch_to_choose_picture">Érintsd meg a piktogramot kép kiválasztásához </string>
   <string name="publish_avatar_explanation">Vedd figyelembe: mindenki láthatja a képedet, aki fel van iratkozva rád.</string>
@@ -367,6 +367,7 @@
   <string name="clear_other_devices">Eszközök tisztítása</string>
   <string name="clear_other_devices_desc">Biztosan törölni kívánja az összes többi eszközt az OMEMO bejelentéséből? A következő alkalommal, amikor a készülékei csatlakoznak, újra bejelentik magukat, de előfordulhat, hogy nem kapják meg az időközben elküldött üzeneteket.</string>
   <string name="error_no_keys_to_trust_server_error">Ehhez a kapcsolathoz nem állnak rendelkezésre használható kulcsok.\nA kiszolgáló új kulcsainak letöltése sikertelen volt. Talán van valami baj a kapcsolattartók szerverével.</string>
+  <string name="error_no_keys_to_trust_presence">Ehhez a kapcsolathoz nem áll rendelkezésre használható kulcs.\nGyőződjön meg róla, hogy kölcsönösen felíratkoztak egymás állapotfrissítéseire.</string>
   <string name="error_no_keys_to_trust">Ehhez a kapcsolathoz nem áll rendelkezésre használható kulcs. Ha törölted valamelyik kulcsukat, akkor újakat kell létrehoznod.</string>
   <string name="error_trustkeys_title">Hiba</string>
   <string name="fetching_history_from_server">Előzmények lekérése a szerverről</string>
@@ -665,7 +666,6 @@
   <string name="pref_automatically_delete_messages_description">Automatikusan törli az üzeneteket az eszközön, amennyiben régebbiek, mint a beállított időkeret.</string>
   <string name="encrypting_message">Üzenet titkosítása</string>
   <string name="not_fetching_history_retention_period">Nem tölt le üzeneteket a helyi megőrzési időszak miatt.</string>
-  <string name="transcoding_video_progress">Videó tömörítése (%s%% kész)</string>
   <string name="corresponding_conversations_closed">Hasonló beszélgetések be lettek zárva.</string>
   <string name="contact_blocked_past_tense">Ismerős blokkolva.</string>
   <string name="pref_notifications_from_strangers">Értesítések idegenektől</string>
@@ -673,7 +673,7 @@
   <string name="received_message_from_stranger">Üzenete érkezett egy idegentől</string>
   <string name="block_stranger">Idegen blokkolása</string>
   <string name="block_entire_domain">Egész domain blokkolása</string>
-  <string name="online_right_now">online most</string>
+  <string name="online_right_now">Jelenleg elérhető</string>
   <string name="retry_decryption">Próbálja újra a dekódolást</string>
   <string name="session_failure">Munkamenet hiba</string>
   <string name="sasl_downgrade">Csökkentett SASL mechanizmus</string>
@@ -688,4 +688,5 @@
   <string name="pref_validate_hostname_summary">A hitelesített gazdanevet tartalmazó kiszolgálói tanúsítványok hitelesek</string>
   <string name="network_is_unreachable">A hálózat elérhetetlen</string>
   <string name="certificate_does_not_contain_jid">A tanúsítvány nem tartalmaz Jabber azonosítót</string>
+  <string name="server_info_partial">részleges</string>
 </resources>

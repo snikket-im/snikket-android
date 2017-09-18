@@ -653,7 +653,6 @@
   <string name="pref_automatically_delete_messages_description">Bu cihazdan, ayarlanmış zaman aralığından eski olan mesajları otomatik olarak silin.</string>
   <string name="encrypting_message">İletiyi şifrelemek</string>
   <string name="not_fetching_history_retention_period">Yerel saklama süresi nedeniyle ileti getirilmiyor.</string>
-  <string name="transcoding_video_progress">Video sıkıştırılıyor (%s%% tamamlandı)</string>
   <string name="corresponding_conversations_closed">Konuşma sonlandı</string>
   <string name="contact_blocked_past_tense">Kişi engellendi.</string>
   <string name="pref_notifications_from_strangers">Yabancılardan bildirimler</string>

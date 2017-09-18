@@ -666,7 +666,6 @@
   <string name="pref_automatically_delete_messages_description">Ezarritako denbora tartea baino zaharragoak diren mezuak gailu honetatik automatikoki ezabatu.</string>
   <string name="encrypting_message">Mezua enkriptatzen</string>
   <string name="not_fetching_history_retention_period">Mezurik ez eskuratzen gelditze tarte lokalarengatik.</string>
-  <string name="transcoding_video_progress">Bideoa konprimatzen (%s%% osatua)</string>
   <string name="corresponding_conversations_closed">Dagokion elkarrizketa itxi egin da.</string>
   <string name="contact_blocked_past_tense">Kontaktua blokeatu da.</string>
   <string name="pref_notifications_from_strangers">Ezezagunen jakinarazpenak</string>

@@ -659,7 +659,6 @@
   <string name="pref_automatically_delete_messages_description">自動從這個設備刪除比設定的時間區間還舊的訊息。</string>
   <string name="encrypting_message">訊息加密中</string>
   <string name="not_fetching_history_retention_period">訊息的時間因為超過本機保留區間而沒有下載。</string>
-  <string name="transcoding_video_progress">影片正在壓縮中 (已經完成了 %s%%)</string>
   <string name="corresponding_conversations_closed">關閉相關的對話了。</string>
   <string name="contact_blocked_past_tense">已經封鎖聯絡人了。</string>
   <string name="pref_notifications_from_strangers">陌生人訊息通知</string>
