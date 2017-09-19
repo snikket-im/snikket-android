@@ -38,35 +38,7 @@
             android:orientation="vertical"
             android:padding="2dp">
 
-            <ImageView
-                android:id="@+id/message_image"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:layout_marginBottom="4dp"
-                android:adjustViewBounds="true"
-                android:longClickable="true"
-                android:background="@color/black87"
-                android:scaleType="centerCrop" />
-
-            <eu.siacs.conversations.ui.widget.CopyTextView
-                android:id="@+id/message_body"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:autoLink="web"
-                android:longClickable="true"
-                android:textColorLink="@color/white"
-                android:textColor="@color/white"
-                android:textColorHighlight="@color/grey800"
-                android:textSize="?attr/TextSizeBody" />
-
-            <Button
-                android:id="@+id/download_button"
-                style="?android:attr/buttonStyleSmall"
-                android:longClickable="true"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:visibility="gone" />
+            <include layout="@layout/message_content"/>
 
             <LinearLayout
                 android:layout_width="wrap_content"

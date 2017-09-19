@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <ImageView
+        android:id="@+id/message_image"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="4dp"
+        android:layout_marginTop="8dp"
+        android:adjustViewBounds="true"
+        android:background="@color/black87"
+        android:longClickable="true"
+        android:scaleType="centerCrop"/>
+
+    <eu.siacs.conversations.ui.widget.CopyTextView
+        android:id="@+id/message_body"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:autoLink="web"
+        android:longClickable="true"
+        android:textColor="?attr/color_text_primary"
+        android:textColorHighlight="@color/grey500"
+        android:textColorLink="@color/black87"
+        android:textSize="?attr/TextSizeBody"/>
+
+    <Button
+        android:id="@+id/download_button"
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:longClickable="true"
+        android:visibility="gone"/>
+</merge>
