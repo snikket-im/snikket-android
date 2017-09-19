@@ -777,32 +777,40 @@ public class FileBackend {
 		final String mime = file.getMimeType();
 		boolean image = message.getType() == Message.TYPE_IMAGE || (mime != null && mime.startsWith("image/"));
 		boolean video = mime != null && mime.startsWith("video/");
+		boolean audio = mime != null && mime.startsWith("audio/");
+		final StringBuilder body = new StringBuilder();
+		if (url != null) {
+			body.append(url.toString());
+		}
+		body.append('|').append(file.getSize());
 		if (image || video) {
 			try {
 				Dimensions dimensions = image ? getImageDimensions(file) : getVideoDimensions(file);
-				if (url == null) {
-					message.setBody(Long.toString(file.getSize()) + '|' + dimensions.width + '|' + dimensions.height);
-				} else {
-					message.setBody(url.toString() + "|" + Long.toString(file.getSize()) + '|' + dimensions.width + '|' + dimensions.height);
-				}
-				return;
+				body.append('|').append(dimensions.width).append('|').append(dimensions.height);
 			} catch (NotAVideoFile notAVideoFile) {
 				Log.d(Config.LOGTAG,"file with mime type "+file.getMimeType()+" was not a video file");
 				//fall threw
 			}
+		} else if (audio) {
+			body.append("|0|0|").append(getMediaRuntime(file));
 		}
-		if (url != null) {
-			message.setBody(url.toString()+"|"+Long.toString(file.getSize()));
-		} else {
-			message.setBody(Long.toString(file.getSize()));
-		}
-
+		message.setBody(body.toString());
 	}
 
 	public int getMediaRuntime(Uri uri) {
 		try {
 			MediaMetadataRetriever mediaMetadataRetriever = new MediaMetadataRetriever();
 			mediaMetadataRetriever.setDataSource(mXmppConnectionService,uri);
+			return Integer.parseInt(mediaMetadataRetriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION));
+		} catch (IllegalArgumentException e) {
+			return 0;
+		}
+	}
+
+	private int getMediaRuntime(File file) {
+		try {
+			MediaMetadataRetriever mediaMetadataRetriever = new MediaMetadataRetriever();
+			mediaMetadataRetriever.setDataSource(file.toString());
 			return Integer.parseInt(mediaMetadataRetriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION));
 		} catch (IllegalArgumentException e) {
 			return 0;

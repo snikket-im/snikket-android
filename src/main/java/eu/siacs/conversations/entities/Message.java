@@ -715,6 +715,8 @@ public class Message extends AbstractEntity {
 						fileParams.url = parseUrl(parts[0]);
 					}
 					break;
+				case 5:
+					fileParams.runtime = parseInt(parts[4]);
 				case 4:
 					fileParams.width = parseInt(parts[2]);
 					fileParams.height = parseInt(parts[3]);
@@ -778,6 +780,7 @@ public class Message extends AbstractEntity {
 		public long size = 0;
 		public int width = 0;
 		public int height = 0;
+		public int runtime = 0;
 	}
 
 	public void setFingerprint(String fingerprint) {
