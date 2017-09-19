@@ -492,11 +492,11 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
 	}
 
 	@Override
-	protected String getShareableUri() {
+	protected String getShareableUri(boolean http) {
 		if (mAccount != null) {
-			return mAccount.getShareableUri();
+			return http ? mAccount.getShareableLink() : mAccount.getShareableUri();
 		} else {
-			return "";
+			return null;
 		}
 	}
 
@@ -590,7 +590,6 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
 	public boolean onCreateOptionsMenu(final Menu menu) {
 		super.onCreateOptionsMenu(menu);
 		getMenuInflater().inflate(R.menu.editaccount, menu);
-		final MenuItem showQrCode = menu.findItem(R.id.action_show_qr_code);
 		final MenuItem showBlocklist = menu.findItem(R.id.action_show_block_list);
 		final MenuItem showMoreInfo = menu.findItem(R.id.action_server_info_show_more);
 		final MenuItem changePassword = menu.findItem(R.id.action_change_password_on_server);
@@ -614,7 +613,6 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
 			mamPrefs.setVisible(mAccount.getXmppConnection().getFeatures().mam());
 			changePresence.setVisible(manuallyChangePresence());
 		} else {
-			showQrCode.setVisible(false);
 			showBlocklist.setVisible(false);
 			showMoreInfo.setVisible(false);
 			changePassword.setVisible(false);
@@ -783,19 +781,6 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
 				break;
 		}
 		return super.onOptionsItemSelected(item);
-	}
-
-	private void shareLink(boolean http) {
-		Intent intent = new Intent(Intent.ACTION_SEND);
-		intent.setType("text/plain");
-		String text;
-		if (http) {
-			text = mAccount.getShareableLink();
-		} else {
-			text = mAccount.getShareableUri();
-		}
-		intent.putExtra(Intent.EXTRA_TEXT,text);
-		startActivity(Intent.createChooser(intent, getText(R.string.share_with)));
 	}
 
 	private void shareBarcode() {
