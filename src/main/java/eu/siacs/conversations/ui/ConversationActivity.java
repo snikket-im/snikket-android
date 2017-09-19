@@ -443,23 +443,25 @@ public class ConversationActivity extends XmppActivity
 			}
 		}
 		if (Config.supportOmemo()) {
-			new Handler().post(new Runnable() {
-				@Override
-				public void run() {
-					View view = findViewById(R.id.action_security);
-					if (view != null) {
-						view.setOnLongClickListener(new View.OnLongClickListener() {
-							@Override
-							public boolean onLongClick(View v) {
-								return quickOmemoDebugger(getSelectedConversation());
-							}
-						});
-					}
-				}
-			});
+			new Handler().post(addOmemoDebuggerRunnable);
 		}
 		return super.onCreateOptionsMenu(menu);
 	}
+
+	private Runnable addOmemoDebuggerRunnable = new Runnable() {
+		@Override
+		public void run() {
+			View view = findViewById(R.id.action_security);
+			if (view != null) {
+				view.setOnLongClickListener(new View.OnLongClickListener() {
+					@Override
+					public boolean onLongClick(View v) {
+						return v.getId() == R.id.action_security && quickOmemoDebugger(getSelectedConversation());
+					}
+				});
+			}
+		}
+	};
 
 	private boolean quickOmemoDebugger(Conversation c) {
 		if (c != null) {
