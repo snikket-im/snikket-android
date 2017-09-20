@@ -331,7 +331,6 @@ public class MessageAdapter extends ArrayAdapter<Message> implements CopyTextVie
 		viewHolder.audioPlayer.setVisibility(View.GONE);
 		viewHolder.image.setVisibility(View.GONE);
 		viewHolder.messageBody.setVisibility(View.VISIBLE);
-		viewHolder.messageBody.setIncludeFontPadding(false);
 		Spannable span = new SpannableString(body);
 		float size = EmojiManager.isEmoji(body) ? 3.0f : 2.0f;
 		span.setSpan(new RelativeSizeSpan(size), 0, body.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
@@ -412,7 +411,6 @@ public class MessageAdapter extends ArrayAdapter<Message> implements CopyTextVie
 		viewHolder.image.setVisibility(View.GONE);
 		viewHolder.audioPlayer.setVisibility(View.GONE);
 		viewHolder.messageBody.setVisibility(View.VISIBLE);
-		viewHolder.messageBody.setIncludeFontPadding(true);
 		if (message.getBody() != null) {
 			final String nick = UIHelper.getMessageDisplayName(message);
 			SpannableStringBuilder body = message.getMergedBody();
