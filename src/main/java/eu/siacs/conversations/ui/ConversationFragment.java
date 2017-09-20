@@ -868,6 +868,9 @@ public class ConversationFragment extends Fragment implements EditMessage.Keyboa
 	@Override
 	public void onStop() {
 		super.onStop();
+		if (activity == null || !activity.isChangingConfigurations()) {
+			messageListAdapter.stopAudioPlayer();
+		}
 		if (this.conversation != null) {
 			final String msg = mEditMessage.getText().toString();
 			this.conversation.setNextMessage(msg);
@@ -894,6 +897,7 @@ public class ConversationFragment extends Fragment implements EditMessage.Keyboa
 			this.conversation.setNextMessage(msg);
 			if (this.conversation != conversation) {
 				updateChatState(this.conversation, msg);
+				messageListAdapter.stopAudioPlayer();
 			}
 			this.conversation.trim();
 

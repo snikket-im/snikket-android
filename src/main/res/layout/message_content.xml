@@ -30,4 +30,41 @@
         android:layout_height="wrap_content"
         android:longClickable="true"
         android:visibility="gone"/>
+
+    <RelativeLayout
+        android:id="@+id/audio_player"
+        android:layout_width="288dp"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        >
+
+        <ImageButton
+            android:id="@+id/play_pause"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:alpha="?attr/icon_alpha"
+            android:background="?android:selectableItemBackground"/>
+
+        <TextView
+            android:id="@+id/runtime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:paddingBottom="16dp"
+            android:paddingRight="16dp"
+            android:textColor="?attr/color_text_secondary"
+            android:textSize="?attr/TextSizeInfo"/>
+
+        <SeekBar
+            android:id="@+id/progress"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/runtime"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@+id/play_pause"
+            android:progress="100"/>
+    </RelativeLayout>
+
 </merge>
