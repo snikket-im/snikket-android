@@ -156,6 +156,7 @@ public class XmppConnectionService extends Service {
 	public static final String ACTION_GCM_TOKEN_REFRESH = "gcm_token_refresh";
 	public static final String ACTION_GCM_MESSAGE_RECEIVED = "gcm_message_received";
 	private final SerialSingleThreadExecutor mFileAddingExecutor = new SerialSingleThreadExecutor();
+	private final SerialSingleThreadExecutor mVideoCompressionExecutor = new SerialSingleThreadExecutor();
 	private final SerialSingleThreadExecutor mDatabaseExecutor = new SerialSingleThreadExecutor();
 	private ReplacingSerialSingleThreadExecutor mContactMergerExecutor = new ReplacingSerialSingleThreadExecutor(true);
 	private final IBinder mBinder = new XmppConnectionBinder();
@@ -487,8 +488,12 @@ public class XmppConnectionService extends Service {
 		}
 		message.setCounterpart(conversation.getNextCounterpart());
 		message.setType(Message.TYPE_FILE);
-		AttachFileToConversationRunnable runnable = new AttachFileToConversationRunnable(this,uri,message,callback);
-		mFileAddingExecutor.execute(runnable);
+		final AttachFileToConversationRunnable runnable = new AttachFileToConversationRunnable(this,uri,message,callback);
+		if (runnable.isVideoMessage()) {
+			mVideoCompressionExecutor.execute(runnable);
+		} else {
+			mFileAddingExecutor.execute(runnable);
+		}
 	}
 
 	public void attachImageToConversation(final Conversation conversation, final Uri uri, final UiCallback<Message> callback) {

@@ -42,6 +42,9 @@ public class AttachFileToConversationRunnable implements Runnable, MediaTranscod
 		this.isVideoMessage = (mimeType != null && mimeType.startsWith("video/") && Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2);
 	}
 
+	public boolean isVideoMessage() {
+		return this.isVideoMessage;
+	}
 
 	private void processAsFile() {
 		final String path = mXmppConnectionService.getFileBackend().getOriginalPath(uri);
