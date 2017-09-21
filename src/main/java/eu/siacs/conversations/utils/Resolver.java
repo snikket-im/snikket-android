@@ -15,6 +15,7 @@ import java.util.List;
 import de.measite.minidns.DNSClient;
 import de.measite.minidns.DNSName;
 import de.measite.minidns.dnssec.DNSSECResultNotAuthenticException;
+import de.measite.minidns.dnsserverlookup.AndroidUsingExec;
 import de.measite.minidns.hla.DnssecResolverApi;
 import de.measite.minidns.hla.ResolverApi;
 import de.measite.minidns.hla.ResolverResult;
@@ -39,13 +40,11 @@ public class Resolver {
     private static XmppConnectionService SERVICE = null;
 
 
-    public static void registerXmppConnectionService(XmppConnectionService service) {
+    public static void init(XmppConnectionService service) {
         Resolver.SERVICE = service;
-        registerLookupMechanism(service);
-    }
-
-    private static void registerLookupMechanism(Context context) {
-        DNSClient.addDnsServerLookupMechanism(new AndroidUsingLinkProperties(context));
+        DNSClient.removeDNSServerLookupMechanism(AndroidUsingExec.INSTANCE);
+        DNSClient.addDnsServerLookupMechanism(AndroidUsingExecLowPriority.INSTANCE);
+        DNSClient.addDnsServerLookupMechanism(new AndroidUsingLinkProperties(service));
     }
 
     public static List<Result> resolve(String domain) throws NetworkIsUnreachableException {
