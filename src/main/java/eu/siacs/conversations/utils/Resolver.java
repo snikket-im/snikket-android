@@ -14,6 +14,8 @@ import java.util.List;
 
 import de.measite.minidns.DNSClient;
 import de.measite.minidns.DNSName;
+import de.measite.minidns.Question;
+import de.measite.minidns.Record;
 import de.measite.minidns.dnssec.DNSSECResultNotAuthenticException;
 import de.measite.minidns.dnsserverlookup.AndroidUsingExec;
 import de.measite.minidns.hla.DnssecResolverApi;
@@ -151,18 +153,12 @@ public class Resolver {
     }
 
     private static <D extends Data> ResolverResult<D> resolveWithFallback(DNSName dnsName, Class<D> type, boolean validateHostname) throws IOException {
+        final Question question = new Question(dnsName, Record.TYPE.getType(type));
         if (!validateHostname) {
-            return ResolverApi.INSTANCE.resolve(dnsName, type);
+            return ResolverApi.INSTANCE.resolve(question);
         }
         try {
-            final ResolverResult<D> r = DnssecResolverApi.INSTANCE.resolveDnssecReliable(dnsName, type);
-            if (r.wasSuccessful()) {
-                if (r.getAnswers().isEmpty() && type.equals(SRV.class)) {
-                    Log.d(Config.LOGTAG, Resolver.class.getSimpleName() + ": resolving  SRV records of " + dnsName.toString() + " with DNSSEC yielded empty result");
-                }
-                return r;
-            }
-            Log.d(Config.LOGTAG, Resolver.class.getSimpleName() + ": error resolving " + type.getSimpleName() + " with DNSSEC. Trying DNS instead.", r.getResolutionUnsuccessfulException());
+            return DnssecResolverApi.INSTANCE.resolveDnssecReliable(question);
         } catch (DNSSECResultNotAuthenticException e) {
             Log.d(Config.LOGTAG, Resolver.class.getSimpleName() + ": error resolving " + type.getSimpleName() + " with DNSSEC. Trying DNS instead.", e);
         } catch (IOException e) {
@@ -170,7 +166,7 @@ public class Resolver {
         } catch (Throwable throwable) {
             Log.d(Config.LOGTAG, Resolver.class.getSimpleName() + ": error resolving " + type.getSimpleName() + " with DNSSEC. Trying DNS instead.", throwable);
         }
-        return ResolverApi.INSTANCE.resolve(dnsName, type);
+        return ResolverApi.INSTANCE.resolve(question);
     }
 
     private static boolean validateHostname() {
