@@ -18,6 +18,15 @@
                 <category android:name="com.example.gcm" />
             </intent-filter>
         </receiver>
+
+        <receiver android:name=".services.MaintenanceReceiver"
+                  android:exported="true"
+                  android:permission="android.permission.CHANGE_CONFIGURATION">
+            <intent-filter>
+                <action android:name="eu.siacs.conversations.RENEW_INSTANCE_ID"/>
+            </intent-filter>
+        </receiver>
+
         <service
             android:name=".services.PushMessageReceiver"
             android:exported="false" >
