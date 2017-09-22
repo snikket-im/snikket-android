@@ -22,7 +22,7 @@
   <string name="title_activity_sharewith">Distribuie către Conversations</string>
   <string name="title_activity_start_conversation">Pornește o conversație</string>
   <string name="title_activity_choose_contact">Alege contact</string>
-  <string name="title_activity_block_list">Blochează lista</string>
+  <string name="title_activity_block_list">Listă contacte blocate</string>
   <string name="just_now">în acest moment</string>
   <string name="minute_ago">acum un minut</string>
   <string name="minutes_ago">acum %d minute</string>
@@ -37,7 +37,7 @@
   <string name="participant">Participant</string>
   <string name="visitor">Vizitator</string>
   <string name="remove_contact_text">Ați dori să ștergeți pe %s din listă? Conversația asociată cu acest contact nu va fi ștearsă.</string>
-  <string name="block_contact_text">Ați dori să blocați pe %s să mai trimită mesaje?</string>
+  <string name="block_contact_text">Ați dori să blocați pe %s ca să nu vă mai trimită mesaje?</string>
   <string name="unblock_contact_text">Ați dori să deblocați pe %s și să îi permiteți să vă trimită mesaje?</string>
   <string name="block_domain_text">Blochează toate contactele de la %s?</string>
   <string name="unblock_domain_text">Deblochează toate contactele de la %s?</string>
@@ -57,7 +57,7 @@
   <string name="block">Blochează</string>
   <string name="unblock">Deblochează</string>
   <string name="save">Salvează</string>
-  <string name="ok">DA</string>
+  <string name="ok">BINE</string>
   <string name="crash_report_title">Conversations s-a oprit neașteptat</string>
   <string name="crash_report_message">Trimițând datele despre erori ajutați la continuarea dezvoltării aplicației Conversations\n<b>Atenție:</b> Se va utiliza contul XMPP pentru a trimite informațiile din jurnal către programatori.</string>
   <string name="send_now">Trimite acum</string>
@@ -122,15 +122,15 @@
   <string name="pref_never_send_crash">Nu trimite rapoarte de erori</string>
   <string name="pref_never_send_crash_summary">Trimițând datele despre erori ajutați la continuarea dezvoltării aplicației Conversations</string>
   <string name="pref_confirm_messages">Confirmă mesajele</string>
-  <string name="pref_confirm_messages_summary">Contactele sunt notificate atunci când ai primit un mesaj și l-ai citit</string>
+  <string name="pref_confirm_messages_summary">Contactele sunt notificate atunci când ați primit un mesaj și l-ați citit</string>
   <string name="pref_ui_options">Opțiuni interfață</string>
   <string name="openpgp_error">OpenKeychain a raportat o eroare</string>
   <string name="accept">Acceptă</string>
   <string name="error">A apărut o eroare</string>
-  <string name="pref_grant_presence_updates">Trimite actualizări de prezență</string>
+  <string name="pref_grant_presence_updates">Acordă actualizări de prezență</string>
   <string name="pref_grant_presence_updates_summary">Acordă și cere anticipat abonarea la actualizările de prezență pentru contactele create de dumneavoastră</string>
   <string name="your_account">Contul tău</string>
-  <string name="send_presence_updates">Trimite actualizari de prezență</string>
+  <string name="send_presence_updates">Trimite actualizări de prezență</string>
   <string name="receive_presence_updates">Primește actualizări de prezență</string>
   <string name="ask_for_presence_updates">Cere actualizări de prezență</string>
   <string name="attach_choose_picture">Alege o imagine</string>
@@ -175,10 +175,10 @@
   <string name="attach_record_voice">Înregistrare voce</string>
   <string name="account_settings_jabber_id">ID-ul Jabber</string>
   <string name="block_jabber_id">Blochează ID Jabber</string>
-  <string name="account_settings_password">Parola</string>
+  <string name="account_settings_password">Parolă</string>
   <string name="account_settings_example_jabber_id">username@example.com</string>
   <string name="account_settings_confirm_password">Confirmă parola</string>
-  <string name="password">Parola</string>
+  <string name="password">Parolă</string>
   <string name="confirm_password">Confirmă parola</string>
   <string name="passwords_do_not_match">Parolele nu sunt identice</string>
   <string name="invalid_jid">Acesta nu este un ID Jabber valabil</string>
@@ -267,7 +267,7 @@
   <string name="enable">Activează</string>
   <string name="conference_requires_password">Conferința necesită o parolă</string>
   <string name="enter_password">Introduceți parola</string>
-  <string name="missing_presence_subscription">Lipseste abonarea de la actualizarea prezentei</string>
+  <string name="missing_presence_subscription">Lipsește abonarea de la actualizările de prezență</string>
   <string name="request_presence_updates">Vă rugăm, mai întâi cereți actualizări de prezență de la acest contact.\n\n<small>Acestea vor fi folosite pentru a determina ce aplicații folosește contactul dumneavoastră pentru conectare.</small></string>
   <string name="request_now">Cere acum</string>
   <string name="delete_fingerprint">Șterge amprenta</string>
@@ -318,13 +318,13 @@
   <string name="url_copied_to_clipboard">Adresă copiată în memorie</string>
   <string name="scan_qr_code">Scanează cod de bare 2D</string>
   <string name="show_qr_code">Arată cod de bare 2D</string>
-  <string name="show_block_list">Arată lista blocată</string>
+  <string name="show_block_list">Listă contacte blocate</string>
   <string name="account_details">Detalii cont</string>
   <string name="verify_otr">Verifica OTR</string>
   <string name="remote_fingerprint">Amprentă la distanta</string>
   <string name="shared_secret_hint">Indiciu sau Întrebare</string>
   <string name="shared_secret_secret">Secret împărtășit</string>
-  <string name="confirm">Confirma</string>
+  <string name="confirm">Confirmă</string>
   <string name="in_progress">În desfășurare</string>
   <string name="respond">Raspunde</string>
   <string name="secrets_do_not_match">Secretele nu se potrivesc</string>
@@ -372,7 +372,7 @@
   <string name="error_trustkeys_title">Eroare</string>
   <string name="fetching_history_from_server">Descarc istoric de pe server</string>
   <string name="no_more_history_on_server">Nu mai exista istoric pe server</string>
-  <string name="updating">Actualizez...</string>
+  <string name="updating">Actualizare...</string>
   <string name="password_changed">Parolă schimbată</string>
   <string name="could_not_change_password">Nu s-a putut schimba parola</string>
   <string name="otr_session_not_started">Trimite un mesaj pentru a pornii o discutie criptata</string>
@@ -382,8 +382,8 @@
   <string name="shared_secret_hint_should_not_be_empty">Indiciul tău nu ar trebui să fie gol</string>
   <string name="shared_secret_can_not_be_empty">Secretul tău împărtășit nu poate fi gol</string>
   <string name="manual_verification_explanation">Compară cu grijă amprenta afișata mai jos cu amprenta contactului.\nPoți folosi orice formă de comunicare de încredere precum un e-mail criptat sau o convorbire telefonică pentru a face schimb de amprente.</string>
-  <string name="change_password">Schimbare parola</string>
-  <string name="current_password">Parola curentă</string>
+  <string name="change_password">Schimbare parolă</string>
+  <string name="current_password">Parolă curentă</string>
   <string name="new_password">Parolă nouă</string>
   <string name="password_should_not_be_empty">Parola nu poate să fie goală</string>
   <string name="enable_all_accounts">Activează toate conturile</string>
@@ -622,7 +622,7 @@ sau chiar pierderea mesajelor.\nÎn continuare veți fi rugați să dezactivați
   <string name="no_permission_to_access_x">Nu există permisiunea de a accesa %s</string>
   <string name="remote_server_not_found">Serverul nu a fost găsit</string>
   <string name="unable_to_update_account">Nu se poate actualiza contul</string>
-  <string name="missing_presence_subscription_with_x">Lipsesc actualizările de prezență cu %s.</string>
+  <string name="missing_presence_subscription_with_x">Lipsește abonarea de la actualizările de prezență cu %s.</string>
   <string name="missing_keys_from_x">Cheie OMEMO lipsă de la %s.</string>
   <string name="missing_omemo_keys">Chei OMEMO lipsă</string>
   <string name="wrong_conference_configuration">Aceasta este o conferința care nu este privata și nu este anonimă.</string>
@@ -672,8 +672,9 @@ sau chiar pierderea mesajelor.\nÎn continuare veți fi rugați să dezactivați
   <string name="pref_automatically_delete_messages_description">De pe acest dispozitiv se vor șterge dacă sunt mai vechi de perioada selectată.</string>
   <string name="encrypting_message">Mesajul se criptează</string>
   <string name="not_fetching_history_retention_period">Politica de retenție locală împiedică descărcarea altor mesaje.</string>
+  <string name="transcoding_video">Se comprimă clipul video</string>
   <string name="corresponding_conversations_closed">Conversațiile corespunzătoare au fost închise</string>
-  <string name="contact_blocked_past_tense">Contact blocat</string>
+  <string name="contact_blocked_past_tense">Contact blocat.</string>
   <string name="pref_notifications_from_strangers">Notificări de la persoane necunoscute</string>
   <string name="pref_notifications_from_strangers_summary">Nu veți fi deranjat/ă atunci când o persoană care nu este în lista ta de contacte vă scrie</string>
   <string name="received_message_from_stranger">Mesaj primit de la o persoana necunoscuta</string>
@@ -695,4 +696,5 @@ sau chiar pierderea mesajelor.\nÎn continuare veți fi rugați să dezactivați
   <string name="network_is_unreachable">Rețeaua nu este accesibilă </string>
   <string name="certificate_does_not_contain_jid">Certificatul nu conține un ID Jabber</string>
   <string name="server_info_partial">parțial</string>
+  <string name="attach_record_video">Înregistrare video</string>
 </resources>
