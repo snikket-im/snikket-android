@@ -763,10 +763,25 @@ public class ConversationFragment extends Fragment implements EditMessage.Keyboa
 		}
 	}
 
-	private void resendMessage(Message message) {
-		if (message.getType() == Message.TYPE_FILE || message.getType() == Message.TYPE_IMAGE) {
+	private void resendMessage(final Message message) {
+		if (message.isFileOrImage()) {
 			DownloadableFile file = activity.xmppConnectionService.getFileBackend().getFile(message);
-			if (!file.exists()) {
+			if (file.exists()) {
+				final Conversation conversation = message.getConversation();
+				final XmppConnection xmppConnection = conversation.getAccount().getXmppConnection();
+				if (!message.hasFileOnRemoteHost()
+						&& xmppConnection != null
+						&& !xmppConnection.getFeatures().httpUpload(message.getFileParams().size)) {
+					activity.selectPresence(conversation, new OnPresenceSelected() {
+						@Override
+						public void onPresenceSelected() {
+							message.setCounterpart(conversation.getNextCounterpart());
+							activity.xmppConnectionService.resendFailedMessages(message);
+						}
+					});
+					return;
+				}
+			} else {
 				Toast.makeText(activity, R.string.file_deleted, Toast.LENGTH_SHORT).show();
 				message.setTransferable(new TransferablePlaceholder(Transferable.STATUS_DELETED));
 				activity.updateConversationList();
