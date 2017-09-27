@@ -108,7 +108,7 @@ public class MessageAdapter extends ArrayAdapter<Message> implements CopyTextVie
 		}
 	};
 
-	private ConversationActivity activity;
+	private final ConversationActivity activity;
 
 	private DisplayMetrics metrics;
 
@@ -669,8 +669,7 @@ public class MessageAdapter extends ArrayAdapter<Message> implements CopyTextVie
 					viewHolder.load_more_messages = (Button) view.findViewById(R.id.load_more_messages);
 					break;
 				default:
-					viewHolder = null;
-					break;
+					throw new AssertionError("Unknown view type");
 			}
 			if (viewHolder.messageBody != null) {
 				listSelectionManager.onCreate(viewHolder.messageBody,
@@ -790,16 +789,13 @@ public class MessageAdapter extends ArrayAdapter<Message> implements CopyTextVie
 				}
 			} else {
 				displayInfoMessage(viewHolder,activity.getString(R.string.install_openkeychain),darkBackground);
-				if (viewHolder != null) {
-					viewHolder.message_box
-						.setOnClickListener(new OnClickListener() {
+				viewHolder.message_box.setOnClickListener(new OnClickListener() {
 
 							@Override
 							public void onClick(View v) {
 								activity.showInstallPgpDialog();
 							}
 						});
-				}
 			}
 		} else if (message.getEncryption() == Message.ENCRYPTION_DECRYPTION_FAILED) {
 			displayDecryptionFailed(viewHolder,darkBackground);
