@@ -666,6 +666,7 @@
   <string name="pref_automatically_delete_messages_description">Slett meldinger fra denne enheten automatisk hvis de er eldre enn oppsatt tidsramme.</string>
   <string name="encrypting_message">Krypterer melding</string>
   <string name="not_fetching_history_retention_period">Henter ikke inn meldinger på grunn av lokal oppbevaringsperiode.</string>
+  <string name="transcoding_video">Komprimerer video</string>
   <string name="corresponding_conversations_closed">Samsvarende samtaler lukket.</string>
   <string name="contact_blocked_past_tense">Kontakt blokkert.</string>
   <string name="pref_notifications_from_strangers">Varslinger fra fremmede</string>
@@ -688,4 +689,6 @@
   <string name="pref_validate_hostname_summary">Tjenersertifikat som inneholder gyldige vertsnavn anses som bekreftet</string>
   <string name="network_is_unreachable">Nettverket kan ikke nås</string>
   <string name="certificate_does_not_contain_jid">Tjenersertifikatet inneholder ikke en Jabber-ID</string>
+  <string name="server_info_partial">delvis</string>
+  <string name="attach_record_video">Ta opp video</string>
 </resources>

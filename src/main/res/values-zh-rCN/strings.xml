@@ -367,6 +367,8 @@
   <string name="clear_other_devices">清除设备</string>
   <string name="clear_other_devices_desc">你想清除所有其他设备的 OMEMO 通告？下次你的设备连接，将会重新收到通告，但也许将不会收到当时你发送的消息。</string>
   <string name="error_no_keys_to_trust_server_error">此联系人没有可用的密钥。\n从服务器获取密钥失败。也许你的联系人所在服务器发生问题。</string>
+  <string name="error_no_keys_to_trust_presence">没有可以用于这个账户的密钥。
+请确保你有相互的在线状态的订阅。</string>
   <string name="error_no_keys_to_trust">此联系人没有可用的密钥。如果你曾经清除过他们的密钥，那么需要他们生成新的密钥。</string>
   <string name="error_trustkeys_title">错误</string>
   <string name="fetching_history_from_server">从服务器获取历史记录</string>
@@ -664,6 +666,7 @@
   <string name="pref_automatically_delete_messages_description">自动从此设备上删除超过配置时间段的消息</string>
   <string name="encrypting_message">消息加密中</string>
   <string name="not_fetching_history_retention_period">由于本地保留期限，因此无法提取消息。</string>
+  <string name="transcoding_video">正在压缩视频</string>
   <string name="corresponding_conversations_closed">相应的对话已关闭。</string>
   <string name="contact_blocked_past_tense">联系人已屏蔽</string>
   <string name="pref_notifications_from_strangers">陌生人也通知</string>
@@ -682,4 +685,10 @@
   <string name="pref_headsup_notifications_summary">显示顶部通知</string>
   <string name="today">今天</string>
   <string name="yesterday">昨天</string>
+  <string name="pref_validate_hostname">使用 DNSSEC 来验证主机名</string>
+  <string name="pref_validate_hostname_summary">包含已验证的主机名的服务器证书被认为是已验证的</string>
+  <string name="network_is_unreachable">网络不可达</string>
+  <string name="certificate_does_not_contain_jid">证书不包含一个 Jabber ID</string>
+  <string name="server_info_partial">部分的</string>
+  <string name="attach_record_video">录制视频</string>
 </resources>
