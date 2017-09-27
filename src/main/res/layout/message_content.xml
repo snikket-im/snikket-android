@@ -33,7 +33,7 @@
 
     <RelativeLayout
         android:id="@+id/audio_player"
-        android:layout_width="288dp"
+        android:layout_width="@dimen/audio_player_width"
         android:layout_height="wrap_content"
         android:visibility="gone"
         >

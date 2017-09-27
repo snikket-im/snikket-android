@@ -3,4 +3,5 @@
 	<!-- https://material.io/devices/ -->
 	<dimen name="fineprint_size">12sp</dimen>
 	<dimen name="swipe_handle_size">48dp</dimen>
+	<dimen name="audio_player_width">288dp</dimen>
 </resources>
