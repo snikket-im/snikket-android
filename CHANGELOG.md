@@ -1,5 +1,10 @@
 # Changelog
 
+### Version 1.21.0
+* Inline player for audio messages
+* Stronger compression for long videos
+* Long press the 'add back' button to show block menu
+
 ### Version 1.20.1
 * fixed OTR encrypted file transfer
 
