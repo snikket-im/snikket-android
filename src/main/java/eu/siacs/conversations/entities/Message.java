@@ -4,8 +4,6 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.text.SpannableStringBuilder;
 
-import com.vdurmont.emoji.EmojiManager;
-
 import java.net.MalformedURLException;
 import java.net.URL;
 
@@ -14,6 +12,7 @@ import eu.siacs.conversations.crypto.axolotl.FingerprintStatus;
 import eu.siacs.conversations.http.AesGcmURLStreamHandler;
 import eu.siacs.conversations.ui.adapter.MessageAdapter;
 import eu.siacs.conversations.utils.CryptoHelper;
+import eu.siacs.conversations.utils.Emoticons;
 import eu.siacs.conversations.utils.GeoHelper;
 import eu.siacs.conversations.utils.MimeUtils;
 import eu.siacs.conversations.utils.UIHelper;
@@ -684,7 +683,7 @@ public class Message extends AbstractEntity {
 
 	public synchronized boolean bodyIsOnlyEmojis() {
 		if (isEmojisOnly == null) {
-			isEmojisOnly = EmojiManager.isOnlyEmojis(body.replaceAll("\\s", ""));
+			isEmojisOnly = Emoticons.isOnlyEmoji(body.replaceAll("\\s",""));
 		}
 		return isEmojisOnly;
 	}
