@@ -1,11 +1,7 @@
 package eu.siacs.conversations.utils;
 
-import android.util.Log;
-
 import java.util.ArrayList;
 import java.util.List;
-
-import eu.siacs.conversations.Config;
 
 public class Emoticons {
 
@@ -68,45 +64,46 @@ public class Emoticons {
 
 
 		public boolean offer(int codepoint) {
+			boolean add = false;
 			if (this.codepoints.size() == 0) {
 				if (REGIONAL_INDICATORS.contains(codepoint)) {
-					codepoints.add(codepoint);
-					return true;
+					add = true;
 				} else if (EMOJIS.contains(codepoint) && !FITZPATRICK.contains(codepoint) && codepoint != ZWJ) {
-					codepoints.add(codepoint);
-					return true;
+					add = true;
 				}
 			} else {
 				int previous = codepoints.get(codepoints.size() -1);
 				if (REGIONAL_INDICATORS.contains(previous) && REGIONAL_INDICATORS.contains(codepoint)) {
 					if (codepoints.size() == 1) {
-						codepoints.add(codepoint);
-						return true;
+						add = true;
 					}
 				} else if (previous == VARIATION_16) {
 					if (isMerger(codepoint)) {
-						codepoints.add(codepoint);
-						return true;
+						add = true;
 					}
-				} else if (isMerger(previous)) {
-					if (EMOJIS.contains(codepoint)) {
-						codepoints.add(codepoint);
-						return true;
+				} else if (FITZPATRICK.contains(previous)) {
+					if (codepoint == ZWJ || EMOJIS.contains(codepoint)) {
+						add = true;
 					}
-				} else {
-					if (isMerger(codepoint)) {
-						codepoints.add(codepoint);
-						return true;
-					} else if (codepoint == VARIATION_16 && EMOJIS.contains(previous)) {
-						codepoints.add(codepoint);
-						return true;
+				} else if (ZWJ == previous) {
+					if (EMOJIS.contains(codepoint) || FITZPATRICK.contains(codepoint)) {
+						add = true;
 					}
+				} else if (isMerger(codepoint)) {
+					add = true;
+				} else if (codepoint == VARIATION_16 && EMOJIS.contains(previous)) {
+					add = true;
 				}
 			}
-			return false;
+			if (add) {
+				codepoints.add(codepoint);
+				return true;
+			} else {
+				return false;
+			}
 		}
 
-		public static boolean isMerger(int codepoint) {
+		private static boolean isMerger(int codepoint) {
 			return codepoint == ZWJ || FITZPATRICK.contains(codepoint);
 		}
 
