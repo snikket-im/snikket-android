@@ -11,8 +11,21 @@ public class Emoticons {
 	private static final UnicodeRange TRANSPORT_SYMBOLS = new UnicodeRange(0x1F680,0x1F6FF);
 	private static final UnicodeRange MISC_SYMBOLS = new UnicodeRange(0x2600,0x26FF);
 	private static final UnicodeRange DINGBATS = new UnicodeRange(0x2700,0x27BF);
+	private static final UnicodeRange ENCLOSED_ALPHANUMERIC_SUPPLEMENT = new UnicodeRange(0x1F100,0x1F1FF);
 	private static final UnicodeRange REGIONAL_INDICATORS = new UnicodeRange(0x1F1E6,0x1F1FF);
-	private static final UnicodeBlocks EMOJIS = new UnicodeBlocks(MISC_SYMBOLS_AND_PICTOGRAPHS,SUPPLEMENTAL_SYMBOLS,EMOTICONS,TRANSPORT_SYMBOLS,MISC_SYMBOLS,DINGBATS);
+	private static final UnicodeRange GEOMETRIC_SHAPES = new UnicodeRange(0x25A0,0x25FF);
+	private static final UnicodeRange LATIN_SUPPLEMENT = new UnicodeRange(0x80,0xFF);
+	private static final UnicodeRange MISC_TECHNICAL = new UnicodeRange(0x2300,0x23FF);
+	private static final UnicodeBlocks SYMBOLIZE = new UnicodeBlocks(GEOMETRIC_SHAPES, LATIN_SUPPLEMENT);
+	private static final UnicodeBlocks EMOJIS = new UnicodeBlocks(
+			MISC_SYMBOLS_AND_PICTOGRAPHS,
+			SUPPLEMENTAL_SYMBOLS,
+			EMOTICONS,
+			TRANSPORT_SYMBOLS,
+			MISC_SYMBOLS,
+			DINGBATS,
+			ENCLOSED_ALPHANUMERIC_SUPPLEMENT,
+			MISC_TECHNICAL);
 	private static final int ZWJ = 0x200D;
 	private static final int VARIATION_16 = 0xFE0F;
 	private static final UnicodeRange FITZPATRICK = new UnicodeRange(0x1F3FB,0x1F3FF);
@@ -66,29 +79,25 @@ public class Emoticons {
 		public boolean offer(int codepoint) {
 			boolean add = false;
 			if (this.codepoints.size() == 0) {
-				if (REGIONAL_INDICATORS.contains(codepoint)) {
+				if (SYMBOLIZE.contains(codepoint)) {
+					add = true;
+				} else if (REGIONAL_INDICATORS.contains(codepoint)) {
 					add = true;
 				} else if (EMOJIS.contains(codepoint) && !FITZPATRICK.contains(codepoint) && codepoint != ZWJ) {
 					add = true;
 				}
 			} else {
 				int previous = codepoints.get(codepoints.size() -1);
-				if (REGIONAL_INDICATORS.contains(previous) && REGIONAL_INDICATORS.contains(codepoint)) {
-					if (codepoints.size() == 1) {
-						add = true;
-					}
+				if (SYMBOLIZE.contains(previous)) {
+					add = codepoint == VARIATION_16;
+				} else if (REGIONAL_INDICATORS.contains(previous) && REGIONAL_INDICATORS.contains(codepoint)) {
+					add = codepoints.size() == 1;
 				} else if (previous == VARIATION_16) {
-					if (isMerger(codepoint)) {
-						add = true;
-					}
+					add = isMerger(codepoint);
 				} else if (FITZPATRICK.contains(previous)) {
-					if (codepoint == ZWJ || EMOJIS.contains(codepoint)) {
-						add = true;
-					}
+					add = codepoint == ZWJ || EMOJIS.contains(codepoint);
 				} else if (ZWJ == previous) {
-					if (EMOJIS.contains(codepoint) || FITZPATRICK.contains(codepoint)) {
-						add = true;
-					}
+					add = EMOJIS.contains(codepoint) || FITZPATRICK.contains(codepoint);
 				} else if (isMerger(codepoint)) {
 					add = true;
 				} else if (codepoint == VARIATION_16 && EMOJIS.contains(previous)) {
@@ -108,6 +117,9 @@ public class Emoticons {
 		}
 
 		public Symbol build() {
+			if (codepoints.size() > 0 && SYMBOLIZE.contains(codepoints.get(codepoints.size() - 1))) {
+				return Symbol.NON_EMOJI;
+			}
 			return codepoints.size() == 0 ? Symbol.NON_EMOJI : Symbol.EMOJI;
 		}
 	}
