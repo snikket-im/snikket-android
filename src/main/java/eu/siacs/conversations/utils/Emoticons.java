@@ -1,12 +1,8 @@
 package eu.siacs.conversations.utils;
 
-import android.util.Log;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-
-import eu.siacs.conversations.Config;
 
 public class Emoticons {
 
@@ -22,6 +18,7 @@ public class Emoticons {
 	private static final UnicodeRange GEOMETRIC_SHAPES = new UnicodeRange(0x25A0,0x25FF);
 	private static final UnicodeRange LATIN_SUPPLEMENT = new UnicodeRange(0x80,0xFF);
 	private static final UnicodeRange MISC_TECHNICAL = new UnicodeRange(0x2300,0x23FF);
+	private static final UnicodeRange TAGS = new UnicodeRange(0xE0020,0xE007F);
 	private static final UnicodeList CYK_SYMBOLS_AND_PUNCTUATION = new UnicodeList(0x3030,0x303D);
 	private static final UnicodeList LETTERLIKE_SYMBOLS = new UnicodeList(0x2122,0x2139);
 
@@ -43,9 +40,11 @@ public class Emoticons {
 			ENCLOSED_ALPHANUMERIC_SUPPLEMENT,
 			ENCLOSED_IDEOGRAPHIC_SUPPLEMENT,
 			MISC_TECHNICAL);
+
 	private static final int ZWJ = 0x200D;
 	private static final int VARIATION_16 = 0xFE0F;
 	private static final int COMBINING_ENCLOSING_KEYCAP = 0x20E3;
+	private static final int BLACK_FLAG = 0x1F3F4;
 	private static final UnicodeRange FITZPATRICK = new UnicodeRange(0x1F3FB,0x1F3FF);
 
 	private static List<Symbol> parse(String input) {
@@ -106,7 +105,9 @@ public class Emoticons {
 				}
 			} else {
 				int previous = codepoints.get(codepoints.size() -1);
-				if (COMBINING_ENCLOSING_KEYCAP == codepoint) {
+				if (codepoints.get(0) == BLACK_FLAG) {
+					add = TAGS.contains(codepoint);
+				} else if (COMBINING_ENCLOSING_KEYCAP == codepoint) {
 					add = KEYCAP_COMBINEABLE.contains(previous) || previous == VARIATION_16;
 				} else if (SYMBOLIZE.contains(previous)) {
 					add = codepoint == VARIATION_16;
@@ -124,7 +125,6 @@ public class Emoticons {
 					add = true;
 				}
 			}
-			Log.d(Config.LOGTAG,"code point "+String.format("%H",codepoint)+" added="+add);
 			if (add) {
 				codepoints.add(codepoint);
 				return true;
