@@ -802,7 +802,7 @@ public class MessageAdapter extends ArrayAdapter<Message> implements CopyTextVie
 			if (message.isGeoUri()) {
 				displayLocationMessage(viewHolder,message);
 			} else if (message.bodyIsOnlyEmojis()) {
-				displayEmojiMessage(viewHolder, message.getBody().replaceAll("\\s",""));
+				displayEmojiMessage(viewHolder, message.getBody().trim());
 			} else if (message.treatAsDownloadable()) {
 				try {
 					URL url = new URL(message.getBody());
