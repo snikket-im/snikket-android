@@ -54,6 +54,7 @@ public class Conversation extends AbstractEntity implements Blockable, Comparabl
 	public static final String ATTRIBUTE_MUTED_TILL = "muted_till";
 	public static final String ATTRIBUTE_ALWAYS_NOTIFY = "always_notify";
 	public static final String ATTRIBUTE_LAST_CLEAR_HISTORY = "last_clear_history";
+	public static final String ATTRIBUTE_NEXT_MESSAGE = "next_message";
 
 	private static final String ATTRIBUTE_CRYPTO_TARGETS = "crypto_targets";
 
@@ -80,8 +81,6 @@ public class Conversation extends AbstractEntity implements Blockable, Comparabl
 
 	private transient String otrFingerprint = null;
 	private Smp mSmp = new Smp();
-
-	private String nextMessage;
 
 	private transient MucOptions mucOptions = null;
 
@@ -753,19 +752,18 @@ public class Conversation extends AbstractEntity implements Blockable, Comparabl
 	}
 
 	public String getNextMessage() {
-		if (this.nextMessage == null) {
-			return "";
-		} else {
-			return this.nextMessage;
-		}
+		final String nextMessage = getAttribute(ATTRIBUTE_NEXT_MESSAGE);
+		return nextMessage == null ? "" : nextMessage;
 	}
 
 	public boolean smpRequested() {
 		return smp().status == Smp.STATUS_CONTACT_REQUESTED;
 	}
 
-	public void setNextMessage(String message) {
-		this.nextMessage = message;
+	public boolean setNextMessage(String message) {
+		boolean changed = !getNextMessage().equals(message);
+		this.setAttribute(ATTRIBUTE_NEXT_MESSAGE,message);
+		return changed;
 	}
 
 	public void setSymmetricKey(byte[] key) {

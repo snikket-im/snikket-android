@@ -889,7 +889,9 @@ public class ConversationFragment extends Fragment implements EditMessage.Keyboa
 		}
 		if (this.conversation != null) {
 			final String msg = mEditMessage.getText().toString();
-			this.conversation.setNextMessage(msg);
+			if (this.conversation.setNextMessage(msg)) {
+				activity.xmppConnectionService.updateConversation(this.conversation);
+			}
 			updateChatState(this.conversation, msg);
 		}
 	}
@@ -910,7 +912,9 @@ public class ConversationFragment extends Fragment implements EditMessage.Keyboa
 		setupIme();
 		if (this.conversation != null) {
 			final String msg = mEditMessage.getText().toString();
-			this.conversation.setNextMessage(msg);
+			if (this.conversation.setNextMessage(msg)) {
+				activity.xmppConnectionService.updateConversation(conversation);
+			}
 			if (this.conversation != conversation) {
 				updateChatState(this.conversation, msg);
 				messageListAdapter.stopAudioPlayer();
@@ -1154,7 +1158,9 @@ public class ConversationFragment extends Fragment implements EditMessage.Keyboa
 			mEditMessage.append(conversation.getDraftMessage());
 			conversation.setDraftMessage(null);
 		}
-		conversation.setNextMessage(mEditMessage.getText().toString());
+		if (conversation.setNextMessage(mEditMessage.getText().toString())) {
+			activity.xmppConnectionService.updateConversation(conversation);
+		}
 		updateChatMsgHint();
 		new Handler().post(new Runnable() {
 			@Override
