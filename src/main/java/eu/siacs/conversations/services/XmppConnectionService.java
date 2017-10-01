@@ -1748,7 +1748,12 @@ public class XmppConnectionService extends Service {
 		this.accounts.add(account);
 		this.reconnectAccountInBackground(account);
 		updateAccountUi();
+		syncEnabledAccountSetting();
 		toggleForegroundService();
+	}
+
+	private void syncEnabledAccountSetting() {
+		getPreferences().edit().putBoolean(EventReceiver.SETTING_ENABLED_ACCOUNTS,hasEnabledAccounts()).apply();
 	}
 
 	public void createAccountFromKey(final String alias, final OnAccountCreated callback) {
@@ -1823,6 +1828,7 @@ public class XmppConnectionService extends Service {
 			updateAccountUi();
 			getNotificationService().updateErrorNotification();
 			toggleForegroundService();
+			syncEnabledAccountSetting();
 			return true;
 		} else {
 			return false;

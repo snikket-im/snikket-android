@@ -760,25 +760,6 @@ public class DatabaseBackend extends SQLiteOpenHelper {
 		return rows == 1;
 	}
 
-	public boolean hasEnabledAccounts() {
-		SQLiteDatabase db = this.getReadableDatabase();
-		Cursor cursor = db.rawQuery("select count(" + Account.UUID + ")  from "
-				+ Account.TABLENAME + " where not options & (1 <<1)", null);
-		try {
-			cursor.moveToFirst();
-			int count = cursor.getInt(0);
-			return (count > 0);
-		} catch (SQLiteCantOpenDatabaseException e) {
-			return true; // better safe than sorry
-		} catch (RuntimeException e) {
-			return true; // better safe than sorry
-		} finally {
-			if (cursor != null) {
-				cursor.close();
-			}
-		}
-	}
-
 	@Override
 	public SQLiteDatabase getWritableDatabase() {
 		SQLiteDatabase db = super.getWritableDatabase();
