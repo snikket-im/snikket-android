@@ -1,6 +1,6 @@
 #### General information
 
-* **Version:** eg 1.12.2
+* **Version:** eg 1.21.0
 * **Device:** eg Google Nexus 5
 * **Android Version:** eg Android 6.0 Stock or Android 5.1 Cyanogenmod
 * **Server name:** eg conversations.im, jabber.at or self hosted
@@ -17,7 +17,12 @@
 
 #### Expected result
 
-What is the expected output? What do you see instead?
+What is the expected output? 
+
+
+#### Actual result
+
+What do you see instead?
 
 
 #### Debug output
