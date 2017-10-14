@@ -84,13 +84,18 @@ public class AttachFileToConversationRunnable implements Runnable, MediaTranscod
 		final int runtime = mXmppConnectionService.getFileBackend().getMediaRuntime(uri);
 		MediaFormatStrategy formatStrategy = runtime >= 8000 ? MediaFormatStrategyPresets.createExportPreset960x540Strategy() : MediaFormatStrategyPresets.createAndroid720pStrategy();
 		file.getParentFile().mkdirs();
-		ParcelFileDescriptor parcelFileDescriptor = mXmppConnectionService.getContentResolver().openFileDescriptor(uri, "r");
+		final ParcelFileDescriptor parcelFileDescriptor = mXmppConnectionService.getContentResolver().openFileDescriptor(uri, "r");
+		if (parcelFileDescriptor == null) {
+			throw new FileNotFoundException("Parcel File Descriptor was null");
+		}
 		FileDescriptor fileDescriptor = parcelFileDescriptor.getFileDescriptor();
 		Future<Void> future = MediaTranscoder.getInstance().transcodeVideo(fileDescriptor, file.getAbsolutePath(), formatStrategy, this);
 		try {
 			future.get();
-		} catch (Exception e) {
+		} catch (InterruptedException e) {
 			throw new AssertionError(e);
+		} catch (ExecutionException e) {
+			Log.d(Config.LOGTAG,"ignoring execution exception. Should get handled by onTranscodeFiled() instead",e);
 		}
 	}
 
@@ -132,7 +137,7 @@ public class AttachFileToConversationRunnable implements Runnable, MediaTranscod
 		if (isVideoMessage) {
 			try {
 				processAsVideo();
-			} catch (Throwable e) {
+			} catch (FileNotFoundException e) {
 				processAsFile();
 			}
 		} else {
