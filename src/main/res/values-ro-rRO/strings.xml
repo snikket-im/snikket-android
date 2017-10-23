@@ -530,7 +530,7 @@
   <string name="shared_file_with_x">Partajează fișierul cu %s...</string>
   <string name="shared_image_with_x">Partajează imaginea cu %s.</string>
   <string name="shared_images_with_x">Partajează imaginile cu %s.</string>
-  <string name="shared_text_with_x">Partajeaza textul cu %s</string>
+  <string name="shared_text_with_x">Partajează textul cu %s</string>
   <string name="no_storage_permission">Conversations are nevoie de acces la stocarea externa</string>
   <string name="sync_with_contacts">Sincronizează cu contactele</string>
   <string name="sync_with_contacts_long">Conversations dorește să potrivească lista de contacte XMPP cu cea din dispozitiv pentru a putea afișa numele lor complete și avatarele.\n\nConversations doar va citi și potrivi local fără să le încarce pe vreun server.\n\nUrmează să fiți întrebați dacă doriți să permiteți accesul la contacte.</string>
@@ -585,7 +585,7 @@ sau chiar pierderea mesajelor.\nÎn continuare veți fi rugați să dezactivați
   <string name="presence_xa">Indisponibil</string>
   <string name="presence_dnd">Ocupat</string>
   <string name="secure_password_generated">O parolă sigură a fost generată</string>
-  <string name="device_does_not_support_battery_op">Dispozitivul dumneavoastra nu suporta dezactivarea optimizarii de baterie pentru aceasta aplicatie</string>
+  <string name="device_does_not_support_battery_op">Dispozitivul dumneavoastră nu suportă dezactivarea optimizării de baterie pentru această aplicație</string>
   <string name="show_password">Arată parola</string>
   <string name="registration_please_wait">Înregistrare eșuată: Încercați din nou mai târziu</string>
   <string name="registration_password_too_weak">Înregistrare eșuată: Parolă nesigură</string>
@@ -611,7 +611,7 @@ sau chiar pierderea mesajelor.\nÎn continuare veți fi rugați să dezactivați
   <string name="this_device_is_no_longer_in_use">Acest dispozitiv nu mai este in uz</string>
   <string name="type_pc">PC</string>
   <string name="type_phone">Telefon mobil</string>
-  <string name="type_tablet">Tableta</string>
+  <string name="type_tablet">Tabletă</string>
   <string name="type_web">Navigator internet</string>
   <string name="type_console">Consola</string>
   <string name="payment_required">Este necesar să efectuați o plată</string>
@@ -625,7 +625,7 @@ sau chiar pierderea mesajelor.\nÎn continuare veți fi rugați să dezactivați
   <string name="missing_presence_subscription_with_x">Lipsește abonarea de la actualizările de prezență cu %s.</string>
   <string name="missing_keys_from_x">Cheie OMEMO lipsă de la %s.</string>
   <string name="missing_omemo_keys">Chei OMEMO lipsă</string>
-  <string name="wrong_conference_configuration">Aceasta este o conferința care nu este privata și nu este anonimă.</string>
+  <string name="wrong_conference_configuration">Aceasta este o conferință care nu este privată și nu este anonimă.</string>
   <string name="this_conference_has_no_members">Conferința nu are nici un membru.</string>
   <string name="report_jid_as_spammer">Raportează că această identitate trimite mesaje nedorite.</string>
   <string name="pref_delete_omemo_identities">Șterge identitățile OEMO</string>
@@ -645,9 +645,9 @@ sau chiar pierderea mesajelor.\nÎn continuare veți fi rugați să dezactivați
   <string name="verified_fingerprints">Amprente verificate</string>
   <string name="use_camera_icon_to_scan_barcode">Foloseste camera pentru a scana codul de bare al contactului</string>
   <string name="please_wait_for_keys_to_be_fetched">Asteptati cat se preiau cheile</string>
-  <string name="share_as_barcode">Partajeaza un cod de bare</string>
-  <string name="share_as_uri">Partajeaza ca adresa XMPP</string>
-  <string name="share_as_http">Partajeaza ca legatura HTTP</string>
+  <string name="share_as_barcode">Partajează un cod de bare</string>
+  <string name="share_as_uri">Partajează ca adresă XMPP</string>
+  <string name="share_as_http">Partajează ca legatură HTTP</string>
   <string name="pref_blind_trust_before_verification">Încredere Oarbă Înainte de Verificare</string>
   <string name="pref_blind_trust_before_verification_summary">Ai încredere în toate dispozitivele noi ale contactelor care nu au fost verificate anterior, și cere confirmare manuală de fiecare dată când un contact adaugă un dispozitiv nou.</string>
   <string name="blindly_trusted_omemo_keys">Încredere oarbă în aceste chei OMEMO</string>
@@ -676,7 +676,7 @@ sau chiar pierderea mesajelor.\nÎn continuare veți fi rugați să dezactivați
   <string name="corresponding_conversations_closed">Conversațiile corespunzătoare au fost închise</string>
   <string name="contact_blocked_past_tense">Contact blocat.</string>
   <string name="pref_notifications_from_strangers">Notificări de la persoane necunoscute</string>
-  <string name="pref_notifications_from_strangers_summary">Nu veți fi deranjat/ă atunci când o persoană care nu este în lista ta de contacte vă scrie</string>
+  <string name="pref_notifications_from_strangers_summary">Nu veți fi deranjat/ă atunci când o persoană care nu este în lista de contacte vă scrie</string>
   <string name="received_message_from_stranger">Mesaj primit de la o persoana necunoscuta</string>
   <string name="block_stranger">Blocare contact necunoscut</string>
   <string name="block_entire_domain">Blocare tot domeniu</string>

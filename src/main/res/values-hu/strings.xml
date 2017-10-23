@@ -6,7 +6,7 @@
   <string name="action_end_conversation">Beszélgetés befejezése</string>
   <string name="action_contact_details">Kapcsolat részletek</string>
   <string name="action_muc_details">Konferencia részletek</string>
-  <string name="action_secure">Biztonságos neszélgetés</string>
+  <string name="action_secure">Biztonságos beszélgetés</string>
   <string name="action_add_account">Fiók hozzáadása</string>
   <string name="action_edit_contact">Név szerkesztése</string>
   <string name="action_add_phone_book">Címjegyzékhez hozzáad</string>
@@ -64,13 +64,13 @@
   <string name="send_never">Ne kérdezze többször</string>
   <string name="problem_connecting_to_account">Nem sikerül a fiókhoz csatlakozni</string>
   <string name="problem_connecting_to_accounts">Nem sikerül fiókokhoz csatlakozni</string>
-  <string name="touch_to_fix">Érintsd meg itt fiókjaid beállításaihoz </string>
+  <string name="touch_to_fix">Érintsd meg itt fiókjaid beállításához</string>
   <string name="attach_file">Fájl csatolása</string>
   <string name="not_in_roster">Az ismerős nincs a névsorodban. Hozzáadod?</string>
   <string name="add_contact">Ismerős hozzáadása</string>
   <string name="send_failed">Kézbesítés meghiúsult</string>
   <string name="preparing_image">A kép átvitelének előkészítése</string>
-  <string name="preparing_images">Képek előkészítése az átvitelhez.</string>
+  <string name="preparing_images">Képek előkészítése az átvitelhez</string>
   <string name="sharing_files_please_wait">Fájlok megosztása. Kérlek várj...</string>
   <string name="action_clear_history">Előzmények törlése</string>
   <string name="clear_conversation_history">Beszélgetés előzményének törlése</string>
@@ -666,6 +666,7 @@
   <string name="pref_automatically_delete_messages_description">Automatikusan törli az üzeneteket az eszközön, amennyiben régebbiek, mint a beállított időkeret.</string>
   <string name="encrypting_message">Üzenet titkosítása</string>
   <string name="not_fetching_history_retention_period">Nem tölt le üzeneteket a helyi megőrzési időszak miatt.</string>
+  <string name="transcoding_video">Videó tömörítése</string>
   <string name="corresponding_conversations_closed">Hasonló beszélgetések be lettek zárva.</string>
   <string name="contact_blocked_past_tense">Ismerős blokkolva.</string>
   <string name="pref_notifications_from_strangers">Értesítések idegenektől</string>
@@ -689,4 +690,5 @@
   <string name="network_is_unreachable">A hálózat elérhetetlen</string>
   <string name="certificate_does_not_contain_jid">A tanúsítvány nem tartalmaz Jabber azonosítót</string>
   <string name="server_info_partial">részleges</string>
+  <string name="attach_record_video">Videó felvétele</string>
 </resources>

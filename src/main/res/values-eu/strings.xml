@@ -666,6 +666,7 @@
   <string name="pref_automatically_delete_messages_description">Ezarritako denbora tartea baino zaharragoak diren mezuak gailu honetatik automatikoki ezabatu.</string>
   <string name="encrypting_message">Mezua enkriptatzen</string>
   <string name="not_fetching_history_retention_period">Mezurik ez eskuratzen gelditze tarte lokalarengatik.</string>
+  <string name="transcoding_video">Bideoa konprimatzen</string>
   <string name="corresponding_conversations_closed">Dagokion elkarrizketa itxi egin da.</string>
   <string name="contact_blocked_past_tense">Kontaktua blokeatu da.</string>
   <string name="pref_notifications_from_strangers">Ezezagunen jakinarazpenak</string>
@@ -688,4 +689,6 @@
   <string name="pref_validate_hostname_summary">Ostalariaren izena balioztatuta daukaten zerbitzarien ziurtagiriak egiaztatutzat hartzen dira</string>
   <string name="network_is_unreachable">Ezin da sarera heldu</string>
   <string name="certificate_does_not_contain_jid">Ziurtagiriak ez dauka Jabber ID baliodun bat</string>
+  <string name="server_info_partial">partziala</string>
+  <string name="attach_record_video">Bideoa grabatu</string>
 </resources>

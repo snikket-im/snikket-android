@@ -368,6 +368,7 @@
   <string name="clear_other_devices">Wyczyść urządzenia</string>
   <string name="clear_other_devices_desc">Czy na pewno chcesz usunąć wszystkie inne urządzenia z ogłoszenia OMEMO? Następnym razem gdy połączą się Twoje urdzącenia, ogłoszą się one ponownie, ale mogą nie otrzymać wiadomości wysłanych w międzyczasie.</string>
   <string name="error_no_keys_to_trust_server_error">Nie ma dostępnych kluczy dl atego kontaktu.\nPobieranie nowych kluczy z serwera nie powiodło się. Byćmoże jest coś nie tak z Twoim serwerem kontaktów?</string>
+  <string name="error_no_keys_to_trust_presence">Brak dostępnych kluczy dla tego kontaktu.\nUpewnij się, że wzajemnie powiadamiacie się o obecności.</string>
   <string name="error_no_keys_to_trust">Nie ma dostępnych żadnych użytecznych kluczy dla tego kontaktu. Jeśli usunąłeś jakieś jego klucze, kontakt będzie musiał wygenerować nowe.</string>
   <string name="error_trustkeys_title">Błąd</string>
   <string name="fetching_history_from_server">Pobieranie historii z serwera</string>
@@ -492,7 +493,10 @@
   <string name="pref_presence_settings">Obecność</string>
   <string name="pref_away_when_screen_off">Status \"Oddalony\" gdy wyświetlacz jest wyłączony</string>
   <string name="pref_away_when_screen_off_summary">Oznacza Twój zasób jako \"Oddalony\", gdy wyświetlacz jest wyłączony</string>
+  <string name="pref_dnd_on_silent_mode">\"Nie przeszkadzać\" w trybie cichym</string>
+  <string name="pref_dnd_on_silent_mode_summary">Oznacza Twój zasób jako \"Nie przeszkadzać\", gdy urządzenie jest w trybie cichym</string>
   <string name="pref_treat_vibrate_as_silent">Traktuj tryb wibracji jak tryb cichy</string>
+  <string name="pref_treat_vibrate_as_dnd_summary">Oznacza Twój zasób jako \"Nie przeszkadzać\", gdy urządzenie jest w trybie wibracji</string>
   <string name="pref_show_connection_options">Rozszerzone ustawienia połączenia</string>
   <string name="pref_show_connection_options_summary">Pokaż nazwę hosta i ustawienia portu przy dodawaniu konta</string>
   <string name="hostname_example">xmpp.examle.com</string>
@@ -670,6 +674,7 @@ Conversations będzie wciąż ograniczał transfer danych, kiedy tylko to jest m
   <string name="pref_automatically_delete_messages_description">Automatycznie usuwaj z tego urządzenia wiadomości starsze niż skonfigurowany okres czasu.</string>
   <string name="encrypting_message">Szyfrowanie wiadomości</string>
   <string name="not_fetching_history_retention_period">Nie pobieram wiadomości przez lokalny okres retencji</string>
+  <string name="transcoding_video">Kompresuję film</string>
   <string name="corresponding_conversations_closed">Odpowiadające rozmowy zostały zamknięte.</string>
   <string name="contact_blocked_past_tense">Kontakt zablokowany</string>
   <string name="pref_notifications_from_strangers">Powiadomienia od nieznajomych</string>
@@ -686,4 +691,12 @@ Conversations będzie wciąż ograniczał transfer danych, kiedy tylko to jest m
   <string name="application_found_to_open_website">Nie znaleziono aplikacji do otwarcia strony</string>
   <string name="pref_headsup_notifications">Powiadomienia heads-up</string>
   <string name="pref_headsup_notifications_summary">Pokazuj powiadomienia Heads-up</string>
+  <string name="today">Dzisiaj</string>
+  <string name="yesterday">Wczoraj</string>
+  <string name="pref_validate_hostname">Potwierdź nazwę hosta za pomocą DNSSEC</string>
+  <string name="pref_validate_hostname_summary">Certyfikaty serwera posiadające prawidłową nazwę hosta są uznawane za zweryfikowane</string>
+  <string name="network_is_unreachable">Sieć jest niedostępna</string>
+  <string name="certificate_does_not_contain_jid">Certyfikat nie zawiera Jabber ID</string>
+  <string name="server_info_partial">częściowo</string>
+  <string name="attach_record_video">Nagraj film</string>
 </resources>

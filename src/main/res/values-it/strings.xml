@@ -134,7 +134,7 @@
   <string name="receive_presence_updates">Ricevi aggiornamenti della presenza</string>
   <string name="ask_for_presence_updates">Chiedi aggiornamenti della presenza</string>
   <string name="attach_choose_picture">Scegli un’immagine</string>
-  <string name="attach_take_picture">Foto</string>
+  <string name="attach_take_picture">Scatta una foto</string>
   <string name="preemptively_grant">Concedi aggiornamenti della presenza preventivamente</string>
   <string name="error_not_an_image_file">Il file selezionato non è un’immagine</string>
   <string name="error_compressing_image">Errore durante la conversione dell’immagine</string>
@@ -307,8 +307,8 @@
   <string name="using_account">usando l’account %s</string>
   <string name="checking_x">Controllo %s su host HTTP</string>
   <string name="not_connected_try_again">Non sei connesso. Riprova più tardi</string>
-  <string name="check_x_filesize">Controllo dimensione %s</string>
-  <string name="check_x_filesize_on_host">Controlla %1$s dimensione su %2$s</string>
+  <string name="check_x_filesize">Controlla dimensione %s</string>
+  <string name="check_x_filesize_on_host">Controlla dimensione %1$s su %2$s</string>
   <string name="message_options">Opzioni del messaggio</string>
   <string name="select_text">Seleziona testo</string>
   <string name="quote">Quota</string>
@@ -339,7 +339,7 @@
   <string name="pref_export_logs">Esporta la cronologia</string>
   <string name="pref_export_logs_summary">Scrivi la cronologia delle conversazioni nella scheda SD</string>
   <string name="notification_export_logs_title">Scrittura log su scheda SD</string>
-  <string name="choose_file">Scegli file</string>
+  <string name="choose_file">Scegli un file</string>
   <string name="receiving_x_file">Ricezione di %1$s file (%2$d%% completato)</string>
   <string name="download_x_file">Scarica %s</string>
   <string name="delete_x_file">Elimina %s</string>
@@ -666,6 +666,7 @@
   <string name="pref_automatically_delete_messages_description">Elimina automaticamente da questo dispositivo i messaggi più vecchi del lasso di tempo configurato.</string>
   <string name="encrypting_message">Cifratura del messaggio</string>
   <string name="not_fetching_history_retention_period">Nessun recupero di messaggi a causa del periodo di conservazione locale.</string>
+  <string name="transcoding_video">Compressione video in corso</string>
   <string name="corresponding_conversations_closed">Chiuse le relative conversazioni.</string>
   <string name="contact_blocked_past_tense">Contatto bloccato.</string>
   <string name="pref_notifications_from_strangers">Notifiche da sconosciuti</string>
@@ -689,4 +690,5 @@
   <string name="network_is_unreachable">Rete non raggiungibile</string>
   <string name="certificate_does_not_contain_jid">Il certificato non contiene un ID Jabber</string>
   <string name="server_info_partial">parziale</string>
+  <string name="attach_record_video">Registra un video</string>
 </resources>
