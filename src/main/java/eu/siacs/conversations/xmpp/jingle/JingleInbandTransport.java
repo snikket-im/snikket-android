@@ -101,8 +101,6 @@ public class JingleInbandTransport extends JingleTransport {
 		try {
 			this.digest = MessageDigest.getInstance("SHA-1");
 			digest.reset();
-			file.getParentFile().mkdirs();
-			file.createNewFile();
 			this.fileOutputStream = connection.getFileOutputStream();
 			if (this.fileOutputStream == null) {
 				Log.d(Config.LOGTAG,account.getJid().toBareJid()+": could not create output stream");

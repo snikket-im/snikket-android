@@ -141,8 +141,6 @@ public class JingleSocks5Transport extends JingleTransport {
 					digest.reset();
 					//inputStream.skip(45);
 					socket.setSoTimeout(30000);
-					file.getParentFile().mkdirs();
-					file.createNewFile();
 					fileOutputStream = connection.getFileOutputStream();
 					if (fileOutputStream == null) {
 						callback.onFileTransferAborted();

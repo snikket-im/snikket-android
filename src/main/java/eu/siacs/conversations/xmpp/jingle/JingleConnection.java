@@ -5,6 +5,7 @@ import android.util.Log;
 import android.util.Pair;
 
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
@@ -154,7 +155,14 @@ public class JingleConnection implements Transferable {
 		return this.mFileInputStream;
 	}
 
-	public OutputStream getFileOutputStream() {
+	public OutputStream getFileOutputStream() throws IOException {
+		if (this.file == null) {
+			Log.d(Config.LOGTAG,"file object was not assigned");
+			return null;
+		}
+		this.file.getParentFile().mkdirs();
+		this.file.createNewFile();
+		this.mFileOutputStream = AbstractConnectionManager.createOutputStream(this.file,message.getEncryption() == Message.ENCRYPTION_AXOLOTL);
 		return this.mFileOutputStream;
 	}
 
@@ -459,7 +467,6 @@ public class JingleConnection implements Transferable {
 						this.file.setKeyAndIv(key);
 					}
 				}
-				this.mFileOutputStream = AbstractConnectionManager.createOutputStream(this.file,message.getEncryption() == Message.ENCRYPTION_AXOLOTL);
 				this.file.setExpectedSize(size);
 				message.resetFileParams();
 				Log.d(Config.LOGTAG, "receiving file: expecting size of " + this.file.getExpectedSize());
