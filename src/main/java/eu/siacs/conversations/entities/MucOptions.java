@@ -10,6 +10,7 @@ import java.util.Set;
 
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
+import eu.siacs.conversations.utils.JidHelper;
 import eu.siacs.conversations.xml.Namespace;
 import eu.siacs.conversations.xmpp.chatstate.ChatState;
 import eu.siacs.conversations.xmpp.forms.Data;
@@ -20,8 +21,6 @@ import eu.siacs.conversations.xmpp.pep.Avatar;
 
 @SuppressLint("DefaultLocale")
 public class MucOptions {
-
-	private static List<String> LOCALPART_BLACKLIST = Arrays.asList("xmpp","jabber");
 
 	private boolean mAutoPushConfiguration = true;
 
@@ -605,14 +604,7 @@ public class MucOptions {
 		} else if (!conversation.getJid().isBareJid()) {
 			return conversation.getJid().getResourcepart();
 		} else {
-			Jid jid = account.getJid();
-			if (LOCALPART_BLACKLIST.contains(jid.getLocalpart())) {
-				final String domain = jid.getDomainpart();
-				final int index = domain.lastIndexOf('.');
-				return index > 1 ? domain.substring(0,index) : domain;
-			} else {
-				return jid.getLocalpart();
-			}
+			return JidHelper.localPartOrFallback(account.getJid());
 		}
 	}
 
