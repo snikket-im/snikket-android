@@ -2,6 +2,7 @@ package eu.siacs.conversations.ui;
 
 import android.app.PendingIntent;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
@@ -33,7 +34,9 @@ import eu.siacs.conversations.xmpp.jid.Jid;
 
 public class ShareWithActivity extends XmppActivity implements XmppConnectionService.OnConversationUpdate {
 
+	private static final int REQUEST_STORAGE_PERMISSION = 0x733f32;
 	private boolean mReturnToPrevious = false;
+	private Conversation mPendingConversation = null;
 
 	@Override
 	public void onConversationUpdate() {
@@ -145,6 +148,22 @@ public class ShareWithActivity extends XmppActivity implements XmppConnectionSer
 	}
 
 	@Override
+	public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
+		if (grantResults.length > 0)
+			if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+				if (requestCode == REQUEST_STORAGE_PERMISSION) {
+					if (this.mPendingConversation != null) {
+						share(this.mPendingConversation);
+					} else {
+						Log.d(Config.LOGTAG,"unable to find stored conversation");
+					}
+				}
+			} else {
+				Toast.makeText(this, R.string.no_storage_permission, Toast.LENGTH_SHORT).show();
+			}
+	}
+
+	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
@@ -156,7 +175,7 @@ public class ShareWithActivity extends XmppActivity implements XmppConnectionSer
 		setContentView(R.layout.share_with);
 		setTitle(getString(R.string.title_activity_sharewith));
 
-		mListView = (ListView) findViewById(R.id.choose_conversation_list);
+		mListView = findViewById(R.id.choose_conversation_list);
 		mAdapter = new ConversationAdapter(this, this.mConversations);
 		mListView.setAdapter(mAdapter);
 		mListView.setOnItemClickListener(new OnItemClickListener() {
@@ -274,6 +293,10 @@ public class ShareWithActivity extends XmppActivity implements XmppConnectionSer
 	}
 
 	private void share(final Conversation conversation) {
+		if (share.uris.size() != 0 && !hasStoragePermission(REQUEST_STORAGE_PERMISSION)) {
+			mPendingConversation = conversation;
+			return;
+		}
 		final Account account = conversation.getAccount();
 		final XmppConnection connection = account.getXmppConnection();
 		final long max = connection == null ? -1 : connection.getFeatures().getMaxHttpUploadSize();
