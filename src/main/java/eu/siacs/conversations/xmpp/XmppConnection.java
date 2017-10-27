@@ -1051,7 +1051,12 @@ public class XmppConnection implements Runnable {
 					final Element jid = bind.findChild("jid");
 					if (jid != null && jid.getContent() != null) {
 						try {
-							if (account.setJid(Jid.fromString(jid.getContent()))) {
+							Jid assignedJid = Jid.fromString(jid.getContent());
+							if (!account.getJid().getDomainpart().equals(assignedJid.getDomainpart())) {
+								Log.d(Config.LOGTAG,account.getJid().toBareJid()+": server tried to re-assign domain to "+assignedJid.getDomainpart());
+								throw new StateChangingError(Account.State.BIND_FAILURE);
+							}
+							if (account.setJid(assignedJid)) {
 								Log.d(Config.LOGTAG, account.getJid().toBareJid() + ": bare jid changed during bind. updating database");
 								mXmppConnectionService.databaseBackend.updateAccount(account);
 							}
