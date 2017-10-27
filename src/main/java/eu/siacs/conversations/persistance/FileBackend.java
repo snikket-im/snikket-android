@@ -137,7 +137,7 @@ public class FileBackend {
 		}
 	}
 
-	private static long getFileSize(Context context, Uri uri) {
+	public static long getFileSize(Context context, Uri uri) {
 		try {
 			final Cursor cursor = context.getContentResolver().query(uri, null, null, null, null);
 			if (cursor != null && cursor.moveToFirst()) {
@@ -235,14 +235,14 @@ public class FileBackend {
 		}
 		File file = new File(path);
 		long size = file.length();
-		if (size == 0 || size >= Config.IMAGE_MAX_SIZE ) {
+		if (size == 0 || size >= mXmppConnectionService.getResources().getInteger(R.integer.auto_accept_filesize)) {
 			return false;
 		}
 		BitmapFactory.Options options = new BitmapFactory.Options();
 		options.inJustDecodeBounds = true;
 		try {
 			BitmapFactory.decodeStream(mXmppConnectionService.getContentResolver().openInputStream(uri), null, options);
-			if (options == null || options.outMimeType == null || options.outHeight <= 0 || options.outWidth <= 0) {
+			if (options.outMimeType == null || options.outHeight <= 0 || options.outWidth <= 0) {
 				return false;
 			}
 			return (options.outWidth <= Config.IMAGE_SIZE && options.outHeight <= Config.IMAGE_SIZE && options.outMimeType.contains(Config.IMAGE_FORMAT.name().toLowerCase()));
@@ -348,6 +348,7 @@ public class FileBackend {
 			scaledBitmap = rotate(scaledBitmap, rotation);
 			boolean targetSizeReached = false;
 			int quality = Config.IMAGE_QUALITY;
+			final int imageMaxSize = mXmppConnectionService.getResources().getInteger(R.integer.auto_accept_filesize);
 			while(!targetSizeReached) {
 				os = new FileOutputStream(file);
 				boolean success = scaledBitmap.compress(Config.IMAGE_FORMAT, quality, os);
@@ -355,7 +356,7 @@ public class FileBackend {
 					throw new FileCopyException(R.string.error_compressing_image);
 				}
 				os.flush();
-				targetSizeReached = file.length() <= Config.IMAGE_MAX_SIZE || quality <= 50;
+				targetSizeReached = file.length() <= imageMaxSize|| quality <= 50;
 				quality -= 5;
 			}
 			scaledBitmap.recycle();

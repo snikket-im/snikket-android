@@ -9,6 +9,7 @@ import net.ypresto.androidtranscoder.MediaTranscoder;
 import net.ypresto.androidtranscoder.format.MediaFormatStrategy;
 import net.ypresto.androidtranscoder.format.MediaFormatStrategyPresets;
 
+import java.io.File;
 import java.io.FileDescriptor;
 import java.io.FileNotFoundException;
 import java.util.concurrent.ExecutionException;
@@ -31,6 +32,7 @@ public class AttachFileToConversationRunnable implements Runnable, MediaTranscod
 	private final Uri uri;
 	private final UiCallback<Message> callback;
 	private final boolean isVideoMessage;
+	private final long originalFileSize;
 	private int currentProgress = -1;
 
 	public AttachFileToConversationRunnable(XmppConnectionService xmppConnectionService, Uri uri, Message message, UiCallback<Message> callback) {
@@ -39,7 +41,11 @@ public class AttachFileToConversationRunnable implements Runnable, MediaTranscod
 		this.message = message;
 		this.callback = callback;
 		final String mimeType = MimeUtils.guessMimeTypeFromUri(mXmppConnectionService, uri);
-		this.isVideoMessage = (mimeType != null && mimeType.startsWith("video/") && Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2);
+		final int autoAcceptFileSize = mXmppConnectionService.getResources().getInteger(R.integer.auto_accept_filesize);
+		this.originalFileSize = FileBackend.getFileSize(mXmppConnectionService,uri);
+		this.isVideoMessage = (mimeType != null && mimeType.startsWith("video/")
+				&& Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2)
+				&& originalFileSize > autoAcceptFileSize;
 	}
 
 	public boolean isVideoMessage() {
@@ -111,6 +117,18 @@ public class AttachFileToConversationRunnable implements Runnable, MediaTranscod
 	@Override
 	public void onTranscodeCompleted() {
 		mXmppConnectionService.stopForcingForegroundNotification();
+		final File file = mXmppConnectionService.getFileBackend().getFile(message);
+		long convertedFileSize = mXmppConnectionService.getFileBackend().getFile(message).getSize();
+		Log.d(Config.LOGTAG,"originalFileSize="+originalFileSize+" convertedFileSize="+convertedFileSize);
+		if (originalFileSize != 0 && convertedFileSize >= originalFileSize) {
+			if (file.delete()) {
+				Log.d(Config.LOGTAG,"original file size was smaller. deleting and processing as file");
+				processAsFile();
+				return;
+			} else {
+				Log.d(Config.LOGTAG,"unable to delete converted file");
+			}
+		}
 		mXmppConnectionService.getFileBackend().updateFileParams(message);
 		if (message.getEncryption() == Message.ENCRYPTION_DECRYPTED) {
 			mXmppConnectionService.getPgpEngine().encrypt(message, callback);
