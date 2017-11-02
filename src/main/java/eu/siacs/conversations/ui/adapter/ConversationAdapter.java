@@ -58,6 +58,7 @@ public class ConversationAdapter extends ArrayAdapter<Conversation> {
 			convName.setText(conversation.getJid().toBareJid().toString());
 		}
 		TextView mLastMessage = (TextView) view.findViewById(R.id.conversation_lastmsg);
+		ImageView mLastMessageImage = (ImageView) view.findViewById(R.id.conversation_lastmsg_img);
 		TextView mTimestamp = (TextView) view.findViewById(R.id.conversation_lastupdate);
 		TextView mSenderName = (TextView) view.findViewById(R.id.sender_name);
 		ImageView imagePreview = (ImageView) view.findViewById(R.id.conversation_lastimage);
@@ -84,11 +85,13 @@ public class ConversationAdapter extends ArrayAdapter<Conversation> {
 				|| message.getTransferable().getStatus() != Transferable.STATUS_DELETED)) {
 			mSenderName.setVisibility(View.GONE);
 			mLastMessage.setVisibility(View.GONE);
+            		mLastMessageImage.setVisibility(View.GONE);
 			imagePreview.setVisibility(View.VISIBLE);
 			activity.loadBitmap(message, imagePreview);
 		} else {
 			Pair<String,Boolean> preview = UIHelper.getMessagePreview(activity,message);
 			mLastMessage.setVisibility(View.VISIBLE);
+			mLastMessageImage.setVisibility(View.VISIBLE);
 			imagePreview.setVisibility(View.GONE);
 			mLastMessage.setText(preview.first);
 			if (preview.second) {
@@ -121,6 +124,15 @@ public class ConversationAdapter extends ArrayAdapter<Conversation> {
 			} else {
 				mSenderName.setVisibility(View.GONE);
 			}
+			if (message.getFileParams().runtime > 0) {
+				mLastMessageImage.setImageResource(activity.getThemeResource(R.attr.ic_attach_record, R.drawable.ic_attach_record));
+			} else if (message.getType() == Message.TYPE_FILE) {
+				mLastMessageImage.setImageResource(activity.getThemeResource(R.attr.ic_attach_document, R.drawable.ic_attach_document));
+			} else if (message.isGeoUri()) {
+				mLastMessageImage.setImageResource(activity.getThemeResource(R.attr.ic_attach_location, R.drawable.ic_attach_location));
+			} else {
+				mLastMessageImage.setVisibility(View.GONE);
+            }
 		}
 
 		long muted_till = conversation.getLongAttribute(Conversation.ATTRIBUTE_MUTED_TILL,0);

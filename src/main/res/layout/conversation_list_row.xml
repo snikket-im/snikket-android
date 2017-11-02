@@ -74,11 +74,16 @@
                     <LinearLayout android:layout_width="match_parent"
                                   android:layout_height="wrap_content"
                                   android:layout_centerVertical="true"
-                                  android:orientation="vertical"
+                                  android:orientation="horizontal"
                                   android:layout_toRightOf="@id/sender_name"
                                   android:layout_alignWithParentIfMissing="true"
                                   android:layout_toLeftOf="@+id/notification_status"
                                   android:id="@+id/txt_img_wrapper">
+                      <ImageView
+                            android:id="@+id/conversation_lastmsg_img"
+                            android:layout_width="?attr/IconSize"
+                            android:layout_height="?attr/IconSize" />
+                      
                         <android.support.text.emoji.widget.EmojiTextView
                             android:id="@+id/conversation_lastmsg"
                             android:layout_width="match_parent"
