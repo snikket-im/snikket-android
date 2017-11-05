@@ -15,6 +15,8 @@ import android.support.v13.view.inputmethod.InputConnectionCompat;
 import android.support.v13.view.inputmethod.InputContentInfoCompat;
 import android.text.Editable;
 import android.text.InputType;
+import android.text.TextWatcher;
+import android.text.style.StyleSpan;
 import android.util.Log;
 import android.util.Pair;
 import android.view.ContextMenu;
@@ -73,6 +75,7 @@ import eu.siacs.conversations.ui.adapter.MessageAdapter.OnContactPictureLongClic
 import eu.siacs.conversations.ui.widget.EditMessage;
 import eu.siacs.conversations.ui.widget.ListSelectionManager;
 import eu.siacs.conversations.utils.NickValidityChecker;
+import eu.siacs.conversations.utils.StylingHelper;
 import eu.siacs.conversations.utils.UIHelper;
 import eu.siacs.conversations.xmpp.XmppConnection;
 import eu.siacs.conversations.xmpp.chatstate.ChatState;
@@ -461,6 +464,8 @@ public class ConversationFragment extends Fragment implements EditMessage.Keyboa
 				}
 			}
 		});
+
+		mEditMessage.addTextChangedListener(new StylingHelper.MessageEditorStyler(mEditMessage));
 
 		mEditMessage.setOnEditorActionListener(mEditorActionListener);
 		mEditMessage.setRichContentListener(new String[]{"image/*"}, mEditorContentListener);

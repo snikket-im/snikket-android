@@ -68,6 +68,7 @@ import eu.siacs.conversations.utils.CryptoHelper;
 import eu.siacs.conversations.utils.Emoticons;
 import eu.siacs.conversations.utils.GeoHelper;
 import eu.siacs.conversations.utils.Patterns;
+import eu.siacs.conversations.utils.StylingHelper;
 import eu.siacs.conversations.utils.UIHelper;
 import eu.siacs.conversations.xmpp.mam.MamReference;
 
@@ -473,8 +474,11 @@ public class MessageAdapter extends ArrayAdapter<Message> implements CopyTextVie
 			}
 			Matcher matcher = Emoticons.generatePattern(body).matcher(body);
 			while(matcher.find()) {
-					body.setSpan(new RelativeSizeSpan(1.2f), matcher.start(), matcher.end(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-				}
+				body.setSpan(new RelativeSizeSpan(1.2f), matcher.start(), matcher.end(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+			}
+
+			StylingHelper.format(body, true);
+
 			Linkify.addLinks(body, XMPP_PATTERN, "xmpp");
 			Linkify.addLinks(body, Patterns.AUTOLINK_WEB_URL, "http", WEBURL_MATCH_FILTER, WEBURL_TRANSFORM_FILTER);
 			Linkify.addLinks(body, GeoHelper.GEO_URI, "geo");
