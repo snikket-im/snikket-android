@@ -896,7 +896,7 @@ public class XmppConnection implements Runnable {
 			saslMechanism = new ScramSha256(tagWriter, account, mXmppConnectionService.getRNG());
 		} else if (mechanisms.contains("SCRAM-SHA-1")) {
 			saslMechanism = new ScramSha1(tagWriter, account, mXmppConnectionService.getRNG());
-		} else if (mechanisms.contains("PLAIN")) {
+		} else if (mechanisms.contains("PLAIN") && !account.getJid().getDomainpart().equals("nimbuzz.com")) {
 			saslMechanism = new Plain(tagWriter, account);
 		} else if (mechanisms.contains("DIGEST-MD5")) {
 			saslMechanism = new DigestMd5(tagWriter, account, mXmppConnectionService.getRNG());
