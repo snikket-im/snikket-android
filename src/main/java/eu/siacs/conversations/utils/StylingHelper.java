@@ -63,25 +63,17 @@ public class StylingHelper {
 		}
 	}
 
-	public static void format(final Editable editable) {
-		format(editable, false);
-	}
-
-	public static void format(final Editable editable, final boolean replaceStyleAnnotation) {
-		for (ImStyleParser.Style style : ImStyleParser.parse(editable)) {
-			editable.setSpan(createSpanForStyle(style), style.getStart(), style.getEnd(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-			if (replaceStyleAnnotation) {
-				editable.replace(style.getStart(), style.getStart() + 1, "\u200B");
-				editable.replace(style.getEnd(), style.getEnd() + 1, "\u200B");
-			}
-		}
-	}
-
 	public static void format(final Editable editable, @ColorInt int color) {
+		final int syntaxColor = Color.argb(
+				Math.round(Color.alpha(color) * 0.6f),
+				Color.red(color),
+				Color.green(color),
+				Color.blue(color)
+		);
 		for(ImStyleParser.Style style : ImStyleParser.parse(editable)) {
 			editable.setSpan(createSpanForStyle(style), style.getStart() + 1, style.getEnd(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-			editable.setSpan(new ForegroundColorSpan(color),style.getStart(),style.getStart()+1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-			editable.setSpan(new ForegroundColorSpan(color),style.getEnd(),style.getEnd()+1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+			editable.setSpan(new ForegroundColorSpan(syntaxColor),style.getStart(),style.getStart()+1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+			editable.setSpan(new ForegroundColorSpan(syntaxColor),style.getEnd(),style.getEnd()+1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
 		}
 	}
 
@@ -121,14 +113,7 @@ public class StylingHelper {
 		@Override
 		public void afterTextChanged(Editable editable) {
 			clear(editable);
-			final int color = mEditText.getCurrentTextColor();
-			final int syntaxColor = Color.argb(
-					Math.round(Color.alpha(color) * 0.6f),
-					Color.red(color),
-					Color.green(color),
-					Color.blue(color)
-			);
-			format(editable,syntaxColor);
+			format(editable,mEditText.getCurrentTextColor());
 		}
 	}
 }

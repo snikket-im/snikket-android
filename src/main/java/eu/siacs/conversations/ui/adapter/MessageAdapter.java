@@ -411,6 +411,13 @@ public class MessageAdapter extends ArrayAdapter<Message> implements CopyTextVie
 		viewHolder.image.setVisibility(View.GONE);
 		viewHolder.audioPlayer.setVisibility(View.GONE);
 		viewHolder.messageBody.setVisibility(View.VISIBLE);
+
+		viewHolder.messageBody.setTextColor(this.getMessageTextColor(darkBackground, true));
+		viewHolder.messageBody.setLinkTextColor(this.getMessageTextColor(darkBackground, true));
+		viewHolder.messageBody.setHighlightColor(ContextCompat.getColor(activity, darkBackground
+				? (type == SENT || !mUseGreenBackground ? R.color.black26 : R.color.grey800) : R.color.grey500));
+		viewHolder.messageBody.setTypeface(null, Typeface.NORMAL);
+
 		if (message.getBody() != null) {
 			final String nick = UIHelper.getMessageDisplayName(message);
 			SpannableStringBuilder body = message.getMergedBody();
@@ -477,7 +484,7 @@ public class MessageAdapter extends ArrayAdapter<Message> implements CopyTextVie
 				body.setSpan(new RelativeSizeSpan(1.2f), matcher.start(), matcher.end(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 			}
 
-			StylingHelper.format(body, true);
+			StylingHelper.format(body, viewHolder.messageBody.getCurrentTextColor());
 
 			Linkify.addLinks(body, XMPP_PATTERN, "xmpp");
 			Linkify.addLinks(body, Patterns.AUTOLINK_WEB_URL, "http", WEBURL_MATCH_FILTER, WEBURL_TRANSFORM_FILTER);
@@ -491,11 +498,6 @@ public class MessageAdapter extends ArrayAdapter<Message> implements CopyTextVie
 			viewHolder.messageBody.setText("");
 			viewHolder.messageBody.setTextIsSelectable(false);
 		}
-		viewHolder.messageBody.setTextColor(this.getMessageTextColor(darkBackground, true));
-		viewHolder.messageBody.setLinkTextColor(this.getMessageTextColor(darkBackground, true));
-		viewHolder.messageBody.setHighlightColor(ContextCompat.getColor(activity, darkBackground
-				? (type == SENT || !mUseGreenBackground ? R.color.black26 : R.color.grey800) : R.color.grey500));
-		viewHolder.messageBody.setTypeface(null, Typeface.NORMAL);
 	}
 
 	private void displayDownloadableMessage(ViewHolder viewHolder, final Message message, String text) {
