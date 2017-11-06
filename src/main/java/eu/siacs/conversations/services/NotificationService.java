@@ -682,7 +682,7 @@ public class NotificationService {
 				if (account.isOnlineAndConnected()) {
 					connected++;
 					enabled++;
-				} else if (!account.isOptionSet(Account.OPTION_DISABLED)) {
+				} else if (account.isEnabled()) {
 					enabled++;
 				}
 			}

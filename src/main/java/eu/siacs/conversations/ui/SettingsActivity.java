@@ -278,7 +278,7 @@ public class SettingsActivity extends XmppActivity implements
 		builder.setTitle(R.string.pref_delete_omemo_identities);
 		final List<CharSequence> accounts = new ArrayList<>();
 		for(Account account : xmppConnectionService.getAccounts()) {
-			if (!account.isOptionSet(Account.OPTION_DISABLED)) {
+			if (account.isEnabled()) {
 				accounts.add(account.getJid().toBareJid().toString());
 			}
 		}
@@ -345,7 +345,7 @@ public class SettingsActivity extends XmppActivity implements
 			if (xmppConnectionServiceBound) {
 				for (Account account : xmppConnectionService.getAccounts()) {
 					if (account.setResource(resource)) {
-						if (!account.isOptionSet(Account.OPTION_DISABLED)) {
+						if (account.isEnabled()) {
 							XmppConnection connection = account.getXmppConnection();
 							if (connection != null) {
 								connection.resetStreamId();
@@ -410,7 +410,7 @@ public class SettingsActivity extends XmppActivity implements
 
 	private void reconnectAccounts() {
 		for (Account account : xmppConnectionService.getAccounts()) {
-			if (!account.isOptionSet(Account.OPTION_DISABLED)) {
+			if (account.isEnabled()) {
 				xmppConnectionService.reconnectAccountInBackground(account);
 			}
 		}

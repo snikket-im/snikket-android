@@ -50,7 +50,7 @@ public class ExceptionHelper {
 			List<Account> accounts = service.getAccounts();
 			Account account = null;
 			for (int i = 0; i < accounts.size(); ++i) {
-				if (!accounts.get(i).isOptionSet(Account.OPTION_DISABLED)) {
+				if (accounts.get(i).isEnabled()) {
 					account = accounts.get(i);
 					break;
 				}

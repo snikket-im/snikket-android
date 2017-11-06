@@ -108,6 +108,10 @@ public class Account extends AbstractEntity {
 		return key == null || Boolean.parseBoolean(key);
 	}
 
+	public boolean isEnabled() {
+		return !isOptionSet(Account.OPTION_DISABLED);
+	}
+
 	public enum State {
 		DISABLED(false,false),
 		OFFLINE(false),

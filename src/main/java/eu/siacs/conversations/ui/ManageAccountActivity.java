@@ -127,15 +127,15 @@ public class ManageAccountActivity extends XmppActivity implements OnAccountUpda
 				R.menu.manageaccounts_context, menu);
 		AdapterContextMenuInfo acmi = (AdapterContextMenuInfo) menuInfo;
 		this.selectedAccount = accountList.get(acmi.position);
-		if (this.selectedAccount.isOptionSet(Account.OPTION_DISABLED)) {
+		if (this.selectedAccount.isEnabled()) {
+			menu.findItem(R.id.mgmt_account_enable).setVisible(false);
+			menu.findItem(R.id.mgmt_account_announce_pgp).setVisible(Config.supportOpenPgp());
+			menu.findItem(R.id.mgmt_account_change_presence).setVisible(manuallyChangePresence());
+		} else {
 			menu.findItem(R.id.mgmt_account_disable).setVisible(false);
 			menu.findItem(R.id.mgmt_account_announce_pgp).setVisible(false);
 			menu.findItem(R.id.mgmt_account_publish_avatar).setVisible(false);
 			menu.findItem(R.id.mgmt_account_change_presence).setVisible(false);
-		} else {
-			menu.findItem(R.id.mgmt_account_enable).setVisible(false);
-			menu.findItem(R.id.mgmt_account_announce_pgp).setVisible(Config.supportOpenPgp());
-			menu.findItem(R.id.mgmt_account_change_presence).setVisible(manuallyChangePresence());
 		}
 		menu.setHeaderTitle(this.selectedAccount.getJid().toBareJid().toString());
 	}
@@ -280,7 +280,7 @@ public class ManageAccountActivity extends XmppActivity implements OnAccountUpda
 		List<Account> list = new ArrayList<>();
 		synchronized (this.accountList) {
 			for (Account account : this.accountList) {
-				if (!account.isOptionSet(Account.OPTION_DISABLED)) {
+				if (account.isEnabled()) {
 					list.add(account);
 				}
 			}
@@ -293,7 +293,7 @@ public class ManageAccountActivity extends XmppActivity implements OnAccountUpda
 	private boolean accountsLeftToDisable() {
 		synchronized (this.accountList) {
 			for (Account account : this.accountList) {
-				if (!account.isOptionSet(Account.OPTION_DISABLED)) {
+				if (account.isEnabled()) {
 					return true;
 				}
 			}
@@ -304,7 +304,7 @@ public class ManageAccountActivity extends XmppActivity implements OnAccountUpda
 	private boolean accountsLeftToEnable() {
 		synchronized (this.accountList) {
 			for (Account account : this.accountList) {
-				if (account.isOptionSet(Account.OPTION_DISABLED)) {
+				if (!account.isEnabled()) {
 					return true;
 				}
 			}
@@ -316,7 +316,7 @@ public class ManageAccountActivity extends XmppActivity implements OnAccountUpda
 		List<Account> list = new ArrayList<>();
 		synchronized (this.accountList) {
 			for (Account account : this.accountList) {
-				if (account.isOptionSet(Account.OPTION_DISABLED)) {
+				if (!account.isEnabled()) {
 					list.add(account);
 				}
 			}

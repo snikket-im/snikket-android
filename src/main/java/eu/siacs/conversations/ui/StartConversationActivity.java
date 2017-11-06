@@ -867,7 +867,7 @@ public class StartConversationActivity extends XmppActivity implements OnRosterU
 
     private boolean handleJid(Invite invite) {
         Account account = xmppConnectionService.findAccountByJid(invite.getJid());
-        if (account != null && !account.isOptionSet(Account.OPTION_DISABLED)) {
+        if (account != null && account.isEnabled()) {
             if (invite.hasFingerprints() && xmppConnectionService.verifyFingerprints(account,invite.getFingerprints())) {
                 Toast.makeText(this,R.string.verified_fingerprints,Toast.LENGTH_SHORT).show();
             }

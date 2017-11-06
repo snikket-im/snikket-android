@@ -253,7 +253,7 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
 			}
 			mHostname.setError(null);
 			mPort.setError(null);
-			if (!mAccount.isOptionSet(Account.OPTION_DISABLED)
+			if (mAccount.isEnabled()
 					&& !registerNewAccount
 					&& !mInitMode) {
 				finish();
