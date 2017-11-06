@@ -1487,7 +1487,7 @@ public class ConversationActivity extends XmppActivity
 					this.mPendingGeoUri = null;
 				}
 			} else if (requestCode == REQUEST_TRUST_KEYS_TEXT || requestCode == REQUEST_TRUST_KEYS_MENU) {
-				this.forbidProcessingPendings = !xmppConnectionServiceBound;
+				this.forbidProcessingPendings = true;
 				if (xmppConnectionServiceBound) {
 					mConversationFragment.onActivityResult(requestCode, resultCode, data);
 					this.mPostponedActivityResult = null;
