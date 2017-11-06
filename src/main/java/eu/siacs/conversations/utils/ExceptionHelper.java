@@ -19,6 +19,7 @@ import java.io.OutputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
@@ -31,7 +32,10 @@ import eu.siacs.conversations.xmpp.jid.InvalidJidException;
 import eu.siacs.conversations.xmpp.jid.Jid;
 
 public class ExceptionHelper {
-	private static SimpleDateFormat DATE_FORMATs = new SimpleDateFormat("yyyy-MM-dd");
+
+	private static final String FILENAME = "stacktrace.txt";
+	private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
+
 	public static void init(Context context) {
 		if (!(Thread.getDefaultUncaughtExceptionHandler() instanceof ExceptionHandler)) {
 			Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandler(
@@ -59,7 +63,7 @@ public class ExceptionHelper {
 				return false;
 			}
 			final Account finalAccount = account;
-			FileInputStream file = activity.openFileInput("stacktrace.txt");
+			FileInputStream file = activity.openFileInput(FILENAME);
 			InputStreamReader inputStreamReader = new InputStreamReader(file);
 			BufferedReader stacktrace = new BufferedReader(inputStreamReader);
 			final StringBuilder report = new StringBuilder();
@@ -67,11 +71,11 @@ public class ExceptionHelper {
 			PackageInfo packageInfo;
 			try {
 				packageInfo = pm.getPackageInfo(activity.getPackageName(), PackageManager.GET_SIGNATURES);
-				report.append("Version: " + packageInfo.versionName + '\n');
-				report.append("Last Update: " + DATE_FORMATs.format(new Date(packageInfo.lastUpdateTime)) + '\n');
+				report.append("Version: ").append(packageInfo.versionName).append('\n');
+				report.append("Last Update: ").append(DATE_FORMAT.format(new Date(packageInfo.lastUpdateTime))).append('\n');
 				Signature[] signatures = packageInfo.signatures;
 				if (signatures != null && signatures.length >= 1) {
-					report.append("SHA-1: " + CryptoHelper.getFingerprintCert(packageInfo.signatures[0].toByteArray()) + "\n");
+					report.append("SHA-1: ").append(CryptoHelper.getFingerprintCert(packageInfo.signatures[0].toByteArray())).append('\n');
 				}
 				report.append('\n');
 			} catch (Exception e) {
@@ -84,7 +88,7 @@ public class ExceptionHelper {
 				report.append('\n');
 			}
 			file.close();
-			activity.deleteFile("stacktrace.txt");
+			activity.deleteFile(FILENAME);
 			AlertDialog.Builder builder = new AlertDialog.Builder(activity);
 			builder.setTitle(activity.getString(R.string.crash_report_title));
 			builder.setMessage(activity.getText(R.string.crash_report_message));
@@ -126,7 +130,7 @@ public class ExceptionHelper {
 
 	public static void writeToStacktraceFile(Context context, String msg) {
 		try {
-			OutputStream os = context.openFileOutput("stacktrace.txt", Context.MODE_PRIVATE);
+			OutputStream os = context.openFileOutput(FILENAME, Context.MODE_PRIVATE);
 			os.write(msg.getBytes());
 			os.flush();
 			os.close();
