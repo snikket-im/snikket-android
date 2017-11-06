@@ -79,7 +79,7 @@ public class StylingHelper {
 
 	public static void format(final Editable editable, @ColorInt int color) {
 		for(ImStyleParser.Style style : ImStyleParser.parse(editable)) {
-			editable.setSpan(createSpanForStyle(style), style.getStart() + 1, style.getEnd() - 1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+			editable.setSpan(createSpanForStyle(style), style.getStart() + 1, style.getEnd(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
 			editable.setSpan(new ForegroundColorSpan(color),style.getStart(),style.getStart()+1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
 			editable.setSpan(new ForegroundColorSpan(color),style.getEnd(),style.getEnd()+1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
 		}
@@ -123,7 +123,7 @@ public class StylingHelper {
 			clear(editable);
 			final int color = mEditText.getCurrentTextColor();
 			final int syntaxColor = Color.argb(
-					Math.round(Color.alpha(color) * 0.5f),
+					Math.round(Color.alpha(color) * 0.6f),
 					Color.red(color),
 					Color.green(color),
 					Color.blue(color)
