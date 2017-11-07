@@ -67,21 +67,23 @@ public class StylingHelper {
 
 	public static void format(final Editable editable, @ColorInt int textColor) {
 		for (ImStyleParser.Style style : ImStyleParser.parse(editable)) {
-			editable.setSpan(createSpanForStyle(style), style.getStart() + 1, style.getEnd(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-			makeKeywordOpaque(editable, style.getStart(), style.getStart() + 1, textColor);
-			makeKeywordOpaque(editable, style.getEnd(), style.getEnd() + 1, textColor);
+			final int keywordLength = style.getKeyword().length();
+			editable.setSpan(createSpanForStyle(style), style.getStart() + keywordLength, style.getEnd() - keywordLength + 1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+			makeKeywordOpaque(editable, style.getStart(), style.getStart() + keywordLength, textColor);
+			makeKeywordOpaque(editable, style.getEnd() - keywordLength + 1, style.getEnd() + 1, textColor);
 		}
 	}
 
 	private static ParcelableSpan createSpanForStyle(ImStyleParser.Style style) {
-		switch (style.getCharacter()) {
-			case '*':
+		switch (style.getKeyword()) {
+			case "*":
 				return new StyleSpan(Typeface.BOLD);
-			case '_':
+			case "_":
 				return new StyleSpan(Typeface.ITALIC);
-			case '~':
+			case "~":
 				return new StrikethroughSpan();
-			case '`':
+			case "`":
+			case "```":
 				return new TypefaceSpan("monospace");
 			default:
 				throw new AssertionError("Unknown Style");
