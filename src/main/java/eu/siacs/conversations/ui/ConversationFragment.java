@@ -74,6 +74,7 @@ import eu.siacs.conversations.ui.adapter.MessageAdapter.OnContactPictureClicked;
 import eu.siacs.conversations.ui.adapter.MessageAdapter.OnContactPictureLongClicked;
 import eu.siacs.conversations.ui.widget.EditMessage;
 import eu.siacs.conversations.ui.widget.ListSelectionManager;
+import eu.siacs.conversations.utils.MessageUtils;
 import eu.siacs.conversations.utils.NickValidityChecker;
 import eu.siacs.conversations.utils.StylingHelper;
 import eu.siacs.conversations.utils.UIHelper;
@@ -591,7 +592,7 @@ public class ConversationFragment extends Fragment implements EditMessage.Keyboa
 	}
 
 	private void quoteMessage(Message message) {
-		quoteText(message.getMergedBody().toString());
+		quoteText(MessageUtils.prepareQuote(message));
 	}
 
 	@Override
@@ -632,7 +633,7 @@ public class ConversationFragment extends Fragment implements EditMessage.Keyboa
 			MenuItem showErrorMessage = menu.findItem(R.id.show_error_message);
 			if (!treatAsFile && !encrypted && !m.isGeoUri() && !m.treatAsDownloadable()) {
 				copyMessage.setVisible(true);
-				quoteMessage.setVisible(true);
+				quoteMessage.setVisible(MessageUtils.prepareQuote(m).length() > 0);
 			}
 			if (m.getEncryption() == Message.ENCRYPTION_DECRYPTION_FAILED) {
 				retryDecryption.setVisible(true);
