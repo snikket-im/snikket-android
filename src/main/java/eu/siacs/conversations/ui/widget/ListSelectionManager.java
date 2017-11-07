@@ -194,10 +194,6 @@ public class ListSelectionManager {
 		return SUPPORTED;
 	}
 
-	public static void startSelection(TextView textView) {
-		startSelection(textView, 0, textView.getText().length());
-	}
-
 	public static void startSelection(TextView textView, int start, int end) {
 		final CharSequence text = textView.getText();
 		if (SUPPORTED && start >= 0 && end > start && textView.isTextSelectable() && text instanceof Spannable) {

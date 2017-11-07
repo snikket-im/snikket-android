@@ -555,28 +555,7 @@ public class ConversationFragment extends Fragment implements EditMessage.Keyboa
 
 			@Override
 			public void onQuote(String text) {
-				if (mEditMessage.isEnabled()) {
-					text = text.replaceAll("(\n *){2,}", "\n").replaceAll("(^|\n)", "$1> ").replaceAll("\n$", "");
-					Editable editable = mEditMessage.getEditableText();
-					int position = mEditMessage.getSelectionEnd();
-					if (position == -1) position = editable.length();
-					if (position > 0 && editable.charAt(position - 1) != '\n') {
-						editable.insert(position++, "\n");
-					}
-					editable.insert(position, text);
-					position += text.length();
-					editable.insert(position++, "\n");
-					if (position < editable.length() && editable.charAt(position) != '\n') {
-						editable.insert(position, "\n");
-					}
-					mEditMessage.setSelection(position);
-					mEditMessage.requestFocus();
-					InputMethodManager inputMethodManager = (InputMethodManager) getActivity()
-							.getSystemService(Context.INPUT_METHOD_SERVICE);
-					if (inputMethodManager != null) {
-						inputMethodManager.showSoftInput(mEditMessage, InputMethodManager.SHOW_IMPLICIT);
-					}
-				}
+				quoteText(text);
 			}
 		});
 		messagesView.setAdapter(messageListAdapter);
@@ -584,6 +563,35 @@ public class ConversationFragment extends Fragment implements EditMessage.Keyboa
 		registerForContextMenu(messagesView);
 
 		return view;
+	}
+
+	private void quoteText(String text) {
+		if (mEditMessage.isEnabled()) {
+			text = text.replaceAll("(\n *){2,}", "\n").replaceAll("(^|\n)", "$1> ").replaceAll("\n$", "");
+			Editable editable = mEditMessage.getEditableText();
+			int position = mEditMessage.getSelectionEnd();
+			if (position == -1) position = editable.length();
+			if (position > 0 && editable.charAt(position - 1) != '\n') {
+				editable.insert(position++, "\n");
+			}
+			editable.insert(position, text);
+			position += text.length();
+			editable.insert(position++, "\n");
+			if (position < editable.length() && editable.charAt(position) != '\n') {
+				editable.insert(position, "\n");
+			}
+			mEditMessage.setSelection(position);
+			mEditMessage.requestFocus();
+			InputMethodManager inputMethodManager = (InputMethodManager) getActivity()
+					.getSystemService(Context.INPUT_METHOD_SERVICE);
+			if (inputMethodManager != null) {
+				inputMethodManager.showSoftInput(mEditMessage, InputMethodManager.SHOW_IMPLICIT);
+			}
+		}
+	}
+
+	private void quoteMessage(Message message) {
+		quoteText(message.getMergedBody().toString());
 	}
 
 	@Override
@@ -607,9 +615,12 @@ public class ConversationFragment extends Fragment implements EditMessage.Keyboa
 			final boolean treatAsFile = m.getType() != Message.TYPE_TEXT
 					&& m.getType() != Message.TYPE_PRIVATE
 					&& t == null;
+			final boolean encrypted = m.getEncryption() == Message.ENCRYPTION_DECRYPTION_FAILED
+					|| m.getEncryption() == Message.ENCRYPTION_PGP;
 			activity.getMenuInflater().inflate(R.menu.message_context, menu);
 			menu.setHeaderTitle(R.string.message_options);
-			MenuItem selectText = menu.findItem(R.id.select_text);
+			MenuItem copyMessage = menu.findItem(R.id.copy_message);
+			MenuItem quoteMessage = menu.findItem(R.id.quote_message);
 			MenuItem retryDecryption = menu.findItem(R.id.retry_decryption);
 			MenuItem correctMessage = menu.findItem(R.id.correct_message);
 			MenuItem shareWith = menu.findItem(R.id.share_with);
@@ -619,8 +630,9 @@ public class ConversationFragment extends Fragment implements EditMessage.Keyboa
 			MenuItem cancelTransmission = menu.findItem(R.id.cancel_transmission);
 			MenuItem deleteFile = menu.findItem(R.id.delete_file);
 			MenuItem showErrorMessage = menu.findItem(R.id.show_error_message);
-			if (!treatAsFile && !m.isGeoUri() && !m.treatAsDownloadable()) {
-				selectText.setVisible(ListSelectionManager.isSupported());
+			if (!treatAsFile && !encrypted && !m.isGeoUri() && !m.treatAsDownloadable()) {
+				copyMessage.setVisible(true);
+				quoteMessage.setVisible(true);
 			}
 			if (m.getEncryption() == Message.ENCRYPTION_DECRYPTION_FAILED) {
 				retryDecryption.setVisible(true);
@@ -671,11 +683,14 @@ public class ConversationFragment extends Fragment implements EditMessage.Keyboa
 			case R.id.share_with:
 				shareWith(selectedMessage);
 				return true;
-			case R.id.select_text:
-				selectText(selectedMessage);
-				return true;
 			case R.id.correct_message:
 				correctMessage(selectedMessage);
+				return true;
+			case R.id.copy_message:
+				copyMessage(selectedMessage);
+				return true;
+			case R.id.quote_message:
+				quoteMessage(selectedMessage);
 				return true;
 			case R.id.send_again:
 				resendMessage(selectedMessage);
@@ -743,23 +758,11 @@ public class ConversationFragment extends Fragment implements EditMessage.Keyboa
 		}
 	}
 
-	private void selectText(Message message) {
-		final int index;
-		synchronized (this.messageList) {
-			index = this.messageList.indexOf(message);
+	 private void copyMessage(Message message) {
+		if (activity.copyTextToClipboard(message.getMergedBody().toString(), R.string.message)) {
+			Toast.makeText(activity, R.string.message_copied_to_clipboard, Toast.LENGTH_SHORT).show();
 		}
-		if (index >= 0) {
-			final int first = this.messagesView.getFirstVisiblePosition();
-			final int last = first + this.messagesView.getChildCount();
-			if (index >= first && index < last)	{
-				final View view = this.messagesView.getChildAt(index - first);
-				final TextView messageBody = this.messageListAdapter.getMessageBody(view);
-				if (messageBody != null) {
-					ListSelectionManager.startSelection(messageBody);
-				}
-			}
-		}
-	}
+	 }
 
 	private void deleteFile(Message message) {
 		if (activity.xmppConnectionService.getFileBackend().deleteFile(message)) {
