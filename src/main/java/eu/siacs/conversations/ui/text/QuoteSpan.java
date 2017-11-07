@@ -2,6 +2,7 @@ package eu.siacs.conversations.ui.text;
 
 import android.graphics.Canvas;
 import android.graphics.Paint;
+import android.support.annotation.ColorInt;
 import android.text.Layout;
 import android.text.TextPaint;
 import android.text.style.CharacterStyle;
@@ -48,5 +49,10 @@ public class QuoteSpan extends CharacterStyle implements LeadingMarginSpan {
 		c.drawRect(x + dir * paddingLeft, top, x + dir * (paddingLeft + width), bottom, p);
 		p.setStyle(style);
 		p.setColor(color);
+	}
+
+	@ColorInt
+	public int getColor() {
+		return this.color;
 	}
 }

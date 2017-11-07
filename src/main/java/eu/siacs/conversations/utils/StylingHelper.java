@@ -45,6 +45,8 @@ import android.widget.EditText;
 import java.util.Arrays;
 import java.util.List;
 
+import eu.siacs.conversations.ui.text.QuoteSpan;
+
 public class StylingHelper {
 
 	private static List<? extends Class<? extends ParcelableSpan>> SPAN_CLASSES = Arrays.asList(
@@ -56,24 +58,18 @@ public class StylingHelper {
 
 	public static void clear(final Editable editable) {
 		final int end = editable.length() - 1;
-		for(Class<?extends ParcelableSpan> clazz : SPAN_CLASSES) {
+		for (Class<? extends ParcelableSpan> clazz : SPAN_CLASSES) {
 			for (ParcelableSpan span : editable.getSpans(0, end, clazz)) {
 				editable.removeSpan(span);
 			}
 		}
 	}
 
-	public static void format(final Editable editable, @ColorInt int color) {
-		final int syntaxColor = Color.argb(
-				Math.round(Color.alpha(color) * 0.6f),
-				Color.red(color),
-				Color.green(color),
-				Color.blue(color)
-		);
-		for(ImStyleParser.Style style : ImStyleParser.parse(editable)) {
+	public static void format(final Editable editable, @ColorInt int textColor) {
+		for (ImStyleParser.Style style : ImStyleParser.parse(editable)) {
 			editable.setSpan(createSpanForStyle(style), style.getStart() + 1, style.getEnd(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-			editable.setSpan(new ForegroundColorSpan(syntaxColor),style.getStart(),style.getStart()+1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-			editable.setSpan(new ForegroundColorSpan(syntaxColor),style.getEnd(),style.getEnd()+1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+			makeKeywordOpaque(editable, style.getStart(), style.getStart() + 1, textColor);
+			makeKeywordOpaque(editable, style.getEnd(), style.getEnd() + 1, textColor);
 		}
 	}
 
@@ -90,6 +86,19 @@ public class StylingHelper {
 			default:
 				throw new AssertionError("Unknown Style");
 		}
+	}
+
+	private static void makeKeywordOpaque(final Editable editable, int start, int end, @ColorInt int fallbackTextColor) {
+		QuoteSpan[] quoteSpans = editable.getSpans(start, end, QuoteSpan.class);
+		@ColorInt int textColor = quoteSpans.length > 0 ? quoteSpans[0].getColor() : fallbackTextColor;
+		@ColorInt int keywordColor = transformColor(textColor);
+		editable.setSpan(new ForegroundColorSpan(keywordColor), start, end, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+	}
+
+	private static
+	@ColorInt
+	int transformColor(@ColorInt int c) {
+		return Color.argb(Math.round(Color.alpha(c) * 0.6f), Color.red(c), Color.green(c), Color.blue(c));
 	}
 
 	public static class MessageEditorStyler implements TextWatcher {
@@ -113,7 +122,7 @@ public class StylingHelper {
 		@Override
 		public void afterTextChanged(Editable editable) {
 			clear(editable);
-			format(editable,mEditText.getCurrentTextColor());
+			format(editable, mEditText.getCurrentTextColor());
 		}
 	}
 }
