@@ -1,5 +1,10 @@
 # Changelog
 
+### Version 1.22.0
+* Text markup *bold*, _italic_,`monospace` and ~strikethrough~
+* Use same emoji style on all Android versions
+* Display emojis slightly larger within continuous text
+
 ### Version 1.21.0
 * Inline player for audio messages
 * Stronger compression for long videos
