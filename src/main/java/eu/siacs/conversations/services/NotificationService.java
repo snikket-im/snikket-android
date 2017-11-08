@@ -733,6 +733,7 @@ public class NotificationService {
 		} else {
 			mBuilder.setSmallIcon(R.drawable.ic_stat_alert_warning);
 		}
+		mBuilder.setPriority(NotificationCompat.PRIORITY_LOW);
 		mBuilder.setContentIntent(PendingIntent.getActivity(mXmppConnectionService,
 				145,
 				new Intent(mXmppConnectionService,ManageAccountActivity.class),
