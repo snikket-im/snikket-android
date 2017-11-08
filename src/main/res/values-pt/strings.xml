@@ -291,7 +291,6 @@
   <string name="check_x_filesize">Verifique o tamanho de %s</string>
   <string name="check_x_filesize_on_host">Verifique o tamanho de %1$s em %2$s</string>
   <string name="message_options">Opções de mensagem</string>
-  <string name="select_text">Selecionar texto</string>
   <string name="copy_original_url">Copiar o URL original</string>
   <string name="send_again">Enviar novamente</string>
   <string name="file_url">URL do ficheiro</string>
@@ -342,7 +341,6 @@
   <string name="regenerate_omemo_key">Regenerar a chave OMEMO</string>
   <string name="clear_other_devices">Apagar dispositivos</string>
   <string name="clear_other_devices_desc">Tem a certeza que quer apagar todos os outros dispositivos do anúncio OMEMO? A próxima vez que os seus dispositivos se conectem, irão ser eles mesmos a fazerem o anúncio novamente, mas podem não receber as mensagems enviadas entretanto.</string>
-  <string name="error_no_keys_to_trust_server_error">Não existem chaves disponíveis para serem utilizadas para este contacto.\nNão foi possível obter chaves novas do servidor. Talvez exista algum problema com o seu servidor de contactos.</string>
   <string name="error_no_keys_to_trust">Não existem chaves disponíveis para serem utilizadas para este contacto. Se removeu alguma das chaves dele, ele irá necessitar de gerar chaves novas. </string>
   <string name="error_trustkeys_title">Erro</string>
   <string name="fetching_history_from_server">Obtendo o histórico do servidor</string>

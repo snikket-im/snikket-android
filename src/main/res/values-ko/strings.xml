@@ -304,7 +304,6 @@
   <string name="check_x_filesize">%s 크기 확인</string>
   <string name="check_x_filesize_on_host">%2$s의 %1$s 크기 확인</string>
   <string name="message_options">메세지 설정 </string>
-  <string name="select_text">텍스트를 선택</string>
   <string name="quote">인용</string>
   <string name="copy_original_url">원본 URL 복사 </string>
   <string name="send_again">다시 보내기 </string>
@@ -360,7 +359,6 @@
   <string name="regenerate_omemo_key">OMEMO 키 다시 생성</string>
   <string name="clear_other_devices">기기 제거</string>
   <string name="clear_other_devices_desc">OMEMO 선언으로부터 모든 기기를 지우시겠습니까? 다음에 기기들이 접속할 때, 기기들이 스스로 다시 선언하지만, 그 동안에 보내진 메세지는 받지 못할수도 있습니다.</string>
-  <string name="error_no_keys_to_trust_server_error">이 연락처에 사용할 수 있는 키가 없습니다. \n서버로부터 새로운 키를 가져올 수 없습니다. 아마 연락처의 서버에 오류가 있는 것 같습니다.</string>
   <string name="error_no_keys_to_trust">이 연락처에 사용할 수 있는 키가 없습니다. 당신이 그들의 키 중에서 어떤 것이든 제거했다면, 그들이 새로운 키를 만들어야 합니다.</string>
   <string name="error_trustkeys_title">오류</string>
   <string name="fetching_history_from_server">서버로부터 기록 가져오는중 </string>

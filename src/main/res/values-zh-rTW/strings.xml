@@ -309,7 +309,6 @@
   <string name="check_x_filesize">檢查 %s 大小</string>
   <string name="check_x_filesize_on_host">在 %2$s 上檢查 %1$s 的大小</string>
   <string name="message_options">消息選項</string>
-  <string name="select_text">選擇文本</string>
   <string name="quote">引用</string>
   <string name="copy_original_url">拷貝原始URL</string>
   <string name="send_again">再次發送</string>
@@ -365,7 +364,6 @@
   <string name="regenerate_omemo_key">重新生成 OMEMO 金鑰</string>
   <string name="clear_other_devices">清除設備</string>
   <string name="clear_other_devices_desc">你想清除所有其他設備的 OMEMO 通告？下次你的設備連接，將會重新收到通告，但也許將不會收到當時你發送的消息。</string>
-  <string name="error_no_keys_to_trust_server_error">此連絡人沒有可用的金鑰。\n從伺服器獲取金鑰失敗。也許你的連絡人所在伺服器發生問題。</string>
   <string name="error_no_keys_to_trust">此連絡人沒有可用的金鑰。如果你曾經清除過他們的金鑰，那麼需要他們生成新的金鑰。</string>
   <string name="error_trustkeys_title">錯誤</string>
   <string name="fetching_history_from_server">從伺服器獲取歷史記錄</string>

@@ -310,7 +310,6 @@
   <string name="check_x_filesize">Comprobar tamaño de %s</string>
   <string name="check_x_filesize_on_host">Comprobar tamaño de %1$s en %2$s</string>
   <string name="message_options">Opciones de mensaje</string>
-  <string name="select_text">Seleccionar texto</string>
   <string name="quote">Citar</string>
   <string name="copy_original_url">Copiar URL original</string>
   <string name="send_again">Volver a enviar</string>
@@ -366,7 +365,7 @@
   <string name="regenerate_omemo_key">Regenerar clave OMEMO</string>
   <string name="clear_other_devices">Limpiar dispositivos</string>
   <string name="clear_other_devices_desc">¿Estás seguro de que quieres limpiar todos los otros dispositivos del anuncio OMEMO? La próxima vez que tus dispositivos conecten, tendrán que volver a anunciarse, pero estos podrían no recibir los mensajes enviados durante el proceso.</string>
-  <string name="error_no_keys_to_trust_server_error">No hay claves disponibles para este contacto. La búsqueda de nuevas claves al servidor ha fallado. Puede que exista un problema con el servidor de tu contacto.</string>
+  <string name="error_no_keys_to_trust_server_error">No hay claves disponibles para este contacto.\nLa búsqueda de nuevas claves en el servidor ha fallado. Puede que haya algún problema con el servidor de tu contacto.</string>
   <string name="error_no_keys_to_trust_presence">No hay claves disponibles para este contacto.\n Asegúrate que tenéis suscripción de presencia mutua. </string>
   <string name="error_no_keys_to_trust">No hay claves disponibles para este contacto. Si has eliminado alguna de sus claves, tus contactos necesitarán generar nuevas claves.</string>
   <string name="error_trustkeys_title">Error</string>
@@ -691,4 +690,7 @@
   <string name="certificate_does_not_contain_jid">El certificado no contiene un identificador Jabber</string>
   <string name="server_info_partial">Parcial</string>
   <string name="attach_record_video">Grabar video</string>
+  <string name="copy_to_clipboard">Copiar al portapapeles</string>
+  <string name="message_copied_to_clipboard">Mensaje copiado en el portapapeles</string>
+  <string name="message">Mensaje</string>
 </resources>

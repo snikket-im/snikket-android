@@ -310,7 +310,6 @@
   <string name="check_x_filesize">%s-Größe prüfen</string>
   <string name="check_x_filesize_on_host">%1$s-Größe auf %2$s prüfen</string>
   <string name="message_options">Nachrichtenoptionen</string>
-  <string name="select_text">Text markieren</string>
   <string name="quote">Zitat</string>
   <string name="copy_original_url">Original-URL kopieren</string>
   <string name="send_again">Erneut senden</string>
@@ -366,7 +365,6 @@
   <string name="regenerate_omemo_key">OMEMO-Schlüssel erneuern</string>
   <string name="clear_other_devices">Geräte entfernen</string>
   <string name="clear_other_devices_desc">Alle anderen Geräte aus der OMEMO-Bekanntmachung entfernen? Die Bekanntmachung wird bei der nächsten Verbindung erneuert, möglicherweise werden aber nicht alle Nachrichten empfangen, die in der Zwischenzeit versendet wurden.</string>
-  <string name="error_no_keys_to_trust_server_error">Für diesen Kontakt sind keine benutzbaren Schlüssel verfügbar.\nNeue Schlüssel vom Server herunterzuladen war nicht erfolgreich. Vielleicht stimmt etwas mit dem Server deines Kontakts nicht.</string>
   <string name="error_no_keys_to_trust_presence">Für diesen Kontakt sind keine benutzbaren Schlüssel verfügbar.\nStelle sicher, dass du den gegenseitigen Online-Status aktiviert hast.</string>
   <string name="error_no_keys_to_trust">Für diesen Kontakt sind keine benutzbaren Schlüssel verfügbar. Falls sie gelöscht wurden, müssen diese neu erstellt werden.</string>
   <string name="error_trustkeys_title">Fehler</string>

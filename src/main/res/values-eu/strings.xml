@@ -310,7 +310,6 @@
   <string name="check_x_filesize">Egiaztatu %sren neurria</string>
   <string name="check_x_filesize_on_host">Egiaztatu %1$sren neurria %2$s ostalarian</string>
   <string name="message_options">Mezuaren aukerak</string>
-  <string name="select_text">Testua hautatu</string>
   <string name="quote">Aipatu</string>
   <string name="copy_original_url">Jatorrizko URLa kopiatu</string>
   <string name="send_again">Berriro bidali</string>
@@ -366,7 +365,6 @@
   <string name="regenerate_omemo_key">OMEMO gakoa birsortu</string>
   <string name="clear_other_devices">Gailuak garbitu</string>
   <string name="clear_other_devices_desc">Ziur al zaude OMEMO iragarpenetik beste gailu guztiak garbitu nahi dituzulaz? Zure gailuak konektatzen diren hurrengoan, beraiek berriragarriko dira, baina agian ez dute mezurik jasoko bitartean.</string>
-  <string name="error_no_keys_to_trust_server_error">Ez dago gako erabilgarririk kontaktu honetarako.\nEzin izan da zerbitzaritik gako berririk eskuratu. Agian akatsen bat dago zure kontaktuen zerbitzariarekin.</string>
   <string name="error_no_keys_to_trust_presence">Ez dago gako erabilgarririk kontaktu honetarako.\nEgiaztatu ezazu bien arteko presentzia harpidetza duzuela.</string>
   <string name="error_no_keys_to_trust">Kontaktu honetarako gako erabilgarririk ez dago. Bere gakoak purgatu badituzu, berri batzuk sortu behar dituzte.</string>
   <string name="error_trustkeys_title">Akatsa</string>

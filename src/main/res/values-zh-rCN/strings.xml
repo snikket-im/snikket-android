@@ -310,7 +310,6 @@
   <string name="check_x_filesize">检查 %s 大小</string>
   <string name="check_x_filesize_on_host">在 %2$s 上检查 %1$s 的大小</string>
   <string name="message_options">消息选项</string>
-  <string name="select_text">选择文本</string>
   <string name="quote">引用</string>
   <string name="copy_original_url">拷贝原始URL</string>
   <string name="send_again">再次发送</string>
@@ -366,7 +365,6 @@
   <string name="regenerate_omemo_key">重新生成 OMEMO 密钥</string>
   <string name="clear_other_devices">清除设备</string>
   <string name="clear_other_devices_desc">你想清除所有其他设备的 OMEMO 通告？下次你的设备连接，将会重新收到通告，但也许将不会收到当时你发送的消息。</string>
-  <string name="error_no_keys_to_trust_server_error">此联系人没有可用的密钥。\n从服务器获取密钥失败。也许你的联系人所在服务器发生问题。</string>
   <string name="error_no_keys_to_trust_presence">没有可以用于这个账户的密钥。
 请确保你有相互的在线状态的订阅。</string>
   <string name="error_no_keys_to_trust">此联系人没有可用的密钥。如果你曾经清除过他们的密钥，那么需要他们生成新的密钥。</string>

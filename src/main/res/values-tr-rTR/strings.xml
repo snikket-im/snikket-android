@@ -305,7 +305,6 @@
   <string name="check_x_filesize">%s boyutunu denetle</string>
   <string name="check_x_filesize_on_host">%2$s üzerindeki %1$s boyutunu denetle</string>
   <string name="message_options">İleti seçenekleri</string>
-  <string name="select_text">Metni seç</string>
   <string name="quote">Alıntı</string>
   <string name="copy_original_url">Orijinal URL\'i kopyala</string>
   <string name="send_again">Yeniden gönder</string>
@@ -361,7 +360,6 @@
   <string name="regenerate_omemo_key">OMEMO anahtarını yeniden oluştur</string>
   <string name="clear_other_devices">Aygıtları sil</string>
   <string name="clear_other_devices_desc">OMEMO bildirimindeki diğer aygıtların hepsini silmek istediğinizden emin misiniz? Aygıtlarınız yeniden bağlandıklarında kendilerini yeniden bildirecekler ama bu süre zarfındaki iletileri alamayabilirler.</string>
-  <string name="error_no_keys_to_trust_server_error">Bu kişi için kullanılabilr anahtar mevcut değil\nSunucudan yeni anahtarlar alınamadı. Sunucunuzla ilgili bir sorun olabilir.</string>
   <string name="error_no_keys_to_trust">Bu kişi için kullanılabilecek bir anahtar bulunmuyor. Eğer anahtarlarını sildiyseniz, yeni anahtar oluşturmaları gerekiyor.</string>
   <string name="error_trustkeys_title">Hata</string>
   <string name="fetching_history_from_server">Sunucudan geçmiş alınıyor</string>

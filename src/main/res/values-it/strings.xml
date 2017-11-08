@@ -310,7 +310,6 @@
   <string name="check_x_filesize">Controlla dimensione %s</string>
   <string name="check_x_filesize_on_host">Controlla dimensione %1$s su %2$s</string>
   <string name="message_options">Opzioni del messaggio</string>
-  <string name="select_text">Seleziona testo</string>
   <string name="quote">Quota</string>
   <string name="copy_original_url">Copia URL originale</string>
   <string name="send_again">Invia di nuovo</string>
@@ -366,7 +365,6 @@
   <string name="regenerate_omemo_key">Rigenera chiave OMEMO</string>
   <string name="clear_other_devices">Pulisci dispositivi</string>
   <string name="clear_other_devices_desc">Sei sicuro/a di voler rimuovere tutti gli altri dispositivi dall\'annuncio OMEMO? La prossima volta che si connetteranno si riannunceranno, ma potrebbero non ricevere i messaggi inviati nel frattempo.</string>
-  <string name="error_no_keys_to_trust_server_error">Non ci sono chiavi utilizzabili per questo contatto.\nLa raccolta di nuove chiavi dal server è fallita. Forse qualcosa non va con il tuo server dei contatti.</string>
   <string name="error_no_keys_to_trust_presence">Non ci sono chiavi utilizzabili per questo contatto.\nAssicurati di avere reciprocamente la sottoscrizione sulla presenza.</string>
   <string name="error_no_keys_to_trust">Non ci sono chiavi usabili per questo contatto. Se hai cancellato qualsiasi loro chiave, devono generarne di nuove.</string>
   <string name="error_trustkeys_title">Errore</string>

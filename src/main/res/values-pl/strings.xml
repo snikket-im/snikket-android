@@ -310,7 +310,6 @@
   <string name="check_x_filesize">Sprawdź rozmiar %s</string>
   <string name="check_x_filesize_on_host">Sprawdź wielkość %1$s na %2$s</string>
   <string name="message_options">Opcje wiadomości</string>
-  <string name="select_text">Zaznacz tekst</string>
   <string name="quote">Cytat</string>
   <string name="copy_original_url">Skopiuj oryginalny URL</string>
   <string name="send_again">Wyślij ponownie</string>
@@ -367,7 +366,6 @@
   <string name="regenerate_omemo_key">Wygeneruj ponownie klucz OMEMO</string>
   <string name="clear_other_devices">Wyczyść urządzenia</string>
   <string name="clear_other_devices_desc">Czy na pewno chcesz usunąć wszystkie inne urządzenia z ogłoszenia OMEMO? Następnym razem gdy połączą się Twoje urdzącenia, ogłoszą się one ponownie, ale mogą nie otrzymać wiadomości wysłanych w międzyczasie.</string>
-  <string name="error_no_keys_to_trust_server_error">Nie ma dostępnych kluczy dl atego kontaktu.\nPobieranie nowych kluczy z serwera nie powiodło się. Byćmoże jest coś nie tak z Twoim serwerem kontaktów?</string>
   <string name="error_no_keys_to_trust_presence">Brak dostępnych kluczy dla tego kontaktu.\nUpewnij się, że wzajemnie powiadamiacie się o obecności.</string>
   <string name="error_no_keys_to_trust">Nie ma dostępnych żadnych użytecznych kluczy dla tego kontaktu. Jeśli usunąłeś jakieś jego klucze, kontakt będzie musiał wygenerować nowe.</string>
   <string name="error_trustkeys_title">Błąd</string>

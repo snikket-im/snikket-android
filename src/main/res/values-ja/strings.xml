@@ -310,7 +310,6 @@
   <string name="check_x_filesize">%s サイズを確認</string>
   <string name="check_x_filesize_on_host">%2$s で %1$s のサイズを確認</string>
   <string name="message_options">メッセージオプション</string>
-  <string name="select_text">テキストを選択</string>
   <string name="quote">引用</string>
   <string name="copy_original_url">元の URL をコピー</string>
   <string name="send_again">再送</string>
@@ -366,7 +365,6 @@
   <string name="regenerate_omemo_key">OMEMO 鍵を再生成</string>
   <string name="clear_other_devices">デバイスをクリア</string>
   <string name="clear_other_devices_desc">OMEMO のアナウンスから他のすべてのデバイスをクリアしてもよろしいですか? お使いのデバイスが次回接続したとき、それらは自分自身を再アナウンスしますが、それらはその間に送信されたメッセージを受信できない場合があります。</string>
-  <string name="error_no_keys_to_trust_server_error">この連絡先で利用可能な鍵がありません。\nサーバーから新しい鍵の取得に失敗しました。おそらく、お使いの連絡先サーバーに何か問題があります。</string>
   <string name="error_no_keys_to_trust_presence">この連絡先で利用可能な鍵はありません。\n相互存在サブスクリプションあることを確認してください。</string>
   <string name="error_no_keys_to_trust">この連絡先で利用可能な鍵はありません。あなたがその鍵を消去している場合は、新しいものを生成してもらう必要があります。</string>
   <string name="error_trustkeys_title">エラー</string>

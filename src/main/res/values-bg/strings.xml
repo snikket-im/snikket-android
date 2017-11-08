@@ -310,7 +310,6 @@
   <string name="check_x_filesize">Проверете размера на %s</string>
   <string name="check_x_filesize_on_host">Проверете размера на %1$s на %2$s</string>
   <string name="message_options">Настройки за съобщенята</string>
-  <string name="select_text">Избиране на текста</string>
   <string name="quote">Цитат</string>
   <string name="copy_original_url">Копиране на оригиналния адрес</string>
   <string name="send_again">Повторно изпращане</string>
@@ -366,7 +365,7 @@
   <string name="regenerate_omemo_key">Повторно създаване на ключа OMEMO</string>
   <string name="clear_other_devices">Премахване на устройствата</string>
   <string name="clear_other_devices_desc">Сигурни ли сте, че искате да премахнете всички останали устройства от обявлението OMEMO? Следващия път, когато устройствата Ви се свържат, те ще обявят себе си отново, но може да не получат съобщенията, изпратени междувременно.</string>
-  <string name="error_no_keys_to_trust_server_error">Няма ключове, които могат да бъдат използвани за този контакт.\nИзтеглянето на нови ключове от сървъра беше неуспешно. Възможно е да има проблем със сървъра на контактите Ви.</string>
+  <string name="error_no_keys_to_trust_server_error">Няма ключове, които могат да бъдат използвани за този контакт.\nИзтеглянето на нови ключове от сървъра беше неуспешно. Възможно е да има проблем със сървъра на контакта Ви.</string>
   <string name="error_no_keys_to_trust_presence">Няма ключове, които могат да бъдат използвани за този контакт.\nУверете се, че и двамата имате абонамент за присъствието.</string>
   <string name="error_no_keys_to_trust">Няма ключове, които могат да бъдат използвани за този контакт. Ако сте изчистили някои от ключовете му, то той трябва да създаде нови.</string>
   <string name="error_trustkeys_title">Грешка</string>
@@ -691,4 +690,7 @@
   <string name="certificate_does_not_contain_jid">Сертификатът не съдържа Jabber идентификатор</string>
   <string name="server_info_partial">частично</string>
   <string name="attach_record_video">Запис на видео</string>
+  <string name="copy_to_clipboard">Копиране в буфера</string>
+  <string name="message_copied_to_clipboard">Съобщението е копирано</string>
+  <string name="message">Съобщение</string>
 </resources>

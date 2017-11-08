@@ -310,7 +310,6 @@
   <string name="check_x_filesize">Ellenőrizze a %s méretét</string>
   <string name="check_x_filesize_on_host">Ellenőrizze a %1$s méretét a %2$s oldalon</string>
   <string name="message_options">Műveletek üzenetekkel</string>
-  <string name="select_text">Szöveg kijelölése</string>
   <string name="quote">Idéz</string>
   <string name="copy_original_url">Eredeti URL másolása</string>
   <string name="send_again">Elküldi újra</string>
@@ -366,7 +365,6 @@
   <string name="regenerate_omemo_key">OMEMO kulcs regenerálása</string>
   <string name="clear_other_devices">Eszközök tisztítása</string>
   <string name="clear_other_devices_desc">Biztosan törölni kívánja az összes többi eszközt az OMEMO bejelentéséből? A következő alkalommal, amikor a készülékei csatlakoznak, újra bejelentik magukat, de előfordulhat, hogy nem kapják meg az időközben elküldött üzeneteket.</string>
-  <string name="error_no_keys_to_trust_server_error">Ehhez a kapcsolathoz nem állnak rendelkezésre használható kulcsok.\nA kiszolgáló új kulcsainak letöltése sikertelen volt. Talán van valami baj a kapcsolattartók szerverével.</string>
   <string name="error_no_keys_to_trust_presence">Ehhez a kapcsolathoz nem áll rendelkezésre használható kulcs.\nGyőződjön meg róla, hogy kölcsönösen felíratkoztak egymás állapotfrissítéseire.</string>
   <string name="error_no_keys_to_trust">Ehhez a kapcsolathoz nem áll rendelkezésre használható kulcs. Ha törölted valamelyik kulcsukat, akkor újakat kell létrehoznod.</string>
   <string name="error_trustkeys_title">Hiba</string>

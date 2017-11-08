@@ -310,7 +310,6 @@
   <string name="check_x_filesize">Проверить размер %s</string>
   <string name="check_x_filesize_on_host">Проверить размер %1$s на %2$s</string>
   <string name="message_options">Опции сообщения</string>
-  <string name="select_text">Выбрать текст</string>
   <string name="quote">Цитировать</string>
   <string name="copy_original_url">Копировать адрес ссылки</string>
   <string name="send_again">Отправить ещё раз</string>
@@ -366,7 +365,6 @@
   <string name="regenerate_omemo_key">Создать заново ключ OMEMO</string>
   <string name="clear_other_devices">Очистить устройства</string>
   <string name="clear_other_devices_desc">Вы уверены, что хотите очистить все остальные устройства из анонса ключей OMEMO? При соединении устройств в следующий раз новые ключи анонсируются автоматически, но устройства могут не получить сообщения, посланные до этого.</string>
-  <string name="error_no_keys_to_trust_server_error">Для этого контакта не существует доступных ключей.\nПопытка получения новых ключей с сервера оказалась неудачной. Возможно, что-то не так с сервером контактов.</string>
   <string name="error_no_keys_to_trust_presence">Нет доступных ключей для данного контакта.\nУбедитесь, что у вас есть подписка на взаимное присутствие.</string>
   <string name="error_no_keys_to_trust">Для этого контакта не существует доступных ключей. Если вы очистили все его ключи, ему необходимо создать новые.</string>
   <string name="error_trustkeys_title">Ошибка</string>

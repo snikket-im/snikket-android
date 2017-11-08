@@ -310,7 +310,6 @@
   <string name="check_x_filesize">Verifica marimea %s</string>
   <string name="check_x_filesize_on_host">Verifica marimea %1$s pe %2$s</string>
   <string name="message_options">Opțiuni mesaje</string>
-  <string name="select_text">Selecteaza text</string>
   <string name="quote">Citează</string>
   <string name="copy_original_url">Copiază adresa originală</string>
   <string name="send_again">Trimite din nou</string>
@@ -366,7 +365,7 @@
   <string name="regenerate_omemo_key">Generează din nou cheia OMEMO</string>
   <string name="clear_other_devices">Curață lista dispozitivelor</string>
   <string name="clear_other_devices_desc">Sigur vreți să înlăturați toate celelalte dispozitive din mesajul de anunț OMEMO? Data viitoare când dispozitivele se vor conecta, vor anunța din nou că sunt accesibile, dar se poate ca ele să nu mai primească mesajele trimise între timp.</string>
-  <string name="error_no_keys_to_trust_server_error">Nu exista chei utilizabile pentru acest contact.\nÎncercarea de a descărca o cheie de pe server a eșuat. Se poate să fie o problemă cu serverul de contacte.</string>
+  <string name="error_no_keys_to_trust_server_error">Nu există chei utilizabile pentru acest contact.\nÎncercarea de a descărca chei noi de pe server a eșuat. Se poate ca serverul contactului dumneavoastră să aibă o problemă.</string>
   <string name="error_no_keys_to_trust_presence">Nu există chei disponibile ce pot fi folosite pentru acest contact.\nAsigurați-vă că ați activat trimiterea de actualizări de prezență reciproce.</string>
   <string name="error_no_keys_to_trust">Nu exista chei disponibile și utilizabile pentru acest contact. Dacă ați șters vreuna din cheile contactului, acesta va trebuii să genereze una noua.</string>
   <string name="error_trustkeys_title">Eroare</string>
@@ -697,4 +696,7 @@ sau chiar pierderea mesajelor.\nÎn continuare veți fi rugați să dezactivați
   <string name="certificate_does_not_contain_jid">Certificatul nu conține un ID Jabber</string>
   <string name="server_info_partial">parțial</string>
   <string name="attach_record_video">Înregistrare video</string>
+  <string name="copy_to_clipboard">Copiază în clipboard</string>
+  <string name="message_copied_to_clipboard">Mesaj copiat în clipboard</string>
+  <string name="message">Mesaj</string>
 </resources>

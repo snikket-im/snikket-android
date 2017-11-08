@@ -309,7 +309,6 @@
   <string name="check_x_filesize">Провери величину %s</string>
   <string name="check_x_filesize_on_host">Провери величину %1$s na %2$s</string>
   <string name="message_options">Опције поруке</string>
-  <string name="select_text">Изабери текст</string>
   <string name="quote">Цитирај</string>
   <string name="copy_original_url">Копирај изворни УРЛ</string>
   <string name="send_again">Пошаљи поново</string>
@@ -365,7 +364,6 @@
   <string name="regenerate_omemo_key">Поново генериши ОМЕМО кључ</string>
   <string name="clear_other_devices">Очисти уређаје</string>
   <string name="clear_other_devices_desc">Желите ли заиста да уклоните све остале уређаје са ОМЕМО објаве? Када се ваши уређаји следећи пут повежу, објавиће се сами, али у међувремену можда неће примати поруке.</string>
-  <string name="error_no_keys_to_trust_server_error">Нема употребљивих кључева за овај контакт.\nДобављање нових кључева са сервера није било успешно. Можда нешто није у реду са сервером ваших контаката.</string>
   <string name="error_no_keys_to_trust">Нема употребљивих кључева за овај контакт. Ако сте очистили било који од тих кључева, контакт мора да генерише нови.</string>
   <string name="error_trustkeys_title">Грешка</string>
   <string name="fetching_history_from_server">Добављам историјат са сервера</string>

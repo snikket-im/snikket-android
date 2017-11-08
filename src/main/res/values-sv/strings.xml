@@ -309,7 +309,6 @@
   <string name="check_x_filesize">Kontrollera filstorleken på %s</string>
   <string name="check_x_filesize_on_host">Kontrollera filstorlek för %1$s på %2$s</string>
   <string name="message_options">Meddelandealternativ</string>
-  <string name="select_text">Markera text</string>
   <string name="quote">Citera</string>
   <string name="copy_original_url">Kopiera orginal-URL</string>
   <string name="send_again">Skicka igen</string>
@@ -365,7 +364,6 @@
   <string name="regenerate_omemo_key">Regenerera OMEMO-nyckel</string>
   <string name="clear_other_devices">Rensa enheter</string>
   <string name="clear_other_devices_desc">Är du säker på att du vill rensa alla andra enheter från OMEMO-annonsering? Nästa gång dina enheter ansluter kommer de att återannonsera sig, men de kanske inte tar emot enheter under tiden.</string>
-  <string name="error_no_keys_to_trust_server_error">Det finns inga användbara nycklar tillgängliga för den här kontakten.\nHämtning av nya nyckar från servern har inte lyckats. Kanske är det något fel på din kontakts server.</string>
   <string name="error_no_keys_to_trust">Det finns inga användbara nycklar tillgängliga för den här kontakten. Om du har rensat någon av dennes nycklar behöver de generera nya.</string>
   <string name="error_trustkeys_title">Fel</string>
   <string name="fetching_history_from_server">Hämtar historik från server</string>

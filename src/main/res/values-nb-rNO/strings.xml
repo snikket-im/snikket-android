@@ -310,7 +310,6 @@
   <string name="check_x_filesize">Sjekk %s størrelse</string>
   <string name="check_x_filesize_on_host">Sjekk %1$s størrelse på %2$s</string>
   <string name="message_options">Meldingsvalg</string>
-  <string name="select_text">Velg tekst</string>
   <string name="quote">Sitat</string>
   <string name="copy_original_url">Kopier orginal nettadresse</string>
   <string name="send_again">Send igjen</string>
@@ -366,7 +365,6 @@
   <string name="regenerate_omemo_key">Regenerer OMEMO-nøkkel</string>
   <string name="clear_other_devices">Rens enheter</string>
   <string name="clear_other_devices_desc">Bekreft rensinga av alla andre enheter fra OMEMO-kunngjøringen. Neste gang dine enheter kobler til, vil de tilkjennegi seg på ny, men det kan hende de ikke mottar meldinger sendt i mellomtiden.</string>
-  <string name="error_no_keys_to_trust_server_error">Ingen brukbare nøkler tilgjengelige for denne kontakten.\nInnhenting av nye nøkler fra tjeneren var ikke vellykket. Kanskje det er noe galt med tjeneren kontakten din bruker?</string>
   <string name="error_no_keys_to_trust_presence">Det er ingen brukvare knapper tilgjengelig for denne kontakten.\nForsikre deg om at dere begge abonnerer på hverandres tilstedeværelse.</string>
   <string name="error_no_keys_to_trust">Ingen brukbare nøkler tilgjengelige for denne kontakten. Hvis du har tilintetgjort noen av nøklene deres, må de generere nye.</string>
   <string name="error_trustkeys_title">Feil</string>

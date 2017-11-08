@@ -310,7 +310,6 @@
   <string name="check_x_filesize">Comprobando o tamaño de %s</string>
   <string name="check_x_filesize_on_host">Comporbar o tamaño de %1$s en %2$s</string>
   <string name="message_options">Opcións da mensaxe</string>
-  <string name="select_text">Selecionar texto</string>
   <string name="quote">Cita</string>
   <string name="copy_original_url">Copiar URL orixinal</string>
   <string name="send_again">Enviar de novo</string>
@@ -366,7 +365,6 @@
   <string name="regenerate_omemo_key">Rexenerar a chave OMEMO</string>
   <string name="clear_other_devices">Limplar dispositivos</string>
   <string name="clear_other_devices_desc">Está segura de que quere eliminar todos os outros dispositivos da declaración OMEMO? A próxima vez que se conecten os seus dispositivos estos voltarán a anunciarse pero non rebirán mensaxes enviados mentras tanto.</string>
-  <string name="error_no_keys_to_trust_server_error">Non hai chaves utilizables dispoñibles para este contacto.\nNon se puideron obter novas chaves do servidor. Podería ter acontecido algún erro no servidor do seu contacto.</string>
   <string name="error_no_keys_to_trust_presence">Non hai chaves utilizables dispoñibles para este contacto.\nAsegúrese de que ambos teñen mutua suscrición de presenza.</string>
   <string name="error_no_keys_to_trust">Non hai chaves utilizables dispoñibles para este contacto. Si eliminou algunha das chaves do contacto, precisan xerar unhas novas.</string>
   <string name="error_trustkeys_title">Fallo</string>

@@ -302,7 +302,6 @@
   <string name="check_x_filesize">Ověřit %s velikost</string>
   <string name="check_x_filesize_on_host">Kontrola %1$s velikosti na %2$s</string>
   <string name="message_options">Možnosti zpráv</string>
-  <string name="select_text">Vybrat text</string>
   <string name="copy_original_url">Kopírovat originální URL</string>
   <string name="send_again">Poslat znovu</string>
   <string name="file_url">URL souboru</string>
@@ -354,7 +353,6 @@
   <string name="regenerate_omemo_key">Znovu vytvořit OMEMO klíč</string>
   <string name="clear_other_devices">Smazat přístroje</string>
   <string name="clear_other_devices_desc">Opravdu chcete vymazat ostatní přístroje z OMEMO upozornění? Až se příště tyto přístroje připojí, znovu se ohlásí, ale pravděpodobně neobdrží zprávy odeslané v mezičase mezi přihlášeními.</string>
-  <string name="error_no_keys_to_trust_server_error">Pro tento kontakt nejsou dostupné žádné použitelné klíče.\nNahrání klíčů ze serveru nebylo úspěšné. Možná je něco špatně se serverem vašeho kontaktu.</string>
   <string name="error_no_keys_to_trust">Pro tento kontakt nejsou dostupné žádné použitelné klíče. Pokud jste smazali jakýkoliv z jeho klíčů bude třeba vygenerovat nové.</string>
   <string name="error_trustkeys_title">Chyba</string>
   <string name="fetching_history_from_server">Načíst historii ze serveru</string>

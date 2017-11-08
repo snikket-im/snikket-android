@@ -310,7 +310,6 @@
   <string name="check_x_filesize">Bestandsgrootte van %s controleren</string>
   <string name="check_x_filesize_on_host">Bestandsgrootte van %1$s op %2$s controleren</string>
   <string name="message_options">Berichtopties</string>
-  <string name="select_text">Tekst selecteren</string>
   <string name="quote">Citeren</string>
   <string name="copy_original_url">Oorspronkelijke URL kopiëren</string>
   <string name="send_again">Opnieuw versturen</string>
@@ -366,7 +365,7 @@
   <string name="regenerate_omemo_key">OMEMO-sleutel opnieuw aanmaken</string>
   <string name="clear_other_devices">Apparaten wissen</string>
   <string name="clear_other_devices_desc">Weet je zeker dat je alle andere apparaten uit de OMEMO-aankondiging wilt weglaten? De volgende keer dat je apparaten verbinding maken zullen ze zich opnieuw aankondigen, maar zullen ze misschien niet de berichten ontvangen die in de tussentijd zijn verzonden.</string>
-  <string name="error_no_keys_to_trust_server_error">Er zijn geen bruikbare sleutels beschikbaar voor dit contact.\nHet ophalen van nieuwe sleutels van de server is mislukt. Misschien is er iets mis met de server van je contact.</string>
+  <string name="error_no_keys_to_trust_server_error">Er zijn geen bruikbare sleutels beschikbaar voor dit contact.\nOphalen van nieuwe sleutels van de server is mislukt. Misschien is er iets mis met de server van je contact.</string>
   <string name="error_no_keys_to_trust_presence">Er zijn geen bruikbare sleutels beschikbaar voor dit contact.\nZorg dat je allebei op elkaars aanwezigheidsupdates bent geabonneerd.</string>
   <string name="error_no_keys_to_trust">Er zijn geen bruikbare sleutels beschikbaar voor dit contact. Als je zijn/haar sleutels hebt verwijderd dient hij/zij nieuwe aan te maken.</string>
   <string name="error_trustkeys_title">Fout</string>
@@ -691,4 +690,7 @@
   <string name="certificate_does_not_contain_jid">Certificaat bevat geen Jabber-ID</string>
   <string name="server_info_partial">gedeeltelijk</string>
   <string name="attach_record_video">Video opnemen</string>
+  <string name="copy_to_clipboard">Kopiëren naar klembord</string>
+  <string name="message_copied_to_clipboard">Bericht gekopieerd naar klembord</string>
+  <string name="message">Bericht</string>
 </resources>
