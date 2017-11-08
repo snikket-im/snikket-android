@@ -515,7 +515,7 @@ public class FileBackend {
 				return FileProvider.getUriForFile(context, packageId + FILE_PROVIDER, file);
 			} catch(IllegalArgumentException e) {
 				if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-					throw new SecurityException();
+					throw new SecurityException(e);
 				} else {
 					return Uri.fromFile(file);
 				}

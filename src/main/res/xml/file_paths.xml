@@ -1,8 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <paths>
-    <external-path name="external" path="/"/>
-    <files-path path="Images/" name="pictures" />
-    <files-path path="Videos" name="videos"/>
-    <files-path path="Files/" name="files" />
-    <cache-path path="Camera/" name="camera" />
+    <external-path
+        name="external"
+        path="/"/>
+    <root-path
+        name="storage"
+        path="/storage/"/>
+    <files-path
+        name="pictures"
+        path="Images/"/>
+    <files-path
+        name="videos"
+        path="Videos"/>
+    <files-path
+        name="files"
+        path="Files/"/>
+    <cache-path
+        name="camera"
+        path="Camera/"/>
 </paths>

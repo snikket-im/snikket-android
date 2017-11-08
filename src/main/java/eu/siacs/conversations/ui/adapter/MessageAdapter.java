@@ -22,6 +22,7 @@ import android.text.style.RelativeSizeSpan;
 import android.text.style.StyleSpan;
 import android.text.util.Linkify;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.ActionMode;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -967,6 +968,7 @@ public class MessageAdapter extends ArrayAdapter<Message> implements CopyTextVie
 		try {
 			uri = FileBackend.getUriForFile(activity, file);
 		} catch (SecurityException e) {
+			Log.d(Config.LOGTAG,"No permission to access "+file.getAbsolutePath(),e);
 			Toast.makeText(activity, activity.getString(R.string.no_permission_to_access_x, file.getAbsolutePath()), Toast.LENGTH_SHORT).show();
 			return;
 		}
