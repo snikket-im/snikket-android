@@ -21,23 +21,18 @@ import eu.siacs.conversations.Config;
 
 public class EditMessage extends EmojiEditText {
 
-	public interface OnCommitContentListener {
-		boolean onCommitContent(InputContentInfoCompat inputContentInfo, int flags, Bundle opts, String[] mimeTypes);
-	}
+	private static final InputFilter SPAN_FILTER = new InputFilter() {
 
+		@Override
+		public CharSequence filter(CharSequence source, int start, int end, Spanned dest, int dstart, int dend) {
+			return source instanceof Spanned ? source.toString() : source;
+		}
+	};
+	protected Handler mTypingHandler = new Handler();
+	protected KeyboardListener keyboardListener;
 	private OnCommitContentListener mCommitContentListener = null;
 	private String[] mimeTypes = null;
-
-	public EditMessage(Context context, AttributeSet attrs) {
-		super(context, attrs);
-	}
-
-	public EditMessage(Context context) {
-		super(context);
-	}
-
-	protected Handler mTypingHandler = new Handler();
-
+	private boolean isUserTyping = false;
 	protected Runnable mTypingTimeout = new Runnable() {
 		@Override
 		public void run() {
@@ -47,12 +42,15 @@ public class EditMessage extends EmojiEditText {
 			}
 		}
 	};
-
-	private boolean isUserTyping = false;
-
 	private boolean lastInputWasTab = false;
 
-	protected KeyboardListener keyboardListener;
+	public EditMessage(Context context, AttributeSet attrs) {
+		super(context, attrs);
+	}
+
+	public EditMessage(Context context) {
+		super(context);
+	}
 
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent e) {
@@ -73,8 +71,13 @@ public class EditMessage extends EmojiEditText {
 	}
 
 	@Override
+	public int getAutofillType() {
+		return AUTOFILL_TYPE_NONE;
+	}
+
+	@Override
 	public void onTextChanged(CharSequence text, int start, int lengthBefore, int lengthAfter) {
-		super.onTextChanged(text,start,lengthBefore,lengthAfter);
+		super.onTextChanged(text, start, lengthBefore, lengthAfter);
 		lastInputWasTab = false;
 		if (this.mTypingHandler != null && this.keyboardListener != null) {
 			this.mTypingHandler.removeCallbacks(mTypingTimeout);
@@ -97,23 +100,6 @@ public class EditMessage extends EmojiEditText {
 			this.isUserTyping = false;
 		}
 	}
-
-	public interface KeyboardListener {
-		boolean onEnterPressed();
-		void onTypingStarted();
-		void onTypingStopped();
-		void onTextDeleted();
-		void onTextChanged();
-		boolean onTabPressed(boolean repeated);
-	}
-
-	private static final InputFilter SPAN_FILTER = new InputFilter() {
-
-		@Override
-		public CharSequence filter(CharSequence source, int start, int end, Spanned dest, int dstart, int dend) {
-			return source instanceof Spanned ? source.toString() : source;
-		}
-	};
 
 	@Override
 	public boolean onTextContextMenuItem(int id) {
@@ -157,9 +143,26 @@ public class EditMessage extends EmojiEditText {
 					return EditMessage.this.mCommitContentListener.onCommitContent(inputContentInfo, flags, opts, mimeTypes);
 				}
 			});
-		}
-		else {
+		} else {
 			return ic;
 		}
+	}
+
+	public interface OnCommitContentListener {
+		boolean onCommitContent(InputContentInfoCompat inputContentInfo, int flags, Bundle opts, String[] mimeTypes);
+	}
+
+	public interface KeyboardListener {
+		boolean onEnterPressed();
+
+		void onTypingStarted();
+
+		void onTypingStopped();
+
+		void onTextDeleted();
+
+		void onTextChanged();
+
+		boolean onTabPressed(boolean repeated);
 	}
 }
