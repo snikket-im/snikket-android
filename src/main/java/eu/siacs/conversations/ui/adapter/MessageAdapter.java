@@ -623,59 +623,41 @@ public class MessageAdapter extends ArrayAdapter<Message> implements CopyTextVie
 			switch (type) {
 				case DATE_SEPARATOR:
 					view = activity.getLayoutInflater().inflate(R.layout.message_date_bubble, parent, false);
-					viewHolder.status_message = (TextView) view.findViewById(R.id.message_body);
-					viewHolder.message_box = (LinearLayout) view.findViewById(R.id.message_box);
+					viewHolder.status_message = view.findViewById(R.id.message_body);
+					viewHolder.message_box = view.findViewById(R.id.message_box);
 					break;
 				case SENT:
-					view = activity.getLayoutInflater().inflate(
-							R.layout.message_sent, parent, false);
-					viewHolder.message_box = (LinearLayout) view
-						.findViewById(R.id.message_box);
-					viewHolder.contact_picture = (ImageView) view
-						.findViewById(R.id.message_photo);
-					viewHolder.download_button = (Button) view
-						.findViewById(R.id.download_button);
-					viewHolder.indicator = (ImageView) view
-						.findViewById(R.id.security_indicator);
-					viewHolder.edit_indicator = (ImageView) view.findViewById(R.id.edit_indicator);
-					viewHolder.image = (ImageView) view
-						.findViewById(R.id.message_image);
-					viewHolder.messageBody = (CopyTextView) view
-						.findViewById(R.id.message_body);
-					viewHolder.time = (TextView) view
-						.findViewById(R.id.message_time);
-					viewHolder.indicatorReceived = (ImageView) view
-						.findViewById(R.id.indicator_received);
-					viewHolder.audioPlayer = (RelativeLayout) view.findViewById(R.id.audio_player);
+					view = activity.getLayoutInflater().inflate(R.layout.message_sent, parent, false);
+					viewHolder.message_box = view.findViewById(R.id.message_box);
+					viewHolder.contact_picture = view.findViewById(R.id.message_photo);
+					viewHolder.download_button = view.findViewById(R.id.download_button);
+					viewHolder.indicator = view.findViewById(R.id.security_indicator);
+					viewHolder.edit_indicator = view.findViewById(R.id.edit_indicator);
+					viewHolder.image = view.findViewById(R.id.message_image);
+					viewHolder.messageBody = view.findViewById(R.id.message_body);
+					viewHolder.time = view.findViewById(R.id.message_time);
+					viewHolder.indicatorReceived = view.findViewById(R.id.indicator_received);
+					viewHolder.audioPlayer = view.findViewById(R.id.audio_player);
 					break;
 				case RECEIVED:
-					view = activity.getLayoutInflater().inflate(
-							R.layout.message_received, parent, false);
-					viewHolder.message_box = (LinearLayout) view
-						.findViewById(R.id.message_box);
-					viewHolder.contact_picture = (ImageView) view
-						.findViewById(R.id.message_photo);
-					viewHolder.download_button = (Button) view
-						.findViewById(R.id.download_button);
-					viewHolder.indicator = (ImageView) view
-						.findViewById(R.id.security_indicator);
-					viewHolder.edit_indicator = (ImageView) view.findViewById(R.id.edit_indicator);
-					viewHolder.image = (ImageView) view
-						.findViewById(R.id.message_image);
-					viewHolder.messageBody = (CopyTextView) view
-						.findViewById(R.id.message_body);
-					viewHolder.time = (TextView) view
-						.findViewById(R.id.message_time);
-					viewHolder.indicatorReceived = (ImageView) view
-						.findViewById(R.id.indicator_received);
-					viewHolder.encryption = (TextView) view.findViewById(R.id.message_encryption);
-					viewHolder.audioPlayer = (RelativeLayout) view.findViewById(R.id.audio_player);
+					view = activity.getLayoutInflater().inflate(R.layout.message_received, parent, false);
+					viewHolder.message_box = view.findViewById(R.id.message_box);
+					viewHolder.contact_picture = view.findViewById(R.id.message_photo);
+					viewHolder.download_button = view.findViewById(R.id.download_button);
+					viewHolder.indicator = view.findViewById(R.id.security_indicator);
+					viewHolder.edit_indicator = view.findViewById(R.id.edit_indicator);
+					viewHolder.image = view.findViewById(R.id.message_image);
+					viewHolder.messageBody = view.findViewById(R.id.message_body);
+					viewHolder.time = view.findViewById(R.id.message_time);
+					viewHolder.indicatorReceived = view.findViewById(R.id.indicator_received);
+					viewHolder.encryption = view.findViewById(R.id.message_encryption);
+					viewHolder.audioPlayer = view.findViewById(R.id.audio_player);
 					break;
 				case STATUS:
 					view = activity.getLayoutInflater().inflate(R.layout.message_status, parent, false);
-					viewHolder.contact_picture = (ImageView) view.findViewById(R.id.message_photo);
-					viewHolder.status_message = (TextView) view.findViewById(R.id.status_message);
-					viewHolder.load_more_messages = (Button) view.findViewById(R.id.load_more_messages);
+					viewHolder.contact_picture = view.findViewById(R.id.message_photo);
+					viewHolder.status_message = view.findViewById(R.id.status_message);
+					viewHolder.load_more_messages = view.findViewById(R.id.load_more_messages);
 					break;
 				default:
 					throw new AssertionError("Unknown view type");
