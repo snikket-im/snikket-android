@@ -383,6 +383,7 @@
 	<string name="file_transmission_failed">file transmission failed</string>
 	<string name="file_deleted">The file has been deleted</string>
 	<string name="no_application_found_to_open_file">No application found to open file</string>
+	<string name="no_application_found_to_open_link">No application found to open link</string>
 	<string name="could_not_verify_fingerprint">Could not verify fingerprint</string>
 	<string name="manually_verify">Manually verify</string>
 	<string name="are_you_sure_verify_fingerprint">Are you sure that you want to verify your contact’s OTR fingerprint?</string>

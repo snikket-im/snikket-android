@@ -61,6 +61,7 @@ import eu.siacs.conversations.services.NotificationService;
 import eu.siacs.conversations.ui.ConversationActivity;
 import eu.siacs.conversations.ui.service.AudioPlayer;
 import eu.siacs.conversations.ui.text.DividerSpan;
+import eu.siacs.conversations.ui.text.FixedURLSpan;
 import eu.siacs.conversations.ui.text.QuoteSpan;
 import eu.siacs.conversations.ui.widget.ClickableMovementMethod;
 import eu.siacs.conversations.ui.widget.CopyTextView;
@@ -489,6 +490,7 @@ public class MessageAdapter extends ArrayAdapter<Message> implements CopyTextVie
 			Linkify.addLinks(body, XMPP_PATTERN, "xmpp");
 			Linkify.addLinks(body, Patterns.AUTOLINK_WEB_URL, "http", WEBURL_MATCH_FILTER, WEBURL_TRANSFORM_FILTER);
 			Linkify.addLinks(body, GeoHelper.GEO_URI, "geo");
+			FixedURLSpan.fix(body);
 			viewHolder.messageBody.setAutoLinkMask(0);
 			viewHolder.messageBody.setText(body);
 			viewHolder.messageBody.setTextIsSelectable(true);
