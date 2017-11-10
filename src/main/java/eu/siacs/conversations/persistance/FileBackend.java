@@ -809,7 +809,7 @@ public class FileBackend {
 			MediaMetadataRetriever mediaMetadataRetriever = new MediaMetadataRetriever();
 			mediaMetadataRetriever.setDataSource(mXmppConnectionService,uri);
 			return Integer.parseInt(mediaMetadataRetriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION));
-		} catch (IllegalArgumentException e) {
+		} catch (RuntimeException  e) {
 			return 0;
 		}
 	}
@@ -840,7 +840,7 @@ public class FileBackend {
 		try {
 			metadataRetriever.setDataSource(file.getAbsolutePath());
 		} catch (Exception e) {
-			throw new NotAVideoFile();
+			throw new NotAVideoFile(e);
 		}
 		return getVideoDimensions(metadataRetriever);
 	}
@@ -907,7 +907,13 @@ public class FileBackend {
 	}
 
 	private static class NotAVideoFile extends Exception {
+		public NotAVideoFile(Throwable t) {
+			super(t);
+		}
 
+		public NotAVideoFile() {
+			super();
+		}
 	}
 
 	public class FileCopyException extends Exception {
