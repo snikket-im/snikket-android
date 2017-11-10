@@ -14,6 +14,8 @@ import java.io.File;
 
 public class FileUtils {
 
+	private static final Uri PUBLIC_DOWNLOADS = Uri.parse("content://downloads/public_downloads");
+
 	/**
 	 * Get a file path from a Uri. This will get the the path for Storage Access
 	 * Framework Documents, as well as the _data field for the MediaStore and
@@ -49,10 +51,12 @@ public class FileUtils {
 			else if (isDownloadsDocument(uri)) {
 
 				final String id = DocumentsContract.getDocumentId(uri);
-				final Uri contentUri = ContentUris.withAppendedId(
-						Uri.parse("content://downloads/public_downloads"), Long.valueOf(id));
-
-				return getDataColumn(context, contentUri, null, null);
+				try {
+					final Uri contentUri = ContentUris.withAppendedId(PUBLIC_DOWNLOADS, Long.valueOf(id));
+					return getDataColumn(context, contentUri, null, null);
+				} catch (NumberFormatException e) {
+					return null;
+				}
 			}
 			// MediaProvider
 			else if (isMediaDocument(uri)) {
