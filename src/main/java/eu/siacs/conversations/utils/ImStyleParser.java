@@ -86,7 +86,7 @@ public class ImStyleParser {
 	private static int seekEnd(CharSequence text, char needle, int start, int end) {
 		for (int i = start; i <= end; ++i) {
 			char c = text.charAt(i);
-			if (c == needle) {
+			if (c == needle && !precededByWhiteSpace(text,i,start)) {
 				return i;
 			} else if (c == '\n') {
 				return -1;
