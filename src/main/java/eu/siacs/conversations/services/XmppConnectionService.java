@@ -896,10 +896,14 @@ public class XmppConnectionService extends Service {
 	}
 
 	public boolean hasInternetConnection() {
-		ConnectivityManager cm = (ConnectivityManager) getApplicationContext()
-				.getSystemService(Context.CONNECTIVITY_SERVICE);
-		NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
-		return activeNetwork != null && activeNetwork.isConnected();
+		final ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+		try {
+			final NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+			return activeNetwork != null && activeNetwork.isConnected();
+		} catch (RuntimeException e) {
+			Log.d(Config.LOGTAG,"unable to check for internet connection",e);
+			return true; //if internet connection can not be checked it is probably best to just try
+		}
 	}
 
 	@SuppressLint("TrulyRandom")
@@ -1055,23 +1059,29 @@ public class XmppConnectionService extends Service {
 
 	public void scheduleWakeUpCall(int seconds, int requestCode) {
 		final long timeToWake = SystemClock.elapsedRealtime() + (seconds < 0 ? 1 : seconds + 1) * 1000;
-		AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+		final AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
 		Intent intent = new Intent(this, EventReceiver.class);
 		intent.setAction("ping");
-		PendingIntent alarmIntent = PendingIntent.getBroadcast(this, requestCode, intent, 0);
-		alarmManager.set(AlarmManager.ELAPSED_REALTIME_WAKEUP, timeToWake, alarmIntent);
+		PendingIntent pendingIntent = PendingIntent.getBroadcast(this, requestCode, intent, 0);
+		try {
+			alarmManager.set(AlarmManager.ELAPSED_REALTIME_WAKEUP, timeToWake, pendingIntent);
+		} catch (RuntimeException e) {
+			Log.e(Config.LOGTAG, "unable to schedule alarm for ping", e);
+		}
 	}
 
 	@TargetApi(Build.VERSION_CODES.M)
 	private void scheduleNextIdlePing() {
-		Log.d(Config.LOGTAG, "schedule next idle ping");
-		AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+		final long timeToWake = SystemClock.elapsedRealtime() + (Config.IDLE_PING_INTERVAL * 1000);
+		final AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
 		Intent intent = new Intent(this, EventReceiver.class);
 		intent.setAction(ACTION_IDLE_PING);
-		alarmManager.setAndAllowWhileIdle(AlarmManager.ELAPSED_REALTIME_WAKEUP,
-				SystemClock.elapsedRealtime() + (Config.IDLE_PING_INTERVAL * 1000),
-				PendingIntent.getBroadcast(this, 0, intent, 0)
-		);
+		PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 0, intent, 0);
+		try {
+			alarmManager.setAndAllowWhileIdle(AlarmManager.ELAPSED_REALTIME_WAKEUP, timeToWake, pendingIntent);
+		} catch (RuntimeException e) {
+			Log.d(Config.LOGTAG, "unable to schedule alarm for idle ping", e);
+		}
 	}
 
 	public XmppConnection createConnection(final Account account) {
