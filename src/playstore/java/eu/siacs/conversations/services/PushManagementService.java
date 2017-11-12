@@ -110,10 +110,6 @@ public class PushManagementService {
 				&& playServicesAvailable();
 	}
 
-	public boolean availableAndUseful(Account account) {
-		return Patches.SUFFICIENT_PUSH.contains(account.getServerIdentity()) && available(account);
-	}
-
 	private boolean playServicesAvailable() {
 		return GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(mXmppConnectionService) == ConnectionResult.SUCCESS;
 	}
