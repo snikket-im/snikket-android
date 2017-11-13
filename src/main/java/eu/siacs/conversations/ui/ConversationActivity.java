@@ -206,9 +206,10 @@ public class ConversationActivity extends XmppActivity
 		transaction.replace(R.id.selected_conversation, this.mConversationFragment, "conversation");
 		transaction.commit();
 
-		listView = (EnhancedListView) findViewById(R.id.list);
+		this.listView = findViewById(R.id.list);
 		this.listAdapter = new ConversationAdapter(this, conversationList);
-		listView.setAdapter(this.listAdapter);
+		this.listView.setAdapter(this.listAdapter);
+		this.listView.setSwipeDirection(EnhancedListView.SwipeDirection.END);
 
 		final ActionBar actionBar = getActionBar();
 		if (actionBar != null) {
