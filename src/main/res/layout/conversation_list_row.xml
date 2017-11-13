@@ -44,8 +44,8 @@
                     android:layout_alignLeft="@+id/conversation_lastwrapper"
                     android:layout_toLeftOf="@+id/conversation_lastupdate"
                     android:paddingRight="4dp"
-                    android:singleLine="true"
-                    android:text="Awesome groupchat"
+                    android:maxLines="1"
+                    android:ellipsize="end"
                     android:textColor="?attr/color_text_primary"
                     android:textSize="?attr/TextSizeHeadline"
                     android:typeface="sans"/>
@@ -82,7 +82,8 @@
                       <ImageView
                             android:id="@+id/conversation_lastmsg_img"
                             android:layout_width="?attr/IconSize"
-                            android:layout_height="?attr/IconSize" />
+                            android:layout_height="?attr/IconSize"
+                            android:layout_marginRight="?attr/TextSeparation"/>
                       
                         <android.support.text.emoji.widget.EmojiTextView
                             android:id="@+id/conversation_lastmsg"
@@ -91,8 +92,8 @@
                             android:minHeight="?attr/IconSize"
                             android:gravity="center_vertical"
                             android:scrollHorizontally="false"
-                            android:singleLine="true"
-                            android:text="This is a placeholder text to show the last messages"
+                            android:maxLines="1"
+                            android:ellipsize="end"
                             android:textColor="?attr/color_text_primary"
                             android:textSize="?attr/TextSizeBody"/>
 
@@ -138,7 +139,6 @@
                     android:layout_alignBaseline="@+id/conversation_name"
                     android:layout_alignParentRight="true"
                     android:gravity="right"
-                    android:text="23:42"
                     android:textColor="?attr/color_text_secondary"
                     android:textSize="?attr/TextSizeInfo"/>
             </RelativeLayout>
