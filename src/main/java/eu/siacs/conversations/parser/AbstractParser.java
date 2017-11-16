@@ -47,7 +47,7 @@ public abstract class AbstractParser {
 					try {
 						min = Math.min(min,AbstractParser.parseTimestamp(stamp));
 						returnDefault = false;
-					} catch (ParseException e) {
+					} catch (Throwable t) {
 						//ignore
 					}
 				}
