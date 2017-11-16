@@ -3,7 +3,7 @@ package eu.siacs.conversations.utils;
 public class ReplacingSerialSingleThreadExecutor extends SerialSingleThreadExecutor {
 
     public ReplacingSerialSingleThreadExecutor(boolean prepareLooper) {
-        super(prepareLooper);
+        super(ReplacingSerialSingleThreadExecutor.class.getName(), prepareLooper);
     }
 
     @Override

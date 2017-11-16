@@ -276,7 +276,7 @@ public class AxolotlService implements OnAdvancedStreamFeaturesLoaded {
 		this.messageCache = new HashMap<>();
 		this.sessions = new SessionMap(mXmppConnectionService, axolotlStore, account);
 		this.fetchStatusMap = new FetchStatusMap();
-		this.executor = new SerialSingleThreadExecutor();
+		this.executor = new SerialSingleThreadExecutor("Axolotl");
 	}
 
 	public String getOwnFingerprint() {
