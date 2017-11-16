@@ -774,7 +774,7 @@ public class XmppConnection implements Runnable {
 							Log.e(Config.LOGTAG, account.getJid().toBareJid().toString() + ": ignoring spoofed iq packet");
 						}
 					} else {
-						if (packet.getFrom().equals(packetCallbackDuple.first.getTo())) {
+						if (packet.getFrom() != null && packet.getFrom().equals(packetCallbackDuple.first.getTo())) {
 							callback = packetCallbackDuple.second;
 							packetCallbacks.remove(packet.getId());
 						} else {
