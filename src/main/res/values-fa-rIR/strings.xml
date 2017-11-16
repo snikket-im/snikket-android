@@ -5,7 +5,6 @@
   <string name="action_accounts">مدیریت حساب های کاربری</string>
   <string name="action_end_conversation">اتمام مکالمه</string>
   <string name="action_contact_details">جزییات مخاطب</string>
-  <string name="action_muc_details">جزییات کنفرانس</string>
   <string name="action_secure">مکالمه امن</string>
   <string name="action_add_account">اضافه کردن حساب کاربری</string>
   <string name="action_edit_contact">تغییر نام</string>

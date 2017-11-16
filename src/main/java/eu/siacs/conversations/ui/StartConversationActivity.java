@@ -426,7 +426,7 @@ public class StartConversationActivity extends XmppActivity implements OnRosterU
     protected void showCreateContactDialog(final String prefilledJid, final Invite invite) {
         EnterJidDialog dialog = new EnterJidDialog(
                 this, mKnownHosts, mActivatedAccounts,
-                getString(R.string.create_contact), getString(R.string.create),
+                getString(R.string.dialog_title_create_contact), getString(R.string.create),
                 prefilledJid, null, invite == null || !invite.hasFingerprints()
         );
 
@@ -462,7 +462,7 @@ public class StartConversationActivity extends XmppActivity implements OnRosterU
     @SuppressLint("InflateParams")
     protected void showJoinConferenceDialog(final String prefilledJid) {
         final AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle(R.string.join_conference);
+        builder.setTitle(R.string.dialog_title_join_conference);
         final View dialogView = getLayoutInflater().inflate(R.layout.join_conference_dialog, null);
         final Spinner spinner = (Spinner) dialogView.findViewById(R.id.account);
         final AutoCompleteTextView jid = (AutoCompleteTextView) dialogView.findViewById(R.id.jid);
@@ -534,7 +534,7 @@ public class StartConversationActivity extends XmppActivity implements OnRosterU
 
     private void showCreateConferenceDialog() {
         final AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle(R.string.create_conference);
+        builder.setTitle(R.string.dialog_title_create_conference);
         final View dialogView = getLayoutInflater().inflate(R.layout.create_conference_dialog, null);
         final Spinner spinner = (Spinner) dialogView.findViewById(R.id.account);
         final EditText subject = (EditText) dialogView.findViewById(R.id.subject);
