@@ -100,7 +100,7 @@ public class JingleConnection implements Transferable {
 	private byte[] expectedHash = new byte[0];
 
 	private boolean responding() {
-		return responder.equals(account.getJid());
+		return responder != null && responder.equals(account.getJid());
 	}
 
 	private boolean initiating() {
@@ -914,8 +914,7 @@ public class JingleConnection implements Transferable {
 			}
 			this.mJingleConnectionManager.updateConversationUi(true);
 		} else {
-			this.mXmppConnectionService.markMessage(this.message,
-					Message.STATUS_SEND_FAILED);
+			this.mXmppConnectionService.markMessage(this.message, Message.STATUS_SEND_FAILED);
 			this.message.setTransferable(null);
 		}
 	}
