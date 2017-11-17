@@ -82,45 +82,23 @@ public class PhoneHelper {
 		}
 	}
 
-	private static class NotThrowCursorLoader extends CursorLoader {
-
-		public NotThrowCursorLoader(Context c, Uri u, String[] p, String s, String[] sa, String so) {
-			super(c, u, p, s, sa, so);
-		}
-
-		@Override
-		public Cursor loadInBackground() {
-
-			try {
-				return (super.loadInBackground());
-			} catch (Throwable e) {
-				return(null);
-			}
-		}
-
-	}
-
-	public static Uri getSelfiUri(Context context) {
-		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M
-				&& context.checkSelfPermission(Manifest.permission.READ_CONTACTS) != PackageManager.PERMISSION_GRANTED) {
+	public static Uri getProfilePictureUri(Context context) {
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && context.checkSelfPermission(Manifest.permission.READ_CONTACTS) != PackageManager.PERMISSION_GRANTED) {
 			return null;
 		}
-		String[] mProjection = new String[]{Profile._ID, Profile.PHOTO_URI};
-		Cursor mProfileCursor = context.getContentResolver().query(
-				Profile.CONTENT_URI, mProjection, null, null, null);
-
-		if (mProfileCursor == null || mProfileCursor.getCount() == 0) {
+		final String[] projection = new String[]{Profile._ID, Profile.PHOTO_URI};
+		final Cursor cursor;
+		try {
+			cursor = context.getContentResolver().query(Profile.CONTENT_URI, projection, null, null, null);
+		} catch (SecurityException e) {
 			return null;
-		} else {
-			mProfileCursor.moveToFirst();
-			String uri = mProfileCursor.getString(1);
-			mProfileCursor.close();
-			if (uri == null) {
-				return null;
-			} else {
-				return Uri.parse(uri);
-			}
 		}
+		if (cursor == null) {
+			return null;
+		}
+		final String uri = cursor.moveToFirst() ? cursor.getString(1) : null;
+		cursor.close();
+		return uri == null ? null : Uri.parse(uri);
 	}
 
 	public static String getVersionName(Context context) {
@@ -134,5 +112,23 @@ public class PhoneHelper {
 		} else {
 			return "unknown";
 		}
+	}
+
+	private static class NotThrowCursorLoader extends CursorLoader {
+
+		private NotThrowCursorLoader(Context c, Uri u, String[] p, String s, String[] sa, String so) {
+			super(c, u, p, s, sa, so);
+		}
+
+		@Override
+		public Cursor loadInBackground() {
+
+			try {
+				return (super.loadInBackground());
+			} catch (Throwable e) {
+				return (null);
+			}
+		}
+
 	}
 }
