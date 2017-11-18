@@ -18,6 +18,7 @@
   <string name="title_activity_settings">Ustawienia</string>
   <string name="title_activity_sharewith">Udostępnij w konwersacji</string>
   <string name="title_activity_start_conversation">Rozpocznij konwersację</string>
+  <string name="title_activity_choose_contact">Wybierz kontakt</string>
   <string name="title_activity_block_list">Czarna lista</string>
   <string name="just_now">przed chwilą</string>
   <string name="minute_ago">minutę temu</string>
@@ -42,6 +43,7 @@
   <string name="register_account">Zarejestruj nowe konto na serwerze</string>
   <string name="change_password_on_server">Zmień hasło na serwerze</string>
   <string name="share_with">Udostępnij...</string>
+  <string name="invite_contact">Zaproś kontakt</string>
   <string name="contacts">Kontakty</string>
   <string name="cancel">Anuluj</string>
   <string name="set">Ustaw</string>
