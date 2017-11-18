@@ -1,5 +1,10 @@
 # Changelog
 
+### Version 1.22.1
+* Disable swipe to left to end conversation
+* Fixed 'No permission to access …' when opening files shared from the SD card
+* Always open URLs in new tab
+
 ### Version 1.22.0
 * Text markup *bold*, _italic_,`monospace` and ~strikethrough~
 * Use same emoji style on all Android versions
