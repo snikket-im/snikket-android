@@ -29,6 +29,7 @@ import eu.siacs.conversations.entities.Conversation;
 import eu.siacs.conversations.entities.Message;
 import eu.siacs.conversations.entities.MucOptions;
 import eu.siacs.conversations.entities.Presence;
+import eu.siacs.conversations.entities.ReadByMarker;
 import eu.siacs.conversations.entities.ServiceDiscoveryResult;
 import eu.siacs.conversations.http.HttpConnectionManager;
 import eu.siacs.conversations.services.MessageArchiveService;
@@ -700,13 +701,29 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
 		}
 		Element displayed = packet.findChild("displayed", "urn:xmpp:chat-markers:0");
 		if (displayed != null) {
+			final String id = displayed.getAttribute("id");
 			if (packet.fromAccount(account)) {
-				Conversation conversation = mXmppConnectionService.find(account,counterpart.toBareJid());
+				Conversation conversation = mXmppConnectionService.find(account, counterpart.toBareJid());
 				if (conversation != null && (query == null || query.isCatchup())) {
 					mXmppConnectionService.markRead(conversation);
 				}
+			} else if (isTypeGroupChat) {
+				Conversation conversation = mXmppConnectionService.find(account, counterpart.toBareJid());
+				if (conversation != null && id != null) {
+					Message message = conversation.findMessageWithRemoteId(id);
+					if (message != null) {
+						final Jid fallback = conversation.getMucOptions().getTrueCounterpart(counterpart);
+						Jid trueJid = getTrueCounterpart(query != null ? mucUserElement : null, fallback);
+						ReadByMarker readByMarker = ReadByMarker.from(counterpart,trueJid);
+						if (!conversation.getMucOptions().isSelf(counterpart) && message.addReadByMarker(readByMarker)) {
+							Log.d(Config.LOGTAG,account.getJid().toBareJid()+": added read by ("+readByMarker.getRealJid()+") to message '"+message.getBody()+"'");
+							mXmppConnectionService.updateMessage(message);
+						}
+					}
+
+				}
 			} else {
-				final Message displayedMessage = mXmppConnectionService.markMessage(account, from.toBareJid(), displayed.getAttribute("id"), Message.STATUS_SEND_DISPLAYED);
+				final Message displayedMessage = mXmppConnectionService.markMessage(account, from.toBareJid(), id, Message.STATUS_SEND_DISPLAYED);
 				Message message = displayedMessage == null ? null : displayedMessage.prev();
 				while (message != null
 						&& message.getStatus() == Message.STATUS_SEND_RECEIVED

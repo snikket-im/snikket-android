@@ -6,11 +6,13 @@ import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.graphics.Typeface;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.support.annotation.ColorInt;
 import android.support.v4.content.ContextCompat;
 import android.text.Spannable;
 import android.text.SpannableString;
@@ -709,7 +711,7 @@ public class MessageAdapter extends ArrayAdapter<Message> implements CopyTextVie
 				if (conversation.getMode() == Conversation.MODE_SINGLE) {
 					showAvatar = true;
 					loadAvatar(message,viewHolder.contact_picture,activity.getPixel(32));
-				} else if (message.getCounterpart() != null ){
+				} else if (message.getCounterpart() != null || message.getTrueCounterpart() != null || (message.getCounterparts() != null && message.getCounterparts().size() > 0)) {
 					showAvatar = true;
 					loadAvatar(message,viewHolder.contact_picture,activity.getPixel(32));
 				} else {
@@ -1052,9 +1054,15 @@ public class MessageAdapter extends ArrayAdapter<Message> implements CopyTextVie
 			if (bm != null) {
 				cancelPotentialWork(message, imageView);
 				imageView.setImageBitmap(bm);
-				imageView.setBackgroundColor(0x00000000);
+				imageView.setBackgroundColor(Color.TRANSPARENT);
 			} else {
-				imageView.setBackgroundColor(UIHelper.getColorForName(UIHelper.getMessageDisplayName(message)));
+				@ColorInt int bg;
+				if (message.getType() == Message.TYPE_STATUS && message.getCounterparts() != null && message.getCounterparts().size() > 1) {
+					bg = Color.TRANSPARENT;
+				} else {
+					bg = UIHelper.getColorForName(UIHelper.getMessageDisplayName(message));
+				}
+				imageView.setBackgroundColor(bg);
 				imageView.setImageDrawable(null);
 				final BitmapWorkerTask task = new BitmapWorkerTask(imageView, size);
 				final AsyncDrawable asyncDrawable = new AsyncDrawable(activity.getResources(), null, task);

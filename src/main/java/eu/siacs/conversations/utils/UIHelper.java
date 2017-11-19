@@ -8,6 +8,9 @@ import android.widget.PopupMenu;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.math.BigInteger;
+import java.nio.ByteBuffer;
+import java.security.MessageDigest;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
@@ -27,6 +30,35 @@ import eu.siacs.conversations.entities.Transferable;
 import eu.siacs.conversations.xmpp.jid.Jid;
 
 public class UIHelper {
+
+
+	private static int COLORS[] = {
+			0xFFE91E63, //pink 500
+			0xFFAD1457, //pink 800
+			0xFF9C27B0, //purple 500
+			0xFF6A1B9A, //purple 800
+			0xFF673AB7, //deep purple 500,
+			0xFF4527A0, //deep purple 800,
+			0xFF3F51B5, //indigo 500,
+			0xFF283593, //indigo 800
+			0xFF2196F3, //blue 500
+			0xFF1565C0, //blue 800
+			0xFF03A9F4, //light blue 500
+			0xFF0277BD, //light blue 800
+			0xFF00BCD4, //cyan 500
+			0xFF00838F, //cyan 800
+			0xFF009688, //teal 500,
+			0xFF00695C, //teal 800,
+			//0xFF558B2F, //light green 800
+			0xFFC0CA33, //lime 600
+			0xFF9E9D24, //lime 800
+			0xFFEF6C00, //orange 800
+			0xFFD84315, //deep orange 800,
+			0xFF795548, //brown 500,
+			//0xFF4E342E, //brown 800
+			0xFF607D8B, //blue grey 500,
+			0xFF37474F //blue grey 800
+	};
 
 	private static final List<String> LOCATION_QUESTIONS = Arrays.asList(
 			"where are you", //en
@@ -150,10 +182,18 @@ public class UIHelper {
 		if (name == null || name.isEmpty()) {
 			return 0xFF202020;
 		}
-		int colors[] = {0xFFe91e63, 0xFF9c27b0, 0xFF673ab7, 0xFF3f51b5,
-			0xFF5677fc, 0xFF03a9f4, 0xFF00bcd4, 0xFF009688, 0xFFff5722,
-			0xFF795548, 0xFF607d8b};
-		return colors[(int) ((name.hashCode() & 0xffffffffl) % colors.length)];
+		return COLORS[getIntForName(name) % COLORS.length];
+	}
+
+	private static int getIntForName(String name) {
+		try {
+			final MessageDigest messageDigest = MessageDigest.getInstance("MD5");
+			messageDigest.update(name.getBytes());
+			byte[] bytes = messageDigest.digest();
+			return Math.abs(new BigInteger(bytes).intValue());
+		} catch (Exception e) {
+			return 0;
+		}
 	}
 
 	public static Pair<String,Boolean> getMessagePreview(final Context context, final Message message) {
@@ -312,8 +352,29 @@ public class UIHelper {
 		if (contact != null) {
 			return contact.getDisplayName();
 		} else {
-			return user.getName();
+			final String name = user.getName();
+			if (name != null) {
+				return name;
+			}
+			final Jid realJid = user.getRealJid();
+			if (realJid != null) {
+				return JidHelper.localPartOrFallback(realJid);
+			}
+			return null;
 		}
+	}
+
+	public static String concatNames(List<MucOptions.User> users) {
+		StringBuilder builder = new StringBuilder();
+		final boolean shortNames = users.size() >= 3;
+		for(MucOptions.User user : users) {
+			if (builder.length() != 0) {
+				builder.append(", ");
+			}
+			final String name = UIHelper.getDisplayName(user);
+			builder.append(shortNames ? name.split("\\s+")[0] : name);
+		}
+		return builder.toString();
 	}
 
 	public static String getFileDescriptionString(final Context context, final Message message) {

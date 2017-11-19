@@ -82,7 +82,7 @@ public final class Config {
 	public static final long OMEMO_AUTO_EXPIRY = 7 * MILLISECONDS_IN_DAY;
 	public static final boolean REMOVE_BROKEN_DEVICES = false;
 	public static final boolean OMEMO_PADDING = false;
-	public static boolean PUT_AUTH_TAG_INTO_KEY = true;
+	public static final boolean PUT_AUTH_TAG_INTO_KEY = true;
 
 
 	public static final boolean DISABLE_PROXY_LOOKUP = false; //useful to debug ibb

@@ -16,8 +16,6 @@ import android.support.v13.view.inputmethod.InputConnectionCompat;
 import android.support.v13.view.inputmethod.InputContentInfoCompat;
 import android.text.Editable;
 import android.text.InputType;
-import android.text.TextWatcher;
-import android.text.style.StyleSpan;
 import android.util.Log;
 import android.util.Pair;
 import android.view.ContextMenu;
@@ -49,7 +47,9 @@ import net.java.otr4j.session.SessionStatus;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -63,6 +63,7 @@ import eu.siacs.conversations.entities.DownloadableFile;
 import eu.siacs.conversations.entities.Message;
 import eu.siacs.conversations.entities.MucOptions;
 import eu.siacs.conversations.entities.Presence;
+import eu.siacs.conversations.entities.ReadByMarker;
 import eu.siacs.conversations.entities.Transferable;
 import eu.siacs.conversations.entities.TransferablePlaceholder;
 import eu.siacs.conversations.http.HttpDownloadConnection;
@@ -75,7 +76,6 @@ import eu.siacs.conversations.ui.adapter.MessageAdapter;
 import eu.siacs.conversations.ui.adapter.MessageAdapter.OnContactPictureClicked;
 import eu.siacs.conversations.ui.adapter.MessageAdapter.OnContactPictureLongClicked;
 import eu.siacs.conversations.ui.widget.EditMessage;
-import eu.siacs.conversations.ui.widget.ListSelectionManager;
 import eu.siacs.conversations.utils.MessageUtils;
 import eu.siacs.conversations.utils.NickValidityChecker;
 import eu.siacs.conversations.utils.StylingHelper;
@@ -1394,12 +1394,51 @@ public class ConversationFragment extends Fragment implements EditMessage.Keyboa
 					}
 				}
 			} else {
+				final MucOptions mucOptions = conversation.getMucOptions();
+				final List<MucOptions.User> allUsers = mucOptions.getUsers();
+				final Set<ReadByMarker> addedMarkers = new HashSet<>();
 				ChatState state = ChatState.COMPOSING;
 				List<MucOptions.User> users = conversation.getMucOptions().getUsersWithChatState(state,5);
 				if (users.size() == 0) {
 					state = ChatState.PAUSED;
 					users = conversation.getMucOptions().getUsersWithChatState(state, 5);
-
+				}
+				int markersAdded = 0;
+				if (mucOptions.membersOnly() && mucOptions.nonanonymous()) {
+					//addedMarkers.addAll(ReadByMarker.from(users));
+					for (int i = this.messageList.size() - 1; i >= 0; --i) {
+						final Set<ReadByMarker> markersForMessage = messageList.get(i).getReadByMarkers();
+						final List<MucOptions.User> shownMarkers = new ArrayList<>();
+						for (ReadByMarker marker : markersForMessage) {
+							if (!ReadByMarker.contains(marker, addedMarkers)) {
+								addedMarkers.add(marker); //may be put outside this condition. set should do dedup anyway
+								MucOptions.User user = mucOptions.findUser(marker);
+								if (user != null && !users.contains(user)) {
+									shownMarkers.add(user);
+								}
+							}
+						}
+						final ReadByMarker markerForSender = ReadByMarker.from(messageList.get(i));
+						final Message statusMessage;
+						if (shownMarkers.size() > 1) {
+							statusMessage = Message.createStatusMessage(conversation, getString(R.string.contacts_have_read_up_to_this_point, UIHelper.concatNames(shownMarkers)));
+							statusMessage.setCounterparts(shownMarkers);
+						} else if (shownMarkers.size() == 1) {
+							statusMessage = Message.createStatusMessage(conversation, getString(R.string.contact_has_read_up_to_this_point, UIHelper.getDisplayName(shownMarkers.get(0))));
+							statusMessage.setCounterpart(shownMarkers.get(0).getFullJid());
+							statusMessage.setTrueCounterpart(shownMarkers.get(0).getRealJid());
+						} else {
+							statusMessage = null;
+						}
+						if (statusMessage != null) {
+							++markersAdded;
+							this.messageList.add(i + 1, statusMessage);
+						}
+						addedMarkers.add(markerForSender);
+						if (ReadByMarker.allUsersRepresented(allUsers, addedMarkers)) {
+							break;
+						}
+					}
 				}
 				if (users.size() > 0) {
 					Message statusMessage;
@@ -1410,15 +1449,9 @@ public class ConversationFragment extends Fragment implements EditMessage.Keyboa
 						statusMessage.setTrueCounterpart(user.getRealJid());
 						statusMessage.setCounterpart(user.getFullJid());
 					} else {
-						StringBuilder builder = new StringBuilder();
-						for(MucOptions.User user : users) {
-							if (builder.length() != 0) {
-								builder.append(", ");
-							}
-							builder.append(UIHelper.getDisplayName(user));
-						}
 						int id = state == ChatState.COMPOSING ? R.string.contacts_are_typing : R.string.contacts_have_stopped_typing;
-						statusMessage = Message.createStatusMessage(conversation, getString(id, builder.toString()));
+						statusMessage = Message.createStatusMessage(conversation, getString(id, UIHelper.concatNames(users)));
+						statusMessage.setCounterparts(users);
 					}
 					this.messageList.add(statusMessage);
 				}

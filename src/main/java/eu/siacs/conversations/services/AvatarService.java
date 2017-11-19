@@ -10,10 +10,14 @@ import android.graphics.Typeface;
 import android.net.Uri;
 import android.util.DisplayMetrics;
 import android.util.Log;
+import android.util.LruCache;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
+import java.util.Set;
 
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.entities.Account;
@@ -39,6 +43,7 @@ public class AvatarService implements OnAdvancedStreamFeaturesLoaded {
 	private static final String PREFIX_GENERIC = "generic";
 
 	final private ArrayList<Integer> sizes = new ArrayList<>();
+	final private HashMap<String,Set<String>> conversationDependentKeys = new HashMap<>();
 
 	protected XmppConnectionService mXmppConnectionService = null;
 
@@ -184,6 +189,17 @@ public class AvatarService implements OnAdvancedStreamFeaturesLoaded {
 			clear(conversation.getContact());
 		} else {
 			clear(conversation.getMucOptions());
+			synchronized (this.conversationDependentKeys) {
+				Set<String> keys = this.conversationDependentKeys.get(conversation.getUuid());
+				if (keys == null) {
+					return;
+				}
+				LruCache<String, Bitmap> cache = this.mXmppConnectionService.getBitmapCache();
+				for(String key : keys) {
+					cache.remove(key);
+				}
+				keys.clear();
+			}
 		}
 	}
 
@@ -194,17 +210,36 @@ public class AvatarService implements OnAdvancedStreamFeaturesLoaded {
 			return bitmap;
 		}
 		final List<MucOptions.User> users = mucOptions.getUsers(5);
+		if (users.size() == 0) {
+			bitmap = getImpl(mucOptions.getConversation().getName(),size);
+		} else {
+			bitmap = getImpl(users,size);
+		}
+		this.mXmppConnectionService.getBitmapCache().put(KEY, bitmap);
+		return bitmap;
+	}
+
+	private Bitmap get(List<MucOptions.User> users, int size, boolean cachedOnly) {
+		final String KEY = key(users, size);
+		Bitmap bitmap = this.mXmppConnectionService.getBitmapCache().get(KEY);
+		if (bitmap != null || cachedOnly) {
+			return bitmap;
+		}
+		bitmap = getImpl(users, size);
+		this.mXmppConnectionService.getBitmapCache().put(KEY,bitmap);
+		return bitmap;
+	}
+
+	private Bitmap getImpl(List<MucOptions.User> users, int size) {
 		int count = users.size();
-		bitmap = Bitmap.createBitmap(size, size, Bitmap.Config.ARGB_8888);
+		Bitmap bitmap = Bitmap.createBitmap(size, size, Bitmap.Config.ARGB_8888);
 		Canvas canvas = new Canvas(bitmap);
 		bitmap.eraseColor(TRANSPARENT);
-
 		if (count == 0) {
-			String name = mucOptions.getConversation().getName();
-			drawTile(canvas, name, 0, 0, size, size);
+			throw new AssertionError("Unable to draw tiles for 0 users");
 		} else if (count == 1) {
 			drawTile(canvas, users.get(0), 0, 0, size / 2 - 1, size);
-			drawTile(canvas, mucOptions.getConversation().getAccount(), size / 2 + 1, 0, size, size);
+			drawTile(canvas, users.get(0).getAccount(), size / 2 + 1, 0, size, size);
 		} else if (count == 2) {
 			drawTile(canvas, users.get(0), 0, 0, size / 2 - 1, size);
 			drawTile(canvas, users.get(1), size / 2 + 1, 0, size, size);
@@ -226,7 +261,6 @@ public class AvatarService implements OnAdvancedStreamFeaturesLoaded {
 			drawTile(canvas, "\u2026", PLACEHOLDER_COLOR, size / 2 + 1, size / 2 + 1,
 					size, size);
 		}
-		this.mXmppConnectionService.getBitmapCache().put(KEY, bitmap);
 		return bitmap;
 	}
 
@@ -246,6 +280,31 @@ public class AvatarService implements OnAdvancedStreamFeaturesLoaded {
 		}
 		return PREFIX_CONVERSATION + "_" + options.getConversation().getUuid()
 				+ "_" + String.valueOf(size);
+	}
+
+	private String key(List<MucOptions.User> users, int size) {
+		final Conversation conversation = users.get(0).getConversation();
+		StringBuilder builder = new StringBuilder("TILE_");
+		builder.append(conversation.getUuid());
+
+		for(MucOptions.User user : users) {
+			builder.append("\0");
+			builder.append(user.getRealJid() == null ? "" : user.getRealJid().toBareJid().toPreppedString());
+			builder.append("\0");
+			builder.append(user.getFullJid() == null ? "" : user.getFullJid().toPreppedString());
+		}
+		final String key = builder.toString();
+		synchronized (this.conversationDependentKeys) {
+			Set<String> keys;
+			if (this.conversationDependentKeys.containsKey(conversation.getUuid())) {
+				keys = this.conversationDependentKeys.get(conversation.getUuid());
+			} else {
+				keys = new HashSet<>();
+				this.conversationDependentKeys.put(conversation.getUuid(),keys);
+			}
+			keys.add(key);
+		}
+		return key;
 	}
 
 	public Bitmap get(Account account, int size) {
@@ -268,7 +327,9 @@ public class AvatarService implements OnAdvancedStreamFeaturesLoaded {
 
 	public Bitmap get(Message message, int size, boolean cachedOnly) {
 		final Conversation conversation = message.getConversation();
-		if (message.getStatus() == Message.STATUS_RECEIVED) {
+		if (message.getType() == Message.TYPE_STATUS && message.getCounterparts() != null && message.getCounterparts().size() > 1) {
+			return get(message.getCounterparts(),size,cachedOnly);
+		} else if (message.getStatus() == Message.STATUS_RECEIVED) {
 			Contact c = message.getContact();
 			if (c != null && (c.getProfilePhoto() != null || c.getAvatar() != null)) {
 				return get(c, size, cachedOnly);
@@ -320,11 +381,16 @@ public class AvatarService implements OnAdvancedStreamFeaturesLoaded {
 		if (bitmap != null || cachedOnly) {
 			return bitmap;
 		}
-		bitmap = Bitmap.createBitmap(size, size, Bitmap.Config.ARGB_8888);
+		bitmap = getImpl(name, size);
+		mXmppConnectionService.getBitmapCache().put(KEY, bitmap);
+		return bitmap;
+	}
+
+	private Bitmap getImpl(final String name, final int size) {
+		Bitmap bitmap = Bitmap.createBitmap(size, size, Bitmap.Config.ARGB_8888);
 		Canvas canvas = new Canvas(bitmap);
 		final String trimmedName = name == null ? "" : name.trim();
 		drawTile(canvas, trimmedName, 0, 0, size, size);
-		mXmppConnectionService.getBitmapCache().put(KEY, bitmap);
 		return bitmap;
 	}
 

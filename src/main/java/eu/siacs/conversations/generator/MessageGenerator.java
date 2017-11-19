@@ -39,7 +39,6 @@ public class MessageGenerator extends AbstractGenerator {
 		if (conversation.getMode() == Conversation.MODE_SINGLE) {
 			packet.setTo(message.getCounterpart());
 			packet.setType(MessagePacket.TYPE_CHAT);
-			packet.addChild("markable", "urn:xmpp:chat-markers:0");
 			if (this.mXmppConnectionService.indicateReceived()) {
 				packet.addChild("request", "urn:xmpp:receipts");
 			}
@@ -53,6 +52,10 @@ public class MessageGenerator extends AbstractGenerator {
 		} else {
 			packet.setTo(message.getCounterpart().toBareJid());
 			packet.setType(MessagePacket.TYPE_GROUPCHAT);
+		}
+		if (conversation.getMode() == Conversation.MODE_SINGLE ||
+				(conversation.getMucOptions().nonanonymous() && conversation.getMucOptions().membersOnly() && message.getType() != Message.TYPE_PRIVATE)) {
+			packet.addChild("markable", "urn:xmpp:chat-markers:0");
 		}
 		packet.setFrom(account.getJid());
 		packet.setId(message.getUuid());
@@ -170,10 +173,10 @@ public class MessageGenerator extends AbstractGenerator {
 		return packet;
 	}
 
-	public MessagePacket confirm(final Account account, final Jid to, final String id) {
+	public MessagePacket confirm(final Account account, final Jid to, final String id, final boolean groupChat) {
 		MessagePacket packet = new MessagePacket();
-		packet.setType(MessagePacket.TYPE_CHAT);
-		packet.setTo(to);
+		packet.setType(groupChat ? MessagePacket.TYPE_GROUPCHAT : MessagePacket.TYPE_CHAT);
+		packet.setTo(groupChat ? to.toBareJid() : to);
 		packet.setFrom(account.getJid());
 		Element received = packet.addChild("displayed","urn:xmpp:chat-markers:0");
 		received.setAttribute("id", id);

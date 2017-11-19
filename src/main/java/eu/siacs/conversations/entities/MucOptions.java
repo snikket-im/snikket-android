@@ -11,6 +11,7 @@ import java.util.Set;
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.utils.JidHelper;
+import eu.siacs.conversations.utils.UIHelper;
 import eu.siacs.conversations.xml.Namespace;
 import eu.siacs.conversations.xmpp.chatstate.ChatState;
 import eu.siacs.conversations.xmpp.forms.Data;
@@ -280,6 +281,10 @@ public class MucOptions {
 			return options.getAccount();
 		}
 
+		public Conversation getConversation() {
+			return options.getConversation();
+		}
+
 		public Jid getFullJid() {
 			return fullJid;
 		}
@@ -521,6 +526,21 @@ public class MucOptions {
 		return null;
 	}
 
+	public User findUser(ReadByMarker readByMarker) {
+		if (readByMarker.getRealJid() != null) {
+			User user = findUserByRealJid(readByMarker.getRealJid().toBareJid());
+			if (user == null) {
+				user = new User(this,readByMarker.getFullJid());
+				user.setRealJid(readByMarker.getRealJid());
+			}
+			return user;
+		} else if (readByMarker.getFullJid() != null) {
+			return findUserByFullJid(readByMarker.getFullJid());
+		} else {
+			return null;
+		}
+	}
+
 	public boolean isContactInRoom(Contact contact) {
 		return findUserByRealJid(contact.getJid().toBareJid()) != null;
 	}
@@ -655,17 +675,9 @@ public class MucOptions {
 				if (builder.length() != 0) {
 					builder.append(", ");
 				}
-				Contact contact = user.getContact();
-				if (contact != null && !contact.getDisplayName().isEmpty()) {
-					builder.append(contact.getDisplayName().split("\\s+")[0]);
-				} else {
-					final String name = user.getName();
-					final Jid jid = user.getRealJid();
-					if (name != null){
-						builder.append(name.split("\\s+")[0]);
-					} else if (jid != null) {
-						builder.append(jid.getLocalpart());
-					}
+				String name = UIHelper.getDisplayName(user);
+				if (name != null) {
+					builder.append(name.split("\\s+")[0]);
 				}
 			}
 			return builder.toString();
