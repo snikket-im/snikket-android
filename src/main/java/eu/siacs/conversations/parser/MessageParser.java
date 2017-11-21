@@ -415,10 +415,6 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
 			return;
 		}
 
-		if (query == null && extractChatState(mXmppConnectionService.find(account, counterpart.toBareJid()), isTypeGroupChat, packet)) {
-			mXmppConnectionService.updateConversationUi();
-		}
-
 		if ((body != null || pgpEncrypted != null || axolotlEncrypted != null || oobUrl != null) && !isMucStatusMessage) {
 			final Conversation conversation = mXmppConnectionService.findOrCreateConversation(account, counterpart.toBareJid(), isTypeGroupChat, false, query, false);
 			final boolean conversationMultiMode = conversation.getMode() == Conversation.MODE_MULTI;
@@ -471,6 +467,9 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
 				}
 				message = parseAxolotlChat(axolotlEncrypted, origin, conversation, status);
 				if (message == null) {
+					if (query == null &&  extractChatState(mXmppConnectionService.find(account, counterpart.toBareJid()), isTypeGroupChat, packet)) {
+						mXmppConnectionService.updateConversationUi();
+					}
 					return;
 				}
 				if (conversationMultiMode) {
@@ -543,6 +542,7 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
 							if (replacedMessage.getStatus() == Message.STATUS_RECEIVED) {
 								replacedMessage.markUnread();
 							}
+							extractChatState(mXmppConnectionService.find(account, counterpart.toBareJid()), isTypeGroupChat, packet);
 							mXmppConnectionService.updateMessage(replacedMessage, uuid);
 							mXmppConnectionService.getNotificationService().updateNotification(false);
 							if (mXmppConnectionService.confirmMessages()
@@ -604,6 +604,7 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
 			}
 
 			if (query == null) {
+				extractChatState(mXmppConnectionService.find(account, counterpart.toBareJid()), isTypeGroupChat, packet);
 				mXmppConnectionService.updateConversationUi();
 			}
 
@@ -634,6 +635,11 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
 				}
 			}
 		} else if (!packet.hasChild("body")) { //no body
+
+			if (query == null && extractChatState(mXmppConnectionService.find(account, counterpart.toBareJid()), isTypeGroupChat, packet)) {
+				mXmppConnectionService.updateConversationUi();
+			}
+
 			final Conversation conversation = mXmppConnectionService.find(account, from.toBareJid());
 			if (isTypeGroupChat) {
 				if (packet.hasChild("subject")) {
