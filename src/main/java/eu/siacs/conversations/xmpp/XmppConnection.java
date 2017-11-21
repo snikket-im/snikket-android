@@ -219,8 +219,8 @@ public class XmppConnection implements Runnable {
 
 	public XmppConnection(final Account account, final XmppConnectionService service) {
 		this.account = account;
-		this.wakeLock = service.getPowerManager().newWakeLock(
-				PowerManager.PARTIAL_WAKE_LOCK, account.getJid().toBareJid().toString());
+		final String tag = account.getJid().toBareJid().toPreppedString();
+		this.wakeLock = service.getPowerManager().newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, tag == null ? "[empty bare jid]" : tag);
 		mXmppConnectionService = service;
 	}
 
