@@ -712,15 +712,20 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
 				if (conversation != null && id != null) {
 					Message message = conversation.findMessageWithRemoteId(id);
 					if (message != null) {
-						final Jid fallback = conversation.getMucOptions().getTrueCounterpart(counterpart);
-						Jid trueJid = getTrueCounterpart(query != null ? mucUserElement : null, fallback);
-						ReadByMarker readByMarker = ReadByMarker.from(counterpart,trueJid);
-						if (!conversation.getMucOptions().isSelf(counterpart) && message.addReadByMarker(readByMarker)) {
-							Log.d(Config.LOGTAG,account.getJid().toBareJid()+": added read by ("+readByMarker.getRealJid()+") to message '"+message.getBody()+"'");
-							mXmppConnectionService.updateMessage(message);
+						if (conversation.getMucOptions().isSelf(counterpart)) {
+							if (!message.isRead() && (query == null || query.isCatchup())) { //checking if message is unread fixes race conditions with reflections
+								mXmppConnectionService.markRead(conversation);
+							}
+						} else {
+							final Jid fallback = conversation.getMucOptions().getTrueCounterpart(counterpart);
+							Jid trueJid = getTrueCounterpart(query != null ? mucUserElement : null, fallback);
+							ReadByMarker readByMarker = ReadByMarker.from(counterpart, trueJid);
+							if (message.addReadByMarker(readByMarker)) {
+								Log.d(Config.LOGTAG, account.getJid().toBareJid() + ": added read by (" + readByMarker.getRealJid() + ") to message '" + message.getBody() + "'");
+								mXmppConnectionService.updateMessage(message);
+							}
 						}
 					}
-
 				}
 			} else {
 				final Message displayedMessage = mXmppConnectionService.markMessage(account, from.toBareJid(), id, Message.STATUS_SEND_DISPLAYED);
