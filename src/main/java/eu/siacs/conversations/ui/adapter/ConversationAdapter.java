@@ -79,9 +79,8 @@ public class ConversationAdapter extends ArrayAdapter<Conversation> {
 			convName.setTypeface(null, Typeface.NORMAL);
 		}
 
-		if (message.getFileParams().width > 0
-				&& (message.getTransferable() == null
-				|| message.getTransferable().getStatus() != Transferable.STATUS_DELETED)) {
+		final boolean fileAvailable = message.getTransferable() == null || message.getTransferable().getStatus() != Transferable.STATUS_DELETED;
+		if (message.getFileParams().width > 0 && fileAvailable) {
 			mSenderName.setVisibility(View.GONE);
 			mLastMessage.setVisibility(View.GONE);
 			mLastMessageImage.setVisibility(View.GONE);
@@ -89,7 +88,7 @@ public class ConversationAdapter extends ArrayAdapter<Conversation> {
 			activity.loadBitmap(message, imagePreview);
 		} else {
 			final boolean showPreviewText;
-			if (message.getType() == Message.TYPE_FILE) {
+			if (message.getType() == Message.TYPE_FILE && fileAvailable) {
 				if (message.getFileParams().runtime > 0) {
 					showPreviewText = false;
 					mLastMessageImage.setImageResource(activity.getThemeResource(R.attr.ic_attach_record, R.drawable.ic_attach_record));
