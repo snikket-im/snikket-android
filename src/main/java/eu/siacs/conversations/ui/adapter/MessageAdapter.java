@@ -466,10 +466,8 @@ public class MessageAdapter extends ArrayAdapter<Message> implements CopyTextVie
 				} else {
 					body.insert(privateMarkerIndex, " ");
 				}
-				body.setSpan(new ForegroundColorSpan(getMessageTextColor(darkBackground, false)),
-						0, privateMarkerIndex, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-				body.setSpan(new StyleSpan(Typeface.BOLD),
-						0, privateMarkerIndex, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+				body.setSpan(new ForegroundColorSpan(getMessageTextColor(darkBackground, false)), 0, privateMarkerIndex, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+				body.setSpan(new StyleSpan(Typeface.BOLD), 0, privateMarkerIndex, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 				if (hasMeCommand) {
 					body.setSpan(new StyleSpan(Typeface.BOLD_ITALIC), privateMarkerIndex + 1,
 							privateMarkerIndex + 1 + nick.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
@@ -484,7 +482,9 @@ public class MessageAdapter extends ArrayAdapter<Message> implements CopyTextVie
 			}
 			Matcher matcher = Emoticons.generatePattern(body).matcher(body);
 			while(matcher.find()) {
-				body.setSpan(new RelativeSizeSpan(1.2f), matcher.start(), matcher.end(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+				if (matcher.start() < matcher.end()) {
+					body.setSpan(new RelativeSizeSpan(1.2f), matcher.start(), matcher.end(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+				}
 			}
 
 			StylingHelper.format(body, viewHolder.messageBody.getCurrentTextColor());
