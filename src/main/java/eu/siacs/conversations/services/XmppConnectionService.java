@@ -1278,10 +1278,15 @@ public class XmppConnectionService extends Service {
 			}
 		}
 
+
+		boolean mucMessage = conversation.getMode() == Conversation.MODE_MULTI && message.getType() != Message.TYPE_PRIVATE;
+		if (mucMessage) {
+			message.setCounterpart(conversation.getMucOptions().getSelf().getFullJid());
+		}
+
 		if (resend) {
 			if (packet != null && addToConversation) {
-				if (account.getXmppConnection().getFeatures().sm()
-						|| (conversation.getMode() == Conversation.MODE_MULTI && message.getCounterpart().isBareJid())) {
+				if (account.getXmppConnection().getFeatures().sm() || mucMessage) {
 					markMessage(message, Message.STATUS_UNSEND);
 				} else {
 					markMessage(message, Message.STATUS_SEND);
@@ -3400,7 +3405,7 @@ public class XmppConnectionService extends Service {
 			Account account = conversation.getAccount();
 			final Jid to = markable.getCounterpart();
 			final boolean groupChat = conversation.getMode() == Conversation.MODE_MULTI;
-			MessagePacket packet = mMessageGenerator.confirm(account, to, markable.getRemoteMsgId(), groupChat);
+			MessagePacket packet = mMessageGenerator.confirm(account, to, markable.getRemoteMsgId(), markable.getCounterpart(), groupChat);
 			this.sendMessagePacket(conversation.getAccount(), packet);
 		}
 	}

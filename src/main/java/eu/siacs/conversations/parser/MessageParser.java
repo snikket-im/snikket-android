@@ -701,6 +701,7 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
 		Element displayed = packet.findChild("displayed", "urn:xmpp:chat-markers:0");
 		if (displayed != null) {
 			final String id = displayed.getAttribute("id");
+			final Jid sender = displayed.getAttributeAsJid("sender");
 			if (packet.fromAccount(account)) {
 				Conversation conversation = mXmppConnectionService.find(account, counterpart.toBareJid());
 				if (conversation != null && (query == null || query.isCatchup())) {
@@ -708,8 +709,8 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
 				}
 			} else if (isTypeGroupChat) {
 				Conversation conversation = mXmppConnectionService.find(account, counterpart.toBareJid());
-				if (conversation != null && id != null) {
-					Message message = conversation.findMessageWithRemoteId(id);
+				if (conversation != null && id != null && sender != null) {
+					Message message = conversation.findMessageWithRemoteId(id, sender);
 					if (message != null) {
 						if (conversation.getMucOptions().isSelf(counterpart)) {
 							if (!message.isRead() && (query == null || query.isCatchup())) { //checking if message is unread fixes race conditions with reflections

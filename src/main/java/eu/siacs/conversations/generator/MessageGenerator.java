@@ -173,13 +173,16 @@ public class MessageGenerator extends AbstractGenerator {
 		return packet;
 	}
 
-	public MessagePacket confirm(final Account account, final Jid to, final String id, final boolean groupChat) {
+	public MessagePacket confirm(final Account account, final Jid to, final String id, final Jid counterpart, final boolean groupChat) {
 		MessagePacket packet = new MessagePacket();
 		packet.setType(groupChat ? MessagePacket.TYPE_GROUPCHAT : MessagePacket.TYPE_CHAT);
 		packet.setTo(groupChat ? to.toBareJid() : to);
 		packet.setFrom(account.getJid());
-		Element received = packet.addChild("displayed","urn:xmpp:chat-markers:0");
-		received.setAttribute("id", id);
+		Element displayed = packet.addChild("displayed","urn:xmpp:chat-markers:0");
+		displayed.setAttribute("id", id);
+		if (groupChat && counterpart != null) {
+			displayed.setAttribute("sender",counterpart.toPreppedString());
+		}
 		packet.addChild("store", "urn:xmpp:hints");
 		return packet;
 	}

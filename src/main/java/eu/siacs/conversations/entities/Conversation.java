@@ -289,10 +289,11 @@ public class Conversation extends AbstractEntity implements Blockable, Comparabl
 		return null;
 	}
 
-	public Message findMessageWithRemoteId(String id) {
+	public Message findMessageWithRemoteId(String id, Jid counterpart) {
 		synchronized (this.messages) {
 			for(Message message : this.messages) {
-				if (id.equals(message.getRemoteMsgId()) || id.equals(message.getUuid())) {
+				if (counterpart.equals(message.getCounterpart())
+						&& (id.equals(message.getRemoteMsgId()) || id.equals(message.getUuid()))) {
 					return message;
 				}
 			}
