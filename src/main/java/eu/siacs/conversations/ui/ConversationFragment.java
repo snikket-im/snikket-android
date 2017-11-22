@@ -1746,7 +1746,7 @@ public class ConversationFragment extends Fragment implements EditMessage.Keyboa
 	                                final Intent data) {
 		if (resultCode == Activity.RESULT_OK) {
 			if (requestCode == ConversationActivity.REQUEST_DECRYPT_PGP) {
-				activity.getSelectedConversation().getAccount().getPgpDecryptionService().continueDecryption(true);
+				activity.getSelectedConversation().getAccount().getPgpDecryptionService().continueDecryption(data);
 			} else if (requestCode == ConversationActivity.REQUEST_TRUST_KEYS_TEXT) {
 				final String body = mEditMessage.getText().toString();
 				Message message = new Message(conversation, body, conversation.getNextEncryption());

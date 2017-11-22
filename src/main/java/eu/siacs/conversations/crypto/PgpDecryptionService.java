@@ -25,216 +25,222 @@ import eu.siacs.conversations.services.XmppConnectionService;
 
 public class PgpDecryptionService {
 
-    private final XmppConnectionService mXmppConnectionService;
-    private OpenPgpApi openPgpApi = null;
-
 	protected final ArrayDeque<Message> messages = new ArrayDeque();
-    protected final HashSet<Message> pendingNotifications = new HashSet<>();
-	Message currentMessage;
-    private PendingIntent pendingIntent;
+	protected final HashSet<Message> pendingNotifications = new HashSet<>();
+	private final XmppConnectionService mXmppConnectionService;
+	private OpenPgpApi openPgpApi = null;
+	private Message currentMessage;
+	private PendingIntent pendingIntent;
+	private Intent userInteractionResult;
 
 
-    public PgpDecryptionService(XmppConnectionService service) {
-        this.mXmppConnectionService = service;
-    }
-
-	public synchronized boolean decrypt(final Message message, boolean notify) {
-        messages.add(message);
-        if (notify && pendingIntent == null) {
-            pendingNotifications.add(message);
-            continueDecryption();
-            return false;
-        } else {
-            continueDecryption();
-            return notify;
-        }
+	public PgpDecryptionService(XmppConnectionService service) {
+		this.mXmppConnectionService = service;
 	}
 
-    public synchronized void decrypt(final List<Message> list) {
-        for(Message message : list) {
-            if (message.getEncryption() == Message.ENCRYPTION_PGP) {
-                messages.add(message);
-            }
-        }
-        continueDecryption();
-    }
-
-    public synchronized void discard(List<Message> discards) {
-        this.messages.removeAll(discards);
-        this.pendingNotifications.removeAll(discards);
-    }
-
-    public synchronized void discard(Message message) {
-        this.messages.remove(message);
-        this.pendingNotifications.remove(message);
-    }
-
-    public void giveUpCurrentDecryption(){
-        Message message;
-        synchronized (this) {
-            if(currentMessage != null) {
-                return;
-            }
-            message = messages.peekFirst();
-            if (message == null) {
-                return;
-            }
-            discard(message);
-        }
-        synchronized (message){
-            if (message.getEncryption() == Message.ENCRYPTION_PGP) {
-                message.setEncryption(Message.ENCRYPTION_DECRYPTION_FAILED);
-            }
-        }
-        mXmppConnectionService.updateMessage(message);
-        continueDecryption(true);
-    }
-
-	protected synchronized void decryptNext() {
-		if (pendingIntent == null
-                && getOpenPgpApi() != null
-                && (currentMessage =  messages.poll()) != null) {
-			new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    executeApi(currentMessage);
-                    decryptNext();
-                }
-            }).start();
+	public synchronized boolean decrypt(final Message message, boolean notify) {
+		messages.add(message);
+		if (notify && pendingIntent == null) {
+			pendingNotifications.add(message);
+			continueDecryption();
+			return false;
+		} else {
+			continueDecryption();
+			return notify;
 		}
 	}
 
-    public synchronized void continueDecryption(boolean resetPending) {
-        if (resetPending) {
-            this.pendingIntent = null;
-        }
-        continueDecryption();
-    }
+	public synchronized void decrypt(final List<Message> list) {
+		for (Message message : list) {
+			if (message.getEncryption() == Message.ENCRYPTION_PGP) {
+				messages.add(message);
+			}
+		}
+		continueDecryption();
+	}
 
-    public synchronized void continueDecryption() {
-        if (currentMessage == null) {
-            decryptNext();
-        }
-    }
+	public synchronized void discard(List<Message> discards) {
+		this.messages.removeAll(discards);
+		this.pendingNotifications.removeAll(discards);
+	}
 
-    private synchronized OpenPgpApi getOpenPgpApi() {
-        if (openPgpApi == null) {
-            this.openPgpApi = mXmppConnectionService.getOpenPgpApi();
-        }
-        return this.openPgpApi;
-    }
+	public synchronized void discard(Message message) {
+		this.messages.remove(message);
+		this.pendingNotifications.remove(message);
+	}
 
-    private void executeApi(Message message) {
-        synchronized (message) {
-            Intent params = new Intent();
-            params.setAction(OpenPgpApi.ACTION_DECRYPT_VERIFY);
-            if (message.getType() == Message.TYPE_TEXT) {
-                InputStream is = new ByteArrayInputStream(message.getBody().getBytes());
-                final OutputStream os = new ByteArrayOutputStream();
-                Intent result = getOpenPgpApi().executeApi(params, is, os);
-                switch (result.getIntExtra(OpenPgpApi.RESULT_CODE, OpenPgpApi.RESULT_CODE_ERROR)) {
-                    case OpenPgpApi.RESULT_CODE_SUCCESS:
-                        try {
-                            os.flush();
-                            final String body = os.toString();
-                            if (body == null) {
-                                throw new IOException("body was null");
-                            }
-                            message.setBody(body);
-                            message.setEncryption(Message.ENCRYPTION_DECRYPTED);
-                            final HttpConnectionManager manager = mXmppConnectionService.getHttpConnectionManager();
-                            if (message.trusted()
-                                    && message.treatAsDownloadable()
-                                    && manager.getAutoAcceptFileSize() > 0) {
-                                manager.createNewDownloadConnection(message);
-                            }
-                        } catch (IOException e) {
-                            message.setEncryption(Message.ENCRYPTION_DECRYPTION_FAILED);
-                        }
-                        mXmppConnectionService.updateMessage(message);
-                        break;
-                    case OpenPgpApi.RESULT_CODE_USER_INTERACTION_REQUIRED:
-                        synchronized (PgpDecryptionService.this) {
-                            PendingIntent pendingIntent = result.getParcelableExtra(OpenPgpApi.RESULT_INTENT);
-                            messages.addFirst(message);
-                            currentMessage = null;
-                            storePendingIntent(pendingIntent);
-                        }
-                        break;
-                    case OpenPgpApi.RESULT_CODE_ERROR:
-                        message.setEncryption(Message.ENCRYPTION_DECRYPTION_FAILED);
-                        mXmppConnectionService.updateMessage(message);
-                        break;
-                }
-            } else if (message.getType() == Message.TYPE_IMAGE || message.getType() == Message.TYPE_FILE) {
-                try {
-                    final DownloadableFile inputFile = mXmppConnectionService.getFileBackend().getFile(message, false);
-                    final DownloadableFile outputFile = mXmppConnectionService.getFileBackend().getFile(message, true);
-                    outputFile.getParentFile().mkdirs();
-                    outputFile.createNewFile();
-                    InputStream is = new FileInputStream(inputFile);
-                    OutputStream os = new FileOutputStream(outputFile);
-                    Intent result = getOpenPgpApi().executeApi(params, is, os);
-                    switch (result.getIntExtra(OpenPgpApi.RESULT_CODE, OpenPgpApi.RESULT_CODE_ERROR)) {
-                        case OpenPgpApi.RESULT_CODE_SUCCESS:
-                            URL url = message.getFileParams().url;
-                            mXmppConnectionService.getFileBackend().updateFileParams(message, url);
-                            message.setEncryption(Message.ENCRYPTION_DECRYPTED);
-                            inputFile.delete();
-                            mXmppConnectionService.getFileBackend().updateMediaScanner(outputFile);
-                            mXmppConnectionService.updateMessage(message);
-                            break;
-                        case OpenPgpApi.RESULT_CODE_USER_INTERACTION_REQUIRED:
-                            synchronized (PgpDecryptionService.this) {
-                                PendingIntent pendingIntent = result.getParcelableExtra(OpenPgpApi.RESULT_INTENT);
-                                messages.addFirst(message);
-                                currentMessage = null;
-                                storePendingIntent(pendingIntent);
-                            }
-                            break;
-                        case OpenPgpApi.RESULT_CODE_ERROR:
-                            message.setEncryption(Message.ENCRYPTION_DECRYPTION_FAILED);
-                            mXmppConnectionService.updateMessage(message);
-                            break;
-                    }
-                } catch (final IOException e) {
-                    message.setEncryption(Message.ENCRYPTION_DECRYPTION_FAILED);
-                    mXmppConnectionService.updateMessage(message);
-                }
-            }
-        }
-        notifyIfPending(message);
-    }
+	public void giveUpCurrentDecryption() {
+		Message message;
+		synchronized (this) {
+			if (currentMessage != null) {
+				return;
+			}
+			message = messages.peekFirst();
+			if (message == null) {
+				return;
+			}
+			discard(message);
+		}
+		synchronized (message) {
+			if (message.getEncryption() == Message.ENCRYPTION_PGP) {
+				message.setEncryption(Message.ENCRYPTION_DECRYPTION_FAILED);
+			}
+		}
+		mXmppConnectionService.updateMessage(message);
+		continueDecryption(true);
+	}
 
-    private synchronized void notifyIfPending(Message message) {
-        if (pendingNotifications.remove(message)) {
-            mXmppConnectionService.getNotificationService().push(message);
-        }
-    }
+	protected synchronized void decryptNext() {
+		if (pendingIntent == null
+				&& getOpenPgpApi() != null
+				&& (currentMessage = messages.poll()) != null) {
+			new Thread(new Runnable() {
+				@Override
+				public void run() {
+					executeApi(currentMessage);
+					decryptNext();
+				}
+			}).start();
+		}
+	}
 
-    private void storePendingIntent(PendingIntent pendingIntent) {
-        this.pendingIntent = pendingIntent;
-        mXmppConnectionService.updateConversationUi();
-    }
+	public synchronized void continueDecryption(boolean resetPending) {
+		if (resetPending) {
+			this.pendingIntent = null;
+		}
+		continueDecryption();
+	}
 
-    public synchronized boolean hasPendingIntent(Conversation conversation) {
-        if (pendingIntent == null) {
-            return false;
-        } else {
-            for(Message message : messages) {
-                if (message.getConversation() == conversation) {
-                    return true;
-                }
-            }
-            return false;
-        }
-    }
+	public synchronized void continueDecryption(Intent userInteractionResult) {
+		this.pendingIntent = null;
+		this.userInteractionResult = userInteractionResult;
+		continueDecryption();
+	}
 
-    public PendingIntent getPendingIntent() {
-        return pendingIntent;
-    }
+	public synchronized void continueDecryption() {
+		if (currentMessage == null) {
+			decryptNext();
+		}
+	}
 
-    public boolean isConnected() {
-        return getOpenPgpApi() != null;
-    }
+	private synchronized OpenPgpApi getOpenPgpApi() {
+		if (openPgpApi == null) {
+			this.openPgpApi = mXmppConnectionService.getOpenPgpApi();
+		}
+		return this.openPgpApi;
+	}
+
+	private void executeApi(Message message) {
+		synchronized (message) {
+			Intent params = userInteractionResult != null ? userInteractionResult : new Intent();
+			params.setAction(OpenPgpApi.ACTION_DECRYPT_VERIFY);
+			if (message.getType() == Message.TYPE_TEXT) {
+				InputStream is = new ByteArrayInputStream(message.getBody().getBytes());
+				final OutputStream os = new ByteArrayOutputStream();
+				Intent result = getOpenPgpApi().executeApi(params, is, os);
+				switch (result.getIntExtra(OpenPgpApi.RESULT_CODE, OpenPgpApi.RESULT_CODE_ERROR)) {
+					case OpenPgpApi.RESULT_CODE_SUCCESS:
+						try {
+							os.flush();
+							final String body = os.toString();
+							if (body == null) {
+								throw new IOException("body was null");
+							}
+							message.setBody(body);
+							message.setEncryption(Message.ENCRYPTION_DECRYPTED);
+							final HttpConnectionManager manager = mXmppConnectionService.getHttpConnectionManager();
+							if (message.trusted()
+									&& message.treatAsDownloadable()
+									&& manager.getAutoAcceptFileSize() > 0) {
+								manager.createNewDownloadConnection(message);
+							}
+						} catch (IOException e) {
+							message.setEncryption(Message.ENCRYPTION_DECRYPTION_FAILED);
+						}
+						mXmppConnectionService.updateMessage(message);
+						break;
+					case OpenPgpApi.RESULT_CODE_USER_INTERACTION_REQUIRED:
+						synchronized (PgpDecryptionService.this) {
+							PendingIntent pendingIntent = result.getParcelableExtra(OpenPgpApi.RESULT_INTENT);
+							messages.addFirst(message);
+							currentMessage = null;
+							storePendingIntent(pendingIntent);
+						}
+						break;
+					case OpenPgpApi.RESULT_CODE_ERROR:
+						message.setEncryption(Message.ENCRYPTION_DECRYPTION_FAILED);
+						mXmppConnectionService.updateMessage(message);
+						break;
+				}
+			} else if (message.getType() == Message.TYPE_IMAGE || message.getType() == Message.TYPE_FILE) {
+				try {
+					final DownloadableFile inputFile = mXmppConnectionService.getFileBackend().getFile(message, false);
+					final DownloadableFile outputFile = mXmppConnectionService.getFileBackend().getFile(message, true);
+					outputFile.getParentFile().mkdirs();
+					outputFile.createNewFile();
+					InputStream is = new FileInputStream(inputFile);
+					OutputStream os = new FileOutputStream(outputFile);
+					Intent result = getOpenPgpApi().executeApi(params, is, os);
+					switch (result.getIntExtra(OpenPgpApi.RESULT_CODE, OpenPgpApi.RESULT_CODE_ERROR)) {
+						case OpenPgpApi.RESULT_CODE_SUCCESS:
+							URL url = message.getFileParams().url;
+							mXmppConnectionService.getFileBackend().updateFileParams(message, url);
+							message.setEncryption(Message.ENCRYPTION_DECRYPTED);
+							inputFile.delete();
+							mXmppConnectionService.getFileBackend().updateMediaScanner(outputFile);
+							mXmppConnectionService.updateMessage(message);
+							break;
+						case OpenPgpApi.RESULT_CODE_USER_INTERACTION_REQUIRED:
+							synchronized (PgpDecryptionService.this) {
+								PendingIntent pendingIntent = result.getParcelableExtra(OpenPgpApi.RESULT_INTENT);
+								messages.addFirst(message);
+								currentMessage = null;
+								storePendingIntent(pendingIntent);
+							}
+							break;
+						case OpenPgpApi.RESULT_CODE_ERROR:
+							message.setEncryption(Message.ENCRYPTION_DECRYPTION_FAILED);
+							mXmppConnectionService.updateMessage(message);
+							break;
+					}
+				} catch (final IOException e) {
+					message.setEncryption(Message.ENCRYPTION_DECRYPTION_FAILED);
+					mXmppConnectionService.updateMessage(message);
+				}
+			}
+		}
+		notifyIfPending(message);
+	}
+
+	private synchronized void notifyIfPending(Message message) {
+		if (pendingNotifications.remove(message)) {
+			mXmppConnectionService.getNotificationService().push(message);
+		}
+	}
+
+	private void storePendingIntent(PendingIntent pendingIntent) {
+		this.pendingIntent = pendingIntent;
+		mXmppConnectionService.updateConversationUi();
+	}
+
+	public synchronized boolean hasPendingIntent(Conversation conversation) {
+		if (pendingIntent == null) {
+			return false;
+		} else {
+			for (Message message : messages) {
+				if (message.getConversation() == conversation) {
+					return true;
+				}
+			}
+			return false;
+		}
+	}
+
+	public PendingIntent getPendingIntent() {
+		return pendingIntent;
+	}
+
+	public boolean isConnected() {
+		return getOpenPgpApi() != null;
+	}
 }
