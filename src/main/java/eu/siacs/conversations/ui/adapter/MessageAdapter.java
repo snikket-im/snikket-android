@@ -13,6 +13,7 @@ import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.support.annotation.ColorInt;
+import android.support.text.emoji.EmojiCompat;
 import android.support.v4.content.ContextCompat;
 import android.text.Spannable;
 import android.text.SpannableString;
@@ -69,6 +70,7 @@ import eu.siacs.conversations.ui.widget.ClickableMovementMethod;
 import eu.siacs.conversations.ui.widget.CopyTextView;
 import eu.siacs.conversations.ui.widget.ListSelectionManager;
 import eu.siacs.conversations.utils.CryptoHelper;
+import eu.siacs.conversations.utils.EmojiWrapper;
 import eu.siacs.conversations.utils.Emoticons;
 import eu.siacs.conversations.utils.GeoHelper;
 import eu.siacs.conversations.utils.Patterns;
@@ -337,7 +339,7 @@ public class MessageAdapter extends ArrayAdapter<Message> implements CopyTextVie
 		Spannable span = new SpannableString(body);
 		float size = Emoticons.isEmoji(body) ? 3.0f : 2.0f;
 		span.setSpan(new RelativeSizeSpan(size), 0, body.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-		viewHolder.messageBody.setText(span);
+		viewHolder.messageBody.setText(EmojiWrapper.transform(span));
 	}
 
 	private int applyQuoteSpan(SpannableStringBuilder body, int start, int end, boolean darkBackground) {
@@ -494,7 +496,7 @@ public class MessageAdapter extends ArrayAdapter<Message> implements CopyTextVie
 			Linkify.addLinks(body, GeoHelper.GEO_URI, "geo");
 			FixedURLSpan.fix(body);
 			viewHolder.messageBody.setAutoLinkMask(0);
-			viewHolder.messageBody.setText(body);
+			viewHolder.messageBody.setText(EmojiWrapper.transform(body));
 			viewHolder.messageBody.setTextIsSelectable(true);
 			viewHolder.messageBody.setMovementMethod(ClickableMovementMethod.getInstance());
 			listSelectionManager.onUpdate(viewHolder.messageBody, message);
