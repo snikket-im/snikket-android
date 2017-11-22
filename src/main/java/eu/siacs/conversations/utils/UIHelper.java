@@ -365,13 +365,17 @@ public class UIHelper {
 	}
 
 	public static String concatNames(List<MucOptions.User> users) {
+		return concatNames(users,users.size());
+	}
+
+	public static String concatNames(List<MucOptions.User> users, int max) {
 		StringBuilder builder = new StringBuilder();
 		final boolean shortNames = users.size() >= 3;
-		for(MucOptions.User user : users) {
+		for(int i = 0; i < Math.max(users.size(),max); ++i) {
 			if (builder.length() != 0) {
 				builder.append(", ");
 			}
-			final String name = UIHelper.getDisplayName(user);
+			final String name = UIHelper.getDisplayName(users.get(0));
 			builder.append(shortNames ? name.split("\\s+")[0] : name);
 		}
 		return builder.toString();
