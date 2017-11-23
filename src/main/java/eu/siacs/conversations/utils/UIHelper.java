@@ -375,7 +375,7 @@ public class UIHelper {
 			if (builder.length() != 0) {
 				builder.append(", ");
 			}
-			final String name = UIHelper.getDisplayName(users.get(0));
+			final String name = UIHelper.getDisplayName(users.get(i));
 			builder.append(shortNames ? name.split("\\s+")[0] : name);
 		}
 		return builder.toString();

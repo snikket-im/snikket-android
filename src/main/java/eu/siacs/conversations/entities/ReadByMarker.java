@@ -82,7 +82,7 @@ public class ReadByMarker {
 	public static ReadByMarker from(Jid fullJid, Jid realJid) {
 		final ReadByMarker marker = new ReadByMarker();
 		marker.fullJid = fullJid;
-		marker.realJid = realJid;
+		marker.realJid = realJid == null ? null : realJid.toBareJid();
 		return marker;
 	}
 
