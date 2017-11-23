@@ -499,7 +499,7 @@ public class NotificationService {
 		for (Message message : messages) {
 			Pair<String,Boolean> preview = UIHelper.getMessagePreview(mXmppConnectionService, message);
 			// only show user written text
-			if (preview.second == false) {
+			if (!preview.second) {
 				uBuilder.addMessage(preview.first);
 				uBuilder.setLatestTimestamp(message.getTimeSent());
 			}

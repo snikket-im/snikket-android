@@ -26,6 +26,7 @@ import eu.siacs.conversations.entities.Transferable;
 import eu.siacs.conversations.ui.ConversationActivity;
 import eu.siacs.conversations.ui.XmppActivity;
 import eu.siacs.conversations.ui.widget.UnreadCountCustomView;
+import eu.siacs.conversations.utils.EmojiWrapper;
 import eu.siacs.conversations.utils.UIHelper;
 
 public class ConversationAdapter extends ArrayAdapter<Conversation> {
@@ -52,7 +53,7 @@ public class ConversationAdapter extends ArrayAdapter<Conversation> {
 		}
 		TextView convName = (TextView) view.findViewById(R.id.conversation_name);
 		if (conversation.getMode() == Conversation.MODE_SINGLE || activity.useSubjectToIdentifyConference()) {
-			convName.setText(conversation.getName());
+			convName.setText(EmojiWrapper.transform(conversation.getName()));
 		} else {
 			convName.setText(conversation.getJid().toBareJid().toString());
 		}
@@ -108,7 +109,7 @@ public class ConversationAdapter extends ArrayAdapter<Conversation> {
 
 			final Pair<String,Boolean> preview = UIHelper.getMessagePreview(activity,message);
 			if (showPreviewText) {
-				mLastMessage.setText(preview.first);
+				mLastMessage.setText(EmojiWrapper.transform(preview.first));
 			} else {
 				mLastMessageImage.setContentDescription(preview.first);
 			}
