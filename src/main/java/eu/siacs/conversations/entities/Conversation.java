@@ -839,7 +839,7 @@ public class Conversation extends AbstractEntity implements Blockable, Comparabl
 		synchronized (this.messages) {
 			for(int i = this.messages.size() - 1; i >= 0; --i) {
 				Message message = this.messages.get(i);
-				if (message.getStatus() == Message.STATUS_RECEIVED || message.isCarbon()) {
+				if (message.getStatus() == Message.STATUS_RECEIVED || message.isCarbon() || message.getServerMsgId() != null) {
 					lastReceived = new MamReference(message.getTimeSent(),message.getServerMsgId());
 					break;
 				}
