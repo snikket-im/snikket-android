@@ -5,6 +5,7 @@
   <string name="action_accounts">Gérer les comptes</string>
   <string name="action_end_conversation">Terminer cette conversation</string>
   <string name="action_contact_details">Détails du contact</string>
+  <string name="action_muc_details">Détails de la conversation de groupe</string>
   <string name="action_secure">Conversation sécurisée</string>
   <string name="action_add_account">Ajouter un compte</string>
   <string name="action_edit_contact">Modifier le nom</string>
@@ -215,8 +216,11 @@
   <string name="done">Terminé</string>
   <string name="verify">Vérifier</string>
   <string name="decrypt">Déchiffrer</string>
+  <string name="conferences">Conversations de groupe</string>
   <string name="search">Rechercher</string>
   <string name="enter_contact">Ajouter contact</string>
+  <string name="join_conference">Rejoindre la conversation de groupe</string>
+  <string name="dialog_title_join_conference">Rejoindre la conversation de Groupe</string>
   <string name="view_contact_details">Afficher les détails du contact</string>
   <string name="block_contact">Bloquer le contact</string>
   <string name="unblock_contact">Débloquer le contact</string>
@@ -224,10 +228,14 @@
   <string name="select">Sélectionner</string>
   <string name="contact_already_exists">Le contact existe déjà.</string>
   <string name="join">Rejoindre</string>
+  <string name="conference_address">Adresse de la conversation de groupe</string>
   <string name="conference_address_example">salle@conference.exemple.com/pseudo</string>
   <string name="save_as_bookmark">Enregistrer comme favori</string>
   <string name="delete_bookmark">Supprimer le favori</string>
   <string name="bookmark_already_exists">Le favori existe déjà</string>
+  <string name="action_edit_subject">Modifier le sujet de conversation de groupe</string>
+  <string name="edit_subject_hint">Sujet de cette conversation de groupe</string>
+  <string name="joining_conference">Rejoindre la conversation de groupe</string>
   <string name="leave">Partir</string>
   <string name="contact_added_you">Votre correspondant vous a ajouté dans sa liste de contacts</string>
   <string name="add_back">Ré-ajouter</string>
@@ -251,6 +259,7 @@
   <string name="skip">Passer</string>
   <string name="disable_notifications">Désactiver les notifications</string>
   <string name="enable">Activer</string>
+  <string name="conference_requires_password">Conversation de groupe demande un mot de passe</string>
   <string name="enter_password">Entrer le mot de passe</string>
   <string name="missing_presence_subscription">La notification de présence est manquante </string>
   <string name="request_presence_updates">Veuillez demander à votre contact de partager ses mises à jour de disponibilité.\n\n<small>Elles seront utilisées pour déterminer son client.</small></string>
@@ -278,6 +287,7 @@
   <string name="pref_use_indicate_received_summary">Les messages reçus seront marqués d\'une coche verte (si supporté).</string>
   <string name="pref_use_send_button_to_indicate_status_summary">Le bouton Envoyer change de couleur pour indiquer le statut du contact.</string>
   <string name="pref_expert_options_other">Autres</string>
+  <string name="pref_conference_name">Nom de la conversation de groupe</string>
   <string name="toast_message_otr_fingerprint">Empreinte OTR copiée dans le presse-papier !</string>
   <string name="toast_message_omemo_fingerprint">Empreinte OMEMO copiée dans le presse-papier !</string>
   <string name="using_account">avec le compte %s</string>

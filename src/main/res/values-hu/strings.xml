@@ -5,6 +5,7 @@
   <string name="action_accounts">Fiókok kezelése</string>
   <string name="action_end_conversation">Beszélgetés befejezése</string>
   <string name="action_contact_details">Kapcsolat részletek</string>
+  <string name="action_muc_details">Csoportos csevegés részletei</string>
   <string name="action_secure">Biztonságos beszélgetés</string>
   <string name="action_add_account">Fiók hozzáadása</string>
   <string name="action_edit_contact">Név szerkesztése</string>
@@ -18,6 +19,7 @@
   <string name="title_activity_settings">Beállítások</string>
   <string name="title_activity_sharewith">Megosztás Conversation-nel</string>
   <string name="title_activity_start_conversation">Beszélgessünk!</string>
+  <string name="title_activity_choose_contact">Válassz névjegyet</string>
   <string name="title_activity_block_list">Tiltólista</string>
   <string name="just_now">Éppen most</string>
   <string name="minute_ago">1 perce</string>
@@ -42,6 +44,8 @@
   <string name="register_account">Új fiók létrehozása a szerveren</string>
   <string name="change_password_on_server">Jelszó megváltoztatása a szerveren</string>
   <string name="share_with">Megosztás...</string>
+  <string name="start_conversation">Beszélgetés kezdeményezése</string>
+  <string name="invite_contact">Ismerős meghívása</string>
   <string name="contacts">Névjegyek</string>
   <string name="cancel">Mégse</string>
   <string name="set">Beállít</string>
@@ -215,7 +219,9 @@
   <string name="done">Kész</string>
   <string name="verify">Ellenőriz</string>
   <string name="decrypt">Dekódol</string>
+  <string name="conferences">Konferenciák</string>
   <string name="search">Keresés</string>
+  <string name="create_contact">Névjegy létrehozása</string>
   <string name="enter_contact">Névjegy megadása</string>
   <string name="view_contact_details">Ismerős névjegyének részletei</string>
   <string name="block_contact">Ismerős tiltása</string>
