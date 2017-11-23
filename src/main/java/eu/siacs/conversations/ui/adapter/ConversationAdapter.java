@@ -104,7 +104,7 @@ public class ConversationAdapter extends ArrayAdapter<Conversation> {
 			if (showPreviewText) {
 				viewHolder.lastMessage.setText(EmojiWrapper.transform(preview.first));
 			} else {
-				viewHolder.lastMessage.setContentDescription(preview.first);
+				viewHolder.lastMessageIcon.setContentDescription(preview.first);
 			}
 			viewHolder.lastMessage.setVisibility(showPreviewText ? View.VISIBLE : View.GONE);
 			viewHolder.lastImage.setVisibility(View.GONE);
