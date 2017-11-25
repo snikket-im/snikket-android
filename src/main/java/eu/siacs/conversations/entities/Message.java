@@ -72,6 +72,7 @@ public class Message extends AbstractEntity {
 	public static final String READ = "read";
 	public static final String ERROR_MESSAGE = "errorMsg";
 	public static final String READ_BY_MARKERS = "readByMarkers";
+	public static final String MARKABLE = "markable";
 	public static final String ME_COMMAND = "/me ";
 
 
@@ -98,7 +99,7 @@ public class Message extends AbstractEntity {
 	private Message mPreviousMessage = null;
 	private String axolotlFingerprint = null;
 	private String errorMessage = null;
-	protected Set<ReadByMarker> readByMarkers = new HashSet<>();
+	private Set<ReadByMarker> readByMarkers = new HashSet<>();
 
 	private Boolean isGeoUri = null;
 	private Boolean isEmojisOnly = null;
@@ -133,7 +134,8 @@ public class Message extends AbstractEntity {
 				null,
 				false,
 				null,
-				null);
+				null,
+				false);
 	}
 
 	private Message(final Conversation conversation, final String uuid, final String conversationUUid, final Jid counterpart,
@@ -141,7 +143,8 @@ public class Message extends AbstractEntity {
 					final int encryption, final int status, final int type, final boolean carbon,
 					final String remoteMsgId, final String relativeFilePath,
 					final String serverMsgId, final String fingerprint, final boolean read,
-					final String edited, final boolean oob, final String errorMessage, final Set<ReadByMarker> readByMarkers) {
+					final String edited, final boolean oob, final String errorMessage, final Set<ReadByMarker> readByMarkers,
+	                final boolean markable) {
 		this.conversation = conversation;
 		this.uuid = uuid;
 		this.conversationUuid = conversationUUid;
@@ -161,7 +164,8 @@ public class Message extends AbstractEntity {
 		this.edited = edited;
 		this.oob = oob;
 		this.errorMessage = errorMessage;
-		this.readByMarkers = new HashSet<>();
+		this.readByMarkers = readByMarkers == null ? new HashSet<ReadByMarker>() : readByMarkers;
+		this.markable = markable;
 	}
 
 	public static Message fromCursor(Cursor cursor, Conversation conversation) {
@@ -208,7 +212,8 @@ public class Message extends AbstractEntity {
 				cursor.getString(cursor.getColumnIndex(EDITED)),
 				cursor.getInt(cursor.getColumnIndex(OOB)) > 0,
 				cursor.getString(cursor.getColumnIndex(ERROR_MESSAGE)),
-				ReadByMarker.fromJsonString(cursor.getString(cursor.getColumnIndex(READ_BY_MARKERS))));
+				ReadByMarker.fromJsonString(cursor.getString(cursor.getColumnIndex(READ_BY_MARKERS))),
+				cursor.getInt(cursor.getColumnIndex(MARKABLE)) > 0);
 	}
 
 	public static Message createStatusMessage(Conversation conversation, String body) {
@@ -264,6 +269,7 @@ public class Message extends AbstractEntity {
 		values.put(OOB, oob ? 1 : 0);
 		values.put(ERROR_MESSAGE,errorMessage);
 		values.put(READ_BY_MARKERS,ReadByMarker.toJson(readByMarkers).toString());
+		values.put(MARKABLE, markable ? 1 : 0);
 		return values;
 	}
 
