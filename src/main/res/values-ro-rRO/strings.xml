@@ -562,6 +562,7 @@ sau chiar pierderea mesajelor.\nÎn continuare veți fi rugați să dezactivați
   <string name="this_field_is_required">Acest câmp este obligatoriu</string>
   <string name="correct_message">Corecție mesaj</string>
   <string name="send_corrected_message">Trimite text corectat</string>
+  <string name="no_keys_just_confirm">Deja aveți încredere în acest contact. Selectând \'gata\' doar confirmați că %s ia parte la această discuție de grup.</string>
   <string name="select_image_and_crop">Selectează imaginea și decupează</string>
   <string name="this_account_is_disabled">Ați dezactivat acest cont</string>
   <string name="security_error_invalid_file_access">Eroare de securitate.: Acces fișier invalid</string>
