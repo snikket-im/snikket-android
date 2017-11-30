@@ -470,7 +470,9 @@ public class Conversation extends AbstractEntity implements Blockable, Comparabl
 		synchronized (this.messages) {
 			for (int i = this.messages.size() - 1; i >= 0; --i) {
 				final Message message = this.messages.get(i);
-				if (message.getStatus() <= Message.STATUS_RECEIVED && message.markable) {
+				if (message.getStatus() <= Message.STATUS_RECEIVED
+						&& message.markable
+						&& message.getType() != Message.TYPE_PRIVATE) {
 					return message.isRead() ? null : message;
 				}
 			}
