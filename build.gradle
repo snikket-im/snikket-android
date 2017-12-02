@@ -25,19 +25,18 @@ configurations {
 }
 
 ext {
-    supportLibVersion = '27.0.1'
+    supportLibVersion = '27.0.2'
 }
 
 dependencies {
     compile project(':libs:MemorizingTrustManager')
-    playstoreCompile 'com.google.android.gms:play-services-gcm:11.0.4'
+    playstoreCompile 'com.google.android.gms:play-services-gcm:11.6.2'
     compile 'org.sufficientlysecure:openpgp-api:10.0'
     compile 'com.soundcloud.android:android-crop:1.0.1@aar'
     compile "com.android.support:support-v13:$supportLibVersion"
     compile "com.android.support:appcompat-v7:$supportLibVersion"
     compile "com.android.support:support-emoji:$supportLibVersion"
     freeCompile "com.android.support:support-emoji-bundled:$supportLibVersion"
-    compile 'org.bouncycastle:bcprov-jdk15on:1.52'
     compile 'org.bouncycastle:bcmail-jdk15on:1.52'
     compile 'org.jitsi:org.otr4j:0.22'
     compile 'org.gnu.inet:libidn:1.15'
@@ -65,8 +64,8 @@ android {
     defaultConfig {
         minSdkVersion 14
         targetSdkVersion 25
-        versionCode 240
-        versionName "1.22.1"
+        versionCode 242
+        versionName "1.23.0"
         archivesBaseName += "-$versionName"
         applicationId "eu.siacs.conversations"
     }

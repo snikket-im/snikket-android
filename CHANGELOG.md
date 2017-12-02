@@ -1,5 +1,8 @@
 # Changelog
 
+### Version 1.23.0
+* Support for read markers in private, non-anonymous group chats
+
 ### Version 1.22.1
 * Disable swipe to left to end conversation
 * Fixed 'No permission to access …' when opening files shared from the SD card
