@@ -750,7 +750,7 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
 							}
 						} else {
 							final Jid fallback = conversation.getMucOptions().getTrueCounterpart(counterpart);
-							Jid trueJid = getTrueCounterpart(query != null ? mucUserElement : null, fallback);
+							Jid trueJid = getTrueCounterpart((query != null && query.safeToExtractTrueCounterpart()) ? mucUserElement : null, fallback);
 							ReadByMarker readByMarker = ReadByMarker.from(counterpart, trueJid);
 							if (message.addReadByMarker(readByMarker)) {
 								Log.d(Config.LOGTAG, account.getJid().toBareJid() + ": added read by (" + readByMarker.getRealJid() + ") to message '" + message.getBody() + "'");
