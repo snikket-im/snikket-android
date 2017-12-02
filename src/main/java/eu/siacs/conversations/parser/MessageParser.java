@@ -400,6 +400,10 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
 		}
 
 		boolean isTypeGroupChat = packet.getType() == MessagePacket.TYPE_GROUPCHAT;
+		if (query != null && !query.muc() && isTypeGroupChat) {
+			Log.e(Config.LOGTAG,account.getJid().toBareJid()+": received groupchat ("+from+") message on regular MAM request. skipping");
+			return;
+		}
 		boolean isProperlyAddressed = (to != null) && (!to.isBareJid() || account.countPresences() == 0);
 		boolean isMucStatusMessage = from.isBareJid() && mucUserElement != null && mucUserElement.hasChild("status");
 		if (packet.fromAccount(account)) {
