@@ -840,7 +840,10 @@ public class Conversation extends AbstractEntity implements Blockable, Comparabl
 		MamReference lastReceived = new MamReference(0);
 		synchronized (this.messages) {
 			for(int i = this.messages.size() - 1; i >= 0; --i) {
-				Message message = this.messages.get(i);
+				final Message message = this.messages.get(i);
+				if (message.getType() == Message.TYPE_PRIVATE) {
+					continue; //it's unsafe to use private messages as anchor. They could be coming from user archive
+				}
 				if (message.getStatus() == Message.STATUS_RECEIVED || message.isCarbon() || message.getServerMsgId() != null) {
 					lastReceived = new MamReference(message.getTimeSent(),message.getServerMsgId());
 					break;
