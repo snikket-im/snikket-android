@@ -804,15 +804,19 @@ public class Conversation extends AbstractEntity implements Blockable, Comparabl
 		return this.bookmark;
 	}
 
-	public boolean hasDuplicateMessage(Message message) {
+	public Message findDuplicateMessage(Message message) {
 		synchronized (this.messages) {
 			for (int i = this.messages.size() - 1; i >= 0; --i) {
 				if (this.messages.get(i).similar(message)) {
-					return true;
+					return this.messages.get(i);
 				}
 			}
 		}
-		return false;
+		return null;
+	}
+
+	public boolean hasDuplicateMessage(Message message) {
+		return findDuplicateMessage(message) != null;
 	}
 
 	public Message findSentMessageWithBody(String body) {

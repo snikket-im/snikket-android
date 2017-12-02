@@ -474,6 +474,14 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
 					if (query == null &&  extractChatState(mXmppConnectionService.find(account, counterpart.toBareJid()), isTypeGroupChat, packet)) {
 						mXmppConnectionService.updateConversationUi();
 					}
+					if (query != null && status == Message.STATUS_SEND && remoteMsgId != null) {
+						Message previouslySent = conversation.findSentMessageWithUuid(remoteMsgId);
+						if (previouslySent != null && previouslySent.getServerMsgId() == null && serverMsgId != null) {
+							previouslySent.setServerMsgId(serverMsgId);
+							mXmppConnectionService.databaseBackend.updateMessage(previouslySent);
+							Log.d(Config.LOGTAG,account.getJid().toBareJid()+": encountered previously sent OMEMO message without serverId. updating...");
+						}
+					}
 					return;
 				}
 				if (conversationMultiMode) {
@@ -577,9 +585,23 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
 			boolean checkForDuplicates = (isTypeGroupChat && packet.hasChild("delay", "urn:xmpp:delay"))
 					|| message.getType() == Message.TYPE_PRIVATE
 					|| message.getServerMsgId() != null;
-			if (checkForDuplicates && conversation.hasDuplicateMessage(message)) {
-				Log.d(Config.LOGTAG, "skipping duplicate message from " + message.getCounterpart().toString() + " " + message.getBody());
-				return;
+			if (checkForDuplicates ) {
+				final Message duplicate = conversation.findDuplicateMessage(message);
+				if (duplicate != null) {
+					final boolean serverMsgIdUpdated;
+					if (duplicate.getStatus() != Message.STATUS_RECEIVED
+							&& duplicate.getUuid().equals(message.getRemoteMsgId())
+							&& duplicate.getServerMsgId() == null
+							&& message.getServerMsgId() != null) {
+						duplicate.setServerMsgId(message.getServerMsgId());
+						mXmppConnectionService.databaseBackend.updateMessage(message);
+						serverMsgIdUpdated = true;
+					} else {
+						serverMsgIdUpdated = false;
+					}
+					Log.d(Config.LOGTAG, "skipping duplicate message with " + message.getCounterpart()+". serverMsgIdUpdated="+Boolean.toString(serverMsgIdUpdated));
+					return;
+				}
 			}
 
 			if (query != null && query.getPagingOrder() == MessageArchiveService.PagingOrder.REVERSE) {
