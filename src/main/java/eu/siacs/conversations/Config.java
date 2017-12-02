@@ -100,8 +100,6 @@ public final class Config {
 
 	public static final boolean IGNORE_ID_REWRITE_IN_MUC = true;
 
-	public static final boolean PARSE_REAL_JID_FROM_MUC_MAM = false; //dangerous if server doesn’t filter
-
 	public static final long MAM_MAX_CATCHUP =  MILLISECONDS_IN_DAY * 5;
 	public static final int MAM_MAX_MESSAGES = 750;
 

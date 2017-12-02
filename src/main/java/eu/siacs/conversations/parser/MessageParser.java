@@ -506,8 +506,8 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
 				Jid trueCounterpart;
 				if (message.getEncryption() == Message.ENCRYPTION_AXOLOTL) {
 					trueCounterpart = message.getTrueCounterpart();
-				} else if (Config.PARSE_REAL_JID_FROM_MUC_MAM) {
-					trueCounterpart = getTrueCounterpart(query != null ? mucUserElement : null, fallback);
+				} else if (query != null && query.safeToExtractTrueCounterpart()) {
+					trueCounterpart = getTrueCounterpart(mucUserElement, fallback);
 				} else {
 					trueCounterpart = fallback;
 				}
