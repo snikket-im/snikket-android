@@ -366,7 +366,7 @@ public class ConferenceDetailsActivity extends XmppActivity implements OnConvers
 			this.mSelectedUser = user;
 			String name;
 			final Contact contact = user.getContact();
-			if (contact != null) {
+			if (contact != null && contact.showInRoster()) {
 				name = contact.getDisplayName();
 			} else if (user.getRealJid() != null){
 				name = user.getRealJid().toBareJid().toString();
@@ -385,7 +385,7 @@ public class ConferenceDetailsActivity extends XmppActivity implements OnConvers
 				MenuItem banFromConference = menu.findItem(R.id.ban_from_conference);
 				MenuItem invite = menu.findItem(R.id.invite);
 				startConversation.setVisible(true);
-				if (contact != null) {
+				if (contact != null && contact.showInRoster()) {
 					showContactDetails.setVisible(!contact.isSelf());
 				}
 				if (user.getRole() == MucOptions.Role.NONE) {
