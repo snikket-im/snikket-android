@@ -82,32 +82,6 @@ run your own XMPP server for you and your friends. These XEP's are:
 * [XEP-0363: HTTP File Upload](http://xmpp.org/extensions/xep-0363.html) allows you to share files in conferences
   and with offline contacts.
 
-## Team
-
-#### Head of Development
-
-* [Daniel Gultsch](https://github.com/inputmice)
-
-#### Code Contributions
-
-(In order of appearance)
-
-* [Rene Treffer](https://github.com/rtreffer) ([PRs](https://github.com/siacs/Conversations/pulls?utf8=%E2%9C%93&q=is%3Apr+author%3Artreffer+is%3Amerged))
-* [Andreas Straub](https://github.com/strb) ([PRs](https://github.com/siacs/Conversations/pulls?utf8=%E2%9C%93&q=is%3Apr+author%3Astrb+is%3Amerged))
-* [Alethea Butler](https://github.com/alethea) ([PRs](https://github.com/siacs/Conversations/pulls?utf8=%E2%9C%93&q=is%3Apr+author%3Aalethea+is%3Amerged))
-* [M. Dietrich](https://github.com/emdete) ([PRs](https://github.com/siacs/Conversations/pulls?utf8=%E2%9C%93&q=is%3Apr+author%3Aemdete+is%3Amerged))
-* [betheg](https://github.com/betheg) ([PRs](https://github.com/siacs/Conversations/pulls?utf8=%E2%9C%93&q=is%3Apr+author%3Abetheg+is%3Amerged))
-* [Sam Whited](https://github.com/SamWhited) ([PRs](https://github.com/siacs/Conversations/pulls?utf8=%E2%9C%93&q=is%3Apr+author%3ASamWhited+is%3Amerged))
-* [BrianBlade](https://github.com/BrianBlade) ([PRs](https://github.com/siacs/Conversations/pulls?utf8=%E2%9C%93&q=is%3Apr+author%3ABrianBlade+is%3Amerged))
-
-#### Logo
-* [Ilia Rostovtsev](https://github.com/qooob) (Progress)
-* [Diego Turtulici](http://efesto.eigenlab.org/~diesys) (Original)
-* [fiaxh](https://github.com/fiaxh) (OMEMO)
-
-#### Translations
-Translations are managed on [Transifex](https://www.transifex.com/projects/p/conversations/)
-
 ## FAQ
 
 ### General
@@ -169,7 +143,7 @@ As regular user you should be picking a different server. The server you selecte
 is probably insecure and/or very old.
 
 If you are a server administrator you should make sure that your server provides
-STARTTLS. XMPP over TLS (on a different port) is not sufficient.
+either STARTTLS or [XEP-0368: SRV records for XMPP over TLS](https://xmpp.org/extensions/xep-0368.html).
 
 On rare occasions this error message might also be caused by a server not providing
 a login (SASL) mechanism that Conversations is able to handle. Conversations supports
@@ -184,7 +158,7 @@ If you don’t want this simply pick a server which does not offer Push Notifica
 
  ¹ Your server only needs to support the server side of [XEP-0357: Push Notifications](http://xmpp.org/extensions/xep-0357.html). If you use the Play Store version you do **not** need to run your own app server. The server modules are called *mod_cloud_notify* on Prosody and *mod_push* on ejabberd.
 
-#### Conversations doesn't work for me. Where can I get help?
+#### Conversations doesn’t work for me. Where can I get help?
 
 You can join our conference room on `conversations@conference.siacs.eu`.
 A lot of people in there are able to answer basic questions about the usage of
@@ -269,6 +243,9 @@ as well.
 Making these status and priority optional isn't a solution either because
 Conversations is trying to get rid of old behaviours and set an example for
 other clients.
+
+#### Translations
+Translations are managed on [Transifex](https://www.transifex.com/projects/p/conversations/)
 
 #### How do I backup / move Conversations to a new device?
 On the one hand Conversations supports Message Archive Management to keep a server side history of your messages so when migrating to a new device that device can display your entire history. However that does not work if you enable OMEMO due to its forward secrecy. (Read [The State of Mobile XMPP in 2016](https://gultsch.de/xmpp_2016.html) especially the section on encryption.)
@@ -379,10 +356,7 @@ Unfortunately we don‘t have a recommendation for iPhones right now. There are 
 <a name="beta"></a>
 #### Beta testing
 If you bought the App on [Google Play](https://play.google.com/store/apps/details?id=eu.siacs.conversations)
-you can get access to the latest beta version by joining the
-[Conversations Beta Testers](https://plus.google.com/communities/107649347599361240873)
-community on Google+ and then using [this link](https://play.google.com/apps/testing/eu.siacs.conversations)
-to sign up for the beta test.
+you can get access to the the latest beta version by signing up using [this link](https://play.google.com/apps/testing/eu.siacs.conversations).
 
 #### How do I build Conversations
 
