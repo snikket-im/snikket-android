@@ -9,7 +9,6 @@ import android.widget.PopupMenu;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.math.BigInteger;
-import java.nio.ByteBuffer;
 import java.security.MessageDigest;
 import java.util.Arrays;
 import java.util.Calendar;
@@ -313,16 +312,16 @@ public class UIHelper {
 			final char first = body.charAt(pos +1);
 			return first == ';'
 				|| first == ':'
-				|| smallerThanBeforeWhitespace(body,pos+1);
+				|| closingBeforeWhitespace(body,pos+1);
 		}
 	}
 
-	private static boolean smallerThanBeforeWhitespace(CharSequence body, int pos) {
+	private static boolean closingBeforeWhitespace(CharSequence body, int pos) {
 		for(int i = pos; i < body.length(); ++i) {
 			final char c = body.charAt(i);
 			if (Character.isWhitespace(c)) {
 				return false;
-			} else if (c == '<') {
+			} else if (c == '<' || c == '>') {
 				return body.length() == i + 1 || Character.isWhitespace(body.charAt(i + 1));
 			}
 		}
