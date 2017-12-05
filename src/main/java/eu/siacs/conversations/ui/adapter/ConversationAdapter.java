@@ -74,70 +74,75 @@ public class ConversationAdapter extends ArrayAdapter<Conversation> {
 		}
 
 		final boolean fileAvailable = message.getTransferable() == null || message.getTransferable().getStatus() != Transferable.STATUS_DELETED;
-		if (message.getFileParams().width > 0 && fileAvailable) {
-			viewHolder.sender.setVisibility(View.GONE);
-			viewHolder.lastMessage.setVisibility(View.GONE);
-			viewHolder.lastMessageIcon.setVisibility(View.GONE);
-			viewHolder.lastImage.setVisibility(View.VISIBLE);
-			activity.loadBitmap(message, viewHolder.lastImage);
-		} else {
-			final boolean showPreviewText;
-			if (message.getType() == Message.TYPE_FILE && fileAvailable) {
-				if (message.getFileParams().runtime > 0) {
-					showPreviewText = false;
-					viewHolder.lastMessageIcon.setImageResource(activity.getThemeResource(R.attr.ic_attach_record, R.drawable.ic_attach_record));
-				} else {
-					showPreviewText = true;
-					viewHolder.lastMessageIcon.setImageResource(activity.getThemeResource(R.attr.ic_attach_document, R.drawable.ic_attach_document));
-				}
-				viewHolder.lastMessageIcon.setVisibility(View.VISIBLE);
-			} else if (message.isGeoUri()) {
+		final boolean showPreviewText;
+		if (fileAvailable && (message.isFileOrImage() || message.treatAsDownloadable() || message.isGeoUri())) {
+			final int imageResource;
+			if (message.isGeoUri()) {
+				imageResource = activity.getThemeResource(R.attr.ic_attach_location, R.drawable.ic_attach_location);
 				showPreviewText = false;
-				viewHolder.lastMessageIcon.setImageResource(activity.getThemeResource(R.attr.ic_attach_location, R.drawable.ic_attach_location));
-				viewHolder.lastMessageIcon.setVisibility(View.VISIBLE);
 			} else {
-				showPreviewText = true;
-				viewHolder.lastMessageIcon.setVisibility(View.GONE);
-			}
-
-			final Pair<String,Boolean> preview = UIHelper.getMessagePreview(activity,message);
-			if (showPreviewText) {
-				viewHolder.lastMessage.setText(EmojiWrapper.transform(preview.first));
-			} else {
-				viewHolder.lastMessageIcon.setContentDescription(preview.first);
-			}
-			viewHolder.lastMessage.setVisibility(showPreviewText ? View.VISIBLE : View.GONE);
-			viewHolder.lastImage.setVisibility(View.GONE);
-			if (preview.second) {
-				if (conversation.isRead()) {
-					viewHolder.lastMessage.setTypeface(null, Typeface.ITALIC);
-					viewHolder.sender.setTypeface(null, Typeface.NORMAL);
-				} else {
-					viewHolder.lastMessage.setTypeface(null,Typeface.BOLD_ITALIC);
-					viewHolder.sender.setTypeface(null,Typeface.BOLD);
-				}
-			} else {
-				if (conversation.isRead()) {
-					viewHolder.lastMessage.setTypeface(null,Typeface.NORMAL);
-					viewHolder.sender.setTypeface(null,Typeface.NORMAL);
-				} else {
-					viewHolder.lastMessage.setTypeface(null,Typeface.BOLD);
-					viewHolder.sender.setTypeface(null,Typeface.BOLD);
+				final String mime = message.getMimeType();
+				switch (mime == null ? "" : mime.split("/")[0]) {
+					case "image":
+						imageResource = activity.getThemeResource(R.attr.ic_attach_photo, R.drawable.ic_attach_photo);
+						showPreviewText = false;
+						break;
+					case "video":
+						imageResource = activity.getThemeResource(R.attr.ic_attach_videocam, R.drawable.ic_attach_videocam);
+						showPreviewText = false;
+						break;
+					case "audio":
+						imageResource = activity.getThemeResource(R.attr.ic_attach_record, R.drawable.ic_attach_record);
+						showPreviewText = false;
+						break;
+					default:
+						imageResource = activity.getThemeResource(R.attr.ic_attach_document, R.drawable.ic_attach_document);
+						showPreviewText = true;
+						break;
 				}
 			}
-			if (message.getStatus() == Message.STATUS_RECEIVED) {
-				if (conversation.getMode() == Conversation.MODE_MULTI) {
-					viewHolder.sender.setVisibility(View.VISIBLE);
-					viewHolder.sender.setText(UIHelper.getMessageDisplayName(message).split("\\s+")[0]+':');
-				} else {
-					viewHolder.sender.setVisibility(View.GONE);
-				}
-			} else if (message.getType() != Message.TYPE_STATUS) {
+			viewHolder.lastMessageIcon.setImageResource(imageResource);
+			viewHolder.lastMessageIcon.setVisibility(View.VISIBLE);
+		} else {
+			viewHolder.lastMessageIcon.setVisibility(View.GONE);
+			showPreviewText = true;
+		}
+		final Pair<String,Boolean> preview = UIHelper.getMessagePreview(activity,message);
+		if (showPreviewText) {
+			viewHolder.lastMessage.setText(EmojiWrapper.transform(preview.first));
+		} else {
+			viewHolder.lastMessageIcon.setContentDescription(preview.first);
+		}
+		viewHolder.lastMessage.setVisibility(showPreviewText ? View.VISIBLE : View.GONE);
+		if (preview.second) {
+			if (conversation.isRead()) {
+				viewHolder.lastMessage.setTypeface(null, Typeface.ITALIC);
+				viewHolder.sender.setTypeface(null, Typeface.NORMAL);
+			} else {
+				viewHolder.lastMessage.setTypeface(null,Typeface.BOLD_ITALIC);
+				viewHolder.sender.setTypeface(null,Typeface.BOLD);
+			}
+		} else {
+			if (conversation.isRead()) {
+				viewHolder.lastMessage.setTypeface(null,Typeface.NORMAL);
+				viewHolder.sender.setTypeface(null,Typeface.NORMAL);
+			} else {
+				viewHolder.lastMessage.setTypeface(null,Typeface.BOLD);
+				viewHolder.sender.setTypeface(null,Typeface.BOLD);
+			}
+		}
+		if (message.getStatus() == Message.STATUS_RECEIVED) {
+			if (conversation.getMode() == Conversation.MODE_MULTI) {
 				viewHolder.sender.setVisibility(View.VISIBLE);
-				viewHolder.sender.setText(activity.getString(R.string.me)+':');
+				viewHolder.sender.setText(UIHelper.getMessageDisplayName(message).split("\\s+")[0]+':');
 			} else {
 				viewHolder.sender.setVisibility(View.GONE);
 			}
+		} else if (message.getType() != Message.TYPE_STATUS) {
+			viewHolder.sender.setVisibility(View.VISIBLE);
+			viewHolder.sender.setText(activity.getString(R.string.me)+':');
+		} else {
+			viewHolder.sender.setVisibility(View.GONE);
 		}
 
 		long muted_till = conversation.getLongAttribute(Conversation.ATTRIBUTE_MUTED_TILL,0);
@@ -169,7 +174,6 @@ public class ConversationAdapter extends ArrayAdapter<Conversation> {
 		private ImageView lastMessageIcon;
 		private TextView sender;
 		private TextView timestamp;
-		private ImageView lastImage;
 		private ImageView notificationIcon;
 		private UnreadCountCustomView unreadCount;
 		private ImageView avatar;
@@ -187,7 +191,6 @@ public class ConversationAdapter extends ArrayAdapter<Conversation> {
 				viewHolder.lastMessageIcon = layout.findViewById(R.id.conversation_lastmsg_img);
 				viewHolder.timestamp = layout.findViewById(R.id.conversation_lastupdate);
 				viewHolder.sender = layout.findViewById(R.id.sender_name);
-				viewHolder.lastImage = layout.findViewById(R.id.conversation_lastimage);
 				viewHolder.notificationIcon = layout.findViewById(R.id.notification_status);
 				viewHolder.unreadCount = layout.findViewById(R.id.unread_count);
 				viewHolder.avatar = layout.findViewById(R.id.conversation_image);

@@ -96,15 +96,6 @@
                             android:ellipsize="end"
                             android:textColor="?attr/color_text_primary"
                             android:textSize="?attr/TextSizeBody"/>
-
-                        <com.makeramen.roundedimageview.RoundedImageView
-                            android:id="@+id/conversation_lastimage"
-                            android:layout_width="fill_parent"
-                            android:layout_height="36dp"
-                            android:background="@color/black87"
-                            android:scaleType="centerCrop"
-                            android:visibility="gone"
-                            app:riv_corner_radius="2dp"/>
                     </LinearLayout>
                     <ImageView
                         android:visibility="visible"
