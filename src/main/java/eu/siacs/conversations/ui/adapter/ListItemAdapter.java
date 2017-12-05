@@ -127,7 +127,8 @@ public class ListItemAdapter extends ArrayAdapter<ListItem> {
 				imageView.setImageBitmap(bm);
 				imageView.setBackgroundColor(0x00000000);
 			} else {
-				imageView.setBackgroundColor(UIHelper.getColorForName(item.getDisplayName()));
+				String seed = item.getJid() != null ? item.getJid().toBareJid().toString() : item.getDisplayName();
+				imageView.setBackgroundColor(UIHelper.getColorForName(seed));
 				imageView.setImageDrawable(null);
 				final BitmapWorkerTask task = new BitmapWorkerTask(imageView);
 				final AsyncDrawable asyncDrawable = new AsyncDrawable(activity.getResources(), null, task);

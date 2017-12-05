@@ -112,7 +112,7 @@ public class AccountAdapter extends ArrayAdapter<Account> {
 				imageView.setImageBitmap(bm);
 				imageView.setBackgroundColor(0x00000000);
 			} else {
-				imageView.setBackgroundColor(UIHelper.getColorForName(account.getDisplayName()));
+				imageView.setBackgroundColor(UIHelper.getColorForName(account.getJid().toBareJid().toString()));
 				imageView.setImageDrawable(null);
 				final BitmapWorkerTask task = new BitmapWorkerTask(imageView);
 				final AsyncDrawable asyncDrawable = new AsyncDrawable(activity.getResources(), null, task);

@@ -30,6 +30,7 @@ import eu.siacs.conversations.entities.MucOptions;
 import eu.siacs.conversations.utils.UIHelper;
 import eu.siacs.conversations.xmpp.OnAdvancedStreamFeaturesLoaded;
 import eu.siacs.conversations.xmpp.XmppConnection;
+import eu.siacs.conversations.xmpp.jid.Jid;
 
 public class AvatarService implements OnAdvancedStreamFeaturesLoaded {
 
@@ -67,7 +68,7 @@ public class AvatarService implements OnAdvancedStreamFeaturesLoaded {
 			avatar = mXmppConnectionService.getFileBackend().getAvatar(contact.getAvatar(), size);
 		}
 		if (avatar == null) {
-            avatar = get(contact.getDisplayName(), size, cachedOnly);
+            avatar = get(contact.getDisplayName(), contact.getJid().toBareJid().toString(), size, cachedOnly);
 		}
 		this.mXmppConnectionService.getBitmapCache().put(KEY, avatar);
 		return avatar;
@@ -114,7 +115,8 @@ public class AvatarService implements OnAdvancedStreamFeaturesLoaded {
 			if (contact != null) {
 				avatar = get(contact, size, cachedOnly);
 			} else {
-				avatar = get(user.getName(), size, cachedOnly);
+				String seed = user.getRealJid() != null ? user.getRealJid().toBareJid().toString() : null;
+				avatar = get(user.getName(), seed, size, cachedOnly);
 			}
 		}
 		this.mXmppConnectionService.getBitmapCache().put(KEY, avatar);
@@ -165,10 +167,12 @@ public class AvatarService implements OnAdvancedStreamFeaturesLoaded {
 			if (bookmark.getConversation() != null) {
 				return get(bookmark.getConversation(), size, cachedOnly);
 			} else {
-				return get(bookmark.getDisplayName(), size, cachedOnly);
+				String seed = bookmark.getJid() != null ? bookmark.getJid().toBareJid().toString() : null;
+				return get(bookmark.getDisplayName(), seed, size, cachedOnly);
 			}
 		} else {
-			return get(item.getDisplayName(), size, cachedOnly);
+			String seed = item.getJid() != null ? item.getJid().toBareJid().toString() : null;
+			return get(item.getDisplayName(), seed, size, cachedOnly);
 		}
 	}
 
@@ -211,7 +215,8 @@ public class AvatarService implements OnAdvancedStreamFeaturesLoaded {
 		}
 		final List<MucOptions.User> users = mucOptions.getUsers(5);
 		if (users.size() == 0) {
-			bitmap = getImpl(mucOptions.getConversation().getName(),size);
+			Conversation c = mucOptions.getConversation();
+			bitmap = getImpl(c.getName(),c.getJid().toBareJid().toString(),size);
 		} else {
 			bitmap = getImpl(users,size);
 		}
@@ -319,7 +324,7 @@ public class AvatarService implements OnAdvancedStreamFeaturesLoaded {
 		}
 		avatar = mXmppConnectionService.getFileBackend().getAvatar(account.getAvatar(), size);
 		if (avatar == null) {
-			avatar = get(account.getJid().toBareJid().toString(), size,false);
+			avatar = get(account.getJid().toBareJid().toString(), null, size,false);
 		}
 		mXmppConnectionService.getBitmapCache().put(KEY, avatar);
 		return avatar;
@@ -338,8 +343,12 @@ public class AvatarService implements OnAdvancedStreamFeaturesLoaded {
 				if (user != null) {
 					return getImpl(user,size,cachedOnly);
 				}
+			} else if (c != null) {
+				return get(c, size, cachedOnly);
 			}
-			return get(UIHelper.getMessageDisplayName(message), size, cachedOnly);
+			Jid tcp = message.getTrueCounterpart();
+			String seed = tcp != null ? tcp.toBareJid().toString() :null;
+			return get(UIHelper.getMessageDisplayName(message), seed, size, cachedOnly);
 		} else  {
 			return get(conversation.getAccount(), size, cachedOnly);
 		}
@@ -371,26 +380,26 @@ public class AvatarService implements OnAdvancedStreamFeaturesLoaded {
 				+ String.valueOf(size);
 	}
 
-	public Bitmap get(String name, int size) {
-		return get(name,size,false);
-	}
+	/*public Bitmap get(String name, int size) {
+		return get(name,null, size,false);
+	}*/
 
-	public Bitmap get(final String name, final int size, boolean cachedOnly) {
-		final String KEY = key(name, size);
+	public Bitmap get(final String name, String seed, final int size, boolean cachedOnly) {
+		final String KEY = key(seed == null ? name : seed, size);
 		Bitmap bitmap = mXmppConnectionService.getBitmapCache().get(KEY);
 		if (bitmap != null || cachedOnly) {
 			return bitmap;
 		}
-		bitmap = getImpl(name, size);
+		bitmap = getImpl(name, seed, size);
 		mXmppConnectionService.getBitmapCache().put(KEY, bitmap);
 		return bitmap;
 	}
 
-	private Bitmap getImpl(final String name, final int size) {
+	private Bitmap getImpl(final String name, final String seed, final int size) {
 		Bitmap bitmap = Bitmap.createBitmap(size, size, Bitmap.Config.ARGB_8888);
 		Canvas canvas = new Canvas(bitmap);
 		final String trimmedName = name == null ? "" : name.trim();
-		drawTile(canvas, trimmedName, 0, 0, size, size);
+		drawTile(canvas, trimmedName, seed, 0, 0, size, size);
 		return bitmap;
 	}
 
@@ -403,8 +412,7 @@ public class AvatarService implements OnAdvancedStreamFeaturesLoaded {
 		return PREFIX_GENERIC + "_" + name + "_" + String.valueOf(size);
 	}
 
-	private boolean drawTile(Canvas canvas, String letter, int tileColor,
-						  int left, int top, int right, int bottom) {
+	private boolean drawTile(Canvas canvas, String letter, int tileColor, int left, int top, int right, int bottom) {
 		letter = letter.toUpperCase(Locale.getDefault());
 		Paint tilePaint = new Paint(), textPaint = new Paint();
 		tilePaint.setColor(tileColor);
@@ -443,8 +451,13 @@ public class AvatarService implements OnAdvancedStreamFeaturesLoaded {
 				return true;
 			}
 		}
-		String name = contact != null ? contact.getDisplayName() : user.getName();
-		drawTile(canvas, name, left, top, right, bottom);
+		if (contact != null) {
+			String seed = contact.getJid().toBareJid().toString();
+			drawTile(canvas, contact.getDisplayName(), seed, left, top, right, bottom);
+		} else {
+			String seed = user.getRealJid() == null ? null : user.getRealJid().toBareJid().toString();
+			drawTile(canvas, user.getName(), seed, left, top, right, bottom);
+		}
 		return true;
 	}
 
@@ -458,13 +471,14 @@ public class AvatarService implements OnAdvancedStreamFeaturesLoaded {
 				}
 			}
 		}
-		return drawTile(canvas, account.getJid().toBareJid().toString(), left, top, right, bottom);
+		String name = account.getJid().toBareJid().toString();
+		return drawTile(canvas, name, name, left, top, right, bottom);
 	}
 
-	private boolean drawTile(Canvas canvas, String name, int left, int top, int right, int bottom) {
+	private boolean drawTile(Canvas canvas, String name, String seed, int left, int top, int right, int bottom) {
 		if (name != null) {
 			final String letter = getFirstLetter(name);
-			final int color = UIHelper.getColorForName(name);
+			final int color = UIHelper.getColorForName(seed == null ? name : seed);
 			drawTile(canvas, letter, color, left, top, right, bottom);
 			return true;
 		}
