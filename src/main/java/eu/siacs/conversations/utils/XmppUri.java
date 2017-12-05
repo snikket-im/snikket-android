@@ -14,13 +14,16 @@ import eu.siacs.conversations.xmpp.jid.Jid;
 public class XmppUri {
 
 	protected String jid;
-	protected boolean muc;
 	protected List<Fingerprint> fingerprints = new ArrayList<>();
 	private String body;
+	private String action;
 	protected boolean safeSource = true;
 
 	public static final String OMEMO_URI_PARAM = "omemo-sid-";
 	public static final String OTR_URI_PARAM = "otr-fingerprint";
+
+	public static final String ACTION_JOIN = "join";
+	public static final String ACTION_MESSAGE = "message";
 
 	public XmppUri(String uri) {
 		try {
@@ -63,11 +66,21 @@ public class XmppUri {
 				// sample : https://conversations.im/i/foo/bar.com
 				jid = segments.get(1) + "@" + segments.get(2);
 			}
-			muc = segments.size() > 1 && "j".equalsIgnoreCase(segments.get(0));
+			if (segments.size() > 1 && "j".equalsIgnoreCase(segments.get(0))) {
+				action = ACTION_JOIN;
+			}
 			fingerprints = parseFingerprints(uri.getQuery(),'&');
 		} else if ("xmpp".equalsIgnoreCase(scheme)) {
 			// sample: xmpp:foo@bar.com
-			muc = isMuc(uri.getQuery());
+
+			final String query = uri.getQuery();
+
+			if (hasAction(query, ACTION_JOIN)) {
+				this.action = ACTION_JOIN;
+			} else if (hasAction(query, ACTION_MESSAGE)) {
+				this.action = ACTION_MESSAGE;
+			}
+
 			if (uri.getAuthority() != null) {
 				jid = uri.getAuthority();
 			} else {
@@ -138,14 +151,22 @@ public class XmppUri {
 		return null;
 	}
 
-	protected boolean isMuc(String query) {
+	private boolean hasAction(String query, String action) {
 		for(String pair : query == null ? new String[0] : query.split(";")) {
 			final String[] parts = pair.split("=",2);
-			if (parts.length == 1 && "join".equals(parts[0])) {
+			if (parts.length == 1 && parts[0].equals(action)) {
 				return true;
 			}
 		}
 		return false;
+	}
+
+	public boolean isAction(final String action) {
+		if (this.action == null) {
+			return false;
+		}
+
+		return this.action.equals(action);
 	}
 
 	public Jid getJid() {

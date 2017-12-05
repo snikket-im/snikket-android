@@ -876,7 +876,7 @@ public class StartConversationActivity extends XmppActivity implements OnRosterU
             return true;
         }
         List<Contact> contacts = xmppConnectionService.findContacts(invite.getJid(),invite.account);
-        if (invite.isMuc()) {
+        if (invite.isAction(XmppUri.ACTION_JOIN)) {
             Conversation muc = xmppConnectionService.findFirstMuc(invite.getJid());
             if (muc != null) {
                 switchToConversation(muc,invite.getBody(),false);
@@ -1201,10 +1201,6 @@ public class StartConversationActivity extends XmppActivity implements OnRosterU
                 return handleJid(this);
             }
             return false;
-        }
-
-        public boolean isMuc() {
-            return muc;
         }
     }
 }
