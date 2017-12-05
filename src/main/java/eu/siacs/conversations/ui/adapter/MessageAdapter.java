@@ -76,6 +76,7 @@ import eu.siacs.conversations.utils.GeoHelper;
 import eu.siacs.conversations.utils.Patterns;
 import eu.siacs.conversations.utils.StylingHelper;
 import eu.siacs.conversations.utils.UIHelper;
+import eu.siacs.conversations.utils.XmppUri;
 import eu.siacs.conversations.xmpp.mam.MamReference;
 
 public class MessageAdapter extends ArrayAdapter<Message> implements CopyTextView.CopyHandler {
@@ -111,6 +112,14 @@ public class MessageAdapter extends ArrayAdapter<Message> implements CopyTextVie
 		@Override
 		public boolean acceptMatch(CharSequence cs, int start, int end) {
 			return start < 1 || (cs.charAt(start-1) != '@' && cs.charAt(start-1) != '.' && !cs.subSequence(Math.max(0,start - 3),start).equals("://"));
+		}
+	};
+
+	private static final Linkify.MatchFilter XMPPURI_MATCH_FILTER = new Linkify.MatchFilter() {
+		@Override
+		public boolean acceptMatch(CharSequence s, int start, int end) {
+			XmppUri uri = new XmppUri(s.subSequence(start,end).toString());
+			return uri.isJidValid();
 		}
 	};
 
@@ -491,7 +500,7 @@ public class MessageAdapter extends ArrayAdapter<Message> implements CopyTextVie
 
 			StylingHelper.format(body, viewHolder.messageBody.getCurrentTextColor());
 
-			Linkify.addLinks(body, XMPP_PATTERN, "xmpp");
+			Linkify.addLinks(body, XMPP_PATTERN, "xmpp", XMPPURI_MATCH_FILTER, null);
 			Linkify.addLinks(body, Patterns.AUTOLINK_WEB_URL, "http", WEBURL_MATCH_FILTER, WEBURL_TRANSFORM_FILTER);
 			Linkify.addLinks(body, GeoHelper.GEO_URI, "geo");
 			FixedURLSpan.fix(body);
