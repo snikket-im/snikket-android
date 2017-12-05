@@ -346,7 +346,7 @@ public class ManageAccountActivity extends XmppActivity implements OnAccountUpda
 
 	private void publishOpenPGPPublicKey(Account account) {
 		if (ManageAccountActivity.this.hasPgp()) {
-			announcePgp(selectedAccount, null, onOpenPGPKeyPublished);
+			announcePgp(selectedAccount, null,null, onOpenPGPKeyPublished);
 		} else {
 			this.showInstallPgpDialog();
 		}
@@ -378,12 +378,12 @@ public class ManageAccountActivity extends XmppActivity implements OnAccountUpda
 				if (requestCode == REQUEST_CHOOSE_PGP_ID) {
 					if (data.getExtras().containsKey(OpenPgpApi.EXTRA_SIGN_KEY_ID)) {
 						selectedAccount.setPgpSignId(data.getExtras().getLong(OpenPgpApi.EXTRA_SIGN_KEY_ID));
-						announcePgp(selectedAccount, null, onOpenPGPKeyPublished);
+						announcePgp(selectedAccount, null, null, onOpenPGPKeyPublished);
 					} else {
 						choosePgpSignId(selectedAccount);
 					}
 				} else if (requestCode == REQUEST_ANNOUNCE_PGP) {
-					announcePgp(selectedAccount, null, onOpenPGPKeyPublished);
+					announcePgp(selectedAccount, null, data, onOpenPGPKeyPublished);
 				}
 				this.mPostponedActivityResult = null;
 			} else {

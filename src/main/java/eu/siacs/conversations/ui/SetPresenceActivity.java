@@ -94,7 +94,7 @@ public class SetPresenceActivity extends XmppActivity implements View.OnClickLis
 		if (resultCode == RESULT_OK) {
 			if (xmppConnectionServiceBound && mAccount != null) {
 				if (requestCode == REQUEST_ANNOUNCE_PGP) {
-					announcePgp(mAccount, null, onPresenceChanged);
+					announcePgp(mAccount, null,data, onPresenceChanged);
 				}
 				this.mPostponedActivityResult = null;
 			} else {
@@ -116,7 +116,7 @@ public class SetPresenceActivity extends XmppActivity implements View.OnClickLis
 				finish();
 			} else {
 				xmppConnectionService.changeStatus(mAccount, status, statusMessage, false);
-				announcePgp(mAccount, null, onPresenceChanged);
+				announcePgp(mAccount, null,null, onPresenceChanged);
 			}
 		}
 	}

@@ -1510,7 +1510,7 @@ public class ConversationFragment extends Fragment implements EditMessage.Keyboa
 			return;
 		}
 		if (conversation.getAccount().getPgpSignature() == null) {
-			activity.announcePgp(conversation.getAccount(), conversation, activity.onOpenPGPKeyPublished);
+			activity.announcePgp(conversation.getAccount(), conversation, null, activity.onOpenPGPKeyPublished);
 			return;
 		}
 		if (!mSendingPgpMessage.compareAndSet(false, true)) {

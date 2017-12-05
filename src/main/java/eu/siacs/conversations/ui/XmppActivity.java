@@ -543,7 +543,7 @@ public abstract class XmppActivity extends Activity {
 		startActivityForResult(intent, REQUEST_INVITE_TO_CONVERSATION);
 	}
 
-	protected void announcePgp(Account account, final Conversation conversation, final Runnable onSuccess) {
+	protected void announcePgp(Account account, final Conversation conversation, Intent intent, final Runnable onSuccess) {
 		if (account.getPgpId() == 0) {
 			choosePgpSignId(account);
 		} else {
@@ -554,7 +554,7 @@ public abstract class XmppActivity extends Activity {
 			if (status == null) {
 				status = "";
 			}
-			xmppConnectionService.getPgpEngine().generateSignature(account, status, new UiCallback<Account>() {
+			xmppConnectionService.getPgpEngine().generateSignature(intent, account, status, new UiCallback<Account>() {
 
 				@Override
 				public void userInputRequried(PendingIntent pi, Account account) {
