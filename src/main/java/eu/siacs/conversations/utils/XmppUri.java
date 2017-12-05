@@ -151,6 +151,15 @@ public class XmppUri {
 		}
 	}
 
+	public boolean isJidValid() {
+		try {
+			Jid.fromString(jid);
+			return true;
+		} catch (InvalidJidException e) {
+			return false;
+		}
+	}
+
 	public String getBody() {
 		return body;
 	}
