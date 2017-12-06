@@ -45,6 +45,7 @@ import android.widget.EditText;
 import java.util.Arrays;
 import java.util.List;
 
+import eu.siacs.conversations.entities.Message;
 import eu.siacs.conversations.ui.text.QuoteSpan;
 
 public class StylingHelper {
@@ -65,13 +66,23 @@ public class StylingHelper {
 		}
 	}
 
-	public static void format(final Editable editable, @ColorInt int textColor) {
-		for (ImStyleParser.Style style : ImStyleParser.parse(editable)) {
+	public static void format(final Editable editable, int start, int end, @ColorInt int textColor) {
+		for (ImStyleParser.Style style : ImStyleParser.parse(editable,start,end)) {
 			final int keywordLength = style.getKeyword().length();
 			editable.setSpan(createSpanForStyle(style), style.getStart() + keywordLength, style.getEnd() - keywordLength + 1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
 			makeKeywordOpaque(editable, style.getStart(), style.getStart() + keywordLength, textColor);
 			makeKeywordOpaque(editable, style.getEnd() - keywordLength + 1, style.getEnd() + 1, textColor);
 		}
+	}
+
+	public static void format(final Editable editable, @ColorInt int textColor) {
+		int end = 0;
+		Message.MergeSeparator[] spans = editable.getSpans(0, editable.length() - 1, Message.MergeSeparator.class);
+		for(Message.MergeSeparator span : spans) {
+			format(editable,end,editable.getSpanStart(span),textColor);
+			end = editable.getSpanEnd(span);
+		}
+		format(editable,end,editable.length() -1,textColor);
 	}
 
 	private static ParcelableSpan createSpanForStyle(ImStyleParser.Style style) {

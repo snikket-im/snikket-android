@@ -44,7 +44,7 @@ public class ImStyleParser {
 		return parse(text, 0, text.length() - 1);
 	}
 
-	private static List<Style> parse(CharSequence text, int start, int end) {
+	public static List<Style> parse(CharSequence text, int start, int end) {
 		List<Style> styles = new ArrayList<>();
 		for (int i = start; i <= end; ++i) {
 			char c = text.charAt(i);
