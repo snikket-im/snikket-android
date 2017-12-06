@@ -1520,14 +1520,19 @@ public class ConversationActivity extends XmppActivity
 		return connection == null ? -1 : connection.getFeatures().getMaxHttpUploadSize();
 	}
 
+	private String getBatteryOptimizationPreferenceKey() {
+		@SuppressLint("HardwareIds") String device = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
+		return "show_battery_optimization"+(device == null ? "" : device);
+	}
+
 	private void setNeverAskForBatteryOptimizationsAgain() {
-		getPreferences().edit().putBoolean("show_battery_optimization", false).apply();
+		getPreferences().edit().putBoolean(getBatteryOptimizationPreferenceKey(), false).apply();
 	}
 
 	private void openBatteryOptimizationDialogIfNeeded() {
 		if (hasAccountWithoutPush()
 				&& isOptimizingBattery()
-				&& getPreferences().getBoolean("show_battery_optimization", true)) {
+				&& getPreferences().getBoolean(getBatteryOptimizationPreferenceKey(), true)) {
 			AlertDialog.Builder builder = new AlertDialog.Builder(this);
 			builder.setTitle(R.string.battery_optimizations_enabled);
 			builder.setMessage(R.string.battery_optimizations_enabled_dialog);
@@ -1560,7 +1565,7 @@ public class ConversationActivity extends XmppActivity
 
 	private boolean hasAccountWithoutPush() {
 		for(Account account : xmppConnectionService.getAccounts()) {
-			if (account.getStatus() != Account.State.DISABLED && !xmppConnectionService.getPushManagementService().available(account)) {
+			if (account.getStatus() == Account.State.ONLINE && !xmppConnectionService.getPushManagementService().available(account)) {
 				return true;
 			}
 		}
