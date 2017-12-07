@@ -80,8 +80,8 @@ public class AxolotlService implements OnAdvancedStreamFeaturesLoaded {
 	private final SerialSingleThreadExecutor executor;
 	private int numPublishTriesOnEmptyPep = 0;
 	private boolean pepBroken = false;
+	private int lastDeviceListNotificationHash = 0;
 
-	private AtomicBoolean ownPushPending = new AtomicBoolean(false);
 	private AtomicBoolean changeAccessMode = new AtomicBoolean(false);
 
 	@Override
@@ -350,7 +350,8 @@ public class AxolotlService implements OnAdvancedStreamFeaturesLoaded {
 
 	public void resetBrokenness() {
 		this.pepBroken = false;
-		numPublishTriesOnEmptyPep = 0;
+		this.numPublishTriesOnEmptyPep = 0;
+		this.lastDeviceListNotificationHash = 0;
 	}
 
 	public void clearErrorsInFetchStatusMap(Jid jid) {
@@ -388,11 +389,13 @@ public class AxolotlService implements OnAdvancedStreamFeaturesLoaded {
 	}
 
 	public void registerDevices(final Jid jid, @NonNull final Set<Integer> deviceIds) {
-		boolean me = jid.toBareJid().equals(account.getJid().toBareJid());
-		if (me && ownPushPending.getAndSet(false)) {
-			Log.d(Config.LOGTAG,account.getJid().toBareJid()+": ignoring own device update because of pending push");
+		final int hash = deviceIds.hashCode();
+		final boolean me = jid.toBareJid().equals(account.getJid().toBareJid());
+		if (me && hash == this.lastDeviceListNotificationHash) {
+			Log.d(Config.LOGTAG,account.getJid().toBareJid()+": ignoring duplicate own device id list");
 			return;
 		}
+		this.lastDeviceListNotificationHash = hash;
 		boolean needsPublishing = me && !deviceIds.contains(getOwnDeviceId());
 		if (me) {
 			deviceIds.remove(getOwnDeviceId());
@@ -527,7 +530,6 @@ public class AxolotlService implements OnAdvancedStreamFeaturesLoaded {
 	private void publishDeviceIdsAndRefineAccessModel(final Set<Integer> ids, final boolean firstAttempt) {
 		final Bundle publishOptions = account.getXmppConnection().getFeatures().pepPublishOptions() ? PublishOptions.openAccess() : null;
 		IqPacket publish = mXmppConnectionService.getIqGenerator().publishDeviceIds(ids, publishOptions);
-		ownPushPending.set(true);
 		mXmppConnectionService.sendIqPacket(account, publish, new OnIqPacketReceived() {
 			@Override
 			public void onIqPacketReceived(Account account, IqPacket packet) {
@@ -551,7 +553,6 @@ public class AxolotlService implements OnAdvancedStreamFeaturesLoaded {
 						account.setOption(Account.OPTION_REQUIRES_ACCESS_MODE_CHANGE,false);
 						mXmppConnectionService.databaseBackend.updateAccount(account);
 					}
-					ownPushPending.set(false);
 					if (packet.getType() == IqPacket.TYPE.ERROR) {
 						pepBroken = true;
 						Log.d(Config.LOGTAG, getLogprefix(account) + "Error received while publishing own device id" + packet.findChild("error"));
