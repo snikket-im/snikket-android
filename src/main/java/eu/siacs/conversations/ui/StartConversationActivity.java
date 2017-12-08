@@ -75,6 +75,7 @@ import eu.siacs.conversations.entities.Presence;
 import eu.siacs.conversations.services.XmppConnectionService.OnRosterUpdate;
 import eu.siacs.conversations.ui.adapter.KnownHostsAdapter;
 import eu.siacs.conversations.ui.adapter.ListItemAdapter;
+import eu.siacs.conversations.ui.service.EmojiService;
 import eu.siacs.conversations.utils.XmppUri;
 import eu.siacs.conversations.xmpp.OnUpdateBlocklist;
 import eu.siacs.conversations.xmpp.XmppConnection;
@@ -257,8 +258,9 @@ public class StartConversationActivity extends XmppActivity implements OnRosterU
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        new EmojiService(this).init();
         setContentView(R.layout.activity_start_conversation);
-        mViewPager = (ViewPager) findViewById(R.id.start_conversation_view_pager);
+        mViewPager = findViewById(R.id.start_conversation_view_pager);
         ActionBar actionBar = getActionBar();
         actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
 
@@ -275,7 +277,7 @@ public class StartConversationActivity extends XmppActivity implements OnRosterU
 
         mConferenceAdapter = new ListItemAdapter(this, conferences);
         mContactsAdapter = new ListItemAdapter(this, contacts);
-        ((ListItemAdapter) mContactsAdapter).setOnTagClickedListener(this.mOnTagClickedListener);
+        mContactsAdapter.setOnTagClickedListener(this.mOnTagClickedListener);
         this.mHideOfflineContacts = getPreferences().getBoolean("hide_offline", false);
 
     }
@@ -316,9 +318,7 @@ public class StartConversationActivity extends XmppActivity implements OnRosterU
     }
 
     protected void openConversationForContact(Contact contact) {
-        Conversation conversation = xmppConnectionService
-                .findOrCreateConversation(contact.getAccount(),
-                        contact.getJid(), false, true);
+        Conversation conversation = xmppConnectionService.findOrCreateConversation(contact.getAccount(), contact.getJid(), false, true);
         switchToConversation(conversation);
     }
 
