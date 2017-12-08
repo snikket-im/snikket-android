@@ -72,7 +72,7 @@ public class XmppUri {
 				jid = uri.getAuthority();
 			} else {
 				String[] parts = uri.getSchemeSpecificPart().split("\\?");
-				if (parts.length > 1) {
+				if (parts.length > 0) {
 					jid = parts[0];
 				} else {
 					return;
