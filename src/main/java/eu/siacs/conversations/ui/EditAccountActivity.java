@@ -39,6 +39,7 @@ import android.widget.Toast;
 
 import org.openintents.openpgp.util.OpenPgpUtils;
 
+import java.net.URL;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
@@ -154,10 +155,13 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
 			}
 
 			XmppConnection connection = mAccount == null ? null : mAccount.getXmppConnection();
-			String url = connection != null && mAccount.getStatus() == Account.State.REGISTRATION_WEB ? connection.getWebRegistrationUrl() : null;
-			if (url != null && registerNewAccount && !wasDisabled) {
+			boolean openRegistrationUrl = registerNewAccount && mAccount != null && mAccount.getStatus() == Account.State.REGISTRATION_WEB;
+			boolean openPaymentUrl = mAccount != null && mAccount.getStatus() == Account.State.PAYMENT_REQUIRED;
+			final boolean redirectionWorthyStatus = openPaymentUrl || openRegistrationUrl;
+			URL url = connection != null && redirectionWorthyStatus ? connection.getRedirectionUrl() : null;
+			if (url != null && redirectionWorthyStatus && !wasDisabled) {
 				try {
-					startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(url)));
+					startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(url.toString())));
 					return;
 				} catch (ActivityNotFoundException e) {
 					Toast.makeText(EditAccountActivity.this,R.string.application_found_to_open_website,Toast.LENGTH_SHORT);
@@ -449,11 +453,17 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
 						this.mSaveButton.setTextColor(getSecondaryTextColor());
 					}
 				} else {
-					this.mSaveButton.setText(R.string.connect);
+					XmppConnection connection = mAccount == null ? null : mAccount.getXmppConnection();
+					URL url = connection != null &&  mAccount.getStatus() == Account.State.PAYMENT_REQUIRED ? connection.getRedirectionUrl() : null;
+					if (url != null) {
+						this.mSaveButton.setText(R.string.open_website);
+					} else {
+						this.mSaveButton.setText(R.string.connect);
+					}
 				}
 			} else {
 				XmppConnection connection = mAccount == null ? null : mAccount.getXmppConnection();
-				String url = connection != null && mAccount.getStatus() == Account.State.REGISTRATION_WEB ? connection.getWebRegistrationUrl() : null;
+				URL url = connection != null &&  mAccount.getStatus() == Account.State.REGISTRATION_WEB ? connection.getRedirectionUrl() : null;
 				if (url != null && mRegisterNew.isChecked()) {
 					this.mSaveButton.setText(R.string.open_website);
 				} else {
