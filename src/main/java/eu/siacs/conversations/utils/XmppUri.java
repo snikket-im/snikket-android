@@ -71,7 +71,12 @@ public class XmppUri {
 			if (uri.getAuthority() != null) {
 				jid = uri.getAuthority();
 			} else {
-				jid = uri.getSchemeSpecificPart().split("\\?")[0];
+				String[] parts = uri.getSchemeSpecificPart().split("\\?");
+				if (parts.length > 1) {
+					jid = parts[0];
+				} else {
+					return;
+				}
 			}
 			this.fingerprints = parseFingerprints(uri.getQuery());
 			this.body = parseBody(uri.getQuery());
