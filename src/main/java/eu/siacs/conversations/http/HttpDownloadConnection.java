@@ -72,7 +72,7 @@ public class HttpDownloadConnection implements Transferable {
 			if (message.hasFileOnRemoteHost()) {
 				mUrl = CryptoHelper.toHttpsUrl(message.getFileParams().url);
 			} else {
-				mUrl = CryptoHelper.toHttpsUrl(new URL(message.getBody()));
+				mUrl = CryptoHelper.toHttpsUrl(new URL(message.getBody().split("\n")[0]));
 			}
 			String[] parts = mUrl.getPath().toLowerCase().split("\\.");
 			String lastPart = parts.length >= 1 ? parts[parts.length - 1] : null;

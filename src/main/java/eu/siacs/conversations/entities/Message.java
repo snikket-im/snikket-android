@@ -724,17 +724,22 @@ public class Message extends AbstractEntity {
 
 	public synchronized boolean treatAsDownloadable() {
 		if (treatAsDownloadable == null) {
-			if (body.trim().contains(" ")) {
-				treatAsDownloadable = false;
-			}
 			try {
-				final URL url = new URL(body);
+				final String[] lines = body.split("\n");
+				for(String line : lines) {
+					if (line.contains("\\s+")) {
+						treatAsDownloadable = false;
+						return treatAsDownloadable;
+					}
+				}
+				final URL url = new URL(lines[0]);
 				final String ref = url.getRef();
 				final String protocol = url.getProtocol();
 				final boolean encrypted = ref != null && AesGcmURLStreamHandler.IV_KEY.matcher(ref).matches();
-				treatAsDownloadable = (AesGcmURLStreamHandler.PROTOCOL_NAME.equalsIgnoreCase(protocol) && encrypted)
-						|| (("http".equalsIgnoreCase(protocol) || "https".equalsIgnoreCase(protocol)) && (oob || encrypted));
-
+				final boolean followedByDataUri = lines.length == 2 && lines[1].startsWith("data:");
+				final boolean validAesGcm = AesGcmURLStreamHandler.PROTOCOL_NAME.equalsIgnoreCase(protocol) && encrypted && (lines.length == 1 || followedByDataUri);
+				final boolean validOob = ("http".equalsIgnoreCase(protocol) || "https".equalsIgnoreCase(protocol)) && (oob || encrypted) && lines.length == 1;
+				treatAsDownloadable = validAesGcm || validOob;
 			} catch (MalformedURLException e) {
 				treatAsDownloadable = false;
 			}
