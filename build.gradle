@@ -86,21 +86,21 @@ android {
         playstore
         free
     }
-    if (project.hasProperty('mStoreFile') &&
-            project.hasProperty('mStorePassword') &&
-            project.hasProperty('mKeyAlias') &&
-            project.hasProperty('mKeyPassword')) {
+
+
+    if(new File("signing.properties").exists()) {
+        Properties props = new Properties()
+        props.load(new FileInputStream(file("signing.properties")))
+
         signingConfigs {
             release {
-                storeFile file(mStoreFile)
-                storePassword mStorePassword
-                keyAlias mKeyAlias
-                keyPassword mKeyPassword
+                storeFile file(props['keystore'])
+                storePassword props['keystore.password']
+                keyAlias props['keystore.alias']
+                keyPassword props['keystore.password']
             }
         }
         buildTypes.release.signingConfig = signingConfigs.release
-    } else {
-        buildTypes.release.signingConfig = null
     }
 
     lintOptions {
