@@ -2,10 +2,11 @@
 // sub-projects/modules.
 buildscript {
     repositories {
+        google()
         jcenter()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:2.3.3'
+        classpath 'com.android.tools.build:gradle:3.0.1'
     }
 }
 
@@ -23,8 +24,8 @@ repositories {
 }
 
 configurations {
-    playstoreCompile
-    freeCompile
+    playstoreImplementation
+    freeImplementation
 }
 
 ext {
@@ -32,29 +33,28 @@ ext {
 }
 
 dependencies {
-    compile project(':libs:MemorizingTrustManager')
-    playstoreCompile 'com.google.android.gms:play-services-gcm:11.6.2'
-    compile 'org.sufficientlysecure:openpgp-api:10.0'
-    compile 'com.soundcloud.android:android-crop:1.0.1@aar'
-    compile "com.android.support:support-v13:$supportLibVersion"
-    compile "com.android.support:appcompat-v7:$supportLibVersion"
-    compile "com.android.support:support-emoji:$supportLibVersion"
-    freeCompile "com.android.support:support-emoji-bundled:$supportLibVersion"
-    compile 'org.jitsi:org.otr4j:0.22'
-    compile 'org.bouncycastle:bcmail-jdk15on:1.56'
-    compile 'org.gnu.inet:libidn:1.15'
-    compile 'com.google.zxing:core:3.2.1'
-    compile 'com.google.zxing:android-integration:3.2.1'
-    compile 'de.measite.minidns:minidns-hla:0.2.4'
-    compile 'de.timroes.android:EnhancedListView:0.3.4'
-    compile 'me.leolin:ShortcutBadger:1.1.19@aar'
-    compile 'com.kyleduo.switchbutton:library:1.2.8'
-    compile 'org.whispersystems:signal-protocol-java:2.6.2'
-    compile 'com.makeramen:roundedimageview:2.3.0'
-    compile "com.wefika:flowlayout:0.4.1"
-    compile 'net.ypresto.androidtranscoder:android-transcoder:0.2.0'
-    compile 'com.github.scottyab:showhidepasswordedittext:0.8'
-
+    implementation project(':libs:MemorizingTrustManager')
+    playstoreImplementation 'com.google.android.gms:play-services-gcm:11.6.2'
+    implementation 'org.sufficientlysecure:openpgp-api:10.0'
+    implementation 'com.soundcloud.android:android-crop:1.0.1@aar'
+    implementation "com.android.support:support-v13:$supportLibVersion"
+    implementation "com.android.support:appcompat-v7:$supportLibVersion"
+    implementation "com.android.support:support-emoji:$supportLibVersion"
+    freeImplementation "com.android.support:support-emoji-bundled:$supportLibVersion"
+    implementation 'org.bouncycastle:bcmail-jdk15on:1.56'
+    implementation 'org.jitsi:org.otr4j:0.22'
+    implementation 'org.gnu.inet:libidn:1.15'
+    implementation 'com.google.zxing:core:3.2.1'
+    implementation 'com.google.zxing:android-integration:3.2.1'
+    implementation 'de.measite.minidns:minidns-hla:0.2.4'
+    implementation 'de.timroes.android:EnhancedListView:0.3.4'
+    implementation 'me.leolin:ShortcutBadger:1.1.19@aar'
+    implementation 'com.kyleduo.switchbutton:library:1.2.8'
+    implementation 'org.whispersystems:signal-protocol-java:2.6.2'
+    implementation 'com.makeramen:roundedimageview:2.3.0'
+    implementation "com.wefika:flowlayout:0.4.1"
+    implementation 'net.ypresto.androidtranscoder:android-transcoder:0.2.0'
+    implementation 'com.github.scottyab:showhidepasswordedittext:0.8'
 }
 
 ext {
@@ -82,13 +82,19 @@ android {
     }
 
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_7
-        targetCompatibility JavaVersion.VERSION_1_7
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
     }
 
+    flavorDimensions("distribution")
+
     productFlavors {
-        playstore
-        free
+        playstore {
+            dimension "distribution"
+        }
+        free {
+            dimension "distribution"
+        }
     }
 
     buildTypes {

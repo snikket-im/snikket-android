@@ -8,7 +8,6 @@ src/playstore/res/values/gcm.xml
 .gradle/
 build/
 captures/
-gradle.properties
 signing.properties
 # Ignore Gradle GUI config
 gradle-app.setting
