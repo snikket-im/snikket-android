@@ -1,5 +1,9 @@
 # Changelog
 
+### Version 1.23.1
+* Show icon instead of image preview in conversation overview
+* fixed loop when trying to decrypt with YubiKey
+
 ### Version 1.23.0
 * Support for read markers in private, non-anonymous group chats
 

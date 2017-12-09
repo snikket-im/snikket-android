@@ -50,6 +50,7 @@ dependencies {
     compile 'com.makeramen:roundedimageview:2.3.0'
     compile "com.wefika:flowlayout:0.4.1"
     compile 'net.ypresto.androidtranscoder:android-transcoder:0.2.0'
+
 }
 
 ext {
@@ -64,8 +65,8 @@ android {
     defaultConfig {
         minSdkVersion 14
         targetSdkVersion 25
-        versionCode 242
-        versionName "1.23.0"
+        versionCode 245
+        versionName "1.23.1"
         archivesBaseName += "-$versionName"
         applicationId "eu.siacs.conversations"
     }
