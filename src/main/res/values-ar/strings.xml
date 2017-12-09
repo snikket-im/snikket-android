@@ -487,7 +487,7 @@
   <string name="pref_manually_change_presence">غيِّر يدويًا صفة الحضور</string>
   <string name="pref_manually_change_presence_summary">إضغط على صورتك الرمزية لتغيير وضع حضورك</string>
   <string name="change_presence">تعديل الحضور</string>
-  <string name="status_message">حالة الرسالة</string>
+  <string name="status_message">نص حالة الحضور</string>
   <string name="presence_chat">جاهز للدردشة</string>
   <string name="presence_online">متصل</string>
   <string name="presence_away">غائِب</string>

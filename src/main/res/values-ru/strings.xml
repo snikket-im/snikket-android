@@ -5,6 +5,7 @@
   <string name="action_accounts">Управление аккаунтами</string>
   <string name="action_end_conversation">Закончить текущую беседу</string>
   <string name="action_contact_details">Сведения о контакте</string>
+  <string name="action_muc_details">Подробности конференции</string>
   <string name="action_secure">Защищённая беседа</string>
   <string name="action_add_account">Добавить аккаунт</string>
   <string name="action_edit_contact">Редактировать контакт</string>
@@ -18,6 +19,7 @@
   <string name="title_activity_settings">Настройки</string>
   <string name="title_activity_sharewith">Поделиться</string>
   <string name="title_activity_start_conversation">Начать беседу</string>
+  <string name="title_activity_choose_contact">Выберите контакт</string>
   <string name="title_activity_block_list">Чёрный список</string>
   <string name="just_now">только что</string>
   <string name="minute_ago">1 минуту назад</string>
@@ -42,6 +44,8 @@
   <string name="register_account">Создать новый аккаунт на сервере</string>
   <string name="change_password_on_server">Изменить пароль на сервере</string>
   <string name="share_with">Поделиться с</string>
+  <string name="start_conversation">Начать беседу</string>
+  <string name="invite_contact">Пригласить собеседника</string>
   <string name="contacts">Контакты</string>
   <string name="cancel">Отмена</string>
   <string name="set">Установить</string>
@@ -215,8 +219,12 @@
   <string name="done">Готово</string>
   <string name="verify">Подтвердить</string>
   <string name="decrypt">Расшифровать</string>
+  <string name="conferences">Конференции</string>
   <string name="search">Поиск</string>
+  <string name="create_contact">Создать контакт</string>
+  <string name="dialog_title_create_contact">Создание контакта</string>
   <string name="enter_contact">Добавить контакт</string>
+  <string name="join_conference">Присоединиться к конференции</string>
   <string name="view_contact_details">Посмотреть данные контакта</string>
   <string name="block_contact">Заблокировать контакт</string>
   <string name="unblock_contact">Разблокировать контакт</string>

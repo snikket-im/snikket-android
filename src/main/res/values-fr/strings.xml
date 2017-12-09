@@ -299,6 +299,7 @@
   <string name="conference_banned">Vous êtes bannis de cette conversation de groupe</string>
   <string name="conference_members_only">Cette conversation de groupe est réservée aux membres</string>
   <string name="conference_kicked">Vous avez été éjecté de cette conversation de groupe</string>
+  <string name="conference_unknown_error">Vous n\'appartenez plus à ce groupe de discussion</string>
   <string name="using_account">avec le compte %s</string>
   <string name="checking_x">Vérification de %s sur l\'hôte HTTP</string>
   <string name="not_connected_try_again">Vous n\'êtes pas connecté. Essayez plus tard.</string>
