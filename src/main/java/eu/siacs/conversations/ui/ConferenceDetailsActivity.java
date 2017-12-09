@@ -204,8 +204,9 @@ public class ConferenceDetailsActivity extends XmppActivity implements OnConvers
 	private OnValueEdited onSubjectEdited = new OnValueEdited() {
 
 		@Override
-		public void onValueEdited(String value) {
+		public String onValueEdited(String value) {
 			xmppConnectionService.pushSubjectToConference(mConversation,value);
+			return null;
 		}
 	};
 
@@ -254,8 +255,12 @@ public class ConferenceDetailsActivity extends XmppActivity implements OnConvers
 						new OnValueEdited() {
 
 							@Override
-							public void onValueEdited(String value) {
-								xmppConnectionService.renameInMuc(mConversation,value,renameCallback);
+							public String onValueEdited(String value) {
+								if (xmppConnectionService.renameInMuc(mConversation,value,renameCallback)) {
+									return null;
+								} else {
+									return getString(R.string.invalid_username);
+								}
 							}
 						});
 			}

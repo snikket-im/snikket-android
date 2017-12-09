@@ -133,9 +133,9 @@ public class ConversationFragment extends Fragment implements EditMessage.Keyboa
 			activity.quickPasswordEdit(password, new OnValueEdited() {
 
 				@Override
-				public void onValueEdited(String value) {
-					activity.xmppConnectionService.providePasswordForMuc(
-							conversation, value);
+				public String onValueEdited(String value) {
+					activity.xmppConnectionService.providePasswordForMuc(conversation, value);
+					return null;
 				}
 			});
 		}

@@ -2348,9 +2348,12 @@ public class XmppConnectionService extends Service {
 		return false;
 	}
 
-	public void renameInMuc(final Conversation conversation, final String nick, final UiCallback<Conversation> callback) {
+	public boolean renameInMuc(final Conversation conversation, final String nick, final UiCallback<Conversation> callback) {
 		final MucOptions options = conversation.getMucOptions();
 		final Jid joinJid = options.createJoinJid(nick);
+		if (joinJid == null) {
+			return false;
+		}
 		if (options.online()) {
 			Account account = conversation.getAccount();
 			options.setOnRenameListener(new OnRenameListener() {
@@ -2395,6 +2398,7 @@ public class XmppConnectionService extends Service {
 				joinMuc(conversation);
 			}
 		}
+		return true;
 	}
 
 	public void leaveMuc(Conversation conversation) {

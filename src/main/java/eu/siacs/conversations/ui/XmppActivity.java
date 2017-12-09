@@ -7,6 +7,7 @@ import android.app.ActionBar;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;
+import android.app.Dialog;
 import android.app.PendingIntent;
 import android.content.ActivityNotFoundException;
 import android.content.ClipData;
@@ -167,11 +168,11 @@ public abstract class XmppActivity extends Activity {
 	abstract protected void refreshUiReal();
 
 	protected interface OnValueEdited {
-		public void onValueEdited(String value);
+		String onValueEdited(String value);
 	}
 
 	public interface OnPresenceSelected {
-		public void onPresenceSelected();
+		void onPresenceSelected();
 	}
 
 	protected ServiceConnection mConnection = new ServiceConnection() {
@@ -733,23 +734,13 @@ public abstract class XmppActivity extends Activity {
 						   boolean password) {
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
 		View view = getLayoutInflater().inflate(R.layout.quickedit, null);
-		final EditText editor = (EditText) view.findViewById(R.id.editor);
-		OnClickListener mClickListener = new OnClickListener() {
-
-			@Override
-			public void onClick(DialogInterface dialog, int which) {
-				String value = editor.getText().toString();
-				if (!value.equals(previousValue) && value.trim().length() > 0) {
-					callback.onValueEdited(value);
-				}
-			}
-		};
+		final EditText editor = view.findViewById(R.id.editor);
 		if (password) {
 			editor.setInputType(InputType.TYPE_CLASS_TEXT
 					| InputType.TYPE_TEXT_VARIATION_PASSWORD);
-			builder.setPositiveButton(R.string.accept, mClickListener);
+			builder.setPositiveButton(R.string.accept,null);
 		} else {
-			builder.setPositiveButton(R.string.edit, mClickListener);
+			builder.setPositiveButton(R.string.edit, null);
 		}
 		if (hint != 0) {
 			editor.setHint(hint);
@@ -761,7 +752,24 @@ public abstract class XmppActivity extends Activity {
 		}
 		builder.setView(view);
 		builder.setNegativeButton(R.string.cancel, null);
-		builder.create().show();
+		final AlertDialog dialog = builder.create();
+		dialog.show();
+		View.OnClickListener clickListener = new View.OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				String value = editor.getText().toString();
+				if (!value.equals(previousValue) && value.trim().length() > 0) {
+					String error = callback.onValueEdited(value);
+					if (error != null) {
+						editor.setError(error);
+						return;
+					}
+				}
+				dialog.dismiss();
+			}
+		};
+		dialog.getButton(DialogInterface.BUTTON_POSITIVE).setOnClickListener(clickListener);
 	}
 
 	public boolean hasStoragePermission(int requestCode) {

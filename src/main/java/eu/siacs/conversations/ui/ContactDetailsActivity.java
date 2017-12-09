@@ -284,11 +284,11 @@ public class ContactDetailsActivity extends OmemoActivity implements OnAccountUp
 					quickEdit(contact.getDisplayName(), 0, new OnValueEdited() {
 
 						@Override
-						public void onValueEdited(String value) {
+						public String onValueEdited(String value) {
 							contact.setServerName(value);
-							ContactDetailsActivity.this.xmppConnectionService
-								.pushContactToServer(contact);
+							ContactDetailsActivity.this.xmppConnectionService.pushContactToServer(contact);
 							populateView();
+							return null;
 						}
 					});
 				} else {
