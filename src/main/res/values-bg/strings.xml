@@ -246,6 +246,8 @@
   <string name="contact_added_you">Контактът е добавен във Вашия списък от контакти</string>
   <string name="add_back">Добавяне обратно</string>
   <string name="contact_has_read_up_to_this_point">%s е прочел до тук</string>
+  <string name="contacts_have_read_up_to_this_point">%s човека са прочели до тук</string>
+  <string name="contacts_and_n_more_have_read_up_to_this_point">%1$s и още %2$d човека са прочели до тук</string>
   <string name="publish">Публикуване</string>
   <string name="touch_to_choose_picture">Докоснете аватара, за да изберете изображение от галерията</string>
   <string name="publish_avatar_explanation">Забележка: Всеки, абониран за актуализации на присъствието Ви, ще може да вижда тази снимка.</string>
