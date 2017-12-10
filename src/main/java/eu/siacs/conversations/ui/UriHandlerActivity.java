@@ -1,8 +1,14 @@
 package eu.siacs.conversations.ui;
 
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
+import android.nfc.NdefMessage;
+import android.nfc.NdefRecord;
+import android.nfc.NfcAdapter;
+import android.os.Build;
+import android.os.Parcelable;
 
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
@@ -25,6 +31,11 @@ public class UriHandlerActivity extends Activity {
     @Override
     public void onNewIntent(Intent intent) {
         handleIntent(intent);
+    }
+
+    @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
+    Uri getInviteJellyBean(NdefRecord record) {
+        return record.toUri();
     }
 
     private void handleUri(Uri uri) {
@@ -62,6 +73,30 @@ public class UriHandlerActivity extends Activity {
         startActivity(intent);
     }
 
+    private void handleNfcIntent(Intent data) {
+        for (Parcelable message : data.getParcelableArrayExtra(NfcAdapter.EXTRA_NDEF_MESSAGES)) {
+            if (message instanceof NdefMessage) {
+                for (NdefRecord record : ((NdefMessage) message).getRecords()) {
+                    switch (record.getTnf()) {
+                        case NdefRecord.TNF_WELL_KNOWN:
+                            if (Arrays.equals(record.getType(), NdefRecord.RTD_URI)) {
+                                if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                                    handleUri(getInviteJellyBean(record));
+                                } else {
+                                    byte[] payload = record.getPayload();
+                                    if (payload[0] == 0) {
+                                        Uri uri = Uri.parse(new String(Arrays.copyOfRange(
+                                                payload, 1, payload.length)));
+                                        handleUri(uri);
+                                    }
+                                }
+                            }
+                    }
+                }
+            }
+        }
+    }
+
     private void handleIntent(Intent data) {
         if (data == null) {
             finish();
@@ -76,6 +111,8 @@ public class UriHandlerActivity extends Activity {
             case ACTION_SCAN_QR_CODE:
                 new IntentIntegrator(this).initiateScan(Arrays.asList("AZTEC", "QR_CODE"));
                 return;
+            case NfcAdapter.ACTION_NDEF_DISCOVERED:
+                handleNfcIntent(data);
         }
 
         finish();

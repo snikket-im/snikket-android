@@ -69,14 +69,6 @@
 
                 <data android:scheme="xmpp" />
             </intent-filter>
-            <intent-filter>
-                <action android:name="android.intent.action.SENDTO" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-
-                <data android:scheme="imto" />
-                <data android:host="jabber" />
-            </intent-filter>
             <intent-filter android:autoVerify="true">
                 <action android:name="android.intent.action.VIEW" />
 
@@ -88,20 +80,20 @@
                 <data android:pathPrefix="/i/" />
                 <data android:pathPrefix="/j/" />
             </intent-filter>
-        </activity>
-        <activity
-            android:name=".ui.StartConversationActivity"
-            android:label="@string/title_activity_start_conversation"
-            android:launchMode="singleTop">
             <intent-filter>
                 <action android:name="android.nfc.action.NDEF_DISCOVERED" />
+                <action android:name="android.intent.action.SENDTO" />
 
                 <category android:name="android.intent.category.DEFAULT" />
 
                 <data android:scheme="imto" />
                 <data android:host="jabber" />
             </intent-filter>
-
+        </activity>
+        <activity
+            android:name=".ui.StartConversationActivity"
+            android:label="@string/title_activity_start_conversation"
+            android:launchMode="singleTop">
         </activity>
         <activity
             android:name=".ui.WelcomeActivity"

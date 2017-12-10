@@ -2,7 +2,6 @@ package eu.siacs.conversations.ui;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
-import android.annotation.TargetApi;
 import android.app.ActionBar;
 import android.app.ActionBar.Tab;
 import android.app.ActionBar.TabListener;
@@ -20,12 +19,8 @@ import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
-import android.nfc.NdefMessage;
-import android.nfc.NdefRecord;
-import android.nfc.NfcAdapter;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.text.Editable;
@@ -806,11 +801,6 @@ public class StartConversationActivity extends XmppActivity implements OnRosterU
         setIntent(null);
     }
 
-    @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
-    Invite getInviteJellyBean(NdefRecord record) {
-        return new Invite(record.toUri());
-    }
-
     protected boolean handleIntent(Intent intent) {
         if (intent == null || intent.getAction() == null) {
             return false;
@@ -825,27 +815,6 @@ public class StartConversationActivity extends XmppActivity implements OnRosterU
                     return invite.invite();
                 } else {
                     return false;
-                }
-            case NfcAdapter.ACTION_NDEF_DISCOVERED:
-                for (Parcelable message : getIntent().getParcelableArrayExtra(NfcAdapter.EXTRA_NDEF_MESSAGES)) {
-                    if (message instanceof NdefMessage) {
-                        for (NdefRecord record : ((NdefMessage) message).getRecords()) {
-                            switch (record.getTnf()) {
-                                case NdefRecord.TNF_WELL_KNOWN:
-                                    if (Arrays.equals(record.getType(), NdefRecord.RTD_URI)) {
-                                        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-                                            return getInviteJellyBean(record).invite();
-                                        } else {
-                                            byte[] payload = record.getPayload();
-                                            if (payload[0] == 0) {
-                                                return new Invite(Uri.parse(new String(Arrays.copyOfRange(
-                                                        payload, 1, payload.length)))).invite();
-                                            }
-                                        }
-                                    }
-                            }
-                        }
-                    }
                 }
         }
         return false;
