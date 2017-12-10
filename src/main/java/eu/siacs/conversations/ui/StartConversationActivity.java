@@ -55,9 +55,6 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.zxing.integration.android.IntentIntegrator;
-import com.google.zxing.integration.android.IntentResult;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -644,7 +641,9 @@ public class StartConversationActivity extends XmppActivity implements OnRosterU
                 showCreateConferenceDialog();
                 return true;
             case R.id.action_scan_qr_code:
-                new IntentIntegrator(this).initiateScan(Arrays.asList("AZTEC","QR_CODE"));
+                Intent intent = new Intent(this, UriHandlerActivity.class);
+                intent.setAction(UriHandlerActivity.ACTION_SCAN_QR_CODE);
+                startActivity(intent);
                 return true;
             case R.id.action_hide_offline:
                 mHideOfflineContacts = !item.isChecked();
@@ -682,20 +681,7 @@ public class StartConversationActivity extends XmppActivity implements OnRosterU
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent intent) {
-        if ((requestCode & 0xFFFF) == IntentIntegrator.REQUEST_CODE) {
-            IntentResult scanResult = IntentIntegrator.parseActivityResult(requestCode, resultCode, intent);
-            if (scanResult != null && scanResult.getFormatName() != null) {
-                String data = scanResult.getContents();
-                Invite invite = new Invite(data);
-                if (xmppConnectionServiceBound) {
-                    invite.invite();
-                } else if (invite.getJid() != null) {
-                    this.mPendingInvite = invite;
-                } else {
-                    this.mPendingInvite = null;
-                }
-            }
-        } else if (resultCode == RESULT_OK) {
+        if (resultCode == RESULT_OK) {
             if (xmppConnectionServiceBound) {
                 this.mPostponedActivityResult = null;
                 if (requestCode == REQUEST_CREATE_CONFERENCE) {

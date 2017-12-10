@@ -60,7 +60,6 @@
         <activity
             android:name=".ui.UriHandlerActivity"
             android:label="@string/title_activity_start_conversation"
-            android:theme="@android:style/Theme.NoDisplay"
             android:launchMode="singleTop">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />

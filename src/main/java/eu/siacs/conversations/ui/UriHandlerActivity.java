@@ -4,11 +4,17 @@ import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 
+import com.google.zxing.integration.android.IntentIntegrator;
+import com.google.zxing.integration.android.IntentResult;
+
+import java.util.Arrays;
+
 import eu.siacs.conversations.persistance.DatabaseBackend;
 import eu.siacs.conversations.utils.XmppUri;
 import eu.siacs.conversations.xmpp.jid.Jid;
 
 public class UriHandlerActivity extends Activity {
+    public static final String ACTION_SCAN_QR_CODE = "scan_qr_code";
 
     @Override
     public void onStart() {
@@ -66,8 +72,28 @@ public class UriHandlerActivity extends Activity {
             case Intent.ACTION_VIEW:
             case Intent.ACTION_SENDTO:
                 handleUri(data.getData());
+                break;
+            case ACTION_SCAN_QR_CODE:
+                new IntentIntegrator(this).initiateScan(Arrays.asList("AZTEC", "QR_CODE"));
+                return;
         }
 
         finish();
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent intent) {
+        if ((requestCode & 0xFFFF) == IntentIntegrator.REQUEST_CODE) {
+            IntentResult scanResult = IntentIntegrator.parseActivityResult(requestCode, resultCode,
+                    intent);
+
+            if (scanResult != null && scanResult.getFormatName() != null) {
+                String data = scanResult.getContents();
+                handleUri(Uri.parse(data));
+            }
+        }
+
+        finish();
+        super.onActivityResult(requestCode, requestCode, intent);
     }
 }
