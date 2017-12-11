@@ -72,10 +72,7 @@ public class PresenceParser extends AbstractParser implements
 								|| ((codes.isEmpty() || codes.contains(MucOptions.STATUS_CODE_ROOM_CREATED)) && jid.equals(item.getAttributeAsJid("jid")))) {
 							mucOptions.setOnline();
 							mucOptions.setSelf(user);
-							if (mucOptions.onRenameListener != null) {
-								mucOptions.onRenameListener.onSuccess();
-								mucOptions.onRenameListener = null;
-							}
+							invokeRenameListener(mucOptions, true);
 						}
 						boolean isNew = mucOptions.updateUser(user);
 						final AxolotlService axolotlService = conversation.getAccount().getAxolotlService();
@@ -143,24 +140,47 @@ public class PresenceParser extends AbstractParser implements
 					}
 				}
 			} else if (type.equals("error")) {
-				Element error = packet.findChild("error");
-				if (error != null && error.hasChild("conflict")) {
+				final Element error = packet.findChild("error");
+				if (error == null) {
+					return;
+				}
+				if (error.hasChild("conflict")) {
 					if (mucOptions.online()) {
-						if (mucOptions.onRenameListener != null) {
-							mucOptions.onRenameListener.onFailure();
-							mucOptions.onRenameListener = null;
-						}
+						invokeRenameListener(mucOptions, false);
 					} else {
 						mucOptions.setError(MucOptions.Error.NICK_IN_USE);
 					}
-				} else if (error != null && error.hasChild("not-authorized")) {
+				} else if (error.hasChild("not-authorized")) {
 					mucOptions.setError(MucOptions.Error.PASSWORD_REQUIRED);
-				} else if (error != null && error.hasChild("forbidden")) {
+				} else if (error.hasChild("forbidden")) {
 					mucOptions.setError(MucOptions.Error.BANNED);
-				} else if (error != null && error.hasChild("registration-required")) {
+				} else if (error.hasChild("registration-required")) {
 					mucOptions.setError(MucOptions.Error.MEMBERS_ONLY);
+				} else {
+					final String text = error.findChildContent("text");
+					if (text != null && text.contains("attribute 'to'")) {
+						if (mucOptions.online()) {
+							invokeRenameListener(mucOptions, false);
+						} else {
+							mucOptions.setError(MucOptions.Error.INVALID_NICK);
+						}
+					} else {
+						mucOptions.setError(MucOptions.Error.UNKNOWN);
+						Log.d(Config.LOGTAG, "unknown error in conference: " + packet);
+					}
 				}
 			}
+		}
+	}
+
+	private static void invokeRenameListener(final MucOptions options, boolean success) {
+		if (options.onRenameListener != null) {
+			if (success) {
+				options.onRenameListener.onSuccess();
+			} else {
+				options.onRenameListener.onFailure();
+			}
+			options.onRenameListener = null;
 		}
 	}
 
@@ -292,5 +312,4 @@ public class PresenceParser extends AbstractParser implements
 			this.parseContactPresence(packet, account);
 		}
 	}
-
 }

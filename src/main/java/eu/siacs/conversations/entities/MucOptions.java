@@ -141,6 +141,7 @@ public class MucOptions {
 		MEMBERS_ONLY,
 		KICKED,
 		SHUTDOWN,
+		INVALID_NICK,
 		UNKNOWN
 	}
 

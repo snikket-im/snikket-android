@@ -1109,6 +1109,8 @@ public class ConversationFragment extends Fragment implements EditMessage.Keyboa
 				case UNKNOWN:
 					showSnackbar(R.string.conference_unknown_error, R.string.try_again, joinMuc);
 					break;
+				case INVALID_NICK:
+					showSnackbar(R.string.invalid_muc_nick, R.string.edit, clickToMuc);
 				case SHUTDOWN:
 					showSnackbar(R.string.conference_shutdown, R.string.try_again, joinMuc);
 					break;
