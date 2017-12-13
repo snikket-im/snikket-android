@@ -1250,7 +1250,7 @@ public class XmppConnectionService extends Service {
 					if (!message.needsUploading()) {
 						String pgpBody = message.getEncryptedBody();
 						String decryptedBody = message.getBody();
-						message.setBody(pgpBody);
+						message.setBody(pgpBody); //TODO might throw NPE
 						message.setEncryption(Message.ENCRYPTION_PGP);
 						if (message.edited()) {
 							message.setBody(decryptedBody);
