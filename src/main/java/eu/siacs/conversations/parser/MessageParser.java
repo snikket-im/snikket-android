@@ -746,13 +746,14 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
 				if (conversation != null && id != null && sender != null) {
 					Message message = conversation.findMessageWithRemoteId(id, sender);
 					if (message != null) {
-						if (conversation.getMucOptions().isSelf(counterpart)) {
+						final Jid fallback = conversation.getMucOptions().getTrueCounterpart(counterpart);
+						final Jid trueJid = getTrueCounterpart((query != null && query.safeToExtractTrueCounterpart()) ? mucUserElement : null, fallback);
+						final boolean trueJidMatchesAccount = account.getJid().toBareJid().equals(trueJid == null ? null : trueJid.toBareJid());
+						if (trueJidMatchesAccount || conversation.getMucOptions().isSelf(counterpart)) {
 							if (!message.isRead() && (query == null || query.isCatchup())) { //checking if message is unread fixes race conditions with reflections
 								mXmppConnectionService.markRead(conversation);
 							}
-						} else {
-							final Jid fallback = conversation.getMucOptions().getTrueCounterpart(counterpart);
-							Jid trueJid = getTrueCounterpart((query != null && query.safeToExtractTrueCounterpart()) ? mucUserElement : null, fallback);
+						} else  if (!counterpart.isBareJid() && trueJid != null){
 							ReadByMarker readByMarker = ReadByMarker.from(counterpart, trueJid);
 							if (message.addReadByMarker(readByMarker)) {
 								Log.d(Config.LOGTAG, account.getJid().toBareJid() + ": added read by (" + readByMarker.getRealJid() + ") to message '" + message.getBody() + "'");

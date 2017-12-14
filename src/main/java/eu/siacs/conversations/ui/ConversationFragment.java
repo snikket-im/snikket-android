@@ -1391,9 +1391,7 @@ public class ConversationFragment extends Fragment implements EditMessage.Keyboa
 					state = ChatState.PAUSED;
 					users = conversation.getMucOptions().getUsersWithChatState(state, 5);
 				}
-				int markersAdded = 0;
 				if (mucOptions.membersOnly() && mucOptions.nonanonymous()) {
-					//addedMarkers.addAll(ReadByMarker.from(users));
 					for (int i = this.messageList.size() - 1; i >= 0; --i) {
 						final Set<ReadByMarker> markersForMessage = messageList.get(i).getReadByMarkers();
 						final List<MucOptions.User> shownMarkers = new ArrayList<>();
@@ -1426,7 +1424,6 @@ public class ConversationFragment extends Fragment implements EditMessage.Keyboa
 							statusMessage = null;
 						}
 						if (statusMessage != null) {
-							++markersAdded;
 							this.messageList.add(i + 1, statusMessage);
 						}
 						addedMarkers.add(markerForSender);
