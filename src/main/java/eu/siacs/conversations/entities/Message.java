@@ -726,10 +726,14 @@ public class Message extends AbstractEntity {
 		if (treatAsDownloadable == null) {
 			try {
 				final String[] lines = body.split("\n");
+				if (lines.length ==0) {
+					treatAsDownloadable = false;
+					return false;
+				}
 				for(String line : lines) {
 					if (line.contains("\\s+")) {
 						treatAsDownloadable = false;
-						return treatAsDownloadable;
+						return false;
 					}
 				}
 				final URL url = new URL(lines[0]);
