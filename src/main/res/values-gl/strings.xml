@@ -5,7 +5,7 @@
   <string name="action_accounts">Xestionar contas</string>
   <string name="action_end_conversation">Terminar conversa</string>
   <string name="action_contact_details">Detalles do contacto</string>
-  <string name="action_muc_details">Detalles da charla de grupo</string>
+  <string name="action_muc_details">Detalles da conversa de grupo</string>
   <string name="action_secure">Conversa segura</string>
   <string name="action_add_account">Engadir conta</string>
   <string name="action_edit_contact">Editar contacto</string>
@@ -121,7 +121,7 @@
   <string name="pref_never_send_crash_summary">Enviando volcados de pilas axudas al desenrolo de Conversations</string>
   <string name="pref_confirm_messages">Confirmación de mensaxes</string>
   <string name="pref_confirm_messages_summary">Permitir aos seus contactos saber si recibeu e leu as súas mensaxes</string>
-  <string name="pref_ui_options">IU</string>
+  <string name="pref_ui_options">Interface</string>
   <string name="openpgp_error">OpenKeychain reportou un erro</string>
   <string name="accept">Aceptar</string>
   <string name="error">Produciuse un erro</string>
@@ -246,6 +246,8 @@
   <string name="contact_added_you">Contacto engadido a súa lista de contactos</string>
   <string name="add_back">Voltar a engadir</string>
   <string name="contact_has_read_up_to_this_point">%s leeu ate este punto</string>
+  <string name="contacts_have_read_up_to_this_point">%s leu ate este punto</string>
+  <string name="contacts_and_n_more_have_read_up_to_this_point">%1$s +%2$d máis leron ate este punto</string>
   <string name="publish">Publicar</string>
   <string name="touch_to_choose_picture">Toque no avatar para escoller imaxe desde a galería</string>
   <string name="publish_avatar_explanation">Aviso: todos os suscritos as súas actualizacións de presenza permitiráselle ver esta imaxe.</string>
@@ -284,7 +286,7 @@
   <string name="title_pref_quiet_hours">Non molestar</string>
   <string name="title_pref_quiet_hours_start_time">Hora de inicio</string>
   <string name="title_pref_quiet_hours_end_time">Hora de finalización</string>
-  <string name="title_pref_enable_quiet_hours">Habilitar as horas de non molestar</string>
+  <string name="title_pref_enable_quiet_hours">Establecer horario sen notificacións</string>
   <string name="pref_quiet_hours_summary">As notificacións serán silenciadas durante estas horas</string>
   <string name="pref_use_larger_font">Aumentar o tamaño do texto</string>
   <string name="pref_use_larger_font_summary">Utilizar texto máis grande en toda a app</string>

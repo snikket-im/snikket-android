@@ -19,6 +19,7 @@
   <string name="title_activity_settings">Paramètres</string>
   <string name="title_activity_sharewith">Partager avec Conversation</string>
   <string name="title_activity_start_conversation">Démarrer une conversation</string>
+  <string name="title_activity_choose_contact">Choisir un contact</string>
   <string name="title_activity_block_list">Bloquer la liste</string>
   <string name="just_now">À l\'instant</string>
   <string name="minute_ago">Il y a 1 minute</string>
@@ -245,6 +246,8 @@
   <string name="contact_added_you">Votre correspondant vous a ajouté dans sa liste de contacts</string>
   <string name="add_back">Ré-ajouter</string>
   <string name="contact_has_read_up_to_this_point">%s a tout lu jusqu\'ici</string>
+  <string name="contacts_have_read_up_to_this_point">%s a tout lu jusqu\'ici</string>
+  <string name="contacts_and_n_more_have_read_up_to_this_point">%1$s+%2$d et plus  ont tout lu jusqu\'ici</string>
   <string name="publish">Publier</string>
   <string name="touch_to_choose_picture">Toucher l\'avatar pour choisir une image depuis la galerie.</string>
   <string name="publish_avatar_explanation">Note : toutes les personnes ayant souscrit à vos mises jour de disponibilité verront cette image.</string>
@@ -293,12 +296,15 @@
   <string name="pref_use_send_button_to_indicate_status_summary">Le bouton Envoyer change de couleur pour indiquer le statut du contact.</string>
   <string name="pref_expert_options_other">Autres</string>
   <string name="pref_conference_name">Nom de la conversation de groupe</string>
+  <string name="pref_conference_name_summary">Utiliser le sujet au lieu de JID pour identifier les groupes de discussions</string>
   <string name="pref_autojoin">Joindre les conversations de groupe automatiquement</string>
+  <string name="pref_autojoin_summary">Respectez l\'indicateur de jointure automatique dans les signets des groupes de discussion</string>
   <string name="toast_message_otr_fingerprint">Empreinte OTR copiée dans le presse-papier !</string>
   <string name="toast_message_omemo_fingerprint">Empreinte OMEMO copiée dans le presse-papier !</string>
   <string name="conference_banned">Vous êtes bannis de cette conversation de groupe</string>
   <string name="conference_members_only">Cette conversation de groupe est réservée aux membres</string>
   <string name="conference_kicked">Vous avez été éjecté de cette conversation de groupe</string>
+  <string name="conference_shutdown">La discussion de groupe a été interrompue</string>
   <string name="conference_unknown_error">Vous n\'appartenez plus à ce groupe de discussion</string>
   <string name="using_account">avec le compte %s</string>
   <string name="checking_x">Vérification de %s sur l\'hôte HTTP</string>
@@ -355,6 +361,7 @@
   <string name="pref_show_dynamic_tags_summary">Afficher des tags en lecture seule en dessous des contacts.</string>
   <string name="enable_notifications">Activer les notifications</string>
   <string name="no_conference_server_found">Serveur de conversation de groupe non trouvé</string>
+  <string name="conference_creation_failed">La création d\'un groupe de discussion a échoué!</string>
   <string name="account_image_description">Avatar du compte</string>
   <string name="copy_otr_clipboard_description">Copier l\'empreinte OTR dans le presse-papier</string>
   <string name="copy_omemo_clipboard_description">Copier l\'empreinte OMEMO dans le presse-papier</string>
@@ -393,6 +400,7 @@
   <string name="remove_membership">Révoquer le statut de membre</string>
   <string name="grant_admin_privileges">Accorder des privilèges d\'administrateur</string>
   <string name="remove_admin_privileges">Révoquer des privilèges d\'administrateur</string>
+  <string name="remove_from_room">Supprimer du groupe de discussion</string>
   <string name="could_not_change_affiliation">Impossible de changer l\'affiliation de %s</string>
   <string name="ban_from_conference">Bannir de la conversation</string>
   <string name="removing_from_public_conference">Vous essayez d\'exclure %s d\'une conversation de groupe publique. La seule façon de faire cela est de bannir cet utilisateur à jamais. </string>
@@ -400,10 +408,13 @@
   <string name="could_not_change_role">Impossible de changer le rôle de %s</string>
   <string name="public_conference">Conversations de groupe publiques</string>
   <string name="private_conference">Conversations de groupe privées, réservée aux membres</string>
+  <string name="conference_options">Options du groupe de discussion</string>
   <string name="members_only">Privé, membres uniquement</string>
   <string name="non_anonymous">Non anonyme</string>
   <string name="moderated">Modéré</string>
   <string name="you_are_not_participating">Vous ne participez pas</string>
+  <string name="modified_conference_options">Options de groupe de discussion modifiées!</string>
+  <string name="could_not_modify_conference_options">mpossible de modifier les options de groupe de discussion</string>
   <string name="never">Jamais</string>
   <string name="thirty_minutes">30 minutes</string>
   <string name="one_hour">1 heure</string>
@@ -440,6 +451,7 @@
   <string name="location">Position</string>
   <string name="received_location">Position reçue</string>
   <string name="title_undo_swipe_out_conversation">Conversation fermée</string>
+  <string name="title_undo_swipe_out_muc">Quitter le groupe de discussion</string>
   <string name="pref_dont_trust_system_cas_title">Ne pas utiliser les CAs système</string>
   <string name="pref_dont_trust_system_cas_summary">Tous les certificats doivent être approuvés manuellement.</string>
   <string name="pref_remove_trusted_certificates_title">Retirer les certificats</string>
@@ -463,6 +475,7 @@
   <string name="choose_quick_action">Sélectionner l\'action rapide</string>
   <string name="search_for_contacts_or_groups">Rechercher des contacts ou des groupes</string>
   <string name="send_private_message">Envoyer un message privé</string>
+  <string name="user_has_left_conference">%s a quitté le groupe de discussion!</string>
   <string name="username">Identifiant</string>
   <string name="username_hint">Identifiant</string>
   <string name="invalid_username">Cet identifiant n\'est pas valide</string>
@@ -545,6 +558,7 @@
   <string name="this_field_is_required">Ce champ est requis</string>
   <string name="correct_message">Corriger le message</string>
   <string name="send_corrected_message">Envoyer le message corrigé</string>
+  <string name="no_keys_just_confirm">Vous faites déjà confiance à ce contact. En sélectionnant \"terminé\", vous confirmez simplement que %s fait partie de ce groupe de discussion.</string>
   <string name="select_image_and_crop">Sélectionner et découper une image</string>
   <string name="this_account_is_disabled">Vous avez désactivé ce compte</string>
   <string name="security_error_invalid_file_access">Erreur de sécurité : accès fichier non-valide</string>
@@ -571,8 +585,12 @@
   <string name="show_password">Afficher le mot de passe</string>
   <string name="registration_please_wait">L\'enregistrement a échoué : Réessayer plus tard</string>
   <string name="registration_password_too_weak">Échec de l\'enregistrement : le mot de passe n\'est pas assez fort</string>
+  <string name="create_conference">Créer un groupe de discussion</string>
+  <string name="dialog_title_create_conference">Créer un groupe de discussion</string>
+  <string name="join_or_create_conference">Joindre ou créer un groupe de discussion</string>
   <string name="conference_subject">Objet</string>
   <string name="choose_participants">Choisir les participants</string>
+  <string name="creating_conference">Création d\'un groupe de discussion</string>
   <string name="invite_again">Inviter à nouveau</string>
   <string name="gp_short">Courte</string>
   <string name="gp_medium">Moyenne</string>
@@ -604,6 +622,8 @@
   <string name="missing_presence_subscription_with_x">La notification de présence pour %s est manquante.</string>
   <string name="missing_keys_from_x">La clef OMEMO de %s est manquante.</string>
   <string name="missing_omemo_keys">Clefs OMEMO manquantes</string>
+  <string name="wrong_conference_configuration">Ce n\'est pas un groupe de discussion privée et non anonyme.</string>
+  <string name="this_conference_has_no_members">Il n\'y a pas de membres dans ce groupe de discussion</string>
   <string name="report_jid_as_spammer">Signaler ce JID comme envoyant des messages non sollicités.</string>
   <string name="pref_delete_omemo_identities">Effacer les identités OMEMO</string>
   <string name="pref_delete_omemo_identities_summary">Régénérer vos clefs OMEMO. Tous vos contacts devront vous vérifier à nouveau. À n\'utiliser qu\'en dernier recours.</string>
@@ -674,4 +694,7 @@
   <string name="certificate_does_not_contain_jid">Le certificat ne contient pas d\'ID Jabber</string>
   <string name="server_info_partial">partiel</string>
   <string name="attach_record_video">Enregistrer une vidéo</string>
+  <string name="copy_to_clipboard">Copier dans le presse-papier</string>
+  <string name="message_copied_to_clipboard">Message copié dans le presse-papier</string>
+  <string name="message">Message</string>
 </resources>
