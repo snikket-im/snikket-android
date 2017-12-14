@@ -74,7 +74,6 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
 	private static final int REQUEST_DATA_SAVER = 0x37af244;
 	private AutoCompleteTextView mAccountJid;
 	private EditText mPassword;
-	private EditText mPasswordConfirm;
 	private CheckBox mRegisterNew;
 	private Button mCancelButton;
 	private Button mSaveButton;
@@ -130,7 +129,6 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
 		@Override
 		public void onClick(final View v) {
 			final String password = mPassword.getText().toString();
-			final String passwordConfirm = mPasswordConfirm.getText().toString();
 			final boolean wasDisabled = mAccount != null && mAccount.getStatus() == Account.State.DISABLED;
 
 			if (!mInitMode && passwordChangedInMagicCreateMode()) {
@@ -219,13 +217,6 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
 				mAccountJid.requestFocus();
 				return;
 			}
-			if (registerNewAccount) {
-				if (!password.equals(passwordConfirm)) {
-					mPasswordConfirm.setError(getString(R.string.passwords_do_not_match));
-					mPasswordConfirm.requestFocus();
-					return;
-				}
-			}
 			if (mAccount != null) {
 				if (mInitMode && mAccount.isOptionSet(Account.OPTION_MAGIC_CREATE)) {
 					mAccount.setOption(Account.OPTION_MAGIC_CREATE, mAccount.getPassword().contains(password));
@@ -234,7 +225,6 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
 				mAccount.setPort(numericPort);
 				mAccount.setHostname(hostname);
 				mAccountJid.setError(null);
-				mPasswordConfirm.setError(null);
 				mAccount.setPassword(password);
 				mAccount.setOption(Account.OPTION_REGISTER, registerNewAccount);
 				if (!xmppConnectionService.updateAccount(mAccount)) {
@@ -523,7 +513,6 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
 		this.mAccountJidLabel = (TextView) findViewById(R.id.account_jid_label);
 		this.mPassword = (EditText) findViewById(R.id.account_password);
 		this.mPassword.addTextChangedListener(this.mTextWatcher);
-		this.mPasswordConfirm = (EditText) findViewById(R.id.account_password_confirm);
 		this.mAvatar = (ImageView) findViewById(R.id.avater);
 		this.mAvatar.setOnClickListener(this.mAvatarClickListener);
 		this.mRegisterNew = (CheckBox) findViewById(R.id.account_register_new);
@@ -580,13 +569,7 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
 		}
 		final OnCheckedChangeListener OnCheckedShowConfirmPassword = new OnCheckedChangeListener() {
 			@Override
-			public void onCheckedChanged(final CompoundButton buttonView,
-										 final boolean isChecked) {
-				if (isChecked) {
-					mPasswordConfirm.setVisibility(View.VISIBLE);
-				} else {
-					mPasswordConfirm.setVisibility(View.GONE);
-				}
+			public void onCheckedChanged(final CompoundButton buttonView, final boolean isChecked) {
 				updateSaveButton();
 			}
 		};
@@ -603,7 +586,6 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
 		final MenuItem showBlocklist = menu.findItem(R.id.action_show_block_list);
 		final MenuItem showMoreInfo = menu.findItem(R.id.action_server_info_show_more);
 		final MenuItem changePassword = menu.findItem(R.id.action_change_password_on_server);
-		final MenuItem showPassword = menu.findItem(R.id.action_show_password);
 		final MenuItem renewCertificate = menu.findItem(R.id.action_renew_certificate);
 		final MenuItem mamPrefs = menu.findItem(R.id.action_mam_prefs);
 		final MenuItem changePresence = menu.findItem(R.id.action_change_presence);
@@ -628,13 +610,6 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
 			changePassword.setVisible(false);
 			mamPrefs.setVisible(false);
 			changePresence.setVisible(false);
-		}
-
-		if (mAccount != null) {
-			showPassword.setVisible(mAccount.isOptionSet(Account.OPTION_MAGIC_CREATE)
-					&& !mAccount.isOptionSet(Account.OPTION_REGISTER));
-		} else {
-			showPassword.setVisible(false);
 		}
 		return super.onCreateOptionsMenu(menu);
 	}
@@ -786,9 +761,6 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
 			case R.id.action_change_presence:
 				changePresence();
 				break;
-			case R.id.action_show_password:
-				showPassword();
-				break;
 		}
 		return super.onOptionsItemSelected(item);
 	}
@@ -863,7 +835,6 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
 		if (this.mAccount.isOptionSet(Account.OPTION_REGISTER)) {
 			this.mRegisterNew.setVisibility(View.VISIBLE);
 			this.mRegisterNew.setChecked(true);
-			this.mPasswordConfirm.setText(this.mAccount.getPassword());
 		} else {
 			this.mRegisterNew.setVisibility(View.GONE);
 			this.mRegisterNew.setChecked(false);
@@ -1129,17 +1100,6 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
 		this.mFetchingMamPrefsToast = Toast.makeText(this, R.string.fetching_mam_prefs, Toast.LENGTH_LONG);
 		this.mFetchingMamPrefsToast.show();
 		xmppConnectionService.fetchMamPreferences(mAccount, this);
-	}
-
-	private void showPassword() {
-		AlertDialog.Builder builder = new AlertDialog.Builder(this);
-		View view = getLayoutInflater().inflate(R.layout.dialog_show_password, null);
-		TextView password = (TextView) view.findViewById(R.id.password);
-		password.setText(mAccount.getPassword());
-		builder.setTitle(R.string.password);
-		builder.setView(view);
-		builder.setPositiveButton(R.string.cancel, null);
-		builder.create().show();
 	}
 
 	@Override

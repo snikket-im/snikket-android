@@ -426,8 +426,9 @@ public abstract class XmppActivity extends Activity {
 
 	protected boolean isOptimizingBattery() {
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-			PowerManager pm = (PowerManager) getSystemService(POWER_SERVICE);
-			return !pm.isIgnoringBatteryOptimizations(getPackageName());
+			final PowerManager pm = (PowerManager) getSystemService(POWER_SERVICE);
+			return pm == null
+					&& !pm.isIgnoringBatteryOptimizations(getPackageName());
 		} else {
 			return false;
 		}
@@ -435,8 +436,9 @@ public abstract class XmppActivity extends Activity {
 
 	protected boolean isAffectedByDataSaver() {
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-			ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-			return cm.isActiveNetworkMetered()
+			final ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+			return cm != null
+					&& cm.isActiveNetworkMetered()
 					&& cm.getRestrictBackgroundStatus() == ConnectivityManager.RESTRICT_BACKGROUND_STATUS_ENABLED;
 		} else {
 			return false;

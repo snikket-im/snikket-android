@@ -179,8 +179,6 @@
 	<string name="account_settings_example_jabber_id">username@example.com</string>
 	<string name="account_settings_confirm_password">Confirm password</string>
 	<string name="password">Password</string>
-	<string name="confirm_password">Confirm password</string>
-	<string name="passwords_do_not_match">Passwords do not match</string>
 	<string name="invalid_jid">This is not a valid Jabber ID</string>
 	<string name="error_out_of_memory">Out of memory. Image is too large</string>
 	<string name="add_phone_book_text">Do you want to add %s to your address book?</string>

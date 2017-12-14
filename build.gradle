@@ -17,6 +17,9 @@ repositories {
     maven {
         url 'https://maven.google.com'
     }
+    maven {
+        url "https://jitpack.io"
+    }
 }
 
 configurations {
@@ -37,8 +40,8 @@ dependencies {
     compile "com.android.support:appcompat-v7:$supportLibVersion"
     compile "com.android.support:support-emoji:$supportLibVersion"
     freeCompile "com.android.support:support-emoji-bundled:$supportLibVersion"
-    compile 'org.bouncycastle:bcmail-jdk15on:1.52'
     compile 'org.jitsi:org.otr4j:0.22'
+    compile 'org.bouncycastle:bcmail-jdk15on:1.56'
     compile 'org.gnu.inet:libidn:1.15'
     compile 'com.google.zxing:core:3.2.1'
     compile 'com.google.zxing:android-integration:3.2.1'
@@ -50,6 +53,7 @@ dependencies {
     compile 'com.makeramen:roundedimageview:2.3.0'
     compile "com.wefika:flowlayout:0.4.1"
     compile 'net.ypresto.androidtranscoder:android-transcoder:0.2.0'
+    compile 'com.github.scottyab:showhidepasswordedittext:0.8'
 
 }
 
