@@ -61,7 +61,8 @@ public final class Config {
 	public static final int MINI_GRACE_PERIOD = 750;
 
 	public static final int AVATAR_SIZE = 192;
-	public static final Bitmap.CompressFormat AVATAR_FORMAT = Bitmap.CompressFormat.WEBP;
+	public static final Bitmap.CompressFormat AVATAR_FORMAT = Bitmap.CompressFormat.JPEG;
+	public static final int AVATAR_CHAR_LIMIT = 9400;
 
 	public static final int IMAGE_SIZE = 1920;
 	public static final Bitmap.CompressFormat IMAGE_FORMAT = Bitmap.CompressFormat.JPEG;

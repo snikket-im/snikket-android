@@ -6,10 +6,10 @@ import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.View.OnLongClickListener;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -20,7 +20,6 @@ import com.soundcloud.android.crop.Crop;
 
 import java.io.File;
 
-import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.persistance.FileBackend;
@@ -33,7 +32,6 @@ public class PublishProfilePictureActivity extends XmppActivity {
 	private static final int REQUEST_CHOOSE_FILE_AND_CROP = 0xac23;
 	private static final int REQUEST_CHOOSE_FILE = 0xac24;
 	private ImageView avatar;
-	private TextView accountTextView;
 	private TextView hintOrWarning;
 	private TextView secondaryHint;
 	private Button cancelButton;
@@ -56,35 +54,27 @@ public class PublishProfilePictureActivity extends XmppActivity {
 
 		@Override
 		public void success(Avatar object) {
-			runOnUiThread(new Runnable() {
-
-				@Override
-				public void run() {
-					if (mInitialAccountSetup) {
-						Intent intent = new Intent(getApplicationContext(),
-								StartConversationActivity.class);
-						intent.putExtra("init", true);
-						startActivity(intent);
-					}
-					Toast.makeText(PublishProfilePictureActivity.this,
-							R.string.avatar_has_been_published,
-							Toast.LENGTH_SHORT).show();
-					finish();
+			runOnUiThread(() -> {
+				if (mInitialAccountSetup) {
+					Intent intent = new Intent(getApplicationContext(),
+							StartConversationActivity.class);
+					intent.putExtra("init", true);
+					startActivity(intent);
 				}
+				Toast.makeText(PublishProfilePictureActivity.this,
+						R.string.avatar_has_been_published,
+						Toast.LENGTH_SHORT).show();
+				finish();
 			});
 		}
 
 		@Override
 		public void error(final int errorCode, Avatar object) {
-			runOnUiThread(new Runnable() {
-
-				@Override
-				public void run() {
-					hintOrWarning.setText(errorCode);
-					hintOrWarning.setTextColor(getWarningTextColor());
-					publishButton.setText(R.string.publish);
-					enablePublishButton();
-				}
+			runOnUiThread(() -> {
+				hintOrWarning.setText(errorCode);
+				hintOrWarning.setTextColor(getWarningTextColor());
+				publishButton.setText(R.string.publish);
+				enablePublishButton();
 			});
 
 		}
@@ -98,48 +88,35 @@ public class PublishProfilePictureActivity extends XmppActivity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_publish_profile_picture);
-		this.avatar = (ImageView) findViewById(R.id.account_image);
-		this.cancelButton = (Button) findViewById(R.id.cancel_button);
-		this.publishButton = (Button) findViewById(R.id.publish_button);
-		this.accountTextView = (TextView) findViewById(R.id.account);
-		this.hintOrWarning = (TextView) findViewById(R.id.hint_or_warning);
-		this.secondaryHint = (TextView) findViewById(R.id.secondary_hint);
-		this.publishButton.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-				if (avatarUri != null) {
-					publishButton.setText(R.string.publishing);
-					disablePublishButton();
-					xmppConnectionService.publishAvatar(account, avatarUri,
-							avatarPublication);
-				}
+		this.avatar = findViewById(R.id.account_image);
+		this.cancelButton = findViewById(R.id.cancel_button);
+		this.publishButton = findViewById(R.id.publish_button);
+		this.hintOrWarning = findViewById(R.id.hint_or_warning);
+		this.secondaryHint = findViewById(R.id.secondary_hint);
+		this.publishButton.setOnClickListener(v -> {
+			if (avatarUri != null) {
+				publishButton.setText(R.string.publishing);
+				disablePublishButton();
+				xmppConnectionService.publishAvatar(account, avatarUri,
+						avatarPublication);
 			}
 		});
-		this.cancelButton.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-				if (mInitialAccountSetup) {
-					Intent intent = new Intent(getApplicationContext(),
-							StartConversationActivity.class);
-					if (xmppConnectionService != null && xmppConnectionService.getAccounts().size() == 1) {
-						intent.putExtra("init", true);
-					}
-					startActivity(intent);
+		this.cancelButton.setOnClickListener(v -> {
+			if (mInitialAccountSetup) {
+				Intent intent = new Intent(getApplicationContext(),
+						StartConversationActivity.class);
+				if (xmppConnectionService != null && xmppConnectionService.getAccounts().size() == 1) {
+					intent.putExtra("init", true);
 				}
-				finish();
+				startActivity(intent);
 			}
+			finish();
 		});
-		this.avatar.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-				if (hasStoragePermission(REQUEST_CHOOSE_FILE)) {
-					chooseAvatar(false);
-				}
-
+		this.avatar.setOnClickListener(v -> {
+			if (hasStoragePermission(REQUEST_CHOOSE_FILE)) {
+				chooseAvatar(false);
 			}
+
 		});
 		this.defaultUri = PhoneHelper.getProfilePictureUri(getApplicationContext());
 	}
@@ -153,7 +130,7 @@ public class PublishProfilePictureActivity extends XmppActivity {
 	}
 
 	@Override
-	public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
+	public void onRequestPermissionsResult(int requestCode, @NonNull String permissions[], @NonNull int[] grantResults) {
 		if (grantResults.length > 0)
 			if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
 				if (requestCode == REQUEST_CHOOSE_FILE_AND_CROP) {
@@ -248,8 +225,7 @@ public class PublishProfilePictureActivity extends XmppActivity {
 						this.secondaryHint.setVisibility(View.INVISIBLE);
 					}
 					if (!support) {
-						this.hintOrWarning
-								.setTextColor(getWarningTextColor());
+						this.hintOrWarning.setTextColor(getWarningTextColor());
 						if (account.getStatus() == Account.State.ONLINE) {
 							this.hintOrWarning.setText(R.string.error_publish_avatar_no_server_support);
 						} else {
@@ -264,13 +240,6 @@ public class PublishProfilePictureActivity extends XmppActivity {
 			} else {
 				loadImageIntoPreview(avatarUri);
 			}
-			String account;
-			if (Config.DOMAIN_LOCK != null) {
-				account = this.account.getJid().getLocalpart();
-			} else {
-				account = this.account.getJid().toBareJid().toString();
-			}
-			this.accountTextView.setText(account);
 		}
 	}
 
@@ -296,8 +265,7 @@ public class PublishProfilePictureActivity extends XmppActivity {
 		if (bm == null) {
 			disablePublishButton();
 			this.hintOrWarning.setTextColor(getWarningTextColor());
-			this.hintOrWarning
-					.setText(R.string.error_publish_avatar_converting);
+			this.hintOrWarning.setText(R.string.error_publish_avatar_converting);
 			return;
 		}
 		this.avatar.setImageBitmap(bm);

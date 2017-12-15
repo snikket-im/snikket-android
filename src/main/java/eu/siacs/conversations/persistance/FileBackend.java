@@ -535,29 +535,36 @@ public class FileBackend {
 	}
 
 	public Avatar getPepAvatar(Uri image, int size, Bitmap.CompressFormat format) {
+		Bitmap bm = cropCenterSquare(image, size);
+		if (bm == null) {
+			return null;
+		}
+		return getPepAvatar(bm,format,100);
+	}
+
+	private Avatar getPepAvatar(Bitmap bitmap, Bitmap.CompressFormat format, int quality) {
 		try {
-			Avatar avatar = new Avatar();
-			Bitmap bm = cropCenterSquare(image, size);
-			if (bm == null) {
-				return null;
-			}
 			ByteArrayOutputStream mByteArrayOutputStream = new ByteArrayOutputStream();
-			Base64OutputStream mBase64OutputStream = new Base64OutputStream(
-					mByteArrayOutputStream, Base64.DEFAULT);
+			Base64OutputStream mBase64OutputStream = new Base64OutputStream(mByteArrayOutputStream, Base64.DEFAULT);
 			MessageDigest digest = MessageDigest.getInstance("SHA-1");
-			DigestOutputStream mDigestOutputStream = new DigestOutputStream(
-					mBase64OutputStream, digest);
-			if (!bm.compress(format, 75, mDigestOutputStream)) {
+			DigestOutputStream mDigestOutputStream = new DigestOutputStream(mBase64OutputStream, digest);
+			if (!bitmap.compress(format, quality, mDigestOutputStream)) {
 				return null;
 			}
 			mDigestOutputStream.flush();
 			mDigestOutputStream.close();
+			long chars = mByteArrayOutputStream.size();
+			if (quality >= 50 && chars >= Config.AVATAR_CHAR_LIMIT) {
+				int q = quality - 2;
+				Log.d(Config.LOGTAG,"avatar char length was "+chars+" reducing quality to "+q);
+				return getPepAvatar(bitmap,format,q);
+			}
+			Log.d(Config.LOGTAG,"settled on char length "+chars+" with quality="+quality);
+			final Avatar avatar = new Avatar();
 			avatar.sha1sum = CryptoHelper.bytesToHex(digest.digest());
 			avatar.image = new String(mByteArrayOutputStream.toByteArray());
 			return avatar;
-		} catch (NoSuchAlgorithmException e) {
-			return null;
-		} catch (IOException e) {
+		} catch (Exception e) {
 			return null;
 		}
 	}
@@ -709,7 +716,11 @@ public class FileBackend {
 			RectF targetRect = new RectF(left, top, left + scaledWidth, top + scaledHeight);
 			Bitmap dest = Bitmap.createBitmap(newWidth, newHeight, Bitmap.Config.ARGB_8888);
 			Canvas canvas = new Canvas(dest);
-			canvas.drawBitmap(source, null, targetRect, null);
+			Paint p = new Paint();
+			p.setAntiAlias(true);
+			p.setFilterBitmap(true);
+			p.setDither(true);
+			canvas.drawBitmap(source, null, targetRect, p);
 			if (source.isRecycled()) {
 				source.recycle();
 			}
