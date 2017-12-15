@@ -29,10 +29,18 @@ import eu.siacs.conversations.utils.UIHelper;
 public class AccountAdapter extends ArrayAdapter<Account> {
 
 	private XmppActivity activity;
+	private boolean showStateButton;
+
+	public AccountAdapter(XmppActivity activity, List<Account> objects, boolean showStateButton) {
+		super(activity, 0, objects);
+		this.activity = activity;
+		this.showStateButton = showStateButton;
+	}
 
 	public AccountAdapter(XmppActivity activity, List<Account> objects) {
 		super(activity, 0, objects);
 		this.activity = activity;
+		this.showStateButton = true;
 	}
 
 	@Override
@@ -68,6 +76,11 @@ public class AccountAdapter extends ArrayAdapter<Account> {
 		final Switch tglAccountState = (Switch) view.findViewById(R.id.tgl_account_status);
 		final boolean isDisabled = (account.getStatus() == Account.State.DISABLED);
 		tglAccountState.setChecked(!isDisabled,false);
+		if (this.showStateButton) {
+			tglAccountState.setVisibility(View.VISIBLE);
+		} else {
+			tglAccountState.setVisibility(View.GONE);
+		}
 		tglAccountState.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
 			@Override
 			public void onCheckedChanged(CompoundButton compoundButton, boolean b) {

@@ -57,29 +57,14 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ui.StartConversationActivity"
+            android:name=".ui.UriHandlerActivity"
             android:label="@string/title_activity_start_conversation"
             android:launchMode="singleTop">
-            <intent-filter>
-                <action android:name="android.intent.action.SENDTO" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-
-                <data android:scheme="imto" />
-                <data android:host="jabber" />
-            </intent-filter>
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
 
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
-
-                <data android:scheme="xmpp" />
-            </intent-filter>
-            <intent-filter>
-                <action android:name="android.nfc.action.NDEF_DISCOVERED" />
-
-                <category android:name="android.intent.category.DEFAULT" />
 
                 <data android:scheme="xmpp" />
             </intent-filter>
@@ -94,7 +79,20 @@
                 <data android:pathPrefix="/i/" />
                 <data android:pathPrefix="/j/" />
             </intent-filter>
+            <intent-filter>
+                <action android:name="android.nfc.action.NDEF_DISCOVERED" />
+                <action android:name="android.intent.action.SENDTO" />
 
+                <category android:name="android.intent.category.DEFAULT" />
+
+                <data android:scheme="imto" />
+                <data android:host="jabber" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".ui.StartConversationActivity"
+            android:label="@string/title_activity_start_conversation"
+            android:launchMode="singleTop">
         </activity>
         <activity
             android:name=".ui.WelcomeActivity"
@@ -126,6 +124,10 @@
             android:name=".ui.ManageAccountActivity"
             android:label="@string/title_activity_manage_accounts"
             android:launchMode="singleTask" />
+        <activity
+            android:name=".ui.ShareViaAccountActivity"
+            android:label="@string/title_activity_share_via_account"
+            android:launchMode="singleTop" />
         <activity
             android:name=".ui.EditAccountActivity"
             android:launchMode="singleTop"

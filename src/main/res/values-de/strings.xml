@@ -20,6 +20,7 @@
   <string name="title_activity_sharewith">Mit Unterhaltung teilen</string>
   <string name="title_activity_start_conversation">Unterhaltung beginnen</string>
   <string name="title_activity_choose_contact">Kontakt auswählen</string>
+  <string name="title_activity_share_via_account">Über Account teilen</string>
   <string name="title_activity_block_list">Sperrliste</string>
   <string name="just_now">gerade</string>
   <string name="minute_ago">vor einer Minute</string>
