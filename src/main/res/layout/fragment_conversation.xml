@@ -41,6 +41,7 @@
             android:inputType="textShortMessage|textMultiLine|textCapSentences"
             android:minHeight="48dp"
             android:minLines="1"
+            android:maxLines="6"
             android:paddingBottom="12dp"
             android:paddingLeft="8dp"
             android:paddingRight="8dp"
