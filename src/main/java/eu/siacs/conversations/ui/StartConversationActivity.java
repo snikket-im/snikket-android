@@ -100,15 +100,10 @@ public class StartConversationActivity extends XmppActivity implements OnRosterU
 
         @Override
         public boolean onMenuItemActionExpand(MenuItem item) {
-            mSearchEditText.post(new Runnable() {
-
-                @Override
-                public void run() {
-                    mSearchEditText.requestFocus();
-                    InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-                    imm.showSoftInput(mSearchEditText,
-                            InputMethodManager.SHOW_IMPLICIT);
-                }
+            mSearchEditText.post(() -> {
+                mSearchEditText.requestFocus();
+                InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.showSoftInput(mSearchEditText, InputMethodManager.SHOW_IMPLICIT);
             });
 
             return true;
@@ -204,23 +199,15 @@ public class StartConversationActivity extends XmppActivity implements OnRosterU
     private UiCallback<Conversation> mAdhocConferenceCallback = new UiCallback<Conversation>() {
         @Override
         public void success(final Conversation conversation) {
-            runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    hideToast();
-                    switchToConversation(conversation);
-                }
+            runOnUiThread(() -> {
+                hideToast();
+                switchToConversation(conversation);
             });
         }
 
         @Override
         public void error(final int errorCode, Conversation object) {
-            runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    replaceToast(getString(errorCode));
-                }
-            });
+            runOnUiThread(() -> replaceToast(getString(errorCode)));
         }
 
         @Override
@@ -422,29 +409,26 @@ public class StartConversationActivity extends XmppActivity implements OnRosterU
                 prefilledJid, null, invite == null || !invite.hasFingerprints()
         );
 
-        dialog.setOnEnterJidDialogPositiveListener(new EnterJidDialog.OnEnterJidDialogPositiveListener() {
-            @Override
-            public boolean onEnterJidDialogPositive(Jid accountJid, Jid contactJid) throws EnterJidDialog.JidError {
-                if (!xmppConnectionServiceBound) {
-                    return false;
-                }
+        dialog.setOnEnterJidDialogPositiveListener((accountJid, contactJid) -> {
+            if (!xmppConnectionServiceBound) {
+                return false;
+            }
 
-                final Account account = xmppConnectionService.findAccountByJid(accountJid);
-                if (account == null) {
-                    return true;
-                }
+            final Account account = xmppConnectionService.findAccountByJid(accountJid);
+            if (account == null) {
+                return true;
+            }
 
-                final Contact contact = account.getRoster().getContact(contactJid);
-                if (contact.showInRoster()) {
-                    throw new EnterJidDialog.JidError(getString(R.string.contact_already_exists));
-                } else {
-                    xmppConnectionService.createContact(contact);
-                    if (invite != null && invite.hasFingerprints()) {
-                        xmppConnectionService.verifyFingerprints(contact,invite.getFingerprints());
-                    }
-                    switchToConversation(contact, invite == null ? null : invite.getBody());
-                    return true;
+            final Contact contact = account.getRoster().getContact(contactJid);
+            if (contact.showInRoster()) {
+                throw new EnterJidDialog.JidError(getString(R.string.contact_already_exists));
+            } else {
+                xmppConnectionService.createContact(contact);
+                if (invite != null && invite.hasFingerprints()) {
+                    xmppConnectionService.verifyFingerprints(contact,invite.getFingerprints());
                 }
+                switchToConversation(contact, invite == null ? null : invite.getBody());
+                return true;
             }
         });
 
@@ -589,7 +573,7 @@ public class StartConversationActivity extends XmppActivity implements OnRosterU
         } else {
             ArrayAdapter<String> adapter = new ArrayAdapter<>(context,
                     R.layout.simple_list_item,
-                    Arrays.asList(new String[]{context.getString(R.string.no_accounts)}));
+                    Arrays.asList(context.getString(R.string.no_accounts)));
             adapter.setDropDownViewResource(R.layout.simple_list_item);
             spinner.setAdapter(adapter);
             spinner.setEnabled(false);
@@ -877,29 +861,16 @@ public class StartConversationActivity extends XmppActivity implements OnRosterU
         }
         warning.setText(spannable);
         builder.setView(view);
-        builder.setPositiveButton(R.string.confirm, new OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                if (isTrustedSource.isChecked() && invite.hasFingerprints()) {
-                    xmppConnectionService.verifyFingerprints(contact, invite.getFingerprints());
-                }
-                switchToConversation(contact, invite.getBody());
+        builder.setPositiveButton(R.string.confirm, (dialog, which) -> {
+            if (isTrustedSource.isChecked() && invite.hasFingerprints()) {
+                xmppConnectionService.verifyFingerprints(contact, invite.getFingerprints());
             }
+            switchToConversation(contact, invite.getBody());
         });
-        builder.setNegativeButton(R.string.cancel, new OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                StartConversationActivity.this.finish();
-            }
-        });
+        builder.setNegativeButton(R.string.cancel, (dialog, which) -> StartConversationActivity.this.finish());
         AlertDialog dialog = builder.create();
         dialog.setCanceledOnTouchOutside(false);
-        dialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
-            @Override
-            public void onCancel(DialogInterface dialog) {
-                StartConversationActivity.this.finish();
-            }
-        });
+        dialog.setOnCancelListener(dialog1 -> StartConversationActivity.this.finish());
         dialog.show();
     }
 
