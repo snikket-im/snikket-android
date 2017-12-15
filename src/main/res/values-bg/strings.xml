@@ -29,6 +29,7 @@
   <string name="message_decrypting">Дешифроване на съобщението. Моля, изчакайте…</string>
   <string name="pgp_message">Съобщение, шифр. чрез OpenPGP</string>
   <string name="nick_in_use">Псевдонимът вече се използва</string>
+  <string name="invalid_muc_nick">Неправилен псевдоним</string>
   <string name="admin">Администратор</string>
   <string name="owner">Собственик</string>
   <string name="moderator">Модератор</string>
@@ -248,7 +249,6 @@
   <string name="contacts_and_n_more_have_read_up_to_this_point">%1$s и още %2$d човека са прочели до тук</string>
   <string name="publish">Публикуване</string>
   <string name="touch_to_choose_picture">Докоснете аватара, за да изберете изображение от галерията</string>
-  <string name="publish_avatar_explanation">Забележка: Всеки, абониран за актуализации на присъствието Ви, ще може да вижда тази снимка.</string>
   <string name="publishing">Публикуване…</string>
   <string name="error_publish_avatar_server_reject">Сървърът отказа Вашето публикуване</string>
   <string name="error_publish_avatar_converting">Нещо се обърка при преобразуването на снимката Ви</string>

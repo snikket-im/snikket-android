@@ -232,7 +232,6 @@
   <string name="contact_has_read_up_to_this_point">%s 已读此句</string>
   <string name="publish">发布</string>
   <string name="touch_to_choose_picture">点击头像可从相册中选择头像 </string>
-  <string name="publish_avatar_explanation">请注意: 所有关注您最新动态的人将看到该图像。</string>
   <string name="publishing">正在发布…</string>
   <string name="error_publish_avatar_server_reject">服务器拒绝了您的发布请求</string>
   <string name="error_publish_avatar_converting">转换头像图片出错</string>

@@ -233,7 +233,6 @@
   <string name="add_back">أضف من جهتك أيضا</string>
   <string name="publish">أنشر</string>
   <string name="touch_to_choose_picture">إضغط على الصورة الرمزية لانتقاء صورة من الأستوديو</string>
-  <string name="publish_avatar_explanation">ملاحظة : سيتم السماح لجميع من شارك في تحديثات حضورك رؤية هذه الصورة.</string>
   <string name="publishing">نشر ...</string>
   <string name="error_publish_avatar_server_reject">لقد رفض السيرفر منشورك</string>
   <string name="error_publish_avatar_converting">لقد حدث خلل أثناء تحويل الصورة</string>

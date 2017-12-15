@@ -191,7 +191,6 @@
   <string name="contact_has_read_up_to_this_point">%s קרא עד לנקודה זו</string>
   <string name="publish">פרסם</string>
   <string name="touch_to_choose_picture">לחץ על תמות הפרופיל כדי לבחור תמונה מתוך הגלריה</string>
-  <string name="publish_avatar_explanation">לתשומת לבך: כל מי שרשום לעדכוני נוכחות שלך יורשה לראות את תמונה זו.</string>
   <string name="publishing">מעלה…</string>
   <string name="error_publish_avatar_server_reject">השרת דחה את ההעלאה</string>
   <string name="error_publish_avatar_converting">משהו השתבש במהלך המרת התמונה</string>

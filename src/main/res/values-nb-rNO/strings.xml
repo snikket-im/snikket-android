@@ -232,7 +232,6 @@
   <string name="contact_has_read_up_to_this_point">%s har lest hit</string>
   <string name="publish">Publiser</string>
   <string name="touch_to_choose_picture">Trykk på avataren for å velge blide fra galleriet</string>
-  <string name="publish_avatar_explanation">Merk, alle som kan se dine tilstedeværelsesoppdateringer vil kunne se dette bildet.</string>
   <string name="publishing">Publiserer…</string>
   <string name="error_publish_avatar_server_reject">Tjeneren avslo din publisering</string>
   <string name="error_publish_avatar_converting">Noe gikk galt under konvertering av bildet ditt</string>

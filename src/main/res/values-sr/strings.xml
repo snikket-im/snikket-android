@@ -231,7 +231,6 @@
   <string name="contact_has_read_up_to_this_point">%s је прочитао довде</string>
   <string name="publish">Објави</string>
   <string name="touch_to_choose_picture">Тапните аватар да изаберете слику из галерије</string>
-  <string name="publish_avatar_explanation">Имајте на уму: Свима који су претплаћени на ваше ажурирање присутности биће дозвољено да виде ову слику.</string>
   <string name="publishing">Објављујем…</string>
   <string name="error_publish_avatar_server_reject">Сервер је одбио вашу објаву</string>
   <string name="error_publish_avatar_converting">Дошло је до грешке при прекодирању слике</string>

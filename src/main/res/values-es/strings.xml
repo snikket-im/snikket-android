@@ -29,6 +29,7 @@
   <string name="message_decrypting">Descifrando mensaje. Por favor, espera...</string>
   <string name="pgp_message">Mensaje cifrado con OpenPGP</string>
   <string name="nick_in_use">El apodo ya está en uso</string>
+  <string name="invalid_muc_nick">Apodo inválido</string>
   <string name="admin">Administrador</string>
   <string name="owner">Propietario</string>
   <string name="moderator">Moderador</string>
@@ -248,7 +249,6 @@
   <string name="contacts_and_n_more_have_read_up_to_this_point">%1$s +%2$dhan leído hasta aquí</string>
   <string name="publish">Publicar</string>
   <string name="touch_to_choose_picture">Pulsa para seleccionar una imagen de la galería</string>
-  <string name="publish_avatar_explanation">Nota: Todos tus contactos podrán ver esta imagen.</string>
   <string name="publishing">Publicando…</string>
   <string name="error_publish_avatar_server_reject">El servidor rechazó la publicación</string>
   <string name="error_publish_avatar_converting">Se ha producido un error mientras se convertía la imagen</string>

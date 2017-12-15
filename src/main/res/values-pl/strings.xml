@@ -234,7 +234,6 @@
   <string name="contact_has_read_up_to_this_point">%s przeczytał do tego miejsca</string>
   <string name="publish">Publikuj</string>
   <string name="touch_to_choose_picture">Naciśnij awatar, żeby wybrać obraz z galerii</string>
-  <string name="publish_avatar_explanation">Uwaga: Obraz będzie widoczny dla wszystkich kontaktów, którym udostępniasz powiadomienia o obecności.</string>
   <string name="publishing">Publikowanie...</string>
   <string name="error_publish_avatar_server_reject">Serwer odrzucił żądanie publikacji</string>
   <string name="error_publish_avatar_converting">Wystąpił błąd podczas konwersji obrazu</string>

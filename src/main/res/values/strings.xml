@@ -251,7 +251,6 @@
 	<string name="contacts_and_n_more_have_read_up_to_this_point">%1$s +%2$d more have read up to this point</string>
 	<string name="publish">Publish</string>
 	<string name="touch_to_choose_picture">Touch avatar to select picture from gallery</string>
-	<string name="publish_avatar_explanation">Please note: Everyone subscribed to your presence updates will be allowed to see this picture.</string>
 	<string name="publishing">Publishing…</string>
 	<string name="error_publish_avatar_server_reject">The server rejected your publication</string>
 	<string name="error_publish_avatar_converting">Something went wrong while converting your picture</string>

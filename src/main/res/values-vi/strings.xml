@@ -226,7 +226,6 @@
   <string name="contact_has_read_up_to_this_point">%s đã đọc đến điểm này</string>
   <string name="publish">Đăng</string>
   <string name="touch_to_choose_picture">Chạm ảnh đại diện để chọn hình từ bộ sưu tập</string>
-  <string name="publish_avatar_explanation">Xin chú ý: Ai đã đăng ký nhận cập nhật hiện diện của bạn sẽ có quyền xem hình này.</string>
   <string name="publishing">Đang đăng...</string>
   <string name="error_publish_avatar_server_reject">Máy chủ đã từ chối đăng tải của bạn</string>
   <string name="error_publish_avatar_converting">Đã xảy ra lỗi khi chuyển đổi hình của bạn</string>

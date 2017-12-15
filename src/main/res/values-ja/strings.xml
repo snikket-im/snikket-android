@@ -232,7 +232,6 @@
   <string name="contact_has_read_up_to_this_point">%s はここまで読みました</string>
   <string name="publish">公開</string>
   <string name="touch_to_choose_picture">アバターをタッチしてギャラリーから画像を選択します</string>
-  <string name="publish_avatar_explanation">ご注意ください: あなたの参加アップデートを登録している人は、誰でもこの絵を見ることができます。</string>
   <string name="publishing">公開中…</string>
   <string name="error_publish_avatar_server_reject">サーバーがあなたの公開を拒否しました</string>
   <string name="error_publish_avatar_converting">写真の変換中に、何か問題が発生しました</string>

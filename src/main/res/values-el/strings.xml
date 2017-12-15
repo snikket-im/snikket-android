@@ -176,7 +176,6 @@
   <string name="contact_has_read_up_to_this_point">Η επαφή %s έχει διαβάσει μέχρι αυτό το σημείο</string>
   <string name="publish">Δημοσίευση</string>
   <string name="touch_to_choose_picture">Επιλέξτε την εικόνα προφίλ για να διαλέξετε εικόνα από την έκθεση</string>
-  <string name="publish_avatar_explanation">Παρακαλώ σημειώστε: Όλοι όσοι είναι συνδρομητές στις ενημερώσεις παρουσίας σας θα έχουν την δυνατότητα να δουν αυτή την εικόνα.</string>
   <string name="publishing">Δημοσίευση...</string>
   <string name="error_publish_avatar_server_reject">Ο διακομιστής απέρριψε την δημοσίευσή σας</string>
   <string name="error_publish_avatar_converting">Κάτι πήγε στραβά κατά τη μετατροπή της εικόνας σας</string>

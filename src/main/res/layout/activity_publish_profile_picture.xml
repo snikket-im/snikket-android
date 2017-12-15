@@ -90,7 +90,6 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:minLines="3"
-            android:text="@string/publish_avatar_explanation"
             android:textColor="?attr/color_text_primary"
             android:textSize="?attr/TextSizeBody" />
     </LinearLayout>

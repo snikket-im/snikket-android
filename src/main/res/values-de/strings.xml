@@ -20,7 +20,6 @@
   <string name="title_activity_sharewith">Mit Unterhaltung teilen</string>
   <string name="title_activity_start_conversation">Unterhaltung beginnen</string>
   <string name="title_activity_choose_contact">Kontakt auswählen</string>
-  <string name="title_activity_share_via_account">Über Account teilen</string>
   <string name="title_activity_block_list">Sperrliste</string>
   <string name="just_now">gerade</string>
   <string name="minute_ago">vor einer Minute</string>
@@ -30,6 +29,7 @@
   <string name="message_decrypting">Nachricht wird entschlüsselt. Bitte warten …</string>
   <string name="pgp_message">OpenPGP-verschlüsselte Nachricht</string>
   <string name="nick_in_use">Nickname wird bereits verwendet</string>
+  <string name="invalid_muc_nick">Ungültiger Nickname</string>
   <string name="admin">Administrator</string>
   <string name="owner">Eigentümer</string>
   <string name="moderator">Moderator</string>
@@ -249,7 +249,6 @@
   <string name="contacts_and_n_more_have_read_up_to_this_point">%1$s +%2$d weitere haben bis zu diesem Punkt gelesen </string>
   <string name="publish">Veröffentlichen</string>
   <string name="touch_to_choose_picture">Avatar antippen, um Bild aus Galerie auszuwählen</string>
-  <string name="publish_avatar_explanation">Achtung: Jeder, der deinen Status sehen darf, sieht auch deinen Avatar.</string>
   <string name="publishing">Veröffentliche…</string>
   <string name="error_publish_avatar_server_reject">Der Server hat die Veröffentlichung des Avatars abgelehnt.</string>
   <string name="error_publish_avatar_converting">Bei der Konvertierung des Avatars lief etwas schief.</string>

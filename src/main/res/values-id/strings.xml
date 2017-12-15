@@ -199,7 +199,6 @@
   <string name="contact_has_read_up_to_this_point">%s telah membaca hingga disini</string>
   <string name="publish">Publikasi</string>
   <string name="touch_to_choose_picture">Sentuh Avatar untuk memilih gambar dari gallery</string>
-  <string name="publish_avatar_explanation">Harap dicatat: Setiap orang yang berlangganan update kehadiran Anda akan diizinkan untuk melihat gambar ini.</string>
   <string name="publishing">Mempublikasi...</string>
   <string name="error_publish_avatar_server_reject">Server tidak mengijinkan publikasi Anda</string>
   <string name="error_publish_avatar_converting">Sesuatu yang salah terjadi ketika mengkonversi gambar anda</string>

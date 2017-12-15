@@ -29,6 +29,7 @@
   <string name="message_decrypting">Decriptez mesaj. Te rog așteaptă...</string>
   <string name="pgp_message">Mesaj criptat cu OpenPGP</string>
   <string name="nick_in_use">Numele de utilizator este deja alocat</string>
+  <string name="invalid_muc_nick">Nume invalid</string>
   <string name="admin">Administrator</string>
   <string name="owner">Proprietar</string>
   <string name="moderator">Moderator</string>
@@ -248,7 +249,6 @@
   <string name="contacts_and_n_more_have_read_up_to_this_point">%1$s și încă %2$d au citit până aici</string>
   <string name="publish">Publică</string>
   <string name="touch_to_choose_picture">Atingeți avatarul pentru a selecta o poză din galerie</string>
-  <string name="publish_avatar_explanation">Țineți minte: Toți cei abonați la actualizările dumneavoastră de prezență vor putea să vadă această poză</string>
   <string name="publishing">Se publică...</string>
   <string name="error_publish_avatar_server_reject">Acest server v-a refuzat publicarea</string>
   <string name="error_publish_avatar_converting">Ceva nu a mers bine în timpul conversiei imaginii</string>

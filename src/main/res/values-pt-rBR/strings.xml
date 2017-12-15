@@ -29,6 +29,7 @@
   <string name="message_decrypting">Descriptografando a mensagem. Por favor, aguarde...</string>
   <string name="pgp_message">Mensagem criptografada via OpenPGP</string>
   <string name="nick_in_use">Este apelido já está em uso</string>
+  <string name="invalid_muc_nick">Apelido inválido</string>
   <string name="admin">Administrador</string>
   <string name="owner">Dono</string>
   <string name="moderator">Moderador</string>
@@ -244,9 +245,10 @@
   <string name="contact_added_you">O contato foi adicionado à sua lista de contatos</string>
   <string name="add_back">Adicionar novamente</string>
   <string name="contact_has_read_up_to_this_point">%s leu até esse ponto</string>
+  <string name="contacts_have_read_up_to_this_point">%s leu até esse ponto</string>
+  <string name="contacts_and_n_more_have_read_up_to_this_point">%1$s +%2$d outras pessoas leram até esse ponto</string>
   <string name="publish">Publicar</string>
   <string name="touch_to_choose_picture">Toque o avatar para selecionar uma imagem da galeria</string>
-  <string name="publish_avatar_explanation">Por favor observe: todos aqueles que acompanham suas atualizações de presença poderão ver essa imagem</string>
   <string name="publishing">Publicando...</string>
   <string name="error_publish_avatar_server_reject">O servidor rejeitou sua publicação</string>
   <string name="error_publish_avatar_converting">Ocorreu um erro durante a conversão da sua imagem</string>
@@ -618,6 +620,7 @@
   <string name="missing_presence_subscription_with_x">Sem requisição de atualizações de presença com %s.</string>
   <string name="missing_keys_from_x">Sem chaves OMEMO para %s.</string>
   <string name="missing_omemo_keys">Chaves OMEMO ausentes</string>
+  <string name="wrong_conference_configuration">Esse é uma conversa em grupo não privada e/ou não anônima.</string>
   <string name="this_conference_has_no_members">Esta conversa em grupo não possui participantes.</string>
   <string name="report_jid_as_spammer">Informe que esse JID está enviando mensagens indesejáveis</string>
   <string name="pref_delete_omemo_identities">Excluir identidades OMEMO</string>

@@ -231,7 +231,6 @@
   <string name="contact_has_read_up_to_this_point">%s har läst hit</string>
   <string name="publish">Publicera</string>
   <string name="touch_to_choose_picture">Tryck på avatarbild för att välja en bild från bildgalleriet</string>
-  <string name="publish_avatar_explanation">Notera: Alla som kan se dina tillgänglighetsuppdateringar kommer se denna bild.</string>
   <string name="publishing">Publicerar…</string>
   <string name="error_publish_avatar_server_reject">Servern kunde inte publicera</string>
   <string name="error_publish_avatar_converting">Något gick fel vid konvertering av din bild</string>

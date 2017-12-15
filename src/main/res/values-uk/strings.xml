@@ -232,7 +232,6 @@
   <string name="contact_has_read_up_to_this_point">%s дочитав до цього місця</string>
   <string name="publish">Опублікувати</string>
   <string name="touch_to_choose_picture">Торкніться аватару, щоб вибрати зображення з галереї</string>
-  <string name="publish_avatar_explanation">Будь ласка, зважте: Кожен, хто підписаний на оновлення Вашої присутності, зможе бачити це зображення.</string>
   <string name="publishing">Публікація…</string>
   <string name="error_publish_avatar_server_reject">Сервер відхилив Вашу публікацію</string>
   <string name="error_publish_avatar_converting">Щось пішло не так під час перетворення Вашого зображення</string>

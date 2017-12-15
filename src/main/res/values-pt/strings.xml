@@ -215,7 +215,6 @@
   <string name="contact_has_read_up_to_this_point">%s leu até este ponto</string>
   <string name="publish">Publicar</string>
   <string name="touch_to_choose_picture">Toque no avatar para escolher uma imagem da galeria</string>
-  <string name="publish_avatar_explanation">Por favor note: Todos os subscritos à suas atualizações de presença poderão ver esta imagem.</string>
   <string name="publishing">Publicando...</string>
   <string name="error_publish_avatar_server_reject">O servidor rejeitou a sua publicação</string>
   <string name="error_publish_avatar_converting">Algo deu errado ao converter a sua imagem</string>

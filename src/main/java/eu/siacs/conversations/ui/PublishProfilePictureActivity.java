@@ -73,6 +73,7 @@ public class PublishProfilePictureActivity extends XmppActivity {
 			runOnUiThread(() -> {
 				hintOrWarning.setText(errorCode);
 				hintOrWarning.setTextColor(getWarningTextColor());
+				hintOrWarning.setVisibility(View.VISIBLE);
 				publishButton.setText(R.string.publish);
 				enablePublishButton();
 			});
@@ -215,16 +216,15 @@ public class PublishProfilePictureActivity extends XmppActivity {
 				this.support = this.account.getXmppConnection().getFeatures().pep();
 			}
 			if (this.avatarUri == null) {
-				if (this.account.getAvatar() != null
-						|| this.defaultUri == null) {
+				if (this.account.getAvatar() != null || this.defaultUri == null) {
 					this.avatar.setImageBitmap(avatarService().get(account, getPixel(192)));
 					if (this.defaultUri != null) {
-						this.avatar
-								.setOnLongClickListener(this.backToDefaultListener);
+						this.avatar.setOnLongClickListener(this.backToDefaultListener);
 					} else {
 						this.secondaryHint.setVisibility(View.INVISIBLE);
 					}
 					if (!support) {
+						this.hintOrWarning.setVisibility(View.VISIBLE);
 						this.hintOrWarning.setTextColor(getWarningTextColor());
 						if (account.getStatus() == Account.State.ONLINE) {
 							this.hintOrWarning.setText(R.string.error_publish_avatar_no_server_support);
@@ -264,6 +264,7 @@ public class PublishProfilePictureActivity extends XmppActivity {
 
 		if (bm == null) {
 			disablePublishButton();
+			this.hintOrWarning.setVisibility(View.VISIBLE);
 			this.hintOrWarning.setTextColor(getWarningTextColor());
 			this.hintOrWarning.setText(R.string.error_publish_avatar_converting);
 			return;
@@ -272,10 +273,10 @@ public class PublishProfilePictureActivity extends XmppActivity {
 		if (support) {
 			enablePublishButton();
 			this.publishButton.setText(R.string.publish);
-			this.hintOrWarning.setText(R.string.publish_avatar_explanation);
-			this.hintOrWarning.setTextColor(getPrimaryTextColor());
+			this.hintOrWarning.setVisibility(View.INVISIBLE);
 		} else {
 			disablePublishButton();
+			this.hintOrWarning.setVisibility(View.VISIBLE);
 			this.hintOrWarning.setTextColor(getWarningTextColor());
 			if (account.getStatus() == Account.State.ONLINE) {
 				this.hintOrWarning.setText(R.string.error_publish_avatar_no_server_support);

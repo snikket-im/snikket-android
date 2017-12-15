@@ -226,7 +226,6 @@
   <string name="contact_has_read_up_to_this_point">%s 가 여기까지 읽었습니다 </string>
   <string name="publish">공개 </string>
   <string name="touch_to_choose_picture">갤러리에서 사진을 선택하기 위해 아바타를 터치하세요 </string>
-  <string name="publish_avatar_explanation">참고하세요: 당신의 프레즌스 업데이트를 구독한 모든 사람들은 이 사진을 볼 수 있습니다 </string>
   <string name="publishing">공개중... </string>
   <string name="error_publish_avatar_server_reject">서버가 당신의 발표를 거부했습니다 </string>
   <string name="error_publish_avatar_converting">사진을 변환하는 중 오류가 발생했습니다 </string>
