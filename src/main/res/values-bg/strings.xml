@@ -177,8 +177,6 @@
   <string name="account_settings_example_jabber_id">username@example.com</string>
   <string name="account_settings_confirm_password">Потвърдете паролата</string>
   <string name="password">Парола</string>
-  <string name="confirm_password">Потвърдете паролата</string>
-  <string name="passwords_do_not_match">Паролите са различни</string>
   <string name="invalid_jid">Това не е правилен Jabber идентификатор</string>
   <string name="error_out_of_memory">Няма достатъчно памет. Изображението е твърде голямо.</string>
   <string name="add_phone_book_text">Искате ли да добавите %s към адресния си указател?</string>

@@ -172,8 +172,6 @@
   <string name="account_settings_example_jabber_id">korisnickoime@primer.com</string>
   <string name="account_settings_confirm_password">Потврди лозинку</string>
   <string name="password">Лозинка</string>
-  <string name="confirm_password">Потврди лозинку</string>
-  <string name="passwords_do_not_match">Лозинке се не поклапају</string>
   <string name="invalid_jid">Ово није исправан Џабер ИД</string>
   <string name="error_out_of_memory">Нестало меморије. Слика је превелика</string>
   <string name="add_phone_book_text">Желите ли да додате %s у ваш именик?</string>

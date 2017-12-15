@@ -167,8 +167,6 @@
   <string name="account_settings_example_jabber_id">username@example.com</string>
   <string name="account_settings_confirm_password">تأكيد كلمة السر</string>
   <string name="password">كلمة السر</string>
-  <string name="confirm_password">تأكيد كلمة السر</string>
-  <string name="passwords_do_not_match">كلمتي المرور غير متطابقتان</string>
   <string name="invalid_jid">حساب جابر غير صالح</string>
   <string name="error_out_of_memory">خارج الذاكرة. الصورة كبيرة جدا</string>
   <string name="add_phone_book_text">هل تود إضافة %s إلى سجل عناوينك ؟</string>

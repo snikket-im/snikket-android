@@ -167,8 +167,6 @@
   <string name="account_settings_example_jabber_id">username@example.com</string>
   <string name="account_settings_confirm_password">Xác nhận mật khẩu</string>
   <string name="password">Mật khẩu</string>
-  <string name="confirm_password">Xác nhận mật khẩu</string>
-  <string name="passwords_do_not_match">Mật khẩu không trùng khớp</string>
   <string name="invalid_jid">ID Jabber này không hợp lệ</string>
   <string name="error_out_of_memory">Hết bộ nhớ. Ảnh quá lớn</string>
   <string name="add_phone_book_text">Bạn có muốn thêm %s vào danh bạ?</string>

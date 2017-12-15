@@ -173,8 +173,6 @@
   <string name="account_settings_example_jabber_id">username@example.com</string>
   <string name="account_settings_confirm_password">确认密码</string>
   <string name="password">密码</string>
-  <string name="confirm_password">确认密码</string>
-  <string name="passwords_do_not_match">密码不一致</string>
   <string name="invalid_jid">该 Jabber ID 无效</string>
   <string name="error_out_of_memory">空间不足。图片过大</string>
   <string name="add_phone_book_text">是否添加 %s 到地址薄？</string>

@@ -173,8 +173,6 @@
   <string name="account_settings_example_jabber_id">brukernavn@eksempel.no</string>
   <string name="account_settings_confirm_password">Bekreft passord</string>
   <string name="password">Passord</string>
-  <string name="confirm_password">Bekreft passord</string>
-  <string name="passwords_do_not_match">Passordene samsvarer ikke</string>
   <string name="invalid_jid">Dette er ikke en gyldig Jabber-ID</string>
   <string name="error_out_of_memory">Slapp opp for minne, bildet er for stort</string>
   <string name="add_phone_book_text">Ønsker du å legge %s til i din kontaktliste?</string>

@@ -165,8 +165,6 @@
   <string name="account_settings_example_jabber_id">jmeno@server.cz</string>
   <string name="account_settings_confirm_password">Potvrdit heslo</string>
   <string name="password">Heslo</string>
-  <string name="confirm_password">Potvrdit heslo</string>
-  <string name="passwords_do_not_match">Hesla nesouhlasí</string>
   <string name="invalid_jid">Toto není platné Jabber ID</string>
   <string name="error_out_of_memory">Nedostatek paměti. Obrázek je příliš velký</string>
   <string name="add_phone_book_text">Chcete přidat %s do svého adresáře?</string>

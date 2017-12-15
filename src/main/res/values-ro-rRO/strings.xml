@@ -177,8 +177,6 @@
   <string name="account_settings_example_jabber_id">username@example.com</string>
   <string name="account_settings_confirm_password">Confirmă parola</string>
   <string name="password">Parolă</string>
-  <string name="confirm_password">Confirmă parola</string>
-  <string name="passwords_do_not_match">Parolele nu sunt identice</string>
   <string name="invalid_jid">Acesta nu este un ID Jabber valabil</string>
   <string name="error_out_of_memory">Memorie epuizată. Imaginea este prea mare.</string>
   <string name="add_phone_book_text">Vreți să adăugați pe %s în lista de contacte?</string>

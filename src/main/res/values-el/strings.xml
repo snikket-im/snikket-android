@@ -134,8 +134,6 @@
   <string name="account_settings_example_jabber_id">username@example.com</string>
   <string name="account_settings_confirm_password">Επιβεβαίωση συνθηματικού</string>
   <string name="password">Συνθηματικό</string>
-  <string name="confirm_password">Επιβεβαίωση συνθηματικού</string>
-  <string name="passwords_do_not_match">Τα συνθηματικά δεν ταιριάζουν</string>
   <string name="invalid_jid">Αυτή δεν είναι έγκυρη ταυτότητα Jabber</string>
   <string name="error_out_of_memory">Πλήρης μνήμη. Η εικόνα είναι πολύ μεγάλη</string>
   <string name="server_info_show_more">Πληροφορίες διακομιστή</string>

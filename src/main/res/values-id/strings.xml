@@ -151,8 +151,6 @@
   <string name="account_settings_example_jabber_id">username@example.com</string>
   <string name="account_settings_confirm_password">Ketik ulang password</string>
   <string name="password">Password</string>
-  <string name="confirm_password">Ketik ulang password</string>
-  <string name="passwords_do_not_match">Password tidak sama</string>
   <string name="invalid_jid">Jabber ID tidak valid</string>
   <string name="error_out_of_memory">Memori habis. Gambar terlalu besar</string>
   <string name="server_info_show_more">Info Server</string>

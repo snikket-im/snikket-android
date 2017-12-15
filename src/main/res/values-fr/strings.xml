@@ -177,8 +177,6 @@
   <string name="account_settings_example_jabber_id">nom@exemple.com</string>
   <string name="account_settings_confirm_password">Confirmer le mot de passe</string>
   <string name="password">Mot de passe</string>
-  <string name="confirm_password">Confirmer le mot de passe</string>
-  <string name="passwords_do_not_match">Les deux mots de passe ne correspondent pas.</string>
   <string name="invalid_jid">Cet identifiant n\'est pas valide</string>
   <string name="error_out_of_memory">Plus de mémoire disponible. L\'image est trop volumineuse.</string>
   <string name="add_phone_book_text">Voulez-vous ajouter %s à votre carnet d\'adresses ?</string>

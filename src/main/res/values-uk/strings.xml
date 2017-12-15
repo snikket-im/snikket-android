@@ -173,8 +173,6 @@
   <string name="account_settings_example_jabber_id">username@example.com</string>
   <string name="account_settings_confirm_password">Підтвердіть пароль</string>
   <string name="password">Пароль</string>
-  <string name="confirm_password">Підтвердіть пароль</string>
-  <string name="passwords_do_not_match">Пароль не збігається</string>
   <string name="invalid_jid">Це не є дійсним Jabber ID</string>
   <string name="error_out_of_memory">Пам\'ять вичерпано. Завелике зображення.</string>
   <string name="add_phone_book_text">Бажаєте додати %s до своєї книги контактів?</string>

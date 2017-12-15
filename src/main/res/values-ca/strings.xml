@@ -177,8 +177,6 @@
   <string name="account_settings_example_jabber_id">username@example.com</string>
   <string name="account_settings_confirm_password">Confirma la contrasenya</string>
   <string name="password">Contrasenya</string>
-  <string name="confirm_password">Confirmar contrasenya</string>
-  <string name="passwords_do_not_match">Contrasenyes no coincideixen</string>
   <string name="invalid_jid">Aquesta identificació de Jabber no és vàlida</string>
   <string name="error_out_of_memory">Fora de la capacitat de la mèmoria. L\'imatge és massa gran</string>
   <string name="add_phone_book_text">Voleu afegir a %s a la vostra llibreta d\'adreces?</string>

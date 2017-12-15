@@ -177,8 +177,6 @@
   <string name="account_settings_example_jabber_id">felhasznalo@peldaoldal.com</string>
   <string name="account_settings_confirm_password">Erősítsd meg a jelszót</string>
   <string name="password">Jelszó</string>
-  <string name="confirm_password">Erősítsd meg a jelszót</string>
-  <string name="passwords_do_not_match">Jelszók nem egyeznek</string>
   <string name="invalid_jid">Nem érvényes Jabber azonosító</string>
   <string name="error_out_of_memory">Nincs elég memória. Képfájl túl nagy</string>
   <string name="add_phone_book_text">Szeretnéd %s nevű személyt hozzáadni a névjegyzékhez?</string>

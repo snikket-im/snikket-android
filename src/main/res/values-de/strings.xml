@@ -177,8 +177,6 @@
   <string name="account_settings_example_jabber_id">benutzer@domain.de</string>
   <string name="account_settings_confirm_password">Passwort bestätigen</string>
   <string name="password">Passwort</string>
-  <string name="confirm_password">Passwort bestätigen</string>
-  <string name="passwords_do_not_match">Passwörter stimmen nicht überein</string>
   <string name="invalid_jid">Ungültige Jabber-ID</string>
   <string name="error_out_of_memory">Zu wenig Speicher vorhanden. Das Bild ist zu groß</string>
   <string name="add_phone_book_text">%s zum Telefonbuch hinzufügen</string>

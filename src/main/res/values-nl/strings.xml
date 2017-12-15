@@ -177,8 +177,6 @@
   <string name="account_settings_example_jabber_id">gebruikersnaam@voorbeeld.nl</string>
   <string name="account_settings_confirm_password">Wachtwoord bevestigen</string>
   <string name="password">Wachtwoord</string>
-  <string name="confirm_password">Wachtwoord bevestigen</string>
-  <string name="passwords_do_not_match">Wachtwoorden komen niet met elkaar overeen</string>
   <string name="invalid_jid">Dit is geen geldige Jabber-ID</string>
   <string name="error_out_of_memory">Geen geheugen beschikbaar. Afbeelding is te groot</string>
   <string name="add_phone_book_text">Wil je %s toevoegen aan je adresboek?</string>

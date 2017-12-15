@@ -168,8 +168,6 @@
   <string name="account_settings_example_jabber_id">kullanıcıadı@ornek.com</string>
   <string name="account_settings_confirm_password">Parolayı doğrula</string>
   <string name="password">parola</string>
-  <string name="confirm_password">Parolayı doğrula</string>
-  <string name="passwords_do_not_match">Parolalar eşleşmiyor</string>
   <string name="invalid_jid">Jabber ID geçersiz</string>
   <string name="error_out_of_memory">Yetersiz bellek. Görüntü dosyası çok büyük.</string>
   <string name="add_phone_book_text">%s kişisini listenize eklemek ister misiniz?</string>

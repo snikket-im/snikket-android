@@ -159,8 +159,6 @@
   <string name="account_settings_example_jabber_id">nomedeutilizador@exemplo.com</string>
   <string name="account_settings_confirm_password">Confirmar palavra-passe</string>
   <string name="password">Palavra-passe</string>
-  <string name="confirm_password">Confirmar palavra-passe</string>
-  <string name="passwords_do_not_match">As palavras-passe não correspondem</string>
   <string name="invalid_jid">Esse não é um ID Jabber válido</string>
   <string name="error_out_of_memory">Memória insuficiente. A imagem é muito grande</string>
   <string name="add_phone_book_text">Deseja adicionar %s aos seus contactos?</string>

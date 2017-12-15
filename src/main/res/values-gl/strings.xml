@@ -177,8 +177,6 @@
   <string name="account_settings_example_jabber_id">usuaria@exemplo.com</string>
   <string name="account_settings_confirm_password">Confirmar contrasinal</string>
   <string name="password">Contrasinal</string>
-  <string name="confirm_password">Confirmar contrasinal</string>
-  <string name="passwords_do_not_match">As contrasinais non coinciden</string>
   <string name="invalid_jid">O identificador non é un identificador de Jabber válido</string>
   <string name="error_out_of_memory">Exceso de memoria. A imaxe é demasiado grande</string>
   <string name="add_phone_book_text">Quere engadir a 1%s a súa libreta de enderezos?</string>

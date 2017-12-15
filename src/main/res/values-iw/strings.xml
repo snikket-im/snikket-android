@@ -142,8 +142,6 @@
   <string name="account_settings_example_jabber_id">username@example.com</string>
   <string name="account_settings_confirm_password">אמת סיסמה</string>
   <string name="password">סיסמה</string>
-  <string name="confirm_password">אמת סיסמה</string>
-  <string name="passwords_do_not_match">סיסמאות לא תואמות</string>
   <string name="invalid_jid">מזהה ה Jabber אינו תקין</string>
   <string name="error_out_of_memory">חסר זיכרון. תצלום גדול מדי</string>
   <string name="server_info_show_more">פרטי השרת</string>

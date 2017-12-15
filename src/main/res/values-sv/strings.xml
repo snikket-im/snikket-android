@@ -172,8 +172,6 @@
   <string name="account_settings_example_jabber_id">användarnamn@exempel.se</string>
   <string name="account_settings_confirm_password">Bekräfta lösenord</string>
   <string name="password">Lösenord</string>
-  <string name="confirm_password">Bekräfta lösenord</string>
-  <string name="passwords_do_not_match">Lösenorden är inte lika</string>
   <string name="invalid_jid">Detta är inte ett korrekt Jabber-ID</string>
   <string name="error_out_of_memory">Slut på minne. Bilden är för stor</string>
   <string name="add_phone_book_text">Vill du lägga till %s i din enhets kontakter?</string>

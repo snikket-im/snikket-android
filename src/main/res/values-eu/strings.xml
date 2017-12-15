@@ -177,8 +177,6 @@
   <string name="account_settings_example_jabber_id">erabiltzailea@adibidea.com</string>
   <string name="account_settings_confirm_password">Pasahitza berretsi</string>
   <string name="password">Pasahitza</string>
-  <string name="confirm_password">Pasahitza berretsi</string>
-  <string name="passwords_do_not_match">Pasahitzak ez dute bat egiten</string>
   <string name="invalid_jid">Hau ez da Jabber ID baliodun bat</string>
   <string name="error_out_of_memory">Memoriarik gabe. Irudia handiegia da</string>
   <string name="add_phone_book_text">%s zure helbideen liburura gehitu nahi duzu?</string>

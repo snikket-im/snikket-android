@@ -167,8 +167,6 @@
   <string name="account_settings_example_jabber_id">username@example.com</string>
   <string name="account_settings_confirm_password">암호 확인 </string>
   <string name="password">암호 </string>
-  <string name="confirm_password">암호 확인 </string>
-  <string name="passwords_do_not_match">암호가 일치하지 않습니다 </string>
   <string name="invalid_jid">올바른 Jabber ID가 아닙니다 </string>
   <string name="error_out_of_memory">메모리 부족. 이미지 용량이 너무 큽니다 </string>
   <string name="add_phone_book_text">주소록에 %s를 추가하시겠습니까?</string>
