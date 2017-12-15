@@ -59,7 +59,8 @@
         <activity
             android:name=".ui.UriHandlerActivity"
             android:label="@string/title_activity_start_conversation"
-            android:launchMode="singleTop">
+            android:launchMode="singleTop"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
 
@@ -80,7 +81,6 @@
                 <data android:pathPrefix="/j/" />
             </intent-filter>
             <intent-filter>
-                <action android:name="android.nfc.action.NDEF_DISCOVERED" />
                 <action android:name="android.intent.action.SENDTO" />
 
                 <category android:name="android.intent.category.DEFAULT" />

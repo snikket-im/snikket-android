@@ -821,15 +821,6 @@ public class StartConversationActivity extends XmppActivity implements OnRosterU
     }
 
     private boolean handleJid(Invite invite) {
-        Account account = xmppConnectionService.findAccountByJid(invite.getJid());
-        if (account != null && account.isEnabled()) {
-            if (invite.hasFingerprints() && xmppConnectionService.verifyFingerprints(account,invite.getFingerprints())) {
-                Toast.makeText(this,R.string.verified_fingerprints,Toast.LENGTH_SHORT).show();
-            }
-            switchToAccount(account);
-            finish();
-            return true;
-        }
         List<Contact> contacts = xmppConnectionService.findContacts(invite.getJid(),invite.account);
         if (invite.isAction(XmppUri.ACTION_JOIN)) {
             Conversation muc = xmppConnectionService.findFirstMuc(invite.getJid());

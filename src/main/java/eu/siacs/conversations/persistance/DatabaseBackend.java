@@ -746,7 +746,7 @@ public class DatabaseBackend extends SQLiteOpenHelper {
 		return getAccounts(db);
 	}
 
-	public Collection<Jid> getAccountJids() {
+	public List<Jid> getAccountJids() {
 		SQLiteDatabase db = this.getReadableDatabase();
 		final List<Jid> jids = new ArrayList<>();
 		final String[] columns = new String[]{Account.USERNAME, Account.SERVER};

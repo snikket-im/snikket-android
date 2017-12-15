@@ -1,19 +1,14 @@
 package eu.siacs.conversations.ui;
 
-import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
-import android.nfc.NdefMessage;
-import android.nfc.NdefRecord;
-import android.nfc.NfcAdapter;
-import android.os.Build;
-import android.os.Parcelable;
 
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
 import java.util.Arrays;
+import java.util.List;
 
 import eu.siacs.conversations.persistance.DatabaseBackend;
 import eu.siacs.conversations.utils.XmppUri;
@@ -33,17 +28,12 @@ public class UriHandlerActivity extends Activity {
         handleIntent(intent);
     }
 
-    @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
-    Uri getInviteJellyBean(NdefRecord record) {
-        return record.toUri();
-    }
-
     private void handleUri(Uri uri) {
         final Intent intent;
         final XmppUri xmppUri = new XmppUri(uri);
-        final int numAccounts = DatabaseBackend.getInstance(this).getAccountJids().size();
+        final List<Jid> accounts = DatabaseBackend.getInstance(this).getAccountJids();
 
-        if (numAccounts == 0) {
+        if (accounts.size() == 0) {
             intent = new Intent(getApplicationContext(), WelcomeActivity.class);
             startActivity(intent);
             return;
@@ -63,6 +53,11 @@ public class UriHandlerActivity extends Activity {
                 intent.setType("text/plain");
                 intent.putExtra(Intent.EXTRA_TEXT, body);
             }
+        } else if (accounts.contains(xmppUri.getJid())) {
+            intent = new Intent(getApplicationContext(), EditAccountActivity.class);
+            intent.setAction(Intent.ACTION_VIEW);
+            intent.putExtra("jid", xmppUri.getJid().toBareJid().toString());
+            intent.setData(uri);
         } else {
             intent = new Intent(getApplicationContext(), StartConversationActivity.class);
             intent.setAction(Intent.ACTION_VIEW);
@@ -73,32 +68,8 @@ public class UriHandlerActivity extends Activity {
         startActivity(intent);
     }
 
-    private void handleNfcIntent(Intent data) {
-        for (Parcelable message : data.getParcelableArrayExtra(NfcAdapter.EXTRA_NDEF_MESSAGES)) {
-            if (message instanceof NdefMessage) {
-                for (NdefRecord record : ((NdefMessage) message).getRecords()) {
-                    switch (record.getTnf()) {
-                        case NdefRecord.TNF_WELL_KNOWN:
-                            if (Arrays.equals(record.getType(), NdefRecord.RTD_URI)) {
-                                if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-                                    handleUri(getInviteJellyBean(record));
-                                } else {
-                                    byte[] payload = record.getPayload();
-                                    if (payload[0] == 0) {
-                                        Uri uri = Uri.parse(new String(Arrays.copyOfRange(
-                                                payload, 1, payload.length)));
-                                        handleUri(uri);
-                                    }
-                                }
-                            }
-                    }
-                }
-            }
-        }
-    }
-
     private void handleIntent(Intent data) {
-        if (data == null) {
+        if (data == null || data.getAction() == null) {
             finish();
             return;
         }
@@ -111,8 +82,6 @@ public class UriHandlerActivity extends Activity {
             case ACTION_SCAN_QR_CODE:
                 new IntentIntegrator(this).initiateScan(Arrays.asList("AZTEC", "QR_CODE"));
                 return;
-            case NfcAdapter.ACTION_NDEF_DISCOVERED:
-                handleNfcIntent(data);
         }
 
         finish();
