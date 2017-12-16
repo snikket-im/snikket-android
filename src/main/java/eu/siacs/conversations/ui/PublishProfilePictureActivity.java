@@ -7,6 +7,8 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.StringRes;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -20,14 +22,16 @@ import com.soundcloud.android.crop.Crop;
 
 import java.io.File;
 
+import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.persistance.FileBackend;
+import eu.siacs.conversations.services.XmppConnectionService;
 import eu.siacs.conversations.utils.FileUtils;
 import eu.siacs.conversations.utils.PhoneHelper;
 import eu.siacs.conversations.xmpp.pep.Avatar;
 
-public class PublishProfilePictureActivity extends XmppActivity {
+public class PublishProfilePictureActivity extends XmppActivity implements XmppConnectionService.OnAccountUpdate {
 
 	private static final int REQUEST_CHOOSE_FILE_AND_CROP = 0xac23;
 	private static final int REQUEST_CHOOSE_FILE = 0xac24;
@@ -40,6 +44,7 @@ public class PublishProfilePictureActivity extends XmppActivity {
 	private Uri defaultUri;
 	private Account account;
 	private boolean support = false;
+	private boolean publishing = false;
 	private OnLongClickListener backToDefaultListener = new OnLongClickListener() {
 
 		@Override
@@ -74,8 +79,8 @@ public class PublishProfilePictureActivity extends XmppActivity {
 				hintOrWarning.setText(errorCode);
 				hintOrWarning.setTextColor(getWarningTextColor());
 				hintOrWarning.setVisibility(View.VISIBLE);
-				publishButton.setText(R.string.publish);
-				enablePublishButton();
+				publishing = false;
+				togglePublishButton(true,R.string.publish);
 			});
 
 		}
@@ -96,10 +101,9 @@ public class PublishProfilePictureActivity extends XmppActivity {
 		this.secondaryHint = findViewById(R.id.secondary_hint);
 		this.publishButton.setOnClickListener(v -> {
 			if (avatarUri != null) {
-				publishButton.setText(R.string.publishing);
-				disablePublishButton();
-				xmppConnectionService.publishAvatar(account, avatarUri,
-						avatarPublication);
+				publishing = true;
+				togglePublishButton(false,R.string.publishing);
+				xmppConnectionService.publishAvatar(account, avatarUri, avatarPublication);
 			}
 		});
 		this.cancelButton.setOnClickListener(v -> {
@@ -212,34 +216,21 @@ public class PublishProfilePictureActivity extends XmppActivity {
 	protected void onBackendConnected() {
 		this.account = extractAccount(getIntent());
 		if (this.account != null) {
-			if (this.account.getXmppConnection() != null) {
-				this.support = this.account.getXmppConnection().getFeatures().pep();
-			}
-			if (this.avatarUri == null) {
-				if (this.account.getAvatar() != null || this.defaultUri == null) {
-					this.avatar.setImageBitmap(avatarService().get(account, getPixel(192)));
-					if (this.defaultUri != null) {
-						this.avatar.setOnLongClickListener(this.backToDefaultListener);
-					} else {
-						this.secondaryHint.setVisibility(View.INVISIBLE);
-					}
-					if (!support) {
-						this.hintOrWarning.setVisibility(View.VISIBLE);
-						this.hintOrWarning.setTextColor(getWarningTextColor());
-						if (account.getStatus() == Account.State.ONLINE) {
-							this.hintOrWarning.setText(R.string.error_publish_avatar_no_server_support);
-						} else {
-							this.hintOrWarning.setText(R.string.error_publish_avatar_offline);
-						}
-					}
-				} else {
-					this.avatarUri = this.defaultUri;
-					loadImageIntoPreview(this.defaultUri);
-					this.secondaryHint.setVisibility(View.INVISIBLE);
-				}
+			reloadAvatar();
+		}
+	}
+
+	private void reloadAvatar() {
+		this.support = this.account.getXmppConnection() != null && this.account.getXmppConnection().getFeatures().pep();
+		if (this.avatarUri == null) {
+			if (this.account.getAvatar() != null || this.defaultUri == null) {
+				loadImageIntoPreview(null);
 			} else {
-				loadImageIntoPreview(avatarUri);
+				this.avatarUri = this.defaultUri;
+				loadImageIntoPreview(this.defaultUri);
 			}
+		} else {
+			loadImageIntoPreview(avatarUri);
 		}
 	}
 
@@ -255,15 +246,20 @@ public class PublishProfilePictureActivity extends XmppActivity {
 	}
 
 	protected void loadImageIntoPreview(Uri uri) {
+
 		Bitmap bm = null;
-		try {
-			bm = xmppConnectionService.getFileBackend().cropCenterSquare(uri, getPixel(192));
-		} catch (Exception e) {
-			e.printStackTrace();
+		if (uri == null) {
+			bm = avatarService().get(account, getPixel(192));
+		} else {
+			try {
+				bm = xmppConnectionService.getFileBackend().cropCenterSquare(uri, getPixel(192));
+			} catch (Exception e) {
+				Log.d(Config.LOGTAG,"unable to load bitmap into image view",e);
+			}
 		}
 
 		if (bm == null) {
-			disablePublishButton();
+			togglePublishButton(false,R.string.publish);
 			this.hintOrWarning.setVisibility(View.VISIBLE);
 			this.hintOrWarning.setTextColor(getWarningTextColor());
 			this.hintOrWarning.setText(R.string.error_publish_avatar_converting);
@@ -271,11 +267,10 @@ public class PublishProfilePictureActivity extends XmppActivity {
 		}
 		this.avatar.setImageBitmap(bm);
 		if (support) {
-			enablePublishButton();
-			this.publishButton.setText(R.string.publish);
+			togglePublishButton(uri != null,R.string.publish);
 			this.hintOrWarning.setVisibility(View.INVISIBLE);
 		} else {
-			disablePublishButton();
+			togglePublishButton(false,R.string.publish);
 			this.hintOrWarning.setVisibility(View.VISIBLE);
 			this.hintOrWarning.setTextColor(getWarningTextColor());
 			if (account.getStatus() == Account.State.ONLINE) {
@@ -284,7 +279,7 @@ public class PublishProfilePictureActivity extends XmppActivity {
 				this.hintOrWarning.setText(R.string.error_publish_avatar_offline);
 			}
 		}
-		if (this.defaultUri != null && uri.equals(this.defaultUri)) {
+		if (this.defaultUri == null || this.defaultUri.equals(uri)) {
 			this.secondaryHint.setVisibility(View.INVISIBLE);
 			this.avatar.setOnLongClickListener(null);
 		} else if (this.defaultUri != null) {
@@ -293,17 +288,21 @@ public class PublishProfilePictureActivity extends XmppActivity {
 		}
 	}
 
-	protected void enablePublishButton() {
-		this.publishButton.setEnabled(true);
-		this.publishButton.setTextColor(getPrimaryTextColor());
-	}
-
-	protected void disablePublishButton() {
-		this.publishButton.setEnabled(false);
-		this.publishButton.setTextColor(getSecondaryTextColor());
+	protected void togglePublishButton(boolean enabled, @StringRes int res) {
+		final boolean status = enabled && !publishing;
+		this.publishButton.setText(publishing ? R.string.publishing : res);
+		this.publishButton.setEnabled(status);
+		this.publishButton.setTextColor(status ? getPrimaryTextColor() : getSecondaryTextColor());
 	}
 
 	public void refreshUiReal() {
-		//nothing to do. This Activity doesn't implement any listeners
+		if (this.account != null) {
+			reloadAvatar();
+		}
+	}
+
+	@Override
+	public void onAccountUpdate() {
+		refreshUi();
 	}
 }
