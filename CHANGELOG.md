@@ -1,5 +1,10 @@
 # Changelog
 
+### Version 1.23.2
+* Removed NFC support
+* upload Avatars as JPEG
+* reduce APK size
+
 ### Version 1.23.1
 * Show icon instead of image preview in conversation overview
 * fixed loop when trying to decrypt with YubiKey
