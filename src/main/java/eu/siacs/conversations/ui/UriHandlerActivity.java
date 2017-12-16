@@ -35,6 +35,7 @@ public class UriHandlerActivity extends Activity {
 
         if (accounts.size() == 0) {
             intent = new Intent(getApplicationContext(), WelcomeActivity.class);
+            WelcomeActivity.addInvitee(intent, xmppUri);
             startActivity(intent);
             return;
         }

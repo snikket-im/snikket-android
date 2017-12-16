@@ -61,8 +61,8 @@ public class PublishProfilePictureActivity extends XmppActivity implements XmppC
 		public void success(Avatar object) {
 			runOnUiThread(() -> {
 				if (mInitialAccountSetup) {
-					Intent intent = new Intent(getApplicationContext(),
-							StartConversationActivity.class);
+					Intent intent = new Intent(getApplicationContext(), StartConversationActivity.class);
+					WelcomeActivity.addInvitee(intent, getIntent());
 					intent.putExtra("init", true);
 					startActivity(intent);
 				}
@@ -108,9 +108,9 @@ public class PublishProfilePictureActivity extends XmppActivity implements XmppC
 		});
 		this.cancelButton.setOnClickListener(v -> {
 			if (mInitialAccountSetup) {
-				Intent intent = new Intent(getApplicationContext(),
-						StartConversationActivity.class);
+				Intent intent = new Intent(getApplicationContext(), StartConversationActivity.class);
 				if (xmppConnectionService != null && xmppConnectionService.getAccounts().size() == 1) {
+					WelcomeActivity.addInvitee(intent, getIntent());
 					intent.putExtra("init", true);
 				}
 				startActivity(intent);

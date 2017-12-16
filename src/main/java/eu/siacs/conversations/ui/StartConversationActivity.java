@@ -268,7 +268,10 @@ public class StartConversationActivity extends XmppActivity implements OnRosterU
         if (this.mTheme != theme) {
             recreate();
         } else {
-            askForContactsPermissions();
+            Intent i = getIntent();
+            if (i == null || !i.hasExtra(WelcomeActivity.EXTRA_INVITEE)) {
+                askForContactsPermissions();
+            }
         }
         mConferenceAdapter.refreshSettings();
         mContactsAdapter.refreshSettings();
@@ -786,7 +789,17 @@ public class StartConversationActivity extends XmppActivity implements OnRosterU
     }
 
     protected boolean handleIntent(Intent intent) {
-        if (intent == null || intent.getAction() == null) {
+        if (intent == null) {
+            return false;
+        }
+        final String invitee = intent.getStringExtra(WelcomeActivity.EXTRA_INVITEE);
+        if (invitee != null) {
+            Invite invite = new Invite("xmpp:" + invitee);
+            if (invite.isJidValid()) {
+                return invite.invite();
+            }
+        }
+        if (intent.getAction() == null) {
             return false;
         }
         switch (intent.getAction()) {

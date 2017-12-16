@@ -312,7 +312,9 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
 				&& mAccount.isOptionSet(Account.OPTION_REGISTER)
 				&& xmppConnectionService.getAccounts().size() == 1) {
 			xmppConnectionService.deleteAccount(mAccount);
-			startActivity(new Intent(EditAccountActivity.this, WelcomeActivity.class));
+			Intent intent = new Intent(EditAccountActivity.this, WelcomeActivity.class);
+			WelcomeActivity.addInvitee(intent, getIntent());
+			startActivity(intent);
 		}
 	}
 
@@ -367,30 +369,27 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
 	};
 
 	protected void finishInitialSetup(final Avatar avatar) {
-		runOnUiThread(new Runnable() {
-
-			@Override
-			public void run() {
-				hideKeyboard();
-				final Intent intent;
-				final XmppConnection connection = mAccount.getXmppConnection();
-				final boolean wasFirstAccount = xmppConnectionService != null && xmppConnectionService.getAccounts().size() == 1;
-				if (avatar != null || (connection != null && !connection.getFeatures().pep())) {
-					intent = new Intent(getApplicationContext(), StartConversationActivity.class);
-					if (wasFirstAccount) {
-						intent.putExtra("init", true);
-					}
-				} else {
-					intent = new Intent(getApplicationContext(), PublishProfilePictureActivity.class);
-					intent.putExtra(EXTRA_ACCOUNT, mAccount.getJid().toBareJid().toString());
-					intent.putExtra("setup", true);
-				}
+		runOnUiThread(() -> {
+			hideKeyboard();
+			final Intent intent;
+			final XmppConnection connection = mAccount.getXmppConnection();
+			final boolean wasFirstAccount = xmppConnectionService != null && xmppConnectionService.getAccounts().size() == 1;
+			if (avatar != null || (connection != null && !connection.getFeatures().pep())) {
+				intent = new Intent(getApplicationContext(), StartConversationActivity.class);
 				if (wasFirstAccount) {
-					intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+					intent.putExtra("init", true);
 				}
-				startActivity(intent);
-				finish();
+			} else {
+				intent = new Intent(getApplicationContext(), PublishProfilePictureActivity.class);
+				intent.putExtra(EXTRA_ACCOUNT, mAccount.getJid().toBareJid().toString());
+				intent.putExtra("setup", true);
 			}
+			if (wasFirstAccount) {
+				intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+			}
+			WelcomeActivity.addInvitee(intent, getIntent());
+			startActivity(intent);
+			finish();
 		});
 	}
 
