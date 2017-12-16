@@ -36,6 +36,13 @@ public class WelcomeActivity extends XmppActivity {
 	}
 
 	@Override
+	public void onNewIntent(Intent intent) {
+		if (intent != null) {
+			setIntent(intent);
+		}
+	}
+
+	@Override
 	protected void onCreate(final Bundle savedInstanceState) {
 		if (getResources().getBoolean(R.bool.portrait_only)) {
 			setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
