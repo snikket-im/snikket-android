@@ -20,6 +20,7 @@
   <string name="title_activity_sharewith">Condividi con Conversation</string>
   <string name="title_activity_start_conversation">Inizia una conversazione</string>
   <string name="title_activity_choose_contact">Scegli un contatto</string>
+  <string name="title_activity_share_via_account">Condividi via account</string>
   <string name="title_activity_block_list">Lista nera</string>
   <string name="just_now">adesso</string>
   <string name="minute_ago">1 min fa</string>
@@ -29,6 +30,7 @@
   <string name="message_decrypting">Decifrazione messaggio. Attendere prego...</string>
   <string name="pgp_message">Messaggio cifrato con OpenPGP</string>
   <string name="nick_in_use">Nome utente già in uso</string>
+  <string name="invalid_muc_nick">Nickname non valido</string>
   <string name="admin">Amministratore</string>
   <string name="owner">Proprietario</string>
   <string name="moderator">Moderatore</string>
@@ -244,6 +246,8 @@
   <string name="contact_added_you">Il contatto ti ha aggiunto alla sua lista contatti</string>
   <string name="add_back">Aggiungi anche tu</string>
   <string name="contact_has_read_up_to_this_point">%s ha letto fino a questo punto</string>
+  <string name="contacts_have_read_up_to_this_point">%s ha letto fino a questo punto</string>
+  <string name="contacts_and_n_more_have_read_up_to_this_point">%1$s +%2$d altri hanno letto fino a questo punto</string>
   <string name="publish">Pubblica</string>
   <string name="touch_to_choose_picture">Tocca l’avatar per selezionare l’immagine dalla galleria</string>
   <string name="publishing">Pubblicazione…</string>

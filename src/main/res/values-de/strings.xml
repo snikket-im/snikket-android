@@ -20,6 +20,7 @@
   <string name="title_activity_sharewith">Mit Unterhaltung teilen</string>
   <string name="title_activity_start_conversation">Unterhaltung beginnen</string>
   <string name="title_activity_choose_contact">Kontakt auswählen</string>
+  <string name="title_activity_share_via_account">Teilen über Konto</string>
   <string name="title_activity_block_list">Sperrliste</string>
   <string name="just_now">gerade</string>
   <string name="minute_ago">vor einer Minute</string>
@@ -63,7 +64,7 @@
   <string name="send_never">Nie mehr nachfragen</string>
   <string name="problem_connecting_to_account">Es gibt Probleme beim Verbindungsaufbau mit einem Konto</string>
   <string name="problem_connecting_to_accounts">Es gibt Probleme beim Verbindungsaufbau mit mehreren Konten</string>
-  <string name="touch_to_fix">Hier antippen, um Ihre Konten zu verwalten</string>
+  <string name="touch_to_fix">Hier antippen, um deine Konten zu verwalten</string>
   <string name="attach_file">Datei anfügen</string>
   <string name="not_in_roster">Der Kontakt ist nicht in deiner Kontaktliste. Möchtest du ihn hinzufügen?</string>
   <string name="add_contact">Kontakt hinzufügen</string>

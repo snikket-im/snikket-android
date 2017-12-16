@@ -20,6 +20,7 @@
   <string name="title_activity_sharewith">Distribuie către Conversations</string>
   <string name="title_activity_start_conversation">Pornește o conversație</string>
   <string name="title_activity_choose_contact">Alege contact</string>
+  <string name="title_activity_share_via_account">Partajează cu cont</string>
   <string name="title_activity_block_list">Listă contacte blocate</string>
   <string name="just_now">în acest moment</string>
   <string name="minute_ago">acum un minut</string>

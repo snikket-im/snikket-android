@@ -20,6 +20,7 @@
   <string name="title_activity_sharewith">Delen in gesprek</string>
   <string name="title_activity_start_conversation">Gesprek starten</string>
   <string name="title_activity_choose_contact">Contact kiezen</string>
+  <string name="title_activity_share_via_account">Delen via account</string>
   <string name="title_activity_block_list">Geblokkeerde contacten</string>
   <string name="just_now">zojuist</string>
   <string name="minute_ago">1 min. geleden</string>

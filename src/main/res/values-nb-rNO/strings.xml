@@ -5,6 +5,7 @@
   <string name="action_accounts">Kontobehandling</string>
   <string name="action_end_conversation">Avslutt denne samtalen</string>
   <string name="action_contact_details">Kontaktdetaljer</string>
+  <string name="action_muc_details">Gruppesludringsdetaljer</string>
   <string name="action_secure">Sikret samtale</string>
   <string name="action_add_account">Legg til samtale</string>
   <string name="action_edit_contact">Rediger navn</string>
@@ -18,6 +19,8 @@
   <string name="title_activity_settings">Innstillinger</string>
   <string name="title_activity_sharewith">Del med Conversation</string>
   <string name="title_activity_start_conversation">Start samtale</string>
+  <string name="title_activity_choose_contact">Velg kontakt</string>
+  <string name="title_activity_share_via_account">Del via konto</string>
   <string name="title_activity_block_list">Blokkeringsliste</string>
   <string name="just_now">akkurat nå</string>
   <string name="minute_ago">1 minutt siden</string>
@@ -27,6 +30,7 @@
   <string name="message_decrypting">Dekrypterer melding mens du venter.</string>
   <string name="pgp_message">OpenPGP-kryptert melding</string>
   <string name="nick_in_use">Kallenavn allerede i bruk</string>
+  <string name="invalid_muc_nick">Ugyldig kallenavn</string>
   <string name="admin">Admin</string>
   <string name="owner">Eier</string>
   <string name="moderator">Moderator</string>
@@ -42,6 +46,8 @@
   <string name="register_account">Registrer ny konto på tjeneren</string>
   <string name="change_password_on_server">Endre passord på tjeneren</string>
   <string name="share_with">Del med...</string>
+  <string name="start_conversation">Start samtale</string>
+  <string name="invite_contact">Inviter kontakt</string>
   <string name="contacts">Kontakter</string>
   <string name="cancel">Avbryt</string>
   <string name="set">Sett</string>
@@ -213,8 +219,14 @@
   <string name="done">Ferdig</string>
   <string name="verify">Bekreft</string>
   <string name="decrypt">Dekrypter</string>
+  <string name="conferences">Gruppesludringer</string>
   <string name="search">Søk</string>
+  <string name="create_contact">Opprett kontakt</string>
+  <string name="dialog_title_create_contact">Opprett kontakt</string>
   <string name="enter_contact">Angi kontakt</string>
+  <string name="join_conference">Ta del i gruppesludring</string>
+  <string name="dialog_title_join_conference">Ta del i gruppesludring</string>
+  <string name="delete_contact">Slett kontakt</string>
   <string name="view_contact_details">Vis kontaktdetaljer</string>
   <string name="block_contact">Blokker kontakt</string>
   <string name="unblock_contact">Avblokker kontakt</string>
@@ -222,10 +234,14 @@
   <string name="select">Velg</string>
   <string name="contact_already_exists">Kontakten finnes allerede</string>
   <string name="join">Ta del i</string>
+  <string name="conference_address">Gruppesludringsadresse</string>
   <string name="conference_address_example">rom@konferanse.eksempel.no/kallenavn</string>
   <string name="save_as_bookmark">Lagre som bokmerke</string>
   <string name="delete_bookmark">Slett bokmerke</string>
   <string name="bookmark_already_exists">Dette bokmerket finnes allerede</string>
+  <string name="action_edit_subject">Endre gruppesludringsemne</string>
+  <string name="edit_subject_hint">Emnet for denne gruppesludringen</string>
+  <string name="joining_conference">Tar del i gruppesludring…</string>
   <string name="leave">Forlat</string>
   <string name="contact_added_you">Kontakt la deg til i sin liste</string>
   <string name="add_back">Gjengjeld tjenesten</string>
@@ -275,6 +291,7 @@
   <string name="pref_use_indicate_received_summary">Mottatte meldinger vil bli avmerket i grønt hvis støttet</string>
   <string name="pref_use_send_button_to_indicate_status_summary">Fargelegg send-knapp for å indikere kontakt-status</string>
   <string name="pref_expert_options_other">Annet</string>
+  <string name="pref_conference_name">Gruppesludringsnavn</string>
   <string name="toast_message_otr_fingerprint">OTR-fingeravtrykk kopiert til utklippstavle!</string>
   <string name="toast_message_omemo_fingerprint">OMEMO-fingeravtrykk kopiert til utklippstavle!</string>
   <string name="using_account">bruker konto %s</string>
@@ -542,8 +559,12 @@
   <string name="show_password">Vis passord</string>
   <string name="registration_please_wait">Registrering mislyktes: Prøv igjen senere</string>
   <string name="registration_password_too_weak">Registrering mislyktes: Passordet er for svakt</string>
+  <string name="create_conference">Opprett gruppesludring</string>
+  <string name="dialog_title_create_conference">Opprett gruppesludring</string>
+  <string name="join_or_create_conference">Ta del i eller opprett gruppesludring</string>
   <string name="conference_subject">Tema</string>
   <string name="choose_participants">Velg deltagere</string>
+  <string name="creating_conference">Opprett gruppesludring…</string>
   <string name="invite_again">Inviter igjen</string>
   <string name="gp_short">Kort</string>
   <string name="gp_medium">Middels</string>

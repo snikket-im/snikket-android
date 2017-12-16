@@ -20,6 +20,7 @@
   <string name="title_activity_sharewith">Споделяне в разговора</string>
   <string name="title_activity_start_conversation">Започване на разговор</string>
   <string name="title_activity_choose_contact">Изберете контакт</string>
+  <string name="title_activity_share_via_account">Споделяне чрез профил</string>
   <string name="title_activity_block_list">Списък с блокирани</string>
   <string name="just_now">току-що</string>
   <string name="minute_ago">преди 1 минута</string>
