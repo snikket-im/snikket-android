@@ -8,6 +8,7 @@ import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.RectF;
@@ -74,7 +75,7 @@ public class FileBackend {
 	}
 
 	private void createNoMedia() {
-		final File nomedia = new File(getConversationsDirectory("Files")+".nomedia");
+		final File nomedia = new File(getConversationsDirectory("Files") + ".nomedia");
 		if (!nomedia.exists()) {
 			try {
 				nomedia.createNewFile();
@@ -154,16 +155,16 @@ public class FileBackend {
 
 	public static boolean allFilesUnderSize(Context context, List<Uri> uris, long max) {
 		if (max <= 0) {
-			Log.d(Config.LOGTAG,"server did not report max file size for http upload");
+			Log.d(Config.LOGTAG, "server did not report max file size for http upload");
 			return true; //exception to be compatible with HTTP Upload < v0.2
 		}
-		for(Uri uri : uris) {
+		for (Uri uri : uris) {
 			String mime = context.getContentResolver().getType(uri);
 			if (mime != null && mime.startsWith("video/")) {
 				try {
-					Dimensions dimensions = FileBackend.getVideoDimensions(context,uri);
+					Dimensions dimensions = FileBackend.getVideoDimensions(context, uri);
 					if (dimensions.getMin() > 720) {
-						Log.d(Config.LOGTAG,"do not consider video file with min width larger than 720 for size check");
+						Log.d(Config.LOGTAG, "do not consider video file with min width larger than 720 for size check");
 						continue;
 					}
 				} catch (NotAVideoFile notAVideoFile) {
@@ -171,7 +172,7 @@ public class FileBackend {
 				}
 			}
 			if (FileBackend.getFileSize(context, uri) > max) {
-				Log.d(Config.LOGTAG,"not all files are under "+max+" bytes. suggesting falling back to jingle");
+				Log.d(Config.LOGTAG, "not all files are under " + max + " bytes. suggesting falling back to jingle");
 				return false;
 			}
 		}
@@ -180,14 +181,14 @@ public class FileBackend {
 
 	public String getConversationsDirectory(final String type) {
 		if (Config.ONLY_INTERNAL_STORAGE) {
-			return mXmppConnectionService.getFilesDir().getAbsolutePath()+"/"+type+"/";
+			return mXmppConnectionService.getFilesDir().getAbsolutePath() + "/" + type + "/";
 		} else {
-			return Environment.getExternalStorageDirectory() +"/Conversations/Media/Conversations "+type+"/";
+			return Environment.getExternalStorageDirectory() + "/Conversations/Media/Conversations " + type + "/";
 		}
 	}
 
 	public static String getConversationsLogsDirectory() {
-		return  Environment.getExternalStorageDirectory().getAbsolutePath()+"/Conversations/";
+		return Environment.getExternalStorageDirectory().getAbsolutePath() + "/Conversations/";
 	}
 
 	public Bitmap resize(Bitmap originalBitmap, int size) {
@@ -252,11 +253,11 @@ public class FileBackend {
 	}
 
 	public String getOriginalPath(Uri uri) {
-		return FileUtils.getPath(mXmppConnectionService,uri);
+		return FileUtils.getPath(mXmppConnectionService, uri);
 	}
 
 	public void copyFileToPrivateStorage(File file, Uri uri) throws FileCopyException {
-		Log.d(Config.LOGTAG,"copy file ("+uri.toString()+") to private storage "+file.getAbsolutePath());
+		Log.d(Config.LOGTAG, "copy file (" + uri.toString() + ") to private storage " + file.getAbsolutePath());
 		file.getParentFile().mkdirs();
 		OutputStream os = null;
 		InputStream is = null;
@@ -278,9 +279,9 @@ public class FileBackend {
 			} catch (IOException e) {
 				throw new FileWriterException();
 			}
-		} catch(FileNotFoundException e) {
+		} catch (FileNotFoundException e) {
 			throw new FileCopyException(R.string.error_file_not_found);
-		} catch(FileWriterException e) {
+		} catch (FileWriterException e) {
 			throw new FileCopyException(R.string.error_unable_to_create_temporary_file);
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -293,7 +294,7 @@ public class FileBackend {
 
 	public void copyFileToPrivateStorage(Message message, Uri uri) throws FileCopyException {
 		String mime = MimeUtils.guessMimeTypeFromUri(mXmppConnectionService, uri);
-		Log.d(Config.LOGTAG, "copy " + uri.toString() + " to private storage (mime="+mime+")");
+		Log.d(Config.LOGTAG, "copy " + uri.toString() + " to private storage (mime=" + mime + ")");
 		String extension = MimeTypeMap.getSingleton().getExtensionFromMimeType(mime);
 		if (extension == null) {
 			extension = getExtensionFromUri(uri);
@@ -318,7 +319,7 @@ public class FileBackend {
 			}
 		}
 		int pos = filename == null ? -1 : filename.lastIndexOf('.');
-		return pos > 0 ? filename.substring(pos+1) : null;
+		return pos > 0 ? filename.substring(pos + 1) : null;
 	}
 
 	private void copyImageToPrivateStorage(File file, Uri image, int sampleSize) throws FileCopyException {
@@ -349,14 +350,14 @@ public class FileBackend {
 			boolean targetSizeReached = false;
 			int quality = Config.IMAGE_QUALITY;
 			final int imageMaxSize = mXmppConnectionService.getResources().getInteger(R.integer.auto_accept_filesize);
-			while(!targetSizeReached) {
+			while (!targetSizeReached) {
 				os = new FileOutputStream(file);
 				boolean success = scaledBitmap.compress(Config.IMAGE_FORMAT, quality, os);
 				if (!success) {
 					throw new FileCopyException(R.string.error_compressing_image);
 				}
 				os.flush();
-				targetSizeReached = file.length() <= imageMaxSize|| quality <= 50;
+				targetSizeReached = file.length() <= imageMaxSize || quality <= 50;
 				quality -= 5;
 			}
 			scaledBitmap.recycle();
@@ -381,20 +382,20 @@ public class FileBackend {
 	}
 
 	public void copyImageToPrivateStorage(File file, Uri image) throws FileCopyException {
-		Log.d(Config.LOGTAG,"copy image ("+image.toString()+") to private storage "+file.getAbsolutePath());
+		Log.d(Config.LOGTAG, "copy image (" + image.toString() + ") to private storage " + file.getAbsolutePath());
 		copyImageToPrivateStorage(file, image, 0);
 	}
 
 	public void copyImageToPrivateStorage(Message message, Uri image) throws FileCopyException {
-		switch(Config.IMAGE_FORMAT) {
+		switch (Config.IMAGE_FORMAT) {
 			case JPEG:
-				message.setRelativeFilePath(message.getUuid()+".jpg");
+				message.setRelativeFilePath(message.getUuid() + ".jpg");
 				break;
 			case PNG:
-				message.setRelativeFilePath(message.getUuid()+".png");
+				message.setRelativeFilePath(message.getUuid() + ".png");
 				break;
 			case WEBP:
-				message.setRelativeFilePath(message.getUuid()+".webp");
+				message.setRelativeFilePath(message.getUuid() + ".webp");
 				break;
 		}
 		copyImageToPrivateStorage(getFile(message), image);
@@ -402,7 +403,7 @@ public class FileBackend {
 	}
 
 	private int getRotation(File file) {
-		return getRotation(Uri.parse("file://"+file.getAbsolutePath()));
+		return getRotation(Uri.parse("file://" + file.getAbsolutePath()));
 	}
 
 	private int getRotation(Uri image) {
@@ -419,7 +420,7 @@ public class FileBackend {
 
 	public Bitmap getThumbnail(Message message, int size, boolean cacheOnly) throws FileNotFoundException {
 		final String uuid = message.getUuid();
-		final LruCache<String,Bitmap> cache = mXmppConnectionService.getBitmapCache();
+		final LruCache<String, Bitmap> cache = mXmppConnectionService.getBitmapCache();
 		Bitmap thumbnail = cache.get(uuid);
 		if ((thumbnail == null) && (!cacheOnly)) {
 			synchronized (THUMBNAIL_LOCK) {
@@ -439,8 +440,8 @@ public class FileBackend {
 					thumbnail = resize(fullsize, size);
 					thumbnail = rotate(thumbnail, getRotation(file));
 					if (mime.equals("image/gif")) {
-						Bitmap withGifOverlay = thumbnail.copy(Bitmap.Config.ARGB_8888,true);
-						drawOverlay(withGifOverlay,R.drawable.play_gif,1.0f);
+						Bitmap withGifOverlay = thumbnail.copy(Bitmap.Config.ARGB_8888, true);
+						drawOverlay(withGifOverlay, R.drawable.play_gif, 1.0f);
 						thumbnail.recycle();
 						thumbnail = withGifOverlay;
 					}
@@ -465,16 +466,20 @@ public class FileBackend {
 	private void drawOverlay(Bitmap bitmap, int resource, float factor) {
 		Bitmap overlay = BitmapFactory.decodeResource(mXmppConnectionService.getResources(), resource);
 		Canvas canvas = new Canvas(bitmap);
+		float targetSize = Math.min(canvas.getWidth(), canvas.getHeight()) * factor;
+		Log.d(Config.LOGTAG, "target size overlay: " + targetSize + " overlay bitmap size was " + overlay.getHeight());
+		float left = (canvas.getWidth() - targetSize) / 2.0f;
+		float top = (canvas.getHeight() - targetSize) / 2.0f;
+		RectF dst = new RectF(left, top, left + targetSize - 1, top + targetSize - 1);
+		canvas.drawBitmap(overlay, null, dst, createAntiAliasingPaint());
+	}
+
+	private static Paint createAntiAliasingPaint() {
 		Paint paint = new Paint();
 		paint.setAntiAlias(true);
 		paint.setFilterBitmap(true);
 		paint.setDither(true);
-		float targetSize = Math.min(canvas.getWidth(),canvas.getHeight()) * factor;
-		Log.d(Config.LOGTAG,"target size overlay: "+targetSize+" overlay bitmap size was "+overlay.getHeight());
-		float left = (canvas.getWidth() - targetSize) / 2.0f;
-		float top = (canvas.getHeight() - targetSize) / 2.0f;
-		RectF dst = new RectF(left,top,left+targetSize-1,top+targetSize-1);
-		canvas.drawBitmap(overlay,null,dst,paint);
+		return paint;
 	}
 
 	private Bitmap getVideoPreview(File file, int size) {
@@ -485,16 +490,16 @@ public class FileBackend {
 			frame = metadataRetriever.getFrameAtTime(0);
 			metadataRetriever.release();
 			frame = resize(frame, size);
-		} catch(RuntimeException  e) {
-			frame = Bitmap.createBitmap(size,size, Bitmap.Config.ARGB_8888);
+		} catch (RuntimeException e) {
+			frame = Bitmap.createBitmap(size, size, Bitmap.Config.ARGB_8888);
 			frame.eraseColor(0xff000000);
 		}
-		drawOverlay(frame,R.drawable.play_video,0.75f);
+		drawOverlay(frame, R.drawable.play_video, 0.75f);
 		return frame;
 	}
 
 	private static String getTakePhotoPath() {
-		return Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM)+"/Camera/";
+		return Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM) + "/Camera/";
 	}
 
 	public Uri getTakePhotoUri() {
@@ -505,7 +510,7 @@ public class FileBackend {
 			file = new File(getTakePhotoPath() + "IMG_" + this.IMAGE_DATE_FORMAT.format(new Date()) + ".jpg");
 		}
 		file.getParentFile().mkdirs();
-		return getUriForFile(mXmppConnectionService,file);
+		return getUriForFile(mXmppConnectionService, file);
 	}
 
 	public static Uri getUriForFile(Context context, File file) {
@@ -513,7 +518,7 @@ public class FileBackend {
 			try {
 				String packageId = context.getPackageName();
 				return FileProvider.getUriForFile(context, packageId + FILE_PROVIDER, file);
-			} catch(IllegalArgumentException e) {
+			} catch (IllegalArgumentException e) {
 				if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
 					throw new SecurityException(e);
 				} else {
@@ -530,7 +535,7 @@ public class FileBackend {
 			return original;
 		} else {
 			List<String> segments = original.getPathSegments();
-			return Uri.parse("file://"+getTakePhotoPath()+segments.get(segments.size() - 1));
+			return Uri.parse("file://" + getTakePhotoPath() + segments.get(segments.size() - 1));
 		}
 	}
 
@@ -539,7 +544,24 @@ public class FileBackend {
 		if (bm == null) {
 			return null;
 		}
-		return getPepAvatar(bm,format,100);
+		if (hasAlpha(bm)) {
+			Log.d(Config.LOGTAG,"alpha in avatar detected; uploading as PNG");
+			bm.recycle();
+			bm = cropCenterSquare(image, 96);
+			return getPepAvatar(bm, Bitmap.CompressFormat.PNG, 100);
+		}
+		return getPepAvatar(bm, format, 100);
+	}
+
+	private static boolean hasAlpha(final Bitmap bitmap) {
+		for(int x = 0; x < bitmap.getWidth(); ++x) {
+			for(int y = 0; y < bitmap.getWidth(); ++y) {
+				if (Color.alpha(bitmap.getPixel(x,y)) < 255) {
+					return true;
+				}
+			}
+		}
+		return false;
 	}
 
 	private Avatar getPepAvatar(Bitmap bitmap, Bitmap.CompressFormat format, int quality) {
@@ -554,15 +576,24 @@ public class FileBackend {
 			mDigestOutputStream.flush();
 			mDigestOutputStream.close();
 			long chars = mByteArrayOutputStream.size();
-			if (quality >= 50 && chars >= Config.AVATAR_CHAR_LIMIT) {
+			if (format != Bitmap.CompressFormat.PNG && quality >= 50 && chars >= Config.AVATAR_CHAR_LIMIT) {
 				int q = quality - 2;
-				Log.d(Config.LOGTAG,"avatar char length was "+chars+" reducing quality to "+q);
-				return getPepAvatar(bitmap,format,q);
+				Log.d(Config.LOGTAG, "avatar char length was " + chars + " reducing quality to " + q);
+				return getPepAvatar(bitmap, format, q);
 			}
-			Log.d(Config.LOGTAG,"settled on char length "+chars+" with quality="+quality);
+			Log.d(Config.LOGTAG, "settled on char length " + chars + " with quality=" + quality);
 			final Avatar avatar = new Avatar();
 			avatar.sha1sum = CryptoHelper.bytesToHex(digest.digest());
 			avatar.image = new String(mByteArrayOutputStream.toByteArray());
+			if (format.equals(Bitmap.CompressFormat.WEBP)) {
+				avatar.type = "image/webp";
+			} else if (format.equals(Bitmap.CompressFormat.JPEG)) {
+				avatar.type = "image/jpeg";
+			} else if (format.equals(Bitmap.CompressFormat.PNG)) {
+				avatar.type = "image/png";
+			}
+			avatar.width = bitmap.getWidth();
+			avatar.height = bitmap.getHeight();
 			return avatar;
 		} catch (Exception e) {
 			return null;
@@ -652,7 +683,7 @@ public class FileBackend {
 	}
 
 	public String getAvatarPath(String avatar) {
-		return mXmppConnectionService.getFilesDir().getAbsolutePath()+ "/avatars/" + avatar;
+		return mXmppConnectionService.getFilesDir().getAbsolutePath() + "/avatars/" + avatar;
 	}
 
 	public Uri getAvatarUri(String avatar) {
@@ -716,11 +747,7 @@ public class FileBackend {
 			RectF targetRect = new RectF(left, top, left + scaledWidth, top + scaledHeight);
 			Bitmap dest = Bitmap.createBitmap(newWidth, newHeight, Bitmap.Config.ARGB_8888);
 			Canvas canvas = new Canvas(dest);
-			Paint p = new Paint();
-			p.setAntiAlias(true);
-			p.setFilterBitmap(true);
-			p.setDither(true);
-			canvas.drawBitmap(source, null, targetRect, p);
+			canvas.drawBitmap(source, null, targetRect, createAntiAliasingPaint());
 			if (source.isRecycled()) {
 				source.recycle();
 			}
@@ -748,8 +775,8 @@ public class FileBackend {
 
 		Bitmap output = Bitmap.createBitmap(size, size, Bitmap.Config.ARGB_8888);
 		Canvas canvas = new Canvas(output);
-		canvas.drawBitmap(input, null, target, null);
-		if (input != null && !input.isRecycled()) {
+		canvas.drawBitmap(input, null, target, createAntiAliasingPaint());
+		if (!input.isRecycled()) {
 			input.recycle();
 		}
 		return output;
@@ -787,7 +814,7 @@ public class FileBackend {
 	}
 
 	public void updateFileParams(Message message) {
-		updateFileParams(message,null);
+		updateFileParams(message, null);
 	}
 
 	public void updateFileParams(Message message, URL url) {
@@ -806,7 +833,7 @@ public class FileBackend {
 				Dimensions dimensions = image ? getImageDimensions(file) : getVideoDimensions(file);
 				body.append('|').append(dimensions.width).append('|').append(dimensions.height);
 			} catch (NotAVideoFile notAVideoFile) {
-				Log.d(Config.LOGTAG,"file with mime type "+file.getMimeType()+" was not a video file");
+				Log.d(Config.LOGTAG, "file with mime type " + file.getMimeType() + " was not a video file");
 				//fall threw
 			}
 		} else if (audio) {
@@ -818,9 +845,9 @@ public class FileBackend {
 	public int getMediaRuntime(Uri uri) {
 		try {
 			MediaMetadataRetriever mediaMetadataRetriever = new MediaMetadataRetriever();
-			mediaMetadataRetriever.setDataSource(mXmppConnectionService,uri);
+			mediaMetadataRetriever.setDataSource(mXmppConnectionService, uri);
 			return Integer.parseInt(mediaMetadataRetriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION));
-		} catch (RuntimeException  e) {
+		} catch (RuntimeException e) {
 			return 0;
 		}
 	}
@@ -888,7 +915,7 @@ public class FileBackend {
 			width = -1;
 		}
 		metadataRetriever.release();
-		Log.d(Config.LOGTAG,"extracted video dims "+width+"x"+height);
+		Log.d(Config.LOGTAG, "extracted video dims " + width + "x" + height);
 		return rotated ? new Dimensions(width, height) : new Dimensions(height, width);
 	}
 
@@ -917,7 +944,7 @@ public class FileBackend {
 		}
 
 		public int getMin() {
-			return Math.min(width,height);
+			return Math.min(width, height);
 		}
 	}
 
