@@ -674,7 +674,9 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
 					if (conversation != null && conversation.getMode() == Conversation.MODE_MULTI) {
 						conversation.setHasMessagesLeftOnServer(conversation.countMessages() > 0);
 						String subject = packet.findChildContent("subject");
-						conversation.getMucOptions().setSubject(subject);
+						if (conversation.getMucOptions().setSubject(subject)) {
+							mXmppConnectionService.updateConversation(conversation);
+						}
 						final Bookmark bookmark = conversation.getBookmark();
 						if (bookmark != null && bookmark.getBookmarkName() == null) {
 							if (bookmark.setBookmarkName(subject)) {

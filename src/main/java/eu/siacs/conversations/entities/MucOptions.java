@@ -3,7 +3,6 @@ package eu.siacs.conversations.entities;
 import android.annotation.SuppressLint;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -362,12 +361,11 @@ public class MucOptions {
 	private final Set<User> users = new HashSet<>();
 	private final List<String> features = new ArrayList<>();
 	private Data form = new Data();
-	private Conversation conversation;
+	private final Conversation conversation;
 	private boolean isOnline = false;
 	private Error error = Error.NONE;
 	public OnRenameListener onRenameListener = null;
 	private User self;
-	private String subject = null;
 	private String password = null;
 
 	public MucOptions(Conversation conversation) {
@@ -661,18 +659,39 @@ public class MucOptions {
 		return self;
 	}
 
-	public void setSubject(String content) {
-		this.subject = content;
+	public boolean setSubject(String subject) {
+		return this.conversation.setAttribute("subject",subject);
 	}
 
 	public String getSubject() {
-		return this.subject;
+		return this.conversation.getAttribute("subject");
+	}
+
+	public List<User> getFallbackUsersFromCryptoTargets() {
+		List<User> users = new ArrayList<>();
+		for(Jid jid : conversation.getAcceptedCryptoTargets()) {
+			User user = new User(this,null);
+			user.setRealJid(jid);
+			users.add(user);
+		}
+		return users;
+	}
+
+	public List<User> getUsersRelevantForNameAndAvatar() {
+		final List<User> users;
+		if (isOnline) {
+			users = getUsers(5);
+		} else {
+			users = getFallbackUsersFromCryptoTargets();
+		}
+		return users;
 	}
 
 	public String createNameFromParticipants() {
-		if (getUserCount() >= 2) {
+		List<User> users = getUsersRelevantForNameAndAvatar();
+		if (users.size() >= 2) {
 			StringBuilder builder = new StringBuilder();
-			for (User user : getUsers(5)) {
+			for (User user : users) {
 				if (builder.length() != 0) {
 					builder.append(", ");
 				}

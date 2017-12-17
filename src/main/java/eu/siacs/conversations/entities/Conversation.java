@@ -495,12 +495,12 @@ public class Conversation extends AbstractEntity implements Blockable, Comparabl
 
 	public String getName() {
 		if (getMode() == MODE_MULTI) {
-			if (getMucOptions().getSubject() != null) {
-				return getMucOptions().getSubject();
-			} else if (bookmark != null
-					&& bookmark.getBookmarkName() != null
-					&& !bookmark.getBookmarkName().trim().isEmpty()) {
-				return bookmark.getBookmarkName().trim();
+			final String subject = getMucOptions().getSubject();
+			final String bookmarkName = bookmark != null ? bookmark.getBookmarkName() : null;
+			if (subject != null && !subject.trim().isEmpty()) {
+				return subject;
+			} else if (bookmarkName != null && !bookmarkName.trim().isEmpty()) {
+				return bookmarkName;
 			} else {
 				String generatedName = getMucOptions().createNameFromParticipants();
 				if (generatedName != null) {
