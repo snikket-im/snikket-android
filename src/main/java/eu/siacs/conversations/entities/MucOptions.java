@@ -553,8 +553,10 @@ public class MucOptions {
 		this.error = error;
 	}
 
-	public void setOnline() {
+	public boolean setOnline() {
+		boolean before = this.isOnline;
 		this.isOnline = true;
+		return !before;
 	}
 
 	public ArrayList<User> getUsers() {
