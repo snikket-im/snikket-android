@@ -392,7 +392,7 @@ public class AxolotlService implements OnAdvancedStreamFeaturesLoaded {
 		final int hash = deviceIds.hashCode();
 		final boolean me = jid.toBareJid().equals(account.getJid().toBareJid());
 		if (me) {
-			if (hash == this.lastDeviceListNotificationHash) {
+			if (hash != 0 && hash == this.lastDeviceListNotificationHash) {
 				Log.d(Config.LOGTAG, account.getJid().toBareJid() + ": ignoring duplicate own device id list");
 				return;
 			}
