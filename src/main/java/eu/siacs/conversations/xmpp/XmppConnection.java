@@ -53,6 +53,7 @@ import de.duenndns.ssl.DomainHostnameVerifier;
 import de.duenndns.ssl.MemorizingTrustManager;
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.crypto.XmppDomainVerifier;
+import eu.siacs.conversations.crypto.axolotl.AxolotlService;
 import eu.siacs.conversations.crypto.sasl.Anonymous;
 import eu.siacs.conversations.crypto.sasl.DigestMd5;
 import eu.siacs.conversations.crypto.sasl.External;
@@ -1708,10 +1709,11 @@ public class XmppConnection implements Runnable {
 		}
 
 		public boolean pepPublishOptions() {
-			synchronized (XmppConnection.this.disco) {
-				ServiceDiscoveryResult info = disco.get(account.getJid().toBareJid());
-				return info != null && info.getFeatures().contains(Namespace.PUBSUB_PUBLISH_OPTIONS);
-			}
+			return hasDiscoFeature(account.getJid().toBareJid(),Namespace.PUBSUB_PUBLISH_OPTIONS);
+		}
+
+		public boolean pepOmemoWhitelisted() {
+			return hasDiscoFeature(account.getJid().toBareJid(), AxolotlService.PEP_OMEMO_WHITELISTED);
 		}
 
 		public boolean mam() {

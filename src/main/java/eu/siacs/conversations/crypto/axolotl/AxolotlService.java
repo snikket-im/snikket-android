@@ -63,6 +63,7 @@ public class AxolotlService implements OnAdvancedStreamFeaturesLoaded {
 	public static final String PEP_DEVICE_LIST_NOTIFY = PEP_DEVICE_LIST + "+notify";
 	public static final String PEP_BUNDLES = PEP_PREFIX + ".bundles";
 	public static final String PEP_VERIFICATION = PEP_PREFIX + ".verification";
+	public static final String PEP_OMEMO_WHITELISTED = PEP_PREFIX + ".whitelisted";
 
 	public static final String LOGPREFIX = "AxolotlService";
 

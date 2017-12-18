@@ -913,7 +913,7 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
 				AxolotlService axolotlService = this.mAccount.getAxolotlService();
 				if (axolotlService != null && axolotlService.isPepBroken()) {
 					this.mServerInfoPep.setText(R.string.server_info_broken);
-				} else if (features.pepPublishOptions()) {
+				} else if (features.pepPublishOptions() || features.pepOmemoWhitelisted()) {
 					this.mServerInfoPep.setText(R.string.server_info_available);
 				} else {
 					this.mServerInfoPep.setText(R.string.server_info_partial);
