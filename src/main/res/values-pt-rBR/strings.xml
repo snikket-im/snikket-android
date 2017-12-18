@@ -20,6 +20,7 @@
   <string name="title_activity_sharewith">Compartilhar com a conversa</string>
   <string name="title_activity_start_conversation">Conversar</string>
   <string name="title_activity_choose_contact">Selecione o contato</string>
+  <string name="title_activity_share_via_account">Compartilhar via conta</string>
   <string name="title_activity_block_list">Lista de bloqueios</string>
   <string name="just_now">agora</string>
   <string name="minute_ago">1 minuto atrás</string>
