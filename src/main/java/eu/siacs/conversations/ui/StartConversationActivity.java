@@ -625,6 +625,7 @@ public class StartConversationActivity extends XmppActivity implements OnRosterU
             case R.id.action_scan_qr_code:
                 Intent intent = new Intent(this, UriHandlerActivity.class);
                 intent.setAction(UriHandlerActivity.ACTION_SCAN_QR_CODE);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
                 startActivity(intent);
                 return true;
             case R.id.action_hide_offline:
