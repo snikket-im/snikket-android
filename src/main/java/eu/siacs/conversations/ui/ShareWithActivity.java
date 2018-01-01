@@ -312,23 +312,17 @@ public class ShareWithActivity extends XmppActivity implements XmppConnectionSer
 			return;
 		}
 		if (share.uris.size() != 0) {
-			OnPresenceSelected callback = new OnPresenceSelected() {
-				@Override
-				public void onPresenceSelected() {
-					attachmentCounter.set(share.uris.size());
-					if (share.image) {
-						share.multiple = share.uris.size() > 1;
-						replaceToast(getString(share.multiple ? R.string.preparing_images : R.string.preparing_image));
-						for (Iterator<Uri> i = share.uris.iterator(); i.hasNext(); i.remove()) {
-							ShareWithActivity.this.xmppConnectionService
-									.attachImageToConversation(conversation, i.next(),
-											attachFileCallback);
-						}
-					} else {
-						replaceToast(getString(R.string.preparing_file));
-						ShareWithActivity.this.xmppConnectionService
-								.attachFileToConversation(conversation, share.uris.get(0), attachFileCallback);
+			OnPresenceSelected callback = () -> {
+				attachmentCounter.set(share.uris.size());
+				if (share.image) {
+					share.multiple = share.uris.size() > 1;
+					replaceToast(getString(share.multiple ? R.string.preparing_images : R.string.preparing_image));
+					for (Iterator<Uri> i = share.uris.iterator(); i.hasNext(); i.remove()) {
+						xmppConnectionService.attachImageToConversation(conversation, i.next(), attachFileCallback);
 					}
+				} else {
+					replaceToast(getString(R.string.preparing_file));
+					xmppConnectionService.attachFileToConversation(conversation, share.uris.get(0), attachFileCallback);
 				}
 			};
 			if (account.httpUploadAvailable()
