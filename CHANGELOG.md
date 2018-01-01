@@ -1,7 +1,7 @@
 # Changelog
 
 ### Version 1.23.3
-* Fixed OMEMO device list no being announced
+* Fixed OMEMO device list not being announced
 
 ### Version 1.23.2
 * Removed NFC support
