@@ -20,6 +20,7 @@
   <string name="title_activity_sharewith">Megosztás Conversation-nel</string>
   <string name="title_activity_start_conversation">Beszélgessünk!</string>
   <string name="title_activity_choose_contact">Válassz névjegyet</string>
+  <string name="title_activity_share_via_account">Megosztás fiókon keresztül</string>
   <string name="title_activity_block_list">Tiltólista</string>
   <string name="just_now">Éppen most</string>
   <string name="minute_ago">1 perce</string>
@@ -29,6 +30,7 @@
   <string name="message_decrypting">Üzenet dekódolása. Kérem várjon...</string>
   <string name="pgp_message">OpenPGP kódolású üzenet</string>
   <string name="nick_in_use">A becenév már foglalt</string>
+  <string name="invalid_muc_nick">Érvénytelen becenév</string>
   <string name="admin">Adminisztrátor</string>
   <string name="owner">Tulajdonos</string>
   <string name="moderator">Moderátor</string>
@@ -244,6 +246,8 @@
   <string name="contact_added_you">Ez a felhasználó hozzáadott téged a névjegyeihez</string>
   <string name="add_back">Én is hozzáadom</string>
   <string name="contact_has_read_up_to_this_point">%s eddig olvasta</string>
+  <string name="contacts_have_read_up_to_this_point">%seddig olvasta</string>
+  <string name="contacts_and_n_more_have_read_up_to_this_point">%1$s+ %2$dis eddig olvasta</string>
   <string name="publish">Közzétesz</string>
   <string name="touch_to_choose_picture">Érintsd meg a piktogramot kép kiválasztásához </string>
   <string name="publishing">Közzétesz...</string>

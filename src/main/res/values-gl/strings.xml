@@ -20,6 +20,7 @@
   <string name="title_activity_sharewith">Compartir na conversa</string>
   <string name="title_activity_start_conversation">Iniciar conversa</string>
   <string name="title_activity_choose_contact">Escoller Contacto</string>
+  <string name="title_activity_share_via_account">Compartir coa conta</string>
   <string name="title_activity_block_list">Lista de bloqueo</string>
   <string name="just_now">agora</string>
   <string name="minute_ago">Hai 1 min</string>
@@ -29,6 +30,7 @@
   <string name="message_decrypting">Descifrando a mensaxe. Por favor agarde...</string>
   <string name="pgp_message">Mensaxe cifrado con OpenPGP</string>
   <string name="nick_in_use">O apodo xa está en uso</string>
+  <string name="invalid_muc_nick">Alcume non válido</string>
   <string name="admin">Admin</string>
   <string name="owner">Dono</string>
   <string name="moderator">Moderador</string>

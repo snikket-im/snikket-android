@@ -20,6 +20,7 @@
   <string name="title_activity_sharewith">Partager avec Conversation</string>
   <string name="title_activity_start_conversation">Démarrer une conversation</string>
   <string name="title_activity_choose_contact">Choisir un contact</string>
+  <string name="title_activity_share_via_account">Partager via le compte</string>
   <string name="title_activity_block_list">Bloquer la liste</string>
   <string name="just_now">À l\'instant</string>
   <string name="minute_ago">Il y a 1 minute</string>
@@ -29,6 +30,7 @@
   <string name="message_decrypting">Déchiffrement du message. Veuillez patienter...</string>
   <string name="pgp_message">Message chiffré avec OpenPGP</string>
   <string name="nick_in_use">Cet identifiant est déjà utilisé.</string>
+  <string name="invalid_muc_nick">Identifiant non valide</string>
   <string name="admin">Administrateur</string>
   <string name="owner">Propriétaire</string>
   <string name="moderator">Modérateur</string>
