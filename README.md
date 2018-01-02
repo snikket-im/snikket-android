@@ -100,7 +100,7 @@ Buying the App from the Play Store will also give you access to our [beta test](
 
 #### I don't have a Google Account but I would still like to make a contribution
 
-I accept donations over PayPal, Bitcoin and Flattr. For donations via PayPal you
+I accept donations over PayPal, bank transfer and various crypto currencies. For donations via PayPal you
 can use the email address `donate@siacs.eu` or the button below.
 
 [![Donate with PayPal](https://www.paypalobjects.com/en_US/i/btn/btn_donate_LG.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=CW3SYT3KG5PDL)
@@ -109,10 +109,13 @@ can use the email address `donate@siacs.eu` or the button below.
 larger contributions please get in touch with me beforehand and we can talk
 about bank transfer (SEPA).
 
-My Bitcoin Address is: `1NxSU1YxYzJVDpX1rcESAA3NJki7kRgeeu`
+##### Crypto currencies
 
+Bitcoin: `1AeqNAcg85APAZj9BZfAjdFCC5zesqXp2B`
 
-[![Flattr this!](http://api.flattr.com/button/flattr-badge-large.png)](https://flattr.com/submit/auto?user_id=inputmice&url=http%3A%2F%2Fconversations.siacs.eu&title=Conversations&tags=github&category=software)
+Bitcoin Cash: `16ABkXzYAwWz8Y5DcWFfbBRqL63g3hzEaU`
+
+Ether: `0x5c4e5239cd9c6f4a909e4e8361526e2e3c8ba9fa`
 
 #### How do I create an account?
 XMPP, like email, is a federated protocol, which means that there is not one company you can create an *official XMPP account* with. Instead there are hundreds, or even thousands, of providers out there. One of those providers is our very own [conversations.im](https://account.conversations.im). If you don’t like to use *conversations.im* use a web search engine of your choice to find another provider. Or maybe your university has one. Or you can run your own. Or ask a friend to run one. Once you've found one, you can use Conversations to create an account. Just select *register new account* on server within the create account dialog.
