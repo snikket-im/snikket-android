@@ -724,10 +724,8 @@ public abstract class XmppActivity extends Activity {
 		if (password) {
 			editor.setInputType(InputType.TYPE_CLASS_TEXT
 					| InputType.TYPE_TEXT_VARIATION_PASSWORD);
-			builder.setPositiveButton(R.string.accept, null);
-		} else {
-			builder.setPositiveButton(R.string.edit, null);
 		}
+		builder.setPositiveButton(R.string.accept, null);
 		if (hint != 0) {
 			editor.setHint(hint);
 		}
