@@ -511,7 +511,7 @@ public class MucOptions {
 		return null;
 	}
 
-	private User findUserByRealJid(Jid jid) {
+	public User findUserByRealJid(Jid jid) {
 		if (jid == null) {
 			return null;
 		}

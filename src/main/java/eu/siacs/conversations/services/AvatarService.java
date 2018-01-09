@@ -339,7 +339,13 @@ public class AvatarService implements OnAdvancedStreamFeaturesLoaded {
 			if (c != null && (c.getProfilePhoto() != null || c.getAvatar() != null)) {
 				return get(c, size, cachedOnly);
 			} else if (message.getConversation().getMode() == Conversation.MODE_MULTI){
-				MucOptions.User user = conversation.getMucOptions().findUserByFullJid(message.getCounterpart());
+				final Jid trueCounterpart = message.getTrueCounterpart();
+				MucOptions.User user;
+				if (trueCounterpart != null) {
+					user = conversation.getMucOptions().findUserByRealJid(trueCounterpart);
+				} else {
+					user = conversation.getMucOptions().findUserByFullJid(message.getCounterpart());
+				}
 				if (user != null) {
 					return getImpl(user,size,cachedOnly);
 				}
