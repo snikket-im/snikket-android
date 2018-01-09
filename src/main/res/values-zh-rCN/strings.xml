@@ -37,7 +37,7 @@
   <string name="participant">参与者</string>
   <string name="visitor">访客</string>
   <string name="remove_contact_text">将 %s 从列表中移除? 与该联系人的会话消息不会清除.</string>
-  <string name="block_contact_text">你想屏蔽 %s 将不能发送信息给你？</string>
+  <string name="block_contact_text">你想屏蔽 %s 吗， ta不能发送信息给你？</string>
   <string name="unblock_contact_text">你想解除对 %s 的屏蔽吗，他们将可以发送信息给你？</string>
   <string name="block_domain_text">屏蔽 %s 中的所有联系人？</string>
   <string name="unblock_domain_text">解除对 %s 中所有联系人的屏蔽？</string>
@@ -66,7 +66,7 @@
   <string name="problem_connecting_to_accounts">无法连接至多个账户</string>
   <string name="touch_to_fix">点击此处管理账户</string>
   <string name="attach_file">附加文件</string>
-  <string name="not_in_roster">该联系人不在您的列表。需要加为联系人吗 ?</string>
+  <string name="not_in_roster">该联系人不在您的列表，需要加为联系人吗 ?</string>
   <string name="add_contact">添加联系人</string>
   <string name="send_failed">传递失败</string>
   <string name="preparing_image">准备传输图像</string>
@@ -123,7 +123,7 @@
   <string name="pref_never_send_crash_summary">发送堆栈跟踪帮助 Conversations 开发人员</string>
   <string name="pref_confirm_messages">确认消息</string>
   <string name="pref_confirm_messages_summary">让对方知道你收到并阅读了他们的消息</string>
-  <string name="pref_ui_options">UI</string>
+  <string name="pref_ui_options">用户界面</string>
   <string name="openpgp_error">OpenKeychain 报告了一个错误</string>
   <string name="accept">接受</string>
   <string name="error">产生了一个错误</string>
@@ -399,8 +399,10 @@
   <string name="remove_membership">吊销的成员</string>
   <string name="grant_admin_privileges">授予管理员权限</string>
   <string name="remove_admin_privileges">吊销管理员权限</string>
+  <string name="remove_from_room">从群聊中移除</string>
   <string name="could_not_change_affiliation">不能修改 %s 的从属关系</string>
   <string name="ban_from_conference">屏蔽群聊</string>
+  <string name="removing_from_public_conference">您正尝试将 %s 移除公共的群组，唯一的办法是将该用户永久禁言。</string>
   <string name="ban_now">现在屏蔽</string>
   <string name="could_not_change_role">不能修改 %s 的角色</string>
   <string name="public_conference">公开的群聊</string>
@@ -411,6 +413,7 @@
   <string name="moderated">群主</string>
   <string name="you_are_not_participating">您尚未参与</string>
   <string name="modified_conference_options">群组设置修改成功!</string>
+  <string name="could_not_modify_conference_options">无法更改群组设置</string>
   <string name="never">从不</string>
   <string name="thirty_minutes">30 分钟</string>
   <string name="one_hour">1 个小时</string>
@@ -447,6 +450,7 @@
   <string name="location">位置</string>
   <string name="received_location">位置已收到</string>
   <string name="title_undo_swipe_out_conversation">Conversation 已关闭</string>
+  <string name="title_undo_swipe_out_muc">离开群聊</string>
   <string name="pref_dont_trust_system_cas_title">不相信系统 CA</string>
   <string name="pref_dont_trust_system_cas_summary">所有证书必须人工通过</string>
   <string name="pref_remove_trusted_certificates_title">移除证书</string>
