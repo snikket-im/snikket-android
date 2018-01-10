@@ -55,6 +55,7 @@ import eu.siacs.conversations.services.XmppConnectionService.OnCaptchaRequested;
 import eu.siacs.conversations.services.XmppConnectionService;
 import eu.siacs.conversations.services.XmppConnectionService.OnAccountUpdate;
 import eu.siacs.conversations.ui.adapter.KnownHostsAdapter;
+import eu.siacs.conversations.ui.widget.DisabledActionModeCallback;
 import eu.siacs.conversations.utils.CryptoHelper;
 import eu.siacs.conversations.utils.UIHelper;
 import eu.siacs.conversations.utils.XmppUri;
@@ -856,6 +857,11 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
 		this.mAccountJid.setEnabled(editable);
 		this.mAccountJid.setFocusable(editable);
 		this.mAccountJid.setFocusableInTouchMode(editable);
+		if (editable) {
+			this.mPassword.setCustomSelectionActionModeCallback(null);
+		} else {
+			this.mPassword.setCustomSelectionActionModeCallback(new DisabledActionModeCallback());
+		}
 
 		if (!mInitMode) {
 			this.mAvatar.setVisibility(View.VISIBLE);
