@@ -152,6 +152,17 @@ On rare occasions this error message might also be caused by a server not provid
 a login (SASL) mechanism that Conversations is able to handle. Conversations supports
 SCRAM-SHA1, PLAIN, EXTERNAL (client certs) and DIGEST-MD5.
 
+#### I get 'Bind failure'. What does that mean?
+
+Some Bind failures are transient and resolve themselves after a reconnect.
+
+When trying to connect to OpenFire the bind failure can be a permanent problem when the domain part of the Jabber ID entered in Conversations doesn’t match the domain the OpenFire server feels responsible for. For example OpenFire is configured to use the domain `a.tld` but the Jabber ID entered is `user@b.tld` where `b.tld` also points to the same host. During bind OpenFire tries to reassign the Jabber to `user@a.tld`. Conversations doesn’t like that.
+This can be fixed by creating a new account in Conversations that uses the Jabber ID `user@a.tld`. 
+
+Note: This is kind of a weird quirk in OpenFire. Most other servers would just throw a 'Server not responsible for domain' error instead of attempting to reassign the Jabber ID.
+
+Maybe you attempted to use the Jabber ID `test@b.tld` because `a.tld` doesn’t point to the correct host. In that case you might have to enable the extended connection settings in the expert settings of Conversations and set a host name.
+
 #### How do XEP-0357: Push Notifications work?
 You need to be running the Play Store version of Conversations and your server needs to support push notifications.¹ Because *Google Cloud Notifications (GCM)* are tied with an API key to a specific app your server can not initiate the push message directly. Instead your server will send the push notification to the Conversations App server (operated by us) which then acts as a proxy and initiates the push message for you. The push message sent from our App server through GCM doesn’t contain any personal information. It is just an empty message which will wake up your device and tell Conversations to reconnect to your server. The information send from your server to our App server depends on the configuration of your server but can be limited to your account name. (In any case the Conversations App server won't redirect any information through GCM even if your server sends this information.)
 
