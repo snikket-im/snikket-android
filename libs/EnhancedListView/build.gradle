@@ -1,0 +1,98 @@
+apply plugin: 'com.android.library'
+
+repositories {
+    mavenCentral()
+    google()
+}
+
+dependencies {
+    compile 'com.android.support:support-v4:27.0.2'
+    compile 'com.nineoldandroids:library:2.4.0'
+}
+
+android {
+    compileSdkVersion 26
+    buildToolsVersion "26.0.2"
+
+    defaultConfig {
+        minSdkVersion 14
+        targetSdkVersion 25
+        versionName "0.3.4"
+        versionCode 9
+    }
+
+	lintOptions {
+		abortOnError false
+	}
+}
+
+apply plugin: 'maven'
+apply plugin: 'signing'
+
+version = android.defaultConfig.versionName
+group = "de.timroes.android"
+
+if(project.hasProperty("EnhancedListView.properties") && new File(project.property("EnhancedListView.properties")).exists()) {
+
+    Properties props = new Properties()
+    props.load(new FileInputStream(file(project.property("EnhancedListView.properties"))))
+
+    gradle.taskGraph.whenReady { taskGraph ->
+        if (taskGraph.allTasks.any { it instanceof Sign }) {
+            allprojects { ext."signing.keyId" = props['signing.keyId'] }
+            allprojects { ext."signing.secretKeyRingFile" = props['signing.secretKeyRingFile'] }
+            allprojects { ext."signing.password" = props['signing.password'] }
+        }
+    }
+
+    signing {
+        required { has("release") && gradle.taskGraph.hasTask("uploadArchives") }
+        sign configurations.archives
+    }
+
+    uploadArchives {
+
+        configuration = configurations.archives
+        repositories.mavenDeployer {
+
+            beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
+
+            repository(url: props['sonatypeRepo']) {
+                authentication(userName: props['sonatypeUsername'], password: props['sonatypePassword'])
+            }
+
+            pom.project {
+
+                name 'EnhancedListView'
+                packaging 'aar'
+                description 'ListView with enhanced features for Android'
+                url 'https://github.com/timroes/EnhancedListView'
+
+                scm {
+                    url 'scm:git@github.com:timroes/EnhancedListView.git'
+                    connection 'scm:git@github.com:timroes/EnhancedListView.git'
+                    developerConnection  'scm:git@github.com:timroes/EnhancedListView.git'
+                }
+
+                licenses {
+                    license {
+                        name 'The Apache Software License, Version 2.0'
+                        url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                        distribution 'repo'
+                    }
+                }
+
+                developers {
+                    developer {
+                        id 'timroes'
+                        name 'Tim Roes'
+                        email 'mail@timroes.de'
+                    }
+                }
+
+            }
+
+        }
+    }
+
+}

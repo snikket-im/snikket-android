@@ -34,6 +34,7 @@ ext {
 
 dependencies {
     implementation project(':libs:MemorizingTrustManager')
+    implementation project(':libs:EnhancedListView')
     playstoreImplementation 'com.google.android.gms:play-services-gcm:11.8.0'
     implementation 'org.sufficientlysecure:openpgp-api:10.0'
     implementation 'com.soundcloud.android:android-crop:1.0.1@aar'
@@ -47,7 +48,6 @@ dependencies {
     implementation 'com.google.zxing:core:3.2.1'
     implementation 'com.google.zxing:android-integration:3.2.1'
     implementation 'de.measite.minidns:minidns-hla:0.2.4'
-    implementation 'de.timroes.android:EnhancedListView:0.3.4'
     implementation 'me.leolin:ShortcutBadger:1.1.19@aar'
     implementation 'com.kyleduo.switchbutton:library:1.2.8'
     implementation 'org.whispersystems:signal-protocol-java:2.6.2'
