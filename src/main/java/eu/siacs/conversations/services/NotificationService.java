@@ -225,8 +225,10 @@ public class NotificationService {
 		}
 		synchronized (notifications) {
 			markAsReadIfHasDirectReply(conversation);
+			//TODO: only update if something actually got removed?
 			notifications.remove(conversation.getUuid());
 			final NotificationManagerCompat notificationManager = NotificationManagerCompat.from(mXmppConnectionService);
+			//TODO on later androids (that have multiple Conversations) maybe canceling is enough + update summary notification
 			notificationManager.cancel(conversation.getUuid(), NOTIFICATION_ID);
 			updateNotification(false);
 		}

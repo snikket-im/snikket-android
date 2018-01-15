@@ -741,7 +741,7 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
 			if (packet.fromAccount(account)) {
 				Conversation conversation = mXmppConnectionService.find(account, counterpart.toBareJid());
 				if (conversation != null && (query == null || query.isCatchup())) {
-					mXmppConnectionService.markRead(conversation);
+					mXmppConnectionService.markRead(conversation); //TODO only mark messages read that are older than timestamp
 				}
 			} else if (isTypeGroupChat) {
 				Conversation conversation = mXmppConnectionService.find(account, counterpart.toBareJid());
