@@ -43,13 +43,10 @@ public class XmppAxolotlSession implements Comparable<XmppAxolotlSession> {
 		this.account = account;
 	}
 
-	public Integer getPreKeyId() {
+	public Integer getPreKeyIdAndReset() {
+		final Integer preKeyId = this.preKeyId;
+		this.preKeyId = null;
 		return preKeyId;
-	}
-
-	public void resetPreKeyId() {
-
-		preKeyId = null;
 	}
 
 	public String getFingerprint() {
@@ -87,11 +84,10 @@ public class XmppAxolotlSession implements Comparable<XmppAxolotlSession> {
 		FingerprintStatus status = getTrust();
 		if (!status.isCompromised()) {
 			try {
-				CiphertextMessage ciphertextMessage;
-				try {
-					ciphertextMessage = new PreKeySignalMessage(encryptedKey.key);
-					Optional<Integer> optionalPreKeyId = ((PreKeySignalMessage) ciphertextMessage).getPreKeyId();
-					IdentityKey identityKey = ((PreKeySignalMessage) ciphertextMessage).getIdentityKey();
+				if (encryptedKey.prekey) {
+					PreKeySignalMessage preKeySignalMessage = new PreKeySignalMessage(encryptedKey.key);
+					Optional<Integer> optionalPreKeyId = preKeySignalMessage.getPreKeyId();
+					IdentityKey identityKey = preKeySignalMessage.getIdentityKey();
 					if (!optionalPreKeyId.isPresent()) {
 						throw new CryptoFailedException("PreKeyWhisperMessage did not contain a PreKeyId");
 					}
@@ -100,15 +96,13 @@ public class XmppAxolotlSession implements Comparable<XmppAxolotlSession> {
 						throw new CryptoFailedException("Received PreKeyWhisperMessage but preexisting identity key changed.");
 					}
 					this.identityKey = identityKey;
-				} catch (InvalidVersionException | InvalidMessageException e) {
-					ciphertextMessage = new SignalMessage(encryptedKey.key);
-				}
-				if (ciphertextMessage instanceof PreKeySignalMessage) {
-					plaintext = cipher.decrypt((PreKeySignalMessage) ciphertextMessage);
+					plaintext = cipher.decrypt(preKeySignalMessage);
 				} else {
-					plaintext = cipher.decrypt((SignalMessage) ciphertextMessage);
+					SignalMessage signalMessage = new SignalMessage(encryptedKey.key);
+					plaintext = cipher.decrypt(signalMessage);
+					preKeyId = null; //better safe than sorry because we use that to do special after prekey handling
 				}
-			} catch (InvalidKeyException | LegacyMessageException | InvalidMessageException | DuplicateMessageException | NoSessionException | InvalidKeyIdException | UntrustedIdentityException e) {
+			} catch (InvalidVersionException | InvalidKeyException | LegacyMessageException | InvalidMessageException | DuplicateMessageException | NoSessionException | InvalidKeyIdException | UntrustedIdentityException e) {
 				if (!(e instanceof DuplicateMessageException)) {
 					e.printStackTrace();
 				}

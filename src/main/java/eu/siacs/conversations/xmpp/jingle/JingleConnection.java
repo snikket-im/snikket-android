@@ -448,7 +448,7 @@ public class JingleConnection implements Transferable {
 				}
 				this.file = this.mXmppConnectionService.getFileBackend().getFile(message, false);
 				if (mXmppAxolotlMessage != null) {
-					XmppAxolotlMessage.XmppAxolotlKeyTransportMessage transportMessage = account.getAxolotlService().processReceivingKeyTransportMessage(mXmppAxolotlMessage);
+					XmppAxolotlMessage.XmppAxolotlKeyTransportMessage transportMessage = account.getAxolotlService().processReceivingKeyTransportMessage(mXmppAxolotlMessage, false);
 					if (transportMessage != null) {
 						message.setEncryption(Message.ENCRYPTION_AXOLOTL);
 						this.file.setKey(transportMessage.getKey());

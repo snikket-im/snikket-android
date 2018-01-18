@@ -2,6 +2,7 @@ package eu.siacs.conversations.crypto.axolotl;
 
 import android.util.Base64;
 import android.util.Log;
+import android.util.SparseArray;
 
 
 import java.security.InvalidAlgorithmParameterException;
@@ -43,7 +44,7 @@ public class XmppAxolotlMessage {
 	private byte[] ciphertext = null;
 	private byte[] authtagPlusInnerKey = null;
 	private byte[] iv = null;
-	private final Map<Integer, XmppAxolotlSession.AxolotlKey> keys;
+	private final SparseArray<XmppAxolotlSession.AxolotlKey> keys;
 	private final Jid from;
 	private final int sourceDeviceId;
 
@@ -99,7 +100,7 @@ public class XmppAxolotlMessage {
 			throw new IllegalArgumentException("invalid source id");
 		}
 		List<Element> keyElements = header.getChildren();
-		this.keys = new HashMap<>(keyElements.size());
+		this.keys = new SparseArray<>();
 		for (Element keyElement : keyElements) {
 			switch (keyElement.getName()) {
 				case KEYTAG:
@@ -132,7 +133,7 @@ public class XmppAxolotlMessage {
 	public XmppAxolotlMessage(Jid from, int sourceDeviceId) {
 		this.from = from;
 		this.sourceDeviceId = sourceDeviceId;
-		this.keys = new HashMap<>();
+		this.keys = new SparseArray<>();
 		this.iv = generateIv();
 		this.innerKey = generateKey();
 	}
@@ -157,6 +158,10 @@ public class XmppAxolotlMessage {
 		byte[] iv = new byte[16];
 		random.nextBytes(iv);
 		return iv;
+	}
+
+	public boolean hasPayload() {
+		return ciphertext != null;
 	}
 
 	public void encrypt(String plaintext) throws CryptoFailedException {
@@ -205,10 +210,6 @@ public class XmppAxolotlMessage {
 		return sourceDeviceId;
 	}
 
-	public byte[] getCiphertext() {
-		return ciphertext;
-	}
-
 	public void addDevice(XmppAxolotlSession session) {
 		XmppAxolotlSession.AxolotlKey key;
 		if (authtagPlusInnerKey != null) {
@@ -233,13 +234,13 @@ public class XmppAxolotlMessage {
 		Element encryptionElement = new Element(CONTAINERTAG, AxolotlService.PEP_PREFIX);
 		Element headerElement = encryptionElement.addChild(HEADER);
 		headerElement.setAttribute(SOURCEID, sourceDeviceId);
-		for (Map.Entry<Integer, XmppAxolotlSession.AxolotlKey> keyEntry : keys.entrySet()) {
+		for(int i = 0; i < keys.size(); ++i) {
 			Element keyElement = new Element(KEYTAG);
-			keyElement.setAttribute(REMOTEID, keyEntry.getKey());
-			if (keyEntry.getValue().prekey) {
+			keyElement.setAttribute(REMOTEID, keys.keyAt(i));
+			if (keys.valueAt(i).prekey) {
 				keyElement.setAttribute("prekey","true");
 			}
-			keyElement.setContent(Base64.encodeToString(keyEntry.getValue().key, Base64.NO_WRAP));
+			keyElement.setContent(Base64.encodeToString(keys.valueAt(i).key, Base64.NO_WRAP));
 			headerElement.addChild(keyElement);
 		}
 		headerElement.addChild(IVTAG).setContent(Base64.encodeToString(iv, Base64.NO_WRAP));
@@ -267,7 +268,6 @@ public class XmppAxolotlMessage {
 		byte[] key = unpackKey(session, sourceDeviceId);
 		if (key != null) {
 			try {
-
 				if (key.length >= 32) {
 					int authtaglength = key.length - 16;
 					Log.d(Config.LOGTAG,"found auth tag as part of omemo key");

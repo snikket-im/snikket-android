@@ -163,24 +163,28 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
 		return false;
 	}
 
-	private Message parseAxolotlChat(Element axolotlMessage, Jid from, Conversation conversation, int status) {
-		AxolotlService service = conversation.getAccount().getAxolotlService();
-		XmppAxolotlMessage xmppAxolotlMessage;
+	private Message parseAxolotlChat(Element axolotlMessage, Jid from, Conversation conversation, int status, boolean postpone) {
+		final AxolotlService service = conversation.getAccount().getAxolotlService();
+		final XmppAxolotlMessage xmppAxolotlMessage;
 		try {
 			xmppAxolotlMessage = XmppAxolotlMessage.fromElement(axolotlMessage, from.toBareJid());
 		} catch (Exception e) {
 			Log.d(Config.LOGTAG, conversation.getAccount().getJid().toBareJid() + ": invalid omemo message received " + e.getMessage());
 			return null;
 		}
-		XmppAxolotlMessage.XmppAxolotlPlaintextMessage plaintextMessage = service.processReceivingPayloadMessage(xmppAxolotlMessage);
-		if (plaintextMessage != null) {
-			Message finishedMessage = new Message(conversation, plaintextMessage.getPlaintext(), Message.ENCRYPTION_AXOLOTL, status);
-			finishedMessage.setFingerprint(plaintextMessage.getFingerprint());
-			Log.d(Config.LOGTAG, AxolotlService.getLogprefix(finishedMessage.getConversation().getAccount()) + " Received Message with session fingerprint: " + plaintextMessage.getFingerprint());
-			return finishedMessage;
+		if (xmppAxolotlMessage.hasPayload()) {
+			final XmppAxolotlMessage.XmppAxolotlPlaintextMessage plaintextMessage = service.processReceivingPayloadMessage(xmppAxolotlMessage, postpone);
+			if (plaintextMessage != null) {
+				Message finishedMessage = new Message(conversation, plaintextMessage.getPlaintext(), Message.ENCRYPTION_AXOLOTL, status);
+				finishedMessage.setFingerprint(plaintextMessage.getFingerprint());
+				Log.d(Config.LOGTAG, AxolotlService.getLogprefix(finishedMessage.getConversation().getAccount()) + " Received Message with session fingerprint: " + plaintextMessage.getFingerprint());
+				return finishedMessage;
+			}
 		} else {
-			return null;
+			Log.d(Config.LOGTAG,conversation.getAccount().getJid().toBareJid()+": received OMEMO key transport message");
+			service.processReceivingKeyTransportMessage(xmppAxolotlMessage, postpone);
 		}
+		return null;
 	}
 
 	private class Invite {
@@ -468,7 +472,7 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
 				} else {
 					origin = from;
 				}
-				message = parseAxolotlChat(axolotlEncrypted, origin, conversation, status);
+				message = parseAxolotlChat(axolotlEncrypted, origin, conversation, status, query != null);
 				if (message == null) {
 					if (query == null &&  extractChatState(mXmppConnectionService.find(account, counterpart.toBareJid()), isTypeGroupChat, packet)) {
 						mXmppConnectionService.updateConversationUi();

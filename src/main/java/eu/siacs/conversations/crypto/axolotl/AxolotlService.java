@@ -1313,16 +1313,15 @@ public class AxolotlService implements OnAdvancedStreamFeaturesLoaded {
 		return session;
 	}
 
-	public XmppAxolotlMessage.XmppAxolotlPlaintextMessage processReceivingPayloadMessage(XmppAxolotlMessage message) {
+	public XmppAxolotlMessage.XmppAxolotlPlaintextMessage processReceivingPayloadMessage(XmppAxolotlMessage message, boolean postponePreKeyMessageHandling) {
 		XmppAxolotlMessage.XmppAxolotlPlaintextMessage plaintextMessage = null;
 
 		XmppAxolotlSession session = getReceivingSession(message);
 		try {
 			plaintextMessage = message.decrypt(session, getOwnDeviceId());
-			Integer preKeyId = session.getPreKeyId();
+			Integer preKeyId = session.getPreKeyIdAndReset();
 			if (preKeyId != null) {
-				publishBundlesIfNeeded(false, false);
-				session.resetPreKeyId();
+				postPreKeyMessageHandling(session, preKeyId, postponePreKeyMessageHandling);
 			}
 		} catch (CryptoFailedException e) {
 			Log.w(Config.LOGTAG, getLogprefix(account) + "Failed to decrypt message from "+message.getFrom()+": " + e.getMessage());
@@ -1335,12 +1334,22 @@ public class AxolotlService implements OnAdvancedStreamFeaturesLoaded {
 		return plaintextMessage;
 	}
 
-	public XmppAxolotlMessage.XmppAxolotlKeyTransportMessage processReceivingKeyTransportMessage(XmppAxolotlMessage message) {
+	private void postPreKeyMessageHandling(final XmppAxolotlSession session, int preKeyId, final boolean postpone) {
+		Log.d(Config.LOGTAG,account.getJid().toBareJid()+": postPreKeyMessageHandling() preKeyId="+preKeyId+", postpone="+Boolean.toString(postpone));
+		//TODO: do not republish if we already removed this preKeyId
+		publishBundlesIfNeeded(false, false);
+	}
+
+	public XmppAxolotlMessage.XmppAxolotlKeyTransportMessage processReceivingKeyTransportMessage(XmppAxolotlMessage message, final boolean postponePreKeyMessageHandling) {
 		XmppAxolotlMessage.XmppAxolotlKeyTransportMessage keyTransportMessage;
 
 		XmppAxolotlSession session = getReceivingSession(message);
 		try {
 			keyTransportMessage = message.getParameters(session, getOwnDeviceId());
+			Integer preKeyId = session.getPreKeyIdAndReset();
+			if (preKeyId != null) {
+				postPreKeyMessageHandling(session, preKeyId, postponePreKeyMessageHandling);
+			}
 		} catch (CryptoFailedException e) {
 			Log.d(Config.LOGTAG,"could not decrypt keyTransport message "+e.getMessage());
 			keyTransportMessage = null;
