@@ -397,6 +397,11 @@ public class MucOptions {
 		return self.getRole().ranks(Role.MODERATOR) || (field != null && "1".equals(field.getValue()));
 	}
 
+	public boolean allowPm() {
+		Field field = this.form.getFieldByName("muc#roomconfig_allowpm");
+		return field == null || "1".equals(field.getValue());
+	}
+
 	public boolean participating() {
 		return !online()
 				|| self.getRole().ranks(Role.PARTICIPANT)

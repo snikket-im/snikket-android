@@ -729,4 +729,5 @@
 	<string name="copy_to_clipboard">Copy to clipboard</string>
 	<string name="message_copied_to_clipboard">Message copied to clipboard</string>
 	<string name="message">Message</string>
+	<string name="private_messages_are_disabled">Private messages are disabled</string>
 </resources>

@@ -462,7 +462,11 @@ public class ConferenceDetailsActivity extends XmppActivity implements OnConvers
 				}
 				return true;
 			case R.id.send_private_message:
-				privateMsgInMuc(mConversation,mSelectedUser.getName());
+				if (mConversation.getMucOptions().allowPm()) {
+					privateMsgInMuc(mConversation,mSelectedUser.getName());
+				} else {
+					Toast.makeText(this, R.string.private_messages_are_disabled, Toast.LENGTH_SHORT).show();
+				}
 				return true;
 			case R.id.invite:
 				xmppConnectionService.directInvite(mConversation, jid);
