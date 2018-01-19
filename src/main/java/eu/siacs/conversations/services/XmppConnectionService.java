@@ -303,6 +303,15 @@ public class XmppConnectionService extends Service {
 			mJingleConnectionManager.cancelInTransmission();
 			fetchRosterFromServer(account);
 			fetchBookmarks(account);
+			final boolean flexible= account.getXmppConnection().getFeatures().flexibleOfflineMessageRetrieval();
+			final boolean catchup = getMessageArchiveService().inCatchup(account);
+			if (flexible && catchup) {
+				sendIqPacket(account, mIqGenerator.purgeOfflineMessages(), (acc, packet) -> {
+					if (packet.getType() == IqPacket.TYPE.RESULT) {
+						Log.d(Config.LOGTAG, acc.getJid().toBareJid()+": successfully purged offline messages");
+					}
+				});
+			}
 			sendPresence(account);
 			if (mPushManagementService.available(account)) {
 				mPushManagementService.registerPushTokenOnServer(account);

@@ -45,8 +45,7 @@ public class IqGenerator extends AbstractGenerator {
 		final IqPacket packet = new IqPacket(IqPacket.TYPE.RESULT);
 		packet.setId(request.getId());
 		packet.setTo(request.getFrom());
-		final Element query = packet.addChild("query",
-				"http://jabber.org/protocol/disco#info");
+		final Element query = packet.addChild("query", "http://jabber.org/protocol/disco#info");
 		query.setAttribute("node", request.query().getAttribute("node"));
 		final Element identity = query.addChild("identity");
 		identity.setAttribute("category", "client");
@@ -88,6 +87,12 @@ public class IqGenerator extends AbstractGenerator {
 		}
 		String minutes = String.format(Locale.US,"%02d",offsetMinutes);
 		time.addChild("tzo").setContent(hours+":"+minutes);
+		return packet;
+	}
+
+	public IqPacket purgeOfflineMessages() {
+		final IqPacket packet = new IqPacket(IqPacket.TYPE.SET);
+		packet.addChild("offline",Namespace.FLEXIBLE_OFFLINE_MESSAGE_RETRIEVAL).addChild("purge");
 		return packet;
 	}
 

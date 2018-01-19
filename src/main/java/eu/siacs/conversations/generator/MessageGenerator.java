@@ -91,6 +91,15 @@ public class MessageGenerator extends AbstractGenerator {
 		return packet;
 	}
 
+	public MessagePacket generateKeyTransportMessage(Jid to, XmppAxolotlMessage axolotlMessage) {
+		MessagePacket packet = new MessagePacket();
+		packet.setType(MessagePacket.TYPE_CHAT);
+		packet.setTo(to);
+		packet.setAxolotlMessage(axolotlMessage.toElement());
+		packet.addChild("store", "urn:xmpp:hints");
+		return packet;
+	}
+
 	private static boolean recipientSupportsOmemo(Message message) {
 		Contact c = message.getContact();
 		return c != null && c.getPresences().allOrNonSupport(AxolotlService.PEP_DEVICE_LIST_NOTIFY);
