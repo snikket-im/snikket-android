@@ -242,7 +242,17 @@ public class MessageGenerator extends AbstractGenerator {
 		for(String namespace : namespaces) {
 			receivedPacket.addChild("received", namespace).setAttribute("id", originalMessage.getId());
 		}
+		receivedPacket.addChild("store", "urn:xmpp:hints");
 		return receivedPacket;
+	}
+
+	public MessagePacket received(Account account, Jid to, String id) {
+		MessagePacket packet = new MessagePacket();
+		packet.setFrom(account.getJid());
+		packet.setTo(to);
+		packet.addChild("received","urn:xmpp:receipts").setAttribute("id",id);
+		packet.addChild("store", "urn:xmpp:hints");
+		return packet;
 	}
 
 	public MessagePacket generateOtrError(Jid to, String id, String errorText) {

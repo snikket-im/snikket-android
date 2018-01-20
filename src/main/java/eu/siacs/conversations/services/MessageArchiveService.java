@@ -1,7 +1,6 @@
 package eu.siacs.conversations.services;
 
 import android.util.Log;
-import android.util.Pair;
 
 import java.math.BigInteger;
 import java.util.ArrayList;
@@ -11,9 +10,9 @@ import java.util.List;
 
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
-import eu.siacs.conversations.crypto.axolotl.AxolotlService;
 import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.entities.Conversation;
+import eu.siacs.conversations.entities.ReceiptRequest;
 import eu.siacs.conversations.generator.AbstractGenerator;
 import eu.siacs.conversations.xml.Namespace;
 import eu.siacs.conversations.xml.Element;
@@ -280,7 +279,7 @@ public class MessageArchiveService implements OnAdvancedStreamFeaturesLoaded {
 			if (query.isCatchup() && query.getActualMessageCount() > 0) {
 				mXmppConnectionService.getNotificationService().finishBacklog(true,query.getAccount());
 			}
-			query.account.getAxolotlService().processPostponed();
+			processPostponed(query);
 		} else {
 			final Query nextQuery;
 			if (query.getPagingOrder() == PagingOrder.NORMAL) {
@@ -293,6 +292,17 @@ public class MessageArchiveService implements OnAdvancedStreamFeaturesLoaded {
 			synchronized (this.queries) {
 				this.queries.add(nextQuery);
 			}
+		}
+	}
+
+	private void processPostponed(Query query) {
+		query.account.getAxolotlService().processPostponed();
+		Log.d(Config.LOGTAG,query.getAccount().getJid().toBareJid()+": found "+query.pendingReceiptRequests.size()+" pending receipt requests");
+		Iterator<ReceiptRequest> iterator = query.pendingReceiptRequests.iterator();
+		while (iterator.hasNext()) {
+			ReceiptRequest rr = iterator.next();
+			mXmppConnectionService.sendMessagePacket(query.account,mXmppConnectionService.getMessageGenerator().received(query.account,        rr.getJid(),rr.getId()));
+			iterator.remove();
 		}
 	}
 
@@ -329,6 +339,7 @@ public class MessageArchiveService implements OnAdvancedStreamFeaturesLoaded {
 		private PagingOrder pagingOrder = PagingOrder.NORMAL;
 		private XmppConnectionService.OnMoreMessagesLoaded callback = null;
 		private boolean catchup = true;
+		public HashSet<ReceiptRequest> pendingReceiptRequests = new HashSet<>();
 
 
 		public Query(Conversation conversation, MamReference start, long end, boolean catchup) {
@@ -354,6 +365,7 @@ public class MessageArchiveService implements OnAdvancedStreamFeaturesLoaded {
 			query.conversation = conversation;
 			query.totalCount = totalCount;
 			query.actualCount = actualCount;
+			query.pendingReceiptRequests = pendingReceiptRequests;
 			query.callback = callback;
 			query.catchup = catchup;
 			return query;
