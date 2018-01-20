@@ -423,7 +423,7 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
 			return;
 		}
 
-		if ((body != null || pgpEncrypted != null || axolotlEncrypted != null || oobUrl != null) && !isMucStatusMessage) {
+		if ((body != null || pgpEncrypted != null || (axolotlEncrypted != null && axolotlEncrypted.hasChild("payload")) || oobUrl != null) && !isMucStatusMessage) {
 			final Conversation conversation = mXmppConnectionService.findOrCreateConversation(account, counterpart.toBareJid(), isTypeGroupChat, false, query, false);
 			final boolean conversationMultiMode = conversation.getMode() == Conversation.MODE_MULTI;
 
@@ -671,11 +671,35 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
 			}
 		} else if (!packet.hasChild("body")) { //no body
 
+			final Conversation conversation = mXmppConnectionService.find(account, from.toBareJid());
+			if (axolotlEncrypted != null) {
+				Jid origin;
+				if (conversation != null && conversation.getMode() == Conversation.MODE_MULTI) {
+					final Jid fallback = conversation.getMucOptions().getTrueCounterpart(counterpart);
+					origin = getTrueCounterpart(query != null ? mucUserElement : null, fallback);
+					if (origin == null) {
+						Log.d(Config.LOGTAG, "omemo key transport message in non anonymous conference received");
+						return;
+					}
+				} else if (isTypeGroupChat) {
+					return;
+				} else {
+					origin = from;
+				}
+				try {
+					final XmppAxolotlMessage xmppAxolotlMessage = XmppAxolotlMessage.fromElement(axolotlEncrypted, origin.toBareJid());
+					account.getAxolotlService().processReceivingKeyTransportMessage(xmppAxolotlMessage, query != null);
+					Log.d(Config.LOGTAG,account.getJid().toBareJid()+": omemo key transport message received from "+origin);
+				} catch (Exception e) {
+					Log.d(Config.LOGTAG, account.getJid().toBareJid() + ": invalid omemo key transport message received " + e.getMessage());
+					return;
+				}
+			}
+
 			if (query == null && extractChatState(mXmppConnectionService.find(account, counterpart.toBareJid()), isTypeGroupChat, packet)) {
 				mXmppConnectionService.updateConversationUi();
 			}
 
-			final Conversation conversation = mXmppConnectionService.find(account, from.toBareJid());
 			if (isTypeGroupChat) {
 				if (packet.hasChild("subject")) {
 					if (conversation != null && conversation.getMode() == Conversation.MODE_MULTI) {
