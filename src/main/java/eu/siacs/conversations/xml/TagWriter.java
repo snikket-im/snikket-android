@@ -5,7 +5,9 @@ import android.util.Log;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
+import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.TimeUnit;
 
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.xmpp.stanzas.AbstractStanza;
@@ -15,14 +17,16 @@ public class TagWriter {
 	private OutputStreamWriter outputStream;
 	private boolean finished = false;
 	private LinkedBlockingQueue<AbstractStanza> writeQueue = new LinkedBlockingQueue<AbstractStanza>();
+	private CountDownLatch stanzaWriterCountDownLatch = null;
 
 	private Thread asyncStanzaWriter = new Thread() {
 
 		@Override
 		public void run() {
+			stanzaWriterCountDownLatch = new CountDownLatch(1);
 			while (!isInterrupted()) {
 				if (finished && writeQueue.size() == 0) {
-					return;
+					break;
 				}
 				try {
 					AbstractStanza output = writeQueue.take();
@@ -31,10 +35,12 @@ public class TagWriter {
 						outputStream.flush();
 					}
 				} catch (Exception e) {
-					return;
+					break;
 				}
 			}
+			stanzaWriterCountDownLatch.countDown();
 		}
+
 	};
 
 	public TagWriter() {
@@ -95,8 +101,12 @@ public class TagWriter {
 		this.finished = true;
 	}
 
-	public boolean finished() {
-		return (this.writeQueue.size() == 0);
+	public boolean await(long timeout, TimeUnit timeunit) throws InterruptedException {
+		if (stanzaWriterCountDownLatch == null) {
+			return true;
+		} else {
+			return stanzaWriterCountDownLatch.await(timeout, timeunit);
+		}
 	}
 
 	public boolean isActive() {
