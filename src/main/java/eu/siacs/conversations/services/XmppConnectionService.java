@@ -62,6 +62,7 @@ import java.util.ListIterator;
 import java.util.Locale;
 import java.util.Map;
 import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicLong;
 
@@ -159,6 +160,7 @@ public class XmppConnectionService extends Service {
 	private final SerialSingleThreadExecutor mVideoCompressionExecutor = new SerialSingleThreadExecutor("VideoCompression");
 	private final SerialSingleThreadExecutor mDatabaseWriterExecutor = new SerialSingleThreadExecutor("DatabaseWriter");
 	private final SerialSingleThreadExecutor mDatabaseReaderExecutor = new SerialSingleThreadExecutor("DatabaseReader");
+	private final SerialSingleThreadExecutor mNotificationExecutor = new SerialSingleThreadExecutor("NotificationExecutor");
 	private ReplacingSerialSingleThreadExecutor mContactMergerExecutor = new ReplacingSerialSingleThreadExecutor(true);
 	private final IBinder mBinder = new XmppConnectionBinder();
 	private final List<Conversation> conversations = new CopyOnWriteArrayList<>();
@@ -420,14 +422,14 @@ public class XmppConnectionService extends Service {
 	private LruCache<String, Bitmap> mBitmapCache;
 	private EventReceiver mEventReceiver = new EventReceiver();
 
-	private boolean mRestoredFromDatabase = false;
+	public final CountDownLatch restoredFromDatabaseLatch = new CountDownLatch(1);
 
 	private static String generateFetchKey(Account account, final Avatar avatar) {
 		return account.getJid().toBareJid() + "_" + avatar.owner + "_" + avatar.sha1sum;
 	}
 
 	public boolean areMessagesInitialized() {
-		return this.mRestoredFromDatabase;
+		return this.restoredFromDatabaseLatch.getCount() == 0;
 	}
 
 	public PgpEngine getPgpEngine() {
@@ -569,7 +571,6 @@ public class XmppConnectionService extends Service {
 		boolean interactive = false;
 		if (action != null) {
 			final String uuid = intent.getStringExtra("uuid");
-			final Conversation c = findConversationByUuid(uuid);
 			switch (action) {
 				case ConnectivityManager.CONNECTIVITY_ACTION:
 					if (hasInternetConnection() && Config.RESET_ATTEMPT_COUNT_ON_NETWORK_CHANGE) {
@@ -577,7 +578,7 @@ public class XmppConnectionService extends Service {
 					}
 					break;
 				case ACTION_MERGE_PHONE_CONTACTS:
-					if (mRestoredFromDatabase) {
+					if (restoredFromDatabaseLatch.getCount() == 0) {
 						loadPhoneContacts();
 					}
 					return START_STICKY;
@@ -585,11 +586,20 @@ public class XmppConnectionService extends Service {
 					logoutAndSave(true);
 					return START_NOT_STICKY;
 				case ACTION_CLEAR_NOTIFICATION:
-					if (c != null) {
-						mNotificationService.clear(c);
-					} else {
-						mNotificationService.clear();
-					}
+					mNotificationExecutor.execute(() -> {
+						try {
+							final Conversation c = findConversationByUuid(uuid);
+							if (c != null) {
+								mNotificationService.clear(c);
+							} else {
+								mNotificationService.clear();
+							}
+							restoredFromDatabaseLatch.await();
+
+						} catch (InterruptedException e) {
+							Log.d(Config.LOGTAG,"unable to process clear notification");
+						}
+					});
 					break;
 				case ACTION_DISMISS_ERROR_NOTIFICATIONS:
 					dismissErrorNotifications();
@@ -600,19 +610,41 @@ public class XmppConnectionService extends Service {
 					break;
 				case ACTION_REPLY_TO_CONVERSATION:
 					Bundle remoteInput = RemoteInput.getResultsFromIntent(intent);
-					if (remoteInput != null && c != null) {
-						final CharSequence body = remoteInput.getCharSequence("text_reply");
-						if (body != null && body.length() > 0) {
-							directReply(c, body.toString(), intent.getBooleanExtra("dismiss_notification", false));
-						}
+					if (remoteInput == null) {
+						break;
 					}
+					final CharSequence body = remoteInput.getCharSequence("text_reply");
+					final boolean dismissNotification = intent.getBooleanExtra("dismiss_notification", false);
+					if (body == null || body.length() <= 0) {
+						break;
+					}
+					mNotificationExecutor.execute(()-> {
+						try {
+							restoredFromDatabaseLatch.await();
+							final Conversation c = findConversationByUuid(uuid);
+							if (c != null) {
+								directReply(c, body.toString(), dismissNotification);
+							}
+						} catch (InterruptedException e) {
+							Log.d(Config.LOGTAG,"unable to process direct reply");
+						}
+					});
 					break;
 				case ACTION_MARK_AS_READ:
-					if (c != null) {
-						sendReadMarker(c);
-					} else {
-						Log.d(Config.LOGTAG, "received mark read intent for unknown conversation (" + uuid + ")");
-					}
+					mNotificationExecutor.execute(() -> {
+						final Conversation c = findConversationByUuid(uuid);
+						if (c == null) {
+							Log.d(Config.LOGTAG, "received mark read intent for unknown conversation (" + uuid + ")");
+							return;
+						}
+						try {
+							restoredFromDatabaseLatch.await();
+							sendReadMarker(c);
+						} catch (InterruptedException e) {
+							Log.d(Config.LOGTAG,"unable to process notification read marker for conversation "+c.getName());
+						}
+
+					});
 					break;
 				case AudioManager.RINGER_MODE_CHANGED_ACTION:
 					if (dndOnSilentMode()) {
@@ -1459,7 +1491,7 @@ public class XmppConnectionService extends Service {
 						});
 					}
 					mNotificationService.finishBacklog(false);
-					mRestoredFromDatabase = true;
+					restoredFromDatabaseLatch.countDown();
 					final long diffMessageRestore = SystemClock.elapsedRealtime() - startMessageRestore;
 					Log.d(Config.LOGTAG, "finished restoring messages in " + diffMessageRestore + "ms");
 					updateConversationUi();

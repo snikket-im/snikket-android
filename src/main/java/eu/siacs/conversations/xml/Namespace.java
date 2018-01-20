@@ -17,4 +17,5 @@ public final class Namespace {
 	public static final String PUBSUB_ERROR = "http://jabber.org/protocol/pubsub#errors";
 	public static final String NICK = "http://jabber.org/protocol/nick";
 	public static final String FLEXIBLE_OFFLINE_MESSAGE_RETRIEVAL = "http://jabber.org/protocol/offline";
+	public static final String BIND = "urn:ietf:params:xml:ns:xmpp-bind";
 }

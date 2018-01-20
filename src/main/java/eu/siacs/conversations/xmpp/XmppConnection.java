@@ -1043,14 +1043,16 @@ public class XmppConnection implements Runnable {
 	}
 
 	private void sendBindRequest() {
-		while (!mXmppConnectionService.areMessagesInitialized() && socket != null && !socket.isClosed()) {
-			uninterruptedSleep(500);
+		try {
+			mXmppConnectionService.restoredFromDatabaseLatch.await();
+		} catch (InterruptedException e) {
+			Log.d(Config.LOGTAG,account.getJid().toBareJid()+": interrupted while waiting for DB restore during bind");
+			return;
 		}
 		needsBinding = false;
 		clearIqCallbacks();
 		final IqPacket iq = new IqPacket(IqPacket.TYPE.SET);
-		iq.addChild("bind", "urn:ietf:params:xml:ns:xmpp-bind")
-				.addChild("resource").setContent(account.getResource());
+		iq.addChild("bind", Namespace.BIND).addChild("resource").setContent(account.getResource());
 		this.sendUnmodifiedIqPacket(iq, new OnIqPacketReceived() {
 			@Override
 			public void onIqPacketReceived(final Account account, final IqPacket packet) {
