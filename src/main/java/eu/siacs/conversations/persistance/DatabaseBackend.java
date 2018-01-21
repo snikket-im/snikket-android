@@ -52,6 +52,7 @@ import eu.siacs.conversations.entities.ServiceDiscoveryResult;
 import eu.siacs.conversations.services.ShortcutService;
 import eu.siacs.conversations.utils.CryptoHelper;
 import eu.siacs.conversations.utils.MimeUtils;
+import eu.siacs.conversations.utils.Resolver;
 import eu.siacs.conversations.xmpp.jid.InvalidJidException;
 import eu.siacs.conversations.xmpp.jid.Jid;
 import eu.siacs.conversations.xmpp.mam.MamReference;
@@ -61,7 +62,7 @@ public class DatabaseBackend extends SQLiteOpenHelper {
 	private static DatabaseBackend instance = null;
 
 	private static final String DATABASE_NAME = "history";
-	private static final int DATABASE_VERSION = 38;
+	private static final int DATABASE_VERSION = 39;
 
 	private static String CREATE_CONTATCS_STATEMENT = "create table "
 			+ Contact.TABLENAME + "(" + Contact.ACCOUNT + " TEXT, "
@@ -148,9 +149,18 @@ public class DatabaseBackend extends SQLiteOpenHelper {
 			+ ") ON CONFLICT IGNORE"
 			+ ");";
 
-	private static String START_TIMES_TABLE = "start_times";
+	private static String RESOLVER_RESULTS_TABLENAME = "resolver_results";
 
-	private static String CREATE_START_TIMES_TABLE = "create table "+START_TIMES_TABLE+" (timestamp NUMBER);";
+	private static String CREATE_RESOLVER_RESULTS_TABLE = "create table "+RESOLVER_RESULTS_TABLENAME+"("
+			+ Resolver.Result.DOMAIN + " TEXT,"
+			+ Resolver.Result.HOSTNAME + " TEXT,"
+			+ Resolver.Result.IP + " BLOB,"
+			+ Resolver.Result.PRIORITY + " NUMBER,"
+			+ Resolver.Result.DIRECT_TLS + " NUMBER,"
+			+ Resolver.Result.AUTHENTICATED + " NUMBER,"
+			+ Resolver.Result.PORT + " NUMBER,"
+			+ "UNIQUE("+Resolver.Result.DOMAIN+") ON CONFLICT REPLACE"
+			+ ");";
 
 	private static String CREATE_MESSAGE_TIME_INDEX = "create INDEX message_time_index ON "+Message.TABLENAME+"("+Message.TIME_SENT+")";
 	private static String CREATE_MESSAGE_CONVERSATION_INDEX = "create INDEX message_conversation_index ON "+Message.TABLENAME+"("+Message.CONVERSATION+")";
@@ -213,7 +223,7 @@ public class DatabaseBackend extends SQLiteOpenHelper {
 		db.execSQL(CREATE_SIGNED_PREKEYS_STATEMENT);
 		db.execSQL(CREATE_IDENTITIES_STATEMENT);
 		db.execSQL(CREATE_PRESENCE_TEMPLATES_STATEMENT);
-		db.execSQL(CREATE_START_TIMES_TABLE);
+		db.execSQL(CREATE_RESOLVER_RESULTS_TABLE);
 	}
 
 	@Override
@@ -369,9 +379,6 @@ public class DatabaseBackend extends SQLiteOpenHelper {
 		if (oldVersion < 29 && newVersion >= 29) {
 			db.execSQL("ALTER TABLE " + Message.TABLENAME + " ADD COLUMN " + Message.ERROR_MESSAGE + " TEXT");
 		}
-		if (oldVersion < 30 && newVersion >= 30) {
-			db.execSQL(CREATE_START_TIMES_TABLE);
-		}
 		if (oldVersion >= 15 && oldVersion < 31 && newVersion >= 31) {
 			db.execSQL("ALTER TABLE "+ SQLiteAxolotlStore.IDENTITIES_TABLENAME + " ADD COLUMN "+SQLiteAxolotlStore.TRUST + " TEXT");
 			db.execSQL("ALTER TABLE "+ SQLiteAxolotlStore.IDENTITIES_TABLENAME + " ADD COLUMN "+SQLiteAxolotlStore.ACTIVE + " NUMBER");
@@ -464,6 +471,10 @@ public class DatabaseBackend extends SQLiteOpenHelper {
 
 		if (oldVersion < 38 && newVersion >= 38) {
 			db.execSQL("ALTER TABLE " + Message.TABLENAME + " ADD COLUMN " + Message.MARKABLE + " NUMBER DEFAULT 0");
+		}
+
+		if (oldVersion < 39 && newVersion >= 39) {
+			db.execSQL(CREATE_RESOLVER_RESULTS_TABLE);
 		}
 	}
 
@@ -602,6 +613,28 @@ public class DatabaseBackend extends SQLiteOpenHelper {
 		} catch (JSONException e) { /* result is still null */ }
 
 		cursor.close();
+		return result;
+	}
+
+	public void saveResolverResult(String domain, Resolver.Result result) {
+		SQLiteDatabase db = this.getWritableDatabase();
+		ContentValues contentValues = result.toContentValues();
+		contentValues.put(Resolver.Result.DOMAIN,domain);
+		db.insert(RESOLVER_RESULTS_TABLENAME, null, contentValues);
+	}
+
+	public Resolver.Result findResolverResult(String domain) {
+		SQLiteDatabase db = this.getReadableDatabase();
+		String where = Resolver.Result.DOMAIN+"=?";
+		String[] whereArgs = {domain};
+		Cursor cursor = db.query(RESOLVER_RESULTS_TABLENAME,null,where,whereArgs,null,null,null);
+		Resolver.Result result = null;
+		if (cursor != null) {
+			if (cursor.moveToFirst()) {
+				result = Resolver.Result.fromCursor(cursor);
+			}
+			cursor.close();
+		}
 		return result;
 	}
 

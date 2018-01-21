@@ -351,7 +351,18 @@ public class XmppConnection implements Runnable {
 					throw new IOException(e.getMessage());
 				}
 			} else {
+				final String domain = account.getJid().getDomainpart();
 				List<Resolver.Result> results = Resolver.resolve(account.getJid().getDomainpart());
+				Resolver.Result storedBackupResult;
+				if (!Thread.currentThread().isInterrupted()) {
+					storedBackupResult = mXmppConnectionService.databaseBackend.findResolverResult(domain);
+					if (storedBackupResult != null && !results.contains(storedBackupResult)) {
+						results.add(storedBackupResult);
+						Log.d(Config.LOGTAG, account.getJid().toBareJid() + ": loaded backup resolver result from db: " + storedBackupResult);
+					}
+				} else {
+					storedBackupResult = null;
+				}
 				for (Iterator<Resolver.Result> iterator = results.iterator(); iterator.hasNext(); ) {
 					final Resolver.Result result = iterator.next();
 					if (Thread.currentThread().isInterrupted()) {
@@ -400,6 +411,9 @@ public class XmppConnection implements Runnable {
 							}
 						}
 						if (startXmpp(localSocket)) {
+							if (!result.equals(storedBackupResult)) {
+								mXmppConnectionService.databaseBackend.saveResolverResult(domain, result);
+							}
 							break; // successfully connected to server that speaks xmpp
 						} else {
 							localSocket.close();
