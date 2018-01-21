@@ -2,8 +2,6 @@ package eu.siacs.conversations.xmpp;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.os.PowerManager;
-import android.os.PowerManager.WakeLock;
 import android.os.SystemClock;
 import android.security.KeyChain;
 import android.util.Base64;
@@ -105,7 +103,6 @@ public class XmppConnection implements Runnable {
 	private static final int PACKET_MESSAGE = 1;
 	private static final int PACKET_PRESENCE = 2;
 	protected final Account account;
-	private final WakeLock wakeLock;
 	private Socket socket;
 	private XmlReader tagReader;
 	private TagWriter tagWriter = new TagWriter();
@@ -224,7 +221,6 @@ public class XmppConnection implements Runnable {
 	public XmppConnection(final Account account, final XmppConnectionService service) {
 		this.account = account;
 		final String tag = account.getJid().toBareJid().toPreppedString();
-		this.wakeLock = service.getPowerManager().newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, tag == null ? "[empty bare jid]" : tag);
 		mXmppConnectionService = service;
 	}
 
@@ -439,14 +435,8 @@ public class XmppConnection implements Runnable {
 		} finally {
 			if (!Thread.currentThread().isInterrupted()) {
 				forceCloseSocket();
-				if (wakeLock.isHeld()) {
-					try {
-						wakeLock.release();
-					} catch (final RuntimeException ignored) {
-					}
-				}
 			} else {
-				Log.d(Config.LOGTAG, account.getJid().toBareJid() + ": not force closing socket and releasing wake lock (is held=" + wakeLock.isHeld() + ") because thread was interrupted");
+				Log.d(Config.LOGTAG, account.getJid().toBareJid() + ": not force closing socket because thread was interrupted");
 			}
 		}
 	}
@@ -461,7 +451,7 @@ public class XmppConnection implements Runnable {
 			throw new InterruptedException();
 		}
 		this.socket = socket;
-		tagReader = new XmlReader(wakeLock);
+		tagReader = new XmlReader();
 		if (tagWriter != null) {
 			tagWriter.forceClose();
 		}
