@@ -108,10 +108,12 @@ public class AudioPlayer implements View.OnClickListener, MediaPlayer.OnCompleti
 		if (player.isPlaying()) {
 			viewHolder.progress.setEnabled(false);
 			player.pause();
+			messageAdapter.flagScreenOff();
 			viewHolder.playPause.setImageResource(viewHolder.darkBackground ? R.drawable.ic_play_arrow_white_36dp : R.drawable.ic_play_arrow_black_36dp);
 		} else {
 			viewHolder.progress.setEnabled(true);
 			player.start();
+			messageAdapter.flagScreenOn();
 			this.stopRefresher(true);
 			viewHolder.playPause.setImageResource(viewHolder.darkBackground ? R.drawable.ic_pause_white_36dp : R.drawable.ic_pause_black_36dp);
 		}
@@ -126,10 +128,12 @@ public class AudioPlayer implements View.OnClickListener, MediaPlayer.OnCompleti
 			AudioPlayer.player.setOnCompletionListener(this);
 			AudioPlayer.player.prepare();
 			AudioPlayer.player.start();
+			messageAdapter.flagScreenOn();
 			viewHolder.progress.setEnabled(true);
 			viewHolder.playPause.setImageResource(viewHolder.darkBackground ? R.drawable.ic_pause_white_36dp : R.drawable.ic_pause_black_36dp);
 			return true;
 		} catch (Exception e) {
+			messageAdapter.flagScreenOff();
 			AudioPlayer.currentlyPlayingMessage = null;
 			return false;
 		}
@@ -150,6 +154,7 @@ public class AudioPlayer implements View.OnClickListener, MediaPlayer.OnCompleti
 			AudioPlayer.player.stop();
 		}
 		AudioPlayer.player.release();
+		messageAdapter.flagScreenOff();
 		AudioPlayer.player = null;
 		resetPlayerUi();
 	}
@@ -183,6 +188,7 @@ public class AudioPlayer implements View.OnClickListener, MediaPlayer.OnCompleti
 				AudioPlayer.player = null;
 			}
 			mediaPlayer.release();
+			messageAdapter.flagScreenOff();
 			resetPlayerUi();
 		}
 	}
