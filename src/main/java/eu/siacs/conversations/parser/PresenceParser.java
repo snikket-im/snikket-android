@@ -78,7 +78,7 @@ public class PresenceParser extends AbstractParser implements
 						}
 						boolean isNew = mucOptions.updateUser(user);
 						final AxolotlService axolotlService = conversation.getAccount().getAxolotlService();
-						if (isNew && user.getRealJid() != null && mucOptions.membersOnly() && mucOptions.nonanonymous() && axolotlService.hasEmptyDeviceList(user.getRealJid())) {
+						if (isNew && user.getRealJid() != null && mucOptions.isPrivateAndNonAnonymous() && axolotlService.hasEmptyDeviceList(user.getRealJid())) {
 							axolotlService.fetchDeviceIds(user.getRealJid());
 						}
 						if (codes.contains(MucOptions.STATUS_CODE_ROOM_CREATED) && mucOptions.autoPushConfiguration()) {

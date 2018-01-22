@@ -194,15 +194,13 @@ public class Conversation extends AbstractEntity implements Blockable, Comparabl
 	}
 
 	public boolean setOutgoingChatState(ChatState state) {
-		if (mode == MODE_MULTI && (getNextCounterpart() != null || !isPnNA())) {
-			return false;
+		if (mode == MODE_SINGLE || (isPrivateAndNonAnonymous() && getNextCounterpart() == null)) {
+			if (this.mOutgoingChatState != state) {
+				this.mOutgoingChatState = state;
+				return true;
+			}
 		}
-		if (this.mOutgoingChatState != state) {
-			this.mOutgoingChatState = state;
-			return true;
-		} else {
-			return false;
-		}
+		return false;
 	}
 
 	public ChatState getOutgoingChatState() {
@@ -466,12 +464,12 @@ public class Conversation extends AbstractEntity implements Blockable, Comparabl
 		return unread;
 	}
 
-	public Message getLatestMarkableMessage() {
+	public Message getLatestMarkableMessage(boolean isPrivateAndNonAnonymousMuc) {
 		synchronized (this.messages) {
 			for (int i = this.messages.size() - 1; i >= 0; --i) {
 				final Message message = this.messages.get(i);
 				if (message.getStatus() <= Message.STATUS_RECEIVED
-						&& message.markable
+						&& (message.markable || isPrivateAndNonAnonymousMuc)
 						&& message.getType() != Message.TYPE_PRIVATE) {
 					return message.isRead() ? null : message;
 				}
@@ -697,8 +695,12 @@ public class Conversation extends AbstractEntity implements Blockable, Comparabl
 	/**
 	 * short for is Private and Non-anonymous
 	 */
-	private boolean isPnNA() {
-		return mode == MODE_SINGLE || (getMucOptions().membersOnly() && getMucOptions().nonanonymous());
+	public boolean isSingleOrPrivateAndNonAnonymous() {
+		return mode == MODE_SINGLE || isPrivateAndNonAnonymous();
+	}
+
+	public boolean isPrivateAndNonAnonymous() {
+		return getMucOptions().isPrivateAndNonAnonymous();
 	}
 
 	public synchronized MucOptions getMucOptions() {
@@ -866,7 +868,7 @@ public class Conversation extends AbstractEntity implements Blockable, Comparabl
 	}
 
 	public boolean alwaysNotify() {
-		return mode == MODE_SINGLE || getBooleanAttribute(ATTRIBUTE_ALWAYS_NOTIFY, Config.ALWAYS_NOTIFY_BY_DEFAULT || isPnNA());
+		return mode == MODE_SINGLE || getBooleanAttribute(ATTRIBUTE_ALWAYS_NOTIFY, Config.ALWAYS_NOTIFY_BY_DEFAULT || isPrivateAndNonAnonymous());
 	}
 
 	public boolean setAttribute(String key, String value) {

@@ -424,6 +424,10 @@ public class MucOptions {
 		return hasFeature("muc_nonanonymous");
 	}
 
+	public boolean isPrivateAndNonAnonymous() {
+		return membersOnly() && nonanonymous();
+	}
+
 	public boolean persistent() {
 		return hasFeature("muc_persistent");
 	}

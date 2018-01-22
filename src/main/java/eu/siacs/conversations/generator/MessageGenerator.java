@@ -53,8 +53,7 @@ public class MessageGenerator extends AbstractGenerator {
 			packet.setTo(message.getCounterpart().toBareJid());
 			packet.setType(MessagePacket.TYPE_GROUPCHAT);
 		}
-		if (conversation.getMode() == Conversation.MODE_SINGLE ||
-				(conversation.getMucOptions().nonanonymous() && conversation.getMucOptions().membersOnly() && message.getType() != Message.TYPE_PRIVATE)) {
+		if (conversation.isSingleOrPrivateAndNonAnonymous() && message.getType() != Message.TYPE_PRIVATE) {
 			packet.addChild("markable", "urn:xmpp:chat-markers:0");
 		}
 		packet.setFrom(account.getJid());

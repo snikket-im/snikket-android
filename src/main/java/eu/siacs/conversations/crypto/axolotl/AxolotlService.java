@@ -788,12 +788,11 @@ public class AxolotlService implements OnAdvancedStreamFeaturesLoaded {
 	}
 
 	public boolean isConversationAxolotlCapable(Conversation conversation) {
-		return conversation.getMode() == Conversation.MODE_SINGLE || (conversation.getMucOptions().nonanonymous() && conversation.getMucOptions().membersOnly());
+		return conversation.isSingleOrPrivateAndNonAnonymous();
 	}
 
 	public Pair<AxolotlCapability, Jid> isConversationAxolotlCapableDetailed(Conversation conversation) {
-		if (conversation.getMode() == Conversation.MODE_SINGLE
-				|| (conversation.getMucOptions().membersOnly() && conversation.getMucOptions().nonanonymous())) {
+		if (conversation.isSingleOrPrivateAndNonAnonymous()) {
 			final List<Jid> jids = getCryptoTargets(conversation);
 			for (Jid jid : jids) {
 				if (!hasAny(jid) && (!deviceIds.containsKey(jid) || deviceIds.get(jid).isEmpty())) {

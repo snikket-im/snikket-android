@@ -2271,7 +2271,7 @@ public class XmppConnectionService extends Service {
 					if (mucOptions.mamSupport()) {
 						getMessageArchiveService().catchupMUC(conversation);
 					}
-					if (mucOptions.membersOnly() && mucOptions.nonanonymous()) {
+					if (mucOptions.isPrivateAndNonAnonymous()) {
 						fetchConferenceMembers(conversation);
 						if (followedInvite && conversation.getBookmark() == null) {
 							saveConversationAsBookmark(conversation, null);
@@ -3432,15 +3432,15 @@ public class XmppConnectionService extends Service {
 	}
 
 	public void sendReadMarker(final Conversation conversation) {
-		final Message markable = conversation.getLatestMarkableMessage();
+		final boolean isPrivateAndNonAnonymousMuc = conversation.getMode() == Conversation.MODE_MULTI && conversation.isPrivateAndNonAnonymous();
+		final Message markable = conversation.getLatestMarkableMessage(isPrivateAndNonAnonymousMuc);
 		if (this.markRead(conversation)) {
 			updateConversationUi();
 		}
 		if (confirmMessages()
 				&& markable != null
-				&& markable.trusted()
-				&& markable.getRemoteMsgId() != null
-				&& markable.getType() != Message.TYPE_PRIVATE) {
+				&& (markable.trusted() || isPrivateAndNonAnonymousMuc)
+				&& markable.getRemoteMsgId() != null) {
 			Log.d(Config.LOGTAG, conversation.getAccount().getJid().toBareJid() + ": sending read marker to " + markable.getCounterpart().toString());
 			Account account = conversation.getAccount();
 			final Jid to = markable.getCounterpart();

@@ -1385,7 +1385,7 @@ public class ConversationFragment extends Fragment implements EditMessage.Keyboa
 					state = ChatState.PAUSED;
 					users = conversation.getMucOptions().getUsersWithChatState(state, 5);
 				}
-				if (mucOptions.membersOnly() && mucOptions.nonanonymous()) {
+				if (mucOptions.isPrivateAndNonAnonymous()) {
 					for (int i = this.messageList.size() - 1; i >= 0; --i) {
 						final Set<ReadByMarker> markersForMessage = messageList.get(i).getReadByMarkers();
 						final List<MucOptions.User> shownMarkers = new ArrayList<>();
