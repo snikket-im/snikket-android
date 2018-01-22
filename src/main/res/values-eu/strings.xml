@@ -20,6 +20,7 @@
   <string name="title_activity_sharewith">Elkarrizketa batekin partekatu</string>
   <string name="title_activity_start_conversation">Elkarrizketa hasi</string>
   <string name="title_activity_choose_contact">Kontaktua hautatu</string>
+  <string name="title_activity_share_via_account">Kontu bidez partekatu</string>
   <string name="title_activity_block_list">Blokeatutakoen zerrenda</string>
   <string name="just_now">orain</string>
   <string name="minute_ago">min 1 lehenago</string>
@@ -29,6 +30,7 @@
   <string name="message_decrypting">Mezua desenkriptatzen. Mesedez itxaron…</string>
   <string name="pgp_message">OpenPGPz enkriptatutako mezua</string>
   <string name="nick_in_use">Ezizena erabilita dagoeneko</string>
+  <string name="invalid_muc_nick">Ezizen ez balioduna</string>
   <string name="admin">Administratzailea</string>
   <string name="owner">Jabea</string>
   <string name="moderator">Moderatzailea</string>
@@ -244,6 +246,8 @@
   <string name="contact_added_you">Kontaktuak bere zerrendara gehitu zaitu</string>
   <string name="add_back">Bera gehitu</string>
   <string name="contact_has_read_up_to_this_point">%s(e)k puntu honetaraino irakurri du</string>
+  <string name="contacts_have_read_up_to_this_point">%s(e)k puntu honetaraino irakurri du</string>
+  <string name="contacts_and_n_more_have_read_up_to_this_point">%1$s +%2$d gehiago puntu honetaraino irakurri dute</string>
   <string name="publish">Argitaratu</string>
   <string name="touch_to_choose_picture">Ukitu profileko argazkia irudi bat galeriatik hautatzeko</string>
   <string name="publishing">Argitaratzen…</string>

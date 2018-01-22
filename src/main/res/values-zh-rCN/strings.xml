@@ -390,7 +390,7 @@
   <string name="enable_all_accounts">启用所有账户</string>
   <string name="disable_all_accounts">禁用所有账户</string>
   <string name="perform_action_with">选择一个操作</string>
-  <string name="no_affiliation">普通成员</string>
+  <string name="no_affiliation">没有从属关系</string>
   <string name="no_role">离线</string>
   <string name="outcast">抛弃</string>
   <string name="member">成员</string>

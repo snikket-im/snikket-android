@@ -279,6 +279,7 @@
   <string name="conference_members_only">هذه المجموعة متاحة للأعضاء المنتمين إليها فقط</string>
   <string name="conference_kicked">تم طردك من مجموعة الدردشة هذه</string>
   <string name="conference_shutdown">تم إغلاق مجموعة المحادثة</string>
+  <string name="conference_unknown_error">لم تعد متواجدا داخل مجموعة المحادثة هذه</string>
   <string name="using_account">أنت تستعمل حساب %s</string>
   <string name="not_connected_try_again">انقطع الإتصال .. حاول مرة أخرى</string>
   <string name="check_x_filesize">تحقق من حجم %s</string>
@@ -455,6 +456,7 @@
   <string name="not_valid_hostname">إسم السيرفر هذا ليس صالحاً</string>
   <string name="load_more_messages">أظهر أكثر</string>
   <string name="shared_text_with_x">شارك النص عبر %s</string>
+  <string name="sync_with_contacts">المزامنة مع جهات الإتصال</string>
   <string name="certificate_information">معلومات حول الشهادة</string>
   <string name="certificate_subject">الموضوع</string>
   <string name="certificate_issuer">المصدر</string>
@@ -480,6 +482,7 @@
   <string name="send_corrected_message">إبعث الرسالةَ مُصححة</string>
   <string name="select_image_and_crop">إختر صورة ثم قم بقصها</string>
   <string name="this_account_is_disabled">لقد قمت بتعطيل هذا الحساب</string>
+  <string name="no_application_to_share_uri">تعذر العثور على تطبيق يُمكنُ بواسطته مشاركة الرابط</string>
   <string name="share_uri_with">شارك الرابط مع ...</string>
   <string name="welcome_text">XMPP هو مزود بروتوكول مستقل. يمكنك استخدام هذا العميل مع أي خادم إكس أم بي بي اخترته. و لراحتك جعلنا من السهل إنشاء حساب على conversations.im¹؛ مزود خدمة يتناسب خصيصا للاستخدام مع تطبيق المحادثات Conversations.</string>
   <string name="your_full_jid_will_be">سوف تكون هويتك الكاملة على جابر كالتالي : %s</string>
@@ -541,6 +544,7 @@
   <string name="barcode_does_not_contain_fingerprints_for_this_conversation">لا تحتوي شفرة التّعرّف على بصمات لهذه المحادثة</string>
   <string name="verified_fingerprints">البصمات المصادق عليها</string>
   <string name="use_camera_icon_to_scan_barcode">إستخدم آلة التصوير لمسح شفرة التعرف على مراسلك</string>
+  <string name="please_wait_for_keys_to_be_fetched">الرجاء الإنتظار ريثما يتم جلب المفاتيح</string>
   <string name="share_as_barcode">شاركه كشَفْرة خَيْطيّة</string>
   <string name="share_as_uri">شاركه كعنوان XMPP</string>
   <string name="share_as_http">شاركه كرابط HTTP</string>
@@ -566,10 +570,13 @@
   <string name="block_entire_domain">حظر إسم النطاق كاملا</string>
   <string name="online_right_now">على الهواء الآن</string>
   <string name="retry_decryption">إعادة محاولة فك التشفير</string>
+  <string name="session_failure">فشلت الجلسة</string>
+  <string name="account_status_regis_web">لا يمكن تسجيل حسابات على هذا الخادوم إلا عبر موقع الويب</string>
   <string name="open_website">فتح موقع الإنترنت</string>
   <string name="today">اليوم</string>
   <string name="yesterday">البارحة</string>
   <string name="pref_validate_hostname">التحقق من صحة إسم المضيف بواسطة DNSSEC</string>
+  <string name="network_is_unreachable">لا يمكن الإتصال بالشبكة</string>
   <string name="server_info_partial">جُزْئِيًّا</string>
   <string name="attach_record_video">تسجيل فيديو</string>
   <string name="copy_to_clipboard">النسخ إلى الحافظة</string>

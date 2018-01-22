@@ -101,7 +101,7 @@
   <string name="contacts_have_no_pgp_keys">Conversations non pode cifrar a súa mensaxe porque os seus contactos no publicaron a súa chave pública.\n\n <small>Por favor solicite aos seus contactos que configuren OpenPGP.</small></string>
   <string name="pref_general">Xeral</string>
   <string name="pref_xmpp_resource">Recurso</string>
-  <string name="pref_xmpp_resource_summary">O nome que identifica o cliente que estás a empregar</string>
+  <string name="pref_xmpp_resource_summary">O nome que identifica o cliente que está a empregar</string>
   <string name="pref_accept_files">Aceptar arquivos</string>
   <string name="pref_accept_files_summary">De forma automática aceptar arquivos menores de…</string>
   <string name="pref_attachments">Engadidos</string>
@@ -110,8 +110,8 @@
   <string name="pref_notification_settings">Notificación</string>
   <string name="pref_notifications">Notificacións</string>
   <string name="pref_notifications_summary">Notifica cuando chega unha nova mensaxe</string>
-  <string name="pref_vibrate">Tremer</string>
-  <string name="pref_vibrate_summary">Vibrar cando chegue unha nova mensaxe</string>
+  <string name="pref_vibrate">Vibrar</string>
+  <string name="pref_vibrate_summary">Vibra cando chega unha nova mensaxe</string>
   <string name="pref_led">Notificación LED</string>
   <string name="pref_led_summary">Luz pestanexante cando chegue unha nova mensaxe</string>
   <string name="pref_sound">Ton de aviso</string>
@@ -289,10 +289,10 @@
   <string name="pref_quiet_hours_summary">As notificacións serán silenciadas durante estas horas</string>
   <string name="pref_use_larger_font">Aumentar o tamaño do texto</string>
   <string name="pref_use_larger_font_summary">Utilizar texto máis grande en toda a app</string>
-  <string name="pref_use_send_button_to_indicate_status">O botón Enviar indica o estatus</string>
+  <string name="pref_use_send_button_to_indicate_status">O botón Enviar indica o estado</string>
   <string name="pref_use_indicate_received">Solicitar avisos de recepción</string>
   <string name="pref_use_indicate_received_summary">As mensaxes recibidas marcaránse cun sinal verde si este está admitido</string>
-  <string name="pref_use_send_button_to_indicate_status_summary">Boton de enviar de cor para indicar o estatus do contacto</string>
+  <string name="pref_use_send_button_to_indicate_status_summary">Boton de enviar de cor para indicar o estado do contacto</string>
   <string name="pref_expert_options_other">Outro</string>
   <string name="pref_conference_name">Nome da conversa en grupo</string>
   <string name="pref_conference_name_summary">Utilice o tema en lugar do JID para identificar as conversas en grupo</string>
@@ -672,7 +672,7 @@
   <string name="corresponding_conversations_closed">Conversas correpondentes pechadas.</string>
   <string name="contact_blocked_past_tense">Contacto bloqueado.</string>
   <string name="pref_notifications_from_strangers">Notificacións de estraños</string>
-  <string name="pref_notifications_from_strangers_summary">Notificar as mensaxes recibidas por parte de estraños.</string>
+  <string name="pref_notifications_from_strangers_summary">Notifica as mensaxes recibidas por parte de estraños.</string>
   <string name="received_message_from_stranger">Mensaxe recibida de un estraño</string>
   <string name="block_stranger">Bloquear estraño</string>
   <string name="block_entire_domain">Bloquear o dominio ao completo</string>
