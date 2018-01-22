@@ -311,7 +311,7 @@ public class Resolver {
 
 		public ContentValues toContentValues() {
 			final ContentValues contentValues = new ContentValues();
-			contentValues.put(IP, ip.getAddress());
+			contentValues.put(IP, ip == null ? null : ip.getAddress());
 			contentValues.put(HOSTNAME, hostname.toString());
 			contentValues.put(PORT, port);
 			contentValues.put(PRIORITY, priority);
