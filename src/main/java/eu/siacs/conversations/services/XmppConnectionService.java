@@ -670,6 +670,12 @@ public class XmppConnectionService extends Service {
 					Log.d(Config.LOGTAG, "gcm push message arrived in service. extras=" + intent.getExtras());
 					pushedAccountHash = intent.getStringExtra("account");
 					break;
+				case Intent.ACTION_SEND:
+					Uri uri = intent.getData();
+					if (uri != null) {
+						Log.d(Config.LOGTAG, "received uri permission for "+uri.toString());
+					}
+					return START_STICKY;
 			}
 		}
 		synchronized (this) {

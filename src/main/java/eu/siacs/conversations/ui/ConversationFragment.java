@@ -816,7 +816,7 @@ public class ConversationFragment extends Fragment implements EditMessage.Keyboa
 				Toast.makeText(activity, activity.getString(R.string.no_permission_to_access_x, file.getAbsolutePath()), Toast.LENGTH_SHORT).show();
 				return;
 			}
-			shareIntent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+			shareIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
 			String mime = message.getMimeType();
 			if (mime == null) {
 				mime = "*/*";

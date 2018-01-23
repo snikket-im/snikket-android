@@ -525,6 +525,14 @@ public abstract class XmppActivity extends Activity {
 		startActivity(intent);
 	}
 
+	protected void delegateUriPermissionsToService(Uri uri) {
+		Intent intent = new Intent(this,XmppConnectionService.class);
+		intent.setAction(Intent.ACTION_SEND);
+		intent.setData(uri);
+		intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+		startService(intent);
+	}
+
 	protected void inviteToConversation(Conversation conversation) {
 		Intent intent = new Intent(getApplicationContext(),
 				ChooseContactActivity.class);
