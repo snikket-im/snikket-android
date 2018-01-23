@@ -568,7 +568,6 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
 									&& replacedMessage.getStatus() == Message.STATUS_RECEIVED
 									&& (replacedMessage.trusted() || replacedMessage.getType() == Message.TYPE_PRIVATE)
 									&& remoteMsgId != null
-									&& (!isForwarded || query != null)
 									&& !isTypeGroupChat) {
 								processMessageReceipts(account, packet, query);
 							}
@@ -646,7 +645,6 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
 					&& message.getStatus() == Message.STATUS_RECEIVED
 					&& (message.trusted() || message.getType() == Message.TYPE_PRIVATE)
 					&& remoteMsgId != null
-					&& (!isForwarded || query != null)
 					&& !isTypeGroupChat) {
 				processMessageReceipts(account, packet, query);
 			}
