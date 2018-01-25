@@ -320,7 +320,7 @@ public class ShareWithActivity extends XmppActivity implements XmppConnectionSer
 					for (Iterator<Uri> i = share.uris.iterator(); i.hasNext(); i.remove()) {
 						final Uri uri = i.next();
 						delegateUriPermissionsToService(uri);
-						xmppConnectionService.attachImageToConversation(conversation, i.next(), attachFileCallback);
+						xmppConnectionService.attachImageToConversation(conversation, uri, attachFileCallback);
 					}
 				} else {
 					replaceToast(getString(R.string.preparing_file));
