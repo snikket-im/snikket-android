@@ -17,7 +17,7 @@
   <string name="action_unblock_domain">Deblochează domeniu</string>
   <string name="title_activity_manage_accounts">Configurează conturile</string>
   <string name="title_activity_settings">Setări</string>
-  <string name="title_activity_sharewith">Distribuie către Conversations</string>
+  <string name="title_activity_sharewith">Partajează într-o conversație</string>
   <string name="title_activity_start_conversation">Pornește o conversație</string>
   <string name="title_activity_choose_contact">Alege contact</string>
   <string name="title_activity_share_via_account">Partajează cu cont</string>
@@ -433,7 +433,7 @@
   <string name="vcard">Contact</string>
   <string name="received_x_file">Primit %s</string>
   <string name="disable_foreground_service">Dezactivează serviciul în prim-plan</string>
-  <string name="touch_to_open_conversations">Atinge pentru a deschide Conversations</string>
+  <string name="touch_to_open_conversations">Atingeți pentru a deschide Conversations</string>
   <string name="avatar_has_been_published">Avatarul a fost publicat!</string>
   <string name="sending_x_file">Trimit %s</string>
   <string name="offering_x_file">Ofer %s</string>
@@ -576,7 +576,7 @@ sau chiar pierderea mesajelor.\nÎn continuare veți fi rugați să dezactivați
   <string name="use_own_provider">Folosește furnizorul meu</string>
   <string name="pick_your_username">Alege un nume de utilizator</string>
   <string name="pref_manually_change_presence">Schimbă manual setarea de prezență</string>
-  <string name="pref_manually_change_presence_summary">Atinge-ți avatarul pentru a-ți schimba starea de prezență</string>
+  <string name="pref_manually_change_presence_summary">Atingeți avatarul pentru a-ți schimba starea de prezență</string>
   <string name="change_presence">Setare prezență</string>
   <string name="status_message">Mesaj de stare</string>
   <string name="all_accounts_on_this_device">Setează pentru toate conturile de pe acest dispozitiv</string>
@@ -645,7 +645,7 @@ sau chiar pierderea mesajelor.\nÎn continuare veți fi rugați să dezactivați
   <string name="all_omemo_keys_have_been_verified">Toate cheile OMEMO au fost verificate</string>
   <string name="barcode_does_not_contain_fingerprints_for_this_conversation">Codul de bare nu conține amprente pentru această conversație.</string>
   <string name="verified_fingerprints">Amprente verificate</string>
-  <string name="use_camera_icon_to_scan_barcode">Foloseste camera pentru a scana codul de bare al contactului</string>
+  <string name="use_camera_icon_to_scan_barcode">Folosește camera pentru a scana codul de bare al contactului</string>
   <string name="please_wait_for_keys_to_be_fetched">Asteptati cat se preiau cheile</string>
   <string name="share_as_barcode">Partajează un cod de bare</string>
   <string name="share_as_uri">Partajează ca adresă XMPP</string>
