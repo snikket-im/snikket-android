@@ -1,5 +1,10 @@
 # Changelog
 
+### Version 1.23.4
+* keep screen on while playing audio
+* send delivery receipts after MAM catch-up
+* reduce number of wake locks
+
 ### Version 1.23.3
 * Fixed OMEMO device list not being announced
 
