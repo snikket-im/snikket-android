@@ -562,54 +562,52 @@ public class ConversationFragment extends Fragment implements EditMessage.Keyboa
 		messagesView.setOnScrollListener(mOnScrollListener);
 		messagesView.setTranscriptMode(ListView.TRANSCRIPT_MODE_NORMAL);
 		messageListAdapter = new MessageAdapter((ConversationActivity) getActivity(), this.messageList);
-		messageListAdapter.setOnContactPictureClicked(new OnContactPictureClicked() {
-
-			@Override
-			public void onContactPictureClicked(Message message) {
-				if (message.getStatus() <= Message.STATUS_RECEIVED) {
-					if (message.getConversation().getMode() == Conversation.MODE_MULTI) {
-						Jid user = message.getCounterpart();
-						if (user != null && !user.isBareJid()) {
-							if (!message.getConversation().getMucOptions().isUserInRoom(user)) {
-								Toast.makeText(activity, activity.getString(R.string.user_has_left_conference, user.getResourcepart()), Toast.LENGTH_SHORT).show();
-							}
-							highlightInConference(user.getResourcepart());
+		messageListAdapter.setOnContactPictureClicked(message -> {
+			final boolean received = message.getStatus() <= Message.STATUS_RECEIVED;
+			if (received) {
+				if (message.getConversation().getMode() == Conversation.MODE_MULTI) {
+					Jid user = message.getCounterpart();
+					if (user != null && !user.isBareJid()) {
+						if (!message.getConversation().getMucOptions().isUserInRoom(user)) {
+							Toast.makeText(activity, activity.getString(R.string.user_has_left_conference, user.getResourcepart()), Toast.LENGTH_SHORT).show();
 						}
-					} else {
-						if (!message.getContact().isSelf()) {
-							String fingerprint;
-							if (message.getEncryption() == Message.ENCRYPTION_PGP
-									|| message.getEncryption() == Message.ENCRYPTION_DECRYPTED) {
-								fingerprint = "pgp";
-							} else {
-								fingerprint = message.getFingerprint();
-							}
-							activity.switchToContactDetails(message.getContact(), fingerprint);
-						}
+						highlightInConference(user.getResourcepart());
 					}
+					return;
 				} else {
-					Account account = message.getConversation().getAccount();
-					Intent intent;
-					if (activity.manuallyChangePresence()) {
-						intent = new Intent(activity, SetPresenceActivity.class);
-						intent.putExtra(SetPresenceActivity.EXTRA_ACCOUNT, account.getJid().toBareJid().toString());
-					} else {
-						intent = new Intent(activity, EditAccountActivity.class);
-						intent.putExtra("jid", account.getJid().toBareJid().toString());
+					if (!message.getContact().isSelf()) {
 						String fingerprint;
 						if (message.getEncryption() == Message.ENCRYPTION_PGP
 								|| message.getEncryption() == Message.ENCRYPTION_DECRYPTED) {
 							fingerprint = "pgp";
-						} else if (message.getEncryption() == Message.ENCRYPTION_OTR) {
-							fingerprint = "otr";
 						} else {
 							fingerprint = message.getFingerprint();
 						}
-						intent.putExtra("fingerprint", fingerprint);
+						activity.switchToContactDetails(message.getContact(), fingerprint);
+						return;
 					}
-					startActivity(intent);
 				}
 			}
+			Account account = message.getConversation().getAccount();
+			Intent intent;
+			if (activity.manuallyChangePresence() && !received) {
+				intent = new Intent(activity, SetPresenceActivity.class);
+				intent.putExtra(SetPresenceActivity.EXTRA_ACCOUNT, account.getJid().toBareJid().toString());
+			} else {
+				intent = new Intent(activity, EditAccountActivity.class);
+				intent.putExtra("jid", account.getJid().toBareJid().toString());
+				String fingerprint;
+				if (message.getEncryption() == Message.ENCRYPTION_PGP
+						|| message.getEncryption() == Message.ENCRYPTION_DECRYPTED) {
+					fingerprint = "pgp";
+				} else if (message.getEncryption() == Message.ENCRYPTION_OTR) {
+					fingerprint = "otr";
+				} else {
+					fingerprint = message.getFingerprint();
+				}
+				intent.putExtra("fingerprint", fingerprint);
+			}
+			startActivity(intent);
 		});
 		messageListAdapter.setOnContactPictureLongClicked(message -> {
 			if (message.getStatus() <= Message.STATUS_RECEIVED) {
@@ -632,7 +630,7 @@ public class ConversationFragment extends Fragment implements EditMessage.Keyboa
 				activity.showQrCode();
 			}
 		});
-		messageListAdapter.setOnQuoteListener(text -> quoteText(text));
+		messageListAdapter.setOnQuoteListener(this::quoteText);
 		messagesView.setAdapter(messageListAdapter);
 
 		registerForContextMenu(messagesView);
