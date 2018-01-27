@@ -335,6 +335,10 @@ public class AxolotlService implements OnAdvancedStreamFeaturesLoaded {
 	}
 
 	private Set<XmppAxolotlSession> findSessionsForConversation(Conversation conversation) {
+		if (conversation.getContact().isSelf()) {
+			//will be added in findOwnSessions()
+			return Collections.emptySet();
+		}
 		HashSet<XmppAxolotlSession> sessions = new HashSet<>();
 		for (Jid jid : conversation.getAcceptedCryptoTargets()) {
 			sessions.addAll(this.sessions.getAll(getAddressForJid(jid).getName()).values());
@@ -1180,7 +1184,8 @@ public class AxolotlService implements OnAdvancedStreamFeaturesLoaded {
 	}
 
 	public boolean trustedSessionVerified(final Conversation conversation) {
-		Set<XmppAxolotlSession> sessions = findSessionsForConversation(conversation);
+		final Set<XmppAxolotlSession> sessions = new HashSet<>();
+		sessions.addAll(findSessionsForConversation(conversation));
 		sessions.addAll(findOwnSessions());
 		boolean verified = false;
 		for (XmppAxolotlSession session : sessions) {
@@ -1214,7 +1219,7 @@ public class AxolotlService implements OnAdvancedStreamFeaturesLoaded {
 	@Nullable
 	private boolean buildHeader(XmppAxolotlMessage axolotlMessage, Conversation c) {
 		Set<XmppAxolotlSession> remoteSessions = findSessionsForConversation(c);
-		final boolean acceptEmpty = c.getMode() == Conversation.MODE_MULTI && c.getMucOptions().getUserCount() == 0;
+		final boolean acceptEmpty = (c.getMode() == Conversation.MODE_MULTI && c.getMucOptions().getUserCount() == 0) || c.getContact().isSelf();
 		Collection<XmppAxolotlSession> ownSessions = findOwnSessions();
 		if (remoteSessions.isEmpty() && !acceptEmpty) {
 			return false;

@@ -645,7 +645,7 @@ public class Message extends AbstractEntity {
 
 	public boolean trusted() {
 		Contact contact = this.getContact();
-		return (status > STATUS_RECEIVED || (contact != null && contact.mutualPresenceSubscription()));
+		return status > STATUS_RECEIVED || (contact != null && (contact.mutualPresenceSubscription() || contact.isSelf()));
 	}
 
 	public boolean fixCounterpart() {

@@ -36,10 +36,11 @@ public class MessageGenerator extends AbstractGenerator {
 		Conversation conversation = message.getConversation();
 		Account account = conversation.getAccount();
 		MessagePacket packet = new MessagePacket();
+		final boolean isWithSelf = conversation.getContact().isSelf();
 		if (conversation.getMode() == Conversation.MODE_SINGLE) {
 			packet.setTo(message.getCounterpart());
 			packet.setType(MessagePacket.TYPE_CHAT);
-			if (this.mXmppConnectionService.indicateReceived()) {
+			if (this.mXmppConnectionService.indicateReceived() && !isWithSelf) {
 				packet.addChild("request", "urn:xmpp:receipts");
 			}
 		} else if (message.getType() == Message.TYPE_PRIVATE) {
