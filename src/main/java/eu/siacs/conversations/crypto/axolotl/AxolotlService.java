@@ -1234,6 +1234,23 @@ public class AxolotlService implements OnAdvancedStreamFeaturesLoaded {
 		return true;
 	}
 
+	//this is being used for private muc messages only
+	private boolean buildHeader(XmppAxolotlMessage axolotlMessage, Jid jid) {
+		if (jid == null) {
+			return false;
+		}
+		HashSet<XmppAxolotlSession> sessions = new HashSet<>();
+		sessions.addAll(this.sessions.getAll(getAddressForJid(jid).getName()).values());
+		if (sessions.isEmpty()) {
+			return false;
+		}
+		sessions.addAll(findOwnSessions());
+		for(XmppAxolotlSession session : sessions) {
+			axolotlMessage.addDevice(session);
+		}
+		return true;
+	}
+
 	@Nullable
 	public XmppAxolotlMessage encrypt(Message message) {
 		final XmppAxolotlMessage axolotlMessage = new XmppAxolotlMessage(account.getJid().toBareJid(), getOwnDeviceId());
@@ -1249,12 +1266,14 @@ public class AxolotlService implements OnAdvancedStreamFeaturesLoaded {
 			Log.w(Config.LOGTAG, getLogprefix(account) + "Failed to encrypt message: " + e.getMessage());
 			return null;
 		}
-		//TODO: fix this for MUC PMs - Don't encrypt to all participants
-		if (!buildHeader(axolotlMessage, message.getConversation())) {
-			return null;
-		}
 
-		return axolotlMessage;
+		final boolean success;
+		if (message.getType() == Message.TYPE_PRIVATE) {
+			success = buildHeader(axolotlMessage, message.getTrueCounterpart());
+		} else {
+			success = buildHeader(axolotlMessage, message.getConversation());
+		}
+		return success ? axolotlMessage : null;
 	}
 
 	public void preparePayloadMessage(final Message message, final boolean delay) {

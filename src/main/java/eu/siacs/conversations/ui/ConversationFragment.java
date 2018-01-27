@@ -469,8 +469,10 @@ public class ConversationFragment extends Fragment implements EditMessage.Keyboa
 		if (conversation.getCorrectingMessage() == null) {
 			message = new Message(conversation, body, conversation.getNextEncryption());
 			if (conversation.getMode() == Conversation.MODE_MULTI) {
-				if (conversation.getNextCounterpart() != null) {
-					message.setCounterpart(conversation.getNextCounterpart());
+				final Jid nextCounterpart = conversation.getNextCounterpart();
+				if (nextCounterpart != null) {
+					message.setCounterpart(nextCounterpart);
+					message.setTrueCounterpart(conversation.getMucOptions().getTrueCounterpart(nextCounterpart));
 					message.setType(Message.TYPE_PRIVATE);
 				}
 			}
