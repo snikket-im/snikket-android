@@ -423,7 +423,10 @@ public class StartConversationActivity extends XmppActivity implements OnRosterU
             }
 
             final Contact contact = account.getRoster().getContact(contactJid);
-            if (contact.showInRoster()) {
+            if (contact.isSelf()) {
+                switchToConversation(contact,null);
+                return true;
+            } else if (contact.showInRoster()) {
                 throw new EnterJidDialog.JidError(getString(R.string.contact_already_exists));
             } else {
                 xmppConnectionService.createContact(contact);
