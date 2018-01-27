@@ -1212,10 +1212,11 @@ public class AxolotlService implements OnAdvancedStreamFeaturesLoaded {
 	}
 
 	@Nullable
-	private boolean buildHeader(XmppAxolotlMessage axolotlMessage, Conversation conversation) {
-		Set<XmppAxolotlSession> remoteSessions = findSessionsForConversation(conversation);
+	private boolean buildHeader(XmppAxolotlMessage axolotlMessage, Conversation c) {
+		Set<XmppAxolotlSession> remoteSessions = findSessionsForConversation(c);
+		final boolean acceptEmpty = c.getMode() == Conversation.MODE_MULTI && c.getMucOptions().getUserCount() == 0;
 		Collection<XmppAxolotlSession> ownSessions = findOwnSessions();
-		if (remoteSessions.isEmpty()) {
+		if (remoteSessions.isEmpty() && !acceptEmpty) {
 			return false;
 		}
 		for (XmppAxolotlSession session : remoteSessions) {
