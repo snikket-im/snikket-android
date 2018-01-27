@@ -410,12 +410,19 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
 		}
 		boolean isProperlyAddressed = (to != null) && (!to.isBareJid() || account.countPresences() == 0);
 		boolean isMucStatusMessage = from.isBareJid() && mucUserElement != null && mucUserElement.hasChild("status");
+		boolean selfAddressed;
 		if (packet.fromAccount(account)) {
 			status = Message.STATUS_SEND;
-			counterpart = to != null ? to : account.getJid();
+			selfAddressed = to == null || account.getJid().toBareJid().equals(to.toBareJid());
+			if (selfAddressed) {
+				counterpart = from;
+			} else {
+				counterpart = to != null ? to : account.getJid();
+			}
 		} else {
 			status = Message.STATUS_RECEIVED;
 			counterpart = from;
+			selfAddressed = false;
 		}
 
 		Invite invite = extractInvite(account, packet);
@@ -429,6 +436,17 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
 
 			if (serverMsgId == null) {
 				serverMsgId = extractStanzaId(packet, isTypeGroupChat, conversation);
+			}
+
+
+			if (selfAddressed) {
+				if (mXmppConnectionService.markMessage(conversation, remoteMsgId, Message.STATUS_SEND_RECEIVED, serverMsgId)) {
+					return;
+				}
+				status = Message.STATUS_RECEIVED;
+				if (conversation.findMessageWithRemoteId(remoteMsgId,counterpart) != null) {
+					return;
+				}
 			}
 
 			if (isTypeGroupChat) {
