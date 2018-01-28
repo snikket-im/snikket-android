@@ -395,30 +395,65 @@ public class NotificationService {
 					modifyForTextOnly(mBuilder, mUnreadBuilder, messages);
 				}
 				RemoteInput remoteInput = new RemoteInput.Builder("text_reply").setLabel(UIHelper.getMessageHint(mXmppConnectionService, conversation)).build();
-				NotificationCompat.Action markReadAction = new NotificationCompat.Action.Builder(R.drawable.ic_send_text_offline, "Mark As Read", createReadPendingIntent(conversation)).build();
-				NotificationCompat.Action replyAction = new NotificationCompat.Action.Builder(R.drawable.ic_send_text_offline, "Reply", createReplyIntent(conversation, false)).addRemoteInput(remoteInput).build();
-				NotificationCompat.Action wearReplyAction = new NotificationCompat.Action.Builder(R.drawable.ic_wear_reply, "Reply", createReplyIntent(conversation, true)).addRemoteInput(remoteInput).build();
+				PendingIntent markAsReadPendingIntent = createReadPendingIntent(conversation);
+				NotificationCompat.Action markReadAction = new NotificationCompat.Action.Builder(
+						R.drawable.ic_send_text_offline,
+						mXmppConnectionService.getString(R.string.mark_as_read),
+						markAsReadPendingIntent).build();
+				String replyLabel = mXmppConnectionService.getString(R.string.reply);
+				NotificationCompat.Action replyAction = new NotificationCompat.Action.Builder(
+						R.drawable.ic_send_text_offline,
+						replyLabel,
+						createReplyIntent(conversation, false)).addRemoteInput(remoteInput).build();
+				NotificationCompat.Action wearReplyAction = new NotificationCompat.Action.Builder(R.drawable.ic_wear_reply,
+						replyLabel,
+						createReplyIntent(conversation, true)).addRemoteInput(remoteInput).build();
 				mBuilder.extend(new NotificationCompat.WearableExtender().addAction(wearReplyAction));
 				mUnreadBuilder.setReplyAction(createReplyIntent(conversation, true), remoteInput);
-				mUnreadBuilder.setReadPendingIntent(createReadPendingIntent(conversation));
+				mUnreadBuilder.setReadPendingIntent(markAsReadPendingIntent);
 				mBuilder.extend(new NotificationCompat.CarExtender().setUnreadConversation(mUnreadBuilder.build()));
+				int addedActionsCount = 1;
+				mBuilder.addAction(markReadAction);
 				if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-					mBuilder.addAction(markReadAction);
 					mBuilder.addAction(replyAction);
+					++addedActionsCount;
 				}
-				if ((message = getFirstDownloadableMessage(messages)) != null) {
-					mBuilder.addAction(
-							Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP ?
-									R.drawable.ic_file_download_white_24dp : R.drawable.ic_action_download,
-							mXmppConnectionService.getResources().getString(R.string.download_x_file,
-									UIHelper.getFileDescriptionString(mXmppConnectionService, message)),
-							createDownloadIntent(message)
-					);
+
+				if (displaySnoozeAction(messages)) {
+					String label = mXmppConnectionService.getString(R.string.snooze);
+					PendingIntent pendingSnoozeIntent = createSnoozeIntent(conversation);
+					NotificationCompat.Action snoozeAction = new NotificationCompat.Action.Builder(
+							R.drawable.ic_notifications_paused_white_24dp,
+							label,
+							pendingSnoozeIntent).build();
+					mBuilder.addAction(snoozeAction);
+					++addedActionsCount;
 				}
-				if ((message = getFirstLocationMessage(messages)) != null) {
-					mBuilder.addAction(R.drawable.ic_room_white_24dp,
-							mXmppConnectionService.getString(R.string.show_location),
-							createShowLocationIntent(message));
+				if (addedActionsCount < 3) {
+					final Message firstLocationMessage = getFirstLocationMessage(messages);
+					if (firstLocationMessage != null) {
+						String label = mXmppConnectionService.getResources().getString(R.string.show_location);
+						PendingIntent pendingShowLocationIntent = createShowLocationIntent(firstLocationMessage);
+						NotificationCompat.Action locationAction = new NotificationCompat.Action.Builder(
+								R.drawable.ic_room_white_24dp,
+								label,
+								pendingShowLocationIntent).build();
+						mBuilder.addAction(locationAction);
+						++addedActionsCount;
+					}
+				}
+				if (addedActionsCount < 3) {
+					Message firstDownloadableMessage = getFirstDownloadableMessage(messages);
+					if (firstDownloadableMessage != null) {
+						String label = mXmppConnectionService.getResources().getString(R.string.download_x_file, UIHelper.getFileDescriptionString(mXmppConnectionService, message));
+						PendingIntent pendingDownloadIntent = createDownloadIntent(message);
+						NotificationCompat.Action downloadAction = new NotificationCompat.Action.Builder(
+								R.drawable.ic_file_download_white_24dp,
+								label,
+								pendingDownloadIntent).build();
+						mBuilder.addAction(downloadAction);
+						++addedActionsCount;
+					}
 				}
 			}
 			if (conversation.getMode() == Conversation.MODE_SINGLE) {
@@ -434,6 +469,18 @@ public class NotificationService {
 			mBuilder.setContentIntent(createContentIntent(conversation));
 		}
 		return mBuilder;
+	}
+
+	private static boolean displaySnoozeAction(List<Message> messages) {
+		int numberOfMessagesWithoutReply = 0;
+		for(Message message : messages) {
+			if (message.getStatus() == Message.STATUS_RECEIVED) {
+				++numberOfMessagesWithoutReply;
+			} else {
+				return false;
+			}
+		}
+		return numberOfMessagesWithoutReply >= 3;
 	}
 
 	private void modifyForImage(final Builder builder, final UnreadConversation.Builder uBuilder,
@@ -562,7 +609,7 @@ public class NotificationService {
 		Iterable<Intent> intents = GeoHelper.createGeoIntentsFromMessage(message);
 		for (Intent intent : intents) {
 			if (intent.resolveActivity(mXmppConnectionService.getPackageManager()) != null) {
-				return PendingIntent.getActivity(mXmppConnectionService, 18, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+				return PendingIntent.getActivity(mXmppConnectionService, generateRequestCode(message.getConversation(), 18), intent, PendingIntent.FLAG_UPDATE_CURRENT);
 			}
 		}
 		return createOpenConversationsIntent();
@@ -575,15 +622,23 @@ public class NotificationService {
 		if (downloadMessageUuid != null) {
 			viewConversationIntent.putExtra(ConversationActivity.EXTRA_DOWNLOAD_UUID, downloadMessageUuid);
 			return PendingIntent.getActivity(mXmppConnectionService,
-					(conversationUuid.hashCode() % NOTIFICATION_ID_MULTIPLIER) + 8 * NOTIFICATION_ID_MULTIPLIER,
+					generateRequestCode(conversationUuid, 8),
 					viewConversationIntent,
 					PendingIntent.FLAG_UPDATE_CURRENT);
 		} else {
 			return PendingIntent.getActivity(mXmppConnectionService,
-					(conversationUuid.hashCode() % NOTIFICATION_ID_MULTIPLIER) + 10 * NOTIFICATION_ID_MULTIPLIER,
+					generateRequestCode(conversationUuid, 10),
 					viewConversationIntent,
 					PendingIntent.FLAG_UPDATE_CURRENT);
 		}
+	}
+
+	private int generateRequestCode(String uuid, int actionId) {
+		return (actionId * NOTIFICATION_ID_MULTIPLIER) + (uuid.hashCode() % NOTIFICATION_ID_MULTIPLIER);
+	}
+
+	private int generateRequestCode(Conversation conversation, int actionId) {
+		return generateRequestCode(conversation.getUuid(), actionId);
 	}
 
 	private PendingIntent createDownloadIntent(final Message message) {
@@ -599,7 +654,7 @@ public class NotificationService {
 		intent.setAction(XmppConnectionService.ACTION_CLEAR_NOTIFICATION);
 		if (conversation != null) {
 			intent.putExtra("uuid", conversation.getUuid());
-			return PendingIntent.getService(mXmppConnectionService, (conversation.getUuid().hashCode() % NOTIFICATION_ID_MULTIPLIER) + 12 * NOTIFICATION_ID_MULTIPLIER, intent, 0);
+			return PendingIntent.getService(mXmppConnectionService, generateRequestCode(conversation, 20), intent, 0);
 		}
 		return PendingIntent.getService(mXmppConnectionService, 0, intent, 0);
 	}
@@ -609,7 +664,7 @@ public class NotificationService {
 		intent.setAction(XmppConnectionService.ACTION_REPLY_TO_CONVERSATION);
 		intent.putExtra("uuid",conversation.getUuid());
 		intent.putExtra("dismiss_notification",dismissAfterReply);
-		int id =  (conversation.getUuid().hashCode() % NOTIFICATION_ID_MULTIPLIER) + (dismissAfterReply ? 12 : 14) * NOTIFICATION_ID_MULTIPLIER;
+		final int id =  generateRequestCode(conversation, dismissAfterReply ? 12 : 14);
 		return PendingIntent.getService(mXmppConnectionService, id, intent, 0);
 	}
 
@@ -618,7 +673,15 @@ public class NotificationService {
 		intent.setAction(XmppConnectionService.ACTION_MARK_AS_READ);
 		intent.putExtra("uuid", conversation.getUuid());
 		intent.setPackage(mXmppConnectionService.getPackageName());
-		return PendingIntent.getService(mXmppConnectionService, (conversation.getUuid().hashCode() % NOTIFICATION_ID_MULTIPLIER) + 16 * NOTIFICATION_ID_MULTIPLIER, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+		return PendingIntent.getService(mXmppConnectionService, generateRequestCode(conversation,16), intent, PendingIntent.FLAG_UPDATE_CURRENT);
+	}
+
+	public PendingIntent createSnoozeIntent(Conversation conversation) {
+		final Intent intent = new Intent(mXmppConnectionService, XmppConnectionService.class);
+		intent.setAction(XmppConnectionService.ACTION_SNOOZE);
+		intent.putExtra("uuid", conversation.getUuid());
+		intent.setPackage(mXmppConnectionService.getPackageName());
+		return PendingIntent.getService(mXmppConnectionService, generateRequestCode(conversation,22), intent, PendingIntent.FLAG_UPDATE_CURRENT);
 	}
 
 	private PendingIntent createTryAgainIntent() {

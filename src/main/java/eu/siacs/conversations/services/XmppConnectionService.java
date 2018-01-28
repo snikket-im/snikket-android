@@ -149,6 +149,7 @@ public class XmppConnectionService extends Service {
 
 	public static final String ACTION_REPLY_TO_CONVERSATION = "reply_to_conversations";
 	public static final String ACTION_MARK_AS_READ = "mark_as_read";
+	public static final String ACTION_SNOOZE = "snooze";
 	public static final String ACTION_CLEAR_NOTIFICATION = "clear_notification";
 	public static final String ACTION_DISMISS_ERROR_NOTIFICATIONS = "dismiss_error";
 	public static final String ACTION_TRY_AGAIN = "try_again";
@@ -646,6 +647,17 @@ public class XmppConnectionService extends Service {
 
 					});
 					break;
+				case ACTION_SNOOZE:
+					mNotificationExecutor.execute(() -> {
+						final Conversation c = findConversationByUuid(uuid);
+						if (c == null) {
+							Log.d(Config.LOGTAG,"received snooze intent for unknown conversation ("+ uuid +")");
+							return;
+						}
+						c.setMutedTill(System.currentTimeMillis() + 30 * 60 * 1000);
+						mNotificationService.clear(c);
+						updateConversation(c);
+					});
 				case AudioManager.RINGER_MODE_CHANGED_ACTION:
 					if (dndOnSilentMode()) {
 						refreshAllPresences();

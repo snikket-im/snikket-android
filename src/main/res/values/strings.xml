@@ -452,6 +452,9 @@
 	<string name="two_hours">2 hours</string>
 	<string name="eight_hours">8 hours</string>
 	<string name="until_further_notice">Until further notice</string>
+	<string name="snooze">Snooze</string>
+	<string name="reply">Reply</string>
+	<string name="mark_as_read">Mark as read</string>
 	<string name="pref_input_options">Input</string>
 	<string name="pref_enter_is_send">Enter is send</string>
 	<string name="pref_enter_is_send_summary">Use enter key to send message</string>
