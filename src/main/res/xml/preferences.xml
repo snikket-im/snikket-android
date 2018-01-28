@@ -2,7 +2,8 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
     android:background="?attr/color_background_secondary">
 
-    <PreferenceCategory android:title="@string/pref_general">
+    <PreferenceCategory android:title="@string/pref_general"
+        android:key="general">
         <CheckBoxPreference
             android:defaultValue="@bool/grant_new_contacts"
             android:key="grant_new_contacts"
@@ -16,6 +17,15 @@
             android:key="resource"
             android:summary="@string/pref_xmpp_resource_summary"
             android:title="@string/pref_xmpp_resource"/>
+        <PreferenceScreen
+            android:key="huawei"
+            android:title="@string/huawei_protected_apps"
+            android:summary="@string/huawei_protected_apps_summary"
+            >
+            <intent
+                android:targetPackage="com.huawei.systemmanager"
+                android:targetClass="com.huawei.systemmanager.optimize.process.ProtectActivity"/>
+        </PreferenceScreen>
     </PreferenceCategory>
     <PreferenceCategory android:title="@string/pref_privacy">
         <CheckBoxPreference
