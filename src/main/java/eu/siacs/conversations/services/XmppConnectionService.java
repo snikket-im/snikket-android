@@ -1641,29 +1641,31 @@ public class XmppConnectionService extends Service {
 			return;
 		}
 		Log.d(Config.LOGTAG, "load more messages for " + conversation.getName() + " prior to " + MessageGenerator.getTimestamp(timestamp));
-		Runnable runnable = new Runnable() {
-			@Override
-			public void run() {
-				final Account account = conversation.getAccount();
-				List<Message> messages = databaseBackend.getMessages(conversation, 50, timestamp);
-				if (messages.size() > 0) {
-					conversation.addAll(0, messages);
-					checkDeletedFiles(conversation);
-					callback.onMoreMessagesLoaded(messages.size(), conversation);
-				} else if (conversation.hasMessagesLeftOnServer()
-						&& account.isOnlineAndConnected()
-						&& conversation.getLastClearHistory().getTimestamp() == 0) {
-					if ((conversation.getMode() == Conversation.MODE_SINGLE && account.getXmppConnection().getFeatures().mam())
-							|| (conversation.getMode() == Conversation.MODE_MULTI && conversation.getMucOptions().mamSupport())) {
-						MessageArchiveService.Query query = getMessageArchiveService().query(conversation, new MamReference(0), timestamp, false);
-						if (query != null) {
-							query.setCallback(callback);
-							callback.informUser(R.string.fetching_history_from_server);
-						} else {
-							callback.informUser(R.string.not_fetching_history_retention_period);
-						}
-
+		final Runnable runnable = () -> {
+			final Account account = conversation.getAccount();
+			List<Message> messages = databaseBackend.getMessages(conversation, 50, timestamp);
+			if (messages.size() > 0) {
+				conversation.addAll(0, messages);
+				checkDeletedFiles(conversation);
+				callback.onMoreMessagesLoaded(messages.size(), conversation);
+			} else if (conversation.hasMessagesLeftOnServer()
+					&& account.isOnlineAndConnected()
+					&& conversation.getLastClearHistory().getTimestamp() == 0) {
+				final boolean mamAvailable;
+				if (conversation.getMode() == Conversation.MODE_SINGLE) {
+					mamAvailable = account.getXmppConnection().getFeatures().mam() && !conversation.getContact().isBlocked();
+				} else {
+					mamAvailable = conversation.getMucOptions().mamSupport();
+				}
+				if (mamAvailable) {
+					MessageArchiveService.Query query = getMessageArchiveService().query(conversation, new MamReference(0), timestamp, false);
+					if (query != null) {
+						query.setCallback(callback);
+						callback.informUser(R.string.fetching_history_from_server);
+					} else {
+						callback.informUser(R.string.not_fetching_history_retention_period);
 					}
+
 				}
 			}
 		};
@@ -1754,29 +1756,27 @@ public class XmppConnectionService extends Service {
 				loadMessagesFromDb = false;
 			}
 			final Conversation c = conversation;
-			final Runnable runnable = new Runnable() {
-				@Override
-				public void run() {
-					if (loadMessagesFromDb) {
-						c.addAll(0, databaseBackend.getMessages(c, Config.PAGE_SIZE));
-						updateConversationUi();
-						c.messagesLoaded.set(true);
-					}
-					if (account.getXmppConnection() != null
-							&& account.getXmppConnection().getFeatures().mam()
-							&& !muc) {
-						if (query == null) {
-							mMessageArchiveService.query(c);
-						} else {
-							if (query.getConversation() == null) {
-								mMessageArchiveService.query(c, query.getStart(), query.isCatchup());
-							}
+			final Runnable runnable = () -> {
+				if (loadMessagesFromDb) {
+					c.addAll(0, databaseBackend.getMessages(c, Config.PAGE_SIZE));
+					updateConversationUi();
+					c.messagesLoaded.set(true);
+				}
+				if (account.getXmppConnection() != null
+						&& !c.getContact().isBlocked()
+						&& account.getXmppConnection().getFeatures().mam()
+						&& !muc) {
+					if (query == null) {
+						mMessageArchiveService.query(c);
+					} else {
+						if (query.getConversation() == null) {
+							mMessageArchiveService.query(c, query.getStart(), query.isCatchup());
 						}
 					}
-					checkDeletedFiles(c);
-					if (joinAfterCreate) {
-						joinMuc(c);
-					}
+				}
+				checkDeletedFiles(c);
+				if (joinAfterCreate) {
+					joinMuc(c);
 				}
 			};
 			if (async) {
