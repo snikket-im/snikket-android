@@ -680,46 +680,19 @@ public class Message extends AbstractEntity {
 		this.oob = isOob;
 	}
 
-	private static String extractRelevantExtension(URL url) {
-		String path = url.getPath();
-		return extractRelevantExtension(path);
-	}
-
-	private static String extractRelevantExtension(String path) {
-		if (path == null || path.isEmpty()) {
-			return null;
-		}
-
-		String filename = path.substring(path.lastIndexOf('/') + 1).toLowerCase();
-		int dotPosition = filename.lastIndexOf(".");
-
-		if (dotPosition != -1) {
-			String extension = filename.substring(dotPosition + 1);
-			// we want the real file extension, not the crypto one
-			if (Transferable.VALID_CRYPTO_EXTENSIONS.contains(extension)) {
-				return extractRelevantExtension(filename.substring(0,dotPosition));
-			} else {
-				return extension;
-			}
-		}
-		return null;
-	}
-
 	public String getMimeType() {
+		String extension;
 		if (relativeFilePath != null) {
-			int start = relativeFilePath.lastIndexOf('.') + 1;
-			if (start < relativeFilePath.length()) {
-				return MimeUtils.guessMimeTypeFromExtension(relativeFilePath.substring(start));
-			} else {
-				return null;
-			}
+			extension = MimeUtils.extractRelevantExtension(relativeFilePath);
 		} else {
 			try {
-				return MimeUtils.guessMimeTypeFromExtension(extractRelevantExtension(new URL(body.trim())));
+				final URL url = new URL(body.split("\n")[0]);
+				extension = MimeUtils.extractRelevantExtension(url);
 			} catch (MalformedURLException e) {
 				return null;
 			}
 		}
+		return MimeUtils.guessMimeTypeFromExtension(extension);
 	}
 
 	public synchronized boolean treatAsDownloadable() {

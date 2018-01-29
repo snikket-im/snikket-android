@@ -2,7 +2,9 @@ package eu.siacs.conversations.crypto;
 
 import android.app.PendingIntent;
 import android.content.Intent;
+import android.util.Log;
 
+import org.openintents.openpgp.OpenPgpMetadata;
 import org.openintents.openpgp.util.OpenPgpApi;
 
 import java.io.ByteArrayInputStream;
@@ -17,11 +19,13 @@ import java.util.ArrayDeque;
 import java.util.HashSet;
 import java.util.List;
 
+import eu.siacs.conversations.Config;
 import eu.siacs.conversations.entities.Conversation;
 import eu.siacs.conversations.entities.DownloadableFile;
 import eu.siacs.conversations.entities.Message;
 import eu.siacs.conversations.http.HttpConnectionManager;
 import eu.siacs.conversations.services.XmppConnectionService;
+import eu.siacs.conversations.utils.MimeUtils;
 
 public class PgpDecryptionService {
 
@@ -176,13 +180,31 @@ public class PgpDecryptionService {
 				try {
 					final DownloadableFile inputFile = mXmppConnectionService.getFileBackend().getFile(message, false);
 					final DownloadableFile outputFile = mXmppConnectionService.getFileBackend().getFile(message, true);
-					outputFile.getParentFile().mkdirs();
+					if (outputFile.getParentFile().mkdirs()) {
+						Log.d(Config.LOGTAG,"created parent directories for "+outputFile.getAbsolutePath());
+					}
 					outputFile.createNewFile();
 					InputStream is = new FileInputStream(inputFile);
 					OutputStream os = new FileOutputStream(outputFile);
 					Intent result = getOpenPgpApi().executeApi(params, is, os);
 					switch (result.getIntExtra(OpenPgpApi.RESULT_CODE, OpenPgpApi.RESULT_CODE_ERROR)) {
 						case OpenPgpApi.RESULT_CODE_SUCCESS:
+							OpenPgpMetadata openPgpMetadata = result.getParcelableExtra(OpenPgpApi.RESULT_METADATA);
+							String originalFilename = openPgpMetadata.getFilename();
+							String originalExtension = originalFilename == null ? null : MimeUtils.extractRelevantExtension(originalFilename);
+							if (originalExtension != null && MimeUtils.extractRelevantExtension(outputFile.getName()) == null) {
+								Log.d(Config.LOGTAG,"detected original filename during pgp decryption");
+								String mime = MimeUtils.guessMimeTypeFromExtension(originalExtension);
+								String path = outputFile.getName()+"."+originalExtension;
+								DownloadableFile fixedFile = mXmppConnectionService.getFileBackend().getFileForPath(path,mime);
+								if (fixedFile.getParentFile().mkdirs()) {
+									Log.d(Config.LOGTAG,"created parent directories for "+fixedFile.getAbsolutePath());
+								}
+								if (outputFile.renameTo(fixedFile)) {
+									Log.d(Config.LOGTAG, "renamed " + outputFile.getAbsolutePath() + " to " + fixedFile.getAbsolutePath());
+									message.setRelativeFilePath(path);
+								}
+							}
 							URL url = message.getFileParams().url;
 							mXmppConnectionService.getFileBackend().updateFileParams(message, url);
 							message.setEncryption(Message.ENCRYPTION_DECRYPTED);

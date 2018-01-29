@@ -21,9 +21,13 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
+
+import eu.siacs.conversations.entities.Transferable;
+
 /**
  * Utilities for dealing with MIME types.
  * Used to implement java.net.URLConnection and android.webkit.MimeTypeMap.
@@ -509,5 +513,34 @@ public final class MimeUtils {
             mimeType = uri.getQueryParameter("mimeType");
         }
         return mimeType;
+    }
+
+    public static String extractRelevantExtension(URL url) {
+        String path = url.getPath();
+        return extractRelevantExtension(path, true);
+    }
+
+    public static String extractRelevantExtension(final String path) {
+        return extractRelevantExtension(path, false);
+    }
+
+    public static String extractRelevantExtension(final String path, final boolean ignoreCryptoExtension) {
+        if (path == null || path.isEmpty()) {
+            return null;
+        }
+
+        String filename = path.substring(path.lastIndexOf('/') + 1).toLowerCase();
+        int dotPosition = filename.lastIndexOf(".");
+
+        if (dotPosition != -1) {
+            String extension = filename.substring(dotPosition + 1);
+            // we want the real file extension, not the crypto one
+            if (ignoreCryptoExtension && Transferable.VALID_CRYPTO_EXTENSIONS.contains(extension)) {
+                return extractRelevantExtension(filename.substring(0,dotPosition));
+            } else {
+                return extension;
+            }
+        }
+        return null;
     }
 }
