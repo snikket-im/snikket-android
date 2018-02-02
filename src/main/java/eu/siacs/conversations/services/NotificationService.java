@@ -445,8 +445,8 @@ public class NotificationService {
 				if (addedActionsCount < 3) {
 					Message firstDownloadableMessage = getFirstDownloadableMessage(messages);
 					if (firstDownloadableMessage != null) {
-						String label = mXmppConnectionService.getResources().getString(R.string.download_x_file, UIHelper.getFileDescriptionString(mXmppConnectionService, message));
-						PendingIntent pendingDownloadIntent = createDownloadIntent(message);
+						String label = mXmppConnectionService.getResources().getString(R.string.download_x_file, UIHelper.getFileDescriptionString(mXmppConnectionService, firstDownloadableMessage));
+						PendingIntent pendingDownloadIntent = createDownloadIntent(firstDownloadableMessage);
 						NotificationCompat.Action downloadAction = new NotificationCompat.Action.Builder(
 								R.drawable.ic_file_download_white_24dp,
 								label,
