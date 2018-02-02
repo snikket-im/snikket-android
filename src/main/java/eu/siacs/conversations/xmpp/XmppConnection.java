@@ -610,7 +610,7 @@ public class XmppConnection implements Runnable {
 					ArrayList<AbstractAcknowledgeableStanza> failedStanzas = new ArrayList<>();
 					synchronized (this.mStanzaQueue) {
 						final int serverCount = Integer.parseInt(h);
-						if (serverCount != stanzasSent) {
+						if (serverCount < stanzasSent) {
 							Log.d(Config.LOGTAG, account.getJid().toBareJid().toString()
 									+ ": session resumed with lost packages");
 							stanzasSent = serverCount;
@@ -698,6 +698,9 @@ public class XmppConnection implements Runnable {
 	}
 
 	private void acknowledgeStanzaUpTo(int serverCount) {
+		if (serverCount > stanzasSent) {
+			Log.e(Config.LOGTAG,"server acknowledged more stanzas than we sent. serverCount="+serverCount+", ourCount="+stanzasSent);
+		}
 		for (int i = 0; i < mStanzaQueue.size(); ++i) {
 			if (serverCount >= mStanzaQueue.keyAt(i)) {
 				if (Config.EXTENDED_SM_LOGGING) {
@@ -1049,6 +1052,7 @@ public class XmppConnection implements Runnable {
 		resetAttemptCount(true);
 		resetStreamId();
 		clearIqCallbacks();
+		this.stanzasSent = 0;
 		mStanzaQueue.clear();
 		this.redirectionUrl = null;
 		synchronized (this.disco) {
@@ -1401,6 +1405,14 @@ public class XmppConnection implements Runnable {
 			tagWriter.writeStanzaAsync(packet);
 			if (packet instanceof AbstractAcknowledgeableStanza) {
 				AbstractAcknowledgeableStanza stanza = (AbstractAcknowledgeableStanza) packet;
+
+				if (this.mStanzaQueue.size() != 0) {
+					int currentHighestKey = this.mStanzaQueue.keyAt(this.mStanzaQueue.size() - 1);
+					if (currentHighestKey != stanzasSent) {
+						throw new AssertionError("Stanza count messed up");
+					}
+				}
+
 				++stanzasSent;
 				this.mStanzaQueue.append(stanzasSent, stanza);
 				if (stanza instanceof MessagePacket && stanza.getId() != null && getFeatures().sm()) {
