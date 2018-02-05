@@ -244,7 +244,7 @@
   <string name="joining_conference">Rejoindre la conversation de groupe</string>
   <string name="leave">Partir</string>
   <string name="contact_added_you">Votre correspondant vous a ajouté dans sa liste de contacts</string>
-  <string name="add_back">Ré-ajouter</string>
+  <string name="add_back">Ajouter en retour</string>
   <string name="contact_has_read_up_to_this_point">%s a tout lu jusqu\'ici</string>
   <string name="contacts_have_read_up_to_this_point">%s a tout lu jusqu\'ici</string>
   <string name="contacts_and_n_more_have_read_up_to_this_point">%1$s+%2$d et plus  ont tout lu jusqu\'ici</string>
