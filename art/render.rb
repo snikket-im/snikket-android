@@ -91,7 +91,7 @@ images.each do |source_filename, settings|
 	base_width = svg.root["width"].to_i
 	base_height = svg.root["height"].to_i
 
-	guides = svg.find(".//sodipodi:guide")
+	guides = svg.find(".//sodipodi:guide","sodipodi:http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd")
 
 	resolutions.each do |resolution, factor|
 		output_filename, base_size = settings
