@@ -42,13 +42,13 @@ dependencies {
     implementation "com.android.support:appcompat-v7:$supportLibVersion"
     implementation "com.android.support:support-emoji:$supportLibVersion"
     freeImplementation "com.android.support:support-emoji-bundled:$supportLibVersion"
-    implementation 'org.bouncycastle:bcmail-jdk15on:1.56'
+    implementation 'org.bouncycastle:bcmail-jdk15on:1.58'
     implementation 'org.jitsi:org.otr4j:0.22'
     implementation 'org.gnu.inet:libidn:1.15'
-    implementation 'com.google.zxing:core:3.2.1'
-    implementation 'com.google.zxing:android-integration:3.2.1'
+    implementation 'com.google.zxing:core:3.3.0'
+    implementation 'com.google.zxing:android-integration:3.3.0'
     implementation 'de.measite.minidns:minidns-hla:0.2.4'
-    implementation 'me.leolin:ShortcutBadger:1.1.19@aar'
+    implementation 'me.leolin:ShortcutBadger:1.1.21@aar'
     implementation 'com.kyleduo.switchbutton:library:1.2.8'
     implementation 'org.whispersystems:signal-protocol-java:2.6.2'
     implementation 'com.makeramen:roundedimageview:2.3.0'
@@ -63,14 +63,14 @@ ext {
 }
 
 android {
-    compileSdkVersion 26
-    buildToolsVersion "26.0.2"
+    compileSdkVersion 27
+    buildToolsVersion "27.0.3"
 
     defaultConfig {
         minSdkVersion 14
         targetSdkVersion 25
         versionCode 251
-        versionName "1.23.4"
+        versionName "1.23.5"
         archivesBaseName += "-$versionName"
         applicationId "eu.siacs.conversations"
     }
