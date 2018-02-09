@@ -522,6 +522,9 @@ public abstract class XmppActivity extends Activity {
 		Intent intent = new Intent(this, EditAccountActivity.class);
 		intent.putExtra("jid", account.getJid().toBareJid().toString());
 		intent.putExtra("init", init);
+		if (init) {
+			intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NO_ANIMATION);
+		}
 		startActivity(intent);
 	}
 
