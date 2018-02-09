@@ -101,11 +101,13 @@ public class SettingsActivity extends XmppActivity implements
 
 		//this feature is only available on Huawei Android 6.
 		PreferenceScreen huaweiPreferenceScreen = (PreferenceScreen) mSettingsFragment.findPreference("huawei");
-		Intent intent = huaweiPreferenceScreen.getIntent();
-		//remove when Api version is above M (Version 6.0) or if the intent is not callable
-		if (Build.VERSION.SDK_INT > Build.VERSION_CODES.M || !isCallable(intent)) {
-			PreferenceCategory generalCategory = (PreferenceCategory) mSettingsFragment.findPreference("general");
-			generalCategory.removePreference(huaweiPreferenceScreen);
+		if (huaweiPreferenceScreen != null) {
+			Intent intent = huaweiPreferenceScreen.getIntent();
+			//remove when Api version is above M (Version 6.0) or if the intent is not callable
+			if (Build.VERSION.SDK_INT > Build.VERSION_CODES.M || !isCallable(intent)) {
+				PreferenceCategory generalCategory = (PreferenceCategory) mSettingsFragment.findPreference("general");
+				generalCategory.removePreference(huaweiPreferenceScreen);
+			}
 		}
 
 		boolean removeLocation = new Intent("eu.siacs.conversations.location.request").resolveActivity(getPackageManager()) == null;
@@ -232,8 +234,8 @@ public class SettingsActivity extends XmppActivity implements
 		});
 	}
 
-	private boolean isCallable(Intent intent) {
-		return getPackageManager().queryIntentActivities(intent, PackageManager.MATCH_DEFAULT_ONLY).size() > 0;
+	private boolean isCallable(final Intent i) {
+		return i != null && getPackageManager().queryIntentActivities(i, PackageManager.MATCH_DEFAULT_ONLY).size() > 0;
 	}
 
 
