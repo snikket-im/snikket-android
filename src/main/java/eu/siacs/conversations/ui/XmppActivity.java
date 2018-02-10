@@ -526,7 +526,9 @@ public abstract class XmppActivity extends Activity {
 			intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NO_ANIMATION);
 		}
 		startActivity(intent);
-		overridePendingTransition(0,0);
+		if (init) {
+			overridePendingTransition(0, 0);
+		}
 	}
 
 	protected void delegateUriPermissionsToService(Uri uri) {
