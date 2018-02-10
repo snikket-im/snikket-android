@@ -99,6 +99,9 @@ public class Resolver {
 		ResolverResult<SRV> result = resolveWithFallback(dnsName, SRV.class);
 		List<Result> results = new ArrayList<>();
 		for (SRV record : result.getAnswersOrEmptySet()) {
+			if (record.name.length() == 0 && record.priority == 0) {
+				continue;
+			}
 			final boolean addedIPv4 = results.addAll(resolveIp(record, A.class, result.isAuthenticData(), directTls));
 			results.addAll(resolveIp(record, AAAA.class, result.isAuthenticData(), directTls));
 			if (!addedIPv4 && !Thread.currentThread().isInterrupted()) {
