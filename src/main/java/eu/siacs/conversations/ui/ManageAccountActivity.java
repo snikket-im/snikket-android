@@ -353,17 +353,16 @@ public class ManageAccountActivity extends XmppActivity implements OnAccountUpda
 	}
 
 	private void deleteAccount(final Account account) {
-		AlertDialog.Builder builder = new AlertDialog.Builder(
-				ManageAccountActivity.this);
+		AlertDialog.Builder builder = new AlertDialog.Builder(this);
 		builder.setTitle(getString(R.string.mgmt_account_are_you_sure));
 		builder.setIconAttribute(android.R.attr.alertDialogIcon);
 		builder.setMessage(getString(R.string.mgmt_account_delete_confirm_text));
 		builder.setPositiveButton(getString(R.string.delete),
-				new OnClickListener() {
-					@Override
-					public void onClick(DialogInterface dialog, int which) {
-						xmppConnectionService.deleteAccount(account);
-						selectedAccount = null;
+				(dialog, which) -> {
+					xmppConnectionService.deleteAccount(account);
+					selectedAccount = null;
+					if (xmppConnectionService.getAccounts().size() == 0 && Config.MAGIC_CREATE_DOMAIN != null) {
+						WelcomeActivity.launch(this);
 					}
 				});
 		builder.setNegativeButton(getString(R.string.cancel), null);
@@ -401,16 +400,14 @@ public class ManageAccountActivity extends XmppActivity implements OnAccountUpda
 
 	@Override
 	public void onAccountCreated(Account account) {
-		switchToAccount(account, true);
+		Intent intent = new Intent(this, EditAccountActivity.class);
+		intent.putExtra("jid", account.getJid().toBareJid().toString());
+		intent.putExtra("init", true);
+		startActivity(intent);
 	}
 
 	@Override
 	public void informUser(final int r) {
-		runOnUiThread(new Runnable() {
-			@Override
-			public void run() {
-				Toast.makeText(ManageAccountActivity.this, r, Toast.LENGTH_LONG).show();
-			}
-		});
+		runOnUiThread(() -> Toast.makeText(ManageAccountActivity.this, r, Toast.LENGTH_LONG).show());
 	}
 }

@@ -1248,10 +1248,7 @@ public class ConversationActivity extends XmppActivity
 					startActivity(redirectionIntent);
 					overridePendingTransition(0,0);
 				} else if (Config.MAGIC_CREATE_DOMAIN != null) {
-					Intent redirectionIntent =new Intent(this, WelcomeActivity.class);
-					redirectionIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NO_ANIMATION);
-					startActivity(redirectionIntent);
-					overridePendingTransition(0,0);
+					WelcomeActivity.launch(this);
 				} else {
 					Intent editAccount = new Intent(this, EditAccountActivity.class);
 					editAccount.putExtra("init",true);

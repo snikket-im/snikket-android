@@ -1834,37 +1834,39 @@ public class XmppConnectionService extends Service {
 	}
 
 	public void createAccountFromKey(final String alias, final OnAccountCreated callback) {
-		new Thread(new Runnable() {
-			@Override
-			public void run() {
-				try {
-					X509Certificate[] chain = KeyChain.getCertificateChain(XmppConnectionService.this, alias);
-					Pair<Jid, String> info = CryptoHelper.extractJidAndName(chain[0]);
-					if (info == null) {
-						callback.informUser(R.string.certificate_does_not_contain_jid);
-						return;
-					}
-					if (findAccountByJid(info.first) == null) {
-						Account account = new Account(info.first, "");
-						account.setPrivateKeyAlias(alias);
-						account.setOption(Account.OPTION_DISABLED, true);
-						account.setDisplayName(info.second);
-						createAccount(account);
-						callback.onAccountCreated(account);
-						if (Config.X509_VERIFICATION) {
-							try {
-								getMemorizingTrustManager().getNonInteractive(account.getJid().getDomainpart()).checkClientTrusted(chain, "RSA");
-							} catch (CertificateException e) {
-								callback.informUser(R.string.certificate_chain_is_not_trusted);
-							}
-						}
-					} else {
-						callback.informUser(R.string.account_already_exists);
-					}
-				} catch (Exception e) {
-					e.printStackTrace();
+		new Thread(() -> {
+			try {
+				final X509Certificate[] chain = KeyChain.getCertificateChain(this, alias);
+				final X509Certificate cert = chain != null && chain.length > 0 ? chain[0] : null;
+				if (cert == null) {
 					callback.informUser(R.string.unable_to_parse_certificate);
+					return;
 				}
+				Pair<Jid, String> info = CryptoHelper.extractJidAndName(cert);
+				if (info == null) {
+					callback.informUser(R.string.certificate_does_not_contain_jid);
+					return;
+				}
+				if (findAccountByJid(info.first) == null) {
+					Account account = new Account(info.first, "");
+					account.setPrivateKeyAlias(alias);
+					account.setOption(Account.OPTION_DISABLED, true);
+					account.setDisplayName(info.second);
+					createAccount(account);
+					callback.onAccountCreated(account);
+					if (Config.X509_VERIFICATION) {
+						try {
+							getMemorizingTrustManager().getNonInteractive(account.getJid().getDomainpart()).checkClientTrusted(chain, "RSA");
+						} catch (CertificateException e) {
+							callback.informUser(R.string.certificate_chain_is_not_trusted);
+						}
+					}
+				} else {
+					callback.informUser(R.string.account_already_exists);
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+				callback.informUser(R.string.unable_to_parse_certificate);
 			}
 		}).start();
 
@@ -1876,6 +1878,10 @@ public class XmppConnectionService extends Service {
 			X509Certificate[] chain = KeyChain.getCertificateChain(XmppConnectionService.this, alias);
 			Log.d(Config.LOGTAG, account.getJid().toBareJid() + " loaded certificate chain");
 			Pair<Jid, String> info = CryptoHelper.extractJidAndName(chain[0]);
+			if (info == null) {
+				showErrorToastInUi(R.string.certificate_does_not_contain_jid);
+				return;
+			}
 			if (account.getJid().toBareJid().equals(info.first)) {
 				account.setPrivateKeyAlias(alias);
 				account.setDisplayName(info.second);
@@ -1942,19 +1948,11 @@ public class XmppConnectionService extends Service {
 				}
 			}
 			if (account.getXmppConnection() != null) {
-				new Thread(new Runnable() {
-					@Override
-					public void run() {
-						disconnect(account, true);
-					}
-				}).start();
+				new Thread(() -> disconnect(account, true)).start();
 			}
-			Runnable runnable = new Runnable() {
-				@Override
-				public void run() {
-					if (!databaseBackend.deleteAccount(account)) {
-						Log.d(Config.LOGTAG, account.getJid().toBareJid() + ": unable to delete account");
-					}
+			final Runnable runnable = () -> {
+				if (!databaseBackend.deleteAccount(account)) {
+					Log.d(Config.LOGTAG, account.getJid().toBareJid() + ": unable to delete account");
 				}
 			};
 			mDatabaseWriterExecutor.execute(runnable);
