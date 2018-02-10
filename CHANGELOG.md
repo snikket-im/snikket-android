@@ -1,5 +1,8 @@
 # Changelog
 
+### Version 1.23.5
+* improved self chat
+
 ### Version 1.23.4
 * keep screen on while playing audio
 * send delivery receipts after MAM catch-up
