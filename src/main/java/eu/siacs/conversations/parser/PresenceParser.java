@@ -69,15 +69,13 @@ public class PresenceParser extends AbstractParser implements
 					if (item != null && !from.isBareJid()) {
 						mucOptions.setError(MucOptions.Error.NONE);
 						MucOptions.User user = parseItem(conversation, item, from);
-						if (codes.contains(MucOptions.STATUS_CODE_SELF_PRESENCE)
-								|| ((codes.isEmpty() || codes.contains(MucOptions.STATUS_CODE_ROOM_CREATED)) && jid.equals(item.getAttributeAsJid("jid")))) {
+						if (codes.contains(MucOptions.STATUS_CODE_SELF_PRESENCE) || (codes.contains(MucOptions.STATUS_CODE_ROOM_CREATED) && jid.equals(item.getAttributeAsJid("jid")))) {
 							if (mucOptions.setOnline()) {
 								mXmppConnectionService.getAvatarService().clear(mucOptions);
 							}
 							mucOptions.setSelf(user);
 
 							mXmppConnectionService.persistSelfNick(user);
-
 							invokeRenameListener(mucOptions, true);
 						}
 						boolean isNew = mucOptions.updateUser(user);

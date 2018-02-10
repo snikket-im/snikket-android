@@ -610,18 +610,21 @@ public class Account extends AbstractEntity {
 		return this.bookmarks;
 	}
 
-	public void setBookmarks(final List<Bookmark> bookmarks) {
+	public void setBookmarks(final CopyOnWriteArrayList<Bookmark> bookmarks) {
 		this.bookmarks = bookmarks;
 	}
 
 	public boolean hasBookmarkFor(final Jid conferenceJid) {
-		for (final Bookmark bookmark : this.bookmarks) {
-			final Jid jid = bookmark.getJid();
-			if (jid != null && jid.equals(conferenceJid.toBareJid())) {
-				return true;
+		return getBookmark(conferenceJid) != null;
+	}
+
+	public Bookmark getBookmark(final Jid jid) {
+		for(final Bookmark bookmark : this.bookmarks) {
+			if (bookmark.getJid() != null && jid.toBareJid().equals(bookmark.getJid().toBareJid())) {
+				return bookmark;
 			}
 		}
-		return false;
+		return null;
 	}
 
 	public boolean setAvatar(final String filename) {

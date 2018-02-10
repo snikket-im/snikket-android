@@ -54,7 +54,7 @@ public class MucOptions {
 	}
 
 	public boolean isSelf(Jid counterpart) {
-		return counterpart.getResourcepart().equals(getActualNick());
+		return counterpart.equals(self.getFullJid());
 	}
 
 	public void resetChatState() {

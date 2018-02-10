@@ -347,8 +347,7 @@ public class ConferenceDetailsActivity extends XmppActivity implements OnConvers
 		if (mConversation == null) {
 			return true;
 		}
-		Account account = mConversation.getAccount();
-		if (account.hasBookmarkFor(mConversation.getJid().toBareJid())) {
+		if (mConversation.getBookmark() != null) {
 			menuItemSaveBookmark.setVisible(false);
 			menuItemDeleteBookmark.setVisible(true);
 		} else {
@@ -515,8 +514,8 @@ public class ConferenceDetailsActivity extends XmppActivity implements OnConvers
 	protected void deleteBookmark() {
 		Account account = mConversation.getAccount();
 		Bookmark bookmark = mConversation.getBookmark();
-		mConversation.deregisterWithBookmark();
 		account.getBookmarks().remove(bookmark);
+		bookmark.setConversation(null);
 		xmppConnectionService.pushBookmarks(account);
 		updateView();
 	}

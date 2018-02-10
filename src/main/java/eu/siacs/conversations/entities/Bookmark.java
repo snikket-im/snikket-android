@@ -2,6 +2,7 @@ package eu.siacs.conversations.entities;
 
 import android.content.Context;
 
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -13,7 +14,7 @@ import eu.siacs.conversations.xmpp.jid.Jid;
 public class Bookmark extends Element implements ListItem {
 
 	private Account account;
-	private Conversation mJoinedConversation;
+	private WeakReference<Conversation> conversation;
 
 	public Bookmark(final Account account, final Jid jid) {
 		super("conference");
@@ -49,8 +50,9 @@ public class Bookmark extends Element implements ListItem {
 
 	@Override
 	public String getDisplayName() {
-		if (this.mJoinedConversation != null) {
-			return this.mJoinedConversation.getName();
+		final Conversation c = getConversation();
+		if (c != null) {
+			return c.getName();
 		} else if (getBookmarkName() != null
 				&& !getBookmarkName().trim().isEmpty()) {
 			return getBookmarkName().trim();
@@ -141,12 +143,15 @@ public class Bookmark extends Element implements ListItem {
 		return this.account;
 	}
 
-	public Conversation getConversation() {
-		return this.mJoinedConversation;
+	public synchronized Conversation getConversation() {
+		return this.conversation != null ? this.conversation.get() : null;
 	}
 
-	public void setConversation(Conversation conversation) {
-		this.mJoinedConversation = conversation;
+	public synchronized void setConversation(Conversation conversation) {
+		if (this.conversation != null) {
+			this.conversation.clear();
+		}
+		this.conversation = new WeakReference<>(conversation);
 	}
 
 	public String getBookmarkName() {
@@ -161,12 +166,5 @@ public class Bookmark extends Element implements ListItem {
 		} else {
 			return false;
 		}
-	}
-
-	public void unregisterConversation() {
-		if (this.mJoinedConversation != null) {
-			this.mJoinedConversation.deregisterWithBookmark();
-		}
-		this.mJoinedConversation = null;
 	}
 }

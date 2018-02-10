@@ -86,8 +86,6 @@ public class Conversation extends AbstractEntity implements Blockable, Comparabl
 
 	private byte[] symmetricKey;
 
-	private Bookmark bookmark;
-
 	private boolean messagesLeftOnServer = true;
 	private ChatState mOutgoingChatState = Config.DEFAULT_CHATSTATE;
 	private ChatState mIncomingChatState = Config.DEFAULT_CHATSTATE;
@@ -494,6 +492,7 @@ public class Conversation extends AbstractEntity implements Blockable, Comparabl
 	public String getName() {
 		if (getMode() == MODE_MULTI) {
 			final String subject = getMucOptions().getSubject();
+			Bookmark bookmark = getBookmark();
 			final String bookmarkName = bookmark != null ? bookmark.getBookmarkName() : null;
 			if (subject != null && !subject.trim().isEmpty()) {
 				return subject;
@@ -790,20 +789,8 @@ public class Conversation extends AbstractEntity implements Blockable, Comparabl
 		return this.symmetricKey;
 	}
 
-	public void setBookmark(Bookmark bookmark) {
-		this.bookmark = bookmark;
-		this.bookmark.setConversation(this);
-	}
-
-	public void deregisterWithBookmark() {
-		if (this.bookmark != null) {
-			this.bookmark.setConversation(null);
-		}
-		this.bookmark = null;
-	}
-
 	public Bookmark getBookmark() {
-		return this.bookmark;
+		return this.account.getBookmark(this.contactJid);
 	}
 
 	public Message findDuplicateMessage(Message message) {

@@ -1424,15 +1424,15 @@ public class XmppConnectionService extends Service {
 								}
 								Conversation conversation = find(bookmark);
 								if (conversation != null) {
-									conversation.setBookmark(bookmark);
+									bookmark.setConversation(conversation);
 								} else if (bookmark.autojoin() && bookmark.getJid() != null && autojoin) {
 									conversation = findOrCreateConversation(account, bookmark.getJid(), true, true, false);
-									conversation.setBookmark(bookmark);
+									bookmark.setConversation(conversation);
 								}
 							}
 						}
 					}
-					account.setBookmarks(new ArrayList<>(bookmarks.values()));
+					account.setBookmarks(new CopyOnWriteArrayList<>(bookmarks.values()));
 				} else {
 					Log.d(Config.LOGTAG, account.getJid().toBareJid() + ": could not fetch bookmarks");
 				}
@@ -2478,7 +2478,10 @@ public class XmppConnectionService extends Service {
 		if (account.getStatus() == Account.State.ONLINE || now) {
 			sendPresencePacket(conversation.getAccount(), mPresenceGenerator.leave(conversation.getMucOptions()));
 			conversation.getMucOptions().setOffline();
-			conversation.deregisterWithBookmark();
+			Bookmark bookmark = conversation.getBookmark();
+			if (bookmark != null) {
+				bookmark.setConversation(null);
+			}
 			Log.d(Config.LOGTAG, conversation.getAccount().getJid().toBareJid() + ": leaving muc " + conversation.getJid());
 		} else {
 			account.pendingConferenceLeaves.add(conversation);
@@ -3948,7 +3951,7 @@ public class XmppConnectionService extends Service {
 		bookmark.setAutojoin(getPreferences().getBoolean("autojoin", getResources().getBoolean(R.bool.autojoin)));
 		account.getBookmarks().add(bookmark);
 		pushBookmarks(account);
-		conversation.setBookmark(bookmark);
+		bookmark.setConversation(conversation);
 	}
 
 	public boolean verifyFingerprints(Contact contact, List<XmppUri.Fingerprint> fingerprints) {
