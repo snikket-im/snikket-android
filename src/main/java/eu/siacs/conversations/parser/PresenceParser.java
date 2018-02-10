@@ -11,6 +11,7 @@ import eu.siacs.conversations.Config;
 import eu.siacs.conversations.crypto.PgpEngine;
 import eu.siacs.conversations.crypto.axolotl.AxolotlService;
 import eu.siacs.conversations.entities.Account;
+import eu.siacs.conversations.entities.Bookmark;
 import eu.siacs.conversations.entities.Contact;
 import eu.siacs.conversations.entities.Conversation;
 import eu.siacs.conversations.entities.Message;
@@ -74,6 +75,9 @@ public class PresenceParser extends AbstractParser implements
 								mXmppConnectionService.getAvatarService().clear(mucOptions);
 							}
 							mucOptions.setSelf(user);
+
+							mXmppConnectionService.persistSelfNick(user);
+
 							invokeRenameListener(mucOptions, true);
 						}
 						boolean isNew = mucOptions.updateUser(user);

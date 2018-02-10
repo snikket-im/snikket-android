@@ -2405,6 +2405,22 @@ public class XmppConnectionService extends Service {
 		return false;
 	}
 
+	public void persistSelfNick(MucOptions.User self) {
+		final Conversation conversation = self.getConversation();
+		Jid full = self.getFullJid();
+		if (!full.equals(conversation.getJid())) {
+			Log.d(Config.LOGTAG,"nick changed. updating");
+			conversation.setContactJid(full);
+			databaseBackend.updateConversation(conversation);
+		}
+
+		Bookmark bookmark = conversation.getBookmark();
+		if (bookmark != null && !full.getResourcepart().equals(bookmark.getNick())) {
+			bookmark.setNick(full.getResourcepart());
+			pushBookmarks(bookmark.getAccount());
+		}
+	}
+
 	public boolean renameInMuc(final Conversation conversation, final String nick, final UiCallback<Conversation> callback) {
 		final MucOptions options = conversation.getMucOptions();
 		final Jid joinJid = options.createJoinJid(nick);
@@ -2417,13 +2433,6 @@ public class XmppConnectionService extends Service {
 
 				@Override
 				public void onSuccess() {
-					conversation.setContactJid(joinJid);
-					databaseBackend.updateConversation(conversation);
-					Bookmark bookmark = conversation.getBookmark();
-					if (bookmark != null) {
-						bookmark.setNick(nick);
-						pushBookmarks(bookmark.getAccount());
-					}
 					callback.success(conversation);
 				}
 
