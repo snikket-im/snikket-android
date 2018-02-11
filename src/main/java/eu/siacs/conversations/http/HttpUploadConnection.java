@@ -145,11 +145,11 @@ public class HttpUploadConnection implements Transferable {
 									}
 								}
 							}
+							if (!canceled) {
+								new Thread(this::upload).start();
+							}
+							return;
 						}
-						if (!canceled) {
-							new Thread(this::upload).start();
-						}
-						return;
 					} catch (MalformedURLException e) {
 						//fall through
 					}
@@ -229,7 +229,9 @@ public class HttpUploadConnection implements Transferable {
 			if (connection != null) {
 				connection.disconnect();
 			}
-			wakeLock.release();
+			if (wakeLock.isHeld()) {
+				wakeLock.release();
+			}
 		}
 	}
 }
