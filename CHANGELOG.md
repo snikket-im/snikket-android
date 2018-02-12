@@ -1,5 +1,8 @@
 # Changelog
 
+### Version 1.23.6
+* Fixed crash on receiving invalid HTTP slot response
+
 ### Version 1.23.5
 * improved self chat
 
