@@ -13,9 +13,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.zxing.integration.android.IntentIntegrator;
-import com.google.zxing.integration.android.IntentResult;
-
 import net.java.otr4j.OtrException;
 import net.java.otr4j.session.Session;
 
@@ -26,6 +23,8 @@ import eu.siacs.conversations.entities.Conversation;
 import eu.siacs.conversations.services.XmppConnectionService;
 import eu.siacs.conversations.utils.CryptoHelper;
 import eu.siacs.conversations.utils.XmppUri;
+import eu.siacs.conversations.utils.zxing.IntentIntegrator;
+import eu.siacs.conversations.utils.zxing.IntentResult;
 import eu.siacs.conversations.xmpp.jid.InvalidJidException;
 import eu.siacs.conversations.xmpp.jid.Jid;
 

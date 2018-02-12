@@ -46,7 +46,6 @@ dependencies {
     implementation 'org.jitsi:org.otr4j:0.22'
     implementation 'org.gnu.inet:libidn:1.15'
     implementation 'com.google.zxing:core:3.3.0'
-    implementation 'com.google.zxing:android-integration:3.3.0'
     implementation 'de.measite.minidns:minidns-hla:0.2.4'
     implementation 'me.leolin:ShortcutBadger:1.1.21@aar'
     implementation 'com.kyleduo.switchbutton:library:1.2.8'

@@ -3,15 +3,16 @@ package eu.siacs.conversations.ui;
 import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
-
-import com.google.zxing.integration.android.IntentIntegrator;
-import com.google.zxing.integration.android.IntentResult;
+import android.util.Log;
 
 import java.util.Arrays;
 import java.util.List;
 
+import eu.siacs.conversations.Config;
 import eu.siacs.conversations.persistance.DatabaseBackend;
 import eu.siacs.conversations.utils.XmppUri;
+import eu.siacs.conversations.utils.zxing.IntentIntegrator;
+import eu.siacs.conversations.utils.zxing.IntentResult;
 import eu.siacs.conversations.xmpp.jid.Jid;
 
 public class UriHandlerActivity extends Activity {
@@ -91,8 +92,7 @@ public class UriHandlerActivity extends Activity {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent intent) {
         if ((requestCode & 0xFFFF) == IntentIntegrator.REQUEST_CODE) {
-            IntentResult scanResult = IntentIntegrator.parseActivityResult(requestCode, resultCode,
-                    intent);
+            IntentResult scanResult = IntentIntegrator.parseActivityResult(requestCode, resultCode, intent);
 
             if (scanResult != null && scanResult.getFormatName() != null) {
                 String data = scanResult.getContents();

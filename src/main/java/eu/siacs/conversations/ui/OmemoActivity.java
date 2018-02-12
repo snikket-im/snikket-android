@@ -14,9 +14,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.zxing.integration.android.IntentIntegrator;
-import com.google.zxing.integration.android.IntentResult;
-
 import java.security.cert.X509Certificate;
 import java.util.Arrays;
 
@@ -28,6 +25,8 @@ import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.ui.widget.Switch;
 import eu.siacs.conversations.utils.CryptoHelper;
 import eu.siacs.conversations.utils.XmppUri;
+import eu.siacs.conversations.utils.zxing.IntentIntegrator;
+import eu.siacs.conversations.utils.zxing.IntentResult;
 
 
 public abstract class OmemoActivity extends XmppActivity {

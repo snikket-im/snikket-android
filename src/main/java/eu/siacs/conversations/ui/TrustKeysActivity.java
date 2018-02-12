@@ -15,8 +15,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.zxing.integration.android.IntentIntegrator;
-
 import org.whispersystems.libsignal.IdentityKey;
 
 import java.util.ArrayList;
@@ -35,6 +33,7 @@ import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.entities.Conversation;
 import eu.siacs.conversations.utils.CryptoHelper;
 import eu.siacs.conversations.utils.XmppUri;
+import eu.siacs.conversations.utils.zxing.IntentIntegrator;
 import eu.siacs.conversations.xmpp.OnKeyStatusUpdated;
 import eu.siacs.conversations.xmpp.jid.InvalidJidException;
 import eu.siacs.conversations.xmpp.jid.Jid;
