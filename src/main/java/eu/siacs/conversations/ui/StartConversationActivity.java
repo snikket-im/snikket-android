@@ -423,7 +423,7 @@ public class StartConversationActivity extends XmppActivity implements OnRosterU
             }
 
             final Contact contact = account.getRoster().getContact(contactJid);
-            if (invite.getName() != null) {
+            if (invite != null && invite.getName() != null) {
                 contact.setServerName(invite.getName());
             }
             if (contact.isSelf()) {
