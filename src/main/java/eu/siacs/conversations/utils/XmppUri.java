@@ -13,6 +13,7 @@ import eu.siacs.conversations.xmpp.jid.Jid;
 
 public class XmppUri {
 
+	protected Uri uri;
 	protected String jid;
 	protected List<Fingerprint> fingerprints = new ArrayList<>();
 	private String body;
@@ -52,6 +53,7 @@ public class XmppUri {
 	}
 
 	protected void parse(Uri uri) {
+		this.uri = uri;
 		String scheme = uri.getScheme();
 		String host = uri.getHost();
 		List<String> segments = uri.getPathSegments();
@@ -109,6 +111,13 @@ public class XmppUri {
 				jid = null;
 			}
 		}
+	}
+
+	public String toString() {
+		if (uri != null) {
+			return uri.toString();
+		}
+		return "";
 	}
 
 	protected List<Fingerprint> parseFingerprints(String query) {
