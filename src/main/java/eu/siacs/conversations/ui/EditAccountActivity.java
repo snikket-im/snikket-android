@@ -314,7 +314,7 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
 				&& xmppConnectionService.getAccounts().size() == 1) {
 			xmppConnectionService.deleteAccount(mAccount);
 			Intent intent = new Intent(EditAccountActivity.this, WelcomeActivity.class);
-			WelcomeActivity.addInvitee(intent, getIntent());
+			WelcomeActivity.addInviteUri(intent, getIntent());
 			startActivity(intent);
 		}
 	}
@@ -388,7 +388,7 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
 			if (wasFirstAccount) {
 				intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
 			}
-			WelcomeActivity.addInvitee(intent, getIntent());
+			WelcomeActivity.addInviteUri(intent, getIntent());
 			startActivity(intent);
 			finish();
 		});

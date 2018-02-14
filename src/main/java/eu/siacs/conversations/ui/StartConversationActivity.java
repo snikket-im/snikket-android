@@ -269,7 +269,7 @@ public class StartConversationActivity extends XmppActivity implements OnRosterU
             recreate();
         } else {
             Intent i = getIntent();
-            if (i == null || !i.hasExtra(WelcomeActivity.EXTRA_INVITEE)) {
+            if (i == null || !i.hasExtra(WelcomeActivity.EXTRA_INVITE_URI)) {
                 askForContactsPermissions();
             }
         }
@@ -799,9 +799,9 @@ public class StartConversationActivity extends XmppActivity implements OnRosterU
         if (intent == null) {
             return false;
         }
-        final String invitee = intent.getStringExtra(WelcomeActivity.EXTRA_INVITEE);
-        if (invitee != null) {
-            Invite invite = new Invite("xmpp:" + invitee);
+        final String inviteUri = intent.getStringExtra(WelcomeActivity.EXTRA_INVITE_URI);
+        if (inviteUri != null) {
+            Invite invite = new Invite(inviteUri);
             if (invite.isJidValid()) {
                 return invite.invite();
             }
