@@ -263,7 +263,7 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
 
 		@Override
 		public void onClick(final View v) {
-			deleteMagicCreatedAccountAndReturnIfNecessary();
+			deleteAccountAndReturnIfNecessary();
 			finish();
 		}
 	};
@@ -296,23 +296,22 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
 
 	@Override
 	public boolean onNavigateUp() {
-		deleteMagicCreatedAccountAndReturnIfNecessary();
+		deleteAccountAndReturnIfNecessary();
 		return super.onNavigateUp();
 	}
 
 	@Override
 	public void onBackPressed() {
-		deleteMagicCreatedAccountAndReturnIfNecessary();
+		deleteAccountAndReturnIfNecessary();
 		super.onBackPressed();
 	}
 
-	private void deleteMagicCreatedAccountAndReturnIfNecessary() {
-		if (Config.MAGIC_CREATE_DOMAIN != null
-				&& mAccount != null
-				&& mAccount.isOptionSet(Account.OPTION_MAGIC_CREATE)
-				&& mAccount.isOptionSet(Account.OPTION_REGISTER)
-				&& xmppConnectionService.getAccounts().size() == 1) {
+	private void deleteAccountAndReturnIfNecessary() {
+		if (mInitMode && mAccount != null && !mAccount.isOptionSet(Account.OPTION_LOGGED_IN_SUCCESSFULLY)) {
 			xmppConnectionService.deleteAccount(mAccount);
+		}
+
+		if (xmppConnectionService.getAccounts().size() == 0) {
 			Intent intent = new Intent(EditAccountActivity.this, WelcomeActivity.class);
 			WelcomeActivity.addInviteUri(intent, getIntent());
 			startActivity(intent);
