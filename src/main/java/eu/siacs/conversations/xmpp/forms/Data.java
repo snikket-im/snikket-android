@@ -8,6 +8,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import eu.siacs.conversations.xml.Element;
+import eu.siacs.conversations.xml.Namespace;
 
 public class Data extends Element {
 
@@ -15,7 +16,7 @@ public class Data extends Element {
 
 	public Data() {
 		super("x");
-		this.setAttribute("xmlns","jabber:x:data");
+		this.setAttribute("xmlns", Namespace.DATA);
 	}
 
 	public List<Field> getFields() {

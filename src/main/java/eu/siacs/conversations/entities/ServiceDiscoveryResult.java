@@ -11,11 +11,13 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import eu.siacs.conversations.xml.Element;
+import eu.siacs.conversations.xml.Namespace;
 import eu.siacs.conversations.xmpp.forms.Data;
 import eu.siacs.conversations.xmpp.forms.Field;
 import eu.siacs.conversations.xmpp.stanzas.IqPacket;
@@ -132,7 +134,7 @@ public class ServiceDiscoveryResult {
 				if (element.getAttribute("var") != null) {
 					features.add(element.getAttribute("var"));
 				}
-			} else if (element.getName().equals("x") && "jabber:x:data".equals(element.getAttribute("xmlns"))) {
+			} else if (element.getName().equals("x") && element.getAttribute("xmlns").equals(Namespace.DATA)) {
 				forms.add(Data.parse(element));
 			}
 		}

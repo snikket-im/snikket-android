@@ -978,8 +978,8 @@ public class XmppConnection implements Runnable {
 					register.query().addChild(password);
 					register.setFrom(account.getJid().toBareJid());
 					sendUnmodifiedIqPacket(register, registrationResponseListener);
-				} else if (query.hasChild("x", "jabber:x:data")) {
-					final Data data = Data.parse(query.findChild("x", "jabber:x:data"));
+				} else if (query.hasChild("x", Namespace.DATA)) {
+					final Data data = Data.parse(query.findChild("x", Namespace.DATA));
 					final Element blob = query.findChild("data", "urn:xmpp:bob");
 					final String id = packet.getId();
 					InputStream is;
