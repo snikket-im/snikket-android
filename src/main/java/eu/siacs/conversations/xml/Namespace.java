@@ -10,6 +10,7 @@ public final class Namespace {
 	public static final String MAM = "urn:xmpp:mam:2";
 	public static final String MAM_LEGACY = "urn:xmpp:mam:0";
 	public static final String IDLE = "urn:xmpp:idle:1";
+	public static final String DATA = "jabber:x:data";
 	public static final String OOB = "jabber:x:oob";
 	public static final String SASL = "urn:ietf:params:xml:ns:xmpp-sasl";
 	public static final String TLS = "urn:ietf:params:xml:ns:xmpp-tls";
