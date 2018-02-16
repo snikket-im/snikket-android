@@ -7,7 +7,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.content.pm.PackageManager;
-import android.content.pm.ResolveInfo;
+
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -63,6 +63,7 @@ public class SettingsActivity extends XmppActivity implements
 			mSettingsFragment = new SettingsFragment();
 			fm.beginTransaction().replace(android.R.id.content, mSettingsFragment).commit();
 		}
+		mSettingsFragment.setActivityIntent(getIntent());
 
 		this.mTheme = findTheme();
 		setTheme(this.mTheme);
@@ -132,9 +133,8 @@ public class SettingsActivity extends XmppActivity implements
 		}
 
 		final Preference removeCertsPreference = mSettingsFragment.findPreference("remove_trusted_certificates");
-		removeCertsPreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-			@Override
-			public boolean onPreferenceClick(Preference preference) {
+		if (removeCertsPreference != null) {
+			removeCertsPreference.setOnPreferenceClickListener(preference -> {
 				final MemorizingTrustManager mtm = xmppConnectionService.getMemorizingTrustManager();
 				final ArrayList<String> aliases = Collections.list(mtm.getCertificates());
 				if (aliases.size() == 0) {
@@ -145,44 +145,37 @@ public class SettingsActivity extends XmppActivity implements
 				final AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(SettingsActivity.this);
 				dialogBuilder.setTitle(getResources().getString(R.string.dialog_manage_certs_title));
 				dialogBuilder.setMultiChoiceItems(aliases.toArray(new CharSequence[aliases.size()]), null,
-						new DialogInterface.OnMultiChoiceClickListener() {
-							@Override
-							public void onClick(DialogInterface dialog, int indexSelected,
-												boolean isChecked) {
-								if (isChecked) {
-									selectedItems.add(indexSelected);
-								} else if (selectedItems.contains(indexSelected)) {
-									selectedItems.remove(Integer.valueOf(indexSelected));
-								}
-								if (selectedItems.size() > 0)
-									((AlertDialog) dialog).getButton(DialogInterface.BUTTON_POSITIVE).setEnabled(true);
-								else {
-									((AlertDialog) dialog).getButton(DialogInterface.BUTTON_POSITIVE).setEnabled(false);
-								}
+						(dialog, indexSelected, isChecked) -> {
+							if (isChecked) {
+								selectedItems.add(indexSelected);
+							} else if (selectedItems.contains(indexSelected)) {
+								selectedItems.remove(Integer.valueOf(indexSelected));
+							}
+							if (selectedItems.size() > 0)
+								((AlertDialog) dialog).getButton(DialogInterface.BUTTON_POSITIVE).setEnabled(true);
+							else {
+								((AlertDialog) dialog).getButton(DialogInterface.BUTTON_POSITIVE).setEnabled(false);
 							}
 						});
 
 				dialogBuilder.setPositiveButton(
-						getResources().getString(R.string.dialog_manage_certs_positivebutton), new DialogInterface.OnClickListener() {
-							@Override
-							public void onClick(DialogInterface dialog, int which) {
-								int count = selectedItems.size();
-								if (count > 0) {
-									for (int i = 0; i < count; i++) {
-										try {
-											Integer item = Integer.valueOf(selectedItems.get(i).toString());
-											String alias = aliases.get(item);
-											mtm.deleteCertificate(alias);
-										} catch (KeyStoreException e) {
-											e.printStackTrace();
-											displayToast("Error: " + e.getLocalizedMessage());
-										}
+						getResources().getString(R.string.dialog_manage_certs_positivebutton), (dialog, which) -> {
+							int count = selectedItems.size();
+							if (count > 0) {
+								for (int i = 0; i < count; i++) {
+									try {
+										Integer item = Integer.valueOf(selectedItems.get(i).toString());
+										String alias = aliases.get(item);
+										mtm.deleteCertificate(alias);
+									} catch (KeyStoreException e) {
+										e.printStackTrace();
+										displayToast("Error: " + e.getLocalizedMessage());
 									}
-									if (xmppConnectionServiceBound) {
-										reconnectAccounts();
-									}
-									displayToast(getResources().getQuantityString(R.plurals.toast_delete_certificates, count, count));
 								}
+								if (xmppConnectionServiceBound) {
+									reconnectAccounts();
+								}
+								displayToast(getResources().getQuantityString(R.plurals.toast_delete_certificates, count, count));
 							}
 						});
 				dialogBuilder.setNegativeButton(getResources().getString(R.string.dialog_manage_certs_negativebutton), null);
@@ -190,48 +183,35 @@ public class SettingsActivity extends XmppActivity implements
 				removeCertsDialog.show();
 				removeCertsDialog.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(false);
 				return true;
-			}
-		});
+			});
+		}
 
 		final Preference exportLogsPreference = mSettingsFragment.findPreference("export_logs");
-		exportLogsPreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-			@Override
-			public boolean onPreferenceClick(Preference preference) {
+		if (exportLogsPreference != null) {
+			exportLogsPreference.setOnPreferenceClickListener(preference -> {
 				if (hasStoragePermission(REQUEST_WRITE_LOGS)) {
 					startExport();
 				}
 				return true;
-			}
-		});
-
-		if (Config.ONLY_INTERNAL_STORAGE) {
-			final Preference cleanCachePreference = mSettingsFragment.findPreference("clean_cache");
-			cleanCachePreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-				@Override
-				public boolean onPreferenceClick(Preference preference) {
-					cleanCache();
-					return true;
-				}
-			});
-
-			final Preference cleanPrivateStoragePreference = mSettingsFragment.findPreference("clean_private_storage");
-			cleanPrivateStoragePreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-				@Override
-				public boolean onPreferenceClick(Preference preference) {
-					cleanPrivateStorage();
-					return true;
-				}
 			});
 		}
 
-		final Preference deleteOmemoPreference = mSettingsFragment.findPreference("delete_omemo_identities");
-		deleteOmemoPreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-			@Override
-			public boolean onPreferenceClick(Preference preference) {
-				deleteOmemoIdentities();
-				return true;
+		if (Config.ONLY_INTERNAL_STORAGE) {
+			final Preference cleanCachePreference = mSettingsFragment.findPreference("clean_cache");
+			if (cleanCachePreference != null) {
+				cleanCachePreference.setOnPreferenceClickListener(preference -> cleanCache());
 			}
-		});
+
+			final Preference cleanPrivateStoragePreference = mSettingsFragment.findPreference("clean_private_storage");
+			if (cleanPrivateStoragePreference != null) {
+				cleanPrivateStoragePreference.setOnPreferenceClickListener(preference -> cleanPrivateStorage());
+			}
+		}
+
+		final Preference deleteOmemoPreference = mSettingsFragment.findPreference("delete_omemo_identities");
+		if (deleteOmemoPreference != null) {
+			deleteOmemoPreference.setOnPreferenceClickListener(preference -> deleteOmemoIdentities());
+		}
 	}
 
 	private boolean isCallable(final Intent i) {
@@ -239,15 +219,17 @@ public class SettingsActivity extends XmppActivity implements
 	}
 
 
-	private void cleanCache() {
+	private boolean cleanCache() {
 		Intent intent = new Intent(android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
 		intent.setData(Uri.parse("package:" + getPackageName()));
 		startActivity(intent);
+		return true;
 	}
 
-	private void cleanPrivateStorage() {
+	private boolean cleanPrivateStorage() {
 		cleanPrivatePictures();
 		cleanPrivateFiles();
+		return true;
 	}
 
 	private void cleanPrivatePictures() {
@@ -290,11 +272,11 @@ public class SettingsActivity extends XmppActivity implements
 		}
 	}
 
-	private void deleteOmemoIdentities() {
+	private boolean deleteOmemoIdentities() {
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
 		builder.setTitle(R.string.pref_delete_omemo_identities);
 		final List<CharSequence> accounts = new ArrayList<>();
-		for(Account account : xmppConnectionService.getAccounts()) {
+		for (Account account : xmppConnectionService.getAccounts()) {
 			if (account.isEnabled()) {
 				accounts.add(account.getJid().toBareJid().toString());
 			}
@@ -305,7 +287,7 @@ public class SettingsActivity extends XmppActivity implements
 			public void onClick(DialogInterface dialog, int which, boolean isChecked) {
 				checkedItems[which] = isChecked;
 				final AlertDialog alertDialog = (AlertDialog) dialog;
-				for(boolean item : checkedItems) {
+				for (boolean item : checkedItems) {
 					if (item) {
 						alertDialog.getButton(DialogInterface.BUTTON_POSITIVE).setEnabled(true);
 						return;
@@ -314,11 +296,11 @@ public class SettingsActivity extends XmppActivity implements
 				alertDialog.getButton(DialogInterface.BUTTON_POSITIVE).setEnabled(false);
 			}
 		});
-		builder.setNegativeButton(R.string.cancel,null);
+		builder.setNegativeButton(R.string.cancel, null);
 		builder.setPositiveButton(R.string.delete_selected_keys, new DialogInterface.OnClickListener() {
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
-				for(int i = 0; i < checkedItems.length; ++i) {
+				for (int i = 0; i < checkedItems.length; ++i) {
 					if (checkedItems[i]) {
 						try {
 							Jid jid = Jid.fromString(accounts.get(i).toString());
@@ -337,6 +319,7 @@ public class SettingsActivity extends XmppActivity implements
 		AlertDialog dialog = builder.create();
 		dialog.show();
 		dialog.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(false);
+		return true;
 	}
 
 	@Override

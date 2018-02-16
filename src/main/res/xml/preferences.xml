@@ -87,6 +87,12 @@
             android:key="quiet_hours"
             android:summary="@string/pref_quiet_hours_summary"
             android:title="@string/title_pref_quiet_hours">
+            <intent
+                android:action="android.intent.action.VIEW"
+                android:targetPackage="eu.siacs.conversations"
+                android:targetClass="eu.siacs.conversations.ui.SettingsActivity" >
+                <extra android:name="page" android:value="quiet_hours" />
+            </intent>
             <CheckBoxPreference
                 android:defaultValue="@bool/enable_quiet_hours"
                 android:key="enable_quiet_hours"
@@ -185,6 +191,12 @@
             android:key="expert"
             android:summary="@string/pref_expert_options_summary"
             android:title="@string/pref_expert_options">
+            <intent
+                android:action="android.intent.action.VIEW"
+                android:targetPackage="eu.siacs.conversations"
+                android:targetClass="eu.siacs.conversations.ui.SettingsActivity" >
+                <extra android:name="page" android:value="expert" />
+            </intent>
             <PreferenceCategory android:title="@string/pref_security_settings"
                 android:key="security_options">
                 <CheckBoxPreference
