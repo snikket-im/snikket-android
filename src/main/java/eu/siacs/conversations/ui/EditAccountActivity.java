@@ -1,7 +1,7 @@
 package eu.siacs.conversations.ui;
 
-import android.app.AlertDialog;
-import android.app.AlertDialog.Builder;
+import android.support.v7.app.AlertDialog;
+import android.support.v7.app.AlertDialog.Builder;
 import android.app.PendingIntent;
 import android.content.ActivityNotFoundException;
 import android.content.DialogInterface;
