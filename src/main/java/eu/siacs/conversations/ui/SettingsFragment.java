@@ -21,7 +21,7 @@ public class SettingsFragment extends PreferenceFragment {
 
 		addPreferencesFromResource(R.xml.preferences);
 
-		// Remove from standard preferences if the flag ONLY_INTERNAL_STORAGE is not true
+		// Remove from standard preferences if the flag ONLY_INTERNAL_STORAGE is false
 		if (!Config.ONLY_INTERNAL_STORAGE) {
 			PreferenceCategory mCategory = (PreferenceCategory) findPreference("security_options");
 			if (mCategory != null) {
