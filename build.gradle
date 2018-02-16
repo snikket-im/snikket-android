@@ -33,7 +33,6 @@ ext {
 }
 
 dependencies {
-    implementation project(':libs:MemorizingTrustManager')
     implementation project(':libs:EnhancedListView')
     playstoreImplementation 'com.google.android.gms:play-services-gcm:11.8.0'
     implementation 'org.sufficientlysecure:openpgp-api:10.0'

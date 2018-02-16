@@ -21,11 +21,9 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package de.duenndns.ssl;
+package eu.siacs.conversations.ui;
 
 
-import android.app.Activity;
-import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnCancelListener;
 import android.content.DialogInterface.OnClickListener;
@@ -33,15 +31,19 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.v7.app.AlertDialog;
+import android.support.v7.app.AppCompatActivity;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class MemorizingActivity extends Activity
-		implements OnClickListener,OnCancelListener {
+import eu.siacs.conversations.R;
+import eu.siacs.conversations.entities.MTMDecision;
+import eu.siacs.conversations.services.MemorizingTrustManager;
+
+public class MemorizingActivity extends AppCompatActivity implements OnClickListener,OnCancelListener {
 
 	private final static Logger LOGGER = Logger.getLogger(MemorizingActivity.class.getName());
-	public static final String THEME = "theme";
 
 	int decisionId;
 
@@ -64,9 +66,9 @@ public class MemorizingActivity extends Activity
 		LOGGER.log(Level.FINE, "onResume with " + i.getExtras() + " decId=" + decisionId + " data: " + i.getData());
 		dialog = new AlertDialog.Builder(this).setTitle(titleId)
 			.setMessage(cert)
-			.setPositiveButton(R.string.mtm_decision_always, this)
-			.setNeutralButton(R.string.mtm_decision_once, this)
-			.setNegativeButton(R.string.mtm_decision_abort, this)
+			.setPositiveButton(R.string.always, this)
+			.setNeutralButton(R.string.once, this)
+			.setNegativeButton(R.string.cancel, this)
 			.setOnCancelListener(this)
 			.create();
 		dialog.show();
@@ -86,7 +88,7 @@ public class MemorizingActivity extends Activity
 	}
 
 	protected int findTheme() {
-		return getPreferences().getString(THEME, getResources().getString(R.string.theme)).equals("dark") ? R.style.ConversationsTheme_Dark : R.style.ConversationsTheme;
+		return getPreferences().getString(SettingsActivity.THEME, getResources().getString(R.string.theme)).equals("dark") ? R.style.ConversationsTheme_Dark : R.style.ConversationsTheme;
 	}
 
 	protected SharedPreferences getPreferences() {

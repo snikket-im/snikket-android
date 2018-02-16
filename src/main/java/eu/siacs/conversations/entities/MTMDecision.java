@@ -21,13 +21,13 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package de.duenndns.ssl;
+package eu.siacs.conversations.entities;
 
-class MTMDecision {
+public class MTMDecision {
 	public final static int DECISION_INVALID	= 0;
 	public final static int DECISION_ABORT		= 1;
 	public final static int DECISION_ONCE		= 2;
 	public final static int DECISION_ALWAYS	= 3;
 
-	int state = DECISION_INVALID;
+	public int state = DECISION_INVALID;
 }

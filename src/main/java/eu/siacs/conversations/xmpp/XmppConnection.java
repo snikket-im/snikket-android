@@ -49,9 +49,8 @@ import javax.net.ssl.SSLSocketFactory;
 import javax.net.ssl.X509KeyManager;
 import javax.net.ssl.X509TrustManager;
 
-import de.duenndns.ssl.DomainHostnameVerifier;
-import de.duenndns.ssl.MemorizingTrustManager;
 import eu.siacs.conversations.Config;
+import eu.siacs.conversations.crypto.DomainHostnameVerifier;
 import eu.siacs.conversations.crypto.XmppDomainVerifier;
 import eu.siacs.conversations.crypto.axolotl.AxolotlService;
 import eu.siacs.conversations.crypto.sasl.Anonymous;
@@ -66,6 +65,7 @@ import eu.siacs.conversations.entities.Message;
 import eu.siacs.conversations.entities.ServiceDiscoveryResult;
 import eu.siacs.conversations.generator.IqGenerator;
 import eu.siacs.conversations.persistance.FileBackend;
+import eu.siacs.conversations.services.MemorizingTrustManager;
 import eu.siacs.conversations.services.NotificationService;
 import eu.siacs.conversations.services.XmppConnectionService;
 import eu.siacs.conversations.utils.CryptoHelper;

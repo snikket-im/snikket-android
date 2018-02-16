@@ -24,7 +24,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package de.duenndns.ssl;
+package eu.siacs.conversations.services;
 
 import android.app.Activity;
 import android.app.Application;
@@ -74,6 +74,11 @@ import javax.net.ssl.TrustManager;
 import javax.net.ssl.TrustManagerFactory;
 import javax.net.ssl.X509TrustManager;
 
+import eu.siacs.conversations.R;
+import eu.siacs.conversations.crypto.DomainHostnameVerifier;
+import eu.siacs.conversations.entities.MTMDecision;
+import eu.siacs.conversations.ui.MemorizingActivity;
+
 /**
  * A X509 trust manager implementation which asks the user about invalid
  * certificates and memorizes their decision.
@@ -94,12 +99,12 @@ public class MemorizingTrustManager {
 	private static final Pattern PATTERN_IPV6 = Pattern.compile("\\A(?:[0-9a-fA-F]{1,4}:){7}[0-9a-fA-F]{1,4}\\z");
 
 	final static String DECISION_INTENT = "de.duenndns.ssl.DECISION";
-	final static String DECISION_INTENT_ID     = DECISION_INTENT + ".decisionId";
-	final static String DECISION_INTENT_CERT   = DECISION_INTENT + ".cert";
+	public final static String DECISION_INTENT_ID     = DECISION_INTENT + ".decisionId";
+	public final static String DECISION_INTENT_CERT   = DECISION_INTENT + ".cert";
 	final static String DECISION_INTENT_CHOICE = DECISION_INTENT + ".decisionChoice";
 
 	private final static Logger LOGGER = Logger.getLogger(MemorizingTrustManager.class.getName());
-	final static String DECISION_TITLE_ID      = DECISION_INTENT + ".titleId";
+	public final static String DECISION_TITLE_ID      = DECISION_INTENT + ".titleId";
 	private final static int NOTIFICATION_ID = 100509;
 
 	final static String NO_TRUST_ANCHOR = "Trust anchor for certification path not found.";
@@ -758,7 +763,7 @@ public class MemorizingTrustManager {
 		}
 	}
 
-	protected static void interactResult(int decisionId, int choice) {
+	public static void interactResult(int decisionId, int choice) {
 		MTMDecision d;
 		synchronized(openDecisions) {
 			 d = openDecisions.get(decisionId);

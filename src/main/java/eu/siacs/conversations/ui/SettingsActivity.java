@@ -28,11 +28,11 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 
-import de.duenndns.ssl.MemorizingTrustManager;
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.services.ExportLogsService;
+import eu.siacs.conversations.services.MemorizingTrustManager;
 import eu.siacs.conversations.xmpp.XmppConnection;
 import eu.siacs.conversations.xmpp.jid.InvalidJidException;
 import eu.siacs.conversations.xmpp.jid.Jid;

@@ -180,10 +180,6 @@
             android:label="@string/trust_omemo_fingerprints"
             android:windowSoftInputMode="stateAlwaysHidden" />
         <activity
-            android:name="de.duenndns.ssl.MemorizingActivity"
-            android:theme="@style/ConversationsTheme"
-            tools:replace="android:theme" />
-        <activity
             android:name=".ui.AboutActivity"
             android:label="@string/title_activity_about"
             android:parentActivityName=".ui.SettingsActivity">
@@ -192,6 +188,7 @@
                 android:value="eu.siacs.conversations.ui.SettingsActivity" />
         </activity>
         <activity android:name="com.soundcloud.android.crop.CropImageActivity" />
+        <activity android:name=".ui.MemorizingActivity"/>
 
         <service android:name=".services.ExportLogsService" />
         <service

@@ -25,8 +25,6 @@ import java.util.List;
 
 import javax.net.ssl.SSLSession;
 
-import de.duenndns.ssl.DomainHostnameVerifier;
-
 public class XmppDomainVerifier implements DomainHostnameVerifier {
 
 	private static final String LOGTAG = "XmppDomainVerifier";
