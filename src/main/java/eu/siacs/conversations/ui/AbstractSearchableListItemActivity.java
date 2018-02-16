@@ -104,8 +104,7 @@ public abstract class AbstractSearchableListItemActivity extends XmppActivity {
 		getMenuInflater().inflate(R.menu.choose_contact, menu);
 		final MenuItem menuSearchView = menu.findItem(R.id.action_search);
 		final View mSearchView = menuSearchView.getActionView();
-		mSearchEditText = (EditText) mSearchView
-			.findViewById(R.id.search_field);
+		mSearchEditText = (EditText) mSearchView.findViewById(R.id.search_field);
 		mSearchEditText.addTextChangedListener(mSearchTextWatcher);
 		menuSearchView.setOnActionExpandListener(mOnActionExpandListener);
 		return true;

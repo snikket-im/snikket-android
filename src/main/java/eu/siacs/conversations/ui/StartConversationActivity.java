@@ -596,7 +596,7 @@ public class StartConversationActivity extends XmppActivity implements OnRosterU
         menuHideOffline.setChecked(this.mHideOfflineContacts);
         mMenuSearchView = menu.findItem(R.id.action_search);
         mMenuSearchView.setOnActionExpandListener(mOnActionExpandListener);
-        View mSearchView = MenuItemCompat.getActionView(mMenuSearchView);
+        View mSearchView = mMenuSearchView.getActionView();
         mSearchEditText = (EditText) mSearchView.findViewById(R.id.search_field);
         mSearchEditText.addTextChangedListener(mSearchTextWatcher);
         mSearchEditText.setOnEditorActionListener(mSearchDone);
