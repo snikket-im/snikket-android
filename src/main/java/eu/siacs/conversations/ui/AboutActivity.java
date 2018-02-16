@@ -1,12 +1,12 @@
 package eu.siacs.conversations.ui;
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.v7.app.AppCompatActivity;
 
 import eu.siacs.conversations.R;
 
-public class AboutActivity extends Activity {
+public class AboutActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
