@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+      xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
         android:id="@+id/action_add"
         android:icon="?attr/icon_new"
         android:orderInCategory="10"
-        android:showAsAction="always"
+        app:showAsAction="always"
         android:title="@string/action_add"/>
 
 </menu>

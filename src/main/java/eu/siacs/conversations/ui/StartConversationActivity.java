@@ -2,15 +2,8 @@ package eu.siacs.conversations.ui;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
-import android.app.ActionBar;
-import android.app.ActionBar.Tab;
-import android.app.ActionBar.TabListener;
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.app.Fragment;
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
-import android.app.ListFragment;
 import android.app.PendingIntent;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
@@ -21,8 +14,14 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
+import android.support.v4.app.ListFragment;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.ActionBar;
 import android.text.Editable;
 import android.text.SpannableString;
 import android.text.Spanned;
@@ -78,8 +77,8 @@ public class StartConversationActivity extends XmppActivity implements OnRosterU
 
     public int conference_context_id;
     public int contact_context_id;
-    private Tab mContactsTab;
-    private Tab mConferencesTab;
+    private ActionBar.Tab mContactsTab;
+    private ActionBar.Tab mConferencesTab;
     private ViewPager mViewPager;
     private ListPagerAdapter mListPagerAdapter;
     private List<ListItem> contacts = new ArrayList<>();
@@ -118,29 +117,30 @@ public class StartConversationActivity extends XmppActivity implements OnRosterU
         }
     };
     private boolean mHideOfflineContacts = false;
-    private TabListener mTabListener = new TabListener() {
+    private ActionBar.TabListener mTabListener = new ActionBar.TabListener() {
 
         @Override
-        public void onTabUnselected(Tab tab, FragmentTransaction ft) {
+        public void onTabUnselected(ActionBar.Tab tab, FragmentTransaction ft) {
             return;
         }
 
         @Override
-        public void onTabSelected(Tab tab, FragmentTransaction ft) {
+        public void onTabSelected(ActionBar.Tab tab, FragmentTransaction ft) {
             mViewPager.setCurrentItem(tab.getPosition());
             onTabChanged();
         }
 
         @Override
-        public void onTabReselected(Tab tab, FragmentTransaction ft) {
+        public void onTabReselected(ActionBar.Tab tab, FragmentTransaction ft) {
             return;
         }
     };
     private ViewPager.SimpleOnPageChangeListener mOnPageChangeListener = new ViewPager.SimpleOnPageChangeListener() {
         @Override
         public void onPageSelected(int position) {
-            if (getActionBar() != null) {
-                getActionBar().setSelectedNavigationItem(position);
+            ActionBar actionBar = getSupportActionBar();
+            if (actionBar != null) {
+                actionBar.setSelectedNavigationItem(position);
             }
             onTabChanged();
         }
@@ -165,7 +165,7 @@ public class StartConversationActivity extends XmppActivity implements OnRosterU
     private TextView.OnEditorActionListener mSearchDone = new TextView.OnEditorActionListener() {
         @Override
         public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-            int pos = getActionBar().getSelectedNavigationIndex();
+            int pos = getSupportActionBar().getSelectedNavigationIndex();
             if (pos == 0) {
                 if (contacts.size() == 1) {
                     openConversationForContact((Contact) contacts.get(0));
@@ -240,18 +240,16 @@ public class StartConversationActivity extends XmppActivity implements OnRosterU
         new EmojiService(this).init();
         setContentView(R.layout.activity_start_conversation);
         mViewPager = findViewById(R.id.start_conversation_view_pager);
-        ActionBar actionBar = getActionBar();
+        ActionBar actionBar = getSupportActionBar();
         actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
 
-        mContactsTab = actionBar.newTab().setText(R.string.contacts)
-                .setTabListener(mTabListener);
-        mConferencesTab = actionBar.newTab().setText(R.string.conferences)
-                .setTabListener(mTabListener);
+        mContactsTab = actionBar.newTab().setText(R.string.contacts).setTabListener(mTabListener);
+        mConferencesTab = actionBar.newTab().setText(R.string.conferences).setTabListener(mTabListener);
         actionBar.addTab(mContactsTab);
         actionBar.addTab(mConferencesTab);
 
         mViewPager.setOnPageChangeListener(mOnPageChangeListener);
-        mListPagerAdapter = new ListPagerAdapter(getFragmentManager());
+        mListPagerAdapter = new ListPagerAdapter(getSupportFragmentManager());
         mViewPager.setAdapter(mListPagerAdapter);
 
         mConferenceAdapter = new ListItemAdapter(this, conferences);
@@ -598,18 +596,17 @@ public class StartConversationActivity extends XmppActivity implements OnRosterU
         menuHideOffline.setChecked(this.mHideOfflineContacts);
         mMenuSearchView = menu.findItem(R.id.action_search);
         mMenuSearchView.setOnActionExpandListener(mOnActionExpandListener);
-        View mSearchView = mMenuSearchView.getActionView();
-        mSearchEditText = (EditText) mSearchView
-                .findViewById(R.id.search_field);
+        View mSearchView = MenuItemCompat.getActionView(mMenuSearchView);
+        mSearchEditText = (EditText) mSearchView.findViewById(R.id.search_field);
         mSearchEditText.addTextChangedListener(mSearchTextWatcher);
         mSearchEditText.setOnEditorActionListener(mSearchDone);
-        if (getActionBar().getSelectedNavigationIndex() == 0) {
+        if (getSupportActionBar().getSelectedNavigationIndex() == 0) {
             menuCreateConference.setVisible(false);
         } else {
             menuCreateContact.setVisible(false);
         }
         if (mInitialJid != null) {
-            mMenuSearchView.expandActionView();
+            MenuItemCompat.expandActionView(mMenuSearchView);
             mSearchEditText.append(mInitialJid);
             filter(mInitialJid);
         }
@@ -769,7 +766,7 @@ public class StartConversationActivity extends XmppActivity implements OnRosterU
             }
         }
         final Intent intent = getIntent();
-        final ActionBar ab = getActionBar();
+        final ActionBar ab = getSupportActionBar();
         boolean init = intent != null && intent.getBooleanExtra("init", false);
         boolean noConversations = xmppConnectionService.getConversations().size() == 0;
         if ((init || noConversations) && ab != null) {

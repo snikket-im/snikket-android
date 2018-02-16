@@ -1,18 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+      xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
         android:id="@+id/action_edit_contact"
         android:icon="?attr/icon_edit"
         android:orderInCategory="10"
-        android:showAsAction="always"
+        app:showAsAction="always"
         android:title="@string/action_edit_contact"/>
 
     <item
         android:id="@+id/action_share"
         android:icon="?attr/icon_share"
         android:orderInCategory="15"
-        android:showAsAction="always"
+        app:showAsAction="always"
         android:title="@string/share_uri_with">
         <menu>
             <item
@@ -29,30 +30,30 @@
     <item
         android:id="@+id/action_delete_contact"
         android:orderInCategory="10"
-        android:showAsAction="never"
+        app:showAsAction="never"
         android:title="@string/action_delete_contact"/>
 
     <item
         android:id="@+id/action_block"
         android:orderInCategory="72"
-        android:showAsAction="never"
+        app:showAsAction="never"
         android:title="@string/action_block_contact"/>
 
     <item
         android:id="@+id/action_unblock"
         android:orderInCategory="73"
-        android:showAsAction="never"
+        app:showAsAction="never"
         android:title="@string/action_unblock_contact"/>
 
     <item
         android:id="@+id/action_accounts"
         android:orderInCategory="90"
-        android:showAsAction="never"
+        app:showAsAction="never"
         android:title="@string/action_accounts"/>
     <item
         android:id="@+id/action_settings"
         android:orderInCategory="100"
-        android:showAsAction="never"
+        app:showAsAction="never"
         android:title="@string/action_settings"/>
 
 </menu>

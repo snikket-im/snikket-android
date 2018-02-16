@@ -1,24 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+      xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
         android:id="@+id/action_search"
         android:actionLayout="@layout/actionview_search"
         android:icon="?attr/icon_search"
-        android:showAsAction="collapseActionView|always"
+        app:showAsAction="collapseActionView|always"
         android:title="@string/search"/>
 
     <item
         android:id="@+id/action_create_contact"
         android:icon="?attr/icon_add_person"
-        android:showAsAction="always"
+        app:showAsAction="always"
         android:title="@string/create_contact"
         android:visible="false"/>
 
     <item
         android:id="@+id/action_block_jid"
         android:icon="?attr/icon_add_person"
-        android:showAsAction="always"
+        app:showAsAction="always"
         android:title="@string/block_jabber_id"
         android:visible="false"/>
 </menu>

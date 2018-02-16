@@ -1,7 +1,6 @@
 package eu.siacs.conversations.ui;
 
 import android.annotation.SuppressLint;
-import android.app.ActionBar;
 import android.app.AlertDialog;
 import android.app.FragmentTransaction;
 import android.app.PendingIntent;
@@ -20,6 +19,7 @@ import android.provider.MediaStore;
 import android.provider.Settings;
 import android.support.v4.widget.SlidingPaneLayout;
 import android.support.v4.widget.SlidingPaneLayout.PanelSlideListener;
+import android.support.v7.app.ActionBar;
 import android.util.Log;
 import android.util.Pair;
 import android.view.Gravity;
@@ -214,7 +214,7 @@ public class ConversationActivity extends XmppActivity
 		this.listView.setAdapter(this.listAdapter);
 		this.listView.setSwipeDirection(EnhancedListView.SwipeDirection.END);
 
-		final ActionBar actionBar = getActionBar();
+		final ActionBar actionBar = getSupportActionBar();
 		if (actionBar != null) {
 			actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_TITLE);
 		}
@@ -359,7 +359,7 @@ public class ConversationActivity extends XmppActivity
 	}
 
 	private void updateActionBarTitle(boolean titleShouldBeName) {
-		final ActionBar ab = getActionBar();
+		final ActionBar ab = getSupportActionBar();
 		final Conversation conversation = getSelectedConversation();
 		if (ab != null) {
 			if (titleShouldBeName && conversation != null) {

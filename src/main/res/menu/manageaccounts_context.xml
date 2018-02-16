@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+      xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
         android:id="@+id/mgmt_account_enable"
@@ -15,7 +16,7 @@
         android:title="@string/mgmt_account_publish_pgp"/>
     <item
         android:id="@+id/mgmt_account_disable"
-        android:showAsAction="never"
+        app:showAsAction="never"
         android:title="@string/mgmt_account_disable"/>
     <item
         android:id="@+id/mgmt_account_delete"

@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <style name="ConversationsTheme" parent="@android:style/Theme.Material.Light.DarkActionBar">
-        <item name="android:colorPrimary">@color/primary500</item>
-        <item name="android:colorPrimaryDark">@color/primary700</item>
-        <item name="android:colorAccent">@color/accent</item>
+    <style name="ConversationsTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="colorPrimary">@color/primary500</item>
+        <item name="colorPrimaryDark">@color/primary700</item>
+        <item name="colorAccent">@color/accent</item>
 
-        <item type="color" name="color_text_primary">@color/black87</item>
-        <item type="color" name="color_text_secondary">@color/black54</item>
+        <item name="color_text_primary">@color/black87</item>
+        <item name="color_text_secondary">@color/black54</item>
 
-        <item type="color" name="color_background_primary">@color/grey50</item>
-        <item type="color" name="color_background_secondary">@color/grey200</item>
+        <item name="color_background_primary">@color/grey50</item>
+        <item name="color_background_secondary">@color/grey200</item>
 
         <item name="android:windowActionModeOverlay">true</item>
         <item name="android:actionModeBackground">@color/accent</item>
@@ -22,7 +22,7 @@
         <item name="TextSizeHeadline">20sp</item>
 
         <item type="reference" name="infocard_border">@drawable/infocard_border</item>
-        <item type="color" name="divider">@color/black12</item>
+        <item name="divider">@color/black12</item>
 
         <item type="reference" name="ic_send_cancel_offline">@drawable/ic_send_cancel_offline</item>
         <item type="reference" name="ic_send_location_offline">@drawable/ic_send_location_offline</item>
@@ -43,14 +43,14 @@
         <item type="reference" name="message_bubble_sent">@drawable/message_bubble_sent</item>
         <item type="reference" name="message_bubble_received_green">@drawable/message_bubble_received</item>
 
-        <item type="color" name="unread_count">@color/unreadcountlight</item>
+        <item name="unread_count">@color/unreadcountlight</item>
 
-        <item type="color" name="conversations_overview_background">@color/primary700</item>
+        <item name="conversations_overview_background">@color/primary700</item>
 
         <item type="float" name="icon_alpha">0.54</item>
 
-        <item type="dimen" name="dialog_horizontal_padding">24dp</item>
-        <item type="dimen" name="dialog_vertical_padding">16dp</item>
+        <item name="dialog_horizontal_padding">24dp</item>
+        <item name="dialog_vertical_padding">16dp</item>
 
         <item type="reference" name="icon_add_group">@drawable/ic_group_add_white_24dp</item>
         <item type="reference" name="icon_add_person">@drawable/ic_person_add_white_24dp</item>
@@ -81,16 +81,16 @@
         <item type="reference" name="icon_notifications_none">@drawable/ic_notifications_none_black_24dp</item>
     </style>
 
-    <style name="ConversationsTheme.Dark" parent="android:Theme.Material">
-        <item name="android:colorPrimary">@color/primary800</item>
-        <item name="android:colorPrimaryDark">@color/primary900</item>
-        <item name="android:colorAccent">@color/accent</item>
+    <style name="ConversationsTheme.Dark" parent="Theme.AppCompat">
+        <item name="colorPrimary">@color/primary800</item>
+        <item name="colorPrimaryDark">@color/primary900</item>
+        <item name="colorAccent">@color/accent</item>
 
-        <item type="color" name="color_text_primary">@color/white</item>
-        <item type="color" name="color_text_secondary">@color/white70</item>
+        <item name="color_text_primary">@color/white</item>
+        <item name="color_text_secondary">@color/white70</item>
 
-        <item type="color" name="color_background_primary">@color/grey800</item>
-        <item type="color" name="color_background_secondary">@color/grey900</item>
+        <item name="color_background_primary">@color/grey800</item>
+        <item name="color_background_secondary">@color/grey900</item>
 
         <item name="android:windowActionModeOverlay">true</item>
         <item name="android:actionModeBackground">@color/accent</item>
@@ -102,7 +102,7 @@
         <item name="TextSizeHeadline">20sp</item>
 
         <item type="reference" name="infocard_border">@drawable/infocard_border_dark</item>
-        <item type="color" name="divider">@color/white12</item>
+        <item name="divider">@color/white12</item>
 
         <item type="reference" name="ic_send_cancel_offline">@drawable/ic_send_cancel_offline_white</item>
         <item type="reference" name="ic_send_location_offline">@drawable/ic_send_location_offline_white</item>
@@ -123,14 +123,14 @@
         <item type="reference" name="message_bubble_sent">@drawable/message_bubble_sent_grey</item>
         <item type="reference" name="message_bubble_received_green">@drawable/message_bubble_received_dark</item>
 
-        <item type="color" name="unread_count">@color/unreadcountdark</item>
+        <item name="unread_count">@color/unreadcountdark</item>
 
-        <item type="color" name="conversations_overview_background">@color/primary900</item>
+        <item name="conversations_overview_background">@color/primary900</item>
 
         <item type="float" name="icon_alpha">0.7</item>
 
-        <item type="dimen" name="dialog_horizontal_padding">24dp</item>
-        <item type="dimen" name="dialog_vertical_padding">16dp</item>
+        <item name="dialog_horizontal_padding">24dp</item>
+        <item name="dialog_vertical_padding">16dp</item>
 
         <item type="reference" name="icon_add_group">@drawable/ic_group_add_white_24dp</item>
         <item type="reference" name="icon_add_person">@drawable/ic_person_add_white_24dp</item>
