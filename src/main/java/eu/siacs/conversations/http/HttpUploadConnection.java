@@ -11,7 +11,9 @@ import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 
 import javax.net.ssl.HttpsURLConnection;
 
@@ -32,12 +34,17 @@ import eu.siacs.conversations.xmpp.stanzas.IqPacket;
 
 public class HttpUploadConnection implements Transferable {
 
+	private static final List<String> WHITE_LISTED_HEADERS = Arrays.asList(
+			"Authorization",
+			"Cookie",
+			"Expires"
+	);
+
 	private HttpConnectionManager mHttpConnectionManager;
 	private XmppConnectionService mXmppConnectionService;
 
 	private boolean canceled = false;
 	private boolean delayed = false;
-	private Account account;
 	private DownloadableFile file;
 	private Message message;
 	private String mime;
@@ -95,7 +102,7 @@ public class HttpUploadConnection implements Transferable {
 
 	public void init(Message message, boolean delay) {
 		this.message = message;
-		this.account = message.getConversation().getAccount();
+		final Account account = message.getConversation().getAccount();
 		this.file = mXmppConnectionService.getFileBackend().getFile(message, false);
 		if (message.getEncryption() == Message.ENCRYPTION_PGP || message.getEncryption() == Message.ENCRYPTION_DECRYPTED) {
 			this.mime = "application/pgp-encrypted";
@@ -114,7 +121,7 @@ public class HttpUploadConnection implements Transferable {
 		try {
 			pair = AbstractConnectionManager.createInputStream(file, true);
 		} catch (FileNotFoundException e) {
-			Log.d(Config.LOGTAG,account.getJid().toBareJid()+": could not find file to upload - "+e.getMessage());
+			Log.d(Config.LOGTAG, account.getJid().toBareJid()+": could not find file to upload - "+e.getMessage());
 			fail(e.getMessage());
 			return;
 		}
@@ -123,7 +130,7 @@ public class HttpUploadConnection implements Transferable {
 		this.mFileInputStream = pair.first;
 		Jid host = account.getXmppConnection().findDiscoItemByFeature(Namespace.HTTP_UPLOAD);
 		IqPacket request = mXmppConnectionService.getIqGenerator().requestHttpUploadSlot(host,file,mime);
-		mXmppConnectionService.sendIqPacket(account, request, (account, packet) -> {
+		mXmppConnectionService.sendIqPacket(account, request, (a, packet) -> {
 			if (packet.getType() == IqPacket.TYPE.RESULT) {
 				Element slot = packet.findChild("slot", Namespace.HTTP_UPLOAD);
 				if (slot != null) {
@@ -138,10 +145,10 @@ public class HttpUploadConnection implements Transferable {
 							this.mPutHeaders = new HashMap<>();
 							for(Element child : put.getChildren()) {
 								if ("header".equals(child.getName())) {
-									String name = child.getAttribute("name");
-									String value = child.getContent();
-									if (name != null && value != null && !name.trim().contains("\n") && !value.trim().contains("\n")) {
-										this.mPutHeaders.put(name.trim(),value.trim());
+									final String name = child.getAttribute("name");
+									final String value = child.getContent();
+									if (WHITE_LISTED_HEADERS.contains(name) && value != null && !value.trim().contains("\n")) {
+										this.mPutHeaders.put(name,value.trim());
 									}
 								}
 							}
