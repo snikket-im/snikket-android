@@ -224,9 +224,9 @@ public class ContactDetailsActivity extends OmemoActivity implements OnAccountUp
 		keysWrapper = (LinearLayout) findViewById(R.id.keys_wrapper);
 		tags = (FlowLayout) findViewById(R.id.tags);
 		mShowInactiveDevicesButton = (Button) findViewById(R.id.show_inactive_devices);
-		if (getActionBar() != null) {
-			getActionBar().setHomeButtonEnabled(true);
-			getActionBar().setDisplayHomeAsUpEnabled(true);
+		if (getSupportActionBar() != null) {
+			getSupportActionBar().setHomeButtonEnabled(true);
+			getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 		}
 		mShowInactiveDevicesButton.setOnClickListener(new OnClickListener() {
 			@Override

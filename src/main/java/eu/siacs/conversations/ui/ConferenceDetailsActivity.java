@@ -245,9 +245,9 @@ public class ConferenceDetailsActivity extends XmppActivity implements OnConvers
 		mInviteButton = (Button) findViewById(R.id.invite);
 		mInviteButton.setOnClickListener(inviteListener);
 		mConferenceType = (TextView) findViewById(R.id.muc_conference_type);
-		if (getActionBar() != null) {
-			getActionBar().setHomeButtonEnabled(true);
-			getActionBar().setDisplayHomeAsUpEnabled(true);
+		if (getSupportActionBar() != null) {
+			getSupportActionBar().setHomeButtonEnabled(true);
+			getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 		}
 		mEditNickButton.setOnClickListener(new OnClickListener() {
 

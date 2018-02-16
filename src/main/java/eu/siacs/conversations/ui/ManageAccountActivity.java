@@ -1,14 +1,12 @@
 package eu.siacs.conversations.ui;
 
-import android.app.ActionBar;
 import android.app.AlertDialog;
 import android.content.ActivityNotFoundException;
-import android.content.DialogInterface;
-import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
 import android.os.Bundle;
 import android.security.KeyChain;
 import android.security.KeyChainAliasCallback;
+import android.support.v7.app.ActionBar;
 import android.util.Pair;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
@@ -62,7 +60,7 @@ public class ManageAccountActivity extends XmppActivity implements OnAccountUpda
 			accountList.clear();
 			accountList.addAll(xmppConnectionService.getAccounts());
 		}
-		ActionBar actionBar = getActionBar();
+		ActionBar actionBar = getSupportActionBar();
 		if (actionBar != null) {
 			actionBar.setHomeButtonEnabled(this.accountList.size() > 0);
 			actionBar.setDisplayHomeAsUpEnabled(this.accountList.size() > 0);
