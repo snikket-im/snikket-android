@@ -45,7 +45,7 @@ public class PushManagementService {
 						public void onIqPacketReceived(Account account, IqPacket packet) {
 							Element command = packet.findChild("command","http://jabber.org/protocol/commands");
 							if (packet.getType() == IqPacket.TYPE.RESULT && command != null) {
-								Element x = command.findChild("x","jabber:x:data");
+								Element x = command.findChild("x", Namespace.DATA);
 								if (x != null) {
 									Data data = Data.parse(x);
 									try {
