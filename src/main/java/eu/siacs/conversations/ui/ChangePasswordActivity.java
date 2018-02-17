@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import eu.siacs.conversations.R;
@@ -39,7 +38,6 @@ public class ChangePasswordActivity extends XmppActivity implements XmppConnecti
 			}
 		}
 	};
-	private TextView mCurrentPasswordLabel;
 	private EditText mCurrentPassword;
 	private EditText mNewPassword;
 	private Account mAccount;
@@ -48,10 +46,8 @@ public class ChangePasswordActivity extends XmppActivity implements XmppConnecti
 	void onBackendConnected() {
 		this.mAccount = extractAccount(getIntent());
 		if (this.mAccount != null && this.mAccount.isOptionSet(Account.OPTION_MAGIC_CREATE)) {
-			this.mCurrentPasswordLabel.setVisibility(View.GONE);
 			this.mCurrentPassword.setVisibility(View.GONE);
 		} else {
-			this.mCurrentPasswordLabel.setVisibility(View.VISIBLE);
 			this.mCurrentPassword.setVisibility(View.VISIBLE);
 		}
 	}
@@ -64,7 +60,6 @@ public class ChangePasswordActivity extends XmppActivity implements XmppConnecti
 		mCancelButton.setOnClickListener(view -> finish());
 		this.mChangePasswordButton = findViewById(R.id.right_button);
 		this.mChangePasswordButton.setOnClickListener(this.mOnChangePasswordButtonClicked);
-		this.mCurrentPasswordLabel =  findViewById(R.id.current_password_label);
 		this.mCurrentPassword = findViewById(R.id.current_password);
 		this.mCurrentPassword.setCustomSelectionActionModeCallback(new DisabledActionModeCallback());
 		this.mNewPassword = findViewById(R.id.new_password);

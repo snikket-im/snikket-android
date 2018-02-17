@@ -41,6 +41,7 @@ dependencies {
     implementation "com.android.support:appcompat-v7:$supportLibVersion"
     implementation "com.android.support:support-emoji-appcompat:$supportLibVersion"
     implementation "com.android.support:support-emoji:$supportLibVersion"
+    implementation "com.android.support:design:$supportLibVersion"
     freeImplementation "com.android.support:support-emoji-bundled:$supportLibVersion"
     implementation 'org.bouncycastle:bcmail-jdk15on:1.58'
     implementation 'org.jitsi:org.otr4j:0.22'
@@ -53,7 +54,6 @@ dependencies {
     implementation 'com.makeramen:roundedimageview:2.3.0'
     implementation "com.wefika:flowlayout:0.4.1"
     implementation 'net.ypresto.androidtranscoder:android-transcoder:0.2.0'
-    implementation 'com.github.scottyab:showhidepasswordedittext:0.8'
 }
 
 ext {

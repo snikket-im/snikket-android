@@ -1,7 +1,5 @@
 package eu.siacs.conversations.ui;
 
-import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AlertDialog.Builder;
 import android.app.PendingIntent;
 import android.content.ActivityNotFoundException;
 import android.content.DialogInterface;
@@ -10,11 +8,14 @@ import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.provider.Settings;
 import android.security.KeyChain;
 import android.security.KeyChainAliasCallback;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
+import android.support.v7.app.AlertDialog;
+import android.support.v7.app.AlertDialog.Builder;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.Menu;
@@ -50,9 +51,9 @@ import eu.siacs.conversations.crypto.axolotl.AxolotlService;
 import eu.siacs.conversations.crypto.axolotl.XmppAxolotlSession;
 import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.services.BarcodeProvider;
-import eu.siacs.conversations.services.XmppConnectionService.OnCaptchaRequested;
 import eu.siacs.conversations.services.XmppConnectionService;
 import eu.siacs.conversations.services.XmppConnectionService.OnAccountUpdate;
+import eu.siacs.conversations.services.XmppConnectionService.OnCaptchaRequested;
 import eu.siacs.conversations.ui.adapter.KnownHostsAdapter;
 import eu.siacs.conversations.ui.widget.DisabledActionModeCallback;
 import eu.siacs.conversations.utils.CryptoHelper;
@@ -272,8 +273,9 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
 	private boolean mSavedInstanceInit = false;
 	private Button mClearDevicesButton;
 	private XmppUri pendingUri = null;
+    private boolean mUseTor;
 
-	public void refreshUiReal() {
+    public void refreshUiReal() {
 		invalidateOptionsMenu();
 		if (mAccount != null
 				&& mAccount.getStatus() != Account.State.ONLINE
@@ -356,7 +358,25 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
 		}
 	};
 
-	private final OnClickListener mAvatarClickListener = new OnClickListener() {
+    private View.OnFocusChangeListener mEditTextFocusListener = new View.OnFocusChangeListener() {
+        @Override
+        public void onFocusChange(View view, boolean b) {
+            EditText et = (EditText) view;
+            if (b) {
+				int resId = mUsernameMode ? R.string.username : R.string.account_settings_example_jabber_id;
+				if (view.getId() == R.id.hostname) {
+                    resId = mUseTor ? R.string.hostname_or_onion : R.string.hostname_example;
+                }
+                final int res = resId;
+				new Handler().postDelayed(() -> et.setHint(res),200);
+            } else {
+                et.setHint(null);
+            }
+        }
+    };
+
+
+    private final OnClickListener mAvatarClickListener = new OnClickListener() {
 		@Override
 		public void onClick(final View view) {
 			if (mAccount != null) {
@@ -514,7 +534,7 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
 		setContentView(R.layout.activity_edit_account);
 		this.mAccountJid = (AutoCompleteTextView) findViewById(R.id.account_jid);
 		this.mAccountJid.addTextChangedListener(this.mTextWatcher);
-		this.mAccountJidLabel = (TextView) findViewById(R.id.account_jid_label);
+		this.mAccountJid.setOnFocusChangeListener(this.mEditTextFocusListener);
 		this.mPassword = (EditText) findViewById(R.id.account_password);
 		this.mPassword.addTextChangedListener(this.mTextWatcher);
 		this.mAvatar = (ImageView) findViewById(R.id.avater);
@@ -553,6 +573,7 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
 		this.mNamePort = (LinearLayout) findViewById(R.id.name_port);
 		this.mHostname = (EditText) findViewById(R.id.hostname);
 		this.mHostname.addTextChangedListener(mTextWatcher);
+		this.mHostname.setOnFocusChangeListener(mEditTextFocusListener);
 		this.mClearDevicesButton = (Button) findViewById(R.id.clear_devices);
 		this.mClearDevicesButton.setOnClickListener(new OnClickListener() {
 			@Override
@@ -668,9 +689,8 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
 			}
 		}
 		SharedPreferences preferences = getPreferences();
-		boolean useTor = Config.FORCE_ORBOT || preferences.getBoolean("use_tor", false);
-		this.mShowOptions = useTor || preferences.getBoolean("show_connection_options", false);
-		mHostname.setHint(useTor ? R.string.hostname_or_onion : R.string.hostname_example);
+        mUseTor = Config.FORCE_ORBOT || preferences.getBoolean("use_tor", false);
+		this.mShowOptions = mUseTor || preferences.getBoolean("show_connection_options", false);
 		this.mNamePort.setVisibility(mShowOptions ? View.VISIBLE : View.GONE);
 	}
 
