@@ -12,6 +12,7 @@ import android.provider.ContactsContract.CommonDataKinds;
 import android.provider.ContactsContract.Contacts;
 import android.provider.ContactsContract.Intents;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.widget.CardView;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -115,7 +116,7 @@ public class ContactDetailsActivity extends OmemoActivity implements OnAccountUp
 	private Button mShowInactiveDevicesButton;
 	private QuickContactBadge badge;
 	private LinearLayout keys;
-	private LinearLayout keysWrapper;
+	private CardView keysWrapper;
 	private FlowLayout tags;
 	private boolean showDynamicTags = false;
 	private boolean showLastSeen = false;
@@ -206,34 +207,26 @@ public class ContactDetailsActivity extends OmemoActivity implements OnAccountUp
 		this.messageFingerprint = getIntent().getStringExtra("fingerprint");
 		setContentView(R.layout.activity_contact_details);
 
-		contactJidTv = (TextView) findViewById(R.id.details_contactjid);
-		accountJidTv = (TextView) findViewById(R.id.details_account);
-		lastseen = (TextView) findViewById(R.id.details_lastseen);
-		statusMessage = (TextView) findViewById(R.id.status_message);
-		send = (CheckBox) findViewById(R.id.details_send_presence);
-		receive = (CheckBox) findViewById(R.id.details_receive_presence);
-		badge = (QuickContactBadge) findViewById(R.id.details_contact_badge);
-		addContactButton = (Button) findViewById(R.id.add_contact_button);
-		addContactButton.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View view) {
-				showAddToRosterDialog(contact);
-			}
-		});
-		keys = (LinearLayout) findViewById(R.id.details_contact_keys);
-		keysWrapper = (LinearLayout) findViewById(R.id.keys_wrapper);
-		tags = (FlowLayout) findViewById(R.id.tags);
-		mShowInactiveDevicesButton = (Button) findViewById(R.id.show_inactive_devices);
+		contactJidTv = findViewById(R.id.details_contactjid);
+		accountJidTv = findViewById(R.id.details_account);
+		lastseen = findViewById(R.id.details_lastseen);
+		statusMessage = findViewById(R.id.status_message);
+		send = findViewById(R.id.details_send_presence);
+		receive = findViewById(R.id.details_receive_presence);
+		badge = findViewById(R.id.details_contact_badge);
+		addContactButton = findViewById(R.id.add_contact_button);
+		addContactButton.setOnClickListener(view -> showAddToRosterDialog(contact));
+		keys = findViewById(R.id.details_contact_keys);
+		keysWrapper = findViewById(R.id.keys_wrapper);
+		tags = findViewById(R.id.tags);
+		mShowInactiveDevicesButton = findViewById(R.id.show_inactive_devices);
 		if (getSupportActionBar() != null) {
 			getSupportActionBar().setHomeButtonEnabled(true);
 			getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 		}
-		mShowInactiveDevicesButton.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				showInactiveOmemo = !showInactiveOmemo;
-				populateView();
-			}
+		mShowInactiveDevicesButton.setOnClickListener(v -> {
+			showInactiveOmemo = !showInactiveOmemo;
+			populateView();
 		});
 	}
 
