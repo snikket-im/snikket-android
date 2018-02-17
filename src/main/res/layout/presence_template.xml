@@ -43,7 +43,7 @@
         android:layout_centerVertical="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
-        android:background="?android:selectableItemBackground"
+        android:background="?attr/selectableItemBackgroundBorderless"
         android:padding="@dimen/image_button_padding"
         android:alpha="?attr/icon_alpha"
         android:src="?attr/icon_remove"/>

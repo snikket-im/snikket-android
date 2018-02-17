@@ -80,7 +80,7 @@
                         android:layout_alignParentRight="true"
                         android:layout_centerVertical="true"
                         android:alpha="?attr/icon_alpha"
-                        android:background="?android:selectableItemBackground"
+                        android:background="?attr/selectableItemBackgroundBorderless"
                         android:padding="@dimen/image_button_padding"
                         android:src="?attr/icon_edit_body"/>
                 </RelativeLayout>
@@ -111,7 +111,7 @@
                         android:layout_centerVertical="true"
                         android:layout_gravity="center_horizontal"
                         android:alpha="?attr/icon_alpha"
-                        android:background="?android:selectableItemBackground"
+                        android:background="?attr/selectableItemBackgroundBorderless"
                         android:padding="@dimen/image_button_padding"
                         android:src="?attr/icon_settings"/>
                 </RelativeLayout>
@@ -141,7 +141,7 @@
                         android:layout_centerVertical="true"
                         android:layout_gravity="center_horizontal"
                         android:alpha="?attr/icon_alpha"
-                        android:background="?android:selectableItemBackground"
+                        android:background="?attr/selectableItemBackgroundBorderless"
                         android:padding="@dimen/image_button_padding"
                         android:src="?attr/icon_notifications"/>
                 </RelativeLayout>
