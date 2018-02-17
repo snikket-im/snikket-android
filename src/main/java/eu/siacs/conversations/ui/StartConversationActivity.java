@@ -2,6 +2,7 @@ package eu.siacs.conversations.ui;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
 import android.app.Dialog;
 import android.app.PendingIntent;
@@ -77,8 +78,6 @@ public class StartConversationActivity extends XmppActivity implements OnRosterU
 
     public int conference_context_id;
     public int contact_context_id;
-    private ActionBar.Tab mContactsTab;
-    private ActionBar.Tab mConferencesTab;
     private ViewPager mViewPager;
     private ListPagerAdapter mListPagerAdapter;
     private List<ListItem> contacts = new ArrayList<>();
@@ -91,8 +90,8 @@ public class StartConversationActivity extends XmppActivity implements OnRosterU
     private Invite mPendingInvite = null;
     private EditText mSearchEditText;
     private AtomicBoolean mRequestedContactsPermission = new AtomicBoolean(false);
-    private final int REQUEST_SYNC_CONTACTS = 0x3b28cf;
-    private final int REQUEST_CREATE_CONFERENCE = 0x3b39da;
+    private final int REQUEST_SYNC_CONTACTS = 0x28cf;
+    private final int REQUEST_CREATE_CONFERENCE = 0x39da;
     private Dialog mCurrentDialog = null;
 
     private MenuItem.OnActionExpandListener mOnActionExpandListener = new MenuItem.OnActionExpandListener() {
@@ -243,8 +242,8 @@ public class StartConversationActivity extends XmppActivity implements OnRosterU
         ActionBar actionBar = getSupportActionBar();
         actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
 
-        mContactsTab = actionBar.newTab().setText(R.string.contacts).setTabListener(mTabListener);
-        mConferencesTab = actionBar.newTab().setText(R.string.conferences).setTabListener(mTabListener);
+        ActionBar.Tab mContactsTab = actionBar.newTab().setText(R.string.contacts).setTabListener(mTabListener);
+        ActionBar.Tab mConferencesTab = actionBar.newTab().setText(R.string.conferences).setTabListener(mTabListener);
         actionBar.addTab(mContactsTab);
         actionBar.addTab(mConferencesTab);
 
@@ -447,9 +446,9 @@ public class StartConversationActivity extends XmppActivity implements OnRosterU
         final AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle(R.string.dialog_title_join_conference);
         final View dialogView = getLayoutInflater().inflate(R.layout.join_conference_dialog, null);
-        final Spinner spinner = (Spinner) dialogView.findViewById(R.id.account);
-        final AutoCompleteTextView jid = (AutoCompleteTextView) dialogView.findViewById(R.id.jid);
-        final TextView jabberIdDesc = (TextView) dialogView.findViewById(R.id.jabber_id);
+        final Spinner spinner = dialogView.findViewById(R.id.account);
+        final AutoCompleteTextView jid = dialogView.findViewById(R.id.jid);
+        final TextView jabberIdDesc = dialogView.findViewById(R.id.jabber_id);
         jabberIdDesc.setText(R.string.conference_address);
         jid.setHint(R.string.conference_address_example);
         jid.setAdapter(new KnownHostsAdapter(this, R.layout.simple_list_item, mKnownConferenceHosts));
@@ -519,8 +518,8 @@ public class StartConversationActivity extends XmppActivity implements OnRosterU
         final AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle(R.string.dialog_title_create_conference);
         final View dialogView = getLayoutInflater().inflate(R.layout.create_conference_dialog, null);
-        final Spinner spinner = (Spinner) dialogView.findViewById(R.id.account);
-        final EditText subject = (EditText) dialogView.findViewById(R.id.subject);
+        final Spinner spinner = dialogView.findViewById(R.id.account);
+        final EditText subject = dialogView.findViewById(R.id.subject);
         populateAccountSpinner(this, mActivatedAccounts, spinner);
         builder.setView(dialogView);
         builder.setPositiveButton(R.string.choose_participants, new OnClickListener() {
@@ -597,7 +596,7 @@ public class StartConversationActivity extends XmppActivity implements OnRosterU
         mMenuSearchView = menu.findItem(R.id.action_search);
         mMenuSearchView.setOnActionExpandListener(mOnActionExpandListener);
         View mSearchView = mMenuSearchView.getActionView();
-        mSearchEditText = (EditText) mSearchView.findViewById(R.id.search_field);
+        mSearchEditText = mSearchView.findViewById(R.id.search_field);
         mSearchEditText.addTextChangedListener(mSearchTextWatcher);
         mSearchEditText.setOnEditorActionListener(mSearchDone);
         if (getSupportActionBar().getSelectedNavigationIndex() == 0) {
@@ -740,7 +739,7 @@ public class StartConversationActivity extends XmppActivity implements OnRosterU
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
+    public void onRequestPermissionsResult(int requestCode,@NonNull String permissions[],@NonNull int[] grantResults) {
         if (grantResults.length > 0)
             if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 if (requestCode == REQUEST_SYNC_CONTACTS && xmppConnectionServiceBound) {
@@ -964,7 +963,7 @@ public class StartConversationActivity extends XmppActivity implements OnRosterU
         }
 
         @Override
-        public void destroyItem(ViewGroup container, int position, Object object) {
+        public void destroyItem(@NonNull ViewGroup container, int position,@NonNull Object object) {
             assert (0 <= position && position < fragments.length);
             FragmentTransaction trans = fragmentManager.beginTransaction();
             trans.remove(fragments[position]);
@@ -973,7 +972,7 @@ public class StartConversationActivity extends XmppActivity implements OnRosterU
         }
 
         @Override
-        public Fragment instantiateItem(ViewGroup container, int position) {
+        public Fragment instantiateItem(@NonNull ViewGroup container, int position) {
             Fragment fragment = getItem(position);
             FragmentTransaction trans = fragmentManager.beginTransaction();
             trans.add(container.getId(), fragment, "fragment:" + position);
@@ -987,7 +986,7 @@ public class StartConversationActivity extends XmppActivity implements OnRosterU
         }
 
         @Override
-        public boolean isViewFromObject(View view, Object fragment) {
+        public boolean isViewFromObject(@NonNull View view,@NonNull  Object fragment) {
             return ((Fragment) fragment).getView() == view;
         }
 
@@ -998,26 +997,12 @@ public class StartConversationActivity extends XmppActivity implements OnRosterU
                 if (position == 1) {
                     listFragment.setListAdapter(mConferenceAdapter);
                     listFragment.setContextMenu(R.menu.conference_context);
-                    listFragment.setOnListItemClickListener(new OnItemClickListener() {
-
-                        @Override
-                        public void onItemClick(AdapterView<?> arg0, View arg1,
-                                                int position, long arg3) {
-                            openConversationForBookmark(position);
-                        }
-                    });
+                    listFragment.setOnListItemClickListener((arg0, arg1, p, arg3) -> openConversationForBookmark(p));
                 } else {
 
                     listFragment.setListAdapter(mContactsAdapter);
                     listFragment.setContextMenu(R.menu.contact_context);
-                    listFragment.setOnListItemClickListener(new OnItemClickListener() {
-
-                        @Override
-                        public void onItemClick(AdapterView<?> arg0, View arg1,
-                                                int position, long arg3) {
-                            openConversationForContact(position);
-                        }
-                    });
+                    listFragment.setOnListItemClickListener((arg0, arg1, p, arg3) -> openConversationForContact(p));
                 }
                 fragments[position] = listFragment;
             }
@@ -1045,7 +1030,7 @@ public class StartConversationActivity extends XmppActivity implements OnRosterU
         }
 
         @Override
-        public void onViewCreated(final View view, final Bundle savedInstanceState) {
+        public void onViewCreated(@NonNull final View view, final Bundle savedInstanceState) {
             super.onViewCreated(view, savedInstanceState);
             registerForContextMenu(getListView());
             getListView().setFastScrollEnabled(true);
@@ -1056,6 +1041,9 @@ public class StartConversationActivity extends XmppActivity implements OnRosterU
                                         final ContextMenuInfo menuInfo) {
             super.onCreateContextMenu(menu, v, menuInfo);
             final StartConversationActivity activity = (StartConversationActivity) getActivity();
+            if (activity == null) {
+                return;
+            }
             activity.getMenuInflater().inflate(mResContextMenu, menu);
             final AdapterView.AdapterContextMenuInfo acmi = (AdapterContextMenuInfo) menuInfo;
             if (mResContextMenu == R.menu.conference_context) {
@@ -1084,6 +1072,9 @@ public class StartConversationActivity extends XmppActivity implements OnRosterU
         @Override
         public boolean onContextItemSelected(final MenuItem item) {
             StartConversationActivity activity = (StartConversationActivity) getActivity();
+            if (activity == null) {
+                return true;
+            }
             switch (item.getItemId()) {
                 case R.id.context_start_conversation:
                     activity.openConversationForContact();
