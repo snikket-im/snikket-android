@@ -1,6 +1,6 @@
 package eu.siacs.conversations.ui;
 
-import android.app.Activity;
+import android.support.v7.app.AppCompatActivity ;
 import android.content.Intent;
 import android.net.Uri;
 import android.util.Log;
@@ -15,7 +15,7 @@ import eu.siacs.conversations.utils.zxing.IntentIntegrator;
 import eu.siacs.conversations.utils.zxing.IntentResult;
 import eu.siacs.conversations.xmpp.jid.Jid;
 
-public class UriHandlerActivity extends Activity {
+public class UriHandlerActivity extends AppCompatActivity {
     public static final String ACTION_SCAN_QR_CODE = "scan_qr_code";
 
     @Override

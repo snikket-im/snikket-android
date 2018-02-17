@@ -26,7 +26,7 @@
  */
 package eu.siacs.conversations.services;
 
-import android.app.Activity;
+import android.support.v7.app.AppCompatActivity ;
 import android.app.Application;
 import android.app.NotificationManager;
 import android.app.Service;
@@ -113,7 +113,7 @@ public class MemorizingTrustManager {
 	static String KEYSTORE_FILE = "KeyStore.bks";
 
 	Context master;
-	Activity foregroundAct;
+	AppCompatActivity foregroundAct;
 	NotificationManager notificationManager;
 	private static int decisionId = 0;
 	private static SparseArray<MTMDecision> openDecisions = new SparseArray<MTMDecision>();
@@ -172,8 +172,8 @@ public class MemorizingTrustManager {
 			app = (Application)m;
 		} else if (m instanceof Service) {
 			app = ((Service)m).getApplication();
-		} else if (m instanceof Activity) {
-			app = ((Activity)m).getApplication();
+		} else if (m instanceof AppCompatActivity) {
+			app = ((AppCompatActivity)m).getApplication();
 		} else throw new ClassCastException("MemorizingTrustManager context must be either Activity or Service!");
 
 		File dir = app.getDir(KEYSTORE_DIR, Context.MODE_PRIVATE);
@@ -197,7 +197,7 @@ public class MemorizingTrustManager {
 	 *
 	 * @param act Activity to be bound
 	 */
-	public void bindDisplayActivity(Activity act) {
+	public void bindDisplayActivity(AppCompatActivity act) {
 		foregroundAct = act;
 	}
 
@@ -205,11 +205,11 @@ public class MemorizingTrustManager {
 	 * Removes an Activity from the MTM display stack.
 	 *
 	 * Always call this function when the Activity added with
-	 * {@link #bindDisplayActivity(Activity)} is hidden.
+	 * {@link #bindDisplayActivity(AppCompatActivity)} is hidden.
 	 *
 	 * @param act Activity to be unbound
 	 */
-	public void unbindDisplayActivity(Activity act) {
+	public void unbindDisplayActivity(AppCompatActivity act) {
 		// do not remove if it was overridden by a different activity
 		if (foregroundAct == act)
 			foregroundAct = null;
