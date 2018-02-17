@@ -1,10 +1,10 @@
 package eu.siacs.conversations.ui;
 
 import android.support.v7.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.widget.SwitchCompat;
 import android.view.ContextMenu;
 import android.view.MenuItem;
 import android.view.View;
@@ -22,7 +22,6 @@ import eu.siacs.conversations.R;
 import eu.siacs.conversations.crypto.axolotl.FingerprintStatus;
 import eu.siacs.conversations.crypto.axolotl.XmppAxolotlSession;
 import eu.siacs.conversations.entities.Account;
-import eu.siacs.conversations.ui.widget.Switch;
 import eu.siacs.conversations.utils.CryptoHelper;
 import eu.siacs.conversations.utils.XmppUri;
 import eu.siacs.conversations.utils.zxing.IntentIntegrator;
@@ -117,12 +116,7 @@ public abstract class OmemoActivity extends XmppActivity {
                 session.getTrust(),
                 true,
                 true,
-                new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                account.getAxolotlService().setFingerprintTrust(fingerprint, FingerprintStatus.createActive(isChecked));
-            }
-        });
+                (buttonView, isChecked) -> account.getAxolotlService().setFingerprintTrust(fingerprint, FingerprintStatus.createActive(isChecked)));
     }
 
     protected void addFingerprintRowWithListeners(LinearLayout keys, final Account account,
@@ -134,20 +128,14 @@ public abstract class OmemoActivity extends XmppActivity {
                                                      CompoundButton.OnCheckedChangeListener
                                                              onCheckedChangeListener) {
         View view = getLayoutInflater().inflate(R.layout.contact_key, keys, false);
-        TextView key = (TextView) view.findViewById(R.id.key);
-        TextView keyType = (TextView) view.findViewById(R.id.key_type);
+        TextView key = view.findViewById(R.id.key);
+        TextView keyType =  view.findViewById(R.id.key_type);
         if (Config.X509_VERIFICATION && status.getTrust() == FingerprintStatus.Trust.VERIFIED_X509) {
-            View.OnClickListener listener = new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    showX509Certificate(account,fingerprint);
-                }
-            };
-            key.setOnClickListener(listener);
-            keyType.setOnClickListener(listener);
+            key.setOnClickListener(v -> showX509Certificate(account,fingerprint));
+            keyType.setOnClickListener(v -> showX509Certificate(account,fingerprint));
         }
-        Switch trustToggle = (Switch) view.findViewById(R.id.tgl_trust);
-        ImageView verifiedFingerprintSymbol = (ImageView) view.findViewById(R.id.verified_fingerprint);
+        SwitchCompat trustToggle = view.findViewById(R.id.tgl_trust);
+        ImageView verifiedFingerprintSymbol = view.findViewById(R.id.verified_fingerprint);
         trustToggle.setVisibility(View.VISIBLE);
         registerForContextMenu(view);
         view.setTag(R.id.TAG_ACCOUNT,account);
@@ -155,7 +143,7 @@ public abstract class OmemoActivity extends XmppActivity {
         view.setTag(R.id.TAG_FINGERPRINT_STATUS,status);
         boolean x509 = Config.X509_VERIFICATION && status.getTrust() == FingerprintStatus.Trust.VERIFIED_X509;
         final View.OnClickListener toast;
-        trustToggle.setChecked(status.isTrusted(), false);
+        trustToggle.setChecked(status.isTrusted());
 
         if (status.isActive()){
             key.setTextColor(getPrimaryTextColor());
@@ -164,47 +152,29 @@ public abstract class OmemoActivity extends XmppActivity {
                 verifiedFingerprintSymbol.setVisibility(View.VISIBLE);
                 verifiedFingerprintSymbol.setAlpha(1.0f);
                 trustToggle.setVisibility(View.GONE);
-                verifiedFingerprintSymbol.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        replaceToast(getString(R.string.this_device_has_been_verified), false);
-                    }
-                });
+                verifiedFingerprintSymbol.setOnClickListener(v -> replaceToast(getString(R.string.this_device_has_been_verified), false));
                 toast = null;
             } else {
                 verifiedFingerprintSymbol.setVisibility(View.GONE);
                 trustToggle.setVisibility(View.VISIBLE);
                 trustToggle.setOnCheckedChangeListener(onCheckedChangeListener);
                 if (status.getTrust() == FingerprintStatus.Trust.UNDECIDED && undecidedNeedEnablement) {
-                    trustToggle.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            account.getAxolotlService().setFingerprintTrust(fingerprint,FingerprintStatus.createActive(false));
-                            v.setEnabled(true);
-                            v.setOnClickListener(null);
-                        }
+                    trustToggle.setOnClickListener(v -> {
+                        account.getAxolotlService().setFingerprintTrust(fingerprint,FingerprintStatus.createActive(false));
+                        v.setEnabled(true);
+                        v.setOnClickListener(null);
                     });
                     trustToggle.setEnabled(false);
                 } else {
                     trustToggle.setOnClickListener(null);
                     trustToggle.setEnabled(true);
                 }
-                toast = new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        hideToast();
-                    }
-                };
+                toast = v -> hideToast();
             }
         } else {
             key.setTextColor(getTertiaryTextColor());
             keyType.setTextColor(getTertiaryTextColor());
-            toast = new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    replaceToast(getString(R.string.this_device_is_no_longer_in_use), false);
-                }
-            };
+            toast = v -> replaceToast(getString(R.string.this_device_is_no_longer_in_use), false);
             if (status.isVerified()) {
                 trustToggle.setVisibility(View.GONE);
                 verifiedFingerprintSymbol.setVisibility(View.VISIBLE);
@@ -245,12 +215,9 @@ public abstract class OmemoActivity extends XmppActivity {
         builder.setMessage(R.string.distrust_omemo_key_text);
         builder.setNegativeButton(getString(R.string.cancel), null);
         builder.setPositiveButton(R.string.confirm,
-                new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        account.getAxolotlService().distrustFingerprint(fingerprint);
-                        refreshUi();
-                    }
+                (dialog, which) -> {
+                    account.getAxolotlService().distrustFingerprint(fingerprint);
+                    refreshUi();
                 });
         builder.create().show();
     }

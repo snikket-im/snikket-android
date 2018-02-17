@@ -4,18 +4,4 @@
         <item name="android:layout_height">1.5dp</item>
         <item name="android:background">@color/black12</item>
     </style>
-    <style name="MD">
-        <item name="animationVelocity">6</item>
-        <item name="insetBottom">16dp</item>
-        <item name="insetTop">16dp</item>
-        <item name="insetLeft">16dp</item>
-        <item name="insetRight">16dp</item>
-        <item name="measureFactor">1.4</item>
-        <item name="offDrawable">@drawable/switch_back_off</item>
-        <item name="onDrawable">@drawable/switch_back_on</item>
-        <item name="thumbDrawable">@drawable/switch_thumb</item>
-        <item name="thumb_margin">-17dp</item>
-        <item name="android:padding">16dp</item>
-    </style>
-
 </resources>

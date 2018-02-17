@@ -46,8 +46,7 @@
             android:textStyle="bold" />
     </LinearLayout>
 
-    <eu.siacs.conversations.ui.widget.Switch
-        style="@style/MD"
+    <android.support.v7.widget.SwitchCompat
         android:id="@+id/tgl_account_status"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
