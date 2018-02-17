@@ -12,13 +12,63 @@
         android:icon="?attr/icon_not_secure"
         android:orderInCategory="20"
         app:showAsAction="always"
-        android:title="@string/action_secure"/>
+        android:title="@string/action_secure">
+        <menu>
+            <group android:checkableBehavior="single" >
+                <item
+                    android:id="@+id/encryption_choice_none"
+                    android:title="@string/encryption_choice_unencrypted"/>
+                <item
+                    android:id="@+id/encryption_choice_axolotl"
+                    android:title="@string/encryption_choice_omemo"/>
+                <item
+                    android:id="@+id/encryption_choice_otr"
+                    android:title="@string/encryption_choice_otr"/>
+                <item
+                    android:id="@+id/encryption_choice_pgp"
+                    android:title="@string/encryption_choice_pgp"/>
+            </group>
+        </menu>
+    </item>
     <item
         android:id="@+id/action_attach_file"
         android:icon="?attr/icon_new_attachment"
         android:orderInCategory="30"
         app:showAsAction="always"
-        android:title="@string/attach_file"/>
+        android:title="@string/attach_file">
+        <menu>
+
+            <item
+                android:id="@+id/attach_choose_file"
+                android:title="@string/choose_file"
+                android:icon="?attr/ic_attach_document"/>
+
+            <item
+                android:id="@+id/attach_choose_picture"
+                android:title="@string/attach_choose_picture"
+                android:icon="?attr/ic_attach_photo"/>
+
+            <item
+                android:id="@+id/attach_take_picture"
+                android:title="@string/attach_take_picture"
+                android:icon="?attr/ic_attach_camera"/>
+
+            <item
+                android:id="@+id/attach_record_video"
+                android:title="@string/attach_record_video"
+                android:icon="?attr/ic_attach_videocam"/>
+
+            <item
+                android:id="@+id/attach_record_voice"
+                android:title="@string/attach_record_voice"
+                android:icon="?attr/ic_attach_record"/>
+
+            <item
+                android:id="@+id/attach_location"
+                android:title="@string/send_location"
+                android:icon="?attr/ic_attach_location"/>
+        </menu>
+    </item>
     <item
         android:id="@+id/action_contact_details"
         android:orderInCategory="40"
