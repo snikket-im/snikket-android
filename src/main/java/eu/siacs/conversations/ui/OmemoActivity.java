@@ -5,13 +5,11 @@ import android.support.v7.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
-import android.support.v7.widget.SwitchCompat;
 import android.view.ContextMenu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.CompoundButton;
-import android.widget.ImageButton;
-import android.widget.ImageView;
+
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;

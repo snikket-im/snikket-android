@@ -1,8 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v4.view.ViewPager xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/start_conversation_view_pager"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="?attr/color_background_primary" >
-
-</android.support.v4.view.ViewPager>
+<layout xmlns:android="http://schemas.android.com/apk/res/android" >
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <android.support.v4.view.ViewPager
+            android:id="@+id/start_conversation_view_pager"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="?attr/color_background_primary"/>
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/fab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end|bottom"
+            android:src="?attr/icon_add_person"
+            android:layout_margin="16dp" />
+    </FrameLayout>
+</layout>
