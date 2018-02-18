@@ -2,7 +2,9 @@
 	<!-- Default screen margins, per the Android Design guidelines. -->
 	<dimen name="activity_horizontal_margin">8dp</dimen>
 	<dimen name="activity_vertical_margin">8dp</dimen>
-	<dimen name="infocard_padding">16dp</dimen>
+	<dimen name="card_padding_regular">16dp</dimen>
+	<dimen name="card_padding_list">8dp</dimen> <!-- card_padding_regular minus list_padding -->
+	<dimen name="list_padding">8dp</dimen>
 	<dimen name="image_button_padding">12dp</dimen>
 	<dimen name="fineprint_size">11sp</dimen>
 	<dimen name="audio_player_width">224dp</dimen>

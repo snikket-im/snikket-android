@@ -25,7 +25,7 @@
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:padding="@dimen/infocard_padding">
+                    android:padding="@dimen/card_padding_regular">
 
                     <QuickContactBadge
                         android:id="@+id/details_contact_badge"
@@ -121,7 +121,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:padding="@dimen/infocard_padding">
+                    android:padding="@dimen/card_padding_list">
 
                     <LinearLayout
                         android:id="@+id/details_contact_keys"

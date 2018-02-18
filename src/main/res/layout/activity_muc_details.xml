@@ -23,7 +23,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:padding="@dimen/infocard_padding">
+                android:padding="@dimen/card_padding_regular">
 
                 <TextView
                     android:id="@+id/muc_jabberid"
@@ -194,7 +194,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:padding="@dimen/infocard_padding">
+                android:padding="@dimen/card_padding_list">
 
                 <LinearLayout
                     android:id="@+id/muc_members"

@@ -9,9 +9,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
-        android:paddingBottom="8dp"
-        android:paddingLeft="8dp"
-        android:paddingTop="8dp">
+        android:padding="@dimen/list_padding">
 
         <TextView
             android:id="@+id/key"
@@ -50,8 +48,7 @@
             android:longClickable="true"/>
         <LinearLayout
             android:id="@+id/action_container"
-            android:layout_width="96dp"
-            android:layout_marginRight="-32dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:layout_alignParentRight="true"
@@ -65,7 +62,6 @@
                 android:background="?android:selectableItemBackground"
                 android:padding="@dimen/image_button_padding"
                 android:src="?attr/icon_remove"
-                android:layout_marginRight="16dp"
                 android:visibility="gone" />
 
             <ImageView
@@ -74,13 +70,14 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
-                android:layout_marginRight="16dp"
+                android:padding="@dimen/image_button_padding"
                 android:src="@drawable/ic_verified_fingerprint" />
 
             <android.support.v7.widget.SwitchCompat
                 android:id="@+id/tgl_trust"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
                 android:visibility="gone" />
         </LinearLayout>
 
