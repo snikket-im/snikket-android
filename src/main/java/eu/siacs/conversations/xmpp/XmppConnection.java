@@ -875,22 +875,20 @@ public class XmppConnection implements Runnable {
 		}
 	}
 
-	private void processStreamFeatures(final Tag currentTag)
-			throws XmlPullParserException, IOException {
+	private void processStreamFeatures(final Tag currentTag) throws XmlPullParserException, IOException {
 		this.streamFeatures = tagReader.readElement(currentTag);
+		final boolean isSecure = features.encryptionEnabled || Config.ALLOW_NON_TLS_CONNECTIONS;
 		if (this.streamFeatures.hasChild("starttls") && !features.encryptionEnabled) {
 			sendStartTLS();
 		} else if (this.streamFeatures.hasChild("register") && account.isOptionSet(Account.OPTION_REGISTER)) {
-			if (features.encryptionEnabled || Config.ALLOW_NON_TLS_CONNECTIONS) {
+			if (isSecure) {
 				sendRegistryRequest();
 			} else {
 				throw new StateChangingException(Account.State.INCOMPATIBLE_SERVER);
 			}
 		} else if (!this.streamFeatures.hasChild("register") && account.isOptionSet(Account.OPTION_REGISTER)) {
 			throw new StateChangingException(Account.State.REGISTRATION_NOT_SUPPORTED);
-		} else if (this.streamFeatures.hasChild("mechanisms")
-				&& shouldAuthenticate
-				&& (features.encryptionEnabled || Config.ALLOW_NON_TLS_CONNECTIONS)) {
+		} else if (this.streamFeatures.hasChild("mechanisms") && shouldAuthenticate && isSecure) {
 			authenticate();
 		} else if (this.streamFeatures.hasChild("sm", "urn:xmpp:sm:" + smVersion) && streamId != null) {
 			if (Config.EXTENDED_SM_LOGGING) {
@@ -901,7 +899,7 @@ public class XmppConnection implements Runnable {
 			this.mWaitingForSmCatchup.set(true);
 			this.tagWriter.writeStanzaAsync(resume);
 		} else if (needsBinding) {
-			if (this.streamFeatures.hasChild("bind")) {
+			if (this.streamFeatures.hasChild("bind") && isSecure) {
 				sendBindRequest();
 			} else {
 				throw new StateChangingException(Account.State.INCOMPATIBLE_SERVER);
