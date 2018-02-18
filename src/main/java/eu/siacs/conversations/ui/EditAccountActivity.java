@@ -153,6 +153,7 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
 			final boolean registerNewAccount = mRegisterNew.isChecked() && !Config.DISALLOW_REGISTRATION_IN_UI;
 			if (mUsernameMode && mAccountJid.getText().toString().contains("@")) {
 				mAccountJidLayout.setError(getString(R.string.invalid_username));
+				removeErrorsOnAllBut(mAccountJidLayout);
 				mAccountJid.requestFocus();
 				return;
 			}
@@ -186,6 +187,7 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
 					mAccountJidLayout.setError(getString(R.string.invalid_jid));
 				}
 				mAccountJid.requestFocus();
+				removeErrorsOnAllBut(mAccountJidLayout);
 				return;
 			}
 			String hostname = null;
@@ -196,18 +198,21 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
 				if (hostname.contains(" ")) {
 					mHostnameLayout.setError(getString(R.string.not_valid_hostname));
 					mHostname.requestFocus();
+					removeErrorsOnAllBut(mHostnameLayout);
 					return;
 				}
 				try {
 					numericPort = Integer.parseInt(port);
 					if (numericPort < 0 || numericPort > 65535) {
 						mPortLayout.setError(getString(R.string.not_a_valid_port));
+						removeErrorsOnAllBut(mPortLayout);
 						mPort.requestFocus();
 						return;
 					}
 
 				} catch (NumberFormatException e) {
 					mPortLayout.setError(getString(R.string.not_a_valid_port));
+					removeErrorsOnAllBut(mPortLayout);
 					mPort.requestFocus();
 					return;
 				}
@@ -219,6 +224,7 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
 				} else {
 					mAccountJidLayout.setError(getString(R.string.invalid_jid));
 				}
+				removeErrorsOnAllBut(mAccountJidLayout);
 				mAccountJid.requestFocus();
 				return;
 			}
@@ -239,6 +245,7 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
 			} else {
 				if (xmppConnectionService.findAccountByJid(jid) != null) {
 					mAccountJidLayout.setError(getString(R.string.account_already_exists));
+					removeErrorsOnAllBut(mAccountJidLayout);
 					mAccountJid.requestFocus();
 					return;
 				}
@@ -1061,8 +1068,8 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
 				keysCard.setVisibility(View.GONE);
 			}
 		} else {
+			final TextInputLayout errorLayout;
 			if (this.mAccount.errorStatus()) {
-				final TextInputLayout errorLayout;
 				if (this.mAccount.getStatus() == Account.State.UNAUTHORIZED) {
 					errorLayout = this.mPasswordLayout;
 				} else if (mShowOptions
@@ -1077,11 +1084,29 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
 					errorLayout.requestFocus();
 				}
 			} else {
-				this.mAccountJidLayout.setError(null);
-				this.mPasswordLayout.setError(null);
-				this.mHostnameLayout.setError(null);
+				errorLayout = null;
 			}
+			removeErrorsOnAllBut(errorLayout);
 			this.mStats.setVisibility(View.GONE);
+		}
+	}
+
+	private void removeErrorsOnAllBut(TextInputLayout exception) {
+		if (this.mAccountJidLayout != exception){
+			this.mAccountJidLayout.setErrorEnabled(false);
+			this.mAccountJidLayout.setError(null);
+		}
+		if (this.mPasswordLayout != exception) {
+			this.mPasswordLayout.setErrorEnabled(false);
+			this.mPasswordLayout.setError(null);
+		}
+		if (this.mHostnameLayout != exception) {
+			this.mHostnameLayout.setErrorEnabled(false);
+			this.mHostnameLayout.setError(null);
+		}
+		if (this.mPortLayout != exception) {
+			this.mPortLayout.setErrorEnabled(false);
+			this.mPortLayout.setError(null);
 		}
 	}
 
