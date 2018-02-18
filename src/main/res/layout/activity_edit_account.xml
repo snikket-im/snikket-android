@@ -46,6 +46,7 @@
                     android:orientation="vertical">
 
                     <android.support.design.widget.TextInputLayout
+                        android:id="@+id/account_jid_layout"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="@string/account_settings_jabber_id">
@@ -63,6 +64,7 @@
 
 
                     <android.support.design.widget.TextInputLayout
+                        android:id="@+id/account_password_layout"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         app:passwordToggleDrawable="@drawable/visibility_toggle_drawable"
@@ -98,6 +100,7 @@
                             <android.support.design.widget.TextInputLayout
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
+                                android:id="@+id/hostname_layout"
                                 android:hint="@string/account_settings_hostname">
 
                                 <EditText
@@ -120,6 +123,7 @@
                             <android.support.design.widget.TextInputLayout
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
+                                android:id="@+id/port_layout"
                                 android:hint="@string/account_settings_port">
 
                                 <EditText
