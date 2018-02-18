@@ -2,6 +2,7 @@ package eu.siacs.conversations.ui;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.TextInputLayout;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -23,13 +24,15 @@ public class ChangePasswordActivity extends XmppActivity implements XmppConnecti
 				final String newPassword = mNewPassword.getText().toString();
 				if (!mAccount.isOptionSet(Account.OPTION_MAGIC_CREATE) && !currentPassword.equals(mAccount.getPassword())) {
 					mCurrentPassword.requestFocus();
-					mCurrentPassword.setError(getString(R.string.account_status_unauthorized));
+					mCurrentPasswordLayout.setError(getString(R.string.account_status_unauthorized));
+					removeErrorsOnAllBut(mCurrentPasswordLayout);
 				} else if (newPassword.trim().isEmpty()) {
 					mNewPassword.requestFocus();
-					mNewPassword.setError(getString(R.string.password_should_not_be_empty));
+					mNewPasswordLayout.setError(getString(R.string.password_should_not_be_empty));
+					removeErrorsOnAllBut(mNewPasswordLayout);
 				} else {
-					mCurrentPassword.setError(null);
-					mNewPassword.setError(null);
+					mCurrentPasswordLayout.setError(null);
+					mNewPasswordLayout.setError(null);
 					xmppConnectionService.updateAccountPasswordOnServer(mAccount, newPassword, ChangePasswordActivity.this);
 					mChangePasswordButton.setEnabled(false);
 					mChangePasswordButton.setTextColor(getSecondaryTextColor());
@@ -40,6 +43,8 @@ public class ChangePasswordActivity extends XmppActivity implements XmppConnecti
 	};
 	private EditText mCurrentPassword;
 	private EditText mNewPassword;
+	private TextInputLayout mNewPasswordLayout;
+	private TextInputLayout mCurrentPasswordLayout;
 	private Account mAccount;
 
 	@Override
@@ -64,6 +69,8 @@ public class ChangePasswordActivity extends XmppActivity implements XmppConnecti
 		this.mCurrentPassword.setCustomSelectionActionModeCallback(new DisabledActionModeCallback());
 		this.mNewPassword = findViewById(R.id.new_password);
 		this.mNewPassword.setCustomSelectionActionModeCallback(new DisabledActionModeCallback());
+		this.mCurrentPasswordLayout = findViewById(R.id.current_password_layout);
+		this.mNewPasswordLayout = findViewById(R.id.new_password_layout);
 	}
 
 	@Override
@@ -88,11 +95,23 @@ public class ChangePasswordActivity extends XmppActivity implements XmppConnecti
 	@Override
 	public void onPasswordChangeFailed() {
 		runOnUiThread(() -> {
-			mNewPassword.setError(getString(R.string.could_not_change_password));
+			mNewPasswordLayout.setError(getString(R.string.could_not_change_password));
 			mChangePasswordButton.setEnabled(true);
 			mChangePasswordButton.setTextColor(getPrimaryTextColor());
 			mChangePasswordButton.setText(R.string.change_password);
 		});
+
+	}
+
+	private void removeErrorsOnAllBut(TextInputLayout exception) {
+		if (this.mCurrentPasswordLayout != exception) {
+			this.mCurrentPasswordLayout.setErrorEnabled(false);
+			this.mCurrentPasswordLayout.setError(null);
+		}
+		if (this.mNewPasswordLayout != exception) {
+			this.mNewPasswordLayout.setErrorEnabled(false);
+			this.mNewPasswordLayout.setError(null);
+		}
 
 	}
 
