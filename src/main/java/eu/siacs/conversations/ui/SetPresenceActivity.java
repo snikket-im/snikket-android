@@ -1,6 +1,7 @@
 package eu.siacs.conversations.ui;
 
 import android.content.Intent;
+import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Pair;
@@ -21,6 +22,7 @@ import android.widget.TextView;
 import java.util.List;
 
 import eu.siacs.conversations.R;
+import eu.siacs.conversations.databinding.ActivitySetPresenceBinding;
 import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.entities.ListItem;
 import eu.siacs.conversations.entities.Presence;
@@ -33,12 +35,8 @@ public class SetPresenceActivity extends XmppActivity implements View.OnClickLis
 	protected Account mAccount;
 	private List<PresenceTemplate> mTemplates;
 
-	//UI Elements
-	protected ScrollView mScrollView;
-	protected EditText mStatusMessage;
-	protected Spinner mShowSpinner;
-	protected CheckBox mAllAccounts;
-	protected LinearLayout mTemplatesView;
+	private ActivitySetPresenceBinding binding;
+
 	private Pair<Integer, Intent> mPostponedActivityResult;
 
 	private Runnable onPresenceChanged = new Runnable() {
@@ -50,24 +48,13 @@ public class SetPresenceActivity extends XmppActivity implements View.OnClickLis
 
 	protected void onCreate(final Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_set_presence);
-		mScrollView = (ScrollView) findViewById(R.id.scroll_view);
-		mShowSpinner = (Spinner) findViewById(R.id.presence_show);
+		this.binding = DataBindingUtil.setContentView(this,R.layout.activity_set_presence);
 		ArrayAdapter adapter = ArrayAdapter.createFromResource(this,
 				R.array.presence_show_options,
 				R.layout.simple_list_item);
-		mShowSpinner.setAdapter(adapter);
-		mShowSpinner.setSelection(1);
-		mStatusMessage = (EditText) findViewById(R.id.presence_status_message);
-		mAllAccounts = (CheckBox) findViewById(R.id.all_accounts);
-		mTemplatesView = (LinearLayout) findViewById(R.id.templates);
-		final Button changePresence = (Button) findViewById(R.id.change_presence);
-		changePresence.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				executeChangePresence();
-			}
-		});
+		this.binding.presenceShow.setAdapter(adapter);
+		this.binding.presenceShow.setSelection(1);
+		this.binding.changePresence.setOnClickListener(v -> executeChangePresence());
 	}
 
 	@Override
@@ -105,8 +92,8 @@ public class SetPresenceActivity extends XmppActivity implements View.OnClickLis
 
 	private void executeChangePresence() {
 		Presence.Status status = getStatusFromSpinner();
-		boolean allAccounts = mAllAccounts.isChecked();
-		String statusMessage = mStatusMessage.getText().toString().trim();
+		boolean allAccounts = this.binding.allAccounts.isChecked();
+		String statusMessage = this.binding.presenceStatusMessage.getText().toString().trim();
 		if (allAccounts && noAccountUsesPgp()) {
 			xmppConnectionService.changeStatus(status, statusMessage);
 			finish();
@@ -122,7 +109,7 @@ public class SetPresenceActivity extends XmppActivity implements View.OnClickLis
 	}
 
 	private Presence.Status getStatusFromSpinner() {
-		switch (mShowSpinner.getSelectedItemPosition()) {
+		switch (this.binding.presenceShow.getSelectedItemPosition()) {
 			case 0:
 				return Presence.Status.CHAT;
 			case 2:
@@ -139,19 +126,19 @@ public class SetPresenceActivity extends XmppActivity implements View.OnClickLis
 	private void setStatusInSpinner(Presence.Status status) {
 		switch(status) {
 			case AWAY:
-				mShowSpinner.setSelection(2);
+				this.binding.presenceShow.setSelection(2);
 				break;
 			case XA:
-				mShowSpinner.setSelection(3);
+				this.binding.presenceShow.setSelection(3);
 				break;
 			case CHAT:
-				mShowSpinner.setSelection(0);
+				this.binding.presenceShow.setSelection(0);
 				break;
 			case DND:
-				mShowSpinner.setSelection(4);
+				this.binding.presenceShow.setSelection(4);
 				break;
 			default:
-				mShowSpinner.setSelection(1);
+				this.binding.presenceShow.setSelection(1);
 				break;
 		}
 	}
@@ -167,29 +154,29 @@ public class SetPresenceActivity extends XmppActivity implements View.OnClickLis
 		if (mAccount != null) {
 			setStatusInSpinner(mAccount.getPresenceStatus());
 			String message = mAccount.getPresenceStatusMessage();
-			if (mStatusMessage.getText().length() == 0 && message != null) {
-				mStatusMessage.append(message);
+			if (this.binding.presenceStatusMessage.getText().length() == 0 && message != null) {
+				this.binding.presenceStatusMessage.append(message);
 			}
 			mTemplates = xmppConnectionService.getPresenceTemplates(mAccount);
 			if (this.mPostponedActivityResult != null) {
 				this.onActivityResult(mPostponedActivityResult.first, RESULT_OK, mPostponedActivityResult.second);
 			}
 			boolean e = noAccountUsesPgp();
-			mAllAccounts.setEnabled(e);
-			mAllAccounts.setTextColor(e ? getPrimaryTextColor() : getSecondaryTextColor());
+			this.binding.allAccounts.setEnabled(e);
+			this.binding.allAccounts.setTextColor(e ? getPrimaryTextColor() : getSecondaryTextColor());
 		}
 		redrawTemplates();
 	}
 
 	private void redrawTemplates() {
 		if (mTemplates == null || mTemplates.size() == 0) {
-			mTemplatesView.setVisibility(View.GONE);
+			this.binding.templatesCard.setVisibility(View.GONE);
 		} else {
-			mTemplatesView.removeAllViews();
-			mTemplatesView.setVisibility(View.VISIBLE);
+			this.binding.templates.removeAllViews();
+			this.binding.templatesCard.setVisibility(View.VISIBLE);
 			LayoutInflater inflater = getLayoutInflater();
 			for (PresenceTemplate template : mTemplates) {
-				View templateLayout = inflater.inflate(R.layout.presence_template, mTemplatesView, false);
+				View templateLayout = inflater.inflate(R.layout.presence_template, this.binding.templates, false);
 				templateLayout.setTag(template);
 				setListItemBackgroundOnView(templateLayout);
 				templateLayout.setOnClickListener(this);
@@ -202,7 +189,7 @@ public class SetPresenceActivity extends XmppActivity implements View.OnClickLis
 				status.setText(tag.getName());
 				status.setBackgroundColor(tag.getColor());
 				message.setText(template.getStatusMessage());
-				mTemplatesView.addView(templateLayout);
+				this.binding.templates.addView(templateLayout);
 			}
 		}
 	}
@@ -215,14 +202,9 @@ public class SetPresenceActivity extends XmppActivity implements View.OnClickLis
 		}
 		if (v.getId() == R.id.presence_template) {
 			setStatusInSpinner(template.getStatus());
-			mStatusMessage.getEditableText().clear();
-			mStatusMessage.getEditableText().append(template.getStatusMessage());
-			new Handler().post(new Runnable() {
-				@Override
-				public void run() {
-					mScrollView.smoothScrollTo(0,0);
-				}
-			});
+			this.binding.presenceStatusMessage.getEditableText().clear();
+			this.binding.presenceStatusMessage.getEditableText().append(template.getStatusMessage());
+			new Handler().post(() -> this.binding.scrollView.smoothScrollTo(0,0));
 		} else if (v.getId() == R.id.delete_button) {
 			xmppConnectionService.databaseBackend.deletePresenceTemplate(template);
 			mTemplates.remove(template);

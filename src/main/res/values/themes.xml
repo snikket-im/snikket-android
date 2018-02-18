@@ -21,7 +21,6 @@
         <item name="IconSize">18sp</item>
         <item name="TextSizeHeadline">20sp</item>
 
-        <item type="reference" name="infocard_border">@drawable/infocard_border</item>
         <item name="divider">@color/black12</item>
 
         <item type="reference" name="ic_send_cancel_offline">@drawable/ic_send_cancel_offline</item>
@@ -101,7 +100,6 @@
         <item name="IconSize">18sp</item>
         <item name="TextSizeHeadline">20sp</item>
 
-        <item type="reference" name="infocard_border">@drawable/infocard_border_dark</item>
         <item name="divider">@color/white12</item>
 
         <item type="reference" name="ic_send_cancel_offline">@drawable/ic_send_cancel_offline_white</item>
