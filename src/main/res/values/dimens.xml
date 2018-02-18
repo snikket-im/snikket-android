@@ -6,7 +6,9 @@
 	<dimen name="card_padding_list">8dp</dimen> <!-- card_padding_regular minus list_padding -->
 	<dimen name="list_padding">8dp</dimen>
 	<dimen name="image_button_padding">12dp</dimen>
+	<dimen name="key_action_width">48dp</dimen>  <!-- icon width (24dp) + 2 * image button padding -->
 	<dimen name="fineprint_size">11sp</dimen>
 	<dimen name="audio_player_width">224dp</dimen>
 	<dimen name="swipe_handle_size">32dp</dimen>
+	<dimen name="avatar_item_distance">16dp</dimen>
 </resources>

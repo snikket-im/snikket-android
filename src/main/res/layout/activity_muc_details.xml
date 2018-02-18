@@ -51,7 +51,7 @@
                         android:layout_centerVertical="true"
                         android:layout_toRightOf="@+id/your_photo"
                         android:orientation="vertical"
-                        android:paddingLeft="8dp">
+                        android:paddingLeft="@dimen/avatar_item_distance">
 
                         <TextView
                             android:id="@+id/muc_your_nick"

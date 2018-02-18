@@ -48,20 +48,29 @@
             android:longClickable="true"/>
         <LinearLayout
             android:id="@+id/action_container"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="@dimen/key_action_width"
+            android:layout_height="48dp"
             android:orientation="vertical"
             android:layout_alignParentRight="true"
+            android:gravity="center"
             android:layout_centerVertical="true">
             <ImageButton
-                android:layout_gravity="center_horizontal"
                 android:id="@+id/button_remove"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:alpha="?attr/icon_alpha"
-                android:background="?android:selectableItemBackground"
+                android:background="?attr/selectableItemBackgroundBorderless"
                 android:padding="@dimen/image_button_padding"
                 android:src="?attr/icon_remove"
+                android:visibility="gone" />
+            <ImageButton
+                android:id="@+id/button_enable_device"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:alpha="?attr/icon_alpha"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:padding="@dimen/image_button_padding"
+                android:src="?attr/icon_enable_undecided_device"
                 android:visibility="gone" />
 
             <ImageView
@@ -69,15 +78,12 @@
                 android:id="@+id/verified_fingerprint"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:padding="@dimen/image_button_padding"
                 android:src="@drawable/ic_verified_fingerprint" />
 
             <android.support.v7.widget.SwitchCompat
                 android:id="@+id/tgl_trust"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
                 android:visibility="gone" />
         </LinearLayout>
 

@@ -20,7 +20,7 @@
         android:layout_centerVertical="true"
         android:layout_toRightOf="@+id/contact_photo"
         android:orientation="vertical"
-        android:paddingLeft="16dp" >
+        android:paddingLeft="@dimen/avatar_item_distance" >
 
         <TextView
             android:id="@+id/contact_display_name"

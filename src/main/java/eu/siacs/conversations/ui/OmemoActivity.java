@@ -9,6 +9,7 @@ import android.view.ContextMenu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.CompoundButton;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -130,6 +131,7 @@ public abstract class OmemoActivity extends XmppActivity {
         View view = getLayoutInflater().inflate(R.layout.contact_key, keys, false);
         TextView key = view.findViewById(R.id.key);
         TextView keyType =  view.findViewById(R.id.key_type);
+        ImageButton enableUndecided = view.findViewById(R.id.button_enable_device);
         if (Config.X509_VERIFICATION && status.getTrust() == FingerprintStatus.Trust.VERIFIED_X509) {
             key.setOnClickListener(v -> showX509Certificate(account,fingerprint));
             keyType.setOnClickListener(v -> showX509Certificate(account,fingerprint));
@@ -159,12 +161,13 @@ public abstract class OmemoActivity extends XmppActivity {
                 trustToggle.setVisibility(View.VISIBLE);
                 trustToggle.setOnCheckedChangeListener(onCheckedChangeListener);
                 if (status.getTrust() == FingerprintStatus.Trust.UNDECIDED && undecidedNeedEnablement) {
-                    trustToggle.setOnClickListener(v -> {
+                    enableUndecided.setVisibility(View.VISIBLE);
+                    enableUndecided.setOnClickListener(v -> {
                         account.getAxolotlService().setFingerprintTrust(fingerprint,FingerprintStatus.createActive(false));
-                        v.setEnabled(true);
-                        v.setOnClickListener(null);
+                        enableUndecided.setVisibility(View.GONE);
+                        trustToggle.setVisibility(View.VISIBLE);
                     });
-                    trustToggle.setEnabled(false);
+                    trustToggle.setVisibility(View.GONE);
                 } else {
                     trustToggle.setOnClickListener(null);
                     trustToggle.setEnabled(true);
