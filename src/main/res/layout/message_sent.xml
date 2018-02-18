@@ -15,7 +15,6 @@
         android:layout_height="48dp"
         android:scaleType="fitXY"
         android:paddingBottom="3dp"
-        android:src="@drawable/ic_profile"
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"

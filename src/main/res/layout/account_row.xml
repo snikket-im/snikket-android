@@ -13,7 +13,6 @@
         android:layout_width="48dp"
         android:layout_height="48dp"
         android:layout_alignParentLeft="true"
-        android:src="@drawable/ic_profile"
         android:contentDescription="@string/account_image_description"
         app:riv_corner_radius="2dp" />
 

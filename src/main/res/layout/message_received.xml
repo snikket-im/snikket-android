@@ -16,7 +16,6 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
         android:scaleType="fitXY"
-        android:src="@drawable/ic_profile"
         app:riv_corner_radius="2dp" />
 
     <LinearLayout

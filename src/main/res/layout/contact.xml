@@ -12,7 +12,6 @@
         android:layout_height="48dp"
         android:layout_alignParentLeft="true"
         android:scaleType="centerCrop"
-        android:src="@drawable/ic_profile"
         app:riv_corner_radius="2dp" />
 
     <LinearLayout
@@ -21,23 +20,21 @@
         android:layout_centerVertical="true"
         android:layout_toRightOf="@+id/contact_photo"
         android:orientation="vertical"
-        android:paddingLeft="8dp" >
+        android:paddingLeft="16dp" >
 
         <TextView
             android:id="@+id/contact_display_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:singleLine="true"
-            android:textColor="?attr/color_text_primary"
-            android:textSize="?attr/TextSizeHeadline" />
+            android:textAppearance="@style/TextAppearance.AppCompat.Subhead" />
 
         <TextView
             android:id="@+id/contact_jid"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:singleLine="true"
-            android:textColor="?attr/color_text_primary"
-            android:textSize="?attr/TextSizeBody" />
+            android:textAppearance="@style/TextAppearance.Conversations.Body1.Secondary"/>
         <com.wefika.flowlayout.FlowLayout
             android:id="@+id/tags"
             android:layout_width="wrap_content"
