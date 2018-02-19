@@ -456,7 +456,8 @@ public class ConversationActivity extends XmppActivity
 		pgp.setVisible(Config.supportOpenPgp());
 		none.setVisible(Config.supportUnencrypted() || conversation.getMode() == Conversation.MODE_MULTI);
 		axolotl.setVisible(Config.supportOmemo());
-		if (!conversation.getAccount().getAxolotlService().isConversationAxolotlCapable(conversation)) {
+		final AxolotlService axolotlService = conversation.getAccount().getAxolotlService();
+		if (axolotlService == null || !axolotlService.isConversationAxolotlCapable(conversation)) {
 			axolotl.setEnabled(false);
 		}
 		switch (conversation.getNextEncryption()) {

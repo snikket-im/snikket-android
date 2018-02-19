@@ -2,7 +2,6 @@ package eu.siacs.conversations.ui;
 
 import android.databinding.DataBindingUtil;
 import android.support.v7.app.AlertDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -20,11 +19,9 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
-import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.wefika.flowlayout.FlowLayout;
 
 import org.openintents.openpgp.util.OpenPgpUtils;
 
@@ -41,7 +38,6 @@ import eu.siacs.conversations.entities.Contact;
 import eu.siacs.conversations.entities.ListItem;
 import eu.siacs.conversations.services.XmppConnectionService.OnAccountUpdate;
 import eu.siacs.conversations.services.XmppConnectionService.OnRosterUpdate;
-import eu.siacs.conversations.utils.CryptoHelper;
 import eu.siacs.conversations.utils.UIHelper;
 import eu.siacs.conversations.utils.XmppUri;
 import eu.siacs.conversations.xml.Namespace;
@@ -449,13 +445,7 @@ public class ContactDetailsActivity extends OmemoActivity implements OnAccountUp
 				keyType.setTextColor(ContextCompat.getColor(this, R.color.accent));
 			}
 			key.setText(OpenPgpUtils.convertKeyIdToHex(contact.getPgpKeyId()));
-			final OnClickListener openKey = new OnClickListener() {
-
-				@Override
-				public void onClick(View v) {
-					launchOpenKeyChain(contact.getPgpKeyId());
-				}
-			};
+			final OnClickListener openKey = v -> launchOpenKeyChain(contact.getPgpKeyId());
 			view.setOnClickListener(openKey);
 			key.setOnClickListener(openKey);
 			keyType.setOnClickListener(openKey);
@@ -476,26 +466,6 @@ public class ContactDetailsActivity extends OmemoActivity implements OnAccountUp
 				binding.tags.addView(tv);
 			}
 		}
-	}
-
-	protected void confirmToDeleteFingerprint(final String fingerprint) {
-		AlertDialog.Builder builder = new AlertDialog.Builder(this);
-		builder.setTitle(R.string.delete_fingerprint);
-		builder.setMessage(R.string.sure_delete_fingerprint);
-		builder.setNegativeButton(R.string.cancel, null);
-		builder.setPositiveButton(R.string.delete,
-				new android.content.DialogInterface.OnClickListener() {
-
-					@Override
-					public void onClick(DialogInterface dialog, int which) {
-						if (contact.deleteOtrFingerprint(fingerprint)) {
-							populateView();
-							xmppConnectionService.syncRosterToDisk(contact.getAccount());
-						}
-					}
-
-				});
-		builder.create().show();
 	}
 
 	public void onBackendConnected() {
