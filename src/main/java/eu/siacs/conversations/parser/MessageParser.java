@@ -444,7 +444,7 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
 					return;
 				}
 				status = Message.STATUS_RECEIVED;
-				if (conversation.findMessageWithRemoteId(remoteMsgId,counterpart) != null) {
+				if (remoteMsgId != null && conversation.findMessageWithRemoteId(remoteMsgId,counterpart) != null) {
 					return;
 				}
 			}
