@@ -1,12 +1,7 @@
 package eu.siacs.conversations.parser;
 
-import android.os.Build;
-import android.text.Html;
 import android.util.Log;
 import android.util.Pair;
-
-import net.java.otr4j.session.Session;
-import net.java.otr4j.session.SessionStatus;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -19,7 +14,6 @@ import java.util.UUID;
 
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
-import eu.siacs.conversations.crypto.OtrService;
 import eu.siacs.conversations.crypto.axolotl.AxolotlService;
 import eu.siacs.conversations.crypto.axolotl.XmppAxolotlMessage;
 import eu.siacs.conversations.entities.Account;
@@ -28,10 +22,8 @@ import eu.siacs.conversations.entities.Contact;
 import eu.siacs.conversations.entities.Conversation;
 import eu.siacs.conversations.entities.Message;
 import eu.siacs.conversations.entities.MucOptions;
-import eu.siacs.conversations.entities.Presence;
 import eu.siacs.conversations.entities.ReadByMarker;
 import eu.siacs.conversations.entities.ReceiptRequest;
-import eu.siacs.conversations.entities.ServiceDiscoveryResult;
 import eu.siacs.conversations.http.HttpConnectionManager;
 import eu.siacs.conversations.services.MessageArchiveService;
 import eu.siacs.conversations.services.XmppConnectionService;
@@ -45,8 +37,6 @@ import eu.siacs.conversations.xmpp.pep.Avatar;
 import eu.siacs.conversations.xmpp.stanzas.MessagePacket;
 
 public class MessageParser extends AbstractParser implements OnMessagePacketReceived {
-
-	private static final List<String> CLIENTS_SENDING_HTML_IN_OTR = Arrays.asList("Pidgin", "Adium", "Trillian");
 
 	public MessageParser(XmppConnectionService service) {
 		super(service);
@@ -74,90 +64,6 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
 					}
 				} else {
 					return c.setIncomingChatState(state);
-				}
-			}
-		}
-		return false;
-	}
-
-	private Message parseOtrChat(String body, Jid from, String id, Conversation conversation) {
-		String presence;
-		if (from.isBareJid()) {
-			presence = "";
-		} else {
-			presence = from.getResourcepart();
-		}
-		if (body.matches("^\\?OTRv\\d{1,2}\\?.*")) {
-			conversation.endOtrIfNeeded();
-		}
-		if (!conversation.hasValidOtrSession()) {
-			conversation.startOtrSession(presence, false);
-		} else {
-			String foreignPresence = conversation.getOtrSession().getSessionID().getUserID();
-			if (!foreignPresence.equals(presence)) {
-				conversation.endOtrIfNeeded();
-				conversation.startOtrSession(presence, false);
-			}
-		}
-		try {
-			conversation.setLastReceivedOtrMessageId(id);
-			Session otrSession = conversation.getOtrSession();
-			body = otrSession.transformReceiving(body);
-			SessionStatus status = otrSession.getSessionStatus();
-			if (body == null && status == SessionStatus.ENCRYPTED) {
-				mXmppConnectionService.onOtrSessionEstablished(conversation);
-				return null;
-			} else if (body == null && status == SessionStatus.FINISHED) {
-				conversation.resetOtrSession();
-				mXmppConnectionService.updateConversationUi();
-				return null;
-			} else if (body == null || (body.isEmpty())) {
-				return null;
-			}
-			if (body.startsWith(CryptoHelper.FILETRANSFER)) {
-				String key = body.substring(CryptoHelper.FILETRANSFER.length());
-				conversation.setSymmetricKey(CryptoHelper.hexToBytes(key));
-				return null;
-			}
-			if (clientMightSendHtml(conversation.getAccount(), from)) {
-				Log.d(Config.LOGTAG, conversation.getAccount().getJid().toBareJid() + ": received OTR message from bad behaving client. escaping HTML…");
-				if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-					body = Html.fromHtml(body, Html.FROM_HTML_MODE_LEGACY).toString();
-				} else {
-					body = Html.fromHtml(body).toString();
-				}
-			}
-
-			final OtrService otrService = conversation.getAccount().getOtrService();
-			Message finishedMessage = new Message(conversation, body, Message.ENCRYPTION_OTR, Message.STATUS_RECEIVED);
-			finishedMessage.setFingerprint(otrService.getFingerprint(otrSession.getRemotePublicKey()));
-			conversation.setLastReceivedOtrMessageId(null);
-
-			return finishedMessage;
-		} catch (Exception e) {
-			conversation.resetOtrSession();
-			return null;
-		}
-	}
-
-	private static boolean clientMightSendHtml(Account account, Jid from) {
-		String resource = from.getResourcepart();
-		if (resource == null) {
-			return false;
-		}
-		Presence presence = account.getRoster().getContact(from).getPresences().getPresences().get(resource);
-		ServiceDiscoveryResult disco = presence == null ? null : presence.getServiceDiscoveryResult();
-		if (disco == null) {
-			return false;
-		}
-		return hasIdentityKnowForSendingHtml(disco.getIdentities());
-	}
-
-	private static boolean hasIdentityKnowForSendingHtml(List<ServiceDiscoveryResult.Identity> identities) {
-		for (ServiceDiscoveryResult.Identity identity : identities) {
-			if (identity.getName() != null) {
-				if (CLIENTS_SENDING_HTML_IN_OTR.contains(identity.getName())) {
-					return true;
 				}
 			}
 		}
@@ -316,11 +222,6 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
 						packet.getId(),
 						Message.STATUS_SEND_FAILED,
 						extractErrorMessage(packet));
-				if (message != null) {
-					if (message.getEncryption() == Message.ENCRYPTION_OTR) {
-						message.getConversation().endOtrIfNeeded();
-					}
-				}
 			}
 			return true;
 		}
@@ -467,17 +368,7 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
 				}
 			}
 			final Message message;
-			if (body != null && body.startsWith("?OTR") && Config.supportOtr()) {
-				if (!isForwarded && !isTypeGroupChat && isProperlyAddressed && !conversationMultiMode) {
-					message = parseOtrChat(body, from, remoteMsgId, conversation);
-					if (message == null) {
-						return;
-					}
-				} else {
-					Log.d(Config.LOGTAG, account.getJid().toBareJid() + ": ignoring OTR message from " + from + " isForwarded=" + Boolean.toString(isForwarded) + ", isProperlyAddressed=" + Boolean.valueOf(isProperlyAddressed));
-					message = new Message(conversation, body, Message.ENCRYPTION_NONE, status);
-				}
-			} else if (pgpEncrypted != null && Config.supportOpenPgp()) {
+			if (pgpEncrypted != null && Config.supportOpenPgp()) {
 				message = new Message(conversation, pgpEncrypted, Message.ENCRYPTION_PGP, status);
 			} else if (axolotlEncrypted != null && Config.supportOmemo()) {
 				Jid origin;
@@ -667,13 +558,6 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
 					&& !selfAddressed
 					&& !isTypeGroupChat) {
 				processMessageReceipts(account, packet, query);
-			}
-
-			if (message.getStatus() == Message.STATUS_RECEIVED
-					&& conversation.getOtrSession() != null
-					&& !conversation.getOtrSession().getSessionID().getUserID()
-					.equals(message.getCounterpart().getResourcepart())) {
-				conversation.endOtrIfNeeded();
 			}
 
 			mXmppConnectionService.databaseBackend.createMessage(message);

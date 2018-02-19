@@ -409,33 +409,7 @@ public class ContactDetailsActivity extends OmemoActivity implements OnAccountUp
 
 		binding.detailsContactKeys.removeAllViews();
 		boolean hasKeys = false;
-		LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-		if (Config.supportOtr()) {
-			for (final String otrFingerprint : contact.getOtrFingerprints()) {
-				hasKeys = true;
-				View view = inflater.inflate(R.layout.contact_key, binding.detailsContactKeys, false);
-				TextView key = (TextView) view.findViewById(R.id.key);
-				TextView keyType = (TextView) view.findViewById(R.id.key_type);
-				ImageButton removeButton = (ImageButton) view
-						.findViewById(R.id.button_remove);
-				removeButton.setVisibility(View.VISIBLE);
-				key.setText(CryptoHelper.prettifyFingerprint(otrFingerprint));
-				if (otrFingerprint != null && otrFingerprint.equalsIgnoreCase(messageFingerprint)) {
-					keyType.setText(R.string.otr_fingerprint_selected_message);
-					keyType.setTextColor(ContextCompat.getColor(this, R.color.accent));
-				} else {
-					keyType.setText(R.string.otr_fingerprint);
-				}
-				binding.detailsContactKeys.addView(view);
-				removeButton.setOnClickListener(new OnClickListener() {
-
-					@Override
-					public void onClick(View v) {
-						confirmToDeleteFingerprint(otrFingerprint);
-					}
-				});
-			}
-		}
+		final LayoutInflater inflater = getLayoutInflater();
 		final AxolotlService axolotlService = contact.getAccount().getAxolotlService();
 		if (Config.supportOmemo() && axolotlService != null) {
 			boolean skippedInactive = false;

@@ -132,9 +132,6 @@ public class XmppUri {
 			if (parts.length == 2) {
 				String key = parts[0].toLowerCase(Locale.US);
 				String value = parts[1].toLowerCase(Locale.US);
-				if (OTR_URI_PARAM.equals(key)) {
-					fingerprints.add(new Fingerprint(FingerprintType.OTR,value));
-				}
 				if (key.startsWith(OMEMO_URI_PARAM)) {
 					try {
 						int id = Integer.parseInt(key.substring(OMEMO_URI_PARAM.length()));
@@ -213,8 +210,7 @@ public class XmppUri {
 		return fingerprints.size() > 0;
 	}
 	public enum FingerprintType {
-		OMEMO,
-		OTR
+		OMEMO
 	}
 
 	public static String getFingerprintUri(String base, List<XmppUri.Fingerprint> fingerprints, char seperator) {
@@ -225,8 +221,6 @@ public class XmppUri {
 			if (type == XmppUri.FingerprintType.OMEMO) {
 				builder.append(XmppUri.OMEMO_URI_PARAM);
 				builder.append(fingerprints.get(i).deviceId);
-			} else if (type == XmppUri.FingerprintType.OTR) {
-				builder.append(XmppUri.OTR_URI_PARAM);
 			}
 			builder.append('=');
 			builder.append(fingerprints.get(i).fingerprint);

@@ -7,24 +7,17 @@ import android.util.Pair;
 
 import eu.siacs.conversations.crypto.PgpDecryptionService;
 
-import net.java.otr4j.crypto.OtrCryptoEngineImpl;
-import net.java.otr4j.crypto.OtrCryptoException;
-
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.security.PublicKey;
-import java.security.interfaces.DSAPublicKey;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Locale;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.CopyOnWriteArraySet;
 
 import eu.siacs.conversations.R;
-import eu.siacs.conversations.crypto.OtrService;
 import eu.siacs.conversations.crypto.axolotl.AxolotlService;
 import eu.siacs.conversations.crypto.axolotl.XmppAxolotlSession;
 import eu.siacs.conversations.services.XmppConnectionService;
@@ -241,7 +234,6 @@ public class Account extends AbstractEntity {
 	protected String hostname = null;
 	protected int port = 5222;
 	protected boolean online = false;
-	private OtrService mOtrService = null;
 	private AxolotlService axolotlService = null;
 	private PgpDecryptionService pgpDecryptionService = null;
 	private XmppConnection xmppConnection = null;
@@ -499,16 +491,11 @@ public class Account extends AbstractEntity {
 	}
 
 	public void initAccountServices(final XmppConnectionService context) {
-		this.mOtrService = new OtrService(context, this);
 		this.axolotlService = new AxolotlService(this, context);
 		this.pgpDecryptionService = new PgpDecryptionService(context);
 		if (xmppConnection != null) {
 			xmppConnection.addOnAdvancedStreamFeaturesAvailableListener(axolotlService);
 		}
-	}
-
-	public OtrService getOtrService() {
-		return this.mOtrService;
 	}
 
 	public PgpDecryptionService getPgpDecryptionService() {
@@ -521,26 +508,6 @@ public class Account extends AbstractEntity {
 
 	public void setXmppConnection(final XmppConnection connection) {
 		this.xmppConnection = connection;
-	}
-
-	public String getOtrFingerprint() {
-		if (this.otrFingerprint == null) {
-			try {
-				if (this.mOtrService == null) {
-					return null;
-				}
-				final PublicKey publicKey = this.mOtrService.getPublicKey();
-				if (publicKey == null || !(publicKey instanceof DSAPublicKey)) {
-					return null;
-				}
-				this.otrFingerprint = new OtrCryptoEngineImpl().getFingerprint(publicKey).toLowerCase(Locale.US);
-				return this.otrFingerprint;
-			} catch (final OtrCryptoException ignored) {
-				return null;
-			}
-		} else {
-			return this.otrFingerprint;
-		}
 	}
 
 	public String getRosterVersion() {
@@ -674,10 +641,6 @@ public class Account extends AbstractEntity {
 
 	private List<XmppUri.Fingerprint> getFingerprints() {
 		ArrayList<XmppUri.Fingerprint> fingerprints = new ArrayList<>();
-		final String otr = this.getOtrFingerprint();
-		if (otr != null) {
-			fingerprints.add(new XmppUri.Fingerprint(XmppUri.FingerprintType.OTR,otr));
-		}
 		if (axolotlService == null) {
 			return fingerprints;
 		}

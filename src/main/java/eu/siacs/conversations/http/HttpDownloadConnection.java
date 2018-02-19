@@ -96,9 +96,7 @@ public class HttpDownloadConnection implements Transferable {
 				this.file.setKeyAndIv(CryptoHelper.hexToBytes(reference));
 			}
 
-			if ((this.message.getEncryption() == Message.ENCRYPTION_OTR
-					|| this.message.getEncryption() == Message.ENCRYPTION_AXOLOTL)
-					&& this.file.getKey() == null) {
+			if (this.message.getEncryption() == Message.ENCRYPTION_AXOLOTL && this.file.getKey() == null) {
 				this.message.setEncryption(Message.ENCRYPTION_NONE);
 			}
 			checkFileSize(interactive);

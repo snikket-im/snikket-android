@@ -34,12 +34,6 @@ import android.util.Log;
 import android.util.LruCache;
 import android.util.Pair;
 
-import net.java.otr4j.OtrException;
-import net.java.otr4j.session.Session;
-import net.java.otr4j.session.SessionID;
-import net.java.otr4j.session.SessionImpl;
-import net.java.otr4j.session.SessionStatus;
-
 import org.openintents.openpgp.IOpenPgpService2;
 import org.openintents.openpgp.util.OpenPgpApi;
 import org.openintents.openpgp.util.OpenPgpServiceConnection;
@@ -214,17 +208,8 @@ public class XmppConnectionService extends Service {
 			Conversation conversation = find(getConversations(), contact);
 			if (conversation != null) {
 				if (online) {
-					conversation.endOtrIfNeeded();
 					if (contact.getPresences().size() == 1) {
 						sendUnsentMessages(conversation);
-					}
-				} else {
-					//check if the resource we are haveing a conversation with is still online
-					if (conversation.hasValidOtrSession()) {
-						String otrResource = conversation.getOtrSession().getSessionID().getUserID();
-						if (!(Arrays.asList(contact.getPresences().toResourceArray()).contains(otrResource))) {
-							conversation.endOtrIfNeeded();
-						}
 					}
 				}
 			}
@@ -351,11 +336,7 @@ public class XmppConnectionService extends Service {
 				}
 				List<Conversation> conversations = getConversations();
 				for (Conversation conversation : conversations) {
-					if (conversation.getAccount() == account
-							&& !account.pendingConferenceJoins.contains(conversation)) {
-						if (!conversation.startOtrIfNeeded()) {
-							Log.d(Config.LOGTAG, account.getJid().toBareJid() + ": couldn't start OTR with " + conversation.getContact().getJid() + " when needed");
-						}
+					if (conversation.getAccount() == account && !account.pendingConferenceJoins.contains(conversation)) {
 						sendUnsentMessages(conversation);
 					}
 				}
@@ -1209,17 +1190,6 @@ public class XmppConnectionService extends Service {
 		boolean saveInDb = addToConversation;
 		message.setStatus(Message.STATUS_WAITING);
 
-		if (!resend && message.getEncryption() != Message.ENCRYPTION_OTR) {
-			message.getConversation().endOtrIfNeeded();
-			message.getConversation().findUnsentMessagesWithEncryption(Message.ENCRYPTION_OTR,
-					new Conversation.OnMessageFound() {
-						@Override
-						public void onMessageFound(Message message) {
-							markMessage(message, Message.STATUS_SEND_FAILED);
-						}
-					});
-		}
-
 		if (account.isOnlineAndConnected()) {
 			switch (message.getEncryption()) {
 				case Message.ENCRYPTION_NONE:
@@ -1247,30 +1217,6 @@ public class XmppConnectionService extends Service {
 						}
 					} else {
 						packet = mMessageGenerator.generatePgpChat(message);
-					}
-					break;
-				case Message.ENCRYPTION_OTR:
-					SessionImpl otrSession = conversation.getOtrSession();
-					if (otrSession != null && otrSession.getSessionStatus() == SessionStatus.ENCRYPTED) {
-						try {
-							message.setCounterpart(Jid.fromSessionID(otrSession.getSessionID()));
-						} catch (InvalidJidException e) {
-							break;
-						}
-						if (message.needsUploading()) {
-							mJingleConnectionManager.createNewConnection(message);
-						} else {
-							packet = mMessageGenerator.generateOtrChat(message);
-						}
-					} else if (otrSession == null) {
-						if (message.fixCounterpart()) {
-							conversation.startOtrSession(message.getCounterpart().getResourcepart(), true);
-						} else {
-							Log.d(Config.LOGTAG, account.getJid().toBareJid() + ": could not fix counterpart for OTR message to contact " + message.getCounterpart());
-							break;
-						}
-					} else {
-						Log.d(Config.LOGTAG, account.getJid().toBareJid() + " OTR session with " + message.getContact() + " is in wrong state: " + otrSession.getSessionStatus().toString());
 					}
 					break;
 				case Message.ENCRYPTION_AXOLOTL:
@@ -1322,12 +1268,6 @@ public class XmppConnectionService extends Service {
 							message.setBody(decryptedBody);
 							message.setEncryption(Message.ENCRYPTION_DECRYPTED);
 						}
-					}
-					break;
-				case Message.ENCRYPTION_OTR:
-					if (!conversation.hasValidOtrSession() && message.getCounterpart() != null) {
-						Log.d(Config.LOGTAG, account.getJid().toBareJid() + ": create otr session without starting for " + message.getContact().getJid());
-						conversation.startOtrSession(message.getCounterpart().getResourcepart(), false);
 					}
 					break;
 				case Message.ENCRYPTION_AXOLOTL:
@@ -1804,7 +1744,6 @@ public class XmppConnectionService extends Service {
 				}
 				leaveMuc(conversation);
 			} else {
-				conversation.endOtrIfNeeded();
 				if (conversation.getContact().getOption(Contact.Options.PENDING_SUBSCRIPTION_REQUEST)) {
 					Log.d(Config.LOGTAG, "Canceling presence request from " + conversation.getJid().toString());
 					sendPresencePacket(
@@ -1941,8 +1880,6 @@ public class XmppConnectionService extends Service {
 				if (conversation.getAccount() == account) {
 					if (conversation.getMode() == Conversation.MODE_MULTI) {
 						leaveMuc(conversation);
-					} else if (conversation.getMode() == Conversation.MODE_SINGLE) {
-						conversation.endOtrIfNeeded();
 					}
 					conversations.remove(conversation);
 				}
@@ -2750,12 +2687,6 @@ public class XmppConnectionService extends Service {
 					if (conversation.getAccount() == account) {
 						if (conversation.getMode() == Conversation.MODE_MULTI) {
 							leaveMuc(conversation, true);
-						} else {
-							if (conversation.endOtrIfNeeded()) {
-								Log.d(Config.LOGTAG, account.getJid().toBareJid()
-										+ ": ended otr session with "
-										+ conversation.getJid());
-							}
 						}
 					}
 				}
@@ -2798,65 +2729,6 @@ public class XmppConnectionService extends Service {
 			contact.setOption(Contact.Options.ASKING);
 		}
 		pushContactToServer(contact);
-	}
-
-	public void onOtrSessionEstablished(Conversation conversation) {
-		final Account account = conversation.getAccount();
-		final Session otrSession = conversation.getOtrSession();
-		Log.d(Config.LOGTAG,
-				account.getJid().toBareJid() + " otr session established with "
-						+ conversation.getJid() + "/"
-						+ otrSession.getSessionID().getUserID());
-		conversation.findUnsentMessagesWithEncryption(Message.ENCRYPTION_OTR, new Conversation.OnMessageFound() {
-
-			@Override
-			public void onMessageFound(Message message) {
-				SessionID id = otrSession.getSessionID();
-				try {
-					message.setCounterpart(Jid.fromString(id.getAccountID() + "/" + id.getUserID()));
-				} catch (InvalidJidException e) {
-					return;
-				}
-				if (message.needsUploading()) {
-					mJingleConnectionManager.createNewConnection(message);
-				} else {
-					MessagePacket outPacket = mMessageGenerator.generateOtrChat(message);
-					if (outPacket != null) {
-						mMessageGenerator.addDelay(outPacket, message.getTimeSent());
-						message.setStatus(Message.STATUS_SEND);
-						databaseBackend.updateMessage(message);
-						sendMessagePacket(account, outPacket);
-					}
-				}
-				updateConversationUi();
-			}
-		});
-	}
-
-	public boolean renewSymmetricKey(Conversation conversation) {
-		Account account = conversation.getAccount();
-		byte[] symmetricKey = new byte[32];
-		this.mRandom.nextBytes(symmetricKey);
-		Session otrSession = conversation.getOtrSession();
-		if (otrSession != null) {
-			MessagePacket packet = new MessagePacket();
-			packet.setType(MessagePacket.TYPE_CHAT);
-			packet.setFrom(account.getJid());
-			MessageGenerator.addMessageHints(packet);
-			packet.setAttribute("to", otrSession.getSessionID().getAccountID() + "/"
-					+ otrSession.getSessionID().getUserID());
-			try {
-				packet.setBody(otrSession
-						.transformSending(CryptoHelper.FILETRANSFER
-								+ CryptoHelper.bytesToHex(symmetricKey))[0]);
-				sendMessagePacket(account, packet);
-				conversation.setSymmetricKey(symmetricKey);
-				return true;
-			} catch (OtrException e) {
-				return false;
-			}
-		}
-		return false;
 	}
 
 	public void pushContactToServer(final Contact contact) {
@@ -3959,14 +3831,10 @@ public class XmppConnectionService extends Service {
 	}
 
 	public boolean verifyFingerprints(Contact contact, List<XmppUri.Fingerprint> fingerprints) {
-		boolean needsRosterWrite = false;
 		boolean performedVerification = false;
 		final AxolotlService axolotlService = contact.getAccount().getAxolotlService();
 		for (XmppUri.Fingerprint fp : fingerprints) {
-			if (fp.type == XmppUri.FingerprintType.OTR) {
-				performedVerification |= contact.addOtrFingerprint(fp.fingerprint);
-				needsRosterWrite |= performedVerification;
-			} else if (fp.type == XmppUri.FingerprintType.OMEMO) {
+			if (fp.type == XmppUri.FingerprintType.OMEMO) {
 				String fingerprint = "05" + fp.fingerprint.replaceAll("\\s", "");
 				FingerprintStatus fingerprintStatus = axolotlService.getFingerprintTrust(fingerprint);
 				if (fingerprintStatus != null) {
@@ -3978,9 +3846,6 @@ public class XmppConnectionService extends Service {
 					axolotlService.preVerifyFingerprint(contact, fingerprint);
 				}
 			}
-		}
-		if (needsRosterWrite) {
-			syncRosterToDisk(contact.getAccount());
 		}
 		return performedVerification;
 	}

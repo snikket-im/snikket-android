@@ -48,8 +48,6 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import net.java.otr4j.session.SessionID;
-
 import java.io.FileNotFoundException;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
@@ -782,17 +780,7 @@ public abstract class XmppActivity extends AppCompatActivity {
 	public void selectPresence(final Conversation conversation,
 	                           final OnPresenceSelected listener) {
 		final Contact contact = conversation.getContact();
-		if (conversation.hasValidOtrSession()) {
-			SessionID id = conversation.getOtrSession().getSessionID();
-			Jid jid;
-			try {
-				jid = Jid.fromString(id.getAccountID() + "/" + id.getUserID());
-			} catch (InvalidJidException e) {
-				jid = null;
-			}
-			conversation.setNextCounterpart(jid);
-			listener.onPresenceSelected();
-		} else if (!contact.showInRoster()) {
+		if (!contact.showInRoster()) {
 			showAddToRosterDialog(conversation);
 		} else {
 			final Presences presences = contact.getPresences();

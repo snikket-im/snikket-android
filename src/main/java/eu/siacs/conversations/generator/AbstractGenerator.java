@@ -118,9 +118,6 @@ public abstract class AbstractGenerator {
 		if (!mXmppConnectionService.useTorToConnect()) {
 			features.addAll(Arrays.asList(PRIVACY_SENSITIVE));
 		}
-		if (Config.supportOtr()) {
-			features.addAll(Arrays.asList(OTR));
-		}
 		if (mXmppConnectionService.broadcastLastActivity()) {
 			features.add(Namespace.IDLE);
 		}

@@ -96,17 +96,13 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
 	private TextView mServerInfoHttpUpload;
 	private TextView mServerInfoPush;
 	private TextView mSessionEst;
-	private TextView mOtrFingerprint;
 	private TextView mAxolotlFingerprint;
 	private TextView mPgpFingerprint;
 	private TextView mOwnFingerprintDesc;
-	private TextView mOtrFingerprintDesc;
 	private TextView getmPgpFingerprintDesc;
 	private ImageView mAvatar;
-	private RelativeLayout mOtrFingerprintBox;
 	private RelativeLayout mAxolotlFingerprintBox;
 	private RelativeLayout mPgpFingerprintBox;
-	private ImageButton mOtrFingerprintToClipboardButton;
 	private ImageButton mAxolotlFingerprintToClipboardButton;
 	private ImageButton mPgpDeleteFingerprintButton;
 	private LinearLayout keys;
@@ -567,10 +563,6 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
 		this.mPgpFingerprint = (TextView) findViewById(R.id.pgp_fingerprint);
 		this.getmPgpFingerprintDesc = (TextView) findViewById(R.id.pgp_fingerprint_desc);
 		this.mPgpDeleteFingerprintButton = (ImageButton) findViewById(R.id.action_delete_pgp);
-		this.mOtrFingerprint = (TextView) findViewById(R.id.otr_fingerprint);
-		this.mOtrFingerprintDesc = (TextView) findViewById(R.id.otr_fingerprint_desc);
-		this.mOtrFingerprintBox = (RelativeLayout) findViewById(R.id.otr_fingerprint_box);
-		this.mOtrFingerprintToClipboardButton = (ImageButton) findViewById(R.id.action_copy_to_clipboard);
 		this.mAxolotlFingerprint = (TextView) findViewById(R.id.axolotl_fingerprint);
 		this.mAxolotlFingerprintBox = (RelativeLayout) findViewById(R.id.axolotl_fingerprint_box);
 		this.mAxolotlFingerprintToClipboardButton = (ImageButton) findViewById(R.id.action_copy_axolotl_to_clipboard);
@@ -979,25 +971,6 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
 				this.mPgpDeleteFingerprintButton.setOnClickListener(delete);
 			} else {
 				this.mPgpFingerprintBox.setVisibility(View.GONE);
-			}
-			final String otrFingerprint = this.mAccount.getOtrFingerprint();
-			if (otrFingerprint != null && Config.supportOtr()) {
-				if ("otr".equals(messageFingerprint)) {
-					this.mOtrFingerprintDesc.setTextColor(ContextCompat.getColor(this, R.color.accent));
-				}
-				this.mOtrFingerprintBox.setVisibility(View.VISIBLE);
-				this.mOtrFingerprint.setText(CryptoHelper.prettifyFingerprint(otrFingerprint));
-				this.mOtrFingerprintToClipboardButton.setVisibility(View.VISIBLE);
-				this.mOtrFingerprintToClipboardButton.setOnClickListener(v -> {
-					if (copyTextToClipboard(CryptoHelper.prettifyFingerprint(otrFingerprint), R.string.otr_fingerprint)) {
-						Toast.makeText(
-								EditAccountActivity.this,
-								R.string.toast_message_otr_fingerprint,
-								Toast.LENGTH_SHORT).show();
-					}
-				});
-			} else {
-				this.mOtrFingerprintBox.setVisibility(View.GONE);
 			}
 			final String ownAxolotlFingerprint = this.mAccount.getAxolotlService().getOwnFingerprint();
 			if (ownAxolotlFingerprint != null && Config.supportOmemo()) {

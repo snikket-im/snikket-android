@@ -526,52 +526,6 @@
                         </RelativeLayout>
 
                         <RelativeLayout
-                            android:id="@+id/otr_fingerprint_box"
-                            android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
-                            android:layout_marginTop="24dp">
-
-                            <LinearLayout
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_alignParentLeft="true"
-                                android:layout_centerVertical="true"
-                                android:layout_toLeftOf="@+id/action_copy_to_clipboard"
-                                android:orientation="vertical">
-
-                                <TextView
-                                    android:id="@+id/otr_fingerprint"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:fontFamily="monospace"
-                                    android:textColor="?attr/color_text_primary"
-                                    android:textSize="?attr/TextSizeBody"
-                                    android:typeface="monospace"/>
-
-                                <TextView
-                                    android:id="@+id/otr_fingerprint_desc"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:text="@string/otr_fingerprint"
-                                    android:textColor="?attr/color_text_secondary"
-                                    android:textSize="?attr/TextSizeInfo"/>
-                            </LinearLayout>
-
-                            <ImageButton
-                                android:id="@+id/action_copy_to_clipboard"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_alignParentRight="true"
-                                android:layout_centerVertical="true"
-                                android:alpha="?attr/icon_alpha"
-                                android:background="?attr/selectableItemBackgroundBorderless"
-                                android:contentDescription="@string/copy_otr_clipboard_description"
-                                android:padding="@dimen/image_button_padding"
-                                android:src="?attr/icon_copy"
-                                android:visibility="visible"/>
-                        </RelativeLayout>
-
-                        <RelativeLayout
                             android:id="@+id/axolotl_fingerprint_box"
                             android:layout_width="wrap_content"
                             android:layout_height="match_parent"

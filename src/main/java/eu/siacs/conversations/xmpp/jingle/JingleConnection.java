@@ -404,11 +404,7 @@ public class JingleConnection implements Transferable {
 						} else {
 							message.setType(Message.TYPE_FILE);
 						}
-						if (filename[filename.length - 1].equals("otr")) {
-							message.setEncryption(Message.ENCRYPTION_OTR);
-						} else {
-							message.setEncryption(Message.ENCRYPTION_PGP);
-						}
+						message.setEncryption(Message.ENCRYPTION_PGP);
 					}
 				} else {
 					message.setType(Message.TYPE_FILE);
@@ -418,9 +414,7 @@ public class JingleConnection implements Transferable {
 					if (!fileNameElement.getContent().isEmpty()) {
 						String parts[] = fileNameElement.getContent().split("/");
 						suffix = parts[parts.length - 1];
-						if (message.getEncryption() == Message.ENCRYPTION_OTR  && suffix.endsWith(".otr")) {
-							suffix = suffix.substring(0,suffix.length() - 4);
-						} else if (message.getEncryption() == Message.ENCRYPTION_PGP && (suffix.endsWith(".pgp") || suffix.endsWith(".gpg"))) {
+						if (message.getEncryption() == Message.ENCRYPTION_PGP && (suffix.endsWith(".pgp") || suffix.endsWith(".gpg"))) {
 							suffix = suffix.substring(0,suffix.length() - 4);
 						}
 					}
@@ -457,15 +451,6 @@ public class JingleConnection implements Transferable {
 					} else {
 						Log.d(Config.LOGTAG,"could not process KeyTransportMessage");
 					}
-				} else if (message.getEncryption() == Message.ENCRYPTION_OTR) {
-					byte[] key = conversation.getSymmetricKey();
-					if (key == null) {
-						this.sendCancel();
-						this.fail();
-						return;
-					} else {
-						this.file.setKeyAndIv(key);
-					}
 				}
 				this.file.setExpectedSize(size);
 				message.resetFileParams();
@@ -488,17 +473,7 @@ public class JingleConnection implements Transferable {
 			this.file = this.mXmppConnectionService.getFileBackend().getFile(message, false);
 			Pair<InputStream,Integer> pair;
 			try {
-				if (message.getEncryption() == Message.ENCRYPTION_OTR) {
-					Conversation conversation = this.message.getConversation();
-					if (!this.mXmppConnectionService.renewSymmetricKey(conversation)) {
-						Log.d(Config.LOGTAG, account.getJid().toBareJid() + ": could not set symmetric key");
-						cancel();
-					}
-					this.file.setKeyAndIv(conversation.getSymmetricKey());
-					pair = AbstractConnectionManager.createInputStream(this.file, false);
-					this.file.setExpectedSize(pair.second);
-					content.setFileOffer(this.file, true, this.ftVersion);
-				} else if (message.getEncryption() == Message.ENCRYPTION_AXOLOTL) {
+				if (message.getEncryption() == Message.ENCRYPTION_AXOLOTL) {
 					this.file.setKey(mXmppAxolotlMessage.getInnerKey());
 					this.file.setIv(mXmppAxolotlMessage.getIV());
 					pair = AbstractConnectionManager.createInputStream(this.file, true);

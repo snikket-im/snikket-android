@@ -42,8 +42,6 @@ import android.widget.TextView;
 import android.widget.TextView.OnEditorActionListener;
 import android.widget.Toast;
 
-import net.java.otr4j.session.SessionStatus;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -221,13 +219,7 @@ public class ConversationFragment extends Fragment implements EditMessage.Keyboa
 			}
 		}
 	};
-	protected OnClickListener clickToVerify = new OnClickListener() {
 
-		@Override
-		public void onClick(View v) {
-			activity.verifyOtrSessionDialog(conversation, v);
-		}
-	};
 	private EditMessage.OnCommitContentListener mEditorContentListener = new EditMessage.OnCommitContentListener() {
 		@Override
 		public boolean onCommitContent(InputContentInfoCompat inputContentInfo, int flags, Bundle opts, String[] contentMimeTypes) {
@@ -316,17 +308,7 @@ public class ConversationFragment extends Fragment implements EditMessage.Keyboa
 			}
 		}
 	};
-	private OnClickListener mAnswerSmpClickListener = new OnClickListener() {
-		@Override
-		public void onClick(View view) {
-			Intent intent = new Intent(activity, VerifyOTRActivity.class);
-			intent.setAction(VerifyOTRActivity.ACTION_VERIFY_CONTACT);
-			intent.putExtra("contact", conversation.getContact().getJid().toBareJid().toString());
-			intent.putExtra(VerifyOTRActivity.EXTRA_ACCOUNT, conversation.getAccount().getJid().toBareJid().toString());
-			intent.putExtra("mode", VerifyOTRActivity.MODE_ANSWER_QUESTION);
-			startActivity(intent);
-		}
-	};
+
 	protected OnClickListener clickToDecryptListener = new OnClickListener() {
 
 		@Override
@@ -483,9 +465,6 @@ public class ConversationFragment extends Fragment implements EditMessage.Keyboa
 			message.setUuid(UUID.randomUUID().toString());
 		}
 		switch (message.getConversation().getNextEncryption()) {
-			case Message.ENCRYPTION_OTR:
-				sendOtrMessage(message);
-				break;
 			case Message.ENCRYPTION_PGP:
 				sendPgpMessage(message);
 				break;
@@ -600,8 +579,6 @@ public class ConversationFragment extends Fragment implements EditMessage.Keyboa
 				if (message.getEncryption() == Message.ENCRYPTION_PGP
 						|| message.getEncryption() == Message.ENCRYPTION_DECRYPTED) {
 					fingerprint = "pgp";
-				} else if (message.getEncryption() == Message.ENCRYPTION_OTR) {
-					fingerprint = "otr";
 				} else {
 					fingerprint = message.getFingerprint();
 				}
@@ -1114,14 +1091,6 @@ public class ConversationFragment extends Fragment implements EditMessage.Keyboa
 			}
 		} else if (account.hasPendingPgpIntent(conversation)) {
 			showSnackbar(R.string.openpgp_messages_found, R.string.decrypt, clickToDecryptListener);
-		} else if (mode == Conversation.MODE_SINGLE
-				&& conversation.smpRequested()) {
-			showSnackbar(R.string.smp_requested, R.string.verify, this.mAnswerSmpClickListener);
-		} else if (mode == Conversation.MODE_SINGLE
-				&& conversation.hasValidOtrSession()
-				&& (conversation.getOtrSession().getSessionStatus() == SessionStatus.ENCRYPTED)
-				&& (!conversation.isOtrFingerprintVerified())) {
-			showSnackbar(R.string.unknown_otr_fingerprint, R.string.verify, clickToVerify);
 		} else if (connection != null
 				&& connection.getFeatures().blocking()
 				&& conversation.countMessages() != 0
@@ -1610,21 +1579,6 @@ public class ConversationFragment extends Fragment implements EditMessage.Keyboa
 		final XmppConnectionService xmppService = activity.xmppConnectionService;
 		xmppService.sendMessage(message);
 		messageSent();
-	}
-
-	protected void sendOtrMessage(final Message message) {
-		final ConversationActivity activity = (ConversationActivity) getActivity();
-		final XmppConnectionService xmppService = activity.xmppConnectionService;
-		activity.selectPresence(message.getConversation(),
-				new OnPresenceSelected() {
-
-					@Override
-					public void onPresenceSelected() {
-						message.setCounterpart(conversation.getNextCounterpart());
-						xmppService.sendMessage(message);
-						messageSent();
-					}
-				});
 	}
 
 	public void appendText(String text) {

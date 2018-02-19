@@ -32,11 +32,7 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
-import android.widget.PopupMenu;
-import android.widget.PopupMenu.OnMenuItemClickListener;
 import android.widget.Toast;
-
-import net.java.otr4j.session.SessionStatus;
 
 import org.openintents.openpgp.util.OpenPgpApi;
 
@@ -454,26 +450,18 @@ public class ConversationActivity extends XmppActivity
 	}
 
 	private static void configureEncryptionMenu(Conversation conversation, Menu menu) {
-		MenuItem otr = menu.findItem(R.id.encryption_choice_otr);
 		MenuItem none = menu.findItem(R.id.encryption_choice_none);
 		MenuItem pgp = menu.findItem(R.id.encryption_choice_pgp);
 		MenuItem axolotl = menu.findItem(R.id.encryption_choice_axolotl);
 		pgp.setVisible(Config.supportOpenPgp());
 		none.setVisible(Config.supportUnencrypted() || conversation.getMode() == Conversation.MODE_MULTI);
-		otr.setVisible(Config.supportOtr());
 		axolotl.setVisible(Config.supportOmemo());
-		if (conversation.getMode() == Conversation.MODE_MULTI) {
-			otr.setVisible(false);
-		}
 		if (!conversation.getAccount().getAxolotlService().isConversationAxolotlCapable(conversation)) {
 			axolotl.setEnabled(false);
 		}
 		switch (conversation.getNextEncryption()) {
 			case Message.ENCRYPTION_NONE:
 				none.setChecked(true);
-				break;
-			case Message.ENCRYPTION_OTR:
-				otr.setChecked(true);
 				break;
 			case Message.ENCRYPTION_PGP:
 				pgp.setChecked(true);
@@ -542,7 +530,7 @@ public class ConversationActivity extends XmppActivity
 				startActivity(getInstallApkIntent(fallbackPackageId));
 			}
 		};
-		if ((account.httpUploadAvailable() || attachmentChoice == ATTACHMENT_CHOICE_LOCATION) && encryption != Message.ENCRYPTION_OTR) {
+		if (account.httpUploadAvailable() || attachmentChoice == ATTACHMENT_CHOICE_LOCATION) {
 			conversation.setNextCounterpart(null);
 			callback.onPresenceSelected();
 		} else {
@@ -699,7 +687,6 @@ public class ConversationActivity extends XmppActivity
 		} else if (getSelectedConversation() != null) {
 			switch (item.getItemId()) {
 				case R.id.encryption_choice_axolotl:
-				case R.id.encryption_choice_otr:
 				case R.id.encryption_choice_pgp:
 				case R.id.encryption_choice_none:
 					handleEncryptionSelection(item);
@@ -808,41 +795,6 @@ public class ConversationActivity extends XmppActivity
 		builder.create().show();
 	}
 
-	public void verifyOtrSessionDialog(final Conversation conversation, View view) {
-		if (!conversation.hasValidOtrSession() || conversation.getOtrSession().getSessionStatus() != SessionStatus.ENCRYPTED) {
-			Toast.makeText(this, R.string.otr_session_not_started, Toast.LENGTH_LONG).show();
-			return;
-		}
-		if (view == null) {
-			return;
-		}
-		PopupMenu popup = new PopupMenu(this, view);
-		popup.inflate(R.menu.verification_choices);
-		popup.setOnMenuItemClickListener(new OnMenuItemClickListener() {
-			@Override
-			public boolean onMenuItemClick(MenuItem menuItem) {
-				Intent intent = new Intent(ConversationActivity.this, VerifyOTRActivity.class);
-				intent.setAction(VerifyOTRActivity.ACTION_VERIFY_CONTACT);
-				intent.putExtra("contact", conversation.getContact().getJid().toBareJid().toString());
-				intent.putExtra(EXTRA_ACCOUNT, conversation.getAccount().getJid().toBareJid().toString());
-				switch (menuItem.getItemId()) {
-					case R.id.scan_fingerprint:
-						intent.putExtra("mode", VerifyOTRActivity.MODE_SCAN_FINGERPRINT);
-						break;
-					case R.id.ask_question:
-						intent.putExtra("mode", VerifyOTRActivity.MODE_ASK_QUESTION);
-						break;
-					case R.id.manual_verification:
-						intent.putExtra("mode", VerifyOTRActivity.MODE_MANUAL_VERIFICATION);
-						break;
-				}
-				startActivity(intent);
-				return true;
-			}
-		});
-		popup.show();
-	}
-
 	private void handleEncryptionSelection(MenuItem item) {
 		Conversation conversation = getSelectedConversation();
 		if (conversation == null) {
@@ -852,10 +804,6 @@ public class ConversationActivity extends XmppActivity
 		switch (item.getItemId()) {
 			case R.id.encryption_choice_none:
 				conversation.setNextEncryption(Message.ENCRYPTION_NONE);
-				item.setChecked(true);
-				break;
-			case R.id.encryption_choice_otr:
-				conversation.setNextEncryption(Message.ENCRYPTION_OTR);
 				item.setChecked(true);
 				break;
 			case R.id.encryption_choice_pgp:
@@ -1388,8 +1336,7 @@ public class ConversationActivity extends XmppActivity
 					}
 				};
 				if (c == null || c.getMode() == Conversation.MODE_MULTI
-						|| FileBackend.allFilesUnderSize(this, uris, getMaxHttpUploadSize(c))
-						|| c.getNextEncryption() == Message.ENCRYPTION_OTR) {
+						|| FileBackend.allFilesUnderSize(this, uris, getMaxHttpUploadSize(c))) {
 					callback.onPresenceSelected();
 				} else {
 					selectPresence(c, callback);
