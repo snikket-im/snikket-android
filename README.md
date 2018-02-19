@@ -4,7 +4,7 @@
 
 <p align="center">
     <a href="https://conversations.im/j/conversations@conference.siacs.eu">
-        <img src="https://camo.githubusercontent.com/a839cc0a3d4dac7ec82237381b165dd144365b6d/68747470733a2f2f74696e7975726c2e636f6d2f6a6f696e7468656d7563"
+        <img src="https://inverse.chat/badge.svg?room=conversations@conference.siacs.eu"
              alt="chat on our conference room">
     </a>
     <a href="https://travis-ci.org/siacs/Conversations">
