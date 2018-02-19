@@ -538,8 +538,7 @@ public abstract class XmppActivity extends AppCompatActivity {
 	}
 
 	protected void inviteToConversation(Conversation conversation) {
-		Intent intent = new Intent(getApplicationContext(),
-				ChooseContactActivity.class);
+		Intent intent = new Intent(this, ChooseContactActivity.class);
 		List<String> contacts = new ArrayList<>();
 		if (conversation.getMode() == Conversation.MODE_MULTI) {
 			for (MucOptions.User user : conversation.getMucOptions().getUsers(false)) {

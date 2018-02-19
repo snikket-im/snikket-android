@@ -1409,26 +1409,18 @@ public class ConversationActivity extends XmppActivity
 			AlertDialog.Builder builder = new AlertDialog.Builder(this);
 			builder.setTitle(R.string.battery_optimizations_enabled);
 			builder.setMessage(R.string.battery_optimizations_enabled_dialog);
-			builder.setPositiveButton(R.string.next, new OnClickListener() {
-				@Override
-				public void onClick(DialogInterface dialog, int which) {
-					Intent intent = new Intent(Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS);
-					Uri uri = Uri.parse("package:" + getPackageName());
-					intent.setData(uri);
-					try {
-						startActivityForResult(intent, REQUEST_BATTERY_OP);
-					} catch (ActivityNotFoundException e) {
-						Toast.makeText(ConversationActivity.this, R.string.device_does_not_support_battery_op, Toast.LENGTH_SHORT).show();
-					}
+			builder.setPositiveButton(R.string.next, (dialog, which) -> {
+				Intent intent = new Intent(Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS);
+				Uri uri = Uri.parse("package:" + getPackageName());
+				intent.setData(uri);
+				try {
+					startActivityForResult(intent, REQUEST_BATTERY_OP);
+				} catch (ActivityNotFoundException e) {
+					Toast.makeText(ConversationActivity.this, R.string.device_does_not_support_battery_op, Toast.LENGTH_SHORT).show();
 				}
 			});
 			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2) {
-				builder.setOnDismissListener(new DialogInterface.OnDismissListener() {
-					@Override
-					public void onDismiss(DialogInterface dialog) {
-						setNeverAskForBatteryOptimizationsAgain();
-					}
-				});
+				builder.setOnDismissListener(dialog -> setNeverAskForBatteryOptimizationsAgain());
 			}
 			AlertDialog dialog = builder.create();
 			dialog.setCanceledOnTouchOutside(false);
