@@ -1,5 +1,6 @@
 package eu.siacs.conversations.ui;
 
+import android.databinding.DataBindingUtil;
 import android.support.v7.app.AlertDialog;
 import android.app.PendingIntent;
 import android.content.Context;
@@ -38,6 +39,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.crypto.PgpEngine;
+import eu.siacs.conversations.databinding.ContactBinding;
 import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.entities.Bookmark;
 import eu.siacs.conversations.entities.Contact;
@@ -604,54 +606,42 @@ public class ConferenceDetailsActivity extends XmppActivity implements OnConvers
 			mNotifyStatusText.setText(R.string.notify_only_when_highlighted);
 		}
 
-		LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		final LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		membersView.removeAllViews();
+		if (inflater == null) {
+			return;
+		}
 		final ArrayList<User> users = mucOptions.getUsers();
 		Collections.sort(users);
 		for (final User user : users) {
-			View view = inflater.inflate(R.layout.contact, membersView,false);
-			this.setListItemBackgroundOnView(view);
-			view.setOnClickListener(new OnClickListener() {
-				@Override
-				public void onClick(View view) {
-					highlightInMuc(mConversation, user.getName());
-				}
-			});
-			registerForContextMenu(view);
-			view.setTag(user);
-			TextView tvDisplayName = (TextView) view.findViewById(R.id.contact_display_name);
-			TextView tvKey = (TextView) view.findViewById(R.id.key);
-			TextView tvStatus = (TextView) view.findViewById(R.id.contact_jid);
+			ContactBinding binding = DataBindingUtil.inflate(inflater,R.layout.contact,membersView,false);
+			this.setListItemBackgroundOnView(binding.getRoot());
+			binding.getRoot().setOnClickListener(view1 -> highlightInMuc(mConversation, user.getName()));
+			registerForContextMenu(binding.getRoot());
+			binding.getRoot().setTag(user);
 			if (mAdvancedMode && user.getPgpKeyId() != 0) {
-				tvKey.setVisibility(View.VISIBLE);
-				tvKey.setOnClickListener(new OnClickListener() {
-
-					@Override
-					public void onClick(View v) {
-						viewPgpKey(user);
-					}
-				});
-				tvKey.setText(OpenPgpUtils.convertKeyIdToHex(user.getPgpKeyId()));
+				binding.key.setVisibility(View.VISIBLE);
+				binding.key.setOnClickListener(v -> viewPgpKey(user));
+				binding.key.setText(OpenPgpUtils.convertKeyIdToHex(user.getPgpKeyId()));
 			}
 			Contact contact = user.getContact();
 			String name = user.getName();
 			if (contact != null) {
-				tvDisplayName.setText(contact.getDisplayName());
-				tvStatus.setText((name != null ? name+ " \u2022 " : "") + getStatus(user));
+				binding.contactDisplayName.setText(contact.getDisplayName());
+				binding.contactJid.setText((name != null ? name+ " \u2022 " : "") + getStatus(user));
 			} else {
-				tvDisplayName.setText(name == null ? "" : name);
-				tvStatus.setText(getStatus(user));
+				binding.contactDisplayName.setText(name == null ? "" : name);
+				binding.contactJid.setText(getStatus(user));
 
 			}
-			ImageView iv = (ImageView) view.findViewById(R.id.contact_photo);
-			loadAvatar(user,iv);
+			loadAvatar(user,binding.contactPhoto);
 			if (user.getRole() == MucOptions.Role.NONE) {
-				tvDisplayName.setAlpha(INACTIVE_ALPHA);
-				tvKey.setAlpha(INACTIVE_ALPHA);
-				tvStatus.setAlpha(INACTIVE_ALPHA);
-				iv.setAlpha(INACTIVE_ALPHA);
+				binding.contactJid.setAlpha(INACTIVE_ALPHA);
+				binding.key.setAlpha(INACTIVE_ALPHA);
+				binding.contactDisplayName.setAlpha(INACTIVE_ALPHA);
+				binding.contactPhoto.setAlpha(INACTIVE_ALPHA);
 			}
-			membersView.addView(view);
+			membersView.addView(binding.getRoot());
 			if (mConversation.getMucOptions().canInvite()) {
 				mInviteButton.setVisibility(View.VISIBLE);
 			} else {
