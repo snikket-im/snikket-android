@@ -468,10 +468,11 @@ public class ContactDetailsActivity extends OmemoActivity implements OnAccountUp
 				});
 			}
 		}
-		if (Config.supportOmemo()) {
+		final AxolotlService axolotlService = contact.getAccount().getAxolotlService();
+		if (Config.supportOmemo() && axolotlService != null) {
 			boolean skippedInactive = false;
 			boolean showsInactive = false;
-			for (final XmppAxolotlSession session : contact.getAccount().getAxolotlService().findSessionsForContact(contact)) {
+			for (final XmppAxolotlSession session : axolotlService.findSessionsForContact(contact)) {
 				final FingerprintStatus trust = session.getTrust();
 				hasKeys |= !trust.isCompromised();
 				if (!trust.isActive()) {
