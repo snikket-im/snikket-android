@@ -5,6 +5,11 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.IntentSender.SendIntentException;
+import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.widget.CardView;
 import android.view.ContextMenu;
@@ -24,8 +29,10 @@ import android.widget.Toast;
 
 import org.openintents.openpgp.util.OpenPgpUtils;
 
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.concurrent.RejectedExecutionException;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import eu.siacs.conversations.Config;
@@ -40,6 +47,7 @@ import eu.siacs.conversations.entities.MucOptions.User;
 import eu.siacs.conversations.services.XmppConnectionService;
 import eu.siacs.conversations.services.XmppConnectionService.OnConversationUpdate;
 import eu.siacs.conversations.services.XmppConnectionService.OnMucRosterUpdate;
+import eu.siacs.conversations.utils.UIHelper;
 import eu.siacs.conversations.xmpp.jid.Jid;
 
 public class ConferenceDetailsActivity extends XmppActivity implements OnConversationUpdate, OnMucRosterUpdate, XmppConnectionService.OnAffiliationChanged, XmppConnectionService.OnRoleChanged, XmppConnectionService.OnConfigurationPushed {
@@ -636,7 +644,7 @@ public class ConferenceDetailsActivity extends XmppActivity implements OnConvers
 
 			}
 			ImageView iv = (ImageView) view.findViewById(R.id.contact_photo);
-			iv.setImageBitmap(avatarService().get(user, getPixel(48), false));
+			loadAvatar(user,iv);
 			if (user.getRole() == MucOptions.Role.NONE) {
 				tvDisplayName.setAlpha(INACTIVE_ALPHA);
 				tvKey.setAlpha(INACTIVE_ALPHA);
@@ -706,11 +714,97 @@ public class ConferenceDetailsActivity extends XmppActivity implements OnConvers
 	}
 
 	private void displayToast(final String msg) {
-		runOnUiThread(new Runnable() {
-			@Override
-			public void run() {
-				Toast.makeText(ConferenceDetailsActivity.this,msg,Toast.LENGTH_SHORT).show();
-			}
-		});
+		runOnUiThread(() -> Toast.makeText(ConferenceDetailsActivity.this,msg,Toast.LENGTH_SHORT).show());
 	}
+
+
+	class BitmapWorkerTask extends AsyncTask<User, Void, Bitmap> {
+		private final WeakReference<ImageView> imageViewReference;
+		private User o = null;
+
+		private BitmapWorkerTask(ImageView imageView) {
+			imageViewReference = new WeakReference<>(imageView);
+		}
+
+		@Override
+		protected Bitmap doInBackground(User... params) {
+			this.o = params[0];
+			if (imageViewReference.get() == null) {
+				return null;
+			}
+			return avatarService().get(this.o, getPixel(48), isCancelled());
+		}
+
+		@Override
+		protected void onPostExecute(Bitmap bitmap) {
+			if (bitmap != null && !isCancelled()) {
+				final ImageView imageView = imageViewReference.get();
+				if (imageView != null) {
+					imageView.setImageBitmap(bitmap);
+					imageView.setBackgroundColor(0x00000000);
+				}
+			}
+		}
+	}
+
+	public void loadAvatar(User user, ImageView imageView) {
+		if (cancelPotentialWork(user, imageView)) {
+			final Bitmap bm = avatarService().get(user,getPixel(48),true);
+			if (bm != null) {
+				cancelPotentialWork(user, imageView);
+				imageView.setImageBitmap(bm);
+				imageView.setBackgroundColor(0x00000000);
+			} else {
+				String seed = user.getRealJid() != null ? user.getRealJid().toBareJid().toString() : null;
+				imageView.setBackgroundColor(UIHelper.getColorForName(seed == null ? user.getName() : seed));
+				imageView.setImageDrawable(null);
+				final BitmapWorkerTask task = new BitmapWorkerTask(imageView);
+				final AsyncDrawable asyncDrawable = new AsyncDrawable(getResources(), null, task);
+				imageView.setImageDrawable(asyncDrawable);
+				try {
+					task.execute(user);
+				} catch (final RejectedExecutionException ignored) {
+				}
+			}
+		}
+	}
+
+	public static boolean cancelPotentialWork(User user, ImageView imageView) {
+		final BitmapWorkerTask bitmapWorkerTask = getBitmapWorkerTask(imageView);
+
+		if (bitmapWorkerTask != null) {
+			final User old = bitmapWorkerTask.o;
+			if (old == null || user != old) {
+				bitmapWorkerTask.cancel(true);
+			} else {
+				return false;
+			}
+		}
+		return true;
+	}
+
+	private static BitmapWorkerTask getBitmapWorkerTask(ImageView imageView) {
+		if (imageView != null) {
+			final Drawable drawable = imageView.getDrawable();
+			if (drawable instanceof AsyncDrawable) {
+				final AsyncDrawable asyncDrawable = (AsyncDrawable) drawable;
+				return asyncDrawable.getBitmapWorkerTask();
+			}
+		}
+		return null;
+	}
+
+	static class AsyncDrawable extends BitmapDrawable {
+		private final WeakReference<BitmapWorkerTask> bitmapWorkerTaskReference;
+
+		public AsyncDrawable(Resources res, Bitmap bitmap, BitmapWorkerTask bitmapWorkerTask) {
+			super(res, bitmap);
+			bitmapWorkerTaskReference = new WeakReference<>(bitmapWorkerTask);
+		}
+
+		public BitmapWorkerTask getBitmapWorkerTask() {
+			return bitmapWorkerTaskReference.get();
+		}
+	}
+
 }

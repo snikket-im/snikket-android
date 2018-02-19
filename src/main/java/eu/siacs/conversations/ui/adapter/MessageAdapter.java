@@ -1052,7 +1052,8 @@ public class MessageAdapter extends ArrayAdapter<Message> implements CopyTextVie
 
 		@Override
 		protected Bitmap doInBackground(Message... params) {
-			return activity.avatarService().get(params[0], size, isCancelled());
+			this.message = params[0];
+			return activity.avatarService().get(this.message, size, isCancelled());
 		}
 
 		@Override
