@@ -797,12 +797,13 @@ public class NotificationService {
 				mXmppConnectionService.getString(R.string.try_again),
 				createTryAgainIntent());
 		mBuilder.setDeleteIntent(createDismissErrorIntent());
-		mBuilder.setVisibility(NotificationCompat.VISIBILITY_PUBLIC);
+		mBuilder.setVisibility(NotificationCompat.VISIBILITY_PRIVATE);
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
 			mBuilder.setSmallIcon(R.drawable.ic_warning_white_24dp);
 		} else {
 			mBuilder.setSmallIcon(R.drawable.ic_stat_alert_warning);
 		}
+		mBuilder.setLocalOnly(true);
 		mBuilder.setPriority(NotificationCompat.PRIORITY_LOW);
 		mBuilder.setContentIntent(PendingIntent.getActivity(mXmppConnectionService,
 				145,
