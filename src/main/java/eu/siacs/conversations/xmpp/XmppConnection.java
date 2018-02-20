@@ -1203,6 +1203,10 @@ public class XmppConnection implements Runnable {
 		if (hash != null && ver != null) {
 			discoveryResult = mXmppConnectionService.getCachedServiceDiscoveryResult(new Pair<>(hash, ver));
 		}
+		final boolean requestDiscoItemsFirst = !account.isOptionSet(Account.OPTION_LOGGED_IN_SUCCESSFULLY);
+		if (requestDiscoItemsFirst) {
+			sendServiceDiscoveryItems(account.getServer());
+		}
 		if (discoveryResult == null) {
 			sendServiceDiscoveryInfo(account.getServer());
 		} else {
@@ -1210,7 +1214,9 @@ public class XmppConnection implements Runnable {
 			disco.put(account.getServer(), discoveryResult);
 		}
 		sendServiceDiscoveryInfo(account.getJid().toBareJid());
-		sendServiceDiscoveryItems(account.getServer());
+		if (!requestDiscoItemsFirst) {
+			sendServiceDiscoveryItems(account.getServer());
+		}
 
 		if (!mWaitForDisco.get()) {
 			finalizeBind();
