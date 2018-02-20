@@ -29,6 +29,7 @@ import eu.siacs.conversations.persistance.FileBackend;
 import eu.siacs.conversations.services.XmppConnectionService;
 import eu.siacs.conversations.ui.adapter.ConversationAdapter;
 import eu.siacs.conversations.ui.service.EmojiService;
+import eu.siacs.conversations.ui.util.PresenceSelector;
 import eu.siacs.conversations.xmpp.XmppConnection;
 import eu.siacs.conversations.xmpp.jid.InvalidJidException;
 import eu.siacs.conversations.xmpp.jid.Jid;
@@ -312,7 +313,7 @@ public class ShareWithActivity extends XmppActivity implements XmppConnectionSer
 			return;
 		}
 		if (share.uris.size() != 0) {
-			OnPresenceSelected callback = () -> {
+			PresenceSelector.OnPresenceSelected callback = () -> {
 				attachmentCounter.set(share.uris.size());
 				if (share.image) {
 					share.multiple = share.uris.size() > 1;
@@ -339,7 +340,7 @@ public class ShareWithActivity extends XmppActivity implements XmppConnectionSer
 			}
 		} else {
 			if (mReturnToPrevious && this.share.text != null && !this.share.text.isEmpty() ) {
-				final OnPresenceSelected callback = new OnPresenceSelected() {
+				final PresenceSelector.OnPresenceSelected callback = new PresenceSelector.OnPresenceSelected() {
 
 					private void finishAndSend(Message message) {
 						xmppConnectionService.sendMessage(message);

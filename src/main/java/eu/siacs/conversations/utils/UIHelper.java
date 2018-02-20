@@ -532,21 +532,4 @@ public class UIHelper {
 				return new ListItem.Tag(context.getString(R.string.presence_online), 0xff259b24);
 		}
 	}
-
-	public static String tranlasteType(Context context, String type) {
-		switch (type.toLowerCase()) {
-			case "pc":
-				return context.getString(R.string.type_pc);
-			case "phone":
-				return context.getString(R.string.type_phone);
-			case "tablet":
-				return context.getString(R.string.type_tablet);
-			case "web":
-				return context.getString(R.string.type_web);
-			case "console":
-				return context.getString(R.string.type_console);
-			default:
-				return type;
-		}
-	}
 }

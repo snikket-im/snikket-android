@@ -388,7 +388,7 @@ public class TrustKeysActivity extends OmemoActivity implements OnKeyStatusUpdat
 
 	private void finishOk() {
 		Intent data = new Intent();
-		data.putExtra("choice", getIntent().getIntExtra("choice", ConversationActivity.ATTACHMENT_CHOICE_INVALID));
+		data.putExtra("choice", getIntent().getIntExtra("choice", ConversationFragment.ATTACHMENT_CHOICE_INVALID));
 		setResult(RESULT_OK, data);
 		finish();
 	}

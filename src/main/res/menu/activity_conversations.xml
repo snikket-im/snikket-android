@@ -1,0 +1,22 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/action_add"
+        android:icon="?attr/icon_new"
+        android:orderInCategory="10"
+        app:showAsAction="always"
+        android:title="@string/action_add"/>
+
+    <item
+        android:id="@+id/action_accounts"
+        android:orderInCategory="90"
+        app:showAsAction="never"
+        android:title="@string/action_accounts"/>
+    <item
+        android:id="@+id/action_settings"
+        android:orderInCategory="100"
+        app:showAsAction="never"
+        android:title="@string/action_settings"/>
+
+</menu>

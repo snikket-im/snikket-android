@@ -29,11 +29,11 @@
 
 package eu.siacs.conversations.ui.util;
 
-import static eu.siacs.conversations.ui.ConversationActivity.ATTACHMENT_CHOICE_CHOOSE_IMAGE;
-import static eu.siacs.conversations.ui.ConversationActivity.ATTACHMENT_CHOICE_LOCATION;
-import static eu.siacs.conversations.ui.ConversationActivity.ATTACHMENT_CHOICE_RECORD_VIDEO;
-import static eu.siacs.conversations.ui.ConversationActivity.ATTACHMENT_CHOICE_RECORD_VOICE;
-import static eu.siacs.conversations.ui.ConversationActivity.ATTACHMENT_CHOICE_TAKE_PHOTO;
+import static eu.siacs.conversations.ui.ConversationFragment.ATTACHMENT_CHOICE_CHOOSE_IMAGE;
+import static eu.siacs.conversations.ui.ConversationFragment.ATTACHMENT_CHOICE_LOCATION;
+import static eu.siacs.conversations.ui.ConversationFragment.ATTACHMENT_CHOICE_RECORD_VIDEO;
+import static eu.siacs.conversations.ui.ConversationFragment.ATTACHMENT_CHOICE_RECORD_VOICE;
+import static eu.siacs.conversations.ui.ConversationFragment.ATTACHMENT_CHOICE_TAKE_PHOTO;
 
 public enum SendButtonAction {
 	TEXT, TAKE_PHOTO, SEND_LOCATION, RECORD_VOICE, CANCEL, CHOOSE_PICTURE, RECORD_VIDEO;
