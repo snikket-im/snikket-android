@@ -71,8 +71,7 @@ import eu.siacs.conversations.services.XmppConnectionService;
 import eu.siacs.conversations.ui.XmppActivity.OnPresenceSelected;
 import eu.siacs.conversations.ui.XmppActivity.OnValueEdited;
 import eu.siacs.conversations.ui.adapter.MessageAdapter;
-import eu.siacs.conversations.ui.adapter.MessageAdapter.OnContactPictureClicked;
-import eu.siacs.conversations.ui.adapter.MessageAdapter.OnContactPictureLongClicked;
+import eu.siacs.conversations.ui.util.SendButtonAction;
 import eu.siacs.conversations.ui.widget.EditMessage;
 import eu.siacs.conversations.utils.MessageUtils;
 import eu.siacs.conversations.utils.NickValidityChecker;
@@ -81,6 +80,12 @@ import eu.siacs.conversations.utils.UIHelper;
 import eu.siacs.conversations.xmpp.XmppConnection;
 import eu.siacs.conversations.xmpp.chatstate.ChatState;
 import eu.siacs.conversations.xmpp.jid.Jid;
+
+import static eu.siacs.conversations.ui.ConversationActivity.ATTACHMENT_CHOICE_CHOOSE_IMAGE;
+import static eu.siacs.conversations.ui.ConversationActivity.ATTACHMENT_CHOICE_LOCATION;
+import static eu.siacs.conversations.ui.ConversationActivity.ATTACHMENT_CHOICE_RECORD_VIDEO;
+import static eu.siacs.conversations.ui.ConversationActivity.ATTACHMENT_CHOICE_RECORD_VOICE;
+import static eu.siacs.conversations.ui.ConversationActivity.ATTACHMENT_CHOICE_TAKE_PHOTO;
 
 public class ConversationFragment extends Fragment implements EditMessage.KeyboardListener {
 
@@ -357,19 +362,11 @@ public class ConversationFragment extends Fragment implements EditMessage.Keyboa
 				SendButtonAction action = (SendButtonAction) tag;
 				switch (action) {
 					case TAKE_PHOTO:
-						activity.attachFile(ConversationActivity.ATTACHMENT_CHOICE_TAKE_PHOTO);
-						break;
 					case RECORD_VIDEO:
-						activity.attachFile(ConversationActivity.ATTACHMENT_CHOICE_RECORD_VIDEO);
-						break;
 					case SEND_LOCATION:
-						activity.attachFile(ConversationActivity.ATTACHMENT_CHOICE_LOCATION);
-						break;
 					case RECORD_VOICE:
-						activity.attachFile(ConversationActivity.ATTACHMENT_CHOICE_RECORD_VOICE);
-						break;
 					case CHOOSE_PICTURE:
-						activity.attachFile(ConversationActivity.ATTACHMENT_CHOICE_CHOOSE_IMAGE);
+						activity.attachFile(action.toChoice());
 						break;
 					case CANCEL:
 						if (conversation != null) {
@@ -1674,8 +1671,7 @@ public class ConversationFragment extends Fragment implements EditMessage.Keyboa
 	}
 
 	@Override
-	public void onActivityResult(int requestCode, int resultCode,
-	                             final Intent data) {
+	public void onActivityResult(int requestCode, int resultCode, final Intent data) {
 		if (resultCode == Activity.RESULT_OK) {
 			if (requestCode == ConversationActivity.REQUEST_DECRYPT_PGP) {
 				activity.getSelectedConversation().getAccount().getPgpDecryptionService().continueDecryption(data);
@@ -1691,18 +1687,6 @@ public class ConversationFragment extends Fragment implements EditMessage.Keyboa
 			if (requestCode == ConversationActivity.REQUEST_DECRYPT_PGP) {
 				// discard the message to prevent decryption being blocked
 				conversation.getAccount().getPgpDecryptionService().giveUpCurrentDecryption();
-			}
-		}
-	}
-
-	enum SendButtonAction {
-		TEXT, TAKE_PHOTO, SEND_LOCATION, RECORD_VOICE, CANCEL, CHOOSE_PICTURE, RECORD_VIDEO;
-
-		public static SendButtonAction valueOfOrDefault(String setting, SendButtonAction text) {
-			try {
-				return valueOf(setting);
-			} catch (IllegalArgumentException e) {
-				return TEXT;
 			}
 		}
 	}
