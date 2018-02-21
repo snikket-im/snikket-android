@@ -666,7 +666,7 @@ public class ConversationActivity extends XmppActivity
 			reInitLatestConversation();
 		} else {
 			this.mConversationFragment.messageListAdapter.updatePreferences();
-			this.mConversationFragment.messagesView.invalidateViews();
+			//this.mConversationFragment.messagesView.invalidateViews();
 			this.mConversationFragment.setupIme();
 		}
 
