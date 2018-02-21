@@ -89,7 +89,7 @@
             android:title="@string/title_pref_quiet_hours">
             <intent
                 android:action="android.intent.action.VIEW"
-                android:targetPackage="eu.siacs.conversations"
+                android:targetPackage="@string/applicationId"
                 android:targetClass="eu.siacs.conversations.ui.SettingsActivity" >
                 <extra android:name="page" android:value="quiet_hours" />
             </intent>
@@ -193,7 +193,7 @@
             android:title="@string/pref_expert_options">
             <intent
                 android:action="android.intent.action.VIEW"
-                android:targetPackage="eu.siacs.conversations"
+                android:targetPackage="@string/applicationId"
                 android:targetClass="eu.siacs.conversations.ui.SettingsActivity" >
                 <extra android:name="page" android:value="expert" />
             </intent>
