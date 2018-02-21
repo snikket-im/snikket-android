@@ -7,6 +7,7 @@ import android.content.pm.PackageManager;
 import android.databinding.DataBindingUtil;
 import android.net.Uri;
 import android.os.Build;
+import android.os.Parcelable;
 import android.preference.Preference;
 import android.preference.PreferenceManager;
 import android.provider.MediaStore;
@@ -62,6 +63,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -92,6 +94,7 @@ import eu.siacs.conversations.ui.adapter.MessageAdapter;
 import eu.siacs.conversations.ui.util.ActivityResult;
 import eu.siacs.conversations.ui.util.AttachmentTool;
 import eu.siacs.conversations.ui.util.ConversationMenuConfigurator;
+import eu.siacs.conversations.ui.util.PendingItem;
 import eu.siacs.conversations.ui.util.PresenceSelector;
 import eu.siacs.conversations.ui.util.SendButtonAction;
 import eu.siacs.conversations.ui.util.SendButtonTool;
@@ -129,19 +132,18 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
 	public static final int ATTACHMENT_CHOICE_RECORD_VIDEO = 0x0307;
 
 	public static final String RECENTLY_USED_QUICK_ACTION = "recently_used_quick_action";
+	public static final String STATE_CONVERSATION_UUID = ConversationFragment.class.getName() + ".uuid";
+	public static final String STATE_SCROLL_POSITION = ConversationFragment.class.getName() + ".scroll_position";
 
 
 	final protected List<Message> messageList = new ArrayList<>();
-	protected Conversation conversation;
-
-	private FragmentConversationBinding binding;
-
-	protected MessageAdapter messageListAdapter;
-	private Toast messageLoaderToast;
-
-	private ActivityResult postponedActivityResult = null;
+	private final PendingItem<ActivityResult> postponedActivityResult = new PendingItem<>();
+	private final PendingItem<String> pendingConversationsUuid = new PendingItem<>();
 	public Uri mPendingEditorContent = null;
-
+	protected MessageAdapter messageListAdapter;
+	private Conversation conversation;
+	private FragmentConversationBinding binding;
+	private Toast messageLoaderToast;
 	private ConversationsMainActivity activity;
 
 	private OnClickListener clickToMuc = new OnClickListener() {
@@ -268,7 +270,7 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
 					inputContentInfo.requestPermission();
 				} catch (Exception e) {
 					Log.e(Config.LOGTAG, "InputContentInfoCompat#requestPermission() failed.", e);
-					Toast.makeText(getActivity(),activity.getString(R.string.no_permission_to_access_x, inputContentInfo.getDescription()), Toast.LENGTH_LONG
+					Toast.makeText(getActivity(), activity.getString(R.string.no_permission_to_access_x, inputContentInfo.getDescription()), Toast.LENGTH_LONG
 					).show();
 					return false;
 				}
@@ -658,10 +660,10 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
 				selectPresenceToAttachFile(choice);
 				break;
 			case REQUEST_CHOOSE_PGP_ID:
-				long id = data.getLongExtra(OpenPgpApi.EXTRA_SIGN_KEY_ID,0);
+				long id = data.getLongExtra(OpenPgpApi.EXTRA_SIGN_KEY_ID, 0);
 				if (id != 0) {
 					conversation.getAccount().setPgpSignId(id);
-					activity.announcePgp(conversation.getAccount(),null,null,activity.onOpenPGPKeyPublished);
+					activity.announcePgp(conversation.getAccount(), null, null, activity.onOpenPGPKeyPublished);
 				} else {
 					activity.choosePgpSignId(conversation.getAccount());
 				}
@@ -713,11 +715,11 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, final Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
-		ActivityResult activityResult = ActivityResult.of(requestCode,resultCode,data);
+		ActivityResult activityResult = ActivityResult.of(requestCode, resultCode, data);
 		if (activity != null && activity.xmppConnectionService != null) {
 			handleActivityResult(activityResult);
 		} else {
-			this.postponedActivityResult = activityResult;
+			this.postponedActivityResult.push(activityResult);
 		}
 	}
 
@@ -726,14 +728,14 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
 	}
 
 	@Override
-	public void onAttach(Context context) {
-		Log.d(Config.LOGTAG,"onAttach()");
-		if (context instanceof ConversationsMainActivity) {
-			this.activity = (ConversationsMainActivity) context;
+	public void onAttach(Activity activity) {
+		super.onAttach(activity);
+		Log.d(Config.LOGTAG, "onAttach()");
+		if (activity instanceof ConversationsMainActivity) {
+			this.activity = (ConversationsMainActivity) activity;
 		} else {
 			throw new IllegalStateException("Trying to attach fragment to activity that is not the ConversationActivity");
 		}
-		super.onAttach(context);
 	}
 
 	@Override
@@ -776,7 +778,7 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
 
 	@Override
 	public View onCreateView(final LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		this.binding = DataBindingUtil.inflate(inflater,R.layout.fragment_conversation,container,false);
+		this.binding = DataBindingUtil.inflate(inflater, R.layout.fragment_conversation, container, false);
 		binding.getRoot().setOnClickListener(null); //TODO why the fuck did we do this?
 
 		binding.textinput.addTextChangedListener(new StylingHelper.MessageEditorStyler(binding.textinput));
@@ -1180,10 +1182,10 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
 							.findFragmentByTag("conversation");
 					if (fragment != null) {
 						fragment.showNoPGPKeyDialog(false, (dialog, which) -> {
-									conversation.setNextEncryption(Message.ENCRYPTION_NONE);
-									activity.xmppConnectionService.updateConversation(conversation);
-									selectPresenceToAttachFile(attachmentChoice);
-								});
+							conversation.setNextEncryption(Message.ENCRYPTION_NONE);
+							activity.xmppConnectionService.updateConversation(conversation);
+							selectPresenceToAttachFile(attachmentChoice);
+						});
 					}
 				}
 			} else {
@@ -1530,6 +1532,27 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
 		}
 	}
 
+
+	@Override
+	public void onSaveInstanceState(Bundle outState) {
+		super.onSaveInstanceState(outState);
+		if (conversation != null) {
+			outState.putString(STATE_CONVERSATION_UUID, conversation.getUuid());
+		}
+	}
+
+	@Override
+	public void onActivityCreated(Bundle savedInstanceState) {
+		super.onActivityCreated(savedInstanceState);
+		if (savedInstanceState == null) {
+			return;
+		}
+		String uuid = savedInstanceState.getString(STATE_CONVERSATION_UUID);
+		if (uuid != null) {
+			this.pendingConversationsUuid.push(uuid);
+		}
+	}
+
 	@Override
 	public void onStart() {
 		super.onStart();
@@ -1561,13 +1584,14 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
 	}
 
 	public boolean reInit(Conversation conversation) {
-		Log.d(Config.LOGTAG,"reInit()");
+		Log.d(Config.LOGTAG, "reInit()");
 		if (conversation == null) {
+			Log.d(Config.LOGTAG, "conversation was null :(");
 			return false;
 		}
 
 		if (this.activity == null) {
-			Log.d(Config.LOGTAG,"activity was null");
+			Log.d(Config.LOGTAG, "activity was null");
 			this.conversation = conversation;
 			return false;
 		}
@@ -1768,7 +1792,7 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
 		final Conversation c = this.conversation;
 		final Presence.Status status;
 		final String text = this.binding.textinput == null ? "" : this.binding.textinput.getText().toString();
-		final SendButtonAction action = SendButtonTool.getAction(getActivity(),c,text);
+		final SendButtonAction action = SendButtonTool.getAction(getActivity(), c, text);
 		if (useSendButtonToIndicateStatus && c.getAccount().getStatus() == Account.State.ONLINE) {
 			if (activity.xmppConnectionService != null && activity.xmppConnectionService.getMessageArchiveService().isCatchingUp(c)) {
 				status = Presence.Status.OFFLINE;
@@ -1959,8 +1983,8 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
 						new UiCallback<Contact>() {
 
 							@Override
-							public void userInputRequried(PendingIntent pi,Contact contact) {
-								startPendingIntent(pi,REQUEST_ENCRYPT_MESSAGE);
+							public void userInputRequried(PendingIntent pi, Contact contact) {
+								startPendingIntent(pi, REQUEST_ENCRYPT_MESSAGE);
 							}
 
 							@Override
@@ -1980,12 +2004,12 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
 
 			} else {
 				showNoPGPKeyDialog(false, (dialog, which) -> {
-							conversation.setNextEncryption(Message.ENCRYPTION_NONE);
-							xmppService.updateConversation(conversation);
-							message.setEncryption(Message.ENCRYPTION_NONE);
-							xmppService.sendMessage(message);
-							messageSent();
-						});
+					conversation.setNextEncryption(Message.ENCRYPTION_NONE);
+					xmppService.updateConversation(conversation);
+					message.setEncryption(Message.ENCRYPTION_NONE);
+					xmppService.sendMessage(message);
+					messageSent();
+				});
 			}
 		} else {
 			if (conversation.getMucOptions().pgpKeysInUse()) {
@@ -2000,12 +2024,12 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
 				encryptTextMessage(message);
 			} else {
 				showNoPGPKeyDialog(true, (dialog, which) -> {
-							conversation.setNextEncryption(Message.ENCRYPTION_NONE);
-							message.setEncryption(Message.ENCRYPTION_NONE);
-							xmppService.updateConversation(conversation);
-							xmppService.sendMessage(message);
-							messageSent();
-						});
+					conversation.setNextEncryption(Message.ENCRYPTION_NONE);
+					message.setEncryption(Message.ENCRYPTION_NONE);
+					xmppService.updateConversation(conversation);
+					xmppService.sendMessage(message);
+					messageSent();
+				});
 			}
 		}
 	}
@@ -2030,7 +2054,7 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
 					public void error(final int error, Message message) {
 						getActivity().runOnUiThread(() -> {
 							doneSendingPgpMessage();
-							Toast.makeText(getActivity(),R.string.unable_to_connect_to_keychain,Toast.LENGTH_SHORT).show();
+							Toast.makeText(getActivity(), R.string.unable_to_connect_to_keychain, Toast.LENGTH_SHORT).show();
 						});
 
 					}
@@ -2152,23 +2176,42 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
 
 	private void startPendingIntent(PendingIntent pendingIntent, int requestCode) {
 		try {
-			getActivity().startIntentSenderForResult(pendingIntent.getIntentSender(), requestCode,null, 0, 0, 0);
+			getActivity().startIntentSenderForResult(pendingIntent.getIntentSender(), requestCode, null, 0, 0, 0);
 		} catch (final SendIntentException ignored) {
 		}
 	}
 
 	@Override
 	public void onBackendConnected() {
-		if (postponedActivityResult != null) {
-			handleActivityResult(postponedActivityResult);
+		Log.d(Config.LOGTAG, "ConversationFragment.onBackendConnected()");
+		String uuid = pendingConversationsUuid.pop();
+		if (uuid != null) {
+			Conversation conversation = activity.xmppConnectionService.findConversationByUuid(uuid);
+			if (conversation == null) {
+				Log.d(Config.LOGTAG, "unable to restore activity");
+				clearPending();
+				return;
+			}
+			reInit(conversation);
 		}
-		postponedActivityResult = null;
+		ActivityResult activityResult = postponedActivityResult.pop();
+		if (activityResult != null) {
+			handleActivityResult(activityResult);
+		}
+	}
+
+	@Override
+	void refresh() {
+
 	}
 
 	public void clearPending() {
-		if (postponedActivityResult != null) {
-			Log.d(Config.LOGTAG,"cleared pending intent with unhandled result left");
+		if (postponedActivityResult.pop() != null) {
+			Log.d(Config.LOGTAG, "cleared pending intent with unhandled result left");
 		}
-		postponedActivityResult = null;
+	}
+
+	public Conversation getConversation() {
+		return conversation;
 	}
 }

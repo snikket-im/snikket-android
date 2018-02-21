@@ -29,6 +29,7 @@
 
 package eu.siacs.conversations.ui;
 
+import android.app.Activity;
 import android.content.Context;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
@@ -36,7 +37,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -55,20 +55,22 @@ public class ConversationsOverviewFragment extends XmppFragment {
 
 	private final List<Conversation> conversations = new ArrayList<>();
 	private ConversationAdapter conversationsAdapter;
-	private ConversationsMainActivity activity;
+	private XmppActivity activity;
 
 	@Override
-	public void onAttach(Context context) {
-		if (context instanceof ConversationsMainActivity) {
-			this.activity = (ConversationsMainActivity) context;
+	public void onAttach(Activity activity) {
+		super.onAttach(activity);
+		Log.d(Config.LOGTAG,"on attach");
+		if (activity instanceof XmppActivity) {
+			this.activity = (XmppActivity) activity;
 		} else {
-			throw new IllegalStateException("Trying to attach fragment to activity that is not the ConversationActivity");
+			throw new IllegalStateException("Trying to attach fragment to activity that is not an XmppActivity");
 		}
-		super.onAttach(context);
 	}
 
 	@Override
 	public View onCreateView(final LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+		Log.d(Config.LOGTAG,"onCreateView");
 		this.binding = DataBindingUtil.inflate(inflater, R.layout.fragment_conversations_overview, container, false);
 		this.binding.fab.setOnClickListener((view)-> StartConversationActivity.launch(getActivity()));
 
@@ -90,6 +92,26 @@ public class ConversationsOverviewFragment extends XmppFragment {
 	@Override
 	void onBackendConnected() {
 		Log.d(Config.LOGTAG,"nice!");
+		refresh();
+	}
+
+	@Override
+	public void onStart() {
+		super.onStart();
+		Log.d(Config.LOGTAG,"ConversationsOverviewFragment.onStart()");
+		if (activity.xmppConnectionService != null) {
+			refresh();
+		}
+	}
+
+	@Override
+	public void onResume() {
+		super.onResume();
+		Log.d(Config.LOGTAG,"ConversationsOverviewFragment.onResume()");
+	}
+
+	@Override
+	void refresh() {
 		this.activity.xmppConnectionService.populateWithOrderedConversations(this.conversations);
 		this.conversationsAdapter.notifyDataSetChanged();
 	}

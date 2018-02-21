@@ -31,11 +31,15 @@ package eu.siacs.conversations.ui;
 
 
 import android.app.Fragment;
+import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.IdRes;
+import android.support.v7.app.ActionBar;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
@@ -60,6 +64,7 @@ public class ConversationsMainActivity extends XmppActivity implements OnConvers
 	void onBackendConnected() {
 		notifyFragment(R.id.main_fragment);
 		notifyFragment(R.id.secondary_fragment);
+		invalidateActionBarTitle();
 	}
 
 	private void notifyFragment(@IdRes int id) {
@@ -73,30 +78,102 @@ public class ConversationsMainActivity extends XmppActivity implements OnConvers
 	protected void onCreate(final Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		new EmojiService(this).init();
-		this.binding = DataBindingUtil.setContentView(this,R.layout.activity_conversations);
+		this.binding = DataBindingUtil.setContentView(this, R.layout.activity_conversations);
+		this.getFragmentManager().addOnBackStackChangedListener(this::invalidateActionBarTitle);
 		this.initializeFragments();
+		this.invalidateActionBarTitle();
+	}
+
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		getMenuInflater().inflate(R.menu.activity_conversations, menu);
+		return super.onCreateOptionsMenu(menu);
 	}
 
 	@Override
 	public void onConversationSelected(Conversation conversation) {
-		Log.d(Config.LOGTAG,"selected "+conversation.getName());
+		Log.d(Config.LOGTAG, "selected " + conversation.getName());
 		ConversationFragment conversationFragment = (ConversationFragment) getFragmentManager().findFragmentById(R.id.secondary_fragment);
 		if (conversationFragment == null) {
 			conversationFragment = new ConversationFragment();
 			FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
-			fragmentTransaction.replace(R.id.main_fragment,conversationFragment);
+			fragmentTransaction.replace(R.id.main_fragment, conversationFragment);
+			fragmentTransaction.addToBackStack(null);
 			fragmentTransaction.commit();
 		}
 		conversationFragment.reInit(conversation);
 	}
 
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+			case android.R.id.home:
+				FragmentManager fm = getFragmentManager();
+				if (fm.getBackStackEntryCount() > 0) {
+					fm.popBackStack();
+					return true;
+				}
+				break;
+		}
+		return super.onOptionsItemSelected(item);
+	}
+
 	private void initializeFragments() {
 		FragmentTransaction transaction = getFragmentManager().beginTransaction();
-		transaction.replace(R.id.main_fragment, new ConversationsOverviewFragment());
+		Fragment mainFragment = getFragmentManager().findFragmentById(R.id.main_fragment);
+		Fragment secondaryFragment = getFragmentManager().findFragmentById(R.id.secondary_fragment);
+		if (mainFragment != null) {
+			Log.d(Config.LOGTAG,"initializeFragment(). main fragment exists");
+			if (binding.secondaryFragment != null) {
+				if (mainFragment instanceof ConversationFragment) {
+					Log.d(Config.LOGTAG,"gained secondary fragment. moving...");
+					getFragmentManager().popBackStack();
+					transaction.remove(mainFragment);
+					transaction.commit();
+					getFragmentManager().executePendingTransactions();
+					transaction = getFragmentManager().beginTransaction();
+					transaction.replace(R.id.secondary_fragment, mainFragment);
+					transaction.replace(R.id.main_fragment, new ConversationsOverviewFragment());
+					transaction.commit();
+					return;
+				}
+			} else {
+				if (secondaryFragment != null && secondaryFragment instanceof ConversationFragment) {
+					Log.d(Config.LOGTAG,"lost secondary fragment. moving...");
+					transaction.remove(secondaryFragment);
+					transaction.commit();
+					getFragmentManager().executePendingTransactions();
+					transaction = getFragmentManager().beginTransaction();
+					transaction.replace(R.id.main_fragment, secondaryFragment);
+					transaction.addToBackStack(null);
+					transaction.commit();
+					return;
+				}
+			}
+		} else {
+			transaction.replace(R.id.main_fragment, new ConversationsOverviewFragment());
+		}
 		if (binding.secondaryFragment != null) {
 			transaction.replace(R.id.secondary_fragment, new ConversationFragment());
 		}
 		transaction.commit();
+	}
+
+	private void invalidateActionBarTitle() {
+		final ActionBar actionBar = getSupportActionBar();
+		if (actionBar != null) {
+			Fragment mainFragment = getFragmentManager().findFragmentById(R.id.main_fragment);
+			if (mainFragment != null && mainFragment instanceof ConversationFragment) {
+				final Conversation conversation = ((ConversationFragment) mainFragment).getConversation();
+				if (conversation != null) {
+					actionBar.setTitle(conversation.getName());
+					actionBar.setDisplayHomeAsUpEnabled(true);
+					return;
+				}
+			}
+			actionBar.setTitle(R.string.app_name);
+			actionBar.setDisplayHomeAsUpEnabled(false);
+		}
 	}
 
 	@Override
@@ -111,6 +188,6 @@ public class ConversationsMainActivity extends XmppActivity implements OnConvers
 
 	@Override
 	public void onConversationRead(Conversation conversation) {
-		Log.d(Config.LOGTAG,"read event for "+conversation.getName()+" received");
+		Log.d(Config.LOGTAG, "read event for " + conversation.getName() + " received");
 	}
 }

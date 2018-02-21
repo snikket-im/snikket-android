@@ -27,13 +27,19 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package eu.siacs.conversations.ui;
+package eu.siacs.conversations.ui.util;
 
-import android.app.Fragment;
+public class PendingItem<T> {
 
-public abstract class XmppFragment extends Fragment {
+	private T item = null;
 
-	abstract void onBackendConnected();
+	public synchronized void push(T item) {
+		this.item = item;
+	}
 
-	abstract void refresh();
+	public synchronized T pop() {
+		final T item = this.item;
+		this.item = null;
+		return item;
+	}
 }
