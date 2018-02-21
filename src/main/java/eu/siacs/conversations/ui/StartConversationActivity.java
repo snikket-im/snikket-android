@@ -943,6 +943,11 @@ public class StartConversationActivity extends XmppActivity implements OnRosterU
         invalidateOptionsMenu();
     }
 
+    public static void launch(Context context) {
+        final Intent intent = new Intent(context,StartConversationActivity.class);
+        context.startActivity(intent);
+    }
+
     @Override
     public void OnUpdateBlocklist(final Status status) {
         refreshUi();

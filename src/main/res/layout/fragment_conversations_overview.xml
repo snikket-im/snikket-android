@@ -1,15 +1,9 @@
-<android.support.v4.widget.SlidingPaneLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/content_view_spl"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent" >
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <LinearLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_marginRight="@dimen/swipe_handle_size"
-        android:layout_height="match_parent"
-        android:background="?attr/color_background_primary"
-        android:orientation="vertical" >
+        android:layout_height="match_parent">
+
 
         <de.timroes.android.listview.EnhancedListView
             android:id="@+id/list"
@@ -17,15 +11,14 @@
             android:layout_height="wrap_content"
             android:background="?attr/color_background_primary"
             android:divider="@color/black12"
-            android:dividerHeight="1dp" />
-    </LinearLayout>
+            android:dividerHeight="1dp"/>
 
-    <LinearLayout
-        android:id="@+id/selected_conversation"
-        android:layout_width="fill_parent"
-        android:layout_height="match_parent"
-        android:layout_weight="1"
-        android:orientation="vertical" >
-    </LinearLayout>
-
-</android.support.v4.widget.SlidingPaneLayout>
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/fab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end|bottom"
+            android:layout_margin="16dp"
+            android:src="?attr/icon_new"/>
+    </FrameLayout>
+</layout>

@@ -2,6 +2,7 @@ package eu.siacs.conversations.ui.adapter;
 
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.content.res.Resources;
@@ -12,6 +13,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.preference.PreferenceManager;
 import android.support.annotation.ColorInt;
 import android.support.v4.content.ContextCompat;
 import android.text.Spannable;
@@ -62,6 +64,8 @@ import eu.siacs.conversations.persistance.FileBackend;
 import eu.siacs.conversations.services.MessageArchiveService;
 import eu.siacs.conversations.services.NotificationService;
 import eu.siacs.conversations.ui.ConversationActivity;
+import eu.siacs.conversations.ui.ConversationsMainActivity;
+import eu.siacs.conversations.ui.XmppActivity;
 import eu.siacs.conversations.ui.service.AudioPlayer;
 import eu.siacs.conversations.ui.text.DividerSpan;
 import eu.siacs.conversations.ui.text.FixedURLSpan;
@@ -123,7 +127,7 @@ public class MessageAdapter extends ArrayAdapter<Message> implements CopyTextVie
 		}
 	};
 
-	private final ConversationActivity activity;
+	private final XmppActivity activity;
 
 	private DisplayMetrics metrics;
 
@@ -139,7 +143,7 @@ public class MessageAdapter extends ArrayAdapter<Message> implements CopyTextVie
 
 	private final AudioPlayer audioPlayer;
 
-	public MessageAdapter(ConversationActivity activity, List<Message> messages) {
+	public MessageAdapter(XmppActivity activity, List<Message> messages) {
 		super(activity, 0, messages);
 		this.audioPlayer = new AudioPlayer(this);
 		this.activity = activity;
@@ -1003,8 +1007,9 @@ public class MessageAdapter extends ArrayAdapter<Message> implements CopyTextVie
 	}
 
 	public void updatePreferences() {
-		this.mIndicateReceived = activity.indicateReceived();
-		this.mUseGreenBackground = activity.useGreenBackground();
+		SharedPreferences p = PreferenceManager.getDefaultSharedPreferences(activity);
+		this.mIndicateReceived = p.getBoolean("indicate_received", activity.getResources().getBoolean(R.bool.indicate_received));
+		this.mUseGreenBackground = p.getBoolean("use_green_background", activity.getResources().getBoolean(R.bool.use_green_background));
 	}
 
 	public TextView getMessageBody(View view) {

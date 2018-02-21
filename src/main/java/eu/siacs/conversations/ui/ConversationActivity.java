@@ -162,7 +162,7 @@ public class ConversationActivity extends XmppActivity
 
 		this.mConversationFragment = new ConversationFragment();
 		FragmentTransaction transaction = getFragmentManager().beginTransaction();
-		transaction.replace(R.id.selected_conversation, this.mConversationFragment, "conversation");
+		//transaction.replace(R.id.selected_conversation, this.mConversationFragment, "conversation");
 		transaction.commit();
 
 		this.listView = findViewById(R.id.list);
@@ -260,9 +260,9 @@ public class ConversationActivity extends XmppActivity
 		listView.setUndoHideDelay(5000);
 		listView.setRequireTouchBeforeDismiss(false);
 
-		mContentView = findViewById(R.id.content_view_spl);
+		//mContentView = findViewById(R.id.content_view_spl);
 		if (mContentView == null) {
-			mContentView = findViewById(R.id.content_view_ll);
+			//mContentView = findViewById(R.id.content_view_ll);
 		}
 		if (mContentView instanceof SlidingPaneLayout) {
 			SlidingPaneLayout mSlidingPaneLayout = (SlidingPaneLayout) mContentView;
@@ -767,11 +767,6 @@ public class ConversationActivity extends XmppActivity
 		}
 	}
 
-	public long getMaxHttpUploadSize(Conversation conversation) {
-		final XmppConnection connection = conversation.getAccount().getXmppConnection();
-		return connection == null ? -1 : connection.getFeatures().getMaxHttpUploadSize();
-	}
-
 	private String getBatteryOptimizationPreferenceKey() {
 		@SuppressLint("HardwareIds") String device = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
 		return "show_battery_optimization" + (device == null ? "" : device);
@@ -831,26 +826,6 @@ public class ConversationActivity extends XmppActivity
 		listAdapter.notifyDataSetChanged();
 	}
 
-	public void runIntent(PendingIntent pi, int requestCode) {
-		try {
-			this.startIntentSenderForResult(pi.getIntentSender(), requestCode,
-					null, 0, 0, 0);
-		} catch (final SendIntentException ignored) {
-		}
-	}
-
-	public boolean useSendButtonToIndicateStatus() {
-		return getPreferences().getBoolean("send_button_status", getResources().getBoolean(R.bool.send_button_status));
-	}
-
-	public boolean indicateReceived() {
-		return getPreferences().getBoolean("indicate_received", getResources().getBoolean(R.bool.indicate_received));
-	}
-
-	public boolean useGreenBackground() {
-		return getPreferences().getBoolean("use_green_background", getResources().getBoolean(R.bool.use_green_background));
-	}
-
 	@Override
 	protected void refreshUiReal() {
 		updateConversationList();
@@ -891,11 +866,6 @@ public class ConversationActivity extends XmppActivity
 	@Override
 	public void OnUpdateBlocklist(Status status) {
 		this.refreshUi();
-	}
-
-
-	public boolean enterIsSend() {
-		return getPreferences().getBoolean("enter_is_send", getResources().getBoolean(R.bool.enter_is_send));
 	}
 
 	@Override
