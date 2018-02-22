@@ -7,8 +7,6 @@ import android.content.pm.PackageManager;
 import android.databinding.DataBindingUtil;
 import android.net.Uri;
 import android.os.Build;
-import android.os.Parcelable;
-import android.preference.Preference;
 import android.preference.PreferenceManager;
 import android.provider.MediaStore;
 import android.support.v7.app.AlertDialog;
@@ -25,7 +23,6 @@ import android.os.SystemClock;
 import android.support.v13.view.inputmethod.InputConnectionCompat;
 import android.support.v13.view.inputmethod.InputContentInfoCompat;
 import android.text.Editable;
-import android.text.InputType;
 import android.util.Log;
 import android.util.Pair;
 import android.view.ContextMenu;
@@ -46,11 +43,8 @@ import android.widget.AbsListView.OnScrollListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.CheckBox;
-import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.PopupMenu;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
 import android.widget.TextView.OnEditorActionListener;
 import android.widget.Toast;
 
@@ -62,12 +56,9 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
-import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.concurrent.atomic.AtomicInteger;
 
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
@@ -82,7 +73,6 @@ import eu.siacs.conversations.entities.DownloadableFile;
 import eu.siacs.conversations.entities.Message;
 import eu.siacs.conversations.entities.MucOptions;
 import eu.siacs.conversations.entities.Presence;
-import eu.siacs.conversations.entities.Presences;
 import eu.siacs.conversations.entities.ReadByMarker;
 import eu.siacs.conversations.entities.Transferable;
 import eu.siacs.conversations.entities.TransferablePlaceholder;
@@ -105,7 +95,6 @@ import eu.siacs.conversations.utils.StylingHelper;
 import eu.siacs.conversations.utils.UIHelper;
 import eu.siacs.conversations.xmpp.XmppConnection;
 import eu.siacs.conversations.xmpp.chatstate.ChatState;
-import eu.siacs.conversations.xmpp.jid.InvalidJidException;
 import eu.siacs.conversations.xmpp.jid.Jid;
 
 import static eu.siacs.conversations.ui.XmppActivity.EXTRA_ACCOUNT;
@@ -1247,7 +1236,7 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
 				this.activity.onConversationArchived(conversation);
 			} else {
 				activity.onConversationsListItemUpdated();
-				updateMessages();
+				refresh();
 			}
 		});
 		builder.create().show();
@@ -1267,7 +1256,7 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
 			conversation.setMutedTill(till);
 			activity.xmppConnectionService.updateConversation(conversation);
 			activity.onConversationsListItemUpdated();
-			updateMessages();
+			refresh();
 			getActivity().invalidateOptionsMenu();
 		});
 		builder.create().show();
@@ -1277,7 +1266,7 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
 		conversation.setMutedTill(0);
 		this.activity.xmppConnectionService.updateConversation(conversation);
 		this.activity.onConversationsListItemUpdated();
-		updateMessages();
+		refresh();
 		getActivity().invalidateOptionsMenu();
 	}
 
@@ -1415,7 +1404,7 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
 		if (activity.xmppConnectionService.getFileBackend().deleteFile(message)) {
 			message.setTransferable(new TransferablePlaceholder(Transferable.STATUS_DELETED));
 			activity.onConversationsListItemUpdated();
-			updateMessages();
+			refresh();
 		}
 	}
 
@@ -1438,7 +1427,7 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
 				Toast.makeText(activity, R.string.file_deleted, Toast.LENGTH_SHORT).show();
 				message.setTransferable(new TransferablePlaceholder(Transferable.STATUS_DELETED));
 				activity.onConversationsListItemUpdated();
-				updateMessages();
+				refresh();
 				return;
 			}
 		}
@@ -1479,7 +1468,7 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
 	private void retryDecryption(Message message) {
 		message.setEncryption(Message.ENCRYPTION_PGP);
 		activity.onConversationsListItemUpdated();
-		updateMessages();
+		refresh();
 		conversation.getAccount().getPgpDecryptionService().decrypt(message, false);
 	}
 
@@ -1621,7 +1610,7 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
 		this.binding.textinput.setKeyboardListener(this);
 		messageListAdapter.updatePreferences();
 		this.binding.messagesView.setAdapter(messageListAdapter);
-		updateMessages();
+		refresh();
 		this.conversation.messagesLoaded.set(true);
 		synchronized (this.messageList) {
 			final Message first = conversation.getFirstUnreadMessage();
@@ -1729,13 +1718,11 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
 		}
 	}
 
-	public void updateMessages() {
+	@Override
+	public void refresh() {
 		synchronized (this.messageList) {
-			if (getView() == null) {
-				return;
-			}
 			if (this.conversation != null) {
-				conversation.populateWithMessages(ConversationFragment.this.messageList);
+				conversation.populateWithMessages(this.messageList);
 				updateSnackBar(conversation);
 				updateStatusMessages();
 				this.messageListAdapter.notifyDataSetChanged();
@@ -2198,11 +2185,6 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
 		if (activityResult != null) {
 			handleActivityResult(activityResult);
 		}
-	}
-
-	@Override
-	void refresh() {
-
 	}
 
 	public void clearPending() {

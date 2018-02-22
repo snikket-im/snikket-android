@@ -40,18 +40,21 @@ import android.support.v7.app.ActionBar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.databinding.ActivityConversationsBinding;
 import eu.siacs.conversations.entities.Conversation;
+import eu.siacs.conversations.services.XmppConnectionService;
 import eu.siacs.conversations.ui.interfaces.OnConversationArchived;
 import eu.siacs.conversations.ui.interfaces.OnConversationRead;
 import eu.siacs.conversations.ui.interfaces.OnConversationSelected;
 import eu.siacs.conversations.ui.interfaces.OnConversationsListItemUpdated;
 import eu.siacs.conversations.ui.service.EmojiService;
+import eu.siacs.conversations.xmpp.OnUpdateBlocklist;
 
-public class ConversationsMainActivity extends XmppActivity implements OnConversationSelected, OnConversationArchived, OnConversationsListItemUpdated, OnConversationRead {
+public class ConversationsMainActivity extends XmppActivity implements OnConversationSelected, OnConversationArchived, OnConversationsListItemUpdated, OnConversationRead, XmppConnectionService.OnAccountUpdate, XmppConnectionService.OnConversationUpdate, XmppConnectionService.OnRosterUpdate, OnUpdateBlocklist, XmppConnectionService.OnShowErrorToast {
 
 
 	//secondary fragment (when holding the conversation, must be initialized before refreshing the overview fragment
@@ -174,8 +177,6 @@ public class ConversationsMainActivity extends XmppActivity implements OnConvers
 		} else {
 			transaction.replace(R.id.main_fragment, new ConversationsOverviewFragment());
 		}
-
-		//TODO, do this in backendConnected so we can actually decide what to display
 		if (binding.secondaryFragment != null) {
 			transaction.replace(R.id.secondary_fragment, new ConversationFragment());
 		}
@@ -215,5 +216,30 @@ public class ConversationsMainActivity extends XmppActivity implements OnConvers
 	@Override
 	public void onConversationRead(Conversation conversation) {
 		Log.d(Config.LOGTAG, "read event for " + conversation.getName() + " received");
+	}
+
+	@Override
+	public void onAccountUpdate() {
+		this.refreshUi();
+	}
+
+	@Override
+	public void onConversationUpdate() {
+		this.refreshUi();
+	}
+
+	@Override
+	public void onRosterUpdate() {
+		this.refreshUi();
+	}
+
+	@Override
+	public void OnUpdateBlocklist(OnUpdateBlocklist.Status status) {
+		this.refreshUi();
+	}
+
+	@Override
+	public void onShowErrorToast(int resId) {
+		runOnUiThread(() -> Toast.makeText(this, resId, Toast.LENGTH_SHORT).show());
 	}
 }

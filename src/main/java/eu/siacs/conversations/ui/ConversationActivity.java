@@ -3,11 +3,8 @@ package eu.siacs.conversations.ui;
 import android.annotation.SuppressLint;
 import android.support.v7.app.AlertDialog;
 import android.app.FragmentTransaction;
-import android.app.PendingIntent;
 import android.content.ActivityNotFoundException;
-import android.content.ClipData;
 import android.content.Intent;
-import android.content.IntentSender.SendIntentException;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -29,17 +26,13 @@ import android.widget.Toast;
 
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import de.timroes.android.listview.EnhancedListView;
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
-import eu.siacs.conversations.crypto.axolotl.AxolotlService;
-import eu.siacs.conversations.crypto.axolotl.FingerprintStatus;
 import eu.siacs.conversations.entities.Account;
-import eu.siacs.conversations.entities.Blockable;
 import eu.siacs.conversations.entities.Conversation;
 import eu.siacs.conversations.entities.Message;
 import eu.siacs.conversations.services.XmppConnectionService;
@@ -50,7 +43,6 @@ import eu.siacs.conversations.ui.adapter.ConversationAdapter;
 import eu.siacs.conversations.ui.service.EmojiService;
 import eu.siacs.conversations.utils.ExceptionHelper;
 import eu.siacs.conversations.xmpp.OnUpdateBlocklist;
-import eu.siacs.conversations.xmpp.XmppConnection;
 import eu.siacs.conversations.xmpp.jid.InvalidJidException;
 import eu.siacs.conversations.xmpp.jid.Jid;
 
@@ -836,7 +828,7 @@ public class ConversationActivity extends XmppActivity
 			if (getSelectedConversation() == null) {
 				reInitLatestConversation();
 			} else {
-				ConversationActivity.this.mConversationFragment.updateMessages();
+				ConversationActivity.this.mConversationFragment.refresh();
 				updateActionBarTitle();
 				invalidateOptionsMenu();
 			}
