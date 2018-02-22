@@ -37,7 +37,6 @@ import android.preference.PreferenceManager;
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.entities.Conversation;
 import eu.siacs.conversations.entities.Presence;
-import eu.siacs.conversations.ui.ConversationActivity;
 import eu.siacs.conversations.ui.ConversationFragment;
 import eu.siacs.conversations.utils.UIHelper;
 

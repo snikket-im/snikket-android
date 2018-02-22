@@ -63,8 +63,6 @@ import eu.siacs.conversations.entities.Transferable;
 import eu.siacs.conversations.persistance.FileBackend;
 import eu.siacs.conversations.services.MessageArchiveService;
 import eu.siacs.conversations.services.NotificationService;
-import eu.siacs.conversations.ui.ConversationActivity;
-import eu.siacs.conversations.ui.ConversationsMainActivity;
 import eu.siacs.conversations.ui.XmppActivity;
 import eu.siacs.conversations.ui.service.AudioPlayer;
 import eu.siacs.conversations.ui.text.DividerSpan;

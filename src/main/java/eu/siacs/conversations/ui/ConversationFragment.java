@@ -133,7 +133,7 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
 	private Conversation conversation;
 	private FragmentConversationBinding binding;
 	private Toast messageLoaderToast;
-	private ConversationsMainActivity activity;
+	private ConversationActivity activity;
 
 	private OnClickListener clickToMuc = new OnClickListener() {
 
@@ -719,9 +719,9 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
 	@Override
 	public void onAttach(Activity activity) {
 		super.onAttach(activity);
-		Log.d(Config.LOGTAG, "onAttach()");
-		if (activity instanceof ConversationsMainActivity) {
-			this.activity = (ConversationsMainActivity) activity;
+		Log.d(Config.LOGTAG, "ConversationFragment.onAttach()");
+		if (activity instanceof ConversationActivity) {
+			this.activity = (ConversationActivity) activity;
 		} else {
 			throw new IllegalStateException("Trying to attach fragment to activity that is not the ConversationActivity");
 		}
@@ -1532,6 +1532,7 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
 
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
+		Log.d(Config.LOGTAG,"ConversationFragment.onActivityCreated()");
 		super.onActivityCreated(savedInstanceState);
 		if (savedInstanceState == null) {
 			return;

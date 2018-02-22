@@ -25,9 +25,9 @@ import eu.siacs.conversations.R;
 import eu.siacs.conversations.entities.Conversation;
 import eu.siacs.conversations.entities.Message;
 import eu.siacs.conversations.entities.Transferable;
-import eu.siacs.conversations.ui.ConversationActivity;
 import eu.siacs.conversations.ui.ConversationFragment;
 import eu.siacs.conversations.ui.XmppActivity;
+import eu.siacs.conversations.ui.util.Color;
 import eu.siacs.conversations.ui.widget.UnreadCountCustomView;
 import eu.siacs.conversations.utils.EmojiWrapper;
 import eu.siacs.conversations.utils.UIHelper;
@@ -48,13 +48,12 @@ public class ConversationAdapter extends ArrayAdapter<Conversation> {
 			LayoutInflater inflater = (LayoutInflater) activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 			view = inflater.inflate(R.layout.conversation_list_row,parent, false);
 		}
+		ViewHolder viewHolder = ViewHolder.get(view);
 		Conversation conversation = getItem(position);
 		if (this.activity instanceof XmppActivity) {
-			View swipeableItem = view.findViewById(R.id.swipeable_item);
-			int c = conversation == selectedConversation ? this.activity.getSecondaryBackgroundColor() : this.activity.getPrimaryBackgroundColor();
-			swipeableItem.setBackgroundColor(c);
+			int c = Color.get(activity, conversation == selectedConversation ? R.attr.color_background_secondary: R.attr.color_background_primary);
+			viewHolder.swipeableItem.setBackgroundColor(c);
 		}
-		ViewHolder viewHolder = ViewHolder.get(view);
 		if (conversation.getMode() == Conversation.MODE_SINGLE || activity.useSubjectToIdentifyConference()) {
 			viewHolder.name.setText(EmojiWrapper.transform(conversation.getName()));
 		} else {
@@ -182,6 +181,7 @@ public class ConversationAdapter extends ArrayAdapter<Conversation> {
 	}
 
 	public static class ViewHolder {
+		private View swipeableItem;
 		private TextView name;
 		private TextView lastMessage;
 		private ImageView lastMessageIcon;
@@ -199,6 +199,7 @@ public class ConversationAdapter extends ArrayAdapter<Conversation> {
 			ViewHolder viewHolder = (ViewHolder) layout.getTag();
 			if (viewHolder == null) {
 				viewHolder = new ViewHolder();
+				viewHolder.swipeableItem = layout.findViewById(R.id.swipeable_item);
 				viewHolder.name = layout.findViewById(R.id.conversation_name);
 				viewHolder.lastMessage = layout.findViewById(R.id.conversation_lastmsg);
 				viewHolder.lastMessageIcon = layout.findViewById(R.id.conversation_lastmsg_img);

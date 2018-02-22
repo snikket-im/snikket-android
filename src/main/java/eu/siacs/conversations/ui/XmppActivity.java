@@ -40,7 +40,6 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.text.InputType;
 import android.util.DisplayMetrics;
-import android.util.Pair;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -51,11 +50,8 @@ import android.widget.Toast;
 import java.io.FileNotFoundException;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 import java.util.concurrent.RejectedExecutionException;
-import java.util.concurrent.atomic.AtomicInteger;
 
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
@@ -71,9 +67,7 @@ import eu.siacs.conversations.services.BarcodeProvider;
 import eu.siacs.conversations.services.XmppConnectionService;
 import eu.siacs.conversations.services.XmppConnectionService.XmppConnectionBinder;
 import eu.siacs.conversations.ui.util.PresenceSelector;
-import eu.siacs.conversations.utils.CryptoHelper;
 import eu.siacs.conversations.utils.ExceptionHelper;
-import eu.siacs.conversations.utils.UIHelper;
 import eu.siacs.conversations.xmpp.OnKeyStatusUpdated;
 import eu.siacs.conversations.xmpp.OnUpdateBlocklist;
 import eu.siacs.conversations.xmpp.jid.InvalidJidException;
@@ -507,27 +501,25 @@ public abstract class XmppActivity extends AppCompatActivity {
 	}
 
 	private void switchToConversation(Conversation conversation, String text, String nick, boolean pm, boolean newTask) {
-		Intent viewConversationIntent = new Intent(this,
-				ConversationActivity.class);
-		viewConversationIntent.setAction(ConversationActivity.ACTION_VIEW_CONVERSATION);
-		viewConversationIntent.putExtra(ConversationActivity.CONVERSATION,
-				conversation.getUuid());
+		Intent intent = new Intent(this, ConversationActivity.class);
+		intent.setAction(ConversationActivity.ACTION_VIEW_CONVERSATION);
+		intent.putExtra(ConversationActivity.EXTRA_CONVERSATION, conversation.getUuid());
 		if (text != null) {
-			viewConversationIntent.putExtra(ConversationActivity.TEXT, text);
+			intent.putExtra(ConversationActivity.EXTRA_TEXT, text);
 		}
 		if (nick != null) {
-			viewConversationIntent.putExtra(ConversationActivity.NICK, nick);
-			viewConversationIntent.putExtra(ConversationActivity.PRIVATE_MESSAGE, pm);
+			intent.putExtra(ConversationActivity.EXTRA_NICK, nick);
+			intent.putExtra(ConversationActivity.EXTRA_IS_PRIVATE_MESSAGE, pm);
 		}
 		if (newTask) {
-			viewConversationIntent.setFlags(viewConversationIntent.getFlags()
+			intent.setFlags(intent.getFlags()
 					| Intent.FLAG_ACTIVITY_NEW_TASK
 					| Intent.FLAG_ACTIVITY_SINGLE_TOP);
 		} else {
-			viewConversationIntent.setFlags(viewConversationIntent.getFlags()
+			intent.setFlags(intent.getFlags()
 					| Intent.FLAG_ACTIVITY_CLEAR_TOP);
 		}
-		startActivity(viewConversationIntent);
+		startActivity(intent);
 		finish();
 	}
 
@@ -821,14 +813,6 @@ public abstract class XmppActivity extends AppCompatActivity {
 
 	public int getOnlineColor() {
 		return this.mColorGreen;
-	}
-
-	public int getPrimaryBackgroundColor() {
-		return this.mPrimaryBackgroundColor;
-	}
-
-	public int getSecondaryBackgroundColor() {
-		return this.mSecondaryBackgroundColor;
 	}
 
 	public int getPixel(int dp) {
