@@ -42,4 +42,8 @@ public class PendingItem<T> {
 		this.item = null;
 		return item;
 	}
+
+	public synchronized T peek() {
+		return item;
+	}
 }

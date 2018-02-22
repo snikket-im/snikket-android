@@ -47,15 +47,19 @@ import eu.siacs.conversations.R;
 import eu.siacs.conversations.databinding.FragmentConversationsOverviewBinding;
 import eu.siacs.conversations.entities.Conversation;
 import eu.siacs.conversations.ui.adapter.ConversationAdapter;
+import eu.siacs.conversations.ui.interfaces.OnConversationArchived;
 import eu.siacs.conversations.ui.interfaces.OnConversationSelected;
+import eu.siacs.conversations.ui.util.PendingItem;
 
-public class ConversationsOverviewFragment extends XmppFragment {
+public class ConversationsOverviewFragment extends XmppFragment implements EnhancedListView.OnDismissCallback {
 
 	private FragmentConversationsOverviewBinding binding;
 
 	private final List<Conversation> conversations = new ArrayList<>();
 	private ConversationAdapter conversationsAdapter;
 	private XmppActivity activity;
+
+	private final PendingItem<Conversation> swipedConversation = new PendingItem<>();
 
 	@Override
 	public void onAttach(Activity activity) {
@@ -76,7 +80,6 @@ public class ConversationsOverviewFragment extends XmppFragment {
 
 		this.conversationsAdapter = new ConversationAdapter(this.activity, this.conversations);
 		this.binding.list.setAdapter(this.conversationsAdapter);
-		this.binding.list.setSwipeDirection(EnhancedListView.SwipeDirection.BOTH);
 		this.binding.list.setOnItemClickListener((parent, view, position, id) -> {
 			Conversation conversation = this.conversations.get(position);
 			if (activity instanceof OnConversationSelected) {
@@ -85,7 +88,13 @@ public class ConversationsOverviewFragment extends XmppFragment {
 				Log.w(ConversationsOverviewFragment.class.getCanonicalName(),"Activity does not implement OnConversationSelected");
 			}
 		});
-
+		this.binding.list.setDismissCallback(this);
+		this.binding.list.enableSwipeToDismiss();
+		this.binding.list.setSwipeDirection(EnhancedListView.SwipeDirection.BOTH);
+		this.binding.list.setSwipingLayout(R.id.swipeable_item);
+		this.binding.list.setUndoStyle(EnhancedListView.UndoStyle.SINGLE_POPUP);
+		this.binding.list.setUndoHideDelay(5000);
+		this.binding.list.setRequireTouchBeforeDismiss(false);
 		return binding.getRoot();
 	}
 
@@ -113,6 +122,72 @@ public class ConversationsOverviewFragment extends XmppFragment {
 	@Override
 	void refresh() {
 		this.activity.xmppConnectionService.populateWithOrderedConversations(this.conversations);
+		Conversation removed = this.swipedConversation.peek();
+		if (removed != null) {
+			if (removed.isRead()) {
+				this.conversations.remove(removed);
+			} else {
+				this.binding.list.discardUndo(); //will be ignored during discard when conversation is unRead
+			}
+		}
 		this.conversationsAdapter.notifyDataSetChanged();
+	}
+
+	@Override
+	public EnhancedListView.Undoable onDismiss(EnhancedListView listView, int position) {
+		try {
+			swipedConversation.push(this.conversationsAdapter.getItem(position));
+		} catch (IndexOutOfBoundsException e) {
+			return null;
+		}
+		this.conversationsAdapter.remove(swipedConversation.peek());
+		this.activity.xmppConnectionService.markRead(swipedConversation.peek());
+
+		if (position == 0 && this.conversationsAdapter.getCount() == 0) {
+			final Conversation c = swipedConversation.pop();
+			activity.xmppConnectionService.archiveConversation(c);
+			if (activity instanceof OnConversationArchived) {
+				((OnConversationArchived) activity).onConversationArchived(c);
+			}
+			return null;
+		}
+		final boolean formerlySelected = ConversationFragment.getConversation(getActivity()) == swipedConversation.peek();
+		if (activity instanceof OnConversationArchived) {
+			((OnConversationArchived) activity).onConversationArchived(swipedConversation.peek());
+		}
+		return new EnhancedListView.Undoable() {
+
+			@Override
+			public void undo() {
+				Conversation c = swipedConversation.pop();
+				conversationsAdapter.insert(c, position);
+				if (formerlySelected) {
+					if (activity instanceof OnConversationSelected) {
+						((OnConversationSelected) activity).onConversationSelected(c);
+					}
+				}
+				if (position > listView.getLastVisiblePosition()) {
+					listView.smoothScrollToPosition(position);
+				}
+			}
+
+			@Override
+			public void discard() {
+				Conversation c = swipedConversation.pop();
+				if (!c.isRead() && c.getMode() == Conversation.MODE_SINGLE) {
+					return;
+				}
+				activity.xmppConnectionService.archiveConversation(c);
+			}
+
+			@Override
+			public String getTitle() {
+				if (swipedConversation.peek().getMode() == Conversation.MODE_MULTI) {
+					return getResources().getString(R.string.title_undo_swipe_out_muc);
+				} else {
+					return getResources().getString(R.string.title_undo_swipe_out_conversation);
+				}
+			}
+		};
 	}
 }

@@ -32,5 +32,6 @@ package eu.siacs.conversations.ui.interfaces;
 import eu.siacs.conversations.entities.Conversation;
 
 public interface OnConversationArchived {
+
 	void onConversationArchived(Conversation conversation);
 }

@@ -53,24 +53,38 @@ import eu.siacs.conversations.ui.service.EmojiService;
 
 public class ConversationsMainActivity extends XmppActivity implements OnConversationSelected, OnConversationArchived, OnConversationsListItemUpdated, OnConversationRead {
 
+
+	//secondary fragment (when holding the conversation, must be initialized before refreshing the overview fragment
+	private static final @IdRes int[] FRAGMENT_ID_NOTIFICATION_ORDER = {R.id.secondary_fragment, R.id.main_fragment};
+
 	private ActivityConversationsBinding binding;
 
 	@Override
 	protected void refreshUiReal() {
-
+		for(@IdRes int id : FRAGMENT_ID_NOTIFICATION_ORDER) {
+			refreshFragment(id);
+		}
 	}
 
 	@Override
 	void onBackendConnected() {
-		notifyFragment(R.id.main_fragment);
-		notifyFragment(R.id.secondary_fragment);
+		for(@IdRes int id : FRAGMENT_ID_NOTIFICATION_ORDER) {
+			notifyFragmentOfBackendConnected(id);
+		}
 		invalidateActionBarTitle();
 	}
 
-	private void notifyFragment(@IdRes int id) {
-		Fragment mainFragment = getFragmentManager().findFragmentById(id);
-		if (mainFragment != null && mainFragment instanceof XmppFragment) {
-			((XmppFragment) mainFragment).onBackendConnected();
+	private void notifyFragmentOfBackendConnected(@IdRes int id) {
+		final Fragment fragment = getFragmentManager().findFragmentById(id);
+		if (fragment != null && fragment instanceof XmppFragment) {
+			((XmppFragment) fragment).onBackendConnected();
+		}
+	}
+
+	private void refreshFragment(@IdRes int id) {
+		final Fragment fragment = getFragmentManager().findFragmentById(id);
+		if (fragment != null && fragment instanceof XmppFragment) {
+			((XmppFragment) fragment).refresh();
 		}
 	}
 
@@ -94,14 +108,21 @@ public class ConversationsMainActivity extends XmppActivity implements OnConvers
 	public void onConversationSelected(Conversation conversation) {
 		Log.d(Config.LOGTAG, "selected " + conversation.getName());
 		ConversationFragment conversationFragment = (ConversationFragment) getFragmentManager().findFragmentById(R.id.secondary_fragment);
+		final boolean mainNeedsRefresh;
 		if (conversationFragment == null) {
+			mainNeedsRefresh = false;
 			conversationFragment = new ConversationFragment();
 			FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
 			fragmentTransaction.replace(R.id.main_fragment, conversationFragment);
 			fragmentTransaction.addToBackStack(null);
 			fragmentTransaction.commit();
+		} else {
+			mainNeedsRefresh = true;
 		}
 		conversationFragment.reInit(conversation);
+		if (mainNeedsRefresh) {
+			refreshFragment(R.id.main_fragment);
+		}
 	}
 
 	@Override
@@ -153,6 +174,8 @@ public class ConversationsMainActivity extends XmppActivity implements OnConvers
 		} else {
 			transaction.replace(R.id.main_fragment, new ConversationsOverviewFragment());
 		}
+
+		//TODO, do this in backendConnected so we can actually decide what to display
 		if (binding.secondaryFragment != null) {
 			transaction.replace(R.id.secondary_fragment, new ConversationFragment());
 		}
@@ -183,7 +206,10 @@ public class ConversationsMainActivity extends XmppActivity implements OnConvers
 
 	@Override
 	public void onConversationsListItemUpdated() {
-
+		Fragment fragment = getFragmentManager().findFragmentById(R.id.main_fragment);
+		if (fragment != null && fragment instanceof ConversationsOverviewFragment) {
+			((ConversationsOverviewFragment) fragment).refresh();
+		}
 	}
 
 	@Override

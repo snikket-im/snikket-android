@@ -2211,6 +2211,15 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
 		}
 	}
 
+	public static Conversation getConversation(Activity activity) {
+		Fragment fragment = activity.getFragmentManager().findFragmentById(R.id.secondary_fragment);
+		if (fragment != null && fragment instanceof ConversationFragment) {
+			return ((ConversationFragment) fragment).getConversation();
+		} else {
+			return null;
+		}
+	}
+
 	public Conversation getConversation() {
 		return conversation;
 	}
