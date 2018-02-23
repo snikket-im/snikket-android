@@ -33,6 +33,8 @@ package eu.siacs.conversations.ui;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.content.Context;
+import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.IdRes;
@@ -52,6 +54,7 @@ import eu.siacs.conversations.ui.interfaces.OnConversationRead;
 import eu.siacs.conversations.ui.interfaces.OnConversationSelected;
 import eu.siacs.conversations.ui.interfaces.OnConversationsListItemUpdated;
 import eu.siacs.conversations.ui.service.EmojiService;
+import eu.siacs.conversations.ui.util.PendingItem;
 import eu.siacs.conversations.xmpp.OnUpdateBlocklist;
 
 public class ConversationActivity extends XmppActivity implements OnConversationSelected, OnConversationArchived, OnConversationsListItemUpdated, OnConversationRead, XmppConnectionService.OnAccountUpdate, XmppConnectionService.OnConversationUpdate, XmppConnectionService.OnRosterUpdate, OnUpdateBlocklist, XmppConnectionService.OnShowErrorToast {
@@ -65,23 +68,39 @@ public class ConversationActivity extends XmppActivity implements OnConversation
 
 
 	//secondary fragment (when holding the conversation, must be initialized before refreshing the overview fragment
-	private static final @IdRes int[] FRAGMENT_ID_NOTIFICATION_ORDER = {R.id.secondary_fragment, R.id.main_fragment};
-
+	private static final @IdRes
+	int[] FRAGMENT_ID_NOTIFICATION_ORDER = {R.id.secondary_fragment, R.id.main_fragment};
+	private final PendingItem<Intent> pendingViewIntent = new PendingItem<>();
 	private ActivityConversationsBinding binding;
+
+	private static boolean isViewIntent(Intent i) {
+		return i != null && ACTION_VIEW_CONVERSATION.equals(i.getAction()) && i.hasExtra(EXTRA_CONVERSATION);
+	}
+
+	private static Intent createLauncherIntent(Context context) {
+		final Intent intent = new Intent(context, ConversationActivity.class);
+		intent.setAction(Intent.ACTION_MAIN);
+		intent.addCategory(Intent.CATEGORY_LAUNCHER);
+		return intent;
+	}
 
 	@Override
 	protected void refreshUiReal() {
-		for(@IdRes int id : FRAGMENT_ID_NOTIFICATION_ORDER) {
+		for (@IdRes int id : FRAGMENT_ID_NOTIFICATION_ORDER) {
 			refreshFragment(id);
 		}
 	}
 
 	@Override
 	void onBackendConnected() {
-		for(@IdRes int id : FRAGMENT_ID_NOTIFICATION_ORDER) {
+		for (@IdRes int id : FRAGMENT_ID_NOTIFICATION_ORDER) {
 			notifyFragmentOfBackendConnected(id);
 		}
 		invalidateActionBarTitle();
+		Intent intent = pendingViewIntent.pop();
+		if (intent != null) {
+			processViewIntent(intent);
+		}
 	}
 
 	private void notifyFragmentOfBackendConnected(@IdRes int id) {
@@ -98,6 +117,16 @@ public class ConversationActivity extends XmppActivity implements OnConversation
 		}
 	}
 
+	private void processViewIntent(Intent intent) {
+		String uuid = intent.getStringExtra(EXTRA_CONVERSATION);
+		Conversation conversation = uuid != null ? xmppConnectionService.findConversationByUuid(uuid) : null;
+		if (conversation == null) {
+			Log.d(Config.LOGTAG, "unable to view conversation with uuid:" + uuid);
+			return;
+		}
+		openConversation(conversation, intent.getExtras());
+	}
+
 	@Override
 	protected void onCreate(final Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -106,6 +135,11 @@ public class ConversationActivity extends XmppActivity implements OnConversation
 		this.getFragmentManager().addOnBackStackChangedListener(this::invalidateActionBarTitle);
 		this.initializeFragments();
 		this.invalidateActionBarTitle();
+		final Intent intent = getIntent();
+		if (isViewIntent(intent)) {
+			pendingViewIntent.push(intent);
+			setIntent(createLauncherIntent(this));
+		}
 	}
 
 	@Override
@@ -117,6 +151,10 @@ public class ConversationActivity extends XmppActivity implements OnConversation
 	@Override
 	public void onConversationSelected(Conversation conversation) {
 		Log.d(Config.LOGTAG, "selected " + conversation.getName());
+		openConversation(conversation, null);
+	}
+
+	private void openConversation(Conversation conversation, Bundle extras) {
 		ConversationFragment conversationFragment = (ConversationFragment) getFragmentManager().findFragmentById(R.id.secondary_fragment);
 		final boolean mainNeedsRefresh;
 		if (conversationFragment == null) {
@@ -149,15 +187,26 @@ public class ConversationActivity extends XmppActivity implements OnConversation
 		return super.onOptionsItemSelected(item);
 	}
 
+	@Override
+	protected void onNewIntent(final Intent intent) {
+		if (isViewIntent(intent)) {
+			if (xmppConnectionService != null) {
+				processViewIntent(intent);
+			} else {
+				pendingViewIntent.push(intent);
+			}
+		}
+	}
+
 	private void initializeFragments() {
 		FragmentTransaction transaction = getFragmentManager().beginTransaction();
 		Fragment mainFragment = getFragmentManager().findFragmentById(R.id.main_fragment);
 		Fragment secondaryFragment = getFragmentManager().findFragmentById(R.id.secondary_fragment);
 		if (mainFragment != null) {
-			Log.d(Config.LOGTAG,"initializeFragment(). main fragment exists");
+			Log.d(Config.LOGTAG, "initializeFragment(). main fragment exists");
 			if (binding.secondaryFragment != null) {
 				if (mainFragment instanceof ConversationFragment) {
-					Log.d(Config.LOGTAG,"gained secondary fragment. moving...");
+					Log.d(Config.LOGTAG, "gained secondary fragment. moving...");
 					getFragmentManager().popBackStack();
 					transaction.remove(mainFragment);
 					transaction.commit();
@@ -170,7 +219,7 @@ public class ConversationActivity extends XmppActivity implements OnConversation
 				}
 			} else {
 				if (secondaryFragment != null && secondaryFragment instanceof ConversationFragment) {
-					Log.d(Config.LOGTAG,"lost secondary fragment. moving...");
+					Log.d(Config.LOGTAG, "lost secondary fragment. moving...");
 					transaction.remove(secondaryFragment);
 					transaction.commit();
 					getFragmentManager().executePendingTransactions();
