@@ -54,18 +54,28 @@ import eu.siacs.conversations.ui.util.PendingItem;
 
 public class ConversationsOverviewFragment extends XmppFragment implements EnhancedListView.OnDismissCallback {
 
-	private FragmentConversationsOverviewBinding binding;
-
 	private final List<Conversation> conversations = new ArrayList<>();
+	private final PendingItem<Conversation> swipedConversation = new PendingItem<>();
+	private FragmentConversationsOverviewBinding binding;
 	private ConversationAdapter conversationsAdapter;
 	private XmppActivity activity;
 
-	private final PendingItem<Conversation> swipedConversation = new PendingItem<>();
+	public static Conversation getSuggestion(Activity activity) {
+		Fragment fragment = activity.getFragmentManager().findFragmentById(R.id.main_fragment);
+		if (fragment != null && fragment instanceof ConversationsOverviewFragment) {
+			List<Conversation> conversations = ((ConversationsOverviewFragment) fragment).conversations;
+			if (conversations.size() > 0) {
+				return conversations.get(0);
+			}
+		}
+		return null;
+
+	}
 
 	@Override
 	public void onAttach(Activity activity) {
 		super.onAttach(activity);
-		Log.d(Config.LOGTAG,"on attach");
+		Log.d(Config.LOGTAG, "on attach");
 		if (activity instanceof XmppActivity) {
 			this.activity = (XmppActivity) activity;
 		} else {
@@ -74,10 +84,16 @@ public class ConversationsOverviewFragment extends XmppFragment implements Enhan
 	}
 
 	@Override
+	public void onDetach() {
+		super.onDetach();
+		this.activity = null;
+	}
+
+	@Override
 	public View onCreateView(final LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		Log.d(Config.LOGTAG,"onCreateView");
+		Log.d(Config.LOGTAG, "onCreateView");
 		this.binding = DataBindingUtil.inflate(inflater, R.layout.fragment_conversations_overview, container, false);
-		this.binding.fab.setOnClickListener((view)-> StartConversationActivity.launch(getActivity()));
+		this.binding.fab.setOnClickListener((view) -> StartConversationActivity.launch(getActivity()));
 
 		this.conversationsAdapter = new ConversationAdapter(this.activity, this.conversations);
 		this.binding.list.setAdapter(this.conversationsAdapter);
@@ -86,7 +102,7 @@ public class ConversationsOverviewFragment extends XmppFragment implements Enhan
 			if (activity instanceof OnConversationSelected) {
 				((OnConversationSelected) activity).onConversationSelected(conversation);
 			} else {
-				Log.w(ConversationsOverviewFragment.class.getCanonicalName(),"Activity does not implement OnConversationSelected");
+				Log.w(ConversationsOverviewFragment.class.getCanonicalName(), "Activity does not implement OnConversationSelected");
 			}
 		});
 		this.binding.list.setDismissCallback(this);
@@ -101,14 +117,14 @@ public class ConversationsOverviewFragment extends XmppFragment implements Enhan
 
 	@Override
 	void onBackendConnected() {
-		Log.d(Config.LOGTAG,"nice!");
+		Log.d(Config.LOGTAG, "nice!");
 		refresh();
 	}
 
 	@Override
 	public void onStart() {
 		super.onStart();
-		Log.d(Config.LOGTAG,"ConversationsOverviewFragment.onStart()");
+		Log.d(Config.LOGTAG, "ConversationsOverviewFragment.onStart()");
 		if (activity.xmppConnectionService != null) {
 			refresh();
 		}
@@ -117,7 +133,7 @@ public class ConversationsOverviewFragment extends XmppFragment implements Enhan
 	@Override
 	public void onResume() {
 		super.onResume();
-		Log.d(Config.LOGTAG,"ConversationsOverviewFragment.onResume()");
+		Log.d(Config.LOGTAG, "ConversationsOverviewFragment.onResume()");
 	}
 
 	@Override
@@ -190,17 +206,5 @@ public class ConversationsOverviewFragment extends XmppFragment implements Enhan
 				}
 			}
 		};
-	}
-
-	public static Conversation getSuggestion(Activity activity) {
-		Fragment fragment = activity.getFragmentManager().findFragmentById(R.id.main_fragment);
-		if (fragment != null && fragment instanceof ConversationsOverviewFragment) {
-			List<Conversation> conversations = ((ConversationsOverviewFragment) fragment).conversations;
-			if (conversations.size() > 0) {
-				return conversations.get(0);
-			}
-		}
-		return null;
-
 	}
 }

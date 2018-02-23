@@ -168,17 +168,24 @@ public class ConversationActivity extends XmppActivity implements OnConversation
 		final boolean mainNeedsRefresh;
 		if (conversationFragment == null) {
 			mainNeedsRefresh = false;
-			conversationFragment = new ConversationFragment();
-			FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
-			fragmentTransaction.replace(R.id.main_fragment, conversationFragment);
-			fragmentTransaction.addToBackStack(null);
-			fragmentTransaction.commit();
+			Fragment mainFragment = getFragmentManager().findFragmentById(R.id.main_fragment);
+			if (mainFragment != null && mainFragment instanceof ConversationFragment) {
+				conversationFragment = (ConversationFragment) mainFragment;
+			} else {
+				conversationFragment = new ConversationFragment();
+				FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
+				fragmentTransaction.replace(R.id.main_fragment, conversationFragment);
+				fragmentTransaction.addToBackStack(null);
+				fragmentTransaction.commit();
+			}
 		} else {
 			mainNeedsRefresh = true;
 		}
 		conversationFragment.reInit(conversation);
 		if (mainNeedsRefresh) {
 			refreshFragment(R.id.main_fragment);
+		} else {
+			invalidateActionBarTitle();
 		}
 	}
 

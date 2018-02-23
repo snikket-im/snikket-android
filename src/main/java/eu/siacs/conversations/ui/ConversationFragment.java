@@ -728,6 +728,12 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
 	}
 
 	@Override
+	public void onDetach() {
+		super.onDetach();
+		this.activity = null;
+	}
+
+	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setHasOptionsMenu(true);
