@@ -631,7 +631,7 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
 			}
 
 			if (query != null && query.getPagingOrder() == MessageArchiveService.PagingOrder.REVERSE) {
-				conversation.prepend(message);
+				conversation.prepend(query.getActualInThisQuery(),message);
 			} else {
 				conversation.add(message);
 			}

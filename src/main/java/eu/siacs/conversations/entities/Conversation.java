@@ -955,9 +955,9 @@ public class Conversation extends AbstractEntity implements Blockable, Comparabl
 		}
 	}
 
-	public void prepend(Message message) {
+	public void prepend(int offset, Message message) {
 		synchronized (this.messages) {
-			this.messages.add(0,message);
+			this.messages.add(Math.min(offset,this.messages.size()),message);
 		}
 	}
 
