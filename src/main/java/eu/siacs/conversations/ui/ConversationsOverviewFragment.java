@@ -31,7 +31,6 @@ package eu.siacs.conversations.ui;
 
 import android.app.Activity;
 import android.app.Fragment;
-import android.content.Context;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.util.Log;

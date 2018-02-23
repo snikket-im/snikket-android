@@ -645,10 +645,10 @@ public class ConversationLegacyActivity extends XmppActivity
 					updateActionBarTitle(true);
 				}
 			}
-			if (this.mConversationFragment.reInit(getSelectedConversation())) {
+			/*if (this.mConversationFragment.reInit(getSelectedConversation())) {
 				Log.d(Config.LOGTAG, "setting scroll position on fragment");
 				this.mConversationFragment.setScrollPosition(mScrollPosition);
-			}
+			}*/
 			mOpenConversation = null;
 		} else if (intent != null && ACTION_VIEW_CONVERSATION.equals(intent.getAction())) {
 			clearPending();

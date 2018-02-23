@@ -72,6 +72,7 @@ public class ConversationActivity extends XmppActivity implements OnConversation
 	int[] FRAGMENT_ID_NOTIFICATION_ORDER = {R.id.secondary_fragment, R.id.main_fragment};
 	private final PendingItem<Intent> pendingViewIntent = new PendingItem<>();
 	private ActivityConversationsBinding binding;
+	private boolean mActivityPaused = true;
 
 	private static boolean isViewIntent(Intent i) {
 		return i != null && ACTION_VIEW_CONVERSATION.equals(i.getAction()) && i.hasExtra(EXTRA_CONVERSATION);
@@ -214,6 +215,22 @@ public class ConversationActivity extends XmppActivity implements OnConversation
 		}
 	}
 
+	@Override
+	public void onPause() {
+		this.mActivityPaused = true;
+		super.onPause();
+	}
+
+	@Override
+	public void onResume() {
+		super.onResume();
+		final int theme = findTheme();
+		if (this.mTheme != theme) {
+			recreate();
+		}
+		this.mActivityPaused = false;
+	}
+
 	private void initializeFragments() {
 		FragmentTransaction transaction = getFragmentManager().beginTransaction();
 		Fragment mainFragment = getFragmentManager().findFragmentById(R.id.main_fragment);
@@ -287,7 +304,9 @@ public class ConversationActivity extends XmppActivity implements OnConversation
 
 	@Override
 	public void onConversationRead(Conversation conversation) {
-		Log.d(Config.LOGTAG, "read event for " + conversation.getName() + " received");
+		if (!mActivityPaused && pendingViewIntent.peek() == null) {
+			xmppConnectionService.sendReadMarker(conversation);
+		}
 	}
 
 	@Override
