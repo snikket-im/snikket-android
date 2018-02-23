@@ -35,7 +35,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_toRightOf="@+id/conversation_image"
-                android:paddingLeft="8dp">
+                android:paddingLeft="@dimen/avatar_item_distance">
 
                 <TextView
                     android:id="@+id/conversation_name"
@@ -46,8 +46,7 @@
                     android:paddingRight="4dp"
                     android:maxLines="1"
                     android:ellipsize="end"
-                    android:textColor="?attr/color_text_primary"
-                    android:textSize="?attr/TextSizeHeadline"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
                     android:typeface="sans"/>
 
                 <RelativeLayout
@@ -67,9 +66,8 @@
                         android:layout_alignParentLeft="true"
                         android:text="@string/me"
                         android:layout_marginRight="?attr/TextSeparation"
-                        android:textColor="?attr/color_text_secondary"
-                        android:visibility="visible"
-                        android:textSize="?attr/TextSizeBody"/>
+                        android:textAppearance="@style/TextAppearance.Conversations.Body1.Secondary"
+                        android:visibility="visible"/>
 
                     <LinearLayout android:layout_width="match_parent"
                                   android:layout_height="wrap_content"
@@ -94,8 +92,7 @@
                             android:scrollHorizontally="false"
                             android:maxLines="1"
                             android:ellipsize="end"
-                            android:textColor="?attr/color_text_primary"
-                            android:textSize="?attr/TextSizeBody"/>
+                            android:textAppearance="@style/TextAppearance.AppCompat.Body1"/>
                     </LinearLayout>
                     <ImageView
                         android:visibility="visible"
@@ -130,8 +127,7 @@
                     android:layout_alignBaseline="@+id/conversation_name"
                     android:layout_alignParentRight="true"
                     android:gravity="right"
-                    android:textColor="?attr/color_text_secondary"
-                    android:textSize="?attr/TextSizeInfo"/>
+                    android:textAppearance="@style/TextAppearance.AppCompat.Caption"/>
             </RelativeLayout>
         </RelativeLayout>
     </FrameLayout>

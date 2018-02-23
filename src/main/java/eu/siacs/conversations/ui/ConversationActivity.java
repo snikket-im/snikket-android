@@ -99,7 +99,15 @@ public class ConversationActivity extends XmppActivity implements OnConversation
 		invalidateActionBarTitle();
 		Intent intent = pendingViewIntent.pop();
 		if (intent != null) {
-			processViewIntent(intent);
+			if (processViewIntent(intent)) {
+				return;
+			}
+		}
+		if (binding.secondaryFragment != null && ConversationFragment.getConversation(this) == null) {
+			Conversation conversation = ConversationsOverviewFragment.getSuggestion(this);
+			if (conversation != null) {
+				openConversation(conversation, null);
+			}
 		}
 	}
 
@@ -117,14 +125,15 @@ public class ConversationActivity extends XmppActivity implements OnConversation
 		}
 	}
 
-	private void processViewIntent(Intent intent) {
+	private boolean processViewIntent(Intent intent) {
 		String uuid = intent.getStringExtra(EXTRA_CONVERSATION);
 		Conversation conversation = uuid != null ? xmppConnectionService.findConversationByUuid(uuid) : null;
 		if (conversation == null) {
 			Log.d(Config.LOGTAG, "unable to view conversation with uuid:" + uuid);
-			return;
+			return false;
 		}
 		openConversation(conversation, intent.getExtras());
+		return true;
 	}
 
 	@Override

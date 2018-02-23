@@ -11,8 +11,8 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:background="?attr/color_background_primary"
-            android:divider="@color/black12"
-            android:dividerHeight="1dp"/>
+            android:divider="@android:color/transparent"
+            android:dividerHeight="0dp"/>
 
         <android.support.design.widget.FloatingActionButton
             android:id="@+id/fab"

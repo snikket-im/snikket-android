@@ -30,6 +30,7 @@
 package eu.siacs.conversations.ui;
 
 import android.app.Activity;
+import android.app.Fragment;
 import android.content.Context;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
@@ -189,5 +190,17 @@ public class ConversationsOverviewFragment extends XmppFragment implements Enhan
 				}
 			}
 		};
+	}
+
+	public static Conversation getSuggestion(Activity activity) {
+		Fragment fragment = activity.getFragmentManager().findFragmentById(R.id.main_fragment);
+		if (fragment != null && fragment instanceof ConversationsOverviewFragment) {
+			List<Conversation> conversations = ((ConversationsOverviewFragment) fragment).conversations;
+			if (conversations.size() > 0) {
+				return conversations.get(0);
+			}
+		}
+		return null;
+
 	}
 }
