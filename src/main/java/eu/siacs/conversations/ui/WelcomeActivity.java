@@ -96,7 +96,7 @@ public class WelcomeActivity extends XmppActivity {
 
 	public static void launch(AppCompatActivity activity) {
 		Intent intent = new Intent(activity, WelcomeActivity.class);
-		intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NO_ANIMATION);
+		intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
 		activity.startActivity(intent);
 		activity.overridePendingTransition(0,0);
 	}
