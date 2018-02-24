@@ -1471,6 +1471,18 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
 		activity.xmppConnectionService.getHttpConnectionManager().createNewDownloadConnection(message, true);
 	}
 
+	public static void downloadFile(Activity activity, Message message) {
+		Fragment fragment = activity.getFragmentManager().findFragmentById(R.id.main_fragment);
+		if (fragment != null && fragment instanceof ConversationFragment) {
+			((ConversationFragment) fragment).downloadFile(message);
+			return;
+		}
+		fragment = activity.getFragmentManager().findFragmentById(R.id.secondary_fragment);
+		if (fragment != null && fragment instanceof ConversationFragment) {
+			((ConversationFragment) fragment).downloadFile(message);
+		}
+	}
+
 	private void cancelTransmission(Message message) {
 		Transferable transferable = message.getTransferable();
 		if (transferable != null) {
