@@ -1580,6 +1580,7 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
 				this.activity.xmppConnectionService.updateConversation(this.conversation);
 			}
 			updateChatState(this.conversation, msg);
+			this.activity.xmppConnectionService.getNotificationService().setOpenConversation(null);
 		}
 	}
 
@@ -1658,6 +1659,8 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
 		}
 		if (activity != null) {
 			activity.onConversationRead(this.conversation);
+			//TODO if we only do this when this fragment is running on main it won't *bing* in tablet layout which might be unnecessary since we can *see* it
+			activity.xmppConnectionService.getNotificationService().setOpenConversation(this.conversation);
 		}
 	}
 

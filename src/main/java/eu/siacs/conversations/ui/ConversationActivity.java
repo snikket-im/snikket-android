@@ -98,6 +98,7 @@ public class ConversationActivity extends XmppActivity implements OnConversation
 			notifyFragmentOfBackendConnected(id);
 		}
 		invalidateActionBarTitle();
+		xmppConnectionService.getNotificationService().setIsInForeground(true);
 		Intent intent = pendingViewIntent.pop();
 		if (intent != null) {
 			if (processViewIntent(intent)) {
