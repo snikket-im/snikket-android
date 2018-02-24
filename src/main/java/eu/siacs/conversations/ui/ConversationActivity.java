@@ -248,12 +248,19 @@ public class ConversationActivity extends XmppActivity implements OnConversation
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		getMenuInflater().inflate(R.menu.activity_conversations, menu);
+		MenuItem qrCodeScanMenuItem = menu.findItem(R.id.action_scan_qr_code);
+		if (qrCodeScanMenuItem != null) {
+			Fragment fragment = getFragmentManager().findFragmentById(R.id.main_fragment);
+			boolean visible = getResources().getBoolean(R.bool.show_qr_code_scan)
+					&& fragment != null
+					&& fragment instanceof ConversationsOverviewFragment;
+			qrCodeScanMenuItem.setVisible(visible);
+		}
 		return super.onCreateOptionsMenu(menu);
 	}
 
 	@Override
 	public void onConversationSelected(Conversation conversation) {
-		Log.d(Config.LOGTAG, "selected " + conversation.getName());
 		openConversation(conversation, null);
 	}
 
