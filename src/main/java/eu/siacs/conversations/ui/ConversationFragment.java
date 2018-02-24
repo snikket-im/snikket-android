@@ -9,6 +9,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.preference.PreferenceManager;
 import android.provider.MediaStore;
+import android.support.annotation.IdRes;
 import android.support.v7.app.AlertDialog;
 import android.app.Fragment;
 import android.app.PendingIntent;
@@ -639,9 +640,6 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
 
 	private void handlePositiveActivityResult(int requestCode, final Intent data) {
 		switch (requestCode) {
-			case REQUEST_DECRYPT_PGP:
-				conversation.getAccount().getPgpDecryptionService().continueDecryption(data);
-				break;
 			case REQUEST_TRUST_KEYS_TEXT:
 				final String body = this.binding.textinput.getText().toString();
 				Message message = new Message(conversation, body, conversation.getNextEncryption());
@@ -697,10 +695,7 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
 
 	private void handleNegativeActivityResult(int requestCode) {
 		switch (requestCode) {
-			case REQUEST_DECRYPT_PGP:
-				// discard the message to prevent decryption being blocked
-				conversation.getAccount().getPgpDecryptionService().giveUpCurrentDecryption();
-				break;
+			//nothing to do for now
 		}
 	}
 
@@ -2276,12 +2271,24 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
 	}
 
 	public static Conversation getConversation(Activity activity) {
-		Fragment fragment = activity.getFragmentManager().findFragmentById(R.id.secondary_fragment);
+		return getConversation(activity, R.id.secondary_fragment);
+	}
+
+	private static Conversation getConversation(Activity activity, @IdRes int res) {
+		final Fragment fragment = activity.getFragmentManager().findFragmentById(res);
 		if (fragment != null && fragment instanceof ConversationFragment) {
 			return ((ConversationFragment) fragment).getConversation();
 		} else {
 			return null;
 		}
+	}
+
+	public static Conversation getConversationReliable(Activity activity) {
+		final Conversation conversation = getConversation(activity, R.id.secondary_fragment);
+		if (conversation != null) {
+			return conversation;
+		}
+		return getConversation(activity, R.id.main_fragment);
 	}
 
 	public Conversation getConversation() {

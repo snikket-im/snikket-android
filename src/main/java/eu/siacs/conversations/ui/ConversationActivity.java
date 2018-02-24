@@ -60,6 +60,8 @@ import eu.siacs.conversations.ui.service.EmojiService;
 import eu.siacs.conversations.ui.util.PendingItem;
 import eu.siacs.conversations.xmpp.OnUpdateBlocklist;
 
+import static eu.siacs.conversations.ui.ConversationFragment.REQUEST_DECRYPT_PGP;
+
 public class ConversationActivity extends XmppActivity implements OnConversationSelected, OnConversationArchived, OnConversationsListItemUpdated, OnConversationRead, XmppConnectionService.OnAccountUpdate, XmppConnectionService.OnConversationUpdate, XmppConnectionService.OnRosterUpdate, OnUpdateBlocklist, XmppConnectionService.OnShowErrorToast {
 
 	public static final String ACTION_VIEW_CONVERSATION = "eu.siacs.conversations.action.VIEW";
@@ -192,6 +194,40 @@ public class ConversationActivity extends XmppActivity implements OnConversation
 		}
 		openConversation(conversation, intent.getExtras());
 		return true;
+	}
+
+	@Override
+	public void onActivityResult(int requestCode, int resultCode, final Intent data) {
+		Log.d(Config.LOGTAG,"on activity result");
+		if (resultCode == RESULT_OK) {
+			handlePositiveActivityResult(requestCode, data);
+		} else {
+			handleNegativeActivityResult(requestCode);
+		}
+	}
+
+	private void handleNegativeActivityResult(int requestCode) {
+		switch (requestCode) {
+			case REQUEST_DECRYPT_PGP:
+				Conversation conversation = ConversationFragment.getConversationReliable(this);
+				if (conversation == null) {
+					break;
+				}
+				conversation.getAccount().getPgpDecryptionService().giveUpCurrentDecryption();
+				break;
+		}
+	}
+
+	private void handlePositiveActivityResult(int requestCode, final Intent data) {
+		switch (requestCode) {
+			case REQUEST_DECRYPT_PGP:
+				Conversation conversation = ConversationFragment.getConversationReliable(this);
+				if (conversation == null) {
+					break;
+				}
+				conversation.getAccount().getPgpDecryptionService().continueDecryption(data);
+				break;
+		}
 	}
 
 	@Override
