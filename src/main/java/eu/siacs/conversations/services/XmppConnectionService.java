@@ -2341,7 +2341,11 @@ public class XmppConnectionService extends Service {
 							MucOptions.User user = AbstractParser.parseItem(conversation, child);
 							if (!user.realJidMatchesAccount()) {
 								boolean isNew = conversation.getMucOptions().updateUser(user);
-								if (isNew && user.getRealJid() != null && axolotlService.hasEmptyDeviceList(user.getRealJid())) {
+								Contact contact = user.getContact();
+								if (isNew
+										&& user.getRealJid() != null
+										&& (contact == null || !contact.mutualPresenceSubscription())
+										&& axolotlService.hasEmptyDeviceList(user.getRealJid())) {
 									axolotlService.fetchDeviceIds(user.getRealJid());
 								}
 							}
