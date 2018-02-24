@@ -173,10 +173,6 @@ public class ConversationAdapter extends ArrayAdapter<Conversation> {
 	@Override
 	public void notifyDataSetChanged() {
 		this.selectedConversation = ConversationFragment.getConversation(activity);
-		Log.d(Config.LOGTAG,"notify data set changed");
-		if (this.selectedConversation == null) {
-			Log.d(Config.LOGTAG,"selected conversation is null");
-		}
 		super.notifyDataSetChanged();
 	}
 

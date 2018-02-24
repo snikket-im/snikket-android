@@ -60,11 +60,29 @@ public class ConversationsOverviewFragment extends XmppFragment implements Enhan
 	private XmppActivity activity;
 
 	public static Conversation getSuggestion(Activity activity) {
+		final Conversation exception;
+		Fragment fragment = activity.getFragmentManager().findFragmentById(R.id.main_fragment);
+		if (fragment != null && fragment instanceof ConversationsOverviewFragment) {
+			exception = ((ConversationsOverviewFragment) fragment).swipedConversation.peek();
+		} else {
+			exception = null;
+		}
+		return getSuggestion(activity, exception);
+	}
+
+	public static Conversation getSuggestion(Activity activity, Conversation exception) {
 		Fragment fragment = activity.getFragmentManager().findFragmentById(R.id.main_fragment);
 		if (fragment != null && fragment instanceof ConversationsOverviewFragment) {
 			List<Conversation> conversations = ((ConversationsOverviewFragment) fragment).conversations;
 			if (conversations.size() > 0) {
-				return conversations.get(0);
+				Conversation suggestion = conversations.get(0);
+				if (suggestion == exception) {
+					if (conversations.size() > 1) {
+						return conversations.get(1);
+					}
+				} else {
+					return suggestion;
+				}
 			}
 		}
 		return null;
@@ -74,7 +92,6 @@ public class ConversationsOverviewFragment extends XmppFragment implements Enhan
 	@Override
 	public void onAttach(Activity activity) {
 		super.onAttach(activity);
-		Log.d(Config.LOGTAG, "on attach");
 		if (activity instanceof XmppActivity) {
 			this.activity = (XmppActivity) activity;
 		} else {

@@ -149,6 +149,7 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
 
 		@Override
 		public void onClick(View v) {
+			activity.xmppConnectionService.archiveConversation(conversation);
 			activity.onConversationArchived(conversation);
 		}
 	};
@@ -1032,6 +1033,7 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
 				handleAttachmentSelection(item);
 				break;
 			case R.id.action_archive:
+				activity.xmppConnectionService.archiveConversation(conversation);
 				activity.onConversationArchived(conversation);
 				break;
 			case R.id.action_contact_details:
@@ -1239,6 +1241,7 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
 		builder.setPositiveButton(getString(R.string.delete_messages), (dialog, which) -> {
 			this.activity.xmppConnectionService.clearConversationHistory(conversation);
 			if (endConversationCheckBox.isChecked()) {
+				this.activity.xmppConnectionService.archiveConversation(conversation);
 				this.activity.onConversationArchived(conversation);
 			} else {
 				activity.onConversationsListItemUpdated();
@@ -1353,7 +1356,11 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
 	@Override
 	public void onResume() {
 		new Handler().post(() -> {
-			final PackageManager packageManager = getActivity().getPackageManager();
+			final Activity activity = getActivity();
+			if (activity == null) {
+				return;
+			}
+			final PackageManager packageManager = activity.getPackageManager();
 			ConversationMenuConfigurator.updateAttachmentAvailability(packageManager);
 			getActivity().invalidateOptionsMenu();
 		});

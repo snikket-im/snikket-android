@@ -205,6 +205,15 @@ public class ConversationActivity extends XmppActivity implements OnConversation
 	}
 
 	@Override
+	protected void onStart() {
+		final int theme = findTheme();
+		if (this.mTheme != theme) {
+			recreate();
+		}
+		super.onStart();
+	}
+
+	@Override
 	protected void onNewIntent(final Intent intent) {
 		if (isViewIntent(intent)) {
 			if (xmppConnectionService != null) {
@@ -224,10 +233,6 @@ public class ConversationActivity extends XmppActivity implements OnConversation
 	@Override
 	public void onResume() {
 		super.onResume();
-		final int theme = findTheme();
-		if (this.mTheme != theme) {
-			recreate();
-		}
 		this.mActivityPaused = false;
 	}
 
@@ -291,7 +296,22 @@ public class ConversationActivity extends XmppActivity implements OnConversation
 
 	@Override
 	public void onConversationArchived(Conversation conversation) {
-
+		//TODO; check if nothing more left;
+		Fragment mainFragment = getFragmentManager().findFragmentById(R.id.main_fragment);
+		if (mainFragment != null && mainFragment instanceof ConversationFragment) {
+			getFragmentManager().popBackStack();
+			return;
+		}
+		Fragment secondaryFragment = getFragmentManager().findFragmentById(R.id.secondary_fragment);
+		if (secondaryFragment != null && secondaryFragment instanceof ConversationFragment) {
+			if (((ConversationFragment) secondaryFragment).getConversation() == conversation) {
+				Conversation suggestion = ConversationsOverviewFragment.getSuggestion(this, conversation);
+				if (suggestion != null) {
+					openConversation(suggestion, null);
+					return;
+				}
+			}
+		}
 	}
 
 	@Override
