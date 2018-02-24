@@ -102,7 +102,7 @@ public final class CryptoHelper {
 	public static String random(int length, SecureRandom random) {
 		final byte[] bytes = new byte[length];
 		random.nextBytes(bytes);
-		return Base64.encodeToString(bytes,Base64.NO_PADDING|Base64.NO_WRAP);
+		return Base64.encodeToString(bytes,Base64.NO_PADDING|Base64.NO_WRAP|Base64.URL_SAFE);
 	}
 
 	public static String prettifyFingerprint(String fingerprint) {

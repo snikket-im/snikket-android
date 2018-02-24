@@ -1070,7 +1070,8 @@ public class XmppConnection implements Runnable {
 		}
 		clearIqCallbacks();
 		final IqPacket iq = new IqPacket(IqPacket.TYPE.SET);
-		iq.addChild("bind", Namespace.BIND).addChild("resource").setContent(account.getResource());
+		final String resource = Config.USE_RANDOM_RESOURCE_ON_EVERY_BIND ? nextRandomId() : account.getResource();
+		iq.addChild("bind", Namespace.BIND).addChild("resource").setContent(resource);
 		this.sendUnmodifiedIqPacket(iq, new OnIqPacketReceived() {
 			@Override
 			public void onIqPacketReceived(final Account account, final IqPacket packet) {
@@ -1370,7 +1371,7 @@ public class XmppConnection implements Runnable {
 	}
 
 	private String nextRandomId() {
-		return CryptoHelper.random(50, mXmppConnectionService.getRNG());
+		return CryptoHelper.random(10, mXmppConnectionService.getRNG());
 	}
 
 	public String sendIqPacket(final IqPacket packet, final OnIqPacketReceived callback) {
