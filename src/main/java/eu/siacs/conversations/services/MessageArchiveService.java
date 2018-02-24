@@ -301,6 +301,26 @@ public class MessageArchiveService implements OnAdvancedStreamFeaturesLoaded {
 		}
 	}
 
+	public void kill(Conversation conversation) {
+		synchronized (this.queries) {
+			for (Query q : queries) {
+				if (q.conversation == conversation) {
+					kill(q);
+				}
+			}
+		}
+	}
+
+	private void kill(Query query) {
+		Log.d(Config.LOGTAG,query.getAccount().getJid().toBareJid()+": killing mam query prematurely");
+		query.callback = null;
+		this.finalizeQuery(query,false);
+		if (query.isCatchup() && query.getActualMessageCount() > 0) {
+			mXmppConnectionService.getNotificationService().finishBacklog(true,query.getAccount());
+		}
+		this.processPostponed(query);
+	}
+
 	private void processPostponed(Query query) {
 		query.account.getAxolotlService().processPostponed();
 		Log.d(Config.LOGTAG,query.getAccount().getJid().toBareJid()+": found "+query.pendingReceiptRequests.size()+" pending receipt requests");
