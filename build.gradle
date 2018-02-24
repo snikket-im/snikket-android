@@ -73,6 +73,7 @@ android {
         archivesBaseName += "-$versionName"
         applicationId "eu.siacs.conversations"
         resValue "string", "applicationId", applicationId
+        resValue "string", "app_name", "Conversations"
     }
 
     dataBinding {

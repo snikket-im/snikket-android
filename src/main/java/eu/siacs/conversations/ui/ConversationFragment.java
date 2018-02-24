@@ -1616,29 +1616,31 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
 	}
 
 	private void reInit(Conversation conversation) {
-		Log.d(Config.LOGTAG, "reInit()");
+		reInit(conversation, false);
+	}
+
+	private void reInit(Conversation conversation, boolean restore) {
 		if (conversation == null) {
-			Log.d(Config.LOGTAG, "conversation was null :(");
 			return;
 		}
-
 		if (this.activity == null) {
-			Log.d(Config.LOGTAG, "activity was null");
 			this.conversation = conversation;
 			return;
 		}
-
+		Log.d(Config.LOGTAG, "reInit(restore="+Boolean.toString(restore)+")");
 		setupIme();
 		if (this.conversation != null) {
 			final String msg = this.binding.textinput.getText().toString();
 			if (this.conversation.setNextMessage(msg)) {
 				activity.xmppConnectionService.updateConversation(conversation);
 			}
-			if (this.conversation != conversation) {
+			if (this.conversation != conversation && !restore) {
 				updateChatState(this.conversation, msg);
 				messageListAdapter.stopAudioPlayer();
 			}
-			this.conversation.trim();
+			if (!restore) {
+				this.conversation.trim();
+			}
 
 		}
 
@@ -2259,7 +2261,7 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
 				clearPending();
 				return;
 			}
-			reInit(conversation);
+			reInit(conversation, true);
 		}
 		ActivityResult activityResult = postponedActivityResult.pop();
 		if (activityResult != null) {

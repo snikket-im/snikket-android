@@ -257,6 +257,9 @@ public class ConversationActivity extends XmppActivity implements OnConversation
 					return true;
 				}
 				break;
+			case R.id.action_scan_qr_code:
+				UriHandlerActivity.scan(this);
+				return true;
 		}
 		return super.onOptionsItemSelected(item);
 	}

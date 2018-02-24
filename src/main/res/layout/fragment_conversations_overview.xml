@@ -20,6 +20,6 @@
             android:layout_height="wrap_content"
             android:layout_gravity="end|bottom"
             android:layout_margin="16dp"
-            android:src="?attr/icon_new"/>
+            android:src="@drawable/ic_chat_white_24dp"/>
     </FrameLayout>
 </layout>
