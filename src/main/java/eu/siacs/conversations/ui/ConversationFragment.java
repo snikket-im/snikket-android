@@ -95,6 +95,7 @@ import eu.siacs.conversations.utils.StylingHelper;
 import eu.siacs.conversations.utils.UIHelper;
 import eu.siacs.conversations.xmpp.XmppConnection;
 import eu.siacs.conversations.xmpp.chatstate.ChatState;
+import eu.siacs.conversations.xmpp.jid.InvalidJidException;
 import eu.siacs.conversations.xmpp.jid.Jid;
 
 import static eu.siacs.conversations.ui.XmppActivity.EXTRA_ACCOUNT;
@@ -128,6 +129,7 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
 	final protected List<Message> messageList = new ArrayList<>();
 	private final PendingItem<ActivityResult> postponedActivityResult = new PendingItem<>();
 	private final PendingItem<String> pendingConversationsUuid = new PendingItem<>();
+	private final PendingItem<Bundle> pendingExtras = new PendingItem<>();
 	public Uri mPendingEditorContent = null;
 	protected MessageAdapter messageListAdapter;
 	private Conversation conversation;
@@ -1485,7 +1487,7 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
 		conversation.getAccount().getPgpDecryptionService().decrypt(message, false);
 	}
 
-	protected void privateMessageWith(final Jid counterpart) {
+	private void privateMessageWith(final Jid counterpart) {
 		if (conversation.setOutgoingChatState(Config.DEFAULT_CHATSTATE)) {
 			activity.xmppConnectionService.sendChatState(conversation);
 		}
@@ -1508,7 +1510,7 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
 
 	}
 
-	protected void highlightInConference(String nick) {
+	private void highlightInConference(String nick) {
 		final Editable editable = this.binding.textinput.getText();
 		String oldString = editable.toString().trim();
 		final int pos = this.binding.textinput.getSelectionStart();
@@ -1545,7 +1547,6 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
 
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
-		Log.d(Config.LOGTAG,"ConversationFragment.onActivityCreated()");
 		super.onActivityCreated(savedInstanceState);
 		if (savedInstanceState == null) {
 			return;
@@ -1560,6 +1561,10 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
 	public void onStart() {
 		super.onStart();
 		reInit(conversation);
+		final Bundle extras = pendingExtras.pop();
+		if (extras != null) {
+			processExtras(extras);
+		}
 	}
 
 	@Override
@@ -1586,7 +1591,18 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
 		}
 	}
 
-	public void reInit(Conversation conversation) {
+	public void reInit(Conversation conversation, Bundle extras) {
+		this.reInit(conversation);
+		if (extras != null) {
+			if (activity != null) {
+				processExtras(extras);
+			} else {
+				pendingExtras.push(extras);
+			}
+		}
+	}
+
+	private void reInit(Conversation conversation) {
 		Log.d(Config.LOGTAG, "reInit()");
 		if (conversation == null) {
 			Log.d(Config.LOGTAG, "conversation was null :(");
@@ -1642,6 +1658,32 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
 		}
 		if (activity != null) {
 			activity.onConversationRead(this.conversation);
+		}
+	}
+
+	private void processExtras(Bundle extras) {
+		final String downloadUuid = extras.getString(ConversationActivity.EXTRA_DOWNLOAD_UUID);
+		final String text = extras.getString(ConversationActivity.EXTRA_TEXT);
+		final String nick = extras.getString(ConversationActivity.EXTRA_NICK);
+		final boolean pm = extras.getBoolean(ConversationActivity.EXTRA_IS_PRIVATE_MESSAGE, false);
+		if (nick != null) {
+			if (pm) {
+				Jid jid = conversation.getJid();
+				try {
+					Jid next = Jid.fromParts(jid.getLocalpart(), jid.getDomainpart(), nick);
+					privateMessageWith(next);
+				} catch (final InvalidJidException ignored) {
+					//do nothing
+				}
+			} else {
+				highlightInConference(nick);
+			}
+		} else {
+			appendText(text);
+		}
+		final Message message = downloadUuid == null ? null : conversation.findMessageWithFileAndUuid(downloadUuid);
+		if (message != null) {
+			startDownloadable(message);
 		}
 	}
 

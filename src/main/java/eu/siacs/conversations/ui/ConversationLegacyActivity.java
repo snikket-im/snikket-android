@@ -175,7 +175,7 @@ public class ConversationLegacyActivity extends XmppActivity
 				if (getSelectedConversation() != conversationList.get(position)) {
 					ConversationLegacyActivity.this.mConversationFragment.stopScrolling();
 					setSelectedConversation(conversationList.get(position));
-					ConversationLegacyActivity.this.mConversationFragment.reInit(getSelectedConversation());
+					//ConversationLegacyActivity.this.mConversationFragment.reInit(getSelectedConversation());
 					conversationWasSelectedByKeyboard = false;
 				}
 				hideConversationsOverview();
@@ -206,8 +206,7 @@ public class ConversationLegacyActivity extends XmppActivity
 					return null;
 				} else if (formerlySelected) {
 					setSelectedConversation(listAdapter.getItem(0));
-					ConversationLegacyActivity.this.mConversationFragment
-							.reInit(getSelectedConversation());
+					//ConversationLegacyActivity.this.mConversationFragment.reInit(getSelectedConversation());
 				}
 
 				return new EnhancedListView.Undoable() {
@@ -217,8 +216,7 @@ public class ConversationLegacyActivity extends XmppActivity
 						listAdapter.insert(swipedConversation, position);
 						if (formerlySelected) {
 							setSelectedConversation(swipedConversation);
-							ConversationLegacyActivity.this.mConversationFragment
-									.reInit(getSelectedConversation());
+							//ConversationLegacyActivity.this.mConversationFragment.reInit(getSelectedConversation());
 						}
 						swipedConversation = null;
 						listView.setSelectionFromTop(index + (listView.getChildCount() < position ? 1 : 0), top);
@@ -294,7 +292,7 @@ public class ConversationLegacyActivity extends XmppActivity
 	public void switchToConversation(Conversation conversation) {
 		setSelectedConversation(conversation);
 		runOnUiThread(() -> {
-			ConversationLegacyActivity.this.mConversationFragment.reInit(getSelectedConversation());
+			//ConversationLegacyActivity.this.mConversationFragment.reInit(getSelectedConversation());
 			openConversation();
 		});
 	}
@@ -373,7 +371,7 @@ public class ConversationLegacyActivity extends XmppActivity
 		if (reinit) {
 			if (conversationList.size() > 0) {
 				setSelectedConversation(conversationList.get(0));
-				this.mConversationFragment.reInit(getSelectedConversation());
+				//this.mConversationFragment.reInit(getSelectedConversation());
 			} else {
 				setSelectedConversation(null);
 				if (mRedirected.compareAndSet(false, true)) {
@@ -497,7 +495,7 @@ public class ConversationLegacyActivity extends XmppActivity
 			this.conversationWasSelectedByKeyboard = true;
 			this.mConversationFragment.stopScrolling();
 			setSelectedConversation(this.conversationList.get(index));
-			this.mConversationFragment.reInit(getSelectedConversation());
+			//this.mConversationFragment.reInit(getSelectedConversation());
 			if (index > listView.getLastVisiblePosition() - 1 || index < listView.getFirstVisiblePosition() + 1) {
 				this.listView.setSelection(index);
 			}
@@ -686,7 +684,7 @@ public class ConversationLegacyActivity extends XmppActivity
 		showConversationsOverview();
 		clearPending();
 		setSelectedConversation(conversationList.get(0));
-		this.mConversationFragment.reInit(getSelectedConversation());
+		//this.mConversationFragment.reInit(getSelectedConversation());
 	}
 
 	private void handleViewConversationIntent(final Intent intent) {
@@ -697,7 +695,7 @@ public class ConversationLegacyActivity extends XmppActivity
 		final boolean pm = intent.getBooleanExtra(PRIVATE_MESSAGE, false);
 		this.mConversationFragment.stopScrolling();
 		if (selectConversationByUuid(uuid)) {
-			this.mConversationFragment.reInit(getSelectedConversation());
+			/*this.mConversationFragment.reInit(getSelectedConversation());
 			if (nick != null) {
 				if (pm) {
 					Jid jid = getSelectedConversation().getJid();
@@ -724,7 +722,7 @@ public class ConversationLegacyActivity extends XmppActivity
 				if (message != null) {
 					//startDownloadable(message);
 				}
-			}
+			}*/
 		} else {
 			mUnprocessedNewIntent = false;
 		}

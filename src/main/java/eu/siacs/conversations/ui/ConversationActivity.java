@@ -182,7 +182,7 @@ public class ConversationActivity extends XmppActivity implements OnConversation
 		} else {
 			mainNeedsRefresh = true;
 		}
-		conversationFragment.reInit(conversation);
+		conversationFragment.reInit(conversation, extras);
 		if (mainNeedsRefresh) {
 			refreshFragment(R.id.main_fragment);
 		} else {
