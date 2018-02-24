@@ -270,12 +270,18 @@ public class MessageArchiveService implements OnAdvancedStreamFeaturesLoaded {
 			query.getConversation().setFirstMamReference(first == null ? null : first.getContent());
 		}
 		if (complete || relevant == null || abort) {
-			boolean done = !query.isCatchup();
-			if (count != null && !query.isCatchup()) {
-				try {
-					done = Integer.parseInt(count) <= query.getTotalCount();
-				} catch (NumberFormatException e) {
-					done = false;
+			boolean done;
+			if (query.isCatchup()) {
+				done = false;
+			} else {
+				if (count != null) {
+					try {
+						done = Integer.parseInt(count) <= query.getTotalCount();
+					} catch (NumberFormatException e) {
+						done = false;
+					}
+				} else {
+					done = query.getTotalCount() == 0;
 				}
 			}
 			done = done || (query.getActualMessageCount() == 0 && !query.isCatchup());
