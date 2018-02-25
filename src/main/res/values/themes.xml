@@ -177,4 +177,12 @@
         <item name="TextSizeHeadline">22sp</item>
     </style>
 
+    <style name="ConversationsTheme.FullScreen" parent="@style/Theme.AppCompat.Light">
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowActionBar">false</item>
+        <item name="android:windowFullscreen">true</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:windowBackground">@android:color/black</item>
+    </style>
+
 </resources>

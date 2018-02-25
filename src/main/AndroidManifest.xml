@@ -14,6 +14,8 @@
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS" />
 
+    <uses-permission android:name="android.permission.CAMERA" />
+
     <uses-permission
         android:name="android.permission.READ_PHONE_STATE"
         tools:node="remove" />
@@ -57,9 +59,13 @@
             </intent-filter>
         </activity>
         <activity
+            android:name=".ui.ScanActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/ConversationsTheme.FullScreen"
+            android:windowSoftInputMode="stateAlwaysHidden" />
+        <activity
             android:name=".ui.UriHandlerActivity"
-            android:label="@string/title_activity_start_conversation"
-            android:launchMode="singleTop">
+            android:label="@string/title_activity_start_conversation">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
 

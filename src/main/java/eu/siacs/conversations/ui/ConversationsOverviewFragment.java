@@ -152,10 +152,16 @@ public class ConversationsOverviewFragment extends XmppFragment implements Enhan
 	@Override
 	public void onSaveInstanceState(Bundle bundle) {
 		super.onSaveInstanceState(bundle);
-		bundle.putParcelable(STATE_SCROLL_POSITION,getScrollState());
+		ScrollState scrollState = getScrollState();
+		if (scrollState != null) {
+			bundle.putParcelable(STATE_SCROLL_POSITION, scrollState);
+		}
 	}
 
 	private ScrollState getScrollState() {
+		if (this.binding == null) {
+			return null;
+		}
 		int position = this.binding.list.getFirstVisiblePosition();
 		final View view = this.binding.list.getChildAt(0);
 		if (view != null) {

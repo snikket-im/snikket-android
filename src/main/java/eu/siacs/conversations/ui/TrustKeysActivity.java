@@ -36,12 +36,10 @@ import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.entities.Conversation;
 import eu.siacs.conversations.utils.CryptoHelper;
 import eu.siacs.conversations.utils.XmppUri;
-import eu.siacs.conversations.utils.zxing.IntentIntegrator;
 import eu.siacs.conversations.xmpp.OnKeyStatusUpdated;
 import eu.siacs.conversations.xmpp.jid.InvalidJidException;
 import eu.siacs.conversations.xmpp.jid.Jid;
 
-import static android.databinding.DataBindingUtil.inflate;
 
 public class TrustKeysActivity extends OmemoActivity implements OnKeyStatusUpdated {
 	private List<Jid> contactJids;
@@ -135,7 +133,7 @@ public class TrustKeysActivity extends OmemoActivity implements OnKeyStatusUpdat
 				if (hasPendingKeyFetches()) {
 					Toast.makeText(this, R.string.please_wait_for_keys_to_be_fetched, Toast.LENGTH_SHORT).show();
 				} else {
-					new IntentIntegrator(this).initiateScan(Arrays.asList("AZTEC","QR_CODE"));
+					//new IntentIntegrator(this).initiateScan(Arrays.asList("AZTEC","QR_CODE"));
 					return true;
 				}
 		}

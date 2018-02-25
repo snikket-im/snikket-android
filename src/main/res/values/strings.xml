@@ -743,4 +743,5 @@
 	<string name="mtm_cert_details">Certificate details:</string>
 	<string name="mtm_notification">Certificate Verification</string>
 	<string name="once">Once</string>
+    <string name="qr_code_scanner_needs_access_to_camera">The QR code scanner needs access to the camera</string>
 </resources>

@@ -25,9 +25,6 @@ import eu.siacs.conversations.databinding.ContactKeyBinding;
 import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.utils.CryptoHelper;
 import eu.siacs.conversations.utils.XmppUri;
-import eu.siacs.conversations.utils.zxing.IntentIntegrator;
-import eu.siacs.conversations.utils.zxing.IntentResult;
-
 
 public abstract class OmemoActivity extends XmppActivity {
 
@@ -76,7 +73,7 @@ public abstract class OmemoActivity extends XmppActivity {
                 copyOmemoFingerprint(mSelectedFingerprint);
                 break;
             case R.id.verify_scan:
-                new IntentIntegrator(this).initiateScan(Arrays.asList("AZTEC","QR_CODE"));
+                //new IntentIntegrator(this).initiateScan(Arrays.asList("AZTEC","QR_CODE"));
                 break;
         }
         return true;
@@ -84,7 +81,7 @@ public abstract class OmemoActivity extends XmppActivity {
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent intent) {
-        IntentResult scanResult = IntentIntegrator.parseActivityResult(requestCode, resultCode, intent);
+        /*IntentResult scanResult = IntentIntegrator.parseActivityResult(requestCode, resultCode, intent);
         if (scanResult != null && scanResult.getFormatName() != null) {
             String data = scanResult.getContents();
             XmppUri uri = new XmppUri(data);
@@ -93,7 +90,7 @@ public abstract class OmemoActivity extends XmppActivity {
             } else {
                 this.mPendingFingerprintVerificationUri =uri;
             }
-        }
+        }*/
     }
 
     protected abstract void processFingerprintVerification(XmppUri uri);
