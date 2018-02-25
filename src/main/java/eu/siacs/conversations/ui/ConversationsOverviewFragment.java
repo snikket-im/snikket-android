@@ -50,11 +50,15 @@ import eu.siacs.conversations.ui.adapter.ConversationAdapter;
 import eu.siacs.conversations.ui.interfaces.OnConversationArchived;
 import eu.siacs.conversations.ui.interfaces.OnConversationSelected;
 import eu.siacs.conversations.ui.util.PendingItem;
+import eu.siacs.conversations.ui.util.ScrollState;
 
 public class ConversationsOverviewFragment extends XmppFragment implements EnhancedListView.OnDismissCallback {
 
+	private static final String STATE_SCROLL_POSITION = ConversationsOverviewFragment.class.getName()+".scroll_state";
+
 	private final List<Conversation> conversations = new ArrayList<>();
 	private final PendingItem<Conversation> swipedConversation = new PendingItem<>();
+	private final PendingItem<ScrollState> pendingScrollState = new PendingItem<>();
 	private FragmentConversationsOverviewBinding binding;
 	private ConversationAdapter conversationsAdapter;
 	private XmppActivity activity;
@@ -87,6 +91,15 @@ public class ConversationsOverviewFragment extends XmppFragment implements Enhan
 		}
 		return null;
 
+	}
+
+	@Override
+	public void onActivityCreated(Bundle savedInstanceState) {
+		super.onActivityCreated(savedInstanceState);
+		if (savedInstanceState == null) {
+			return;
+		}
+		pendingScrollState.push(savedInstanceState.getParcelable(STATE_SCROLL_POSITION));
 	}
 
 	@Override
@@ -133,8 +146,23 @@ public class ConversationsOverviewFragment extends XmppFragment implements Enhan
 
 	@Override
 	void onBackendConnected() {
-		Log.d(Config.LOGTAG, "nice!");
 		refresh();
+	}
+
+	@Override
+	public void onSaveInstanceState(Bundle bundle) {
+		super.onSaveInstanceState(bundle);
+		bundle.putParcelable(STATE_SCROLL_POSITION,getScrollState());
+	}
+
+	private ScrollState getScrollState() {
+		int position = this.binding.list.getFirstVisiblePosition();
+		final View view = this.binding.list.getChildAt(0);
+		if (view != null) {
+			return new ScrollState(position,view.getTop());
+		} else {
+			return new ScrollState(position, 0);
+		}
 	}
 
 	@Override
@@ -168,6 +196,16 @@ public class ConversationsOverviewFragment extends XmppFragment implements Enhan
 			}
 		}
 		this.conversationsAdapter.notifyDataSetChanged();
+		ScrollState scrollState = pendingScrollState.pop();
+		if (scrollState != null) {
+			setScrollPosition(scrollState);
+		}
+	}
+
+	private void setScrollPosition(ScrollState scrollPosition) {
+		if (scrollPosition != null) {
+			this.binding.list.setSelectionFromTop(scrollPosition.position, scrollPosition.offset);
+		}
 	}
 
 	@Override

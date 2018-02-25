@@ -29,6 +29,7 @@
 
 package eu.siacs.conversations.ui;
 
+import android.app.Activity;
 import android.app.Fragment;
 
 public abstract class XmppFragment extends Fragment {
@@ -36,4 +37,11 @@ public abstract class XmppFragment extends Fragment {
 	abstract void onBackendConnected();
 
 	abstract void refresh();
+
+	protected void runOnUiThread(Runnable runnable) {
+		final Activity activity = getActivity();
+		if (activity != null) {
+			activity.runOnUiThread(runnable);
+		}
+	}
 }

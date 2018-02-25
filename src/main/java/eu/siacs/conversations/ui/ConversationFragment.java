@@ -210,7 +210,7 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
 								conversation.messagesLoaded.set(true);
 								return;
 							}
-							getActivity().runOnUiThread(() -> {
+							runOnUiThread(() -> {
 								final int oldPosition = binding.messagesView.getFirstVisiblePosition();
 								Message message = null;
 								int childPos;
@@ -242,7 +242,7 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
 						@Override
 						public void informUser(final int resId) {
 
-							getActivity().runOnUiThread(() -> {
+							runOnUiThread(() -> {
 								if (messageLoaderToast != null) {
 									messageLoaderToast.cancel();
 								}
@@ -519,12 +519,12 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
 			@Override
 			public void inform(final String text) {
 				hidePrepareFileToast(prepareFileToast);
-				getActivity().runOnUiThread(() -> activity.replaceToast(text));
+				runOnUiThread(() -> activity.replaceToast(text));
 			}
 
 			@Override
 			public void success(Message message) {
-				getActivity().runOnUiThread(() -> activity.hideToast());
+				runOnUiThread(() -> activity.hideToast());
 				hidePrepareFileToast(prepareFileToast);
 				activity.xmppConnectionService.sendMessage(message);
 			}
@@ -532,7 +532,7 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
 			@Override
 			public void error(final int errorCode, Message message) {
 				hidePrepareFileToast(prepareFileToast);
-				getActivity().runOnUiThread(() -> activity.replaceToast(getString(errorCode)));
+				runOnUiThread(() -> activity.replaceToast(getString(errorCode)));
 
 			}
 
@@ -775,7 +775,7 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
 	@Override
 	public void onDetach() {
 		super.onDetach();
-		this.activity = null;
+		this.activity = null; //TODO maybe not a good idea since some callbacks really need it
 	}
 
 	@Override
@@ -2238,26 +2238,38 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
 
 	@Override
 	public void onTypingStarted() {
+		final XmppConnectionService service = activity == null ? null : activity.xmppConnectionService;
+		if (service == null) {
+			return;
+		}
 		Account.State status = conversation.getAccount().getStatus();
 		if (status == Account.State.ONLINE && conversation.setOutgoingChatState(ChatState.COMPOSING)) {
-			activity.xmppConnectionService.sendChatState(conversation);
+			service.sendChatState(conversation);
 		}
 		updateSendButton();
 	}
 
 	@Override
 	public void onTypingStopped() {
+		final XmppConnectionService service = activity == null ? null : activity.xmppConnectionService;
+		if (service == null) {
+			return;
+		}
 		Account.State status = conversation.getAccount().getStatus();
 		if (status == Account.State.ONLINE && conversation.setOutgoingChatState(ChatState.PAUSED)) {
-			activity.xmppConnectionService.sendChatState(conversation);
+			service.sendChatState(conversation);
 		}
 	}
 
 	@Override
 	public void onTextDeleted() {
+		final XmppConnectionService service = activity == null ? null : activity.xmppConnectionService;
+		if (service == null) {
+			return;
+		}
 		Account.State status = conversation.getAccount().getStatus();
 		if (status == Account.State.ONLINE && conversation.setOutgoingChatState(Config.DEFAULT_CHATSTATE)) {
-			activity.xmppConnectionService.sendChatState(conversation);
+			service.sendChatState(conversation);
 		}
 		updateSendButton();
 	}
