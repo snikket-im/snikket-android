@@ -57,6 +57,7 @@ images = {
 	'ic_notifications_paused_white80.svg' => ['ic_notifications_paused_white80', 24],
 	'ic_notifications_white80.svg' => ['ic_notifications_white80', 24],
 	'ic_verified_fingerprint.svg' => ['ic_verified_fingerprint', 36],
+    'qrcode-scan.svg' => ['ic_qr_code_scan_white_24dp', 24],
 	'message_bubble_received.svg' => ['message_bubble_received.9', 0],
 	'message_bubble_received_grey.svg' => ['message_bubble_received_grey.9', 0],
 	'message_bubble_received_dark.svg' => ['message_bubble_received_dark.9', 0],

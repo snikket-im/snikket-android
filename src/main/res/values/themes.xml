@@ -72,7 +72,7 @@
         <item type="reference" name="icon_settings">@drawable/ic_settings_black_24dp</item>
         <item type="reference" name="icon_import_export">@drawable/ic_import_export_white_24dp</item>
         <item type="reference" name="icon_share">@drawable/ic_share_white_24dp</item>
-        <item type="reference" name="icon_scan_qr_code">@drawable/ic_camera_alt_white_24dp</item>
+        <item type="reference" name="icon_scan_qr_code">@drawable/ic_qr_code_scan_white_24dp</item>
 
         <item type="reference" name="icon_notifications">@drawable/ic_notifications_black_24dp</item>
         <item type="reference" name="icon_notifications_off">@drawable/ic_notifications_off_black_24dp</item>
@@ -152,7 +152,7 @@
         <item type="reference" name="icon_settings">@drawable/ic_settings_white_24dp</item>
         <item type="reference" name="icon_import_export">@drawable/ic_import_export_white_24dp</item>
         <item type="reference" name="icon_share">@drawable/ic_share_white_24dp</item>
-        <item type="reference" name="icon_scan_qr_code">@drawable/ic_camera_alt_white_24dp</item>
+        <item type="reference" name="icon_scan_qr_code">@drawable/ic_qr_code_scan_white_24dp</item>
 
         <item type="reference" name="icon_notifications">@drawable/ic_notifications_white_24dp</item>
         <item type="reference" name="icon_notifications_off">@drawable/ic_notifications_off_white_24dp</item>
