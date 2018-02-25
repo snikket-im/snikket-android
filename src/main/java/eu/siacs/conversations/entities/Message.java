@@ -568,7 +568,8 @@ public class Message extends AbstractEntity {
 						!message.bodyIsOnlyEmojis() &&
 						((this.axolotlFingerprint == null && message.axolotlFingerprint == null) || this.axolotlFingerprint.equals(message.getFingerprint())) &&
 						UIHelper.sameDay(message.getTimeSent(),this.getTimeSent()) &&
-						this.getReadByMarkers().equals(message.getReadByMarkers())
+						this.getReadByMarkers().equals(message.getReadByMarkers()) &&
+						!this.conversation.getJid().toBareJid().toString().equals(Config.BUG_REPORTS)
 				);
 	}
 
