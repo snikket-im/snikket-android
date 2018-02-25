@@ -64,7 +64,7 @@
   <string name="send_never">Nu mă mai întreba</string>
   <string name="problem_connecting_to_account">Nu mă pot conecta la cont</string>
   <string name="problem_connecting_to_accounts">Nu mă pot conecta la conturi multiple</string>
-  <string name="touch_to_fix">Apasă aici pentru a configura conturile tale</string>
+  <string name="touch_to_fix">Apăsați aici pentru a configura conturile dumneavoastră</string>
   <string name="attach_file">Atașează fișier</string>
   <string name="not_in_roster">Contactul nu este în lista dumneavoastră. Ați dori să îl adăugați?</string>
   <string name="add_contact">Adaugă contact</string>
@@ -87,7 +87,7 @@
   <string name="send_pgp_message">Trimite mesaj criptat cu OpenPGP</string>
   <string name="your_nick_has_been_changed">Numele tău a fost schimbat</string>
   <string name="send_unencrypted">Trimite necriptat</string>
-  <string name="decryption_failed">Decriptarea a eșuat. Poate nu ai cheia privată corectă.</string>
+  <string name="decryption_failed">Decriptarea a eșuat. Poate nu aveții cheia privată corectă.</string>
   <string name="openkeychain_required">OpenKeychain</string>
   <string name="openkeychain_required_long">Conversations utilizează o aplicație externă <b>OpenKeychain</b> pentru a cripta și decripta mesaje și a administra cheile publice.\n\nOpenKeychain este licențiat sub GPLv3 și se poate instala din F-Droid și Google Play.\n\n<small>(Vă rugăm să reporniți Conversations după)</small></string>
   <string name="restart">Repornește</string>
@@ -106,7 +106,7 @@
   <string name="pref_accept_files_summary">Mai mici decât...</string>
   <string name="pref_attachments">Atașamente</string>
   <string name="pref_return_to_previous">Partajare rapidă</string>
-  <string name="pref_return_to_previous_summary">După ce ai partajat ceva, întoarce-te la activitatea precedentă în loc să deschizi conversația</string>
+  <string name="pref_return_to_previous_summary">După ce ați partajat ceva, întoarce-te la activitatea precedentă în loc să deschizi conversația</string>
   <string name="pref_notification_settings">Notificare</string>
   <string name="pref_notifications">Notificări</string>
   <string name="pref_notifications_summary">Notifică atunci când este primit un mesaj nou</string>
@@ -139,7 +139,7 @@
   <string name="error_not_an_image_file">Fișierul selectat nu este o imagine</string>
   <string name="error_compressing_image">Eroare la conversia fișierului de imagine</string>
   <string name="error_file_not_found">Fișierul nu a fost găsit</string>
-  <string name="error_io_exception">Eroare I/O generala. Poate ai rămas fără spațiu liber?</string>
+  <string name="error_io_exception">Eroare I/O generala. Poate ați rămas fără spațiu liber?</string>
   <string name="error_security_exception_during_image_copy">Aplicația folosită pentru selecția acestei imagini nu a oferit destule permisiuni pentru a putea citi fișierul.\n\n<small>Folosește un alt manager de fișiere pentru a alege o imagine</small></string>
   <string name="account_status_unknown">Necunoscut</string>
   <string name="account_status_disabled">Dezactivat temporar</string>
@@ -307,7 +307,7 @@
   <string name="conference_unknown_error">Nu mai sunteți în această discuție de grup</string>
   <string name="using_account">folosind cont %s</string>
   <string name="checking_x">Verifica %s pe gazda HTTP</string>
-  <string name="not_connected_try_again">Nu ești conectat(ă). Încearcă din nou mai târziu.</string>
+  <string name="not_connected_try_again">Nu sunteți conectat(ă). Încercați din nou mai târziu</string>
   <string name="check_x_filesize">Verifica marimea %s</string>
   <string name="check_x_filesize_on_host">Verifica marimea %1$s pe %2$s</string>
   <string name="message_options">Opțiuni mesaje</string>
@@ -382,7 +382,7 @@
   <string name="smp_explain_answer">Contactul dumneavoastră dorește să vă verifice amprenta provocându-vă cu un secret împărtășit. Contactul a furnizat următorul indiciu sau întrebare legat de acel secret.</string>
   <string name="shared_secret_hint_should_not_be_empty">Indiciul tău nu ar trebui să fie gol</string>
   <string name="shared_secret_can_not_be_empty">Secretul tău împărtășit nu poate fi gol</string>
-  <string name="manual_verification_explanation">Compară cu grijă amprenta afișata mai jos cu amprenta contactului.\nPoți folosi orice formă de comunicare de încredere precum un e-mail criptat sau o convorbire telefonică pentru a face schimb de amprente.</string>
+  <string name="manual_verification_explanation">Comparați cu grijă amprenta afișata mai jos cu amprenta contactului.\nPuteți folosi orice formă de comunicare de încredere precum un e-mail criptat sau o convorbire telefonică pentru a face schimb de amprente.</string>
   <string name="change_password">Schimbare parolă</string>
   <string name="current_password">Parolă curentă</string>
   <string name="new_password">Parolă nouă</string>
@@ -420,6 +420,9 @@
   <string name="two_hours">2 ore</string>
   <string name="eight_hours">8 ore</string>
   <string name="until_further_notice">Până la noi ordine</string>
+  <string name="snooze">Amânare</string>
+  <string name="reply">Răspunde</string>
+  <string name="mark_as_read">Marchează ca citit</string>
   <string name="pref_input_options">Opțiuni introducere text</string>
   <string name="pref_enter_is_send">ENTER trimite</string>
   <string name="pref_enter_is_send_summary">Apasă tasta ENTER pentru a trimite mesajul</string>
@@ -702,4 +705,7 @@ sau chiar pierderea mesajelor.\nÎn continuare veți fi rugați să dezactivați
   <string name="copy_to_clipboard">Copiază în clipboard</string>
   <string name="message_copied_to_clipboard">Mesaj copiat în clipboard</string>
   <string name="message">Mesaj</string>
+  <string name="private_messages_are_disabled">Mesajele private sunt dezactivate</string>
+  <string name="huawei_protected_apps">Aplicații protejate</string>
+  <string name="huawei_protected_apps_summary">Pentru a continua să primiți notificări, chiar și când ecranul este oprit, trebuie să adăugați Conversations în lista de aplicații protejate.</string>
 </resources>

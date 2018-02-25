@@ -20,6 +20,7 @@
   <string name="title_activity_sharewith">Compartir con Conversación</string>
   <string name="title_activity_start_conversation">Nueva Conversación</string>
   <string name="title_activity_choose_contact">Seleccionar Contacto</string>
+  <string name="title_activity_share_via_account">Compartir via cuenta</string>
   <string name="title_activity_block_list">Lista contactos bloqueados</string>
   <string name="just_now">ahora</string>
   <string name="minute_ago">hace 1 min</string>
@@ -419,6 +420,9 @@
   <string name="two_hours">2 horas</string>
   <string name="eight_hours">8 horas</string>
   <string name="until_further_notice">Hasta nuevo aviso</string>
+  <string name="snooze">Silenciar</string>
+  <string name="reply">Responder</string>
+  <string name="mark_as_read">Marcar como leído</string>
   <string name="pref_input_options">Entrada</string>
   <string name="pref_enter_is_send">Intro para enviar</string>
   <string name="pref_enter_is_send_summary">Usar la tecla intro para enviar el mensaje</string>
@@ -695,4 +699,7 @@
   <string name="copy_to_clipboard">Copiar al portapapeles</string>
   <string name="message_copied_to_clipboard">Mensaje copiado en el portapapeles</string>
   <string name="message">Mensaje</string>
+  <string name="private_messages_are_disabled">Los mensajes privados están deshabilitados</string>
+  <string name="huawei_protected_apps">Aplicaciones protegidas</string>
+  <string name="huawei_protected_apps_summary">Para seguir recibiendo notificaciones, incluso cuando la pantalla está apagada, necesitas añadir Conversations a la lista de aplicaciones protegidas.</string>
 </resources>

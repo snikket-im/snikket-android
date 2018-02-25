@@ -420,6 +420,9 @@
   <string name="two_hours">2 heures</string>
   <string name="eight_hours">8 heures</string>
   <string name="until_further_notice">Jusqu\'à nouvel ordre</string>
+  <string name="snooze">Répéter les notifications</string>
+  <string name="reply">Répondre</string>
+  <string name="mark_as_read">Marqué comme lu</string>
   <string name="pref_input_options">Saisie</string>
   <string name="pref_enter_is_send">Touche Entrée pour envoyer</string>
   <string name="pref_enter_is_send_summary">Utiliser la touche Entrée pour envoyer un message.</string>
@@ -696,4 +699,7 @@
   <string name="copy_to_clipboard">Copier dans le presse-papier</string>
   <string name="message_copied_to_clipboard">Message copié dans le presse-papier</string>
   <string name="message">Message</string>
+  <string name="private_messages_are_disabled">Les messages privés sont désactivés</string>
+  <string name="huawei_protected_apps">Applications protégées</string>
+  <string name="huawei_protected_apps_summary">Pour recevoir les notifications, même lorsque l\'écran est éteint, vous devez ajouter Conversations à la liste des applications protégées.</string>
 </resources>

@@ -420,6 +420,8 @@
   <string name="two_hours">2 个小时</string>
   <string name="eight_hours">8 个小时</string>
   <string name="until_further_notice">直到重新开启通知</string>
+  <string name="reply">回复</string>
+  <string name="mark_as_read">标记为已读</string>
   <string name="pref_input_options">输入</string>
   <string name="pref_enter_is_send">点击回车发送</string>
   <string name="pref_enter_is_send_summary">用回车键来发送消息</string>
@@ -695,4 +697,5 @@
   <string name="copy_to_clipboard">复制</string>
   <string name="message_copied_to_clipboard">消息已被复制</string>
   <string name="message">消息</string>
+  <string name="private_messages_are_disabled">禁止私信</string>
 </resources>

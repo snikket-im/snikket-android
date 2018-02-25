@@ -420,6 +420,9 @@
   <string name="two_hours">2 horas</string>
   <string name="eight_hours">8 horas</string>
   <string name="until_further_notice">Ate novo aviso</string>
+  <string name="snooze">Pospor</string>
+  <string name="reply">Respostar</string>
+  <string name="mark_as_read">Marcar como lido</string>
   <string name="pref_input_options">Entrada</string>
   <string name="pref_enter_is_send">Enter envía</string>
   <string name="pref_enter_is_send_summary">Utilizar a tecla Enter para enviar mensaxe</string>
@@ -696,4 +699,7 @@
   <string name="copy_to_clipboard">Copiar ao portapapeis</string>
   <string name="message_copied_to_clipboard">Mensaxe copiada ao portapapeis</string>
   <string name="message">Mensaxe</string>
+  <string name="private_messages_are_disabled">As mensaxes privadas están deshabilitadas</string>
+  <string name="huawei_protected_apps">Apps protexidos</string>
+  <string name="huawei_protected_apps_summary">Para seguir recibindo notificacións, incluso cando a pantalla está apagada, precisa engadir Conversations a lista de apps protexidos.</string>
 </resources>

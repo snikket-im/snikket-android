@@ -420,6 +420,9 @@
   <string name="two_hours">2 часа</string>
   <string name="eight_hours">8 часа</string>
   <string name="until_further_notice">До отмяна</string>
+  <string name="snooze">Отлагане</string>
+  <string name="reply">Отговаряне</string>
+  <string name="mark_as_read">Отбелязване като прочетено</string>
   <string name="pref_input_options">Въвеждане</string>
   <string name="pref_enter_is_send">Enter изпраща</string>
   <string name="pref_enter_is_send_summary">Натискането на клавиша Enter изпраща съобщението</string>
@@ -696,4 +699,7 @@
   <string name="copy_to_clipboard">Копиране в буфера</string>
   <string name="message_copied_to_clipboard">Съобщението е копирано</string>
   <string name="message">Съобщение</string>
+  <string name="private_messages_are_disabled">Личните съобщения са изключени</string>
+  <string name="huawei_protected_apps">Защитени приложения</string>
+  <string name="huawei_protected_apps_summary">Ако искате да продължите да получавате известия дори когато екранът е заключен, трябва да добавите „Conversations“ към списъка от защитени приложения.</string>
 </resources>

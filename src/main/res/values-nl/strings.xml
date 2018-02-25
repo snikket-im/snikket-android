@@ -420,6 +420,9 @@
   <string name="two_hours">2 uur</string>
   <string name="eight_hours">8 uur</string>
   <string name="until_further_notice">Voor onbepaalde duur</string>
+  <string name="snooze">Sluimeren</string>
+  <string name="reply">Beantwoorden</string>
+  <string name="mark_as_read">Markeren als gelezen</string>
   <string name="pref_input_options">Invoer</string>
   <string name="pref_enter_is_send">Enter is versturen</string>
   <string name="pref_enter_is_send_summary">Gebruik de enter-toets om berichten te versturen</string>
@@ -696,4 +699,7 @@
   <string name="copy_to_clipboard">Kopiëren naar klembord</string>
   <string name="message_copied_to_clipboard">Bericht gekopieerd naar klembord</string>
   <string name="message">Bericht</string>
+  <string name="private_messages_are_disabled">Privéberichten zijn uitgeschakeld</string>
+  <string name="huawei_protected_apps">Beschermde apps</string>
+  <string name="huawei_protected_apps_summary">Om meldingen te blijven ontvangen, zelfs wanneer het scherm uit staat, moet je Conversations toevoegen aan de lijst met beschermde apps.</string>
 </resources>

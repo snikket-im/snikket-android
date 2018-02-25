@@ -420,6 +420,9 @@
   <string name="two_hours">2 óra</string>
   <string name="eight_hours">8 óra</string>
   <string name="until_further_notice">További értesítésig</string>
+  <string name="snooze">Szundi</string>
+  <string name="reply">Válasz</string>
+  <string name="mark_as_read">Elolvasva</string>
   <string name="pref_input_options">Bevitel</string>
   <string name="pref_enter_is_send">Enter gomb küldjön</string>
   <string name="pref_enter_is_send_summary">Használja az Enter-t üzenet küldésre</string>
@@ -696,4 +699,7 @@
   <string name="copy_to_clipboard">Másolja a vágólapra</string>
   <string name="message_copied_to_clipboard">Üzenet a vágólapra másolva</string>
   <string name="message">Üzenet</string>
+  <string name="private_messages_are_disabled">A privát üzenetek le vannak tiltva</string>
+  <string name="huawei_protected_apps">Védett alkalmazások</string>
+  <string name="huawei_protected_apps_summary">Ha értesítést szeretne kapni, még akkor is, ha a képernyő ki van kapcsolva, hozzá kell adnia a Conversations-t a védett alkalmazások listájához.</string>
 </resources>

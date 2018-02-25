@@ -420,6 +420,9 @@
   <string name="two_hours">2 ordu</string>
   <string name="eight_hours">8 ordu</string>
   <string name="until_further_notice">abisatu arte</string>
+  <string name="snooze">Beranduago jakinarazi</string>
+  <string name="reply">Erantzun</string>
+  <string name="mark_as_read">Irakurrita bezala markatu</string>
   <string name="pref_input_options">Sarrera</string>
   <string name="pref_enter_is_send">Sartu teklak bidaltzen du</string>
   <string name="pref_enter_is_send_summary">Sartu tekla erabili mezua bidaltzeko</string>
@@ -696,4 +699,7 @@
   <string name="copy_to_clipboard">Arbelera kopiatu</string>
   <string name="message_copied_to_clipboard">Mezua arbelera kopiatu da</string>
   <string name="message">Mezua</string>
+  <string name="private_messages_are_disabled">Mezu pribatuak ezgaituta daude</string>
+  <string name="huawei_protected_apps">Babestutako aplikazioak</string>
+  <string name="huawei_protected_apps_summary">Jakinarazpenak jasotzen jarraitu nahi naduzu, baita pantaila itzalita dagoenean ere, Conversations babestutako aplikazioen zerrendan gehitu behar duzu.</string>
 </resources>

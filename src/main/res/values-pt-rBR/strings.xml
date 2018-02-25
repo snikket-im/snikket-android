@@ -420,6 +420,7 @@
   <string name="two_hours">2 horas</string>
   <string name="eight_hours">8 horas</string>
   <string name="until_further_notice">Até segunda ordem</string>
+  <string name="mark_as_read">Marcar como lida</string>
   <string name="pref_input_options">Entrada</string>
   <string name="pref_enter_is_send">Enter envia</string>
   <string name="pref_enter_is_send_summary">Usa o botão Enter para enviar a mensagem.</string>
@@ -696,4 +697,5 @@
   <string name="copy_to_clipboard">Copiar para a área de transferência</string>
   <string name="message_copied_to_clipboard">A mensagem foi copiada para a área de transferência</string>
   <string name="message">Mensagem</string>
+  <string name="private_messages_are_disabled">As mensagens privadas estão desabilitadas</string>
 </resources>

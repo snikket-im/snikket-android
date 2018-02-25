@@ -121,6 +121,7 @@
   <string name="pref_confirm_messages">تأكيد الرسالة</string>
   <string name="pref_confirm_messages_summary">دع مراسيلك يعرفون متى قد تلقيت و هل قرئت رسائلهم</string>
   <string name="pref_ui_options">واجهة المستخدم</string>
+  <string name="openpgp_error">لقد قام أوبن كي تشاين بالإبلاغ عن وجود خطأ</string>
   <string name="accept">قبول</string>
   <string name="error">حدث خطأ ما</string>
   <string name="pref_grant_presence_updates">منح تحديثات الظهور</string>
@@ -233,6 +234,8 @@
   <string name="leave">غادر</string>
   <string name="contact_added_you">جهة اتصال أضافتك </string>
   <string name="add_back">أضف من جهتك أيضا</string>
+  <string name="contact_has_read_up_to_this_point">لقد قرأ %s الرسائل إلى غاية هذا السطر</string>
+  <string name="contacts_have_read_up_to_this_point">لقد قرأ %s الرسائل إلى غاية هذا السطر</string>
   <string name="publish">أنشر</string>
   <string name="touch_to_choose_picture">إضغط على الصورة الرمزية لانتقاء صورة من الأستوديو</string>
   <string name="publishing">نشر ...</string>
@@ -272,7 +275,7 @@
   <string name="pref_use_indicate_received">طلب تقارير تسليم الرسائل</string>
   <string name="pref_expert_options_other">أخرى</string>
   <string name="pref_conference_name">إسم مجموعة المحادثة</string>
-  <string name="pref_autojoin">إلتحاق تلقائي بمجموعات المحادثة</string>
+  <string name="pref_autojoin">إنضمام تلقائي إلى فِرَق المحادثة</string>
   <string name="toast_message_otr_fingerprint">تم نسخ بصمة OTR إلى الحافظة</string>
   <string name="toast_message_omemo_fingerprint">تم نسخ بصمة OMEMO إلى الحافظة !</string>
   <string name="conference_banned">حسابك محظور للإلتحاق بمجموعة المحادثة هذه</string>
@@ -367,6 +370,8 @@
   <string name="ban_from_conference">الحظر من دخول مجموعة المحادثة</string>
   <string name="ban_now">حظر الآن</string>
   <string name="could_not_change_role">لا يمكن تغيير دول %s</string>
+  <string name="public_conference">فريق محادثة عمومي مفتوح للجميع</string>
+  <string name="private_conference">خاص، فريق محادثة مفتوح للأعضاء المنتمين إليه فقط</string>
   <string name="conference_options">خيارات مجموعة المحادثة</string>
   <string name="members_only">سرِّي ، للأعضاء فقط</string>
   <string name="non_anonymous">لا تسمح للمجهولين بالدخول</string>
@@ -378,6 +383,8 @@
   <string name="two_hours">ساعتين</string>
   <string name="eight_hours">8 ساعات</string>
   <string name="until_further_notice">حتى إشعار آخر</string>
+  <string name="reply">الرد</string>
+  <string name="mark_as_read">إعتباره كمقروء</string>
   <string name="pref_enter_is_send">أدخل للإرسال</string>
   <string name="pref_enter_is_send_summary">استخدام مفتاح الدخول لإرسال رسالة</string>
   <string name="pref_display_enter_key">عرض مفتاح الادخال</string>
@@ -440,12 +447,15 @@
   <string name="pref_show_connection_options_summary">عرض اسم المضيف وإعدادات المنفذ عند تنصيب حساب</string>
   <string name="hostname_example">xmpp.example.com</string>
   <string name="action_add_account_with_certificate">أضف حساباً مرفوقاً بشهادة</string>
+  <string name="authenticate_with_certificate">أتركه فارغًا القيام بالمصادقة عبر شهادة</string>
   <string name="mam_prefs">إعدادت الأرشيف</string>
   <string name="captcha_required">رمز الكابتشا ضروري</string>
   <string name="captcha_hint">قم بإدخال الرموز المتواجدة في الصورة</string>
   <string name="certificate_chain_is_not_trusted">سلسلة الشهادة غير موثوق فيها</string>
   <string name="jid_does_not_match_certificate">معرف ID جابر لا يتطابق مع الشهادة</string>
   <string name="action_renew_certificate">تجديد الشهادة</string>
+  <string name="error_fetching_omemo_key">خطأ أثناء جلب مفتاح أوميمو OMEMO !</string>
+  <string name="device_does_not_support_certificates">إنّ جهازك لا يدعم اختيار شهادات العملاء !</string>
   <string name="pref_connection_options">الإتصال</string>
   <string name="pref_use_tor">الإتصال عبر شبكة طور Tor</string>
   <string name="pref_use_tor_summary">تمرير كافة الاتصالات عبر شبكة تور. يتطلب أوربوت Orbot</string>
@@ -454,8 +464,17 @@
   <string name="hostname_or_onion">خادوم أو عنوان .onion</string>
   <string name="not_a_valid_port">هذا ليس برقم منفذٍ صالح</string>
   <string name="not_valid_hostname">إسم السيرفر هذا ليس صالحاً</string>
+  <plurals name="x_messages">
+    <item quantity="zero">%d رسائل</item>
+    <item quantity="one">%d رسالة</item>
+    <item quantity="two">%d رسالتين</item>
+    <item quantity="few">%d رسائل</item>
+    <item quantity="many">%d رسائل</item>
+    <item quantity="other">%d رسائل</item>
+  </plurals>
   <string name="load_more_messages">أظهر أكثر</string>
   <string name="shared_text_with_x">شارك النص عبر %s</string>
+  <string name="no_storage_permission">تطبيق Conversations بحاجة إلى النفاذ إلى مساحة التخزين الخارجية</string>
   <string name="sync_with_contacts">المزامنة مع جهات الإتصال</string>
   <string name="certificate_information">معلومات حول الشهادة</string>
   <string name="certificate_subject">الموضوع</string>
@@ -482,6 +501,7 @@
   <string name="send_corrected_message">إبعث الرسالةَ مُصححة</string>
   <string name="select_image_and_crop">إختر صورة ثم قم بقصها</string>
   <string name="this_account_is_disabled">لقد قمت بتعطيل هذا الحساب</string>
+  <string name="security_error_invalid_file_access">خطأ في الأمان : نفاذ غير سليم إلى ملف</string>
   <string name="no_application_to_share_uri">تعذر العثور على تطبيق يُمكنُ بواسطته مشاركة الرابط</string>
   <string name="share_uri_with">شارك الرابط مع ...</string>
   <string name="welcome_text">XMPP هو مزود بروتوكول مستقل. يمكنك استخدام هذا العميل مع أي خادم إكس أم بي بي اخترته. و لراحتك جعلنا من السهل إنشاء حساب على conversations.im¹؛ مزود خدمة يتناسب خصيصا للاستخدام مع تطبيق المحادثات Conversations.</string>
@@ -493,6 +513,7 @@
   <string name="pref_manually_change_presence_summary">إضغط على صورتك الرمزية لتغيير وضع حضورك</string>
   <string name="change_presence">تعديل الحضور</string>
   <string name="status_message">نص حالة الحضور</string>
+  <string name="all_accounts_on_this_device">تعيينه لكل الحسابات على هذا الجهاز</string>
   <string name="presence_chat">جاهز للدردشة</string>
   <string name="presence_online">متصل</string>
   <string name="presence_away">غائِب</string>
@@ -521,6 +542,7 @@
   <string name="pref_use_green_background">خلفية خضراء</string>
   <string name="pref_use_green_background_summary">إستخدم خلفية خضراء للرسائل المُستَلَمة</string>
   <string name="unable_to_connect_to_keychain">تعذر الربط بأوبن كي تشاين</string>
+  <string name="this_device_is_no_longer_in_use">لم يعُد هذا الجهاز مُستعمَلًا</string>
   <string name="type_pc">كمبيوتر</string>
   <string name="type_phone">هاتف نقال</string>
   <string name="type_tablet">لوحة مفاتيحية</string>
@@ -537,6 +559,7 @@
   <string name="error_publish_avatar_offline">يجب أن تكون متصلا ليسمح لك بنشر الصورة الرمزية الخاصة بك.</string>
   <string name="show_error_message">أظهر رسالة الخطأ</string>
   <string name="error_message">رسالة خطأ</string>
+  <string name="data_saver_enabled">خدمة توفير البيانات مُنشّطة</string>
   <string name="error_unable_to_create_temporary_file">فشلت عملية إنشاء ملف مؤقت</string>
   <string name="this_device_has_been_verified">تم التحقق من هذا الجهاز</string>
   <string name="copy_fingerprint">انسخ البصمة</string>
@@ -548,10 +571,12 @@
   <string name="share_as_barcode">شاركه كشَفْرة خَيْطيّة</string>
   <string name="share_as_uri">شاركه كعنوان XMPP</string>
   <string name="share_as_http">شاركه كرابط HTTP</string>
+  <string name="blindly_trusted_omemo_keys">الثقة العمياء في مفاتيح أوميمو OMEMO</string>
   <string name="not_trusted">غير موثوق بها</string>
   <string name="invalid_barcode">الشفْرة الخيْطيّة خاطئة</string>
   <string name="pref_clean_cache">تفريغ الذاكرة الوسيطة</string>
   <string name="pref_clean_private_storage">تفريغ مساحة التخرين الخاصة</string>
+  <string name="i_followed_this_link_from_a_trusted_source">لقد إتبعتُ هذا الرابط عبر مصدر موثوق</string>
   <string name="verify_omemo_keys">قم بفحص مفاتيح أو مي مو OMEMO</string>
   <string name="show_inactive_devices">أظهر الأجهزة المعطلة</string>
   <string name="hide_inactive_devices">قم بإخفاء الأجهزة المعطلة</string>
@@ -565,6 +590,7 @@
   <string name="transcoding_video">ضغط الفيديو</string>
   <string name="contact_blocked_past_tense">جهة الاتصال محجوبة.</string>
   <string name="pref_notifications_from_strangers">الإشعارات من طرف غرباء</string>
+  <string name="pref_notifications_from_strangers_summary">القيام بإخطاري عندما أتلقى رسائل مِن طرف غُرباء.</string>
   <string name="received_message_from_stranger">لقد تلقيت رسالة من شخص غريب</string>
   <string name="block_stranger">حظر الغريب</string>
   <string name="block_entire_domain">حظر إسم النطاق كاملا</string>
@@ -573,6 +599,7 @@
   <string name="session_failure">فشلت الجلسة</string>
   <string name="account_status_regis_web">لا يمكن تسجيل حسابات على هذا الخادوم إلا عبر موقع الويب</string>
   <string name="open_website">فتح موقع الإنترنت</string>
+  <string name="application_found_to_open_website">تعذر العثور على تطبيق يُمكنه فتح موقع الويب</string>
   <string name="today">اليوم</string>
   <string name="yesterday">البارحة</string>
   <string name="pref_validate_hostname">التحقق من صحة إسم المضيف بواسطة DNSSEC</string>
