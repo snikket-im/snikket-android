@@ -30,15 +30,21 @@
 package eu.siacs.conversations.ui;
 
 
+import android.annotation.SuppressLint;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.support.annotation.IdRes;
 import android.support.v7.app.ActionBar;
+import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -58,6 +64,7 @@ import eu.siacs.conversations.ui.interfaces.OnConversationSelected;
 import eu.siacs.conversations.ui.interfaces.OnConversationsListItemUpdated;
 import eu.siacs.conversations.ui.service.EmojiService;
 import eu.siacs.conversations.ui.util.PendingItem;
+import eu.siacs.conversations.utils.ExceptionHelper;
 import eu.siacs.conversations.xmpp.OnUpdateBlocklist;
 
 import static eu.siacs.conversations.ui.ConversationFragment.REQUEST_DECRYPT_PGP;
@@ -124,6 +131,7 @@ public class ConversationActivity extends XmppActivity implements OnConversation
 				openConversation(conversation, null);
 			}
 		}
+		showDialogsIfMainIsOverview();
 	}
 
 	private boolean performRedirectIfNecessary(boolean noAnimation) {
@@ -175,6 +183,60 @@ public class ConversationActivity extends XmppActivity implements OnConversation
 		return intent;
 	}
 
+	private void showDialogsIfMainIsOverview() {
+		Fragment fragment = getFragmentManager().findFragmentById(R.id.main_fragment);
+		if (fragment != null && fragment instanceof ConversationsOverviewFragment) {
+			if (ExceptionHelper.checkForCrash(this, this.xmppConnectionService)) {
+				return;
+			}
+			openBatteryOptimizationDialogIfNeeded();
+		}
+	}
+
+	private String getBatteryOptimizationPreferenceKey() {
+		@SuppressLint("HardwareIds") String device = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
+		return "show_battery_optimization" + (device == null ? "" : device);
+	}
+
+	private void setNeverAskForBatteryOptimizationsAgain() {
+		getPreferences().edit().putBoolean(getBatteryOptimizationPreferenceKey(), false).apply();
+	}
+
+	private void openBatteryOptimizationDialogIfNeeded() {
+		if (hasAccountWithoutPush()
+				&& isOptimizingBattery()
+				&& getPreferences().getBoolean(getBatteryOptimizationPreferenceKey(), true)) {
+			AlertDialog.Builder builder = new AlertDialog.Builder(this);
+			builder.setTitle(R.string.battery_optimizations_enabled);
+			builder.setMessage(R.string.battery_optimizations_enabled_dialog);
+			builder.setPositiveButton(R.string.next, (dialog, which) -> {
+				Intent intent = new Intent(Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS);
+				Uri uri = Uri.parse("package:" + getPackageName());
+				intent.setData(uri);
+				try {
+					startActivityForResult(intent, REQUEST_BATTERY_OP);
+				} catch (ActivityNotFoundException e) {
+					Toast.makeText(this, R.string.device_does_not_support_battery_op, Toast.LENGTH_SHORT).show();
+				}
+			});
+			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2) {
+				builder.setOnDismissListener(dialog -> setNeverAskForBatteryOptimizationsAgain());
+			}
+			AlertDialog dialog = builder.create();
+			dialog.setCanceledOnTouchOutside(false);
+			dialog.show();
+		}
+	}
+
+	private boolean hasAccountWithoutPush() {
+		for (Account account : xmppConnectionService.getAccounts()) {
+			if (account.getStatus() == Account.State.ONLINE && !xmppConnectionService.getPushManagementService().available(account)) {
+				return true;
+			}
+		}
+		return false;
+	}
+
 	private void notifyFragmentOfBackendConnected(@IdRes int id) {
 		final Fragment fragment = getFragmentManager().findFragmentById(id);
 		if (fragment != null && fragment instanceof XmppFragment) {
@@ -219,6 +281,9 @@ public class ConversationActivity extends XmppActivity implements OnConversation
 				}
 				conversation.getAccount().getPgpDecryptionService().giveUpCurrentDecryption();
 				break;
+			case REQUEST_BATTERY_OP:
+				setNeverAskForBatteryOptimizationsAgain();
+				break;
 		}
 	}
 
@@ -240,6 +305,7 @@ public class ConversationActivity extends XmppActivity implements OnConversation
 		new EmojiService(this).init();
 		this.binding = DataBindingUtil.setContentView(this, R.layout.activity_conversations);
 		this.getFragmentManager().addOnBackStackChangedListener(this::invalidateActionBarTitle);
+		this.getFragmentManager().addOnBackStackChangedListener(this::showDialogsIfMainIsOverview);
 		this.initializeFragments();
 		this.invalidateActionBarTitle();
 		final Intent intent = getIntent();

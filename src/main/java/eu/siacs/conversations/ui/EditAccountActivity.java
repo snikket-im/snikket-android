@@ -75,7 +75,7 @@ import eu.siacs.conversations.xmpp.pep.Avatar;
 public class EditAccountActivity extends OmemoActivity implements OnAccountUpdate, OnUpdateBlocklist,
 		OnKeyStatusUpdated, OnCaptchaRequested, KeyChainAliasCallback, XmppConnectionService.OnShowErrorToast, XmppConnectionService.OnMamPreferencesFetched {
 
-	private static final int REQUEST_DATA_SAVER = 0x37af244;
+	private static final int REQUEST_DATA_SAVER = 0xf244;
 	private TextInputLayout mAccountJidLayout;
 	private EditText mPassword;
 	private TextInputLayout mPasswordLayout;
