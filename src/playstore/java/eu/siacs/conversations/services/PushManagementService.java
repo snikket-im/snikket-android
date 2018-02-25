@@ -13,7 +13,6 @@ import eu.siacs.conversations.R;
 import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.xml.Element;
 import eu.siacs.conversations.xml.Namespace;
-import eu.siacs.conversations.xmpp.OnIqPacketReceived;
 import eu.siacs.conversations.xmpp.XmppConnection;
 import eu.siacs.conversations.xmpp.forms.Data;
 import eu.siacs.conversations.xmpp.jid.InvalidJidException;
@@ -32,68 +31,56 @@ public class PushManagementService {
 
 	public void registerPushTokenOnServer(final Account account) {
 		Log.d(Config.LOGTAG, account.getJid().toBareJid() + ": has push support");
-		retrieveGcmInstanceToken(new OnGcmInstanceTokenRetrieved() {
-			@Override
-			public void onGcmInstanceTokenRetrieved(String token) {
-				try {
-					final String deviceId = Settings.Secure.getString(mXmppConnectionService.getContentResolver(), Settings.Secure.ANDROID_ID);
-					IqPacket packet = mXmppConnectionService.getIqGenerator().pushTokenToAppServer(Jid.fromString(APP_SERVER), token, deviceId);
-					mXmppConnectionService.sendIqPacket(account, packet, new OnIqPacketReceived() {
-						@Override
-						public void onIqPacketReceived(Account account, IqPacket packet) {
-							Element command = packet.findChild("command","http://jabber.org/protocol/commands");
-							if (packet.getType() == IqPacket.TYPE.RESULT && command != null) {
-								Element x = command.findChild("x", Namespace.DATA);
-								if (x != null) {
-									Data data = Data.parse(x);
-									try {
-										String node = data.getValue("node");
-										String secret = data.getValue("secret");
-										Jid jid = Jid.fromString(data.getValue("jid"));
-										if (node != null && secret != null) {
-											enablePushOnServer(account, jid, node, secret);
-										}
-									} catch (InvalidJidException e) {
-										e.printStackTrace();
-									}
+		retrieveGcmInstanceToken(token -> {
+			try {
+				final String deviceId = Settings.Secure.getString(mXmppConnectionService.getContentResolver(), Settings.Secure.ANDROID_ID);
+				IqPacket packet = mXmppConnectionService.getIqGenerator().pushTokenToAppServer(Jid.fromString(APP_SERVER), token, deviceId);
+				mXmppConnectionService.sendIqPacket(account, packet, (a, p) -> {
+					Element command = p.findChild("command","http://jabber.org/protocol/commands");
+					if (p.getType() == IqPacket.TYPE.RESULT && command != null) {
+						Element x = command.findChild("x", Namespace.DATA);
+						if (x != null) {
+							Data data = Data.parse(x);
+							try {
+								String node = data.getValue("node");
+								String secret = data.getValue("secret");
+								Jid jid = Jid.fromString(data.getValue("jid"));
+								if (node != null && secret != null) {
+									enablePushOnServer(a, jid, node, secret);
 								}
-							} else {
-								Log.d(Config.LOGTAG,account.getJid().toBareJid()+": invalid response from app server");
+							} catch (InvalidJidException e) {
+								e.printStackTrace();
 							}
 						}
-					});
-				} catch (InvalidJidException ignored) {
+					} else {
+						Log.d(Config.LOGTAG, a.getJid().toBareJid()+": invalid response from app server");
+					}
+				});
+			} catch (InvalidJidException ignored) {
 
-				}
 			}
 		});
 	}
 
 	private void enablePushOnServer(final Account account, final Jid jid, final String node, final String secret) {
 		IqPacket enable = mXmppConnectionService.getIqGenerator().enablePush(jid, node, secret);
-		mXmppConnectionService.sendIqPacket(account, enable, new OnIqPacketReceived() {
-			@Override
-			public void onIqPacketReceived(Account account, IqPacket packet) {
-				if (packet.getType() == IqPacket.TYPE.RESULT) {
-					Log.d(Config.LOGTAG, account.getJid().toBareJid() + ": successfully enabled push on server");
-				} else if (packet.getType() == IqPacket.TYPE.ERROR) {
-					Log.d(Config.LOGTAG, account.getJid().toBareJid() + ": enabling push on server failed");
-				}
+		mXmppConnectionService.sendIqPacket(account, enable, (a, p) -> {
+			if (p.getType() == IqPacket.TYPE.RESULT) {
+				Log.d(Config.LOGTAG, a.getJid().toBareJid() + ": successfully enabled push on server");
+			} else if (p.getType() == IqPacket.TYPE.ERROR) {
+				Log.d(Config.LOGTAG, a.getJid().toBareJid() + ": enabling push on server failed");
 			}
 		});
 	}
 
 	private void retrieveGcmInstanceToken(final OnGcmInstanceTokenRetrieved instanceTokenRetrieved) {
-		new Thread(new Runnable() {
-			@Override
-			public void run() {
-				InstanceID instanceID = InstanceID.getInstance(mXmppConnectionService);
-				try {
-					String token = instanceID.getToken(mXmppConnectionService.getString(R.string.gcm_defaultSenderId), GoogleCloudMessaging.INSTANCE_ID_SCOPE, null);
-					instanceTokenRetrieved.onGcmInstanceTokenRetrieved(token);
-				} catch (Exception e) {
-					Log.d(Config.LOGTAG,"unable to get push token");
-				}
+		new Thread(() -> {
+			InstanceID instanceID = InstanceID.getInstance(mXmppConnectionService);
+			try {
+				String token = instanceID.getToken(mXmppConnectionService.getString(R.string.gcm_defaultSenderId), GoogleCloudMessaging.INSTANCE_ID_SCOPE, null);
+				instanceTokenRetrieved.onGcmInstanceTokenRetrieved(token);
+			} catch (Exception e) {
+				Log.d(Config.LOGTAG,"unable to get push token");
 			}
 		}).start();
 
