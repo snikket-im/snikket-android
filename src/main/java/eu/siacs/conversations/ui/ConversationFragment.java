@@ -126,18 +126,22 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
 	public static final String RECENTLY_USED_QUICK_ACTION = "recently_used_quick_action";
 	public static final String STATE_CONVERSATION_UUID = ConversationFragment.class.getName() + ".uuid";
 	public static final String STATE_SCROLL_POSITION = ConversationFragment.class.getName() + ".scroll_position";
+	public static final String STATE_PHOTO_URI = ConversationFragment.class.getName()+".take_photo_uri";
 
 
 	final protected List<Message> messageList = new ArrayList<>();
 	private final PendingItem<ActivityResult> postponedActivityResult = new PendingItem<>();
 	private final PendingItem<String> pendingConversationsUuid = new PendingItem<>();
 	private final PendingItem<Bundle> pendingExtras = new PendingItem<>();
+	private final PendingItem<Uri> pendingTakePhotoUri = new PendingItem<>();
 	public Uri mPendingEditorContent = null;
 	protected MessageAdapter messageListAdapter;
 	private Conversation conversation;
 	private FragmentConversationBinding binding;
 	private Toast messageLoaderToast;
 	private ConversationActivity activity;
+
+	private boolean reInitRequiredOnStart = true;
 
 	private OnClickListener clickToMuc = new OnClickListener() {
 
@@ -667,6 +671,14 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
 				for (Iterator<Uri> i = imageUris.iterator(); i.hasNext(); i.remove()) {
 					Log.d(Config.LOGTAG, "ConversationsActivity.onActivityResult() - attaching image to conversations. CHOOSE_IMAGE");
 					attachImageToConversation(conversation, i.next());
+				}
+				break;
+			case ATTACHMENT_CHOICE_TAKE_PHOTO:
+				Uri takePhotoUri = pendingTakePhotoUri.pop();
+				if (takePhotoUri != null) {
+					attachImageToConversation(conversation, takePhotoUri);
+				} else {
+					Log.d(Config.LOGTAG,"lost take photo uri. unable to to attach");
 				}
 				break;
 			case ATTACHMENT_CHOICE_CHOOSE_FILE:
@@ -1309,10 +1321,8 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
 					intent.setAction(MediaStore.ACTION_VIDEO_CAPTURE);
 					break;
 				case ATTACHMENT_CHOICE_TAKE_PHOTO:
-					Uri uri = activity.xmppConnectionService.getFileBackend().getTakePhotoUri();
-					//TODO save photo uri
-					//mPendingImageUris.clear();
-					//mPendingImageUris.add(uri);
+					final Uri uri = activity.xmppConnectionService.getFileBackend().getTakePhotoUri();
+					pendingTakePhotoUri.push(uri);
 					intent.putExtra(MediaStore.EXTRA_OUTPUT, uri);
 					intent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
 					intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
@@ -1559,6 +1569,10 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
 		super.onSaveInstanceState(outState);
 		if (conversation != null) {
 			outState.putString(STATE_CONVERSATION_UUID, conversation.getUuid());
+			Uri uri = pendingTakePhotoUri.pop();
+			if (uri != null) {
+				outState.putString(STATE_PHOTO_URI, uri.toString());
+			}
 		}
 	}
 
@@ -1571,16 +1585,24 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
 		String uuid = savedInstanceState.getString(STATE_CONVERSATION_UUID);
 		if (uuid != null) {
 			this.pendingConversationsUuid.push(uuid);
+			String takePhotoUri = savedInstanceState.getString(STATE_PHOTO_URI);
+			if (takePhotoUri != null) {
+				pendingTakePhotoUri.push(Uri.parse(takePhotoUri));
+			}
 		}
 	}
 
 	@Override
 	public void onStart() {
 		super.onStart();
-		reInit(conversation);
-		final Bundle extras = pendingExtras.pop();
-		if (extras != null) {
-			processExtras(extras);
+		if (this.reInitRequiredOnStart) {
+			reInit(conversation);
+			final Bundle extras = pendingExtras.pop();
+			if (extras != null) {
+				processExtras(extras);
+			}
+		} else {
+			Log.d(Config.LOGTAG,"skipped reinit on start");
 		}
 	}
 
@@ -1625,29 +1647,29 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
 
 	public void reInit(Conversation conversation, Bundle extras) {
 		this.saveMessageDraftStopAudioPlayer();
-		this.reInit(conversation);
-		if (extras != null) {
-			//if binding or activity does not exist we will retry in onStart()
-			if (this.activity != null && this.binding != null) {
+		if (this.reInit(conversation)) {
+			if (extras != null) {
 				processExtras(extras);
-			} else {
-				pendingExtras.push(extras);
 			}
+			this.reInitRequiredOnStart = false;
+		} else {
+			this.reInitRequiredOnStart = true;
+			pendingExtras.push(extras);
 		}
 	}
 
-	private void reInit(Conversation conversation) {
-		reInit(conversation, false);
+	private boolean reInit(Conversation conversation) {
+		return reInit(conversation, false);
 	}
 
-	private void reInit(Conversation conversation, boolean restore) {
+	private boolean reInit(Conversation conversation, boolean restore) {
 		if (conversation == null) {
-			return;
+			return false;
 		}
 		this.conversation = conversation;
 		//once we set the conversation all is good and it will automatically do the right thing in onStart()
 		if (this.activity == null || this.binding == null) {
-			return;
+			return false;
 		}
 		Log.d(Config.LOGTAG, "reInit(restore="+Boolean.toString(restore)+")");
 		setupIme();
@@ -1682,6 +1704,7 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
 		activity.onConversationRead(this.conversation);
 		//TODO if we only do this when this fragment is running on main it won't *bing* in tablet layout which might be unnecessary since we can *see* it
 		activity.xmppConnectionService.getNotificationService().setOpenConversation(this.conversation);
+		return true;
 	}
 
 	private void processExtras(Bundle extras) {
