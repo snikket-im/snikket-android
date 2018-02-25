@@ -103,17 +103,21 @@ public class ConversationActivity extends XmppActivity implements OnConversation
 		if (performRedirectIfNecessary(true)) {
 			return;
 		}
-		for (@IdRes int id : FRAGMENT_ID_NOTIFICATION_ORDER) {
-			notifyFragmentOfBackendConnected(id);
-		}
-		invalidateActionBarTitle();
 		xmppConnectionService.getNotificationService().setIsInForeground(true);
 		Intent intent = pendingViewIntent.pop();
 		if (intent != null) {
 			if (processViewIntent(intent)) {
+				if (binding.secondaryFragment != null) {
+					notifyFragmentOfBackendConnected(R.id.main_fragment);
+				}
+				invalidateActionBarTitle();
 				return;
 			}
 		}
+		for (@IdRes int id : FRAGMENT_ID_NOTIFICATION_ORDER) {
+			notifyFragmentOfBackendConnected(id);
+		}
+		invalidateActionBarTitle();
 		if (binding.secondaryFragment != null && ConversationFragment.getConversation(this) == null) {
 			Conversation conversation = ConversationsOverviewFragment.getSuggestion(this);
 			if (conversation != null) {
