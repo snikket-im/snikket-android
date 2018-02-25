@@ -901,7 +901,10 @@ public abstract class XmppActivity extends AppCompatActivity {
 	}
 
 	protected void showQrCode() {
-		final String uri = getShareableUri();
+		showQrCode(getShareableUri());
+	}
+
+	protected void showQrCode(final String uri) {
 		if (uri == null || uri.isEmpty()) {
 			return;
 		}

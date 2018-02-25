@@ -847,7 +847,7 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
 					}
 				}
 			} else {
-				activity.showQrCode();
+				activity.showQrCode(conversation.getAccount().getShareableUri());
 			}
 		});
 		messageListAdapter.setOnQuoteListener(this::quoteText);
