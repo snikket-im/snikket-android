@@ -1826,6 +1826,10 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
 
 	@Override
 	public void refresh() {
+		if (this.binding == null) {
+			Log.d(Config.LOGTAG,"ConversationFragment.refresh() skipped updated because view binding was null");
+			return;
+		}
 		this.refresh(true);
 	}
 

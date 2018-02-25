@@ -154,6 +154,10 @@ public class ConversationsOverviewFragment extends XmppFragment implements Enhan
 
 	@Override
 	void refresh() {
+		if (this.binding == null || this.activity == null) {
+			Log.d(Config.LOGTAG,"ConversationsOverviewFragment.refresh() skipped updated because view binding or activity was null");
+			return;
+		}
 		this.activity.xmppConnectionService.populateWithOrderedConversations(this.conversations);
 		Conversation removed = this.swipedConversation.peek();
 		if (removed != null) {
