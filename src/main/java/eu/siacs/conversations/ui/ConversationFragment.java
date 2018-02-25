@@ -1,5 +1,6 @@
 package eu.siacs.conversations.ui;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.SharedPreferences;
@@ -268,7 +269,7 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
 					return false;
 				}
 			}
-			if (activity.hasStoragePermission(REQUEST_ADD_EDITOR_CONTENT)) {
+			if (hasStoragePermission(REQUEST_ADD_EDITOR_CONTENT)) {
 				attachImageToConversation(inputContentInfo.getContentUri());
 			} else {
 				mPendingEditorContent = inputContentInfo.getContentUri();
@@ -991,7 +992,7 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
 				copyUrl(selectedMessage);
 				return true;
 			case R.id.download_file:
-				downloadFile(selectedMessage);
+				startDownloadable(selectedMessage);
 				return true;
 			case R.id.cancel_transmission:
 				cancelTransmission(selectedMessage);
@@ -1129,7 +1130,7 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
 
 	public void attachFile(final int attachmentChoice) {
 		if (attachmentChoice != ATTACHMENT_CHOICE_LOCATION) {
-			if (!Config.ONLY_INTERNAL_STORAGE && !activity.hasStoragePermission(attachmentChoice)) {
+			if (!Config.ONLY_INTERNAL_STORAGE && !hasStoragePermission(attachmentChoice)) {
 				return;
 			}
 		}
@@ -1213,7 +1214,7 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
 	}
 
 	public void startDownloadable(Message message) {
-		if (!Config.ONLY_INTERNAL_STORAGE && !activity.hasStoragePermission(REQUEST_START_DOWNLOAD)) {
+		if (!Config.ONLY_INTERNAL_STORAGE && !hasStoragePermission(REQUEST_START_DOWNLOAD)) {
 			this.mPendingDownloadableMessage = message;
 			return;
 		}
@@ -1266,6 +1267,19 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
 			getActivity().invalidateOptionsMenu();
 		});
 		builder.create().show();
+	}
+
+	private boolean hasStoragePermission(int requestCode) {
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+			if (activity.checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+				requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, requestCode);
+				return false;
+			} else {
+				return true;
+			}
+		} else {
+			return true;
+		}
 	}
 
 	public void unmuteConversation(final Conversation conversation) {
@@ -1462,19 +1476,15 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
 		}
 	}
 
-	private void downloadFile(Message message) {
-		activity.xmppConnectionService.getHttpConnectionManager().createNewDownloadConnection(message, true);
-	}
-
 	public static void downloadFile(Activity activity, Message message) {
 		Fragment fragment = activity.getFragmentManager().findFragmentById(R.id.main_fragment);
 		if (fragment != null && fragment instanceof ConversationFragment) {
-			((ConversationFragment) fragment).downloadFile(message);
+			((ConversationFragment) fragment).startDownloadable(message);
 			return;
 		}
 		fragment = activity.getFragmentManager().findFragmentById(R.id.secondary_fragment);
 		if (fragment != null && fragment instanceof ConversationFragment) {
-			((ConversationFragment) fragment).downloadFile(message);
+			((ConversationFragment) fragment).startDownloadable(message);
 		}
 	}
 
@@ -1599,10 +1609,26 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
 		}
 	}
 
+	private void saveMessageDraftStopAudioPlayer() {
+		final Conversation previousConversation = this.conversation;
+		if (this.activity == null || this.binding == null || previousConversation == null) {
+			return;
+		}
+		Log.d(Config.LOGTAG,"ConversationFragment.saveMessageDraftStopAudioPlayer()");
+		final String msg = this.binding.textinput.getText().toString();
+		if (previousConversation.setNextMessage(msg)) {
+			activity.xmppConnectionService.updateConversation(previousConversation);
+		}
+		updateChatState(this.conversation, msg);
+		messageListAdapter.stopAudioPlayer();
+	}
+
 	public void reInit(Conversation conversation, Bundle extras) {
+		this.saveMessageDraftStopAudioPlayer();
 		this.reInit(conversation);
 		if (extras != null) {
-			if (activity != null) {
+			//if binding or activity does not exist we will retry in onStart()
+			if (this.activity != null && this.binding != null) {
 				processExtras(extras);
 			} else {
 				pendingExtras.push(extras);
@@ -1618,32 +1644,18 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
 		if (conversation == null) {
 			return;
 		}
-		if (this.activity == null) {
-			this.conversation = conversation;
+		this.conversation = conversation;
+		//once we set the conversation all is good and it will automatically do the right thing in onStart()
+		if (this.activity == null || this.binding == null) {
 			return;
 		}
 		Log.d(Config.LOGTAG, "reInit(restore="+Boolean.toString(restore)+")");
 		setupIme();
-		if (this.conversation != null) {
-			final String msg = this.binding.textinput.getText().toString();
-			if (this.conversation.setNextMessage(msg)) {
-				activity.xmppConnectionService.updateConversation(conversation);
-			}
-			if (this.conversation != conversation && !restore) {
-				updateChatState(this.conversation, msg);
-				messageListAdapter.stopAudioPlayer();
-			}
-			if (!restore) {
-				this.conversation.trim();
-			}
-
+		if (!restore) {
+			this.conversation.trim();
 		}
 
-		if (activity != null) {
-			this.binding.textSendButton.setContentDescription(activity.getString(R.string.send_message_to_x, conversation.getName()));
-		}
-
-		this.conversation = conversation;
+		this.binding.textSendButton.setContentDescription(activity.getString(R.string.send_message_to_x, conversation.getName()));
 		this.binding.textinput.setKeyboardListener(null);
 		this.binding.textinput.setText("");
 		this.binding.textinput.append(this.conversation.getNextMessage());
@@ -1666,11 +1678,10 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
 			this.binding.messagesView.setSelection(pos);
 			isAtBottom = pos == bottom;
 		}
-		if (activity != null) {
-			activity.onConversationRead(this.conversation);
-			//TODO if we only do this when this fragment is running on main it won't *bing* in tablet layout which might be unnecessary since we can *see* it
-			activity.xmppConnectionService.getNotificationService().setOpenConversation(this.conversation);
-		}
+
+		activity.onConversationRead(this.conversation);
+		//TODO if we only do this when this fragment is running on main it won't *bing* in tablet layout which might be unnecessary since we can *see* it
+		activity.xmppConnectionService.getNotificationService().setOpenConversation(this.conversation);
 	}
 
 	private void processExtras(Bundle extras) {

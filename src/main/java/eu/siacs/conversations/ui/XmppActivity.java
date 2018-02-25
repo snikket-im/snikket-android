@@ -768,7 +768,7 @@ public abstract class XmppActivity extends AppCompatActivity {
 		dialog.getButton(DialogInterface.BUTTON_POSITIVE).setOnClickListener(clickListener);
 	}
 
-	public boolean hasStoragePermission(int requestCode) {
+	protected boolean hasStoragePermission(int requestCode) {
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
 			if (checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
 				requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, requestCode);
