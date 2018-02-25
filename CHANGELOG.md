@@ -1,5 +1,8 @@
 # Changelog
 
+### Version 1.23.7
+* Improved MAM support + bug fixes
+
 ### Version 1.23.6
 * Fixed crash on receiving invalid HTTP slot response
 
