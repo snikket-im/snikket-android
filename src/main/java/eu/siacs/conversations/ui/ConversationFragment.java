@@ -2177,6 +2177,7 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
 
 					@Override
 					public void success(Message message) {
+						//TODO the following two call can be made before the callback
 						message.setEncryption(Message.ENCRYPTION_DECRYPTED);
 						activity.xmppConnectionService.sendMessage(message);
 						getActivity().runOnUiThread(() -> messageSent());

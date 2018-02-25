@@ -8,6 +8,8 @@
         android:id="@+id/choose_conversation_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:listitem="@layout/conversation_list_row" />
+        tools:listitem="@layout/conversation_list_row"
+        android:divider="@android:color/transparent"
+        android:dividerHeight="0dp"/>
 
 </LinearLayout>

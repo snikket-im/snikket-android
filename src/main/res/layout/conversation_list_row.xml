@@ -46,8 +46,7 @@
                     android:paddingRight="4dp"
                     android:maxLines="1"
                     android:ellipsize="end"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
-                    android:typeface="sans"/>
+                    android:textAppearance="@style/TextAppearance.AppCompat.Subhead" />
 
                 <RelativeLayout
                     android:id="@+id/conversation_lastwrapper"

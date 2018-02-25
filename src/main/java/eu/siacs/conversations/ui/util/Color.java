@@ -31,18 +31,17 @@ package eu.siacs.conversations.ui.util;
 
 
 import android.content.Context;
-import android.content.res.Resources;
+import android.content.res.TypedArray;
 import android.support.annotation.AttrRes;
 import android.support.annotation.ColorInt;
-import android.util.TypedValue;
 
 public class Color {
 
 	public static @ColorInt int get(Context context, @AttrRes int attr) {
-		TypedValue typedValue = new TypedValue();
-		Resources.Theme theme = context.getTheme();
-		theme.resolveAttribute(attr, typedValue, true);
-		return typedValue.data;
+		TypedArray typedArray = context.obtainStyledAttributes(new int[]{attr});
+		int color = typedArray.getColor(0,0);
+		typedArray.recycle();
+		return color;
 	}
 
 }

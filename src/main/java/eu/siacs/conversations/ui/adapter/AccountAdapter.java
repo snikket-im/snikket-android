@@ -7,11 +7,11 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.support.v7.widget.SwitchCompat;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -24,6 +24,7 @@ import eu.siacs.conversations.R;
 import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.ui.ManageAccountActivity;
 import eu.siacs.conversations.ui.XmppActivity;
+import eu.siacs.conversations.ui.util.Color;
 import eu.siacs.conversations.utils.UIHelper;
 
 public class AccountAdapter extends ArrayAdapter<Account> {
@@ -67,7 +68,7 @@ public class AccountAdapter extends ArrayAdapter<Account> {
 				break;
 			case DISABLED:
 			case CONNECTING:
-				statusView.setTextColor(activity.getSecondaryTextColor());
+				statusView.setTextColor(Color.get(activity,android.R.attr.textColorSecondary));
 				break;
 			default:
 				statusView.setTextColor(activity.getWarningTextColor());

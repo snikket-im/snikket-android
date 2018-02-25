@@ -43,7 +43,7 @@ public class ShareViaAccountActivity extends XmppActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		setContentView(R.layout.manage_accounts);
+		setContentView(R.layout.activity_manage_accounts);
 
 		accountListView = (ListView) findViewById(R.id.account_list);
 		this.mAccountAdapter = new AccountAdapter(this, accountList, false);
