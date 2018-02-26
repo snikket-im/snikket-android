@@ -104,11 +104,14 @@ public class UriHandlerActivity extends AppCompatActivity {
 			intent.setAction(Intent.ACTION_VIEW);
 			intent.putExtra("jid", xmppUri.getJid().toBareJid().toString());
 			intent.setData(uri);
-		} else {
+		} else if (xmppUri.isJidValid()){
 			intent = new Intent(getApplicationContext(), StartConversationActivity.class);
 			intent.setAction(Intent.ACTION_VIEW);
 			intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
 			intent.setData(uri);
+		} else {
+			Toast.makeText(this,R.string.invalid_jid,Toast.LENGTH_SHORT).show();
+			return;
 		}
 
 		startActivity(intent);
