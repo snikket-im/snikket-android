@@ -40,6 +40,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.text.InputType;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -145,6 +146,7 @@ public abstract class XmppActivity extends AppCompatActivity {
 
 		}
 	};
+	public boolean mSkipBackgroundBinding = false;
 
 	public static boolean cancelPotentialWork(Message message, ImageView imageView) {
 		final BitmapWorkerTask bitmapWorkerTask = getBitmapWorkerTask(imageView);
@@ -205,7 +207,11 @@ public abstract class XmppActivity extends AppCompatActivity {
 	protected void onStart() {
 		super.onStart();
 		if (!xmppConnectionServiceBound) {
-			connectToBackend();
+			if (this.mSkipBackgroundBinding) {
+				Log.d(Config.LOGTAG,"skipping background binding");
+			} else {
+				connectToBackend();
+			}
 		} else {
 			if (!registeredListeners) {
 				this.registerListeners();
