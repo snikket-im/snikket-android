@@ -184,9 +184,12 @@ public class ConversationActivity extends XmppActivity implements OnConversation
 	}
 
 	private void showDialogsIfMainIsOverview() {
-		Fragment fragment = getFragmentManager().findFragmentById(R.id.main_fragment);
+		if (xmppConnectionService == null) {
+			return;
+		}
+		final Fragment fragment = getFragmentManager().findFragmentById(R.id.main_fragment);
 		if (fragment != null && fragment instanceof ConversationsOverviewFragment) {
-			if (ExceptionHelper.checkForCrash(this, this.xmppConnectionService)) {
+			if (ExceptionHelper.checkForCrash(this)) {
 				return;
 			}
 			openBatteryOptimizationDialogIfNeeded();
@@ -343,6 +346,7 @@ public class ConversationActivity extends XmppActivity implements OnConversation
 	public void onConversationSelected(Conversation conversation) {
 		if (ConversationFragment.getConversation(this) == conversation) {
 			Log.d(Config.LOGTAG,"ignore onConversationSelected() because conversation is already open");
+			return;
 		}
 		openConversation(conversation, null);
 	}

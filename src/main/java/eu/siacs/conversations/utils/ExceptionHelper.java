@@ -28,6 +28,7 @@ import eu.siacs.conversations.entities.Conversation;
 import eu.siacs.conversations.entities.Message;
 import eu.siacs.conversations.services.XmppConnectionService;
 import eu.siacs.conversations.ui.ConversationActivity;
+import eu.siacs.conversations.ui.XmppActivity;
 import eu.siacs.conversations.xmpp.jid.InvalidJidException;
 import eu.siacs.conversations.xmpp.jid.Jid;
 
@@ -43,10 +44,13 @@ public class ExceptionHelper {
 		}
 	}
 
-	public static boolean checkForCrash(ConversationActivity activity, final XmppConnectionService service) {
+	public static boolean checkForCrash(XmppActivity activity) {
 		try {
-			final SharedPreferences preferences = PreferenceManager
-					.getDefaultSharedPreferences(activity);
+			final XmppConnectionService service = activity == null ? null : activity.xmppConnectionService;
+			if (service == null) {
+				return false;
+			}
+			final SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(activity);
 			boolean neverSend = preferences.getBoolean("never_send", false);
 			if (neverSend || Config.BUG_REPORTS == null) {
 				return false;
