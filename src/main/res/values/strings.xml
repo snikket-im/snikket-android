@@ -691,8 +691,8 @@
 	<string name="i_followed_this_link_from_a_trusted_source">I followed this link from a trusted source</string>
 	<string name="verifying_omemo_keys_trusted_source">You are about to verify the OMEMO keys of %1$s after clicking a link. This is only secure if you followed this link from a trusted source where only %2$s could have published this link.</string>
 	<string name="verify_omemo_keys">Verify OMEMO keys</string>
-	<string name="show_inactive_devices">Show inactive devices</string>
-	<string name="hide_inactive_devices">Hide inactive devices</string>
+	<string name="show_inactive_devices">Show inactive</string>
+	<string name="hide_inactive_devices">Hide inactive</string>
 	<string name="distrust_omemo_key">Distrust device</string>
 	<string name="distrust_omemo_key_text">Are you sure you want to remove the verification for this device?\nThis device and messages coming from that device will be marked as untrusted.</string>
 	<string name="timeout_24_hours">24 hours</string>
