@@ -1701,6 +1701,12 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
 			return false;
 		}
 		Log.d(Config.LOGTAG,"reInit(hasExtras="+Boolean.toString(hasExtras)+")");
+
+		if (this.conversation.isRead() && hasExtras) {
+			Log.d(Config.LOGTAG,"trimming conversation");
+			this.conversation.trim();
+		}
+
 		setupIme();
 
 		this.binding.textSendButton.setContentDescription(activity.getString(R.string.send_message_to_x, conversation.getName()));
@@ -1712,7 +1718,11 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
 		refresh(false);
 		this.conversation.messagesLoaded.set(true);
 
-		if (hasExtras) {
+		final boolean scrolledToBottomAndNoPending = this.scrolledToBottom() && pendingScrollState.peek() == null;
+
+		Log.d(Config.LOGTAG,"scrolledToBottomAndNoPending="+Boolean.toString(scrolledToBottomAndNoPending));
+
+		if (hasExtras || scrolledToBottomAndNoPending) {
 			synchronized (this.messageList) {
 				Log.d(Config.LOGTAG,"jump to first unread message");
 				final Message first = conversation.getFirstUnreadMessage();
@@ -1733,6 +1743,11 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
 		//TODO if we only do this when this fragment is running on main it won't *bing* in tablet layout which might be unnecessary since we can *see* it
 		activity.xmppConnectionService.getNotificationService().setOpenConversation(this.conversation);
 		return true;
+	}
+
+	private boolean scrolledToBottom() {
+		final ListView l = this.binding.messagesView;
+		return l.getLastVisiblePosition() == l.getAdapter().getCount() -1 && l.getChildAt(l.getChildCount() - 1).getBottom() <= l.getHeight();
 	}
 
 	private void processExtras(Bundle extras) {
