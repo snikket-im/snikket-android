@@ -1624,8 +1624,8 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
 	public void onStart() {
 		super.onStart();
 		if (this.reInitRequiredOnStart) {
-			reInit(conversation);
 			final Bundle extras = pendingExtras.pop();
+			reInit(conversation, extras != null);
 			if (extras != null) {
 				processExtras(extras);
 			}
@@ -1676,7 +1676,7 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
 
 	public void reInit(Conversation conversation, Bundle extras) {
 		this.saveMessageDraftStopAudioPlayer();
-		if (this.reInit(conversation, false, extras != null)) {
+		if (this.reInit(conversation, extras != null)) {
 			if (extras != null) {
 				processExtras(extras);
 			}
@@ -1688,14 +1688,10 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
 	}
 
 	private void reInit(Conversation conversation) {
-		reInit(conversation, false, false);
+		reInit(conversation, false);
 	}
 
-	private void reInitRestore(Conversation conversation) {
-		reInit(conversation, true, false);
-	}
-
-	private boolean reInit(Conversation conversation, boolean restore, boolean hasExtras) {
+	private boolean reInit(final Conversation conversation, final boolean hasExtras) {
 		if (conversation == null) {
 			return false;
 		}
@@ -1704,14 +1700,8 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
 		if (this.activity == null || this.binding == null) {
 			return false;
 		}
-		Log.d(Config.LOGTAG, "reInit(restore=" + Boolean.toString(restore) + ", hasExtras="+Boolean.toString(hasExtras)+")");
-
-		final boolean fullReset = !restore && !hasExtras;
-
+		Log.d(Config.LOGTAG,"reInit(hasExtras="+Boolean.toString(hasExtras)+")");
 		setupIme();
-		if (fullReset) {
-			this.conversation.trim();
-		}
 
 		this.binding.textSendButton.setContentDescription(activity.getString(R.string.send_message_to_x, conversation.getName()));
 		this.binding.textinput.setKeyboardListener(null);
@@ -1719,16 +1709,10 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
 		this.binding.textinput.append(this.conversation.getNextMessage());
 		this.binding.textinput.setKeyboardListener(this);
 		messageListAdapter.updatePreferences();
-		if (fullReset) {
-			this.binding.messagesView.setAdapter(messageListAdapter);
-		}
 		refresh(false);
 		this.conversation.messagesLoaded.set(true);
 
-		//usually on a restore we don’t want to jump unless there is no scroll state to restore anyway
-		//on a view intent (indicated by hasExtras) we always want to jump
-		final boolean jump = (!restore || pendingScrollState.peek() == null) || hasExtras;
-		if (jump) {
+		if (hasExtras) {
 			synchronized (this.messageList) {
 				Log.d(Config.LOGTAG,"jump to first unread message");
 				final Message first = conversation.getFirstUnreadMessage();
@@ -2350,7 +2334,7 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
 				clearPending();
 				return;
 			}
-			reInitRestore(conversation);
+			reInit(conversation);
 			ScrollState scrollState = pendingScrollState.pop();
 			if (scrollState != null) {
 				setScrollPosition(scrollState);
