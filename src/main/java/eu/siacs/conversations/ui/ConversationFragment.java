@@ -1746,8 +1746,16 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
 	}
 
 	private boolean scrolledToBottom() {
-		final ListView l = this.binding.messagesView;
-		return l.getLastVisiblePosition() == l.getAdapter().getCount() -1 && l.getChildAt(l.getChildCount() - 1).getBottom() <= l.getHeight();
+		if (this.binding == null) {
+			return false;
+		}
+		final ListView listView = this.binding.messagesView;
+		if (listView.getLastVisiblePosition() == listView.getAdapter().getCount() -1) {
+			final View lastChild = listView.getChildAt(listView.getChildCount() -1);
+			return lastChild != null && lastChild.getBottom() <= listView.getHeight();
+		} else {
+			return false;
+		}
 	}
 
 	private void processExtras(Bundle extras) {
