@@ -54,6 +54,7 @@ import android.view.TextureView;
 import android.view.TextureView.SurfaceTextureListener;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.Toast;
 
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
@@ -66,6 +67,9 @@ import eu.siacs.conversations.ui.widget.ScannerView;
 @SuppressWarnings("deprecation")
 public final class ScanActivity extends Activity implements SurfaceTextureListener, ActivityCompat.OnRequestPermissionsResultCallback {
 	public static final String INTENT_EXTRA_RESULT = "result";
+
+	public static final int REQUEST_SCAN_QR_CODE = 0x0987;
+	private static final int REQUEST_CAMERA_PERMISSIONS_TO_SCAN = 0x6789;
 
 	private static final long VIBRATE_DURATION = 50L;
 	private static final long AUTO_FOCUS_INTERVAL_MS = 2500L;
@@ -263,7 +267,30 @@ public final class ScanActivity extends Activity implements SurfaceTextureListen
 	}
 
 	private void postFinish() {
-		new Handler().postDelayed(() -> finish(), 50);
+		new Handler().postDelayed(this::finish, 50);
+	}
+
+	public static void scan(Activity activity) {
+		if (ContextCompat.checkSelfPermission(activity, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
+			Intent intent = new Intent(activity, ScanActivity.class);
+			activity.startActivityForResult(intent, REQUEST_SCAN_QR_CODE);
+		} else {
+			ActivityCompat.requestPermissions(activity, new String[]{Manifest.permission.CAMERA}, REQUEST_CAMERA_PERMISSIONS_TO_SCAN);
+		}
+
+	}
+
+	public static void onRequestPermissionResult(Activity activity, int requestCode, int[] grantResults) {
+		if (requestCode != REQUEST_CAMERA_PERMISSIONS_TO_SCAN) {
+			return;
+		}
+		if (grantResults.length > 0) {
+			if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+				scan(activity);
+			} else {
+				Toast.makeText(activity, R.string.qr_code_scanner_needs_access_to_camera, Toast.LENGTH_SHORT).show();
+			}
+		}
 	}
 
 	private final class AutoFocusRunnable implements Runnable {

@@ -133,6 +133,7 @@ public class TrustKeysActivity extends OmemoActivity implements OnKeyStatusUpdat
 				if (hasPendingKeyFetches()) {
 					Toast.makeText(this, R.string.please_wait_for_keys_to_be_fetched, Toast.LENGTH_SHORT).show();
 				} else {
+					ScanActivity.scan(this);
 					//new IntentIntegrator(this).initiateScan(Arrays.asList("AZTEC","QR_CODE"));
 					return true;
 				}
