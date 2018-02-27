@@ -50,8 +50,6 @@ import android.widget.PopupMenu;
 import android.widget.TextView.OnEditorActionListener;
 import android.widget.Toast;
 
-import org.openintents.openpgp.util.OpenPgpApi;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -102,8 +100,7 @@ import eu.siacs.conversations.xmpp.jid.InvalidJidException;
 import eu.siacs.conversations.xmpp.jid.Jid;
 
 import static eu.siacs.conversations.ui.XmppActivity.EXTRA_ACCOUNT;
-import static eu.siacs.conversations.ui.XmppActivity.REQUEST_ANNOUNCE_PGP;
-import static eu.siacs.conversations.ui.XmppActivity.REQUEST_CHOOSE_PGP_ID;
+import static eu.siacs.conversations.ui.XmppActivity.REQUEST_INVITE_TO_CONVERSATION;
 
 
 public class ConversationFragment extends XmppFragment implements EditMessage.KeyboardListener {
@@ -723,6 +720,15 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
 				Uri geo = Uri.parse("geo:" + String.valueOf(latitude) + "," + String.valueOf(longitude));
 				attachLocationToConversation(conversation, geo);
 				break;
+			case REQUEST_INVITE_TO_CONVERSATION:
+				XmppActivity.ConferenceInvite invite = XmppActivity.ConferenceInvite.parse(data);
+				if (invite != null) {
+					if (invite.execute(activity)) {
+						activity.mToast = Toast.makeText(activity, R.string.creating_conference, Toast.LENGTH_LONG);
+						activity.mToast.show();
+					}
+				}
+				break;
 		}
 	}
 
@@ -1075,7 +1081,7 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
 				startActivity(intent);
 				break;
 			case R.id.action_invite:
-				activity.inviteToConversation(conversation);
+				startActivityForResult(ChooseContactActivity.create(activity,conversation), REQUEST_INVITE_TO_CONVERSATION);
 				break;
 			case R.id.action_clear_history:
 				clearHistoryDialog(conversation);
@@ -2346,6 +2352,10 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
 			if (scrollState != null) {
 				setScrollPosition(scrollState);
 			}
+		}
+		ActivityResult activityResult = postponedActivityResult.pop();
+		if (activityResult != null) {
+			handleActivityResult(activityResult);
 		}
 	}
 

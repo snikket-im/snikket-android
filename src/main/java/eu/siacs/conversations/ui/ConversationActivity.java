@@ -562,6 +562,12 @@ public class ConversationActivity extends XmppActivity implements OnConversation
 	}
 
 	@Override
+	public void switchToConversation(Conversation conversation) {
+		Log.d(Config.LOGTAG,"override");
+		openConversation(conversation,null);
+	}
+
+	@Override
 	public void onConversationRead(Conversation conversation) {
 		if (!mActivityPaused && pendingViewIntent.peek() == null) {
 			xmppConnectionService.sendReadMarker(conversation);

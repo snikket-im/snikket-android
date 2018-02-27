@@ -568,24 +568,7 @@ public abstract class XmppActivity extends AppCompatActivity {
 	}
 
 	protected void inviteToConversation(Conversation conversation) {
-		Intent intent = new Intent(this, ChooseContactActivity.class);
-		List<String> contacts = new ArrayList<>();
-		if (conversation.getMode() == Conversation.MODE_MULTI) {
-			for (MucOptions.User user : conversation.getMucOptions().getUsers(false)) {
-				Jid jid = user.getRealJid();
-				if (jid != null) {
-					contacts.add(jid.toBareJid().toString());
-				}
-			}
-		} else {
-			contacts.add(conversation.getJid().toBareJid().toString());
-		}
-		intent.putExtra("filter_contacts", contacts.toArray(new String[contacts.size()]));
-		intent.putExtra("conversation", conversation.getUuid());
-		intent.putExtra("multiple", true);
-		intent.putExtra("show_enter_jid", true);
-		intent.putExtra(EXTRA_ACCOUNT, conversation.getAccount().getJid().toBareJid().toString());
-		startActivityForResult(intent, REQUEST_INVITE_TO_CONVERSATION);
+		startActivityForResult(ChooseContactActivity.create(this,conversation), REQUEST_INVITE_TO_CONVERSATION);
 	}
 
 	protected void announcePgp(Account account, final Conversation conversation, Intent intent, final Runnable onSuccess) {
