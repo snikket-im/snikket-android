@@ -42,6 +42,7 @@ public class Account extends AbstractEntity {
 	public static final String PORT = "port";
 	public static final String STATUS = "status";
 	public static final String STATUS_MESSAGE = "status_message";
+	public static final String RESOURCE = "resource";
 
 	public static final String PINNED_MECHANISM_KEY = "pinned_mechanism";
 
@@ -229,6 +230,7 @@ public class Account extends AbstractEntity {
 	protected String rosterVersion;
 	protected State status = State.OFFLINE;
 	protected final JSONObject keys;
+	protected String resource;
 	protected String avatar;
 	protected String displayName = null;
 	protected String hostname = null;
@@ -238,7 +240,6 @@ public class Account extends AbstractEntity {
 	private PgpDecryptionService pgpDecryptionService = null;
 	private XmppConnection xmppConnection = null;
 	private long mEndGracePeriod = 0L;
-	private String otrFingerprint;
 	private final Roster roster = new Roster(this);
 	private List<Bookmark> bookmarks = new CopyOnWriteArrayList<>();
 	private final Collection<Jid> blocklist = new CopyOnWriteArraySet<>();
@@ -256,9 +257,6 @@ public class Account extends AbstractEntity {
 					final Presence.Status status, String statusMessage) {
 		this.uuid = uuid;
 		this.jid = jid;
-		if (jid.isBareJid()) {
-			this.setResource("mobile");
-		}
 		this.password = password;
 		this.options = options;
 		this.rosterVersion = rosterVersion;
@@ -280,8 +278,10 @@ public class Account extends AbstractEntity {
 	public static Account fromCursor(final Cursor cursor) {
 		Jid jid = null;
 		try {
-			jid = Jid.fromParts(cursor.getString(cursor.getColumnIndex(USERNAME)),
-					cursor.getString(cursor.getColumnIndex(SERVER)), "mobile");
+			jid = Jid.fromParts(
+					cursor.getString(cursor.getColumnIndex(USERNAME)),
+					cursor.getString(cursor.getColumnIndex(SERVER)),
+					cursor.getString(cursor.getColumnIndex(RESOURCE)));
 		} catch (final InvalidJidException ignored) {
 		}
 		return new Account(cursor.getString(cursor.getColumnIndex(UUID)),
@@ -317,6 +317,7 @@ public class Account extends AbstractEntity {
 	}
 
 	public boolean setJid(final Jid next) {
+		final Jid previousFull = this.jid;
 		final Jid prev = this.jid != null ? this.jid.toBareJid() : null;
 		final boolean changed = prev == null || (next != null && !prev.equals(next.toBareJid()));
 		if (changed) {
@@ -328,7 +329,7 @@ public class Account extends AbstractEntity {
 			}
 		}
 		this.jid = next;
-		return changed;
+		return next != null && next.equals(previousFull);
 	}
 
 	public Jid getServer() {
@@ -483,6 +484,7 @@ public class Account extends AbstractEntity {
 		values.put(PORT, port);
 		values.put(STATUS, presenceStatus.toShowString());
 		values.put(STATUS_MESSAGE, presenceStatusMessage);
+		values.put(RESOURCE,jid.getResourcepart());
 		return values;
 	}
 

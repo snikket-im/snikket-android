@@ -9,14 +9,6 @@
             android:key="grant_new_contacts"
             android:summary="@string/pref_grant_presence_updates_summary"
             android:title="@string/pref_grant_presence_updates"/>
-
-        <ListPreference
-            android:defaultValue="@string/default_resource"
-            android:entries="@array/resources"
-            android:entryValues="@array/resources"
-            android:key="resource"
-            android:summary="@string/pref_xmpp_resource_summary"
-            android:title="@string/pref_xmpp_resource"/>
         <PreferenceScreen
             android:key="huawei"
             android:title="@string/huawei_protected_apps"

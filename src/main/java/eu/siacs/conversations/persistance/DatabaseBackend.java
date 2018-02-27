@@ -62,7 +62,7 @@ public class DatabaseBackend extends SQLiteOpenHelper {
 	private static DatabaseBackend instance = null;
 
 	private static final String DATABASE_NAME = "history";
-	private static final int DATABASE_VERSION = 39;
+	private static final int DATABASE_VERSION = 40;
 
 	private static String CREATE_CONTATCS_STATEMENT = "create table "
 			+ Contact.TABLENAME + "(" + Contact.ACCOUNT + " TEXT, "
@@ -184,6 +184,7 @@ public class DatabaseBackend extends SQLiteOpenHelper {
 				+ Account.AVATAR + " TEXT, "
 				+ Account.KEYS + " TEXT, "
 				+ Account.HOSTNAME + " TEXT, "
+				+ Account.RESOURCE + " TEXT,"
 				+ Account.PORT + " NUMBER DEFAULT 5222)");
 		db.execSQL("create table " + Conversation.TABLENAME + " ("
 				+ Conversation.UUID + " TEXT PRIMARY KEY, " + Conversation.NAME
@@ -304,6 +305,9 @@ public class DatabaseBackend extends SQLiteOpenHelper {
 		if (oldVersion < 26 && newVersion >= 26) {
 			db.execSQL("ALTER TABLE " + Account.TABLENAME + " ADD COLUMN " + Account.STATUS + " TEXT");
 			db.execSQL("ALTER TABLE " + Account.TABLENAME + " ADD COLUMN " + Account.STATUS_MESSAGE + " TEXT");
+		}
+		if (oldVersion < 40 && newVersion >= 40) {
+			db.execSQL("ALTER TABLE " + Account.TABLENAME + " ADD COLUMN " + Account.RESOURCE + " TEXT");
 		}
 		/* Any migrations that alter the Account table need to happen BEFORE this migration, as it
 		 * depends on account de-serialization.

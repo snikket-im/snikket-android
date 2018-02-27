@@ -50,6 +50,7 @@ import javax.net.ssl.X509KeyManager;
 import javax.net.ssl.X509TrustManager;
 
 import eu.siacs.conversations.Config;
+import eu.siacs.conversations.R;
 import eu.siacs.conversations.crypto.DomainHostnameVerifier;
 import eu.siacs.conversations.crypto.XmppDomainVerifier;
 import eu.siacs.conversations.crypto.axolotl.AxolotlService;
@@ -102,94 +103,6 @@ public class XmppConnection implements Runnable {
 	private static final int PACKET_IQ = 0;
 	private static final int PACKET_MESSAGE = 1;
 	private static final int PACKET_PRESENCE = 2;
-	protected final Account account;
-	private Socket socket;
-	private XmlReader tagReader;
-	private TagWriter tagWriter = new TagWriter();
-	private final Features features = new Features(this);
-	private boolean shouldAuthenticate = true;
-	private boolean inSmacksSession = false;
-	private boolean isBound = false;
-	private Element streamFeatures;
-	private final HashMap<Jid, ServiceDiscoveryResult> disco = new HashMap<>();
-
-	private String streamId = null;
-	private int smVersion = 3;
-	private final SparseArray<AbstractAcknowledgeableStanza> mStanzaQueue = new SparseArray<>();
-
-	private int stanzasReceived = 0;
-	private int stanzasSent = 0;
-	private long lastPacketReceived = 0;
-	private long lastPingSent = 0;
-	private long lastConnect = 0;
-	private long lastSessionStarted = 0;
-	private long lastDiscoStarted = 0;
-	private AtomicInteger mPendingServiceDiscoveries = new AtomicInteger(0);
-	private AtomicBoolean mWaitForDisco = new AtomicBoolean(true);
-	private AtomicBoolean mWaitingForSmCatchup = new AtomicBoolean(false);
-	private AtomicInteger mSmCatchupMessageCounter = new AtomicInteger(0);
-	private boolean mInteractive = false;
-	private int attempt = 0;
-	private final Hashtable<String, Pair<IqPacket, OnIqPacketReceived>> packetCallbacks = new Hashtable<>();
-	private OnPresencePacketReceived presenceListener = null;
-	private OnJinglePacketReceived jingleListener = null;
-	private OnIqPacketReceived unregisteredIqListener = null;
-	private OnMessagePacketReceived messageListener = null;
-	private OnStatusChanged statusListener = null;
-	private OnBindListener bindListener = null;
-	private final ArrayList<OnAdvancedStreamFeaturesLoaded> advancedStreamFeaturesLoadedListeners = new ArrayList<>();
-	private OnMessageAcknowledged acknowledgedListener = null;
-	private final XmppConnectionService mXmppConnectionService;
-
-	private SaslMechanism saslMechanism;
-	private URL redirectionUrl = null;
-	private String verifiedHostname = null;
-	private Thread mThread;
-	private CountDownLatch mStreamCountDownLatch;
-
-	private class MyKeyManager implements X509KeyManager {
-		@Override
-		public String chooseClientAlias(String[] strings, Principal[] principals, Socket socket) {
-			return account.getPrivateKeyAlias();
-		}
-
-		@Override
-		public String chooseServerAlias(String s, Principal[] principals, Socket socket) {
-			return null;
-		}
-
-		@Override
-		public X509Certificate[] getCertificateChain(String alias) {
-			Log.d(Config.LOGTAG, "getting certificate chain");
-			try {
-				return KeyChain.getCertificateChain(mXmppConnectionService, alias);
-			} catch (Exception e) {
-				Log.d(Config.LOGTAG, e.getMessage());
-				return new X509Certificate[0];
-			}
-		}
-
-		@Override
-		public String[] getClientAliases(String s, Principal[] principals) {
-			final String alias = account.getPrivateKeyAlias();
-			return alias != null ? new String[]{alias} : new String[0];
-		}
-
-		@Override
-		public String[] getServerAliases(String s, Principal[] principals) {
-			return new String[0];
-		}
-
-		@Override
-		public PrivateKey getPrivateKey(String alias) {
-			try {
-				return KeyChain.getPrivateKey(mXmppConnectionService, alias);
-			} catch (Exception e) {
-				return null;
-			}
-		}
-	}
-
 	public final OnIqPacketReceived registrationResponseListener = new OnIqPacketReceived() {
 		@Override
 		public void onIqPacketReceived(Account account, IqPacket packet) {
@@ -217,6 +130,47 @@ public class XmppConnection implements Runnable {
 			}
 		}
 	};
+	protected final Account account;
+	private final Features features = new Features(this);
+	private final HashMap<Jid, ServiceDiscoveryResult> disco = new HashMap<>();
+	private final SparseArray<AbstractAcknowledgeableStanza> mStanzaQueue = new SparseArray<>();
+	private final Hashtable<String, Pair<IqPacket, OnIqPacketReceived>> packetCallbacks = new Hashtable<>();
+	private final ArrayList<OnAdvancedStreamFeaturesLoaded> advancedStreamFeaturesLoadedListeners = new ArrayList<>();
+	private final XmppConnectionService mXmppConnectionService;
+	private Socket socket;
+	private XmlReader tagReader;
+	private TagWriter tagWriter = new TagWriter();
+	private boolean shouldAuthenticate = true;
+	private boolean inSmacksSession = false;
+	private boolean isBound = false;
+	private Element streamFeatures;
+	private String streamId = null;
+	private int smVersion = 3;
+	private int stanzasReceived = 0;
+	private int stanzasSent = 0;
+	private long lastPacketReceived = 0;
+	private long lastPingSent = 0;
+	private long lastConnect = 0;
+	private long lastSessionStarted = 0;
+	private long lastDiscoStarted = 0;
+	private AtomicInteger mPendingServiceDiscoveries = new AtomicInteger(0);
+	private AtomicBoolean mWaitForDisco = new AtomicBoolean(true);
+	private AtomicBoolean mWaitingForSmCatchup = new AtomicBoolean(false);
+	private AtomicInteger mSmCatchupMessageCounter = new AtomicInteger(0);
+	private boolean mInteractive = false;
+	private int attempt = 0;
+	private OnPresencePacketReceived presenceListener = null;
+	private OnJinglePacketReceived jingleListener = null;
+	private OnIqPacketReceived unregisteredIqListener = null;
+	private OnMessagePacketReceived messageListener = null;
+	private OnStatusChanged statusListener = null;
+	private OnBindListener bindListener = null;
+	private OnMessageAcknowledged acknowledgedListener = null;
+	private SaslMechanism saslMechanism;
+	private URL redirectionUrl = null;
+	private String verifiedHostname = null;
+	private Thread mThread;
+	private CountDownLatch mStreamCountDownLatch;
 
 	public XmppConnection(final Account account, final XmppConnectionService service) {
 		this.account = account;
@@ -477,19 +431,6 @@ public class XmppConnection implements Runnable {
 		sendStartStream();
 		final Tag tag = tagReader.readTag();
 		return tag != null && tag.isStart("stream");
-	}
-
-	private static class TlsFactoryVerifier {
-		private final SSLSocketFactory factory;
-		private final DomainHostnameVerifier verifier;
-
-		public TlsFactoryVerifier(final SSLSocketFactory factory, final DomainHostnameVerifier verifier) throws IOException {
-			this.factory = factory;
-			this.verifier = verifier;
-			if (factory == null || verifier == null) {
-				throw new IOException("could not setup ssl");
-			}
-		}
 	}
 
 	private TlsFactoryVerifier getTlsFactoryVerifier() throws NoSuchAlgorithmException, KeyManagementException, IOException {
@@ -836,7 +777,6 @@ public class XmppConnection implements Runnable {
 		tagWriter.writeTag(startTLS);
 	}
 
-
 	private void switchOverToTls(final Tag currentTag) throws XmlPullParserException, IOException {
 		tagReader.readTag();
 		try {
@@ -1069,55 +1009,52 @@ public class XmppConnection implements Runnable {
 			return;
 		}
 		clearIqCallbacks();
+		if (account.getJid().isBareJid()) {
+			account.setResource(this.createNewResource());
+		}
 		final IqPacket iq = new IqPacket(IqPacket.TYPE.SET);
 		final String resource = Config.USE_RANDOM_RESOURCE_ON_EVERY_BIND ? nextRandomId() : account.getResource();
 		iq.addChild("bind", Namespace.BIND).addChild("resource").setContent(resource);
-		this.sendUnmodifiedIqPacket(iq, new OnIqPacketReceived() {
-			@Override
-			public void onIqPacketReceived(final Account account, final IqPacket packet) {
-				if (packet.getType() == IqPacket.TYPE.TIMEOUT) {
-					return;
-				}
-				final Element bind = packet.findChild("bind");
-				if (bind != null && packet.getType() == IqPacket.TYPE.RESULT) {
-					isBound = true;
-					final Element jid = bind.findChild("jid");
-					if (jid != null && jid.getContent() != null) {
-						try {
-							Jid assignedJid = Jid.fromString(jid.getContent());
-							if (!account.getJid().getDomainpart().equals(assignedJid.getDomainpart())) {
-								Log.d(Config.LOGTAG,account.getJid().toBareJid()+": server tried to re-assign domain to "+assignedJid.getDomainpart());
-								throw new StateChangingError(Account.State.BIND_FAILURE);
-							}
-							if (account.setJid(assignedJid)) {
-								Log.d(Config.LOGTAG, account.getJid().toBareJid() + ": bare jid changed during bind. updating database");
-								mXmppConnectionService.databaseBackend.updateAccount(account);
-							}
-							if (streamFeatures.hasChild("session")
-									&& !streamFeatures.findChild("session").hasChild("optional")) {
-								sendStartSession();
-							} else {
-								sendPostBindInitialization();
-							}
-							return;
-						} catch (final InvalidJidException e) {
-							Log.d(Config.LOGTAG, account.getJid().toBareJid() + ": server reported invalid jid (" + jid.getContent() + ") on bind");
+		this.sendUnmodifiedIqPacket(iq, (account, packet) -> {
+			if (packet.getType() == IqPacket.TYPE.TIMEOUT) {
+				return;
+			}
+			final Element bind = packet.findChild("bind");
+			if (bind != null && packet.getType() == IqPacket.TYPE.RESULT) {
+				isBound = true;
+				final Element jid = bind.findChild("jid");
+				if (jid != null && jid.getContent() != null) {
+					try {
+						Jid assignedJid = Jid.fromString(jid.getContent());
+						if (!account.getJid().getDomainpart().equals(assignedJid.getDomainpart())) {
+							Log.d(Config.LOGTAG,account.getJid().toBareJid()+": server tried to re-assign domain to "+assignedJid.getDomainpart());
+							throw new StateChangingError(Account.State.BIND_FAILURE);
 						}
-					} else {
-						Log.d(Config.LOGTAG, account.getJid() + ": disconnecting because of bind failure. (no jid)");
+						if (account.setJid(assignedJid)) {
+							Log.d(Config.LOGTAG, account.getJid().toBareJid() + ": jid changed during bind. updating database");
+							mXmppConnectionService.databaseBackend.updateAccount(account);
+						}
+						if (streamFeatures.hasChild("session")
+								&& !streamFeatures.findChild("session").hasChild("optional")) {
+							sendStartSession();
+						} else {
+							sendPostBindInitialization();
+						}
+						return;
+					} catch (final InvalidJidException e) {
+						Log.d(Config.LOGTAG, account.getJid().toBareJid() + ": server reported invalid jid (" + jid.getContent() + ") on bind");
 					}
 				} else {
-					Log.d(Config.LOGTAG, account.getJid() + ": disconnecting because of bind failure (" + packet.toString());
+					Log.d(Config.LOGTAG, account.getJid() + ": disconnecting because of bind failure. (no jid)");
 				}
-				final Element error = packet.findChild("error");
-				final String resource = account.getResource().split("\\.")[0];
-				if (packet.getType() == IqPacket.TYPE.ERROR && error != null && error.hasChild("conflict")) {
-					account.setResource(resource + "." + nextRandomId());
-				} else {
-					account.setResource(resource);
-				}
-				throw new StateChangingError(Account.State.BIND_FAILURE);
+			} else {
+				Log.d(Config.LOGTAG, account.getJid() + ": disconnecting because of bind failure (" + packet.toString());
 			}
+			final Element error = packet.findChild("error");
+			if (packet.getType() == IqPacket.TYPE.ERROR && error != null && error.hasChild("conflict")) {
+				account.setResource(createNewResource());
+			}
+			throw new StateChangingError(Account.State.BIND_FAILURE);
 		},true);
 	}
 
@@ -1337,18 +1274,14 @@ public class XmppConnection implements Runnable {
 		});
 	}
 
-	private void processStreamError(final Tag currentTag)
-			throws XmlPullParserException, IOException {
+	private void processStreamError(final Tag currentTag) throws XmlPullParserException, IOException {
 		final Element streamError = tagReader.readElement(currentTag);
 		if (streamError == null) {
 			return;
 		}
 		if (streamError.hasChild("conflict")) {
-			final String resource = account.getResource().split("\\.")[0];
-			account.setResource(resource + "." + nextRandomId());
-			Log.d(Config.LOGTAG,
-					account.getJid().toBareJid() + ": switching resource due to conflict ("
-							+ account.getResource() + ")");
+			account.setResource(createNewResource());
+			Log.d(Config.LOGTAG, account.getJid().toBareJid() + ": switching resource due to conflict (" + account.getResource() + ")");
 			throw new IOException();
 		} else if (streamError.hasChild("host-unknown")) {
 			throw new StateChangingException(Account.State.HOST_UNKNOWN);
@@ -1370,8 +1303,16 @@ public class XmppConnection implements Runnable {
 		tagWriter.writeTag(stream);
 	}
 
+	private String createNewResource() {
+		return mXmppConnectionService.getString(R.string.app_name)+'.'+nextRandomId(true);
+	}
+
 	private String nextRandomId() {
-		return CryptoHelper.random(10, mXmppConnectionService.getRNG());
+		return nextRandomId(false);
+	}
+
+	private String nextRandomId(boolean s) {
+		return CryptoHelper.random(s ? 3 : 9, mXmppConnectionService.getRNG());
 	}
 
 	public String sendIqPacket(final IqPacket packet, final OnIqPacketReceived callback) {
@@ -1662,6 +1603,75 @@ public class XmppConnection implements Runnable {
 		return Identity.UNKNOWN;
 	}
 
+	private IqGenerator getIqGenerator() {
+		return mXmppConnectionService.getIqGenerator();
+	}
+
+	public enum Identity {
+		FACEBOOK,
+		SLACK,
+		EJABBERD,
+		PROSODY,
+		NIMBUZZ,
+		UNKNOWN
+	}
+
+	private static class TlsFactoryVerifier {
+		private final SSLSocketFactory factory;
+		private final DomainHostnameVerifier verifier;
+
+		public TlsFactoryVerifier(final SSLSocketFactory factory, final DomainHostnameVerifier verifier) throws IOException {
+			this.factory = factory;
+			this.verifier = verifier;
+			if (factory == null || verifier == null) {
+				throw new IOException("could not setup ssl");
+			}
+		}
+	}
+
+	private class MyKeyManager implements X509KeyManager {
+		@Override
+		public String chooseClientAlias(String[] strings, Principal[] principals, Socket socket) {
+			return account.getPrivateKeyAlias();
+		}
+
+		@Override
+		public String chooseServerAlias(String s, Principal[] principals, Socket socket) {
+			return null;
+		}
+
+		@Override
+		public X509Certificate[] getCertificateChain(String alias) {
+			Log.d(Config.LOGTAG, "getting certificate chain");
+			try {
+				return KeyChain.getCertificateChain(mXmppConnectionService, alias);
+			} catch (Exception e) {
+				Log.d(Config.LOGTAG, e.getMessage());
+				return new X509Certificate[0];
+			}
+		}
+
+		@Override
+		public String[] getClientAliases(String s, Principal[] principals) {
+			final String alias = account.getPrivateKeyAlias();
+			return alias != null ? new String[]{alias} : new String[0];
+		}
+
+		@Override
+		public String[] getServerAliases(String s, Principal[] principals) {
+			return new String[0];
+		}
+
+		@Override
+		public PrivateKey getPrivateKey(String alias) {
+			try {
+				return KeyChain.getPrivateKey(mXmppConnectionService, alias);
+			} catch (Exception e) {
+				return null;
+			}
+		}
+	}
+
 	private class StateChangingError extends Error {
 		private final Account.State state;
 
@@ -1676,15 +1686,6 @@ public class XmppConnection implements Runnable {
 		public StateChangingException(Account.State state) {
 			this.state = state;
 		}
-	}
-
-	public enum Identity {
-		FACEBOOK,
-		SLACK,
-		EJABBERD,
-		PROSODY,
-		NIMBUZZ,
-		UNKNOWN
 	}
 
 	public class Features {
@@ -1817,9 +1818,5 @@ public class XmppConnection implements Runnable {
 		public boolean stanzaIds() {
 			return hasDiscoFeature(account.getJid().toBareJid(), Namespace.STANZA_IDS);
 		}
-	}
-
-	private IqGenerator getIqGenerator() {
-		return mXmppConnectionService.getIqGenerator();
 	}
 }

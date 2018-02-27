@@ -100,8 +100,6 @@
 	<string name="no_pgp_keys">No OpenPGP Keys found</string>
 	<string name="contacts_have_no_pgp_keys">Conversations is unable to encrypt your messages because your contacts are not announcing their public key.\n\n<small>Please ask your contacts to setup OpenPGP.</small></string>
 	<string name="pref_general">General</string>
-	<string name="pref_xmpp_resource">XMPP resource</string>
-	<string name="pref_xmpp_resource_summary">The name this client identifies itself with</string>
 	<string name="pref_accept_files">Accept files</string>
 	<string name="pref_accept_files_summary">Automatically accept files smaller than…</string>
 	<string name="pref_attachments">Attachments</string>

@@ -1,13 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-	<string-array name="resources">
-		<item>Mobile</item>
-		<item>Phone</item>
-		<item>Tablet</item>
-		<item>@string/app_name</item>
-		<item>Android</item>
-	</string-array>
 	<string-array name="themes">
 		<item>@string/pref_theme_light</item>
 		<item>@string/pref_theme_dark</item>
