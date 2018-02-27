@@ -686,18 +686,6 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
 				int choice = data.getIntExtra("choice", ATTACHMENT_CHOICE_INVALID);
 				selectPresenceToAttachFile(choice);
 				break;
-			case REQUEST_CHOOSE_PGP_ID:
-				long id = data.getLongExtra(OpenPgpApi.EXTRA_SIGN_KEY_ID, 0);
-				if (id != 0) {
-					conversation.getAccount().setPgpSignId(id);
-					activity.announcePgp(conversation.getAccount(), null, null, activity.onOpenPGPKeyPublished);
-				} else {
-					activity.choosePgpSignId(conversation.getAccount());
-				}
-				break;
-			case REQUEST_ANNOUNCE_PGP:
-				activity.announcePgp(conversation.getAccount(), conversation, data, activity.onOpenPGPKeyPublished);
-				break;
 			case ATTACHMENT_CHOICE_CHOOSE_IMAGE:
 				List<Uri> imageUris = AttachmentTool.extractUriFromIntent(data);
 				for (Iterator<Uri> i = imageUris.iterator(); i.hasNext(); i.remove()) {
@@ -2358,10 +2346,6 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
 			if (scrollState != null) {
 				setScrollPosition(scrollState);
 			}
-		}
-		ActivityResult activityResult = postponedActivityResult.pop();
-		if (activityResult != null) {
-			handleActivityResult(activityResult);
 		}
 	}
 
