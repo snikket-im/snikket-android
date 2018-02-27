@@ -474,7 +474,7 @@ public class StartConversationActivity extends XmppActivity implements OnRosterU
 			} else if (contact.showInRoster()) {
 				throw new EnterJidDialog.JidError(getString(R.string.contact_already_exists));
 			} else {
-				xmppConnectionService.createContact(contact);
+				xmppConnectionService.createContact(contact,true);
 				if (invite != null && invite.hasFingerprints()) {
 					xmppConnectionService.verifyFingerprints(contact, invite.getFingerprints());
 				}

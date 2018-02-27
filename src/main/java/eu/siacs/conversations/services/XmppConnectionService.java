@@ -2724,8 +2724,7 @@ public class XmppConnectionService extends Service {
 		}
 	}
 
-	public void createContact(Contact contact) {
-		boolean autoGrant = getBooleanPreference("grant_new_contacts", R.bool.grant_new_contacts);
+	public void createContact(Contact contact, boolean autoGrant) {
 		if (autoGrant) {
 			contact.setOption(Contact.Options.PREEMPTIVE_GRANT);
 			contact.setOption(Contact.Options.ASKING);

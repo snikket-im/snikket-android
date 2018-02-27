@@ -1,14 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+<PreferenceScreen
+    android:key="main_screen"
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:background="?attr/color_background_secondary">
 
     <PreferenceCategory android:title="@string/pref_general"
         android:key="general">
-        <CheckBoxPreference
-            android:defaultValue="@bool/grant_new_contacts"
-            android:key="grant_new_contacts"
-            android:summary="@string/pref_grant_presence_updates_summary"
-            android:title="@string/pref_grant_presence_updates"/>
         <PreferenceScreen
             android:key="huawei"
             android:title="@string/huawei_protected_apps"

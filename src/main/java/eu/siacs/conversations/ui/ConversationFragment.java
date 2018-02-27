@@ -309,7 +309,7 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
 		public void onClick(View v) {
 			final Contact contact = conversation == null ? null : conversation.getContact();
 			if (contact != null) {
-				activity.xmppConnectionService.createContact(contact);
+				activity.xmppConnectionService.createContact(contact,true);
 				activity.switchToContactDetails(contact);
 			}
 		}
@@ -1701,6 +1701,8 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
 
 		setupIme();
 
+		final boolean scrolledToBottomAndNoPending = this.scrolledToBottom() && pendingScrollState.peek() == null;
+
 		this.binding.textSendButton.setContentDescription(activity.getString(R.string.send_message_to_x, conversation.getName()));
 		this.binding.textinput.setKeyboardListener(null);
 		this.binding.textinput.setText("");
@@ -1709,8 +1711,6 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
 		messageListAdapter.updatePreferences();
 		refresh(false);
 		this.conversation.messagesLoaded.set(true);
-
-		final boolean scrolledToBottomAndNoPending = this.scrolledToBottom() && pendingScrollState.peek() == null;
 
 		Log.d(Config.LOGTAG,"scrolledToBottomAndNoPending="+Boolean.toString(scrolledToBottomAndNoPending));
 

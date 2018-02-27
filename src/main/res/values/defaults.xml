@@ -7,7 +7,6 @@
     <bool name="headsup_notifications">false</bool>
     <bool name="dnd_on_silent_mode">false</bool>
     <bool name="treat_vibrate_as_silent">false</bool>
-    <bool name="grant_new_contacts">true</bool>
     <bool name="confirm_messages">true</bool>
     <bool name="chat_states">false</bool>
     <bool name="last_activity">false</bool>
