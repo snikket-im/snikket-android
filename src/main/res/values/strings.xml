@@ -282,37 +282,6 @@
 	<string name="pref_expert_options_summary">Please be careful with these</string>
 	<string name="title_activity_about">About Conversations</string>
 	<string name="pref_about_conversations_summary">Build and licensing information</string>
-	<string name="pref_about_message" translatable="false">
-			Conversations • the very last word in instant messaging.
-			\n\nCopyright © 2014-2018 Daniel Gultsch
-			\n\nThis program is free software: you can redistribute it and/or modify
-			it under the terms of the GNU General Public License as published by
-			the Free Software Foundation, either version 3 of the License, or
-			(at your option) any later version.
-			\n\nThis program is distributed in the hope that it will be useful,
-			but WITHOUT ANY WARRANTY; without even the implied warranty of
-			MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-			GNU General Public License for more details.
-			\n\nYou should have received a copy of the GNU General Public License
-			along with this program. If not, see https://www.gnu.org/licenses
-			\n\nDownload the full source code at https://github.com/siacs/Conversations
-			\n\n\nLibraries
-			\n\nhttps://www.bouncycastle.org\n(The MIT License (MIT))
-			\n\nhttps://www.gnu.org/software/libidn\n(Apache License, Version 2.0)
-			\n\nhttps://github.com/ge0rg/MemorizingTrustManager\n(The MIT License (MIT))
-			\n\nhttps://github.com/rtreffer/minidns\n(WTFPL)
-			\n\nhttps://github.com/open-keychain/openkeychain-api-lib\n(Apache License, Version 2.0)
-			\n\nhttps://github.com/jitsi/otr4j\n(LGPL-3.0)
-			\n\nhttps://developer.android.com/tools/support-library\n(Apache License, Version 2.0)
-			\n\nhttps://github.com/zxing/zxing\n(Apache License, Version 2.0)
-			\n\nhttps://github.com/google/material-design-icons\n(CC BY 4.0)
-			\n\nhttps://github.com/timroes/EnhancedListView\n(Apache License, Version 2.0)
-			\n\nhttps://github.com/leolin310148/ShortcutBadger\n(Apache License, Version 2.0)
-			\n\nhttps://github.com/kyleduo/SwitchButton\n(Apache License, Version 2.0)
-			\n\nhttps://github.com/WhisperSystems/libaxolotl-java\n(GPLv3)
-			\n\nhttps://github.com/vinc3m1/RoundedImageView\n(Apache License, Version 2.0)
-			\n\nhttps://github.com/jdamcd/android-crop\n(Apache License, Version 2.0)
-	</string>
 	<string name="title_pref_quiet_hours">Quiet Hours</string>
 	<string name="title_pref_quiet_hours_start_time">Start time</string>
 	<string name="title_pref_quiet_hours_end_time">End time</string>

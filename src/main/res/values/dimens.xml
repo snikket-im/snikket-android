@@ -12,6 +12,9 @@
 	<dimen name="swipe_handle_size">32dp</dimen>
 	<dimen name="avatar_item_distance">16dp</dimen>
 
+	<dimen name="publish_avatar_top_margin">8dp</dimen>
+	<dimen name="publish_avatar_size">96dp</dimen>
+
 	<!-- scanner -->
 	<dimen name="scan_laser_width">4dp</dimen>
 	<dimen name="scan_dot_size">8dp</dimen>

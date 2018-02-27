@@ -60,10 +60,10 @@ public class ScannerView extends View {
         super(context, attrs);
 
         final Resources res = getResources();
-        maskColor = res.getColor(R.color.scan_mask);
-        maskResultColor = res.getColor(R.color.scan_result_view);
-        laserColor = res.getColor(R.color.scan_laser);
-        dotColor = res.getColor(R.color.scan_dot);
+        maskColor = res.getColor(R.color.black54);
+        maskResultColor = res.getColor(R.color.black87);
+        laserColor = res.getColor(R.color.red500);
+        dotColor = res.getColor(R.color.orange500);
         dotResultColor = res.getColor(R.color.scan_result_dots);
 
         maskPaint = new Paint();

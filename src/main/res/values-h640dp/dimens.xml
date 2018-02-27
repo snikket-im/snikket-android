@@ -1,0 +1,4 @@
+<resources>
+    <dimen name="publish_avatar_top_margin">24dp</dimen>
+	<dimen name="publish_avatar_size">192dp</dimen>
+</resources>
