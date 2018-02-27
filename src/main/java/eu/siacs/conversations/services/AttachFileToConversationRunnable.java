@@ -60,6 +60,7 @@ public class AttachFileToConversationRunnable implements Runnable, MediaTranscod
 			if (message.getEncryption() == Message.ENCRYPTION_DECRYPTED) {
 				mXmppConnectionService.getPgpEngine().encrypt(message, callback);
 			} else {
+				mXmppConnectionService.sendMessage(message);
 				callback.success(message);
 			}
 		} else {
@@ -74,6 +75,7 @@ public class AttachFileToConversationRunnable implements Runnable, MediaTranscod
 						callback.error(R.string.unable_to_connect_to_keychain, null);
 					}
 				} else {
+					mXmppConnectionService.sendMessage(message);
 					callback.success(message);
 				}
 			} catch (FileBackend.FileCopyException e) {

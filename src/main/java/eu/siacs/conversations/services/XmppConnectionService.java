@@ -447,9 +447,7 @@ public class XmppConnectionService extends Service {
 		return this.mAvatarService;
 	}
 
-	public void attachLocationToConversation(final Conversation conversation,
-	                                         final Uri uri,
-	                                         final UiCallback<Message> callback) {
+	public void attachLocationToConversation(final Conversation conversation,final Uri uri, final UiCallback<Message> callback) {
 		int encryption = conversation.getNextEncryption();
 		if (encryption == Message.ENCRYPTION_PGP) {
 			encryption = Message.ENCRYPTION_DECRYPTED;
@@ -461,6 +459,7 @@ public class XmppConnectionService extends Service {
 		if (encryption == Message.ENCRYPTION_DECRYPTED) {
 			getPgpEngine().encrypt(message, callback);
 		} else {
+			sendMessage(message);
 			callback.success(message);
 		}
 	}
@@ -528,6 +527,7 @@ public class XmppConnectionService extends Service {
 							callback.error(R.string.unable_to_connect_to_keychain, null);
 						}
 					} else {
+						sendMessage(message);
 						callback.success(message);
 					}
 				} catch (final FileBackend.FileCopyException e) {
