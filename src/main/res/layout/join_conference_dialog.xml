@@ -7,38 +7,30 @@
               android:paddingLeft="24dp"
               android:paddingRight="24dp"
               android:paddingTop="16dp">
-
     <TextView
-        android:id="@+id/your_account"
+        style="@style/InputLabel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/your_account"
-        android:textColor="?attr/color_text_primary"
-        android:textSize="?attr/TextSizeBody" />
+        android:text="@string/your_account"/>
 
     <Spinner
         android:id="@+id/account"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content" />
 
-    <TextView
-        android:id="@+id/jabber_id"
-        android:layout_width="wrap_content"
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/account_jid_layout"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:text="@string/conference_address"
-        android:textColor="?attr/color_text_primary"
-        android:textSize="?attr/TextSizeBody" />
+        android:hint="@string/conference_address">
 
-    <AutoCompleteTextView
-        android:id="@+id/jid"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:hint="@string/conference_address_example"
-        android:inputType="textEmailAddress"
-        android:textColor="?attr/color_text_primary"
-        android:textColorHint="?attr/color_text_secondary"
-        android:textSize="?attr/TextSizeBody"/>
+        <AutoCompleteTextView
+            android:id="@+id/jid"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textEmailAddress"/>
+    </android.support.design.widget.TextInputLayout>
+
 
     <CheckBox
         android:id="@+id/bookmark"
@@ -46,8 +38,6 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:checked="true"
-        android:text="@string/save_as_bookmark"
-        android:textColor="?attr/color_text_primary"
-        android:textSize="?attr/TextSizeBody"/>
+        android:text="@string/save_as_bookmark"/>
 
 </LinearLayout>

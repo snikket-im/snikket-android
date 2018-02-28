@@ -76,6 +76,7 @@ import eu.siacs.conversations.services.XmppConnectionService.OnRosterUpdate;
 import eu.siacs.conversations.ui.adapter.KnownHostsAdapter;
 import eu.siacs.conversations.ui.adapter.ListItemAdapter;
 import eu.siacs.conversations.ui.service.EmojiService;
+import eu.siacs.conversations.ui.util.DelayedHintHelper;
 import eu.siacs.conversations.utils.XmppUri;
 import eu.siacs.conversations.xmpp.OnUpdateBlocklist;
 import eu.siacs.conversations.xmpp.XmppConnection;
@@ -493,9 +494,7 @@ public class StartConversationActivity extends XmppActivity implements OnRosterU
 		final View dialogView = getLayoutInflater().inflate(R.layout.join_conference_dialog, null);
 		final Spinner spinner = dialogView.findViewById(R.id.account);
 		final AutoCompleteTextView jid = dialogView.findViewById(R.id.jid);
-		final TextView jabberIdDesc = dialogView.findViewById(R.id.jabber_id);
-		jabberIdDesc.setText(R.string.conference_address);
-		jid.setHint(R.string.conference_address_example);
+		DelayedHintHelper.setHint(R.string.conference_address_example,jid);
 		jid.setAdapter(new KnownHostsAdapter(this, R.layout.simple_list_item, mKnownConferenceHosts));
 		if (prefilledJid != null) {
 			jid.append(prefilledJid);
