@@ -37,14 +37,14 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/touch_to_choose_picture"
-                android:textColor="?attr/color_text_secondary"/>
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"/>
 
             <TextView
                 android:id="@+id/secondary_hint"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/or_long_press_for_default"
-                android:textColor="?attr/color_text_secondary"/>
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                android:text="@string/or_long_press_for_default"/>
 
             <TextView
                 android:id="@+id/hint_or_warning"
@@ -52,8 +52,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:layout_marginBottom="8dp"
-                android:textColor="?attr/color_text_primary"
-                android:textSize="?attr/TextSizeBody"/>
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"/>
 
         </LinearLayout>
     </android.support.v7.widget.CardView>
