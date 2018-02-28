@@ -127,10 +127,6 @@ public abstract class OmemoActivity extends XmppActivity {
 	                                              CompoundButton.OnCheckedChangeListener
 			                                              onCheckedChangeListener) {
 		ContactKeyBinding binding = DataBindingUtil.inflate(getLayoutInflater(), R.layout.contact_key, keys, true);
-		if (Config.X509_VERIFICATION && status.getTrust() == FingerprintStatus.Trust.VERIFIED_X509) {
-			binding.key.setOnClickListener(v -> showX509Certificate(account, fingerprint));
-			binding.keyType.setOnClickListener(v -> showX509Certificate(account, fingerprint));
-		}
 		binding.tglTrust.setVisibility(View.VISIBLE);
 		registerForContextMenu(binding.getRoot());
 		binding.getRoot().setTag(R.id.TAG_ACCOUNT, account);
@@ -211,37 +207,6 @@ public abstract class OmemoActivity extends XmppActivity {
 					account.getAxolotlService().distrustFingerprint(fingerprint);
 					refreshUi();
 				});
-		builder.create().show();
-	}
-
-	private void showX509Certificate(Account account, String fingerprint) {
-		X509Certificate x509Certificate = account.getAxolotlService().getFingerprintCertificate(fingerprint);
-		if (x509Certificate != null) {
-			showCertificateInformationDialog(CryptoHelper.extractCertificateInformation(x509Certificate));
-		} else {
-			Toast.makeText(this, R.string.certificate_not_found, Toast.LENGTH_SHORT).show();
-		}
-	}
-
-	private void showCertificateInformationDialog(Bundle bundle) {
-		View view = getLayoutInflater().inflate(R.layout.certificate_information, null);
-		final String not_available = getString(R.string.certicate_info_not_available);
-		TextView subject_cn = (TextView) view.findViewById(R.id.subject_cn);
-		TextView subject_o = (TextView) view.findViewById(R.id.subject_o);
-		TextView issuer_cn = (TextView) view.findViewById(R.id.issuer_cn);
-		TextView issuer_o = (TextView) view.findViewById(R.id.issuer_o);
-		TextView sha1 = (TextView) view.findViewById(R.id.sha1);
-
-		subject_cn.setText(bundle.getString("subject_cn", not_available));
-		subject_o.setText(bundle.getString("subject_o", not_available));
-		issuer_cn.setText(bundle.getString("issuer_cn", not_available));
-		issuer_o.setText(bundle.getString("issuer_o", not_available));
-		sha1.setText(bundle.getString("sha1", not_available));
-
-		AlertDialog.Builder builder = new AlertDialog.Builder(this);
-		builder.setTitle(R.string.certificate_information);
-		builder.setView(view);
-		builder.setPositiveButton(R.string.ok, null);
 		builder.create().show();
 	}
 

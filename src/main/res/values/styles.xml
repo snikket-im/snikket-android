@@ -2,6 +2,10 @@
     <style name="TextAppearance.Conversations.Body1.Secondary" parent="TextAppearance.AppCompat.Body1">
         <item name="android:textColor">?android:textColorSecondary</item>
     </style>
+    <style name="TextAppearance.Conversations.Fingerprint" parent="TextAppearance.AppCompat.Body1">
+        <item name="android:fontFamily">monospace</item>
+        <item name="android:typeface">monospace</item>
+    </style>
     <style name="InputLabel" parent="TextAppearance.AppCompat.Caption">
         <item name="android:paddingBottom">@dimen/input_label_vertical_spacing</item>
         <item name="android:paddingLeft">@dimen/input_label_horizontal_spacing</item>

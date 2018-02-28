@@ -12,8 +12,7 @@
         android:id="@+id/text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="?attr/TextSizeBody"
-        android:textColor="?attr/color_text_primary"/>
+        android:textAppearance="@style/TextAppearance.AppCompat.Body1"/>
     <CheckBox
         android:layout_marginTop="8dp"
         android:id="@+id/report_spam"

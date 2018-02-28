@@ -11,10 +11,9 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textColor="?attr/color_text_primary"
-        android:paddingBottom="8dp"
-        android:text="@string/clear_histor_msg"
-        android:textSize="?attr/TextSizeBody" />
+        android:layout_marginBottom="8dp"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+        android:text="@string/clear_histor_msg"/>
 
     <CheckBox
         android:id="@+id/end_conversation_checkbox"

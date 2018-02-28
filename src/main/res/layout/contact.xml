@@ -50,10 +50,7 @@
                 android:id="@+id/key"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:fontFamily="monospace"
-                android:textColor="?attr/color_text_primary"
-                android:textSize="?attr/TextSizeBody"
-                android:typeface="monospace"
+                android:textAppearance="@style/TextAppearance.Conversations.Fingerprint"
                 android:visibility="gone"/>
         </LinearLayout>
 

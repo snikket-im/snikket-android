@@ -28,32 +28,27 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/pick_your_username"
-                android:textColor="?attr/color_text_primary"
-                android:textSize="?attr/TextSizeHeadline"
-                android:textStyle="bold"/>
+                android:textAppearance="@style/TextAppearance.AppCompat.Title"/>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:text="@string/magic_create_text"
-                android:textColor="?attr/color_text_primary"
-                android:textSize="?attr/TextSizeBody"/>
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"/>
             <EditText
                 android:id="@+id/username"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:hint="@string/username_hint"
-                android:inputType="textNoSuggestions"
-                android:textSize="?attr/TextSizeBody"/>
+                android:inputType="textNoSuggestions"/>
             <TextView
                 android:id="@+id/full_jid"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:text="@string/your_full_jid_will_be"
-                android:textColor="?attr/color_text_secondary"
-                android:textSize="?attr/TextSizeInfo"
+                android:textAppearance="@style/TextAppearance.AppCompat.Caption"
                 android:visibility="invisible"/>
             <Button
                 android:id="@+id/create_account"
