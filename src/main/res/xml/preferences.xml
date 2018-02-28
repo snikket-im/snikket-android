@@ -257,6 +257,11 @@
                     android:key="display_enter_key"
                     android:summary="@string/pref_display_enter_key_summary"
                     android:title="@string/pref_display_enter_key"/>
+                <CheckBoxPreference
+                    android:defaultValue="@bool/scroll_to_bottom"
+                    android:key="scroll_to_bottom"
+                    android:title="@string/pref_scroll_to_bottom"
+                    android:summary="@string/pref_scroll_to_bottom_summary"/>
             </PreferenceCategory>
             <PreferenceCategory android:title="@string/pref_presence_settings">
                 <CheckBoxPreference

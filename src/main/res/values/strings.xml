@@ -709,4 +709,6 @@
 	<string name="mtm_notification">Certificate Verification</string>
 	<string name="once">Once</string>
     <string name="qr_code_scanner_needs_access_to_camera">The QR code scanner needs access to the camera</string>
+    <string name="pref_scroll_to_bottom">Scroll to bottom</string>
+	<string name="pref_scroll_to_bottom_summary">Scroll down after sending a message</string>
 </resources>
