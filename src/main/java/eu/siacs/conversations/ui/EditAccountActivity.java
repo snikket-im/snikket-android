@@ -965,7 +965,7 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
 				this.mPgpFingerprint.setText(OpenPgpUtils.convertKeyIdToHex(pgpKeyId));
 				this.mPgpFingerprint.setOnClickListener(openPgp);
 				if ("pgp".equals(messageFingerprint)) {
-					this.getmPgpFingerprintDesc.setTextColor(ContextCompat.getColor(this, R.color.accent));
+					this.getmPgpFingerprintDesc.setTextAppearance(this,R.style.TextAppearance_Conversations_Caption_Highlight);
 				}
 				this.getmPgpFingerprintDesc.setOnClickListener(openPgp);
 				this.mPgpDeleteFingerprintButton.setOnClickListener(delete);
@@ -976,10 +976,10 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
 			if (ownAxolotlFingerprint != null && Config.supportOmemo()) {
 				this.mAxolotlFingerprintBox.setVisibility(View.VISIBLE);
 				if (ownAxolotlFingerprint.equals(messageFingerprint)) {
-					this.mOwnFingerprintDesc.setTextColor(ContextCompat.getColor(this, R.color.accent));
+					this.mOwnFingerprintDesc.setTextAppearance(this,R.style.TextAppearance_Conversations_Caption_Highlight);
 					this.mOwnFingerprintDesc.setText(R.string.omemo_fingerprint_selected_message);
 				} else {
-					this.mOwnFingerprintDesc.setTextColor(getSecondaryTextColor());
+					this.mOwnFingerprintDesc.setTextAppearance(this,R.style.TextAppearance_Conversations_Caption);
 					this.mOwnFingerprintDesc.setText(R.string.omemo_fingerprint);
 				}
 				this.mAxolotlFingerprint.setText(CryptoHelper.prettifyFingerprint(ownAxolotlFingerprint.substring(2)));

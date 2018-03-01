@@ -778,10 +778,6 @@ public abstract class XmppActivity extends AppCompatActivity {
 		}
 	}
 
-	public int getTertiaryTextColor() {
-		return this.mTertiaryTextColor;
-	}
-
 	public int getSecondaryTextColor() {
 		return this.mSecondaryTextColor;
 	}

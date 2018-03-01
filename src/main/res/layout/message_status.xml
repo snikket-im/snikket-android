@@ -40,8 +40,6 @@
         android:layout_toEndOf="@+id/message_photo"
         android:layout_toRightOf="@+id/message_photo"
         android:text="@string/contact_has_read_up_to_this_point"
-        android:textColor="?attr/color_text_secondary"
-        android:textSize="?attr/TextSizeInfo"
-        android:textStyle="italic"/>
+        android:textAppearance="@style/TextAppearance.Conversations.Status"/>
 
 </RelativeLayout>

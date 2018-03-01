@@ -3,7 +3,6 @@
 
     <attr name="TextSizeInfo" format="dimension" />
     <attr name="TextSizeBody" format="dimension" />
-    <attr name="TextSizeHeadline" format="dimension" />
     <attr name="TextSeparation" format="dimension"/>
 
     <attr name="IconSize" format="dimension"/>

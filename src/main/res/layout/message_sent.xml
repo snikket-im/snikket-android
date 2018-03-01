@@ -54,8 +54,7 @@
                     android:layout_gravity="center_vertical"
                     android:gravity="center_vertical"
                     android:text="@string/sending"
-                    android:textColor="?attr/color_text_secondary"
-                    android:textSize="?attr/TextSizeInfo" />
+                    android:textAppearance="@style/TextAppearance.Conversations.Caption"/>
 
                 <ImageView
                     android:id="@+id/security_indicator"

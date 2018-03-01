@@ -481,18 +481,14 @@
                                     android:id="@+id/pgp_fingerprint"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:fontFamily="monospace"
-                                    android:textColor="?attr/color_text_primary"
-                                    android:textSize="?attr/TextSizeBody"
-                                    android:typeface="monospace"/>
+                                    android:textAppearance="@style/TextAppearance.Conversations.Fingerprint"/>
 
                                 <TextView
                                     android:id="@+id/pgp_fingerprint_desc"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:text="@string/openpgp_key_id"
-                                    android:textColor="?attr/color_text_secondary"
-                                    android:textSize="?attr/TextSizeInfo"/>
+                                    android:textAppearance="@style/TextAppearance.AppCompat.Caption"/>
                             </LinearLayout>
 
                             <ImageButton
@@ -526,18 +522,13 @@
                                     android:id="@+id/axolotl_fingerprint"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:fontFamily="monospace"
-                                    android:textColor="?attr/color_text_primary"
-                                    android:textSize="?attr/TextSizeBody"
-                                    android:typeface="monospace"/>
+                                    android:textAppearance="@style/TextAppearance.Conversations.Fingerprint"/>
 
                                 <TextView
                                     android:id="@+id/own_fingerprint_desc"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:text="@string/omemo_fingerprint"
-                                    android:textColor="?attr/color_text_secondary"
-                                    android:textSize="?attr/TextSizeInfo"/>
+                                    android:textAppearance="@style/TextAppearance.AppCompat.Caption"/>
                             </LinearLayout>
 
                             <LinearLayout

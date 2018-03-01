@@ -53,9 +53,8 @@
                     android:layout_gravity="center_vertical"
                     android:gravity="center_vertical"
                     android:layout_marginRight="4sp"
-                    android:textColor="@color/white70"
-                    android:textStyle="bold"
-                    android:textSize="?attr/TextSizeInfo" />
+                    android:textAppearance="@style/TextAppearance.Conversations.Caption"
+                    android:textStyle="bold"/>
 
                 <ImageView
                     android:id="@+id/security_indicator"
@@ -84,8 +83,7 @@
                     android:layout_gravity="center_vertical"
                     android:gravity="center_vertical"
                     android:text="@string/sending"
-                    android:textColor="@color/white70"
-                    android:textSize="?attr/TextSizeInfo" />
+                    android:textAppearance="@style/TextAppearance.Conversations.Caption"/>
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>

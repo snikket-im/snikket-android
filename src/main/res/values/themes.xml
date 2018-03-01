@@ -19,7 +19,6 @@
         <item name="TextSizeBody">14sp</item>
         <item name="TextSeparation">5sp</item>
         <item name="IconSize">18sp</item>
-        <item name="TextSizeHeadline">20sp</item>
 
         <item name="divider">@color/black12</item>
 
@@ -99,7 +98,6 @@
         <item name="TextSizeBody">14sp</item>
         <item name="TextSeparation">5sp</item>
         <item name="IconSize">18sp</item>
-        <item name="TextSizeHeadline">20sp</item>
 
         <item name="divider">@color/white12</item>
 
@@ -166,7 +164,6 @@
         <item name="TextSizeBody">16sp</item>
         <item name="TextSeparation">6sp</item>
         <item name="IconSize">20sp</item>
-        <item name="TextSizeHeadline">22sp</item>
     </style>
 
     <style name="ConversationsTheme.Dark.LargerText" parent="ConversationsTheme.Dark">
@@ -174,7 +171,6 @@
         <item name="TextSizeBody">16sp</item>
         <item name="IconSize">20sp</item>
         <item name="TextSeparation">6sp</item>
-        <item name="TextSizeHeadline">22sp</item>
     </style>
 
     <style name="ConversationsTheme.FullScreen" parent="@style/Theme.AppCompat.Light">

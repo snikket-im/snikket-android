@@ -12,13 +12,11 @@
         android:id="@+id/warning"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="?attr/TextSizeBody"
-        android:textColor="?attr/color_text_primary"/>
+        android:textAppearance="@style/TextAppearance.Conversations.Body1"/>
     <CheckBox
         android:layout_marginTop="8dp"
         android:id="@+id/trusted_source"
         android:layout_width="wrap_content"
-        android:textColor="?attr/color_text_primary"
         android:layout_height="wrap_content"
         android:text="@string/i_followed_this_link_from_a_trusted_source" />
 

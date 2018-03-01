@@ -18,10 +18,7 @@
         android:layout_height="wrap_content"
         android:autoLink="web"
         android:longClickable="true"
-        android:textColor="?attr/color_text_primary"
-        android:textColorHighlight="@color/grey500"
-        android:textColorLink="@color/black87"
-        android:textSize="?attr/TextSizeBody"/>
+        android:textAppearance="@style/TextAppearance.Conversations.Body1"/>
 
     <Button
         android:id="@+id/download_button"
@@ -54,8 +51,7 @@
             android:layout_alignParentRight="true"
             android:paddingBottom="16dp"
             android:paddingRight="16dp"
-            android:textColor="?attr/color_text_secondary"
-            android:textSize="?attr/TextSizeInfo"/>
+            android:textAppearance="@style/TextAppearance.Conversations.Caption"/>
 
         <SeekBar
             android:id="@+id/progress"

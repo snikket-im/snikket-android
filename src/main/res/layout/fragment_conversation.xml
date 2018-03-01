@@ -84,8 +84,7 @@
                 android:layout_centerVertical="true"
                 android:layout_toLeftOf="@+id/snackbar_action"
                 android:paddingLeft="24dp"
-                android:textColor="@color/white"
-                android:textSize="?attr/TextSizeBody"/>
+                android:textAppearance="@style/TextAppearance.Conversations.Body1.OnDark"/>
 
             <TextView
                 android:id="@+id/snackbar_action"
@@ -98,8 +97,7 @@
                 android:paddingRight="24dp"
                 android:paddingTop="16dp"
                 android:textAllCaps="true"
-                android:textColor="@color/white"
-                android:textSize="?attr/TextSizeBody"
+                android:textAppearance="@style/TextAppearance.Conversations.Body1.OnDark"
                 android:textStyle="bold"/>
         </RelativeLayout>
 
