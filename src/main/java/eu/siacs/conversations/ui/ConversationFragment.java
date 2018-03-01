@@ -11,6 +11,8 @@ import android.os.Build;
 import android.preference.PreferenceManager;
 import android.provider.MediaStore;
 import android.support.annotation.IdRes;
+import android.support.annotation.NonNull;
+import android.support.annotation.StringRes;
 import android.support.v7.app.AlertDialog;
 import android.app.Fragment;
 import android.app.PendingIntent;
@@ -309,7 +311,7 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
 		public void onClick(View v) {
 			final Contact contact = conversation == null ? null : conversation.getContact();
 			if (contact != null) {
-				activity.xmppConnectionService.createContact(contact,true);
+				activity.xmppConnectionService.createContact(contact, true);
 				activity.switchToContactDetails(contact);
 			}
 		}
@@ -1081,7 +1083,7 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
 				startActivity(intent);
 				break;
 			case R.id.action_invite:
-				startActivityForResult(ChooseContactActivity.create(activity,conversation), REQUEST_INVITE_TO_CONVERSATION);
+				startActivityForResult(ChooseContactActivity.create(activity, conversation), REQUEST_INVITE_TO_CONVERSATION);
 				break;
 			case R.id.action_clear_history:
 				clearHistoryDialog(conversation);
@@ -1166,7 +1168,11 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
 	}
 
 	public void attachFile(final int attachmentChoice) {
-		if (attachmentChoice != ATTACHMENT_CHOICE_LOCATION) {
+		if (attachmentChoice == ATTACHMENT_CHOICE_TAKE_PHOTO || attachmentChoice == ATTACHMENT_CHOICE_RECORD_VIDEO) {
+			if (!hasStorageAndCameraPermission(attachmentChoice)) {
+				return;
+			}
+		} else if (attachmentChoice != ATTACHMENT_CHOICE_LOCATION) {
 			if (!Config.ONLY_INTERNAL_STORAGE && !hasStoragePermission(attachmentChoice)) {
 				return;
 			}
@@ -1231,9 +1237,9 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
 	}
 
 	@Override
-	public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
+	public void onRequestPermissionsResult(int requestCode, @NonNull String permissions[], @NonNull int[] grantResults) {
 		if (grantResults.length > 0)
-			if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+			if (allGranted(grantResults)) {
 				if (requestCode == REQUEST_START_DOWNLOAD) {
 					if (this.mPendingDownloadableMessage != null) {
 						startDownloadable(this.mPendingDownloadableMessage);
@@ -1246,8 +1252,32 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
 					attachFile(requestCode);
 				}
 			} else {
-				Toast.makeText(getActivity(), R.string.no_storage_permission, Toast.LENGTH_SHORT).show();
+				@StringRes int res;
+				if (Manifest.permission.CAMERA.equals(getFirstDenied(grantResults, permissions))) {
+					res = R.string.no_camera_permission;
+				} else {
+					res = R.string.no_storage_permission;
+				}
+				Toast.makeText(getActivity(),res, Toast.LENGTH_SHORT).show();
 			}
+	}
+
+	private static boolean allGranted(int[] grantResults) {
+		for(int grantResult : grantResults) {
+			if (grantResult != PackageManager.PERMISSION_GRANTED) {
+				return false;
+			}
+		}
+		return true;
+	}
+
+	private static String getFirstDenied(int[] grantResults, String[] permissions) {
+		for(int i = 0; i < grantResults.length; ++i) {
+			if (grantResults[i] == PackageManager.PERMISSION_DENIED) {
+				return permissions[i];
+			}
+		}
+		return null;
 	}
 
 	public void startDownloadable(Message message) {
@@ -1313,6 +1343,26 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
 				return false;
 			} else {
 				return true;
+			}
+		} else {
+			return true;
+		}
+	}
+
+	private boolean hasStorageAndCameraPermission(int requestCode) {
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+			List<String> missingPermissions = new ArrayList<>();
+			if (!Config.ONLY_INTERNAL_STORAGE && activity.checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+				missingPermissions.add(Manifest.permission.WRITE_EXTERNAL_STORAGE);
+			}
+			if (activity.checkSelfPermission(Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+				missingPermissions.add(Manifest.permission.CAMERA);
+			}
+			if (missingPermissions.size() == 0) {
+				return true;
+			} else {
+				requestPermissions(missingPermissions.toArray(new String[missingPermissions.size()]), requestCode);
+				return false;
 			}
 		} else {
 			return true;
@@ -1692,10 +1742,10 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
 		if (this.activity == null || this.binding == null) {
 			return false;
 		}
-		Log.d(Config.LOGTAG,"reInit(hasExtras="+Boolean.toString(hasExtras)+")");
+		Log.d(Config.LOGTAG, "reInit(hasExtras=" + Boolean.toString(hasExtras) + ")");
 
 		if (this.conversation.isRead() && hasExtras) {
-			Log.d(Config.LOGTAG,"trimming conversation");
+			Log.d(Config.LOGTAG, "trimming conversation");
 			this.conversation.trim();
 		}
 
@@ -1712,16 +1762,16 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
 		refresh(false);
 		this.conversation.messagesLoaded.set(true);
 
-		Log.d(Config.LOGTAG,"scrolledToBottomAndNoPending="+Boolean.toString(scrolledToBottomAndNoPending));
+		Log.d(Config.LOGTAG, "scrolledToBottomAndNoPending=" + Boolean.toString(scrolledToBottomAndNoPending));
 
 		if (hasExtras || scrolledToBottomAndNoPending) {
 			synchronized (this.messageList) {
-				Log.d(Config.LOGTAG,"jump to first unread message");
+				Log.d(Config.LOGTAG, "jump to first unread message");
 				final Message first = conversation.getFirstUnreadMessage();
 				final int bottom = Math.max(0, this.messageList.size() - 1);
 				final int pos;
 				if (first == null) {
-					Log.d(Config.LOGTAG,"first unread message was null");
+					Log.d(Config.LOGTAG, "first unread message was null");
 					pos = bottom;
 				} else {
 					int i = getIndexOf(first.getUuid(), this.messageList);
@@ -1742,8 +1792,8 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
 			return false;
 		}
 		final ListView listView = this.binding.messagesView;
-		if (listView.getLastVisiblePosition() == listView.getAdapter().getCount() -1) {
-			final View lastChild = listView.getChildAt(listView.getChildCount() -1);
+		if (listView.getLastVisiblePosition() == listView.getAdapter().getCount() - 1) {
+			final View lastChild = listView.getChildAt(listView.getChildCount() - 1);
 			return lastChild != null && lastChild.getBottom() <= listView.getHeight();
 		} else {
 			return false;
@@ -2370,7 +2420,7 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
 		}
 		pendingScrollState.pop();
 		if (pendingTakePhotoUri.pop() != null) {
-			Log.e(Config.LOGTAG,"cleared pending photo uri");
+			Log.e(Config.LOGTAG, "cleared pending photo uri");
 		}
 	}
 
