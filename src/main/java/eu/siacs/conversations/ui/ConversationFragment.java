@@ -1584,7 +1584,7 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
 		super.onSaveInstanceState(outState);
 		if (conversation != null) {
 			outState.putString(STATE_CONVERSATION_UUID, conversation.getUuid());
-			final Uri uri = pendingTakePhotoUri.pop();
+			final Uri uri = pendingTakePhotoUri.peek();
 			if (uri != null) {
 				outState.putString(STATE_PHOTO_URI, uri.toString());
 			}
@@ -2361,14 +2361,17 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
 		if (activityResult != null) {
 			handleActivityResult(activityResult);
 		}
+		clearPending();
 	}
 
-	public void clearPending() {
+	private void clearPending() {
 		if (postponedActivityResult.pop() != null) {
-			Log.d(Config.LOGTAG, "cleared pending intent with unhandled result left");
+			Log.e(Config.LOGTAG, "cleared pending intent with unhandled result left");
 		}
 		pendingScrollState.pop();
-		pendingTakePhotoUri.pop();
+		if (pendingTakePhotoUri.pop() != null) {
+			Log.e(Config.LOGTAG,"cleared pending photo uri");
+		}
 	}
 
 	public Conversation getConversation() {

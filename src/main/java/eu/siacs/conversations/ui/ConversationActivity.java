@@ -432,8 +432,8 @@ public class ConversationActivity extends XmppActivity implements OnConversation
 
 	@Override
 	public void onSaveInstanceState(Bundle savedInstanceState) {
-		Intent pendingIntent = pendingViewIntent.pop();
-		savedInstanceState.putParcelable("intent", pendingIntent == null ? pendingIntent : getIntent());
+		Intent pendingIntent = pendingViewIntent.peek();
+		savedInstanceState.putParcelable("intent", pendingIntent != null ? pendingIntent : getIntent());
 		super.onSaveInstanceState(savedInstanceState);
 	}
 
