@@ -480,6 +480,7 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
 
 	private void setScrollPosition(ScrollState scrollPosition) {
 		if (scrollPosition != null) {
+			//TODO maybe this needs a 'post'
 			this.binding.messagesView.setSelectionFromTop(scrollPosition.position, scrollPosition.offset);
 		}
 	}
@@ -1771,13 +1772,12 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
 				final int bottom = Math.max(0, this.messageList.size() - 1);
 				final int pos;
 				if (first == null) {
-					Log.d(Config.LOGTAG, "first unread message was null");
 					pos = bottom;
 				} else {
 					int i = getIndexOf(first.getUuid(), this.messageList);
 					pos = i < 0 ? bottom : i;
 				}
-				this.binding.messagesView.setSelection(pos);
+				this.binding.messagesView.post(() -> this.binding.messagesView.setSelection(pos));
 			}
 		}
 
