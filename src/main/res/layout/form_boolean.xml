@@ -7,7 +7,5 @@
     <CheckBox
         android:id="@+id/field"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textColor="?attr/color_text_primary"
-        android:textSize="?attr/TextSizeBody"/>
+        android:layout_height="wrap_content"/>
 </LinearLayout>

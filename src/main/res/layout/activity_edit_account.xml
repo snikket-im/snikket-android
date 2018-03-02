@@ -223,8 +223,7 @@
                                     android:ellipsize="end"
                                     android:singleLine="true"
                                     android:text="@string/server_info_session_established"
-                                    android:textColor="?attr/color_text_primary"
-                                    android:textSize="?attr/TextSizeBody"/>
+                                    android:textAppearance="@style/TextAppearance.Conversations.Body1"/>
 
                                 <TextView
                                     android:id="@+id/session_est"
@@ -232,9 +231,7 @@
                                     android:layout_height="wrap_content"
                                     android:layout_gravity="right"
                                     android:paddingLeft="4dp"
-                                    android:textColor="?attr/color_text_primary"
-                                    android:textSize="?attr/TextSizeBody"
-                                    tools:ignore="RtlHardcoded"/>
+                                    android:textAppearance="@style/TextAppearance.Conversations.Body1"/>
                             </TableRow>
 
                         </TableLayout>
@@ -257,8 +254,7 @@
                                     android:ellipsize="end"
                                     android:singleLine="true"
                                     android:text="@string/server_info_pep"
-                                    android:textColor="?attr/color_text_primary"
-                                    android:textSize="?attr/TextSizeBody"/>
+                                    android:textAppearance="@style/TextAppearance.Conversations.Body1"/>
 
                                 <TextView
                                     android:id="@+id/server_info_pep"
@@ -266,8 +262,7 @@
                                     android:layout_height="wrap_content"
                                     android:layout_gravity="right"
                                     android:paddingLeft="4dp"
-                                    android:textColor="?attr/color_text_primary"
-                                    android:textSize="?attr/TextSizeBody"
+                                    android:textAppearance="@style/TextAppearance.Conversations.Body1"
                                     tools:ignore="RtlHardcoded"/>
                             </TableRow>
 
@@ -281,8 +276,7 @@
                                     android:ellipsize="end"
                                     android:singleLine="true"
                                     android:text="@string/server_info_blocking"
-                                    android:textColor="?attr/color_text_primary"
-                                    android:textSize="?attr/TextSizeBody"/>
+                                    android:textAppearance="@style/TextAppearance.Conversations.Body1"/>
 
                                 <TextView
                                     android:id="@+id/server_info_blocking"
@@ -290,8 +284,7 @@
                                     android:layout_height="wrap_content"
                                     android:layout_gravity="right"
                                     android:paddingLeft="4dp"
-                                    android:textColor="?attr/color_text_primary"
-                                    android:textSize="?attr/TextSizeBody"
+                                    android:textAppearance="@style/TextAppearance.Conversations.Body1"
                                     tools:ignore="RtlHardcoded"/>
                             </TableRow>
 
@@ -305,8 +298,7 @@
                                     android:ellipsize="end"
                                     android:singleLine="true"
                                     android:text="@string/server_info_stream_management"
-                                    android:textColor="?attr/color_text_primary"
-                                    android:textSize="?attr/TextSizeBody"/>
+                                    android:textAppearance="@style/TextAppearance.Conversations.Body1"/>
 
                                 <TextView
                                     android:id="@+id/server_info_sm"
@@ -314,8 +306,7 @@
                                     android:layout_height="wrap_content"
                                     android:layout_gravity="right"
                                     android:paddingLeft="4dp"
-                                    android:textColor="?attr/color_text_primary"
-                                    android:textSize="?attr/TextSizeBody"
+                                    android:textAppearance="@style/TextAppearance.Conversations.Body1"
                                     tools:ignore="RtlHardcoded"/>
                             </TableRow>
 
@@ -329,8 +320,7 @@
                                     android:ellipsize="end"
                                     android:singleLine="true"
                                     android:text="@string/server_info_roster_version"
-                                    android:textColor="?attr/color_text_primary"
-                                    android:textSize="?attr/TextSizeBody"/>
+                                    android:textAppearance="@style/TextAppearance.Conversations.Body1"/>
 
                                 <TextView
                                     android:id="@+id/server_info_roster_version"
@@ -338,8 +328,7 @@
                                     android:layout_height="wrap_content"
                                     android:layout_gravity="right"
                                     android:paddingLeft="4dp"
-                                    android:textColor="?attr/color_text_primary"
-                                    android:textSize="?attr/TextSizeBody"
+                                    android:textAppearance="@style/TextAppearance.Conversations.Body1"
                                     tools:ignore="RtlHardcoded"/>
                             </TableRow>
 
@@ -353,8 +342,7 @@
                                     android:ellipsize="end"
                                     android:singleLine="true"
                                     android:text="@string/server_info_carbon_messages"
-                                    android:textColor="?attr/color_text_primary"
-                                    android:textSize="?attr/TextSizeBody"/>
+                                    android:textAppearance="@style/TextAppearance.Conversations.Body1"/>
 
                                 <TextView
                                     android:id="@+id/server_info_carbons"
@@ -362,8 +350,7 @@
                                     android:layout_height="wrap_content"
                                     android:layout_gravity="right"
                                     android:paddingLeft="4dp"
-                                    android:textColor="?attr/color_text_primary"
-                                    android:textSize="?attr/TextSizeBody"
+                                    android:textAppearance="@style/TextAppearance.Conversations.Body1"
                                     tools:ignore="RtlHardcoded"/>
                             </TableRow>
 
@@ -377,8 +364,7 @@
                                     android:ellipsize="end"
                                     android:singleLine="true"
                                     android:text="@string/server_info_mam"
-                                    android:textColor="?attr/color_text_primary"
-                                    android:textSize="?attr/TextSizeBody"/>
+                                    android:textAppearance="@style/TextAppearance.Conversations.Body1"/>
 
                                 <TextView
                                     android:id="@+id/server_info_mam"
@@ -386,8 +372,7 @@
                                     android:layout_height="wrap_content"
                                     android:layout_gravity="right"
                                     android:paddingLeft="4dp"
-                                    android:textColor="?attr/color_text_primary"
-                                    android:textSize="?attr/TextSizeBody"
+                                    android:textAppearance="@style/TextAppearance.Conversations.Body1"
                                     tools:ignore="RtlHardcoded"/>
                             </TableRow>
 
@@ -401,8 +386,7 @@
                                     android:ellipsize="end"
                                     android:singleLine="true"
                                     android:text="@string/server_info_csi"
-                                    android:textColor="?attr/color_text_primary"
-                                    android:textSize="?attr/TextSizeBody"/>
+                                    android:textAppearance="@style/TextAppearance.Conversations.Body1"/>
 
                                 <TextView
                                     android:id="@+id/server_info_csi"
@@ -410,8 +394,7 @@
                                     android:layout_height="wrap_content"
                                     android:layout_gravity="right"
                                     android:paddingLeft="4dp"
-                                    android:textColor="?attr/color_text_primary"
-                                    android:textSize="?attr/TextSizeBody"
+                                    android:textAppearance="@style/TextAppearance.Conversations.Body1"
                                     tools:ignore="RtlHardcoded"/>
                             </TableRow>
 
@@ -426,8 +409,7 @@
                                     android:ellipsize="end"
                                     android:singleLine="true"
                                     android:text="@string/server_info_push"
-                                    android:textColor="?attr/color_text_primary"
-                                    android:textSize="?attr/TextSizeBody"/>
+                                    android:textAppearance="@style/TextAppearance.Conversations.Body1"/>
 
                                 <TextView
                                     android:id="@+id/server_info_push"
@@ -435,8 +417,7 @@
                                     android:layout_height="wrap_content"
                                     android:layout_gravity="right"
                                     android:paddingLeft="4dp"
-                                    android:textColor="?attr/color_text_primary"
-                                    android:textSize="?attr/TextSizeBody"/>
+                                    android:textAppearance="@style/TextAppearance.Conversations.Body1"/>
                             </TableRow>
 
                             <TableRow
@@ -449,8 +430,7 @@
                                     android:ellipsize="end"
                                     android:singleLine="true"
                                     android:text="@string/server_info_http_upload"
-                                    android:textColor="?attr/color_text_primary"
-                                    android:textSize="?attr/TextSizeBody"/>
+                                    android:textAppearance="@style/TextAppearance.Conversations.Body1"/>
 
                                 <TextView
                                     android:id="@+id/server_info_http_upload"
@@ -458,8 +438,7 @@
                                     android:layout_height="wrap_content"
                                     android:layout_gravity="right"
                                     android:paddingLeft="4dp"
-                                    android:textColor="?attr/color_text_primary"
-                                    android:textSize="?attr/TextSizeBody"/>
+                                    android:textAppearance="@style/TextAppearance.Conversations.Body1"/>
                             </TableRow>
                         </TableLayout>
 
