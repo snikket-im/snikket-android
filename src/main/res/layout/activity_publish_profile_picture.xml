@@ -71,8 +71,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="@string/cancel"
-            android:textColor="?attr/color_text_primary"/>
+            android:text="@string/cancel"/>
 
         <View
             android:layout_width="1dp"
@@ -88,8 +87,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:enabled="false"
-            android:text="@string/publish"
-            android:textColor="?attr/color_text_secondary"/>
+            android:text="@string/publish"/>
     </LinearLayout>
 
 </RelativeLayout>

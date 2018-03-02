@@ -421,12 +421,10 @@ public class TrustKeysActivity extends OmemoActivity implements OnKeyStatusUpdat
 
 	private void unlock() {
 		binding.saveButton.setEnabled(true);
-		binding.saveButton.setTextColor(getPrimaryTextColor());
 	}
 
 	private void lock() {
 		binding.saveButton.setEnabled(false);
-		binding.saveButton.setTextColor(getSecondaryTextColor());
 	}
 
 	private void lockOrUnlockAsNeeded() {

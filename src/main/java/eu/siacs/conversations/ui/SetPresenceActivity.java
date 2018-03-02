@@ -163,7 +163,6 @@ public class SetPresenceActivity extends XmppActivity implements View.OnClickLis
 			}
 			boolean e = noAccountUsesPgp();
 			this.binding.allAccounts.setEnabled(e);
-			this.binding.allAccounts.setTextColor(e ? getPrimaryTextColor() : getSecondaryTextColor());
 		}
 		redrawTemplates();
 	}

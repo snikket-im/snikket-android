@@ -6,9 +6,6 @@
         <item name="colorPrimaryDark">@color/primary700</item>
         <item name="colorAccent">@color/accent</item>
 
-        <item name="color_text_primary">@color/black87</item>
-        <item name="color_text_secondary">@color/black54</item>
-
         <item name="color_background_primary">@color/grey50</item>
         <item name="color_background_secondary">@color/grey200</item>
 
@@ -16,7 +13,6 @@
         <item name="android:actionModeBackground">@color/accent</item>
 
         <item name="TextSizeInfo">12sp</item>
-        <item name="TextSizeBody">14sp</item>
         <item name="TextSeparation">5sp</item>
         <item name="IconSize">18sp</item>
 
@@ -85,8 +81,6 @@
         <item name="colorPrimaryDark">@color/primary900</item>
         <item name="colorAccent">@color/accent</item>
 
-        <item name="color_text_primary">@color/white</item>
-        <item name="color_text_secondary">@color/white70</item>
 
         <item name="color_background_primary">@color/grey800</item>
         <item name="color_background_secondary">@color/grey900</item>
@@ -95,7 +89,6 @@
         <item name="android:actionModeBackground">@color/accent</item>
 
         <item name="TextSizeInfo">12sp</item>
-        <item name="TextSizeBody">14sp</item>
         <item name="TextSeparation">5sp</item>
         <item name="IconSize">18sp</item>
 
@@ -157,20 +150,6 @@
         <item type="reference" name="icon_notifications_paused">@drawable/ic_notifications_paused_white_24dp</item>
         <item type="reference" name="icon_notifications_none">@drawable/ic_notifications_none_white_24dp</item>
         <item type="reference" name="icon_enable_undecided_device">@drawable/ic_new_releases_white_24dp</item>
-    </style>
-
-    <style name="ConversationsTheme.LargerText" parent="ConversationsTheme">
-        <item name="TextSizeInfo">14sp</item>
-        <item name="TextSizeBody">16sp</item>
-        <item name="TextSeparation">6sp</item>
-        <item name="IconSize">20sp</item>
-    </style>
-
-    <style name="ConversationsTheme.Dark.LargerText" parent="ConversationsTheme.Dark">
-        <item name="TextSizeInfo">14sp</item>
-        <item name="TextSizeBody">16sp</item>
-        <item name="IconSize">20sp</item>
-        <item name="TextSeparation">6sp</item>
     </style>
 
     <style name="ConversationsTheme.FullScreen" parent="@style/Theme.AppCompat.Light">

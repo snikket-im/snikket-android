@@ -150,11 +150,6 @@
             android:summary="@string/pref_use_green_background_summary"
             android:title="@string/pref_use_green_background"/>
         <CheckBoxPreference
-            android:defaultValue="@bool/use_larger_font"
-            android:key="use_larger_font"
-            android:summary="@string/pref_use_larger_font_summary"
-            android:title="@string/pref_use_larger_font"/>
-        <CheckBoxPreference
             android:defaultValue="@bool/send_button_status"
             android:key="send_button_status"
             android:summary="@string/pref_use_send_button_to_indicate_status_summary"

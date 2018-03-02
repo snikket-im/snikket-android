@@ -292,7 +292,6 @@ public class PublishProfilePictureActivity extends XmppActivity implements XmppC
 		final boolean status = enabled && !publishing;
 		this.publishButton.setText(publishing ? R.string.publishing : res);
 		this.publishButton.setEnabled(status);
-		this.publishButton.setTextColor(status ? getPrimaryTextColor() : getSecondaryTextColor());
 	}
 
 	public void refreshUiReal() {

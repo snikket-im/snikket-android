@@ -47,8 +47,7 @@
                 android:paddingBottom="12dp"
                 android:paddingLeft="8dp"
                 android:paddingRight="8dp"
-                android:paddingTop="12dp"
-                android:textColor="?attr/color_text_primary">
+                android:paddingTop="12dp">
 
                 <requestFocus/>
             </eu.siacs.conversations.ui.widget.EditMessage>

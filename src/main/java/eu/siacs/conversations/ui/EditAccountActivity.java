@@ -447,29 +447,23 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
 		if (!mInitMode && passwordChangedInMagicCreateMode()) {
 			this.mSaveButton.setText(R.string.change_password);
 			this.mSaveButton.setEnabled(true);
-			this.mSaveButton.setTextColor(getPrimaryTextColor());
 		} else if (accountInfoEdited && !mInitMode) {
 			this.mSaveButton.setText(R.string.save);
 			this.mSaveButton.setEnabled(true);
-			this.mSaveButton.setTextColor(getPrimaryTextColor());
 		} else if (mAccount != null
 				&& (mAccount.getStatus() == Account.State.CONNECTING || mAccount.getStatus() == Account.State.REGISTRATION_SUCCESSFUL || mFetchingAvatar)) {
 			this.mSaveButton.setEnabled(false);
-			this.mSaveButton.setTextColor(getSecondaryTextColor());
 			this.mSaveButton.setText(R.string.account_status_connecting);
 		} else if (mAccount != null && mAccount.getStatus() == Account.State.DISABLED && !mInitMode) {
 			this.mSaveButton.setEnabled(true);
-			this.mSaveButton.setTextColor(getPrimaryTextColor());
 			this.mSaveButton.setText(R.string.enable);
 		} else {
 			this.mSaveButton.setEnabled(true);
-			this.mSaveButton.setTextColor(getPrimaryTextColor());
 			if (!mInitMode) {
 				if (mAccount != null && mAccount.isOnlineAndConnected()) {
 					this.mSaveButton.setText(R.string.save);
 					if (!accountInfoEdited) {
 						this.mSaveButton.setEnabled(false);
-						this.mSaveButton.setTextColor(getSecondaryTextColor());
 					}
 				} else {
 					XmppConnection connection = mAccount == null ? null : mAccount.getXmppConnection();
@@ -750,7 +744,6 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
 
 		if (Config.MAGIC_CREATE_DOMAIN == null && this.xmppConnectionService.getAccounts().size() == 0) {
 			this.mCancelButton.setEnabled(false);
-			this.mCancelButton.setTextColor(getSecondaryTextColor());
 		}
 		if (mUsernameMode) {
 			this.binding.accountJid.setHint(R.string.username_hint);

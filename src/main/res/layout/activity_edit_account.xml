@@ -71,7 +71,7 @@
                                 android:layout_height="wrap_content"
                                 app:passwordToggleDrawable="@drawable/visibility_toggle_drawable"
                                 app:passwordToggleEnabled="true"
-                                app:passwordToggleTint="?attr/color_text_secondary">
+                                app:passwordToggleTint="?android:textColorSecondary">
 
                                 <android.support.design.widget.TextInputEditText
                                     android:id="@+id/account_password"
@@ -604,8 +604,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="@string/cancel"
-                android:textColor="?attr/color_text_primary"/>
+                android:text="@string/cancel"/>
 
             <View
                 android:layout_width="1dp"
@@ -621,8 +620,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:enabled="false"
-                android:text="@string/save"
-                android:textColor="?attr/color_text_secondary"/>
+                android:text="@string/save"/>
         </LinearLayout>
 
     </RelativeLayout>

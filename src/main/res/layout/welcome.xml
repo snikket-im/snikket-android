@@ -50,7 +50,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="right"
                 android:text="@string/use_own_provider"
-                android:textColor="?attr/color_text_secondary"/>
+                android:textColor="?android:textColorSecondary"/>
         </LinearLayout>
         <RelativeLayout
             android:layout_width="match_parent"
@@ -73,7 +73,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
-            android:textColor="?attr/color_text_secondary"
+            android:textColor="?android:attr/textColorSecondary"
             android:textSize="@dimen/fineprint_size"
             android:maxLines="1"
             android:text="@string/free_for_six_month"
