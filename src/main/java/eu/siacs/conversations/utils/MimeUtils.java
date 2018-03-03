@@ -55,7 +55,6 @@ public final class MimeUtils {
         add("application/msaccess", "mdb");
         add("application/oda", "oda");
         add("application/ogg", "ogg");
-        add("application/ogg", "oga");
         add("application/pdf", "pdf");
         add("application/pgp-keys", "key");
         add("application/pgp-signature", "pgp");
@@ -234,6 +233,7 @@ public final class MimeUtils {
         add("audio/mpeg", "mp2");
         add("audio/mpeg", "m4a");
         add("audio/mpegurl", "m3u");
+        add("audio/ogg","oga");
         add("audio/prs.sid", "sid");
         add("audio/x-aiff", "aif");
         add("audio/x-aiff", "aiff");
@@ -355,6 +355,7 @@ public final class MimeUtils {
         add("video/fli", "fli");
         add("video/m4v", "m4v");
         add("video/mp2ts", "ts");
+        add("video/ogg","ogv");
         add("video/mpeg", "mpeg");
         add("video/mpeg", "mpg");
         add("video/mpeg", "mpe");
@@ -489,7 +490,7 @@ public final class MimeUtils {
         if (mimeType == null || mimeType.isEmpty()) {
             return null;
         }
-        return mimeTypeToExtensionMap.get(mimeType);
+        return mimeTypeToExtensionMap.get(mimeType.split(";")[0]);
     }
 
     public static String guessMimeTypeFromUri(Context context, Uri uri) {

@@ -464,9 +464,7 @@ public class XmppConnectionService extends Service {
 		}
 	}
 
-	public void attachFileToConversation(final Conversation conversation,
-	                                     final Uri uri,
-	                                     final UiCallback<Message> callback) {
+	public void attachFileToConversation(final Conversation conversation, final Uri uri, final String type, final UiCallback<Message> callback) {
 		if (FileBackend.weOwnFile(this, uri)) {
 			Log.d(Config.LOGTAG, "trying to attach file that belonged to us");
 			callback.error(R.string.security_error_invalid_file_access, null);
@@ -480,7 +478,7 @@ public class XmppConnectionService extends Service {
 		}
 		message.setCounterpart(conversation.getNextCounterpart());
 		message.setType(Message.TYPE_FILE);
-		final AttachFileToConversationRunnable runnable = new AttachFileToConversationRunnable(this, uri, message, callback);
+		final AttachFileToConversationRunnable runnable = new AttachFileToConversationRunnable(this, uri, type, message, callback);
 		if (runnable.isVideoMessage()) {
 			mVideoCompressionExecutor.execute(runnable);
 		} else {
@@ -502,7 +500,7 @@ public class XmppConnectionService extends Service {
 				|| ("auto".equals(compressPictures) && getFileBackend().useImageAsIs(uri))
 				|| (mimeType != null && mimeType.endsWith("/gif"))) {
 			Log.d(Config.LOGTAG, conversation.getAccount().getJid().toBareJid() + ": not compressing picture. sending as file");
-			attachFileToConversation(conversation, uri, callback);
+			attachFileToConversation(conversation, uri, mimeType, callback);
 			return;
 		}
 		final Message message;

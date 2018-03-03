@@ -508,14 +508,14 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
 		});
 	}
 
-	private void attachFileToConversation(Conversation conversation, Uri uri) {
+	private void attachFileToConversation(Conversation conversation, Uri uri, String type) {
 		if (conversation == null) {
 			return;
 		}
 		final Toast prepareFileToast = Toast.makeText(getActivity(), getText(R.string.preparing_file), Toast.LENGTH_LONG);
 		prepareFileToast.show();
 		activity.delegateUriPermissionsToService(uri);
-		activity.xmppConnectionService.attachFileToConversation(conversation, uri, new UiInformableCallback<Message>() {
+		activity.xmppConnectionService.attachFileToConversation(conversation, uri, type, new UiInformableCallback<Message>() {
 			@Override
 			public void inform(final String text) {
 				hidePrepareFileToast(prepareFileToast);
@@ -705,10 +705,11 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
 			case ATTACHMENT_CHOICE_RECORD_VIDEO:
 			case ATTACHMENT_CHOICE_RECORD_VOICE:
 				final List<Uri> fileUris = AttachmentTool.extractUriFromIntent(data);
+				String type = data.getType();
 				final PresenceSelector.OnPresenceSelected callback = () -> {
 					for (Iterator<Uri> i = fileUris.iterator(); i.hasNext(); i.remove()) {
 						Log.d(Config.LOGTAG, "ConversationsActivity.onActivityResult() - attaching file to conversations. CHOOSE_FILE/RECORD_VOICE/RECORD_VIDEO");
-						attachFileToConversation(conversation, i.next());
+						attachFileToConversation(conversation, i.next(), type);
 					}
 				};
 				if (conversation == null || conversation.getMode() == Conversation.MODE_MULTI || FileBackend.allFilesUnderSize(getActivity(), fileUris, getMaxHttpUploadSize(conversation))) {

@@ -53,6 +53,7 @@ public class ShareWithActivity extends XmppActivity implements XmppConnectionSer
 		public String text;
 		public String uuid;
 		public boolean multiple = false;
+		public String type;
 	}
 
 	private Share share;
@@ -215,6 +216,7 @@ public class ShareWithActivity extends XmppActivity implements XmppConnectionSer
 				this.share.uris.clear();
 				this.share.uris.add(uri);
 				this.share.image = type.startsWith("image/") || isImage(uri);
+				this.share.type = type;
 			} else {
 				this.share.text = text;
 			}
@@ -315,7 +317,7 @@ public class ShareWithActivity extends XmppActivity implements XmppConnectionSer
 					replaceToast(getString(R.string.preparing_file));
 					final Uri uri = share.uris.get(0);
 					delegateUriPermissionsToService(uri);
-					xmppConnectionService.attachFileToConversation(conversation, uri, attachFileCallback);
+					xmppConnectionService.attachFileToConversation(conversation, uri, share.type,  attachFileCallback);
 				}
 			};
 			if (account.httpUploadAvailable()

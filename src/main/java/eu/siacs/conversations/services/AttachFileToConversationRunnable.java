@@ -30,17 +30,19 @@ public class AttachFileToConversationRunnable implements Runnable, MediaTranscod
 	private final XmppConnectionService mXmppConnectionService;
 	private final Message message;
 	private final Uri uri;
+	private final String type;
 	private final UiCallback<Message> callback;
 	private final boolean isVideoMessage;
 	private final long originalFileSize;
 	private int currentProgress = -1;
 
-	public AttachFileToConversationRunnable(XmppConnectionService xmppConnectionService, Uri uri, Message message, UiCallback<Message> callback) {
+	public AttachFileToConversationRunnable(XmppConnectionService xmppConnectionService, Uri uri, String type, Message message, UiCallback<Message> callback) {
 		this.uri = uri;
+		this.type = type;
 		this.mXmppConnectionService = xmppConnectionService;
 		this.message = message;
 		this.callback = callback;
-		final String mimeType = MimeUtils.guessMimeTypeFromUri(mXmppConnectionService, uri);
+		final String mimeType = type != null ? type : MimeUtils.guessMimeTypeFromUri(mXmppConnectionService, uri);
 		final int autoAcceptFileSize = mXmppConnectionService.getResources().getInteger(R.integer.auto_accept_filesize);
 		this.originalFileSize = FileBackend.getFileSize(mXmppConnectionService,uri);
 		this.isVideoMessage = (mimeType != null && mimeType.startsWith("video/")
@@ -65,7 +67,7 @@ public class AttachFileToConversationRunnable implements Runnable, MediaTranscod
 			}
 		} else {
 			try {
-				mXmppConnectionService.getFileBackend().copyFileToPrivateStorage(message, uri);
+				mXmppConnectionService.getFileBackend().copyFileToPrivateStorage(message, uri, type);
 				mXmppConnectionService.getFileBackend().updateFileParams(message);
 				if (message.getEncryption() == Message.ENCRYPTION_DECRYPTED) {
 					final PgpEngine pgpEngine = mXmppConnectionService.getPgpEngine();
