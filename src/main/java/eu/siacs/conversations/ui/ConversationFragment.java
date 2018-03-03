@@ -852,22 +852,16 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
 				}
 			}
 			Account account = message.getConversation().getAccount();
-			Intent intent;
-			if (activity.manuallyChangePresence() && !received) {
-				intent = new Intent(activity, SetPresenceActivity.class);
-				intent.putExtra(EXTRA_ACCOUNT, account.getJid().toBareJid().toString());
+			Intent intent = new Intent(activity, EditAccountActivity.class);
+			intent.putExtra("jid", account.getJid().toBareJid().toString());
+			String fingerprint;
+			if (message.getEncryption() == Message.ENCRYPTION_PGP
+					|| message.getEncryption() == Message.ENCRYPTION_DECRYPTED) {
+				fingerprint = "pgp";
 			} else {
-				intent = new Intent(activity, EditAccountActivity.class);
-				intent.putExtra("jid", account.getJid().toBareJid().toString());
-				String fingerprint;
-				if (message.getEncryption() == Message.ENCRYPTION_PGP
-						|| message.getEncryption() == Message.ENCRYPTION_DECRYPTED) {
-					fingerprint = "pgp";
-				} else {
-					fingerprint = message.getFingerprint();
-				}
-				intent.putExtra("fingerprint", fingerprint);
+				fingerprint = message.getFingerprint();
 			}
+			intent.putExtra("fingerprint", fingerprint);
 			startActivity(intent);
 		});
 		messageListAdapter.setOnContactPictureLongClicked(message -> {

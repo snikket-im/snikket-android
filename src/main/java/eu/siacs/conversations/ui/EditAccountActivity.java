@@ -10,6 +10,7 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
+import android.preference.PreferenceManager;
 import android.provider.Settings;
 import android.security.KeyChain;
 import android.security.KeyChainAliasCallback;
@@ -20,10 +21,12 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AlertDialog.Builder;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.AdapterView;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -52,12 +55,15 @@ import eu.siacs.conversations.R;
 import eu.siacs.conversations.crypto.axolotl.AxolotlService;
 import eu.siacs.conversations.crypto.axolotl.XmppAxolotlSession;
 import eu.siacs.conversations.databinding.ActivityEditAccountBinding;
+import eu.siacs.conversations.databinding.DialogPresenceBinding;
 import eu.siacs.conversations.entities.Account;
+import eu.siacs.conversations.entities.PresenceTemplate;
 import eu.siacs.conversations.services.BarcodeProvider;
 import eu.siacs.conversations.services.XmppConnectionService;
 import eu.siacs.conversations.services.XmppConnectionService.OnAccountUpdate;
 import eu.siacs.conversations.services.XmppConnectionService.OnCaptchaRequested;
 import eu.siacs.conversations.ui.adapter.KnownHostsAdapter;
+import eu.siacs.conversations.ui.adapter.PresenceTemplateAdapter;
 import eu.siacs.conversations.ui.widget.DisabledActionModeCallback;
 import eu.siacs.conversations.utils.CryptoHelper;
 import eu.siacs.conversations.utils.UIHelper;
@@ -622,7 +628,7 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
 				changePassword.setVisible(false);
 			}
 			mamPrefs.setVisible(mAccount.getXmppConnection().getFeatures().mam());
-			changePresence.setVisible(manuallyChangePresence());
+			changePresence.setVisible(true);
 		} else {
 			showBlocklist.setVisible(false);
 			showMoreInfo.setVisible(false);
@@ -833,9 +839,23 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
 	}
 
 	private void changePresence() {
-		Intent intent = new Intent(this, SetPresenceActivity.class);
-		intent.putExtra(SetPresenceActivity.EXTRA_ACCOUNT, mAccount.getJid().toBareJid().toString());
-		startActivity(intent);
+		SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+		boolean manualStatus = sharedPreferences.getBoolean(SettingsActivity.MANUALLY_CHANGE_PRESENCE, getResources().getBoolean(R.bool.manually_change_presence));
+		AlertDialog.Builder builder = new AlertDialog.Builder(this);
+		final DialogPresenceBinding binding = DataBindingUtil.inflate(getLayoutInflater(),R.layout.dialog_presence,null,false);
+		binding.show.setVisibility(manualStatus ? View.VISIBLE : View.GONE);
+		List<PresenceTemplate> templates = xmppConnectionService.getPresenceTemplates(mAccount);
+		PresenceTemplateAdapter presenceTemplateAdapter = new PresenceTemplateAdapter(this,R.layout.simple_list_item,templates);
+		binding.statusMessage.setAdapter(presenceTemplateAdapter);
+		binding.statusMessage.setOnItemClickListener((parent, view, position, id) -> {
+			PresenceTemplate template = (PresenceTemplate) parent.getItemAtPosition(position);
+			Log.d(Config.LOGTAG,"selected: "+template.getStatusMessage());
+		});
+		builder.setTitle(R.string.change_presence);
+		builder.setView(binding.getRoot());
+		builder.setNegativeButton(R.string.cancel,null);
+		builder.setPositiveButton(R.string.confirm,null);
+		builder.create().show();
 	}
 
 	@Override

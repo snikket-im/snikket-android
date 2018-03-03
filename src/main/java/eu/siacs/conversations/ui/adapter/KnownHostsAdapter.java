@@ -1,6 +1,7 @@
 package eu.siacs.conversations.ui.adapter;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
 import android.widget.ArrayAdapter;
 import android.widget.Filter;
 
@@ -45,10 +46,9 @@ public class KnownHostsAdapter extends ArrayAdapter<String> {
 		}
 
 		@Override
-		protected void publishResults(CharSequence constraint,
-				FilterResults results) {
+		protected void publishResults(CharSequence constraint, FilterResults results) {
 			ArrayList filteredList = (ArrayList) results.values;
-			if (results != null && results.count > 0) {
+			if (results.count > 0) {
 				clear();
 				for (Object c : filteredList) {
 					add((String) c);
@@ -59,11 +59,12 @@ public class KnownHostsAdapter extends ArrayAdapter<String> {
 	};
 
 	public KnownHostsAdapter(Context context, int viewResourceId, List<String> mKnownHosts) {
-		super(context, viewResourceId, new ArrayList<String>());
+		super(context, viewResourceId, new ArrayList<>());
 		domains = new ArrayList<>(mKnownHosts);
 	}
 
 	@Override
+	@NonNull
 	public Filter getFilter() {
 		return domainFilter;
 	}

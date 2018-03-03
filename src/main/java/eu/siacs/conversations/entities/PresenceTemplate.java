@@ -73,4 +73,9 @@ public class PresenceTemplate extends AbstractEntity {
 		result = 31 * result + status.hashCode();
 		return result;
 	}
+
+	@Override
+	public String toString() {
+		return statusMessage;
+	}
 }
