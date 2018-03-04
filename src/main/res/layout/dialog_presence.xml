@@ -15,23 +15,25 @@
         android:layout_marginBottom="?attr/dialog_vertical_padding">
 
         <RadioButton
+            android:id="@+id/online"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/presence_online"/>
 
         <RadioButton
-            android:id="@+id/radioButton"
+            android:id="@+id/away"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/presence_away"/>
 
         <RadioButton
-            android:id="@+id/radioButton2"
+            android:id="@+id/xa"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/presence_xa"/>
 
         <RadioButton
+            android:id="@+id/dnd"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/presence_dnd"/>
@@ -46,7 +48,7 @@
         android:layout_height="wrap_content"
         android:ems="10"
         android:hint="@string/status_message"
-        android:inputType="textPersonName"/>
+        android:inputType="textShortMessage"/>
     </android.support.design.widget.TextInputLayout>
 
 </LinearLayout>

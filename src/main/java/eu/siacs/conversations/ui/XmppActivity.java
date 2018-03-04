@@ -562,7 +562,7 @@ public abstract class XmppActivity extends AppCompatActivity {
 		startActivityForResult(ChooseContactActivity.create(this,conversation), REQUEST_INVITE_TO_CONVERSATION);
 	}
 
-	protected void announcePgp(Account account, final Conversation conversation, Intent intent, final Runnable onSuccess) {
+	protected void announcePgp(final Account account, final Conversation conversation, Intent intent, final Runnable onSuccess) {
 		if (account.getPgpId() == 0) {
 			choosePgpSignId(account);
 		} else {
@@ -573,10 +573,10 @@ public abstract class XmppActivity extends AppCompatActivity {
 			if (status == null) {
 				status = "";
 			}
-			xmppConnectionService.getPgpEngine().generateSignature(intent, account, status, new UiCallback<Account>() {
+			xmppConnectionService.getPgpEngine().generateSignature(intent, account, status, new UiCallback<String>() {
 
 				@Override
-				public void userInputRequried(PendingIntent pi, Account account) {
+				public void userInputRequried(PendingIntent pi, String signature) {
 					try {
 						startIntentSenderForResult(pi.getIntentSender(), REQUEST_ANNOUNCE_PGP, null, 0, 0, 0);
 					} catch (final SendIntentException ignored) {
@@ -584,7 +584,8 @@ public abstract class XmppActivity extends AppCompatActivity {
 				}
 
 				@Override
-				public void success(Account account) {
+				public void success(String signature) {
+					account.setPgpSignature(signature);
 					xmppConnectionService.databaseBackend.updateAccount(account);
 					xmppConnectionService.sendPresence(account);
 					if (conversation != null) {
@@ -598,8 +599,8 @@ public abstract class XmppActivity extends AppCompatActivity {
 				}
 
 				@Override
-				public void error(int error, Account account) {
-					if (error == 0 && account != null) {
+				public void error(int error, String signature) {
+					if (error == 0) {
 						account.setPgpSignId(0);
 						account.unsetPgpSignature();
 						xmppConnectionService.databaseBackend.updateAccount(account);

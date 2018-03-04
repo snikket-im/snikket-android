@@ -198,7 +198,7 @@ public class PgpEngine {
 		});
 	}
 
-	public void generateSignature(Intent intent, final Account account, String status, final UiCallback<Account> callback) {
+	public void generateSignature(Intent intent, final Account account, String status, final UiCallback<String> callback) {
 		if (account.getPgpId() == 0) {
 			return;
 		}
@@ -232,19 +232,18 @@ public class PgpEngine {
 							}
 						}
 					} catch (IOException e) {
-						callback.error(R.string.openpgp_error, account);
+						callback.error(R.string.openpgp_error, null);
 						return;
 					}
-					account.setPgpSignature(signatureBuilder.toString());
-					callback.success(account);
+					callback.success(signatureBuilder.toString());
 					return;
 				case OpenPgpApi.RESULT_CODE_USER_INTERACTION_REQUIRED:
-					callback.userInputRequried(result.getParcelableExtra(OpenPgpApi.RESULT_INTENT), account);
+					callback.userInputRequried(result.getParcelableExtra(OpenPgpApi.RESULT_INTENT), status);
 					return;
 				case OpenPgpApi.RESULT_CODE_ERROR:
 					OpenPgpError error = result.getParcelableExtra(OpenPgpApi.RESULT_ERROR);
 					if (error != null && "signing subkey not found!".equals(error.getMessage())) {
-						callback.error(0, account);
+						callback.error(0, null);
 					} else {
 						logError(account, error);
 						callback.error(R.string.unable_to_connect_to_keychain, null);

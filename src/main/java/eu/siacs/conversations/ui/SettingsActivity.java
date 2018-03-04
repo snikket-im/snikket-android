@@ -338,9 +338,6 @@ public class SettingsActivity extends XmppActivity implements
 				if (name.equals(AWAY_WHEN_SCREEN_IS_OFF) || name.equals(MANUALLY_CHANGE_PRESENCE)) {
 					xmppConnectionService.toggleScreenEventReceiver();
 				}
-				if (name.equals(MANUALLY_CHANGE_PRESENCE) && !noAccountUsesPgp()) {
-					Toast.makeText(this, R.string.republish_pgp_keys, Toast.LENGTH_LONG).show();
-				}
 				xmppConnectionService.refreshAllPresences();
 			}
 		} else if (name.equals("dont_trust_system_cas")) {

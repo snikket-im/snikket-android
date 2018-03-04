@@ -644,6 +644,10 @@ public class DatabaseBackend extends SQLiteOpenHelper {
 
 	public void insertPresenceTemplate(PresenceTemplate template) {
 		SQLiteDatabase db = this.getWritableDatabase();
+		String whereToDelete = PresenceTemplate.MESSAGE+"=?";
+		String[] whereToDeleteArgs = {template.getStatusMessage()};
+		db.delete(PresenceTemplate.TABELNAME,whereToDelete,whereToDeleteArgs);
+		db.delete(PresenceTemplate.TABELNAME,PresenceTemplate.UUID+" not in (select "+PresenceTemplate.UUID+" from "+PresenceTemplate.TABELNAME+" order by "+PresenceTemplate.LAST_USED+" desc limit 9)",null);
 		db.insert(PresenceTemplate.TABELNAME, null, template.getContentValues());
 	}
 
@@ -656,14 +660,6 @@ public class DatabaseBackend extends SQLiteOpenHelper {
 		}
 		cursor.close();
 		return templates;
-	}
-
-	public void deletePresenceTemplate(PresenceTemplate template) {
-		Log.d(Config.LOGTAG,"deleting presence template with uuid "+template.getUuid());
-		SQLiteDatabase db = this.getWritableDatabase();
-		String where = PresenceTemplate.UUID+"=?";
-		String[] whereArgs = {template.getUuid()};
-		db.delete(PresenceTemplate.TABELNAME,where,whereArgs);
 	}
 
 	public CopyOnWriteArrayList<Conversation> getConversations(int status) {

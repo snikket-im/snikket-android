@@ -3474,15 +3474,16 @@ public class XmppConnectionService extends Service {
 	}
 
 	private void sendPresence(final Account account, final boolean includeIdleTimestamp) {
-		PresencePacket packet;
+		Presence.Status status;
 		if (manuallyChangePresence()) {
-			packet = mPresenceGenerator.selfPresence(account, account.getPresenceStatus());
-			String message = account.getPresenceStatusMessage();
-			if (message != null && !message.isEmpty()) {
-				packet.addChild(new Element("status").setContent(message));
-			}
+			status = account.getPresenceStatus();
 		} else {
-			packet = mPresenceGenerator.selfPresence(account, getTargetPresence());
+			status = getTargetPresence();
+		}
+		PresencePacket packet = mPresenceGenerator.selfPresence(account,status);
+		String message = account.getPresenceStatusMessage();
+		if (message != null && !message.isEmpty()) {
+			packet.addChild(new Element("status").setContent(message));
 		}
 		if (mLastActivity > 0 && includeIdleTimestamp) {
 			long since = Math.min(mLastActivity, System.currentTimeMillis()); //don't send future dates
@@ -3779,29 +3780,15 @@ public class XmppConnectionService extends Service {
 		return pending;
 	}
 
-	public void changeStatus(Account account, Presence.Status status, String statusMessage, boolean send) {
-		if (!statusMessage.isEmpty()) {
-			databaseBackend.insertPresenceTemplate(new PresenceTemplate(status, statusMessage));
+	public void changeStatus(Account account, PresenceTemplate template, String signature) {
+		if (!template.getStatusMessage().isEmpty()) {
+			databaseBackend.insertPresenceTemplate(template);
 		}
-		changeStatusReal(account, status, statusMessage, send);
-	}
-
-	private void changeStatusReal(Account account, Presence.Status status, String statusMessage, boolean send) {
-		account.setPresenceStatus(status);
-		account.setPresenceStatusMessage(statusMessage);
+		account.setPgpSignature(signature);
+		account.setPresenceStatus(template.getStatus());
+		account.setPresenceStatusMessage(template.getStatusMessage());
 		databaseBackend.updateAccount(account);
-		if (account.isEnabled() && send) {
-			sendPresence(account);
-		}
-	}
-
-	public void changeStatus(Presence.Status status, String statusMessage) {
-		if (!statusMessage.isEmpty()) {
-			databaseBackend.insertPresenceTemplate(new PresenceTemplate(status, statusMessage));
-		}
-		for (Account account : getAccounts()) {
-			changeStatusReal(account, status, statusMessage, true);
-		}
+		sendPresence(account);
 	}
 
 	public List<PresenceTemplate> getPresenceTemplates(Account account) {

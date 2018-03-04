@@ -164,7 +164,6 @@
 	<string name="unpublish_pgp">Remove OpenPGP public key</string>
 	<string name="unpublish_pgp_message">Are you sure you want to remove your OpenPGP public key from your presence announcement?\nYour contacts will no longer be able to send you OpenPGP encrypted messages.</string>
 	<string name="openpgp_has_been_published">OpenPGP public key has been published.</string>
-	<string name="republish_pgp_keys">Remember to republish your OpenPGP public keys!</string>
 	<string name="mgmt_account_enable">Enable account</string>
 	<string name="mgmt_account_are_you_sure">Are you sure?</string>
 	<string name="mgmt_account_delete_confirm_text">If you delete your account, your entire conversation history will be lost</string>
@@ -483,7 +482,7 @@
 	<string name="account_status_bind_failure">Bind failure</string>
 	<string name="account_status_host_unknown">Server not responsible for domain</string>
 	<string name="server_info_broken">Broken</string>
-	<string name="pref_presence_settings">Presence</string>
+	<string name="pref_presence_settings">Availability</string>
 	<string name="pref_away_when_screen_off">Away when screen is off</string>
 	<string name="pref_away_when_screen_off_summary">Marks your resource as away when the screen is turned off</string>
 	<string name="pref_dnd_on_silent_mode">“Do not disturb” in silent mode</string>
@@ -568,8 +567,8 @@
 	<string name="create_account">Create Account</string>
 	<string name="use_own_provider">Use my own provider</string>
 	<string name="pick_your_username">Pick your username</string>
-	<string name="pref_manually_change_presence">Manually change presence</string>
-	<string name="pref_manually_change_presence_summary">Touch your avatar to change your presence</string>
+	<string name="pref_manually_change_presence">Manage availability manually</string>
+	<string name="pref_manually_change_presence_summary">Set your availability when editing your status message.</string>
 	<string name="change_presence">Change Presence</string>
 	<string name="status_message">Status message</string>
 	<string name="all_accounts_on_this_device">Set for all accounts on this device</string>
@@ -710,4 +709,6 @@
     <string name="qr_code_scanner_needs_access_to_camera">The QR code scanner needs access to the camera</string>
     <string name="pref_scroll_to_bottom">Scroll to bottom</string>
 	<string name="pref_scroll_to_bottom_summary">Scroll down after sending a message</string>
+    <string name="edit_status_message_title">Edit Status Message</string>
+	<string name="edit_status_message">Edit status message</string>
 </resources>

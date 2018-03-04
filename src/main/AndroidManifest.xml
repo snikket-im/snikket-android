@@ -108,12 +108,6 @@
             android:label="@string/create_account"
             android:launchMode="singleTask"/>
         <activity
-            android:name=".ui.SetPresenceActivity"
-            android:configChanges="orientation|screenSize"
-            android:label="@string/change_presence"
-            android:launchMode="singleTop"
-            android:windowSoftInputMode="stateHidden|adjustResize" />
-        <activity
             android:name=".ui.SettingsActivity"
             android:label="@string/title_activity_settings" />
         <activity

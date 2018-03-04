@@ -5,7 +5,7 @@
         android:id="@+id/action_change_presence"
         android:icon="@drawable/ic_announcement_white_24dp"
         app:showAsAction="always"
-        android:title="@string/change_presence"/>
+        android:title="@string/edit_status_message"/>
 
     <item
         android:id="@+id/action_share"
