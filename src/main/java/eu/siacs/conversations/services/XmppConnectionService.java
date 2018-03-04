@@ -1859,17 +1859,14 @@ public class XmppConnectionService extends Service {
 
 	public void updateAccountPasswordOnServer(final Account account, final String newPassword, final OnAccountPasswordChanged callback) {
 		final IqPacket iq = getIqGenerator().generateSetPassword(account, newPassword);
-		sendIqPacket(account, iq, new OnIqPacketReceived() {
-			@Override
-			public void onIqPacketReceived(final Account account, final IqPacket packet) {
-				if (packet.getType() == IqPacket.TYPE.RESULT) {
-					account.setPassword(newPassword);
-					account.setOption(Account.OPTION_MAGIC_CREATE, false);
-					databaseBackend.updateAccount(account);
-					callback.onPasswordChangeSucceeded();
-				} else {
-					callback.onPasswordChangeFailed();
-				}
+		sendIqPacket(account, iq, (a, packet) -> {
+			if (packet.getType() == IqPacket.TYPE.RESULT) {
+				a.setPassword(newPassword);
+				a.setOption(Account.OPTION_MAGIC_CREATE, false);
+				databaseBackend.updateAccount(a);
+				callback.onPasswordChangeSucceeded();
+			} else {
+				callback.onPasswordChangeFailed();
 			}
 		});
 	}
