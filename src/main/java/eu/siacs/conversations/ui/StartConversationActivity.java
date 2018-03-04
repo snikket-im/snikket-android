@@ -752,6 +752,7 @@ public class StartConversationActivity extends XmppActivity implements OnRosterU
 	public void onRequestPermissionsResult(int requestCode, @NonNull String permissions[], @NonNull int[] grantResults) {
 		if (grantResults.length > 0)
 			if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+				ScanActivity.onRequestPermissionResult(this,requestCode,grantResults);
 				if (requestCode == REQUEST_SYNC_CONTACTS && xmppConnectionServiceBound) {
 					xmppConnectionService.loadPhoneContacts();
 				}
