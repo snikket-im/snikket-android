@@ -396,7 +396,7 @@ public class NotificationService {
 				RemoteInput remoteInput = new RemoteInput.Builder("text_reply").setLabel(UIHelper.getMessageHint(mXmppConnectionService, conversation)).build();
 				PendingIntent markAsReadPendingIntent = createReadPendingIntent(conversation);
 				NotificationCompat.Action markReadAction = new NotificationCompat.Action.Builder(
-						R.drawable.ic_send_text_offline,
+						R.drawable.ic_drafts_white_24dp,
 						mXmppConnectionService.getString(R.string.mark_as_read),
 						markAsReadPendingIntent).build();
 				String replyLabel = mXmppConnectionService.getString(R.string.reply);
