@@ -296,46 +296,6 @@ public class Contact implements ListItem, Blockable {
 		return groups;
 	}
 
-	public ArrayList<String> getOtrFingerprints() {
-		synchronized (this.keys) {
-			final ArrayList<String> fingerprints = new ArrayList<String>();
-			try {
-				if (this.keys.has("otr_fingerprints")) {
-					final JSONArray prints = this.keys.getJSONArray("otr_fingerprints");
-					for (int i = 0; i < prints.length(); ++i) {
-						final String print = prints.isNull(i) ? null : prints.getString(i);
-						if (print != null && !print.isEmpty()) {
-							fingerprints.add(prints.getString(i).toLowerCase(Locale.US));
-						}
-					}
-				}
-			} catch (final JSONException ignored) {
-
-			}
-			return fingerprints;
-		}
-	}
-	public boolean addOtrFingerprint(String print) {
-		synchronized (this.keys) {
-			if (getOtrFingerprints().contains(print)) {
-				return false;
-			}
-			try {
-				JSONArray fingerprints;
-				if (!this.keys.has("otr_fingerprints")) {
-					fingerprints = new JSONArray();
-				} else {
-					fingerprints = this.keys.getJSONArray("otr_fingerprints");
-				}
-				fingerprints.put(print);
-				this.keys.put("otr_fingerprints", fingerprints);
-				return true;
-			} catch (final JSONException ignored) {
-				return false;
-			}
-		}
-	}
-
 	public long getPgpKeyId() {
 		synchronized (this.keys) {
 			if (this.keys.has("pgp_keyid")) {
@@ -461,30 +421,6 @@ public class Contact implements ListItem, Blockable {
 
 	public String getAvatar() {
 		return avatar == null ? null : avatar.getFilename();
-	}
-
-	public boolean deleteOtrFingerprint(String fingerprint) {
-		synchronized (this.keys) {
-			boolean success = false;
-			try {
-				if (this.keys.has("otr_fingerprints")) {
-					JSONArray newPrints = new JSONArray();
-					JSONArray oldPrints = this.keys
-							.getJSONArray("otr_fingerprints");
-					for (int i = 0; i < oldPrints.length(); ++i) {
-						if (!oldPrints.getString(i).equals(fingerprint)) {
-							newPrints.put(oldPrints.getString(i));
-						} else {
-							success = true;
-						}
-					}
-					this.keys.put("otr_fingerprints", newPrints);
-				}
-				return success;
-			} catch (JSONException e) {
-				return false;
-			}
-		}
 	}
 
 	public boolean mutualPresenceSubscription() {
