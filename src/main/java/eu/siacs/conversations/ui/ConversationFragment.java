@@ -95,6 +95,7 @@ import eu.siacs.conversations.ui.widget.EditMessage;
 import eu.siacs.conversations.utils.MessageUtils;
 import eu.siacs.conversations.utils.NickValidityChecker;
 import eu.siacs.conversations.utils.StylingHelper;
+import eu.siacs.conversations.utils.TimeframeUtils;
 import eu.siacs.conversations.utils.UIHelper;
 import eu.siacs.conversations.xmpp.XmppConnection;
 import eu.siacs.conversations.xmpp.chatstate.ChatState;
@@ -1316,7 +1317,15 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
 		AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 		builder.setTitle(R.string.disable_notifications);
 		final int[] durations = getResources().getIntArray(R.array.mute_options_durations);
-		builder.setItems(R.array.mute_options_descriptions, (dialog, which) -> {
+		final CharSequence[] labels = new CharSequence[durations.length];
+		for(int i = 0; i < durations.length; ++i) {
+			if (durations[i] == -1) {
+				labels[i] = getString(R.string.until_further_notice);
+			} else {
+				labels[i] = TimeframeUtils.resolve(activity,1000L * durations[i]);
+			}
+		}
+		builder.setItems(labels, (dialog, which) -> {
 			final long till;
 			if (durations[which] == -1) {
 				till = Long.MAX_VALUE;
