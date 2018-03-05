@@ -409,16 +409,42 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
 	private int lastCompletionCursor;
 	private boolean firstWord = false;
 	private Message mPendingDownloadableMessage;
+	private final PendingItem<Message> pendingMessage = new PendingItem<>();
 
-	public static void downloadFile(Activity activity, Message message) {
+
+	private static ConversationFragment findConversationFragment(Activity activity) {
 		Fragment fragment = activity.getFragmentManager().findFragmentById(R.id.main_fragment);
 		if (fragment != null && fragment instanceof ConversationFragment) {
-			((ConversationFragment) fragment).startDownloadable(message);
-			return;
+			return (ConversationFragment) fragment;
 		}
 		fragment = activity.getFragmentManager().findFragmentById(R.id.secondary_fragment);
 		if (fragment != null && fragment instanceof ConversationFragment) {
-			((ConversationFragment) fragment).startDownloadable(message);
+			return (ConversationFragment) fragment;
+		}
+		return null;
+	}
+
+	public static void downloadFile(Activity activity, Message message) {
+		ConversationFragment fragment = findConversationFragment(activity);
+		if (fragment != null) {
+			fragment.startDownloadable(message);
+		}
+	}
+
+	public static void registerPendingMessage(Activity activity, Message message) {
+		ConversationFragment fragment = findConversationFragment(activity);
+		if (fragment != null) {
+			fragment.pendingMessage.push(message);
+		}
+	}
+
+	public static void openPendingMessage(Activity activity) {
+		ConversationFragment fragment = findConversationFragment(activity);
+		if (fragment != null) {
+			Message message = fragment.pendingMessage.pop();
+			if (message != null) {
+				fragment.messageListAdapter.openDownloadable(message);
+			}
 		}
 	}
 

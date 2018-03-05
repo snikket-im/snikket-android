@@ -1,5 +1,6 @@
 package eu.siacs.conversations.ui.adapter;
 
+import android.Manifest;
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -15,6 +16,7 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.preference.PreferenceManager;
 import android.support.annotation.ColorInt;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.text.Spannable;
 import android.text.SpannableString;
@@ -63,6 +65,7 @@ import eu.siacs.conversations.entities.Transferable;
 import eu.siacs.conversations.persistance.FileBackend;
 import eu.siacs.conversations.services.MessageArchiveService;
 import eu.siacs.conversations.services.NotificationService;
+import eu.siacs.conversations.ui.ConversationActivity;
 import eu.siacs.conversations.ui.ConversationFragment;
 import eu.siacs.conversations.ui.XmppActivity;
 import eu.siacs.conversations.ui.service.AudioPlayer;
@@ -901,6 +904,11 @@ public class MessageAdapter extends ArrayAdapter<Message> implements CopyTextVie
 	}
 
 	public void openDownloadable(Message message) {
+		if (ContextCompat.checkSelfPermission(activity, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+			ConversationFragment.registerPendingMessage(activity, message);
+			ActivityCompat.requestPermissions(activity, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, ConversationActivity.REQUEST_OPEN_MESSAGE);
+			return;
+		}
 		DownloadableFile file = activity.xmppConnectionService.getFileBackend().getFile(message);
 		if (!file.exists()) {
 			Toast.makeText(activity, R.string.file_deleted, Toast.LENGTH_SHORT).show();
