@@ -35,6 +35,7 @@ import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.services.ExportLogsService;
 import eu.siacs.conversations.services.MemorizingTrustManager;
 import eu.siacs.conversations.ui.util.Color;
+import eu.siacs.conversations.utils.TimeframeUtils;
 import eu.siacs.conversations.xmpp.XmppConnection;
 import eu.siacs.conversations.xmpp.jid.InvalidJidException;
 import eu.siacs.conversations.xmpp.jid.Jid;
@@ -108,6 +109,25 @@ public class SettingsActivity extends XmppActivity implements
 				}
 			}
 		}
+
+		ListPreference automaticMessageDeletionList = (ListPreference) mSettingsFragment.findPreference(AUTOMATIC_MESSAGE_DELETION);
+		if (automaticMessageDeletionList != null) {
+			final int[] choices = getResources().getIntArray(R.array.automatic_message_deletion_values);
+			CharSequence[] entries = new CharSequence[choices.length];
+			CharSequence[] entryValues = new CharSequence[choices.length];
+			for (int i = 0; i < choices.length; ++i) {
+				Log.d(Config.LOGTAG,"resolving choice "+choices[i]);
+				entryValues[i] = String.valueOf(choices[i]);
+				if (choices[i] == 0) {
+					entries[i] = getString(R.string.never);
+				} else {
+					entries[i] = TimeframeUtils.resolve(this, 1000L * choices[i]);
+				}
+			}
+			automaticMessageDeletionList.setEntries(entries);
+			automaticMessageDeletionList.setEntryValues(entryValues);
+		}
+
 
 		boolean removeLocation = new Intent("eu.siacs.conversations.location.request").resolveActivity(getPackageManager()) == null;
 		boolean removeVoice = new Intent(MediaStore.Audio.Media.RECORD_SOUND_ACTION).resolveActivity(getPackageManager()) == null;

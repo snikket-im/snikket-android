@@ -98,18 +98,11 @@
 		<item>610</item>
 		<item>2584</item>
 	</string-array>
-	<string-array name="automatic_message_deletion_values">
+	<integer-array name="automatic_message_deletion_values">
 		<item>0</item>
 		<item>86400</item>
 		<item>604800</item>
 		<item>2592000</item>
 		<item>15811200</item>
-	</string-array>
-	<string-array name="automatic_message_deletion">
-		<item>@string/never</item>
-		<item>@string/timeout_24_hours</item>
-		<item>@string/timeout_7_days</item>
-		<item>@string/timeout_30_days</item>
-		<item>@string/timeout_6_months</item>
-	</string-array>
+	</integer-array>
 </resources>

@@ -658,10 +658,30 @@
 	<string name="hide_inactive_devices">Hide inactive</string>
 	<string name="distrust_omemo_key">Distrust device</string>
 	<string name="distrust_omemo_key_text">Are you sure you want to remove the verification for this device?\nThis device and messages coming from that device will be marked as untrusted.</string>
-	<string name="timeout_24_hours">24 hours</string>
-	<string name="timeout_7_days">7 days</string>
-	<string name="timeout_30_days">30 days</string>
-	<string name="timeout_6_months">6 months</string>
+	<plurals name="seconds">
+		<item quantity="one">%d second</item>
+		<item quantity="other">%d seconds</item>
+	</plurals>
+	<plurals name="minutes">
+		<item quantity="one">%d minute</item>
+		<item quantity="other">%d minutes</item>
+	</plurals>
+	<plurals name="hours">
+		<item quantity="one">%d hour</item>
+		<item quantity="other">%d hours</item>
+	</plurals>
+	<plurals name="days">
+		<item quantity="one">%d day</item>
+		<item quantity="other">%d days</item>
+	</plurals>
+	<plurals name="weeks">
+		<item quantity="one">%d week</item>
+		<item quantity="other">%d weeks</item>
+	</plurals>
+	<plurals name="months">
+		<item quantity="one">%d month</item>
+		<item quantity="other">%d months</item>
+	</plurals>
 	<string name="pref_automatically_delete_messages">Automatic message deletion</string>
 	<string name="pref_automatically_delete_messages_description">Automatically delete messages from this device that are older than the configured time frame.</string>
 	<string name="encrypting_message">Encrypting message</string>

@@ -192,9 +192,7 @@
                     android:key="automatic_message_deletion"
                     android:title="@string/pref_automatically_delete_messages"
                     android:summary="@string/pref_automatically_delete_messages_description"
-                    android:defaultValue="@integer/automatic_message_deletion"
-                    android:entries="@array/automatic_message_deletion"
-                    android:entryValues="@array/automatic_message_deletion_values" />
+                    android:defaultValue="@integer/automatic_message_deletion"/>
                 <CheckBoxPreference
                     android:defaultValue="@bool/dont_trust_system_cas"
                     android:key="dont_trust_system_cas"
