@@ -5,7 +5,8 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 
-import eu.siacs.conversations.xmpp.jid.Jid;
+import rocks.xmpp.addr.Jid;
+
 
 public class Roster {
 	final Account account;
@@ -21,7 +22,7 @@ public class Roster {
 			return null;
 		}
 		synchronized (this.contacts) {
-			Contact contact = contacts.get(jid.toBareJid());
+			Contact contact = contacts.get(jid.asBareJid());
 			if (contact != null && contact.showInRoster()) {
 				return contact;
 			} else {
@@ -32,13 +33,13 @@ public class Roster {
 
 	public Contact getContact(final Jid jid) {
 		synchronized (this.contacts) {
-			if (!contacts.containsKey(jid.toBareJid())) {
-				Contact contact = new Contact(jid.toBareJid());
+			if (!contacts.containsKey(jid.asBareJid())) {
+				Contact contact = new Contact(jid.asBareJid());
 				contact.setAccount(account);
-				contacts.put(contact.getJid().toBareJid(), contact);
+				contacts.put(contact.getJid().asBareJid(), contact);
 				return contact;
 			}
-			return contacts.get(jid.toBareJid());
+			return contacts.get(jid.asBareJid());
 		}
 	}
 
@@ -78,7 +79,7 @@ public class Roster {
 		contact.setAccount(account);
 		contact.setOption(Contact.Options.IN_ROSTER);
 		synchronized (this.contacts) {
-			contacts.put(contact.getJid().toBareJid(), contact);
+			contacts.put(contact.getJid().asBareJid(), contact);
 		}
 	}
 

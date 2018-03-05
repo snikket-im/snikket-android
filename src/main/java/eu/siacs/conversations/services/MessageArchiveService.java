@@ -17,9 +17,9 @@ import eu.siacs.conversations.generator.AbstractGenerator;
 import eu.siacs.conversations.xml.Namespace;
 import eu.siacs.conversations.xml.Element;
 import eu.siacs.conversations.xmpp.OnAdvancedStreamFeaturesLoaded;
-import eu.siacs.conversations.xmpp.jid.Jid;
 import eu.siacs.conversations.xmpp.mam.MamReference;
 import eu.siacs.conversations.xmpp.stanzas.IqPacket;
+import rocks.xmpp.addr.Jid;
 
 public class MessageArchiveService implements OnAdvancedStreamFeaturesLoaded {
 
@@ -164,7 +164,7 @@ public class MessageArchiveService implements OnAdvancedStreamFeaturesLoaded {
 	private void execute(final Query query) {
 		final Account account = query.getAccount();
 		if (account.getStatus() == Account.State.ONLINE) {
-			Log.d(Config.LOGTAG, account.getJid().toBareJid().toString() + ": running mam query " + query.toString());
+			Log.d(Config.LOGTAG, account.getJid().asBareJid().toString() + ": running mam query " + query.toString());
 			IqPacket packet = this.mXmppConnectionService.getIqGenerator().queryMessageArchiveManagement(query);
 			this.mXmppConnectionService.sendIqPacket(account, packet, (a, p) -> {
 				Element fin = p.findChild("fin", Namespace.MAM);
@@ -180,7 +180,7 @@ public class MessageArchiveService implements OnAdvancedStreamFeaturesLoaded {
 				} else if (p.getType() == IqPacket.TYPE.RESULT && query.isLegacy()) {
 					//do nothing
 				} else {
-					Log.d(Config.LOGTAG, a.getJid().toBareJid().toString() + ": error executing mam: " + p.toString());
+					Log.d(Config.LOGTAG, a.getJid().asBareJid().toString() + ": error executing mam: " + p.toString());
 					finalizeQuery(query, true);
 				}
 			});
@@ -278,7 +278,7 @@ public class MessageArchiveService implements OnAdvancedStreamFeaturesLoaded {
 			done = done || (query.getActualMessageCount() == 0 && !query.isCatchup());
 			this.finalizeQuery(query, done);
 
-			Log.d(Config.LOGTAG, query.getAccount().getJid().toBareJid() + ": finished mam after " + query.getTotalCount() + "(" + query.getActualMessageCount() + ") messages. messages left=" + Boolean.toString(!done) + " count=" + count);
+			Log.d(Config.LOGTAG, query.getAccount().getJid().asBareJid() + ": finished mam after " + query.getTotalCount() + "(" + query.getActualMessageCount() + ") messages. messages left=" + Boolean.toString(!done) + " count=" + count);
 			if (query.isCatchup() && query.getActualMessageCount() > 0) {
 				mXmppConnectionService.getNotificationService().finishBacklog(true, query.getAccount());
 			}
@@ -313,7 +313,7 @@ public class MessageArchiveService implements OnAdvancedStreamFeaturesLoaded {
 	}
 
 	private void kill(Query query) {
-		Log.d(Config.LOGTAG, query.getAccount().getJid().toBareJid() + ": killing mam query prematurely");
+		Log.d(Config.LOGTAG, query.getAccount().getJid().asBareJid() + ": killing mam query prematurely");
 		query.callback = null;
 		this.finalizeQuery(query, false);
 		if (query.isCatchup() && query.getActualMessageCount() > 0) {
@@ -324,7 +324,7 @@ public class MessageArchiveService implements OnAdvancedStreamFeaturesLoaded {
 
 	private void processPostponed(Query query) {
 		query.account.getAxolotlService().processPostponed();
-		Log.d(Config.LOGTAG, query.getAccount().getJid().toBareJid() + ": found " + query.pendingReceiptRequests.size() + " pending receipt requests");
+		Log.d(Config.LOGTAG, query.getAccount().getJid().asBareJid() + ": found " + query.pendingReceiptRequests.size() + " pending receipt requests");
 		Iterator<ReceiptRequest> iterator = query.pendingReceiptRequests.iterator();
 		while (iterator.hasNext()) {
 			ReceiptRequest rr = iterator.next();
@@ -441,7 +441,7 @@ public class MessageArchiveService implements OnAdvancedStreamFeaturesLoaded {
 		}
 
 		public Jid getWith() {
-			return conversation == null ? null : conversation.getJid().toBareJid();
+			return conversation == null ? null : conversation.getJid().asBareJid();
 		}
 
 		public boolean muc() {
@@ -506,7 +506,7 @@ public class MessageArchiveService implements OnAdvancedStreamFeaturesLoaded {
 			if (muc()) {
 				return getWith().equals(from);
 			} else {
-				return (from == null) || account.getJid().toBareJid().equals(from.toBareJid());
+				return (from == null) || account.getJid().asBareJid().equals(from.asBareJid());
 			}
 		}
 

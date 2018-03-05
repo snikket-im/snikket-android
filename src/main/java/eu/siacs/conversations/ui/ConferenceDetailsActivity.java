@@ -50,7 +50,7 @@ import eu.siacs.conversations.services.XmppConnectionService;
 import eu.siacs.conversations.services.XmppConnectionService.OnConversationUpdate;
 import eu.siacs.conversations.services.XmppConnectionService.OnMucRosterUpdate;
 import eu.siacs.conversations.utils.UIHelper;
-import eu.siacs.conversations.xmpp.jid.Jid;
+import rocks.xmpp.addr.Jid;
 
 public class ConferenceDetailsActivity extends XmppActivity implements OnConversationUpdate, OnMucRosterUpdate, XmppConnectionService.OnAffiliationChanged, XmppConnectionService.OnRoleChanged, XmppConnectionService.OnConfigurationPushed {
 	public static final String ACTION_VIEW_MUC = "view_muc";
@@ -329,9 +329,9 @@ public class ConferenceDetailsActivity extends XmppActivity implements OnConvers
 	protected String getShareableUri(boolean http) {
 		if (mConversation != null) {
 			if (http) {
-				return "https://conversations.im/j/"+ mConversation.getJid().toBareJid();
+				return "https://conversations.im/j/"+ mConversation.getJid().asBareJid();
 			} else {
-				return "xmpp:"+mConversation.getJid().toBareJid()+"?join";
+				return "xmpp:"+mConversation.getJid().asBareJid()+"?join";
 			}
 		} else {
 			return null;
@@ -378,7 +378,7 @@ public class ConferenceDetailsActivity extends XmppActivity implements OnConvers
 			if (contact != null && contact.showInRoster()) {
 				name = contact.getDisplayName();
 			} else if (user.getRealJid() != null){
-				name = user.getRealJid().toBareJid().toString();
+				name = user.getRealJid().asBareJid().toString();
 			} else {
 				name = user.getName();
 			}
@@ -502,7 +502,7 @@ public class ConferenceDetailsActivity extends XmppActivity implements OnConvers
 
 	protected void startConversation(User user) {
 		if (user.getRealJid() != null) {
-			Conversation conversation = xmppConnectionService.findOrCreateConversation(this.mConversation.getAccount(),user.getRealJid().toBareJid(),false,true);
+			Conversation conversation = xmppConnectionService.findOrCreateConversation(this.mConversation.getAccount(),user.getRealJid().asBareJid(),false,true);
 			switchToConversation(conversation);
 		}
 	}
@@ -544,14 +544,14 @@ public class ConferenceDetailsActivity extends XmppActivity implements OnConvers
 		final User self = mucOptions.getSelf();
 		String account;
 		if (Config.DOMAIN_LOCK != null) {
-			account = mConversation.getAccount().getJid().getLocalpart();
+			account = mConversation.getAccount().getJid().getLocal();
 		} else {
-			account = mConversation.getAccount().getJid().toBareJid().toString();
+			account = mConversation.getAccount().getJid().asBareJid().toString();
 		}
 		mAccountJid.setText(getString(R.string.using_account, account));
 		mYourPhoto.setImageBitmap(avatarService().get(mConversation.getAccount(), getPixel(48)));
 		setTitle(mConversation.getName());
-		mFullJid.setText(mConversation.getJid().toBareJid().toString());
+		mFullJid.setText(mConversation.getJid().asBareJid().toString());
 		mYourNick.setText(mucOptions.getActualNick());
 		TextView mRoleAffiliaton = (TextView) findViewById(R.id.muc_role);
 		if (mucOptions.online()) {
@@ -680,7 +680,7 @@ public class ConferenceDetailsActivity extends XmppActivity implements OnConvers
 
 	@Override
 	public void onAffiliationChangeFailed(Jid jid, int resId) {
-		displayToast(getString(resId,jid.toBareJid().toString()));
+		displayToast(getString(resId,jid.asBareJid().toString()));
 	}
 
 	@Override
@@ -745,7 +745,7 @@ public class ConferenceDetailsActivity extends XmppActivity implements OnConvers
 				imageView.setImageBitmap(bm);
 				imageView.setBackgroundColor(0x00000000);
 			} else {
-				String seed = user.getRealJid() != null ? user.getRealJid().toBareJid().toString() : null;
+				String seed = user.getRealJid() != null ? user.getRealJid().asBareJid().toString() : null;
 				imageView.setBackgroundColor(UIHelper.getColorForName(seed == null ? user.getName() : seed));
 				imageView.setImageDrawable(null);
 				final BitmapWorkerTask task = new BitmapWorkerTask(imageView);

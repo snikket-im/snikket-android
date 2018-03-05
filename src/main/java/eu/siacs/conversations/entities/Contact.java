@@ -18,9 +18,8 @@ import eu.siacs.conversations.Config;
 import eu.siacs.conversations.utils.JidHelper;
 import eu.siacs.conversations.utils.UIHelper;
 import eu.siacs.conversations.xml.Element;
-import eu.siacs.conversations.xmpp.jid.InvalidJidException;
-import eu.siacs.conversations.xmpp.jid.Jid;
 import eu.siacs.conversations.xmpp.pep.Avatar;
+import rocks.xmpp.addr.Jid;
 
 public class Contact implements ListItem, Blockable {
 	public static final String TABLENAME = "contacts";
@@ -93,8 +92,8 @@ public class Contact implements ListItem, Blockable {
 	public static Contact fromCursor(final Cursor cursor) {
 		final Jid jid;
 		try {
-			jid = Jid.fromString(cursor.getString(cursor.getColumnIndex(JID)), true);
-		} catch (final InvalidJidException e) {
+			jid = Jid.of(cursor.getString(cursor.getColumnIndex(JID)));
+		} catch (final IllegalArgumentException e) {
 			// TODO: Borked DB... handle this somehow?
 			return null;
 		}
@@ -121,10 +120,10 @@ public class Contact implements ListItem, Blockable {
 			return this.serverName;
 		} else if (this.presenceName != null && !this.presenceName.isEmpty() && mutualPresenceSubscription() ) {
 			return this.presenceName;
-		} else if (jid.hasLocalpart()) {
+		} else if (jid.getLocal() != null) {
 			return JidHelper.localPartOrFallback(jid);
 		} else {
-			return jid.getDomainpart();
+			return jid.getDomain();
 		}
 	}
 
@@ -197,7 +196,7 @@ public class Contact implements ListItem, Blockable {
 			values.put(ACCOUNT, accountUuid);
 			values.put(SYSTEMNAME, systemName);
 			values.put(SERVERNAME, serverName);
-			values.put(JID, jid.toPreppedString());
+			values.put(JID, jid.toString());
 			values.put(OPTIONS, subscription);
 			values.put(SYSTEMACCOUNT, systemAccount);
 			values.put(PHOTOURI, photoUri);
@@ -445,7 +444,7 @@ public class Contact implements ListItem, Blockable {
 	}
 
 	public Jid getServer() {
-		return getJid().toDomainJid();
+		return Jid.ofDomain(getJid().getDomain());
 	}
 
 	public boolean setAvatar(Avatar avatar) {
@@ -499,20 +498,20 @@ public class Contact implements ListItem, Blockable {
 
 	@Override
 	public boolean isDomainBlocked() {
-		return getAccount().isBlocked(this.getJid().toDomainJid());
+		return getAccount().isBlocked(Jid.ofDomain(this.getJid().getDomain()));
 	}
 
 	@Override
 	public Jid getBlockedJid() {
 		if (isDomainBlocked()) {
-			return getJid().toDomainJid();
+			return Jid.ofDomain(getJid().getDomain());
 		} else {
 			return getJid();
 		}
 	}
 
 	public boolean isSelf() {
-		return account.getJid().toBareJid().equals(getJid().toBareJid());
+		return account.getJid().asBareJid().equals(getJid().asBareJid());
 	}
 
 	public void setCommonName(String cn) {

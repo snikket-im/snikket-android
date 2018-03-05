@@ -55,7 +55,7 @@ public class GeoHelper {
 		locationPluginIntent.putExtra("longitude",longitude);
 		if (message.getStatus() != Message.STATUS_RECEIVED) {
 			locationPluginIntent.putExtra("jid",conversation.getAccount().getJid().toString());
-			locationPluginIntent.putExtra("name",conversation.getAccount().getJid().getLocalpart());
+			locationPluginIntent.putExtra("name",conversation.getAccount().getJid().getLocal());
 		} else {
 			Contact contact = message.getContact();
 			if (contact != null) {

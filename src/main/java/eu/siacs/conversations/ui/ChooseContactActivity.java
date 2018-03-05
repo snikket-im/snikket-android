@@ -29,7 +29,7 @@ import eu.siacs.conversations.entities.Contact;
 import eu.siacs.conversations.entities.Conversation;
 import eu.siacs.conversations.entities.ListItem;
 import eu.siacs.conversations.entities.MucOptions;
-import eu.siacs.conversations.xmpp.jid.Jid;
+import rocks.xmpp.addr.Jid;
 
 public class ChooseContactActivity extends AbstractSearchableListItemActivity {
 	private List<String> mActivatedAccounts = new ArrayList<>();
@@ -123,7 +123,7 @@ public class ChooseContactActivity extends AbstractSearchableListItemActivity {
 				data.putExtra("contact", mListItem.getJid().toString());
 				String account = request.getStringExtra(EXTRA_ACCOUNT);
 				if (account == null && mListItem instanceof Contact) {
-					account = ((Contact) mListItem).getAccount().getJid().toBareJid().toString();
+					account = ((Contact) mListItem).getAccount().getJid().asBareJid().toString();
 				}
 				data.putExtra(EXTRA_ACCOUNT, account);
 				data.putExtra("conversation",
@@ -172,7 +172,7 @@ public class ChooseContactActivity extends AbstractSearchableListItemActivity {
 			if (account.getStatus() != Account.State.DISABLED) {
 				for (final Contact contact : account.getRoster().getContacts()) {
 					if (contact.showInRoster() &&
-							!filterContacts.contains(contact.getJid().toBareJid().toString())
+							!filterContacts.contains(contact.getJid().asBareJid().toString())
 							&& contact.match(this, needle)) {
 						getListItems().add(contact);
 					}
@@ -241,9 +241,9 @@ public class ChooseContactActivity extends AbstractSearchableListItemActivity {
 		for (Account account : xmppConnectionService.getAccounts()) {
 			if (account.getStatus() != Account.State.DISABLED) {
 				if (Config.DOMAIN_LOCK != null) {
-					this.mActivatedAccounts.add(account.getJid().getLocalpart());
+					this.mActivatedAccounts.add(account.getJid().getLocal());
 				} else {
-					this.mActivatedAccounts.add(account.getJid().toBareJid().toString());
+					this.mActivatedAccounts.add(account.getJid().asBareJid().toString());
 				}
 			}
 		}
@@ -257,17 +257,17 @@ public class ChooseContactActivity extends AbstractSearchableListItemActivity {
 			for (MucOptions.User user : conversation.getMucOptions().getUsers(false)) {
 				Jid jid = user.getRealJid();
 				if (jid != null) {
-					contacts.add(jid.toBareJid().toString());
+					contacts.add(jid.asBareJid().toString());
 				}
 			}
 		} else {
-			contacts.add(conversation.getJid().toBareJid().toString());
+			contacts.add(conversation.getJid().asBareJid().toString());
 		}
 		intent.putExtra("filter_contacts", contacts.toArray(new String[contacts.size()]));
 		intent.putExtra("conversation", conversation.getUuid());
 		intent.putExtra("multiple", true);
 		intent.putExtra("show_enter_jid", true);
-		intent.putExtra(EXTRA_ACCOUNT, conversation.getAccount().getJid().toBareJid().toString());
+		intent.putExtra(EXTRA_ACCOUNT, conversation.getAccount().getJid().asBareJid().toString());
 		return intent;
 	}
 }

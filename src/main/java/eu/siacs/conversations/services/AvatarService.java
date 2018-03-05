@@ -30,7 +30,7 @@ import eu.siacs.conversations.entities.MucOptions;
 import eu.siacs.conversations.utils.UIHelper;
 import eu.siacs.conversations.xmpp.OnAdvancedStreamFeaturesLoaded;
 import eu.siacs.conversations.xmpp.XmppConnection;
-import eu.siacs.conversations.xmpp.jid.Jid;
+import rocks.xmpp.addr.Jid;
 
 public class AvatarService implements OnAdvancedStreamFeaturesLoaded {
 
@@ -68,7 +68,7 @@ public class AvatarService implements OnAdvancedStreamFeaturesLoaded {
 			avatar = mXmppConnectionService.getFileBackend().getAvatar(contact.getAvatar(), size);
 		}
 		if (avatar == null) {
-            avatar = get(contact.getDisplayName(), contact.getJid().toBareJid().toString(), size, cachedOnly);
+            avatar = get(contact.getDisplayName(), contact.getJid().asBareJid().toString(), size, cachedOnly);
 		}
 		this.mXmppConnectionService.getBitmapCache().put(KEY, avatar);
 		return avatar;
@@ -115,7 +115,7 @@ public class AvatarService implements OnAdvancedStreamFeaturesLoaded {
 			if (contact != null) {
 				avatar = get(contact, size, cachedOnly);
 			} else {
-				String seed = user.getRealJid() != null ? user.getRealJid().toBareJid().toString() : null;
+				String seed = user.getRealJid() != null ? user.getRealJid().asBareJid().toString() : null;
 				avatar = get(user.getName(), seed, size, cachedOnly);
 			}
 		}
@@ -141,7 +141,7 @@ public class AvatarService implements OnAdvancedStreamFeaturesLoaded {
 				this.sizes.add(size);
 			}
 		}
-		return PREFIX_CONTACT + "_" + contact.getAccount().getJid().toBareJid() + "_"
+		return PREFIX_CONTACT + "_" + contact.getAccount().getJid().asBareJid() + "_"
 				+ contact.getJid() + "_" + String.valueOf(size);
 	}
 
@@ -151,7 +151,7 @@ public class AvatarService implements OnAdvancedStreamFeaturesLoaded {
 				this.sizes.add(size);
 			}
 		}
-		return PREFIX_CONTACT + "_" + user.getAccount().getJid().toBareJid() + "_"
+		return PREFIX_CONTACT + "_" + user.getAccount().getJid().asBareJid() + "_"
 				+ user.getFullJid() + "_" + String.valueOf(size);
 	}
 
@@ -167,11 +167,11 @@ public class AvatarService implements OnAdvancedStreamFeaturesLoaded {
 			if (bookmark.getConversation() != null) {
 				return get(bookmark.getConversation(), size, cachedOnly);
 			} else {
-				String seed = bookmark.getJid() != null ? bookmark.getJid().toBareJid().toString() : null;
+				String seed = bookmark.getJid() != null ? bookmark.getJid().asBareJid().toString() : null;
 				return get(bookmark.getDisplayName(), seed, size, cachedOnly);
 			}
 		} else {
-			String seed = item.getJid() != null ? item.getJid().toBareJid().toString() : null;
+			String seed = item.getJid() != null ? item.getJid().asBareJid().toString() : null;
 			return get(item.getDisplayName(), seed, size, cachedOnly);
 		}
 	}
@@ -216,7 +216,7 @@ public class AvatarService implements OnAdvancedStreamFeaturesLoaded {
 		final List<MucOptions.User> users = mucOptions.getUsersRelevantForNameAndAvatar();
 		if (users.size() == 0) {
 			Conversation c = mucOptions.getConversation();
-			bitmap = getImpl(c.getName(),c.getJid().toBareJid().toString(),size);
+			bitmap = getImpl(c.getName(),c.getJid().asBareJid().toString(),size);
 		} else {
 			bitmap = getImpl(users,size);
 		}
@@ -294,9 +294,9 @@ public class AvatarService implements OnAdvancedStreamFeaturesLoaded {
 
 		for(MucOptions.User user : users) {
 			builder.append("\0");
-			builder.append(user.getRealJid() == null ? "" : user.getRealJid().toBareJid().toPreppedString());
+			builder.append(user.getRealJid() == null ? "" : user.getRealJid().asBareJid().toString());
 			builder.append("\0");
-			builder.append(user.getFullJid() == null ? "" : user.getFullJid().toPreppedString());
+			builder.append(user.getFullJid() == null ? "" : user.getFullJid().toString());
 		}
 		final String key = builder.toString();
 		synchronized (this.conversationDependentKeys) {
@@ -324,7 +324,7 @@ public class AvatarService implements OnAdvancedStreamFeaturesLoaded {
 		}
 		avatar = mXmppConnectionService.getFileBackend().getAvatar(account.getAvatar(), size);
 		if (avatar == null) {
-			avatar = get(account.getJid().toBareJid().toString(), null, size,false);
+			avatar = get(account.getJid().asBareJid().toString(), null, size,false);
 		}
 		mXmppConnectionService.getBitmapCache().put(KEY, avatar);
 		return avatar;
@@ -353,7 +353,7 @@ public class AvatarService implements OnAdvancedStreamFeaturesLoaded {
 				return get(c, size, cachedOnly);
 			}
 			Jid tcp = message.getTrueCounterpart();
-			String seed = tcp != null ? tcp.toBareJid().toString() :null;
+			String seed = tcp != null ? tcp.asBareJid().toString() :null;
 			return get(UIHelper.getMessageDisplayName(message), seed, size, cachedOnly);
 		} else  {
 			return get(conversation.getAccount(), size, cachedOnly);
@@ -458,10 +458,10 @@ public class AvatarService implements OnAdvancedStreamFeaturesLoaded {
 			}
 		}
 		if (contact != null) {
-			String seed = contact.getJid().toBareJid().toString();
+			String seed = contact.getJid().asBareJid().toString();
 			drawTile(canvas, contact.getDisplayName(), seed, left, top, right, bottom);
 		} else {
-			String seed = user.getRealJid() == null ? null : user.getRealJid().toBareJid().toString();
+			String seed = user.getRealJid() == null ? null : user.getRealJid().asBareJid().toString();
 			drawTile(canvas, user.getName(), seed, left, top, right, bottom);
 		}
 		return true;
@@ -477,7 +477,7 @@ public class AvatarService implements OnAdvancedStreamFeaturesLoaded {
 				}
 			}
 		}
-		String name = account.getJid().toBareJid().toString();
+		String name = account.getJid().asBareJid().toString();
 		return drawTile(canvas, name, name, left, top, right, bottom);
 	}
 
@@ -522,7 +522,7 @@ public class AvatarService implements OnAdvancedStreamFeaturesLoaded {
 	public void onAdvancedStreamFeaturesAvailable(Account account) {
 		XmppConnection.Features features = account.getXmppConnection().getFeatures();
 		if (features.pep() && !features.pepPersistent()) {
-			Log.d(Config.LOGTAG,account.getJid().toBareJid()+": has pep but is not persistent");
+			Log.d(Config.LOGTAG,account.getJid().asBareJid()+": has pep but is not persistent");
 			if (account.getAvatar() != null) {
 				mXmppConnectionService.republishAvatarIfNeeded(account);
 			}

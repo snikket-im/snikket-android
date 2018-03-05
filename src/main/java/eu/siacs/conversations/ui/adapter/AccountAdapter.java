@@ -54,9 +54,9 @@ public class AccountAdapter extends ArrayAdapter<Account> {
 		}
 		TextView jid = view.findViewById(R.id.account_jid);
 		if (Config.DOMAIN_LOCK != null) {
-			jid.setText(account.getJid().getLocalpart());
+			jid.setText(account.getJid().getLocal());
 		} else {
-			jid.setText(account.getJid().toBareJid().toString());
+			jid.setText(account.getJid().asBareJid().toString());
 		}
 		TextView statusView = view.findViewById(R.id.account_status);
 		ImageView imageView = view.findViewById(R.id.account_image);
@@ -125,7 +125,7 @@ public class AccountAdapter extends ArrayAdapter<Account> {
 				imageView.setImageBitmap(bm);
 				imageView.setBackgroundColor(0x00000000);
 			} else {
-				imageView.setBackgroundColor(UIHelper.getColorForName(account.getJid().toBareJid().toString()));
+				imageView.setBackgroundColor(UIHelper.getColorForName(account.getJid().asBareJid().toString()));
 				imageView.setImageDrawable(null);
 				final BitmapWorkerTask task = new BitmapWorkerTask(imageView);
 				final AsyncDrawable asyncDrawable = new AsyncDrawable(activity.getResources(), null, task);

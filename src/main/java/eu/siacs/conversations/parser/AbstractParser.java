@@ -11,9 +11,8 @@ import eu.siacs.conversations.entities.Conversation;
 import eu.siacs.conversations.entities.MucOptions;
 import eu.siacs.conversations.services.XmppConnectionService;
 import eu.siacs.conversations.xml.Element;
-import eu.siacs.conversations.xmpp.jid.InvalidJidException;
-import eu.siacs.conversations.xmpp.jid.Jid;
 import eu.siacs.conversations.xmpp.stanzas.AbstractStanza;
+import rocks.xmpp.addr.Jid;
 
 public abstract class AbstractParser {
 
@@ -39,7 +38,7 @@ public abstract class AbstractParser {
 		for(Element child : element.getChildren()) {
 			if ("delay".equals(child.getName()) && "urn:xmpp:delay".equals(child.getNamespace())) {
 				final Jid f = to == null ? null : child.getAttributeAsJid("from");
-				if (f != null && (to.toBareJid().equals(f) || to.getDomainpart().equals(f.toString()))) {
+				if (f != null && (to.asBareJid().equals(f) || to.getDomain().equals(f.toString()))) {
 					continue;
 				}
 				final String stamp = child.getAttribute("stamp");
@@ -86,7 +85,7 @@ public abstract class AbstractParser {
 
 	protected void updateLastseen(final Account account, final Jid from) {
 		final Contact contact = account.getRoster().getContact(from);
-		contact.setLastResource(from.isBareJid() ? "" : from.getResourcepart());
+		contact.setLastResource(from.isBareJid() ? "" : from.getResource());
 	}
 
 	protected String avatarData(Element items) {
@@ -102,15 +101,15 @@ public abstract class AbstractParser {
 	}
 
 	public static MucOptions.User parseItem(Conversation conference, Element item, Jid fullJid) {
-		final String local = conference.getJid().getLocalpart();
-		final String domain = conference.getJid().getDomainpart();
+		final String local = conference.getJid().getLocal();
+		final String domain = conference.getJid().getDomain();
 		String affiliation = item.getAttribute("affiliation");
 		String role = item.getAttribute("role");
 		String nick = item.getAttribute("nick");
 		if (nick != null && fullJid == null) {
 			try {
-				fullJid = Jid.fromParts(local, domain, nick);
-			} catch (InvalidJidException e) {
+				fullJid = Jid.of(local, domain, nick);
+			} catch (IllegalArgumentException e) {
 				fullJid = null;
 			}
 		}

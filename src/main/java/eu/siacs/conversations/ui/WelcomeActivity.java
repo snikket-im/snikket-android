@@ -67,7 +67,7 @@ public class WelcomeActivity extends XmppActivity {
 			List<Account> accounts = xmppConnectionService.getAccounts();
 			Intent intent = new Intent(WelcomeActivity.this, EditAccountActivity.class);
 			if (accounts.size() == 1) {
-				intent.putExtra("jid", accounts.get(0).getJid().toBareJid().toString());
+				intent.putExtra("jid", accounts.get(0).getJid().asBareJid().toString());
 				intent.putExtra("init", true);
 			} else if (accounts.size() >= 1) {
 				intent = new Intent(WelcomeActivity.this, ManageAccountActivity.class);

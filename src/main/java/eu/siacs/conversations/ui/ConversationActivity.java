@@ -176,7 +176,7 @@ public class ConversationActivity extends XmppActivity implements OnConversation
 		Intent intent;
 		if (pendingAccount != null) {
 			intent = new Intent(this, EditAccountActivity.class);
-			intent.putExtra("jid", pendingAccount.getJid().toBareJid().toString());
+			intent.putExtra("jid", pendingAccount.getJid().asBareJid().toString());
 		} else {
 			if (xmppConnectionService.getAccounts().size() == 0) {
 				if (Config.X509_VERIFICATION) {

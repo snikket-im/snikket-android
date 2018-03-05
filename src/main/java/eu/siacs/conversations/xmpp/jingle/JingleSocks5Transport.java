@@ -37,7 +37,7 @@ public class JingleSocks5Transport extends JingleTransport {
 			MessageDigest mDigest = MessageDigest.getInstance("SHA-1");
 			StringBuilder destBuilder = new StringBuilder();
 			if (jingleConnection.getFtVersion() == Content.Version.FT_3) {
-				Log.d(Config.LOGTAG,this.connection.getAccount().getJid().toBareJid()+": using session Id instead of transport Id for proxy destination");
+				Log.d(Config.LOGTAG,this.connection.getAccount().getJid().asBareJid()+": using session Id instead of transport Id for proxy destination");
 				destBuilder.append(jingleConnection.getSessionId());
 			} else {
 				destBuilder.append(jingleConnection.getTransportId());
@@ -97,7 +97,7 @@ public class JingleSocks5Transport extends JingleTransport {
 					digest.reset();
 					fileInputStream = connection.getFileInputStream();
 					if (fileInputStream == null) {
-						Log.d(Config.LOGTAG, connection.getAccount().getJid().toBareJid() + ": could not create input stream");
+						Log.d(Config.LOGTAG, connection.getAccount().getJid().asBareJid() + ": could not create input stream");
 						callback.onFileTransferAborted();
 						return;
 					}
@@ -117,7 +117,7 @@ public class JingleSocks5Transport extends JingleTransport {
 						callback.onFileTransmitted(file);
 					}
 				} catch (Exception e) {
-					Log.d(Config.LOGTAG, connection.getAccount().getJid().toBareJid() + ": "+e.getMessage());
+					Log.d(Config.LOGTAG, connection.getAccount().getJid().asBareJid() + ": "+e.getMessage());
 					callback.onFileTransferAborted();
 				} finally {
 					FileBackend.close(fileInputStream);
@@ -144,7 +144,7 @@ public class JingleSocks5Transport extends JingleTransport {
 					fileOutputStream = connection.getFileOutputStream();
 					if (fileOutputStream == null) {
 						callback.onFileTransferAborted();
-						Log.d(Config.LOGTAG, connection.getAccount().getJid().toBareJid() + ": could not create output stream");
+						Log.d(Config.LOGTAG, connection.getAccount().getJid().asBareJid() + ": could not create output stream");
 						return;
 					}
 					double size = file.getExpectedSize();
@@ -155,7 +155,7 @@ public class JingleSocks5Transport extends JingleTransport {
 						count = inputStream.read(buffer);
 						if (count == -1) {
 							callback.onFileTransferAborted();
-							Log.d(Config.LOGTAG, connection.getAccount().getJid().toBareJid() + ": file ended prematurely with "+remainingSize+" bytes remaining");
+							Log.d(Config.LOGTAG, connection.getAccount().getJid().asBareJid() + ": file ended prematurely with "+remainingSize+" bytes remaining");
 							return;
 						} else {
 							fileOutputStream.write(buffer, 0, count);
@@ -169,7 +169,7 @@ public class JingleSocks5Transport extends JingleTransport {
 					file.setSha1Sum(digest.digest());
 					callback.onFileTransmitted(file);
 				} catch (Exception e) {
-					Log.d(Config.LOGTAG, connection.getAccount().getJid().toBareJid() + ": "+e.getMessage());
+					Log.d(Config.LOGTAG, connection.getAccount().getJid().asBareJid() + ": "+e.getMessage());
 					callback.onFileTransferAborted();
 				} finally {
 					wakeLock.release();

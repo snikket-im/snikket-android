@@ -16,7 +16,7 @@ import java.util.List;
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.persistance.DatabaseBackend;
 import eu.siacs.conversations.utils.XmppUri;
-import eu.siacs.conversations.xmpp.jid.Jid;
+import rocks.xmpp.addr.Jid;
 
 public class UriHandlerActivity extends AppCompatActivity {
 
@@ -102,7 +102,7 @@ public class UriHandlerActivity extends AppCompatActivity {
 		} else if (accounts.contains(xmppUri.getJid())) {
 			intent = new Intent(getApplicationContext(), EditAccountActivity.class);
 			intent.setAction(Intent.ACTION_VIEW);
-			intent.putExtra("jid", xmppUri.getJid().toBareJid().toString());
+			intent.putExtra("jid", xmppUri.getJid().asBareJid().toString());
 			intent.setData(uri);
 		} else if (xmppUri.isJidValid()){
 			intent = new Intent(getApplicationContext(), StartConversationActivity.class);

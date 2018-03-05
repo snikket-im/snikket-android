@@ -25,7 +25,7 @@ import javax.crypto.spec.SecretKeySpec;
 
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.xml.Element;
-import eu.siacs.conversations.xmpp.jid.Jid;
+import rocks.xmpp.addr.Jid;
 
 public class XmppAxolotlMessage {
 	public static final String CONTAINERTAG = "encrypted";

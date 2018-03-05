@@ -34,19 +34,19 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 
-import eu.siacs.conversations.xmpp.jid.Jid;
+import rocks.xmpp.addr.Jid;
 
 public class JidHelper {
 
 	private static List<String> LOCALPART_BLACKLIST = Arrays.asList("xmpp","jabber","me");
 
 	public static String localPartOrFallback(Jid jid) {
-		if (LOCALPART_BLACKLIST.contains(jid.getLocalpart().toLowerCase(Locale.ENGLISH))) {
-			final String domain = jid.getDomainpart();
+		if (LOCALPART_BLACKLIST.contains(jid.getLocal().toLowerCase(Locale.ENGLISH))) {
+			final String domain = jid.getDomain();
 			final int index = domain.lastIndexOf('.');
 			return index > 1 ? domain.substring(0,index) : domain;
 		} else {
-			return jid.getUnescapedLocalpart();
+			return jid.getLocal();
 		}
 	}
 

@@ -57,7 +57,7 @@ public class ConversationAdapter extends ArrayAdapter<Conversation> {
 		if (conversation.getMode() == Conversation.MODE_SINGLE || activity.useSubjectToIdentifyConference()) {
 			viewHolder.name.setText(EmojiWrapper.transform(conversation.getName()));
 		} else {
-			viewHolder.name.setText(conversation.getJid().toBareJid().toString());
+			viewHolder.name.setText(conversation.getJid().asBareJid().toString());
 		}
 
 		Message message = conversation.getLatestMessage();

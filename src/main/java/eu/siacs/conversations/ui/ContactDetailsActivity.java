@@ -44,8 +44,7 @@ import eu.siacs.conversations.xml.Namespace;
 import eu.siacs.conversations.xmpp.OnKeyStatusUpdated;
 import eu.siacs.conversations.xmpp.OnUpdateBlocklist;
 import eu.siacs.conversations.xmpp.XmppConnection;
-import eu.siacs.conversations.xmpp.jid.InvalidJidException;
-import eu.siacs.conversations.xmpp.jid.Jid;
+import rocks.xmpp.addr.Jid;
 
 public class ContactDetailsActivity extends OmemoActivity implements OnAccountUpdate, OnRosterUpdate, OnUpdateBlocklist, OnKeyStatusUpdated {
 	public static final String ACTION_VIEW_CONTACT = "view_contact";
@@ -168,7 +167,7 @@ public class ContactDetailsActivity extends OmemoActivity implements OnAccountUp
 	protected String getShareableUri(boolean http) {
 		final String prefix = http ? "https://conversations.im/i/" : "xmpp:";
 		if (contact != null) {
-			return prefix+contact.getJid().toBareJid().toString();
+			return prefix+contact.getJid().asBareJid().toString();
 		} else {
 			return "";
 		}
@@ -180,12 +179,12 @@ public class ContactDetailsActivity extends OmemoActivity implements OnAccountUp
 		showInactiveOmemo = savedInstanceState != null && savedInstanceState.getBoolean("show_inactive_omemo",false);
 		if (getIntent().getAction().equals(ACTION_VIEW_CONTACT)) {
 			try {
-				this.accountJid = Jid.fromString(getIntent().getExtras().getString(EXTRA_ACCOUNT));
-			} catch (final InvalidJidException ignored) {
+				this.accountJid = Jid.of(getIntent().getExtras().getString(EXTRA_ACCOUNT));
+			} catch (final IllegalArgumentException ignored) {
 			}
 			try {
-				this.contactJid = Jid.fromString(getIntent().getExtras().getString("contact"));
-			} catch (final InvalidJidException ignored) {
+				this.contactJid = Jid.of(getIntent().getExtras().getString("contact"));
+			} catch (final IllegalArgumentException ignored) {
 			}
 		}
 		this.messageFingerprint = getIntent().getStringExtra("fingerprint");
@@ -395,9 +394,9 @@ public class ContactDetailsActivity extends OmemoActivity implements OnAccountUp
 		}
 		String account;
 		if (Config.DOMAIN_LOCK != null) {
-			account = contact.getAccount().getJid().getLocalpart();
+			account = contact.getAccount().getJid().getLocal();
 		} else {
-			account = contact.getAccount().getJid().toBareJid().toString();
+			account = contact.getAccount().getJid().asBareJid().toString();
 		}
 		binding.detailsAccount.setText(getString(R.string.using_account, account));
 		binding.detailsContactBadge.setImageBitmap(avatarService().get(contact, getPixel(72)));
@@ -494,7 +493,7 @@ public class ContactDetailsActivity extends OmemoActivity implements OnAccountUp
 
 	@Override
 	protected void processFingerprintVerification(XmppUri uri) {
-		if (contact != null && contact.getJid().toBareJid().equals(uri.getJid()) && uri.hasFingerprints()) {
+		if (contact != null && contact.getJid().asBareJid().equals(uri.getJid()) && uri.hasFingerprints()) {
 			if (xmppConnectionService.verifyFingerprints(contact,uri.getFingerprints())) {
 				Toast.makeText(this,R.string.verified_fingerprints,Toast.LENGTH_SHORT).show();
 			}

@@ -191,7 +191,7 @@ public class SQLiteAxolotlStore implements SignalProtocolStore {
 			FingerprintStatus status = getFingerprintStatus(fingerprint);
 			if (status == null) {
 				if (mXmppConnectionService.blindTrustBeforeVerification() && !account.getAxolotlService().hasVerifiedKeys(address.getName())) {
-					Log.d(Config.LOGTAG,account.getJid().toBareJid()+": blindly trusted "+fingerprint+" of "+address.getName());
+					Log.d(Config.LOGTAG,account.getJid().asBareJid()+": blindly trusted "+fingerprint+" of "+address.getName());
 					status = FingerprintStatus.createActiveTrusted();
 				} else {
 					status = FingerprintStatus.createActiveUndecided();

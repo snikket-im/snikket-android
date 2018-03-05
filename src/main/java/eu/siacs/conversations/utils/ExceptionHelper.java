@@ -27,10 +27,8 @@ import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.entities.Conversation;
 import eu.siacs.conversations.entities.Message;
 import eu.siacs.conversations.services.XmppConnectionService;
-import eu.siacs.conversations.ui.ConversationActivity;
 import eu.siacs.conversations.ui.XmppActivity;
-import eu.siacs.conversations.xmpp.jid.InvalidJidException;
-import eu.siacs.conversations.xmpp.jid.Jid;
+import rocks.xmpp.addr.Jid;
 
 public class ExceptionHelper {
 
@@ -103,13 +101,13 @@ public class ExceptionHelper {
 						public void onClick(DialogInterface dialog, int which) {
 
 							Log.d(Config.LOGTAG, "using account="
-									+ finalAccount.getJid().toBareJid()
+									+ finalAccount.getJid().asBareJid()
 									+ " to send in stack trace");
 							Conversation conversation = null;
 							try {
 								conversation = service.findOrCreateConversation(finalAccount,
-										Jid.fromString(Config.BUG_REPORTS), false, true);
-							} catch (final InvalidJidException ignored) {
+										Jid.of(Config.BUG_REPORTS), false, true);
+							} catch (final IllegalArgumentException ignored) {
 							}
 							Message message = new Message(conversation, report
 									.toString(), Message.ENCRYPTION_NONE);

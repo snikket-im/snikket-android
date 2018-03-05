@@ -31,8 +31,7 @@ import eu.siacs.conversations.ui.adapter.ConversationAdapter;
 import eu.siacs.conversations.ui.service.EmojiService;
 import eu.siacs.conversations.ui.util.PresenceSelector;
 import eu.siacs.conversations.xmpp.XmppConnection;
-import eu.siacs.conversations.xmpp.jid.InvalidJidException;
-import eu.siacs.conversations.xmpp.jid.Jid;
+import rocks.xmpp.addr.Jid;
 
 public class ShareWithActivity extends XmppActivity implements XmppConnectionService.OnConversationUpdate {
 
@@ -266,8 +265,8 @@ public class ShareWithActivity extends XmppActivity implements XmppConnectionSer
 		}else{
 			Account account;
 			try {
-				account = xmppConnectionService.findAccountByJid(Jid.fromString(share.account));
-			} catch (final InvalidJidException e) {
+				account = xmppConnectionService.findAccountByJid(Jid.of(share.account));
+			} catch (final IllegalArgumentException e) {
 				account = null;
 			}
 			if (account == null) {
@@ -276,8 +275,8 @@ public class ShareWithActivity extends XmppActivity implements XmppConnectionSer
 
 			try {
 				conversation = xmppConnectionService
-						.findOrCreateConversation(account, Jid.fromString(share.contact), false,true);
-			} catch (final InvalidJidException e) {
+						.findOrCreateConversation(account, Jid.of(share.contact), false,true);
+			} catch (final IllegalArgumentException e) {
 				return;
 			}
 		}

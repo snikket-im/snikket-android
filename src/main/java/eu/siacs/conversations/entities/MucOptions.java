@@ -15,9 +15,8 @@ import eu.siacs.conversations.xml.Namespace;
 import eu.siacs.conversations.xmpp.chatstate.ChatState;
 import eu.siacs.conversations.xmpp.forms.Data;
 import eu.siacs.conversations.xmpp.forms.Field;
-import eu.siacs.conversations.xmpp.jid.InvalidJidException;
-import eu.siacs.conversations.xmpp.jid.Jid;
 import eu.siacs.conversations.xmpp.pep.Avatar;
+import rocks.xmpp.addr.Jid;
 
 @SuppressLint("DefaultLocale")
 public class MucOptions {
@@ -179,11 +178,11 @@ public class MucOptions {
 		}
 
 		public String getName() {
-			return fullJid == null ? null : fullJid.getResourcepart();
+			return fullJid == null ? null : fullJid.getResource();
 		}
 
 		public void setRealJid(Jid jid) {
-			this.realJid = jid != null ? jid.toBareJid() : null;
+			this.realJid = jid != null ? jid.asBareJid() : null;
 		}
 
 		public Role getRole() {
@@ -319,7 +318,7 @@ public class MucOptions {
 		}
 
 		public boolean realJidMatchesAccount() {
-			return realJid != null && realJid.equals(options.account.getJid().toBareJid());
+			return realJid != null && realJid.equals(options.account.getJid().asBareJid());
 		}
 
 		@Override
@@ -448,7 +447,7 @@ public class MucOptions {
 						break;
 					}
 				}
-				boolean self = user.realJid != null && user.realJid.equals(account.getJid().toBareJid());
+				boolean self = user.realJid != null && user.realJid.equals(account.getJid().asBareJid());
 				if (membersOnly()
 						&& nonanonymous()
 						&& user.affiliation.ranks(Affiliation.MEMBER)
@@ -536,7 +535,7 @@ public class MucOptions {
 
 	public User findUser(ReadByMarker readByMarker) {
 		if (readByMarker.getRealJid() != null) {
-			User user = findUserByRealJid(readByMarker.getRealJid().toBareJid());
+			User user = findUserByRealJid(readByMarker.getRealJid().asBareJid());
 			if (user == null) {
 				user = new User(this,readByMarker.getFullJid());
 				user.setRealJid(readByMarker.getRealJid());
@@ -550,7 +549,7 @@ public class MucOptions {
 	}
 
 	public boolean isContactInRoom(Contact contact) {
-		return findUserByRealJid(contact.getJid().toBareJid()) != null;
+		return findUserByRealJid(contact.getJid().asBareJid()) != null;
 	}
 
 	public boolean isUserInRoom(Jid jid) {
@@ -606,7 +605,7 @@ public class MucOptions {
 	public List<User> getUsers(int max) {
 		ArrayList<User> subset = new ArrayList<>();
 		HashSet<Jid> jids = new HashSet<>();
-		jids.add(account.getJid().toBareJid());
+		jids.add(account.getJid().asBareJid());
 		synchronized (users) {
 			for(User user : users) {
 				if (user.getRealJid() == null || jids.add(user.getRealJid())) {
@@ -632,7 +631,7 @@ public class MucOptions {
 				&& !conversation.getBookmark().getNick().trim().isEmpty()) {
 			return conversation.getBookmark().getNick().trim();
 		} else if (!conversation.getJid().isBareJid()) {
-			return conversation.getJid().getResourcepart();
+			return conversation.getJid().getResource();
 		} else {
 			return JidHelper.localPartOrFallback(account.getJid());
 		}
@@ -756,15 +755,15 @@ public class MucOptions {
 
 	public Jid createJoinJid(String nick) {
 		try {
-			return Jid.fromString(this.conversation.getJid().toBareJid().toString() + "/" + nick);
-		} catch (final InvalidJidException e) {
+			return Jid.of(this.conversation.getJid().asBareJid().toString() + "/" + nick);
+		} catch (final IllegalArgumentException e) {
 			return null;
 		}
 	}
 
 	public Jid getTrueCounterpart(Jid jid) {
 		if (jid.equals(getSelf().getFullJid())) {
-			return account.getJid().toBareJid();
+			return account.getJid().asBareJid();
 		}
 		User user = findUserByFullJid(jid);
 		return user == null ? null : user.realJid;

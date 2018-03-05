@@ -7,8 +7,7 @@ import java.util.List;
 
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.xmpp.forms.Field;
-import eu.siacs.conversations.xmpp.jid.InvalidJidException;
-import eu.siacs.conversations.xmpp.jid.Jid;
+import rocks.xmpp.addr.Jid;
 
 public class FormJidSingleFieldWrapper extends FormTextFieldWrapper {
 
@@ -23,8 +22,8 @@ public class FormJidSingleFieldWrapper extends FormTextFieldWrapper {
 		String value = getValue();
 		if (!value.isEmpty()) {
 			try {
-				Jid.fromString(value);
-			} catch (InvalidJidException e) {
+				Jid.of(value);
+			} catch (IllegalArgumentException e) {
 				editText.setError(context.getString(R.string.invalid_jid));
 				editText.requestFocus();
 				return false;

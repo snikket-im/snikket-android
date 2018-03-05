@@ -29,8 +29,8 @@ import eu.siacs.conversations.services.XmppConnectionService;
 import eu.siacs.conversations.utils.CryptoHelper;
 import eu.siacs.conversations.xml.Namespace;
 import eu.siacs.conversations.xml.Element;
-import eu.siacs.conversations.xmpp.jid.Jid;
 import eu.siacs.conversations.xmpp.stanzas.IqPacket;
+import rocks.xmpp.addr.Jid;
 
 public class HttpUploadConnection implements Transferable {
 
@@ -121,7 +121,7 @@ public class HttpUploadConnection implements Transferable {
 		try {
 			pair = AbstractConnectionManager.createInputStream(file, true);
 		} catch (FileNotFoundException e) {
-			Log.d(Config.LOGTAG, account.getJid().toBareJid()+": could not find file to upload - "+e.getMessage());
+			Log.d(Config.LOGTAG, account.getJid().asBareJid()+": could not find file to upload - "+e.getMessage());
 			fail(e.getMessage());
 			return;
 		}
@@ -220,7 +220,7 @@ public class HttpUploadConnection implements Transferable {
 				mXmppConnectionService.getFileBackend().updateFileParams(message, mGetUrl);
 				mXmppConnectionService.getFileBackend().updateMediaScanner(file);
 				message.setTransferable(null);
-				message.setCounterpart(message.getConversation().getJid().toBareJid());
+				message.setCounterpart(message.getConversation().getJid().asBareJid());
 				mXmppConnectionService.resendMessage(message, delayed);
 			} else {
 				Log.d(Config.LOGTAG,"http upload failed because response code was "+code);

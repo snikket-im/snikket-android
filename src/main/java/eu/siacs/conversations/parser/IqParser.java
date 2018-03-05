@@ -31,8 +31,8 @@ import eu.siacs.conversations.xml.Namespace;
 import eu.siacs.conversations.xml.Element;
 import eu.siacs.conversations.xmpp.OnIqPacketReceived;
 import eu.siacs.conversations.xmpp.OnUpdateBlocklist;
-import eu.siacs.conversations.xmpp.jid.Jid;
 import eu.siacs.conversations.xmpp.stanzas.IqPacket;
+import rocks.xmpp.addr.Jid;
 
 public class IqParser extends AbstractParser implements OnIqPacketReceived {
 
@@ -70,7 +70,7 @@ public class IqParser extends AbstractParser implements OnIqPacketReceived {
 				}
 				boolean both = contact.getOption(Contact.Options.TO) && contact.getOption(Contact.Options.FROM);
 				if ((both != bothPre) && both) {
-					Log.d(Config.LOGTAG,account.getJid().toBareJid()+": gained mutual presence subscription with "+contact.getJid());
+					Log.d(Config.LOGTAG,account.getJid().asBareJid()+": gained mutual presence subscription with "+contact.getJid());
 					AxolotlService axolotlService = account.getAxolotlService();
 					if (axolotlService != null) {
 						axolotlService.clearErrorsInFetchStatusMap(contact.getJid());

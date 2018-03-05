@@ -8,8 +8,7 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
-import eu.siacs.conversations.xmpp.jid.InvalidJidException;
-import eu.siacs.conversations.xmpp.jid.Jid;
+import rocks.xmpp.addr.Jid;
 
 public class ReadByMarker {
 
@@ -52,14 +51,14 @@ public class ReadByMarker {
 		JSONObject jsonObject = new JSONObject();
 		if (fullJid != null) {
 			try {
-				jsonObject.put("fullJid", fullJid.toPreppedString());
+				jsonObject.put("fullJid", fullJid.toString());
 			} catch (JSONException e) {
 				//ignore
 			}
 		}
 		if (realJid != null) {
 			try {
-				jsonObject.put("realJid", realJid.toPreppedString());
+				jsonObject.put("realJid", realJid.toString());
 			} catch (JSONException e) {
 				//ignore
 			}
@@ -82,7 +81,7 @@ public class ReadByMarker {
 	public static ReadByMarker from(Jid fullJid, Jid realJid) {
 		final ReadByMarker marker = new ReadByMarker();
 		marker.fullJid = fullJid;
-		marker.realJid = realJid == null ? null : realJid.toBareJid();
+		marker.realJid = realJid == null ? null : realJid.asBareJid();
 		return marker;
 	}
 
@@ -111,13 +110,13 @@ public class ReadByMarker {
 	public static ReadByMarker fromJson(JSONObject jsonObject) {
 		ReadByMarker marker = new ReadByMarker();
 		try {
-			marker.fullJid = Jid.fromString(jsonObject.getString("fullJid"),true);
-		} catch (JSONException | InvalidJidException e) {
+			marker.fullJid = Jid.of(jsonObject.getString("fullJid"));
+		} catch (JSONException | IllegalArgumentException e) {
 			marker.fullJid = null;
 		}
 		try {
-			marker.realJid = Jid.fromString(jsonObject.getString("realJid"),true);
-		} catch (JSONException | InvalidJidException e) {
+			marker.realJid = Jid.of(jsonObject.getString("realJid"));
+		} catch (JSONException | IllegalArgumentException e) {
 			marker.realJid = null;
 		}
 		return marker;
@@ -142,7 +141,7 @@ public class ReadByMarker {
 	public static boolean contains(ReadByMarker needle, Set<ReadByMarker> readByMarkers) {
 		for(ReadByMarker marker : readByMarkers) {
 			if (marker.realJid != null && needle.realJid != null) {
-				if (marker.realJid.toBareJid().equals(needle.realJid.toBareJid())) {
+				if (marker.realJid.asBareJid().equals(needle.realJid.asBareJid())) {
 					return true;
 				}
 			} else if (marker.fullJid != null && needle.fullJid != null) {

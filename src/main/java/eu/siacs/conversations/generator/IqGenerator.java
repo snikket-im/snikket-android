@@ -31,9 +31,9 @@ import eu.siacs.conversations.services.XmppConnectionService;
 import eu.siacs.conversations.xml.Namespace;
 import eu.siacs.conversations.xml.Element;
 import eu.siacs.conversations.xmpp.forms.Data;
-import eu.siacs.conversations.xmpp.jid.Jid;
 import eu.siacs.conversations.xmpp.pep.Avatar;
 import eu.siacs.conversations.xmpp.stanzas.IqPacket;
+import rocks.xmpp.addr.Jid;
 
 public class IqGenerator extends AbstractGenerator {
 
@@ -284,7 +284,7 @@ public class IqGenerator extends AbstractGenerator {
 	public IqPacket generateSetBlockRequest(final Jid jid, boolean reportSpam) {
 		final IqPacket iq = new IqPacket(IqPacket.TYPE.SET);
 		final Element block = iq.addChild("block", Namespace.BLOCKING);
-		final Element item = block.addChild("item").setAttribute("jid", jid.toBareJid().toString());
+		final Element item = block.addChild("item").setAttribute("jid", jid.asBareJid().toString());
 		if (reportSpam) {
 			item.addChild("report", "urn:xmpp:reporting:0").addChild("spam");
 		}
@@ -295,7 +295,7 @@ public class IqGenerator extends AbstractGenerator {
 	public IqPacket generateSetUnblockRequest(final Jid jid) {
 		final IqPacket iq = new IqPacket(IqPacket.TYPE.SET);
 		final Element block = iq.addChild("unblock", Namespace.BLOCKING);
-		block.addChild("item").setAttribute("jid", jid.toBareJid().toString());
+		block.addChild("item").setAttribute("jid", jid.asBareJid().toString());
 		return iq;
 	}
 
@@ -304,7 +304,7 @@ public class IqGenerator extends AbstractGenerator {
 		packet.setTo(account.getServer());
 		final Element query = packet.addChild("query", Namespace.REGISTER);
 		final Jid jid = account.getJid();
-		query.addChild("username").setContent(jid.getLocalpart());
+		query.addChild("username").setContent(jid.getLocal());
 		query.addChild("password").setContent(newPassword);
 		return packet;
 	}
@@ -317,7 +317,7 @@ public class IqGenerator extends AbstractGenerator {
 
 	public IqPacket changeAffiliation(Conversation conference, List<Jid> jids, String affiliation) {
 		IqPacket packet = new IqPacket(IqPacket.TYPE.SET);
-		packet.setTo(conference.getJid().toBareJid());
+		packet.setTo(conference.getJid().asBareJid());
 		packet.setFrom(conference.getAccount().getJid());
 		Element query = packet.query("http://jabber.org/protocol/muc#admin");
 		for(Jid jid : jids) {
@@ -330,7 +330,7 @@ public class IqGenerator extends AbstractGenerator {
 
 	public IqPacket changeRole(Conversation conference, String nick, String role) {
 		IqPacket packet = new IqPacket(IqPacket.TYPE.SET);
-		packet.setTo(conference.getJid().toBareJid());
+		packet.setTo(conference.getJid().asBareJid());
 		packet.setFrom(conference.getAccount().getJid());
 		Element item = packet.query("http://jabber.org/protocol/muc#admin").addChild("item");
 		item.setAttribute("nick", nick);
@@ -367,7 +367,7 @@ public class IqGenerator extends AbstractGenerator {
 
 	public IqPacket generateCreateAccountWithCaptcha(Account account, String id, Data data) {
 		final IqPacket register = new IqPacket(IqPacket.TYPE.SET);
-		register.setFrom(account.getJid().toBareJid());
+		register.setFrom(account.getJid().asBareJid());
 		register.setTo(account.getServer());
 		register.setId(id);
 		Element query = register.query("jabber:iq:register");
@@ -406,7 +406,7 @@ public class IqGenerator extends AbstractGenerator {
 
 	public IqPacket queryAffiliation(Conversation conversation, String affiliation) {
 		IqPacket packet = new IqPacket(IqPacket.TYPE.GET);
-		packet.setTo(conversation.getJid().toBareJid());
+		packet.setTo(conversation.getJid().asBareJid());
 		packet.query("http://jabber.org/protocol/muc#admin").addChild("item").setAttribute("affiliation",affiliation);
 		return packet;
 	}

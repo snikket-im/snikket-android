@@ -26,7 +26,7 @@ import eu.siacs.conversations.entities.Message;
 import eu.siacs.conversations.entities.MucOptions;
 import eu.siacs.conversations.entities.Presence;
 import eu.siacs.conversations.entities.Transferable;
-import eu.siacs.conversations.xmpp.jid.Jid;
+import rocks.xmpp.addr.Jid;
 
 public class UIHelper {
 
@@ -470,7 +470,7 @@ public class UIHelper {
 				return conversation.getMucOptions().getSelf().getName();
 			} else {
 				final Jid jid = conversation.getAccount().getJid();
-				return jid.hasLocalpart() ? jid.getLocalpart() : jid.toDomainJid().toString();
+				return jid.getLocal() != null ? jid.getLocal() : Jid.ofDomain(jid.getDomain()).toString();
 			}
 		}
 	}
@@ -501,7 +501,7 @@ public class UIHelper {
 		if (counterpart == null) {
 			return "";
 		} else if (!counterpart.isBareJid()) {
-			return counterpart.getResourcepart().trim();
+			return counterpart.getResource().trim();
 		} else {
 			return counterpart.toString().trim();
 		}

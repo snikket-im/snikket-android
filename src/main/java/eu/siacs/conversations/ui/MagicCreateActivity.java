@@ -16,8 +16,7 @@ import java.security.SecureRandom;
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.entities.Account;
-import eu.siacs.conversations.xmpp.jid.InvalidJidException;
-import eu.siacs.conversations.xmpp.jid.Jid;
+import rocks.xmpp.addr.Jid;
 
 public class MagicCreateActivity extends XmppActivity implements TextWatcher {
 
@@ -66,7 +65,7 @@ public class MagicCreateActivity extends XmppActivity implements TextWatcher {
 			} else {
 				mUsername.setError(null);
 				try {
-					Jid jid = Jid.fromParts(username.toLowerCase(), Config.MAGIC_CREATE_DOMAIN, null);
+					Jid jid = Jid.of(username.toLowerCase(), Config.MAGIC_CREATE_DOMAIN, null);
 					Account account = xmppConnectionService.findAccountByJid(jid);
 					if (account == null) {
 						account = new Account(jid, createPassword());
@@ -76,13 +75,13 @@ public class MagicCreateActivity extends XmppActivity implements TextWatcher {
 						xmppConnectionService.createAccount(account);
 					}
 					Intent intent = new Intent(MagicCreateActivity.this, EditAccountActivity.class);
-					intent.putExtra("jid", account.getJid().toBareJid().toString());
+					intent.putExtra("jid", account.getJid().asBareJid().toString());
 					intent.putExtra("init", true);
 					intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
 					Toast.makeText(MagicCreateActivity.this, R.string.secure_password_generated, Toast.LENGTH_SHORT).show();
 					WelcomeActivity.addInviteUri(intent, getIntent());
 					startActivity(intent);
-				} catch (InvalidJidException e) {
+				} catch (IllegalArgumentException e) {
 					mUsername.setError(getString(R.string.invalid_username));
 					mUsername.requestFocus();
 				}
@@ -114,9 +113,9 @@ public class MagicCreateActivity extends XmppActivity implements TextWatcher {
 		if (s.toString().trim().length() > 0) {
 			try {
 				mFullJidDisplay.setVisibility(View.VISIBLE);
-				Jid jid = Jid.fromParts(s.toString().toLowerCase(), Config.MAGIC_CREATE_DOMAIN, null);
+				Jid jid = Jid.of(s.toString().toLowerCase(), Config.MAGIC_CREATE_DOMAIN, null);
 				mFullJidDisplay.setText(getString(R.string.your_full_jid_will_be, jid.toString()));
-			} catch (InvalidJidException e) {
+			} catch (IllegalArgumentException e) {
 				mFullJidDisplay.setVisibility(View.INVISIBLE);
 			}
 

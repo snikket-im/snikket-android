@@ -1,6 +1,6 @@
 package eu.siacs.conversations.entities;
 
-import eu.siacs.conversations.xmpp.jid.Jid;
+import rocks.xmpp.addr.Jid;
 
 public interface Blockable {
 	boolean isBlocked();

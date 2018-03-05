@@ -53,6 +53,7 @@ dependencies {
     implementation 'com.makeramen:roundedimageview:2.3.0'
     implementation "com.wefika:flowlayout:0.4.1"
     implementation 'net.ypresto.androidtranscoder:android-transcoder:0.2.0'
+    implementation 'rocks.xmpp:xmpp-addr:0.7.5'
 }
 
 ext {

@@ -3,7 +3,7 @@ package eu.siacs.conversations.xmpp.pep;
 import android.util.Base64;
 
 import eu.siacs.conversations.xml.Element;
-import eu.siacs.conversations.xmpp.jid.Jid;
+import rocks.xmpp.addr.Jid;
 
 public class Avatar {
 

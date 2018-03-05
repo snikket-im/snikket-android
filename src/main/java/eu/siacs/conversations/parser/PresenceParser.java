@@ -23,9 +23,9 @@ import eu.siacs.conversations.services.XmppConnectionService;
 import eu.siacs.conversations.xml.Element;
 import eu.siacs.conversations.xml.Namespace;
 import eu.siacs.conversations.xmpp.OnPresencePacketReceived;
-import eu.siacs.conversations.xmpp.jid.Jid;
 import eu.siacs.conversations.xmpp.pep.Avatar;
 import eu.siacs.conversations.xmpp.stanzas.PresencePacket;
+import rocks.xmpp.addr.Jid;
 
 public class PresenceParser extends AbstractParser implements
 		OnPresencePacketReceived {
@@ -35,7 +35,7 @@ public class PresenceParser extends AbstractParser implements
 	}
 
 	public void parseConferencePresence(PresencePacket packet, Account account) {
-		final Conversation conversation = packet.getFrom() == null ? null : mXmppConnectionService.find(account, packet.getFrom().toBareJid());
+		final Conversation conversation = packet.getFrom() == null ? null : mXmppConnectionService.find(account, packet.getFrom().asBareJid());
 		if (conversation != null) {
 			final MucOptions mucOptions = conversation.getMucOptions();
 			boolean before = mucOptions.online();
@@ -89,9 +89,9 @@ public class PresenceParser extends AbstractParser implements
 							axolotlService.fetchDeviceIds(user.getRealJid());
 						}
 						if (codes.contains(MucOptions.STATUS_CODE_ROOM_CREATED) && mucOptions.autoPushConfiguration()) {
-							Log.d(Config.LOGTAG,mucOptions.getAccount().getJid().toBareJid()
+							Log.d(Config.LOGTAG,mucOptions.getAccount().getJid().asBareJid()
 									+": room '"
-									+mucOptions.getConversation().getJid().toBareJid()
+									+mucOptions.getConversation().getJid().asBareJid()
 									+"' created. pushing default configuration");
 							mXmppConnectionService.pushConferenceConfiguration(mucOptions.getConversation(),
 									IqGenerator.defaultRoomConfiguration(),
@@ -217,15 +217,15 @@ public class PresenceParser extends AbstractParser implements
 		final String type = packet.getAttribute("type");
 		final Contact contact = account.getRoster().getContact(from);
 		if (type == null) {
-			final String resource = from.isBareJid() ? "" : from.getResourcepart();
+			final String resource = from.isBareJid() ? "" : from.getResource();
 			if (contact.setPresenceName(packet.findChildContent("nick", Namespace.NICK))) {
 				mXmppConnectionService.getAvatarService().clear(contact);
 			}
 			Avatar avatar = Avatar.parsePresence(packet.findChild("x", "vcard-temp:x:update"));
 			if (avatar != null && (!contact.isSelf() || account.getAvatar() == null)) {
-				avatar.owner = from.toBareJid();
+				avatar.owner = from.asBareJid();
 				if (mXmppConnectionService.getFileBackend().isAvatarCached(avatar)) {
-					if (avatar.owner.equals(account.getJid().toBareJid())) {
+					if (avatar.owner.equals(account.getJid().asBareJid())) {
 						account.setAvatar(avatar.getFilename());
 						mXmppConnectionService.databaseBackend.updateAccount(account);
 						mXmppConnectionService.getAvatarService().clear(account);
@@ -284,7 +284,7 @@ public class PresenceParser extends AbstractParser implements
 			if (from.isBareJid()) {
 				contact.clearPresences();
 			} else {
-				contact.removePresence(from.getResourcepart());
+				contact.removePresence(from.getResource());
 			}
 			mXmppConnectionService.onContactStatusChanged.onContactStatusChanged(contact, false);
 		} else if (type.equals("subscribe")) {
@@ -294,7 +294,7 @@ public class PresenceParser extends AbstractParser implements
 			} else {
 				contact.setOption(Contact.Options.PENDING_SUBSCRIPTION_REQUEST);
 				final Conversation conversation = mXmppConnectionService.findOrCreateConversation(
-						account, contact.getJid().toBareJid(), false, false);
+						account, contact.getJid().asBareJid(), false, false);
 				final String statusMessage = packet.findChildContent("status");
 				if (statusMessage != null
 						&& !statusMessage.isEmpty()

@@ -510,7 +510,7 @@ public class MessageAdapter extends ArrayAdapter<Message> implements CopyTextVie
 				} else {
 					final String to;
 					if (message.getCounterpart() != null) {
-						to = message.getCounterpart().getResourcepart();
+						to = message.getCounterpart().getResource();
 					} else {
 						to = "";
 					}

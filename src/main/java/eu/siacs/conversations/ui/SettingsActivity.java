@@ -27,7 +27,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import java.util.Locale;
 
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
@@ -36,9 +35,7 @@ import eu.siacs.conversations.services.ExportLogsService;
 import eu.siacs.conversations.services.MemorizingTrustManager;
 import eu.siacs.conversations.ui.util.Color;
 import eu.siacs.conversations.utils.TimeframeUtils;
-import eu.siacs.conversations.xmpp.XmppConnection;
-import eu.siacs.conversations.xmpp.jid.InvalidJidException;
-import eu.siacs.conversations.xmpp.jid.Jid;
+import rocks.xmpp.addr.Jid;
 
 public class SettingsActivity extends XmppActivity implements
 		OnSharedPreferenceChangeListener {
@@ -296,7 +293,7 @@ public class SettingsActivity extends XmppActivity implements
 		final List<CharSequence> accounts = new ArrayList<>();
 		for (Account account : xmppConnectionService.getAccounts()) {
 			if (account.isEnabled()) {
-				accounts.add(account.getJid().toBareJid().toString());
+				accounts.add(account.getJid().asBareJid().toString());
 			}
 		}
 		final boolean[] checkedItems = new boolean[accounts.size()];
@@ -316,12 +313,12 @@ public class SettingsActivity extends XmppActivity implements
 			for (int i = 0; i < checkedItems.length; ++i) {
 				if (checkedItems[i]) {
 					try {
-						Jid jid = Jid.fromString(accounts.get(i).toString());
+						Jid jid = Jid.of(accounts.get(i).toString());
 						Account account = xmppConnectionService.findAccountByJid(jid);
 						if (account != null) {
 							account.getAxolotlService().regenerateKeys(true);
 						}
-					} catch (InvalidJidException e) {
+					} catch (IllegalArgumentException e) {
 						//
 					}
 

@@ -99,8 +99,7 @@ import eu.siacs.conversations.utils.TimeframeUtils;
 import eu.siacs.conversations.utils.UIHelper;
 import eu.siacs.conversations.xmpp.XmppConnection;
 import eu.siacs.conversations.xmpp.chatstate.ChatState;
-import eu.siacs.conversations.xmpp.jid.InvalidJidException;
-import eu.siacs.conversations.xmpp.jid.Jid;
+import rocks.xmpp.addr.Jid;
 
 import static eu.siacs.conversations.ui.XmppActivity.EXTRA_ACCOUNT;
 import static eu.siacs.conversations.ui.XmppActivity.REQUEST_INVITE_TO_CONVERSATION;
@@ -671,7 +670,7 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
 				contacts[i] = targets.get(i).toString();
 			}
 			intent.putExtra("contacts", contacts);
-			intent.putExtra(EXTRA_ACCOUNT, conversation.getAccount().getJid().toBareJid().toString());
+			intent.putExtra(EXTRA_ACCOUNT, conversation.getAccount().getJid().asBareJid().toString());
 			intent.putExtra("choice", attachmentChoice);
 			intent.putExtra("conversation", conversation.getUuid());
 			startActivityForResult(intent, requestCode);
@@ -688,7 +687,7 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
 		} else if (multi && conversation.getNextCounterpart() != null) {
 			this.binding.textinput.setHint(getString(
 					R.string.send_private_message_to,
-					conversation.getNextCounterpart().getResourcepart()));
+					conversation.getNextCounterpart().getResource()));
 		} else if (multi && !conversation.getMucOptions().participating()) {
 			this.binding.textinput.setHint(R.string.you_are_not_participating);
 		} else {
@@ -867,9 +866,9 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
 					Jid user = message.getCounterpart();
 					if (user != null && !user.isBareJid()) {
 						if (!message.getConversation().getMucOptions().isUserInRoom(user)) {
-							Toast.makeText(getActivity(), activity.getString(R.string.user_has_left_conference, user.getResourcepart()), Toast.LENGTH_SHORT).show();
+							Toast.makeText(getActivity(), activity.getString(R.string.user_has_left_conference, user.getResource()), Toast.LENGTH_SHORT).show();
 						}
-						highlightInConference(user.getResourcepart());
+						highlightInConference(user.getResource());
 					}
 					return;
 				} else {
@@ -888,7 +887,7 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
 			}
 			Account account = message.getConversation().getAccount();
 			Intent intent = new Intent(activity, EditAccountActivity.class);
-			intent.putExtra("jid", account.getJid().toBareJid().toString());
+			intent.putExtra("jid", account.getJid().asBareJid().toString());
 			String fingerprint;
 			if (message.getEncryption() == Message.ENCRYPTION_PGP
 					|| message.getEncryption() == Message.ENCRYPTION_DECRYPTED) {
@@ -912,7 +911,7 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
 						if (mucOptions.isUserInRoom(user)) {
 							privateMessageWith(user);
 						} else {
-							Toast.makeText(getActivity(), activity.getString(R.string.user_has_left_conference, user.getResourcepart()), Toast.LENGTH_SHORT).show();
+							Toast.makeText(getActivity(), activity.getString(R.string.user_has_left_conference, user.getResource()), Toast.LENGTH_SHORT).show();
 						}
 					}
 				}
@@ -1853,9 +1852,9 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
 			if (pm) {
 				Jid jid = conversation.getJid();
 				try {
-					Jid next = Jid.fromParts(jid.getLocalpart(), jid.getDomainpart(), nick);
+					Jid next = Jid.of(jid.getLocal(), jid.getDomain(), nick);
 					privateMessageWith(next);
-				} catch (final InvalidJidException ignored) {
+				} catch (final IllegalArgumentException ignored) {
 					//do nothing
 				}
 			} else {
@@ -1872,7 +1871,7 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
 
 	private boolean showBlockSubmenu(View view) {
 		final Jid jid = conversation.getJid();
-		if (jid.isDomainJid()) {
+		if (jid.getLocal() == null) {
 			BlockContactDialog.show(activity, conversation);
 		} else {
 			PopupMenu popupMenu = new PopupMenu(getActivity(), view);
@@ -1881,7 +1880,7 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
 				Blockable blockable;
 				switch (menuItem.getItemId()) {
 					case R.id.block_domain:
-						blockable = conversation.getAccount().getRoster().getContact(jid.toDomainJid());
+						blockable = conversation.getAccount().getRoster().getContact(Jid.ofDomain(jid.getDomain()));
 						break;
 					default:
 						blockable = conversation;

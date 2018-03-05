@@ -18,7 +18,7 @@ public class PresenceGenerator extends AbstractGenerator {
 		PresencePacket packet = new PresencePacket();
 		packet.setAttribute("type", type);
 		packet.setTo(contact.getJid());
-		packet.setFrom(contact.getAccount().getJid().toBareJid());
+		packet.setFrom(contact.getAccount().getJid().asBareJid());
 		return packet;
 	}
 

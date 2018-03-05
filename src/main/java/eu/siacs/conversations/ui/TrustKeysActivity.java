@@ -37,8 +37,7 @@ import eu.siacs.conversations.entities.Conversation;
 import eu.siacs.conversations.utils.CryptoHelper;
 import eu.siacs.conversations.utils.XmppUri;
 import eu.siacs.conversations.xmpp.OnKeyStatusUpdated;
-import eu.siacs.conversations.xmpp.jid.InvalidJidException;
-import eu.siacs.conversations.xmpp.jid.Jid;
+import rocks.xmpp.addr.Jid;
 
 
 public class TrustKeysActivity extends OmemoActivity implements OnKeyStatusUpdated {
@@ -85,8 +84,8 @@ public class TrustKeysActivity extends OmemoActivity implements OnKeyStatusUpdat
 		this.contactJids = new ArrayList<>();
 		for(String jid : getIntent().getStringArrayExtra("contacts")) {
 			try {
-				this.contactJids.add(Jid.fromString(jid));
-			} catch (InvalidJidException e) {
+				this.contactJids.add(Jid.of(jid));
+			} catch (IllegalArgumentException e) {
 				e.printStackTrace();
 			}
 		}
@@ -232,7 +231,7 @@ public class TrustKeysActivity extends OmemoActivity implements OnKeyStatusUpdat
 			showCameraToast();
 		}
 
-		binding.ownKeysTitle.setText(mAccount.getJid().toBareJid().toString());
+		binding.ownKeysTitle.setText(mAccount.getJid().asBareJid().toString());
 		binding.ownKeysCard.setVisibility(hasOwnKeys ? View.VISIBLE : View.GONE);
 		binding.foreignKeys.setVisibility(hasForeignKeys ? View.VISIBLE : View.GONE);
 		if(hasPendingKeyFetches()) {

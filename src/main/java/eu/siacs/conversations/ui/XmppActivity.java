@@ -71,8 +71,7 @@ import eu.siacs.conversations.ui.util.PresenceSelector;
 import eu.siacs.conversations.utils.ExceptionHelper;
 import eu.siacs.conversations.xmpp.OnKeyStatusUpdated;
 import eu.siacs.conversations.xmpp.OnUpdateBlocklist;
-import eu.siacs.conversations.xmpp.jid.InvalidJidException;
-import eu.siacs.conversations.xmpp.jid.Jid;
+import rocks.xmpp.addr.Jid;
 
 public abstract class XmppActivity extends AppCompatActivity {
 
@@ -394,8 +393,8 @@ public abstract class XmppActivity extends AppCompatActivity {
 			} else if (presences.size() == 1) {
 				String presence = presences.toResourceArray()[0];
 				try {
-					conversation.setNextCounterpart(Jid.fromParts(contact.getJid().getLocalpart(), contact.getJid().getDomainpart(), presence));
-				} catch (InvalidJidException e) {
+					conversation.setNextCounterpart(Jid.of(contact.getJid().getLocal(), contact.getJid().getDomain(), presence));
+				} catch (IllegalArgumentException e) {
 					conversation.setNextCounterpart(null);
 				}
 				listener.onPresenceSelected();
@@ -527,7 +526,7 @@ public abstract class XmppActivity extends AppCompatActivity {
 	public void switchToContactDetails(Contact contact, String messageFingerprint) {
 		Intent intent = new Intent(this, ContactDetailsActivity.class);
 		intent.setAction(ContactDetailsActivity.ACTION_VIEW_CONTACT);
-		intent.putExtra(EXTRA_ACCOUNT, contact.getAccount().getJid().toBareJid().toString());
+		intent.putExtra(EXTRA_ACCOUNT, contact.getAccount().getJid().asBareJid().toString());
 		intent.putExtra("contact", contact.getJid().toString());
 		intent.putExtra("fingerprint", messageFingerprint);
 		startActivity(intent);
@@ -539,7 +538,7 @@ public abstract class XmppActivity extends AppCompatActivity {
 
 	public void switchToAccount(Account account, boolean init) {
 		Intent intent = new Intent(this, EditAccountActivity.class);
-		intent.putExtra("jid", account.getJid().toBareJid().toString());
+		intent.putExtra("jid", account.getJid().asBareJid().toString());
 		intent.putExtra("init", init);
 		if (init) {
 			intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NO_ANIMATION);
@@ -879,8 +878,8 @@ public abstract class XmppActivity extends AppCompatActivity {
 	protected Account extractAccount(Intent intent) {
 		String jid = intent != null ? intent.getStringExtra(EXTRA_ACCOUNT) : null;
 		try {
-			return jid != null ? xmppConnectionService.findAccountByJid(Jid.fromString(jid)) : null;
-		} catch (InvalidJidException e) {
+			return jid != null ? xmppConnectionService.findAccountByJid(Jid.of(jid)) : null;
+		} catch (IllegalArgumentException e) {
 			return null;
 		}
 	}
@@ -935,12 +934,12 @@ public abstract class XmppActivity extends AppCompatActivity {
 				if (data.getBooleanExtra("multiple", false)) {
 					String[] toAdd = data.getStringArrayExtra("contacts");
 					for (String item : toAdd) {
-						invite.jids.add(Jid.fromString(item));
+						invite.jids.add(Jid.of(item));
 					}
 				} else {
-					invite.jids.add(Jid.fromString(data.getStringExtra("contact")));
+					invite.jids.add(Jid.of(data.getStringExtra("contact")));
 				}
-			} catch (final InvalidJidException ignored) {
+			} catch (final IllegalArgumentException ignored) {
 				return null;
 			}
 			return invite;
@@ -958,7 +957,7 @@ public abstract class XmppActivity extends AppCompatActivity {
 				}
 				return false;
 			} else {
-				jids.add(conversation.getJid().toBareJid());
+				jids.add(conversation.getJid().asBareJid());
 				return service.createAdhocConference(conversation.getAccount(), null, jids, activity.adhocCallback);
 			}
 		}
