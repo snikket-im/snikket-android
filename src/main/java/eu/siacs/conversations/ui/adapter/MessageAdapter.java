@@ -1,6 +1,7 @@
 package eu.siacs.conversations.ui.adapter;
 
 import android.Manifest;
+import android.app.Activity;
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -180,6 +181,10 @@ public class MessageAdapter extends ArrayAdapter<Message> implements CopyTextVie
 
 	public void setOnContactPictureClicked(OnContactPictureClicked listener) {
 		this.mOnContactPictureClickedListener = listener;
+	}
+
+	public Activity getActivity() {
+		return activity;
 	}
 
 	public void setOnContactPictureLongClicked(
@@ -901,6 +906,10 @@ public class MessageAdapter extends ArrayAdapter<Message> implements CopyTextVie
 
 	public void stopAudioPlayer() {
 		audioPlayer.stop();
+	}
+
+	public void startStopPending() {
+		audioPlayer.startStopPending();
 	}
 
 	public void openDownloadable(Message message) {

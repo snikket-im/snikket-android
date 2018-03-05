@@ -424,6 +424,13 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
 		return null;
 	}
 
+	public static void startStopPending(Activity activity) {
+		ConversationFragment fragment = findConversationFragment(activity);
+		if (fragment != null) {
+			fragment.messageListAdapter.startStopPending();
+		}
+	}
+
 	public static void downloadFile(Activity activity, Message message) {
 		ConversationFragment fragment = findConversationFragment(activity);
 		if (fragment != null) {
