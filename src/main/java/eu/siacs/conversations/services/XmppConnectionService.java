@@ -3588,6 +3588,8 @@ public class XmppConnectionService extends Service {
 			markMessage(msg, Message.STATUS_WAITING);
 			this.resendMessage(msg, false);
 		}
+		message.getConversation().sort();
+		updateConversationUi();
 	}
 
 	public void clearConversationHistory(final Conversation conversation) {
