@@ -1,5 +1,8 @@
 # Changelog
 
+### Version 1.23.8
+* bug fixes
+
 ### Version 1.23.7
 * Improved MAM support + bug fixes
 
