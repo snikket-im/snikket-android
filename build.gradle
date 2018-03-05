@@ -29,7 +29,7 @@ configurations {
 }
 
 ext {
-    supportLibVersion = '27.0.2'
+    supportLibVersion = '27.1.0'
 }
 
 dependencies {
