@@ -606,7 +606,7 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
 				if (packet.hasChild("subject")) {
 					if (conversation != null && conversation.getMode() == Conversation.MODE_MULTI) {
 						conversation.setHasMessagesLeftOnServer(conversation.countMessages() > 0);
-						String subject = packet.findChildContent("subject");
+						String subject = packet.findInternationalizedChildContent("subject");
 						if (conversation.getMucOptions().setSubject(subject)) {
 							mXmppConnectionService.updateConversation(conversation);
 						}
