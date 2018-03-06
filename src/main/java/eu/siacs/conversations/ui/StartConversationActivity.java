@@ -623,7 +623,7 @@ public class StartConversationActivity extends XmppActivity implements OnRosterU
 		mSearchEditText.addTextChangedListener(mSearchTextWatcher);
 		mSearchEditText.setOnEditorActionListener(mSearchDone);
 		if (mInitialJid != null) {
-			MenuItemCompat.expandActionView(mMenuSearchView);
+			mMenuSearchView.expandActionView();
 			mSearchEditText.append(mInitialJid);
 			filter(mInitialJid);
 		}
