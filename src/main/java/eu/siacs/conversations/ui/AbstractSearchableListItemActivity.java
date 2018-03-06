@@ -1,6 +1,7 @@
 package eu.siacs.conversations.ui;
 
 import android.content.Context;
+import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -16,11 +17,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import eu.siacs.conversations.R;
+import eu.siacs.conversations.databinding.ActivityChooseContactBinding;
 import eu.siacs.conversations.entities.ListItem;
 import eu.siacs.conversations.ui.adapter.ListItemAdapter;
 
 public abstract class AbstractSearchableListItemActivity extends XmppActivity {
-	private ListView mListView;
+	protected ActivityChooseContactBinding binding;
 	private final List<ListItem> listItems = new ArrayList<>();
 	private ArrayAdapter<ListItem> mListItemsAdapter;
 
@@ -74,7 +76,7 @@ public abstract class AbstractSearchableListItemActivity extends XmppActivity {
 	};
 
 	public ListView getListView() {
-		return mListView;
+		return binding.chooseContactList;
 	}
 
 	public List<ListItem> getListItems() {
@@ -92,11 +94,10 @@ public abstract class AbstractSearchableListItemActivity extends XmppActivity {
 	@Override
 	public void onCreate(final Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_choose_contact);
-		mListView = (ListView) findViewById(R.id.choose_contact_list);
-		mListView.setFastScrollEnabled(true);
+		this.binding = DataBindingUtil.setContentView(this,R.layout.activity_choose_contact);
+		this.binding.chooseContactList.setFastScrollEnabled(true);
 		mListItemsAdapter = new ListItemAdapter(this, listItems);
-		mListView.setAdapter(mListItemsAdapter);
+		this.binding.chooseContactList.setAdapter(mListItemsAdapter);
 	}
 
 	@Override

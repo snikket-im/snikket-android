@@ -26,17 +26,11 @@ public class BlocklistActivity extends AbstractSearchableListItemActivity implem
 	@Override
 	public void onCreate(final Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		getListView().setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-
-			@Override
-			public boolean onItemLongClick(final AdapterView<?> parent,
-					final View view,
-					final int position,
-					final long id) {
-				BlockContactDialog.show(BlocklistActivity.this, (Contact) getListItems().get(position));
-				return true;
-			}
+		getListView().setOnItemLongClickListener((parent, view, position, id) -> {
+			BlockContactDialog.show(BlocklistActivity.this, (Contact) getListItems().get(position));
+			return true;
 		});
+		this.binding.fab.setOnClickListener((v)->showEnterJidDialog());
 	}
 
 	@Override
@@ -66,23 +60,6 @@ public class BlocklistActivity extends AbstractSearchableListItemActivity implem
 		getListItemAdapter().notifyDataSetChanged();
 	}
 
-	@Override
-	public boolean onCreateOptionsMenu(final Menu menu) {
-		super.onCreateOptionsMenu(menu);
-		menu.findItem(R.id.action_block_jid).setVisible(true);
-		return true;
-	}
-
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		switch (item.getItemId()) {
-			case R.id.action_block_jid:
-				showEnterJidDialog();
-				return true;
-		}
-		return super.onOptionsItemSelected(item);
-	}
-
 	protected void showEnterJidDialog() {
 		EnterJidDialog dialog = new EnterJidDialog(
 				this, mKnownHosts, null,
@@ -90,15 +67,12 @@ public class BlocklistActivity extends AbstractSearchableListItemActivity implem
 				null, account.getJid().asBareJid().toString(), true
 		);
 
-		dialog.setOnEnterJidDialogPositiveListener(new EnterJidDialog.OnEnterJidDialogPositiveListener() {
-			@Override
-			public boolean onEnterJidDialogPositive(Jid accountJid, Jid contactJid) throws EnterJidDialog.JidError {
-				Contact contact = account.getRoster().getContact(contactJid);
-                if (xmppConnectionService.sendBlockRequest(contact, false)) {
-					Toast.makeText(BlocklistActivity.this,R.string.corresponding_conversations_closed,Toast.LENGTH_SHORT).show();
-				}
-				return true;
+		dialog.setOnEnterJidDialogPositiveListener((accountJid, contactJid) -> {
+			Contact contact = account.getRoster().getContact(contactJid);
+			if (xmppConnectionService.sendBlockRequest(contact, false)) {
+				Toast.makeText(BlocklistActivity.this, R.string.corresponding_conversations_closed, Toast.LENGTH_SHORT).show();
 			}
+			return true;
 		});
 
 		dialog.show();
