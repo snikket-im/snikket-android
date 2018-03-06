@@ -71,8 +71,6 @@ public class Conversation extends AbstractEntity implements Blockable, Comparabl
 
 	private transient MucOptions mucOptions = null;
 
-	private byte[] symmetricKey;
-
 	private boolean messagesLeftOnServer = true;
 	private ChatState mOutgoingChatState = Config.DEFAULT_CHATSTATE;
 	private ChatState mIncomingChatState = Config.DEFAULT_CHATSTATE;
@@ -600,35 +598,18 @@ public class Conversation extends AbstractEntity implements Blockable, Comparabl
 	}
 
 	public int getNextEncryption() {
-		return fixAvailableEncryption(this.getIntAttribute(ATTRIBUTE_NEXT_ENCRYPTION, getDefaultEncryption()));
-	}
-
-	private int fixAvailableEncryption(int selectedEncryption) {
-		switch(selectedEncryption) {
-			case Message.ENCRYPTION_NONE:
-				return Config.supportUnencrypted() ? selectedEncryption : getDefaultEncryption();
-			case Message.ENCRYPTION_AXOLOTL:
-				return Config.supportOmemo() ? selectedEncryption : getDefaultEncryption();
-			case Message.ENCRYPTION_PGP:
-			case Message.ENCRYPTION_DECRYPTED:
-			case Message.ENCRYPTION_DECRYPTION_FAILED:
-				return Config.supportOpenPgp() ? Message.ENCRYPTION_PGP : getDefaultEncryption();
-			default:
-				return getDefaultEncryption();
-		}
-	}
-
-	private int getDefaultEncryption() {
+		final int defaultEncryption;
 		AxolotlService axolotlService = account.getAxolotlService();
-		if (Config.supportUnencrypted()) {
-			return Message.ENCRYPTION_NONE;
-		} else if (Config.supportOmemo()
-				&& (axolotlService != null && axolotlService.isConversationAxolotlCapable(this) || !Config.multipleEncryptionChoices())) {
-			return Message.ENCRYPTION_AXOLOTL;
-		} else if (Config.supportOpenPgp()) {
-			return Message.ENCRYPTION_PGP;
+		if (axolotlService != null && axolotlService.isConversationAxolotlCapable(this)) {
+			defaultEncryption = Message.ENCRYPTION_AXOLOTL;
 		} else {
-			return Message.ENCRYPTION_NONE;
+			defaultEncryption =  Message.ENCRYPTION_NONE;
+		}
+		int encryption = this.getIntAttribute(ATTRIBUTE_NEXT_ENCRYPTION, defaultEncryption);
+		if (encryption == Message.ENCRYPTION_OTR) {
+			return defaultEncryption;
+		} else {
+			return encryption;
 		}
 	}
 
@@ -645,14 +626,6 @@ public class Conversation extends AbstractEntity implements Blockable, Comparabl
 		boolean changed = !getNextMessage().equals(message);
 		this.setAttribute(ATTRIBUTE_NEXT_MESSAGE, message);
 		return changed;
-	}
-
-	public void setSymmetricKey(byte[] key) {
-		this.symmetricKey = key;
-	}
-
-	public byte[] getSymmetricKey() {
-		return this.symmetricKey;
 	}
 
 	public Bookmark getBookmark() {
