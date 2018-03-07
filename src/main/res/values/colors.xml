@@ -14,6 +14,7 @@
 	<color name="white12">#1fffffff</color>
 	<color name="grey50">#fffafafa</color>
 	<color name="grey200">#ffeeeeee</color>
+	<color name="grey300">#ffe0e0e0</color>
 	<color name="grey500">#ff9e9e9e</color>
 	<color name="grey800">#ff424242</color>
 	<color name="grey900">#ff282828</color>

@@ -2,8 +2,6 @@ package eu.siacs.conversations.utils;
 
 import android.support.v7.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
-import android.content.DialogInterface.OnClickListener;
 import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
@@ -28,7 +26,6 @@ import eu.siacs.conversations.entities.Conversation;
 import eu.siacs.conversations.entities.Message;
 import eu.siacs.conversations.services.XmppConnectionService;
 import eu.siacs.conversations.ui.XmppActivity;
-import rocks.xmpp.addr.Jid;
 
 public class ExceptionHelper {
 
@@ -94,35 +91,14 @@ public class ExceptionHelper {
 			AlertDialog.Builder builder = new AlertDialog.Builder(activity);
 			builder.setTitle(activity.getString(R.string.crash_report_title));
 			builder.setMessage(activity.getText(R.string.crash_report_message));
-			builder.setPositiveButton(activity.getText(R.string.send_now),
-					new OnClickListener() {
+			builder.setPositiveButton(activity.getText(R.string.send_now), (dialog, which) -> {
 
-						@Override
-						public void onClick(DialogInterface dialog, int which) {
-
-							Log.d(Config.LOGTAG, "using account="
-									+ finalAccount.getJid().asBareJid()
-									+ " to send in stack trace");
-							Conversation conversation = null;
-							try {
-								conversation = service.findOrCreateConversation(finalAccount,
-										Jid.of(Config.BUG_REPORTS), false, true);
-							} catch (final IllegalArgumentException ignored) {
-							}
-							Message message = new Message(conversation, report
-									.toString(), Message.ENCRYPTION_NONE);
-							service.sendMessage(message);
-						}
-					});
-			builder.setNegativeButton(activity.getText(R.string.send_never),
-					new OnClickListener() {
-
-						@Override
-						public void onClick(DialogInterface dialog, int which) {
-							preferences.edit().putBoolean("never_send", true)
-									.apply();
-						}
-					});
+				Log.d(Config.LOGTAG, "using account=" + finalAccount.getJid().asBareJid() + " to send in stack trace");
+				Conversation conversation = service.findOrCreateConversation(finalAccount, Config.BUG_REPORTS, false, true);
+				Message message = new Message(conversation, report.toString(), Message.ENCRYPTION_NONE);
+				service.sendMessage(message);
+			});
+			builder.setNegativeButton(activity.getText(R.string.send_never), (dialog, which) -> preferences.edit().putBoolean("never_send", true).apply());
 			builder.create().show();
 			return true;
 		} catch (final IOException ignored) {
@@ -130,7 +106,7 @@ public class ExceptionHelper {
 		}
 	}
 
-	public static void writeToStacktraceFile(Context context, String msg) {
+	static void writeToStacktraceFile(Context context, String msg) {
 		try {
 			OutputStream os = context.openFileOutput(FILENAME, Context.MODE_PRIVATE);
 			os.write(msg.getBytes());

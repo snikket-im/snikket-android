@@ -564,7 +564,7 @@ public class Message extends AbstractEntity {
 						((this.axolotlFingerprint == null && message.axolotlFingerprint == null) || this.axolotlFingerprint.equals(message.getFingerprint())) &&
 						UIHelper.sameDay(message.getTimeSent(),this.getTimeSent()) &&
 						this.getReadByMarkers().equals(message.getReadByMarkers()) &&
-						!this.conversation.getJid().asBareJid().toString().equals(Config.BUG_REPORTS)
+						!this.conversation.getJid().asBareJid().equals(Config.BUG_REPORTS)
 				);
 	}
 

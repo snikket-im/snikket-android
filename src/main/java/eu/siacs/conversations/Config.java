@@ -3,6 +3,7 @@ package eu.siacs.conversations;
 import android.graphics.Bitmap;
 
 import eu.siacs.conversations.xmpp.chatstate.ChatState;
+import rocks.xmpp.addr.Jid;
 
 public final class Config {
 
@@ -22,10 +23,6 @@ public final class Config {
 		return (ENCRYPTION_MASK & OPENPGP) != 0;
 	}
 
-	public static boolean supportOtr() {
-		return (ENCRYPTION_MASK & OTR) != 0;
-	}
-
 	public static boolean supportOmemo() {
 		return (ENCRYPTION_MASK & OMEMO) != 0;
 	}
@@ -36,7 +33,7 @@ public final class Config {
 
 	public static final String LOGTAG = "conversations";
 
-	public static final String BUG_REPORTS = "bugs@conversations.im";
+	public static final Jid BUG_REPORTS = Jid.of("bugs@conversations.im");
 
 
 	public static final String DOMAIN_LOCK = null; //only allow account creation for this domain

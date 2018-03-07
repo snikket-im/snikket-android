@@ -600,7 +600,9 @@ public class Conversation extends AbstractEntity implements Blockable, Comparabl
 	public int getNextEncryption() {
 		final int defaultEncryption;
 		AxolotlService axolotlService = account.getAxolotlService();
-		if (axolotlService != null && axolotlService.isConversationAxolotlCapable(this)) {
+		if (contactJid.asBareJid().equals(Config.BUG_REPORTS)) {
+			defaultEncryption = Message.ENCRYPTION_NONE;
+		} else if (axolotlService != null && axolotlService.isConversationAxolotlCapable(this)) {
 			defaultEncryption = Message.ENCRYPTION_AXOLOTL;
 		} else {
 			defaultEncryption =  Message.ENCRYPTION_NONE;
@@ -881,17 +883,5 @@ public class Conversation extends AbstractEntity implements Blockable, Comparabl
 				&& !getJid().equals(Jid.ofDomain(account.getJid().getDomain()))
 				&& !getContact().showInRoster()
 				&& sentMessagesCount() == 0;
-	}
-
-	public class Smp {
-		public static final int STATUS_NONE = 0;
-		public static final int STATUS_CONTACT_REQUESTED = 1;
-		public static final int STATUS_WE_REQUESTED = 2;
-		public static final int STATUS_FAILED = 3;
-		public static final int STATUS_VERIFIED = 4;
-
-		public String secret = null;
-		public String hint = null;
-		public int status = 0;
 	}
 }
