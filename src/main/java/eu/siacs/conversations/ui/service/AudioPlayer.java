@@ -3,7 +3,6 @@ package eu.siacs.conversations.ui.service;
 import android.Manifest;
 import android.content.pm.PackageManager;
 import android.content.res.ColorStateList;
-import android.media.Image;
 import android.media.MediaPlayer;
 import android.os.Build;
 import android.os.Handler;
@@ -20,7 +19,7 @@ import java.util.Locale;
 
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.entities.Message;
-import eu.siacs.conversations.ui.ConversationActivity;
+import eu.siacs.conversations.ui.ConversationsActivity;
 import eu.siacs.conversations.ui.adapter.MessageAdapter;
 import eu.siacs.conversations.ui.util.PendingItem;
 import eu.siacs.conversations.utils.WeakReferenceSet;
@@ -107,7 +106,7 @@ public class AudioPlayer implements View.OnClickListener, MediaPlayer.OnCompleti
 	private void startStop(ImageButton playPause) {
 		if (ContextCompat.checkSelfPermission(messageAdapter.getActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
 			pendingOnClickView.push(new WeakReference<>(playPause));
-			ActivityCompat.requestPermissions(messageAdapter.getActivity(), new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, ConversationActivity.REQUEST_PLAY_PAUSE);
+			ActivityCompat.requestPermissions(messageAdapter.getActivity(), new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, ConversationsActivity.REQUEST_PLAY_PAUSE);
 			return;
 		}
 		final RelativeLayout audioPlayer = (RelativeLayout) playPause.getParent();

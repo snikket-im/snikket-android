@@ -35,7 +35,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.View.OnLongClickListener;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.ArrayAdapter;
@@ -66,7 +65,7 @@ import eu.siacs.conversations.entities.Transferable;
 import eu.siacs.conversations.persistance.FileBackend;
 import eu.siacs.conversations.services.MessageArchiveService;
 import eu.siacs.conversations.services.NotificationService;
-import eu.siacs.conversations.ui.ConversationActivity;
+import eu.siacs.conversations.ui.ConversationsActivity;
 import eu.siacs.conversations.ui.ConversationFragment;
 import eu.siacs.conversations.ui.XmppActivity;
 import eu.siacs.conversations.ui.service.AudioPlayer;
@@ -915,7 +914,7 @@ public class MessageAdapter extends ArrayAdapter<Message> implements CopyTextVie
 	public void openDownloadable(Message message) {
 		if (ContextCompat.checkSelfPermission(activity, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
 			ConversationFragment.registerPendingMessage(activity, message);
-			ActivityCompat.requestPermissions(activity, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, ConversationActivity.REQUEST_OPEN_MESSAGE);
+			ActivityCompat.requestPermissions(activity, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, ConversationsActivity.REQUEST_OPEN_MESSAGE);
 			return;
 		}
 		DownloadableFile file = activity.xmppConnectionService.getFileBackend().getFile(message);

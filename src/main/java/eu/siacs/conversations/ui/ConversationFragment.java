@@ -28,7 +28,6 @@ import android.support.v13.view.inputmethod.InputConnectionCompat;
 import android.support.v13.view.inputmethod.InputContentInfoCompat;
 import android.text.Editable;
 import android.util.Log;
-import android.util.Pair;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.Gravity;
@@ -140,7 +139,7 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
 	private Conversation conversation;
 	private FragmentConversationBinding binding;
 	private Toast messageLoaderToast;
-	private ConversationActivity activity;
+	private ConversationsActivity activity;
 
 	private boolean reInitRequiredOnStart = true;
 
@@ -794,10 +793,10 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
 	public void onAttach(Activity activity) {
 		super.onAttach(activity);
 		Log.d(Config.LOGTAG, "ConversationFragment.onAttach()");
-		if (activity instanceof ConversationActivity) {
-			this.activity = (ConversationActivity) activity;
+		if (activity instanceof ConversationsActivity) {
+			this.activity = (ConversationsActivity) activity;
 		} else {
-			throw new IllegalStateException("Trying to attach fragment to activity that is not the ConversationActivity");
+			throw new IllegalStateException("Trying to attach fragment to activity that is not the ConversationsActivity");
 		}
 	}
 
@@ -1844,10 +1843,10 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
 	}
 
 	private void processExtras(Bundle extras) {
-		final String downloadUuid = extras.getString(ConversationActivity.EXTRA_DOWNLOAD_UUID);
-		final String text = extras.getString(ConversationActivity.EXTRA_TEXT);
-		final String nick = extras.getString(ConversationActivity.EXTRA_NICK);
-		final boolean pm = extras.getBoolean(ConversationActivity.EXTRA_IS_PRIVATE_MESSAGE, false);
+		final String downloadUuid = extras.getString(ConversationsActivity.EXTRA_DOWNLOAD_UUID);
+		final String text = extras.getString(ConversationsActivity.EXTRA_TEXT);
+		final String nick = extras.getString(ConversationsActivity.EXTRA_NICK);
+		final boolean pm = extras.getBoolean(ConversationsActivity.EXTRA_IS_PRIVATE_MESSAGE, false);
 		if (nick != null) {
 			if (pm) {
 				Jid jid = conversation.getJid();

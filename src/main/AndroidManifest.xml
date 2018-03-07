@@ -47,17 +47,20 @@
 
         <activity
             android:name=".ui.ConversationActivity"
-            android:label="@string/app_name"
-            android:launchMode="singleTask"
-            android:minWidth="300dp"
-            android:minHeight="300dp"
-            android:windowSoftInputMode="stateHidden">
+            android:theme="@style/SplashTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".ui.ConversationsActivity"
+            android:label="@string/app_name"
+            android:launchMode="singleTask"
+            android:minWidth="300dp"
+            android:minHeight="300dp"
+            android:windowSoftInputMode="stateHidden" />
         <activity
             android:name=".ui.ScanActivity"
             android:screenOrientation="portrait"

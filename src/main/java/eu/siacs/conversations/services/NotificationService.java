@@ -44,7 +44,7 @@ import eu.siacs.conversations.entities.Contact;
 import eu.siacs.conversations.entities.Conversation;
 import eu.siacs.conversations.entities.Message;
 import eu.siacs.conversations.persistance.FileBackend;
-import eu.siacs.conversations.ui.ConversationActivity;
+import eu.siacs.conversations.ui.ConversationsActivity;
 import eu.siacs.conversations.ui.ManageAccountActivity;
 import eu.siacs.conversations.ui.TimePreference;
 import eu.siacs.conversations.utils.GeoHelper;
@@ -615,11 +615,11 @@ public class NotificationService {
 	}
 
 	private PendingIntent createContentIntent(final String conversationUuid, final String downloadMessageUuid) {
-		final Intent viewConversationIntent = new Intent(mXmppConnectionService,ConversationActivity.class);
-		viewConversationIntent.setAction(ConversationActivity.ACTION_VIEW_CONVERSATION);
-		viewConversationIntent.putExtra(ConversationActivity.EXTRA_CONVERSATION, conversationUuid);
+		final Intent viewConversationIntent = new Intent(mXmppConnectionService,ConversationsActivity.class);
+		viewConversationIntent.setAction(ConversationsActivity.ACTION_VIEW_CONVERSATION);
+		viewConversationIntent.putExtra(ConversationsActivity.EXTRA_CONVERSATION, conversationUuid);
 		if (downloadMessageUuid != null) {
-			viewConversationIntent.putExtra(ConversationActivity.EXTRA_DOWNLOAD_UUID, downloadMessageUuid);
+			viewConversationIntent.putExtra(ConversationsActivity.EXTRA_DOWNLOAD_UUID, downloadMessageUuid);
 			return PendingIntent.getActivity(mXmppConnectionService,
 					generateRequestCode(conversationUuid, 8),
 					viewConversationIntent,
@@ -767,7 +767,7 @@ public class NotificationService {
 	}
 
 	private PendingIntent createOpenConversationsIntent() {
-		return PendingIntent.getActivity(mXmppConnectionService, 0, new Intent(mXmppConnectionService, ConversationActivity.class), 0);
+		return PendingIntent.getActivity(mXmppConnectionService, 0, new Intent(mXmppConnectionService, ConversationsActivity.class), 0);
 	}
 
 	public void updateErrorNotification() {
