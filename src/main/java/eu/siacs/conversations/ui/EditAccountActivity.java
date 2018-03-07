@@ -639,7 +639,7 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
 				changePassword.setVisible(false);
 			}
 			mamPrefs.setVisible(mAccount.getXmppConnection().getFeatures().mam());
-			changePresence.setVisible(true);
+			changePresence.setVisible(!mInitMode);
 		} else {
 			showBlocklist.setVisible(false);
 			showMoreInfo.setVisible(false);
