@@ -29,7 +29,9 @@
 
 package eu.siacs.conversations.utils;
 
+import android.annotation.TargetApi;
 import android.content.Context;
+import android.os.Build;
 import android.support.annotation.ColorInt;
 import android.text.Spannable;
 import android.text.SpannableString;
@@ -53,10 +55,10 @@ import rocks.xmpp.addr.Jid;
 
 public class IrregularUnicodeBlockDetector {
 
-	private static final Map<Character.UnicodeBlock,Character.UnicodeBlock> NORMALIZATION_MAP;
+	private static final Map<Character.UnicodeBlock, Character.UnicodeBlock> NORMALIZATION_MAP;
 
 	static {
-		Map<Character.UnicodeBlock,Character.UnicodeBlock> temp = new HashMap<>();
+		Map<Character.UnicodeBlock, Character.UnicodeBlock> temp = new HashMap<>();
 		temp.put(Character.UnicodeBlock.LATIN_1_SUPPLEMENT, Character.UnicodeBlock.BASIC_LATIN);
 		NORMALIZATION_MAP = Collections.unmodifiableMap(temp);
 	}
@@ -98,7 +100,7 @@ public class IrregularUnicodeBlockDetector {
 		return builder;
 	}
 
-	private static Map<Character.UnicodeBlock, List<String>> map(Jid jid) {
+	private static Map<Character.UnicodeBlock, List<String>> mapCompat(Jid jid) {
 		Map<Character.UnicodeBlock, List<String>> map = new HashMap<>();
 		String local = jid.getLocal();
 		final int length = local.length();
@@ -118,16 +120,48 @@ public class IrregularUnicodeBlockDetector {
 		return map;
 	}
 
-	private static Set<String> eliminateFirstAndGetCodePoints(Map<Character.UnicodeBlock, List<String>> map) {
-		Character.UnicodeBlock block = Character.UnicodeBlock.BASIC_LATIN;
+	@TargetApi(Build.VERSION_CODES.N)
+	private static Map<Character.UnicodeScript, List<String>> map(Jid jid) {
+		Map<Character.UnicodeScript, List<String>> map = new HashMap<>();
+		String local = jid.getLocal();
+		final int length = local.length();
+		for (int offset = 0; offset < length; ) {
+			final int codePoint = local.codePointAt(offset);
+			Character.UnicodeScript script = Character.UnicodeScript.of(codePoint);
+			if (script != Character.UnicodeScript.COMMON) {
+				List<String> codePoints;
+				if (map.containsKey(script)) {
+					codePoints = map.get(script);
+				} else {
+					codePoints = new ArrayList<>();
+					map.put(script, codePoints);
+				}
+				codePoints.add(String.copyValueOf(Character.toChars(codePoint)));
+			}
+			offset += Character.charCount(codePoint);
+		}
+		return map;
+	}
+
+	private static Set<String> eliminateFirstAndGetCodePointsCompat(Map<Character.UnicodeBlock, List<String>> map) {
+		return eliminateFirstAndGetCodePoints(map, Character.UnicodeBlock.BASIC_LATIN);
+	}
+
+	@TargetApi(Build.VERSION_CODES.N)
+	private static Set<String> eliminateFirstAndGetCodePoints(Map<Character.UnicodeScript, List<String>> map) {
+		return eliminateFirstAndGetCodePoints(map, Character.UnicodeScript.COMMON);
+	}
+
+	private static <T> Set<String> eliminateFirstAndGetCodePoints(Map<T, List<String>> map, T defaultPick) {
+		T pick = defaultPick;
 		int size = 0;
-		for (Map.Entry<Character.UnicodeBlock, List<String>> entry : map.entrySet()) {
+		for (Map.Entry<T, List<String>> entry : map.entrySet()) {
 			if (entry.getValue().size() > size) {
 				size = entry.getValue().size();
-				block = entry.getKey();
+				pick = entry.getKey();
 			}
 		}
-		map.remove(block);
+		map.remove(pick);
 		Set<String> all = new HashSet<>();
 		for (List<String> codePoints : map.values()) {
 			all.addAll(codePoints);
@@ -141,7 +175,13 @@ public class IrregularUnicodeBlockDetector {
 			if (pattern != null) {
 				return pattern;
 			}
-			pattern = create(eliminateFirstAndGetCodePoints(map(jid)));
+			Set<String> codePoints;
+			if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N) {
+				codePoints = eliminateFirstAndGetCodePointsCompat(mapCompat(jid));
+			} else {
+				codePoints = eliminateFirstAndGetCodePoints(map(jid));
+			}
+			pattern = create(codePoints);
 			CACHE.put(jid, pattern);
 			return pattern;
 		}
