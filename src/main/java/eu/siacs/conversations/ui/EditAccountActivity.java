@@ -93,16 +93,6 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
 	private TextView getmDisableOsOptimizationsBody;
 	private TableLayout mMoreTable;
 
-	private TextView mServerInfoSm;
-	private TextView mServerInfoRosterVersion;
-	private TextView mServerInfoCarbons;
-	private TextView mServerInfoMam;
-	private TextView mServerInfoCSI;
-	private TextView mServerInfoBlocking;
-	private TextView mServerInfoPep;
-	private TextView mServerInfoHttpUpload;
-	private TextView mServerInfoPush;
-	private TextView mSessionEst;
 	private TextView mAxolotlFingerprint;
 	private TextView mPgpFingerprint;
 	private TextView mOwnFingerprintDesc;
@@ -281,7 +271,6 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
 		}
 	};
 	private Toast mFetchingMamPrefsToast;
-	private TableRow mPushRow;
 	private String mSavedInstanceAccount;
 	private boolean mSavedInstanceInit = false;
 	private Button mClearDevicesButton;
@@ -559,17 +548,6 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
 		this.mRegisterNew = (CheckBox) findViewById(R.id.account_register_new);
 		this.mDisableOsOptimizationsButton = (Button) findViewById(R.id.os_optimization_disable);
 		this.getmDisableOsOptimizationsBody = (TextView) findViewById(R.id.os_optimization_body);
-		this.mSessionEst = (TextView) findViewById(R.id.session_est);
-		this.mServerInfoRosterVersion = (TextView) findViewById(R.id.server_info_roster_version);
-		this.mServerInfoCarbons = (TextView) findViewById(R.id.server_info_carbons);
-		this.mServerInfoMam = (TextView) findViewById(R.id.server_info_mam);
-		this.mServerInfoCSI = (TextView) findViewById(R.id.server_info_csi);
-		this.mServerInfoBlocking = (TextView) findViewById(R.id.server_info_blocking);
-		this.mServerInfoSm = (TextView) findViewById(R.id.server_info_sm);
-		this.mServerInfoPep = (TextView) findViewById(R.id.server_info_pep);
-		this.mServerInfoHttpUpload = (TextView) findViewById(R.id.server_info_http_upload);
-		this.mPushRow = (TableRow) findViewById(R.id.push_row);
-		this.mServerInfoPush = (TextView) findViewById(R.id.server_info_push);
 		this.mPgpFingerprintBox = (RelativeLayout) findViewById(R.id.pgp_fingerprint_box);
 		this.mPgpFingerprint = (TextView) findViewById(R.id.pgp_fingerprint);
 		this.getmPgpFingerprintDesc = (TextView) findViewById(R.id.pgp_fingerprint_desc);
@@ -979,12 +957,17 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
 		} else {
 			this.mAvatar.setVisibility(View.GONE);
 		}
-		if (this.mAccount.isOptionSet(Account.OPTION_REGISTER)) {
-			this.mRegisterNew.setVisibility(View.VISIBLE);
-			this.mRegisterNew.setChecked(true);
+		this.binding.accountRegisterNew.setChecked(this.mAccount.isOptionSet(Account.OPTION_REGISTER));
+		if (this.mAccount.isOptionSet(Account.OPTION_MAGIC_CREATE)) {
+			if (this.mAccount.isOptionSet(Account.OPTION_REGISTER)) {
+				ActionBar actionBar = getSupportActionBar();
+				if (actionBar != null) {
+					actionBar.setTitle(R.string.create_account);
+				}
+			}
+			this.binding.accountRegisterNew.setVisibility(View.GONE);
 		} else {
-			this.mRegisterNew.setVisibility(View.GONE);
-			this.mRegisterNew.setChecked(false);
+			this.binding.accountRegisterNew.setVisibility(mInitMode ? View.VISIBLE : View.GONE);
 		}
 		if (this.mAccount.isOnlineAndConnected() && !this.mFetchingAvatar) {
 			Features features = this.mAccount.getXmppConnection().getFeatures();
@@ -992,63 +975,62 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
 			boolean showBatteryWarning = !xmppConnectionService.getPushManagementService().available(mAccount) && isOptimizingBattery();
 			boolean showDataSaverWarning = isAffectedByDataSaver();
 			showOsOptimizationWarning(showBatteryWarning, showDataSaverWarning);
-			this.mSessionEst.setText(UIHelper.readableTimeDifferenceFull(this, this.mAccount.getXmppConnection()
+			this.binding.sessionEst.setText(UIHelper.readableTimeDifferenceFull(this, this.mAccount.getXmppConnection()
 					.getLastSessionEstablished()));
 			if (features.rosterVersioning()) {
-				this.mServerInfoRosterVersion.setText(R.string.server_info_available);
+				this.binding.serverInfoRosterVersion.setText(R.string.server_info_available);
 			} else {
-				this.mServerInfoRosterVersion.setText(R.string.server_info_unavailable);
+				this.binding.serverInfoRosterVersion.setText(R.string.server_info_unavailable);
 			}
 			if (features.carbons()) {
-				this.mServerInfoCarbons.setText(R.string.server_info_available);
+				this.binding.serverInfoCarbons.setText(R.string.server_info_available);
 			} else {
-				this.mServerInfoCarbons
-						.setText(R.string.server_info_unavailable);
+				this.binding.serverInfoCarbons.setText(R.string.server_info_unavailable);
 			}
 			if (features.mam()) {
-				this.mServerInfoMam.setText(R.string.server_info_available);
+				this.binding.serverInfoMam.setText(R.string.server_info_available);
 			} else {
-				this.mServerInfoMam.setText(R.string.server_info_unavailable);
+				this.binding.serverInfoMam.setText(R.string.server_info_unavailable);
 			}
 			if (features.csi()) {
-				this.mServerInfoCSI.setText(R.string.server_info_available);
+				this.binding.serverInfoCsi.setText(R.string.server_info_available);
 			} else {
-				this.mServerInfoCSI.setText(R.string.server_info_unavailable);
+				this.binding.serverInfoCsi.setText(R.string.server_info_unavailable);
 			}
 			if (features.blocking()) {
-				this.mServerInfoBlocking.setText(R.string.server_info_available);
+				this.binding.serverInfoBlocking.setText(R.string.server_info_available);
 			} else {
-				this.mServerInfoBlocking.setText(R.string.server_info_unavailable);
+				this.binding.serverInfoBlocking.setText(R.string.server_info_unavailable);
 			}
 			if (features.sm()) {
-				this.mServerInfoSm.setText(R.string.server_info_available);
+				this.binding.serverInfoSm.setText(R.string.server_info_available);
 			} else {
-				this.mServerInfoSm.setText(R.string.server_info_unavailable);
+				this.binding.serverInfoSm.setText(R.string.server_info_unavailable);
 			}
 			if (features.pep()) {
 				AxolotlService axolotlService = this.mAccount.getAxolotlService();
 				if (axolotlService != null && axolotlService.isPepBroken()) {
-					this.mServerInfoPep.setText(R.string.server_info_broken);
+					this.binding.serverInfoPep.setText(R.string.server_info_broken);
 				} else if (features.pepPublishOptions() || features.pepOmemoWhitelisted()) {
-					this.mServerInfoPep.setText(R.string.server_info_available);
+					this.binding.serverInfoPep.setText(R.string.server_info_available);
 				} else {
-					this.mServerInfoPep.setText(R.string.server_info_partial);
+					this.binding.serverInfoPep.setText(R.string.server_info_partial);
 				}
 			} else {
-				this.mServerInfoPep.setText(R.string.server_info_unavailable);
+				this.binding.serverInfoPep.setText(R.string.server_info_unavailable);
 			}
 			if (features.httpUpload(0)) {
-				this.mServerInfoHttpUpload.setText(R.string.server_info_available);
+				this.binding.serverInfoHttpUpload.setText(R.string.server_info_available);
 			} else {
-				this.mServerInfoHttpUpload.setText(R.string.server_info_unavailable);
+				this.binding.serverInfoHttpUpload.setText(R.string.server_info_unavailable);
 			}
 
-			this.mPushRow.setVisibility(xmppConnectionService.getPushManagementService().isStub() ? View.GONE : View.VISIBLE);
+			this.binding.pushRow.setVisibility(xmppConnectionService.getPushManagementService().isStub() ? View.GONE : View.VISIBLE);
 
 			if (xmppConnectionService.getPushManagementService().available(mAccount)) {
-				this.mServerInfoPush.setText(R.string.server_info_available);
+				this.binding.serverInfoPush.setText(R.string.server_info_available);
 			} else {
-				this.mServerInfoPush.setText(R.string.server_info_unavailable);
+				this.binding.serverInfoPush.setText(R.string.server_info_unavailable);
 			}
 			final long pgpKeyId = this.mAccount.getPgpId();
 			if (pgpKeyId != 0 && Config.supportOpenPgp()) {
