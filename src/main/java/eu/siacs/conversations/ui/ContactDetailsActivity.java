@@ -38,6 +38,7 @@ import eu.siacs.conversations.entities.Contact;
 import eu.siacs.conversations.entities.ListItem;
 import eu.siacs.conversations.services.XmppConnectionService.OnAccountUpdate;
 import eu.siacs.conversations.services.XmppConnectionService.OnRosterUpdate;
+import eu.siacs.conversations.utils.IrregularUnicodeBlockDetector;
 import eu.siacs.conversations.utils.UIHelper;
 import eu.siacs.conversations.utils.XmppUri;
 import eu.siacs.conversations.xml.Namespace;
@@ -129,8 +130,7 @@ public class ContactDetailsActivity extends OmemoActivity implements OnAccountUp
 				AlertDialog.Builder builder = new AlertDialog.Builder(
 						ContactDetailsActivity.this);
 				builder.setTitle(getString(R.string.action_add_phone_book));
-				builder.setMessage(getString(R.string.add_phone_book_text,
-						contact.getDisplayJid()));
+				builder.setMessage(getString(R.string.add_phone_book_text, contact.getJid().toString()));
 				builder.setNegativeButton(getString(R.string.cancel), null);
 				builder.setPositiveButton(getString(R.string.add), addToPhonebook);
 				builder.create().show();
@@ -235,9 +235,7 @@ public class ContactDetailsActivity extends OmemoActivity implements OnAccountUp
 				break;
 			case R.id.action_delete_contact:
 				builder.setTitle(getString(R.string.action_delete_contact))
-					.setMessage(
-							getString(R.string.remove_contact_text,
-								contact.getDisplayJid()))
+					.setMessage(getString(R.string.remove_contact_text, contact.getJid().toString()))
 					.setPositiveButton(getString(R.string.delete),
 							removeFromRoster).create().show();
 				break;
@@ -386,12 +384,7 @@ public class ContactDetailsActivity extends OmemoActivity implements OnAccountUp
 			}
 		}
 
-		if (contact.getPresences().size() > 1) {
-			binding.detailsContactjid.setText(contact.getDisplayJid() + " ("
-					+ contact.getPresences().size() + ")");
-		} else {
-			binding.detailsContactjid.setText(contact.getDisplayJid());
-		}
+		binding.detailsContactjid.setText(IrregularUnicodeBlockDetector.style(this,contact.getJid()));
 		String account;
 		if (Config.DOMAIN_LOCK != null) {
 			account = contact.getAccount().getJid().getLocal();

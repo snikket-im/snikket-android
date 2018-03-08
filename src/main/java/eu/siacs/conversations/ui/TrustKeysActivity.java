@@ -35,6 +35,7 @@ import eu.siacs.conversations.databinding.KeysCardBinding;
 import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.entities.Conversation;
 import eu.siacs.conversations.utils.CryptoHelper;
+import eu.siacs.conversations.utils.IrregularUnicodeBlockDetector;
 import eu.siacs.conversations.utils.XmppUri;
 import eu.siacs.conversations.xmpp.OnKeyStatusUpdated;
 import rocks.xmpp.addr.Jid;
@@ -195,9 +196,8 @@ public class TrustKeysActivity extends OmemoActivity implements OnKeyStatusUpdat
 			for (Map.Entry<Jid, Map<String, Boolean>> entry : foreignKeysToTrust.entrySet()) {
 				hasForeignKeys = true;
 				KeysCardBinding keysCardBinding =  DataBindingUtil.inflate(getLayoutInflater(),R.layout.keys_card, binding.foreignKeys,false);
-				//final LinearLayout layout = (LinearLayout) getLayoutInflater().inflate(R.layout.keys_card, foreignKeys, false);
 				final Jid jid = entry.getKey();
-				keysCardBinding.foreignKeysTitle.setText(jid.toString());
+				keysCardBinding.foreignKeysTitle.setText(IrregularUnicodeBlockDetector.style(this,jid));
 				keysCardBinding.foreignKeysTitle.setOnClickListener(v -> switchToContactDetails(mAccount.getRoster().getContact(jid)));
 				final Map<String, Boolean> fingerprints = entry.getValue();
 				for (final String fingerprint : fingerprints.keySet()) {
@@ -397,7 +397,7 @@ public class TrustKeysActivity extends OmemoActivity implements OnKeyStatusUpdat
 					fingerprint,
 					FingerprintStatus.createActive(ownKeysToTrust.get(fingerprint)));
 		}
-		List<Jid> acceptedTargets = mConversation == null ? new ArrayList<Jid>() : mConversation.getAcceptedCryptoTargets();
+		List<Jid> acceptedTargets = mConversation == null ? new ArrayList<>() : mConversation.getAcceptedCryptoTargets();
 		synchronized (this.foreignKeysToTrust) {
 			for (Map.Entry<Jid, Map<String, Boolean>> entry : foreignKeysToTrust.entrySet()) {
 				Jid jid = entry.getKey();

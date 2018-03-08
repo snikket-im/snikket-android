@@ -64,16 +64,6 @@ public class Bookmark extends Element implements ListItem {
 	}
 
 	@Override
-	public String getDisplayJid() {
-		Jid jid = getJid();
-		if (jid != null) {
-			return jid.toString();
-		} else {
-			return getAttribute("jid"); //fallback if jid wasn't parsable
-		}
-	}
-
-	@Override
 	public Jid getJid() {
 		return this.getAttributeAsJid("jid");
 	}

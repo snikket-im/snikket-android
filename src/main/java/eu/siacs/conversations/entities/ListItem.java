@@ -10,8 +10,6 @@ import rocks.xmpp.addr.Jid;
 public interface ListItem extends Comparable<ListItem> {
 	String getDisplayName();
 
-	String getDisplayJid();
-
 	Jid getJid();
 
 	List<Tag> getTags(Context context);

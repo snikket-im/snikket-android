@@ -127,15 +127,6 @@ public class Contact implements ListItem, Blockable {
 		}
 	}
 
-	@Override
-	public String getDisplayJid() {
-		if (jid != null) {
-			return jid.toString();
-		} else {
-			return null;
-		}
-	}
-
 	public String getProfilePhoto() {
 		return this.photoUri;
 	}

@@ -1,6 +1,5 @@
 package eu.siacs.conversations.ui.adapter;
 
-import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.databinding.DataBindingUtil;
@@ -27,8 +26,11 @@ import eu.siacs.conversations.databinding.ContactBinding;
 import eu.siacs.conversations.entities.ListItem;
 import eu.siacs.conversations.ui.SettingsActivity;
 import eu.siacs.conversations.ui.XmppActivity;
+import eu.siacs.conversations.ui.util.Color;
 import eu.siacs.conversations.utils.EmojiWrapper;
+import eu.siacs.conversations.utils.IrregularUnicodeBlockDetector;
 import eu.siacs.conversations.utils.UIHelper;
+import rocks.xmpp.addr.Jid;
 
 public class ListItemAdapter extends ArrayAdapter<ListItem> {
 
@@ -108,10 +110,10 @@ public class ListItemAdapter extends ArrayAdapter<ListItem> {
 				viewHolder.tags.addView(tv);
 			}
 		}
-		final String jid = item.getDisplayJid();
+		final Jid jid = item.getJid();
 		if (jid != null) {
 			viewHolder.jid.setVisibility(View.VISIBLE);
-			viewHolder.jid.setText(jid);
+			viewHolder.jid.setText(IrregularUnicodeBlockDetector.style(activity, jid));
 		} else {
 			viewHolder.jid.setVisibility(View.GONE);
 		}
