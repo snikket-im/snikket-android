@@ -38,7 +38,7 @@ import eu.siacs.conversations.entities.Contact;
 import eu.siacs.conversations.entities.ListItem;
 import eu.siacs.conversations.services.XmppConnectionService.OnAccountUpdate;
 import eu.siacs.conversations.services.XmppConnectionService.OnRosterUpdate;
-import eu.siacs.conversations.utils.IrregularUnicodeBlockDetector;
+import eu.siacs.conversations.utils.IrregularUnicodeDetector;
 import eu.siacs.conversations.utils.UIHelper;
 import eu.siacs.conversations.utils.XmppUri;
 import eu.siacs.conversations.xml.Namespace;
@@ -384,7 +384,7 @@ public class ContactDetailsActivity extends OmemoActivity implements OnAccountUp
 			}
 		}
 
-		binding.detailsContactjid.setText(IrregularUnicodeBlockDetector.style(this,contact.getJid()));
+		binding.detailsContactjid.setText(IrregularUnicodeDetector.style(this,contact.getJid()));
 		String account;
 		if (Config.DOMAIN_LOCK != null) {
 			account = contact.getAccount().getJid().getLocal();

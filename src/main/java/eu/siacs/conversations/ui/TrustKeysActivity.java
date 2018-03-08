@@ -10,16 +10,12 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.Button;
 import android.widget.CompoundButton;
-import android.widget.LinearLayout;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import org.whispersystems.libsignal.IdentityKey;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -35,7 +31,7 @@ import eu.siacs.conversations.databinding.KeysCardBinding;
 import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.entities.Conversation;
 import eu.siacs.conversations.utils.CryptoHelper;
-import eu.siacs.conversations.utils.IrregularUnicodeBlockDetector;
+import eu.siacs.conversations.utils.IrregularUnicodeDetector;
 import eu.siacs.conversations.utils.XmppUri;
 import eu.siacs.conversations.xmpp.OnKeyStatusUpdated;
 import rocks.xmpp.addr.Jid;
@@ -197,7 +193,7 @@ public class TrustKeysActivity extends OmemoActivity implements OnKeyStatusUpdat
 				hasForeignKeys = true;
 				KeysCardBinding keysCardBinding =  DataBindingUtil.inflate(getLayoutInflater(),R.layout.keys_card, binding.foreignKeys,false);
 				final Jid jid = entry.getKey();
-				keysCardBinding.foreignKeysTitle.setText(IrregularUnicodeBlockDetector.style(this,jid));
+				keysCardBinding.foreignKeysTitle.setText(IrregularUnicodeDetector.style(this,jid));
 				keysCardBinding.foreignKeysTitle.setOnClickListener(v -> switchToContactDetails(mAccount.getRoster().getContact(jid)));
 				final Map<String, Boolean> fingerprints = entry.getValue();
 				for (final String fingerprint : fingerprints.keySet()) {

@@ -53,9 +53,10 @@ import eu.siacs.conversations.R;
 import eu.siacs.conversations.ui.util.Color;
 import rocks.xmpp.addr.Jid;
 
-public class IrregularUnicodeBlockDetector {
+public class IrregularUnicodeDetector {
 
 	private static final Map<Character.UnicodeBlock, Character.UnicodeBlock> NORMALIZATION_MAP;
+	private static final LruCache<Jid, PatternTuple> CACHE = new LruCache<>(100);
 
 	static {
 		Map<Character.UnicodeBlock, Character.UnicodeBlock> temp = new HashMap<>();
@@ -71,27 +72,31 @@ public class IrregularUnicodeBlockDetector {
 		}
 	}
 
-	private static final LruCache<Jid, Pattern> CACHE = new LruCache<>(100);
-
 	public static Spannable style(Context context, Jid jid) {
 		return style(jid, Color.get(context, R.attr.color_warning));
 	}
 
 	private static Spannable style(Jid jid, @ColorInt int color) {
+		PatternTuple patternTuple = find(jid);
 		SpannableStringBuilder builder = new SpannableStringBuilder();
-		if (jid.getLocal() != null) {
+		if (jid.getLocal() != null && patternTuple.local != null) {
 			SpannableString local = new SpannableString(jid.getLocal());
-			Matcher matcher = find(jid).matcher(local);
-			while (matcher.find()) {
-				if (matcher.start() < matcher.end()) {
-					local.setSpan(new ForegroundColorSpan(color), matcher.start(), matcher.end(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-				}
-			}
+			colorize(local, patternTuple.local, color);
 			builder.append(local);
 			builder.append('@');
 		}
 		if (jid.getDomain() != null) {
-			builder.append(jid.getDomain());
+			int i = jid.getDomain().lastIndexOf('.');
+			if (i != -1) {
+				String second = jid.getDomain().substring(0, i);
+				String top = jid.getDomain().substring(i, jid.getDomain().length());
+				SpannableString secondSpannableString = new SpannableString(second);
+				colorize(secondSpannableString, patternTuple.domain, color);
+				builder.append(secondSpannableString);
+				builder.append(top);
+			} else {
+				builder.append(jid.getDomain());
+			}
 		}
 		if (builder.length() != 0 && jid.getResource() != null) {
 			builder.append('/');
@@ -100,12 +105,20 @@ public class IrregularUnicodeBlockDetector {
 		return builder;
 	}
 
-	private static Map<Character.UnicodeBlock, List<String>> mapCompat(Jid jid) {
+	private static void colorize(SpannableString spannableString, Pattern pattern, @ColorInt int color) {
+		Matcher matcher = pattern.matcher(spannableString);
+		while (matcher.find()) {
+			if (matcher.start() < matcher.end()) {
+				spannableString.setSpan(new ForegroundColorSpan(color), matcher.start(), matcher.end(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+			}
+		}
+	}
+
+	private static Map<Character.UnicodeBlock, List<String>> mapCompat(String word) {
 		Map<Character.UnicodeBlock, List<String>> map = new HashMap<>();
-		String local = jid.getLocal();
-		final int length = local.length();
+		final int length = word.length();
 		for (int offset = 0; offset < length; ) {
-			final int codePoint = local.codePointAt(offset);
+			final int codePoint = word.codePointAt(offset);
 			Character.UnicodeBlock block = normalize(Character.UnicodeBlock.of(codePoint));
 			List<String> codePoints;
 			if (map.containsKey(block)) {
@@ -121,12 +134,11 @@ public class IrregularUnicodeBlockDetector {
 	}
 
 	@TargetApi(Build.VERSION_CODES.N)
-	private static Map<Character.UnicodeScript, List<String>> map(Jid jid) {
+	private static Map<Character.UnicodeScript, List<String>> map(String word) {
 		Map<Character.UnicodeScript, List<String>> map = new HashMap<>();
-		String local = jid.getLocal();
-		final int length = local.length();
+		final int length = word.length();
 		for (int offset = 0; offset < length; ) {
-			final int codePoint = local.codePointAt(offset);
+			final int codePoint = word.codePointAt(offset);
 			Character.UnicodeScript script = Character.UnicodeScript.of(codePoint);
 			if (script != Character.UnicodeScript.COMMON) {
 				List<String> codePoints;
@@ -169,19 +181,24 @@ public class IrregularUnicodeBlockDetector {
 		return all;
 	}
 
-	private static Pattern find(Jid jid) {
+	private static Set<String> findIrregularCodePoints(String word) {
+		Set<String> codePoints;
+		if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N) {
+			codePoints = eliminateFirstAndGetCodePointsCompat(mapCompat(word));
+		} else {
+			codePoints = eliminateFirstAndGetCodePoints(map(word));
+		}
+		return codePoints;
+	}
+
+	private static PatternTuple find(Jid jid) {
 		synchronized (CACHE) {
-			Pattern pattern = CACHE.get(jid);
+			PatternTuple pattern = CACHE.get(jid);
 			if (pattern != null) {
 				return pattern;
 			}
-			Set<String> codePoints;
-			if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N) {
-				codePoints = eliminateFirstAndGetCodePointsCompat(mapCompat(jid));
-			} else {
-				codePoints = eliminateFirstAndGetCodePoints(map(jid));
-			}
-			pattern = create(codePoints);
+			;
+			pattern = PatternTuple.of(jid);
 			CACHE.put(jid, pattern);
 			return pattern;
 		}
@@ -196,5 +213,38 @@ public class IrregularUnicodeBlockDetector {
 			pattern.append(Pattern.quote(codePoint));
 		}
 		return Pattern.compile(pattern.toString());
+	}
+
+	private static class PatternTuple {
+		private final Pattern local;
+		private final Pattern domain;
+
+		private PatternTuple(Pattern local, Pattern domain) {
+			this.local = local;
+			this.domain = domain;
+		}
+
+		private static PatternTuple of(Jid jid) {
+			final Pattern localPattern;
+			if (jid.getLocal() != null) {
+				localPattern = create(findIrregularCodePoints(jid.getLocal()));
+			} else {
+				localPattern = null;
+			}
+			String domain = jid.getDomain();
+			final Pattern domainPattern;
+			if (domain != null) {
+				int i = domain.lastIndexOf('.');
+				if (i != -1) {
+					String secondLevel = domain.substring(0, i);
+					domainPattern = create(findIrregularCodePoints(secondLevel));
+				} else {
+					domainPattern = null;
+				}
+			} else {
+				domainPattern = null;
+			}
+			return new PatternTuple(localPattern, domainPattern);
+		}
 	}
 }

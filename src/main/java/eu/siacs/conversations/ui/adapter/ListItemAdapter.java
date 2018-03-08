@@ -26,9 +26,8 @@ import eu.siacs.conversations.databinding.ContactBinding;
 import eu.siacs.conversations.entities.ListItem;
 import eu.siacs.conversations.ui.SettingsActivity;
 import eu.siacs.conversations.ui.XmppActivity;
-import eu.siacs.conversations.ui.util.Color;
 import eu.siacs.conversations.utils.EmojiWrapper;
-import eu.siacs.conversations.utils.IrregularUnicodeBlockDetector;
+import eu.siacs.conversations.utils.IrregularUnicodeDetector;
 import eu.siacs.conversations.utils.UIHelper;
 import rocks.xmpp.addr.Jid;
 
@@ -113,7 +112,7 @@ public class ListItemAdapter extends ArrayAdapter<ListItem> {
 		final Jid jid = item.getJid();
 		if (jid != null) {
 			viewHolder.jid.setVisibility(View.VISIBLE);
-			viewHolder.jid.setText(IrregularUnicodeBlockDetector.style(activity, jid));
+			viewHolder.jid.setText(IrregularUnicodeDetector.style(activity, jid));
 		} else {
 			viewHolder.jid.setVisibility(View.GONE);
 		}
