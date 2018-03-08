@@ -1781,6 +1781,7 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
 		if (this.activity == null || this.binding == null) {
 			return false;
 		}
+		stopScrolling();
 		Log.d(Config.LOGTAG, "reInit(hasExtras=" + Boolean.toString(hasExtras) + ")");
 
 		if (this.conversation.isRead() && hasExtras) {
@@ -2157,7 +2158,7 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
 		}
 	}
 
-	public void stopScrolling() {
+	private void stopScrolling() {
 		long now = SystemClock.uptimeMillis();
 		MotionEvent cancel = MotionEvent.obtain(now, now, MotionEvent.ACTION_CANCEL, 0, 0, 0);
 		binding.messagesView.dispatchTouchEvent(cancel);
