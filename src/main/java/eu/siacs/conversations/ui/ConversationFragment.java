@@ -134,15 +134,14 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
 	private final PendingItem<Bundle> pendingExtras = new PendingItem<>();
 	private final PendingItem<Uri> pendingTakePhotoUri = new PendingItem<>();
 	private final PendingItem<ScrollState> pendingScrollState = new PendingItem<>();
+	private final PendingItem<Message> pendingMessage = new PendingItem<>();
 	public Uri mPendingEditorContent = null;
 	protected MessageAdapter messageListAdapter;
 	private Conversation conversation;
 	private FragmentConversationBinding binding;
 	private Toast messageLoaderToast;
 	private ConversationsActivity activity;
-
 	private boolean reInitRequiredOnStart = true;
-
 	private OnClickListener clickToMuc = new OnClickListener() {
 
 		@Override
@@ -258,7 +257,6 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
 			}
 		}
 	};
-
 	private EditMessage.OnCommitContentListener mEditorContentListener = new EditMessage.OnCommitContentListener() {
 		@Override
 		public boolean onCommitContent(InputContentInfoCompat inputContentInfo, int flags, Bundle opts, String[] contentMimeTypes) {
@@ -328,7 +326,6 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
 			}
 		}
 	};
-
 	protected OnClickListener clickToDecryptListener = new OnClickListener() {
 
 		@Override
@@ -407,8 +404,6 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
 	private int lastCompletionCursor;
 	private boolean firstWord = false;
 	private Message mPendingDownloadableMessage;
-	private final PendingItem<Message> pendingMessage = new PendingItem<>();
-
 
 	private static ConversationFragment findConversationFragment(Activity activity) {
 		Fragment fragment = activity.getFragmentManager().findFragmentById(R.id.main_fragment);
@@ -472,6 +467,24 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
 			return conversation;
 		}
 		return getConversation(activity, R.id.main_fragment);
+	}
+
+	private static boolean allGranted(int[] grantResults) {
+		for (int grantResult : grantResults) {
+			if (grantResult != PackageManager.PERMISSION_GRANTED) {
+				return false;
+			}
+		}
+		return true;
+	}
+
+	private static String getFirstDenied(int[] grantResults, String[] permissions) {
+		for (int i = 0; i < grantResults.length; ++i) {
+			if (grantResults[i] == PackageManager.PERMISSION_DENIED) {
+				return permissions[i];
+			}
+		}
+		return null;
 	}
 
 	private int getIndexOf(String uuid, List<Message> messages) {
@@ -1286,26 +1299,8 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
 				} else {
 					res = R.string.no_storage_permission;
 				}
-				Toast.makeText(getActivity(),res, Toast.LENGTH_SHORT).show();
+				Toast.makeText(getActivity(), res, Toast.LENGTH_SHORT).show();
 			}
-	}
-
-	private static boolean allGranted(int[] grantResults) {
-		for(int grantResult : grantResults) {
-			if (grantResult != PackageManager.PERMISSION_GRANTED) {
-				return false;
-			}
-		}
-		return true;
-	}
-
-	private static String getFirstDenied(int[] grantResults, String[] permissions) {
-		for(int i = 0; i < grantResults.length; ++i) {
-			if (grantResults[i] == PackageManager.PERMISSION_DENIED) {
-				return permissions[i];
-			}
-		}
-		return null;
 	}
 
 	public void startDownloadable(Message message) {
@@ -1349,11 +1344,11 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
 		builder.setTitle(R.string.disable_notifications);
 		final int[] durations = getResources().getIntArray(R.array.mute_options_durations);
 		final CharSequence[] labels = new CharSequence[durations.length];
-		for(int i = 0; i < durations.length; ++i) {
+		for (int i = 0; i < durations.length; ++i) {
 			if (durations[i] == -1) {
 				labels[i] = getString(R.string.until_further_notice);
 			} else {
-				labels[i] = TimeframeUtils.resolve(activity,1000L * durations[i]);
+				labels[i] = TimeframeUtils.resolve(activity, 1000L * durations[i]);
 			}
 		}
 		builder.setItems(labels, (dialog, which) -> {
@@ -1587,7 +1582,8 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
 		new Handler().post(() -> {
 			int size = messageList.size();
 			this.binding.messagesView.setSelection(size - 1);
-		});	}
+		});
+	}
 
 	private void copyUrl(Message message) {
 		final String url;
@@ -1819,7 +1815,7 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
 					int i = getIndexOf(first.getUuid(), this.messageList);
 					pos = i < 0 ? bottom : i;
 				}
-				this.binding.messagesView.post(() -> this.binding.messagesView.setSelection(pos));
+				setSelection(pos);
 			}
 		}
 
@@ -1827,6 +1823,11 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
 		//TODO if we only do this when this fragment is running on main it won't *bing* in tablet layout which might be unnecessary since we can *see* it
 		activity.xmppConnectionService.getNotificationService().setOpenConversation(this.conversation);
 		return true;
+	}
+
+	private void setSelection(int pos) {
+		this.binding.messagesView.setSelection(pos);
+		this.binding.messagesView.post(() -> this.binding.messagesView.setSelection(pos));
 	}
 
 	private boolean scrolledToBottom() {
