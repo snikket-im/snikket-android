@@ -100,8 +100,6 @@
   <string name="no_pgp_keys">Δεν βρέθηκαν κλειδιά OpenPGP</string>
   <string name="contacts_have_no_pgp_keys">Το Conversations αδυνατεί να κρυπτογραφήσει τα μηνύματά σας γιατί οι επαφές σας δεν ανακοινώνουν το δημόσιο κλειδί τους.\n\n<small>Παρακαλώ ζητήστε από τις επαφές σας να εγκαταστήσουν το OpenPGP.</small></string>
   <string name="pref_general">Γενικά</string>
-  <string name="pref_xmpp_resource">πόρος XMPP</string>
-  <string name="pref_xmpp_resource_summary">Το όνομα με το οποίο ταυτοποιείται αυτό το πρόγραμμα-πελάτης</string>
   <string name="pref_accept_files">Αποδοχή αρχείων</string>
   <string name="pref_accept_files_summary">Αυτόματη αποδοχή αρχείων μικρότερα από...</string>
   <string name="pref_attachments">Επισυναπτόμμενα</string>
@@ -127,7 +125,6 @@
   <string name="openpgp_error">Το OpenKeychain ανέφερε κάποιο σφάλμα</string>
   <string name="accept">Αποδοχή</string>
   <string name="error">Έχει συμβεί κάποιο σφάλμα</string>
-  <string name="pref_grant_presence_updates">Χορήγηση ενημερώσεων παρουσίας</string>
   <string name="your_account">Ο λογαριασμός σας</string>
   <string name="send_presence_updates">Αποστολή ενημερώσεων παρουσίας</string>
   <string name="receive_presence_updates">Λήψη ενημερώσεων παρουσίας</string>
@@ -168,7 +165,6 @@
   <string name="unpublish_pgp_message">Είστε σίγουρος ότι θέλετε να αφαιρέσετε το OpenPGP δημόσιο κλειδί σας από την παρούσα ανακοίνωσή σας? 
 Οι επαφές σας δεν θα είναι πλέον δυνατόν να σας στείλουν OpenPGP κρυπτογραφημένα μηνύματα.</string>
   <string name="openpgp_has_been_published">OpenPGP δημόσιο κλειδί έχει δημοσιευτεί</string>
-  <string name="republish_pgp_keys">Θυμηθείτε να ξαναδημοσιεύσετε τα OpenPGP δημόσια κλειδιά σας!</string>
   <string name="mgmt_account_enable">Ενεργοποίηση λογαριασμού</string>
   <string name="mgmt_account_are_you_sure">Είστε βέβαιοι;</string>
   <string name="mgmt_account_delete_confirm_text">Αν διαγράψετε το λογαριαγμό σας, ολόκληρο το ιστορικό συζήτησης θα χαθεί</string>
@@ -273,8 +269,6 @@
   <string name="title_pref_quiet_hours_end_time">Ώρα λήξης</string>
   <string name="title_pref_enable_quiet_hours">Ενεργοποίηση ωρών ησυχίας</string>
   <string name="pref_quiet_hours_summary">Οι ειδοποιήσεις θα σιγαστούν κατά τις ώρες ησυχίας</string>
-  <string name="pref_use_larger_font">Αύξηση μεγέθους γραμματοσειράς</string>
-  <string name="pref_use_larger_font_summary">Χρήση μεγαλύτερου μεγέθους γραμματοσειράς για όλη την εφαρμογή</string>
   <string name="pref_use_send_button_to_indicate_status">Το κουμπί αποστολής υποδηλώνει την κατάσταση</string>
   <string name="pref_use_indicate_received">Αίτηση για αποδείξεις μηνυμάτων</string>
   <string name="pref_use_indicate_received_summary">Τα ληφθέντα μηνύματα θα σημειώνονται με ένα πράσινο τικ, αν αυτό υποστηρίζεται</string>
@@ -356,10 +350,6 @@
   <string name="could_not_change_role">Δεν ήταν δυνατή η αλλαγή ρόλου της επαφής %s</string>
   <string name="non_anonymous">Μη-ανώνυμα</string>
   <string name="never">Ποτέ</string>
-  <string name="thirty_minutes">30 λεπτά</string>
-  <string name="one_hour">1 ώρα</string>
-  <string name="two_hours">2 ώρες</string>
-  <string name="eight_hours">8 ώρες</string>
   <string name="until_further_notice">Μέχρι νεωτέρας</string>
   <string name="pref_enter_is_send">Αποστολή με το πλήκτρο Enter</string>
   <string name="pref_enter_is_send_summary">Χρήση του πλήκτρου Enter για την αποστολή μηνύματος</string>

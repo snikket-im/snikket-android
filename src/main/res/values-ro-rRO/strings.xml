@@ -100,8 +100,6 @@
   <string name="no_pgp_keys">Nu am găsit chei OpenPGP</string>
   <string name="contacts_have_no_pgp_keys">Conversations nu poate cripta mesajele tale către contactele tale care nu își anunță cheia publică.\n\n<small>Vă rugăm să cereți contactelor să configureze OpenPGP.</small></string>
   <string name="pref_general">General</string>
-  <string name="pref_xmpp_resource">Nume client XMPP</string>
-  <string name="pref_xmpp_resource_summary">Numele cu care această aplicație de identifică</string>
   <string name="pref_accept_files">Acceptă fișiere</string>
   <string name="pref_accept_files_summary">Mai mici decât...</string>
   <string name="pref_attachments">Atașamente</string>
@@ -127,8 +125,6 @@
   <string name="openpgp_error">OpenKeychain a raportat o eroare</string>
   <string name="accept">Acceptă</string>
   <string name="error">A apărut o eroare</string>
-  <string name="pref_grant_presence_updates">Acordă actualizări de prezență</string>
-  <string name="pref_grant_presence_updates_summary">Acordă și cere anticipat abonarea la actualizările de prezență pentru contactele create de dumneavoastră</string>
   <string name="your_account">Contul tău</string>
   <string name="send_presence_updates">Trimite actualizări de prezență</string>
   <string name="receive_presence_updates">Primește actualizări de prezență</string>
@@ -168,7 +164,6 @@
   <string name="unpublish_pgp">Șterge cheia publică OpenPGP</string>
   <string name="unpublish_pgp_message">Sigur doriți să vă ștergeți cheia publică OpenPGP din mesajele de prezență?\nContactele dumneavoastră nu vor mai putea să vă trimită mesaje criptate cu OpenPGP.</string>
   <string name="openpgp_has_been_published">Cheia publică OpenPGP a fost publicată.</string>
-  <string name="republish_pgp_keys">Amintiți-vă să vă republicați cheile publice OpenPGP!</string>
   <string name="mgmt_account_enable">Activează cont</string>
   <string name="mgmt_account_are_you_sure">Sigur doriți asta?</string>
   <string name="mgmt_account_delete_confirm_text">Dacă vă ștergeți contul, întregul istoric de conversații va fi pierdut</string>
@@ -287,8 +282,6 @@
   <string name="title_pref_quiet_hours_end_time">Ora de terminare</string>
   <string name="title_pref_enable_quiet_hours">Activează orar de liniște</string>
   <string name="pref_quiet_hours_summary">Notificările vor fi reduse la tăcere în timpul orelor de liniște</string>
-  <string name="pref_use_larger_font">Mărește fontul</string>
-  <string name="pref_use_larger_font_summary">Folosește o mărime de text mai mare în toată aplicația</string>
   <string name="pref_use_send_button_to_indicate_status">Butonul de trimitere indică starea</string>
   <string name="pref_use_indicate_received">Cere raport de primire</string>
   <string name="pref_use_indicate_received_summary">Mesajele primite vor fi marcate cu o bifa verde, dacă este suportat</string>
@@ -415,10 +408,6 @@
   <string name="modified_conference_options">Opțiuni discuție de grup modificate!</string>
   <string name="could_not_modify_conference_options">Nu s-au putut modifica opțiunile discuției de grup</string>
   <string name="never">Niciodată</string>
-  <string name="thirty_minutes">30 minute</string>
-  <string name="one_hour">O ora</string>
-  <string name="two_hours">2 ore</string>
-  <string name="eight_hours">8 ore</string>
   <string name="until_further_notice">Până la noi ordine</string>
   <string name="snooze">Amânare</string>
   <string name="reply">Răspunde</string>
@@ -479,7 +468,6 @@
   <string name="choose_quick_action">Alege actiunea rapida</string>
   <string name="search_for_contacts_or_groups">Caută contacte sau grupuri</string>
   <string name="send_private_message">trimite mesaj privat</string>
-  <string name="user_has_left_conference">%s a părăsit discuția de grup!</string>
   <string name="username">Nume utilizator</string>
   <string name="username_hint">Nume utilizator</string>
   <string name="invalid_username">Acesta nu este un nume de utilizator valabil</string>
@@ -491,7 +479,6 @@
   <string name="account_status_bind_failure">Eroare de conexiune</string>
   <string name="account_status_host_unknown">Gazdă fără domeniu</string>
   <string name="server_info_broken">Deteriorat</string>
-  <string name="pref_presence_settings">Setări de prezență</string>
   <string name="pref_away_when_screen_off">Plecat când ecranul este oprit</string>
   <string name="pref_away_when_screen_off_summary">Declară clientul drept plecat atunci când ecranul este oprit</string>
   <string name="pref_dnd_on_silent_mode">\"Nu deranja\" în modul silențios</string>
@@ -535,7 +522,6 @@
   <string name="shared_image_with_x">Partajează imaginea cu %s.</string>
   <string name="shared_images_with_x">Partajează imaginile cu %s.</string>
   <string name="shared_text_with_x">Partajează textul cu %s</string>
-  <string name="no_storage_permission">Conversations are nevoie de acces la stocarea externa</string>
   <string name="sync_with_contacts">Sincronizează cu contactele</string>
   <string name="sync_with_contacts_long">Conversations dorește să potrivească lista de contacte XMPP cu cea din dispozitiv pentru a putea afișa numele lor complete și avatarele.\n\nConversations doar va citi și potrivi local fără să le încarce pe vreun server.\n\nUrmează să fiți întrebați dacă doriți să permiteți accesul la contacte.</string>
   <string name="certificate_information">Informații despre certificat</string>
@@ -572,14 +558,11 @@ sau chiar pierderea mesajelor.\nÎn continuare veți fi rugați să dezactivați
   <string name="security_error_invalid_file_access">Eroare de securitate.: Acces fișier invalid</string>
   <string name="no_application_to_share_uri">Nu s-a găsit nici o aplicație care să partajeze adresa</string>
   <string name="share_uri_with">Partajează adresa cu...</string>
-  <string name="welcome_text">XMPP este un protocol independent ce nu depinde de un anume furnizor. Aveți posibilitatea să utilizați acest client cu orice server XMPP doriți.\nTotuși, pentru confortul dumneavoastră, am facilitat crearea unui cont pe conversations.im¹; un furnizor potrivit pentru utilizarea cu aplicația Conversations.</string>
   <string name="magic_create_text">Vă vom ghida prin procesul de creare al unui cont pe conversations.im.¹\nCând alegeți conversations.im ca furnizor veți putea comunica cu utilizatorii altor furnizori oferindu-le ID-ul dumneavoastră Jabber.</string>
   <string name="your_full_jid_will_be">ID-ul Jabber va fi: %s</string>
   <string name="create_account">Creează cont</string>
   <string name="use_own_provider">Folosește furnizorul meu</string>
   <string name="pick_your_username">Alege un nume de utilizator</string>
-  <string name="pref_manually_change_presence">Schimbă manual setarea de prezență</string>
-  <string name="pref_manually_change_presence_summary">Atingeți avatarul pentru a-ți schimba starea de prezență</string>
   <string name="change_presence">Setare prezență</string>
   <string name="status_message">Mesaj de stare</string>
   <string name="all_accounts_on_this_device">Setează pentru toate conturile de pe acest dispozitiv</string>
@@ -665,14 +648,8 @@ sau chiar pierderea mesajelor.\nÎn continuare veți fi rugați să dezactivați
   <string name="i_followed_this_link_from_a_trusted_source">Am urmat aceasta legătură de la o sursă de încredere</string>
   <string name="verifying_omemo_keys_trusted_source">Urmează să verificați cheile OMEMO pentru %1$s după ce veți deschide legătura. Acest lucru se poate face în siguranță doar dacă ați primit legătura de la o sursă de încredere unde doar %2$s putea publica.</string>
   <string name="verify_omemo_keys">Verifica cheile OMEMO</string>
-  <string name="show_inactive_devices">Arată dispozitivele inactive</string>
-  <string name="hide_inactive_devices">Ascunde dispozitivele inactive</string>
   <string name="distrust_omemo_key">Pierde încrederea în acest dispozitiv</string>
   <string name="distrust_omemo_key_text">Sigur doriți să ștergeți datele de verificare pentru acest dispozitiv?\nAcest dispozitiv precum și mesajele venind de la el vor fi marcate ca ne fiind de încredere.</string>
-  <string name="timeout_24_hours">24 ore</string>
-  <string name="timeout_7_days">7 zile</string>
-  <string name="timeout_30_days">30 zile</string>
-  <string name="timeout_6_months">6 luni</string>
   <string name="pref_automatically_delete_messages">Ștergerea automată a mesajelor</string>
   <string name="pref_automatically_delete_messages_description">De pe acest dispozitiv se vor șterge dacă sunt mai vechi de perioada selectată.</string>
   <string name="encrypting_message">Mesajul se criptează</string>

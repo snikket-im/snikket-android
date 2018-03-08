@@ -94,8 +94,6 @@
   <string name="no_pgp_keys">Inga OpenPGP-nycklar funna</string>
   <string name="contacts_have_no_pgp_keys">Conversations kan inte kryptera ditt meddelande eftersom din kontakt inte annonserar sin publika nyckel.\n\n<small>Be din kontakt att sätta upp OpenPGP.</small></string>
   <string name="pref_general">Generellt</string>
-  <string name="pref_xmpp_resource">XMPP-resurs</string>
-  <string name="pref_xmpp_resource_summary">Namnet klienten identifierar sig med</string>
   <string name="pref_accept_files">Acceptera filer</string>
   <string name="pref_accept_files_summary">Acceptera automatiskt filer som är mindre än…</string>
   <string name="pref_attachments">Bifogningar</string>
@@ -121,8 +119,6 @@
   <string name="openpgp_error">OpenKeychain rapporterade ett fel</string>
   <string name="accept">Acceptera</string>
   <string name="error">Ett fel har inträffat</string>
-  <string name="pref_grant_presence_updates">Tillåt tillänglighetsuppdateringar</string>
-  <string name="pref_grant_presence_updates_summary">Tillåt och be om abonnemangsbegäran i förväg för kontakter du har skapat</string>
   <string name="your_account">Ditt konto</string>
   <string name="send_presence_updates">Skicka tillgänglighetsuppdatering</string>
   <string name="receive_presence_updates">Ta emot tillgänglighetsuppdateringar</string>
@@ -161,7 +157,6 @@
   <string name="unpublish_pgp">Ta bort OpenPGP publik nyckel</string>
   <string name="unpublish_pgp_message">Är du säker på att du vill ta bort din OpenPGP publik nyckel från din tillgänglighetsuppdatering?\nDina kontakter kommer inte längre att kunna skicka dig OpenPGP-krypterade meddelande.</string>
   <string name="openpgp_has_been_published">OpenPGP-nyckel har publicerats.</string>
-  <string name="republish_pgp_keys">Kom ihåg att återpublicera dina publika OpenPGP nycklar.</string>
   <string name="mgmt_account_enable">Aktivera konto</string>
   <string name="mgmt_account_are_you_sure">Är du säker?</string>
   <string name="mgmt_account_delete_confirm_text">Om du tar bort ditt konto kommer hela konversationshistoriken att försvinna</string>
@@ -267,8 +262,6 @@
   <string name="title_pref_quiet_hours_end_time">Sluttid</string>
   <string name="title_pref_enable_quiet_hours">Aktivera tysta timmar</string>
   <string name="pref_quiet_hours_summary">Notifieringar kommer vara tysta under tysta timmar</string>
-  <string name="pref_use_larger_font">Öka teckenstorlek</string>
-  <string name="pref_use_larger_font_summary">Använd större teckenstorlek för hela applikationen</string>
   <string name="pref_use_send_button_to_indicate_status">Skickaknappen indikerar status</string>
   <string name="pref_use_indicate_received">Begär mottagningskvitto</string>
   <string name="pref_use_indicate_received_summary">Mottagna meddelanden markeras med en grön bock om det stöds</string>
@@ -373,10 +366,6 @@
   <string name="moderated">Modererad</string>
   <string name="you_are_not_participating">Du deltar ej</string>
   <string name="never">Aldrig</string>
-  <string name="thirty_minutes">30 minuter</string>
-  <string name="one_hour">1 timme</string>
-  <string name="two_hours">2 timmar</string>
-  <string name="eight_hours">8 timmar</string>
   <string name="until_further_notice">Tills vidare</string>
   <string name="pref_input_options">Input</string>
   <string name="pref_enter_is_send">Skicka med enter</string>
@@ -442,7 +431,6 @@
   <string name="account_status_bind_failure">Bind-fel</string>
   <string name="account_status_host_unknown">Servern är inte ansvarig för domänen</string>
   <string name="server_info_broken">Sönder</string>
-  <string name="pref_presence_settings">Tillgänglighet</string>
   <string name="pref_away_when_screen_off">Status borta när skärmen är av</string>
   <string name="pref_away_when_screen_off_summary">Sätter din tillgänglighet till borta när skrämen är av</string>
   <string name="pref_treat_vibrate_as_silent">Hantera vibrationsläge som tyst läge</string>
@@ -482,7 +470,6 @@
   <string name="shared_image_with_x">Delade bild med %s</string>
   <string name="shared_images_with_x">Delade bilder med %s</string>
   <string name="shared_text_with_x">Delade text med %s</string>
-  <string name="no_storage_permission">Conversations behöver access till extern lagring</string>
   <string name="sync_with_contacts">Synkronisera med kontakter</string>
   <string name="sync_with_contacts_long">Conversations vill matcha din XMPP-kontaktlista med dina kontakter för att visa deras namn och profilbild.\n\nConversations läser endast dina kontakter för att matcha dem lokalt utan att ladda upp dem till din server.\n\nDu kommer nu få frågan om tillåtelse för att använda kontakterna.</string>
   <string name="certificate_information">Certifikatinformation</string>
@@ -514,14 +501,11 @@
   <string name="security_error_invalid_file_access">Säkerhetsfel: Ogiltig filaccess</string>
   <string name="no_application_to_share_uri">Ingen applikation kunde hittas för att dela URI</string>
   <string name="share_uri_with">Dela URI med...</string>
-  <string name="welcome_text">XMPP är ett leverantörsoberoende protokoll. Du kan använda denna klient med vilken XMPP server du vill.\nFör din bekvämlighet har vi gjort det enkelt att skapa ett konto hos conversations.im¹; en leverantör speciellt anpassad för att användas med Conversations.</string>
   <string name="magic_create_text">Du kommer nu att få hjälp med att skapa ett konto på conversations.im.¹\nNär conversations.im väljs som leverantör kommer du kunna kommunicera med användare hos andra leverantörer genom att ge dem ditt Jabber ID.</string>
   <string name="your_full_jid_will_be">Ditt jabber ID blir: %s</string>
   <string name="create_account">Skapa konto</string>
   <string name="use_own_provider">Använd min egen leverantör</string>
   <string name="pick_your_username">Välj användarnamn</string>
-  <string name="pref_manually_change_presence">Ändra tillgänglighet manuellt</string>
-  <string name="pref_manually_change_presence_summary">Tryck på din avatarbild för att ändra tillgänglighet</string>
   <string name="change_presence">Ändra tillgänglighet</string>
   <string name="status_message">Statusmeddelande</string>
   <string name="all_accounts_on_this_device">Använd för alla konton på den här enheten</string>
@@ -601,14 +585,8 @@
   <string name="i_followed_this_link_from_a_trusted_source">Jag följde denna länk från en trovärdig källa</string>
   <string name="verifying_omemo_keys_trusted_source">Du håller på att verifiera OMEMO-nyckeln för %1$s efter att du följt en länk. Detta är endast säkert om du följde länken från en trovärdig källa där endast %2$s kan ha publiserat denna länk.</string>
   <string name="verify_omemo_keys">Verifiera OMEMO-nycklar</string>
-  <string name="show_inactive_devices">Visa inaktiva enheter</string>
-  <string name="hide_inactive_devices">Göm inaktiva enheter</string>
   <string name="distrust_omemo_key">Lita ej på enhet</string>
   <string name="distrust_omemo_key_text">Är du säker på att du vill ta bort verifieringen av denna enhet?\nDenna enhet och meddelanden som kommer från enheten kommer att markeras som ej pålitliga.</string>
-  <string name="timeout_24_hours">24 timmar</string>
-  <string name="timeout_7_days">7 dagar</string>
-  <string name="timeout_30_days">30 dagar</string>
-  <string name="timeout_6_months">6 månader</string>
   <string name="pref_automatically_delete_messages">Automatisk borttagning av meddelanden</string>
   <string name="pref_automatically_delete_messages_description">Ta automatiskt bort meddelanden från denna enhet som är äldre än den konfigurerade tidsramen.</string>
   <string name="encrypting_message">Krypterar meddelande</string>

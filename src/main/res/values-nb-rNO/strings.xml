@@ -100,8 +100,6 @@
   <string name="no_pgp_keys">Ingen OpenPGP-nøkler funnet</string>
   <string name="contacts_have_no_pgp_keys">Conversations kan ikke kryptere din melding fordi dine kontakter ikke annonserer sine offentlige nøkkler.\n\n<small>Spør din kontakt om å sette opp OpenPGP.</small></string>
   <string name="pref_general">Generelt</string>
-  <string name="pref_xmpp_resource">XMPP-ressurs</string>
-  <string name="pref_xmpp_resource_summary">Navnet denne klienten identifiserer seg med</string>
   <string name="pref_accept_files">Godta filer</string>
   <string name="pref_accept_files_summary">Automatisk godkjenning av filer mindre enn...</string>
   <string name="pref_attachments">Vedlegg</string>
@@ -127,8 +125,6 @@
   <string name="openpgp_error">Feilmelding fra OpenKeychain</string>
   <string name="accept">Godta</string>
   <string name="error">En feil har inntruffet</string>
-  <string name="pref_grant_presence_updates">Tilstedeværelsesoppdateringer</string>
-  <string name="pref_grant_presence_updates_summary">Gi oppdatering for tilstedeværelse på forhånd til kontakter du har lagt til</string>
   <string name="your_account">Din konto</string>
   <string name="send_presence_updates">Send oppdateringer for tilstedeværelse</string>
   <string name="receive_presence_updates">Motta oppdateringer for tilstedeværelse</string>
@@ -168,7 +164,6 @@
   <string name="unpublish_pgp">Fjern offentlig OpenPGP-nøkkel</string>
   <string name="unpublish_pgp_message">Er du sikker på at du vil fjerne din offentlige OpenPGP-nøkkel fra din tilstedeværelseskunngjøring?\nDine kontakter vil ikke lenger kunne sende deg OpenPGP-krypterte meldinger.</string>
   <string name="openpgp_has_been_published">Offentlig OpenPGP-nøkkel har blitt offentliggjort.</string>
-  <string name="republish_pgp_keys">Husk å offentliggjøre dine offentlige OpenPGP nøkler igjen!</string>
   <string name="mgmt_account_enable">Skru på konto</string>
   <string name="mgmt_account_are_you_sure">Bekreft.</string>
   <string name="mgmt_account_delete_confirm_text">Hvis du sletter kontoen din, vil hele samtalehistorikken gå tapt.</string>
@@ -287,8 +282,6 @@
   <string name="title_pref_quiet_hours_end_time">Avslutning</string>
   <string name="title_pref_enable_quiet_hours">Aktiver stille tidsavgrensning</string>
   <string name="pref_quiet_hours_summary">Varslinger blir ikke spilt under stilletid</string>
-  <string name="pref_use_larger_font">Øk tekststørrelse</string>
-  <string name="pref_use_larger_font_summary">Bruk større tekststørrelser i hele programmet</string>
   <string name="pref_use_send_button_to_indicate_status">Forsendelsesknappstatus</string>
   <string name="pref_use_indicate_received">Forespør meldingskvitteringer</string>
   <string name="pref_use_indicate_received_summary">Mottatte meldinger vil bli avmerket i grønt hvis støttet</string>
@@ -415,10 +408,6 @@
   <string name="modified_conference_options">Endret gruppesludringsvalg!</string>
   <string name="could_not_modify_conference_options">Kunne ikke endre gruppesludringsvalg</string>
   <string name="never">Aldri</string>
-  <string name="thirty_minutes">30 minutter</string>
-  <string name="one_hour">1 time</string>
-  <string name="two_hours">2 timer</string>
-  <string name="eight_hours">8 timer</string>
   <string name="until_further_notice">Til videre beskjed</string>
   <string name="snooze">Slumre</string>
   <string name="reply">Svar</string>
@@ -477,7 +466,6 @@
   <string name="choose_quick_action">Velg hurtighendelse</string>
   <string name="search_for_contacts_or_groups">Søk etter kontakter eller grupper</string>
   <string name="send_private_message">Send privat melding</string>
-  <string name="user_has_left_conference">%s har forlatt gruppesludringen!</string>
   <string name="username">Brukernavn</string>
   <string name="username_hint">Brukernavn</string>
   <string name="invalid_username">Dette er ikke et gyldig brukernavn</string>
@@ -489,7 +477,6 @@
   <string name="account_status_bind_failure">Klarte ikke å binde</string>
   <string name="account_status_host_unknown">Tjeneren er ikke ansvarlig for domene</string>
   <string name="server_info_broken">Knekt</string>
-  <string name="pref_presence_settings">Tilstedeværelse</string>
   <string name="pref_away_when_screen_off">Borte når skjermen er av</string>
   <string name="pref_away_when_screen_off_summary">Markerer din ressurs som borte når skjermen er avskrudd</string>
   <string name="pref_dnd_on_silent_mode">“Ikke forstyrr” i stillemodus.</string>
@@ -532,7 +519,6 @@
   <string name="shared_image_with_x">Bilde delt med %s</string>
   <string name="shared_images_with_x">Del bilder med %s</string>
   <string name="shared_text_with_x">Del tekst med %s</string>
-  <string name="no_storage_permission">Conversations trenger tilgang til eksternt lagringsmedie</string>
   <string name="sync_with_contacts">Synkroniser med kontakter</string>
   <string name="sync_with_contacts_long">Conversations vil jamføre din XMPP-kontaktliste med dine kontakter for å vise dem med navn og profilbilde.\n\nConversations leser bare dine kontakter for å jamføre dem lokalt, uten å laste dem opp til tjeneren din.\n\nDu kommer nå til å bli spurt om tilgangstillatelse til dine kontakter.</string>
   <string name="certificate_information">Sertifikatsinformasjon</string>
@@ -566,14 +552,11 @@
   <string name="security_error_invalid_file_access">Sikkerhetsfeil: Ugyldig filtilgang</string>
   <string name="no_application_to_share_uri">Fant inget program til deling av URI</string>
   <string name="share_uri_with">Del URI med…</string>
-  <string name="welcome_text">XMPP er en protokoll uavhengig av tilbydere. Du kan bruke denne klienten med hvilken XMPP-tjener du ønsker.\nAv beleilighetshensyn har vi dog gjort det lett å opprette en konto på conversations.im¹; en tilbyder spesielt myntet på bruk med Conversations.</string>
   <string name="magic_create_text">Vi geleider deg gjennom prosessen med å opprette en konto på conversations.im.¹\nNår du velger conversations.im som tilbyder vil du kunne snakke med brukere fra andre tilbyder ved å gi dem din fulle XMPP-ID.</string>
   <string name="your_full_jid_will_be">Din fulle Jabber-ID vil være: %s</string>
   <string name="create_account">Opprett konto</string>
   <string name="use_own_provider">Bruk min egen tilbyder</string>
   <string name="pick_your_username">Velg ditt brukernavn</string>
-  <string name="pref_manually_change_presence">Egendef. tilstedeværelse</string>
-  <string name="pref_manually_change_presence_summary">Trykk på avataren din for å endre tilstedeværelse</string>
   <string name="change_presence">Endre tilstedeværelse</string>
   <string name="status_message">Statusmelding</string>
   <string name="all_accounts_on_this_device">Sett for alle kontoene på denne enheten</string>
@@ -659,14 +642,8 @@
   <string name="i_followed_this_link_from_a_trusted_source">Jeg fulgte denne lenken fra en tiltrodd kilde</string>
   <string name="verifying_omemo_keys_trusted_source">Du er i ferd med å bekrefte at OMEMO-nøklene til %1$s etter å ha trykket på en lenke. Dette er bare sikkert hvis du fulgte denne lenken fra en tiltrodd kilde der bare %2$s kunne ha offentliggjort denne lenken.</string>
   <string name="verify_omemo_keys">Bekreft OMEMO-nøkler</string>
-  <string name="show_inactive_devices">Vis inaktive enheter</string>
-  <string name="hide_inactive_devices">Skjul inaktive enheter</string>
   <string name="distrust_omemo_key">Fjern tiltro til enhet</string>
   <string name="distrust_omemo_key_text">Er du sikker på at du vil fjerne bekreftelsen av denne enheten?\nDenne eneheten og meldinger fra den vil bli vises som \'Ikke betrodd\'.</string>
-  <string name="timeout_24_hours">et døgn</string>
-  <string name="timeout_7_days">ei uke</string>
-  <string name="timeout_30_days">30 dager</string>
-  <string name="timeout_6_months">et halvt år</string>
   <string name="pref_automatically_delete_messages">Automatisk meldingssletting</string>
   <string name="pref_automatically_delete_messages_description">Slett meldinger fra denne enheten automatisk hvis de er eldre enn oppsatt tidsramme.</string>
   <string name="encrypting_message">Krypterer melding</string>

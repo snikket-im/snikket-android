@@ -93,8 +93,6 @@
   <string name="no_pgp_keys">Não foram encontradas chaves OpenPGP</string>
   <string name="contacts_have_no_pgp_keys">Conversations não é capaz de cifrar as suas mensagens porque os seus contactos não estão a anunciar as suas chaves públicas.\n\n<small>Por favor peça aos seus contactos para configurarem o OpenPGP.</small></string>
   <string name="pref_general">Geral</string>
-  <string name="pref_xmpp_resource">Recurso XMPP</string>
-  <string name="pref_xmpp_resource_summary">O nome pelo qual este cliente se identifica</string>
   <string name="pref_accept_files">Aceitar ficheiros</string>
   <string name="pref_accept_files_summary">Automaticamente aceitar ficheiros menores que...</string>
   <string name="pref_attachments">Anexos</string>
@@ -117,7 +115,6 @@
   <string name="openpgp_error">O OpenKeychain reportou um erro</string>
   <string name="accept">Aceitar</string>
   <string name="error">Ocorreu um erro</string>
-  <string name="pref_grant_presence_updates">Permitir atualizações de presença</string>
   <string name="your_account">A sua conta</string>
   <string name="send_presence_updates">Enviar atualizações de presença</string>
   <string name="receive_presence_updates">Receber atualizações de presença</string>
@@ -250,8 +247,6 @@
   <string name="title_pref_quiet_hours_end_time">Hora de fim</string>
   <string name="title_pref_enable_quiet_hours">Ativar horas de tranquilidade</string>
   <string name="pref_quiet_hours_summary">Notificações serão silenciadas nas horas de tranquilidade</string>
-  <string name="pref_use_larger_font">Aumentar o tamanho da fonte</string>
-  <string name="pref_use_larger_font_summary">Usar fontes maiores para toda a aplicação</string>
   <string name="pref_use_send_button_to_indicate_status">O botão de enviar indica o estado</string>
   <string name="pref_use_indicate_received">Solicitar recibo de mensagem</string>
   <string name="pref_use_indicate_received_summary">Mensagens recebidas serão marcadas com um visto verde se suportado</string>
@@ -350,10 +345,6 @@
   <string name="moderated">Moderado</string>
   <string name="you_are_not_participating">Não está a participar</string>
   <string name="never">Nunca</string>
-  <string name="thirty_minutes">30 minutos</string>
-  <string name="one_hour">1 hora</string>
-  <string name="two_hours">2 horas</string>
-  <string name="eight_hours">8 horas</string>
   <string name="until_further_notice">Até segunda ordem</string>
   <string name="pref_input_options">Introdução</string>
   <string name="pref_enter_is_send">O enter envia</string>
@@ -413,7 +404,6 @@
   <string name="download_failed_could_not_connect">Transferência falhou: Não foi possível conectar ao host</string>
   <string name="account_status_tor_unavailable">Rede Tor indisponível</string>
   <string name="server_info_broken">Existe um problema</string>
-  <string name="pref_presence_settings">Presença</string>
   <string name="pref_away_when_screen_off">Ausente quando o ecrã está desligado</string>
   <string name="pref_away_when_screen_off_summary">Define o seu recurso como ausente quando o ecrã está desligado</string>
   <string name="pref_treat_vibrate_as_silent">Tratar vibrar como modo silencioso</string>
@@ -452,7 +442,6 @@
   <string name="shared_image_with_x">Imagem partilhada com %s</string>
   <string name="shared_images_with_x">Imagens partilhadas com %s</string>
   <string name="shared_text_with_x">Mensagem partilhada com %s</string>
-  <string name="no_storage_permission">Conversations necessita de acesso ao armazenamento externo</string>
   <string name="sync_with_contacts">Sincronizar com contactos</string>
   <string name="sync_with_contacts_long">A aplicação Conversations deseja fazer a correspondência entre a sua lista de contactos XMPP e os seus contactos para mostrar os seus nomes completos e os seus avatares.\n\nA aplicação Conversations irá apenas ler os seus contactos e fazer a correspondência localmente sem enviar os dados para o seu servidor.\n\nIrá agora ser-lhe pedido para dar permissão para aceder aos seus contactos.</string>
   <string name="certificate_information">Informação do Certificado</string>

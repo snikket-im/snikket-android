@@ -94,8 +94,6 @@
   <string name="no_pgp_keys">未找到 OpenPGP 金鑰</string>
   <string name="contacts_have_no_pgp_keys">因您的連絡人未公佈公開金鑰，Conversations未能成功加密您的資訊.\n\n<small>請通知連絡人設置OpenPGP.</small></string>
   <string name="pref_general">常規</string>
-  <string name="pref_xmpp_resource">XMPP 資源</string>
-  <string name="pref_xmpp_resource_summary">用戶端標識名稱</string>
   <string name="pref_accept_files">接收檔案</string>
   <string name="pref_accept_files_summary">自動接收小於 … 的檔案</string>
   <string name="pref_attachments">附件</string>
@@ -121,8 +119,6 @@
   <string name="openpgp_error">OpenKeychain 報告了一個錯誤</string>
   <string name="accept">接受</string>
   <string name="error">產生了一個錯誤</string>
-  <string name="pref_grant_presence_updates">同意更新線上連絡人</string>
-  <string name="pref_grant_presence_updates_summary">當新增聯絡人時先行給予以及請求上線狀態的訂閱</string>
   <string name="your_account">你的帳號</string>
   <string name="send_presence_updates">發送線上連絡人列表更新</string>
   <string name="receive_presence_updates">接收線上連絡人列表更新</string>
@@ -161,7 +157,6 @@
   <string name="unpublish_pgp">移除 OpenPGP 公開金鑰</string>
   <string name="unpublish_pgp_message">確定要移除上線狀態中的 OpenPGP 公開金鑰嗎？\n這樣一來，你的聯絡人就無法傳送以 OpenPGP 加密的訊息給你了。</string>
   <string name="openpgp_has_been_published">OpenPGP 公開金鑰已發佈</string>
-  <string name="republish_pgp_keys">記得重新發佈OpenPGP公開金鑰</string>
   <string name="mgmt_account_enable">啟用帳戶</string>
   <string name="mgmt_account_are_you_sure">確定?</string>
   <string name="mgmt_account_delete_confirm_text">刪除帳號會導致聊天紀錄全部不見</string>
@@ -267,8 +262,6 @@
   <string name="title_pref_quiet_hours_end_time">結束時間</string>
   <string name="title_pref_enable_quiet_hours">啟用靜默時間段</string>
   <string name="pref_quiet_hours_summary">在靜默時間段內通知將保持靜音</string>
-  <string name="pref_use_larger_font"> 放大字體</string>
-  <string name="pref_use_larger_font_summary">整個 app 介面使用較大的字體</string>
   <string name="pref_use_send_button_to_indicate_status">發送按鈕顯示狀態</string>
   <string name="pref_use_indicate_received">請求消息回復</string>
   <string name="pref_use_indicate_received_summary">如果支援消息將會以綠色對勾標識</string>
@@ -373,10 +366,6 @@
   <string name="moderated">版主</string>
   <string name="you_are_not_participating">您尚未參與</string>
   <string name="never">從不</string>
-  <string name="thirty_minutes">30 分鐘</string>
-  <string name="one_hour">1 個小時</string>
-  <string name="two_hours">2 個小時</string>
-  <string name="eight_hours">8 個小時</string>
   <string name="until_further_notice">直到新的通知</string>
   <string name="pref_input_options">輸入</string>
   <string name="pref_enter_is_send">回車是發送</string>
@@ -440,7 +429,6 @@
   <string name="account_status_bind_failure">綁定失敗</string>
   <string name="account_status_host_unknown">伺服器不能為功能變數名稱做出回應</string>
   <string name="server_info_broken">損壞</string>
-  <string name="pref_presence_settings">存在</string>
   <string name="pref_away_when_screen_off">關閉螢幕時離開</string>
   <string name="pref_away_when_screen_off_summary">當螢幕關閉時將標記您的資源為離開狀態</string>
   <string name="pref_treat_vibrate_as_silent">靜音模式開啟振動</string>
@@ -479,7 +467,6 @@
   <string name="shared_image_with_x">用 %s 分享圖片</string>
   <string name="shared_images_with_x">跟 %s 分享的圖片</string>
   <string name="shared_text_with_x">跟 %s 分享的文字資料</string>
-  <string name="no_storage_permission">Conversations 需要訪問外部存儲</string>
   <string name="sync_with_contacts">與連絡人同步</string>
   <string name="sync_with_contacts_long">Conversations 會匹配你的 XMPP 花名冊與你的連絡人，以顯示他們的全名和頭像。\n\nConversations 只會讀取你的連絡人並在本地匹配，不會上傳到你的伺服器。\n\n現在將要詢問你是否給予訪問你連絡人的許可權。</string>
   <string name="certificate_information">證書詳情</string>
@@ -513,14 +500,11 @@
   <string name="security_error_invalid_file_access">安全錯誤：檔案存取無效</string>
   <string name="no_application_to_share_uri">找不到可以分享網址(URI)的應用程式</string>
   <string name="share_uri_with">分享網址(URI)…</string>
-  <string name="welcome_text">XMPP 是一個獨立協議的提供者。你可以用這個用戶端連接任何你選擇的 XMPP 伺服器。\n為了讓你更便捷，我們讓你可以在 conversations.im¹ 上方便的註冊帳號；特意為使用 Conversations 的人準備。</string>
   <string name="magic_create_text">我們將會引導你完成在 conversations.im¹ 上註冊帳號的過程。\n當獲得了 conversations.im 提供的帳號以後，你可以通過添加使用其他提供商的好友的完整 Jabber ID 來與他們聯絡。</string>
   <string name="your_full_jid_will_be">您完整的 Jabble ID 是：%s </string>
   <string name="create_account">創建帳戶</string>
   <string name="use_own_provider">使用我自己的服務端</string>
   <string name="pick_your_username">輸入您的用戶名</string>
-  <string name="pref_manually_change_presence">手動更改狀態</string>
-  <string name="pref_manually_change_presence_summary">點擊你的頭像來變更你的狀態</string>
   <string name="change_presence">變更狀態</string>
   <string name="status_message">狀態資訊</string>
   <string name="all_accounts_on_this_device">為本設備上的所有帳戶設置</string>
@@ -600,14 +584,8 @@
   <string name="i_followed_this_link_from_a_trusted_source">我使用來源可信任的連結</string>
   <string name="verifying_omemo_keys_trusted_source">點了連結以後將會驗證 %1$s 的 OMEMO 金鑰。這個行為只有在該連結的來源可信任，並且只有 %2$s 可以提供該連結的情況下，才是安全無虞的。</string>
   <string name="verify_omemo_keys">驗證 OMEMO 金鑰</string>
-  <string name="show_inactive_devices">顯示沒在活動的設備</string>
-  <string name="hide_inactive_devices">隱藏沒在活動的設備</string>
   <string name="distrust_omemo_key">停止信任設備</string>
   <string name="distrust_omemo_key_text">確定想要移除這個設備的驗證資料嗎？\n這個設備和來自它的訊息都會標記為不可信任。</string>
-  <string name="timeout_24_hours">24 小時</string>
-  <string name="timeout_7_days">7 天</string>
-  <string name="timeout_30_days">30 天</string>
-  <string name="timeout_6_months">6 個月</string>
   <string name="pref_automatically_delete_messages">自動刪除訊息</string>
   <string name="pref_automatically_delete_messages_description">自動從這個設備刪除比設定的時間區間還舊的訊息。</string>
   <string name="encrypting_message">訊息加密中</string>

@@ -100,8 +100,6 @@
   <string name="no_pgp_keys">Ez da OpenPGP gakorik aurkitu</string>
   <string name="contacts_have_no_pgp_keys">Conversations ez da zure mezuak enkriptatzeko gai zure kontaktuak haien gako publikoa jakinarazten ez daudelako.\n\n<small>Mesedez eskatu ezaiezu zure kontakuei OpenPGP konfigura dezaten.</small></string>
   <string name="pref_general">Orokorrak</string>
-  <string name="pref_xmpp_resource">XMPP baliabidea</string>
-  <string name="pref_xmpp_resource_summary">Bezero honek bere burua aurkezteko erabiltzen duen izena</string>
   <string name="pref_accept_files">Fitxategiak onartu</string>
   <string name="pref_accept_files_summary">Hurrengo tamaina baino fitxategi txikiagoak automatikoki onartu…</string>
   <string name="pref_attachments">Eranskinak</string>
@@ -127,8 +125,6 @@
   <string name="openpgp_error">OpenKeychainek akats baten berri eman du</string>
   <string name="accept">Onartu</string>
   <string name="error">Akats bat gertatu da</string>
-  <string name="pref_grant_presence_updates">Presentzia eguneraketak eman</string>
-  <string name="pref_grant_presence_updates_summary">Prebentiboki presentzia eguneraketak eman eta eskatu sortu dituzun kontaktuetarako</string>
   <string name="your_account">Zure kontua</string>
   <string name="send_presence_updates">Presentzia eguneraketak bidali</string>
   <string name="receive_presence_updates">Presentzia eguneraketak jaso</string>
@@ -168,7 +164,6 @@
   <string name="unpublish_pgp">OpenPGP gako publikoa kendu</string>
   <string name="unpublish_pgp_message">Ziur zure OpenPGP gako publikoa zure presentzia eguneraketetatik kendu nahi duzula?\nZure kontaktuek ezin dizute gehiago OpenPGPz enkriptatutako mezuak bidali.</string>
   <string name="openpgp_has_been_published">OpenPGP gako publikoa argitaratu da.</string>
-  <string name="republish_pgp_keys">Gogoratu ezazu zure OpenPGP gako publikoak birrargitaratzeaz!</string>
   <string name="mgmt_account_enable">Kontua gaitu</string>
   <string name="mgmt_account_are_you_sure">Ziur al zaude?</string>
   <string name="mgmt_account_delete_confirm_text">Zure kontua ezabatzen baduzu, zure elkarrizketen historia guztia galduko da</string>
@@ -287,8 +282,6 @@
   <string name="title_pref_quiet_hours_end_time">Amaiera ordua</string>
   <string name="title_pref_enable_quiet_hours">Ordu lasaiak gaitu</string>
   <string name="pref_quiet_hours_summary">Jakinarazpenak isilaraziko dira ordu lasaiak iraun bitartean </string>
-  <string name="pref_use_larger_font">Letraren tamaina handitu</string>
-  <string name="pref_use_larger_font_summary">Letra tamaina handiagoa erabili aplikazio osoan zehar</string>
   <string name="pref_use_send_button_to_indicate_status">Bidaltze botoiak egoera adierazten du</string>
   <string name="pref_use_indicate_received">Mezuen jasotzea eskatu</string>
   <string name="pref_use_indicate_received_summary">Jasotako mezuak marka berde batekin markatuko dira. Baliteke kasu guztietan ez funtzionatzea.</string>
@@ -415,10 +408,6 @@
   <string name="modified_conference_options">Taldearen aukerak aldatu dira</string>
   <string name="could_not_modify_conference_options">Ezin izan dira taldearen aukerak aldatu</string>
   <string name="never">Inoiz</string>
-  <string name="thirty_minutes">30 minutu</string>
-  <string name="one_hour">ordu 1</string>
-  <string name="two_hours">2 ordu</string>
-  <string name="eight_hours">8 ordu</string>
   <string name="until_further_notice">abisatu arte</string>
   <string name="snooze">Beranduago jakinarazi</string>
   <string name="reply">Erantzun</string>
@@ -477,7 +466,6 @@
   <string name="choose_quick_action">Ekintza azkarra aukeratu</string>
   <string name="search_for_contacts_or_groups">Kontaktuak edo taldeak bilatu</string>
   <string name="send_private_message">Mezu pribatua bidali</string>
-  <string name="user_has_left_conference">%s(e)k taldea utzi egin du</string>
   <string name="username">Erabiltzaile izena</string>
   <string name="username_hint">Erabiltzaile izena</string>
   <string name="invalid_username">Hau ez da erabiltzaile izen baliodun bat</string>
@@ -489,7 +477,6 @@
   <string name="account_status_bind_failure">Estekatzeak hust egin du</string>
   <string name="account_status_host_unknown">Zerbitzaria ez da domeinuaren erantzule</string>
   <string name="server_info_broken">Hondatuta</string>
-  <string name="pref_presence_settings">Presentzia</string>
   <string name="pref_away_when_screen_off">Urrun pantaila itzalita dagoenean</string>
   <string name="pref_away_when_screen_off_summary">Zure baliabidea urrun bezala markatzen du pantaila itzalita dagoenean</string>
   <string name="pref_dnd_on_silent_mode">\"Ez gogaitu\" modu isilean</string>
@@ -532,7 +519,6 @@
   <string name="shared_image_with_x">Irudia %s(r)ekin partekatu da</string>
   <string name="shared_images_with_x">Irudiak %s(r)ekin partekatu dira</string>
   <string name="shared_text_with_x">Testua %s(r)ekin partekatu da</string>
-  <string name="no_storage_permission">Conversationsek kanpoko biltegirako sarbidea behar du</string>
   <string name="sync_with_contacts">Kontaktuekin sinkronizatu</string>
   <string name="sync_with_contacts_long">Conversationsek zure XMPP zerrenda eta zure kontaktuak uztartu nahi ditu haien izenak eta argazkiak erakusteko.\n\nConversationsek zure kontaktuak modu lokalean soilik irakurri eta uztartuko ditu, zure zerbitzarira kargatu gabe.\n\nJarraian baimenak eskatuko zaizkizu zure kontaktuetara sartu ahal izateko.</string>
   <string name="certificate_information">Ziurtagiriaren informazioa</string>
@@ -566,14 +552,11 @@
   <string name="security_error_invalid_file_access">Segurtasun akatsa: fitxategi sarrera baliogabea</string>
   <string name="no_application_to_share_uri">Ez da aplikaziorik aurkitu URIa partekatzeko</string>
   <string name="share_uri_with">URIa honekin partekatu...</string>
-  <string name="welcome_text">XMPP hornitzaleez independiente den protokolo bat da. Bezero hau aukeratzen duzun edozein XMPP zerbitzariarekin erabili dezakezu.\nHala ere zure erosotasunerako conversations.im¹-en, Conversationsekin bereziki erabiltzeko egokia den hornitzaile batean, kontu bat sortzea erraz egin dugu.</string>
   <string name="magic_create_text">conversations.im-en kontu bat sortzeko prozesuan zehar gidatuko zaitugu.\nconversations.im¹ hornitzaile bezala aukeratzerakoan beste hornitzaileen erabiltzaileekin komunikatzeko gai izango zara haiei zure Jabber ID osoa emanez.</string>
   <string name="your_full_jid_will_be">Zure Jabber ID osoa %s izango da</string>
   <string name="create_account">Kontua sortu</string>
   <string name="use_own_provider">Nire hornitzale propioa erabili</string>
   <string name="pick_your_username">Aukeratu zure erabiltzaile izena</string>
-  <string name="pref_manually_change_presence">Presentzia eskuz aldatu</string>
-  <string name="pref_manually_change_presence_summary">Ukitu zure profileko argazkia zure presentzia aldatzeko</string>
   <string name="change_presence">Presentzia aldatu</string>
   <string name="status_message">Egoera mezua</string>
   <string name="all_accounts_on_this_device">Gailu honetako kontu guztietarako ezarri</string>
@@ -659,14 +642,8 @@
   <string name="i_followed_this_link_from_a_trusted_source">Lotura hau jatorri fidagarri batetik jarraitu dut</string>
   <string name="verifying_omemo_keys_trusted_source">%1$s(r)en OMEMO gakoak egiaztatuko dira lotura batean sakatu ondoren. Hau segurua da soilik lotura hau jatorri fidagarri batetik jarraitu baduzu eta soilik %2$s(e)k argitaratu izan ahal badu.</string>
   <string name="verify_omemo_keys">OMEMO gakoak egiaztatu</string>
-  <string name="show_inactive_devices">Erabiltzen ez diren gailuak erakutsi</string>
-  <string name="hide_inactive_devices">Erabiltzen ez diren gailuak ezkutatu</string>
   <string name="distrust_omemo_key">Gailu ez fidagarria</string>
   <string name="distrust_omemo_key_text">Gailu honen egiaztapena ezabatu nahi duzulaz ziur al zaude?\nGailu hau eta beregandik datozen mezuak ez fidagarriak bezala markatuko dira.</string>
-  <string name="timeout_24_hours">24 ordu</string>
-  <string name="timeout_7_days">7 egun</string>
-  <string name="timeout_30_days">30 egun</string>
-  <string name="timeout_6_months">6 hilabete</string>
   <string name="pref_automatically_delete_messages">Mezuen ezabatze automatikoa</string>
   <string name="pref_automatically_delete_messages_description">Ezarritako denbora tartea baino zaharragoak diren mezuak gailu honetatik automatikoki ezabatu.</string>
   <string name="encrypting_message">Mezua enkriptatzen</string>

@@ -87,8 +87,6 @@
   <string name="no_pgp_keys">לא נמצאו מפתחות OpenPGP</string>
   <string name="contacts_have_no_pgp_keys">Conversations אינה מסוגלת להצפין את הודעותיך משום שאנשי הקשר שלך אינם מכריזים על המפתח הפומבי שלהם.\n\n<small>אנא בקש מאנשי הקשר שלך לארגן OpenPGP.</small></string>
   <string name="pref_general">כללי</string>
-  <string name="pref_xmpp_resource">משאב XMPP</string>
-  <string name="pref_xmpp_resource_summary">השם שבעזרתו לקוח זה מזהה את עצמו</string>
   <string name="pref_accept_files">קבל קבצים</string>
   <string name="pref_accept_files_summary">קבל אוטומטית קבצים שגודלם קטן מ…</string>
   <string name="pref_notifications">התראות</string>
@@ -100,7 +98,6 @@
   <string name="openpgp_error">אפליקציית OpenKeychain דיווחה על שגיאה</string>
   <string name="accept">קבל</string>
   <string name="error">אירעה שגיאה</string>
-  <string name="pref_grant_presence_updates">הענק עדכוני נוכחות</string>
   <string name="your_account">החשבון שלך</string>
   <string name="send_presence_updates">שלח עדכוני נוכחות</string>
   <string name="receive_presence_updates">קבל עדכוני נוכחות</string>
@@ -221,8 +218,6 @@
   <string name="title_pref_quiet_hours_end_time">זמן סיום</string>
   <string name="title_pref_enable_quiet_hours">הפעל \"שעות שקטות\"</string>
   <string name="pref_quiet_hours_summary">ההתראות יושבתו במהלך שעות שקטות</string>
-  <string name="pref_use_larger_font">הגדל גופן</string>
-  <string name="pref_use_larger_font_summary">הגדל גופן בכל האפליקציה</string>
   <string name="pref_use_send_button_to_indicate_status">לחצן השליחה מעיד על הסטטוס</string>
   <string name="pref_use_indicate_received">בקש אימות הגעת הודעות</string>
   <string name="pref_use_indicate_received_summary">יופיע סימן \"וי\" ליד כל הודעה שהתקבלה על ידי איש הקשר, במידה והפעולה נתמכת על ידי איש הקשר.</string>
@@ -315,10 +310,6 @@
   <string name="moderated">Moderated</string>
   <string name="you_are_not_participating">אינך משתתף</string>
   <string name="never">לעולם לא</string>
-  <string name="thirty_minutes">30 דקות</string>
-  <string name="one_hour">שעה אחת</string>
-  <string name="two_hours">2 שעות</string>
-  <string name="eight_hours">8 שעות</string>
   <string name="until_further_notice">עד אחרית הימים</string>
   <string name="pref_enter_is_send">לחצן Enter שולח את ההודעה</string>
   <string name="pref_enter_is_send_summary">השתמש בלחצן ה-Enter כלחצן השליחה</string>
@@ -399,7 +390,6 @@
   </plurals>
   <string name="shared_file_with_x">שתף קובץ בעזרת %s</string>
   <string name="shared_image_with_x">שתף תמונה בעזרת %s</string>
-  <string name="no_storage_permission">‏Conversations זקוקה לגישה לאחסון חיצוני</string>
   <string name="sync_with_contacts">סנכרן עם אנשי קשר</string>
   <string name="sync_with_contacts_long">‏Conversations מבקשת להתאים את רשימת XMPP שלך עם אנשי הקשר שלך כדי להציג את השמות המלאים שלהם כולל אווטארים.\n\nConversations רק תקרא את אנשי הקשר שלך ותתאים אותם באופן מקומי מבלי להעלות אותם לשרת שלך.\n\nכעת אתה תתבקש להעניק הרשאה כדי לגשת להתקן שלך.</string>
 </resources>

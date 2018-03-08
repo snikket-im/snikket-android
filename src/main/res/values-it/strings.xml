@@ -100,8 +100,6 @@
   <string name="no_pgp_keys">Nessuna chiave OpenPGP trovata</string>
   <string name="contacts_have_no_pgp_keys">Conversations non è in grado di cifrare i tuoi messaggi perché i contatti non stanno annunciando la propria chiave pubblica.\n\n<small>Per favore chiedi ai tuoi contatti di configurare OpenPGP.</small></string>
   <string name="pref_general">Generale</string>
-  <string name="pref_xmpp_resource">Risorsa XMPP</string>
-  <string name="pref_xmpp_resource_summary">Il nome con il quale questo client si identifica</string>
   <string name="pref_accept_files">Accetta i file</string>
   <string name="pref_accept_files_summary">Accetta automaticamente i file più piccoli di…</string>
   <string name="pref_attachments">Allegati</string>
@@ -127,8 +125,6 @@
   <string name="openpgp_error">OpenKeychain ha riportato un errore</string>
   <string name="accept">Accetta</string>
   <string name="error">Si è verificato un errore</string>
-  <string name="pref_grant_presence_updates">Concedi aggiornamenti della presenza</string>
-  <string name="pref_grant_presence_updates_summary">Concedi e richiedi preventivamente le sottoscrizioni sulla presenza ai contatti che hai creato</string>
   <string name="your_account">Il tuo account</string>
   <string name="send_presence_updates">Invia aggiornamenti della presenza</string>
   <string name="receive_presence_updates">Ricevi aggiornamenti della presenza</string>
@@ -168,7 +164,6 @@
   <string name="unpublish_pgp">Rimuovi chiave pubblica OpenPGP</string>
   <string name="unpublish_pgp_message">Sei sicuro di volere rimuovere la tua chiave pubblica OpenPGP dalla dichiarazione di presenza?\nI tuoi contatti non potranno più inviarti messaggi cifrati con OpenPGP.</string>
   <string name="openpgp_has_been_published">La chiave pubblica OpenPGP è stata pubblicata.</string>
-  <string name="republish_pgp_keys">Ricorda di ripubblicare le tue chiavi pubbliche OpenPGP!</string>
   <string name="mgmt_account_enable">Abilita utente</string>
   <string name="mgmt_account_are_you_sure">Sei sicuro?</string>
   <string name="mgmt_account_delete_confirm_text">Se elimini il tuo account perderai tutta la cronologia delle conversazioni</string>
@@ -287,8 +282,6 @@
   <string name="title_pref_quiet_hours_end_time">Orario fine</string>
   <string name="title_pref_enable_quiet_hours">Abilita ore di quiete</string>
   <string name="pref_quiet_hours_summary">Le notifiche verranno silenziate durante le ore di quiete</string>
-  <string name="pref_use_larger_font">Aumenta la dimensione dei caratteri</string>
-  <string name="pref_use_larger_font_summary">Usa font più grandi in tutta l’app</string>
   <string name="pref_use_send_button_to_indicate_status">Il pulsante di invio indica lo stato</string>
   <string name="pref_use_indicate_received">Richiedi la ricevuta di ritorno</string>
   <string name="pref_use_indicate_received_summary">I messaggi ricevuti verranno contrassegnati con una spunta verde se supportato</string>
@@ -415,10 +408,6 @@
   <string name="modified_conference_options">Opzioni della chat di gruppo modificate!</string>
   <string name="could_not_modify_conference_options">Impossibile modificare le opzioni della chat di gruppo</string>
   <string name="never">Mai</string>
-  <string name="thirty_minutes">30 minuti</string>
-  <string name="one_hour">1 ora</string>
-  <string name="two_hours">2 ore</string>
-  <string name="eight_hours">8 ore</string>
   <string name="until_further_notice">Fino a nuovo avviso</string>
   <string name="snooze">Ritarda</string>
   <string name="reply">Rispondi</string>
@@ -477,7 +466,6 @@
   <string name="choose_quick_action">Scegli azione rapida</string>
   <string name="search_for_contacts_or_groups">Cerca contatti o gruppi</string>
   <string name="send_private_message">Invia messaggio privato</string>
-  <string name="user_has_left_conference">%s ha lasciato la chat di gruppo!</string>
   <string name="username">Utente</string>
   <string name="username_hint">Utente</string>
   <string name="invalid_username">Questo non è un nome utente valido</string>
@@ -489,7 +477,6 @@
   <string name="account_status_bind_failure">Bind fallito</string>
   <string name="account_status_host_unknown">Server non responsabile per il dominio</string>
   <string name="server_info_broken">Rotto</string>
-  <string name="pref_presence_settings">Presenza</string>
   <string name="pref_away_when_screen_off">\"Non disponibile\" a schermo spento</string>
   <string name="pref_away_when_screen_off_summary">Imposta la tua risorsa come non disponibile quando lo schermo è spento</string>
   <string name="pref_dnd_on_silent_mode">\"Non disturbare\" in modalità silenziosa</string>
@@ -532,7 +519,6 @@
   <string name="shared_image_with_x">Immagine condivisa con %s</string>
   <string name="shared_images_with_x">Immagini condivise con %s</string>
   <string name="shared_text_with_x">Testo condiviso con %s</string>
-  <string name="no_storage_permission">Conversations necessita di accesso alla memoria esterna</string>
   <string name="sync_with_contacts">Sincronizza con i contatti</string>
   <string name="sync_with_contacts_long">Conversations vuole confrontare il tuo roster XMPP con i tuoi contatti per mostrare i loro nomi ed avatar.\n\nConversations leggerà solamente i contatti e li confronterà localmente senza caricarli sul server.\n\nTi verrà ora chiesto il permesso di accedere ai tuoi contatti.</string>
   <string name="certificate_information">Informazioni del certificato</string>
@@ -566,14 +552,11 @@
   <string name="security_error_invalid_file_access">Errore di sicurezza: accesso file non valido</string>
   <string name="no_application_to_share_uri">Nessuna applicazione trovata per condividere l\'URI</string>
   <string name="share_uri_with">Condividi l\'URI con...</string>
-  <string name="welcome_text">XMPP è un protocollo che non dipende da un provider. Puoi usare questo client con qualsiasi server XMPP scelto.\nTuttavia per comodità abbiamo semplificato la creazione di un account su conversations.im¹; un provider particolarmente adatto all\'uso con Conversations.</string>
   <string name="magic_create_text">Ti guideremo nel processo di creazione di un account su conversations.im.¹\nQuando scegli conversations.im come provider potrai comunicare con utenti di altri provider dando il tuo ID Jabber completo.</string>
   <string name="your_full_jid_will_be">Il tuo ID Jabber completo sarà: %s</string>
   <string name="create_account">Crea account</string>
   <string name="use_own_provider">Usa un altro provider</string>
   <string name="pick_your_username">Scegli il tuo nome utente</string>
-  <string name="pref_manually_change_presence">Cambia la presenza manualmente</string>
-  <string name="pref_manually_change_presence_summary">Tocca il tuo avatar per cambiare la presenza</string>
   <string name="change_presence">Cambia la presenza</string>
   <string name="status_message">Messaggio di stato</string>
   <string name="all_accounts_on_this_device">Imposta per tutti gli account del dispositivo</string>
@@ -659,14 +642,8 @@
   <string name="i_followed_this_link_from_a_trusted_source">Ho seguito questo link da una fonte fidata</string>
   <string name="verifying_omemo_keys_trusted_source">Stai per verificare le chiavi OMEMO di %1$s cliccando un link. Questo metodo è sicuro solo se hai seguito il link da una fonte fidata dove solo %2$s può averlo pubblicato.</string>
   <string name="verify_omemo_keys">Verifica chiavi OMEMO</string>
-  <string name="show_inactive_devices">Mostra dispositivi inattivi</string>
-  <string name="hide_inactive_devices">Nascondi dispositivi inattivi</string>
   <string name="distrust_omemo_key">Diffida il dispositvo</string>
   <string name="distrust_omemo_key_text">Sei sicuro di volere rimuovere la verifica per questo dispositivo?\nIl dispositivo e i messaggi provenienti da esso verranno segnati come non fidati.</string>
-  <string name="timeout_24_hours">24 ore</string>
-  <string name="timeout_7_days">7 giorni</string>
-  <string name="timeout_30_days">30 giorni</string>
-  <string name="timeout_6_months">6 mesi</string>
   <string name="pref_automatically_delete_messages">Eliminazione automatica messaggi</string>
   <string name="pref_automatically_delete_messages_description">Elimina automaticamente da questo dispositivo i messaggi più vecchi del lasso di tempo configurato.</string>
   <string name="encrypting_message">Cifratura del messaggio</string>

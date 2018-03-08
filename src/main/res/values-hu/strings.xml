@@ -100,8 +100,6 @@
   <string name="no_pgp_keys">Nem talált OpenPGP kulcsokat</string>
   <string name="contacts_have_no_pgp_keys">A Conversations nem képes titkosítani az üzeneteket, mert az ismerősei nem jelentik be a nyilvános kulcsaikat.\n\n<small> Kérje meg az ismerőseit, hogy állítsák be az OpenPGP-t.</small></string>
   <string name="pref_general">Általános</string>
-  <string name="pref_xmpp_resource">XMPP erőforrás</string>
-  <string name="pref_xmpp_resource_summary">A név amivel a kliens azonosítja magát</string>
   <string name="pref_accept_files">Fájlok fogadása</string>
   <string name="pref_accept_files_summary">Automatikusan fogadjon ennél kisebb fájlokat...</string>
   <string name="pref_attachments">Csatolmányok</string>
@@ -127,8 +125,6 @@
   <string name="openpgp_error">Az OpenKeychain hibát jelzett</string>
   <string name="accept">Elfogad</string>
   <string name="error">Hiba történt</string>
-  <string name="pref_grant_presence_updates">Állapot frissítések megadása</string>
-  <string name="pref_grant_presence_updates_summary">Általad létrehozott kapcsolatok esetében, előre megadja és kéri az állapot-információkat</string>
   <string name="your_account">Fiókod</string>
   <string name="send_presence_updates">Állapot frissítések küldése</string>
   <string name="receive_presence_updates">Állapot frissítések fogadása</string>
@@ -168,7 +164,6 @@
   <string name="unpublish_pgp">OpenPGP nyilvános kulcs eltávolítása</string>
   <string name="unpublish_pgp_message">Biztosan eltávolítja az OpenPGP nyilvános kulcsát a jelenléti bejelentésből?\nA kapcsolatai többé nem tudnak OpenPGP titkosított üzeneteket küldeni Önnek.</string>
   <string name="openpgp_has_been_published">OpenPGP publikus kulcs meg lett adva.</string>
-  <string name="republish_pgp_keys">Ne felejtsd el újra publikálni az OpenPGP kulcsaidat!</string>
   <string name="mgmt_account_enable">Fiók bekapcsolása</string>
   <string name="mgmt_account_are_you_sure">Biztos vagy ebben?</string>
   <string name="mgmt_account_delete_confirm_text">Ha törli fiókját, az egész beszélgetési előzménye elvész</string>
@@ -287,8 +282,6 @@
   <string name="title_pref_quiet_hours_end_time">Befejezése</string>
   <string name="title_pref_enable_quiet_hours">Csöndes órák engedélyezése</string>
   <string name="pref_quiet_hours_summary">Értesítések el lesznek némítva a csöndes órákban</string>
-  <string name="pref_use_larger_font">Betűméret növelése</string>
-  <string name="pref_use_larger_font_summary">Az egész programban használjon nagyobb betűméretet</string>
   <string name="pref_use_send_button_to_indicate_status">A küldés gomb jelzi az állapotot</string>
   <string name="pref_use_indicate_received">Üzenet nyugták kérése</string>
   <string name="pref_use_indicate_received_summary">A megkapott üzenetek egy zöld pipával lesznek jelölve ha támogatott ez a funkció</string>
@@ -415,10 +408,6 @@
   <string name="modified_conference_options">Módosította a konferencia beállításokat!</string>
   <string name="could_not_modify_conference_options">Nem tudta módosítani a konferencia beállításokat!</string>
   <string name="never">Soha</string>
-  <string name="thirty_minutes">30 perc</string>
-  <string name="one_hour">1 óra</string>
-  <string name="two_hours">2 óra</string>
-  <string name="eight_hours">8 óra</string>
   <string name="until_further_notice">További értesítésig</string>
   <string name="snooze">Szundi</string>
   <string name="reply">Válasz</string>
@@ -477,7 +466,6 @@
   <string name="choose_quick_action">Gyors gomb funkciója</string>
   <string name="search_for_contacts_or_groups">Keresés a címek között</string>
   <string name="send_private_message">Privát üzenet küldése</string>
-  <string name="user_has_left_conference">%s elhagyta a konferenciát!</string>
   <string name="username">Felhasználónév</string>
   <string name="username_hint">Felhasználónév</string>
   <string name="invalid_username">Ez nem egy érvényes felhasználónév</string>
@@ -489,7 +477,6 @@
   <string name="account_status_bind_failure">Bind hiba</string>
   <string name="account_status_host_unknown">A szerver nem felel a domain-ért</string>
   <string name="server_info_broken">Hibás</string>
-  <string name="pref_presence_settings">Jelenlét</string>
   <string name="pref_away_when_screen_off">\"Távol\" állapot lezárt telefonnál</string>
   <string name="pref_away_when_screen_off_summary">Kikapcsolt képernyőnél a neved alatt egy \"távol\" címke látható</string>
   <string name="pref_dnd_on_silent_mode">\"Ne zavarjon\" csöndes módban</string>
@@ -532,7 +519,6 @@
   <string name="shared_image_with_x">%s partnerrel képet osztott meg</string>
   <string name="shared_images_with_x">%s partnerrel képeket osztott meg</string>
   <string name="shared_text_with_x">%s partnerrel szöveget osztott meg</string>
-  <string name="no_storage_permission">A Conversations-nek hozzáférést kell biztosítani a külső tárhelyhez</string>
   <string name="sync_with_contacts">Szinkronizáljon a névjegyekkel</string>
   <string name="sync_with_contacts_long">A Conversations szeretné megfeleltetni az XMPP névsort a névjegyeivel, hogy megmutassa a teljes nevet és arcképet.\n\nA Conversations csak olvassa a névjegyeit és helyileg felelteti meg őket anélkül, hogy feltöltené azokat a szerverre.\n\nMost meg lesz kérdezve, hogy engedélyezi-e a névjegyekhez való hozzáférést.</string>
   <string name="certificate_information">Tanúsítványinformáció</string>
@@ -566,14 +552,11 @@
   <string name="security_error_invalid_file_access">Biztonsági hiba: Érvénytelen fájl hozzáférés</string>
   <string name="no_application_to_share_uri">Nem találtunk URI-t használó alkalmazást</string>
   <string name="share_uri_with">Megosztás URI-ként</string>
-  <string name="welcome_text">Az XMPP egy szolgáltató független protokoll. Ezt az ügyfél programot bármelyik XMPP szerverhez használhatja.\nDe a könnyebbség kedvéért létrehozhat egy fiókot a conversations.im¹ szolgáltatón is; ami kifejezetten a Conversations programmal való használatra lett tervezve.</string>
   <string name="magic_create_text">Végigvezetjük a fiók létrehozás folyamatán a conversations.im-en.¹ \ nHa a conversations.im-et választja szolgáltatójának, akkor képes lesz kommunikálni a más szolgáltatóknál lévő felhasználókkal, ha megadja nekik a teljes Jabber azonosítóját.</string>
   <string name="your_full_jid_will_be">A teljes Jabber azonosítód ez lesz: %s</string>
   <string name="create_account">Fiók létrehozása</string>
   <string name="use_own_provider">Saját szolgáltató használata</string>
   <string name="pick_your_username">Válassz felhasználónevet</string>
-  <string name="pref_manually_change_presence">Manuális jelenlét beállítás</string>
-  <string name="pref_manually_change_presence_summary">Érintsd meg a képed a jelenlét megváltoztatásához</string>
   <string name="change_presence">Jelenlét megváltoztatása</string>
   <string name="status_message">Állapotüzenet</string>
   <string name="all_accounts_on_this_device">Állítsa be az összes fiókhoz ezen az eszközön</string>
@@ -659,14 +642,8 @@
   <string name="i_followed_this_link_from_a_trusted_source">Egy megbízható forrásból követtem ezt a linket</string>
   <string name="verifying_omemo_keys_trusted_source">A linkre kattintás után %1$s OMEMO kulcsát ellenőrizni fogja. Ez csak akkor biztonságos, ha ezt a linket egy megbízható forrásból kapta, ahol csak %2$s tudta közzétenni ezt a linket.</string>
   <string name="verify_omemo_keys">OMEMO kulcsok ellenőrzése</string>
-  <string name="show_inactive_devices">Inaktív eszközök listája</string>
-  <string name="hide_inactive_devices">Inaktívak listájának elrejtése</string>
   <string name="distrust_omemo_key">Ne bízzon az eszközben</string>
   <string name="distrust_omemo_key_text">Biztos benne, hogy el szeretné távolítani az eszköz ellenőrzését?\nAz eszköz és az eszközről érkező üzenetek nem megbízhatóak lesznek ezentúl.</string>
-  <string name="timeout_24_hours">24 óra</string>
-  <string name="timeout_7_days">7 nap</string>
-  <string name="timeout_30_days">30 nap</string>
-  <string name="timeout_6_months">6 hónap</string>
   <string name="pref_automatically_delete_messages">Automatikus üzenet törlés</string>
   <string name="pref_automatically_delete_messages_description">Automatikusan törli az üzeneteket az eszközön, amennyiben régebbiek, mint a beállított időkeret.</string>
   <string name="encrypting_message">Üzenet titkosítása</string>

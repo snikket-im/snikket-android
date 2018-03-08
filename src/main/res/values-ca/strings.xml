@@ -98,8 +98,6 @@
   <string name="no_pgp_keys">No hi ha claus OPENPGP trobades</string>
   <string name="contacts_have_no_pgp_keys">Coversations no és possible xifrar les teves converses perquè els teus contactes no han mostrat la seva clau pública.\n\n<small> Si us plau, pregunti als seus contactes per configurar OpenPGP .</small></string>
   <string name="pref_general">General</string>
-  <string name="pref_xmpp_resource">Recursos XMPP</string>
-  <string name="pref_xmpp_resource_summary">El nom que identifica aquest client amb</string>
   <string name="pref_accept_files">Acceptar fitxers</string>
   <string name="pref_accept_files_summary">Accepta fitxers automàticament amb una mida menor a…</string>
   <string name="pref_attachments">Fitxers adjunts</string>
@@ -125,8 +123,6 @@
   <string name="openpgp_error">OpenKeychain ha reportat un error</string>
   <string name="accept">Acceptar</string>
   <string name="error">Un error ha passat</string>
-  <string name="pref_grant_presence_updates">Concedir actualitzacions</string>
-  <string name="pref_grant_presence_updates_summary">Concedeix i sol·liciteu preferentment subscripcions de presència per als contactes que hàgiu creat</string>
   <string name="your_account">El teu compte</string>
   <string name="send_presence_updates">Enviar actualitzacions de presència</string>
   <string name="receive_presence_updates">Rebre actualitzacions</string>
@@ -166,7 +162,6 @@
   <string name="unpublish_pgp">Treu la clau pública OpenPGP</string>
   <string name="unpublish_pgp_message">Esteu segur que voleu eliminar la vostra clau pública OpenPGP de l\'anunci de la vostra presència?\nEls vostres contactes ja no podran enviar missatges xifrats amb OpenPGP.</string>
   <string name="openpgp_has_been_published">S\'ha publicat la clau pública OpenPGP.</string>
-  <string name="republish_pgp_keys">Recordeu tornar a publicar les vostres claus públiques de OpenPGP.</string>
   <string name="mgmt_account_enable">Habilitar compte</string>
   <string name="mgmt_account_are_you_sure">Estàs segur?</string>
   <string name="mgmt_account_delete_confirm_text">Si suprimiu el vostre compte, es perdrà tot l\'historial de la conversa</string>
@@ -283,8 +278,6 @@
   <string name="title_pref_quiet_hours_end_time">Hora de finalització</string>
   <string name="title_pref_enable_quiet_hours">Habilitar hores de silenci</string>
   <string name="pref_quiet_hours_summary">Les notificacions seràn silenciades a les hores de silenci</string>
-  <string name="pref_use_larger_font">Augmentar el tamany de la font.</string>
-  <string name="pref_use_larger_font_summary">Utilitzar la mida més gran de les lletres per a tota l\'aplicació</string>
   <string name="pref_use_send_button_to_indicate_status">Botó d\'indicació de l\'estatus enviar</string>
   <string name="pref_use_indicate_received">Rebuts de sol.licituds dels missatges</string>
   <string name="pref_use_indicate_received_summary">Els missatges rebuts seràn marcats amb uns ticks verds si ho admet</string>
@@ -414,10 +407,6 @@ mentrestant.</string>
   <string name="modified_conference_options">S\'han modificat les opcions de xat en grup.</string>
   <string name="could_not_modify_conference_options">No s\'han pogut modificar les opcions de xat de grup</string>
   <string name="never">Mai</string>
-  <string name="thirty_minutes">30 minuts</string>
-  <string name="one_hour">1 hora</string>
-  <string name="two_hours">2 Hores</string>
-  <string name="eight_hours">8 Hores</string>
   <string name="until_further_notice">Fins nou avís</string>
   <string name="pref_input_options">Entrada</string>
   <string name="pref_enter_is_send">Entra per enviar</string>
@@ -473,7 +462,6 @@ mentrestant.</string>
   <string name="choose_quick_action">Trieu una acció ràpida</string>
   <string name="search_for_contacts_or_groups">Cerca contactes o grups</string>
   <string name="send_private_message">Envia un missatge privat</string>
-  <string name="user_has_left_conference">%sha deixat el xat en grup! </string>
   <string name="username">Nom d\'usuari</string>
   <string name="username_hint">Nom d\'usuari</string>
   <string name="invalid_username">Aquest no és un nom d\'usuari vàlid</string>
@@ -485,7 +473,6 @@ mentrestant.</string>
   <string name="account_status_bind_failure"> Vincular el error</string>
   <string name="account_status_host_unknown">El servidor no es fa responsable del domini</string>
   <string name="server_info_broken">Trencat</string>
-  <string name="pref_presence_settings">Presència</string>
   <string name="pref_away_when_screen_off">Fora quan la pantalla està apagada</string>
   <string name="pref_away_when_screen_off_summary">Marqueu el vostre recurs quan la pantalla estigui desactivada</string>
   <string name="pref_dnd_on_silent_mode">\"No molesteu\" en modo silenciós</string>
@@ -528,7 +515,6 @@ mentrestant.</string>
   <string name="shared_image_with_x">Imatge compartida amb %s</string>
   <string name="shared_images_with_x">Imatges compartides amb %s</string>
   <string name="shared_text_with_x">Text compartit amb %s</string>
-  <string name="no_storage_permission">Les converses necessiten accés a emmagatzematge extern</string>
   <string name="sync_with_contacts">Sincronitza amb contactes</string>
   <string name="sync_with_contacts_long">Conversations vol coincidir amb la vostra llista XMPP amb els vostres contactes per 
 mostrar els noms i avatars complets.\n\nConversations només 
@@ -570,7 +556,6 @@ missatges.\n\nAra se us demanarà que desactiveu-las.</string>
   <string name="security_error_invalid_file_access">Error de seguretat: accés d\'arxiu no vàlid</string>
   <string name="no_application_to_share_uri">No s\'ha trobat cap aplicació que comparteixi URI</string>
   <string name="share_uri_with">Comparteix l\'URI amb...</string>
-  <string name="welcome_text">XMPP és un protocol independent del proveïdor. Podeu utilitzar aquest client amb el servidor XMPP que trieu.\nPerò per a la vostra comoditat, hem facilitat crear un compte a conversations.im¹; un proveïdor especialment indicat per a l\'ús amb Conversations.</string>
   <string name="magic_create_text">Us guiarem pel procés de creació d\'un compte a conversations.im.¹\nQuan 
 trieu conversations.im com a proveïdor, podreu comunicar-vos amb els usuaris 
 d\'altres proveïdors donant-los la vostra ID Jabber completa.</string>
@@ -578,8 +563,6 @@ d\'altres proveïdors donant-los la vostra ID Jabber completa.</string>
   <string name="create_account">Crear compte</string>
   <string name="use_own_provider">Utilitza el meu propi proveïdor</string>
   <string name="pick_your_username">Tria el teu nom d\'usuari</string>
-  <string name="pref_manually_change_presence">Canvia la presència manualment</string>
-  <string name="pref_manually_change_presence_summary">Toca el teu avatar per canviar la teva presència</string>
   <string name="change_presence">Canvi de presència</string>
   <string name="status_message">Missatge d\'estat</string>
   <string name="all_accounts_on_this_device">Estableix per a tots els comptes d\'aquest dispositiu</string>
@@ -666,14 +649,8 @@ d\'altres proveïdors donant-los la vostra ID Jabber completa.</string>
   <string name="i_followed_this_link_from_a_trusted_source">He seguit aquest enllaç des d\'una font de confiança</string>
   <string name="verifying_omemo_keys_trusted_source">Esteu a punt de verificar les claus OMEMO de %1$sdesprés de fer clic a un enllaç. Això només és segur si seguiu aquest enllaç des d\'una font de confiança on només %2$s podria haver publicat aquest enllaç.</string>
   <string name="verify_omemo_keys">Comproveu les claus OMEMO</string>
-  <string name="show_inactive_devices">Mostra dispositius inactius</string>
-  <string name="hide_inactive_devices">Amaga els dispositius inactius</string>
   <string name="distrust_omemo_key">Dispositiu no confiable</string>
   <string name="distrust_omemo_key_text">Estàs segur que vols eliminar la verificació d\'aquest dispositiu?\nAquest dispositiu i missatges procedents d\'aquest dispositiu es marcaran com a no confiables.</string>
-  <string name="timeout_24_hours">24 hores</string>
-  <string name="timeout_7_days">7 dies</string>
-  <string name="timeout_30_days">30 dies</string>
-  <string name="timeout_6_months">6 mesos</string>
   <string name="pref_automatically_delete_messages">Supressió de missatge automàtic</string>
   <string name="pref_automatically_delete_messages_description">Suprimiu automàticament missatges d\'aquest dispositiu que són més grans que el marc de temps configurat.</string>
   <string name="encrypting_message">Xifrant el missatge</string>

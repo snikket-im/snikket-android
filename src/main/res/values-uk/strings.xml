@@ -94,8 +94,6 @@
   <string name="no_pgp_keys">Не знайдено жодного OpenPGP ключа</string>
   <string name="contacts_have_no_pgp_keys">Не вдалося розшифрувати повідомлення, оскільки контакт не повідомляє свого публічного ключа.\n\n<small>Будь ласка, попросіть контакт налаштувати OpenPGP.</small></string>
   <string name="pref_general">Загальне</string>
-  <string name="pref_xmpp_resource">Ідентифікатор XMPP</string>
-  <string name="pref_xmpp_resource_summary">Ім\'я, з яким цей клієнт себе ідентифікує</string>
   <string name="pref_accept_files">Приймати файли</string>
   <string name="pref_accept_files_summary">Автоматично приймати файли менші за…</string>
   <string name="pref_attachments">Вкладення</string>
@@ -121,8 +119,6 @@
   <string name="openpgp_error">OpenKeychain відзвітував про помилку</string>
   <string name="accept">Прийняти</string>
   <string name="error">Сталася помилка</string>
-  <string name="pref_grant_presence_updates">Давати оновлення про присутність</string>
-  <string name="pref_grant_presence_updates_summary">Одразу надвати й запитувати підписку на пристуність для контактів, які ви створюєте</string>
   <string name="your_account">Ваш обліковий запис</string>
   <string name="send_presence_updates">Надсилати оновлення про присутність</string>
   <string name="receive_presence_updates">Отримувати оновлення про присутність</string>
@@ -162,7 +158,6 @@
   <string name="unpublish_pgp">Видалити публічний ключ OpenPGP</string>
   <string name="unpublish_pgp_message">Ви впевнені, що хочете видалити ваш публічний ключ OpenPGP з вашого оголошення про присутність?\nВаші контакти більше не зможуть надсилати вам повідомлення, зашифровані OpenPGP.</string>
   <string name="openpgp_has_been_published">Публічний ключ OpenPGP опубліковано.</string>
-  <string name="republish_pgp_keys">Не забудьте переопублікувати Ваші публічні ключі OpenPGP!</string>
   <string name="mgmt_account_enable">Увімкнути обліковий запис</string>
   <string name="mgmt_account_are_you_sure">Ви впевнені?</string>
   <string name="mgmt_account_delete_confirm_text">Якщо ви видалите ваш обліковий запис, буде втрачено всю історію листування</string>
@@ -268,8 +263,6 @@
   <string name="title_pref_quiet_hours_end_time">Час завершення</string>
   <string name="title_pref_enable_quiet_hours">Задіяти години тиші</string>
   <string name="pref_quiet_hours_summary">Сповіщення не звучатимуть під час годин тиші</string>
-  <string name="pref_use_larger_font">Збільшити розмір шрифту</string>
-  <string name="pref_use_larger_font_summary">Використовувати більші розміри шрифтів у всій програмі</string>
   <string name="pref_use_send_button_to_indicate_status">Кнопка відправки показує стан</string>
   <string name="pref_use_indicate_received">Просити повідомлення про доставку</string>
   <string name="pref_use_indicate_received_summary">Отримані повідомлення будуть позначені зеленою галочкою, якщо ця функція підтримується</string>
@@ -375,10 +368,6 @@
   <string name="moderated">Модеровано</string>
   <string name="you_are_not_participating">Ви не берете участі</string>
   <string name="never">Ніколи</string>
-  <string name="thirty_minutes">30 хвилин</string>
-  <string name="one_hour">1 година</string>
-  <string name="two_hours">2 години</string>
-  <string name="eight_hours">8 годин</string>
   <string name="until_further_notice">До наступного повідомлення</string>
   <string name="pref_input_options">Введення</string>
   <string name="pref_enter_is_send">Enter для відправки</string>
@@ -446,7 +435,6 @@
   <string name="account_status_bind_failure">Прив\'язка не спрацювала</string>
   <string name="account_status_host_unknown">Сервер не відповідає за домен</string>
   <string name="server_info_broken">Поламано</string>
-  <string name="pref_presence_settings">Присутність</string>
   <string name="pref_away_when_screen_off">Відійшов, якщо екран викнуто</string>
   <string name="pref_away_when_screen_off_summary">Показувати стан як відійшов, якщо екран вимкнуто</string>
   <string name="pref_dnd_on_silent_mode">\"Не турбувати\" в режимі тиші</string>
@@ -490,7 +478,6 @@
   <string name="shared_image_with_x">Поділився зображенням з %s</string>
   <string name="shared_images_with_x">Поділився зображеннями з %s</string>
   <string name="shared_text_with_x">Поділився текстом з %s</string>
-  <string name="no_storage_permission">Програма потребує доступу до зовнішнього сховища даних</string>
   <string name="sync_with_contacts">Синхронізувати контакти</string>
   <string name="sync_with_contacts_long">Програма хоче співставити Ваш список XMPP розмов з вашою книгою контактів, щоб показати повні імена та аватари контактів.\n\nПрограма лише прочитає Ваші контакти і співставить їх локально без завантаження їх до Вашого сервера.\n\nЗараз Вас попросять надати дозвіл для доступу до Ваших контактів.</string>
   <string name="certificate_information">Інформація про сертифікат</string>
@@ -523,14 +510,11 @@
   <string name="security_error_invalid_file_access">Помилка безпеки: Недійсний доступ до файлу</string>
   <string name="no_application_to_share_uri">Не знайдено програми, щоб поділитися URI</string>
   <string name="share_uri_with">Поділитися URI з…</string>
-  <string name="welcome_text">XMPP — це протокол, який не залежить від постачальника послуг. Ви можете використовувати цю програму з будь-яким постачальником послуг XMPP, якого оберете.\nАле для вашої зручності, ми забезпечили вас простим способом створити новий обліковий запис на conversations.im¹; це ресурс, який особливо прилаштований для використання з програмою Conversations.</string>
   <string name="magic_create_text">Ми допоможемо вам крок за кроком створити обліковий запис на conversations.im.¹\nОбравши conversations.im постачальником послуг, ви зможете спілкуватися з користувачами інших постачальників, надавши їм ваш повний Jabber ID.</string>
   <string name="your_full_jid_will_be">Ваш повний Jabber ID буде: %s</string>
   <string name="create_account">Створити обліковий запис</string>
   <string name="use_own_provider">Використати мого власного провайдера</string>
   <string name="pick_your_username">Оберіть Ваше ім\'я користувача</string>
-  <string name="pref_manually_change_presence">Змінити присутність вручну</string>
-  <string name="pref_manually_change_presence_summary">Токніться Вашого аватара, щоб змінити Вашу присутність</string>
   <string name="change_presence">Змінити присутність</string>
   <string name="status_message">Повідомлення статусу</string>
   <string name="all_accounts_on_this_device">Задати для всіх облікових записі на цьому пристрої</string>
@@ -610,14 +594,8 @@
   <string name="i_followed_this_link_from_a_trusted_source">Я прослідував за цим посиланням від довіреного джерела</string>
   <string name="verifying_omemo_keys_trusted_source">Ви збираєтеся підтвердити ключі OMEMO для %1$s після переходу за посиланням. Це безпечно, лише якщо ви отримали посилання з довіреного джерела, де лише %2$s міг опублікувати це посилання.</string>
   <string name="verify_omemo_keys">Підтвердити ключі OMEMO</string>
-  <string name="show_inactive_devices">Показати неактивні пристрої</string>
-  <string name="hide_inactive_devices">Приховати неактивні пристрої</string>
   <string name="distrust_omemo_key">Недовіряти пристрою</string>
   <string name="distrust_omemo_key_text">Ви певні, що більше не довіряєте цьому пристрою?\nЦей пристрій і повідомлення з нього будуть позначатися як недовірені.</string>
-  <string name="timeout_24_hours">24 години</string>
-  <string name="timeout_7_days">7 днів</string>
-  <string name="timeout_30_days">30 днів</string>
-  <string name="timeout_6_months">6 місяців</string>
   <string name="pref_automatically_delete_messages">Автоматичне видалення повідомлень</string>
   <string name="pref_automatically_delete_messages_description">Автоматично видаляти повідомлення з цього пристрою, старіші за вказаний часовий проміжок.</string>
   <string name="encrypting_message">Зашифровую повідомлення</string>

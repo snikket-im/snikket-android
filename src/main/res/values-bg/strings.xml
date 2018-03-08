@@ -100,8 +100,6 @@
   <string name="no_pgp_keys">Не са открити OpenPGP ключове</string>
   <string name="contacts_have_no_pgp_keys">Conversations не може да шифрова съобщенията Ви, тъй като Вашите контакти не обявяват публичните си ключове.\n\n<small>Моля, помолете го да инсталират и настроят OpenPGP.</small></string>
   <string name="pref_general">Общи</string>
-  <string name="pref_xmpp_resource">XMPP ресурс</string>
-  <string name="pref_xmpp_resource_summary">Името, с което се определя този клиент</string>
   <string name="pref_accept_files">Приемане на файлове</string>
   <string name="pref_accept_files_summary">Автоматично приемане на файлове с размер, по-малък от…</string>
   <string name="pref_attachments">Притурки</string>
@@ -127,8 +125,6 @@
   <string name="openpgp_error">OpenKeychain докладва за грешка</string>
   <string name="accept">Приемане</string>
   <string name="error">Възникна грешка</string>
-  <string name="pref_grant_presence_updates">Позволяване на актуализации на присъствието</string>
-  <string name="pref_grant_presence_updates_summary">Предварително позволяване и изискване на абонамент за присъствието за контактите, създадени от Вас</string>
   <string name="your_account">Вашият профил</string>
   <string name="send_presence_updates">Изпращане на актуализации за присъствието</string>
   <string name="receive_presence_updates">Получаване на актуализации за присъствието</string>
@@ -168,7 +164,6 @@
   <string name="unpublish_pgp">Премахване на публичния OpenPGP ключ</string>
   <string name="unpublish_pgp_message">Наистина ли искате да премахнете своя публичен OpenPGP ключ от известяването си за присъствие?\nКонтактите Ви вече няма да могат да Ви изпращат съобщение, шифровани чрез OpenPGP.</string>
   <string name="openpgp_has_been_published">Публичният OpenPGP ключ беше публикуван.</string>
-  <string name="republish_pgp_keys">Запомнете, че трябва да публикувате повторно своите публични OpenPGP ключове!</string>
   <string name="mgmt_account_enable">Активиране на профила</string>
   <string name="mgmt_account_are_you_sure">Сигурни ли сте?</string>
   <string name="mgmt_account_delete_confirm_text">Ако изтриете профила си, ще загубите цялата история на разговорите си</string>
@@ -287,8 +282,6 @@
   <string name="title_pref_quiet_hours_end_time">Край</string>
   <string name="title_pref_enable_quiet_hours">Включване на тихите часове</string>
   <string name="pref_quiet_hours_summary">Известията ще бъдат заглушени по време на тихите часове</string>
-  <string name="pref_use_larger_font">Голям размер на шрифта</string>
-  <string name="pref_use_larger_font_summary">Използване на по-голям размер на шрифтовете в цялото приложение</string>
   <string name="pref_use_send_button_to_indicate_status">Бутонът за изпращане показва състоянието</string>
   <string name="pref_use_indicate_received">Изискване на отчет за съобщенията</string>
   <string name="pref_use_indicate_received_summary">Получените съобщения ще бъдат отбелязани със зелена отметка, ако това се поддържа</string>
@@ -415,10 +408,6 @@
   <string name="modified_conference_options">Настройките на груповия разговор бяха променени!</string>
   <string name="could_not_modify_conference_options">Неуспешна промяна на настройките на груповия разговор</string>
   <string name="never">Никога</string>
-  <string name="thirty_minutes">30 минути</string>
-  <string name="one_hour">1 час</string>
-  <string name="two_hours">2 часа</string>
-  <string name="eight_hours">8 часа</string>
   <string name="until_further_notice">До отмяна</string>
   <string name="snooze">Отлагане</string>
   <string name="reply">Отговаряне</string>
@@ -477,7 +466,6 @@
   <string name="choose_quick_action">Изберете бързо действие</string>
   <string name="search_for_contacts_or_groups">Търсене на контакти или групи</string>
   <string name="send_private_message">Изпращане на лично съобщение</string>
-  <string name="user_has_left_conference">%s напусна груповия разговор!</string>
   <string name="username">Потребителско име</string>
   <string name="username_hint">Потребителско име</string>
   <string name="invalid_username">Това не е правилно потребителско име</string>
@@ -489,7 +477,6 @@
   <string name="account_status_bind_failure">Грешка при свързване</string>
   <string name="account_status_host_unknown">Сървърът не отговаря за домейна</string>
   <string name="server_info_broken">Повредено</string>
-  <string name="pref_presence_settings">Присъствие</string>
   <string name="pref_away_when_screen_off">Отсъстващ, когато екранът е изключен</string>
   <string name="pref_away_when_screen_off_summary">Преминава в състояние „отсъстващ“ когато екранът бъде изключен</string>
   <string name="pref_dnd_on_silent_mode">„Отпочиващ“ в тих режим</string>
@@ -532,7 +519,6 @@
   <string name="shared_image_with_x">Изображението е споделено с %s</string>
   <string name="shared_images_with_x">Изображения, споделени с %s</string>
   <string name="shared_text_with_x">Текстът е споделен с %s</string>
-  <string name="no_storage_permission">Conversations се нуждае от достъп до външно място за съхранение</string>
   <string name="sync_with_contacts">Синхронизиране с контактите</string>
   <string name="sync_with_contacts_long">Conversations иска да съчетае Вашия списък в XMPP с контактите Ви, за да показва пълните им имена и снимки..\n\nConversations единствено ще чете контактите Ви и ще ги използва вътрешно, без да ги качва на сървъра Ви.\n\nЩе бъдете помолен/а за позволение за достъп до контактите Ви.</string>
   <string name="certificate_information">Информация за сертификата</string>
@@ -566,14 +552,11 @@
   <string name="security_error_invalid_file_access">Грешка в сигурността: неправилен достъп до файл</string>
   <string name="no_application_to_share_uri">Няма намерено приложение за споделяне на адреса</string>
   <string name="share_uri_with">Споделяне на адреса с…</string>
-  <string name="welcome_text">XMPP е протокол, който не е обвързан с конкретен доставчик. Можете да използвате клиента с всеки сървър, който работи с протокола XMPP.\nЗа Ваше удобство, ние предоставяме лесен начин да си създадете профил в conversations.im¹ — сървър, пригоден да работи добре с Conversations.</string>
   <string name="magic_create_text">Ще преминем заедно с Вас през процеса за създаване на профил в conversations.im.¹\nАко изберете да използвате conversations.im, ще можете да общувате с потребители, използващи други сървъри, като им дадете своя пълен Jabber идентификатор.</string>
   <string name="your_full_jid_will_be">Вашият пълен Jabber идентификатор ще бъде: %s</string>
   <string name="create_account">Създаване на профил</string>
   <string name="use_own_provider">Използване на собствен сървър</string>
   <string name="pick_your_username">Изберете потребителското си име</string>
-  <string name="pref_manually_change_presence">Ръчна промяна на присъствието</string>
-  <string name="pref_manually_change_presence_summary">Докоснете аватара си, за да промените присъствието си</string>
   <string name="change_presence">Промяна на присъствието</string>
   <string name="status_message">Съобщение за състоянието</string>
   <string name="all_accounts_on_this_device">Задаване за всички профили на това устройство</string>
@@ -659,14 +642,8 @@
   <string name="i_followed_this_link_from_a_trusted_source">Последвах тази връзка от доверено място</string>
   <string name="verifying_omemo_keys_trusted_source">На път сте да потвърдите ключовете OMEMO на %1$s, след като сте щракнали връзка. Това е безопасна операция, само ако сте последвали тази връзка от доверено място, където само %2$s би могъл да я публикува.</string>
   <string name="verify_omemo_keys">Потвърждаване на ключове OMEMO</string>
-  <string name="show_inactive_devices">Показване на неактивните устройства</string>
-  <string name="hide_inactive_devices">Скриване на неактивните устройства</string>
   <string name="distrust_omemo_key">Сваляне на доверието</string>
   <string name="distrust_omemo_key_text">Наистина ли искате да заличите потвърждението на това устройство?\nТова устройство и съобщенията, идващи от него, ще бъдат отбелязани като „непроверени“.</string>
-  <string name="timeout_24_hours">24 часа</string>
-  <string name="timeout_7_days">7 дни</string>
-  <string name="timeout_30_days">30 дни</string>
-  <string name="timeout_6_months">6 месеца</string>
   <string name="pref_automatically_delete_messages">Автоматично изтриване на съобщенията</string>
   <string name="pref_automatically_delete_messages_description">Автоматично изтриване на съобщенията от това устройство, които са по-стари от зададеното време.</string>
   <string name="encrypting_message">Шифроване на съобщението</string>

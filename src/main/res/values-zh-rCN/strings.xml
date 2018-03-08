@@ -100,8 +100,6 @@
   <string name="no_pgp_keys">未找到 OpenPGP 密钥</string>
   <string name="contacts_have_no_pgp_keys">因您的联系人未公布公钥，Conversations未能成功加密您的信息.\n\n<small>请通知联系人设置OpenPGP.</small></string>
   <string name="pref_general">常规</string>
-  <string name="pref_xmpp_resource">XMPP 资源</string>
-  <string name="pref_xmpp_resource_summary">客户端标识名称</string>
   <string name="pref_accept_files">接收文件</string>
   <string name="pref_accept_files_summary">自动接收小于 … 的文件</string>
   <string name="pref_attachments">附件</string>
@@ -127,8 +125,6 @@
   <string name="openpgp_error">OpenKeychain 报告了一个错误</string>
   <string name="accept">接受</string>
   <string name="error">产生了一个错误</string>
-  <string name="pref_grant_presence_updates">同意更新在线联系人</string>
-  <string name="pref_grant_presence_updates_summary">预先向您创建的联系人授予和请求状态订阅</string>
   <string name="your_account">你的账号</string>
   <string name="send_presence_updates">发送在线联系人列表更新</string>
   <string name="receive_presence_updates">接收在线联系人列表更新</string>
@@ -168,7 +164,6 @@
   <string name="unpublish_pgp">移除 OpenPGP 公钥</string>
   <string name="unpublish_pgp_message">您确定要从在线通知中移除 OpenPGP 公钥吗？\n您的联系人将无法再向您发送 OpenPGP 加密信息。</string>
   <string name="openpgp_has_been_published">OpenPGP 公钥已发布</string>
-  <string name="republish_pgp_keys">记得重新发布OpenPGP公钥</string>
   <string name="mgmt_account_enable">启用账户</string>
   <string name="mgmt_account_are_you_sure">确定?</string>
   <string name="mgmt_account_delete_confirm_text">如果您删除帐户，您的整个聊天记录将会丢失</string>
@@ -287,8 +282,6 @@
   <string name="title_pref_quiet_hours_end_time">结束时间</string>
   <string name="title_pref_enable_quiet_hours">启用静默时间段</string>
   <string name="pref_quiet_hours_summary">在静默时间段内通知将保持静音</string>
-  <string name="pref_use_larger_font"> 放大字体</string>
-  <string name="pref_use_larger_font_summary">整个 app 界面使用较大的字体</string>
   <string name="pref_use_send_button_to_indicate_status">发送按钮显示状态</string>
   <string name="pref_use_indicate_received">请求消息回复</string>
   <string name="pref_use_indicate_received_summary">如果支持消息将会以绿色对勾标识</string>
@@ -415,10 +408,6 @@
   <string name="modified_conference_options">群组设置修改成功!</string>
   <string name="could_not_modify_conference_options">无法更改群组设置</string>
   <string name="never">从不</string>
-  <string name="thirty_minutes">30 分钟</string>
-  <string name="one_hour">1 个小时</string>
-  <string name="two_hours">2 个小时</string>
-  <string name="eight_hours">8 个小时</string>
   <string name="until_further_notice">直到重新开启通知</string>
   <string name="reply">回复</string>
   <string name="mark_as_read">标记为已读</string>
@@ -474,7 +463,6 @@
   <string name="choose_quick_action">选择快速动作</string>
   <string name="search_for_contacts_or_groups">搜索联系人或群组</string>
   <string name="send_private_message">发送私密消息</string>
-  <string name="user_has_left_conference">%s 离开了群聊!</string>
   <string name="username">用户名</string>
   <string name="username_hint">用户名</string>
   <string name="invalid_username">该用户名无效</string>
@@ -486,7 +474,6 @@
   <string name="account_status_bind_failure">绑定失败</string>
   <string name="account_status_host_unknown">服务器不能为域名做出响应</string>
   <string name="server_info_broken">损坏</string>
-  <string name="pref_presence_settings">存在</string>
   <string name="pref_away_when_screen_off">关闭屏幕时离开</string>
   <string name="pref_away_when_screen_off_summary">当屏幕关闭时将标记您的资源为离开状态</string>
   <string name="pref_dnd_on_silent_mode">静音模式时设为“请勿打扰”</string>
@@ -528,7 +515,6 @@
   <string name="shared_image_with_x">用 %s 分享图片</string>
   <string name="shared_images_with_x">图片分享自 %s</string>
   <string name="shared_text_with_x">用 %s 分享文本</string>
-  <string name="no_storage_permission">Conversations 需要访问外部存储</string>
   <string name="sync_with_contacts">同步联系人</string>
   <string name="sync_with_contacts_long">Conversations 会匹配你的 XMPP 花名册与你的联系人，以显示他们的全名和头像。\n\nConversations 只会读取你的联系人并在本地匹配，不会上传到你的服务器。\n\n现在将要询问你是否给予访问你联系人的权限。</string>
   <string name="certificate_information">证书详情</string>
@@ -564,14 +550,11 @@
   <string name="security_error_invalid_file_access">安全错误：文件访问权限无效</string>
   <string name="no_application_to_share_uri">没有可以分享此链接的应用</string>
   <string name="share_uri_with">分享链接...</string>
-  <string name="welcome_text">XMPP 是一个独立协议的提供者。你可以用这个客户端连接任何你选择的 XMPP 服务器。\n为了让你更便捷，我们让你可以在 conversations.im¹ 上方便的注册账号；特意为使用 Conversations 的人准备。</string>
   <string name="magic_create_text">我们将会引导你完成在 conversations.im¹ 上注册账号的过程。\n当获得了 conversations.im 提供的账号以后，你可以通过添加使用其他提供商的好友的完整 Jabber ID 来与他们联络。</string>
   <string name="your_full_jid_will_be">您完整的 Jabble ID 是：%s </string>
   <string name="create_account">创建账户</string>
   <string name="use_own_provider">使用我自己的服务端</string>
   <string name="pick_your_username">输入您的用户名</string>
-  <string name="pref_manually_change_presence">手动更改状态</string>
-  <string name="pref_manually_change_presence_summary">点击你的头像来变更你的状态</string>
   <string name="change_presence">变更状态</string>
   <string name="status_message">状态信息</string>
   <string name="all_accounts_on_this_device">为本设备上的所有帐户设置</string>
@@ -657,14 +640,8 @@
   <string name="i_followed_this_link_from_a_trusted_source">我从一个可信的源追踪的此链接</string>
   <string name="verifying_omemo_keys_trusted_source">点击一个链接后将会开始校验 %1$s 的 OMEMO 密钥。此种情形只在你获得了一个从可信的源上只有 %2$s 能发布的该链接才是安全的。</string>
   <string name="verify_omemo_keys">校验 OMEMO 密钥</string>
-  <string name="show_inactive_devices">显示非活跃设备</string>
-  <string name="hide_inactive_devices">隐藏非活跃设备</string>
   <string name="distrust_omemo_key">不信任的设备</string>
   <string name="distrust_omemo_key_text">你确认要移除此设备的验证吗？\n此设备及从其发送的信息将会被标识为不可信。</string>
-  <string name="timeout_24_hours">24 个小时</string>
-  <string name="timeout_7_days">7 天</string>
-  <string name="timeout_30_days">30 天</string>
-  <string name="timeout_6_months">6 个月</string>
   <string name="pref_automatically_delete_messages">自动删除消息</string>
   <string name="pref_automatically_delete_messages_description">自动从此设备上删除超过配置时间段的消息</string>
   <string name="encrypting_message">消息加密中</string>

@@ -100,8 +100,6 @@
   <string name="no_pgp_keys">Geen OpenPGP-sleutels gevonden</string>
   <string name="contacts_have_no_pgp_keys">Conversations kan je berichten niet versleutelen omdat je contacten geen publieke sleutel hebben ingesteld.\n\n<small>Vraag je contacten om OpenPGP te configureren.</small></string>
   <string name="pref_general">Algemeen</string>
-  <string name="pref_xmpp_resource">XMPP-bron</string>
-  <string name="pref_xmpp_resource_summary">De naam waarmee deze cliënt zich identificeert</string>
   <string name="pref_accept_files">Aanvaard bestanden</string>
   <string name="pref_accept_files_summary">Aanvaard automatisch bestanden kleiner dan…</string>
   <string name="pref_attachments">Bijlagen</string>
@@ -127,8 +125,6 @@
   <string name="openpgp_error">OpenKeychain rapporteerde een fout</string>
   <string name="accept">Aanvaarden</string>
   <string name="error">Er is een fout opgetreden</string>
-  <string name="pref_grant_presence_updates">Verleen toestemming voor aanwezigheidsupdates</string>
-  <string name="pref_grant_presence_updates_summary">Op voorhand toestemming voor aanwezigheidsupdates verlenen en vragen aan contacten die je hebt aangemaakt</string>
   <string name="your_account">Je account</string>
   <string name="send_presence_updates">Verstuur aanwezigheidsupdates</string>
   <string name="receive_presence_updates">Ontvang aanwezigheidsupdates</string>
@@ -168,7 +164,6 @@
   <string name="unpublish_pgp">OpenPGP-publieke sleutel verwijderen</string>
   <string name="unpublish_pgp_message">Weet je zeker dat je je OpenPGP-publieke sleutel uit je aanwezigheidsaankondiging wil verwijderen?\nJe contacten zullen je geen OpenPGP-versleutelde berichten meer kunnen sturen.</string>
   <string name="openpgp_has_been_published">OpenPGP-publieke sleutel is gepubliceerd.</string>
-  <string name="republish_pgp_keys">Vergeet niet je OpenPGP-publieke sleutels opnieuw te publiceren!</string>
   <string name="mgmt_account_enable">Account inschakelen</string>
   <string name="mgmt_account_are_you_sure">Weet je het zeker?</string>
   <string name="mgmt_account_delete_confirm_text">Als je je account verwijdert, wordt je volledige gespreksgeschiedenis gewist</string>
@@ -287,8 +282,6 @@
   <string name="title_pref_quiet_hours_end_time">Eindtijd</string>
   <string name="title_pref_enable_quiet_hours">Stille uren inschakelen</string>
   <string name="pref_quiet_hours_summary">Tijdens stille uren worden meldingen onderdrukt</string>
-  <string name="pref_use_larger_font">Vergroot lettergrootte</string>
-  <string name="pref_use_larger_font_summary">Gebruik grotere lettertypes over de hele app</string>
   <string name="pref_use_send_button_to_indicate_status">Verstuur-knop toont status aan</string>
   <string name="pref_use_indicate_received">Vraag ontvangstbevestigingen</string>
   <string name="pref_use_indicate_received_summary">Indien ondersteund, worden ontvangen berichten met een groen vinkje aangeduid</string>
@@ -415,10 +408,6 @@
   <string name="modified_conference_options">Gespreksopties aangepast!</string>
   <string name="could_not_modify_conference_options">Kon gespreksopties niet aanpassen</string>
   <string name="never">Nooit</string>
-  <string name="thirty_minutes">30 minuten</string>
-  <string name="one_hour">1 uur</string>
-  <string name="two_hours">2 uur</string>
-  <string name="eight_hours">8 uur</string>
   <string name="until_further_notice">Voor onbepaalde duur</string>
   <string name="snooze">Sluimeren</string>
   <string name="reply">Beantwoorden</string>
@@ -477,7 +466,6 @@
   <string name="choose_quick_action">Snelle actie kiezen</string>
   <string name="search_for_contacts_or_groups">Zoeken naar contacten of groepen</string>
   <string name="send_private_message">Privébericht sturen</string>
-  <string name="user_has_left_conference">%s heeft het groepsgesprek verlaten!</string>
   <string name="username">Gebruikersnaam</string>
   <string name="username_hint">Gebruikersnaam</string>
   <string name="invalid_username">Dit is geen geldige gebruikersnaam</string>
@@ -489,7 +477,6 @@
   <string name="account_status_bind_failure">Bindingsfout</string>
   <string name="account_status_host_unknown">Server niet verantwoordelijk voor domein</string>
   <string name="server_info_broken">Gebroken</string>
-  <string name="pref_presence_settings">Aanwezigheid</string>
   <string name="pref_away_when_screen_off">Even weg wanneer scherm uit staat</string>
   <string name="pref_away_when_screen_off_summary">Stelt je bron in als even weg wanneer het scherm uitgeschakeld is</string>
   <string name="pref_dnd_on_silent_mode">“Niet storen” in stille modus</string>
@@ -532,7 +519,6 @@
   <string name="shared_image_with_x">Afbeelding gedeeld met %s</string>
   <string name="shared_images_with_x">Afbeeldingen gedeeld met %s</string>
   <string name="shared_text_with_x">Tekst gedeeld met %s</string>
-  <string name="no_storage_permission">Conversations heeft toegang nodig tot de externe opslag</string>
   <string name="sync_with_contacts">Synchroniseer met contacten</string>
   <string name="sync_with_contacts_long">Conversations wil je XMPP-contacten met je systeemcontacten vergelijken om hun volledige namen en avatars te tonen.\n\nConversations zal je contacten enkel lokaal lezen en vergelijken zonder ze te uploaden naar je server.\n\nJe zal nu gevraagd worden Conversations toegang te verlenen tot je contacten.</string>
   <string name="certificate_information">Certificaatinformatie</string>
@@ -566,14 +552,11 @@
   <string name="security_error_invalid_file_access">Beveiligingsfout: Ongeldige bestandstoegang</string>
   <string name="no_application_to_share_uri">Geen applicatie om URI te delen</string>
   <string name="share_uri_with">URI delen met…</string>
-  <string name="welcome_text">XMPP is een provider-onafhankelijk protocol. Je kan deze cliënt gebruiken met elke willekeurige XMPP-server.\nOm het je gemakkelijker te maken kun je simpelweg een account aanmaken conversations.im¹; een provider speciaal geschikt voor Conversations.</string>
   <string name="magic_create_text">We zullen je helpen een account op conversations.im¹ aan te maken.\nWanneer je conversations.im als je provider kiest kan je met gebruikers van andere providers communiceren door hen je volledige Jabber-ID te geven.</string>
   <string name="your_full_jid_will_be">Je volledige Jabber-ID zal %s zijn</string>
   <string name="create_account">Account aanmaken</string>
   <string name="use_own_provider">Gebruik mijn eigen provider</string>
   <string name="pick_your_username">Kies je gebruikersnaam</string>
-  <string name="pref_manually_change_presence">Aanwezigheid handmatig instellen</string>
-  <string name="pref_manually_change_presence_summary">Tik op je avatar om je aanwezigheid in te stellen</string>
   <string name="change_presence">Aanwezigheid instellen</string>
   <string name="status_message">Statusbericht</string>
   <string name="all_accounts_on_this_device">Instellen voor alle accounts op dit apparaat</string>
@@ -659,14 +642,8 @@
   <string name="i_followed_this_link_from_a_trusted_source">Ik heb deze link gevolgd vanuit een betrouwbare bron</string>
   <string name="verifying_omemo_keys_trusted_source">Je staat op het punt de OMEMO-sleutels van %1$s te verifiëren door op een link te klikken. Dit is enkel veilig als je de link van een betrouwbare bron hebt gevolgd, waarbij enkel %2$s de link gepubliceerd kan hebben.</string>
   <string name="verify_omemo_keys">OMEMO-sleutels verifiëren</string>
-  <string name="show_inactive_devices">Toon niet-actieve apparaten</string>
-  <string name="hide_inactive_devices">Verberg niet-actieve apparaten</string>
   <string name="distrust_omemo_key">Apparaat niet meer vertrouwen</string>
   <string name="distrust_omemo_key_text">Weet je zeker dat je de verificatie voor dit apparaat wil verwijderen?\nHet apparaat en alle berichten die het verstuurt zullen als niet-vertrouwd worden weergegeven.</string>
-  <string name="timeout_24_hours">24 uur</string>
-  <string name="timeout_7_days">7 dagen</string>
-  <string name="timeout_30_days">30 dagen</string>
-  <string name="timeout_6_months">6 maanden</string>
   <string name="pref_automatically_delete_messages">Automatisch berichten verwijderen</string>
   <string name="pref_automatically_delete_messages_description">Verwijder automatisch berichten van dit apparaat ouder dan de ingestelde tijdsperiode.</string>
   <string name="encrypting_message">Bericht wordt versleuteld</string>

@@ -100,8 +100,6 @@
   <string name="no_pgp_keys">لم يتم العثور على أية مفاتيح OpenPGP</string>
   <string name="contacts_have_no_pgp_keys">Conversations::لا يستطيع تشفير الرساله\n\n<small>من فضلك أخبر صديقك بتنصيب تطبيق OpenPGP.</small></string>
   <string name="pref_general">عام</string>
-  <string name="pref_xmpp_resource">الريسورس</string>
-  <string name="pref_xmpp_resource_summary">الإسم الذي يقوم جهازك بالتعريف عن نفسه</string>
   <string name="pref_accept_files">ضبط استقبال الملفات</string>
   <string name="pref_accept_files_summary">اقبل تلقائيا الملفات أقل من</string>
   <string name="pref_attachments">الملفات المرفقة</string>
@@ -124,7 +122,6 @@
   <string name="openpgp_error">لقد قام أوبن كي تشاين بالإبلاغ عن وجود خطأ</string>
   <string name="accept">قبول</string>
   <string name="error">حدث خطأ ما</string>
-  <string name="pref_grant_presence_updates">منح تحديثات الظهور</string>
   <string name="your_account">حسابك</string>
   <string name="send_presence_updates">ارسال تحديثات الظهور</string>
   <string name="receive_presence_updates">تحصل على تحديثات حالة الحضور</string>
@@ -159,7 +156,6 @@
   <string name="mgmt_account_publish_pgp">أنشر المفتاح العمومي OpenPGP</string>
   <string name="unpublish_pgp">حذف مفتاح OpenPGP العمومي</string>
   <string name="openpgp_has_been_published">لقد تم نشر مفتاح OpenPGP العمومي.</string>
-  <string name="republish_pgp_keys">تذكر إعادة نشر مفاتيح OpenPGP العمومية الخاصة بك !</string>
   <string name="mgmt_account_enable">تفعيل الحساب</string>
   <string name="mgmt_account_are_you_sure">هل أنت متأكد ؟</string>
   <string name="mgmt_account_delete_confirm_text">إذا قمت حذفت حسابك، فسوف تفقد سجل محادثاتك بالكامل</string>
@@ -270,8 +266,6 @@
   <string name="title_pref_quiet_hours_end_time">وقت النهاية</string>
   <string name="title_pref_enable_quiet_hours">تفعيل ساعات السكون</string>
   <string name="pref_quiet_hours_summary">سوف تكتم التنبيهات إبان ساعات السكون</string>
-  <string name="pref_use_larger_font">زيادة حجم الخط</string>
-  <string name="pref_use_larger_font_summary">إستخدم خطوطا كبيرة الحجم في التطبيق</string>
   <string name="pref_use_indicate_received">طلب تقارير تسليم الرسائل</string>
   <string name="pref_expert_options_other">أخرى</string>
   <string name="pref_conference_name">إسم مجموعة المحادثة</string>
@@ -378,10 +372,6 @@
   <string name="moderated">تحت الرقابة</string>
   <string name="you_are_not_participating">لست مشتركا في المجموعة</string>
   <string name="never">أبداً</string>
-  <string name="thirty_minutes">30 دقيقة</string>
-  <string name="one_hour">ساعة</string>
-  <string name="two_hours">ساعتين</string>
-  <string name="eight_hours">8 ساعات</string>
   <string name="until_further_notice">حتى إشعار آخر</string>
   <string name="reply">الرد</string>
   <string name="mark_as_read">إعتباره كمقروء</string>
@@ -429,7 +419,6 @@
   <string name="choose_quick_action">إختر حركة سريعة</string>
   <string name="search_for_contacts_or_groups">إبحث عن أصدقاء أو مجموعات</string>
   <string name="send_private_message">إبعث برسالة على الخاص</string>
-  <string name="user_has_left_conference">غادر %s فريق المحادثة</string>
   <string name="username">إسم المستخدم</string>
   <string name="username_hint">إسم المستخدم</string>
   <string name="invalid_username">إسم المستخدم هذا ليس صالحاً</string>
@@ -440,7 +429,6 @@
   <string name="account_status_tor_unavailable">شبكة طور غير متاحة</string>
   <string name="account_status_host_unknown">هذا السيرفر غير مسؤول عن إسم النطاق</string>
   <string name="server_info_broken">مكسر</string>
-  <string name="pref_presence_settings">الحضور</string>
   <string name="pref_away_when_screen_off">غائب عند إطفاء الشاشة</string>
   <string name="pref_dnd_on_silent_mode">\"لا تزعجني\" في وضع السكوت</string>
   <string name="pref_show_connection_options">إعدادات الربط الموسعة</string>
@@ -474,7 +462,6 @@
   </plurals>
   <string name="load_more_messages">أظهر أكثر</string>
   <string name="shared_text_with_x">شارك النص عبر %s</string>
-  <string name="no_storage_permission">تطبيق Conversations بحاجة إلى النفاذ إلى مساحة التخزين الخارجية</string>
   <string name="sync_with_contacts">المزامنة مع جهات الإتصال</string>
   <string name="certificate_information">معلومات حول الشهادة</string>
   <string name="certificate_subject">الموضوع</string>
@@ -504,13 +491,10 @@
   <string name="security_error_invalid_file_access">خطأ في الأمان : نفاذ غير سليم إلى ملف</string>
   <string name="no_application_to_share_uri">تعذر العثور على تطبيق يُمكنُ بواسطته مشاركة الرابط</string>
   <string name="share_uri_with">شارك الرابط مع ...</string>
-  <string name="welcome_text">XMPP هو مزود بروتوكول مستقل. يمكنك استخدام هذا العميل مع أي خادم إكس أم بي بي اخترته. و لراحتك جعلنا من السهل إنشاء حساب على conversations.im¹؛ مزود خدمة يتناسب خصيصا للاستخدام مع تطبيق المحادثات Conversations.</string>
   <string name="your_full_jid_will_be">سوف تكون هويتك الكاملة على جابر كالتالي : %s</string>
   <string name="create_account">إنشاء حساب</string>
   <string name="use_own_provider">إستخدم مزودي الخاص</string>
   <string name="pick_your_username">إختر إسم المستخدم</string>
-  <string name="pref_manually_change_presence">غيِّر يدويًا صفة الحضور</string>
-  <string name="pref_manually_change_presence_summary">إضغط على صورتك الرمزية لتغيير وضع حضورك</string>
   <string name="change_presence">تعديل الحضور</string>
   <string name="status_message">نص حالة الحضور</string>
   <string name="all_accounts_on_this_device">تعيينه لكل الحسابات على هذا الجهاز</string>
@@ -578,13 +562,7 @@
   <string name="pref_clean_private_storage">تفريغ مساحة التخرين الخاصة</string>
   <string name="i_followed_this_link_from_a_trusted_source">لقد إتبعتُ هذا الرابط عبر مصدر موثوق</string>
   <string name="verify_omemo_keys">قم بفحص مفاتيح أو مي مو OMEMO</string>
-  <string name="show_inactive_devices">أظهر الأجهزة المعطلة</string>
-  <string name="hide_inactive_devices">قم بإخفاء الأجهزة المعطلة</string>
   <string name="distrust_omemo_key">إبطال الثقة مع هذا الجهاز</string>
-  <string name="timeout_24_hours">24 ساعة</string>
-  <string name="timeout_7_days">7 أيام</string>
-  <string name="timeout_30_days">30 يوماً</string>
-  <string name="timeout_6_months">6 أشهر</string>
   <string name="pref_automatically_delete_messages">الحذف الآلي للرسائل</string>
   <string name="encrypting_message">تشفير الرسالة</string>
   <string name="transcoding_video">ضغط الفيديو</string>

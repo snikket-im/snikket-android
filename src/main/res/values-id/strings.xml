@@ -88,8 +88,6 @@
   <string name="no_pgp_keys">Tidak ada kunci OpenPGP ditemukan</string>
   <string name="contacts_have_no_pgp_keys">Percakapan tidak dapat mengenkripsi pesan Anda karena kontak tidak mengumumkan kunci publik mereka.\n\n<small>Silakan meminta kontak Anda untuk setup OpenPGP.</small></string>
   <string name="pref_general">Umum</string>
-  <string name="pref_xmpp_resource">XMPP resource</string>
-  <string name="pref_xmpp_resource_summary">Identifikasi nama klien ini dengan</string>
   <string name="pref_accept_files">Terima berkas</string>
   <string name="pref_accept_files_summary">Otomatis menerima berkas lebih kecil dari...</string>
   <string name="pref_attachments">Lampiran</string>
@@ -110,7 +108,6 @@
   <string name="openpgp_error">OpenKeychain melaporkan kesalahan</string>
   <string name="accept">Terima</string>
   <string name="error">Sebuah kesalahan terjadi</string>
-  <string name="pref_grant_presence_updates">Memberikan perubahan kehadiran</string>
   <string name="your_account">Akun anda</string>
   <string name="send_presence_updates">Kirim pembaruan kehadiran</string>
   <string name="receive_presence_updates">Terima pembaruan kehadiran</string>
@@ -230,8 +227,6 @@
   <string name="title_pref_quiet_hours_end_time">Waktu selesai</string>
   <string name="title_pref_enable_quiet_hours">Aktifkan waktu sunyi</string>
   <string name="pref_quiet_hours_summary">Pemberitahuan akan disunyukan ketika jam sunyi.</string>
-  <string name="pref_use_larger_font">Perbesar ukuran huruf</string>
-  <string name="pref_use_larger_font_summary">Gunakan ukuran huruf lebih besar diseluruh aplikasi</string>
   <string name="pref_use_send_button_to_indicate_status">Tombol kirim menunjukan statusnya</string>
   <string name="pref_use_indicate_received">Permintaan penerimaan pesan</string>
   <string name="pref_use_indicate_received_summary">Pesan yang diterima akan ditambahkan centang hijau jika didukung</string>
@@ -320,10 +315,6 @@
   <string name="non_anonymous">Non Anonymous</string>
   <string name="you_are_not_participating">Anda tidak berpartisipasi</string>
   <string name="never">Tidak pernah</string>
-  <string name="thirty_minutes">30 menit</string>
-  <string name="one_hour">1 jam</string>
-  <string name="two_hours">2 jam</string>
-  <string name="eight_hours">8 jam</string>
   <string name="until_further_notice">Sampai pemberitahuan selanjutnya</string>
   <string name="pref_input_options">Masukan</string>
   <string name="pref_enter_is_send">Enter untuk mengirim</string>
@@ -381,7 +372,6 @@
   <string name="download_failed_could_not_connect">Unduhan gagal: Tidak dapat terhubung ke host</string>
   <string name="account_status_tor_unavailable">Tor network tidak tersedia</string>
   <string name="server_info_broken">Rusak</string>
-  <string name="pref_presence_settings">Kehadiran</string>
   <string name="hostname_example">xmpp.example.com</string>
   <string name="pref_connection_options">Koneksi</string>
   <string name="pref_use_tor">Hubungkan via Tor</string>
@@ -415,8 +405,6 @@
   <string name="your_full_jid_will_be">Jabber ID anda akan seperti: %s</string>
   <string name="create_account">Buat Akun</string>
   <string name="pick_your_username">Pilih username anda</string>
-  <string name="pref_manually_change_presence">Ubah kehadiran manual</string>
-  <string name="pref_manually_change_presence_summary">Sentuh avatar untuk mengubah kehadiran</string>
   <string name="change_presence">Ubah Kehadiran</string>
   <string name="status_message">Status</string>
   <string name="presence_chat">Tersedia</string>

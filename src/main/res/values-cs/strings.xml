@@ -93,8 +93,6 @@
   <string name="no_pgp_keys">Nebyly nalezeny žádné OpenPGP klíče</string>
   <string name="contacts_have_no_pgp_keys">Není možné zašifrovat zprávy v aplikaci Konverzace, protože kontakty neoznamují svůj veřejný klíč.\n\n<small>Požádejte své kontakty ať si nastaví OpenPGP.</small></string>
   <string name="pref_general">Obecné</string>
-  <string name="pref_xmpp_resource">XMPP zdroj</string>
-  <string name="pref_xmpp_resource_summary">Jméno se kterým se tento klient identifikuje</string>
   <string name="pref_accept_files">Přijímat soubory</string>
   <string name="pref_accept_files_summary">Automaticky přijímat soubory menší než…</string>
   <string name="pref_attachments">Přílohy</string>
@@ -119,7 +117,6 @@
   <string name="openpgp_error">OpenKeychain nahlásil chybu</string>
   <string name="accept">Přijmout</string>
   <string name="error">Došlo k chybě</string>
-  <string name="pref_grant_presence_updates">Povolit aktualizace stavu</string>
   <string name="your_account">Váš účet</string>
   <string name="send_presence_updates">Zasílat změny stavu</string>
   <string name="receive_presence_updates">Přijímat změny stavu</string>
@@ -156,7 +153,6 @@
   <string name="mgmt_account_publish_avatar">Zveřejnit avatar</string>
   <string name="mgmt_account_publish_pgp">Zveřejnit OpenPGP klíč</string>
   <string name="openpgp_has_been_published">Veřejný OpenPGP klíč byl zveřejněn.</string>
-  <string name="republish_pgp_keys">Nezapomeňte znovuzveřejnit své veřejné OpenPGP klíče!</string>
   <string name="mgmt_account_enable">Povolit účet</string>
   <string name="mgmt_account_are_you_sure">Jste si jisti?</string>
   <string name="attach_record_voice">Nahrát hlas</string>
@@ -260,8 +256,6 @@
   <string name="title_pref_quiet_hours_end_time">Dokdy</string>
   <string name="title_pref_enable_quiet_hours">Povolit tichý režim</string>
   <string name="pref_quiet_hours_summary">Upozornění budou během tichého režimu ztlumena</string>
-  <string name="pref_use_larger_font">Zvětšit písmo</string>
-  <string name="pref_use_larger_font_summary">Používat v celé aplikaci větší velikost písma</string>
   <string name="pref_use_send_button_to_indicate_status">Tlačítko pro odeslání zobrazuje stav</string>
   <string name="pref_use_indicate_received">Požadovat oznámení o přijetí</string>
   <string name="pref_use_indicate_received_summary">Přijaté zprávy budou označeny zeleně, pokud je funkce podporována</string>
@@ -362,10 +356,6 @@
   <string name="moderated">Moderováno</string>
   <string name="you_are_not_participating">Neúčastníte se</string>
   <string name="never">Nikdy</string>
-  <string name="thirty_minutes">30 minut</string>
-  <string name="one_hour">jedna hodina</string>
-  <string name="two_hours">2 hodiny</string>
-  <string name="eight_hours">8 hodin</string>
   <string name="until_further_notice">Než opět změním</string>
   <string name="pref_input_options">Vstup</string>
   <string name="pref_enter_is_send">Enter odesílá</string>
@@ -430,7 +420,6 @@
   <string name="account_status_bind_failure">Bind chyba</string>
   <string name="account_status_host_unknown">Server není zodpovědný za doménu</string>
   <string name="server_info_broken">Rozbité</string>
-  <string name="pref_presence_settings">Stav</string>
   <string name="pref_away_when_screen_off">Pryč při vypnuté obrazovce</string>
   <string name="pref_away_when_screen_off_summary">Při vypnuté obrazovce označí váš stav jako pryč</string>
   <string name="pref_treat_vibrate_as_silent">Vibrační mód brát stejně jako tichý</string>
@@ -471,7 +460,6 @@
   <string name="shared_image_with_x">Obrázek sdílen s %s</string>
   <string name="shared_images_with_x">Obrázky sdíleny s %s</string>
   <string name="shared_text_with_x">Text sdílen s %s</string>
-  <string name="no_storage_permission">Conversations vyžaduje přístup k externímu úložišti</string>
   <string name="sync_with_contacts">Synchronizovat s kontakty</string>
   <string name="sync_with_contacts_long">Aplikace Conversations by ráda porovnala svůj XMPP seznam s vašimi kontakty, aby mohla zobrazit plná jména a avatary.\n\nConversations načte a porovná kontakty pouze lokálně, bez jejich nahrávání na server.\n\nNyní budete dotázáni na udělení práv pro přístup k seznamu kontaktů.</string>
   <string name="certificate_information">Informace certifikátu</string>
@@ -503,14 +491,11 @@
   <string name="security_error_invalid_file_access">Chyba zabezpečení: Neplatný přístup k souboru</string>
   <string name="no_application_to_share_uri">Nebyla nalezena aplikace pro sdílení URI</string>
   <string name="share_uri_with">Sdílet URI s...</string>
-  <string name="welcome_text">XMPP je protokol nezávislý na poskytovateli. Tohoto klienta můžete použít s jakýmkoliv XMPP serverem dle svého výběru.\nPro lepší uživatelskou přívětivost jsme připravili možnost vytvořit účet u conversations.im¹; poskytovatele speciálné připraveného pro použití s aplikací Conversations.</string>
   <string name="magic_create_text">Provedeme vás procesem založení uživatelského účtu u conversations.im.¹\nVybráním conversations.im za svého poskytovatele budete moci komunikovat s uživateli u jiných poskytovatelů, poté co jim sdělíte své Jabber ID.</string>
   <string name="your_full_jid_will_be">Vaše celé Jabber ID bude: %s</string>
   <string name="create_account">Vytvořit účet</string>
   <string name="use_own_provider">Použít vlastního provozovatele</string>
   <string name="pick_your_username">Zadejte své uživatelské jméno</string>
-  <string name="pref_manually_change_presence">Ručně změnit dostupnost</string>
-  <string name="pref_manually_change_presence_summary">Dotykem na avatar změnit svou dostupnost</string>
   <string name="change_presence">Změnit dostupnost</string>
   <string name="status_message">Stavová zpráva</string>
   <string name="all_accounts_on_this_device">Nastavit pro všechny účty na tomto přístroji</string>

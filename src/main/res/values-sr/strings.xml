@@ -94,8 +94,6 @@
   <string name="no_pgp_keys">Нема ОпенПГП кључева</string>
   <string name="contacts_have_no_pgp_keys">Конверзација није могла да шифрује ваше поруке јер ваши контакти не објављују свој јавни кључ.\n\n<small>Замолите ваше контакте да поставе ОпенПГП.</small></string>
   <string name="pref_general">Опште</string>
-  <string name="pref_xmpp_resource">ИксМПП ресурс</string>
-  <string name="pref_xmpp_resource_summary">Име са којим се овај клијент идентификује</string>
   <string name="pref_accept_files">Прихватај фајлове</string>
   <string name="pref_accept_files_summary">Аутоматски прихватај фајлове мање од…</string>
   <string name="pref_attachments">Прилози</string>
@@ -121,8 +119,6 @@
   <string name="openpgp_error">Отворени кључарник је пријавио грешку</string>
   <string name="accept">Прихвати</string>
   <string name="error">Десила се грешка</string>
-  <string name="pref_grant_presence_updates">Дозволи ажурирања присутности</string>
-  <string name="pref_grant_presence_updates_summary">Унапред дозволи и питај за претплату на присутност за контакте које направите</string>
   <string name="your_account">Ваш налог</string>
   <string name="send_presence_updates">Шаљи ажурирања присутности</string>
   <string name="receive_presence_updates">Примај ажурирања присутности</string>
@@ -162,7 +158,6 @@
   <string name="unpublish_pgp">Уклони ОпенПГП кључ</string>
   <string name="unpublish_pgp_message">Желите ли заиста да уклоните ваш ОпенПГП кључ из ваше објаве присутности?\nВаши контакти више неће моћи да вам шаљу ОпенПГП шифроване поруке.</string>
   <string name="openpgp_has_been_published">ОпенПГП јавни кључ је објављен.</string>
-  <string name="republish_pgp_keys">Не заборавите да поново објавите ваше ОпенПГП јавне кључеве!</string>
   <string name="mgmt_account_enable">Укључи налог</string>
   <string name="mgmt_account_are_you_sure">Да ли сте сигурни?</string>
   <string name="attach_record_voice">Сними глас</string>
@@ -267,8 +262,6 @@
   <string name="title_pref_quiet_hours_end_time">Време завршетка</string>
   <string name="title_pref_enable_quiet_hours">Укључи тихе сате</string>
   <string name="pref_quiet_hours_summary">Обавештења ће бити ућуткана за време тихих сати</string>
-  <string name="pref_use_larger_font">Повећај величину фонта</string>
-  <string name="pref_use_larger_font_summary">Користи веће величине фонта за читаву апликацију</string>
   <string name="pref_use_send_button_to_indicate_status">Дугме слања показује стање</string>
   <string name="pref_use_indicate_received">Захтевај потврде порука</string>
   <string name="pref_use_indicate_received_summary">Означи примљене поруке зеленом квачицом, ако је подржано</string>
@@ -373,10 +366,6 @@
   <string name="moderated">Уређивана</string>
   <string name="you_are_not_participating">Не учествујете</string>
   <string name="never">никад</string>
-  <string name="thirty_minutes">30 минута</string>
-  <string name="one_hour">1 сат</string>
-  <string name="two_hours">2 сата</string>
-  <string name="eight_hours">8 сати</string>
   <string name="until_further_notice">до даљњег</string>
   <string name="pref_input_options">Унос</string>
   <string name="pref_enter_is_send">Ентер шаље</string>
@@ -444,7 +433,6 @@
   <string name="account_status_bind_failure">Неуспех свезивања</string>
   <string name="account_status_host_unknown">Сервер није одговоран за домен</string>
   <string name="server_info_broken">Оштећен</string>
-  <string name="pref_presence_settings">Присутност</string>
   <string name="pref_away_when_screen_off">Одсутан кад је екран искључен</string>
   <string name="pref_away_when_screen_off_summary">Означавање вашег ресурса одсутним кад је екран искључен</string>
   <string name="pref_treat_vibrate_as_silent">Вибрација је нечујни режим</string>
@@ -485,7 +473,6 @@
   <string name="shared_image_with_x">Подељена слика са %s</string>
   <string name="shared_images_with_x">Подељене слике са %s</string>
   <string name="shared_text_with_x">Подељен текст са %s</string>
-  <string name="no_storage_permission">Конверзацији је потребан приступ спољашњем складишту</string>
   <string name="sync_with_contacts">Синхронизуј са контактима</string>
   <string name="sync_with_contacts_long">Конверзација жели да поклапи ваш ИксМПП именик са контактима на вашем уређају да би приказала њихова пуна имена и аватаре.\n\nКонверзација ће само да очита ваше контакте и упореди их локално без отпремања на сервер.\n\nСада ћете бити упитани за дозволу приступа вашим контактима.</string>
   <string name="certificate_information">Подаци о сертификату</string>
@@ -517,14 +504,11 @@
   <string name="security_error_invalid_file_access">Безбедносна грешка: неисправан приступ фајлу</string>
   <string name="no_application_to_share_uri">Нема апликације за дељење веза</string>
   <string name="share_uri_with">Подели везу помоћу…</string>
-  <string name="welcome_text">ИксМПП је протокол независан од провајдера. Можете да користите овог клијента са било којим ИксМПП сервером.\nИпак, због погодности омогућили смо једноставно прављење налога на conversations.im¹, сервер посебно прилагођен за коришћење са Конверзацијом.</string>
   <string name="magic_create_text">Водићемо вас кроз процес прављења налога на conversations.im.¹\nАко изаберете conversations.im за даваоца услуге моћи ћете да комуницирате са корисницима других сервера ако им дате ваш Џабер ИД.</string>
   <string name="your_full_jid_will_be">Ваш пуни Џабер ИД ће бити: %s</string>
   <string name="create_account">Направи налог</string>
   <string name="use_own_provider">Користићу сопствени провајдер</string>
   <string name="pick_your_username">Одредите ваше корисничко име</string>
-  <string name="pref_manually_change_presence">Ручно промени присутност</string>
-  <string name="pref_manually_change_presence_summary">Тапните ваш аватар да промените присутност</string>
   <string name="change_presence">Промени присутност</string>
   <string name="status_message">Порука стања</string>
   <string name="all_accounts_on_this_device">Постави за све налоге на овом уређају</string>
@@ -600,13 +584,7 @@
   <string name="pref_clean_cache">Очисти кеш</string>
   <string name="pref_clean_private_storage">Очисти лично складиште</string>
   <string name="verify_omemo_keys">Овери ОМЕМО кључеве</string>
-  <string name="show_inactive_devices">Прикажи неактивне уређаје</string>
-  <string name="hide_inactive_devices">Сакриј неактивне уређаје</string>
   <string name="distrust_omemo_key_text">Желите ли заиста да уклоните оверу за овај уређај?\nПоруке које долазе са тог уређаја ће бити означене као непоуздане.</string>
-  <string name="timeout_24_hours">24 сата</string>
-  <string name="timeout_7_days">7 дана</string>
-  <string name="timeout_30_days">30 дана</string>
-  <string name="timeout_6_months">6 месеци</string>
   <string name="pref_automatically_delete_messages">Аутоматско брисање порука</string>
   <string name="pref_automatically_delete_messages_description">Аутоматско брисање порука са овог уређаја које су старије од постављеног времена.</string>
   <string name="encrypting_message">Шифрујем поруку</string>

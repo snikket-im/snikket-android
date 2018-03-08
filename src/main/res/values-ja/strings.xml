@@ -94,8 +94,6 @@
   <string name="no_pgp_keys">OpenPGP の鍵はありません</string>
   <string name="contacts_have_no_pgp_keys">連絡先が公開鍵を通知しないため、Conversations はあなたのメッセージを暗号化することができません。\n\n<small>連絡先に OpenPGP をセットアップするように依頼してください。</small></string>
   <string name="pref_general">全般</string>
-  <string name="pref_xmpp_resource">XMPP リソース</string>
-  <string name="pref_xmpp_resource_summary">自分自身を識別するこのクライアントの名前</string>
   <string name="pref_accept_files">ファイルを受取</string>
   <string name="pref_accept_files_summary">自動的に小さいファイルを受取…</string>
   <string name="pref_attachments">添付ファイル</string>
@@ -121,8 +119,6 @@
   <string name="openpgp_error">OpenKeychain がエラーを報告しました</string>
   <string name="accept">受付</string>
   <string name="error">エラーが発生しました</string>
-  <string name="pref_grant_presence_updates">参加アップデートの権限を付与</string>
-  <string name="pref_grant_presence_updates_summary">事前に、作成した連絡先に対して権限を付与して、参加のサブスクリプションを求めます</string>
   <string name="your_account">あなたのアカウント</string>
   <string name="send_presence_updates">参加アップデートを送信</string>
   <string name="receive_presence_updates">参加アップデートを受信</string>
@@ -162,7 +158,6 @@
   <string name="unpublish_pgp">OpenPGP 公開鍵を削除</string>
   <string name="unpublish_pgp_message">在席通知から OpenPGP 公開鍵を削除してもよろしいですか?\n連絡先はあなたに OpenPGP 暗号化メッセージを送信できなくなります。</string>
   <string name="openpgp_has_been_published">OpenPGP 公開鍵を公開しました。</string>
-  <string name="republish_pgp_keys">OpenPGP 公開鍵を再公開するのをお忘れなく!</string>
   <string name="mgmt_account_enable">アカウントを有効にする</string>
   <string name="mgmt_account_are_you_sure">よろしいですか?</string>
   <string name="mgmt_account_delete_confirm_text">アカウントを削除すると、会話履歴すべてが失われます</string>
@@ -268,8 +263,6 @@
   <string name="title_pref_quiet_hours_end_time">終了時間</string>
   <string name="title_pref_enable_quiet_hours">消音時間を有効にする</string>
   <string name="pref_quiet_hours_summary">消音時間の間、通知は無音になります</string>
-  <string name="pref_use_larger_font">フォントサイズを拡大</string>
-  <string name="pref_use_larger_font_summary">アプリ全体にわたって大きなフォントサイズを使用します</string>
   <string name="pref_use_send_button_to_indicate_status">送信ボタンにステータスを示す</string>
   <string name="pref_use_indicate_received">要求メッセージの受信</string>
   <string name="pref_use_indicate_received_summary">サポートされている場合、受信したメッセージに緑色のチェックマークが付きます</string>
@@ -376,10 +369,6 @@
   <string name="moderated">司会</string>
   <string name="you_are_not_participating">あなたは参加していません</string>
   <string name="never">なし</string>
-  <string name="thirty_minutes">30 分</string>
-  <string name="one_hour">1 時間</string>
-  <string name="two_hours">2 時間</string>
-  <string name="eight_hours">8 時間</string>
   <string name="until_further_notice">通知があるまで</string>
   <string name="pref_input_options">入力</string>
   <string name="pref_enter_is_send">Enter は送信</string>
@@ -443,7 +432,6 @@
   <string name="account_status_bind_failure">バインド失敗</string>
   <string name="account_status_host_unknown">サーバーがドメインに対応しません</string>
   <string name="server_info_broken">壊れています</string>
-  <string name="pref_presence_settings">参加</string>
   <string name="pref_away_when_screen_off">画面がオフのときは離席</string>
   <string name="pref_away_when_screen_off_summary">画面がオフになっているとき、リソースを離席としてマークします</string>
   <string name="pref_dnd_on_silent_mode">サイレントモード時 “邪魔しないで”</string>
@@ -485,7 +473,6 @@
   <string name="shared_image_with_x">%s で画像を共有</string>
   <string name="shared_images_with_x">%s で画像を共有</string>
   <string name="shared_text_with_x">%s でテキストを共有</string>
-  <string name="no_storage_permission">Conversations は外部ストレージにアクセスが必要です</string>
   <string name="sync_with_contacts">連絡先と同期</string>
   <string name="sync_with_contacts_long">Conversations はフルネームやアバターを表示するために、連絡先と XMPP 名簿と一致するようにしたいです。\n\nConversations は、サーバーにアップロードすることはなく、ローカルで連絡先を読んで一致させるだけです。\n\n今、連絡先へのアクセス許可を付与するように求められます。</string>
   <string name="certificate_information">証明書情報</string>
@@ -518,14 +505,11 @@
   <string name="security_error_invalid_file_access">セキュリティエラー: 不正なファイルアクセス</string>
   <string name="no_application_to_share_uri">URI を共有するアプリケーションが見つかりません</string>
   <string name="share_uri_with">…で URI を共有</string>
-  <string name="welcome_text">XMPPはプロバイダーに依存しないプロトコルです。これまであなたが選択したどのXMPPサーバーでも、このクライアントを使用することができます。\nしかしあなたが便利なように、Conversationsで使用するのに最適なプロバイダーconversations.im¹で簡単にアカウントを作成することができるようにしています。</string>
   <string name="magic_create_text">conversations.imのアカウントを作成する手順をガイドします。\nプロバイダーとしてconversations.imを選択すると、あなたの完全なJabber IDを指定することによって、他のプロバイダーのユーザと通信することができるようになります。</string>
   <string name="your_full_jid_will_be">あなたの完全な Jabber ID は: %s</string>
   <string name="create_account">アカウントを作成</string>
   <string name="use_own_provider">独自のプロバイダーを使用する</string>
   <string name="pick_your_username">ユーザー名を選択</string>
-  <string name="pref_manually_change_presence">参加を手動で変更</string>
-  <string name="pref_manually_change_presence_summary">アバターをタッチして、参加を変更します</string>
   <string name="change_presence">参加を変更</string>
   <string name="status_message">ステータスメッセージ</string>
   <string name="all_accounts_on_this_device">このデバイス上のすべてのアカウントに対して設定</string>
@@ -605,14 +589,8 @@
   <string name="i_followed_this_link_from_a_trusted_source">信頼できるソースからこのリンクをたどりました</string>
   <string name="verifying_omemo_keys_trusted_source">リンクをクリックした後、%1$s の OMEMO 鍵を検証しようとしています。 これは、%2$s がこのリンクを公開した、信頼できるソースからこのリンクをたどった場合にのみ安全です。</string>
   <string name="verify_omemo_keys">OMEMO 鍵を検証</string>
-  <string name="show_inactive_devices">非アクティブのデバイスを表示</string>
-  <string name="hide_inactive_devices">非アクティブのデバイスを非表示</string>
   <string name="distrust_omemo_key">信頼できないデバイス</string>
   <string name="distrust_omemo_key_text">このデバイスの検証を削除してもよろしいですか?\nこのデバイスと、そのデバイスからのメッセージは信頼できないとマークされます。</string>
-  <string name="timeout_24_hours">24 時間</string>
-  <string name="timeout_7_days">7 日</string>
-  <string name="timeout_30_days">30 日</string>
-  <string name="timeout_6_months">6 ヶ月</string>
   <string name="pref_automatically_delete_messages">自動メッセージ削除</string>
   <string name="pref_automatically_delete_messages_description">設定された期間よりも古いメッセージを、このデバイスから自動的に削除します。</string>
   <string name="encrypting_message">メッセージの暗号化中</string>

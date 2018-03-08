@@ -93,8 +93,6 @@
   <string name="no_pgp_keys">Herhangi bir OpenPGP anahtarı bulunamadı</string>
   <string name="contacts_have_no_pgp_keys">Kişiler ortak anahtarlarını yayımlamadığı için Conversations iletilerinizi şifreleyemiyor.\n\n<small>Lütfen kişilerden OpenPGP’yi ayarlamalarını isteyin.</small></string>
   <string name="pref_general">Genel</string>
-  <string name="pref_xmpp_resource">XMPP kaynağı</string>
-  <string name="pref_xmpp_resource_summary">İstemci kimliği</string>
   <string name="pref_accept_files">Dosyaları kabul et</string>
   <string name="pref_accept_files_summary">…‘den küçük olan dosyaları kendiliğinden kabul et</string>
   <string name="pref_attachments">Ekler</string>
@@ -120,8 +118,6 @@
   <string name="openpgp_error">OpenKeychain bir hata bildirdi</string>
   <string name="accept">Kabul et</string>
   <string name="error">Bir hata oluştu</string>
-  <string name="pref_grant_presence_updates">Durum güncelleme bildirimlerine izin ver</string>
-  <string name="pref_grant_presence_updates_summary">Eklediğiniz kişilerin durum bildirimlerine abone olmayı isteyin ve peşinen kabul edin.</string>
   <string name="your_account">Hesabınız</string>
   <string name="send_presence_updates">Çevrim içi durum bildirimi gönder</string>
   <string name="receive_presence_updates">Çevrim içi durum bildirimi al</string>
@@ -158,7 +154,6 @@
   <string name="mgmt_account_publish_avatar">Avatar yayımla</string>
   <string name="mgmt_account_publish_pgp">OpenPGP genel anahtarını yayımla</string>
   <string name="openpgp_has_been_published">OpenPGP genel anahtar yayımlandı.</string>
-  <string name="republish_pgp_keys">OpenPGP genel anahtarınızı yeniden yayımlamayı unutmayın!</string>
   <string name="mgmt_account_enable">Hesabı etkinleştir</string>
   <string name="mgmt_account_are_you_sure">Emin misiniz?</string>
   <string name="attach_record_voice">Ses kaydet</string>
@@ -263,8 +258,6 @@
   <string name="title_pref_quiet_hours_end_time">Bitiş zamanı</string>
   <string name="title_pref_enable_quiet_hours">Sessiz saatleri etkinleştir</string>
   <string name="pref_quiet_hours_summary">Bildirimler sessiz saatler boyunca sessize alınacaktır</string>
-  <string name="pref_use_larger_font">Yazı tipini büyüt</string>
-  <string name="pref_use_larger_font_summary">Uygulamanın tümünde büyük yazı tipi kullan</string>
   <string name="pref_use_send_button_to_indicate_status">Gönder düğmesi durum bildirsin</string>
   <string name="pref_use_indicate_received">İleti alındısı iste</string>
   <string name="pref_use_indicate_received_summary">Alınan iletiler, eğer destekleniyorsa, yeşil bir tikle işaretlenecektir.</string>
@@ -369,10 +362,6 @@
   <string name="moderated">Denetli</string>
   <string name="you_are_not_participating">Katılımcı değilsiniz</string>
   <string name="never">Hiçbir zaman</string>
-  <string name="thirty_minutes">30 dakika</string>
-  <string name="one_hour">1 saat</string>
-  <string name="two_hours">2 saat</string>
-  <string name="eight_hours">8 saat</string>
   <string name="until_further_notice">İkinci bildirime kadar</string>
   <string name="pref_input_options">Girdi</string>
   <string name="pref_enter_is_send">Enter=gönder</string>
@@ -438,7 +427,6 @@
   <string name="account_status_bind_failure">Bağlantı başarısız</string>
   <string name="account_status_host_unknown">Sunucu alan adı için sorumlu değil</string>
   <string name="server_info_broken">Bozuk</string>
-  <string name="pref_presence_settings">Durum</string>
   <string name="pref_away_when_screen_off">Ekran kapandığında uzakta</string>
   <string name="pref_away_when_screen_off_summary">Ekran kapandığında çevrim içi durum bildiriminizi uzakta olarak değiştirir</string>
   <string name="pref_treat_vibrate_as_silent">Titreşim kipini sessiz kip olarak değerlendir</string>
@@ -478,7 +466,6 @@
   <string name="shared_image_with_x">%s ile paylaşılan resim</string>
   <string name="shared_images_with_x">%s ile paylaşılan resimler</string>
   <string name="shared_text_with_x">%s ile paylaşılan metin</string>
-  <string name="no_storage_permission">Conversations’ın harici depolama alanına erişmesi gerek </string>
   <string name="sync_with_contacts">Kişilerle senkronize et</string>
   <string name="sync_with_contacts_long">Conversations XMPP listenizi telefon rehberinizle eşleştirerek kişilerin tam adlarını ve avatarlarını göstermek istiyor.\n\nConversations telefon rehberinizi yalnızca okuyacak ve onları sunucunuza yüklemeden eşleştirecek.\n\nŞimdi telefon rehberinize erişilmesine izin vermeniz istenecek.</string>
   <string name="certificate_information">Sertifika Bilgisi</string>
@@ -510,14 +497,11 @@
   <string name="security_error_invalid_file_access">Güvenlik hatası: Geçersiz dosya erişimi</string>
   <string name="no_application_to_share_uri">URI paylaşmak için uygulama bulunamadı</string>
   <string name="share_uri_with">URI paylaş ile...</string>
-  <string name="welcome_text">XMPP servis sağlayıcısından bağımsız bir iletişim kuralıdır. Bu istemciyi dilediğiniz XMPP sunucusuyla birlikte kullanabilirsiniz\nLakin rahat etmeniz için Conversations istemcisiyle kullanmanız için oluşturduğumuz conversation.im¹ sunucusu üzerinde hesap açmayı kolaylaştırdık.</string>
   <string name="magic_create_text">conversation.im sağlayıcısında hesap açma sürecinde size yol göstereceğiz.\nconversation.im\'i bir servis sağlayıcı olarak kullandığınızda diğer sağlayıcıları kullananlarla tam Jabber kimliğinizi vererek iletişim kurabilirsiniz.</string>
   <string name="your_full_jid_will_be">Tam Jabber kimliğiniz %s olacak</string>
   <string name="create_account">Hesap Oluştur</string>
   <string name="use_own_provider">Kendi sağlayıcımı kullan</string>
   <string name="pick_your_username">Kullanıcı adınızı seçin</string>
-  <string name="pref_manually_change_presence">Durumunuzu elle değiştirin</string>
-  <string name="pref_manually_change_presence_summary">Durumunuzu değiştirmek için avatarınıza dokunun</string>
   <string name="change_presence">Durum Değiştir</string>
   <string name="status_message">Durum iletisi</string>
   <string name="all_accounts_on_this_device">Bu aygıttaki tüm hesaplara uygula</string>
@@ -597,14 +581,8 @@
   <string name="i_followed_this_link_from_a_trusted_source">Bu bağlantıyı güvenilir bir kaynaktan takip ettim</string>
   <string name="verifying_omemo_keys_trusted_source">Bir bağlantıyı tıkladıktan sonra %1$s in OMEMO anahtarını doğrulamış olacaksınız.  Bu yalnızca  bağlantının %2$s  tarafından yayınladığından eminseniz güvenlidir.</string>
   <string name="verify_omemo_keys">OMEMO anahtarlarını doğrula</string>
-  <string name="show_inactive_devices">Aktif olmayan cihazları göster</string>
-  <string name="hide_inactive_devices">Aktif olmayan cihazları gizle</string>
   <string name="distrust_omemo_key">Güvensiz aygıt</string>
   <string name="distrust_omemo_key_text">Bu cihazın doğrulamasını kaldırmak istediğinizden emin misiniz? \ Bu cihaz ve cihazdan gelen mesajlar güvenilmez olarak işaretlenecektir.</string>
-  <string name="timeout_24_hours">24 saat</string>
-  <string name="timeout_7_days">7 gün</string>
-  <string name="timeout_30_days">30 gün</string>
-  <string name="timeout_6_months">6 ay</string>
   <string name="pref_automatically_delete_messages">Otomatik ileti silmek</string>
   <string name="pref_automatically_delete_messages_description">Bu cihazdan, ayarlanmış zaman aralığından eski olan mesajları otomatik olarak silin.</string>
   <string name="encrypting_message">İletiyi şifrelemek</string>

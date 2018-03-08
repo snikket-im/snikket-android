@@ -93,8 +93,6 @@
   <string name="no_pgp_keys">Không tìm thấy các khoá OpenPGP</string>
   <string name="contacts_have_no_pgp_keys">Conversations không thể mã hoá tin nhắn vì các liên hệ của bạn không thông báo khoá công cộng của họ.\n\n<small>Hãy yêu cầu họ cài đặt OpenPGP.</small></string>
   <string name="pref_general">Tổng quan</string>
-  <string name="pref_xmpp_resource">Ứng dụng XMPP</string>
-  <string name="pref_xmpp_resource_summary">Tên của máy trạm này được tự đặt là</string>
   <string name="pref_accept_files">Chấp thuận các tập tin</string>
   <string name="pref_accept_files_summary">Tự động chấp thuận các tập tin nhỏ hơn...</string>
   <string name="pref_attachments">Tập tin đính kèm</string>
@@ -120,8 +118,6 @@
   <string name="openpgp_error">OpenKeychain đã báo cáo một lỗi</string>
   <string name="accept">Chấp thuận</string>
   <string name="error">Đã có lỗi xảy ra</string>
-  <string name="pref_grant_presence_updates">Trao quyền cập nhật hiện diện</string>
-  <string name="pref_grant_presence_updates_summary">Ưu tiên trao quyền và hỏi đăng ký hiện diện cho các liên hệ bạn đã tạo</string>
   <string name="your_account">Tài khoản của bạn</string>
   <string name="send_presence_updates">Gửi cập nhật hiện diện</string>
   <string name="receive_presence_updates">Nhận cập nhật hiện diện</string>
@@ -158,7 +154,6 @@
   <string name="mgmt_account_publish_avatar">Đăng ảnh đại diện</string>
   <string name="mgmt_account_publish_pgp">Đăng khoá công cộng OpenPGP</string>
   <string name="openpgp_has_been_published">Đã phát hành khoá công cộng OpenPGP.</string>
-  <string name="republish_pgp_keys">Nhớ phát hành lại các khoá công cộng OpenPGP!</string>
   <string name="mgmt_account_enable">Bật tài khoản</string>
   <string name="mgmt_account_are_you_sure">Bạn chắc chứ?</string>
   <string name="attach_record_voice">Ghi âm</string>
@@ -257,8 +252,6 @@
   <string name="title_pref_quiet_hours_end_time">Thời gian kết thúc</string>
   <string name="title_pref_enable_quiet_hours">Bật giờ yên lặng</string>
   <string name="pref_quiet_hours_summary">Thông báo sẽ được tắt trong giờ yên lặng</string>
-  <string name="pref_use_larger_font">Tăng kích cỡ chữ</string>
-  <string name="pref_use_larger_font_summary">Dùng cỡ chữ lớn hơn trên toàn ứng dụng</string>
   <string name="pref_use_send_button_to_indicate_status">Nút gửi biểu thị trạng thái</string>
   <string name="pref_use_indicate_received">Yêu cầu thông báo nhận tin nhắn</string>
   <string name="pref_use_indicate_received_summary">Các tin nhắn đã nhận sẽ được đánh dấu kiểm màu xanh lá nếu được hỗ trợ</string>
@@ -354,10 +347,6 @@
   <string name="moderated">Đã điều phối</string>
   <string name="you_are_not_participating">Hiện bạn chưa tham gia</string>
   <string name="never">Chưa từng</string>
-  <string name="thirty_minutes">30 phút</string>
-  <string name="one_hour">1 tiếng</string>
-  <string name="two_hours">2 tiếng</string>
-  <string name="eight_hours">8 tiếng</string>
   <string name="until_further_notice">Cho đến thông báo tiếp theo</string>
   <string name="pref_enter_is_send">Bấm Enter để gửi</string>
   <string name="pref_enter_is_send_summary">Bấm nút Enter để gửi tin nhắn</string>
@@ -439,7 +428,6 @@
   </plurals>
   <string name="shared_file_with_x">Chia sẻ tập tin với %s</string>
   <string name="shared_image_with_x">Chia sẻ hình với %s</string>
-  <string name="no_storage_permission">Conversations cần quyền truy cập ổ nhớ ngoài</string>
   <string name="sync_with_contacts">Đồng bộ với danh bạ</string>
   <string name="sync_with_contacts_long">Conversations muốn so sánh danh sách bạn bè XMPP với danh bạ của bạn để hiện tên đầy đủ và ảnh đại diện của họ.\n\nConversations sẽ chỉ đọc danh bạ và so sánh trên thiết bị chứ không tải lên máy chủ.\n\nBây giờ, bạn sẽ được hỏi trao quyền truy cập danh bạ.</string>
   <string name="certificate_information">Thông tin chứng nhận</string>

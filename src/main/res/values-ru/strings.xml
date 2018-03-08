@@ -100,8 +100,6 @@
   <string name="no_pgp_keys">Нет OpenPGP ключей</string>
   <string name="contacts_have_no_pgp_keys">Conversations не может зашифровать сообщения, потому что удалённые пользователи не анонсируют свои открытые ключи.\n\n<small>Пожалуйста, попросите удалённых пользователей установить OpenPGP.</small></string>
   <string name="pref_general">Общие</string>
-  <string name="pref_xmpp_resource">Название ресурса</string>
-  <string name="pref_xmpp_resource_summary">Имя, которым клиент идентифицирует себя</string>
   <string name="pref_accept_files">Принимать файлы</string>
   <string name="pref_accept_files_summary">Автоматический приём файлов…</string>
   <string name="pref_attachments">Вложения</string>
@@ -127,8 +125,6 @@
   <string name="openpgp_error">Возникла ошибка в OpenKeychain</string>
   <string name="accept">Принять</string>
   <string name="error">Произошла ошибка</string>
-  <string name="pref_grant_presence_updates">Предоставлять обновления</string>
-  <string name="pref_grant_presence_updates_summary">Разрешить и запрашивать статус присутствия для созданных вами контактов</string>
   <string name="your_account">Ваш аккаунт</string>
   <string name="send_presence_updates">Отправлять присутствие</string>
   <string name="receive_presence_updates">Получать присутствие</string>
@@ -168,7 +164,6 @@
   <string name="unpublish_pgp">Удалить открытый OpenPGP ключ</string>
   <string name="unpublish_pgp_message">Вы действительно хотите удалить ваш OpenPGP публичный ключ из опубликованных?\nВаши собеседники не смогут больше отправлять вам зашифрованные OpenPGP сообщения.</string>
   <string name="openpgp_has_been_published">Открытый ключ OpenPGP был опубликован.</string>
-  <string name="republish_pgp_keys">Не забудьте повторно анонсировать свои OpenPGP ключи!</string>
   <string name="mgmt_account_enable">Включить аккаунт</string>
   <string name="mgmt_account_are_you_sure">Вы уверены?</string>
   <string name="mgmt_account_delete_confirm_text">Если вы удалите аккаунт, будет потеряна вся история переписки.</string>
@@ -287,8 +282,6 @@
   <string name="title_pref_quiet_hours_end_time">Окончание</string>
   <string name="title_pref_enable_quiet_hours">Включить режим «тихих часов»</string>
   <string name="pref_quiet_hours_summary">Уведомления будут отключены во время «тихих часов»</string>
-  <string name="pref_use_larger_font">Увеличить размер шрифта</string>
-  <string name="pref_use_larger_font_summary">Установите больший размер шрифта по всей программе</string>
   <string name="pref_use_send_button_to_indicate_status">Использовать кнопку-индикатор</string>
   <string name="pref_use_indicate_received">Запрос в получении сообщения</string>
   <string name="pref_use_indicate_received_summary">Если поддерживается, поступившие сообщения будут отмечены зелёной галочкой</string>
@@ -415,10 +408,6 @@
   <string name="modified_conference_options">Настройки конференции изменены!</string>
   <string name="could_not_modify_conference_options">Не удалось изменить настройки конференции</string>
   <string name="never">Никогда</string>
-  <string name="thirty_minutes">30 минут</string>
-  <string name="one_hour">1 час</string>
-  <string name="two_hours">2 часа</string>
-  <string name="eight_hours">8 часов</string>
   <string name="until_further_notice">До следующего уведомления</string>
   <string name="pref_input_options">Ввод</string>
   <string name="pref_enter_is_send">Отправить на \"Enter\"</string>
@@ -478,7 +467,6 @@
   <string name="choose_quick_action">Выбрать быстрое действие</string>
   <string name="search_for_contacts_or_groups">Поиск контактов или групп</string>
   <string name="send_private_message">Отправить частное сообщение</string>
-  <string name="user_has_left_conference">%s покинул конференцию!</string>
   <string name="username">Имя пользователя</string>
   <string name="username_hint">Имя пользователя</string>
   <string name="invalid_username">Недопустимое имя пользователя</string>
@@ -490,7 +478,6 @@
   <string name="account_status_bind_failure">Ошибка связывания</string>
   <string name="account_status_host_unknown">Сервер не ответственен за домен</string>
   <string name="server_info_broken">Повреждено</string>
-  <string name="pref_presence_settings">Присутствие</string>
   <string name="pref_away_when_screen_off">Вышел когда экран выключен</string>
   <string name="pref_away_when_screen_off_summary">Отмечает ваш ресурс как «вышел» когда экран выключен</string>
   <string name="pref_dnd_on_silent_mode">\"Не беспокоить\" в беззвучном режиме</string>
@@ -535,7 +522,6 @@
   <string name="shared_image_with_x">Изображение отправлено %s</string>
   <string name="shared_images_with_x">Изображения отправлены %s</string>
   <string name="shared_text_with_x">Общий текст с %s</string>
-  <string name="no_storage_permission">Conversations требуется доступ к внешнему хранилищу</string>
   <string name="sync_with_contacts">Синхронизировать с контактами</string>
   <string name="sync_with_contacts_long">Conversations ожидает совпадения вашего XMPP ростера с вашими контактами для отображения их полных имен и аватаров.\n\nConversations только считает ваши контакты и сопоставит их локально без отправки их на ваш сервер.\n\nСейчас вы получите запрос на разрешение доступа к вашим контактам.</string>
   <string name="certificate_information">Информация о сертификате</string>
@@ -569,14 +555,11 @@
   <string name="security_error_invalid_file_access">Ошибка безопасности: недействительный доступ к файлу</string>
   <string name="no_application_to_share_uri">Не найдено приложения для отправки</string>
   <string name="share_uri_with">Отправить URI…</string>
-  <string name="welcome_text">XMPP — независимый протокол. Вы можете использовать клиент для работы с любым XMPP сервером.\nОднако, для Вашего удобства мы упростили процедуру создания аккаунта на conversations.im¹; данный провайдер максимально подходит для использования с Conversations.</string>
   <string name="magic_create_text">Мы поможем Вам создать аккаунт на conversations.im¹.\nВыбрав conversations.im в качестве провайдера, вы сможете общаться с пользователями других провайдеров, сообщив им свой полный Jabber ID.</string>
   <string name="your_full_jid_will_be">Ваш полный Jabber ID: %s</string>
   <string name="create_account">Создать аккаунт</string>
   <string name="use_own_provider">Использовать свой провайдер</string>
   <string name="pick_your_username">Выберите имя пользователя</string>
-  <string name="pref_manually_change_presence">Ручная смена присутствия</string>
-  <string name="pref_manually_change_presence_summary">Нажмите на аватар для смены присутствия</string>
   <string name="change_presence">Сменить присутствие</string>
   <string name="status_message">Статусное собщение</string>
   <string name="all_accounts_on_this_device">Для всех аккаунтов</string>
@@ -662,14 +645,8 @@
   <string name="i_followed_this_link_from_a_trusted_source">Открывать ссылки из надёжного источника</string>
   <string name="verifying_omemo_keys_trusted_source">Вы потвердите OMEMO ключи %1$s после нажатия на ссылку. Это безопасно только если вы перешли по ссылке из доверенного источника, где только %2$sмог разместить эту ссылку.</string>
   <string name="verify_omemo_keys">Проверить OMEMO ключ</string>
-  <string name="show_inactive_devices">Показать неактивные устройста</string>
-  <string name="hide_inactive_devices">Спрятать неактивные устройства</string>
   <string name="distrust_omemo_key">Не доверенное устройство.</string>
   <string name="distrust_omemo_key_text">Вы действительно хотите удалить устройство из доверенных?\Устройство и сообщения, полученные с этого устройства, будут помечаться как недоверенные.</string>
-  <string name="timeout_24_hours">24 часа</string>
-  <string name="timeout_7_days">7 дней</string>
-  <string name="timeout_30_days">30 дней</string>
-  <string name="timeout_6_months">6 месяцев</string>
   <string name="pref_automatically_delete_messages">Автоматическое удаление сообщений</string>
   <string name="pref_automatically_delete_messages_description">Автоматически удалять сообщения с этого устройства по прошествии заданного времени.</string>
   <string name="encrypting_message">Зашифровать сообщение</string>

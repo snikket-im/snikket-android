@@ -93,8 +93,6 @@
   <string name="no_pgp_keys">OpenPGP 키가 발견되지 않음 </string>
   <string name="contacts_have_no_pgp_keys">당신의 연락처가 그들의 공개 키를 선언하지 않고 있기 때문에 Conversations는 당신의 메세지를 암호화할 수 없습니다. OpenPGP를 설정하도록 당신의 연락처에게 물어보세요.  </string>
   <string name="pref_general">일반 </string>
-  <string name="pref_xmpp_resource">XMPP 자원 </string>
-  <string name="pref_xmpp_resource_summary">이 클라이언트가 자신을 알아보는 이름</string>
   <string name="pref_accept_files">파일 수락 </string>
   <string name="pref_accept_files_summary">이 크기보다 작은 파일을 자동으로 수락 </string>
   <string name="pref_attachments">첨부파일</string>
@@ -119,8 +117,6 @@
   <string name="openpgp_error">OpenKeychain이 오류를 보고합니다 </string>
   <string name="accept">수락 </string>
   <string name="error">오류가 발생했습니다 </string>
-  <string name="pref_grant_presence_updates">프레즌스 업데이트 허가 </string>
-  <string name="pref_grant_presence_updates_summary">미리 작성한 연락처에 대한 권한을 부여하여 참여 구독을 요구합니다</string>
   <string name="your_account">당신의 계정 </string>
   <string name="send_presence_updates">프레즌스 업데이트 보내기 </string>
   <string name="receive_presence_updates">프레즌스 업데이트 받기 </string>
@@ -157,7 +153,6 @@
   <string name="mgmt_account_publish_avatar">아바타 공개 </string>
   <string name="mgmt_account_publish_pgp">OpenPGP 공개 키 공개 </string>
   <string name="openpgp_has_been_published">OpenPGP 공개키를 공개했습니다.</string>
-  <string name="republish_pgp_keys">OpenPGP 공개 키를 다시 공개하는 것을 잊지 마세요!</string>
   <string name="mgmt_account_enable">계정 사용 </string>
   <string name="mgmt_account_are_you_sure">확실합니까? </string>
   <string name="attach_record_voice">녹음 </string>
@@ -262,8 +257,6 @@
   <string name="title_pref_quiet_hours_end_time">마감 시간 </string>
   <string name="title_pref_enable_quiet_hours">무음 시간대 사용 </string>
   <string name="pref_quiet_hours_summary">무음 시간대에는 알림이 해제됩니다 </string>
-  <string name="pref_use_larger_font">글자 크기 증가 </string>
-  <string name="pref_use_larger_font_summary">앱 전반에 큰 글자 크기를 사용합니다 </string>
   <string name="pref_use_send_button_to_indicate_status">전송 버튼이 상태를 나타냄</string>
   <string name="pref_use_indicate_received">메세지 영수증 요청</string>
   <string name="pref_use_indicate_received_summary">만약 지원될 경우, 수신된 메세지는 초록색 기호로 표시됩니다. </string>
@@ -368,10 +361,6 @@
   <string name="moderated">중재됨</string>
   <string name="you_are_not_participating">당신은 참여하고 있지 않습니다</string>
   <string name="never">안함 </string>
-  <string name="thirty_minutes">30분 </string>
-  <string name="one_hour">1시간 </string>
-  <string name="two_hours">2시간 </string>
-  <string name="eight_hours">8시간 </string>
   <string name="until_further_notice">나중에 알릴때까지 </string>
   <string name="pref_input_options">입력</string>
   <string name="pref_enter_is_send">엔터 키로 전송  </string>
@@ -435,7 +424,6 @@
   <string name="account_status_bind_failure">바인드 실패</string>
   <string name="account_status_host_unknown">서버가 도메인에 응답하지 않습니다</string>
   <string name="server_info_broken">손상됨</string>
-  <string name="pref_presence_settings">참가</string>
   <string name="pref_away_when_screen_off">화면이 꺼져있을 경우 자리 비움으로 표시</string>
   <string name="pref_away_when_screen_off_summary">화면이 꺼져있을 경우에 자리 비움으로 상태를 표시함</string>
   <string name="pref_treat_vibrate_as_silent">진동을 자동으로 처리</string>
@@ -474,7 +462,6 @@
   <string name="shared_image_with_x">이미지를 %s와 공유함</string>
   <string name="shared_images_with_x">%s로 이미지를 공유</string>
   <string name="shared_text_with_x">%s 에서 텍스트를 공유</string>
-  <string name="no_storage_permission">Conversations는 외부 저장소로의 접근을 필요로 합니다</string>
   <string name="sync_with_contacts">연락처와 동기화</string>
   <string name="sync_with_contacts_long">Conversations는 XMPP 명단과 연락처 명단을 대조시켜서 이름과 아바타를 표시하고자 합니다.\n\nConversations는 당신의 서버에 업로드하지 않고 기기 내부적으로만 연락처를 읽고 대조를 할 것입니다.\n\n이제 연락처에 접근할 권한을 당신에게 물어볼 것입니다.</string>
   <string name="certificate_information">인증서 정보</string>
@@ -506,14 +493,11 @@
   <string name="security_error_invalid_file_access">보안 오류 : 잘못된 파일 액세스</string>
   <string name="no_application_to_share_uri">URI를 공유하는 응용 프로그램을 찾을 수 없습니다</string>
   <string name="share_uri_with">URI를 공유할 대상...</string>
-  <string name="welcome_text">XMPP는 제공자에 의존하지 않는 프로토콜입니다. 지금까지 당신이 선택한 어떤 XMPP 서버에서든 이 클라이언트를 사용할 수 있습니다. \n 그러나 당신이 편리하게, Conversations에서 사용하기에 적합한 제공자인 conversations.im¹에서 쉽게 계정을 만들 수 있도록하고 있습니다.</string>
   <string name="magic_create_text">conversations. im 계정을 만드는 단계를 안내합니다. \n 제공자로 conversations. im을 선택하면 당신의 완전한 Jabber ID를 지정하여 다른 공급자의 사용자와 통신 할 수 있습니다.</string>
   <string name="your_full_jid_will_be">나의 전체 Jabber ID: %s</string>
   <string name="create_account">계정 생성</string>
   <string name="use_own_provider">다른 서버 이용</string>
   <string name="pick_your_username">유저네임을 고르세요</string>
-  <string name="pref_manually_change_presence">참가를 수동으로 변경</string>
-  <string name="pref_manually_change_presence_summary">아바타를 터치하여 참여를 변경합니다</string>
   <string name="change_presence">참여를 변경</string>
   <string name="status_message">상태 메세지</string>
   <string name="all_accounts_on_this_device">이 장치의 모든 계정에 대해 설정</string>

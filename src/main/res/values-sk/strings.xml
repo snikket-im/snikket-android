@@ -84,8 +84,6 @@
   <string name="no_pgp_keys">Nenašli sa žiadne OpenPGP kľúče</string>
   <string name="contacts_have_no_pgp_keys">Nie je možné zašifrovať správy v aplikácii Conversations, pretože kontakty neoznamujú svoj verejný kľúč.\n\n<small>Požiadajte svoje kontakty o nastavenie OpenPGP.</small></string>
   <string name="pref_general">Všeobecné</string>
-  <string name="pref_xmpp_resource">XMPP zdroj</string>
-  <string name="pref_xmpp_resource_summary">Meno, ktorým sa tento klient identifikuje</string>
   <string name="pref_accept_files">Prijať súbory</string>
   <string name="pref_accept_files_summary">Automaticky prijať súbory menšie ako…</string>
   <string name="pref_notifications">Upozornenia</string>
@@ -97,7 +95,6 @@
   <string name="openpgp_error">OpenKeychain nahlásil chybu</string>
   <string name="accept">Prijať</string>
   <string name="error">Došlo k chybe</string>
-  <string name="pref_grant_presence_updates">Povoliť aktualizáciu stavu</string>
   <string name="your_account">Váš účet</string>
   <string name="send_presence_updates">Zasielať zmeny stavu</string>
   <string name="receive_presence_updates">Prijímať zmeny stavu</string>
@@ -219,8 +216,6 @@
   <string name="title_pref_quiet_hours_end_time">Čas konca</string>
   <string name="title_pref_enable_quiet_hours">Povoliť tichý režim</string>
   <string name="pref_quiet_hours_summary">Upozornenia budú počas tichého režimu stlmené</string>
-  <string name="pref_use_larger_font">Zväčšiť veľkosť písma</string>
-  <string name="pref_use_larger_font_summary">Použiť väčšie písmo v celej aplikácii</string>
   <string name="pref_use_send_button_to_indicate_status">Tlačidlo pre odoslanie zobrazuje stav</string>
   <string name="pref_use_indicate_received">Požadovať oznámenie o prijatí</string>
   <string name="pref_use_indicate_received_summary">Prijaté správy budú označené zelenou kvačkou. Toto nemusí vždy plne fungovať.</string>
@@ -308,10 +303,6 @@
   <string name="non_anonymous">Neanonymný</string>
   <string name="you_are_not_participating">Nezúčastňujete sa</string>
   <string name="never">Nikdy</string>
-  <string name="thirty_minutes">30 minút</string>
-  <string name="one_hour">1 hodina</string>
-  <string name="two_hours">2 hodiny</string>
-  <string name="eight_hours">8 hodín</string>
   <string name="until_further_notice">Až do odvolania</string>
   <string name="pref_enter_is_send">Enter odosiela</string>
   <string name="pref_enter_is_send_summary">Použiť klávesu enter na odoslanie správy</string>
