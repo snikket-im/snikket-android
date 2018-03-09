@@ -86,16 +86,14 @@ public class IrregularUnicodeDetector {
 			builder.append('@');
 		}
 		if (jid.getDomain() != null) {
-			int i = jid.getDomain().lastIndexOf('.');
-			if (i != -1) {
-				String second = jid.getDomain().substring(0, i);
-				String top = jid.getDomain().substring(i, jid.getDomain().length());
-				SpannableString secondSpannableString = new SpannableString(second);
-				colorize(secondSpannableString, patternTuple.domain, color);
-				builder.append(secondSpannableString);
-				builder.append(top);
-			} else {
-				builder.append(jid.getDomain());
+			String[] labels = jid.getDomain().split("\\.");
+			for (int i = 0; i < labels.length; ++i) {
+				SpannableString spannableString = new SpannableString(labels[i]);
+				colorize(spannableString, patternTuple.domain.get(i), color);
+				if (i != 0) {
+					builder.append('.');
+				}
+				builder.append(spannableString);
 			}
 		}
 		if (builder.length() != 0 && jid.getResource() != null) {
@@ -217,9 +215,9 @@ public class IrregularUnicodeDetector {
 
 	private static class PatternTuple {
 		private final Pattern local;
-		private final Pattern domain;
+		private final List<Pattern> domain;
 
-		private PatternTuple(Pattern local, Pattern domain) {
+		private PatternTuple(Pattern local, List<Pattern> domain) {
 			this.local = local;
 			this.domain = domain;
 		}
@@ -232,19 +230,13 @@ public class IrregularUnicodeDetector {
 				localPattern = null;
 			}
 			String domain = jid.getDomain();
-			final Pattern domainPattern;
+			final List<Pattern> domainPatterns = new ArrayList<>();
 			if (domain != null) {
-				int i = domain.lastIndexOf('.');
-				if (i != -1) {
-					String secondLevel = domain.substring(0, i);
-					domainPattern = create(findIrregularCodePoints(secondLevel));
-				} else {
-					domainPattern = null;
+				for (String label : domain.split("\\.")) {
+					domainPatterns.add(create(findIrregularCodePoints(label)));
 				}
-			} else {
-				domainPattern = null;
 			}
-			return new PatternTuple(localPattern, domainPattern);
+			return new PatternTuple(localPattern, domainPatterns);
 		}
 	}
 }
