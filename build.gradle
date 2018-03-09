@@ -21,6 +21,9 @@ repositories {
     maven {
         url "https://jitpack.io"
     }
+    maven {
+        url "https://oss.sonatype.org/content/repositories/snapshots"
+    }
 }
 
 configurations {
@@ -53,7 +56,7 @@ dependencies {
     implementation 'com.makeramen:roundedimageview:2.3.0'
     implementation "com.wefika:flowlayout:0.4.1"
     implementation 'net.ypresto.androidtranscoder:android-transcoder:0.2.0'
-    implementation 'rocks.xmpp:xmpp-addr:0.7.5'
+    implementation 'rocks.xmpp:xmpp-addr:0.8.0-SNAPSHOT'
 }
 
 ext {
