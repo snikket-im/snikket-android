@@ -59,6 +59,7 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -94,8 +95,8 @@ public class StartConversationActivity extends XmppActivity implements OnRosterU
 	private List<ListItem> conferences = new ArrayList<>();
 	private ListItemAdapter mConferenceAdapter;
 	private List<String> mActivatedAccounts = new ArrayList<>();
-	private List<String> mKnownHosts;
-	private List<String> mKnownConferenceHosts;
+	private Collection<String> mKnownHosts;
+	private Collection<String> mKnownConferenceHosts;
 	private Invite mPendingInvite = null;
 	private EditText mSearchEditText;
 	private AtomicBoolean mRequestedContactsPermission = new AtomicBoolean(false);

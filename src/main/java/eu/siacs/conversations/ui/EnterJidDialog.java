@@ -10,6 +10,7 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import java.util.Collection;
 import java.util.List;
 
 import eu.siacs.conversations.Config;
@@ -40,9 +41,9 @@ public class EnterJidDialog {
 	protected OnEnterJidDialogPositiveListener listener = null;
 
 	public EnterJidDialog(
-		final Context context, List<String> knownHosts, final List<String> activatedAccounts,
-		final String title, final String positiveButton,
-		final String prefilledJid, final String account, boolean allowEditJid
+			final Context context, Collection<String> knownHosts, final List<String> activatedAccounts,
+			final String title, final String positiveButton,
+			final String prefilledJid, final String account, boolean allowEditJid
 	) {
 		AlertDialog.Builder builder = new AlertDialog.Builder(context);
 		builder.setTitle(title);

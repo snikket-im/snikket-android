@@ -394,8 +394,8 @@ public class Contact implements ListItem, Blockable {
 				another.getDisplayName());
 	}
 
-	public Jid getServer() {
-		return Jid.ofDomain(getJid().getDomain());
+	public String getServer() {
+		return getJid().getDomain();
 	}
 
 	public boolean setAvatar(Avatar avatar) {

@@ -340,7 +340,7 @@ public class NotificationService {
 		for (final ArrayList<Message> messages : notifications.values()) {
 			if (messages.size() > 0) {
 				conversation = messages.get(0).getConversation();
-				final String name = conversation.getName();
+				final String name = conversation.getName().toString();
 				SpannableString styledString;
 				if (Config.HIDE_MESSAGE_TEXT_IN_NOTIFICATION) {
 					int count = messages.size();
@@ -379,7 +379,7 @@ public class NotificationService {
 		final Builder mBuilder = new NotificationCompat.Builder(mXmppConnectionService);
 		if (messages.size() >= 1) {
 			final Conversation conversation = messages.get(0).getConversation();
-			final UnreadConversation.Builder mUnreadBuilder = new UnreadConversation.Builder(conversation.getName());
+			final UnreadConversation.Builder mUnreadBuilder = new UnreadConversation.Builder(conversation.getName().toString());
 			mBuilder.setLargeIcon(mXmppConnectionService.getAvatarService()
 					.get(conversation, getPixel(64)));
 			mBuilder.setContentTitle(conversation.getName());

@@ -55,6 +55,7 @@ import java.util.List;
 import java.util.ListIterator;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -3392,42 +3393,40 @@ public class XmppConnectionService extends Service {
 
 	}
 
-	public List<String> getKnownHosts() {
-		final List<String> hosts = new ArrayList<>();
+	public Collection<String> getKnownHosts() {
+		final Set<String> hosts = new HashSet<>();
 		for (final Account account : getAccounts()) {
-			if (!hosts.contains(account.getServer().toString())) {
-				hosts.add(account.getServer().toString());
-			}
+			hosts.add(account.getServer());
 			for (final Contact contact : account.getRoster().getContacts()) {
 				if (contact.showInRoster()) {
-					final String server = contact.getServer().toString();
+					final String server = contact.getServer();
 					if (server != null && !hosts.contains(server)) {
 						hosts.add(server);
 					}
 				}
 			}
 		}
-		if (Config.DOMAIN_LOCK != null && !hosts.contains(Config.DOMAIN_LOCK)) {
+		if (Config.DOMAIN_LOCK != null) {
 			hosts.add(Config.DOMAIN_LOCK);
 		}
-		if (Config.MAGIC_CREATE_DOMAIN != null && !hosts.contains(Config.MAGIC_CREATE_DOMAIN)) {
+		if (Config.MAGIC_CREATE_DOMAIN != null) {
 			hosts.add(Config.MAGIC_CREATE_DOMAIN);
 		}
 		return hosts;
 	}
 
-	public List<String> getKnownConferenceHosts() {
-		final ArrayList<String> mucServers = new ArrayList<>();
+	public Collection<String> getKnownConferenceHosts() {
+		final Set<String> mucServers = new HashSet<>();
 		for (final Account account : accounts) {
 			if (account.getXmppConnection() != null) {
 				final String server = account.getXmppConnection().getMucServer();
-				if (server != null && !mucServers.contains(server)) {
+				if (server != null) {
 					mucServers.add(server);
 				}
 				for (Bookmark bookmark : account.getBookmarks()) {
 					final Jid jid = bookmark.getJid();
 					final String s = jid == null ? null : jid.getDomain();
-					if (s != null && !mucServers.contains(s)) {
+					if (s != null) {
 						mucServers.add(s);
 					}
 				}

@@ -46,7 +46,7 @@ public class ContactChooserTargetService extends ChooserTargetService implements
 			final int pixel = (int) (48 * getResources().getDisplayMetrics().density);
 			for(int i = 0; i < Math.min(conversations.size(),MAX_TARGETS); ++i) {
 				final Conversation conversation = conversations.get(i);
-				final String name = conversation.getName();
+				final String name = conversation.getName().toString();
 				final Icon icon = Icon.createWithBitmap(mXmppConnectionService.getAvatarService().get(conversation, pixel));
 				final float score = 1 - (1.0f / MAX_TARGETS) * i;
 				final Bundle extras = new Bundle();

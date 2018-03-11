@@ -17,6 +17,7 @@ import android.widget.AbsListView.MultiChoiceModeListener;
 import android.widget.ListView;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
@@ -37,7 +38,7 @@ import rocks.xmpp.addr.Jid;
 public class ChooseContactActivity extends AbstractSearchableListItemActivity {
 	public static final String EXTRA_TITLE_RES_ID = "extra_title_res_id";
 	private List<String> mActivatedAccounts = new ArrayList<>();
-	private List<String> mKnownHosts;
+	private Collection<String> mKnownHosts;
 	private Set<Contact> selected;
 	private Set<String> filterContacts;
 

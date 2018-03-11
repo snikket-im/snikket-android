@@ -465,7 +465,7 @@ public class Conversation extends AbstractEntity implements Blockable, Comparabl
 		}
 	}
 
-	public String getName() {
+	public CharSequence getName() {
 		if (getMode() == MODE_MULTI) {
 			final String subject = getMucOptions().getSubject();
 			Bookmark bookmark = getBookmark();
@@ -483,7 +483,7 @@ public class Conversation extends AbstractEntity implements Blockable, Comparabl
 				}
 			}
 		} else if (isWithStranger()) {
-			return contactJid.asBareJid().toString();
+			return contactJid;
 		} else {
 			return this.getContact().getDisplayName();
 		}

@@ -42,7 +42,7 @@ public class GeoHelper {
 		String label;
 		if (conversation.getMode() == Conversation.MODE_SINGLE && message.getStatus() == Message.STATUS_RECEIVED) {
 			try {
-				label = "(" + URLEncoder.encode(message.getConversation().getName(), "UTF-8") + ")";
+				label = "(" + URLEncoder.encode(message.getConversation().getName().toString(), "UTF-8") + ")";
 			} catch (UnsupportedEncodingException e) {
 				label = "";
 			}

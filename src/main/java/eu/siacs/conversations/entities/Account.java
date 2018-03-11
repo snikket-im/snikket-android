@@ -228,7 +228,7 @@ public class Account extends AbstractEntity {
 	protected Jid jid;
 	protected String password;
 	protected int options = 0;
-	protected String rosterVersion;
+	private String rosterVersion;
 	protected State status = State.OFFLINE;
 	protected final JSONObject keys;
 	protected String resource;
@@ -336,8 +336,8 @@ public class Account extends AbstractEntity {
 		return next != null && !next.equals(previousFull);
 	}
 
-	public Jid getServer() {
-		return Jid.ofDomain(jid.getDomain());
+	public String getServer() {
+		return jid.getDomain();
 	}
 
 	public String getPassword() {
@@ -357,8 +357,8 @@ public class Account extends AbstractEntity {
 	}
 
 	public boolean isOnion() {
-		final Jid server = getServer();
-		return server != null && server.toString().toLowerCase().endsWith(".onion");
+		final String server = getServer();
+		return server != null && server.endsWith(".onion");
 	}
 
 	public void setPort(int port) {

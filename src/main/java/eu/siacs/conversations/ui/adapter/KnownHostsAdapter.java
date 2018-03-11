@@ -6,6 +6,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Filter;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Locale;
 
@@ -58,7 +59,7 @@ public class KnownHostsAdapter extends ArrayAdapter<String> {
 		}
 	};
 
-	public KnownHostsAdapter(Context context, int viewResourceId, List<String> mKnownHosts) {
+	public KnownHostsAdapter(Context context, int viewResourceId, Collection<String> mKnownHosts) {
 		super(context, viewResourceId, new ArrayList<>());
 		domains = new ArrayList<>(mKnownHosts);
 	}

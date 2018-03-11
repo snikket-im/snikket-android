@@ -1,6 +1,7 @@
 package eu.siacs.conversations.entities;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
@@ -46,7 +47,7 @@ public class Bookmark extends Element implements ListItem {
 	}
 
 	@Override
-	public int compareTo(final ListItem another) {
+	public int compareTo(final @NonNull ListItem another) {
 		return this.getDisplayName().compareToIgnoreCase(
 				another.getDisplayName());
 	}
@@ -55,7 +56,7 @@ public class Bookmark extends Element implements ListItem {
 	public String getDisplayName() {
 		final Conversation c = getConversation();
 		if (c != null) {
-			return c.getName();
+			return c.getName().toString();
 		} else if (getBookmarkName() != null
 				&& !getBookmarkName().trim().isEmpty()) {
 			return getBookmarkName().trim();

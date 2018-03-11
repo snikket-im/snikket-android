@@ -216,7 +216,7 @@ public class AvatarService implements OnAdvancedStreamFeaturesLoaded {
 		final List<MucOptions.User> users = mucOptions.getUsersRelevantForNameAndAvatar();
 		if (users.size() == 0) {
 			Conversation c = mucOptions.getConversation();
-			bitmap = getImpl(c.getName(),c.getJid().asBareJid().toString(),size);
+			bitmap = getImpl(c.getName().toString(),c.getJid().asBareJid().toString(),size);
 		} else {
 			bitmap = getImpl(users,size);
 		}
