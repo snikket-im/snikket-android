@@ -15,9 +15,11 @@ public class Bookmark extends Element implements ListItem {
 
 	private Account account;
 	private WeakReference<Conversation> conversation;
+	private Jid jid;
 
 	public Bookmark(final Account account, final Jid jid) {
 		super("conference");
+		this.jid = jid;
 		this.setAttribute("jid", jid.toString());
 		this.account = account;
 	}
@@ -31,6 +33,7 @@ public class Bookmark extends Element implements ListItem {
 		Bookmark bookmark = new Bookmark(account);
 		bookmark.setAttributes(element.getAttributes());
 		bookmark.setChildren(element.getChildren());
+		bookmark.jid =  bookmark.getAttributeAsJid("jid");
 		return bookmark;
 	}
 
@@ -65,7 +68,7 @@ public class Bookmark extends Element implements ListItem {
 
 	@Override
 	public Jid getJid() {
-		return this.getAttributeAsJid("jid");
+		return this.jid;
 	}
 
 	@Override
