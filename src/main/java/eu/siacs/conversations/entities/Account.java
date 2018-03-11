@@ -618,7 +618,7 @@ public class Account extends AbstractEntity {
 
 	public String getShareableUri() {
 		List<XmppUri.Fingerprint> fingerprints = this.getFingerprints();
-		String uri = "xmpp:"+this.getJid().asBareJid().toString();
+		String uri = "xmpp:"+this.getJid().asBareJid().toEscapedString();
 		if (fingerprints.size() > 0) {
 			return XmppUri.getFingerprintUri(uri,fingerprints,';');
 		} else {
@@ -628,7 +628,7 @@ public class Account extends AbstractEntity {
 
 	public String getShareableLink() {
 		List<XmppUri.Fingerprint> fingerprints = this.getFingerprints();
-		String uri = "https://conversations.im/i/"+this.getJid().asBareJid().toString();
+		String uri = "https://conversations.im/i/"+this.getJid().asBareJid().toEscapedString();
 		if (fingerprints.size() > 0) {
 			return XmppUri.getFingerprintUri(uri,fingerprints,'&');
 		} else {

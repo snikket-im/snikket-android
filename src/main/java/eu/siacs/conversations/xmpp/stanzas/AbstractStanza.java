@@ -20,26 +20,26 @@ public class AbstractStanza extends Element {
 
 	public void setTo(final Jid to) {
 		if (to != null) {
-			setAttribute("to", to.toString());
+			setAttribute("to", to.toEscapedString());
 		}
 	}
 
 	public void setFrom(final Jid from) {
 		if (from != null) {
-			setAttribute("from", from.toString());
+			setAttribute("from", from.toEscapedString());
 		}
 	}
 
 	public boolean fromServer(final Account account) {
 		return getFrom() == null
-			|| getFrom().equals(account.getServer())
+			|| getFrom().equals(Jid.of(account.getServer()))
 			|| getFrom().equals(account.getJid().asBareJid())
 			|| getFrom().equals(account.getJid());
 	}
 
 	public boolean toServer(final Account account) {
 		return getTo() == null
-			|| getTo().equals(account.getServer())
+			|| getTo().equals(Jid.of(account.getServer()))
 			|| getTo().equals(account.getJid().asBareJid())
 			|| getTo().equals(account.getJid());
 	}

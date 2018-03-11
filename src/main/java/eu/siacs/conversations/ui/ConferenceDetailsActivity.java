@@ -329,7 +329,7 @@ public class ConferenceDetailsActivity extends XmppActivity implements OnConvers
 	protected String getShareableUri(boolean http) {
 		if (mConversation != null) {
 			if (http) {
-				return "https://conversations.im/j/"+ mConversation.getJid().asBareJid();
+				return "https://conversations.im/j/"+ mConversation.getJid().asBareJid().toEscapedString();
 			} else {
 				return "xmpp:"+mConversation.getJid().asBareJid()+"?join";
 			}
