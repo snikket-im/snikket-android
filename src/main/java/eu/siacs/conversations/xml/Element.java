@@ -151,9 +151,8 @@ public class Element {
 		final String jid = this.getAttribute(name);
 		if (jid != null && !jid.isEmpty()) {
 			try {
-				return Jid.of(jid);
+				return Jid.ofEscaped(jid);
 			} catch (final IllegalArgumentException e) {
-				Log.e(Config.LOGTAG, "could not parse jid " + jid);
 				return null;
 			}
 		}

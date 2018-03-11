@@ -58,14 +58,14 @@ public class MagicCreateActivity extends XmppActivity implements TextWatcher {
 		mRandom = new SecureRandom();
 		Button next = findViewById(R.id.create_account);
 		next.setOnClickListener(v -> {
-			String username = mUsername.getText().toString();
-			if (username.contains("@") || username.length() < 3) {
-				mUsername.setError(getString(R.string.invalid_username));
-				mUsername.requestFocus();
-			} else {
-				mUsername.setError(null);
-				try {
-					Jid jid = Jid.of(username.toLowerCase(), Config.MAGIC_CREATE_DOMAIN, null);
+			try {
+				String username = mUsername.getText().toString();
+				Jid jid = Jid.of(username.toLowerCase(), Config.MAGIC_CREATE_DOMAIN, null);
+				if (!jid.getEscapedLocal().equals(jid.getLocal())|| username.length() < 3) {
+					mUsername.setError(getString(R.string.invalid_username));
+					mUsername.requestFocus();
+				} else {
+					mUsername.setError(null);
 					Account account = xmppConnectionService.findAccountByJid(jid);
 					if (account == null) {
 						account = new Account(jid, createPassword());
@@ -81,10 +81,10 @@ public class MagicCreateActivity extends XmppActivity implements TextWatcher {
 					Toast.makeText(MagicCreateActivity.this, R.string.secure_password_generated, Toast.LENGTH_SHORT).show();
 					WelcomeActivity.addInviteUri(intent, getIntent());
 					startActivity(intent);
-				} catch (IllegalArgumentException e) {
-					mUsername.setError(getString(R.string.invalid_username));
-					mUsername.requestFocus();
 				}
+			} catch (IllegalArgumentException e) {
+				mUsername.setError(getString(R.string.invalid_username));
+				mUsername.requestFocus();
 			}
 		});
 		mUsername.addTextChangedListener(this);
@@ -114,7 +114,7 @@ public class MagicCreateActivity extends XmppActivity implements TextWatcher {
 			try {
 				mFullJidDisplay.setVisibility(View.VISIBLE);
 				Jid jid = Jid.of(s.toString().toLowerCase(), Config.MAGIC_CREATE_DOMAIN, null);
-				mFullJidDisplay.setText(getString(R.string.your_full_jid_will_be, jid.toString()));
+				mFullJidDisplay.setText(getString(R.string.your_full_jid_will_be, jid.toEscapedString()));
 			} catch (IllegalArgumentException e) {
 				mFullJidDisplay.setVisibility(View.INVISIBLE);
 			}

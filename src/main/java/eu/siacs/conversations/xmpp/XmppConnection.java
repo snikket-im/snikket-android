@@ -1020,7 +1020,7 @@ public class XmppConnection implements Runnable {
 				final Element jid = bind.findChild("jid");
 				if (jid != null && jid.getContent() != null) {
 					try {
-						Jid assignedJid = Jid.of(jid.getContent());
+						Jid assignedJid = Jid.ofEscaped(jid.getContent());
 						if (!account.getJid().getDomain().equals(assignedJid.getDomain())) {
 							Log.d(Config.LOGTAG,account.getJid().asBareJid()+": server tried to re-assign domain to "+assignedJid.getDomain());
 							throw new StateChangingError(Account.State.BIND_FAILURE);
