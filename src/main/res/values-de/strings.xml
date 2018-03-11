@@ -466,6 +466,7 @@
   <string name="choose_quick_action">Wähle Schnell-Taste</string>
   <string name="search_for_contacts_or_groups">Nach Kontakten oder Konferenzen suchen</string>
   <string name="send_private_message">Private Nachricht senden</string>
+  <string name="user_has_left_conference">%1$s hat den Gruppenchat verlassen!</string>
   <string name="username">Benutzername</string>
   <string name="username_hint">Benutzername</string>
   <string name="invalid_username">Ungültiger Benutzername</string>
@@ -477,6 +478,7 @@
   <string name="account_status_bind_failure">Bindungsfehler</string>
   <string name="account_status_host_unknown">Unbekannte Domain</string>
   <string name="server_info_broken">Fehlerhaft</string>
+  <string name="pref_presence_settings">Status</string>
   <string name="pref_away_when_screen_off">Abwesend bei abgeschaltetem Bildschirm</string>
   <string name="pref_away_when_screen_off_summary">Setzt deinen Status auf \"abwesend\", solange dein Bildschirm abgeschaltet ist</string>
   <string name="pref_dnd_on_silent_mode">\"Bitte nicht stören\" bei Stummschaltung</string>
@@ -519,6 +521,8 @@
   <string name="shared_image_with_x">Bild mit %s geteilt</string>
   <string name="shared_images_with_x">Bilder mit %s geteilt</string>
   <string name="shared_text_with_x">Text mit %s geteilt</string>
+  <string name="no_storage_permission">Conversations benötigt Zugriff auf den externen Speicher</string>
+  <string name="no_camera_permission">Conversations benötigt Zugriff auf die Kamera</string>
   <string name="sync_with_contacts">Mit Kontakten synchronisieren</string>
   <string name="sync_with_contacts_long">Conversations möchte deine XMPP-Kontaktliste mit deinen Kontakten abgleichen, um deren vollständige Namen und Avatare anzuzeigen.\n\nConversations wird deine Kontakte nur lokal lesen, abgleichen und überträgt diese nicht auf den Server.\n\nDu wirst nun gefragt, ob du den Zugriff auf deine Kontakte erlauben möchtest.</string>
   <string name="certificate_information">Zertifikatinformationen</string>
@@ -552,15 +556,18 @@
   <string name="security_error_invalid_file_access">Sicherheitsfehler: Dateizugriff nicht erlaubt</string>
   <string name="no_application_to_share_uri">Keine Anwendung zum Teilen der URI gefunden</string>
   <string name="share_uri_with">Teile URI mit…</string>
+  <string name="welcome_text">Jabber ist ein anbieterunabhängiges Instant Messaging Netzwerk. Du kannst diesen Client mit jedem beliebigen Jabber-Server nutzen.\nUm es dir leicht zu machen, haben wir die Möglichkeit geschaffen, ein Konto auf conversations.im¹ anzulegen; ein Anbieter, der speziell für die Verwendung mit Conversations geeignet ist.</string>
   <string name="magic_create_text">Wir führen dich durch den Prozess der Kontoerstellung auf conversations.im.¹\nWenn du conversations.im als Provider wählst, kannst du mit Nutzern anderer Anbieter kommunizieren, indem du ihnen deine vollständige Jabber-ID gibst.</string>
   <string name="your_full_jid_will_be">Deine vollständige Jabber ID lautet: %s</string>
   <string name="create_account">Konto erstellen</string>
   <string name="use_own_provider">Nutze eigenen Provider</string>
   <string name="pick_your_username">Wähle deinen Benutzernamen</string>
+  <string name="pref_manually_change_presence">Status manuell ändern</string>
+  <string name="pref_manually_change_presence_summary">Lege deinen Status fest, wenn du deine Statusnachricht bearbeitest.</string>
   <string name="change_presence">Status ändern</string>
   <string name="status_message">Statusnachricht</string>
   <string name="all_accounts_on_this_device">Für alle Konten dieses Gerätes festlegen</string>
-  <string name="presence_chat">Frei zum chatten</string>
+  <string name="presence_chat">Frei zum Chatten</string>
   <string name="presence_online">Online</string>
   <string name="presence_away">Weg</string>
   <string name="presence_xa">Nicht verfügbar</string>
@@ -642,8 +649,34 @@
   <string name="i_followed_this_link_from_a_trusted_source">Ich habe diesen Link aus einer vertrauenswürdigen Quelle erhalten</string>
   <string name="verifying_omemo_keys_trusted_source">Du bist dabei, die OMEMO-Schlüssel von %1$s nach dem Klick auf diesen Link zu überprüfen. Dies ist nur sicher, wenn du diesen Link von einer vertrauenswürdigen Quelle erhalten hast, der nur von %2$s veröffentlicht werden konnte.</string>
   <string name="verify_omemo_keys">Überprüfe OMEMO-Schlüssel</string>
+  <string name="show_inactive_devices">Inaktive anzeigen</string>
+  <string name="hide_inactive_devices">Inaktive nicht anzeigen</string>
   <string name="distrust_omemo_key">Gerät nicht mehr vertrauen</string>
   <string name="distrust_omemo_key_text">Möchtest du die vorhandene Überprüfung für dieses Gerät löschen?\nDas Gerät und gesendete Nachrichten von diesem Gerät werden als nicht vertrauenswürdig markiert.</string>
+  <plurals name="seconds">
+    <item quantity="one">%d Sekunde</item>
+    <item quantity="other">%d Sekunden</item>
+  </plurals>
+  <plurals name="minutes">
+    <item quantity="one">%d Minute</item>
+    <item quantity="other">%d Minuten</item>
+  </plurals>
+  <plurals name="hours">
+    <item quantity="one">%d Stunde</item>
+    <item quantity="other">%d Stunden</item>
+  </plurals>
+  <plurals name="days">
+    <item quantity="one">%d Tag</item>
+    <item quantity="other">%d Tage</item>
+  </plurals>
+  <plurals name="weeks">
+    <item quantity="one">%d Woche</item>
+    <item quantity="other">%d Wochen</item>
+  </plurals>
+  <plurals name="months">
+    <item quantity="one">%d Monat</item>
+    <item quantity="other">%d Monate</item>
+  </plurals>
   <string name="pref_automatically_delete_messages">Automatische Nachrichtenlöschung</string>
   <string name="pref_automatically_delete_messages_description">Lösche Nachrichten automatisch, wenn diese älter als die eingestellte Zeit sind.</string>
   <string name="encrypting_message">Nachricht wird verschlüsselt</string>
@@ -679,4 +712,18 @@
   <string name="private_messages_are_disabled">Private Nachrichten sind deaktiviert</string>
   <string name="huawei_protected_apps">Geschützte Apps</string>
   <string name="huawei_protected_apps_summary">Um weiterhin Benachrichtigungen zu erhalten, auch wenn der Bildschirm ausgeschaltet ist, musst du Conversations zur Liste der geschützten Apps hinzufügen.</string>
+  <string name="mtm_accept_cert">Unbekanntes Zertifikat akzeptieren?</string>
+  <string name="mtm_trust_anchor">Das Serverzertifikat wurde nicht von einer bekannten Zertifizierungsstelle signiert.</string>
+  <string name="mtm_cert_expired">Das Serverzertifikat ist abgelaufen.</string>
+  <string name="mtm_accept_servername">Nicht übereinstimmenden Servernamen akzeptieren?</string>
+  <string name="mtm_hostname_mismatch">Server konnte sich nicht als \"%s\" authentifizieren. Das Zertifikat ist nur gültig für:</string>
+  <string name="mtm_connect_anyway">Möchtest du trotzdem eine Verbindung herstellen?</string>
+  <string name="mtm_cert_details">Zertifikatsdetails:</string>
+  <string name="mtm_notification">Zertifikatsüberprüfung</string>
+  <string name="once">Einmalig</string>
+  <string name="qr_code_scanner_needs_access_to_camera">Der QR-Codescanner benötigt Zugriff auf die Kamera.</string>
+  <string name="pref_scroll_to_bottom">Nach unten scrollen</string>
+  <string name="pref_scroll_to_bottom_summary">Nach dem Senden einer Nachricht nach unten scrollen</string>
+  <string name="edit_status_message_title">Statusnachricht bearbeiten</string>
+  <string name="edit_status_message">Statusnachricht bearbeiten</string>
 </resources>

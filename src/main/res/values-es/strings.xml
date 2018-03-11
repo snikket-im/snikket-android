@@ -466,6 +466,7 @@
   <string name="choose_quick_action">Elegir acción rápida</string>
   <string name="search_for_contacts_or_groups">Buscar contactos o grupos</string>
   <string name="send_private_message">Enviar mensaje privado</string>
+  <string name="user_has_left_conference">%1$s ha dejado la conversación!</string>
   <string name="username">Usuario</string>
   <string name="username_hint">Usuario</string>
   <string name="invalid_username">Esto no es un usuario válido</string>
@@ -477,6 +478,7 @@
   <string name="account_status_bind_failure">Fallo de enlace</string>
   <string name="account_status_host_unknown">El servidor no es responsable del dominio</string>
   <string name="server_info_broken">Error</string>
+  <string name="pref_presence_settings">Disponibilidad</string>
   <string name="pref_away_when_screen_off">Ausente con pantalla apagada</string>
   <string name="pref_away_when_screen_off_summary">Cambia tu estado a ausente cuando la pantalla está apagada</string>
   <string name="pref_dnd_on_silent_mode">\"No molestar\" en modo silencio</string>
@@ -519,6 +521,8 @@
   <string name="shared_image_with_x">Imagen compartida con %s</string>
   <string name="shared_images_with_x">Imágenes compartidas con %s</string>
   <string name="shared_text_with_x">Compartido texto con %s</string>
+  <string name="no_storage_permission">Conversations necesita acceder al almacenamiento externo</string>
+  <string name="no_camera_permission">Conversations necesita acceder a la cámara</string>
   <string name="sync_with_contacts">Sincronizar contactos</string>
   <string name="sync_with_contacts_long">Conversations quiere cruzar tu lista de contactos de XMPP con tus contactos del móvil para mostrar sus nombres completos y sus fotos de perfil.\n\nConversations solo leerá tus contactos y los cruzará localmente sin subirlos a tu servidor.\n\nEl sistema te preguntará ahora para conceder los permisos de acceso a tus contactos del móvil.</string>
   <string name="certificate_information">Información de certificado</string>
@@ -552,11 +556,14 @@
   <string name="security_error_invalid_file_access">Error de seguridad: Acceso a fichero inválido</string>
   <string name="no_application_to_share_uri">No se ha encontrado ninguna aplicación para compartir la URI</string>
   <string name="share_uri_with">Compartir URI con...</string>
+  <string name="welcome_text">Jabber es una red de mensajería instantánea independiente del proveedor. Puedes usar este cliente con cualquier servidor Jabber que elijas.\nSin embargo, para tu conveniencia, hacemos de forma sencilla la creación de una cuenta en conversations.im¹; un proveedor especialmente especializado para el uso con Conversations.</string>
   <string name="magic_create_text">Te guiaremos durante el proceso de creación de la cuenta en conversations.im.¹\nCuando selecciones conversations.im como proveedor, podrás comunicarte con usuarios de otros servidores mediante tu identificador Jabber.</string>
   <string name="your_full_jid_will_be">Tu identificador Jabber será: %s</string>
   <string name="create_account">Crear cuenta</string>
   <string name="use_own_provider">Usar otro proveedor de mi elección</string>
   <string name="pick_your_username">Selecciona tu nombre de usuario</string>
+  <string name="pref_manually_change_presence">Gestionar disponibilidad manualmente</string>
+  <string name="pref_manually_change_presence_summary">Establezca su disponibilidad cuando edite su mensaje de estado.</string>
   <string name="change_presence">Cambiar estado</string>
   <string name="status_message">Mensaje de estado</string>
   <string name="all_accounts_on_this_device">Establecer para todas mis cuentas en este dispositivo</string>
@@ -642,8 +649,34 @@
   <string name="i_followed_this_link_from_a_trusted_source">Enlace desde una fuente de confianza</string>
   <string name="verifying_omemo_keys_trusted_source">Vas a verificar las claves OMEMO de %1$s después de hacer click en el enlace. Esto solo es seguro si conseguiste este enlace desde una fuente de confianza donde solo %2$s pudo haber publicado el enlace</string>
   <string name="verify_omemo_keys">Verificar claves OMEMO</string>
+  <string name="show_inactive_devices">Mostrar inactivos</string>
+  <string name="hide_inactive_devices">Ocultar inactivos</string>
   <string name="distrust_omemo_key">Desconfiar de este dispositivo</string>
   <string name="distrust_omemo_key_text">¿Estás seguro que quieres eliminar la verificación de este dispositivo?\nEste dispositivo y los mensajes que lleguen desde allí serán marcados como no confiables.</string>
+  <plurals name="seconds">
+    <item quantity="one">%d segundo</item>
+    <item quantity="other">%d segundos</item>
+  </plurals>
+  <plurals name="minutes">
+    <item quantity="one">%d minuto</item>
+    <item quantity="other">%d minutos</item>
+  </plurals>
+  <plurals name="hours">
+    <item quantity="one">%d hora</item>
+    <item quantity="other">%dhoras</item>
+  </plurals>
+  <plurals name="days">
+    <item quantity="one">%d día</item>
+    <item quantity="other">%d días</item>
+  </plurals>
+  <plurals name="weeks">
+    <item quantity="one">%d semana</item>
+    <item quantity="other">%d semanas</item>
+  </plurals>
+  <plurals name="months">
+    <item quantity="one">%d mes</item>
+    <item quantity="other">%d meses</item>
+  </plurals>
   <string name="pref_automatically_delete_messages">Borrado automático de mensajes</string>
   <string name="pref_automatically_delete_messages_description">Automáticamente borrar mensajes del dispositivo más antiguos que el configurado en el marco de tiempo.</string>
   <string name="encrypting_message">Cifrando mensaje</string>
@@ -679,4 +712,18 @@
   <string name="private_messages_are_disabled">Los mensajes privados están deshabilitados</string>
   <string name="huawei_protected_apps">Aplicaciones protegidas</string>
   <string name="huawei_protected_apps_summary">Para seguir recibiendo notificaciones, incluso cuando la pantalla está apagada, necesitas añadir Conversations a la lista de aplicaciones protegidas.</string>
+  <string name="mtm_accept_cert">¿Aceptar certificado desconocido?</string>
+  <string name="mtm_trust_anchor">El certificado del servidor no está firmado por una Autoridad Certificadora conocida.</string>
+  <string name="mtm_cert_expired">El certificado del servidor está expirado.</string>
+  <string name="mtm_accept_servername">¿Aceptar nombre del servidor no coincidente?</string>
+  <string name="mtm_hostname_mismatch">El servidor no pudo autenticarse como \"%s\". El certificado es solo válido para:</string>
+  <string name="mtm_connect_anyway">¿Quieres conectar de todas formas?</string>
+  <string name="mtm_cert_details">Detalles del Certificado:</string>
+  <string name="mtm_notification">Verificación del Certificado</string>
+  <string name="once">Una vez</string>
+  <string name="qr_code_scanner_needs_access_to_camera">El escáner de código QR necesita acceso a la cámara</string>
+  <string name="pref_scroll_to_bottom">Desplazarse hasta abajo</string>
+  <string name="pref_scroll_to_bottom_summary">Desplazarse hasta abajo después de mandar un mensaje</string>
+  <string name="edit_status_message_title">Editar Mensaje de Estado</string>
+  <string name="edit_status_message">Editar mensaje de estado</string>
 </resources>

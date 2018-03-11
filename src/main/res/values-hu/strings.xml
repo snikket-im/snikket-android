@@ -466,6 +466,7 @@
   <string name="choose_quick_action">Gyors gomb funkciója</string>
   <string name="search_for_contacts_or_groups">Keresés a címek között</string>
   <string name="send_private_message">Privát üzenet küldése</string>
+  <string name="user_has_left_conference">%1$s elhagyta a konferenciát!</string>
   <string name="username">Felhasználónév</string>
   <string name="username_hint">Felhasználónév</string>
   <string name="invalid_username">Ez nem egy érvényes felhasználónév</string>
@@ -477,6 +478,7 @@
   <string name="account_status_bind_failure">Bind hiba</string>
   <string name="account_status_host_unknown">A szerver nem felel a domain-ért</string>
   <string name="server_info_broken">Hibás</string>
+  <string name="pref_presence_settings">Elérhetőség</string>
   <string name="pref_away_when_screen_off">\"Távol\" állapot lezárt telefonnál</string>
   <string name="pref_away_when_screen_off_summary">Kikapcsolt képernyőnél a neved alatt egy \"távol\" címke látható</string>
   <string name="pref_dnd_on_silent_mode">\"Ne zavarjon\" csöndes módban</string>
@@ -519,6 +521,8 @@
   <string name="shared_image_with_x">%s partnerrel képet osztott meg</string>
   <string name="shared_images_with_x">%s partnerrel képeket osztott meg</string>
   <string name="shared_text_with_x">%s partnerrel szöveget osztott meg</string>
+  <string name="no_storage_permission">A Conversations-nek hozzáférésre lenne szüksége a külső tárhelyhez</string>
+  <string name="no_camera_permission">A Conversations-nek hozzáférésre lenne szüksége a kamerához</string>
   <string name="sync_with_contacts">Szinkronizáljon a névjegyekkel</string>
   <string name="sync_with_contacts_long">A Conversations szeretné megfeleltetni az XMPP névsort a névjegyeivel, hogy megmutassa a teljes nevet és arcképet.\n\nA Conversations csak olvassa a névjegyeit és helyileg felelteti meg őket anélkül, hogy feltöltené azokat a szerverre.\n\nMost meg lesz kérdezve, hogy engedélyezi-e a névjegyekhez való hozzáférést.</string>
   <string name="certificate_information">Tanúsítványinformáció</string>
@@ -552,11 +556,14 @@
   <string name="security_error_invalid_file_access">Biztonsági hiba: Érvénytelen fájl hozzáférés</string>
   <string name="no_application_to_share_uri">Nem találtunk URI-t használó alkalmazást</string>
   <string name="share_uri_with">Megosztás URI-ként</string>
+  <string name="welcome_text">A Jabber egy szolgáltató független, azonnali üzenetküldő hálózat. Ezt az ügyfél programot bármelyik Jabber szerverhez használhatja.\nDe a könnyebbség kedvéért létrehozhat egy fiókot a conversations.im¹ szolgáltatón is; ami kifejezetten a Conversations programmal való használatra lett tervezve.</string>
   <string name="magic_create_text">Végigvezetjük a fiók létrehozás folyamatán a conversations.im-en.¹ \ nHa a conversations.im-et választja szolgáltatójának, akkor képes lesz kommunikálni a más szolgáltatóknál lévő felhasználókkal, ha megadja nekik a teljes Jabber azonosítóját.</string>
   <string name="your_full_jid_will_be">A teljes Jabber azonosítód ez lesz: %s</string>
   <string name="create_account">Fiók létrehozása</string>
   <string name="use_own_provider">Saját szolgáltató használata</string>
   <string name="pick_your_username">Válassz felhasználónevet</string>
+  <string name="pref_manually_change_presence">Elérhetőség manuális beállítása</string>
+  <string name="pref_manually_change_presence_summary">Az állapotüzenet szerkesztésekor állítsa be elérhetőségét</string>
   <string name="change_presence">Jelenlét megváltoztatása</string>
   <string name="status_message">Állapotüzenet</string>
   <string name="all_accounts_on_this_device">Állítsa be az összes fiókhoz ezen az eszközön</string>
@@ -642,8 +649,34 @@
   <string name="i_followed_this_link_from_a_trusted_source">Egy megbízható forrásból követtem ezt a linket</string>
   <string name="verifying_omemo_keys_trusted_source">A linkre kattintás után %1$s OMEMO kulcsát ellenőrizni fogja. Ez csak akkor biztonságos, ha ezt a linket egy megbízható forrásból kapta, ahol csak %2$s tudta közzétenni ezt a linket.</string>
   <string name="verify_omemo_keys">OMEMO kulcsok ellenőrzése</string>
+  <string name="show_inactive_devices">Inaktívak megjelenítése</string>
+  <string name="hide_inactive_devices">Inaktívak elrejtése</string>
   <string name="distrust_omemo_key">Ne bízzon az eszközben</string>
   <string name="distrust_omemo_key_text">Biztos benne, hogy el szeretné távolítani az eszköz ellenőrzését?\nAz eszköz és az eszközről érkező üzenetek nem megbízhatóak lesznek ezentúl.</string>
+  <plurals name="seconds">
+    <item quantity="one">%d másodperc</item>
+    <item quantity="other">%d másodperc</item>
+  </plurals>
+  <plurals name="minutes">
+    <item quantity="one">%d perc</item>
+    <item quantity="other">%d perc</item>
+  </plurals>
+  <plurals name="hours">
+    <item quantity="one">%d óra</item>
+    <item quantity="other">%d óra</item>
+  </plurals>
+  <plurals name="days">
+    <item quantity="one">%d nap</item>
+    <item quantity="other">%d nap</item>
+  </plurals>
+  <plurals name="weeks">
+    <item quantity="one">%d hét</item>
+    <item quantity="other">%d hét</item>
+  </plurals>
+  <plurals name="months">
+    <item quantity="one">%d hónap</item>
+    <item quantity="other">%d hónap</item>
+  </plurals>
   <string name="pref_automatically_delete_messages">Automatikus üzenet törlés</string>
   <string name="pref_automatically_delete_messages_description">Automatikusan törli az üzeneteket az eszközön, amennyiben régebbiek, mint a beállított időkeret.</string>
   <string name="encrypting_message">Üzenet titkosítása</string>
@@ -679,4 +712,18 @@
   <string name="private_messages_are_disabled">A privát üzenetek le vannak tiltva</string>
   <string name="huawei_protected_apps">Védett alkalmazások</string>
   <string name="huawei_protected_apps_summary">Ha értesítést szeretne kapni, még akkor is, ha a képernyő ki van kapcsolva, hozzá kell adnia a Conversations-t a védett alkalmazások listájához.</string>
+  <string name="mtm_accept_cert">Ismeretlen tanúsítvány elfogadása?</string>
+  <string name="mtm_trust_anchor">A szervertanúsítványt nem írta alá ismert Tanúsító Hatóság.</string>
+  <string name="mtm_cert_expired">A szervertanúsítvány lejárt.</string>
+  <string name="mtm_accept_servername">Elfogadja a nem megfelelő kiszolgáló nevét?</string>
+  <string name="mtm_hostname_mismatch">A kiszolgáló nem tudta hitelesíteni mint \"%s\". A tanúsítvány csak az alábbiakra érvényes:</string>
+  <string name="mtm_connect_anyway">Szeretnél akárhogyan is csatlakozni?</string>
+  <string name="mtm_cert_details">Tanúsítvány részletek:</string>
+  <string name="mtm_notification">Tanúsítvány Igazolás</string>
+  <string name="once">Egyszer</string>
+  <string name="qr_code_scanner_needs_access_to_camera">A QR-kódos szkennernek hozzáférésre van szüksége a fényképezőgéphez</string>
+  <string name="pref_scroll_to_bottom">Görgessen az aljára</string>
+  <string name="pref_scroll_to_bottom_summary">Görgessen le egy üzenet elküldése után</string>
+  <string name="edit_status_message_title">Állapotüzenet szerkesztése</string>
+  <string name="edit_status_message">állapotüzenet szerkesztése</string>
 </resources>

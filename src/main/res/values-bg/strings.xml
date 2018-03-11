@@ -466,6 +466,7 @@
   <string name="choose_quick_action">Изберете бързо действие</string>
   <string name="search_for_contacts_or_groups">Търсене на контакти или групи</string>
   <string name="send_private_message">Изпращане на лично съобщение</string>
+  <string name="user_has_left_conference">%1$s напусна груповия разговор!</string>
   <string name="username">Потребителско име</string>
   <string name="username_hint">Потребителско име</string>
   <string name="invalid_username">Това не е правилно потребителско име</string>
@@ -477,6 +478,7 @@
   <string name="account_status_bind_failure">Грешка при свързване</string>
   <string name="account_status_host_unknown">Сървърът не отговаря за домейна</string>
   <string name="server_info_broken">Повредено</string>
+  <string name="pref_presence_settings">Присъствие</string>
   <string name="pref_away_when_screen_off">Отсъстващ, когато екранът е изключен</string>
   <string name="pref_away_when_screen_off_summary">Преминава в състояние „отсъстващ“ когато екранът бъде изключен</string>
   <string name="pref_dnd_on_silent_mode">„Отпочиващ“ в тих режим</string>
@@ -519,6 +521,8 @@
   <string name="shared_image_with_x">Изображението е споделено с %s</string>
   <string name="shared_images_with_x">Изображения, споделени с %s</string>
   <string name="shared_text_with_x">Текстът е споделен с %s</string>
+  <string name="no_storage_permission">Conversations се нуждае от достъп до външно място за съхранение</string>
+  <string name="no_camera_permission">Conversations се нуждае от достъп до камерата</string>
   <string name="sync_with_contacts">Синхронизиране с контактите</string>
   <string name="sync_with_contacts_long">Conversations иска да съчетае Вашия списък в XMPP с контактите Ви, за да показва пълните им имена и снимки..\n\nConversations единствено ще чете контактите Ви и ще ги използва вътрешно, без да ги качва на сървъра Ви.\n\nЩе бъдете помолен/а за позволение за достъп до контактите Ви.</string>
   <string name="certificate_information">Информация за сертификата</string>
@@ -552,11 +556,14 @@
   <string name="security_error_invalid_file_access">Грешка в сигурността: неправилен достъп до файл</string>
   <string name="no_application_to_share_uri">Няма намерено приложение за споделяне на адреса</string>
   <string name="share_uri_with">Споделяне на адреса с…</string>
+  <string name="welcome_text">Jabber е мрежа за общуване чрез мигновени съобщения, която не е обвързана с конкретен доставчик. Можете да използвате клиента с всеки сървър, който работи с Jabber.\nЗа Ваше удобство, ние предоставяме лесен начин да си създадете профил в conversations.im¹ — сървър, пригоден да работи добре с Conversations.</string>
   <string name="magic_create_text">Ще преминем заедно с Вас през процеса за създаване на профил в conversations.im.¹\nАко изберете да използвате conversations.im, ще можете да общувате с потребители, използващи други сървъри, като им дадете своя пълен Jabber идентификатор.</string>
   <string name="your_full_jid_will_be">Вашият пълен Jabber идентификатор ще бъде: %s</string>
   <string name="create_account">Създаване на профил</string>
   <string name="use_own_provider">Използване на собствен сървър</string>
   <string name="pick_your_username">Изберете потребителското си име</string>
+  <string name="pref_manually_change_presence">Ръчна промяна на присъствието</string>
+  <string name="pref_manually_change_presence_summary">Задайте присъствието си, когато редактирате съобщението за състоянието си.</string>
   <string name="change_presence">Промяна на присъствието</string>
   <string name="status_message">Съобщение за състоянието</string>
   <string name="all_accounts_on_this_device">Задаване за всички профили на това устройство</string>
@@ -642,8 +649,34 @@
   <string name="i_followed_this_link_from_a_trusted_source">Последвах тази връзка от доверено място</string>
   <string name="verifying_omemo_keys_trusted_source">На път сте да потвърдите ключовете OMEMO на %1$s, след като сте щракнали връзка. Това е безопасна операция, само ако сте последвали тази връзка от доверено място, където само %2$s би могъл да я публикува.</string>
   <string name="verify_omemo_keys">Потвърждаване на ключове OMEMO</string>
+  <string name="show_inactive_devices">Показване на неактивните</string>
+  <string name="hide_inactive_devices">Скриване на неактивните</string>
   <string name="distrust_omemo_key">Сваляне на доверието</string>
   <string name="distrust_omemo_key_text">Наистина ли искате да заличите потвърждението на това устройство?\nТова устройство и съобщенията, идващи от него, ще бъдат отбелязани като „непроверени“.</string>
+  <plurals name="seconds">
+    <item quantity="one">%d секунда</item>
+    <item quantity="other">%d секунди</item>
+  </plurals>
+  <plurals name="minutes">
+    <item quantity="one">%d минута</item>
+    <item quantity="other">%d минути</item>
+  </plurals>
+  <plurals name="hours">
+    <item quantity="one">%d час</item>
+    <item quantity="other">%d часа</item>
+  </plurals>
+  <plurals name="days">
+    <item quantity="one">%d ден</item>
+    <item quantity="other">%d дни</item>
+  </plurals>
+  <plurals name="weeks">
+    <item quantity="one">%d седмица</item>
+    <item quantity="other">%d седмици</item>
+  </plurals>
+  <plurals name="months">
+    <item quantity="one">%d месец</item>
+    <item quantity="other">%d месеца</item>
+  </plurals>
   <string name="pref_automatically_delete_messages">Автоматично изтриване на съобщенията</string>
   <string name="pref_automatically_delete_messages_description">Автоматично изтриване на съобщенията от това устройство, които са по-стари от зададеното време.</string>
   <string name="encrypting_message">Шифроване на съобщението</string>
@@ -679,4 +712,18 @@
   <string name="private_messages_are_disabled">Личните съобщения са изключени</string>
   <string name="huawei_protected_apps">Защитени приложения</string>
   <string name="huawei_protected_apps_summary">Ако искате да продължите да получавате известия дори когато екранът е заключен, трябва да добавите „Conversations“ към списъка от защитени приложения.</string>
+  <string name="mtm_accept_cert">Приемане на непознатия сертификат?</string>
+  <string name="mtm_trust_anchor">Сървърният сертификат не е подписан от познат център за сертификация.</string>
+  <string name="mtm_cert_expired">Сървърният сертификат е с изтекла давност.</string>
+  <string name="mtm_accept_servername">Приемане на несъвпадащото име на сървъра?</string>
+  <string name="mtm_hostname_mismatch">Сървърът не може да се удостовери като „%s“. Сертификатът важи само за:</string>
+  <string name="mtm_connect_anyway">Искате ли да се свържете въпреки това?</string>
+  <string name="mtm_cert_details">Подробности за сертификата:</string>
+  <string name="mtm_notification">Проверка на сертификата</string>
+  <string name="once">Веднъж</string>
+  <string name="qr_code_scanner_needs_access_to_camera">Сканирането на QR-код се нуждае от достъп до камерата</string>
+  <string name="pref_scroll_to_bottom">Превъртане до дъното</string>
+  <string name="pref_scroll_to_bottom_summary">Превъртане надолу след изпращане на съобщение</string>
+  <string name="edit_status_message_title">Редактиране на съобщението за състоянието</string>
+  <string name="edit_status_message">Редактиране на съобщението за състоянието</string>
 </resources>

@@ -19,7 +19,7 @@
   <string name="title_activity_settings">Setări</string>
   <string name="title_activity_sharewith">Partajează într-o conversație</string>
   <string name="title_activity_start_conversation">Pornește o conversație</string>
-  <string name="title_activity_choose_contact">Alege contact</string>
+  <string name="title_activity_choose_contact">Alegeți contact</string>
   <string name="title_activity_share_via_account">Partajează cu cont</string>
   <string name="title_activity_block_list">Listă contacte blocate</string>
   <string name="just_now">în acest moment</string>
@@ -77,7 +77,7 @@
   <string name="clear_histor_msg">Doriți să ștergeți toate mesajele din această conversație?\n\n<b>Atenție:</b> Această acțiune nu va influența mesajele aflate pe alte telefoane/tablete/servere.</string>
   <string name="delete_messages">Șterge mesajele</string>
   <string name="also_end_conversation">Închide conversația după ștergere</string>
-  <string name="choose_presence">Alege dispozitiv</string>
+  <string name="choose_presence">Alegeți dispozitiv</string>
   <string name="send_unencrypted_message">Trimite mesaje necriptate</string>
   <string name="send_message">Trimite mesaj</string>
   <string name="send_message_to_x">Trimite mesaj către %s</string>
@@ -85,7 +85,7 @@
   <string name="send_omemo_message">Trimite mesaj criptat cu OMEMO</string>
   <string name="send_omemo_x509_message">Trimite mesaj criptat cu v\\OMEMO</string>
   <string name="send_pgp_message">Trimite mesaj criptat cu OpenPGP</string>
-  <string name="your_nick_has_been_changed">Numele tău a fost schimbat</string>
+  <string name="your_nick_has_been_changed">Numele dumneavoastră a fost schimbat</string>
   <string name="send_unencrypted">Trimite necriptat</string>
   <string name="decryption_failed">Decriptarea a eșuat. Poate nu aveții cheia privată corectă.</string>
   <string name="openkeychain_required">OpenKeychain</string>
@@ -125,11 +125,11 @@
   <string name="openpgp_error">OpenKeychain a raportat o eroare</string>
   <string name="accept">Acceptă</string>
   <string name="error">A apărut o eroare</string>
-  <string name="your_account">Contul tău</string>
+  <string name="your_account">Contul dumneavoastră</string>
   <string name="send_presence_updates">Trimite actualizări de prezență</string>
   <string name="receive_presence_updates">Primește actualizări de prezență</string>
   <string name="ask_for_presence_updates">Cere actualizări de prezență</string>
-  <string name="attach_choose_picture">Alege o imagine</string>
+  <string name="attach_choose_picture">Alegeți o imagine</string>
   <string name="attach_take_picture">Fă o poză</string>
   <string name="preemptively_grant">Acorda anticipat cererea de abonare</string>
   <string name="error_not_an_image_file">Fișierul selectat nu este o imagine</string>
@@ -193,10 +193,10 @@
   <string name="last_seen_now">văzut(ă) ultima dată adineauri</string>
   <string name="last_seen_min">văzut(ă) ultima dată acum 1 minut</string>
   <string name="last_seen_mins">văzut(ă) ultima dată acum %d minute</string>
-  <string name="last_seen_hour">vazut ultima data acum o ora</string>
-  <string name="last_seen_hours">vazut ultima data acum %d ore</string>
-  <string name="last_seen_day">vazut ultima data acum o zi</string>
-  <string name="last_seen_days">vazut ultima data acum %d zile</string>
+  <string name="last_seen_hour">văzut(ă) ultima dată acum o oră</string>
+  <string name="last_seen_hours">văzut(ă) ultima dată acum %d ore</string>
+  <string name="last_seen_day">văzut(ă) ultima dată acum o zi</string>
+  <string name="last_seen_days">văzut(ă) ultima dată acum %d zile</string>
   <string name="install_openkeychain">Mesaj criptat. Te rog instalează OpenKeychain pentru a-l putea decripta.</string>
   <string name="unknown_otr_fingerprint">Amprenta OTR necunoscuta</string>
   <string name="openpgp_messages_found">A fost găsit un mesaj criptat cu OpenPGP</string>
@@ -218,7 +218,7 @@
   <string name="search">Caută</string>
   <string name="create_contact">Creează contact</string>
   <string name="dialog_title_create_contact">Creează contact</string>
-  <string name="enter_contact">Introdu contact</string>
+  <string name="enter_contact">Introduceți contact</string>
   <string name="join_conference">Alătură-te unei discuții de grup</string>
   <string name="dialog_title_join_conference">Alătură-te unei discuții de grup</string>
   <string name="delete_contact">Șterge contact</string>
@@ -226,7 +226,7 @@
   <string name="block_contact">Blochează contact</string>
   <string name="unblock_contact">Deblochează contact</string>
   <string name="create">Creeaza</string>
-  <string name="select">Selecteaza</string>
+  <string name="select">Selectează</string>
   <string name="contact_already_exists">Contactul exista deja</string>
   <string name="join">Alatura-te</string>
   <string name="conference_address">Adresă discuție de grup</string>
@@ -332,7 +332,7 @@
   <string name="pref_export_logs">Exportă istoric</string>
   <string name="pref_export_logs_summary">Scrie istoricul conversațiilor pe cardul SD</string>
   <string name="notification_export_logs_title">Se scrie jurnal pe card SD</string>
-  <string name="choose_file">Alege un fișier</string>
+  <string name="choose_file">Alegeți un fișier</string>
   <string name="receiving_x_file">Primesc %1$s (%2$d%% complet)</string>
   <string name="download_x_file">Descarca %s</string>
   <string name="delete_x_file">Șterge %s</string>
@@ -373,8 +373,8 @@
   <string name="ask_question">Întreabă ceva</string>
   <string name="smp_explain_question">Dumneavoastră și contactul aveți un secret în comun pe care nimeni altcineva nu îl știe (cum ar fi o glumă sau ce ați mâncat ultima dată când v-ați văzut), puteți folosi acel secret ca să vă verificați amprenta fiecăruia.\n\nDumneavoastră puneți la dispoziție un indiciu sau o întrebare contactului iar el/ea va răspunde cu un mesaj sensibil la majuscule.</string>
   <string name="smp_explain_answer">Contactul dumneavoastră dorește să vă verifice amprenta provocându-vă cu un secret împărtășit. Contactul a furnizat următorul indiciu sau întrebare legat de acel secret.</string>
-  <string name="shared_secret_hint_should_not_be_empty">Indiciul tău nu ar trebui să fie gol</string>
-  <string name="shared_secret_can_not_be_empty">Secretul tău împărtășit nu poate fi gol</string>
+  <string name="shared_secret_hint_should_not_be_empty">Indiciul dumneavoastră nu ar trebui să fie gol</string>
+  <string name="shared_secret_can_not_be_empty">Secretul dumneavoastră împărtășit nu poate fi gol</string>
   <string name="manual_verification_explanation">Comparați cu grijă amprenta afișata mai jos cu amprenta contactului.\nPuteți folosi orice formă de comunicare de încredere precum un e-mail criptat sau o convorbire telefonică pentru a face schimb de amprente.</string>
   <string name="change_password">Schimbare parolă</string>
   <string name="current_password">Parolă curentă</string>
@@ -457,17 +457,18 @@
     <item quantity="other">%d certificate șterse</item>
   </plurals>
   <plurals name="select_contact">
-    <item quantity="one">Selecteaza %d contact</item>
-    <item quantity="few">Selecteaza %d contacte</item>
-    <item quantity="other">Selectează %d contacte</item>
+    <item quantity="one">Selectează %d contact</item>
+    <item quantity="few">Selectează %d contacte</item>
+    <item quantity="other">Selectează %d de contacte</item>
   </plurals>
   <string name="pref_quick_action_summary">Înlocuiește butonul de trimitere cu o acțiune rapidă</string>
   <string name="pref_quick_action">Acțiune rapidă</string>
   <string name="none">Nimic</string>
   <string name="recently_used">Folosit recent</string>
-  <string name="choose_quick_action">Alege actiunea rapida</string>
+  <string name="choose_quick_action">Alegeți acțiunea rapidă</string>
   <string name="search_for_contacts_or_groups">Caută contacte sau grupuri</string>
   <string name="send_private_message">trimite mesaj privat</string>
+  <string name="user_has_left_conference">%1$s a părăsit discuția de grup!</string>
   <string name="username">Nume utilizator</string>
   <string name="username_hint">Nume utilizator</string>
   <string name="invalid_username">Acesta nu este un nume de utilizator valabil</string>
@@ -479,6 +480,7 @@
   <string name="account_status_bind_failure">Eroare de conexiune</string>
   <string name="account_status_host_unknown">Gazdă fără domeniu</string>
   <string name="server_info_broken">Deteriorat</string>
+  <string name="pref_presence_settings">Setări de disponibilitate</string>
   <string name="pref_away_when_screen_off">Plecat când ecranul este oprit</string>
   <string name="pref_away_when_screen_off_summary">Declară clientul drept plecat atunci când ecranul este oprit</string>
   <string name="pref_dnd_on_silent_mode">\"Nu deranja\" în modul silențios</string>
@@ -522,6 +524,8 @@
   <string name="shared_image_with_x">Partajează imaginea cu %s.</string>
   <string name="shared_images_with_x">Partajează imaginile cu %s.</string>
   <string name="shared_text_with_x">Partajează textul cu %s</string>
+  <string name="no_storage_permission">Conversations are nevoie de acces la stocarea externă</string>
+  <string name="no_camera_permission">Conversations are nevoie de acces la camera foto</string>
   <string name="sync_with_contacts">Sincronizează cu contactele</string>
   <string name="sync_with_contacts_long">Conversations dorește să potrivească lista de contacte XMPP cu cea din dispozitiv pentru a putea afișa numele lor complete și avatarele.\n\nConversations doar va citi și potrivi local fără să le încarce pe vreun server.\n\nUrmează să fiți întrebați dacă doriți să permiteți accesul la contacte.</string>
   <string name="certificate_information">Informații despre certificat</string>
@@ -558,11 +562,14 @@ sau chiar pierderea mesajelor.\nÎn continuare veți fi rugați să dezactivați
   <string name="security_error_invalid_file_access">Eroare de securitate.: Acces fișier invalid</string>
   <string name="no_application_to_share_uri">Nu s-a găsit nici o aplicație care să partajeze adresa</string>
   <string name="share_uri_with">Partajează adresa cu...</string>
+  <string name="welcome_text">Jabber este o rețea de mesagerie instant ce nu depinde de un anumit furnizor. Aveți posibilitatea să utilizați acest client cu orice server Jabber doriți.\nTotuși, pentru confortul dumneavoastră, am facilitat crearea unui cont pe conversations.im¹; un furnizor potrivit pentru utilizarea cu aplicația Conversations.</string>
   <string name="magic_create_text">Vă vom ghida prin procesul de creare al unui cont pe conversations.im.¹\nCând alegeți conversations.im ca furnizor veți putea comunica cu utilizatorii altor furnizori oferindu-le ID-ul dumneavoastră Jabber.</string>
   <string name="your_full_jid_will_be">ID-ul Jabber va fi: %s</string>
   <string name="create_account">Creează cont</string>
   <string name="use_own_provider">Folosește furnizorul meu</string>
-  <string name="pick_your_username">Alege un nume de utilizator</string>
+  <string name="pick_your_username">Alegeți un nume de utilizator</string>
+  <string name="pref_manually_change_presence">Setare disponibilitatea manual</string>
+  <string name="pref_manually_change_presence_summary">Setați-vă disponibilitatea atunci când vă editați mesajul de stare.</string>
   <string name="change_presence">Setare prezență</string>
   <string name="status_message">Mesaj de stare</string>
   <string name="all_accounts_on_this_device">Setează pentru toate conturile de pe acest dispozitiv</string>
@@ -580,7 +587,7 @@ sau chiar pierderea mesajelor.\nÎn continuare veți fi rugați să dezactivați
   <string name="dialog_title_create_conference">Creează discuție de grup</string>
   <string name="join_or_create_conference">Alătură-te sau creează discuție de grup</string>
   <string name="conference_subject">Subiect</string>
-  <string name="choose_participants">Alege participanți</string>
+  <string name="choose_participants">Alegeți participanți</string>
   <string name="creating_conference">Se creează discuția de grup...</string>
   <string name="invite_again">Trimite din nou invitația</string>
   <string name="gp_short">Scurt</string>
@@ -648,8 +655,40 @@ sau chiar pierderea mesajelor.\nÎn continuare veți fi rugați să dezactivați
   <string name="i_followed_this_link_from_a_trusted_source">Am urmat aceasta legătură de la o sursă de încredere</string>
   <string name="verifying_omemo_keys_trusted_source">Urmează să verificați cheile OMEMO pentru %1$s după ce veți deschide legătura. Acest lucru se poate face în siguranță doar dacă ați primit legătura de la o sursă de încredere unde doar %2$s putea publica.</string>
   <string name="verify_omemo_keys">Verifica cheile OMEMO</string>
+  <string name="show_inactive_devices">Arată inactive</string>
+  <string name="hide_inactive_devices">Ascunde inactive</string>
   <string name="distrust_omemo_key">Pierde încrederea în acest dispozitiv</string>
   <string name="distrust_omemo_key_text">Sigur doriți să ștergeți datele de verificare pentru acest dispozitiv?\nAcest dispozitiv precum și mesajele venind de la el vor fi marcate ca ne fiind de încredere.</string>
+  <plurals name="seconds">
+    <item quantity="one">%d secundă</item>
+    <item quantity="few">%d secunde</item>
+    <item quantity="other">%d de secunde</item>
+  </plurals>
+  <plurals name="minutes">
+    <item quantity="one">%d minut</item>
+    <item quantity="few">%d minute</item>
+    <item quantity="other">%d de minute</item>
+  </plurals>
+  <plurals name="hours">
+    <item quantity="one">%d oră</item>
+    <item quantity="few">%d ore</item>
+    <item quantity="other">%d de ore</item>
+  </plurals>
+  <plurals name="days">
+    <item quantity="one">%d zi</item>
+    <item quantity="few"> %d zile</item>
+    <item quantity="other">%d de zile</item>
+  </plurals>
+  <plurals name="weeks">
+    <item quantity="one">%d săptămână</item>
+    <item quantity="few">%d săptămâni</item>
+    <item quantity="other">%d de săptămâni</item>
+  </plurals>
+  <plurals name="months">
+    <item quantity="one">%d lună</item>
+    <item quantity="few">%d luni</item>
+    <item quantity="other">%d de luni</item>
+  </plurals>
   <string name="pref_automatically_delete_messages">Ștergerea automată a mesajelor</string>
   <string name="pref_automatically_delete_messages_description">De pe acest dispozitiv se vor șterge dacă sunt mai vechi de perioada selectată.</string>
   <string name="encrypting_message">Mesajul se criptează</string>
@@ -685,4 +724,18 @@ sau chiar pierderea mesajelor.\nÎn continuare veți fi rugați să dezactivați
   <string name="private_messages_are_disabled">Mesajele private sunt dezactivate</string>
   <string name="huawei_protected_apps">Aplicații protejate</string>
   <string name="huawei_protected_apps_summary">Pentru a continua să primiți notificări, chiar și când ecranul este oprit, trebuie să adăugați Conversations în lista de aplicații protejate.</string>
+  <string name="mtm_accept_cert">Acceptați certificatul necunoscut?</string>
+  <string name="mtm_trust_anchor">Certificatul serverului nu este semnat de o autoritate de certificare (CA) cunoscută</string>
+  <string name="mtm_cert_expired">Certificatul serverului a expirat.</string>
+  <string name="mtm_accept_servername">Acceptați numele serverului ce nu corespunde?</string>
+  <string name="mtm_hostname_mismatch">Serverul nu s-a putut autentifica ca \"%s\". Certificatul este valid doar pentru:</string>
+  <string name="mtm_connect_anyway">Doriți să vă conectați oricum?</string>
+  <string name="mtm_cert_details">Detalii certificat:</string>
+  <string name="mtm_notification">Verificare certificat</string>
+  <string name="once">Doar o dată</string>
+  <string name="qr_code_scanner_needs_access_to_camera">Scanerul de coduri QR are nevoie de acces la camera foto</string>
+  <string name="pref_scroll_to_bottom">Derulează în jos</string>
+  <string name="pref_scroll_to_bottom_summary">După trimiterea unui mesaj derulează până la sfârșit</string>
+  <string name="edit_status_message_title">Editare mesaj de stare</string>
+  <string name="edit_status_message">Editare mesaj de stare</string>
 </resources>

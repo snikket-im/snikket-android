@@ -466,6 +466,7 @@
   <string name="choose_quick_action">Snelle actie kiezen</string>
   <string name="search_for_contacts_or_groups">Zoeken naar contacten of groepen</string>
   <string name="send_private_message">Privébericht sturen</string>
+  <string name="user_has_left_conference">%1$s heeft het groepsgesprek verlaten!</string>
   <string name="username">Gebruikersnaam</string>
   <string name="username_hint">Gebruikersnaam</string>
   <string name="invalid_username">Dit is geen geldige gebruikersnaam</string>
@@ -477,6 +478,7 @@
   <string name="account_status_bind_failure">Bindingsfout</string>
   <string name="account_status_host_unknown">Server niet verantwoordelijk voor domein</string>
   <string name="server_info_broken">Gebroken</string>
+  <string name="pref_presence_settings">Aanwezigheid</string>
   <string name="pref_away_when_screen_off">Even weg wanneer scherm uit staat</string>
   <string name="pref_away_when_screen_off_summary">Stelt je bron in als even weg wanneer het scherm uitgeschakeld is</string>
   <string name="pref_dnd_on_silent_mode">“Niet storen” in stille modus</string>
@@ -519,6 +521,8 @@
   <string name="shared_image_with_x">Afbeelding gedeeld met %s</string>
   <string name="shared_images_with_x">Afbeeldingen gedeeld met %s</string>
   <string name="shared_text_with_x">Tekst gedeeld met %s</string>
+  <string name="no_storage_permission">Conversations heeft toegang nodig tot de externe opslag</string>
+  <string name="no_camera_permission">Conversations heeft toegang nodig tot de camera</string>
   <string name="sync_with_contacts">Synchroniseer met contacten</string>
   <string name="sync_with_contacts_long">Conversations wil je XMPP-contacten met je systeemcontacten vergelijken om hun volledige namen en avatars te tonen.\n\nConversations zal je contacten enkel lokaal lezen en vergelijken zonder ze te uploaden naar je server.\n\nJe zal nu gevraagd worden Conversations toegang te verlenen tot je contacten.</string>
   <string name="certificate_information">Certificaatinformatie</string>
@@ -552,11 +556,14 @@
   <string name="security_error_invalid_file_access">Beveiligingsfout: Ongeldige bestandstoegang</string>
   <string name="no_application_to_share_uri">Geen applicatie om URI te delen</string>
   <string name="share_uri_with">URI delen met…</string>
+  <string name="welcome_text">Jabber is een provider-onafhankelijk berichtennetwerk. Je kan deze cliënt gebruiken met elke willekeurige Jabber-server.\nOm het je gemakkelijker te maken kun je simpelweg een account aanmaken conversations.im¹; een provider speciaal geschikt voor Conversations.</string>
   <string name="magic_create_text">We zullen je helpen een account op conversations.im¹ aan te maken.\nWanneer je conversations.im als je provider kiest kan je met gebruikers van andere providers communiceren door hen je volledige Jabber-ID te geven.</string>
   <string name="your_full_jid_will_be">Je volledige Jabber-ID zal %s zijn</string>
   <string name="create_account">Account aanmaken</string>
   <string name="use_own_provider">Gebruik mijn eigen provider</string>
   <string name="pick_your_username">Kies je gebruikersnaam</string>
+  <string name="pref_manually_change_presence">Aanwezigheid handmatig beheren</string>
+  <string name="pref_manually_change_presence_summary">Stel je aanwezigheid in bij het bewerken van je statusbericht.</string>
   <string name="change_presence">Aanwezigheid instellen</string>
   <string name="status_message">Statusbericht</string>
   <string name="all_accounts_on_this_device">Instellen voor alle accounts op dit apparaat</string>
@@ -642,8 +649,34 @@
   <string name="i_followed_this_link_from_a_trusted_source">Ik heb deze link gevolgd vanuit een betrouwbare bron</string>
   <string name="verifying_omemo_keys_trusted_source">Je staat op het punt de OMEMO-sleutels van %1$s te verifiëren door op een link te klikken. Dit is enkel veilig als je de link van een betrouwbare bron hebt gevolgd, waarbij enkel %2$s de link gepubliceerd kan hebben.</string>
   <string name="verify_omemo_keys">OMEMO-sleutels verifiëren</string>
+  <string name="show_inactive_devices">Niet-actieve tonen</string>
+  <string name="hide_inactive_devices">Niet-actieve verbergen</string>
   <string name="distrust_omemo_key">Apparaat niet meer vertrouwen</string>
   <string name="distrust_omemo_key_text">Weet je zeker dat je de verificatie voor dit apparaat wil verwijderen?\nHet apparaat en alle berichten die het verstuurt zullen als niet-vertrouwd worden weergegeven.</string>
+  <plurals name="seconds">
+    <item quantity="one">%d seconde</item>
+    <item quantity="other">%d seconden</item>
+  </plurals>
+  <plurals name="minutes">
+    <item quantity="one">%d minuut</item>
+    <item quantity="other">%d minuten</item>
+  </plurals>
+  <plurals name="hours">
+    <item quantity="one">%d uur</item>
+    <item quantity="other">%d uur</item>
+  </plurals>
+  <plurals name="days">
+    <item quantity="one">%d dag</item>
+    <item quantity="other">%d dagen</item>
+  </plurals>
+  <plurals name="weeks">
+    <item quantity="one">%d week</item>
+    <item quantity="other">%d weken</item>
+  </plurals>
+  <plurals name="months">
+    <item quantity="one">%d maand</item>
+    <item quantity="other">%d maand</item>
+  </plurals>
   <string name="pref_automatically_delete_messages">Automatisch berichten verwijderen</string>
   <string name="pref_automatically_delete_messages_description">Verwijder automatisch berichten van dit apparaat ouder dan de ingestelde tijdsperiode.</string>
   <string name="encrypting_message">Bericht wordt versleuteld</string>
@@ -679,4 +712,18 @@
   <string name="private_messages_are_disabled">Privéberichten zijn uitgeschakeld</string>
   <string name="huawei_protected_apps">Beschermde apps</string>
   <string name="huawei_protected_apps_summary">Om meldingen te blijven ontvangen, zelfs wanneer het scherm uit staat, moet je Conversations toevoegen aan de lijst met beschermde apps.</string>
+  <string name="mtm_accept_cert">Onbekend certificaat aanvaarden?</string>
+  <string name="mtm_trust_anchor">Het servercertificaat is niet ondertekend door een gekende certificaatautoriteit.</string>
+  <string name="mtm_cert_expired">Het servercertificaat is verlopen.</string>
+  <string name="mtm_accept_servername">Verkeerde servernaam aanvaarden?</string>
+  <string name="mtm_hostname_mismatch">De server kon niet authenticeren als ‘%s’. Het certificaat is enkel geldig voor:</string>
+  <string name="mtm_connect_anyway">Wil je toch verbinding maken?</string>
+  <string name="mtm_cert_details">Certificaatgegevens:</string>
+  <string name="mtm_notification">Certificaatverificatie</string>
+  <string name="once">Eenmalig</string>
+  <string name="qr_code_scanner_needs_access_to_camera">De QR-codescanner heeft toegang nodig tot de camera</string>
+  <string name="pref_scroll_to_bottom">Scrollen naar beneden</string>
+  <string name="pref_scroll_to_bottom_summary">Scroll naar beneden na versturen van bericht</string>
+  <string name="edit_status_message_title">Statusbericht bewerken</string>
+  <string name="edit_status_message">Statusbericht bewerken</string>
 </resources>
