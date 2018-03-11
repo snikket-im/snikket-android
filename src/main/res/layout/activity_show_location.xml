@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.ShowLocationActivity">
+
+    <include layout="@layout/toolbar" />
+
+    <org.osmdroid.views.MapView android:id="@+id/map"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"/>
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end|bottom"
+        android:src="?attr/icon_directions"
+        android:tint="@color/white"
+        android:layout_alignParentEnd="true"
+        android:contentDescription="@string/action_unfix_from_location"
+        android:layout_margin="16dp"
+        android:layout_alignParentBottom="true"/>
+</RelativeLayout>

@@ -66,6 +66,11 @@
     <attr name="icon_enable_undecided_device" format="reference"/>
     <attr name="icon_scroll_down" format="reference"/>
 
+    <attr name="icon_gps_not_fixed" format="reference"/>
+    <attr name="icon_gps_fixed" format="reference"/>
+    <attr name="icon_directions" format="reference"/>
+    <attr name="icon_copy_bar" format="reference"/>
+
     <attr name="icon_notifications" format="reference"/>
     <attr name="icon_notifications_off" format="reference"/>
     <attr name="icon_notifications_paused" format="reference"/>
