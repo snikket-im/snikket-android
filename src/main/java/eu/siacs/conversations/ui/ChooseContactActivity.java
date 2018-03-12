@@ -231,8 +231,7 @@ public class ChooseContactActivity extends AbstractSearchableListItemActivity {
 
 	protected void showEnterJidDialog(XmppUri uri) {
 		Jid jid = uri == null ? null : uri.getJid();
-		EnterJidDialog dialog = new EnterJidDialog(
-				this,
+		EnterJidDialog dialog = EnterJidDialog.newInstance(
 				mKnownHosts,
 				mActivatedAccounts,
 				getString(R.string.enter_contact),
@@ -257,7 +256,7 @@ public class ChooseContactActivity extends AbstractSearchableListItemActivity {
 			return true;
 		});
 
-		dialog.show();
+		dialog.show(getSupportFragmentManager(), "enter_contact_dialog");
 	}
 
 	@Override
