@@ -8,7 +8,7 @@
              alt="chat on our conference room">
     </a>
     <a href="https://travis-ci.org/siacs/Conversations">
-        <img src="https://travis-ci.org/siacs/Conversations.svg?branch=development"
+        <img src="https://travis-ci.org/siacs/Conversations.svg?branch=master"
              alt="build status">
     </a>
     <a href="https://bountysource.com/teams/siacs">
