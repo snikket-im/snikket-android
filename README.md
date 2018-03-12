@@ -39,7 +39,7 @@
 
 ## Features
 
-* End-to-end encryption with [OMEMO](http://conversations.im/omemo/), [OTR](https://otr.cypherpunks.ca/), or [OpenPGP](http://openpgp.org/about/)
+* End-to-end encryption with [OMEMO](http://conversations.im/omemo/) or [OpenPGP](http://openpgp.org/about/)
 * Send and receive images as well as other kind of files
 * Share your location via an external [plug-in](https://play.google.com/store/apps/details?id=eu.siacs.conversations.sharelocation&referrer=utm_source%3Dgithub)
 * Indication when your contact has read your message
@@ -290,9 +290,8 @@ I am available for hire. Contact me via XMPP: `inputmice@siacs.eu`
 
 #### Why are there three end-to-end encryption methods and which one should I choose?
 
-* OTR is a legacy encryption method. It works out of the box with most contacts as long as they are online.
-* OMEMO works even when a contact is offline, and works with multiple devices. It also allows asynchronous file-transfer when the server has [HTTP File Upload](http://xmpp.org/extensions/xep-0363.html). However, OMEMO is not as widely supported as OTR and is currently implemented only by Conversations and Gajim. OMEMO should be preferred over OTR for contacts who use Conversations.
-* OpenPGP (XEP-0027) is a very old encryption method that has some advantages over OTR but should only be used by experts who know what they are doing.
+* OMEMO works even when a contact is offline, and works with multiple devices. It also allows asynchronous file-transfer when the server has [HTTP File Upload](http://xmpp.org/extensions/xep-0363.html). However, OMEMO not widely support and is currently implemented only implemented [by a handful of clients](https://omemo.top).
+* OpenPGP (XEP-0027) is a very old encryption method that has some advantages over OMEMO but should only be used by people who what they are doing.
 
 #### How do I use OpenPGP
 
@@ -303,9 +302,7 @@ The way PGP works is that you trust Key IDs instead of JID's or email addresses.
 So in theory your contact list should consist of Public-Key-IDs instead of
 JID's. But of course no email or XMPP client out there implements these
 concepts. Plus PGP in the context of instant messaging has a couple of
-downsides: It is vulnerable to replay attacks, it is rather verbose, and
-decrypting and encrypting takes longer than OTR. It is however asynchronous and
-works well with message carbons.
+downsides: It is vulnerable to replay attacks and it is rather verbose.
 
 To use OpenPGP you have to install the open source app
 [OpenKeychain](http://www.openkeychain.org) and then long press on the account in
@@ -316,16 +313,14 @@ OMEMO has two requirements: Your server and the server of your contact need to s
 
 #### How does the encryption for conferences work?
 
-For conferences only OMEMO and OpenPGP are supported as encryption method. (OTR
-does not work with multiple participants).
+For conferences only OMEMO and OpenPGP are supported as encryption method..
 
 ##### OMEMO
 
 OMEMO encryption works only in private (members only) conferences that are non-anonymous.
-You need to have presence subscription with every member of the conference.
-You can verify that by going into the conference details, long press every member and start
-a conversation with them. (Or select 'contact details' if they are already in your contact
-list)
+
+The server of all participants need to pass the OMEMO [Compliance Test](https://conversations.im/compliance).
+In other words they either need to run version 18.01+ of ejabberd or have the `omemo_all_access` module installed on Prosody.
 
 The owner of a conference can make a public conference private by going into the conference
 details and hit the settings button (the one with the gears) and select both *private* and
@@ -347,11 +342,6 @@ very small conferences with contacts you are already using OpenPGP with. This
 feature is regarded experimental. Conversations is the only client that uses
 XEP-0027 with conferences. (The XEP neither specifically allows nor disallows
 this.)
-
-#### Why is Conversations not end-to-end encrypted by default
-We briefly had OMEMO as the default E2EE but it turned out to be a usability nightmare and thus we reverted that. You can find more information in [the commit message](https://github.com/siacs/Conversations/commit/035d0c79572d5981c53d1bff7f30b484c6542f17) of that change.
-
-Quick reminder that Conversations **always** uses TLS to connect to your server. It won‘t even connect to a server without TLS.
 
 #### What is Blind Trust Before Verification / why are messages marked with a red lock?
 
