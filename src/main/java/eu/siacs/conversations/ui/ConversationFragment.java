@@ -876,10 +876,15 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
 				if (message.getConversation().getMode() == Conversation.MODE_MULTI) {
 					Jid user = message.getCounterpart();
 					if (user != null && !user.isBareJid()) {
-						if (!message.getConversation().getMucOptions().isUserInRoom(user)) {
-							Toast.makeText(getActivity(), activity.getString(R.string.user_has_left_conference, user.getResource()), Toast.LENGTH_SHORT).show();
+						final MucOptions mucOptions = message.getConversation().getMucOptions();
+						if (mucOptions.participating() || message.getConversation().getNextCounterpart() != null) {
+							if (!mucOptions.isUserInRoom(user)) {
+								Toast.makeText(getActivity(), activity.getString(R.string.user_has_left_conference, user.getResource()), Toast.LENGTH_SHORT).show();
+							}
+							highlightInConference(user.getResource());
+						} else {
+							Toast.makeText(getActivity(),R.string.you_are_not_participating, Toast.LENGTH_SHORT).show();
 						}
-						highlightInConference(user.getResource());
 					}
 					return;
 				} else {
@@ -1732,7 +1737,7 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
 		}
 		if (this.conversation != null) {
 			final String msg = this.binding.textinput.getText().toString();
-			if (this.conversation.setNextMessage(msg)) {
+			if (this.conversation.getStatus() != Conversation.STATUS_ARCHIVED && this.conversation.setNextMessage(msg)) {
 				this.activity.xmppConnectionService.updateConversation(this.conversation);
 			}
 			updateChatState(this.conversation, msg);
@@ -1867,7 +1872,10 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
 					//do nothing
 				}
 			} else {
-				highlightInConference(nick);
+				final MucOptions mucOptions = conversation.getMucOptions();
+				if (mucOptions.participating() || conversation.getNextCounterpart() != null) {
+					highlightInConference(nick);
+				}
 			}
 		} else {
 			appendText(text);
