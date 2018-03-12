@@ -3,8 +3,6 @@ package eu.siacs.conversations.utils;
 import android.Manifest;
 import android.content.Context;
 import android.content.CursorLoader;
-import android.content.Loader;
-import android.content.Loader.OnLoadCompleteListener;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.net.Uri;
@@ -41,36 +39,22 @@ public class PhoneHelper {
 		CursorLoader mCursorLoader = new NotThrowCursorLoader(context,
 				ContactsContract.Data.CONTENT_URI, PROJECTION, SELECTION, null,
 				null);
-		mCursorLoader.registerListener(0, new OnLoadCompleteListener<Cursor>() {
-
-			@Override
-			public void onLoadComplete(Loader<Cursor> arg0, Cursor cursor) {
-				if (cursor != null) {
-					while (cursor.moveToNext()) {
-						Bundle contact = new Bundle();
-						contact.putInt("phoneid", cursor.getInt(cursor
-								.getColumnIndex(ContactsContract.Data._ID)));
-						contact.putString(
-								"displayname",
-								cursor.getString(cursor
-										.getColumnIndex(ContactsContract.Data.DISPLAY_NAME)));
-						contact.putString("photouri", cursor.getString(cursor
-								.getColumnIndex(ContactsContract.Data.PHOTO_URI)));
-						contact.putString("lookup", cursor.getString(cursor
-								.getColumnIndex(ContactsContract.Data.LOOKUP_KEY)));
-
-						contact.putString(
-								"jid",
-								cursor.getString(cursor
-										.getColumnIndex(ContactsContract.CommonDataKinds.Im.DATA)));
-						phoneContacts.add(contact);
-					}
-					cursor.close();
+		mCursorLoader.registerListener(0, (arg0, c) -> {
+			if (c != null) {
+				while (c.moveToNext()) {
+					Bundle contact = new Bundle();
+					contact.putInt("phoneid", c.getInt(c.getColumnIndex(ContactsContract.Data._ID)));
+					contact.putString("displayname", c.getString(c.getColumnIndex(ContactsContract.Data.DISPLAY_NAME)));
+					contact.putString("photouri", c.getString(c.getColumnIndex(ContactsContract.Data.PHOTO_URI)));
+					contact.putString("lookup", c.getString(c.getColumnIndex(ContactsContract.Data.LOOKUP_KEY)));
+					contact.putString("jid", c.getString(c.getColumnIndex(ContactsContract.CommonDataKinds.Im.DATA)));
+					phoneContacts.add(contact);
 				}
+				c.close();
+			}
 
-				if (listener != null) {
-					listener.onPhoneContactsLoaded(phoneContacts);
-				}
+			if (listener != null) {
+				listener.onPhoneContactsLoaded(phoneContacts);
 			}
 		});
 		try {
@@ -90,7 +74,7 @@ public class PhoneHelper {
 		final Cursor cursor;
 		try {
 			cursor = context.getContentResolver().query(Profile.CONTENT_URI, projection, null, null, null);
-		} catch (SecurityException e) {
+		} catch (Throwable e) {
 			return null;
 		}
 		if (cursor == null) {
