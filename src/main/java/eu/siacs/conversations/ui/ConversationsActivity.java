@@ -63,6 +63,7 @@ import eu.siacs.conversations.databinding.ActivityConversationsBinding;
 import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.entities.Conversation;
 import eu.siacs.conversations.services.XmppConnectionService;
+import eu.siacs.conversations.ui.interfaces.OnBackendConnected;
 import eu.siacs.conversations.ui.interfaces.OnConversationArchived;
 import eu.siacs.conversations.ui.interfaces.OnConversationRead;
 import eu.siacs.conversations.ui.interfaces.OnConversationSelected;
@@ -258,8 +259,8 @@ public class ConversationsActivity extends XmppActivity implements OnConversatio
 
 	private void notifyFragmentOfBackendConnected(@IdRes int id) {
 		final Fragment fragment = getFragmentManager().findFragmentById(id);
-		if (fragment != null && fragment instanceof XmppFragment) {
-			((XmppFragment) fragment).onBackendConnected();
+		if (fragment != null && fragment instanceof OnBackendConnected) {
+			((OnBackendConnected) fragment).onBackendConnected();
 		}
 	}
 

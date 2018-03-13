@@ -418,12 +418,14 @@ public class UIHelper {
 	public static String concatNames(List<MucOptions.User> users, int max) {
 		StringBuilder builder = new StringBuilder();
 		final boolean shortNames = users.size() >= 3;
-		for (int i = 0; i < Math.max(users.size(), max); ++i) {
+		for (int i = 0; i < Math.min(users.size(), max); ++i) {
 			if (builder.length() != 0) {
 				builder.append(", ");
 			}
 			final String name = UIHelper.getDisplayName(users.get(i));
-			builder.append(shortNames ? name.split("\\s+")[0] : name);
+			if (name != null) {
+				builder.append(shortNames ? name.split("\\s+")[0] : name);
+			}
 		}
 		return builder.toString();
 	}

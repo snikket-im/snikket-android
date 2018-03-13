@@ -27,21 +27,10 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package eu.siacs.conversations.ui;
+package eu.siacs.conversations.ui.interfaces;
 
-import android.app.Activity;
-import android.app.Fragment;
+public interface OnBackendConnected {
 
-import eu.siacs.conversations.ui.interfaces.OnBackendConnected;
+	void onBackendConnected();
 
-public abstract class XmppFragment extends Fragment implements OnBackendConnected {
-
-	abstract void refresh();
-
-	protected void runOnUiThread(Runnable runnable) {
-		final Activity activity = getActivity();
-		if (activity != null) {
-			activity.runOnUiThread(runnable);
-		}
-	}
 }

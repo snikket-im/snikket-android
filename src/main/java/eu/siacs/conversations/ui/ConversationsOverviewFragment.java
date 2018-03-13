@@ -145,7 +145,7 @@ public class ConversationsOverviewFragment extends XmppFragment implements Enhan
 	}
 
 	@Override
-	void onBackendConnected() {
+	public void onBackendConnected() {
 		refresh();
 	}
 
