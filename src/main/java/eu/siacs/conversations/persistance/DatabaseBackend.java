@@ -776,7 +776,8 @@ public class DatabaseBackend extends SQLiteOpenHelper {
 		SQLiteDatabase db = this.getReadableDatabase();
 		final List<Jid> jids = new ArrayList<>();
 		final String[] columns = new String[]{Account.USERNAME, Account.SERVER};
-		Cursor cursor = db.query(Account.TABLENAME,columns,null,null,null,null,null);
+		String where = "not options & (1 <<1)";
+		Cursor cursor = db.query(Account.TABLENAME,columns,where,null,null,null,null);
 		try {
 			while(cursor.moveToNext()) {
 				jids.add(Jid.of(cursor.getString(0),cursor.getString(1),null));

@@ -1663,7 +1663,6 @@ public class XmppConnectionService extends Service {
 				return conversation;
 			}
 			conversation = databaseBackend.findConversation(account, jid);
-			Log.d(Config.LOGTAG,"loaded from db: "+conversation.getNextMessage());
 			final boolean loadMessagesFromDb;
 			if (conversation != null) {
 				conversation.setStatus(Conversation.STATUS_AVAILABLE);
