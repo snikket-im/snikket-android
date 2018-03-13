@@ -53,7 +53,7 @@ public class UriHandlerActivity extends AppCompatActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		this.handled = savedInstanceState != null && savedInstanceState.getBoolean("handled",false);
+		this.handled = savedInstanceState != null && savedInstanceState.getBoolean("handled", false);
 	}
 
 	@Override
@@ -74,6 +74,10 @@ public class UriHandlerActivity extends AppCompatActivity {
 	}
 
 	private void handleUri(Uri uri) {
+		handleUri(uri, false);
+	}
+
+	private void handleUri(Uri uri, final boolean scanned) {
 		final Intent intent;
 		final XmppUri xmppUri = new XmppUri(uri);
 		final List<Jid> accounts = DatabaseBackend.getInstance(this).getAccountJids(); //TODO only look at enabled accounts
@@ -104,13 +108,14 @@ public class UriHandlerActivity extends AppCompatActivity {
 			intent.setAction(Intent.ACTION_VIEW);
 			intent.putExtra("jid", xmppUri.getJid().asBareJid().toString());
 			intent.setData(uri);
-		} else if (xmppUri.isJidValid()){
+		} else if (xmppUri.isJidValid()) {
 			intent = new Intent(getApplicationContext(), StartConversationActivity.class);
 			intent.setAction(Intent.ACTION_VIEW);
 			intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+			intent.putExtra("scanned", scanned);
 			intent.setData(uri);
 		} else {
-			Toast.makeText(this,R.string.invalid_jid,Toast.LENGTH_SHORT).show();
+			Toast.makeText(this, R.string.invalid_jid, Toast.LENGTH_SHORT).show();
 			return;
 		}
 
@@ -149,7 +154,7 @@ public class UriHandlerActivity extends AppCompatActivity {
 			String result = intent.getStringExtra(ScanActivity.INTENT_EXTRA_RESULT);
 			if (result != null) {
 				Uri uri = Uri.parse(result);
-				handleUri(uri);
+				handleUri(uri, true);
 			}
 		}
 		finish();

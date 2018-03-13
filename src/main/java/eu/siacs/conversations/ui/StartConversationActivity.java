@@ -273,7 +273,7 @@ public class StartConversationActivity extends XmppActivity implements OnRosterU
 					try {
 						Jid jid = Jid.of(searchString);
 						if (jid.getLocal() != null && jid.isBareJid() && jid.getDomain().contains(".")) {
-							showCreateContactDialog(jid.toString(),null);
+							showCreateContactDialog(jid.toString(), null);
 							return;
 						}
 					} catch (IllegalArgumentException ignored) {
@@ -475,7 +475,7 @@ public class StartConversationActivity extends XmppActivity implements OnRosterU
 			} else if (contact.showInRoster()) {
 				throw new EnterJidDialog.JidError(getString(R.string.contact_already_exists));
 			} else {
-				xmppConnectionService.createContact(contact,true);
+				xmppConnectionService.createContact(contact, true);
 				if (invite != null && invite.hasFingerprints()) {
 					xmppConnectionService.verifyFingerprints(contact, invite.getFingerprints());
 				}
@@ -494,7 +494,7 @@ public class StartConversationActivity extends XmppActivity implements OnRosterU
 		final View dialogView = getLayoutInflater().inflate(R.layout.join_conference_dialog, null);
 		final Spinner spinner = dialogView.findViewById(R.id.account);
 		final AutoCompleteTextView jid = dialogView.findViewById(R.id.jid);
-		DelayedHintHelper.setHint(R.string.conference_address_example,jid);
+		DelayedHintHelper.setHint(R.string.conference_address_example, jid);
 		jid.setAdapter(new KnownHostsAdapter(this, R.layout.simple_list_item, mKnownConferenceHosts));
 		if (prefilledJid != null) {
 			jid.append(prefilledJid);
@@ -752,7 +752,7 @@ public class StartConversationActivity extends XmppActivity implements OnRosterU
 	public void onRequestPermissionsResult(int requestCode, @NonNull String permissions[], @NonNull int[] grantResults) {
 		if (grantResults.length > 0)
 			if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-				ScanActivity.onRequestPermissionResult(this,requestCode,grantResults);
+				ScanActivity.onRequestPermissionResult(this, requestCode, grantResults);
 				if (requestCode == REQUEST_SYNC_CONTACTS && xmppConnectionServiceBound) {
 					xmppConnectionService.loadPhoneContacts();
 				}
@@ -821,7 +821,7 @@ public class StartConversationActivity extends XmppActivity implements OnRosterU
 			case Intent.ACTION_VIEW:
 				Uri uri = intent.getData();
 				if (uri != null) {
-					Invite invite = new Invite(intent.getData(), false);
+					Invite invite = new Invite(intent.getData(), intent.getBooleanExtra("scanned", false));
 					invite.account = intent.getStringExtra("account");
 					return invite.invite();
 				} else {
