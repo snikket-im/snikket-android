@@ -186,6 +186,7 @@ public class HttpUploadConnection implements Transferable {
 			if (connection instanceof HttpsURLConnection) {
 				mHttpConnectionManager.setupTrustManager((HttpsURLConnection) connection, true);
 			}
+			connection.setUseCaches(false);
 			connection.setRequestMethod("PUT");
 			connection.setFixedLengthStreamingMode(expectedFileSize);
 			connection.setRequestProperty("Content-Type", mime == null ? "application/octet-stream" : mime);
