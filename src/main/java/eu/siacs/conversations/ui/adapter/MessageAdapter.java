@@ -98,33 +98,39 @@ public class MessageAdapter extends ArrayAdapter<Message> implements CopyTextVie
 					+ "\\;\\/\\?\\@\\&\\=\\#\\~\\-\\.\\+\\!\\*\\'\\(\\)\\,\\_])"
 					+ "|(?:\\%[a-fA-F0-9]{2}))+");
 
-	private static final Linkify.TransformFilter WEBURL_TRANSFORM_FILTER = new Linkify.TransformFilter() {
-		@Override
-		public String transformUrl(Matcher matcher, String url) {
-			if (url == null) {
-				return null;
-			}
-			final String lcUrl = url.toLowerCase(Locale.US);
-			if (lcUrl.startsWith("http://") || lcUrl.startsWith("https://")) {
-				return url;
-			} else {
-				return "http://" + url;
-			}
+	private static final Linkify.TransformFilter WEBURL_TRANSFORM_FILTER = (matcher, url) -> {
+		if (url == null) {
+			return null;
 		}
-	};
-	private static final Linkify.MatchFilter WEBURL_MATCH_FILTER = new Linkify.MatchFilter() {
-		@Override
-		public boolean acceptMatch(CharSequence cs, int start, int end) {
-			return start < 1 || (cs.charAt(start - 1) != '@' && cs.charAt(start - 1) != '.' && !cs.subSequence(Math.max(0, start - 3), start).equals("://"));
+		final String lcUrl = url.toLowerCase(Locale.US);
+		if (lcUrl.startsWith("http://") || lcUrl.startsWith("https://")) {
+			return removeTrailingBracket(url);
+		} else {
+			return "http://" + removeTrailingBracket(url);
 		}
 	};
 
-	private static final Linkify.MatchFilter XMPPURI_MATCH_FILTER = new Linkify.MatchFilter() {
-		@Override
-		public boolean acceptMatch(CharSequence s, int start, int end) {
-			XmppUri uri = new XmppUri(s.subSequence(start, end).toString());
-			return uri.isJidValid();
+	private static String removeTrailingBracket(final String url) {
+		int numOpenBrackets = 0;
+		for(char c : url.toCharArray()) {
+			if (c=='(') {
+				++numOpenBrackets;
+			} else if (c==')') {
+				--numOpenBrackets;
+			}
 		}
+		if (numOpenBrackets != 0 && url.charAt(url.length() - 1) == ')') {
+			return url.substring(0,url.length() - 1);
+		} else {
+			return url;
+		}
+	}
+
+	private static final Linkify.MatchFilter WEBURL_MATCH_FILTER = (cs, start, end) -> start < 1 || (cs.charAt(start - 1) != '@' && cs.charAt(start - 1) != '.' && !cs.subSequence(Math.max(0, start - 3), start).equals("://"));
+
+	private static final Linkify.MatchFilter XMPPURI_MATCH_FILTER = (s, start, end) -> {
+		XmppUri uri = new XmppUri(s.subSequence(start, end).toString());
+		return uri.isJidValid();
 	};
 
 	private final XmppActivity activity;
