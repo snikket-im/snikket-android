@@ -1915,6 +1915,9 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
 		final XmppConnection connection = account.getXmppConnection();
 		final int mode = conversation.getMode();
 		final Contact contact = mode == Conversation.MODE_SINGLE ? conversation.getContact() : null;
+		if (conversation.getStatus() == Conversation.STATUS_ARCHIVED) {
+			return;
+		}
 		if (account.getStatus() == Account.State.DISABLED) {
 			showSnackbar(R.string.this_account_is_disabled, R.string.enable, this.mEnableAccountListener);
 		} else if (conversation.isBlocked()) {
