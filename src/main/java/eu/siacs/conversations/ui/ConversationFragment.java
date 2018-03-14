@@ -2181,6 +2181,9 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
 	}
 
 	private boolean showLoadMoreMessages(final Conversation c) {
+		if (activity == null || activity.xmppConnectionService == null) {
+			return false;
+		}
 		final boolean mam = hasMamSupport(c) && !c.getContact().isBlocked();
 		final MessageArchiveService service = activity.xmppConnectionService.getMessageArchiveService();
 		return mam && (c.getLastClearHistory().getTimestamp() != 0 || (c.countMessages() == 0 && c.messagesLoaded.get() && c.hasMessagesLeftOnServer() && !service.queryInProgress(c)));

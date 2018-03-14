@@ -9,6 +9,7 @@ import android.support.annotation.StringRes;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBar;
+import android.util.Log;
 import android.view.ActionMode;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -19,6 +20,7 @@ import android.widget.AbsListView.MultiChoiceModeListener;
 import android.widget.ListView;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
@@ -40,7 +42,7 @@ import rocks.xmpp.addr.Jid;
 public class ChooseContactActivity extends AbstractSearchableListItemActivity {
 	public static final String EXTRA_TITLE_RES_ID = "extra_title_res_id";
 	private List<String> mActivatedAccounts = new ArrayList<>();
-	private Set<Contact> selected;
+	private Set<String> selected = new HashSet<>();
 	private Set<String> filterContacts;
 
 	private PendingItem<ActivityResult> postponedActivityResult = new PendingItem<>();
@@ -70,6 +72,14 @@ public class ChooseContactActivity extends AbstractSearchableListItemActivity {
 	public void onCreate(final Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		filterContacts = new HashSet<>();
+		if (savedInstanceState != null) {
+			String[] selectedContacts = savedInstanceState.getStringArray("selected_contacts");
+			if (selectedContacts != null) {
+				selected.clear();
+				selected.addAll(Arrays.asList(selectedContacts));
+			}
+		}
+
 		String[] contacts = getIntent().getStringArrayExtra("filter_contacts");
 		if (contacts != null) {
 			Collections.addAll(filterContacts, contacts);
@@ -86,16 +96,24 @@ public class ChooseContactActivity extends AbstractSearchableListItemActivity {
 
 				@Override
 				public boolean onCreateActionMode(ActionMode mode, Menu menu) {
+					binding.fab.setVisibility(View.GONE);
+					final View view = getSearchEditText();
 					final InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-					imm.hideSoftInputFromWindow(getSearchEditText().getWindowToken(), InputMethodManager.HIDE_IMPLICIT_ONLY);
+					if (view != null && imm != null) {
+						imm.hideSoftInputFromWindow(getSearchEditText().getWindowToken(), InputMethodManager.HIDE_IMPLICIT_ONLY);
+					}
 					MenuInflater inflater = getMenuInflater();
 					inflater.inflate(R.menu.select_multiple, menu);
-					selected = new HashSet<>();
+					MenuItem selectButton = menu.findItem(R.id.selection_submit);
+					String buttonText = getResources().getQuantityString(R.plurals.select_contact, selected.size(), selected.size());
+					selectButton.setTitle(buttonText);
 					return true;
 				}
 
 				@Override
 				public void onDestroyActionMode(ActionMode mode) {
+					binding.fab.setVisibility(View.VISIBLE);
+					selected.clear();
 				}
 
 				@Override
@@ -122,9 +140,9 @@ public class ChooseContactActivity extends AbstractSearchableListItemActivity {
 				public void onItemCheckedStateChanged(ActionMode mode, int position, long id, boolean checked) {
 					Contact item = (Contact) getListItems().get(position);
 					if (checked) {
-						selected.add(item);
+						selected.add(item.getJid().toString());
 					} else {
-						selected.remove(item);
+						selected.remove(item.getJid().toString());
 					}
 					int numSelected = selected.size();
 					MenuItem selectButton = mode.getMenu().findItem(R.id.selection_submit);
@@ -187,6 +205,12 @@ public class ChooseContactActivity extends AbstractSearchableListItemActivity {
 		return true;
 	}
 
+	@Override
+	public void onSaveInstanceState(Bundle savedInstanceState) {
+		savedInstanceState.putStringArray("selected_contacts",getSelectedContactJids());
+		super.onSaveInstanceState(savedInstanceState);
+	}
+
 	protected void filterContacts(final String needle) {
 		getListItems().clear();
 		if (xmppConnectionService == null) {
@@ -209,11 +233,7 @@ public class ChooseContactActivity extends AbstractSearchableListItemActivity {
 	}
 
 	private String[] getSelectedContactJids() {
-		List<String> result = new ArrayList<>();
-		for (Contact contact : selected) {
-			result.add(contact.getJid().toString());
-		}
-		return result.toArray(new String[result.size()]);
+		return selected.toArray(new String[selected.size()]);
 	}
 
 	public void refreshUiReal() {
