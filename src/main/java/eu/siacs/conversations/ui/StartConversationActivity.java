@@ -440,6 +440,12 @@ public class StartConversationActivity extends XmppActivity implements OnRosterU
 
 	@SuppressLint("InflateParams")
 	protected void showCreateContactDialog(final String prefilledJid, final Invite invite) {
+		FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+		Fragment prev = getSupportFragmentManager().findFragmentByTag("dialog");
+		if (prev != null) {
+			ft.remove(prev);
+		}
+		ft.addToBackStack(null);
 		EnterJidDialog dialog = EnterJidDialog.newInstance(
 				mKnownHosts, mActivatedAccounts,
 				getString(R.string.dialog_title_create_contact), getString(R.string.create),
@@ -474,18 +480,30 @@ public class StartConversationActivity extends XmppActivity implements OnRosterU
 				return true;
 			}
 		});
-		dialog.show(getSupportFragmentManager(), "create_contact_dialog");
+		dialog.show(ft, "dialog");
 	}
 
 	@SuppressLint("InflateParams")
 	protected void showJoinConferenceDialog(final String prefilledJid) {
-		JoinConferenceDialog dialog = JoinConferenceDialog.newInstance(prefilledJid, mActivatedAccounts, mKnownConferenceHosts);
-		dialog.show(getSupportFragmentManager(),"join_conference_dialog");
+		FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+		Fragment prev = getSupportFragmentManager().findFragmentByTag("dialog");
+		if (prev != null) {
+			ft.remove(prev);
+		}
+		ft.addToBackStack(null);
+		JoinConferenceDialog joinConferenceFragment = JoinConferenceDialog.newInstance(prefilledJid, mActivatedAccounts, mKnownConferenceHosts);
+		joinConferenceFragment.show(ft, "dialog");
 	}
 
 	private void showCreateConferenceDialog() {
-		CreateConferenceDialog dialog = CreateConferenceDialog.newInstance(mActivatedAccounts);
-		dialog.show(getSupportFragmentManager(),"create_conference_dialog");
+		FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+		Fragment prev = getSupportFragmentManager().findFragmentByTag("dialog");
+		if (prev != null) {
+			ft.remove(prev);
+		}
+		ft.addToBackStack(null);
+		CreateConferenceDialog createConferenceFragment = CreateConferenceDialog.newInstance(mActivatedAccounts);
+		createConferenceFragment.show(ft, "dialog");
 	}
 
 	private Account getSelectedAccount(Spinner spinner) {

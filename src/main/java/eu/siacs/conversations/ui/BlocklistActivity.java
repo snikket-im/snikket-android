@@ -1,6 +1,8 @@
 package eu.siacs.conversations.ui;
 
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.text.Editable;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -62,6 +64,12 @@ public class BlocklistActivity extends AbstractSearchableListItemActivity implem
 	}
 
 	protected void showEnterJidDialog() {
+		FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+		Fragment prev = getSupportFragmentManager().findFragmentByTag("dialog");
+		if (prev != null) {
+			ft.remove(prev);
+		}
+		ft.addToBackStack(null);
 		EnterJidDialog dialog = EnterJidDialog.newInstance(
 				mKnownHosts, null,
 				getString(R.string.block_jabber_id), getString(R.string.block),
@@ -76,7 +84,7 @@ public class BlocklistActivity extends AbstractSearchableListItemActivity implem
 			return true;
 		});
 
-		dialog.show(getSupportFragmentManager(), "block_contact_dialog");
+		dialog.show(ft, "dialog");
 	}
 
 	protected void refreshUiReal() {

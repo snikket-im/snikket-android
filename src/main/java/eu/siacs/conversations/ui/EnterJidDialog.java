@@ -1,5 +1,6 @@
 package eu.siacs.conversations.ui;
 
+import android.databinding.DataBindingUtil;
 import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
 import android.os.Bundle;
@@ -17,6 +18,7 @@ import java.util.List;
 
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
+import eu.siacs.conversations.databinding.EnterJidDialogBinding;
 import eu.siacs.conversations.ui.adapter.KnownHostsAdapter;
 import eu.siacs.conversations.ui.util.DelayedHintHelper;
 import rocks.xmpp.addr.Jid;
@@ -61,59 +63,57 @@ public class EnterJidDialog extends DialogFragment{
 	public Dialog onCreateDialog(Bundle savedInstanceState) {
 		final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 		builder.setTitle(getArguments().getString(TITLE_KEY));
-		View dialogView = getActivity().getLayoutInflater().inflate(R.layout.enter_jid_dialog, null);
-		final Spinner spinner = dialogView.findViewById(R.id.account);
-		final AutoCompleteTextView jid = dialogView.findViewById(R.id.jid);
-		jid.setAdapter(new KnownHostsAdapter(getActivity(), R.layout.simple_list_item, (Collection<String>) getArguments().getSerializable(CONFERENCE_HOSTS_KEY)));
+		EnterJidDialogBinding binding = DataBindingUtil.inflate(getActivity().getLayoutInflater(), R.layout.enter_jid_dialog, null, false);
+		binding.jid.setAdapter(new KnownHostsAdapter(getActivity(), R.layout.simple_list_item, (Collection<String>) getArguments().getSerializable(CONFERENCE_HOSTS_KEY)));
 		String prefilledJid = getArguments().getString(PREFILLED_JID_KEY);
 		if (prefilledJid != null) {
-			jid.append(prefilledJid);
+			binding.jid.append(prefilledJid);
 			if (!getArguments().getBoolean(ALLOW_EDIT_JID_KEY)) {
-				jid.setFocusable(false);
-				jid.setFocusableInTouchMode(false);
-				jid.setClickable(false);
-				jid.setCursorVisible(false);
+				binding.jid.setFocusable(false);
+				binding.jid.setFocusableInTouchMode(false);
+				binding.jid.setClickable(false);
+				binding.jid.setCursorVisible(false);
 			}
 		}
 
-		DelayedHintHelper.setHint(R.string.account_settings_example_jabber_id,jid);
+		DelayedHintHelper.setHint(R.string.account_settings_example_jabber_id, binding.jid);
 
 		String account = getArguments().getString(ACCOUNT_KEY);
 		if (account == null) {
-			StartConversationActivity.populateAccountSpinner(getActivity(), getArguments().getStringArrayList(ACCOUNTS_LIST_KEY), spinner);
+			StartConversationActivity.populateAccountSpinner(getActivity(), getArguments().getStringArrayList(ACCOUNTS_LIST_KEY), binding.account);
 		} else {
 			ArrayAdapter<String> adapter = new ArrayAdapter<>(getActivity(),
 					R.layout.simple_list_item,
 					new String[] { account });
-			spinner.setEnabled(false);
+			binding.account.setEnabled(false);
 			adapter.setDropDownViewResource(R.layout.simple_list_item);
-			spinner.setAdapter(adapter);
+			binding.account.setAdapter(adapter);
 		}
 
-		builder.setView(dialogView);
+		builder.setView(binding.getRoot());
 		builder.setNegativeButton(R.string.cancel, null);
 		builder.setPositiveButton(getArguments().getString(POSITIVE_BUTTON_KEY), null);
 		AlertDialog dialog = builder.create();
 
 		View.OnClickListener dialogOnClick = v -> {
 			final Jid accountJid;
-			if (!spinner.isEnabled() && account == null) {
+			if (!binding.account.isEnabled() && account == null) {
 				return;
 			}
 			try {
 				if (Config.DOMAIN_LOCK != null) {
-					accountJid = Jid.of((String) spinner.getSelectedItem(), Config.DOMAIN_LOCK, null);
+					accountJid = Jid.of((String) binding.account.getSelectedItem(), Config.DOMAIN_LOCK, null);
 				} else {
-					accountJid = Jid.of((String) spinner.getSelectedItem());
+					accountJid = Jid.of((String) binding.account.getSelectedItem());
 				}
 			} catch (final IllegalArgumentException e) {
 				return;
 			}
 			final Jid contactJid;
 			try {
-				contactJid = Jid.of(jid.getText().toString());
+				contactJid = Jid.of(binding.jid.getText().toString());
 			} catch (final IllegalArgumentException e) {
-				jid.setError(getActivity().getString(R.string.invalid_jid));
+				binding.jid.setError(getActivity().getString(R.string.invalid_jid));
 				return;
 			}
 
@@ -123,7 +123,7 @@ public class EnterJidDialog extends DialogFragment{
 						dialog.dismiss();
 					}
 				} catch(JidError error) {
-					jid.setError(error.toString());
+					binding.jid.setError(error.toString());
 				}
 			}
 		};

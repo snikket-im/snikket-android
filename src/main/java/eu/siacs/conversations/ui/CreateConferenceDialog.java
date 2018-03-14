@@ -1,6 +1,7 @@
 package eu.siacs.conversations.ui;
 
 import android.app.Dialog;
+import android.databinding.DataBindingUtil;
 import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
 import android.content.Context;
@@ -15,6 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import eu.siacs.conversations.R;
+import eu.siacs.conversations.databinding.CreateConferenceDialogBinding;
 
 public class CreateConferenceDialog extends DialogFragment {
 
@@ -40,16 +42,14 @@ public class CreateConferenceDialog extends DialogFragment {
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setTitle(R.string.dialog_title_create_conference);
-        final View dialogView = getActivity().getLayoutInflater().inflate(R.layout.create_conference_dialog, null);
-        final Spinner spinner = dialogView.findViewById(R.id.account);
-        final EditText subject = dialogView.findViewById(R.id.subject);
+        CreateConferenceDialogBinding binding = DataBindingUtil.inflate(getActivity().getLayoutInflater(), R.layout.create_conference_dialog, null, false);
         ArrayList<String> mActivatedAccounts = getArguments().getStringArrayList(ACCOUNTS_LIST_KEY);
-        StartConversationActivity.populateAccountSpinner(getActivity(), mActivatedAccounts, spinner);
-        builder.setView(dialogView);
+        StartConversationActivity.populateAccountSpinner(getActivity(), mActivatedAccounts, binding.account);
+        builder.setView(binding.getRoot());
         builder.setPositiveButton(R.string.choose_participants, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                mListener.onCreateDialogPositiveClick(spinner, subject.getText().toString());
+                mListener.onCreateDialogPositiveClick(binding.account, binding.subject.getText().toString());
             }
         });
         builder.setNegativeButton(R.string.cancel, null);
