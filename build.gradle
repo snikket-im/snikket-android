@@ -69,7 +69,7 @@ android {
     buildToolsVersion "27.0.3"
 
     defaultConfig {
-        minSdkVersion 14
+        minSdkVersion 19
         targetSdkVersion 25
         versionCode 257
         versionName "2.0.0-beta.2"
