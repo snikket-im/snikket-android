@@ -427,7 +427,7 @@ public class ContactDetailsActivity extends OmemoActivity implements OnAccountUp
 		} else {
 			binding.showInactiveDevices.setVisibility(View.GONE);
 		}
-		binding.scanButton.setVisibility(hasKeys ? View.VISIBLE : View.GONE);
+		binding.scanButton.setVisibility(hasKeys && isCameraFeatureAvailable() ? View.VISIBLE : View.GONE);
 		if (hasKeys) {
 			binding.scanButton.setOnClickListener((v)-> ScanActivity.scan(this));
 		}

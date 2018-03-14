@@ -111,7 +111,7 @@ public class TrustKeysActivity extends OmemoActivity implements OnKeyStatusUpdat
 	public boolean onCreateOptionsMenu(Menu menu) {
 		getMenuInflater().inflate(R.menu.trust_keys, menu);
 		MenuItem scanQrCode = menu.findItem(R.id.action_scan_qr_code);
-		scanQrCode.setVisible(ownKeysToTrust.size() > 0 || foreignActuallyHasKeys());
+		scanQrCode.setVisible((ownKeysToTrust.size() > 0 || foreignActuallyHasKeys()) && isCameraFeatureAvailable());
 		return super.onCreateOptionsMenu(menu);
 	}
 
@@ -223,7 +223,7 @@ public class TrustKeysActivity extends OmemoActivity implements OnKeyStatusUpdat
 			}
 		}
 
-		if ((hasOwnKeys || foreignActuallyHasKeys()) && mUseCameraHintShown.compareAndSet(false,true)) {
+		if ((hasOwnKeys || foreignActuallyHasKeys()) && isCameraFeatureAvailable() && mUseCameraHintShown.compareAndSet(false,true)) {
 			showCameraToast();
 		}
 

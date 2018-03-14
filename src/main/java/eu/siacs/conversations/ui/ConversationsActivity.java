@@ -385,11 +385,15 @@ public class ConversationsActivity extends XmppActivity implements OnConversatio
 		getMenuInflater().inflate(R.menu.activity_conversations, menu);
 		MenuItem qrCodeScanMenuItem = menu.findItem(R.id.action_scan_qr_code);
 		if (qrCodeScanMenuItem != null) {
-			Fragment fragment = getFragmentManager().findFragmentById(R.id.main_fragment);
-			boolean visible = getResources().getBoolean(R.bool.show_qr_code_scan)
-					&& fragment != null
-					&& fragment instanceof ConversationsOverviewFragment;
-			qrCodeScanMenuItem.setVisible(visible);
+			if (isCameraFeatureAvailable()) {
+				Fragment fragment = getFragmentManager().findFragmentById(R.id.main_fragment);
+				boolean visible = getResources().getBoolean(R.bool.show_qr_code_scan)
+						&& fragment != null
+						&& fragment instanceof ConversationsOverviewFragment;
+				qrCodeScanMenuItem.setVisible(visible);
+			} else {
+				qrCodeScanMenuItem.setVisible(false);
+			}
 		}
 		return super.onCreateOptionsMenu(menu);
 	}

@@ -83,12 +83,11 @@ public abstract class XmppActivity extends AppCompatActivity {
 	public boolean xmppConnectionServiceBound = false;
 	protected boolean registeredListeners = false;
 
-	protected int mPrimaryBackgroundColor;
-	protected int mSecondaryBackgroundColor;
 	protected int mColorRed;
 	protected int mColorOrange;
 	protected int mColorGreen;
-	protected int mPrimaryColor;
+
+	private boolean isCameraFeatureAvailable = false;
 
 	protected boolean mUseSubject = true;
 	protected int mTheme;
@@ -408,19 +407,13 @@ public abstract class XmppActivity extends AppCompatActivity {
 		super.onCreate(savedInstanceState);
 		metrics = getResources().getDisplayMetrics();
 		ExceptionHelper.init(getApplicationContext());
+		this.isCameraFeatureAvailable = getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA);
 
 		mColorRed = ContextCompat.getColor(this, R.color.red800);
 		mColorOrange = ContextCompat.getColor(this, R.color.orange500);
 		mColorGreen = ContextCompat.getColor(this, R.color.green500);
-		mPrimaryColor = ContextCompat.getColor(this, R.color.primary500);
-		mPrimaryBackgroundColor = ContextCompat.getColor(this, R.color.grey50);
-		mSecondaryBackgroundColor = ContextCompat.getColor(this, R.color.grey200);
 
 		this.mTheme = findTheme();
-		if (isDarkTheme()) {
-			mPrimaryBackgroundColor = ContextCompat.getColor(this, R.color.grey800);
-			mSecondaryBackgroundColor = ContextCompat.getColor(this, R.color.grey900);
-		}
 		setTheme(this.mTheme);
 
 		this.mUsingEnterKey = usingEnterKey();
@@ -429,6 +422,10 @@ public abstract class XmppActivity extends AppCompatActivity {
 		if (ab != null) {
 			ab.setDisplayHomeAsUpEnabled(true);
 		}
+	}
+
+	protected boolean isCameraFeatureAvailable() {
+		return this.isCameraFeatureAvailable;
 	}
 
 	public boolean isDarkTheme() {

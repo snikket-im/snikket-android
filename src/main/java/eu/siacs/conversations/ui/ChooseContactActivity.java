@@ -182,7 +182,7 @@ public class ChooseContactActivity extends AbstractSearchableListItemActivity {
 		super.onCreateOptionsMenu(menu);
 		final Intent i = getIntent();
 		boolean showEnterJid = i != null && i.getBooleanExtra("show_enter_jid", false);
-		menu.findItem(R.id.action_scan_qr_code).setVisible(showEnterJid);
+		menu.findItem(R.id.action_scan_qr_code).setVisible(isCameraFeatureAvailable() && showEnterJid);
 		return true;
 	}
 
