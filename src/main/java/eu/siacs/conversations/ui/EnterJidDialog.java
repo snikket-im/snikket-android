@@ -1,11 +1,13 @@
 package eu.siacs.conversations.ui;
 
+import android.app.Activity;
 import android.databinding.DataBindingUtil;
 import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.app.Dialog;
+import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
@@ -13,6 +15,7 @@ import android.widget.Spinner;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 
@@ -20,10 +23,11 @@ import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.databinding.EnterJidDialogBinding;
 import eu.siacs.conversations.ui.adapter.KnownHostsAdapter;
+import eu.siacs.conversations.ui.interfaces.OnBackendConnected;
 import eu.siacs.conversations.ui.util.DelayedHintHelper;
 import rocks.xmpp.addr.Jid;
 
-public class EnterJidDialog extends DialogFragment{
+public class EnterJidDialog extends DialogFragment implements OnBackendConnected {
 
 	private OnEnterJidDialogPositiveListener mListener = null;
 
@@ -33,21 +37,20 @@ public class EnterJidDialog extends DialogFragment{
 	private static final String ACCOUNT_KEY = "account";
 	private static final String ALLOW_EDIT_JID_KEY = "allow_edit_jid";
 	private static final String ACCOUNTS_LIST_KEY = "activated_accounts_list";
-	private static final String CONFERENCE_HOSTS_KEY = "known_conference_hosts";
 
-	public static EnterJidDialog newInstance(
-			Collection<String> knownHosts, final List<String> activatedAccounts,
-			final String title, final String positiveButton,
-			final String prefilledJid, final String account, boolean allowEditJid) {
+	private KnownHostsAdapter knownHostsAdapter;
+
+	public static EnterJidDialog newInstance(final List<String> activatedAccounts,
+	                                         final String title, final String positiveButton,
+	                                         final String prefilledJid, final String account, boolean allowEditJid) {
 		EnterJidDialog dialog = new EnterJidDialog();
-		Bundle bundle  = new Bundle();
+		Bundle bundle = new Bundle();
 		bundle.putString(TITLE_KEY, title);
 		bundle.putString(POSITIVE_BUTTON_KEY, positiveButton);
 		bundle.putString(PREFILLED_JID_KEY, prefilledJid);
 		bundle.putString(ACCOUNT_KEY, account);
 		bundle.putBoolean(ALLOW_EDIT_JID_KEY, allowEditJid);
 		bundle.putStringArrayList(ACCOUNTS_LIST_KEY, (ArrayList<String>) activatedAccounts);
-		bundle.putSerializable(CONFERENCE_HOSTS_KEY, (HashSet) knownHosts);
 		dialog.setArguments(bundle);
 		return dialog;
 	}
@@ -58,13 +61,23 @@ public class EnterJidDialog extends DialogFragment{
 		setRetainInstance(true);
 	}
 
+	@Override
+	public void onStart() {
+		super.onStart();
+		final Activity activity = getActivity();
+		if (activity instanceof XmppActivity && ((XmppActivity) activity).xmppConnectionService != null) {
+			refreshKnownHosts();
+		}
+	}
+
 	@NonNull
 	@Override
 	public Dialog onCreateDialog(Bundle savedInstanceState) {
 		final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 		builder.setTitle(getArguments().getString(TITLE_KEY));
 		EnterJidDialogBinding binding = DataBindingUtil.inflate(getActivity().getLayoutInflater(), R.layout.enter_jid_dialog, null, false);
-		binding.jid.setAdapter(new KnownHostsAdapter(getActivity(), R.layout.simple_list_item, (Collection<String>) getArguments().getSerializable(CONFERENCE_HOSTS_KEY)));
+		this.knownHostsAdapter = new KnownHostsAdapter(getActivity(), R.layout.simple_list_item);
+		binding.jid.setAdapter(this.knownHostsAdapter);
 		String prefilledJid = getArguments().getString(PREFILLED_JID_KEY);
 		if (prefilledJid != null) {
 			binding.jid.append(prefilledJid);
@@ -84,7 +97,7 @@ public class EnterJidDialog extends DialogFragment{
 		} else {
 			ArrayAdapter<String> adapter = new ArrayAdapter<>(getActivity(),
 					R.layout.simple_list_item,
-					new String[] { account });
+					new String[]{account});
 			binding.account.setEnabled(false);
 			adapter.setDropDownViewResource(R.layout.simple_list_item);
 			binding.account.setAdapter(adapter);
@@ -117,12 +130,12 @@ public class EnterJidDialog extends DialogFragment{
 				return;
 			}
 
-			if(mListener != null) {
+			if (mListener != null) {
 				try {
-					if(mListener.onEnterJidDialogPositive(accountJid, contactJid)) {
+					if (mListener.onEnterJidDialogPositive(accountJid, contactJid)) {
 						dialog.dismiss();
 					}
-				} catch(JidError error) {
+				} catch (JidError error) {
 					binding.jid.setError(error.toString());
 				}
 			}
@@ -134,6 +147,19 @@ public class EnterJidDialog extends DialogFragment{
 
 	public void setOnEnterJidDialogPositiveListener(OnEnterJidDialogPositiveListener listener) {
 		this.mListener = listener;
+	}
+
+	@Override
+	public void onBackendConnected() {
+		refreshKnownHosts();
+	}
+
+	private void refreshKnownHosts() {
+		Activity activity = getActivity();
+		if (activity instanceof XmppActivity) {
+			Collection<String> hosts = ((XmppActivity) activity).xmppConnectionService.getKnownHosts();
+			this.knownHostsAdapter.refresh(hosts);
+		}
 	}
 
 	public interface OnEnterJidDialogPositiveListener {

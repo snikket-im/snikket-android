@@ -87,6 +87,8 @@ public abstract class XmppActivity extends AppCompatActivity {
 	protected int mColorOrange;
 	protected int mColorGreen;
 
+	protected static final String FRAGMENT_TAG_DIALOG = "dialog";
+
 	private boolean isCameraFeatureAvailable = false;
 
 	protected boolean mUseSubject = true;

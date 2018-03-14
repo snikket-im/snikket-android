@@ -19,7 +19,6 @@ import android.widget.AbsListView.MultiChoiceModeListener;
 import android.widget.ListView;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
@@ -32,6 +31,7 @@ import eu.siacs.conversations.entities.Contact;
 import eu.siacs.conversations.entities.Conversation;
 import eu.siacs.conversations.entities.ListItem;
 import eu.siacs.conversations.entities.MucOptions;
+import eu.siacs.conversations.ui.interfaces.OnBackendConnected;
 import eu.siacs.conversations.ui.util.ActivityResult;
 import eu.siacs.conversations.ui.util.PendingItem;
 import eu.siacs.conversations.utils.XmppUri;
@@ -40,7 +40,6 @@ import rocks.xmpp.addr.Jid;
 public class ChooseContactActivity extends AbstractSearchableListItemActivity {
 	public static final String EXTRA_TITLE_RES_ID = "extra_title_res_id";
 	private List<String> mActivatedAccounts = new ArrayList<>();
-	private Collection<String> mKnownHosts;
 	private Set<Contact> selected;
 	private Set<String> filterContacts;
 
@@ -240,7 +239,6 @@ public class ChooseContactActivity extends AbstractSearchableListItemActivity {
 		ft.addToBackStack(null);
 		Jid jid = uri == null ? null : uri.getJid();
 		EnterJidDialog dialog = EnterJidDialog.newInstance(
-				mKnownHosts,
 				mActivatedAccounts,
 				getString(R.string.enter_contact),
 				getString(R.string.select),
@@ -301,10 +299,13 @@ public class ChooseContactActivity extends AbstractSearchableListItemActivity {
 				}
 			}
 		}
-		this.mKnownHosts = xmppConnectionService.getKnownHosts();
 		ActivityResult activityResult = this.postponedActivityResult.pop();
 		if (activityResult != null) {
 			handleActivityResult(activityResult);
+		}
+		Fragment fragment = getSupportFragmentManager().findFragmentByTag(FRAGMENT_TAG_DIALOG);
+		if (fragment != null && fragment instanceof OnBackendConnected) {
+			((OnBackendConnected) fragment).onBackendConnected();
 		}
 	}
 

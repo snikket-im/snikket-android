@@ -64,6 +64,16 @@ public class KnownHostsAdapter extends ArrayAdapter<String> {
 		domains = new ArrayList<>(mKnownHosts);
 	}
 
+	public KnownHostsAdapter(Context context, int viewResourceId) {
+		super(context, viewResourceId, new ArrayList<>());
+		domains = new ArrayList<>();
+	}
+
+	public void refresh(Collection<String> knownHosts) {
+		domains = new ArrayList<>(knownHosts);
+		notifyDataSetChanged();
+	}
+
 	@Override
 	@NonNull
 	public Filter getFilter() {
