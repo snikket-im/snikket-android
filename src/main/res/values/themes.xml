@@ -155,6 +155,8 @@
     </style>
 
     <style name="ConversationsTheme.FullScreen" parent="@style/Theme.AppCompat.Light">
+        <item name="colorPrimary">@color/primary500</item>
+        <item name="colorPrimaryDark">@color/primary700</item>
         <item name="android:windowNoTitle">true</item>
         <item name="android:windowActionBar">false</item>
         <item name="android:windowFullscreen">true</item>

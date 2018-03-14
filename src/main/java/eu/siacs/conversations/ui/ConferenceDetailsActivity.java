@@ -386,7 +386,7 @@ public class ConferenceDetailsActivity extends XmppActivity implements OnConvers
 				}
 			} else {
 				MenuItem sendPrivateMessage = menu.findItem(R.id.send_private_message);
-				sendPrivateMessage.setVisible(user.getRole().ranks(MucOptions.Role.PARTICIPANT));
+				sendPrivateMessage.setVisible(user.getRole().ranks(MucOptions.Role.VISITOR));
 			}
 
 		}
