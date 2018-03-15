@@ -363,7 +363,6 @@
   <string name="error_no_keys_to_trust_server_error">Für diesen Kontakt sind keine nutzbaren Schlüssel verfügbar.\nDas Abrufen neuer Schlüssel vom Server ist fehlgeschlagen. Vielleicht gitb es ein Problem mit dem Server deines Kontaktes.</string>
   <string name="error_no_keys_to_trust_presence">Für diesen Kontakt sind keine benutzbaren Schlüssel verfügbar.\nStelle sicher, dass du den gegenseitigen Online-Status aktiviert hast.</string>
   <string name="error_no_keys_to_trust">Für diesen Kontakt sind keine benutzbaren Schlüssel verfügbar. Falls sie gelöscht wurden, müssen diese neu erstellt werden.</string>
-  <string name="error_trustkeys_title">Fehler</string>
   <string name="fetching_history_from_server">Lade Chatverlauf…</string>
   <string name="no_more_history_on_server">Keine weiteren Nachrichten vorhanden</string>
   <string name="updating">Aktualisieren…</string>

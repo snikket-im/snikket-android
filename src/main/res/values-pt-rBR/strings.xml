@@ -363,7 +363,6 @@
   <string name="error_no_keys_to_trust_server_error">Não existe nenhuma chave utilizável disponível para este contato.\nA obtenção de novas chaves no servidor não foi bem sucedida. Pode ser que tenha algum problema com o servidor do seu contato.</string>
   <string name="error_no_keys_to_trust_presence">Não existem chaves em condições de uso para esse contato.\nCertifique-se de que existem requisições de presença mútuas.</string>
   <string name="error_no_keys_to_trust">Não existe nenhuma chave utilizável para esse contato. Caso você tenha expurgado alguma chave dele, ele terá que gerar uma nova.</string>
-  <string name="error_trustkeys_title">Erro</string>
   <string name="fetching_history_from_server">Obtendo histórico do servidor</string>
   <string name="no_more_history_on_server">Nenhum outro histórico do servidor</string>
   <string name="updating">Atualizando...</string>

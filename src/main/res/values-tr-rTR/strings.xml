@@ -325,7 +325,6 @@
   <string name="clear_other_devices">Aygıtları sil</string>
   <string name="clear_other_devices_desc">OMEMO bildirimindeki diğer aygıtların hepsini silmek istediğinizden emin misiniz? Aygıtlarınız yeniden bağlandıklarında kendilerini yeniden bildirecekler ama bu süre zarfındaki iletileri alamayabilirler.</string>
   <string name="error_no_keys_to_trust">Bu kişi için kullanılabilecek bir anahtar bulunmuyor. Eğer anahtarlarını sildiyseniz, yeni anahtar oluşturmaları gerekiyor.</string>
-  <string name="error_trustkeys_title">Hata</string>
   <string name="fetching_history_from_server">Sunucudan geçmiş alınıyor</string>
   <string name="no_more_history_on_server">Sunucuda başka geçmiş kalmadı</string>
   <string name="updating">Güncelleniyor…</string>

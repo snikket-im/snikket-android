@@ -319,7 +319,6 @@
   <string name="clear_other_devices">Smazat přístroje</string>
   <string name="clear_other_devices_desc">Opravdu chcete vymazat ostatní přístroje z OMEMO upozornění? Až se příště tyto přístroje připojí, znovu se ohlásí, ale pravděpodobně neobdrží zprávy odeslané v mezičase mezi přihlášeními.</string>
   <string name="error_no_keys_to_trust">Pro tento kontakt nejsou dostupné žádné použitelné klíče. Pokud jste smazali jakýkoliv z jeho klíčů bude třeba vygenerovat nové.</string>
-  <string name="error_trustkeys_title">Chyba</string>
   <string name="fetching_history_from_server">Načíst historii ze serveru</string>
   <string name="no_more_history_on_server">Na serveru není žádná další historie</string>
   <string name="updating">Aktualizuji...</string>

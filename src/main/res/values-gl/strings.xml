@@ -363,7 +363,6 @@
   <string name="error_no_keys_to_trust_server_error">Non hai chaves dispoñibles que se poidan usar con este contacto.\nNon se puideron obter novas chaves do servidor. Quizáis hai algún problema coas chaves do seu contacto.</string>
   <string name="error_no_keys_to_trust_presence">Non hai chaves utilizables dispoñibles para este contacto.\nAsegúrese de que ambos teñen mutua suscrición de presenza.</string>
   <string name="error_no_keys_to_trust">Non hai chaves utilizables dispoñibles para este contacto. Si eliminou algunha das chaves do contacto, precisan xerar unhas novas.</string>
-  <string name="error_trustkeys_title">Fallo</string>
   <string name="fetching_history_from_server">Obtendo historial desde o servidor</string>
   <string name="no_more_history_on_server">Non hai máis historial no servidor</string>
   <string name="updating">Actualizando....</string>

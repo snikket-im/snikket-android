@@ -363,7 +363,6 @@
   <string name="error_no_keys_to_trust_server_error">Ez dago gako erabilgarririk kontaktu honetarako.\nEzin izan da zerbitzaritik gako berririk eskuratu. Agian akatsen bat dago zure kontaktuaren zerbitzariarekin.</string>
   <string name="error_no_keys_to_trust_presence">Ez dago gako erabilgarririk kontaktu honetarako.\nEgiaztatu ezazu bien arteko presentzia harpidetza duzuela.</string>
   <string name="error_no_keys_to_trust">Kontaktu honetarako gako erabilgarririk ez dago. Bere gakoak purgatu badituzu, berri batzuk sortu behar dituzte.</string>
-  <string name="error_trustkeys_title">Akatsa</string>
   <string name="fetching_history_from_server">Mezuak zerbitzaritik eskuratzen</string>
   <string name="no_more_history_on_server">Mezu gehiagorik ez zerbitzarian</string>
   <string name="updating">Eguneratzen...</string>

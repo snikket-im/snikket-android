@@ -363,7 +363,6 @@
   <string name="error_no_keys_to_trust_server_error">Для этого контакта не существует доступных ключей.\nПопытка получения новых ключей с сервера оказалась неудачной. Возможно, что-то не так с сервером вашего собеседника.</string>
   <string name="error_no_keys_to_trust_presence">Нет доступных ключей для данного контакта.\nУбедитесь, что у вас есть подписка на взаимное присутствие.</string>
   <string name="error_no_keys_to_trust">Для этого контакта не существует доступных ключей. Если вы очистили все его ключи, ему необходимо создать новые.</string>
-  <string name="error_trustkeys_title">Ошибка</string>
   <string name="fetching_history_from_server">Получение истории с сервера</string>
   <string name="no_more_history_on_server">На сервере больше нет истории</string>
   <string name="updating">Обновление…</string>

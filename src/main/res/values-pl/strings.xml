@@ -364,7 +364,6 @@
   <string name="error_no_keys_to_trust_server_error">Nie ma dostępnych kluczy dla tego kontaktu.\nPobieranie nowych kluczy z serwera nie powiodło się. Być może jest coś nie tak z serwerem kontaktu?</string>
   <string name="error_no_keys_to_trust_presence">Brak dostępnych kluczy dla tego kontaktu.\nUpewnij się, że wzajemnie powiadamiacie się o obecności.</string>
   <string name="error_no_keys_to_trust">Nie ma dostępnych żadnych użytecznych kluczy dla tego kontaktu. Jeśli usunąłeś jakieś jego klucze, kontakt będzie musiał wygenerować nowe.</string>
-  <string name="error_trustkeys_title">Błąd</string>
   <string name="fetching_history_from_server">Pobieranie historii z serwera</string>
   <string name="no_more_history_on_server">Koniec historii na serwerze</string>
   <string name="updating">Aktualizowanie...</string>

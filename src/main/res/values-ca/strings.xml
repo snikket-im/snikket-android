@@ -362,7 +362,6 @@ mentrestant.</string>
   <string name="error_no_keys_to_trust_server_error">No hi ha claus utilitzables per a aquest contacte.\nEls fitxers noves del servidor no han tingut èxit. Potser hi ha alguna cosa malament amb el servidor del vostre contacte.</string>
   <string name="error_no_keys_to_trust_presence">No hi ha claus disponibles per a aquest contacte.\nAssegureu-vos que teniu una subscripció de presència mútua.</string>
   <string name="error_no_keys_to_trust">No hi ha claus disponibles per a aquest contacte. Si heu purgat qualsevol de les claus, heu de generar-ne de noves.</string>
-  <string name="error_trustkeys_title">Error</string>
   <string name="fetching_history_from_server">Anar a cercar la història als servidors</string>
   <string name="no_more_history_on_server">No hi ha més histories al servidor</string>
   <string name="updating">Actualitzant</string>

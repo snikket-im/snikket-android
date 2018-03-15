@@ -363,7 +363,6 @@
   <string name="error_no_keys_to_trust_server_error">No hay claves disponibles para este contacto.\nLa búsqueda de nuevas claves en el servidor ha fallado. Puede que haya algún problema con el servidor de tu contacto.</string>
   <string name="error_no_keys_to_trust_presence">No hay claves disponibles para este contacto.\n Asegúrate que tenéis suscripción de presencia mutua. </string>
   <string name="error_no_keys_to_trust">No hay claves disponibles para este contacto. Si has eliminado alguna de sus claves, tus contactos necesitarán generar nuevas claves.</string>
-  <string name="error_trustkeys_title">Error</string>
   <string name="fetching_history_from_server">Buscando historial en el servidor</string>
   <string name="no_more_history_on_server">No hay más historial en el servidor</string>
   <string name="updating">Actualizando…</string>

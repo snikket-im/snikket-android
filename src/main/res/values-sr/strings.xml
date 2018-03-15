@@ -329,7 +329,6 @@
   <string name="clear_other_devices">Очисти уређаје</string>
   <string name="clear_other_devices_desc">Желите ли заиста да уклоните све остале уређаје са ОМЕМО објаве? Када се ваши уређаји следећи пут повежу, објавиће се сами, али у међувремену можда неће примати поруке.</string>
   <string name="error_no_keys_to_trust">Нема употребљивих кључева за овај контакт. Ако сте очистили било који од тих кључева, контакт мора да генерише нови.</string>
-  <string name="error_trustkeys_title">Грешка</string>
   <string name="fetching_history_from_server">Добављам историјат са сервера</string>
   <string name="no_more_history_on_server">Нема више историјата на серверу</string>
   <string name="updating">Ажурирам…</string>

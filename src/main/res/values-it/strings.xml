@@ -363,7 +363,6 @@
   <string name="error_no_keys_to_trust_server_error">Non ci sono chiavi utilizzabili per questo contatto.\nRicezione di nuovi chiavi dal server non riuscita. Forse qualcosa non va con il server del tuo contatto.</string>
   <string name="error_no_keys_to_trust_presence">Non ci sono chiavi utilizzabili per questo contatto.\nAssicurati di avere reciprocamente la sottoscrizione sulla presenza.</string>
   <string name="error_no_keys_to_trust">Non ci sono chiavi usabili per questo contatto. Se hai cancellato qualsiasi loro chiave, devono generarne di nuove.</string>
-  <string name="error_trustkeys_title">Errore</string>
   <string name="fetching_history_from_server">Caricamento della cronologia dal server</string>
   <string name="no_more_history_on_server">Fine cronologia sul server</string>
   <string name="updating">Caricamento…</string>
@@ -717,4 +716,13 @@
   <string name="mtm_cert_expired">Il certificato del server è scaduto.</string>
   <string name="mtm_accept_servername">Accetti il nome del server non corrispondente?</string>
   <string name="mtm_hostname_mismatch">Il server non ha potuto autenticarsi come \"%s\". Il certificato è valido solo per:</string>
+  <string name="mtm_connect_anyway">Vuoi connetterti comunque?</string>
+  <string name="mtm_cert_details">Dettagli certificato:</string>
+  <string name="mtm_notification">Verifica del certificato</string>
+  <string name="once">Una volta sola</string>
+  <string name="qr_code_scanner_needs_access_to_camera">Lo scanner di codici QR ha bisogno di accedere alla fotocamera</string>
+  <string name="pref_scroll_to_bottom">Scorri in fondo</string>
+  <string name="pref_scroll_to_bottom_summary">Scorri in basso dopo l\'invio di un messaggio</string>
+  <string name="edit_status_message_title">Modifica messaggio di stato</string>
+  <string name="edit_status_message">Modifica il messaggio di stato</string>
 </resources>

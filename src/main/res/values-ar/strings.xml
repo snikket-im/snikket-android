@@ -331,7 +331,6 @@
   <string name="copy_omemo_clipboard_description">انسخ بصمة OMEMO إلى الحافظة</string>
   <string name="regenerate_omemo_key">إعادة إنشاء مفتاح أوميمو OMEMO</string>
   <string name="clear_other_devices">حذف أجهزة</string>
-  <string name="error_trustkeys_title">خطأ</string>
   <string name="fetching_history_from_server">جلب المحفوظات من السرفر</string>
   <string name="no_more_history_on_server">لا مزيد من المحفوظات بالسرفر</string>
   <string name="updating">جاري التحديث..</string>

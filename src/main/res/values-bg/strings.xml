@@ -363,7 +363,6 @@
   <string name="error_no_keys_to_trust_server_error">Няма ключове, които могат да бъдат използвани за този контакт.\nИзтеглянето на нови ключове от сървъра беше неуспешно. Възможно е да има проблем със сървъра на контакта Ви.</string>
   <string name="error_no_keys_to_trust_presence">Няма ключове, които могат да бъдат използвани за този контакт.\nУверете се, че и двамата имате абонамент за присъствието.</string>
   <string name="error_no_keys_to_trust">Няма ключове, които могат да бъдат използвани за този контакт. Ако сте изчистили някои от ключовете му, то той трябва да създаде нови.</string>
-  <string name="error_trustkeys_title">Грешка</string>
   <string name="fetching_history_from_server">Получаване на историята от сървъра</string>
   <string name="no_more_history_on_server">Няма повече история на сървъра</string>
   <string name="updating">Актуализиране…</string>

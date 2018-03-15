@@ -363,7 +363,6 @@
   <string name="error_no_keys_to_trust_server_error">没有找到可以的密钥。\n服务器似乎发生错误，无法获取新的密钥。 </string>
   <string name="error_no_keys_to_trust_presence">没有可以用于这个账户的密钥。请确保你有相互的在线状态的订阅。</string>
   <string name="error_no_keys_to_trust">此联系人没有可用的密钥。如果你曾经清除过他们的密钥，那么需要他们生成新的密钥。</string>
-  <string name="error_trustkeys_title">错误</string>
   <string name="fetching_history_from_server">从服务器获取历史记录</string>
   <string name="no_more_history_on_server">服务器上没有更多历史记录</string>
   <string name="updating">更新中…</string>

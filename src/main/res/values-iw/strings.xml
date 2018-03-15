@@ -275,7 +275,6 @@
   <string name="clear_other_devices">נקה מכשירים</string>
   <string name="clear_other_devices_desc">האם אתה בטוח שברצונך לנקות את כל המכשירים מהכרזת ה OMEMO? בפעם הבאה שהמכשירים יתחברו, הם יכריזו שוב על עצמם, אך הם עלולים לאבד הודעות עד להכרזה זו.</string>
   <string name="error_no_keys_to_trust">אין מפתחות שימושיים עבור איש קשר זה. אם מחקת אחד מהמפתחות שלהם, יהיה עליהם ליצר מפתח חדש.</string>
-  <string name="error_trustkeys_title">שגיאה</string>
   <string name="fetching_history_from_server">הורדת היסטוריה מהשרת</string>
   <string name="no_more_history_on_server">אין עוד היסטוריה בשרת</string>
   <string name="updating">מעדכן...</string>

@@ -269,7 +269,6 @@
   <string name="account_image_description">Avatar účtu</string>
   <string name="copy_otr_clipboard_description">Skopírovať OTR identifikátor do schránky</string>
   <string name="copy_omemo_clipboard_description">Skopírovať OMEMO identifikátor do schránky</string>
-  <string name="error_trustkeys_title">Chyba</string>
   <string name="fetching_history_from_server">Načítať históriu zo serveru</string>
   <string name="no_more_history_on_server">Na serveri nie je žiadna ďalšia história</string>
   <string name="updating">Aktualizujem...</string>

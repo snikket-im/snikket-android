@@ -363,7 +363,6 @@
   <string name="error_no_keys_to_trust_server_error">Nu există chei utilizabile pentru acest contact.\nÎncercarea de a descărca chei noi de pe server a eșuat. Se poate ca serverul contactului dumneavoastră să aibă o problemă.</string>
   <string name="error_no_keys_to_trust_presence">Nu există chei disponibile ce pot fi folosite pentru acest contact.\nAsigurați-vă că ați activat trimiterea de actualizări de prezență reciproce.</string>
   <string name="error_no_keys_to_trust">Nu exista chei disponibile și utilizabile pentru acest contact. Dacă ați șters vreuna din cheile contactului, acesta va trebuii să genereze una noua.</string>
-  <string name="error_trustkeys_title">Eroare</string>
   <string name="fetching_history_from_server">Descarc istoric de pe server</string>
   <string name="no_more_history_on_server">Nu mai exista istoric pe server</string>
   <string name="updating">Actualizare...</string>
@@ -568,7 +567,7 @@ sau chiar pierderea mesajelor.\nÎn continuare veți fi rugați să dezactivați
   <string name="create_account">Creează cont</string>
   <string name="use_own_provider">Folosește furnizorul meu</string>
   <string name="pick_your_username">Alegeți un nume de utilizator</string>
-  <string name="pref_manually_change_presence">Setare disponibilitatea manual</string>
+  <string name="pref_manually_change_presence">Setează disponibilitate manual</string>
   <string name="pref_manually_change_presence_summary">Setați-vă disponibilitatea atunci când vă editați mesajul de stare.</string>
   <string name="change_presence">Setare prezență</string>
   <string name="status_message">Mesaj de stare</string>

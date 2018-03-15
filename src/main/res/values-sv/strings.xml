@@ -329,7 +329,6 @@
   <string name="clear_other_devices">Rensa enheter</string>
   <string name="clear_other_devices_desc">Är du säker på att du vill rensa alla andra enheter från OMEMO-annonsering? Nästa gång dina enheter ansluter kommer de att återannonsera sig, men de kanske inte tar emot enheter under tiden.</string>
   <string name="error_no_keys_to_trust">Det finns inga användbara nycklar tillgängliga för den här kontakten. Om du har rensat någon av dennes nycklar behöver de generera nya.</string>
-  <string name="error_trustkeys_title">Fel</string>
   <string name="fetching_history_from_server">Hämtar historik från server</string>
   <string name="no_more_history_on_server">Ingen mer historik på server</string>
   <string name="updating">Uppdaterar…</string>

@@ -332,7 +332,6 @@
   <string name="error_no_keys_to_trust_server_error">この連絡先で使用可能な鍵がありません。\nサーバーから新しい鍵を取得できませんでした。連絡先のサーバーに問題がある可能性があります。</string>
   <string name="error_no_keys_to_trust_presence">この連絡先で利用可能な鍵はありません。\n相互存在サブスクリプションあることを確認してください。</string>
   <string name="error_no_keys_to_trust">この連絡先で利用可能な鍵はありません。あなたがその鍵を消去している場合は、新しいものを生成してもらう必要があります。</string>
-  <string name="error_trustkeys_title">エラー</string>
   <string name="fetching_history_from_server">サーバーから履歴を取得中</string>
   <string name="no_more_history_on_server">サーバーにこれ以上履歴はありません</string>
   <string name="updating">アップデート中…</string>

@@ -309,7 +309,6 @@
   <string name="clear_other_devices">Apagar dispositivos</string>
   <string name="clear_other_devices_desc">Tem a certeza que quer apagar todos os outros dispositivos do anúncio OMEMO? A próxima vez que os seus dispositivos se conectem, irão ser eles mesmos a fazerem o anúncio novamente, mas podem não receber as mensagems enviadas entretanto.</string>
   <string name="error_no_keys_to_trust">Não existem chaves disponíveis para serem utilizadas para este contacto. Se removeu alguma das chaves dele, ele irá necessitar de gerar chaves novas. </string>
-  <string name="error_trustkeys_title">Erro</string>
   <string name="fetching_history_from_server">Obtendo o histórico do servidor</string>
   <string name="no_more_history_on_server">Não existe mais histórico no servidor</string>
   <string name="updating">A atualizar...</string>

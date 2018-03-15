@@ -363,7 +363,6 @@
   <string name="error_no_keys_to_trust_server_error">Ehhez a kapcsolathoz nem áll rendelkezésre használható kulcs.\n A kiszolgáló új kulcsainak letöltése sikertelen volt. Talán van valami baj a kapcsolattartó szerverével.</string>
   <string name="error_no_keys_to_trust_presence">Ehhez a kapcsolathoz nem áll rendelkezésre használható kulcs.\nGyőződjön meg róla, hogy kölcsönösen felíratkoztak egymás állapotfrissítéseire.</string>
   <string name="error_no_keys_to_trust">Ehhez a kapcsolathoz nem áll rendelkezésre használható kulcs. Ha törölted valamelyik kulcsukat, akkor újakat kell létrehoznod.</string>
-  <string name="error_trustkeys_title">Hiba</string>
   <string name="fetching_history_from_server">Előzmények lekérése a szerverről</string>
   <string name="no_more_history_on_server">Nincs több előzmény a szerveren</string>
   <string name="updating">Frissítés...</string>

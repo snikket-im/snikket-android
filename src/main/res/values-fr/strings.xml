@@ -363,7 +363,6 @@
   <string name="error_no_keys_to_trust_server_error">Aucune clef utilisable pour ce contact. \nL\'obtention de nouvelles clefs depuis le serveur a échoué. Il pourrait y avoir un problème avec le serveur de votre contact. </string>
   <string name="error_no_keys_to_trust_presence">Il n\'y a aucune clé utilisable disponible pour ce contact.\nAssurez-vous d\'avoir un abonnement de présence mutuelle.</string>
   <string name="error_no_keys_to_trust">il n\'y a pas de clef disponible pour ce contact. Si vous avez purgé toutes ses clefs, il doit en générer de nouvelles.</string>
-  <string name="error_trustkeys_title">Erreur</string>
   <string name="fetching_history_from_server">Récupération de l\'historique sur le serveur</string>
   <string name="no_more_history_on_server">Plus d\'historique sur le serveur</string>
   <string name="updating">Mise à jour…</string>

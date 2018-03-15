@@ -363,7 +363,6 @@
   <string name="error_no_keys_to_trust_server_error">Ingen brukbare tilgjengelig for denne kontakten.\nInnhenting av nye nøkler fra tjeneren mislyktes. Kanskje det er noe galt med din kontakts tjener.</string>
   <string name="error_no_keys_to_trust_presence">Det er ingen brukvare nøkler tilgjengelig for denne kontakten.\nForsikre deg om at dere begge abonnerer på hverandres tilstedeværelse.</string>
   <string name="error_no_keys_to_trust">Ingen brukbare nøkler tilgjengelige for denne kontakten. Hvis du har tilintetgjort noen av nøklene deres, må de generere nye.</string>
-  <string name="error_trustkeys_title">Feil</string>
   <string name="fetching_history_from_server">Henter inn historikk fra tjener</string>
   <string name="no_more_history_on_server">Ikke mer historikk på tjeneren</string>
   <string name="updating">Oppdaterer…</string>

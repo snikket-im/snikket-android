@@ -280,7 +280,6 @@
   <string name="account_image_description">Avatar akun</string>
   <string name="copy_otr_clipboard_description">Salin OTR fingerprint ke clipboard</string>
   <string name="clear_other_devices">Bersihkan perangkat</string>
-  <string name="error_trustkeys_title">Error</string>
   <string name="fetching_history_from_server">Mengambil data dari server</string>
   <string name="no_more_history_on_server">Tidak ada data lagi di server</string>
   <string name="updating">Merubah...</string>
