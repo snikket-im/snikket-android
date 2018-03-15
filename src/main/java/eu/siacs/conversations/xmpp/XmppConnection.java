@@ -1,5 +1,6 @@
 package eu.siacs.conversations.xmpp;
 
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.SystemClock;
@@ -1006,6 +1007,8 @@ public class XmppConnection implements Runnable {
 		clearIqCallbacks();
 		if (account.getJid().isBareJid()) {
 			account.setResource(this.createNewResource());
+		} else {
+			fixResource(mXmppConnectionService, account);
 		}
 		final IqPacket iq = new IqPacket(IqPacket.TYPE.SET);
 		final String resource = Config.USE_RANDOM_RESOURCE_ON_EVERY_BIND ? nextRandomId() : account.getResource();
@@ -1282,7 +1285,7 @@ public class XmppConnection implements Runnable {
 
 	private void sendStartStream() throws IOException {
 		final Tag stream = Tag.start("stream:stream");
-		stream.setAttribute("to", account.getServer().toString());
+		stream.setAttribute("to", account.getServer());
 		stream.setAttribute("version", "1.0");
 		stream.setAttribute("xml:lang", "en");
 		stream.setAttribute("xmlns", "jabber:client");
@@ -1292,6 +1295,25 @@ public class XmppConnection implements Runnable {
 
 	private String createNewResource() {
 		return mXmppConnectionService.getString(R.string.app_name)+'.'+nextRandomId(true);
+	}
+
+	private static void fixResource(Context context, Account account) {
+		String resource = account.getResource();
+		int fixedPartLength = context.getString(R.string.app_name).length() + 1; //include the trailing dot
+		int randomPartLength = 4; // 3 bytes
+		if (resource != null && resource.length() > fixedPartLength + randomPartLength) {
+			if (validBase64(resource.substring(fixedPartLength,fixedPartLength + randomPartLength))) {
+				account.setResource(resource.substring(0,fixedPartLength + randomPartLength));
+			}
+		}
+	}
+
+	private static boolean validBase64(String input) {
+		try {
+			return Base64.decode(input, Base64.URL_SAFE).length == 3;
+		} catch (Throwable throwable) {
+			return false;
+		}
 	}
 
 	private String nextRandomId() {
