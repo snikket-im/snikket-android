@@ -30,6 +30,10 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:orientation="vertical">
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
                         android:orientation="vertical"
                         android:padding="@dimen/card_padding_regular">
 
@@ -38,14 +42,44 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/error_trustkeys_title"
-                            android:textAppearance="@style/TextAppearance.AppCompat.Title"/>
+                            android:textAppearance="@style/TextAppearance.AppCompat.Title"
+                            android:layout_marginBottom="8sp"/>
 
                         <TextView
                             android:id="@+id/key_error_message"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:padding="8dp"
-                            android:textAppearance="@style/TextAppearance.AppCompat.Body1"/>
+                            android:textAppearance="@style/TextAppearance.AppCompat.Subhead"/>
+                        <TextView
+                            android:id="@+id/key_error_general"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textAppearance="@style/TextAppearance.Conversations.Body1"/>
+                        <TextView
+                            android:layout_marginTop="8sp"
+                            android:id="@+id/key_error_hint_mutual"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textAppearance="@style/TextAppearance.Conversations.Body1.Secondary"
+                            android:text="@string/error_trustkey_hint_mutual"/>
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="right"
+                        android:gravity="right">
+
+                        <Button
+                            android:id="@+id/disable_button"
+                            style="?android:attr/borderlessButtonStyle"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:minWidth="0dp"
+                            android:paddingLeft="16dp"
+                            android:paddingRight="16dp"
+                            android:text="@string/disable_encryption"
+                            android:textColor="@color/accent"/>
+                    </LinearLayout>
                     </LinearLayout>
 
                 </android.support.v7.widget.CardView>

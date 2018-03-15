@@ -77,6 +77,7 @@ public class AxolotlService implements OnAdvancedStreamFeaturesLoaded {
 	private final Map<Jid, Set<Integer>> deviceIds;
 	private final Map<String, XmppAxolotlMessage> messageCache;
 	private final FetchStatusMap fetchStatusMap;
+	private final Map<Jid, Boolean> fetchDeviceListStatus = new HashMap<>();
 	private final HashMap<Jid, List<OnDeviceIdsFetched>> fetchDeviceIdsMap = new HashMap<>();
 	private final SerialSingleThreadExecutor executor;
 	private int numPublishTriesOnEmptyPep = 0;
@@ -95,6 +96,20 @@ public class AxolotlService implements OnAdvancedStreamFeaturesLoaded {
 		} else {
 			Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": skipping OMEMO initialization");
 		}
+	}
+
+	private boolean hasErrorFetchingDeviceList(Jid jid) {
+		Boolean status = fetchDeviceListStatus.get(jid);
+		return status != null && !status;
+	}
+
+	public boolean hasErrorFetchingDeviceList(List<Jid> jids) {
+		for(Jid jid : jids) {
+			if (hasErrorFetchingDeviceList(jid)) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 	public boolean fetchMapHasErrors(List<Jid> jids) {
@@ -361,6 +376,7 @@ public class AxolotlService implements OnAdvancedStreamFeaturesLoaded {
 
 	public void clearErrorsInFetchStatusMap(Jid jid) {
 		fetchStatusMap.clearErrorFor(jid);
+		fetchDeviceListStatus.remove(jid);
 	}
 
 	public void regenerateKeys(boolean wipeOther) {
@@ -368,6 +384,7 @@ public class AxolotlService implements OnAdvancedStreamFeaturesLoaded {
 		sessions.clear();
 		fetchStatusMap.clear();
 		fetchDeviceIdsMap.clear();
+		fetchDeviceListStatus.clear();
 		publishBundlesIfNeeded(true, wipeOther);
 	}
 
@@ -960,26 +977,29 @@ public class AxolotlService implements OnAdvancedStreamFeaturesLoaded {
 				this.fetchDeviceIdsMap.put(jid, callbacks);
 				Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": fetching device ids for " + jid);
 				IqPacket packet = mXmppConnectionService.getIqGenerator().retrieveDeviceIds(jid);
-				mXmppConnectionService.sendIqPacket(account, packet, new OnIqPacketReceived() {
-					@Override
-					public void onIqPacketReceived(Account account, IqPacket packet) {
-						synchronized (fetchDeviceIdsMap) {
-							List<OnDeviceIdsFetched> callbacks = fetchDeviceIdsMap.remove(jid);
-							if (packet.getType() == IqPacket.TYPE.RESULT) {
-								Element item = mXmppConnectionService.getIqParser().getItem(packet);
-								Set<Integer> deviceIds = mXmppConnectionService.getIqParser().deviceIds(item);
-								registerDevices(jid, deviceIds);
-								if (callbacks != null) {
-									for (OnDeviceIdsFetched callback : callbacks) {
-										callback.fetched(jid, deviceIds);
-									}
+				mXmppConnectionService.sendIqPacket(account, packet, (account, response) -> {
+					synchronized (fetchDeviceIdsMap) {
+						List<OnDeviceIdsFetched> callbacks1 = fetchDeviceIdsMap.remove(jid);
+						if (response.getType() == IqPacket.TYPE.RESULT) {
+							fetchDeviceListStatus.put(jid, true);
+							Element item = mXmppConnectionService.getIqParser().getItem(response);
+							Set<Integer> deviceIds = mXmppConnectionService.getIqParser().deviceIds(item);
+							registerDevices(jid, deviceIds);
+							if (callbacks1 != null) {
+								for (OnDeviceIdsFetched callback1 : callbacks1) {
+									callback1.fetched(jid, deviceIds);
 								}
+							}
+						} else {
+							if (response.getType() == IqPacket.TYPE.TIMEOUT) {
+								fetchDeviceListStatus.remove(jid);
 							} else {
-								Log.d(Config.LOGTAG, packet.toString());
-								if (callbacks != null) {
-									for (OnDeviceIdsFetched callback : callbacks) {
-										callback.fetched(jid, null);
-									}
+								fetchDeviceListStatus.put(jid, false);
+							}
+							Log.d(Config.LOGTAG, response.toString());
+							if (callbacks1 != null) {
+								for (OnDeviceIdsFetched callback1 : callbacks1) {
+									callback1.fetched(jid, null);
 								}
 							}
 						}
@@ -993,14 +1013,11 @@ public class AxolotlService implements OnAdvancedStreamFeaturesLoaded {
 		final ArrayList<Jid> unfinishedJids = new ArrayList<>(jids);
 		synchronized (unfinishedJids) {
 			for (Jid jid : unfinishedJids) {
-				fetchDeviceIds(jid, new OnDeviceIdsFetched() {
-					@Override
-					public void fetched(Jid jid, Set<Integer> deviceIds) {
-						synchronized (unfinishedJids) {
-							unfinishedJids.remove(jid);
-							if (unfinishedJids.size() == 0 && callback != null) {
-								callback.fetched();
-							}
+				fetchDeviceIds(jid, (j, deviceIds) -> {
+					synchronized (unfinishedJids) {
+						unfinishedJids.remove(j);
+						if (unfinishedJids.size() == 0 && callback != null) {
+							callback.fetched();
 						}
 					}
 				});

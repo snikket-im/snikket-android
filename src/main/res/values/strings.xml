@@ -363,7 +363,7 @@
 	<string name="error_no_keys_to_trust_server_error">There are no usable keys available for this contact.\nFetching new keys from the server has been unsuccessful. Maybe there is something wrong with your contact’s server.</string>
 	<string name="error_no_keys_to_trust_presence">There are no usable keys available for this contact.\nMake sure you have mutual presence subscription.</string>
 	<string name="error_no_keys_to_trust">There are no usable keys available for this contact. If you have purged any of their keys, they need to generate new ones.</string>
-	<string name="error_trustkeys_title">Error</string>
+	<string name="error_trustkeys_title">Something went wrong</string>
 	<string name="fetching_history_from_server">Fetching history from server</string>
 	<string name="no_more_history_on_server">No more history on server</string>
 	<string name="updating">Updating…</string>
@@ -727,4 +727,11 @@
 	<string name="pref_scroll_to_bottom_summary">Scroll down after sending a message</string>
     <string name="edit_status_message_title">Edit Status Message</string>
 	<string name="edit_status_message">Edit status message</string>
+    <string name="disable_encryption">Disable encryption</string>
+	<string name="error_trustkey_general">Conversations is unable to send encrypted messages to %1$s. This may be due to your contact using an outdated server or client that can not handle OMEMO.</string>
+	<string name="error_trustkey_device_list">Unable to fetch device list</string>
+	<string name="error_trustkey_bundle">Unable to fetch device bundles</string>
+	<string name="error_trustkey_hint_mutual">Hint: In some cases this can be fixed by adding each other your contact lists.</string>
+	<string name="disable_encryption_message">Are you sure you want to disable OMEMO encryption for this conversation?\nThis will allow your server administrator to read your messages, but it might be the only way to communicate with people using outdated clients.</string>
+	<string name="disable_now">Disable now</string>
 </resources>
