@@ -39,10 +39,14 @@ public class SettingsFragment extends PreferenceFragment {
 	}
 
 	public void setActivityIntent(final Intent intent) {
+		boolean wasEmpty = TextUtils.isEmpty(page);
 		if (intent != null) {
 			if (Intent.ACTION_VIEW.equals(intent.getAction())) {
 				if (intent.getExtras() != null) {
 					this.page = intent.getExtras().getString("page");
+					if (wasEmpty) {
+						openPreferenceScreen(page);
+					}
 				}
 			}
 		}

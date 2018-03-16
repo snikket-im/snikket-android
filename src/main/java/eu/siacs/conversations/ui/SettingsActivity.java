@@ -113,7 +113,6 @@ public class SettingsActivity extends XmppActivity implements
 			CharSequence[] entries = new CharSequence[choices.length];
 			CharSequence[] entryValues = new CharSequence[choices.length];
 			for (int i = 0; i < choices.length; ++i) {
-				Log.d(Config.LOGTAG,"resolving choice "+choices[i]);
 				entryValues[i] = String.valueOf(choices[i]);
 				if (choices[i] == 0) {
 					entries[i] = getString(R.string.never);
@@ -156,7 +155,7 @@ public class SettingsActivity extends XmppActivity implements
 					displayToast(getString(R.string.toast_no_trusted_certs));
 					return true;
 				}
-				final ArrayList selectedItems = new ArrayList<>();
+				final ArrayList<Integer> selectedItems = new ArrayList<>();
 				final AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(SettingsActivity.this);
 				dialogBuilder.setTitle(getResources().getString(R.string.dialog_manage_certs_title));
 				dialogBuilder.setMultiChoiceItems(aliases.toArray(new CharSequence[aliases.size()]), null,
