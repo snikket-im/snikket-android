@@ -185,6 +185,9 @@ public class XmppUri {
 	}
 
 	public boolean isJidValid() {
+		if (jid == null) {
+			return false;
+		}
 		try {
 			Jid.of(jid);
 			return true;
