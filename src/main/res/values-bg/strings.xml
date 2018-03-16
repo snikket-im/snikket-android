@@ -363,6 +363,7 @@
   <string name="error_no_keys_to_trust_server_error">Няма ключове, които могат да бъдат използвани за този контакт.\nИзтеглянето на нови ключове от сървъра беше неуспешно. Възможно е да има проблем със сървъра на контакта Ви.</string>
   <string name="error_no_keys_to_trust_presence">Няма ключове, които могат да бъдат използвани за този контакт.\nУверете се, че и двамата имате абонамент за присъствието.</string>
   <string name="error_no_keys_to_trust">Няма ключове, които могат да бъдат използвани за този контакт. Ако сте изчистили някои от ключовете му, то той трябва да създаде нови.</string>
+  <string name="error_trustkeys_title">Нещо се обърка</string>
   <string name="fetching_history_from_server">Получаване на историята от сървъра</string>
   <string name="no_more_history_on_server">Няма повече история на сървъра</string>
   <string name="updating">Актуализиране…</string>
@@ -725,4 +726,11 @@
   <string name="pref_scroll_to_bottom_summary">Превъртане надолу след изпращане на съобщение</string>
   <string name="edit_status_message_title">Редактиране на съобщението за състоянието</string>
   <string name="edit_status_message">Редактиране на съобщението за състоянието</string>
+  <string name="disable_encryption">Изключване на шифроването</string>
+  <string name="error_trustkey_general">Conversations не може да изпраща шифровани съобщения до %1$s. Възможно е Вашият контакт да използва остарял сървър или клиент, който не може да работи с OMEMO.</string>
+  <string name="error_trustkey_device_list">Неуспешно получаване на списъка с устройства</string>
+  <string name="error_trustkey_bundle">Неуспешно получаване на пакетите с устройства</string>
+  <string name="error_trustkey_hint_mutual">Съвет: В някои случаи това може да се оправи, ако се добавите един друг в списъците си с контакти.</string>
+  <string name="disable_encryption_message">Наистина ли искате да изключите шифроването чрез OMEMO за този разговор?\nТова ще позволи на администратора Ви да чете съобщенията Ви, но пък най-вероятно е единственият начин за общуване с хората, използващи стари клиенти.</string>
+  <string name="disable_now">Изключване сега</string>
 </resources>

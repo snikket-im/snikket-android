@@ -363,6 +363,7 @@
   <string name="error_no_keys_to_trust_server_error">No hay claves disponibles para este contacto.\nLa búsqueda de nuevas claves en el servidor ha fallado. Puede que haya algún problema con el servidor de tu contacto.</string>
   <string name="error_no_keys_to_trust_presence">No hay claves disponibles para este contacto.\n Asegúrate que tenéis suscripción de presencia mutua. </string>
   <string name="error_no_keys_to_trust">No hay claves disponibles para este contacto. Si has eliminado alguna de sus claves, tus contactos necesitarán generar nuevas claves.</string>
+  <string name="error_trustkeys_title">Se produjo un error</string>
   <string name="fetching_history_from_server">Buscando historial en el servidor</string>
   <string name="no_more_history_on_server">No hay más historial en el servidor</string>
   <string name="updating">Actualizando…</string>
@@ -725,4 +726,11 @@
   <string name="pref_scroll_to_bottom_summary">Desplazarse hasta abajo después de mandar un mensaje</string>
   <string name="edit_status_message_title">Editar Mensaje de Estado</string>
   <string name="edit_status_message">Editar mensaje de estado</string>
+  <string name="disable_encryption">Deshabilitar cifrado</string>
+  <string name="error_trustkey_general">Conversations no puede enviar mensajes cifrados a %1$s. Esto puede deberse a que tu contacto está usando un servidor o un cliente desactualizado que no puede manejar las claves OMEMO.</string>
+  <string name="error_trustkey_device_list">No se ha podido conseguir la lista de dispositivos</string>
+  <string name="error_trustkey_bundle">No se ha podido conseguir las claves del dispositivo</string>
+  <string name="error_trustkey_hint_mutual">Consejo: En algunas ocasiones esto puede corregirse agregando a tu contacto a tu lista de contactos. Tu contacto deberá asegurarse también que estás en su lista de contactos.</string>
+  <string name="disable_encryption_message">¿Estás seguro de que quieres deshabilitar el cifrado OMEMO para esta conversación?\nEsto permitiría al administrador de tu servidor leer tus mensajes, aunque esta podría ser la única via de comunicación con personas que usen clientes desactualizados.</string>
+  <string name="disable_now">Deshabilitar ahora</string>
 </resources>

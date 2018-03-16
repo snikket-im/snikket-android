@@ -363,6 +363,7 @@
   <string name="error_no_keys_to_trust_server_error">Für diesen Kontakt sind keine nutzbaren Schlüssel verfügbar.\nDas Abrufen neuer Schlüssel vom Server ist fehlgeschlagen. Vielleicht gitb es ein Problem mit dem Server deines Kontaktes.</string>
   <string name="error_no_keys_to_trust_presence">Für diesen Kontakt sind keine benutzbaren Schlüssel verfügbar.\nStelle sicher, dass du den gegenseitigen Online-Status aktiviert hast.</string>
   <string name="error_no_keys_to_trust">Für diesen Kontakt sind keine benutzbaren Schlüssel verfügbar. Falls sie gelöscht wurden, müssen diese neu erstellt werden.</string>
+  <string name="error_trustkeys_title">Etwas ist schief gelaufen</string>
   <string name="fetching_history_from_server">Lade Chatverlauf…</string>
   <string name="no_more_history_on_server">Keine weiteren Nachrichten vorhanden</string>
   <string name="updating">Aktualisieren…</string>
@@ -725,4 +726,11 @@
   <string name="pref_scroll_to_bottom_summary">Nach dem Senden einer Nachricht nach unten scrollen</string>
   <string name="edit_status_message_title">Statusnachricht bearbeiten</string>
   <string name="edit_status_message">Statusnachricht bearbeiten</string>
+  <string name="disable_encryption">Verschlüsselung deaktivieren</string>
+  <string name="error_trustkey_general">Conversations ist nicht in der Lage, verschlüsselte Nachrichten an  %1$s zu senden. Dies kann daran liegen, dass dein Kontakt einen veralteten Server oder Client verwendet, der mit OMEMO nicht umgehen kann.</string>
+  <string name="error_trustkey_device_list">Geräteliste konnte nicht abgerufen werden</string>
+  <string name="error_trustkey_bundle">Gerätebündel konnten nicht abgerufen werden</string>
+  <string name="error_trustkey_hint_mutual">Tipp: In manchen Fällen kann dies behoben werden, indem man sich gegenseitig die Kontaktlisten hinzufügt.</string>
+  <string name="disable_encryption_message">Bist du sicher, dass du die OMEMO-Verschlüsselung für dieses Gespräch deaktivieren möchtest?\nDies wird es deinem Serveradministrator ermöglichen, deine Nachrichten zu lesen, aber es könnte die einzige Möglichkeit sein, mit Personen zu kommunizieren, die veraltete Clients verwenden. </string>
+  <string name="disable_now">Jetzt deaktivieren</string>
 </resources>

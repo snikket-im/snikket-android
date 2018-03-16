@@ -363,6 +363,7 @@
   <string name="error_no_keys_to_trust_server_error">Nu există chei utilizabile pentru acest contact.\nÎncercarea de a descărca chei noi de pe server a eșuat. Se poate ca serverul contactului dumneavoastră să aibă o problemă.</string>
   <string name="error_no_keys_to_trust_presence">Nu există chei disponibile ce pot fi folosite pentru acest contact.\nAsigurați-vă că ați activat trimiterea de actualizări de prezență reciproce.</string>
   <string name="error_no_keys_to_trust">Nu exista chei disponibile și utilizabile pentru acest contact. Dacă ați șters vreuna din cheile contactului, acesta va trebuii să genereze una noua.</string>
+  <string name="error_trustkeys_title">A apărut o problemă</string>
   <string name="fetching_history_from_server">Descarc istoric de pe server</string>
   <string name="no_more_history_on_server">Nu mai exista istoric pe server</string>
   <string name="updating">Actualizare...</string>
@@ -737,4 +738,11 @@ sau chiar pierderea mesajelor.\nÎn continuare veți fi rugați să dezactivați
   <string name="pref_scroll_to_bottom_summary">După trimiterea unui mesaj derulează până la sfârșit</string>
   <string name="edit_status_message_title">Editare mesaj de stare</string>
   <string name="edit_status_message">Editare mesaj de stare</string>
+  <string name="disable_encryption">Dezactivează criptarea</string>
+  <string name="error_trustkey_general">Conversations nu poate trimite mesaje criptate către %1$s. Aceasta se poate întâmpla dacă contactul dumneavoastră folosește un server sau un client învechit care nu suportă OMEMO.</string>
+  <string name="error_trustkey_device_list">Nu s-a putut descărca lista dispozitivelor</string>
+  <string name="error_trustkey_bundle">Nu s-a putut descărca pachetul de dispozitive</string>
+  <string name="error_trustkey_hint_mutual">Sugestie: În unele cazuri se poate rezolva dacă vă adăugați reciproc în lista de contacte.</string>
+  <string name="disable_encryption_message">Sigur doriți să dezactivați criptarea OMEMO pentru această conversație?\nAstfel veți permite administratorilor serverului să vă citească mesajele, dar se poate ca ăsta să fie singurul mod în care puteți să comunicați cu persoanele care folosesc clienți învechiți.</string>
+  <string name="disable_now">Dezactivează acum</string>
 </resources>
