@@ -734,4 +734,5 @@
 	<string name="error_trustkey_hint_mutual">Hint: In some cases this can be fixed by adding each other your contact lists.</string>
 	<string name="disable_encryption_message">Are you sure you want to disable OMEMO encryption for this conversation?\nThis will allow your server administrator to read your messages, but it might be the only way to communicate with people using outdated clients.</string>
 	<string name="disable_now">Disable now</string>
+    <string name="draft">Draft:</string>
 </resources>
