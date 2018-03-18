@@ -83,6 +83,7 @@ import eu.siacs.conversations.ui.adapter.ListItemAdapter;
 import eu.siacs.conversations.ui.interfaces.OnBackendConnected;
 import eu.siacs.conversations.ui.service.EmojiService;
 import eu.siacs.conversations.ui.util.DelayedHintHelper;
+import eu.siacs.conversations.ui.util.PendingItem;
 import eu.siacs.conversations.utils.XmppUri;
 import eu.siacs.conversations.xmpp.OnUpdateBlocklist;
 import eu.siacs.conversations.xmpp.XmppConnection;
@@ -110,8 +111,13 @@ public class StartConversationActivity extends XmppActivity implements OnRosterU
 		public boolean onMenuItemActionExpand(MenuItem item) {
 			mSearchEditText.post(() -> {
 				mSearchEditText.requestFocus();
+				if (oneShotKeyboardSuppress.compareAndSet(true,false)) {
+					return;
+				}
 				InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-				imm.showSoftInput(mSearchEditText, InputMethodManager.SHOW_IMPLICIT);
+				if (imm != null) {
+					imm.showSoftInput(mSearchEditText, InputMethodManager.SHOW_IMPLICIT);
+				}
 			});
 
 			return true;
@@ -133,8 +139,7 @@ public class StartConversationActivity extends XmppActivity implements OnRosterU
 		}
 
 		@Override
-		public void beforeTextChanged(CharSequence s, int start, int count,
-		                              int after) {
+		public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 		}
 
 		@Override
@@ -173,7 +178,8 @@ public class StartConversationActivity extends XmppActivity implements OnRosterU
 			}
 		}
 	};
-	private String mInitialJid;
+	private final PendingItem<String> mInitialSearchValue = new PendingItem<>();
+	private final AtomicBoolean oneShotKeyboardSuppress = new AtomicBoolean();
 	private Pair<Integer, Intent> mPostponedActivityResult;
 	private Toast mToast;
 	private UiCallback<Conversation> mAdhocConferenceCallback = new UiCallback<Conversation>() {
@@ -512,13 +518,23 @@ public class StartConversationActivity extends XmppActivity implements OnRosterU
 	}
 
 	@Override
+	public void invalidateOptionsMenu() {
+		boolean isExpanded = mMenuSearchView != null && mMenuSearchView.isActionViewExpanded();
+		String text = mSearchEditText != null ? mSearchEditText.getText().toString() : "";
+		if (isExpanded) {
+			mInitialSearchValue.push(text);
+			oneShotKeyboardSuppress.set(true);
+		}
+		super.invalidateOptionsMenu();
+	}
+
+	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		getMenuInflater().inflate(R.menu.start_conversation, menu);
 		MenuItem menuHideOffline = menu.findItem(R.id.action_hide_offline);
 		MenuItem joinGroupChat = menu.findItem(R.id.action_join_conference);
 		MenuItem qrCodeScanMenuItem = menu.findItem(R.id.action_scan_qr_code);
-		ActionBar bar = getSupportActionBar();
-		joinGroupChat.setVisible(bar != null && binding.startConversationViewPager.getCurrentItem() == 1);
+		joinGroupChat.setVisible(binding.startConversationViewPager.getCurrentItem() == 1);
 		qrCodeScanMenuItem.setVisible(isCameraFeatureAvailable());
 		menuHideOffline.setChecked(this.mHideOfflineContacts);
 		mMenuSearchView = menu.findItem(R.id.action_search);
@@ -527,10 +543,11 @@ public class StartConversationActivity extends XmppActivity implements OnRosterU
 		mSearchEditText = mSearchView.findViewById(R.id.search_field);
 		mSearchEditText.addTextChangedListener(mSearchTextWatcher);
 		mSearchEditText.setOnEditorActionListener(mSearchDone);
-		if (mInitialJid != null) {
+		String initialSearchValue = mInitialSearchValue.pop();
+		if (initialSearchValue != null) {
 			mMenuSearchView.expandActionView();
-			mSearchEditText.append(mInitialJid);
-			filter(mInitialJid);
+			mSearchEditText.append(initialSearchValue);
+			filter(initialSearchValue);
 		}
 		return super.onCreateOptionsMenu(menu);
 	}
@@ -775,7 +792,7 @@ public class StartConversationActivity extends XmppActivity implements OnRosterU
 				mSearchEditText.append(invite.getJid().toString());
 				filter(invite.getJid().toString());
 			} else {
-				mInitialJid = invite.getJid().toString();
+				mInitialSearchValue.push(invite.getJid().toString());
 			}
 			return true;
 		}
