@@ -13,8 +13,8 @@ import eu.siacs.conversations.services.AttachFileToConversationRunnable;
 
 public class SerialSingleThreadExecutor implements Executor {
 
-	final Executor executor = Executors.newSingleThreadExecutor();
-	protected final ArrayDeque<Runnable> tasks = new ArrayDeque<>();
+	private final Executor executor = Executors.newSingleThreadExecutor();
+	final ArrayDeque<Runnable> tasks = new ArrayDeque<>();
 	private Runnable active;
 	private final String name;
 
@@ -22,26 +22,19 @@ public class SerialSingleThreadExecutor implements Executor {
 		this(name, false);
 	}
 
-	public SerialSingleThreadExecutor(String name, boolean prepareLooper) {
+	SerialSingleThreadExecutor(String name, boolean prepareLooper) {
 		if (prepareLooper) {
-			execute(new Runnable() {
-				@Override
-				public void run() {
-					Looper.prepare();
-				}
-			});
+			execute(Looper::prepare);
 		}
 		this.name = name;
 	}
 
 	public synchronized void execute(final Runnable r) {
-		tasks.offer(new Runnable() {
-			public void run() {
-				try {
-					r.run();
-				} finally {
-					scheduleNext();
-				}
+		tasks.offer(() -> {
+			try {
+				r.run();
+			} finally {
+				scheduleNext();
 			}
 		});
 		if (active == null) {
@@ -49,7 +42,7 @@ public class SerialSingleThreadExecutor implements Executor {
 		}
 	}
 
-	protected synchronized void scheduleNext() {
+	private synchronized void scheduleNext() {
 		if ((active =  tasks.poll()) != null) {
 			executor.execute(active);
 			int remaining = tasks.size();

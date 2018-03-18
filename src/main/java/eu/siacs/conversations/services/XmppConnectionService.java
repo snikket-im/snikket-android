@@ -105,6 +105,7 @@ import eu.siacs.conversations.utils.OnPhoneContactsLoadedListener;
 import eu.siacs.conversations.utils.PRNGFixes;
 import eu.siacs.conversations.utils.PhoneHelper;
 import eu.siacs.conversations.utils.ReplacingSerialSingleThreadExecutor;
+import eu.siacs.conversations.utils.ReplacingTaskManager;
 import eu.siacs.conversations.utils.Resolver;
 import eu.siacs.conversations.utils.SerialSingleThreadExecutor;
 import eu.siacs.conversations.xml.Namespace;
@@ -157,6 +158,7 @@ public class XmppConnectionService extends Service {
 	private final SerialSingleThreadExecutor mDatabaseWriterExecutor = new SerialSingleThreadExecutor("DatabaseWriter");
 	private final SerialSingleThreadExecutor mDatabaseReaderExecutor = new SerialSingleThreadExecutor("DatabaseReader");
 	private final SerialSingleThreadExecutor mNotificationExecutor = new SerialSingleThreadExecutor("NotificationExecutor");
+	private final ReplacingTaskManager mRosterSyncTaskManager = new ReplacingTaskManager();
 	private final IBinder mBinder = new XmppConnectionBinder();
 	private final List<Conversation> conversations = new CopyOnWriteArrayList<>();
 	private final IqGenerator mIqGenerator = new IqGenerator(this);
@@ -1459,7 +1461,7 @@ public class XmppConnectionService extends Service {
 
 
 	public void syncRoster(final Account account) {
-		mDatabaseWriterExecutor.execute(() -> databaseBackend.writeRoster(account.getRoster()));
+		mRosterSyncTaskManager.execute(account, () -> databaseBackend.writeRoster(account.getRoster()));
 	}
 
 	public List<Conversation> getConversations() {
@@ -1855,6 +1857,7 @@ public class XmppConnectionService extends Service {
 			};
 			mDatabaseWriterExecutor.execute(runnable);
 			this.accounts.remove(account);
+			this.mRosterSyncTaskManager.clear(account);
 			updateAccountUi();
 			getNotificationService().updateErrorNotification();
 			syncEnabledAccountSetting();
