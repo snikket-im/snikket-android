@@ -415,6 +415,7 @@ public class IqGenerator extends AbstractGenerator {
 		options.putString("muc#roomconfig_membersonly", "1");
 		options.putString("muc#roomconfig_publicroom", "0");
 		options.putString("muc#roomconfig_whois", "anyone");
+		options.putString("muc#roomconfig_enablearchiving","1");
 		options.putString("mam","1");
 		return options;
 	}
