@@ -1057,9 +1057,9 @@ public class XmppConnectionService extends Service {
 		int activeAccounts = 0;
 		for (final Account account : accounts) {
 			if (account.getStatus() != Account.State.DISABLED) {
+				databaseBackend.writeRoster(account.getRoster());
 				activeAccounts++;
 			}
-			databaseBackend.writeRoster(account.getRoster());
 			if (account.getXmppConnection() != null) {
 				new Thread(() -> disconnect(account, false)).start();
 			}
