@@ -85,6 +85,7 @@ import eu.siacs.conversations.ui.adapter.MessageAdapter;
 import eu.siacs.conversations.ui.util.ActivityResult;
 import eu.siacs.conversations.ui.util.AttachmentTool;
 import eu.siacs.conversations.ui.util.ConversationMenuConfigurator;
+import eu.siacs.conversations.ui.util.MenuDoubleTabUtil;
 import eu.siacs.conversations.ui.util.PendingItem;
 import eu.siacs.conversations.ui.util.PresenceSelector;
 import eu.siacs.conversations.ui.util.ScrollState;
@@ -1105,7 +1106,9 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
 
 	@Override
 	public boolean onOptionsItemSelected(final MenuItem item) {
-		if (conversation == null) {
+		if (MenuDoubleTabUtil.shouldIgnoreTap()) {
+			return false;
+		} else if (conversation == null) {
 			return super.onOptionsItemSelected(item);
 		}
 		switch (item.getItemId()) {

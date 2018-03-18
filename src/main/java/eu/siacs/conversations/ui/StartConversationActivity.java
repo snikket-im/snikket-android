@@ -83,6 +83,7 @@ import eu.siacs.conversations.ui.adapter.ListItemAdapter;
 import eu.siacs.conversations.ui.interfaces.OnBackendConnected;
 import eu.siacs.conversations.ui.service.EmojiService;
 import eu.siacs.conversations.ui.util.DelayedHintHelper;
+import eu.siacs.conversations.ui.util.MenuDoubleTabUtil;
 import eu.siacs.conversations.ui.util.PendingItem;
 import eu.siacs.conversations.utils.XmppUri;
 import eu.siacs.conversations.xmpp.OnUpdateBlocklist;
@@ -544,6 +545,9 @@ public class StartConversationActivity extends XmppActivity implements OnRosterU
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
+		if (MenuDoubleTabUtil.shouldIgnoreTap()) {
+			return false;
+		}
 		switch (item.getItemId()) {
 			case R.id.action_join_conference:
 				showJoinConferenceDialog(null);
