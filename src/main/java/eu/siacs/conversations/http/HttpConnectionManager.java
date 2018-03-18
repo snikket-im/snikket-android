@@ -1,5 +1,7 @@
 package eu.siacs.conversations.http;
 
+import android.util.Log;
+
 import org.apache.http.conn.ssl.StrictHostnameVerifier;
 
 import java.io.IOException;
@@ -16,10 +18,13 @@ import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.SSLSocketFactory;
 import javax.net.ssl.X509TrustManager;
 
+import eu.siacs.conversations.Config;
+import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.entities.Message;
 import eu.siacs.conversations.services.AbstractConnectionManager;
 import eu.siacs.conversations.services.XmppConnectionService;
 import eu.siacs.conversations.utils.TLSSocketFactory;
+import eu.siacs.conversations.xmpp.OnAdvancedStreamFeaturesLoaded;
 
 public class HttpConnectionManager extends AbstractConnectionManager {
 

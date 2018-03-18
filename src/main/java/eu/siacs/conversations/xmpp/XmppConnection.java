@@ -36,6 +36,7 @@ import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map.Entry;
+import java.util.Set;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -135,7 +136,7 @@ public class XmppConnection implements Runnable {
 	private final HashMap<Jid, ServiceDiscoveryResult> disco = new HashMap<>();
 	private final SparseArray<AbstractAcknowledgeableStanza> mStanzaQueue = new SparseArray<>();
 	private final Hashtable<String, Pair<IqPacket, OnIqPacketReceived>> packetCallbacks = new Hashtable<>();
-	private final ArrayList<OnAdvancedStreamFeaturesLoaded> advancedStreamFeaturesLoadedListeners = new ArrayList<>();
+	private final Set<OnAdvancedStreamFeaturesLoaded> advancedStreamFeaturesLoadedListeners = new HashSet<>();
 	private final XmppConnectionService mXmppConnectionService;
 	private Socket socket;
 	private XmlReader tagReader;
@@ -1431,9 +1432,7 @@ public class XmppConnection implements Runnable {
 	}
 
 	public void addOnAdvancedStreamFeaturesAvailableListener(final OnAdvancedStreamFeaturesLoaded listener) {
-		if (!this.advancedStreamFeaturesLoadedListeners.contains(listener)) {
-			this.advancedStreamFeaturesLoadedListeners.add(listener);
-		}
+		this.advancedStreamFeaturesLoadedListeners.add(listener);
 	}
 
 	private void forceCloseSocket() {
