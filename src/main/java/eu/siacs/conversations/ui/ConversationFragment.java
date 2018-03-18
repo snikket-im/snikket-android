@@ -1322,6 +1322,10 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
 		}
 		Transferable transferable = message.getTransferable();
 		if (transferable != null) {
+			if (transferable instanceof TransferablePlaceholder && message.treatAsDownloadable()) {
+				activity.xmppConnectionService.getHttpConnectionManager().createNewDownloadConnection(message, true);
+				return;
+			}
 			if (!transferable.start()) {
 				Toast.makeText(getActivity(), R.string.not_connected_try_again, Toast.LENGTH_SHORT).show();
 			}
