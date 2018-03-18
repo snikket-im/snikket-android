@@ -280,7 +280,6 @@ public class XmppConnectionService extends Service {
 			boolean needsUpdating = account.setOption(Account.OPTION_LOGGED_IN_SUCCESSFULLY, true);
 			needsUpdating |= account.setOption(Account.OPTION_HTTP_UPLOAD_AVAILABLE, account.getXmppConnection().getFeatures().httpUpload(0));
 			if (needsUpdating) {
-				Log.d(Config.LOGTAG, "account needed updating");
 				databaseBackend.updateAccount(account);
 			}
 			account.getRoster().clearPresences();
