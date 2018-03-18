@@ -19,6 +19,8 @@ import android.preference.PreferenceManager;
 import android.preference.PreferenceScreen;
 import android.provider.MediaStore;
 import android.util.Log;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Toast;
 
 import java.io.File;
@@ -57,18 +59,19 @@ public class SettingsActivity extends XmppActivity implements
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		setContentView(R.layout.activity_settings);
 		FragmentManager fm = getFragmentManager();
-		mSettingsFragment = (SettingsFragment) fm.findFragmentById(android.R.id.content);
+		mSettingsFragment = (SettingsFragment) fm.findFragmentById(R.id.settings_content);
 		if (mSettingsFragment == null || !mSettingsFragment.getClass().equals(SettingsFragment.class)) {
 			mSettingsFragment = new SettingsFragment();
-			fm.beginTransaction().replace(android.R.id.content, mSettingsFragment).commit();
+			fm.beginTransaction().replace(R.id.settings_content, mSettingsFragment).commit();
 		}
 		mSettingsFragment.setActivityIntent(getIntent());
-
 		this.mTheme = findTheme();
 		setTheme(this.mTheme);
 		getWindow().getDecorView().setBackgroundColor(Color.get(this, R.attr.color_background_primary));
-
+		setSupportActionBar(findViewById(R.id.toolbar));
+		configureActionBar(getSupportActionBar());
 	}
 
 	@Override

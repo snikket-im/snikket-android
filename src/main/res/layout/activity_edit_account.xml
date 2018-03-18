@@ -8,11 +8,14 @@
         android:layout_height="match_parent"
         android:background="?attr/color_background_secondary">
 
+        <include android:id="@+id/toolbar"
+            layout="@layout/toolbar" />
+
         <ScrollView
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_above="@+id/button_bar"
-            android:layout_alignParentTop="true">
+            android:layout_below="@id/toolbar">
 
             <LinearLayout
                 android:id="@+id/account_main_layout"

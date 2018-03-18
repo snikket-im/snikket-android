@@ -41,7 +41,7 @@ import eu.siacs.conversations.R;
 import eu.siacs.conversations.entities.MTMDecision;
 import eu.siacs.conversations.services.MemorizingTrustManager;
 
-public class MemorizingActivity extends AppCompatActivity implements OnClickListener,OnCancelListener {
+public class MemorizingActivity extends AppCompatActivity implements OnClickListener, OnCancelListener {
 
 	private final static Logger LOGGER = Logger.getLogger(MemorizingActivity.class.getName());
 
@@ -54,6 +54,8 @@ public class MemorizingActivity extends AppCompatActivity implements OnClickList
 		LOGGER.log(Level.FINE, "onCreate");
 		setTheme(findTheme());
 		super.onCreate(savedInstanceState);
+		getLayoutInflater().inflate(R.layout.toolbar, findViewById(android.R.id.content));
+		setSupportActionBar(findViewById(R.id.toolbar));
 	}
 
 	@Override

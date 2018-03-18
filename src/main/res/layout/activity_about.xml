@@ -1,13 +1,16 @@
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-            xmlns:tools="http://schemas.android.com/tools"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="?attr/color_background_secondary"
-            tools:context="eu.siacs.conversations.ui.AboutActivity">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="?attr/color_background_secondary"
+    tools:context="eu.siacs.conversations.ui.AboutActivity"
+    android:orientation="vertical">
 
-    <LinearLayout
+    <include layout="@layout/toolbar" />
+
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent">
 
         <android.support.v7.widget.CardView
             android:layout_width="match_parent"
@@ -28,5 +31,5 @@
                 android:textAppearance="@style/TextAppearance.AppCompat.Body1"
                 android:typeface="monospace"/>
         </android.support.v7.widget.CardView>
-    </LinearLayout>
-</ScrollView>
+    </ScrollView>
+</LinearLayout>

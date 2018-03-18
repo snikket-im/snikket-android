@@ -3,7 +3,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:background="?attr/color_background_primary" >
+    android:background="?attr/color_background_primary"
+    android:orientation="vertical">
+
+    <include layout="@layout/toolbar" />
 
     <ListView
         android:id="@+id/account_list"

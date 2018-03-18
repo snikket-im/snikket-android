@@ -11,6 +11,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -226,10 +227,8 @@ public class ConferenceDetailsActivity extends XmppActivity implements OnConvers
 		this.binding.mucMoreDetails.setVisibility(View.GONE);
 		this.binding.changeConferenceButton.setOnClickListener(this.mChangeConferenceSettings);
 		this.binding.invite.setOnClickListener(inviteListener);
-		if (getSupportActionBar() != null) {
-			getSupportActionBar().setHomeButtonEnabled(true);
-			getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-		}
+		setSupportActionBar((Toolbar) binding.toolbar);
+		configureActionBar(getSupportActionBar());
 		this.binding.editNickButton.setOnClickListener(v -> quickEdit(mConversation.getMucOptions().getActualNick(),
 				0,
 				value -> {

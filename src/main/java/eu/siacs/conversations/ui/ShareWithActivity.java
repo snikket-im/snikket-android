@@ -157,12 +157,15 @@ public class ShareWithActivity extends XmppActivity implements XmppConnectionSer
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		new EmojiService(this).init();
+
+		setContentView(R.layout.activity_share_with);
+
+		setSupportActionBar(findViewById(R.id.toolbar));
 		if (getSupportActionBar() != null) {
 			getSupportActionBar().setDisplayHomeAsUpEnabled(false);
 			getSupportActionBar().setHomeButtonEnabled(false);
 		}
 
-		setContentView(R.layout.activity_share_with);
 		setTitle(getString(R.string.title_activity_sharewith));
 
 		mListView = findViewById(R.id.choose_conversation_list);

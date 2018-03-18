@@ -12,6 +12,7 @@ import android.provider.ContactsContract.CommonDataKinds;
 import android.provider.ContactsContract.Contacts;
 import android.provider.ContactsContract.Intents;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -190,10 +191,8 @@ public class ContactDetailsActivity extends OmemoActivity implements OnAccountUp
 		this.messageFingerprint = getIntent().getStringExtra("fingerprint");
 		this.binding = DataBindingUtil.setContentView(this, R.layout.activity_contact_details);
 
-		if (getSupportActionBar() != null) {
-			getSupportActionBar().setHomeButtonEnabled(true);
-			getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-		}
+		setSupportActionBar((Toolbar) binding.toolbar);
+		configureActionBar(getSupportActionBar());
 		binding.showInactiveDevices.setOnClickListener(v -> {
 			showInactiveOmemo = !showInactiveOmemo;
 			populateView();

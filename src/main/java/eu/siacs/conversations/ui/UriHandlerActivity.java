@@ -54,6 +54,8 @@ public class UriHandlerActivity extends AppCompatActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		this.handled = savedInstanceState != null && savedInstanceState.getBoolean("handled", false);
+		getLayoutInflater().inflate(R.layout.toolbar, findViewById(android.R.id.content));
+		setSupportActionBar(findViewById(R.id.toolbar));
 	}
 
 	@Override

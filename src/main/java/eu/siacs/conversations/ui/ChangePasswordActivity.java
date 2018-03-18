@@ -60,6 +60,8 @@ public class ChangePasswordActivity extends XmppActivity implements XmppConnecti
 	protected void onCreate(final Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_change_password);
+		setSupportActionBar(findViewById(R.id.toolbar));
+		configureActionBar(getSupportActionBar());
 		Button mCancelButton = findViewById(R.id.left_button);
 		mCancelButton.setOnClickListener(view -> finish());
 		this.mChangePasswordButton = findViewById(R.id.right_button);
