@@ -82,11 +82,11 @@ public class IqParser extends AbstractParser implements OnIqPacketReceived {
 		mXmppConnectionService.updateConversationUi();
 		mXmppConnectionService.updateRosterUi();
 		mXmppConnectionService.getShortcutService().refresh();
+		mXmppConnectionService.syncRoster(account);
 	}
 
 	public String avatarData(final IqPacket packet) {
-		final Element pubsub = packet.findChild("pubsub",
-				"http://jabber.org/protocol/pubsub");
+		final Element pubsub = packet.findChild("pubsub", Namespace.PUBSUB);
 		if (pubsub == null) {
 			return null;
 		}
@@ -98,8 +98,7 @@ public class IqParser extends AbstractParser implements OnIqPacketReceived {
 	}
 
 	public Element getItem(final IqPacket packet) {
-		final Element pubsub = packet.findChild("pubsub",
-				"http://jabber.org/protocol/pubsub");
+		final Element pubsub = packet.findChild("pubsub", Namespace.PUBSUB);
 		if (pubsub == null) {
 			return null;
 		}

@@ -619,7 +619,7 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
 	}
 
 	private void hidePrepareFileToast(final Toast prepareFileToast) {
-		if (prepareFileToast != null) {
+		if (prepareFileToast != null && activity != null) {
 			activity.runOnUiThread(prepareFileToast::cancel);
 		}
 	}

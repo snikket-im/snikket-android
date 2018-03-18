@@ -7,6 +7,7 @@ import android.database.DatabaseUtils;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.os.Environment;
+import android.os.SystemClock;
 import android.util.Base64;
 import android.util.Log;
 
@@ -850,6 +851,7 @@ public class DatabaseBackend extends SQLiteOpenHelper {
 	}
 
 	public void writeRoster(final Roster roster) {
+		long start = SystemClock.elapsedRealtime();
 		final Account account = roster.getAccount();
 		final SQLiteDatabase db = this.getWritableDatabase();
 		db.beginTransaction();
@@ -866,6 +868,8 @@ public class DatabaseBackend extends SQLiteOpenHelper {
 		db.endTransaction();
 		account.setRosterVersion(roster.getVersion());
 		updateAccount(account);
+		long duration = SystemClock.elapsedRealtime() - start;
+		Log.d(Config.LOGTAG,account.getJid().asBareJid()+": persisted roster in "+duration+"ms");
 	}
 
 	public void deleteMessagesInConversation(Conversation conversation) {

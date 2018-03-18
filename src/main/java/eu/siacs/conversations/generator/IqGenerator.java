@@ -98,8 +98,7 @@ public class IqGenerator extends AbstractGenerator {
 
 	protected IqPacket publish(final String node, final Element item, final Bundle options) {
 		final IqPacket packet = new IqPacket(IqPacket.TYPE.SET);
-		final Element pubsub = packet.addChild("pubsub",
-				"http://jabber.org/protocol/pubsub");
+		final Element pubsub = packet.addChild("pubsub",Namespace.PUBSUB);
 		final Element publish = pubsub.addChild("publish");
 		publish.setAttribute("node", node);
 		publish.addChild(item);
@@ -116,8 +115,7 @@ public class IqGenerator extends AbstractGenerator {
 
 	protected IqPacket retrieve(String node, Element item) {
 		final IqPacket packet = new IqPacket(IqPacket.TYPE.GET);
-		final Element pubsub = packet.addChild("pubsub",
-				"http://jabber.org/protocol/pubsub");
+		final Element pubsub = packet.addChild("pubsub",Namespace.PUBSUB);
 		final Element items = pubsub.addChild("items");
 		items.setAttribute("node", node);
 		if (item != null) {
@@ -397,7 +395,7 @@ public class IqGenerator extends AbstractGenerator {
 		enable.setAttribute("jid",jid.toString());
 		enable.setAttribute("node", node);
 		Data data = new Data();
-		data.setFormType("http://jabber.org/protocol/pubsub#publish-options");
+		data.setFormType(Namespace.PUBSUB_PUBLISH_OPTIONS);
 		data.put("secret",secret);
 		data.submit();
 		enable.addChild(data);
