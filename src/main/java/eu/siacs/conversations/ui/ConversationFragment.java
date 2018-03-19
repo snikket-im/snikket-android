@@ -884,7 +884,7 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
 							}
 							highlightInConference(user.getResource());
 						} else {
-							Toast.makeText(getActivity(),R.string.you_are_not_participating, Toast.LENGTH_SHORT).show();
+							Toast.makeText(getActivity(), R.string.you_are_not_participating, Toast.LENGTH_SHORT).show();
 						}
 					}
 					return;
@@ -972,7 +972,7 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
 		InputMethodManager imm = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
 		View view = activity.getCurrentFocus();
 		if (view != null && imm != null) {
-			imm.hideSoftInputFromWindow(view.getWindowToken(),0);
+			imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
 		}
 	}
 
@@ -1272,15 +1272,11 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
 					}
 					selectPresenceToAttachFile(attachmentChoice);
 				} else {
-					final ConversationFragment fragment = (ConversationFragment) getFragmentManager()
-							.findFragmentByTag("conversation");
-					if (fragment != null) {
-						fragment.showNoPGPKeyDialog(false, (dialog, which) -> {
-							conversation.setNextEncryption(Message.ENCRYPTION_NONE);
-							activity.xmppConnectionService.updateConversation(conversation);
-							selectPresenceToAttachFile(attachmentChoice);
-						});
-					}
+					showNoPGPKeyDialog(false, (dialog, which) -> {
+						conversation.setNextEncryption(Message.ENCRYPTION_NONE);
+						activity.xmppConnectionService.updateConversation(conversation);
+						selectPresenceToAttachFile(attachmentChoice);
+					});
 				}
 			} else {
 				activity.showInstallPgpDialog();
