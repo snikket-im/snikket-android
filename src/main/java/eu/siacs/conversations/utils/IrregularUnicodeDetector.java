@@ -56,7 +56,7 @@ import rocks.xmpp.addr.Jid;
 public class IrregularUnicodeDetector {
 
 	private static final Map<Character.UnicodeBlock, Character.UnicodeBlock> NORMALIZATION_MAP;
-	private static final LruCache<Jid, PatternTuple> CACHE = new LruCache<>(100);
+	private static final LruCache<Jid, PatternTuple> CACHE = new LruCache<>(4096);
 
 	static {
 		Map<Character.UnicodeBlock, Character.UnicodeBlock> temp = new HashMap<>();
