@@ -424,7 +424,7 @@ public class ConversationsActivity extends XmppActivity implements OnConversatio
 				FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
 				fragmentTransaction.replace(R.id.main_fragment, conversationFragment);
 				fragmentTransaction.addToBackStack(null);
-				fragmentTransaction.commit();
+				fragmentTransaction.commitAllowingStateLoss(); //allowing state loss is probably fine since view intents et all are already stored and a click can probably be 'ignored'
 			}
 		} else {
 			mainNeedsRefresh = true;
