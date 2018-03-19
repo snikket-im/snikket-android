@@ -82,8 +82,8 @@
   <string name="send_message">Üzenet küldése</string>
   <string name="send_message_to_x">Üzenet elküldése %s számára</string>
   <string name="send_otr_message">OTR titkosított üzenet küldése</string>
-  <string name="send_omemo_message">OMEMO titkosított üzenetet küldése</string>
-  <string name="send_omemo_x509_message">OMEMO v\\kódolt üzenet küldése</string>
+  <string name="send_omemo_message">OMEMO titkosított üzenet küldése</string>
+  <string name="send_omemo_x509_message">OMEMO v\\titkosított üzenet küldése</string>
   <string name="send_pgp_message">OpenPGP titkosított üzenet küldése</string>
   <string name="your_nick_has_been_changed">Beceneved megváltozott</string>
   <string name="send_unencrypted">Küldés titkosítás nélkül</string>
@@ -363,6 +363,7 @@
   <string name="error_no_keys_to_trust_server_error">Ehhez a kapcsolathoz nem áll rendelkezésre használható kulcs.\n A kiszolgáló új kulcsainak letöltése sikertelen volt. Talán van valami baj a kapcsolattartó szerverével.</string>
   <string name="error_no_keys_to_trust_presence">Ehhez a kapcsolathoz nem áll rendelkezésre használható kulcs.\nGyőződjön meg róla, hogy kölcsönösen felíratkoztak egymás állapotfrissítéseire.</string>
   <string name="error_no_keys_to_trust">Ehhez a kapcsolathoz nem áll rendelkezésre használható kulcs. Ha törölted valamelyik kulcsukat, akkor újakat kell létrehoznod.</string>
+  <string name="error_trustkeys_title">Valami nem jó alakult</string>
   <string name="fetching_history_from_server">Előzmények lekérése a szerverről</string>
   <string name="no_more_history_on_server">Nincs több előzmény a szerveren</string>
   <string name="updating">Frissítés...</string>
@@ -725,4 +726,11 @@
   <string name="pref_scroll_to_bottom_summary">Görgessen le egy üzenet elküldése után</string>
   <string name="edit_status_message_title">Állapotüzenet szerkesztése</string>
   <string name="edit_status_message">állapotüzenet szerkesztése</string>
+  <string name="disable_encryption">A titkosítás letiltása</string>
+  <string name="error_trustkey_general">A Conversations nem tud titkosított üzeneteket küldeni neki: %1$s. Ez a kapcsolattól függhet, mivel az elavult kiszolgáló vagy ügyfél nem tudja kezelni az OMEMO-t.</string>
+  <string name="error_trustkey_device_list">Nem sikerült lekérni az eszközlistát</string>
+  <string name="error_trustkey_bundle">Nem sikerült lekérni az eszközcsomagokat</string>
+  <string name="error_trustkey_hint_mutual">Tipp: Bizonyos esetekben ez úgy oldható meg, hogy egymást felveszik a névjegyzékben.</string>
+  <string name="disable_encryption_message">Biztosan le szeretné tiltani az OMEMO titkosítást ehhez a beszélgetéshez?\nEz lehetővé fogja tenni a kiszolgáló rendszergazdájának, hogy elolvassa az üzeneteket(ha rosszat akar); de ez lehet az egyetlen módja annak, hogy kommunikáljon az elavult ügyfeleket használó emberekkel.</string>
+  <string name="disable_now">Letiltás most</string>
 </resources>

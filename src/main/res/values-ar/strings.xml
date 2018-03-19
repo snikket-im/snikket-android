@@ -296,6 +296,7 @@
   <string name="shared_secret_secret">السر المشترك</string>
   <string name="confirm">تأكيد</string>
   <string name="in_progress">جاري الاتصال</string>
+  <string name="respond">رد</string>
   <string name="secrets_do_not_match">الأسرار غير متطابقة</string>
   <string name="try_again">حاول مرة أخرى</string>
   <string name="finish">انهاء</string>
@@ -331,6 +332,7 @@
   <string name="copy_omemo_clipboard_description">انسخ بصمة OMEMO إلى الحافظة</string>
   <string name="regenerate_omemo_key">إعادة إنشاء مفتاح أوميمو OMEMO</string>
   <string name="clear_other_devices">حذف أجهزة</string>
+  <string name="error_trustkeys_title">لقد طرأ هناك خطأ</string>
   <string name="fetching_history_from_server">جلب المحفوظات من السرفر</string>
   <string name="no_more_history_on_server">لا مزيد من المحفوظات بالسرفر</string>
   <string name="updating">جاري التحديث..</string>
@@ -372,6 +374,7 @@
   <string name="you_are_not_participating">لست مشتركا في المجموعة</string>
   <string name="never">أبداً</string>
   <string name="until_further_notice">حتى إشعار آخر</string>
+  <string name="snooze">إغفاء</string>
   <string name="reply">الرد</string>
   <string name="mark_as_read">إعتباره كمقروء</string>
   <string name="pref_enter_is_send">أدخل للإرسال</string>
@@ -530,6 +533,7 @@
   <string name="type_phone">هاتف نقال</string>
   <string name="type_tablet">لوحة مفاتيحية</string>
   <string name="type_web">متصفح الواب</string>
+  <string name="type_console">الواجهة الطرفية</string>
   <string name="payment_required">مطلوب منك الدفع</string>
   <string name="missing_internet_permission">ينقص تصريح الإتصال بالإنترنت</string>
   <string name="me">أنا</string>
@@ -561,7 +565,57 @@
   <string name="pref_clean_private_storage">تفريغ مساحة التخرين الخاصة</string>
   <string name="i_followed_this_link_from_a_trusted_source">لقد إتبعتُ هذا الرابط عبر مصدر موثوق</string>
   <string name="verify_omemo_keys">قم بفحص مفاتيح أو مي مو OMEMO</string>
+  <string name="show_inactive_devices">إظهار غير الناشطين</string>
+  <string name="hide_inactive_devices">إخفاء المستخدمين غير الناشطين</string>
   <string name="distrust_omemo_key">إبطال الثقة مع هذا الجهاز</string>
+  <plurals name="seconds">
+    <item quantity="zero">%d ثانية</item>
+    <item quantity="one">%d ثانية</item>
+    <item quantity="two">%d ثانيتين</item>
+    <item quantity="few">%d ثواني</item>
+    <item quantity="many">%d ثواني</item>
+    <item quantity="other">%d ثواني</item>
+  </plurals>
+  <plurals name="minutes">
+    <item quantity="zero">%d دقيقة</item>
+    <item quantity="one">%d دقيقة</item>
+    <item quantity="two">%d دقيقتين</item>
+    <item quantity="few">%d دقائق</item>
+    <item quantity="many">%d دقائق</item>
+    <item quantity="other">%d دقائق</item>
+  </plurals>
+  <plurals name="hours">
+    <item quantity="zero">%d ساعة</item>
+    <item quantity="one">%d ساعة</item>
+    <item quantity="two">%d ساعتين</item>
+    <item quantity="few">%d ساعات</item>
+    <item quantity="many">%d ساعات</item>
+    <item quantity="other">%d ساعات</item>
+  </plurals>
+  <plurals name="days">
+    <item quantity="zero">%d يوم</item>
+    <item quantity="one">%d يوم</item>
+    <item quantity="two">%d يومين</item>
+    <item quantity="few">%d أيام</item>
+    <item quantity="many">%d أيام</item>
+    <item quantity="other">%d أيام</item>
+  </plurals>
+  <plurals name="weeks">
+    <item quantity="zero">%d أسبوع</item>
+    <item quantity="one">%d أسبوع</item>
+    <item quantity="two">%d أسبوعين</item>
+    <item quantity="few">%d أسابيع</item>
+    <item quantity="many">%d أسابيع</item>
+    <item quantity="other">%d أسابيع</item>
+  </plurals>
+  <plurals name="months">
+    <item quantity="zero">%d شهر</item>
+    <item quantity="one">%d شهر</item>
+    <item quantity="two">%d شهرين</item>
+    <item quantity="few">%d أشهر</item>
+    <item quantity="many">%dأشهر</item>
+    <item quantity="other">%d أشهر</item>
+  </plurals>
   <string name="pref_automatically_delete_messages">الحذف الآلي للرسائل</string>
   <string name="encrypting_message">تشفير الرسالة</string>
   <string name="transcoding_video">ضغط الفيديو</string>
@@ -586,4 +640,12 @@
   <string name="copy_to_clipboard">النسخ إلى الحافظة</string>
   <string name="message_copied_to_clipboard">تم نسخ الرسالة إلى الحافظة</string>
   <string name="message">رسالة</string>
+  <string name="huawei_protected_apps">التطبيقات المُؤمَّنَة</string>
+  <string name="mtm_accept_cert">تقبُّل الشهادات المجهولة ؟</string>
+  <string name="mtm_cert_details">تفاصيل الشهادة :</string>
+  <string name="mtm_notification">التحقق مِن الشهادة</string>
+  <string name="once">مرة واحدة</string>
+  <string name="pref_scroll_to_bottom">السحب إلى أسفل</string>
+  <string name="disable_encryption">تعطيل التعمية</string>
+  <string name="disable_now">تعطيله حالًا</string>
 </resources>
