@@ -78,8 +78,9 @@ public class BarcodeProvider extends ContentProvider implements ServiceConnectio
 		if (barcodeDirectory.exists() && barcodeDirectory.isDirectory()) {
 			for (File file : barcodeDirectory.listFiles()) {
 				if (file.isFile() && !file.isHidden()) {
-					Log.d(Config.LOGTAG, "deleting old barcode file " + file.getAbsolutePath());
-					file.delete();
+					if (file.delete()) {
+						Log.d(Config.LOGTAG, "deleted old barcode file " + file.getAbsolutePath());
+					}
 				}
 			}
 		}
