@@ -2,36 +2,27 @@ package eu.siacs.conversations.ui;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
-import android.content.res.TypedArray;
-import android.databinding.DataBindingUtil;
-import android.databinding.ViewDataBinding;
-import android.graphics.drawable.Drawable;
-import android.support.annotation.AttrRes;
-import android.support.annotation.DrawableRes;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.design.widget.TabLayout;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AlertDialog;
 import android.app.Dialog;
 import android.app.PendingIntent;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
-import android.content.DialogInterface;
-import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.databinding.DataBindingUtil;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.DrawableRes;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.ListFragment;
-import android.support.v4.view.MenuItemCompat;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.SpannableString;
@@ -50,11 +41,9 @@ import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.AdapterView.AdapterContextMenuInfo;
-import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.CheckBox;
-import android.widget.Checkable;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Spinner;
@@ -63,7 +52,6 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -78,11 +66,9 @@ import eu.siacs.conversations.entities.Conversation;
 import eu.siacs.conversations.entities.ListItem;
 import eu.siacs.conversations.entities.Presence;
 import eu.siacs.conversations.services.XmppConnectionService.OnRosterUpdate;
-import eu.siacs.conversations.ui.adapter.KnownHostsAdapter;
 import eu.siacs.conversations.ui.adapter.ListItemAdapter;
 import eu.siacs.conversations.ui.interfaces.OnBackendConnected;
 import eu.siacs.conversations.ui.service.EmojiService;
-import eu.siacs.conversations.ui.util.DelayedHintHelper;
 import eu.siacs.conversations.ui.util.MenuDoubleTabUtil;
 import eu.siacs.conversations.ui.util.PendingItem;
 import eu.siacs.conversations.utils.XmppUri;
@@ -94,6 +80,9 @@ public class StartConversationActivity extends XmppActivity implements OnRosterU
 
 	private final int REQUEST_SYNC_CONTACTS = 0x28cf;
 	private final int REQUEST_CREATE_CONFERENCE = 0x39da;
+	private final PendingItem<Intent> pendingViewIntent = new PendingItem<>();
+	private final PendingItem<String> mInitialSearchValue = new PendingItem<>();
+	private final AtomicBoolean oneShotKeyboardSuppress = new AtomicBoolean();
 	public int conference_context_id;
 	public int contact_context_id;
 	private ListPagerAdapter mListPagerAdapter;
@@ -102,7 +91,6 @@ public class StartConversationActivity extends XmppActivity implements OnRosterU
 	private List<ListItem> conferences = new ArrayList<>();
 	private ListItemAdapter mConferenceAdapter;
 	private List<String> mActivatedAccounts = new ArrayList<>();
-	private Invite mPendingInvite = null;
 	private EditText mSearchEditText;
 	private AtomicBoolean mRequestedContactsPermission = new AtomicBoolean(false);
 	private boolean mHideOfflineContacts = false;
@@ -112,7 +100,7 @@ public class StartConversationActivity extends XmppActivity implements OnRosterU
 		public boolean onMenuItemActionExpand(MenuItem item) {
 			mSearchEditText.post(() -> {
 				mSearchEditText.requestFocus();
-				if (oneShotKeyboardSuppress.compareAndSet(true,false)) {
+				if (oneShotKeyboardSuppress.compareAndSet(true, false)) {
 					return;
 				}
 				InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
@@ -147,26 +135,6 @@ public class StartConversationActivity extends XmppActivity implements OnRosterU
 		public void onTextChanged(CharSequence s, int start, int before, int count) {
 		}
 	};
-	private TextView.OnEditorActionListener mSearchDone = new TextView.OnEditorActionListener() {
-		@Override
-		public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-			int pos = binding.startConversationViewPager.getCurrentItem();
-			if (pos == 0) {
-				if (contacts.size() == 1) {
-					openConversationForContact((Contact) contacts.get(0));
-					return true;
-				}
-			} else {
-				if (conferences.size() == 1) {
-					openConversationsForBookmark((Bookmark) conferences.get(0));
-					return true;
-				}
-			}
-			hideKeyboard();
-			mListPagerAdapter.requestFocus(pos);
-			return true;
-		}
-	};
 	private MenuItem mMenuSearchView;
 	private ListItemAdapter.OnTagClickedListener mOnTagClickedListener = new ListItemAdapter.OnTagClickedListener() {
 		@Override
@@ -179,8 +147,6 @@ public class StartConversationActivity extends XmppActivity implements OnRosterU
 			}
 		}
 	};
-	private final PendingItem<String> mInitialSearchValue = new PendingItem<>();
-	private final AtomicBoolean oneShotKeyboardSuppress = new AtomicBoolean();
 	private Pair<Integer, Intent> mPostponedActivityResult;
 	private Toast mToast;
 	private UiCallback<Conversation> mAdhocConferenceCallback = new UiCallback<Conversation>() {
@@ -203,6 +169,26 @@ public class StartConversationActivity extends XmppActivity implements OnRosterU
 		}
 	};
 	private ActivityStartConversationBinding binding;
+	private TextView.OnEditorActionListener mSearchDone = new TextView.OnEditorActionListener() {
+		@Override
+		public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+			int pos = binding.startConversationViewPager.getCurrentItem();
+			if (pos == 0) {
+				if (contacts.size() == 1) {
+					openConversationForContact((Contact) contacts.get(0));
+					return true;
+				}
+			} else {
+				if (conferences.size() == 1) {
+					openConversationsForBookmark((Bookmark) conferences.get(0));
+					return true;
+				}
+			}
+			hideKeyboard();
+			mListPagerAdapter.requestFocus(pos);
+			return true;
+		}
+	};
 	private ViewPager.SimpleOnPageChangeListener mOnPageChangeListener = new ViewPager.SimpleOnPageChangeListener() {
 		@Override
 		public void onPageSelected(int position) {
@@ -229,6 +215,17 @@ public class StartConversationActivity extends XmppActivity implements OnRosterU
 	public static void launch(Context context) {
 		final Intent intent = new Intent(context, StartConversationActivity.class);
 		context.startActivity(intent);
+	}
+
+	private static Intent createLauncherIntent(Context context) {
+		final Intent intent = new Intent(context, StartConversationActivity.class);
+		intent.setAction(Intent.ACTION_MAIN);
+		intent.addCategory(Intent.CATEGORY_LAUNCHER);
+		return intent;
+	}
+
+	private static boolean isViewIntent(final Intent i) {
+		return i != null && (Intent.ACTION_VIEW.equals(i.getAction()) || Intent.ACTION_SENDTO.equals(i.getAction()));
 	}
 
 	protected void hideToast() {
@@ -285,6 +282,31 @@ public class StartConversationActivity extends XmppActivity implements OnRosterU
 		mContactsAdapter.setOnTagClickedListener(this.mOnTagClickedListener);
 		this.mHideOfflineContacts = getPreferences().getBoolean("hide_offline", false);
 
+		final Intent intent;
+		if (savedInstanceState == null) {
+			intent = getIntent();
+		} else {
+			final String search = savedInstanceState.getString("search");
+			if (search != null) {
+				mInitialSearchValue.push(search);
+			}
+			intent = savedInstanceState.getParcelable("intent");
+		}
+
+		if (isViewIntent(intent)) {
+			pendingViewIntent.push(intent);
+			setIntent(createLauncherIntent(this));
+		}
+	}
+
+	@Override
+	public void onSaveInstanceState(Bundle savedInstanceState) {
+		Intent pendingIntent = pendingViewIntent.peek();
+		savedInstanceState.putParcelable("intent", pendingIntent != null ? pendingIntent : getIntent());
+		if (mMenuSearchView != null && mMenuSearchView.isActionViewExpanded()) {
+			savedInstanceState.putString("search", mSearchEditText != null ? mSearchEditText.getText().toString() : null);
+		}
+		super.onSaveInstanceState(savedInstanceState);
 	}
 
 	@Override
@@ -304,12 +326,13 @@ public class StartConversationActivity extends XmppActivity implements OnRosterU
 	}
 
 	@Override
-	public void onNewIntent(Intent intent) {
+	public void onNewIntent(final Intent intent) {
 		if (xmppConnectionServiceBound) {
-			handleIntent(intent);
+			processViewIntent(intent);
 		} else {
-			setIntent(intent);
+			pendingViewIntent.push(intent);
 		}
+		setIntent(createLauncherIntent(this));
 	}
 
 	protected void openConversationForContact(int position) {
@@ -682,49 +705,37 @@ public class StartConversationActivity extends XmppActivity implements OnRosterU
 				}
 			}
 		}
-		final Intent intent = getIntent();
 		final ActionBar ab = getSupportActionBar();
-		boolean init = intent != null && intent.getBooleanExtra("init", false);
 		boolean noConversations = xmppConnectionService.getConversations().size() == 0;
-		if ((init || noConversations) && ab != null) {
+		if (noConversations && ab != null) {
 			ab.setDisplayShowHomeEnabled(false);
 			ab.setDisplayHomeAsUpEnabled(false);
 			ab.setHomeButtonEnabled(false);
 		}
-		if (this.mPendingInvite != null) {
-			mPendingInvite.invite();
-			this.mPendingInvite = null;
+		Intent intent = pendingViewIntent.pop();
+		if (intent != null && processViewIntent(intent)) {
 			filter(null);
-		} else if (!handleIntent(getIntent())) {
+		} else {
 			if (mSearchEditText != null) {
 				filter(mSearchEditText.getText().toString());
 			} else {
 				filter(null);
 			}
-		} else {
-			filter(null);
 		}
-		setIntent(null);
 		Fragment fragment = getSupportFragmentManager().findFragmentByTag(FRAGMENT_TAG_DIALOG);
 		if (fragment != null && fragment instanceof OnBackendConnected) {
-			Log.d(Config.LOGTAG,"calling on backend connected on dialog");
+			Log.d(Config.LOGTAG, "calling on backend connected on dialog");
 			((OnBackendConnected) fragment).onBackendConnected();
 		}
 	}
 
-	protected boolean handleIntent(Intent intent) {
-		if (intent == null) {
-			return false;
-		}
+	protected boolean processViewIntent(Intent intent) {
 		final String inviteUri = intent.getStringExtra(WelcomeActivity.EXTRA_INVITE_URI);
 		if (inviteUri != null) {
 			Invite invite = new Invite(inviteUri);
 			if (invite.isJidValid()) {
 				return invite.invite();
 			}
-		}
-		if (intent.getAction() == null) {
-			return false;
 		}
 		switch (intent.getAction()) {
 			case Intent.ACTION_SENDTO:
@@ -876,7 +887,7 @@ public class StartConversationActivity extends XmppActivity implements OnRosterU
 	}
 
 	@Override
-	public void onCreateDialogPositiveClick(Spinner spinner,String subject) {
+	public void onCreateDialogPositiveClick(Spinner spinner, String subject) {
 		if (!xmppConnectionServiceBound) {
 			return;
 		}
