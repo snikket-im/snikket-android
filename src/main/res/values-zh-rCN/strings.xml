@@ -473,6 +473,7 @@
   <string name="account_status_bind_failure">绑定失败</string>
   <string name="account_status_host_unknown">服务器不能为域名做出响应</string>
   <string name="server_info_broken">损坏</string>
+  <string name="pref_presence_settings">可用性</string>
   <string name="pref_away_when_screen_off">关闭屏幕时离开</string>
   <string name="pref_away_when_screen_off_summary">当屏幕关闭时将标记您的资源为离开状态</string>
   <string name="pref_dnd_on_silent_mode">静音模式时设为“请勿打扰”</string>
@@ -641,6 +642,24 @@
   <string name="verify_omemo_keys">校验 OMEMO 密钥</string>
   <string name="distrust_omemo_key">不信任的设备</string>
   <string name="distrust_omemo_key_text">你确认要移除此设备的验证吗？\n此设备及从其发送的信息将会被标识为不可信。</string>
+  <plurals name="seconds">
+    <item quantity="other">%d秒</item>
+  </plurals>
+  <plurals name="minutes">
+    <item quantity="other">%d分钟</item>
+  </plurals>
+  <plurals name="hours">
+    <item quantity="other">%d小时</item>
+  </plurals>
+  <plurals name="days">
+    <item quantity="other">%d天</item>
+  </plurals>
+  <plurals name="weeks">
+    <item quantity="other">%d周</item>
+  </plurals>
+  <plurals name="months">
+    <item quantity="other">%d个月</item>
+  </plurals>
   <string name="pref_automatically_delete_messages">自动删除消息</string>
   <string name="pref_automatically_delete_messages_description">自动从此设备上删除超过配置时间段的消息</string>
   <string name="encrypting_message">消息加密中</string>
