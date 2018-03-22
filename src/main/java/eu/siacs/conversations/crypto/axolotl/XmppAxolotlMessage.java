@@ -91,6 +91,18 @@ public class XmppAxolotlMessage {
 		}
 	}
 
+	public static int parseSourceId(final Element axolotlMessage) throws IllegalArgumentException {
+		final Element header = axolotlMessage.findChild(HEADER);
+		if (header == null) {
+			throw new IllegalArgumentException("No header found");
+		}
+		try {
+			return Integer.parseInt(header.getAttribute(SOURCEID));
+		} catch (NumberFormatException e) {
+			throw new IllegalArgumentException("invalid source id");
+		}
+	}
+
 	private XmppAxolotlMessage(final Element axolotlMessage, final Jid from) throws IllegalArgumentException {
 		this.from = from;
 		Element header = axolotlMessage.findChild(HEADER);

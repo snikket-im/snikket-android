@@ -6,6 +6,7 @@ import android.util.Pair;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -368,17 +369,39 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
 				message = new Message(conversation, pgpEncrypted, Message.ENCRYPTION_PGP, status);
 			} else if (axolotlEncrypted != null && Config.supportOmemo()) {
 				Jid origin;
+				Set<Jid> fallbacksBySourceId = Collections.emptySet();
 				if (conversationMultiMode) {
 					final Jid fallback = conversation.getMucOptions().getTrueCounterpart(counterpart);
 					origin = getTrueCounterpart(query != null ? mucUserElement : null, fallback);
 					if (origin == null) {
-						Log.d(Config.LOGTAG, "axolotl message in non anonymous conference received");
+						try {
+							fallbacksBySourceId = account.getAxolotlService().findCounterpartsBySourceId(XmppAxolotlMessage.parseSourceId(axolotlEncrypted));
+						} catch (IllegalArgumentException e) {
+							//ignoring
+						}
+					}
+					if (origin == null && fallbacksBySourceId.size() == 0) {
+						Log.d(Config.LOGTAG, "axolotl message in anonymous conference received and no possible fallbacks");
 						return;
 					}
 				} else {
+					fallbacksBySourceId = Collections.emptySet();
 					origin = from;
 				}
-				message = parseAxolotlChat(axolotlEncrypted, origin, conversation, status, query != null);
+				if (origin != null) {
+					message = parseAxolotlChat(axolotlEncrypted, origin, conversation, status, query != null);
+				} else {
+					Message trial = null;
+					for(Jid fallback : fallbacksBySourceId) {
+						trial = parseAxolotlChat(axolotlEncrypted, fallback, conversation, status, query != null);
+						if (trial != null) {
+							Log.d(Config.LOGTAG,account.getJid().asBareJid()+": decoded muc message using fallback");
+							origin = fallback;
+							break;
+						}
+					}
+					message = trial;
+				}
 				if (message == null) {
 					if (query == null &&  extractChatState(mXmppConnectionService.find(account, counterpart.asBareJid()), isTypeGroupChat, packet)) {
 						mXmppConnectionService.updateConversationUi();
@@ -576,7 +599,7 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
 					final Jid fallback = conversation.getMucOptions().getTrueCounterpart(counterpart);
 					origin = getTrueCounterpart(query != null ? mucUserElement : null, fallback);
 					if (origin == null) {
-						Log.d(Config.LOGTAG, "omemo key transport message in non anonymous conference received");
+						Log.d(Config.LOGTAG, "omemo key transport message in anonymous conference received");
 						return;
 					}
 				} else if (isTypeGroupChat) {
