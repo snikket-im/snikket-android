@@ -8,6 +8,7 @@ import android.graphics.PorterDuffXfermode;
 import android.graphics.Rect;
 import android.graphics.Typeface;
 import android.net.Uri;
+import android.support.annotation.Nullable;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.util.LruCache;
@@ -141,8 +142,13 @@ public class AvatarService implements OnAdvancedStreamFeaturesLoaded {
 				this.sizes.add(size);
 			}
 		}
-		return PREFIX_CONTACT + "_" + contact.getAccount().getJid().asBareJid() + "_"
-				+ contact.getJid() + "_" + String.valueOf(size);
+		return PREFIX_CONTACT +
+				'\0' +
+				contact.getAccount().getJid().asBareJid() +
+				'\0' +
+				emptyOnNull(contact.getJid()) +
+				'\0' +
+				size;
 	}
 
 	private String key(MucOptions.User user, int size) {
@@ -151,8 +157,15 @@ public class AvatarService implements OnAdvancedStreamFeaturesLoaded {
 				this.sizes.add(size);
 			}
 		}
-		return PREFIX_CONTACT + "_" + user.getAccount().getJid().asBareJid() + "_"
-				+ user.getFullJid() + "_" + String.valueOf(size);
+		return PREFIX_CONTACT +
+				'\0' +
+				user.getAccount().getJid().asBareJid() +
+				'\0' +
+				emptyOnNull(user.getFullJid()) +
+				'\0' +
+				emptyOnNull(user.getRealJid()) +
+				'\0' +
+				size;
 	}
 
 	public Bitmap get(ListItem item, int size) {
@@ -294,10 +307,12 @@ public class AvatarService implements OnAdvancedStreamFeaturesLoaded {
 
 		for(MucOptions.User user : users) {
 			builder.append("\0");
-			builder.append(user.getRealJid() == null ? "" : user.getRealJid().asBareJid().toString());
+			builder.append(emptyOnNull(user.getRealJid()));
 			builder.append("\0");
-			builder.append(user.getFullJid() == null ? "" : user.getFullJid().toString());
+			builder.append(emptyOnNull(user.getFullJid()));
 		}
+		builder.append('\0');
+		builder.append(size);
 		final String key = builder.toString();
 		synchronized (this.conversationDependentKeys) {
 			Set<String> keys;
@@ -437,8 +452,7 @@ public class AvatarService implements OnAdvancedStreamFeaturesLoaded {
 		return true;
 	}
 
-	private boolean drawTile(Canvas canvas, MucOptions.User user, int left,
-						  int top, int right, int bottom) {
+	private boolean drawTile(Canvas canvas, MucOptions.User user, int left, int top, int right, int bottom) {
 		Contact contact = user.getContact();
 		if (contact != null) {
 			Uri uri = null;
@@ -527,5 +541,9 @@ public class AvatarService implements OnAdvancedStreamFeaturesLoaded {
 				mXmppConnectionService.republishAvatarIfNeeded(account);
 			}
 		}
+	}
+
+	private static String emptyOnNull(@Nullable Jid value) {
+		return value == null ? "" : value.toString();
 	}
 }
