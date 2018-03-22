@@ -1521,18 +1521,24 @@ public class XmppConnection implements Runnable {
 		}
 	}
 
-	public String getMucServer() {
+	public List<String> getMucServers() {
+		List<String> servers = new ArrayList<>();
 		synchronized (this.disco) {
 			for (final Entry<Jid, ServiceDiscoveryResult> cursor : disco.entrySet()) {
 				final ServiceDiscoveryResult value = cursor.getValue();
 				if (value.getFeatures().contains("http://jabber.org/protocol/muc")
 						&& !value.getFeatures().contains("jabber:iq:gateway")
 						&& !value.hasIdentity("conference", "irc")) {
-					return cursor.getKey().toString();
+					servers.add(cursor.getKey().toString());
 				}
 			}
 		}
-		return null;
+		return servers;
+	}
+
+	public String getMucServer() {
+		List<String> servers = getMucServers();
+		return servers.size() > 0 ? servers.get(0) : null;
 	}
 
 	public int getTimeToNextAttempt() {

@@ -363,6 +363,7 @@
   <string name="error_no_keys_to_trust_server_error">Non ci sono chiavi utilizzabili per questo contatto.\nRicezione di nuovi chiavi dal server non riuscita. Forse qualcosa non va con il server del tuo contatto.</string>
   <string name="error_no_keys_to_trust_presence">Non ci sono chiavi utilizzabili per questo contatto.\nAssicurati di avere reciprocamente la sottoscrizione sulla presenza.</string>
   <string name="error_no_keys_to_trust">Non ci sono chiavi usabili per questo contatto. Se hai cancellato qualsiasi loro chiave, devono generarne di nuove.</string>
+  <string name="error_trustkeys_title">Qualcosa è andato storto</string>
   <string name="fetching_history_from_server">Caricamento della cronologia dal server</string>
   <string name="no_more_history_on_server">Fine cronologia sul server</string>
   <string name="updating">Caricamento…</string>
@@ -725,4 +726,11 @@
   <string name="pref_scroll_to_bottom_summary">Scorri in basso dopo l\'invio di un messaggio</string>
   <string name="edit_status_message_title">Modifica messaggio di stato</string>
   <string name="edit_status_message">Modifica il messaggio di stato</string>
+  <string name="disable_encryption">Disattiva la cifratura</string>
+  <string name="error_trustkey_general">Conversations non riesce a inviare messaggi criptati a %1$s. Potrebbe essere dovuto al tuo contatto che usa un server obsoleto o un client che non supporta OMEMO.</string>
+  <string name="error_trustkey_device_list">Ricezione elenco dispositivi fallita</string>
+  <string name="error_trustkey_bundle">Ricezione gruppi dispositivi fallita</string>
+  <string name="error_trustkey_hint_mutual">Suggerimento: in alcuni casi può essere risolto aggiungendo a vicenda la vostra lista di contatti.</string>
+  <string name="disable_encryption_message">Sei sicuro di disattivare la cifratura OMEMO per questa conversazione?\nCiò permetterà all\'amministratore del server di leggere i tuoi messaggi, ma potrebbe essere il solo modo di comunicare con persone che usano client obsoleti.</string>
+  <string name="disable_now">Disattiva adesso</string>
 </resources>

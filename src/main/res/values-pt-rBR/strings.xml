@@ -363,6 +363,7 @@
   <string name="error_no_keys_to_trust_server_error">Não existe nenhuma chave utilizável disponível para este contato.\nA obtenção de novas chaves no servidor não foi bem sucedida. Pode ser que tenha algum problema com o servidor do seu contato.</string>
   <string name="error_no_keys_to_trust_presence">Não existem chaves em condições de uso para esse contato.\nCertifique-se de que existem requisições de presença mútuas.</string>
   <string name="error_no_keys_to_trust">Não existe nenhuma chave utilizável para esse contato. Caso você tenha expurgado alguma chave dele, ele terá que gerar uma nova.</string>
+  <string name="error_trustkeys_title">Alguma coisa deu errado</string>
   <string name="fetching_history_from_server">Obtendo histórico do servidor</string>
   <string name="no_more_history_on_server">Nenhum outro histórico do servidor</string>
   <string name="updating">Atualizando...</string>
@@ -408,6 +409,8 @@
   <string name="could_not_modify_conference_options">Não foi possível modificar as opções da conversa em grupo</string>
   <string name="never">Nunca</string>
   <string name="until_further_notice">Até segunda ordem</string>
+  <string name="snooze">Soneca</string>
+  <string name="reply">Responder</string>
   <string name="mark_as_read">Marcar como lida</string>
   <string name="pref_input_options">Entrada</string>
   <string name="pref_enter_is_send">Enter envia</string>
@@ -463,6 +466,7 @@
   <string name="choose_quick_action">Selecione a ação rápida</string>
   <string name="search_for_contacts_or_groups">Pesquisar por contatos ou grupos</string>
   <string name="send_private_message">Enviar mensagem privada</string>
+  <string name="user_has_left_conference">%1$s deixou a conversa em grupo!</string>
   <string name="username">Nome de usuário</string>
   <string name="username_hint">Nome de usuário</string>
   <string name="invalid_username">Esse não é um nome de usuário válido</string>
@@ -474,6 +478,7 @@
   <string name="account_status_bind_failure">Falha na associação</string>
   <string name="account_status_host_unknown">O servidor não responde por esse domínio</string>
   <string name="server_info_broken">Quebrado</string>
+  <string name="pref_presence_settings">Disponibilidade</string>
   <string name="pref_away_when_screen_off">Afastado quando a tela estiver desligada</string>
   <string name="pref_away_when_screen_off_summary">Define o seu status como afastado quando a tela estiver desligada.</string>
   <string name="pref_dnd_on_silent_mode">\"Não perturbe\" em modo silencioso</string>
@@ -516,6 +521,8 @@
   <string name="shared_image_with_x">Imagem compartilhada com %s</string>
   <string name="shared_images_with_x">Imagens compartilhadas com %s</string>
   <string name="shared_text_with_x">Texto compartilhado com %s</string>
+  <string name="no_storage_permission">O Conversations necessita de acesso ao armazenamento externo</string>
+  <string name="no_camera_permission">O Conversations necessita de acesso à câmera</string>
   <string name="sync_with_contacts">Sincronizar com os contatos</string>
   <string name="sync_with_contacts_long">O Conversations quer procurar por correspondências entre contatos da sua conta Jabber e do seu telefone, para complementar as informações de nome completo e avatares\n\nO Conversations fará a verificação localmente, sem enviar nenhuma informação sua para o servidor\n\nVocê será solicitado a fornecer permissão de acesso aos seus contatos agora.</string>
   <string name="certificate_information">Informação do certificado</string>
@@ -549,11 +556,14 @@
   <string name="security_error_invalid_file_access">Erro de segurança: Acesso inválido ao arquivo</string>
   <string name="no_application_to_share_uri">Não foi encontrado nenhum aplicativo para compartilhar a URI</string>
   <string name="share_uri_with">Compartilhar a URI com...</string>
+  <string name="welcome_text">Jabber é uma rede de mensageria instantânea independente de provedor. Você pode usar este cliente com qualquer servidor Jabber que você escolher.\nEntretanto, para sua conveniência, nós simplificamos o processo de criação de uma conta no conversations.im¹; um provedor especialmente configurado para ser usado com o Conversations.</string>
   <string name="magic_create_text">Nós guiaremos você ao longo do processo de criar uma conta em conversations.im.¹\nAo usar esse provedor você também poderá se comunicar com usuários de outros provedores. Basta fornecê-los a sua identificação Jabber completa.</string>
   <string name="your_full_jid_will_be">Sua ID Jabber será: %s</string>
   <string name="create_account">Criar conta</string>
   <string name="use_own_provider">Usar meu próprio provedor</string>
   <string name="pick_your_username">Selecione seu nome de usuário</string>
+  <string name="pref_manually_change_presence">Gerenciar a disponibilidade manualmente</string>
+  <string name="pref_manually_change_presence_summary">Defina sua disponibilidade ao editar a sua mensagem de status</string>
   <string name="change_presence">Alterar a presença</string>
   <string name="status_message">Mensagem de status</string>
   <string name="all_accounts_on_this_device">Definir para todas as contas deste dispositivo</string>
@@ -639,8 +649,34 @@
   <string name="i_followed_this_link_from_a_trusted_source">Eu segui este link a partir de uma fonte segura</string>
   <string name="verifying_omemo_keys_trusted_source">Você está prestes a verificar as chaves OMEMO de %1$s após ter clicado em um link. Isso só é seguro se você acesso esse link a partir de uma fonte segura, onde somente %2$s poderia tê-lo publicado.</string>
   <string name="verify_omemo_keys">Verificar chaves OMEMO</string>
+  <string name="show_inactive_devices">Exibir os inativos</string>
+  <string name="hide_inactive_devices">Ocultar os inativos</string>
   <string name="distrust_omemo_key">Remover a confiança do dispositivo</string>
   <string name="distrust_omemo_key_text">Tem certeza que deseja remover a verificação para este dispositivo?\nEste dispositivo e as mensagens oriundas dele serão marcadas como não confáveis.</string>
+  <plurals name="seconds">
+    <item quantity="one">%d segundo</item>
+    <item quantity="other">%d segundos</item>
+  </plurals>
+  <plurals name="minutes">
+    <item quantity="one">%d minuto</item>
+    <item quantity="other">%d minutos</item>
+  </plurals>
+  <plurals name="hours">
+    <item quantity="one">%d hora</item>
+    <item quantity="other">%d horas</item>
+  </plurals>
+  <plurals name="days">
+    <item quantity="one">%d dia</item>
+    <item quantity="other">%d dias</item>
+  </plurals>
+  <plurals name="weeks">
+    <item quantity="one">%d semana</item>
+    <item quantity="other">%d semanas</item>
+  </plurals>
+  <plurals name="months">
+    <item quantity="one">%d mês</item>
+    <item quantity="other">%d meses</item>
+  </plurals>
   <string name="pref_automatically_delete_messages">Exclusão automática de mensagens</string>
   <string name="pref_automatically_delete_messages_description">Excluir automaticamente as mensagens deste dispositivo que sejam mais antigas do que o tempo estipulado.</string>
   <string name="encrypting_message">Criptografar a mensagem</string>
@@ -674,4 +710,27 @@
   <string name="message_copied_to_clipboard">A mensagem foi copiada para a área de transferência</string>
   <string name="message">Mensagem</string>
   <string name="private_messages_are_disabled">As mensagens privadas estão desabilitadas</string>
+  <string name="huawei_protected_apps">Apps protegidos</string>
+  <string name="huawei_protected_apps_summary">Para continuar recebendo notificações, mesmo com a tela apagada, você precisa adicionar o Conversations à lista de apps protegidos.</string>
+  <string name="mtm_accept_cert">Aceitar certificado desconhecido?</string>
+  <string name="mtm_trust_anchor">O servidor do certificado não está assinado por uma autoridade certificadora reconhecida.</string>
+  <string name="mtm_cert_expired">O certificado do servidor expirou.</string>
+  <string name="mtm_accept_servername">Aceitar nome de servidor não correspondente?</string>
+  <string name="mtm_hostname_mismatch">Não foi possível autenticar o servidor como \"%s\". O certificado é válido somente para:</string>
+  <string name="mtm_connect_anyway">Deseja conectar-se mesmo assim?</string>
+  <string name="mtm_cert_details">Detalhes do certificado:</string>
+  <string name="mtm_notification">Verificação do certificado</string>
+  <string name="once">Uma vez</string>
+  <string name="qr_code_scanner_needs_access_to_camera">O scanner de QR code necessita de acesso à câmera</string>
+  <string name="pref_scroll_to_bottom">Rolar para baixo</string>
+  <string name="pref_scroll_to_bottom_summary">Rola para o final após enviar uma mensagem</string>
+  <string name="edit_status_message_title">Editar a mensagem de status</string>
+  <string name="edit_status_message">Editar a mensagem de status</string>
+  <string name="disable_encryption">Desabilitar a criptografia</string>
+  <string name="error_trustkey_general">O Conversations é incapaz de enviar mensagens criptografadas para %1$s. Isso pode ocorrer caso o seu contato esteja usando um servidor desatualizado ou o cliente não consiga lidar com OMEMO.</string>
+  <string name="error_trustkey_device_list">Não foi possível obter a lista de dispositivos</string>
+  <string name="error_trustkey_bundle">Não foi possível obter o grupo de dispositivos</string>
+  <string name="error_trustkey_hint_mutual">Dica: Em alguns casos isso pode ser resolvido adicionando-se um ao outro na lista de contatos.</string>
+  <string name="disable_encryption_message">Tem certeza que deseja desabilitar a criptografia OMEMO nesta conversa?\nIsso permitirá que o administrador do seu servidor seja capaz de ler suas mensagens. Por outro lado, pode ser a única forma de se comunicar com pessoas usando clientes desatualizados.</string>
+  <string name="disable_now">Desabilitar agora</string>
 </resources>

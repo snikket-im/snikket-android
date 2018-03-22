@@ -3357,10 +3357,7 @@ public class XmppConnectionService extends Service {
 		final Set<String> mucServers = new HashSet<>();
 		for (final Account account : accounts) {
 			if (account.getXmppConnection() != null) {
-				final String server = account.getXmppConnection().getMucServer();
-				if (server != null) {
-					mucServers.add(server);
-				}
+				mucServers.addAll(account.getXmppConnection().getMucServers());
 				for (Bookmark bookmark : account.getBookmarks()) {
 					final Jid jid = bookmark.getJid();
 					final String s = jid == null ? null : jid.getDomain();

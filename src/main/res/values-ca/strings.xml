@@ -2,45 +2,47 @@
 <resources>
   <string name="action_settings">Preferències</string>
   <string name="action_add">Nova conversa</string>
-  <string name="action_accounts">Gestionar comptes</string>
-  <string name="action_end_conversation">Finalitzar conversa</string>
+  <string name="action_accounts">Gestiona els comptes</string>
+  <string name="action_end_conversation">Finalitza la conversa</string>
   <string name="action_contact_details">Detalls del contacte</string>
   <string name="action_muc_details">Detalls del xat de grup</string>
   <string name="action_secure">Conversa segura</string>
-  <string name="action_add_account">Afegir compte</string>
+  <string name="action_add_account">Afegeix un compte</string>
   <string name="action_edit_contact">Edita el nom</string>
   <string name="action_add_phone_book">Afegeix a la llibreta d\'adreces</string>
   <string name="action_delete_contact">Elimina de la llista de contactes</string>
-  <string name="action_block_contact">Bloqueja contacte</string>
-  <string name="action_unblock_contact">Desbloqueja contacte</string>
+  <string name="action_block_contact">Bloqueja el contacte</string>
+  <string name="action_unblock_contact">Desbloqueja el contacte</string>
   <string name="action_block_domain">Bloqueja el domini</string>
-  <string name="action_unblock_domain">Desbloqueja aquest domini</string>
-  <string name="title_activity_manage_accounts">Administrar comptes</string>
+  <string name="action_unblock_domain">Desbloqueja el domini</string>
+  <string name="title_activity_manage_accounts">Administra els comptes</string>
   <string name="title_activity_settings">Configuració</string>
   <string name="title_activity_sharewith">Compartir amb converses</string>
   <string name="title_activity_start_conversation">Començar una conversa</string>
   <string name="title_activity_choose_contact">Tria el contacte</string>
-  <string name="title_activity_block_list">LLista bloqueix</string>
+  <string name="title_activity_share_via_account">Comparteix mitjançant compte</string>
+  <string name="title_activity_block_list">Llista de bloqueig</string>
   <string name="just_now">Ara</string>
   <string name="minute_ago">1 min abans</string>
   <string name="minutes_ago">%de minuts abans</string>
   <string name="unread_conversations">Converses sense llegir o no llegides</string>
   <string name="sending">enviant…</string>
   <string name="message_decrypting">Desxifrant missatge. Espereu ...</string>
-  <string name="pgp_message">Missatge xifrat OpenPGP</string>
+  <string name="pgp_message">Missatge xifrat amb OpenPGP</string>
   <string name="nick_in_use">El sobrenom ja està en ús</string>
+  <string name="invalid_muc_nick">Sobrenom invàlid</string>
   <string name="admin">Administrador</string>
   <string name="owner">Propietari</string>
   <string name="moderator">Moderador</string>
   <string name="participant">Participant</string>
   <string name="visitor">Visitant</string>
-  <string name="remove_contact_text">Vols eliminar a %s de la teva llista?. La conversa associada a aquest compte no s\'eliminarà.</string>
-  <string name="block_contact_text">Li agradaria bloquejar %s i no podrà enviar missatges? </string>
-  <string name="unblock_contact_text">L\'hi agradaria desbloquejar %s i permetre\'ls enviar-vos missatges?</string>
-  <string name="block_domain_text">Bloqueja tots els teus contactes des de %s?</string>
-  <string name="unblock_domain_text">Desbloqueja tots el contactes des de %s?</string>
+  <string name="remove_contact_text">Voleu eliminar a %s de la vostra llista de contactes? La conversa associada a aquest contacte no s\'eliminarà.</string>
+  <string name="block_contact_text">Voleu impedir que %s us pugui enviar missatges?</string>
+  <string name="unblock_contact_text">Us agradaria desbloquejar %s i permetre que us enviï missatges?</string>
+  <string name="block_domain_text">Voleu bloquejar tots els contactes de %s?</string>
+  <string name="unblock_domain_text">Voleu desbloquejar tots el contactes de %s?</string>
   <string name="contact_blocked">Contacte bloquejat</string>
-  <string name="remove_bookmark_text">L\'hi agradaria eliminar %s de favorits?? La conversació associada amb aquesta llista de favorits no serà eliminada.</string>
+  <string name="remove_bookmark_text">Voleu eliminar %s dels marcadors? La conversa associada amb aquest marcador no serà eliminada.</string>
   <string name="register_account">Registrar nou compte al servidor</string>
   <string name="change_password_on_server">Canviar la contrasenya del servidor</string>
   <string name="share_with">Compartir amb</string>
@@ -48,8 +50,8 @@
   <string name="invite_contact">Convida un contacte</string>
   <string name="contacts">Contactes</string>
   <string name="cancel">Cancel·lar</string>
-  <string name="set">Conjunt</string>
-  <string name="add">Afegir</string>
+  <string name="set">Aplica</string>
+  <string name="add">Afegeix</string>
   <string name="edit">Editar</string>
   <string name="delete">Eliminar</string>
   <string name="block">Bloquejar</string>
@@ -229,9 +231,9 @@
   <string name="join">Unir-se</string>
   <string name="conference_address">Direcció del xat de grup</string>
   <string name="conference_address_example">room@conference.example.com/nick</string>
-  <string name="save_as_bookmark">Guardar com a favorits</string>
-  <string name="delete_bookmark">Eliminar de favorits</string>
-  <string name="bookmark_already_exists">Aquesta llista de favorits ja existeix</string>
+  <string name="save_as_bookmark">Guarda com a marcador</string>
+  <string name="delete_bookmark">Elimina dels marcadors</string>
+  <string name="bookmark_already_exists">Aquest marcador ja existeix</string>
   <string name="action_edit_subject">Edita el tema del xat de grup</string>
   <string name="edit_subject_hint">El tema d\'aquest xat de grup</string>
   <string name="joining_conference">S\'està unint al xat de grup...</string>
@@ -239,6 +241,8 @@
   <string name="contact_added_you">Afegir un contacte a la llista de contactes</string>
   <string name="add_back">Afegir nou</string>
   <string name="contact_has_read_up_to_this_point">%s ha llegit fins aquest punt</string>
+  <string name="contacts_have_read_up_to_this_point">%s ha llegit fins aquí</string>
+  <string name="contacts_and_n_more_have_read_up_to_this_point">%1$s i %2$d més han llegit fins aquí</string>
   <string name="publish">Publicar</string>
   <string name="touch_to_choose_picture">Tocar avatar per seleccionar imatge de la  galeria</string>
   <string name="publishing">Publicant...</string>
@@ -362,6 +366,7 @@ mentrestant.</string>
   <string name="error_no_keys_to_trust_server_error">No hi ha claus utilitzables per a aquest contacte.\nEls fitxers noves del servidor no han tingut èxit. Potser hi ha alguna cosa malament amb el servidor del vostre contacte.</string>
   <string name="error_no_keys_to_trust_presence">No hi ha claus disponibles per a aquest contacte.\nAssegureu-vos que teniu una subscripció de presència mútua.</string>
   <string name="error_no_keys_to_trust">No hi ha claus disponibles per a aquest contacte. Si heu purgat qualsevol de les claus, heu de generar-ne de noves.</string>
+  <string name="error_trustkeys_title">Alguna cosa ha anat malament</string>
   <string name="fetching_history_from_server">Anar a cercar la història als servidors</string>
   <string name="no_more_history_on_server">No hi ha més histories al servidor</string>
   <string name="updating">Actualitzant</string>
@@ -407,6 +412,9 @@ mentrestant.</string>
   <string name="could_not_modify_conference_options">No s\'han pogut modificar les opcions de xat de grup</string>
   <string name="never">Mai</string>
   <string name="until_further_notice">Fins nou avís</string>
+  <string name="snooze">Posposa</string>
+  <string name="reply">Respon</string>
+  <string name="mark_as_read">Marcar com llegit</string>
   <string name="pref_input_options">Entrada</string>
   <string name="pref_enter_is_send">Entra per enviar</string>
   <string name="pref_enter_is_send_summary">Utilitza el botó enter per enviar el missatge</string>
@@ -461,6 +469,7 @@ mentrestant.</string>
   <string name="choose_quick_action">Trieu una acció ràpida</string>
   <string name="search_for_contacts_or_groups">Cerca contactes o grups</string>
   <string name="send_private_message">Envia un missatge privat</string>
+  <string name="user_has_left_conference">%1$s ha deixat el xat del grup!</string>
   <string name="username">Nom d\'usuari</string>
   <string name="username_hint">Nom d\'usuari</string>
   <string name="invalid_username">Aquest no és un nom d\'usuari vàlid</string>
@@ -472,6 +481,7 @@ mentrestant.</string>
   <string name="account_status_bind_failure"> Vincular el error</string>
   <string name="account_status_host_unknown">El servidor no es fa responsable del domini</string>
   <string name="server_info_broken">Trencat</string>
+  <string name="pref_presence_settings">Disponibilitat</string>
   <string name="pref_away_when_screen_off">Fora quan la pantalla està apagada</string>
   <string name="pref_away_when_screen_off_summary">Marqueu el vostre recurs quan la pantalla estigui desactivada</string>
   <string name="pref_dnd_on_silent_mode">\"No molesteu\" en modo silenciós</string>
@@ -514,6 +524,8 @@ mentrestant.</string>
   <string name="shared_image_with_x">Imatge compartida amb %s</string>
   <string name="shared_images_with_x">Imatges compartides amb %s</string>
   <string name="shared_text_with_x">Text compartit amb %s</string>
+  <string name="no_storage_permission">Conversations necessita accés a emmagatzematge extern</string>
+  <string name="no_camera_permission">Conversations necessita accés a la càmera</string>
   <string name="sync_with_contacts">Sincronitza amb contactes</string>
   <string name="sync_with_contacts_long">Conversations vol coincidir amb la vostra llista XMPP amb els vostres contactes per 
 mostrar els noms i avatars complets.\n\nConversations només 
@@ -555,6 +567,9 @@ missatges.\n\nAra se us demanarà que desactiveu-las.</string>
   <string name="security_error_invalid_file_access">Error de seguretat: accés d\'arxiu no vàlid</string>
   <string name="no_application_to_share_uri">No s\'ha trobat cap aplicació que comparteixi URI</string>
   <string name="share_uri_with">Comparteix l\'URI amb...</string>
+  <string name="welcome_text">Jabber és una xarxa de missatgeria instantània independent del proveïdor. Podeu
+ utilitzar aquest client amb el servidor de Jabber que trieu.\nPerò 
+per a la seva comoditat hem facilitat crear un compte a converses.im¹; un proveïdor especialment indicat per a l\'ús amb Conversations.</string>
   <string name="magic_create_text">Us guiarem pel procés de creació d\'un compte a conversations.im.¹\nQuan 
 trieu conversations.im com a proveïdor, podreu comunicar-vos amb els usuaris 
 d\'altres proveïdors donant-los la vostra ID Jabber completa.</string>
@@ -562,6 +577,8 @@ d\'altres proveïdors donant-los la vostra ID Jabber completa.</string>
   <string name="create_account">Crear compte</string>
   <string name="use_own_provider">Utilitza el meu propi proveïdor</string>
   <string name="pick_your_username">Tria el teu nom d\'usuari</string>
+  <string name="pref_manually_change_presence">Gestioneu la disponibilitat manualment</string>
+  <string name="pref_manually_change_presence_summary">Establir la vostra disponibilitat en editar el vostre missatge d\'estat.</string>
   <string name="change_presence">Canvi de presència</string>
   <string name="status_message">Missatge d\'estat</string>
   <string name="all_accounts_on_this_device">Estableix per a tots els comptes d\'aquest dispositiu</string>
@@ -648,8 +665,34 @@ d\'altres proveïdors donant-los la vostra ID Jabber completa.</string>
   <string name="i_followed_this_link_from_a_trusted_source">He seguit aquest enllaç des d\'una font de confiança</string>
   <string name="verifying_omemo_keys_trusted_source">Esteu a punt de verificar les claus OMEMO de %1$sdesprés de fer clic a un enllaç. Això només és segur si seguiu aquest enllaç des d\'una font de confiança on només %2$s podria haver publicat aquest enllaç.</string>
   <string name="verify_omemo_keys">Comproveu les claus OMEMO</string>
+  <string name="show_inactive_devices">Mostra inactiu</string>
+  <string name="hide_inactive_devices">Amaga inactiu</string>
   <string name="distrust_omemo_key">Dispositiu no confiable</string>
   <string name="distrust_omemo_key_text">Estàs segur que vols eliminar la verificació d\'aquest dispositiu?\nAquest dispositiu i missatges procedents d\'aquest dispositiu es marcaran com a no confiables.</string>
+  <plurals name="seconds">
+    <item quantity="one">1%d segons</item>
+    <item quantity="other">%d segons</item>
+  </plurals>
+  <plurals name="minutes">
+    <item quantity="one">1%d minuts</item>
+    <item quantity="other">%d minuts</item>
+  </plurals>
+  <plurals name="hours">
+    <item quantity="one">1%d hores</item>
+    <item quantity="other">%d hores</item>
+  </plurals>
+  <plurals name="days">
+    <item quantity="one">1%d dies</item>
+    <item quantity="other">%d dies</item>
+  </plurals>
+  <plurals name="weeks">
+    <item quantity="one">1%d setmanes</item>
+    <item quantity="other">%d setmanes</item>
+  </plurals>
+  <plurals name="months">
+    <item quantity="one">1%d meses</item>
+    <item quantity="other">%d meses</item>
+  </plurals>
   <string name="pref_automatically_delete_messages">Supressió de missatge automàtic</string>
   <string name="pref_automatically_delete_messages_description">Suprimiu automàticament missatges d\'aquest dispositiu que són més grans que el marc de temps configurat.</string>
   <string name="encrypting_message">Xifrant el missatge</string>
@@ -682,4 +725,30 @@ d\'altres proveïdors donant-los la vostra ID Jabber completa.</string>
   <string name="copy_to_clipboard">Copiar al portapapers</string>
   <string name="message_copied_to_clipboard">Missatge copiat al portapapers</string>
   <string name="message">Missatge</string>
+  <string name="private_messages_are_disabled">Els missatges privats estan desactivats</string>
+  <string name="huawei_protected_apps">Aplicacions protegides</string>
+  <string name="huawei_protected_apps_summary">Per continuar rebent notificacions, fins i tot quan la pantalla està apagada, heu 
+d\'afegir Converses a la llista d\'aplicacions protegides.</string>
+  <string name="mtm_accept_cert">Voleu acceptar un certificat desconegut?</string>
+  <string name="mtm_trust_anchor">El certificat del servidor no està signat per una autoritat de certificació coneguda.</string>
+  <string name="mtm_cert_expired">El certificat del servidor ha caducat.</string>
+  <string name="mtm_accept_servername">Voleu acceptar el nom del servidor associat?</string>
+  <string name="mtm_hostname_mismatch">El servidor no s\'ha pogut autenticar com \" 1%s \". El certificat només és vàlid per a:</string>
+  <string name="mtm_connect_anyway">Voleu connectar de totes maneres?</string>
+  <string name="mtm_cert_details">Detalls del certificat:</string>
+  <string name="mtm_notification">Verificació del certificat</string>
+  <string name="once">Un cop</string>
+  <string name="qr_code_scanner_needs_access_to_camera">L\'escàner de codi QR necessita accés a la càmera</string>
+  <string name="pref_scroll_to_bottom">Desplaça\'t cap a la part inferior</string>
+  <string name="pref_scroll_to_bottom_summary">Desplaceu-vos cap avall després d\'enviar un missatge</string>
+  <string name="edit_status_message_title">Edita el missatge d\'estat</string>
+  <string name="edit_status_message">Edita el missatge d\'estat</string>
+  <string name="disable_encryption">Desactiva el xifratge</string>
+  <string name="error_trustkey_general">Les converses no poden enviar missatges xifrats a 1%1$s . Això pot ser degut al vostre contacte mitjançant un servidor o client obsolet que no pot gestionar OMEMO.</string>
+  <string name="error_trustkey_device_list">No es pot obtenir la llista de dispositius</string>
+  <string name="error_trustkey_bundle">No es poden obtenir paquets de dispositius</string>
+  <string name="error_trustkey_hint_mutual">Suggeriment: en alguns casos això es pot resoldre afegint les vostres llistes de contactes.</string>
+  <string name="disable_encryption_message">Estàs segur que vols desactivar el xifratge OMEMO per a aquesta conversa?\nAixò permetrà 
+que l\'administrador del servidor llegeixi els missatges, però pot ser l\'única forma de comunicar-se amb persones que utilitzin clients obsolets.</string>
+  <string name="disable_now">Desactiva ara</string>
 </resources>
