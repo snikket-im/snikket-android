@@ -48,7 +48,6 @@ dependencies {
     implementation "com.android.support:design:$supportLibVersion"
     freeImplementation "com.android.support:support-emoji-bundled:$supportLibVersion"
     implementation 'org.bouncycastle:bcmail-jdk15on:1.58'
-    implementation 'org.gnu.inet:libidn:1.15'
     implementation 'com.google.zxing:core:3.3.0'
     implementation 'de.measite.minidns:minidns-hla:0.2.4'
     implementation 'me.leolin:ShortcutBadger:1.1.21@aar'
@@ -71,8 +70,8 @@ android {
     defaultConfig {
         minSdkVersion 19
         targetSdkVersion 25
-        versionCode 259
-        versionName "2.0.0-beta.4"
+        versionCode 260
+        versionName "2.0.0-rc.1"
         archivesBaseName += "-$versionName"
         applicationId "eu.siacs.conversations"
         resValue "string", "applicationId", applicationId
