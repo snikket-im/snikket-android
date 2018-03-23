@@ -3,7 +3,6 @@ package eu.siacs.conversations.ui;
 import android.app.Activity;
 import android.app.PendingIntent;
 import android.content.ActivityNotFoundException;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentSender;
 import android.content.SharedPreferences;
@@ -29,7 +28,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.EditText;
@@ -38,7 +36,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TableLayout;
-import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -67,7 +64,6 @@ import eu.siacs.conversations.ui.adapter.KnownHostsAdapter;
 import eu.siacs.conversations.ui.adapter.PresenceTemplateAdapter;
 import eu.siacs.conversations.ui.util.MenuDoubleTabUtil;
 import eu.siacs.conversations.ui.util.PendingItem;
-import eu.siacs.conversations.ui.widget.DisabledActionModeCallback;
 import eu.siacs.conversations.utils.CryptoHelper;
 import eu.siacs.conversations.utils.UIHelper;
 import eu.siacs.conversations.utils.XmppUri;
@@ -425,9 +421,9 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
 		if (requestCode == REQUEST_CHANGE_STATUS) {
 			PresenceTemplate template = mPendingPresenceTemplate.pop();
 			if (template != null && resultCode == Activity.RESULT_OK) {
-				generateSignature(data,template);
+				generateSignature(data, template);
 			} else {
-				Log.d(Config.LOGTAG,"pgp result not ok");
+				Log.d(Config.LOGTAG, "pgp result not ok");
 			}
 		}
 	}
@@ -638,26 +634,27 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
 	@Override
 	protected void onStart() {
 		super.onStart();
+		final Intent intent = getIntent();
 		final int theme = findTheme();
 		if (this.mTheme != theme) {
 			recreate();
-		} else if (getIntent() != null) {
+		} else if (intent != null) {
 			try {
-				this.jidToEdit = Jid.of(getIntent().getStringExtra("jid"));
+				this.jidToEdit = Jid.of(intent.getStringExtra("jid"));
 			} catch (final IllegalArgumentException | NullPointerException ignored) {
 				this.jidToEdit = null;
 			}
-			if (jidToEdit != null && getIntent().getData() != null) {
-				final XmppUri uri = new XmppUri(getIntent().getData());
+			if (jidToEdit != null && intent.getData() != null && intent.getBooleanExtra("scanned", false)) {
+				final XmppUri uri = new XmppUri(intent.getData());
 				if (xmppConnectionServiceBound) {
 					processFingerprintVerification(uri, false);
 				} else {
 					this.pendingUri = uri;
 				}
 			}
-			boolean init = getIntent().getBooleanExtra("init", false);
+			boolean init = intent.getBooleanExtra("init", false);
 			this.mInitMode = init || this.jidToEdit == null;
-			this.messageFingerprint = getIntent().getStringExtra("fingerprint");
+			this.messageFingerprint = intent.getStringExtra("fingerprint");
 			if (!mInitMode) {
 				this.binding.accountRegisterNew.setVisibility(View.GONE);
 				if (getSupportActionBar() != null) {
@@ -832,15 +829,15 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
 		SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
 		boolean manualStatus = sharedPreferences.getBoolean(SettingsActivity.MANUALLY_CHANGE_PRESENCE, getResources().getBoolean(R.bool.manually_change_presence));
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
-		final DialogPresenceBinding binding = DataBindingUtil.inflate(getLayoutInflater(),R.layout.dialog_presence,null,false);
+		final DialogPresenceBinding binding = DataBindingUtil.inflate(getLayoutInflater(), R.layout.dialog_presence, null, false);
 		String current = mAccount.getPresenceStatusMessage();
 		if (current != null && !current.trim().isEmpty()) {
 			binding.statusMessage.append(current);
 		}
-		setAvailabilityRadioButton(mAccount.getPresenceStatus(),binding);
+		setAvailabilityRadioButton(mAccount.getPresenceStatus(), binding);
 		binding.show.setVisibility(manualStatus ? View.VISIBLE : View.GONE);
 		List<PresenceTemplate> templates = xmppConnectionService.getPresenceTemplates(mAccount);
-		PresenceTemplateAdapter presenceTemplateAdapter = new PresenceTemplateAdapter(this,R.layout.simple_list_item,templates);
+		PresenceTemplateAdapter presenceTemplateAdapter = new PresenceTemplateAdapter(this, R.layout.simple_list_item, templates);
 		binding.statusMessage.setAdapter(presenceTemplateAdapter);
 		binding.statusMessage.setOnItemClickListener((parent, view, position, id) -> {
 			PresenceTemplate template = (PresenceTemplate) parent.getItemAtPosition(position);
@@ -848,9 +845,9 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
 		});
 		builder.setTitle(R.string.edit_status_message_title);
 		builder.setView(binding.getRoot());
-		builder.setNegativeButton(R.string.cancel,null);
+		builder.setNegativeButton(R.string.cancel, null);
 		builder.setPositiveButton(R.string.confirm, (dialog, which) -> {
-			PresenceTemplate template = new PresenceTemplate(getAvailabilityRadioButton(binding),binding.statusMessage.getText().toString().trim());
+			PresenceTemplate template = new PresenceTemplate(getAvailabilityRadioButton(binding), binding.statusMessage.getText().toString().trim());
 			if (mAccount.getPgpId() != 0 && hasPgp()) {
 				generateSignature(null, template);
 			} else {
@@ -864,7 +861,7 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
 		xmppConnectionService.getPgpEngine().generateSignature(intent, mAccount, template.getStatusMessage(), new UiCallback<String>() {
 			@Override
 			public void success(String signature) {
-				xmppConnectionService.changeStatus(mAccount,template,signature);
+				xmppConnectionService.changeStatus(mAccount, template, signature);
 			}
 
 			@Override
@@ -1043,7 +1040,7 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
 				this.mPgpFingerprint.setText(OpenPgpUtils.convertKeyIdToHex(pgpKeyId));
 				this.mPgpFingerprint.setOnClickListener(openPgp);
 				if ("pgp".equals(messageFingerprint)) {
-					this.getmPgpFingerprintDesc.setTextAppearance(this,R.style.TextAppearance_Conversations_Caption_Highlight);
+					this.getmPgpFingerprintDesc.setTextAppearance(this, R.style.TextAppearance_Conversations_Caption_Highlight);
 				}
 				this.getmPgpFingerprintDesc.setOnClickListener(openPgp);
 				this.mPgpDeleteFingerprintButton.setOnClickListener(delete);
@@ -1054,10 +1051,10 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
 			if (ownAxolotlFingerprint != null && Config.supportOmemo()) {
 				this.mAxolotlFingerprintBox.setVisibility(View.VISIBLE);
 				if (ownAxolotlFingerprint.equals(messageFingerprint)) {
-					this.mOwnFingerprintDesc.setTextAppearance(this,R.style.TextAppearance_Conversations_Caption_Highlight);
+					this.mOwnFingerprintDesc.setTextAppearance(this, R.style.TextAppearance_Conversations_Caption_Highlight);
 					this.mOwnFingerprintDesc.setText(R.string.omemo_fingerprint_selected_message);
 				} else {
-					this.mOwnFingerprintDesc.setTextAppearance(this,R.style.TextAppearance_Conversations_Caption);
+					this.mOwnFingerprintDesc.setTextAppearance(this, R.style.TextAppearance_Conversations_Caption);
 					this.mOwnFingerprintDesc.setText(R.string.omemo_fingerprint);
 				}
 				this.mAxolotlFingerprint.setText(CryptoHelper.prettifyFingerprint(ownAxolotlFingerprint.substring(2)));

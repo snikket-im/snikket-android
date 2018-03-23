@@ -110,6 +110,7 @@ public class UriHandlerActivity extends AppCompatActivity {
 			intent.setAction(Intent.ACTION_VIEW);
 			intent.putExtra("jid", xmppUri.getJid().asBareJid().toString());
 			intent.setData(uri);
+			intent.putExtra("scanned", scanned);
 		} else if (xmppUri.isJidValid()) {
 			intent = new Intent(getApplicationContext(), StartConversationActivity.class);
 			intent.setAction(Intent.ACTION_VIEW);
