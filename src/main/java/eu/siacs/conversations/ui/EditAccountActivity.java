@@ -442,6 +442,7 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
 		if (mAccount != null && mAccount.getJid().asBareJid().equals(uri.getJid()) && uri.hasFingerprints()) {
 			if (xmppConnectionService.verifyFingerprints(mAccount, uri.getFingerprints())) {
 				Toast.makeText(this, R.string.verified_fingerprints, Toast.LENGTH_SHORT).show();
+				updateAccountInformation(false);
 			}
 		} else if (showWarningToast) {
 			Toast.makeText(this, R.string.invalid_barcode, Toast.LENGTH_SHORT).show();
