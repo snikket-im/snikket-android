@@ -8,6 +8,7 @@
 * Removed slide out panel for conversation overview
 * Add ability to change status message
 * Highlight irregular unicode code blocks in Jabber IDs
+* Conversations now requires Android 4.4+
 
 ### Version 1.23.8
 * bug fixes
