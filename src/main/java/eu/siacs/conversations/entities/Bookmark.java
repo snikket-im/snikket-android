@@ -2,6 +2,7 @@ package eu.siacs.conversations.entities;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
@@ -55,16 +56,23 @@ public class Bookmark extends Element implements ListItem {
 	@Override
 	public String getDisplayName() {
 		final Conversation c = getConversation();
+		final String name = getBookmarkName();
 		if (c != null) {
 			return c.getName().toString();
-		} else if (getBookmarkName() != null
-				&& !getBookmarkName().trim().isEmpty()) {
-			return getBookmarkName().trim();
+		} else if (printableValue(name, false)) {
+			return name.trim();
 		} else {
 			Jid jid = this.getJid();
-			String name = jid != null ? jid.getLocal() : getAttribute("jid");
-			return name != null ? name : "";
+			return jid != null && jid.getLocal() != null ? jid.getLocal() : "";
 		}
+	}
+
+	public static boolean printableValue(@Nullable String value, boolean permitNone) {
+		return value != null && !value.trim().isEmpty() && (permitNone || !"None".equals(value));
+	}
+
+	public static boolean printableValue(@Nullable String value) {
+		return printableValue(value, true);
 	}
 
 	@Override

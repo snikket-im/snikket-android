@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
 import android.provider.ContactsContract;
+import android.text.TextUtils;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -112,13 +113,13 @@ public class Contact implements ListItem, Blockable {
 	}
 
 	public String getDisplayName() {
-		if (Config.X509_VERIFICATION && this.commonName != null && !this.commonName.isEmpty()) {
+		if (Config.X509_VERIFICATION && !TextUtils.isEmpty(this.commonName)) {
 			return this.commonName;
-		} else if (this.systemName != null && !this.systemName.isEmpty()) {
+		} else if (!TextUtils.isEmpty(this.systemName)) {
 			return this.systemName;
-		} else if (this.serverName != null && !this.serverName.isEmpty()) {
+		} else if (!TextUtils.isEmpty(this.serverName)) {
 			return this.serverName;
-		} else if (this.presenceName != null && !this.presenceName.isEmpty() && mutualPresenceSubscription() ) {
+		} else if (!TextUtils.isEmpty(this.presenceName) && mutualPresenceSubscription() ) {
 			return this.presenceName;
 		} else if (jid.getLocal() != null) {
 			return JidHelper.localPartOrFallback(jid);
@@ -152,7 +153,7 @@ public class Contact implements ListItem, Blockable {
 	}
 
 	public boolean match(Context context, String needle) {
-		if (needle == null || needle.isEmpty()) {
+		if (TextUtils.isEmpty(needle)) {
 			return true;
 		}
 		needle = needle.toLowerCase(Locale.US).trim();
