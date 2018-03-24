@@ -99,6 +99,7 @@ import eu.siacs.conversations.utils.TimeframeUtils;
 import eu.siacs.conversations.utils.UIHelper;
 import eu.siacs.conversations.xmpp.XmppConnection;
 import eu.siacs.conversations.xmpp.chatstate.ChatState;
+import eu.siacs.conversations.xmpp.jingle.JingleConnection;
 import rocks.xmpp.addr.Jid;
 
 import static eu.siacs.conversations.ui.XmppActivity.EXTRA_ACCOUNT;
@@ -998,11 +999,13 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
 			relevantForCorrection = relevantForCorrection.next();
 		}
 		if (m.getType() != Message.TYPE_STATUS) {
+
 			final boolean treatAsFile = m.getType() != Message.TYPE_TEXT
 					&& m.getType() != Message.TYPE_PRIVATE
-					&& t == null;
+					&& !(t instanceof TransferablePlaceholder);
 			final boolean encrypted = m.getEncryption() == Message.ENCRYPTION_DECRYPTION_FAILED
 					|| m.getEncryption() == Message.ENCRYPTION_PGP;
+			final boolean receiving = m.getStatus() == Message.STATUS_RECEIVED && (t instanceof JingleConnection || t instanceof HttpDownloadConnection);
 			activity.getMenuInflater().inflate(R.menu.message_context, menu);
 			menu.setHeaderTitle(R.string.message_options);
 			MenuItem copyMessage = menu.findItem(R.id.copy_message);
@@ -1028,7 +1031,7 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
 					&& (m.getConversation().getMucOptions().nonanonymous() || m.getConversation().getMode() == Conversation.MODE_SINGLE)) {
 				correctMessage.setVisible(true);
 			}
-			if (treatAsFile || (m.getType() == Message.TYPE_TEXT && !m.treatAsDownloadable())) {
+			if ((treatAsFile && !receiving) || (m.getType() == Message.TYPE_TEXT && !m.treatAsDownloadable())) {
 				shareWith.setVisible(true);
 			}
 			if (m.getStatus() == Message.STATUS_SEND_FAILED) {
