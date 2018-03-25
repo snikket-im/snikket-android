@@ -324,6 +324,7 @@ public class MessageArchiveService implements OnAdvancedStreamFeaturesLoaded {
 
 	private void processPostponed(Query query) {
 		query.account.getAxolotlService().processPostponed();
+		query.pendingReceiptRequests.removeAll(query.receiptRequests);
 		Log.d(Config.LOGTAG, query.getAccount().getJid().asBareJid() + ": found " + query.pendingReceiptRequests.size() + " pending receipt requests");
 		Iterator<ReceiptRequest> iterator = query.pendingReceiptRequests.iterator();
 		while (iterator.hasNext()) {
@@ -360,7 +361,8 @@ public class MessageArchiveService implements OnAdvancedStreamFeaturesLoaded {
 	}
 
 	public class Query {
-		public HashSet<ReceiptRequest> pendingReceiptRequests = new HashSet<>();
+		private HashSet<ReceiptRequest> pendingReceiptRequests = new HashSet<>();
+		private HashSet<ReceiptRequest> receiptRequests = new HashSet<>();
 		private int totalCount = 0;
 		private int actualCount = 0;
 		private int actualInThisQuery = 0;
@@ -399,9 +401,20 @@ public class MessageArchiveService implements OnAdvancedStreamFeaturesLoaded {
 			query.totalCount = totalCount;
 			query.actualCount = actualCount;
 			query.pendingReceiptRequests = pendingReceiptRequests;
+			query.receiptRequests = receiptRequests;
 			query.callback = callback;
 			query.catchup = catchup;
 			return query;
+		}
+
+		public void removePendingReceiptRequest(ReceiptRequest receiptRequest) {
+			if (!this.pendingReceiptRequests.remove(receiptRequest)) {
+				this.receiptRequests.add(receiptRequest);
+			}
+		}
+
+		public void addPendingReceiptRequest(ReceiptRequest receiptRequest) {
+			this.pendingReceiptRequests.add(receiptRequest);
 		}
 
 		public boolean isLegacy() {

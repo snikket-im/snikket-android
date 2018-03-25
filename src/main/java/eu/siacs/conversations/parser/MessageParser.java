@@ -692,7 +692,7 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
 			String id = received.getAttribute("id");
 			if (packet.fromAccount(account)) {
 				if (query != null && id != null && packet.getTo() != null) {
-					query.pendingReceiptRequests.remove(new ReceiptRequest(packet.getTo(),id));
+					query.removePendingReceiptRequest(new ReceiptRequest(packet.getTo(),id));
 				}
 			} else {
 				mXmppConnectionService.markMessage(account, from.asBareJid(), received.getAttribute("id"), Message.STATUS_SEND_RECEIVED);
@@ -785,9 +785,9 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
 						packet.getType());
 				mXmppConnectionService.sendMessagePacket(account, receipt);
 			}
-		} else {
+		} else { //just catchup??
 			if (request) {
-				query.pendingReceiptRequests.add(new ReceiptRequest(packet.getFrom(),packet.getId()));
+				query.addPendingReceiptRequest(new ReceiptRequest(packet.getFrom(),packet.getId()));
 			}
 		}
 	}
