@@ -13,7 +13,7 @@
             android:layout_height="wrap_content"
             android:background="?attr/colorPrimary"
             android:minHeight="?attr/actionBarSize"
-            android:elevation="6dp"
+            android:elevation="@dimen/toolbar_elevation"
             app:tabMode="fixed"
             app:tabGravity="fill"
             app:tabTextColor="@color/white70"

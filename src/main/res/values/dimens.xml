@@ -12,6 +12,8 @@
 	<dimen name="swipe_handle_size">32dp</dimen>
 	<dimen name="avatar_item_distance">16dp</dimen>
 
+	<dimen name="toolbar_elevation">4dp</dimen>
+
 	<dimen name="publish_avatar_top_margin">8dp</dimen>
 	<dimen name="publish_avatar_size">96dp</dimen>
 
