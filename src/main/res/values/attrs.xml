@@ -71,4 +71,6 @@
         <attr name="backgroundColor" format="reference|color"/>
     </declare-styleable>
 
+    <attr name="popupOverlayStyle" format="reference"/>
+
 </resources>

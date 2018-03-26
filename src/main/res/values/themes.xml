@@ -5,6 +5,7 @@
         <item name="colorPrimary">@color/primary500</item>
         <item name="colorPrimaryDark">@color/primary700</item>
         <item name="colorAccent">@color/accent</item>
+        <item name="popupOverlayStyle">@style/ThemeOverlay.AppCompat.Light</item>
 
         <item name="color_background_primary">@color/grey50</item>
         <item name="color_background_secondary">@color/grey200</item>
@@ -81,7 +82,7 @@
         <item name="colorPrimary">@color/primary800</item>
         <item name="colorPrimaryDark">@color/primary900</item>
         <item name="colorAccent">@color/accent</item>
-
+        <item name="popupOverlayStyle">@style/ThemeOverlay.AppCompat.Dark</item>
 
         <item name="color_background_primary">@color/grey800</item>
         <item name="color_background_secondary">@color/grey900</item>
