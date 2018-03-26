@@ -593,6 +593,9 @@ public class Conversation extends AbstractEntity implements Blockable, Comparabl
 
 	public int getNextEncryption() {
 		final int defaultEncryption;
+		if (!Config.supportOmemo() && !Config.supportOpenPgp()) {
+			return Message.ENCRYPTION_NONE;
+		}
 		AxolotlService axolotlService = account.getAxolotlService();
 		if (contactJid.asBareJid().equals(Config.BUG_REPORTS)) {
 			defaultEncryption = Message.ENCRYPTION_NONE;
