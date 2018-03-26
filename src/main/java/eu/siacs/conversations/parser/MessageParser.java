@@ -761,7 +761,7 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
 						packet.getType());
 				mXmppConnectionService.sendMessagePacket(account, receipt);
 			}
-		} else { //just catchup??
+		} else if (query.isCatchup()) {
 			if (request) {
 				query.addPendingReceiptRequest(new ReceiptRequest(packet.getFrom(), packet.getId()));
 			}
