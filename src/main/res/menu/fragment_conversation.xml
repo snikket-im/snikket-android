@@ -69,7 +69,7 @@
         android:id="@+id/action_muc_details"
         android:icon="?attr/icon_group"
         android:orderInCategory="40"
-        app:showAsAction="ifRoom"
+        app:showAsAction="never"
         android:title="@string/action_muc_details"/>
     <item
         android:id="@+id/action_invite"

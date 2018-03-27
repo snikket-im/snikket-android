@@ -17,6 +17,14 @@
         </PreferenceScreen>
     </PreferenceCategory>
     <PreferenceCategory android:title="@string/pref_privacy">
+        <ListPreference
+            android:key="omemo"
+            android:title="@string/pref_omemo_setting"
+            android:summary="@string/pref_omemo_setting_summary_default_on"
+            android:defaultValue="@string/omemo_setting_default"
+            android:entryValues="@array/omemo_setting_entry_values"
+            android:entries="@array/omemo_setting_entries"
+            />
         <CheckBoxPreference
             android:defaultValue="@bool/confirm_messages"
             android:key="confirm_messages"

@@ -63,6 +63,7 @@ import java.util.concurrent.atomic.AtomicLong;
 
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
+import eu.siacs.conversations.crypto.OmemoSetting;
 import eu.siacs.conversations.crypto.PgpDecryptionService;
 import eu.siacs.conversations.crypto.PgpEngine;
 import eu.siacs.conversations.crypto.axolotl.AxolotlService;
@@ -932,6 +933,7 @@ public class XmppConnectionService extends Service {
 	@SuppressLint("TrulyRandom")
 	@Override
 	public void onCreate() {
+		OmemoSetting.load(this);
 		ExceptionHelper.init(getApplicationContext());
 		PRNGFixes.apply();
 		Resolver.init(this);

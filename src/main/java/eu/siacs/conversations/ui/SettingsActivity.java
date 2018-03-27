@@ -32,6 +32,7 @@ import java.util.List;
 
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
+import eu.siacs.conversations.crypto.OmemoSetting;
 import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.services.ExportLogsService;
 import eu.siacs.conversations.services.MemorizingTrustManager;
@@ -52,6 +53,7 @@ public class SettingsActivity extends XmppActivity implements
 	public static final String BROADCAST_LAST_ACTIVITY = "last_activity";
 	public static final String THEME = "theme";
 	public static final String SHOW_DYNAMIC_TAGS = "show_dynamic_tags";
+	public static final String OMEMO_SETTING = "omemo";
 
 	public static final int REQUEST_WRITE_LOGS = 0xbf8701;
 	private SettingsFragment mSettingsFragment;
@@ -83,6 +85,8 @@ public class SettingsActivity extends XmppActivity implements
 	public void onStart() {
 		super.onStart();
 		PreferenceManager.getDefaultSharedPreferences(this).registerOnSharedPreferenceChangeListener(this);
+
+		changeOmemoSettingSummary();
 
 		if (Config.FORCE_ORBOT) {
 			PreferenceCategory connectionOptions = (PreferenceCategory) mSettingsFragment.findPreference("connection_options");
@@ -231,6 +235,26 @@ public class SettingsActivity extends XmppActivity implements
 		}
 	}
 
+	private void changeOmemoSettingSummary() {
+		ListPreference omemoPreference = (ListPreference) mSettingsFragment.findPreference(OMEMO_SETTING);
+		if (omemoPreference != null) {
+			String value = omemoPreference.getValue();
+			switch (value) {
+				case "always":
+					omemoPreference.setSummary(R.string.pref_omemo_setting_summary_always);
+					break;
+				case "default_on":
+					omemoPreference.setSummary(R.string.pref_omemo_setting_summary_default_on);
+					break;
+				case "default_off":
+					omemoPreference.setSummary(R.string.pref_omemo_setting_summary_default_off);
+					break;
+			}
+		} else {
+			Log.d(Config.LOGTAG,"unable to find preference named "+OMEMO_SETTING);
+		}
+	}
+
 	private boolean isCallable(final Intent i) {
 		return i != null && getPackageManager().queryIntentActivities(i, PackageManager.MATCH_DEFAULT_ONLY).size() > 0;
 	}
@@ -350,7 +374,10 @@ public class SettingsActivity extends XmppActivity implements
 				TREAT_VIBRATE_AS_SILENT,
 				MANUALLY_CHANGE_PRESENCE,
 				BROADCAST_LAST_ACTIVITY);
-		if (name.equals(KEEP_FOREGROUND_SERVICE)) {
+		if (name.equals(OMEMO_SETTING)) {
+			OmemoSetting.load(this, preferences);
+			changeOmemoSettingSummary();
+		} else if (name.equals(KEEP_FOREGROUND_SERVICE)) {
 			xmppConnectionService.toggleForegroundService();
 		} else if (resendPresence.contains(name)) {
 			if (xmppConnectionServiceBound) {

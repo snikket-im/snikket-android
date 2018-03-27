@@ -735,4 +735,8 @@
 	<string name="disable_encryption_message">Are you sure you want to disable OMEMO encryption for this conversation?\nThis will allow your server administrator to read your messages, but it might be the only way to communicate with people using outdated clients.</string>
 	<string name="disable_now">Disable now</string>
     <string name="draft">Draft:</string>
+    <string name="pref_omemo_setting">OMEMO Encryption</string>
+	<string name="pref_omemo_setting_summary_always">OMEMO will always be used for one-on-one and private group chats.</string>
+	<string name="pref_omemo_setting_summary_default_on">OMEMO will be used by default for new conversations.</string>
+	<string name="pref_omemo_setting_summary_default_off">OMEMO will have to be turned on explicitly for new conversations.</string>
 </resources>

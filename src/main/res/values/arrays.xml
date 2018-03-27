@@ -90,4 +90,16 @@
 		<item>2592000</item>
 		<item>15811200</item>
 	</integer-array>
+	<string-array name="omemo_setting_entry_values">
+		<item>always</item>
+		<item>default_on</item>
+		<item>default_off</item>
+	</string-array>
+	<string-array name="omemo_setting_entries">
+		<item>@string/always</item>
+		<item>@string/default_on</item>
+		<item>@string/default_off</item>
+	</string-array>
+	<string name="default_on">On by default</string>
+	<string name="default_off">Off by default</string>
 </resources>

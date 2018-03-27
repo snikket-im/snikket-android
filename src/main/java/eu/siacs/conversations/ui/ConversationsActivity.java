@@ -60,6 +60,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
+import eu.siacs.conversations.crypto.OmemoSetting;
 import eu.siacs.conversations.databinding.ActivityConversationsBinding;
 import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.entities.Conversation;
@@ -364,6 +365,7 @@ public class ConversationsActivity extends XmppActivity implements OnConversatio
 	@Override
 	protected void onCreate(final Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		OmemoSetting.load(this);
 		new EmojiService(this).init();
 		this.binding = DataBindingUtil.setContentView(this, R.layout.activity_conversations);
 		setSupportActionBar((Toolbar) binding.toolbar);

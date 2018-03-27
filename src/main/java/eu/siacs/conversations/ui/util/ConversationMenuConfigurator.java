@@ -38,6 +38,7 @@ import android.view.MenuItem;
 
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
+import eu.siacs.conversations.crypto.OmemoSetting;
 import eu.siacs.conversations.crypto.axolotl.AxolotlService;
 import eu.siacs.conversations.entities.Conversation;
 import eu.siacs.conversations.entities.Message;
@@ -77,7 +78,9 @@ public class ConversationMenuConfigurator {
 		final MenuItem axolotl = menu.findItem(R.id.encryption_choice_axolotl);
 
 		boolean visible;
-		if (conversation.getMode() == Conversation.MODE_MULTI) {
+		if (OmemoSetting.isAlways()) {
+			visible = false;
+		} else if (conversation.getMode() == Conversation.MODE_MULTI) {
 			visible = (Config.supportOpenPgp() || Config.supportOmemo()) && Config.multipleEncryptionChoices();
 		} else {
 			visible = Config.multipleEncryptionChoices();

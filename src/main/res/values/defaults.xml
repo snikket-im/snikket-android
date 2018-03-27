@@ -42,4 +42,5 @@
     <bool name="validate_hostname">false</bool>
     <bool name="show_qr_code_scan">true</bool>
     <bool name="scroll_to_bottom">true</bool>
+    <string name="omemo_setting_default">default_on</string>
 </resources>
