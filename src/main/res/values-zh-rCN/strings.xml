@@ -363,6 +363,7 @@
   <string name="error_no_keys_to_trust_server_error">没有找到可以的密钥。\n服务器似乎发生错误，无法获取新的密钥。 </string>
   <string name="error_no_keys_to_trust_presence">没有可以用于这个账户的密钥。请确保你有相互的在线状态的订阅。</string>
   <string name="error_no_keys_to_trust">此联系人没有可用的密钥。如果你曾经清除过他们的密钥，那么需要他们生成新的密钥。</string>
+  <string name="error_trustkeys_title">出错了</string>
   <string name="fetching_history_from_server">从服务器获取历史记录</string>
   <string name="no_more_history_on_server">服务器上没有更多历史记录</string>
   <string name="updating">更新中…</string>
@@ -408,6 +409,7 @@
   <string name="could_not_modify_conference_options">无法更改群组设置</string>
   <string name="never">从不</string>
   <string name="until_further_notice">直到重新开启通知</string>
+  <string name="snooze">小睡</string>
   <string name="reply">回复</string>
   <string name="mark_as_read">标记为已读</string>
   <string name="pref_input_options">输入</string>
@@ -462,6 +464,7 @@
   <string name="choose_quick_action">选择快速动作</string>
   <string name="search_for_contacts_or_groups">搜索联系人或群组</string>
   <string name="send_private_message">发送私密消息</string>
+  <string name="user_has_left_conference">%1$s 离开了群聊！</string>
   <string name="username">用户名</string>
   <string name="username_hint">用户名</string>
   <string name="invalid_username">该用户名无效</string>
@@ -515,6 +518,8 @@
   <string name="shared_image_with_x">用 %s 分享图片</string>
   <string name="shared_images_with_x">图片分享自 %s</string>
   <string name="shared_text_with_x">用 %s 分享文本</string>
+  <string name="no_storage_permission">Conversations 需要外部储存权限</string>
+  <string name="no_camera_permission">Conversations 需要摄像头权限</string>
   <string name="sync_with_contacts">同步联系人</string>
   <string name="sync_with_contacts_long">Conversations 会匹配你的 XMPP 花名册与你的联系人，以显示他们的全名和头像。\n\nConversations 只会读取你的联系人并在本地匹配，不会上传到你的服务器。\n\n现在将要询问你是否给予访问你联系人的权限。</string>
   <string name="certificate_information">证书详情</string>
@@ -550,11 +555,14 @@
   <string name="security_error_invalid_file_access">安全错误：文件访问权限无效</string>
   <string name="no_application_to_share_uri">没有可以分享此链接的应用</string>
   <string name="share_uri_with">分享链接...</string>
+  <string name="welcome_text">Jabber 是一个独立即时通讯网络服务商。无论您选择何种 Jabber 服务器，您都可使用本客户端\n但是为了让您更方便些，我们希望您在 conversations.im¹ 创建账号，它专门为 Conversations 服务。</string>
   <string name="magic_create_text">我们将会引导你完成在 conversations.im¹ 上注册账号的过程。\n当获得了 conversations.im 提供的账号以后，你可以通过添加使用其他提供商的好友的完整 Jabber ID 来与他们联络。</string>
   <string name="your_full_jid_will_be">您完整的 Jabble ID 是：%s </string>
   <string name="create_account">创建账户</string>
   <string name="use_own_provider">使用我自己的服务端</string>
   <string name="pick_your_username">输入您的用户名</string>
+  <string name="pref_manually_change_presence">手动更改状态</string>
+  <string name="pref_manually_change_presence_summary">编辑状态信息时，您的状态</string>
   <string name="change_presence">变更状态</string>
   <string name="status_message">状态信息</string>
   <string name="all_accounts_on_this_device">为本设备上的所有帐户设置</string>
@@ -640,6 +648,8 @@
   <string name="i_followed_this_link_from_a_trusted_source">我从一个可信的源追踪的此链接</string>
   <string name="verifying_omemo_keys_trusted_source">点击一个链接后将会开始校验 %1$s 的 OMEMO 密钥。此种情形只在你获得了一个从可信的源上只有 %2$s 能发布的该链接才是安全的。</string>
   <string name="verify_omemo_keys">校验 OMEMO 密钥</string>
+  <string name="show_inactive_devices">显示不活跃设备</string>
+  <string name="hide_inactive_devices">隐藏不活跃设备</string>
   <string name="distrust_omemo_key">不信任的设备</string>
   <string name="distrust_omemo_key_text">你确认要移除此设备的验证吗？\n此设备及从其发送的信息将会被标识为不可信。</string>
   <plurals name="seconds">
@@ -693,4 +703,27 @@
   <string name="message_copied_to_clipboard">消息已被复制</string>
   <string name="message">消息</string>
   <string name="private_messages_are_disabled">禁止私信</string>
+  <string name="huawei_protected_apps">受保护的应用</string>
+  <string name="huawei_protected_apps_summary">为了在屏幕关闭时也可收到消息提醒，您需要将 Conversations 加入受保护的应用列表。</string>
+  <string name="mtm_accept_cert">接受未知的证书？</string>
+  <string name="mtm_trust_anchor">服务器证书未经已知证书机构签发。</string>
+  <string name="mtm_cert_expired">服务器证书已失效。</string>
+  <string name="mtm_accept_servername">接受不匹配的服务器名称？</string>
+  <string name="mtm_hostname_mismatch">由于 “%s”，服务器无法验证。证书仅对此有效：</string>
+  <string name="mtm_connect_anyway">您仍希望连接吗？</string>
+  <string name="mtm_cert_details">证书详情:</string>
+  <string name="mtm_notification">证书验证</string>
+  <string name="once">仅一次</string>
+  <string name="qr_code_scanner_needs_access_to_camera">二维码扫描器需要摄像头权限</string>
+  <string name="pref_scroll_to_bottom">滚动到底部</string>
+  <string name="pref_scroll_to_bottom_summary">发送消息后滚动到底部</string>
+  <string name="edit_status_message_title">编辑状态信息</string>
+  <string name="edit_status_message">编辑状态信息</string>
+  <string name="disable_encryption">禁用加密</string>
+  <string name="error_trustkey_general">Conversations 无法向 %1$s 发送加密信息。这可能由于您的联系人使用的是过时的服务器或客户端，无法处理 OMEMO.</string>
+  <string name="error_trustkey_device_list">无法获取设备列表</string>
+  <string name="error_trustkey_bundle">无法获取设备包</string>
+  <string name="error_trustkey_hint_mutual">提示：某些情况下，可以将对方加入联系人列表，以解决此问题。</string>
+  <string name="disable_encryption_message">确认要禁用此会话的 OMEMO 加密吗？\n这会允许您的服务器管理员阅读你们的消息，但这可能是和使用过时客户端的人会话的唯一方式。</string>
+  <string name="disable_now">现在禁用</string>
 </resources>

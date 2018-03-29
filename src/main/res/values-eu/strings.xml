@@ -363,6 +363,7 @@
   <string name="error_no_keys_to_trust_server_error">Ez dago gako erabilgarririk kontaktu honetarako.\nEzin izan da zerbitzaritik gako berririk eskuratu. Agian akatsen bat dago zure kontaktuaren zerbitzariarekin.</string>
   <string name="error_no_keys_to_trust_presence">Ez dago gako erabilgarririk kontaktu honetarako.\nEgiaztatu ezazu bien arteko presentzia harpidetza duzuela.</string>
   <string name="error_no_keys_to_trust">Kontaktu honetarako gako erabilgarririk ez dago. Bere gakoak purgatu badituzu, berri batzuk sortu behar dituzte.</string>
+  <string name="error_trustkeys_title">Zerbait gaizki joan da</string>
   <string name="fetching_history_from_server">Mezuak zerbitzaritik eskuratzen</string>
   <string name="no_more_history_on_server">Mezu gehiagorik ez zerbitzarian</string>
   <string name="updating">Eguneratzen...</string>
@@ -465,6 +466,7 @@
   <string name="choose_quick_action">Ekintza azkarra aukeratu</string>
   <string name="search_for_contacts_or_groups">Kontaktuak edo taldeak bilatu</string>
   <string name="send_private_message">Mezu pribatua bidali</string>
+  <string name="user_has_left_conference">%1$s(e)k taldea utzi du</string>
   <string name="username">Erabiltzaile izena</string>
   <string name="username_hint">Erabiltzaile izena</string>
   <string name="invalid_username">Hau ez da erabiltzaile izen baliodun bat</string>
@@ -476,6 +478,7 @@
   <string name="account_status_bind_failure">Estekatzeak hust egin du</string>
   <string name="account_status_host_unknown">Zerbitzaria ez da domeinuaren erantzule</string>
   <string name="server_info_broken">Hondatuta</string>
+  <string name="pref_presence_settings">Eskuragarritasuna</string>
   <string name="pref_away_when_screen_off">Urrun pantaila itzalita dagoenean</string>
   <string name="pref_away_when_screen_off_summary">Zure baliabidea urrun bezala markatzen du pantaila itzalita dagoenean</string>
   <string name="pref_dnd_on_silent_mode">\"Ez gogaitu\" modu isilean</string>
@@ -518,6 +521,8 @@
   <string name="shared_image_with_x">Irudia %s(r)ekin partekatu da</string>
   <string name="shared_images_with_x">Irudiak %s(r)ekin partekatu dira</string>
   <string name="shared_text_with_x">Testua %s(r)ekin partekatu da</string>
+  <string name="no_storage_permission">Conversationsek kanpoko biltegirako sarbidea behar du</string>
+  <string name="no_camera_permission">Conversationsek kamerarako sarbidea behar du</string>
   <string name="sync_with_contacts">Kontaktuekin sinkronizatu</string>
   <string name="sync_with_contacts_long">Conversationsek zure XMPP zerrenda eta zure kontaktuak uztartu nahi ditu haien izenak eta argazkiak erakusteko.\n\nConversationsek zure kontaktuak modu lokalean soilik irakurri eta uztartuko ditu, zure zerbitzarira kargatu gabe.\n\nJarraian baimenak eskatuko zaizkizu zure kontaktuetara sartu ahal izateko.</string>
   <string name="certificate_information">Ziurtagiriaren informazioa</string>
@@ -556,6 +561,7 @@
   <string name="create_account">Kontua sortu</string>
   <string name="use_own_provider">Nire hornitzale propioa erabili</string>
   <string name="pick_your_username">Aukeratu zure erabiltzaile izena</string>
+  <string name="pref_manually_change_presence">Kudeatu eskuragarritasuna eskuz</string>
   <string name="change_presence">Presentzia aldatu</string>
   <string name="status_message">Egoera mezua</string>
   <string name="all_accounts_on_this_device">Gailu honetako kontu guztietarako ezarri</string>
@@ -641,8 +647,34 @@
   <string name="i_followed_this_link_from_a_trusted_source">Lotura hau jatorri fidagarri batetik jarraitu dut</string>
   <string name="verifying_omemo_keys_trusted_source">%1$s(r)en OMEMO gakoak egiaztatuko dira lotura batean sakatu ondoren. Hau segurua da soilik lotura hau jatorri fidagarri batetik jarraitu baduzu eta soilik %2$s(e)k argitaratu izan ahal badu.</string>
   <string name="verify_omemo_keys">OMEMO gakoak egiaztatu</string>
+  <string name="show_inactive_devices">Ez aktiboak erakutsi</string>
+  <string name="hide_inactive_devices">Ez aktiboak ezkutatu</string>
   <string name="distrust_omemo_key">Gailu ez fidagarria</string>
   <string name="distrust_omemo_key_text">Gailu honen egiaztapena ezabatu nahi duzulaz ziur al zaude?\nGailu hau eta beregandik datozen mezuak ez fidagarriak bezala markatuko dira.</string>
+  <plurals name="seconds">
+    <item quantity="one">Segundu %d</item>
+    <item quantity="other">%d segundu</item>
+  </plurals>
+  <plurals name="minutes">
+    <item quantity="one">Minutu %d</item>
+    <item quantity="other">%d minutu</item>
+  </plurals>
+  <plurals name="hours">
+    <item quantity="one">Ordu %d</item>
+    <item quantity="other">%d ordu</item>
+  </plurals>
+  <plurals name="days">
+    <item quantity="one">Egun %d</item>
+    <item quantity="other">%d egun</item>
+  </plurals>
+  <plurals name="weeks">
+    <item quantity="one">Aste %d</item>
+    <item quantity="other">%d aste</item>
+  </plurals>
+  <plurals name="months">
+    <item quantity="one">Hilabete %d</item>
+    <item quantity="other">%d hilabete</item>
+  </plurals>
   <string name="pref_automatically_delete_messages">Mezuen ezabatze automatikoa</string>
   <string name="pref_automatically_delete_messages_description">Ezarritako denbora tartea baino zaharragoak diren mezuak gailu honetatik automatikoki ezabatu.</string>
   <string name="encrypting_message">Mezua enkriptatzen</string>
@@ -678,4 +710,8 @@
   <string name="private_messages_are_disabled">Mezu pribatuak ezgaituta daude</string>
   <string name="huawei_protected_apps">Babestutako aplikazioak</string>
   <string name="huawei_protected_apps_summary">Jakinarazpenak jasotzen jarraitu nahi naduzu, baita pantaila itzalita dagoenean ere, Conversations babestutako aplikazioen zerrendan gehitu behar duzu.</string>
+  <string name="mtm_accept_cert">Ziurtagiri ezezaguna onartu?</string>
+  <string name="once">Behin</string>
+  <string name="disable_encryption">Enkriptazioa ezgaitu</string>
+  <string name="disable_now">Orain ezgaitu</string>
 </resources>
