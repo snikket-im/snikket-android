@@ -1435,9 +1435,7 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
 			switch (attachmentChoice) {
 				case ATTACHMENT_CHOICE_CHOOSE_IMAGE:
 					intent.setAction(Intent.ACTION_GET_CONTENT);
-					if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2) {
-						intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
-					}
+					intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
 					intent.setType("image/*");
 					chooser = true;
 					break;
@@ -1800,9 +1798,15 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
 		if (this.activity == null || this.binding == null) {
 			return false;
 		}
+
+		if (!activity.xmppConnectionService.isConversationStillOpen(this.conversation)) {
+			activity.onConversationArchived(this.conversation);
+			return false;
+		}
+
 		stopScrolling();
 		Log.d(Config.LOGTAG, "reInit(hasExtras=" + Boolean.toString(hasExtras) + ")");
-
+		
 		if (this.conversation.isRead() && hasExtras) {
 			Log.d(Config.LOGTAG, "trimming conversation");
 			this.conversation.trim();
@@ -1992,6 +1996,12 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
 			Log.d(Config.LOGTAG, "ConversationFragment.refresh() skipped updated because view binding was null");
 			return;
 		}
+		if (this.conversation != null && this.activity != null && this.activity.xmppConnectionService != null) {
+			if (!activity.xmppConnectionService.isConversationStillOpen(this.conversation)) {
+				activity.onConversationArchived(this.conversation);
+				return;
+			}
+		}
 		this.refresh(true);
 	}
 
@@ -2031,10 +2041,6 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
 				this.binding.messagesView.setSelection(size - 1);
 			});
 		}
-	}
-
-	public void setFocusOnInputField() {
-		this.binding.textinput.requestFocus();
 	}
 
 	public void doneSendingPgpMessage() {
@@ -2464,14 +2470,20 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
 		if (uuid != null) {
 			Conversation conversation = activity.xmppConnectionService.findConversationByUuid(uuid);
 			if (conversation == null) {
-				Log.d(Config.LOGTAG, "unable to restore activity");
 				clearPending();
+				activity.onConversationArchived(null);
 				return;
 			}
 			reInit(conversation);
 			ScrollState scrollState = pendingScrollState.pop();
 			if (scrollState != null) {
 				setScrollPosition(scrollState);
+			}
+		} else {
+			if (!activity.xmppConnectionService.isConversationStillOpen(conversation)) {
+				clearPending();
+				activity.onConversationArchived(conversation);
+				return;
 			}
 		}
 		ActivityResult activityResult = postponedActivityResult.pop();

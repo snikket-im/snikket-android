@@ -242,10 +242,8 @@ public class ConversationsActivity extends XmppActivity implements OnConversatio
 					Toast.makeText(this, R.string.device_does_not_support_battery_op, Toast.LENGTH_SHORT).show();
 				}
 			});
-			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2) {
-				builder.setOnDismissListener(dialog -> setNeverAskForBatteryOptimizationsAgain());
-			}
-			AlertDialog dialog = builder.create();
+			builder.setOnDismissListener(dialog -> setNeverAskForBatteryOptimizationsAgain());
+			final AlertDialog dialog = builder.create();
 			dialog.setCanceledOnTouchOutside(false);
 			dialog.show();
 		}

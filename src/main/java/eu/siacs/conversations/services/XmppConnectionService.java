@@ -1615,6 +1615,17 @@ public class XmppConnectionService extends Service {
 		}
 	}
 
+	public boolean isConversationStillOpen(final Conversation conversation) {
+		synchronized (this.conversations) {
+			for(Conversation current : this.conversations) {
+				if (current == conversation) {
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+
 	public Conversation findOrCreateConversation(Account account, Jid jid, boolean muc, final boolean async) {
 		return this.findOrCreateConversation(account, jid, muc, false, async);
 	}
