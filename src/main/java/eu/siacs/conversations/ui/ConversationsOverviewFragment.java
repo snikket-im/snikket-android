@@ -227,9 +227,6 @@ public class ConversationsOverviewFragment extends XmppFragment implements Enhan
 		if (position == 0 && this.conversationsAdapter.getCount() == 0) {
 			final Conversation c = swipedConversation.pop();
 			activity.xmppConnectionService.archiveConversation(c);
-			if (activity instanceof OnConversationArchived) {
-				((OnConversationArchived) activity).onConversationArchived(c);
-			}
 			return null;
 		}
 		final boolean formerlySelected = ConversationFragment.getConversation(getActivity()) == swipedConversation.peek();

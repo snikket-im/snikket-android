@@ -159,7 +159,6 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
 		@Override
 		public void onClick(View v) {
 			activity.xmppConnectionService.archiveConversation(conversation);
-			activity.onConversationArchived(conversation);
 		}
 	};
 	private OnClickListener joinMuc = new OnClickListener() {
@@ -1130,7 +1129,6 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
 				break;
 			case R.id.action_archive:
 				activity.xmppConnectionService.archiveConversation(conversation);
-				activity.onConversationArchived(conversation);
 				break;
 			case R.id.action_contact_details:
 				activity.switchToContactDetails(conversation.getContact());
@@ -1806,7 +1804,7 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
 
 		stopScrolling();
 		Log.d(Config.LOGTAG, "reInit(hasExtras=" + Boolean.toString(hasExtras) + ")");
-		
+
 		if (this.conversation.isRead() && hasExtras) {
 			Log.d(Config.LOGTAG, "trimming conversation");
 			this.conversation.trim();
