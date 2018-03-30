@@ -925,6 +925,25 @@ public class Conversation extends AbstractEntity implements Blockable, Comparabl
 				&& sentMessagesCount() == 0;
 	}
 
+	public int getReceivedMessagesCountSinceUuid(String uuid) {
+		if (uuid == null) {
+			return  0;
+		}
+		int count = 0;
+		synchronized (this.messages) {
+			for (int i = messages.size() - 1; i >= 0; i--) {
+				final Message message = messages.get(i);
+				if (uuid.equals(message.getUuid())) {
+					return count;
+				}
+				if (message.getStatus() <= Message.STATUS_RECEIVED) {
+					++count;
+				}
+			}
+		}
+		return 0;
+	}
+
 	public interface OnMessageFound {
 		void onMessageFound(final Message message);
 	}

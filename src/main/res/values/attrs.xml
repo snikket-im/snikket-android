@@ -58,6 +58,7 @@
     <attr name="icon_import_export" format="reference"/>
     <attr name="icon_scan_qr_code" format="reference"/>
     <attr name="icon_enable_undecided_device" format="reference"/>
+    <attr name="icon_scroll_down" format="reference"/>
 
     <attr name="icon_notifications" format="reference"/>
     <attr name="icon_notifications_off" format="reference"/>
