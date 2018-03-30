@@ -2510,14 +2510,14 @@ public class XmppConnectionService extends Service {
 						}
 					}
 					Element form = query.findChild("x", Namespace.DATA);
-					if (form != null) {
-						conversation.getMucOptions().updateFormData(Data.parse(form));
+					Data data = form == null ? null : Data.parse(form);
+					if (conversation.getMucOptions().updateConfiguration(features, data)) {
+						Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": muc configuration changed for " + conversation.getJid().asBareJid());
+						updateConversation(conversation);
 					}
-					conversation.getMucOptions().updateFeatures(features);
 					if (callback != null) {
 						callback.onConferenceConfigurationFetched(conversation);
 					}
-					Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": fetched muc configuration for " + conversation.getJid().asBareJid() + " - " + features.toString());
 					updateConversationUi();
 				} else if (packet.getType() == IqPacket.TYPE.ERROR) {
 					if (callback != null) {

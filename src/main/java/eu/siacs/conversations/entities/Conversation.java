@@ -56,6 +56,10 @@ public class Conversation extends AbstractEntity implements Blockable, Comparabl
 	private static final String ATTRIBUTE_NEXT_MESSAGE_TIMESTAMP = "next_message_timestamp";
 	private static final String ATTRIBUTE_CRYPTO_TARGETS = "crypto_targets";
 	private static final String ATTRIBUTE_NEXT_ENCRYPTION = "next_encryption";
+	public static final String ATTRIBUTE_ALLOW_PM = "allow_pm";
+	public static final String ATTRIBUTE_MEMBERS_ONLY = "members_only";
+	public static final String ATTRIBUTE_MODERATED = "moderated";
+	public static final String ATTRIBUTE_NON_ANONYMOUS = "non_anonymous";
 	protected final ArrayList<Message> messages = new ArrayList<>();
 	public AtomicBoolean messagesLoaded = new AtomicBoolean(true);
 	protected Account account = null;
@@ -725,6 +729,12 @@ public class Conversation extends AbstractEntity implements Blockable, Comparabl
 		return mode == MODE_SINGLE || getBooleanAttribute(ATTRIBUTE_ALWAYS_NOTIFY, Config.ALWAYS_NOTIFY_BY_DEFAULT || isPrivateAndNonAnonymous());
 	}
 
+	public boolean setAttribute(String key, boolean value) {
+		boolean prev = getBooleanAttribute(key,false);
+		setAttribute(key,Boolean.toString(value));
+		return prev != value;
+	}
+
 	private boolean setAttribute(String key, long value) {
 		return setAttribute(key, Long.toString(value));
 	}
@@ -811,7 +821,7 @@ public class Conversation extends AbstractEntity implements Blockable, Comparabl
 		}
 	}
 
-	private boolean getBooleanAttribute(String key, boolean defaultValue) {
+	public boolean getBooleanAttribute(String key, boolean defaultValue) {
 		String value = this.getAttribute(key);
 		if (value == null) {
 			return defaultValue;
