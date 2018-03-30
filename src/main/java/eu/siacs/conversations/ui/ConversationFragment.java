@@ -213,7 +213,9 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
 
 		@Override
 		public void onScrollStateChanged(AbsListView view, int scrollState) {
-
+			if (AbsListView.OnScrollListener.SCROLL_STATE_IDLE == scrollState) {
+				fireReadEvent();
+			}
 		}
 
 		@Override
@@ -1547,9 +1549,33 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
 			getActivity().invalidateOptionsMenu();
 		});
 		super.onResume();
+		binding.messagesView.post(this::fireReadEvent);
+	}
+
+	private void fireReadEvent() {
 		if (activity != null && this.conversation != null) {
-			activity.onConversationRead(this.conversation);
+			String uuid = getLastVisibleMessageUuid();
+			if (uuid != null) {
+				activity.onConversationRead(this.conversation, uuid);
+			}
 		}
+	}
+
+	private String getLastVisibleMessageUuid() {
+		if (binding == null) {
+			return null;
+		}
+		int pos = binding.messagesView.getLastVisiblePosition();
+		if (pos >= 0) {
+			Message message = (Message) binding.messagesView.getItemAtPosition(pos);
+			if (message != null) {
+				while(message.next() != null && message.next().wasMergedIntoPrevious()) {
+					message = message.next();
+				}
+				return message.getUuid();
+			}
+		}
+		return null;
 	}
 
 	private void showErrorMessage(final Message message) {
@@ -1884,7 +1910,8 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
 			}
 		}
 
-		activity.onConversationRead(this.conversation);
+
+		this.binding.messagesView.post(this::fireReadEvent);
 		//TODO if we only do this when this fragment is running on main it won't *bing* in tablet layout which might be unnecessary since we can *see* it
 		activity.xmppConnectionService.getNotificationService().setOpenConversation(this.conversation);
 		return true;
@@ -2076,7 +2103,7 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
 				this.messageListAdapter.notifyDataSetChanged();
 				updateChatMsgHint();
 				if (notifyConversationRead && activity != null) {
-					activity.onConversationRead(this.conversation);
+					binding.messagesView.post(this::fireReadEvent);
 				}
 				updateSendButton();
 				updateEditablity();

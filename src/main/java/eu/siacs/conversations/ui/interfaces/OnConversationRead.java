@@ -32,5 +32,5 @@ package eu.siacs.conversations.ui.interfaces;
 import eu.siacs.conversations.entities.Conversation;
 
 public interface OnConversationRead {
-	void onConversationRead(Conversation conversation);
+	void onConversationRead(Conversation conversation, String upToUuid);
 }
