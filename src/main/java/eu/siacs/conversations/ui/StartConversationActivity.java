@@ -225,7 +225,7 @@ public class StartConversationActivity extends XmppActivity implements OnRosterU
 	}
 
 	private static boolean isViewIntent(final Intent i) {
-		return i != null && (Intent.ACTION_VIEW.equals(i.getAction()) || Intent.ACTION_SENDTO.equals(i.getAction()));
+		return i != null && (Intent.ACTION_VIEW.equals(i.getAction()) || Intent.ACTION_SENDTO.equals(i.getAction()) || i.hasExtra(WelcomeActivity.EXTRA_INVITE_URI));
 	}
 
 	protected void hideToast() {
@@ -316,8 +316,7 @@ public class StartConversationActivity extends XmppActivity implements OnRosterU
 		if (this.mTheme != theme) {
 			recreate();
 		} else {
-			Intent i = getIntent();
-			if (i == null || !i.hasExtra(WelcomeActivity.EXTRA_INVITE_URI)) {
+			if (pendingViewIntent.peek() == null) {
 				askForContactsPermissions();
 			}
 		}
@@ -729,7 +728,7 @@ public class StartConversationActivity extends XmppActivity implements OnRosterU
 		}
 	}
 
-	protected boolean processViewIntent(Intent intent) {
+	protected boolean processViewIntent(@NonNull Intent intent) {
 		final String inviteUri = intent.getStringExtra(WelcomeActivity.EXTRA_INVITE_URI);
 		if (inviteUri != null) {
 			Invite invite = new Invite(inviteUri);
