@@ -607,7 +607,7 @@ public class XmppConnectionService extends Service {
 						}
 						try {
 							restoredFromDatabaseLatch.await();
-							sendReadMarker(c,null);
+							sendReadMarker(c, null);
 						} catch (InterruptedException e) {
 							Log.d(Config.LOGTAG, "unable to process notification read marker for conversation " + c.getName());
 						}
@@ -1617,7 +1617,7 @@ public class XmppConnectionService extends Service {
 
 	public boolean isConversationStillOpen(final Conversation conversation) {
 		synchronized (this.conversations) {
-			for(Conversation current : this.conversations) {
+			for (Conversation current : this.conversations) {
 				if (current == conversation) {
 					return true;
 				}
@@ -3265,7 +3265,7 @@ public class XmppConnectionService extends Service {
 	}
 
 	public boolean markRead(final Conversation conversation, boolean dismiss) {
-		return markRead(conversation,null,dismiss).size() > 0;
+		return markRead(conversation, null, dismiss).size() > 0;
 	}
 
 	public boolean markRead(final Conversation conversation) {
@@ -3306,7 +3306,7 @@ public class XmppConnectionService extends Service {
 
 	public void sendReadMarker(final Conversation conversation, String upToUuid) {
 		final boolean isPrivateAndNonAnonymousMuc = conversation.getMode() == Conversation.MODE_MULTI && conversation.isPrivateAndNonAnonymous();
-		final List<Message> readMessages = this.markRead(conversation,upToUuid,true);
+		final List<Message> readMessages = this.markRead(conversation, upToUuid, true);
 		if (readMessages.size() > 0) {
 			updateConversationUi();
 		}

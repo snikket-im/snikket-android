@@ -131,7 +131,6 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
 	private static final String STATE_LAST_MESSAGE_UUID = "state_last_message_uuid";
 
 	final protected List<Message> messageList = new ArrayList<>();
-	private String lastMessageUuid = null;
 	private final PendingItem<ActivityResult> postponedActivityResult = new PendingItem<>();
 	private final PendingItem<String> pendingConversationsUuid = new PendingItem<>();
 	private final PendingItem<Bundle> pendingExtras = new PendingItem<>();
@@ -141,6 +140,7 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
 	private final PendingItem<Message> pendingMessage = new PendingItem<>();
 	public Uri mPendingEditorContent = null;
 	protected MessageAdapter messageListAdapter;
+	private String lastMessageUuid = null;
 	private Conversation conversation;
 	private FragmentConversationBinding binding;
 	private Toast messageLoaderToast;
@@ -185,30 +185,6 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
 			});
 		}
 	};
-
-	private void toggleScrollDownButton() {
-		toggleScrollDownButton(binding.messagesView);
-	}
-
-	private void toggleScrollDownButton(AbsListView listView) {
-		if (conversation == null) {
-			return;
-		}
-		if (scrolledToBottom(listView)) {
-			lastMessageUuid = null;
-			hideUnreadMessagesCount();
-		} else {
-			binding.scrollToBottomButton.setEnabled(true);
-			binding.scrollToBottomButton.setVisibility(View.VISIBLE);
-			if (lastMessageUuid == null) {
-				lastMessageUuid = conversation.getLatestMessage().getUuid();
-			}
-			if (conversation.getReceivedMessagesCountSinceUuid(lastMessageUuid) > 0) {
-				binding.unreadCountCustomView.setVisibility(View.VISIBLE);
-			}
-		}
-	}
-
 	private OnScrollListener mOnScrollListener = new OnScrollListener() {
 
 		@Override
@@ -391,12 +367,12 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
 	};
 	private OnClickListener mScrollButtonListener = new OnClickListener() {
 
- 		@Override
- 		public void onClick(View v) {
- 			stopScrolling();
- 			setSelection(binding.messagesView.getCount() - 1);
+		@Override
+		public void onClick(View v) {
+			stopScrolling();
+			setSelection(binding.messagesView.getCount() - 1);
 		}
- 	};
+	};
 	private OnClickListener mSendButtonListener = new OnClickListener() {
 
 		@Override
@@ -521,6 +497,49 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
 			}
 		}
 		return null;
+	}
+
+	private static void hideSoftKeyboard(final Activity activity) {
+		InputMethodManager imm = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
+		View view = activity.getCurrentFocus();
+		if (view != null && imm != null) {
+			imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+		}
+	}
+
+	private static boolean scrolledToBottom(AbsListView listView) {
+		final int count = listView.getCount();
+		if (count == 0) {
+			return true;
+		} else if (listView.getLastVisiblePosition() == count - 1) {
+			final View lastChild = listView.getChildAt(listView.getChildCount() - 1);
+			return lastChild != null && lastChild.getBottom() <= listView.getHeight();
+		} else {
+			return false;
+		}
+	}
+
+	private void toggleScrollDownButton() {
+		toggleScrollDownButton(binding.messagesView);
+	}
+
+	private void toggleScrollDownButton(AbsListView listView) {
+		if (conversation == null) {
+			return;
+		}
+		if (scrolledToBottom(listView)) {
+			lastMessageUuid = null;
+			hideUnreadMessagesCount();
+		} else {
+			binding.scrollToBottomButton.setEnabled(true);
+			binding.scrollToBottomButton.setVisibility(View.VISIBLE);
+			if (lastMessageUuid == null) {
+				lastMessageUuid = conversation.getLatestMessage().getUuid();
+			}
+			if (conversation.getReceivedMessagesCountSinceUuid(lastMessageUuid) > 0) {
+				binding.unreadCountCustomView.setVisibility(View.VISIBLE);
+			}
+		}
 	}
 
 	private int getIndexOf(String uuid, List<Message> messages) {
@@ -1008,14 +1027,6 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
 			if (inputMethodManager != null) {
 				inputMethodManager.showSoftInput(binding.textinput, InputMethodManager.SHOW_IMPLICIT);
 			}
-		}
-	}
-
-	private static void hideSoftKeyboard(final Activity activity) {
-		InputMethodManager imm = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
-		View view = activity.getCurrentFocus();
-		if (view != null && imm != null) {
-			imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
 		}
 	}
 
@@ -1569,7 +1580,7 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
 		if (pos >= 0) {
 			Message message = (Message) binding.messagesView.getItemAtPosition(pos);
 			if (message != null) {
-				while(message.next() != null && message.next().wasMergedIntoPrevious()) {
+				while (message.next() != null && message.next().wasMergedIntoPrevious()) {
 					message = message.next();
 				}
 				return message.getUuid();
@@ -1850,7 +1861,7 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
 			this.reInitRequiredOnStart = true;
 			pendingExtras.push(extras);
 		}
-		updateUnreadMessagesCount();
+		resetUnreadMessagesCount();
 	}
 
 	private void reInit(Conversation conversation) {
@@ -1895,6 +1906,7 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
 		Log.d(Config.LOGTAG, "scrolledToBottomAndNoPending=" + Boolean.toString(scrolledToBottomAndNoPending));
 
 		if (hasExtras || scrolledToBottomAndNoPending) {
+			resetUnreadMessagesCount();
 			synchronized (this.messageList) {
 				Log.d(Config.LOGTAG, "jump to first unread message");
 				final Message first = conversation.getFirstUnreadMessage();
@@ -1917,7 +1929,7 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
 		return true;
 	}
 
-	private void updateUnreadMessagesCount() {
+	private void resetUnreadMessagesCount() {
 		lastMessageUuid = null;
 		hideUnreadMessagesCount();
 	}
@@ -1934,6 +1946,7 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
 	private void setSelection(int pos) {
 		this.binding.messagesView.setSelection(pos);
 		this.binding.messagesView.post(() -> this.binding.messagesView.setSelection(pos));
+		this.binding.messagesView.post(this::fireReadEvent);
 	}
 
 	private boolean scrolledToBottom() {
@@ -1941,15 +1954,6 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
 			return false;
 		}
 		return scrolledToBottom(this.binding.messagesView);
-	}
-
-	private static boolean scrolledToBottom(AbsListView listView) {
-		if (listView.getLastVisiblePosition() == listView.getCount() - 1) {
-			final View lastChild = listView.getChildAt(listView.getChildCount() - 1);
-			return lastChild != null && lastChild.getBottom() <= listView.getHeight();
-		} else {
-			return false;
-		}
 	}
 
 	private void processExtras(Bundle extras) {
