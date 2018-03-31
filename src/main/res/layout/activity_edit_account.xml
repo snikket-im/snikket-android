@@ -57,14 +57,17 @@
                                 android:id="@+id/account_jid_layout"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:hint="@string/account_settings_jabber_id">
+                                android:hint="@string/account_settings_jabber_id"
+                                app:hintTextAppearance="@style/TextAppearance.Conversations.Design.Hint"
+                                app:errorTextAppearance="@style/TextAppearance.Conversations.Design.Error">
 
                                 <AutoCompleteTextView
                                     android:id="@+id/account_jid"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:imeOptions="actionNext"
-                                    android:inputType="textEmailAddress"/>
+                                    android:inputType="textEmailAddress"
+                                    style="@style/Widget.Conversations.EditText"/>
                             </android.support.design.widget.TextInputLayout>
 
 
@@ -74,7 +77,9 @@
                                 android:layout_height="wrap_content"
                                 app:passwordToggleDrawable="@drawable/visibility_toggle_drawable"
                                 app:passwordToggleEnabled="true"
-                                app:passwordToggleTint="?android:textColorSecondary">
+                                app:passwordToggleTint="?android:textColorSecondary"
+                                app:hintTextAppearance="@style/TextAppearance.Conversations.Design.Hint"
+                                app:errorTextAppearance="@style/TextAppearance.Conversations.Design.Error">
 
                                 <android.support.design.widget.TextInputEditText
                                     android:id="@+id/account_password"
@@ -82,7 +87,8 @@
                                     android:layout_height="wrap_content"
                                     android:layout_alignParentTop="true"
                                     android:hint="@string/password"
-                                    android:inputType="textPassword"/>
+                                    android:inputType="textPassword"
+                                    style="@style/Widget.Conversations.EditText"/>
                             </android.support.design.widget.TextInputLayout>
 
                             <LinearLayout
@@ -103,13 +109,16 @@
                                         android:id="@+id/hostname_layout"
                                         android:layout_width="match_parent"
                                         android:layout_height="wrap_content"
-                                        android:hint="@string/account_settings_hostname">
+                                        android:hint="@string/account_settings_hostname"
+                                        app:hintTextAppearance="@style/TextAppearance.Conversations.Design.Hint"
+                                        app:errorTextAppearance="@style/TextAppearance.Conversations.Design.Error">
 
                                         <EditText
                                             android:id="@+id/hostname"
                                             android:layout_width="fill_parent"
                                             android:layout_height="wrap_content"
-                                            android:inputType="textNoSuggestions"/>
+                                            android:inputType="textNoSuggestions"
+                                            style="@style/Widget.Conversations.EditText"/>
                                     </android.support.design.widget.TextInputLayout>
                                 </LinearLayout>
 
@@ -123,14 +132,17 @@
                                         android:id="@+id/port_layout"
                                         android:layout_width="match_parent"
                                         android:layout_height="wrap_content"
-                                        android:hint="@string/account_settings_port">
+                                        android:hint="@string/account_settings_port"
+                                        app:hintTextAppearance="@style/TextAppearance.Conversations.Design.Hint"
+                                        app:errorTextAppearance="@style/TextAppearance.Conversations.Design.Error">
 
                                         <EditText
                                             android:id="@+id/port"
                                             android:layout_width="match_parent"
                                             android:layout_height="match_parent"
                                             android:inputType="number"
-                                            android:maxLength="5"/>
+                                            android:maxLength="5"
+                                            style="@style/Widget.Conversations.EditText"/>
                                     </android.support.design.widget.TextInputLayout>
                                 </LinearLayout>
                             </LinearLayout>
@@ -171,7 +183,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="@string/battery_optimizations_enabled"
-                                android:textAppearance="@style/TextAppearance.AppCompat.Title"/>
+                                android:textAppearance="@style/TextAppearance.Conversations.Title"/>
 
                             <TextView
                                 android:id="@+id/os_optimization_body"
@@ -179,7 +191,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="8dp"
                                 android:text="@string/battery_optimizations_enabled_explained"
-                                android:textAppearance="@style/TextAppearance.AppCompat.Body1"/>
+                                android:textAppearance="@style/TextAppearance.Conversations.Body1"/>
                         </LinearLayout>
 
                         <LinearLayout
@@ -480,7 +492,7 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:text="@string/openpgp_key_id"
-                                    android:textAppearance="@style/TextAppearance.AppCompat.Caption"/>
+                                    android:textAppearance="@style/TextAppearance.Conversations.Caption"/>
                             </LinearLayout>
 
                             <ImageButton
@@ -520,7 +532,7 @@
                                     android:id="@+id/own_fingerprint_desc"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:textAppearance="@style/TextAppearance.AppCompat.Caption"/>
+                                    android:textAppearance="@style/TextAppearance.Conversations.Caption"/>
                             </LinearLayout>
 
                             <LinearLayout
@@ -580,7 +592,7 @@
                             android:layout_height="wrap_content"
                             android:layout_margin="@dimen/list_padding"
                             android:text="@string/other_devices"
-                            android:textAppearance="@style/TextAppearance.AppCompat.Title"/>
+                            android:textAppearance="@style/TextAppearance.Conversations.Title"/>
 
                         <LinearLayout
                             android:id="@+id/other_device_keys"

@@ -1,7 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <attr name="TextSizeInfo" format="dimension" />
+    <attr name="TextSizeCaption" format="dimension" />
+    <attr name="TextSizeTitle" format="dimension" />
+    <attr name="TextSizeSubhead" format="dimension" />
+    <attr name="TextSizeBody1" format="dimension" />
+    <attr name="TextSizeBody2" format="dimension" />
+    <attr name="TextSizeInput" format="dimension" />
     <attr name="TextSeparation" format="dimension"/>
 
     <attr name="IconSize" format="dimension"/>

@@ -54,7 +54,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="@string/account_settings_example_jabber_id"
-                                android:textAppearance="@style/TextAppearance.AppCompat.Title"/>
+                                android:textAppearance="@style/TextAppearance.Conversations.Title"/>
 
                             <com.wefika.flowlayout.FlowLayout
                                 android:id="@+id/tags"
@@ -71,14 +71,14 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="4dp"
-                                android:textAppearance="@style/TextAppearance.AppCompat.Subhead"/>
+                                android:textAppearance="@style/TextAppearance.Conversations.Subhead"/>
 
                             <TextView
                                 android:id="@+id/status_message"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="8dp"
-                                android:textAppearance="@style/TextAppearance.AppCompat.Body1"/>
+                                android:textAppearance="@style/TextAppearance.Conversations.Body1"/>
 
                             <Button
                                 android:id="@+id/add_contact_button"
@@ -93,14 +93,14 @@
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="8dp"
                                 android:text="@string/send_presence_updates"
-                                android:textAppearance="@style/TextAppearance.AppCompat.Body1"/>
+                                android:textAppearance="@style/TextAppearance.Conversations.Body1"/>
 
                             <CheckBox
                                 android:id="@+id/details_receive_presence"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="@string/receive_presence_updates"
-                                android:textAppearance="@style/TextAppearance.AppCompat.Body1"/>
+                                android:textAppearance="@style/TextAppearance.Conversations.Body1"/>
                         </LinearLayout>
 
                         <TextView
@@ -111,7 +111,7 @@
                             android:layout_below="@+id/details_jidbox"
                             android:layout_marginTop="32dp"
                             android:text="@string/using_account"
-                            android:textAppearance="@style/TextAppearance.AppCompat.Caption"/>
+                            android:textAppearance="@style/TextAppearance.Conversations.Caption"/>
                     </RelativeLayout>
                 </android.support.v7.widget.CardView>
 

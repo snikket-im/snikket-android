@@ -1,50 +1,91 @@
-<resources xmlns:tools="http://schemas.android.com/tools" xmlns:android="http://schemas.android.com/apk/res/android">
-    <style name="TextAppearance.Conversations.Body1.Secondary" parent="TextAppearance.AppCompat.Body1">
+<resources xmlns:android="http://schemas.android.com/apk/res/android" xmlns:tools="http://schemas.android.com/tools">
+
+    <style name="TextAppearance.Conversations.Title" parent="TextAppearance.AppCompat.Title">
+        <item name="android:textSize">?TextSizeTitle</item>
+    </style>
+
+    <style name="TextAppearance.Conversations.Subhead" parent="TextAppearance.AppCompat.Subhead">
+        <item name="android:textSize">?TextSizeSubhead</item>
+    </style>
+
+    <style name="TextAppearance.Conversations.Body2" parent="TextAppearance.AppCompat.Body2">
+        <item name="android:textSize">?TextSizeBody2</item>
+    </style>
+
+    <style name="TextAppearance.Conversations.Body1" parent="TextAppearance.AppCompat.Body1">
+        <item name="android:textSize">?TextSizeBody1</item>
+        <item name="android:textColorLink">?android:textColorPrimary</item>
+    </style>
+
+    <style name="TextAppearance.Conversations.Caption" parent="TextAppearance.AppCompat.Caption">
+        <item name="android:textSize">?TextSizeCaption</item>
+    </style>
+
+    <style name="Widget.Conversations.EditText" parent="Widget.AppCompat.EditText">
+        <item name="android:textSize">?TextSizeInput</item>
+    </style>
+
+    <style name="TextAppearance.Conversations.Design.Hint" parent="TextAppearance.Design.Hint">
+        <item name="android:textSize">?TextSizeCaption</item>
+    </style>
+
+    <style name="TextAppearance.Conversations.Design.Error" parent="TextAppearance.Design.Error">
+        <item name="android:textSize">?TextSizeCaption</item>
+    </style>
+
+    <style name="TextAppearance.Conversations.Body1.Secondary" parent="TextAppearance.Conversations.Body1">
         <item name="android:textColor">?android:textColorSecondary</item>
     </style>
-    <style name="TextAppearance.Conversations.Fingerprint" parent="TextAppearance.AppCompat.Body1">
+
+    <style name="TextAppearance.Conversations.Fingerprint" parent="TextAppearance.Conversations.Body1">
         <item name="android:fontFamily" tools:targetApi="jelly_bean">monospace</item>
         <item name="android:typeface">monospace</item>
     </style>
-    <style name="InputLabel" parent="TextAppearance.AppCompat.Caption">
+
+    <style name="InputLabel" parent="TextAppearance.Conversations.Caption">
         <item name="android:paddingBottom">@dimen/input_label_vertical_spacing</item>
         <item name="android:paddingLeft">@dimen/input_label_horizontal_spacing</item>
         <item name="android:paddingRight">@dimen/input_label_horizontal_spacing</item>
     </style>
-    <style name="TextAppearance.Conversations.Status" parent="TextAppearance.AppCompat.Caption">
+
+    <style name="TextAppearance.Conversations.Status" parent="TextAppearance.Conversations.Caption">
         <item name="android:textStyle">italic</item>
     </style>
-    <style name="TextAppearance.Conversations.Tag" parent="TextAppearance.AppCompat.Caption">
+
+    <style name="TextAppearance.Conversations.Tag" parent="TextAppearance.Conversations.Caption">
         <item name="android:textColor">@color/white</item>
     </style>
+
     <style name="TextAppearance.Conversations.Caption.OnDark" parent="TextAppearance.Conversations.Caption">
         <item name="android:textColor">@color/white70</item>
     </style>
+
     <style name="TextAppearance.Conversations.Caption.OnDark.Bold" parent="TextAppearance.Conversations.Caption.OnDark">
         <item name="android:textStyle">bold</item>
     </style>
-    <style name="TextAppearance.Conversations.Caption" parent="TextAppearance.AppCompat.Caption">
-    </style>
+
     <style name="TextAppearance.Conversations.Caption.Waring" parent="TextAppearance.Conversations.Caption">
         <item name="android:textColor">@color/red800</item>
     </style>
+
     <style name="TextAppearance.Conversations.Caption.Highlight" parent="TextAppearance.Conversations.Caption">
         <item name="android:textColor">?colorAccent</item>
     </style>
+
     <style name="TextAppearance.Conversations.Caption.Disabled" parent="TextAppearance.Conversations.Caption">
         <item name="android:textColor">?android:textColorTertiary</item>
     </style>
+
     <style name="TextAppearance.Conversations.Fingerprint.Disabled" parent="TextAppearance.Conversations.Fingerprint">
         <item name="android:textColor">?android:textColorTertiary</item>
     </style>
-    <style name="TextAppearance.Conversations.Body1.OnDark" parent="TextAppearance.AppCompat.Body1">
+
+    <style name="TextAppearance.Conversations.Body1.OnDark" parent="TextAppearance.Conversations.Body1">
         <item name="android:textColor">@color/white</item>
         <item name="android:textColorLink">@color/white</item>
     </style>
-    <style name="TextAppearance.Conversations.Body1.Secondary.OnDark" parent="TextAppearance.AppCompat.Body1">
+
+    <style name="TextAppearance.Conversations.Body1.Secondary.OnDark" parent="TextAppearance.Conversations.Body1">
         <item name="android:textColor">@color/white70</item>
-    </style>
-    <style name="TextAppearance.Conversations.Body1" parent="TextAppearance.AppCompat.Body1">
-        <item name="android:textColorLink">?android:textColorPrimary</item>
     </style>
 </resources>

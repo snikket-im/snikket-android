@@ -1,55 +1,62 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
-<LinearLayout android:orientation="vertical"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:paddingLeft="?attr/dialog_horizontal_padding"
-              android:paddingRight="?attr/dialog_horizontal_padding"
-              android:paddingBottom="?attr/dialog_vertical_padding"
-              android:paddingTop="?attr/dialog_vertical_padding">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <RadioGroup
-        android:id="@+id/show"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="?attr/dialog_vertical_padding">
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:paddingBottom="?attr/dialog_vertical_padding"
+        android:paddingLeft="?attr/dialog_horizontal_padding"
+        android:paddingRight="?attr/dialog_horizontal_padding"
+        android:paddingTop="?attr/dialog_vertical_padding">
 
-        <RadioButton
-            android:id="@+id/online"
+        <RadioGroup
+            android:id="@+id/show"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/presence_online"/>
+            android:layout_marginBottom="?attr/dialog_vertical_padding">
 
-        <RadioButton
-            android:id="@+id/away"
+            <RadioButton
+                android:id="@+id/online"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/presence_online"/>
+
+            <RadioButton
+                android:id="@+id/away"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/presence_away"/>
+
+            <RadioButton
+                android:id="@+id/xa"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/presence_xa"/>
+
+            <RadioButton
+                android:id="@+id/dnd"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/presence_dnd"/>
+        </RadioGroup>
+
+        <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/presence_away"/>
+            app:errorTextAppearance="@style/TextAppearance.Conversations.Design.Error"
+            app:hintTextAppearance="@style/TextAppearance.Conversations.Design.Hint">
 
-        <RadioButton
-            android:id="@+id/xa"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/presence_xa"/>
+            <eu.siacs.conversations.ui.widget.ImmediateAutoCompleteTextView
+                android:id="@+id/status_message"
+                style="@style/Widget.Conversations.EditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:hint="@string/status_message"
+                android:inputType="textShortMessage"/>
+        </android.support.design.widget.TextInputLayout>
 
-        <RadioButton
-            android:id="@+id/dnd"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/presence_dnd"/>
-    </RadioGroup>
-
-    <android.support.design.widget.TextInputLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-    <eu.siacs.conversations.ui.widget.ImmediateAutoCompleteTextView
-        android:id="@+id/status_message"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:hint="@string/status_message"
-        android:inputType="textShortMessage"/>
-    </android.support.design.widget.TextInputLayout>
-
-</LinearLayout>
+    </LinearLayout>
 </layout>

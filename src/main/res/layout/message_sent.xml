@@ -58,8 +58,8 @@
 
                 <ImageView
                     android:id="@+id/security_indicator"
-                    android:layout_width="?attr/TextSizeInfo"
-                    android:layout_height="?attr/TextSizeInfo"
+                    android:layout_width="?attr/TextSizeCaption"
+                    android:layout_height="?attr/TextSizeCaption"
                     android:layout_gravity="center_vertical"
                     android:layout_marginLeft="4sp"
                     android:alpha="0.54"
@@ -68,8 +68,8 @@
 
                 <ImageView
                     android:id="@+id/edit_indicator"
-                    android:layout_width="?attr/TextSizeInfo"
-                    android:layout_height="?attr/TextSizeInfo"
+                    android:layout_width="?attr/TextSizeCaption"
+                    android:layout_height="?attr/TextSizeCaption"
                     android:layout_gravity="center_vertical"
                     android:layout_marginLeft="4sp"
                     android:alpha="0.54"
@@ -78,8 +78,8 @@
 
                 <ImageView
                     android:id="@+id/indicator_received"
-                    android:layout_width="?attr/TextSizeInfo"
-                    android:layout_height="?attr/TextSizeInfo"
+                    android:layout_width="?attr/TextSizeCaption"
+                    android:layout_height="?attr/TextSizeCaption"
                     android:layout_gravity="center_vertical"
                     android:layout_marginLeft="4sp"
                     android:alpha="0.54"

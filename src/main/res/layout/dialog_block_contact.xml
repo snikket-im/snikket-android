@@ -14,7 +14,7 @@
             android:id="@+id/text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textAppearance="@style/TextAppearance.AppCompat.Body1"/>
+            android:textAppearance="@style/TextAppearance.Conversations.Body1"/>
 
         <CheckBox
             android:id="@+id/report_spam"

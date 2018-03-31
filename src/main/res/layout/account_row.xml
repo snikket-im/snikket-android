@@ -32,14 +32,14 @@
             android:layout_height="wrap_content"
             android:scrollHorizontally="false"
             android:singleLine="true"
-            android:textAppearance="@style/TextAppearance.AppCompat.Subhead"/>
+            android:textAppearance="@style/TextAppearance.Conversations.Subhead"/>
 
         <TextView
             android:id="@+id/account_status"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/account_status_unknown"
-            android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+            android:textAppearance="@style/TextAppearance.Conversations.Body2"
              />
     </LinearLayout>
 

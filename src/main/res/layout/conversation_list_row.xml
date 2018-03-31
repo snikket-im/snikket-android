@@ -46,7 +46,7 @@
                     android:paddingRight="4dp"
                     android:maxLines="1"
                     android:ellipsize="end"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Subhead" />
+                    android:textAppearance="@style/TextAppearance.Conversations.Subhead" />
 
                 <RelativeLayout
                     android:id="@+id/conversation_lastwrapper"
@@ -91,7 +91,7 @@
                             android:scrollHorizontally="false"
                             android:maxLines="1"
                             android:ellipsize="end"
-                            android:textAppearance="@style/TextAppearance.AppCompat.Body1"/>
+                            android:textAppearance="@style/TextAppearance.Conversations.Body1"/>
                     </LinearLayout>
                     <ImageView
                         android:visibility="visible"
@@ -126,7 +126,7 @@
                     android:layout_alignBaseline="@+id/conversation_name"
                     android:layout_alignParentRight="true"
                     android:gravity="right"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Caption"/>
+                    android:textAppearance="@style/TextAppearance.Conversations.Caption"/>
             </RelativeLayout>
         </RelativeLayout>
     </FrameLayout>

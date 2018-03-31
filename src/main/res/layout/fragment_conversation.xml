@@ -63,6 +63,7 @@
                 android:layout_toLeftOf="@+id/textSendButton"
                 android:background="?attr/color_background_primary"
                 android:ems="10"
+                style="@style/Widget.Conversations.EditText"
                 android:imeOptions="flagNoExtractUi|actionSend"
                 android:inputType="textShortMessage|textMultiLine|textCapSentences"
                 android:maxLines="8"

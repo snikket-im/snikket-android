@@ -14,7 +14,12 @@
         <item name="windowActionModeOverlay">true</item>
         <item name="android:actionModeBackground">@color/accent</item>
 
-        <item name="TextSizeInfo">12sp</item>
+        <item name="TextSizeCaption">12sp</item>
+        <item name="TextSizeBody1">14sp</item>
+        <item name="TextSizeBody2">14sp</item>
+        <item name="TextSizeSubhead">16sp</item>
+        <item name="TextSizeTitle">20sp</item>
+        <item name="TextSizeInput">16sp</item>
         <item name="TextSeparation">5sp</item>
         <item name="IconSize">18sp</item>
 
@@ -92,7 +97,12 @@
         <item name="windowActionModeOverlay">true</item>
         <item name="android:actionModeBackground">@color/accent</item>
 
-        <item name="TextSizeInfo">12sp</item>
+        <item name="TextSizeCaption">12sp</item>
+        <item name="TextSizeBody1">14sp</item>
+        <item name="TextSizeBody2">14sp</item>
+        <item name="TextSizeSubhead">16sp</item>
+        <item name="TextSizeTitle">20sp</item>
+        <item name="TextSizeInput">16sp</item>
         <item name="TextSeparation">5sp</item>
         <item name="IconSize">18sp</item>
 

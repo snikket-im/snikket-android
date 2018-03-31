@@ -30,7 +30,7 @@
                 android:clickable="true"
                 android:longClickable="true"
                 android:maxLines="1"
-                android:textAppearance="@style/TextAppearance.AppCompat.Caption"/>
+                android:textAppearance="@style/TextAppearance.Conversations.Caption"/>
         </LinearLayout>
 
         <LinearLayout
