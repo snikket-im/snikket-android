@@ -1578,7 +1578,13 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
 		}
 		int pos = binding.messagesView.getLastVisiblePosition();
 		if (pos >= 0) {
-			Message message = (Message) binding.messagesView.getItemAtPosition(pos);
+			Message message = null;
+			for(int i = pos ; i >= 0; --i) {
+				message = (Message) binding.messagesView.getItemAtPosition(i);
+				if (message.getType() != Message.TYPE_STATUS) {
+					break;
+				}
+			}
 			if (message != null) {
 				while (message.next() != null && message.next().wasMergedIntoPrevious()) {
 					message = message.next();
