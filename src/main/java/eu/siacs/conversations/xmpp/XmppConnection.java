@@ -1521,6 +1521,12 @@ public class XmppConnection implements Runnable {
 		}
 	}
 
+	public List<String> getMucServersWithholdAccount() {
+		List<String> servers = getMucServers();
+		servers.remove(account.getServer());
+		return servers;
+	}
+
 	public List<String> getMucServers() {
 		List<String> servers = new ArrayList<>();
 		synchronized (this.disco) {
