@@ -3268,8 +3268,8 @@ public class XmppConnectionService extends Service {
 		return markRead(conversation, null, dismiss).size() > 0;
 	}
 
-	public boolean markRead(final Conversation conversation) {
-		return markRead(conversation, null, true).size() > 0;
+	public void markRead(final Conversation conversation) {
+		markRead(conversation, null, true);
 	}
 
 	public List<Message> markRead(final Conversation conversation, String upToUuid, boolean dismiss) {
