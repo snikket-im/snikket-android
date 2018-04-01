@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto">
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -19,26 +20,27 @@
         <Spinner
             android:id="@+id/account"
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"/>
 
         <android.support.design.widget.TextInputLayout
             android:id="@+id/account_jid_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/conference_address"
-            app:hintTextAppearance="@style/TextAppearance.Conversations.Design.Hint"
-            app:errorTextAppearance="@style/TextAppearance.Conversations.Design.Error">
+            app:errorTextAppearance="@style/TextAppearance.Conversations.Design.Error"
+            app:hintTextAppearance="@style/TextAppearance.Conversations.Design.Hint">
 
             <AutoCompleteTextView
                 android:id="@+id/jid"
+                style="@style/Widget.Conversations.EditText"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:inputType="textEmailAddress"
-                style="@style/Widget.Conversations.EditText"/>
+                android:inputType="textEmailAddress"/>
         </android.support.design.widget.TextInputLayout>
 
         <CheckBox
             android:id="@+id/bookmark"
+            style="@style/Widget.Conversations.CheckBox"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"

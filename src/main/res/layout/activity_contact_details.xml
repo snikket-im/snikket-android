@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+        xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -8,8 +8,9 @@
         android:background="?attr/color_background_secondary"
         android:orientation="vertical">
 
-        <include android:id="@+id/toolbar"
-            layout="@layout/toolbar" />
+        <include
+            android:id="@+id/toolbar"
+            layout="@layout/toolbar"/>
 
         <ScrollView
             android:layout_width="fill_parent"
@@ -89,6 +90,7 @@
 
                             <CheckBox
                                 android:id="@+id/details_send_presence"
+                                style="@style/Widget.Conversations.CheckBox"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="8dp"
@@ -97,6 +99,7 @@
 
                             <CheckBox
                                 android:id="@+id/details_receive_presence"
+                                style="@style/Widget.Conversations.CheckBox"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="@string/receive_presence_updates"
@@ -149,9 +152,9 @@
                                 style="?android:attr/borderlessButtonStyle"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
+                                android:minWidth="0dp"
                                 android:paddingLeft="16dp"
                                 android:paddingRight="16dp"
-                                android:minWidth="0dp"
                                 android:text="@string/scan_qr_code"
                                 android:textColor="?attr/colorAccent"/>
 
@@ -160,9 +163,9 @@
                                 style="?android:attr/borderlessButtonStyle"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
+                                android:minWidth="0dp"
                                 android:paddingLeft="16dp"
                                 android:paddingRight="16dp"
-                                android:minWidth="0dp"
                                 android:text="@string/show_inactive_devices"
                                 android:textColor="?attr/colorAccent"/>
                         </LinearLayout>

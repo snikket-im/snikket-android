@@ -9,19 +9,15 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
-import android.view.View;
 import android.widget.AutoCompleteTextView;
-import android.widget.CheckBox;
-import android.widget.Checkable;
 import android.widget.Spinner;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashSet;
 import java.util.List;
 
 import eu.siacs.conversations.R;
-import eu.siacs.conversations.databinding.JoinConferenceDialogBinding;
+import eu.siacs.conversations.databinding.DialogJoinConferenceBinding;
 import eu.siacs.conversations.ui.adapter.KnownHostsAdapter;
 import eu.siacs.conversations.ui.interfaces.OnBackendConnected;
 import eu.siacs.conversations.ui.util.DelayedHintHelper;
@@ -53,7 +49,7 @@ public class JoinConferenceDialog extends DialogFragment implements OnBackendCon
 	public Dialog onCreateDialog(Bundle savedInstanceState) {
 		final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 		builder.setTitle(R.string.dialog_title_join_conference);
-		JoinConferenceDialogBinding binding = DataBindingUtil.inflate(getActivity().getLayoutInflater(), R.layout.join_conference_dialog, null, false);
+		DialogJoinConferenceBinding binding = DataBindingUtil.inflate(getActivity().getLayoutInflater(), R.layout.dialog_join_conference, null, false);
 		DelayedHintHelper.setHint(R.string.conference_address_example, binding.jid);
 		this.knownHostsAdapter = new KnownHostsAdapter(getActivity(), R.layout.simple_list_item);
 		binding.jid.setAdapter(knownHostsAdapter);

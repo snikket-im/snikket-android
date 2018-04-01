@@ -19,24 +19,28 @@
 
             <RadioButton
                 android:id="@+id/online"
+                style="@style/Widget.Conversations.RadioButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/presence_online"/>
 
             <RadioButton
                 android:id="@+id/away"
+                style="@style/Widget.Conversations.RadioButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/presence_away"/>
 
             <RadioButton
                 android:id="@+id/xa"
+                style="@style/Widget.Conversations.RadioButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/presence_xa"/>
 
             <RadioButton
                 android:id="@+id/dnd"
+                style="@style/Widget.Conversations.RadioButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/presence_dnd"/>

@@ -25,6 +25,15 @@
         <item name="android:textSize">?TextSizeInput</item>
     </style>
 
+    <style name="Widget.Conversations.CheckBox" parent="Widget.AppCompat.CompoundButton.CheckBox">
+        <item name="android:textSize">?TextSizeBody1</item>
+    </style>
+
+    <style name="Widget.Conversations.RadioButton" parent="Widget.AppCompat.CompoundButton.RadioButton">
+        <item name="android:textSize">?TextSizeBody1</item>
+    </style>
+
+
     <style name="TextAppearance.Conversations.Design.Hint" parent="TextAppearance.Design.Hint">
         <item name="android:textSize">?TextSizeCaption</item>
     </style>
