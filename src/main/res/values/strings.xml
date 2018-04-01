@@ -349,7 +349,7 @@
 	<string name="could_not_verify_fingerprint">Could not verify fingerprint</string>
 	<string name="manually_verify">Manually verify</string>
 	<string name="are_you_sure_verify_fingerprint">Are you sure that you want to verify your contact’s OTR fingerprint?</string>
-	<string name="pref_show_dynamic_tags">Show dynamic tags</string>
+	<string name="pref_show_dynamic_tags">Dynamic Tags</string>
 	<string name="pref_show_dynamic_tags_summary">Display read-only tags underneath contacts</string>
 	<string name="enable_notifications">Enable notifications</string>
 	<string name="no_conference_server_found">No group chat server found</string>
@@ -739,4 +739,11 @@
 	<string name="pref_omemo_setting_summary_always">OMEMO will always be used for one-on-one and private group chats.</string>
 	<string name="pref_omemo_setting_summary_default_on">OMEMO will be used by default for new conversations.</string>
 	<string name="pref_omemo_setting_summary_default_off">OMEMO will have to be turned on explicitly for new conversations.</string>
+	<string name="pref_font_size">Font Size</string>
+	<string name="pref_font_size_summary">The relative font size used within the app.</string>
+	<string name="default_on">On by default</string>
+	<string name="default_off">Off by default</string>
+	<string name="small">Small</string>
+	<string name="medium">Medium</string>
+	<string name="large">Large</string>
 </resources>

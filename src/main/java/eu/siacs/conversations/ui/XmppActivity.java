@@ -71,6 +71,7 @@ import eu.siacs.conversations.services.XmppConnectionService.XmppConnectionBinde
 import eu.siacs.conversations.ui.util.MenuDoubleTabUtil;
 import eu.siacs.conversations.ui.util.PresenceSelector;
 import eu.siacs.conversations.utils.ExceptionHelper;
+import eu.siacs.conversations.utils.ThemeHelper;
 import eu.siacs.conversations.xmpp.OnKeyStatusUpdated;
 import eu.siacs.conversations.xmpp.OnUpdateBlocklist;
 import rocks.xmpp.addr.Jid;
@@ -845,13 +846,7 @@ public abstract class XmppActivity extends AppCompatActivity {
 	}
 
 	protected int findTheme() {
-		Boolean dark = getPreferences().getString(SettingsActivity.THEME, getResources().getString(R.string.theme)).equals("dark");
-
-		if (dark) {
-			return R.style.ConversationsTheme_Dark;
-		} else {
-			return R.style.ConversationsTheme;
-		}
+		return ThemeHelper.find(this);
 	}
 
 	@Override

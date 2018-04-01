@@ -100,6 +100,14 @@
 		<item>@string/default_on</item>
 		<item>@string/default_off</item>
 	</string-array>
-	<string name="default_on">On by default</string>
-	<string name="default_off">Off by default</string>
+	<string-array name="font_size_entry_values">
+		<item>small</item>
+		<item>medium</item>
+		<item>large</item>
+	</string-array>
+	<string-array name="font_size_entries">
+		<item>@string/small</item>
+		<item>@string/medium</item>
+		<item>@string/large</item>
+	</string-array>
 </resources>

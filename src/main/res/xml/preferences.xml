@@ -148,15 +148,22 @@
             android:summary="@string/pref_theme_options_summary"
             android:title="@string/pref_theme_options"/>
         <CheckBoxPreference
-            android:defaultValue="@bool/use_subject"
-            android:key="use_subject"
-            android:summary="@string/pref_conference_name_summary"
-            android:title="@string/pref_conference_name"/>
-        <CheckBoxPreference
             android:defaultValue="@bool/use_green_background"
             android:key="use_green_background"
             android:summary="@string/pref_use_green_background_summary"
             android:title="@string/pref_use_green_background"/>
+        <ListPreference
+            android:defaultValue="@string/default_font_size"
+            android:key="font_size"
+            android:title="@string/pref_font_size"
+            android:summary="@string/pref_font_size_summary"
+            android:entryValues="@array/font_size_entry_values"
+            android:entries="@array/font_size_entries"/>
+        <CheckBoxPreference
+            android:defaultValue="@bool/use_subject"
+            android:key="use_subject"
+            android:summary="@string/pref_conference_name_summary"
+            android:title="@string/pref_conference_name"/>
         <CheckBoxPreference
             android:defaultValue="@bool/send_button_status"
             android:key="send_button_status"
