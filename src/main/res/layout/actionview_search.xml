@@ -1,22 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:addStatesFromChildren="true"
-    android:focusable="true"
-    android:gravity="center"
-    android:paddingLeft="5dp"
-    android:paddingRight="5dp" >
+                android:layout_height="wrap_content"
+                android:addStatesFromChildren="true"
+                android:focusable="true"
+                android:gravity="center"
+                android:paddingLeft="5dp"
+                android:paddingRight="5dp">
 
     <EditText
         android:id="@+id/search_field"
+        style="@style/Widget.Conversations.SearchView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:focusable="true"
-        android:inputType="textEmailAddress|textNoSuggestions"
+        android:hint="@string/search_for_contacts_or_groups"
         android:imeOptions="actionSearch"
-        android:textColor="@color/white"
-        android:textColorHint="@color/white70"
-        android:hint="@string/search_for_contacts_or_groups"/>
+        android:inputType="textEmailAddress|textNoSuggestions"/>
 
 </RelativeLayout>
