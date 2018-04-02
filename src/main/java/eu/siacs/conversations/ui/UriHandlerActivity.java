@@ -84,6 +84,11 @@ public class UriHandlerActivity extends AppCompatActivity {
 		final XmppUri xmppUri = new XmppUri(uri);
 		final List<Jid> accounts = DatabaseBackend.getInstance(this).getAccountJids(); //TODO only look at enabled accounts
 
+		if (!xmppUri.isJidValid()) {
+			Toast.makeText(this, R.string.invalid_jid, Toast.LENGTH_SHORT).show();
+			return;
+		}
+
 		if (accounts.size() == 0) {
 			intent = new Intent(getApplicationContext(), WelcomeActivity.class);
 			WelcomeActivity.addInviteUri(intent, xmppUri);
@@ -111,15 +116,12 @@ public class UriHandlerActivity extends AppCompatActivity {
 			intent.putExtra("jid", xmppUri.getJid().asBareJid().toString());
 			intent.setData(uri);
 			intent.putExtra("scanned", scanned);
-		} else if (xmppUri.isJidValid()) {
+		} else {
 			intent = new Intent(getApplicationContext(), StartConversationActivity.class);
 			intent.setAction(Intent.ACTION_VIEW);
 			intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
 			intent.putExtra("scanned", scanned);
 			intent.setData(uri);
-		} else {
-			Toast.makeText(this, R.string.invalid_jid, Toast.LENGTH_SHORT).show();
-			return;
 		}
 
 		startActivity(intent);
