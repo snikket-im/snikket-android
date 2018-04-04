@@ -318,7 +318,7 @@ public class Account extends AbstractEntity {
 	}
 
 	public String getUsername() {
-		return jid.getLocal();
+		return jid.getEscapedLocal();
 	}
 
 	public boolean setJid(final Jid next) {
