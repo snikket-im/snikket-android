@@ -1,6 +1,8 @@
 package eu.siacs.conversations.services;
 
+import android.content.res.Resources;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.PorterDuff;
@@ -21,6 +23,7 @@ import java.util.Locale;
 import java.util.Set;
 
 import eu.siacs.conversations.Config;
+import eu.siacs.conversations.R;
 import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.entities.Bookmark;
 import eu.siacs.conversations.entities.Contact;
@@ -76,21 +79,48 @@ public class AvatarService implements OnAdvancedStreamFeaturesLoaded {
 	}
 
 	public Bitmap getRoundedShortcut(final Contact contact) {
+		return getRoundedShortcut(contact,false);
+	}
+
+	public Bitmap getRoundedShortcutWithIcon(final Contact contact){
+		return getRoundedShortcut(contact,true);
+	}
+
+	private Bitmap getRoundedShortcut(final Contact contact,boolean withIcon) {
 		DisplayMetrics metrics = mXmppConnectionService.getResources().getDisplayMetrics();
 		int size = Math.round(metrics.density * 48);
 		Bitmap bitmap = get(contact,size);
 		Bitmap output = Bitmap.createBitmap(bitmap.getWidth(), bitmap.getHeight(), Bitmap.Config.ARGB_8888);
 		Canvas canvas = new Canvas(output);
-
 		final Paint paint = new Paint();
-		final Rect rect = new Rect(0, 0, bitmap.getWidth(), bitmap.getHeight());
 
+		drawAvatar(bitmap, canvas, paint);
+		if(withIcon){
+			drawIcon(canvas, paint);
+		}
+		return output;
+	}
+
+	private void drawAvatar(Bitmap bitmap, Canvas canvas, Paint paint) {
+		final Rect rect = new Rect(0, 0, bitmap.getWidth(), bitmap.getHeight());
 		paint.setAntiAlias(true);
 		canvas.drawARGB(0, 0, 0, 0);
 		canvas.drawCircle(bitmap.getWidth() / 2, bitmap.getHeight() / 2, bitmap.getWidth() / 2, paint);
 		paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_IN));
 		canvas.drawBitmap(bitmap, rect, rect, paint);
-		return output;
+	}
+
+	private void drawIcon(Canvas canvas, Paint paint) {
+		BitmapFactory.Options opts = new BitmapFactory.Options();
+		opts.inSampleSize = 3;
+		Resources resources = mXmppConnectionService.getResources();
+		Bitmap icon = BitmapFactory.decodeResource(resources, R.drawable.ic_launcher, opts);
+		paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_OVER));
+
+		int left = canvas.getWidth() - icon.getWidth();
+		int top = canvas.getHeight() - icon.getHeight();
+		final Rect rect = new Rect(left, top, left + icon.getWidth(), top + icon.getHeight());
+		canvas.drawBitmap(icon, null, rect, paint);
 	}
 
 	public Bitmap get(final MucOptions.User user, final int size, boolean cachedOnly) {

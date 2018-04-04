@@ -49,6 +49,7 @@
 	<string name="start_conversation">Start conversation</string>
 	<string name="invite_contact">Invite contact</string>
 	<string name="contacts">Contacts</string>
+	<string name="contact">Contact</string>
 	<string name="cancel">Cancel</string>
 	<string name="set">Set</string>
 	<string name="add">Add</string>
@@ -739,6 +740,7 @@
 	<string name="pref_omemo_setting_summary_always">OMEMO will always be used for one-on-one and private group chats.</string>
 	<string name="pref_omemo_setting_summary_default_on">OMEMO will be used by default for new conversations.</string>
 	<string name="pref_omemo_setting_summary_default_off">OMEMO will have to be turned on explicitly for new conversations.</string>
+	<string name="create_shortcut">Create Shortcut</string>
 	<string name="pref_font_size">Font Size</string>
 	<string name="pref_font_size_summary">The relative font size used within the app.</string>
 	<string name="default_on">On by default</string>

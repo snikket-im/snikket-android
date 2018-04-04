@@ -4,9 +4,11 @@ import android.annotation.TargetApi;
 import android.content.Intent;
 import android.content.pm.ShortcutInfo;
 import android.content.pm.ShortcutManager;
+import android.graphics.Bitmap;
 import android.graphics.drawable.Icon;
 import android.net.Uri;
 import android.os.Build;
+import android.support.annotation.NonNull;
 import android.util.Log;
 
 import java.util.ArrayList;
@@ -75,11 +77,7 @@ public class ShortcutService {
         }
         List<ShortcutInfo> newDynamicShortCuts = new ArrayList<>();
         for (Contact contact : contacts) {
-            ShortcutInfo shortcut = new ShortcutInfo.Builder(xmppConnectionService, getShortcutId(contact))
-                    .setShortLabel(contact.getDisplayName())
-                    .setIntent(getShortcutIntent(contact))
-                    .setIcon(Icon.createWithBitmap(xmppConnectionService.getAvatarService().getRoundedShortcut(contact)))
-                    .build();
+            ShortcutInfo shortcut = getShortcutInfo(contact);
             newDynamicShortCuts.add(shortcut);
         }
         if (shortcutManager.setDynamicShortcuts(newDynamicShortCuts)) {
@@ -87,6 +85,15 @@ public class ShortcutService {
         } else {
             Log.d(Config.LOGTAG, "unable to update dynamic shortcuts");
         }
+    }
+
+    @TargetApi(Build.VERSION_CODES.N_MR1)
+    private ShortcutInfo getShortcutInfo(Contact contact) {
+        return new ShortcutInfo.Builder(xmppConnectionService, getShortcutId(contact))
+                        .setShortLabel(contact.getDisplayName())
+                        .setIntent(getShortcutIntent(contact))
+                        .setIcon(Icon.createWithBitmap(xmppConnectionService.getAvatarService().getRoundedShortcut(contact)))
+                        .build();
     }
 
     private static boolean contactsChanged(List<Contact> needles, List<ShortcutInfo> haystack) {
@@ -117,6 +124,30 @@ public class ShortcutService {
         intent.setAction(Intent.ACTION_VIEW);
         intent.setData(Uri.parse("xmpp:"+contact.getJid().asBareJid().toString()));
         intent.putExtra("account",contact.getAccount().getJid().asBareJid().toString());
+        return intent;
+    }
+
+    @NonNull
+    public Intent createShortcut(Contact contact) {
+        Intent intent;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            ShortcutInfo shortcut = getShortcutInfo(contact);
+            ShortcutManager shortcutManager = xmppConnectionService.getSystemService(ShortcutManager.class);
+            intent = shortcutManager.createShortcutResultIntent(shortcut);
+        } else {
+            intent = createShortcutResultIntent(contact);
+        }
+        return intent;
+    }
+
+    @NonNull
+    private Intent createShortcutResultIntent(Contact contact) {
+        Intent intent;AvatarService avatarService = xmppConnectionService.getAvatarService();
+        Bitmap icon = avatarService.getRoundedShortcutWithIcon(contact);
+        intent = new Intent();
+        intent.putExtra(Intent.EXTRA_SHORTCUT_NAME, contact.getDisplayName());
+        intent.putExtra(Intent.EXTRA_SHORTCUT_ICON, icon);
+        intent.putExtra(Intent.EXTRA_SHORTCUT_INTENT, getShortcutIntent(contact));
         return intent;
     }
 
