@@ -266,7 +266,7 @@ public class XmppAxolotlMessage {
 	private byte[] unpackKey(XmppAxolotlSession session, Integer sourceDeviceId) throws CryptoFailedException {
 		XmppAxolotlSession.AxolotlKey encryptedKey = keys.get(sourceDeviceId);
 		if (encryptedKey == null) {
-			throw new CryptoFailedException("Message was not encrypted for this device");
+			throw new NotEncryptedForThisDeviceException();
 		}
 		return session.processReceiving(encryptedKey);
 	}
