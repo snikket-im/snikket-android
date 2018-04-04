@@ -1581,20 +1581,22 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
 		if (binding == null) {
 			return null;
 		}
-		int pos = binding.messagesView.getLastVisiblePosition();
-		if (pos >= 0) {
-			Message message = null;
-			for(int i = pos ; i >= 0; --i) {
-				message = (Message) binding.messagesView.getItemAtPosition(i);
-				if (message.getType() != Message.TYPE_STATUS) {
-					break;
+		synchronized (this.messageList) {
+			int pos = binding.messagesView.getLastVisiblePosition();
+			if (pos >= 0) {
+				Message message = null;
+				for (int i = pos; i >= 0; --i) {
+					message = (Message) binding.messagesView.getItemAtPosition(i);
+					if (message.getType() != Message.TYPE_STATUS) {
+						break;
+					}
 				}
-			}
-			if (message != null) {
-				while (message.next() != null && message.next().wasMergedIntoPrevious()) {
-					message = message.next();
+				if (message != null) {
+					while (message.next() != null && message.next().wasMergedIntoPrevious()) {
+						message = message.next();
+					}
+					return message.getUuid();
 				}
-				return message.getUuid();
 			}
 		}
 		return null;
