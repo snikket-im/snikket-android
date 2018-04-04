@@ -1372,15 +1372,22 @@ public class AxolotlService implements OnAdvancedStreamFeaturesLoaded {
 		return session;
 	}
 
-	public XmppAxolotlMessage.XmppAxolotlPlaintextMessage processReceivingPayloadMessage(XmppAxolotlMessage message, boolean postponePreKeyMessageHandling) {
+	public XmppAxolotlMessage.XmppAxolotlPlaintextMessage processReceivingPayloadMessage(XmppAxolotlMessage message, boolean postponePreKeyMessageHandling) throws NotEncryptedForThisDeviceException {
 		XmppAxolotlMessage.XmppAxolotlPlaintextMessage plaintextMessage = null;
 
 		XmppAxolotlSession session = getReceivingSession(message);
+		int ownDeviceId = getOwnDeviceId();
 		try {
-			plaintextMessage = message.decrypt(session, getOwnDeviceId());
+			plaintextMessage = message.decrypt(session, ownDeviceId);
 			Integer preKeyId = session.getPreKeyIdAndReset();
 			if (preKeyId != null) {
 				postPreKeyMessageHandling(session, preKeyId, postponePreKeyMessageHandling);
+			}
+		} catch (NotEncryptedForThisDeviceException e) {
+			if (account.getJid().asBareJid().equals(message.getFrom().asBareJid()) && message.getSenderDeviceId() == ownDeviceId) {
+				Log.w(Config.LOGTAG, getLogprefix(account) + "Reflected omemo message received");
+			} else {
+				throw e;
 			}
 		} catch (CryptoFailedException e) {
 			Log.w(Config.LOGTAG, getLogprefix(account) + "Failed to decrypt message from " + message.getFrom() + ": " + e.getMessage());

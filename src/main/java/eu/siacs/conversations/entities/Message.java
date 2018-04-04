@@ -42,6 +42,7 @@ public class Message extends AbstractEntity {
 	public static final int ENCRYPTION_DECRYPTED = 3;
 	public static final int ENCRYPTION_DECRYPTION_FAILED = 4;
 	public static final int ENCRYPTION_AXOLOTL = 5;
+	public static final int ENCRYPTION_AXOLOTL_NOT_FOR_THIS_DEVICE = 6;
 
 	public static final int TYPE_TEXT = 0;
 	public static final int TYPE_IMAGE = 1;
@@ -868,6 +869,9 @@ public class Message extends AbstractEntity {
 	private static int getCleanedEncryption(int encryption) {
 		if (encryption == ENCRYPTION_DECRYPTED || encryption == ENCRYPTION_DECRYPTION_FAILED) {
 			return ENCRYPTION_PGP;
+		}
+		if (encryption == ENCRYPTION_AXOLOTL_NOT_FOR_THIS_DEVICE) {
+			return ENCRYPTION_AXOLOTL;
 		}
 		return encryption;
 	}

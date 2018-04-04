@@ -277,6 +277,8 @@ public class UIHelper {
 			return new Pair<>(context.getString(R.string.pgp_message), true);
 		} else if (message.getEncryption() == Message.ENCRYPTION_DECRYPTION_FAILED) {
 			return new Pair<>(context.getString(R.string.decryption_failed), true);
+		} else if (message.getEncryption() == Message.ENCRYPTION_AXOLOTL_NOT_FOR_THIS_DEVICE) {
+			return new Pair<>(context.getString(R.string.not_encrypted_for_this_device), true);
 		} else if (message.getType() == Message.TYPE_FILE || message.getType() == Message.TYPE_IMAGE) {
 			if (message.getStatus() == Message.STATUS_RECEIVED) {
 				return new Pair<>(context.getString(R.string.received_x_file,

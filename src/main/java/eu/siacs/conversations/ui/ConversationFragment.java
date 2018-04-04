@@ -1054,6 +1054,10 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
 		}
 		if (m.getType() != Message.TYPE_STATUS) {
 
+			if (m.getEncryption() == Message.ENCRYPTION_AXOLOTL_NOT_FOR_THIS_DEVICE) {
+				return;
+			}
+
 			final boolean treatAsFile = m.getType() != Message.TYPE_TEXT
 					&& m.getType() != Message.TYPE_PRIVATE
 					&& !(t instanceof TransferablePlaceholder);

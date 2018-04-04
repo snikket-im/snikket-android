@@ -16,6 +16,7 @@ import java.util.UUID;
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.crypto.axolotl.AxolotlService;
+import eu.siacs.conversations.crypto.axolotl.NotEncryptedForThisDeviceException;
 import eu.siacs.conversations.crypto.axolotl.XmppAxolotlMessage;
 import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.entities.Bookmark;
@@ -114,7 +115,12 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
 			return null;
 		}
 		if (xmppAxolotlMessage.hasPayload()) {
-			final XmppAxolotlMessage.XmppAxolotlPlaintextMessage plaintextMessage = service.processReceivingPayloadMessage(xmppAxolotlMessage, postpone);
+			final XmppAxolotlMessage.XmppAxolotlPlaintextMessage plaintextMessage;
+			try {
+				plaintextMessage = service.processReceivingPayloadMessage(xmppAxolotlMessage, postpone);
+			} catch (NotEncryptedForThisDeviceException e) {
+				return new Message(conversation, "", Message.ENCRYPTION_AXOLOTL_NOT_FOR_THIS_DEVICE, status);
+			}
 			if (plaintextMessage != null) {
 				Message finishedMessage = new Message(conversation, plaintextMessage.getPlaintext(), Message.ENCRYPTION_AXOLOTL, status);
 				finishedMessage.setFingerprint(plaintextMessage.getFingerprint());
@@ -545,6 +551,8 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
 
 			if (message.getEncryption() == Message.ENCRYPTION_PGP) {
 				notify = conversation.getAccount().getPgpDecryptionService().decrypt(message, notify);
+			} else if (message.getEncryption() == Message.ENCRYPTION_AXOLOTL_NOT_FOR_THIS_DEVICE) {
+				notify = false;
 			}
 
 			if (query == null) {
