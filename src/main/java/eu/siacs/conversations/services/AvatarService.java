@@ -48,7 +48,7 @@ public class AvatarService implements OnAdvancedStreamFeaturesLoaded {
 	private static final String PREFIX_GENERIC = "generic";
 
 	final private ArrayList<Integer> sizes = new ArrayList<>();
-	final private HashMap<String,Set<String>> conversationDependentKeys = new HashMap<>();
+	final private HashMap<String, Set<String>> conversationDependentKeys = new HashMap<>();
 
 	protected XmppConnectionService mXmppConnectionService = null;
 
@@ -58,7 +58,7 @@ public class AvatarService implements OnAdvancedStreamFeaturesLoaded {
 
 	private Bitmap get(final Contact contact, final int size, boolean cachedOnly) {
 		if (contact.isSelf()) {
-			return get(contact.getAccount(),size,cachedOnly);
+			return get(contact.getAccount(), size, cachedOnly);
 		}
 		final String KEY = key(contact, size);
 		Bitmap avatar = this.mXmppConnectionService.getBitmapCache().get(KEY);
@@ -72,30 +72,30 @@ public class AvatarService implements OnAdvancedStreamFeaturesLoaded {
 			avatar = mXmppConnectionService.getFileBackend().getAvatar(contact.getAvatar(), size);
 		}
 		if (avatar == null) {
-            avatar = get(contact.getDisplayName(), contact.getJid().asBareJid().toString(), size, cachedOnly);
+			avatar = get(contact.getDisplayName(), contact.getJid().asBareJid().toString(), size, cachedOnly);
 		}
 		this.mXmppConnectionService.getBitmapCache().put(KEY, avatar);
 		return avatar;
 	}
 
 	public Bitmap getRoundedShortcut(final Contact contact) {
-		return getRoundedShortcut(contact,false);
+		return getRoundedShortcut(contact, false);
 	}
 
-	public Bitmap getRoundedShortcutWithIcon(final Contact contact){
-		return getRoundedShortcut(contact,true);
+	public Bitmap getRoundedShortcutWithIcon(final Contact contact) {
+		return getRoundedShortcut(contact, true);
 	}
 
-	private Bitmap getRoundedShortcut(final Contact contact,boolean withIcon) {
+	private Bitmap getRoundedShortcut(final Contact contact, boolean withIcon) {
 		DisplayMetrics metrics = mXmppConnectionService.getResources().getDisplayMetrics();
 		int size = Math.round(metrics.density * 48);
-		Bitmap bitmap = get(contact,size);
+		Bitmap bitmap = get(contact, size);
 		Bitmap output = Bitmap.createBitmap(bitmap.getWidth(), bitmap.getHeight(), Bitmap.Config.ARGB_8888);
 		Canvas canvas = new Canvas(output);
 		final Paint paint = new Paint();
 
 		drawAvatar(bitmap, canvas, paint);
-		if(withIcon){
+		if (withIcon) {
 			drawIcon(canvas, paint);
 		}
 		return output;
@@ -112,14 +112,16 @@ public class AvatarService implements OnAdvancedStreamFeaturesLoaded {
 
 	private void drawIcon(Canvas canvas, Paint paint) {
 		BitmapFactory.Options opts = new BitmapFactory.Options();
-		opts.inSampleSize = 3;
+		opts.inSampleSize = 2;
 		Resources resources = mXmppConnectionService.getResources();
 		Bitmap icon = BitmapFactory.decodeResource(resources, R.drawable.ic_launcher, opts);
 		paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_OVER));
 
-		int left = canvas.getWidth() - icon.getWidth();
-		int top = canvas.getHeight() - icon.getHeight();
-		final Rect rect = new Rect(left, top, left + icon.getWidth(), top + icon.getHeight());
+		int iconSize = Math.round(canvas.getHeight() / 2.6f);
+
+		int left = canvas.getWidth() - iconSize;
+		int top = canvas.getHeight() - iconSize;
+		final Rect rect = new Rect(left, top, left + iconSize, top + iconSize);
 		canvas.drawBitmap(icon, null, rect, paint);
 	}
 
@@ -161,7 +163,7 @@ public class AvatarService implements OnAdvancedStreamFeaturesLoaded {
 						key(contact, size));
 			}
 		}
-		for(Conversation conversation : mXmppConnectionService.findAllConferencesWith(contact)) {
+		for (Conversation conversation : mXmppConnectionService.findAllConferencesWith(contact)) {
 			clear(conversation);
 		}
 	}
@@ -199,12 +201,12 @@ public class AvatarService implements OnAdvancedStreamFeaturesLoaded {
 	}
 
 	public Bitmap get(ListItem item, int size) {
-		return get(item,size,false);
+		return get(item, size, false);
 	}
 
 	public Bitmap get(ListItem item, int size, boolean cachedOnly) {
 		if (item instanceof Contact) {
-			return get((Contact) item, size,cachedOnly);
+			return get((Contact) item, size, cachedOnly);
 		} else if (item instanceof Bookmark) {
 			Bookmark bookmark = (Bookmark) item;
 			if (bookmark.getConversation() != null) {
@@ -220,7 +222,7 @@ public class AvatarService implements OnAdvancedStreamFeaturesLoaded {
 	}
 
 	public Bitmap get(Conversation conversation, int size) {
-		return get(conversation,size,false);
+		return get(conversation, size, false);
 	}
 
 	public Bitmap get(Conversation conversation, int size, boolean cachedOnly) {
@@ -242,7 +244,7 @@ public class AvatarService implements OnAdvancedStreamFeaturesLoaded {
 					return;
 				}
 				LruCache<String, Bitmap> cache = this.mXmppConnectionService.getBitmapCache();
-				for(String key : keys) {
+				for (String key : keys) {
 					cache.remove(key);
 				}
 				keys.clear();
@@ -250,7 +252,7 @@ public class AvatarService implements OnAdvancedStreamFeaturesLoaded {
 		}
 	}
 
-	private Bitmap get(MucOptions mucOptions, int size,  boolean cachedOnly) {
+	private Bitmap get(MucOptions mucOptions, int size, boolean cachedOnly) {
 		final String KEY = key(mucOptions, size);
 		Bitmap bitmap = this.mXmppConnectionService.getBitmapCache().get(KEY);
 		if (bitmap != null || cachedOnly) {
@@ -259,9 +261,9 @@ public class AvatarService implements OnAdvancedStreamFeaturesLoaded {
 		final List<MucOptions.User> users = mucOptions.getUsersRelevantForNameAndAvatar();
 		if (users.size() == 0) {
 			Conversation c = mucOptions.getConversation();
-			bitmap = getImpl(c.getName().toString(),c.getJid().asBareJid().toString(),size);
+			bitmap = getImpl(c.getName().toString(), c.getJid().asBareJid().toString(), size);
 		} else {
-			bitmap = getImpl(users,size);
+			bitmap = getImpl(users, size);
 		}
 		this.mXmppConnectionService.getBitmapCache().put(KEY, bitmap);
 		return bitmap;
@@ -274,7 +276,7 @@ public class AvatarService implements OnAdvancedStreamFeaturesLoaded {
 			return bitmap;
 		}
 		bitmap = getImpl(users, size);
-		this.mXmppConnectionService.getBitmapCache().put(KEY,bitmap);
+		this.mXmppConnectionService.getBitmapCache().put(KEY, bitmap);
 		return bitmap;
 	}
 
@@ -335,7 +337,7 @@ public class AvatarService implements OnAdvancedStreamFeaturesLoaded {
 		StringBuilder builder = new StringBuilder("TILE_");
 		builder.append(conversation.getUuid());
 
-		for(MucOptions.User user : users) {
+		for (MucOptions.User user : users) {
 			builder.append("\0");
 			builder.append(emptyOnNull(user.getRealJid()));
 			builder.append("\0");
@@ -350,7 +352,7 @@ public class AvatarService implements OnAdvancedStreamFeaturesLoaded {
 				keys = this.conversationDependentKeys.get(conversation.getUuid());
 			} else {
 				keys = new HashSet<>();
-				this.conversationDependentKeys.put(conversation.getUuid(),keys);
+				this.conversationDependentKeys.put(conversation.getUuid(), keys);
 			}
 			keys.add(key);
 		}
@@ -369,7 +371,7 @@ public class AvatarService implements OnAdvancedStreamFeaturesLoaded {
 		}
 		avatar = mXmppConnectionService.getFileBackend().getAvatar(account.getAvatar(), size);
 		if (avatar == null) {
-			avatar = get(account.getJid().asBareJid().toString(), null, size,false);
+			avatar = get(account.getJid().asBareJid().toString(), null, size, false);
 		}
 		mXmppConnectionService.getBitmapCache().put(KEY, avatar);
 		return avatar;
@@ -378,12 +380,12 @@ public class AvatarService implements OnAdvancedStreamFeaturesLoaded {
 	public Bitmap get(Message message, int size, boolean cachedOnly) {
 		final Conversation conversation = message.getConversation();
 		if (message.getType() == Message.TYPE_STATUS && message.getCounterparts() != null && message.getCounterparts().size() > 1) {
-			return get(message.getCounterparts(),size,cachedOnly);
+			return get(message.getCounterparts(), size, cachedOnly);
 		} else if (message.getStatus() == Message.STATUS_RECEIVED) {
 			Contact c = message.getContact();
 			if (c != null && (c.getProfilePhoto() != null || c.getAvatar() != null)) {
 				return get(c, size, cachedOnly);
-			} else if (message.getConversation().getMode() == Conversation.MODE_MULTI){
+			} else if (message.getConversation().getMode() == Conversation.MODE_MULTI) {
 				final Jid trueCounterpart = message.getTrueCounterpart();
 				MucOptions.User user;
 				if (trueCounterpart != null) {
@@ -392,15 +394,15 @@ public class AvatarService implements OnAdvancedStreamFeaturesLoaded {
 					user = conversation.getMucOptions().findUserByFullJid(message.getCounterpart());
 				}
 				if (user != null) {
-					return getImpl(user,size,cachedOnly);
+					return getImpl(user, size, cachedOnly);
 				}
 			} else if (c != null) {
 				return get(c, size, cachedOnly);
 			}
 			Jid tcp = message.getTrueCounterpart();
-			String seed = tcp != null ? tcp.asBareJid().toString() :null;
+			String seed = tcp != null ? tcp.asBareJid().toString() : null;
 			return get(UIHelper.getMessageDisplayName(message), seed, size, cachedOnly);
-		} else  {
+		} else {
 			return get(conversation.getAccount(), size, cachedOnly);
 		}
 	}
@@ -536,7 +538,7 @@ public class AvatarService implements OnAdvancedStreamFeaturesLoaded {
 	}
 
 	private static String getFirstLetter(String name) {
-		for(Character c : name.toCharArray()) {
+		for (Character c : name.toCharArray()) {
 			if (Character.isLetterOrDigit(c)) {
 				return c.toString();
 			}
@@ -566,7 +568,7 @@ public class AvatarService implements OnAdvancedStreamFeaturesLoaded {
 	public void onAdvancedStreamFeaturesAvailable(Account account) {
 		XmppConnection.Features features = account.getXmppConnection().getFeatures();
 		if (features.pep() && !features.pepPersistent()) {
-			Log.d(Config.LOGTAG,account.getJid().asBareJid()+": has pep but is not persistent");
+			Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": has pep but is not persistent");
 			if (account.getAvatar() != null) {
 				mXmppConnectionService.republishAvatarIfNeeded(account);
 			}
