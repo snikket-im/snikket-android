@@ -1,5 +1,10 @@
 # Changelog
 
+### Version 2.1.0
+* Added configurable font size
+* Added global OMEMO preference
+* Added scroll to bottom button
+
 ### Version 2.0.0
 * OMEMO by default for everything but public group chats
 * Integrate QR code scanner (requires camera permission)

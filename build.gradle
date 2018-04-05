@@ -19,9 +19,6 @@ repositories {
         url 'https://maven.google.com'
     }
     maven {
-        url "https://jitpack.io"
-    }
-    maven {
         url "https://oss.sonatype.org/content/repositories/snapshots"
     }
 }
@@ -65,13 +62,12 @@ ext {
 
 android {
     compileSdkVersion 27
-    buildToolsVersion "27.0.3"
 
     defaultConfig {
         minSdkVersion 19
         targetSdkVersion 25
-        versionCode 261
-        versionName "2.0.0"
+        versionCode 262
+        versionName "2.1.0-beta"
         archivesBaseName += "-$versionName"
         applicationId "eu.siacs.conversations"
         resValue "string", "applicationId", applicationId
