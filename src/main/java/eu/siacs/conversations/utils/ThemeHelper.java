@@ -29,10 +29,12 @@
 
 package eu.siacs.conversations.utils;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.preference.PreferenceManager;
+import android.support.annotation.StyleRes;
 
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.ui.SettingsActivity;
@@ -51,6 +53,17 @@ public class ThemeHelper {
 				return dark ? R.style.ConversationsTheme_Dark_Large : R.style.ConversationsTheme_Large;
 			default:
 				return dark ? R.style.ConversationsTheme_Dark : R.style.ConversationsTheme;
+		}
+	}
+
+	public static boolean isDark(@StyleRes int id) {
+		switch (id) {
+			case R.style.ConversationsTheme_Dark:
+			case R.style.ConversationsTheme_Dark_Large:
+			case R.style.ConversationsTheme_Dark_Medium:
+				return true;
+			default:
+				return false;
 		}
 	}
 }

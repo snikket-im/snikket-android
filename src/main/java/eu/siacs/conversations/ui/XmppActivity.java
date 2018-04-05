@@ -431,7 +431,7 @@ public abstract class XmppActivity extends AppCompatActivity {
 	}
 
 	public boolean isDarkTheme() {
-		return this.mTheme == R.style.ConversationsTheme_Dark;
+		return ThemeHelper.isDark(mTheme);
 	}
 
 	public int getThemeResource(int r_attr_name, int r_drawable_def) {
