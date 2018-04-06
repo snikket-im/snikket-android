@@ -5,13 +5,11 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
-import android.widget.ListView;
 import android.widget.Toast;
 
 import java.net.URLConnection;
@@ -58,7 +56,7 @@ public class ShareWithActivity extends XmppActivity implements XmppConnectionSer
 	private Share share;
 
 	private static final int REQUEST_START_NEW_CONVERSATION = 0x0501;
-	private ListView mListView;
+	private RecyclerView mListView;
 	private ConversationAdapter mAdapter;
 	private List<Conversation> mConversations = new ArrayList<>();
 	private Toast mToast;
@@ -170,15 +168,9 @@ public class ShareWithActivity extends XmppActivity implements XmppConnectionSer
 
 		mListView = findViewById(R.id.choose_conversation_list);
 		mAdapter = new ConversationAdapter(this, this.mConversations);
+		mListView.setLayoutManager(new LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false));
 		mListView.setAdapter(mAdapter);
-		mListView.setOnItemClickListener(new OnItemClickListener() {
-
-			@Override
-			public void onItemClick(AdapterView<?> arg0, View arg1, int position, long arg3) {
-				share(mConversations.get(position));
-			}
-		});
-
+		mAdapter.setConversationClickListener((view, conversation) -> share(conversation));
 		this.share = new Share();
 	}
 

@@ -1,18 +1,17 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <FrameLayout
+    <android.support.design.widget.CoordinatorLayout
         android:background="?attr/color_background_primary"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
 
-        <de.timroes.android.listview.EnhancedListView
+        <android.support.v7.widget.RecyclerView
             android:id="@+id/list"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:background="?attr/color_background_primary"
-            android:divider="@android:color/transparent"
-            android:dividerHeight="0dp"/>
+           />
 
         <android.support.design.widget.FloatingActionButton
             android:id="@+id/fab"
@@ -21,5 +20,5 @@
             android:layout_gravity="end|bottom"
             android:layout_margin="16dp"
             android:src="@drawable/ic_chat_white_24dp"/>
-    </FrameLayout>
+    </android.support.design.widget.CoordinatorLayout>
 </layout>
