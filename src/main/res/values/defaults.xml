@@ -21,7 +21,6 @@
     <string name="theme">light</string>
     <bool name="use_subject">true</bool>
     <bool name="use_green_background">true</bool>
-    <bool name="use_larger_font">false</bool>
     <bool name="send_button_status">false</bool>
     <string name="quick_action">recent</string>
     <bool name="show_dynamic_tags">false</bool>
