@@ -81,7 +81,6 @@
   <string name="send_unencrypted_message">Envia un missatge no xifrat</string>
   <string name="send_message">Envia un missatge</string>
   <string name="send_message_to_x">Envia un missatge a %s</string>
-  <string name="send_otr_message">Envia un missatge xifrat amb OTR</string>
   <string name="send_omemo_message">Envia un missatge xifrat amb OMEMO</string>
   <string name="send_omemo_x509_message">Envia un missatge xifrat amb v\\OMEMO</string>
   <string name="send_pgp_message">Envia un missatge xifrat amb OpenPGP</string>
@@ -170,9 +169,7 @@
   <string name="attach_record_voice">Enregistra veu</string>
   <string name="account_settings_jabber_id">Identificació de Jabber</string>
   <string name="block_jabber_id">Bloqueja la identificació de Jabber</string>
-  <string name="account_settings_password">Contrasenya</string>
   <string name="account_settings_example_jabber_id">username@example.com</string>
-  <string name="account_settings_confirm_password">Confirma la contrasenya</string>
   <string name="password">Contrasenya</string>
   <string name="invalid_jid">Aquesta identificació de Jabber no és vàlida</string>
   <string name="error_out_of_memory">Memòria exhaurida. La imatge és massa gran.</string>
@@ -198,11 +195,7 @@
   <string name="last_seen_day">darrera connexió: fa 1 dia</string>
   <string name="last_seen_days">darrera connexió: fa %d dies</string>
   <string name="install_openkeychain">Missatge xifrat. Si us plau instal.leu l\'OpenKeychain per desxifrar-lo.</string>
-  <string name="unknown_otr_fingerprint">Empremta digital OTR desconeguda</string>
   <string name="openpgp_messages_found">S\'han trobat missatges xifrats amb OpenPGP</string>
-  <string name="your_fingerprint">La teva empremta digital</string>
-  <string name="otr_fingerprint">Empremta digital OTR</string>
-  <string name="otr_fingerprint_selected_message">Empremta digital OTR del missatge</string>
   <string name="openpgp_key_id">Identificador de la clau d\'OpenPGP</string>
   <string name="omemo_fingerprint">Empremta digital OMEMO</string>
   <string name="omemo_fingerprint_x509">Empremta digital v\\OMEMO</string>
@@ -212,11 +205,9 @@
   <string name="trust_omemo_fingerprints">Confia en les empremtes digitals d\'OMEMO</string>
   <string name="fetching_keys">S\'estan obtenint les claus...</string>
   <string name="done">Fet</string>
-  <string name="verify">Verifica</string>
   <string name="decrypt">Desxifra</string>
   <string name="conferences">Xats de grup</string>
   <string name="search">Cerca</string>
-  <string name="create_contact">Crea un contacte</string>
   <string name="dialog_title_create_contact">Crea un contacte</string>
   <string name="enter_contact">Introduïu un contacte</string>
   <string name="join_conference">Uniu-vos al xat en grup</string>
@@ -263,11 +254,8 @@
   <string name="enable">Habilita</string>
   <string name="conference_requires_password">El xat de grup requereix contrasenya</string>
   <string name="enter_password">Introduïu la contrasenya</string>
-  <string name="missing_presence_subscription">Falta la subscripció a la presència</string>
   <string name="request_presence_updates">Si us plau, primer sol·liciteu les actualitzacions de presència del contacte.\n\n<small>S\'utilitzaran per determinar quin(s) client(s) està fent servir.</small></string>
   <string name="request_now">Sol·licita ara</string>
-  <string name="delete_fingerprint">Elimina l\'empremta digital</string>
-  <string name="sure_delete_fingerprint">Confirmeu que voleu eliminar l\'empremta digital?</string>
   <string name="ignore">Ignora</string>
   <string name="without_mutual_presence_updates"><b>Avís:</b>L\'enviament sense actualitzacions de presència mútues pot causar problemes inesperats.\n\n<small>Aneu als detalls del contacte per verificar les subscripcions de presència.</small></string>
   <string name="pref_security_settings">Seguretat</string>
@@ -291,7 +279,6 @@
   <string name="pref_conference_name_summary">Utilitzeu el tema en comptes de JID per identificar els xats del grup</string>
   <string name="pref_autojoin">Uniu-vos automàticament als xats de grup</string>
   <string name="pref_autojoin_summary">Respecta l\'indicador d\'autoentrada als marcadors de xat de grup</string>
-  <string name="toast_message_otr_fingerprint">Empremta digital OTR copiada al portapapers</string>
   <string name="toast_message_omemo_fingerprint">S\'ha copiat l\'empremta digital d\'OMEMO al porta-retalls.</string>
   <string name="conference_banned">Estàs prohibit en aquest xat de grup</string>
   <string name="conference_members_only">Aquest xat en grup només és de membres</string>
@@ -313,19 +300,8 @@
   <string name="show_qr_code">Mostra el codi de barres 2D</string>
   <string name="show_block_list">Mostra la llista de bloqueig</string>
   <string name="account_details">Detalls del compte</string>
-  <string name="verify_otr">Verificar OTR</string>
-  <string name="remote_fingerprint">Empremta digital remota</string>
-  <string name="shared_secret_hint">Pista o pregunta</string>
-  <string name="shared_secret_secret">Secret compartit</string>
   <string name="confirm">Confirmar</string>
-  <string name="in_progress">En progrés</string>
-  <string name="respond">Respondre</string>
-  <string name="secrets_do_not_match">Els secrets no coincideixen</string>
   <string name="try_again">Intenta una altra vegada</string>
-  <string name="finish">Acabat</string>
-  <string name="verified">Verificat</string>
-  <string name="smp_requested">Sol.licitar una verificació per SMP del contacte</string>
-  <string name="no_otr_session_found">Cap sessió OTR ha estat trobada!</string>
   <string name="conversations_foreground_service">Converses</string>
   <string name="pref_keep_foreground_service">Mantenir el servei en primer pla</string>
   <string name="pref_keep_foreground_service_summary">Evitar que el sistema operatiu desconnecti la connexió</string>
@@ -346,16 +322,11 @@
   <string name="file_deleted">L\'arxiu ha sigut eliminat</string>
   <string name="no_application_found_to_open_file">Cap aplicació trobada a l\'obrir l\'arxiu</string>
   <string name="no_application_found_to_open_link">No s\'ha trobat cap aplicació per obrir el vincle</string>
-  <string name="could_not_verify_fingerprint">No s\'ha pogut verificar l\'empremta dactilar</string>
-  <string name="manually_verify">Verificat manualment</string>
-  <string name="are_you_sure_verify_fingerprint">Estàs segur que vols verificar l\'empremta digital OTR del teu contacte?</string>
-  <string name="pref_show_dynamic_tags">Mostrar etiquetes dinàmiques</string>
   <string name="pref_show_dynamic_tags_summary">Mostra etiquetes de nomès lectura per sota dels noms dels contactes</string>
   <string name="enable_notifications">Habilitar notificació</string>
   <string name="no_conference_server_found">No s\'ha trobat cap servidor de xat de grup</string>
   <string name="conference_creation_failed">No s\'ha pogut crear el xat de grup</string>
   <string name="account_image_description">Avatar del compte</string>
-  <string name="copy_otr_clipboard_description">Copiar l\'empremta digital OTR al portapapers</string>
   <string name="copy_omemo_clipboard_description">Copieu l\'empremta digital OMEMO al porta-retalls</string>
   <string name="regenerate_omemo_key">Regenerar la clau OMEMO</string>
   <string name="clear_other_devices">Esborra els dispositius</string>
@@ -365,20 +336,12 @@ anunciar, però és possible que no rebeu missatges enviats mentre
 mentrestant.</string>
   <string name="error_no_keys_to_trust_server_error">No hi ha claus utilitzables per a aquest contacte.\nEls fitxers noves del servidor no han tingut èxit. Potser hi ha alguna cosa malament amb el servidor del vostre contacte.</string>
   <string name="error_no_keys_to_trust_presence">No hi ha claus disponibles per a aquest contacte.\nAssegureu-vos que teniu una subscripció de presència mútua.</string>
-  <string name="error_no_keys_to_trust">No hi ha claus disponibles per a aquest contacte. Si heu purgat qualsevol de les claus, heu de generar-ne de noves.</string>
   <string name="error_trustkeys_title">Alguna cosa ha anat malament</string>
   <string name="fetching_history_from_server">Anar a cercar la història als servidors</string>
   <string name="no_more_history_on_server">No hi ha més histories al servidor</string>
   <string name="updating">Actualitzant</string>
   <string name="password_changed">Contrasenya canviada</string>
   <string name="could_not_change_password">No s\'ha pogut canviar la contrasenya</string>
-  <string name="otr_session_not_started">Començar a enviar un missatge de conversació xifrat</string>
-  <string name="ask_question">Fer una pregunta</string>
-  <string name="smp_explain_question">Si vosté i el seu contacte tenen un secret en comú que ningú més sap (com una broma o simplement el que vau dinar l\'última vegada que es van trobar) pot utilitzar aquest secret per comprovar les empremtes de cadascú.\n\nProporcionaràs una pista o una pregunta a la que el seu contacte donarà una resposta, que distingeix entre majúscules i minúscules.</string>
-  <string name="smp_explain_answer">El seu contacte l\'hi agradaria verificar la seva empremta digital per un repte amb un secret compartit.El seu contacte proporciona el següent suggeriment o pregunta per aquest secret.</string>
-  <string name="shared_secret_hint_should_not_be_empty">El seu suggeriment no pot estar buit</string>
-  <string name="shared_secret_can_not_be_empty">El teu secret compartit no pot estar buit</string>
-  <string name="manual_verification_explanation">Compari acuradament l\'empremta digital que és mostra a continuació amb la empremta digital del seu contacte.\n\ També pots utilitzar alguna forma de confiança d la comunicació com a correu electrònic xifrat o alguna trucada telefònica per intercanviar-lo</string>
   <string name="change_password">Cambiar contrasenya</string>
   <string name="current_password">Contrasenya actual</string>
   <string name="new_password">Nova contrasenya</string>
@@ -427,7 +390,6 @@ mentrestant.</string>
   <string name="apk">Aplicació d\'Android</string>
   <string name="vcard">Contacte</string>
   <string name="received_x_file">Rebut %s</string>
-  <string name="disable_foreground_service">Deshabilitat el servei de primer pla</string>
   <string name="touch_to_open_conversations">Tocar per obrir les conversacions</string>
   <string name="avatar_has_been_published">L\'avatar ha sigut publicat!</string>
   <string name="sending_x_file">Enviant %s</string>
@@ -532,14 +494,6 @@ mostrar els noms i avatars complets.\n\nConversations només
 llegeix els vostres contactes i els relacionaran localment sense haver
  de penjar-les al vostre servidor.\n\nAra se us demanarà que 
 concediu permís per accedir als teus contactes.</string>
-  <string name="certificate_information">Informació del certificat</string>
-  <string name="certificate_subject">Subjecte</string>
-  <string name="certificate_issuer">Emissor</string>
-  <string name="certificate_cn">Nom comú</string>
-  <string name="certificate_o">Organització</string>
-  <string name="certificate_sha1">SHA-1</string>
-  <string name="certicate_info_not_available">(No està disponible)</string>
-  <string name="certificate_not_found">No s\'ha trobat cap certificat</string>
   <string name="notify_on_all_messages">Notifica a tots els missatges</string>
   <string name="notify_only_when_highlighted">Notifica només quan s\'esmenta</string>
   <string name="notify_never">S\'han desactivat les notificacions</string>
@@ -579,9 +533,7 @@ d\'altres proveïdors donant-los la vostra ID Jabber completa.</string>
   <string name="pick_your_username">Tria el teu nom d\'usuari</string>
   <string name="pref_manually_change_presence">Gestioneu la disponibilitat manualment</string>
   <string name="pref_manually_change_presence_summary">Establir la vostra disponibilitat en editar el vostre missatge d\'estat.</string>
-  <string name="change_presence">Canvi de presència</string>
   <string name="status_message">Missatge d\'estat</string>
-  <string name="all_accounts_on_this_device">Estableix per a tots els comptes d\'aquest dispositiu</string>
   <string name="presence_chat">Lliure per xatejar</string>
   <string name="presence_online">En línia</string>
   <string name="presence_away">Lluny</string>
@@ -589,13 +541,9 @@ d\'altres proveïdors donant-los la vostra ID Jabber completa.</string>
   <string name="presence_dnd">Ocupat</string>
   <string name="secure_password_generated">S\'ha generat una contrasenya segura</string>
   <string name="device_does_not_support_battery_op">El dispositiu no admet l\'exclusió de l\'optimització de la bateria</string>
-  <string name="show_password">Ensenya la contrasenya</string>
   <string name="registration_please_wait">Error de registre: torna-ho a provar més tard</string>
   <string name="registration_password_too_weak">Ha fallat la inscripció: la contrasenya és massa feble</string>
-  <string name="create_conference">Crea un xat en grup</string>
   <string name="dialog_title_create_conference">Crea un Xat en Grup</string>
-  <string name="join_or_create_conference">Uniu-vos o creeu un xat en grup</string>
-  <string name="conference_subject">Subjecte</string>
   <string name="choose_participants">Tria els participants</string>
   <string name="creating_conference">S\'està creant el xat en grup...</string>
   <string name="invite_again">Torna a convidar</string>
@@ -626,11 +574,6 @@ d\'altres proveïdors donant-los la vostra ID Jabber completa.</string>
   <string name="no_permission_to_access_x">No hi ha permís per accedir %s</string>
   <string name="remote_server_not_found">El servidor remot no s\'ha trobat</string>
   <string name="unable_to_update_account">No es pot actualitzar el compte</string>
-  <string name="missing_presence_subscription_with_x">Falta la subscripció a la presència amb %s</string>
-  <string name="missing_keys_from_x">S\'han perdut les claus OMEMO de %s</string>
-  <string name="missing_omemo_keys">Falten les claus OMEMO</string>
-  <string name="wrong_conference_configuration">No és un xat en grup privat i no anònim.</string>
-  <string name="this_conference_has_no_members">No hi ha membres en aquest xat en grup.</string>
   <string name="report_jid_as_spammer">Informar d\'aquest JID com l\'enviament de missatges no desitjats.</string>
   <string name="pref_delete_omemo_identities">Elimineu les identitats OMEMO</string>
   <string name="pref_delete_omemo_identities_summary">Regenereu les vostres claus OMEMO. Tots els contactes hauran de tornar-vos a verificar. Utilitzeu això només com a últim recurs.</string>
@@ -731,12 +674,10 @@ d\'altres proveïdors donant-los la vostra ID Jabber completa.</string>
 d\'afegir Converses a la llista d\'aplicacions protegides.</string>
   <string name="mtm_accept_cert">Voleu acceptar un certificat desconegut?</string>
   <string name="mtm_trust_anchor">El certificat del servidor no està signat per una autoritat de certificació coneguda.</string>
-  <string name="mtm_cert_expired">El certificat del servidor ha caducat.</string>
   <string name="mtm_accept_servername">Voleu acceptar el nom del servidor associat?</string>
   <string name="mtm_hostname_mismatch">El servidor no s\'ha pogut autenticar com \" 1%s \". El certificat només és vàlid per a:</string>
   <string name="mtm_connect_anyway">Voleu connectar de totes maneres?</string>
   <string name="mtm_cert_details">Detalls del certificat:</string>
-  <string name="mtm_notification">Verificació del certificat</string>
   <string name="once">Un cop</string>
   <string name="qr_code_scanner_needs_access_to_camera">L\'escàner de codi QR necessita accés a la càmera</string>
   <string name="pref_scroll_to_bottom">Desplaça\'t cap a la part inferior</string>
