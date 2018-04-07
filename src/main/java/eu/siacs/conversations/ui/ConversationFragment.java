@@ -1590,7 +1590,7 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
 				for (int i = pos; i >= 0; --i) {
 					try {
 						message = (Message) binding.messagesView.getItemAtPosition(i);
-					} catch (ArrayIndexOutOfBoundsException e) {
+					} catch (IndexOutOfBoundsException e) {
 						//should not happen if we synchronize properly. however if that fails we just gonna try item -1
 						continue;
 					}
