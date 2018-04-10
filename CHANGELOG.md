@@ -4,6 +4,8 @@
 * Added configurable font size
 * Added global OMEMO preference
 * Added scroll to bottom button
+* Only mark visible messages as read
+
 
 ### Version 2.0.0
 * OMEMO by default for everything but public group chats
