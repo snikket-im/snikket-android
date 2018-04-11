@@ -99,6 +99,14 @@
         <item name="android:textColorLink">@color/white</item>
     </style>
 
+    <style name="TextAppearance.Conversations.Body1.Emoji.OnDark" parent="TextAppearance.Conversations.Body1">
+        <item name="android:textColor">@color/white</item>
+    </style>
+
+    <style name="TextAppearance.Conversations.Body1.Emoji" parent="TextAppearance.Conversations.Body1">
+        <item name="android:textColor">?EmojiColor</item>
+    </style>
+
     <style name="TextAppearance.Conversations.Body1.Secondary.OnDark" parent="TextAppearance.Conversations.Body1">
         <item name="android:textColor">@color/white70</item>
     </style>

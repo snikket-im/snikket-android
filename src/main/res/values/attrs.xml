@@ -14,6 +14,7 @@
     <attr name="color_background_secondary" format="reference|color" />
     <attr name="color_background_primary" format="reference|color" />
     <attr name="color_warning" format="reference|color"/>
+    <attr name="EmojiColor" format="reference|color"/>
 
     <attr name="ic_send_cancel_offline" format="reference"/>
     <attr name="ic_send_location_offline" format="reference"/>
