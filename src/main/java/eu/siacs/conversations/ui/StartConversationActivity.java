@@ -65,6 +65,7 @@ import eu.siacs.conversations.entities.Contact;
 import eu.siacs.conversations.entities.Conversation;
 import eu.siacs.conversations.entities.ListItem;
 import eu.siacs.conversations.entities.Presence;
+import eu.siacs.conversations.services.XmppConnectionService;
 import eu.siacs.conversations.services.XmppConnectionService.OnRosterUpdate;
 import eu.siacs.conversations.ui.adapter.ListItemAdapter;
 import eu.siacs.conversations.ui.interfaces.OnBackendConnected;
@@ -76,7 +77,7 @@ import eu.siacs.conversations.xmpp.OnUpdateBlocklist;
 import eu.siacs.conversations.xmpp.XmppConnection;
 import rocks.xmpp.addr.Jid;
 
-public class StartConversationActivity extends XmppActivity implements OnRosterUpdate, OnUpdateBlocklist, CreateConferenceDialog.CreateConferenceDialogListener, JoinConferenceDialog.JoinConferenceDialogListener {
+public class StartConversationActivity extends XmppActivity implements XmppConnectionService.OnConversationUpdate, OnRosterUpdate, OnUpdateBlocklist, CreateConferenceDialog.CreateConferenceDialogListener, JoinConferenceDialog.JoinConferenceDialogListener {
 
 	private final int REQUEST_SYNC_CONTACTS = 0x28cf;
 	private final int REQUEST_CREATE_CONFERENCE = 0x39da;
@@ -967,6 +968,11 @@ public class StartConversationActivity extends XmppActivity implements OnRosterU
 			dialog.dismiss();
 			switchToConversation(conversation);
 		}
+	}
+
+	@Override
+	public void onConversationUpdate() {
+		refreshUi();
 	}
 
 	public static class MyListFragment extends ListFragment {
