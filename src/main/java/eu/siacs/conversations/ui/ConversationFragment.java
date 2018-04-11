@@ -1060,9 +1060,7 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
 				return;
 			}
 
-			final boolean treatAsFile = m.getType() != Message.TYPE_TEXT
-					&& m.getType() != Message.TYPE_PRIVATE
-					&& !(t instanceof TransferablePlaceholder);
+			final boolean deleted = t != null && t instanceof TransferablePlaceholder;
 			final boolean encrypted = m.getEncryption() == Message.ENCRYPTION_DECRYPTION_FAILED
 					|| m.getEncryption() == Message.ENCRYPTION_PGP;
 			final boolean receiving = m.getStatus() == Message.STATUS_RECEIVED && (t instanceof JingleConnection || t instanceof HttpDownloadConnection);
@@ -1079,7 +1077,7 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
 			MenuItem cancelTransmission = menu.findItem(R.id.cancel_transmission);
 			MenuItem deleteFile = menu.findItem(R.id.delete_file);
 			MenuItem showErrorMessage = menu.findItem(R.id.show_error_message);
-			if (!treatAsFile && !encrypted && !m.isGeoUri() && !m.treatAsDownloadable()) {
+			if (!m.isFileOrImage() && !encrypted && !m.isGeoUri() && !m.treatAsDownloadable()) {
 				copyMessage.setVisible(true);
 				quoteMessage.setVisible(MessageUtils.prepareQuote(m).length() > 0);
 			}
@@ -1091,7 +1089,7 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
 					&& (m.getConversation().getMucOptions().nonanonymous() || m.getConversation().getMode() == Conversation.MODE_SINGLE)) {
 				correctMessage.setVisible(true);
 			}
-			if ((treatAsFile && !receiving) || (m.getType() == Message.TYPE_TEXT && !m.treatAsDownloadable())) {
+			if ((m.isFileOrImage() && !deleted && !receiving) || (m.getType() == Message.TYPE_TEXT && !m.treatAsDownloadable())) {
 				shareWith.setVisible(true);
 			}
 			if (m.getStatus() == Message.STATUS_SEND_FAILED) {
@@ -1103,17 +1101,17 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
 					|| (t != null && t instanceof HttpDownloadConnection)) {
 				copyUrl.setVisible(true);
 			}
-			if ((m.isFileOrImage() && t instanceof TransferablePlaceholder && m.hasFileOnRemoteHost())) {
+			if (m.isFileOrImage() && deleted && m.hasFileOnRemoteHost()) {
 				downloadFile.setVisible(true);
 				downloadFile.setTitle(activity.getString(R.string.download_x_file, UIHelper.getFileDescriptionString(activity, m)));
 			}
 			boolean waitingOfferedSending = m.getStatus() == Message.STATUS_WAITING
 					|| m.getStatus() == Message.STATUS_UNSEND
 					|| m.getStatus() == Message.STATUS_OFFERED;
-			if ((t != null && !(t instanceof TransferablePlaceholder)) || waitingOfferedSending && m.needsUploading()) {
+			if ((t != null && !deleted) || waitingOfferedSending && m.needsUploading()) {
 				cancelTransmission.setVisible(true);
 			}
-			if (treatAsFile) {
+			if (m.isFileOrImage() && !deleted) {
 				String path = m.getRelativeFilePath();
 				if (path == null || !path.startsWith("/")) {
 					deleteFile.setVisible(true);
@@ -1383,11 +1381,12 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
 		}
 		Transferable transferable = message.getTransferable();
 		if (transferable != null) {
-			if (transferable instanceof TransferablePlaceholder && message.treatAsDownloadable()) {
+			if (transferable instanceof TransferablePlaceholder && message.hasFileOnRemoteHost()) {
 				activity.xmppConnectionService.getHttpConnectionManager().createNewDownloadConnection(message, true);
 				return;
 			}
 			if (!transferable.start()) {
+				Log.d(Config.LOGTAG,"type: "+transferable.getClass().getName());
 				Toast.makeText(getActivity(), R.string.not_connected_try_again, Toast.LENGTH_SHORT).show();
 			}
 		} else if (message.treatAsDownloadable()) {
