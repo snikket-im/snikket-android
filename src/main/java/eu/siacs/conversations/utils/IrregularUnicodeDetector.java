@@ -117,6 +117,10 @@ public class IrregularUnicodeDetector {
 		final int length = word.length();
 		for (int offset = 0; offset < length; ) {
 			final int codePoint = word.codePointAt(offset);
+			offset += Character.charCount(codePoint);
+			if (!Character.isLetter(codePoint)) {
+				continue;
+			}
 			Character.UnicodeBlock block = normalize(Character.UnicodeBlock.of(codePoint));
 			List<String> codePoints;
 			if (map.containsKey(block)) {
@@ -126,7 +130,6 @@ public class IrregularUnicodeDetector {
 				map.put(block, codePoints);
 			}
 			codePoints.add(String.copyValueOf(Character.toChars(codePoint)));
-			offset += Character.charCount(codePoint);
 		}
 		return map;
 	}
