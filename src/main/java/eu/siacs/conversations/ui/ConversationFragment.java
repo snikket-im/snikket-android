@@ -95,6 +95,7 @@ import eu.siacs.conversations.ui.widget.EditMessage;
 import eu.siacs.conversations.utils.ExceptionHelper;
 import eu.siacs.conversations.utils.MessageUtils;
 import eu.siacs.conversations.utils.NickValidityChecker;
+import eu.siacs.conversations.utils.QuickLoader;
 import eu.siacs.conversations.utils.StylingHelper;
 import eu.siacs.conversations.utils.TimeframeUtils;
 import eu.siacs.conversations.utils.UIHelper;
@@ -1805,6 +1806,7 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
 		String uuid = savedInstanceState.getString(STATE_CONVERSATION_UUID);
 		pendingLastMessageUuid.push(savedInstanceState.getString(STATE_LAST_MESSAGE_UUID, null));
 		if (uuid != null) {
+			QuickLoader.set(uuid);
 			this.pendingConversationsUuid.push(uuid);
 			String takePhotoUri = savedInstanceState.getString(STATE_PHOTO_URI);
 			if (takePhotoUri != null) {
@@ -1874,6 +1876,7 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
 	}
 
 	public void reInit(Conversation conversation, Bundle extras) {
+		QuickLoader.set(conversation.getUuid());
 		this.saveMessageDraftStopAudioPlayer();
 		if (this.reInit(conversation, extras != null)) {
 			if (extras != null) {

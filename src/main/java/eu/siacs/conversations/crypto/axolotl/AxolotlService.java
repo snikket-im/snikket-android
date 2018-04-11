@@ -1013,7 +1013,6 @@ public class AxolotlService implements OnAdvancedStreamFeaturesLoaded {
 							} else {
 								fetchDeviceListStatus.put(jid, false);
 							}
-							Log.d(Config.LOGTAG, response.toString());
 							if (callbacks1 != null) {
 								for (OnDeviceIdsFetched callback1 : callbacks1) {
 									callback1.fetched(jid, null);
