@@ -430,6 +430,7 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
 			}
 			message.markable = packet.hasChild("markable", "urn:xmpp:chat-markers:0");
 			if (conversationMultiMode) {
+				message.setMucUser(conversation.getMucOptions().findUserByFullJid(message.getCounterpart()));
 				final Jid fallback = conversation.getMucOptions().getTrueCounterpart(counterpart);
 				Jid trueCounterpart;
 				if (message.getEncryption() == Message.ENCRYPTION_AXOLOTL) {
@@ -461,8 +462,9 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
 							|| replacedMessage.getFingerprint().equals(message.getFingerprint());
 					final boolean trueCountersMatch = replacedMessage.getTrueCounterpart() != null
 							&& replacedMessage.getTrueCounterpart().equals(message.getTrueCounterpart());
+					final boolean mucUserMatches = query == null && replacedMessage.sameMucUser(message); //can not be checked when using mam
 					final boolean duplicate = conversation.hasDuplicateMessage(message);
-					if (fingerprintsMatch && (trueCountersMatch || !conversationMultiMode) && !duplicate) {
+					if (fingerprintsMatch && (trueCountersMatch || !conversationMultiMode || !mucUserMatches) && !duplicate) {
 						Log.d(Config.LOGTAG, "replaced message '" + replacedMessage.getBody() + "' with '" + message.getBody() + "'");
 						synchronized (replacedMessage) {
 							final String uuid = replacedMessage.getUuid();
