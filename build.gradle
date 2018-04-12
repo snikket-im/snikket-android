@@ -29,7 +29,7 @@ configurations {
 }
 
 ext {
-    supportLibVersion = '27.1.0'
+    supportLibVersion = '27.1.1'
 }
 
 dependencies {
@@ -51,7 +51,7 @@ dependencies {
     implementation 'com.makeramen:roundedimageview:2.3.0'
     implementation "com.wefika:flowlayout:0.4.1"
     implementation 'net.ypresto.androidtranscoder:android-transcoder:0.2.0'
-    implementation 'rocks.xmpp:xmpp-addr:0.8.0-20180330.211042-9'
+    implementation 'rocks.xmpp:xmpp-addr:0.8.0-SNAPSHOT'
 }
 
 ext {
