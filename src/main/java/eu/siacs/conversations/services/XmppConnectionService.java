@@ -1608,13 +1608,7 @@ public class XmppConnectionService extends Service {
 	public boolean isConversationsListEmpty(final Conversation ignore) {
 		synchronized (this.conversations) {
 			final int size = this.conversations.size();
-			if (size == 0) {
-				return true;
-			} else if (size == 1) {
-				return this.conversations.get(0) == ignore;
-			} else {
-				return false;
-			}
+			return size == 0 || size == 1 && this.conversations.get(0) == ignore;
 		}
 	}
 
