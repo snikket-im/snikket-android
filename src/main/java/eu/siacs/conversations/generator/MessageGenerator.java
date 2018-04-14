@@ -77,9 +77,7 @@ public class MessageGenerator extends AbstractGenerator {
 			return null;
 		}
 		packet.setAxolotlMessage(axolotlMessage.toElement());
-		if (Config.supportUnencrypted() && !recipientSupportsOmemo(message)) {
-			packet.setBody(OMEMO_FALLBACK_MESSAGE);
-		}
+		packet.setBody(OMEMO_FALLBACK_MESSAGE);
 		packet.addChild("store", "urn:xmpp:hints");
 		packet.addChild("encryption","urn:xmpp:eme:0")
 				.setAttribute("name","OMEMO")
@@ -94,11 +92,6 @@ public class MessageGenerator extends AbstractGenerator {
 		packet.setAxolotlMessage(axolotlMessage.toElement());
 		packet.addChild("store", "urn:xmpp:hints");
 		return packet;
-	}
-
-	private static boolean recipientSupportsOmemo(Message message) {
-		Contact c = message.getContact();
-		return c != null && c.getPresences().allOrNonSupport(AxolotlService.PEP_DEVICE_LIST_NOTIFY);
 	}
 
 	public static void addMessageHints(MessagePacket packet) {
