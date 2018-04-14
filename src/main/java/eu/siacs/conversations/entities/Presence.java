@@ -44,19 +44,22 @@ public class Presence implements Comparable {
 	private ServiceDiscoveryResult disco;
 	private final String ver;
 	private final String hash;
+	private final String node;
 	private final String message;
 
-	private Presence(Status status, String ver, String hash, String message) {
+	private Presence(Status status, String ver, String hash, String node, String message) {
 		this.status = status;
 		this.ver = ver;
 		this.hash = hash;
+		this.node = node;
 		this.message = message;
 	}
 
 	public static Presence parse(String show, Element caps, String message) {
 		final String hash = caps == null ? null : caps.getAttribute("hash");
 		final String ver = caps == null ? null : caps.getAttribute("ver");
-		return new Presence(Status.fromShowString(show), ver, hash, message);
+		final String node = caps == null ? null : caps.getAttribute("node");
+		return new Presence(Status.fromShowString(show), ver, hash, node, message);
 	}
 
 	public int compareTo(Object other) {
@@ -73,6 +76,10 @@ public class Presence implements Comparable {
 
 	public String getVer() {
 		return this.ver;
+	}
+
+	public String getNode() {
+		return this.node;
 	}
 
 	public String getHash() {

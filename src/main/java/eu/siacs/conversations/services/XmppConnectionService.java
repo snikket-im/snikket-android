@@ -166,6 +166,15 @@ public class XmppConnectionService extends Service {
 	private final IqGenerator mIqGenerator = new IqGenerator(this);
 	private final List<String> mInProgressAvatarFetches = new ArrayList<>();
 	private final HashSet<Jid> mLowPingTimeoutMode = new HashSet<>();
+	private final OnIqPacketReceived mDefaultIqHandler = (account, packet) -> {
+		if (packet.getType() != IqPacket.TYPE.RESULT) {
+			Element error = packet.findChild("error");
+			String text = error != null ? error.findChildContent("text") : null;
+			if (text != null) {
+				Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": received iq error - " + text);
+			}
+		}
+	};
 	public DatabaseBackend databaseBackend;
 	private ReplacingSerialSingleThreadExecutor mContactMergerExecutor = new ReplacingSerialSingleThreadExecutor(true);
 	private long mLastActivity = 0;
@@ -188,15 +197,6 @@ public class XmppConnectionService extends Service {
 	private OnMessagePacketReceived mMessageParser = new MessageParser(this);
 	private OnPresencePacketReceived mPresenceParser = new PresenceParser(this);
 	private IqParser mIqParser = new IqParser(this);
-	private final OnIqPacketReceived mDefaultIqHandler = (account, packet) -> {
-		if (packet.getType() != IqPacket.TYPE.RESULT) {
-			Element error = packet.findChild("error");
-			String text = error != null ? error.findChildContent("text") : null;
-			if (text != null) {
-				Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": received iq error - " + text);
-			}
-		}
-	};
 	private MessageGenerator mMessageGenerator = new MessageGenerator(this);
 	public OnContactStatusChanged onContactStatusChanged = (contact, online) -> {
 		Conversation conversation = find(getConversations(), contact);
@@ -3653,19 +3653,23 @@ public class XmppConnectionService extends Service {
 				account.inProgressDiscoFetches.add(key);
 				IqPacket request = new IqPacket(IqPacket.TYPE.GET);
 				request.setTo(jid);
-				request.query("http://jabber.org/protocol/disco#info");
-				Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": making disco request for " + key.second + " to " + jid);
-				sendIqPacket(account, request, (account1, discoPacket) -> {
+				String node = presence.getNode();
+				Element query = request.query("http://jabber.org/protocol/disco#info");
+				if (node != null) {
+					query.setAttribute("node",node);
+				}
+				Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": making disco request for " + key.second + " to " + jid+ "node="+node);
+				sendIqPacket(account, request, (a, discoPacket) -> {
 					if (discoPacket.getType() == IqPacket.TYPE.RESULT) {
 						ServiceDiscoveryResult disco1 = new ServiceDiscoveryResult(discoPacket);
 						if (presence.getVer().equals(disco1.getVer())) {
 							databaseBackend.insertDiscoveryResult(disco1);
-							injectServiceDiscorveryResult(account1.getRoster(), presence.getHash(), presence.getVer(), disco1);
+							injectServiceDiscorveryResult(a.getRoster(), presence.getHash(), presence.getVer(), disco1);
 						} else {
-							Log.d(Config.LOGTAG, account1.getJid().asBareJid() + ": mismatch in caps for contact " + jid + " " + presence.getVer() + " vs " + disco1.getVer());
+							Log.d(Config.LOGTAG, a.getJid().asBareJid() + ": mismatch in caps for contact " + jid + " " + presence.getVer() + " vs " + disco1.getVer());
 						}
 					}
-					account1.inProgressDiscoFetches.remove(key);
+					a.inProgressDiscoFetches.remove(key);
 				});
 			}
 		}
