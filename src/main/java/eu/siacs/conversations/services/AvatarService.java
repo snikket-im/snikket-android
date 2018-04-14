@@ -258,14 +258,21 @@ public class AvatarService implements OnAdvancedStreamFeaturesLoaded {
 		if (bitmap != null || cachedOnly) {
 			return bitmap;
 		}
-		final List<MucOptions.User> users = mucOptions.getUsersRelevantForNameAndAvatar();
-		if (users.size() == 0) {
-			Conversation c = mucOptions.getConversation();
-			bitmap = getImpl(c.getName().toString(), c.getJid().asBareJid().toString(), size);
-		} else {
-			bitmap = getImpl(users, size);
+
+		bitmap = mXmppConnectionService.getFileBackend().getAvatar(mucOptions.getAvatar(), size);
+
+		if (bitmap == null) {
+			final List<MucOptions.User> users = mucOptions.getUsersRelevantForNameAndAvatar();
+			if (users.size() == 0) {
+				Conversation c = mucOptions.getConversation();
+				bitmap = getImpl(c.getName().toString(), c.getJid().asBareJid().toString(), size);
+			} else {
+				bitmap = getImpl(users, size);
+			}
 		}
+
 		this.mXmppConnectionService.getBitmapCache().put(KEY, bitmap);
+
 		return bitmap;
 	}
 

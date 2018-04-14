@@ -1574,10 +1574,10 @@ public class XmppConnectionService extends Service {
 
 	public List<Conversation> findAllConferencesWith(Contact contact) {
 		ArrayList<Conversation> results = new ArrayList<>();
-		for (Conversation conversation : conversations) {
-			if (conversation.getMode() == Conversation.MODE_MULTI
-					&& conversation.getMucOptions().isContactInRoom(contact)) {
-				results.add(conversation);
+		for (final Conversation c : conversations) {
+			if (c.getMode() == Conversation.MODE_MULTI
+					&& (c.getJid().asBareJid().equals(c.getJid().asBareJid()) || c.getMucOptions().isContactInRoom(contact))) {
+				results.add(c);
 			}
 		}
 		return results;
@@ -2851,58 +2851,52 @@ public class XmppConnectionService extends Service {
 
 	private void fetchAvatarPep(Account account, final Avatar avatar, final UiCallback<Avatar> callback) {
 		IqPacket packet = this.mIqGenerator.retrievePepAvatar(avatar);
-		sendIqPacket(account, packet, new OnIqPacketReceived() {
-
-			@Override
-			public void onIqPacketReceived(Account account, IqPacket result) {
-				synchronized (mInProgressAvatarFetches) {
-					mInProgressAvatarFetches.remove(generateFetchKey(account, avatar));
-				}
-				final String ERROR = account.getJid().asBareJid()
-						+ ": fetching avatar for " + avatar.owner + " failed ";
-				if (result.getType() == IqPacket.TYPE.RESULT) {
-					avatar.image = mIqParser.avatarData(result);
-					if (avatar.image != null) {
-						if (getFileBackend().save(avatar)) {
-							if (account.getJid().asBareJid().equals(avatar.owner)) {
-								if (account.setAvatar(avatar.getFilename())) {
-									databaseBackend.updateAccount(account);
-								}
-								getAvatarService().clear(account);
-								updateConversationUi();
-								updateAccountUi();
-							} else {
-								Contact contact = account.getRoster()
-										.getContact(avatar.owner);
-								contact.setAvatar(avatar);
-								getAvatarService().clear(contact);
-								updateConversationUi();
-								updateRosterUi();
+		sendIqPacket(account, packet, (a, result) -> {
+			synchronized (mInProgressAvatarFetches) {
+				mInProgressAvatarFetches.remove(generateFetchKey(a, avatar));
+			}
+			final String ERROR = a.getJid().asBareJid() + ": fetching avatar for " + avatar.owner + " failed ";
+			if (result.getType() == IqPacket.TYPE.RESULT) {
+				avatar.image = mIqParser.avatarData(result);
+				if (avatar.image != null) {
+					if (getFileBackend().save(avatar)) {
+						if (a.getJid().asBareJid().equals(avatar.owner)) {
+							if (a.setAvatar(avatar.getFilename())) {
+								databaseBackend.updateAccount(a);
 							}
-							if (callback != null) {
-								callback.success(avatar);
-							}
-							Log.d(Config.LOGTAG, account.getJid().asBareJid()
-									+ ": successfully fetched pep avatar for " + avatar.owner);
-							return;
+							getAvatarService().clear(a);
+							updateConversationUi();
+							updateAccountUi();
+						} else {
+							Contact contact = a.getRoster().getContact(avatar.owner);
+							contact.setAvatar(avatar);
+							getAvatarService().clear(contact);
+							updateConversationUi();
+							updateRosterUi();
 						}
-					} else {
-
-						Log.d(Config.LOGTAG, ERROR + "(parsing error)");
+						if (callback != null) {
+							callback.success(avatar);
+						}
+						Log.d(Config.LOGTAG, a.getJid().asBareJid()
+								+ ": successfully fetched pep avatar for " + avatar.owner);
+						return;
 					}
 				} else {
-					Element error = result.findChild("error");
-					if (error == null) {
-						Log.d(Config.LOGTAG, ERROR + "(server error)");
-					} else {
-						Log.d(Config.LOGTAG, ERROR + error.toString());
-					}
-				}
-				if (callback != null) {
-					callback.error(0, null);
-				}
 
+					Log.d(Config.LOGTAG, ERROR + "(parsing error)");
+				}
+			} else {
+				Element error = result.findChild("error");
+				if (error == null) {
+					Log.d(Config.LOGTAG, ERROR + "(server error)");
+				} else {
+					Log.d(Config.LOGTAG, ERROR + error.toString());
+				}
 			}
+			if (callback != null) {
+				callback.error(0, null);
+			}
+
 		});
 	}
 

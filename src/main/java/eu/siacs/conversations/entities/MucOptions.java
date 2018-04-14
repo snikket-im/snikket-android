@@ -390,6 +390,10 @@ public class MucOptions {
 		this.features.addAll(features);
 	}
 
+	public String getAvatar() {
+		return account.getRoster().getContact(conversation.getJid()).getAvatar();
+	}
+
 	private void updateFormData(Data form) {
 		this.form = form;
 	}

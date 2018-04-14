@@ -35,7 +35,6 @@ import eu.siacs.conversations.http.AesGcmURLStreamHandler;
 import rocks.xmpp.addr.Jid;
 
 public final class CryptoHelper {
-	public static final String FILETRANSFER = "?FILETRANSFERv1:";
 	private final static char[] hexArray = "0123456789abcdef".toCharArray();
 
 	public static final Pattern UUID_PATTERN = Pattern.compile("[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}");
