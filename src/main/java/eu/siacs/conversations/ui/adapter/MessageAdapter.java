@@ -377,19 +377,6 @@ public class MessageAdapter extends ArrayAdapter<Message> implements CopyTextVie
 		viewHolder.messageBody.setTextIsSelectable(false);
 	}
 
-	private void displayDecryptionFailed(ViewHolder viewHolder, boolean darkBackground) {
-		viewHolder.download_button.setVisibility(View.GONE);
-		viewHolder.image.setVisibility(View.GONE);
-		viewHolder.audioPlayer.setVisibility(View.GONE);
-		viewHolder.messageBody.setVisibility(View.VISIBLE);
-		if (darkBackground) {
-			viewHolder.messageBody.setTextAppearance(getContext(), R.style.TextAppearance_Conversations_Body1_Secondary_OnDark);
-		} else {
-			viewHolder.messageBody.setTextAppearance(getContext(), R.style.TextAppearance_Conversations_Body1_Secondary);
-		}
-		viewHolder.messageBody.setTextIsSelectable(false);
-	}
-
 	private void displayEmojiMessage(final ViewHolder viewHolder, final String body, final boolean darkBackground) {
 		viewHolder.download_button.setVisibility(View.GONE);
 		viewHolder.audioPlayer.setVisibility(View.GONE);
@@ -767,6 +754,8 @@ public class MessageAdapter extends ArrayAdapter<Message> implements CopyTextVie
 			loadAvatar(message, viewHolder.contact_picture, activity.getPixel(48));
 		}
 
+		resetClickListener(viewHolder.message_box, viewHolder.messageBody);
+
 		viewHolder.contact_picture.setOnClickListener(v -> {
 			if (MessageAdapter.this.mOnContactPictureClickedListener != null) {
 				MessageAdapter.this.mOnContactPictureClickedListener
@@ -812,10 +801,11 @@ public class MessageAdapter extends ArrayAdapter<Message> implements CopyTextVie
 				}
 			} else {
 				displayInfoMessage(viewHolder, activity.getString(R.string.install_openkeychain), darkBackground);
-				viewHolder.message_box.setOnClickListener(v -> activity.showInstallPgpDialog());
+				viewHolder.message_box.setOnClickListener(this::promptOpenKeychainInstall);
+				viewHolder.messageBody.setOnClickListener(this::promptOpenKeychainInstall);
 			}
 		} else if (message.getEncryption() == Message.ENCRYPTION_DECRYPTION_FAILED) {
-			displayDecryptionFailed(viewHolder, darkBackground);
+			displayInfoMessage(viewHolder, activity.getString(R.string.decryption_failed), darkBackground);
 		} else if (message.getEncryption() == Message.ENCRYPTION_AXOLOTL_NOT_FOR_THIS_DEVICE) {
 			displayInfoMessage(viewHolder, activity.getString(R.string.not_encrypted_for_this_device), darkBackground);
 		} else {
@@ -866,6 +856,16 @@ public class MessageAdapter extends ArrayAdapter<Message> implements CopyTextVie
 		displayStatus(viewHolder, message, type, darkBackground);
 
 		return view;
+	}
+
+	private void promptOpenKeychainInstall(View view) {
+		activity.showInstallPgpDialog();
+	}
+
+	private static void resetClickListener(View... views) {
+		for(View view : views) {
+			view.setOnClickListener(null);
+		}
 	}
 
 	@Override
