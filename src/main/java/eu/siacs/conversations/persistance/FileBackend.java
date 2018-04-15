@@ -72,7 +72,7 @@ public class FileBackend {
 
 	private XmppConnectionService mXmppConnectionService;
 
-	private static final List<String> BLACKLISTED_PATH_ELEMENTS = Arrays.asList("org.mozilla.firefox");
+	private static final List<String> BLACKLISTED_PATH_ELEMENTS = Arrays.asList("org.mozilla.firefox","org.mozilla.fennec_fdroid");
 
 	public FileBackend(XmppConnectionService service) {
 		this.mXmppConnectionService = service;
