@@ -110,6 +110,7 @@ import eu.siacs.conversations.utils.ReplacingSerialSingleThreadExecutor;
 import eu.siacs.conversations.utils.ReplacingTaskManager;
 import eu.siacs.conversations.utils.Resolver;
 import eu.siacs.conversations.utils.SerialSingleThreadExecutor;
+import eu.siacs.conversations.utils.WakeLockHelper;
 import eu.siacs.conversations.xml.Namespace;
 import eu.siacs.conversations.utils.XmppUri;
 import eu.siacs.conversations.xml.Element;
@@ -659,7 +660,7 @@ public class XmppConnectionService extends Service {
 			}
 		}
 		synchronized (this) {
-			this.wakeLock.acquire();
+			WakeLockHelper.acquire(wakeLock);
 			boolean pingNow = ConnectivityManager.CONNECTIVITY_ACTION.equals(action);
 			HashSet<Account> pingCandidates = new HashSet<>();
 			for (Account account : accounts) {
@@ -677,12 +678,7 @@ public class XmppConnectionService extends Service {
 					scheduleWakeUpCall(lowTimeout ? Config.LOW_PING_TIMEOUT : Config.PING_TIMEOUT, account.getUuid().hashCode());
 				}
 			}
-			if (wakeLock.isHeld()) {
-				try {
-					wakeLock.release();
-				} catch (final RuntimeException ignored) {
-				}
-			}
+			WakeLockHelper.release(wakeLock);
 		}
 		if (SystemClock.elapsedRealtime() - mLastExpiryRun.get() >= Config.EXPIRY_INTERVAL) {
 			expireOldMessages();

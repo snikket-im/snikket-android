@@ -17,6 +17,7 @@ import eu.siacs.conversations.entities.DownloadableFile;
 import eu.siacs.conversations.persistance.FileBackend;
 import eu.siacs.conversations.utils.CryptoHelper;
 import eu.siacs.conversations.utils.SocksSocketFactory;
+import eu.siacs.conversations.utils.WakeLockHelper;
 import eu.siacs.conversations.xmpp.jingle.stanzas.Content;
 
 public class JingleSocks5Transport extends JingleTransport {
@@ -27,17 +28,16 @@ public class JingleSocks5Transport extends JingleTransport {
 	private InputStream inputStream;
 	private boolean isEstablished = false;
 	private boolean activated = false;
-	protected Socket socket;
+	private Socket socket;
 
-	public JingleSocks5Transport(JingleConnection jingleConnection,
-			JingleCandidate candidate) {
+	JingleSocks5Transport(JingleConnection jingleConnection, JingleCandidate candidate) {
 		this.candidate = candidate;
 		this.connection = jingleConnection;
 		try {
 			MessageDigest mDigest = MessageDigest.getInstance("SHA-1");
 			StringBuilder destBuilder = new StringBuilder();
 			if (jingleConnection.getFtVersion() == Content.Version.FT_3) {
-				Log.d(Config.LOGTAG,this.connection.getAccount().getJid().asBareJid()+": using session Id instead of transport Id for proxy destination");
+				Log.d(Config.LOGTAG, this.connection.getAccount().getJid().asBareJid() + ": using session Id instead of transport Id for proxy destination");
 				destBuilder.append(jingleConnection.getSessionId());
 			} else {
 				destBuilder.append(jingleConnection.getTransportId());
@@ -58,124 +58,112 @@ public class JingleSocks5Transport extends JingleTransport {
 	}
 
 	public void connect(final OnTransportConnected callback) {
-		new Thread(new Runnable() {
-
-			@Override
-			public void run() {
-				try {
-					final boolean useTor = connection.getAccount().isOnion() || connection.getConnectionManager().getXmppConnectionService().useTorToConnect();
-					if (useTor) {
-						socket = SocksSocketFactory.createSocketOverTor(candidate.getHost(),candidate.getPort());
-					} else {
-						socket = new Socket();
-						SocketAddress address = new InetSocketAddress(candidate.getHost(),candidate.getPort());
-						socket.connect(address,Config.SOCKET_TIMEOUT * 1000);
-					}
-					inputStream = socket.getInputStream();
-					outputStream = socket.getOutputStream();
-					SocksSocketFactory.createSocksConnection(socket,destination,0);
-					isEstablished = true;
-					callback.established();
-				} catch (IOException e) {
-					callback.failed();
+		new Thread(() -> {
+			try {
+				final boolean useTor = connection.getAccount().isOnion() || connection.getConnectionManager().getXmppConnectionService().useTorToConnect();
+				if (useTor) {
+					socket = SocksSocketFactory.createSocketOverTor(candidate.getHost(), candidate.getPort());
+				} else {
+					socket = new Socket();
+					SocketAddress address = new InetSocketAddress(candidate.getHost(), candidate.getPort());
+					socket.connect(address, Config.SOCKET_TIMEOUT * 1000);
 				}
+				inputStream = socket.getInputStream();
+				outputStream = socket.getOutputStream();
+				SocksSocketFactory.createSocksConnection(socket, destination, 0);
+				isEstablished = true;
+				callback.established();
+			} catch (IOException e) {
+				callback.failed();
 			}
 		}).start();
 
 	}
 
 	public void send(final DownloadableFile file, final OnFileTransmissionStatusChanged callback) {
-		new Thread(new Runnable() {
-
-			@Override
-			public void run() {
-				InputStream fileInputStream = null;
-				final PowerManager.WakeLock wakeLock = connection.getConnectionManager().createWakeLock("jingle_send_"+connection.getSessionId());
-				try {
-					wakeLock.acquire();
-					MessageDigest digest = MessageDigest.getInstance("SHA-1");
-					digest.reset();
-					fileInputStream = connection.getFileInputStream();
-					if (fileInputStream == null) {
-						Log.d(Config.LOGTAG, connection.getAccount().getJid().asBareJid() + ": could not create input stream");
-						callback.onFileTransferAborted();
-						return;
-					}
-					long size = file.getExpectedSize();
-					long transmitted = 0;
-					int count;
-					byte[] buffer = new byte[8192];
-					while ((count = fileInputStream.read(buffer)) > 0) {
-						outputStream.write(buffer, 0, count);
-						digest.update(buffer, 0, count);
-						transmitted += count;
-						connection.updateProgress((int) ((((double) transmitted) / size) * 100));
-					}
-					outputStream.flush();
-					file.setSha1Sum(digest.digest());
-					if (callback != null) {
-						callback.onFileTransmitted(file);
-					}
-				} catch (Exception e) {
-					Log.d(Config.LOGTAG, connection.getAccount().getJid().asBareJid() + ": "+e.getMessage());
+		new Thread(() -> {
+			InputStream fileInputStream = null;
+			final PowerManager.WakeLock wakeLock = connection.getConnectionManager().createWakeLock("jingle_send_" + connection.getSessionId());
+			try {
+				wakeLock.acquire();
+				MessageDigest digest = MessageDigest.getInstance("SHA-1");
+				digest.reset();
+				fileInputStream = connection.getFileInputStream();
+				if (fileInputStream == null) {
+					Log.d(Config.LOGTAG, connection.getAccount().getJid().asBareJid() + ": could not create input stream");
 					callback.onFileTransferAborted();
-				} finally {
-					FileBackend.close(fileInputStream);
-					wakeLock.release();
+					return;
 				}
+				long size = file.getExpectedSize();
+				long transmitted = 0;
+				int count;
+				byte[] buffer = new byte[8192];
+				while ((count = fileInputStream.read(buffer)) > 0) {
+					outputStream.write(buffer, 0, count);
+					digest.update(buffer, 0, count);
+					transmitted += count;
+					connection.updateProgress((int) ((((double) transmitted) / size) * 100));
+				}
+				outputStream.flush();
+				file.setSha1Sum(digest.digest());
+				if (callback != null) {
+					callback.onFileTransmitted(file);
+				}
+			} catch (Exception e) {
+				Log.d(Config.LOGTAG, connection.getAccount().getJid().asBareJid() + ": " + e.getMessage());
+				callback.onFileTransferAborted();
+			} finally {
+				FileBackend.close(fileInputStream);
+				WakeLockHelper.release(wakeLock);
 			}
 		}).start();
 
 	}
 
 	public void receive(final DownloadableFile file, final OnFileTransmissionStatusChanged callback) {
-		new Thread(new Runnable() {
-
-			@Override
-			public void run() {
-				OutputStream fileOutputStream = null;
-				final PowerManager.WakeLock wakeLock = connection.getConnectionManager().createWakeLock("jingle_receive_"+connection.getSessionId());
-				try {
-					wakeLock.acquire();
-					MessageDigest digest = MessageDigest.getInstance("SHA-1");
-					digest.reset();
-					//inputStream.skip(45);
-					socket.setSoTimeout(30000);
-					fileOutputStream = connection.getFileOutputStream();
-					if (fileOutputStream == null) {
-						callback.onFileTransferAborted();
-						Log.d(Config.LOGTAG, connection.getAccount().getJid().asBareJid() + ": could not create output stream");
-						return;
-					}
-					double size = file.getExpectedSize();
-					long remainingSize = file.getExpectedSize();
-					byte[] buffer = new byte[8192];
-					int count;
-					while (remainingSize > 0) {
-						count = inputStream.read(buffer);
-						if (count == -1) {
-							callback.onFileTransferAborted();
-							Log.d(Config.LOGTAG, connection.getAccount().getJid().asBareJid() + ": file ended prematurely with "+remainingSize+" bytes remaining");
-							return;
-						} else {
-							fileOutputStream.write(buffer, 0, count);
-							digest.update(buffer, 0, count);
-							remainingSize -= count;
-						}
-						connection.updateProgress((int) (((size - remainingSize) / size) * 100));
-					}
-					fileOutputStream.flush();
-					fileOutputStream.close();
-					file.setSha1Sum(digest.digest());
-					callback.onFileTransmitted(file);
-				} catch (Exception e) {
-					Log.d(Config.LOGTAG, connection.getAccount().getJid().asBareJid() + ": "+e.getMessage());
+		new Thread(() -> {
+			OutputStream fileOutputStream = null;
+			final PowerManager.WakeLock wakeLock = connection.getConnectionManager().createWakeLock("jingle_receive_" + connection.getSessionId());
+			try {
+				wakeLock.acquire();
+				MessageDigest digest = MessageDigest.getInstance("SHA-1");
+				digest.reset();
+				//inputStream.skip(45);
+				socket.setSoTimeout(30000);
+				fileOutputStream = connection.getFileOutputStream();
+				if (fileOutputStream == null) {
 					callback.onFileTransferAborted();
-				} finally {
-					wakeLock.release();
-					FileBackend.close(fileOutputStream);
-					FileBackend.close(inputStream);
+					Log.d(Config.LOGTAG, connection.getAccount().getJid().asBareJid() + ": could not create output stream");
+					return;
 				}
+				double size = file.getExpectedSize();
+				long remainingSize = file.getExpectedSize();
+				byte[] buffer = new byte[8192];
+				int count;
+				while (remainingSize > 0) {
+					count = inputStream.read(buffer);
+					if (count == -1) {
+						callback.onFileTransferAborted();
+						Log.d(Config.LOGTAG, connection.getAccount().getJid().asBareJid() + ": file ended prematurely with " + remainingSize + " bytes remaining");
+						return;
+					} else {
+						fileOutputStream.write(buffer, 0, count);
+						digest.update(buffer, 0, count);
+						remainingSize -= count;
+					}
+					connection.updateProgress((int) (((size - remainingSize) / size) * 100));
+				}
+				fileOutputStream.flush();
+				fileOutputStream.close();
+				file.setSha1Sum(digest.digest());
+				callback.onFileTransmitted(file);
+			} catch (Exception e) {
+				Log.d(Config.LOGTAG, connection.getAccount().getJid().asBareJid() + ": " + e.getMessage());
+				callback.onFileTransferAborted();
+			} finally {
+				WakeLockHelper.release(wakeLock);
+				FileBackend.close(fileOutputStream);
+				FileBackend.close(inputStream);
 			}
 		}).start();
 	}

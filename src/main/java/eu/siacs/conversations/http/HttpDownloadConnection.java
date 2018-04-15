@@ -26,6 +26,7 @@ import eu.siacs.conversations.services.AbstractConnectionManager;
 import eu.siacs.conversations.services.XmppConnectionService;
 import eu.siacs.conversations.utils.CryptoHelper;
 import eu.siacs.conversations.utils.FileWriterException;
+import eu.siacs.conversations.utils.WakeLockHelper;
 
 public class HttpDownloadConnection implements Transferable {
 
@@ -365,7 +366,7 @@ public class HttpDownloadConnection implements Transferable {
 				if (connection != null) {
 					connection.disconnect();
 				}
-				wakeLock.release();
+				WakeLockHelper.release(wakeLock);
 			}
 		}
 
