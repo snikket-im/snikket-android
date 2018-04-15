@@ -279,7 +279,7 @@
   <string name="pref_conference_name">Nazwa konferencji</string>
   <string name="pref_conference_name_summary">Użyj tytułu zamiast JID do identyfikowania konferencji</string>
   <string name="pref_autojoin">Automatycznie dołączaj do konferencji</string>
-  <string name="pref_autojoin_summary">Respektuj flagę autodołączenia w tej konferencji</string>
+  <string name="pref_autojoin_summary">Respektuj flagę autodołączenia do konferencji z zakładek</string>
   <string name="toast_message_omemo_fingerprint">Odcisk klucza OMEMO został skopiowany do schowka!</string>
   <string name="conference_banned">Zbanowany</string>
   <string name="conference_members_only">Konferencja tylko dla użytkowników</string>
@@ -357,7 +357,7 @@
   <string name="remove_membership">Cofnij członkostwo</string>
   <string name="grant_admin_privileges">Przyznaj uprawnienia administratora</string>
   <string name="remove_admin_privileges">Odbierz uprawnienia administratora</string>
-  <string name="remove_from_room">Usuń z pokoju</string>
+  <string name="remove_from_room">Usuń z konferencji</string>
   <string name="could_not_change_affiliation">Nie udało się zmienić stanowiska dla %s</string>
   <string name="ban_from_conference">Zbanuj</string>
   <string name="removing_from_public_conference">Próbujesz usunąć %s z publicznego pokoju. Jedyne co można zrobić to zbanować użytkownika na stałe.</string>
@@ -396,8 +396,8 @@
   <string name="hide_offline">Ukryj niedostępnych</string>
   <string name="contact_is_typing">%s pisze...</string>
   <string name="contact_has_stopped_typing">%s przestał(a) pisać</string>
-  <string name="contacts_are_typing">1%s pisze...</string>
-  <string name="contacts_have_stopped_typing">1%s przestał pisać</string>
+  <string name="contacts_are_typing">%s pisze...</string>
+  <string name="contacts_have_stopped_typing">%s przestał pisać</string>
   <string name="pref_chat_states">Powiadomienia pisania</string>
   <string name="pref_chat_states_summary">Powiadamiaj rozmówcę, kiedy rozpoczynasz nową wiadomość</string>
   <string name="send_location">Wyślij lokalizację</string>
@@ -406,10 +406,10 @@
   <string name="location">Lokalizacja</string>
   <string name="received_location">Otrzymano lokalizację</string>
   <string name="title_undo_swipe_out_conversation">Zamknięto konwersację</string>
-  <string name="title_undo_swipe_out_muc">Opuszczono pokój</string>
+  <string name="title_undo_swipe_out_muc">Opuszczono konferencję</string>
   <string name="pref_dont_trust_system_cas_title">Nie ufaj certyfikatom systemowym</string>
   <string name="pref_dont_trust_system_cas_summary">Wymagaj ręcznego potwierdzania certyfikatów</string>
-  <string name="pref_remove_trusted_certificates_title">Usuń certyfikat</string>
+  <string name="pref_remove_trusted_certificates_title">Usuń certyfikaty</string>
   <string name="pref_remove_trusted_certificates_summary">Wybierz zaufane certyfikaty do usunięcia</string>
   <string name="toast_no_trusted_certs">Brak ręcznie zaufanych certyfikatów</string>
   <string name="dialog_manage_certs_title">Usuń certyfikaty</string>
@@ -434,7 +434,7 @@
   <string name="choose_quick_action">Wybierz szybką akcję</string>
   <string name="search_for_contacts_or_groups">Szukaj kontaktów i grup</string>
   <string name="send_private_message">Wyślij wiadomość prywatną</string>
-  <string name="user_has_left_conference">%1$s opuścił pokój!</string>
+  <string name="user_has_left_conference">%1$s opuścił konferencję!</string>
   <string name="username">Nazwa użytkownika</string>
   <string name="username_hint">Nazwa użytkownika</string>
   <string name="invalid_username">Błędna nazwa użytkownika</string>
@@ -711,4 +711,5 @@ Administrator twojego serwera będzie mógł czytać twoje wiadomości, ale moż
   <string name="medium">Średnia</string>
   <string name="large">Duża</string>
   <string name="not_encrypted_for_this_device">Wiadomość nie była zaszyfrowana dla tego urządzenia.</string>
+  <string name="undo">cofnij</string>
 </resources>

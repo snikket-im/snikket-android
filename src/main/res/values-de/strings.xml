@@ -595,7 +595,7 @@
   <string name="verifying_omemo_keys_trusted_source">Du bist dabei, die OMEMO-Schlüssel von %1$s nach dem Klick auf diesen Link zu überprüfen. Dies ist nur sicher, wenn du diesen Link von einer vertrauenswürdigen Quelle erhalten hast, der nur von %2$s veröffentlicht werden konnte.</string>
   <string name="verify_omemo_keys">Überprüfe OMEMO-Schlüssel</string>
   <string name="show_inactive_devices">Inaktive anzeigen</string>
-  <string name="hide_inactive_devices">Inaktive nicht anzeigen</string>
+  <string name="hide_inactive_devices">Inaktive ausblenden</string>
   <string name="distrust_omemo_key">Gerät nicht mehr vertrauen</string>
   <string name="distrust_omemo_key_text">Möchtest du die vorhandene Überprüfung für dieses Gerät löschen?\nDas Gerät und gesendete Nachrichten von diesem Gerät werden als nicht vertrauenswürdig markiert.</string>
   <plurals name="seconds">
@@ -690,4 +690,5 @@
   <string name="medium">Mittel</string>
   <string name="large">Groß</string>
   <string name="not_encrypted_for_this_device">Die Nachricht wurde für dieses Gerät nicht verschlüsselt.</string>
+  <string name="undo">rückgängig</string>
 </resources>

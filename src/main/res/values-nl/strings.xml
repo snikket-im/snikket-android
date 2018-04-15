@@ -690,4 +690,5 @@
   <string name="medium">Gemiddeld</string>
   <string name="large">Groot</string>
   <string name="not_encrypted_for_this_device">Bericht is niet versleuteld voor dit apparaat.</string>
+  <string name="undo">ongedaan maken</string>
 </resources>

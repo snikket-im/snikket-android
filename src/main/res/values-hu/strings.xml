@@ -49,6 +49,7 @@
   <string name="start_conversation">Beszélgetés kezdeményezése</string>
   <string name="invite_contact">Ismerős meghívása</string>
   <string name="contacts">Névjegyek</string>
+  <string name="contact">Kapcsolat</string>
   <string name="cancel">Mégse</string>
   <string name="set">Beállít</string>
   <string name="add">Hozzáad</string>
@@ -680,6 +681,7 @@
   <string name="pref_omemo_setting_summary_always">OMEMO lesz mindig használva az egy-egy és egyéni csoportos beszélgetésekhez.</string>
   <string name="pref_omemo_setting_summary_default_on">OMEMO lesz az alapértelmezett az új beszélgetésekhez.</string>
   <string name="pref_omemo_setting_summary_default_off">Az OMEMO-t kifejezetten be kell majd kapcsolni az új beszélgetésekhez.</string>
+  <string name="create_shortcut">Parancsikon létrehozása</string>
   <string name="pref_font_size">Betűméret</string>
   <string name="pref_font_size_summary">Az alkalmazásban használt relatív betűméret.</string>
   <string name="default_on">Bekapcsolva alapból</string>
@@ -687,4 +689,6 @@
   <string name="small">Kicsi</string>
   <string name="medium">Közepes</string>
   <string name="large">Nagy</string>
+  <string name="not_encrypted_for_this_device">Az üzenet nem volt titkosított erre az eszközre.</string>
+  <string name="undo">visszacsinál</string>
 </resources>

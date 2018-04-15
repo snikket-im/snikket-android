@@ -701,4 +701,5 @@ sau chiar pierderea mesajelor.\nÎn continuare veți fi rugați să dezactivați
   <string name="medium">Medie</string>
   <string name="large">Mare</string>
   <string name="not_encrypted_for_this_device">Mesajul nu a fost criptat pentru acest dispozitiv.</string>
+  <string name="undo">anulează</string>
 </resources>

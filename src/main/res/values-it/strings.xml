@@ -690,4 +690,5 @@
   <string name="medium">Medio</string>
   <string name="large">Grande</string>
   <string name="not_encrypted_for_this_device">Il messaggio non è stato criptato per questo dispositivo.</string>
+  <string name="undo">annulla</string>
 </resources>

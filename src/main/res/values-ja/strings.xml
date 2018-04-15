@@ -5,6 +5,7 @@
   <string name="action_accounts">アカウントの管理</string>
   <string name="action_end_conversation">この会話を終了</string>
   <string name="action_contact_details">連絡先の詳細</string>
+  <string name="action_muc_details">談話室の詳細</string>
   <string name="action_secure">安全に会話</string>
   <string name="action_add_account">アカウントを追加</string>
   <string name="action_edit_contact">名前の編集</string>
@@ -18,6 +19,7 @@
   <string name="title_activity_settings">設定</string>
   <string name="title_activity_sharewith">会話で共有</string>
   <string name="title_activity_start_conversation">会話の開始</string>
+  <string name="title_activity_choose_contact">連絡先を選択</string>
   <string name="title_activity_block_list">ブロックリスト</string>
   <string name="just_now">ちょうど今</string>
   <string name="minute_ago">1 分前</string>
@@ -27,6 +29,7 @@
   <string name="message_decrypting">メッセージを復号化しています。しばらくお待ちください…</string>
   <string name="pgp_message">OpenPGP 暗号化メッセージ</string>
   <string name="nick_in_use">ニックネームは既に使用されています</string>
+  <string name="invalid_muc_nick">正しくないニックネームです</string>
   <string name="admin">管理者</string>
   <string name="owner">オーナー</string>
   <string name="moderator">モデレーター</string>
@@ -42,7 +45,10 @@
   <string name="register_account">サーバーに新しいアカウントを登録</string>
   <string name="change_password_on_server">サーバーのパスワードを変更</string>
   <string name="share_with">…で共有</string>
+  <string name="start_conversation">会話を始める</string>
+  <string name="invite_contact">連絡先を招待</string>
   <string name="contacts">連絡先</string>
+  <string name="contact">連絡先</string>
   <string name="cancel">キャンセル</string>
   <string name="set">設定</string>
   <string name="add">追加</string>
@@ -200,8 +206,13 @@
   <string name="fetching_keys">鍵の取得中…</string>
   <string name="done">完了</string>
   <string name="decrypt">復号化</string>
+  <string name="conferences">談話室</string>
   <string name="search">検索</string>
+  <string name="dialog_title_create_contact">連絡先を作成</string>
   <string name="enter_contact">連絡先を入力</string>
+  <string name="join_conference">談話室に参加</string>
+  <string name="dialog_title_join_conference">談話室に参加</string>
+  <string name="delete_contact">連絡先を削除</string>
   <string name="view_contact_details">連絡先の詳細を表示</string>
   <string name="block_contact">連絡先をブロック</string>
   <string name="unblock_contact">連絡先のブロックを解除</string>
@@ -209,10 +220,14 @@
   <string name="select">選択</string>
   <string name="contact_already_exists">連絡先はすでに存在します</string>
   <string name="join">参加</string>
+  <string name="conference_address">談話室のアドレス</string>
   <string name="conference_address_example">room@conference.example.com/nick</string>
   <string name="save_as_bookmark">ブックマークとして保存</string>
   <string name="delete_bookmark">ブックマークを削除</string>
   <string name="bookmark_already_exists">このブックマークはすでに存在します</string>
+  <string name="action_edit_subject">談話室の題を編集</string>
+  <string name="edit_subject_hint">この談話室の題</string>
+  <string name="joining_conference">談話室に参加しています…</string>
   <string name="leave">退出</string>
   <string name="contact_added_you">連絡先があなたを連絡先リストに追加しました</string>
   <string name="add_back">戻りを追加</string>
@@ -235,6 +250,7 @@
   <string name="skip">スキップ</string>
   <string name="disable_notifications">通知を無効にする</string>
   <string name="enable">有効</string>
+  <string name="conference_requires_password">談話室にはパスワードが必要</string>
   <string name="enter_password">パスワードを入力してください</string>
   <string name="request_presence_updates">最初に連絡先から参加アップデートを要求してください。\n\n<small>これは、連絡先が何のクライアントを使用しているかを決めるために使用されます。</small></string>
   <string name="request_now">今すぐ要求</string>
@@ -257,7 +273,14 @@
   <string name="pref_use_indicate_received_summary">サポートされている場合、受信したメッセージに緑色のチェックマークが付きます</string>
   <string name="pref_use_send_button_to_indicate_status_summary">送信ボタンに連絡先ステータスを示す色が付きます</string>
   <string name="pref_expert_options_other">その他</string>
+  <string name="pref_conference_name">談話室名</string>
+  <string name="pref_conference_name_summary">談話室のJIDの代わりに題を使う</string>
+  <string name="pref_autojoin">自動で談話室に参加</string>
   <string name="toast_message_omemo_fingerprint">OMEMO フィンガープリントをクリップボードにコピーしました!</string>
+  <string name="conference_banned">この談話室から締め出されています</string>
+  <string name="conference_members_only">この談話室はメンバー制です</string>
+  <string name="conference_kicked">この談話室から蹴り出されています</string>
+  <string name="conference_unknown_error">既にこの談話室に参加していません</string>
   <string name="using_account">アカウント %s を使用</string>
   <string name="checking_x">HTTP ホストの %s を確認中</string>
   <string name="not_connected_try_again">接続されていません。後でもう一度お試しください</string>
@@ -296,6 +319,8 @@
   <string name="no_application_found_to_open_file">ファイルを開くアプリケーションが見つかりません</string>
   <string name="pref_show_dynamic_tags_summary">連絡先の下に、読み取り専用タグを表示します</string>
   <string name="enable_notifications">通知を有効にする</string>
+  <string name="no_conference_server_found">談話室のサーバーが見つかりませんでした</string>
+  <string name="conference_creation_failed">談話室の作成に失敗しました。</string>
   <string name="account_image_description">アカウント アバター</string>
   <string name="copy_omemo_clipboard_description">OMEMO フィンガープリントをクリップボードにコピー</string>
   <string name="regenerate_omemo_key">OMEMO 鍵を再生成</string>
@@ -325,14 +350,20 @@
   <string name="grant_admin_privileges">管理者権限を付与</string>
   <string name="remove_admin_privileges">管理者権限を取消</string>
   <string name="could_not_change_affiliation">%s の所属を変更できません</string>
+  <string name="ban_from_conference">談話室から蹴り出す</string>
   <string name="ban_now">今すぐ禁止</string>
   <string name="could_not_change_role">%s の役割を変更できません</string>
+  <string name="conference_options">談話室のオプション</string>
   <string name="members_only">プライベート、メンバーのみ</string>
   <string name="non_anonymous">匿名でない</string>
   <string name="moderated">司会</string>
   <string name="you_are_not_participating">あなたは参加していません</string>
+  <string name="modified_conference_options">談話室のオプションが変更されました!</string>
+  <string name="could_not_modify_conference_options">談話室のオプションを変更できませんでした</string>
   <string name="never">なし</string>
   <string name="until_further_notice">通知があるまで</string>
+  <string name="reply">返信する</string>
+  <string name="mark_as_read">既読にする</string>
   <string name="pref_input_options">入力</string>
   <string name="pref_enter_is_send">Enter は送信</string>
   <string name="pref_enter_is_send_summary">Enter キーをメッセージの送信に使用します</string>
@@ -362,6 +393,7 @@
   <string name="location">位置</string>
   <string name="received_location">位置を受信しました</string>
   <string name="title_undo_swipe_out_conversation">会話が閉じられました</string>
+  <string name="title_undo_swipe_out_muc">談話室を退出</string>
   <string name="pref_dont_trust_system_cas_title">システムの CA を信頼しない</string>
   <string name="pref_dont_trust_system_cas_summary">すべての証明書を手動で承認する必要があります</string>
   <string name="pref_remove_trusted_certificates_title">証明書を削除</string>
@@ -383,6 +415,7 @@
   <string name="choose_quick_action">クイックアクションの選択</string>
   <string name="search_for_contacts_or_groups">連絡先またはグループの検索</string>
   <string name="send_private_message">プライベートメッセージを送信</string>
+  <string name="user_has_left_conference">%1$s は談話室を退出しました</string>
   <string name="username">ユーザー名</string>
   <string name="username_hint">ユーザー名</string>
   <string name="invalid_username">これは有効なユーザー名ではありません</string>
@@ -454,6 +487,7 @@
   <string name="this_field_is_required">このフィールドは必須です</string>
   <string name="correct_message">メッセージを修正</string>
   <string name="send_corrected_message">修正したメッセージを送信</string>
+  <string name="no_keys_just_confirm">この連絡先を既に信用しています。\'done\'を選択すれば %s をグループチャットに加えることを承認します。</string>
   <string name="select_image_and_crop">画像の選択とトリミング</string>
   <string name="this_account_is_disabled">このアカウントを無効にしました</string>
   <string name="security_error_invalid_file_access">セキュリティエラー: 不正なファイルアクセス</string>
@@ -474,7 +508,9 @@
   <string name="device_does_not_support_battery_op">お使いのデバイスはバッテリー最適化の停止をサポートしていません</string>
   <string name="registration_please_wait">登録に失敗しました: 後でもう一度試してください</string>
   <string name="registration_password_too_weak">登録に失敗しました: パスワードが弱すぎます</string>
+  <string name="dialog_title_create_conference">談話室を作成</string>
   <string name="choose_participants">参加者を選択</string>
+  <string name="creating_conference">談話室を作成しています…</string>
   <string name="invite_again">もう一度招待</string>
   <string name="gp_short">短</string>
   <string name="gp_medium">中</string>
@@ -538,6 +574,24 @@
   <string name="verify_omemo_keys">OMEMO 鍵を検証</string>
   <string name="distrust_omemo_key">信頼できないデバイス</string>
   <string name="distrust_omemo_key_text">このデバイスの検証を削除してもよろしいですか?\nこのデバイスと、そのデバイスからのメッセージは信頼できないとマークされます。</string>
+  <plurals name="seconds">
+    <item quantity="other">%d秒</item>
+  </plurals>
+  <plurals name="minutes">
+    <item quantity="other">%d分</item>
+  </plurals>
+  <plurals name="hours">
+    <item quantity="other">%d時間</item>
+  </plurals>
+  <plurals name="days">
+    <item quantity="other">%d日</item>
+  </plurals>
+  <plurals name="weeks">
+    <item quantity="other">%d週</item>
+  </plurals>
+  <plurals name="months">
+    <item quantity="other">%dか月</item>
+  </plurals>
   <string name="pref_automatically_delete_messages">自動メッセージ削除</string>
   <string name="pref_automatically_delete_messages_description">設定された期間よりも古いメッセージを、このデバイスから自動的に削除します。</string>
   <string name="encrypting_message">メッセージの暗号化中</string>
@@ -570,4 +624,18 @@
   <string name="copy_to_clipboard">クリップボードにコピー</string>
   <string name="message_copied_to_clipboard">メッセージをクリップボードにコピーしました</string>
   <string name="message">メッセージ</string>
+  <string name="mtm_cert_details">証明書の詳細:</string>
+  <string name="edit_status_message_title">在席状況メッセージを編集</string>
+  <string name="edit_status_message">在席状況メッセージを編集</string>
+  <string name="disable_encryption">暗号化をしない</string>
+  <string name="error_trustkey_general">Conversations は %1$s に暗号化メッセージを送れません。この連絡先が利用しているサーバーが古すぎるか、クライアントが OMEMO を扱えません。</string>
+  <string name="error_trustkey_hint_mutual">ヒント: お互いが名簿に加えれば解決するでしょう。</string>
+  <string name="draft">下書き:</string>
+  <string name="pref_omemo_setting">OMEMO 暗号化</string>
+  <string name="pref_font_size">フォントの大きさ</string>
+  <string name="small">小</string>
+  <string name="medium">中</string>
+  <string name="large">大</string>
+  <string name="not_encrypted_for_this_device">このデバイス向けにメッセージは暗号化されませんでした。</string>
+  <string name="undo">やり直す</string>
 </resources>

@@ -49,6 +49,7 @@
   <string name="start_conversation">Elkarrizketa hasi</string>
   <string name="invite_contact">Kontaktua gonbidatu</string>
   <string name="contacts">Kontaktuak</string>
+  <string name="contact">Kontaktua</string>
   <string name="cancel">Utzi</string>
   <string name="set">Ezarri</string>
   <string name="add">Gehitu</string>
@@ -322,6 +323,7 @@
   <string name="file_deleted">Fitxategia ezabatu egin da</string>
   <string name="no_application_found_to_open_file">Fitxategia ireki dezakeen aplikaziorik ez da aurkitu</string>
   <string name="no_application_found_to_open_link">Ez da lotura hau ireki dezakeen aplikaziorik aurkitu</string>
+  <string name="pref_show_dynamic_tags">Etiketa dinamikoak</string>
   <string name="pref_show_dynamic_tags_summary">Irakurtzeko soilik diren etiketak erakutsi kontaktuen azpian</string>
   <string name="enable_notifications">Jakinarazpenak gaitu</string>
   <string name="no_conference_server_found">Ez da talde zerbitzaririk aurkitu</string>
@@ -654,7 +656,20 @@
   <string name="huawei_protected_apps">Babestutako aplikazioak</string>
   <string name="huawei_protected_apps_summary">Jakinarazpenak jasotzen jarraitu nahi naduzu, baita pantaila itzalita dagoenean ere, Conversations babestutako aplikazioen zerrendan gehitu behar duzu.</string>
   <string name="mtm_accept_cert">Ziurtagiri ezezaguna onartu?</string>
+  <string name="mtm_cert_details">Ziurtagiriaren xehetasunak:</string>
   <string name="once">Behin</string>
+  <string name="qr_code_scanner_needs_access_to_camera">QR kode eskanerrak kamerara sarbidea behar du</string>
+  <string name="pref_scroll_to_bottom">Behera joan</string>
+  <string name="pref_scroll_to_bottom_summary">Jaitsi mezu bat bidali ostean</string>
+  <string name="edit_status_message_title">Egoera mezua editatu</string>
+  <string name="edit_status_message">Egoera mezua editatu</string>
   <string name="disable_encryption">Enkriptazioa ezgaitu</string>
+  <string name="error_trustkey_device_list">Ezin izan da gailuen zerrenda eskuratu</string>
   <string name="disable_now">Orain ezgaitu</string>
+  <string name="draft">Zirriborroa:</string>
+  <string name="pref_omemo_setting">OMEMO enkriptazioa</string>
+  <string name="pref_omemo_setting_summary_always">OMEMO beti erabiliko da biren artean eta taldeko txat pribatetuetan</string>
+  <string name="pref_omemo_setting_summary_default_on">OMEMO elkarrizketa berrietan lehenetsi bezala erabiliko da</string>
+  <string name="create_shortcut">Lasterbidea sortu</string>
+  <string name="pref_font_size">Letraren neurria</string>
 </resources>

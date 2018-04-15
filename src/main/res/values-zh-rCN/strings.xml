@@ -683,4 +683,5 @@
   <string name="medium">中</string>
   <string name="large">大</string>
   <string name="not_encrypted_for_this_device">该设备的消息未加密。</string>
+  <string name="undo">撤销</string>
 </resources>
