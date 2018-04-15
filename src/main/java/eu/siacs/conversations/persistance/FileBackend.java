@@ -536,8 +536,7 @@ public class FileBackend {
 	public static Uri getUriForFile(Context context, File file) {
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N || Config.ONLY_INTERNAL_STORAGE) {
 			try {
-				String packageId = context.getPackageName();
-				return FileProvider.getUriForFile(context, packageId + FILE_PROVIDER, file);
+				return FileProvider.getUriForFile(context, getAuthority(context), file);
 			} catch (IllegalArgumentException e) {
 				if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
 					throw new SecurityException(e);
@@ -548,6 +547,10 @@ public class FileBackend {
 		} else {
 			return Uri.fromFile(file);
 		}
+	}
+
+	public static String getAuthority(Context context) {
+		return context.getPackageName() + FILE_PROVIDER;
 	}
 
 	public static Uri getIndexableTakePhotoUri(Uri original) {
@@ -727,9 +730,7 @@ public class FileBackend {
 				input = rotate(input, getRotation(image));
 				return cropCenterSquare(input, size);
 			}
-		} catch (SecurityException e) {
-			return null; // happens for example on Android 6.0 if contacts permissions get revoked
-		} catch (FileNotFoundException e) {
+		} catch (FileNotFoundException | SecurityException e) {
 			return null;
 		} finally {
 			close(is);
