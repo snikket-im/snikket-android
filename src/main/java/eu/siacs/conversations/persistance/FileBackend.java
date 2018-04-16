@@ -68,11 +68,9 @@ public class FileBackend {
 
 	private static final SimpleDateFormat IMAGE_DATE_FORMAT = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.US);
 
-	public static final String FILE_PROVIDER = ".files";
+	private static final String FILE_PROVIDER = ".files";
 
 	private XmppConnectionService mXmppConnectionService;
-
-	private static final List<String> BLACKLISTED_PATH_ELEMENTS = Arrays.asList("org.mozilla.firefox","org.mozilla.fennec_fdroid");
 
 	public FileBackend(XmppConnectionService service) {
 		this.mXmppConnectionService = service;
@@ -222,7 +220,7 @@ public class FileBackend {
 		}
 	}
 
-	public static Bitmap rotate(Bitmap bitmap, int degree) {
+	private static Bitmap rotate(Bitmap bitmap, int degree) {
 		if (degree == 0) {
 			return bitmap;
 		}
@@ -236,8 +234,6 @@ public class FileBackend {
 		}
 		return result;
 	}
-
-
 
 
 	public boolean useImageAsIs(Uri uri) {
@@ -264,19 +260,16 @@ public class FileBackend {
 	}
 
 	public static boolean isPathBlacklisted(String path) {
-		for(String element : BLACKLISTED_PATH_ELEMENTS) {
-			if (path.contains(element)) {
-				return true;
-			}
-		}
-		return false;
+		Environment.getDataDirectory();
+		final String androidDataPath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/Android/data/";
+		return path.startsWith(androidDataPath);
 	}
 
 	public String getOriginalPath(Uri uri) {
 		return FileUtils.getPath(mXmppConnectionService, uri);
 	}
 
-	public void copyFileToPrivateStorage(File file, Uri uri) throws FileCopyException {
+	private void copyFileToPrivateStorage(File file, Uri uri) throws FileCopyException {
 		Log.d(Config.LOGTAG, "copy file (" + uri.toString() + ") to private storage " + file.getAbsolutePath());
 		file.getParentFile().mkdirs();
 		OutputStream os = null;
@@ -568,7 +561,7 @@ public class FileBackend {
 			return null;
 		}
 		if (hasAlpha(bm)) {
-			Log.d(Config.LOGTAG,"alpha in avatar detected; uploading as PNG");
+			Log.d(Config.LOGTAG, "alpha in avatar detected; uploading as PNG");
 			bm.recycle();
 			bm = cropCenterSquare(image, 96);
 			return getPepAvatar(bm, Bitmap.CompressFormat.PNG, 100);
@@ -577,9 +570,9 @@ public class FileBackend {
 	}
 
 	private static boolean hasAlpha(final Bitmap bitmap) {
-		for(int x = 0; x < bitmap.getWidth(); ++x) {
-			for(int y = 0; y < bitmap.getWidth(); ++y) {
-				if (Color.alpha(bitmap.getPixel(x,y)) < 255) {
+		for (int x = 0; x < bitmap.getWidth(); ++x) {
+			for (int y = 0; y < bitmap.getWidth(); ++y) {
+				if (Color.alpha(bitmap.getPixel(x, y)) < 255) {
 					return true;
 				}
 			}
@@ -671,7 +664,7 @@ public class FileBackend {
 			file = new File(getAvatarPath(avatar.getFilename()));
 			avatar.size = file.length();
 		} else {
-			file = new File(mXmppConnectionService.getCacheDir().getAbsolutePath()+"/"+ UUID.randomUUID().toString());
+			file = new File(mXmppConnectionService.getCacheDir().getAbsolutePath() + "/" + UUID.randomUUID().toString());
 			file.getParentFile().mkdirs();
 			OutputStream os = null;
 			try {
