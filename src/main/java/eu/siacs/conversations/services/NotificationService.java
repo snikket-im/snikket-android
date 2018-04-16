@@ -499,9 +499,7 @@ public class NotificationService {
 				bigPictureStyle.setSummaryText(text);
 				builder.setContentText(text);
 			} else {
-				builder.setContentText(mXmppConnectionService.getString(
-						R.string.received_x_file,
-						UIHelper.getFileDescriptionString(mXmppConnectionService, message)));
+				builder.setContentText(UIHelper.getFileDescriptionString(mXmppConnectionService, message));
 			}
 			builder.setStyle(bigPictureStyle);
 		} catch (final FileNotFoundException e) {

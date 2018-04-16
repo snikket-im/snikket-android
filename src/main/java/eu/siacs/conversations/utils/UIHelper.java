@@ -280,23 +280,14 @@ public class UIHelper {
 		} else if (message.getEncryption() == Message.ENCRYPTION_AXOLOTL_NOT_FOR_THIS_DEVICE) {
 			return new Pair<>(context.getString(R.string.not_encrypted_for_this_device), true);
 		} else if (message.getType() == Message.TYPE_FILE || message.getType() == Message.TYPE_IMAGE) {
-			if (message.getStatus() == Message.STATUS_RECEIVED) {
-				return new Pair<>(context.getString(R.string.received_x_file,
-						getFileDescriptionString(context, message)), true);
-			} else {
-				return new Pair<>(getFileDescriptionString(context, message), true);
-			}
+			return new Pair<>(getFileDescriptionString(context, message), true);
 		} else {
 			final String body = message.getBody();
 			if (body.startsWith(Message.ME_COMMAND)) {
 				return new Pair<>(body.replaceAll("^" + Message.ME_COMMAND,
 						UIHelper.getMessageDisplayName(message) + " "), false);
 			} else if (message.isGeoUri()) {
-				if (message.getStatus() == Message.STATUS_RECEIVED) {
-					return new Pair<>(context.getString(R.string.received_location), true);
-				} else {
-					return new Pair<>(context.getString(R.string.location), true);
-				}
+				return new Pair<>(context.getString(R.string.location), true);
 			} else if (message.treatAsDownloadable()) {
 				return new Pair<>(context.getString(R.string.x_file_offered_for_download,
 						getFileDescriptionString(context, message)), true);

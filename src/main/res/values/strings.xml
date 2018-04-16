@@ -388,7 +388,6 @@
     <string name="pdf_document">PDF document</string>
     <string name="apk">Android App</string>
     <string name="vcard">Contact</string>
-    <string name="received_x_file">Received %s</string>
     <string name="touch_to_open_conversations">Touch to open Conversations</string>
     <string name="avatar_has_been_published">Avatar has been published!</string>
     <string name="sending_x_file">Sending %s</string>
@@ -404,7 +403,6 @@
     <string name="show_location">Show location</string>
     <string name="no_application_found_to_display_location">No application found to display location</string>
     <string name="location">Location</string>
-    <string name="received_location">Received location</string>
     <string name="title_undo_swipe_out_conversation">Conversation closed</string>
     <string name="title_undo_swipe_out_muc">Left group chat</string>
     <string name="pref_dont_trust_system_cas_title">Don’t trust system CAs</string>
