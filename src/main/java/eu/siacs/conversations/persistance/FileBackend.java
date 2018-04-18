@@ -665,10 +665,14 @@ public class FileBackend {
 			avatar.size = file.length();
 		} else {
 			file = new File(mXmppConnectionService.getCacheDir().getAbsolutePath() + "/" + UUID.randomUUID().toString());
-			file.getParentFile().mkdirs();
+			if (file.getParentFile().mkdirs()) {
+				Log.d(Config.LOGTAG,"created cache directory");
+			}
 			OutputStream os = null;
 			try {
-				file.createNewFile();
+				if (!file.createNewFile()) {
+					Log.d(Config.LOGTAG,"unable to create temporary file "+file.getAbsolutePath());
+				}
 				os = new FileOutputStream(file);
 				MessageDigest digest = MessageDigest.getInstance("SHA-1");
 				digest.reset();
@@ -679,11 +683,20 @@ public class FileBackend {
 				mDigestOutputStream.close();
 				String sha1sum = CryptoHelper.bytesToHex(digest.digest());
 				if (sha1sum.equals(avatar.sha1sum)) {
+					File outputFile = new File(getAvatarPath(avatar.getFilename()));
+					if (outputFile.getParentFile().mkdirs()) {
+						Log.d(Config.LOGTAG,"created avatar directory");
+					}
 					String filename = getAvatarPath(avatar.getFilename());
-					file.renameTo(new File(filename));
+					if (!file.renameTo(new File(filename))) {
+						Log.d(Config.LOGTAG,"unable to rename "+file.getAbsolutePath()+" to "+outputFile);
+						return false;
+					}
 				} else {
 					Log.d(Config.LOGTAG, "sha1sum mismatch for " + avatar.owner);
-					file.delete();
+					if (!file.delete()) {
+						Log.d(Config.LOGTAG,"unable to delete temporary file");
+					}
 					return false;
 				}
 				avatar.size = bytes.length;
