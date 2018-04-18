@@ -484,7 +484,7 @@ public class Conversation extends AbstractEntity implements Blockable, Comparabl
 		}
 	}
 
-	public CharSequence getName() {
+	public @NonNull CharSequence getName() {
 		if (getMode() == MODE_MULTI) {
 			final String subject = getMucOptions().getSubject();
 			final Bookmark bookmark = getBookmark();
@@ -498,7 +498,7 @@ public class Conversation extends AbstractEntity implements Blockable, Comparabl
 				if (printableValue(generatedName)) {
 					return generatedName;
 				} else {
-					return getJid().getLocal();
+					return contactJid.getLocal() != null ? contactJid.getLocal() : contactJid;
 				}
 			}
 		} else if (isWithStranger()) {
