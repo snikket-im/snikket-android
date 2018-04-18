@@ -1,5 +1,9 @@
 # Changelog
 
+### Version 2.1.1
+* Improved start up performance
+* bug fixes
+
 ### Version 2.1.0
 * Added configurable font size
 * Added global OMEMO preference
