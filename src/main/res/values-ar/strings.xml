@@ -359,7 +359,6 @@
   <string name="pdf_document">مستند PDF</string>
   <string name="apk">تطبيق اندرويد</string>
   <string name="vcard">تواصل</string>
-  <string name="received_x_file">تم التلقي %s</string>
   <string name="touch_to_open_conversations">ألمس لفتح تطبيق المحادثات</string>
   <string name="avatar_has_been_published">تم نشر الصورة الرمزية !</string>
   <string name="sending_x_file">ارسال %s</string>
@@ -375,7 +374,6 @@
   <string name="show_location">أظهر الموقع</string>
   <string name="no_application_found_to_display_location">لم يتم العثور على أي تطبيق يسمح بعرض الموقع الجغرافي</string>
   <string name="location">الموقع</string>
-  <string name="received_location">تلقيت موقعا</string>
   <string name="title_undo_swipe_out_conversation">تم إغلاق المحادثة</string>
   <string name="title_undo_swipe_out_muc">عادَر مجموعة المحادثة</string>
   <string name="pref_dont_trust_system_cas_title">لا تثق في سلطات شهادات النظام</string>

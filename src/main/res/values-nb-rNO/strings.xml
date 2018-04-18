@@ -385,7 +385,6 @@
   <string name="pdf_document">PDF-dokument</string>
   <string name="apk">Android-app</string>
   <string name="vcard">Kontakt</string>
-  <string name="received_x_file">Mottatt %s</string>
   <string name="touch_to_open_conversations">Trykk for å åpne Conversations</string>
   <string name="avatar_has_been_published">Avatar publisert!</string>
   <string name="sending_x_file">Sender %s</string>
@@ -401,7 +400,6 @@
   <string name="show_location">Vis plasseringsdata</string>
   <string name="no_application_found_to_display_location">Ingen programmer funnet til visning av plasseringsdata</string>
   <string name="location">Plasseringsdata</string>
-  <string name="received_location">Mottok plasseringsdata</string>
   <string name="title_undo_swipe_out_conversation">Samtale lukket</string>
   <string name="title_undo_swipe_out_muc">Forlot gruppesludringen</string>
   <string name="pref_dont_trust_system_cas_title">Ikke stol på systemets CA-er</string>

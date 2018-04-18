@@ -388,7 +388,6 @@
   <string name="pdf_document">Dokument PDF</string>
   <string name="apk">Aplikacja Androida</string>
   <string name="vcard">Kontakt</string>
-  <string name="received_x_file">Odebrano %s</string>
   <string name="touch_to_open_conversations">Dotknij, aby otworzyć Conversations</string>
   <string name="avatar_has_been_published">Avatar został pomyślnie opublikowany!</string>
   <string name="sending_x_file">Wysyłanie %s</string>
@@ -404,7 +403,6 @@
   <string name="show_location">Pokaż lokalizację</string>
   <string name="no_application_found_to_display_location">Nie odnaleziono aplikacji do wyświetlenia lokalizacji</string>
   <string name="location">Lokalizacja</string>
-  <string name="received_location">Otrzymano lokalizację</string>
   <string name="title_undo_swipe_out_conversation">Zamknięto konwersację</string>
   <string name="title_undo_swipe_out_muc">Opuszczono konferencję</string>
   <string name="pref_dont_trust_system_cas_title">Nie ufaj certyfikatom systemowym</string>

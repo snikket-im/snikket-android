@@ -281,7 +281,6 @@
   <string name="pdf_document">dokument PDF</string>
   <string name="apk">Android App</string>
   <string name="vcard">Kontakt</string>
-  <string name="received_x_file">Prijatý %s</string>
   <string name="touch_to_open_conversations">Kliknite na spustenie Conversations</string>
   <string name="avatar_has_been_published">Avatar sa publikoval!</string>
   <string name="sending_x_file">Posielam %s</string>
@@ -293,7 +292,6 @@
   <string name="show_location">Zobraziť polohu</string>
   <string name="no_application_found_to_display_location">Nenašla sa aplikácia na zobrazenie polohy</string>
   <string name="location">Poloha</string>
-  <string name="received_location">Prijatá poloha</string>
   <string name="title_undo_swipe_out_conversation">Konverzácia zatvorená</string>
   <string name="pref_dont_trust_system_cas_title">Nedôverovať systému CAs</string>
   <string name="pref_dont_trust_system_cas_summary">Všetky certifikáty musia byť ručne schválené</string>

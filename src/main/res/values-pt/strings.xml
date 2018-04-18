@@ -323,7 +323,6 @@
   <string name="pdf_document">Documento PDF</string>
   <string name="apk">Aplicação Android</string>
   <string name="vcard">Contacto</string>
-  <string name="received_x_file">Recebeu %s</string>
   <string name="touch_to_open_conversations">Toque para abrir Conversations</string>
   <string name="avatar_has_been_published">O avatar foi publicado!</string>
   <string name="sending_x_file">Enviando %s</string>
@@ -336,7 +335,6 @@
   <string name="show_location">Exibir localização</string>
   <string name="no_application_found_to_display_location">Não foi encontrada nenhuma aplicação para mostrar a localização</string>
   <string name="location">Localização</string>
-  <string name="received_location">Localização recebida</string>
   <string name="title_undo_swipe_out_conversation">Conversa fechada</string>
   <string name="pref_dont_trust_system_cas_title">Não confiar nas CAs do sistema</string>
   <string name="pref_dont_trust_system_cas_summary">Todos os certificados têm que ser aprovados manualmente</string>

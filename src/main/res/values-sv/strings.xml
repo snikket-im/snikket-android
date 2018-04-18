@@ -341,7 +341,6 @@
   <string name="pdf_document">PDF-dokument</string>
   <string name="apk">Android-app</string>
   <string name="vcard">Kontakt</string>
-  <string name="received_x_file">Tagit emot %s</string>
   <string name="touch_to_open_conversations">Tryck för att öppna Conversations</string>
   <string name="avatar_has_been_published">Avatarbild har publicerats!</string>
   <string name="sending_x_file">Skickar %s</string>
@@ -357,7 +356,6 @@
   <string name="show_location">Visa position</string>
   <string name="no_application_found_to_display_location">Kunde inte hitta applikation för att visa position</string>
   <string name="location">Position</string>
-  <string name="received_location">Mottog position</string>
   <string name="title_undo_swipe_out_conversation">Konversation stängd</string>
   <string name="pref_dont_trust_system_cas_title">Lita inte på systemets CAs</string>
   <string name="pref_dont_trust_system_cas_summary">Alla certifikat måste manuellt godkännas</string>

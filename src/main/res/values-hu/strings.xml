@@ -388,7 +388,6 @@
   <string name="pdf_document">PDF dokumentum</string>
   <string name="apk">Android applikáció</string>
   <string name="vcard">Névjegy</string>
-  <string name="received_x_file">Fogadott fájl: %s</string>
   <string name="touch_to_open_conversations">A Conversations megnyitásához érintse meg</string>
   <string name="avatar_has_been_published">A önarckép publikálva lett!</string>
   <string name="sending_x_file">Küldés alatt: %s</string>
@@ -404,7 +403,6 @@
   <string name="show_location">Hely mutatása</string>
   <string name="no_application_found_to_display_location">Nincs alkalmazás a helyzetének megjelenítéséhez</string>
   <string name="location">Hely</string>
-  <string name="received_location">Kapott hely</string>
   <string name="title_undo_swipe_out_conversation">A beszélgetés lezárult</string>
   <string name="title_undo_swipe_out_muc">A konferenciát elhagyta</string>
   <string name="pref_dont_trust_system_cas_title">Ne bízzon a rendszer hitelesítésekben</string>

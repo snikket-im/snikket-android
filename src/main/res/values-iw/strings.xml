@@ -287,7 +287,6 @@
   <string name="pdf_document">מסמך PDF</string>
   <string name="apk">אפליקציית אנדרויד</string>
   <string name="vcard">איש קשר</string>
-  <string name="received_x_file">התקבל %s</string>
   <string name="touch_to_open_conversations">לחץ כדי לפתוח את Conversations</string>
   <string name="avatar_has_been_published">תמונת הפרופיל פורסמה!</string>
   <string name="sending_x_file">שולח %s</string>
@@ -300,7 +299,6 @@
   <string name="show_location">הראה מיקום</string>
   <string name="no_application_found_to_display_location">לא נמצאה אפליקציית המראה את המיקום</string>
   <string name="location">מיקום</string>
-  <string name="received_location">מיקום שהתקבל</string>
   <string name="title_undo_swipe_out_conversation">השיחה נסגרה</string>
   <string name="pref_dont_trust_system_cas_title">אל תסמוך על ה- CAs של המערכת</string>
   <string name="pref_dont_trust_system_cas_summary">כל החתימות הדיגטליות יצטרכו לעבור אימות ידני</string>

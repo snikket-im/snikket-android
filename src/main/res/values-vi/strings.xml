@@ -323,7 +323,6 @@
   <string name="pdf_document">tài liệu PDF</string>
   <string name="apk">Ứng dụng Android</string>
   <string name="vcard">Liên hệ</string>
-  <string name="received_x_file">Đã nhận %s</string>
   <string name="touch_to_open_conversations">Chạm để mở Conversations</string>
   <string name="avatar_has_been_published">Đã đăng tải ảnh đại diện!</string>
   <string name="sending_x_file">Đang gửi %s</string>
@@ -336,7 +335,6 @@
   <string name="show_location">Hiện vị trí</string>
   <string name="no_application_found_to_display_location">Không thấy ứng dụng nào có thể hiện vị trí</string>
   <string name="location">Vị trí</string>
-  <string name="received_location">Vị trí đã nhận</string>
   <string name="title_undo_swipe_out_conversation">Đã đóng cuộc hội thoại</string>
   <string name="pref_dont_trust_system_cas_title">Đừng tin các CA hệ thống</string>
   <string name="pref_dont_trust_system_cas_summary">Tất cả chứng nhận phải được phê duyệt thủ công</string>

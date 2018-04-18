@@ -388,7 +388,6 @@
   <string name="pdf_document">document PDF</string>
   <string name="apk">Application Android</string>
   <string name="vcard">Contact</string>
-  <string name="received_x_file">%s reçu(e)</string>
   <string name="touch_to_open_conversations">Cliquez pour ouvrir Conversations</string>
   <string name="avatar_has_been_published">L\'avatar a été publié !</string>
   <string name="sending_x_file">%s en cours d\'envoi</string>
@@ -404,7 +403,6 @@
   <string name="show_location">Afficher la position</string>
   <string name="no_application_found_to_display_location">Aucune application trouvée pour afficher la position</string>
   <string name="location">Position</string>
-  <string name="received_location">Position reçue</string>
   <string name="title_undo_swipe_out_conversation">Conversation fermée</string>
   <string name="title_undo_swipe_out_muc">Quitter le groupe de discussion</string>
   <string name="pref_dont_trust_system_cas_title">Ne pas utiliser les CAs système</string>

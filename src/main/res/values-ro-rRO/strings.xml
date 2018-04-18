@@ -388,7 +388,6 @@
   <string name="pdf_document">document PDF</string>
   <string name="apk">Aplicație Android</string>
   <string name="vcard">Contact</string>
-  <string name="received_x_file">Primit %s</string>
   <string name="touch_to_open_conversations">Atingeți pentru a deschide Conversations</string>
   <string name="avatar_has_been_published">Avatarul a fost publicat!</string>
   <string name="sending_x_file">Trimit %s</string>
@@ -404,7 +403,6 @@
   <string name="show_location">Arată locația</string>
   <string name="no_application_found_to_display_location">Nu s-a găsit nici o aplicație care să afișeze locația</string>
   <string name="location">Locatie</string>
-  <string name="received_location">Locație primită</string>
   <string name="title_undo_swipe_out_conversation">Conversație închisă</string>
   <string name="title_undo_swipe_out_muc">A părăsit discuția de grup</string>
   <string name="pref_dont_trust_system_cas_title">Nu ai încredere în CA din sistem</string>

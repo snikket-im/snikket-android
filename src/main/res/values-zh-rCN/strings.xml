@@ -388,7 +388,6 @@
   <string name="pdf_document">PDF 文档</string>
   <string name="apk">Android App</string>
   <string name="vcard">联系人</string>
-  <string name="received_x_file">已经收到 %s</string>
   <string name="touch_to_open_conversations">轻触打开 Conversations</string>
   <string name="avatar_has_been_published">头像已经发布！</string>
   <string name="sending_x_file">发送中 %s</string>
@@ -404,7 +403,6 @@
   <string name="show_location">显示位置</string>
   <string name="no_application_found_to_display_location">无法找到显示位置的应用</string>
   <string name="location">位置</string>
-  <string name="received_location">位置已收到</string>
   <string name="title_undo_swipe_out_conversation">会话已关闭</string>
   <string name="title_undo_swipe_out_muc">离开群聊</string>
   <string name="pref_dont_trust_system_cas_title">不相信系统 CA</string>
@@ -669,7 +667,7 @@
   <string name="error_trustkey_hint_mutual">提示：某些情况下，可以将对方加入联系人列表，以解决此问题。</string>
   <string name="disable_encryption_message">确认要禁用此会话的 OMEMO 加密吗？\n这会允许您的服务器管理员阅读你们的消息，但这可能是和使用过时客户端的人会话的唯一方式。</string>
   <string name="disable_now">现在禁用</string>
-  <string name="draft">草案：</string>
+  <string name="draft">草稿：</string>
   <string name="pref_omemo_setting">OMEMO加密</string>
   <string name="pref_omemo_setting_summary_always">OMEMO将始终用于一对一和私人群组聊天。</string>
   <string name="pref_omemo_setting_summary_default_on">OMEMO将默认用于新对话。</string>

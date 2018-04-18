@@ -388,7 +388,6 @@
   <string name="pdf_document">PDF dokumentua</string>
   <string name="apk">Android aplikazioa</string>
   <string name="vcard">Kontaktua</string>
-  <string name="received_x_file">%s jaso da</string>
   <string name="touch_to_open_conversations">Ikutu Conversations irekitzeko</string>
   <string name="avatar_has_been_published">Profileko argazkia argitaratu da</string>
   <string name="sending_x_file">%s bidaltzen</string>
@@ -404,7 +403,6 @@
   <string name="show_location">Kokapena erakutsi</string>
   <string name="no_application_found_to_display_location">Kokapena erakutsi dezakeen aplikaziorik ez da aurkitu</string>
   <string name="location">Kokapena</string>
-  <string name="received_location">Kokapena jaso da</string>
   <string name="title_undo_swipe_out_conversation">Elkarrizketa itxi egin da</string>
   <string name="title_undo_swipe_out_muc">Taldea utzi egin da</string>
   <string name="pref_dont_trust_system_cas_title">Sistemaren CAtaz ez fidatu</string>

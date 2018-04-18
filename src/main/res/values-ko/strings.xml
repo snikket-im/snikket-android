@@ -336,7 +336,6 @@
   <string name="pdf_document">PDF 문서 </string>
   <string name="apk">안드로이드 앱 </string>
   <string name="vcard">연락처 </string>
-  <string name="received_x_file">%s 수신 </string>
   <string name="touch_to_open_conversations">터치해서 Conversations 열기 </string>
   <string name="avatar_has_been_published">아바타가 공개되었습니다 </string>
   <string name="sending_x_file">%s 전송중 </string>
@@ -352,7 +351,6 @@
   <string name="show_location">위치 표시 </string>
   <string name="no_application_found_to_display_location">위치를 표시할 수 있는 앱이 발견되지 않았습니다 </string>
   <string name="location">위치 </string>
-  <string name="received_location">위치 수신 </string>
   <string name="title_undo_swipe_out_conversation">대화 끝남 </string>
   <string name="pref_dont_trust_system_cas_title">시스템 CA를 신뢰하지 않음 </string>
   <string name="pref_dont_trust_system_cas_summary">모든 인증서는 수동으로 승인되어야 함 </string>

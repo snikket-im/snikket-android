@@ -294,7 +294,6 @@
   <string name="pdf_document">Berkas PDF</string>
   <string name="apk">Apl Android</string>
   <string name="vcard">Kontak</string>
-  <string name="received_x_file">Diterima %s</string>
   <string name="touch_to_open_conversations">Sentuh untuk membuka Conversations</string>
   <string name="avatar_has_been_published">Avatar telah diterbitkan!</string>
   <string name="sending_x_file">Mengirim %s</string>
@@ -307,7 +306,6 @@
   <string name="show_location">Tampilkan lokasi</string>
   <string name="no_application_found_to_display_location">Tidak ada aplikasi ditemukan untuk menampilkan lokasi</string>
   <string name="location">Lokasi</string>
-  <string name="received_location">Lokasi yang diterima</string>
   <string name="title_undo_swipe_out_conversation">Percakapan tertutup</string>
   <string name="pref_dont_trust_system_cas_title">Jangan percaya sistem CA</string>
   <string name="pref_dont_trust_system_cas_summary">Semua sertifikat harus disetujui secara manual</string>

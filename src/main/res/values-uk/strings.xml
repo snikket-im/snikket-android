@@ -343,7 +343,6 @@
   <string name="pdf_document">PDF документ</string>
   <string name="apk">програма Android</string>
   <string name="vcard">Контакт</string>
-  <string name="received_x_file">Отримано %s</string>
   <string name="touch_to_open_conversations">Торкніться, щоб відкрити Розмови</string>
   <string name="avatar_has_been_published">Аватар опубліковано!</string>
   <string name="sending_x_file">Відправка %s</string>
@@ -359,7 +358,6 @@
   <string name="show_location">Показати місцезнаходження</string>
   <string name="no_application_found_to_display_location">Не знайдено програми, щоб показати місцезнаходження</string>
   <string name="location">Місцезнаходження</string>
-  <string name="received_location">Отримано місцезнаходження</string>
   <string name="title_undo_swipe_out_conversation">Розмову закрито</string>
   <string name="pref_dont_trust_system_cas_title">Не довіряти системним центрам сертифікації</string>
   <string name="pref_dont_trust_system_cas_summary">Усі сертифікати мають бути підтверджені вручну</string>

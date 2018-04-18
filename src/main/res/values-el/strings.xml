@@ -328,7 +328,6 @@
   <string name="pdf_document">έγγραφο PDF</string>
   <string name="apk">Εφαρμογή Android</string>
   <string name="vcard">Επαφή</string>
-  <string name="received_x_file">Λήψη του %s</string>
   <string name="touch_to_open_conversations">Επιλέξτε για να ανοίξετε το Conversations</string>
   <string name="avatar_has_been_published">Η εικόνα προφίλ έχει δημοσιευτεί!</string>
   <string name="sending_x_file">Αποστολή του %s</string>
@@ -340,7 +339,6 @@
   <string name="show_location">Εμφάνιση τοποθεσίας</string>
   <string name="no_application_found_to_display_location">Δεν βρέθηκε εφαρμογή για την απεικόνιση τοποθεσίας</string>
   <string name="location">Τοποθεσία</string>
-  <string name="received_location">Ελήφθη τοποθεσία</string>
   <string name="title_undo_swipe_out_conversation">Η συζήτηση έκλεισε</string>
   <string name="pref_dont_trust_system_cas_title">Μη έμπιστες αρχές πιστοποίησης συστήματος</string>
   <string name="pref_dont_trust_system_cas_summary">Όλα τα πιστοποιητικά πρέπει να εγκριθούν χειροκίνητα</string>

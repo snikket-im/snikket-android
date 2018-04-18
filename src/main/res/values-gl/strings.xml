@@ -385,7 +385,6 @@
   <string name="pdf_document">documento PDF</string>
   <string name="apk">App Android</string>
   <string name="vcard">Contacto</string>
-  <string name="received_x_file">Recibido %s</string>
   <string name="touch_to_open_conversations">Toque para abrir Conversations</string>
   <string name="avatar_has_been_published">Publicouse o avatar</string>
   <string name="sending_x_file">Enviando %s</string>
@@ -401,7 +400,6 @@
   <string name="show_location">Mostrar localización</string>
   <string name="no_application_found_to_display_location">Non se atopou un aplicativo para mostrar a localización</string>
   <string name="location">Localización</string>
-  <string name="received_location">Localización recibida</string>
   <string name="title_undo_swipe_out_conversation">Pechouse a conversa</string>
   <string name="title_undo_swipe_out_muc">Deixar a conversa en grupo</string>
   <string name="pref_dont_trust_system_cas_title">Non confiar nas CAs do sistema</string>

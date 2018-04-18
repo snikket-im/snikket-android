@@ -337,7 +337,6 @@
   <string name="pdf_document">PDF belgesi</string>
   <string name="apk">Android uygulaması</string>
   <string name="vcard">Kişi</string>
-  <string name="received_x_file">%s alındı</string>
   <string name="touch_to_open_conversations">Conversations’ı başlatmak için dokunun</string>
   <string name="avatar_has_been_published">Avatar yayımlandı!</string>
   <string name="sending_x_file">%s gönderiliyor</string>
@@ -353,7 +352,6 @@
   <string name="show_location">Yer bildirimi göster</string>
   <string name="no_application_found_to_display_location">Yer bildirimi için bir uygulama bulunamadı</string>
   <string name="location">Yer</string>
-  <string name="received_location">Bildirilen yer</string>
   <string name="title_undo_swipe_out_conversation">Konuşma sonlandı</string>
   <string name="pref_dont_trust_system_cas_title">Sistem sertifikalarına güvenmeyin</string>
   <string name="pref_dont_trust_system_cas_summary">Tüm sertifikalar bizzat onaylanmalıdır</string>

@@ -49,6 +49,7 @@
   <string name="start_conversation">Iniciar conversa</string>
   <string name="invite_contact">Convidar contato</string>
   <string name="contacts">Contatos</string>
+  <string name="contact">Contato</string>
   <string name="cancel">Cancelar</string>
   <string name="set">Definir</string>
   <string name="add">Adicionar</string>
@@ -322,6 +323,7 @@
   <string name="file_deleted">O arquivo foi excluído</string>
   <string name="no_application_found_to_open_file">Não foi encontrado nenhum aplicativo para abrir o arquivo</string>
   <string name="no_application_found_to_open_link">Não foi encontrado nenhum aplicativo para abrir o link</string>
+  <string name="pref_show_dynamic_tags">Etiquetas dinâmicas</string>
   <string name="pref_show_dynamic_tags_summary">Exibe etiquetas de somente-leitura abaixo dos contatos.</string>
   <string name="enable_notifications">Habilitar notificações</string>
   <string name="no_conference_server_found">Não foi encontrado nenhum servidor de conversas em grupo</string>
@@ -386,7 +388,6 @@
   <string name="pdf_document">Documento PDF</string>
   <string name="apk">Aplicativo Android</string>
   <string name="vcard">Contato</string>
-  <string name="received_x_file">%s recebido</string>
   <string name="touch_to_open_conversations">Toque para abrir o Conversations</string>
   <string name="avatar_has_been_published">O avatar foi publicado.</string>
   <string name="sending_x_file">Enviando %s</string>
@@ -402,7 +403,6 @@
   <string name="show_location">Exibir localização</string>
   <string name="no_application_found_to_display_location">Não foi encontrado nenhum aplicativo para exibir a localização</string>
   <string name="location">Localização</string>
-  <string name="received_location">Localização recebida</string>
   <string name="title_undo_swipe_out_conversation">A conversa foi fechada</string>
   <string name="title_undo_swipe_out_muc">Deixar a conversa em grupo</string>
   <string name="pref_dont_trust_system_cas_title">Não confiar nas CAs do sistema</string>
@@ -674,4 +674,19 @@
   <string name="error_trustkey_hint_mutual">Dica: Em alguns casos isso pode ser resolvido adicionando-se um ao outro na lista de contatos.</string>
   <string name="disable_encryption_message">Tem certeza que deseja desabilitar a criptografia OMEMO nesta conversa?\nIsso permitirá que o administrador do seu servidor seja capaz de ler suas mensagens. Por outro lado, pode ser a única forma de se comunicar com pessoas usando clientes desatualizados.</string>
   <string name="disable_now">Desabilitar agora</string>
+  <string name="draft">Rascunho:</string>
+  <string name="pref_omemo_setting">Criptografia OMEMO</string>
+  <string name="pref_omemo_setting_summary_always">OMEMO será sempre utilizado em conversas um-para-um e de grupos privados.</string>
+  <string name="pref_omemo_setting_summary_default_on">OMEMO será utilizado por padrão em novas conversas.</string>
+  <string name="pref_omemo_setting_summary_default_off">OMEMO deverá ser explicitamente ativado para novas conversas.</string>
+  <string name="create_shortcut">Criar atalho</string>
+  <string name="pref_font_size">Tamanho da fonte</string>
+  <string name="pref_font_size_summary">O tamanho relativo da fonte utilizada no app.</string>
+  <string name="default_on">Ligado por padrão</string>
+  <string name="default_off">Desligado por padrão</string>
+  <string name="small">Pequena</string>
+  <string name="medium">Média</string>
+  <string name="large">Grande</string>
+  <string name="not_encrypted_for_this_device">A mensagem não foi criptografada para este dispositivo.</string>
+  <string name="undo">desfazer</string>
 </resources>

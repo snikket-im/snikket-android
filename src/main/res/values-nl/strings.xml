@@ -388,7 +388,6 @@
   <string name="pdf_document">PDF-document</string>
   <string name="apk">Android-applicatie</string>
   <string name="vcard">Contact</string>
-  <string name="received_x_file">%s ontvangen</string>
   <string name="touch_to_open_conversations">Tik om Conversations te openen</string>
   <string name="avatar_has_been_published">Avatar is gepubliceerd!</string>
   <string name="sending_x_file">Bezig met versturen van %s</string>
@@ -404,7 +403,6 @@
   <string name="show_location">Locatie weergeven</string>
   <string name="no_application_found_to_display_location">Geen applicatie om locatie weer te geven</string>
   <string name="location">Locatie</string>
-  <string name="received_location">Locatie ontvangen</string>
   <string name="title_undo_swipe_out_conversation">Gesprek gesloten</string>
   <string name="title_undo_swipe_out_muc">Groepsgesprek verlaten</string>
   <string name="pref_dont_trust_system_cas_title">Systeem-CA\'s niet vertrouwen</string>
