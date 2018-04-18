@@ -36,6 +36,7 @@ import eu.siacs.conversations.R;
 import eu.siacs.conversations.ui.util.LocationHelper;
 import eu.siacs.conversations.ui.widget.Marker;
 import eu.siacs.conversations.ui.widget.MyLocation;
+import eu.siacs.conversations.utils.ThemeHelper;
 
 public abstract class LocationActivity extends ActionBarActivity implements LocationListener {
 	protected LocationManager locationManager;
@@ -80,6 +81,7 @@ public abstract class LocationActivity extends ActionBarActivity implements Loca
 	protected void onCreate(final Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		final Context ctx = getApplicationContext();
+		setTheme(ThemeHelper.find(this));
 
 		final PackageManager packageManager = ctx.getPackageManager();
 		hasLocationFeature = packageManager.hasSystemFeature(PackageManager.FEATURE_LOCATION) ||
@@ -87,10 +89,6 @@ public abstract class LocationActivity extends ActionBarActivity implements Loca
 				packageManager.hasSystemFeature(PackageManager.FEATURE_LOCATION_NETWORK);
 		this.locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
 		this.marker_icon = BitmapFactory.decodeResource(ctx.getResources(), R.drawable.marker);
-		final Boolean dark = PreferenceManager.getDefaultSharedPreferences(ctx)
-				.getString("theme", "light").equals("dark");
-		final int mTheme = dark ? R.style.ConversationsTheme_Dark : R.style.ConversationsTheme;
-		setTheme(mTheme);
 
 		// Ask for location permissions if location services are enabled and we're
 		// just starting the activity (we don't want to keep pestering them on every
