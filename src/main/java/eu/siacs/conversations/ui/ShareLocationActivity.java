@@ -8,11 +8,11 @@ import android.location.LocationListener;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.view.View;
 import android.widget.Button;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
 
 import org.osmdroid.api.IGeoPoint;
 import org.osmdroid.util.GeoPoint;
@@ -25,7 +25,7 @@ import eu.siacs.conversations.ui.widget.MyLocation;
 
 public class ShareLocationActivity extends LocationActivity implements LocationListener {
 
-	private RelativeLayout snackBar;
+	private Snackbar snackBar;
 	private boolean marker_fixed_to_loc = false;
 	private static final String KEY_FIXED_TO_LOC = "fixed_to_loc";
 	private Boolean noAskAgain = false;
@@ -62,18 +62,19 @@ public class ShareLocationActivity extends LocationActivity implements LocationL
 			finish();
 		});
 
-		// Setup the snackbar
-		this.snackBar = findViewById(R.id.snackbar);
-		final TextView snackbarAction = findViewById(R.id.snackbar_action);
-		snackbarAction.setOnClickListener(view -> {
-			if (isLocationEnabledAndAllowed()) {
-				updateUi();
-			} else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && !hasLocationPermissions()) {
-				requestPermissions(REQUEST_CODE_SNACKBAR_PRESSED);
-			} else if (!isLocationEnabled()) {
-				startActivity(new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS));
-			}
-		});
+		final CoordinatorLayout snackBarCoordinator = findViewById(R.id.snackbarCoordinator);
+		if (snackBarCoordinator != null) {
+			this.snackBar = Snackbar.make(snackBarCoordinator, R.string.location_disabled, Snackbar.LENGTH_INDEFINITE);
+			snackBar.setAction(R.string.enable, view -> {
+				if (isLocationEnabledAndAllowed()) {
+					updateUi();
+				} else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && !hasLocationPermissions()) {
+					requestPermissions(REQUEST_CODE_SNACKBAR_PRESSED);
+				} else if (!isLocationEnabled()) {
+					startActivity(new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS));
+				}
+			});
+		}
 
 		// Setup the share button
 		final Button shareButton = findViewById(R.id.share_button);
@@ -223,9 +224,9 @@ public class ShareLocationActivity extends LocationActivity implements LocationL
 	@Override
 	protected void updateUi() {
 		if (!hasLocationFeature || noAskAgain || isLocationEnabledAndAllowed()) {
-			this.snackBar.setVisibility(View.GONE);
+			this.snackBar.dismiss();
 		} else {
-			this.snackBar.setVisibility(View.VISIBLE);
+			this.snackBar.show();
 		}
 
 		// Setup the fab button

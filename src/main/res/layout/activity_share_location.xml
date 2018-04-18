@@ -1,99 +1,66 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout
+    android:id="@+id/snackbarCoordinator"
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".ui.ShareLocationActivity">
-
-    <include layout="@layout/toolbar" />
-
-    <org.osmdroid.views.MapView android:id="@+id/map"
+    android:layout_height="match_parent">
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@+id/button_bar"/>
+        tools:context=".ui.ShareLocationActivity">
 
-    <RelativeLayout
-        android:id="@+id/snackbar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
-        android:layout_marginBottom="4dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"
-        android:layout_above="@+id/button_bar"
-        android:background="@drawable/snackbar"
-        android:minHeight="48dp"
-        android:visibility="visible">
+        <include layout="@layout/toolbar" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
-            android:layout_centerVertical="true"
-            android:layout_toStartOf="@+id/snackbar_action"
-            android:paddingStart="24dp"
-            android:text="@string/location_disabled"
-            tools:ignore="RtlSymmetry"
-            android:textAppearance="@style/TextAppearance.Conversations.Body1.OnDark"/>
-        <TextView
-            android:id="@+id/snackbar_action"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:paddingBottom="16dp"
-            android:paddingLeft="24dp"
-            android:paddingRight="24dp"
-            android:paddingTop="16dp"
-            android:textAllCaps="true"
-            android:textStyle="bold"
-            android:text="@string/enable"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentEnd="true"
-            android:textAppearance="@style/TextAppearance.Conversations.Body1.OnDark" />
-    </RelativeLayout>
-
-    <LinearLayout
-        android:id="@+id/button_bar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentRight="true"
-        tools:ignore="RtlHardcoded">
-
-        <Button
-            android:id="@+id/cancel_button"
-            style="?android:attr/borderlessButtonStyle"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/cancel"
-            android:textAppearance="@style/TextAppearance.Conversations.Body1"/>
-
-        <View
-            android:layout_width="1dp"
+        <org.osmdroid.views.MapView android:id="@+id/map"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginBottom="7dp"
-            android:layout_marginTop="7dp"
-            android:background="@color/accent"/>
+            android:layout_above="@+id/button_bar"/>
 
-        <Button
-            android:id="@+id/share_button"
-            style="?android:attr/borderlessButtonStyle"
-            android:layout_width="0dp"
+        <LinearLayout
+            android:id="@+id/button_bar"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/share_with"
-            android:textAppearance="@style/TextAppearance.Conversations.Body1"/>
-    </LinearLayout>
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentRight="true"
+            tools:ignore="RtlHardcoded">
 
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/fab"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="end|bottom"
-        android:src="?attr/icon_gps_fixed"
-        android:layout_alignParentEnd="true"
-        android:layout_above="@+id/button_bar"
-        android:contentDescription="@string/action_unfix_from_location"
-        android:layout_margin="16dp" />
+            <Button
+                android:id="@+id/cancel_button"
+                style="?android:attr/borderlessButtonStyle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/cancel"
+                android:textAppearance="@style/TextAppearance.Conversations.Body1"/>
 
-</RelativeLayout>
+            <View
+                android:layout_width="1dp"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="7dp"
+                android:layout_marginTop="7dp"
+                android:background="@color/accent"/>
+
+            <Button
+                android:id="@+id/share_button"
+                style="?android:attr/borderlessButtonStyle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/share_with"
+                android:textAppearance="@style/TextAppearance.Conversations.Body1"/>
+        </LinearLayout>
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/fab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end|bottom"
+            android:src="?attr/icon_gps_fixed"
+            android:layout_alignParentEnd="true"
+            android:layout_above="@+id/button_bar"
+            android:contentDescription="@string/action_unfix_from_location"
+            android:layout_margin="16dp" />
+
+    </RelativeLayout>
+</android.support.design.widget.CoordinatorLayout>
