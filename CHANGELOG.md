@@ -1,5 +1,8 @@
 # Changelog
 
+### Version 2.1.2
+* Fixed avatars not being displayed on new installs
+
 ### Version 2.1.1
 * Improved start up performance
 * bug fixes
