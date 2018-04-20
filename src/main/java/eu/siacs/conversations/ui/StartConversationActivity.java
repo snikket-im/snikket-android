@@ -745,7 +745,11 @@ public class StartConversationActivity extends XmppActivity implements XmppConne
 				return invite.invite();
 			}
 		}
-		switch (intent.getAction()) {
+		final String action = intent.getAction();
+		if (action == null) {
+			return false;
+		}
+		switch (action) {
 			case Intent.ACTION_SENDTO:
 			case Intent.ACTION_VIEW:
 				Uri uri = intent.getData();
