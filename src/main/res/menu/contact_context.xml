@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <item
-        android:id="@+id/context_start_conversation"
-        android:title="@string/start_conversation"/>
     <item
         android:id="@+id/context_contact_details"
         android:title="@string/view_contact_details"/>
+    <item
+        android:id="@+id/context_show_qr"
+        android:title="@string/show_qr_code"/>
     <item
         android:id="@+id/context_contact_block_unblock"
         android:title="@string/block_contact"/>

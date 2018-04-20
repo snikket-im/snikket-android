@@ -345,11 +345,6 @@ public class StartConversationActivity extends XmppActivity implements XmppConne
 		switchToConversation(conversation);
 	}
 
-	protected void openConversationForContact() {
-		int position = contact_context_id;
-		openConversationForContact(position);
-	}
-
 	protected void openConversationForBookmark() {
 		openConversationForBookmark(conference_context_id);
 	}
@@ -395,6 +390,12 @@ public class StartConversationActivity extends XmppActivity implements XmppConne
 		int position = contact_context_id;
 		Contact contact = (Contact) contacts.get(position);
 		switchToContactDetails(contact);
+	}
+
+	protected void showQrForContact() {
+		int position = contact_context_id;
+		Contact contact = (Contact) contacts.get(position);
+		showQrCode("xmpp:"+contact.getJid().asBareJid().toEscapedString());
 	}
 
 	protected void toggleContactBlock() {
@@ -1047,11 +1048,11 @@ public class StartConversationActivity extends XmppActivity implements XmppConne
 				return true;
 			}
 			switch (item.getItemId()) {
-				case R.id.context_start_conversation:
-					activity.openConversationForContact();
-					break;
 				case R.id.context_contact_details:
 					activity.openDetailsForContact();
+					break;
+				case R.id.context_show_qr:
+					activity.showQrForContact();
 					break;
 				case R.id.context_contact_block_unblock:
 					activity.toggleContactBlock();
