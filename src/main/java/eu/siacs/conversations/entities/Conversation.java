@@ -920,9 +920,11 @@ public class Conversation extends AbstractEntity implements Blockable, Comparabl
 	}
 
 	public boolean isWithStranger() {
+		final Contact contact = getContact();
 		return mode == MODE_SINGLE
-				&& !getJid().equals(Jid.ofDomain(account.getJid().getDomain()))
-				&& !getContact().showInRoster()
+				&& !contactJid.equals(Jid.ofDomain(account.getJid().getDomain()))
+				&& !contact.showInRoster()
+				&& !contact.isSelf()
 				&& sentMessagesCount() == 0;
 	}
 
