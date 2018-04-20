@@ -49,6 +49,7 @@
   <string name="start_conversation">Comença la conversa</string>
   <string name="invite_contact">Convida un contacte</string>
   <string name="contacts">Contactes</string>
+  <string name="contact">Contacte</string>
   <string name="cancel">Cancel·la</string>
   <string name="set">Aplica</string>
   <string name="add">Afegeix</string>
@@ -322,6 +323,7 @@
   <string name="file_deleted">L\'arxiu ha sigut eliminat</string>
   <string name="no_application_found_to_open_file">Cap aplicació trobada a l\'obrir l\'arxiu</string>
   <string name="no_application_found_to_open_link">No s\'ha trobat cap aplicació per obrir el vincle</string>
+  <string name="pref_show_dynamic_tags">Etiquetes dinàmiques</string>
   <string name="pref_show_dynamic_tags_summary">Mostra etiquetes de nomès lectura per sota dels noms dels contactes</string>
   <string name="enable_notifications">Habilitar notificació</string>
   <string name="no_conference_server_found">No s\'ha trobat cap servidor de xat de grup</string>
@@ -690,4 +692,19 @@ d\'afegir Converses a la llista d\'aplicacions protegides.</string>
   <string name="disable_encryption_message">Estàs segur que vols desactivar el xifratge OMEMO per a aquesta conversa?\nAixò permetrà 
 que l\'administrador del servidor llegeixi els missatges, però pot ser l\'única forma de comunicar-se amb persones que utilitzin clients obsolets.</string>
   <string name="disable_now">Desactiva ara</string>
+  <string name="draft">Esborrany:</string>
+  <string name="pref_omemo_setting">Encriptació OMEMO</string>
+  <string name="pref_omemo_setting_summary_always">OMEMO sempre s\'utilitzarà per a xerrades individuals i privades en grup.</string>
+  <string name="pref_omemo_setting_summary_default_on">OMEMO s\'utilitzarà per defecte per a les noves converses.</string>
+  <string name="pref_omemo_setting_summary_default_off">OMEMO haurà de ser activat explícitament per a noves converses.</string>
+  <string name="create_shortcut">Crear accés directe</string>
+  <string name="pref_font_size">Grandària de la font</string>
+  <string name="pref_font_size_summary">La grandària relativa de la font utilitzada dins de l\'aplicació.</string>
+  <string name="default_on">Activat per defecte</string>
+  <string name="default_off">Desactivat per defecte</string>
+  <string name="small">Petita</string>
+  <string name="medium">Mitjana</string>
+  <string name="large">Gran</string>
+  <string name="not_encrypted_for_this_device">El missatge no està xifrat per a aquest dispositiu.</string>
+  <string name="undo">desfer</string>
 </resources>

@@ -18,7 +18,7 @@
   <string name="title_activity_manage_accounts">Fiókok kezelése</string>
   <string name="title_activity_settings">Beállítások</string>
   <string name="title_activity_sharewith">Megosztás Conversation-nel</string>
-  <string name="title_activity_start_conversation">Beszélgessünk!</string>
+  <string name="title_activity_start_conversation">Beszéljünk!</string>
   <string name="title_activity_choose_contact">Válassz névjegyet</string>
   <string name="title_activity_share_via_account">Megosztás fiókon keresztül</string>
   <string name="title_activity_block_list">Tiltólista</string>

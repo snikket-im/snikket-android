@@ -49,6 +49,7 @@
   <string name="start_conversation">Comezar conversa</string>
   <string name="invite_contact">Invitar contacto</string>
   <string name="contacts">Contactos</string>
+  <string name="contact">Contacto</string>
   <string name="cancel">Cancelar</string>
   <string name="set">Establecer</string>
   <string name="add">Engadir</string>
@@ -322,6 +323,7 @@
   <string name="file_deleted">Este ficheiro eliminouse</string>
   <string name="no_application_found_to_open_file">Non se atopou un aplicativo para abrir o ficheiro</string>
   <string name="no_application_found_to_open_link">Non se atopou ningunha aplicación para abrir a ligazón</string>
+  <string name="pref_show_dynamic_tags">Etiquetas dinámicas</string>
   <string name="pref_show_dynamic_tags_summary">Mostrar etiquetas de só lectura baixo os contactos</string>
   <string name="enable_notifications">Habilitar notificacións</string>
   <string name="no_conference_server_found">Non se atopou ningún servidor de conversa en grupo</string>
@@ -333,6 +335,7 @@
   <string name="clear_other_devices_desc">Está segura de que quere eliminar todos os outros dispositivos da declaración OMEMO? A próxima vez que se conecten os seus dispositivos estos voltarán a anunciarse pero non rebirán mensaxes enviados mentras tanto.</string>
   <string name="error_no_keys_to_trust_server_error">Non hai chaves dispoñibles que se poidan usar con este contacto.\nNon se puideron obter novas chaves do servidor. Quizáis hai algún problema coas chaves do seu contacto.</string>
   <string name="error_no_keys_to_trust_presence">Non hai chaves utilizables dispoñibles para este contacto.\nAsegúrese de que ambos teñen mutua suscrición de presenza.</string>
+  <string name="error_trustkeys_title">Algo saíu mal</string>
   <string name="fetching_history_from_server">Obtendo historial desde o servidor</string>
   <string name="no_more_history_on_server">Non hai máis historial no servidor</string>
   <string name="updating">Actualizando....</string>
@@ -425,6 +428,7 @@
   <string name="choose_quick_action">Escolla a acción rápida</string>
   <string name="search_for_contacts_or_groups">Buscar contactos e grupos</string>
   <string name="send_private_message">Enviar mensaxe privada</string>
+  <string name="user_has_left_conference">%1$s abandonou a sala!</string>
   <string name="username">Identificador</string>
   <string name="username_hint">Nome de usuaria</string>
   <string name="invalid_username">Este non é un identificador válido</string>
@@ -436,6 +440,7 @@
   <string name="account_status_bind_failure">Fallou a ligazón</string>
   <string name="account_status_host_unknown">O servidor non é responsable do dominio</string>
   <string name="server_info_broken">Roto</string>
+  <string name="pref_presence_settings">Disponibilidade</string>
   <string name="pref_away_when_screen_off">Non dispoñible cando se apaga a pantalla</string>
   <string name="pref_away_when_screen_off_summary">Marca o seu recurso como non dipoñíble cando se apaga a pantalla</string>
   <string name="pref_dnd_on_silent_mode">\"Non molestar\" en modo silencioso</string>
@@ -478,6 +483,8 @@
   <string name="shared_image_with_x">Imaxe compartida con %s</string>
   <string name="shared_images_with_x">Imaxes compartidas con %s</string>
   <string name="shared_text_with_x">Texto compartido con %s</string>
+  <string name="no_storage_permission">Conversations necesita acceso ao almacenamiento externo</string>
+  <string name="no_camera_permission">Conversations necesita acceso á cámara</string>
   <string name="sync_with_contacts">Sincronice con todos os contactos</string>
   <string name="sync_with_contacts_long">Conversations quere comparar a súa lista XMPP cos seus contactos para mostrar os seus nomes completos e avatares.\n\nConversations só fará esta comprobación de xeito local sen subilos ao servidor.\n\nAgora pediráselle conceder permiso para acceder aos seus contactos.</string>
   <string name="notify_on_all_messages">Notificar todas as mensaxes</string>
@@ -503,11 +510,14 @@
   <string name="security_error_invalid_file_access">Fallo na seguridade: Acceso non válido ao ficheiro</string>
   <string name="no_application_to_share_uri">Non se atopou un aplicativo para compartir URI</string>
   <string name="share_uri_with">Compartir URI con...</string>
+  <string name="welcome_text">Jabber é una rede de mensajería instantánea independente do proveedor. Podes usar este cliente con calquera servidor Jabber que elixas.\nCon todo, para a túa comodidade facilitamos a creación dunha conta en conversations.im¹; un proveedor especialmente adecuado para o uso con Conversations.</string>
   <string name="magic_create_text">Guiarémola a través do proceso de crear unha conta en conversations.im.\nCando escolla conversations.im como proveedor poderá comunicarse con outras usuarias de outros proveedores que lle proporcionen un ID Jabber completo.</string>
   <string name="your_full_jid_will_be">O seu ID Jabber será: %s</string>
   <string name="create_account">Crear conta</string>
   <string name="use_own_provider">Utilizar o meu propio proveedor</string>
   <string name="pick_your_username">Escolla un identificador</string>
+  <string name="pref_manually_change_presence">Xestionar a disponibilidade manualmente</string>
+  <string name="pref_manually_change_presence_summary">Configure a súa disponibilidade ao editar a mensaxe de estado.</string>
   <string name="status_message">Mensaxe de estado</string>
   <string name="presence_chat">Dispoñible para conversar</string>
   <string name="presence_online">En liña</string>
@@ -582,8 +592,34 @@
   <string name="i_followed_this_link_from_a_trusted_source">Seguín esta ligazón desde unha fonte de confianza</string>
   <string name="verifying_omemo_keys_trusted_source">Vai verificar as chaves OMEMO de %1$s despois de pulsar na ligazón. Esto só é seguro si sigueu esta ligazón desde unha fonte de confianza onde só %2$s a podería ter publicado.</string>
   <string name="verify_omemo_keys">Validar chaves OMEMO</string>
+  <string name="show_inactive_devices">Mostrar inactivos</string>
+  <string name="hide_inactive_devices">Amagar inactivos</string>
   <string name="distrust_omemo_key">Retirar confianza a dispositivo</string>
   <string name="distrust_omemo_key_text">Está segura de que quere retirar a verificación de este dispositivo?\nEste dispositivo e as mensaxes que del proveñan serán marcadas como non confiables.</string>
+  <plurals name="seconds">
+    <item quantity="one">%d segundos</item>
+    <item quantity="other">%d segundos</item>
+  </plurals>
+  <plurals name="minutes">
+    <item quantity="one">1%d minutos</item>
+    <item quantity="other">%d minutos</item>
+  </plurals>
+  <plurals name="hours">
+    <item quantity="one">%d horas</item>
+    <item quantity="other">%d horas</item>
+  </plurals>
+  <plurals name="days">
+    <item quantity="one">%ddias</item>
+    <item quantity="other">%d dias</item>
+  </plurals>
+  <plurals name="weeks">
+    <item quantity="one">%dsemanas</item>
+    <item quantity="other">%d semanas</item>
+  </plurals>
+  <plurals name="months">
+    <item quantity="one">%dmeses</item>
+    <item quantity="other">%dmeses</item>
+  </plurals>
   <string name="pref_automatically_delete_messages">Borrado automático de mensaxes</string>
   <string name="pref_automatically_delete_messages_description">Borrar mensaxes de xeito automático de este dispositivo que anteriores ao marco temporal configurado.</string>
   <string name="encrypting_message">Cifrando mensaxe</string>
@@ -619,4 +655,38 @@
   <string name="private_messages_are_disabled">As mensaxes privadas están deshabilitadas</string>
   <string name="huawei_protected_apps">Apps protexidos</string>
   <string name="huawei_protected_apps_summary">Para seguir recibindo notificacións, incluso cando a pantalla está apagada, precisa engadir Conversations a lista de apps protexidos.</string>
+  <string name="mtm_accept_cert">¿Aceptar certificado descoñecido?</string>
+  <string name="mtm_trust_anchor">O certificado do servidor non está asinado por unha autoridade de certificación coñecida.</string>
+  <string name="mtm_accept_servername">¿Aceptar un nome de servidor que non coincida?</string>
+  <string name="mtm_hostname_mismatch">O servidor non pode autenticarse como \"%s\". O certificado só é válido para:</string>
+  <string name="mtm_connect_anyway">Queres conectarte de todos os xeitos?</string>
+  <string name="mtm_cert_details">Detalles do certificado:</string>
+  <string name="once">Unha vez</string>
+  <string name="qr_code_scanner_needs_access_to_camera">O escaner de código QR necesita acceso á cámara.</string>
+  <string name="pref_scroll_to_bottom">Desprazarse ata la parte inferior</string>
+  <string name="pref_scroll_to_bottom_summary">Desprazarse cara abaixo logo de enviar unha mensaxe</string>
+  <string name="edit_status_message_title">Editar a Menxase de Estado</string>
+  <string name="edit_status_message">Editar a menxase de estado</string>
+  <string name="disable_encryption">Desactivar a encriptación</string>
+  <string name="error_trustkey_general">Conversations non pode enviar mensaxes cifradas a %1$s Isto pode deberse a que o seu contacto utiliza un servidor ou cliente obsoleto que non pode manexar OMEMO.</string>
+  <string name="error_trustkey_device_list">Non se pode recuperar la lista de dispositivos</string>
+  <string name="error_trustkey_bundle">Non se poden recuperar os paquetes de dispositivos</string>
+  <string name="error_trustkey_hint_mutual">Suxerencia: Nalgúns casos, isto pode solucionarse engadíndose mutuamente as súas listas de contactos.</string>
+  <string name="disable_encryption_message">¿Estás seguro de que queres desactivar o cifrado OMEMO para esta conversación? Isto permitirá que o administrador do teu servidor lea as túas mensaxes, pero pode ser la única forma de comunicarte con persoas que usan clientes obsoletos.</string>
+  <string name="disable_now">Desactivar agora</string>
+  <string name="draft">Borrador:</string>
+  <string name="pref_omemo_setting">Encriptación OMEMO</string>
+  <string name="pref_omemo_setting_summary_always">OMEMO sempre se utilizará para charlas individuais e privadas en grupo.</string>
+  <string name="pref_omemo_setting_summary_default_on">OMEMO utilizarase por defecto para las novas conversacións.</string>
+  <string name="pref_omemo_setting_summary_default_off">OMEMO terá que ser activado explícitamente para novas conversacións.</string>
+  <string name="create_shortcut">Crear acceso directo</string>
+  <string name="pref_font_size">Tamaño da fonte</string>
+  <string name="pref_font_size_summary">O tamaño de fonte relativo a esta app</string>
+  <string name="default_on">Activado por defecto</string>
+  <string name="default_off">Desactivado por defecto</string>
+  <string name="small">Pequena</string>
+  <string name="medium">Mediana</string>
+  <string name="large">Grande</string>
+  <string name="not_encrypted_for_this_device">A menxase non foi encriptada para este disposivivo</string>
+  <string name="undo">desfacer</string>
 </resources>

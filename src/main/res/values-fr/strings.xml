@@ -654,6 +654,8 @@
   <string name="huawei_protected_apps">Applications protégées</string>
   <string name="huawei_protected_apps_summary">Pour recevoir les notifications, même lorsque l\'écran est éteint, vous devez ajouter Conversations à la liste des applications protégées.</string>
   <string name="mtm_accept_cert">Accepter les certificats inconnus ?</string>
+  <string name="mtm_trust_anchor">Le certificat du serveur n\'est pas signé par une Autorité de Certification connue.</string>
+  <string name="mtm_hostname_mismatch">Le serveur n\'a pu s\'authentifier en tant que \"%s\". Le certificat est valide uniquement pour :</string>
   <string name="mtm_connect_anyway">Désirez-vous quand-même vous connecter ?</string>
   <string name="mtm_cert_details">Détails du certificat :</string>
   <string name="once">Une fois</string>

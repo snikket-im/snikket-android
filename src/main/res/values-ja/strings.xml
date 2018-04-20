@@ -630,10 +630,14 @@
   <string name="error_trustkey_hint_mutual">ヒント: お互いが名簿に加えれば解決するでしょう。</string>
   <string name="draft">下書き:</string>
   <string name="pref_omemo_setting">OMEMO 暗号化</string>
+  <string name="pref_omemo_setting_summary_always">OMEMO は1対1の会話とグループチャットで常に使用されます。</string>
+  <string name="pref_omemo_setting_summary_default_on">デフォルトで新しい会話で OMEMO を使用します。</string>
   <string name="pref_font_size">フォントの大きさ</string>
+  <string name="default_on">デフォルトでオン</string>
+  <string name="default_off">デフォルトでオフ</string>
   <string name="small">小</string>
   <string name="medium">中</string>
   <string name="large">大</string>
   <string name="not_encrypted_for_this_device">このデバイス向けにメッセージは暗号化されませんでした。</string>
-  <string name="undo">やり直す</string>
+  <string name="undo">元に戻す</string>
 </resources>
