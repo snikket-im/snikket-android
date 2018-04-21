@@ -690,4 +690,12 @@
     <string name="large">Large</string>
     <string name="not_encrypted_for_this_device">Message was not encrypted for this device.</string>
     <string name="undo">undo</string>
+    <string name="location_disabled">Location sharing is disabled</string>
+    <string name="action_fix_to_location">Fix position</string>
+    <string name="action_unfix_from_location">Unfix position</string>
+    <string name="action_copy_location">Copy Location</string>
+    <string name="action_share_location">Share Location</string>
+    <string name="action_directions">Directions</string>
+    <string name="title_activity_share_location">Share location</string>
+    <string name="title_activity_show_location">Show location</string>
 </resources>

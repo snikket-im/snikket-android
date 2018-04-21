@@ -1,0 +1,14 @@
+<menu
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item android:id="@+id/action_share_location"
+        app:showAsAction="ifRoom"
+        android:showAsAction="ifRoom"
+        android:title="@string/action_share_location"
+        android:icon="?attr/icon_share"/>
+    <item android:id="@+id/action_copy_location"
+        android:title="@string/action_copy_location"
+        android:icon="?attr/icon_copy_bar"
+        app:showAsAction="ifRoom"
+        android:showAsAction="ifRoom"/>
+</menu>
