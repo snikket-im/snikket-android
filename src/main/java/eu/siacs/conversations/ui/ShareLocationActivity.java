@@ -3,22 +3,22 @@ package eu.siacs.conversations.ui;
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.databinding.DataBindingUtil;
 import android.location.Location;
 import android.location.LocationListener;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.design.widget.CoordinatorLayout;
-import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
-import android.widget.Button;
 
 import org.osmdroid.api.IGeoPoint;
 import org.osmdroid.util.GeoPoint;
 
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
+import eu.siacs.conversations.databinding.ActivityShareLocationBinding;
 import eu.siacs.conversations.ui.util.LocationHelper;
 import eu.siacs.conversations.ui.widget.Marker;
 import eu.siacs.conversations.ui.widget.MyLocation;
@@ -26,6 +26,7 @@ import eu.siacs.conversations.ui.widget.MyLocation;
 public class ShareLocationActivity extends LocationActivity implements LocationListener {
 
 	private Snackbar snackBar;
+	private ActivityShareLocationBinding binding;
 	private boolean marker_fixed_to_loc = false;
 	private static final String KEY_FIXED_TO_LOC = "fixed_to_loc";
 	private Boolean noAskAgain = false;
@@ -50,59 +51,48 @@ public class ShareLocationActivity extends LocationActivity implements LocationL
 	protected void onCreate(final Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		setContentView(R.layout.activity_share_location);
-		setSupportActionBar(findViewById(R.id.toolbar));
+		this.binding = DataBindingUtil.setContentView(this,R.layout.activity_share_location);
+		setSupportActionBar((Toolbar) binding.toolbar);
 		configureActionBar(getSupportActionBar());
-		setupMapView(Config.Map.INITIAL_POS);
+		setupMapView(binding.map, Config.Map.INITIAL_POS);
 
-		// Setup the cancel button
-		final Button cancelButton = findViewById(R.id.cancel_button);
-		cancelButton.setOnClickListener(view -> {
+		this.binding.cancelButton.setOnClickListener(view -> {
 			setResult(RESULT_CANCELED);
 			finish();
 		});
 
-		final CoordinatorLayout snackBarCoordinator = findViewById(R.id.snackbarCoordinator);
-		if (snackBarCoordinator != null) {
-			this.snackBar = Snackbar.make(snackBarCoordinator, R.string.location_disabled, Snackbar.LENGTH_INDEFINITE);
-			snackBar.setAction(R.string.enable, view -> {
-				if (isLocationEnabledAndAllowed()) {
-					updateUi();
-				} else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && !hasLocationPermissions()) {
-					requestPermissions(REQUEST_CODE_SNACKBAR_PRESSED);
-				} else if (!isLocationEnabled()) {
-					startActivity(new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS));
-				}
-			});
-		}
+		this.snackBar = Snackbar.make(this.binding.snackbarCoordinator, R.string.location_disabled, Snackbar.LENGTH_INDEFINITE);
+		this.snackBar.setAction(R.string.enable, view -> {
+			if (isLocationEnabledAndAllowed()) {
+				updateUi();
+			} else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && !hasLocationPermissions()) {
+				requestPermissions(REQUEST_CODE_SNACKBAR_PRESSED);
+			} else if (!isLocationEnabled()) {
+				startActivity(new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS));
+			}
+		});
 
-		// Setup the share button
-		final Button shareButton = findViewById(R.id.share_button);
-		if (shareButton != null) {
-			shareButton.setOnClickListener(view -> {
-				final Intent result = new Intent();
+		this.binding.shareButton.setOnClickListener(view -> {
+			final Intent result = new Intent();
 
-				if (marker_fixed_to_loc && myLoc != null) {
-					result.putExtra("latitude", myLoc.getLatitude());
-					result.putExtra("longitude", myLoc.getLongitude());
-					result.putExtra("altitude", myLoc.getAltitude());
-					result.putExtra("accuracy", (int) myLoc.getAccuracy());
-				} else {
-					final IGeoPoint markerPoint = map.getMapCenter();
-					result.putExtra("latitude", markerPoint.getLatitude());
-					result.putExtra("longitude", markerPoint.getLongitude());
-				}
+			if (marker_fixed_to_loc && myLoc != null) {
+				result.putExtra("latitude", myLoc.getLatitude());
+				result.putExtra("longitude", myLoc.getLongitude());
+				result.putExtra("altitude", myLoc.getAltitude());
+				result.putExtra("accuracy", (int) myLoc.getAccuracy());
+			} else {
+				final IGeoPoint markerPoint = this.binding.map.getMapCenter();
+				result.putExtra("latitude", markerPoint.getLatitude());
+				result.putExtra("longitude", markerPoint.getLongitude());
+			}
 
-				setResult(RESULT_OK, result);
-				finish();
-			});
-		}
+			setResult(RESULT_OK, result);
+			finish();
+		});
 
 		this.marker_fixed_to_loc = isLocationEnabledAndAllowed();
 
-		// Setup the fab button
-		final FloatingActionButton toggleFixedMarkerButton = findViewById(R.id.fab);
-		toggleFixedMarkerButton.setOnClickListener(view -> {
+		this.binding.fab.setOnClickListener(view -> {
 			if (!marker_fixed_to_loc) {
 				if (!isLocationEnabled()) {
 					startActivity(new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS));
@@ -163,14 +153,14 @@ public class ShareLocationActivity extends LocationActivity implements LocationL
 	protected void updateLocationMarkers() {
 		super.updateLocationMarkers();
 		if (this.myLoc != null) {
-			this.map.getOverlays().add(new MyLocation(this, null, this.myLoc));
+			this.binding.map.getOverlays().add(new MyLocation(this, null, this.myLoc));
 			if (this.marker_fixed_to_loc) {
-				map.getOverlays().add(new Marker(marker_icon, new GeoPoint(this.myLoc)));
+				this.binding.map.getOverlays().add(new Marker(marker_icon, new GeoPoint(this.myLoc)));
 			} else {
-				map.getOverlays().add(new Marker(marker_icon));
+				this.binding.map.getOverlays().add(new Marker(marker_icon));
 			}
 		} else {
-			map.getOverlays().add(new Marker(marker_icon));
+			this.binding.map.getOverlays().add(new Marker(marker_icon));
 		}
 	}
 
@@ -229,20 +219,18 @@ public class ShareLocationActivity extends LocationActivity implements LocationL
 			this.snackBar.show();
 		}
 
-		// Setup the fab button
-		final FloatingActionButton fab = findViewById(R.id.fab);
 		if (isLocationEnabledAndAllowed()) {
-			fab.setVisibility(View.VISIBLE);
+			this.binding.fab.setVisibility(View.VISIBLE);
 			runOnUiThread(() -> {
-				fab.setImageResource(marker_fixed_to_loc ? R.drawable.ic_gps_fixed_white_24dp :
+				this.binding.fab.setImageResource(marker_fixed_to_loc ? R.drawable.ic_gps_fixed_white_24dp :
 						R.drawable.ic_gps_not_fixed_white_24dp);
-				fab.setContentDescription(getResources().getString(
+				this.binding.fab.setContentDescription(getResources().getString(
 						marker_fixed_to_loc ? R.string.action_unfix_from_location : R.string.action_fix_to_location
 				));
-				fab.invalidate();
+				this.binding.fab.invalidate();
 			});
 		} else {
-			fab.setVisibility(View.GONE);
+			this.binding.fab.setVisibility(View.GONE);
 		}
 	}
 }

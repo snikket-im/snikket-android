@@ -1,66 +1,75 @@
-<android.support.design.widget.CoordinatorLayout
-    android:id="@+id/snackbarCoordinator"
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:context=".ui.ShareLocationActivity">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools">
 
-        <include layout="@layout/toolbar" />
 
-        <org.osmdroid.views.MapView android:id="@+id/map"
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_above="@+id/button_bar"/>
+            tools:context=".ui.ShareLocationActivity">
 
-        <LinearLayout
-            android:id="@+id/button_bar"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentRight="true"
-            tools:ignore="RtlHardcoded">
+            <include
+                android:id="@+id/toolbar"
+                layout="@layout/toolbar"/>
 
-            <Button
-                android:id="@+id/cancel_button"
-                style="?android:attr/borderlessButtonStyle"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="@string/cancel"
-                android:textAppearance="@style/TextAppearance.Conversations.Body1"/>
+            <android.support.design.widget.CoordinatorLayout
 
-            <View
-                android:layout_width="1dp"
+                android:id="@+id/snackbar_coordinator"
+                android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginBottom="7dp"
-                android:layout_marginTop="7dp"
-                android:background="@color/accent"/>
+               android:layout_above="@+id/button_bar" >
 
-            <Button
-                android:id="@+id/share_button"
-                style="?android:attr/borderlessButtonStyle"
-                android:layout_width="0dp"
+                <android.support.design.widget.FloatingActionButton
+                    android:id="@+id/fab"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_above="@+id/button_bar"
+                    android:layout_alignParentEnd="true"
+                    android:layout_gravity="end|bottom"
+                    android:layout_margin="16dp"
+                    android:contentDescription="@string/action_unfix_from_location"
+                    android:src="?attr/icon_gps_fixed"/>
+
+
+            <org.osmdroid.views.MapView
+                android:id="@+id/map"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"/>
+
+            </android.support.design.widget.CoordinatorLayout>
+
+            <LinearLayout
+                android:id="@+id/button_bar"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="@string/share_with"
-                android:textAppearance="@style/TextAppearance.Conversations.Body1"/>
-        </LinearLayout>
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentRight="true"
+                tools:ignore="RtlHardcoded">
 
-        <android.support.design.widget.FloatingActionButton
-            android:id="@+id/fab"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="end|bottom"
-            android:src="?attr/icon_gps_fixed"
-            android:layout_alignParentEnd="true"
-            android:layout_above="@+id/button_bar"
-            android:contentDescription="@string/action_unfix_from_location"
-            android:layout_margin="16dp" />
 
-    </RelativeLayout>
-</android.support.design.widget.CoordinatorLayout>
+                <Button
+                    android:id="@+id/cancel_button"
+                    style="@style/Widget.Conversations.Button.Borderless"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/cancel"/>
+
+                <View
+                    android:layout_width="1dp"
+                    android:layout_height="fill_parent"
+                    android:layout_marginBottom="7dp"
+                    android:layout_marginTop="7dp"
+                    android:background="?attr/divider"/>
+
+                <Button
+                    android:id="@+id/share_button"
+                    style="@style/Widget.Conversations.Button.Borderless"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/share"/>
+            </LinearLayout>
+
+        </RelativeLayout>
+</layout>

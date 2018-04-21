@@ -50,7 +50,7 @@ public abstract class LocationActivity extends ActionBarActivity implements Loca
 	protected static final String KEY_ZOOM_LEVEL = "zoom";
 
 	protected Location myLoc = null;
-	protected MapView map = null;
+	private MapView map = null;
 	protected IMapController mapController = null;
 
 	protected Bitmap marker_icon;
@@ -137,9 +137,8 @@ public abstract class LocationActivity extends ActionBarActivity implements Loca
 		}
 	}
 
-	protected void setupMapView(final GeoPoint pos) {
-		// Get map view and configure it.
-		map = findViewById(R.id.map);
+	protected void setupMapView(MapView mapView, final GeoPoint pos) {
+		map = mapView;
 		map.setTileSource(tileSource());
 		map.setBuiltInZoomControls(false);
 		map.setMultiTouchControls(true);

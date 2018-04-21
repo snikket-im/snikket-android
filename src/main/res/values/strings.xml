@@ -296,7 +296,7 @@
     <string name="copy_original_url">Copy original URL</string>
     <string name="send_again">Send again</string>
     <string name="file_url">File URL</string>
-    <string name="url_copied_to_clipboard">URL copied to clipboard</string>
+    <string name="url_copied_to_clipboard">Copied URL to clipboard</string>
     <string name="scan_qr_code">Scan 2D Barcode</string>
     <string name="show_qr_code">Show 2D Barcode</string>
     <string name="show_block_list">Show block list</string>
@@ -698,4 +698,5 @@
     <string name="action_directions">Directions</string>
     <string name="title_activity_share_location">Share location</string>
     <string name="title_activity_show_location">Show location</string>
+    <string name="share">Share</string>
 </resources>

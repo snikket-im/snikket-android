@@ -1,17 +1,17 @@
 package eu.siacs.conversations.ui;
 
-import android.app.ActionBar;
 import android.content.ActivityNotFoundException;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.ComponentName;
 import android.content.Intent;
+import android.databinding.DataBindingUtil;
 import android.location.Location;
 import android.location.LocationListener;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.design.widget.FloatingActionButton;
+import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -25,6 +25,7 @@ import java.util.regex.Pattern;
 
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
+import eu.siacs.conversations.databinding.ActivityShowLocationBinding;
 import eu.siacs.conversations.ui.util.LocationHelper;
 import eu.siacs.conversations.ui.util.UriHelper;
 import eu.siacs.conversations.ui.widget.Marker;
@@ -34,7 +35,7 @@ import eu.siacs.conversations.ui.widget.MyLocation;
 public class ShowLocationActivity extends LocationActivity implements LocationListener {
 
 	private GeoPoint loc = Config.Map.INITIAL_POS;
-	private FloatingActionButton navigationButton;
+	private ActivityShowLocationBinding binding;
 
 
 	private Uri createGeoUri() {
@@ -45,19 +46,13 @@ public class ShowLocationActivity extends LocationActivity implements LocationLi
 	protected void onCreate(final Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		final ActionBar actionBar = getActionBar();
-		if (actionBar != null) {
-			actionBar.setDisplayHomeAsUpEnabled(true);
-		}
+		this.binding = DataBindingUtil.setContentView(this,R.layout.activity_show_location);
+		setSupportActionBar((Toolbar) binding.toolbar);
 
-		setContentView(R.layout.activity_show_location);
-		setSupportActionBar(findViewById(R.id.toolbar));
 		configureActionBar(getSupportActionBar());
-		setupMapView(this.loc);
+		setupMapView(this.binding.map, this.loc);
 
-		// Setup the fab button
-		this.navigationButton = findViewById(R.id.fab);
-		this.navigationButton.setOnClickListener(view -> startNavigation());
+		this.binding.fab.setOnClickListener(view -> startNavigation());
 
 		final Intent intent = getIntent();
 		if (intent != null) {
@@ -157,9 +152,9 @@ public class ShowLocationActivity extends LocationActivity implements LocationLi
 	protected void updateLocationMarkers() {
 		super.updateLocationMarkers();
 		if (this.myLoc != null) {
-			this.map.getOverlays().add(new MyLocation(this, null, this.myLoc));
+			this.binding.map.getOverlays().add(new MyLocation(this, null, this.myLoc));
 		}
-		this.map.getOverlays().add(new Marker(this.marker_icon, this.loc));
+		this.binding.map.getOverlays().add(new Marker(this.marker_icon, this.loc));
 	}
 
 	@Override
@@ -175,6 +170,7 @@ public class ShowLocationActivity extends LocationActivity implements LocationLi
 				if (clipboard != null) {
 					final ClipData clip = ClipData.newPlainText("location", createGeoUri().toString());
 					clipboard.setPrimaryClip(clip);
+					Toast.makeText(this,R.string.url_copied_to_clipboard,Toast.LENGTH_SHORT).show();
 				}
 				return true;
 			case R.id.action_share_location:
@@ -204,9 +200,7 @@ public class ShowLocationActivity extends LocationActivity implements LocationLi
 	protected void updateUi() {
 		final Intent i = new Intent(Intent.ACTION_VIEW, Uri.parse("google.navigation:q=0,0"));
 		final ComponentName component = i.resolveActivity(getPackageManager());
-		if (this.navigationButton != null) {
-			this.navigationButton.setVisibility(component == null ? View.GONE : View.VISIBLE);
-		}
+		this.binding.fab.setVisibility(component == null ? View.GONE : View.VISIBLE);
 	}
 
 	@Override

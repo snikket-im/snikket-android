@@ -38,6 +38,10 @@
         <item name="android:textSize">?TextSizeBody1</item>
     </style>
 
+    <style name="Widget.Conversations.Button.Borderless" parent="@style/Widget.AppCompat.Button.Borderless">
+        <item name="android:textSize">?TextSizeBody2</item>
+    </style>
+
 
     <style name="TextAppearance.Conversations.Design.Hint" parent="TextAppearance.Design.Hint">
         <item name="android:textSize">?TextSizeCaption</item>
