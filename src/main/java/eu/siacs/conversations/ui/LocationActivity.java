@@ -142,7 +142,7 @@ public abstract class LocationActivity extends ActionBarActivity implements Loca
 		map.setTileSource(tileSource());
 		map.setBuiltInZoomControls(false);
 		map.setMultiTouchControls(true);
-		map.setTilesScaledToDpi(getPreferences().getBoolean("scale_tiles_for_high_dpi", false));
+		map.setTilesScaledToDpi(true);
 		mapController = map.getController();
 		mapController.setZoom(Config.Map.INITIAL_ZOOM_LEVEL);
 		mapController.setCenter(pos);
@@ -241,7 +241,7 @@ public abstract class LocationActivity extends ActionBarActivity implements Loca
 		updateLocationMarkers();
 		updateUi();
 		map.setTileSource(tileSource());
-		map.setTilesScaledToDpi(getPreferences().getBoolean("scale_tiles_for_high_dpi", false));
+		map.setTilesScaledToDpi(true);
 
 		if (mapAtInitialLoc()) {
 			gotoLoc();
@@ -286,28 +286,12 @@ public abstract class LocationActivity extends ActionBarActivity implements Loca
 		return PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
 	}
 
-	@TargetApi(Build.VERSION_CODES.KITKAT)
-	private boolean isLocationEnabledKitkat() {
+	protected boolean isLocationEnabled() {
 		try {
 			final int locationMode = Settings.Secure.getInt(getContentResolver(), Settings.Secure.LOCATION_MODE);
 			return locationMode != Settings.Secure.LOCATION_MODE_OFF;
 		} catch( final Settings.SettingNotFoundException e ){
 			return false;
-		}
-	}
-
-	@SuppressWarnings("deprecation")
-	private boolean isLocationEnabledLegacy() {
-		final String locationProviders = Settings.Secure.getString(getContentResolver(),
-				Settings.Secure.LOCATION_PROVIDERS_ALLOWED);
-		return !TextUtils.isEmpty(locationProviders);
-	}
-
-	protected boolean isLocationEnabled() {
-		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-			return isLocationEnabledKitkat();
-		} else {
-			return isLocationEnabledLegacy();
 		}
 	}
 }
