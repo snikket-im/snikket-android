@@ -203,7 +203,7 @@
 
                             <Button
                                 android:id="@+id/os_optimization_disable"
-                                style="?android:attr/borderlessButtonStyle"
+                                style="@style/Widget.Conversations.Button.Borderless"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:minWidth="0dp"
@@ -603,7 +603,7 @@
 
                         <Button
                             android:id="@+id/clear_devices"
-                            style="?android:attr/borderlessButtonStyle"
+                            style="@style/Widget.Conversations.Button.Borderless"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_horizontal"
@@ -626,7 +626,7 @@
 
             <Button
                 android:id="@+id/cancel_button"
-                style="?android:attr/borderlessButtonStyle"
+                style="@style/Widget.Conversations.Button.Borderless"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -641,7 +641,7 @@
 
             <Button
                 android:id="@+id/save_button"
-                style="?android:attr/borderlessButtonStyle"
+                style="@style/Widget.Conversations.Button.Borderless"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"

@@ -44,7 +44,7 @@
                     android:textAppearance="@style/TextAppearance.Conversations.Body1"/>
                 <Button
                     android:id="@+id/create_account"
-                    style="?android:attr/borderlessButtonStyle"
+                    style="@style/Widget.Conversations.Button.Borderless"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="right"
@@ -52,7 +52,7 @@
                     android:textColor="@color/accent"/>
                 <Button
                     android:id="@+id/use_own_provider"
-                    style="?android:attr/borderlessButtonStyle"
+                    style="@style/Widget.Conversations.Button.Borderless"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="right"

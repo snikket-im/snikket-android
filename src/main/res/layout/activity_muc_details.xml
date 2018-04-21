@@ -223,7 +223,7 @@
 
                             <Button
                                 android:id="@+id/invite"
-                                style="?android:attr/borderlessButtonStyle"
+                                style="@style/Widget.Conversations.Button.Borderless"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:minWidth="0dp"

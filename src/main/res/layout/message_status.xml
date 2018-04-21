@@ -11,12 +11,13 @@
 
     <Button
         android:id="@+id/load_more_messages"
-        style="?android:attr/borderlessButtonStyle"
+        style="@style/Widget.Conversations.Button.Borderless"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
         android:text="@string/load_more_messages"
-        android:textColor="@color/accent" android:layout_centerVertical="true"
-        android:layout_centerHorizontal="true"/>
+        android:textColor="@color/accent"/>
 
     <com.makeramen.roundedimageview.RoundedImageView
         android:id="@+id/message_photo"
@@ -33,12 +34,12 @@
         android:id="@+id/status_message"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:minHeight="32dp"
         android:layout_centerVertical="true"
-        android:gravity="center_vertical"
         android:layout_marginLeft="8dp"
         android:layout_toEndOf="@+id/message_photo"
         android:layout_toRightOf="@+id/message_photo"
+        android:gravity="center_vertical"
+        android:minHeight="32dp"
         android:text="@string/contact_has_read_up_to_this_point"
         android:textAppearance="@style/TextAppearance.Conversations.Status"/>
 
