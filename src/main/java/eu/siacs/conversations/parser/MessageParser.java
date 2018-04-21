@@ -520,8 +520,12 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
 							&& duplicate.getServerMsgId() == null
 							&& message.getServerMsgId() != null) {
 						duplicate.setServerMsgId(message.getServerMsgId());
-						mXmppConnectionService.databaseBackend.updateMessage(message);
-						serverMsgIdUpdated = true;
+						if (mXmppConnectionService.databaseBackend.updateMessage(duplicate)) {
+							serverMsgIdUpdated = true;
+						} else {
+							serverMsgIdUpdated = false;
+							Log.e(Config.LOGTAG,"failed to update message");
+						}
 					} else {
 						serverMsgIdUpdated = false;
 					}

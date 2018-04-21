@@ -825,11 +825,10 @@ public class DatabaseBackend extends SQLiteOpenHelper {
 		return db;
 	}
 
-	public void updateMessage(Message message) {
+	public boolean updateMessage(Message message) {
 		SQLiteDatabase db = this.getWritableDatabase();
 		String[] args = {message.getUuid()};
-		db.update(Message.TABLENAME, message.getContentValues(), Message.UUID
-				+ "=?", args);
+		return db.update(Message.TABLENAME, message.getContentValues(), Message.UUID + "=?", args) == 1;
 	}
 
 	public void updateMessage(Message message, String uuid) {
