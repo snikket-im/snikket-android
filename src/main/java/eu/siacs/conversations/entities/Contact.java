@@ -443,7 +443,11 @@ public class Contact implements ListItem, Blockable {
 	}
 
 	public boolean isSelf() {
-		return account.getJid().asBareJid().equals(getJid().asBareJid());
+		return account.getJid().asBareJid().equals(jid.asBareJid());
+	}
+
+	public boolean isOwnServer() {
+		return account.getJid().getDomain().equals(jid.getDomain());
 	}
 
 	public void setCommonName(String cn) {

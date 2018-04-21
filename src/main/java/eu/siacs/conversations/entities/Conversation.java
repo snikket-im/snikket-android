@@ -622,6 +622,9 @@ public class Conversation extends AbstractEntity implements Blockable, Comparabl
 		if (conversation.getJid().asBareJid().equals(Config.BUG_REPORTS)) {
 			return false;
 		}
+		if (conversation.getContact().isOwnServer()) {
+			return false;
+		}
 		final String contact = conversation.getJid().getDomain();
 		final String account = conversation.getAccount().getServer();
 		if (Config.OMEMO_EXCEPTIONS.CONTACT_DOMAINS.contains(contact) || Config.OMEMO_EXCEPTIONS.ACCOUNT_DOMAINS.contains(account)) {
@@ -922,7 +925,7 @@ public class Conversation extends AbstractEntity implements Blockable, Comparabl
 	public boolean isWithStranger() {
 		final Contact contact = getContact();
 		return mode == MODE_SINGLE
-				&& !contactJid.equals(Jid.ofDomain(account.getJid().getDomain()))
+				&& !contact.isOwnServer()
 				&& !contact.showInRoster()
 				&& !contact.isSelf()
 				&& sentMessagesCount() == 0;
