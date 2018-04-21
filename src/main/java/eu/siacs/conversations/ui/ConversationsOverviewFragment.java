@@ -58,6 +58,7 @@ import eu.siacs.conversations.ui.util.Color;
 import eu.siacs.conversations.ui.util.PendingActionHelper;
 import eu.siacs.conversations.ui.util.PendingItem;
 import eu.siacs.conversations.ui.util.ScrollState;
+import eu.siacs.conversations.utils.ThemeHelper;
 
 import static android.support.v7.widget.helper.ItemTouchHelper.LEFT;
 import static android.support.v7.widget.helper.ItemTouchHelper.RIGHT;
@@ -133,7 +134,7 @@ public class ConversationsOverviewFragment extends XmppFragment {
 					activity.xmppConnectionService.archiveConversation(c);
 				}
 			});
-			Snackbar.make(binding.list, title, 5000)
+			final Snackbar snackbar = Snackbar.make(binding.list, title, 5000)
 					.setAction(R.string.undo, v -> {
 						pendingActionHelper.undo();
 						Conversation c = swipedConversation.pop();
@@ -158,8 +159,9 @@ public class ConversationsOverviewFragment extends XmppFragment {
 									break;
 							}
 						}
-					})
-					.show();
+					});
+			ThemeHelper.fixTextSize(snackbar);
+			snackbar.show();
 		}
 	};
 

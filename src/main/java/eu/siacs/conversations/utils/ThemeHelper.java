@@ -29,13 +29,18 @@
 
 package eu.siacs.conversations.utils;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
+import android.content.res.TypedArray;
 import android.preference.PreferenceManager;
 import android.support.annotation.StyleRes;
+import android.support.design.widget.Snackbar;
+import android.util.Log;
+import android.util.TypedValue;
+import android.widget.TextView;
 
+import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.ui.SettingsActivity;
 
@@ -64,6 +69,20 @@ public class ThemeHelper {
 				return true;
 			default:
 				return false;
+		}
+	}
+
+	public static void fixTextSize(Snackbar snackbar) {
+		TypedArray typedArray = snackbar.getContext().obtainStyledAttributes(new int[]{R.attr.TextSizeBody1});
+		final float size = typedArray.getDimension(0,0f);
+		typedArray.recycle();
+		if (size != 0f) {
+			final TextView text = snackbar.getView().findViewById(android.support.design.R.id.snackbar_text);
+			final TextView action = snackbar.getView().findViewById(android.support.design.R.id.snackbar_action);
+			if (text != null && action != null) {
+				text.setTextSize(TypedValue.COMPLEX_UNIT_PX, size);
+				action.setTextSize(TypedValue.COMPLEX_UNIT_PX, size);
+			}
 		}
 	}
 }

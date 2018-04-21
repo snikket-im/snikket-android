@@ -22,6 +22,7 @@ import eu.siacs.conversations.databinding.ActivityShareLocationBinding;
 import eu.siacs.conversations.ui.util.LocationHelper;
 import eu.siacs.conversations.ui.widget.Marker;
 import eu.siacs.conversations.ui.widget.MyLocation;
+import eu.siacs.conversations.utils.ThemeHelper;
 
 public class ShareLocationActivity extends LocationActivity implements LocationListener {
 
@@ -71,6 +72,7 @@ public class ShareLocationActivity extends LocationActivity implements LocationL
 				startActivity(new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS));
 			}
 		});
+		ThemeHelper.fixTextSize(this.snackBar);
 
 		this.binding.shareButton.setOnClickListener(view -> {
 			final Intent result = new Intent();
