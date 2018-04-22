@@ -58,10 +58,7 @@ public class Field extends Element {
 		List<String> values = new ArrayList<>();
 		for(Element child : getChildren()) {
 			if ("value".equals(child.getName())) {
-				String content = child.getContent();
-				if (content != null) {
-					values.add(content);
-				}
+				values.add(child.getContent());
 			}
 		}
 		return values;

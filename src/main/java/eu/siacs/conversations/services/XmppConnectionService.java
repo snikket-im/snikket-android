@@ -3649,20 +3649,21 @@ public class XmppConnectionService extends Service {
 				account.inProgressDiscoFetches.add(key);
 				IqPacket request = new IqPacket(IqPacket.TYPE.GET);
 				request.setTo(jid);
-				String node = presence.getNode();
-				Element query = request.query("http://jabber.org/protocol/disco#info");
-				if (node != null) {
-					query.setAttribute("node",node);
+				final String node = presence.getNode();
+				final String ver = presence.getVer();
+				final Element query = request.query("http://jabber.org/protocol/disco#info");
+				if (node != null && ver != null) {
+					query.setAttribute("node",node+"#"+ver);
 				}
-				Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": making disco request for " + key.second + " to " + jid+ "node="+node);
-				sendIqPacket(account, request, (a, discoPacket) -> {
-					if (discoPacket.getType() == IqPacket.TYPE.RESULT) {
-						ServiceDiscoveryResult disco1 = new ServiceDiscoveryResult(discoPacket);
-						if (presence.getVer().equals(disco1.getVer())) {
-							databaseBackend.insertDiscoveryResult(disco1);
-							injectServiceDiscorveryResult(a.getRoster(), presence.getHash(), presence.getVer(), disco1);
+				Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": making disco request for " + key.second + " to " + jid);
+				sendIqPacket(account, request, (a, response) -> {
+					if (response.getType() == IqPacket.TYPE.RESULT) {
+						ServiceDiscoveryResult discoveryResult = new ServiceDiscoveryResult(response);
+						if (presence.getVer().equals(discoveryResult.getVer())) {
+							databaseBackend.insertDiscoveryResult(discoveryResult);
+							injectServiceDiscorveryResult(a.getRoster(), presence.getHash(), presence.getVer(), discoveryResult);
 						} else {
-							Log.d(Config.LOGTAG, a.getJid().asBareJid() + ": mismatch in caps for contact " + jid + " " + presence.getVer() + " vs " + disco1.getVer());
+							Log.d(Config.LOGTAG, a.getJid().asBareJid() + ": mismatch in caps for contact " + jid + " " + presence.getVer() + " vs " + discoveryResult.getVer());
 						}
 					}
 					a.inProgressDiscoFetches.remove(key);
