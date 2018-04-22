@@ -239,4 +239,47 @@
         <item name="colorPrimaryDark">@color/grey300</item>
         <item name="android:windowBackground">@drawable/background</item>
     </style>
+
+    <style name="ConversationsTheme.Dialog" parent="@style/Theme.AppCompat.Light.Dialog">
+        <item name="colorPrimary">@color/primary500</item>
+        <item name="colorPrimaryDark">@color/primary700</item>
+        <item name="colorAccent">@color/accent</item>
+        <item name="color_background_primary">@color/grey50</item>
+        <item name="divider">@color/black12</item>
+        <item name="TextSizeBody2">14sp</item>
+        <item name="TextSizeDisplay2">45sp</item>
+        <item name="android:windowNoTitle">true</item>
+    </style>
+
+    <style name="ConversationsTheme.Dark.Dialog" parent="@style/Theme.AppCompat.Dialog">
+        <item name="colorPrimary">@color/primary500</item>
+        <item name="colorPrimaryDark">@color/primary700</item>
+        <item name="colorAccent">@color/accent</item>
+        <item name="color_background_primary">@color/grey800</item>
+        <item name="divider">@color/white12</item>
+        <item name="TextSizeBody2">14sp</item>
+        <item name="TextSizeDisplay2">45sp</item>
+        <item name="android:windowNoTitle">true</item>
+    </style>
+
+    <style name="ConversationsTheme.Dialog.Medium" parent="ConversationsTheme.Dialog">
+        <item name="TextSizeBody2">16sp</item>
+        <item name="TextSizeDisplay2">51sp</item>
+    </style>
+
+    <style name="ConversationsTheme.Dark.Dialog.Medium" parent="ConversationsTheme.Dark.Dialog">
+        <item name="TextSizeBody2">16sp</item>
+        <item name="TextSizeDisplay2">51sp</item>
+    </style>
+
+    <style name="ConversationsTheme.Dialog.Large" parent="ConversationsTheme.Dialog">
+        <item name="TextSizeBody2">18sp</item>
+        <item name="TextSizeDisplay2">56sp</item>
+    </style>
+
+    <style name="ConversationsTheme.Dark.Dialog.Large" parent="ConversationsTheme.Dark.Dialog">
+        <item name="TextSizeBody2">18sp</item>
+        <item name="TextSizeTitle">56sp</item>
+    </style>
+
 </resources>

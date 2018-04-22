@@ -35,7 +35,6 @@
   privacy
 * Rely on existing, well established protocols (XMPP)
 * Do not require a Google Account or specifically Google Cloud Messaging (GCM)
-* Require as few permissions as possible
 
 ## Features
 

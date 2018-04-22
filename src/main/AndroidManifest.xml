@@ -22,6 +22,7 @@
     <uses-feature android:name="android.hardware.location.network" android:required="false" />
 
     <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.RECORD_AUDIO"/>
 
     <uses-permission
         android:name="android.permission.READ_PHONE_STATE"
@@ -58,12 +59,11 @@
         </receiver>
         <activity
             android:name=".ui.ShareLocationActivity"
-            android:label="@string/title_activity_share_location" >
-            <intent-filter>
-                <action android:name="eu.siacs.conversations.location.request" />
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-        </activity>
+            android:label="@string/title_activity_share_location"/>
+        <activity
+            android:name=".ui.RecordingActivity"
+            android:theme="@style/ConversationsTheme.Dialog"
+            android:configChanges="orientation|screenSize"/>
         <activity
             android:name=".ui.ShowLocationActivity"
             android:label="@string/title_activity_show_location" >

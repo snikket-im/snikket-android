@@ -699,4 +699,7 @@
     <string name="title_activity_share_location">Share location</string>
     <string name="title_activity_show_location">Show location</string>
     <string name="share">Share</string>
+    <string name="unable_to_start_recording">Unable to start recording</string>
+    <string name="please_wait">Please wait…</string>
+    <string name="no_microphone_permission">Conversations needs access to the microphone</string>
 </resources>

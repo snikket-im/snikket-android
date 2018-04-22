@@ -6,6 +6,7 @@
     <attr name="TextSizeSubhead" format="dimension" />
     <attr name="TextSizeBody1" format="dimension" />
     <attr name="TextSizeBody2" format="dimension" />
+    <attr name="TextSizeDisplay2" format="dimension" />
     <attr name="TextSizeInput" format="dimension" />
     <attr name="TextSeparation" format="dimension"/>
 

@@ -61,6 +61,21 @@ public class ThemeHelper {
 		}
 	}
 
+	public static int findDialog(Context context) {
+		final SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+		final Resources resources = context.getResources();
+		final boolean dark = sharedPreferences.getString(SettingsActivity.THEME, resources.getString(R.string.theme)).equals("dark");
+		final String fontSize = sharedPreferences.getString("font_size", resources.getString(R.string.default_font_size));
+		switch (fontSize) {
+			case "medium":
+				return dark ? R.style.ConversationsTheme_Dark_Dialog_Medium : R.style.ConversationsTheme_Dialog_Medium;
+			case "large":
+				return dark ? R.style.ConversationsTheme_Dark_Dialog_Large : R.style.ConversationsTheme_Dialog_Large;
+			default:
+				return dark ? R.style.ConversationsTheme_Dark_Dialog : R.style.ConversationsTheme_Dialog;
+		}
+	}
+
 	public static boolean isDark(@StyleRes int id) {
 		switch (id) {
 			case R.style.ConversationsTheme_Dark:

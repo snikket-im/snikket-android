@@ -55,6 +55,7 @@ import eu.siacs.conversations.R;
 import eu.siacs.conversations.entities.DownloadableFile;
 import eu.siacs.conversations.entities.Message;
 import eu.siacs.conversations.services.XmppConnectionService;
+import eu.siacs.conversations.ui.RecordingActivity;
 import eu.siacs.conversations.utils.CryptoHelper;
 import eu.siacs.conversations.utils.ExifHelper;
 import eu.siacs.conversations.utils.FileUtils;
@@ -76,11 +77,13 @@ public class FileBackend {
 		this.mXmppConnectionService = service;
 	}
 
-	private void createNoMedia() {
-		final File nomedia = new File(getConversationsDirectory("Files") + ".nomedia");
-		if (!nomedia.exists()) {
+	private void createNoMedia(File diretory) {
+		final File noMedia = new File(diretory,".nomedia");
+		if (!noMedia.exists()) {
 			try {
-				nomedia.createNewFile();
+				if (!noMedia.createNewFile()) {
+					Log.d(Config.LOGTAG,"created nomedia file "+noMedia.getAbsolutePath());
+				}
 			} catch (Exception e) {
 				Log.d(Config.LOGTAG, "could not create nomedia file");
 			}
@@ -88,14 +91,23 @@ public class FileBackend {
 	}
 
 	public void updateMediaScanner(File file) {
-		String path = file.getAbsolutePath();
-		if (!path.startsWith(getConversationsDirectory("Files"))) {
+		if (!isInDirectoryThatShouldNotBeScanned(mXmppConnectionService, file)) {
 			Intent intent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
 			intent.setData(Uri.fromFile(file));
 			mXmppConnectionService.sendBroadcast(intent);
-		} else {
-			createNoMedia();
+		} else if (file.getAbsolutePath().startsWith(getAppMediaDirectory(mXmppConnectionService))) {
+			createNoMedia(file.getParentFile());
 		}
+	}
+
+	private static boolean isInDirectoryThatShouldNotBeScanned(Context context, File file) {
+		String path = file.getAbsolutePath();
+		for(String type : new String[]{RecordingActivity.STORAGE_DIRECTORY_TYPE_NAME, "Files"}) {
+			if (path.startsWith(getConversationsDirectory(context, type))) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 	public boolean deleteFile(Message message) {
@@ -186,11 +198,19 @@ public class FileBackend {
 	}
 
 	public String getConversationsDirectory(final String type) {
+		return getConversationsDirectory(mXmppConnectionService, type);
+	}
+
+	public static String getConversationsDirectory(Context context, final String type) {
 		if (Config.ONLY_INTERNAL_STORAGE) {
-			return mXmppConnectionService.getFilesDir().getAbsolutePath() + "/" + type + "/";
+			return context.getFilesDir().getAbsolutePath() + "/" + type + "/";
 		} else {
-			return Environment.getExternalStorageDirectory() + "/Conversations/Media/Conversations " + type + "/";
+			return getAppMediaDirectory(context)+context.getString(R.string.app_name)+" " + type + "/";
 		}
+	}
+
+	public static String getAppMediaDirectory(Context context) {
+		return Environment.getExternalStorageDirectory().getAbsolutePath()+"/"+context.getString(R.string.app_name)+"/Media/";
 	}
 
 	public static String getConversationsLogsDirectory() {
