@@ -1,20 +1,19 @@
 package eu.siacs.conversations.ui;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.databinding.DataBindingUtil;
 import android.media.MediaRecorder;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
 import android.os.FileObserver;
 import android.os.Handler;
 import android.os.SystemClock;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
-import android.widget.Button;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.File;
@@ -25,6 +24,7 @@ import java.util.Locale;
 
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
+import eu.siacs.conversations.databinding.ActivityRecordingBinding;
 import eu.siacs.conversations.persistance.FileBackend;
 import eu.siacs.conversations.utils.ThemeHelper;
 
@@ -32,9 +32,7 @@ public class RecordingActivity extends Activity implements View.OnClickListener 
 
 	public static String STORAGE_DIRECTORY_TYPE_NAME = "Recordings";
 
-	private TextView mTimerTextView;
-	private Button mCancelButton;
-	private Button mStopButton;
+	private ActivityRecordingBinding binding;
 
 	private MediaRecorder mRecorder;
 	private long mStartTime = 0;
@@ -57,12 +55,9 @@ public class RecordingActivity extends Activity implements View.OnClickListener 
 	protected void onCreate(Bundle savedInstanceState) {
 		setTheme(ThemeHelper.findDialog(this));
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_recording);
-		this.mTimerTextView = (TextView) this.findViewById(R.id.timer);
-		this.mCancelButton = (Button) this.findViewById(R.id.cancel_button);
-		this.mCancelButton.setOnClickListener(this);
-		this.mStopButton = (Button) this.findViewById(R.id.share_button);
-		this.mStopButton.setOnClickListener(this);
+		this.binding = DataBindingUtil.setContentView(this,R.layout.activity_recording);
+		this.binding.cancelButton.setOnClickListener(this);
+		this.binding.shareButton.setOnClickListener(this);
 		this.setFinishOnTouchOutside(false);
 		getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 	}
@@ -71,7 +66,7 @@ public class RecordingActivity extends Activity implements View.OnClickListener 
 	protected void onStart() {
 		super.onStart();
 		if (!startRecording()) {
-			mStopButton.setEnabled(false);
+			this.binding.shareButton.setEnabled(false);
 			Toast.makeText(this, R.string.unable_to_start_recording, Toast.LENGTH_SHORT).show();
 		}
 	}
@@ -164,12 +159,13 @@ public class RecordingActivity extends Activity implements View.OnClickListener 
 		mFileObserver.startWatching();
 	}
 
+	@SuppressLint("SetTextI18n")
 	private void tick() {
 		long time = (mStartTime < 0) ? 0 : (SystemClock.elapsedRealtime() - mStartTime);
 		int minutes = (int) (time / 60000);
 		int seconds = (int) (time / 1000) % 60;
 		int milliseconds = (int) (time / 100) % 10;
-		mTimerTextView.setText(minutes + ":" + (seconds < 10 ? "0" + seconds : seconds) + "." + milliseconds);
+		this.binding.timer.setText(minutes + ":" + (seconds < 10 ? "0" + seconds : seconds) + "." + milliseconds);
 	}
 
 	@Override
@@ -182,8 +178,8 @@ public class RecordingActivity extends Activity implements View.OnClickListener 
 				finish();
 				break;
 			case R.id.share_button:
-				mStopButton.setEnabled(false);
-				mStopButton.setText(R.string.please_wait);
+				this.binding.shareButton.setEnabled(false);
+				this.binding.shareButton.setText(R.string.please_wait);
 				mHandler.removeCallbacks(mTickExecutor);
 				mHandler.postDelayed(() -> stopRecording(true), 500);
 				break;

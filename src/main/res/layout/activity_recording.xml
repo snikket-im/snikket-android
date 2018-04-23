@@ -1,47 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:layout_width="match_parent"
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?attr/color_background_primary">
+
+        <LinearLayout
+            android:id="@+id/button_bar"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/timer">
+
+            <Button
+                android:id="@+id/cancel_button"
+                style="@style/Widget.Conversations.Button.Borderless"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:background="?attr/color_background_primary">
+                android:layout_weight="1"
+                android:text="@string/cancel"/>
 
-    <LinearLayout
-        android:id="@+id/button_bar"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_below="@+id/timer">
+            <View
+                android:layout_width="1dp"
+                android:layout_height="fill_parent"
+                android:layout_marginBottom="7dp"
+                android:layout_marginTop="7dp"
+                android:background="?attr/divider"/>
 
-        <Button
-            android:id="@+id/cancel_button"
-            style="@style/Widget.Conversations.Button.Borderless"
-            android:layout_width="0dp"
+            <Button
+                android:id="@+id/share_button"
+                style="@style/Widget.Conversations.Button.Borderless"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/share"/>
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/timer"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/cancel"/>
-
-        <View
-            android:layout_width="1dp"
-            android:layout_height="fill_parent"
-            android:layout_marginBottom="7dp"
-            android:layout_marginTop="7dp"
-            android:background="?attr/divider"/>
-
-        <Button
-            android:id="@+id/share_button"
-            style="@style/Widget.Conversations.Button.Borderless"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/share"/>
-    </LinearLayout>
-
-    <TextView
-        android:id="@+id/timer"
-        android:textAppearance="@style/TextAppearance.Conversations.Display2.Monospace"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:text="0:00.0"/>
-</RelativeLayout>
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:textAppearance="@style/TextAppearance.Conversations.Display2.Monospace"/>
+    </RelativeLayout>
+</layout>
