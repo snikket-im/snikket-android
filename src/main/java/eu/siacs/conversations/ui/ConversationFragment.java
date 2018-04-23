@@ -1113,7 +1113,7 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
 			}
 			if (m.isFileOrImage() && !deleted) {
 				String path = m.getRelativeFilePath();
-				if (path == null || !path.startsWith("/")) {
+				if (path == null || !path.startsWith("/") || FileBackend.isInDirectoryThatShouldNotBeScanned(getActivity(), path) ) {
 					deleteFile.setVisible(true);
 					deleteFile.setTitle(activity.getString(R.string.delete_x_file, UIHelper.getFileDescriptionString(activity, m)));
 				}

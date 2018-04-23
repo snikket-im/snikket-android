@@ -101,7 +101,10 @@ public class FileBackend {
 	}
 
 	private static boolean isInDirectoryThatShouldNotBeScanned(Context context, File file) {
-		String path = file.getAbsolutePath();
+		return isInDirectoryThatShouldNotBeScanned(context, file.getAbsolutePath());
+	}
+
+	public static boolean isInDirectoryThatShouldNotBeScanned(Context context, String path) {
 		for(String type : new String[]{RecordingActivity.STORAGE_DIRECTORY_TYPE_NAME, "Files"}) {
 			if (path.startsWith(getConversationsDirectory(context, type))) {
 				return true;
@@ -280,7 +283,6 @@ public class FileBackend {
 	}
 
 	public static boolean isPathBlacklisted(String path) {
-		Environment.getDataDirectory();
 		final String androidDataPath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/Android/data/";
 		return path.startsWith(androidDataPath);
 	}
