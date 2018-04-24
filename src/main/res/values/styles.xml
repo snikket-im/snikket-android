@@ -34,6 +34,8 @@
     <style name="Widget.Conversations.SearchView" parent="Widget.Conversations.EditText">
         <item name="android:textColor">@color/white</item>
         <item name="android:textColorHint">@color/white70</item>
+        <item name="android:background">@android:color/transparent</item>
+        <item name="android:textSize">18sp</item>
     </style>
 
     <style name="Widget.Conversations.CheckBox" parent="Widget.AppCompat.CompoundButton.CheckBox">
