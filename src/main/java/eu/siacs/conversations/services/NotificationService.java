@@ -702,13 +702,7 @@ public class NotificationService {
 	}
 
 	public static Pattern generateNickHighlightPattern(final String nick) {
-		// We expect a word boundary, i.e. space or start of string, followed by
-		// the
-		// nick (matched in case-insensitive manner), followed by optional
-		// punctuation (for example "bob: i disagree" or "how are you alice?"),
-		// followed by another word boundary.
-		return Pattern.compile("\\b" + Pattern.quote(nick) + "\\p{Punct}?\\b",
-				Pattern.CASE_INSENSITIVE | Pattern.UNICODE_CASE);
+		return Pattern.compile("(?<=(^|\\s))" + Pattern.quote(nick) + "\\b", Pattern.CASE_INSENSITIVE | Pattern.UNICODE_CASE);
 	}
 
 	public void setOpenConversation(final Conversation conversation) {
