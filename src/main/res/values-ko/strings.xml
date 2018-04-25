@@ -262,7 +262,6 @@
   <string name="copy_original_url">원본 URL 복사 </string>
   <string name="send_again">다시 보내기 </string>
   <string name="file_url">파일 URL</string>
-  <string name="url_copied_to_clipboard">URL이 클립보드에 복사되었습니다 </string>
   <string name="scan_qr_code">2D 바코드를 스캔하세요</string>
   <string name="show_qr_code">2D 바코드를 보여주세요</string>
   <string name="show_block_list">차단 목록 보기 </string>
@@ -371,7 +370,6 @@
   <string name="none">없음</string>
   <string name="recently_used">최근 사용된 항목</string>
   <string name="choose_quick_action">빠른 동작 선택</string>
-  <string name="search_for_contacts_or_groups">연락처 또는 그룹 검색</string>
   <string name="send_private_message">개인 메세지 전송</string>
   <string name="username">사용자 이름</string>
   <string name="username_hint">사용자 이름</string>

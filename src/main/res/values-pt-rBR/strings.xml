@@ -296,7 +296,7 @@
   <string name="copy_original_url">Copiar a URL original</string>
   <string name="send_again">Enviar novamente</string>
   <string name="file_url">URL do arquivo</string>
-  <string name="url_copied_to_clipboard">A URL foi copiada para a área de transferência</string>
+  <string name="url_copied_to_clipboard">URL copiada para a área de transferência</string>
   <string name="scan_qr_code">Capturar código de barras 2D</string>
   <string name="show_qr_code">Exibir código de barras 2D</string>
   <string name="show_block_list">Exibir a lista de bloqueios</string>
@@ -426,7 +426,6 @@
   <string name="none">Nenhuma</string>
   <string name="recently_used">Usada mais recentemente</string>
   <string name="choose_quick_action">Selecione a ação rápida</string>
-  <string name="search_for_contacts_or_groups">Pesquisar por contatos ou grupos</string>
   <string name="send_private_message">Enviar mensagem privada</string>
   <string name="user_has_left_conference">%1$s deixou a conversa em grupo!</string>
   <string name="username">Nome de usuário</string>

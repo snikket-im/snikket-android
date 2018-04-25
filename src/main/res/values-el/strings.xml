@@ -269,7 +269,6 @@
   <string name="message_options">Επιλογές μηνυμάτων</string>
   <string name="copy_original_url">Αντιγραφή αρχικής διεύθυνσης URL</string>
   <string name="send_again">Αποστολή ξανά</string>
-  <string name="url_copied_to_clipboard">Η διεύθυνση URL αντιγράφηκε στο πρόχειρο</string>
   <string name="show_block_list">Εμφάνιση λίστας αποκλεισμένων</string>
   <string name="account_details">Λεπτομέρειες λογαριασμού</string>
   <string name="confirm">Επιβεβαίωση</string>

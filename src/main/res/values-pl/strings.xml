@@ -114,7 +114,7 @@
   <string name="pref_led_summary">Migaj lampką powiadamiającą gdy nadejdzie wiadomość</string>
   <string name="pref_sound">Dzwonek</string>
   <string name="pref_sound_summary">Odtwórz dźwięk gdy nadejdzie wiadomość</string>
-  <string name="pref_notification_grace_period">Czas Bez Powiadomień</string>
+  <string name="pref_notification_grace_period">Czas bez powiadomień</string>
   <string name="pref_notification_grace_period_summary">Czas od ostatniej aktywności na innym urządzeniu, przez który Conversations nie odzywa się</string>
   <string name="pref_advanced_options">Zaawansowane</string>
   <string name="pref_never_send_crash">Nie wysyłaj raportów awarii</string>
@@ -137,7 +137,7 @@
   <string name="error_file_not_found">Nie odnaleziono pliku</string>
   <string name="error_io_exception">Ogólny błąd wejścia/wyjścia</string>
   <string name="error_security_exception_during_image_copy">Aplikacja użyta do wyboru obrazu nie zezwoliła na odczyt pliku.\n\n<small>Wybierz obraz przy użyciu innego menedżera plików</small></string>
-  <string name="account_status_unknown">nieznany</string>
+  <string name="account_status_unknown">Nieznany</string>
   <string name="account_status_disabled">Tymczasowo wyłączono</string>
   <string name="account_status_online">Połączono</string>
   <string name="account_status_connecting">Łączenie...</string>
@@ -233,15 +233,15 @@
   <string name="contact_added_you">Kontakt został dodany do listy</string>
   <string name="add_back">Dodaj ponownie</string>
   <string name="contact_has_read_up_to_this_point">%s przeczytał do tego miejsca</string>
-  <string name="contacts_have_read_up_to_this_point">%s przeczytane do tego momentu</string>
-  <string name="contacts_and_n_more_have_read_up_to_this_point">%1$s +%2$d do tego miejsca zostało więcej do przeczytania.</string>
+  <string name="contacts_have_read_up_to_this_point">%s przeczytali do tego miejsca</string>
+  <string name="contacts_and_n_more_have_read_up_to_this_point">%1$s i %2$d osób przeczytało do tego miejsca</string>
   <string name="publish">Publikuj</string>
   <string name="touch_to_choose_picture">Naciśnij awatar, żeby wybrać obraz z galerii</string>
   <string name="publishing">Publikowanie...</string>
   <string name="error_publish_avatar_server_reject">Serwer odrzucił żądanie publikacji</string>
   <string name="error_publish_avatar_converting">Wystąpił błąd podczas konwersji obrazu</string>
   <string name="error_saving_avatar">Nie udało się zapisać obrazu w pamięci urządzenia</string>
-  <string name="or_long_press_for_default">(lub przytrzymaj długo, aby ustawić domyślny)</string>
+  <string name="or_long_press_for_default">(lub długo przytrzymaj, aby ustawić domyślny)</string>
   <string name="error_publish_avatar_no_server_support">Serwer nie udostępnia możliwości publikacji awatarów</string>
   <string name="private_message">szepcze</string>
   <string name="private_message_to">do %s</string>
@@ -275,7 +275,7 @@
   <string name="pref_use_indicate_received">Raporty dostarczenia</string>
   <string name="pref_use_indicate_received_summary">Jeżeli to możliwe, oznaczaj dostarczone wiadomości zielonym haczykiem</string>
   <string name="pref_use_send_button_to_indicate_status_summary">Koloruj przycisk wysyłania w zależności od statusu kontaktu</string>
-  <string name="pref_expert_options_other">Inne opcje</string>
+  <string name="pref_expert_options_other">Inne</string>
   <string name="pref_conference_name">Nazwa konferencji</string>
   <string name="pref_conference_name_summary">Użyj tytułu zamiast JID do identyfikowania konferencji</string>
   <string name="pref_autojoin">Automatycznie dołączaj do konferencji</string>
@@ -290,13 +290,13 @@
   <string name="checking_x">Sprawdzanie %s na hoście HTTP</string>
   <string name="not_connected_try_again">Brak połączenia. Spróbuj ponownie później</string>
   <string name="check_x_filesize">Sprawdź rozmiar %s</string>
-  <string name="check_x_filesize_on_host">Sprawdź wielkość %1$s na %2$s</string>
+  <string name="check_x_filesize_on_host">Sprawdź rozmiar %1$s na %2$s</string>
   <string name="message_options">Opcje wiadomości</string>
   <string name="quote">Cytat</string>
   <string name="copy_original_url">Skopiuj oryginalny URL</string>
   <string name="send_again">Wyślij ponownie</string>
   <string name="file_url">URL pliku</string>
-  <string name="url_copied_to_clipboard">URL obrazu został skopiowany do schowka</string>
+  <string name="url_copied_to_clipboard">Skopiowano URL do schowka</string>
   <string name="scan_qr_code">Zeskanuj kod</string>
   <string name="show_qr_code">Pokaż kod QR</string>
   <string name="show_block_list">Wyświetl listę banów</string>
@@ -395,8 +395,8 @@
   <string name="hide_offline">Ukryj niedostępnych</string>
   <string name="contact_is_typing">%s pisze...</string>
   <string name="contact_has_stopped_typing">%s przestał(a) pisać</string>
-  <string name="contacts_are_typing">%s pisze...</string>
-  <string name="contacts_have_stopped_typing">%s przestał pisać</string>
+  <string name="contacts_are_typing">%s piszą...</string>
+  <string name="contacts_have_stopped_typing">%s przestali pisać</string>
   <string name="pref_chat_states">Powiadomienia pisania</string>
   <string name="pref_chat_states_summary">Powiadamiaj rozmówcę, kiedy rozpoczynasz nową wiadomość</string>
   <string name="send_location">Wyślij lokalizację</string>
@@ -430,7 +430,6 @@
   <string name="none">Brak</string>
   <string name="recently_used">Ostatnio używana</string>
   <string name="choose_quick_action">Wybierz szybką akcję</string>
-  <string name="search_for_contacts_or_groups">Szukaj kontaktów i grup</string>
   <string name="send_private_message">Wyślij wiadomość prywatną</string>
   <string name="user_has_left_conference">%1$s opuścił konferencję!</string>
   <string name="username">Nazwa użytkownika</string>
@@ -446,15 +445,15 @@
   <string name="server_info_broken">Zepsute</string>
   <string name="pref_presence_settings">Dostępność</string>
   <string name="pref_away_when_screen_off">Status \"Oddalony\" gdy wyświetlacz jest wyłączony</string>
-  <string name="pref_away_when_screen_off_summary">Oznacza Twój zasób jako \"Oddalony\", gdy wyświetlacz jest wyłączony</string>
+  <string name="pref_away_when_screen_off_summary">Oznacza twój zasób jako \"Oddalony\", gdy wyświetlacz jest wyłączony</string>
   <string name="pref_dnd_on_silent_mode">\"Nie przeszkadzać\" w trybie cichym</string>
-  <string name="pref_dnd_on_silent_mode_summary">Oznacza Twój zasób jako \"Nie przeszkadzać\", gdy urządzenie jest w trybie cichym</string>
+  <string name="pref_dnd_on_silent_mode_summary">Oznacza twój zasób jako \"Nie przeszkadzać\", gdy urządzenie jest w trybie cichym</string>
   <string name="pref_treat_vibrate_as_silent">Traktuj tryb wibracji jak tryb cichy</string>
-  <string name="pref_treat_vibrate_as_dnd_summary">Oznacza Twój zasób jako \"Nie przeszkadzać\", gdy urządzenie jest w trybie wibracji</string>
+  <string name="pref_treat_vibrate_as_dnd_summary">Oznacza twój zasób jako \"Nie przeszkadzać\", gdy urządzenie jest w trybie wibracji</string>
   <string name="pref_show_connection_options">Rozszerzone ustawienia połączenia</string>
   <string name="pref_show_connection_options_summary">Pokaż nazwę hosta i ustawienia portu przy dodawaniu konta</string>
-  <string name="hostname_example">xmpp.examle.com</string>
-  <string name="action_add_account_with_certificate">Dodaj konto za pomocą certyfikatu</string>
+  <string name="hostname_example">xmpp.example.com</string>
+  <string name="action_add_account_with_certificate">Dodaj konto przy pomocy certyfikatu</string>
   <string name="unable_to_parse_certificate">Nie mogę odczytać certyfikatu</string>
   <string name="authenticate_with_certificate">Pozostaw puste by autoryzować za pomocą certyfikatu</string>
   <string name="mam_prefs">Preferencje archiwizacji</string>
@@ -474,7 +473,7 @@
   <string name="pref_use_tor_summary">Tuneluj wszystkie połączenia przez sieć TOR. Wymaga zainstalowania aplikacji \"Orbot\"</string>
   <string name="account_settings_hostname">Nazwa hosta</string>
   <string name="account_settings_port">Port</string>
-  <string name="hostname_or_onion">Adres serwera lub \".onion\" adres</string>
+  <string name="hostname_or_onion">Adres serwera lub adres \".onion\"</string>
   <string name="not_a_valid_port">To nie jest prawidłowy numer portu</string>
   <string name="not_valid_hostname">To nie jest prawidłowa nazwa hosta</string>
   <string name="connected_accounts">%1$d z %2$d kont połączonych</string>
@@ -485,8 +484,8 @@
     <item quantity="other">%d wiadomości</item>
   </plurals>
   <string name="load_more_messages">Załaduj wiecej wiadomości</string>
-  <string name="shared_file_with_x">Dzielony plik z %s</string>
-  <string name="shared_image_with_x">Dzielony obraz z %s</string>
+  <string name="shared_file_with_x">Dzielenie pliku z %s</string>
+  <string name="shared_image_with_x">Dzielenie obrazu z %s</string>
   <string name="shared_images_with_x">Obraz udostępniony %s</string>
   <string name="shared_text_with_x">Tekst udostępniony %s</string>
   <string name="no_storage_permission">Conversations potrzebuje dostępu do zewnętrznej pamięci</string>
@@ -520,7 +519,7 @@
 Dla twojej wygody ułatwiliśmy stworzenie konta na conversations.im; serwerze dostosowanym do Conversations.</string>
   <string name="magic_create_text">Przeprowadzimy Cię przez proces tworzenia konta na conversations.im.\nKiedy wybierzesz konto na serwerze conversations.im, będziesz mógł komunikować się z użytkownikami na innych serwerach podając im swój pełen Jabber ID.</string>
   <string name="your_full_jid_will_be">Twój pełen Jabber ID będzie następujący: %s</string>
-  <string name="create_account">Utwórz Konto</string>
+  <string name="create_account">Utwórz konto</string>
   <string name="use_own_provider">Użyj innego serwera</string>
   <string name="pick_your_username">Wybierz nazwę użytkownika</string>
   <string name="pref_manually_change_presence">Zarządzaj dostępnością ręcznie</string>
@@ -528,12 +527,12 @@ Dla twojej wygody ułatwiliśmy stworzenie konta na conversations.im; serwerze d
   <string name="status_message">Status</string>
   <string name="presence_chat">Chętny do rozmowy</string>
   <string name="presence_online">Dostępny</string>
-  <string name="presence_away">Zaraz Wracam</string>
+  <string name="presence_away">Zaraz wracam</string>
   <string name="presence_xa">Niedostępny</string>
   <string name="presence_dnd">Zajęty</string>
   <string name="secure_password_generated">Zostało wygenerowane bezpieczne hasło</string>
   <string name="device_does_not_support_battery_op">Twoje urządzenie nie pozwala na wyłączenie optymalizacji baterii</string>
-  <string name="registration_please_wait">Rejestracja nie powiodła się. Spróbuj później</string>
+  <string name="registration_please_wait">Rejestracja nie powiodła się: spróbuj później</string>
   <string name="registration_password_too_weak">Rejestracja nie powiodła się: hasło zbyt słabe</string>
   <string name="dialog_title_create_conference">Utwórz konferencję</string>
   <string name="choose_participants">Wybierz członków</string>
@@ -542,8 +541,8 @@ Dla twojej wygody ułatwiliśmy stworzenie konta na conversations.im; serwerze d
   <string name="gp_short">Krótki</string>
   <string name="gp_medium">Średni</string>
   <string name="gp_long">Długi</string>
-  <string name="pref_broadcast_last_activity">Dziel się ostatnią interakcją.</string>
-  <string name="pref_broadcast_last_activity_summary">Powiadamiaj kontakty, że używasz Conversations</string>
+  <string name="pref_broadcast_last_activity">Dziel się ostatnią interakcją</string>
+  <string name="pref_broadcast_last_activity_summary">Powiadamiaj kontakty o tym, że używasz Conversations</string>
   <string name="pref_privacy">Prywatność</string>
   <string name="pref_theme_options">Skórka</string>
   <string name="pref_theme_options_summary">Wybierz paletę kolorów</string>
@@ -572,7 +571,7 @@ Dla twojej wygody ułatwiliśmy stworzenie konta na conversations.im; serwerze d
   <string name="delete_selected_keys">Usuń zaznaczone klucze</string>
   <string name="error_publish_avatar_offline">Musisz być połączony/na, aby opublikować swój awatar.</string>
   <string name="show_error_message">Pokaż komunikaty błędów</string>
-  <string name="error_message">Komunikat o Błędzie</string>
+  <string name="error_message">Komunikat o błędzie</string>
   <string name="data_saver_enabled">Oszczędzanie danych jest włączone</string>
   <string name="data_saver_enabled_explained">Twój system operacyjny blokuje dostęp do internetu Conversations, kiedy jest w tle. Aby dostawać powiadomienia dla nowych wiadomości powinieneś/powinnaś dać Conversations nieograniczony dostęp do internetu, kiedy Oszczędzanie danych jest włączone.
 Conversations będzie wciąż ograniczał transfer danych, kiedy tylko to jest możliwe.</string>
@@ -585,12 +584,12 @@ Conversations będzie wciąż ograniczał transfer danych, kiedy tylko to jest m
   <string name="verified_fingerprints">Zaufane odciski</string>
   <string name="use_camera_icon_to_scan_barcode">Użyj aparatu, aby zeskanować kod kreskowy kontaktu.</string>
   <string name="please_wait_for_keys_to_be_fetched">Proszę czekać na ściągnięcie kluczy</string>
-  <string name="share_as_barcode">Udostępnij przez Kod Kreskowy</string>
+  <string name="share_as_barcode">Udostępnij przez kod QR</string>
   <string name="share_as_uri">Udostępnij przez URI XMPP</string>
   <string name="share_as_http">Udostępnij przez link HTTP</string>
   <string name="pref_blind_trust_before_verification">Ślepo Ufaj Przed Weryfikacją</string>
   <string name="pref_blind_trust_before_verification_summary">Automatycznie ufaj wszystkim nowym urządzeniom kontaktów, którzy nie zostali zweryfikowani wcześniej, i poproś o ręczne potwierdzenie za każdym, kiedy zweryfikowany kontakt dodaje nowe urządzenie.</string>
-  <string name="blindly_trusted_omemo_keys">Ślepo ufaj kluczom OMEMO</string>
+  <string name="blindly_trusted_omemo_keys">Klucze OMEMO którym ślepo zaufano</string>
   <string name="not_trusted">Niezaufane</string>
   <string name="invalid_barcode">Nieprawidłowy kod kreskowy 2D</string>
   <string name="pref_clean_cache_summary">Wyczyść cache (używane przez kamerę)</string>
@@ -685,7 +684,7 @@ Conversations będzie wciąż ograniczał transfer danych, kiedy tylko to jest m
   <string name="qr_code_scanner_needs_access_to_camera">Skaner kodów QR potrzebuje dostępu do aparatu</string>
   <string name="pref_scroll_to_bottom">Przesuń na dół</string>
   <string name="pref_scroll_to_bottom_summary">Przesuń na dół po wysłaniu wiadomości</string>
-  <string name="edit_status_message_title">Edytuj Komunikat Statusu</string>
+  <string name="edit_status_message_title">Edytuj komunikat statusu</string>
   <string name="edit_status_message">Edytuj komunikat statusu</string>
   <string name="disable_encryption">Wyłącz szyfrowanie</string>
   <string name="error_trustkey_general">Conversations nie mogło wysłać zaszyfrowanej wiadomości do %1$s. Możliwe, że kontakt używa starego serwera lub klienta który nie wspiera OMEMO.</string>
@@ -710,4 +709,16 @@ Administrator twojego serwera będzie mógł czytać twoje wiadomości, ale moż
   <string name="large">Duża</string>
   <string name="not_encrypted_for_this_device">Wiadomość nie była zaszyfrowana dla tego urządzenia.</string>
   <string name="undo">cofnij</string>
+  <string name="location_disabled">Udostępnianie lokalizacji jest wyłączone</string>
+  <string name="action_fix_to_location">Zablokuj pozycję</string>
+  <string name="action_unfix_from_location">Odblokuj pozycję</string>
+  <string name="action_copy_location">Skopiuj lokalizację</string>
+  <string name="action_share_location">Udostępnij lokalizację</string>
+  <string name="action_directions">Kierunki</string>
+  <string name="title_activity_share_location">Udostępnij lokalizację</string>
+  <string name="title_activity_show_location">Pokaż lokalizację</string>
+  <string name="share">Udostępnij</string>
+  <string name="unable_to_start_recording">Nie można rozpocząć nagrywania</string>
+  <string name="please_wait">Proszę czekać...</string>
+  <string name="no_microphone_permission">Conversations potrzebuje dostępu do mikrofonu</string>
 </resources>

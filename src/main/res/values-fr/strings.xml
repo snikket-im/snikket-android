@@ -296,7 +296,6 @@
   <string name="copy_original_url">Copier l\'URL</string>
   <string name="send_again">Envoyer de nouveau</string>
   <string name="file_url">URL du fichier</string>
-  <string name="url_copied_to_clipboard">URL copiée dans le presse-papier</string>
   <string name="scan_qr_code">Scanner le code-barres 2D</string>
   <string name="show_qr_code">Montrer le code-barres 2D</string>
   <string name="show_block_list">Afficher la liste des contacts bloqués</string>
@@ -426,7 +425,6 @@
   <string name="none">Aucune</string>
   <string name="recently_used">Dernière utilisée</string>
   <string name="choose_quick_action">Sélectionner l\'action rapide</string>
-  <string name="search_for_contacts_or_groups">Rechercher des contacts ou des groupes</string>
   <string name="send_private_message">Envoyer un message privé</string>
   <string name="user_has_left_conference">%1$s a quitté le groupe de discussion !</string>
   <string name="username">Identifiant</string>
@@ -684,4 +682,5 @@
   <string name="large">Grande</string>
   <string name="not_encrypted_for_this_device">OMEMO sera utilisé par défaut pour toute nouvelle conversation.</string>
   <string name="undo">annuler</string>
+  <string name="location_disabled">Le partage de positionnement est désactivé.</string>
 </resources>

@@ -426,7 +426,6 @@
   <string name="none">Ninguna</string>
   <string name="recently_used">Usada más recientemente</string>
   <string name="choose_quick_action">Elegir acción rápida</string>
-  <string name="search_for_contacts_or_groups">Buscar contactos o grupos</string>
   <string name="send_private_message">Enviar mensaje privado</string>
   <string name="user_has_left_conference">%1$s ha dejado la conversación!</string>
   <string name="username">Usuario</string>
@@ -689,4 +688,16 @@
   <string name="large">Grande</string>
   <string name="not_encrypted_for_this_device">El mensaje no fue cifrado para este dispositivo.</string>
   <string name="undo">deshacer</string>
+  <string name="location_disabled">Compartir ubicación está deshabilitado</string>
+  <string name="action_fix_to_location">Fijar posición</string>
+  <string name="action_unfix_from_location">Desfijar posición</string>
+  <string name="action_copy_location">Copiar ubicación</string>
+  <string name="action_share_location">Compatir Ubicación</string>
+  <string name="action_directions">Direcciones</string>
+  <string name="title_activity_share_location">Compartir ubicación</string>
+  <string name="title_activity_show_location">Mostrar ubicación</string>
+  <string name="share">Compartir</string>
+  <string name="unable_to_start_recording">No se ha podido empezar la grabación</string>
+  <string name="please_wait">Por favor, espera...</string>
+  <string name="no_microphone_permission">Conversations necesita acceder al micrófono</string>
 </resources>

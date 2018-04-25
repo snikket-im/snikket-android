@@ -267,7 +267,6 @@
   <string name="copy_original_url">Kopiera orginal-URL</string>
   <string name="send_again">Skicka igen</string>
   <string name="file_url">Fil-URL</string>
-  <string name="url_copied_to_clipboard">URL kopierad till urklipp</string>
   <string name="scan_qr_code">Scanna 2D-streckkod</string>
   <string name="show_qr_code">Visa 2D-streckkod</string>
   <string name="show_block_list">Visa blockeringslista</string>
@@ -378,7 +377,6 @@
   <string name="none">Ingen</string>
   <string name="recently_used">Senast använd</string>
   <string name="choose_quick_action">Välj snabbfunktion</string>
-  <string name="search_for_contacts_or_groups">Sök efter kontakter eller grupper</string>
   <string name="send_private_message">Skicka privat meddelande</string>
   <string name="username">Användarnamn</string>
   <string name="username_hint">Användarnamn</string>

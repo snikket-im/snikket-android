@@ -296,7 +296,7 @@
   <string name="copy_original_url">Original-URL kopieren</string>
   <string name="send_again">Erneut senden</string>
   <string name="file_url">Datei-URL</string>
-  <string name="url_copied_to_clipboard">URL in Zwischenablage kopiert</string>
+  <string name="url_copied_to_clipboard">URL in die Zwischenablage kopiert</string>
   <string name="scan_qr_code">Barcode scannen</string>
   <string name="show_qr_code">Barcode anzeigen</string>
   <string name="show_block_list">Sperrliste anzeigen</string>
@@ -426,7 +426,6 @@
   <string name="none">Keine</string>
   <string name="recently_used">Zuletzt verwendet</string>
   <string name="choose_quick_action">Wähle Schnell-Taste</string>
-  <string name="search_for_contacts_or_groups">Nach Kontakten oder Konferenzen suchen</string>
   <string name="send_private_message">Private Nachricht senden</string>
   <string name="user_has_left_conference">%1$s hat den Gruppenchat verlassen!</string>
   <string name="username">Benutzername</string>
@@ -689,4 +688,16 @@
   <string name="large">Groß</string>
   <string name="not_encrypted_for_this_device">Die Nachricht wurde für dieses Gerät nicht verschlüsselt.</string>
   <string name="undo">rückgängig</string>
+  <string name="location_disabled">Standort teilen ist deaktiviert</string>
+  <string name="action_fix_to_location">Position fixieren</string>
+  <string name="action_unfix_from_location">Position lösen</string>
+  <string name="action_copy_location">Standort kopieren</string>
+  <string name="action_share_location">Standort teilen</string>
+  <string name="action_directions">Wegbeschreibungen</string>
+  <string name="title_activity_share_location">Standort teilen</string>
+  <string name="title_activity_show_location">Standort anzeigen</string>
+  <string name="share">Teilen</string>
+  <string name="unable_to_start_recording">Aufnahme kann nicht gestartet werden</string>
+  <string name="please_wait">Bitte warten...</string>
+  <string name="no_microphone_permission">Conversations benötigt Zugriff auf das Mikrofon</string>
 </resources>

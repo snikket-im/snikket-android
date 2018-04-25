@@ -296,7 +296,6 @@
   <string name="copy_original_url">拷贝原始URL</string>
   <string name="send_again">再次发送</string>
   <string name="file_url">文件  </string>
-  <string name="url_copied_to_clipboard">已经拷贝 URL 到剪贴板</string>
   <string name="scan_qr_code">扫描二维码</string>
   <string name="show_qr_code">显示二维码</string>
   <string name="show_block_list">显示屏蔽列表</string>
@@ -424,7 +423,6 @@
   <string name="none">无</string>
   <string name="recently_used">最近常用</string>
   <string name="choose_quick_action">选择快捷操作</string>
-  <string name="search_for_contacts_or_groups">搜索联系人或群组</string>
   <string name="send_private_message">发送私密消息</string>
   <string name="user_has_left_conference">%1$s 离开了群聊！</string>
   <string name="username">用户名</string>

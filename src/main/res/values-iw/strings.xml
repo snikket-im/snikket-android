@@ -222,7 +222,6 @@
   <string name="copy_original_url">העתק קישור</string>
   <string name="send_again">שלח שוב</string>
   <string name="file_url">קישור קובץ</string>
-  <string name="url_copied_to_clipboard">הקישור הועתק</string>
   <string name="show_block_list">הראה רשימת חסומים</string>
   <string name="account_details">פרטי חשבון</string>
   <string name="confirm">אמת</string>
@@ -321,7 +320,6 @@
   <string name="none">כלום</string>
   <string name="recently_used">לפי השימוש האחרון</string>
   <string name="choose_quick_action">בחר פעולה מהירה</string>
-  <string name="search_for_contacts_or_groups">חפש אנשי קשר או קבוצות</string>
   <string name="send_private_message">שלח הודעה פרטית</string>
   <string name="username">שם משתמש</string>
   <string name="username_hint">שם משתמש</string>

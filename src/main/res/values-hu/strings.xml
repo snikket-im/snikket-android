@@ -296,7 +296,6 @@
   <string name="copy_original_url">Eredeti URL másolása</string>
   <string name="send_again">Elküldi újra</string>
   <string name="file_url">Fájl URL-je</string>
-  <string name="url_copied_to_clipboard">URL a vágólapra másolva</string>
   <string name="scan_qr_code">2D vonalkód olvasás</string>
   <string name="show_qr_code">2D vonalkód mutatása</string>
   <string name="show_block_list">Tiltólista mutatása</string>
@@ -426,7 +425,6 @@
   <string name="none">Semmi</string>
   <string name="recently_used">Legutóbb használt</string>
   <string name="choose_quick_action">Gyors gomb funkciója</string>
-  <string name="search_for_contacts_or_groups">Keresés a címek között</string>
   <string name="send_private_message">Privát üzenet küldése</string>
   <string name="user_has_left_conference">%1$s elhagyta a konferenciát!</string>
   <string name="username">Felhasználónév</string>

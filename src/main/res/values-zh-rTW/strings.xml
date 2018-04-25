@@ -267,7 +267,6 @@
   <string name="copy_original_url">拷貝原始URL</string>
   <string name="send_again">再次發送</string>
   <string name="file_url">檔案位址(URL)</string>
-  <string name="url_copied_to_clipboard">已經拷貝 URL 到剪貼板</string>
   <string name="scan_qr_code">掃描二維條碼</string>
   <string name="show_qr_code">顯示二維條碼</string>
   <string name="show_block_list">顯示封鎖清單</string>
@@ -376,7 +375,6 @@
   <string name="none">無</string>
   <string name="recently_used">最近使用過的</string>
   <string name="choose_quick_action">選擇快速動作</string>
-  <string name="search_for_contacts_or_groups">搜索連絡人或群組</string>
   <string name="send_private_message">發送私密消息</string>
   <string name="username">用戶名</string>
   <string name="username_hint">用戶名</string>

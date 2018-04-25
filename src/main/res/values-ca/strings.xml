@@ -296,7 +296,6 @@
   <string name="copy_original_url">Copiar la URL original</string>
   <string name="send_again">Envia una altra vegada</string>
   <string name="file_url">URL del fitxer</string>
-  <string name="url_copied_to_clipboard">URL copiada al portapapers</string>
   <string name="scan_qr_code">Escaneja el codi de barres 2D</string>
   <string name="show_qr_code">Mostra el codi de barres 2D</string>
   <string name="show_block_list">Mostra la llista de bloqueig</string>
@@ -429,7 +428,6 @@ mentrestant.</string>
   <string name="none">Cap</string>
   <string name="recently_used">Ús més recent</string>
   <string name="choose_quick_action">Trieu una acció ràpida</string>
-  <string name="search_for_contacts_or_groups">Cerca contactes o grups</string>
   <string name="send_private_message">Envia un missatge privat</string>
   <string name="user_has_left_conference">%1$s ha deixat el xat del grup!</string>
   <string name="username">Nom d\'usuari</string>

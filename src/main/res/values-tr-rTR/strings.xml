@@ -263,7 +263,6 @@
   <string name="copy_original_url">Orijinal URL\'i kopyala</string>
   <string name="send_again">Yeniden gönder</string>
   <string name="file_url">Dosya URL</string>
-  <string name="url_copied_to_clipboard">Panoya kopyalanan URL</string>
   <string name="scan_qr_code">2B Barkod Tara</string>
   <string name="show_qr_code">2B Barkod Göster</string>
   <string name="show_block_list">Engellenenler listesini göster</string>
@@ -374,7 +373,6 @@
   <string name="none">Hiçbiri</string>
   <string name="recently_used">En son kullanılanlar</string>
   <string name="choose_quick_action">Kısayolu seç</string>
-  <string name="search_for_contacts_or_groups">Kişi veya gruplarda ara</string>
   <string name="send_private_message">Özel ileti gönder</string>
   <string name="username">Kullanıcı adı</string>
   <string name="username_hint">Kullanıcı adı</string>

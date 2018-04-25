@@ -295,7 +295,6 @@
   <string name="copy_original_url">Kopier orginal nettadresse</string>
   <string name="send_again">Send igjen</string>
   <string name="file_url">Filens nettadresse</string>
-  <string name="url_copied_to_clipboard">Nettadresse kopiert til utklippstavle</string>
   <string name="scan_qr_code">Skann 2D-strekkode</string>
   <string name="show_qr_code">Vis 2D-strekkode</string>
   <string name="show_block_list">Vis blokkeringsliste</string>
@@ -423,7 +422,6 @@
   <string name="none">Ingen</string>
   <string name="recently_used">Senest brukt</string>
   <string name="choose_quick_action">Velg hurtighendelse</string>
-  <string name="search_for_contacts_or_groups">Søk etter kontakter eller grupper</string>
   <string name="send_private_message">Send privat melding</string>
   <string name="username">Brukernavn</string>
   <string name="username_hint">Brukernavn</string>

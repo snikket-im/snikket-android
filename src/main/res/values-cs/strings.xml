@@ -260,7 +260,6 @@
   <string name="copy_original_url">Kopírovat originální URL</string>
   <string name="send_again">Poslat znovu</string>
   <string name="file_url">URL souboru</string>
-  <string name="url_copied_to_clipboard">URL zkopírováno do schránky</string>
   <string name="show_block_list">Zobrazit seznam blokovaných</string>
   <string name="account_details">Detaily účtu</string>
   <string name="confirm">Potvrdit</string>
@@ -368,7 +367,6 @@
   <string name="none">Žádná</string>
   <string name="recently_used">Naposledy použitá</string>
   <string name="choose_quick_action">Vybrat rychlou akci</string>
-  <string name="search_for_contacts_or_groups">Hledat kontakty či skupiny</string>
   <string name="send_private_message">Poslat soukromou zprávu</string>
   <string name="username">Uživatelské jméno</string>
   <string name="username_hint">Uživatelské jméno</string>

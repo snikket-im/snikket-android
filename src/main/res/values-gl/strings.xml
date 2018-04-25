@@ -100,8 +100,8 @@
   <string name="no_pgp_keys">Non se atoparon chaves OpenPGP</string>
   <string name="contacts_have_no_pgp_keys">Conversations non pode cifrar a súa mensaxe porque os seus contactos no publicaron a súa chave pública.\n\n <small>Por favor solicite aos seus contactos que configuren OpenPGP.</small></string>
   <string name="pref_general">Xeral</string>
-  <string name="pref_accept_files">Aceptar arquivos</string>
-  <string name="pref_accept_files_summary">De forma automática aceptar arquivos menores de…</string>
+  <string name="pref_accept_files">Aceptar ficheiros</string>
+  <string name="pref_accept_files_summary">De forma automática aceptar ficheiros menores de…</string>
   <string name="pref_attachments">Engadidos</string>
   <string name="pref_return_to_previous">Compartición rápida</string>
   <string name="pref_return_to_previous_summary">Voltar inmediatamente a actividade anterior no lugar de abrir a conversa despois de compartir algo</string>
@@ -136,7 +136,7 @@
   <string name="error_compressing_image">Erro convertindo o arquivo de imaxe</string>
   <string name="error_file_not_found">Arquivo non atopado</string>
   <string name="error_io_exception">Erro xeral de I/O. ¿Quedaches sen espazo no disco?</string>
-  <string name="error_security_exception_during_image_copy">A aplicación que usas para seleccionar imaxes non proporciona suficientes permisos para leer o arquivo.\n\n<small>Utiliza un explorador de arquivos diferente para seleccionar a imaxe</small></string>
+  <string name="error_security_exception_during_image_copy">A aplicación que utiliza para seleccionar imaxes non proporciona suficientes permisos para leer o ficheiro.\n\n<small>Utiliza un explorador de ficheiros diferente para seleccionar a imaxe</small></string>
   <string name="account_status_unknown">Descoñecido</string>
   <string name="account_status_disabled">Deshabilitado temporalmente</string>
   <string name="account_status_online">Conectado</string>
@@ -296,7 +296,6 @@
   <string name="copy_original_url">Copiar URL orixinal</string>
   <string name="send_again">Enviar de novo</string>
   <string name="file_url">URL do ficheiro</string>
-  <string name="url_copied_to_clipboard">URL copiado ao portapapeis</string>
   <string name="scan_qr_code">Escanear código de barras 2D</string>
   <string name="show_qr_code">Mostar código de barras 2D</string>
   <string name="show_block_list">Mostrar lista de bloqueo</string>
@@ -426,7 +425,6 @@
   <string name="none">Ningunha</string>
   <string name="recently_used">Utilizadas recentemente</string>
   <string name="choose_quick_action">Escolla a acción rápida</string>
-  <string name="search_for_contacts_or_groups">Buscar contactos e grupos</string>
   <string name="send_private_message">Enviar mensaxe privada</string>
   <string name="user_has_left_conference">%1$s abandonou a sala!</string>
   <string name="username">Identificador</string>

@@ -428,7 +428,6 @@
   <string name="none">Nimic</string>
   <string name="recently_used">Folosită recent</string>
   <string name="choose_quick_action">Alegeți acțiunea rapidă</string>
-  <string name="search_for_contacts_or_groups">Caută contacte sau grupuri</string>
   <string name="send_private_message">trimite mesaj privat</string>
   <string name="user_has_left_conference">%1$s a părăsit discuția de grup!</string>
   <string name="username">Nume utilizator</string>
@@ -700,4 +699,16 @@ sau chiar pierderea mesajelor.\nÎn continuare veți fi rugați să dezactivați
   <string name="large">Mare</string>
   <string name="not_encrypted_for_this_device">Mesajul nu a fost criptat pentru acest dispozitiv.</string>
   <string name="undo">anulează</string>
+  <string name="location_disabled">Partajarea locației este dezactivată</string>
+  <string name="action_fix_to_location">Blochează poziția</string>
+  <string name="action_unfix_from_location">Deblochează poziția</string>
+  <string name="action_copy_location">Copiere locație</string>
+  <string name="action_share_location">Partajare locație</string>
+  <string name="action_directions">Indicații</string>
+  <string name="title_activity_share_location">Partajare locație</string>
+  <string name="title_activity_show_location">Arată locația</string>
+  <string name="share">Partajare</string>
+  <string name="unable_to_start_recording">Nu s-a putut porni înregistrarea</string>
+  <string name="please_wait">Vă rugăm să așteptați...</string>
+  <string name="no_microphone_permission">Conversations are nevoie de acces la microfon</string>
 </resources>

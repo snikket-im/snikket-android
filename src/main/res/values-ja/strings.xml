@@ -291,7 +291,6 @@
   <string name="copy_original_url">元の URL をコピー</string>
   <string name="send_again">再送</string>
   <string name="file_url">ファイル URL</string>
-  <string name="url_copied_to_clipboard">URL をクリップボードにコピーしました</string>
   <string name="scan_qr_code">2D バーコードをスキャン</string>
   <string name="show_qr_code">2D バーコードを表示</string>
   <string name="show_block_list">ブロックリストを表示</string>
@@ -411,7 +410,6 @@
   <string name="none">なし</string>
   <string name="recently_used">最近使用した</string>
   <string name="choose_quick_action">クイックアクションの選択</string>
-  <string name="search_for_contacts_or_groups">連絡先またはグループの検索</string>
   <string name="send_private_message">プライベートメッセージを送信</string>
   <string name="user_has_left_conference">%1$s は談話室を退出しました</string>
   <string name="username">ユーザー名</string>

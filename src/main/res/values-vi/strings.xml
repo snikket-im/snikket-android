@@ -256,7 +256,6 @@
   <string name="copy_original_url">Sao chép URL gốc</string>
   <string name="send_again">Gửi lại</string>
   <string name="file_url">URL tập tin</string>
-  <string name="url_copied_to_clipboard">Đã chép URL vào clipboard</string>
   <string name="show_block_list">Quét danh sách chặn</string>
   <string name="account_details">Chi tiết tài khoản</string>
   <string name="confirm">Xác nhận</string>
@@ -355,7 +354,6 @@
   <string name="none">Không có</string>
   <string name="recently_used">Dùng gần đây nhất</string>
   <string name="choose_quick_action">Chọn thao tác nhanh</string>
-  <string name="search_for_contacts_or_groups">Tìm các liên hệ và nhóm</string>
   <string name="send_private_message">Gửi tin nhắn cá nhân</string>
   <string name="username">Tên người dùng</string>
   <string name="username_hint">Tên người dùng</string>

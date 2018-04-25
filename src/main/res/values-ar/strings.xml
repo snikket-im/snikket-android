@@ -274,7 +274,6 @@
   <string name="copy_original_url">أنسخ الرابط الأصلي</string>
   <string name="send_again">أعد الإرسال</string>
   <string name="file_url">رابط الملف</string>
-  <string name="url_copied_to_clipboard">تم نسخ الرابط إلى الحافظة</string>
   <string name="scan_qr_code">إمسح شفرة التّعرّف 2D</string>
   <string name="show_qr_code">أظهر شفرة التّعرّف 2D</string>
   <string name="show_block_list">إعرض قائمة المحبوسين</string>
@@ -388,7 +387,6 @@
   <string name="none">لا شيء</string>
   <string name="recently_used">التي تم استعمالها كثيرا مؤخرا</string>
   <string name="choose_quick_action">إختر حركة سريعة</string>
-  <string name="search_for_contacts_or_groups">إبحث عن أصدقاء أو مجموعات</string>
   <string name="send_private_message">إبعث برسالة على الخاص</string>
   <string name="user_has_left_conference">لقد غادَر %1$s فريق المحادثة !</string>
   <string name="username">إسم المستخدم</string>

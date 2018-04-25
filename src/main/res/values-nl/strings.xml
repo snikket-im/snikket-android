@@ -296,7 +296,6 @@
   <string name="copy_original_url">Oorspronkelijke URL kopiëren</string>
   <string name="send_again">Opnieuw versturen</string>
   <string name="file_url">Bestands-URL</string>
-  <string name="url_copied_to_clipboard">URL gekopieerd naar klembord</string>
   <string name="scan_qr_code">2D-streepjescode scannen</string>
   <string name="show_qr_code">2D-streepjescode tonen</string>
   <string name="show_block_list">Geblokkeerde contacten weergeven</string>
@@ -426,7 +425,6 @@
   <string name="none">Geen</string>
   <string name="recently_used">Recent gebruikt</string>
   <string name="choose_quick_action">Snelle actie kiezen</string>
-  <string name="search_for_contacts_or_groups">Zoeken naar contacten of groepen</string>
   <string name="send_private_message">Privébericht sturen</string>
   <string name="user_has_left_conference">%1$s heeft het groepsgesprek verlaten!</string>
   <string name="username">Gebruikersnaam</string>

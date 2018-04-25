@@ -296,7 +296,7 @@
   <string name="copy_original_url">Copia URL originale</string>
   <string name="send_again">Invia di nuovo</string>
   <string name="file_url">URL del file</string>
-  <string name="url_copied_to_clipboard">URL copiato</string>
+  <string name="url_copied_to_clipboard">URL copiato negli appunti</string>
   <string name="scan_qr_code">Scansiona codice a barre 2D</string>
   <string name="show_qr_code">Mostra codice a barre 2D</string>
   <string name="show_block_list">Mostra la lista nera</string>
@@ -426,7 +426,6 @@
   <string name="none">Nessuno</string>
   <string name="recently_used">Usati recentemente</string>
   <string name="choose_quick_action">Scegli azione rapida</string>
-  <string name="search_for_contacts_or_groups">Cerca contatti o gruppi</string>
   <string name="send_private_message">Invia messaggio privato</string>
   <string name="user_has_left_conference">%1$s ha abbandonato la chat di gruppo!</string>
   <string name="username">Utente</string>
@@ -689,4 +688,16 @@
   <string name="large">Grande</string>
   <string name="not_encrypted_for_this_device">Il messaggio non è stato criptato per questo dispositivo.</string>
   <string name="undo">annulla</string>
+  <string name="location_disabled">La condivisione della posizione è disattivata</string>
+  <string name="action_fix_to_location">Fissa la posizione</string>
+  <string name="action_unfix_from_location">Sblocca la posizione</string>
+  <string name="action_copy_location">Copia la posizione</string>
+  <string name="action_share_location">Condividi la posizione</string>
+  <string name="action_directions">Direzioni</string>
+  <string name="title_activity_share_location">Condividi la posizione</string>
+  <string name="title_activity_show_location">Mostra la posizione</string>
+  <string name="share">Condividi</string>
+  <string name="unable_to_start_recording">Impossibile avviare la registrazione</string>
+  <string name="please_wait">Attendere prego...</string>
+  <string name="no_microphone_permission">Conversations ha bisogno di accedere al microfono</string>
 </resources>

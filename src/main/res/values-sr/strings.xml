@@ -267,7 +267,6 @@
   <string name="copy_original_url">Копирај изворни УРЛ</string>
   <string name="send_again">Пошаљи поново</string>
   <string name="file_url">УРЛ фајла</string>
-  <string name="url_copied_to_clipboard">УРЛ је копиран на клипборд</string>
   <string name="scan_qr_code">Очитај 2Д бар-кôд</string>
   <string name="show_qr_code">Прикажи 2Д бар-кôд</string>
   <string name="show_block_list">Прикажи списак блокираних</string>
@@ -380,7 +379,6 @@
   <string name="none">Ниједна</string>
   <string name="recently_used">Недавно коришћена</string>
   <string name="choose_quick_action">Изаберите брзу радњу</string>
-  <string name="search_for_contacts_or_groups">Тражите контакте или групе</string>
   <string name="send_private_message">Пошаљи личну поруку</string>
   <string name="username">Корисничко име</string>
   <string name="username_hint">Корисничко име</string>

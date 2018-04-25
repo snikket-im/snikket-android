@@ -230,7 +230,6 @@
   <string name="copy_original_url">Salin URL asli</string>
   <string name="send_again">Kirim lagi</string>
   <string name="file_url">URL Berkas</string>
-  <string name="url_copied_to_clipboard">URL disalin ke clipboard</string>
   <string name="show_block_list">Tampilkan daftar blokir</string>
   <string name="account_details">Detil akun</string>
   <string name="confirm">Konfirmasi</string>
@@ -326,7 +325,6 @@
   <string name="none">Tak satupun</string>
   <string name="recently_used">Maling sering digunakan</string>
   <string name="choose_quick_action">Pilih aksi cepat</string>
-  <string name="search_for_contacts_or_groups">Cari grup atau daftar kontak</string>
   <string name="send_private_message">Kirim pesan pribadi</string>
   <string name="username">Username</string>
   <string name="username_hint">Username</string>
