@@ -321,7 +321,10 @@ public class AvatarService implements OnAdvancedStreamFeaturesLoaded {
 		return bitmap;
 	}
 
-	public void clear(MucOptions options) {
+	public void clear(final MucOptions options) {
+		if (options == null) {
+			return;
+		}
 		synchronized (this.sizes) {
 			for (Integer size : sizes) {
 				this.mXmppConnectionService.getBitmapCache().remove(key(options, size));
@@ -329,7 +332,7 @@ public class AvatarService implements OnAdvancedStreamFeaturesLoaded {
 		}
 	}
 
-	private String key(MucOptions options, int size) {
+	private String key(final MucOptions options, int size) {
 		synchronized (this.sizes) {
 			if (!this.sizes.contains(size)) {
 				this.sizes.add(size);
