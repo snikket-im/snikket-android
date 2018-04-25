@@ -872,9 +872,10 @@ public class DatabaseBackend extends SQLiteOpenHelper {
 	}
 
 	public void deleteMessagesInConversation(Conversation conversation) {
-		SQLiteDatabase db = this.getWritableDatabase();
+		final SQLiteDatabase db = this.getWritableDatabase();
 		String[] args = {conversation.getUuid()};
-		db.delete(Message.TABLENAME, Message.CONVERSATION + "=?", args);
+		int num = db.delete(Message.TABLENAME, Message.CONVERSATION + "=?", args);
+		Log.d(Config.LOGTAG,"deleted "+num+" messages for "+conversation.getJid().asBareJid());
 	}
 
 	public boolean expireOldMessages(long timestamp) {
