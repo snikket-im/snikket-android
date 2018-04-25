@@ -73,6 +73,7 @@ public class ConversationsOverviewFragment extends XmppFragment {
 	private FragmentConversationsOverviewBinding binding;
 	private ConversationAdapter conversationsAdapter;
 	private XmppActivity activity;
+	private float mSwipeEscapeVelocity = 0f;
 	private PendingActionHelper pendingActionHelper = new PendingActionHelper();
 
 	private ItemTouchHelper.SimpleCallback callback = new ItemTouchHelper.SimpleCallback(0,LEFT|RIGHT) {
@@ -80,6 +81,11 @@ public class ConversationsOverviewFragment extends XmppFragment {
 		public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
 			//todo maybe we can manually changing the position of the conversation
 			return false;
+		}
+
+		@Override
+		public float getSwipeEscapeVelocity (float defaultValue) {
+			return mSwipeEscapeVelocity;
 		}
 
 		@Override
@@ -232,6 +238,8 @@ public class ConversationsOverviewFragment extends XmppFragment {
 	@Override
 	public View onCreateView(final LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		Log.d(Config.LOGTAG, "onCreateView");
+		this.mSwipeEscapeVelocity = getResources().getDimension(R.dimen.swipe_escape_velocity);
+		Log.d(Config.LOGTAG,"swipe escape velocity: "+this.mSwipeEscapeVelocity);
 		this.binding = DataBindingUtil.inflate(inflater, R.layout.fragment_conversations_overview, container, false);
 		this.binding.fab.setOnClickListener((view) -> StartConversationActivity.launch(getActivity()));
 
