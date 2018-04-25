@@ -424,7 +424,13 @@ public class ConversationsActivity extends XmppActivity implements OnConversatio
 				FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
 				fragmentTransaction.replace(R.id.main_fragment, conversationFragment);
 				fragmentTransaction.addToBackStack(null);
-				fragmentTransaction.commitAllowingStateLoss(); //allowing state loss is probably fine since view intents et all are already stored and a click can probably be 'ignored'
+				try {
+					fragmentTransaction.commit();
+				} catch (IllegalStateException e) {
+					Log.w(Config.LOGTAG,"sate loss while opening conversation",e);
+					//allowing state loss is probably fine since view intents et all are already stored and a click can probably be 'ignored'
+					return;
+				}
 			}
 		} else {
 			mainNeedsRefresh = true;
@@ -563,7 +569,12 @@ public class ConversationsActivity extends XmppActivity implements OnConversatio
 		}
 		Fragment mainFragment = getFragmentManager().findFragmentById(R.id.main_fragment);
 		if (mainFragment != null && mainFragment instanceof ConversationFragment) {
-			getFragmentManager().popBackStack();
+			try {
+				getFragmentManager().popBackStack();
+			} catch (IllegalStateException e) {
+				Log.w(Config.LOGTAG,"state loss while popping back state after archiving conversation",e);
+				//this usually means activity is no longer active; meaning on the next open we will run through this again
+			}
 			return;
 		}
 		Fragment secondaryFragment = getFragmentManager().findFragmentById(R.id.secondary_fragment);
