@@ -64,6 +64,7 @@ import eu.siacs.conversations.ui.adapter.KnownHostsAdapter;
 import eu.siacs.conversations.ui.adapter.PresenceTemplateAdapter;
 import eu.siacs.conversations.ui.util.MenuDoubleTabUtil;
 import eu.siacs.conversations.ui.util.PendingItem;
+import eu.siacs.conversations.ui.util.SoftKeyboardUtils;
 import eu.siacs.conversations.utils.CryptoHelper;
 import eu.siacs.conversations.utils.UIHelper;
 import eu.siacs.conversations.utils.XmppUri;
@@ -389,7 +390,7 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
 
 	protected void finishInitialSetup(final Avatar avatar) {
 		runOnUiThread(() -> {
-			hideKeyboard();
+			SoftKeyboardUtils.hideSoftKeyboard(EditAccountActivity.this);
 			final Intent intent;
 			final XmppConnection connection = mAccount.getXmppConnection();
 			final boolean wasFirstAccount = xmppConnectionService != null && xmppConnectionService.getAccounts().size() == 1;

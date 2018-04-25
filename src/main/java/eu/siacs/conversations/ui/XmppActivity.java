@@ -248,13 +248,6 @@ public abstract class XmppActivity extends ActionBarActivity {
 		}
 	}
 
-	protected void hideKeyboard() {
-		final InputMethodManager inputManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-		View focus = getCurrentFocus();
-		if (focus != null && inputManager != null) {
-			inputManager.hideSoftInputFromWindow(focus.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
-		}
-	}
 
 	public boolean hasPgp() {
 		return xmppConnectionService.getPgpEngine() != null;

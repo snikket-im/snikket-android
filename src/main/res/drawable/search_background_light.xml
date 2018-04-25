@@ -28,24 +28,14 @@
   ~ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   -->
 
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+    <item android:drawable="@color/grey50"/>
 
-        <include
-            android:id="@+id/toolbar"
-            layout="@layout/toolbar"/>
-
-
-        <ListView
-            android:id="@+id/search_results"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="?attr/activity_background_search"
-            android:divider="@android:color/transparent"
-            android:dividerHeight="0dp"/>
-    </LinearLayout>
-</layout>
+    <item>
+        <bitmap
+            android:alpha="0.12"
+            android:gravity="center"
+            android:src="@drawable/ic_search_background_black"/>
+    </item>
+</layer-list>

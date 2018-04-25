@@ -11,6 +11,8 @@
         <item name="color_background_secondary">@color/grey200</item>
         <item name="color_warning">@color/red_a700</item>
 
+        <item name="activity_background_search">@drawable/search_background_light</item>
+
         <item name="EmojiColor">@color/black</item>
 
         <item name="windowActionModeOverlay">true</item>
@@ -99,6 +101,7 @@
 
         <item name="color_background_primary">@color/grey800</item>
         <item name="color_background_secondary">@color/grey900</item>
+        <item name="activity_background_search">@drawable/search_background_dark</item>
         <item name="color_warning">@color/red_a100</item>
 
         <item name="EmojiColor">@color/white</item>

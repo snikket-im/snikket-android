@@ -36,6 +36,7 @@
         <item name="android:textColorHint">@color/white70</item>
         <item name="android:background">@android:color/transparent</item>
         <item name="android:textSize">18sp</item>
+        <item name="android:textCursorDrawable">@drawable/white_cursor</item>
     </style>
 
     <style name="Widget.Conversations.CheckBox" parent="Widget.AppCompat.CompoundButton.CheckBox">

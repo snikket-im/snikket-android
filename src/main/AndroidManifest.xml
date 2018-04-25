@@ -61,6 +61,9 @@
             android:name=".ui.ShareLocationActivity"
             android:label="@string/title_activity_share_location"/>
         <activity
+            android:name=".ui.SearchActivity"
+            android:label="@string/title_activity_search"/>
+        <activity
             android:name=".ui.RecordingActivity"
             android:theme="@style/ConversationsTheme.Dialog"
             android:configChanges="orientation|screenSize"/>

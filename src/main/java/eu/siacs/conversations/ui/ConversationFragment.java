@@ -105,6 +105,7 @@ import rocks.xmpp.addr.Jid;
 
 import static eu.siacs.conversations.ui.XmppActivity.EXTRA_ACCOUNT;
 import static eu.siacs.conversations.ui.XmppActivity.REQUEST_INVITE_TO_CONVERSATION;
+import static eu.siacs.conversations.ui.util.SoftKeyboardUtils.hideSoftKeyboard;
 
 
 public class ConversationFragment extends XmppFragment implements EditMessage.KeyboardListener {
@@ -500,14 +501,6 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
 			}
 		}
 		return null;
-	}
-
-	private static void hideSoftKeyboard(final Activity activity) {
-		InputMethodManager imm = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
-		View view = activity.getCurrentFocus();
-		if (view != null && imm != null) {
-			imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
-		}
 	}
 
 	private static boolean scrolledToBottom(AbsListView listView) {

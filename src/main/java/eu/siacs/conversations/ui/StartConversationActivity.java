@@ -72,6 +72,7 @@ import eu.siacs.conversations.ui.interfaces.OnBackendConnected;
 import eu.siacs.conversations.ui.service.EmojiService;
 import eu.siacs.conversations.ui.util.MenuDoubleTabUtil;
 import eu.siacs.conversations.ui.util.PendingItem;
+import eu.siacs.conversations.ui.util.SoftKeyboardUtils;
 import eu.siacs.conversations.utils.XmppUri;
 import eu.siacs.conversations.xmpp.OnUpdateBlocklist;
 import eu.siacs.conversations.xmpp.XmppConnection;
@@ -116,7 +117,7 @@ public class StartConversationActivity extends XmppActivity implements XmppConne
 
 		@Override
 		public boolean onMenuItemActionCollapse(MenuItem item) {
-			hideKeyboard();
+			SoftKeyboardUtils.hideSoftKeyboard(StartConversationActivity.this);
 			mSearchEditText.setText("");
 			filter(null);
 			return true;
@@ -186,7 +187,7 @@ public class StartConversationActivity extends XmppActivity implements XmppConne
 					return true;
 				}
 			}
-			hideKeyboard();
+			SoftKeyboardUtils.hideSoftKeyboard(StartConversationActivity.this);
 			mListPagerAdapter.requestFocus(pos);
 			return true;
 		}
@@ -343,6 +344,7 @@ public class StartConversationActivity extends XmppActivity implements XmppConne
 
 	protected void openConversationForContact(Contact contact) {
 		Conversation conversation = xmppConnectionService.findOrCreateConversation(contact.getAccount(), contact.getJid(), false, true);
+		SoftKeyboardUtils.hideSoftKeyboard(this);
 		switchToConversation(conversation);
 	}
 
@@ -384,6 +386,7 @@ public class StartConversationActivity extends XmppActivity implements XmppConne
 			bookmark.setAutojoin(true);
 			xmppConnectionService.pushBookmarks(bookmark.getAccount());
 		}
+		SoftKeyboardUtils.hideSoftKeyboard(this);
 		switchToConversation(conversation);
 	}
 
