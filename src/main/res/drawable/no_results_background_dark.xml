@@ -36,6 +36,6 @@
         <bitmap
             android:alpha="@dimen/background_image_opacity"
             android:gravity="center"
-            android:src="@drawable/ic_search_background_white"/>
+            android:src="@drawable/ic_no_results_background_white"/>
     </item>
 </layer-list>

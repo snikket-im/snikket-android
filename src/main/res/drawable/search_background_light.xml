@@ -30,11 +30,11 @@
 
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <item android:drawable="@color/grey50"/>
+    <item android:drawable="@color/grey200"/>
 
     <item>
         <bitmap
-            android:alpha="0.12"
+            android:alpha="@dimen/background_image_opacity"
             android:gravity="center"
             android:src="@drawable/ic_search_background_black"/>
     </item>

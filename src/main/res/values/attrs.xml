@@ -1,23 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <attr name="TextSizeCaption" format="dimension" />
-    <attr name="TextSizeTitle" format="dimension" />
-    <attr name="TextSizeSubhead" format="dimension" />
-    <attr name="TextSizeBody1" format="dimension" />
-    <attr name="TextSizeBody2" format="dimension" />
-    <attr name="TextSizeDisplay2" format="dimension" />
-    <attr name="TextSizeInput" format="dimension" />
+    <attr name="TextSizeCaption" format="dimension"/>
+    <attr name="TextSizeTitle" format="dimension"/>
+    <attr name="TextSizeSubhead" format="dimension"/>
+    <attr name="TextSizeBody1" format="dimension"/>
+    <attr name="TextSizeBody2" format="dimension"/>
+    <attr name="TextSizeDisplay2" format="dimension"/>
+    <attr name="TextSizeInput" format="dimension"/>
     <attr name="TextSeparation" format="dimension"/>
 
     <attr name="IconSize" format="dimension"/>
 
-    <attr name="color_background_secondary" format="reference|color" />
-    <attr name="color_background_primary" format="reference|color" />
+    <attr name="color_background_secondary" format="reference|color"/>
+    <attr name="color_background_primary" format="reference|color"/>
     <attr name="color_warning" format="reference|color"/>
     <attr name="EmojiColor" format="reference|color"/>
 
     <attr name="activity_background_search" format="reference"/>
+    <attr name="activity_background_no_results" format="reference"/>
 
     <attr name="ic_send_cancel_offline" format="reference"/>
     <attr name="ic_send_location_offline" format="reference"/>
@@ -38,7 +39,7 @@
     <attr name="message_bubble_sent" format="reference"/>
     <attr name="message_bubble_received_green" format="reference"/>
 
-    <attr name="unread_count" format="reference|color" />
+    <attr name="unread_count" format="reference|color"/>
 
     <attr name="conversations_overview_background" format="reference|color"/>
 

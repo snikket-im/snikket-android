@@ -47,6 +47,8 @@ import eu.siacs.conversations.R;
 import eu.siacs.conversations.databinding.ActivitySearchBinding;
 import eu.siacs.conversations.entities.Message;
 import eu.siacs.conversations.ui.adapter.MessageAdapter;
+import eu.siacs.conversations.ui.util.Color;
+import eu.siacs.conversations.ui.util.Drawable;
 
 import static eu.siacs.conversations.ui.util.SoftKeyboardUtils.hideSoftKeyboard;
 import static eu.siacs.conversations.ui.util.SoftKeyboardUtils.showKeyboard;
@@ -94,6 +96,18 @@ public class SearchActivity extends XmppActivity implements TextWatcher {
 	@Override
 	void onBackendConnected() {
 
+	}
+
+	private void changeBackground(boolean hasSearch, boolean hasResults) {
+		if (hasSearch) {
+			if (hasResults) {
+				binding.searchResults.setBackgroundColor(Color.get(this,R.attr.color_background_secondary));
+			} else {
+				binding.searchResults.setBackground(Drawable.get(this,R.attr.activity_background_no_results));
+			}
+		} else {
+			binding.searchResults.setBackground(Drawable.get(this,R.attr.activity_background_search));
+		}
 	}
 
 	@Override

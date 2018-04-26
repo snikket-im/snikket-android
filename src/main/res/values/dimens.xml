@@ -24,4 +24,6 @@
 	<dimen name="scan_dot_size">8dp</dimen>
 
 	<dimen name="swipe_escape_velocity">1200dp</dimen> <!-- android default is 120dp -->
+
+	<dimen name="background_image_opacity">0.12</dimen>
 </resources>
