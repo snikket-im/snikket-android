@@ -6,6 +6,7 @@ import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.SwitchCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -60,18 +61,18 @@ public class AccountAdapter extends ArrayAdapter<Account> {
 		}
 		TextView statusView = view.findViewById(R.id.account_status);
 		ImageView imageView = view.findViewById(R.id.account_image);
-		loadAvatar(account,imageView);
+		loadAvatar(account, imageView);
 		statusView.setText(getContext().getString(account.getStatus().getReadableId()));
 		switch (account.getStatus()) {
 			case ONLINE:
-				statusView.setTextColor(activity.getOnlineColor());
+				statusView.setTextColor(Color.get(activity, R.attr.TextColorOnline));
 				break;
 			case DISABLED:
 			case CONNECTING:
-				statusView.setTextColor(Color.get(activity,android.R.attr.textColorSecondary));
+				statusView.setTextColor(Color.get(activity, android.R.attr.textColorSecondary));
 				break;
 			default:
-				statusView.setTextColor(activity.getWarningTextColor());
+				statusView.setTextColor(Color.get(activity, R.attr.TextColorError));
 				break;
 		}
 		final SwitchCompat tglAccountState = view.findViewById(R.id.tgl_account_status);
@@ -85,7 +86,7 @@ public class AccountAdapter extends ArrayAdapter<Account> {
 		}
 		tglAccountState.setOnCheckedChangeListener((compoundButton, b) -> {
 			if (b == isDisabled && activity instanceof ManageAccountActivity) {
-				((ManageAccountActivity) activity).onClickTglAccountState(account,b);
+				((ManageAccountActivity) activity).onClickTglAccountState(account, b);
 			}
 		});
 		return view;
@@ -119,7 +120,7 @@ public class AccountAdapter extends ArrayAdapter<Account> {
 
 	public void loadAvatar(Account account, ImageView imageView) {
 		if (cancelPotentialWork(account, imageView)) {
-			final Bitmap bm = activity.avatarService().get(account,activity.getPixel(48),true);
+			final Bitmap bm = activity.avatarService().get(account, activity.getPixel(48), true);
 			if (bm != null) {
 				cancelPotentialWork(account, imageView);
 				imageView.setImageBitmap(bm);

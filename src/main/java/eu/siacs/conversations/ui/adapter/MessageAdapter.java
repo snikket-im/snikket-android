@@ -302,7 +302,7 @@ public class MessageAdapter extends ArrayAdapter<Message> implements CopyTextVie
 				break;
 		}
 		if (error && type == SENT) {
-			viewHolder.time.setTextAppearance(getContext(), R.style.TextAppearance_Conversations_Caption_Waring);
+			viewHolder.time.setTextAppearance(getContext(), R.style.TextAppearance_Conversations_Caption_Warning);
 		} else {
 			if (darkBackground) {
 				viewHolder.time.setTextAppearance(getContext(), R.style.TextAppearance_Conversations_Caption_OnDark);

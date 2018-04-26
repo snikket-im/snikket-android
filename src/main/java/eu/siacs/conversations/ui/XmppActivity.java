@@ -43,7 +43,6 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
@@ -86,8 +85,6 @@ public abstract class XmppActivity extends ActionBarActivity {
 	protected boolean registeredListeners = false;
 
 	protected int mColorRed;
-	protected int mColorOrange;
-	protected int mColorGreen;
 
 	protected static final String FRAGMENT_TAG_DIALOG = "dialog";
 
@@ -407,8 +404,6 @@ public abstract class XmppActivity extends ActionBarActivity {
 		this.isCameraFeatureAvailable = getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA);
 
 		mColorRed = ContextCompat.getColor(this, R.color.red800);
-		mColorOrange = ContextCompat.getColor(this, R.color.orange500);
-		mColorGreen = ContextCompat.getColor(this, R.color.green500);
 
 		this.mTheme = findTheme();
 		setTheme(this.mTheme);
@@ -767,10 +762,6 @@ public abstract class XmppActivity extends ActionBarActivity {
 
 	public int getWarningTextColor() {
 		return this.mColorRed;
-	}
-
-	public int getOnlineColor() {
-		return this.mColorGreen;
 	}
 
 	public int getPixel(int dp) {

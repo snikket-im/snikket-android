@@ -91,7 +91,7 @@
         <item name="android:textStyle">bold</item>
     </style>
 
-    <style name="TextAppearance.Conversations.Caption.Waring" parent="TextAppearance.Conversations.Caption">
+    <style name="TextAppearance.Conversations.Caption.Warning" parent="TextAppearance.Conversations.Caption">
         <item name="android:textColor">@color/red800</item>
     </style>
 
