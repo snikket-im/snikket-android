@@ -46,6 +46,8 @@
             android:layout_height="match_parent"
             android:background="?attr/activity_background_search"
             android:divider="@android:color/transparent"
-            android:dividerHeight="0dp"/>
+            android:dividerHeight="0dp"
+            android:listSelector="@android:color/transparent"
+            android:stackFromBottom="true"/>
     </LinearLayout>
 </layout>

@@ -11,6 +11,7 @@ import java.util.regex.Pattern;
 
 import eu.siacs.conversations.entities.Contact;
 import eu.siacs.conversations.entities.Conversation;
+import eu.siacs.conversations.entities.Conversational;
 import eu.siacs.conversations.entities.Message;
 
 public class GeoHelper {
@@ -38,11 +39,11 @@ public class GeoHelper {
 		} catch (NumberFormatException nfe) {
 			return intents;
 		}
-		final Conversation conversation = message.getConversation();
+		final Conversational conversation = message.getConversation();
 		String label;
-		if (conversation.getMode() == Conversation.MODE_SINGLE && message.getStatus() == Message.STATUS_RECEIVED) {
+		if (conversation instanceof Conversation && conversation.getMode() == Conversation.MODE_SINGLE && message.getStatus() == Message.STATUS_RECEIVED) {
 			try {
-				label = "(" + URLEncoder.encode(message.getConversation().getName().toString(), "UTF-8") + ")";
+				label = "(" + URLEncoder.encode(((Conversation)conversation).getName().toString(), "UTF-8") + ")";
 			} catch (UnsupportedEncodingException e) {
 				label = "";
 			}

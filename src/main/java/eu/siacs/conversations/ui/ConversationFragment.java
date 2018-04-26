@@ -705,7 +705,7 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
 			message.setEdited(message.getUuid());
 			message.setUuid(UUID.randomUUID().toString());
 		}
-		switch (message.getConversation().getNextEncryption()) {
+		switch (conversation.getNextEncryption()) {
 			case Message.ENCRYPTION_PGP:
 				sendPgpMessage(message);
 				break;
@@ -932,11 +932,11 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
 		messageListAdapter.setOnContactPictureClicked(message -> {
 			final boolean received = message.getStatus() <= Message.STATUS_RECEIVED;
 			if (received) {
-				if (message.getConversation().getMode() == Conversation.MODE_MULTI) {
+				if (message.getConversation() instanceof Conversation && message.getConversation().getMode() == Conversation.MODE_MULTI) {
 					Jid user = message.getCounterpart();
 					if (user != null && !user.isBareJid()) {
-						final MucOptions mucOptions = message.getConversation().getMucOptions();
-						if (mucOptions.participating() || message.getConversation().getNextCounterpart() != null) {
+						final MucOptions mucOptions = ((Conversation) message.getConversation()).getMucOptions();
+						if (mucOptions.participating() || ((Conversation) message.getConversation()).getNextCounterpart() != null) {
 							if (!mucOptions.isUserInRoom(user)) {
 								Toast.makeText(getActivity(), activity.getString(R.string.user_has_left_conference, user.getResource()), Toast.LENGTH_SHORT).show();
 							}
@@ -1079,7 +1079,8 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
 			}
 			if (relevantForCorrection.getType() == Message.TYPE_TEXT
 					&& relevantForCorrection.isLastCorrectableMessage()
-					&& (m.getConversation().getMucOptions().nonanonymous() || m.getConversation().getMode() == Conversation.MODE_SINGLE)) {
+					&& m.getConversation() instanceof Conversation
+					&& (((Conversation) m.getConversation()).getMucOptions().nonanonymous() || m.getConversation().getMode() == Conversation.MODE_SINGLE)) {
 				correctMessage.setVisible(true);
 			}
 			if ((m.isFileOrImage() && !deleted && !receiving) || (m.getType() == Message.TYPE_TEXT && !m.treatAsDownloadable())) {
@@ -1628,9 +1629,12 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
 
 	private void resendMessage(final Message message) {
 		if (message.isFileOrImage()) {
+			if (!(message.getConversation() instanceof Conversation)) {
+				return;
+			}
+			final Conversation conversation = (Conversation) message.getConversation();
 			DownloadableFile file = activity.xmppConnectionService.getFileBackend().getFile(message);
 			if (file.exists()) {
-				final Conversation conversation = message.getConversation();
 				final XmppConnection xmppConnection = conversation.getAccount().getXmppConnection();
 				if (!message.hasFileOnRemoteHost()
 						&& xmppConnection != null

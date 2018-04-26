@@ -42,6 +42,7 @@ import eu.siacs.conversations.R;
 import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.entities.Contact;
 import eu.siacs.conversations.entities.Conversation;
+import eu.siacs.conversations.entities.Conversational;
 import eu.siacs.conversations.entities.Message;
 import eu.siacs.conversations.persistance.FileBackend;
 import eu.siacs.conversations.ui.ConversationsActivity;
@@ -77,11 +78,12 @@ public class NotificationService {
 	}
 
 	public boolean notify(final Message message) {
+		final Conversation conversation = (Conversation) message.getConversation();
 		return message.getStatus() == Message.STATUS_RECEIVED
 				&& notificationsEnabled()
-				&& !message.getConversation().isMuted()
-				&& (message.getConversation().alwaysNotify() || wasHighlightedOrPrivate(message))
-				&& (!message.getConversation().isWithStranger() || notificationsFromStrangers())
+				&& !conversation.isMuted()
+				&& (conversation.alwaysNotify() || wasHighlightedOrPrivate(message))
+				&& (!conversation.isWithStranger() || notificationsFromStrangers())
 				;
 	}
 
@@ -112,7 +114,7 @@ public class NotificationService {
 	public void pushFromBacklog(final Message message) {
 		if (notify(message)) {
 			synchronized (notifications) {
-				getBacklogMessageCounter(message.getConversation()).incrementAndGet();
+				getBacklogMessageCounter((Conversation) message.getConversation()).incrementAndGet();
 				pushToStack(message);
 			}
 		}
@@ -239,7 +241,7 @@ public class NotificationService {
 		if (messages != null && messages.size() > 0) {
 			Message last = messages.get(messages.size() - 1);
 			if (last.getStatus() != Message.STATUS_RECEIVED) {
-				if (mXmppConnectionService.markRead(last.getConversation(), false)) {
+				if (mXmppConnectionService.markRead((Conversation) last.getConversation(), false)) {
 					mXmppConnectionService.updateConversationUi();
 				}
 			}
@@ -337,7 +339,7 @@ public class NotificationService {
 		Conversation conversation = null;
 		for (final ArrayList<Message> messages : notifications.values()) {
 			if (messages.size() > 0) {
-				conversation = messages.get(0).getConversation();
+				conversation = (Conversation) messages.get(0).getConversation();
 				final String name = conversation.getName().toString();
 				SpannableString styledString;
 				if (Config.HIDE_MESSAGE_TEXT_IN_NOTIFICATION) {
@@ -376,7 +378,7 @@ public class NotificationService {
 	private Builder buildSingleConversations(final ArrayList<Message> messages) {
 		final Builder mBuilder = new NotificationCompat.Builder(mXmppConnectionService);
 		if (messages.size() >= 1) {
-			final Conversation conversation = messages.get(0).getConversation();
+			final Conversation conversation = (Conversation) messages.get(0).getConversation();
 			final UnreadConversation.Builder mUnreadBuilder = new UnreadConversation.Builder(conversation.getName().toString());
 			mBuilder.setLargeIcon(mXmppConnectionService.getAvatarService()
 					.get(conversation, getPixel(64)));
@@ -510,7 +512,7 @@ public class NotificationService {
 	private void modifyForTextOnly(final Builder builder, final UnreadConversation.Builder uBuilder, final ArrayList<Message> messages) {
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
 			NotificationCompat.MessagingStyle messagingStyle = new NotificationCompat.MessagingStyle(mXmppConnectionService.getString(R.string.me));
-			Conversation conversation = messages.get(0).getConversation();
+			final Conversation conversation = (Conversation) messages.get(0).getConversation();
 			if (conversation.getMode() == Conversation.MODE_MULTI) {
 				messagingStyle.setConversationTitle(conversation.getName());
 			}
@@ -632,7 +634,7 @@ public class NotificationService {
 		return (actionId * NOTIFICATION_ID_MULTIPLIER) + (uuid.hashCode() % NOTIFICATION_ID_MULTIPLIER);
 	}
 
-	private int generateRequestCode(Conversation conversation, int actionId) {
+	private int generateRequestCode(Conversational conversation, int actionId) {
 		return generateRequestCode(conversation.getUuid(), actionId);
 	}
 
@@ -640,7 +642,7 @@ public class NotificationService {
 		return createContentIntent(message.getConversationUuid(), message.getUuid());
 	}
 
-	private PendingIntent createContentIntent(final Conversation conversation) {
+	private PendingIntent createContentIntent(final Conversational conversation) {
 		return createContentIntent(conversation.getUuid(), null);
 	}
 
@@ -692,13 +694,18 @@ public class NotificationService {
 	}
 
 	private boolean wasHighlightedOrPrivate(final Message message) {
-		final String nick = message.getConversation().getMucOptions().getActualNick();
-		final Pattern highlight = generateNickHighlightPattern(nick);
-		if (message.getBody() == null || nick == null) {
+		if (message.getConversation() instanceof Conversation) {
+			Conversation conversation = (Conversation) message.getConversation();
+			final String nick = conversation.getMucOptions().getActualNick();
+			final Pattern highlight = generateNickHighlightPattern(nick);
+			if (message.getBody() == null || nick == null) {
+				return false;
+			}
+			final Matcher m = highlight.matcher(message.getBody());
+			return (m.find() || message.getType() == Message.TYPE_PRIVATE);
+		} else {
 			return false;
 		}
-		final Matcher m = highlight.matcher(message.getBody());
-		return (m.find() || message.getType() == Message.TYPE_PRIVATE);
 	}
 
 	public static Pattern generateNickHighlightPattern(final String nick) {

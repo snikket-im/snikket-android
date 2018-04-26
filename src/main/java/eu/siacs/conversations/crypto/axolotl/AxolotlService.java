@@ -1307,7 +1307,7 @@ public class AxolotlService implements OnAdvancedStreamFeaturesLoaded {
 		if (message.getType() == Message.TYPE_PRIVATE) {
 			success = buildHeader(axolotlMessage, message.getTrueCounterpart());
 		} else {
-			success = buildHeader(axolotlMessage, message.getConversation());
+			success = buildHeader(axolotlMessage, (Conversation) message.getConversation());
 		}
 		return success ? axolotlMessage : null;
 	}

@@ -58,6 +58,7 @@ import eu.siacs.conversations.R;
 import eu.siacs.conversations.crypto.axolotl.FingerprintStatus;
 import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.entities.Conversation;
+import eu.siacs.conversations.entities.Conversational;
 import eu.siacs.conversations.entities.DownloadableFile;
 import eu.siacs.conversations.entities.Message;
 import eu.siacs.conversations.entities.Message.FileParams;
@@ -112,15 +113,15 @@ public class MessageAdapter extends ArrayAdapter<Message> implements CopyTextVie
 
 	private static String removeTrailingBracket(final String url) {
 		int numOpenBrackets = 0;
-		for(char c : url.toCharArray()) {
-			if (c=='(') {
+		for (char c : url.toCharArray()) {
+			if (c == '(') {
 				++numOpenBrackets;
-			} else if (c==')') {
+			} else if (c == ')') {
 				--numOpenBrackets;
 			}
 		}
 		if (numOpenBrackets != 0 && url.charAt(url.length() - 1) == ')') {
-			return url.substring(0,url.length() - 1);
+			return url.substring(0, url.length() - 1);
 		} else {
 			return url;
 		}
@@ -530,10 +531,13 @@ public class MessageAdapter extends ArrayAdapter<Message> implements CopyTextVie
 				}
 			}
 			if (message.getConversation().getMode() == Conversation.MODE_MULTI && message.getStatus() == Message.STATUS_RECEIVED) {
-				Pattern pattern = NotificationService.generateNickHighlightPattern(message.getConversation().getMucOptions().getActualNick());
-				Matcher matcher = pattern.matcher(body);
-				while (matcher.find()) {
-					body.setSpan(new StyleSpan(Typeface.BOLD), matcher.start(), matcher.end(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+				if (message.getConversation() instanceof Conversation) {
+					final Conversation conversation = (Conversation) message.getConversation();
+					Pattern pattern = NotificationService.generateNickHighlightPattern(conversation.getMucOptions().getActualNick());
+					Matcher matcher = pattern.matcher(body);
+					while (matcher.find()) {
+						body.setSpan(new StyleSpan(Typeface.BOLD), matcher.start(), matcher.end(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+					}
 				}
 			}
 			Matcher matcher = Emoticons.generatePattern(body).matcher(body);
@@ -649,7 +653,7 @@ public class MessageAdapter extends ArrayAdapter<Message> implements CopyTextVie
 		final Message message = getItem(position);
 		final boolean omemoEncryption = message.getEncryption() == Message.ENCRYPTION_AXOLOTL;
 		final boolean isInValidSession = message.isValidInSession() && (!omemoEncryption || message.isTrusted());
-		final Conversation conversation = message.getConversation();
+		final Conversational conversation = message.getConversation();
 		final Account account = conversation.getAccount();
 		final int type = getItemViewType(position);
 		ViewHolder viewHolder;
@@ -727,7 +731,7 @@ public class MessageAdapter extends ArrayAdapter<Message> implements CopyTextVie
 				viewHolder.status_message.setVisibility(View.GONE);
 				viewHolder.contact_picture.setVisibility(View.GONE);
 				viewHolder.load_more_messages.setVisibility(View.VISIBLE);
-				viewHolder.load_more_messages.setOnClickListener(v -> loadMoreMessages(message.getConversation()));
+				viewHolder.load_more_messages.setOnClickListener(v -> loadMoreMessages((Conversation) message.getConversation()));
 			} else {
 				viewHolder.status_message.setVisibility(View.VISIBLE);
 				viewHolder.load_more_messages.setVisibility(View.GONE);
@@ -794,7 +798,7 @@ public class MessageAdapter extends ArrayAdapter<Message> implements CopyTextVie
 			}
 		} else if (message.getEncryption() == Message.ENCRYPTION_PGP) {
 			if (account.isPgpDecryptionServiceConnected()) {
-				if (!account.hasPendingPgpIntent(conversation)) {
+				if (conversation instanceof Conversation && !account.hasPendingPgpIntent((Conversation) conversation)) {
 					displayInfoMessage(viewHolder, activity.getString(R.string.message_decrypting), darkBackground);
 				} else {
 					displayInfoMessage(viewHolder, activity.getString(R.string.pgp_message), darkBackground);
@@ -863,7 +867,7 @@ public class MessageAdapter extends ArrayAdapter<Message> implements CopyTextVie
 	}
 
 	private static void resetClickListener(View... views) {
-		for(View view : views) {
+		for (View view : views) {
 			view.setOnClickListener(null);
 		}
 	}

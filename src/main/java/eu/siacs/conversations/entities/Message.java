@@ -90,7 +90,7 @@ public class Message extends AbstractEntity {
 	protected boolean read = true;
 	protected String remoteMsgId = null;
 	protected String serverMsgId = null;
-	private final Conversation conversation;
+	private final Conversational conversation;
 	protected Transferable transferable = null;
 	private Message mNextMessage = null;
 	private Message mPreviousMessage = null;
@@ -105,15 +105,15 @@ public class Message extends AbstractEntity {
 	private List<MucOptions.User> counterparts;
 	private WeakReference<MucOptions.User> user;
 
-	private Message(Conversation conversation) {
+	private Message(Conversational conversation) {
 		this.conversation = conversation;
 	}
 
-	public Message(Conversation conversation, String body, int encryption) {
+	public Message(Conversational conversation, String body, int encryption) {
 		this(conversation, body, encryption, STATUS_UNSEND);
 	}
 
-	public Message(Conversation conversation, String body, int encryption, int status) {
+	public Message(Conversational conversation, String body, int encryption, int status) {
 		this(conversation, java.util.UUID.randomUUID().toString(),
 				conversation.getUuid(),
 				conversation.getJid() == null ? null : conversation.getJid().asBareJid(),
@@ -136,12 +136,12 @@ public class Message extends AbstractEntity {
 				false);
 	}
 
-	private Message(final Conversation conversation, final String uuid, final String conversationUUid, final Jid counterpart,
-					final Jid trueCounterpart, final String body, final long timeSent,
-					final int encryption, final int status, final int type, final boolean carbon,
-					final String remoteMsgId, final String relativeFilePath,
-					final String serverMsgId, final String fingerprint, final boolean read,
-					final String edited, final boolean oob, final String errorMessage, final Set<ReadByMarker> readByMarkers,
+	protected Message(final Conversational conversation, final String uuid, final String conversationUUid, final Jid counterpart,
+	                final Jid trueCounterpart, final String body, final long timeSent,
+	                final int encryption, final int status, final int type, final boolean carbon,
+	                final String remoteMsgId, final String relativeFilePath,
+	                final String serverMsgId, final String fingerprint, final boolean read,
+	                final String edited, final boolean oob, final String errorMessage, final Set<ReadByMarker> readByMarkers,
 	                final boolean markable) {
 		this.conversation = conversation;
 		this.uuid = uuid;
@@ -252,7 +252,7 @@ public class Message extends AbstractEntity {
 		} else {
 			values.put(TRUE_COUNTERPART, trueCounterpart.toString());
 		}
-		values.put(BODY, body.length() > Config.MAX_STORAGE_MESSAGE_CHARS ? body.substring(0,Config.MAX_STORAGE_MESSAGE_CHARS) : body);
+		values.put(BODY, body.length() > Config.MAX_STORAGE_MESSAGE_CHARS ? body.substring(0, Config.MAX_STORAGE_MESSAGE_CHARS) : body);
 		values.put(TIME_SENT, timeSent);
 		values.put(ENCRYPTION, encryption);
 		values.put(STATUS, status);
@@ -262,11 +262,11 @@ public class Message extends AbstractEntity {
 		values.put(RELATIVE_FILE_PATH, relativeFilePath);
 		values.put(SERVER_MSG_ID, serverMsgId);
 		values.put(FINGERPRINT, axolotlFingerprint);
-		values.put(READ,read ? 1 : 0);
+		values.put(READ, read ? 1 : 0);
 		values.put(EDITED, edited);
 		values.put(OOB, oob ? 1 : 0);
-		values.put(ERROR_MESSAGE,errorMessage);
-		values.put(READ_BY_MARKERS,ReadByMarker.toJson(readByMarkers).toString());
+		values.put(ERROR_MESSAGE, errorMessage);
+		values.put(READ_BY_MARKERS, ReadByMarker.toJson(readByMarkers).toString());
 		values.put(MARKABLE, markable ? 1 : 0);
 		return values;
 	}
@@ -275,7 +275,7 @@ public class Message extends AbstractEntity {
 		return conversationUuid;
 	}
 
-	public Conversation getConversation() {
+	public Conversational getConversation() {
 		return this.conversation;
 	}
 
@@ -497,7 +497,7 @@ public class Message extends AbstractEntity {
 				}
 				return (message.getRemoteMsgId().equals(this.remoteMsgId) || message.getRemoteMsgId().equals(this.uuid))
 						&& matchingCounterpart
-						&& (body.equals(otherBody) ||(message.getEncryption() == Message.ENCRYPTION_PGP && hasUuid));
+						&& (body.equals(otherBody) || (message.getEncryption() == Message.ENCRYPTION_PGP && hasUuid));
 			} else {
 				return this.remoteMsgId == null
 						&& matchingCounterpart
@@ -508,36 +508,46 @@ public class Message extends AbstractEntity {
 	}
 
 	public Message next() {
-		synchronized (this.conversation.messages) {
-			if (this.mNextMessage == null) {
-				int index = this.conversation.messages.indexOf(this);
-				if (index < 0 || index >= this.conversation.messages.size() - 1) {
-					this.mNextMessage = null;
-				} else {
-					this.mNextMessage = this.conversation.messages.get(index + 1);
+		if (this.conversation instanceof Conversation) {
+			final Conversation conversation = (Conversation) this.conversation;
+			synchronized (conversation.messages) {
+				if (this.mNextMessage == null) {
+					int index = conversation.messages.indexOf(this);
+					if (index < 0 || index >= conversation.messages.size() - 1) {
+						this.mNextMessage = null;
+					} else {
+						this.mNextMessage = conversation.messages.get(index + 1);
+					}
 				}
+				return this.mNextMessage;
 			}
-			return this.mNextMessage;
+		} else {
+			throw new AssertionError("Calling next should be disabled for stubs");
 		}
 	}
 
 	public Message prev() {
-		synchronized (this.conversation.messages) {
-			if (this.mPreviousMessage == null) {
-				int index = this.conversation.messages.indexOf(this);
-				if (index <= 0 || index > this.conversation.messages.size()) {
-					this.mPreviousMessage = null;
-				} else {
-					this.mPreviousMessage = this.conversation.messages.get(index - 1);
+		if (this.conversation instanceof Conversation) {
+			final Conversation conversation = (Conversation) this.conversation;
+			synchronized (conversation.messages) {
+				if (this.mPreviousMessage == null) {
+					int index = conversation.messages.indexOf(this);
+					if (index <= 0 || index > conversation.messages.size()) {
+						this.mPreviousMessage = null;
+					} else {
+						this.mPreviousMessage = conversation.messages.get(index - 1);
+					}
 				}
 			}
 			return this.mPreviousMessage;
+		} else {
+			throw new AssertionError("Calling prev should be disabled for stubs");
 		}
 	}
 
 	public boolean isLastCorrectableMessage() {
 		Message next = next();
-		while(next != null) {
+		while (next != null) {
 			if (next.isCorrectable()) {
 				return false;
 			}
@@ -566,7 +576,7 @@ public class Message extends AbstractEntity {
 						this.edited() == message.edited() &&
 						(message.getTimeSent() - this.getTimeSent()) <= (Config.MESSAGE_MERGE_WINDOW * 1000) &&
 						this.getBody().length() + message.getBody().length() <= Config.MAX_DISPLAY_MESSAGE_CHARS &&
-						!message.isGeoUri()&&
+						!message.isGeoUri() &&
 						!this.isGeoUri() &&
 						!message.treatAsDownloadable() &&
 						!this.treatAsDownloadable() &&
@@ -575,7 +585,7 @@ public class Message extends AbstractEntity {
 						!this.bodyIsOnlyEmojis() &&
 						!message.bodyIsOnlyEmojis() &&
 						((this.axolotlFingerprint == null && message.axolotlFingerprint == null) || this.axolotlFingerprint.equals(message.getFingerprint())) &&
-						UIHelper.sameDay(message.getTimeSent(),this.getTimeSent()) &&
+						UIHelper.sameDay(message.getTimeSent(), this.getTimeSent()) &&
 						this.getReadByMarkers().equals(message.getReadByMarkers()) &&
 						!this.conversation.getJid().asBareJid().equals(Config.BUG_REPORTS)
 				);
@@ -599,7 +609,8 @@ public class Message extends AbstractEntity {
 		return this.counterparts;
 	}
 
-	public static class MergeSeparator {}
+	public static class MergeSeparator {
+	}
 
 	public SpannableStringBuilder getMergedBody() {
 		SpannableStringBuilder body = new SpannableStringBuilder(this.body.trim());
@@ -624,7 +635,7 @@ public class Message extends AbstractEntity {
 	public int getMergedStatus() {
 		int status = this.status;
 		Message current = this;
-		while(current.mergeable(current.next())) {
+		while (current.mergeable(current.next())) {
 			current = current.next();
 			if (current == null) {
 				break;
@@ -637,7 +648,7 @@ public class Message extends AbstractEntity {
 	public long getMergedTimeSent() {
 		long time = this.timeSent;
 		Message current = this;
-		while(current.mergeable(current.next())) {
+		while (current.mergeable(current.next())) {
 			current = current.next();
 			if (current == null) {
 				break;
@@ -708,11 +719,11 @@ public class Message extends AbstractEntity {
 		if (treatAsDownloadable == null) {
 			try {
 				final String[] lines = body.split("\n");
-				if (lines.length ==0) {
+				if (lines.length == 0) {
 					treatAsDownloadable = false;
 					return false;
 				}
-				for(String line : lines) {
+				for (String line : lines) {
 					if (line.contains("\\s+")) {
 						treatAsDownloadable = false;
 						return false;
@@ -735,7 +746,7 @@ public class Message extends AbstractEntity {
 
 	public synchronized boolean bodyIsOnlyEmojis() {
 		if (isEmojisOnly == null) {
-			isEmojisOnly = Emoticons.isOnlyEmoji(body.replaceAll("\\s",""));
+			isEmojisOnly = Emoticons.isOnlyEmoji(body.replaceAll("\\s", ""));
 		}
 		return isEmojisOnly;
 	}
@@ -847,9 +858,9 @@ public class Message extends AbstractEntity {
 		return s != null && s.isTrusted();
 	}
 
-	private  int getPreviousEncryption() {
-		for (Message iterator = this.prev(); iterator != null; iterator = iterator.prev()){
-			if( iterator.isCarbon() || iterator.getStatus() == STATUS_RECEIVED ) {
+	private int getPreviousEncryption() {
+		for (Message iterator = this.prev(); iterator != null; iterator = iterator.prev()) {
+			if (iterator.isCarbon() || iterator.getStatus() == STATUS_RECEIVED) {
 				continue;
 			}
 			return iterator.getEncryption();
@@ -858,13 +869,18 @@ public class Message extends AbstractEntity {
 	}
 
 	private int getNextEncryption() {
-		for (Message iterator = this.next(); iterator != null; iterator = iterator.next()){
-			if( iterator.isCarbon() || iterator.getStatus() == STATUS_RECEIVED ) {
-				continue;
+		if (this.conversation instanceof Conversation) {
+			Conversation conversation = (Conversation) this.conversation;
+			for (Message iterator = this.next(); iterator != null; iterator = iterator.next()) {
+				if (iterator.isCarbon() || iterator.getStatus() == STATUS_RECEIVED) {
+					continue;
+				}
+				return iterator.getEncryption();
 			}
-			return iterator.getEncryption();
+			return conversation.getNextEncryption();
+		} else {
+			throw new AssertionError("This should never be called since isInValidSession should be disabled for stubs");
 		}
-		return conversation.getNextEncryption();
 	}
 
 	public boolean isValidInSession() {

@@ -47,13 +47,14 @@ import eu.siacs.conversations.R;
 import eu.siacs.conversations.databinding.ActivitySearchBinding;
 import eu.siacs.conversations.entities.Message;
 import eu.siacs.conversations.ui.adapter.MessageAdapter;
+import eu.siacs.conversations.ui.interfaces.OnSearchResultsAvailable;
 import eu.siacs.conversations.ui.util.Color;
 import eu.siacs.conversations.ui.util.Drawable;
 
 import static eu.siacs.conversations.ui.util.SoftKeyboardUtils.hideSoftKeyboard;
 import static eu.siacs.conversations.ui.util.SoftKeyboardUtils.showKeyboard;
 
-public class SearchActivity extends XmppActivity implements TextWatcher {
+public class SearchActivity extends XmppActivity implements TextWatcher, OnSearchResultsAvailable {
 
 	private ActivitySearchBinding binding;
 	private MessageAdapter messageListAdapter;
@@ -122,7 +123,23 @@ public class SearchActivity extends XmppActivity implements TextWatcher {
 
 	@Override
 	public void afterTextChanged(Editable s) {
-		Log.d(Config.LOGTAG,"searching for "+s);
+		String term = s.toString().trim();
+		if (term.length() > 0) {
+			xmppConnectionService.search(s.toString().trim(), this);
+		} else {
+			this.messages.clear();
+			messageListAdapter.notifyDataSetChanged();
+			changeBackground(false, false);
+		}
 	}
 
+	@Override
+	public void onSearchResultsAvailable(String term, List<Message> messages) {
+		this.messages.clear();
+		this.messages.addAll(messages);
+		runOnUiThread(() -> {
+			messageListAdapter.notifyDataSetChanged();
+			changeBackground(true, messages.size() > 0);
+		});
+	}
 }

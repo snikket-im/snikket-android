@@ -15,7 +15,7 @@ public class SerialSingleThreadExecutor implements Executor {
 
 	private final Executor executor = Executors.newSingleThreadExecutor();
 	final ArrayDeque<Runnable> tasks = new ArrayDeque<>();
-	private Runnable active;
+	protected Runnable active;
 	private final String name;
 
 	public SerialSingleThreadExecutor(String name) {
@@ -43,7 +43,7 @@ public class SerialSingleThreadExecutor implements Executor {
 	}
 
 	private synchronized void scheduleNext() {
-		if ((active =  tasks.poll()) != null) {
+		if ((active = tasks.poll()) != null) {
 			executor.execute(active);
 			int remaining = tasks.size();
 			if (remaining > 0) {

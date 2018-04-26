@@ -30,14 +30,11 @@ import rocks.xmpp.addr.Jid;
 import static eu.siacs.conversations.entities.Bookmark.printableValue;
 
 
-public class Conversation extends AbstractEntity implements Blockable, Comparable<Conversation> {
+public class Conversation extends AbstractEntity implements Blockable, Comparable<Conversation>, Conversational {
 	public static final String TABLENAME = "conversations";
 
 	public static final int STATUS_AVAILABLE = 0;
 	public static final int STATUS_ARCHIVED = 1;
-
-	public static final int MODE_MULTI = 1;
-	public static final int MODE_SINGLE = 0;
 
 	public static final String NAME = "name";
 	public static final String ACCOUNT = "accountUuid";

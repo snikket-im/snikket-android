@@ -98,6 +98,7 @@ import eu.siacs.conversations.persistance.DatabaseBackend;
 import eu.siacs.conversations.persistance.FileBackend;
 import eu.siacs.conversations.ui.SettingsActivity;
 import eu.siacs.conversations.ui.UiCallback;
+import eu.siacs.conversations.ui.interfaces.OnSearchResultsAvailable;
 import eu.siacs.conversations.utils.ConversationsFileObserver;
 import eu.siacs.conversations.utils.CryptoHelper;
 import eu.siacs.conversations.utils.ExceptionHelper;
@@ -534,6 +535,10 @@ public class XmppConnectionService extends Service {
 		return find(getConversations(), account, jid);
 	}
 
+	public void search(String term, OnSearchResultsAvailable onSearchResultsAvailable) {
+		MessageSearchTask.search(this, term, onSearchResultsAvailable);
+	}
+
 	@Override
 	public int onStartCommand(Intent intent, int flags, int startId) {
 		final String action = intent == null ? null : intent.getAction();
@@ -781,7 +786,7 @@ public class XmppConnectionService extends Service {
 					message.setEncryption(Message.ENCRYPTION_DECRYPTED);
 					sendMessage(message);
 					if (dismissAfterReply) {
-						markRead(message.getConversation(), true);
+						markRead((Conversation) message.getConversation(), true);
 					} else {
 						mNotificationService.pushFromDirectReply(message);
 					}
@@ -1142,7 +1147,7 @@ public class XmppConnectionService extends Service {
 			databaseBackend.updateAccount(account);
 			mNotificationService.updateErrorNotification();
 		}
-		final Conversation conversation = message.getConversation();
+		final Conversation conversation = (Conversation) message.getConversation();
 		account.deactivateGracePeriod();
 		MessagePacket packet = null;
 		final boolean addToConversation = (conversation.getMode() != Conversation.MODE_MULTI
@@ -3242,6 +3247,15 @@ public class XmppConnectionService extends Service {
 		return null;
 	}
 
+	public Account findAccountByUuid(final String uuid) {
+		for(Account account : this.accounts) {
+			if (account.getUuid().equals(uuid)) {
+				return account;
+			}
+		}
+		return null;
+	}
+
 	public Conversation findConversationByUuid(String uuid) {
 		for (Conversation conversation : getConversations()) {
 			if (conversation.getUuid().equals(uuid)) {
@@ -3528,7 +3542,9 @@ public class XmppConnectionService extends Service {
 			markMessage(msg, Message.STATUS_WAITING);
 			this.resendMessage(msg, false);
 		}
-		message.getConversation().sort();
+		if (message.getConversation() instanceof Conversation) {
+			((Conversation) message.getConversation()).sort();
+		}
 		updateConversationUi();
 	}
 

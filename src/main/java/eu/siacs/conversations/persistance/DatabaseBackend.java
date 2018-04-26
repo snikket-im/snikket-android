@@ -674,8 +674,7 @@ public class DatabaseBackend extends SQLiteOpenHelper {
 		return getMessages(conversations, limit, -1);
 	}
 
-	public ArrayList<Message> getMessages(Conversation conversation, int limit,
-										  long timestamp) {
+	public ArrayList<Message> getMessages(Conversation conversation, int limit, long timestamp) {
 		ArrayList<Message> list = new ArrayList<>();
 		SQLiteDatabase db = this.getReadableDatabase();
 		Cursor cursor;
@@ -705,40 +704,43 @@ public class DatabaseBackend extends SQLiteOpenHelper {
 		return list;
 	}
 
+	public Cursor getMessageSearchCursor(String term) {
+		SQLiteDatabase db = this.getReadableDatabase();
+		String SQL = "SELECT "+Message.TABLENAME+".*,"+Conversation.TABLENAME+'.'+Conversation.CONTACTJID+','+Conversation.TABLENAME+'.'+Conversation.ACCOUNT+','+Conversation.TABLENAME+'.'+Conversation.MODE+" FROM "+Message.TABLENAME +" join "+Conversation.TABLENAME+" on "+Message.TABLENAME+'.'+Message.CONVERSATION+'='+Conversation.TABLENAME+'.'+Conversation.UUID+" where "+Message.BODY +" LIKE ? limit 200";
+		return db.rawQuery(SQL,new String[]{'%'+term+'%'});
+	}
+
 	public Iterable<Message> getMessagesIterable(final Conversation conversation) {
-		return new Iterable<Message>() {
-			@Override
-			public Iterator<Message> iterator() {
-				class MessageIterator implements Iterator<Message> {
-					SQLiteDatabase db = getReadableDatabase();
-					String[] selectionArgs = {conversation.getUuid()};
-					Cursor cursor = db.query(Message.TABLENAME, null, Message.CONVERSATION
-							+ "=?", selectionArgs, null, null, Message.TIME_SENT
-							+ " ASC", null);
+		return () -> {
+			class MessageIterator implements Iterator<Message> {
+				private SQLiteDatabase db = getReadableDatabase();
+				private String[] selectionArgs = {conversation.getUuid()};
+				private Cursor cursor = db.query(Message.TABLENAME, null, Message.CONVERSATION
+						+ "=?", selectionArgs, null, null, Message.TIME_SENT
+						+ " ASC", null);
 
-					public MessageIterator() {
-						cursor.moveToFirst();
-					}
-
-					@Override
-					public boolean hasNext() {
-						return !cursor.isAfterLast();
-					}
-
-					@Override
-					public Message next() {
-						Message message = Message.fromCursor(cursor, conversation);
-						cursor.moveToNext();
-						return message;
-					}
-
-					@Override
-					public void remove() {
-						throw new UnsupportedOperationException();
-					}
+				private MessageIterator() {
+					cursor.moveToFirst();
 				}
-				return new MessageIterator();
+
+				@Override
+				public boolean hasNext() {
+					return !cursor.isAfterLast();
+				}
+
+				@Override
+				public Message next() {
+					Message message = Message.fromCursor(cursor, conversation);
+					cursor.moveToNext();
+					return message;
+				}
+
+				@Override
+				public void remove() {
+					throw new UnsupportedOperationException();
+				}
 			}
+			return new MessageIterator();
 		};
 	}
 

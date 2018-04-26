@@ -48,7 +48,7 @@ public class PgpEngine {
 	public void encrypt(final Message message, final UiCallback<Message> callback) {
 		Intent params = new Intent();
 		params.setAction(OpenPgpApi.ACTION_ENCRYPT);
-		final Conversation conversation = message.getConversation();
+		final Conversation conversation = (Conversation) message.getConversation();
 		if (conversation.getMode() == Conversation.MODE_SINGLE) {
 			long[] keys = {
 					conversation.getContact().getPgpKeyId(),

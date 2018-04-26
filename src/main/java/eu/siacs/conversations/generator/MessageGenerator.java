@@ -29,7 +29,7 @@ public class MessageGenerator extends AbstractGenerator {
 	}
 
 	private MessagePacket preparePacket(Message message) {
-		Conversation conversation = message.getConversation();
+		Conversation conversation = (Conversation) message.getConversation();
 		Account account = conversation.getAccount();
 		MessagePacket packet = new MessagePacket();
 		final boolean isWithSelf = conversation.getContact().isSelf();
