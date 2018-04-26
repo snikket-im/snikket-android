@@ -30,13 +30,7 @@ public class SerialSingleThreadExecutor implements Executor {
 	}
 
 	public synchronized void execute(final Runnable r) {
-		tasks.offer(() -> {
-			try {
-				r.run();
-			} finally {
-				scheduleNext();
-			}
-		});
+		tasks.offer(new Runner(r));
 		if (active == null) {
 			scheduleNext();
 		}
@@ -48,6 +42,31 @@ public class SerialSingleThreadExecutor implements Executor {
 			int remaining = tasks.size();
 			if (remaining > 0) {
 				Log.d(Config.LOGTAG,remaining+" remaining tasks on executor '"+name+"'");
+			}
+		}
+	}
+
+	private class Runner implements Runnable, Cancellable {
+
+		private final Runnable runnable;
+
+		private Runner(Runnable runnable) {
+			this.runnable = runnable;
+		}
+
+		@Override
+		public void cancel() {
+			if (runnable instanceof Cancellable) {
+				((Cancellable) runnable).cancel();
+			}
+		}
+
+		@Override
+		public void run() {
+			try {
+				runnable.run();
+			} finally {
+				scheduleNext();
 			}
 		}
 	}

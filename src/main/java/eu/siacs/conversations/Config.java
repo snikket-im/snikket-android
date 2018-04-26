@@ -74,6 +74,7 @@ public final class Config {
 
 	public static final int PAGE_SIZE = 50;
 	public static final int MAX_NUM_PAGES = 3;
+	public static final int MAX_SEARCH_RESULTS = 300;
 
 	public static final int REFRESH_UI_INTERVAL = 500;
 

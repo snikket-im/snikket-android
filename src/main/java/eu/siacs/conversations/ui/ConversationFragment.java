@@ -85,6 +85,7 @@ import eu.siacs.conversations.ui.adapter.MessageAdapter;
 import eu.siacs.conversations.ui.util.ActivityResult;
 import eu.siacs.conversations.ui.util.AttachmentTool;
 import eu.siacs.conversations.ui.util.ConversationMenuConfigurator;
+import eu.siacs.conversations.ui.util.ListViewUtils;
 import eu.siacs.conversations.ui.util.MenuDoubleTabUtil;
 import eu.siacs.conversations.ui.util.PendingItem;
 import eu.siacs.conversations.ui.util.PresenceSelector;
@@ -1940,21 +1941,11 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
 	}
 
 	private void setSelection(int pos, boolean jumpToBottom) {
-		setSelection(this.binding.messagesView, pos, jumpToBottom);
-		this.binding.messagesView.post(() -> setSelection(this.binding.messagesView, pos, jumpToBottom));
+		ListViewUtils.setSelection(this.binding.messagesView, pos, jumpToBottom);
+		this.binding.messagesView.post(() -> ListViewUtils.setSelection(this.binding.messagesView, pos, jumpToBottom));
 		this.binding.messagesView.post(this::fireReadEvent);
 	}
 
-	private static void setSelection(final ListView listView, int pos, boolean jumpToBottom) {
-		if (jumpToBottom) {
-			final View lastChild = listView.getChildAt(listView.getChildCount() - 1);
-			if (lastChild != null) {
-				listView.setSelectionFromTop(pos, -lastChild.getHeight());
-				return;
-			}
-		}
-		listView.setSelection(pos);
-	}
 
 	private boolean scrolledToBottom() {
 		return this.binding != null && scrolledToBottom(this.binding.messagesView);

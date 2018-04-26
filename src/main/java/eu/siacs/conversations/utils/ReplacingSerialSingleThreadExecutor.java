@@ -18,4 +18,11 @@ public class ReplacingSerialSingleThreadExecutor extends SerialSingleThreadExecu
 		}
 		super.execute(r);
 	}
+
+	public synchronized void cancelRunningTasks() {
+		tasks.clear();
+		if (active != null && active instanceof Cancellable) {
+			((Cancellable) active).cancel();
+		}
+	}
 }

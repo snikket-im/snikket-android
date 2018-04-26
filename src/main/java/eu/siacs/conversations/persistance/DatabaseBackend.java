@@ -706,7 +706,7 @@ public class DatabaseBackend extends SQLiteOpenHelper {
 
 	public Cursor getMessageSearchCursor(String term) {
 		SQLiteDatabase db = this.getReadableDatabase();
-		String SQL = "SELECT "+Message.TABLENAME+".*,"+Conversation.TABLENAME+'.'+Conversation.CONTACTJID+','+Conversation.TABLENAME+'.'+Conversation.ACCOUNT+','+Conversation.TABLENAME+'.'+Conversation.MODE+" FROM "+Message.TABLENAME +" join "+Conversation.TABLENAME+" on "+Message.TABLENAME+'.'+Message.CONVERSATION+'='+Conversation.TABLENAME+'.'+Conversation.UUID+" where "+Message.BODY +" LIKE ? limit 200";
+		String SQL = "SELECT "+Message.TABLENAME+".*,"+Conversation.TABLENAME+'.'+Conversation.CONTACTJID+','+Conversation.TABLENAME+'.'+Conversation.ACCOUNT+','+Conversation.TABLENAME+'.'+Conversation.MODE+" FROM "+Message.TABLENAME +" join "+Conversation.TABLENAME+" on "+Message.TABLENAME+'.'+Message.CONVERSATION+'='+Conversation.TABLENAME+'.'+Conversation.UUID+" where "+Message.ENCRYPTION+" NOT IN("+Message.ENCRYPTION_AXOLOTL_NOT_FOR_THIS_DEVICE+','+Message.ENCRYPTION_PGP+','+Message.ENCRYPTION_DECRYPTION_FAILED+") AND "+Message.BODY +" LIKE ? ORDER BY "+Message.TIME_SENT+" DESC limit "+Config.MAX_SEARCH_RESULTS;
 		return db.rawQuery(SQL,new String[]{'%'+term+'%'});
 	}
 

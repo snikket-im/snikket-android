@@ -66,6 +66,14 @@ public class MessageSearchTask implements Runnable, Cancellable {
 		this.onSearchResultsAvailable = onSearchResultsAvailable;
 	}
 
+	public static void search(XmppConnectionService xmppConnectionService, String term, OnSearchResultsAvailable onSearchResultsAvailable) {
+		new MessageSearchTask(xmppConnectionService, term, onSearchResultsAvailable).executeInBackground();
+	}
+
+	public static void cancelRunningTasks() {
+		EXECUTOR.cancelRunningTasks();
+	}
+
 	@Override
 	public void cancel() {
 		this.isCancelled = true;
@@ -76,29 +84,40 @@ public class MessageSearchTask implements Runnable, Cancellable {
 		long startTimestamp = SystemClock.elapsedRealtime();
 		Cursor cursor = null;
 		try {
-			final HashMap<String,Conversational> conversationCache = new HashMap<>();
+			final HashMap<String, Conversational> conversationCache = new HashMap<>();
 			final List<Message> result = new ArrayList<>();
 			cursor = xmppConnectionService.databaseBackend.getMessageSearchCursor(term);
-			while(cursor.moveToNext()) {
-				final String conversationUuid = cursor.getString(cursor.getColumnIndex(Message.CONVERSATION));
-				Conversational conversation;
-				if (conversationCache.containsKey(conversationUuid)) {
-					conversation = conversationCache.get(conversationUuid);
-				} else {
-					String accountUuid = cursor.getString(cursor.getColumnIndex(Conversation.ACCOUNT));
-					String contactJid = cursor.getString(cursor.getColumnIndex(Conversation.CONTACTJID));
-					int mode = cursor.getInt(cursor.getColumnIndex(Conversation.MODE));
-					conversation = findOrGenerateStub(conversationUuid, accountUuid, contactJid, mode);
-					conversationCache.put(conversationUuid, conversation);
-				}
-				Message message = IndividualMessage.fromCursor(cursor, conversation);
-				result.add(message);
+			if (isCancelled) {
+				Log.d(Config.LOGTAG, "canceled search task");
+				return;
+			}
+			if (cursor != null && cursor.getCount() > 0) {
+				cursor.moveToLast();
+				do {
+					if (isCancelled) {
+						Log.d(Config.LOGTAG, "canceled search task");
+						return;
+					}
+					final String conversationUuid = cursor.getString(cursor.getColumnIndex(Message.CONVERSATION));
+					Conversational conversation;
+					if (conversationCache.containsKey(conversationUuid)) {
+						conversation = conversationCache.get(conversationUuid);
+					} else {
+						String accountUuid = cursor.getString(cursor.getColumnIndex(Conversation.ACCOUNT));
+						String contactJid = cursor.getString(cursor.getColumnIndex(Conversation.CONTACTJID));
+						int mode = cursor.getInt(cursor.getColumnIndex(Conversation.MODE));
+						conversation = findOrGenerateStub(conversationUuid, accountUuid, contactJid, mode);
+						conversationCache.put(conversationUuid, conversation);
+					}
+					Message message = IndividualMessage.fromCursor(cursor, conversation);
+					result.add(message);
+				} while (cursor.moveToPrevious());
 			}
 			long stopTimestamp = SystemClock.elapsedRealtime();
-			Log.d(Config.LOGTAG,"found "+result.size()+" messages in "+(stopTimestamp - startTimestamp)+"ms");
+			Log.d(Config.LOGTAG, "found " + result.size() + " messages in " + (stopTimestamp - startTimestamp) + "ms");
 			onSearchResultsAvailable.onSearchResultsAvailable(term, result);
 		} catch (Exception e) {
-			Log.d(Config.LOGTAG,"exception while searching ",e);
+			Log.d(Config.LOGTAG, "exception while searching ", e);
 		} finally {
 			if (cursor != null) {
 				cursor.close();
@@ -116,14 +135,10 @@ public class MessageSearchTask implements Runnable, Cancellable {
 		if (account != null && jid != null) {
 			return new StubConversation(account, conversationUuid, jid.asBareJid(), mode);
 		}
-		throw new Exception("Unable to generate stub for "+contactJid);
+		throw new Exception("Unable to generate stub for " + contactJid);
 	}
 
 	private void executeInBackground() {
 		EXECUTOR.execute(this);
-	}
-
-	public static void search(XmppConnectionService xmppConnectionService, String term, OnSearchResultsAvailable onSearchResultsAvailable) {
-		new MessageSearchTask(xmppConnectionService, term, onSearchResultsAvailable).executeInBackground();
 	}
 }
