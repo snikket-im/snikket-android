@@ -46,6 +46,7 @@ import java.util.List;
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.databinding.ActivitySearchBinding;
+import eu.siacs.conversations.entities.Contact;
 import eu.siacs.conversations.entities.Message;
 import eu.siacs.conversations.services.MessageSearchTask;
 import eu.siacs.conversations.ui.adapter.MessageAdapter;
@@ -57,7 +58,7 @@ import eu.siacs.conversations.ui.util.ListViewUtils;
 import static eu.siacs.conversations.ui.util.SoftKeyboardUtils.hideSoftKeyboard;
 import static eu.siacs.conversations.ui.util.SoftKeyboardUtils.showKeyboard;
 
-public class SearchActivity extends XmppActivity implements TextWatcher, OnSearchResultsAvailable {
+public class SearchActivity extends XmppActivity implements TextWatcher, OnSearchResultsAvailable, MessageAdapter.OnContactPictureClicked {
 
 	private ActivitySearchBinding binding;
 	private MessageAdapter messageListAdapter;
@@ -70,6 +71,7 @@ public class SearchActivity extends XmppActivity implements TextWatcher, OnSearc
 		setSupportActionBar((Toolbar) this.binding.toolbar);
 		configureActionBar(getSupportActionBar());
 		this.messageListAdapter = new MessageAdapter(this, this.messages);
+		this.messageListAdapter.setOnContactPictureClicked(this);
 		this.binding.searchResults.setAdapter(messageListAdapter);
 	}
 
@@ -147,5 +149,27 @@ public class SearchActivity extends XmppActivity implements TextWatcher, OnSearc
 			changeBackground(true, messages.size() > 0);
 			ListViewUtils.scrollToBottom(this.binding.searchResults);
 		});
+	}
+
+	@Override
+	public void onContactPictureClicked(Message message) {
+		String fingerprint;
+		if (message.getEncryption() == Message.ENCRYPTION_PGP || message.getEncryption() == Message.ENCRYPTION_DECRYPTED) {
+			fingerprint = "pgp";
+		} else {
+			fingerprint = message.getFingerprint();
+		}
+		if (message.getStatus() == Message.STATUS_RECEIVED) {
+			final Contact contact = message.getContact();
+			if (contact != null) {
+				if (contact.isSelf()) {
+					switchToAccount(message.getConversation().getAccount(), fingerprint);
+				} else {
+					switchToContactDetails(contact, fingerprint);
+				}
+			}
+		} else {
+			switchToAccount(message.getConversation().getAccount(), fingerprint);
+		}
 	}
 }

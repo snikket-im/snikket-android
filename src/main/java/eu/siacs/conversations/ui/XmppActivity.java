@@ -521,16 +521,23 @@ public abstract class XmppActivity extends ActionBarActivity {
 		startActivity(intent);
 	}
 
-	public void switchToAccount(Account account) {
-		switchToAccount(account, false);
+	public void switchToAccount(Account account, String fingerprint) {
+		switchToAccount(account, false, fingerprint);
 	}
 
-	public void switchToAccount(Account account, boolean init) {
+	public void switchToAccount(Account account) {
+		switchToAccount(account, false, null);
+	}
+
+	public void switchToAccount(Account account, boolean init, String fingerprint) {
 		Intent intent = new Intent(this, EditAccountActivity.class);
 		intent.putExtra("jid", account.getJid().asBareJid().toString());
 		intent.putExtra("init", init);
 		if (init) {
 			intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NO_ANIMATION);
+		}
+		if (fingerprint != null) {
+			intent.putExtra("fingerprint", fingerprint);
 		}
 		startActivity(intent);
 		if (init) {

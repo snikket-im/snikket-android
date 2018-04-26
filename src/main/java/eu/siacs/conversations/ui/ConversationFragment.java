@@ -931,6 +931,12 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
 		binding.messagesView.setTranscriptMode(ListView.TRANSCRIPT_MODE_NORMAL);
 		messageListAdapter = new MessageAdapter((XmppActivity) getActivity(), this.messageList);
 		messageListAdapter.setOnContactPictureClicked(message -> {
+			String fingerprint;
+			if (message.getEncryption() == Message.ENCRYPTION_PGP || message.getEncryption() == Message.ENCRYPTION_DECRYPTED) {
+				fingerprint = "pgp";
+			} else {
+				fingerprint = message.getFingerprint();
+			}
 			final boolean received = message.getStatus() <= Message.STATUS_RECEIVED;
 			if (received) {
 				if (message.getConversation() instanceof Conversation && message.getConversation().getMode() == Conversation.MODE_MULTI) {
@@ -949,30 +955,12 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
 					return;
 				} else {
 					if (!message.getContact().isSelf()) {
-						String fingerprint;
-						if (message.getEncryption() == Message.ENCRYPTION_PGP
-								|| message.getEncryption() == Message.ENCRYPTION_DECRYPTED) {
-							fingerprint = "pgp";
-						} else {
-							fingerprint = message.getFingerprint();
-						}
 						activity.switchToContactDetails(message.getContact(), fingerprint);
 						return;
 					}
 				}
 			}
-			Account account = message.getConversation().getAccount();
-			Intent intent = new Intent(activity, EditAccountActivity.class);
-			intent.putExtra("jid", account.getJid().asBareJid().toString());
-			String fingerprint;
-			if (message.getEncryption() == Message.ENCRYPTION_PGP
-					|| message.getEncryption() == Message.ENCRYPTION_DECRYPTED) {
-				fingerprint = "pgp";
-			} else {
-				fingerprint = message.getFingerprint();
-			}
-			intent.putExtra("fingerprint", fingerprint);
-			startActivity(intent);
+			activity.switchToAccount(message.getConversation().getAccount(), fingerprint);
 		});
 		messageListAdapter.setOnContactPictureLongClicked(message -> {
 			if (message.getStatus() <= Message.STATUS_RECEIVED) {

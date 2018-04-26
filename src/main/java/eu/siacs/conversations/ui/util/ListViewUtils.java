@@ -36,7 +36,7 @@ import android.widget.ListView;
 public class ListViewUtils {
 
 	public static void scrollToBottom(final ListView listView) {
-		int count = listView.getAdapter().getCount();
+		final int count = listView.getAdapter().getCount();
 		if (count > 0) {
 			setSelection(listView, count - 1, true);
 		}
