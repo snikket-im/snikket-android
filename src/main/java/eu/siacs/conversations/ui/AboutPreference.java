@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.preference.Preference;
 import android.util.AttributeSet;
 
+import eu.siacs.conversations.R;
 import eu.siacs.conversations.utils.PhoneHelper;
 
 public class AboutPreference extends Preference {
@@ -26,7 +27,7 @@ public class AboutPreference extends Preference {
     }
 
     private void setSummary() {
-		setSummary("Conversations " + PhoneHelper.getVersionName(getContext()));
+		setSummary(getContext().getString(R.string.app_name) +' '+ PhoneHelper.getVersionName(getContext()));
 	}
 }
 
