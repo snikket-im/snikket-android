@@ -8,6 +8,7 @@ import android.graphics.Paint;
 import android.graphics.Point;
 import android.location.Location;
 import android.os.Build;
+import android.support.v4.content.ContextCompat;
 
 import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.MapView;
@@ -24,23 +25,11 @@ public class MyLocation extends SimpleLocationOverlay {
 	private final Paint fill;
 	private final Paint outline;
 
-	@TargetApi(Build.VERSION_CODES.LOLLIPOP)
-	private int getColor(final Context ctx) {
-		final int accent;
-		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-			accent = ctx.getResources().getColor(R.color.accent, ctx.getTheme());
-		} else {
-			//noinspection deprecation
-			accent = ctx.getResources().getColor(R.color.accent);
-		}
-		return accent;
-	}
-
 	public MyLocation(final Context ctx, final Bitmap icon, final Location position) {
 		super(icon);
 		this.mapCenterPoint = new Point();
 		this.fill = new Paint(Paint.ANTI_ALIAS_FLAG);
-		final int accent = this.getColor(ctx);
+		final int accent = ContextCompat.getColor(ctx,R.color.blue500);
 		fill.setColor(accent);
 		fill.setStyle(Paint.Style.FILL);
 		this.outline = new Paint(Paint.ANTI_ALIAS_FLAG);

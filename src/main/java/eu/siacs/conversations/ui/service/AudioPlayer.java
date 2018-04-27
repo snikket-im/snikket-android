@@ -70,7 +70,7 @@ public class AudioPlayer implements View.OnClickListener, MediaPlayer.OnCompleti
 		}
 		viewHolder.progress.setOnSeekBarChangeListener(this);
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-			ColorStateList color = ContextCompat.getColorStateList(messageAdapter.getContext(), viewHolder.darkBackground ? R.color.white70 : R.color.bubble);
+			ColorStateList color = ContextCompat.getColorStateList(messageAdapter.getContext(), viewHolder.darkBackground ? R.color.white70 : R.color.green700_desaturated);
 			viewHolder.progress.setThumbTintList(color);
 			viewHolder.progress.setProgressTintList(color);
 		}

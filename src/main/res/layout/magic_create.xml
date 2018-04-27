@@ -65,7 +65,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="right"
                     android:text="@string/next"
-                    android:textColor="@color/accent"/>
+                    android:textColor="?colorAccent"/>
             </LinearLayout>
             <RelativeLayout
                 android:layout_width="match_parent"

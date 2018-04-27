@@ -2,9 +2,9 @@
 <resources>
 
     <style name="ConversationsTheme" parent="Theme.AppCompat.Light.NoActionBar">
-        <item name="colorPrimary">@color/primary500</item>
-        <item name="colorPrimaryDark">@color/primary700</item>
-        <item name="colorAccent">@color/accent</item>
+        <item name="colorPrimary">@color/green600</item>
+        <item name="colorPrimaryDark">@color/green700</item>
+        <item name="colorAccent">@color/deep_purple_a200</item>
         <item name="popupOverlayStyle">@style/ThemeOverlay.AppCompat.Light</item>
 
         <item name="color_background_primary">@color/grey50</item>
@@ -19,7 +19,7 @@
         <item name="EmojiColor">@color/black</item>
 
         <item name="windowActionModeOverlay">true</item>
-        <item name="android:actionModeBackground">@color/accent</item>
+        <item name="android:actionModeBackground">@color/deep_purple_a200</item>
 
         <item name="TextSizeCaption">12sp</item>
         <item name="TextSizeBody1">14sp</item>
@@ -51,9 +51,9 @@
         <item type="reference" name="message_bubble_sent">@drawable/message_bubble_sent</item>
         <item type="reference" name="message_bubble_received_green">@drawable/message_bubble_received</item>
 
-        <item name="unread_count">@color/unreadcountlight</item>
+        <item name="unread_count">@color/green700_desaturated</item>
 
-        <item name="conversations_overview_background">@color/primary700</item>
+        <item name="conversations_overview_background">@color/green700</item>
 
         <item type="float" name="icon_alpha">0.54</item>
 
@@ -97,9 +97,9 @@
     </style>
 
     <style name="ConversationsTheme.Dark" parent="Theme.AppCompat.NoActionBar">
-        <item name="colorPrimary">@color/primary800</item>
-        <item name="colorPrimaryDark">@color/primary900</item>
-        <item name="colorAccent">@color/accent</item>
+        <item name="colorPrimary">@color/green800</item>
+        <item name="colorPrimaryDark">@color/green900</item>
+        <item name="colorAccent">@color/deep_purple_a100</item>
         <item name="popupOverlayStyle">@style/ThemeOverlay.AppCompat.Dark</item>
 
         <item name="color_background_primary">@color/grey800</item>
@@ -114,7 +114,7 @@
         <item name="EmojiColor">@color/white</item>
 
         <item name="windowActionModeOverlay">true</item>
-        <item name="android:actionModeBackground">@color/accent</item>
+        <item name="android:actionModeBackground">@color/deep_purple_a100</item>
 
         <item name="TextSizeCaption">12sp</item>
         <item name="TextSizeBody1">14sp</item>
@@ -146,9 +146,9 @@
         <item type="reference" name="message_bubble_sent">@drawable/message_bubble_sent_grey</item>
         <item type="reference" name="message_bubble_received_green">@drawable/message_bubble_received_dark</item>
 
-        <item name="unread_count">@color/unreadcountdark</item>
+        <item name="unread_count">@color/green900_desaturated</item>
 
-        <item name="conversations_overview_background">@color/primary900</item>
+        <item name="conversations_overview_background">@color/green900</item>
 
         <item type="float" name="icon_alpha">0.7</item>
 
@@ -236,8 +236,8 @@
     </style>
 
     <style name="ConversationsTheme.FullScreen" parent="@style/Theme.AppCompat.Light">
-        <item name="colorPrimary">@color/primary500</item>
-        <item name="colorPrimaryDark">@color/primary700</item>
+        <item name="colorPrimary">@color/green600</item>
+        <item name="colorPrimaryDark">@color/green700</item>
         <item name="android:windowNoTitle">true</item>
         <item name="android:windowActionBar">false</item>
         <item name="android:windowFullscreen">true</item>
@@ -251,9 +251,9 @@
     </style>
 
     <style name="ConversationsTheme.Dialog" parent="@style/Theme.AppCompat.Light.Dialog">
-        <item name="colorPrimary">@color/primary500</item>
-        <item name="colorPrimaryDark">@color/primary700</item>
-        <item name="colorAccent">@color/accent</item>
+        <item name="colorPrimary">@color/green600</item>
+        <item name="colorPrimaryDark">@color/green700</item>
+        <item name="colorAccent">@color/deep_purple_a200</item>
         <item name="color_background_primary">@color/grey50</item>
         <item name="divider">@color/black12</item>
         <item name="TextSizeBody2">14sp</item>
@@ -262,9 +262,9 @@
     </style>
 
     <style name="ConversationsTheme.Dark.Dialog" parent="@style/Theme.AppCompat.Dialog">
-        <item name="colorPrimary">@color/primary500</item>
-        <item name="colorPrimaryDark">@color/primary700</item>
-        <item name="colorAccent">@color/accent</item>
+        <item name="colorPrimary">@color/green800</item>
+        <item name="colorPrimaryDark">@color/green900</item>
+        <item name="colorAccent">@color/deep_purple_a100</item>
         <item name="color_background_primary">@color/grey800</item>
         <item name="divider">@color/white12</item>
         <item name="TextSizeBody2">14sp</item>

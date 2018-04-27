@@ -210,7 +210,7 @@
                                 android:paddingLeft="16dp"
                                 android:paddingRight="16dp"
                                 android:text="@string/disable"
-                                android:textColor="@color/accent"/>
+                                android:textColor="?colorAccent"/>
                         </LinearLayout>
                     </LinearLayout>
                 </android.support.v7.widget.CardView>
@@ -608,7 +608,7 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_horizontal"
                             android:text="@string/clear_other_devices"
-                            android:textColor="@color/accent"/>
+                            android:textColor="?colorAccent"/>
                     </LinearLayout>
                 </android.support.v7.widget.CardView>
             </LinearLayout>

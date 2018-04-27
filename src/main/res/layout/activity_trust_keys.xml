@@ -82,7 +82,7 @@
                             android:paddingLeft="16dp"
                             android:paddingRight="16dp"
                             android:text="@string/disable_encryption"
-                            android:textColor="@color/accent"/>
+                            android:textColor="?colorAccent"/>
                     </LinearLayout>
                     </LinearLayout>
 

@@ -438,7 +438,7 @@ public class ContactDetailsActivity extends OmemoActivity implements OnAccountUp
 			TextView keyType = (TextView) view.findViewById(R.id.key_type);
 			keyType.setText(R.string.openpgp_key_id);
 			if ("pgp".equals(messageFingerprint)) {
-				keyType.setTextColor(ContextCompat.getColor(this, R.color.accent));
+				keyType.setTextAppearance(this, R.style.TextAppearance_Conversations_Caption_Highlight);
 			}
 			key.setText(OpenPgpUtils.convertKeyIdToHex(contact.getPgpKeyId()));
 			final OnClickListener openKey = v -> launchOpenKeyChain(contact.getPgpKeyId());

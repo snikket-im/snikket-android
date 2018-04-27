@@ -1,10 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-	<color name="primary500">#ff259b24</color>
-	<color name="primary700">#ff0a7e07</color>
-	<color name="primary800">#ff026100</color>
-	<color name="primary900">#ff024500</color>
-	<color name="accent">#ff0091ea</color>
 	<color name="black">#ff000000</color>
 	<color name="black87">#de000000</color>
 	<color name="black54">#8a000000</color>
@@ -25,11 +20,19 @@
 	<color name="red_a100">#ffff8a80</color>
 	<color name="red800">#ffc62828</color>
 	<color name="orange500">#ffff9800</color>
-	<color name="green500">#ff259b24</color>
-	<color name="bubble">#ff4b9b4a</color>
-	<color name="unreadcountlight">#ff4b9b4a</color>
-	<color name="unreadcountdark">#ff326130</color>
+	<color name="deep_purple_a100">#ffB388FF</color>
+	<color name="deep_purple_a200">#ff7C4DFF</color>
+	<color name="green500">#ff4CAF50</color>
+	<color name="green600">#ff43A047</color>
+	<color name="green700">#ff388E3C</color>
+	<color name="green800">#ff2E7D32</color>
+	<color name="green900">#ff1B5E20</color>
+
+	<color name="green700_desaturated">#ff4d8e50</color> <!-- desaturated by 15 -->
+	<color name="green900_desaturated">#ff295e2d</color> <!-- desaturated by 15 -->
 
 	<!-- scanner -->
 	<color name="scan_result_dots">#c04CAF50</color>
+
+	<color name="blue500">#ff2196f3</color>
 </resources>

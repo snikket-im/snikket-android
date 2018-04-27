@@ -1,7 +1,6 @@
 package eu.siacs.conversations.ui.forms;
 
 import android.content.Context;
-import android.support.v4.content.ContextCompat;
 import android.text.SpannableString;
 import android.text.style.ForegroundColorSpan;
 import android.text.style.StyleSpan;
@@ -11,6 +10,7 @@ import android.view.View;
 import java.util.List;
 
 import eu.siacs.conversations.R;
+import eu.siacs.conversations.ui.util.Color;
 import eu.siacs.conversations.xmpp.forms.Field;
 
 public abstract class FormFieldWrapper {
@@ -58,7 +58,7 @@ public abstract class FormFieldWrapper {
 			int start = label.length();
 			int end = label.length() + 2;
 			spannableString.setSpan(new StyleSpan(android.graphics.Typeface.BOLD), start, end, 0);
-			spannableString.setSpan(new ForegroundColorSpan(ContextCompat.getColor(context, R.color.accent)), start, end, 0);
+			spannableString.setSpan(new ForegroundColorSpan(Color.get(context,R.attr.colorAccent)), start, end, 0);
 		}
 		return spannableString;
 	}

@@ -49,7 +49,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="right"
                     android:text="@string/create_account"
-                    android:textColor="@color/accent"/>
+                    android:textColor="?colorAccent"/>
                 <Button
                     android:id="@+id/use_own_provider"
                     style="@style/Widget.Conversations.Button.Borderless"

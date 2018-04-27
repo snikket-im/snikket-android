@@ -17,7 +17,7 @@
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
         android:text="@string/load_more_messages"
-        android:textColor="@color/accent"/>
+        android:textColor="?colorAccent"/>
 
     <com.makeramen.roundedimageview.RoundedImageView
         android:id="@+id/message_photo"
