@@ -1,5 +1,8 @@
 # Changelog
 
+### Version 2.1.4
+* bug fixes
+
 ### Version 2.1.3
 * Do not process stanzas with invalid JIDs
 
