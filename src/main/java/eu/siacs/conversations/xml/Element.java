@@ -11,6 +11,7 @@ import java.util.Locale;
 
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.utils.XmlHelper;
+import eu.siacs.conversations.xmpp.InvalidJid;
 import rocks.xmpp.addr.Jid;
 
 public class Element {
@@ -153,7 +154,7 @@ public class Element {
 			try {
 				return Jid.ofEscaped(jid);
 			} catch (final IllegalArgumentException e) {
-				return null;
+				return new InvalidJid(jid);
 			}
 		}
 		return null;

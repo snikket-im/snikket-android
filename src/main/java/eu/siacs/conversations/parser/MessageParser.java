@@ -32,6 +32,7 @@ import eu.siacs.conversations.services.XmppConnectionService;
 import eu.siacs.conversations.utils.CryptoHelper;
 import eu.siacs.conversations.xml.Namespace;
 import eu.siacs.conversations.xml.Element;
+import eu.siacs.conversations.xmpp.InvalidJid;
 import eu.siacs.conversations.xmpp.OnMessagePacketReceived;
 import eu.siacs.conversations.xmpp.chatstate.ChatState;
 import eu.siacs.conversations.xmpp.pep.Avatar;
@@ -64,7 +65,7 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
 		for (Element child : packet.getChildren()) {
 			if (child.getName().equals("stanza-id")
 					&& Namespace.STANZA_IDS.equals(child.getNamespace())
-					&& by.equals(child.getAttributeAsJid("by"))) {
+					&& by.equals(InvalidJid.getNullForInvalid(child.getAttributeAsJid("by")))) {
 				return child.getAttribute("id");
 			}
 		}
@@ -73,7 +74,7 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
 
 	private static Jid getTrueCounterpart(Element mucUserElement, Jid fallback) {
 		final Element item = mucUserElement == null ? null : mucUserElement.findChild("item");
-		Jid result = item == null ? null : item.getAttributeAsJid("jid");
+		Jid result = item == null ? null : InvalidJid.getNullForInvalid(item.getAttributeAsJid("jid"));
 		return result != null ? result : fallback;
 	}
 
@@ -139,17 +140,25 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
 		if (x != null) {
 			Element invite = x.findChild("invite");
 			if (invite != null) {
-				Element pw = x.findChild("password");
-				Jid from = invite.getAttributeAsJid("from");
+				String password = x.findChildContent("password");
+				Jid from = InvalidJid.getNullForInvalid(invite.getAttributeAsJid("from"));
 				Contact contact = from == null ? null : account.getRoster().getContact(from);
-				return new Invite(message.getAttributeAsJid("from"), pw != null ? pw.getContent() : null, contact);
+				Jid room = InvalidJid.getNullForInvalid(message.getAttributeAsJid("from"));
+				if (room == null) {
+					return null;
+				}
+				return new Invite(room, password, contact);
 			}
 		} else {
 			x = message.findChild("x", "jabber:x:conference");
 			if (x != null) {
-				Jid from = message.getAttributeAsJid("from");
+				Jid from = InvalidJid.getNullForInvalid(message.getAttributeAsJid("from"));
 				Contact contact = from == null ? null : account.getRoster().getContact(from);
-				return new Invite(x.getAttributeAsJid("jid"), x.getAttribute("password"), contact);
+				Jid room = InvalidJid.getNullForInvalid(x.getAttributeAsJid("jid"));
+				if (room == null) {
+					return null;
+				}
+				return new Invite(room, x.getAttribute("password"), contact);
 			}
 		}
 		return null;
@@ -697,7 +706,7 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
 		Element displayed = packet.findChild("displayed", "urn:xmpp:chat-markers:0");
 		if (displayed != null) {
 			final String id = displayed.getAttribute("id");
-			final Jid sender = displayed.getAttributeAsJid("sender");
+			final Jid sender = InvalidJid.getNullForInvalid(displayed.getAttributeAsJid("sender"));
 			if (packet.fromAccount(account) && !selfAddressed) {
 				dismissNotification(account, counterpart, query);
 			} else if (isTypeGroupChat) {

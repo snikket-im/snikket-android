@@ -66,4 +66,10 @@ public class IqPacket extends AbstractAcknowledgeableStanza {
 		return packet;
 	}
 
+	@Override
+	public boolean valid() {
+		String id = getId();
+		return id != null && super.valid();
+	}
+
 }
