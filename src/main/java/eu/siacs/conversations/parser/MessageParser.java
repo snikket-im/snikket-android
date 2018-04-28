@@ -293,8 +293,8 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
 		}
 		boolean notify = false;
 
-		if (from == null) {
-			Log.d(Config.LOGTAG, "no from in: " + packet.toString());
+		if (from == null || !InvalidJid.isValid(from) || !InvalidJid.isValid(to)) {
+			Log.e(Config.LOGTAG, "encountered invalid message from='" + from + "' to='" + to + "'");
 			return;
 		}
 
