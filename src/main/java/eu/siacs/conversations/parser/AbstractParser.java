@@ -11,6 +11,7 @@ import eu.siacs.conversations.entities.Conversation;
 import eu.siacs.conversations.entities.MucOptions;
 import eu.siacs.conversations.services.XmppConnectionService;
 import eu.siacs.conversations.xml.Element;
+import eu.siacs.conversations.xmpp.InvalidJid;
 import eu.siacs.conversations.xmpp.stanzas.AbstractStanza;
 import rocks.xmpp.addr.Jid;
 
@@ -37,7 +38,7 @@ public abstract class AbstractParser {
 		}
 		for(Element child : element.getChildren()) {
 			if ("delay".equals(child.getName()) && "urn:xmpp:delay".equals(child.getNamespace())) {
-				final Jid f = to == null ? null : child.getAttributeAsJid("from");
+				final Jid f = to == null ? null : InvalidJid.getNullForInvalid(child.getAttributeAsJid("from"));
 				if (f != null && (to.asBareJid().equals(f) || to.getDomain().equals(f.toString()))) {
 					continue;
 				}
@@ -115,7 +116,9 @@ public abstract class AbstractParser {
 		}
 		Jid realJid = item.getAttributeAsJid("jid");
 		MucOptions.User user = new MucOptions.User(conference.getMucOptions(), fullJid);
-		user.setRealJid(realJid);
+		if (InvalidJid.isValid(realJid)) {
+			user.setRealJid(realJid);
+		}
 		user.setAffiliation(affiliation);
 		user.setRole(role);
 		return user;

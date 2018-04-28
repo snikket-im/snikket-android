@@ -29,6 +29,7 @@ import eu.siacs.conversations.entities.Contact;
 import eu.siacs.conversations.services.XmppConnectionService;
 import eu.siacs.conversations.xml.Namespace;
 import eu.siacs.conversations.xml.Element;
+import eu.siacs.conversations.xmpp.InvalidJid;
 import eu.siacs.conversations.xmpp.OnIqPacketReceived;
 import eu.siacs.conversations.xmpp.OnUpdateBlocklist;
 import eu.siacs.conversations.xmpp.stanzas.IqPacket;
@@ -47,7 +48,7 @@ public class IqParser extends AbstractParser implements OnIqPacketReceived {
 		}
 		for (final Element item : query.getChildren()) {
 			if (item.getName().equals("item")) {
-				final Jid jid = item.getAttributeAsJid("jid");
+				final Jid jid = InvalidJid.getNullForInvalid(item.getAttributeAsJid("jid"));
 				if (jid == null) {
 					continue;
 				}
@@ -310,7 +311,7 @@ public class IqParser extends AbstractParser implements OnIqPacketReceived {
 				// Create a collection of Jids from the packet
 				for (final Element item : items) {
 					if (item.getName().equals("item")) {
-						final Jid jid = item.getAttributeAsJid("jid");
+						final Jid jid = InvalidJid.getNullForInvalid(item.getAttributeAsJid("jid"));
 						if (jid != null) {
 							jids.add(jid);
 						}
@@ -344,7 +345,7 @@ public class IqParser extends AbstractParser implements OnIqPacketReceived {
 				final Collection<Jid> jids = new ArrayList<>(items.size());
 				for (final Element item : items) {
 					if (item.getName().equals("item")) {
-						final Jid jid = item.getAttributeAsJid("jid");
+						final Jid jid = InvalidJid.getNullForInvalid(item.getAttributeAsJid("jid"));
 						if (jid != null) {
 							jids.add(jid);
 						}
