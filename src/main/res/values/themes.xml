@@ -3,7 +3,7 @@
 
     <style name="ConversationsTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="colorPrimary">@color/green600</item>
-        <item name="colorPrimaryDark">@color/green700</item>
+        <item name="colorPrimaryDark">@color/green800</item>
         <item name="colorAccent">@color/deep_purple_a200</item>
         <item name="popupOverlayStyle">@style/ThemeOverlay.AppCompat.Light</item>
 

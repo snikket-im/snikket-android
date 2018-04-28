@@ -85,6 +85,7 @@ import eu.siacs.conversations.ui.adapter.MessageAdapter;
 import eu.siacs.conversations.ui.util.ActivityResult;
 import eu.siacs.conversations.ui.util.AttachmentTool;
 import eu.siacs.conversations.ui.util.ConversationMenuConfigurator;
+import eu.siacs.conversations.ui.util.DateSeparator;
 import eu.siacs.conversations.ui.util.ListViewUtils;
 import eu.siacs.conversations.ui.util.MenuDoubleTabUtil;
 import eu.siacs.conversations.ui.util.PendingItem;
@@ -92,6 +93,7 @@ import eu.siacs.conversations.ui.util.PresenceSelector;
 import eu.siacs.conversations.ui.util.ScrollState;
 import eu.siacs.conversations.ui.util.SendButtonAction;
 import eu.siacs.conversations.ui.util.SendButtonTool;
+import eu.siacs.conversations.ui.util.ShareUtil;
 import eu.siacs.conversations.ui.widget.EditMessage;
 import eu.siacs.conversations.utils.MessageUtils;
 import eu.siacs.conversations.utils.NickValidityChecker;
@@ -1111,13 +1113,13 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
 	public boolean onContextItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 			case R.id.share_with:
-				shareWith(selectedMessage);
+				ShareUtil.share(activity, selectedMessage);
 				return true;
 			case R.id.correct_message:
 				correctMessage(selectedMessage);
 				return true;
 			case R.id.copy_message:
-				copyMessage(selectedMessage);
+				ShareUtil.copyToClipboard(activity, selectedMessage);
 				return true;
 			case R.id.quote_message:
 				quoteMessage(selectedMessage);
@@ -1126,7 +1128,7 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
 				resendMessage(selectedMessage);
 				return true;
 			case R.id.copy_url:
-				copyUrl(selectedMessage);
+				ShareUtil.copyUrlToClipboard(activity, selectedMessage);
 				return true;
 			case R.id.download_file:
 				startDownloadable(selectedMessage);
@@ -1570,43 +1572,6 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
 		builder.create().show();
 	}
 
-	private void shareWith(Message message) {
-		Intent shareIntent = new Intent();
-		shareIntent.setAction(Intent.ACTION_SEND);
-		if (message.isGeoUri()) {
-			shareIntent.putExtra(Intent.EXTRA_TEXT, message.getBody());
-			shareIntent.setType("text/plain");
-		} else if (!message.isFileOrImage()) {
-			shareIntent.putExtra(Intent.EXTRA_TEXT, message.getMergedBody().toString());
-			shareIntent.setType("text/plain");
-		} else {
-			final DownloadableFile file = activity.xmppConnectionService.getFileBackend().getFile(message);
-			try {
-				shareIntent.putExtra(Intent.EXTRA_STREAM, FileBackend.getUriForFile(getActivity(), file));
-			} catch (SecurityException e) {
-				Toast.makeText(getActivity(), activity.getString(R.string.no_permission_to_access_x, file.getAbsolutePath()), Toast.LENGTH_SHORT).show();
-				return;
-			}
-			shareIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-			String mime = message.getMimeType();
-			if (mime == null) {
-				mime = "*/*";
-			}
-			shareIntent.setType(mime);
-		}
-		try {
-			startActivity(Intent.createChooser(shareIntent, getText(R.string.share_with)));
-		} catch (ActivityNotFoundException e) {
-			//This should happen only on faulty androids because normally chooser is always available
-			Toast.makeText(getActivity(), R.string.no_application_found_to_open_file, Toast.LENGTH_SHORT).show();
-		}
-	}
-
-	private void copyMessage(Message message) {
-		if (activity.copyTextToClipboard(message.getMergedBody().toString(), R.string.message)) {
-			Toast.makeText(getActivity(), R.string.message_copied_to_clipboard, Toast.LENGTH_SHORT).show();
-		}
-	}
 
 	private void deleteFile(Message message) {
 		if (activity.xmppConnectionService.getFileBackend().deleteFile(message)) {
@@ -1651,24 +1616,6 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
 			int size = messageList.size();
 			this.binding.messagesView.setSelection(size - 1);
 		});
-	}
-
-	private void copyUrl(Message message) {
-		final String url;
-		final int resId;
-		if (message.isGeoUri()) {
-			resId = R.string.location;
-			url = message.getBody();
-		} else if (message.hasFileOnRemoteHost()) {
-			resId = R.string.file_url;
-			url = message.getFileParams().url.toString();
-		} else {
-			url = message.getBody().trim();
-			resId = R.string.file_url;
-		}
-		if (activity.copyTextToClipboard(url, resId)) {
-			Toast.makeText(getActivity(), R.string.url_copied_to_clipboard, Toast.LENGTH_SHORT).show();
-		}
 	}
 
 	private void cancelTransmission(Message message) {
@@ -1943,6 +1890,7 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
 		final String downloadUuid = extras.getString(ConversationsActivity.EXTRA_DOWNLOAD_UUID);
 		final String text = extras.getString(ConversationsActivity.EXTRA_TEXT);
 		final String nick = extras.getString(ConversationsActivity.EXTRA_NICK);
+		final boolean asQuote = extras.getBoolean(ConversationsActivity.EXTRA_AS_QUOTE);
 		final boolean pm = extras.getBoolean(ConversationsActivity.EXTRA_IS_PRIVATE_MESSAGE, false);
 		if (nick != null) {
 			if (pm) {
@@ -1960,7 +1908,11 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
 				}
 			}
 		} else {
-			appendText(text);
+			if (text != null && asQuote) {
+				quoteText(text);
+			} else {
+				appendText(text);
+			}
 		}
 		final Message message = downloadUuid == null ? null : conversation.findMessageWithFileAndUuid(downloadUuid);
 		if (message != null) {
@@ -2159,13 +2111,7 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
 
 	protected void updateDateSeparators() {
 		synchronized (this.messageList) {
-			for (int i = 0; i < this.messageList.size(); ++i) {
-				final Message current = this.messageList.get(i);
-				if (i == 0 || !UIHelper.sameDay(this.messageList.get(i - 1).getTimeSent(), current.getTimeSent())) {
-					this.messageList.add(i, Message.createDateSeparator(current));
-					i++;
-				}
-			}
+			DateSeparator.addAll(this.messageList);
 		}
 	}
 

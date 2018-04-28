@@ -171,7 +171,7 @@ public class ConversationsOverviewFragment extends XmppFragment {
 							}
 						}
 					});
-			ThemeHelper.fixTextSize(snackbar);
+			ThemeHelper.fix(snackbar);
 			snackbar.show();
 		}
 	};

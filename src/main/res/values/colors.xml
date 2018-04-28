@@ -22,6 +22,8 @@
 	<color name="orange500">#ffff9800</color>
 	<color name="deep_purple_a100">#ffB388FF</color>
 	<color name="deep_purple_a200">#ff7C4DFF</color>
+	<color name="deep_purple_a400">#ff651FFF</color>
+	<color name="deep_purple_a700">#ff6200EA</color>
 	<color name="green500">#ff4CAF50</color>
 	<color name="green600">#ff43A047</color>
 	<color name="green700">#ff388E3C</color>

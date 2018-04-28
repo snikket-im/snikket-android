@@ -467,25 +467,31 @@ public abstract class XmppActivity extends ActionBarActivity {
 		switchToConversation(conversation, null, false);
 	}
 
-	public void switchToConversation(Conversation conversation, String text,
-	                                 boolean newTask) {
-		switchToConversation(conversation, text, null, false, newTask);
+	public void switchToConversationAndQuote(Conversation conversation, String text) {
+		switchToConversation(conversation, text, true, null, false, false);
+	}
+
+	public void switchToConversation(Conversation conversation, String text, boolean newTask) {
+		switchToConversation(conversation, text, false, null, false, newTask);
 	}
 
 	public void highlightInMuc(Conversation conversation, String nick) {
-		switchToConversation(conversation, null, nick, false, false);
+		switchToConversation(conversation, null, false, nick, false, false);
 	}
 
 	public void privateMsgInMuc(Conversation conversation, String nick) {
-		switchToConversation(conversation, null, nick, true, false);
+		switchToConversation(conversation, null, false, nick, true, false);
 	}
 
-	private void switchToConversation(Conversation conversation, String text, String nick, boolean pm, boolean newTask) {
+	private void switchToConversation(Conversation conversation, String text, boolean asQuote, String nick, boolean pm, boolean newTask) {
 		Intent intent = new Intent(this, ConversationsActivity.class);
 		intent.setAction(ConversationsActivity.ACTION_VIEW_CONVERSATION);
 		intent.putExtra(ConversationsActivity.EXTRA_CONVERSATION, conversation.getUuid());
 		if (text != null) {
 			intent.putExtra(ConversationsActivity.EXTRA_TEXT, text);
+			if (asQuote) {
+				intent.putExtra(ConversationsActivity.EXTRA_AS_QUOTE, asQuote);
+			}
 		}
 		if (nick != null) {
 			intent.putExtra(ConversationsActivity.EXTRA_NICK, nick);

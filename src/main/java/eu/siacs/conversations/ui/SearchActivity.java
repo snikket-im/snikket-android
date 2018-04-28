@@ -36,10 +36,14 @@ import android.text.Editable;
 import android.text.InputType;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.ContextMenu;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.EditText;
 
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -47,13 +51,20 @@ import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.databinding.ActivitySearchBinding;
 import eu.siacs.conversations.entities.Contact;
+import eu.siacs.conversations.entities.Conversation;
+import eu.siacs.conversations.entities.Conversational;
 import eu.siacs.conversations.entities.Message;
+import eu.siacs.conversations.entities.StubConversation;
 import eu.siacs.conversations.services.MessageSearchTask;
 import eu.siacs.conversations.ui.adapter.MessageAdapter;
 import eu.siacs.conversations.ui.interfaces.OnSearchResultsAvailable;
+import eu.siacs.conversations.ui.util.ChangeWatcher;
 import eu.siacs.conversations.ui.util.Color;
+import eu.siacs.conversations.ui.util.DateSeparator;
 import eu.siacs.conversations.ui.util.Drawable;
 import eu.siacs.conversations.ui.util.ListViewUtils;
+import eu.siacs.conversations.ui.util.ShareUtil;
+import eu.siacs.conversations.utils.MessageUtils;
 
 import static eu.siacs.conversations.ui.util.SoftKeyboardUtils.hideSoftKeyboard;
 import static eu.siacs.conversations.ui.util.SoftKeyboardUtils.showKeyboard;
@@ -63,6 +74,8 @@ public class SearchActivity extends XmppActivity implements TextWatcher, OnSearc
 	private ActivitySearchBinding binding;
 	private MessageAdapter messageListAdapter;
 	private final List<Message> messages = new ArrayList<>();
+	private WeakReference<Message> selectedMessageReference = new WeakReference<>(null);
+	private final ChangeWatcher<String> currentSearch = new ChangeWatcher<>();
 
 	@Override
 	public void onCreate(final Bundle savedInstanceState) {
@@ -73,6 +86,7 @@ public class SearchActivity extends XmppActivity implements TextWatcher, OnSearc
 		this.messageListAdapter = new MessageAdapter(this, this.messages);
 		this.messageListAdapter.setOnContactPictureClicked(this);
 		this.binding.searchResults.setAdapter(messageListAdapter);
+		registerForContextMenu(this.binding.searchResults);
 	}
 
 	@Override
@@ -82,9 +96,27 @@ public class SearchActivity extends XmppActivity implements TextWatcher, OnSearc
 		EditText searchField = searchActionMenuItem.getActionView().findViewById(R.id.search_field);
 		searchField.addTextChangedListener(this);
 		searchField.setHint(R.string.search_messages);
-		searchField.setInputType(InputType.TYPE_CLASS_TEXT|InputType.TYPE_TEXT_FLAG_AUTO_COMPLETE);
+		searchField.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_AUTO_COMPLETE);
 		showKeyboard(searchField);
 		return super.onCreateOptionsMenu(menu);
+	}
+
+	@Override
+	public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+		AdapterView.AdapterContextMenuInfo acmi = (AdapterView.AdapterContextMenuInfo) menuInfo;
+		final Message message = this.messages.get(acmi.position);
+		this.selectedMessageReference = new WeakReference<>(message);
+		getMenuInflater().inflate(R.menu.search_result_context, menu);
+		MenuItem copy = menu.findItem(R.id.copy_message);
+		MenuItem quote = menu.findItem(R.id.quote_message);
+		MenuItem copyUrl = menu.findItem(R.id.copy_url);
+		if (message.isGeoUri()) {
+			copy.setVisible(false);
+			quote.setVisible(false);
+		} else {
+			copyUrl.setVisible(false);
+		}
+		super.onCreateContextMenu(menu, v, menuInfo);
 	}
 
 	@Override
@@ -93,6 +125,43 @@ public class SearchActivity extends XmppActivity implements TextWatcher, OnSearc
 			hideSoftKeyboard(this);
 		}
 		return super.onOptionsItemSelected(item);
+	}
+
+	@Override
+	public boolean onContextItemSelected(MenuItem item) {
+		final Message message = selectedMessageReference.get();
+		if (message != null) {
+			switch (item.getItemId()) {
+				case R.id.share_with:
+					ShareUtil.share(this, message);
+					break;
+				case R.id.copy_message:
+					ShareUtil.copyToClipboard(this, message);
+					break;
+				case R.id.copy_url:
+					ShareUtil.copyUrlToClipboard(this, message);
+					break;
+				case R.id.quote_message:
+					quote(message);
+			}
+		}
+		return super.onContextItemSelected(item);
+	}
+
+	private void quote(Message message) {
+		String text = MessageUtils.prepareQuote(message);
+		final Conversational conversational = message.getConversation();
+		final Conversation conversation;
+		if (conversational instanceof Conversation) {
+			conversation = (Conversation) conversational;
+		} else {
+			conversation = xmppConnectionService.findOrCreateConversation(conversational.getAccount(),
+					conversational.getJid(),
+					conversational.getMode() == Conversational.MODE_MULTI,
+					true,
+					true);
+		}
+		switchToConversationAndQuote(conversation, text);
 	}
 
 	@Override
@@ -108,12 +177,12 @@ public class SearchActivity extends XmppActivity implements TextWatcher, OnSearc
 	private void changeBackground(boolean hasSearch, boolean hasResults) {
 		if (hasSearch) {
 			if (hasResults) {
-				binding.searchResults.setBackgroundColor(Color.get(this,R.attr.color_background_secondary));
+				binding.searchResults.setBackgroundColor(Color.get(this, R.attr.color_background_secondary));
 			} else {
-				binding.searchResults.setBackground(Drawable.get(this,R.attr.activity_background_no_results));
+				binding.searchResults.setBackground(Drawable.get(this, R.attr.activity_background_no_results));
 			}
 		} else {
-			binding.searchResults.setBackground(Drawable.get(this,R.attr.activity_background_search));
+			binding.searchResults.setBackground(Drawable.get(this, R.attr.activity_background_search));
 		}
 	}
 
@@ -129,7 +198,10 @@ public class SearchActivity extends XmppActivity implements TextWatcher, OnSearc
 
 	@Override
 	public void afterTextChanged(Editable s) {
-		String term = s.toString().trim();
+		final String term = s.toString().trim();
+		if (!currentSearch.watch(term)) {
+			return;
+		}
 		if (term.length() > 0) {
 			xmppConnectionService.search(s.toString().trim(), this);
 		} else {
@@ -144,6 +216,7 @@ public class SearchActivity extends XmppActivity implements TextWatcher, OnSearc
 	public void onSearchResultsAvailable(String term, List<Message> messages) {
 		runOnUiThread(() -> {
 			this.messages.clear();
+			DateSeparator.addAll(messages);
 			this.messages.addAll(messages);
 			messageListAdapter.notifyDataSetChanged();
 			changeBackground(true, messages.size() > 0);
