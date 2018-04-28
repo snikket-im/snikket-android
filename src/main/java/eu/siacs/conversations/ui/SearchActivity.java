@@ -207,6 +207,7 @@ public class SearchActivity extends XmppActivity implements TextWatcher, OnSearc
 		} else {
 			MessageSearchTask.cancelRunningTasks();
 			this.messages.clear();
+			messageListAdapter.setHighlightedTerm(null);
 			messageListAdapter.notifyDataSetChanged();
 			changeBackground(false, false);
 		}
@@ -216,6 +217,7 @@ public class SearchActivity extends XmppActivity implements TextWatcher, OnSearc
 	public void onSearchResultsAvailable(String term, List<Message> messages) {
 		runOnUiThread(() -> {
 			this.messages.clear();
+			messageListAdapter.setHighlightedTerm(term);
 			DateSeparator.addAll(messages);
 			this.messages.addAll(messages);
 			messageListAdapter.notifyDataSetChanged();
