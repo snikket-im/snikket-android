@@ -37,8 +37,17 @@ public class InvalidJid implements Jid {
 
 	private final String value;
 
-	public InvalidJid(String jid) {
+	private InvalidJid(String jid) {
 		this.value = jid;
+	}
+	public  static Jid of(String jid, boolean fallback) {
+		final int pos = jid.indexOf('/');
+		if (fallback && pos >= 0 && jid.length() >= pos + 1) {
+			if (jid.substring(pos+1).trim().isEmpty()) {
+				return Jid.ofEscaped(jid.substring(0,pos));
+			}
+		}
+		return new InvalidJid(jid);
 	}
 
 	@Override
