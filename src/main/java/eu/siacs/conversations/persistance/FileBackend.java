@@ -332,7 +332,11 @@ public class FileBackend {
 		Log.d(Config.LOGTAG, "copy " + uri.toString() + " to private storage (mime=" + mime + ")");
 		String extension = MimeUtils.guessExtensionFromMimeType(mime);
 		if (extension == null) {
+			Log.d(Config.LOGTAG,"extension from mime type was null");
 			extension = getExtensionFromUri(uri);
+		}
+		if ("ogg".equals(extension) && type != null && type.startsWith("audio/")) {
+			extension = "oga";
 		}
 		message.setRelativeFilePath(message.getUuid() + "." + extension);
 		copyFileToPrivateStorage(mXmppConnectionService.getFileBackend().getFile(message), uri);
@@ -351,6 +355,12 @@ public class FileBackend {
 				filename = null;
 			} finally {
 				cursor.close();
+			}
+		}
+		if (filename == null) {
+			final List<String> segments = uri.getPathSegments();
+			if (segments.size() > 0) {
+				filename = segments.get(segments.size() -1);
 			}
 		}
 		int pos = filename == null ? -1 : filename.lastIndexOf('.');
