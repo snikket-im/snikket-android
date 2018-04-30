@@ -50,6 +50,7 @@ import eu.siacs.conversations.entities.Roster;
 import eu.siacs.conversations.entities.ServiceDiscoveryResult;
 import eu.siacs.conversations.services.ShortcutService;
 import eu.siacs.conversations.utils.CryptoHelper;
+import eu.siacs.conversations.utils.FtsUtils;
 import eu.siacs.conversations.utils.MimeUtils;
 import eu.siacs.conversations.utils.Resolver;
 import eu.siacs.conversations.xmpp.mam.MamReference;
@@ -229,6 +230,10 @@ public class DatabaseBackend extends SQLiteOpenHelper {
 		db.execSQL(CREATE_IDENTITIES_STATEMENT);
 		db.execSQL(CREATE_PRESENCE_TEMPLATES_STATEMENT);
 		db.execSQL(CREATE_RESOLVER_RESULTS_TABLE);
+		db.execSQL(CREATE_MESSAGE_INDEX_TABLE);
+		db.execSQL(CREATE_MESSAGE_INSERT_TRIGGER);
+		db.execSQL(CREATE_MESSAGE_UPDATE_TRIGGER);
+		db.execSQL(CREATE_MESSAGE_DELETE_TRIGGER);
 	}
 
 	@Override
@@ -718,10 +723,11 @@ public class DatabaseBackend extends SQLiteOpenHelper {
 		return list;
 	}
 
-	public Cursor getMessageSearchCursor(String term) {
+	public Cursor getMessageSearchCursor(List<String> term) {
 		SQLiteDatabase db = this.getReadableDatabase();
 		String SQL = "SELECT "+Message.TABLENAME+".*,"+Conversation.TABLENAME+'.'+Conversation.CONTACTJID+','+Conversation.TABLENAME+'.'+Conversation.ACCOUNT+','+Conversation.TABLENAME+'.'+Conversation.MODE+" FROM "+Message.TABLENAME +" join "+Conversation.TABLENAME+" on "+Message.TABLENAME+'.'+Message.CONVERSATION+'='+Conversation.TABLENAME+'.'+Conversation.UUID+" join messages_index ON messages_index.uuid=messages.uuid where "+Message.ENCRYPTION+" NOT IN("+Message.ENCRYPTION_AXOLOTL_NOT_FOR_THIS_DEVICE+','+Message.ENCRYPTION_PGP+','+Message.ENCRYPTION_DECRYPTION_FAILED+") AND messages_index.body MATCH ? ORDER BY "+Message.TIME_SENT+" DESC limit "+Config.MAX_SEARCH_RESULTS;
-		return db.rawQuery(SQL,new String[]{'%'+term+'%'});
+		Log.d(Config.LOGTAG,"search term: "+FtsUtils.toMatchString(term));
+		return db.rawQuery(SQL,new String[]{FtsUtils.toMatchString(term)});
 	}
 
 	public Iterable<Message> getMessagesIterable(final Conversation conversation) {

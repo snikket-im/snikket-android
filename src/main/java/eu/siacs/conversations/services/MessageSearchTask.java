@@ -55,18 +55,18 @@ public class MessageSearchTask implements Runnable, Cancellable {
 	private static final ReplacingSerialSingleThreadExecutor EXECUTOR = new ReplacingSerialSingleThreadExecutor(MessageSearchTask.class.getName());
 
 	private final XmppConnectionService xmppConnectionService;
-	private final String term;
+	private final List<String> term;
 	private final OnSearchResultsAvailable onSearchResultsAvailable;
 
 	private boolean isCancelled = false;
 
-	private MessageSearchTask(XmppConnectionService xmppConnectionService, String term, OnSearchResultsAvailable onSearchResultsAvailable) {
+	private MessageSearchTask(XmppConnectionService xmppConnectionService, List<String> term, OnSearchResultsAvailable onSearchResultsAvailable) {
 		this.xmppConnectionService = xmppConnectionService;
 		this.term = term;
 		this.onSearchResultsAvailable = onSearchResultsAvailable;
 	}
 
-	public static void search(XmppConnectionService xmppConnectionService, String term, OnSearchResultsAvailable onSearchResultsAvailable) {
+	public static void search(XmppConnectionService xmppConnectionService, List<String> term, OnSearchResultsAvailable onSearchResultsAvailable) {
 		new MessageSearchTask(xmppConnectionService, term, onSearchResultsAvailable).executeInBackground();
 	}
 

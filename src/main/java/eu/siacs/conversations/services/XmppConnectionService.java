@@ -535,7 +535,7 @@ public class XmppConnectionService extends Service {
 		return find(getConversations(), account, jid);
 	}
 
-	public void search(String term, OnSearchResultsAvailable onSearchResultsAvailable) {
+	public void search(List<String> term, OnSearchResultsAvailable onSearchResultsAvailable) {
 		MessageSearchTask.search(this, term, onSearchResultsAvailable);
 	}
 

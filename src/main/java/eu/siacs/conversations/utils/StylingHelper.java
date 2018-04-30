@@ -91,7 +91,15 @@ public class StylingHelper {
 		format(editable, end, editable.length() - 1, textColor);
 	}
 
-	public static void highlight(final Context context, final Editable editable, String needle, boolean dark) {
+	public static void highlight(final Context context, final Editable editable, List<String> needles, boolean dark) {
+		for(String needle : needles) {
+			if (!FtsUtils.isKeyword(needle)) {
+				highlight(context, editable, needle, dark);
+			}
+		}
+	}
+
+	private static void highlight(final Context context, final Editable editable, String needle, boolean dark) {
 		final int length = needle.length();
 		String string = editable.toString();
 		int start = indexOfIgnoreCase(string, needle, 0);

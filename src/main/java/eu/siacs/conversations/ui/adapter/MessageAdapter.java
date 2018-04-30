@@ -34,7 +34,6 @@ import android.view.ActionMode;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.ArrayAdapter;
@@ -99,7 +98,7 @@ public class MessageAdapter extends ArrayAdapter<Message> implements CopyTextVie
 					+ "\\;\\/\\?\\@\\&\\=\\#\\~\\-\\.\\+\\!\\*\\'\\(\\)\\,\\_])"
 					+ "|(?:\\%[a-fA-F0-9]{2}))+");
 
-	private String highlightedText = null;
+	private List<String> highlightedTerm = null;
 
 	private static final Linkify.TransformFilter WEBURL_TRANSFORM_FILTER = (matcher, url) -> {
 		if (url == null) {
@@ -550,8 +549,8 @@ public class MessageAdapter extends ArrayAdapter<Message> implements CopyTextVie
 			}
 
 			StylingHelper.format(body, viewHolder.messageBody.getCurrentTextColor());
-			if (highlightedText != null) {
-				StylingHelper.highlight(activity, body, highlightedText, StylingHelper.isDarkText(viewHolder.messageBody));
+			if (highlightedTerm != null) {
+				StylingHelper.highlight(activity, body, highlightedTerm, StylingHelper.isDarkText(viewHolder.messageBody));
 			}
 
 			Linkify.addLinks(body, XMPP_PATTERN, "xmpp", XMPPURI_MATCH_FILTER, null);
@@ -1008,8 +1007,8 @@ public class MessageAdapter extends ArrayAdapter<Message> implements CopyTextVie
 		}
 	}
 
-	public void setHighlightedTerm(String term) {
-		this.highlightedText = term;
+	public void setHighlightedTerm(List<String> term) {
+		this.highlightedTerm = term;
 	}
 
 	public interface OnQuoteListener {

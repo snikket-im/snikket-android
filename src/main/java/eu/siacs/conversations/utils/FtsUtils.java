@@ -27,14 +27,68 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package eu.siacs.conversations.ui.interfaces;
+package eu.siacs.conversations.utils;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Locale;
 
-import eu.siacs.conversations.entities.Message;
+public class FtsUtils {
 
-public interface OnSearchResultsAvailable {
+	private static List<String> KEYWORDS = Arrays.asList("OR", "AND");
 
-	void onSearchResultsAvailable(List<String> term, List<Message> messages);
+	public static List<String> parse(String input) {
+		List<String> term = new ArrayList<>();
+		for (String part : input.split("\\s+")) {
+			if (part.isEmpty()) {
+				continue;
+			}
+			final String cleaned = part.substring(getStartIndex(part), getEndIndex(part) +1);
+			if (isKeyword(cleaned)) {
+				term.add(part);
+			} else {
+				term.add(cleaned);
+			}
+		}
+		return term;
+	}
+
+	public static String toMatchString(List<String> terms) {
+		StringBuilder builder = new StringBuilder();
+		for (String term : terms) {
+			if (builder.length() != 0) {
+				builder.append(' ');
+			}
+			if (isKeyword(term)) {
+				builder.append(term.toUpperCase(Locale.ENGLISH));
+			} else if (term.contains("*") || term.startsWith("-")) {
+				builder.append(term);
+			} else {
+				builder.append('*').append(term).append('*');
+			}
+		}
+		return builder.toString();
+	}
+
+	public static boolean isKeyword(String term) {
+		return KEYWORDS.contains(term.toUpperCase(Locale.ENGLISH));
+	}
+
+	private static int getStartIndex(String term) {
+		int index = 0;
+		while (term.charAt(index) == '*') {
+			++index;
+		}
+		return index;
+	}
+
+	private static int getEndIndex(String term) {
+		int index = term.length() - 1;
+		while (term.charAt(index) == '*') {
+			--index;
+		}
+		return index;
+	}
 
 }
