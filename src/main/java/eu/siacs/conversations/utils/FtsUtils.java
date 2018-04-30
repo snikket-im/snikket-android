@@ -34,6 +34,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 
+
 public class FtsUtils {
 
 	private static List<String> KEYWORDS = Arrays.asList("OR", "AND");
@@ -44,10 +45,10 @@ public class FtsUtils {
 			if (part.isEmpty()) {
 				continue;
 			}
-			final String cleaned = part.substring(getStartIndex(part), getEndIndex(part) +1);
+			final String cleaned = clean(part);
 			if (isKeyword(cleaned)) {
 				term.add(part);
-			} else {
+			} else if (!cleaned.isEmpty()) {
 				term.add(cleaned);
 			}
 		}
@@ -76,9 +77,13 @@ public class FtsUtils {
 	}
 
 	private static int getStartIndex(String term) {
+		int length = term.length();
 		int index = 0;
 		while (term.charAt(index) == '*') {
 			++index;
+			if (index >= length) {
+				break;
+			}
 		}
 		return index;
 	}
@@ -87,8 +92,21 @@ public class FtsUtils {
 		int index = term.length() - 1;
 		while (term.charAt(index) == '*') {
 			--index;
+			if (index < 0) {
+				break;
+			}
 		}
 		return index;
+	}
+
+	private static String clean(String input) {
+		int begin = getStartIndex(input);
+		int end = getEndIndex(input);
+		if (begin > end) {
+			return "";
+		} else {
+			return input.substring(begin, end + 1);
+		}
 	}
 
 }
