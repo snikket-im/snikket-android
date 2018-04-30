@@ -950,10 +950,28 @@ public class FileBackend {
 		return getVideoDimensions(mediaMetadataRetriever);
 	}
 
+	private static Dimensions getVideoDimensionsOfFrame(MediaMetadataRetriever mediaMetadataRetriever) {
+		Bitmap bitmap = null;
+		try {
+			bitmap = mediaMetadataRetriever.getFrameAtTime();
+			return new Dimensions(bitmap.getHeight(), bitmap.getWidth());
+		} catch (Exception e) {
+			return null;
+		} finally {
+			if (bitmap != null) {
+				bitmap.recycle();;
+			}
+		}
+	}
+
 	private static Dimensions getVideoDimensions(MediaMetadataRetriever metadataRetriever) throws NotAVideoFile {
 		String hasVideo = metadataRetriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_HAS_VIDEO);
 		if (hasVideo == null) {
 			throw new NotAVideoFile();
+		}
+		Dimensions dimensions = getVideoDimensionsOfFrame(metadataRetriever);
+		if (dimensions != null) {
+			return dimensions;
 		}
 		int rotation = extractRotationFromMediaRetriever(metadataRetriever);
 		boolean rotated = rotation == 90 || rotation == 270;
@@ -977,25 +995,19 @@ public class FileBackend {
 	}
 
 	private static int extractRotationFromMediaRetriever(MediaMetadataRetriever metadataRetriever) {
-		int rotation;
-		if (Build.VERSION.SDK_INT >= 17) {
-			String r = metadataRetriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_VIDEO_ROTATION);
-			try {
-				rotation = Integer.parseInt(r);
-			} catch (Exception e) {
-				rotation = 0;
-			}
-		} else {
-			rotation = 0;
+		String r = metadataRetriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_VIDEO_ROTATION);
+		try {
+			return Integer.parseInt(r);
+		} catch (Exception e) {
+			return 0;
 		}
-		return rotation;
 	}
 
 	private static class Dimensions {
 		public final int width;
 		public final int height;
 
-		public Dimensions(int height, int width) {
+		Dimensions(int height, int width) {
 			this.width = width;
 			this.height = height;
 		}
