@@ -37,11 +37,9 @@ import android.preference.PreferenceManager;
 import android.support.annotation.StyleRes;
 import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
-import android.util.Log;
 import android.util.TypedValue;
 import android.widget.TextView;
 
-import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.ui.SettingsActivity;
 
@@ -99,7 +97,7 @@ public class ThemeHelper {
 			if (text != null && action != null) {
 				text.setTextSize(TypedValue.COMPLEX_UNIT_PX, size);
 				action.setTextSize(TypedValue.COMPLEX_UNIT_PX, size);
-				action.setTextColor(ContextCompat.getColor(context, R.color.deep_purple_a100));
+				action.setTextColor(ContextCompat.getColor(context, R.color.blue_a100));
 			}
 		}
 	}

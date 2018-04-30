@@ -97,7 +97,7 @@ public class StylingHelper {
 		int start = indexOfIgnoreCase(string, needle, 0);
 		while (start != -1) {
 			int end = start + length;
-			editable.setSpan(new BackgroundColorSpan(ContextCompat.getColor(context, dark ? R.color.deep_purple_a100 : R.color.deep_purple_a200)), start, end, SpannableString.SPAN_EXCLUSIVE_EXCLUSIVE);
+			editable.setSpan(new BackgroundColorSpan(ContextCompat.getColor(context, dark ? R.color.blue_a100 : R.color.blue_a200)), start, end, SpannableString.SPAN_EXCLUSIVE_EXCLUSIVE);
 			editable.setSpan(new ForegroundColorSpan(ContextCompat.getColor(context, dark ? R.color.black87 : R.color.white)), start, end, SpannableString.SPAN_EXCLUSIVE_EXCLUSIVE);
 			start = indexOfIgnoreCase(string, needle, start + length);
 		}
