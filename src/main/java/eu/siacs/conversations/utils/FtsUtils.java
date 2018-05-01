@@ -46,7 +46,7 @@ public class FtsUtils {
 				continue;
 			}
 			final String cleaned = clean(part);
-			if (isKeyword(cleaned)) {
+			if (isKeyword(cleaned) || cleaned.contains("*")) {
 				term.add(part);
 			} else if (!cleaned.isEmpty()) {
 				term.add(cleaned);
@@ -72,7 +72,7 @@ public class FtsUtils {
 		return builder.toString();
 	}
 
-	public static boolean isKeyword(String term) {
+	static boolean isKeyword(String term) {
 		return KEYWORDS.contains(term.toUpperCase(Locale.ENGLISH));
 	}
 

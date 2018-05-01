@@ -87,6 +87,7 @@ public class MessageSearchTask implements Runnable, Cancellable {
 			final HashMap<String, Conversational> conversationCache = new HashMap<>();
 			final List<Message> result = new ArrayList<>();
 			cursor = xmppConnectionService.databaseBackend.getMessageSearchCursor(term);
+			long dbTimer = SystemClock.elapsedRealtime();
 			if (isCancelled) {
 				Log.d(Config.LOGTAG, "canceled search task");
 				return;
@@ -99,10 +100,8 @@ public class MessageSearchTask implements Runnable, Cancellable {
 						return;
 					}
 					final String conversationUuid = cursor.getString(cursor.getColumnIndex(Message.CONVERSATION));
-					Conversational conversation;
-					if (conversationCache.containsKey(conversationUuid)) {
-						conversation = conversationCache.get(conversationUuid);
-					} else {
+					Conversational conversation = conversationCache.get(conversationUuid);
+					if (conversation == null) {
 						String accountUuid = cursor.getString(cursor.getColumnIndex(Conversation.ACCOUNT));
 						String contactJid = cursor.getString(cursor.getColumnIndex(Conversation.CONTACTJID));
 						int mode = cursor.getInt(cursor.getColumnIndex(Conversation.MODE));
@@ -114,7 +113,7 @@ public class MessageSearchTask implements Runnable, Cancellable {
 				} while (cursor.moveToPrevious());
 			}
 			long stopTimestamp = SystemClock.elapsedRealtime();
-			Log.d(Config.LOGTAG, "found " + result.size() + " messages in " + (stopTimestamp - startTimestamp) + "ms");
+			Log.d(Config.LOGTAG, "found " + result.size() + " messages in " + (stopTimestamp - startTimestamp) + "ms"+ " (db was "+(dbTimer - startTimestamp)+"ms)");
 			onSearchResultsAvailable.onSearchResultsAvailable(term, result);
 		} catch (Exception e) {
 			Log.d(Config.LOGTAG, "exception while searching ", e);
