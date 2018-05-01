@@ -574,8 +574,9 @@ public class AxolotlService implements OnAdvancedStreamFeaturesLoaded {
 		mXmppConnectionService.sendIqPacket(account, publish, new OnIqPacketReceived() {
 			@Override
 			public void onIqPacketReceived(Account account, IqPacket packet) {
-				Element error = packet.getType() == IqPacket.TYPE.ERROR ? packet.findChild("error") : null;
-				if (firstAttempt && error != null && error.hasChild("precondition-not-met", Namespace.PUBSUB_ERROR)) {
+				final Element error = packet.getType() == IqPacket.TYPE.ERROR ? packet.findChild("error") : null;
+				final boolean preConditionNotMet = error != null && error.hasChild("precondition-not-met", Namespace.PUBSUB_ERROR);
+				if (firstAttempt && preConditionNotMet) {
 					Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": precondition wasn't met for device list. pushing node configuration");
 					mXmppConnectionService.pushNodeConfiguration(account, AxolotlService.PEP_DEVICE_LIST, publishOptions, new XmppConnectionService.OnConfigurationPushed() {
 						@Override
@@ -595,8 +596,13 @@ public class AxolotlService implements OnAdvancedStreamFeaturesLoaded {
 						mXmppConnectionService.databaseBackend.updateAccount(account);
 					}
 					if (packet.getType() == IqPacket.TYPE.ERROR) {
-						pepBroken = true;
-						Log.d(Config.LOGTAG, getLogprefix(account) + "Error received while publishing own device id" + packet.findChild("error"));
+						if (preConditionNotMet) {
+							Log.d(Config.LOGTAG,account.getJid().asBareJid()+": pre condition still not met on second attempt");
+						} else if (error != null) {
+							pepBroken = true;
+							Log.d(Config.LOGTAG, getLogprefix(account) + "Error received while publishing own device id" + packet.findChild("error"));
+						}
+
 					}
 				}
 			}

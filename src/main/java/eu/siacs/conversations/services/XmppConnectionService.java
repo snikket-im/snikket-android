@@ -2546,15 +2546,15 @@ public class XmppConnectionService extends Service {
 							public void onIqPacketReceived(Account account, IqPacket packet) {
 								if (packet.getType() == IqPacket.TYPE.RESULT && callback != null) {
 									callback.onPushSucceeded();
-								} else {
-									Log.d(Config.LOGTAG, packet.toString());
+								} else if (packet.getType() == IqPacket.TYPE.ERROR && callback != null) {
+									callback.onPushFailed();
 								}
 							}
 						});
 					} else if (callback != null) {
 						callback.onPushFailed();
 					}
-				} else if (callback != null) {
+				} else if (packet.getType() == IqPacket.TYPE.ERROR && callback != null) {
 					callback.onPushFailed();
 				}
 			}
