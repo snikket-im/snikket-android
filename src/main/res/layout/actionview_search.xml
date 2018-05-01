@@ -12,7 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:focusable="true"
-        android:imeOptions="actionSearch"
+        android:imeOptions="flagNoExtractUi|actionSearch"
         android:inputType="textEmailAddress|textNoSuggestions"/>
 
 </RelativeLayout>

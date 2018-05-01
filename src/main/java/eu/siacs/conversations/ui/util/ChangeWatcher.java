@@ -44,4 +44,7 @@ public class ChangeWatcher<T> {
 		}
 	}
 
+	public T get() {
+		return object;
+	}
 }

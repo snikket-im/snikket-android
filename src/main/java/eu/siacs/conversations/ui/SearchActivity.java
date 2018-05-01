@@ -63,6 +63,7 @@ import eu.siacs.conversations.ui.util.Color;
 import eu.siacs.conversations.ui.util.DateSeparator;
 import eu.siacs.conversations.ui.util.Drawable;
 import eu.siacs.conversations.ui.util.ListViewUtils;
+import eu.siacs.conversations.ui.util.PendingItem;
 import eu.siacs.conversations.ui.util.ShareUtil;
 import eu.siacs.conversations.utils.FtsUtils;
 import eu.siacs.conversations.utils.MessageUtils;
@@ -72,15 +73,23 @@ import static eu.siacs.conversations.ui.util.SoftKeyboardUtils.showKeyboard;
 
 public class SearchActivity extends XmppActivity implements TextWatcher, OnSearchResultsAvailable, MessageAdapter.OnContactPictureClicked {
 
+	private static final String EXTRA_SEARCH_TERM = "search-term";
+
 	private ActivitySearchBinding binding;
 	private MessageAdapter messageListAdapter;
 	private final List<Message> messages = new ArrayList<>();
 	private WeakReference<Message> selectedMessageReference = new WeakReference<>(null);
 	private final ChangeWatcher<List<String>> currentSearch = new ChangeWatcher<>();
+	private final PendingItem<String> pendingSearchTerm = new PendingItem<>();
+	private final PendingItem<List<String>> pendingSearch = new PendingItem<>();
 
 	@Override
-	public void onCreate(final Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
+	public void onCreate(final Bundle bundle) {
+		final String searchTerm = bundle == null ? null : bundle.getString(EXTRA_SEARCH_TERM);
+		if (searchTerm != null) {
+			pendingSearchTerm.push(searchTerm);
+		}
+		super.onCreate(bundle);
 		this.binding = DataBindingUtil.setContentView(this, R.layout.activity_search);
 		setSupportActionBar((Toolbar) this.binding.toolbar);
 		configureActionBar(getSupportActionBar());
@@ -93,8 +102,20 @@ public class SearchActivity extends XmppActivity implements TextWatcher, OnSearc
 	@Override
 	public boolean onCreateOptionsMenu(final Menu menu) {
 		getMenuInflater().inflate(R.menu.activity_search, menu);
-		MenuItem searchActionMenuItem = menu.findItem(R.id.action_search);
-		EditText searchField = searchActionMenuItem.getActionView().findViewById(R.id.search_field);
+		final MenuItem searchActionMenuItem = menu.findItem(R.id.action_search);
+		final EditText searchField = searchActionMenuItem.getActionView().findViewById(R.id.search_field);
+		final String term = pendingSearchTerm.pop();
+		if (term != null) {
+			searchField.append(term);
+			List<String> searchTerm = FtsUtils.parse(term);
+			if (xmppConnectionService != null) {
+				if (currentSearch.watch(searchTerm)) {
+					xmppConnectionService.search(searchTerm, this);
+				}
+			} else {
+				pendingSearch.push(searchTerm);
+			}
+		}
 		searchField.addTextChangedListener(this);
 		searchField.setHint(R.string.search_messages);
 		searchField.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_AUTO_COMPLETE);
@@ -153,6 +174,15 @@ public class SearchActivity extends XmppActivity implements TextWatcher, OnSearc
 		return super.onContextItemSelected(item);
 	}
 
+	@Override
+	public void onSaveInstanceState(Bundle bundle) {
+		List<String> term = currentSearch.get();
+		if (term != null && term.size() > 0) {
+			bundle.putString(EXTRA_SEARCH_TERM,FtsUtils.toUserEnteredString(term));
+		}
+		super.onSaveInstanceState(bundle);
+	}
+
 	private void quote(Message message) {
 		switchToConversationAndQuote(wrap(message.getConversation()), MessageUtils.prepareQuote(message));
 	}
@@ -176,7 +206,10 @@ public class SearchActivity extends XmppActivity implements TextWatcher, OnSearc
 
 	@Override
 	void onBackendConnected() {
-
+		final List<String> searchTerm = pendingSearch.pop();
+		if (searchTerm != null && currentSearch.watch(searchTerm)) {
+			xmppConnectionService.search(searchTerm, this);
+		}
 	}
 
 	private void changeBackground(boolean hasSearch, boolean hasResults) {
