@@ -706,4 +706,6 @@
     <string name="search_messages">Search messages</string>
     <string name="gif">GIF</string>
     <string name="view_conversation">View conversation</string>
+    <string name="pref_use_share_location_plugin">Share Location Plugin</string>
+    <string name="pref_use_share_location_plugin_summary">Use the Share Location Plugin instead of the build in map</string>
 </resources>

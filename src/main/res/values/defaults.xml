@@ -43,4 +43,5 @@
     <bool name="scroll_to_bottom">true</bool>
     <string name="omemo_setting_default">default_on</string>
     <string name="default_font_size">small</string>
+    <bool name="use_share_location_plugin">false</bool>
 </resources>

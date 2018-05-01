@@ -95,6 +95,7 @@ import eu.siacs.conversations.ui.util.SendButtonAction;
 import eu.siacs.conversations.ui.util.SendButtonTool;
 import eu.siacs.conversations.ui.util.ShareUtil;
 import eu.siacs.conversations.ui.widget.EditMessage;
+import eu.siacs.conversations.utils.GeoHelper;
 import eu.siacs.conversations.utils.MessageUtils;
 import eu.siacs.conversations.utils.NickValidityChecker;
 import eu.siacs.conversations.utils.QuickLoader;
@@ -1498,7 +1499,7 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
 					intent = new Intent(getActivity(), RecordingActivity.class);
 					break;
 				case ATTACHMENT_CHOICE_LOCATION:
-					intent = new Intent(getActivity(), ShareLocationActivity.class);
+					intent = GeoHelper.getFetchIntent(activity);
 					break;
 			}
 			if (intent.resolveActivity(getActivity().getPackageManager()) != null) {

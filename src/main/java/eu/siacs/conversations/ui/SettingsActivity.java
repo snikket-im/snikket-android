@@ -1,5 +1,6 @@
 package eu.siacs.conversations.ui;
 
+import android.preference.CheckBoxPreference;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
 import android.app.FragmentManager;
@@ -37,6 +38,7 @@ import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.services.ExportLogsService;
 import eu.siacs.conversations.services.MemorizingTrustManager;
 import eu.siacs.conversations.ui.util.Color;
+import eu.siacs.conversations.utils.GeoHelper;
 import eu.siacs.conversations.utils.TimeframeUtils;
 import rocks.xmpp.addr.Jid;
 
@@ -97,6 +99,14 @@ public class SettingsActivity extends XmppActivity implements
 		}
 
 		PreferenceScreen mainPreferenceScreen = (PreferenceScreen) mSettingsFragment.findPreference("main_screen");
+
+		PreferenceCategory attachmentsCategory = (PreferenceCategory) mSettingsFragment.findPreference("attachments");
+		CheckBoxPreference locationPlugin = (CheckBoxPreference) mSettingsFragment.findPreference("use_share_location_plugin");
+		if (attachmentsCategory != null && locationPlugin != null) {
+			if (!GeoHelper.isLocationPluginInstalled(this)) {
+				attachmentsCategory.removePreference(locationPlugin);
+			}
+		}
 
 		//this feature is only available on Huawei Android 6.
 		PreferenceScreen huaweiPreferenceScreen = (PreferenceScreen) mSettingsFragment.findPreference("huawei");
