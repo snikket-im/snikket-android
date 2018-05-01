@@ -1,5 +1,10 @@
 # Changelog
 
+### Version 2.2.0
+* Integrate Voice Recorder
+* Integrate Share Location
+* Added ability to search messages
+
 ### Version 2.1.4
 * bug fixes
 
