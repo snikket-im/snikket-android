@@ -97,6 +97,7 @@ public class GeoHelper {
 			intents.add(locationPluginIntent);
 		} else {
 			Intent intent = new Intent(context, ShowLocationActivity.class);
+			intent.setAction(SHOW_LOCATION_PACKAGE_NAME);
 			intent.putExtra("latitude", latitude);
 			intent.putExtra("longitude", longitude);
 			intents.add(intent);
