@@ -965,7 +965,7 @@ public class MessageAdapter extends ArrayAdapter<Message> implements CopyTextVie
 	}
 
 	public void showLocation(Message message) {
-		for (Intent intent : GeoHelper.createGeoIntentsFromMessage(message)) {
+		for (Intent intent : GeoHelper.createGeoIntentsFromMessage(activity, message)) {
 			if (intent.resolveActivity(getContext().getPackageManager()) != null) {
 				getContext().startActivity(intent);
 				return;

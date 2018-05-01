@@ -1,6 +1,7 @@
 package eu.siacs.conversations.utils;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
@@ -18,32 +19,34 @@ import eu.siacs.conversations.entities.Conversation;
 import eu.siacs.conversations.entities.Conversational;
 import eu.siacs.conversations.entities.Message;
 import eu.siacs.conversations.ui.ShareLocationActivity;
+import eu.siacs.conversations.ui.ShowLocationActivity;
 
 public class GeoHelper {
 
 	private static final String SHARE_LOCATION_PACKAGE_NAME = "eu.siacs.conversations.location.request";
+	private static final String SHOW_LOCATION_PACKAGE_NAME = "eu.siacs.conversations.location.show";
 
 	public static Pattern GEO_URI = Pattern.compile("geo:([\\-0-9.]+),([\\-0-9.]+)(?:,([\\-0-9.]+))?(?:\\?(.*))?", Pattern.CASE_INSENSITIVE);
 
-	public static boolean isLocationPluginInstalled(Activity activity) {
-		return new Intent(SHARE_LOCATION_PACKAGE_NAME).resolveActivity(activity.getPackageManager()) != null;
+	public static boolean isLocationPluginInstalled(Context context) {
+		return new Intent(SHARE_LOCATION_PACKAGE_NAME).resolveActivity(context.getPackageManager()) != null;
 	}
 
-	public static boolean isLocationPluginInstalledAndDesired(Activity activity) {
-		SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(activity);
-		final boolean configured = preferences.getBoolean("use_share_location_plugin", activity.getResources().getBoolean(R.bool.use_share_location_plugin));
-		return configured && isLocationPluginInstalled(activity);
+	public static boolean isLocationPluginInstalledAndDesired(Context context) {
+		SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+		final boolean configured = preferences.getBoolean("use_share_location_plugin", context.getResources().getBoolean(R.bool.use_share_location_plugin));
+		return configured && isLocationPluginInstalled(context);
 	}
 
-	public static Intent getFetchIntent(Activity activity) {
-		if (isLocationPluginInstalledAndDesired(activity)) {
+	public static Intent getFetchIntent(Context context) {
+		if (isLocationPluginInstalledAndDesired(context)) {
 			return new Intent(SHARE_LOCATION_PACKAGE_NAME);
 		} else {
-			return new Intent(activity, ShareLocationActivity.class);
+			return new Intent(context, ShareLocationActivity.class);
 		}
 	}
 
-	public static ArrayList<Intent> createGeoIntentsFromMessage(Message message) {
+	public static ArrayList<Intent> createGeoIntentsFromMessage(Context context, Message message) {
 		final ArrayList<Intent> intents = new ArrayList<>();
 		Matcher matcher = GEO_URI.matcher(message.getBody());
 		if (!matcher.matches()) {
@@ -75,22 +78,29 @@ public class GeoHelper {
 			label = "";
 		}
 
-		Intent locationPluginIntent = new Intent("eu.siacs.conversations.location.show");
-		locationPluginIntent.putExtra("latitude",latitude);
-		locationPluginIntent.putExtra("longitude",longitude);
-		if (message.getStatus() != Message.STATUS_RECEIVED) {
-			locationPluginIntent.putExtra("jid",conversation.getAccount().getJid().toString());
-			locationPluginIntent.putExtra("name",conversation.getAccount().getJid().getLocal());
-		} else {
-			Contact contact = message.getContact();
-			if (contact != null) {
-				locationPluginIntent.putExtra("name", contact.getDisplayName());
-				locationPluginIntent.putExtra("jid", contact.getJid().toString());
+		if (isLocationPluginInstalledAndDesired(context)) {
+			Intent locationPluginIntent = new Intent(SHOW_LOCATION_PACKAGE_NAME);
+			locationPluginIntent.putExtra("latitude", latitude);
+			locationPluginIntent.putExtra("longitude", longitude);
+			if (message.getStatus() != Message.STATUS_RECEIVED) {
+				locationPluginIntent.putExtra("jid", conversation.getAccount().getJid().toString());
+				locationPluginIntent.putExtra("name", conversation.getAccount().getJid().getLocal());
 			} else {
-				locationPluginIntent.putExtra("name", UIHelper.getDisplayedMucCounterpart(message.getCounterpart()));
+				Contact contact = message.getContact();
+				if (contact != null) {
+					locationPluginIntent.putExtra("name", contact.getDisplayName());
+					locationPluginIntent.putExtra("jid", contact.getJid().toString());
+				} else {
+					locationPluginIntent.putExtra("name", UIHelper.getDisplayedMucCounterpart(message.getCounterpart()));
+				}
 			}
+			intents.add(locationPluginIntent);
+		} else {
+			Intent intent = new Intent(context, ShowLocationActivity.class);
+			intent.putExtra("latitude", latitude);
+			intent.putExtra("longitude", longitude);
+			intents.add(intent);
 		}
-		intents.add(locationPluginIntent);
 
 		Intent geoIntent = new Intent(Intent.ACTION_VIEW);
 		geoIntent.setData(Uri.parse("geo:" + String.valueOf(latitude) + "," + String.valueOf(longitude) + "?q=" + String.valueOf(latitude) + "," + String.valueOf(longitude) + label));

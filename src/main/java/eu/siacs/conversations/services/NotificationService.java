@@ -603,7 +603,7 @@ public class NotificationService {
 	}
 
 	private PendingIntent createShowLocationIntent(final Message message) {
-		Iterable<Intent> intents = GeoHelper.createGeoIntentsFromMessage(message);
+		Iterable<Intent> intents = GeoHelper.createGeoIntentsFromMessage(mXmppConnectionService, message);
 		for (Intent intent : intents) {
 			if (intent.resolveActivity(mXmppConnectionService.getPackageManager()) != null) {
 				return PendingIntent.getActivity(mXmppConnectionService, generateRequestCode(message.getConversation(), 18), intent, PendingIntent.FLAG_UPDATE_CURRENT);
