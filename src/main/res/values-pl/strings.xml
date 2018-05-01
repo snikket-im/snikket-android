@@ -231,7 +231,7 @@
   <string name="joining_conference">Dołączanie do konferencji</string>
   <string name="leave">Opuść pokój</string>
   <string name="contact_added_you">Kontakt został dodany do listy</string>
-  <string name="add_back">Dodaj ponownie</string>
+  <string name="add_back">Również dodaj</string>
   <string name="contact_has_read_up_to_this_point">%s przeczytał do tego miejsca</string>
   <string name="contacts_have_read_up_to_this_point">%s przeczytali do tego miejsca</string>
   <string name="contacts_and_n_more_have_read_up_to_this_point">%1$s i %2$d osób przeczytało do tego miejsca</string>
@@ -430,6 +430,8 @@
   <string name="none">Brak</string>
   <string name="recently_used">Ostatnio używana</string>
   <string name="choose_quick_action">Wybierz szybką akcję</string>
+  <string name="search_contacts">Przeszukuj kontakty</string>
+  <string name="search_groups">Przeszukuj konferencje</string>
   <string name="send_private_message">Wyślij wiadomość prywatną</string>
   <string name="user_has_left_conference">%1$s opuścił konferencję!</string>
   <string name="username">Nazwa użytkownika</string>
@@ -588,7 +590,7 @@ Conversations będzie wciąż ograniczał transfer danych, kiedy tylko to jest m
   <string name="share_as_uri">Udostępnij przez URI XMPP</string>
   <string name="share_as_http">Udostępnij przez link HTTP</string>
   <string name="pref_blind_trust_before_verification">Ślepo Ufaj Przed Weryfikacją</string>
-  <string name="pref_blind_trust_before_verification_summary">Automatycznie ufaj wszystkim nowym urządzeniom kontaktów, którzy nie zostali zweryfikowani wcześniej, i poproś o ręczne potwierdzenie za każdym, kiedy zweryfikowany kontakt dodaje nowe urządzenie.</string>
+  <string name="pref_blind_trust_before_verification_summary">Automatycznie ufaj wszystkim nowym urządzeniom kontaktów, którzy nie zostali zweryfikowani wcześniej i poproś o ręczne potwierdzenie za każdym razem, kiedy zweryfikowany kontakt dodaje nowe urządzenie.</string>
   <string name="blindly_trusted_omemo_keys">Klucze OMEMO którym ślepo zaufano</string>
   <string name="not_trusted">Niezaufane</string>
   <string name="invalid_barcode">Nieprawidłowy kod kreskowy 2D</string>

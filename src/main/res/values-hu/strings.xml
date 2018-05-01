@@ -296,6 +296,7 @@
   <string name="copy_original_url">Eredeti URL másolása</string>
   <string name="send_again">Elküldi újra</string>
   <string name="file_url">Fájl URL-je</string>
+  <string name="url_copied_to_clipboard">URL vágólapra másolása</string>
   <string name="scan_qr_code">2D vonalkód olvasás</string>
   <string name="show_qr_code">2D vonalkód mutatása</string>
   <string name="show_block_list">Tiltólista mutatása</string>
@@ -425,6 +426,8 @@
   <string name="none">Semmi</string>
   <string name="recently_used">Legutóbb használt</string>
   <string name="choose_quick_action">Gyors gomb funkciója</string>
+  <string name="search_contacts">Névjegyek keresése</string>
+  <string name="search_groups">Konferenciák keresése</string>
   <string name="send_private_message">Privát üzenet küldése</string>
   <string name="user_has_left_conference">%1$s elhagyta a konferenciát!</string>
   <string name="username">Felhasználónév</string>
@@ -687,4 +690,16 @@
   <string name="large">Nagy</string>
   <string name="not_encrypted_for_this_device">Az üzenet nem volt titkosított erre az eszközre.</string>
   <string name="undo">visszacsinál</string>
+  <string name="location_disabled">A helymegosztás le van tiltva</string>
+  <string name="action_fix_to_location">Pozíció fixálása</string>
+  <string name="action_unfix_from_location">Pozíció feloldása</string>
+  <string name="action_copy_location">Hely Másolása</string>
+  <string name="action_share_location">Hely Megosztása</string>
+  <string name="action_directions">Útvonal</string>
+  <string name="title_activity_share_location">Hely megosztása</string>
+  <string name="title_activity_show_location">Hely megjelenítése</string>
+  <string name="share">Megoszt</string>
+  <string name="unable_to_start_recording">Nem sikerült elkezdeni a felvételt</string>
+  <string name="please_wait">Kérlek várj…</string>
+  <string name="no_microphone_permission">A Conversations-nek hozzáférésre van szüksége a mikrofonhoz</string>
 </resources>

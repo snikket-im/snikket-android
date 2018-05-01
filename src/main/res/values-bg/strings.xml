@@ -426,6 +426,8 @@
   <string name="none">Нищо</string>
   <string name="recently_used">Използвани наскоро</string>
   <string name="choose_quick_action">Изберете бързо действие</string>
+  <string name="search_contacts">Търсене в контактите</string>
+  <string name="search_groups">Търсене в груповите разговори</string>
   <string name="send_private_message">Изпращане на лично съобщение</string>
   <string name="user_has_left_conference">%1$s напусна груповия разговор!</string>
   <string name="username">Потребителско име</string>

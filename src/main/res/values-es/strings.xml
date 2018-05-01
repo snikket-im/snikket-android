@@ -426,6 +426,8 @@
   <string name="none">Ninguna</string>
   <string name="recently_used">Usada más recientemente</string>
   <string name="choose_quick_action">Elegir acción rápida</string>
+  <string name="search_contacts">Buscar contactos</string>
+  <string name="search_groups">Buscar conversaciones en grupo</string>
   <string name="send_private_message">Enviar mensaje privado</string>
   <string name="user_has_left_conference">%1$s ha dejado la conversación!</string>
   <string name="username">Usuario</string>

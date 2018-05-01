@@ -49,6 +49,7 @@
   <string name="start_conversation">Начать беседу</string>
   <string name="invite_contact">Пригласить собеседника</string>
   <string name="contacts">Контакты</string>
+  <string name="contact">Контакт</string>
   <string name="cancel">Отмена</string>
   <string name="set">Установить</string>
   <string name="add">Добавить</string>
@@ -332,6 +333,7 @@
   <string name="clear_other_devices_desc">Вы уверены, что хотите очистить все остальные устройства из анонса ключей OMEMO? При соединении устройств в следующий раз новые ключи анонсируются автоматически, но устройства могут не получить сообщения, посланные до этого.</string>
   <string name="error_no_keys_to_trust_server_error">Для этого контакта не существует доступных ключей.\nПопытка получения новых ключей с сервера оказалась неудачной. Возможно, что-то не так с сервером вашего собеседника.</string>
   <string name="error_no_keys_to_trust_presence">Нет доступных ключей для данного контакта.\nУбедитесь, что у вас есть подписка на взаимное присутствие.</string>
+  <string name="error_trustkeys_title">Что-то пошло не так</string>
   <string name="fetching_history_from_server">Получение истории с сервера</string>
   <string name="no_more_history_on_server">На сервере больше нет истории</string>
   <string name="updating">Обновление…</string>
@@ -370,6 +372,7 @@
   <string name="could_not_modify_conference_options">Не удалось изменить настройки конференции</string>
   <string name="never">Никогда</string>
   <string name="until_further_notice">До следующего уведомления</string>
+  <string name="mark_as_read">Отметить как прочитанное</string>
   <string name="pref_input_options">Ввод</string>
   <string name="pref_enter_is_send">Отправить на \"Enter\"</string>
   <string name="pref_enter_is_send_summary">Клавиша \"Enter\" отправляет сообщение</string>
@@ -435,6 +438,7 @@
   <string name="account_status_bind_failure">Ошибка связывания</string>
   <string name="account_status_host_unknown">Сервер не ответственен за домен</string>
   <string name="server_info_broken">Повреждено</string>
+  <string name="pref_presence_settings">Доступность</string>
   <string name="pref_away_when_screen_off">Вышел когда экран выключен</string>
   <string name="pref_away_when_screen_off_summary">Отмечает ваш ресурс как «вышел» когда экран выключен</string>
   <string name="pref_dnd_on_silent_mode">\"Не беспокоить\" в беззвучном режиме</string>
@@ -479,6 +483,8 @@
   <string name="shared_image_with_x">Изображение отправлено %s</string>
   <string name="shared_images_with_x">Изображения отправлены %s</string>
   <string name="shared_text_with_x">Общий текст с %s</string>
+  <string name="no_storage_permission">Conversations требуется доступ к внешнему хранилищу</string>
+  <string name="no_camera_permission">Conversations требуется доступ к камере</string>
   <string name="sync_with_contacts">Синхронизировать с контактами</string>
   <string name="sync_with_contacts_long">Conversations ожидает совпадения вашего XMPP ростера с вашими контактами для отображения их полных имен и аватаров.\n\nConversations только считает ваши контакты и сопоставит их локально без отправки их на ваш сервер.\n\nСейчас вы получите запрос на разрешение доступа к вашим контактам.</string>
   <string name="notify_on_all_messages">Все сообщения</string>
@@ -583,6 +589,8 @@
   <string name="i_followed_this_link_from_a_trusted_source">Открывать ссылки из надёжного источника</string>
   <string name="verifying_omemo_keys_trusted_source">Вы потвердите OMEMO ключи %1$s после нажатия на ссылку. Это безопасно только если вы перешли по ссылке из доверенного источника, где только %2$sмог разместить эту ссылку.</string>
   <string name="verify_omemo_keys">Проверить OMEMO ключ</string>
+  <string name="show_inactive_devices">Показывать неактивные</string>
+  <string name="hide_inactive_devices">Скрыть неактивные</string>
   <string name="distrust_omemo_key">Не доверенное устройство.</string>
   <string name="distrust_omemo_key_text">Вы действительно хотите удалить устройство из доверенных?\Устройство и сообщения, полученные с этого устройства, будут помечаться как недоверенные.</string>
   <string name="pref_automatically_delete_messages">Автоматическое удаление сообщений</string>
@@ -616,4 +624,11 @@
   <string name="copy_to_clipboard">Скопировать в буфер обмена</string>
   <string name="message_copied_to_clipboard">Сообщение скопировано в буфер обмена</string>
   <string name="message">Сообщение</string>
+  <string name="mtm_accept_cert">Принять Неизвестный Сертификат?</string>
+  <string name="edit_status_message">Редактировать статусное сообщение</string>
+  <string name="disable_encryption">Отключить шифрование</string>
+  <string name="disable_now">Отключить сейчас</string>
+  <string name="pref_omemo_setting">OMEMO-шифрование</string>
+  <string name="undo">отменить</string>
+  <string name="share">Поделиться</string>
 </resources>
