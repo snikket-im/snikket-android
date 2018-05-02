@@ -20,6 +20,7 @@ import eu.siacs.conversations.ui.adapter.MessageAdapter;
 import eu.siacs.conversations.utils.CryptoHelper;
 import eu.siacs.conversations.utils.Emoticons;
 import eu.siacs.conversations.utils.GeoHelper;
+import eu.siacs.conversations.utils.MessageUtils;
 import eu.siacs.conversations.utils.MimeUtils;
 import eu.siacs.conversations.utils.UIHelper;
 import rocks.xmpp.addr.Jid;
@@ -709,29 +710,7 @@ public class Message extends AbstractEntity {
 
 	public synchronized boolean treatAsDownloadable() {
 		if (treatAsDownloadable == null) {
-			try {
-				final String[] lines = body.split("\n");
-				if (lines.length == 0) {
-					treatAsDownloadable = false;
-					return false;
-				}
-				for (String line : lines) {
-					if (line.contains("\\s+")) {
-						treatAsDownloadable = false;
-						return false;
-					}
-				}
-				final URL url = new URL(lines[0]);
-				final String ref = url.getRef();
-				final String protocol = url.getProtocol();
-				final boolean encrypted = ref != null && AesGcmURLStreamHandler.IV_KEY.matcher(ref).matches();
-				final boolean followedByDataUri = lines.length == 2 && lines[1].startsWith("data:");
-				final boolean validAesGcm = AesGcmURLStreamHandler.PROTOCOL_NAME.equalsIgnoreCase(protocol) && encrypted && (lines.length == 1 || followedByDataUri);
-				final boolean validOob = ("http".equalsIgnoreCase(protocol) || "https".equalsIgnoreCase(protocol)) && (oob || encrypted) && lines.length == 1;
-				treatAsDownloadable = validAesGcm || validOob;
-			} catch (MalformedURLException e) {
-				treatAsDownloadable = false;
-			}
+			treatAsDownloadable = MessageUtils.treatAsDownloadable(this.body, this.oob);
 		}
 		return treatAsDownloadable;
 	}

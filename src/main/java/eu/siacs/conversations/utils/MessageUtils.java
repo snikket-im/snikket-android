@@ -29,7 +29,11 @@
 
 package eu.siacs.conversations.utils;
 
+import java.net.MalformedURLException;
+import java.net.URL;
+
 import eu.siacs.conversations.entities.Message;
+import eu.siacs.conversations.http.AesGcmURLStreamHandler;
 
 public class MessageUtils {
 	public static String prepareQuote(Message message) {
@@ -50,5 +54,29 @@ public class MessageUtils {
 			builder.append(line.trim());
 		}
 		return builder.toString();
+	}
+
+	public static boolean treatAsDownloadable(final String body, final boolean oob) {
+		try {
+			final String[] lines = body.split("\n");
+			if (lines.length == 0) {
+				return false;
+			}
+			for (String line : lines) {
+				if (line.contains("\\s+")) {
+					return false;
+				}
+			}
+			final URL url = new URL(lines[0]);
+			final String ref = url.getRef();
+			final String protocol = url.getProtocol();
+			final boolean encrypted = ref != null && AesGcmURLStreamHandler.IV_KEY.matcher(ref).matches();
+			final boolean followedByDataUri = lines.length == 2 && lines[1].startsWith("data:");
+			final boolean validAesGcm = AesGcmURLStreamHandler.PROTOCOL_NAME.equalsIgnoreCase(protocol) && encrypted && (lines.length == 1 || followedByDataUri);
+			final boolean validOob = ("http".equalsIgnoreCase(protocol) || "https".equalsIgnoreCase(protocol)) && (oob || encrypted) && lines.length == 1;
+			return validAesGcm || validOob;
+		} catch (MalformedURLException e) {
+			return false;
+		}
 	}
 }
