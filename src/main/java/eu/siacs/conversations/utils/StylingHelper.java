@@ -47,6 +47,7 @@ import android.text.style.TypefaceSpan;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -97,6 +98,25 @@ public class StylingHelper {
 				highlight(context, editable, needle, dark);
 			}
 		}
+	}
+
+	public static List<String> filterHighlightedWords(List<String> terms) {
+		List<String> words = new ArrayList<>();
+		for(String term : terms) {
+			if (!FtsUtils.isKeyword(term)) {
+				StringBuilder builder = new StringBuilder();
+				for (int codepoint, i = 0; i < term.length(); i += Character.charCount(codepoint)) {
+					codepoint = term.codePointAt(i);
+					if (Character.isLetterOrDigit(codepoint)) {
+						builder.append(Character.toChars(codepoint));
+					}
+				}
+				if (builder.length() > 0) {
+					words.add(builder.toString());
+				}
+			}
+		}
+		return words;
 	}
 
 	private static void highlight(final Context context, final Editable editable, String needle, boolean dark) {
