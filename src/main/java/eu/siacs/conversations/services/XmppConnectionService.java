@@ -226,7 +226,6 @@ public class XmppConnectionService extends Service {
 	private AvatarService mAvatarService = new AvatarService(this);
 	private MessageArchiveService mMessageArchiveService = new MessageArchiveService(this);
 	private PushManagementService mPushManagementService = new PushManagementService(this);
-	private OnConversationUpdate mOnConversationUpdate = null;
 	private final ConversationsFileObserver fileObserver = new ConversationsFileObserver(
 			Environment.getExternalStorageDirectory().getAbsolutePath()
 	) {
@@ -249,21 +248,20 @@ public class XmppConnectionService extends Service {
 			}
 		}
 	};
-	private int convChangedListenerCount = 0;
-	private OnShowErrorToast mOnShowErrorToast = null;
-	private int showErrorToastListenerCount = 0;
+
 	private int unreadCount = -1;
-	private OnAccountUpdate mOnAccountUpdate = null;
-	private OnCaptchaRequested mOnCaptchaRequested = null;
-	private int accountChangedListenerCount = 0;
-	private int captchaRequestedListenerCount = 0;
-	private OnRosterUpdate mOnRosterUpdate = null;
-	private OnUpdateBlocklist mOnUpdateBlocklist = null;
-	private int updateBlocklistListenerCount = 0;
-	private int rosterChangedListenerCount = 0;
-	private OnMucRosterUpdate mOnMucRosterUpdate = null;
-	private int mucRosterChangedListenerCount = 0;
-	private OnKeyStatusUpdated mOnKeyStatusUpdated = null;
+
+	//Ui callback listeners
+	private final List<OnConversationUpdate> mOnConversationUpdates = new ArrayList<>();
+	private final List<OnShowErrorToast> mOnShowErrorToasts = new ArrayList<>();
+	private final List<OnAccountUpdate> mOnAccountUpdates = new ArrayList<>();
+	private final List<OnCaptchaRequested> mOnCaptchaRequested = new ArrayList<>();
+	private final List<OnRosterUpdate> mOnRosterUpdates = new ArrayList<>();
+	private final List<OnUpdateBlocklist> mOnUpdateBlocklist = new ArrayList<>();
+	private final List<OnMucRosterUpdate> mOnMucRosterUpdate = new ArrayList<>();
+	private final List<OnKeyStatusUpdated> mOnKeyStatusUpdated = new ArrayList<>();
+
+
 	private final OnBindListener mOnBindListener = new OnBindListener() {
 
 		@Override
@@ -302,7 +300,6 @@ public class XmppConnectionService extends Service {
 			syncDirtyContacts(account);
 		}
 	};
-	private int keyStatusUpdatedListenerCount = 0;
 	private AtomicLong mLastExpiryRun = new AtomicLong(0);
 	private SecureRandom mRandom;
 	private LruCache<Pair<String, String>, ServiceDiscoveryResult> discoCache = new LruCache<>(20);
@@ -311,9 +308,7 @@ public class XmppConnectionService extends Service {
 		@Override
 		public void onStatusChanged(final Account account) {
 			XmppConnection connection = account.getXmppConnection();
-			if (mOnAccountUpdate != null) {
-				mOnAccountUpdate.onAccountUpdate();
-			}
+			updateAccountUi();
 			if (account.getStatus() == Account.State.ONLINE) {
 				synchronized (mLowPingTimeoutMode) {
 					if (mLowPingTimeoutMode.remove(account.getJid().asBareJid())) {
@@ -1881,24 +1876,17 @@ public class XmppConnectionService extends Service {
 			if (checkListeners()) {
 				switchToForeground();
 			}
-			this.mOnConversationUpdate = listener;
-			this.mNotificationService.setIsInForeground(true);
-			if (this.convChangedListenerCount < 2) {
-				this.convChangedListenerCount++;
-			}
+			this.mOnConversationUpdates.add(listener);
+			this.mNotificationService.setIsInForeground(this.mOnConversationUpdates.size() > 0);
 		}
 	}
 
-	public void removeOnConversationListChangedListener() {
+	public void removeOnConversationListChangedListener(OnConversationUpdate listener) {
 		synchronized (this) {
-			this.convChangedListenerCount--;
-			if (this.convChangedListenerCount <= 0) {
-				this.convChangedListenerCount = 0;
-				this.mOnConversationUpdate = null;
-				this.mNotificationService.setIsInForeground(false);
-				if (checkListeners()) {
-					switchToBackground();
-				}
+			this.mOnConversationUpdates.remove(listener);
+			this.mNotificationService.setIsInForeground(this.mOnConversationUpdates.size() > 0);
+			if (checkListeners()) {
+				switchToBackground();
 			}
 		}
 	}
@@ -1908,23 +1896,15 @@ public class XmppConnectionService extends Service {
 			if (checkListeners()) {
 				switchToForeground();
 			}
-			this.mOnShowErrorToast = onShowErrorToast;
-			if (this.showErrorToastListenerCount < 2) {
-				this.showErrorToastListenerCount++;
-			}
+			this.mOnShowErrorToasts.add(onShowErrorToast);
 		}
-		this.mOnShowErrorToast = onShowErrorToast;
 	}
 
-	public void removeOnShowErrorToastListener() {
+	public void removeOnShowErrorToastListener(OnShowErrorToast onShowErrorToast) {
 		synchronized (this) {
-			this.showErrorToastListenerCount--;
-			if (this.showErrorToastListenerCount <= 0) {
-				this.showErrorToastListenerCount = 0;
-				this.mOnShowErrorToast = null;
-				if (checkListeners()) {
-					switchToBackground();
-				}
+			this.mOnShowErrorToasts.remove(onShowErrorToast);
+			if (checkListeners()) {
+				switchToBackground();
 			}
 		}
 	}
@@ -1934,22 +1914,15 @@ public class XmppConnectionService extends Service {
 			if (checkListeners()) {
 				switchToForeground();
 			}
-			this.mOnAccountUpdate = listener;
-			if (this.accountChangedListenerCount < 2) {
-				this.accountChangedListenerCount++;
-			}
+			this.mOnAccountUpdates.add(listener);
 		}
 	}
 
-	public void removeOnAccountListChangedListener() {
+	public void removeOnAccountListChangedListener(OnAccountUpdate listener) {
 		synchronized (this) {
-			this.accountChangedListenerCount--;
-			if (this.accountChangedListenerCount <= 0) {
-				this.mOnAccountUpdate = null;
-				this.accountChangedListenerCount = 0;
-				if (checkListeners()) {
-					switchToBackground();
-				}
+			this.mOnAccountUpdates.remove(listener);
+			if (checkListeners()) {
+				switchToBackground();
 			}
 		}
 	}
@@ -1959,22 +1932,15 @@ public class XmppConnectionService extends Service {
 			if (checkListeners()) {
 				switchToForeground();
 			}
-			this.mOnCaptchaRequested = listener;
-			if (this.captchaRequestedListenerCount < 2) {
-				this.captchaRequestedListenerCount++;
-			}
+			this.mOnCaptchaRequested.add(listener);
 		}
 	}
 
-	public void removeOnCaptchaRequestedListener() {
+	public void removeOnCaptchaRequestedListener(OnCaptchaRequested listener) {
 		synchronized (this) {
-			this.captchaRequestedListenerCount--;
-			if (this.captchaRequestedListenerCount <= 0) {
-				this.mOnCaptchaRequested = null;
-				this.captchaRequestedListenerCount = 0;
-				if (checkListeners()) {
-					switchToBackground();
-				}
+			this.mOnCaptchaRequested.remove(listener);
+			if (checkListeners()) {
+				switchToBackground();
 			}
 		}
 	}
@@ -1984,22 +1950,15 @@ public class XmppConnectionService extends Service {
 			if (checkListeners()) {
 				switchToForeground();
 			}
-			this.mOnRosterUpdate = listener;
-			if (this.rosterChangedListenerCount < 2) {
-				this.rosterChangedListenerCount++;
-			}
+			this.mOnRosterUpdates.add(listener);
 		}
 	}
 
-	public void removeOnRosterUpdateListener() {
+	public void removeOnRosterUpdateListener(final OnRosterUpdate listener) {
 		synchronized (this) {
-			this.rosterChangedListenerCount--;
-			if (this.rosterChangedListenerCount <= 0) {
-				this.rosterChangedListenerCount = 0;
-				this.mOnRosterUpdate = null;
-				if (checkListeners()) {
-					switchToBackground();
-				}
+			this.mOnRosterUpdates.remove(listener);
+			if (checkListeners()) {
+				switchToBackground();
 			}
 		}
 	}
@@ -2009,22 +1968,15 @@ public class XmppConnectionService extends Service {
 			if (checkListeners()) {
 				switchToForeground();
 			}
-			this.mOnUpdateBlocklist = listener;
-			if (this.updateBlocklistListenerCount < 2) {
-				this.updateBlocklistListenerCount++;
-			}
+			this.mOnUpdateBlocklist.add(listener);
 		}
 	}
 
-	public void removeOnUpdateBlocklistListener() {
+	public void removeOnUpdateBlocklistListener(final OnUpdateBlocklist listener) {
 		synchronized (this) {
-			this.updateBlocklistListenerCount--;
-			if (this.updateBlocklistListenerCount <= 0) {
-				this.updateBlocklistListenerCount = 0;
-				this.mOnUpdateBlocklist = null;
-				if (checkListeners()) {
-					switchToBackground();
-				}
+			this.mOnUpdateBlocklist.remove(listener);
+			if (checkListeners()) {
+				switchToBackground();
 			}
 		}
 	}
@@ -2034,22 +1986,15 @@ public class XmppConnectionService extends Service {
 			if (checkListeners()) {
 				switchToForeground();
 			}
-			this.mOnKeyStatusUpdated = listener;
-			if (this.keyStatusUpdatedListenerCount < 2) {
-				this.keyStatusUpdatedListenerCount++;
-			}
+			this.mOnKeyStatusUpdated.add(listener);
 		}
 	}
 
-	public void removeOnNewKeysAvailableListener() {
+	public void removeOnNewKeysAvailableListener(final OnKeyStatusUpdated listener) {
 		synchronized (this) {
-			this.keyStatusUpdatedListenerCount--;
-			if (this.keyStatusUpdatedListenerCount <= 0) {
-				this.keyStatusUpdatedListenerCount = 0;
-				this.mOnKeyStatusUpdated = null;
-				if (checkListeners()) {
-					switchToBackground();
-				}
+			this.mOnKeyStatusUpdated.remove(listener);
+			if (checkListeners()) {
+				switchToBackground();
 			}
 		}
 	}
@@ -2059,34 +2004,27 @@ public class XmppConnectionService extends Service {
 			if (checkListeners()) {
 				switchToForeground();
 			}
-			this.mOnMucRosterUpdate = listener;
-			if (this.mucRosterChangedListenerCount < 2) {
-				this.mucRosterChangedListenerCount++;
-			}
+			this.mOnMucRosterUpdate.add(listener);
 		}
 	}
 
-	public void removeOnMucRosterUpdateListener() {
+	public void removeOnMucRosterUpdateListener(final OnMucRosterUpdate listener) {
 		synchronized (this) {
-			this.mucRosterChangedListenerCount--;
-			if (this.mucRosterChangedListenerCount <= 0) {
-				this.mucRosterChangedListenerCount = 0;
-				this.mOnMucRosterUpdate = null;
-				if (checkListeners()) {
-					switchToBackground();
-				}
+			this.mOnMucRosterUpdate.remove(listener);
+			if (checkListeners()) {
+				switchToBackground();
 			}
 		}
 	}
 
 	public boolean checkListeners() {
-		return (this.mOnAccountUpdate == null
-				&& this.mOnConversationUpdate == null
-				&& this.mOnRosterUpdate == null
-				&& this.mOnCaptchaRequested == null
-				&& this.mOnUpdateBlocklist == null
-				&& this.mOnShowErrorToast == null
-				&& this.mOnKeyStatusUpdated == null);
+		return (this.mOnAccountUpdates.size() == 0
+				&& this.mOnConversationUpdates.size() == 0
+				&& this.mOnRosterUpdates.size() == 0
+				&& this.mOnCaptchaRequested.size() == 0
+				&& this.mOnUpdateBlocklist.size() == 0
+				&& this.mOnShowErrorToasts.size() == 0
+				&& this.mOnKeyStatusUpdated.size() == 0);
 	}
 
 	private void switchToForeground() {
@@ -3185,56 +3123,57 @@ public class XmppConnectionService extends Service {
 
 
 	public void showErrorToastInUi(int resId) {
-		if (mOnShowErrorToast != null) {
-			mOnShowErrorToast.onShowErrorToast(resId);
+		for(OnShowErrorToast listener : this.mOnShowErrorToasts) {
+			listener.onShowErrorToast(resId);
 		}
 	}
 
 	public void updateConversationUi() {
-		if (mOnConversationUpdate != null) {
-			mOnConversationUpdate.onConversationUpdate();
+		for(OnConversationUpdate listener : this.mOnConversationUpdates) {
+			listener.onConversationUpdate();
 		}
 	}
 
 	public void updateAccountUi() {
-		if (mOnAccountUpdate != null) {
-			mOnAccountUpdate.onAccountUpdate();
+		for(OnAccountUpdate listener : this.mOnAccountUpdates) {
+			listener.onAccountUpdate();
 		}
 	}
 
 	public void updateRosterUi() {
-		if (mOnRosterUpdate != null) {
-			mOnRosterUpdate.onRosterUpdate();
+		for(OnRosterUpdate listener : this.mOnRosterUpdates) {
+			listener.onRosterUpdate();
 		}
 	}
 
 	public boolean displayCaptchaRequest(Account account, String id, Data data, Bitmap captcha) {
-		if (mOnCaptchaRequested != null) {
+		if (mOnCaptchaRequested.size() > 0) {
 			DisplayMetrics metrics = getApplicationContext().getResources().getDisplayMetrics();
 			Bitmap scaled = Bitmap.createScaledBitmap(captcha, (int) (captcha.getWidth() * metrics.scaledDensity),
 					(int) (captcha.getHeight() * metrics.scaledDensity), false);
-
-			mOnCaptchaRequested.onCaptchaRequested(account, id, data, scaled);
+			for(OnCaptchaRequested listener : this.mOnCaptchaRequested) {
+				listener.onCaptchaRequested(account, id, data, scaled);
+			}
 			return true;
 		}
 		return false;
 	}
 
 	public void updateBlocklistUi(final OnUpdateBlocklist.Status status) {
-		if (mOnUpdateBlocklist != null) {
-			mOnUpdateBlocklist.OnUpdateBlocklist(status);
+		for(OnUpdateBlocklist listener : this.mOnUpdateBlocklist) {
+			listener.OnUpdateBlocklist(status);
 		}
 	}
 
 	public void updateMucRosterUi() {
-		if (mOnMucRosterUpdate != null) {
-			mOnMucRosterUpdate.onMucRosterUpdate();
+		for(OnMucRosterUpdate listener : this.mOnMucRosterUpdate) {
+			listener.onMucRosterUpdate();
 		}
 	}
 
 	public void keyStatusUpdated(AxolotlService.FetchStatus report) {
-		if (mOnKeyStatusUpdated != null) {
-			mOnKeyStatusUpdated.onKeyStatusUpdated(report);
+		for(OnKeyStatusUpdated listener : this.mOnKeyStatusUpdated) {
+			listener.onKeyStatusUpdated(report);
 		}
 	}
 
