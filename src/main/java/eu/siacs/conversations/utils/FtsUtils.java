@@ -41,7 +41,7 @@ public class FtsUtils {
 
 	public static List<String> parse(String input) {
 		List<String> term = new ArrayList<>();
-		for (String part : input.split("\\s+")) {
+		for (String part : input.replace('"',' ').split("\\s+")) {
 			if (part.isEmpty()) {
 				continue;
 			}
