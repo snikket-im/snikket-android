@@ -39,7 +39,7 @@ public class MessageGenerator extends AbstractGenerator {
 			if (this.mXmppConnectionService.indicateReceived() && !isWithSelf) {
 				packet.addChild("request", "urn:xmpp:receipts");
 			}
-		} else if (message.getType() == Message.TYPE_PRIVATE) {
+		} else if (message.getType() == Message.TYPE_PRIVATE) { //TODO files and images might be private as well
 			packet.setTo(message.getCounterpart());
 			packet.setType(MessagePacket.TYPE_CHAT);
 			packet.addChild("x","http://jabber.org/protocol/muc#user");

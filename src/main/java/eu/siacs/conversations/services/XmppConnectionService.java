@@ -2483,6 +2483,7 @@ public class XmppConnectionService extends Service {
 							@Override
 							public void onIqPacketReceived(Account account, IqPacket packet) {
 								if (packet.getType() == IqPacket.TYPE.RESULT && callback != null) {
+									Log.d(Config.LOGTAG,account.getJid().asBareJid()+": successfully changed node configuration for node "+node);
 									callback.onPushSucceeded();
 								} else if (packet.getType() == IqPacket.TYPE.ERROR && callback != null) {
 									callback.onPushFailed();
