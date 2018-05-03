@@ -29,6 +29,7 @@
 
 package eu.siacs.conversations.ui.util;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.provider.MediaStore;
@@ -45,6 +46,12 @@ import eu.siacs.conversations.entities.Message;
 
 public class ConversationMenuConfigurator {
 
+	private static boolean microphoneAvailable = false;
+
+	public static void reloadFeatures(Context context) {
+		microphoneAvailable = context.getPackageManager().hasSystemFeature(PackageManager.FEATURE_MICROPHONE);
+	}
+
 	public static void configureAttachmentMenu(@NonNull Conversation conversation, Menu menu) {
 		final MenuItem menuAttach = menu.findItem(R.id.action_attach_file);
 
@@ -54,12 +61,11 @@ public class ConversationMenuConfigurator {
 		} else {
 			visible = true;
 		}
-
 		menuAttach.setVisible(visible);
-
 		if (!visible) {
 			return;
 		}
+		menu.findItem(R.id.attach_record_voice).setVisible(microphoneAvailable);
 	}
 
 	public static void configureEncryptionMenu(@NonNull Conversation conversation, Menu menu) {
