@@ -888,7 +888,9 @@ public class FileBackend {
 		if (image || video) {
 			try {
 				Dimensions dimensions = image ? getImageDimensions(file) : getVideoDimensions(file);
-				body.append('|').append(dimensions.width).append('|').append(dimensions.height);
+				if (dimensions.valid()) {
+					body.append('|').append(dimensions.width).append('|').append(dimensions.height);
+				}
 			} catch (NotAVideoFile notAVideoFile) {
 				Log.d(Config.LOGTAG, "file with mime type " + file.getMimeType() + " was not a video file");
 				//fall threw
@@ -1014,6 +1016,10 @@ public class FileBackend {
 
 		public int getMin() {
 			return Math.min(width, height);
+		}
+
+		public boolean valid() {
+			return width > 0 && height > 0;
 		}
 	}
 
