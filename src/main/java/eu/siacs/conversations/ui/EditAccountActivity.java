@@ -158,7 +158,7 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
 					startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(url.toString())));
 					return;
 				} catch (ActivityNotFoundException e) {
-					Toast.makeText(EditAccountActivity.this, R.string.application_found_to_open_website, Toast.LENGTH_SHORT);
+					Toast.makeText(EditAccountActivity.this, R.string.application_found_to_open_website, Toast.LENGTH_SHORT).show();
 					return;
 				}
 			}
@@ -170,7 +170,7 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
 				} else {
 					jid = Jid.of(binding.accountJid.getText().toString());
 				}
-			} catch (final IllegalArgumentException e) {
+			} catch (final NullPointerException | IllegalArgumentException e) {
 				if (mUsernameMode) {
 					mAccountJidLayout.setError(getString(R.string.invalid_username));
 				} else {
@@ -755,7 +755,7 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
 	}
 
 	private String getUserModeDomain() {
-		if (mAccount != null) {
+		if (mAccount != null && mAccount.getJid().getDomain() != null) {
 			return mAccount.getJid().getDomain();
 		} else {
 			return Config.DOMAIN_LOCK;
