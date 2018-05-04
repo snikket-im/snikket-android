@@ -31,24 +31,30 @@ package eu.siacs.conversations.utils;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.regex.Pattern;
 
 import eu.siacs.conversations.entities.Message;
 import eu.siacs.conversations.http.AesGcmURLStreamHandler;
 
 public class MessageUtils {
+
+	private static final Pattern LTR_RTL = Pattern.compile("(\\u200E[^\\u200F]*\\u200F){3,}");
+
+	private static final String EMPTY_STRING = "";
+
 	public static String prepareQuote(Message message) {
 		final StringBuilder builder = new StringBuilder();
 		final String body = message.getMergedBody().toString();
-		for(String line : body.split("\n")) {
+		for (String line : body.split("\n")) {
 			if (line.length() <= 0) {
 				continue;
 			}
 			final char c = line.charAt(0);
-			if (c == '>' && UIHelper.isPositionFollowedByQuoteableCharacter(line,0)
-					|| (c == '\u00bb' && !UIHelper.isPositionFollowedByQuote(line,0))) {
+			if (c == '>' && UIHelper.isPositionFollowedByQuoteableCharacter(line, 0)
+					|| (c == '\u00bb' && !UIHelper.isPositionFollowedByQuote(line, 0))) {
 				continue;
 			}
-			if (builder.length() != 0 ) {
+			if (builder.length() != 0) {
 				builder.append('\n');
 			}
 			builder.append(line.trim());
@@ -78,5 +84,9 @@ public class MessageUtils {
 		} catch (MalformedURLException e) {
 			return false;
 		}
+	}
+
+	public static String filterLtrRtl(String body) {
+		return LTR_RTL.matcher(body).replaceFirst(EMPTY_STRING);
 	}
 }

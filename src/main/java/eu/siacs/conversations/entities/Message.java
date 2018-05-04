@@ -606,7 +606,7 @@ public class Message extends AbstractEntity {
 	}
 
 	public SpannableStringBuilder getMergedBody() {
-		SpannableStringBuilder body = new SpannableStringBuilder(this.body.trim());
+		SpannableStringBuilder body = new SpannableStringBuilder(MessageUtils.filterLtrRtl(this.body).trim());
 		Message current = this;
 		while (current.mergeable(current.next())) {
 			current = current.next();
@@ -616,7 +616,7 @@ public class Message extends AbstractEntity {
 			body.append("\n\n");
 			body.setSpan(new MergeSeparator(), body.length() - 2, body.length(),
 					SpannableStringBuilder.SPAN_EXCLUSIVE_EXCLUSIVE);
-			body.append(current.getBody().trim());
+			body.append(MessageUtils.filterLtrRtl(current.getBody()).trim());
 		}
 		return body;
 	}
