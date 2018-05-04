@@ -10,6 +10,11 @@
         android:id="@+id/copy_message"
         android:title="@string/copy_to_clipboard"
         android:visible="false"/>
+
+    <item
+        android:id="@+id/copy_link"
+        android:title="@string/copy_link"
+        android:visible="false"/>
     <item
         android:id="@+id/quote_message"
         android:title="@string/quote"

@@ -92,11 +92,6 @@ public class MessageAdapter extends ArrayAdapter<Message> implements CopyTextVie
 	private static final int RECEIVED = 1;
 	private static final int STATUS = 2;
 	private static final int DATE_SEPARATOR = 3;
-	private static final Pattern XMPP_PATTERN = Pattern
-			.compile("xmpp\\:(?:(?:["
-					+ Patterns.GOOD_IRI_CHAR
-					+ "\\;\\/\\?\\@\\&\\=\\#\\~\\-\\.\\+\\!\\*\\'\\(\\)\\,\\_])"
-					+ "|(?:\\%[a-fA-F0-9]{2}))+");
 
 	private List<String> highlightedTerm = null;
 
@@ -553,7 +548,7 @@ public class MessageAdapter extends ArrayAdapter<Message> implements CopyTextVie
 				StylingHelper.highlight(activity, body, highlightedTerm, StylingHelper.isDarkText(viewHolder.messageBody));
 			}
 
-			Linkify.addLinks(body, XMPP_PATTERN, "xmpp", XMPPURI_MATCH_FILTER, null);
+			Linkify.addLinks(body, Patterns.XMPP_PATTERN, "xmpp", XMPPURI_MATCH_FILTER, null);
 			Linkify.addLinks(body, Patterns.AUTOLINK_WEB_URL, "http", WEBURL_MATCH_FILTER, WEBURL_TRANSFORM_FILTER);
 			Linkify.addLinks(body, GeoHelper.GEO_URI, "geo");
 			FixedURLSpan.fix(body);

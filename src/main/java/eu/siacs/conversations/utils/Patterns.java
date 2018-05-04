@@ -26,6 +26,13 @@ import java.util.regex.Pattern;
  * Commonly used regular expression patterns.
  */
 public class Patterns {
+
+    public static final Pattern XMPP_PATTERN = Pattern
+            .compile("xmpp\\:(?:(?:["
+                    + Patterns.GOOD_IRI_CHAR
+                    + "\\;\\/\\?\\@\\&\\=\\#\\~\\-\\.\\+\\!\\*\\'\\(\\)\\,\\_])"
+                    + "|(?:\\%[a-fA-F0-9]{2}))+");
+
     /**
      *  Regular expression to match all IANA top-level domains.
      *  List accurate as of 2011/07/18.  List taken from:

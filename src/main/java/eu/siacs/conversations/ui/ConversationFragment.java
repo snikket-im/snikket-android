@@ -98,6 +98,7 @@ import eu.siacs.conversations.ui.widget.EditMessage;
 import eu.siacs.conversations.utils.GeoHelper;
 import eu.siacs.conversations.utils.MessageUtils;
 import eu.siacs.conversations.utils.NickValidityChecker;
+import eu.siacs.conversations.utils.Patterns;
 import eu.siacs.conversations.utils.QuickLoader;
 import eu.siacs.conversations.utils.StylingHelper;
 import eu.siacs.conversations.utils.TimeframeUtils;
@@ -1052,6 +1053,7 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
 			activity.getMenuInflater().inflate(R.menu.message_context, menu);
 			menu.setHeaderTitle(R.string.message_options);
 			MenuItem copyMessage = menu.findItem(R.id.copy_message);
+			MenuItem copyLink = menu.findItem(R.id.copy_link);
 			MenuItem quoteMessage = menu.findItem(R.id.quote_message);
 			MenuItem retryDecryption = menu.findItem(R.id.retry_decryption);
 			MenuItem correctMessage = menu.findItem(R.id.correct_message);
@@ -1065,6 +1067,13 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
 			if (!m.isFileOrImage() && !encrypted && !m.isGeoUri() && !m.treatAsDownloadable()) {
 				copyMessage.setVisible(true);
 				quoteMessage.setVisible(MessageUtils.prepareQuote(m).length() > 0);
+				String body = m.getMergedBody().toString();
+				if (ShareUtil.containsXmppUri(body)) {
+					copyLink.setTitle(R.string.copy_jabber_id);
+					copyLink.setVisible(true);
+				} else if (Patterns.AUTOLINK_WEB_URL.matcher(body).find()) {
+					copyLink.setVisible(true);
+				}
 			}
 			if (m.getEncryption() == Message.ENCRYPTION_DECRYPTION_FAILED) {
 				retryDecryption.setVisible(true);
@@ -1121,6 +1130,9 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
 				return true;
 			case R.id.copy_message:
 				ShareUtil.copyToClipboard(activity, selectedMessage);
+				return true;
+			case R.id.copy_link:
+				ShareUtil.copyLinkToClipboard(activity, selectedMessage);
 				return true;
 			case R.id.quote_message:
 				quoteMessage(selectedMessage);
