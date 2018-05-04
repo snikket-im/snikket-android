@@ -16,13 +16,13 @@ public class XmppUri {
 
 	protected Uri uri;
 	protected String jid;
-	protected List<Fingerprint> fingerprints = new ArrayList<>();
+	private List<Fingerprint> fingerprints = new ArrayList<>();
 	private String body;
 	private String name;
 	private String action;
-	protected boolean safeSource = true;
+	private boolean safeSource = true;
 
-	public static final String OMEMO_URI_PARAM = "omemo-sid-";
+	private static final String OMEMO_URI_PARAM = "omemo-sid-";
 
 	public static final String ACTION_JOIN = "join";
 	public static final String ACTION_MESSAGE = "message";
@@ -121,11 +121,11 @@ public class XmppUri {
 		return "";
 	}
 
-	protected List<Fingerprint> parseFingerprints(String query) {
+	private List<Fingerprint> parseFingerprints(String query) {
 		return parseFingerprints(query, ';');
 	}
 
-	protected List<Fingerprint> parseFingerprints(String query, char seperator) {
+	private List<Fingerprint> parseFingerprints(String query, char seperator) {
 		List<Fingerprint> fingerprints = new ArrayList<>();
 		String[] pairs = query == null ? new String[0] : query.split(String.valueOf(seperator));
 		for (String pair : pairs) {
@@ -146,7 +146,7 @@ public class XmppUri {
 		return fingerprints;
 	}
 
-	protected String parseParameter(String key, String query) {
+	private String parseParameter(String key, String query) {
 		for (String pair : query == null ? new String[0] : query.split(";")) {
 			final String[] parts = pair.split("=", 2);
 			if (parts.length == 2 && key.equals(parts[0].toLowerCase(Locale.US))) {
@@ -171,11 +171,8 @@ public class XmppUri {
 	}
 
 	public boolean isAction(final String action) {
-		if (this.action == null) {
-			return false;
-		}
+		return this.action != null && this.action.equals(action);
 
-		return this.action.equals(action);
 	}
 
 	public Jid getJid() {
@@ -239,11 +236,7 @@ public class XmppUri {
 	public static class Fingerprint {
 		public final FingerprintType type;
 		public final String fingerprint;
-		public final int deviceId;
-
-		public Fingerprint(FingerprintType type, String fingerprint) {
-			this(type, fingerprint, 0);
-		}
+		final int deviceId;
 
 		public Fingerprint(FingerprintType type, String fingerprint, int deviceId) {
 			this.type = type;
@@ -257,7 +250,7 @@ public class XmppUri {
 		}
 	}
 
-	public static String lameUrlDecode(String url) {
+	private static String lameUrlDecode(String url) {
 		return url.replace("%23", "#").replace("%25", "%");
 	}
 
