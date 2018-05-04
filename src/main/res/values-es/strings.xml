@@ -702,4 +702,9 @@
   <string name="unable_to_start_recording">No se ha podido empezar la grabación</string>
   <string name="please_wait">Por favor, espera...</string>
   <string name="no_microphone_permission">Conversations necesita acceder al micrófono</string>
+  <string name="search_messages">Buscar mensajes</string>
+  <string name="gif">GIF</string>
+  <string name="view_conversation">Ver conversación</string>
+  <string name="pref_use_share_location_plugin">Plugin para Compartir Ubicación</string>
+  <string name="pref_use_share_location_plugin_summary">Usar el Plugin externo para Compartir Ubicación en lugar del propio de la aplicación.</string>
 </resources>

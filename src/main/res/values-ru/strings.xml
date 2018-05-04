@@ -296,6 +296,7 @@
   <string name="copy_original_url">Копировать адрес ссылки</string>
   <string name="send_again">Отправить ещё раз</string>
   <string name="file_url">URL файла</string>
+  <string name="url_copied_to_clipboard">Ссылка скопирована в буфер обмена</string>
   <string name="scan_qr_code">Сканировать 2D штрихкод</string>
   <string name="show_qr_code">Показать 2D штрихкод</string>
   <string name="show_block_list">Показать чёрный список</string>
@@ -372,7 +373,8 @@
   <string name="could_not_modify_conference_options">Не удалось изменить настройки конференции</string>
   <string name="never">Никогда</string>
   <string name="until_further_notice">До следующего уведомления</string>
-  <string name="mark_as_read">Отметить как прочитанное</string>
+  <string name="reply">Ответить</string>
+  <string name="mark_as_read">Прочитано</string>
   <string name="pref_input_options">Ввод</string>
   <string name="pref_enter_is_send">Отправить на \"Enter\"</string>
   <string name="pref_enter_is_send_summary">Клавиша \"Enter\" отправляет сообщение</string>
@@ -593,6 +595,42 @@
   <string name="hide_inactive_devices">Скрыть неактивные</string>
   <string name="distrust_omemo_key">Не доверенное устройство.</string>
   <string name="distrust_omemo_key_text">Вы действительно хотите удалить устройство из доверенных?\Устройство и сообщения, полученные с этого устройства, будут помечаться как недоверенные.</string>
+  <plurals name="seconds">
+    <item quantity="one">%d секунда</item>
+    <item quantity="few">%d секунды</item>
+    <item quantity="many">%d секунд</item>
+    <item quantity="other">%d секунд</item>
+  </plurals>
+  <plurals name="minutes">
+    <item quantity="one">%d минута</item>
+    <item quantity="few">%d минуты</item>
+    <item quantity="many">%d минут</item>
+    <item quantity="other">%d минут</item>
+  </plurals>
+  <plurals name="hours">
+    <item quantity="one">%d час</item>
+    <item quantity="few">%d часа</item>
+    <item quantity="many">%d часов</item>
+    <item quantity="other">%d часов</item>
+  </plurals>
+  <plurals name="days">
+    <item quantity="one">%d день</item>
+    <item quantity="few">%d дня</item>
+    <item quantity="many">%d дней</item>
+    <item quantity="other">%d дней</item>
+  </plurals>
+  <plurals name="weeks">
+    <item quantity="one">%d неделя</item>
+    <item quantity="few">%d недели</item>
+    <item quantity="many">%d недель</item>
+    <item quantity="other">%d недель</item>
+  </plurals>
+  <plurals name="months">
+    <item quantity="one">%d месяц</item>
+    <item quantity="few">%d месяца</item>
+    <item quantity="many">%d месяцев</item>
+    <item quantity="other">%d месяцев</item>
+  </plurals>
   <string name="pref_automatically_delete_messages">Автоматическое удаление сообщений</string>
   <string name="pref_automatically_delete_messages_description">Автоматически удалять сообщения с этого устройства по прошествии заданного времени.</string>
   <string name="encrypting_message">Зашифровать сообщение</string>
@@ -625,10 +663,18 @@
   <string name="message_copied_to_clipboard">Сообщение скопировано в буфер обмена</string>
   <string name="message">Сообщение</string>
   <string name="mtm_accept_cert">Принять Неизвестный Сертификат?</string>
+  <string name="edit_status_message_title">Редактировать статусное сообщение</string>
   <string name="edit_status_message">Редактировать статусное сообщение</string>
   <string name="disable_encryption">Отключить шифрование</string>
+  <string name="error_trustkey_device_list">Не удалось загрузить список устройств</string>
   <string name="disable_now">Отключить сейчас</string>
+  <string name="draft">Черновик:</string>
   <string name="pref_omemo_setting">OMEMO-шифрование</string>
+  <string name="pref_font_size">Размер шрифта</string>
+  <string name="small">Маленький</string>
+  <string name="medium">Средний</string>
+  <string name="large">Большой</string>
   <string name="undo">отменить</string>
   <string name="share">Поделиться</string>
+  <string name="please_wait">Пожалуйста, подождите…</string>
 </resources>

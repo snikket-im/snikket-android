@@ -426,6 +426,8 @@
   <string name="none">Nessuno</string>
   <string name="recently_used">Usati recentemente</string>
   <string name="choose_quick_action">Scegli azione rapida</string>
+  <string name="search_contacts">Cerca contatti</string>
+  <string name="search_groups">Cerca chat di gruppo</string>
   <string name="send_private_message">Invia messaggio privato</string>
   <string name="user_has_left_conference">%1$s ha abbandonato la chat di gruppo!</string>
   <string name="username">Utente</string>
@@ -700,4 +702,9 @@
   <string name="unable_to_start_recording">Impossibile avviare la registrazione</string>
   <string name="please_wait">Attendere prego...</string>
   <string name="no_microphone_permission">Conversations ha bisogno di accedere al microfono</string>
+  <string name="search_messages">Cerca messaggi</string>
+  <string name="gif">GIF</string>
+  <string name="view_conversation">Vedi conversazione</string>
+  <string name="pref_use_share_location_plugin">Plugin Condivisione Posizione</string>
+  <string name="pref_use_share_location_plugin_summary">Usa il Plugin Condivisione Posizione al posto della mappa integrata</string>
 </resources>

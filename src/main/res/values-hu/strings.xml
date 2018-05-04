@@ -702,4 +702,9 @@
   <string name="unable_to_start_recording">Nem sikerült elkezdeni a felvételt</string>
   <string name="please_wait">Kérlek várj…</string>
   <string name="no_microphone_permission">A Conversations-nek hozzáférésre van szüksége a mikrofonhoz</string>
+  <string name="search_messages">Üzenetek keresése</string>
+  <string name="gif">GIF</string>
+  <string name="view_conversation">Beszélgetés megtekintése</string>
+  <string name="pref_use_share_location_plugin">Helymegosztás bővítmény</string>
+  <string name="pref_use_share_location_plugin_summary">Használja a Helymegosztás bővítményt a beépített térkép helyett</string>
 </resources>

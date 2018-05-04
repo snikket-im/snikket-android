@@ -296,6 +296,7 @@
   <string name="copy_original_url">Copiar URL orixinal</string>
   <string name="send_again">Enviar de novo</string>
   <string name="file_url">URL do ficheiro</string>
+  <string name="url_copied_to_clipboard">URL copiado ao portapapeis</string>
   <string name="scan_qr_code">Escanear código de barras 2D</string>
   <string name="show_qr_code">Mostar código de barras 2D</string>
   <string name="show_block_list">Mostrar lista de bloqueo</string>
@@ -425,6 +426,8 @@
   <string name="none">Ningunha</string>
   <string name="recently_used">Utilizadas recentemente</string>
   <string name="choose_quick_action">Escolla a acción rápida</string>
+  <string name="search_contacts">Buscar contactos</string>
+  <string name="search_groups">Buscar conversas en grupo</string>
   <string name="send_private_message">Enviar mensaxe privada</string>
   <string name="user_has_left_conference">%1$s abandonou a sala!</string>
   <string name="username">Identificador</string>
@@ -687,4 +690,21 @@
   <string name="large">Grande</string>
   <string name="not_encrypted_for_this_device">A menxase non foi encriptada para este disposivivo</string>
   <string name="undo">desfacer</string>
+  <string name="location_disabled">Compartir Localización está deshabilitado</string>
+  <string name="action_fix_to_location">Fixar posición</string>
+  <string name="action_unfix_from_location">Soltar posición</string>
+  <string name="action_copy_location">Copiar Localización</string>
+  <string name="action_share_location">Compartir Localización</string>
+  <string name="action_directions">Direccións</string>
+  <string name="title_activity_share_location">Compartir localización</string>
+  <string name="title_activity_show_location">Mostrar localización</string>
+  <string name="share">Compartir</string>
+  <string name="unable_to_start_recording">Non se puido iniciar a gravación</string>
+  <string name="please_wait">Por favor, agarde...</string>
+  <string name="no_microphone_permission">Conversations precisa acceder ao micrófono</string>
+  <string name="search_messages">Buscar mensaxes</string>
+  <string name="gif">GIF</string>
+  <string name="view_conversation">Ver conversa</string>
+  <string name="pref_use_share_location_plugin">Engadido para Compartir Localización</string>
+  <string name="pref_use_share_location_plugin_summary">Utilice o Engadido para Compartir Localización en lugar do mapa incluído</string>
 </resources>

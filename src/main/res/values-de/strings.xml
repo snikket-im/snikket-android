@@ -702,4 +702,9 @@
   <string name="unable_to_start_recording">Aufnahme kann nicht gestartet werden</string>
   <string name="please_wait">Bitte warten...</string>
   <string name="no_microphone_permission">Conversations benötigt Zugriff auf das Mikrofon</string>
+  <string name="search_messages">Nachrichten durchsuchen</string>
+  <string name="gif">GIF</string>
+  <string name="view_conversation">Unterhaltung anzeigen</string>
+  <string name="pref_use_share_location_plugin"> Plugin zum Standort teilen</string>
+  <string name="pref_use_share_location_plugin_summary">Verwende das Plugin zum Standort teilen anstelle der eingebauten Karte</string>
 </resources>

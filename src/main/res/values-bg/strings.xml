@@ -702,4 +702,9 @@
   <string name="unable_to_start_recording">Записът не може да започне</string>
   <string name="please_wait">Моля, изчакайте…</string>
   <string name="no_microphone_permission">Conversations се нуждае от достъп до микрофона</string>
+  <string name="search_messages">Търсене в съобщенията</string>
+  <string name="gif">GIF</string>
+  <string name="view_conversation">Преглед на разговора</string>
+  <string name="pref_use_share_location_plugin">Разширение за споделяне на местоположението</string>
+  <string name="pref_use_share_location_plugin_summary">Използване на разширението за споделяне на местоположението вместо вградената карта</string>
 </resources>

@@ -723,4 +723,9 @@ Administrator twojego serwera będzie mógł czytać twoje wiadomości, ale moż
   <string name="unable_to_start_recording">Nie można rozpocząć nagrywania</string>
   <string name="please_wait">Proszę czekać...</string>
   <string name="no_microphone_permission">Conversations potrzebuje dostępu do mikrofonu</string>
+  <string name="search_messages">Wyszukaj wiadomości</string>
+  <string name="gif">GIF</string>
+  <string name="view_conversation">Pokaż konwersację</string>
+  <string name="pref_use_share_location_plugin">Wtyczka Udostępniania Lokalizacji</string>
+  <string name="pref_use_share_location_plugin_summary">Użyj Wtyczki Udostępniania Lokalizacji zamiast wbudowanej mapy</string>
 </resources>

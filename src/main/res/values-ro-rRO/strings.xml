@@ -713,4 +713,9 @@ sau chiar pierderea mesajelor.\nÎn continuare veți fi rugați să dezactivați
   <string name="unable_to_start_recording">Nu s-a putut porni înregistrarea</string>
   <string name="please_wait">Vă rugăm să așteptați...</string>
   <string name="no_microphone_permission">Conversations are nevoie de acces la microfon</string>
+  <string name="search_messages">Caută mesaje</string>
+  <string name="gif">GIF</string>
+  <string name="view_conversation">Arată conversația</string>
+  <string name="pref_use_share_location_plugin">Extensia Share Location</string>
+  <string name="pref_use_share_location_plugin_summary">Folosește localizarea cu extensia în locul hărții incluse</string>
 </resources>
