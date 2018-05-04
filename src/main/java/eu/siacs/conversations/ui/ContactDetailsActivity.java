@@ -10,7 +10,6 @@ import android.preference.PreferenceManager;
 import android.provider.ContactsContract.CommonDataKinds;
 import android.provider.ContactsContract.Contacts;
 import android.provider.ContactsContract.Intents;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
@@ -63,14 +62,14 @@ public class ContactDetailsActivity extends OmemoActivity implements OnAccountUp
 
 		@Override
 		public void onCheckedChanged(CompoundButton buttonView,
-				boolean isChecked) {
+		                             boolean isChecked) {
 			if (isChecked) {
 				if (contact
 						.getOption(Contact.Options.PENDING_SUBSCRIPTION_REQUEST)) {
 					xmppConnectionService.sendPresencePacket(contact
-							.getAccount(),
+									.getAccount(),
 							xmppConnectionService.getPresenceGenerator()
-							.sendPresenceUpdatesTo(contact));
+									.sendPresenceUpdatesTo(contact));
 				} else {
 					contact.setOption(Contact.Options.PREEMPTIVE_GRANT);
 				}
@@ -78,7 +77,7 @@ public class ContactDetailsActivity extends OmemoActivity implements OnAccountUp
 				contact.resetOption(Contact.Options.PREEMPTIVE_GRANT);
 				xmppConnectionService.sendPresencePacket(contact.getAccount(),
 						xmppConnectionService.getPresenceGenerator()
-						.stopPresenceUpdatesTo(contact));
+								.stopPresenceUpdatesTo(contact));
 			}
 		}
 	};
@@ -86,15 +85,15 @@ public class ContactDetailsActivity extends OmemoActivity implements OnAccountUp
 
 		@Override
 		public void onCheckedChanged(CompoundButton buttonView,
-				boolean isChecked) {
+		                             boolean isChecked) {
 			if (isChecked) {
 				xmppConnectionService.sendPresencePacket(contact.getAccount(),
 						xmppConnectionService.getPresenceGenerator()
-						.requestPresenceUpdatesFrom(contact));
+								.requestPresenceUpdatesFrom(contact));
 			} else {
 				xmppConnectionService.sendPresencePacket(contact.getAccount(),
 						xmppConnectionService.getPresenceGenerator()
-						.stopPresenceUpdatesFrom(contact));
+								.stopPresenceUpdatesFrom(contact));
 			}
 		}
 	};
@@ -163,18 +162,17 @@ public class ContactDetailsActivity extends OmemoActivity implements OnAccountUp
 
 	@Override
 	protected String getShareableUri(boolean http) {
-		final String prefix = http ? "https://conversations.im/i/" : "xmpp:";
-		if (contact != null) {
-			return prefix+contact.getJid().asBareJid().toEscapedString();
+		if (http) {
+			return "https://conversations.im/j/" + XmppUri.lameUrlEncode(contact.getJid().asBareJid().toEscapedString());
 		} else {
-			return "";
+			return "xmpp:" + contact.getJid().asBareJid().toEscapedString();
 		}
 	}
 
 	@Override
 	protected void onCreate(final Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		showInactiveOmemo = savedInstanceState != null && savedInstanceState.getBoolean("show_inactive_omemo",false);
+		showInactiveOmemo = savedInstanceState != null && savedInstanceState.getBoolean("show_inactive_omemo", false);
 		if (getIntent().getAction().equals(ACTION_VIEW_CONTACT)) {
 			try {
 				this.accountJid = Jid.of(getIntent().getExtras().getString(EXTRA_ACCOUNT));
@@ -199,7 +197,7 @@ public class ContactDetailsActivity extends OmemoActivity implements OnAccountUp
 
 	@Override
 	public void onSaveInstanceState(final Bundle savedInstanceState) {
-		savedInstanceState.putBoolean("show_inactive_omemo",showInactiveOmemo);
+		savedInstanceState.putBoolean("show_inactive_omemo", showInactiveOmemo);
 		super.onSaveInstanceState(savedInstanceState);
 	}
 
@@ -235,9 +233,9 @@ public class ContactDetailsActivity extends OmemoActivity implements OnAccountUp
 				break;
 			case R.id.action_delete_contact:
 				builder.setTitle(getString(R.string.action_delete_contact))
-					.setMessage(getString(R.string.remove_contact_text, contact.getJid().toString()))
-					.setPositiveButton(getString(R.string.delete),
-							removeFromRoster).create().show();
+						.setMessage(getString(R.string.remove_contact_text, contact.getJid().toString()))
+						.setPositiveButton(getString(R.string.delete),
+								removeFromRoster).create().show();
 				break;
 			case R.id.action_edit_contact:
 				Uri systemAccount = contact.getSystemAccount();
@@ -317,7 +315,7 @@ public class ContactDetailsActivity extends OmemoActivity implements OnAccountUp
 				StringBuilder builder = new StringBuilder();
 				binding.statusMessage.setVisibility(View.VISIBLE);
 				int s = statusMessages.size();
-				for(int i = 0; i < s; ++i) {
+				for (int i = 0; i < s; ++i) {
 					if (s > 1) {
 						builder.append("• ");
 					}
@@ -384,7 +382,7 @@ public class ContactDetailsActivity extends OmemoActivity implements OnAccountUp
 			}
 		}
 
-		binding.detailsContactjid.setText(IrregularUnicodeDetector.style(this,contact.getJid()));
+		binding.detailsContactjid.setText(IrregularUnicodeDetector.style(this, contact.getJid()));
 		String account;
 		if (Config.DOMAIN_LOCK != null) {
 			account = contact.getAccount().getJid().getLocal();
@@ -429,7 +427,7 @@ public class ContactDetailsActivity extends OmemoActivity implements OnAccountUp
 		}
 		binding.scanButton.setVisibility(hasKeys && isCameraFeatureAvailable() ? View.VISIBLE : View.GONE);
 		if (hasKeys) {
-			binding.scanButton.setOnClickListener((v)-> ScanActivity.scan(this));
+			binding.scanButton.setOnClickListener((v) -> ScanActivity.scan(this));
 		}
 		if (Config.supportOpenPgp() && contact.getPgpKeyId() != 0) {
 			hasKeys = true;
@@ -455,8 +453,8 @@ public class ContactDetailsActivity extends OmemoActivity implements OnAccountUp
 		} else {
 			binding.tags.setVisibility(View.VISIBLE);
 			binding.tags.removeAllViewsInLayout();
-			for(final ListItem.Tag tag : tagList) {
-				final TextView tv = (TextView) inflater.inflate(R.layout.list_item_tag,binding.tags,false);
+			for (final ListItem.Tag tag : tagList) {
+				final TextView tv = (TextView) inflater.inflate(R.layout.list_item_tag, binding.tags, false);
 				tv.setText(tag.getName());
 				tv.setBackgroundColor(tag.getColor());
 				binding.tags.addView(tv);
@@ -487,11 +485,11 @@ public class ContactDetailsActivity extends OmemoActivity implements OnAccountUp
 	@Override
 	protected void processFingerprintVerification(XmppUri uri) {
 		if (contact != null && contact.getJid().asBareJid().equals(uri.getJid()) && uri.hasFingerprints()) {
-			if (xmppConnectionService.verifyFingerprints(contact,uri.getFingerprints())) {
-				Toast.makeText(this,R.string.verified_fingerprints,Toast.LENGTH_SHORT).show();
+			if (xmppConnectionService.verifyFingerprints(contact, uri.getFingerprints())) {
+				Toast.makeText(this, R.string.verified_fingerprints, Toast.LENGTH_SHORT).show();
 			}
 		} else {
-			Toast.makeText(this,R.string.invalid_barcode,Toast.LENGTH_SHORT).show();
+			Toast.makeText(this, R.string.invalid_barcode, Toast.LENGTH_SHORT).show();
 		}
 	}
 }

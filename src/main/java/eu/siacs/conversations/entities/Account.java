@@ -6,9 +6,6 @@ import android.os.SystemClock;
 import android.util.Log;
 import android.util.Pair;
 
-import eu.siacs.conversations.Config;
-import eu.siacs.conversations.crypto.PgpDecryptionService;
-
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -19,7 +16,9 @@ import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.CopyOnWriteArraySet;
 
+import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
+import eu.siacs.conversations.crypto.PgpDecryptionService;
 import eu.siacs.conversations.crypto.axolotl.AxolotlService;
 import eu.siacs.conversations.crypto.axolotl.XmppAxolotlSession;
 import eu.siacs.conversations.services.XmppConnectionService;
@@ -95,7 +94,7 @@ public class Account extends AbstractEntity {
 
 	public boolean setShowErrorNotification(boolean newValue) {
 		boolean oldValue = showErrorNotification();
-		setKey("show_error",Boolean.toString(newValue));
+		setKey("show_error", Boolean.toString(newValue));
 		return newValue != oldValue;
 	}
 
@@ -109,7 +108,7 @@ public class Account extends AbstractEntity {
 	}
 
 	public enum State {
-		DISABLED(false,false),
+		DISABLED(false, false),
 		OFFLINE(false),
 		CONNECTING(false),
 		ONLINE(false),
@@ -117,12 +116,12 @@ public class Account extends AbstractEntity {
 		UNAUTHORIZED,
 		SERVER_NOT_FOUND,
 		REGISTRATION_SUCCESSFUL(false),
-		REGISTRATION_FAILED(true,false),
-		REGISTRATION_WEB(true,false),
-		REGISTRATION_CONFLICT(true,false),
-		REGISTRATION_NOT_SUPPORTED(true,false),
-		REGISTRATION_PLEASE_WAIT(true,false),
-		REGISTRATION_PASSWORD_TOO_WEAK(true,false),
+		REGISTRATION_FAILED(true, false),
+		REGISTRATION_WEB(true, false),
+		REGISTRATION_CONFLICT(true, false),
+		REGISTRATION_NOT_SUPPORTED(true, false),
+		REGISTRATION_PLEASE_WAIT(true, false),
+		REGISTRATION_PASSWORD_TOO_WEAK(true, false),
 		TLS_ERROR,
 		INCOMPATIBLE_SERVER,
 		TOR_NOT_AVAILABLE,
@@ -148,7 +147,7 @@ public class Account extends AbstractEntity {
 		}
 
 		State(final boolean isError) {
-			this(isError,true);
+			this(isError, true);
 		}
 
 		State(final boolean isError, final boolean reconnect) {
@@ -157,7 +156,7 @@ public class Account extends AbstractEntity {
 		}
 
 		State() {
-			this(true,true);
+			this(true, true);
 		}
 
 		public int getReadableId() {
@@ -254,9 +253,9 @@ public class Account extends AbstractEntity {
 	}
 
 	private Account(final String uuid, final Jid jid,
-					final String password, final int options, final String rosterVersion, final String keys,
-					final String avatar, String displayName, String hostname, int port,
-					final Presence.Status status, String statusMessage) {
+	                final String password, final int options, final String rosterVersion, final String keys,
+	                final String avatar, String displayName, String hostname, int port,
+	                final Presence.Status status, String statusMessage) {
 		this.uuid = uuid;
 		this.jid = jid;
 		this.password = password;
@@ -265,7 +264,7 @@ public class Account extends AbstractEntity {
 		JSONObject tmp;
 		try {
 			tmp = new JSONObject(keys);
-		} catch(JSONException e) {
+		} catch (JSONException e) {
 			tmp = new JSONObject();
 		}
 		this.keys = tmp;
@@ -286,7 +285,7 @@ public class Account extends AbstractEntity {
 					cursor.getString(cursor.getColumnIndex(SERVER)),
 					resource == null || resource.trim().isEmpty() ? null : resource);
 		} catch (final IllegalArgumentException ignored) {
-			Log.d(Config.LOGTAG,cursor.getString(cursor.getColumnIndex(USERNAME))+"@"+cursor.getString(cursor.getColumnIndex(SERVER)));
+			Log.d(Config.LOGTAG, cursor.getString(cursor.getColumnIndex(USERNAME)) + "@" + cursor.getString(cursor.getColumnIndex(SERVER)));
 			throw new AssertionError(ignored);
 		}
 		return new Account(cursor.getString(cursor.getColumnIndex(UUID)),
@@ -480,7 +479,7 @@ public class Account extends AbstractEntity {
 		values.put(PORT, port);
 		values.put(STATUS, presenceStatus.toShowString());
 		values.put(STATUS_MESSAGE, presenceStatusMessage);
-		values.put(RESOURCE,jid.getResource());
+		values.put(RESOURCE, jid.getResource());
 		return values;
 	}
 
@@ -584,7 +583,7 @@ public class Account extends AbstractEntity {
 	}
 
 	public Bookmark getBookmark(final Jid jid) {
-		for(final Bookmark bookmark : this.bookmarks) {
+		for (final Bookmark bookmark : this.bookmarks) {
 			if (bookmark.getJid() != null && jid.asBareJid().equals(bookmark.getJid().asBareJid())) {
 				return bookmark;
 			}
@@ -619,9 +618,9 @@ public class Account extends AbstractEntity {
 
 	public String getShareableUri() {
 		List<XmppUri.Fingerprint> fingerprints = this.getFingerprints();
-		String uri = "xmpp:"+this.getJid().asBareJid().toEscapedString();
+		String uri = "xmpp:" + this.getJid().asBareJid().toEscapedString();
 		if (fingerprints.size() > 0) {
-			return XmppUri.getFingerprintUri(uri,fingerprints,';');
+			return XmppUri.getFingerprintUri(uri, fingerprints, ';');
 		} else {
 			return uri;
 		}
@@ -629,9 +628,9 @@ public class Account extends AbstractEntity {
 
 	public String getShareableLink() {
 		List<XmppUri.Fingerprint> fingerprints = this.getFingerprints();
-		String uri = "https://conversations.im/i/"+this.getJid().asBareJid().toEscapedString();
+		String uri = "https://conversations.im/i/" + XmppUri.lameUrlEncode(this.getJid().asBareJid().toEscapedString());
 		if (fingerprints.size() > 0) {
-			return XmppUri.getFingerprintUri(uri,fingerprints,'&');
+			return XmppUri.getFingerprintUri(uri, fingerprints, '&');
 		} else {
 			return uri;
 		}
@@ -642,10 +641,10 @@ public class Account extends AbstractEntity {
 		if (axolotlService == null) {
 			return fingerprints;
 		}
-		fingerprints.add(new XmppUri.Fingerprint(XmppUri.FingerprintType.OMEMO,axolotlService.getOwnFingerprint().substring(2),axolotlService.getOwnDeviceId()));
-		for(XmppAxolotlSession session : axolotlService.findOwnSessions()) {
+		fingerprints.add(new XmppUri.Fingerprint(XmppUri.FingerprintType.OMEMO, axolotlService.getOwnFingerprint().substring(2), axolotlService.getOwnDeviceId()));
+		for (XmppAxolotlSession session : axolotlService.findOwnSessions()) {
 			if (session.getTrust().isVerified() && session.getTrust().isActive()) {
-				fingerprints.add(new XmppUri.Fingerprint(XmppUri.FingerprintType.OMEMO,session.getFingerprint().substring(2).replaceAll("\\s",""),session.getRemoteAddress().getDeviceId()));
+				fingerprints.add(new XmppUri.Fingerprint(XmppUri.FingerprintType.OMEMO, session.getFingerprint().substring(2).replaceAll("\\s", ""), session.getRemoteAddress().getDeviceId()));
 			}
 		}
 		return fingerprints;

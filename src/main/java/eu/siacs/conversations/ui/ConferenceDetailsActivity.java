@@ -45,6 +45,7 @@ import eu.siacs.conversations.services.XmppConnectionService.OnConversationUpdat
 import eu.siacs.conversations.services.XmppConnectionService.OnMucRosterUpdate;
 import eu.siacs.conversations.ui.util.MenuDoubleTabUtil;
 import eu.siacs.conversations.utils.UIHelper;
+import eu.siacs.conversations.utils.XmppUri;
 import rocks.xmpp.addr.Jid;
 
 public class ConferenceDetailsActivity extends XmppActivity implements OnConversationUpdate, OnMucRosterUpdate, XmppConnectionService.OnAffiliationChanged, XmppConnectionService.OnRoleChanged, XmppConnectionService.OnConfigurationPushed {
@@ -298,7 +299,7 @@ public class ConferenceDetailsActivity extends XmppActivity implements OnConvers
 	protected String getShareableUri(boolean http) {
 		if (mConversation != null) {
 			if (http) {
-				return "https://conversations.im/j/" + mConversation.getJid().asBareJid().toEscapedString();
+				return "https://conversations.im/j/" + XmppUri.lameUrlEncode(mConversation.getJid().asBareJid().toEscapedString());
 			} else {
 				return "xmpp:" + mConversation.getJid().asBareJid() + "?join";
 			}
