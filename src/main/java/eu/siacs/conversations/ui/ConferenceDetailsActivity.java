@@ -378,9 +378,13 @@ public class ConferenceDetailsActivity extends XmppActivity implements OnConvers
 						} else {
 							removeMembership.setVisible(true);
 						}
-						banFromConference.setVisible(true);
+						if (!Config.DISABLE_BAN) {
+							banFromConference.setVisible(true);
+						}
 					} else {
-						removeFromRoom.setVisible(true);
+						if (!Config.DISABLE_BAN || mConversation.getMucOptions().membersOnly()) {
+							removeFromRoom.setVisible(true);
+						}
 					}
 					if (user.getAffiliation() != MucOptions.Affiliation.ADMIN) {
 						giveAdminPrivileges.setVisible(true);
