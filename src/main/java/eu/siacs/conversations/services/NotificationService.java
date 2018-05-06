@@ -548,10 +548,10 @@ public class NotificationService {
 		}
 		/** message preview for Android Auto **/
 		for (Message message : messages) {
-			Pair<String, Boolean> preview = UIHelper.getMessagePreview(mXmppConnectionService, message);
+			Pair<CharSequence, Boolean> preview = UIHelper.getMessagePreview(mXmppConnectionService, message);
 			// only show user written text
 			if (!preview.second) {
-				uBuilder.addMessage(preview.first);
+				uBuilder.addMessage(preview.first.toString());
 				uBuilder.setLatestTimestamp(message.getTimeSent());
 			}
 		}

@@ -360,7 +360,7 @@ public class MessageAdapter extends ArrayAdapter<Message> implements CopyTextVie
 		}
 	}
 
-	private void displayInfoMessage(ViewHolder viewHolder, String text, boolean darkBackground) {
+	private void displayInfoMessage(ViewHolder viewHolder, CharSequence text, boolean darkBackground) {
 		viewHolder.download_button.setVisibility(View.GONE);
 		viewHolder.audioPlayer.setVisibility(View.GONE);
 		viewHolder.image.setVisibility(View.GONE);

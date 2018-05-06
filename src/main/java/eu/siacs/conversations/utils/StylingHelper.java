@@ -36,6 +36,7 @@ import android.support.annotation.ColorInt;
 import android.support.v4.content.ContextCompat;
 import android.text.Editable;
 import android.text.ParcelableSpan;
+import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.TextWatcher;
@@ -44,6 +45,7 @@ import android.text.style.ForegroundColorSpan;
 import android.text.style.StrikethroughSpan;
 import android.text.style.StyleSpan;
 import android.text.style.TypefaceSpan;
+import android.util.Log;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -51,6 +53,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.entities.Message;
 import eu.siacs.conversations.ui.text.QuoteSpan;
@@ -93,7 +96,7 @@ public class StylingHelper {
 	}
 
 	public static void highlight(final Context context, final Editable editable, List<String> needles, boolean dark) {
-		for(String needle : needles) {
+		for (String needle : needles) {
 			if (!FtsUtils.isKeyword(needle)) {
 				highlight(context, editable, needle, dark);
 			}
@@ -102,7 +105,7 @@ public class StylingHelper {
 
 	public static List<String> filterHighlightedWords(List<String> terms) {
 		List<String> words = new ArrayList<>();
-		for(String term : terms) {
+		for (String term : terms) {
 			if (!FtsUtils.isKeyword(term)) {
 				StringBuilder builder = new StringBuilder();
 				for (int codepoint, i = 0; i < term.length(); i += Character.charCount(codepoint)) {
@@ -130,6 +133,44 @@ public class StylingHelper {
 			start = indexOfIgnoreCase(string, needle, start + length);
 		}
 
+	}
+
+	static CharSequence subSequence(CharSequence charSequence, int start, int end) {
+		if (start == 0 && charSequence.length() + 1 == end) {
+			return charSequence;
+		}
+		if (charSequence instanceof Spannable) {
+			Spannable spannable = (Spannable) charSequence;
+			Spannable sub = (Spannable) spannable.subSequence(start, end);
+			for (Class<? extends ParcelableSpan> clazz : SPAN_CLASSES) {
+				ParcelableSpan[] spannables = spannable.getSpans(start, end, clazz);
+				for (ParcelableSpan parcelableSpan : spannables) {
+					int beginSpan = spannable.getSpanStart(parcelableSpan);
+					int endSpan = spannable.getSpanEnd(parcelableSpan);
+					if (beginSpan >= start && endSpan <= end) {
+						continue;
+					}
+					sub.setSpan(clone(parcelableSpan), Math.max(beginSpan - start, 0), Math.min(sub.length() - 1, endSpan), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+				}
+			}
+			return sub;
+		} else {
+			return charSequence.subSequence(start, end);
+		}
+	}
+
+	private static ParcelableSpan clone(ParcelableSpan span) {
+		if (span instanceof ForegroundColorSpan) {
+			return new ForegroundColorSpan(((ForegroundColorSpan) span).getForegroundColor());
+		} else if (span instanceof TypefaceSpan) {
+			return new TypefaceSpan(((TypefaceSpan) span).getFamily());
+		} else if (span instanceof StyleSpan) {
+			return new StyleSpan(((StyleSpan) span).getStyle());
+		} else if (span instanceof StrikethroughSpan) {
+			return new StrikethroughSpan();
+		} else {
+			throw new AssertionError("Unknown Span");
+		}
 	}
 
 	public static boolean isDarkText(TextView textView) {
@@ -163,7 +204,7 @@ public class StylingHelper {
 	private static
 	@ColorInt
 	int transformColor(@ColorInt int c) {
-		return Color.argb(Math.round(Color.alpha(c) * 0.6f), Color.red(c), Color.green(c), Color.blue(c));
+		return Color.argb(Math.round(Color.alpha(c) * 0.45f), Color.red(c), Color.green(c), Color.blue(c));
 	}
 
 	private static int indexOfIgnoreCase(final String haystack, final String needle, final int start) {

@@ -156,9 +156,9 @@ public class ConversationAdapter extends RecyclerView.Adapter<ConversationAdapte
 				viewHolder.lastMessageIcon.setVisibility(View.GONE);
 				showPreviewText = true;
 			}
-			final Pair<String, Boolean> preview = UIHelper.getMessagePreview(activity, message);
+			final Pair<CharSequence, Boolean> preview = UIHelper.getMessagePreview(activity, message, viewHolder.lastMessage.getCurrentTextColor());
 			if (showPreviewText) {
-				viewHolder.lastMessage.setText(EmojiWrapper.transform(preview.first));
+				viewHolder.lastMessage.setText(EmojiWrapper.transform(UIHelper.shorten(preview.first)));
 			} else {
 				viewHolder.lastMessageIcon.setContentDescription(preview.first);
 			}
