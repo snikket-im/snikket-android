@@ -45,7 +45,6 @@ import android.text.style.ForegroundColorSpan;
 import android.text.style.StrikethroughSpan;
 import android.text.style.StyleSpan;
 import android.text.style.TypefaceSpan;
-import android.util.Log;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -53,7 +52,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.entities.Message;
 import eu.siacs.conversations.ui.text.QuoteSpan;
@@ -112,6 +110,9 @@ public class StylingHelper {
 					codepoint = term.codePointAt(i);
 					if (Character.isLetterOrDigit(codepoint)) {
 						builder.append(Character.toChars(codepoint));
+					} else if (builder.length() > 0) {
+						words.add(builder.toString());
+						builder.delete(0, builder.length());
 					}
 				}
 				if (builder.length() > 0) {
