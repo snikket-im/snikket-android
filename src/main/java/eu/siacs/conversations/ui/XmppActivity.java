@@ -48,6 +48,7 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
@@ -876,7 +877,7 @@ public abstract class XmppActivity extends ActionBarActivity {
 		Bitmap bm;
 		try {
 			bm = xmppConnectionService.getFileBackend().getThumbnail(message, (int) (metrics.density * 288), true);
-		} catch (FileNotFoundException e) {
+		} catch (IOException e) {
 			bm = null;
 		}
 		if (bm != null) {
@@ -970,7 +971,7 @@ public abstract class XmppActivity extends ActionBarActivity {
 				} else {
 					return null;
 				}
-			} catch (FileNotFoundException e) {
+			} catch (IOException e) {
 				return null;
 			}
 		}
