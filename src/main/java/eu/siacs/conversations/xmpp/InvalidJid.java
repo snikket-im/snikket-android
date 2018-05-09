@@ -41,6 +41,7 @@ public class InvalidJid implements Jid {
 	private InvalidJid(String jid) {
 		this.value = jid;
 	}
+
 	public  static Jid of(String jid, boolean fallback) {
 		final int pos = jid.indexOf('/');
 		if (fallback && pos >= 0 && jid.length() >= pos + 1) {

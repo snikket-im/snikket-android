@@ -23,6 +23,8 @@ import eu.siacs.conversations.Config;
 import eu.siacs.conversations.crypto.OmemoSetting;
 import eu.siacs.conversations.crypto.PgpDecryptionService;
 import eu.siacs.conversations.crypto.axolotl.AxolotlService;
+import eu.siacs.conversations.utils.JidHelper;
+import eu.siacs.conversations.xmpp.InvalidJid;
 import eu.siacs.conversations.xmpp.chatstate.ChatState;
 import eu.siacs.conversations.xmpp.mam.MamReference;
 import rocks.xmpp.addr.Jid;
@@ -104,18 +106,11 @@ public class Conversation extends AbstractEntity implements Blockable, Comparabl
 	}
 
 	public static Conversation fromCursor(Cursor cursor) {
-		Jid jid;
-		try {
-			jid = Jid.of(cursor.getString(cursor.getColumnIndex(CONTACTJID)));
-		} catch (final IllegalArgumentException e) {
-			// Borked DB..
-			jid = null;
-		}
 		return new Conversation(cursor.getString(cursor.getColumnIndex(UUID)),
 				cursor.getString(cursor.getColumnIndex(NAME)),
 				cursor.getString(cursor.getColumnIndex(CONTACT)),
 				cursor.getString(cursor.getColumnIndex(ACCOUNT)),
-				jid,
+				JidHelper.parseOrFallbackToInvalid(cursor.getString(cursor.getColumnIndex(CONTACTJID))),
 				cursor.getLong(cursor.getColumnIndex(CREATED)),
 				cursor.getInt(cursor.getColumnIndex(STATUS)),
 				cursor.getInt(cursor.getColumnIndex(MODE)),

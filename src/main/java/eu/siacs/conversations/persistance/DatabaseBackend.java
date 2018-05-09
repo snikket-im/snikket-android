@@ -53,6 +53,7 @@ import eu.siacs.conversations.utils.CryptoHelper;
 import eu.siacs.conversations.utils.FtsUtils;
 import eu.siacs.conversations.utils.MimeUtils;
 import eu.siacs.conversations.utils.Resolver;
+import eu.siacs.conversations.xmpp.InvalidJid;
 import eu.siacs.conversations.xmpp.mam.MamReference;
 import rocks.xmpp.addr.Jid;
 
@@ -680,10 +681,14 @@ public class DatabaseBackend extends SQLiteOpenHelper {
 		SQLiteDatabase db = this.getReadableDatabase();
 		String[] selectionArgs = {Integer.toString(status)};
 		Cursor cursor = db.rawQuery("select * from " + Conversation.TABLENAME
-				+ " where " + Conversation.STATUS + " = ? order by "
+				+ " where " + Conversation.STATUS + " = ? and "+Conversation.CONTACTJID+" is not null order by "
 				+ Conversation.CREATED + " desc", selectionArgs);
 		while (cursor.moveToNext()) {
-			list.add(Conversation.fromCursor(cursor));
+			final Conversation conversation = Conversation.fromCursor(cursor);
+			if (conversation.getJid() instanceof InvalidJid) {
+				continue;
+			}
+			list.add(conversation);
 		}
 		cursor.close();
 		return list;
@@ -780,6 +785,9 @@ public class DatabaseBackend extends SQLiteOpenHelper {
 		cursor.moveToFirst();
 		Conversation conversation = Conversation.fromCursor(cursor);
 		cursor.close();
+		if (conversation.getJid() instanceof InvalidJid) {
+			return null;
+		}
 		return conversation;
 	}
 
