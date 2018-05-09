@@ -1437,7 +1437,7 @@ public class AxolotlService implements OnAdvancedStreamFeaturesLoaded {
 
 	private void completeSession(XmppAxolotlSession session) {
 		final XmppAxolotlMessage axolotlMessage = new XmppAxolotlMessage(account.getJid().asBareJid(), getOwnDeviceId());
-		axolotlMessage.addDevice(session);
+		axolotlMessage.addDevice(session, true);
 		try {
 			Jid jid = Jid.of(session.getRemoteAddress().getName());
 			MessagePacket packet = mXmppConnectionService.getMessageGenerator().generateKeyTransportMessage(jid, axolotlMessage);

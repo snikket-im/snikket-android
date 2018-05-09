@@ -218,16 +218,20 @@ public class XmppAxolotlMessage {
 		return this.from;
 	}
 
-	public int getSenderDeviceId() {
+	int getSenderDeviceId() {
 		return sourceDeviceId;
 	}
 
-	public void addDevice(XmppAxolotlSession session) {
+	void addDevice(XmppAxolotlSession session) {
+		addDevice(session, false);
+	}
+
+	void addDevice(XmppAxolotlSession session, boolean ignoreSessionTrust) {
 		XmppAxolotlSession.AxolotlKey key;
 		if (authtagPlusInnerKey != null) {
-			key = session.processSending(authtagPlusInnerKey);
+			key = session.processSending(authtagPlusInnerKey, ignoreSessionTrust);
 		} else {
-			key = session.processSending(innerKey);
+			key = session.processSending(innerKey, ignoreSessionTrust);
 		}
 		if (key != null) {
 			keys.put(session.getRemoteAddress().getDeviceId(), key);

@@ -118,9 +118,9 @@ public class XmppAxolotlSession implements Comparable<XmppAxolotlSession> {
 	}
 
 	@Nullable
-	public AxolotlKey processSending(@NonNull byte[] outgoingMessage) {
+	public AxolotlKey processSending(@NonNull byte[] outgoingMessage, boolean ignoreSessionTrust) {
 		FingerprintStatus status = getTrust();
-		if (status.isTrustedAndActive()) {
+		if (ignoreSessionTrust || status.isTrustedAndActive()) {
 			try {
 				CiphertextMessage ciphertextMessage = cipher.encrypt(outgoingMessage);
 				return new AxolotlKey(ciphertextMessage.serialize(),ciphertextMessage.getType() == CiphertextMessage.PREKEY_TYPE);
