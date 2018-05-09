@@ -29,8 +29,12 @@
 
 package eu.siacs.conversations.utils;
 
+import android.util.LruCache;
+
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.regex.Pattern;
 
@@ -71,11 +75,15 @@ public class Emoticons {
 			ENCLOSED_IDEOGRAPHIC_SUPPLEMENT,
 			MISC_TECHNICAL);
 
+	private static final int MAX_EMOIJS = 42;
+
 	private static final int ZWJ = 0x200D;
 	private static final int VARIATION_16 = 0xFE0F;
 	private static final int COMBINING_ENCLOSING_KEYCAP = 0x20E3;
 	private static final int BLACK_FLAG = 0x1F3F4;
 	private static final UnicodeRange FITZPATRICK = new UnicodeRange(0x1F3FB,0x1F3FF);
+
+	private static final LruCache<CharSequence,Pattern> CACHE = new LruCache<>(256);
 
 	private static List<Symbol> parse(String input) {
 		List<Symbol> symbols = new ArrayList<>();
@@ -99,15 +107,32 @@ public class Emoticons {
 		return symbols;
 	}
 
-	public static Pattern generatePattern(CharSequence input) {
-		final StringBuilder pattern = new StringBuilder();
+	public static Pattern getEmojiPattern(CharSequence input) {
+		Pattern pattern = CACHE.get(input);
+		if (pattern == null) {
+			pattern = generatePattern(input);
+			CACHE.put(input, pattern);
+		}
+		return pattern;
+	}
+
+	private static Pattern generatePattern(CharSequence input) {
+		final HashSet<String> emojis = new HashSet<>();
+		int i = 0;
 		for(Symbol symbol : parse(input.toString())) {
 			if (symbol instanceof Emoji) {
-				if (pattern.length() != 0) {
-					pattern.append('|');
+				emojis.add(symbol.toString());
+				if (++i >= MAX_EMOIJS) {
+					return Pattern.compile("");
 				}
-				pattern.append(Pattern.quote(symbol.toString()));
 			}
+		}
+		final StringBuilder pattern = new StringBuilder();
+		for(String emoji : emojis) {
+			if (pattern.length() != 0) {
+				pattern.append('|');
+			}
+			pattern.append(Pattern.quote(emoji));
 		}
 		return Pattern.compile(pattern.toString());
 	}
