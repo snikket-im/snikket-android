@@ -6,7 +6,7 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.1.1'
+        classpath 'com.android.tools.build:gradle:3.1.2'
     }
 }
 
@@ -33,7 +33,7 @@ ext {
 }
 
 dependencies {
-    playstoreImplementation 'com.google.android.gms:play-services-gcm:15.0.0'
+    playstoreImplementation 'com.google.android.gms:play-services-gcm:15.0.1'
     implementation 'org.sufficientlysecure:openpgp-api:10.0'
     implementation 'com.soundcloud.android:android-crop:1.0.1@aar'
     implementation "com.android.support:support-v13:$supportLibVersion"
