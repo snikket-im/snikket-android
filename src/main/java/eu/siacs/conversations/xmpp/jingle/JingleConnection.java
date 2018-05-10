@@ -771,7 +771,7 @@ public class JingleConnection implements Transferable {
 		this.mJingleStatus = JINGLE_STATUS_FINISHED;
 		this.message.setStatus(Message.STATUS_RECEIVED);
 		this.message.setTransferable(null);
-		this.mXmppConnectionService.updateMessage(message);
+		this.mXmppConnectionService.updateMessage(message, false);
 		this.mJingleConnectionManager.finishConnection(this);
 	}
 

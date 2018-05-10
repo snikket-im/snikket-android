@@ -407,7 +407,7 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
 						Message previouslySent = conversation.findSentMessageWithUuid(remoteMsgId);
 						if (previouslySent != null && previouslySent.getServerMsgId() == null && serverMsgId != null) {
 							previouslySent.setServerMsgId(serverMsgId);
-							mXmppConnectionService.databaseBackend.updateMessage(previouslySent);
+							mXmppConnectionService.databaseBackend.updateMessage(previouslySent, false);
 							Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": encountered previously sent OMEMO message without serverId. updating...");
 						}
 					}
@@ -529,7 +529,7 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
 							&& duplicate.getServerMsgId() == null
 							&& message.getServerMsgId() != null) {
 						duplicate.setServerMsgId(message.getServerMsgId());
-						if (mXmppConnectionService.databaseBackend.updateMessage(duplicate)) {
+						if (mXmppConnectionService.databaseBackend.updateMessage(duplicate, false)) {
 							serverMsgIdUpdated = true;
 						} else {
 							serverMsgIdUpdated = false;
@@ -725,7 +725,7 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
 							ReadByMarker readByMarker = ReadByMarker.from(counterpart, trueJid);
 							if (message.addReadByMarker(readByMarker)) {
 								Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": added read by (" + readByMarker.getRealJid() + ") to message '" + message.getBody() + "'");
-								mXmppConnectionService.updateMessage(message);
+								mXmppConnectionService.updateMessage(message, false);
 							}
 						}
 					}

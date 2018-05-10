@@ -90,7 +90,7 @@ public class PgpDecryptionService {
 				message.setEncryption(Message.ENCRYPTION_DECRYPTION_FAILED);
 			}
 		}
-		mXmppConnectionService.updateMessage(message);
+		mXmppConnectionService.updateMessage(message, false);
 		continueDecryption(true);
 	}
 
