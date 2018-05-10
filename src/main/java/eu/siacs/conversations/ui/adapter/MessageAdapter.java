@@ -123,7 +123,24 @@ public class MessageAdapter extends ArrayAdapter<Message> implements CopyTextVie
 		}
 	}
 
-	private static final Linkify.MatchFilter WEBURL_MATCH_FILTER = (cs, start, end) -> start < 1 || (cs.charAt(start - 1) != '@' && cs.charAt(start - 1) != '.' && !cs.subSequence(Math.max(0, start - 3), start).equals("://"));
+	private static final Linkify.MatchFilter WEBURL_MATCH_FILTER = (cs, start, end) -> {
+		if (start > 0) {
+			if (cs.charAt(start - 1) == '@' || cs.charAt(start - 1) == '.'
+					|| cs.subSequence(Math.max(0, start - 3), start).equals("://")) {
+				return false;
+			}
+		}
+
+		if (end < cs.length()) {
+			// Reject strings that were probably matched only because they contain a dot followed by
+			// by some known TLD (see also comment for WORD_BOUNDARY in Patterns.java)
+			if (Character.isAlphabetic(cs.charAt(end-1)) && Character.isAlphabetic(cs.charAt(end))) {
+				return false;
+			}
+		}
+
+		return true;
+	};
 
 	private static final Linkify.MatchFilter XMPPURI_MATCH_FILTER = (s, start, end) -> {
 		XmppUri uri = new XmppUri(s.subSequence(start, end).toString());
