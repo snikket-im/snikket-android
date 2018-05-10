@@ -919,7 +919,7 @@ public class XmppConnectionService extends Service {
 	public boolean hasInternetConnection() {
 		final ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
 		try {
-			final NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+			final NetworkInfo activeNetwork = cm == null ? null : cm.getActiveNetworkInfo();
 			return activeNetwork != null && activeNetwork.isConnected();
 		} catch (RuntimeException e) {
 			Log.d(Config.LOGTAG, "unable to check for internet connection", e);
