@@ -87,9 +87,9 @@ public class RecordingActivity extends Activity implements View.OnClickListener 
 		mRecorder = new MediaRecorder();
 		mRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
 		mRecorder.setOutputFormat(MediaRecorder.OutputFormat.MPEG_4);
-		mRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.HE_AAC);
-		mRecorder.setAudioEncodingBitRate(48000);
-		mRecorder.setAudioSamplingRate(16000);
+		mRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AAC);
+		mRecorder.setAudioEncodingBitRate(96000);
+		mRecorder.setAudioSamplingRate(22050);
 		setupOutputFile();
 		mRecorder.setOutputFile(mOutputFile.getAbsolutePath());
 
