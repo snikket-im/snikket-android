@@ -519,7 +519,8 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
 
 			boolean checkForDuplicates = (isTypeGroupChat && packet.hasChild("delay", "urn:xmpp:delay"))
 					|| message.getType() == Message.TYPE_PRIVATE
-					|| message.getServerMsgId() != null;
+					|| message.getServerMsgId() != null
+					|| (query == null && mXmppConnectionService.getMessageArchiveService().isCatchupInProgress(conversation));
 			if (checkForDuplicates) {
 				final Message duplicate = conversation.findDuplicateMessage(message);
 				if (duplicate != null) {

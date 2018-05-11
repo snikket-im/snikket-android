@@ -257,10 +257,14 @@ public class IqGenerator extends AbstractGenerator {
 		} else if (mam.getWith()!=null) {
 			data.put("with", mam.getWith().toString());
 		}
-		if (mam.getStart() != 0) {
-			data.put("start", getTimestamp(mam.getStart()));
+		final long start = mam.getStart();
+		final long end = mam.getEnd();
+		if (start != 0) {
+			data.put("start", getTimestamp(start));
 		}
-		data.put("end", getTimestamp(mam.getEnd()));
+		if (end != 0) {
+			data.put("end", getTimestamp(end));
+		}
 		data.submit();
 		query.addChild(data);
 		Element set = query.addChild("set", "http://jabber.org/protocol/rsm");
