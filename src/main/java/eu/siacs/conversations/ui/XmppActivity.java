@@ -33,6 +33,7 @@ import android.os.IBinder;
 import android.os.PowerManager;
 import android.os.SystemClock;
 import android.preference.PreferenceManager;
+import android.support.annotation.BoolRes;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AlertDialog.Builder;
@@ -399,7 +400,7 @@ public abstract class XmppActivity extends ActionBarActivity {
 		setTheme(this.mTheme);
 
 		this.mUsingEnterKey = usingEnterKey();
-		mUseSubject = getPreferences().getBoolean("use_subject", getResources().getBoolean(R.bool.use_subject));
+		mUseSubject = getBooleanPreference("use_subject", R.bool.use_subject);
 	}
 
 	protected boolean isCameraFeatureAvailable() {
@@ -447,6 +448,10 @@ public abstract class XmppActivity extends ActionBarActivity {
 
 	protected SharedPreferences getPreferences() {
 		return PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+	}
+
+	protected boolean getBooleanPreference(String name, @BoolRes int res) {
+		return getPreferences().getBoolean(name, getResources().getBoolean(res));
 	}
 
 	public boolean useSubjectToIdentifyConference() {

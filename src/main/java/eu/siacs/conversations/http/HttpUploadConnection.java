@@ -180,7 +180,7 @@ public class HttpUploadConnection implements Transferable {
 			wakeLock.acquire(readTimeout);
 			Log.d(Config.LOGTAG, "uploading to " + mPutUrl.toString()+ " w/ read timeout of "+readTimeout+"s");
 			if (mUseTor) {
-				connection = (HttpURLConnection) mPutUrl.openConnection(mHttpConnectionManager.getProxy());
+				connection = (HttpURLConnection) mPutUrl.openConnection(HttpConnectionManager.getProxy());
 			} else {
 				connection = (HttpURLConnection) mPutUrl.openConnection();
 			}

@@ -77,7 +77,7 @@ public class HttpConnectionManager extends AbstractConnectionManager {
 		}
 	}
 
-	public Proxy getProxy() throws IOException {
+	public static Proxy getProxy() throws IOException {
 		return new Proxy(Proxy.Type.HTTP, new InetSocketAddress(InetAddress.getByAddress(new byte[]{127,0,0,1}), 8118));
 	}
 }

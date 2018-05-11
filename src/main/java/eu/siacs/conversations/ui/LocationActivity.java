@@ -14,6 +14,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.provider.Settings;
+import android.support.annotation.BoolRes;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
 import android.util.Log;
@@ -29,10 +30,12 @@ import org.osmdroid.views.MapView;
 import org.osmdroid.views.overlay.Overlay;
 
 import java.io.File;
+import java.io.IOException;
 
 import eu.siacs.conversations.BuildConfig;
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
+import eu.siacs.conversations.http.HttpConnectionManager;
 import eu.siacs.conversations.ui.util.LocationHelper;
 import eu.siacs.conversations.ui.widget.Marker;
 import eu.siacs.conversations.ui.widget.MyLocation;
@@ -100,6 +103,13 @@ public abstract class LocationActivity extends ActionBarActivity implements Loca
 		final IConfigurationProvider config = Configuration.getInstance();
 		config.load(ctx, getPreferences());
 		config.setUserAgentValue(BuildConfig.APPLICATION_ID + "_" + BuildConfig.VERSION_CODE);
+		if (Config.FORCE_ORBOT || getBooleanPreference("use_tor", R.bool.use_tor)) {
+			try {
+				config.setHttpProxy(HttpConnectionManager.getProxy());
+			} catch (IOException e) {
+				throw new RuntimeException("Unable to configure proxy");
+			}
+		}
 
 		final File f = new File(ctx.getCacheDir() + "/tiles");
 		try {
@@ -284,6 +294,10 @@ public abstract class LocationActivity extends ActionBarActivity implements Loca
 
 	protected SharedPreferences getPreferences() {
 		return PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+	}
+
+	protected boolean getBooleanPreference(String name, @BoolRes int res) {
+		return getPreferences().getBoolean(name, getResources().getBoolean(res));
 	}
 
 	protected boolean isLocationEnabled() {

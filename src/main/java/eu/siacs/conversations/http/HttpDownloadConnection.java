@@ -222,7 +222,7 @@ public class HttpDownloadConnection implements Transferable {
 				changeStatus(STATUS_CHECKING);
 				HttpURLConnection connection;
 				if (mUseTor) {
-					connection = (HttpURLConnection) mUrl.openConnection(mHttpConnectionManager.getProxy());
+					connection = (HttpURLConnection) mUrl.openConnection(HttpConnectionManager.getProxy());
 				} else {
 					connection = (HttpURLConnection) mUrl.openConnection();
 				}
@@ -290,7 +290,7 @@ public class HttpDownloadConnection implements Transferable {
 			try {
 				wakeLock.acquire();
 				if (mUseTor) {
-					connection = (HttpURLConnection) mUrl.openConnection(mHttpConnectionManager.getProxy());
+					connection = (HttpURLConnection) mUrl.openConnection(HttpConnectionManager.getProxy());
 				} else {
 					connection = (HttpURLConnection) mUrl.openConnection();
 				}
