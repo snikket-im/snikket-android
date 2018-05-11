@@ -297,6 +297,8 @@
   <string name="send_again">Erneut senden</string>
   <string name="file_url">Datei-URL</string>
   <string name="url_copied_to_clipboard">URL in die Zwischenablage kopiert</string>
+  <string name="jabber_id_copied_to_clipboard">Jabber-ID in die Zwischenablage kopiert</string>
+  <string name="web_address">Internetadresse</string>
   <string name="scan_qr_code">Barcode scannen</string>
   <string name="show_qr_code">Barcode anzeigen</string>
   <string name="show_block_list">Sperrliste anzeigen</string>
@@ -707,4 +709,6 @@
   <string name="view_conversation">Unterhaltung anzeigen</string>
   <string name="pref_use_share_location_plugin"> Plugin zum Standort teilen</string>
   <string name="pref_use_share_location_plugin_summary">Verwende das Plugin zum Standort teilen anstelle der eingebauten Karte</string>
+  <string name="copy_link">Internetadresse kopieren</string>
+  <string name="copy_jabber_id">Jabber-ID kopieren</string>
 </resources>

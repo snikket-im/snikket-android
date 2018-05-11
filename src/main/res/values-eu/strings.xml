@@ -296,6 +296,9 @@
   <string name="copy_original_url">Jatorrizko URLa kopiatu</string>
   <string name="send_again">Berriro bidali</string>
   <string name="file_url">Fitxategiaren URLa</string>
+  <string name="url_copied_to_clipboard">URLa arbelera kopiatu da</string>
+  <string name="jabber_id_copied_to_clipboard">Jabber IDa arbelera kopiatu da</string>
+  <string name="web_address">web helbidea</string>
   <string name="scan_qr_code">2D barra kodea eskaneatu</string>
   <string name="show_qr_code">2D barra kodea erakutsi</string>
   <string name="show_block_list">Blokeatutakoen zerrenda ikusi</string>
@@ -425,6 +428,8 @@
   <string name="none">Bat ere ez</string>
   <string name="recently_used">Azkenengo aldiz erabilitakoa</string>
   <string name="choose_quick_action">Ekintza azkarra aukeratu</string>
+  <string name="search_contacts">Kontaktuak bilatu</string>
+  <string name="search_groups">Talde elkarrizketak bilatu</string>
   <string name="send_private_message">Mezu pribatua bidali</string>
   <string name="user_has_left_conference">%1$s(e)k taldea utzi du</string>
   <string name="username">Erabiltzaile izena</string>
@@ -656,6 +661,8 @@
   <string name="mtm_accept_cert">Ziurtagiri ezezaguna onartu?</string>
   <string name="mtm_trust_anchor">Zerbitzariaren ziurtagiria ez dago ezaguna den Ziurtagiri jaulkitzaile batez sinatuta.</string>
   <string name="mtm_accept_servername">Bat ez datorren zerbitzari izena onartu?</string>
+  <string name="mtm_hostname_mismatch">Zerbitzariak ezin izan du \"%s\" bezala autentifikatu. Ziurtagiria honetarako da balioduna soilik:</string>
+  <string name="mtm_connect_anyway">Konektatu nahi al duzu hala ere?</string>
   <string name="mtm_cert_details">Ziurtagiriaren xehetasunak:</string>
   <string name="once">Behin</string>
   <string name="qr_code_scanner_needs_access_to_camera">QR kode eskanerrak kamerara sarbidea behar du</string>
@@ -664,6 +671,7 @@
   <string name="edit_status_message_title">Egoera mezua editatu</string>
   <string name="edit_status_message">Egoera mezua editatu</string>
   <string name="disable_encryption">Enkriptazioa ezgaitu</string>
+  <string name="error_trustkey_general">Conversationsek ezin du %1$s(r)i enkriptatutako mezuak bidali. Hau gerta daiteke zure kontaktuak zaharkitutako zerbitzari bat erabiltzen duelako edo erabiltzen ari den aplikazioak OMEMO ezin duelako kudeatu.</string>
   <string name="error_trustkey_device_list">Ezin izan da gailuen zerrenda eskuratu</string>
   <string name="disable_now">Orain ezgaitu</string>
   <string name="draft">Zirriborroa:</string>
@@ -672,6 +680,7 @@
   <string name="pref_omemo_setting_summary_default_on">OMEMO elkarrizketa berrietan lehenetsi bezala erabiliko da</string>
   <string name="create_shortcut">Lasterbidea sortu</string>
   <string name="pref_font_size">Letraren neurria</string>
+  <string name="pref_font_size_summary">Aplikazioaren barruan erabiliko den letraren neurri erlatiboa.</string>
   <string name="default_on">Piztuta lehenetsi bezala</string>
   <string name="default_off">Itzalita lehenetsi bezala</string>
   <string name="small">Txikia</string>
@@ -679,4 +688,23 @@
   <string name="large">Handia</string>
   <string name="not_encrypted_for_this_device">Mezua ez da enkriptatu gailu honentzat.</string>
   <string name="undo">desegin</string>
+  <string name="location_disabled">Kokapena partekatzea ezgaituta dago</string>
+  <string name="action_fix_to_location">Kokapena finkatu</string>
+  <string name="action_unfix_from_location">Kokapena askatu</string>
+  <string name="action_copy_location">Kokapena kopiatu</string>
+  <string name="action_share_location">Kokapena partekatu</string>
+  <string name="action_directions">Norabideak</string>
+  <string name="title_activity_share_location">Kokapena partekatu</string>
+  <string name="title_activity_show_location">Kokapena erakutsi</string>
+  <string name="share">Partekatu</string>
+  <string name="unable_to_start_recording">Ezin izan da grabatzen hasi</string>
+  <string name="please_wait">Mesedez itxaron…</string>
+  <string name="no_microphone_permission">Conversationsek mikrofonorako sarbidea behar du</string>
+  <string name="search_messages">Mezuak bilatu</string>
+  <string name="gif">GIF</string>
+  <string name="view_conversation">Elkarrizketa ikusi</string>
+  <string name="pref_use_share_location_plugin">Kokapena partekatzeko plugina</string>
+  <string name="pref_use_share_location_plugin_summary">Erabili kokapena partekatzeko plugina mapa erabili beharrean</string>
+  <string name="copy_link">Web helbidea kopiatu</string>
+  <string name="copy_jabber_id">Jabber IDa kopiatu</string>
 </resources>

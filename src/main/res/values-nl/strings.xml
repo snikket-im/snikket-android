@@ -296,6 +296,9 @@
   <string name="copy_original_url">Oorspronkelijke URL kopiëren</string>
   <string name="send_again">Opnieuw versturen</string>
   <string name="file_url">Bestands-URL</string>
+  <string name="url_copied_to_clipboard">URL gekopieerd naar klembord</string>
+  <string name="jabber_id_copied_to_clipboard">Jabber-ID gekopieerd naar klembord</string>
+  <string name="web_address">webadres</string>
   <string name="scan_qr_code">2D-streepjescode scannen</string>
   <string name="show_qr_code">2D-streepjescode tonen</string>
   <string name="show_block_list">Geblokkeerde contacten weergeven</string>
@@ -425,6 +428,8 @@
   <string name="none">Geen</string>
   <string name="recently_used">Recent gebruikt</string>
   <string name="choose_quick_action">Snelle actie kiezen</string>
+  <string name="search_contacts">Contacten zoeken</string>
+  <string name="search_groups">Groepsgesprekken zoeken</string>
   <string name="send_private_message">Privébericht sturen</string>
   <string name="user_has_left_conference">%1$s heeft het groepsgesprek verlaten!</string>
   <string name="username">Gebruikersnaam</string>
@@ -687,4 +692,23 @@
   <string name="large">Groot</string>
   <string name="not_encrypted_for_this_device">Bericht is niet versleuteld voor dit apparaat.</string>
   <string name="undo">ongedaan maken</string>
+  <string name="location_disabled">Delen van locatie is uitgeschakeld</string>
+  <string name="action_fix_to_location">Positie vergrendelen</string>
+  <string name="action_unfix_from_location">Positie ontgrendelen</string>
+  <string name="action_copy_location">Locatie kopiëren</string>
+  <string name="action_share_location">Locatie delen</string>
+  <string name="action_directions">Routebeschrijving</string>
+  <string name="title_activity_share_location">Locatie delen</string>
+  <string name="title_activity_show_location">Locatie weergeven</string>
+  <string name="share">Delen</string>
+  <string name="unable_to_start_recording">Kan opname niet starten</string>
+  <string name="please_wait">Even geduld…</string>
+  <string name="no_microphone_permission">Conversations heeft toegang nodig tot de microfoon</string>
+  <string name="search_messages">Berichten zoeken</string>
+  <string name="gif">GIF</string>
+  <string name="view_conversation">Gesprek bekijken</string>
+  <string name="pref_use_share_location_plugin">Plug-in voor delen van locatie</string>
+  <string name="pref_use_share_location_plugin_summary">Gebruik de Plug-in voor delen van locatie in plaats van de ingebouwde kaart</string>
+  <string name="copy_link">Webadres kopiëren</string>
+  <string name="copy_jabber_id">Jabber-ID kopiëren</string>
 </resources>

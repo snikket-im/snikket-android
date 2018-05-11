@@ -297,6 +297,8 @@
   <string name="send_again">Wyślij ponownie</string>
   <string name="file_url">URL pliku</string>
   <string name="url_copied_to_clipboard">Skopiowano URL do schowka</string>
+  <string name="jabber_id_copied_to_clipboard">Skopiowano JID do schowka</string>
+  <string name="web_address">adres URL</string>
   <string name="scan_qr_code">Zeskanuj kod</string>
   <string name="show_qr_code">Pokaż kod QR</string>
   <string name="show_block_list">Wyświetl listę banów</string>
@@ -728,4 +730,6 @@ Administrator twojego serwera będzie mógł czytać twoje wiadomości, ale moż
   <string name="view_conversation">Pokaż konwersację</string>
   <string name="pref_use_share_location_plugin">Wtyczka Udostępniania Lokalizacji</string>
   <string name="pref_use_share_location_plugin_summary">Użyj Wtyczki Udostępniania Lokalizacji zamiast wbudowanej mapy</string>
+  <string name="copy_link">Skopiuj URL</string>
+  <string name="copy_jabber_id">Skopiuj JID</string>
 </resources>

@@ -297,6 +297,8 @@
   <string name="send_again">Invia di nuovo</string>
   <string name="file_url">URL del file</string>
   <string name="url_copied_to_clipboard">URL copiato negli appunti</string>
+  <string name="jabber_id_copied_to_clipboard">ID Jabberd copiato negli appunti</string>
+  <string name="web_address">indirizzo web</string>
   <string name="scan_qr_code">Scansiona codice a barre 2D</string>
   <string name="show_qr_code">Mostra codice a barre 2D</string>
   <string name="show_block_list">Mostra la lista nera</string>
@@ -707,4 +709,6 @@
   <string name="view_conversation">Vedi conversazione</string>
   <string name="pref_use_share_location_plugin">Plugin Condivisione Posizione</string>
   <string name="pref_use_share_location_plugin_summary">Usa il Plugin Condivisione Posizione al posto della mappa integrata</string>
+  <string name="copy_link">Copia indirizzo web</string>
+  <string name="copy_jabber_id">Copia ID Jabber</string>
 </resources>

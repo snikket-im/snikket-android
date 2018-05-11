@@ -296,6 +296,9 @@
   <string name="copy_original_url">Copiar la URL original</string>
   <string name="send_again">Envia una altra vegada</string>
   <string name="file_url">URL del fitxer</string>
+  <string name="url_copied_to_clipboard">URL copiada al portapapers</string>
+  <string name="jabber_id_copied_to_clipboard">ID de Jabberd copiada al portapapers</string>
+  <string name="web_address">Adreça Web</string>
   <string name="scan_qr_code">Escaneja el codi de barres 2D</string>
   <string name="show_qr_code">Mostra el codi de barres 2D</string>
   <string name="show_block_list">Mostra la llista de bloqueig</string>
@@ -428,6 +431,8 @@ mentrestant.</string>
   <string name="none">Cap</string>
   <string name="recently_used">Ús més recent</string>
   <string name="choose_quick_action">Trieu una acció ràpida</string>
+  <string name="search_contacts">Buscar contactes</string>
+  <string name="search_groups">Buscar xats en grup</string>
   <string name="send_private_message">Envia un missatge privat</string>
   <string name="user_has_left_conference">%1$s ha deixat el xat del grup!</string>
   <string name="username">Nom d\'usuari</string>
@@ -705,4 +710,23 @@ que l\'administrador del servidor llegeixi els missatges, però pot ser l\'únic
   <string name="large">Gran</string>
   <string name="not_encrypted_for_this_device">El missatge no està xifrat per a aquest dispositiu.</string>
   <string name="undo">desfer</string>
+  <string name="location_disabled">L\'ús compartit d\'ubicacions està desactivat</string>
+  <string name="action_fix_to_location">Posició fixa</string>
+  <string name="action_unfix_from_location">Posició no fixada</string>
+  <string name="action_copy_location">Copiar ubicació</string>
+  <string name="action_share_location">Compartir ubicació</string>
+  <string name="action_directions">Adreces</string>
+  <string name="title_activity_share_location">Compartir ubicació</string>
+  <string name="title_activity_show_location">Mostrar ubicació</string>
+  <string name="share">Compartir</string>
+  <string name="unable_to_start_recording">No es pot iniciar l\'enregistrament</string>
+  <string name="please_wait">Si us plau, esperi...</string>
+  <string name="no_microphone_permission">Conversations  necessita accés al micròfon</string>
+  <string name="search_messages">Buscar missatges</string>
+  <string name="gif">GIF</string>
+  <string name="view_conversation">Veure conversa</string>
+  <string name="pref_use_share_location_plugin">Plugin per Compartir Ubicació</string>
+  <string name="pref_use_share_location_plugin_summary">Utilitzi el plugin Compartir ubicació en lloc d\'incorporar el mapa</string>
+  <string name="copy_link">Copiar adreça web</string>
+  <string name="copy_jabber_id">Copiar ID de Jabber</string>
 </resources>

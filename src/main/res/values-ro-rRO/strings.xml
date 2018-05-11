@@ -297,6 +297,8 @@
   <string name="send_again">Trimite din nou</string>
   <string name="file_url">Adresă fișier</string>
   <string name="url_copied_to_clipboard">Adresă copiată în memorie</string>
+  <string name="jabber_id_copied_to_clipboard">Adresă ID Jabber copiată în memorie</string>
+  <string name="web_address">adresă web</string>
   <string name="scan_qr_code">Scanează cod de bare 2D</string>
   <string name="show_qr_code">Arată cod de bare 2D</string>
   <string name="show_block_list">Listă contacte blocate</string>
@@ -718,4 +720,6 @@ sau chiar pierderea mesajelor.\nÎn continuare veți fi rugați să dezactivați
   <string name="view_conversation">Arată conversația</string>
   <string name="pref_use_share_location_plugin">Extensia Share Location</string>
   <string name="pref_use_share_location_plugin_summary">Folosește localizarea cu extensia în locul hărții incluse</string>
+  <string name="copy_link">Copiază adresa web</string>
+  <string name="copy_jabber_id">Copiază ID Jabber</string>
 </resources>

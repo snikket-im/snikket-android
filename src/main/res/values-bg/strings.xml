@@ -297,6 +297,8 @@
   <string name="send_again">Повторно изпращане</string>
   <string name="file_url">Адрес на файла</string>
   <string name="url_copied_to_clipboard">Копиране на адреса</string>
+  <string name="jabber_id_copied_to_clipboard">Jabber идентификаторът е копиран</string>
+  <string name="web_address">уеб адрес</string>
   <string name="scan_qr_code">Сканиране на 2-измерен баркод</string>
   <string name="show_qr_code">Показване на 2-измерен баркод</string>
   <string name="show_block_list">Показване на списъка с блокирани</string>
@@ -707,4 +709,6 @@
   <string name="view_conversation">Преглед на разговора</string>
   <string name="pref_use_share_location_plugin">Разширение за споделяне на местоположението</string>
   <string name="pref_use_share_location_plugin_summary">Използване на разширението за споделяне на местоположението вместо вградената карта</string>
+  <string name="copy_link">Копиране на уеб адрес</string>
+  <string name="copy_jabber_id">Копиране на Jabber идентификатор</string>
 </resources>

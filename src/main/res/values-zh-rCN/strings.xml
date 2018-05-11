@@ -23,7 +23,7 @@
   <string name="title_activity_share_via_account">通过帐户分享</string>
   <string name="title_activity_block_list">屏蔽列表</string>
   <string name="just_now">刚刚</string>
-  <string name="minute_ago">1 分钟前</string>
+  <string name="minute_ago">1分钟前</string>
   <string name="minutes_ago">%d分钟前</string>
   <string name="unread_conversations">未读会话</string>
   <string name="sending">正在发送…</string>
@@ -182,7 +182,7 @@
   <string name="server_info_blocking">XEP-0191：屏蔽指令</string>
   <string name="server_info_roster_version">XEP-0237：名单版本</string>
   <string name="server_info_stream_management">XEP-0198：流管理</string>
-  <string name="server_info_pep">XEP-0163：PEP（头像 / OMEMO）</string>
+  <string name="server_info_pep">XEP-0163：PEP（头像/OMEMO）</string>
   <string name="server_info_http_upload">XEP-0363：HTTP文件上传</string>
   <string name="server_info_push">XEP-0357：推送</string>
   <string name="server_info_available">有效</string>
@@ -297,6 +297,8 @@
   <string name="send_again">重新发送</string>
   <string name="file_url">文件URL</string>
   <string name="url_copied_to_clipboard">已经拷贝URL到剪贴板</string>
+  <string name="jabber_id_copied_to_clipboard">已将Jabber ID复制到剪贴板</string>
+  <string name="web_address">web地址</string>
   <string name="scan_qr_code">扫描二维码</string>
   <string name="show_qr_code">显示二维码</string>
   <string name="show_block_list">显示黑名单</string>
@@ -695,4 +697,11 @@
   <string name="unable_to_start_recording">无法开始记录</string>
   <string name="please_wait">请等待……</string>
   <string name="no_microphone_permission">Conversations需要访问麦克风</string>
+  <string name="search_messages">搜索消息</string>
+  <string name="gif">GIF</string>
+  <string name="view_conversation">查看对话</string>
+  <string name="pref_use_share_location_plugin">分享位置插件</string>
+  <string name="pref_use_share_location_plugin_summary">使用共享位置插件而不是内置地图</string>
+  <string name="copy_link">复制web地址</string>
+  <string name="copy_jabber_id">复制Jabber ID</string>
 </resources>

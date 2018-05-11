@@ -297,6 +297,8 @@
   <string name="send_again">Volver a enviar</string>
   <string name="file_url">URL de archivo</string>
   <string name="url_copied_to_clipboard">URL copiada al portapapeles</string>
+  <string name="jabber_id_copied_to_clipboard">Identificador Jabber copiado al portapapeles</string>
+  <string name="web_address">dirección web</string>
   <string name="scan_qr_code">Escanear código QR</string>
   <string name="show_qr_code">Mostrar código QR</string>
   <string name="show_block_list">Mostrar contactos bloqueados</string>
@@ -707,4 +709,6 @@
   <string name="view_conversation">Ver conversación</string>
   <string name="pref_use_share_location_plugin">Plugin para Compartir Ubicación</string>
   <string name="pref_use_share_location_plugin_summary">Usar el Plugin externo para Compartir Ubicación en lugar del propio de la aplicación.</string>
+  <string name="copy_link">Copiar dirección web</string>
+  <string name="copy_jabber_id">Copiar Identificador Jabber</string>
 </resources>

@@ -296,6 +296,9 @@
   <string name="copy_original_url">Copier l\'URL</string>
   <string name="send_again">Envoyer de nouveau</string>
   <string name="file_url">URL du fichier</string>
+  <string name="url_copied_to_clipboard">URL copiée dans le presse-papier</string>
+  <string name="jabber_id_copied_to_clipboard">Jabberd ID copié dans le presse-papier</string>
+  <string name="web_address">adresse internet</string>
   <string name="scan_qr_code">Scanner le code-barres 2D</string>
   <string name="show_qr_code">Montrer le code-barres 2D</string>
   <string name="show_block_list">Afficher la liste des contacts bloqués</string>
@@ -425,6 +428,8 @@
   <string name="none">Aucune</string>
   <string name="recently_used">Dernière utilisée</string>
   <string name="choose_quick_action">Sélectionner l\'action rapide</string>
+  <string name="search_contacts"> Rechercher dans les contacts</string>
+  <string name="search_groups">Rechercher dans les conversations de groupe</string>
   <string name="send_private_message">Envoyer un message privé</string>
   <string name="user_has_left_conference">%1$s a quitté le groupe de discussion !</string>
   <string name="username">Identifiant</string>
@@ -514,6 +519,7 @@
   <string name="use_own_provider">Utiliser votre propre fournisseur</string>
   <string name="pick_your_username">Choisissez votre nom d\'utilisateur</string>
   <string name="pref_manually_change_presence">Gérer l\'état de disponibilité manuellement</string>
+  <string name="pref_manually_change_presence_summary">Définir votre disponibilité lors de l\'édition de votre statut.</string>
   <string name="status_message">Message de statut</string>
   <string name="presence_chat">Disponible</string>
   <string name="presence_online">En ligne</string>
@@ -683,4 +689,20 @@
   <string name="not_encrypted_for_this_device">OMEMO sera utilisé par défaut pour toute nouvelle conversation.</string>
   <string name="undo">annuler</string>
   <string name="location_disabled">Le partage de positionnement est désactivé.</string>
+  <string name="action_fix_to_location">Figer la position</string>
+  <string name="action_unfix_from_location">Débloquer la position</string>
+  <string name="action_copy_location">Copier la position</string>
+  <string name="action_share_location">Partager la position</string>
+  <string name="title_activity_share_location">Partager la position</string>
+  <string name="title_activity_show_location">Afficher la position</string>
+  <string name="share">Partager</string>
+  <string name="unable_to_start_recording">Impossible de démarrer l\'enregistrement</string>
+  <string name="please_wait">Veuillez patienter...</string>
+  <string name="no_microphone_permission">Conversations a besoin d\'accéder au micro</string>
+  <string name="search_messages">Rechercher dans les messages</string>
+  <string name="gif">GIF</string>
+  <string name="view_conversation">Voir la conversation</string>
+  <string name="pref_use_share_location_plugin_summary">Utiliser le plugin \"Share Location\" plutôt que la carte intégrée</string>
+  <string name="copy_link">Copier l\'adresse internet</string>
+  <string name="copy_jabber_id">Copier le Jabber ID</string>
 </resources>

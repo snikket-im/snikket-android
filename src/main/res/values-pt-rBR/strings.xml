@@ -297,6 +297,8 @@
   <string name="send_again">Enviar novamente</string>
   <string name="file_url">URL do arquivo</string>
   <string name="url_copied_to_clipboard">URL copiada para a área de transferência</string>
+  <string name="jabber_id_copied_to_clipboard">O ID do Jabberd foi copiado para a área de transferência</string>
+  <string name="web_address">endereço web</string>
   <string name="scan_qr_code">Capturar código de barras 2D</string>
   <string name="show_qr_code">Exibir código de barras 2D</string>
   <string name="show_block_list">Exibir a lista de bloqueios</string>
@@ -426,6 +428,8 @@
   <string name="none">Nenhuma</string>
   <string name="recently_used">Usada mais recentemente</string>
   <string name="choose_quick_action">Selecione a ação rápida</string>
+  <string name="search_contacts">Pesquisar contatos</string>
+  <string name="search_groups">Pesquisar conversas em grupo</string>
   <string name="send_private_message">Enviar mensagem privada</string>
   <string name="user_has_left_conference">%1$s deixou a conversa em grupo!</string>
   <string name="username">Nome de usuário</string>
@@ -688,4 +692,23 @@
   <string name="large">Grande</string>
   <string name="not_encrypted_for_this_device">A mensagem não foi criptografada para este dispositivo.</string>
   <string name="undo">desfazer</string>
+  <string name="location_disabled">O compartilhamento da localização está desabilitado</string>
+  <string name="action_fix_to_location">Fixar posição</string>
+  <string name="action_unfix_from_location">Desafixar posição</string>
+  <string name="action_copy_location">Copiar localização</string>
+  <string name="action_share_location">Compartilhar localização</string>
+  <string name="action_directions">Direções</string>
+  <string name="title_activity_share_location">Compartilhar localização</string>
+  <string name="title_activity_show_location">Exibir localização</string>
+  <string name="share">Compartilhar</string>
+  <string name="unable_to_start_recording">Não foi possível iniciar a gravação</string>
+  <string name="please_wait">Por favor, aguarde...</string>
+  <string name="no_microphone_permission">O Conversations precisa de acesso ao microfone</string>
+  <string name="search_messages">Pesquisar mensagens</string>
+  <string name="gif">GIF</string>
+  <string name="view_conversation">Ver conversa</string>
+  <string name="pref_use_share_location_plugin">Plugin de Compartilhamento de Localização</string>
+  <string name="pref_use_share_location_plugin_summary">Use o Plugin de Compartilhamento de Localização ao invés do mapa nativo</string>
+  <string name="copy_link">Copiar endereço web</string>
+  <string name="copy_jabber_id">Copiar ID do Jabber</string>
 </resources>
