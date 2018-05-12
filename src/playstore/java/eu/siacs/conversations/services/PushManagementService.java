@@ -11,6 +11,7 @@ import com.google.android.gms.iid.InstanceID;
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.entities.Account;
+import eu.siacs.conversations.utils.PhoneHelper;
 import eu.siacs.conversations.xml.Element;
 import eu.siacs.conversations.xml.Namespace;
 import eu.siacs.conversations.xmpp.XmppConnection;
@@ -20,7 +21,7 @@ import rocks.xmpp.addr.Jid;
 
 public class PushManagementService {
 
-	private static final Jid APP_SERVER = Jid.of("push.siacs.eu");
+	private static final Jid APP_SERVER = Jid.of("p2.siacs.eu");
 
 	protected final XmppConnectionService mXmppConnectionService;
 
@@ -31,8 +32,8 @@ public class PushManagementService {
 	void registerPushTokenOnServer(final Account account) {
 		Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": has push support");
 		retrieveGcmInstanceToken(token -> {
-			final String deviceId = Settings.Secure.getString(mXmppConnectionService.getContentResolver(), Settings.Secure.ANDROID_ID);
-			IqPacket packet = mXmppConnectionService.getIqGenerator().pushTokenToAppServer(APP_SERVER, token, deviceId);
+			final String androidId = PhoneHelper.getAndroidId(mXmppConnectionService);
+			IqPacket packet = mXmppConnectionService.getIqGenerator().pushTokenToAppServer(APP_SERVER, token, androidId);
 			mXmppConnectionService.sendIqPacket(account, packet, (a, p) -> {
 				Element command = p.findChild("command", "http://jabber.org/protocol/commands");
 				if (p.getType() == IqPacket.TYPE.RESULT && command != null) {

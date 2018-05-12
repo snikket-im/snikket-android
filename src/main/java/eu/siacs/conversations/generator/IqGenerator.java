@@ -387,7 +387,7 @@ public class IqGenerator extends AbstractGenerator {
 		command.setAttribute("action","execute");
 		Data data = new Data();
 		data.put("token", token);
-		data.put("device-id", deviceId);
+		data.put("android-id", deviceId);
 		data.submit();
 		command.addChild(data);
 		return packet;

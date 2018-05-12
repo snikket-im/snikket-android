@@ -667,7 +667,7 @@ public class XmppConnectionService extends Service {
 				pingNow |= processAccountState(account,
 						interactive,
 						"ui".equals(action),
-						CryptoHelper.getAccountFingerprint(account).equals(pushedAccountHash),
+						CryptoHelper.getAccountFingerprint(account,PhoneHelper.getAndroidId(this)).equals(pushedAccountHash),
 						pingCandidates);
 			}
 			if (pingNow) {

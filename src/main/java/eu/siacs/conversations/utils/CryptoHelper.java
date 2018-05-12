@@ -222,13 +222,13 @@ public final class CryptoHelper {
 		return prettifyFingerprintCert(bytesToHex(fingerprint));
 	}
 
-	public static String getAccountFingerprint(Account account) {
-		return getFingerprint(account.getJid().asBareJid().toString());
+	public static String getAccountFingerprint(Account account, String androidId) {
+		return getFingerprint(account.getJid().asBareJid().toEscapedString()+"\00"+androidId);
 	}
 
 	public static String getFingerprint(String value) {
 		try {
-			MessageDigest md = MessageDigest.getInstance("SHA-256");
+			MessageDigest md = MessageDigest.getInstance("SHA-1");
 			return bytesToHex(md.digest(value.getBytes("UTF-8")));
 		} catch (Exception e) {
 			return "";
