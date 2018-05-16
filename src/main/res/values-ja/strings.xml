@@ -241,7 +241,7 @@
   <string name="or_long_press_for_default">(または長押しするとデフォルトに戻します)</string>
   <string name="error_publish_avatar_no_server_support">ご利用のサーバーは、アバターの公開をサポートしていません</string>
   <string name="private_message">ささやいた</string>
-  <string name="private_message_to">%s に</string>
+  <string name="private_message_to">%s へ</string>
   <string name="send_private_message_to">プライベートメッセージを %s に送信</string>
   <string name="connect">接続</string>
   <string name="account_already_exists">このアカウントはすでに存在します</string>
@@ -630,7 +630,9 @@
   <string name="pref_omemo_setting">OMEMO 暗号化</string>
   <string name="pref_omemo_setting_summary_always">OMEMO は1対1の会話とグループチャットで常に使用されます。</string>
   <string name="pref_omemo_setting_summary_default_on">デフォルトで新しい会話で OMEMO を使用します。</string>
+  <string name="create_shortcut">ショートカットを作成</string>
   <string name="pref_font_size">フォントの大きさ</string>
+  <string name="pref_font_size_summary">このアプリで使用される相対フォントサイズ</string>
   <string name="default_on">デフォルトでオン</string>
   <string name="default_off">デフォルトでオフ</string>
   <string name="small">小</string>
@@ -638,4 +640,12 @@
   <string name="large">大</string>
   <string name="not_encrypted_for_this_device">このデバイス向けにメッセージは暗号化されませんでした。</string>
   <string name="undo">元に戻す</string>
+  <string name="action_fix_to_location">位置を固定</string>
+  <string name="action_unfix_from_location">位置を固定しない</string>
+  <string name="action_copy_location">場所をコピー</string>
+  <string name="please_wait">しばらくお待ちください…</string>
+  <string name="search_messages">メッセージを検索</string>
+  <string name="gif">GIF</string>
+  <string name="copy_link">ウェブアドレスをコピー</string>
+  <string name="copy_jabber_id">Jabber ID をコピー</string>
 </resources>
