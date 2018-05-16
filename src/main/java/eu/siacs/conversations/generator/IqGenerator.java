@@ -383,7 +383,7 @@ public class IqGenerator extends AbstractGenerator {
 		IqPacket packet = new IqPacket(IqPacket.TYPE.SET);
 		packet.setTo(appServer);
 		Element command = packet.addChild("command", "http://jabber.org/protocol/commands");
-		command.setAttribute("node","register-push-gcm");
+		command.setAttribute("node","register-push-fcm");
 		command.setAttribute("action","execute");
 		Data data = new Data();
 		data.put("token", token);
