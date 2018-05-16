@@ -1,5 +1,9 @@
 # Changelog
 
+### Version 2.2.1
+* improved recording quality
+* load map tiles over Tor if enabled 
+
 ### Version 2.2.0
 * Integrate Voice Recorder
 * Integrate Share Location
