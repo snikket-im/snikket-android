@@ -3,21 +3,7 @@
     package="eu.siacs.conversations"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <permission android:name="eu.siacs.conversations.permission.C2D_MESSAGE"
-                android:protectionLevel="signature"/>
-    <uses-permission android:name="eu.siacs.conversations.permission.C2D_MESSAGE"/>
-
     <application>
-
-        <receiver
-            android:name="com.google.android.gms.gcm.GcmReceiver"
-            android:exported="true"
-            android:permission="com.google.android.c2dm.permission.SEND" >
-            <intent-filter>
-                <action android:name="com.google.android.c2dm.intent.RECEIVE" />
-                <category android:name="com.example.gcm" />
-            </intent-filter>
-        </receiver>
 
         <receiver android:name=".services.MaintenanceReceiver"
                   android:exported="true"
@@ -31,13 +17,13 @@
             android:name=".services.PushMessageReceiver"
             android:exported="false" >
             <intent-filter>
-                <action android:name="com.google.android.c2dm.intent.RECEIVE" />
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
 
-        <service android:name=".services.InstanceIdService" android:exported="false">
+        <service android:name=".services.InstanceIdService">
             <intent-filter>
-                <action android:name="com.google.android.gms.iid.InstanceID"/>
+                <action android:name="com.google.firebase.INSTANCE_ID_EVENT"/>
             </intent-filter>
         </service>
     </application>

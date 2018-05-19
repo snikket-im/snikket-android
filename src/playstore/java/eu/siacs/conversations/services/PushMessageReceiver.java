@@ -1,20 +1,21 @@
 package eu.siacs.conversations.services;
 
 import android.content.Intent;
-import android.os.Bundle;
-import android.util.Log;
 
-import com.google.android.gms.gcm.GcmListenerService;
+import com.google.firebase.messaging.FirebaseMessagingService;
+import com.google.firebase.messaging.RemoteMessage;
 
-import eu.siacs.conversations.Config;
+import java.util.Map;
 
-public class PushMessageReceiver extends GcmListenerService {
+public class PushMessageReceiver extends FirebaseMessagingService {
 
 	@Override
-	public void onMessageReceived(String from, Bundle data) {
+	public void onMessageReceived(RemoteMessage message) {
+		Map<String, String> data = message.getData();
 		Intent intent = new Intent(this, XmppConnectionService.class);
-		intent.setAction(XmppConnectionService.ACTION_GCM_MESSAGE_RECEIVED);
-		intent.replaceExtras(data);
+		intent.setAction(XmppConnectionService.ACTION_FCM_MESSAGE_RECEIVED);
+		intent.putExtra("account", data.get("account"));
 		startService(intent);
 	}
+
 }

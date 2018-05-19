@@ -5,7 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 
-import com.google.android.gms.iid.InstanceID;
+import com.google.firebase.iid.FirebaseInstanceId;
 
 import java.io.IOException;
 
@@ -23,11 +23,10 @@ public class MaintenanceReceiver extends BroadcastReceiver {
 
 	private void renewInstanceToken(final Context context) {
 		new Thread(() -> {
-			InstanceID instanceID = InstanceID.getInstance(context);
 			try {
-				instanceID.deleteInstanceID();
+				FirebaseInstanceId.getInstance().deleteInstanceId();
 				Intent intent = new Intent(context, XmppConnectionService.class);
-				intent.setAction(XmppConnectionService.ACTION_GCM_TOKEN_REFRESH);
+				intent.setAction(XmppConnectionService.ACTION_FCM_TOKEN_REFRESH);
 				context.startService(intent);
 			} catch (IOException e) {
 				Log.d(Config.LOGTAG, "unable to renew instance token", e);
