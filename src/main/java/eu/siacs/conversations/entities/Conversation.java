@@ -647,11 +647,12 @@ public class Conversation extends AbstractEntity implements Blockable, Comparabl
 		return null;
 	}
 
-	public boolean setNextMessage(String message) {
+	public boolean setNextMessage(final String input) {
+		final String message = input == null || input.trim().isEmpty() ? null : input;
 		boolean changed = !getNextMessage().equals(message);
 		this.setAttribute(ATTRIBUTE_NEXT_MESSAGE, message);
 		if (changed) {
-			this.setAttribute(ATTRIBUTE_NEXT_MESSAGE_TIMESTAMP, TextUtils.isEmpty(message) ? 0 : System.currentTimeMillis());
+			this.setAttribute(ATTRIBUTE_NEXT_MESSAGE_TIMESTAMP, message == null ? 0 : System.currentTimeMillis());
 		}
 		return changed;
 	}

@@ -334,6 +334,22 @@ public class UIHelper {
 		}
 	}
 
+	public static boolean isLastLineQuote(String body) {
+		if (body.endsWith("\n")) {
+			return false;
+		}
+		String[] lines = body.split("\n");
+		if (lines.length == 0) {
+			return false;
+		}
+		String line = lines[lines.length - 1];
+		if (line.isEmpty()) {
+			return false;
+		}
+		char first = line.charAt(0);
+		return first == '>' && isPositionFollowedByQuoteableCharacter(line,0) || first == '\u00bb';
+	}
+
 	public static CharSequence shorten(CharSequence input) {
 		return input.length() > 256 ? StylingHelper.subSequence(input, 0, 256) : input;
 	}

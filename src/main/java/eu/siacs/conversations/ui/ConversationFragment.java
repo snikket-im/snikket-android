@@ -2391,7 +2391,9 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
 			return;
 		}
 		String previous = this.binding.textinput.getText().toString();
-		if (previous.length() != 0 && !previous.endsWith(" ")) {
+		if (UIHelper.isLastLineQuote(previous)) {
+			text = '\n' + text;
+		} else if (previous.length() != 0 && !Character.isWhitespace(previous.charAt(previous.length() - 1))) {
 			text = " " + text;
 		}
 		this.binding.textinput.append(text);
