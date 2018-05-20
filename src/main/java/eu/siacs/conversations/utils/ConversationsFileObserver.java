@@ -29,7 +29,7 @@ public abstract class ConversationsFileObserver {
 
         while (!stack.empty()) {
             String parent = stack.pop();
-            mObservers.add(new SingleFileObserver(parent, FileObserver.DELETE));
+            mObservers.add(new SingleFileObserver(parent, FileObserver.DELETE| FileObserver.MOVED_FROM));
             final File path = new File(parent);
             final File[] files = path.listFiles();
             if (files == null) {
