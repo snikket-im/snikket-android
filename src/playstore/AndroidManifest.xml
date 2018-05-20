@@ -5,6 +5,9 @@
 
     <application>
 
+        <meta-data android:name="firebase_analytics_collection_deactivated" android:value="true" />
+        <meta-data android:name="google_analytics_adid_collection_enabled" android:value="false" />
+
         <receiver android:name=".services.MaintenanceReceiver"
                   android:exported="true"
                   android:permission="android.permission.CHANGE_CONFIGURATION">
