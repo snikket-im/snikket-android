@@ -34,7 +34,7 @@ public class EventReceiver extends BroadcastReceiver {
 		}
 	}
 
-	public boolean hasEnabledAccounts(Context context) {
+	public static boolean hasEnabledAccounts(Context context) {
 		return PreferenceManager.getDefaultSharedPreferences(context).getBoolean(SETTING_ENABLED_ACCOUNTS,true);
 	}
 
