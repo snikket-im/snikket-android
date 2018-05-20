@@ -290,8 +290,8 @@ I am available for hire. Contact me via XMPP: `inputmice@siacs.eu`
 
 #### Why are there two end-to-end encryption methods and which one should I choose?
 
-* OMEMO works even when a contact is offline, and works with multiple devices. It also allows asynchronous file-transfer when the server has [HTTP File Upload](http://xmpp.org/extensions/xep-0363.html). However, OMEMO not widely support and is currently implemented only implemented [by a handful of clients](https://omemo.top).
-* OpenPGP (XEP-0027) is a very old encryption method that has some advantages over OMEMO but should only be used by people who what they are doing.
+* OMEMO works even when a contact is offline, and works with multiple devices. It also allows asynchronous file-transfer when the server has [HTTP File Upload](http://xmpp.org/extensions/xep-0363.html). However, OMEMO not widely support and is currently implemented only [by a handful of clients](https://omemo.top).
+* OpenPGP (XEP-0027) is a very old encryption method that has some advantages over OMEMO but should only be used by people who know what they are doing.
 
 #### How do I use OpenPGP
 
