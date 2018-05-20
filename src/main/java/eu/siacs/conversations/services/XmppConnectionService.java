@@ -2181,7 +2181,7 @@ public class XmppConnectionService extends Service {
 
 			@Override
 			public void onIqPacketReceived(Account account, IqPacket packet) {
-
+				final boolean omemoEnabled = conversation.getNextEncryption() == Message.ENCRYPTION_AXOLOTL;
 				Element query = packet.query("http://jabber.org/protocol/muc#admin");
 				if (packet.getType() == IqPacket.TYPE.RESULT && query != null) {
 					for (Element child : query.getChildren()) {
@@ -2190,7 +2190,8 @@ public class XmppConnectionService extends Service {
 							if (!user.realJidMatchesAccount()) {
 								boolean isNew = conversation.getMucOptions().updateUser(user);
 								Contact contact = user.getContact();
-								if (isNew
+								if (omemoEnabled
+										&& isNew
 										&& user.getRealJid() != null
 										&& (contact == null || !contact.mutualPresenceSubscription())
 										&& axolotlService.hasEmptyDeviceList(user.getRealJid())) {
