@@ -710,7 +710,7 @@ public class NotificationService {
 	}
 
 	public static Pattern generateNickHighlightPattern(final String nick) {
-		return Pattern.compile("(?<=(^|\\s))" + Pattern.quote(nick) + "\\b", Pattern.CASE_INSENSITIVE | Pattern.UNICODE_CASE);
+		return Pattern.compile("(?<=(^|\\s))" + Pattern.quote(nick) + "\\b");
 	}
 
 	public void setOpenConversation(final Conversation conversation) {
