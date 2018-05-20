@@ -2,7 +2,7 @@
 *.swp
 .settings
 
-src/playstore/res/values/gcm.xml
+src/playstore/res/values/push.xml
 
 # https://github.com/github/gitignore/blob/master/Gradle.gitignore
 .gradle/
