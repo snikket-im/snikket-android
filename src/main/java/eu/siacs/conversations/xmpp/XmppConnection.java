@@ -1807,6 +1807,10 @@ public class XmppConnection implements Runnable {
 			this.blockListRequested = value;
 		}
 
+		public boolean p1S3FileTransfer() {
+			return hasDiscoFeature(Jid.of(account.getServer()),Namespace.P1_S3_FILE_TRANSFER);
+		}
+
 		public boolean httpUpload(long filesize) {
 			if (Config.DISABLE_HTTP_UPLOAD) {
 				return false;

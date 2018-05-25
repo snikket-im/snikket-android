@@ -1,5 +1,8 @@
 package eu.siacs.conversations.generator;
 
+import android.util.Log;
+
+import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -13,6 +16,7 @@ import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.entities.Contact;
 import eu.siacs.conversations.entities.Conversation;
 import eu.siacs.conversations.entities.Message;
+import eu.siacs.conversations.http.P1S3UrlStreamHandler;
 import eu.siacs.conversations.services.XmppConnectionService;
 import eu.siacs.conversations.xml.Element;
 import eu.siacs.conversations.xml.Namespace;
@@ -42,7 +46,7 @@ public class MessageGenerator extends AbstractGenerator {
 		} else if (message.getType() == Message.TYPE_PRIVATE) { //TODO files and images might be private as well
 			packet.setTo(message.getCounterpart());
 			packet.setType(MessagePacket.TYPE_CHAT);
-			packet.addChild("x","http://jabber.org/protocol/muc#user");
+			packet.addChild("x", "http://jabber.org/protocol/muc#user");
 			if (this.mXmppConnectionService.indicateReceived()) {
 				packet.addChild("request", "urn:xmpp:receipts");
 			}
@@ -55,9 +59,9 @@ public class MessageGenerator extends AbstractGenerator {
 		}
 		packet.setFrom(account.getJid());
 		packet.setId(message.getUuid());
-		packet.addChild("origin-id", Namespace.STANZA_IDS).setAttribute("id",message.getUuid());
+		packet.addChild("origin-id", Namespace.STANZA_IDS).setAttribute("id", message.getUuid());
 		if (message.edited()) {
-			packet.addChild("replace","urn:xmpp:message-correct:0").setAttribute("id",message.getEditedId());
+			packet.addChild("replace", "urn:xmpp:message-correct:0").setAttribute("id", message.getEditedId());
 		}
 		return packet;
 	}
@@ -79,9 +83,9 @@ public class MessageGenerator extends AbstractGenerator {
 		packet.setAxolotlMessage(axolotlMessage.toElement());
 		packet.setBody(OMEMO_FALLBACK_MESSAGE);
 		packet.addChild("store", "urn:xmpp:hints");
-		packet.addChild("encryption","urn:xmpp:eme:0")
-				.setAttribute("name","OMEMO")
-				.setAttribute("namespace",AxolotlService.PEP_PREFIX);
+		packet.addChild("encryption", "urn:xmpp:eme:0")
+				.setAttribute("name", "OMEMO")
+				.setAttribute("namespace", AxolotlService.PEP_PREFIX);
 		return packet;
 	}
 
@@ -99,8 +103,16 @@ public class MessageGenerator extends AbstractGenerator {
 		String content;
 		if (message.hasFileOnRemoteHost()) {
 			Message.FileParams fileParams = message.getFileParams();
-			content = fileParams.url.toString();
-			packet.addChild("x",Namespace.OOB).addChild("url").setContent(content);
+			final URL url = fileParams.url;
+			if (P1S3UrlStreamHandler.PROTOCOL_NAME.equals(url.getProtocol())) {
+				Element x = packet.addChild("x", Namespace.P1_S3_FILE_TRANSFER);
+				x.setAttribute("name", url.getFile());
+				x.setAttribute("fileid", url.getHost());
+				return packet;
+			} else {
+				content = url.toString();
+				packet.addChild("x", Namespace.OOB).addChild("url").setContent(content);
+			}
 		} else {
 			content = message.getBody();
 		}
@@ -113,7 +125,7 @@ public class MessageGenerator extends AbstractGenerator {
 		if (message.hasFileOnRemoteHost()) {
 			final String url = message.getFileParams().url.toString();
 			packet.setBody(url);
-			packet.addChild("x",Namespace.OOB).addChild("url").setContent(url);
+			packet.addChild("x", Namespace.OOB).addChild("url").setContent(url);
 		} else {
 			if (Config.supportUnencrypted()) {
 				packet.setBody(PGP_FALLBACK_MESSAGE);
@@ -146,16 +158,16 @@ public class MessageGenerator extends AbstractGenerator {
 		packet.setType(groupChat ? MessagePacket.TYPE_GROUPCHAT : MessagePacket.TYPE_CHAT);
 		packet.setTo(groupChat ? to.asBareJid() : to);
 		packet.setFrom(account.getJid());
-		Element displayed = packet.addChild("displayed","urn:xmpp:chat-markers:0");
+		Element displayed = packet.addChild("displayed", "urn:xmpp:chat-markers:0");
 		displayed.setAttribute("id", id);
 		if (groupChat && counterpart != null) {
-			displayed.setAttribute("sender",counterpart.toString());
+			displayed.setAttribute("sender", counterpart.toString());
 		}
 		packet.addChild("store", "urn:xmpp:hints");
 		return packet;
 	}
 
-	public MessagePacket conferenceSubject(Conversation conversation,String subject) {
+	public MessagePacket conferenceSubject(Conversation conversation, String subject) {
 		MessagePacket packet = new MessagePacket();
 		packet.setType(MessagePacket.TYPE_GROUPCHAT);
 		packet.setTo(conversation.getJid().asBareJid());
@@ -175,7 +187,7 @@ public class MessageGenerator extends AbstractGenerator {
 		x.setAttribute("jid", conversation.getJid().asBareJid().toString());
 		String password = conversation.getMucOptions().getPassword();
 		if (password != null) {
-			x.setAttribute("password",password);
+			x.setAttribute("password", password);
 		}
 		return packet;
 	}
@@ -198,7 +210,7 @@ public class MessageGenerator extends AbstractGenerator {
 		receivedPacket.setType(type);
 		receivedPacket.setTo(originalMessage.getFrom());
 		receivedPacket.setFrom(account.getJid());
-		for(String namespace : namespaces) {
+		for (String namespace : namespaces) {
 			receivedPacket.addChild("received", namespace).setAttribute("id", originalMessage.getId());
 		}
 		receivedPacket.addChild("store", "urn:xmpp:hints");
@@ -209,7 +221,7 @@ public class MessageGenerator extends AbstractGenerator {
 		MessagePacket packet = new MessagePacket();
 		packet.setFrom(account.getJid());
 		packet.setTo(to);
-		packet.addChild("received","urn:xmpp:receipts").setAttribute("id",id);
+		packet.addChild("received", "urn:xmpp:receipts").setAttribute("id", id);
 		packet.addChild("store", "urn:xmpp:hints");
 		return packet;
 	}

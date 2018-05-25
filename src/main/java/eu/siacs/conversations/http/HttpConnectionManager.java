@@ -46,11 +46,10 @@ public class HttpConnectionManager extends AbstractConnectionManager {
 		return connection;
 	}
 
-	public HttpUploadConnection createNewUploadConnection(Message message, boolean delay) {
-		HttpUploadConnection connection = new HttpUploadConnection(this);
+	public void createNewUploadConnection(Message message, boolean delay) {
+		HttpUploadConnection connection = new HttpUploadConnection(Method.determine(message.getConversation().getAccount()), this);
 		connection.init(message,delay);
 		this.uploadConnections.add(connection);
-		return connection;
 	}
 
 	public void finishConnection(HttpDownloadConnection connection) {

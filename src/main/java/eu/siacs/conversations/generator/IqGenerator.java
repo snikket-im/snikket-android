@@ -350,6 +350,14 @@ public class IqGenerator extends AbstractGenerator {
 		return packet;
 	}
 
+	public IqPacket requestP1S3Slot(Jid host, String md5) {
+		IqPacket packet = new IqPacket(IqPacket.TYPE.SET);
+		packet.setTo(host);
+		packet.query(Namespace.P1_S3_FILE_TRANSFER).setAttribute("md5",md5);
+		Log.d(Config.LOGTAG,packet.toString());
+		return packet;
+	}
+
 	private static String convertFilename(String name) {
 		int pos = name.indexOf('.');
 		if (pos != -1) {

@@ -68,7 +68,7 @@ public class AbstractConnectionManager {
 		is = new FileInputStream(file);
 		size = (int) file.getSize();
 		if (file.getKey() == null) {
-			return new Pair<InputStream,Integer>(is,size);
+			return new Pair<>(is,size);
 		}
 		try {
 			if (gcm) {
@@ -81,16 +81,10 @@ public class AbstractConnectionManager {
 				Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
 				cipher.init(Cipher.ENCRYPT_MODE, new SecretKeySpec(file.getKey(), "AES"), ips);
 				Log.d(Config.LOGTAG, "opening encrypted input stream");
-				return new Pair<InputStream,Integer>(new CipherInputStream(is, cipher),(size / 16 + 1) * 16);
+				return new Pair<>(new CipherInputStream(is, cipher),(size / 16 + 1) * 16);
 			}
-		} catch (InvalidKeyException e) {
-			return null;
-		} catch (NoSuchAlgorithmException e) {
-			return null;
-		} catch (NoSuchPaddingException e) {
-			return null;
-		} catch (InvalidAlgorithmParameterException e) {
-			return null;
+		} catch (Exception e) {
+			throw new AssertionError(e);
 		}
 	}
 

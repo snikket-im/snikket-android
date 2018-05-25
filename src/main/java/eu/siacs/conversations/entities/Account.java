@@ -57,7 +57,7 @@ public class Account extends AbstractEntity {
 	public final HashSet<Pair<String, String>> inProgressDiscoFetches = new HashSet<>();
 
 	public boolean httpUploadAvailable(long filesize) {
-		return xmppConnection != null && xmppConnection.getFeatures().httpUpload(filesize);
+		return xmppConnection != null && (xmppConnection.getFeatures().httpUpload(filesize) || xmppConnection.getFeatures().p1S3FileTransfer());
 	}
 
 	public boolean httpUploadAvailable() {

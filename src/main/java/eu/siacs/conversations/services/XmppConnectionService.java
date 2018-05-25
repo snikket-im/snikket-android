@@ -88,7 +88,7 @@ import eu.siacs.conversations.generator.IqGenerator;
 import eu.siacs.conversations.generator.MessageGenerator;
 import eu.siacs.conversations.generator.PresenceGenerator;
 import eu.siacs.conversations.http.HttpConnectionManager;
-import eu.siacs.conversations.http.AesGcmURLStreamHandlerFactory;
+import eu.siacs.conversations.http.CustomURLStreamHandlerFactory;
 import eu.siacs.conversations.parser.AbstractParser;
 import eu.siacs.conversations.parser.IqParser;
 import eu.siacs.conversations.parser.MessageParser;
@@ -152,7 +152,7 @@ public class XmppConnectionService extends Service {
 	private static final String ACTION_MERGE_PHONE_CONTACTS = "merge_phone_contacts";
 
 	static {
-		URL.setURLStreamHandlerFactory(new AesGcmURLStreamHandlerFactory());
+		URL.setURLStreamHandlerFactory(new CustomURLStreamHandlerFactory());
 	}
 
 	public final CountDownLatch restoredFromDatabaseLatch = new CountDownLatch(1);

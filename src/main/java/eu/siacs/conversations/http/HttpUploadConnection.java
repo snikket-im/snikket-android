@@ -1,8 +1,11 @@
 package eu.siacs.conversations.http;
 
 import android.os.PowerManager;
+import android.renderscript.ScriptGroup;
 import android.util.Log;
 import android.util.Pair;
+
+import org.bouncycastle.jce.exception.ExtIOException;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -14,6 +17,7 @@ import java.net.URL;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Scanner;
 
 import javax.net.ssl.HttpsURLConnection;
 
@@ -26,6 +30,7 @@ import eu.siacs.conversations.parser.IqParser;
 import eu.siacs.conversations.persistance.FileBackend;
 import eu.siacs.conversations.services.AbstractConnectionManager;
 import eu.siacs.conversations.services.XmppConnectionService;
+import eu.siacs.conversations.utils.Checksum;
 import eu.siacs.conversations.utils.CryptoHelper;
 import eu.siacs.conversations.utils.WakeLockHelper;
 import eu.siacs.conversations.xml.Namespace;
@@ -35,24 +40,24 @@ import rocks.xmpp.addr.Jid;
 
 public class HttpUploadConnection implements Transferable {
 
-	private static final List<String> WHITE_LISTED_HEADERS = Arrays.asList(
+	public static final List<String> WHITE_LISTED_HEADERS = Arrays.asList(
 			"Authorization",
 			"Cookie",
 			"Expires"
 	);
 
-	private HttpConnectionManager mHttpConnectionManager;
-	private XmppConnectionService mXmppConnectionService;
+	private final HttpConnectionManager mHttpConnectionManager;
+	private final XmppConnectionService mXmppConnectionService;
+	private final SlotRequester mSlotRequester;
+	private final Method method;
 
 	private boolean canceled = false;
 	private boolean delayed = false;
 	private DownloadableFile file;
 	private Message message;
 	private String mime;
-	private URL mGetUrl;
-	private URL mPutUrl;
-	private HashMap<String,String> mPutHeaders;
-	private boolean mUseTor = false;
+	private SlotRequester.Slot slot;
+	private final boolean mUseTor;
 
 	private byte[] key = null;
 
@@ -60,9 +65,11 @@ public class HttpUploadConnection implements Transferable {
 
 	private InputStream mFileInputStream;
 
-	public HttpUploadConnection(HttpConnectionManager httpConnectionManager) {
+	public HttpUploadConnection(Method method, HttpConnectionManager httpConnectionManager) {
+		this.method = method;
 		this.mHttpConnectionManager = httpConnectionManager;
 		this.mXmppConnectionService = httpConnectionManager.getXmppConnectionService();
+		this.mSlotRequester = new SlotRequester(this.mXmppConnectionService);
 		this.mUseTor = mXmppConnectionService.useTorToConnect();
 	}
 
@@ -118,6 +125,21 @@ public class HttpUploadConnection implements Transferable {
 			mXmppConnectionService.getRNG().nextBytes(this.key);
 			this.file.setKeyAndIv(this.key);
 		}
+
+		final String md5;
+
+		if (method == Method.P1_S3) {
+			try {
+				md5 = Checksum.md5(AbstractConnectionManager.createInputStream(file, true).first);
+			} catch (Exception e) {
+				Log.d(Config.LOGTAG, account.getJid().asBareJid()+": unable to calculate md5()", e);
+				fail(e.getMessage());
+				return;
+			}
+		} else {
+			md5 = null;
+		}
+
 		Pair<InputStream,Integer> pair;
 		try {
 			pair = AbstractConnectionManager.createInputStream(file, true);
@@ -129,42 +151,20 @@ public class HttpUploadConnection implements Transferable {
 		this.file.setExpectedSize(pair.second);
 		message.resetFileParams();
 		this.mFileInputStream = pair.first;
-		Jid host = account.getXmppConnection().findDiscoItemByFeature(Namespace.HTTP_UPLOAD);
-		IqPacket request = mXmppConnectionService.getIqGenerator().requestHttpUploadSlot(host,file,mime);
-		mXmppConnectionService.sendIqPacket(account, request, (a, packet) -> {
-			if (packet.getType() == IqPacket.TYPE.RESULT) {
-				Element slot = packet.findChild("slot", Namespace.HTTP_UPLOAD);
-				if (slot != null) {
-					try {
-						final Element put = slot.findChild("put");
-						final Element get = slot.findChild("get");
-						final String putUrl = put == null ? null : put.getAttribute("url");
-						final String getUrl = get == null ? null : get.getAttribute("url");
-						if (getUrl != null && putUrl != null) {
-							this.mGetUrl = new URL(getUrl);
-							this.mPutUrl = new URL(putUrl);
-							this.mPutHeaders = new HashMap<>();
-							for(Element child : put.getChildren()) {
-								if ("header".equals(child.getName())) {
-									final String name = child.getAttribute("name");
-									final String value = child.getContent();
-									if (WHITE_LISTED_HEADERS.contains(name) && value != null && !value.trim().contains("\n")) {
-										this.mPutHeaders.put(name,value.trim());
-									}
-								}
-							}
-							if (!canceled) {
-								new Thread(this::upload).start();
-							}
-							return;
-						}
-					} catch (MalformedURLException e) {
-						//fall through
-					}
+		this.mSlotRequester.request(method, account, file, mime, md5, new SlotRequester.OnSlotRequested() {
+			@Override
+			public void success(SlotRequester.Slot slot) {
+				if (!canceled) {
+					HttpUploadConnection.this.slot = slot;
+					Log.d(Config.LOGTAG,"not starting upload to "+slot.getPutUrl());
+					new Thread(HttpUploadConnection.this::upload).start();
 				}
 			}
-			Log.d(Config.LOGTAG,account.getJid().toString()+": invalid response to slot request "+packet);
-			fail(IqParser.extractErrorMessage(packet));
+
+			@Override
+			public void failure(String message) {
+				fail(message);
+			}
 		});
 		message.setTransferable(this);
 		mXmppConnectionService.markMessage(message, Message.STATUS_UNSEND);
@@ -178,11 +178,11 @@ public class HttpUploadConnection implements Transferable {
 			final int expectedFileSize = (int) file.getExpectedSize();
 			final int readTimeout = (expectedFileSize / 2048) + Config.SOCKET_TIMEOUT; //assuming a minimum transfer speed of 16kbit/s
 			wakeLock.acquire(readTimeout);
-			Log.d(Config.LOGTAG, "uploading to " + mPutUrl.toString()+ " w/ read timeout of "+readTimeout+"s");
+			Log.d(Config.LOGTAG, "uploading to " + slot.getPutUrl().toString()+ " w/ read timeout of "+readTimeout+"s");
 			if (mUseTor) {
-				connection = (HttpURLConnection) mPutUrl.openConnection(HttpConnectionManager.getProxy());
+				connection = (HttpURLConnection) slot.getPutUrl().openConnection(HttpConnectionManager.getProxy());
 			} else {
-				connection = (HttpURLConnection) mPutUrl.openConnection();
+				connection = (HttpURLConnection) slot.getPutUrl().openConnection();
 			}
 			if (connection instanceof HttpsURLConnection) {
 				mHttpConnectionManager.setupTrustManager((HttpsURLConnection) connection, true);
@@ -190,14 +190,14 @@ public class HttpUploadConnection implements Transferable {
 			connection.setUseCaches(false);
 			connection.setRequestMethod("PUT");
 			connection.setFixedLengthStreamingMode(expectedFileSize);
-			connection.setRequestProperty("Content-Type", mime == null ? "application/octet-stream" : mime);
 			connection.setRequestProperty("User-Agent",mXmppConnectionService.getIqGenerator().getIdentityName());
-			if(mPutHeaders != null) {
-				for(HashMap.Entry<String,String> entry : mPutHeaders.entrySet()) {
+			if(slot.getHeaders() != null) {
+				for(HashMap.Entry<String,String> entry : slot.getHeaders().entrySet()) {
 					connection.setRequestProperty(entry.getKey(),entry.getValue());
 				}
 			}
 			connection.setDoOutput(true);
+			connection.setDoInput(true);
 			connection.setConnectTimeout(Config.SOCKET_TIMEOUT * 1000);
 			connection.setReadTimeout(readTimeout * 1000);
 			connection.connect();
@@ -214,12 +214,22 @@ public class HttpUploadConnection implements Transferable {
 			os.close();
 			mFileInputStream.close();
 			int code = connection.getResponseCode();
+			InputStream is = connection.getErrorStream();
+			if (is != null) {
+				try (Scanner scanner = new Scanner(is)) {
+					scanner.useDelimiter("\\Z");
+					Log.d(Config.LOGTAG, "body: " + scanner.next());
+				}
+			}
 			if (code == 200 || code == 201) {
 				Log.d(Config.LOGTAG, "finished uploading file");
+				final URL get;
 				if (key != null) {
-					mGetUrl = CryptoHelper.toAesGcmUrl(new URL(mGetUrl.toString() + "#" + CryptoHelper.bytesToHex(key)));
+					get = CryptoHelper.toAesGcmUrl(new URL(slot.getGetUrl().toString() + "#" + CryptoHelper.bytesToHex(key)));
+				} else {
+					get = slot.getGetUrl();
 				}
-				mXmppConnectionService.getFileBackend().updateFileParams(message, mGetUrl);
+				mXmppConnectionService.getFileBackend().updateFileParams(message, get);
 				mXmppConnectionService.getFileBackend().updateMediaScanner(file);
 				message.setTransferable(null);
 				message.setCounterpart(message.getConversation().getJid().asBareJid());
