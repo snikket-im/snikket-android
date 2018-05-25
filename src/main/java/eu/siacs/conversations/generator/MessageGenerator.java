@@ -123,9 +123,16 @@ public class MessageGenerator extends AbstractGenerator {
 	public MessagePacket generatePgpChat(Message message) {
 		MessagePacket packet = preparePacket(message);
 		if (message.hasFileOnRemoteHost()) {
-			final String url = message.getFileParams().url.toString();
-			packet.setBody(url);
-			packet.addChild("x", Namespace.OOB).addChild("url").setContent(url);
+			Message.FileParams fileParams = message.getFileParams();
+			final URL url = fileParams.url;
+			if (P1S3UrlStreamHandler.PROTOCOL_NAME.equals(url.getProtocol())) {
+				Element x = packet.addChild("x", Namespace.P1_S3_FILE_TRANSFER);
+				x.setAttribute("name", url.getFile());
+				x.setAttribute("fileid", url.getHost());
+			} else {
+				packet.setBody(url.toString());
+				packet.addChild("x", Namespace.OOB).addChild("url").setContent(url.toString());
+			}
 		} else {
 			if (Config.supportUnencrypted()) {
 				packet.setBody(PGP_FALLBACK_MESSAGE);

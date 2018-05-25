@@ -276,6 +276,6 @@ public final class CryptoHelper {
 			return false;
 		}
 		final String u = url.toLowerCase();
-		return !u.contains(" ") && (u.startsWith("https://") || u.startsWith("http://")) && u.endsWith(".pgp");
+		return !u.contains(" ") && (u.startsWith("https://") || u.startsWith("http://") || u.startsWith("p1s3://")) && u.endsWith(".pgp");
 	}
 }

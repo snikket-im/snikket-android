@@ -29,11 +29,12 @@
 
 package eu.siacs.conversations.http;
 
-import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.net.URLStreamHandler;
+
+import eu.siacs.conversations.xml.Element;
 
 public class P1S3UrlStreamHandler extends URLStreamHandler {
 
@@ -45,6 +46,17 @@ public class P1S3UrlStreamHandler extends URLStreamHandler {
 	}
 
 	public static URL of(String fileId, String filename) throws MalformedURLException {
+		if (fileId == null || filename == null) {
+			throw new MalformedURLException("Paramaters must not be null");
+		}
 		return new URL(PROTOCOL_NAME+"://" + fileId + "/" + filename);
+	}
+
+	public static URL of(Element x) {
+		try {
+			return of(x.getAttribute("fileid"),x.getAttribute("name"));
+		} catch (MalformedURLException e) {
+			return null;
+		}
 	}
 }

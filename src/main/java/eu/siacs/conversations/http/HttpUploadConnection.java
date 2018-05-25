@@ -1,18 +1,14 @@
 package eu.siacs.conversations.http;
 
 import android.os.PowerManager;
-import android.renderscript.ScriptGroup;
 import android.util.Log;
 import android.util.Pair;
-
-import org.bouncycastle.jce.exception.ExtIOException;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -26,17 +22,12 @@ import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.entities.DownloadableFile;
 import eu.siacs.conversations.entities.Message;
 import eu.siacs.conversations.entities.Transferable;
-import eu.siacs.conversations.parser.IqParser;
 import eu.siacs.conversations.persistance.FileBackend;
 import eu.siacs.conversations.services.AbstractConnectionManager;
 import eu.siacs.conversations.services.XmppConnectionService;
 import eu.siacs.conversations.utils.Checksum;
 import eu.siacs.conversations.utils.CryptoHelper;
 import eu.siacs.conversations.utils.WakeLockHelper;
-import eu.siacs.conversations.xml.Namespace;
-import eu.siacs.conversations.xml.Element;
-import eu.siacs.conversations.xmpp.stanzas.IqPacket;
-import rocks.xmpp.addr.Jid;
 
 public class HttpUploadConnection implements Transferable {
 
@@ -50,15 +41,13 @@ public class HttpUploadConnection implements Transferable {
 	private final XmppConnectionService mXmppConnectionService;
 	private final SlotRequester mSlotRequester;
 	private final Method method;
-
+	private final boolean mUseTor;
 	private boolean canceled = false;
 	private boolean delayed = false;
 	private DownloadableFile file;
 	private Message message;
 	private String mime;
 	private SlotRequester.Slot slot;
-	private final boolean mUseTor;
-
 	private byte[] key = null;
 
 	private long transmitted = 0;
@@ -156,7 +145,6 @@ public class HttpUploadConnection implements Transferable {
 			public void success(SlotRequester.Slot slot) {
 				if (!canceled) {
 					HttpUploadConnection.this.slot = slot;
-					Log.d(Config.LOGTAG,"not starting upload to "+slot.getPutUrl());
 					new Thread(HttpUploadConnection.this::upload).start();
 				}
 			}
@@ -225,7 +213,11 @@ public class HttpUploadConnection implements Transferable {
 				Log.d(Config.LOGTAG, "finished uploading file");
 				final URL get;
 				if (key != null) {
-					get = CryptoHelper.toAesGcmUrl(new URL(slot.getGetUrl().toString() + "#" + CryptoHelper.bytesToHex(key)));
+					if (method == Method.P1_S3) {
+						get = new URL(slot.getGetUrl().toString()+"#"+CryptoHelper.bytesToHex(key));
+					} else {
+						get = CryptoHelper.toAesGcmUrl(new URL(slot.getGetUrl().toString() + "#" + CryptoHelper.bytesToHex(key)));
+					}
 				} else {
 					get = slot.getGetUrl();
 				}

@@ -35,6 +35,7 @@ import java.util.regex.Pattern;
 
 import eu.siacs.conversations.entities.Message;
 import eu.siacs.conversations.http.AesGcmURLStreamHandler;
+import eu.siacs.conversations.http.P1S3UrlStreamHandler;
 
 public class MessageUtils {
 
@@ -79,7 +80,8 @@ public class MessageUtils {
 			final boolean encrypted = ref != null && AesGcmURLStreamHandler.IV_KEY.matcher(ref).matches();
 			final boolean followedByDataUri = lines.length == 2 && lines[1].startsWith("data:");
 			final boolean validAesGcm = AesGcmURLStreamHandler.PROTOCOL_NAME.equalsIgnoreCase(protocol) && encrypted && (lines.length == 1 || followedByDataUri);
-			final boolean validOob = ("http".equalsIgnoreCase(protocol) || "https".equalsIgnoreCase(protocol)) && (oob || encrypted) && lines.length == 1;
+			final boolean validProtocol = "http".equalsIgnoreCase(protocol) || "https".equalsIgnoreCase(protocol) || P1S3UrlStreamHandler.PROTOCOL_NAME.equalsIgnoreCase(protocol);
+			final boolean validOob = validProtocol && (oob || encrypted) && lines.length == 1;
 			return validAesGcm || validOob;
 		} catch (MalformedURLException e) {
 			return false;
