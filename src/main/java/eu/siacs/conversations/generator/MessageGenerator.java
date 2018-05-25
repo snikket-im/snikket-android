@@ -106,7 +106,8 @@ public class MessageGenerator extends AbstractGenerator {
 			final URL url = fileParams.url;
 			if (P1S3UrlStreamHandler.PROTOCOL_NAME.equals(url.getProtocol())) {
 				Element x = packet.addChild("x", Namespace.P1_S3_FILE_TRANSFER);
-				x.setAttribute("name", url.getFile());
+				final String file = url.getFile();
+				x.setAttribute("name", file.charAt(0) == '/' ? file.substring(1) : file);
 				x.setAttribute("fileid", url.getHost());
 				return packet;
 			} else {
@@ -127,7 +128,8 @@ public class MessageGenerator extends AbstractGenerator {
 			final URL url = fileParams.url;
 			if (P1S3UrlStreamHandler.PROTOCOL_NAME.equals(url.getProtocol())) {
 				Element x = packet.addChild("x", Namespace.P1_S3_FILE_TRANSFER);
-				x.setAttribute("name", url.getFile());
+				final String file = url.getFile();
+				x.setAttribute("name", file.charAt(0) == '/' ? file.substring(1) : file);
 				x.setAttribute("fileid", url.getHost());
 			} else {
 				packet.setBody(url.toString());
