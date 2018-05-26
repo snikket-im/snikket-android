@@ -287,6 +287,9 @@ public class PresenceParser extends AbstractParser implements
 			} else {
 				contact.removePresence(from.getResource());
 			}
+			if (contact.getShownStatus() == Presence.Status.OFFLINE) {
+				contact.flagInactive();
+			}
 			mXmppConnectionService.onContactStatusChanged.onContactStatusChanged(contact, false);
 		} else if (type.equals("subscribe")) {
 			if (contact.getOption(Contact.Options.PREEMPTIVE_GRANT)) {

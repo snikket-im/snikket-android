@@ -151,6 +151,8 @@ public class XmppConnectionService extends Service {
 	public static final String ACTION_FCM_MESSAGE_RECEIVED = "fcm_message_received";
 	private static final String ACTION_MERGE_PHONE_CONTACTS = "merge_phone_contacts";
 
+	private static final String SETTING_LAST_ACTIVITY_TS = "last_activity_timestamp";
+
 	static {
 		URL.setURLStreamHandlerFactory(new CustomURLStreamHandlerFactory());
 	}
@@ -943,6 +945,9 @@ public class XmppConnectionService extends Service {
 				return bitmap.getByteCount() / 1024;
 			}
 		};
+		if (mLastActivity == 0) {
+			mLastActivity = getPreferences().getLong(SETTING_LAST_ACTIVITY_TS, System.currentTimeMillis());
+		}
 
 		Log.d(Config.LOGTAG, "initializing database...");
 		this.databaseBackend = DatabaseBackend.getInstance(getApplicationContext());
@@ -1871,7 +1876,6 @@ public class XmppConnectionService extends Service {
 
 	public void setOnConversationListChangedListener(OnConversationUpdate listener) {
 		synchronized (this) {
-			this.mLastActivity = System.currentTimeMillis();
 			if (checkListeners()) {
 				switchToForeground();
 			}
@@ -2054,6 +2058,12 @@ public class XmppConnectionService extends Service {
 
 	private void switchToBackground() {
 		final boolean broadcastLastActivity = broadcastLastActivity();
+		if (broadcastLastActivity) {
+			mLastActivity = System.currentTimeMillis();
+			final SharedPreferences.Editor editor = getPreferences().edit();
+			editor.putLong(SETTING_LAST_ACTIVITY_TS, mLastActivity);
+			editor.apply();
+		}
 		for (Account account : getAccounts()) {
 			if (account.getStatus() == Account.State.ONLINE) {
 				XmppConnection connection = account.getXmppConnection();
