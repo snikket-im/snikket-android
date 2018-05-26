@@ -1815,36 +1815,42 @@ public class XmppConnection implements Runnable {
 			if (Config.DISABLE_HTTP_UPLOAD) {
 				return false;
 			} else {
-				List<Entry<Jid, ServiceDiscoveryResult>> items = findDiscoItemsByFeature(Namespace.HTTP_UPLOAD);
-				if (items.size() > 0) {
-					try {
-						long maxsize = Long.parseLong(items.get(0).getValue().getExtendedDiscoInformation(Namespace.HTTP_UPLOAD, "max-file-size"));
-						if (filesize <= maxsize) {
-							return true;
-						} else {
-							Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": http upload is not available for files with size " + filesize + " (max is " + maxsize + ")");
-							return false;
+				for(String namespace : new String[]{Namespace.HTTP_UPLOAD, Namespace.HTTP_UPLOAD_LEGACY}) {
+					List<Entry<Jid, ServiceDiscoveryResult>> items = findDiscoItemsByFeature(namespace);
+					if (items.size() > 0) {
+						try {
+							long maxsize = Long.parseLong(items.get(0).getValue().getExtendedDiscoInformation(namespace, "max-file-size"));
+							if (filesize <= maxsize) {
+								return true;
+							} else {
+								Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": http upload is not available for files with size " + filesize + " (max is " + maxsize + ")");
+								return false;
+							}
+						} catch (Exception e) {
+							//ignored
 						}
-					} catch (Exception e) {
-						return true;
 					}
-				} else {
-					return false;
 				}
+				return false;
 			}
 		}
 
+		public boolean useLegacyHttpUpload() {
+			return findDiscoItemByFeature(Namespace.HTTP_UPLOAD) == null && findDiscoItemByFeature(Namespace.HTTP_UPLOAD_LEGACY) != null;
+		}
+
 		public long getMaxHttpUploadSize() {
-			List<Entry<Jid, ServiceDiscoveryResult>> items = findDiscoItemsByFeature(Namespace.HTTP_UPLOAD);
-			if (items.size() > 0) {
-				try {
-					return Long.parseLong(items.get(0).getValue().getExtendedDiscoInformation(Namespace.HTTP_UPLOAD, "max-file-size"));
-				} catch (Exception e) {
-					return -1;
+			for(String namespace : new String[]{Namespace.HTTP_UPLOAD, Namespace.HTTP_UPLOAD_LEGACY}) {
+				List<Entry<Jid, ServiceDiscoveryResult>> items = findDiscoItemsByFeature(namespace);
+				if (items.size() > 0) {
+					try {
+						return Long.parseLong(items.get(0).getValue().getExtendedDiscoInformation(namespace, "max-file-size"));
+					} catch (Exception e) {
+						//ignored
+					}
 				}
-			} else {
-				return -1;
 			}
+			return -1;
 		}
 
 		public boolean stanzaIds() {

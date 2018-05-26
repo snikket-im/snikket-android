@@ -58,9 +58,40 @@ public class SlotRequester {
 		if (method == Method.HTTP_UPLOAD) {
 			Jid host = account.getXmppConnection().findDiscoItemByFeature(Namespace.HTTP_UPLOAD);
 			requestHttpUpload(account, host, file, mime, callback);
+		} else if (method == Method.HTTP_UPLOAD_LEGACY) {
+			Jid host = account.getXmppConnection().findDiscoItemByFeature(Namespace.HTTP_UPLOAD_LEGACY);
+			requestHttpUploadLegacy(account, host, file, mime, callback);
 		} else {
 			requestP1S3(account, Jid.of(account.getServer()), file.getName(), md5, callback);
 		}
+	}
+
+	private void requestHttpUploadLegacy(Account account, Jid host, DownloadableFile file, String mime, OnSlotRequested callback) {
+		IqPacket request = service.getIqGenerator().requestHttpUploadLegacySlot(host, file, mime);
+		service.sendIqPacket(account, request, (a, packet) -> {
+			if (packet.getType() == IqPacket.TYPE.RESULT) {
+				Element slotElement = packet.findChild("slot", Namespace.HTTP_UPLOAD_LEGACY);
+				if (slotElement != null) {
+					try {
+						final String putUrl = slotElement.findChildContent("put");
+						final String getUrl = slotElement.findChildContent("get");
+						if (getUrl != null && putUrl != null) {
+							Slot slot = new Slot(new URL(putUrl));
+							slot.getUrl = new URL(getUrl);
+							slot.headers = new HashMap<>();
+							slot.headers.put("Content-Type", mime == null ? "application/octet-stream" : mime);
+							callback.success(slot);
+							return;
+						}
+					} catch (MalformedURLException e) {
+						//fall through
+					}
+				}
+			}
+			Log.d(Config.LOGTAG, account.getJid().toString() + ": invalid response to slot request " + packet);
+			callback.failure(IqParser.extractErrorMessage(packet));
+		});
+
 	}
 
 	private void requestHttpUpload(Account account, Jid host, DownloadableFile file, String mime, OnSlotRequested callback) {
@@ -85,9 +116,9 @@ public class SlotRequester {
 									if (HttpUploadConnection.WHITE_LISTED_HEADERS.contains(name) && value != null && !value.trim().contains("\n")) {
 										slot.headers.put(name, value.trim());
 									}
-									slot.headers.put("Content-Type", mime == null ? "application/octet-stream" : mime);
 								}
 							}
+							slot.headers.put("Content-Type", mime == null ? "application/octet-stream" : mime);
 							callback.success(slot);
 							return;
 						}
