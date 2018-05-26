@@ -153,7 +153,7 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
 			boolean openPaymentUrl = mAccount != null && mAccount.getStatus() == Account.State.PAYMENT_REQUIRED;
 			final boolean redirectionWorthyStatus = openPaymentUrl || openRegistrationUrl;
 			URL url = connection != null && redirectionWorthyStatus ? connection.getRedirectionUrl() : null;
-			if (url != null && redirectionWorthyStatus && !wasDisabled) {
+			if (url != null && !wasDisabled) {
 				try {
 					startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(url.toString())));
 					return;
@@ -1021,6 +1021,9 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
 				this.binding.serverInfoPep.setText(R.string.server_info_unavailable);
 			}
 			if (features.httpUpload(0)) {
+				this.binding.serverInfoHttpUpload.setText(R.string.server_info_available);
+			} if (features.p1S3FileTransfer()) {
+				this.binding.serverInfoHttpUploadDescription.setText(R.string.p1_s3_filetransfer);
 				this.binding.serverInfoHttpUpload.setText(R.string.server_info_available);
 			} else {
 				this.binding.serverInfoHttpUpload.setText(R.string.server_info_unavailable);
