@@ -62,6 +62,7 @@ import eu.siacs.conversations.entities.DownloadableFile;
 import eu.siacs.conversations.entities.Message;
 import eu.siacs.conversations.entities.Message.FileParams;
 import eu.siacs.conversations.entities.Transferable;
+import eu.siacs.conversations.http.P1S3UrlStreamHandler;
 import eu.siacs.conversations.persistance.FileBackend;
 import eu.siacs.conversations.services.MessageArchiveService;
 import eu.siacs.conversations.services.NotificationService;
@@ -92,9 +93,6 @@ public class MessageAdapter extends ArrayAdapter<Message> implements CopyTextVie
 	private static final int RECEIVED = 1;
 	private static final int STATUS = 2;
 	private static final int DATE_SEPARATOR = 3;
-
-	private List<String> highlightedTerm = null;
-
 	private static final Linkify.TransformFilter WEBURL_TRANSFORM_FILTER = (matcher, url) -> {
 		if (url == null) {
 			return null;
@@ -106,6 +104,28 @@ public class MessageAdapter extends ArrayAdapter<Message> implements CopyTextVie
 			return "http://" + removeTrailingBracket(url);
 		}
 	};
+	private static final Linkify.MatchFilter WEBURL_MATCH_FILTER = (cs, start, end) -> start < 1 || (cs.charAt(start - 1) != '@' && cs.charAt(start - 1) != '.' && !cs.subSequence(Math.max(0, start - 3), start).equals("://"));
+	private static final Linkify.MatchFilter XMPPURI_MATCH_FILTER = (s, start, end) -> {
+		XmppUri uri = new XmppUri(s.subSequence(start, end).toString());
+		return uri.isJidValid();
+	};
+	private final XmppActivity activity;
+	private final ListSelectionManager listSelectionManager = new ListSelectionManager();
+	private final AudioPlayer audioPlayer;
+	private List<String> highlightedTerm = null;
+	private DisplayMetrics metrics;
+	private OnContactPictureClicked mOnContactPictureClickedListener;
+	private OnContactPictureLongClicked mOnContactPictureLongClickedListener;
+	private boolean mIndicateReceived = false;
+	private boolean mUseGreenBackground = false;
+	private OnQuoteListener onQuoteListener;
+	public MessageAdapter(XmppActivity activity, List<Message> messages) {
+		super(activity, 0, messages);
+		this.audioPlayer = new AudioPlayer(this);
+		this.activity = activity;
+		metrics = getContext().getResources().getDisplayMetrics();
+		updatePreferences();
+	}
 
 	private static String removeTrailingBracket(final String url) {
 		int numOpenBrackets = 0;
@@ -121,31 +141,6 @@ public class MessageAdapter extends ArrayAdapter<Message> implements CopyTextVie
 		} else {
 			return url;
 		}
-	}
-
-	private static final Linkify.MatchFilter WEBURL_MATCH_FILTER = (cs, start, end) -> start < 1 || (cs.charAt(start - 1) != '@' && cs.charAt(start - 1) != '.' && !cs.subSequence(Math.max(0, start - 3), start).equals("://"));
-
-	private static final Linkify.MatchFilter XMPPURI_MATCH_FILTER = (s, start, end) -> {
-		XmppUri uri = new XmppUri(s.subSequence(start, end).toString());
-		return uri.isJidValid();
-	};
-
-	private final XmppActivity activity;
-	private final ListSelectionManager listSelectionManager = new ListSelectionManager();
-	private final AudioPlayer audioPlayer;
-	private DisplayMetrics metrics;
-	private OnContactPictureClicked mOnContactPictureClickedListener;
-	private OnContactPictureLongClicked mOnContactPictureLongClickedListener;
-	private boolean mIndicateReceived = false;
-	private boolean mUseGreenBackground = false;
-	private OnQuoteListener onQuoteListener;
-
-	public MessageAdapter(XmppActivity activity, List<Message> messages) {
-		super(activity, 0, messages);
-		this.audioPlayer = new AudioPlayer(this);
-		this.activity = activity;
-		metrics = getContext().getResources().getDisplayMetrics();
-		updatePreferences();
 	}
 
 	public static boolean cancelPotentialWork(Message message, ImageView imageView) {
@@ -171,6 +166,12 @@ public class MessageAdapter extends ArrayAdapter<Message> implements CopyTextVie
 			}
 		}
 		return null;
+	}
+
+	private static void resetClickListener(View... views) {
+		for (View view : views) {
+			view.setOnClickListener(null);
+		}
 	}
 
 	public void flagScreenOn() {
@@ -816,11 +817,18 @@ public class MessageAdapter extends ArrayAdapter<Message> implements CopyTextVie
 			} else if (message.treatAsDownloadable()) {
 				try {
 					URL url = new URL(message.getBody());
-					displayDownloadableMessage(viewHolder,
-							message,
-							activity.getString(R.string.check_x_filesize_on_host,
-									UIHelper.getFileDescriptionString(activity, message),
-									url.getHost()));
+					if (P1S3UrlStreamHandler.PROTOCOL_NAME.equalsIgnoreCase(url.getProtocol())) {
+						displayDownloadableMessage(viewHolder,
+								message,
+								activity.getString(R.string.check_x_filesize,
+										UIHelper.getFileDescriptionString(activity, message)));
+					} else {
+						displayDownloadableMessage(viewHolder,
+								message,
+								activity.getString(R.string.check_x_filesize_on_host,
+										UIHelper.getFileDescriptionString(activity, message),
+										url.getHost()));
+					}
 				} catch (Exception e) {
 					displayDownloadableMessage(viewHolder,
 							message,
@@ -860,12 +868,6 @@ public class MessageAdapter extends ArrayAdapter<Message> implements CopyTextVie
 
 	private void promptOpenKeychainInstall(View view) {
 		activity.showInstallPgpDialog();
-	}
-
-	private static void resetClickListener(View... views) {
-		for (View view : views) {
-			view.setOnClickListener(null);
-		}
 	}
 
 	@Override
