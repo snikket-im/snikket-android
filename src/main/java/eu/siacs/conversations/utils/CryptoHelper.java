@@ -130,6 +130,7 @@ public final class CryptoHelper {
 		cipherSuites.retainAll(platformCiphers);
 		cipherSuites.addAll(platformCiphers);
 		filterWeakCipherSuites(cipherSuites);
+		cipherSuites.remove("TLS_FALLBACK_SCSV");
 		return cipherSuites.toArray(new String[cipherSuites.size()]);
 	}
 
