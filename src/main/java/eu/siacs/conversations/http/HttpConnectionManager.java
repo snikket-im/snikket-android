@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.net.Proxy;
+import java.net.URL;
 import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
 import java.util.List;
@@ -50,6 +51,15 @@ public class HttpConnectionManager extends AbstractConnectionManager {
 		HttpUploadConnection connection = new HttpUploadConnection(Method.determine(message.getConversation().getAccount()), this);
 		connection.init(message,delay);
 		this.uploadConnections.add(connection);
+	}
+
+	public boolean checkConnection(Message message) {
+		final Account account = message.getConversation().getAccount();
+		final URL url = message.getFileParams().url;
+		if (url.getProtocol().equalsIgnoreCase(P1S3UrlStreamHandler.PROTOCOL_NAME) && account.getStatus() != Account.State.ONLINE) {
+			return false;
+		}
+		return mXmppConnectionService.hasInternetConnection();
 	}
 
 	public void finishConnection(HttpDownloadConnection connection) {

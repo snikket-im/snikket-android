@@ -1387,7 +1387,7 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
 		Transferable transferable = message.getTransferable();
 		if (transferable != null) {
 			if (transferable instanceof TransferablePlaceholder && message.hasFileOnRemoteHost()) {
-				activity.xmppConnectionService.getHttpConnectionManager().createNewDownloadConnection(message, true);
+				createNewConnection(message);
 				return;
 			}
 			if (!transferable.start()) {
@@ -1395,8 +1395,16 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
 				Toast.makeText(getActivity(), R.string.not_connected_try_again, Toast.LENGTH_SHORT).show();
 			}
 		} else if (message.treatAsDownloadable()) {
-			activity.xmppConnectionService.getHttpConnectionManager().createNewDownloadConnection(message, true);
+			createNewConnection(message);
 		}
+	}
+
+	private void createNewConnection(final Message message) {
+		if (!activity.xmppConnectionService.getHttpConnectionManager().checkConnection(message)) {
+			Toast.makeText(getActivity(), R.string.not_connected_try_again, Toast.LENGTH_SHORT).show();
+			return;
+		}
+		activity.xmppConnectionService.getHttpConnectionManager().createNewDownloadConnection(message, true);
 	}
 
 	@SuppressLint("InflateParams")
