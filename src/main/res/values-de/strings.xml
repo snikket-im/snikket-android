@@ -188,7 +188,7 @@
   <string name="server_info_available">ja</string>
   <string name="server_info_unavailable">nein</string>
   <string name="missing_public_keys">Öffentlicher Schlüssel fehlt</string>
-  <string name="last_seen_now">online</string>
+  <string name="last_seen_now">gerade eben noch gesehen</string>
   <string name="last_seen_min">vor einer Minute gesehen</string>
   <string name="last_seen_mins">vor %d Minuten gesehen</string>
   <string name="last_seen_hour">vor einer Stunde gesehen</string>

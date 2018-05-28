@@ -280,6 +280,7 @@
   <string name="conference_banned">この談話室から締め出されています</string>
   <string name="conference_members_only">この談話室はメンバー制です</string>
   <string name="conference_kicked">この談話室から蹴り出されています</string>
+  <string name="conference_shutdown">このグループチャットは閉鎖されました</string>
   <string name="conference_unknown_error">既にこの談話室に参加していません</string>
   <string name="using_account">アカウント %s を使用</string>
   <string name="checking_x">HTTP ホストの %s を確認中</string>
@@ -291,6 +292,8 @@
   <string name="copy_original_url">元の URL をコピー</string>
   <string name="send_again">再送</string>
   <string name="file_url">ファイル URL</string>
+  <string name="url_copied_to_clipboard">URL をクリップボードにコピーしました</string>
+  <string name="jabber_id_copied_to_clipboard">Jabber ID をクリップボードにコピーしました</string>
   <string name="scan_qr_code">2D バーコードをスキャン</string>
   <string name="show_qr_code">2D バーコードを表示</string>
   <string name="show_block_list">ブロックリストを表示</string>
@@ -620,6 +623,7 @@
   <string name="copy_to_clipboard">クリップボードにコピー</string>
   <string name="message_copied_to_clipboard">メッセージをクリップボードにコピーしました</string>
   <string name="message">メッセージ</string>
+  <string name="mtm_connect_anyway">それでも接続を希望しますか?</string>
   <string name="mtm_cert_details">証明書の詳細:</string>
   <string name="edit_status_message_title">在席状況メッセージを編集</string>
   <string name="edit_status_message">在席状況メッセージを編集</string>

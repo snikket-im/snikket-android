@@ -369,11 +369,13 @@
   <plurals name="toast_delete_certificates">
     <item quantity="one">%d сертифікат видалено</item>
     <item quantity="few">%d сертифікати видалено</item>
+    <item quantity="many">%d сертифікатів видалено</item>
     <item quantity="other">%d сертифікатів видалено</item>
   </plurals>
   <plurals name="select_contact">
     <item quantity="one">Вибрано %d контакт</item>
     <item quantity="few">Вибрано %d контакти</item>
+    <item quantity="many">Вибрано %d контактів</item>
     <item quantity="other">Вибрано %d контактів</item>
   </plurals>
   <string name="pref_quick_action_summary">Замінити клавішу відправити швидкими діями</string>
@@ -429,6 +431,7 @@
   <plurals name="x_messages">
     <item quantity="one">%d повідомлення</item>
     <item quantity="few">%d повідомлення</item>
+    <item quantity="many">%d повідомлень</item>
     <item quantity="other">%d повідомлень</item>
   </plurals>
   <string name="load_more_messages">Завантажити більше повідомлень</string>

@@ -355,11 +355,13 @@
   <plurals name="toast_delete_certificates">
     <item quantity="one">%d certifikát smazán</item>
     <item quantity="few">%d certifikáty smazány</item>
+    <item quantity="many">%d certifikátů smazáno</item>
     <item quantity="other">%d certifikátů smazáno</item>
   </plurals>
   <plurals name="select_contact">
     <item quantity="one">Vybrat %d kontakt</item>
     <item quantity="few">Vybrat %d kontakty</item>
+    <item quantity="many">Vybrat %d kontaktů</item>
     <item quantity="other">Vybrat %d kontaktů</item>
   </plurals>
   <string name="pref_quick_action_summary">Nahradit tlačítko odeslání rychlou akcí</string>
@@ -412,6 +414,7 @@
   <plurals name="x_messages">
     <item quantity="one">%d zpráva</item>
     <item quantity="few">%d zprávy</item>
+    <item quantity="many">%d zpráv</item>
     <item quantity="other">%d zpráv</item>
   </plurals>
   <string name="load_more_messages">Načíst více zpráv</string>

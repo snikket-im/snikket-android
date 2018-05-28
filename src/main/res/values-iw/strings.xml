@@ -309,10 +309,14 @@
   <string name="dialog_manage_certs_negativebutton">ביטול</string>
   <plurals name="toast_delete_certificates">
     <item quantity="one">%d חתימה נמחקה</item>
+    <item quantity="two">%d חתימות נמחקו</item>
+    <item quantity="many">%d חתימות נמחקו</item>
     <item quantity="other">%d חתימות נמחקו</item>
   </plurals>
   <plurals name="select_contact">
     <item quantity="one">בחר איש קשר %d</item>
+    <item quantity="two">בחר %d אנשי קשר</item>
+    <item quantity="many">בחר %d אנשי קשר</item>
     <item quantity="other">בחר %d אנשי קשר</item>
   </plurals>
   <string name="pref_quick_action_summary">החלף לחצן שליחה בפעולה מהירה</string>
@@ -347,6 +351,8 @@
   <string name="connected_accounts">%1$d מתוך %2$d חשבונות מחוברים</string>
   <plurals name="x_messages">
     <item quantity="one">הודעה %d</item>
+    <item quantity="two">%d הודעות</item>
+    <item quantity="many">%d הודעות</item>
     <item quantity="other">%d הודעות</item>
   </plurals>
   <string name="shared_file_with_x">שתף קובץ בעזרת %s</string>

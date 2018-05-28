@@ -303,11 +303,13 @@
   <plurals name="toast_delete_certificates">
     <item quantity="one">%d certifikátu vymazaných</item>
     <item quantity="few">%d certifikátu vymazaných</item>
+    <item quantity="many">%d certifikátov vymazaných</item>
     <item quantity="other">%d certifikátov vymazaných</item>
   </plurals>
   <plurals name="select_contact">
     <item quantity="one">Vybrať %d kontaktu</item>
     <item quantity="few">Vybrať %d kontaktu</item>
+    <item quantity="many">Vybrať %d kontaktov</item>
     <item quantity="other">Vybrať %d kontaktov</item>
   </plurals>
   <string name="pref_quick_action_summary">Nahradiť tlačidlo poslať rýchlou akciou</string>
