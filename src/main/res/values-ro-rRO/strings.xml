@@ -722,4 +722,5 @@ sau chiar pierderea mesajelor.\nÎn continuare veți fi rugați să dezactivați
   <string name="pref_use_share_location_plugin_summary">Folosește localizarea cu extensia în locul hărții incluse</string>
   <string name="copy_link">Copiază adresa web</string>
   <string name="copy_jabber_id">Copiază ID Jabber</string>
+  <string name="p1_s3_filetransfer">Partajare fișiere prin HTTP pentru S3</string>
 </resources>

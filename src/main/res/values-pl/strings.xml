@@ -732,4 +732,5 @@ Administrator twojego serwera będzie mógł czytać twoje wiadomości, ale moż
   <string name="pref_use_share_location_plugin_summary">Użyj Wtyczki Udostępniania Lokalizacji zamiast wbudowanej mapy</string>
   <string name="copy_link">Skopiuj URL</string>
   <string name="copy_jabber_id">Skopiuj JID</string>
+  <string name="p1_s3_filetransfer">Udostępnianie plików przez HTTP S3</string>
 </resources>

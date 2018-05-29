@@ -711,4 +711,5 @@
   <string name="pref_use_share_location_plugin_summary">Използване на разширението за споделяне на местоположението вместо вградената карта</string>
   <string name="copy_link">Копиране на уеб адрес</string>
   <string name="copy_jabber_id">Копиране на Jabber идентификатор</string>
+  <string name="p1_s3_filetransfer">Споделяне на файлове през HTTP за S3</string>
 </resources>

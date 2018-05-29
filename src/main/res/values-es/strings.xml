@@ -711,4 +711,5 @@
   <string name="pref_use_share_location_plugin_summary">Usar el Plugin externo para Compartir Ubicación en lugar del propio de la aplicación.</string>
   <string name="copy_link">Copiar dirección web</string>
   <string name="copy_jabber_id">Copiar Identificador Jabber</string>
+  <string name="p1_s3_filetransfer">Compartición de Archivos mediante S3</string>
 </resources>

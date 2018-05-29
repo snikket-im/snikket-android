@@ -711,4 +711,5 @@
   <string name="pref_use_share_location_plugin_summary">Verwende das Plugin zum Standort teilen anstelle der eingebauten Karte</string>
   <string name="copy_link">Internetadresse kopieren</string>
   <string name="copy_jabber_id">Jabber-ID kopieren</string>
+  <string name="p1_s3_filetransfer">HTTP-Dateifreigabe für S3</string>
 </resources>

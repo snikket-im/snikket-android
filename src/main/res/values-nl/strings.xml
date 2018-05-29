@@ -708,7 +708,8 @@
   <string name="gif">GIF</string>
   <string name="view_conversation">Gesprek bekijken</string>
   <string name="pref_use_share_location_plugin">Plug-in voor delen van locatie</string>
-  <string name="pref_use_share_location_plugin_summary">Gebruik de Plug-in voor delen van locatie in plaats van de ingebouwde kaart</string>
+  <string name="pref_use_share_location_plugin_summary">Gebruik de ‘Plug-in voor delen van locatie’ in plaats van de ingebouwde kaart</string>
   <string name="copy_link">Webadres kopiëren</string>
   <string name="copy_jabber_id">Jabber-ID kopiëren</string>
+  <string name="p1_s3_filetransfer">Bestanden delen via HTTP voor S3</string>
 </resources>
