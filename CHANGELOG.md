@@ -1,5 +1,10 @@
 # Changelog
 
+### Version 2.2.2
+* Fixed connection problems with TLS1.3 servers
+* Attempt to delete broken bundles from PEP
+* Use FCM instead of GCM
+
 ### Version 2.2.1
 * improved recording quality
 * load map tiles over Tor if enabled 
