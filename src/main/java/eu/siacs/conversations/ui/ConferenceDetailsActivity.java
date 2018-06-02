@@ -166,6 +166,10 @@ public class ConferenceDetailsActivity extends XmppActivity implements OnConvers
 					options1.putString("muc#roomconfig_whois", values[2] ? "anyone" : "moderators");
 				}
 				options1.putString("muc#roomconfig_persistentroom", "1");
+				final boolean whois = values.length == 2 ? values[1] : values[2];
+				if (values[0] == whois) {
+					options1.putString("muc#roomconfig_publicroom",whois ? "0" : "1");
+				}
 				xmppConnectionService.pushConferenceConfiguration(mConversation,
 						options1,
 						ConferenceDetailsActivity.this);
