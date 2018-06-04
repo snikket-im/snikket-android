@@ -319,7 +319,7 @@ For conferences only OMEMO and OpenPGP are supported as encryption method..
 
 OMEMO encryption works only in private (members only) conferences that are non-anonymous.
 
-The server of all participants need to pass the OMEMO [Compliance Test](https://conversations.im/compliance).
+The server of all participants need to pass the OMEMO [Compliance Test](https://conversations.im/compliance/).
 In other words they either need to run version 18.01+ of ejabberd or have the `omemo_all_access` module installed on Prosody.
 
 The owner of a conference can make a public conference private by going into the conference
