@@ -135,12 +135,7 @@ public class EditMessage extends EmojiAppCompatEditText {
 
 		if (mimeTypes != null && mCommitContentListener != null) {
 			EditorInfoCompat.setContentMimeTypes(editorInfo, mimeTypes);
-			return InputConnectionCompat.createWrapper(ic, editorInfo, new InputConnectionCompat.OnCommitContentListener() {
-				@Override
-				public boolean onCommitContent(InputContentInfoCompat inputContentInfo, int flags, Bundle opts) {
-					return EditMessage.this.mCommitContentListener.onCommitContent(inputContentInfo, flags, opts, mimeTypes);
-				}
-			});
+			return InputConnectionCompat.createWrapper(ic, editorInfo, (inputContentInfo, flags, opts) -> EditMessage.this.mCommitContentListener.onCommitContent(inputContentInfo, flags, opts, mimeTypes));
 		} else {
 			return ic;
 		}

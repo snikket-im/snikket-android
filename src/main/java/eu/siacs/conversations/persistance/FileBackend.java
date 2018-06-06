@@ -199,15 +199,6 @@ public class FileBackend {
 		return context.getPackageName() + FILE_PROVIDER;
 	}
 
-	public static Uri getIndexableTakePhotoUri(Uri original) {
-		if (Config.ONLY_INTERNAL_STORAGE || "file".equals(original.getScheme())) {
-			return original;
-		} else {
-			List<String> segments = original.getPathSegments();
-			return Uri.parse("file://" + getTakePhotoPath() + segments.get(segments.size() - 1));
-		}
-	}
-
 	private static boolean hasAlpha(final Bitmap bitmap) {
 		for (int x = 0; x < bitmap.getWidth(); ++x) {
 			for (int y = 0; y < bitmap.getWidth(); ++y) {
@@ -226,7 +217,7 @@ public class FileBackend {
 		return calcSampleSize(options, size);
 	}
 
-	public static int calcSampleSize(BitmapFactory.Options options, int size) {
+	private static int calcSampleSize(BitmapFactory.Options options, int size) {
 		int height = options.outHeight;
 		int width = options.outWidth;
 		int inSampleSize = 1;
