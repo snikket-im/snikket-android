@@ -278,34 +278,15 @@ public class SettingsActivity extends XmppActivity implements
 	}
 
 	private boolean cleanPrivateStorage() {
-		cleanPrivatePictures();
-		cleanPrivateFiles();
+		for(String type : Arrays.asList("Images", "Videos", "Files", "Recordings")) {
+		        cleanPrivateFiles(type);
+	    }
 		return true;
 	}
 
-	private void cleanPrivatePictures() {
+	private void cleanPrivateFiles(final String type) {
 		try {
-			File dir = new File(getFilesDir().getAbsolutePath(), "/Pictures/");
-			File[] array = dir.listFiles();
-			if (array != null) {
-				for (int b = 0; b < array.length; b++) {
-					String name = array[b].getName().toLowerCase();
-					if (name.equals(".nomedia")) {
-						continue;
-					}
-					if (array[b].isFile()) {
-						array[b].delete();
-					}
-				}
-			}
-		} catch (Throwable e) {
-			Log.e("CleanCache", e.toString());
-		}
-	}
-
-	private void cleanPrivateFiles() {
-		try {
-			File dir = new File(getFilesDir().getAbsolutePath(), "/Files/");
+			File dir = new File(getFilesDir().getAbsolutePath(), "/" + type + "/");
 			File[] array = dir.listFiles();
 			if (array != null) {
 				for (int b = 0; b < array.length; b++) {
