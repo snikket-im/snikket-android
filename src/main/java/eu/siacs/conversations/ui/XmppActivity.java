@@ -688,18 +688,23 @@ public abstract class XmppActivity extends ActionBarActivity {
 	}
 
 	protected void quickEdit(String previousValue, int hint, OnValueEdited callback) {
-		quickEdit(previousValue, callback, hint, false);
+		quickEdit(previousValue, callback, hint, false, false);
+	}
+
+	protected void quickEdit(String previousValue, int hint, OnValueEdited callback, boolean permitEmpty) {
+		quickEdit(previousValue, callback, hint, false, permitEmpty);
 	}
 
 	protected void quickPasswordEdit(String previousValue, OnValueEdited callback) {
-		quickEdit(previousValue, callback, R.string.password, true);
+		quickEdit(previousValue, callback, R.string.password, true, false);
 	}
 
 	@SuppressLint("InflateParams")
 	private void quickEdit(final String previousValue,
 	                       final OnValueEdited callback,
 	                       final int hint,
-	                       boolean password) {
+	                       boolean password,
+	                       boolean permitEmpty) {
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
 		View view = getLayoutInflater().inflate(R.layout.quickedit, null);
 		final EditText editor = view.findViewById(R.id.editor);
@@ -722,7 +727,7 @@ public abstract class XmppActivity extends ActionBarActivity {
 		dialog.show();
 		View.OnClickListener clickListener = v -> {
 			String value = editor.getText().toString();
-			if (!value.equals(previousValue) && value.trim().length() > 0) {
+			if (!value.equals(previousValue) && (!value.trim().isEmpty() || permitEmpty)) {
 				String error = callback.onValueEdited(value);
 				if (error != null) {
 					editor.setError(error);

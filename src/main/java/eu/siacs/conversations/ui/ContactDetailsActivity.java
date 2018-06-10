@@ -240,16 +240,12 @@ public class ContactDetailsActivity extends OmemoActivity implements OnAccountUp
 			case R.id.action_edit_contact:
 				Uri systemAccount = contact.getSystemAccount();
 				if (systemAccount == null) {
-					quickEdit(contact.getDisplayName(), 0, new OnValueEdited() {
-
-						@Override
-						public String onValueEdited(String value) {
-							contact.setServerName(value);
-							ContactDetailsActivity.this.xmppConnectionService.pushContactToServer(contact);
-							populateView();
-							return null;
-						}
-					});
+					quickEdit(contact.getDisplayName(), 0, value -> {
+						contact.setServerName(value);
+						ContactDetailsActivity.this.xmppConnectionService.pushContactToServer(contact);
+						populateView();
+						return null;
+					}, true);
 				} else {
 					Intent intent = new Intent(Intent.ACTION_EDIT);
 					intent.setDataAndType(systemAccount, Contacts.CONTENT_ITEM_TYPE);

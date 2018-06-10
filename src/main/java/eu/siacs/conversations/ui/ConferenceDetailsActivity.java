@@ -181,7 +181,7 @@ public class ConferenceDetailsActivity extends XmppActivity implements OnConvers
 
 		@Override
 		public String onValueEdited(String value) {
-			xmppConnectionService.pushSubjectToConference(mConversation, value);
+			xmppConnectionService.pushSubjectToConference(mConversation, value.trim().isEmpty() ? null : value.trim());
 			return null;
 		}
 	};
@@ -271,7 +271,8 @@ public class ConferenceDetailsActivity extends XmppActivity implements OnConvers
 				if (mConversation != null) {
 					quickEdit(mConversation.getMucOptions().getSubject(),
 							R.string.edit_subject_hint,
-							this.onSubjectEdited);
+							this.onSubjectEdited,
+							true);
 				}
 				break;
 			case R.id.action_share_http:
