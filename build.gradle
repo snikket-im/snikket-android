@@ -13,11 +13,9 @@ buildscript {
 apply plugin: 'com.android.application'
 
 repositories {
+    google()
     jcenter()
     mavenCentral()
-    maven {
-        url 'https://maven.google.com'
-    }
     maven {
         url "https://oss.sonatype.org/content/repositories/snapshots"
     }
