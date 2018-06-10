@@ -181,10 +181,16 @@ public class StartConversationActivity extends XmppActivity implements XmppConne
 				if (contacts.size() == 1) {
 					openConversationForContact((Contact) contacts.get(0));
 					return true;
+				} else if (contacts.size() == 0 && conferences.size() == 1) {
+					openConversationsForBookmark((Bookmark) conferences.get(0));
+					return true;
 				}
 			} else {
 				if (conferences.size() == 1) {
 					openConversationsForBookmark((Bookmark) conferences.get(0));
+					return true;
+				} else if (conferences.size() == 0 && contacts.size() == 1) {
+					openConversationForContact((Contact) contacts.get(0));
 					return true;
 				}
 			}
