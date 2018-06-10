@@ -7,6 +7,7 @@ import android.app.PendingIntent;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.databinding.DataBindingUtil;
 import android.net.Uri;
@@ -283,7 +284,12 @@ public class StartConversationActivity extends XmppActivity implements XmppConne
 		mConferenceAdapter = new ListItemAdapter(this, conferences);
 		mContactsAdapter = new ListItemAdapter(this, contacts);
 		mContactsAdapter.setOnTagClickedListener(this.mOnTagClickedListener);
-		this.mHideOfflineContacts = getPreferences().getBoolean("hide_offline", false);
+
+		final SharedPreferences preferences = getPreferences();
+
+		this.mHideOfflineContacts = preferences.getBoolean("hide_offline", false);
+
+		final boolean startSearching = preferences.getBoolean("start_searching",getResources().getBoolean(R.bool.start_searching));
 
 		final Intent intent;
 		if (savedInstanceState == null) {
@@ -299,6 +305,8 @@ public class StartConversationActivity extends XmppActivity implements XmppConne
 		if (isViewIntent(intent)) {
 			pendingViewIntent.push(intent);
 			setIntent(createLauncherIntent(this));
+		} else if (startSearching && mInitialSearchValue.peek() == null) {
+			mInitialSearchValue.push("");
 		}
 	}
 

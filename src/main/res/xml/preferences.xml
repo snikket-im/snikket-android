@@ -269,6 +269,11 @@
             </PreferenceCategory>
             <PreferenceCategory android:title="@string/pref_input_options">
                 <CheckBoxPreference
+                    android:defaultValue="@bool/start_searching"
+                    android:key="start_searching"
+                    android:summary="@string/pref_start_search_summary"
+                    android:title="@string/pref_start_search"/>
+                <CheckBoxPreference
                     android:defaultValue="@bool/enter_is_send"
                     android:key="enter_is_send"
                     android:summary="@string/pref_enter_is_send_summary"
