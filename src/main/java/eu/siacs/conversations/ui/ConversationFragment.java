@@ -85,6 +85,7 @@ import eu.siacs.conversations.ui.util.ActivityResult;
 import eu.siacs.conversations.ui.util.AttachmentTool;
 import eu.siacs.conversations.ui.util.ConversationMenuConfigurator;
 import eu.siacs.conversations.ui.util.DateSeparator;
+import eu.siacs.conversations.ui.util.EditMessageActionModeCallback;
 import eu.siacs.conversations.ui.util.ListViewUtils;
 import eu.siacs.conversations.ui.util.MenuDoubleTabUtil;
 import eu.siacs.conversations.ui.util.PendingItem;
@@ -991,25 +992,16 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
 
 		registerForContextMenu(binding.messagesView);
 
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+			this.binding.textinput.setCustomInsertionActionModeCallback(new EditMessageActionModeCallback(this.binding.textinput));
+		}
+
 		return binding.getRoot();
 	}
 
 	private void quoteText(String text) {
 		if (binding.textinput.isEnabled()) {
-			text = text.replaceAll("(\n *){2,}", "\n").replaceAll("(^|\n)", "$1> ").replaceAll("\n$", "");
-			Editable editable = binding.textinput.getEditableText();
-			int position = binding.textinput.getSelectionEnd();
-			if (position == -1) position = editable.length();
-			if (position > 0 && editable.charAt(position - 1) != '\n') {
-				editable.insert(position++, "\n");
-			}
-			editable.insert(position, text);
-			position += text.length();
-			editable.insert(position++, "\n");
-			if (position < editable.length() && editable.charAt(position) != '\n') {
-				editable.insert(position, "\n");
-			}
-			binding.textinput.setSelection(position);
+			binding.textinput.insertAsQuote(text);
 			binding.textinput.requestFocus();
 			InputMethodManager inputMethodManager = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
 			if (inputMethodManager != null) {
