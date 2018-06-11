@@ -704,4 +704,5 @@
   <string name="pref_use_share_location_plugin_summary">使用共享位置插件而不是内置地图</string>
   <string name="copy_link">复制web地址</string>
   <string name="copy_jabber_id">复制Jabber ID</string>
+  <string name="p1_s3_filetransfer">用于S3的HTTP文件共享</string>
 </resources>

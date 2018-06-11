@@ -712,4 +712,6 @@
   <string name="copy_link">Webadres kopiëren</string>
   <string name="copy_jabber_id">Jabber-ID kopiëren</string>
   <string name="p1_s3_filetransfer">Bestanden delen via HTTP voor S3</string>
+  <string name="pref_start_search">Rechtstreeks zoeken</string>
+  <string name="pref_start_search_summary">Open het toetsenbord op het scherm ‘Gesprek starten’ en plaats de cursor in het zoekveld</string>
 </resources>

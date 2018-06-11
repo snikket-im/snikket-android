@@ -712,4 +712,6 @@
   <string name="copy_link">Internetadresse kopieren</string>
   <string name="copy_jabber_id">Jabber-ID kopieren</string>
   <string name="p1_s3_filetransfer">HTTP-Dateifreigabe für S3</string>
+  <string name="pref_start_search">Direkte Suche </string>
+  <string name="pref_start_search_summary">Beim Dialog \'Unterhaltung beginnen\' Tastatur öffnen und den Cursor im Suchfeld platzieren</string>
 </resources>

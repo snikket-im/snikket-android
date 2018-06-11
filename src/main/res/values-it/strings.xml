@@ -711,4 +711,5 @@
   <string name="pref_use_share_location_plugin_summary">Usa il Plugin Condivisione Posizione al posto della mappa integrata</string>
   <string name="copy_link">Copia indirizzo web</string>
   <string name="copy_jabber_id">Copia ID Jabber</string>
+  <string name="p1_s3_filetransfer">Condivisione file in HTTP per S3</string>
 </resources>

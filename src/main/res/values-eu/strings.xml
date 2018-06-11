@@ -673,11 +673,15 @@
   <string name="disable_encryption">Enkriptazioa ezgaitu</string>
   <string name="error_trustkey_general">Conversationsek ezin du %1$s(r)i enkriptatutako mezuak bidali. Hau gerta daiteke zure kontaktuak zaharkitutako zerbitzari bat erabiltzen duelako edo erabiltzen ari den aplikazioak OMEMO ezin duelako kudeatu.</string>
   <string name="error_trustkey_device_list">Ezin izan da gailuen zerrenda eskuratu</string>
+  <string name="error_trustkey_bundle">Ezin izan dira gailuen bilgarriak eskuratu</string>
+  <string name="error_trustkey_hint_mutual">Lagungarria: kasu batzuetan bakoitzak bestea bere kontaktuen zerrendara gehituz konpon daiteke.</string>
+  <string name="disable_encryption_message">Ziur al zaude OMEMO enkriptazioa ezgaitu nahi duzulaz elkarrizketa honetarako?\nHonek zure zerbitzariaren administratzaileari zure mezuak irakurtzea ahalbidetuko dio, baina aplikazio zaharrak erabiltzen dituzten pertsonekin komunikatzeko modu bakarra izan daiteke.</string>
   <string name="disable_now">Orain ezgaitu</string>
   <string name="draft">Zirriborroa:</string>
   <string name="pref_omemo_setting">OMEMO enkriptazioa</string>
   <string name="pref_omemo_setting_summary_always">OMEMO beti erabiliko da biren artean eta taldeko txat pribatetuetan</string>
   <string name="pref_omemo_setting_summary_default_on">OMEMO elkarrizketa berrietan lehenetsi bezala erabiliko da</string>
+  <string name="pref_omemo_setting_summary_default_off">OMEMO esplizituki piztu beharko da elkarrizketa berrietarako</string>
   <string name="create_shortcut">Lasterbidea sortu</string>
   <string name="pref_font_size">Letraren neurria</string>
   <string name="pref_font_size_summary">Aplikazioaren barruan erabiliko den letraren neurri erlatiboa.</string>
@@ -707,4 +711,5 @@
   <string name="pref_use_share_location_plugin_summary">Erabili kokapena partekatzeko plugina mapa erabili beharrean</string>
   <string name="copy_link">Web helbidea kopiatu</string>
   <string name="copy_jabber_id">Jabber IDa kopiatu</string>
+  <string name="p1_s3_filetransfer">HTTP fitxategiak partekatzea S3rentzako</string>
 </resources>

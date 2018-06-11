@@ -723,4 +723,6 @@ sau chiar pierderea mesajelor.\nÎn continuare veți fi rugați să dezactivați
   <string name="copy_link">Copiază adresa web</string>
   <string name="copy_jabber_id">Copiază ID Jabber</string>
   <string name="p1_s3_filetransfer">Partajare fișiere prin HTTP pentru S3</string>
+  <string name="pref_start_search">Activează direct căutarea</string>
+  <string name="pref_start_search_summary">În ecranul \"Pornește o conversație\" focalizează câmpul de căutare și arată tastatura</string>
 </resources>
