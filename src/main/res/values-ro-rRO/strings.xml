@@ -293,6 +293,7 @@
   <string name="check_x_filesize_on_host">Verifica marimea %1$s pe %2$s</string>
   <string name="message_options">Opțiuni mesaje</string>
   <string name="quote">Citează</string>
+  <string name="paste_as_quote">Lipește citat</string>
   <string name="copy_original_url">Copiază adresa originală</string>
   <string name="send_again">Trimite din nou</string>
   <string name="file_url">Adresă fișier</string>

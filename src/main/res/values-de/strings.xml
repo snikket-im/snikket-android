@@ -293,6 +293,7 @@
   <string name="check_x_filesize_on_host">%1$s-Größe auf %2$s prüfen</string>
   <string name="message_options">Nachrichtenoptionen</string>
   <string name="quote">Zitat</string>
+  <string name="paste_as_quote">Als Zitat einfügen</string>
   <string name="copy_original_url">Original-URL kopieren</string>
   <string name="send_again">Erneut senden</string>
   <string name="file_url">Datei-URL</string>

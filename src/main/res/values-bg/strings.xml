@@ -712,4 +712,6 @@
   <string name="copy_link">Копиране на уеб адрес</string>
   <string name="copy_jabber_id">Копиране на Jabber идентификатор</string>
   <string name="p1_s3_filetransfer">Споделяне на файлове през HTTP за S3</string>
+  <string name="pref_start_search">Директно търсене</string>
+  <string name="pref_start_search_summary">На екрана за „Започване на разговор“ да се отваря клавиатурата и да се поставя курсорът в полето за търсене</string>
 </resources>
