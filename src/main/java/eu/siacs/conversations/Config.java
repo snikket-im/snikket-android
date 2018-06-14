@@ -47,10 +47,14 @@ public final class Config {
 
 	public static final boolean ALLOW_NON_TLS_CONNECTIONS = false; //very dangerous. you should have a good reason to set this to true
 	public static final boolean FORCE_ORBOT = false; // always use TOR
+
+
+	//Notification settings
 	public static final boolean HIDE_MESSAGE_TEXT_IN_NOTIFICATION = false;
 	public static final boolean SHOW_CONNECTED_ACCOUNTS = false; //show number of connected accounts in foreground notification
-
 	public static final boolean ALWAYS_NOTIFY_BY_DEFAULT = false;
+	public static final boolean SUPPRESS_ERROR_NOTIFICATION = false;
+
 
 	public static final boolean DISABLE_BAN = false; // disables the ability to ban users from rooms
 
@@ -93,7 +97,6 @@ public final class Config {
 
 	public static final boolean DISABLE_PROXY_LOOKUP = false; //useful to debug ibb
 	public static final boolean DISABLE_HTTP_UPLOAD = false;
-	public static final boolean DISABLE_STRING_PREP = false; // setting to true might increase startup performance
 	public static final boolean EXTENDED_SM_LOGGING = false; // log stanza counts
 	public static final boolean BACKGROUND_STANZA_LOGGING = false; //log all stanzas that were received while the app is in background
 	public static final boolean RESET_ATTEMPT_COUNT_ON_NETWORK_CHANGE = true; //setting to true might increase power consumption

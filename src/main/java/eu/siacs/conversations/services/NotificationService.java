@@ -769,6 +769,10 @@ public class NotificationService {
 	}
 
 	public void updateErrorNotification() {
+		if (Config.SUPPRESS_ERROR_NOTIFICATION) {
+			cancel(ERROR_NOTIFICATION_ID);
+			return;
+		}
 		final List<Account> errors = new ArrayList<>();
 		for (final Account account : mXmppConnectionService.getAccounts()) {
 			if (account.hasErrorStatus() && account.showErrorNotification()) {
