@@ -293,6 +293,7 @@
   <string name="check_x_filesize_on_host">Controlla dimensione %1$s su %2$s</string>
   <string name="message_options">Opzioni del messaggio</string>
   <string name="quote">Cita</string>
+  <string name="paste_as_quote">Incolla come citazione</string>
   <string name="copy_original_url">Copia URL originale</string>
   <string name="send_again">Invia di nuovo</string>
   <string name="file_url">URL del file</string>
@@ -712,4 +713,6 @@
   <string name="copy_link">Copia indirizzo web</string>
   <string name="copy_jabber_id">Copia ID Jabber</string>
   <string name="p1_s3_filetransfer">Condivisione file in HTTP per S3</string>
+  <string name="pref_start_search">Ricerca diretta</string>
+  <string name="pref_start_search_summary">Nella schermata \'Inizia conversazione\' apri la tastiera e posiziona il cursore nella casella di ricerca</string>
 </resources>

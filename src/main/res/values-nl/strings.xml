@@ -293,6 +293,7 @@
   <string name="check_x_filesize_on_host">Bestandsgrootte van %1$s op %2$s controleren</string>
   <string name="message_options">Berichtopties</string>
   <string name="quote">Citeren</string>
+  <string name="paste_as_quote">Plakken als citaat</string>
   <string name="copy_original_url">Oorspronkelijke URL kopiëren</string>
   <string name="send_again">Opnieuw versturen</string>
   <string name="file_url">Bestands-URL</string>
