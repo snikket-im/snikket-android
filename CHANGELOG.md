@@ -1,5 +1,10 @@
 # Changelog
 
+### Version 2.2.3
+* Introduce Expert Setting to enable direct search
+* Introduce Paste As Quote on Android 6+
+* Fixed issues with HTTP Upload
+
 ### Version 2.2.2
 * Fixed connection problems with TLS1.3 servers
 * Attempt to delete broken bundles from PEP
