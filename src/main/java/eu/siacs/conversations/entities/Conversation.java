@@ -903,7 +903,7 @@ public class Conversation extends AbstractEntity implements Blockable, Comparabl
 		return count;
 	}
 
-	private int sentMessagesCount() {
+	public int sentMessagesCount() {
 		int count = 0;
 		synchronized (this.messages) {
 			for (Message message : messages) {

@@ -44,14 +44,19 @@ public class ContactChooserTargetService extends ChooserTargetService implements
 			mXmppConnectionService.populateWithOrderedConversations(conversations, false);
 			final ComponentName componentName = new ComponentName(this, ShareWithActivity.class);
 			final int pixel = (int) (48 * getResources().getDisplayMetrics().density);
-			for(int i = 0; i < Math.min(conversations.size(),MAX_TARGETS); ++i) {
-				final Conversation conversation = conversations.get(i);
+			for(Conversation conversation : conversations) {
+				if (conversation.sentMessagesCount() == 0) {
+					continue;
+				}
 				final String name = conversation.getName().toString();
 				final Icon icon = Icon.createWithBitmap(mXmppConnectionService.getAvatarService().get(conversation, pixel));
-				final float score = 1 - (1.0f / MAX_TARGETS) * i;
+				final float score = 1 - (1.0f / MAX_TARGETS) * chooserTargets.size();
 				final Bundle extras = new Bundle();
 				extras.putString("uuid", conversation.getUuid());
 				chooserTargets.add(new ChooserTarget(name, icon, score, componentName, extras));
+				if (chooserTargets.size() >= MAX_TARGETS) {
+					break;
+				}
 			}
 		} catch (InterruptedException e) {
 		}
