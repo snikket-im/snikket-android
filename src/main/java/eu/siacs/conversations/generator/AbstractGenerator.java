@@ -15,6 +15,7 @@ import java.util.TimeZone;
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.crypto.axolotl.AxolotlService;
+import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.services.XmppConnectionService;
 import eu.siacs.conversations.utils.PhoneHelper;
 import eu.siacs.conversations.xml.Namespace;
@@ -73,7 +74,7 @@ public abstract class AbstractGenerator {
 		return mXmppConnectionService.getString(R.string.app_name) + " " + getIdentityVersion();
 	}
 
-	public String getIdentityType() {
+	String getIdentityType() {
 		if ("chromium".equals(android.os.Build.BRAND)) {
 			return "pc";
 		} else {
@@ -81,9 +82,9 @@ public abstract class AbstractGenerator {
 		}
 	}
 
-	public String getCapHash() {
+	String getCapHash(final Account account) {
 		StringBuilder s = new StringBuilder();
-		s.append("client/" + getIdentityType() + "//" + getIdentityName() + "<");
+		s.append("client/").append(getIdentityType()).append("//").append(getIdentityName()).append('<');
 		MessageDigest md;
 		try {
 			md = MessageDigest.getInstance("SHA-1");
@@ -91,8 +92,8 @@ public abstract class AbstractGenerator {
 			return null;
 		}
 
-		for (String feature : getFeatures()) {
-			s.append(feature + "<");
+		for (String feature : getFeatures(account)) {
+			s.append(feature).append('<');
 		}
 		byte[] sha1 = md.digest(s.toString().getBytes());
 		return new String(Base64.encode(sha1, Base64.DEFAULT)).trim();
@@ -103,9 +104,8 @@ public abstract class AbstractGenerator {
 		return DATE_FORMAT.format(time);
 	}
 
-	public List<String> getFeatures() {
-		ArrayList<String> features = new ArrayList<>();
-		features.addAll(Arrays.asList(FEATURES));
+	public List<String> getFeatures(Account account) {
+		ArrayList<String> features = new ArrayList<>(Arrays.asList(FEATURES));
 		if (mXmppConnectionService.confirmMessages()) {
 			features.addAll(Arrays.asList(MESSAGE_CONFIRMATION_FEATURES));
 		}
@@ -115,7 +115,7 @@ public abstract class AbstractGenerator {
 		if (Config.supportOmemo()) {
 			features.add(AxolotlService.PEP_DEVICE_LIST_NOTIFY);
 		}
-		if (!mXmppConnectionService.useTorToConnect()) {
+		if (!mXmppConnectionService.useTorToConnect() && !account.isOnion()) {
 			features.addAll(Arrays.asList(PRIVACY_SENSITIVE));
 		}
 		if (mXmppConnectionService.broadcastLastActivity()) {

@@ -285,7 +285,8 @@ public class IqParser extends AbstractParser implements OnIqPacketReceived {
 		final boolean isGet = packet.getType() == IqPacket.TYPE.GET;
 		if (packet.getType() == IqPacket.TYPE.ERROR || packet.getType() == IqPacket.TYPE.TIMEOUT) {
 			return;
-		} else if (packet.hasChild("query", Namespace.ROSTER) && packet.fromServer(account)) {
+		}
+		if (packet.hasChild("query", Namespace.ROSTER) && packet.fromServer(account)) {
 			final Element query = packet.findChild("query");
 			// If this is in response to a query for the whole roster:
 			if (packet.getType() == IqPacket.TYPE.RESULT) {
@@ -362,7 +363,7 @@ public class IqParser extends AbstractParser implements OnIqPacketReceived {
 			mXmppConnectionService.getJingleConnectionManager()
 				.deliverIbbPacket(account, packet);
 		} else if (packet.hasChild("query", "http://jabber.org/protocol/disco#info")) {
-			final IqPacket response = mXmppConnectionService.getIqGenerator().discoResponse(packet);
+			final IqPacket response = mXmppConnectionService.getIqGenerator().discoResponse(account, packet);
 			mXmppConnectionService.sendIqPacket(account, response, null);
 		} else if (packet.hasChild("query","jabber:iq:version") && isGet) {
 			final IqPacket response = mXmppConnectionService.getIqGenerator().versionResponse(packet);
@@ -372,7 +373,7 @@ public class IqParser extends AbstractParser implements OnIqPacketReceived {
 			mXmppConnectionService.sendIqPacket(account, response, null);
 		} else if (packet.hasChild("time","urn:xmpp:time") && isGet) {
 			final IqPacket response;
-			if (mXmppConnectionService.useTorToConnect()) {
+			if (mXmppConnectionService.useTorToConnect() || account.isOnion()) {
 				response = packet.generateResponse(IqPacket.TYPE.ERROR);
 				final Element error = response.addChild("error");
 				error.setAttribute("type","cancel");

@@ -167,7 +167,7 @@ public class HttpUploadConnection implements Transferable {
 			final int readTimeout = (expectedFileSize / 2048) + Config.SOCKET_TIMEOUT; //assuming a minimum transfer speed of 16kbit/s
 			wakeLock.acquire(readTimeout);
 			Log.d(Config.LOGTAG, "uploading to " + slot.getPutUrl().toString()+ " w/ read timeout of "+readTimeout+"s");
-			if (mUseTor) {
+			if (mUseTor || message.getConversation().getAccount().isOnion()) {
 				connection = (HttpURLConnection) slot.getPutUrl().openConnection(HttpConnectionManager.getProxy());
 			} else {
 				connection = (HttpURLConnection) slot.getPutUrl().openConnection();

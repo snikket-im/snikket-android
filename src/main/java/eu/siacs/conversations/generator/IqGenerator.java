@@ -41,7 +41,7 @@ public class IqGenerator extends AbstractGenerator {
 		super(service);
 	}
 
-	public IqPacket discoResponse(final IqPacket request) {
+	public IqPacket discoResponse(final Account account, final IqPacket request) {
 		final IqPacket packet = new IqPacket(IqPacket.TYPE.RESULT);
 		packet.setId(request.getId());
 		packet.setTo(request.getFrom());
@@ -51,7 +51,7 @@ public class IqGenerator extends AbstractGenerator {
 		identity.setAttribute("category", "client");
 		identity.setAttribute("type", getIdentityType());
 		identity.setAttribute("name", getIdentityName());
-		for (final String feature : getFeatures()) {
+		for (final String feature : getFeatures(account)) {
 			query.addChild("feature").setAttribute("var", feature);
 		}
 		return packet;
@@ -113,7 +113,7 @@ public class IqGenerator extends AbstractGenerator {
 		return publish(node, item, null);
 	}
 
-	protected IqPacket retrieve(String node, Element item) {
+	private IqPacket retrieve(String node, Element item) {
 		final IqPacket packet = new IqPacket(IqPacket.TYPE.GET);
 		final Element pubsub = packet.addChild("pubsub", Namespace.PUBSUB);
 		final Element items = pubsub.addChild("items");

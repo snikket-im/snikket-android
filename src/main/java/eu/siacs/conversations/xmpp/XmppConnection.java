@@ -260,7 +260,7 @@ public class XmppConnection implements Runnable {
 			if (useTor) {
 				String destination;
 				if (account.getHostname().isEmpty()) {
-					destination = account.getServer().toString();
+					destination = account.getServer();
 				} else {
 					destination = account.getHostname();
 					this.verifiedHostname = destination;

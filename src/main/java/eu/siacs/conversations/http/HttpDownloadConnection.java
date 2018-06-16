@@ -265,7 +265,7 @@ public class HttpDownloadConnection implements Transferable {
 				Log.d(Config.LOGTAG, "retrieve file size. interactive:" + String.valueOf(interactive));
 				changeStatus(STATUS_CHECKING);
 				HttpURLConnection connection;
-				if (mUseTor) {
+				if (mUseTor || message.getConversation().getAccount().isOnion()) {
 					connection = (HttpURLConnection) mUrl.openConnection(HttpConnectionManager.getProxy());
 				} else {
 					connection = (HttpURLConnection) mUrl.openConnection();
@@ -348,7 +348,7 @@ public class HttpDownloadConnection implements Transferable {
 			PowerManager.WakeLock wakeLock = mHttpConnectionManager.createWakeLock("http_download_" + message.getUuid());
 			try {
 				wakeLock.acquire();
-				if (mUseTor) {
+				if (mUseTor || message.getConversation().getAccount().isOnion()) {
 					connection = (HttpURLConnection) mUrl.openConnection(HttpConnectionManager.getProxy());
 				} else {
 					connection = (HttpURLConnection) mUrl.openConnection();
