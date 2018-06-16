@@ -42,6 +42,7 @@
     <string name="block_domain_text">Block all contacts from %s?</string>
     <string name="unblock_domain_text">Unblock all contacts from %s?</string>
     <string name="contact_blocked">Contact blocked</string>
+    <string name="blocked">Blocked</string>
     <string name="remove_bookmark_text">Would you like to remove %s as a bookmark? The conversation associated with this bookmark will not be removed.</string>
     <string name="register_account">Register new account on server</string>
     <string name="change_password_on_server">Change password on server</string>
