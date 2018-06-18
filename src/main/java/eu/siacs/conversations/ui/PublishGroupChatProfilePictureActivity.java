@@ -37,8 +37,6 @@ import android.os.Bundle;
 import android.support.annotation.StringRes;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
@@ -52,13 +50,8 @@ import eu.siacs.conversations.ui.interfaces.OnAvatarPublication;
 import eu.siacs.conversations.ui.util.PendingItem;
 
 public class PublishGroupChatProfilePictureActivity extends XmppActivity implements OnAvatarPublication {
-
-    private static final int REQUEST_CHOOSE_FILE = 0xac24;
-
-    private ActivityPublishProfilePictureBinding binding;
-
     private final PendingItem<String> pendingConversationUuid = new PendingItem<>();
-
+    private ActivityPublishProfilePictureBinding binding;
     private Conversation conversation;
     private Uri uri;
 
@@ -112,6 +105,8 @@ public class PublishGroupChatProfilePictureActivity extends XmppActivity impleme
 
 
     private void publish(View view) {
+        binding.publishButton.setText(R.string.publishing);
+        binding.publishButton.setEnabled(false);
         xmppConnectionService.publishMucAvatar(conversation, uri, this);
     }
 
@@ -143,13 +138,16 @@ public class PublishGroupChatProfilePictureActivity extends XmppActivity impleme
 
     @Override
     public void onAvatarPublicationSucceeded() {
-        finish();
+        runOnUiThread(() -> {
+            Toast.makeText(this, R.string.avatar_has_been_published, Toast.LENGTH_SHORT).show();
+            finish();
+        });
     }
 
     @Override
     public void onAvatarPublicationFailed(@StringRes int res) {
         runOnUiThread(() -> {
-            Toast.makeText(this,res,Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, res, Toast.LENGTH_SHORT).show();
             this.binding.publishButton.setText(R.string.publish);
             this.binding.publishButton.setEnabled(true);
         });
