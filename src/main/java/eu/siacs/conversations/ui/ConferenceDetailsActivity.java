@@ -531,6 +531,7 @@ public class ConferenceDetailsActivity extends XmppActivity implements OnConvers
 			account = mConversation.getAccount().getJid().asBareJid().toString();
 		}
 		this.binding.detailsAccount.setText(getString(R.string.using_account, account));
+		this.binding.jid.setText(mConversation.getJid().asBareJid().toEscapedString());
 		this.binding.yourPhoto.setImageBitmap(avatarService().get(mConversation, getPixel(72)));
 		this.binding.mucTitle.setText(mucOptions.getName());
 		this.binding.mucSubject.setText(mucOptions.getSubject());
@@ -554,7 +555,7 @@ public class ConferenceDetailsActivity extends XmppActivity implements OnConvers
 			if (self.getAffiliation().ranks(MucOptions.Affiliation.OWNER)) {
 				this.binding.changeConferenceButton.setVisibility(View.VISIBLE);
 			} else {
-				this.binding.changeConferenceButton.setVisibility(View.GONE);
+				this.binding.changeConferenceButton.setVisibility(View.INVISIBLE);
 			}
 		} else {
 			this.binding.mucMoreDetails.setVisibility(View.GONE);
