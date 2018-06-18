@@ -2447,23 +2447,8 @@ public class XmppConnectionService extends Service {
 		sendIqPacket(conversation.getAccount(), request, new OnIqPacketReceived() {
 			@Override
 			public void onIqPacketReceived(Account account, IqPacket packet) {
-				Element query = packet.findChild("query", "http://jabber.org/protocol/disco#info");
-				if (packet.getType() == IqPacket.TYPE.RESULT && query != null) {
-					String name = null;
-					ArrayList<String> features = new ArrayList<>();
-					for (Element child : query.getChildren()) {
-						if (child.getName().equals("feature")) {
-							String var = child.getAttribute("var");
-							if (var != null) {
-								features.add(var);
-							}
-						} else if (child.getName().equals("identity")) {
-							name = child.getAttribute("name");
-						}
-					}
-					Element form = query.findChild("x", Namespace.DATA);
-					Data data = form == null ? null : Data.parse(form);
-					if (conversation.getMucOptions().updateConfiguration(features, name, data)) {
+				if (packet.getType() == IqPacket.TYPE.RESULT) {
+					if (conversation.getMucOptions().updateConfiguration(new ServiceDiscoveryResult(packet))) {
 						Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": muc configuration changed for " + conversation.getJid().asBareJid());
 						updateConversation(conversation);
 					}
