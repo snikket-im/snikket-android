@@ -2,6 +2,7 @@ package eu.siacs.conversations.ui;
 
 import android.app.PendingIntent;
 import android.content.Context;
+import android.content.Intent;
 import android.content.IntentSender.SendIntentException;
 import android.content.res.Resources;
 import android.databinding.DataBindingUtil;
@@ -12,6 +13,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -247,6 +249,20 @@ public class ConferenceDetailsActivity extends XmppActivity implements OnConvers
 		this.mAdvancedMode = getPreferences().getBoolean("advanced_muc_mode", false);
 		this.binding.mucInfoMore.setVisibility(this.mAdvancedMode ? View.VISIBLE : View.GONE);
 		this.binding.notificationStatusButton.setOnClickListener(this.mNotifyStatusClickListener);
+		this.binding.yourPhoto.setOnClickListener(v -> {
+			final MucOptions mucOptions = mConversation.getMucOptions();
+			if (!mucOptions.hasVCards()) {
+				Toast.makeText(this,R.string.host_does_not_support_group_chat_avatars, Toast.LENGTH_SHORT).show();
+				return;
+			}
+			if (!mucOptions.getSelf().getAffiliation().ranks(MucOptions.Affiliation.OWNER)) {
+				Toast.makeText(this,R.string.only_the_owner_can_change_group_chat_avatar, Toast.LENGTH_SHORT).show();
+				return;
+			}
+			final Intent intent = new Intent(this, PublishGroupChatProfilePictureActivity.class);
+			intent.putExtra("uuid",mConversation.getUuid());
+			startActivity(intent);
+		});
 	}
 
 	@Override
@@ -266,14 +282,6 @@ public class ConferenceDetailsActivity extends XmppActivity implements OnConvers
 		switch (menuItem.getItemId()) {
 			case android.R.id.home:
 				finish();
-				break;
-			case R.id.action_edit_subject:
-				if (mConversation != null) {
-					quickEdit(mConversation.getMucOptions().getSubject(),
-							R.string.edit_subject_hint,
-							this.onSubjectEdited,
-							true);
-				}
 				break;
 			case R.id.action_share_http:
 				shareLink(true);
@@ -318,7 +326,6 @@ public class ConferenceDetailsActivity extends XmppActivity implements OnConvers
 		MenuItem menuItemSaveBookmark = menu.findItem(R.id.action_save_as_bookmark);
 		MenuItem menuItemDeleteBookmark = menu.findItem(R.id.action_delete_bookmark);
 		MenuItem menuItemAdvancedMode = menu.findItem(R.id.action_advanced_mode);
-		MenuItem menuItemChangeSubject = menu.findItem(R.id.action_edit_subject);
 		menuItemAdvancedMode.setChecked(mAdvancedMode);
 		if (mConversation == null) {
 			return true;
@@ -330,7 +337,6 @@ public class ConferenceDetailsActivity extends XmppActivity implements OnConvers
 			menuItemDeleteBookmark.setVisible(false);
 			menuItemSaveBookmark.setVisible(true);
 		}
-		menuItemChangeSubject.setVisible(mConversation.getMucOptions().canChangeSubject());
 		return true;
 	}
 
@@ -525,21 +531,16 @@ public class ConferenceDetailsActivity extends XmppActivity implements OnConvers
 			account = mConversation.getAccount().getJid().asBareJid().toString();
 		}
 		this.binding.detailsAccount.setText(getString(R.string.using_account, account));
-		this.binding.yourPhoto.setImageBitmap(avatarService().get(mConversation.getAccount(), getPixel(48)));
-		setTitle(mConversation.getName());
-		this.binding.mucJabberid.setText(mConversation.getJid().asBareJid().toString());
+		this.binding.yourPhoto.setImageBitmap(avatarService().get(mConversation, getPixel(72)));
+		this.binding.mucTitle.setText(mucOptions.getName());
+		this.binding.mucSubject.setText(mucOptions.getSubject());
 		this.binding.mucYourNick.setText(mucOptions.getActualNick());
 		if (mucOptions.online()) {
 			this.binding.mucMoreDetails.setVisibility(View.VISIBLE);
 			this.binding.mucSettings.setVisibility(View.VISIBLE);
 			this.binding.mucInfoMore.setVisibility(this.mAdvancedMode ? View.VISIBLE : View.GONE);
-			final String status = getStatus(self);
-			if (status != null) {
-				this.binding.mucRole.setVisibility(View.VISIBLE);
-				this.binding.mucRole.setText(status);
-			} else {
-				this.binding.mucRole.setVisibility(View.GONE);
-			}
+			this.binding.mucRole.setVisibility(View.VISIBLE);
+			this.binding.mucRole.setText(getStatus(self));
 			if (mucOptions.membersOnly()) {
 				this.binding.mucConferenceType.setText(R.string.private_conference);
 			} else {

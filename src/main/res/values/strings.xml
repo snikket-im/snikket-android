@@ -510,7 +510,6 @@
     <string name="correct_message">Correct message</string>
     <string name="send_corrected_message">Send corrected message</string>
     <string name="no_keys_just_confirm">You already trust this contact. By selecting \'done\' you are just confirming that %s is part of this group chat.</string>
-    <string name="select_image_and_crop">Select image and crop</string>
     <string name="this_account_is_disabled">You have disabled this account</string>
     <string name="security_error_invalid_file_access">Security error: Invalid file access</string>
     <string name="no_application_to_share_uri">No application found to share URI</string>
@@ -717,4 +716,7 @@
     <string name="p1_s3_filetransfer">HTTP File Sharing for S3</string>
     <string name="pref_start_search">Direct Search</string>
     <string name="pref_start_search_summary">At ‘Start Conversation’ screen open keyboard and place cursor in search field</string>
+    <string name="group_chat_avatar">Group chat avatar</string>
+    <string name="host_does_not_support_group_chat_avatars">Host does not support group chat avatars</string>
+    <string name="only_the_owner_can_change_group_chat_avatar">Only the owner can change group chat avatar</string>
 </resources>

@@ -3,13 +3,6 @@
       xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:id="@+id/action_edit_subject"
-        android:icon="?attr/icon_edit"
-        android:orderInCategory="10"
-        app:showAsAction="always"
-        android:title="@string/action_edit_subject"/>
-
-    <item
         android:id="@+id/action_share"
         android:icon="?attr/icon_share"
         android:orderInCategory="15"

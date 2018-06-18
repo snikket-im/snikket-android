@@ -736,6 +736,15 @@ public class FileBackend {
 	}
 
 	public Avatar getPepAvatar(Uri image, int size, Bitmap.CompressFormat format) {
+
+		final Avatar uncompressAvatar = getUncompressedAvatar(image);
+		if (uncompressAvatar != null && uncompressAvatar.image.length() <= Config.AVATAR_CHAR_LIMIT) {
+			return uncompressAvatar;
+		}
+		if (uncompressAvatar != null) {
+			Log.d(Config.LOGTAG,"uncompressed avatar exceeded char limit by "+(uncompressAvatar.image.length() - Config.AVATAR_CHAR_LIMIT));
+		}
+
 		Bitmap bm = cropCenterSquare(image, size);
 		if (bm == null) {
 			return null;
@@ -747,6 +756,19 @@ public class FileBackend {
 			return getPepAvatar(bm, Bitmap.CompressFormat.PNG, 100);
 		}
 		return getPepAvatar(bm, format, 100);
+	}
+
+	private Avatar getUncompressedAvatar(Uri uri) {
+		Bitmap bitmap = null;
+		try {
+			bitmap = BitmapFactory.decodeStream(mXmppConnectionService.getContentResolver().openInputStream(uri));
+			return getPepAvatar(bitmap, Bitmap.CompressFormat.PNG, 100);
+		} catch (Exception e) {
+			if (bitmap != null) {
+				bitmap.recycle();
+			}
+		}
+		return null;
 	}
 
 	private Avatar getPepAvatar(Bitmap bitmap, Bitmap.CompressFormat format, int quality) {
