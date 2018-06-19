@@ -749,7 +749,7 @@ public class Conversation extends AbstractEntity implements Blockable, Comparabl
 						return false;
 					}
 				} else {
-					String prev = this.attributes.getString(key);
+					final String prev = this.attributes.optString(key, null);
 					this.attributes.put(key, value);
 					return !value.equals(prev);
 				}
@@ -769,7 +769,6 @@ public class Conversation extends AbstractEntity implements Blockable, Comparabl
 				this.attributes.put(key, array);
 				return true;
 			} catch (JSONException e) {
-				e.printStackTrace();
 				return false;
 			}
 		}
@@ -777,11 +776,7 @@ public class Conversation extends AbstractEntity implements Blockable, Comparabl
 
 	public String getAttribute(String key) {
 		synchronized (this.attributes) {
-			try {
-				return this.attributes.getString(key);
-			} catch (JSONException e) {
-				return null;
-			}
+		    return this.attributes.optString(key, null);
 		}
 	}
 

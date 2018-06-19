@@ -2,6 +2,7 @@ package eu.siacs.conversations.entities;
 
 import android.annotation.SuppressLint;
 import android.support.annotation.NonNull;
+import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -377,9 +378,10 @@ public class MucOptions {
 	public boolean updateConfiguration(ServiceDiscoveryResult serviceDiscoveryResult) {
 		this.serviceDiscoveryResult = serviceDiscoveryResult;
 		String name;
-		Field roomInfoName = getRoomInfoForm().getFieldByName("muc#roominfo_name");
-		if (roomInfoName != null) {
-			name = roomInfoName.getValue();
+		Field roomConfigName = getRoomInfoForm().getFieldByName("muc#roomconfig_roomname");
+		if (roomConfigName != null) {
+			Log.d(Config.LOGTAG,"value of room config name "+roomConfigName.getValue());
+			name = roomConfigName.getValue();
 		} else {
 			List<ServiceDiscoveryResult.Identity> identities = serviceDiscoveryResult.getIdentities();
 			String identityName = identities.size() > 0 ? identities.get(0).getName() : null;
@@ -415,7 +417,7 @@ public class MucOptions {
     }
 
 	public boolean canInvite() {
-		Field field = getRoomInfoForm().getFieldByName("muc#roominfo_allowinvites");
+		Field field = getRoomInfoForm().getFieldByName("muc#roomconfig_allowinvites");
 		return !membersOnly() || self.getRole().ranks(Role.MODERATOR) || (field != null && "1".equals(field.getValue()));
 	}
 
@@ -425,8 +427,19 @@ public class MucOptions {
 	}
 
 	public boolean allowPm() {
-		Field field = getRoomInfoForm().getFieldByName("muc#roominfo_allowpm");
-		return field != null && "1".equals(field.getValue());
+		final Field field = getRoomInfoForm().getFieldByName("muc#roomconfig_allowpm");
+		if (field == null) {
+			return true; //fall back if field does not exists
+		}
+		if ("anyone".equals(field.getValue())) {
+			return true;
+		} else if ("participants".equals(field.getValue())) {
+			return self.getRole().ranks(Role.PARTICIPANT);
+		} else if ("moderators".equals(field.getValue())) {
+			return self.getRole().ranks(Role.MODERATOR);
+		} else {
+			return false;
+		}
 	}
 
 	public boolean participating() {
