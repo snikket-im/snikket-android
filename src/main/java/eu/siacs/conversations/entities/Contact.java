@@ -340,7 +340,10 @@ public class Contact implements ListItem, Blockable {
 		String ask = item.getAttribute("ask");
 		String subscription = item.getAttribute("subscription");
 
-		if (subscription != null) {
+		if (subscription == null) {
+			this.resetOption(Options.FROM);
+			this.resetOption(Options.TO);
+		} else {
 			switch (subscription) {
 				case "to":
 					this.resetOption(Options.FROM);
