@@ -27,7 +27,6 @@ import android.text.format.DateUtils;
 import android.text.style.ForegroundColorSpan;
 import android.text.style.RelativeSizeSpan;
 import android.text.style.StyleSpan;
-import android.text.util.Linkify;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.ActionMode;
@@ -47,7 +46,6 @@ import android.widget.Toast;
 import java.lang.ref.WeakReference;
 import java.net.URL;
 import java.util.List;
-import java.util.Locale;
 import java.util.concurrent.RejectedExecutionException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -71,8 +69,8 @@ import eu.siacs.conversations.ui.ConversationFragment;
 import eu.siacs.conversations.ui.XmppActivity;
 import eu.siacs.conversations.ui.service.AudioPlayer;
 import eu.siacs.conversations.ui.text.DividerSpan;
-import eu.siacs.conversations.ui.text.FixedURLSpan;
 import eu.siacs.conversations.ui.text.QuoteSpan;
+import eu.siacs.conversations.ui.util.MyLinkify;
 import eu.siacs.conversations.ui.widget.ClickableMovementMethod;
 import eu.siacs.conversations.ui.widget.CopyTextView;
 import eu.siacs.conversations.ui.widget.ListSelectionManager;
@@ -80,10 +78,8 @@ import eu.siacs.conversations.utils.CryptoHelper;
 import eu.siacs.conversations.utils.EmojiWrapper;
 import eu.siacs.conversations.utils.Emoticons;
 import eu.siacs.conversations.utils.GeoHelper;
-import eu.siacs.conversations.utils.Patterns;
 import eu.siacs.conversations.utils.StylingHelper;
 import eu.siacs.conversations.utils.UIHelper;
-import eu.siacs.conversations.utils.XmppUri;
 import eu.siacs.conversations.xmpp.mam.MamReference;
 
 public class MessageAdapter extends ArrayAdapter<Message> implements CopyTextView.CopyHandler {
@@ -93,57 +89,6 @@ public class MessageAdapter extends ArrayAdapter<Message> implements CopyTextVie
 	private static final int RECEIVED = 1;
 	private static final int STATUS = 2;
 	private static final int DATE_SEPARATOR = 3;
-	private static final Linkify.TransformFilter WEBURL_TRANSFORM_FILTER = (matcher, url) -> {
-		if (url == null) {
-			return null;
-		}
-		final String lcUrl = url.toLowerCase(Locale.US);
-		if (lcUrl.startsWith("http://") || lcUrl.startsWith("https://")) {
-			return removeTrailingBracket(url);
-		} else {
-			return "http://" + removeTrailingBracket(url);
-		}
-	};
-
-	private static String removeTrailingBracket(final String url) {
-		int numOpenBrackets = 0;
-		for (char c : url.toCharArray()) {
-			if (c == '(') {
-				++numOpenBrackets;
-			} else if (c == ')') {
-				--numOpenBrackets;
-			}
-		}
-		if (numOpenBrackets != 0 && url.charAt(url.length() - 1) == ')') {
-			return url.substring(0, url.length() - 1);
-		} else {
-			return url;
-		}
-	}
-
-	private static final Linkify.MatchFilter WEBURL_MATCH_FILTER = (cs, start, end) -> {
-		if (start > 0) {
-			if (cs.charAt(start - 1) == '@' || cs.charAt(start - 1) == '.'
-					|| cs.subSequence(Math.max(0, start - 3), start).equals("://")) {
-				return false;
-			}
-		}
-
-		if (end < cs.length()) {
-			// Reject strings that were probably matched only because they contain a dot followed by
-			// by some known TLD (see also comment for WORD_BOUNDARY in Patterns.java)
-			if (Character.isAlphabetic(cs.charAt(end-1)) && Character.isAlphabetic(cs.charAt(end))) {
-				return false;
-			}
-		}
-
-		return true;
-	};
-
-	private static final Linkify.MatchFilter XMPPURI_MATCH_FILTER = (s, start, end) -> {
-		XmppUri uri = new XmppUri(s.subSequence(start, end).toString());
-		return uri.isJidValid();
-	};
 	private final XmppActivity activity;
 	private final ListSelectionManager listSelectionManager = new ListSelectionManager();
 	private final AudioPlayer audioPlayer;
@@ -567,11 +512,7 @@ public class MessageAdapter extends ArrayAdapter<Message> implements CopyTextVie
 			if (highlightedTerm != null) {
 				StylingHelper.highlight(activity, body, highlightedTerm, StylingHelper.isDarkText(viewHolder.messageBody));
 			}
-
-			Linkify.addLinks(body, Patterns.XMPP_PATTERN, "xmpp", XMPPURI_MATCH_FILTER, null);
-			Linkify.addLinks(body, Patterns.AUTOLINK_WEB_URL, "http", WEBURL_MATCH_FILTER, WEBURL_TRANSFORM_FILTER);
-			Linkify.addLinks(body, GeoHelper.GEO_URI, "geo");
-			FixedURLSpan.fix(body);
+			MyLinkify.addLinks(body,true);
 			viewHolder.messageBody.setAutoLinkMask(0);
 			viewHolder.messageBody.setText(EmojiWrapper.transform(body));
 			viewHolder.messageBody.setTextIsSelectable(true);

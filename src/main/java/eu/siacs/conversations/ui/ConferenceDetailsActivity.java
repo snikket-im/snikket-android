@@ -13,6 +13,8 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
+import android.text.SpannableString;
+import android.text.SpannableStringBuilder;
 import android.util.Log;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
@@ -46,6 +48,8 @@ import eu.siacs.conversations.services.XmppConnectionService;
 import eu.siacs.conversations.services.XmppConnectionService.OnConversationUpdate;
 import eu.siacs.conversations.services.XmppConnectionService.OnMucRosterUpdate;
 import eu.siacs.conversations.ui.util.MenuDoubleTabUtil;
+import eu.siacs.conversations.ui.util.MyLinkify;
+import eu.siacs.conversations.ui.widget.ClickableMovementMethod;
 import eu.siacs.conversations.utils.UIHelper;
 import eu.siacs.conversations.utils.XmppUri;
 import rocks.xmpp.addr.Jid;
@@ -547,7 +551,10 @@ public class ConferenceDetailsActivity extends XmppActivity implements OnConvers
 			this.binding.mucTitle.setVisibility(View.GONE);
 		}
 		if (printableValue(subject)) {
-			this.binding.mucSubject.setText(mucOptions.getSubject());
+			SpannableStringBuilder spannable = new SpannableStringBuilder(subject);
+			MyLinkify.addLinks(spannable, false);
+			this.binding.mucSubject.setText(spannable);
+			this.binding.mucSubject.setAutoLinkMask(0);
 			this.binding.mucSubject.setVisibility(View.VISIBLE);
 		} else {
 			this.binding.mucSubject.setVisibility(View.GONE);

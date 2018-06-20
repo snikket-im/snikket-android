@@ -38,10 +38,14 @@ import android.os.Build;
 import android.text.Editable;
 import android.text.Spanned;
 import android.text.style.URLSpan;
+import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
+import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
+import eu.siacs.conversations.ui.ConversationsActivity;
+import eu.siacs.conversations.utils.XmppUri;
 
 
 @SuppressLint("ParcelCreator")
@@ -64,6 +68,12 @@ public class FixedURLSpan extends URLSpan {
 	public void onClick(View widget) {
 		final Uri uri = Uri.parse(getURL());
 		final Context context = widget.getContext();
+		if (uri.getScheme().equals("xmpp") && context instanceof ConversationsActivity) {
+			if (((ConversationsActivity) context).onXmppUriClicked(uri)) {
+				widget.playSoundEffect(0);
+				return;
+			}
+		}
 		final Intent intent = new Intent(Intent.ACTION_VIEW, uri);
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
 			intent.setFlags(Intent.FLAG_ACTIVITY_NEW_DOCUMENT);
@@ -71,6 +81,7 @@ public class FixedURLSpan extends URLSpan {
 		//intent.putExtra(Browser.EXTRA_APPLICATION_ID, context.getPackageName());
 		try {
 			context.startActivity(intent);
+			widget.playSoundEffect(0);
 		} catch (ActivityNotFoundException e) {
 			Toast.makeText(context, R.string.no_application_found_to_open_link, Toast.LENGTH_SHORT).show();
 		}

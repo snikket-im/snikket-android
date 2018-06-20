@@ -75,6 +75,7 @@ import eu.siacs.conversations.entities.Blockable;
 import eu.siacs.conversations.entities.Bookmark;
 import eu.siacs.conversations.entities.Contact;
 import eu.siacs.conversations.entities.Conversation;
+import eu.siacs.conversations.entities.Conversational;
 import eu.siacs.conversations.entities.DownloadableFile;
 import eu.siacs.conversations.entities.Message;
 import eu.siacs.conversations.entities.MucOptions;
@@ -3261,6 +3262,16 @@ public class XmppConnectionService extends Service {
 			}
 		}
 		return null;
+	}
+
+	public Conversation findUniqueConversationByJid(XmppUri xmppUri) {
+		List<Conversation> findings = new ArrayList<>();
+		for (Conversation c : getConversations()) {
+			if (c.getJid().asBareJid().equals(xmppUri.getJid()) && ((c.getMode() == Conversational.MODE_MULTI) == xmppUri.isAction(XmppUri.ACTION_JOIN))) {
+				findings.add(c);
+			}
+		}
+		return findings.size() == 1 ? findings.get(0) : null;
 	}
 
 	public boolean markRead(final Conversation conversation, boolean dismiss) {

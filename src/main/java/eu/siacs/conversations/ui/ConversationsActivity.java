@@ -76,6 +76,7 @@ import eu.siacs.conversations.ui.util.ConversationMenuConfigurator;
 import eu.siacs.conversations.ui.util.MenuDoubleTabUtil;
 import eu.siacs.conversations.ui.util.PendingItem;
 import eu.siacs.conversations.utils.ExceptionHelper;
+import eu.siacs.conversations.utils.XmppUri;
 import eu.siacs.conversations.xmpp.OnUpdateBlocklist;
 
 import static eu.siacs.conversations.ui.ConversationFragment.REQUEST_DECRYPT_PGP;
@@ -444,6 +445,18 @@ public class ConversationsActivity extends XmppActivity implements OnConversatio
 		} else {
 			invalidateActionBarTitle();
 		}
+	}
+
+	public boolean onXmppUriClicked(Uri uri) {
+		XmppUri xmppUri = new XmppUri(uri);
+		if (xmppUri.isJidValid() && !xmppUri.hasFingerprints()) {
+			final Conversation conversation = xmppConnectionService.findUniqueConversationByJid(xmppUri);
+			if (conversation != null) {
+				openConversation(conversation, null);
+				return true;
+			}
+		}
+		return false;
 	}
 
 	@Override
