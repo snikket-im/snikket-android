@@ -508,7 +508,6 @@
   <string name="correct_message">Correxir mensaxe</string>
   <string name="send_corrected_message">Enviar mensaxe correxida</string>
   <string name="no_keys_just_confirm">Xa confia neste contacto. Ao seleccionar \'feito\' só está confirmando que %s é parte deste chat grupal.</string>
-  <string name="select_image_and_crop">Escoller imaxe e recortar</string>
   <string name="this_account_is_disabled">Deshabilitou esta conta</string>
   <string name="security_error_invalid_file_access">Fallo na seguridade: Acceso non válido ao ficheiro</string>
   <string name="no_application_to_share_uri">Non se atopou un aplicativo para compartir URI</string>

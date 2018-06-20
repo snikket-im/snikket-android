@@ -519,7 +519,6 @@ missatges.\n\nAra se us demanarà que desactiveu-las.</string>
   <string name="correct_message">Corregeix el missatge</string>
   <string name="send_corrected_message">Envia el missatge corregit</string>
   <string name="no_keys_just_confirm">Ja confieu en aquest contacte. Si seleccioneu \"fet\", només confirma que forma %s part d\'aquest xat en grup.</string>
-  <string name="select_image_and_crop">Seleccioneu la imatge i retalleu</string>
   <string name="this_account_is_disabled">Heu desactivat aquest compte</string>
   <string name="security_error_invalid_file_access">Error de seguretat: accés d\'arxiu no vàlid</string>
   <string name="no_application_to_share_uri">No s\'ha trobat cap aplicació que comparteixi URI</string>

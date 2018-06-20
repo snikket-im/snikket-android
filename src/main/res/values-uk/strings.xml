@@ -458,7 +458,6 @@
   <string name="this_field_is_required">Це поле вимагається</string>
   <string name="correct_message">Виправити повідомлення</string>
   <string name="send_corrected_message">Відправити виправлене повідомлення</string>
-  <string name="select_image_and_crop">Виберати й обрізати зображення</string>
   <string name="this_account_is_disabled">Ви вимкнули цей обліковий запис</string>
   <string name="security_error_invalid_file_access">Помилка безпеки: Недійсний доступ до файлу</string>
   <string name="no_application_to_share_uri">Не знайдено програми, щоб поділитися URI</string>

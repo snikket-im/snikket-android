@@ -42,6 +42,7 @@
   <string name="block_domain_text">¿Bloquear todos los contactos de %s?</string>
   <string name="unblock_domain_text">¿Desbloquear todos los contatos de %s?</string>
   <string name="contact_blocked">Contacto bloqueado</string>
+  <string name="blocked">Bloqueado</string>
   <string name="remove_bookmark_text">¿Quieres eliminar %s de tus marcadores? La conversación asociada con este marcador no se eliminará.</string>
   <string name="register_account">Registrar nueva cuenta en servidor</string>
   <string name="change_password_on_server">Cambiar contraseña en servidor</string>
@@ -509,7 +510,6 @@
   <string name="correct_message">Corregir mensaje</string>
   <string name="send_corrected_message">Enviar mensaje corregido</string>
   <string name="no_keys_just_confirm">Ya confías en este contacto. Seleccionando \'hecho\', estás confirmando que %s es parte de esta conversación.</string>
-  <string name="select_image_and_crop">Seleccionar imagen y recortar</string>
   <string name="this_account_is_disabled">Has deshabilitado esta cuenta</string>
   <string name="security_error_invalid_file_access">Error de seguridad: Acceso a fichero inválido</string>
   <string name="no_application_to_share_uri">No se ha encontrado ninguna aplicación para compartir la URI</string>
@@ -714,5 +714,5 @@
   <string name="copy_jabber_id">Copiar Identificador Jabber</string>
   <string name="p1_s3_filetransfer">Compartición de Archivos mediante S3</string>
   <string name="pref_start_search">Búsqueda directa</string>
-  <string name="pref_start_search_summary">Al cambiar a la pantalla de conversación abir el teclado y poner el cursor en el campo de búsqueda</string>
+  <string name="pref_start_search_summary">En la pantalla de \'Nueva Conversación\' abrir el teclado y poner el cursor en el campo de búsqueda</string>
 </resources>

@@ -355,7 +355,6 @@
   <string name="this_field_is_required">Bagian ini wajib diisi</string>
   <string name="correct_message">Perbaiki pesan</string>
   <string name="send_corrected_message">Kirim perbaikan pesan</string>
-  <string name="select_image_and_crop">Pilih gambar dan sesuaikan</string>
   <string name="share_uri_with">Bagikan URI dengan...</string>
   <string name="your_full_jid_will_be">Jabber ID anda akan seperti: %s</string>
   <string name="create_account">Buat Akun</string>

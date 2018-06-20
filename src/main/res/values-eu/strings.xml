@@ -42,6 +42,7 @@
   <string name="block_domain_text">%s(r)en kontaktu guztiak blokeatu?</string>
   <string name="unblock_domain_text">%s(r)en kontaktu guztiak desblokeatu?</string>
   <string name="contact_blocked">Kontaktua blokeatu da</string>
+  <string name="blocked">Blokeatuta</string>
   <string name="remove_bookmark_text">%s laster-marka bezala ezabatu nahi duzu? Laster-marka honekin lotutako elkarrizketa ez da ezabatuko.</string>
   <string name="register_account">Kontu berria zerbitzarian erregistratu</string>
   <string name="change_password_on_server">Pasahitza zerbitzarian aldatu</string>
@@ -293,6 +294,7 @@
   <string name="check_x_filesize_on_host">Egiaztatu %1$sren neurria %2$s ostalarian</string>
   <string name="message_options">Mezuaren aukerak</string>
   <string name="quote">Aipatu</string>
+  <string name="paste_as_quote">Aipamen bezala itsatsi</string>
   <string name="copy_original_url">Jatorrizko URLa kopiatu</string>
   <string name="send_again">Berriro bidali</string>
   <string name="file_url">Fitxategiaren URLa</string>
@@ -508,7 +510,6 @@
   <string name="correct_message">Mezua zuzendu</string>
   <string name="send_corrected_message">Mezu zuzendua bidali</string>
   <string name="no_keys_just_confirm">Kontaktu honetaz fidatzen zara dagoeneko. \'Eginda\' hautatuz %s talde honen kidea dela egiaztatzen duzu besterik gabe.</string>
-  <string name="select_image_and_crop">Irudia hautatu eta moztu</string>
   <string name="this_account_is_disabled">Kontu hau ezgaitu duzu</string>
   <string name="security_error_invalid_file_access">Segurtasun akatsa: fitxategi sarrera baliogabea</string>
   <string name="no_application_to_share_uri">Ez da aplikaziorik aurkitu URIa partekatzeko</string>
@@ -712,4 +713,6 @@
   <string name="copy_link">Web helbidea kopiatu</string>
   <string name="copy_jabber_id">Jabber IDa kopiatu</string>
   <string name="p1_s3_filetransfer">HTTP fitxategiak partekatzea S3rentzako</string>
+  <string name="pref_start_search">Bilaketa zuzena</string>
+  <string name="pref_start_search_summary">\'Elkarrizketa hasi\' pantailan teklatua ireki eta kurtsorea bilaketa eremuan jarri</string>
 </resources>

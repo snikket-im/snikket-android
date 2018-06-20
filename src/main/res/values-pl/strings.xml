@@ -293,6 +293,7 @@
   <string name="check_x_filesize_on_host">Sprawdź rozmiar %1$s na %2$s</string>
   <string name="message_options">Opcje wiadomości</string>
   <string name="quote">Cytat</string>
+  <string name="paste_as_quote">Wklej jako cytat</string>
   <string name="copy_original_url">Skopiuj oryginalny URL</string>
   <string name="send_again">Wyślij ponownie</string>
   <string name="file_url">URL pliku</string>
@@ -514,7 +515,6 @@
   <string name="correct_message">Popraw wiadomość</string>
   <string name="send_corrected_message">Wyślij poprawioną wiadomość</string>
   <string name="no_keys_just_confirm">Już zaufałeś temu kontaktowi. Wybierając \'zrobione\' potwierdzasz, że %s jest członkiem konferencji.</string>
-  <string name="select_image_and_crop">Wybierz i przytnij obraz</string>
   <string name="this_account_is_disabled">Wyłączyłeś to konto</string>
   <string name="security_error_invalid_file_access">Błąd bezpieczeństwa: nieprawidłowy dostęp do pliku</string>
   <string name="no_application_to_share_uri">Nie odnaleziono aplikacji skojarzonej z URI</string>
@@ -733,4 +733,6 @@ Administrator twojego serwera będzie mógł czytać twoje wiadomości, ale moż
   <string name="copy_link">Skopiuj URL</string>
   <string name="copy_jabber_id">Skopiuj JID</string>
   <string name="p1_s3_filetransfer">Udostępnianie plików przez HTTP S3</string>
+  <string name="pref_start_search">Wyszukiwanie bezpośrednie</string>
+  <string name="pref_start_search_summary">Na ekranie \'Rozpocznij konwersację\' otwórz klawiaturę i umieść kursor w polu wyszukiwania</string>
 </resources>

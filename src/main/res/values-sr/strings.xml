@@ -449,7 +449,6 @@
   <string name="this_field_is_required">Ово поље је захтевано</string>
   <string name="correct_message">Исправи поруку</string>
   <string name="send_corrected_message">Пошаљи исправљену поруку</string>
-  <string name="select_image_and_crop">Изабери слику и опсеци</string>
   <string name="this_account_is_disabled">Искључили сте овај налог</string>
   <string name="security_error_invalid_file_access">Безбедносна грешка: неисправан приступ фајлу</string>
   <string name="no_application_to_share_uri">Нема апликације за дељење веза</string>

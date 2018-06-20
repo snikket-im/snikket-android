@@ -42,6 +42,7 @@
   <string name="block_domain_text">Alle contacten van %s blokkeren?</string>
   <string name="unblock_domain_text">Alle contacten van %s deblokkeren?</string>
   <string name="contact_blocked">Contact geblokkeerd</string>
+  <string name="blocked">Geblokkeerd</string>
   <string name="remove_bookmark_text">Wil je %s als bladwijzer verwijderen? Het gesprek met deze account zal niet worden verwijderd.</string>
   <string name="register_account">Nieuwe account op server registreren</string>
   <string name="change_password_on_server">Wachtwoord op server veranderen</string>
@@ -509,7 +510,6 @@
   <string name="correct_message">Bericht corrigeren</string>
   <string name="send_corrected_message">Gecorrigeerd bericht versturen</string>
   <string name="no_keys_just_confirm">Je vertrouwt dit contact al. Door \'klaar\' te kiezen bevestig je enkel dat %s deel uitmaakt van dit groepsgesprek.</string>
-  <string name="select_image_and_crop">Afbeelding kiezen en bijsnijden</string>
   <string name="this_account_is_disabled">Je hebt deze account uitgeschakeld</string>
   <string name="security_error_invalid_file_access">Beveiligingsfout: Ongeldige bestandstoegang</string>
   <string name="no_application_to_share_uri">Geen applicatie om URI te delen</string>

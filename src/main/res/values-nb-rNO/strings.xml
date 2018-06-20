@@ -496,7 +496,6 @@
   <string name="correct_message">Korriger melding</string>
   <string name="send_corrected_message">Send korrigert melding</string>
   <string name="no_keys_just_confirm">Du stoler allerede på denne kontakten. Ved å velge \'ferdig\' bekrefter du bare at %s er en del av denne gruppesludringen.</string>
-  <string name="select_image_and_crop">Velg bilde og utsnitt</string>
   <string name="this_account_is_disabled">Du har skrudd av denne kontoen</string>
   <string name="security_error_invalid_file_access">Sikkerhetsfeil: Ugyldig filtilgang</string>
   <string name="no_application_to_share_uri">Fant inget program til deling av URI</string>

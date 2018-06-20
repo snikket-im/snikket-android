@@ -487,7 +487,6 @@
   <string name="correct_message">メッセージを修正</string>
   <string name="send_corrected_message">修正したメッセージを送信</string>
   <string name="no_keys_just_confirm">この連絡先を既に信用しています。\'done\'を選択すれば %s をグループチャットに加えることを承認します。</string>
-  <string name="select_image_and_crop">画像の選択とトリミング</string>
   <string name="this_account_is_disabled">このアカウントを無効にしました</string>
   <string name="security_error_invalid_file_access">セキュリティエラー: 不正なファイルアクセス</string>
   <string name="no_application_to_share_uri">URI を共有するアプリケーションが見つかりません</string>

@@ -440,7 +440,6 @@
   <string name="this_field_is_required">Toto pole je vyžadováno</string>
   <string name="correct_message">Opravit zprávu</string>
   <string name="send_corrected_message">Odeslat opravenou zprávu</string>
-  <string name="select_image_and_crop">Vybrat obrázek a oříznout</string>
   <string name="this_account_is_disabled">Tento účet byl vypnut</string>
   <string name="security_error_invalid_file_access">Chyba zabezpečení: Neplatný přístup k souboru</string>
   <string name="no_application_to_share_uri">Nebyla nalezena aplikace pro sdílení URI</string>

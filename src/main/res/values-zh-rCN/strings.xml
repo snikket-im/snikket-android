@@ -42,10 +42,11 @@
   <string name="block_domain_text">屏蔽 %s 中的所有联系人？</string>
   <string name="unblock_domain_text">解除对 %s 中所有联系人的屏蔽？</string>
   <string name="contact_blocked">联系人已屏蔽</string>
+  <string name="blocked">已屏蔽</string>
   <string name="remove_bookmark_text">从书签中移除 %s ？相关会话消息不会被清除 .</string>
   <string name="register_account">在服务器上注册新账户</string>
   <string name="change_password_on_server">在服务器上改变密码</string>
-  <string name="share_with">分享</string>
+  <string name="share_with">分享……</string>
   <string name="start_conversation">开始会话</string>
   <string name="invite_contact">邀请联系人</string>
   <string name="contacts">联系人</string>
@@ -293,6 +294,7 @@
   <string name="check_x_filesize_on_host">在 %2$s 上检查 %1$s 的大小</string>
   <string name="message_options">消息选项</string>
   <string name="quote">引用</string>
+  <string name="paste_as_quote">粘贴引用</string>
   <string name="copy_original_url">复制原始URL</string>
   <string name="send_again">重新发送</string>
   <string name="file_url">文件URL</string>
@@ -479,10 +481,10 @@
     <item quantity="other">%d 条消息</item>
   </plurals>
   <string name="load_more_messages">载入更多消息</string>
-  <string name="shared_file_with_x">用 %s 分享文件</string>
-  <string name="shared_image_with_x">用 %s 分享图片</string>
-  <string name="shared_images_with_x">图片分享自 %s</string>
-  <string name="shared_text_with_x">用 %s 分享文本</string>
+  <string name="shared_file_with_x">文件已分享给%s</string>
+  <string name="shared_image_with_x">图片已分享给%s</string>
+  <string name="shared_images_with_x">多张图片已分享给%s</string>
+  <string name="shared_text_with_x">文本已分享给%s</string>
   <string name="no_storage_permission">Conversations 需要外部储存权限</string>
   <string name="no_camera_permission">Conversations 需要摄像头权限</string>
   <string name="sync_with_contacts">同步联系人</string>
@@ -507,10 +509,9 @@
   <string name="correct_message">更正消息</string>
   <string name="send_corrected_message">发送更正后的消息</string>
   <string name="no_keys_just_confirm">您已经验证了该用户。 点击‘确认’即可让 %s 加入该群。 </string>
-  <string name="select_image_and_crop">选择照片并裁剪</string>
   <string name="this_account_is_disabled">你已经禁用了此账户</string>
   <string name="security_error_invalid_file_access">安全错误：文件访问权限无效</string>
-  <string name="no_application_to_share_uri">没有可以分享此链接的应用</string>
+  <string name="no_application_to_share_uri">未找到可以分享此链接的应用</string>
   <string name="share_uri_with">分享链接……</string>
   <string name="welcome_text">Jabber 是一个独立即时通讯网络服务商。无论您选择何种 Jabber 服务器，您都可使用本客户端\n但是为了让您更方便些，我们希望您在 conversations.im¹ 创建账号，它专门为 Conversations 服务。</string>
   <string name="magic_create_text">我们将会引导你完成在 conversations.im¹ 上注册账号的过程。\n当获得了 conversations.im 提供的账号以后，你可以通过添加使用其他提供商的好友的完整 Jabber ID 来与他们联络。</string>
@@ -579,9 +580,9 @@
   <string name="verified_fingerprints">已验证的指纹</string>
   <string name="use_camera_icon_to_scan_barcode">使用相机扫描一个联系人的条码</string>
   <string name="please_wait_for_keys_to_be_fetched">请等待密钥被获取</string>
-  <string name="share_as_barcode">以条码的形式分享</string>
-  <string name="share_as_uri">以 XMPP URI 的形式分享</string>
-  <string name="share_as_http">以 HTTP 链接的形式分享</string>
+  <string name="share_as_barcode">分享条形码</string>
+  <string name="share_as_uri">分享XMPP URI</string>
+  <string name="share_as_http">分享HTTP链接</string>
   <string name="pref_blind_trust_before_verification">验证前盲目信任</string>
   <string name="pref_blind_trust_before_verification_summary">自动信任之前未经过验证的联系人的所有新设备，并在每次验证的联系人添加新设备时提示手动确认。</string>
   <string name="blindly_trusted_omemo_keys">盲目信任的 OMEMO 密钥</string>
@@ -701,8 +702,10 @@
   <string name="gif">GIF</string>
   <string name="view_conversation">查看对话</string>
   <string name="pref_use_share_location_plugin">分享位置插件</string>
-  <string name="pref_use_share_location_plugin_summary">使用共享位置插件而不是内置地图</string>
+  <string name="pref_use_share_location_plugin_summary">使用分享位置插件而不是地图内置</string>
   <string name="copy_link">复制web地址</string>
   <string name="copy_jabber_id">复制Jabber ID</string>
   <string name="p1_s3_filetransfer">用于S3的HTTP文件共享</string>
+  <string name="pref_start_search">直接搜索</string>
+  <string name="pref_start_search_summary">在“开始对话”屏幕上打开键盘并将光标放在搜索栏中</string>
 </resources>

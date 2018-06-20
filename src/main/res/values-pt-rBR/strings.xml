@@ -509,7 +509,6 @@
   <string name="correct_message">Corrigir a mensagem</string>
   <string name="send_corrected_message">Enviar a mensagem corrigida</string>
   <string name="no_keys_just_confirm">Você já confia neste contato. Ao selecionar \'Concluído\' você está apenas confirmando que %s é parte desta conversa em grupo.</string>
-  <string name="select_image_and_crop">Selecione e recorte a imagem</string>
   <string name="this_account_is_disabled">Você desabilitou essa conta</string>
   <string name="security_error_invalid_file_access">Erro de segurança: Acesso inválido ao arquivo</string>
   <string name="no_application_to_share_uri">Não foi encontrado nenhum aplicativo para compartilhar a URI</string>

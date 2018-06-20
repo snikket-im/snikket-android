@@ -507,7 +507,6 @@
   <string name="correct_message">Исправить сообщение</string>
   <string name="send_corrected_message">Отправить исправленное сообщение</string>
   <string name="no_keys_just_confirm">Вы уже доверяете этому контакту. Выбрав «готово», вы только подтвердите, что %s является участником конференции.</string>
-  <string name="select_image_and_crop">Выбрать изображение</string>
   <string name="this_account_is_disabled">Вы отключили этот аккаунт</string>
   <string name="security_error_invalid_file_access">Ошибка безопасности: недействительный доступ к файлу</string>
   <string name="no_application_to_share_uri">Не найдено приложения для отправки</string>

@@ -18,7 +18,7 @@
   <string name="title_activity_manage_accounts">Fiókok kezelése</string>
   <string name="title_activity_settings">Beállítások</string>
   <string name="title_activity_sharewith">Megosztás Conversation-nel</string>
-  <string name="title_activity_start_conversation">Beszéljünk!</string>
+  <string name="title_activity_start_conversation">Beszélgessünk!</string>
   <string name="title_activity_choose_contact">Válassz névjegyet</string>
   <string name="title_activity_share_via_account">Megosztás fiókon keresztül</string>
   <string name="title_activity_block_list">Tiltólista</string>
@@ -42,6 +42,7 @@
   <string name="block_domain_text">%s minden névjegyét tiltja?</string>
   <string name="unblock_domain_text">%s minden tiltását feloldja</string>
   <string name="contact_blocked">Ismerős letiltva</string>
+  <string name="blocked">Letiltva</string>
   <string name="remove_bookmark_text">Szeretnéd eltávolítani %s nevű névjegyet a könyvjelzőkből? A beszélgetésetek nem fog törlődni.</string>
   <string name="register_account">Új fiók létrehozása a szerveren</string>
   <string name="change_password_on_server">Jelszó megváltoztatása a szerveren</string>
@@ -293,6 +294,7 @@
   <string name="check_x_filesize_on_host">Ellenőrizze a %1$s méretét a %2$s oldalon</string>
   <string name="message_options">Műveletek üzenetekkel</string>
   <string name="quote">Idéz</string>
+  <string name="paste_as_quote">Beillesztés idézetként</string>
   <string name="copy_original_url">Eredeti URL másolása</string>
   <string name="send_again">Elküldi újra</string>
   <string name="file_url">Fájl URL-je</string>
@@ -508,7 +510,6 @@
   <string name="correct_message">Üzenet szerkesztése</string>
   <string name="send_corrected_message">Kijavított üzenet küldése</string>
   <string name="no_keys_just_confirm">Már megbízik ebben a kapcsolatban. A \"kész\" beállítás kiválasztásával csak megerősíti, hogy %s része a konferenciának.</string>
-  <string name="select_image_and_crop">Válassza ki a képet és vágja körbe</string>
   <string name="this_account_is_disabled">Letiltotta ezt a fiókot</string>
   <string name="security_error_invalid_file_access">Biztonsági hiba: Érvénytelen fájl hozzáférés</string>
   <string name="no_application_to_share_uri">Nem találtunk URI-t használó alkalmazást</string>
@@ -711,4 +712,7 @@
   <string name="pref_use_share_location_plugin_summary">Használja a Helymegosztás bővítményt a beépített térkép helyett</string>
   <string name="copy_link">Webcím másolása</string>
   <string name="copy_jabber_id">Jabber azonosító másolása</string>
+  <string name="p1_s3_filetransfer">HTTP fájlmegosztás S3-nak</string>
+  <string name="pref_start_search">Közvetlen keresés</string>
+  <string name="pref_start_search_summary">A \"Beszélgessünk\" képernyőn nyissa meg a billentyűzetet, és helyezze a kurzort a keresőmezőbe</string>
 </resources>

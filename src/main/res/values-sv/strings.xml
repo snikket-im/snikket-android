@@ -446,7 +446,6 @@
   <string name="this_field_is_required">Detta fält måste fyllas i</string>
   <string name="correct_message">Korrigera meddelanden</string>
   <string name="send_corrected_message">Skicka korrigerat meddelande</string>
-  <string name="select_image_and_crop">Välj bild och beskär</string>
   <string name="this_account_is_disabled">Du har deaktiverat detta konto</string>
   <string name="security_error_invalid_file_access">Säkerhetsfel: Ogiltig filaccess</string>
   <string name="no_application_to_share_uri">Ingen applikation kunde hittas för att dela URI</string>

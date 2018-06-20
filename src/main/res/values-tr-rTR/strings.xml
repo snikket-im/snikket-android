@@ -442,7 +442,6 @@
   <string name="this_field_is_required">Bu alan zorunludur</string>
   <string name="correct_message">ileti düzelt</string>
   <string name="send_corrected_message">Düzeltilmiş iletiyi gönder</string>
-  <string name="select_image_and_crop">Resmi seçip kırpın</string>
   <string name="this_account_is_disabled">Bu hesabı devre dışı bıraktınız</string>
   <string name="security_error_invalid_file_access">Güvenlik hatası: Geçersiz dosya erişimi</string>
   <string name="no_application_to_share_uri">URI paylaşmak için uygulama bulunamadı</string>

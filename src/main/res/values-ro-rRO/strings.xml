@@ -42,6 +42,7 @@
   <string name="block_domain_text">Blochează toate contactele de la %s?</string>
   <string name="unblock_domain_text">Deblochează toate contactele de la %s?</string>
   <string name="contact_blocked">Contact blocat</string>
+  <string name="blocked">Blocat</string>
   <string name="remove_bookmark_text">Ați dori să ștergeți pe %s din semne de carte? Conversația asociată cu acest semn de carte nu va fi ștearsă.</string>
   <string name="register_account">Înregistrează un cont nou pe server</string>
   <string name="change_password_on_server">Schimbă parola pe server</string>
@@ -514,7 +515,6 @@ sau chiar pierderea mesajelor.\nÎn continuare veți fi rugați să dezactivați
   <string name="correct_message">Corecție mesaj</string>
   <string name="send_corrected_message">Trimite text corectat</string>
   <string name="no_keys_just_confirm">Deja aveți încredere în acest contact. Selectând \'gata\' doar confirmați că %s ia parte la această discuție de grup.</string>
-  <string name="select_image_and_crop">Selectează imaginea și decupează</string>
   <string name="this_account_is_disabled">Ați dezactivat acest cont</string>
   <string name="security_error_invalid_file_access">Eroare de securitate.: Acces fișier invalid</string>
   <string name="no_application_to_share_uri">Nu s-a găsit nici o aplicație care să partajeze adresa</string>

@@ -42,6 +42,7 @@
   <string name="block_domain_text">Блокиране на всички контакти от %s?</string>
   <string name="unblock_domain_text">Деблокиране на всички контакти от %s?</string>
   <string name="contact_blocked">Контактът е блокиран</string>
+  <string name="blocked">Блокиран</string>
   <string name="remove_bookmark_text">Искате ли да премахнете отметката за %s? Разговорът, свързан с тази отметка, няма да бъде премахнат.</string>
   <string name="register_account">Регистриране на нов профил на сървъра</string>
   <string name="change_password_on_server">Промяна на паролата в сървъра</string>
@@ -293,6 +294,7 @@
   <string name="check_x_filesize_on_host">Проверете размера на %1$s на %2$s</string>
   <string name="message_options">Настройки за съобщенята</string>
   <string name="quote">Цитат</string>
+  <string name="paste_as_quote">Поставяне като цитат</string>
   <string name="copy_original_url">Копиране на оригиналния адрес</string>
   <string name="send_again">Повторно изпращане</string>
   <string name="file_url">Адрес на файла</string>
@@ -508,7 +510,6 @@
   <string name="correct_message">Поправяне на съобщението</string>
   <string name="send_corrected_message">Изпращане на поправеното съобщение</string>
   <string name="no_keys_just_confirm">Вие вече имате доверие на този контакт. Избирайки „готово“, Вие просто потвърждавате, че %s е част от този групов разговор.</string>
-  <string name="select_image_and_crop">Изберете изображение и изрежете</string>
   <string name="this_account_is_disabled">Вие сте деактивирали този профил</string>
   <string name="security_error_invalid_file_access">Грешка в сигурността: неправилен достъп до файл</string>
   <string name="no_application_to_share_uri">Няма намерено приложение за споделяне на адреса</string>

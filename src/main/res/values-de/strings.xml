@@ -42,6 +42,7 @@
   <string name="block_domain_text">Alle Kontakte von %s sperren?</string>
   <string name="unblock_domain_text">Alle Kontakte von %s entsperren?</string>
   <string name="contact_blocked">Kontakt gesperrt</string>
+  <string name="blocked">Gesperrt</string>
   <string name="remove_bookmark_text">Möchtest du %s von deiner Kontaktliste entfernen? Die Unterhaltung mit dieser Konferenz wird dabei nicht entfernt.</string>
   <string name="register_account">Neues Konto auf Server erstellen</string>
   <string name="change_password_on_server">Passwort ändern</string>
@@ -509,7 +510,6 @@
   <string name="correct_message">Nachricht korrigieren</string>
   <string name="send_corrected_message">Korrigierte Nachricht senden</string>
   <string name="no_keys_just_confirm">Du vertraust diesem Kontakt bereits. Durch Auswählen von \"Fertig\" bestätigst du, dass %s Teil dieses Gruppenchats ist.</string>
-  <string name="select_image_and_crop">Bild auswählen und zuschneiden</string>
   <string name="this_account_is_disabled">Du hast dieses Konto deaktiviert</string>
   <string name="security_error_invalid_file_access">Sicherheitsfehler: Dateizugriff nicht erlaubt</string>
   <string name="no_application_to_share_uri">Keine Anwendung zum Teilen der URI gefunden</string>

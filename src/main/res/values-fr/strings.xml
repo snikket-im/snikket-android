@@ -508,7 +508,6 @@
   <string name="correct_message">Corriger le message</string>
   <string name="send_corrected_message">Envoyer le message corrigé</string>
   <string name="no_keys_just_confirm">Vous faites déjà confiance à ce contact. En sélectionnant \"terminé\", vous confirmez simplement que %s fait partie de ce groupe de discussion.</string>
-  <string name="select_image_and_crop">Sélectionner et découper une image</string>
   <string name="this_account_is_disabled">Vous avez désactivé ce compte</string>
   <string name="security_error_invalid_file_access">Erreur de sécurité : accès fichier non-valide</string>
   <string name="no_application_to_share_uri">Aucune application trouvée pour partager l\'URI</string>
