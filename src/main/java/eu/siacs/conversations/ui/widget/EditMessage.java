@@ -2,7 +2,6 @@ package eu.siacs.conversations.ui.widget;
 
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
-import android.support.text.emoji.widget.EmojiAppCompatEditText;
 import android.support.v13.view.inputmethod.EditorInfoCompat;
 import android.support.v13.view.inputmethod.InputConnectionCompat;
 import android.support.v13.view.inputmethod.InputContentInfoCompat;
@@ -23,7 +22,7 @@ import android.view.inputmethod.InputConnection;
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
 
-public class EditMessage extends EmojiAppCompatEditText {
+public class EditMessage extends AbstractEditMessage {
 
 	private static final InputFilter SPAN_FILTER = (source, start, end, dest, dstart, dend) -> source instanceof Spanned ? source.toString() : source;
 	protected Handler mTypingHandler = new Handler();

@@ -10,7 +10,7 @@ android:
   licenses:
     - '.+'
 script:
-    - ./gradlew assembleFreeRelease
+    - ./gradlew assembleFreeSystemRelease
 
 before_install:
     - yes | sdkmanager "platforms;android-27"
