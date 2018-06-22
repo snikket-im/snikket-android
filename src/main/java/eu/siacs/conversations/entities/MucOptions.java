@@ -306,6 +306,10 @@ public class MucOptions {
 
 		}
 
+		public boolean isDomain() {
+			return realJid != null && realJid.getLocal() == null && role == Role.NONE;
+		}
+
 		@Override
 		public int hashCode() {
 			int result = role != null ? role.hashCode() : 0;
@@ -610,17 +614,13 @@ public class MucOptions {
 
 	public ArrayList<User> getUsers(boolean includeOffline) {
 		synchronized (users) {
-			if (includeOffline) {
-				return new ArrayList<>(users);
-			} else {
-				ArrayList<User> onlineUsers = new ArrayList<>();
-				for (User user : users) {
-					if (user.getRole().ranks(Role.PARTICIPANT)) {
-						onlineUsers.add(user);
+				ArrayList<User> users = new ArrayList<>();
+				for (User user : this.users) {
+					if (!user.isDomain() && (includeOffline || user.getRole().ranks(Role.PARTICIPANT))) {
+						users.add(user);
 					}
 				}
-				return onlineUsers;
-			}
+				return users;
 		}
 	}
 
@@ -645,7 +645,7 @@ public class MucOptions {
 		jids.add(account.getJid().asBareJid());
 		synchronized (users) {
 			for (User user : users) {
-				if (user.getRealJid() == null || jids.add(user.getRealJid())) {
+				if (user.getRealJid() == null || (user.getRealJid().getLocal() != null && jids.add(user.getRealJid()))) {
 					subset.add(user);
 				}
 				if (subset.size() >= max) {
@@ -834,11 +834,11 @@ public class MucOptions {
 		return this.conversation;
 	}
 
-	public List<Jid> getMembers() {
+	public List<Jid> getMembers(final boolean includeDomains) {
 		ArrayList<Jid> members = new ArrayList<>();
 		synchronized (users) {
 			for (User user : users) {
-				if (user.affiliation.ranks(Affiliation.MEMBER) && user.realJid != null) {
+				if (user.affiliation.ranks(Affiliation.MEMBER) && user.realJid != null && (!user.isDomain() || includeDomains)) {
 					members.add(user.realJid);
 				}
 			}

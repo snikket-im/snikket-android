@@ -868,7 +868,7 @@ public class AxolotlService implements OnAdvancedStreamFeaturesLoaded {
 			jids = new ArrayList<>();
 			jids.add(conversation.getJid().asBareJid());
 		} else {
-			jids = conversation.getMucOptions().getMembers();
+			jids = conversation.getMucOptions().getMembers(false);
 		}
 		return jids;
 	}

@@ -244,7 +244,7 @@ public class ConferenceDetailsActivity extends XmppActivity implements OnConvers
 		setSupportActionBar((Toolbar) binding.toolbar);
 		configureActionBar(getSupportActionBar());
 		this.binding.editNickButton.setOnClickListener(v -> quickEdit(mConversation.getMucOptions().getActualNick(),
-				R.string.nickname_for_this_group_chat,
+				R.string.nickname,
 				value -> {
 					if (xmppConnectionService.renameInMuc(mConversation, value, renameCallback)) {
 						return null;

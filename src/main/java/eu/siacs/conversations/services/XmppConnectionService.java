@@ -2220,13 +2220,13 @@ public class XmppConnectionService extends Service {
 				}
 				++i;
 				if (i >= affiliations.length) {
-					List<Jid> members = conversation.getMucOptions().getMembers();
+					List<Jid> members = conversation.getMucOptions().getMembers(true);
 					if (success) {
 						List<Jid> cryptoTargets = conversation.getAcceptedCryptoTargets();
 						boolean changed = false;
 						for (ListIterator<Jid> iterator = cryptoTargets.listIterator(); iterator.hasNext(); ) {
 							Jid jid = iterator.next();
-							if (!members.contains(jid)) {
+							if (!members.contains(jid) && !members.contains(Jid.ofDomain(jid.getDomain()))) {
 								iterator.remove();
 								Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": removed " + jid + " from crypto targets of " + conversation.getName());
 								changed = true;
@@ -2237,7 +2237,6 @@ public class XmppConnectionService extends Service {
 							updateConversation(conversation);
 						}
 					}
-					Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": retrieved members for " + conversation.getJid().asBareJid() + ": " + conversation.getMucOptions().getMembers());
 					getAvatarService().clear(conversation);
 					updateMucRosterUi();
 					updateConversationUi();

@@ -720,5 +720,5 @@
     <string name="host_does_not_support_group_chat_avatars">Host does not support group chat avatars</string>
     <string name="only_the_owner_can_change_group_chat_avatar">Only the owner can change group chat avatar</string>
     <string name="contact_name">Contact name</string>
-    <string name="nickname_for_this_group_chat">Nickname for this group chat</string>
+    <string name="nickname">Nickname</string>
 </resources>
