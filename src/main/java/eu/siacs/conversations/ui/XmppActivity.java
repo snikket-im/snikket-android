@@ -18,6 +18,7 @@ import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
+import android.databinding.DataBindingUtil;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.Point;
@@ -34,6 +35,7 @@ import android.os.PowerManager;
 import android.os.SystemClock;
 import android.preference.PreferenceManager;
 import android.support.annotation.BoolRes;
+import android.support.annotation.StringRes;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AlertDialog.Builder;
@@ -48,7 +50,6 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
@@ -59,6 +60,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.crypto.PgpEngine;
+import eu.siacs.conversations.databinding.DialogQuickeditBinding;
 import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.entities.Contact;
 import eu.siacs.conversations.entities.Conversation;
@@ -687,11 +689,11 @@ public abstract class XmppActivity extends ActionBarActivity {
 		builder.create().show();
 	}
 
-	protected void quickEdit(String previousValue, int hint, OnValueEdited callback) {
+	protected void quickEdit(String previousValue, @StringRes int hint, OnValueEdited callback) {
 		quickEdit(previousValue, callback, hint, false, false);
 	}
 
-	protected void quickEdit(String previousValue, int hint, OnValueEdited callback, boolean permitEmpty) {
+	protected void quickEdit(String previousValue, @StringRes int hint, OnValueEdited callback, boolean permitEmpty) {
 		quickEdit(previousValue, callback, hint, false, permitEmpty);
 	}
 
@@ -702,35 +704,32 @@ public abstract class XmppActivity extends ActionBarActivity {
 	@SuppressLint("InflateParams")
 	private void quickEdit(final String previousValue,
 	                       final OnValueEdited callback,
-	                       final int hint,
+	                       final @StringRes int hint,
 	                       boolean password,
 	                       boolean permitEmpty) {
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
-		View view = getLayoutInflater().inflate(R.layout.quickedit, null);
-		final EditText editor = view.findViewById(R.id.editor);
+		DialogQuickeditBinding binding = DataBindingUtil.inflate(getLayoutInflater(),R.layout.dialog_quickedit, null, false);
 		if (password) {
-			editor.setInputType(InputType.TYPE_CLASS_TEXT
-					| InputType.TYPE_TEXT_VARIATION_PASSWORD);
+			binding.inputEditText.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
 		}
 		builder.setPositiveButton(R.string.accept, null);
 		if (hint != 0) {
-			editor.setHint(hint);
+			binding.inputLayout.setHint(getString(hint));
 		}
-		editor.requestFocus();
-		editor.setText("");
+		binding.inputEditText.requestFocus();
 		if (previousValue != null) {
-			editor.getText().append(previousValue);
+			binding.inputEditText.getText().append(previousValue);
 		}
-		builder.setView(view);
+		builder.setView(binding.getRoot());
 		builder.setNegativeButton(R.string.cancel, null);
 		final AlertDialog dialog = builder.create();
 		dialog.show();
 		View.OnClickListener clickListener = v -> {
-			String value = editor.getText().toString();
+			String value = binding.inputEditText.getText().toString();
 			if (!value.equals(previousValue) && (!value.trim().isEmpty() || permitEmpty)) {
 				String error = callback.onValueEdited(value);
 				if (error != null) {
-					editor.setError(error);
+					binding.inputLayout.setError(error);
 					return;
 				}
 			}

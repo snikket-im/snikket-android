@@ -244,12 +244,12 @@ public class ConferenceDetailsActivity extends XmppActivity implements OnConvers
 		setSupportActionBar((Toolbar) binding.toolbar);
 		configureActionBar(getSupportActionBar());
 		this.binding.editNickButton.setOnClickListener(v -> quickEdit(mConversation.getMucOptions().getActualNick(),
-				0,
+				R.string.nickname_for_this_group_chat,
 				value -> {
 					if (xmppConnectionService.renameInMuc(mConversation, value, renameCallback)) {
 						return null;
 					} else {
-						return getString(R.string.invalid_username);
+						return getString(R.string.invalid_muc_nick);
 					}
 				}));
 		this.mAdvancedMode = getPreferences().getBoolean("advanced_muc_mode", false);
