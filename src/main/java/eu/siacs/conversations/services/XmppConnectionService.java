@@ -2538,14 +2538,6 @@ public class XmppConnectionService extends Service {
 	public void pushSubjectToConference(final Conversation conference, final String subject) {
 		MessagePacket packet = this.getMessageGenerator().conferenceSubject(conference, subject);
 		this.sendMessagePacket(conference.getAccount(), packet);
-		final MucOptions mucOptions = conference.getMucOptions();
-		final MucOptions.User self = mucOptions.getSelf();
-		if (self.getAffiliation().ranks(MucOptions.Affiliation.OWNER)) {
-			Bundle options = new Bundle();
-			options.putString("muc#roomconfig_persistentroom", "1");
-			options.putString("muc#roomconfig_roomname", subject);
-			this.pushConferenceConfiguration(conference, options, null);
-		}
 	}
 
 	public void changeAffiliationInConference(final Conversation conference, Jid user, final MucOptions.Affiliation affiliation, final OnAffiliationChanged callback) {
