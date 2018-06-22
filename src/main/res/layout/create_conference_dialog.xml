@@ -39,7 +39,7 @@
                 style="@style/Widget.Conversations.EditText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/edit_subject_hint"
+                android:hint="@string/topic"
                 android:nextFocusDown="@+id/subject"
                 android:nextFocusUp="@+id/subject"/>
         </android.support.design.widget.TextInputLayout>

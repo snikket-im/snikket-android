@@ -228,7 +228,7 @@
     <string name="delete_bookmark">Delete bookmark</string>
     <string name="bookmark_already_exists">This bookmark already exists</string>
     <string name="action_edit_subject">Edit group chat subject</string>
-    <string name="edit_subject_hint">The subject of this group chat</string>
+    <string name="topic">Topic</string>
     <string name="joining_conference">Joining group chat…</string>
     <string name="leave">Leave</string>
     <string name="contact_added_you">Contact added you to contact list</string>
@@ -721,4 +721,5 @@
     <string name="only_the_owner_can_change_group_chat_avatar">Only the owner can change group chat avatar</string>
     <string name="contact_name">Contact name</string>
     <string name="nickname">Nickname</string>
+    <string name="group_chat_name">Name</string>
 </resources>

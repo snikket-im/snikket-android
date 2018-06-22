@@ -60,23 +60,67 @@
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content">
 
-                                    <TextView
-                                        android:id="@+id/muc_title"
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:singleLine="true"
-                                        android:layout_alignParentStart="true"
-                                        android:layout_toStartOf="@+id/edit_muc_name_button"
-                                        android:textAppearance="@style/TextAppearance.Conversations.Title"/>
-                                    <TextView
-                                        android:id="@+id/muc_subject"
+                                    <LinearLayout
+                                        android:id="@+id/muc_display"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:layout_alignParentStart="true"
-                                        android:autoLink="web"
-                                        android:layout_below="@+id/muc_title"
                                         android:layout_toStartOf="@+id/edit_muc_name_button"
-                                        android:textAppearance="@style/TextAppearance.Conversations.Subhead"/>
+                                        android:orientation="vertical">
+
+                                        <TextView
+                                            android:id="@+id/muc_title"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:textAppearance="@style/TextAppearance.Conversations.Title"/>
+
+                                        <TextView
+                                            android:id="@+id/muc_subject"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:autoLink="web"
+                                            android:textAppearance="@style/TextAppearance.Conversations.Subhead"/>
+                                    </LinearLayout>
+
+
+                                    <LinearLayout
+                                        android:id="@+id/muc_editor"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_alignParentStart="true"
+                                        android:layout_toStartOf="@+id/edit_muc_name_button"
+                                        android:orientation="vertical"
+                                        android:visibility="gone">
+
+                                        <android.support.design.widget.TextInputLayout
+                                            android:layout_width="match_parent"
+                                            android:layout_height="wrap_content"
+                                            app:errorTextAppearance="@style/TextAppearance.Conversations.Design.Error"
+                                            app:hintTextAppearance="@style/TextAppearance.Conversations.Design.Hint">
+
+                                            <android.support.design.widget.TextInputEditText
+                                                android:id="@+id/muc_edit_title"
+                                                android:layout_width="match_parent"
+                                                android:layout_height="wrap_content"
+                                                android:hint="@string/group_chat_name"
+                                                android:textAppearance="@style/Widget.Conversations.EditText"/>
+                                        </android.support.design.widget.TextInputLayout>
+
+                                        <android.support.design.widget.TextInputLayout
+                                            android:layout_width="match_parent"
+                                            android:layout_height="wrap_content"
+                                            app:errorTextAppearance="@style/TextAppearance.Conversations.Design.Error"
+                                            app:hintTextAppearance="@style/TextAppearance.Conversations.Design.Hint">
+
+                                            <android.support.design.widget.TextInputEditText
+                                                android:id="@+id/muc_edit_subject"
+                                                android:layout_width="match_parent"
+                                                android:layout_height="wrap_content"
+                                                android:hint="@string/topic"
+                                                android:textAppearance="@style/Widget.Conversations.EditText"/>
+                                        </android.support.design.widget.TextInputLayout>
+
+                                    </LinearLayout>
 
                                     <ImageButton
                                         android:id="@+id/edit_muc_name_button"
@@ -152,6 +196,7 @@
                             </TableRow>
 
                         </TableLayout>
+
                         <TextView
                             android:id="@+id/jid"
                             android:layout_width="wrap_content"
