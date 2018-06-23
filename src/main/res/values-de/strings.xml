@@ -228,7 +228,6 @@
   <string name="delete_bookmark">Von Kontaktliste entfernen</string>
   <string name="bookmark_already_exists">Die Konferenz befindet sich bereits auf deiner Kontaktliste</string>
   <string name="action_edit_subject">Gruppenchatthema bearbeiten</string>
-  <string name="edit_subject_hint">Thema des Gruppenchats</string>
   <string name="joining_conference">Gruppenchat wird beigetreten…</string>
   <string name="leave">Verlassen</string>
   <string name="contact_added_you">Der Kontakt hat dich zur Kontaktliste hinzugefügt</string>
@@ -277,8 +276,6 @@
   <string name="pref_use_indicate_received_summary">Empfangene Nachrichten werden mit einem grünen Häkchen markiert. Bitte beachte, dass dies nicht in allen Fällen funktioniert.</string>
   <string name="pref_use_send_button_to_indicate_status_summary">\"Senden\"-Schaltfläche einfärben, um den Online-Status des Kontakts anzuzeigen</string>
   <string name="pref_expert_options_other">Sonstiges</string>
-  <string name="pref_conference_name">Gruppenchatname</string>
-  <string name="pref_conference_name_summary">Thema des Gruppenchats anstatt JID als Namen verwenden</string>
   <string name="pref_autojoin">Gruppenchats automatisch beitreten</string>
   <string name="pref_autojoin_summary">Autojoin-Flag in Gruppenchatlesezeichen beachten</string>
   <string name="toast_message_omemo_fingerprint">OMEMO-Fingerabdruck in die Zwischenablage kopiert!</string>
@@ -715,4 +712,7 @@
   <string name="p1_s3_filetransfer">HTTP-Dateifreigabe für S3</string>
   <string name="pref_start_search">Direkte Suche </string>
   <string name="pref_start_search_summary">Beim Dialog \'Unterhaltung beginnen\' Tastatur öffnen und den Cursor im Suchfeld platzieren</string>
+  <string name="group_chat_avatar">Gruppenchat-Avatar</string>
+  <string name="host_does_not_support_group_chat_avatars">Host unterstützt keine Gruppenchat-Avatare</string>
+  <string name="only_the_owner_can_change_group_chat_avatar">Nur der Eigentümer kann den Gruppenchat-Avatar ändern.</string>
 </resources>

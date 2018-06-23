@@ -227,7 +227,6 @@
   <string name="delete_bookmark">Удалить закладку</string>
   <string name="bookmark_already_exists">Такая закладка уже существует</string>
   <string name="action_edit_subject">Редактировать тему конференции</string>
-  <string name="edit_subject_hint">Тема конференции</string>
   <string name="joining_conference">Вход в конференцию…</string>
   <string name="leave">Покинуть</string>
   <string name="contact_added_you">Собеседник добавил вас в список контактов</string>
@@ -276,8 +275,6 @@
   <string name="pref_use_indicate_received_summary">Если поддерживается, поступившие сообщения будут отмечены зелёной галочкой</string>
   <string name="pref_use_send_button_to_indicate_status_summary">Раскрасить кнопку отправить, указывая текущий статус собеседника</string>
   <string name="pref_expert_options_other">Другие</string>
-  <string name="pref_conference_name">Название конференции</string>
-  <string name="pref_conference_name_summary">Использовать тему вместо JID в качестве идентификатора конференций</string>
   <string name="pref_autojoin">Автоматически присоединяться к конференциям</string>
   <string name="pref_autojoin_summary">Использовать флаг autojoin в закладках конференций</string>
   <string name="toast_message_omemo_fingerprint">OMEMO отпечаток скопирован в буфер обмена!</string>

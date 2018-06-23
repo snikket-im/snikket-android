@@ -42,6 +42,7 @@
   <string name="block_domain_text">Bloquer tous les contacts de %s ?</string>
   <string name="unblock_domain_text">Débloquer tous les contacts de %s ?</string>
   <string name="contact_blocked">Contact bloqué</string>
+  <string name="blocked">Bloqué</string>
   <string name="remove_bookmark_text">Voulez-vous retirer %s des favoris? La conversation associée à ce favori ne sera pas supprimée.</string>
   <string name="register_account">Créer un nouveau compte sur le serveur</string>
   <string name="change_password_on_server">Changer de mot de passe sur le serveur</string>
@@ -227,7 +228,6 @@
   <string name="delete_bookmark">Supprimer le favori</string>
   <string name="bookmark_already_exists">Le favori existe déjà</string>
   <string name="action_edit_subject">Modifier le sujet de la conversation de groupe</string>
-  <string name="edit_subject_hint">Sujet de cette conversation de groupe</string>
   <string name="joining_conference">Rejoindre la conversation de groupe</string>
   <string name="leave">Partir</string>
   <string name="contact_added_you">Votre correspondant vous a ajouté dans sa liste de contacts</string>
@@ -276,8 +276,6 @@
   <string name="pref_use_indicate_received_summary">Les messages reçus seront marqués d\'une coche verte (si supporté).</string>
   <string name="pref_use_send_button_to_indicate_status_summary">Le bouton Envoyer change de couleur pour indiquer le statut du contact.</string>
   <string name="pref_expert_options_other">Autres</string>
-  <string name="pref_conference_name">Nom de la conversation de groupe</string>
-  <string name="pref_conference_name_summary">Utiliser le sujet au lieu de JID pour identifier les groupes de discussions</string>
   <string name="pref_autojoin">Joindre les conversations de groupe automatiquement</string>
   <string name="pref_autojoin_summary">Respectez l\'indicateur de jointure automatique dans les signets des groupes de discussion</string>
   <string name="toast_message_omemo_fingerprint">Empreinte OMEMO copiée dans le presse-papier !</string>
@@ -293,6 +291,7 @@
   <string name="check_x_filesize_on_host">Vérification de la taille de %1$s sur %2$s</string>
   <string name="message_options">Options du message</string>
   <string name="quote">Citation</string>
+  <string name="paste_as_quote">Coller en tant que citation</string>
   <string name="copy_original_url">Copier l\'URL</string>
   <string name="send_again">Envoyer de nouveau</string>
   <string name="file_url">URL du fichier</string>
@@ -512,6 +511,7 @@
   <string name="security_error_invalid_file_access">Erreur de sécurité : accès fichier non-valide</string>
   <string name="no_application_to_share_uri">Aucune application trouvée pour partager l\'URI</string>
   <string name="share_uri_with">Partager l\'URI avec...</string>
+  <string name="welcome_text">Jabber est un réseau de messagerie instantanée indépendant du fournisseur. Vous pouvez utiliser ce client avec n\'importe quel serveur Jabber que vous choisissez.\nToutefois, pour votre commodité, nous avons facilité la création d\'un compte sur conversations.im¹ ; un fournisseur spécialement adapté à l\'utilisation avec Conversations.</string>
   <string name="magic_create_text">Nous vous guiderons pendant toute la procédure de création d\'un compte utilisateur sur conversations.im.¹\nEn choisissant conversations.im comme fournisseur, vous pourrez communiquer avec les utilisateurs d\'autres fournisseurs en leur transmettant votre Jabber ID complet. </string>
   <string name="your_full_jid_will_be">Votre Jabber ID complet sera : %s</string>
   <string name="create_account">Créer un compte</string>
@@ -670,6 +670,7 @@
   <string name="disable_encryption">Désactiver le chiffrement</string>
   <string name="error_trustkey_general">Conversations n\'est pas capable d\'envoyer un message chiffré à %1$s. Ceci peut être lié au fait que votre contact utilise un serveur obsolète ou un client qui ne gère par OMEMO. </string>
   <string name="error_trustkey_device_list">Impossible de récupérer la liste des appareils</string>
+  <string name="error_trustkey_bundle">Impossible de récupérer les trousseaux de clés de l\'appareil</string>
   <string name="error_trustkey_hint_mutual">Indication : Dans certains cas, cela peut être résolu en vous ajoutant respectivement dans votre liste de contacts.</string>
   <string name="disable_encryption_message">Êtes-vous sûr de vouloir désactiver le chiffrement OMEMO pour cette discussion?\nCeci permettra à l\'administrateur de votre serveur de lire vos messages, mais cela peut être le seul moyen de communiquer avec des personnes utilisant un vieux client.</string>
   <string name="disable_now">Désactiver maintenant</string>
@@ -704,4 +705,7 @@
   <string name="pref_use_share_location_plugin_summary">Utiliser le plugin \"Share Location\" plutôt que la carte intégrée</string>
   <string name="copy_link">Copier l\'adresse internet</string>
   <string name="copy_jabber_id">Copier le Jabber ID</string>
+  <string name="group_chat_avatar">Avatar du groupe de discussion</string>
+  <string name="host_does_not_support_group_chat_avatars">Le serveur ne prend pas en charge les avatars pour les groupes de discussion</string>
+  <string name="only_the_owner_can_change_group_chat_avatar">Seul le propriétaire peut changer l\'avatar d\'un groupe de discussion</string>
 </resources>

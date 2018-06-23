@@ -42,6 +42,7 @@
   <string name="block_domain_text">Zablokować wszystkie kontakty z %s?</string>
   <string name="unblock_domain_text">Odblokować wszystkie kontakty z %s?</string>
   <string name="contact_blocked">Kontakt zablokowany</string>
+  <string name="blocked">Zablokowane</string>
   <string name="remove_bookmark_text">Czy usunąć zakładkę %s? Konwersacja powiązana z zakładką nie zostanie usunięta.</string>
   <string name="register_account">Zarejestruj nowe konto na serwerze</string>
   <string name="change_password_on_server">Zmień hasło na serwerze</string>
@@ -227,7 +228,6 @@
   <string name="delete_bookmark">Usuń zakładkę</string>
   <string name="bookmark_already_exists">Zakładka już istnieje</string>
   <string name="action_edit_subject">Edytuj tytuł konferencji</string>
-  <string name="edit_subject_hint">Tytuł konferencji</string>
   <string name="joining_conference">Dołączanie do konferencji</string>
   <string name="leave">Opuść pokój</string>
   <string name="contact_added_you">Kontakt został dodany do listy</string>
@@ -276,8 +276,6 @@
   <string name="pref_use_indicate_received_summary">Jeżeli to możliwe, oznaczaj dostarczone wiadomości zielonym haczykiem</string>
   <string name="pref_use_send_button_to_indicate_status_summary">Koloruj przycisk wysyłania w zależności od statusu kontaktu</string>
   <string name="pref_expert_options_other">Inne</string>
-  <string name="pref_conference_name">Nazwa konferencji</string>
-  <string name="pref_conference_name_summary">Użyj tytułu zamiast JID do identyfikowania konferencji</string>
   <string name="pref_autojoin">Automatycznie dołączaj do konferencji</string>
   <string name="pref_autojoin_summary">Respektuj flagę autodołączenia do konferencji z zakładek</string>
   <string name="toast_message_omemo_fingerprint">Odcisk klucza OMEMO został skopiowany do schowka!</string>
@@ -735,4 +733,7 @@ Administrator twojego serwera będzie mógł czytać twoje wiadomości, ale moż
   <string name="p1_s3_filetransfer">Udostępnianie plików przez HTTP S3</string>
   <string name="pref_start_search">Wyszukiwanie bezpośrednie</string>
   <string name="pref_start_search_summary">Na ekranie \'Rozpocznij konwersację\' otwórz klawiaturę i umieść kursor w polu wyszukiwania</string>
+  <string name="group_chat_avatar">Awatar konwersacji</string>
+  <string name="host_does_not_support_group_chat_avatars">Serwer nie wspiera awatarów konwersacji</string>
+  <string name="only_the_owner_can_change_group_chat_avatar">Tylko właściciel może zmienić awatar konwersacji</string>
 </resources>

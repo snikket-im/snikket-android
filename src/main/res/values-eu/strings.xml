@@ -228,7 +228,6 @@
   <string name="delete_bookmark">Laster-marka ezabatu</string>
   <string name="bookmark_already_exists">Laster-marka hau existitzen da dagoeneko</string>
   <string name="action_edit_subject">Taldearen gaia editatu</string>
-  <string name="edit_subject_hint">Talde honen gaia</string>
   <string name="joining_conference">Taldera batzen...</string>
   <string name="leave">Alde egin</string>
   <string name="contact_added_you">Kontaktuak bere zerrendara gehitu zaitu</string>
@@ -277,8 +276,6 @@
   <string name="pref_use_indicate_received_summary">Jasotako mezuak marka berde batekin markatuko dira. Baliteke kasu guztietan ez funtzionatzea.</string>
   <string name="pref_use_send_button_to_indicate_status_summary">Bidaltze botoia koloreztatu kontaktu baten egoera adierazteko</string>
   <string name="pref_expert_options_other">Besteak</string>
-  <string name="pref_conference_name">Taldearen izena</string>
-  <string name="pref_conference_name_summary">Erabili gelaren gaia taldeak identifikatzeko eta ez JIDa</string>
   <string name="pref_autojoin">Taldeetara automatikoki batu</string>
   <string name="pref_autojoin_summary">Automatikoki batzeko marka errespetatu taldeen laster-marketan</string>
   <string name="toast_message_omemo_fingerprint">OMEMO hatz-marka arbelara kopiatu da</string>

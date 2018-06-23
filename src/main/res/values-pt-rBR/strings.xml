@@ -227,7 +227,6 @@
   <string name="delete_bookmark">Excluir o favorito</string>
   <string name="bookmark_already_exists">Esse favorito já existe</string>
   <string name="action_edit_subject">Editar o assunto da conversa em grupo</string>
-  <string name="edit_subject_hint">O assunto desta conversa em grupo</string>
   <string name="joining_conference">Entrando na conversa em grupo...</string>
   <string name="leave">Sair</string>
   <string name="contact_added_you">O contato foi adicionado à sua lista de contatos</string>
@@ -276,8 +275,6 @@
   <string name="pref_use_indicate_received_summary">As mensagens recebidas serão marcadas com um tique verde, se suportado.</string>
   <string name="pref_use_send_button_to_indicate_status_summary">Colore o botão de envio para indicar o status do contato.</string>
   <string name="pref_expert_options_other">Outras</string>
-  <string name="pref_conference_name">Nome da conversa em grupo</string>
-  <string name="pref_conference_name_summary">Use o assunto ao invés do JID para identificar as conversas em grupo</string>
   <string name="pref_autojoin">Entrar automaticamente nas conversas em grupo</string>
   <string name="pref_autojoin_summary">Respeita a sinalização de entrada automática dos favoritos de conversa em grupo</string>
   <string name="toast_message_omemo_fingerprint">Impressão digital OMEMO copiada para a área de transferência!</string>

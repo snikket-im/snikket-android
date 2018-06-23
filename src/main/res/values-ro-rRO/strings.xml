@@ -228,7 +228,6 @@
   <string name="delete_bookmark">Șterge semn de carte</string>
   <string name="bookmark_already_exists">Acest semn de carte exista</string>
   <string name="action_edit_subject">Editează subiectul discuției de grup</string>
-  <string name="edit_subject_hint">Subiectul acestei discuții de grup</string>
   <string name="joining_conference">Vă alăturați discuției de grup...</string>
   <string name="leave">Paraseste</string>
   <string name="contact_added_you">Contactul v-a adăugat în lista de contacte</string>
@@ -277,8 +276,6 @@
   <string name="pref_use_indicate_received_summary">Mesajele primite vor fi marcate cu o bifa verde, dacă este suportat</string>
   <string name="pref_use_send_button_to_indicate_status_summary">Colorează butonul de trimitere pentru a indica starea contactului</string>
   <string name="pref_expert_options_other">Altele</string>
-  <string name="pref_conference_name">Titlul discuției de grup</string>
-  <string name="pref_conference_name_summary">Folosește subiectul discuției pentru a o identifica</string>
   <string name="pref_autojoin">Alătură-te automat discuțiilor de grup</string>
   <string name="pref_autojoin_summary">Respectă setarea de alăturare automată la o discuție de grup conform semnului de carte</string>
   <string name="toast_message_omemo_fingerprint">Amprentă OMEMO copiată în memorie!</string>
@@ -726,4 +723,7 @@ sau chiar pierderea mesajelor.\nÎn continuare veți fi rugați să dezactivați
   <string name="p1_s3_filetransfer">Partajare fișiere prin HTTP pentru S3</string>
   <string name="pref_start_search">Activează direct căutarea</string>
   <string name="pref_start_search_summary">În ecranul \"Pornește o conversație\" focalizează câmpul de căutare și arată tastatura</string>
+  <string name="group_chat_avatar">Avatar discuție de grup</string>
+  <string name="host_does_not_support_group_chat_avatars">Serverul gazdă nu suporta avatare pentru grupuri</string>
+  <string name="only_the_owner_can_change_group_chat_avatar">Doar proprietarul grupului poate schimba avatarul</string>
 </resources>

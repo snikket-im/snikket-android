@@ -226,7 +226,6 @@
   <string name="delete_bookmark">Slett bokmerke</string>
   <string name="bookmark_already_exists">Dette bokmerket finnes allerede</string>
   <string name="action_edit_subject">Endre gruppesludringsemne</string>
-  <string name="edit_subject_hint">Emnet for denne gruppesludringen</string>
   <string name="joining_conference">Tar del i gruppesludring…</string>
   <string name="leave">Forlat</string>
   <string name="contact_added_you">Kontakt la deg til i sin liste</string>
@@ -275,8 +274,6 @@
   <string name="pref_use_indicate_received_summary">Mottatte meldinger vil bli avmerket i grønt hvis støttet</string>
   <string name="pref_use_send_button_to_indicate_status_summary">Fargelegg send-knapp for å indikere kontakt-status</string>
   <string name="pref_expert_options_other">Annet</string>
-  <string name="pref_conference_name">Gruppesludringsnavn</string>
-  <string name="pref_conference_name_summary">Bruk emne istedenfor JID til å identifisere gruppesludringer</string>
   <string name="pref_autojoin">Ta del i gruppesludringer automatisk</string>
   <string name="pref_autojoin_summary">Respekter flagget for automatisk tilknytning i gruppesludringsbokmerker</string>
   <string name="toast_message_omemo_fingerprint">OMEMO-fingeravtrykk kopiert til utklippstavle!</string>

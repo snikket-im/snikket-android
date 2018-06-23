@@ -42,6 +42,7 @@
   <string name="block_domain_text">Bloccare tutti i contatti da %s?</string>
   <string name="unblock_domain_text">Sbloccare tutti i contatti da %s?</string>
   <string name="contact_blocked">Contatto bloccato</string>
+  <string name="blocked">Bloccato</string>
   <string name="remove_bookmark_text">Vuoi rimuovere il segnalibro %s? La conversazione associata con questo contatto non sarà rimossa.</string>
   <string name="register_account">Registra un nuovo account sul server</string>
   <string name="change_password_on_server">Cambia la password sul server</string>
@@ -227,7 +228,6 @@
   <string name="delete_bookmark">Elimina segnalibro</string>
   <string name="bookmark_already_exists">Questo segnalibro esiste già</string>
   <string name="action_edit_subject">Modifica titolo chat di gruppo</string>
-  <string name="edit_subject_hint">L\'argomento di questa chat di gruppo</string>
   <string name="joining_conference">Ingresso nella chat di gruppo...</string>
   <string name="leave">Abbandona</string>
   <string name="contact_added_you">Il contatto ti ha aggiunto alla sua lista contatti</string>
@@ -276,8 +276,6 @@
   <string name="pref_use_indicate_received_summary">I messaggi ricevuti verranno contrassegnati con una spunta verde se supportato</string>
   <string name="pref_use_send_button_to_indicate_status_summary">Colora il pulsante di invio per indicare lo stato del contatto</string>
   <string name="pref_expert_options_other">Altro</string>
-  <string name="pref_conference_name">Nome chat di gruppo</string>
-  <string name="pref_conference_name_summary">Usa il titolo invece del JID per identificare le chat di gruppo</string>
   <string name="pref_autojoin">Unisciti automaticamente alle chat di gruppo</string>
   <string name="pref_autojoin_summary">Rispetta l\'opzione di entrata automatica nei segnalibri di chat di gruppo</string>
   <string name="toast_message_omemo_fingerprint">impronta OMEMO copiata negli appunti|</string>
@@ -714,4 +712,7 @@
   <string name="p1_s3_filetransfer">Condivisione file in HTTP per S3</string>
   <string name="pref_start_search">Ricerca diretta</string>
   <string name="pref_start_search_summary">Nella schermata \'Inizia conversazione\' apri la tastiera e posiziona il cursore nella casella di ricerca</string>
+  <string name="group_chat_avatar">Avatar chat di gruppo</string>
+  <string name="host_does_not_support_group_chat_avatars">L\'host non supporta gli avatar per chat di gruppo</string>
+  <string name="only_the_owner_can_change_group_chat_avatar">Solo il proprietario può cambiare l\'avatar della chat di gruppo</string>
 </resources>

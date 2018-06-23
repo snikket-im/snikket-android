@@ -228,7 +228,6 @@
   <string name="delete_bookmark">删除书签</string>
   <string name="bookmark_already_exists">该书签已存在</string>
   <string name="action_edit_subject">编辑群聊主题</string>
-  <string name="edit_subject_hint">群聊的主题</string>
   <string name="joining_conference">正在加入群聊…</string>
   <string name="leave">离开</string>
   <string name="contact_added_you">联系人已添加你到联系人列表</string>
@@ -277,8 +276,6 @@
   <string name="pref_use_indicate_received_summary">如果支持，收到的消息将标记为绿色对勾</string>
   <string name="pref_use_send_button_to_indicate_status_summary">着色发送按钮以示联系人状态</string>
   <string name="pref_expert_options_other">其他</string>
-  <string name="pref_conference_name">群聊名称</string>
-  <string name="pref_conference_name_summary">显示群聊主题</string>
   <string name="pref_autojoin">自动加入群聊</string>
   <string name="pref_autojoin_summary">允许群组的自动加入标志生效</string>
   <string name="toast_message_omemo_fingerprint">OMEMO 指纹已拷贝到剪贴板！</string>

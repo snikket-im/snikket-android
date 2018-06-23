@@ -256,8 +256,6 @@
   <string name="pref_use_indicate_received_summary">如果支援收到的訊息將會以綠色勾號標識</string>
   <string name="pref_use_send_button_to_indicate_status_summary">發送按鈕採用其他顏色以示發送狀態的區別</string>
   <string name="pref_expert_options_other">其他</string>
-  <string name="pref_conference_name">聊天群組名稱</string>
-  <string name="pref_conference_name_summary">用標題而非 JID 來識別聊天群組</string>
   <string name="toast_message_omemo_fingerprint">OMEMO 指紋已拷貝到剪貼板！</string>
   <string name="using_account">用帳戶  %s</string>
   <string name="checking_x">正在 HTTP 伺服器中檢查 %s</string>

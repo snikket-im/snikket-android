@@ -228,7 +228,6 @@
   <string name="delete_bookmark">Eliminar marcador</string>
   <string name="bookmark_already_exists">Este marcador ya existe</string>
   <string name="action_edit_subject">Editar asunto de la conversación</string>
-  <string name="edit_subject_hint">El asunto de esta conversación en grupo</string>
   <string name="joining_conference">Uniéndose a conversación...</string>
   <string name="leave">Salir</string>
   <string name="contact_added_you">El contacto te ha añadido a su lista de contactos</string>
@@ -277,8 +276,6 @@
   <string name="pref_use_indicate_received_summary">Cuando el contacto reciba el mensaje será indicado con una marca verde. Cuidado, esto podría no funcionar en todos los casos.</string>
   <string name="pref_use_send_button_to_indicate_status_summary">El color del botón enviar indica el estado del contacto</string>
   <string name="pref_expert_options_other">Otros</string>
-  <string name="pref_conference_name">Nombre en la conversaciones en grupo</string>
-  <string name="pref_conference_name_summary">Usar el asunto de la conversación en lugar del identificador jabber como nombre en las conversaciones en grupo</string>
   <string name="pref_autojoin">Unirse automáticamente a conversaciones en grupo</string>
   <string name="pref_autojoin_summary">Respetar la opción de los marcadores de unirse automáticamente a las conversaciones en grupo</string>
   <string name="toast_message_omemo_fingerprint">¡Huella digital OMEMO copiada al portapapeles!</string>
@@ -715,4 +712,7 @@
   <string name="p1_s3_filetransfer">Compartición de Archivos mediante S3</string>
   <string name="pref_start_search">Búsqueda directa</string>
   <string name="pref_start_search_summary">En la pantalla de \'Nueva Conversación\' abrir el teclado y poner el cursor en el campo de búsqueda</string>
+  <string name="group_chat_avatar">Avatar de la conversación en grupo</string>
+  <string name="host_does_not_support_group_chat_avatars">El servidor no soporta avatares en conversaciones en grupo</string>
+  <string name="only_the_owner_can_change_group_chat_avatar">Solo el propietario de la conversación puede cambiar el avatar</string>
 </resources>

@@ -228,7 +228,6 @@
   <string name="delete_bookmark">Изтриване на отметка</string>
   <string name="bookmark_already_exists">Вече съществува такава отметка</string>
   <string name="action_edit_subject">Редактиране на темата на груповия разговор</string>
-  <string name="edit_subject_hint">Темата на този групов разговор</string>
   <string name="joining_conference">Присъединяване в групов разговор…</string>
   <string name="leave">Напускане</string>
   <string name="contact_added_you">Контактът е добавен във Вашия списък от контакти</string>
@@ -277,8 +276,6 @@
   <string name="pref_use_indicate_received_summary">Получените съобщения ще бъдат отбелязани със зелена отметка, ако това се поддържа</string>
   <string name="pref_use_send_button_to_indicate_status_summary">Оцветяване на бутона за изпращане в зависимост от състоянието на контакта</string>
   <string name="pref_expert_options_other">Други</string>
-  <string name="pref_conference_name">Име на груповия разговор</string>
-  <string name="pref_conference_name_summary">Използване на темата вместо JID за идентифициране на груповите разговори</string>
   <string name="pref_autojoin">Автоматично присъединяване в груповите разговори</string>
   <string name="pref_autojoin_summary">Спазване на флага за автоматично присъединяване в отметките на груповите разговори</string>
   <string name="toast_message_omemo_fingerprint">Отпечатъкът OMEMO е копиран!</string>
@@ -715,4 +712,7 @@
   <string name="p1_s3_filetransfer">Споделяне на файлове през HTTP за S3</string>
   <string name="pref_start_search">Директно търсене</string>
   <string name="pref_start_search_summary">На екрана за „Започване на разговор“ да се отваря клавиатурата и да се поставя курсорът в полето за търсене</string>
+  <string name="group_chat_avatar">Аватар на груповия разговор</string>
+  <string name="host_does_not_support_group_chat_avatars">Сървърът не поддържа аватари за груповите разговори</string>
+  <string name="only_the_owner_can_change_group_chat_avatar">Само собственикът може да променя аватара на груповия разговор</string>
 </resources>

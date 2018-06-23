@@ -226,7 +226,6 @@
   <string name="delete_bookmark">ブックマークを削除</string>
   <string name="bookmark_already_exists">このブックマークはすでに存在します</string>
   <string name="action_edit_subject">談話室の題を編集</string>
-  <string name="edit_subject_hint">この談話室の題</string>
   <string name="joining_conference">談話室に参加しています…</string>
   <string name="leave">退出</string>
   <string name="contact_added_you">連絡先があなたを連絡先リストに追加しました</string>
@@ -273,8 +272,6 @@
   <string name="pref_use_indicate_received_summary">サポートされている場合、受信したメッセージに緑色のチェックマークが付きます</string>
   <string name="pref_use_send_button_to_indicate_status_summary">送信ボタンに連絡先ステータスを示す色が付きます</string>
   <string name="pref_expert_options_other">その他</string>
-  <string name="pref_conference_name">談話室名</string>
-  <string name="pref_conference_name_summary">談話室のJIDの代わりに題を使う</string>
   <string name="pref_autojoin">自動で談話室に参加</string>
   <string name="toast_message_omemo_fingerprint">OMEMO フィンガープリントをクリップボードにコピーしました!</string>
   <string name="conference_banned">この談話室から締め出されています</string>

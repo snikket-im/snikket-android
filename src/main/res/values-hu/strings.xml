@@ -228,7 +228,6 @@
   <string name="delete_bookmark">Könyvjelző törlése</string>
   <string name="bookmark_already_exists">A könyvjelző már létezik</string>
   <string name="action_edit_subject">Konferencia témájának beállítása</string>
-  <string name="edit_subject_hint">A konferencia témája</string>
   <string name="joining_conference">Konferenciához csatlakozás...</string>
   <string name="leave">Távozás</string>
   <string name="contact_added_you">Ez a felhasználó hozzáadott téged a névjegyeihez</string>
@@ -277,8 +276,6 @@
   <string name="pref_use_indicate_received_summary">A megkapott üzenetek egy zöld pipával lesznek jelölve ha támogatott ez a funkció</string>
   <string name="pref_use_send_button_to_indicate_status_summary">Kiszínezi a küldés gombot, hogy jelezze a partner állapotát</string>
   <string name="pref_expert_options_other">Egyéb</string>
-  <string name="pref_conference_name">Konferencia neve</string>
-  <string name="pref_conference_name_summary">A konferencia tárgyát használja a JID helyett azonosításra </string>
   <string name="pref_autojoin">Automatikus csatlakozás konferenciákhoz </string>
   <string name="pref_autojoin_summary">Tiszteletben tartja az automata csatlakozás beállítást a konferencia könyvjelzőkben</string>
   <string name="toast_message_omemo_fingerprint">Az OMEMO ujjlenyomat vágólapra lett másolva!</string>

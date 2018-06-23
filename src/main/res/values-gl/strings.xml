@@ -227,7 +227,6 @@
   <string name="delete_bookmark">Eliminar marcador</string>
   <string name="bookmark_already_exists">Este marcador xa existe</string>
   <string name="action_edit_subject">Editar o tema da conversa en grupo</string>
-  <string name="edit_subject_hint">O tema desta conversa en grupo</string>
   <string name="joining_conference">Entrando na conversa en grupo</string>
   <string name="leave">Saír</string>
   <string name="contact_added_you">Contacto engadido a súa lista de contactos</string>
@@ -276,8 +275,6 @@
   <string name="pref_use_indicate_received_summary">As mensaxes recibidas marcaránse cun sinal verde si este está admitido</string>
   <string name="pref_use_send_button_to_indicate_status_summary">Boton de enviar de cor para indicar o estado do contacto</string>
   <string name="pref_expert_options_other">Outro</string>
-  <string name="pref_conference_name">Nome da conversa en grupo</string>
-  <string name="pref_conference_name_summary">Utilice o tema en lugar do JID para identificar as conversas en grupo</string>
   <string name="pref_autojoin">Unirse automaticamente ás conversas en grupo</string>
   <string name="pref_autojoin_summary">Respecta a marca de autoentrada nos marcadores da conversa en grupo</string>
   <string name="toast_message_omemo_fingerprint">Copiouse a pegada dixital OMEMO ao portapapeis!</string>

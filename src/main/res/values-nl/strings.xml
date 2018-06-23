@@ -228,7 +228,6 @@
   <string name="delete_bookmark">Bladwijzer verwijderen</string>
   <string name="bookmark_already_exists">Deze bladwijzer bestaat al</string>
   <string name="action_edit_subject">Gespreksonderwerp bewerken</string>
-  <string name="edit_subject_hint">Het onderwerp van dit groepsgesprek</string>
   <string name="joining_conference">Deelnemen aan groepsgesprek…</string>
   <string name="leave">Verlaten</string>
   <string name="contact_added_you">Contact heeft je toegevoegd aan zijn/haar contacten</string>
@@ -277,8 +276,6 @@
   <string name="pref_use_indicate_received_summary">Indien ondersteund, worden ontvangen berichten met een groen vinkje aangeduid</string>
   <string name="pref_use_send_button_to_indicate_status_summary">Kleur verstuur-knop in om status van contact weer te geven</string>
   <string name="pref_expert_options_other">Andere</string>
-  <string name="pref_conference_name">Gespreksnaam</string>
-  <string name="pref_conference_name_summary">Gebruik onderwerp ipv JID om groepsgesprekken te identificeren</string>
   <string name="pref_autojoin">Automatisch deelnemen aan groepsgesprekken</string>
   <string name="pref_autojoin_summary">Respecteer de autojoin-vlag bij groepsgespreksbladwijzers</string>
   <string name="toast_message_omemo_fingerprint">OMEMO-vingerafdruk gekopieerd naar klembord!</string>
@@ -715,4 +712,7 @@
   <string name="p1_s3_filetransfer">Bestanden delen via HTTP voor S3</string>
   <string name="pref_start_search">Rechtstreeks zoeken</string>
   <string name="pref_start_search_summary">Open het toetsenbord op het scherm ‘Gesprek starten’ en plaats de cursor in het zoekveld</string>
+  <string name="group_chat_avatar">Gespreksafbeelding</string>
+  <string name="host_does_not_support_group_chat_avatars">Host ondersteunt geen gespreksafbeeldingen</string>
+  <string name="only_the_owner_can_change_group_chat_avatar">Enkel de eigenaar kan de gespreksafbeelding wijzigen</string>
 </resources>

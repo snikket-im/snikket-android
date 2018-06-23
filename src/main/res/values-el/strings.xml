@@ -217,7 +217,6 @@
   <string name="delete_bookmark">Διαγραφή σελιδοδείκτη</string>
   <string name="bookmark_already_exists">Αυτός ο σελιδοδείκτης υπάρχει ήδη</string>
   <string name="action_edit_subject">Επεξεργασία θέματος ομαδικής συζήτησης</string>
-  <string name="edit_subject_hint">Το θέμα της ομαδικής συζήτησης</string>
   <string name="joining_conference">Συμμετοχή σε ομαδική συζήτηση...</string>
   <string name="leave">Έξοδος</string>
   <string name="contact_added_you">Η επαφή σας πρόσθεσε στην λίστα επαφών</string>
