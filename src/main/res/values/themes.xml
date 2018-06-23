@@ -62,7 +62,7 @@
 
         <item type="reference" name="icon_add_group">@drawable/ic_group_add_white_24dp</item>
         <item type="reference" name="icon_add_person">@drawable/ic_person_add_white_24dp</item>
-        <item type="reference" name="icon_cancel">@drawable/ic_cancel_white_24dp</item>
+        <item type="reference" name="icon_cancel">@drawable/ic_cancel_black_24dp</item>
         <item type="reference" name="icon_copy">@drawable/ic_content_copy_black_24dp</item>
         <item type="reference" name="icon_discard">@drawable/ic_delete_white_24dp</item>
         <item type="reference" name="icon_download">@drawable/ic_file_download_white_24dp</item>

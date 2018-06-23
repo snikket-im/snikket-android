@@ -43,7 +43,7 @@
                             android:layout_width="72dp"
                             android:layout_height="72dp"
                             android:layout_alignParentTop="true"
-                            android:layout_marginRight="16dp"
+                            android:layout_marginRight="@dimen/avatar_item_distance"
                             android:contentDescription="@string/account_image_description"
                             app:riv_corner_radius="2dp"/>
 

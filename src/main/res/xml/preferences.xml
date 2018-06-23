@@ -170,11 +170,6 @@
             android:summary="@string/pref_font_size_summary"
             android:title="@string/pref_font_size"/>
         <CheckBoxPreference
-            android:defaultValue="@bool/use_subject"
-            android:key="use_subject"
-            android:summary="@string/pref_conference_name_summary"
-            android:title="@string/pref_conference_name"/>
-        <CheckBoxPreference
             android:defaultValue="@bool/send_button_status"
             android:key="send_button_status"
             android:summary="@string/pref_use_send_button_to_indicate_status_summary"

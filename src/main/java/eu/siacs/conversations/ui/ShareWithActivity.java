@@ -199,7 +199,7 @@ public class ShareWithActivity extends XmppActivity implements XmppConnectionSer
 		if (intent == null) {
 			return;
 		}
-		this.mReturnToPrevious = getPreferences().getBoolean("return_to_previous", getResources().getBoolean(R.bool.return_to_previous));
+		this.mReturnToPrevious = getBooleanPreference("return_to_previous", R.bool.return_to_previous);
 		final String type = intent.getType();
 		final String action = intent.getAction();
 		Log.d(Config.LOGTAG, "action: "+action+ ", type:"+type);

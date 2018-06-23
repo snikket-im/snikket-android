@@ -84,15 +84,11 @@ public class ConversationAdapter extends RecyclerView.Adapter<ConversationAdapte
 		if (conversation == null) {
 			return;
 		}
-		if (conversation.getMode() == Conversation.MODE_SINGLE || activity.useSubjectToIdentifyConference()) {
-			CharSequence name = conversation.getName();
-			if (name instanceof Jid) {
-				viewHolder.name.setText(IrregularUnicodeDetector.style(activity, (Jid) name));
-			} else {
-				viewHolder.name.setText(EmojiWrapper.transform(name));
-			}
+		CharSequence name = conversation.getName();
+		if (name instanceof Jid) {
+			viewHolder.name.setText(IrregularUnicodeDetector.style(activity, (Jid) name));
 		} else {
-			viewHolder.name.setText(conversation.getJid().asBareJid().toString());
+			viewHolder.name.setText(EmojiWrapper.transform(name));
 		}
 
 		viewHolder.frame.setBackgroundColor(Color.get(activity, conversation == ConversationFragment.getConversation(activity) ? R.attr.color_background_secondary : R.attr.color_background_primary));

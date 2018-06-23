@@ -277,8 +277,6 @@
     <string name="pref_use_indicate_received_summary">Received messages will be marked with a green tick if supported</string>
     <string name="pref_use_send_button_to_indicate_status_summary">Colorize send button to indicate contact status</string>
     <string name="pref_expert_options_other">Other</string>
-    <string name="pref_conference_name">Group chat name</string>
-    <string name="pref_conference_name_summary">Use subject instead of JID to identify group chats</string>
     <string name="pref_autojoin">Automatically join group chats</string>
     <string name="pref_autojoin_summary">Respect the autojoin flag in group chat bookmarks</string>
     <string name="toast_message_omemo_fingerprint">OMEMO fingerprint copied to clipboard!</string>

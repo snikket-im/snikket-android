@@ -72,6 +72,7 @@ import eu.siacs.conversations.services.XmppConnectionService;
 import eu.siacs.conversations.services.XmppConnectionService.XmppConnectionBinder;
 import eu.siacs.conversations.ui.util.MenuDoubleTabUtil;
 import eu.siacs.conversations.ui.util.PresenceSelector;
+import eu.siacs.conversations.ui.util.SoftKeyboardUtils;
 import eu.siacs.conversations.utils.ExceptionHelper;
 import eu.siacs.conversations.utils.ThemeHelper;
 import eu.siacs.conversations.xmpp.OnKeyStatusUpdated;
@@ -95,7 +96,6 @@ public abstract class XmppActivity extends ActionBarActivity {
 
 	private boolean isCameraFeatureAvailable = false;
 
-	protected boolean mUseSubject = true;
 	protected int mTheme;
 	protected boolean mUsingEnterKey = false;
 	protected Toast mToast;
@@ -402,7 +402,6 @@ public abstract class XmppActivity extends ActionBarActivity {
 		setTheme(this.mTheme);
 
 		this.mUsingEnterKey = usingEnterKey();
-		mUseSubject = getBooleanPreference("use_subject", R.bool.use_subject);
 	}
 
 	protected boolean isCameraFeatureAvailable() {
@@ -445,7 +444,7 @@ public abstract class XmppActivity extends ActionBarActivity {
 	}
 
 	protected boolean usingEnterKey() {
-		return getPreferences().getBoolean("display_enter_key", getResources().getBoolean(R.bool.display_enter_key));
+		return getBooleanPreference("display_enter_key", R.bool.display_enter_key);
 	}
 
 	protected SharedPreferences getPreferences() {
@@ -454,10 +453,6 @@ public abstract class XmppActivity extends ActionBarActivity {
 
 	protected boolean getBooleanPreference(String name, @BoolRes int res) {
 		return getPreferences().getBoolean(name, getResources().getBoolean(res));
-	}
-
-	public boolean useSubjectToIdentifyConference() {
-		return mUseSubject;
 	}
 
 	public void switchToConversation(Conversation conversation) {
@@ -723,6 +718,7 @@ public abstract class XmppActivity extends ActionBarActivity {
 		builder.setView(binding.getRoot());
 		builder.setNegativeButton(R.string.cancel, null);
 		final AlertDialog dialog = builder.create();
+		dialog.setOnShowListener(d -> SoftKeyboardUtils.showKeyboard(binding.inputEditText));
 		dialog.show();
 		View.OnClickListener clickListener = v -> {
 			String value = binding.inputEditText.getText().toString();
@@ -733,9 +729,17 @@ public abstract class XmppActivity extends ActionBarActivity {
 					return;
 				}
 			}
+			SoftKeyboardUtils.hideSoftKeyboard(binding.inputEditText);
 			dialog.dismiss();
 		};
 		dialog.getButton(DialogInterface.BUTTON_POSITIVE).setOnClickListener(clickListener);
+		dialog.getButton(DialogInterface.BUTTON_NEGATIVE).setOnClickListener((v -> {
+			SoftKeyboardUtils.hideSoftKeyboard(binding.inputEditText);
+			dialog.dismiss();
+		}));
+		dialog.setOnDismissListener(dialog1 -> {
+			SoftKeyboardUtils.hideSoftKeyboard(binding.inputEditText);
+        });
 	}
 
 	protected boolean hasStoragePermission(int requestCode) {
@@ -790,7 +794,7 @@ public abstract class XmppActivity extends ActionBarActivity {
 	}
 
 	protected boolean manuallyChangePresence() {
-		return getPreferences().getBoolean(SettingsActivity.MANUALLY_CHANGE_PRESENCE, getResources().getBoolean(R.bool.manually_change_presence));
+		return getBooleanPreference(SettingsActivity.MANUALLY_CHANGE_PRESENCE, R.bool.manually_change_presence);
 	}
 
 	protected String getShareableUri() {

@@ -984,7 +984,7 @@ public class StartConversationActivity extends XmppActivity implements XmppConne
 				jid.setError(getString(R.string.bookmark_already_exists));
 			} else {
 				final Bookmark bookmark = new Bookmark(account, conferenceJid.asBareJid());
-				bookmark.setAutojoin(getPreferences().getBoolean("autojoin", getResources().getBoolean(R.bool.autojoin)));
+				bookmark.setAutojoin(getBooleanPreference("autojoin", R.bool.autojoin));
 				String nick = conferenceJid.getResource();
 				if (nick != null && !nick.isEmpty()) {
 					bookmark.setNick(nick);
