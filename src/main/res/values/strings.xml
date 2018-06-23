@@ -20,6 +20,7 @@
     <string name="title_activity_sharewith">Share with Conversation</string>
     <string name="title_activity_start_conversation">Start Conversation</string>
     <string name="title_activity_choose_contact">Choose Contact</string>
+    <string name="title_activity_choose_contacts">Choose Contacts</string>
     <string name="title_activity_share_via_account">Share via account</string>
     <string name="title_activity_block_list">Block list</string>
     <string name="just_now">just now</string>
@@ -418,10 +419,6 @@
     <plurals name="toast_delete_certificates">
         <item quantity="one">%d certificate deleted</item>
         <item quantity="other">%d certificates deleted</item>
-    </plurals>
-    <plurals name="select_contact">
-        <item quantity="one">Select %d contact</item>
-        <item quantity="other">Select %d contacts</item>
     </plurals>
     <string name="pref_quick_action_summary">Replace send button with quick action</string>
     <string name="pref_quick_action">Quick Action</string>

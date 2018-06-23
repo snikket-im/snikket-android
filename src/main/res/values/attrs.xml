@@ -20,6 +20,8 @@
     <attr name="activity_background_search" format="reference"/>
     <attr name="activity_background_no_results" format="reference"/>
 
+    <attr name="list_item_background" format="reference"/>
+
     <attr name="TextColorOnline" format="reference|color"/>
     <attr name="TextColorError" format="reference|color"/>
 

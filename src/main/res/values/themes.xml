@@ -15,11 +15,12 @@
 
         <item name="activity_background_search">@drawable/search_background_light</item>
         <item name="activity_background_no_results">@drawable/no_results_background_light</item>
+        <item name="list_item_background">@drawable/list_item_background_light</item>
 
         <item name="EmojiColor">@color/black</item>
 
         <item name="windowActionModeOverlay">true</item>
-        <item name="android:actionModeBackground">@color/blue_a200</item>
+        <item name="android:actionModeBackground">?colorPrimary</item>
 
         <item name="TextSizeCaption">12sp</item>
         <item name="TextSizeBody1">14sp</item>
@@ -107,6 +108,7 @@
         <item name="color_background_secondary">@color/grey900</item>
         <item name="activity_background_search">@drawable/search_background_dark</item>
         <item name="activity_background_no_results">@drawable/no_results_background_dark</item>
+        <item name="list_item_background">@drawable/list_item_background_dark</item>
         <item name="color_warning">@color/red_a100</item>
 
         <item name="TextColorOnline">@color/green500</item>
@@ -115,7 +117,7 @@
         <item name="EmojiColor">@color/white</item>
 
         <item name="windowActionModeOverlay">true</item>
-        <item name="android:actionModeBackground">@color/blue_a100</item>
+        <item name="android:actionModeBackground">?colorPrimary</item>
 
         <item name="TextSizeCaption">12sp</item>
         <item name="TextSizeBody1">14sp</item>

@@ -5,7 +5,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="?android:attr/activatedBackgroundIndicator"
+        android:background="?attr/list_item_background"
         android:padding="@dimen/list_padding">
 
         <com.makeramen.roundedimageview.RoundedImageView
