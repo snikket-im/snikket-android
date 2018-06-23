@@ -43,8 +43,8 @@
 
                             <com.makeramen.roundedimageview.RoundedImageView
                                 android:id="@+id/your_photo"
-                                android:layout_width="72dp"
-                                android:layout_height="72dp"
+                                android:layout_width="@dimen/avatar_on_details_screen_size"
+                                android:layout_height="@dimen/avatar_on_details_screen_size"
                                 android:layout_alignParentStart="true"
                                 app:riv_corner_radius="2dp"
                                 android:layout_marginEnd="@dimen/avatar_item_distance"/>

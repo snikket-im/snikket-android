@@ -610,16 +610,20 @@ public class ConferenceDetailsActivity extends XmppActivity implements OnConvers
         this.binding.editMucNameButton.setVisibility((self.getAffiliation().ranks(MucOptions.Affiliation.OWNER) || mucOptions.canChangeSubject()) ? View.VISIBLE : View.GONE);
         this.binding.detailsAccount.setText(getString(R.string.using_account, account));
         this.binding.jid.setText(mConversation.getJid().asBareJid().toEscapedString());
-        this.binding.yourPhoto.setImageBitmap(avatarService().get(mConversation, getPixel(72)));
+        this.binding.yourPhoto.setImageBitmap(avatarService().get(mConversation,(int) getResources().getDimension(R.dimen.avatar_on_details_screen_size)));
         String roomName = mucOptions.getName();
         String subject = mucOptions.getSubject();
+        final boolean hasTitle;
         if (printableValue(roomName)) {
             this.binding.mucTitle.setText(roomName);
             this.binding.mucTitle.setVisibility(View.VISIBLE);
+            hasTitle = true;
         } else if (!printableValue(subject)) {
             this.binding.mucTitle.setText(EmojiWrapper.transform(mConversation.getName()));
+            hasTitle = true;
             this.binding.mucTitle.setVisibility(View.VISIBLE);
         } else {
+            hasTitle = false;
             this.binding.mucTitle.setVisibility(View.GONE);
         }
         if (printableValue(subject)) {
@@ -627,7 +631,7 @@ public class ConferenceDetailsActivity extends XmppActivity implements OnConvers
             StylingHelper.format(spannable, this.binding.mucSubject.getCurrentTextColor());
             MyLinkify.addLinks(spannable, false);
             this.binding.mucSubject.setText(EmojiWrapper.transform(spannable));
-            this.binding.mucSubject.setTextAppearance(this,subject.length() > 120 ? R.style.TextAppearance_Conversations_Body1_Linkified : R.style.TextAppearance_Conversations_Subhead);
+            this.binding.mucSubject.setTextAppearance(this,subject.length() > (hasTitle ? 128 : 196) ? R.style.TextAppearance_Conversations_Body1_Linkified : R.style.TextAppearance_Conversations_Subhead);
             this.binding.mucSubject.setAutoLinkMask(0);
             this.binding.mucSubject.setVisibility(View.VISIBLE);
         } else {
@@ -816,6 +820,9 @@ public class ConferenceDetailsActivity extends XmppActivity implements OnConvers
 
     @Override
     public void afterTextChanged(Editable s) {
+        if (mConversation == null) {
+            return;
+        }
         final MucOptions mucOptions = mConversation.getMucOptions();
         if (this.binding.mucEditor.getVisibility() == View.VISIBLE) {
             boolean subjectChanged = changed(binding.mucEditSubject.getEditableText().toString(), mucOptions.getSubject());

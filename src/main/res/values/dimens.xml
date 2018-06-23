@@ -15,6 +15,7 @@
 
 	<dimen name="publish_avatar_top_margin">8dp</dimen>
 	<dimen name="publish_avatar_size">96dp</dimen>
+	<dimen name="avatar_on_details_screen_size">56dp</dimen>
 
 	<dimen name="input_label_vertical_spacing">4dp</dimen>
 	<dimen name="input_label_horizontal_spacing">4dp</dimen>

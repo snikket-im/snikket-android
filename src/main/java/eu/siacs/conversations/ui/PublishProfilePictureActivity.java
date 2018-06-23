@@ -170,10 +170,10 @@ public class PublishProfilePictureActivity extends XmppActivity implements XmppC
 
         Bitmap bm = null;
         if (uri == null) {
-            bm = avatarService().get(account, getPixel(192));
+            bm = avatarService().get(account, (int) getResources().getDimension(R.dimen.publish_avatar_size));
         } else {
             try {
-                bm = xmppConnectionService.getFileBackend().cropCenterSquare(uri, getPixel(192));
+                bm = xmppConnectionService.getFileBackend().cropCenterSquare(uri, (int) getResources().getDimension(R.dimen.publish_avatar_size));
             } catch (Exception e) {
                 Log.d(Config.LOGTAG, "unable to load bitmap into image view", e);
             }

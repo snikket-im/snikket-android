@@ -952,7 +952,7 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
 
 		if (!mInitMode) {
 			this.mAvatar.setVisibility(View.VISIBLE);
-			this.mAvatar.setImageBitmap(avatarService().get(this.mAccount, getPixel(72)));
+			this.mAvatar.setImageBitmap(avatarService().get(this.mAccount, (int) getResources().getDimension(R.dimen.avatar_on_details_screen_size)));
 		} else {
 			this.mAvatar.setVisibility(View.GONE);
 		}

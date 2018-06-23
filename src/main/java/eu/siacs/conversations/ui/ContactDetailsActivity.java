@@ -374,7 +374,7 @@ public class ContactDetailsActivity extends OmemoActivity implements OnAccountUp
 			account = contact.getAccount().getJid().asBareJid().toString();
 		}
 		binding.detailsAccount.setText(getString(R.string.using_account, account));
-		binding.detailsContactBadge.setImageBitmap(avatarService().get(contact, getPixel(72)));
+		binding.detailsContactBadge.setImageBitmap(avatarService().get(contact, (int) getResources().getDimension(R.dimen.avatar_on_details_screen_size)));
 		binding.detailsContactBadge.setOnClickListener(this.onBadgeClick);
 
 		binding.detailsContactKeys.removeAllViews();

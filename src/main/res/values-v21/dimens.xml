@@ -1,4 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-	<dimen name="elv_undo_bottom_offset">63dp</dimen> <!-- 48dp + 15dp -->
-</resources>

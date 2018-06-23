@@ -37,8 +37,8 @@
 
                         <QuickContactBadge
                             android:id="@+id/details_contact_badge"
-                            android:layout_width="72dp"
-                            android:layout_height="72dp"
+                            android:layout_width="@dimen/avatar_on_details_screen_size"
+                            android:layout_height="@dimen/avatar_on_details_screen_size"
                             android:layout_alignParentTop="true"
                             android:scaleType="centerCrop"/>
 
