@@ -51,6 +51,8 @@ import eu.siacs.conversations.services.XmppConnectionService.OnMucRosterUpdate;
 import eu.siacs.conversations.ui.util.MenuDoubleTabUtil;
 import eu.siacs.conversations.ui.util.MyLinkify;
 import eu.siacs.conversations.ui.util.SoftKeyboardUtils;
+import eu.siacs.conversations.utils.EmojiWrapper;
+import eu.siacs.conversations.utils.StylingHelper;
 import eu.siacs.conversations.utils.UIHelper;
 import eu.siacs.conversations.utils.XmppUri;
 import rocks.xmpp.addr.Jid;
@@ -265,6 +267,7 @@ public class ConferenceDetailsActivity extends XmppActivity implements OnConvers
         this.binding.editMucNameButton.setOnClickListener(this::onMucEditButtonClicked);
         this.binding.mucEditTitle.addTextChangedListener(this);
         this.binding.mucEditSubject.addTextChangedListener(this);
+        this.binding.mucEditSubject.addTextChangedListener(new StylingHelper.MessageEditorStyler(this.binding.mucEditSubject));
     }
 
     @Override
@@ -614,15 +617,17 @@ public class ConferenceDetailsActivity extends XmppActivity implements OnConvers
             this.binding.mucTitle.setText(roomName);
             this.binding.mucTitle.setVisibility(View.VISIBLE);
         } else if (!printableValue(subject)) {
-            this.binding.mucTitle.setText(mConversation.getName());
+            this.binding.mucTitle.setText(EmojiWrapper.transform(mConversation.getName()));
             this.binding.mucTitle.setVisibility(View.VISIBLE);
         } else {
             this.binding.mucTitle.setVisibility(View.GONE);
         }
         if (printableValue(subject)) {
             SpannableStringBuilder spannable = new SpannableStringBuilder(subject);
+            StylingHelper.format(spannable, this.binding.mucSubject.getCurrentTextColor());
             MyLinkify.addLinks(spannable, false);
-            this.binding.mucSubject.setText(spannable);
+            this.binding.mucSubject.setText(EmojiWrapper.transform(spannable));
+            this.binding.mucSubject.setTextAppearance(this,subject.length() > 120 ? R.style.TextAppearance_Conversations_Body1_Linkified : R.style.TextAppearance_Conversations_Subhead);
             this.binding.mucSubject.setAutoLinkMask(0);
             this.binding.mucSubject.setVisibility(View.VISIBLE);
         } else {

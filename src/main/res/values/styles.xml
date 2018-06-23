@@ -23,6 +23,10 @@
         <item name="android:textColorLink">?android:textColorPrimary</item>
     </style>
 
+    <style name="TextAppearance.Conversations.Body1.Linkified" parent="TextAppearance.AppCompat.Body1">
+        <item name="android:textSize">?TextSizeBody1</item>
+    </style>
+
     <style name="TextAppearance.Conversations.Caption" parent="TextAppearance.AppCompat.Caption">
         <item name="android:textSize">?TextSizeCaption</item>
     </style>
