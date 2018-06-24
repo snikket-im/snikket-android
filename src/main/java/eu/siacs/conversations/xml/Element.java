@@ -136,6 +136,11 @@ public class Element {
 		return this;
 	}
 
+	public Element removeAttribute(String name) {
+		this.attributes.remove(name);
+		return this;
+	}
+
 	public Element setAttributes(Hashtable<String, String> attributes) {
 		this.attributes = attributes;
 		return this;

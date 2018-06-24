@@ -52,6 +52,7 @@ import eu.siacs.conversations.ui.util.MenuDoubleTabUtil;
 import eu.siacs.conversations.ui.util.MyLinkify;
 import eu.siacs.conversations.ui.util.SoftKeyboardUtils;
 import eu.siacs.conversations.utils.EmojiWrapper;
+import eu.siacs.conversations.utils.StringUtils;
 import eu.siacs.conversations.utils.StylingHelper;
 import eu.siacs.conversations.utils.UIHelper;
 import eu.siacs.conversations.utils.XmppUri;
@@ -364,7 +365,7 @@ public class ConferenceDetailsActivity extends XmppActivity implements OnConvers
         if (mucOptions.getSelf().getAffiliation().ranks(MucOptions.Affiliation.OWNER) && changed(mucOptions.getName(), name)) {
             Bundle options = new Bundle();
             options.putString("muc#roomconfig_persistentroom", "1");
-            options.putString("muc#roomconfig_roomname", name);
+            options.putString("muc#roomconfig_roomname", StringUtils.nullOnEmpty(name));
             xmppConnectionService.pushConferenceConfiguration(mConversation, options, this);
         }
     }

@@ -2462,7 +2462,7 @@ public class XmppConnectionService extends Service {
 					}
 
 					if (bookmark != null && (sameBefore || bookmark.getBookmarkName() == null)) {
-						if (bookmark.setBookmarkName(mucOptions.getName())) {
+						if (bookmark.setBookmarkName(StringUtils.nullOnEmpty(mucOptions.getName()))) {
 							pushBookmarks(account);
 						}
 					}
@@ -2555,7 +2555,7 @@ public class XmppConnectionService extends Service {
 	}
 
 	public void pushSubjectToConference(final Conversation conference, final String subject) {
-		MessagePacket packet = this.getMessageGenerator().conferenceSubject(conference, subject);
+		MessagePacket packet = this.getMessageGenerator().conferenceSubject(conference, StringUtils.nullOnEmpty(subject));
 		this.sendMessagePacket(conference.getAccount(), packet);
 	}
 

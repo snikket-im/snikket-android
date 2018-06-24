@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
+import eu.siacs.conversations.utils.StringUtils;
 import eu.siacs.conversations.utils.UIHelper;
 import eu.siacs.conversations.xml.Element;
 import eu.siacs.conversations.xmpp.InvalidJid;
@@ -163,11 +164,11 @@ public class Bookmark extends Element implements ListItem {
 
 	public boolean setBookmarkName(String name) {
 		String before = getBookmarkName();
-		if (name != null && !name.equals(before)) {
+		if (name != null) {
 			this.setAttribute("name", name);
-			return true;
 		} else {
-			return false;
+			this.removeAttribute("name");
 		}
+		return StringUtils.changed(before, name);
 	}
 }

@@ -43,4 +43,8 @@ public class StringUtils {
         return !equals(one, two);
     }
 
+    public static String nullOnEmpty(String input) {
+        return input == null || input.trim().isEmpty() ? null : input;
+    }
+
 }
