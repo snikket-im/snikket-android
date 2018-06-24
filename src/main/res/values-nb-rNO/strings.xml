@@ -410,10 +410,6 @@
     <item quantity="one">%d sertifikat slettet</item>
     <item quantity="other">%d sertifikater slettet</item>
   </plurals>
-  <plurals name="select_contact">
-    <item quantity="one">Velg %d kontakt</item>
-    <item quantity="other">Velg %d kontakter</item>
-  </plurals>
   <string name="pref_quick_action_summary">Erstatt forsendelsesknapp med hurtighandling</string>
   <string name="pref_quick_action">Hurtighandling</string>
   <string name="none">Ingen</string>

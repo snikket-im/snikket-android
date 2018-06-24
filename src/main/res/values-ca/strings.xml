@@ -419,10 +419,6 @@ mentrestant.</string>
     <item quantity="one">%d certificat esborrat</item>
     <item quantity="other">%d certificats esborrats</item>
   </plurals>
-  <plurals name="select_contact">
-    <item quantity="one">Seleccionar %d contacte</item>
-    <item quantity="other">Seleccionar %d contactes</item>
-  </plurals>
   <string name="pref_quick_action_summary">Reemplaça el botó d\'enviar per una acció ràpida</string>
   <string name="pref_quick_action">Acció ràpida</string>
   <string name="none">Cap</string>

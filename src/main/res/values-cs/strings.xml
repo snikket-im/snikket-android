@@ -358,12 +358,6 @@
     <item quantity="many">%d certifikátů smazáno</item>
     <item quantity="other">%d certifikátů smazáno</item>
   </plurals>
-  <plurals name="select_contact">
-    <item quantity="one">Vybrat %d kontakt</item>
-    <item quantity="few">Vybrat %d kontakty</item>
-    <item quantity="many">Vybrat %d kontaktů</item>
-    <item quantity="other">Vybrat %d kontaktů</item>
-  </plurals>
   <string name="pref_quick_action_summary">Nahradit tlačítko odeslání rychlou akcí</string>
   <string name="pref_quick_action">Rychlá akce</string>
   <string name="none">Žádná</string>

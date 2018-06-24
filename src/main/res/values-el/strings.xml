@@ -350,8 +350,4 @@
     <item quantity="one">%d πιστοποιητικο διαγραφθηκε</item>
     <item quantity="other">%d πιστοποιητικά διαγραφθηκαν</item>
   </plurals>
-  <plurals name="select_contact">
-    <item quantity="one">Επιλογή %d επαφής</item>
-    <item quantity="other">Επιλογή %d επαφών</item>
-  </plurals>
 </resources>

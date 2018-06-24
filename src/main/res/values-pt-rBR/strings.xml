@@ -417,10 +417,6 @@
     <item quantity="one">%d certificado cancelado</item>
     <item quantity="other">%d certificados cancelados</item>
   </plurals>
-  <plurals name="select_contact">
-    <item quantity="one">Selecionar %d contato</item>
-    <item quantity="other">Selecionar %d contatos</item>
-  </plurals>
   <string name="pref_quick_action_summary">Troca o botão enviar pelo de ação rápida.</string>
   <string name="pref_quick_action">Ação rápida</string>
   <string name="none">Nenhuma</string>

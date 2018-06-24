@@ -372,12 +372,6 @@
     <item quantity="many">%d сертифікатів видалено</item>
     <item quantity="other">%d сертифікатів видалено</item>
   </plurals>
-  <plurals name="select_contact">
-    <item quantity="one">Вибрано %d контакт</item>
-    <item quantity="few">Вибрано %d контакти</item>
-    <item quantity="many">Вибрано %d контактів</item>
-    <item quantity="other">Вибрано %d контактів</item>
-  </plurals>
   <string name="pref_quick_action_summary">Замінити клавішу відправити швидкими діями</string>
   <string name="pref_quick_action">Швидкі дії</string>
   <string name="none">Жодної</string>

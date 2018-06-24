@@ -228,6 +228,7 @@
   <string name="delete_bookmark">Von Kontaktliste entfernen</string>
   <string name="bookmark_already_exists">Die Konferenz befindet sich bereits auf deiner Kontaktliste</string>
   <string name="action_edit_subject">Gruppenchatthema bearbeiten</string>
+  <string name="topic">Thema</string>
   <string name="joining_conference">Gruppenchat wird beigetreten…</string>
   <string name="leave">Verlassen</string>
   <string name="contact_added_you">Der Kontakt hat dich zur Kontaktliste hinzugefügt</string>
@@ -417,10 +418,6 @@
   <plurals name="toast_delete_certificates">
     <item quantity="one">%d Zertifikat gelöscht</item>
     <item quantity="other">%d Zertifikate gelöscht</item>
-  </plurals>
-  <plurals name="select_contact">
-    <item quantity="one">%d Kontakt ausgewählt</item>
-    <item quantity="other">%d Kontakte ausgewählt</item>
   </plurals>
   <string name="pref_quick_action_summary">Ersetze Absende-Knopf durch Schnell-Tasten</string>
   <string name="pref_quick_action">Schnell-Tasten</string>
@@ -715,4 +712,7 @@
   <string name="group_chat_avatar">Gruppenchat-Avatar</string>
   <string name="host_does_not_support_group_chat_avatars">Host unterstützt keine Gruppenchat-Avatare</string>
   <string name="only_the_owner_can_change_group_chat_avatar">Nur der Eigentümer kann den Gruppenchat-Avatar ändern.</string>
+  <string name="contact_name">Kontaktname</string>
+  <string name="nickname">Nickname</string>
+  <string name="group_chat_name">Name</string>
 </resources>

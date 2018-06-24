@@ -417,9 +417,6 @@
   <plurals name="toast_delete_certificates">
     <item quantity="other">%d 个证书已被删除</item>
   </plurals>
-  <plurals name="select_contact">
-    <item quantity="other">选择 %d 个联系人</item>
-  </plurals>
   <string name="pref_quick_action_summary">以快捷操作替代发送按钮</string>
   <string name="pref_quick_action">快捷操作</string>
   <string name="none">无</string>

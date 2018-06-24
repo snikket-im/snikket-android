@@ -418,10 +418,6 @@
     <item quantity="one">%d tanúsítvány törölve</item>
     <item quantity="other">%d tanúsítvány törölve</item>
   </plurals>
-  <plurals name="select_contact">
-    <item quantity="one">%d névjegy kiválasztása</item>
-    <item quantity="other">%d névjegy kiválasztása</item>
-  </plurals>
   <string name="pref_quick_action_summary">Küldés gomb helyett választott funkciógomb</string>
   <string name="pref_quick_action">Gyors gomb</string>
   <string name="none">Semmi</string>

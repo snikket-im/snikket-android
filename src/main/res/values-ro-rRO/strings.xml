@@ -228,6 +228,7 @@
   <string name="delete_bookmark">Șterge semn de carte</string>
   <string name="bookmark_already_exists">Acest semn de carte exista</string>
   <string name="action_edit_subject">Editează subiectul discuției de grup</string>
+  <string name="topic">Subiect discuție</string>
   <string name="joining_conference">Vă alăturați discuției de grup...</string>
   <string name="leave">Paraseste</string>
   <string name="contact_added_you">Contactul v-a adăugat în lista de contacte</string>
@@ -418,11 +419,6 @@
     <item quantity="one">%d certificat sters</item>
     <item quantity="few">%d certificate sterse</item>
     <item quantity="other">%d certificate șterse</item>
-  </plurals>
-  <plurals name="select_contact">
-    <item quantity="one">Selectează %d contact</item>
-    <item quantity="few">Selectează %d contacte</item>
-    <item quantity="other">Selectează %d de contacte</item>
   </plurals>
   <string name="pref_quick_action_summary">Înlocuiește butonul de trimitere cu o acțiune rapidă</string>
   <string name="pref_quick_action">Acțiune rapidă</string>
@@ -726,4 +722,7 @@ sau chiar pierderea mesajelor.\nÎn continuare veți fi rugați să dezactivați
   <string name="group_chat_avatar">Avatar discuție de grup</string>
   <string name="host_does_not_support_group_chat_avatars">Serverul gazdă nu suporta avatare pentru grupuri</string>
   <string name="only_the_owner_can_change_group_chat_avatar">Doar proprietarul grupului poate schimba avatarul</string>
+  <string name="contact_name">Nume contact</string>
+  <string name="nickname">Nume afișat</string>
+  <string name="group_chat_name">Nume discuție de grup</string>
 </resources>

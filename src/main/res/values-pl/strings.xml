@@ -228,6 +228,7 @@
   <string name="delete_bookmark">Usuń zakładkę</string>
   <string name="bookmark_already_exists">Zakładka już istnieje</string>
   <string name="action_edit_subject">Edytuj tytuł konferencji</string>
+  <string name="topic">Temat</string>
   <string name="joining_conference">Dołączanie do konferencji</string>
   <string name="leave">Opuść pokój</string>
   <string name="contact_added_you">Kontakt został dodany do listy</string>
@@ -419,12 +420,6 @@
     <item quantity="few">Usunięto %d certyfikaty</item>
     <item quantity="many">Usunięto %d certyfikatów</item>
     <item quantity="other">Usunięto %d certyfikatów</item>
-  </plurals>
-  <plurals name="select_contact">
-    <item quantity="one">%d kontakt wybrany</item>
-    <item quantity="few">%d kontakty wybrane</item>
-    <item quantity="many">%d kontaktów wybranych</item>
-    <item quantity="other">%d kontaktów wybranych</item>
   </plurals>
   <string name="pref_quick_action_summary">Zastąp przycisk wysyłania szybką akcją</string>
   <string name="pref_quick_action">Szybka akcja</string>
@@ -736,4 +731,7 @@ Administrator twojego serwera będzie mógł czytać twoje wiadomości, ale moż
   <string name="group_chat_avatar">Awatar konwersacji</string>
   <string name="host_does_not_support_group_chat_avatars">Serwer nie wspiera awatarów konwersacji</string>
   <string name="only_the_owner_can_change_group_chat_avatar">Tylko właściciel może zmienić awatar konwersacji</string>
+  <string name="contact_name">Nazwa kontaktu</string>
+  <string name="nickname">Pseudonim</string>
+  <string name="group_chat_name">Nazwa</string>
 </resources>

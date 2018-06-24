@@ -368,10 +368,6 @@
     <item quantity="one">%d certifikat borttaget</item>
     <item quantity="other">%d certifikat borttagna</item>
   </plurals>
-  <plurals name="select_contact">
-    <item quantity="one">Välj %d kontakt</item>
-    <item quantity="other">Välj %d kontakter</item>
-  </plurals>
   <string name="pref_quick_action_summary">Byt sänd-knappen mot snabbfunktion</string>
   <string name="pref_quick_action">Snabbfunktion</string>
   <string name="none">Ingen</string>

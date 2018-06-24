@@ -228,6 +228,7 @@
   <string name="delete_bookmark">Bladwijzer verwijderen</string>
   <string name="bookmark_already_exists">Deze bladwijzer bestaat al</string>
   <string name="action_edit_subject">Gespreksonderwerp bewerken</string>
+  <string name="topic">Onderwerp</string>
   <string name="joining_conference">Deelnemen aan groepsgesprek…</string>
   <string name="leave">Verlaten</string>
   <string name="contact_added_you">Contact heeft je toegevoegd aan zijn/haar contacten</string>
@@ -417,10 +418,6 @@
   <plurals name="toast_delete_certificates">
     <item quantity="one">%d certificaat verwijderd</item>
     <item quantity="other">%d certificaten verwijderd</item>
-  </plurals>
-  <plurals name="select_contact">
-    <item quantity="one">Selecteer %d contact</item>
-    <item quantity="other">Selecteer %d contacten</item>
   </plurals>
   <string name="pref_quick_action_summary">Vervang verzendknop door snelle actie</string>
   <string name="pref_quick_action">Snelle actie</string>
@@ -715,4 +712,7 @@
   <string name="group_chat_avatar">Gespreksafbeelding</string>
   <string name="host_does_not_support_group_chat_avatars">Host ondersteunt geen gespreksafbeeldingen</string>
   <string name="only_the_owner_can_change_group_chat_avatar">Enkel de eigenaar kan de gespreksafbeelding wijzigen</string>
+  <string name="contact_name">Contactnaam</string>
+  <string name="nickname">Bijnaam</string>
+  <string name="group_chat_name">Naam</string>
 </resources>

@@ -313,12 +313,6 @@
     <item quantity="many">%d חתימות נמחקו</item>
     <item quantity="other">%d חתימות נמחקו</item>
   </plurals>
-  <plurals name="select_contact">
-    <item quantity="one">בחר איש קשר %d</item>
-    <item quantity="two">בחר %d אנשי קשר</item>
-    <item quantity="many">בחר %d אנשי קשר</item>
-    <item quantity="other">בחר %d אנשי קשר</item>
-  </plurals>
   <string name="pref_quick_action_summary">החלף לחצן שליחה בפעולה מהירה</string>
   <string name="pref_quick_action">פעולה מהירה</string>
   <string name="none">כלום</string>

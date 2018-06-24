@@ -228,6 +228,7 @@
   <string name="delete_bookmark">Eliminar marcador</string>
   <string name="bookmark_already_exists">Este marcador ya existe</string>
   <string name="action_edit_subject">Editar asunto de la conversación</string>
+  <string name="topic">Asunto</string>
   <string name="joining_conference">Uniéndose a conversación...</string>
   <string name="leave">Salir</string>
   <string name="contact_added_you">El contacto te ha añadido a su lista de contactos</string>
@@ -417,10 +418,6 @@
   <plurals name="toast_delete_certificates">
     <item quantity="one">%d certificado eliminado</item>
     <item quantity="other">%d certificados eliminados</item>
-  </plurals>
-  <plurals name="select_contact">
-    <item quantity="one">Seleccionado %d contacto</item>
-    <item quantity="other">Seleccionados %d contactos</item>
   </plurals>
   <string name="pref_quick_action_summary">Cambiar el botón de enviar por botón de acción rápida</string>
   <string name="pref_quick_action">Acción rápida</string>
@@ -715,4 +712,7 @@
   <string name="group_chat_avatar">Avatar de la conversación en grupo</string>
   <string name="host_does_not_support_group_chat_avatars">El servidor no soporta avatares en conversaciones en grupo</string>
   <string name="only_the_owner_can_change_group_chat_avatar">Solo el propietario de la conversación puede cambiar el avatar</string>
+  <string name="contact_name">Nombre del contacto</string>
+  <string name="nickname">Apodo</string>
+  <string name="group_chat_name">Nombre</string>
 </resources>

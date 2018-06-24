@@ -362,9 +362,6 @@
   <plurals name="toast_delete_certificates">
     <item quantity="other">%d 인증서 삭제됨 </item>
   </plurals>
-  <plurals name="select_contact">
-    <item quantity="other">%d 연락처 선택 </item>
-  </plurals>
   <string name="pref_quick_action_summary">전송 버튼을 빠른 동작 버튼으로 교체</string>
   <string name="pref_quick_action">빠른 동작</string>
   <string name="none">없음</string>

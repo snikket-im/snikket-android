@@ -347,10 +347,6 @@
     <item quantity="one">%d certificado apagado</item>
     <item quantity="other">%d certificados apagados</item>
   </plurals>
-  <plurals name="select_contact">
-    <item quantity="one">Selecionar %d contacto</item>
-    <item quantity="other">Selecionar %d contactos</item>
-  </plurals>
   <string name="pref_quick_action_summary">Substituir botão enviar com ação rápida</string>
   <string name="pref_quick_action">Ação rápida</string>
   <string name="none">Nenhum</string>

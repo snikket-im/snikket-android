@@ -228,6 +228,7 @@
   <string name="delete_bookmark">Изтриване на отметка</string>
   <string name="bookmark_already_exists">Вече съществува такава отметка</string>
   <string name="action_edit_subject">Редактиране на темата на груповия разговор</string>
+  <string name="topic">Тема</string>
   <string name="joining_conference">Присъединяване в групов разговор…</string>
   <string name="leave">Напускане</string>
   <string name="contact_added_you">Контактът е добавен във Вашия списък от контакти</string>
@@ -417,10 +418,6 @@
   <plurals name="toast_delete_certificates">
     <item quantity="one">%d сертификат е изтрит</item>
     <item quantity="other">%d сертификата са изтрити</item>
-  </plurals>
-  <plurals name="select_contact">
-    <item quantity="one">Изберете %d контакт</item>
-    <item quantity="other">Изберете %d контакта</item>
   </plurals>
   <string name="pref_quick_action_summary">Замяна на бутона за изпращане с бързо действие</string>
   <string name="pref_quick_action">Бързо действие</string>
@@ -715,4 +712,7 @@
   <string name="group_chat_avatar">Аватар на груповия разговор</string>
   <string name="host_does_not_support_group_chat_avatars">Сървърът не поддържа аватари за груповите разговори</string>
   <string name="only_the_owner_can_change_group_chat_avatar">Само собственикът може да променя аватара на груповия разговор</string>
+  <string name="contact_name">Име на контакта</string>
+  <string name="nickname">Псевдоним</string>
+  <string name="group_chat_name">Име</string>
 </resources>

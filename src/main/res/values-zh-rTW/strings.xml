@@ -367,9 +367,6 @@
   <plurals name="toast_delete_certificates">
     <item quantity="other">%d 個證書已被刪除</item>
   </plurals>
-  <plurals name="select_contact">
-    <item quantity="other">選擇 %d 個連絡人</item>
-  </plurals>
   <string name="pref_quick_action_summary">以快速動作替代發送按鈕</string>
   <string name="pref_quick_action">快速動作</string>
   <string name="none">無</string>

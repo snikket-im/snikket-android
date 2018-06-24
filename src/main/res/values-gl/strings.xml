@@ -416,10 +416,6 @@
     <item quantity="one">%d certificado eliminado</item>
     <item quantity="other">%d certificados eleminados</item>
   </plurals>
-  <plurals name="select_contact">
-    <item quantity="one">Selecione %d contacto</item>
-    <item quantity="other">Selecione %d contactos</item>
-  </plurals>
   <string name="pref_quick_action_summary">Substitúa o botón enviar con unha acción rápida</string>
   <string name="pref_quick_action">Acción rápida</string>
   <string name="none">Ningunha</string>

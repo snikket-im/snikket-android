@@ -306,12 +306,6 @@
     <item quantity="many">%d certifikátov vymazaných</item>
     <item quantity="other">%d certifikátov vymazaných</item>
   </plurals>
-  <plurals name="select_contact">
-    <item quantity="one">Vybrať %d kontaktu</item>
-    <item quantity="few">Vybrať %d kontaktu</item>
-    <item quantity="many">Vybrať %d kontaktov</item>
-    <item quantity="other">Vybrať %d kontaktov</item>
-  </plurals>
   <string name="pref_quick_action_summary">Nahradiť tlačidlo poslať rýchlou akciou</string>
   <string name="pref_quick_action">Rýchla akcia</string>
   <string name="none">Žiadny</string>

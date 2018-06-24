@@ -228,6 +228,7 @@
   <string name="delete_bookmark">Supprimer le favori</string>
   <string name="bookmark_already_exists">Le favori existe déjà</string>
   <string name="action_edit_subject">Modifier le sujet de la conversation de groupe</string>
+  <string name="topic">Sujet</string>
   <string name="joining_conference">Rejoindre la conversation de groupe</string>
   <string name="leave">Partir</string>
   <string name="contact_added_you">Votre correspondant vous a ajouté dans sa liste de contacts</string>
@@ -417,10 +418,6 @@
   <plurals name="toast_delete_certificates">
     <item quantity="one">%d certificat supprimé</item>
     <item quantity="other">%d certificats supprimés</item>
-  </plurals>
-  <plurals name="select_contact">
-    <item quantity="one">%d contact sélectionné</item>
-    <item quantity="other">%d contacts sélectionnés</item>
   </plurals>
   <string name="pref_quick_action_summary">Remplacer le bouton Envoyer par une action rapide.</string>
   <string name="pref_quick_action">Action Rapide</string>
@@ -658,6 +655,7 @@
   <string name="huawei_protected_apps_summary">Pour recevoir les notifications, même lorsque l\'écran est éteint, vous devez ajouter Conversations à la liste des applications protégées.</string>
   <string name="mtm_accept_cert">Accepter les certificats inconnus ?</string>
   <string name="mtm_trust_anchor">Le certificat du serveur n\'est pas signé par une Autorité de Certification connue.</string>
+  <string name="mtm_accept_servername">Accepter un nom de serveur qui ne correspond pas ?</string>
   <string name="mtm_hostname_mismatch">Le serveur n\'a pu s\'authentifier en tant que \"%s\". Le certificat est valide uniquement pour :</string>
   <string name="mtm_connect_anyway">Désirez-vous quand-même vous connecter ?</string>
   <string name="mtm_cert_details">Détails du certificat :</string>
@@ -672,7 +670,7 @@
   <string name="error_trustkey_device_list">Impossible de récupérer la liste des appareils</string>
   <string name="error_trustkey_bundle">Impossible de récupérer les trousseaux de clés de l\'appareil</string>
   <string name="error_trustkey_hint_mutual">Indication : Dans certains cas, cela peut être résolu en vous ajoutant respectivement dans votre liste de contacts.</string>
-  <string name="disable_encryption_message">Êtes-vous sûr de vouloir désactiver le chiffrement OMEMO pour cette discussion?\nCeci permettra à l\'administrateur de votre serveur de lire vos messages, mais cela peut être le seul moyen de communiquer avec des personnes utilisant un vieux client.</string>
+  <string name="disable_encryption_message">Êtes-vous sûr de vouloir désactiver le chiffrement OMEMO pour cette discussion ?\nCeci permettra à l\'administrateur de votre serveur de lire vos messages, mais cela peut être le seul moyen de communiquer avec des personnes utilisant un vieux client.</string>
   <string name="disable_now">Désactiver maintenant</string>
   <string name="draft">Brouillon :</string>
   <string name="pref_omemo_setting">Chiffrement OMEMO</string>
@@ -681,6 +679,7 @@
   <string name="pref_omemo_setting_summary_default_off">OMEMO devra être activé manuellement pour chaque nouvelle discussion</string>
   <string name="create_shortcut">Créer un raccourci</string>
   <string name="pref_font_size">Taille de police</string>
+  <string name="pref_font_size_summary">La taille de police relative utilisée dans l\'application.</string>
   <string name="default_on">Activé par défaut</string>
   <string name="default_off">Désactivé par défaut</string>
   <string name="small">Petite</string>
@@ -693,6 +692,7 @@
   <string name="action_unfix_from_location">Débloquer la position</string>
   <string name="action_copy_location">Copier la position</string>
   <string name="action_share_location">Partager la position</string>
+  <string name="action_directions">Instructions</string>
   <string name="title_activity_share_location">Partager la position</string>
   <string name="title_activity_show_location">Afficher la position</string>
   <string name="share">Partager</string>
@@ -702,10 +702,17 @@
   <string name="search_messages">Rechercher dans les messages</string>
   <string name="gif">GIF</string>
   <string name="view_conversation">Voir la conversation</string>
+  <string name="pref_use_share_location_plugin">Plugin de partage de localisation</string>
   <string name="pref_use_share_location_plugin_summary">Utiliser le plugin \"Share Location\" plutôt que la carte intégrée</string>
   <string name="copy_link">Copier l\'adresse internet</string>
   <string name="copy_jabber_id">Copier le Jabber ID</string>
+  <string name="p1_s3_filetransfer">Partage de fichier HTTP pour S3</string>
+  <string name="pref_start_search">Recherche directe</string>
+  <string name="pref_start_search_summary">Sur l\'écran de démarrage de Conversation, afficher le clavier et placer le curseur sur le champ recherche</string>
   <string name="group_chat_avatar">Avatar du groupe de discussion</string>
   <string name="host_does_not_support_group_chat_avatars">Le serveur ne prend pas en charge les avatars pour les groupes de discussion</string>
   <string name="only_the_owner_can_change_group_chat_avatar">Seul le propriétaire peut changer l\'avatar d\'un groupe de discussion</string>
+  <string name="contact_name">Nom du contact</string>
+  <string name="nickname">Surnom</string>
+  <string name="group_chat_name">Nom</string>
 </resources>

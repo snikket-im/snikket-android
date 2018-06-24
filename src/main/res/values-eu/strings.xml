@@ -418,10 +418,6 @@
     <item quantity="one">Ziurtagiri %d ezabatua</item>
     <item quantity="other">%d ziurtagiri ezabatuak</item>
   </plurals>
-  <plurals name="select_contact">
-    <item quantity="one">Hautatu kontaktu %d</item>
-    <item quantity="other">Hautatu %d kontaktu</item>
-  </plurals>
   <string name="pref_quick_action_summary">Bidaltze botoia ekintza azkar batekin aldatu</string>
   <string name="pref_quick_action">Ekintza azkarra</string>
   <string name="none">Bat ere ez</string>

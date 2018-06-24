@@ -369,11 +369,6 @@
     <item quantity="few">%d сертификата обрисана</item>
     <item quantity="other">%d сертификата обрисано</item>
   </plurals>
-  <plurals name="select_contact">
-    <item quantity="one">Изабери %d контакт</item>
-    <item quantity="few">Изабери %d контакта</item>
-    <item quantity="other">Изабери %d контаката</item>
-  </plurals>
   <string name="pref_quick_action_summary">Замени дугме за слање брзом радњом</string>
   <string name="pref_quick_action">Брза радња</string>
   <string name="none">Ниједна</string>
