@@ -26,6 +26,7 @@ import eu.siacs.conversations.entities.Conversation;
 import eu.siacs.conversations.entities.Message;
 import eu.siacs.conversations.entities.Transferable;
 import eu.siacs.conversations.ui.ConversationFragment;
+import eu.siacs.conversations.ui.ConversationsOverviewFragment;
 import eu.siacs.conversations.ui.XmppActivity;
 import eu.siacs.conversations.ui.util.Color;
 import eu.siacs.conversations.ui.widget.UnreadCountCustomView;
@@ -91,7 +92,11 @@ public class ConversationAdapter extends RecyclerView.Adapter<ConversationAdapte
 			viewHolder.name.setText(EmojiWrapper.transform(name));
 		}
 
-		viewHolder.frame.setBackgroundColor(Color.get(activity, conversation == ConversationFragment.getConversation(activity) ? R.attr.color_background_secondary : R.attr.color_background_primary));
+		if (conversation == ConversationFragment.getConversation(activity)) {
+			viewHolder.frame.setBackgroundColor(Color.get(activity,R.attr.color_background_tertiary));
+		} else {
+			viewHolder.frame.setBackground(null);
+		}
 
 		Message message = conversation.getLatestMessage();
 		final int unreadCount = conversation.unreadCount();

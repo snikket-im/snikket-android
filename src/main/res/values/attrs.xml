@@ -12,6 +12,7 @@
 
     <attr name="IconSize" format="dimension"/>
 
+    <attr name="color_background_tertiary" format="reference|color"/>
     <attr name="color_background_secondary" format="reference|color"/>
     <attr name="color_background_primary" format="reference|color"/>
     <attr name="color_warning" format="reference|color"/>
