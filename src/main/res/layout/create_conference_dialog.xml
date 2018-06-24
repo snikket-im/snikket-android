@@ -22,12 +22,6 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"/>
 
-        <View
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:focusable="true"
-            android:focusableInTouchMode="true"/>
-
         <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -35,13 +29,11 @@
             app:hintTextAppearance="@style/TextAppearance.Conversations.Design.Hint">
 
             <android.support.design.widget.TextInputEditText
-                android:id="@+id/subject"
+                android:id="@+id/group_chat_name"
                 style="@style/Widget.Conversations.EditText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/topic"
-                android:nextFocusDown="@+id/subject"
-                android:nextFocusUp="@+id/subject"/>
+                android:hint="@string/create_dialog_group_chat_name"/>
         </android.support.design.widget.TextInputLayout>
     </LinearLayout>
 </layout>

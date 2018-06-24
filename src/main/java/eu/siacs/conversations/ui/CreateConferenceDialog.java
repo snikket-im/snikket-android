@@ -17,6 +17,7 @@ import java.util.List;
 
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.databinding.CreateConferenceDialogBinding;
+import eu.siacs.conversations.ui.util.DelayedHintHelper;
 
 public class CreateConferenceDialog extends DialogFragment {
 
@@ -46,13 +47,9 @@ public class CreateConferenceDialog extends DialogFragment {
         ArrayList<String> mActivatedAccounts = getArguments().getStringArrayList(ACCOUNTS_LIST_KEY);
         StartConversationActivity.populateAccountSpinner(getActivity(), mActivatedAccounts, binding.account);
         builder.setView(binding.getRoot());
-        builder.setPositiveButton(R.string.choose_participants, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                mListener.onCreateDialogPositiveClick(binding.account, binding.subject.getText().toString());
-            }
-        });
+        builder.setPositiveButton(R.string.choose_participants, (dialog, which) -> mListener.onCreateDialogPositiveClick(binding.account, binding.groupChatName.getText().toString().trim()));
         builder.setNegativeButton(R.string.cancel, null);
+        DelayedHintHelper.setHint(R.string.providing_a_name_is_optional, binding.groupChatName);
         return builder.create();
     }
 

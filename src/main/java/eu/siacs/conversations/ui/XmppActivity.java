@@ -924,22 +924,11 @@ public abstract class XmppActivity extends ActionBarActivity {
 
 		public static ConferenceInvite parse(Intent data) {
 			ConferenceInvite invite = new ConferenceInvite();
-			invite.uuid = data.getStringExtra("conversation");
+			invite.uuid = data.getStringExtra(ChooseContactActivity.EXTRA_CONVERSATION);
 			if (invite.uuid == null) {
 				return null;
 			}
-			try {
-				if (data.getBooleanExtra("multiple", false)) {
-					String[] toAdd = data.getStringArrayExtra("contacts");
-					for (String item : toAdd) {
-						invite.jids.add(Jid.of(item));
-					}
-				} else {
-					invite.jids.add(Jid.of(data.getStringExtra("contact")));
-				}
-			} catch (final IllegalArgumentException ignored) {
-				return null;
-			}
+			invite.jids.addAll(ChooseContactActivity.extractJabberIds(data));
 			return invite;
 		}
 
