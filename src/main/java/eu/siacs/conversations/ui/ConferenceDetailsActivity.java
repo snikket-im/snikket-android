@@ -58,6 +58,7 @@ import eu.siacs.conversations.utils.XmppUri;
 import rocks.xmpp.addr.Jid;
 
 import static eu.siacs.conversations.entities.Bookmark.printableValue;
+import static eu.siacs.conversations.utils.StringUtils.changed;
 
 public class ConferenceDetailsActivity extends XmppActivity implements OnConversationUpdate, OnMucRosterUpdate, XmppConnectionService.OnAffiliationChanged, XmppConnectionService.OnRoleChanged, XmppConnectionService.OnConfigurationPushed, TextWatcher {
     public static final String ACTION_VIEW_MUC = "view_muc";
@@ -368,13 +369,6 @@ public class ConferenceDetailsActivity extends XmppActivity implements OnConvers
         }
     }
 
-    private static String blankOnNull(String input) {
-        return input == null ? "" : input;
-    }
-
-    private static boolean changed(String one, String two) {
-        return !blankOnNull(one).equals(blankOnNull(two));
-    }
 
     @Override
     protected String getShareableUri(boolean http) {
@@ -558,8 +552,7 @@ public class ConferenceDetailsActivity extends XmppActivity implements OnConvers
     }
 
     protected void saveAsBookmark() {
-        xmppConnectionService.saveConversationAsBookmark(mConversation,
-                mConversation.getMucOptions().getSubject());
+        xmppConnectionService.saveConversationAsBookmark(mConversation, mConversation.getMucOptions().getName());
     }
 
     protected void deleteBookmark() {
