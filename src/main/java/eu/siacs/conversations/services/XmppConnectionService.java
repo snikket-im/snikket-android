@@ -9,6 +9,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.database.ContentObserver;
 import android.graphics.Bitmap;
 import android.media.AudioManager;
@@ -29,6 +30,7 @@ import android.security.KeyChain;
 import android.support.annotation.BoolRes;
 import android.support.annotation.IntegerRes;
 import android.support.v4.app.RemoteInput;
+import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -64,6 +66,7 @@ import java.util.concurrent.atomic.AtomicLong;
 import javax.security.auth.callback.Callback;
 
 import eu.siacs.conversations.Config;
+import eu.siacs.conversations.Manifest;
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.crypto.OmemoSetting;
 import eu.siacs.conversations.crypto.PgpDecryptionService;
@@ -970,7 +973,10 @@ public class XmppConnectionService extends Service {
 		restoreFromDatabase();
 
 		getContentResolver().registerContentObserver(ContactsContract.Contacts.CONTENT_URI, true, contactObserver);
-		new Thread(fileObserver::startWatching).start();
+		if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M || ContextCompat.checkSelfPermission(this, android.Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
+			Log.d(Config.LOGTAG,"starting file observer");
+			new Thread(fileObserver::startWatching).start();
+		}
 		if (Config.supportOpenPgp()) {
 			this.pgpServiceConnection = new OpenPgpServiceConnection(this, "org.sufficientlysecure.keychain", new OpenPgpServiceConnection.OnBound() {
 				@Override
@@ -1022,6 +1028,11 @@ public class XmppConnectionService extends Service {
 		}
 		fileObserver.stopWatching();
 		super.onDestroy();
+	}
+
+	public void restartFileObserver() {
+		Log.d(Config.LOGTAG,"restarting file observer");
+		new Thread(fileObserver::restartWatching).start();
 	}
 
 	public void toggleScreenEventReceiver() {

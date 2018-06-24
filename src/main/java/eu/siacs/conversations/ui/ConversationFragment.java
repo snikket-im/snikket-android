@@ -499,6 +499,15 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
 		return true;
 	}
 
+	private static boolean writeGranted(int[] grantResults, String[] permission) {
+		for(int i = 0; i < grantResults.length; ++i) {
+			if (Manifest.permission.WRITE_EXTERNAL_STORAGE.equals(permission[i])) {
+				return grantResults[i] == PackageManager.PERMISSION_GRANTED;
+			}
+		}
+		return false;
+	}
+
 	private static String getFirstDenied(int[] grantResults, String[] permissions) {
 		for (int i = 0; i < grantResults.length; ++i) {
 			if (grantResults[i] == PackageManager.PERMISSION_DENIED) {
@@ -1343,7 +1352,7 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
 
 	@Override
 	public void onRequestPermissionsResult(int requestCode, @NonNull String permissions[], @NonNull int[] grantResults) {
-		if (grantResults.length > 0)
+		if (grantResults.length > 0) {
 			if (allGranted(grantResults)) {
 				if (requestCode == REQUEST_START_DOWNLOAD) {
 					if (this.mPendingDownloadableMessage != null) {
@@ -1368,6 +1377,12 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
 				}
 				Toast.makeText(getActivity(), res, Toast.LENGTH_SHORT).show();
 			}
+		}
+		if (writeGranted(grantResults, permissions)) {
+			if (activity != null && activity.xmppConnectionService != null) {
+				activity.xmppConnectionService.restartFileObserver();
+			}
+		}
 	}
 
 	public void startDownloadable(Message message) {

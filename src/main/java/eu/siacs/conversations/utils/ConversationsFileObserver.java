@@ -75,6 +75,11 @@ public abstract class ConversationsFileObserver {
 
     abstract public void onEvent(int event, String path);
 
+    public void restartWatching() {
+        stopWatching();
+        startWatching();
+    }
+
     private class SingleFileObserver extends FileObserver {
         private final String path;
 
