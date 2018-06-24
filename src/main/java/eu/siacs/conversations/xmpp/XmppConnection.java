@@ -1541,6 +1541,7 @@ public class XmppConnection implements Runnable {
 			for (final Entry<Jid, ServiceDiscoveryResult> cursor : disco.entrySet()) {
 				final ServiceDiscoveryResult value = cursor.getValue();
 				if (value.getFeatures().contains("http://jabber.org/protocol/muc")
+						&& value.hasIdentity("conference", "text")
 						&& !value.getFeatures().contains("jabber:iq:gateway")
 						&& !value.hasIdentity("conference", "irc")) {
 					servers.add(cursor.getKey().toString());
