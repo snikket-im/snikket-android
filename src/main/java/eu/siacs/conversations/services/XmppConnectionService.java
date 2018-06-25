@@ -41,7 +41,6 @@ import org.openintents.openpgp.IOpenPgpService2;
 import org.openintents.openpgp.util.OpenPgpApi;
 import org.openintents.openpgp.util.OpenPgpServiceConnection;
 
-import java.math.BigInteger;
 import java.net.URL;
 import java.security.SecureRandom;
 import java.security.cert.CertificateException;
@@ -63,10 +62,8 @@ import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicLong;
 
-import javax.security.auth.callback.Callback;
 
 import eu.siacs.conversations.Config;
-import eu.siacs.conversations.Manifest;
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.crypto.OmemoSetting;
 import eu.siacs.conversations.crypto.PgpDecryptionService;
