@@ -609,7 +609,7 @@ public class ConferenceDetailsActivity extends XmppActivity implements OnConvers
         String subject = mucOptions.getSubject();
         final boolean hasTitle;
         if (printableValue(roomName)) {
-            this.binding.mucTitle.setText(roomName);
+            this.binding.mucTitle.setText(EmojiWrapper.transform(roomName));
             this.binding.mucTitle.setVisibility(View.VISIBLE);
             hasTitle = true;
         } else if (!printableValue(subject)) {
