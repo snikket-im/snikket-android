@@ -20,6 +20,7 @@
   <string name="title_activity_sharewith">Udostępnij w konwersacji</string>
   <string name="title_activity_start_conversation">Rozpocznij konwersację</string>
   <string name="title_activity_choose_contact">Wybierz kontakt</string>
+  <string name="title_activity_choose_contacts">Wybierz kontakty</string>
   <string name="title_activity_share_via_account">Udostępnij za pomocą</string>
   <string name="title_activity_block_list">Czarna lista</string>
   <string name="just_now">przed chwilą</string>
@@ -734,4 +735,6 @@ Administrator twojego serwera będzie mógł czytać twoje wiadomości, ale moż
   <string name="contact_name">Nazwa kontaktu</string>
   <string name="nickname">Pseudonim</string>
   <string name="group_chat_name">Nazwa</string>
+  <string name="providing_a_name_is_optional">Nie trzeba podawać nazwy</string>
+  <string name="create_dialog_group_chat_name">Nazwa konferencji</string>
 </resources>

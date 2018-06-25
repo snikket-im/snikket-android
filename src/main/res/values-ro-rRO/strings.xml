@@ -20,6 +20,7 @@
   <string name="title_activity_sharewith">Partajează într-o conversație</string>
   <string name="title_activity_start_conversation">Pornește o conversație</string>
   <string name="title_activity_choose_contact">Alegeți contact</string>
+  <string name="title_activity_choose_contacts">Alegeți contactele</string>
   <string name="title_activity_share_via_account">Partajează cu cont</string>
   <string name="title_activity_block_list">Listă contacte blocate</string>
   <string name="just_now">în acest moment</string>
@@ -723,6 +724,8 @@ sau chiar pierderea mesajelor.\nÎn continuare veți fi rugați să dezactivați
   <string name="host_does_not_support_group_chat_avatars">Serverul gazdă nu suporta avatare pentru grupuri</string>
   <string name="only_the_owner_can_change_group_chat_avatar">Doar proprietarul grupului poate schimba avatarul</string>
   <string name="contact_name">Nume contact</string>
-  <string name="nickname">Nume afișat</string>
-  <string name="group_chat_name">Nume discuție de grup</string>
+  <string name="nickname">Numele dumneavoastră</string>
+  <string name="group_chat_name">Titlul discuției de grup</string>
+  <string name="providing_a_name_is_optional">Setarea numelui este opțională</string>
+  <string name="create_dialog_group_chat_name">Titlul discuției de grup</string>
 </resources>

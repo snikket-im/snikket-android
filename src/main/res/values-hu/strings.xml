@@ -5,7 +5,7 @@
   <string name="action_accounts">Fiókok kezelése</string>
   <string name="action_end_conversation">Beszélgetés befejezése</string>
   <string name="action_contact_details">Kapcsolat részletek</string>
-  <string name="action_muc_details">Csoportos csevegés részletei</string>
+  <string name="action_muc_details">Konferencia részletei</string>
   <string name="action_secure">Biztonságos beszélgetés</string>
   <string name="action_add_account">Fiók hozzáadása</string>
   <string name="action_edit_contact">Név szerkesztése</string>
@@ -20,6 +20,7 @@
   <string name="title_activity_sharewith">Megosztás Conversation-nel</string>
   <string name="title_activity_start_conversation">Beszélgessünk!</string>
   <string name="title_activity_choose_contact">Válassz névjegyet</string>
+  <string name="title_activity_choose_contacts">Válassz névjegyeket</string>
   <string name="title_activity_share_via_account">Megosztás fiókon keresztül</string>
   <string name="title_activity_block_list">Tiltólista</string>
   <string name="just_now">Éppen most</string>
@@ -228,6 +229,7 @@
   <string name="delete_bookmark">Könyvjelző törlése</string>
   <string name="bookmark_already_exists">A könyvjelző már létezik</string>
   <string name="action_edit_subject">Konferencia témájának beállítása</string>
+  <string name="topic">Téma</string>
   <string name="joining_conference">Konferenciához csatlakozás...</string>
   <string name="leave">Távozás</string>
   <string name="contact_added_you">Ez a felhasználó hozzáadott téged a névjegyeihez</string>
@@ -708,4 +710,12 @@
   <string name="p1_s3_filetransfer">HTTP fájlmegosztás S3-nak</string>
   <string name="pref_start_search">Közvetlen keresés</string>
   <string name="pref_start_search_summary">A \"Beszélgessünk\" képernyőn nyissa meg a billentyűzetet, és helyezze a kurzort a keresőmezőbe</string>
+  <string name="group_chat_avatar">Konferencia profilkép</string>
+  <string name="host_does_not_support_group_chat_avatars">A gazdagép nem támogatja a konferencia profilképeket</string>
+  <string name="only_the_owner_can_change_group_chat_avatar">Csak a tulajdonos tudja megváltoztatni a csoport profilképét</string>
+  <string name="contact_name">Kapcsolatnév</string>
+  <string name="nickname">Becenév</string>
+  <string name="group_chat_name">Név</string>
+  <string name="providing_a_name_is_optional">A név megadása nem kötelező</string>
+  <string name="create_dialog_group_chat_name">Konferencia neve</string>
 </resources>

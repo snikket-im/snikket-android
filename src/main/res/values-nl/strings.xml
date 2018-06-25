@@ -20,6 +20,7 @@
   <string name="title_activity_sharewith">Delen in gesprek</string>
   <string name="title_activity_start_conversation">Gesprek starten</string>
   <string name="title_activity_choose_contact">Contact kiezen</string>
+  <string name="title_activity_choose_contacts">Contacten kiezen</string>
   <string name="title_activity_share_via_account">Delen via account</string>
   <string name="title_activity_block_list">Geblokkeerde contacten</string>
   <string name="just_now">zojuist</string>
@@ -715,4 +716,6 @@
   <string name="contact_name">Contactnaam</string>
   <string name="nickname">Bijnaam</string>
   <string name="group_chat_name">Naam</string>
+  <string name="providing_a_name_is_optional">Naam is niet vereist</string>
+  <string name="create_dialog_group_chat_name">Gespreksnaam</string>
 </resources>

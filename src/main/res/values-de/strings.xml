@@ -20,6 +20,7 @@
   <string name="title_activity_sharewith">Mit Unterhaltung teilen</string>
   <string name="title_activity_start_conversation">Unterhaltung beginnen</string>
   <string name="title_activity_choose_contact">Kontakt auswählen</string>
+  <string name="title_activity_choose_contacts">Kontakte auswählen</string>
   <string name="title_activity_share_via_account">Teilen über Konto</string>
   <string name="title_activity_block_list">Sperrliste</string>
   <string name="just_now">gerade</string>
@@ -715,4 +716,6 @@
   <string name="contact_name">Kontaktname</string>
   <string name="nickname">Nickname</string>
   <string name="group_chat_name">Name</string>
+  <string name="providing_a_name_is_optional">Angabe eines Namens ist optional</string>
+  <string name="create_dialog_group_chat_name">Gruppenchatname</string>
 </resources>

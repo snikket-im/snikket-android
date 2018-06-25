@@ -20,6 +20,7 @@
   <string name="title_activity_sharewith">Compartir con Conversación</string>
   <string name="title_activity_start_conversation">Nueva Conversación</string>
   <string name="title_activity_choose_contact">Seleccionar Contacto</string>
+  <string name="title_activity_choose_contacts">Seleccionar Contactos</string>
   <string name="title_activity_share_via_account">Compartir via cuenta</string>
   <string name="title_activity_block_list">Lista contactos bloqueados</string>
   <string name="just_now">ahora</string>
@@ -715,4 +716,6 @@
   <string name="contact_name">Nombre del contacto</string>
   <string name="nickname">Apodo</string>
   <string name="group_chat_name">Nombre</string>
+  <string name="providing_a_name_is_optional">Añadir un nombre es opcional</string>
+  <string name="create_dialog_group_chat_name">Nombre de la Conversación en grupo</string>
 </resources>
