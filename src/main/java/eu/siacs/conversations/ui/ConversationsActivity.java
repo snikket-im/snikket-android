@@ -468,7 +468,11 @@ public class ConversationsActivity extends XmppActivity implements OnConversatio
 			case android.R.id.home:
 				FragmentManager fm = getFragmentManager();
 				if (fm.getBackStackEntryCount() > 0) {
-					fm.popBackStack();
+					try {
+						fm.popBackStack();
+					} catch (IllegalArgumentException e) {
+						Log.w(Config.LOGTAG,"Unable to pop back stack after pressing home button");
+					}
 					return true;
 				}
 				break;
