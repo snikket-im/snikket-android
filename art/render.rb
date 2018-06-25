@@ -13,7 +13,7 @@ resolutions = {
 images = {
 	'ic_launcher.svg' => ['ic_launcher', 48],
 	'main_logo.svg' => ['main_logo', 200],
-    'main_logo.svg' => ['splash_logo', 144],
+    'splash_logo.svg' => ['splash_logo', 144],
     'ic_search_black.svg' => ['ic_search_background_black', 144],
     'ic_search_white.svg' => ['ic_search_background_white', 144],
     'ic_no_results_white.svg' => ['ic_no_results_background_white', 144],
@@ -79,7 +79,7 @@ images = {
 # "/Applications/Inkscape.app/Contents/Resources/bin/inkscape"
 
 inkscape = "inkscape"
-imagemagick = "convert"
+imagemagick = "magick"
 
 def execute_cmd(cmd)
 	puts cmd
@@ -143,7 +143,7 @@ images.each do |source_filename, settings|
 
 		execute_cmd "#{imagemagick} -background none PNG32:#{path} -gravity center -extent #{width+2}x#{height+2} PNG32:#{path}"
 
-		draw_format = "-draw \"rectangle %d,%d %d,%d\""
+		draw_format = "-draw \"line %d,%d %d,%d\""
 		top_line = draw_format % [top.min + 1, 0, top.max, 0]
 		right_line = draw_format % [width + 1, right.min + 1, width + 1, right.max]
 		bottom_line = draw_format % [bottom.min + 1, height + 1, bottom.max, height + 1]
