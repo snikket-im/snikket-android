@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="ConversationsTheme.Dark" parent="ConversationsTheme.Dark.Base">
+        <item name="android:navigationBarColor">@color/grey900</item>
+    </style>
+</resources>

@@ -99,7 +99,9 @@
         <item type="reference" name="icon_enable_undecided_device">@drawable/ic_new_releases_black_24dp</item>
     </style>
 
-    <style name="ConversationsTheme.Dark" parent="Theme.AppCompat.NoActionBar">
+    <style name="ConversationsTheme.Dark" parent="ConversationsTheme.Dark.Base" />
+
+    <style name="ConversationsTheme.Dark.Base" parent="Theme.AppCompat.NoActionBar">
         <item name="colorPrimary">@color/green800</item>
         <item name="colorPrimaryDark">@color/green900</item>
         <item name="colorAccent">@color/blue_a100</item>
