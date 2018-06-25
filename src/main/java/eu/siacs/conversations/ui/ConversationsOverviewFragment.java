@@ -136,15 +136,6 @@ public class ConversationsOverviewFragment extends XmppFragment {
 			boolean isMuc = swipedConversation.peek().getMode() == Conversation.MODE_MULTI;
 			int title = isMuc ? R.string.title_undo_swipe_out_muc : R.string.title_undo_swipe_out_conversation;
 
-			pendingActionHelper.push(() -> {
-				Conversation c = swipedConversation.pop();
-				if(c != null){
-					if (!c.isRead() && c.getMode() == Conversation.MODE_SINGLE) {
-						return;
-					}
-					activity.xmppConnectionService.archiveConversation(c);
-				}
-			});
 			final Snackbar snackbar = Snackbar.make(binding.list, title, 5000)
 					.setAction(R.string.undo, v -> {
 						pendingActionHelper.undo();
@@ -171,6 +162,20 @@ public class ConversationsOverviewFragment extends XmppFragment {
 							}
 						}
 					});
+
+			pendingActionHelper.push(() -> {
+				if (snackbar.isShownOrQueued()) {
+					snackbar.dismiss();
+				}
+				Conversation c = swipedConversation.pop();
+				if(c != null){
+					if (!c.isRead() && c.getMode() == Conversation.MODE_SINGLE) {
+						return;
+					}
+					activity.xmppConnectionService.archiveConversation(c);
+				}
+			});
+
 			ThemeHelper.fix(snackbar);
 			snackbar.show();
 		}
