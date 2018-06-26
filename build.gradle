@@ -67,8 +67,8 @@ android {
     defaultConfig {
         minSdkVersion 19
         targetSdkVersion 25
-        versionCode 274
-        versionName "2.2.3"
+        versionCode 276
+        versionName "2.2.4"
         archivesBaseName += "-$versionName"
         applicationId "eu.siacs.conversations"
         resValue "string", "applicationId", applicationId
@@ -95,15 +95,19 @@ android {
     productFlavors {
         playstore {
             dimension "distribution"
+            versionNameSuffix "-p"
         }
         free {
             dimension "distribution"
+            versionNameSuffix "-f"
         }
         system {
             dimension "emoji"
+            versionNameSuffix "s"
         }
         compat {
             dimension "emoji"
+            versionNameSuffix "c"
         }
     }
 
@@ -112,11 +116,13 @@ android {
             shrinkResources true
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            versionNameSuffix "r"
         }
         debug {
             shrinkResources true
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            versionNameSuffix "d"
         }
     }
 

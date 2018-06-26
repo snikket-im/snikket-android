@@ -1,5 +1,10 @@
 # Changelog
 
+### Version 2.2.4
+* Use group chat name as primary identifier
+* Show group name and subject in group chat details
+* Upload group chat avatar on compatible servers
+
 ### Version 2.2.3
 * Introduce Expert Setting to enable direct search
 * Introduce Paste As Quote on Android 6+
