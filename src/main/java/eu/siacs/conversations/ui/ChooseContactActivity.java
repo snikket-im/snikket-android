@@ -207,6 +207,9 @@ public class ChooseContactActivity extends AbstractSearchableListItemActivity im
 
     @Override
     public void onItemCheckedStateChanged(ActionMode mode, int position, long id, boolean checked) {
+        if (selected.size() != 0) {
+            getListView().playSoundEffect(0);
+        }
         Contact item = (Contact) getListItems().get(position);
         if (checked) {
             selected.add(item.getJid().toString());
