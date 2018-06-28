@@ -95,11 +95,11 @@ android {
     productFlavors {
         playstore {
             dimension "distribution"
-            versionNameSuffix "-p"
+            versionNameSuffix "+p"
         }
         free {
             dimension "distribution"
-            versionNameSuffix "-f"
+            versionNameSuffix "+f"
         }
         system {
             dimension "emoji"
