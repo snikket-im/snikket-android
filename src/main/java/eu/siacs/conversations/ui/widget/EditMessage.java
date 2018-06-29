@@ -22,7 +22,7 @@ import android.view.inputmethod.InputConnection;
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
 
-public class EditMessage extends AbstractEditMessage {
+public class EditMessage extends EmojiWrapperEditText {
 
 	private static final InputFilter SPAN_FILTER = (source, start, end, dest, dstart, dend) -> source instanceof Spanned ? source.toString() : source;
 	protected Handler mTypingHandler = new Handler();

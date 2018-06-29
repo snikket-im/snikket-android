@@ -4,13 +4,13 @@ import android.content.Context;
 import android.support.v7.widget.AppCompatEditText;
 import android.util.AttributeSet;
 
-public abstract class AbstractEditMessage extends AppCompatEditText {
+public class EmojiWrapperEditText extends AppCompatEditText {
 
-    public AbstractEditMessage(Context context) {
+    public EmojiWrapperEditText(Context context) {
         super(context);
     }
 
-    public AbstractEditMessage(Context context, AttributeSet attrs) {
+    public EmojiWrapperEditText(Context context, AttributeSet attrs) {
         super(context, attrs);
     }
 }
