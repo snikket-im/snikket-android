@@ -2197,6 +2197,8 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
 							final String body;
 							if (size <= 4) {
 								body = getString(R.string.contacts_have_read_up_to_this_point, UIHelper.concatNames(shownMarkers));
+							} else if (ReadByMarker.allUsersRepresented(allUsers, markersForMessage, markerForSender)) {
+								body = getString(R.string.everyone_has_read_up_to_this_point);
 							} else {
 								body = getString(R.string.contacts_and_n_more_have_read_up_to_this_point, UIHelper.concatNames(shownMarkers, 3), size - 3);
 							}

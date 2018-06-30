@@ -6,6 +6,7 @@ import org.json.JSONObject;
 
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import rocks.xmpp.addr.Jid;
@@ -160,6 +161,12 @@ public class ReadByMarker {
 			}
 		}
 		return true;
+	}
+
+	public static boolean allUsersRepresented(Collection<MucOptions.User> users, Set<ReadByMarker> markers, ReadByMarker marker) {
+		HashSet<ReadByMarker> markersCopy = new HashSet<>(markers);
+		markersCopy.add(marker);
+		return allUsersRepresented(users, markersCopy);
 	}
 
 }
