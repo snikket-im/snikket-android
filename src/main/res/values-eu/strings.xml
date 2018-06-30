@@ -20,6 +20,7 @@
   <string name="title_activity_sharewith">Elkarrizketa batekin partekatu</string>
   <string name="title_activity_start_conversation">Elkarrizketa hasi</string>
   <string name="title_activity_choose_contact">Kontaktua hautatu</string>
+  <string name="title_activity_choose_contacts">Kontaktuak hautatu</string>
   <string name="title_activity_share_via_account">Kontu bidez partekatu</string>
   <string name="title_activity_block_list">Blokeatutakoen zerrenda</string>
   <string name="just_now">orain</string>
@@ -228,6 +229,7 @@
   <string name="delete_bookmark">Laster-marka ezabatu</string>
   <string name="bookmark_already_exists">Laster-marka hau existitzen da dagoeneko</string>
   <string name="action_edit_subject">Taldearen gaia editatu</string>
+  <string name="topic">Gaia</string>
   <string name="joining_conference">Taldera batzen...</string>
   <string name="leave">Alde egin</string>
   <string name="contact_added_you">Kontaktuak bere zerrendara gehitu zaitu</string>
@@ -708,4 +710,12 @@
   <string name="p1_s3_filetransfer">HTTP fitxategiak partekatzea S3rentzako</string>
   <string name="pref_start_search">Bilaketa zuzena</string>
   <string name="pref_start_search_summary">\'Elkarrizketa hasi\' pantailan teklatua ireki eta kurtsorea bilaketa eremuan jarri</string>
+  <string name="group_chat_avatar">Taldearen irudia</string>
+  <string name="host_does_not_support_group_chat_avatars">Ostalariak ez ditu taldeen irudiak onartzen</string>
+  <string name="only_the_owner_can_change_group_chat_avatar">Jabeak soilik alda dezake taldearen irudia</string>
+  <string name="contact_name">Kontaktuaren izena</string>
+  <string name="nickname">Ezizena</string>
+  <string name="group_chat_name">Izena</string>
+  <string name="providing_a_name_is_optional">Izen bat ematea hautazkoa da</string>
+  <string name="create_dialog_group_chat_name">Taldearen izena</string>
 </resources>

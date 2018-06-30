@@ -20,6 +20,7 @@
   <string name="title_activity_sharewith">Compartir na conversa</string>
   <string name="title_activity_start_conversation">Iniciar conversa</string>
   <string name="title_activity_choose_contact">Escoller Contacto</string>
+  <string name="title_activity_choose_contacts">Escolla contactos</string>
   <string name="title_activity_share_via_account">Compartir coa conta</string>
   <string name="title_activity_block_list">Lista de bloqueo</string>
   <string name="just_now">agora</string>
@@ -42,6 +43,7 @@
   <string name="block_domain_text">Bloquear todos os contactos desde 1%s?</string>
   <string name="unblock_domain_text">Desbloquear todos os contactos desde 1%s?</string>
   <string name="contact_blocked">Contacto bloqueado</string>
+  <string name="blocked">Bloqueado</string>
   <string name="remove_bookmark_text">Quere eliminar %s como marcador? A conversa asociada a este marcador non será eliminada.</string>
   <string name="register_account">Rexistrar nova conta no servidor</string>
   <string name="change_password_on_server">Cambiar o contrasinal no servidor</string>
@@ -227,6 +229,7 @@
   <string name="delete_bookmark">Eliminar marcador</string>
   <string name="bookmark_already_exists">Este marcador xa existe</string>
   <string name="action_edit_subject">Editar o tema da conversa en grupo</string>
+  <string name="topic">Asunto</string>
   <string name="joining_conference">Entrando na conversa en grupo</string>
   <string name="leave">Saír</string>
   <string name="contact_added_you">Contacto engadido a súa lista de contactos</string>
@@ -290,6 +293,7 @@
   <string name="check_x_filesize_on_host">Comporbar o tamaño de %1$s en %2$s</string>
   <string name="message_options">Opcións da mensaxe</string>
   <string name="quote">Cita</string>
+  <string name="paste_as_quote">Pegar como cita</string>
   <string name="copy_original_url">Copiar URL orixinal</string>
   <string name="send_again">Enviar de novo</string>
   <string name="file_url">URL do ficheiro</string>
@@ -703,4 +707,15 @@
   <string name="pref_use_share_location_plugin_summary">Utilice o Engadido para Compartir Localización en lugar do mapa incluído</string>
   <string name="copy_link">Copiar a dirección web</string>
   <string name="copy_jabber_id">Copiar a ID de Jabber</string>
+  <string name="p1_s3_filetransfer">Compartición de ficheiro HTTP para S3</string>
+  <string name="pref_start_search">Busca directa</string>
+  <string name="pref_start_search_summary">Na pantalla \'Iniciar Conversa\' abrir teclado e por o cursor no campo de busca</string>
+  <string name="group_chat_avatar">Avatar da conversa de grupo</string>
+  <string name="host_does_not_support_group_chat_avatars">O servidor non soporta o avatar na conversa de grupo</string>
+  <string name="only_the_owner_can_change_group_chat_avatar">Só o dono pode cambiar o avatar da conversa de grupo</string>
+  <string name="contact_name">Nome do contacto</string>
+  <string name="nickname">Alcume</string>
+  <string name="group_chat_name">Nome</string>
+  <string name="providing_a_name_is_optional">Proporcionar un nome é optativo</string>
+  <string name="create_dialog_group_chat_name">Nome da conversa de grupo</string>
 </resources>

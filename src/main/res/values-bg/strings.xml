@@ -20,6 +20,7 @@
   <string name="title_activity_sharewith">Споделяне в разговора</string>
   <string name="title_activity_start_conversation">Започване на разговор</string>
   <string name="title_activity_choose_contact">Изберете контакт</string>
+  <string name="title_activity_choose_contacts">Изберете контакти</string>
   <string name="title_activity_share_via_account">Споделяне чрез профил</string>
   <string name="title_activity_block_list">Списък с блокирани</string>
   <string name="just_now">току-що</string>
@@ -715,4 +716,6 @@
   <string name="contact_name">Име на контакта</string>
   <string name="nickname">Псевдоним</string>
   <string name="group_chat_name">Име</string>
+  <string name="providing_a_name_is_optional">Въвеждането на име не е задължитално</string>
+  <string name="create_dialog_group_chat_name">Име на груповия разговор</string>
 </resources>

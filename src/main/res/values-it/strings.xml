@@ -20,6 +20,7 @@
   <string name="title_activity_sharewith">Condividi con Conversation</string>
   <string name="title_activity_start_conversation">Inizia una conversazione</string>
   <string name="title_activity_choose_contact">Scegli un contatto</string>
+  <string name="title_activity_choose_contacts">Scegli i contatti</string>
   <string name="title_activity_share_via_account">Condividi via account</string>
   <string name="title_activity_block_list">Lista nera</string>
   <string name="just_now">adesso</string>
@@ -228,6 +229,7 @@
   <string name="delete_bookmark">Elimina segnalibro</string>
   <string name="bookmark_already_exists">Questo segnalibro esiste già</string>
   <string name="action_edit_subject">Modifica titolo chat di gruppo</string>
+  <string name="topic">Argomento</string>
   <string name="joining_conference">Ingresso nella chat di gruppo...</string>
   <string name="leave">Abbandona</string>
   <string name="contact_added_you">Il contatto ti ha aggiunto alla sua lista contatti</string>
@@ -711,4 +713,9 @@
   <string name="group_chat_avatar">Avatar chat di gruppo</string>
   <string name="host_does_not_support_group_chat_avatars">L\'host non supporta gli avatar per chat di gruppo</string>
   <string name="only_the_owner_can_change_group_chat_avatar">Solo il proprietario può cambiare l\'avatar della chat di gruppo</string>
+  <string name="contact_name">Nome contatto</string>
+  <string name="nickname">Soprannome</string>
+  <string name="group_chat_name">Nome</string>
+  <string name="providing_a_name_is_optional">Il nome è facoltativo</string>
+  <string name="create_dialog_group_chat_name">Nome chat di gruppo</string>
 </resources>
