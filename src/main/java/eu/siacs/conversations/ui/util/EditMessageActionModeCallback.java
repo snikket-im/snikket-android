@@ -32,11 +32,13 @@ package eu.siacs.conversations.ui.util;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
+import android.util.Log;
 import android.view.ActionMode;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 
+import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.ui.widget.EditMessage;
 
@@ -55,7 +57,10 @@ public class EditMessageActionModeCallback implements ActionMode.Callback {
 		MenuInflater inflater = mode.getMenuInflater();
 		inflater.inflate(R.menu.edit_message_actions, menu);
 		MenuItem pasteAsQuote = menu.findItem(R.id.paste_as_quote);
-		pasteAsQuote.setVisible(clipboardManager.hasPrimaryClip() && clipboardManager.getPrimaryClipDescription().hasMimeType("text/plain"));
+		ClipData primaryClip = clipboardManager.getPrimaryClip();
+		if (primaryClip != null && primaryClip.getItemCount() >= 0) {
+			pasteAsQuote.setVisible(primaryClip.getDescription().getMimeType(0).startsWith("text/") && primaryClip.getItemAt(0).getText() != null);
+		}
 		return true;
 	}
 
