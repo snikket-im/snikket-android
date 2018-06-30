@@ -53,7 +53,7 @@ public class AvatarService implements OnAdvancedStreamFeaturesLoaded {
 
 	protected XmppConnectionService mXmppConnectionService = null;
 
-	public AvatarService(XmppConnectionService service) {
+	AvatarService(XmppConnectionService service) {
 		this.mXmppConnectionService = service;
 	}
 
@@ -213,7 +213,13 @@ public class AvatarService implements OnAdvancedStreamFeaturesLoaded {
 			if (bookmark.getConversation() != null) {
 				return get(bookmark.getConversation(), size, cachedOnly);
 			} else {
-				String seed = bookmark.getJid() != null ? bookmark.getJid().asBareJid().toString() : null;
+				Jid jid = bookmark.getJid();
+				Account account = bookmark.getAccount();
+				Contact contact = jid == null ? null : account.getRoster().getContact(jid);
+				if (contact != null && contact.getAvatar() != null) {
+					return get(contact, size, cachedOnly);
+				}
+				String seed = jid != null ? jid.asBareJid().toString() : null;
 				return get(bookmark.getDisplayName(), seed, size, cachedOnly);
 			}
 		} else {

@@ -233,6 +233,7 @@ public class PresenceParser extends AbstractParser implements
 						mXmppConnectionService.updateConversationUi();
 						mXmppConnectionService.updateAccountUi();
 					} else if (contact.setAvatar(avatar)) {
+						mXmppConnectionService.syncRoster(account);
 						mXmppConnectionService.getAvatarService().clear(contact);
 						mXmppConnectionService.updateConversationUi();
 						mXmppConnectionService.updateRosterUi();
