@@ -71,6 +71,8 @@ public class FileBackend {
 
     private XmppConnectionService mXmppConnectionService;
 
+    private static final float IGNORE_PADDING = 0.15f;
+
     public FileBackend(XmppConnectionService service) {
         this.mXmppConnectionService = service;
     }
@@ -710,9 +712,11 @@ public class FileBackend {
      * https://stackoverflow.com/a/3943023/210897
      */
     private boolean paintOverlayBlack(final Bitmap bitmap) {
+        final int h = bitmap.getHeight();
+        final int w = bitmap.getWidth();
         int record = 0;
-        for (int y = 0; y < bitmap.getHeight(); ++y) {
-            for (int x = 0; x < bitmap.getWidth(); ++x) {
+        for (int y = Math.round(h * IGNORE_PADDING); y < h - Math.round(h * IGNORE_PADDING); ++y) {
+            for (int x = Math.round(w * IGNORE_PADDING); x < w - Math.round(w * IGNORE_PADDING); ++x) {
                 int pixel = bitmap.getPixel(x, y);
                 if ((Color.red(pixel) * 0.299 + Color.green(pixel) * 0.587 + Color.blue(pixel) * 0.114) > 186) {
                     --record;
