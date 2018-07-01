@@ -1,5 +1,9 @@
 # Changelog
 
+### Version 2.2.5
+* Persist MUC avatar across restarts / show in bookmarks
+* Offer Paste as quote for HTML content
+
 ### Version 2.2.4
 * Use group chat name as primary identifier
 * Show group name and subject in group chat details
