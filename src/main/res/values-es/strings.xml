@@ -237,6 +237,7 @@
   <string name="contact_has_read_up_to_this_point">%s ha leído hasta aquí</string>
   <string name="contacts_have_read_up_to_this_point">%s han leído hasta aquí</string>
   <string name="contacts_and_n_more_have_read_up_to_this_point">%1$s + %2$d han leído hasta aquí</string>
+  <string name="everyone_has_read_up_to_this_point">Todos han leído hasta aquí</string>
   <string name="publish">Publicar</string>
   <string name="touch_to_choose_picture">Pulsa para seleccionar una imagen de la galería</string>
   <string name="publishing">Publicando…</string>

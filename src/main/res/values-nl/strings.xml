@@ -237,6 +237,7 @@
   <string name="contact_has_read_up_to_this_point">%s heeft tot hier gelezen</string>
   <string name="contacts_have_read_up_to_this_point">%s hebben tot hier gelezen</string>
   <string name="contacts_and_n_more_have_read_up_to_this_point">%1$s en nog %2$d meer hebben tot hier gelezen</string>
+  <string name="everyone_has_read_up_to_this_point">Iedereen heeft tot hier gelezen</string>
   <string name="publish">Publiceer</string>
   <string name="touch_to_choose_picture">Tik op avatar om een foto uit de galerij te kiezen</string>
   <string name="publishing">Publiceren…</string>

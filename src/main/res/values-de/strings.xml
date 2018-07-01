@@ -237,6 +237,7 @@
   <string name="contact_has_read_up_to_this_point">%s hat bis zu diesem Punkt gelesen</string>
   <string name="contacts_have_read_up_to_this_point">%s haben bis zu diesem Punkt gelesen</string>
   <string name="contacts_and_n_more_have_read_up_to_this_point">%1$s +%2$d weitere haben bis zu diesem Punkt gelesen </string>
+  <string name="everyone_has_read_up_to_this_point">Alle haben bis zu diesem Punkt gelesen</string>
   <string name="publish">Veröffentlichen</string>
   <string name="touch_to_choose_picture">Avatar antippen, um Bild aus Galerie auszuwählen</string>
   <string name="publishing">Veröffentliche…</string>

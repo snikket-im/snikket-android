@@ -237,6 +237,7 @@
   <string name="contact_has_read_up_to_this_point">%s a citit până aici</string>
   <string name="contacts_have_read_up_to_this_point">%s au citit până aici</string>
   <string name="contacts_and_n_more_have_read_up_to_this_point">%1$s și încă %2$d au citit până aici</string>
+  <string name="everyone_has_read_up_to_this_point">Toate persoanele au citit până aici</string>
   <string name="publish">Publică</string>
   <string name="touch_to_choose_picture">Atingeți avatarul pentru a selecta o poză din galerie</string>
   <string name="publishing">Se publică...</string>

@@ -237,6 +237,7 @@
   <string name="contact_has_read_up_to_this_point">%s przeczytał do tego miejsca</string>
   <string name="contacts_have_read_up_to_this_point">%s przeczytali do tego miejsca</string>
   <string name="contacts_and_n_more_have_read_up_to_this_point">%1$s i %2$d osób przeczytało do tego miejsca</string>
+  <string name="everyone_has_read_up_to_this_point">Wszyscy przeczytali do tego miejsca</string>
   <string name="publish">Publikuj</string>
   <string name="touch_to_choose_picture">Naciśnij awatar, żeby wybrać obraz z galerii</string>
   <string name="publishing">Publikowanie...</string>
