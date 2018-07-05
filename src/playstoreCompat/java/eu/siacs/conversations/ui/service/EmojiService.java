@@ -46,6 +46,7 @@ public class EmojiService {
         //there are some annoying bugs with emoji compat that make it a safer choice not to use it when possible
         // a) when using the ondemand emoji font (play store) flags don’t work
         // b) the text preview has annoying glitches when the cut of text contains emojis (the emoji will be half visible)
+        // c) can trigger a hardware rendering bug https://issuetracker.google.com/issues/67102093
         fontRequestEmojiCompatConfig.setReplaceAll(Build.VERSION.SDK_INT < Build.VERSION_CODES.O);
         EmojiCompat.init(fontRequestEmojiCompatConfig);
     }
