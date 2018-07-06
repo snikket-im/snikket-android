@@ -52,7 +52,10 @@ public class XmppUri {
 		return safeSource;
 	}
 
-	protected void parse(Uri uri) {
+	protected void parse(final Uri uri) {
+		if (uri == null) {
+			return;
+		}
 		this.uri = uri;
 		String scheme = uri.getScheme();
 		String host = uri.getHost();
