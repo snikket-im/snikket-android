@@ -72,8 +72,8 @@ public class EditMessageActionModeCallback implements ActionMode.Callback {
 	@Override
 	public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
 		if (item.getItemId() == R.id.paste_as_quote) {
-			ClipData primaryClip = clipboardManager.getPrimaryClip();
-			if (primaryClip.getItemCount() >= 1) {
+			final ClipData primaryClip = clipboardManager.getPrimaryClip();
+			if (primaryClip != null && primaryClip.getItemCount() >= 1) {
 				editMessage.insertAsQuote(primaryClip.getItemAt(0).getText().toString());
 				return true;
 			}
