@@ -88,7 +88,6 @@ public abstract class XmppActivity extends ActionBarActivity {
 	protected static final int REQUEST_BATTERY_OP = 0x49ff;
 	public XmppConnectionService xmppConnectionService;
 	public boolean xmppConnectionServiceBound = false;
-	protected final AtomicBoolean registeredListeners = new AtomicBoolean(false);
 
 	protected int mColorRed;
 
@@ -108,9 +107,7 @@ public abstract class XmppActivity extends ActionBarActivity {
 			XmppConnectionBinder binder = (XmppConnectionBinder) service;
 			xmppConnectionService = binder.getService();
 			xmppConnectionServiceBound = true;
-			if (registeredListeners.compareAndSet(false,true)) {
-				registerListeners();
-			}
+			registerListeners();
 			onBackendConnected();
 		}
 
@@ -212,9 +209,7 @@ public abstract class XmppActivity extends ActionBarActivity {
 				connectToBackend();
 			}
 		} else {
-			if (registeredListeners.compareAndSet(false,true)) {
-				this.registerListeners();
-			}
+			this.registerListeners();
 			this.onBackendConnected();
 		}
 	}
@@ -230,9 +225,7 @@ public abstract class XmppActivity extends ActionBarActivity {
 	protected void onStop() {
 		super.onStop();
 		if (xmppConnectionServiceBound) {
-			if (registeredListeners.compareAndSet(true, false)) {
-				this.unregisterListeners();
-			}
+			this.unregisterListeners();
 			unbindService(mConnection);
 			xmppConnectionServiceBound = false;
 		}
