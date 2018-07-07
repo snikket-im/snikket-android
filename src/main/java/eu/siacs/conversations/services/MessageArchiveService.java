@@ -20,6 +20,7 @@ import eu.siacs.conversations.xml.Element;
 import eu.siacs.conversations.xmpp.OnAdvancedStreamFeaturesLoaded;
 import eu.siacs.conversations.xmpp.mam.MamReference;
 import eu.siacs.conversations.xmpp.stanzas.IqPacket;
+import eu.siacs.conversations.xmpp.stanzas.MessagePacket;
 import rocks.xmpp.addr.Jid;
 
 public class MessageArchiveService implements OnAdvancedStreamFeaturesLoaded {
@@ -28,6 +29,66 @@ public class MessageArchiveService implements OnAdvancedStreamFeaturesLoaded {
 
 	private final HashSet<Query> queries = new HashSet<>();
 	private final ArrayList<Query> pendingQueries = new ArrayList<>();
+
+	public enum Version {
+		MAM_0("urn:xmpp:mam:0", true),
+		MAM_1("urn:xmpp:mam:1", false),
+		MAM_2("urn:xmpp:mam:2", false);
+
+		public final boolean legacy;
+		public final String namespace;
+
+		Version(String namespace, boolean legacy) {
+			this.namespace = namespace;
+			this.legacy = legacy;
+		}
+
+		public static Version get(Account account) {
+			return get(account,null);
+		}
+
+		public static Version get(Account account, Conversation conversation) {
+			if (conversation == null || conversation.getMode() == Conversation.MODE_SINGLE) {
+				return get(account.getXmppConnection().getFeatures().getAccountFeatures());
+			} else {
+				return get(conversation.getMucOptions().getFeatures());
+			}
+		}
+
+		private static Version get(List<String> features) {
+			final Version[] values = values();
+			for(int i = values.length -1; i >= 0; --i) {
+				for(String feature : features) {
+					if (values[i].namespace.equals(feature)) {
+						return values[i];
+					}
+				}
+			}
+			return MAM_0;
+		}
+
+		public static boolean has(List<String> features) {
+			for(String feature : features) {
+				for(Version version : values()) {
+					if (version.namespace.equals(feature)) {
+						return true;
+					}
+				}
+			}
+			return false;
+		}
+
+		public static Element findResult(MessagePacket packet) {
+			for(Version version : values()) {
+				Element result = packet.findChild("result", version.namespace);
+				if (result != null) {
+					return result;
+				}
+			}
+			return null;
+		}
+
+	};
 
 	MessageArchiveService(final XmppConnectionService service) {
 		this.mXmppConnectionService = service;
@@ -168,7 +229,7 @@ public class MessageArchiveService implements OnAdvancedStreamFeaturesLoaded {
 			Log.d(Config.LOGTAG, account.getJid().asBareJid().toString() + ": running mam query " + query.toString());
 			IqPacket packet = this.mXmppConnectionService.getIqGenerator().queryMessageArchiveManagement(query);
 			this.mXmppConnectionService.sendIqPacket(account, packet, (a, p) -> {
-				Element fin = p.findChild("fin", Namespace.MAM);
+				Element fin = p.findChild("fin", query.version.namespace);
 				if (p.getType() == IqPacket.TYPE.TIMEOUT) {
 					synchronized (MessageArchiveService.this.queries) {
 						MessageArchiveService.this.queries.remove(query);
@@ -390,16 +451,21 @@ public class MessageArchiveService implements OnAdvancedStreamFeaturesLoaded {
 		private PagingOrder pagingOrder = PagingOrder.NORMAL;
 		private XmppConnectionService.OnMoreMessagesLoaded callback = null;
 		private boolean catchup = true;
+		public final Version version;
 
 
 		Query(Conversation conversation, MamReference start, long end, boolean catchup) {
-			this(conversation.getAccount(), catchup ? start : start.timeOnly(), end);
+			this(conversation.getAccount(), Version.get(conversation.getAccount(), conversation), catchup ? start : start.timeOnly(), end);
 			this.conversation = conversation;
 			this.pagingOrder = catchup ? PagingOrder.NORMAL : PagingOrder.REVERSE;
 			this.catchup = catchup;
 		}
 
 		Query(Account account, MamReference start, long end) {
+			this(account, Version.get(account), start, end);
+		}
+
+		Query(Account account, Version version, MamReference start, long end) {
 			this.account = account;
 			if (start.getReference() != null) {
 				this.reference = start.getReference();
@@ -408,10 +474,11 @@ public class MessageArchiveService implements OnAdvancedStreamFeaturesLoaded {
 			}
 			this.end = end;
 			this.queryId = new BigInteger(50, mXmppConnectionService.getRNG()).toString(32);
+			this.version = version;
 		}
 
 		private Query page(String reference) {
-			Query query = new Query(this.account, new MamReference(this.start, reference), this.end);
+			Query query = new Query(this.account, this.version, new MamReference(this.start, reference), this.end);
 			query.conversation = conversation;
 			query.totalCount = totalCount;
 			query.actualCount = actualCount;
@@ -433,11 +500,7 @@ public class MessageArchiveService implements OnAdvancedStreamFeaturesLoaded {
 		}
 
 		public boolean isLegacy() {
-			if (conversation == null || conversation.getMode() == Conversation.MODE_SINGLE) {
-				return account.getXmppConnection().getFeatures().mamLegacy();
-			} else {
-				return conversation.getMucOptions().mamLegacy();
-			}
+			return version.legacy;
 		}
 
 		public boolean safeToExtractTrueCounterpart() {
@@ -570,6 +633,7 @@ public class MessageArchiveService implements OnAdvancedStreamFeaturesLoaded {
 				builder.append(this.reference);
 			}
 			builder.append(", catchup=").append(Boolean.toString(catchup));
+			builder.append(", ns=").append(version.namespace);
 			return builder.toString();
 		}
 

@@ -248,10 +248,10 @@ public class IqGenerator extends AbstractGenerator {
 
 	public IqPacket queryMessageArchiveManagement(final MessageArchiveService.Query mam) {
 		final IqPacket packet = new IqPacket(IqPacket.TYPE.SET);
-		final Element query = packet.query(mam.isLegacy() ? Namespace.MAM_LEGACY : Namespace.MAM);
+		final Element query = packet.query(mam.version.namespace);
 		query.setAttribute("queryid", mam.getQueryId());
 		final Data data = new Data();
-		data.setFormType(mam.isLegacy() ? Namespace.MAM_LEGACY : Namespace.MAM);
+		data.setFormType(mam.version.namespace);
 		if (mam.muc()) {
 			packet.setTo(mam.getWith());
 		} else if (mam.getWith() != null) {

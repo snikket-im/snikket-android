@@ -3766,11 +3766,11 @@ public class XmppConnectionService extends Service {
 	}
 
 	public void fetchMamPreferences(Account account, final OnMamPreferencesFetched callback) {
-		final boolean legacy = account.getXmppConnection().getFeatures().mamLegacy();
+		final MessageArchiveService.Version version = MessageArchiveService.Version.get(account);
 		IqPacket request = new IqPacket(IqPacket.TYPE.GET);
-		request.addChild("prefs", legacy ? Namespace.MAM_LEGACY : Namespace.MAM);
+		request.addChild("prefs", version.namespace);
 		sendIqPacket(account, request, (account1, packet) -> {
-			Element prefs = packet.findChild("prefs", legacy ? Namespace.MAM_LEGACY : Namespace.MAM);
+			Element prefs = packet.findChild("prefs", version.namespace);
 			if (packet.getType() == IqPacket.TYPE.RESULT && prefs != null) {
 				callback.onPreferencesFetched(prefs);
 			} else {

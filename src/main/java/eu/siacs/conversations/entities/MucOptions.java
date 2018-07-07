@@ -11,6 +11,7 @@ import java.util.Set;
 
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
+import eu.siacs.conversations.services.MessageArchiveService;
 import eu.siacs.conversations.utils.JidHelper;
 import eu.siacs.conversations.utils.UIHelper;
 import eu.siacs.conversations.xml.Namespace;
@@ -64,6 +65,10 @@ public class MucOptions {
 				user.chatState = Config.DEFAULT_CHATSTATE;
 			}
 		}
+	}
+
+	public boolean mamSupport() {
+		return MessageArchiveService.Version.has(getFeatures());
 	}
 
 	public enum Affiliation {
@@ -456,12 +461,9 @@ public class MucOptions {
 		return conversation.getBooleanAttribute(Conversation.ATTRIBUTE_MEMBERS_ONLY, false);
 	}
 
-	public boolean mamSupport() {
-		return hasFeature(Namespace.MAM) || hasFeature(Namespace.MAM_LEGACY);
-	}
 
-	public boolean mamLegacy() {
-		return hasFeature(Namespace.MAM_LEGACY) && !hasFeature(Namespace.MAM);
+	public List<String> getFeatures() {
+		return this.serviceDiscoveryResult != null ? this.serviceDiscoveryResult.features : Collections.emptyList();
 	}
 
 	public boolean nonanonymous() {

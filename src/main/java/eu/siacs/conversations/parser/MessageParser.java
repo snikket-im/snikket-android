@@ -239,16 +239,15 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
 		Long timestamp = null;
 		boolean isCarbon = false;
 		String serverMsgId = null;
-		final Element fin = original.findChild("fin", Namespace.MAM_LEGACY);
+		final Element fin = original.findChild("fin", MessageArchiveService.Version.MAM_0.namespace);
 		if (fin != null) {
 			mXmppConnectionService.getMessageArchiveService().processFinLegacy(fin, original.getFrom());
 			return;
 		}
-		final boolean mamLegacy = original.hasChild("result", Namespace.MAM_LEGACY);
-		final Element result = original.findChild("result", mamLegacy ? Namespace.MAM_LEGACY : Namespace.MAM);
+		final Element result = MessageArchiveService.Version.findResult(original);
 		final MessageArchiveService.Query query = result == null ? null : mXmppConnectionService.getMessageArchiveService().findQuery(result.getAttribute("queryid"));
 		if (query != null && query.validFrom(original.getFrom())) {
-			Pair<MessagePacket, Long> f = original.getForwardedMessagePacket("result", mamLegacy ? Namespace.MAM_LEGACY : Namespace.MAM);
+			Pair<MessagePacket, Long> f = original.getForwardedMessagePacket("result", query.version.namespace);
 			if (f == null) {
 				return;
 			}
