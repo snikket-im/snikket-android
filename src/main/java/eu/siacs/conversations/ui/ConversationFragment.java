@@ -745,7 +745,8 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
 		boolean hasUndecidedContacts = !axolotlService.getKeysWithTrust(FingerprintStatus.createActiveUndecided(), targets).isEmpty();
 		boolean hasPendingKeys = !axolotlService.findDevicesWithoutSession(conversation).isEmpty();
 		boolean hasNoTrustedKeys = axolotlService.anyTargetHasNoTrustedKeys(targets);
-		if (hasUndecidedOwn || hasUndecidedContacts || hasPendingKeys || hasNoTrustedKeys || hasUnaccepted) {
+		boolean downloadInProgress = axolotlService.hasPendingKeyFetches(targets);
+		if (hasUndecidedOwn || hasUndecidedContacts || hasPendingKeys || hasNoTrustedKeys || hasUnaccepted || downloadInProgress) {
 			axolotlService.createSessionsIfNeeded(conversation);
 			Intent intent = new Intent(getActivity(), TrustKeysActivity.class);
 			String[] contacts = new String[targets.size()];

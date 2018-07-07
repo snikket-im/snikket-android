@@ -1256,7 +1256,7 @@ public class AxolotlService implements OnAdvancedStreamFeaturesLoaded {
 		return verified;
 	}
 
-	public boolean hasPendingKeyFetches(Account account, List<Jid> jids) {
+	public boolean hasPendingKeyFetches(List<Jid> jids) {
 		SignalProtocolAddress ownAddress = new SignalProtocolAddress(account.getJid().asBareJid().toString(), 0);
 		if (fetchStatusMap.getAll(ownAddress.getName()).containsValue(FetchStatus.PENDING)) {
 			return true;
