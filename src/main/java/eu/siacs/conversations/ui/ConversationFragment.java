@@ -2014,6 +2014,9 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
 				case MEMBERS_ONLY:
 					showSnackbar(R.string.conference_members_only, R.string.leave, leaveMuc);
 					break;
+				case RESOURCE_CONSTRAINT:
+					showSnackbar(R.string.conference_resource_constraint, R.string.try_again, joinMuc);
+					break;
 				case KICKED:
 					showSnackbar(R.string.conference_kicked, R.string.join, joinMuc);
 					break;

@@ -166,6 +166,8 @@ public class PresenceParser extends AbstractParser implements
 					mucOptions.setError(MucOptions.Error.BANNED);
 				} else if (error.hasChild("registration-required")) {
 					mucOptions.setError(MucOptions.Error.MEMBERS_ONLY);
+				} else if (error.hasChild("resource-constraint")) {
+					mucOptions.setError(MucOptions.Error.RESOURCE_CONSTRAINT);
 				} else {
 					final String text = error.findChildContent("text");
 					if (text != null && text.contains("attribute 'to'")) {

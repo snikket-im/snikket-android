@@ -284,6 +284,7 @@
     <string name="toast_message_omemo_fingerprint">OMEMO fingerprint copied to clipboard!</string>
     <string name="conference_banned">You are banned from this group chat</string>
     <string name="conference_members_only">This group chat is members only</string>
+    <string name="conference_resource_constraint">Resource constraint</string>
     <string name="conference_kicked">You have been kicked from this group chat</string>
     <string name="conference_shutdown">The group chat was shut down</string>
     <string name="conference_unknown_error">You are no longer in this group chat</string>
