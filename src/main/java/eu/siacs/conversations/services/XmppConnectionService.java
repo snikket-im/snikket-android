@@ -3224,74 +3224,64 @@ public class XmppConnectionService extends Service {
 	}
 
 
-	public void showErrorToastInUi(int resId) {
+	private <T> List<T> threadSafeList(Set<T> set) {
 		synchronized (LISTENER_LOCK) {
-			for (OnShowErrorToast listener : this.mOnShowErrorToasts) {
-				listener.onShowErrorToast(resId);
-			}
+			return set.size() == 0 ? Collections.emptyList() : new ArrayList<>(set);
+		}
+	}
+
+	public void showErrorToastInUi(int resId) {
+		for (OnShowErrorToast listener : threadSafeList(this.mOnShowErrorToasts)) {
+			listener.onShowErrorToast(resId);
 		}
 	}
 
 	public void updateConversationUi() {
-		synchronized (LISTENER_LOCK) {
-			for (OnConversationUpdate listener : this.mOnConversationUpdates) {
-				listener.onConversationUpdate();
-			}
+		for (OnConversationUpdate listener : threadSafeList(this.mOnConversationUpdates)) {
+			listener.onConversationUpdate();
 		}
 	}
 
 	public void updateAccountUi() {
-		synchronized (LISTENER_LOCK) {
-			for (OnAccountUpdate listener : this.mOnAccountUpdates) {
-				listener.onAccountUpdate();
-			}
+		for (OnAccountUpdate listener : threadSafeList(this.mOnAccountUpdates)) {
+			listener.onAccountUpdate();
 		}
 	}
 
 	public void updateRosterUi() {
-		synchronized (LISTENER_LOCK) {
-			for (OnRosterUpdate listener : this.mOnRosterUpdates) {
-				listener.onRosterUpdate();
-			}
+		for (OnRosterUpdate listener : threadSafeList(this.mOnRosterUpdates)) {
+			listener.onRosterUpdate();
 		}
 	}
 
 	public boolean displayCaptchaRequest(Account account, String id, Data data, Bitmap captcha) {
-		synchronized (LISTENER_LOCK) {
-			if (mOnCaptchaRequested.size() > 0) {
-				DisplayMetrics metrics = getApplicationContext().getResources().getDisplayMetrics();
-				Bitmap scaled = Bitmap.createScaledBitmap(captcha, (int) (captcha.getWidth() * metrics.scaledDensity),
-						(int) (captcha.getHeight() * metrics.scaledDensity), false);
-				for (OnCaptchaRequested listener : this.mOnCaptchaRequested) {
-					listener.onCaptchaRequested(account, id, data, scaled);
-				}
-				return true;
+		if (mOnCaptchaRequested.size() > 0) {
+			DisplayMetrics metrics = getApplicationContext().getResources().getDisplayMetrics();
+			Bitmap scaled = Bitmap.createScaledBitmap(captcha, (int) (captcha.getWidth() * metrics.scaledDensity),
+					(int) (captcha.getHeight() * metrics.scaledDensity), false);
+			for (OnCaptchaRequested listener : threadSafeList(this.mOnCaptchaRequested)) {
+				listener.onCaptchaRequested(account, id, data, scaled);
 			}
-			return false;
+			return true;
 		}
+		return false;
 	}
 
 	public void updateBlocklistUi(final OnUpdateBlocklist.Status status) {
-		synchronized (LISTENER_LOCK) {
-			for (OnUpdateBlocklist listener : this.mOnUpdateBlocklist) {
-				listener.OnUpdateBlocklist(status);
-			}
+		for (OnUpdateBlocklist listener : threadSafeList(this.mOnUpdateBlocklist)) {
+			listener.OnUpdateBlocklist(status);
 		}
 	}
 
 	public void updateMucRosterUi() {
-		synchronized (LISTENER_LOCK) {
-			for (OnMucRosterUpdate listener : this.mOnMucRosterUpdate) {
-				listener.onMucRosterUpdate();
-			}
+		for (OnMucRosterUpdate listener : threadSafeList(this.mOnMucRosterUpdate)) {
+			listener.onMucRosterUpdate();
 		}
 	}
 
 	public void keyStatusUpdated(AxolotlService.FetchStatus report) {
-		synchronized (LISTENER_LOCK) {
-			for (OnKeyStatusUpdated listener : this.mOnKeyStatusUpdated) {
-				listener.onKeyStatusUpdated(report);
-			}
+		for (OnKeyStatusUpdated listener : threadSafeList(this.mOnKeyStatusUpdated)) {
+			listener.onKeyStatusUpdated(report);
 		}
 	}
 
