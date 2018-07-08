@@ -74,7 +74,10 @@ public class PresenceParser extends AbstractParser implements
 							if (mucOptions.setOnline()) {
 								mXmppConnectionService.getAvatarService().clear(mucOptions);
 							}
-							mucOptions.setSelf(user);
+							if (mucOptions.setSelf(user)) {
+								Log.d(Config.LOGTAG,"role or affiliation changed");
+								mXmppConnectionService.databaseBackend.updateConversation(conversation);
+							}
 
 							mXmppConnectionService.persistSelfNick(user);
 							invokeRenameListener(mucOptions, true);

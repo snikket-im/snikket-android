@@ -325,7 +325,7 @@ public class IqGenerator extends AbstractGenerator {
 		Element query = packet.query("http://jabber.org/protocol/muc#admin");
 		for (Jid jid : jids) {
 			Element item = query.addChild("item");
-			item.setAttribute("jid", jid.toString());
+			item.setAttribute("jid", jid.toEscapedString());
 			item.setAttribute("affiliation", affiliation);
 		}
 		return packet;
