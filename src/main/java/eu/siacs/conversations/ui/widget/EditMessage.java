@@ -149,7 +149,7 @@ public class EditMessage extends EmojiWrapperEditText {
 	public InputConnection onCreateInputConnection(EditorInfo editorInfo) {
 		final InputConnection ic = super.onCreateInputConnection(editorInfo);
 
-		if (mimeTypes != null && mCommitContentListener != null) {
+		if (mimeTypes != null && mCommitContentListener != null && ic != null) {
 			EditorInfoCompat.setContentMimeTypes(editorInfo, mimeTypes);
 			return InputConnectionCompat.createWrapper(ic, editorInfo, (inputContentInfo, flags, opts) -> EditMessage.this.mCommitContentListener.onCommitContent(inputContentInfo, flags, opts, mimeTypes));
 		} else {

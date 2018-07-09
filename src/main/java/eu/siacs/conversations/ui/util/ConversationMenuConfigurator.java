@@ -42,6 +42,7 @@ import eu.siacs.conversations.R;
 import eu.siacs.conversations.crypto.OmemoSetting;
 import eu.siacs.conversations.crypto.axolotl.AxolotlService;
 import eu.siacs.conversations.entities.Conversation;
+import eu.siacs.conversations.entities.Conversational;
 import eu.siacs.conversations.entities.Message;
 
 public class ConversationMenuConfigurator {
@@ -70,6 +71,14 @@ public class ConversationMenuConfigurator {
 
 	public static void configureEncryptionMenu(@NonNull Conversation conversation, Menu menu) {
 		final MenuItem menuSecure = menu.findItem(R.id.action_security);
+
+		final boolean participating = conversation.getMode() == Conversational.MODE_SINGLE || conversation.getMucOptions().participating();
+
+		if (!participating) {
+			menuSecure.setVisible(false);
+			return;
+		}
+
 		final MenuItem none = menu.findItem(R.id.encryption_choice_none);
 		final MenuItem pgp = menu.findItem(R.id.encryption_choice_pgp);
 		final MenuItem axolotl = menu.findItem(R.id.encryption_choice_axolotl);
