@@ -20,6 +20,7 @@
   <string name="title_activity_sharewith">分享会话</string>
   <string name="title_activity_start_conversation">开始会话</string>
   <string name="title_activity_choose_contact">选择联系人</string>
+  <string name="title_activity_choose_contacts">选择联系人</string>
   <string name="title_activity_share_via_account">通过帐户分享</string>
   <string name="title_activity_block_list">屏蔽列表</string>
   <string name="just_now">刚刚</string>
@@ -228,6 +229,7 @@
   <string name="delete_bookmark">删除书签</string>
   <string name="bookmark_already_exists">该书签已存在</string>
   <string name="action_edit_subject">编辑群聊主题</string>
+  <string name="topic">主题</string>
   <string name="joining_conference">正在加入群聊…</string>
   <string name="leave">离开</string>
   <string name="contact_added_you">联系人已添加你到联系人列表</string>
@@ -235,6 +237,7 @@
   <string name="contact_has_read_up_to_this_point">%s 已读此句</string>
   <string name="contacts_have_read_up_to_this_point">%s 已读此句</string>
   <string name="contacts_and_n_more_have_read_up_to_this_point">%1$s +%2$d 都已读此句</string>
+  <string name="everyone_has_read_up_to_this_point">全部已读此句</string>
   <string name="publish">发布</string>
   <string name="touch_to_choose_picture">点击头像可从相册中选择头像 </string>
   <string name="publishing">正在发布…</string>
@@ -702,4 +705,12 @@
   <string name="p1_s3_filetransfer">用于S3的HTTP文件共享</string>
   <string name="pref_start_search">直接搜索</string>
   <string name="pref_start_search_summary">在“开始对话”屏幕上打开键盘并将光标放在搜索栏中</string>
+  <string name="group_chat_avatar">群聊头像</string>
+  <string name="host_does_not_support_group_chat_avatars">主机不支持群聊头像</string>
+  <string name="only_the_owner_can_change_group_chat_avatar">只有所有者才能更改群聊头像</string>
+  <string name="contact_name">联系人名称</string>
+  <string name="nickname">昵称</string>
+  <string name="group_chat_name">名称</string>
+  <string name="providing_a_name_is_optional">提供名称是可选的</string>
+  <string name="create_dialog_group_chat_name">群聊名称</string>
 </resources>

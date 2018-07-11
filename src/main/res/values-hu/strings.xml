@@ -237,6 +237,7 @@
   <string name="contact_has_read_up_to_this_point">%s eddig olvasta</string>
   <string name="contacts_have_read_up_to_this_point">%seddig olvasta</string>
   <string name="contacts_and_n_more_have_read_up_to_this_point">%1$s+ %2$dis eddig olvasta</string>
+  <string name="everyone_has_read_up_to_this_point">Mindenki elolvasta eddig</string>
   <string name="publish">Közzétesz</string>
   <string name="touch_to_choose_picture">Érintsd meg a piktogramot kép kiválasztásához </string>
   <string name="publishing">Közzétesz...</string>

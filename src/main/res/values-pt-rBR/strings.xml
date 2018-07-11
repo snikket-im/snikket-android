@@ -20,7 +20,7 @@
   <string name="title_activity_sharewith">Compartilhar com a conversa</string>
   <string name="title_activity_start_conversation">Conversar</string>
   <string name="title_activity_choose_contact">Selecione o contato</string>
-  <string name="title_activity_choose_contacts">Escolher Contatos</string>
+  <string name="title_activity_choose_contacts">Selecionar Contatos</string>
   <string name="title_activity_share_via_account">Compartilhar via conta</string>
   <string name="title_activity_block_list">Lista de bloqueios</string>
   <string name="just_now">agora</string>
@@ -237,6 +237,7 @@
   <string name="contact_has_read_up_to_this_point">%s leu até esse ponto</string>
   <string name="contacts_have_read_up_to_this_point">%s leu até esse ponto</string>
   <string name="contacts_and_n_more_have_read_up_to_this_point">%1$s +%2$d outras pessoas leram até esse ponto</string>
+  <string name="everyone_has_read_up_to_this_point">Todos leram até esse ponto</string>
   <string name="publish">Publicar</string>
   <string name="touch_to_choose_picture">Toque o avatar para selecionar uma imagem da galeria</string>
   <string name="publishing">Publicando...</string>
@@ -710,12 +711,12 @@
   <string name="p1_s3_filetransfer">Compartilhamento de arquivos via HTTP para S3</string>
   <string name="pref_start_search">Pesquisa direta</string>
   <string name="pref_start_search_summary">Na tela \"Conversar\", abra o teclado e coloque o cursor no campo de pesquisa</string>
-  <string name="group_chat_avatar">Avatar de chat em grupo</string>
-  <string name="host_does_not_support_group_chat_avatars">O host não suporta avatares de chat em grupo</string>
-  <string name="only_the_owner_can_change_group_chat_avatar">Somente o proprietário pode mudar o avatar do chat em grupo</string>
-  <string name="contact_name">Nome de contato</string>
+  <string name="group_chat_avatar">Avatar de conversa em grupo</string>
+  <string name="host_does_not_support_group_chat_avatars">O host não suporta avatares de conversa em grupo</string>
+  <string name="only_the_owner_can_change_group_chat_avatar">Somente o proprietário pode alterar o avatar da conversa em grupo</string>
+  <string name="contact_name">Nome do contato</string>
   <string name="nickname">Apelido</string>
   <string name="group_chat_name">Nome</string>
-  <string name="providing_a_name_is_optional">Fornecer um nome é opcional</string>
-  <string name="create_dialog_group_chat_name">Nome do chat em grupo</string>
+  <string name="providing_a_name_is_optional">O fornecimento do nome é opcional</string>
+  <string name="create_dialog_group_chat_name">Nome da conversa em grupo</string>
 </resources>

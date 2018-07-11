@@ -237,6 +237,7 @@
   <string name="contact_has_read_up_to_this_point">%s(e)k puntu honetaraino irakurri du</string>
   <string name="contacts_have_read_up_to_this_point">%s(e)k puntu honetaraino irakurri du</string>
   <string name="contacts_and_n_more_have_read_up_to_this_point">%1$s +%2$d gehiago puntu honetaraino irakurri dute</string>
+  <string name="everyone_has_read_up_to_this_point">Guztiek puntu honetaraino irakurri dute</string>
   <string name="publish">Argitaratu</string>
   <string name="touch_to_choose_picture">Ukitu profileko argazkia irudi bat galeriatik hautatzeko</string>
   <string name="publishing">Argitaratzen…</string>
@@ -671,7 +672,7 @@
   <string name="error_trustkey_device_list">Ezin izan da gailuen zerrenda eskuratu</string>
   <string name="error_trustkey_bundle">Ezin izan dira gailuen bilgarriak eskuratu</string>
   <string name="error_trustkey_hint_mutual">Lagungarria: kasu batzuetan bakoitzak bestea bere kontaktuen zerrendara gehituz konpon daiteke.</string>
-  <string name="disable_encryption_message">Ziur al zaude OMEMO enkriptazioa ezgaitu nahi duzulaz elkarrizketa honetarako?\nHonek zure zerbitzariaren administratzaileari zure mezuak irakurtzea ahalbidetuko dio, baina aplikazio zaharrak erabiltzen dituzten pertsonekin komunikatzeko modu bakarra izan daiteke.</string>
+  <string name="disable_encryption_message">Ziur al zaude OMEMO enkriptazioa ezgaitu nahi duzula elkarrizketa honetarako?\nHonek zure zerbitzariaren administratzaileari zure mezuak irakurtzea ahalbidetuko dio, baina aplikazio zaharrak erabiltzen dituzten pertsonekin komunikatzeko modu bakarra izan daiteke.</string>
   <string name="disable_now">Orain ezgaitu</string>
   <string name="draft">Zirriborroa:</string>
   <string name="pref_omemo_setting">OMEMO enkriptazioa</string>
