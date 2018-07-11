@@ -75,7 +75,7 @@ public class Element {
 		return findInternationalizedChildContent(name, Locale.getDefault().getLanguage());
 	}
 
-	public String findInternationalizedChildContent(String name,@NonNull String language) {
+	private String findInternationalizedChildContent(String name, @NonNull String language) {
 		HashMap<String,String> contents = new HashMap<>();
 		for(Element child : this.children) {
 			if (name.equals(child.getName())) {
@@ -91,7 +91,11 @@ public class Element {
 			}
 		}
 
-		return contents.get(null);
+		String value = contents.get(null);
+		if (value != null) {
+			return value;
+		}
+		return contents.size() > 0 ? contents.values().iterator().next() : null;
 	}
 
 	public Element findChild(String name, String xmlns) {
