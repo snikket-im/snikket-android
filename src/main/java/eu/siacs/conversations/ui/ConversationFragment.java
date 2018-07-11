@@ -2034,6 +2034,9 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
 				case SHUTDOWN:
 					showSnackbar(R.string.conference_shutdown, R.string.try_again, joinMuc);
 					break;
+				case DESTROYED:
+					showSnackbar(R.string.conference_destroyed, R.string.leave, leaveMuc);
+					break;
 				default:
 					hideSnackbar();
 					break;

@@ -721,4 +721,5 @@
     <string name="group_chat_name">Name</string>
     <string name="providing_a_name_is_optional">Providing a name is optional</string>
     <string name="create_dialog_group_chat_name">Group chat name</string>
+    <string name="conference_destroyed">This group chat has been destroyed</string>
 </resources>

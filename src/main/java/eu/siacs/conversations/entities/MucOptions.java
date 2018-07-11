@@ -167,6 +167,7 @@ public class MucOptions {
 		RESOURCE_CONSTRAINT,
 		KICKED,
 		SHUTDOWN,
+		DESTROYED,
 		INVALID_NICK,
 		UNKNOWN
 	}
