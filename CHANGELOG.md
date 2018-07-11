@@ -1,5 +1,8 @@
 # Changelog
 
+### Version 2.2.6
+* support old MAM version to work with Prosody
+
 ### Version 2.2.5
 * Persist MUC avatar across restarts / show in bookmarks
 * Offer Paste as quote for HTML content
