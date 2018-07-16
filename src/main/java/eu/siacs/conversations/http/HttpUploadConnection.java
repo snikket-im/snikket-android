@@ -230,7 +230,7 @@ public class HttpUploadConnection implements Transferable {
 				Log.d(Config.LOGTAG,"http upload failed because response code was "+code);
 				fail("http upload failed because response code was "+code);
 			}
-		} catch (IOException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 			Log.d(Config.LOGTAG,"http upload failed "+e.getMessage());
 			fail(e.getMessage());
