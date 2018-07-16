@@ -574,6 +574,7 @@ public class XmppConnection implements Runnable {
 				final String h = resumed.getAttribute("h");
 				try {
 					ArrayList<AbstractAcknowledgeableStanza> failedStanzas = new ArrayList<>();
+					final boolean acknowledgedMessages;
 					synchronized (this.mStanzaQueue) {
 						final int serverCount = Integer.parseInt(h);
 						if (serverCount < stanzasSent) {
@@ -583,11 +584,14 @@ public class XmppConnection implements Runnable {
 						} else {
 							Log.d(Config.LOGTAG, account.getJid().asBareJid().toString() + ": session resumed");
 						}
-						acknowledgeStanzaUpTo(serverCount);
+						acknowledgedMessages = acknowledgeStanzaUpTo(serverCount);
 						for (int i = 0; i < this.mStanzaQueue.size(); ++i) {
 							failedStanzas.add(mStanzaQueue.valueAt(i));
 						}
 						mStanzaQueue.clear();
+					}
+					if (acknowledgedMessages) {
+						mXmppConnectionService.updateConversationUi();
 					}
 					Log.d(Config.LOGTAG, "resending " + failedStanzas.size() + " stanzas");
 					for (AbstractAcknowledgeableStanza packet : failedStanzas) {
@@ -629,9 +633,13 @@ public class XmppConnection implements Runnable {
 				final Element ack = tagReader.readElement(nextTag);
 				lastPacketReceived = SystemClock.elapsedRealtime();
 				try {
+					final boolean acknowledgedMessages;
 					synchronized (this.mStanzaQueue) {
 						final int serverSequence = Integer.parseInt(ack.getAttribute("h"));
-						acknowledgeStanzaUpTo(serverSequence);
+						acknowledgedMessages = acknowledgeStanzaUpTo(serverSequence);
+					}
+					if (acknowledgedMessages) {
+						mXmppConnectionService.updateConversationUi();
 					}
 				} catch (NumberFormatException | NullPointerException e) {
 					Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": server send ack without sequence number");
@@ -641,8 +649,12 @@ public class XmppConnection implements Runnable {
 				try {
 					final int serverCount = Integer.parseInt(failed.getAttribute("h"));
 					Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": resumption failed but server acknowledged stanza #" + serverCount);
+					final boolean acknowledgedMessages;
 					synchronized (this.mStanzaQueue) {
-						acknowledgeStanzaUpTo(serverCount);
+						acknowledgedMessages = acknowledgeStanzaUpTo(serverCount);
+					}
+					if (acknowledgedMessages) {
+						mXmppConnectionService.updateConversationUi();
 					}
 				} catch (NumberFormatException | NullPointerException e) {
 					Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": resumption failed");
@@ -663,10 +675,11 @@ public class XmppConnection implements Runnable {
 		}
 	}
 
-	private void acknowledgeStanzaUpTo(int serverCount) {
+	private boolean acknowledgeStanzaUpTo(int serverCount) {
 		if (serverCount > stanzasSent) {
 			Log.e(Config.LOGTAG, "server acknowledged more stanzas than we sent. serverCount=" + serverCount + ", ourCount=" + stanzasSent);
 		}
+		boolean acknowledgedMessages = false;
 		for (int i = 0; i < mStanzaQueue.size(); ++i) {
 			if (serverCount >= mStanzaQueue.keyAt(i)) {
 				if (Config.EXTENDED_SM_LOGGING) {
@@ -675,12 +688,13 @@ public class XmppConnection implements Runnable {
 				AbstractAcknowledgeableStanza stanza = mStanzaQueue.valueAt(i);
 				if (stanza instanceof MessagePacket && acknowledgedListener != null) {
 					MessagePacket packet = (MessagePacket) stanza;
-					acknowledgedListener.onMessageAcknowledged(account, packet.getId());
+					acknowledgedMessages |= acknowledgedListener.onMessageAcknowledged(account, packet.getId());
 				}
 				mStanzaQueue.removeAt(i);
 				i--;
 			}
 		}
+		return acknowledgedMessages;
 	}
 
 	private @NonNull
