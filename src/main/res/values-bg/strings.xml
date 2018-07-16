@@ -284,6 +284,7 @@
   <string name="toast_message_omemo_fingerprint">Отпечатъкът OMEMO е копиран!</string>
   <string name="conference_banned">Достъпът Ви до този групов разговор е забранен</string>
   <string name="conference_members_only">Този групов разговор е само за членове</string>
+  <string name="conference_resource_constraint">Ограничение на ресурса</string>
   <string name="conference_kicked">Бяхте изритан(а) от този групов разговор</string>
   <string name="conference_shutdown">Груповия разговор приключи</string>
   <string name="conference_unknown_error">Вече не участвате в този групов разговор</string>
@@ -719,4 +720,5 @@
   <string name="group_chat_name">Име</string>
   <string name="providing_a_name_is_optional">Въвеждането на име не е задължитално</string>
   <string name="create_dialog_group_chat_name">Име на груповия разговор</string>
+  <string name="conference_destroyed">Този групов разговор е унищожен</string>
 </resources>

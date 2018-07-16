@@ -284,6 +284,7 @@
   <string name="toast_message_omemo_fingerprint">OMEMO-Fingerabdruck in die Zwischenablage kopiert!</string>
   <string name="conference_banned">Du wurdest aus diesem Gruppenchat ausgeschlossen</string>
   <string name="conference_members_only">Dieser Gruppenchat ist nur für Mitglieder</string>
+  <string name="conference_resource_constraint">Ressourcenbeschränkung</string>
   <string name="conference_kicked">Du wurdest aus diesem Gruppchat geworfen</string>
   <string name="conference_shutdown">Gruppenchat wurde geschlossen</string>
   <string name="conference_unknown_error">Du bist nicht länger in diesem Gruppenchat</string>
@@ -719,4 +720,5 @@
   <string name="group_chat_name">Name</string>
   <string name="providing_a_name_is_optional">Angabe eines Namens ist optional</string>
   <string name="create_dialog_group_chat_name">Gruppenchatname</string>
+  <string name="conference_destroyed">Dieser Gruppenchat wurde zerstört</string>
 </resources>

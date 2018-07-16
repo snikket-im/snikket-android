@@ -284,6 +284,7 @@
   <string name="toast_message_omemo_fingerprint">OMEMO-vingerafdruk gekopieerd naar klembord!</string>
   <string name="conference_banned">Je bent verbannen uit dit groepsgesprek</string>
   <string name="conference_members_only">Dit groepsgesprek is enkel voor leden</string>
+  <string name="conference_resource_constraint">Bronbeperking</string>
   <string name="conference_kicked">Je bent uit dit groepsgesprek verwijderd</string>
   <string name="conference_shutdown">Het groepsgesprek is uitgeschakeld</string>
   <string name="conference_unknown_error">Je neemt niet langer deel aan dit groepsgesprek</string>
@@ -719,4 +720,5 @@
   <string name="group_chat_name">Naam</string>
   <string name="providing_a_name_is_optional">Naam is niet vereist</string>
   <string name="create_dialog_group_chat_name">Gespreksnaam</string>
+  <string name="conference_destroyed">Dit groepsgesprek is verwijderd</string>
 </resources>

@@ -719,4 +719,5 @@
   <string name="group_chat_name">Nombre</string>
   <string name="providing_a_name_is_optional">Añadir un nombre es opcional</string>
   <string name="create_dialog_group_chat_name">Nombre de la Conversación en grupo</string>
+  <string name="conference_destroyed">Esta conversación en grupo ha sido destruida</string>
 </resources>

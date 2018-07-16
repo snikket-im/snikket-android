@@ -284,6 +284,7 @@
   <string name="toast_message_omemo_fingerprint">OMEMO hatz-marka arbelara kopiatu da</string>
   <string name="conference_banned">Talde honetara sartzea debekatuta duzu</string>
   <string name="conference_members_only">Talde hau kideentzat da soilik</string>
+  <string name="conference_resource_constraint">Baliabide murrizketa</string>
   <string name="conference_kicked">Talde honetatik kanporatua izan zara</string>
   <string name="conference_shutdown">Taldea itzali egin da</string>
   <string name="conference_unknown_error">Ez zaude dagoeneko talde honetan</string>
@@ -719,4 +720,5 @@
   <string name="group_chat_name">Izena</string>
   <string name="providing_a_name_is_optional">Izen bat ematea hautazkoa da</string>
   <string name="create_dialog_group_chat_name">Taldearen izena</string>
+  <string name="conference_destroyed">Talde hau suntsitu egin da</string>
 </resources>

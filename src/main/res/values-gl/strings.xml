@@ -237,6 +237,7 @@
   <string name="contact_has_read_up_to_this_point">%s leeu ate este punto</string>
   <string name="contacts_have_read_up_to_this_point">%s leu ate este punto</string>
   <string name="contacts_and_n_more_have_read_up_to_this_point">%1$s +%2$d máis leron ate este punto</string>
+  <string name="everyone_has_read_up_to_this_point">Todas leron ate este punto</string>
   <string name="publish">Publicar</string>
   <string name="touch_to_choose_picture">Toque no avatar para escoller imaxe desde a galería</string>
   <string name="publishing">Publicando...</string>
@@ -283,6 +284,7 @@
   <string name="toast_message_omemo_fingerprint">Copiouse a pegada dixital OMEMO ao portapapeis!</string>
   <string name="conference_banned">Vostede non pode acceder a esta conversa en grupo</string>
   <string name="conference_members_only">Esta conversa en grupo é so para membros</string>
+  <string name="conference_resource_constraint">Restrición do recurso</string>
   <string name="conference_kicked">Xa foi expulsado de esta conversa en grupo</string>
   <string name="conference_shutdown">A conversa en grupo foi apagada</string>
   <string name="conference_unknown_error">Xa non estás nesta conversa en grupo</string>
@@ -718,4 +720,5 @@
   <string name="group_chat_name">Nome</string>
   <string name="providing_a_name_is_optional">Proporcionar un nome é optativo</string>
   <string name="create_dialog_group_chat_name">Nome da conversa de grupo</string>
+  <string name="conference_destroyed">Esta conversa de grupo foi destruída</string>
 </resources>
