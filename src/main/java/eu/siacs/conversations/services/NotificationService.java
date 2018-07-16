@@ -181,7 +181,7 @@ public class NotificationService {
 	public void push(final Message message) {
 		synchronized (CATCHUP_LOCK) {
 			final XmppConnection connection = message.getConversation().getAccount().getXmppConnection();
-			if (connection.isWaitingForSmCatchup()) {
+			if (connection != null && connection.isWaitingForSmCatchup()) {
 				connection.incrementSmCatchupMessageCounter();
 				pushFromBacklog(message);
 			} else {
