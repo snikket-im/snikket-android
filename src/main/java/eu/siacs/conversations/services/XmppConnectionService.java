@@ -1902,164 +1902,196 @@ public class XmppConnectionService extends Service {
 	}
 
 	public void setOnConversationListChangedListener(OnConversationUpdate listener) {
+		final boolean remainingListeners;
 		synchronized (LISTENER_LOCK) {
-			if (checkListeners()) {
-				switchToForeground();
-			}
+			remainingListeners = checkListeners();
 			if (!this.mOnConversationUpdates.add(listener)) {
 				Log.w(Config.LOGTAG,listener.getClass().getName()+" is already registered as ConversationListChangedListener");
 			}
 			this.mNotificationService.setIsInForeground(this.mOnConversationUpdates.size() > 0);
 		}
+		if (remainingListeners) {
+			switchToForeground();
+		}
 	}
 
 	public void removeOnConversationListChangedListener(OnConversationUpdate listener) {
+		final boolean remainingListeners;
 		synchronized (LISTENER_LOCK) {
 			this.mOnConversationUpdates.remove(listener);
 			this.mNotificationService.setIsInForeground(this.mOnConversationUpdates.size() > 0);
-			if (checkListeners()) {
-				switchToBackground();
-			}
+			remainingListeners = checkListeners();
+		}
+		if (remainingListeners) {
+			switchToBackground();
 		}
 	}
 
 	public void setOnShowErrorToastListener(OnShowErrorToast listener) {
+		final boolean remainingListeners;
 		synchronized (LISTENER_LOCK) {
-			if (checkListeners()) {
-				switchToForeground();
-			}
+			remainingListeners = checkListeners();
 			if (!this.mOnShowErrorToasts.add(listener)) {
 				Log.w(Config.LOGTAG,listener.getClass().getName()+" is already registered as OnShowErrorToastListener");
 			}
 		}
+		if (remainingListeners) {
+			switchToForeground();
+		}
 	}
 
 	public void removeOnShowErrorToastListener(OnShowErrorToast onShowErrorToast) {
+		final boolean remainingListeners;
 		synchronized (LISTENER_LOCK) {
 			this.mOnShowErrorToasts.remove(onShowErrorToast);
-			if (checkListeners()) {
-				switchToBackground();
-			}
+			remainingListeners = checkListeners();
+		}
+		if (remainingListeners) {
+			switchToBackground();
 		}
 	}
 
 	public void setOnAccountListChangedListener(OnAccountUpdate listener) {
+		final boolean remainingListeners;
 		synchronized (LISTENER_LOCK) {
-			if (checkListeners()) {
-				switchToForeground();
-			}
+			remainingListeners = checkListeners();
 			if (!this.mOnAccountUpdates.add(listener)) {
 				Log.w(Config.LOGTAG,listener.getClass().getName()+" is already registered as OnAccountListChangedtListener");
 			}
 		}
+		if (remainingListeners) {
+			switchToForeground();
+		}
 	}
 
 	public void removeOnAccountListChangedListener(OnAccountUpdate listener) {
+		final boolean remainingListeners;
 		synchronized (LISTENER_LOCK) {
 			this.mOnAccountUpdates.remove(listener);
-			if (checkListeners()) {
-				switchToBackground();
-			}
+			remainingListeners = checkListeners();
+		}
+		if (remainingListeners) {
+			switchToBackground();
 		}
 	}
 
 	public void setOnCaptchaRequestedListener(OnCaptchaRequested listener) {
+		final boolean remainingListeners;
 		synchronized (LISTENER_LOCK) {
-			if (checkListeners()) {
-				switchToForeground();
-			}
+			remainingListeners = checkListeners();
 			if (!this.mOnCaptchaRequested.add(listener)) {
 				Log.w(Config.LOGTAG,listener.getClass().getName()+" is already registered as OnCaptchaRequestListener");
 			}
 		}
+		if (remainingListeners) {
+			switchToForeground();
+		}
 	}
 
 	public void removeOnCaptchaRequestedListener(OnCaptchaRequested listener) {
+		final boolean remainingListeners;
 		synchronized (LISTENER_LOCK) {
 			this.mOnCaptchaRequested.remove(listener);
-			if (checkListeners()) {
-				switchToBackground();
-			}
+			remainingListeners = checkListeners();
+		}
+		if (remainingListeners) {
+			switchToBackground();
 		}
 	}
 
 	public void setOnRosterUpdateListener(final OnRosterUpdate listener) {
+		final boolean remainingListeners;
 		synchronized (LISTENER_LOCK) {
-			if (checkListeners()) {
-				switchToForeground();
-			}
+			remainingListeners = checkListeners();
 			if (!this.mOnRosterUpdates.add(listener)) {
 				Log.w(Config.LOGTAG,listener.getClass().getName()+" is already registered as OnRosterUpdateListener");
 			}
 		}
+		if (remainingListeners) {
+			switchToForeground();
+		}
 	}
 
 	public void removeOnRosterUpdateListener(final OnRosterUpdate listener) {
+		final boolean remainingListeners;
 		synchronized (LISTENER_LOCK) {
 			this.mOnRosterUpdates.remove(listener);
-			if (checkListeners()) {
-				switchToBackground();
-			}
+			remainingListeners = checkListeners();
+		}
+		if (remainingListeners) {
+			switchToBackground();
 		}
 	}
 
 	public void setOnUpdateBlocklistListener(final OnUpdateBlocklist listener) {
+		final boolean remainingListeners;
 		synchronized (LISTENER_LOCK) {
-			if (checkListeners()) {
-				switchToForeground();
-			}
+			remainingListeners = checkListeners();
 			if (!this.mOnUpdateBlocklist.add(listener)) {
 				Log.w(Config.LOGTAG,listener.getClass().getName()+" is already registered as OnUpdateBlocklistListener");
 			}
 		}
+		if (remainingListeners) {
+			switchToForeground();
+		}
 	}
 
 	public void removeOnUpdateBlocklistListener(final OnUpdateBlocklist listener) {
+		final boolean remainingListeners;
 		synchronized (LISTENER_LOCK) {
 			this.mOnUpdateBlocklist.remove(listener);
-			if (checkListeners()) {
-				switchToBackground();
-			}
+			remainingListeners = checkListeners();
+		}
+		if (remainingListeners) {
+			switchToBackground();
 		}
 	}
 
 	public void setOnKeyStatusUpdatedListener(final OnKeyStatusUpdated listener) {
+		final boolean remainingListeners;
 		synchronized (LISTENER_LOCK) {
-			if (checkListeners()) {
-				switchToForeground();
-			}
+			remainingListeners = checkListeners();
 			if (!this.mOnKeyStatusUpdated.add(listener)) {
 				Log.w(Config.LOGTAG,listener.getClass().getName()+" is already registered as OnKeyStatusUpdateListener");
 			}
 		}
+		if (remainingListeners) {
+			switchToForeground();
+		}
 	}
 
 	public void removeOnNewKeysAvailableListener(final OnKeyStatusUpdated listener) {
+		final boolean remainingListeners;
 		synchronized (LISTENER_LOCK) {
 			this.mOnKeyStatusUpdated.remove(listener);
-			if (checkListeners()) {
-				switchToBackground();
-			}
+			remainingListeners = checkListeners();
+		}
+		if (remainingListeners) {
+			switchToBackground();
 		}
 	}
 
 	public void setOnMucRosterUpdateListener(OnMucRosterUpdate listener) {
+		final boolean remainingListeners;
 		synchronized (LISTENER_LOCK) {
-			if (checkListeners()) {
-				switchToForeground();
-			}
+			remainingListeners = checkListeners();
 			if (!this.mOnMucRosterUpdate.add(listener)) {
 				Log.w(Config.LOGTAG,listener.getClass().getName()+" is already registered as OnMucRosterListener");
 			}
 		}
+		if (remainingListeners) {
+			switchToForeground();
+		}
 	}
 
 	public void removeOnMucRosterUpdateListener(final OnMucRosterUpdate listener) {
+		final boolean remainingListeners;
 		synchronized (LISTENER_LOCK) {
 			this.mOnMucRosterUpdate.remove(listener);
-			if (checkListeners()) {
-				switchToBackground();
-			}
+			remainingListeners = checkListeners();
+		}
+		if (remainingListeners) {
+			switchToBackground();
 		}
 	}
 
