@@ -91,7 +91,10 @@ public class XmppUri {
 			if (uri.getAuthority() != null) {
 				jid = uri.getAuthority();
 			} else {
-				String[] parts = uri.getSchemeSpecificPart().split("\\?");
+				// At this point, it might be safe to assume that any instance of '%' or '#' in the
+				// passed URI is the result of the user input and can safely be (should be?) encoded
+				Uri replaced = Uri.parse(lameUrlEncode(uri.toString()));
+				String[] parts = replaced.getSchemeSpecificPart().split("\\?");
 				if (parts.length > 0) {
 					jid = parts[0];
 				} else {
