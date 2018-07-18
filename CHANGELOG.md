@@ -1,5 +1,8 @@
 # Changelog
 
+### Version 2.2.7
+* stability improvements
+
 ### Version 2.2.6
 * support old MAM version to work with Prosody
 
