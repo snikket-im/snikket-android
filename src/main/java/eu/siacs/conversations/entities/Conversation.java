@@ -151,33 +151,44 @@ public class Conversation extends AbstractEntity implements Blockable, Comparabl
 	}
 
 	public void findWaitingMessages(OnMessageFound onMessageFound) {
+		final ArrayList<Message> results = new ArrayList<>();
 		synchronized (this.messages) {
 			for (Message message : this.messages) {
 				if (message.getStatus() == Message.STATUS_WAITING) {
-					onMessageFound.onMessageFound(message);
+					results.add(message);
 				}
 			}
+		}
+		for(Message result : results) {
+			onMessageFound.onMessageFound(result);
 		}
 	}
 
 	public void findUnreadMessages(OnMessageFound onMessageFound) {
+		final ArrayList<Message> results = new ArrayList<>();
 		synchronized (this.messages) {
 			for (Message message : this.messages) {
 				if (!message.isRead()) {
-					onMessageFound.onMessageFound(message);
+					results.add(message);
 				}
 			}
+		}
+		for(Message result : results) {
+			onMessageFound.onMessageFound(result);
 		}
 	}
 
 	public void findMessagesWithFiles(final OnMessageFound onMessageFound) {
+		final ArrayList<Message> results = new ArrayList<>();
 		synchronized (this.messages) {
-			for (final Message message : this.messages) {
-				if ((message.getType() == Message.TYPE_IMAGE || message.getType() == Message.TYPE_FILE)
-						&& message.getEncryption() != Message.ENCRYPTION_PGP) {
-					onMessageFound.onMessageFound(message);
+			for (final Message m : this.messages) {
+				if (m.isFileOrImage() && m.getEncryption() != Message.ENCRYPTION_PGP) {
+					results.add(m);
 				}
 			}
+		}
+		for(Message result : results) {
+			onMessageFound.onMessageFound(result);
 		}
 	}
 
@@ -242,25 +253,17 @@ public class Conversation extends AbstractEntity implements Blockable, Comparabl
 		}
 	}
 
-	public void findUnsentMessagesWithEncryption(int encryptionType, OnMessageFound onMessageFound) {
+	public void findUnsentTextMessages(OnMessageFound onMessageFound) {
+		final ArrayList<Message> results = new ArrayList<>();
 		synchronized (this.messages) {
 			for (Message message : this.messages) {
-				if ((message.getStatus() == Message.STATUS_UNSEND || message.getStatus() == Message.STATUS_WAITING)
-						&& (message.getEncryption() == encryptionType)) {
-					onMessageFound.onMessageFound(message);
+				if (message.getType() != Message.TYPE_IMAGE && message.getStatus() == Message.STATUS_UNSEND) {
+					results.add(message);
 				}
 			}
 		}
-	}
-
-	public void findUnsentTextMessages(OnMessageFound onMessageFound) {
-		synchronized (this.messages) {
-			for (Message message : this.messages) {
-				if (message.getType() != Message.TYPE_IMAGE
-						&& message.getStatus() == Message.STATUS_UNSEND) {
-					onMessageFound.onMessageFound(message);
-				}
-			}
+		for(Message result : results) {
+			onMessageFound.onMessageFound(result);
 		}
 	}
 

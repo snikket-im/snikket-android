@@ -1307,13 +1307,7 @@ public class XmppConnectionService extends Service {
 	}
 
 	private void sendUnsentMessages(final Conversation conversation) {
-		conversation.findWaitingMessages(new Conversation.OnMessageFound() {
-
-			@Override
-			public void onMessageFound(Message message) {
-				resendMessage(message, true);
-			}
-		});
+		conversation.findWaitingMessages(message -> resendMessage(message, true));
 	}
 
 	public void resendMessage(final Message message, final boolean delay) {
@@ -3136,13 +3130,7 @@ public class XmppConnectionService extends Service {
 	public void resetSendingToWaiting(Account account) {
 		for (Conversation conversation : getConversations()) {
 			if (conversation.getAccount() == account) {
-				conversation.findUnsentTextMessages(new Conversation.OnMessageFound() {
-
-					@Override
-					public void onMessageFound(Message message) {
-						markMessage(message, Message.STATUS_WAITING);
-					}
-				});
+				conversation.findUnsentTextMessages(message -> markMessage(message, Message.STATUS_WAITING));
 			}
 		}
 	}
