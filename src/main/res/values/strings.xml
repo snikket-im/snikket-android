@@ -328,6 +328,7 @@
     <string name="file_deleted">The file has been deleted</string>
     <string name="no_application_found_to_open_file">No application found to open file</string>
     <string name="no_application_found_to_open_link">No application found to open link</string>
+    <string name="no_application_found_to_view_contact">No application found to view contact</string>
     <string name="pref_show_dynamic_tags">Dynamic Tags</string>
     <string name="pref_show_dynamic_tags_summary">Display read-only tags underneath contacts</string>
     <string name="enable_notifications">Enable notifications</string>
