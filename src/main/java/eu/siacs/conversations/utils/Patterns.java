@@ -28,11 +28,10 @@ import java.util.regex.Pattern;
 public class Patterns {
 
     public static final Pattern XMPP_PATTERN = Pattern
-            .compile("xmpp:"
-                    + "(?:\\S+)" // any (one or more) non-whitespace prefix
-                    + "@(?:[." + Patterns.GOOD_IRI_CHAR + "])+" // domain part, added the dot
-                    + "(?:\\?[a-zA-Z]+)?" // optional action, can be any letter but no digit
-                    );
+            .compile("xmpp\\:(?:(?:["
+                    + Patterns.GOOD_IRI_CHAR
+                    + "\\;\\/\\?\\@\\&\\=\\#\\~\\-\\.\\+\\!\\*\\'\\(\\)\\,\\_])"
+                    + "|(?:\\%[a-fA-F0-9]{2}))+");
 
     /**
      *  Regular expression to match all IANA top-level domains.
