@@ -1,5 +1,8 @@
 # Changelog
 
+### Version 2.2.8
+* fixed regression that broke XMPP uris
+
 ### Version 2.2.7
 * stability improvements
 

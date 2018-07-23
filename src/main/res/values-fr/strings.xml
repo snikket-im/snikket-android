@@ -20,6 +20,7 @@
   <string name="title_activity_sharewith">Partager avec Conversation</string>
   <string name="title_activity_start_conversation">Démarrer une conversation</string>
   <string name="title_activity_choose_contact">Choisir un contact</string>
+  <string name="title_activity_choose_contacts">Choisir les contacts</string>
   <string name="title_activity_share_via_account">Partager via le compte</string>
   <string name="title_activity_block_list">Bloquer la liste</string>
   <string name="just_now">À l\'instant</string>
@@ -236,6 +237,7 @@
   <string name="contact_has_read_up_to_this_point">%s a tout lu jusqu\'ici</string>
   <string name="contacts_have_read_up_to_this_point">%s a tout lu jusqu\'ici</string>
   <string name="contacts_and_n_more_have_read_up_to_this_point">%1$s+%2$d et plus  ont tout lu jusqu\'ici</string>
+  <string name="everyone_has_read_up_to_this_point">Tout le monde a lu jusqu\'ici</string>
   <string name="publish">Publier</string>
   <string name="touch_to_choose_picture">Toucher l\'avatar pour choisir une image depuis la galerie.</string>
   <string name="publishing">Mise à jour…</string>
@@ -715,4 +717,7 @@
   <string name="contact_name">Nom du contact</string>
   <string name="nickname">Surnom</string>
   <string name="group_chat_name">Nom</string>
+  <string name="providing_a_name_is_optional">Fournir un nom est facultatif</string>
+  <string name="create_dialog_group_chat_name">Nom de la conversation de groupe</string>
+  <string name="conference_destroyed">Cette conversation de groupe a été supprimée</string>
 </resources>

@@ -284,6 +284,7 @@
   <string name="toast_message_omemo_fingerprint">OMEMO 指纹已拷贝到剪贴板！</string>
   <string name="conference_banned">你已经被禁言了</string>
   <string name="conference_members_only">这个群组只允许群组成员聊天</string>
+  <string name="conference_resource_constraint">资源限制</string>
   <string name="conference_kicked">您已被移出该群组了</string>
   <string name="conference_shutdown">这个群组已被关闭</string>
   <string name="conference_unknown_error">您已不在该群组</string>
@@ -713,4 +714,5 @@
   <string name="group_chat_name">名称</string>
   <string name="providing_a_name_is_optional">提供名称是可选的</string>
   <string name="create_dialog_group_chat_name">群聊名称</string>
+  <string name="conference_destroyed">群聊已被解散</string>
 </resources>
