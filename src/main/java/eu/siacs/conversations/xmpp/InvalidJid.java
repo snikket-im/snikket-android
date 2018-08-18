@@ -69,6 +69,11 @@ public class InvalidJid implements Jid {
 	}
 
 	@Override
+	public boolean isDomainJid() {
+		throw new AssertionError("Not implemented");
+	}
+
+	@Override
 	public Jid asBareJid() {
 		throw new AssertionError("Not implemented");
 	}
