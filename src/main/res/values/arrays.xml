@@ -73,12 +73,14 @@
 	</string-array>
 
 	<string-array name="grace_periods">
+		<item>@string/gp_disable</item>
 		<item>@string/gp_short</item>
 		<item>@string/gp_medium</item>
 		<item>@string/gp_long</item>
 	</string-array>
 
 	<string-array name="grace_periods_values">
+		<item>0</item>
 		<item>144</item>
 		<item>610</item>
 		<item>2584</item>

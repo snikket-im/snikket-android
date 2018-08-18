@@ -535,6 +535,7 @@
     <string name="choose_participants">Choose participants</string>
     <string name="creating_conference">Creating group chat…</string>
     <string name="invite_again">Invite again</string>
+    <string name="gp_disable">Disable</string>
     <string name="gp_short">Short</string>
     <string name="gp_medium">Medium</string>
     <string name="gp_long">Long</string>
