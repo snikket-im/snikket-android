@@ -14,4 +14,11 @@ public class PublishOptions {
         return options;
     }
 
+    public static Bundle persistentWhitelistAccess() {
+        final Bundle options = new Bundle();
+        options.putString("pubsub#persist_items","true");
+        options.putString("pubsub#access_model","whitelist");
+        return options;
+    }
+
 }

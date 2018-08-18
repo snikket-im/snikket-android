@@ -1754,6 +1754,10 @@ public class XmppConnection implements Runnable {
 			return hasDiscoFeature(Jid.of(account.getServer()), "urn:xmpp:carbons:2");
 		}
 
+		public boolean bookmarksConversion() {
+			return hasDiscoFeature(account.getJid().asBareJid(),Namespace.BOOKMARKS_CONVERSION) && pepPublishOptions();
+		}
+
 		public boolean blocking() {
 			return hasDiscoFeature(Jid.of(account.getServer()), Namespace.BLOCKING);
 		}

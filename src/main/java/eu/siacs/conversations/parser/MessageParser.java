@@ -212,6 +212,13 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
 			AxolotlService axolotlService = account.getAxolotlService();
 			axolotlService.registerDevices(from, deviceIds);
 			mXmppConnectionService.updateAccountUi();
+		} else if (Namespace.BOOKMARKS.equals(node)) {
+			Log.d(Config.LOGTAG,"received bookmarks from "+from);
+			if (account.getJid().asBareJid().equals(from)) {
+				final Element i = items.findChild("item");
+				final Element storage = i == null ? null : i.findChild("storage", Namespace.BOOKMARKS);
+				mXmppConnectionService.processBookmarks(account,storage);
+			}
 		}
 	}
 
@@ -219,7 +226,7 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
 		if (packet.getType() == MessagePacket.TYPE_ERROR) {
 			Jid from = packet.getFrom();
 			if (from != null) {
-				Message message = mXmppConnectionService.markMessage(account,
+				mXmppConnectionService.markMessage(account,
 						from.asBareJid(),
 						packet.getId(),
 						Message.STATUS_SEND_FAILED,

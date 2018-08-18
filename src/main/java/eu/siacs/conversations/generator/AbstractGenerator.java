@@ -36,6 +36,7 @@ public abstract class AbstractGenerator {
 			"http://jabber.org/protocol/disco#info",
 			"urn:xmpp:avatar:metadata+notify",
 			"http://jabber.org/protocol/nick+notify",
+			Namespace.BOOKMARKS+"+notify",
 			"urn:xmpp:ping",
 			"jabber:iq:version",
 			"http://jabber.org/protocol/chatstates"
@@ -50,20 +51,17 @@ public abstract class AbstractGenerator {
 	private final String[] PRIVACY_SENSITIVE = {
 			"urn:xmpp:time" //XEP-0202: Entity Time leaks time zone
 	};
-	private final String[] OTR = {
-			"urn:xmpp:otr:0"
-	};
 	private String mVersion = null;
 
 	private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.US);
 
 	protected XmppConnectionService mXmppConnectionService;
 
-	protected AbstractGenerator(XmppConnectionService service) {
+	AbstractGenerator(XmppConnectionService service) {
 		this.mXmppConnectionService = service;
 	}
 
-	protected String getIdentityVersion() {
+	String getIdentityVersion() {
 		if (mVersion == null) {
 			this.mVersion = PhoneHelper.getVersionName(mXmppConnectionService);
 		}
