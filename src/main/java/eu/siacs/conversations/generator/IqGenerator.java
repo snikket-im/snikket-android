@@ -205,6 +205,7 @@ public class IqGenerator extends AbstractGenerator {
 
 	public IqPacket publishDeviceIds(final Set<Integer> ids, final Bundle publishOptions) {
 		final Element item = new Element("item");
+		item.setAttribute("id", "current");
 		final Element list = item.addChild("list", AxolotlService.PEP_PREFIX);
 		for (Integer id : ids) {
 			final Element device = new Element("device");
@@ -217,6 +218,7 @@ public class IqGenerator extends AbstractGenerator {
 	public IqPacket publishBundles(final SignedPreKeyRecord signedPreKeyRecord, final IdentityKey identityKey,
 	                               final Set<PreKeyRecord> preKeyRecords, final int deviceId, Bundle publishOptions) {
 		final Element item = new Element("item");
+		item.setAttribute("id", "current");
 		final Element bundle = item.addChild("bundle", AxolotlService.PEP_PREFIX);
 		final Element signedPreKeyPublic = bundle.addChild("signedPreKeyPublic");
 		signedPreKeyPublic.setAttribute("signedPreKeyId", signedPreKeyRecord.getId());
@@ -239,6 +241,7 @@ public class IqGenerator extends AbstractGenerator {
 
 	public IqPacket publishVerification(byte[] signature, X509Certificate[] certificates, final int deviceId) {
 		final Element item = new Element("item");
+		item.setAttribute("id", "current");
 		final Element verification = item.addChild("verification", AxolotlService.PEP_PREFIX);
 		final Element chain = verification.addChild("chain");
 		for (int i = 0; i < certificates.length; ++i) {
