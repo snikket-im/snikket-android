@@ -784,11 +784,12 @@ public class FileBackend {
             bitmap = BitmapFactory.decodeStream(mXmppConnectionService.getContentResolver().openInputStream(uri));
             return getPepAvatar(bitmap, Bitmap.CompressFormat.PNG, 100);
         } catch (Exception e) {
+            return null;
+        } finally {
             if (bitmap != null) {
                 bitmap.recycle();
             }
         }
-        return null;
     }
 
     private Avatar getPepAvatar(Bitmap bitmap, Bitmap.CompressFormat format, int quality) {
@@ -822,6 +823,9 @@ public class FileBackend {
             avatar.width = bitmap.getWidth();
             avatar.height = bitmap.getHeight();
             return avatar;
+        } catch (OutOfMemoryError e) {
+            Log.d(Config.LOGTAG,"unable to convert avatar to base64 due to low memory");
+            return null;
         } catch (Exception e) {
             return null;
         }
