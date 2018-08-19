@@ -955,11 +955,12 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
 			final boolean received = message.getStatus() <= Message.STATUS_RECEIVED;
 			if (received) {
 				if (message.getConversation() instanceof Conversation && message.getConversation().getMode() == Conversation.MODE_MULTI) {
+					Jid tcp = message.getTrueCounterpart();
 					Jid user = message.getCounterpart();
 					if (user != null && !user.isBareJid()) {
 						final MucOptions mucOptions = ((Conversation) message.getConversation()).getMucOptions();
 						if (mucOptions.participating() || ((Conversation) message.getConversation()).getNextCounterpart() != null) {
-							if (!mucOptions.isUserInRoom(user)) {
+							if (!mucOptions.isUserInRoom(user) && mucOptions.findUserByRealJid(tcp == null ? null : tcp.asBareJid()) == null) {
 								Toast.makeText(getActivity(), activity.getString(R.string.user_has_left_conference, user.getResource()), Toast.LENGTH_SHORT).show();
 							}
 							highlightInConference(user.getResource());
