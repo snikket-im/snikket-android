@@ -51,6 +51,7 @@ dependencies {
     implementation 'net.ypresto.androidtranscoder:android-transcoder:0.2.0'
     implementation 'rocks.xmpp:xmpp-addr:0.8.0'
     implementation 'org.osmdroid:osmdroid-android:6.0.1'
+    implementation 'org.hsluv:hsluv:0.2'
 }
 
 ext {

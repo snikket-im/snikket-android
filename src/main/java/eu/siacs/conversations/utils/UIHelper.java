@@ -230,6 +230,9 @@ public class UIHelper {
 	}
 
 	public static int getColorForName(String name, boolean safe) {
+		if (Config.XEP_0392) {
+			return XEP0392Helper.rgbFromNick(name);
+		}
 		if (name == null || name.isEmpty()) {
 			return 0xFF202020;
 		}
