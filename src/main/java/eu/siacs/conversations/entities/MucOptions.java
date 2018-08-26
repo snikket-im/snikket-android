@@ -559,6 +559,16 @@ public class MucOptions {
 		return null;
 	}
 
+	public User findOrCreateUserByRealJid(Jid jid) {
+		User user = findUserByRealJid(jid);
+		if (user == null) {
+			user = new User(this, null);
+			user.setRealJid(jid);
+			user.setRole("visitor");
+		}
+		return user;
+	}
+
 	public User findUser(ReadByMarker readByMarker) {
 		if (readByMarker.getRealJid() != null) {
 			User user = findUserByRealJid(readByMarker.getRealJid().asBareJid());

@@ -11,6 +11,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
@@ -49,6 +50,7 @@ import eu.siacs.conversations.services.XmppConnectionService;
 import eu.siacs.conversations.services.XmppConnectionService.OnConversationUpdate;
 import eu.siacs.conversations.services.XmppConnectionService.OnMucRosterUpdate;
 import eu.siacs.conversations.ui.util.MenuDoubleTabUtil;
+import eu.siacs.conversations.ui.util.MucDetailsContextMenuHelper;
 import eu.siacs.conversations.ui.util.MyLinkify;
 import eu.siacs.conversations.ui.util.SoftKeyboardUtils;
 import eu.siacs.conversations.utils.EmojiWrapper;
@@ -215,6 +217,7 @@ public class ConferenceDetailsActivity extends XmppActivity implements OnConvers
         }
         return null;
     }
+
 
     @Override
     public void onConversationUpdate() {
@@ -427,129 +430,25 @@ public class ConferenceDetailsActivity extends XmppActivity implements OnConvers
                 name = user.getName();
             }
             menu.setHeaderTitle(name);
-            if (user.getRealJid() != null) {
-                MenuItem showContactDetails = menu.findItem(R.id.action_contact_details);
-                MenuItem startConversation = menu.findItem(R.id.start_conversation);
-                MenuItem giveMembership = menu.findItem(R.id.give_membership);
-                MenuItem removeMembership = menu.findItem(R.id.remove_membership);
-                MenuItem giveAdminPrivileges = menu.findItem(R.id.give_admin_privileges);
-                MenuItem removeAdminPrivileges = menu.findItem(R.id.remove_admin_privileges);
-                MenuItem removeFromRoom = menu.findItem(R.id.remove_from_room);
-                MenuItem banFromConference = menu.findItem(R.id.ban_from_conference);
-                MenuItem invite = menu.findItem(R.id.invite);
-                startConversation.setVisible(true);
-                if (contact != null && contact.showInRoster()) {
-                    showContactDetails.setVisible(!contact.isSelf());
-                }
-                if (user.getRole() == MucOptions.Role.NONE) {
-                    invite.setVisible(true);
-                }
-                if (self.getAffiliation().ranks(MucOptions.Affiliation.ADMIN) &&
-                        self.getAffiliation().outranks(user.getAffiliation())) {
-                    if (mAdvancedMode) {
-                        if (user.getAffiliation() == MucOptions.Affiliation.NONE) {
-                            giveMembership.setVisible(true);
-                        } else {
-                            removeMembership.setVisible(true);
-                        }
-                        if (!Config.DISABLE_BAN) {
-                            banFromConference.setVisible(true);
-                        }
-                    } else {
-                        if (!Config.DISABLE_BAN || mConversation.getMucOptions().membersOnly()) {
-                            removeFromRoom.setVisible(true);
-                        }
-                    }
-                    if (user.getAffiliation() != MucOptions.Affiliation.ADMIN) {
-                        giveAdminPrivileges.setVisible(true);
-                    } else {
-                        removeAdminPrivileges.setVisible(true);
-                    }
-                }
-            } else {
-                MenuItem sendPrivateMessage = menu.findItem(R.id.send_private_message);
-                sendPrivateMessage.setVisible(user.getRole().ranks(MucOptions.Role.VISITOR));
-            }
-
+            MucDetailsContextMenuHelper.configureMucDetailsContextMenu(menu, mConversation, user, mAdvancedMode);
         }
         super.onCreateContextMenu(menu, v, menuInfo);
     }
 
     @Override
     public boolean onContextItemSelected(MenuItem item) {
-        Jid jid = mSelectedUser.getRealJid();
-        switch (item.getItemId()) {
-            case R.id.action_contact_details:
-                Contact contact = mSelectedUser.getContact();
-                if (contact != null) {
-                    switchToContactDetails(contact);
-                }
-                return true;
-            case R.id.start_conversation:
-                startConversation(mSelectedUser);
-                return true;
-            case R.id.give_admin_privileges:
-                xmppConnectionService.changeAffiliationInConference(mConversation, jid, MucOptions.Affiliation.ADMIN, this);
-                return true;
-            case R.id.give_membership:
-                xmppConnectionService.changeAffiliationInConference(mConversation, jid, MucOptions.Affiliation.MEMBER, this);
-                return true;
-            case R.id.remove_membership:
-                xmppConnectionService.changeAffiliationInConference(mConversation, jid, MucOptions.Affiliation.NONE, this);
-                return true;
-            case R.id.remove_admin_privileges:
-                xmppConnectionService.changeAffiliationInConference(mConversation, jid, MucOptions.Affiliation.MEMBER, this);
-                return true;
-            case R.id.remove_from_room:
-                removeFromRoom(mSelectedUser);
-                return true;
-            case R.id.ban_from_conference:
-                xmppConnectionService.changeAffiliationInConference(mConversation, jid, MucOptions.Affiliation.OUTCAST, this);
-                if (mSelectedUser.getRole() != MucOptions.Role.NONE) {
-                    xmppConnectionService.changeRoleInConference(mConversation, mSelectedUser.getName(), MucOptions.Role.NONE, this);
-                }
-                return true;
-            case R.id.send_private_message:
-                if (mConversation.getMucOptions().allowPm()) {
-                    privateMsgInMuc(mConversation, mSelectedUser.getName());
-                } else {
-                    Toast.makeText(this, R.string.private_messages_are_disabled, Toast.LENGTH_SHORT).show();
-                }
-                return true;
-            case R.id.invite:
-                xmppConnectionService.directInvite(mConversation, jid);
-                return true;
-            default:
-                return super.onContextItemSelected(item);
+        if (!MucDetailsContextMenuHelper.onContextItemSelected(item, mSelectedUser, mConversation, this, this, this)) {
+            return super.onContextItemSelected(item);
         }
+        return true;
     }
 
     private void removeFromRoom(final User user) {
-        if (mConversation.getMucOptions().membersOnly()) {
-            xmppConnectionService.changeAffiliationInConference(mConversation, user.getRealJid(), MucOptions.Affiliation.NONE, this);
-            if (user.getRole() != MucOptions.Role.NONE) {
-                xmppConnectionService.changeRoleInConference(mConversation, mSelectedUser.getName(), MucOptions.Role.NONE, ConferenceDetailsActivity.this);
-            }
-        } else {
-            AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            builder.setTitle(R.string.ban_from_conference);
-            builder.setMessage(getString(R.string.removing_from_public_conference, user.getName()));
-            builder.setNegativeButton(R.string.cancel, null);
-            builder.setPositiveButton(R.string.ban_now, (dialog, which) -> {
-                xmppConnectionService.changeAffiliationInConference(mConversation, user.getRealJid(), MucOptions.Affiliation.OUTCAST, ConferenceDetailsActivity.this);
-                if (user.getRole() != MucOptions.Role.NONE) {
-                    xmppConnectionService.changeRoleInConference(mConversation, mSelectedUser.getName(), MucOptions.Role.NONE, ConferenceDetailsActivity.this);
-                }
-            });
-            builder.create().show();
-        }
+        MucDetailsContextMenuHelper.removeFromRoom(user, mConversation, this, this, this);
     }
 
     protected void startConversation(User user) {
-        if (user.getRealJid() != null) {
-            Conversation conversation = xmppConnectionService.findOrCreateConversation(this.mConversation.getAccount(), user.getRealJid().asBareJid(), false, true);
-            switchToConversation(conversation);
-        }
+        MucDetailsContextMenuHelper.startConversation(user, this.mConversation, this);
     }
 
     protected void saveAsBookmark() {

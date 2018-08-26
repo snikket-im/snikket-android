@@ -78,10 +78,11 @@ import eu.siacs.conversations.utils.EmojiWrapper;
 import eu.siacs.conversations.utils.ExceptionHelper;
 import eu.siacs.conversations.utils.XmppUri;
 import eu.siacs.conversations.xmpp.OnUpdateBlocklist;
+import rocks.xmpp.addr.Jid;
 
 import static eu.siacs.conversations.ui.ConversationFragment.REQUEST_DECRYPT_PGP;
 
-public class ConversationsActivity extends XmppActivity implements OnConversationSelected, OnConversationArchived, OnConversationsListItemUpdated, OnConversationRead, XmppConnectionService.OnAccountUpdate, XmppConnectionService.OnConversationUpdate, XmppConnectionService.OnRosterUpdate, OnUpdateBlocklist, XmppConnectionService.OnShowErrorToast {
+public class ConversationsActivity extends XmppActivity implements OnConversationSelected, OnConversationArchived, OnConversationsListItemUpdated, OnConversationRead, XmppConnectionService.OnAccountUpdate, XmppConnectionService.OnConversationUpdate, XmppConnectionService.OnRosterUpdate, OnUpdateBlocklist, XmppConnectionService.OnShowErrorToast, XmppConnectionService.OnAffiliationChanged, XmppConnectionService.OnRoleChanged {
 
 	public static final String ACTION_VIEW_CONVERSATION = "eu.siacs.conversations.action.VIEW";
 	public static final String EXTRA_CONVERSATION = "conversationUuid";
@@ -414,6 +415,30 @@ public class ConversationsActivity extends XmppActivity implements OnConversatio
 		}
 		openConversation(conversation, null);
 	}
+
+    private void displayToast(final String msg) {
+        runOnUiThread(() -> Toast.makeText(ConversationsActivity.this, msg, Toast.LENGTH_SHORT).show());
+    }
+
+    @Override
+    public void onAffiliationChangedSuccessful(Jid jid) {
+
+    }
+
+    @Override
+    public void onAffiliationChangeFailed(Jid jid, int resId) {
+        displayToast(getString(resId, jid.asBareJid().toString()));
+    }
+
+    @Override
+    public void onRoleChangedSuccessful(String nick) {
+
+    }
+
+    @Override
+    public void onRoleChangeFailed(String nick, int resId) {
+        displayToast(getString(resId, nick));
+    }
 
 	private void openConversation(Conversation conversation, Bundle extras) {
 		ConversationFragment conversationFragment = (ConversationFragment) getFragmentManager().findFragmentById(R.id.secondary_fragment);

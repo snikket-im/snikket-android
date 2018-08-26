@@ -73,6 +73,7 @@ import eu.siacs.conversations.entities.Conversational;
 import eu.siacs.conversations.entities.DownloadableFile;
 import eu.siacs.conversations.entities.Message;
 import eu.siacs.conversations.entities.MucOptions;
+import eu.siacs.conversations.entities.MucOptions.User;
 import eu.siacs.conversations.entities.Presence;
 import eu.siacs.conversations.entities.ReadByMarker;
 import eu.siacs.conversations.entities.Transferable;
@@ -89,6 +90,7 @@ import eu.siacs.conversations.ui.util.DateSeparator;
 import eu.siacs.conversations.ui.util.EditMessageActionModeCallback;
 import eu.siacs.conversations.ui.util.ListViewUtils;
 import eu.siacs.conversations.ui.util.MenuDoubleTabUtil;
+import eu.siacs.conversations.ui.util.MucDetailsContextMenuHelper;
 import eu.siacs.conversations.ui.util.PendingItem;
 import eu.siacs.conversations.ui.util.PresenceSelector;
 import eu.siacs.conversations.ui.util.ScrollState;
@@ -978,21 +980,28 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
 			}
 			activity.switchToAccount(message.getConversation().getAccount(), fingerprint);
 		});
-		messageListAdapter.setOnContactPictureLongClicked(message -> {
+		messageListAdapter.setOnContactPictureLongClicked((v, message) -> {
 			if (message.getStatus() <= Message.STATUS_RECEIVED) {
 				if (message.getConversation().getMode() == Conversation.MODE_MULTI) {
-					final MucOptions mucOptions = conversation.getMucOptions();
-					if (!mucOptions.allowPm()) {
-						Toast.makeText(getActivity(), R.string.private_messages_are_disabled, Toast.LENGTH_SHORT).show();
-						return;
-					}
-					Jid user = message.getCounterpart();
-					if (user != null && !user.isBareJid()) {
-						if (mucOptions.isUserInRoom(user)) {
-							privateMessageWith(user);
-						} else {
-							Toast.makeText(getActivity(), activity.getString(R.string.user_has_left_conference, user.getResource()), Toast.LENGTH_SHORT).show();
-						}
+					Jid tcp = message.getTrueCounterpart();
+					Jid cp = message.getCounterpart();
+					if (cp != null && !cp.isBareJid()) {
+						User userByRealJid = conversation.getMucOptions().findOrCreateUserByRealJid(tcp);
+						final User user = userByRealJid != null ? userByRealJid : conversation.getMucOptions().findUserByFullJid(cp);
+						final PopupMenu popupMenu = new PopupMenu(getActivity(), v);
+						popupMenu.inflate(R.menu.muc_details_context);
+						final Menu menu = popupMenu.getMenu();
+						final boolean advancedMode = activity.getPreferences().getBoolean("advanced_muc_mode", false);
+						MucDetailsContextMenuHelper.configureMucDetailsContextMenu(menu, conversation, user, advancedMode);
+						final MucOptions mucOptions = ((Conversation) message.getConversation()).getMucOptions();
+						popupMenu.setOnMenuItemClickListener(menuItem -> {
+							if (menuItem.getItemId() == R.id.send_private_message) {
+								privateMessageWith(cp);
+								return true;
+							}
+							return MucDetailsContextMenuHelper.onContextItemSelected(menuItem, user, conversation, activity, activity, activity);
+						});
+						popupMenu.show();
 					}
 				}
 			} else {
