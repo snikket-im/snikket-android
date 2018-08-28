@@ -173,13 +173,12 @@ public class XmppConnection implements Runnable {
 	private SaslMechanism saslMechanism;
 	private URL redirectionUrl = null;
 	private String verifiedHostname = null;
-	private Thread mThread;
+	private volatile Thread mThread;
 	private CountDownLatch mStreamCountDownLatch;
 
 	public XmppConnection(final Account account, final XmppConnectionService service) {
 		this.account = account;
-		final String tag = account.getJid().asBareJid().toString();
-		mXmppConnectionService = service;
+		this.mXmppConnectionService = service;
 	}
 
 	private static void fixResource(Context context, Account account) {
@@ -438,7 +437,7 @@ public class XmppConnection implements Runnable {
 	 *
 	 * @return true if server returns with valid xmpp, false otherwise
 	 */
-	private boolean startXmpp(Socket socket) throws Exception {
+	private synchronized boolean startXmpp(Socket socket) throws Exception {
 		if (Thread.currentThread().isInterrupted()) {
 			throw new InterruptedException();
 		}
@@ -485,7 +484,7 @@ public class XmppConnection implements Runnable {
 		connect();
 	}
 
-	private void processStream() throws XmlPullParserException, IOException, NoSuchAlgorithmException {
+	private void processStream() throws XmlPullParserException, IOException {
 		final CountDownLatch streamCountDownLatch = new CountDownLatch(1);
 		this.mStreamCountDownLatch = streamCountDownLatch;
 		Tag nextTag = tagReader.readTag();
