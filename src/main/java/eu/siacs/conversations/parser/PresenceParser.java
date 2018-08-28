@@ -353,6 +353,8 @@ public class PresenceParser extends AbstractParser implements
 			this.parseConferencePresence(packet, account);
 		} else if (packet.hasChild("x", "http://jabber.org/protocol/muc")) {
 			this.parseConferencePresence(packet, account);
+		} else if ("error".equals(packet.getAttribute("type")) && mXmppConnectionService.isMuc(account, packet.getFrom())) {
+			this.parseConferencePresence(packet, account);
 		} else {
 			this.parseContactPresence(packet, account);
 		}

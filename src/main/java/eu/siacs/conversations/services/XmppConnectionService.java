@@ -547,6 +547,11 @@ public class XmppConnectionService extends Service {
         return find(getConversations(), account, jid);
     }
 
+    public boolean isMuc(final Account account, final Jid jid) {
+        final Conversation c = find(account, jid);
+        return c != null && c.getMode() == Conversational.MODE_MULTI;
+    }
+
     public void search(List<String> term, OnSearchResultsAvailable onSearchResultsAvailable) {
         MessageSearchTask.search(this, term, onSearchResultsAvailable);
     }
