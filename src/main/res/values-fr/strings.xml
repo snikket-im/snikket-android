@@ -284,6 +284,7 @@
   <string name="toast_message_omemo_fingerprint">Empreinte OMEMO copiée dans le presse-papier !</string>
   <string name="conference_banned">Vous êtes bannis de cette conversation de groupe</string>
   <string name="conference_members_only">Cette conversation de groupe est réservée aux membres</string>
+  <string name="conference_resource_constraint">Contrainte de ressource</string>
   <string name="conference_kicked">Vous avez été éjecté de cette conversation de groupe</string>
   <string name="conference_shutdown">La discussion de groupe a été interrompue</string>
   <string name="conference_unknown_error">Vous n\'appartenez plus à ce groupe de discussion</string>
@@ -327,6 +328,7 @@
   <string name="file_deleted">Le fichier a été supprimé</string>
   <string name="no_application_found_to_open_file">Aucune application disponible pour ouvrir le fichier</string>
   <string name="no_application_found_to_open_link">Aucune application trouvée pour ouvrir le lien</string>
+  <string name="no_application_found_to_view_contact">Aucune application trouvée pour afficher le contact</string>
   <string name="pref_show_dynamic_tags">Tags dynamiques</string>
   <string name="pref_show_dynamic_tags_summary">Afficher des tags en lecture seule en dessous des contacts.</string>
   <string name="enable_notifications">Activer les notifications</string>
@@ -532,6 +534,7 @@
   <string name="choose_participants">Choisir les participants</string>
   <string name="creating_conference">Création d\'un groupe de discussion...</string>
   <string name="invite_again">Inviter à nouveau</string>
+  <string name="gp_disable">Désactiver</string>
   <string name="gp_short">Courte</string>
   <string name="gp_medium">Moyenne</string>
   <string name="gp_long">Longue</string>

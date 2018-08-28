@@ -328,6 +328,7 @@
   <string name="file_deleted">Het bestand is verwijderd</string>
   <string name="no_application_found_to_open_file">Geen applicatie om bestand te openen</string>
   <string name="no_application_found_to_open_link">Geen applicatie om verwijzing te openen</string>
+  <string name="no_application_found_to_view_contact">Geen applicatie om contact weer te geven</string>
   <string name="pref_show_dynamic_tags">Dynamische tags</string>
   <string name="pref_show_dynamic_tags_summary">Toon enkel-lezen tags onder contacten</string>
   <string name="enable_notifications">Meldingen inschakelen</string>
@@ -533,6 +534,7 @@
   <string name="choose_participants">Kies deelnemers</string>
   <string name="creating_conference">Groepsgesprek aanmaken…</string>
   <string name="invite_again">Opnieuw uitnodigen</string>
+  <string name="gp_disable">Uitschakelen</string>
   <string name="gp_short">Kort</string>
   <string name="gp_medium">Gemiddeld</string>
   <string name="gp_long">Lang</string>

@@ -328,6 +328,7 @@
   <string name="file_deleted">Fișierul a fost șters</string>
   <string name="no_application_found_to_open_file">Nu s-a găsit nici o aplicație care să deschidă fișierul</string>
   <string name="no_application_found_to_open_link">Nu s-a găsit nici o aplicație care să deschidă legătura</string>
+  <string name="no_application_found_to_view_contact">Nu s-a găsit nici o aplicație care să deschidă contactul</string>
   <string name="pref_show_dynamic_tags">Etichete dinamice</string>
   <string name="pref_show_dynamic_tags_summary">Sub contacte arată etichete dinamice</string>
   <string name="enable_notifications">Activează notificările</string>
@@ -537,6 +538,7 @@ sau chiar pierderea mesajelor.\nÎn continuare veți fi rugați să dezactivați
   <string name="choose_participants">Alegeți participanți</string>
   <string name="creating_conference">Se creează discuția de grup...</string>
   <string name="invite_again">Trimite din nou invitația</string>
+  <string name="gp_disable">Dezactivată</string>
   <string name="gp_short">Scurt</string>
   <string name="gp_medium">Mediu</string>
   <string name="gp_long">Lung</string>

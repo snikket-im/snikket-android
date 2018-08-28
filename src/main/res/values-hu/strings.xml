@@ -284,6 +284,7 @@
   <string name="toast_message_omemo_fingerprint">Az OMEMO ujjlenyomat vágólapra lett másolva!</string>
   <string name="conference_banned">Ki vagy tiltva ebből a konferenciából</string>
   <string name="conference_members_only">Ez a konferencia csak tagoknak szól</string>
+  <string name="conference_resource_constraint">Erőforráskorlát</string>
   <string name="conference_kicked">Ki lettél rúgva ebből a konferenciából</string>
   <string name="conference_shutdown">A konferencia le lett állítva</string>
   <string name="conference_unknown_error">Ön már nincs benne ebben a konferenciában</string>
@@ -719,4 +720,5 @@
   <string name="group_chat_name">Név</string>
   <string name="providing_a_name_is_optional">A név megadása nem kötelező</string>
   <string name="create_dialog_group_chat_name">Konferencia neve</string>
+  <string name="conference_destroyed">Ez a konferencia megszűnt</string>
 </resources>

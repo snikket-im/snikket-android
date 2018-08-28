@@ -328,6 +328,7 @@
   <string name="file_deleted">Файлът беше изтрит</string>
   <string name="no_application_found_to_open_file">Няма намерено приложение за отваряне на файла</string>
   <string name="no_application_found_to_open_link">Няма намерено приложение за отваряне на връзката</string>
+  <string name="no_application_found_to_view_contact">Няма намерено приложение за преглед на контакта</string>
   <string name="pref_show_dynamic_tags">Динамични етикети</string>
   <string name="pref_show_dynamic_tags_summary">Показване на етикети, предназначени само за четене под контактите</string>
   <string name="enable_notifications">Включване на известията</string>
@@ -533,6 +534,7 @@
   <string name="choose_participants">Изберете участниците</string>
   <string name="creating_conference">Създаване на групов разговор…</string>
   <string name="invite_again">Канене отново</string>
+  <string name="gp_disable">Изключване</string>
   <string name="gp_short">Кратко</string>
   <string name="gp_medium">Средно</string>
   <string name="gp_long">Дълго</string>

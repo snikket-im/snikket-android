@@ -328,6 +328,7 @@
   <string name="file_deleted">文件已经删除</string>
   <string name="no_application_found_to_open_file">没有可以打开此文件的应用</string>
   <string name="no_application_found_to_open_link">没有可以打开此链接的应用</string>
+  <string name="no_application_found_to_view_contact">未找到可以查看联系人的应用</string>
   <string name="pref_show_dynamic_tags">动态标签</string>
   <string name="pref_show_dynamic_tags_summary">在联系人下方显示只读标签</string>
   <string name="enable_notifications">启用通知</string>
@@ -533,6 +534,7 @@
   <string name="choose_participants">选择成员</string>
   <string name="creating_conference">正在创建群聊…</string>
   <string name="invite_again">重新邀请</string>
+  <string name="gp_disable">禁用</string>
   <string name="gp_short">短</string>
   <string name="gp_medium">中</string>
   <string name="gp_long">长</string>

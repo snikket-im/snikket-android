@@ -327,6 +327,7 @@
   <string name="file_deleted">Il file è stato eliminato</string>
   <string name="no_application_found_to_open_file">Nessuna applicazione trovata per aprire il file</string>
   <string name="no_application_found_to_open_link">Nessuna applicazione trovata per aprire il link</string>
+  <string name="no_application_found_to_view_contact">Nessuna applicazione trovata per vedere il contatto</string>
   <string name="pref_show_dynamic_tags">Tag dinamici</string>
   <string name="pref_show_dynamic_tags_summary">Mostra tag in sola lettura sotto i contatti</string>
   <string name="enable_notifications">Attiva le notifiche</string>
@@ -532,6 +533,7 @@
   <string name="choose_participants">Scegli i partecipanti</string>
   <string name="creating_conference">Creazione chat di gruppo...</string>
   <string name="invite_again">Invita di nuovo</string>
+  <string name="gp_disable">Disattiva</string>
   <string name="gp_short">Breve</string>
   <string name="gp_medium">Medio</string>
   <string name="gp_long">Lungo</string>

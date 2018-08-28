@@ -327,6 +327,7 @@
   <string name="file_deleted">El archivo ha sido eliminado</string>
   <string name="no_application_found_to_open_file">No se ha encontrado ninguna aplicación para abrir el archivo</string>
   <string name="no_application_found_to_open_link">No se ha encontrado aplicación para abrir el link</string>
+  <string name="no_application_found_to_view_contact">No se ha encontrado aplicación para ver el contacto</string>
   <string name="pref_show_dynamic_tags">Etiquetas dinámicas</string>
   <string name="pref_show_dynamic_tags_summary">Mostrar información en forma de etiquetas debajo de los contactos</string>
   <string name="enable_notifications">Habilitar notificaciones</string>
@@ -532,6 +533,7 @@
   <string name="choose_participants">Elige a los participantes</string>
   <string name="creating_conference">Creando conversación en grupo...</string>
   <string name="invite_again">Invitar de nuevo</string>
+  <string name="gp_disable">Deshabilitar</string>
   <string name="gp_short">Corto</string>
   <string name="gp_medium">Medio</string>
   <string name="gp_long">Largo</string>

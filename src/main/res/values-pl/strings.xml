@@ -284,6 +284,7 @@
   <string name="toast_message_omemo_fingerprint">Odcisk klucza OMEMO został skopiowany do schowka!</string>
   <string name="conference_banned">Zbanowany</string>
   <string name="conference_members_only">Konferencja tylko dla użytkowników</string>
+  <string name="conference_resource_constraint">Ograniczenie zasobu</string>
   <string name="conference_kicked">Wykopany</string>
   <string name="conference_shutdown">Konferencja została zamknięta</string>
   <string name="conference_unknown_error">Nie uczestniczysz już w tej konferencji</string>
@@ -327,6 +328,7 @@
   <string name="file_deleted">Plik został usunięty</string>
   <string name="no_application_found_to_open_file">Nie odnaleziono aplikacji skojarzonej z typem pliku</string>
   <string name="no_application_found_to_open_link">Brak aplikacji do otwarcia linka</string>
+  <string name="no_application_found_to_view_contact">Brak aplikacji która może wyświetlić kontakt</string>
   <string name="pref_show_dynamic_tags">Dynamiczne tagi</string>
   <string name="pref_show_dynamic_tags_summary">Wyświetlaj etykiety pod kontaktami</string>
   <string name="enable_notifications">Włącz powiadomienia</string>
@@ -537,6 +539,7 @@ Dla twojej wygody ułatwiliśmy stworzenie konta na conversations.im; serwerze d
   <string name="choose_participants">Wybierz członków</string>
   <string name="creating_conference">Tworzenie konferencji</string>
   <string name="invite_again">Zaproś ponownie</string>
+  <string name="gp_disable">Wyłącz</string>
   <string name="gp_short">Krótki</string>
   <string name="gp_medium">Średni</string>
   <string name="gp_long">Długi</string>
@@ -738,4 +741,5 @@ Administrator twojego serwera będzie mógł czytać twoje wiadomości, ale moż
   <string name="group_chat_name">Nazwa</string>
   <string name="providing_a_name_is_optional">Nie trzeba podawać nazwy</string>
   <string name="create_dialog_group_chat_name">Nazwa konferencji</string>
+  <string name="conference_destroyed">Ta konferencja została usunięta</string>
 </resources>

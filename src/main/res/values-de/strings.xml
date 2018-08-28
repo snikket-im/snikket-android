@@ -327,7 +327,8 @@
   <string name="file_transmission_failed">Übertragung fehlgeschlagen</string>
   <string name="file_deleted">Datei wurde gelöscht</string>
   <string name="no_application_found_to_open_file">Keine Anwendung zum Öffnen der Datei gefunden</string>
-  <string name="no_application_found_to_open_link">Keine App gefunden, um diesen Link zu öffnen</string>
+  <string name="no_application_found_to_open_link">Keine Anwendung zum Öffnen des Links gefunden</string>
+  <string name="no_application_found_to_view_contact">Keine Anwendung zum Anzeigen des Kontaktes gefunden</string>
   <string name="pref_show_dynamic_tags">Dynamische Tags</string>
   <string name="pref_show_dynamic_tags_summary">Schreibgeschütze Tags unterhalb der Kontakte anzeigen</string>
   <string name="enable_notifications">Benachrichtigungen aktivieren</string>
@@ -406,7 +407,7 @@
   <string name="pref_chat_states_summary">Informiere deine Kontakte, wenn du eine Nachricht schreibst</string>
   <string name="send_location">Standort senden</string>
   <string name="show_location">Standort anzeigen</string>
-  <string name="no_application_found_to_display_location">Keine App für die Standort-Anzeige gefunden</string>
+  <string name="no_application_found_to_display_location">Keine Anwendung für die Standortanzeige gefunden</string>
   <string name="location">Standort</string>
   <string name="title_undo_swipe_out_conversation">Unterhaltung beendet</string>
   <string name="title_undo_swipe_out_muc">Gruppenchat verlassen</string>
@@ -533,6 +534,7 @@
   <string name="choose_participants">Mitglieder wählen</string>
   <string name="creating_conference">Erstelle Gruppenchat…</string>
   <string name="invite_again">Erneut einladen</string>
+  <string name="gp_disable">Deaktivieren</string>
   <string name="gp_short">kurz</string>
   <string name="gp_medium">mittel</string>
   <string name="gp_long">lang</string>

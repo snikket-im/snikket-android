@@ -62,7 +62,7 @@
   <string name="save">Gardar</string>
   <string name="ok">OK</string>
   <string name="crash_report_title">Conversations deteuse.</string>
-  <string name="crash_report_message">Enviando volcados de pilas axudas ao desenrolo de Conversations\n<b>Aviso:</b> Isto empregará a túa conta XMPP para enviar o volcado de pila ao desenrolador.</string>
+  <string name="crash_report_message">Enviando volcados de pilas axudas ao desenvolvemento de Conversations\n<b>Aviso:</b> Isto empregará a túa conta XMPP para enviar o volcado de pila ao desenvolvedor.</string>
   <string name="send_now">Enviar agora</string>
   <string name="send_never">Non preguntar de novo</string>
   <string name="problem_connecting_to_account">Erro na conexión á conta</string>
@@ -120,7 +120,7 @@
   <string name="pref_notification_grace_period_summary">O tempo que Conversations permanece silente despois de ver actividade en outro dispositivo</string>
   <string name="pref_advanced_options">Avanzado</string>
   <string name="pref_never_send_crash">Nunca enviar informe de erros</string>
-  <string name="pref_never_send_crash_summary">Enviando volcados de pilas axudas al desenrolo de Conversations</string>
+  <string name="pref_never_send_crash_summary">Enviando volcados de pilas axudas ao desenvolvemento de Conversations</string>
   <string name="pref_confirm_messages">Confirmación de mensaxes</string>
   <string name="pref_confirm_messages_summary">Permitir aos seus contactos saber si recibeu e leu as súas mensaxes</string>
   <string name="pref_ui_options">Interface</string>
@@ -328,6 +328,7 @@
   <string name="file_deleted">Este ficheiro eliminouse</string>
   <string name="no_application_found_to_open_file">Non se atopou un aplicativo para abrir o ficheiro</string>
   <string name="no_application_found_to_open_link">Non se atopou ningunha aplicación para abrir a ligazón</string>
+  <string name="no_application_found_to_view_contact">Non se atopou aplicación para ver o contacto</string>
   <string name="pref_show_dynamic_tags">Etiquetas dinámicas</string>
   <string name="pref_show_dynamic_tags_summary">Mostrar etiquetas de só lectura baixo os contactos</string>
   <string name="enable_notifications">Habilitar notificacións</string>
@@ -533,6 +534,7 @@
   <string name="choose_participants">Escoller participantes</string>
   <string name="creating_conference">Creando unha conversa en grupo...</string>
   <string name="invite_again">Invitar de novo</string>
+  <string name="gp_disable">Desactivar</string>
   <string name="gp_short">Corto</string>
   <string name="gp_medium">Medio</string>
   <string name="gp_long">Longo</string>
