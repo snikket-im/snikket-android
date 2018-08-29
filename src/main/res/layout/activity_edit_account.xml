@@ -117,7 +117,7 @@
                                             android:id="@+id/hostname"
                                             android:layout_width="fill_parent"
                                             android:layout_height="wrap_content"
-                                            android:inputType="textNoSuggestions"
+                                            android:inputType="textWebEmailAddress"
                                             style="@style/Widget.Conversations.EditText"/>
                                     </android.support.design.widget.TextInputLayout>
                                 </LinearLayout>
