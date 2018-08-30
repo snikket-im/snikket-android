@@ -858,11 +858,13 @@ public class StartConversationActivity extends XmppActivity implements XmppConne
 
 	protected void filterContacts(String needle) {
 		this.contacts.clear();
-		for (Account account : xmppConnectionService.getAccounts()) {
+		final List<Account> accounts = xmppConnectionService.getAccounts();
+		final boolean singleAccountActive = isSingleAccountActive(accounts);
+		for (Account account : accounts) {
 			if (account.getStatus() != Account.State.DISABLED) {
 				for (Contact contact : account.getRoster().getContacts()) {
 					Presence.Status s = contact.getShownStatus();
-					if (contact.showInRoster() && contact.match(this, needle)
+					if ((contact.showInRoster() || (singleAccountActive && contact.showInPhoneBook())) && contact.match(this, needle)
 							&& (!this.mHideOfflineContacts
 							|| (needle != null && !needle.trim().isEmpty())
 							|| s.compareTo(Presence.Status.OFFLINE) < 0)) {
@@ -873,6 +875,16 @@ public class StartConversationActivity extends XmppActivity implements XmppConne
 		}
 		Collections.sort(this.contacts);
 		mContactsAdapter.notifyDataSetChanged();
+	}
+
+	private static boolean isSingleAccountActive(final List<Account> accounts) {
+		int i = 0;
+		for(Account account : accounts) {
+			if (account.getStatus() != Account.State.DISABLED) {
+				++i;
+			}
+		}
+		return i == 1;
 	}
 
 	protected void filterConferences(String needle) {
