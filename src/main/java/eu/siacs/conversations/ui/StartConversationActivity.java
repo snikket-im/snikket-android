@@ -1050,9 +1050,11 @@ public class StartConversationActivity extends XmppActivity implements XmppConne
 				final Contact contact = (Contact) activity.contacts.get(acmi.position);
 				final MenuItem blockUnblockItem = menu.findItem(R.id.context_contact_block_unblock);
 				final MenuItem showContactDetailsItem = menu.findItem(R.id.context_contact_details);
+				final MenuItem deleteContactMenuItem = menu.findItem(R.id.context_delete_contact);
 				if (contact.isSelf()) {
 					showContactDetailsItem.setVisible(false);
 				}
+				deleteContactMenuItem.setVisible(contact.showInRoster());
 				XmppConnection xmpp = contact.getAccount().getXmppConnection();
 				if (xmpp != null && xmpp.getFeatures().blocking() && !contact.isSelf()) {
 					if (contact.isBlocked()) {
