@@ -127,6 +127,7 @@
     <string name="openpgp_error">OpenKeychain reported an error</string>
     <string name="accept">Accept</string>
     <string name="error">An error has occurred</string>
+    <string name="recording_error">Error</string>
     <string name="your_account">Your account</string>
     <string name="send_presence_updates">Send presence updates</string>
     <string name="receive_presence_updates">Receive presence updates</string>
@@ -725,4 +726,5 @@
     <string name="create_dialog_group_chat_name">Group chat name</string>
     <string name="conference_destroyed">This group chat has been destroyed</string>
     <string name="phone_book">Address book</string>
+    <string name="unable_to_save_recording">Unable to save recording</string>
 </resources>

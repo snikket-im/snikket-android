@@ -264,6 +264,7 @@
         <item name="colorAccent">@color/blue_a200</item>
         <item name="color_background_primary">@color/grey50</item>
         <item name="divider">@color/black12</item>
+        <item name="TextSizeTitle">18sp</item>
         <item name="TextSizeBody2">14sp</item>
         <item name="TextSizeDisplay2">45sp</item>
         <item name="android:windowNoTitle">true</item>
