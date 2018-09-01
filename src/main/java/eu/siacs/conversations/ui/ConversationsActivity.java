@@ -470,7 +470,7 @@ public class ConversationsActivity extends XmppActivity implements OnConversatio
 				if (fm.getBackStackEntryCount() > 0) {
 					try {
 						fm.popBackStack();
-					} catch (IllegalArgumentException e) {
+					} catch (IllegalStateException e) {
 						Log.w(Config.LOGTAG,"Unable to pop back stack after pressing home button");
 					}
 					return true;
