@@ -534,7 +534,12 @@ public class FileBackend {
     private String getExtensionFromUri(Uri uri) {
         String[] projection = {MediaStore.MediaColumns.DATA};
         String filename = null;
-        Cursor cursor = mXmppConnectionService.getContentResolver().query(uri, projection, null, null, null);
+        Cursor cursor;
+        try {
+            cursor = mXmppConnectionService.getContentResolver().query(uri, projection, null, null, null);
+        } catch (IllegalArgumentException e) {
+            cursor = null;
+        }
         if (cursor != null) {
             try {
                 if (cursor.moveToFirst()) {
