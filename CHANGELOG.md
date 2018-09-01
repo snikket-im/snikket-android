@@ -1,5 +1,9 @@
 # Changelog
 
+### Version 2.2.9
+* Store bookmarks in PEP if server has ability to convert to old bookmarks
+* Show Jabber IDs from address book in Start Conversation screen
+
 ### Version 2.2.8
 * fixed regression that broke XMPP uris
 
