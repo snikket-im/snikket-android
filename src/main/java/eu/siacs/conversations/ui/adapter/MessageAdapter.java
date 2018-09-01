@@ -877,6 +877,10 @@ public class MessageAdapter extends ArrayAdapter<Message> implements CopyTextVie
 		audioPlayer.stop();
 	}
 
+	public void unregisterListenerInAudioPlayer() {
+		audioPlayer.unregisterListener();
+	}
+
 	public void startStopPending() {
 		audioPlayer.startStopPending();
 	}

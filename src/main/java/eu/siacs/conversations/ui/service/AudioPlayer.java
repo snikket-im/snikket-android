@@ -1,13 +1,20 @@
 package eu.siacs.conversations.ui.service;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.pm.PackageManager;
 import android.content.res.ColorStateList;
-import android.media.MediaPlayer;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
+import android.media.AudioManager;
 import android.os.Build;
 import android.os.Handler;
+import android.os.PowerManager;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.RelativeLayout;
@@ -17,14 +24,16 @@ import android.widget.TextView;
 import java.lang.ref.WeakReference;
 import java.util.Locale;
 
+import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.entities.Message;
+import eu.siacs.conversations.services.MediaPlayer;
 import eu.siacs.conversations.ui.ConversationsActivity;
 import eu.siacs.conversations.ui.adapter.MessageAdapter;
 import eu.siacs.conversations.ui.util.PendingItem;
 import eu.siacs.conversations.utils.WeakReferenceSet;
 
-public class AudioPlayer implements View.OnClickListener, MediaPlayer.OnCompletionListener, SeekBar.OnSeekBarChangeListener, Runnable {
+public class AudioPlayer implements View.OnClickListener, MediaPlayer.OnCompletionListener, SeekBar.OnSeekBarChangeListener, Runnable, SensorEventListener {
 
 	private static final int REFRESH_INTERVAL = 250;
 	private static final Object LOCK = new Object();
@@ -32,16 +41,36 @@ public class AudioPlayer implements View.OnClickListener, MediaPlayer.OnCompleti
 	private static Message currentlyPlayingMessage = null;
 	private final MessageAdapter messageAdapter;
 	private final WeakReferenceSet<RelativeLayout> audioPlayerLayouts = new WeakReferenceSet<>();
+	private final SensorManager sensorManager;
+	private final Sensor proximitySensor;
+	private static PowerManager.WakeLock wakeLock;
 
 	private final PendingItem<WeakReference<ImageButton>> pendingOnClickView = new PendingItem<>();
 
 	private final Handler handler = new Handler();
 
 	public AudioPlayer(MessageAdapter adapter) {
+		final Context context = adapter.getContext();
 		this.messageAdapter = adapter;
+		this.sensorManager = (SensorManager) context.getSystemService(Context.SENSOR_SERVICE);
+		this.proximitySensor = this.sensorManager == null ? null : this.sensorManager.getDefaultSensor(Sensor.TYPE_PROXIMITY);
+		if (Build.VERSION.SDK_INT >= 21) {
+			synchronized (AudioPlayer.LOCK) {
+				if (AudioPlayer.wakeLock == null) {
+					final PowerManager powerManager = (PowerManager) context.getSystemService(Context.POWER_SERVICE);
+					AudioPlayer.wakeLock = powerManager == null ? null : powerManager.newWakeLock(PowerManager.PROXIMITY_SCREEN_OFF_WAKE_LOCK, AudioPlayer.class.getSimpleName());
+					AudioPlayer.wakeLock.setReferenceCounted(false);
+				}
+			}
+		} else {
+			AudioPlayer.wakeLock = null;
+		}
 		synchronized (AudioPlayer.LOCK) {
 			if (AudioPlayer.player != null) {
 				AudioPlayer.player.setOnCompletionListener(this);
+				if (AudioPlayer.player.isPlaying() && sensorManager != null) {
+					sensorManager.registerListener(this, proximitySensor, SensorManager.SENSOR_DELAY_NORMAL);
+				}
 			}
 		}
 	}
@@ -125,32 +154,45 @@ public class AudioPlayer implements View.OnClickListener, MediaPlayer.OnCompleti
 			viewHolder.progress.setEnabled(false);
 			player.pause();
 			messageAdapter.flagScreenOff();
+			releaseProximityWakeLock();
 			viewHolder.playPause.setImageResource(viewHolder.darkBackground ? R.drawable.ic_play_arrow_white_36dp : R.drawable.ic_play_arrow_black_36dp);
 		} else {
 			viewHolder.progress.setEnabled(true);
 			player.start();
 			messageAdapter.flagScreenOn();
+			acquireProximityWakeLock();
 			this.stopRefresher(true);
 			viewHolder.playPause.setImageResource(viewHolder.darkBackground ? R.drawable.ic_pause_white_36dp : R.drawable.ic_pause_black_36dp);
 		}
 		return false;
 	}
 
-	private boolean play(ViewHolder viewHolder, Message message) {
+	private void play(ViewHolder viewHolder, Message message, boolean earpiece, double progress) {
+		if (play(viewHolder, message, earpiece)) {
+			AudioPlayer.player.seekTo((int) (AudioPlayer.player.getDuration() * progress));
+		}
+	}
+
+	private boolean play(ViewHolder viewHolder, Message message, boolean earpiece) {
 		AudioPlayer.player = new MediaPlayer();
 		try {
 			AudioPlayer.currentlyPlayingMessage = message;
+			AudioPlayer.player.setAudioStreamType(earpiece ? AudioManager.STREAM_VOICE_CALL : AudioManager.STREAM_MUSIC);
 			AudioPlayer.player.setDataSource(messageAdapter.getFileBackend().getFile(message).getAbsolutePath());
 			AudioPlayer.player.setOnCompletionListener(this);
 			AudioPlayer.player.prepare();
 			AudioPlayer.player.start();
 			messageAdapter.flagScreenOn();
+			acquireProximityWakeLock();
 			viewHolder.progress.setEnabled(true);
 			viewHolder.playPause.setImageResource(viewHolder.darkBackground ? R.drawable.ic_pause_white_36dp : R.drawable.ic_pause_black_36dp);
+			sensorManager.registerListener(this, proximitySensor, SensorManager.SENSOR_DELAY_NORMAL);
 			return true;
 		} catch (Exception e) {
 			messageAdapter.flagScreenOff();
+			releaseProximityWakeLock();
 			AudioPlayer.currentlyPlayingMessage = null;
+			sensorManager.unregisterListener(this);
 			return false;
 		}
 	}
@@ -172,7 +214,7 @@ public class AudioPlayer implements View.OnClickListener, MediaPlayer.OnCompleti
 		if (AudioPlayer.player != null) {
 			stopCurrent();
 		}
-		return play(viewHolder, message);
+		return play(viewHolder, message, false);
 	}
 
 	private void stopCurrent() {
@@ -181,6 +223,7 @@ public class AudioPlayer implements View.OnClickListener, MediaPlayer.OnCompleti
 		}
 		AudioPlayer.player.release();
 		messageAdapter.flagScreenOff();
+		releaseProximityWakeLock();
 		AudioPlayer.player = null;
 		resetPlayerUi();
 	}
@@ -206,7 +249,7 @@ public class AudioPlayer implements View.OnClickListener, MediaPlayer.OnCompleti
 	}
 
 	@Override
-	public void onCompletion(MediaPlayer mediaPlayer) {
+	public void onCompletion(android.media.MediaPlayer mediaPlayer) {
 		synchronized (AudioPlayer.LOCK) {
 			this.stopRefresher(false);
 			if (AudioPlayer.player == mediaPlayer) {
@@ -215,7 +258,9 @@ public class AudioPlayer implements View.OnClickListener, MediaPlayer.OnCompleti
 			}
 			mediaPlayer.release();
 			messageAdapter.flagScreenOff();
+			releaseProximityWakeLock();
 			resetPlayerUi();
+			sensorManager.unregisterListener(this);
 		}
 	}
 
@@ -250,6 +295,11 @@ public class AudioPlayer implements View.OnClickListener, MediaPlayer.OnCompleti
 				stopCurrent();
 			}
 			AudioPlayer.currentlyPlayingMessage = null;
+			sensorManager.unregisterListener(this);
+			if (wakeLock != null && wakeLock.isHeld()) {
+				wakeLock.release();
+			}
+			wakeLock = null;
 		}
 	}
 
@@ -257,6 +307,12 @@ public class AudioPlayer implements View.OnClickListener, MediaPlayer.OnCompleti
 		this.handler.removeCallbacks(this);
 		if (runOnceMore) {
 			this.handler.post(this);
+		}
+	}
+
+	public void unregisterListener() {
+		if (sensorManager != null) {
+			sensorManager.unregisterListener(this);
 		}
 	}
 
@@ -287,6 +343,70 @@ public class AudioPlayer implements View.OnClickListener, MediaPlayer.OnCompleti
 		return true;
 	}
 
+	@Override
+	public void onSensorChanged(SensorEvent event) {
+		if (event.sensor.getType() != Sensor.TYPE_PROXIMITY) {
+			return;
+		}
+		if (AudioPlayer.player == null || !AudioPlayer.player.isPlaying()) {
+			return;
+		}
+		int streamType;
+		if (event.values[0] < 5f && event.values[0] != proximitySensor.getMaximumRange()) {
+			streamType = AudioManager.STREAM_VOICE_CALL;
+		} else {
+			streamType = AudioManager.STREAM_MUSIC;
+		}
+		double position = AudioPlayer.player.getCurrentPosition();
+		double duration = AudioPlayer.player.getDuration();
+		double progress = position / duration;
+		if (AudioPlayer.player.getAudioStreamType() != streamType) {
+			synchronized (AudioPlayer.LOCK) {
+				AudioPlayer.player.stop();
+				AudioPlayer.player.release();
+				AudioPlayer.player = null;
+				try {
+					ViewHolder currentViewHolder = getCurrentViewHolder();
+					if (currentViewHolder != null) {
+						play(currentViewHolder, currentlyPlayingMessage, streamType == AudioManager.STREAM_VOICE_CALL, progress);
+					}
+				} catch (Exception e) {
+					Log.w(Config.LOGTAG, e);
+				}
+			}
+		}
+	}
+
+	@Override
+	public void onAccuracyChanged(Sensor sensor, int i) {
+	}
+
+	private void acquireProximityWakeLock() {
+		synchronized (AudioPlayer.LOCK) {
+			if (wakeLock != null) {
+				wakeLock.acquire();
+			}
+		}
+	}
+
+	private void releaseProximityWakeLock() {
+		synchronized (AudioPlayer.LOCK) {
+			if (wakeLock != null && wakeLock.isHeld()) {
+				wakeLock.release();
+			}
+		}
+	}
+
+	private ViewHolder getCurrentViewHolder() {
+		for (WeakReference<RelativeLayout> audioPlayer : audioPlayerLayouts) {
+			final Message message = (Message) audioPlayer.get().getTag();
+			if (message == currentlyPlayingMessage) {
+				return ViewHolder.get(audioPlayer.get());
+			}
+		}
+		return null;
+	}
+
 	public static class ViewHolder {
 		private TextView runtime;
 		private SeekBar progress;
@@ -297,9 +417,9 @@ public class AudioPlayer implements View.OnClickListener, MediaPlayer.OnCompleti
 			ViewHolder viewHolder = (ViewHolder) audioPlayer.getTag(R.id.TAG_AUDIO_PLAYER_VIEW_HOLDER);
 			if (viewHolder == null) {
 				viewHolder = new ViewHolder();
-				viewHolder.runtime = (TextView) audioPlayer.findViewById(R.id.runtime);
-				viewHolder.progress = (SeekBar) audioPlayer.findViewById(R.id.progress);
-				viewHolder.playPause = (ImageButton) audioPlayer.findViewById(R.id.play_pause);
+				viewHolder.runtime = audioPlayer.findViewById(R.id.runtime);
+				viewHolder.progress = audioPlayer.findViewById(R.id.progress);
+				viewHolder.playPause = audioPlayer.findViewById(R.id.play_pause);
 				audioPlayer.setTag(R.id.TAG_AUDIO_PLAYER_VIEW_HOLDER, viewHolder);
 			}
 			return viewHolder;
