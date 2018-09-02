@@ -564,7 +564,6 @@ public class MucOptions {
 		if (user == null) {
 			user = new User(this, null);
 			user.setRealJid(jid);
-			user.setRole("visitor");
 		}
 		return user;
 	}

@@ -3,6 +3,7 @@ package eu.siacs.conversations.ui;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.FragmentManager;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.databinding.DataBindingUtil;
@@ -482,6 +483,17 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
 			return ((ConversationFragment) fragment).getConversation();
 		} else {
 			return null;
+		}
+	}
+
+	public static ConversationFragment get(Activity activity) {
+		FragmentManager fragmentManager = activity.getFragmentManager();
+		Fragment fragment = fragmentManager.findFragmentById(R.id.main_fragment);
+		if (fragment != null && fragment instanceof ConversationFragment) {
+			return (ConversationFragment) fragment;
+		} else {
+			fragment = fragmentManager.findFragmentById(R.id.secondary_fragment);
+			return fragment != null && fragment instanceof ConversationFragment ? (ConversationFragment) fragment : null;
 		}
 	}
 
@@ -986,21 +998,13 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
 					Jid tcp = message.getTrueCounterpart();
 					Jid cp = message.getCounterpart();
 					if (cp != null && !cp.isBareJid()) {
-						User userByRealJid = conversation.getMucOptions().findOrCreateUserByRealJid(tcp);
+						User userByRealJid = tcp != null ? conversation.getMucOptions().findOrCreateUserByRealJid(tcp) : null;
 						final User user = userByRealJid != null ? userByRealJid : conversation.getMucOptions().findUserByFullJid(cp);
 						final PopupMenu popupMenu = new PopupMenu(getActivity(), v);
 						popupMenu.inflate(R.menu.muc_details_context);
 						final Menu menu = popupMenu.getMenu();
-						final boolean advancedMode = activity.getPreferences().getBoolean("advanced_muc_mode", false);
-						MucDetailsContextMenuHelper.configureMucDetailsContextMenu(menu, conversation, user, advancedMode);
-						final MucOptions mucOptions = ((Conversation) message.getConversation()).getMucOptions();
-						popupMenu.setOnMenuItemClickListener(menuItem -> {
-							if (menuItem.getItemId() == R.id.send_private_message) {
-								privateMessageWith(cp);
-								return true;
-							}
-							return MucDetailsContextMenuHelper.onContextItemSelected(menuItem, user, conversation, activity, activity, activity);
-						});
+						MucDetailsContextMenuHelper.configureMucDetailsContextMenu(activity, menu, conversation, user);
+						popupMenu.setOnMenuItemClickListener(menuItem -> MucDetailsContextMenuHelper.onContextItemSelected(menuItem, user, conversation, activity));
 						popupMenu.show();
 					}
 				}
@@ -1673,7 +1677,7 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
 		conversation.getAccount().getPgpDecryptionService().decrypt(message, false);
 	}
 
-	private void privateMessageWith(final Jid counterpart) {
+	public void privateMessageWith(final Jid counterpart) {
 		if (conversation.setOutgoingChatState(Config.DEFAULT_CHATSTATE)) {
 			activity.xmppConnectionService.sendChatState(conversation);
 		}

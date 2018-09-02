@@ -418,7 +418,6 @@ public class ConferenceDetailsActivity extends XmppActivity implements OnConvers
         if (tag instanceof User) {
             getMenuInflater().inflate(R.menu.muc_details_context, menu);
             final User user = (User) tag;
-            final User self = mConversation.getMucOptions().getSelf();
             this.mSelectedUser = user;
             String name;
             final Contact contact = user.getContact();
@@ -430,26 +429,19 @@ public class ConferenceDetailsActivity extends XmppActivity implements OnConvers
                 name = user.getName();
             }
             menu.setHeaderTitle(name);
-            MucDetailsContextMenuHelper.configureMucDetailsContextMenu(menu, mConversation, user, mAdvancedMode);
+            MucDetailsContextMenuHelper.configureMucDetailsContextMenu(this, menu, mConversation, user);
         }
         super.onCreateContextMenu(menu, v, menuInfo);
     }
 
     @Override
     public boolean onContextItemSelected(MenuItem item) {
-        if (!MucDetailsContextMenuHelper.onContextItemSelected(item, mSelectedUser, mConversation, this, this, this)) {
+        if (!MucDetailsContextMenuHelper.onContextItemSelected(item, mSelectedUser, mConversation, this)) {
             return super.onContextItemSelected(item);
         }
         return true;
     }
 
-    private void removeFromRoom(final User user) {
-        MucDetailsContextMenuHelper.removeFromRoom(user, mConversation, this, this, this);
-    }
-
-    protected void startConversation(User user) {
-        MucDetailsContextMenuHelper.startConversation(user, this.mConversation, this);
-    }
 
     protected void saveAsBookmark() {
         xmppConnectionService.saveConversationAsBookmark(mConversation, mConversation.getMucOptions().getName());
