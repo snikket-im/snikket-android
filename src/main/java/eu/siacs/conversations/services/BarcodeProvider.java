@@ -14,6 +14,7 @@ import android.os.CancellationSignal;
 import android.os.IBinder;
 import android.os.ParcelFileDescriptor;
 import android.support.annotation.Nullable;
+import android.support.v4.content.ContextCompat;
 import android.util.Log;
 
 import com.google.zxing.BarcodeFormat;
@@ -162,7 +163,6 @@ public class BarcodeProvider extends ContentProvider implements ServiceConnectio
 			synchronized (this) {
 				if (mXmppConnectionService == null && !mBindingInProcess) {
 					Log.d(Config.LOGTAG, "calling to bind service");
-					context.startService(intent);
 					context.bindService(intent, this, Context.BIND_AUTO_CREATE);
 					this.mBindingInProcess = true;
 				}

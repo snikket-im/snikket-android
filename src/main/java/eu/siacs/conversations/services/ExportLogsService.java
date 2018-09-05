@@ -42,15 +42,12 @@ public class ExportLogsService extends Service {
 	@Override
 	public int onStartCommand(Intent intent, int flags, int startId) {
 		if (running.compareAndSet(false, true)) {
-			new Thread(new Runnable() {
-				@Override
-				public void run() {
-					export();
-					stopForeground(true);
-					running.set(false);
-					stopSelf();
-				}
-			}).start();
+			new Thread(() -> {
+                export();
+                stopForeground(true);
+                running.set(false);
+                stopSelf();
+            }).start();
 		}
 		return START_NOT_STICKY;
 	}

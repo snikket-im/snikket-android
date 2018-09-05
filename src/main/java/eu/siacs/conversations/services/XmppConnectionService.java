@@ -1,5 +1,6 @@
 package eu.siacs.conversations.services;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.app.AlarmManager;
@@ -104,6 +105,7 @@ import eu.siacs.conversations.ui.SettingsActivity;
 import eu.siacs.conversations.ui.UiCallback;
 import eu.siacs.conversations.ui.interfaces.OnAvatarPublication;
 import eu.siacs.conversations.ui.interfaces.OnSearchResultsAvailable;
+import eu.siacs.conversations.utils.Compatibility;
 import eu.siacs.conversations.utils.ConversationsFileObserver;
 import eu.siacs.conversations.utils.CryptoHelper;
 import eu.siacs.conversations.utils.ExceptionHelper;
@@ -157,7 +159,6 @@ public class XmppConnectionService extends Service {
     public static final String ACTION_IDLE_PING = "idle_ping";
     public static final String ACTION_FCM_TOKEN_REFRESH = "fcm_token_refresh";
     public static final String ACTION_FCM_MESSAGE_RECEIVED = "fcm_message_received";
-    private static final String ACTION_MERGE_PHONE_CONTACTS = "merge_phone_contacts";
 
     private static final String SETTING_LAST_ACTIVITY_TS = "last_activity_timestamp";
 
@@ -193,10 +194,9 @@ public class XmppConnectionService extends Service {
         @Override
         public void onChange(boolean selfChange) {
             super.onChange(selfChange);
-            Intent intent = new Intent(getApplicationContext(),
-                    XmppConnectionService.class);
-            intent.setAction(ACTION_MERGE_PHONE_CONTACTS);
-            startService(intent);
+            if (restoredFromDatabaseLatch.getCount() == 0) {
+                loadPhoneContacts();
+            }
         }
     };
     private FileBackend fileBackend = new FileBackend(this);
@@ -240,6 +240,7 @@ public class XmppConnectionService extends Service {
     ) {
         @Override
         public void onEvent(int event, String path) {
+            Log.d(Config.LOGTAG,"event "+event+" path="+path);
             markFileDeleted(path);
         }
     };
@@ -569,11 +570,6 @@ public class XmppConnectionService extends Service {
                         resetAllAttemptCounts(true, false);
                     }
                     break;
-                case ACTION_MERGE_PHONE_CONTACTS:
-                    if (restoredFromDatabaseLatch.getCount() == 0) {
-                        loadPhoneContacts();
-                    }
-                    return START_STICKY;
                 case Intent.ACTION_SHUTDOWN:
                     logoutAndSave(true);
                     return START_NOT_STICKY;
@@ -958,6 +954,9 @@ public class XmppConnectionService extends Service {
         Resolver.init(this);
         this.mRandom = new SecureRandom();
         updateMemorizingTrustmanager();
+        if (Compatibility.twentySix()) {
+            mNotificationService.initializeChannels();
+        }
         final int maxMemory = (int) (Runtime.getRuntime().maxMemory() / 1024);
         final int cacheSize = maxMemory / 8;
         this.mBitmapCache = new LruCache<String, Bitmap>(cacheSize) {
@@ -984,7 +983,10 @@ public class XmppConnectionService extends Service {
 
         restoreFromDatabase();
 
-        getContentResolver().registerContentObserver(ContactsContract.Contacts.CONTENT_URI, true, contactObserver);
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M || ContextCompat.checkSelfPermission(this, Manifest.permission.READ_CONTACTS) == PackageManager.PERMISSION_GRANTED) {
+            //TODO get this restarted if users gives permission
+            getContentResolver().registerContentObserver(ContactsContract.Contacts.CONTENT_URI, true, contactObserver);
+        }
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M || ContextCompat.checkSelfPermission(this, android.Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
             Log.d(Config.LOGTAG, "starting file observer");
             new Thread(fileObserver::startWatching).start();
@@ -1062,7 +1064,7 @@ public class XmppConnectionService extends Service {
     }
 
     public void toggleForegroundService() {
-        if (mForceForegroundService.get() || (keepForegroundService() && hasEnabledAccounts())) {
+        if (mForceForegroundService.get() || (Compatibility.keepForegroundService(this) && hasEnabledAccounts())) {
             startForeground(NotificationService.FOREGROUND_NOTIFICATION_ID, this.mNotificationService.createForegroundNotification());
             Log.d(Config.LOGTAG, "started foreground service");
         } else {
@@ -1071,14 +1073,11 @@ public class XmppConnectionService extends Service {
         }
     }
 
-    public boolean keepForegroundService() {
-        return getBooleanPreference(SettingsActivity.KEEP_FOREGROUND_SERVICE, R.bool.enable_foreground_service);
-    }
-
     @Override
     public void onTaskRemoved(final Intent rootIntent) {
         super.onTaskRemoved(rootIntent);
-        if (keepForegroundService() || mForceForegroundService.get()) {
+        //TODO check for accounts enabled
+        if ((Compatibility.keepForegroundService(this) && hasEnabledAccounts()) || mForceForegroundService.get()) {
             Log.d(Config.LOGTAG, "ignoring onTaskRemoved because foreground service is activated");
         } else {
             this.logoutAndSave(false);
@@ -1951,6 +1950,7 @@ public class XmppConnectionService extends Service {
 			updateAccountUi();
 			getNotificationService().updateErrorNotification();
 			syncEnabledAccountSetting();
+			toggleForegroundService();
 		}
 	}
 

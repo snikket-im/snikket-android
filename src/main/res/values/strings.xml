@@ -727,4 +727,15 @@
     <string name="conference_destroyed">This group chat has been destroyed</string>
     <string name="phone_book">Address book</string>
     <string name="unable_to_save_recording">Unable to save recording</string>
+    <string name="foreground_service_channel_name">Foreground service</string>
+    <string name="foreground_service_channel_description">This notification category is used to display a permanent notification indicating that Conversations is running.</string>
+    <string name="notification_group_status_information">Status Information</string>
+    <string name="error_channel_name">Connectivity Problems</string>
+    <string name="error_channel_description">This notification category is used to display a notification in case there is a problem connecting to an account.</string>
+    <string name="notification_group_messages">Messages</string>
+    <string name="messages_channel_name">Messages</string>
+    <string name="silent_messages_channel_name">Silent messages</string>
+    <string name="silent_messages_channel_description">This notification group is used to display notifications that should not trigger any sound. For example when being active on another device (Grace Period).</string>
+    <string name="pref_more_notification_settings">Notification Settings</string>
+    <string name="pref_more_notification_settings_summary">Importance, Sound, Vibrate</string>
 </resources>

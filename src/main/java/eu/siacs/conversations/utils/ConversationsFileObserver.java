@@ -2,11 +2,14 @@ package eu.siacs.conversations.utils;
 
 
 import android.os.FileObserver;
+import android.util.Log;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Stack;
+
+import eu.siacs.conversations.Config;
 
 /**
  * Copyright (C) 2012 Bartek Przybylski
@@ -19,7 +22,7 @@ public abstract class ConversationsFileObserver {
     private final String path;
     private final List<SingleFileObserver> mObservers = new ArrayList<>();
 
-    public ConversationsFileObserver(String path) {
+    protected ConversationsFileObserver(String path) {
         this.path = path;
     }
 
@@ -83,13 +86,17 @@ public abstract class ConversationsFileObserver {
     private class SingleFileObserver extends FileObserver {
         private final String path;
 
-        public SingleFileObserver(String path, int mask) {
+        SingleFileObserver(String path, int mask) {
             super(path, mask);
             this.path = path;
         }
 
         @Override
         public void onEvent(int event, String filename) {
+            if (filename == null) {
+                Log.d(Config.LOGTAG,"ignored file event with NULL filename (event="+event+")");
+                return;
+            }
             ConversationsFileObserver.this.onEvent(event, path+'/'+filename);
         }
 

@@ -3,38 +3,37 @@ package eu.siacs.conversations.services;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
+import android.support.v4.content.ContextCompat;
 import android.util.Log;
 
 import eu.siacs.conversations.Config;
-import eu.siacs.conversations.persistance.DatabaseBackend;
 
 public class EventReceiver extends BroadcastReceiver {
 
 	public static final String SETTING_ENABLED_ACCOUNTS = "enabled_accounts";
 
 	@Override
-	public void onReceive(Context context, Intent intent) {
-		Intent mIntentForService = new Intent(context, XmppConnectionService.class);
-		if (intent.getAction() != null) {
-			mIntentForService.setAction(intent.getAction());
+	public void onReceive(final Context context, final Intent originalIntent) {
+		final Intent intentForService = new Intent(context, XmppConnectionService.class);
+		if (originalIntent.getAction() != null) {
+			intentForService.setAction(originalIntent.getAction());
 		} else {
-			mIntentForService.setAction("other");
+			intentForService.setAction("other");
 		}
-		final String action = intent.getAction();
+		final String action = originalIntent.getAction();
 		if (action.equals("ui") || hasEnabledAccounts(context)) {
 			try {
-				context.startService(mIntentForService);
+				ContextCompat.startForegroundService(context, intentForService);
 			} catch (RuntimeException e) {
 				Log.d(Config.LOGTAG,"EventReceiver was unable to start service");
 			}
 		} else {
-			Log.d(Config.LOGTAG,"EventReceiver ignored action "+mIntentForService.getAction());
+			Log.d(Config.LOGTAG,"EventReceiver ignored action "+intentForService.getAction());
 		}
 	}
 
-	public static boolean hasEnabledAccounts(Context context) {
+	public static boolean hasEnabledAccounts(final Context context) {
 		return PreferenceManager.getDefaultSharedPreferences(context).getBoolean(SETTING_ENABLED_ACCOUNTS,true);
 	}
 

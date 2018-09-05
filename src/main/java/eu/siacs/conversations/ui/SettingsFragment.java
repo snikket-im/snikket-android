@@ -11,6 +11,7 @@ import android.widget.ListView;
 
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
+import eu.siacs.conversations.utils.Compatibility;
 
 public class SettingsFragment extends PreferenceFragment {
 
@@ -32,6 +33,7 @@ public class SettingsFragment extends PreferenceFragment {
 				mCategory.removePreference(cleanPrivateStorage);
 			}
 		}
+		Compatibility.removeUnusedPreferences(this);
 
 		if (!TextUtils.isEmpty(page)) {
 			openPreferenceScreen(page);

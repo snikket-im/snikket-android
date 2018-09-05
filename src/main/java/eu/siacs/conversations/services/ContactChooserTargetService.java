@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.os.IBinder;
 import android.service.chooser.ChooserTarget;
 import android.service.chooser.ChooserTargetService;
+import android.support.v4.content.ContextCompat;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,7 +33,6 @@ public class ContactChooserTargetService extends ChooserTargetService implements
 	public List<ChooserTarget> onGetChooserTargets(ComponentName targetActivityName, IntentFilter matchedFilter) {
 		Intent intent = new Intent(this, XmppConnectionService.class);
 		intent.setAction("contact_chooser");
-		startService(intent);
 		bindService(intent, this, Context.BIND_AUTO_CREATE);
 		ArrayList<ChooserTarget> chooserTargets = new ArrayList<>();
 		try {

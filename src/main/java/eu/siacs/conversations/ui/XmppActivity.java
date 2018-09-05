@@ -532,11 +532,15 @@ public abstract class XmppActivity extends ActionBarActivity {
 	}
 
 	protected void delegateUriPermissionsToService(Uri uri) {
-		Intent intent = new Intent(this,XmppConnectionService.class);
+		Intent intent = new Intent(this, XmppConnectionService.class);
 		intent.setAction(Intent.ACTION_SEND);
 		intent.setData(uri);
 		intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-		startService(intent);
+		try {
+			startService(intent);
+		} catch (Exception e) {
+			Log.e(Config.LOGTAG,"unable to delegate uri permission",e);
+		}
 	}
 
 	protected void inviteToConversation(Conversation conversation) {
