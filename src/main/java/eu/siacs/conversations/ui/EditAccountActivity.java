@@ -736,6 +736,7 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
 			this.mCancelButton.setEnabled(false);
 		}
 		if (mUsernameMode) {
+			this.binding.accountJidLayout.setHint(getString(R.string.username_hint));
 			this.binding.accountJid.setHint(R.string.username_hint);
 		} else {
 			final KnownHostsAdapter mKnownHostsAdapter = new KnownHostsAdapter(this,
