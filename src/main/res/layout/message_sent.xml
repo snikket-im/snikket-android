@@ -9,23 +9,36 @@
                 android:paddingRight="8dp"
                 android:paddingTop="3dp">
 
-    <com.makeramen.roundedimageview.RoundedImageView
-        android:id="@+id/message_photo"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
-        android:scaleType="fitXY"
-        android:paddingBottom="3dp"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
+
+
+    <LinearLayout
+        android:id="@+id/message_photo_box"
+        android:orientation="vertical"
         android:layout_alignParentEnd="true"
-        app:riv_corner_radius="2dp" />
+        android:layout_alignParentBottom="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+        <com.makeramen.roundedimageview.RoundedImageView
+            android:id="@+id/message_photo"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:scaleType="fitXY"
+            app:riv_corner_radius="2dp" />
+        <View
+            android:id="@+id/placeholder"
+            android:layout_height="3dp"
+            android:layout_width="48dp"
+        />
+    </LinearLayout>
+
+
 
     <LinearLayout
         android:id="@+id/message_box"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_toLeftOf="@+id/message_photo"
+        android:layout_toLeftOf="@+id/message_photo_box"
         android:background="?attr/message_bubble_sent"
         android:minHeight="53dp"
         android:layout_marginLeft="-4dp"
