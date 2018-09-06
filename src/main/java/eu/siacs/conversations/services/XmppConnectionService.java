@@ -943,7 +943,7 @@ public class XmppConnectionService extends Service {
         final ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
         try {
             final NetworkInfo activeNetwork = cm == null ? null : cm.getActiveNetworkInfo();
-            return activeNetwork != null && activeNetwork.isConnected();
+            return activeNetwork != null && (activeNetwork.isConnected() || activeNetwork.getType() == ConnectivityManager.TYPE_ETHERNET);
         } catch (RuntimeException e) {
             Log.d(Config.LOGTAG, "unable to check for internet connection", e);
             return true; //if internet connection can not be checked it is probably best to just try
