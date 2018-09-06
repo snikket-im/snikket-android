@@ -4,8 +4,10 @@ import android.Manifest;
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.app.AlarmManager;
+import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
@@ -387,7 +389,8 @@ public class XmppConnectionService extends Service {
     private WakeLock wakeLock;
     private PowerManager pm;
     private LruCache<String, Bitmap> mBitmapCache;
-    private EventReceiver mEventReceiver = new EventReceiver();
+    private BroadcastReceiver mInternalEventReceiver = new InternalEventReceiver();
+    private BroadcastReceiver mInternalScreenEventReceiver = new InternalEventReceiver();
 
     private static String generateFetchKey(Account account, final Avatar avatar) {
         return account.getJid().asBareJid() + "_" + avatar.owner + "_" + avatar.sha1sum;
@@ -638,6 +641,7 @@ public class XmppConnectionService extends Service {
                         updateConversation(c);
                     });
                 case AudioManager.RINGER_MODE_CHANGED_ACTION:
+                case NotificationManager.ACTION_INTERRUPTION_FILTER_CHANGED:
                     if (dndOnSilentMode()) {
                         refreshAllPresences();
                     }
@@ -862,16 +866,25 @@ public class XmppConnectionService extends Service {
     }
 
     private boolean isPhoneSilenced() {
-        AudioManager audioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
+        final boolean notificationDnd;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            final NotificationManager notificationManager = getSystemService(NotificationManager.class);
+            final int filter = notificationManager == null ? NotificationManager.INTERRUPTION_FILTER_UNKNOWN : notificationManager.getCurrentInterruptionFilter();
+            notificationDnd = filter >= NotificationManager.INTERRUPTION_FILTER_PRIORITY;
+        } else {
+            notificationDnd = false;
+        }
+        final AudioManager audioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
+        final int ringerMode = audioManager == null ? AudioManager.RINGER_MODE_NORMAL : audioManager.getRingerMode();
         try {
             if (treatVibrateAsSilent()) {
-                return audioManager.getRingerMode() != AudioManager.RINGER_MODE_NORMAL;
+                return notificationDnd || ringerMode != AudioManager.RINGER_MODE_NORMAL;
             } else {
-                return audioManager.getRingerMode() == AudioManager.RINGER_MODE_SILENT;
+                return notificationDnd || ringerMode == AudioManager.RINGER_MODE_SILENT;
             }
         } catch (Throwable throwable) {
             Log.d(Config.LOGTAG, "platform bug in isPhoneSilenced (" + throwable.getMessage() + ")");
-            return false;
+            return notificationDnd;
         }
     }
 
@@ -1009,9 +1022,12 @@ public class XmppConnectionService extends Service {
         toggleScreenEventReceiver();
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             scheduleNextIdlePing();
-        }
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            registerReceiver(this.mEventReceiver, new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
+            IntentFilter intentFilter = new IntentFilter();
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                intentFilter.addAction(ConnectivityManager.CONNECTIVITY_ACTION);
+            }
+            intentFilter.addAction(NotificationManager.ACTION_INTERRUPTION_FILTER_CHANGED);
+            registerReceiver(this.mInternalEventReceiver, intentFilter);
         }
     }
 
@@ -1039,7 +1055,7 @@ public class XmppConnectionService extends Service {
     @Override
     public void onDestroy() {
         try {
-            unregisterReceiver(this.mEventReceiver);
+            unregisterReceiver(this.mInternalEventReceiver);
         } catch (IllegalArgumentException e) {
             //ignored
         }
@@ -1054,12 +1070,13 @@ public class XmppConnectionService extends Service {
 
     public void toggleScreenEventReceiver() {
         if (awayWhenScreenOff() && !manuallyChangePresence()) {
-            final IntentFilter filter = new IntentFilter(Intent.ACTION_SCREEN_ON);
+            final IntentFilter filter = new IntentFilter();
+            filter.addAction(Intent.ACTION_SCREEN_ON);
             filter.addAction(Intent.ACTION_SCREEN_OFF);
-            registerReceiver(this.mEventReceiver, filter);
+            registerReceiver(this.mInternalScreenEventReceiver, filter);
         } else {
             try {
-                unregisterReceiver(this.mEventReceiver);
+                unregisterReceiver(this.mInternalScreenEventReceiver);
             } catch (IllegalArgumentException e) {
                 //ignored
             }
@@ -4053,4 +4070,12 @@ public class XmppConnectionService extends Service {
 			return XmppConnectionService.this;
 		}
 	}
+
+	private class InternalEventReceiver extends BroadcastReceiver {
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            onStartCommand(intent,0,0);
+        }
+    }
 }
