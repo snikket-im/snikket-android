@@ -120,6 +120,14 @@ public class NotificationService {
         errorChannel.setShowBadge(false);
         errorChannel.setGroup("status");
         notificationManager.createNotificationChannel(errorChannel);
+
+        final NotificationChannel videoCompressionChannel = new NotificationChannel("compression",
+                c.getString(R.string.video_compression_channel_name),
+                NotificationManager.IMPORTANCE_LOW);
+        videoCompressionChannel.setShowBadge(false);
+        videoCompressionChannel.setGroup("status");
+        notificationManager.createNotificationChannel(videoCompressionChannel);
+
         final NotificationChannel messagesChannel = new NotificationChannel("messages",
                 c.getString(R.string.messages_channel_name),
                 NotificationManager.IMPORTANCE_HIGH);
@@ -881,7 +889,7 @@ public class NotificationService {
         mBuilder.setSmallIcon(R.drawable.ic_hourglass_empty_white_24dp);
         mBuilder.setContentIntent(createContentIntent(message.getConversation()));
         if (Compatibility.twentySix()) {
-            mBuilder.setChannelId("foreground");
+            mBuilder.setChannelId("compression");
         }
         Notification notification = mBuilder.build();
         notify(FOREGROUND_NOTIFICATION_ID, notification);

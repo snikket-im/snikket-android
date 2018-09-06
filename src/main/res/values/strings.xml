@@ -738,4 +738,5 @@
     <string name="silent_messages_channel_description">This notification group is used to display notifications that should not trigger any sound. For example when being active on another device (Grace Period).</string>
     <string name="pref_more_notification_settings">Notification Settings</string>
     <string name="pref_more_notification_settings_summary">Importance, Sound, Vibrate</string>
+    <string name="video_compression_channel_name">Video compression</string>
 </resources>
