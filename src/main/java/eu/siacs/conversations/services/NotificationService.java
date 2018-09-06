@@ -158,15 +158,10 @@ public class NotificationService {
     public boolean notify(final Message message) {
         final Conversation conversation = (Conversation) message.getConversation();
         return message.getStatus() == Message.STATUS_RECEIVED
-                && notificationsEnabled()
                 && !conversation.isMuted()
                 && (conversation.alwaysNotify() || wasHighlightedOrPrivate(message))
                 && (!conversation.isWithStranger() || notificationsFromStrangers())
                 ;
-    }
-
-    private boolean notificationsEnabled() {
-        return mXmppConnectionService.getBooleanPreference("show_notification", R.bool.show_notification);
     }
 
     private boolean notificationsFromStrangers() {

@@ -108,8 +108,6 @@
     <string name="pref_return_to_previous">Quick Sharing</string>
     <string name="pref_return_to_previous_summary">Immediately return to previous activity instead of opening the conversation after sharing something</string>
     <string name="pref_notification_settings">Notification</string>
-    <string name="pref_notifications">Notifications</string>
-    <string name="pref_notifications_summary">Notify when a new message arrives</string>
     <string name="pref_vibrate">Vibrate</string>
     <string name="pref_vibrate_summary">Vibrate when a new message arrives</string>
     <string name="pref_led">LED Notification</string>
