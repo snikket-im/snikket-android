@@ -407,6 +407,7 @@ public class XmppConnectionService extends Service {
     public void stopForcingForegroundNotification() {
         mForceForegroundService.set(false);
         toggleForegroundService();
+        mNotificationService.dismissForcedForegroundNotification();
     }
 
     public boolean areMessagesInitialized() {

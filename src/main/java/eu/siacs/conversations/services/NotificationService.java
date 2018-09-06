@@ -883,11 +883,16 @@ public class NotificationService {
         mBuilder.setProgress(100, current, false);
         mBuilder.setSmallIcon(R.drawable.ic_hourglass_empty_white_24dp);
         mBuilder.setContentIntent(createContentIntent(message.getConversation()));
+        mBuilder.setOngoing(true);
         if (Compatibility.twentySix()) {
             mBuilder.setChannelId("compression");
         }
         Notification notification = mBuilder.build();
         notify(FOREGROUND_NOTIFICATION_ID, notification);
+    }
+
+    public void dismissForcedForegroundNotification() {
+        cancel(FOREGROUND_NOTIFICATION_ID);
     }
 
     private void notify(String tag, int id, Notification notification) {
