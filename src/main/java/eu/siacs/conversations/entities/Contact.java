@@ -312,13 +312,16 @@ public class Contact implements ListItem, Blockable {
 		}
 	}
 
-	public void setPgpKeyId(long keyId) {
+	public boolean setPgpKeyId(long keyId) {
+		final long previousKeyId = getPgpKeyId();
 		synchronized (this.keys) {
 			try {
 				this.keys.put("pgp_keyid", keyId);
+				return previousKeyId != keyId;
 			} catch (final JSONException ignored) {
 			}
 		}
+		return false;
 	}
 
 	public void setOption(int option) {
