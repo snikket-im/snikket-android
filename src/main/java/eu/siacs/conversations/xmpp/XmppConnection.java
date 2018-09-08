@@ -415,8 +415,6 @@ public class XmppConnection implements Runnable {
 			this.changeStatus(Account.State.MISSING_INTERNET_PERMISSION);
 		} catch (final StateChangingException e) {
 			this.changeStatus(e.state);
-		} catch (final Resolver.NetworkIsUnreachableException e) {
-			this.changeStatus(Account.State.NETWORK_IS_UNREACHABLE);
 		} catch (final UnknownHostException | ConnectException e) {
 			this.changeStatus(Account.State.SERVER_NOT_FOUND);
 		} catch (final SocksSocketFactory.SocksProxyNotFoundException e) {

@@ -3846,7 +3846,7 @@ public class XmppConnectionService extends Service {
 						ServiceDiscoveryResult discoveryResult = new ServiceDiscoveryResult(response);
 						if (presence.getVer().equals(discoveryResult.getVer())) {
 							databaseBackend.insertDiscoveryResult(discoveryResult);
-							injectServiceDiscorveryResult(a.getRoster(), presence.getHash(), presence.getVer(), discoveryResult);
+							injectServiceDiscoveryResult(a.getRoster(), presence.getHash(), presence.getVer(), discoveryResult);
 						} else {
 							Log.d(Config.LOGTAG, a.getJid().asBareJid() + ": mismatch in caps for contact " + jid + " " + presence.getVer() + " vs " + discoveryResult.getVer());
 						}
@@ -3857,7 +3857,7 @@ public class XmppConnectionService extends Service {
 		}
 	}
 
-	private void injectServiceDiscorveryResult(Roster roster, String hash, String ver, ServiceDiscoveryResult disco) {
+	private void injectServiceDiscoveryResult(Roster roster, String hash, String ver, ServiceDiscoveryResult disco) {
 		for (Contact contact : roster.getContacts()) {
 			for (Presence presence : contact.getPresences().getPresences().values()) {
 				if (hash.equals(presence.getHash()) && ver.equals(presence.getVer())) {

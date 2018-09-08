@@ -132,8 +132,7 @@ public class Account extends AbstractEntity {
 		STREAM_ERROR,
 		POLICY_VIOLATION,
 		PAYMENT_REQUIRED,
-		MISSING_INTERNET_PERMISSION(false),
-		NETWORK_IS_UNREACHABLE(false);
+		MISSING_INTERNET_PERMISSION(false);
 
 		private final boolean isError;
 		private final boolean attemptReconnect;
@@ -211,8 +210,6 @@ public class Account extends AbstractEntity {
 					return R.string.payment_required;
 				case MISSING_INTERNET_PERMISSION:
 					return R.string.missing_internet_permission;
-				case NETWORK_IS_UNREACHABLE:
-					return R.string.network_is_unreachable;
 				default:
 					return R.string.account_status_unknown;
 			}

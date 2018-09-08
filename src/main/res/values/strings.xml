@@ -648,7 +648,6 @@
     <string name="yesterday">Yesterday</string>
     <string name="pref_validate_hostname">Validate hostname with DNSSEC</string>
     <string name="pref_validate_hostname_summary">Server certificates that contain the validated hostname are considered verified</string>
-    <string name="network_is_unreachable">Network is unreachable</string>
     <string name="certificate_does_not_contain_jid">Certificate does not contain a Jabber ID</string>
     <string name="server_info_partial">partial</string>
     <string name="attach_record_video">Record video</string>
