@@ -240,7 +240,7 @@ public class PresenceParser extends AbstractParser implements
 		return codes;
 	}
 
-	public void parseContactPresence(final PresencePacket packet, final Account account) {
+	private void parseContactPresence(final PresencePacket packet, final Account account) {
 		final PresenceGenerator mPresenceGenerator = mXmppConnectionService.getPresenceGenerator();
 		final Jid from = packet.getFrom();
 		if (from == null || from.equals(account.getJid())) {
@@ -273,6 +273,11 @@ public class PresenceParser extends AbstractParser implements
 					mXmppConnectionService.fetchAvatar(account, avatar);
 				}
 			}
+
+			if (mXmppConnectionService.isMuc(account, from)) {
+				return;
+			}
+
 			int sizeBefore = contact.getPresences().size();
 
 			final String show = packet.findChildContent("show");
