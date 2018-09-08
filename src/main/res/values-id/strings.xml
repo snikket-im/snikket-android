@@ -92,8 +92,6 @@
   <string name="pref_attachments">Lampiran</string>
   <string name="pref_return_to_previous">Bagikan Cepat</string>
   <string name="pref_notification_settings">Notif</string>
-  <string name="pref_notifications">Notifikasi</string>
-  <string name="pref_notifications_summary">Notifikasikan jika pesan baru tiba</string>
   <string name="pref_vibrate">Getar</string>
   <string name="pref_vibrate_summary">Aktifkan getar ketika pesan masuk</string>
   <string name="pref_led">Notifikasi LED</string>

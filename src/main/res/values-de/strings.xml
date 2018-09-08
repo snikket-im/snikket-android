@@ -9,7 +9,7 @@
   <string name="action_secure">Verschlüsselte Unterhaltung</string>
   <string name="action_add_account">Konto hinzufügen</string>
   <string name="action_edit_contact">Namen bearbeiten</string>
-  <string name="action_add_phone_book">Zu Telefonbuch hinzufügen</string>
+  <string name="action_add_phone_book">Zum Telefonbuch hinzufügen</string>
   <string name="action_delete_contact">Aus Kontaktliste entfernen</string>
   <string name="action_block_contact">Kontakt sperren</string>
   <string name="action_unblock_contact">Kontakt entsperren</string>
@@ -108,8 +108,6 @@
   <string name="pref_return_to_previous">Schnell-Teilen</string>
   <string name="pref_return_to_previous_summary">Nach dem Teilen sofort wieder zur vorherigen App zurückkehren anstatt die Unterhaltung zu öffnen</string>
   <string name="pref_notification_settings">Benachrichtigung</string>
-  <string name="pref_notifications">Benachrichtigungen</string>
-  <string name="pref_notifications_summary">Benachrichtigen bei Erhalt einer neuen Nachricht</string>
   <string name="pref_vibrate">Vibrieren</string>
   <string name="pref_vibrate_summary">Vibrieren bei Erhalt einer neuen Nachricht</string>
   <string name="pref_led">LED Benachrichtigung</string>
@@ -395,7 +393,7 @@
   <string name="apk">Android App</string>
   <string name="vcard">Kontakt</string>
   <string name="touch_to_open_conversations">Antippen, um Conversations zu öffnen</string>
-  <string name="avatar_has_been_published">Avatar wurde gespeichert</string>
+  <string name="avatar_has_been_published">Avatar wurde veröffentlicht!</string>
   <string name="sending_x_file">%s wird gesendet</string>
   <string name="offering_x_file">%s wird angeboten</string>
   <string name="hide_offline">Offline verstecken</string>
@@ -440,7 +438,7 @@
   <string name="download_failed_could_not_connect">Download fehlgeschlagen: keine Verbindung zum Host</string>
   <string name="download_failed_could_not_write_file">Download fehlgeschlagen: Datei konnte nicht gespeichert werden</string>
   <string name="account_status_tor_unavailable">Tor-Netzwerk nicht verfügbar</string>
-  <string name="account_status_bind_failure">Bindungsfehler</string>
+  <string name="account_status_bind_failure">Verbindungsfehler</string>
   <string name="account_status_host_unknown">Unbekannte Domain</string>
   <string name="server_info_broken">Fehlerhaft</string>
   <string name="pref_presence_settings">Status</string>
@@ -499,8 +497,8 @@
   <string name="always">Immer</string>
   <string name="automatically">Automatisch</string>
   <string name="battery_optimizations_enabled">Batterieoptimierung aktiv</string>
-  <string name="battery_optimizations_enabled_explained">Dein Telefon wendet Batterioptimierungen bei Conversations an, welche verspätete Benachrichtigungen oder Nachrichtenverlust verursachen können.\nEs ist empfehlenswert diese zu deaktivieren.</string>
-  <string name="battery_optimizations_enabled_dialog">Dein Telefon wendet Batterioptimierungen bei Conversations an, welche verspätete Benachrichtigungen oder Nachrichtenverlust verursachen können. Es ist empfehlenswert dies zu deaktivieren.</string>
+  <string name="battery_optimizations_enabled_explained">Dein Telefon verwendet Batterioptimierungen bei Conversations, welche verspätete Benachrichtigungen oder Nachrichtenverlust verursachen können.\nEs wird empfohlen, diese zu deaktivieren.</string>
+  <string name="battery_optimizations_enabled_dialog">Dein Telefon verwendet Batterioptimierungen bei Conversations, welche verspätete Benachrichtigungen oder Nachrichtenverlust verursachen können.\n\nDu wirst nun gefragt, diese zu deaktivieren.</string>
   <string name="disable">Deaktivieren</string>
   <string name="selection_too_large">Der ausgewählte Bereich ist zu groß</string>
   <string name="no_accounts">(Keine aktivierten Konten)</string>
@@ -528,8 +526,8 @@
   <string name="presence_dnd">Beschäftigt</string>
   <string name="secure_password_generated">Ein sicheres Passwort wurde erstellt</string>
   <string name="device_does_not_support_battery_op">Dein Gerät unterstützt kein Ausschalten der Batterieoptimierung</string>
-  <string name="registration_please_wait">Fehlgeschlagen: Bitte später versuchen.</string>
-  <string name="registration_password_too_weak">Registrierung fehlgeschlagen; Passwort zu schwach</string>
+  <string name="registration_please_wait">Registrierung fehlgeschlagen: Bitte später versuchen.</string>
+  <string name="registration_password_too_weak">Registrierung fehlgeschlagen: Passwort zu schwach</string>
   <string name="dialog_title_create_conference">Gruppenchat erstellen</string>
   <string name="choose_participants">Mitglieder wählen</string>
   <string name="creating_conference">Erstelle Gruppenchat…</string>
@@ -547,7 +545,7 @@
   <string name="pref_theme_dark">Dunkles Design</string>
   <string name="pref_use_green_background">Grüner Hintergrund</string>
   <string name="pref_use_green_background_summary">Für empfangene Nachrichten grünen Hintergrund verwenden</string>
-  <string name="unable_to_connect_to_keychain">Kann nicht mit OpenKeychain verbinden</string>
+  <string name="unable_to_connect_to_keychain">Verbindung zu OpenKeychain nicht möglich</string>
   <string name="this_device_is_no_longer_in_use">Dieses Gerät ist nicht länger in Benutzung</string>
   <string name="type_pc">Computer</string>
   <string name="type_phone">Mobiltelefon</string>
@@ -561,12 +559,12 @@
   <string name="allow">Erlauben</string>
   <string name="no_permission_to_access_x">Keine Berechtigung um auf %s zuzugreifen</string>
   <string name="remote_server_not_found">Remote-Server nicht gefunden</string>
-  <string name="unable_to_update_account">Konto kann nicht aktualisiert werden.</string>
+  <string name="unable_to_update_account">Konto kann nicht aktualisiert werden</string>
   <string name="report_jid_as_spammer">Melde die JID als Sender unerwünschter Nachrichten.</string>
   <string name="pref_delete_omemo_identities">OMEMO-Identitäten zurücksetzen</string>
   <string name="pref_delete_omemo_identities_summary">Regeneriere deine OMEMO-Schlüssel. Alle deine Kontakte müssen dich neu verifizieren. Nutze dies als letzten Ausweg.</string>
   <string name="delete_selected_keys">Ausgewählte Schlüssel löschen</string>
-  <string name="error_publish_avatar_offline">Du musst verbunden sein um deinen Avatar zu veröffentlichen</string>
+  <string name="error_publish_avatar_offline">Du musst verbunden sein, um deinen Avatar zu veröffentlichen</string>
   <string name="show_error_message">Zeige Fehlermeldung</string>
   <string name="error_message">Fehlermeldung</string>
   <string name="data_saver_enabled">Datensparmodus aktiv</string>
@@ -648,7 +646,6 @@
   <string name="yesterday">Gestern</string>
   <string name="pref_validate_hostname">Überprüfe den Hostnamen mit DNSSEC</string>
   <string name="pref_validate_hostname_summary">Serverzertifikate, die den überprüften Hostnamen enthalten, werden als verifiziert betrachtet</string>
-  <string name="network_is_unreachable">Netzwerk nicht verfügbar</string>
   <string name="certificate_does_not_contain_jid">Zertifikat enthält keine Jabber-ID</string>
   <string name="server_info_partial">teilweise</string>
   <string name="attach_record_video">Video aufnehmen</string>
@@ -663,9 +660,9 @@
   <string name="mtm_accept_servername">Nicht übereinstimmenden Servernamen akzeptieren?</string>
   <string name="mtm_hostname_mismatch">Server konnte sich nicht als \"%s\" authentifizieren. Das Zertifikat ist nur gültig für:</string>
   <string name="mtm_connect_anyway">Möchtest du trotzdem eine Verbindung herstellen?</string>
-  <string name="mtm_cert_details">Zertifikatsdetails:</string>
+  <string name="mtm_cert_details">Zertifikatdetails:</string>
   <string name="once">Einmalig</string>
-  <string name="qr_code_scanner_needs_access_to_camera">Der QR-Codescanner benötigt Zugriff auf die Kamera.</string>
+  <string name="qr_code_scanner_needs_access_to_camera">Der QR-Codescanner benötigt Zugriff auf die Kamera</string>
   <string name="pref_scroll_to_bottom">Nach unten scrollen</string>
   <string name="pref_scroll_to_bottom_summary">Nach dem Senden einer Nachricht nach unten scrollen</string>
   <string name="edit_status_message_title">Statusnachricht bearbeiten</string>
@@ -674,7 +671,7 @@
   <string name="error_trustkey_general">Conversations ist nicht in der Lage, verschlüsselte Nachrichten an  %1$s zu senden. Dies kann daran liegen, dass dein Kontakt einen veralteten Server oder Client verwendet, der mit OMEMO nicht umgehen kann.</string>
   <string name="error_trustkey_device_list">Geräteliste konnte nicht abgerufen werden</string>
   <string name="error_trustkey_bundle">Gerätebündel konnten nicht abgerufen werden</string>
-  <string name="error_trustkey_hint_mutual">Tipp: In manchen Fällen kann dies behoben werden, indem man sich gegenseitig die Kontaktlisten hinzufügt.</string>
+  <string name="error_trustkey_hint_mutual">Tipp: In manchen Fällen kann dies behoben werden, indem man sich gegenseitig zu den Kontaktlisten hinzufügt.</string>
   <string name="disable_encryption_message">Bist du sicher, dass du die OMEMO-Verschlüsselung für dieses Gespräch deaktivieren möchtest?\nDies wird es deinem Serveradministrator ermöglichen, deine Nachrichten zu lesen, aber es könnte die einzige Möglichkeit sein, mit Personen zu kommunizieren, die veraltete Clients verwenden. </string>
   <string name="disable_now">Jetzt deaktivieren</string>
   <string name="draft">Entwurf:</string>
@@ -690,7 +687,7 @@
   <string name="small">Klein</string>
   <string name="medium">Mittel</string>
   <string name="large">Groß</string>
-  <string name="not_encrypted_for_this_device">Die Nachricht wurde für dieses Gerät nicht verschlüsselt.</string>
+  <string name="not_encrypted_for_this_device">Die Nachricht wurde nicht für dieses Gerät verschlüsselt.</string>
   <string name="undo">rückgängig</string>
   <string name="location_disabled">Standort teilen ist deaktiviert</string>
   <string name="action_fix_to_location">Position fixieren</string>
@@ -716,11 +713,12 @@
   <string name="pref_start_search_summary">Beim Dialog \'Unterhaltung beginnen\' Tastatur öffnen und den Cursor im Suchfeld platzieren</string>
   <string name="group_chat_avatar">Gruppenchat-Avatar</string>
   <string name="host_does_not_support_group_chat_avatars">Host unterstützt keine Gruppenchat-Avatare</string>
-  <string name="only_the_owner_can_change_group_chat_avatar">Nur der Eigentümer kann den Gruppenchat-Avatar ändern.</string>
+  <string name="only_the_owner_can_change_group_chat_avatar">Nur der Eigentümer kann den Gruppenchat-Avatar ändern</string>
   <string name="contact_name">Kontaktname</string>
   <string name="nickname">Nickname</string>
   <string name="group_chat_name">Name</string>
   <string name="providing_a_name_is_optional">Angabe eines Namens ist optional</string>
   <string name="create_dialog_group_chat_name">Gruppenchatname</string>
   <string name="conference_destroyed">Dieser Gruppenchat wurde zerstört</string>
+  <string name="phone_book">Telefonbuch</string>
 </resources>

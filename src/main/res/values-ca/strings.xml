@@ -20,6 +20,7 @@
   <string name="title_activity_sharewith">Compartir amb Conversations</string>
   <string name="title_activity_start_conversation">Comença una conversa</string>
   <string name="title_activity_choose_contact">Tria el contacte</string>
+  <string name="title_activity_choose_contacts">Seleccionar contactes</string>
   <string name="title_activity_share_via_account">Comparteix mitjançant compte</string>
   <string name="title_activity_block_list">Llista de bloqueig</string>
   <string name="just_now">Ara</string>
@@ -42,6 +43,7 @@
   <string name="block_domain_text">Voleu bloquejar tots els contactes de %s?</string>
   <string name="unblock_domain_text">Voleu desbloquejar tots el contactes de %s?</string>
   <string name="contact_blocked">Contacte bloquejat</string>
+  <string name="blocked">Bloquejats</string>
   <string name="remove_bookmark_text">Voleu eliminar %s dels marcadors? La conversa associada amb aquest marcador no serà eliminada.</string>
   <string name="register_account">Registra un compte nou al servidor</string>
   <string name="change_password_on_server">Canvia la contrasenya al servidor</string>
@@ -106,8 +108,6 @@
   <string name="pref_return_to_previous">Compartició ràpida</string>
   <string name="pref_return_to_previous_summary">Torna immediatament a l\'activitat anterior en comptes d\'obrir la conversa després d\'haver compartit alguna cosa</string>
   <string name="pref_notification_settings">Notificació</string>
-  <string name="pref_notifications">Notificacions</string>
-  <string name="pref_notifications_summary">Notifica quan arribi un missatge nou</string>
   <string name="pref_vibrate">Vibra</string>
   <string name="pref_vibrate_summary">Vibra quan arribi un missatge nou</string>
   <string name="pref_led">Notificació LED</string>
@@ -227,6 +227,7 @@
   <string name="delete_bookmark">Elimina dels marcadors</string>
   <string name="bookmark_already_exists">Aquest marcador ja existeix</string>
   <string name="action_edit_subject">Edita el tema del xat de grup</string>
+  <string name="topic">Assumpte</string>
   <string name="joining_conference">S\'està unint al xat de grup...</string>
   <string name="leave">Surt</string>
   <string name="contact_added_you">S\'ha afegit el contacte a la llista de contactes</string>
@@ -234,6 +235,7 @@
   <string name="contact_has_read_up_to_this_point">%s ha llegit fins aquí</string>
   <string name="contacts_have_read_up_to_this_point">%s han llegit fins aquí</string>
   <string name="contacts_and_n_more_have_read_up_to_this_point">%1$s i %2$d més han llegit fins aquí</string>
+  <string name="everyone_has_read_up_to_this_point">Tothom ha llegit fins a aquí</string>
   <string name="publish">Publica</string>
   <string name="touch_to_choose_picture">Toqueu l\'avatar per triar una imatge de la  galeria</string>
   <string name="publishing">S\'està publicant...</string>
@@ -280,6 +282,7 @@
   <string name="toast_message_omemo_fingerprint">S\'ha copiat l\'empremta digital d\'OMEMO al porta-retalls.</string>
   <string name="conference_banned">Estàs prohibit en aquest xat de grup</string>
   <string name="conference_members_only">Aquest xat en grup només és de membres</string>
+  <string name="conference_resource_constraint">Limitació de recursos</string>
   <string name="conference_kicked">Heu estat expulsat d\'aquest xat de grup</string>
   <string name="conference_shutdown">S\'ha tancat el xat de grup</string>
   <string name="conference_unknown_error">Ja no ets en aquest xat de grup</string>
@@ -290,6 +293,7 @@
   <string name="check_x_filesize_on_host">Verificació de la mida de %1$s en %2$s</string>
   <string name="message_options">Opcions del missatge</string>
   <string name="quote">Cita</string>
+  <string name="paste_as_quote">Pegar com a cita</string>
   <string name="copy_original_url">Copiar la URL original</string>
   <string name="send_again">Envia una altra vegada</string>
   <string name="file_url">URL del fitxer</string>
@@ -322,6 +326,7 @@
   <string name="file_deleted">L\'arxiu ha sigut eliminat</string>
   <string name="no_application_found_to_open_file">Cap aplicació trobada a l\'obrir l\'arxiu</string>
   <string name="no_application_found_to_open_link">No s\'ha trobat cap aplicació per obrir el vincle</string>
+  <string name="no_application_found_to_view_contact">No s\'ha trobat cap aplicació per veure el contacte</string>
   <string name="pref_show_dynamic_tags">Etiquetes dinàmiques</string>
   <string name="pref_show_dynamic_tags_summary">Mostra etiquetes de nomès lectura per sota dels noms dels contactes</string>
   <string name="enable_notifications">Habilitar notificació</string>
@@ -542,6 +547,7 @@ d\'altres proveïdors donant-los la vostra ID Jabber completa.</string>
   <string name="choose_participants">Tria els participants</string>
   <string name="creating_conference">S\'està creant el xat en grup...</string>
   <string name="invite_again">Torna a convidar</string>
+  <string name="gp_disable">Inhabilitar</string>
   <string name="gp_short">Curt</string>
   <string name="gp_medium">Mitjà</string>
   <string name="gp_long">Llarg</string>
@@ -656,7 +662,6 @@ d\'altres proveïdors donant-los la vostra ID Jabber completa.</string>
   <string name="yesterday">Ahir</string>
   <string name="pref_validate_hostname">Valideu el nom del servidor amb DNSSEC</string>
   <string name="pref_validate_hostname_summary">Els certificats de servidor que contenen el nom de host validat es consideren verificats</string>
-  <string name="network_is_unreachable">No es pot accedir a la xarxa</string>
   <string name="certificate_does_not_contain_jid">El certificat no conté una identificació de Jabber</string>
   <string name="server_info_partial">parcial</string>
   <string name="attach_record_video">Grava vídeo</string>
@@ -721,4 +726,17 @@ que l\'administrador del servidor llegeixi els missatges, però pot ser l\'únic
   <string name="pref_use_share_location_plugin_summary">Utilitzi el plugin Compartir ubicació en lloc d\'incorporar el mapa</string>
   <string name="copy_link">Copiar adreça web</string>
   <string name="copy_jabber_id">Copiar ID de Jabber</string>
+  <string name="p1_s3_filetransfer">Ús compartit d\'arxius HTTP per a S3</string>
+  <string name="pref_start_search">Recerca directa</string>
+  <string name="pref_start_search_summary">En la pantalla \'Iniciar conversa\' obri el teclat i col·loqui el cursor en el camp de recerca</string>
+  <string name="group_chat_avatar">Avatar de xat en grup</string>
+  <string name="host_does_not_support_group_chat_avatars">El host no suporta avatars de xat de grup</string>
+  <string name="only_the_owner_can_change_group_chat_avatar">Només el propietari pot canviar l\'avatar del xat en grup</string>
+  <string name="contact_name">Nom de contacte</string>
+  <string name="nickname">Sobrenom</string>
+  <string name="group_chat_name">Nom</string>
+  <string name="providing_a_name_is_optional">Proporcionar un nom és opcional</string>
+  <string name="create_dialog_group_chat_name">Nom del xat en grup</string>
+  <string name="conference_destroyed">Aquest xat en grup ha estat destruït</string>
+  <string name="phone_book">Agenda d\'adreces</string>
 </resources>

@@ -108,8 +108,6 @@
   <string name="pref_return_to_previous">快速分享</string>
   <string name="pref_return_to_previous_summary">分享后立即回到之前活动的应用程序，而非打开会话</string>
   <string name="pref_notification_settings">通知</string>
-  <string name="pref_notifications">通知</string>
-  <string name="pref_notifications_summary">收到新消息时通知</string>
   <string name="pref_vibrate">震动</string>
   <string name="pref_vibrate_summary">收到新消息时震动</string>
   <string name="pref_led">LED 灯提示</string>
@@ -642,7 +640,6 @@
   <string name="yesterday">昨天</string>
   <string name="pref_validate_hostname">使用 DNSSEC 来验证主机名</string>
   <string name="pref_validate_hostname_summary">包含已验证的主机名的服务器证书被认为是已验证的</string>
-  <string name="network_is_unreachable">网络不可达</string>
   <string name="certificate_does_not_contain_jid">证书不包含一个 Jabber ID</string>
   <string name="server_info_partial">部分的</string>
   <string name="attach_record_video">录制视频</string>

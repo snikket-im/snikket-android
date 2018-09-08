@@ -99,8 +99,6 @@
   <string name="pref_return_to_previous">Брзо дељење</string>
   <string name="pref_return_to_previous_summary">Враћање на претходну активност уместо отварања преписке након дељења</string>
   <string name="pref_notification_settings">Обавештење</string>
-  <string name="pref_notifications">Обавештења</string>
-  <string name="pref_notifications_summary">Обавести кад стигне нова порука</string>
   <string name="pref_vibrate">Вибрирај</string>
   <string name="pref_vibrate_summary">Вибрирање кад стигне нова порука</string>
   <string name="pref_led">ЛЕД светло</string>
@@ -540,7 +538,6 @@
   <string name="open_website">Отвори сајт</string>
   <string name="today">Данас</string>
   <string name="yesterday">Јуче</string>
-  <string name="network_is_unreachable">Мрежа није доступна</string>
   <string name="certificate_does_not_contain_jid">Сертификат не садржи Џабер ИД</string>
   <string name="attach_record_video">Сними видео</string>
 </resources>

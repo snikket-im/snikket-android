@@ -108,8 +108,6 @@
   <string name="pref_return_to_previous">Compartir de forma rápida</string>
   <string name="pref_return_to_previous_summary">Inmediatamente volver a la actividad anterior en lugar de abrir la conversación después de compartir una imagen o archivo</string>
   <string name="pref_notification_settings">Notificaciones</string>
-  <string name="pref_notifications">Notificaciones</string>
-  <string name="pref_notifications_summary">Notificar cuando llega un nuevo mensaje</string>
   <string name="pref_vibrate">Vibrar</string>
   <string name="pref_vibrate_summary">Vibra cuando llega un nuevo mensaje</string>
   <string name="pref_led">Luz</string>
@@ -284,6 +282,7 @@
   <string name="toast_message_omemo_fingerprint">¡Huella digital OMEMO copiada al portapapeles!</string>
   <string name="conference_banned">Tu entrada a esta conversación en grupo ha sido prohibida</string>
   <string name="conference_members_only">Esta conversación en grupo es solo para miembros</string>
+  <string name="conference_resource_constraint">Limitación de recursos</string>
   <string name="conference_kicked">Has sido expulsado de esta conversación</string>
   <string name="conference_shutdown">La conversación en grupo ha sido cerrada</string>
   <string name="conference_unknown_error">Ya no estás dentro de esta conversación en grupo</string>
@@ -647,7 +646,6 @@
   <string name="yesterday">Ayer</string>
   <string name="pref_validate_hostname">Validar hostname con DNSSEC</string>
   <string name="pref_validate_hostname_summary">Los certificados del servidor que contienen el hostname validado son considerados verificados</string>
-  <string name="network_is_unreachable">La red es inaccesible</string>
   <string name="certificate_does_not_contain_jid">El certificado no contiene un identificador Jabber</string>
   <string name="server_info_partial">Parcial</string>
   <string name="attach_record_video">Grabar video</string>
@@ -722,4 +720,5 @@
   <string name="providing_a_name_is_optional">Añadir un nombre es opcional</string>
   <string name="create_dialog_group_chat_name">Nombre de la Conversación en grupo</string>
   <string name="conference_destroyed">Esta conversación en grupo ha sido destruida</string>
+  <string name="phone_book">Libreta de direcciones</string>
 </resources>

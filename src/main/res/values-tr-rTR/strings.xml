@@ -98,8 +98,6 @@
   <string name="pref_return_to_previous">Hızlı Paylaşım</string>
   <string name="pref_return_to_previous_summary">Bir şey paylaştıktan sonra bir grup konuşmasına dönmek yerine önceki etkinliğe dön</string>
   <string name="pref_notification_settings">Bildirim</string>
-  <string name="pref_notifications">Bildirimler</string>
-  <string name="pref_notifications_summary">Yeni ileti geldiğinde bildir</string>
   <string name="pref_vibrate">Titreşim</string>
   <string name="pref_vibrate_summary">Yeni ileti geldiğinde titret</string>
   <string name="pref_led">LED Bildirimi</string>

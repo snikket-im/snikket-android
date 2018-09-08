@@ -99,8 +99,6 @@
   <string name="pref_return_to_previous">快速分享</string>
   <string name="pref_return_to_previous_summary">分享後立即回到之前活動的應用程式，而非打開會話</string>
   <string name="pref_notification_settings">通知</string>
-  <string name="pref_notifications">通知</string>
-  <string name="pref_notifications_summary">收到新訊息時顯示通知</string>
   <string name="pref_vibrate">震動</string>
   <string name="pref_vibrate_summary">收到新訊息時震動</string>
   <string name="pref_led">LED 燈通知</string>

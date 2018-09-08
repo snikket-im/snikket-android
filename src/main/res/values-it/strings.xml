@@ -108,8 +108,6 @@
   <string name="pref_return_to_previous">Condivisione rapida</string>
   <string name="pref_return_to_previous_summary">Torna subito all\'attività precedente invece di aprire la conversazione dopo avere condiviso qualcosa</string>
   <string name="pref_notification_settings">Notifiche</string>
-  <string name="pref_notifications">Notifiche</string>
-  <string name="pref_notifications_summary">Notifica quando arriva un nuovo messaggio</string>
   <string name="pref_vibrate">Vibra</string>
   <string name="pref_vibrate_summary">Vibra quando arriva un nuovo messaggio</string>
   <string name="pref_led">Notifica LED</string>
@@ -647,7 +645,6 @@
   <string name="yesterday">Ieri</string>
   <string name="pref_validate_hostname">Convalida hostname con DNSSEC</string>
   <string name="pref_validate_hostname_summary">I certificati dei server che contengono l\'hostname convalidato sono considerati verificati</string>
-  <string name="network_is_unreachable">Rete non raggiungibile</string>
   <string name="certificate_does_not_contain_jid">Il certificato non contiene un ID Jabber</string>
   <string name="server_info_partial">parziale</string>
   <string name="attach_record_video">Registra un video</string>
@@ -722,4 +719,5 @@
   <string name="providing_a_name_is_optional">Il nome è facoltativo</string>
   <string name="create_dialog_group_chat_name">Nome chat di gruppo</string>
   <string name="conference_destroyed">Questa chat di gruppo è stata distrutta</string>
+  <string name="phone_book">Rubrica</string>
 </resources>

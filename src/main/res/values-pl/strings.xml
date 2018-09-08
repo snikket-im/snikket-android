@@ -108,8 +108,6 @@
   <string name="pref_return_to_previous">Szybkie Udostępnianie</string>
   <string name="pref_return_to_previous_summary">Po udostępnieniu obiektu natychmiastowo powróć do poprzedniej aktywności zamiast otwierać konwersację</string>
   <string name="pref_notification_settings">Powiadomienie</string>
-  <string name="pref_notifications">Powiadomienia</string>
-  <string name="pref_notifications_summary">Powiadamiaj, gdy nadejdzie wiadomość</string>
   <string name="pref_vibrate">Wibracje</string>
   <string name="pref_vibrate_summary">Wibruj gdy nadejdzie wiadomość</string>
   <string name="pref_led">Powiadomienie diodą LED</string>
@@ -666,7 +664,6 @@ Conversations będzie wciąż ograniczał transfer danych, kiedy tylko to jest m
   <string name="yesterday">Wczoraj</string>
   <string name="pref_validate_hostname">Potwierdź nazwę hosta za pomocą DNSSEC</string>
   <string name="pref_validate_hostname_summary">Certyfikaty serwera posiadające prawidłową nazwę hosta są uznawane za zweryfikowane</string>
-  <string name="network_is_unreachable">Sieć jest niedostępna</string>
   <string name="certificate_does_not_contain_jid">Certyfikat nie zawiera Jabber ID</string>
   <string name="server_info_partial">częściowo</string>
   <string name="attach_record_video">Nagraj film</string>
@@ -742,4 +739,5 @@ Administrator twojego serwera będzie mógł czytać twoje wiadomości, ale moż
   <string name="providing_a_name_is_optional">Nie trzeba podawać nazwy</string>
   <string name="create_dialog_group_chat_name">Nazwa konferencji</string>
   <string name="conference_destroyed">Ta konferencja została usunięta</string>
+  <string name="phone_book">Książka adresowa</string>
 </resources>

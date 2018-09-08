@@ -105,8 +105,6 @@
   <string name="pref_return_to_previous">クイック共有</string>
   <string name="pref_return_to_previous_summary">共有した後で、会話を開く代わりに、すぐに前のアクティビティに戻ります</string>
   <string name="pref_notification_settings">通知</string>
-  <string name="pref_notifications">通知</string>
-  <string name="pref_notifications_summary">新しいメッセージが到着したときに通知します</string>
   <string name="pref_vibrate">振動</string>
   <string name="pref_vibrate_summary">新しいメッセージが届いたときに振動します</string>
   <string name="pref_led">LED 通知</string>
@@ -609,7 +607,6 @@
   <string name="yesterday">昨日</string>
   <string name="pref_validate_hostname">DNSSEC でホスト名を検証</string>
   <string name="pref_validate_hostname_summary">検証されたホスト名を含むサーバー証明書は検証済みと見なされます</string>
-  <string name="network_is_unreachable">ネットワークが到達できません</string>
   <string name="certificate_does_not_contain_jid">証明書に Jabber ID が含まれていません</string>
   <string name="server_info_partial">一時的</string>
   <string name="attach_record_video">ビデオを録画</string>

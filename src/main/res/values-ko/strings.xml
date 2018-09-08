@@ -98,8 +98,6 @@
   <string name="pref_return_to_previous">빠른 공유</string>
   <string name="pref_return_to_previous_summary">공유 한 후 대화를 열지 않고 바로 이전 작업으로 돌아갑니다</string>
   <string name="pref_notification_settings">알림 </string>
-  <string name="pref_notifications">알림 </string>
-  <string name="pref_notifications_summary">새 메세지 도착시 알림 </string>
   <string name="pref_vibrate">진동 </string>
   <string name="pref_vibrate_summary">새 메세지 도착시 진동</string>
   <string name="pref_led">LED 알림</string>

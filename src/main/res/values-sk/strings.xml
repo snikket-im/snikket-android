@@ -85,8 +85,6 @@
   <string name="pref_general">Všeobecné</string>
   <string name="pref_accept_files">Prijať súbory</string>
   <string name="pref_accept_files_summary">Automaticky prijať súbory menšie ako…</string>
-  <string name="pref_notifications">Upozornenia</string>
-  <string name="pref_notifications_summary">Upozorniť pri prijatí novej správy</string>
   <string name="pref_vibrate">Vibrovať</string>
   <string name="pref_never_send_crash">Neodosielať detaily o zlyhaní aplikácie</string>
   <string name="pref_never_send_crash_summary">Zaslaním detailov o dôvode zlyhania pomáhate ďalšiemu vývoju aplikácie Conversations</string>

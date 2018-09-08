@@ -108,8 +108,6 @@
   <string name="pref_return_to_previous">Snel delen</string>
   <string name="pref_return_to_previous_summary">Keer na iets te delen onmiddellijk terug naar de vorige activiteit in plaats van het gesprek te openen</string>
   <string name="pref_notification_settings">Melding</string>
-  <string name="pref_notifications">Meldingen</string>
-  <string name="pref_notifications_summary">Melding wanneer een nieuw bericht ontvangen wordt</string>
   <string name="pref_vibrate">Trillen</string>
   <string name="pref_vibrate_summary">Trillen wanneer een nieuw bericht ontvangen wordt</string>
   <string name="pref_led">LED-melding</string>
@@ -648,7 +646,6 @@
   <string name="yesterday">Gisteren</string>
   <string name="pref_validate_hostname">Valideer hostnaam met DNSSEC</string>
   <string name="pref_validate_hostname_summary">Servercertificaten die de gevalideerde hostnaam bevatten worden beschouwd als geverifieerd</string>
-  <string name="network_is_unreachable">Netwerk niet bereikbaar</string>
   <string name="certificate_does_not_contain_jid">Certificaat bevat geen Jabber-ID</string>
   <string name="server_info_partial">gedeeltelijk</string>
   <string name="attach_record_video">Video opnemen</string>
@@ -723,4 +720,5 @@
   <string name="providing_a_name_is_optional">Naam is niet vereist</string>
   <string name="create_dialog_group_chat_name">Gespreksnaam</string>
   <string name="conference_destroyed">Dit groepsgesprek is verwijderd</string>
+  <string name="phone_book">Adresboek</string>
 </resources>

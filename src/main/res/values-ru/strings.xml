@@ -106,8 +106,6 @@
   <string name="pref_return_to_previous">Быстрый обмен</string>
   <string name="pref_return_to_previous_summary">Мгновенный возврат на предыдущий экран вместо открытия беседы после обмена</string>
   <string name="pref_notification_settings">Уведомление</string>
-  <string name="pref_notifications">Уведомления</string>
-  <string name="pref_notifications_summary">Использовать звуковое уведомление когда приходят новые сообщения</string>
   <string name="pref_vibrate">Вибрация</string>
   <string name="pref_vibrate_summary">Вибрировать, когда приходят новые сообщения</string>
   <string name="pref_led">Светодиодное уведомление</string>
@@ -645,7 +643,6 @@
   <string name="yesterday">Вчера</string>
   <string name="pref_validate_hostname">Проверить имя сервера с помощью DNSSEC</string>
   <string name="pref_validate_hostname_summary">Серверные сертификаты, содержащие проверенное имя хоста, считаются проверенными</string>
-  <string name="network_is_unreachable">Сеть недоступна</string>
   <string name="certificate_does_not_contain_jid">Сертификат не содержит Jabber ID</string>
   <string name="server_info_partial">частичный</string>
   <string name="attach_record_video">Записать видео</string>

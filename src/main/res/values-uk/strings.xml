@@ -99,8 +99,6 @@
   <string name="pref_return_to_previous">Швидко поділитися</string>
   <string name="pref_return_to_previous_summary">Негайно повертатися до попередньої діяльності замість відкриття розмови після того, як чимось поділитися</string>
   <string name="pref_notification_settings">Сповіщення</string>
-  <string name="pref_notifications">Сповіщення</string>
-  <string name="pref_notifications_summary">Сповіщати, коли приходять нові повідомлення</string>
   <string name="pref_vibrate">Вібрувати</string>
   <string name="pref_vibrate_summary">Вібрувати, коли приходять нові повідомлення</string>
   <string name="pref_led">Індикація LED</string>
@@ -559,7 +557,6 @@
   <string name="yesterday">Учора</string>
   <string name="pref_validate_hostname">Перевіряти адресу з допомогою DNSSEC</string>
   <string name="pref_validate_hostname_summary">Сертифікати, які містять завірену адресу, вважаються засвідченими</string>
-  <string name="network_is_unreachable">Мережа недоступна.</string>
   <string name="certificate_does_not_contain_jid">Сертифікат не містить ідентифікатора Jabber ID</string>
   <string name="server_info_partial">частково</string>
 </resources>

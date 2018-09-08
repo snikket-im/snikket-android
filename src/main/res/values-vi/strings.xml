@@ -98,8 +98,6 @@
   <string name="pref_return_to_previous">Chia sẻ nhanh</string>
   <string name="pref_return_to_previous_summary">Lập tức quay trở lại hoạt động trước đó thay vì mở cuộc hội thoại sau khi chia sẻ </string>
   <string name="pref_notification_settings">Thông báo</string>
-  <string name="pref_notifications">Thông báo</string>
-  <string name="pref_notifications_summary">Thông báo khi có tin nhắn mới</string>
   <string name="pref_vibrate">Rung</string>
   <string name="pref_vibrate_summary">Rung khi có tin nhắn mới</string>
   <string name="pref_led">Thông báo đèn LED</string>

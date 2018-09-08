@@ -104,8 +104,6 @@
   <string name="pref_attachments">الملفات المرفقة</string>
   <string name="pref_return_to_previous">التبادل السريع</string>
   <string name="pref_notification_settings">إشعار</string>
-  <string name="pref_notifications">الإشعارات</string>
-  <string name="pref_notifications_summary">أخبرني عندما تصل رسالة جديدة</string>
   <string name="pref_vibrate">إعداد الإهتزاز</string>
   <string name="pref_vibrate_summary">إهتز عند وصول رسالة جديدة</string>
   <string name="pref_led">إشعار ضوئي</string>
@@ -591,7 +589,6 @@
   <string name="today">اليوم</string>
   <string name="yesterday">البارحة</string>
   <string name="pref_validate_hostname">التحقق من صحة إسم المضيف بواسطة DNSSEC</string>
-  <string name="network_is_unreachable">لا يمكن الإتصال بالشبكة</string>
   <string name="certificate_does_not_contain_jid">الشهادة لا تحتوي على مُعرّف جابر ID</string>
   <string name="server_info_partial">جُزْئِيًّا</string>
   <string name="attach_record_video">تسجيل فيديو</string>

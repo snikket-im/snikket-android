@@ -88,8 +88,6 @@
   <string name="pref_general">כללי</string>
   <string name="pref_accept_files">קבל קבצים</string>
   <string name="pref_accept_files_summary">קבל אוטומטית קבצים שגודלם קטן מ…</string>
-  <string name="pref_notifications">התראות</string>
-  <string name="pref_notifications_summary">תודיע כאשר הודעה חדשה מגיעה</string>
   <string name="pref_vibrate">הרטט</string>
   <string name="pref_never_send_crash">לעולם אל תשלח דיווחי קריסה</string>
   <string name="pref_never_send_crash_summary">על ידי שליחת עקבות מחסנית אתה עוזר להתקדמות הפיתוח של Conversations</string>

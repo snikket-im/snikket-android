@@ -108,8 +108,6 @@
   <string name="pref_return_to_previous">Gyors megosztás</string>
   <string name="pref_return_to_previous_summary">Megosztás után, a beszélgetés megnyitása helyett azonnal térjen vissza a korábbi tevékenységhez</string>
   <string name="pref_notification_settings">Értesítés</string>
-  <string name="pref_notifications">Értesítések</string>
-  <string name="pref_notifications_summary">Értesítsen új üzenet érkezésekor</string>
   <string name="pref_vibrate">Rezgés</string>
   <string name="pref_vibrate_summary">Rezegjen új üzenet érkezésekor</string>
   <string name="pref_led">LED értesítés</string>
@@ -328,6 +326,7 @@
   <string name="file_deleted">A fájl törlésre került</string>
   <string name="no_application_found_to_open_file">Nincs alkalmazás a fájl megnyitására</string>
   <string name="no_application_found_to_open_link">Nincs alkalmazás a link megnyitására</string>
+  <string name="no_application_found_to_view_contact">A névjegy megtekintéséhez nincs alkalmazás</string>
   <string name="pref_show_dynamic_tags">Dinamikus címkék</string>
   <string name="pref_show_dynamic_tags_summary">Információs címkék megjelenítése a partnerek alatt</string>
   <string name="enable_notifications">Értesítések bekapcsolása</string>
@@ -533,6 +532,7 @@
   <string name="choose_participants">Válaszd ki a résztvevőket</string>
   <string name="creating_conference">Konferencia létrehozása ...</string>
   <string name="invite_again">Meghívja újra</string>
+  <string name="gp_disable">Letilt</string>
   <string name="gp_short">Rövid</string>
   <string name="gp_medium">Közepesen hosszú</string>
   <string name="gp_long">Hosszú</string>
@@ -646,7 +646,6 @@
   <string name="yesterday">Tegnap</string>
   <string name="pref_validate_hostname">Gazdanév validálása DNSSEC-el</string>
   <string name="pref_validate_hostname_summary">A hitelesített gazdanevet tartalmazó kiszolgálói tanúsítványok hitelesek</string>
-  <string name="network_is_unreachable">A hálózat elérhetetlen</string>
   <string name="certificate_does_not_contain_jid">A tanúsítvány nem tartalmaz Jabber azonosítót</string>
   <string name="server_info_partial">részleges</string>
   <string name="attach_record_video">Videó felvétele</string>
@@ -721,4 +720,5 @@
   <string name="providing_a_name_is_optional">A név megadása nem kötelező</string>
   <string name="create_dialog_group_chat_name">Konferencia neve</string>
   <string name="conference_destroyed">Ez a konferencia megszűnt</string>
+  <string name="phone_book">Címjegyzék</string>
 </resources>
