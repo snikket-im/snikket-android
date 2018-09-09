@@ -35,6 +35,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
@@ -215,20 +216,35 @@ public class NotificationService {
             if (account == null || !notify) {
                 updateNotification(notify);
             } else {
-                updateNotification(getBacklogMessageCount(account) > 0);
+                final int count;
+                final List<String> conversations;
+                synchronized (this.mBacklogMessageCounter) {
+                    conversations = getBacklogConversations(account);
+                    count = getBacklogMessageCount(account);
+                }
+                updateNotification(count > 0, conversations);
             }
         }
     }
 
+    private List<String> getBacklogConversations(Account account) {
+        final List<String> conversations = new ArrayList<>();
+        for (Iterator<Map.Entry<Conversation, AtomicInteger>> it = mBacklogMessageCounter.entrySet().iterator(); it.hasNext(); ) {
+            Map.Entry<Conversation, AtomicInteger> entry = it.next();
+            if (entry.getKey().getAccount() == account) {
+                conversations.add(entry.getKey().getUuid());
+            }
+        }
+        return conversations;
+    }
+
     private int getBacklogMessageCount(Account account) {
         int count = 0;
-        synchronized (this.mBacklogMessageCounter) {
-            for (Iterator<Map.Entry<Conversation, AtomicInteger>> it = mBacklogMessageCounter.entrySet().iterator(); it.hasNext(); ) {
-                Map.Entry<Conversation, AtomicInteger> entry = it.next();
-                if (entry.getKey().getAccount() == account) {
-                    count += entry.getValue().get();
-                    it.remove();
-                }
+        for (Iterator<Map.Entry<Conversation, AtomicInteger>> it = mBacklogMessageCounter.entrySet().iterator(); it.hasNext(); ) {
+            Map.Entry<Conversation, AtomicInteger> entry = it.next();
+            if (entry.getKey().getAccount() == account) {
+                count += entry.getValue().get();
+                it.remove();
             }
         }
         Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": backlog message count=" + count);
@@ -275,11 +291,12 @@ public class NotificationService {
         }
         synchronized (notifications) {
             pushToStack(message);
-            final Account account = message.getConversation().getAccount();
+            final Conversational conversation = message.getConversation();
+            final Account account = conversation.getAccount();
             final boolean doNotify = (!(this.mIsInForeground && this.mOpenConversation == null) || !isScreenOn)
                     && !account.inGracePeriod()
                     && !this.inMiniGracePeriod(account);
-            updateNotification(doNotify);
+            updateNotification(doNotify, Collections.singletonList(conversation.getUuid()));
         }
     }
 
@@ -301,7 +318,7 @@ public class NotificationService {
             markAsReadIfHasDirectReply(conversation);
             if (notifications.remove(conversation.getUuid()) != null) {
                 cancel(conversation.getUuid(), NOTIFICATION_ID);
-                updateNotification(false, true);
+                updateNotification(false, null, true);
             }
         }
     }
@@ -326,11 +343,17 @@ public class NotificationService {
     }
 
     public void updateNotification(final boolean notify) {
-        updateNotification(notify, false);
+        updateNotification(notify, null, false);
     }
 
-    private void updateNotification(final boolean notify, boolean summaryOnly) {
+    public void updateNotification(final boolean notify, final List<String> conversations) {
+        updateNotification(notify, conversations, false);
+    }
+
+    private void updateNotification(final boolean notify, final List<String> conversations, final boolean summaryOnly) {
         final SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(mXmppConnectionService);
+
+        final boolean notifyOnlyOneChild = notify && conversations != null && conversations.size() == 1; //if this check is changed to > 0 catchup messages will create one notification per conversation
 
         if (notifications.size() == 0) {
             cancel(NOTIFICATION_ID);
@@ -345,11 +368,17 @@ public class NotificationService {
                 notify(NOTIFICATION_ID, mBuilder.build());
             } else {
                 mBuilder = buildMultipleConversation(notify);
-                mBuilder.setGroupAlertBehavior(NotificationCompat.GROUP_ALERT_CHILDREN);
+                if (notifyOnlyOneChild) {
+                    mBuilder.setGroupAlertBehavior(NotificationCompat.GROUP_ALERT_CHILDREN);
+                }
                 modifyForSoundVibrationAndLight(mBuilder, notify, preferences);
                 if (!summaryOnly) {
                     for (Map.Entry<String, ArrayList<Message>> entry : notifications.entrySet()) {
-                        Builder singleBuilder = buildSingleConversations(entry.getValue(), notify);
+                        String uuid = entry.getKey();
+                        Builder singleBuilder = buildSingleConversations(entry.getValue(), notifyOnlyOneChild ? conversations.contains(uuid) : notify);
+                        if (!notifyOnlyOneChild) {
+                            singleBuilder.setGroupAlertBehavior(NotificationCompat.GROUP_ALERT_SUMMARY);
+                        }
                         singleBuilder.setGroup(CONVERSATIONS_GROUP);
                         setNotificationColor(singleBuilder);
                         notify(entry.getKey(), NOTIFICATION_ID, singleBuilder.build());
