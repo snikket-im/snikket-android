@@ -54,6 +54,7 @@ import eu.siacs.conversations.entities.DownloadableFile;
 import eu.siacs.conversations.entities.Message;
 import eu.siacs.conversations.services.XmppConnectionService;
 import eu.siacs.conversations.ui.RecordingActivity;
+import eu.siacs.conversations.ui.util.Attachment;
 import eu.siacs.conversations.utils.CryptoHelper;
 import eu.siacs.conversations.utils.ExifHelper;
 import eu.siacs.conversations.utils.FileUtils;
@@ -105,16 +106,19 @@ public class FileBackend {
         }
     }
 
-    public static boolean allFilesUnderSize(Context context, List<Uri> uris, long max) {
+    public static boolean allFilesUnderSize(Context context, List<Attachment> attachments, long max) {
         if (max <= 0) {
             Log.d(Config.LOGTAG, "server did not report max file size for http upload");
             return true; //exception to be compatible with HTTP Upload < v0.2
         }
-        for (Uri uri : uris) {
-            String mime = context.getContentResolver().getType(uri);
+        for (Attachment attachment : attachments) {
+            if (attachment.getType() != Attachment.Type.FILE) {
+                continue;
+            }
+            String mime = attachment.getMime();
             if (mime != null && mime.startsWith("video/")) {
                 try {
-                    Dimensions dimensions = FileBackend.getVideoDimensions(context, uri);
+                    Dimensions dimensions = FileBackend.getVideoDimensions(context, attachment.getUri());
                     if (dimensions.getMin() > 720) {
                         Log.d(Config.LOGTAG, "do not consider video file with min width larger than 720 for size check");
                         continue;
@@ -123,7 +127,7 @@ public class FileBackend {
                     //ignore and fall through
                 }
             }
-            if (FileBackend.getFileSize(context, uri) > max) {
+            if (FileBackend.getFileSize(context, attachment.getUri()) > max) {
                 Log.d(Config.LOGTAG, "not all files are under " + max + " bytes. suggesting falling back to jingle");
                 return false;
             }
@@ -217,6 +221,7 @@ public class FileBackend {
         return calcSampleSize(options, size);
     }
 
+
     private static int calcSampleSize(BitmapFactory.Options options, int size) {
         int height = options.outHeight;
         int width = options.outWidth;
@@ -232,6 +237,29 @@ public class FileBackend {
             }
         }
         return inSampleSize;
+    }
+
+    public Bitmap getPreviewForUri(Attachment attachment, int size, boolean cacheOnly) {
+        final LruCache<String, Bitmap> cache = mXmppConnectionService.getBitmapCache();
+        Bitmap bitmap = cache.get(attachment.getUuid().toString());
+        if (bitmap != null || cacheOnly) {
+            return bitmap;
+        }
+        Log.d(Config.LOGTAG,"attachment mime="+attachment.getMime());
+        if (attachment.getMime() != null && attachment.getMime().startsWith("video/")) {
+            bitmap = cropCenterSquareVideo(attachment.getUri(), size);
+            drawOverlay(bitmap, paintOverlayBlack(bitmap) ? R.drawable.play_video_black : R.drawable.play_video_white, 0.75f);
+        } else {
+            bitmap = cropCenterSquare(attachment.getUri(), size);
+            if ("image/gif".equals(attachment.getMime())) {
+                Bitmap withGifOverlay = bitmap.copy(Bitmap.Config.ARGB_8888, true);
+                drawOverlay(withGifOverlay, paintOverlayBlack(withGifOverlay) ? R.drawable.play_gif_black : R.drawable.play_gif_white, 1.0f);
+                bitmap.recycle();
+                bitmap = withGifOverlay;
+            }
+        }
+        cache.put(attachment.getUuid().toString(), bitmap);
+        return bitmap;
     }
 
     private static Dimensions getVideoDimensions(Context context, Uri uri) throws NotAVideoFile {
@@ -731,6 +759,21 @@ public class FileBackend {
             }
         }
         return record < 0;
+    }
+
+    private Bitmap cropCenterSquareVideo(Uri uri, int size) {
+        MediaMetadataRetriever metadataRetriever = new MediaMetadataRetriever();
+        Bitmap frame;
+        try {
+            metadataRetriever.setDataSource(mXmppConnectionService, uri);
+            frame = metadataRetriever.getFrameAtTime(0);
+            metadataRetriever.release();
+            return cropCenterSquare(frame, size);
+        } catch (Exception e) {
+            frame = Bitmap.createBitmap(size, size, Bitmap.Config.ARGB_8888);
+            frame.eraseColor(0xff000000);
+            return frame;
+        }
     }
 
     private Bitmap getVideoPreview(File file, int size) {

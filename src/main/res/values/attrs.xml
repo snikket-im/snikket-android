@@ -50,6 +50,7 @@
     <attr name="conversations_overview_background" format="reference|color"/>
 
     <attr name="icon_alpha" format="float"/>
+    <attr name="delete_icon_alpha" format="float"/>
 
     <attr name="icon_add_group" format="reference"/>
     <attr name="icon_add_person" format="reference"/>

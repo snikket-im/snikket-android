@@ -318,7 +318,7 @@ public class ShareWithActivity extends XmppActivity implements XmppConnectionSer
 			if (account.httpUploadAvailable()
 					&& ((share.image && !neverCompressPictures())
 					|| conversation.getMode() == Conversation.MODE_MULTI
-					|| FileBackend.allFilesUnderSize(this, share.uris, max))) {
+					/*|| FileBackend.allFilesUnderSize(this, share.uris, max)*/)) {
 				callback.onPresenceSelected();
 			} else {
 				selectPresence(conversation, callback);
