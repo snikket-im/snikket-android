@@ -105,8 +105,6 @@
   <string name="pref_accept_files">接收文件</string>
   <string name="pref_accept_files_summary">自动接收小于 … 的文件</string>
   <string name="pref_attachments">附件</string>
-  <string name="pref_return_to_previous">快速分享</string>
-  <string name="pref_return_to_previous_summary">分享后立即回到之前活动的应用程序，而非打开会话</string>
   <string name="pref_notification_settings">通知</string>
   <string name="pref_vibrate">震动</string>
   <string name="pref_vibrate_summary">收到新消息时震动</string>
@@ -125,6 +123,7 @@
   <string name="openpgp_error">OpenKeychain 报告了一个错误</string>
   <string name="accept">接受</string>
   <string name="error">产生了一个错误</string>
+  <string name="recording_error">错误</string>
   <string name="your_account">你的账号</string>
   <string name="send_presence_updates">发送在线联系人列表更新</string>
   <string name="receive_presence_updates">接收在线联系人列表更新</string>
@@ -692,7 +691,7 @@
   <string name="title_activity_share_location">分享位置</string>
   <string name="title_activity_show_location">显示位置</string>
   <string name="share">分享</string>
-  <string name="unable_to_start_recording">无法开始记录</string>
+  <string name="unable_to_start_recording">无法开始录音</string>
   <string name="please_wait">请等待……</string>
   <string name="no_microphone_permission">Conversations需要访问麦克风</string>
   <string name="search_messages">搜索消息</string>
@@ -714,4 +713,18 @@
   <string name="providing_a_name_is_optional">提供名称是可选的</string>
   <string name="create_dialog_group_chat_name">群聊名称</string>
   <string name="conference_destroyed">群聊已被解散</string>
+  <string name="phone_book">地址簿</string>
+  <string name="unable_to_save_recording">无法保存录音</string>
+  <string name="foreground_service_channel_name">前台服务</string>
+  <string name="foreground_service_channel_description">此通知类别用于显示表明Conversations正在运行的永久通知。</string>
+  <string name="notification_group_status_information">状态信息</string>
+  <string name="error_channel_name">连接问题</string>
+  <string name="error_channel_description">此通知类别用于显示一旦帐户连接出现问题的通知。</string>
+  <string name="notification_group_messages">消息</string>
+  <string name="messages_channel_name">消息</string>
+  <string name="silent_messages_channel_name">无声消息</string>
+  <string name="silent_messages_channel_description">此通知组用于显示不应触发任何声音的通知。 例如，当在另一个设备上激活时（宽限期）。</string>
+  <string name="pref_more_notification_settings">通知设置</string>
+  <string name="pref_more_notification_settings_summary">重要性，声音，振动</string>
+  <string name="video_compression_channel_name">视频压缩</string>
 </resources>

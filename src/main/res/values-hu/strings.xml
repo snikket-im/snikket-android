@@ -105,8 +105,6 @@
   <string name="pref_accept_files">Fájlok fogadása</string>
   <string name="pref_accept_files_summary">Automatikusan fogadjon ennél kisebb fájlokat...</string>
   <string name="pref_attachments">Csatolmányok</string>
-  <string name="pref_return_to_previous">Gyors megosztás</string>
-  <string name="pref_return_to_previous_summary">Megosztás után, a beszélgetés megnyitása helyett azonnal térjen vissza a korábbi tevékenységhez</string>
   <string name="pref_notification_settings">Értesítés</string>
   <string name="pref_vibrate">Rezgés</string>
   <string name="pref_vibrate_summary">Rezegjen új üzenet érkezésekor</string>

@@ -102,7 +102,6 @@
   <string name="pref_accept_files">ضبط استقبال الملفات</string>
   <string name="pref_accept_files_summary">اقبل تلقائيا الملفات أقل من</string>
   <string name="pref_attachments">الملفات المرفقة</string>
-  <string name="pref_return_to_previous">التبادل السريع</string>
   <string name="pref_notification_settings">إشعار</string>
   <string name="pref_vibrate">إعداد الإهتزاز</string>
   <string name="pref_vibrate_summary">إهتز عند وصول رسالة جديدة</string>

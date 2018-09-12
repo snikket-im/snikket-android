@@ -95,8 +95,6 @@
   <string name="pref_accept_files">파일 수락 </string>
   <string name="pref_accept_files_summary">이 크기보다 작은 파일을 자동으로 수락 </string>
   <string name="pref_attachments">첨부파일</string>
-  <string name="pref_return_to_previous">빠른 공유</string>
-  <string name="pref_return_to_previous_summary">공유 한 후 대화를 열지 않고 바로 이전 작업으로 돌아갑니다</string>
   <string name="pref_notification_settings">알림 </string>
   <string name="pref_vibrate">진동 </string>
   <string name="pref_vibrate_summary">새 메세지 도착시 진동</string>

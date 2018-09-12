@@ -105,8 +105,6 @@
   <string name="pref_accept_files">Aceptar ficheiros</string>
   <string name="pref_accept_files_summary">De forma automática aceptar ficheiros menores de…</string>
   <string name="pref_attachments">Engadidos</string>
-  <string name="pref_return_to_previous">Compartición rápida</string>
-  <string name="pref_return_to_previous_summary">Voltar inmediatamente a actividade anterior no lugar de abrir a conversa despois de compartir algo</string>
   <string name="pref_notification_settings">Notificación</string>
   <string name="pref_vibrate">Vibrar</string>
   <string name="pref_vibrate_summary">Vibra cando chega unha nova mensaxe</string>
@@ -125,6 +123,7 @@
   <string name="openpgp_error">OpenKeychain reportou un erro</string>
   <string name="accept">Aceptar</string>
   <string name="error">Produciuse un erro</string>
+  <string name="recording_error">Fallo</string>
   <string name="your_account">A túa conta</string>
   <string name="send_presence_updates">Enviar actualizacións de presencia</string>
   <string name="receive_presence_updates">Recibir actualizacións de presencia</string>
@@ -721,4 +720,17 @@
   <string name="create_dialog_group_chat_name">Nome da conversa de grupo</string>
   <string name="conference_destroyed">Esta conversa de grupo foi destruída</string>
   <string name="phone_book">Axenda de direccións</string>
+  <string name="unable_to_save_recording">Non se puido gardar a gravación</string>
+  <string name="foreground_service_channel_name">Servizo en segundo plano</string>
+  <string name="foreground_service_channel_description">Esta categoría de notificacións utilízase para mostrar unha notificación permanente indicando que Conversations está a funcionar.</string>
+  <string name="notification_group_status_information">Información do estado</string>
+  <string name="error_channel_name">Problemas de conexión</string>
+  <string name="error_channel_description">Esta categoría de conexión utilízase para mostrar unha notificación en caso de que houbese un problema ao conectar a conta.</string>
+  <string name="notification_group_messages">Mensaxes</string>
+  <string name="messages_channel_name">Mensaxes</string>
+  <string name="silent_messages_channel_name">Mensaxes acalados</string>
+  <string name="silent_messages_channel_description">Este grupo de notificacións é utilizado para mostrar notificacións que non debería activar ningún son. Por exemplo, cando está activo en outro dispositivo (Período de Graza).</string>
+  <string name="pref_more_notification_settings">Axustes das notificacións</string>
+  <string name="pref_more_notification_settings_summary">Importancia, Son, Vibrar</string>
+  <string name="video_compression_channel_name">Compresión de vídeo</string>
 </resources>

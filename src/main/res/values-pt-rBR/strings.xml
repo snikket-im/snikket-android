@@ -105,8 +105,6 @@
   <string name="pref_accept_files">Aceitar arquivos</string>
   <string name="pref_accept_files_summary">Aceita automaticamente arquivos menores que...</string>
   <string name="pref_attachments">Anexos</string>
-  <string name="pref_return_to_previous">Compartilhamento rápido</string>
-  <string name="pref_return_to_previous_summary">Após compartilhar alguma coisa, retorna imediatamente à atividade anterior ao invés de abrir a conversa.</string>
   <string name="pref_notification_settings">Notificação</string>
   <string name="pref_vibrate">Vibração</string>
   <string name="pref_vibrate_summary">Vibra ao receber uma nova mensagem.</string>
@@ -125,6 +123,7 @@
   <string name="openpgp_error">O OpenKeychain informou um erro</string>
   <string name="accept">Aceitar</string>
   <string name="error">Ocorreu um erro</string>
+  <string name="recording_error">Erro</string>
   <string name="your_account">Sua conta</string>
   <string name="send_presence_updates">Enviar atualizações de presença</string>
   <string name="receive_presence_updates">Receber atualizações de presença</string>
@@ -282,6 +281,7 @@
   <string name="toast_message_omemo_fingerprint">Impressão digital OMEMO copiada para a área de transferência!</string>
   <string name="conference_banned">Você foi banido desta conversa em grupo</string>
   <string name="conference_members_only">Somente membros podem entrar nessa conversa em grupo</string>
+  <string name="conference_resource_constraint">Restrição de recursos</string>
   <string name="conference_kicked">Você foi retirado desta conversa em grupo</string>
   <string name="conference_shutdown">A conversa em grupo foi encerrada</string>
   <string name="conference_unknown_error">Você não está mais nesta conversa em grupo</string>
@@ -325,6 +325,7 @@
   <string name="file_deleted">O arquivo foi excluído</string>
   <string name="no_application_found_to_open_file">Não foi encontrado nenhum aplicativo para abrir o arquivo</string>
   <string name="no_application_found_to_open_link">Não foi encontrado nenhum aplicativo para abrir o link</string>
+  <string name="no_application_found_to_view_contact">Não foi encontrado nenhum aplicativo para visualizar contatos</string>
   <string name="pref_show_dynamic_tags">Etiquetas dinâmicas</string>
   <string name="pref_show_dynamic_tags_summary">Exibe etiquetas de somente-leitura abaixo dos contatos.</string>
   <string name="enable_notifications">Habilitar notificações</string>
@@ -530,6 +531,7 @@
   <string name="choose_participants">Selecione os participantes</string>
   <string name="creating_conference">Criando a conversa em grupo...</string>
   <string name="invite_again">Convidar novamente</string>
+  <string name="gp_disable">Desabilitar</string>
   <string name="gp_short">Curto</string>
   <string name="gp_medium">Médio</string>
   <string name="gp_long">Longo</string>
@@ -716,4 +718,19 @@
   <string name="group_chat_name">Nome</string>
   <string name="providing_a_name_is_optional">O fornecimento do nome é opcional</string>
   <string name="create_dialog_group_chat_name">Nome da conversa em grupo</string>
+  <string name="conference_destroyed">Essa conversa em grupo foi destruída</string>
+  <string name="phone_book">Livro de endereços</string>
+  <string name="unable_to_save_recording">Não foi possível salvar a gravação</string>
+  <string name="foreground_service_channel_name">Serviço ativo</string>
+  <string name="foreground_service_channel_description">Essa categoria de notificação é utilizada para exibir uma notificação permanente indicando que o Conversations está em execução.</string>
+  <string name="notification_group_status_information">Informação de status</string>
+  <string name="error_channel_name">Problemas de conectividade</string>
+  <string name="error_channel_description">Essa categoria de notificação é utilizada para exibir uma notificação caso exista algum problema de conectividade com uma conta.</string>
+  <string name="notification_group_messages">Mensagens</string>
+  <string name="messages_channel_name">Mensagens</string>
+  <string name="silent_messages_channel_name">Silenciar mensagens</string>
+  <string name="silent_messages_channel_description">Essa categoria de notificação é utilizada para exibir notificações que não deveriam gerar nenhum som. Por exemplo, quando estiver ativo em outro dispositivo (Período de Espera).</string>
+  <string name="pref_more_notification_settings">Configurações de notificações</string>
+  <string name="pref_more_notification_settings_summary">Importância, som, vibração</string>
+  <string name="video_compression_channel_name">Compressão de vídeo</string>
 </resources>

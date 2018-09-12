@@ -105,8 +105,6 @@
   <string name="pref_accept_files">Fitxategiak onartu</string>
   <string name="pref_accept_files_summary">Hurrengo tamaina baino fitxategi txikiagoak automatikoki onartu…</string>
   <string name="pref_attachments">Eranskinak</string>
-  <string name="pref_return_to_previous">Partekatze azkarra</string>
-  <string name="pref_return_to_previous_summary">Zuzenean aurreko aktibitatera itzuli elkarrizketa ireki beharrean zerbait partekatu ondoren</string>
   <string name="pref_notification_settings">Jakinarazpena</string>
   <string name="pref_vibrate">Dardaratu</string>
   <string name="pref_vibrate_summary">Mezu berri bat heltzerakoan dardartu</string>
@@ -125,6 +123,7 @@
   <string name="openpgp_error">OpenKeychainek akats baten berri eman du</string>
   <string name="accept">Onartu</string>
   <string name="error">Akats bat gertatu da</string>
+  <string name="recording_error">Akatsa</string>
   <string name="your_account">Zure kontua</string>
   <string name="send_presence_updates">Presentzia eguneraketak bidali</string>
   <string name="receive_presence_updates">Presentzia eguneraketak jaso</string>
@@ -307,7 +306,7 @@
   <string name="confirm">Baieztatu</string>
   <string name="try_again">Saiatu berriz</string>
   <string name="conversations_foreground_service">Conversations</string>
-  <string name="pref_keep_foreground_service">Zerbitzua atzeko planoan mantendu</string>
+  <string name="pref_keep_foreground_service">Zerbitzua aurreko planoan mantendu</string>
   <string name="pref_keep_foreground_service_summary">Sistema eragileak zure konexioa hiltzea galarazten du</string>
   <string name="pref_export_logs">Historia esportatu</string>
   <string name="pref_export_logs_summary">Elkarrizketen historiaren erregistroak SD txartelean gorde</string>
@@ -326,6 +325,7 @@
   <string name="file_deleted">Fitxategia ezabatu egin da</string>
   <string name="no_application_found_to_open_file">Fitxategia ireki dezakeen aplikaziorik ez da aurkitu</string>
   <string name="no_application_found_to_open_link">Ez da lotura hau ireki dezakeen aplikaziorik aurkitu</string>
+  <string name="no_application_found_to_view_contact">Ez da kontaktuak ikusteko aplikaziorik aurkitu</string>
   <string name="pref_show_dynamic_tags">Etiketa dinamikoak</string>
   <string name="pref_show_dynamic_tags_summary">Irakurtzeko soilik diren etiketak erakutsi kontaktuen azpian</string>
   <string name="enable_notifications">Jakinarazpenak gaitu</string>
@@ -531,6 +531,7 @@
   <string name="choose_participants">Parte hartzaileak hautatu</string>
   <string name="creating_conference">Taldea sortzen…</string>
   <string name="invite_again">Berriz gonbidatu</string>
+  <string name="gp_disable">Ezgaitu</string>
   <string name="gp_short">Laburra</string>
   <string name="gp_medium">Ertaina</string>
   <string name="gp_long">Luzea</string>
@@ -718,4 +719,18 @@
   <string name="providing_a_name_is_optional">Izen bat ematea hautazkoa da</string>
   <string name="create_dialog_group_chat_name">Taldearen izena</string>
   <string name="conference_destroyed">Talde hau suntsitu egin da</string>
+  <string name="phone_book">Helbide liburua</string>
+  <string name="unable_to_save_recording">Ezin izan da grabaketa gorde</string>
+  <string name="foreground_service_channel_name">Aurreko planoko zerbitzua</string>
+  <string name="foreground_service_channel_description">Jakinarazpen maila hau Conversations exekutatzen ari dela adierazten duen jakinarazpen iraunkor bat erakusteko erabiltzen da.</string>
+  <string name="notification_group_status_information">Egoeraren informazioa</string>
+  <string name="error_channel_name">Konektagarritasun arazoak</string>
+  <string name="error_channel_description">Jakinarazpen maila hau kontu batera konektatzeko arazoak daudenean jakinarazpen bat erakusteko erabiltzen da.</string>
+  <string name="notification_group_messages">Mezuak</string>
+  <string name="messages_channel_name">Mezuak</string>
+  <string name="silent_messages_channel_name">Mezu isilak</string>
+  <string name="silent_messages_channel_description">Jakinarazpen talde hau inolako soinurik egin beharko ez luketen jakinarazpenak erakusteko erabiltze da. Adibidez beste gailu batean aktibo zaudenean (grazia epea).</string>
+  <string name="pref_more_notification_settings">Jakinarazpenen ezarpenak</string>
+  <string name="pref_more_notification_settings_summary">Garrantzia, soinua, dardara</string>
+  <string name="video_compression_channel_name">Bideoen konprimatzea</string>
 </resources>

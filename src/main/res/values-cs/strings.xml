@@ -95,8 +95,6 @@
   <string name="pref_accept_files">Přijímat soubory</string>
   <string name="pref_accept_files_summary">Automaticky přijímat soubory menší než…</string>
   <string name="pref_attachments">Přílohy</string>
-  <string name="pref_return_to_previous">Rychlé sdílení</string>
-  <string name="pref_return_to_previous_summary">Okamžitě se vrátit k předchozí aktivitě místo otevření konverzace po nasdílení</string>
   <string name="pref_notification_settings">Upozornění</string>
   <string name="pref_vibrate">Vibrovat</string>
   <string name="pref_vibrate_summary">Vibrovat při přijetí nové zprávy</string>

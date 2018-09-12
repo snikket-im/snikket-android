@@ -105,8 +105,6 @@
   <string name="pref_accept_files">Acceptă fișiere</string>
   <string name="pref_accept_files_summary">Mai mici decât...</string>
   <string name="pref_attachments">Atașamente</string>
-  <string name="pref_return_to_previous">Partajare rapidă</string>
-  <string name="pref_return_to_previous_summary">După ce ați partajat ceva, întoarce-te la activitatea precedentă în loc să deschizi conversația</string>
   <string name="pref_notification_settings">Notificare</string>
   <string name="pref_vibrate">Vibrează</string>
   <string name="pref_vibrate_summary">Vibrează când este primit un mesaj nou</string>
@@ -125,6 +123,7 @@
   <string name="openpgp_error">OpenKeychain a raportat o eroare</string>
   <string name="accept">Acceptă</string>
   <string name="error">A apărut o eroare</string>
+  <string name="recording_error">Eroare</string>
   <string name="your_account">Contul dumneavoastră</string>
   <string name="send_presence_updates">Trimite actualizări de prezență</string>
   <string name="receive_presence_updates">Primește actualizări de prezență</string>
@@ -537,9 +536,9 @@ sau chiar pierderea mesajelor.\nÎn continuare veți fi rugați să dezactivați
   <string name="creating_conference">Se creează discuția de grup...</string>
   <string name="invite_again">Trimite din nou invitația</string>
   <string name="gp_disable">Dezactivată</string>
-  <string name="gp_short">Scurt</string>
-  <string name="gp_medium">Mediu</string>
-  <string name="gp_long">Lung</string>
+  <string name="gp_short">Scurtă</string>
+  <string name="gp_medium">Medie</string>
+  <string name="gp_long">Lungă</string>
   <string name="pref_broadcast_last_activity">Anunță ultima interacțiune</string>
   <string name="pref_broadcast_last_activity_summary">Contactele vă sunt anunțate atunci când folosiți Conversations</string>
   <string name="pref_privacy">Intimitate</string>
@@ -731,4 +730,17 @@ sau chiar pierderea mesajelor.\nÎn continuare veți fi rugați să dezactivați
   <string name="create_dialog_group_chat_name">Titlul discuției de grup</string>
   <string name="conference_destroyed">Această discuție de grup a fost distrusă</string>
   <string name="phone_book">Agendă</string>
+  <string name="unable_to_save_recording">Nu s-a putut salva înregistrarea</string>
+  <string name="foreground_service_channel_name">Serviciul activ în prim-plan</string>
+  <string name="foreground_service_channel_description">Această categorie de notificări este folosită pentru a arăta o notificare permanentă ce indică rularea Conversations</string>
+  <string name="notification_group_status_information">Informații de stare</string>
+  <string name="error_channel_name">Probleme de conectare</string>
+  <string name="error_channel_description">Această categorie de notificări este folosită pentru a arăta o notificare în cazul în care există o problemă la conectarea unui cont.</string>
+  <string name="notification_group_messages">Mesaje</string>
+  <string name="messages_channel_name">Mesaje</string>
+  <string name="silent_messages_channel_name">Mesaje silențioase</string>
+  <string name="silent_messages_channel_description">Acest grup de notificări este folosit pentru a arăta notificări care nu emit sunete. De exemplu atunci când sunteți activi pe un alt dispozitiv (Perioada de grație).</string>
+  <string name="pref_more_notification_settings">Setări notificări</string>
+  <string name="pref_more_notification_settings_summary">Importanță, sunete, vibrații</string>
+  <string name="video_compression_channel_name">Compresie video</string>
 </resources>

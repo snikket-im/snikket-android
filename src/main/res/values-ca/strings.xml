@@ -105,8 +105,6 @@
   <string name="pref_accept_files">Accepta els fitxers</string>
   <string name="pref_accept_files_summary">Accepta fitxers automàticament amb una mida menor a…</string>
   <string name="pref_attachments">Fitxers adjunts</string>
-  <string name="pref_return_to_previous">Compartició ràpida</string>
-  <string name="pref_return_to_previous_summary">Torna immediatament a l\'activitat anterior en comptes d\'obrir la conversa després d\'haver compartit alguna cosa</string>
   <string name="pref_notification_settings">Notificació</string>
   <string name="pref_vibrate">Vibra</string>
   <string name="pref_vibrate_summary">Vibra quan arribi un missatge nou</string>

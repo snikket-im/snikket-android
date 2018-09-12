@@ -105,8 +105,6 @@
   <string name="pref_accept_files">Accetta i file</string>
   <string name="pref_accept_files_summary">Accetta automaticamente i file più piccoli di…</string>
   <string name="pref_attachments">Allegati</string>
-  <string name="pref_return_to_previous">Condivisione rapida</string>
-  <string name="pref_return_to_previous_summary">Torna subito all\'attività precedente invece di aprire la conversazione dopo avere condiviso qualcosa</string>
   <string name="pref_notification_settings">Notifiche</string>
   <string name="pref_vibrate">Vibra</string>
   <string name="pref_vibrate_summary">Vibra quando arriva un nuovo messaggio</string>
@@ -125,6 +123,7 @@
   <string name="openpgp_error">OpenKeychain ha riportato un errore</string>
   <string name="accept">Accetta</string>
   <string name="error">Si è verificato un errore</string>
+  <string name="recording_error">Errore</string>
   <string name="your_account">Il tuo account</string>
   <string name="send_presence_updates">Invia aggiornamenti della presenza</string>
   <string name="receive_presence_updates">Ricevi aggiornamenti della presenza</string>
@@ -282,6 +281,7 @@
   <string name="toast_message_omemo_fingerprint">impronta OMEMO copiata negli appunti|</string>
   <string name="conference_banned">Sei stato bandito da questa chat di gruppo</string>
   <string name="conference_members_only">Questa chat di gruppo è solo per membri</string>
+  <string name="conference_resource_constraint">Risorse limitate</string>
   <string name="conference_kicked">Sei stato buttato fuori da questa chat di gruppo</string>
   <string name="conference_shutdown">La chat di gruppo è stata chiusa</string>
   <string name="conference_unknown_error">Non sei più in questa chat di gruppo</string>
@@ -720,4 +720,17 @@
   <string name="create_dialog_group_chat_name">Nome chat di gruppo</string>
   <string name="conference_destroyed">Questa chat di gruppo è stata distrutta</string>
   <string name="phone_book">Rubrica</string>
+  <string name="unable_to_save_recording">Impossibile salvare la registrazione</string>
+  <string name="foreground_service_channel_name">Servizio in primo piano</string>
+  <string name="foreground_service_channel_description">Questa categoria di notifiche è usata per mostrare una notifica permanente per indicare che Conversations è in esecuzione.</string>
+  <string name="notification_group_status_information">Informazioni di stato</string>
+  <string name="error_channel_name">Problemi di connettività</string>
+  <string name="error_channel_description">Questa categoria di notifiche è usata per mostrare un notifica in caso si verifichi un problema nella connessione ad un account.</string>
+  <string name="notification_group_messages">Messaggi</string>
+  <string name="messages_channel_name">Messaggi</string>
+  <string name="silent_messages_channel_name">Messaggi silenziosi</string>
+  <string name="silent_messages_channel_description">Questo gruppo di notifiche è usato per mostrare notifiche che non devono riprodurre alcun suono. Ad esempio mentre si è attivi su un altro dispositivo (Periodo di grazia).</string>
+  <string name="pref_more_notification_settings">Impostazioni di notifica</string>
+  <string name="pref_more_notification_settings_summary">Importanza, suono, vibrazione</string>
+  <string name="video_compression_channel_name">Compressione video</string>
 </resources>

@@ -90,7 +90,6 @@
   <string name="pref_accept_files">Terima berkas</string>
   <string name="pref_accept_files_summary">Otomatis menerima berkas lebih kecil dari...</string>
   <string name="pref_attachments">Lampiran</string>
-  <string name="pref_return_to_previous">Bagikan Cepat</string>
   <string name="pref_notification_settings">Notif</string>
   <string name="pref_vibrate">Getar</string>
   <string name="pref_vibrate_summary">Aktifkan getar ketika pesan masuk</string>

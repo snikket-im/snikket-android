@@ -103,8 +103,6 @@
   <string name="pref_accept_files">Принимать файлы</string>
   <string name="pref_accept_files_summary">Автоматический приём файлов…</string>
   <string name="pref_attachments">Вложения</string>
-  <string name="pref_return_to_previous">Быстрый обмен</string>
-  <string name="pref_return_to_previous_summary">Мгновенный возврат на предыдущий экран вместо открытия беседы после обмена</string>
   <string name="pref_notification_settings">Уведомление</string>
   <string name="pref_vibrate">Вибрация</string>
   <string name="pref_vibrate_summary">Вибрировать, когда приходят новые сообщения</string>

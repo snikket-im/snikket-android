@@ -93,7 +93,6 @@
   <string name="pref_accept_files">پذیرفتن فایل ها</string>
   <string name="pref_accept_files_summary">پذیرفتن خودکار فایل های کوچکتر از ...</string>
   <string name="pref_attachments">پیوست ها</string>
-  <string name="pref_return_to_previous">به اشتراک گذاری سریع</string>
   <string name="pref_notification_settings">اعلان</string>
   <string name="pref_vibrate">لرزش</string>
   <string name="pref_vibrate_summary">هنگام دریافت پیام جدید بلرز</string>

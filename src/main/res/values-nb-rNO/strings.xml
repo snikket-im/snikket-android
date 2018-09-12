@@ -102,8 +102,6 @@
   <string name="pref_accept_files">Godta filer</string>
   <string name="pref_accept_files_summary">Automatisk godkjenning av filer mindre enn...</string>
   <string name="pref_attachments">Vedlegg</string>
-  <string name="pref_return_to_previous">Rask deling</string>
-  <string name="pref_return_to_previous_summary">Gå tilbake til tidligere aktivitet etter å ha delt noe, istedenfor å bli i samtalen</string>
   <string name="pref_notification_settings">Merknad</string>
   <string name="pref_vibrate">Vibrer</string>
   <string name="pref_vibrate_summary">Vibrer når en ny melding ankommer</string>

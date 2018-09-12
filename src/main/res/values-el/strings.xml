@@ -102,8 +102,6 @@
   <string name="pref_accept_files">Αποδοχή αρχείων</string>
   <string name="pref_accept_files_summary">Αυτόματη αποδοχή αρχείων μικρότερα από...</string>
   <string name="pref_attachments">Επισυναπτόμμενα</string>
-  <string name="pref_return_to_previous">Γρήγορος Διαμοιρασμός</string>
-  <string name="pref_return_to_previous_summary">Άμεση επιστροφή στην προηγούμενη δραστηριότητα αντί της εκκίνησης συζήτησης μετά από διαμοιρασμό δεδομένων</string>
   <string name="pref_notification_settings">Ειδοποίηση</string>
   <string name="pref_vibrate">Δόνηση</string>
   <string name="pref_vibrate_summary">Δόνηση όταν δέχεστε νέο μήνυμα</string>

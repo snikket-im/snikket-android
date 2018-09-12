@@ -102,8 +102,6 @@
   <string name="pref_accept_files">ファイルを受取</string>
   <string name="pref_accept_files_summary">自動的に小さいファイルを受取…</string>
   <string name="pref_attachments">添付ファイル</string>
-  <string name="pref_return_to_previous">クイック共有</string>
-  <string name="pref_return_to_previous_summary">共有した後で、会話を開く代わりに、すぐに前のアクティビティに戻ります</string>
   <string name="pref_notification_settings">通知</string>
   <string name="pref_vibrate">振動</string>
   <string name="pref_vibrate_summary">新しいメッセージが届いたときに振動します</string>

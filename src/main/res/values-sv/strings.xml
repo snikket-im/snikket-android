@@ -96,8 +96,6 @@
   <string name="pref_accept_files">Acceptera filer</string>
   <string name="pref_accept_files_summary">Acceptera automatiskt filer som är mindre än…</string>
   <string name="pref_attachments">Bifogningar</string>
-  <string name="pref_return_to_previous">Snabbdelning</string>
-  <string name="pref_return_to_previous_summary">Återvänd genast till föregående aktivitet istället för att öppna konversationen efter att ha delat något</string>
   <string name="pref_notification_settings">Notifiering</string>
   <string name="pref_vibrate">Vibrera</string>
   <string name="pref_vibrate_summary">Vibrera när meddelande tagits emot</string>

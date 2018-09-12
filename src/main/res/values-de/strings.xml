@@ -105,8 +105,6 @@
   <string name="pref_accept_files">Dateien annehmen</string>
   <string name="pref_accept_files_summary">Dateien automatisch annehmen, die kleiner sind als …</string>
   <string name="pref_attachments">Anhänge</string>
-  <string name="pref_return_to_previous">Schnell-Teilen</string>
-  <string name="pref_return_to_previous_summary">Nach dem Teilen sofort wieder zur vorherigen App zurückkehren anstatt die Unterhaltung zu öffnen</string>
   <string name="pref_notification_settings">Benachrichtigung</string>
   <string name="pref_vibrate">Vibrieren</string>
   <string name="pref_vibrate_summary">Vibrieren bei Erhalt einer neuen Nachricht</string>
@@ -114,7 +112,7 @@
   <string name="pref_led_summary">Blinke bei Erhalt einer neuen Nachricht</string>
   <string name="pref_sound">Benachrichtigungston</string>
   <string name="pref_sound_summary">Benachrichtigungston wiedergeben</string>
-  <string name="pref_notification_grace_period">Nachfrist</string>
+  <string name="pref_notification_grace_period">Schonfrist</string>
   <string name="pref_notification_grace_period_summary">Deaktiviere Benachrichtigungen für eine kurze Zeit nach Erhalt einer Nachricht, die von einem anderen deiner Clients kommt</string>
   <string name="pref_advanced_options">Erweitert</string>
   <string name="pref_never_send_crash">Niemals Absturzberichte senden</string>
@@ -125,6 +123,7 @@
   <string name="openpgp_error">Fehler mit OpenKeychain</string>
   <string name="accept">Annehmen</string>
   <string name="error">Ein Fehler ist aufgetreten</string>
+  <string name="recording_error">Fehler</string>
   <string name="your_account">Dein Konto</string>
   <string name="send_presence_updates">Online-Status senden</string>
   <string name="receive_presence_updates">Online-Status empfangen</string>
@@ -337,7 +336,7 @@
   <string name="regenerate_omemo_key">OMEMO-Schlüssel erneuern</string>
   <string name="clear_other_devices">Geräte entfernen</string>
   <string name="clear_other_devices_desc">Alle anderen Geräte aus der OMEMO-Bekanntmachung entfernen? Die Bekanntmachung wird bei der nächsten Verbindung erneuert, möglicherweise werden aber nicht alle Nachrichten empfangen, die in der Zwischenzeit versendet wurden.</string>
-  <string name="error_no_keys_to_trust_server_error">Für diesen Kontakt sind keine nutzbaren Schlüssel verfügbar.\nDas Abrufen neuer Schlüssel vom Server ist fehlgeschlagen. Vielleicht gitb es ein Problem mit dem Server deines Kontaktes.</string>
+  <string name="error_no_keys_to_trust_server_error">Für diesen Kontakt sind keine nutzbaren Schlüssel verfügbar.\nDas Abrufen neuer Schlüssel vom Server ist fehlgeschlagen. Vielleicht gibt es ein Problem mit dem Server deines Kontaktes.</string>
   <string name="error_no_keys_to_trust_presence">Für diesen Kontakt sind keine benutzbaren Schlüssel verfügbar.\nStelle sicher, dass du den gegenseitigen Online-Status aktiviert hast.</string>
   <string name="error_trustkeys_title">Etwas ist schief gelaufen</string>
   <string name="fetching_history_from_server">Lade Chatverlauf…</string>
@@ -526,7 +525,7 @@
   <string name="presence_dnd">Beschäftigt</string>
   <string name="secure_password_generated">Ein sicheres Passwort wurde erstellt</string>
   <string name="device_does_not_support_battery_op">Dein Gerät unterstützt kein Ausschalten der Batterieoptimierung</string>
-  <string name="registration_please_wait">Registrierung fehlgeschlagen: Bitte später versuchen.</string>
+  <string name="registration_please_wait">Registrierung fehlgeschlagen: Bitte später versuchen</string>
   <string name="registration_password_too_weak">Registrierung fehlgeschlagen: Passwort zu schwach</string>
   <string name="dialog_title_create_conference">Gruppenchat erstellen</string>
   <string name="choose_participants">Mitglieder wählen</string>
@@ -564,7 +563,7 @@
   <string name="pref_delete_omemo_identities">OMEMO-Identitäten zurücksetzen</string>
   <string name="pref_delete_omemo_identities_summary">Regeneriere deine OMEMO-Schlüssel. Alle deine Kontakte müssen dich neu verifizieren. Nutze dies als letzten Ausweg.</string>
   <string name="delete_selected_keys">Ausgewählte Schlüssel löschen</string>
-  <string name="error_publish_avatar_offline">Du musst verbunden sein, um deinen Avatar zu veröffentlichen</string>
+  <string name="error_publish_avatar_offline">Du musst verbunden sein, um deinen Avatar zu veröffentlichen.</string>
   <string name="show_error_message">Zeige Fehlermeldung</string>
   <string name="error_message">Fehlermeldung</string>
   <string name="data_saver_enabled">Datensparmodus aktiv</string>
@@ -719,6 +718,19 @@
   <string name="group_chat_name">Name</string>
   <string name="providing_a_name_is_optional">Angabe eines Namens ist optional</string>
   <string name="create_dialog_group_chat_name">Gruppenchatname</string>
-  <string name="conference_destroyed">Dieser Gruppenchat wurde zerstört</string>
+  <string name="conference_destroyed">Dieser Gruppenchat wurde aufgelöst</string>
   <string name="phone_book">Telefonbuch</string>
+  <string name="unable_to_save_recording">Aufnahme kann nicht gespeichert werden</string>
+  <string name="foreground_service_channel_name">Vordergrunddienst</string>
+  <string name="foreground_service_channel_description">Diese Benachrichtigungsart wird verwendet, um eine permanente Benachrichtigung anzuzeigen, die anzeigt, dass Conversations gerade ausgeführt wird.</string>
+  <string name="notification_group_status_information">Statusinformation</string>
+  <string name="error_channel_name">Verbindungsprobleme</string>
+  <string name="error_channel_description">Diese Benachrichtigungsart wird verwendet, um eine Benachrichtigung anzuzeigen, falls es ein Problem bei der Verbindung zu einem Konto gibt.</string>
+  <string name="notification_group_messages">Nachrichten</string>
+  <string name="messages_channel_name">Nachrichten</string>
+  <string name="silent_messages_channel_name">Lautlose Benachrichtigungen</string>
+  <string name="silent_messages_channel_description">Diese Benachrichtigungsart wird verwendet, um Benachrichtigungen anzuzeigen, die keinen Ton auslösen sollen. Zum Beispiel, wenn du auf einem anderen Gerät aktiv bist (Schonfrist).</string>
+  <string name="pref_more_notification_settings">Benachrichtigungseinstellungen</string>
+  <string name="pref_more_notification_settings_summary">Wichtigkeit, Klang, Vibrationen</string>
+  <string name="video_compression_channel_name">Video komprimieren</string>
 </resources>

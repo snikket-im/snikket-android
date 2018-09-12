@@ -105,8 +105,6 @@
   <string name="pref_accept_files">Aanvaard bestanden</string>
   <string name="pref_accept_files_summary">Aanvaard automatisch bestanden kleiner dan…</string>
   <string name="pref_attachments">Bijlagen</string>
-  <string name="pref_return_to_previous">Snel delen</string>
-  <string name="pref_return_to_previous_summary">Keer na iets te delen onmiddellijk terug naar de vorige activiteit in plaats van het gesprek te openen</string>
   <string name="pref_notification_settings">Melding</string>
   <string name="pref_vibrate">Trillen</string>
   <string name="pref_vibrate_summary">Trillen wanneer een nieuw bericht ontvangen wordt</string>
@@ -125,6 +123,7 @@
   <string name="openpgp_error">OpenKeychain rapporteerde een fout</string>
   <string name="accept">Aanvaarden</string>
   <string name="error">Er is een fout opgetreden</string>
+  <string name="recording_error">Fout</string>
   <string name="your_account">Je account</string>
   <string name="send_presence_updates">Verstuur aanwezigheidsupdates</string>
   <string name="receive_presence_updates">Ontvang aanwezigheidsupdates</string>
@@ -721,4 +720,17 @@
   <string name="create_dialog_group_chat_name">Gespreksnaam</string>
   <string name="conference_destroyed">Dit groepsgesprek is verwijderd</string>
   <string name="phone_book">Adresboek</string>
+  <string name="unable_to_save_recording">Kan opname niet opslaan</string>
+  <string name="foreground_service_channel_name">Voorgronddienst</string>
+  <string name="foreground_service_channel_description">Deze meldingscategorie wordt gebruikt om een permanente melding weer te geven dat Conversations wordt uitgevoerd.</string>
+  <string name="notification_group_status_information">Statusinformatie</string>
+  <string name="error_channel_name">Verbindingsproblemen</string>
+  <string name="error_channel_description">Deze meldingscategorie wordt gebruikt om een melding weer te geven ingeval er een probleem is bij het verbinden met een account.</string>
+  <string name="notification_group_messages">Berichten</string>
+  <string name="messages_channel_name">Berichten</string>
+  <string name="silent_messages_channel_name">Stille berichten</string>
+  <string name="silent_messages_channel_description">Deze meldingscategorie wordt gebruikt om meldingen weer te geven die geen geluid mogen maken. Bijvoorbeeld, indien actief op een ander apparaat (uitstelperiode).</string>
+  <string name="pref_more_notification_settings">Meldingsinstellingen</string>
+  <string name="pref_more_notification_settings_summary">Belang, geluid, trillen</string>
+  <string name="video_compression_channel_name">Videocompressie</string>
 </resources>

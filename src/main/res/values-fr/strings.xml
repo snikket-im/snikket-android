@@ -105,8 +105,6 @@
   <string name="pref_accept_files">Accepter les fichiers</string>
   <string name="pref_accept_files_summary">Accepter automatiquement les fichiers plus petits que…</string>
   <string name="pref_attachments">Pièces jointes</string>
-  <string name="pref_return_to_previous">Partage rapide</string>
-  <string name="pref_return_to_previous_summary">Ne pas ouvrir la conversation après avoir partagé quelque chose depuis une autre application</string>
   <string name="pref_notification_settings">Notification</string>
   <string name="pref_vibrate">Vibration</string>
   <string name="pref_vibrate_summary">Vibrer lors de la réception d\'un message</string>

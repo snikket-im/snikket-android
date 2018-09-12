@@ -95,8 +95,6 @@
   <string name="pref_accept_files">Aceitar ficheiros</string>
   <string name="pref_accept_files_summary">Automaticamente aceitar ficheiros menores que...</string>
   <string name="pref_attachments">Anexos</string>
-  <string name="pref_return_to_previous">Partilha Rápida</string>
-  <string name="pref_return_to_previous_summary">Voltar imediatamente à atividade anterior em vez de abrir a conversação depois de partilhar alguma coisa</string>
   <string name="pref_notification_settings">Notificação</string>
   <string name="pref_vibrate">Vibrar</string>
   <string name="pref_vibrate_summary">Vibrar quando uma nova mensagem for recebida</string>

@@ -105,8 +105,6 @@
   <string name="pref_accept_files">Приемане на файлове</string>
   <string name="pref_accept_files_summary">Автоматично приемане на файлове с размер, по-малък от…</string>
   <string name="pref_attachments">Притурки</string>
-  <string name="pref_return_to_previous">Бързо споделяне</string>
-  <string name="pref_return_to_previous_summary">Моментално връщане към предишното действие, вместо отваряне на разговора отново след споделяне на нещо</string>
   <string name="pref_notification_settings">Известие</string>
   <string name="pref_vibrate">Вибрация</string>
   <string name="pref_vibrate_summary">Вибриране при получаване на ново съобщение</string>
@@ -114,7 +112,7 @@
   <string name="pref_led_summary">Мигане на индикаторния светодиод при получаване на ново съобщение</string>
   <string name="pref_sound">Тон на звънене</string>
   <string name="pref_sound_summary">Изпълнение на звук при получаване на ново съобщение</string>
-  <string name="pref_notification_grace_period">Продължителност на пренебрегване</string>
+  <string name="pref_notification_grace_period">Период на пренебрегване</string>
   <string name="pref_notification_grace_period_summary">Времето, през което Conversations няма да прави нищо, след като забележи дейност на друго устройство</string>
   <string name="pref_advanced_options">Разширени</string>
   <string name="pref_never_send_crash">Никога да не се изпращат доклади за сривове</string>
@@ -125,6 +123,7 @@
   <string name="openpgp_error">OpenKeychain докладва за грешка</string>
   <string name="accept">Приемане</string>
   <string name="error">Възникна грешка</string>
+  <string name="recording_error">Грешка</string>
   <string name="your_account">Вашият профил</string>
   <string name="send_presence_updates">Изпращане на актуализации за присъствието</string>
   <string name="receive_presence_updates">Получаване на актуализации за присъствието</string>
@@ -720,4 +719,18 @@
   <string name="providing_a_name_is_optional">Въвеждането на име не е задължитално</string>
   <string name="create_dialog_group_chat_name">Име на груповия разговор</string>
   <string name="conference_destroyed">Този групов разговор е унищожен</string>
+  <string name="phone_book">Адресен указател</string>
+  <string name="unable_to_save_recording">Записът не може да бъде запазен</string>
+  <string name="foreground_service_channel_name">Услуга на преден план</string>
+  <string name="foreground_service_channel_description">Тази категория известия се използва за показване на постоянно известие, което показва, че Conversations работи.</string>
+  <string name="notification_group_status_information">Информация за състоянието</string>
+  <string name="error_channel_name">Проблеми с връзката</string>
+  <string name="error_channel_description">Тази категория известия се използва за показване на известие, в случай че има проблем със свързването с профил.</string>
+  <string name="notification_group_messages">Съобщения</string>
+  <string name="messages_channel_name">Съобщения</string>
+  <string name="silent_messages_channel_name">Тихи съобщения</string>
+  <string name="silent_messages_channel_description">Тази категория известия се използва за показване на известия, които не бива да изпълняват звук. Това може да се използва, например, докато използвате друго устройство (по време на Период на пренебрегване).</string>
+  <string name="pref_more_notification_settings">Настройки за известията</string>
+  <string name="pref_more_notification_settings_summary">Важност, звук, вибрация</string>
+  <string name="video_compression_channel_name">Компресия на видеото</string>
 </resources>

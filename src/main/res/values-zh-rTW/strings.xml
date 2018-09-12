@@ -96,8 +96,6 @@
   <string name="pref_accept_files">接收檔案</string>
   <string name="pref_accept_files_summary">自動接收小於 … 的檔案</string>
   <string name="pref_attachments">附件</string>
-  <string name="pref_return_to_previous">快速分享</string>
-  <string name="pref_return_to_previous_summary">分享後立即回到之前活動的應用程式，而非打開會話</string>
   <string name="pref_notification_settings">通知</string>
   <string name="pref_vibrate">震動</string>
   <string name="pref_vibrate_summary">收到新訊息時震動</string>

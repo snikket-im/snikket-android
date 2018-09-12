@@ -105,8 +105,6 @@
   <string name="pref_accept_files">Akceptuj pliki</string>
   <string name="pref_accept_files_summary">Automatycznie akceptuj pliki mniejsze niż...</string>
   <string name="pref_attachments">Załączniki</string>
-  <string name="pref_return_to_previous">Szybkie Udostępnianie</string>
-  <string name="pref_return_to_previous_summary">Po udostępnieniu obiektu natychmiastowo powróć do poprzedniej aktywności zamiast otwierać konwersację</string>
   <string name="pref_notification_settings">Powiadomienie</string>
   <string name="pref_vibrate">Wibracje</string>
   <string name="pref_vibrate_summary">Wibruj gdy nadejdzie wiadomość</string>
@@ -125,6 +123,7 @@
   <string name="openpgp_error">Wystąpił błąd OpenKeychain</string>
   <string name="accept">Akceptuj</string>
   <string name="error">Wystąpił błąd</string>
+  <string name="recording_error">Błąd</string>
   <string name="your_account">Twoje konto</string>
   <string name="send_presence_updates">Wysyłaj powiadomienia obecności</string>
   <string name="receive_presence_updates">Otrzymuj powiadomienia obecności</string>
@@ -740,4 +739,17 @@ Administrator twojego serwera będzie mógł czytać twoje wiadomości, ale moż
   <string name="create_dialog_group_chat_name">Nazwa konferencji</string>
   <string name="conference_destroyed">Ta konferencja została usunięta</string>
   <string name="phone_book">Książka adresowa</string>
+  <string name="unable_to_save_recording">Nie można zapisać nagrania</string>
+  <string name="foreground_service_channel_name">Usługa na pierwszym planie</string>
+  <string name="foreground_service_channel_description">Ta kategoria powiadomień jest używana aby wyświetlać stałe powiadomienie oznaczające, że Conversations działa</string>
+  <string name="notification_group_status_information">Wiadomość Statusu</string>
+  <string name="error_channel_name">Problemy z połączeniem</string>
+  <string name="error_channel_description">Ta kategoria powiadomień jest używana aby wyświetlać powiadomienia oznaczające, że Conversations ma problemy z połączeniem.</string>
+  <string name="notification_group_messages">Wiadomości</string>
+  <string name="messages_channel_name">Wiadomości</string>
+  <string name="silent_messages_channel_name">Ciche wiadomości</string>
+  <string name="silent_messages_channel_description">Ta kategoria powiadomień jest używana aby wyświetlać powiadomienia które nie powodują żadnych dźwięków. Na przykład w ciągu aktywności na innym urządzeniu (okres karencji).</string>
+  <string name="pref_more_notification_settings">Ustawienia powiadomień</string>
+  <string name="pref_more_notification_settings_summary">Ważność, Dźwięk, Wibracja</string>
+  <string name="video_compression_channel_name">Kompresja wideo</string>
 </resources>

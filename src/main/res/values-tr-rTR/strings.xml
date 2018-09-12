@@ -95,8 +95,6 @@
   <string name="pref_accept_files">Dosyaları kabul et</string>
   <string name="pref_accept_files_summary">…‘den küçük olan dosyaları kendiliğinden kabul et</string>
   <string name="pref_attachments">Ekler</string>
-  <string name="pref_return_to_previous">Hızlı Paylaşım</string>
-  <string name="pref_return_to_previous_summary">Bir şey paylaştıktan sonra bir grup konuşmasına dönmek yerine önceki etkinliğe dön</string>
   <string name="pref_notification_settings">Bildirim</string>
   <string name="pref_vibrate">Titreşim</string>
   <string name="pref_vibrate_summary">Yeni ileti geldiğinde titret</string>

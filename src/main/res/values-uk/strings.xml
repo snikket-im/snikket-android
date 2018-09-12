@@ -96,8 +96,6 @@
   <string name="pref_accept_files">Приймати файли</string>
   <string name="pref_accept_files_summary">Автоматично приймати файли менші за…</string>
   <string name="pref_attachments">Вкладення</string>
-  <string name="pref_return_to_previous">Швидко поділитися</string>
-  <string name="pref_return_to_previous_summary">Негайно повертатися до попередньої діяльності замість відкриття розмови після того, як чимось поділитися</string>
   <string name="pref_notification_settings">Сповіщення</string>
   <string name="pref_vibrate">Вібрувати</string>
   <string name="pref_vibrate_summary">Вібрувати, коли приходять нові повідомлення</string>

@@ -95,8 +95,6 @@
   <string name="pref_accept_files">Chấp thuận các tập tin</string>
   <string name="pref_accept_files_summary">Tự động chấp thuận các tập tin nhỏ hơn...</string>
   <string name="pref_attachments">Tập tin đính kèm</string>
-  <string name="pref_return_to_previous">Chia sẻ nhanh</string>
-  <string name="pref_return_to_previous_summary">Lập tức quay trở lại hoạt động trước đó thay vì mở cuộc hội thoại sau khi chia sẻ </string>
   <string name="pref_notification_settings">Thông báo</string>
   <string name="pref_vibrate">Rung</string>
   <string name="pref_vibrate_summary">Rung khi có tin nhắn mới</string>
