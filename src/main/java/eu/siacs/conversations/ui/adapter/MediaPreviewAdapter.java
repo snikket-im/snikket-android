@@ -17,6 +17,7 @@ import android.widget.ImageView;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.RejectedExecutionException;
 
@@ -28,6 +29,15 @@ import eu.siacs.conversations.ui.util.Attachment;
 import eu.siacs.conversations.ui.util.StyledAttributes;
 
 public class MediaPreviewAdapter extends RecyclerView.Adapter<MediaPreviewAdapter.MediaPreviewViewHolder> {
+
+    private static final List<String> DOCUMENT_MIMES = Arrays.asList(
+            "application/pdf",
+            "application/vnd.oasis.opendocument.text",
+            "application/msword",
+            "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+            "text/x-tex",
+            "text/plain"
+    );
 
     private final ArrayList<Attachment> mediaPreviews = new ArrayList<>();
 
@@ -64,7 +74,7 @@ public class MediaPreviewAdapter extends RecyclerView.Adapter<MediaPreviewAdapte
             } else {
                 final String mime = attachment.getMime();
                 if (mime == null) {
-                    attr = R.attr.media_preview_file;
+                    attr = R.attr.media_preview_unknown;
                 } else if (mime.startsWith("audio/")) {
                     attr = R.attr.media_preview_audio;
                 } else if (mime.equals("text/calendar") || (mime.equals("text/x-vcalendar"))) {
@@ -75,8 +85,10 @@ public class MediaPreviewAdapter extends RecyclerView.Adapter<MediaPreviewAdapte
                     attr = R.attr.media_preview_app;
                 } else if (mime.equals("application/zip") || mime.equals("application/rar")) {
                     attr = R.attr.media_preview_archive;
+                } else if (DOCUMENT_MIMES.contains(mime)) {
+                    attr = R.attr.media_preview_document;
                 } else {
-                    attr = R.attr.media_preview_file;
+                    attr = R.attr.media_preview_unknown;
                 }
             }
             holder.binding.mediaPreview.setImageDrawable(StyledAttributes.getDrawable(context, attr));
