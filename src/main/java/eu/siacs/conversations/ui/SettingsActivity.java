@@ -38,7 +38,7 @@ import eu.siacs.conversations.crypto.OmemoSetting;
 import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.services.ExportLogsService;
 import eu.siacs.conversations.services.MemorizingTrustManager;
-import eu.siacs.conversations.ui.util.Color;
+import eu.siacs.conversations.ui.util.StyledAttributes;
 import eu.siacs.conversations.utils.GeoHelper;
 import eu.siacs.conversations.utils.TimeframeUtils;
 import rocks.xmpp.addr.Jid;
@@ -74,7 +74,7 @@ public class SettingsActivity extends XmppActivity implements
 		mSettingsFragment.setActivityIntent(getIntent());
 		this.mTheme = findTheme();
 		setTheme(this.mTheme);
-		getWindow().getDecorView().setBackgroundColor(Color.get(this, R.attr.color_background_primary));
+		getWindow().getDecorView().setBackgroundColor(StyledAttributes.getColor(this, R.attr.color_background_primary));
 		setSupportActionBar(findViewById(R.id.toolbar));
 		configureActionBar(getSupportActionBar());
 	}

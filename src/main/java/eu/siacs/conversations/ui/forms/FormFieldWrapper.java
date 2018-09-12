@@ -10,7 +10,7 @@ import android.view.View;
 import java.util.List;
 
 import eu.siacs.conversations.R;
-import eu.siacs.conversations.ui.util.Color;
+import eu.siacs.conversations.ui.util.StyledAttributes;
 import eu.siacs.conversations.xmpp.forms.Field;
 
 public abstract class FormFieldWrapper {
@@ -18,9 +18,9 @@ public abstract class FormFieldWrapper {
 	protected final Context context;
 	protected final Field field;
 	protected final View view;
-	protected OnFormFieldValuesEdited onFormFieldValuesEditedListener;
+	OnFormFieldValuesEdited onFormFieldValuesEditedListener;
 
-	protected FormFieldWrapper(Context context, Field field) {
+	FormFieldWrapper(Context context, Field field) {
 		this.context = context;
 		this.field = field;
 		LayoutInflater inflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -58,7 +58,7 @@ public abstract class FormFieldWrapper {
 			int start = label.length();
 			int end = label.length() + 2;
 			spannableString.setSpan(new StyleSpan(android.graphics.Typeface.BOLD), start, end, 0);
-			spannableString.setSpan(new ForegroundColorSpan(Color.get(context,R.attr.colorAccent)), start, end, 0);
+			spannableString.setSpan(new ForegroundColorSpan(StyledAttributes.getColor(context,R.attr.colorAccent)), start, end, 0);
 		}
 		return spannableString;
 	}

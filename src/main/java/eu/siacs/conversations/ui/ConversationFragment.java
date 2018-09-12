@@ -842,7 +842,8 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
             case ATTACHMENT_CHOICE_CHOOSE_FILE:
             case ATTACHMENT_CHOICE_RECORD_VIDEO:
             case ATTACHMENT_CHOICE_RECORD_VOICE:
-                final List<Attachment> fileUris = Attachment.extractAttachments(getActivity(), data, Attachment.Type.FILE);
+                final Attachment.Type type = requestCode == ATTACHMENT_CHOICE_RECORD_VOICE ? Attachment.Type.RECORDING : Attachment.Type.FILE;
+                final List<Attachment> fileUris = Attachment.extractAttachments(getActivity(), data, type);
                 mediaPreviewAdapter.addMediaPreviews(fileUris);
                 toggleInputMethod();
                 break;
@@ -850,7 +851,8 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
                 double latitude = data.getDoubleExtra("latitude", 0);
                 double longitude = data.getDoubleExtra("longitude", 0);
                 Uri geo = Uri.parse("geo:" + String.valueOf(latitude) + "," + String.valueOf(longitude));
-                attachLocationToConversation(conversation, geo);
+                mediaPreviewAdapter.addMediaPreviews(Attachment.of(getActivity(), geo, Attachment.Type.LOCATION));
+                toggleInputMethod();
                 break;
             case REQUEST_INVITE_TO_CONVERSATION:
                 XmppActivity.ConferenceInvite invite = XmppActivity.ConferenceInvite.parse(data);
@@ -869,8 +871,10 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
         final PresenceSelector.OnPresenceSelected callback = () -> {
             for (Iterator<Attachment> i = attachments.iterator(); i.hasNext(); i.remove()) {
                 final Attachment attachment = i.next();
-                if (attachment.getType() == Attachment.Type.IMAGE) {
-                   Log.d(Config.LOGTAG, "ConversationsActivity.commitAttachments() - attaching image to conversations. CHOOSE_IMAGE");
+                if (attachment.getType() == Attachment.Type.LOCATION) {
+                    attachLocationToConversation(conversation, attachment.getUri());
+                } else if (attachment.getType() == Attachment.Type.IMAGE) {
+                    Log.d(Config.LOGTAG, "ConversationsActivity.commitAttachments() - attaching image to conversations. CHOOSE_IMAGE");
 					attachImageToConversation(conversation, attachment.getUri());
                 } else {
                     Log.d(Config.LOGTAG, "ConversationsActivity.commitAttachments() - attaching file to conversations. CHOOSE_FILE/RECORD_VOICE/RECORD_VIDEO");

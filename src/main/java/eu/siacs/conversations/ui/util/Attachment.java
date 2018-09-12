@@ -42,6 +42,7 @@ import java.util.UUID;
 
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.utils.MimeUtils;
+import eu.siacs.conversations.xmpp.stanzas.IqPacket;
 
 public class Attachment {
 
@@ -54,7 +55,7 @@ public class Attachment {
     }
 
     public enum Type {
-        FILE, IMAGE
+        FILE, IMAGE, LOCATION, RECORDING
     }
 
     private final Uri uri;
@@ -70,7 +71,7 @@ public class Attachment {
     }
 
     public static List<Attachment> of(final Context context, Uri uri, Type type) {
-        final String mime = MimeUtils.guessMimeTypeFromUri(context, uri);
+        final String mime = type == Type.LOCATION ?null :MimeUtils.guessMimeTypeFromUri(context, uri);
         return Collections.singletonList(new Attachment(uri, type, mime));
     }
 
@@ -98,6 +99,10 @@ public class Attachment {
             uris.add(new Attachment(data, type, mime));
         }
         return uris;
+    }
+
+    public boolean renderThumbnail() {
+        return type == Type.IMAGE || (type == Type.FILE && mime != null && (mime.startsWith("video/") || mime.startsWith("image/")));
     }
 
     public Uri getUri() {

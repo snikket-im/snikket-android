@@ -63,6 +63,11 @@
         <item name="dialog_horizontal_padding">24dp</item>
         <item name="dialog_vertical_padding">16dp</item>
 
+        <item type="reference" name="media_preview_file">@drawable/ic_description_black_48dp</item>
+        <item type="reference" name="media_preview_recording">@drawable/ic_mic_black_48dp</item>
+        <item type="reference" name="media_preview_audio">@drawable/ic_headset_black_48dp</item>
+        <item type="reference" name="media_preview_location">@drawable/ic_room_black_48dp</item>
+
         <item type="reference" name="icon_add_group">@drawable/ic_group_add_white_24dp</item>
         <item type="reference" name="icon_add_person">@drawable/ic_person_add_white_24dp</item>
         <item type="reference" name="icon_cancel">@drawable/ic_cancel_black_24dp</item>
@@ -163,6 +168,11 @@
 
         <item name="dialog_horizontal_padding">24dp</item>
         <item name="dialog_vertical_padding">16dp</item>
+
+        <item type="reference" name="media_preview_file">@drawable/ic_description_white_48dp</item>
+        <item type="reference" name="media_preview_recording">@drawable/ic_mic_white_48dp</item>
+        <item type="reference" name="media_preview_audio">@drawable/ic_headset_white_48dp</item>
+        <item type="reference" name="media_preview_location">@drawable/ic_room_white_48dp</item>
 
         <item type="reference" name="icon_add_group">@drawable/ic_group_add_white_24dp</item>
         <item type="reference" name="icon_add_person">@drawable/ic_person_add_white_24dp</item>

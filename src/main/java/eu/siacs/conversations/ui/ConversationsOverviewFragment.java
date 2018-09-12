@@ -58,11 +58,11 @@ import eu.siacs.conversations.entities.Conversation;
 import eu.siacs.conversations.ui.adapter.ConversationAdapter;
 import eu.siacs.conversations.ui.interfaces.OnConversationArchived;
 import eu.siacs.conversations.ui.interfaces.OnConversationSelected;
-import eu.siacs.conversations.ui.util.Color;
 import eu.siacs.conversations.ui.util.MenuDoubleTabUtil;
 import eu.siacs.conversations.ui.util.PendingActionHelper;
 import eu.siacs.conversations.ui.util.PendingItem;
 import eu.siacs.conversations.ui.util.ScrollState;
+import eu.siacs.conversations.ui.util.StyledAttributes;
 import eu.siacs.conversations.utils.ThemeHelper;
 
 import static android.support.v7.widget.helper.ItemTouchHelper.LEFT;
@@ -99,7 +99,7 @@ public class ConversationsOverviewFragment extends XmppFragment {
 			super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
 			if(actionState != ItemTouchHelper.ACTION_STATE_IDLE){
 				Paint paint = new Paint();
-				paint.setColor(Color.get(activity,R.attr.conversations_overview_background));
+				paint.setColor(StyledAttributes.getColor(activity,R.attr.conversations_overview_background));
 				paint.setStyle(Paint.Style.FILL);
 				c.drawRect(viewHolder.itemView.getLeft(),viewHolder.itemView.getTop()
 						,viewHolder.itemView.getRight(),viewHolder.itemView.getBottom(), paint);

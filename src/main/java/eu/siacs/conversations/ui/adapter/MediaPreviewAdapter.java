@@ -1,17 +1,17 @@
 package eu.siacs.conversations.ui.adapter;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.res.Resources;
 import android.databinding.DataBindingUtil;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
-import android.net.Uri;
 import android.os.AsyncTask;
+import android.support.annotation.AttrRes;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
@@ -22,11 +22,10 @@ import java.util.concurrent.RejectedExecutionException;
 
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.databinding.MediaPreviewBinding;
-import eu.siacs.conversations.entities.Conversation;
 import eu.siacs.conversations.ui.ConversationFragment;
 import eu.siacs.conversations.ui.XmppActivity;
 import eu.siacs.conversations.ui.util.Attachment;
-import eu.siacs.conversations.utils.UIHelper;
+import eu.siacs.conversations.ui.util.StyledAttributes;
 
 public class MediaPreviewAdapter extends RecyclerView.Adapter<MediaPreviewAdapter.MediaPreviewViewHolder> {
 
@@ -48,8 +47,29 @@ public class MediaPreviewAdapter extends RecyclerView.Adapter<MediaPreviewAdapte
 
     @Override
     public void onBindViewHolder(@NonNull MediaPreviewViewHolder holder, int position) {
+        final Context context = conversationFragment.getActivity();
         final Attachment attachment = mediaPreviews.get(position);
-        loadPreview(attachment, holder.binding.mediaPreview);
+        if (attachment.renderThumbnail()) {
+            holder.binding.mediaPreview.setImageAlpha(255);
+            loadPreview(attachment, holder.binding.mediaPreview);
+        } else {
+            cancelPotentialWork(attachment, holder.binding.mediaPreview);
+            holder.binding.mediaPreview.setBackgroundColor(StyledAttributes.getColor(context, R.attr.color_background_tertiary));
+            holder.binding.mediaPreview.setImageAlpha(Math.round(StyledAttributes.getFloat(context, R.attr.icon_alpha) * 255));
+            final @AttrRes int attr;
+            if (attachment.getType() == Attachment.Type.LOCATION) {
+                attr = R.attr.media_preview_location;
+            } else if (attachment.getType() == Attachment.Type.RECORDING) {
+                attr = R.attr.media_preview_recording;
+            } else {
+                if (attachment.getMime() != null && attachment.getMime().startsWith("audio/")) {
+                    attr = R.attr.media_preview_audio;
+                } else {
+                    attr = R.attr.media_preview_file;
+                }
+            }
+            holder.binding.mediaPreview.setImageDrawable(StyledAttributes.getDrawable(context, attr));
+        }
         holder.binding.deleteButton.setOnClickListener(v -> {
             int pos = mediaPreviews.indexOf(attachment);
             mediaPreviews.remove(pos);
@@ -72,6 +92,7 @@ public class MediaPreviewAdapter extends RecyclerView.Adapter<MediaPreviewAdapte
                 imageView.setImageBitmap(bm);
                 imageView.setBackgroundColor(0x00000000);
             } else {
+                imageView.setBackgroundColor(0xff333333);
                 imageView.setImageDrawable(null);
                 final BitmapWorkerTask task = new BitmapWorkerTask(imageView);
                 final AsyncDrawable asyncDrawable = new AsyncDrawable(conversationFragment.getActivity().getResources(), null, task);

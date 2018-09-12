@@ -9,6 +9,7 @@
             android:layout_height="@dimen/media_preview_size"
             android:background="@color/black54"
             android:layout_centerInParent="true"
+            android:scaleType="center"
             android:layout_margin="12dp"/>
         <ImageButton
             android:id="@+id/delete_button"

@@ -25,7 +25,7 @@ import eu.siacs.conversations.R;
 import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.ui.ManageAccountActivity;
 import eu.siacs.conversations.ui.XmppActivity;
-import eu.siacs.conversations.ui.util.Color;
+import eu.siacs.conversations.ui.util.StyledAttributes;
 import eu.siacs.conversations.utils.UIHelper;
 
 public class AccountAdapter extends ArrayAdapter<Account> {
@@ -65,14 +65,14 @@ public class AccountAdapter extends ArrayAdapter<Account> {
 		statusView.setText(getContext().getString(account.getStatus().getReadableId()));
 		switch (account.getStatus()) {
 			case ONLINE:
-				statusView.setTextColor(Color.get(activity, R.attr.TextColorOnline));
+				statusView.setTextColor(StyledAttributes.getColor(activity, R.attr.TextColorOnline));
 				break;
 			case DISABLED:
 			case CONNECTING:
-				statusView.setTextColor(Color.get(activity, android.R.attr.textColorSecondary));
+				statusView.setTextColor(StyledAttributes.getColor(activity, android.R.attr.textColorSecondary));
 				break;
 			default:
-				statusView.setTextColor(Color.get(activity, R.attr.TextColorError));
+				statusView.setTextColor(StyledAttributes.getColor(activity, R.attr.TextColorError));
 				break;
 		}
 		final SwitchCompat tglAccountState = view.findViewById(R.id.tgl_account_status);

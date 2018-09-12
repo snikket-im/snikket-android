@@ -35,7 +35,6 @@ import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.InputType;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.ContextMenu;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -47,21 +46,18 @@ import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
 
-import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.databinding.ActivitySearchBinding;
 import eu.siacs.conversations.entities.Contact;
 import eu.siacs.conversations.entities.Conversation;
 import eu.siacs.conversations.entities.Conversational;
 import eu.siacs.conversations.entities.Message;
-import eu.siacs.conversations.entities.StubConversation;
 import eu.siacs.conversations.services.MessageSearchTask;
 import eu.siacs.conversations.ui.adapter.MessageAdapter;
 import eu.siacs.conversations.ui.interfaces.OnSearchResultsAvailable;
 import eu.siacs.conversations.ui.util.ChangeWatcher;
-import eu.siacs.conversations.ui.util.Color;
 import eu.siacs.conversations.ui.util.DateSeparator;
-import eu.siacs.conversations.ui.util.Drawable;
+import eu.siacs.conversations.ui.util.StyledAttributes;
 import eu.siacs.conversations.ui.util.ListViewUtils;
 import eu.siacs.conversations.ui.util.PendingItem;
 import eu.siacs.conversations.ui.util.ShareUtil;
@@ -217,12 +213,12 @@ public class SearchActivity extends XmppActivity implements TextWatcher, OnSearc
 	private void changeBackground(boolean hasSearch, boolean hasResults) {
 		if (hasSearch) {
 			if (hasResults) {
-				binding.searchResults.setBackgroundColor(Color.get(this, R.attr.color_background_secondary));
+				binding.searchResults.setBackgroundColor(StyledAttributes.getColor(this, R.attr.color_background_secondary));
 			} else {
-				binding.searchResults.setBackground(Drawable.get(this, R.attr.activity_background_no_results));
+				binding.searchResults.setBackground(StyledAttributes.getDrawable(this, R.attr.activity_background_no_results));
 			}
 		} else {
-			binding.searchResults.setBackground(Drawable.get(this, R.attr.activity_background_search));
+			binding.searchResults.setBackground(StyledAttributes.getDrawable(this, R.attr.activity_background_search));
 		}
 	}
 
