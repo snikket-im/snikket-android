@@ -56,6 +56,10 @@
     <attr name="media_preview_recording" format="reference"/>
     <attr name="media_preview_audio" format="reference"/>
     <attr name="media_preview_location" format="reference"/>
+    <attr name="media_preview_contact" format="reference"/>
+    <attr name="media_preview_app" format="reference"/>
+    <attr name="media_preview_calendar" format="reference"/>
+    <attr name="media_preview_archive" format="reference" />
 
 
     <attr name="icon_add_group" format="reference"/>

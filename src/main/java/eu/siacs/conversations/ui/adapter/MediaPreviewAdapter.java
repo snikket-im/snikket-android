@@ -62,8 +62,19 @@ public class MediaPreviewAdapter extends RecyclerView.Adapter<MediaPreviewAdapte
             } else if (attachment.getType() == Attachment.Type.RECORDING) {
                 attr = R.attr.media_preview_recording;
             } else {
-                if (attachment.getMime() != null && attachment.getMime().startsWith("audio/")) {
+                final String mime = attachment.getMime();
+                if (mime == null) {
+                    attr = R.attr.media_preview_file;
+                } else if (mime.startsWith("audio/")) {
                     attr = R.attr.media_preview_audio;
+                } else if (mime.equals("text/calendar") || (mime.equals("text/x-vcalendar"))) {
+                    attr = R.attr.media_preview_calendar;
+                } else if (mime.equals("text/x-vcard")) {
+                    attr = R.attr.media_preview_contact;
+                } else if (mime.equals("application/vnd.android.package-archive")) {
+                    attr = R.attr.media_preview_app;
+                } else if (mime.equals("application/zip") || mime.equals("application/rar")) {
+                    attr = R.attr.media_preview_archive;
                 } else {
                     attr = R.attr.media_preview_file;
                 }
