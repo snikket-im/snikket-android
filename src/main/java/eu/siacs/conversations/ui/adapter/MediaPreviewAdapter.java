@@ -29,7 +29,7 @@ import eu.siacs.conversations.ui.util.StyledAttributes;
 
 public class MediaPreviewAdapter extends RecyclerView.Adapter<MediaPreviewAdapter.MediaPreviewViewHolder> {
 
-    private final List<Attachment> mediaPreviews = new ArrayList<>();
+    private final ArrayList<Attachment> mediaPreviews = new ArrayList<>();
 
     private final ConversationFragment conversationFragment;
 
@@ -150,7 +150,7 @@ public class MediaPreviewAdapter extends RecyclerView.Adapter<MediaPreviewAdapte
         return mediaPreviews.size() > 0;
     }
 
-    public List<Attachment> getAttachments() {
+    public ArrayList<Attachment> getAttachments() {
         return mediaPreviews;
     }
 

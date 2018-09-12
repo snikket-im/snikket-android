@@ -33,6 +33,8 @@ import android.content.ClipData;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.util.Log;
 
 import java.util.ArrayList;
@@ -44,7 +46,39 @@ import eu.siacs.conversations.Config;
 import eu.siacs.conversations.utils.MimeUtils;
 import eu.siacs.conversations.xmpp.stanzas.IqPacket;
 
-public class Attachment {
+public class Attachment implements Parcelable {
+
+    Attachment(Parcel in) {
+        uri = in.readParcelable(Uri.class.getClassLoader());
+        mime = in.readString();
+        uuid = UUID.fromString(in.readString());
+        type = Type.valueOf(in.readString());
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeParcelable(uri, flags);
+        dest.writeString(mime);
+        dest.writeString(uuid.toString());
+        dest.writeString(type.toString());
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    public static final Creator<Attachment> CREATOR = new Creator<Attachment>() {
+        @Override
+        public Attachment createFromParcel(Parcel in) {
+            return new Attachment(in);
+        }
+
+        @Override
+        public Attachment[] newArray(int size) {
+            return new Attachment[size];
+        }
+    };
 
     public String getMime() {
         return mime;

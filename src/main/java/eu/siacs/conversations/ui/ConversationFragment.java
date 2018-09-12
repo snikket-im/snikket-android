@@ -139,12 +139,14 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
     public static final String RECENTLY_USED_QUICK_ACTION = "recently_used_quick_action";
     public static final String STATE_CONVERSATION_UUID = ConversationFragment.class.getName() + ".uuid";
     public static final String STATE_SCROLL_POSITION = ConversationFragment.class.getName() + ".scroll_position";
-    public static final String STATE_PHOTO_URI = ConversationFragment.class.getName() + ".take_photo_uri";
+    public static final String STATE_PHOTO_URI = ConversationFragment.class.getName() + ".media_previews";
+    public static final String STATE_MEDIA_PREVIEWS = ConversationFragment.class.getName() + ".take_photo_uri";
     private static final String STATE_LAST_MESSAGE_UUID = "state_last_message_uuid";
 
     private final List<Message> messageList = new ArrayList<>();
     private final PendingItem<ActivityResult> postponedActivityResult = new PendingItem<>();
     private final PendingItem<String> pendingConversationsUuid = new PendingItem<>();
+    private final PendingItem<ArrayList<Attachment>> pendingMediaPreviews = new PendingItem<>();
     private final PendingItem<Bundle> pendingExtras = new PendingItem<>();
     private final PendingItem<Uri> pendingTakePhotoUri = new PendingItem<>();
     private final PendingItem<ScrollState> pendingScrollState = new PendingItem<>();
@@ -1773,6 +1775,10 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
             if (scrollState != null) {
                 outState.putParcelable(STATE_SCROLL_POSITION, scrollState);
             }
+            final ArrayList<Attachment> attachments = mediaPreviewAdapter.getAttachments();
+            if (attachments.size() > 0) {
+                outState.putParcelableArrayList(STATE_MEDIA_PREVIEWS, attachments);
+            }
         }
     }
 
@@ -1783,10 +1789,14 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
             return;
         }
         String uuid = savedInstanceState.getString(STATE_CONVERSATION_UUID);
+        ArrayList<Attachment> attachments = savedInstanceState.getParcelableArrayList(STATE_MEDIA_PREVIEWS);
         pendingLastMessageUuid.push(savedInstanceState.getString(STATE_LAST_MESSAGE_UUID, null));
         if (uuid != null) {
             QuickLoader.set(uuid);
             this.pendingConversationsUuid.push(uuid);
+            if (attachments != null && attachments.size() > 0) {
+                this.pendingMediaPreviews.push(attachments);
+            }
             String takePhotoUri = savedInstanceState.getString(STATE_PHOTO_URI);
             if (takePhotoUri != null) {
                 pendingTakePhotoUri.push(Uri.parse(takePhotoUri));
@@ -2637,8 +2647,14 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
         reInit(conversation);
         ScrollState scrollState = pendingScrollState.pop();
         String lastMessageUuid = pendingLastMessageUuid.pop();
+        List<Attachment> attachments = pendingMediaPreviews.pop();
         if (scrollState != null) {
             setScrollPosition(scrollState, lastMessageUuid);
+        }
+        if (attachments != null && attachments.size() > 0) {
+            Log.d(Config.LOGTAG,"had attachments on restore");
+            mediaPreviewAdapter.addMediaPreviews(attachments);
+            toggleInputMethod();
         }
         return true;
     }
