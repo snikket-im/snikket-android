@@ -105,8 +105,6 @@
     <string name="pref_accept_files">Accept files</string>
     <string name="pref_accept_files_summary">Automatically accept files smaller than…</string>
     <string name="pref_attachments">Attachments</string>
-    <string name="pref_return_to_previous">Quick Sharing</string>
-    <string name="pref_return_to_previous_summary">Immediately return to previous activity instead of opening the conversation after sharing something</string>
     <string name="pref_notification_settings">Notification</string>
     <string name="pref_vibrate">Vibrate</string>
     <string name="pref_vibrate_summary">Vibrate when a new message arrives</string>

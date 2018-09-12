@@ -55,6 +55,8 @@ import android.widget.Toast;
 
 import org.openintents.openpgp.util.OpenPgpApi;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import eu.siacs.conversations.Config;
@@ -92,6 +94,12 @@ public class ConversationsActivity extends XmppActivity implements OnConversatio
 	public static final String EXTRA_NICK = "nick";
 	public static final String EXTRA_IS_PRIVATE_MESSAGE = "pm";
 
+	private static List<String> VIEW_AND_SHARE_ACTIONS = Arrays.asList(
+			ACTION_VIEW_CONVERSATION,
+			Intent.ACTION_SEND,
+			Intent.ACTION_SEND_MULTIPLE
+	);
+
 	public static final int REQUEST_OPEN_MESSAGE = 0x9876;
 	public static final int REQUEST_PLAY_PAUSE = 0x5432;
 
@@ -105,8 +113,9 @@ public class ConversationsActivity extends XmppActivity implements OnConversatio
 	private boolean mActivityPaused = true;
 	private AtomicBoolean mRedirectInProcess = new AtomicBoolean(false);
 
-	private static boolean isViewIntent(Intent i) {
-		return i != null && ACTION_VIEW_CONVERSATION.equals(i.getAction()) && i.hasExtra(EXTRA_CONVERSATION);
+	private static boolean isViewOrShareIntent(Intent i) {
+		Log.d(Config.LOGTAG,"action: "+(i == null ? null : i.getAction()));
+		return i != null && VIEW_AND_SHARE_ACTIONS.contains(i.getAction()) && i.hasExtra(EXTRA_CONVERSATION);
 	}
 
 	private static Intent createLauncherIntent(Context context) {
@@ -383,7 +392,7 @@ public class ConversationsActivity extends XmppActivity implements OnConversatio
 		} else {
 			intent = savedInstanceState.getParcelable("intent");
 		}
-		if (isViewIntent(intent)) {
+		if (isViewOrShareIntent(intent)) {
 			pendingViewIntent.push(intent);
 			setIntent(createLauncherIntent(this));
 		}
@@ -530,7 +539,7 @@ public class ConversationsActivity extends XmppActivity implements OnConversatio
 
 	@Override
 	protected void onNewIntent(final Intent intent) {
-		if (isViewIntent(intent)) {
+		if (isViewOrShareIntent(intent)) {
 			if (xmppConnectionService != null) {
 				processViewIntent(intent);
 			} else {

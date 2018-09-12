@@ -75,6 +75,14 @@ public class Attachment {
         return Collections.singletonList(new Attachment(uri, type, mime));
     }
 
+    public static List<Attachment> of(final Context context, List<Uri> uris) {
+        List<Attachment> attachments = new ArrayList<>();
+        for(Uri uri : uris) {
+            final String mime = MimeUtils.guessMimeTypeFromUri(context, uri);
+            attachments.add(new Attachment(uri, mime != null && mime.startsWith("image/") ? Type.IMAGE : Type.FILE,mime));
+        }
+        return attachments;
+    }
 
     public static List<Attachment> extractAttachments(final Context context, final Intent intent, Type type) {
         List<Attachment> uris = new ArrayList<>();

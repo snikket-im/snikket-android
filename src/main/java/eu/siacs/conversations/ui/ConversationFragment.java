@@ -1973,6 +1973,12 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
         final String nick = extras.getString(ConversationsActivity.EXTRA_NICK);
         final boolean asQuote = extras.getBoolean(ConversationsActivity.EXTRA_AS_QUOTE);
         final boolean pm = extras.getBoolean(ConversationsActivity.EXTRA_IS_PRIVATE_MESSAGE, false);
+        final List<Uri> uris = extractUris(extras);
+        if (uris != null && uris.size() > 0) {
+            mediaPreviewAdapter.addMediaPreviews(Attachment.of(getActivity(), uris));
+            toggleInputMethod();
+            return;
+        }
         if (nick != null) {
             if (pm) {
                 Jid jid = conversation.getJid();
@@ -1998,6 +2004,19 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
         final Message message = downloadUuid == null ? null : conversation.findMessageWithFileAndUuid(downloadUuid);
         if (message != null) {
             startDownloadable(message);
+        }
+    }
+
+    private List<Uri> extractUris(Bundle extras) {
+        final List<Uri> uris = extras.getParcelableArrayList(Intent.EXTRA_STREAM);
+        if (uris != null) {
+            return uris;
+        }
+        final Uri uri = extras.getParcelable(Intent.EXTRA_STREAM);
+        if (uri != null) {
+            return Collections.singletonList(uri);
+        } else {
+            return null;
         }
     }
 

@@ -35,7 +35,6 @@
     <bool name="indicate_received">false</bool>
     <bool name="enable_foreground_service">false</bool>
     <bool name="never_send">false</bool>
-    <bool name="return_to_previous">false</bool>
     <bool name="validate_hostname">false</bool>
     <bool name="show_qr_code_scan">true</bool>
     <bool name="scroll_to_bottom">true</bool>

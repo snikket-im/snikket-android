@@ -138,11 +138,6 @@
             android:summary="@string/pref_picture_compression_summary"
             android:title="@string/pref_picture_compression" />
         <CheckBoxPreference
-            android:defaultValue="@bool/return_to_previous"
-            android:key="return_to_previous"
-            android:summary="@string/pref_return_to_previous_summary"
-            android:title="@string/pref_return_to_previous" />
-        <CheckBoxPreference
             android:defaultValue="@bool/use_share_location_plugin"
             android:key="use_share_location_plugin"
             android:summary="@string/pref_use_share_location_plugin_summary"
