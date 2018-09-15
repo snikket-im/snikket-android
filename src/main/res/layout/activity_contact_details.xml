@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -10,7 +11,7 @@
 
         <include
             android:id="@+id/toolbar"
-            layout="@layout/toolbar"/>
+            layout="@layout/toolbar" />
 
         <ScrollView
             android:layout_width="fill_parent"
@@ -40,7 +41,7 @@
                             android:layout_width="@dimen/avatar_on_details_screen_size"
                             android:layout_height="@dimen/avatar_on_details_screen_size"
                             android:layout_alignParentTop="true"
-                            android:scaleType="centerCrop"/>
+                            android:scaleType="centerCrop" />
 
                         <LinearLayout
                             android:id="@+id/details_jidbox"
@@ -55,7 +56,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="@string/account_settings_example_jabber_id"
-                                android:textAppearance="@style/TextAppearance.Conversations.Title"/>
+                                android:textAppearance="@style/TextAppearance.Conversations.Title" />
 
                             <com.wefika.flowlayout.FlowLayout
                                 android:id="@+id/tags"
@@ -64,29 +65,28 @@
                                 android:layout_marginBottom="4dp"
                                 android:layout_marginLeft="-2dp"
                                 android:layout_marginTop="4dp"
-                                android:orientation="horizontal">
-                            </com.wefika.flowlayout.FlowLayout>
+                                android:orientation="horizontal"></com.wefika.flowlayout.FlowLayout>
 
                             <TextView
                                 android:id="@+id/details_lastseen"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="4dp"
-                                android:textAppearance="@style/TextAppearance.Conversations.Subhead"/>
+                                android:textAppearance="@style/TextAppearance.Conversations.Subhead" />
 
                             <TextView
                                 android:id="@+id/status_message"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="8dp"
-                                android:textAppearance="@style/TextAppearance.Conversations.Body1"/>
+                                android:textAppearance="@style/TextAppearance.Conversations.Body1" />
 
                             <Button
                                 android:id="@+id/add_contact_button"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="8dp"
-                                android:text="@string/add_contact"/>
+                                android:text="@string/add_contact" />
 
                             <CheckBox
                                 android:id="@+id/details_send_presence"
@@ -95,7 +95,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="8dp"
                                 android:text="@string/send_presence_updates"
-                                android:textAppearance="@style/TextAppearance.Conversations.Body1"/>
+                                android:textAppearance="@style/TextAppearance.Conversations.Body1" />
 
                             <CheckBox
                                 android:id="@+id/details_receive_presence"
@@ -103,7 +103,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="@string/receive_presence_updates"
-                                android:textAppearance="@style/TextAppearance.Conversations.Body1"/>
+                                android:textAppearance="@style/TextAppearance.Conversations.Body1" />
                         </LinearLayout>
 
                         <TextView
@@ -114,8 +114,54 @@
                             android:layout_below="@+id/details_jidbox"
                             android:layout_marginTop="32dp"
                             android:text="@string/using_account"
-                            android:textAppearance="@style/TextAppearance.Conversations.Caption"/>
+                            android:textAppearance="@style/TextAppearance.Conversations.Caption" />
                     </RelativeLayout>
+                </android.support.v7.widget.CardView>
+
+                <android.support.v7.widget.CardView
+                    android:id="@+id/media_wrapper"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/activity_vertical_margin"
+                    android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                    android:layout_marginRight="@dimen/activity_horizontal_margin"
+                    android:layout_marginTop="@dimen/activity_vertical_margin">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <android.support.v7.widget.RecyclerView
+                            android:id="@+id/media"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:paddingEnd="@dimen/card_padding_regular"
+                            android:paddingStart="@dimen/card_padding_regular"
+                            android:paddingTop="@dimen/card_padding_regular"
+                            android:paddingBottom="@dimen/card_padding_list"
+                            android:layout_marginStart="-2dp"
+                            android:layout_marginEnd="-2dp"/>
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:orientation="horizontal"
+                            android:layout_gravity="end">
+
+                            <Button
+                                android:id="@+id/show_media"
+                                style="@style/Widget.Conversations.Button.Borderless"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:minWidth="0dp"
+                                android:paddingLeft="16dp"
+                                android:paddingRight="16dp"
+                                android:text="@string/show_media"
+                                android:textColor="?attr/colorAccent" />
+                        </LinearLayout>
+                    </LinearLayout>
                 </android.support.v7.widget.CardView>
 
                 <android.support.v7.widget.CardView
@@ -137,8 +183,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:orientation="vertical"
-                            android:padding="@dimen/card_padding_list">
-                        </LinearLayout>
+                            android:padding="@dimen/card_padding_list"/>
 
                         <LinearLayout
                             android:layout_width="wrap_content"
@@ -156,7 +201,7 @@
                                 android:paddingLeft="16dp"
                                 android:paddingRight="16dp"
                                 android:text="@string/scan_qr_code"
-                                android:textColor="?attr/colorAccent"/>
+                                android:textColor="?attr/colorAccent" />
 
                             <Button
                                 android:id="@+id/show_inactive_devices"
@@ -167,7 +212,7 @@
                                 android:paddingLeft="16dp"
                                 android:paddingRight="16dp"
                                 android:text="@string/show_inactive_devices"
-                                android:textColor="?attr/colorAccent"/>
+                                android:textColor="?attr/colorAccent" />
                         </LinearLayout>
                     </LinearLayout>
                 </android.support.v7.widget.CardView>

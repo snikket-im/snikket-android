@@ -43,6 +43,7 @@ import java.security.DigestOutputStream;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -240,12 +241,12 @@ public class FileBackend {
     }
 
     public Bitmap getPreviewForUri(Attachment attachment, int size, boolean cacheOnly) {
+        final String key = "attachment_"+attachment.getUuid().toString()+"_"+String.valueOf(size);
         final LruCache<String, Bitmap> cache = mXmppConnectionService.getBitmapCache();
-        Bitmap bitmap = cache.get(attachment.getUuid().toString());
+        Bitmap bitmap = cache.get(key);
         if (bitmap != null || cacheOnly) {
             return bitmap;
         }
-        Log.d(Config.LOGTAG,"attachment mime="+attachment.getMime());
         if (attachment.getMime() != null && attachment.getMime().startsWith("video/")) {
             bitmap = cropCenterSquareVideo(attachment.getUri(), size);
             drawOverlay(bitmap, paintOverlayBlack(bitmap) ? R.drawable.play_video_black : R.drawable.play_video_white, 0.75f);
@@ -258,7 +259,7 @@ public class FileBackend {
                 bitmap = withGifOverlay;
             }
         }
-        cache.put(attachment.getUuid().toString(), bitmap);
+        cache.put(key, bitmap);
         return bitmap;
     }
 
@@ -452,7 +453,22 @@ public class FileBackend {
         }
     }
 
-    public String getConversationsDirectory(final String type) {
+    public List<Attachment> convertToAttachments(List<DatabaseBackend.FilePath> relativeFilePaths) {
+        List<Attachment> attachments = new ArrayList<>();
+        for(DatabaseBackend.FilePath relativeFilePath : relativeFilePaths) {
+            final String mime = MimeUtils.guessMimeTypeFromExtension(MimeUtils.extractRelevantExtension(relativeFilePath.path));
+            Log.d(Config.LOGTAG,"mime="+mime);
+            File file = getFileForPath(relativeFilePath.path, mime);
+            if (file.exists()) {
+                attachments.add(Attachment.of(relativeFilePath.uuid, file,mime));
+            } else {
+                Log.d(Config.LOGTAG,"file "+file.getAbsolutePath()+" doesnt exist");
+            }
+        }
+        return attachments;
+    }
+
+    private String getConversationsDirectory(final String type) {
         return getConversationsDirectory(mXmppConnectionService, type);
     }
 

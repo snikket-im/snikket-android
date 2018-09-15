@@ -11,13 +11,12 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.SpannableStringBuilder;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -32,6 +31,7 @@ import org.openintents.openpgp.util.OpenPgpUtils;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 import java.util.concurrent.RejectedExecutionException;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -49,6 +49,10 @@ import eu.siacs.conversations.entities.MucOptions.User;
 import eu.siacs.conversations.services.XmppConnectionService;
 import eu.siacs.conversations.services.XmppConnectionService.OnConversationUpdate;
 import eu.siacs.conversations.services.XmppConnectionService.OnMucRosterUpdate;
+import eu.siacs.conversations.ui.adapter.MediaAdapter;
+import eu.siacs.conversations.ui.interfaces.OnMediaLoaded;
+import eu.siacs.conversations.ui.util.Attachment;
+import eu.siacs.conversations.ui.util.GridManager;
 import eu.siacs.conversations.ui.util.MenuDoubleTabUtil;
 import eu.siacs.conversations.ui.util.MucDetailsContextMenuHelper;
 import eu.siacs.conversations.ui.util.MyLinkify;
@@ -63,7 +67,7 @@ import rocks.xmpp.addr.Jid;
 import static eu.siacs.conversations.entities.Bookmark.printableValue;
 import static eu.siacs.conversations.utils.StringUtils.changed;
 
-public class ConferenceDetailsActivity extends XmppActivity implements OnConversationUpdate, OnMucRosterUpdate, XmppConnectionService.OnAffiliationChanged, XmppConnectionService.OnRoleChanged, XmppConnectionService.OnConfigurationPushed, TextWatcher {
+public class ConferenceDetailsActivity extends XmppActivity implements OnConversationUpdate, OnMucRosterUpdate, XmppConnectionService.OnAffiliationChanged, XmppConnectionService.OnRoleChanged, XmppConnectionService.OnConfigurationPushed, TextWatcher, OnMediaLoaded {
     public static final String ACTION_VIEW_MUC = "view_muc";
 
     private static final float INACTIVE_ALPHA = 0.4684f; //compromise between dark and light theme
@@ -77,6 +81,7 @@ public class ConferenceDetailsActivity extends XmppActivity implements OnConvers
         }
     };
     private ActivityMucDetailsBinding binding;
+    private MediaAdapter mMediaAdapter;
     private String uuid = null;
     private User mSelectedUser = null;
 
@@ -273,6 +278,9 @@ public class ConferenceDetailsActivity extends XmppActivity implements OnConvers
         this.binding.mucEditTitle.addTextChangedListener(this);
         this.binding.mucEditSubject.addTextChangedListener(this);
         this.binding.mucEditSubject.addTextChangedListener(new StylingHelper.MessageEditorStyler(this.binding.mucEditSubject));
+        mMediaAdapter = new MediaAdapter(this,R.dimen.media_size);
+        this.binding.media.setAdapter(mMediaAdapter);
+        GridManager.setupLayoutManager(this, this.binding.media, R.dimen.media_size);
     }
 
     @Override
@@ -442,6 +450,16 @@ public class ConferenceDetailsActivity extends XmppActivity implements OnConvers
         return true;
     }
 
+    @Override
+    public void onMediaLoaded(List<Attachment> attachments) {
+        runOnUiThread(() -> {
+            int limit = GridManager.getCurrentColumnCount(binding.media);
+            mMediaAdapter.setAttachments(attachments.subList(0, Math.min(limit,attachments.size())));
+            binding.mediaWrapper.setVisibility(attachments.size() > 0 ? View.VISIBLE : View.GONE);
+        });
+
+    }
+
 
     protected void saveAsBookmark() {
         xmppConnectionService.saveConversationAsBookmark(mConversation, mConversation.getMucOptions().getName());
@@ -468,6 +486,8 @@ public class ConferenceDetailsActivity extends XmppActivity implements OnConvers
         if (uuid != null) {
             this.mConversation = xmppConnectionService.findConversationByUuid(uuid);
             if (this.mConversation != null) {
+                final int limit = GridManager.getCurrentColumnCount(this.binding.media);
+                xmppConnectionService.getAttachments(this.mConversation, limit, this);
                 updateView();
             }
         }

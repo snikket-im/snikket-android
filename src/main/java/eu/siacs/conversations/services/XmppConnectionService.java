@@ -106,7 +106,9 @@ import eu.siacs.conversations.persistance.FileBackend;
 import eu.siacs.conversations.ui.SettingsActivity;
 import eu.siacs.conversations.ui.UiCallback;
 import eu.siacs.conversations.ui.interfaces.OnAvatarPublication;
+import eu.siacs.conversations.ui.interfaces.OnMediaLoaded;
 import eu.siacs.conversations.ui.interfaces.OnSearchResultsAvailable;
+import eu.siacs.conversations.ui.util.Attachment;
 import eu.siacs.conversations.utils.Compatibility;
 import eu.siacs.conversations.utils.ConversationsFileObserver;
 import eu.siacs.conversations.utils.CryptoHelper;
@@ -2417,6 +2419,16 @@ public class XmppConnectionService extends Service {
 		}
 		return false;
 	}
+
+
+	public void getAttachments(final Conversation conversation, int limit, final OnMediaLoaded onMediaLoaded) {
+        getAttachments(conversation.getAccount(), conversation.getJid().asBareJid(), limit, onMediaLoaded);
+    }
+
+
+	public void getAttachments(final Account account, final Jid jid, final int limit, final OnMediaLoaded onMediaLoaded) {
+        new Thread(() -> onMediaLoaded.onMediaLoaded(fileBackend.convertToAttachments(databaseBackend.getRelativeFilePaths(account, jid, limit)))).start();
+    }
 
 	public void persistSelfNick(MucOptions.User self) {
 		final Conversation conversation = self.getConversation();

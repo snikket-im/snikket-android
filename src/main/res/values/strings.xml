@@ -734,4 +734,5 @@
     <string name="pref_more_notification_settings">Notification Settings</string>
     <string name="pref_more_notification_settings_summary">Importance, Sound, Vibrate</string>
     <string name="video_compression_channel_name">Video compression</string>
+    <string name="show_media">Show media</string>
 </resources>

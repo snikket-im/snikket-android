@@ -71,6 +71,7 @@ import eu.siacs.conversations.ui.service.AudioPlayer;
 import eu.siacs.conversations.ui.text.DividerSpan;
 import eu.siacs.conversations.ui.text.QuoteSpan;
 import eu.siacs.conversations.ui.util.MyLinkify;
+import eu.siacs.conversations.ui.util.ViewUtil;
 import eu.siacs.conversations.ui.widget.ClickableMovementMethod;
 import eu.siacs.conversations.ui.widget.CopyTextView;
 import eu.siacs.conversations.ui.widget.ListSelectionManager;
@@ -896,31 +897,11 @@ public class MessageAdapter extends ArrayAdapter<Message> implements CopyTextVie
 			Toast.makeText(activity, R.string.file_deleted, Toast.LENGTH_SHORT).show();
 			return;
 		}
-		Intent openIntent = new Intent(Intent.ACTION_VIEW);
 		String mime = file.getMimeType();
 		if (mime == null) {
 			mime = "*/*";
 		}
-		Uri uri;
-		try {
-			uri = FileBackend.getUriForFile(activity, file);
-		} catch (SecurityException e) {
-			Log.d(Config.LOGTAG, "No permission to access " + file.getAbsolutePath(), e);
-			Toast.makeText(activity, activity.getString(R.string.no_permission_to_access_x, file.getAbsolutePath()), Toast.LENGTH_SHORT).show();
-			return;
-		}
-		openIntent.setDataAndType(uri, mime);
-		openIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-		PackageManager manager = activity.getPackageManager();
-		List<ResolveInfo> info = manager.queryIntentActivities(openIntent, 0);
-		if (info.size() == 0) {
-			openIntent.setDataAndType(uri, "*/*");
-		}
-		try {
-			getContext().startActivity(openIntent);
-		} catch (ActivityNotFoundException e) {
-			Toast.makeText(activity, R.string.no_application_found_to_open_file, Toast.LENGTH_SHORT).show();
-		}
+		ViewUtil.view(activity, file, mime);
 	}
 
 	public void showLocation(Message message) {

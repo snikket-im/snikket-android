@@ -37,6 +37,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.util.Log;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -44,7 +45,6 @@ import java.util.UUID;
 
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.utils.MimeUtils;
-import eu.siacs.conversations.xmpp.stanzas.IqPacket;
 
 public class Attachment implements Parcelable {
 
@@ -97,6 +97,13 @@ public class Attachment implements Parcelable {
     private final UUID uuid;
     private final String mime;
 
+    private Attachment(UUID uuid, Uri uri, Type type, String mime) {
+        this.uri = uri;
+        this.type = type;
+        this.mime = mime;
+        this.uuid = uuid;
+    }
+
     private Attachment(Uri uri, Type type, String mime) {
         this.uri = uri;
         this.type = type;
@@ -116,6 +123,10 @@ public class Attachment implements Parcelable {
             attachments.add(new Attachment(uri, mime != null && mime.startsWith("image/") ? Type.IMAGE : Type.FILE,mime));
         }
         return attachments;
+    }
+
+    public static Attachment of(UUID uuid, final File file, String mime) {
+        return new Attachment(uuid, Uri.fromFile(file),mime != null && (mime.startsWith("image/") || mime.startsWith("video/")) ? Type.IMAGE : Type.FILE, mime);
     }
 
     public static List<Attachment> extractAttachments(final Context context, final Intent intent, Type type) {
