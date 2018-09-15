@@ -235,6 +235,9 @@
                   android:theme="@style/Base.Theme.AppCompat"/>
         <activity android:name=".ui.MemorizingActivity"/>
 
+        <activity android:name=".ui.MediaBrowserActivity"
+            android:label="@string/media_browser"/>
+
         <service android:name=".services.ExportLogsService"/>
         <service
             android:name=".services.ContactChooserTargetService"

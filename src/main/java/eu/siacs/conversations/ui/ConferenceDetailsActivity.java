@@ -488,6 +488,7 @@ public class ConferenceDetailsActivity extends XmppActivity implements OnConvers
             if (this.mConversation != null) {
                 final int limit = GridManager.getCurrentColumnCount(this.binding.media);
                 xmppConnectionService.getAttachments(this.mConversation, limit, this);
+                this.binding.showMedia.setOnClickListener((v)->MediaBrowserActivity.launch(this,mConversation));
                 updateView();
             }
         }

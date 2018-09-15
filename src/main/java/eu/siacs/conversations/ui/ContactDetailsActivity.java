@@ -1,7 +1,6 @@
 package eu.siacs.conversations.ui;
 
 import android.content.ActivityNotFoundException;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -12,18 +11,13 @@ import android.preference.PreferenceManager;
 import android.provider.ContactsContract.CommonDataKinds;
 import android.provider.ContactsContract.Contacts;
 import android.provider.ContactsContract.Intents;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.ViewTreeObserver;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.TextView;
@@ -488,6 +482,7 @@ public class ContactDetailsActivity extends OmemoActivity implements OnAccountUp
 
             final int limit = GridManager.getCurrentColumnCount(this.binding.media);
             xmppConnectionService.getAttachments(account, contact.getJid().asBareJid(), limit, this);
+            this.binding.showMedia.setOnClickListener((v)->MediaBrowserActivity.launch(this,contact));
             populateView();
         }
     }
