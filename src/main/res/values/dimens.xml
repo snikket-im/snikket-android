@@ -12,7 +12,7 @@
 	<dimen name="avatar_item_distance">16dp</dimen>
 
 	<dimen name="media_preview_size">80dp</dimen>
-	<dimen name="media_size">64dp</dimen>
+	<dimen name="media_size">56dp</dimen> <!-- ideally not larger than avatar_on_details_screen -->
 	<dimen name="browser_media_size">96dp</dimen>
 	<dimen name="toolbar_elevation">4dp</dimen>
 

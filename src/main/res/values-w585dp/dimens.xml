@@ -1,4 +1,6 @@
 <resources>
     <dimen name="activity_horizontal_margin">32dp</dimen>
     <dimen name="avatar_on_details_screen_size">96dp</dimen>
+    <dimen name="media_size">80dp</dimen> <!-- ideally not larger than avatar_on_details_screen -->
+    <dimen name="browser_media_size">128dp</dimen>
 </resources>
