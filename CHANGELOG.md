@@ -1,5 +1,12 @@
 # Changelog
 
+### Version 2.3.0
+* Preview and ask for confirmation before sending media files
+* View per conversation media files in contact and conference details screens
+* Enable foreground service by default for Android 8 (notification can be disabled by long pressing it)
+* Audio player: disable screen and switch to ear piece
+
+
 ### Version 2.2.9
 * Store bookmarks in PEP if server has ability to convert to old bookmarks
 * Show Jabber IDs from address book in Start Conversation screen
