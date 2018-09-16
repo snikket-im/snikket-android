@@ -736,4 +736,5 @@
     <string name="video_compression_channel_name">Video compression</string>
     <string name="view_media">View media</string>
     <string name="media_browser">Media browser</string>
+    <string name="export_channel_name">History export</string>
 </resources>

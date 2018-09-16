@@ -100,7 +100,7 @@ public class NotificationService {
     @RequiresApi(api = Build.VERSION_CODES.O)
     public void initializeChannels() {
         final Context c = mXmppConnectionService;
-        NotificationManager notificationManager = c.getSystemService(NotificationManager.class);
+        final NotificationManager notificationManager = c.getSystemService(NotificationManager.class);
         if (notificationManager == null) {
             return;
         }
@@ -128,6 +128,13 @@ public class NotificationService {
         videoCompressionChannel.setShowBadge(false);
         videoCompressionChannel.setGroup("status");
         notificationManager.createNotificationChannel(videoCompressionChannel);
+
+        final NotificationChannel exportChannel = new NotificationChannel("export",
+                c.getString(R.string.export_channel_name),
+                NotificationManager.IMPORTANCE_LOW);
+        exportChannel.setShowBadge(false);
+        exportChannel.setGroup("status");
+        notificationManager.createNotificationChannel(exportChannel);
 
         final NotificationChannel messagesChannel = new NotificationChannel("messages",
                 c.getString(R.string.messages_channel_name),
