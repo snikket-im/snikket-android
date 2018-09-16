@@ -25,6 +25,7 @@ import android.widget.Toast;
 
 import org.openintents.openpgp.util.OpenPgpUtils;
 
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
@@ -404,12 +405,20 @@ public class ContactDetailsActivity extends OmemoActivity implements OnAccountUp
         final LayoutInflater inflater = getLayoutInflater();
         final AxolotlService axolotlService = contact.getAccount().getAxolotlService();
         if (Config.supportOmemo() && axolotlService != null) {
+            final Collection<XmppAxolotlSession> sessions = axolotlService.findSessionsForContact(contact);
+            boolean anyActive = false;
+            for(XmppAxolotlSession session : sessions) {
+                anyActive = session.getTrust().isActive();
+                if (anyActive) {
+                    break;
+                }
+            }
             boolean skippedInactive = false;
             boolean showsInactive = false;
-            for (final XmppAxolotlSession session : axolotlService.findSessionsForContact(contact)) {
+            for (final XmppAxolotlSession session :sessions) {
                 final FingerprintStatus trust = session.getTrust();
                 hasKeys |= !trust.isCompromised();
-                if (!trust.isActive()) {
+                if (!trust.isActive() && anyActive) {
                     if (showInactiveOmemo) {
                         showsInactive = true;
                     } else {
