@@ -125,7 +125,7 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
     public static final int REQUEST_DECRYPT_PGP = 0x0202;
     public static final int REQUEST_ENCRYPT_MESSAGE = 0x0207;
     public static final int REQUEST_TRUST_KEYS_TEXT = 0x0208;
-    public static final int REQUEST_TRUST_KEYS_MENU = 0x0209;
+    public static final int REQUEST_TRUST_KEYS_ATTACHMENTS = 0x0209;
     public static final int REQUEST_START_DOWNLOAD = 0x0210;
     public static final int REQUEST_ADD_EDITOR_CONTENT = 0x0211;
     public static final int ATTACHMENT_CHOICE_CHOOSE_IMAGE = 0x0301;
@@ -758,10 +758,6 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
     }
 
     protected boolean trustKeysIfNeeded(int requestCode) {
-        return trustKeysIfNeeded(requestCode, ATTACHMENT_CHOICE_INVALID);
-    }
-
-    protected boolean trustKeysIfNeeded(int requestCode, int attachmentChoice) {
         AxolotlService axolotlService = conversation.getAccount().getAxolotlService();
         final List<Jid> targets = axolotlService.getCryptoTargets(conversation);
         boolean hasUnaccepted = !conversation.getAcceptedCryptoTargets().containsAll(targets);
@@ -779,7 +775,6 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
             }
             intent.putExtra("contacts", contacts);
             intent.putExtra(EXTRA_ACCOUNT, conversation.getAccount().getJid().asBareJid().toString());
-            intent.putExtra("choice", attachmentChoice);
             intent.putExtra("conversation", conversation.getUuid());
             startActivityForResult(intent, requestCode);
             return true;
@@ -823,9 +818,8 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
                 Message message = new Message(conversation, body, conversation.getNextEncryption());
                 sendMessage(message);
                 break;
-            case REQUEST_TRUST_KEYS_MENU:
-                int choice = data.getIntExtra("choice", ATTACHMENT_CHOICE_INVALID);
-                selectPresenceToAttachFile(choice);
+            case REQUEST_TRUST_KEYS_ATTACHMENTS:
+                commitAttachments();
                 break;
             case ATTACHMENT_CHOICE_CHOOSE_IMAGE:
                 final List<Attachment> imageUris = Attachment.extractAttachments(getActivity(), data, Attachment.Type.IMAGE);
@@ -869,6 +863,9 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
     }
 
     private void commitAttachments() {
+        if (conversation.getNextEncryption() == Message.ENCRYPTION_AXOLOTL && trustKeysIfNeeded(REQUEST_TRUST_KEYS_ATTACHMENTS)) {
+            return;
+        }
         final List<Attachment> attachments = mediaPreviewAdapter.getAttachments();
         final PresenceSelector.OnPresenceSelected callback = () -> {
             for (Iterator<Attachment> i = attachments.iterator(); i.hasNext(); i.remove()) {
@@ -1398,9 +1395,7 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
                 activity.showInstallPgpDialog();
             }
         } else {
-            if (encryption != Message.ENCRYPTION_AXOLOTL || !trustKeysIfNeeded(REQUEST_TRUST_KEYS_MENU, attachmentChoice)) {
-                selectPresenceToAttachFile(attachmentChoice);
-            }
+            selectPresenceToAttachFile(attachmentChoice);
         }
     }
 
