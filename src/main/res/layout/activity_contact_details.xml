@@ -158,7 +158,7 @@
                                 android:minWidth="0dp"
                                 android:paddingLeft="16dp"
                                 android:paddingRight="16dp"
-                                android:text="@string/show_media"
+                                android:text="@string/view_media"
                                 android:textColor="?attr/colorAccent" />
                         </LinearLayout>
                     </LinearLayout>
