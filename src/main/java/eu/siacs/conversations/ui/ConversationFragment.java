@@ -1847,10 +1847,7 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
         }
         if (this.conversation != null) {
             final String msg = this.binding.textinput.getText().toString();
-            final boolean participating = conversation.getMode() == Conversational.MODE_SINGLE || conversation.getMucOptions().participating();
-            if (this.conversation.getStatus() != Conversation.STATUS_ARCHIVED && participating && this.conversation.setNextMessage(msg)) {
-                this.activity.xmppConnectionService.updateConversation(this.conversation);
-            }
+            storeNextMessage(msg);
             updateChatState(this.conversation, msg);
             this.activity.xmppConnectionService.getNotificationService().setOpenConversation(null);
         }
@@ -1872,10 +1869,7 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
         }
         Log.d(Config.LOGTAG, "ConversationFragment.saveMessageDraftStopAudioPlayer()");
         final String msg = this.binding.textinput.getText().toString();
-        final boolean participating = previousConversation.getMode() == Conversational.MODE_SINGLE || previousConversation.getMucOptions().participating();
-        if (participating && previousConversation.setNextMessage(msg)) {
-            activity.xmppConnectionService.updateConversation(previousConversation);
-        }
+        storeNextMessage(msg);
         updateChatState(this.conversation, msg);
         messageListAdapter.stopAudioPlayer();
         mediaPreviewAdapter.clearPreviews();
@@ -2191,10 +2185,7 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
             this.binding.textinput.append(conversation.getDraftMessage());
             conversation.setDraftMessage(null);
         }
-        final boolean participating = conversation.getMode() == Conversational.MODE_SINGLE || conversation.getMucOptions().participating();
-        if (participating && conversation.setNextMessage(this.binding.textinput.getText().toString())) {
-            activity.xmppConnectionService.databaseBackend.updateConversation(conversation);
-        }
+        storeNextMessage();
         updateChatMsgHint();
         SharedPreferences p = PreferenceManager.getDefaultSharedPreferences(activity);
         final boolean prefScrollToBottom = p.getBoolean("scroll_to_bottom", activity.getResources().getBoolean(R.bool.scroll_to_bottom));
@@ -2204,6 +2195,19 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
                 this.binding.messagesView.setSelection(size - 1);
             });
         }
+    }
+
+    private boolean storeNextMessage() {
+        return storeNextMessage(this.binding.textinput.getText().toString());
+    }
+
+    private boolean storeNextMessage(String msg) {
+        final boolean participating = conversation.getMode() == Conversational.MODE_SINGLE || conversation.getMucOptions().participating();
+        if (this.conversation.getStatus() != Conversation.STATUS_ARCHIVED && participating && this.conversation.setNextMessage(msg)) {
+            this.activity.xmppConnectionService.updateConversation(this.conversation);
+            return true;
+        }
+        return false;
     }
 
     public void doneSendingPgpMessage() {
@@ -2576,6 +2580,9 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
         Account.State status = conversation.getAccount().getStatus();
         if (status == Account.State.ONLINE && conversation.setOutgoingChatState(Config.DEFAULT_CHATSTATE)) {
             service.sendChatState(conversation);
+        }
+        if (storeNextMessage()) {
+            activity.onConversationsListItemUpdated();
         }
         updateSendButton();
     }
