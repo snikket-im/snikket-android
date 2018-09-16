@@ -1091,9 +1091,9 @@ public class XmppConnectionService extends Service {
             status = true;
         } else {
             stopForeground(true);
-            mNotificationService.dismissForcedForegroundNotification(); //if the channel was changed the previous call might fail
             status = false;
         }
+        mNotificationService.dismissForcedForegroundNotification(); //if the channel was changed the previous call might fail
         Log.d(Config.LOGTAG,"ForegroundService: "+(status?"on":"off"));
     }
 
