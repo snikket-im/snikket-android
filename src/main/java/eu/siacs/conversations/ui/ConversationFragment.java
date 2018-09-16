@@ -902,7 +902,11 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
 
     private void handleNegativeActivityResult(int requestCode) {
         switch (requestCode) {
-            //nothing to do for now
+            case ATTACHMENT_CHOICE_TAKE_PHOTO:
+                if (pendingTakePhotoUri.clear()) {
+                    Log.d(Config.LOGTAG,"cleared pending photo uri after negative activity result");
+                }
+                break;
         }
     }
 
@@ -1762,6 +1766,15 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
     }
 
     @Override
+    public void startActivityForResult(Intent intent, int requestCode) {
+        final Activity activity = getActivity();
+        if (activity instanceof ConversationsActivity) {
+            ((ConversationsActivity) activity).clearPendingViewIntent();
+        }
+        super.startActivityForResult(intent, requestCode);
+    }
+
+    @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         if (conversation != null) {
@@ -1872,6 +1885,7 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
     public void reInit(Conversation conversation, Bundle extras) {
         QuickLoader.set(conversation.getUuid());
         this.saveMessageDraftStopAudioPlayer();
+        this.clearPending();
         if (this.reInit(conversation, extras != null)) {
             if (extras != null) {
                 processExtras(extras);
@@ -2662,11 +2676,13 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
     }
 
     private void clearPending() {
-        if (postponedActivityResult.pop() != null) {
+        if (postponedActivityResult.clear()) {
             Log.e(Config.LOGTAG, "cleared pending intent with unhandled result left");
         }
-        pendingScrollState.pop();
-        if (pendingTakePhotoUri.pop() != null) {
+        if (pendingScrollState.clear()) {
+            Log.e(Config.LOGTAG,"cleared scroll state");
+        }
+        if (pendingTakePhotoUri.clear()) {
             Log.e(Config.LOGTAG, "cleared pending photo uri");
         }
     }

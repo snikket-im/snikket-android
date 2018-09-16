@@ -46,4 +46,10 @@ public class PendingItem<T> {
 	public synchronized T peek() {
 		return item;
 	}
+
+	public synchronized boolean clear() {
+		boolean notNull = this.item != null;
+		this.item = null;
+		return notNull;
+	}
 }
