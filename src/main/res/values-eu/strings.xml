@@ -733,4 +733,7 @@
   <string name="pref_more_notification_settings">Jakinarazpenen ezarpenak</string>
   <string name="pref_more_notification_settings_summary">Garrantzia, soinua, dardara</string>
   <string name="video_compression_channel_name">Bideoen konprimatzea</string>
+  <string name="view_media">Ikusi multimedia</string>
+  <string name="media_browser">Multimedia nabigatzailea</string>
+  <string name="export_channel_name">Historiaren esportazioa</string>
 </resources>

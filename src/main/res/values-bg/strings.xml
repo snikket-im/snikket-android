@@ -733,4 +733,7 @@
   <string name="pref_more_notification_settings">Настройки за известията</string>
   <string name="pref_more_notification_settings_summary">Важност, звук, вибрация</string>
   <string name="video_compression_channel_name">Компресия на видеото</string>
+  <string name="view_media">Преглед на медийното съдържание</string>
+  <string name="media_browser">Разглеждане на медийното съдържание</string>
+  <string name="export_channel_name">Изнасяне на историята</string>
 </resources>

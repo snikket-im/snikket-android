@@ -733,4 +733,7 @@
   <string name="pref_more_notification_settings">Benachrichtigungseinstellungen</string>
   <string name="pref_more_notification_settings_summary">Wichtigkeit, Klang, Vibrationen</string>
   <string name="video_compression_channel_name">Video komprimieren</string>
+  <string name="view_media">Medien anzeigen</string>
+  <string name="media_browser">Medienbrowser</string>
+  <string name="export_channel_name">Verlauf exportieren</string>
 </resources>

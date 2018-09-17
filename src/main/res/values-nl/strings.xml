@@ -733,4 +733,7 @@
   <string name="pref_more_notification_settings">Meldingsinstellingen</string>
   <string name="pref_more_notification_settings_summary">Belang, geluid, trillen</string>
   <string name="video_compression_channel_name">Videocompressie</string>
+  <string name="view_media">Media bekijken</string>
+  <string name="media_browser">Mediabrowser</string>
+  <string name="export_channel_name">Geschiedenis exporteren</string>
 </resources>

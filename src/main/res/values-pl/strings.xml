@@ -752,4 +752,7 @@ Administrator twojego serwera będzie mógł czytać twoje wiadomości, ale moż
   <string name="pref_more_notification_settings">Ustawienia powiadomień</string>
   <string name="pref_more_notification_settings_summary">Ważność, Dźwięk, Wibracja</string>
   <string name="video_compression_channel_name">Kompresja wideo</string>
+  <string name="view_media">Pokaż media</string>
+  <string name="media_browser">Przeglądarka mediów</string>
+  <string name="export_channel_name">Eksport historii</string>
 </resources>

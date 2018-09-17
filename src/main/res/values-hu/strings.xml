@@ -112,7 +112,7 @@
   <string name="pref_led_summary">Villogjon a LED új üzenet érkezésekor</string>
   <string name="pref_sound">Csengőhang</string>
   <string name="pref_sound_summary">Hangeffekt lejátszása új üzenet érkezésekor</string>
-  <string name="pref_notification_grace_period">Ne zavarjanak időszak</string>
+  <string name="pref_notification_grace_period">Türelmi idő</string>
   <string name="pref_notification_grace_period_summary">A szoftver csendben marad ennyi ideig, miután aktivitást észlelt másik eszközön</string>
   <string name="pref_advanced_options">Fejlett funkciók</string>
   <string name="pref_never_send_crash">Ne küldjön programhiba jelentéseket</string>
@@ -123,6 +123,7 @@
   <string name="openpgp_error">Az OpenKeychain hibát jelzett</string>
   <string name="accept">Elfogad</string>
   <string name="error">Hiba történt</string>
+  <string name="recording_error">Hiba</string>
   <string name="your_account">Fiókod</string>
   <string name="send_presence_updates">Állapot frissítések küldése</string>
   <string name="receive_presence_updates">Állapot frissítések fogadása</string>
@@ -719,4 +720,20 @@
   <string name="create_dialog_group_chat_name">Konferencia neve</string>
   <string name="conference_destroyed">Ez a konferencia megszűnt</string>
   <string name="phone_book">Címjegyzék</string>
+  <string name="unable_to_save_recording">Nem sikerült rögzíteni a felvételt</string>
+  <string name="foreground_service_channel_name">Előtér szolgáltatás</string>
+  <string name="foreground_service_channel_description">Ez az értesítési kategória állandó értesítést jelenít meg arról, hogy a Conversation fut.</string>
+  <string name="notification_group_status_information">Állapotinformáció</string>
+  <string name="error_channel_name">Kapcsolódási problémák</string>
+  <string name="error_channel_description">Ez az értesítési kategória megjelenít egy értesítést, ha probléma merül fel a fiókhoz való kapcsolódással.</string>
+  <string name="notification_group_messages">Üzenetek</string>
+  <string name="messages_channel_name">Üzenetek</string>
+  <string name="silent_messages_channel_name">Csendes üzenetek</string>
+  <string name="silent_messages_channel_description">Ez az értesítési csoport olyan értesítéseket jelenít meg, amelyek nem okozhatnak hangot. Például amikor egy másik eszközön aktív (Türelmi idő).</string>
+  <string name="pref_more_notification_settings">Értesítés beállítások</string>
+  <string name="pref_more_notification_settings_summary">Fontosság, Hang, Vibrálás</string>
+  <string name="video_compression_channel_name">Videó tömörítés</string>
+  <string name="view_media">Multimédia megtekintése</string>
+  <string name="media_browser">Multimédia böngésző</string>
+  <string name="export_channel_name">Előzmény export</string>
 </resources>

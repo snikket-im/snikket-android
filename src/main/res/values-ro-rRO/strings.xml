@@ -743,4 +743,7 @@ sau chiar pierderea mesajelor.\nÎn continuare veți fi rugați să dezactivați
   <string name="pref_more_notification_settings">Setări notificări</string>
   <string name="pref_more_notification_settings_summary">Importanță, sunete, vibrații</string>
   <string name="video_compression_channel_name">Compresie video</string>
+  <string name="view_media">Vizualizare fișiere media</string>
+  <string name="media_browser">Vizualizare fișiere media</string>
+  <string name="export_channel_name">Export istoric</string>
 </resources>
