@@ -32,6 +32,10 @@ public class Compatibility {
         return Build.VERSION.SDK_INT >= Build.VERSION_CODES.O;
     }
 
+    public static boolean twentyTwo() {
+        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1;
+    }
+
     private static boolean getBooleanPreference(Context context, String name, @BoolRes int res) {
         return getPreferences(context).getBoolean(name, context.getResources().getBoolean(res));
     }
