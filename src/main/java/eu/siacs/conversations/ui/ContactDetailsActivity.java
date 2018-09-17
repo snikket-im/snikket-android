@@ -1,5 +1,6 @@
 package eu.siacs.conversations.ui;
 
+import android.Manifest;
 import android.content.ActivityNotFoundException;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -11,6 +12,7 @@ import android.preference.PreferenceManager;
 import android.provider.ContactsContract.CommonDataKinds;
 import android.provider.ContactsContract.Contacts;
 import android.provider.ContactsContract.Intents;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
@@ -45,6 +47,7 @@ import eu.siacs.conversations.ui.interfaces.OnMediaLoaded;
 import eu.siacs.conversations.ui.util.Attachment;
 import eu.siacs.conversations.ui.util.GridManager;
 import eu.siacs.conversations.ui.util.MenuDoubleTabUtil;
+import eu.siacs.conversations.utils.Compatibility;
 import eu.siacs.conversations.utils.IrregularUnicodeDetector;
 import eu.siacs.conversations.utils.UIHelper;
 import eu.siacs.conversations.utils.XmppUri;
@@ -217,6 +220,7 @@ public class ContactDetailsActivity extends OmemoActivity implements OnAccountUp
             this.showDynamicTags = preferences.getBoolean(SettingsActivity.SHOW_DYNAMIC_TAGS, false);
             this.showLastSeen = preferences.getBoolean("last_activity", false);
         }
+        binding.mediaWrapper.setVisibility(Compatibility.hasStoragePermission(this) ? View.VISIBLE : View.GONE);
         mMediaAdapter.setAttachments(Collections.emptyList());
     }
 
@@ -489,9 +493,11 @@ public class ContactDetailsActivity extends OmemoActivity implements OnAccountUp
                 mPendingFingerprintVerificationUri = null;
             }
 
-            final int limit = GridManager.getCurrentColumnCount(this.binding.media);
-            xmppConnectionService.getAttachments(account, contact.getJid().asBareJid(), limit, this);
-            this.binding.showMedia.setOnClickListener((v)->MediaBrowserActivity.launch(this,contact));
+            if (Compatibility.hasStoragePermission(this)) {
+                final int limit = GridManager.getCurrentColumnCount(this.binding.media);
+                xmppConnectionService.getAttachments(account, contact.getJid().asBareJid(), limit, this);
+                this.binding.showMedia.setOnClickListener((v) -> MediaBrowserActivity.launch(this, contact));
+            }
             populateView();
         }
     }

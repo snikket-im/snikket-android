@@ -110,11 +110,7 @@ public class AbstractConnectionManager {
     }
 
     public boolean hasStoragePermission() {
-        if (!Config.ONLY_INTERNAL_STORAGE && Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            return mXmppConnectionService.checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED;
-        } else {
-            return true;
-        }
+        return Compatibility.hasStoragePermission(mXmppConnectionService);
     }
 
     public void updateConversationUi(boolean force) {

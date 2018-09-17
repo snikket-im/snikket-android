@@ -57,6 +57,7 @@ import eu.siacs.conversations.ui.util.MenuDoubleTabUtil;
 import eu.siacs.conversations.ui.util.MucDetailsContextMenuHelper;
 import eu.siacs.conversations.ui.util.MyLinkify;
 import eu.siacs.conversations.ui.util.SoftKeyboardUtils;
+import eu.siacs.conversations.utils.Compatibility;
 import eu.siacs.conversations.utils.EmojiWrapper;
 import eu.siacs.conversations.utils.StringUtils;
 import eu.siacs.conversations.utils.StylingHelper;
@@ -290,6 +291,7 @@ public class ConferenceDetailsActivity extends XmppActivity implements OnConvers
         if (this.mTheme != theme) {
             recreate();
         }
+        binding.mediaWrapper.setVisibility(Compatibility.hasStoragePermission(this) ? View.VISIBLE : View.GONE);
     }
 
     @Override
@@ -486,9 +488,11 @@ public class ConferenceDetailsActivity extends XmppActivity implements OnConvers
         if (uuid != null) {
             this.mConversation = xmppConnectionService.findConversationByUuid(uuid);
             if (this.mConversation != null) {
-                final int limit = GridManager.getCurrentColumnCount(this.binding.media);
-                xmppConnectionService.getAttachments(this.mConversation, limit, this);
-                this.binding.showMedia.setOnClickListener((v)->MediaBrowserActivity.launch(this,mConversation));
+                if (Compatibility.hasStoragePermission(this)) {
+                    final int limit = GridManager.getCurrentColumnCount(this.binding.media);
+                    xmppConnectionService.getAttachments(this.mConversation, limit, this);
+                    this.binding.showMedia.setOnClickListener((v) -> MediaBrowserActivity.launch(this, mConversation));
+                }
                 updateView();
             }
         }
