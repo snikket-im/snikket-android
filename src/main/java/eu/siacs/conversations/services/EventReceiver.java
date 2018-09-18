@@ -8,6 +8,7 @@ import android.support.v4.content.ContextCompat;
 import android.util.Log;
 
 import eu.siacs.conversations.Config;
+import eu.siacs.conversations.utils.Compatibility;
 
 public class EventReceiver extends BroadcastReceiver {
 
@@ -24,7 +25,11 @@ public class EventReceiver extends BroadcastReceiver {
 		final String action = originalIntent.getAction();
 		if (action.equals("ui") || hasEnabledAccounts(context)) {
 			try {
-				ContextCompat.startForegroundService(context, intentForService);
+				if (Compatibility.runsAndTargetsTwentySix(context)) {
+					ContextCompat.startForegroundService(context, intentForService);
+				} else {
+					context.startService(intentForService);
+				}
 			} catch (RuntimeException e) {
 				Log.d(Config.LOGTAG,"EventReceiver was unable to start service");
 			}

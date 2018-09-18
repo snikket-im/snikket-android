@@ -108,7 +108,6 @@ import eu.siacs.conversations.ui.UiCallback;
 import eu.siacs.conversations.ui.interfaces.OnAvatarPublication;
 import eu.siacs.conversations.ui.interfaces.OnMediaLoaded;
 import eu.siacs.conversations.ui.interfaces.OnSearchResultsAvailable;
-import eu.siacs.conversations.ui.util.Attachment;
 import eu.siacs.conversations.utils.Compatibility;
 import eu.siacs.conversations.utils.ConversationsFileObserver;
 import eu.siacs.conversations.utils.CryptoHelper;
@@ -960,7 +959,7 @@ public class XmppConnectionService extends Service {
         Resolver.init(this);
         this.mRandom = new SecureRandom();
         updateMemorizingTrustmanager();
-        if (Compatibility.twentySix()) {
+        if (Compatibility.runsTwentySix()) {
             mNotificationService.initializeChannels();
         }
         final int maxMemory = (int) (Runtime.getRuntime().maxMemory() / 1024);

@@ -64,7 +64,7 @@ android {
 
     defaultConfig {
         minSdkVersion 19
-        targetSdkVersion 28
+        targetSdkVersion 25
         versionCode 285
         versionName "2.3.0-beta.2"
         archivesBaseName += "-$versionName"
