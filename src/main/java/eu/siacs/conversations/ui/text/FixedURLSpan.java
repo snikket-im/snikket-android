@@ -42,6 +42,8 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
+import java.util.Arrays;
+
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.ui.ConversationsActivity;
@@ -68,7 +70,8 @@ public class FixedURLSpan extends URLSpan {
 	public void onClick(View widget) {
 		final Uri uri = Uri.parse(getURL());
 		final Context context = widget.getContext();
-		if (uri.getScheme().equals("xmpp") && context instanceof ConversationsActivity) {
+		final boolean candidateToProcessDirecty = "xmpp".equals(uri.getScheme()) || ("https".equals(uri.getScheme()) && "conversations.im".equals(uri.getHost()) && uri.getPathSegments().size() > 1 && Arrays.asList("j","i").contains(uri.getPathSegments().get(0)));
+		if (candidateToProcessDirecty && context instanceof ConversationsActivity) {
 			if (((ConversationsActivity) context).onXmppUriClicked(uri)) {
 				widget.playSoundEffect(0);
 				return;

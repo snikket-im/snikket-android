@@ -3441,7 +3441,7 @@ public class XmppConnectionService extends Service {
 	public Conversation findUniqueConversationByJid(XmppUri xmppUri) {
 		List<Conversation> findings = new ArrayList<>();
 		for (Conversation c : getConversations()) {
-			if (c.getJid().asBareJid().equals(xmppUri.getJid()) && ((c.getMode() == Conversational.MODE_MULTI) == xmppUri.isAction(XmppUri.ACTION_JOIN))) {
+			if (c.getAccount().isEnabled() && c.getJid().asBareJid().equals(xmppUri.getJid()) && ((c.getMode() == Conversational.MODE_MULTI) == xmppUri.isAction(XmppUri.ACTION_JOIN))) {
 				findings.add(c);
 			}
 		}
