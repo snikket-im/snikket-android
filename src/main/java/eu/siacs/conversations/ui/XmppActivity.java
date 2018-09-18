@@ -473,9 +473,9 @@ public abstract class XmppActivity extends ActionBarActivity {
 		intent.setAction(ConversationsActivity.ACTION_VIEW_CONVERSATION);
 		intent.putExtra(ConversationsActivity.EXTRA_CONVERSATION, conversation.getUuid());
 		if (text != null) {
-			intent.putExtra(ConversationsActivity.EXTRA_TEXT, text);
+			intent.putExtra(Intent.EXTRA_TEXT, text);
 			if (asQuote) {
-				intent.putExtra(ConversationsActivity.EXTRA_AS_QUOTE, asQuote);
+				intent.putExtra(ConversationsActivity.EXTRA_AS_QUOTE, true);
 			}
 		}
 		if (nick != null) {

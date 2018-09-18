@@ -1985,7 +1985,7 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
 
     private void processExtras(Bundle extras) {
         final String downloadUuid = extras.getString(ConversationsActivity.EXTRA_DOWNLOAD_UUID);
-        final String text = extras.getString(ConversationsActivity.EXTRA_TEXT);
+        final String text = extras.getString(Intent.EXTRA_TEXT);
         final String nick = extras.getString(ConversationsActivity.EXTRA_NICK);
         final boolean asQuote = extras.getBoolean(ConversationsActivity.EXTRA_AS_QUOTE);
         final boolean pm = extras.getBoolean(ConversationsActivity.EXTRA_IS_PRIVATE_MESSAGE, false);

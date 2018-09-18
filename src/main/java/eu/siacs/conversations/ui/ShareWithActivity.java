@@ -187,7 +187,7 @@ public class ShareWithActivity extends XmppActivity implements XmppConnectionSer
             intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
         } else if (share.text != null) {
             intent.setAction(ConversationsActivity.ACTION_VIEW_CONVERSATION);
-            intent.putExtra(ConversationsActivity.EXTRA_TEXT, share.text);
+            intent.putExtra(Intent.EXTRA_TEXT, share.text);
         }
         startActivity(intent);
         finish();
