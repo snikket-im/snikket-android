@@ -106,14 +106,18 @@ public class Resolver {
             threads[1].join();
             if (results.size() > 0) {
                 threads[2].interrupt();
-                Collections.sort(results);
-                Log.d(Config.LOGTAG, Resolver.class.getSimpleName() + ": " + results.toString());
-                return results;
+                synchronized (results) {
+                    Collections.sort(results);
+                    Log.d(Config.LOGTAG, Resolver.class.getSimpleName() + ": " + results.toString());
+                    return new ArrayList<>(results);
+                }
             } else {
                 threads[2].join();
-                Collections.sort(fallbackResults);
-                Log.d(Config.LOGTAG, Resolver.class.getSimpleName() + ": " + fallbackResults.toString());
-                return fallbackResults;
+                synchronized (fallbackResults) {
+                    Collections.sort(fallbackResults);
+                    Log.d(Config.LOGTAG, Resolver.class.getSimpleName() + ": " + fallbackResults.toString());
+                    return new ArrayList<>(fallbackResults);
+                }
             }
         } catch (InterruptedException e) {
             return results;
