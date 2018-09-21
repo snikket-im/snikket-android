@@ -455,6 +455,9 @@ public class XmppConnection implements Runnable {
 		if (Thread.currentThread().isInterrupted()) {
 			throw new InterruptedException();
 		}
+		if (socket instanceof SSLSocket) {
+			SSLSocketHelper.log(account, (SSLSocket) socket);
+		}
 		return tag != null && tag.isStart("stream");
 	}
 
@@ -852,6 +855,7 @@ public class XmppConnection implements Runnable {
 			features.encryptionEnabled = true;
 			final Tag tag = tagReader.readTag();
 			if (tag != null && tag.isStart("stream")) {
+				SSLSocketHelper.log(account, sslSocket);
 				processStream();
 			} else {
 				throw new IOException("server didn't restart stream after STARTTLS");

@@ -40,12 +40,14 @@ import android.util.Log;
 import android.util.LruCache;
 import android.util.Pair;
 
+import org.conscrypt.Conscrypt;
 import org.openintents.openpgp.IOpenPgpService2;
 import org.openintents.openpgp.util.OpenPgpApi;
 import org.openintents.openpgp.util.OpenPgpServiceConnection;
 
 import java.net.URL;
 import java.security.SecureRandom;
+import java.security.Security;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
 import java.util.ArrayList;
@@ -955,7 +957,7 @@ public class XmppConnectionService extends Service {
     public void onCreate() {
         OmemoSetting.load(this);
         ExceptionHelper.init(getApplicationContext());
-        PRNGFixes.apply();
+        Security.insertProviderAt(Conscrypt.newProvider(), 1);
         Resolver.init(this);
         this.mRandom = new SecureRandom();
         updateMemorizingTrustmanager();
