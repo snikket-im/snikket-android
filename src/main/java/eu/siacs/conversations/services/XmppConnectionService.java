@@ -3114,6 +3114,14 @@ public class XmppConnectionService extends Service {
 											updateConversationUi();
 											updateMucRosterUi();
 										}
+										if (user.getRealJid() != null) {
+										    Contact contact = account.getRoster().getContact(user.getRealJid());
+										    if (contact.setAvatar(avatar)) {
+                                                syncRoster(account);
+                                                getAvatarService().clear(contact);
+                                                updateRosterUi();
+                                            }
+                                        }
 									}
 								}
 							}

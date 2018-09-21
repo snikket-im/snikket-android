@@ -431,8 +431,12 @@ public class Contact implements ListItem, Blockable {
 		}
 	}
 
-	public String getAvatar() {
+	public String getAvatarFilename() {
 		return avatar == null ? null : avatar.getFilename();
+	}
+
+	public Avatar getAvatar() {
+		return avatar;
 	}
 
 	public boolean mutualPresenceSubscription() {

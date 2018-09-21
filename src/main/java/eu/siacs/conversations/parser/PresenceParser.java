@@ -119,6 +119,14 @@ public class PresenceParser extends AbstractParser implements
 								if (user.setAvatar(avatar)) {
 									mXmppConnectionService.getAvatarService().clear(user);
 								}
+								if (user.getRealJid() != null) {
+									Contact c = conversation.getAccount().getRoster().getContact(user.getRealJid());
+									if (c.setAvatar(avatar)) {
+										mXmppConnectionService.syncRoster(conversation.getAccount());
+										mXmppConnectionService.getAvatarService().clear(c);
+										mXmppConnectionService.updateRosterUi();
+									}
+								}
 							} else if (mXmppConnectionService.isDataSaverDisabled()) {
 								mXmppConnectionService.fetchAvatar(mucOptions.getAccount(), avatar);
 							}

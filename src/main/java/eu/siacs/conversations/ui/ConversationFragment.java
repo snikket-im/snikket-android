@@ -874,7 +874,7 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
                     attachLocationToConversation(conversation, attachment.getUri());
                 } else if (attachment.getType() == Attachment.Type.IMAGE) {
                     Log.d(Config.LOGTAG, "ConversationsActivity.commitAttachments() - attaching image to conversations. CHOOSE_IMAGE");
-					attachImageToConversation(conversation, attachment.getUri());
+                    attachImageToConversation(conversation, attachment.getUri());
                 } else {
                     Log.d(Config.LOGTAG, "ConversationsActivity.commitAttachments() - attaching file to conversations. CHOOSE_FILE/RECORD_VOICE/RECORD_VIDEO");
                     attachFileToConversation(conversation, attachment.getUri(), attachment.getMime());
@@ -901,7 +901,7 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
         switch (requestCode) {
             case ATTACHMENT_CHOICE_TAKE_PHOTO:
                 if (pendingTakePhotoUri.clear()) {
-                    Log.d(Config.LOGTAG,"cleared pending photo uri after negative activity result");
+                    Log.d(Config.LOGTAG, "cleared pending photo uri after negative activity result");
                 }
                 break;
         }
@@ -1033,7 +1033,7 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
                     Jid tcp = message.getTrueCounterpart();
                     Jid cp = message.getCounterpart();
                     if (cp != null && !cp.isBareJid()) {
-                        User userByRealJid = tcp != null ? conversation.getMucOptions().findOrCreateUserByRealJid(tcp) : null;
+                        User userByRealJid = tcp != null ? conversation.getMucOptions().findOrCreateUserByRealJid(tcp, cp) : null;
                         final User user = userByRealJid != null ? userByRealJid : conversation.getMucOptions().findUserByFullJid(cp);
                         final PopupMenu popupMenu = new PopupMenu(getActivity(), v);
                         popupMenu.inflate(R.menu.muc_details_context);
@@ -2670,7 +2670,7 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
             setScrollPosition(scrollState, lastMessageUuid);
         }
         if (attachments != null && attachments.size() > 0) {
-            Log.d(Config.LOGTAG,"had attachments on restore");
+            Log.d(Config.LOGTAG, "had attachments on restore");
             mediaPreviewAdapter.addMediaPreviews(attachments);
             toggleInputMethod();
         }
@@ -2682,7 +2682,7 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
             Log.e(Config.LOGTAG, "cleared pending intent with unhandled result left");
         }
         if (pendingScrollState.clear()) {
-            Log.e(Config.LOGTAG,"cleared scroll state");
+            Log.e(Config.LOGTAG, "cleared scroll state");
         }
         if (pendingTakePhotoUri.clear()) {
             Log.e(Config.LOGTAG, "cleared pending photo uri");
