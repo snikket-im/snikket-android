@@ -377,8 +377,8 @@ public class XmppConnection implements Runnable {
 							}
 
 							SSLSocketHelper.setSecurity((SSLSocket) localSocket);
-							SSLSocketHelper.setSNIHost(tlsFactoryVerifier.factory, (SSLSocket) localSocket, account.getServer());
-							SSLSocketHelper.setAlpnProtocol(tlsFactoryVerifier.factory, (SSLSocket) localSocket, "xmpp-client");
+							SSLSocketHelper.setSNIHost((SSLSocket) localSocket, account.getServer());
+							SSLSocketHelper.setAlpnProtocol((SSLSocket) localSocket, "xmpp-client");
 
 							localSocket.connect(addr, Config.SOCKET_TIMEOUT * 1000);
 
