@@ -687,6 +687,18 @@ public class FileBackend {
         updateFileParams(message);
     }
 
+    public boolean unusualBounds(Uri image) {
+        try {
+            BitmapFactory.Options options = new BitmapFactory.Options();
+            options.inJustDecodeBounds = true;
+            BitmapFactory.decodeStream(mXmppConnectionService.getContentResolver().openInputStream(image), null, options);
+            float ratio = (float) options.outHeight / options.outWidth;
+            return ratio > (21.0f / 9.0f) || ratio < (9.0f / 21.0f);
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
     private int getRotation(File file) {
         return getRotation(Uri.parse("file://" + file.getAbsolutePath()));
     }

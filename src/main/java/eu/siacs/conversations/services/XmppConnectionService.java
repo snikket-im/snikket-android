@@ -504,7 +504,8 @@ public class XmppConnectionService extends Service {
 
         if ("never".equals(compressPictures)
                 || ("auto".equals(compressPictures) && getFileBackend().useImageAsIs(uri))
-                || (mimeType != null && mimeType.endsWith("/gif"))) {
+                || (mimeType != null && mimeType.endsWith("/gif"))
+                || getFileBackend().unusualBounds(uri)) {
             Log.d(Config.LOGTAG, conversation.getAccount().getJid().asBareJid() + ": not compressing picture. sending as file");
             attachFileToConversation(conversation, uri, mimeType, callback);
             return;
