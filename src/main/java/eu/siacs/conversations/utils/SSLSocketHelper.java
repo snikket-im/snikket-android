@@ -4,6 +4,8 @@ import android.os.Build;
 import android.support.annotation.RequiresApi;
 import android.util.Log;
 
+import org.conscrypt.Conscrypt;
+
 import java.lang.reflect.Method;
 import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
@@ -40,37 +42,19 @@ public class SSLSocketHelper {
         }
     }
 
-    public static void setSNIHost(final SSLSocket socket, final String hostname) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            setSNIHostNougat(socket, hostname);
-        } else {
-            try {
-                socket.getClass().getMethod("setHostname", String.class).invoke(socket, hostname);
-            } catch (Throwable e) {
-                Log.e(Config.LOGTAG, "unable to set SNI name on socket (" + hostname + ")", e);
-            }
+    public static void setHostname(final SSLSocket socket, final String hostname) {
+        try {
+            Conscrypt.setHostname(socket, hostname);
+        } catch (IllegalArgumentException e) {
+            Log.e(Config.LOGTAG, "unable to set SNI name on socket (" + hostname + ")", e);
         }
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.N)
-    private static void setSNIHostNougat(final SSLSocket socket, final String hostname) {
-        final SSLParameters parameters = new SSLParameters();
-        parameters.setServerNames(Collections.singletonList(new SNIHostName(hostname)));
-        socket.setSSLParameters(parameters);
-    }
-
-    public static void setAlpnProtocol(final SSLSocket socket, final String protocol) {
+    public static void setApplicationProtocol(final SSLSocket socket, final String protocol) {
         try {
-            final Method method = socket.getClass().getMethod("setAlpnProtocols", byte[].class);
-            // the concatenation of 8-bit, length prefixed protocol names, just one in our case...
-            // http://tools.ietf.org/html/draft-agl-tls-nextprotoneg-04#page-4
-            final byte[] protocolUTF8Bytes = protocol.getBytes("UTF-8");
-            final byte[] lengthPrefixedProtocols = new byte[protocolUTF8Bytes.length + 1];
-            lengthPrefixedProtocols[0] = (byte) protocol.length(); // cannot be over 255 anyhow
-            System.arraycopy(protocolUTF8Bytes, 0, lengthPrefixedProtocols, 1, protocolUTF8Bytes.length);
-            method.invoke(socket, new Object[]{lengthPrefixedProtocols});
-        } catch (Throwable e) {
-            Log.e(Config.LOGTAG,"unable to set ALPN on socket",e);
+            Conscrypt.setApplicationProtocols(socket, new String[]{protocol});
+        } catch (IllegalArgumentException e) {
+            Log.e(Config.LOGTAG, "unable to set ALPN on socket", e);
         }
     }
 
@@ -80,6 +64,6 @@ public class SSLSocketHelper {
 
     public static void log(Account account, SSLSocket socket) {
         SSLSession session = socket.getSession();
-        Log.d(Config.LOGTAG,account.getJid().asBareJid()+": protocol="+session.getProtocol()+" cipher="+session.getCipherSuite());
+        Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": protocol=" + session.getProtocol() + " cipher=" + session.getCipherSuite());
     }
 }
