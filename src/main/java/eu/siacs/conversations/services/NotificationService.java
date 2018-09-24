@@ -384,10 +384,12 @@ public class NotificationService {
                 if (!summaryOnly) {
                     for (Map.Entry<String, ArrayList<Message>> entry : notifications.entrySet()) {
                         String uuid = entry.getKey();
-                        Builder singleBuilder = buildSingleConversations(entry.getValue(), notifyOnlyOneChild ? conversations.contains(uuid) : notify);
+                        final boolean notifyThis =  notifyOnlyOneChild ? conversations.contains(uuid) : notify;
+                        Builder singleBuilder = buildSingleConversations(entry.getValue(),notifyThis);
                         if (!notifyOnlyOneChild) {
                             singleBuilder.setGroupAlertBehavior(NotificationCompat.GROUP_ALERT_SUMMARY);
                         }
+                        modifyForSoundVibrationAndLight(singleBuilder, notifyThis, preferences);
                         singleBuilder.setGroup(CONVERSATIONS_GROUP);
                         setNotificationColor(singleBuilder);
                         notify(entry.getKey(), NOTIFICATION_ID, singleBuilder.build());

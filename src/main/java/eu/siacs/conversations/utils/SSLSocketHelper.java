@@ -1,25 +1,17 @@
 package eu.siacs.conversations.utils;
 
-import android.os.Build;
-import android.support.annotation.RequiresApi;
 import android.util.Log;
 
 import org.conscrypt.Conscrypt;
 
-import java.lang.reflect.Method;
 import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.LinkedList;
 
-import javax.net.ssl.SNIHostName;
-import javax.net.ssl.SNIServerName;
 import javax.net.ssl.SSLContext;
-import javax.net.ssl.SSLParameters;
 import javax.net.ssl.SSLSession;
 import javax.net.ssl.SSLSocket;
-import javax.net.ssl.SSLSocketFactory;
 
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.entities.Account;
