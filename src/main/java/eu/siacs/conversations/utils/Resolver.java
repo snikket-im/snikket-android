@@ -123,9 +123,7 @@ public class Resolver {
             for(Thread thread : threads) {
                 thread.interrupt();
             }
-            synchronized (results) {
-                return new ArrayList<>(results);
-            }
+            return Collections.emptyList();
         }
     }
 
