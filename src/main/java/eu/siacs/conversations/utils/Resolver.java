@@ -120,7 +120,12 @@ public class Resolver {
                 }
             }
         } catch (InterruptedException e) {
-            return results;
+            for(Thread thread : threads) {
+                thread.interrupt();
+            }
+            synchronized (results) {
+                return new ArrayList<>(results);
+            }
         }
     }
 
