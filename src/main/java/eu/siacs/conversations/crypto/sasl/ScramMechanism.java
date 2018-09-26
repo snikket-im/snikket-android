@@ -43,7 +43,7 @@ abstract class ScramMechanism extends SaslMechanism {
 	static {
 		CACHE = new LruCache<String, KeyPair>(10) {
 			protected KeyPair create(final String k) {
-				// Map keys are "bytesToHex(JID),bytesToHex(password),bytesToHex(salt),iterations".
+				// Map keys are "bytesToHex(JID),bytesToHex(password),bytesToHex(salt),iterations,SASL-Mechanism".
 				// Changing any of these values forces a cache miss. `CryptoHelper.bytesToHex()'
 				// is applied to prevent commas in the strings breaking things.
 				final String[] kparts = k.split(",", 4);
@@ -147,12 +147,13 @@ abstract class ScramMechanism extends SaslMechanism {
 				final byte[] authMessage = (clientFirstMessageBare + ',' + new String(serverFirstMessage) + ','
 						+ clientFinalMessageWithoutProof).getBytes();
 
-				// Map keys are "bytesToHex(JID),bytesToHex(password),bytesToHex(salt),iterations".
+				// Map keys are "bytesToHex(JID),bytesToHex(password),bytesToHex(salt),iterations,SASL-Mechanism".
 				final KeyPair keys = CACHE.get(
 						CryptoHelper.bytesToHex(account.getJid().asBareJid().toString().getBytes()) + ","
 						+ CryptoHelper.bytesToHex(account.getPassword().getBytes()) + ","
 						+ CryptoHelper.bytesToHex(salt.getBytes()) + ","
 						+ String.valueOf(iterationCount)
+						+ getMechanism()
 						);
 				if (keys == null) {
 					throw new AuthenticationException("Invalid keys generated");
