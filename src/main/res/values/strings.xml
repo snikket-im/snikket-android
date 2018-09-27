@@ -152,6 +152,7 @@
     <string name="account_status_policy_violation">Policy violation</string>
     <string name="account_status_incompatible_server">Incompatible server</string>
     <string name="account_status_stream_error">Stream error</string>
+    <string name="account_status_stream_opening_error">Stream opening error</string>
     <string name="encryption_choice_unencrypted">Unencrypted</string>
     <string name="encryption_choice_otr">OTR</string>
     <string name="encryption_choice_pgp">OpenPGP</string>
