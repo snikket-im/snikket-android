@@ -201,7 +201,7 @@ public class XmppConnection implements Runnable {
         }
     }
 
-    protected void changeStatus(final Account.State nextStatus) {
+    private void changeStatus(final Account.State nextStatus) {
         synchronized (this) {
             if (Thread.currentThread().isInterrupted()) {
                 Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": not changing status to " + nextStatus + " because thread was interrupted");
@@ -502,7 +502,7 @@ public class XmppConnection implements Runnable {
             } else if (nextTag.isStart("features")) {
                 processStreamFeatures(nextTag);
             } else if (nextTag.isStart("proceed")) {
-                switchOverToTls(nextTag);
+                switchOverToTls();
             } else if (nextTag.isStart("success")) {
                 final String challenge = tagReader.readElement(nextTag).getContent();
                 try {
@@ -828,7 +828,7 @@ public class XmppConnection implements Runnable {
         tagWriter.writeTag(startTLS);
     }
 
-    private void switchOverToTls(final Tag currentTag) throws XmlPullParserException, IOException {
+    private void switchOverToTls() throws XmlPullParserException, IOException {
         tagReader.readTag();
         try {
             final TlsFactoryVerifier tlsFactoryVerifier = getTlsFactoryVerifier();
