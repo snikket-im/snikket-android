@@ -23,6 +23,8 @@ import eu.siacs.conversations.entities.DownloadableFile;
 import eu.siacs.conversations.entities.Message;
 import eu.siacs.conversations.persistance.FileBackend;
 import eu.siacs.conversations.ui.UiCallback;
+import eu.siacs.conversations.utils.Android360pFormatStrategy;
+import eu.siacs.conversations.utils.Android480pFormatStrategy;
 import eu.siacs.conversations.utils.MimeUtils;
 
 public class AttachFileToConversationRunnable implements Runnable, MediaTranscoder.Listener {
@@ -90,7 +92,7 @@ public class AttachFileToConversationRunnable implements Runnable, MediaTranscod
 		message.setRelativeFilePath(message.getUuid() + ".mp4");
 		final DownloadableFile file = mXmppConnectionService.getFileBackend().getFile(message);
 		final int runtime = mXmppConnectionService.getFileBackend().getMediaRuntime(uri);
-		MediaFormatStrategy formatStrategy = runtime >= 8000 ? MediaFormatStrategyPresets.createExportPreset960x540Strategy() : MediaFormatStrategyPresets.createAndroid720pStrategy();
+		final MediaFormatStrategy formatStrategy = runtime >= 20000 ? new Android360pFormatStrategy() : new Android480pFormatStrategy();
 		file.getParentFile().mkdirs();
 		final ParcelFileDescriptor parcelFileDescriptor = mXmppConnectionService.getContentResolver().openFileDescriptor(uri, "r");
 		if (parcelFileDescriptor == null) {
