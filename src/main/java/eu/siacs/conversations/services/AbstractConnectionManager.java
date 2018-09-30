@@ -66,14 +66,14 @@ public class AbstractConnectionManager {
     }
 
     public static OutputStream createAppendedOutputStream(DownloadableFile file) {
-        return createOutputStream(file, false, true);
+        return createOutputStream(file, true);
     }
 
-    public static OutputStream createOutputStream(DownloadableFile file, boolean gcm) {
-        return createOutputStream(file, gcm, false);
+    public static OutputStream createOutputStream(DownloadableFile file) {
+        return createOutputStream(file, false);
     }
 
-    private static OutputStream createOutputStream(DownloadableFile file, boolean gcm, boolean append) {
+    private static OutputStream createOutputStream(DownloadableFile file, boolean append) {
         FileOutputStream os;
         try {
             os = new FileOutputStream(file, append);
@@ -84,20 +84,13 @@ public class AbstractConnectionManager {
             return null;
         }
         try {
-            if (gcm) {
-                Cipher cipher = Compatibility.twentyTwo() ? Cipher.getInstance(CIPHERMODE) : Cipher.getInstance(CIPHERMODE, PROVIDER);
-                SecretKeySpec keySpec = new SecretKeySpec(file.getKey(), KEYTYPE);
-                IvParameterSpec ivSpec = new IvParameterSpec(file.getIv());
-                cipher.init(Cipher.DECRYPT_MODE, keySpec, ivSpec);
-                return new CipherOutputStream(os, cipher);
-            } else {
-                IvParameterSpec ips = new IvParameterSpec(file.getIv());
-                Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
-                cipher.init(Cipher.DECRYPT_MODE, new SecretKeySpec(file.getKey(), KEYTYPE), ips);
-                return new CipherOutputStream(os, cipher);
-            }
+            Cipher cipher = Cipher.getInstance(CIPHERMODE);
+            SecretKeySpec keySpec = new SecretKeySpec(file.getKey(), KEYTYPE);
+            IvParameterSpec ivSpec = new IvParameterSpec(file.getIv());
+            cipher.init(Cipher.DECRYPT_MODE, keySpec, ivSpec);
+            return new CipherOutputStream(os, cipher);
         } catch (Exception e) {
-            throw new AssertionError(e);
+            return null;
         }
     }
 

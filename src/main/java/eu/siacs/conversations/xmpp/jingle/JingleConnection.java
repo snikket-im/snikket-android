@@ -151,18 +151,18 @@ public class JingleConnection implements Transferable {
 		}
 	};
 
-	public InputStream getFileInputStream() {
+	InputStream getFileInputStream() {
 		return this.mFileInputStream;
 	}
 
-	public OutputStream getFileOutputStream() throws IOException {
+	OutputStream getFileOutputStream() throws IOException {
 		if (this.file == null) {
 			Log.d(Config.LOGTAG,"file object was not assigned");
 			return null;
 		}
 		this.file.getParentFile().mkdirs();
 		this.file.createNewFile();
-		this.mFileOutputStream = AbstractConnectionManager.createOutputStream(this.file,message.getEncryption() == Message.ENCRYPTION_AXOLOTL);
+		this.mFileOutputStream = AbstractConnectionManager.createOutputStream(this.file);
 		return this.mFileOutputStream;
 	}
 

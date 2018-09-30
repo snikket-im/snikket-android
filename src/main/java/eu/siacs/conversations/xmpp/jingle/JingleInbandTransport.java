@@ -94,8 +94,7 @@ public class JingleInbandTransport extends JingleTransport {
 	}
 
 	@Override
-	public void receive(DownloadableFile file,
-			OnFileTransmissionStatusChanged callback) {
+	public void receive(DownloadableFile file, OnFileTransmissionStatusChanged callback) {
 		this.onFileTransmissionStatusChanged = callback;
 		this.file = file;
 		try {
@@ -115,8 +114,7 @@ public class JingleInbandTransport extends JingleTransport {
     }
 
 	@Override
-	public void send(DownloadableFile file,
-			OnFileTransmissionStatusChanged callback) {
+	public void send(DownloadableFile file, OnFileTransmissionStatusChanged callback) {
 		this.onFileTransmissionStatusChanged = callback;
 		this.file = file;
 		try {

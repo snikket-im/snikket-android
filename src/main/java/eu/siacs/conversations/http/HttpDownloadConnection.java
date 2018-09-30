@@ -405,7 +405,7 @@ public class HttpDownloadConnection implements Transferable {
 					if (!file.exists() && !file.createNewFile()) {
 						throw new FileWriterException();
 					}
-					os = AbstractConnectionManager.createOutputStream(file, true);
+					os = AbstractConnectionManager.createOutputStream(file);
 				}
 				int count;
 				byte[] buffer = new byte[4096];
