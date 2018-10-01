@@ -843,11 +843,14 @@ public class XmppConnection implements Runnable {
 
             final SSLSocket sslSocket = (SSLSocket) tlsFactoryVerifier.factory.createSocket(socket, address.getHostAddress(), socket.getPort(), true);
 
+
             if (sslSocket == null) {
                 throw new IOException("could not initialize ssl socket");
             }
 
             SSLSocketHelper.setSecurity(sslSocket);
+            SSLSocketHelper.setHostname(sslSocket, account.getServer());
+            SSLSocketHelper.setApplicationProtocol(sslSocket, "xmpp-client");
 
             if (!tlsFactoryVerifier.verifier.verify(account.getServer(), this.verifiedHostname, sslSocket.getSession())) {
                 Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": TLS certificate verification failed");
