@@ -67,6 +67,8 @@ public class NotificationService {
 
     public static final Object CATCHUP_LOCK = new Object();
 
+    private static final int LED_COLOR = 0xff00ff00;
+
     private static final String CONVERSATIONS_GROUP = "eu.siacs.conversations";
     private static final int NOTIFICATION_ID_MULTIPLIER = 1024 * 1024;
     private static final int NOTIFICATION_ID = 2 * NOTIFICATION_ID_MULTIPLIER;
@@ -146,7 +148,7 @@ public class NotificationService {
                 .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
                 .setUsage(AudioAttributes.USAGE_NOTIFICATION_RINGTONE)
                 .build());
-        messagesChannel.setLightColor(0xff00ff00);
+        messagesChannel.setLightColor(LED_COLOR);
         final int dat = 70;
         final long[] pattern = {0, 3 * dat, dat, dat};
         messagesChannel.setVibrationPattern(pattern);
@@ -159,10 +161,22 @@ public class NotificationService {
                 NotificationManager.IMPORTANCE_LOW);
         silentMessagesChannel.setDescription(c.getString(R.string.silent_messages_channel_description));
         silentMessagesChannel.setShowBadge(true);
-        silentMessagesChannel.setLightColor(0xff00ff00);
+        silentMessagesChannel.setLightColor(LED_COLOR);
         silentMessagesChannel.enableLights(true);
         silentMessagesChannel.setGroup("chats");
         notificationManager.createNotificationChannel(silentMessagesChannel);
+
+        final NotificationChannel quietHoursChannel = new NotificationChannel("quiet_hours",
+                c.getString(R.string.title_pref_quiet_hours),
+                NotificationManager.IMPORTANCE_LOW);
+        quietHoursChannel.setShowBadge(true);
+        quietHoursChannel.setLightColor(LED_COLOR);
+        quietHoursChannel.enableLights(true);
+        quietHoursChannel.setGroup("chats");
+        quietHoursChannel.enableVibration(false);
+        quietHoursChannel.setSound(null, null);
+
+        notificationManager.createNotificationChannel(quietHoursChannel);
     }
 
     public boolean notify(final Message message) {
@@ -170,8 +184,7 @@ public class NotificationService {
         return message.getStatus() == Message.STATUS_RECEIVED
                 && !conversation.isMuted()
                 && (conversation.alwaysNotify() || wasHighlightedOrPrivate(message))
-                && (!conversation.isWithStranger() || notificationsFromStrangers())
-                ;
+                && (!conversation.isWithStranger() || notificationsFromStrangers());
     }
 
     private boolean notificationsFromStrangers() {
@@ -362,7 +375,10 @@ public class NotificationService {
     private void updateNotification(final boolean notify, final List<String> conversations, final boolean summaryOnly) {
         final SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(mXmppConnectionService);
 
+        final boolean quiteHours = isQuietHours();
+
         final boolean notifyOnlyOneChild = notify && conversations != null && conversations.size() == 1; //if this check is changed to > 0 catchup messages will create one notification per conversation
+
 
         if (notifications.size() == 0) {
             cancel(NOTIFICATION_ID);
@@ -372,24 +388,24 @@ public class NotificationService {
             }
             final Builder mBuilder;
             if (notifications.size() == 1 && Build.VERSION.SDK_INT < Build.VERSION_CODES.N) {
-                mBuilder = buildSingleConversations(notifications.values().iterator().next(), notify);
-                modifyForSoundVibrationAndLight(mBuilder, notify, preferences);
+                mBuilder = buildSingleConversations(notifications.values().iterator().next(), notify, quiteHours);
+                modifyForSoundVibrationAndLight(mBuilder, notify, quiteHours, preferences);
                 notify(NOTIFICATION_ID, mBuilder.build());
             } else {
-                mBuilder = buildMultipleConversation(notify);
+                mBuilder = buildMultipleConversation(notify, quiteHours);
                 if (notifyOnlyOneChild) {
                     mBuilder.setGroupAlertBehavior(NotificationCompat.GROUP_ALERT_CHILDREN);
                 }
-                modifyForSoundVibrationAndLight(mBuilder, notify, preferences);
+                modifyForSoundVibrationAndLight(mBuilder, notify, quiteHours, preferences);
                 if (!summaryOnly) {
                     for (Map.Entry<String, ArrayList<Message>> entry : notifications.entrySet()) {
                         String uuid = entry.getKey();
                         final boolean notifyThis =  notifyOnlyOneChild ? conversations.contains(uuid) : notify;
-                        Builder singleBuilder = buildSingleConversations(entry.getValue(),notifyThis);
+                        Builder singleBuilder = buildSingleConversations(entry.getValue(),notifyThis, quiteHours);
                         if (!notifyOnlyOneChild) {
                             singleBuilder.setGroupAlertBehavior(NotificationCompat.GROUP_ALERT_SUMMARY);
                         }
-                        modifyForSoundVibrationAndLight(singleBuilder, notifyThis, preferences);
+                        modifyForSoundVibrationAndLight(singleBuilder, notifyThis, quiteHours, preferences);
                         singleBuilder.setGroup(CONVERSATIONS_GROUP);
                         setNotificationColor(singleBuilder);
                         notify(entry.getKey(), NOTIFICATION_ID, singleBuilder.build());
@@ -400,13 +416,13 @@ public class NotificationService {
         }
     }
 
-    private void modifyForSoundVibrationAndLight(Builder mBuilder, boolean notify, SharedPreferences preferences) {
+    private void modifyForSoundVibrationAndLight(Builder mBuilder, boolean notify, boolean quietHours, SharedPreferences preferences) {
         final Resources resources = mXmppConnectionService.getResources();
         final String ringtone = preferences.getString("notification_ringtone", resources.getString(R.string.notification_ringtone));
         final boolean vibrate = preferences.getBoolean("vibrate_on_notification", resources.getBoolean(R.bool.vibrate_on_notification));
         final boolean led = preferences.getBoolean("led", resources.getBoolean(R.bool.led));
         final boolean headsup = preferences.getBoolean("notification_headsup", resources.getBoolean(R.bool.headsup_notifications));
-        if (notify && !isQuietHours()) {
+        if (notify && !quietHours) {
             if (vibrate) {
                 final int dat = 70;
                 final long[] pattern = {0, 3 * dat, dat, dat};
@@ -428,7 +444,7 @@ public class NotificationService {
         setNotificationColor(mBuilder);
         mBuilder.setDefaults(0);
         if (led) {
-            mBuilder.setLights(0xff00FF00, 2000, 3000);
+            mBuilder.setLights(LED_COLOR, 2000, 3000);
         }
     }
 
@@ -440,8 +456,8 @@ public class NotificationService {
         }
     }
 
-    private Builder buildMultipleConversation(final boolean notify) {
-        final Builder mBuilder = new NotificationCompat.Builder(mXmppConnectionService, notify ? "messages" : "silent_messages");
+    private Builder buildMultipleConversation(final boolean notify, final boolean quietHours) {
+        final Builder mBuilder = new NotificationCompat.Builder(mXmppConnectionService, quietHours ? "quiet_hours" : (notify ? "messages" : "silent_messages"));
         final NotificationCompat.InboxStyle style = new NotificationCompat.InboxStyle();
         style.setBigContentTitle(notifications.size()
                 + " "
@@ -487,8 +503,8 @@ public class NotificationService {
         return mBuilder;
     }
 
-    private Builder buildSingleConversations(final ArrayList<Message> messages, final boolean notify) {
-        final Builder mBuilder = new NotificationCompat.Builder(mXmppConnectionService, notify ? "messages" : "silent_messages");
+    private Builder buildSingleConversations(final ArrayList<Message> messages, final boolean notify, final boolean quietHours) {
+        final Builder mBuilder = new NotificationCompat.Builder(mXmppConnectionService, quietHours ? "quiet_hours" : (notify ? "messages" : "silent_messages"));
         if (messages.size() >= 1) {
             final Conversation conversation = (Conversation) messages.get(0).getConversation();
             final UnreadConversation.Builder mUnreadBuilder = new UnreadConversation.Builder(conversation.getName().toString());
