@@ -68,7 +68,7 @@ public final class Config {
 	public static final int CONNECT_DISCO_TIMEOUT = 20;
 	public static final int MINI_GRACE_PERIOD = 750;
 
-	public static final boolean XEP_0392 = false; //enables a variant of XEP-0392 that is based on HSLUV
+	public static final boolean XEP_0392 = true; //enables XEP-0392 v0.6.0
 
 	public static final int AVATAR_SIZE = 192;
 	public static final Bitmap.CompressFormat AVATAR_FORMAT = Bitmap.CompressFormat.JPEG;
