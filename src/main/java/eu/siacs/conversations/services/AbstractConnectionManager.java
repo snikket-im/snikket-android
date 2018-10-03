@@ -39,7 +39,7 @@ public class AbstractConnectionManager {
         this.mXmppConnectionService = service;
     }
 
-    public static Pair<InputStream, Integer> createInputStream(DownloadableFile file, boolean gcm) throws FileNotFoundException {
+    public static Pair<InputStream, Integer> createInputStream(DownloadableFile file) throws FileNotFoundException {
         FileInputStream is;
         int size;
         is = new FileInputStream(file);
@@ -48,18 +48,11 @@ public class AbstractConnectionManager {
             return new Pair<>(is, size);
         }
         try {
-            if (gcm) {
-                Cipher cipher = Compatibility.twentyTwo() ? Cipher.getInstance(CIPHERMODE) : Cipher.getInstance(CIPHERMODE, PROVIDER);
-                SecretKeySpec keySpec = new SecretKeySpec(file.getKey(), KEYTYPE);
-                IvParameterSpec ivSpec = new IvParameterSpec(file.getIv());
-                cipher.init(Cipher.ENCRYPT_MODE, keySpec, ivSpec);
-                return new Pair<>(new CipherInputStream(is, cipher), cipher.getOutputSize(size));
-            } else {
-                IvParameterSpec ips = new IvParameterSpec(file.getIv());
-                Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
-                cipher.init(Cipher.ENCRYPT_MODE, new SecretKeySpec(file.getKey(), KEYTYPE), ips);
-                return new Pair<>(new CipherInputStream(is, cipher), (size / 16 + 1) * 16);
-            }
+            Cipher cipher =  Cipher.getInstance(CIPHERMODE);
+            SecretKeySpec keySpec = new SecretKeySpec(file.getKey(), KEYTYPE);
+            IvParameterSpec ivSpec = new IvParameterSpec(file.getIv());
+            cipher.init(Cipher.ENCRYPT_MODE, keySpec, ivSpec);
+            return new Pair<>(new CipherInputStream(is, cipher), cipher.getOutputSize(size));
         } catch (Exception e) {
             throw new AssertionError(e);
         }

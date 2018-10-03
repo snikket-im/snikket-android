@@ -476,11 +476,11 @@ public class JingleConnection implements Transferable {
 				if (message.getEncryption() == Message.ENCRYPTION_AXOLOTL) {
 					this.file.setKey(mXmppAxolotlMessage.getInnerKey());
 					this.file.setIv(mXmppAxolotlMessage.getIV());
-					pair = AbstractConnectionManager.createInputStream(this.file, true);
+					pair = AbstractConnectionManager.createInputStream(this.file);
 					this.file.setExpectedSize(pair.second);
 					content.setFileOffer(this.file, false, this.ftVersion).addChild(mXmppAxolotlMessage.toElement());
 				} else {
-					pair = AbstractConnectionManager.createInputStream(this.file, false);
+					pair = AbstractConnectionManager.createInputStream(this.file);
 					this.file.setExpectedSize(pair.second);
 					content.setFileOffer(this.file, false, this.ftVersion);
 				}
