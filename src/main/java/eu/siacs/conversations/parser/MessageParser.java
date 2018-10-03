@@ -211,7 +211,6 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
 			Log.d(Config.LOGTAG, AxolotlService.getLogprefix(account) + "Received PEP device list " + deviceIds + " update from " + from + ", processing... ");
 			AxolotlService axolotlService = account.getAxolotlService();
 			axolotlService.registerDevices(from, deviceIds);
-			mXmppConnectionService.updateAccountUi();
 		} else if (Namespace.BOOKMARKS.equals(node)) {
 			Log.d(Config.LOGTAG,"received bookmarks from "+from);
 			if (account.getJid().asBareJid().equals(from)) {

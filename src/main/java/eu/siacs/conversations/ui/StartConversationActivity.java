@@ -1110,13 +1110,13 @@ public class StartConversationActivity extends XmppActivity implements XmppConne
 
 		@Override
 		public void destroyItem(@NonNull ViewGroup container, int position, @NonNull Object object) {
-			assert (0 <= position && position < fragments.length);
 			FragmentTransaction trans = fragmentManager.beginTransaction();
 			trans.remove(fragments[position]);
 			trans.commit();
 			fragments[position] = null;
 		}
 
+		@NonNull
 		@Override
 		public Fragment instantiateItem(@NonNull ViewGroup container, int position) {
 			Fragment fragment = getItem(position);
@@ -1149,8 +1149,7 @@ public class StartConversationActivity extends XmppActivity implements XmppConne
 			}
 		}
 
-		public Fragment getItem(int position) {
-			assert (0 <= position && position < fragments.length);
+		Fragment getItem(int position) {
 			if (fragments[position] == null) {
 				final MyListFragment listFragment = new MyListFragment();
 				if (position == 1) {

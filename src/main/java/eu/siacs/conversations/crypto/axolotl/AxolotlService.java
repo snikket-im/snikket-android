@@ -483,9 +483,18 @@ public class AxolotlService implements OnAdvancedStreamFeaturesLoaded {
 				publishOwnDeviceId(deviceIds);
 			}
 		}
+		final Set<Integer> oldSet = this.deviceIds.get(jid);
+		final boolean changed = oldSet == null || oldSet.hashCode() != hash;
 		this.deviceIds.put(jid, deviceIds);
-		mXmppConnectionService.updateConversationUi(); //update the lock icon
-		mXmppConnectionService.keyStatusUpdated(null);
+		if (changed) {
+			mXmppConnectionService.updateConversationUi(); //update the lock icon
+			mXmppConnectionService.keyStatusUpdated(null);
+			if (me) {
+				mXmppConnectionService.updateAccountUi();
+			}
+		} else {
+			Log.d(Config.LOGTAG,"skipped device list update because it hasn't changed");
+		}
 	}
 
 	public void wipeOtherPepDevices() {
