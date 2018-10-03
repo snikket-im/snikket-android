@@ -110,7 +110,7 @@ public class HttpUploadConnection implements Transferable {
 		if (Config.ENCRYPT_ON_HTTP_UPLOADED
 				|| message.getEncryption() == Message.ENCRYPTION_AXOLOTL
 				|| message.getEncryption() == Message.ENCRYPTION_OTR) {
-			this.key = new byte[48]; // todo: change this to 44 for 12-byte IV instead of 16-byte at some point in future
+			this.key = new byte[44];
 			mXmppConnectionService.getRNG().nextBytes(this.key);
 			this.file.setKeyAndIv(this.key);
 		}
