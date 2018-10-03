@@ -78,6 +78,10 @@ public class FingerprintStatus implements Comparable<FingerprintStatus> {
         return status;
     }
 
+    public static FingerprintStatus createActive(Boolean trusted) {
+        return createActive(trusted != null && trusted);
+    }
+
     public static FingerprintStatus createActive(boolean trusted) {
         final FingerprintStatus status = new FingerprintStatus();
         status.trust = trusted ? Trust.TRUSTED : Trust.UNTRUSTED;
