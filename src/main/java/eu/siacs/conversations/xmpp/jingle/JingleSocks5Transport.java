@@ -15,6 +15,7 @@ import java.security.NoSuchAlgorithmException;
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.entities.DownloadableFile;
 import eu.siacs.conversations.persistance.FileBackend;
+import eu.siacs.conversations.services.AbstractConnectionManager;
 import eu.siacs.conversations.utils.CryptoHelper;
 import eu.siacs.conversations.utils.SocksSocketFactory;
 import eu.siacs.conversations.utils.WakeLockHelper;
@@ -94,11 +95,12 @@ public class JingleSocks5Transport extends JingleTransport {
 					callback.onFileTransferAborted();
 					return;
 				}
+				final InputStream innerInputStream = AbstractConnectionManager.upgrade(file, fileInputStream);
 				long size = file.getExpectedSize();
 				long transmitted = 0;
 				int count;
 				byte[] buffer = new byte[8192];
-				while ((count = fileInputStream.read(buffer)) > 0) {
+				while ((count = innerInputStream.read(buffer)) > 0) {
 					outputStream.write(buffer, 0, count);
 					digest.update(buffer, 0, count);
 					transmitted += count;

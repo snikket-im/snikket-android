@@ -4,6 +4,7 @@ import android.util.Base64;
 import android.util.Log;
 import android.util.Pair;
 
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
@@ -471,25 +472,22 @@ public class JingleConnection implements Transferable {
 		if (message.getType() == Message.TYPE_IMAGE || message.getType() == Message.TYPE_FILE) {
 			content.setTransportId(this.transportId);
 			this.file = this.mXmppConnectionService.getFileBackend().getFile(message, false);
-			Pair<InputStream,Integer> pair;
+			if (message.getEncryption() == Message.ENCRYPTION_AXOLOTL) {
+				this.file.setKey(mXmppAxolotlMessage.getInnerKey());
+				this.file.setIv(mXmppAxolotlMessage.getIV());
+				this.file.setExpectedSize(file.getSize() + 16);
+				content.setFileOffer(this.file, false, this.ftVersion).addChild(mXmppAxolotlMessage.toElement());
+			} else {
+				this.file.setExpectedSize(file.getSize());
+				content.setFileOffer(this.file, false, this.ftVersion);
+			}
+			message.resetFileParams();
 			try {
-				if (message.getEncryption() == Message.ENCRYPTION_AXOLOTL) {
-					this.file.setKey(mXmppAxolotlMessage.getInnerKey());
-					this.file.setIv(mXmppAxolotlMessage.getIV());
-					pair = AbstractConnectionManager.createInputStream(this.file);
-					this.file.setExpectedSize(pair.second);
-					content.setFileOffer(this.file, false, this.ftVersion).addChild(mXmppAxolotlMessage.toElement());
-				} else {
-					pair = AbstractConnectionManager.createInputStream(this.file);
-					this.file.setExpectedSize(pair.second);
-					content.setFileOffer(this.file, false, this.ftVersion);
-				}
+				this.mFileInputStream = new FileInputStream(file);
 			} catch (FileNotFoundException e) {
 				cancel();
 				return;
 			}
-			message.resetFileParams();
-			this.mFileInputStream = pair.first;
 			content.setTransportId(this.transportId);
 			content.socks5transport().setChildren(getCandidatesAsElements());
 			packet.setContent(content);

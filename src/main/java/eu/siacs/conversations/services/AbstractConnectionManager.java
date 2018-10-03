@@ -13,11 +13,16 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.security.InvalidAlgorithmParameterException;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
+import java.security.NoSuchProviderException;
 import java.util.concurrent.atomic.AtomicLong;
 
 import javax.crypto.Cipher;
 import javax.crypto.CipherInputStream;
 import javax.crypto.CipherOutputStream;
+import javax.crypto.NoSuchPaddingException;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 
@@ -39,24 +44,18 @@ public class AbstractConnectionManager {
         this.mXmppConnectionService = service;
     }
 
-    public static Pair<InputStream, Integer> createInputStream(DownloadableFile file) throws FileNotFoundException {
-        FileInputStream is;
-        int size;
-        is = new FileInputStream(file);
-        size = (int) file.getSize();
-        if (file.getKey() == null) {
-            return new Pair<>(is, size);
-        }
-        try {
-            Cipher cipher =  Cipher.getInstance(CIPHERMODE);
+    public static InputStream upgrade(DownloadableFile file, InputStream is) throws InvalidAlgorithmParameterException, NoSuchAlgorithmException, InvalidKeyException, NoSuchPaddingException, NoSuchProviderException {
+        if (file.getKey() != null && file.getIv() != null) {
+            Cipher cipher = Compatibility.twentyTwo() ? Cipher.getInstance(CIPHERMODE) : Cipher.getInstance(CIPHERMODE, PROVIDER);
             SecretKeySpec keySpec = new SecretKeySpec(file.getKey(), KEYTYPE);
             IvParameterSpec ivSpec = new IvParameterSpec(file.getIv());
             cipher.init(Cipher.ENCRYPT_MODE, keySpec, ivSpec);
-            return new Pair<>(new CipherInputStream(is, cipher), cipher.getOutputSize(size));
-        } catch (Exception e) {
-            throw new AssertionError(e);
+            return new CipherInputStream(is, cipher);
+        } else {
+            return is;
         }
     }
+
 
     public static OutputStream createAppendedOutputStream(DownloadableFile file) {
         return createOutputStream(file, true);
