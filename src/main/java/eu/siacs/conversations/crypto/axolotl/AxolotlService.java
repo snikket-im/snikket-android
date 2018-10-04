@@ -550,7 +550,7 @@ public class AxolotlService implements OnAdvancedStreamFeaturesLoaded {
 					} else {
 						Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": own device " + session.getFingerprint() + " was active " + hours + " hours ago");
 					}
-				}
+				} //TODO print last activation diff
 			}
 		}
 		return devices;
