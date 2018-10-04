@@ -525,6 +525,7 @@ public class AxolotlService implements OnAdvancedStreamFeaturesLoaded {
 				if (packet.getType() == IqPacket.TYPE.TIMEOUT) {
 					Log.d(Config.LOGTAG, getLogprefix(account) + "Timeout received while retrieving own Device Ids.");
 				} else {
+					//TODO consider calling registerDevices only after item-not-found to account for broken PEPs
 					Element item = mXmppConnectionService.getIqParser().getItem(packet);
 					Set<Integer> deviceIds = mXmppConnectionService.getIqParser().deviceIds(item);
 					Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": retrieved own device list: " + deviceIds);
@@ -1162,8 +1163,8 @@ public class AxolotlService implements OnAdvancedStreamFeaturesLoaded {
 		Set<SignalProtocolAddress> addresses = new HashSet<>();
 		for (Jid jid : getCryptoTargets(conversation)) {
 			Log.d(Config.LOGTAG, AxolotlService.getLogprefix(account) + "Finding devices without session for " + jid);
-			Set<Integer> ids = deviceIds.get(jid);
-			if (deviceIds.get(jid) != null && !ids.isEmpty()) {
+			final Set<Integer> ids = deviceIds.get(jid);
+			if (ids != null && !ids.isEmpty()) {
 				for (Integer foreignId : ids) {
 					SignalProtocolAddress address = new SignalProtocolAddress(jid.toString(), foreignId);
 					if (sessions.get(address) == null) {

@@ -1076,7 +1076,7 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
 					hasKeys = true;
 				}
 			}
-			if (hasKeys && Config.supportOmemo()) {
+			if (hasKeys && Config.supportOmemo()) { //TODO: either the button should be visible if we print an active device or the device list should be fed with reactived devices
 				this.binding.otherDeviceKeysCard.setVisibility(View.VISIBLE);
 				Set<Integer> otherDevices = mAccount.getAxolotlService().getOwnDeviceIds();
 				if (otherDevices == null || otherDevices.isEmpty()) {
