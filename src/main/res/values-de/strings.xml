@@ -151,7 +151,8 @@
   <string name="account_status_tls_error">TLS-Aushandlung fehlgeschlagen</string>
   <string name="account_status_policy_violation">Verstoß gegen die Richtlinien</string>
   <string name="account_status_incompatible_server">Inkompatibler Server</string>
-  <string name="account_status_stream_error">Datenstromfehler</string>
+  <string name="account_status_stream_error">Stream Fehler</string>
+  <string name="account_status_stream_opening_error">Fehler beim Öffnen des Streams</string>
   <string name="encryption_choice_unencrypted">Unverschlüsselt</string>
   <string name="encryption_choice_otr">OTR</string>
   <string name="encryption_choice_pgp">OpenPGP</string>
@@ -736,4 +737,5 @@
   <string name="view_media">Medien anzeigen</string>
   <string name="media_browser">Medienbrowser</string>
   <string name="export_channel_name">Verlauf exportieren</string>
+  <string name="security_violation_not_attaching_file">Die Datei wurde aufgrund von Sicherheitsverletzungen ausgelassen.</string>
 </resources>
