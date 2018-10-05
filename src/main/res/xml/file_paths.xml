@@ -15,6 +15,9 @@
     <files-path
         name="files"
         path="Files/"/>
+    <files-path
+        name="recordings"
+        path="Recordings/"/>
     <cache-path
         name="camera"
         path="Camera/"/>
