@@ -152,6 +152,7 @@
   <string name="account_status_policy_violation">Нарушение на политиката</string>
   <string name="account_status_incompatible_server">Несъвместим сървър</string>
   <string name="account_status_stream_error">Поточна грешка</string>
+  <string name="account_status_stream_opening_error">Проблем при отварянето на потока</string>
   <string name="encryption_choice_unencrypted">Нешифровано</string>
   <string name="encryption_choice_otr">OTR</string>
   <string name="encryption_choice_pgp">OpenPGP</string>
@@ -736,4 +737,5 @@
   <string name="view_media">Преглед на медийното съдържание</string>
   <string name="media_browser">Разглеждане на медийното съдържание</string>
   <string name="export_channel_name">Изнасяне на историята</string>
+  <string name="security_violation_not_attaching_file">Файлът е пропуснат поради нарушение на сигурността.</string>
 </resources>

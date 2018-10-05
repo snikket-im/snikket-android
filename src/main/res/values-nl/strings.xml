@@ -152,6 +152,7 @@
   <string name="account_status_policy_violation">Beleidsschending</string>
   <string name="account_status_incompatible_server">Incompatibele server</string>
   <string name="account_status_stream_error">Fout bij stream</string>
+  <string name="account_status_stream_opening_error">Fout bij openen van stream</string>
   <string name="encryption_choice_unencrypted">Onversleuteld</string>
   <string name="encryption_choice_otr">OTR</string>
   <string name="encryption_choice_pgp">OpenPGP</string>
@@ -736,4 +737,5 @@
   <string name="view_media">Media bekijken</string>
   <string name="media_browser">Mediabrowser</string>
   <string name="export_channel_name">Geschiedenis exporteren</string>
+  <string name="security_violation_not_attaching_file">Bestand weggelaten wegens beveiligingsovertreding.</string>
 </resources>

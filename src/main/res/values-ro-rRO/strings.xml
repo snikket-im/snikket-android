@@ -152,6 +152,7 @@
   <string name="account_status_policy_violation">Încălcare condiții furnizare serviciu</string>
   <string name="account_status_incompatible_server">Server incompatibil</string>
   <string name="account_status_stream_error">Eroare de date</string>
+  <string name="account_status_stream_opening_error">Eroare deschidere flux de date</string>
   <string name="encryption_choice_unencrypted">Necriptat</string>
   <string name="encryption_choice_otr">OTR</string>
   <string name="encryption_choice_pgp">OpenGPG</string>
@@ -746,4 +747,5 @@ sau chiar pierderea mesajelor.\nÎn continuare veți fi rugați să dezactivați
   <string name="view_media">Vizualizare fișiere media</string>
   <string name="media_browser">Vizualizare fișiere media</string>
   <string name="export_channel_name">Export istoric</string>
+  <string name="security_violation_not_attaching_file">Fișier omis ca urmare a unei probleme de securitate.</string>
 </resources>
