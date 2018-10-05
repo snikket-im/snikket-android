@@ -34,6 +34,7 @@ dependencies {
     }
     implementation 'org.sufficientlysecure:openpgp-api:10.0'
     implementation 'com.theartofdev.edmodo:android-image-cropper:2.7.0'
+    //noinspection GradleCompatible
     implementation "com.android.support:support-v13:$supportLibVersion"
     implementation "com.android.support:appcompat-v7:$supportLibVersion"
     implementation "com.android.support:cardview-v7:$supportLibVersion"
@@ -66,8 +67,8 @@ android {
     defaultConfig {
         minSdkVersion 19
         targetSdkVersion 25
-        versionCode 290
-        versionName "2.3.0"
+        versionCode 293
+        versionName "2.3.1"
         archivesBaseName += "-$versionName"
         applicationId "eu.siacs.conversations"
         resValue "string", "applicationId", applicationId

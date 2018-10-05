@@ -1,5 +1,11 @@
 # Changelog
 
+### Version 2.3.1
+* Stronger compression for video files
+* Use SNI on STARTTLS to fix gtalk
+* Fix Quite Hours on Android 8+
+* Use Consistent Color Generation (XEP-0392)
+
 ### Version 2.3.0
 * Preview and ask for confirmation before sending media files
 * View per conversation media files in contact and conference details screens
