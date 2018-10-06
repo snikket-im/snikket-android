@@ -10,17 +10,17 @@ import net.ypresto.androidtranscoder.format.OutputFormatUnavailableException;
 
 import eu.siacs.conversations.Config;
 
-public class Android480pFormatStrategy implements MediaFormatStrategy {
+public class Android720pFormatStrategy implements MediaFormatStrategy {
 
-    private static final int LONGER_LENGTH = 854;
-    private static final int SHORTER_LENGTH = 480;
+    private static final int LONGER_LENGTH = 1280;
+    private static final int SHORTER_LENGTH = 720;
     private static final int DEFAULT_VIDEO_BITRATE = 2000 * 1000; // 2000 kbit/s upper range of what YouTube recommends
     private static final int DEFAULT_AUDIO_BITRATE = 96 * 1000;
     private final int mVideoBitrate;
     private final int mAudioBitrate;
     private final int mAudioChannels;
 
-    public Android480pFormatStrategy() {
+    public Android720pFormatStrategy() {
         mVideoBitrate = DEFAULT_VIDEO_BITRATE;
         mAudioBitrate = DEFAULT_AUDIO_BITRATE;
         mAudioChannels = 2;
@@ -46,7 +46,7 @@ public class Android480pFormatStrategy implements MediaFormatStrategy {
             throw new OutputFormatUnavailableException("This video is not 16:9, and is not able to transcode. (" + width + "x" + height + ")");
         }
         if (shorter <= SHORTER_LENGTH) {
-            Log.d(Config.LOGTAG, "This video is less or equal to 360p, pass-through. (" + width + "x" + height + ")");
+            Log.d(Config.LOGTAG, "This video is less or equal to 720p, pass-through. (" + width + "x" + height + ")");
             return null;
         }
         MediaFormat format = MediaFormat.createVideoFormat("video/avc", outWidth, outHeight);

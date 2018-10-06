@@ -740,4 +740,9 @@
     <string name="media_browser">Media browser</string>
     <string name="export_channel_name">History export</string>
     <string name="security_violation_not_attaching_file">File omitted due to security violation.</string>
+    <string name="pref_video_compression">Compress Videos</string>
+    <string name="pref_video_compression_summary">Resize and compress videos</string>
+    <string name="video_360p">SD (360p)</string>
+    <string name="video_720p">HD (720p)</string>
+    <string name="video_1080p">Full HD (1080p)</string>
 </resources>

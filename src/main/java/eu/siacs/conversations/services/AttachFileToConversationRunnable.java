@@ -24,7 +24,8 @@ import eu.siacs.conversations.entities.Message;
 import eu.siacs.conversations.persistance.FileBackend;
 import eu.siacs.conversations.ui.UiCallback;
 import eu.siacs.conversations.utils.Android360pFormatStrategy;
-import eu.siacs.conversations.utils.Android480pFormatStrategy;
+import eu.siacs.conversations.utils.Android720pFormatStrategy;
+import eu.siacs.conversations.utils.Android1080pFormatStrategy;
 import eu.siacs.conversations.utils.MimeUtils;
 
 public class AttachFileToConversationRunnable implements Runnable, MediaTranscoder.Listener {
@@ -91,8 +92,22 @@ public class AttachFileToConversationRunnable implements Runnable, MediaTranscod
 		mXmppConnectionService.startForcingForegroundNotification();
 		message.setRelativeFilePath(message.getUuid() + ".mp4");
 		final DownloadableFile file = mXmppConnectionService.getFileBackend().getFile(message);
-		final int runtime = mXmppConnectionService.getFileBackend().getMediaRuntime(uri);
-		final MediaFormatStrategy formatStrategy = runtime >= 20000 ? new Android360pFormatStrategy() : new Android480pFormatStrategy();
+		final MediaFormatStrategy formatStrategy;
+		final String compressVideo = mXmppConnectionService.getResources().getString(R.string.video_compression);
+                    switch (compressVideo) {
+                            case "720":
+                                formatStrategy = new Android720pFormatStrategy();
+								Log.d(Config.LOGTAG,"WOOOMP 720 dar " + compressVideo);
+                                break;
+                            case "1080":
+                                formatStrategy = new Android1080pFormatStrategy();
+								Log.d(Config.LOGTAG,"WOOOMP 1080 dar " + compressVideo);
+                                break;
+                            default:
+                                formatStrategy = new Android360pFormatStrategy();
+								Log.d(Config.LOGTAG,"WOOOMP 360 dar" + compressVideo);
+                                break;
+                    } 
 		file.getParentFile().mkdirs();
 		final ParcelFileDescriptor parcelFileDescriptor = mXmppConnectionService.getContentResolver().openFileDescriptor(uri, "r");
 		if (parcelFileDescriptor == null) {
