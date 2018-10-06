@@ -69,7 +69,6 @@
   <string name="sharing_files_please_wait">در حال به اشتراک گذاری فایل ها. لطفا صبور باشید...</string>
   <string name="action_clear_history">پاک سازی تاریخچه</string>
   <string name="clear_conversation_history">پاک سازی تاریخچه گفتگو ها</string>
-  <string name="delete_messages">حذف پیام ها</string>
   <string name="also_end_conversation">سپس گفتگو را خاتمه بده</string>
   <string name="choose_presence">انتخاب دستگاه</string>
   <string name="send_unencrypted_message">پیام رمز نشده ارسال کن</string>

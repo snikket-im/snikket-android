@@ -77,8 +77,6 @@
   <string name="sharing_files_please_wait">Partage des fichiers. Veuillez patienter...</string>
   <string name="action_clear_history">Vider l\'historique</string>
   <string name="clear_conversation_history">Vider l\'historique de la conversation</string>
-  <string name="clear_histor_msg">Voulez-vous supprimer tous les messages de cette conversation ?\n\n<b>Attention :</b> Les messages seront supprimés uniquement sur cet appareil.</string>
-  <string name="delete_messages">Supprimer les messages</string>
   <string name="also_end_conversation">Fermer cette conversation ensuite</string>
   <string name="choose_presence">Choisir l\'appareil</string>
   <string name="send_unencrypted_message">Envoyer un message en clair</string>

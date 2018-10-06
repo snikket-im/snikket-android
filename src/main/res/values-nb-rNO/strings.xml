@@ -74,8 +74,6 @@
   <string name="sharing_files_please_wait">Deler filer. Vent…</string>
   <string name="action_clear_history">Tøm historikk</string>
   <string name="clear_conversation_history">Tøm samtalehistorikk</string>
-  <string name="clear_histor_msg">Ønsker du å slette alle meldinger i denne samtalen?\n\n<b>Advarsel:</b> Dette har ingen innvirkning på meldinger lagret på andre enheter eller tjenere.</string>
-  <string name="delete_messages">Slett meldinger</string>
   <string name="also_end_conversation">Avslutt denne samtalen etterpå</string>
   <string name="choose_presence">Velg enhet</string>
   <string name="send_unencrypted_message">Send ukryptert melding</string>

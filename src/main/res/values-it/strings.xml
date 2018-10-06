@@ -77,8 +77,6 @@
   <string name="sharing_files_please_wait">Condivisione file. Attendere prego...</string>
   <string name="action_clear_history">Pulisci la cronologia</string>
   <string name="clear_conversation_history">Pulisci la cronologia della conversazione</string>
-  <string name="clear_histor_msg">Vuoi cancellare tutti i messaggi di questa Conversazione?\n\n<b>Attenzione:</b> Questo non influenzerà i messaggi presenti su altri dispositivi o server.</string>
-  <string name="delete_messages">Elimina messaggi</string>
   <string name="also_end_conversation">Termina questa conversazione successivamente</string>
   <string name="choose_presence">Scegli un dispositivo</string>
   <string name="send_unencrypted_message">Invia messaggio non cifrato</string>
@@ -152,6 +150,7 @@
   <string name="account_status_policy_violation">Violazione della policy</string>
   <string name="account_status_incompatible_server">Server non compatibile</string>
   <string name="account_status_stream_error">Errore di stream</string>
+  <string name="account_status_stream_opening_error">Errore apertura flusso</string>
   <string name="encryption_choice_unencrypted">Non cifrato</string>
   <string name="encryption_choice_otr">OTR</string>
   <string name="encryption_choice_pgp">OpenPGP</string>
@@ -736,4 +735,5 @@
   <string name="view_media">Vedi il media</string>
   <string name="media_browser">Browser multimediale</string>
   <string name="export_channel_name">Esportazione cronologia</string>
+  <string name="security_violation_not_attaching_file">File omesso per violazione di sicurezza.</string>
 </resources>

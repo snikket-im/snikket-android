@@ -68,8 +68,6 @@
   <string name="sharing_files_please_wait">Đang chia sẻ các tập tin. Xin chờ...</string>
   <string name="action_clear_history">Xoá lịch sử</string>
   <string name="clear_conversation_history">Xoá lịch sử hội thoại</string>
-  <string name="clear_histor_msg">Bạn có muốn xoá toàn bộ tin nhắn trong hội thoại này?\n\n<b>Cảnh báo:</b> Thao tác này sẽ không ảnh hưởng đến tin nhắn đã lưu trên các thiết bị hoặc máy chủ khác.</string>
-  <string name="delete_messages">Xoá tin nhắn</string>
   <string name="also_end_conversation">Dừng hội thoại này sau đó</string>
   <string name="choose_presence">Chọn thiết bị</string>
   <string name="send_unencrypted_message">Gửi tin nhắn không mã hoá</string>

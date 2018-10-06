@@ -77,8 +77,6 @@
   <string name="sharing_files_please_wait">Compartindo ficheiros. Por favor agarde...</string>
   <string name="action_clear_history">Limpar historial</string>
   <string name="clear_conversation_history">Limpar historial de conversa</string>
-  <string name="clear_histor_msg">¿Queres borrar todas as mensaxes desta conversa?\n\n<b>Ollo:</b> Isto non afectará ás mensaxes gardadas noutros dispositivos ou servidores.</string>
-  <string name="delete_messages">Borrar mensaxes</string>
   <string name="also_end_conversation">Finalizar esta conversación tras o proceso</string>
   <string name="choose_presence">Escoller dispositivo</string>
   <string name="send_unencrypted_message">Enviar mensaxe non cifrada</string>

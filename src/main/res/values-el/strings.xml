@@ -74,8 +74,6 @@
   <string name="sharing_files_please_wait">Διαμοιρασμός φακέλων. Παρακαλώ περιμένετε...</string>
   <string name="action_clear_history">Καθαρισμός ιστορικού</string>
   <string name="clear_conversation_history">Καθαρισμός ιστορικού Συζήτησης</string>
-  <string name="clear_histor_msg">Θέλετε να σβήσετε όλα τα μηνύματα αυτής της Συζήτησης;\n\n<b>Προειδοποίηση:</b> Αυτό δεν θα επηρεάσει τα μηνύματα που είναι αποθηκευμένα σε άλλες συσκευές ή άλλους διακομιστές.</string>
-  <string name="delete_messages">Διαγραφή μηνυμάτων</string>
   <string name="also_end_conversation">Τέλος συζήτησης</string>
   <string name="choose_presence">Επιλογή συσκευής</string>
   <string name="send_unencrypted_message">Αποστολή κρυπτογραφημένου μηνύματος</string>

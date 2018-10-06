@@ -74,8 +74,6 @@
   <string name="sharing_files_please_wait">جاري إرسال الملفات.  الرجاء الإنتظار ...</string>
   <string name="action_clear_history">حذف سجل المحفوظات</string>
   <string name="clear_conversation_history">حذف سجل المحفوظات للمحادثة</string>
-  <string name="clear_histor_msg">هل ترغب بحذف جميع الرسائل في تلك المحادثة ؟\n\n<b>تنويه :</b> هذا لن يؤثر على الرسائل المخزنة على أجهزة أو خوادم أخرى.</string>
-  <string name="delete_messages">إحذف الرسائل</string>
   <string name="also_end_conversation">قم بإنهاء هذه المحادثة بعد ذلك</string>
   <string name="choose_presence">إختر جهازاً</string>
   <string name="send_unencrypted_message">إرسال رسالة غير مشفرة</string>

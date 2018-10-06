@@ -77,8 +77,6 @@
   <string name="sharing_files_please_wait">Bestanden delen. Even geduld…</string>
   <string name="action_clear_history">Geschiedenis wissen</string>
   <string name="clear_conversation_history">Gespreksgeschiedenis wissen</string>
-  <string name="clear_histor_msg">Wil je alle berichten in dit gesprek verwijderen?\n\n<b>Waarschuwing:</b> Dit zal geen invloed hebben op de berichten opgeslagen op andere apparaten of servers.</string>
-  <string name="delete_messages">Berichten verwijderen</string>
   <string name="also_end_conversation">Dit gesprek na afloop beëindigen</string>
   <string name="choose_presence">Apparaat kiezen</string>
   <string name="send_unencrypted_message">Verstuur onversleuteld bericht</string>

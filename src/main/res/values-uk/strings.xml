@@ -68,8 +68,6 @@
   <string name="sharing_files_please_wait">Поширюю файли. Зачекайте, будь ласка…</string>
   <string name="action_clear_history">Очистити історію</string>
   <string name="clear_conversation_history">Очистити історію розмов</string>
-  <string name="clear_histor_msg">Бажаєте видалити всі повідомлення з цієї розмови?\n\n<b>Увага:</b> Це не вплине на повідомлення, які знаходяться на інших пристроях або серверах.</string>
-  <string name="delete_messages">Видалити повідомлення</string>
   <string name="also_end_conversation">Завершити цю розмову опісля</string>
   <string name="choose_presence">Вибрати пристрій</string>
   <string name="send_unencrypted_message">Відправити незашифроване повідомлення</string>

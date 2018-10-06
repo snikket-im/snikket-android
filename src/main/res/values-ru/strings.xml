@@ -75,8 +75,6 @@
   <string name="sharing_files_please_wait">Обмен файлами. Пожалуйста, подождите…</string>
   <string name="action_clear_history">Очистить историю</string>
   <string name="clear_conversation_history">Очистить историю</string>
-  <string name="clear_histor_msg">Вы хотите удалить все сообщения в этой беседе?\n\n<b>Предупреждение:</b> Данная операция не повлияет на сообщения, хранящиеся на других устройствах.</string>
-  <string name="delete_messages">Удалить сообщения</string>
   <string name="also_end_conversation">Закончить эту беседу впоследствии</string>
   <string name="choose_presence">Выберите устройство</string>
   <string name="send_unencrypted_message">Нешифрованное сообщение</string>

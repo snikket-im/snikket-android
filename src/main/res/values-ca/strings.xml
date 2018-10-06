@@ -77,8 +77,6 @@
   <string name="sharing_files_please_wait">S\'estan compartint els fitxers. Espereu...</string>
   <string name="action_clear_history">Neteja l\'historial</string>
   <string name="clear_conversation_history">Neteja l\'historial de la conversa</string>
-  <string name="clear_histor_msg">Voleu esborrar tots els missatges d\'aquesta conversa?\n\n<b>Avís:</b> Això no afectarà els missatges desats en altres dispositius o servidors.</string>
-  <string name="delete_messages">Esborra els missatges</string>
   <string name="also_end_conversation">Finalitza aquesta conversa després</string>
   <string name="choose_presence">Tria el dispositiu</string>
   <string name="send_unencrypted_message">Envia un missatge no xifrat</string>

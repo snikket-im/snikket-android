@@ -68,8 +68,6 @@
   <string name="sharing_files_please_wait">파일을 공유중입니다. 기다리세요...</string>
   <string name="action_clear_history">기록 삭제 </string>
   <string name="clear_conversation_history">대화 기록 삭제 </string>
-  <string name="clear_histor_msg">이 대화의 모든 메세지를 삭제하시겠습니까? 경고: 이것은 다른 기기나 서버에 있는 메세지에는 영향을 미치지 않습니다. </string>
-  <string name="delete_messages">메세지 삭제 </string>
   <string name="also_end_conversation">나중에 이 대화 끝내기 </string>
   <string name="choose_presence">기기 선택</string>
   <string name="send_unencrypted_message">암호화하지 않은 메세지 전송</string>

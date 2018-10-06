@@ -77,8 +77,6 @@
   <string name="sharing_files_please_wait">Teile Dateien. Bitte warten…</string>
   <string name="action_clear_history">Verlauf löschen</string>
   <string name="clear_conversation_history">Unterhaltungsverlauf löschen</string>
-  <string name="clear_histor_msg">Möchtest du alle Nachrichten in dieser Unterhaltung löschen?\n\n<b>Achtung:</b> Dies beeinflusst nicht Nachrichten, die auf anderen Geräten oder Servern gespeichert sind.</string>
-  <string name="delete_messages">Nachrichten löschen</string>
   <string name="also_end_conversation">Diese Unterhaltung danach beenden</string>
   <string name="choose_presence">Gerät auswählen</string>
   <string name="send_unencrypted_message">Unverschlüsselt schreiben…</string>

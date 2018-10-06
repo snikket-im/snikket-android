@@ -68,8 +68,6 @@
   <string name="sharing_files_please_wait">Membagikan berkas. Mohon tunggu…</string>
   <string name="action_clear_history">Bersihkan riwayat</string>
   <string name="clear_conversation_history">Hapus Riwayat Percakapan</string>
-  <string name="clear_histor_msg">Apakah Anda ingin menghapus semua pesan dalam Percakapan ini\n\n<b>Peringatan:</b>ini tidak akan mempengaruhi pesan yang disimpan pada perangkat atau server lain.</string>
-  <string name="delete_messages">Hapus pesan</string>
   <string name="send_unencrypted_message">Kirim pesan tak-terenkripsi</string>
   <string name="send_pgp_message">Kirim pesan terenskripsi OpenPGP</string>
   <string name="your_nick_has_been_changed">Nick kamu telah dirubah</string>

@@ -77,8 +77,6 @@
   <string name="sharing_files_please_wait">Udostępnianie plików. Proszę czekać...</string>
   <string name="action_clear_history">Wyczyść historię</string>
   <string name="clear_conversation_history">Wyczyść historię konwersacji</string>
-  <string name="clear_histor_msg">Czy na pewno usunąć wszystkie wiadomości powiązane z konwersacją?\n\n<b>Uwaga:</b> Działanie nie wpływa na wiadomości przechowywane na innych urządzeniach lub serwerach.</string>
-  <string name="delete_messages">Usuń wiadomości</string>
   <string name="also_end_conversation">po czym zakończ tę rozmowę</string>
   <string name="choose_presence">Wybierz urządzenie</string>
   <string name="send_unencrypted_message">Wyślij wiadomość bez szyfrowania</string>
@@ -152,6 +150,7 @@
   <string name="account_status_policy_violation">Naruszenie zasad</string>
   <string name="account_status_incompatible_server">Serwer niekompatybilny</string>
   <string name="account_status_stream_error">Błąd strumienia</string>
+  <string name="account_status_stream_opening_error">Błąd otwierania strumienia</string>
   <string name="encryption_choice_unencrypted">Bez szyfrowania</string>
   <string name="encryption_choice_otr">OTR</string>
   <string name="encryption_choice_pgp">OpenPGP</string>
@@ -755,4 +754,5 @@ Administrator twojego serwera będzie mógł czytać twoje wiadomości, ale moż
   <string name="view_media">Pokaż media</string>
   <string name="media_browser">Przeglądarka mediów</string>
   <string name="export_channel_name">Eksport historii</string>
+  <string name="security_violation_not_attaching_file">Plik pominięty w związku z naruszeniem bezpieczeństwa.</string>
 </resources>

@@ -63,8 +63,6 @@
   <string name="preparing_image">Pripravujem obrázok na prenos</string>
   <string name="action_clear_history">Vymazať históriu</string>
   <string name="clear_conversation_history">Vymazať históriu konverzácií</string>
-  <string name="clear_histor_msg">Chcete vymazať všetky správy v tejto konverzácii?\n\n<b>Varovanie:</b> Toto neovplyvní správy uložené v iných zariadeniach alebo serveroch.</string>
-  <string name="delete_messages">Vymazať správy</string>
   <string name="also_end_conversation">Neskôr ukončiť konverzáciu</string>
   <string name="send_unencrypted_message">Poslať nezašifrovanú správu</string>
   <string name="send_omemo_message">Poslať OMEMO šifrovanú správu</string>

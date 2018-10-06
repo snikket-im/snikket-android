@@ -77,8 +77,6 @@
   <string name="sharing_files_please_wait">Fitxategiak partekatzen. Mesedez itxaron...</string>
   <string name="action_clear_history">Historia garbitu</string>
   <string name="clear_conversation_history">Elkarrizketa historia garbitu</string>
-  <string name="clear_histor_msg">Elkarrizketa honetako mezu guztiak ezabatu nahi al dituzu?\n\n<b>Abisua:</b> Honek ez du beste gailu edo zerbitzarietan gordetako mezuetan eraginik izango.</string>
-  <string name="delete_messages">Mezuak ezabatu</string>
   <string name="also_end_conversation">Elkarrizketa hau jarraian amaitu</string>
   <string name="choose_presence">Gailua aukeratu</string>
   <string name="send_unencrypted_message">Enkriptatu gabeko mezua bidali</string>

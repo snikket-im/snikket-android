@@ -68,8 +68,6 @@
   <string name="sharing_files_please_wait">Dosyalar Paylaşılıyor. Lütfen bekleyin...</string>
   <string name="action_clear_history">Geçmişi sil</string>
   <string name="clear_conversation_history">Konuşma geçmişini sil</string>
-  <string name="clear_histor_msg">Bu konuşmadaki tüm iletileri silmek istiyor musunuz?\n\n<b>Uyarı:</b>Başka aygıtlardaki ya da sunuculardaki iletiler bundan etkilenmeyecektir.</string>
-  <string name="delete_messages">İletileri sil</string>
   <string name="also_end_conversation">Sonrasında bu konuşmayı sonlandır</string>
   <string name="choose_presence">Aygıt seç</string>
   <string name="send_unencrypted_message">Şifrelenmemiş ileti gönder</string>

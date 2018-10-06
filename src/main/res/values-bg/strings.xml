@@ -77,8 +77,6 @@
   <string name="sharing_files_please_wait">Споделяне на файлове. Моля, изчакайте…</string>
   <string name="action_clear_history">Изчистване на историята</string>
   <string name="clear_conversation_history">Изчистване на историята на разговорите</string>
-  <string name="clear_histor_msg">Искате ли да изтриете всички съобщения от този разговор?\n\n<b>Внимание:</b> Това няма да изтрие съобщенията, съхранявани на други устройства или на сървърите.</string>
-  <string name="delete_messages">Изтриване на съобщенията</string>
   <string name="also_end_conversation">Приключване на този разговор след това</string>
   <string name="choose_presence">Изберете устройство</string>
   <string name="send_unencrypted_message">Изпр. на нешифр. съобщение</string>

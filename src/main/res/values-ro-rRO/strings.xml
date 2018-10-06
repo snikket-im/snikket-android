@@ -77,8 +77,6 @@
   <string name="sharing_files_please_wait">Trimitere fișiere. Te rog asteaptă...</string>
   <string name="action_clear_history">Șterge istoric</string>
   <string name="clear_conversation_history">Șterge istoricul conversației</string>
-  <string name="clear_histor_msg">Doriți să ștergeți toate mesajele din această conversație?\n\n<b>Atenție:</b> Această acțiune nu va influența mesajele aflate pe alte telefoane/tablete/servere.</string>
-  <string name="delete_messages">Șterge mesajele</string>
   <string name="also_end_conversation">Închide conversația după ștergere</string>
   <string name="choose_presence">Alegeți dispozitiv</string>
   <string name="send_unencrypted_message">Trimite mesaje necriptate</string>

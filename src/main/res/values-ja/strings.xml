@@ -74,8 +74,6 @@
   <string name="sharing_files_please_wait">フィルを共有しています。しばらくお待ちください…</string>
   <string name="action_clear_history">履歴をクリア</string>
   <string name="clear_conversation_history">会話履歴をクリア</string>
-  <string name="clear_histor_msg">この会話のすべてのメッセージを削除しますか?\n\n<b>警告:</b> これは、他のデバイスやサーバーに保存されているメッセージには影響しません。</string>
-  <string name="delete_messages">メッセージを削除</string>
   <string name="also_end_conversation">その後、この会話を終了</string>
   <string name="choose_presence">デバイスを選択</string>
   <string name="send_unencrypted_message">暗号化されていないメッセージを送信</string>

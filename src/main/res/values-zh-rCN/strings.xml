@@ -77,8 +77,6 @@
   <string name="sharing_files_please_wait">正在分享文件，请稍候…</string>
   <string name="action_clear_history">清除历史记录</string>
   <string name="clear_conversation_history">清除会话记录</string>
-  <string name="clear_histor_msg">删除该会话中所有信息？\n\n<b>注:</b> 该操作不会影响其他设备或服务器保存的信息。</string>
-  <string name="delete_messages">删除消息</string>
   <string name="also_end_conversation">之后结束此会话</string>
   <string name="choose_presence">选择设备</string>
   <string name="send_unencrypted_message">发送未加密的信息</string>

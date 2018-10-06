@@ -77,8 +77,6 @@
   <string name="sharing_files_please_wait">Fájlok megosztása. Kérlek várj...</string>
   <string name="action_clear_history">Előzmények törlése</string>
   <string name="clear_conversation_history">Beszélgetés előzményének törlése</string>
-  <string name="clear_histor_msg">Szeretnéd az üzeneteket törölni ebben a beszélgetésben?\n\n<b>Figyelem:</b> Ez nem befolyásolja más eszközökön vagy szervereken tárolt üzeneteidet.</string>
-  <string name="delete_messages">Üzenetek törlése</string>
   <string name="also_end_conversation">A beszélgetést is fejezze be</string>
   <string name="choose_presence">Eszköz kiválasztása</string>
   <string name="send_unencrypted_message">Titkosítatlan üzenetküldés</string>

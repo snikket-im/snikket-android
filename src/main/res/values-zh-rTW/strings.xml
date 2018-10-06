@@ -68,8 +68,6 @@
   <string name="sharing_files_please_wait">正在分享檔案中，請稍候…</string>
   <string name="action_clear_history">清除歷史記錄</string>
   <string name="clear_conversation_history">清除會話記錄</string>
-  <string name="clear_histor_msg">要刪除該會話中所有的訊息嗎？\n\n<b>注:</b> 該操作不會影響其他設備或伺服器保存的資訊。</string>
-  <string name="delete_messages">刪除訊息</string>
   <string name="also_end_conversation">結束此會話以後</string>
   <string name="choose_presence">選擇設備</string>
   <string name="send_unencrypted_message">發送未加密的訊息</string>

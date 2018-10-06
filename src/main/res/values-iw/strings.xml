@@ -65,8 +65,6 @@
   <string name="preparing_image">מכין תמונה לשליחה</string>
   <string name="action_clear_history">נקה היסטוריה</string>
   <string name="clear_conversation_history">נקה היסטוריית שיחה</string>
-  <string name="clear_histor_msg">האם ברצונך למחוק את כל ההודעות בשיחה זאת?\n\n<b>אזהרה:</b> פעולה זו לא תשפיע על הודעות מאוחסנות על מכשירים או שרתים אחרים.</string>
-  <string name="delete_messages">מחק הודעות</string>
   <string name="also_end_conversation">סיים את השיחה לאחר מכן</string>
   <string name="send_unencrypted_message">שלח הודעה בלתי מוצפנת</string>
   <string name="send_omemo_message">של הודעה בהצפנת OMEMO</string>
