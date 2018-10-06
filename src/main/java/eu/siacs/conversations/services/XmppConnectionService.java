@@ -116,7 +116,6 @@ import eu.siacs.conversations.utils.CryptoHelper;
 import eu.siacs.conversations.utils.ExceptionHelper;
 import eu.siacs.conversations.utils.MimeUtils;
 import eu.siacs.conversations.utils.OnPhoneContactsLoadedListener;
-import eu.siacs.conversations.utils.PRNGFixes;
 import eu.siacs.conversations.utils.PhoneHelper;
 import eu.siacs.conversations.utils.QuickLoader;
 import eu.siacs.conversations.utils.ReplacingSerialSingleThreadExecutor;
@@ -947,7 +946,11 @@ public class XmppConnectionService extends Service {
     public void onCreate() {
         OmemoSetting.load(this);
         ExceptionHelper.init(getApplicationContext());
-        Security.insertProviderAt(Conscrypt.newProvider(), 1);
+        try {
+            Security.insertProviderAt(Conscrypt.newProvider(), 1);
+        } catch (Throwable throwable) {
+            Log.e(Config.LOGTAG,"unable to initialize security provider", throwable);
+        }
         Resolver.init(this);
         this.mRandom = new SecureRandom();
         updateMemorizingTrustmanager();

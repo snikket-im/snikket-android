@@ -89,7 +89,11 @@ public class SSLSocketHelper {
     }
 
     public static SSLContext getSSLContext() throws NoSuchAlgorithmException {
-        return SSLContext.getInstance("TLSv1.3");
+        try {
+            return SSLContext.getInstance("TLSv1.3");
+        } catch (NoSuchAlgorithmException e) {
+            return SSLContext.getInstance("TLSv1.2");
+        }
     }
 
     public static void log(Account account, SSLSocket socket) {
