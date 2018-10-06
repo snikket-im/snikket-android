@@ -44,6 +44,7 @@ import eu.siacs.conversations.ui.adapter.MediaAdapter;
 import eu.siacs.conversations.ui.interfaces.OnMediaLoaded;
 import eu.siacs.conversations.ui.util.Attachment;
 import eu.siacs.conversations.ui.util.GridManager;
+import eu.siacs.conversations.ui.util.JidDialog;
 import eu.siacs.conversations.ui.util.MenuDoubleTabUtil;
 import eu.siacs.conversations.utils.Compatibility;
 import eu.siacs.conversations.utils.IrregularUnicodeDetector;
@@ -241,7 +242,7 @@ public class ContactDetailsActivity extends OmemoActivity implements OnAccountUp
                 break;
             case R.id.action_delete_contact:
                 builder.setTitle(getString(R.string.action_delete_contact))
-                        .setMessage(getString(R.string.remove_contact_text, contact.getJid().toString()))
+                        .setMessage(JidDialog.style(this, R.string.remove_contact_text, contact.getJid().toEscapedString()))
                         .setPositiveButton(getString(R.string.delete),
                                 removeFromRoster).create().show();
                 break;
