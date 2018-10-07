@@ -73,6 +73,8 @@ public class Message extends AbstractEntity {
 	public static final String MARKABLE = "markable";
 	public static final String ME_COMMAND = "/me ";
 
+	public static final String ERROR_MESSAGE_CANCELLED = "eu.siacs.conversations.cancelled";
+
 
 	public boolean markable = false;
 	protected String conversationUuid;

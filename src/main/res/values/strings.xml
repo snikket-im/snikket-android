@@ -744,4 +744,5 @@
     <string name="pref_video_compression_summary">Lower quality means smaller files</string>
     <string name="video_360p">Medium (360p)</string>
     <string name="video_720p">High (720p)</string>
+    <string name="cancelled">cancelled</string>
 </resources>

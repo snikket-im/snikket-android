@@ -255,7 +255,11 @@ public class MessageAdapter extends ArrayAdapter<Message> implements CopyTextVie
 				}
 				break;
 			case Message.STATUS_SEND_FAILED:
-				info = getContext().getString(R.string.send_failed);
+				if (Message.ERROR_MESSAGE_CANCELLED.equals(message.getErrorMessage())) {
+					info = getContext().getString(R.string.cancelled);
+				} else {
+					info = getContext().getString(R.string.send_failed);
+				}
 				error = true;
 				break;
 			default:
