@@ -1,8 +1,10 @@
 package eu.siacs.conversations.services;
 
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Build;
 import android.os.ParcelFileDescriptor;
+import android.preference.PreferenceManager;
 import android.util.Log;
 
 import net.ypresto.androidtranscoder.MediaTranscoder;
@@ -25,7 +27,6 @@ import eu.siacs.conversations.persistance.FileBackend;
 import eu.siacs.conversations.ui.UiCallback;
 import eu.siacs.conversations.utils.Android360pFormatStrategy;
 import eu.siacs.conversations.utils.Android720pFormatStrategy;
-import eu.siacs.conversations.utils.Android1080pFormatStrategy;
 import eu.siacs.conversations.utils.MimeUtils;
 
 public class AttachFileToConversationRunnable implements Runnable, MediaTranscoder.Listener {
@@ -92,22 +93,7 @@ public class AttachFileToConversationRunnable implements Runnable, MediaTranscod
 		mXmppConnectionService.startForcingForegroundNotification();
 		message.setRelativeFilePath(message.getUuid() + ".mp4");
 		final DownloadableFile file = mXmppConnectionService.getFileBackend().getFile(message);
-		final MediaFormatStrategy formatStrategy;
-		final String compressVideo = mXmppConnectionService.getResources().getString(R.string.video_compression);
-                    switch (compressVideo) {
-                            case "720":
-                                formatStrategy = new Android720pFormatStrategy();
-								Log.d(Config.LOGTAG,"WOOOMP 720 dar " + compressVideo);
-                                break;
-                            case "1080":
-                                formatStrategy = new Android1080pFormatStrategy();
-								Log.d(Config.LOGTAG,"WOOOMP 1080 dar " + compressVideo);
-                                break;
-                            default:
-                                formatStrategy = new Android360pFormatStrategy();
-								Log.d(Config.LOGTAG,"WOOOMP 360 dar" + compressVideo);
-                                break;
-                    } 
+		final MediaFormatStrategy formatStrategy = "720".equals(getVideoCompression()) ? new Android720pFormatStrategy() : new Android360pFormatStrategy();
 		file.getParentFile().mkdirs();
 		final ParcelFileDescriptor parcelFileDescriptor = mXmppConnectionService.getContentResolver().openFileDescriptor(uri, "r");
 		if (parcelFileDescriptor == null) {
@@ -183,4 +169,11 @@ public class AttachFileToConversationRunnable implements Runnable, MediaTranscod
 		}
 	}
 
+	public String getVideoCompression() {
+		return getPreferences().getString("video_compression", mXmppConnectionService.getResources().getString(R.string.video_compression));
+	}
+
+	protected SharedPreferences getPreferences() {
+		return PreferenceManager.getDefaultSharedPreferences(mXmppConnectionService.getApplicationContext());
+	}
 }

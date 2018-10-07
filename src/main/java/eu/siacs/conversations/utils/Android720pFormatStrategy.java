@@ -14,8 +14,8 @@ public class Android720pFormatStrategy implements MediaFormatStrategy {
 
     private static final int LONGER_LENGTH = 1280;
     private static final int SHORTER_LENGTH = 720;
-    private static final int DEFAULT_VIDEO_BITRATE = 2000 * 1000; // 2000 kbit/s upper range of what YouTube recommends
-    private static final int DEFAULT_AUDIO_BITRATE = 96 * 1000;
+    private static final int DEFAULT_VIDEO_BITRATE = 2000 * 1000;
+    private static final int DEFAULT_AUDIO_BITRATE = 192 * 1000;
     private final int mVideoBitrate;
     private final int mAudioBitrate;
     private final int mAudioChannels;
