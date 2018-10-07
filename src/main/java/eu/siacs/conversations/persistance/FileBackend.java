@@ -252,7 +252,7 @@ public class FileBackend {
             drawOverlay(bitmap, paintOverlayBlack(bitmap) ? R.drawable.play_video_black : R.drawable.play_video_white, 0.75f);
         } else {
             bitmap = cropCenterSquare(attachment.getUri(), size);
-            if ("image/gif".equals(attachment.getMime())) {
+            if (bitmap != null && "image/gif".equals(attachment.getMime())) {
                 Bitmap withGifOverlay = bitmap.copy(Bitmap.Config.ARGB_8888, true);
                 drawOverlay(withGifOverlay, paintOverlayBlack(withGifOverlay) ? R.drawable.play_gif_black : R.drawable.play_gif_white, 1.0f);
                 bitmap.recycle();
@@ -1030,6 +1030,7 @@ public class FileBackend {
                 return cropCenterSquare(input, size);
             }
         } catch (FileNotFoundException | SecurityException e) {
+            Log.d(Config.LOGTAG,"unable to open file "+image.toString(), e);
             return null;
         } finally {
             close(is);

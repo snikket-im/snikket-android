@@ -651,7 +651,7 @@ public class DatabaseBackend extends SQLiteOpenHelper {
 		SQLiteDatabase db = this.getReadableDatabase();
 		String where = Resolver.Result.DOMAIN + "=?";
 		String[] whereArgs = {domain};
-		Cursor cursor = db.query(RESOLVER_RESULTS_TABLENAME, null, where, whereArgs, null, null, null);
+		final Cursor cursor = db.query(RESOLVER_RESULTS_TABLENAME, null, where, whereArgs, null, null, null);
 		Resolver.Result result = null;
 		if (cursor != null) {
 			if (cursor.moveToFirst()) {
