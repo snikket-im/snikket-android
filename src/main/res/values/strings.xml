@@ -493,8 +493,8 @@
     <string name="notify_only_when_highlighted">Notify only when mentioned</string>
     <string name="notify_never">Notifications disabled</string>
     <string name="notify_paused">Notifications paused</string>
-    <string name="pref_picture_compression">Compress Pictures</string>
-    <string name="pref_picture_compression_summary">Resize and compress pictures</string>
+    <string name="pref_picture_compression">Image Compression</string>
+    <string name="pref_picture_compression_summary">Resize and compress images</string>
     <string name="always">Always</string>
     <string name="automatically">Automatically</string>
     <string name="battery_optimizations_enabled">Battery optimizations enabled</string>
@@ -740,8 +740,8 @@
     <string name="media_browser">Media browser</string>
     <string name="export_channel_name">History export</string>
     <string name="security_violation_not_attaching_file">File omitted due to security violation.</string>
-    <string name="pref_video_compression">Compress Videos</string>
-    <string name="pref_video_compression_summary">Resize and compress videos</string>
-    <string name="video_360p">SD (360p)</string>
-    <string name="video_720p">HD (720p)</string>
+    <string name="pref_video_compression">Video Quality</string>
+    <string name="pref_video_compression_summary">Lower quality means smaller files</string>
+    <string name="video_360p">Medium (360p)</string>
+    <string name="video_720p">High (720p)</string>
 </resources>

@@ -40,7 +40,7 @@ public class AttachFileToConversationRunnable implements Runnable, MediaTranscod
 	private final long originalFileSize;
 	private int currentProgress = -1;
 
-	public AttachFileToConversationRunnable(XmppConnectionService xmppConnectionService, Uri uri, String type, Message message, UiCallback<Message> callback) {
+	AttachFileToConversationRunnable(XmppConnectionService xmppConnectionService, Uri uri, String type, Message message, UiCallback<Message> callback) {
 		this.uri = uri;
 		this.type = type;
 		this.mXmppConnectionService = xmppConnectionService;
@@ -52,7 +52,7 @@ public class AttachFileToConversationRunnable implements Runnable, MediaTranscod
 		this.isVideoMessage = (mimeType != null && mimeType.startsWith("video/")) && originalFileSize > autoAcceptFileSize;
 	}
 
-	public boolean isVideoMessage() {
+	boolean isVideoMessage() {
 		return this.isVideoMessage;
 	}
 
@@ -169,11 +169,8 @@ public class AttachFileToConversationRunnable implements Runnable, MediaTranscod
 		}
 	}
 
-	public String getVideoCompression() {
-		return getPreferences().getString("video_compression", mXmppConnectionService.getResources().getString(R.string.video_compression));
-	}
-
-	protected SharedPreferences getPreferences() {
-		return PreferenceManager.getDefaultSharedPreferences(mXmppConnectionService.getApplicationContext());
+	private String getVideoCompression() {
+		final SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(mXmppConnectionService);
+		return preferences.getString("video_compression", mXmppConnectionService.getResources().getString(R.string.video_compression));
 	}
 }
