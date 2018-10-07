@@ -14,8 +14,8 @@ public class Android360pFormatStrategy implements MediaFormatStrategy {
 
     private static final int LONGER_LENGTH = 640;
     private static final int SHORTER_LENGTH = 360;
-    private static final int DEFAULT_VIDEO_BITRATE = 1000 * 1000; // 1000 kbit/s upper range of what YouTube recommends
-    private static final int DEFAULT_AUDIO_BITRATE = 96 * 1000;
+    private static final int DEFAULT_VIDEO_BITRATE = 1000 * 1000;
+    private static final int DEFAULT_AUDIO_BITRATE = 128 * 1000;
     private final int mVideoBitrate;
     private final int mAudioBitrate;
     private final int mAudioChannels;

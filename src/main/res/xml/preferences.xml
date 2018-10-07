@@ -137,6 +137,13 @@
             android:key="picture_compression"
             android:summary="@string/pref_picture_compression_summary"
             android:title="@string/pref_picture_compression" />
+        <ListPreference
+            android:defaultValue="@string/video_compression"
+            android:entries="@array/video_compression_entries"
+            android:entryValues="@array/video_compression_values"
+            android:key="video_compression"
+            android:summary="@string/pref_video_compression_summary"
+            android:title="@string/pref_video_compression" />
         <CheckBoxPreference
             android:defaultValue="@bool/use_share_location_plugin"
             android:key="use_share_location_plugin"
