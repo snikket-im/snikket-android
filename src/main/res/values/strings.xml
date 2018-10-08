@@ -561,6 +561,7 @@
     <string name="allow">Allow</string>
     <string name="no_permission_to_access_x">No permission to access %s</string>
     <string name="remote_server_not_found">Remote server not found</string>
+    <string name="remote_server_timeout">Remote server timeout</string>
     <string name="unable_to_update_account">Unable to update account</string>
     <string name="report_jid_as_spammer">Report this JID as sending unwanted messages.</string>
     <string name="pref_delete_omemo_identities">Delete OMEMO identities</string>

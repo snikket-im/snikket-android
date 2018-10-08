@@ -2111,6 +2111,13 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
                         showSnackbar(R.string.remote_server_not_found, R.string.leave, leaveMuc);
                     }
                     break;
+                case REMOTE_SERVER_TIMEOUT:
+                    if (conversation.receivedMessagesCount() > 0) {
+                        showSnackbar(R.string.remote_server_timeout, R.string.try_again, joinMuc);
+                    } else {
+                        showSnackbar(R.string.remote_server_timeout, R.string.leave, leaveMuc);
+                    }
+                    break;
                 case PASSWORD_REQUIRED:
                     showSnackbar(R.string.conference_requires_password, R.string.enter_password, enterPassword);
                     break;

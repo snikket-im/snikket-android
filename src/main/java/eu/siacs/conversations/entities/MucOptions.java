@@ -644,6 +644,7 @@ public class MucOptions {
     public enum Error {
         NO_RESPONSE,
         SERVER_NOT_FOUND,
+        REMOTE_SERVER_TIMEOUT,
         NONE,
         NICK_IN_USE,
         PASSWORD_REQUIRED,
