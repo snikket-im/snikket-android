@@ -93,9 +93,21 @@ android {
         targetCompatibility JavaVersion.VERSION_1_8
     }
 
-    flavorDimensions("distribution", "emoji")
+    flavorDimensions("mode", "distribution", "emoji")
 
     productFlavors {
+
+        quick {
+            dimension "mode"
+            applicationId = "im.conversations.quick"
+            resValue "string", "app_name", "Quick Conversations"
+            resValue "string", "applicationId", applicationId
+        }
+
+        full {
+            dimension "mode"
+        }
+
         playstore {
             dimension "distribution"
             versionNameSuffix "+p"
@@ -111,6 +123,35 @@ android {
         compat {
             dimension "emoji"
             versionNameSuffix "c"
+        }
+    }
+
+    sourceSets {
+        quickFreeCompat {
+            java {
+                srcDirs 'src/freeCompat/java'
+            }
+        }
+        quickPlaystoreCompat {
+            java {
+                srcDirs 'src/playstoreCompat/java'
+            }
+            res {
+                srcDir 'src/playstoreCompat/res'
+            }
+        }
+        fullFreeCompat {
+            java {
+                srcDirs 'src/freeCompat/java'
+            }
+        }
+        fullPlaystoreCompat {
+            java {
+                srcDirs 'src/playstoreCompat/java'
+            }
+            res {
+                srcDir 'src/playstoreCompat/res'
+            }
         }
     }
 
@@ -131,7 +172,7 @@ android {
 
 
 
-    if(new File("signing.properties").exists()) {
+    if (new File("signing.properties").exists()) {
         Properties props = new Properties()
         props.load(new FileInputStream(file("signing.properties")))
 
