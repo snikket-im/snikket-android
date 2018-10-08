@@ -1141,7 +1141,7 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
             if (m.hasFileOnRemoteHost()
                     || m.isGeoUri()
                     || m.treatAsDownloadable()
-                    || (t != null && t instanceof HttpDownloadConnection)) {
+                    || t instanceof HttpDownloadConnection) {
                 copyUrl.setVisible(true);
             }
             if (m.isFileOrImage() && deleted && m.hasFileOnRemoteHost()) {
@@ -1161,7 +1161,7 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
                     deleteFile.setTitle(activity.getString(R.string.delete_x_file, UIHelper.getFileDescriptionString(activity, m)));
                 }
             }
-            if (m.getStatus() == Message.STATUS_SEND_FAILED && m.getErrorMessage() != null) {
+            if (m.getStatus() == Message.STATUS_SEND_FAILED && m.getErrorMessage() != null && !Message.ERROR_MESSAGE_CANCELLED.equals(m.getErrorMessage())) {
                 showErrorMessage.setVisible(true);
             }
         }
@@ -1705,7 +1705,7 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
         if (transferable != null) {
             transferable.cancel();
         } else if (message.getStatus() != Message.STATUS_RECEIVED) {
-            activity.xmppConnectionService.markMessage(message, Message.STATUS_SEND_FAILED);
+            activity.xmppConnectionService.markMessage(message, Message.STATUS_SEND_FAILED, Message.ERROR_MESSAGE_CANCELLED);
         }
     }
 

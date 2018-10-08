@@ -6,6 +6,7 @@ import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.PowerManager;
 import android.os.SystemClock;
+import android.util.Log;
 import android.util.Pair;
 
 import java.io.FileInputStream;
@@ -73,6 +74,7 @@ public class AbstractConnectionManager {
                 return os;
             }
         } catch (FileNotFoundException e) {
+            Log.d(Config.LOGTAG,"unable to create output stream", e);
             return null;
         }
         try {
@@ -82,6 +84,7 @@ public class AbstractConnectionManager {
             cipher.init(Cipher.DECRYPT_MODE, keySpec, ivSpec);
             return new CipherOutputStream(os, cipher);
         } catch (Exception e) {
+            Log.d(Config.LOGTAG,"unable to create cipher output stream", e);
             return null;
         }
     }

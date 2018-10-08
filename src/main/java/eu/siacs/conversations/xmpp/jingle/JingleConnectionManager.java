@@ -167,7 +167,7 @@ public class JingleConnectionManager extends AbstractConnectionManager {
 	public void cancelInTransmission() {
 		for (JingleConnection connection : this.connections) {
 			if (connection.getJingleStatus() == JingleConnection.JINGLE_STATUS_TRANSMITTING) {
-				connection.cancel();
+				connection.abort();
 			}
 		}
 	}
