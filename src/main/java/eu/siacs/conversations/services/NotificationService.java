@@ -56,8 +56,9 @@ import eu.siacs.conversations.entities.Conversational;
 import eu.siacs.conversations.entities.Message;
 import eu.siacs.conversations.persistance.FileBackend;
 import eu.siacs.conversations.ui.ConversationsActivity;
-import eu.siacs.conversations.ui.ManageAccountActivity;
+import eu.siacs.conversations.ui.EditAccountActivity;
 import eu.siacs.conversations.ui.TimePreference;
+import eu.siacs.conversations.utils.AccountUtils;
 import eu.siacs.conversations.utils.Compatibility;
 import eu.siacs.conversations.utils.GeoHelper;
 import eu.siacs.conversations.utils.UIHelper;
@@ -923,10 +924,14 @@ public class NotificationService {
             mBuilder.setLocalOnly(true);
         }
         mBuilder.setPriority(Notification.PRIORITY_LOW);
-        mBuilder.setContentIntent(PendingIntent.getActivity(mXmppConnectionService,
-                145,
-                new Intent(mXmppConnectionService, ManageAccountActivity.class),
-                PendingIntent.FLAG_UPDATE_CURRENT));
+        final Intent intent;
+        if (AccountUtils.MANAGE_ACCOUNT_ACTIVITY != null) {
+            intent = new Intent(mXmppConnectionService, AccountUtils.MANAGE_ACCOUNT_ACTIVITY);
+        } else {
+            intent = new Intent(mXmppConnectionService, EditAccountActivity.class);
+            intent.putExtra("jid", errors.get(0).getJid().asBareJid().toEscapedString());
+        }
+        mBuilder.setContentIntent(PendingIntent.getActivity(mXmppConnectionService,145, intent, PendingIntent.FLAG_UPDATE_CURRENT));
         if (Compatibility.runsTwentySix()) {
             mBuilder.setChannelId("error");
         }

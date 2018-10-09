@@ -50,18 +50,10 @@ public class ExceptionHelper {
 			if (neverSend || Config.BUG_REPORTS == null) {
 				return false;
 			}
-			List<Account> accounts = service.getAccounts();
-			Account account = null;
-			for (int i = 0; i < accounts.size(); ++i) {
-				if (accounts.get(i).isEnabled()) {
-					account = accounts.get(i);
-					break;
-				}
-			}
+			final Account account = AccountUtils.getFirstEnabled(service);
 			if (account == null) {
 				return false;
 			}
-			final Account finalAccount = account;
 			FileInputStream file = activity.openFileInput(FILENAME);
 			InputStreamReader inputStreamReader = new InputStreamReader(file);
 			BufferedReader stacktrace = new BufferedReader(inputStreamReader);
@@ -93,8 +85,8 @@ public class ExceptionHelper {
 			builder.setMessage(activity.getText(R.string.crash_report_message));
 			builder.setPositiveButton(activity.getText(R.string.send_now), (dialog, which) -> {
 
-				Log.d(Config.LOGTAG, "using account=" + finalAccount.getJid().asBareJid() + " to send in stack trace");
-				Conversation conversation = service.findOrCreateConversation(finalAccount, Config.BUG_REPORTS, false, true);
+				Log.d(Config.LOGTAG, "using account=" + account.getJid().asBareJid() + " to send in stack trace");
+				Conversation conversation = service.findOrCreateConversation(account, Config.BUG_REPORTS, false, true);
 				Message message = new Message(conversation, report.toString(), Message.ENCRYPTION_NONE);
 				service.sendMessage(message);
 			});

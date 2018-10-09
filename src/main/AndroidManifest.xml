@@ -148,14 +148,6 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ui.WelcomeActivity"
-            android:label="@string/app_name"
-            android:launchMode="singleTask"/>
-        <activity
-            android:name=".ui.MagicCreateActivity"
-            android:label="@string/create_account"
-            android:launchMode="singleTask"/>
-        <activity
             android:name=".ui.SettingsActivity"
             android:label="@string/title_activity_settings">
             <intent-filter>
@@ -172,10 +164,6 @@
         <activity
             android:name=".ui.ChangePasswordActivity"
             android:label="@string/change_password_on_server"/>
-        <activity
-            android:name=".ui.ManageAccountActivity"
-            android:label="@string/title_activity_manage_accounts"
-            android:launchMode="singleTask"/>
         <activity
             android:name=".ui.ShareViaAccountActivity"
             android:label="@string/title_activity_share_via_account"

@@ -3903,18 +3903,6 @@ public class XmppConnectionService extends Service {
 		return mPushManagementService;
 	}
 
-	public Account getPendingAccount() {
-		Account pending = null;
-		for (Account account : getAccounts()) {
-			if (!account.isOptionSet(Account.OPTION_LOGGED_IN_SUCCESSFULLY)) {
-				pending = account;
-			} else {
-				return null;
-			}
-		}
-		return pending;
-	}
-
 	public void changeStatus(Account account, PresenceTemplate template, String signature) {
 		if (!template.getStatusMessage().isEmpty()) {
 			databaseBackend.insertPresenceTemplate(template);

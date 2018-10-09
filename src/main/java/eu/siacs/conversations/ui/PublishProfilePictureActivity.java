@@ -50,7 +50,7 @@ public class PublishProfilePictureActivity extends XmppActivity implements XmppC
         runOnUiThread(() -> {
             if (mInitialAccountSetup) {
                 Intent intent = new Intent(getApplicationContext(), StartConversationActivity.class);
-                WelcomeActivity.addInviteUri(intent, getIntent());
+                StartConversationActivity.addInviteUri(intent, getIntent());
                 intent.putExtra("init", true);
                 startActivity(intent);
             }
@@ -94,7 +94,7 @@ public class PublishProfilePictureActivity extends XmppActivity implements XmppC
             if (mInitialAccountSetup) {
                 Intent intent = new Intent(getApplicationContext(), StartConversationActivity.class);
                 if (xmppConnectionService != null && xmppConnectionService.getAccounts().size() == 1) {
-                    WelcomeActivity.addInviteUri(intent, getIntent());
+                    StartConversationActivity.addInviteUri(intent, getIntent());
                     intent.putExtra("init", true);
                 }
                 startActivity(intent);

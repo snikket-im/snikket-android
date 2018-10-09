@@ -15,8 +15,6 @@ import eu.siacs.conversations.utils.XmppUri;
 
 public class WelcomeActivity extends XmppActivity {
 
-	public static final String EXTRA_INVITE_URI = "eu.siacs.conversations.invite_uri";
-
 	@Override
 	protected void refreshUiReal() {
 
@@ -80,19 +78,7 @@ public class WelcomeActivity extends XmppActivity {
 	}
 
 	public void addInviteUri(Intent intent) {
-		addInviteUri(intent, getIntent());
-	}
-
-	public static void addInviteUri(Intent intent, XmppUri uri) {
-		if (uri.isJidValid()) {
-			intent.putExtra(EXTRA_INVITE_URI, uri.toString());
-		}
-	}
-
-	public static void addInviteUri(Intent to, Intent from) {
-		if (from != null && from.hasExtra(EXTRA_INVITE_URI)) {
-			to.putExtra(EXTRA_INVITE_URI, from.getStringExtra(EXTRA_INVITE_URI));
-		}
+		StartConversationActivity.addInviteUri(intent, getIntent());
 	}
 
 	public static void launch(AppCompatActivity activity) {

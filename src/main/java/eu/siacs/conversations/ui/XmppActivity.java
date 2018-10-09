@@ -73,6 +73,7 @@ import eu.siacs.conversations.services.XmppConnectionService.XmppConnectionBinde
 import eu.siacs.conversations.ui.util.MenuDoubleTabUtil;
 import eu.siacs.conversations.ui.util.PresenceSelector;
 import eu.siacs.conversations.ui.util.SoftKeyboardUtils;
+import eu.siacs.conversations.utils.AccountUtils;
 import eu.siacs.conversations.utils.ExceptionHelper;
 import eu.siacs.conversations.utils.ThemeHelper;
 import eu.siacs.conversations.xmpp.OnKeyStatusUpdated;
@@ -338,7 +339,7 @@ public abstract class XmppActivity extends ActionBarActivity {
 				startActivity(new Intent(this, SettingsActivity.class));
 				break;
 			case R.id.action_accounts:
-				startActivity(new Intent(this, ManageAccountActivity.class));
+				AccountUtils.launchManageAccounts(this);
 				break;
 			case android.R.id.home:
 				finish();

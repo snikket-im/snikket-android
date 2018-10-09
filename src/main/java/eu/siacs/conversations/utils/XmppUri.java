@@ -180,7 +180,7 @@ public class XmppUri {
 
 	public Jid getJid() {
 		try {
-			return this.jid == null ? null : Jid.of(this.jid.toLowerCase());
+			return this.jid == null ? null : Jid.of(this.jid);
 		} catch (IllegalArgumentException e) {
 			return null;
 		}

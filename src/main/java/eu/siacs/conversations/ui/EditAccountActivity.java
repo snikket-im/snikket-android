@@ -67,6 +67,7 @@ import eu.siacs.conversations.ui.util.MenuDoubleTabUtil;
 import eu.siacs.conversations.ui.util.PendingItem;
 import eu.siacs.conversations.ui.util.SoftKeyboardUtils;
 import eu.siacs.conversations.utils.CryptoHelper;
+import eu.siacs.conversations.utils.SignupUtils;
 import eu.siacs.conversations.utils.UIHelper;
 import eu.siacs.conversations.utils.XmppUri;
 import eu.siacs.conversations.xml.Element;
@@ -279,8 +280,9 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
 		if (mAccount != null
 				&& mAccount.getStatus() != Account.State.ONLINE
 				&& mFetchingAvatar) {
-			//TODO: maybe better redirect to StartConversationActivity
-			startActivity(new Intent(this, ManageAccountActivity.class));
+			Intent intent = new Intent(this, StartConversationActivity.class);
+			StartConversationActivity.addInviteUri(intent, getIntent());
+			startActivity(intent);
 			finish();
 		} else if (mInitMode && mAccount != null && mAccount.getStatus() == Account.State.ONLINE) {
 			if (!mFetchingAvatar) {
@@ -312,8 +314,7 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
 		}
 
 		if (xmppConnectionService.getAccounts().size() == 0 && Config.MAGIC_CREATE_DOMAIN != null) {
-			Intent intent = new Intent(EditAccountActivity.this, WelcomeActivity.class);
-			WelcomeActivity.addInviteUri(intent, getIntent());
+			Intent intent = SignupUtils.getSignUpIntent(this);
 			startActivity(intent);
 		}
 	}
@@ -406,7 +407,7 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
 			if (wasFirstAccount) {
 				intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
 			}
-			WelcomeActivity.addInviteUri(intent, getIntent());
+			StartConversationActivity.addInviteUri(intent, getIntent());
 			startActivity(intent);
 			finish();
 		});

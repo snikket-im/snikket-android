@@ -78,6 +78,7 @@ import eu.siacs.conversations.ui.util.MenuDoubleTabUtil;
 import eu.siacs.conversations.ui.util.PendingItem;
 import eu.siacs.conversations.utils.EmojiWrapper;
 import eu.siacs.conversations.utils.ExceptionHelper;
+import eu.siacs.conversations.utils.SignupUtils;
 import eu.siacs.conversations.utils.XmppUri;
 import eu.siacs.conversations.xmpp.OnUpdateBlocklist;
 import rocks.xmpp.addr.Jid;
@@ -177,7 +178,10 @@ public class ConversationsActivity extends XmppActivity implements OnConversatio
         }
         boolean isConversationsListEmpty = xmppConnectionService.isConversationsListEmpty(ignore);
         if (isConversationsListEmpty && mRedirectInProcess.compareAndSet(false, true)) {
-            final Intent intent = getRedirectionIntent(noAnimation);
+            final Intent intent = SignupUtils.getRedirectionIntent(this);
+            if (noAnimation) {
+                intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+            }
             runOnUiThread(() -> {
                 startActivity(intent);
                 if (noAnimation) {
@@ -186,34 +190,6 @@ public class ConversationsActivity extends XmppActivity implements OnConversatio
             });
         }
         return mRedirectInProcess.get();
-    }
-
-    private Intent getRedirectionIntent(boolean noAnimation) {
-        Account pendingAccount = xmppConnectionService.getPendingAccount();
-        Intent intent;
-        if (pendingAccount != null) {
-            intent = new Intent(this, EditAccountActivity.class);
-            intent.putExtra("jid", pendingAccount.getJid().asBareJid().toString());
-        } else {
-            if (xmppConnectionService.getAccounts().size() == 0) {
-                if (Config.X509_VERIFICATION) {
-                    intent = new Intent(this, ManageAccountActivity.class);
-                } else if (Config.MAGIC_CREATE_DOMAIN != null) {
-                    intent = new Intent(this, WelcomeActivity.class);
-                    WelcomeActivity.addInviteUri(intent, getIntent());
-                } else {
-                    intent = new Intent(this, EditAccountActivity.class);
-                }
-            } else {
-                intent = new Intent(this, StartConversationActivity.class);
-            }
-        }
-        intent.putExtra("init", true);
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        if (noAnimation) {
-            intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-        }
-        return intent;
     }
 
     private void showDialogsIfMainIsOverview() {
