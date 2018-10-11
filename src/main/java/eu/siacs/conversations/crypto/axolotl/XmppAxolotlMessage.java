@@ -178,7 +178,7 @@ public class XmppAxolotlMessage {
 		try {
 			SecretKey secretKey = new SecretKeySpec(innerKey, KEYTYPE);
 			IvParameterSpec ivSpec = new IvParameterSpec(iv);
-			Cipher cipher = Compatibility.twentyTwo() ? Cipher.getInstance(CIPHERMODE) : Cipher.getInstance(CIPHERMODE, PROVIDER);
+			Cipher cipher = Compatibility.twentyEight() ? Cipher.getInstance(CIPHERMODE) : Cipher.getInstance(CIPHERMODE, PROVIDER);
 			cipher.init(Cipher.ENCRYPT_MODE, secretKey, ivSpec);
 			this.ciphertext = cipher.doFinal(Config.OMEMO_PADDING ? getPaddedBytes(plaintext) : plaintext.getBytes());
 			if (Config.PUT_AUTH_TAG_INTO_KEY && this.ciphertext != null) {
@@ -294,7 +294,7 @@ public class XmppAxolotlMessage {
 					key = newKey;
 				}
 
-				Cipher cipher = Compatibility.twentyTwo() ? Cipher.getInstance(CIPHERMODE) : Cipher.getInstance(CIPHERMODE, PROVIDER);
+				Cipher cipher = Compatibility.twentyEight() ? Cipher.getInstance(CIPHERMODE) : Cipher.getInstance(CIPHERMODE, PROVIDER);
 				SecretKeySpec keySpec = new SecretKeySpec(key, KEYTYPE);
 				IvParameterSpec ivSpec = new IvParameterSpec(iv);
 

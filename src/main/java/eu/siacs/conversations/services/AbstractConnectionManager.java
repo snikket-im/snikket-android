@@ -1,15 +1,10 @@
 package eu.siacs.conversations.services;
 
-import android.Manifest;
 import android.content.Context;
-import android.content.pm.PackageManager;
-import android.os.Build;
 import android.os.PowerManager;
 import android.os.SystemClock;
 import android.util.Log;
-import android.util.Pair;
 
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.InputStream;
@@ -47,7 +42,7 @@ public class AbstractConnectionManager {
 
     public static InputStream upgrade(DownloadableFile file, InputStream is) throws InvalidAlgorithmParameterException, NoSuchAlgorithmException, InvalidKeyException, NoSuchPaddingException, NoSuchProviderException {
         if (file.getKey() != null && file.getIv() != null) {
-            final Cipher cipher = Compatibility.twentyTwo() ? Cipher.getInstance(CIPHERMODE) : Cipher.getInstance(CIPHERMODE, PROVIDER);
+            final Cipher cipher = Compatibility.twentyEight() ? Cipher.getInstance(CIPHERMODE) : Cipher.getInstance(CIPHERMODE, PROVIDER);
             SecretKeySpec keySpec = new SecretKeySpec(file.getKey(), KEYTYPE);
             IvParameterSpec ivSpec = new IvParameterSpec(file.getIv());
             cipher.init(Cipher.ENCRYPT_MODE, keySpec, ivSpec);
@@ -78,7 +73,7 @@ public class AbstractConnectionManager {
             return null;
         }
         try {
-            final Cipher cipher = Compatibility.twentyTwo() ? Cipher.getInstance(CIPHERMODE) : Cipher.getInstance(CIPHERMODE, PROVIDER);
+            final Cipher cipher = Compatibility.twentyEight() ? Cipher.getInstance(CIPHERMODE) : Cipher.getInstance(CIPHERMODE, PROVIDER);
             SecretKeySpec keySpec = new SecretKeySpec(file.getKey(), KEYTYPE);
             IvParameterSpec ivSpec = new IvParameterSpec(file.getIv());
             cipher.init(Cipher.DECRYPT_MODE, keySpec, ivSpec);

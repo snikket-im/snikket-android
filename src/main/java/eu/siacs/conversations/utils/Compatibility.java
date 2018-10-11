@@ -37,8 +37,8 @@ public class Compatibility {
         return Build.VERSION.SDK_INT >= Build.VERSION_CODES.O;
     }
 
-    public static boolean twentyTwo() {
-        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1;
+    public static boolean twentyEight() {
+        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.P;
     }
 
     private static boolean getBooleanPreference(Context context, String name, @BoolRes int res) {
