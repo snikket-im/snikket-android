@@ -493,6 +493,8 @@
   <string name="notify_only_when_highlighted">Известяване само при споменаване</string>
   <string name="notify_never">Известията са изключени</string>
   <string name="notify_paused">Известията са спрени временно</string>
+  <string name="pref_picture_compression">Компресия на изображенията</string>
+  <string name="pref_picture_compression_summary">Преоразмеряване и компресиране на изображенията</string>
   <string name="always">Винаги</string>
   <string name="automatically">Автоматично</string>
   <string name="battery_optimizations_enabled">Оптимизациите за използв. на батерията са вкл.</string>
@@ -558,6 +560,7 @@
   <string name="allow">Позволяване</string>
   <string name="no_permission_to_access_x">Няма позволение за достъп до %s</string>
   <string name="remote_server_not_found">Отдалеченият сървър не е намерен</string>
+  <string name="remote_server_timeout">Времето за изчакване на отдалечения сървър изтече</string>
   <string name="unable_to_update_account">Неуспешно обновяване на профила</string>
   <string name="report_jid_as_spammer">Докладване на този JID за изпращане на нежелани съобщения.</string>
   <string name="pref_delete_omemo_identities">Изтриване на идентификаторите OMEMO</string>
@@ -737,4 +740,9 @@
   <string name="media_browser">Разглеждане на медийното съдържание</string>
   <string name="export_channel_name">Изнасяне на историята</string>
   <string name="security_violation_not_attaching_file">Файлът е пропуснат поради нарушение на сигурността.</string>
+  <string name="pref_video_compression">Качество на видеото</string>
+  <string name="pref_video_compression_summary">По-ниското качество означава, че файловете ще са по-малки</string>
+  <string name="video_360p">Средно (360p)</string>
+  <string name="video_720p">Високо (720p)</string>
+  <string name="cancelled">отказано</string>
 </resources>

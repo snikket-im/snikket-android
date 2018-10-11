@@ -493,6 +493,8 @@
   <string name="notify_only_when_highlighted">Nur benachrichtigen, wenn ich erwähnt werde</string>
   <string name="notify_never">Benachrichtigungen deaktiviert</string>
   <string name="notify_paused">Benachrichtigungen pausiert</string>
+  <string name="pref_picture_compression">Bilder komprimieren</string>
+  <string name="pref_picture_compression_summary">Bildgröße ändern und komprimieren</string>
   <string name="always">Immer</string>
   <string name="automatically">Automatisch</string>
   <string name="battery_optimizations_enabled">Batterieoptimierung aktiv</string>
@@ -558,6 +560,7 @@
   <string name="allow">Erlauben</string>
   <string name="no_permission_to_access_x">Keine Berechtigung um auf %s zuzugreifen</string>
   <string name="remote_server_not_found">Remote-Server nicht gefunden</string>
+  <string name="remote_server_timeout">Zeitüberschreitung des Remote-Servers</string>
   <string name="unable_to_update_account">Konto kann nicht aktualisiert werden</string>
   <string name="report_jid_as_spammer">Melde die JID als Sender unerwünschter Nachrichten.</string>
   <string name="pref_delete_omemo_identities">OMEMO-Identitäten zurücksetzen</string>
@@ -737,4 +740,9 @@
   <string name="media_browser">Medienbrowser</string>
   <string name="export_channel_name">Verlauf exportieren</string>
   <string name="security_violation_not_attaching_file">Die Datei wurde aufgrund von Sicherheitsverletzungen ausgelassen.</string>
+  <string name="pref_video_compression">Videoqualität</string>
+  <string name="pref_video_compression_summary">Geringere Qualität ermöglicht kleinere Dateien</string>
+  <string name="video_360p">Mittel (360p)</string>
+  <string name="video_720p">Hoch (720p)</string>
+  <string name="cancelled">abgebrochen</string>
 </resources>

@@ -77,6 +77,9 @@
   <string name="sharing_files_please_wait">Bestanden delen. Even geduld…</string>
   <string name="action_clear_history">Geschiedenis wissen</string>
   <string name="clear_conversation_history">Gespreksgeschiedenis wissen</string>
+  <string name="clear_histor_msg">Weet je zeker dat je alle berichten in dit gesprek wil verwijderen?\n\n<b>Waarschuwing:</b> Dit zal kopieën van deze berichten die opgeslagen zijn op andere apparaten of servers niet verwijderen.</string>
+  <string name="delete_file_dialog">Bestand verwijderen</string>
+  <string name="delete_file_dialog_msg">Weet je zeker dat je dit bestand wil verwijderen?\n\n<b>Waarschuwing:</b> Dit zal kopieën van dit bericht die opgeslagen zijn op andere apparaten of servers niet verwijderen.</string>
   <string name="also_end_conversation">Dit gesprek na afloop beëindigen</string>
   <string name="choose_presence">Apparaat kiezen</string>
   <string name="send_unencrypted_message">Verstuur onversleuteld bericht</string>
@@ -490,6 +493,8 @@
   <string name="notify_only_when_highlighted">Melding enkel wanneer aangesproken</string>
   <string name="notify_never">Meldingen uitgeschakeld</string>
   <string name="notify_paused">Meldingen gepauzeerd</string>
+  <string name="pref_picture_compression">Afbeeldingscompressie</string>
+  <string name="pref_picture_compression_summary">Afbeeldingen verkleinen en comprimeren</string>
   <string name="always">Altijd</string>
   <string name="automatically">Automatisch</string>
   <string name="battery_optimizations_enabled">Batterij-optimalisaties ingeschakeld</string>
@@ -555,6 +560,7 @@
   <string name="allow">Toestaan</string>
   <string name="no_permission_to_access_x">Geen toestemming om toegang te krijgen tot %s</string>
   <string name="remote_server_not_found">Externe server niet gevonden</string>
+  <string name="remote_server_timeout">Time-out bij externe server</string>
   <string name="unable_to_update_account">Kan account niet bijwerken</string>
   <string name="report_jid_as_spammer">Rapporteer deze JID voor het sturen van ongewenste berichten</string>
   <string name="pref_delete_omemo_identities">OMEMO-identiteiten verwijderen</string>
@@ -734,4 +740,9 @@
   <string name="media_browser">Mediabrowser</string>
   <string name="export_channel_name">Geschiedenis exporteren</string>
   <string name="security_violation_not_attaching_file">Bestand weggelaten wegens beveiligingsovertreding.</string>
+  <string name="pref_video_compression">Videokwaliteit</string>
+  <string name="pref_video_compression_summary">Een lagere kwaliteit zorgt voor kleinere bestanden</string>
+  <string name="video_360p">Gemiddeld (360p)</string>
+  <string name="video_720p">Hoog (720p)</string>
+  <string name="cancelled">geannuleerd</string>
 </resources>

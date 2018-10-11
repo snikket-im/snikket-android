@@ -497,6 +497,8 @@
   <string name="notify_only_when_highlighted">Powiadamiaj tylko w przypadku wzmianki o mnie</string>
   <string name="notify_never">Powiadomienia wyłączone</string>
   <string name="notify_paused">Powiadomienia wstrzymane</string>
+  <string name="pref_picture_compression">Kompresja obrazów</string>
+  <string name="pref_picture_compression_summary">Zmień rozmiar i kompresuj obrazki</string>
   <string name="always">Zawsze</string>
   <string name="automatically">Automatycznie</string>
   <string name="battery_optimizations_enabled">Optymalizacje zużycia baterii włączone</string>
@@ -563,6 +565,7 @@ Dla twojej wygody ułatwiliśmy stworzenie konta na conversations.im; serwerze d
   <string name="allow">Pozwól</string>
   <string name="no_permission_to_access_x">Brak pozwolenia na dostęp do %s</string>
   <string name="remote_server_not_found">Nie znaleziono serwera</string>
+  <string name="remote_server_timeout">Brak odpowiedzi od zdalnego serwera</string>
   <string name="unable_to_update_account">Nie można zaktualizować konta</string>
   <string name="report_jid_as_spammer">Raportuj ten JID jako rozsyłający spam</string>
   <string name="pref_delete_omemo_identities">Usuń tożsamości OMEMO</string>
@@ -756,4 +759,9 @@ Administrator twojego serwera będzie mógł czytać twoje wiadomości, ale moż
   <string name="media_browser">Przeglądarka mediów</string>
   <string name="export_channel_name">Eksport historii</string>
   <string name="security_violation_not_attaching_file">Plik pominięty w związku z naruszeniem bezpieczeństwa.</string>
+  <string name="pref_video_compression">Jakość wideo</string>
+  <string name="pref_video_compression_summary">Niższa jakość gwarantuje mniejszy rozmiar</string>
+  <string name="video_360p">Średnia (360p)</string>
+  <string name="video_720p">Wysoka (720p)</string>
+  <string name="cancelled">anulowane</string>
 </resources>

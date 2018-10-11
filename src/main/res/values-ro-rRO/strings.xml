@@ -495,6 +495,8 @@
   <string name="notify_only_when_highlighted">Notifică doar atunci când cineva vă menționează numele</string>
   <string name="notify_never">Notificări dezactivate</string>
   <string name="notify_paused">Notificări suspendate</string>
+  <string name="pref_picture_compression">Compresie imagini</string>
+  <string name="pref_picture_compression_summary">Redimensionează și comprimă imaginile</string>
   <string name="always">Mereu</string>
   <string name="automatically">Automat</string>
   <string name="battery_optimizations_enabled">Optimizare baterie activată</string>
@@ -562,6 +564,7 @@ sau chiar pierderea mesajelor.\nÎn continuare veți fi rugați să dezactivați
   <string name="allow">Permite</string>
   <string name="no_permission_to_access_x">Nu există permisiunea de a accesa %s</string>
   <string name="remote_server_not_found">Serverul nu a fost găsit</string>
+  <string name="remote_server_timeout">A expirat termenul de așteptare răspuns de la serverul destinație</string>
   <string name="unable_to_update_account">Nu se poate actualiza contul</string>
   <string name="report_jid_as_spammer">Raportează că această identitate trimite mesaje nedorite.</string>
   <string name="pref_delete_omemo_identities">Șterge identitățile OEMO</string>
@@ -747,4 +750,9 @@ sau chiar pierderea mesajelor.\nÎn continuare veți fi rugați să dezactivați
   <string name="media_browser">Vizualizare fișiere media</string>
   <string name="export_channel_name">Export istoric</string>
   <string name="security_violation_not_attaching_file">Fișier omis ca urmare a unei probleme de securitate.</string>
+  <string name="pref_video_compression">Calitate video</string>
+  <string name="pref_video_compression_summary">O calitate micä înseamnă fișiere mai mici</string>
+  <string name="video_360p">Medie (360p)</string>
+  <string name="video_720p">Mare (720p)</string>
+  <string name="cancelled">anulat</string>
 </resources>
