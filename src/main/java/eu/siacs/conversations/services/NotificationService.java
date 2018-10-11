@@ -869,7 +869,7 @@ public class NotificationService {
         }
         mBuilder.setContentIntent(createOpenConversationsIntent());
         mBuilder.setWhen(0);
-        mBuilder.setPriority(Notification.PRIORITY_LOW);
+        mBuilder.setPriority(Notification.PRIORITY_MIN);
         mBuilder.setSmallIcon(R.drawable.ic_link_white_24dp);
 
         if (Compatibility.runsTwentySix()) {
