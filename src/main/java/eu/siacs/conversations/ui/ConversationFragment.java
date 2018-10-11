@@ -1148,13 +1148,14 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
                 downloadFile.setVisible(true);
                 downloadFile.setTitle(activity.getString(R.string.download_x_file, UIHelper.getFileDescriptionString(activity, m)));
             }
-            boolean waitingOfferedSending = m.getStatus() == Message.STATUS_WAITING
+            final boolean waitingOfferedSending = m.getStatus() == Message.STATUS_WAITING
                     || m.getStatus() == Message.STATUS_UNSEND
                     || m.getStatus() == Message.STATUS_OFFERED;
-            if ((t != null && !deleted) || waitingOfferedSending && m.needsUploading()) {
+            final boolean cancelable = (t != null && !deleted) || waitingOfferedSending && m.needsUploading();
+            if (cancelable) {
                 cancelTransmission.setVisible(true);
             }
-            if (m.isFileOrImage() && !deleted) {
+            if (m.isFileOrImage() && !deleted && !cancelable) {
                 String path = m.getRelativeFilePath();
                 if (path == null || !path.startsWith("/") || FileBackend.isInDirectoryThatShouldNotBeScanned(getActivity(), path)) {
                     deleteFile.setVisible(true);
