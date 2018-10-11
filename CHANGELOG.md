@@ -1,5 +1,10 @@
 # Changelog
 
+### Version 2.3.2
+* Fixed OMEMO on Android 5.1 & 6.0
+* Added setting for video quality
+* bug fixes
+
 ### Version 2.3.1
 * Stronger compression for video files
 * Use SNI on STARTTLS to fix gtalk
