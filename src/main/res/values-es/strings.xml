@@ -77,6 +77,9 @@
   <string name="sharing_files_please_wait">Compartiendo ficheros. Por favor, espera...</string>
   <string name="action_clear_history">Limpiar historial</string>
   <string name="clear_conversation_history">Limpiar historial de conversación</string>
+  <string name="clear_histor_msg">¿Estás seguro de que quieres borrar todos los mensajes de esta conversación?\n\n<b>Aviso:</b> Esto no borrará las copias de estos mensajes en otros dispositivos o servidores. </string>
+  <string name="delete_file_dialog">Eliminar fichero</string>
+  <string name="delete_file_dialog_msg">¿Estás seguro de que quieres borrar este fichero?\n\n<b>Aviso:</b>Esto no borrará las copias de este fichero almacenado en otros dispositivos o servidores.</string>
   <string name="also_end_conversation">Además, terminar esta conversación</string>
   <string name="choose_presence">Seleccionar dispositivo</string>
   <string name="send_unencrypted_message">Enviar mensaje sin cifrar</string>
@@ -149,7 +152,8 @@
   <string name="account_status_tls_error">Error de negociación TLS</string>
   <string name="account_status_policy_violation">Policy violation</string>
   <string name="account_status_incompatible_server">Servidor incompatible</string>
-  <string name="account_status_stream_error">Stream error</string>
+  <string name="account_status_stream_error">Error de flujo</string>
+  <string name="account_status_stream_opening_error">Error al abrir la secuencia</string>
   <string name="encryption_choice_unencrypted">Sin cifrado</string>
   <string name="encryption_choice_otr">OTR</string>
   <string name="encryption_choice_pgp">OpenPGP</string>
@@ -489,8 +493,6 @@
   <string name="notify_only_when_highlighted">Notificar solo cuando eres mencionado</string>
   <string name="notify_never">Notificaciones deshabilitadas</string>
   <string name="notify_paused">Notificaciones pausadas</string>
-  <string name="pref_picture_compression">Comprimir imágenes</string>
-  <string name="pref_picture_compression_summary">Redimensionar y comprimir las imágenes</string>
   <string name="always">Siempre</string>
   <string name="automatically">Automáticamente</string>
   <string name="battery_optimizations_enabled">Optimizaciones de uso de batería habilitadas</string>
@@ -734,4 +736,5 @@
   <string name="view_media">Ver galería</string>
   <string name="media_browser">Galería</string>
   <string name="export_channel_name">Exportar historial</string>
+  <string name="security_violation_not_attaching_file">Fichero omitido por violación de seguridad</string>
 </resources>

@@ -486,8 +486,6 @@
   <string name="notify_on_all_messages">Обавештења за све поруке</string>
   <string name="notify_never">Обавештења искључена</string>
   <string name="notify_paused">Обавештења паузирана</string>
-  <string name="pref_picture_compression">Компресуј слике</string>
-  <string name="pref_picture_compression_summary">Промена величине и компресовање слика</string>
   <string name="always">увек</string>
   <string name="automatically">аутоматски</string>
   <string name="battery_optimizations_enabled">Оптимизација батерије је укључена</string>

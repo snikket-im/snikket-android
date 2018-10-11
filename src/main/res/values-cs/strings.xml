@@ -415,8 +415,6 @@
   <string name="notify_on_all_messages">Upozorňovat na všechny zprávy</string>
   <string name="notify_never">Upozornění vypnuta</string>
   <string name="notify_paused">Upozornění pozastavena</string>
-  <string name="pref_picture_compression">Komprimovat obrázky</string>
-  <string name="pref_picture_compression_summary">Upravit velikost a komprimovat obrázky</string>
   <string name="always">Vždy</string>
   <string name="automatically">Automaticky</string>
   <string name="battery_optimizations_enabled">Povolena optimalizace využití baterie</string>

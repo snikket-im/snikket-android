@@ -461,8 +461,6 @@
   <string name="notify_only_when_highlighted">メンションされたときにのみ通知</string>
   <string name="notify_never">通知は無効</string>
   <string name="notify_paused">通知は一時停止</string>
-  <string name="pref_picture_compression">写真を圧縮</string>
-  <string name="pref_picture_compression_summary">写真のサイズ変更と圧縮</string>
   <string name="always">常に</string>
   <string name="automatically">自動</string>
   <string name="battery_optimizations_enabled">バッテリー最適化が有効</string>

@@ -77,6 +77,9 @@
   <string name="sharing_files_please_wait">Споделяне на файлове. Моля, изчакайте…</string>
   <string name="action_clear_history">Изчистване на историята</string>
   <string name="clear_conversation_history">Изчистване на историята на разговорите</string>
+  <string name="clear_histor_msg">Наистина ли искате да изтриете всички съобщения в този разговор?\n\n<b>Внимание:</b> Това няма да изтрие копията на тези съобщения, които се съхраняват на други устройства или сървъри.</string>
+  <string name="delete_file_dialog">Изтриване на файла</string>
+  <string name="delete_file_dialog_msg">Наистина ли искате да изтриете този файл?\n\n<b>Внимание:</b> Това няма да изтрие копията на файла, които се съхраняват на други устройства или сървъри.</string>
   <string name="also_end_conversation">Приключване на този разговор след това</string>
   <string name="choose_presence">Изберете устройство</string>
   <string name="send_unencrypted_message">Изпр. на нешифр. съобщение</string>
@@ -490,8 +493,6 @@
   <string name="notify_only_when_highlighted">Известяване само при споменаване</string>
   <string name="notify_never">Известията са изключени</string>
   <string name="notify_paused">Известията са спрени временно</string>
-  <string name="pref_picture_compression">Компресиране на снимките</string>
-  <string name="pref_picture_compression_summary">Преоразмеряване и компресиране на снимките</string>
   <string name="always">Винаги</string>
   <string name="automatically">Автоматично</string>
   <string name="battery_optimizations_enabled">Оптимизациите за използв. на батерията са вкл.</string>

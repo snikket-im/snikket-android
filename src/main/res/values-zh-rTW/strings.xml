@@ -421,8 +421,6 @@
   <string name="notify_on_all_messages">為所有訊息顯示通知</string>
   <string name="notify_never">關閉通知</string>
   <string name="notify_paused">暫停通知</string>
-  <string name="pref_picture_compression">壓縮圖片</string>
-  <string name="pref_picture_compression_summary">裁剪並壓縮圖片</string>
   <string name="always">總是</string>
   <string name="automatically">自動</string>
   <string name="battery_optimizations_enabled">啟用節電模式</string>

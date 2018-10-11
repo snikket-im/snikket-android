@@ -20,6 +20,7 @@
   <string name="title_activity_sharewith">Поделиться</string>
   <string name="title_activity_start_conversation">Начать беседу</string>
   <string name="title_activity_choose_contact">Выберите контакт</string>
+  <string name="title_activity_choose_contacts">Выберите контакты</string>
   <string name="title_activity_share_via_account">Поделиться через аккаунт</string>
   <string name="title_activity_block_list">Чёрный список</string>
   <string name="just_now">только что</string>
@@ -75,6 +76,9 @@
   <string name="sharing_files_please_wait">Обмен файлами. Пожалуйста, подождите…</string>
   <string name="action_clear_history">Очистить историю</string>
   <string name="clear_conversation_history">Очистить историю</string>
+  <string name="clear_histor_msg">Вы хотите удалить все сообщения в этой беседе?\n\n<b>Предупреждение:</b> Данная операция не повлияет на сообщения, хранящиеся на других устройствах или серверах.</string>
+  <string name="delete_file_dialog">Удалить файл</string>
+  <string name="delete_file_dialog_msg">Вы уверены, что хотите удалить этот файл?\n\n<b>Предупреждение:</b> Данная операция не удалит копии этого файла, хранящиеся на других устройствах или серверах.</string>
   <string name="also_end_conversation">Закончить эту беседу впоследствии</string>
   <string name="choose_presence">Выберите устройство</string>
   <string name="send_unencrypted_message">Нешифрованное сообщение</string>
@@ -119,6 +123,7 @@
   <string name="openpgp_error">Возникла ошибка в OpenKeychain</string>
   <string name="accept">Принять</string>
   <string name="error">Произошла ошибка</string>
+  <string name="recording_error">Ошибка</string>
   <string name="your_account">Ваш аккаунт</string>
   <string name="send_presence_updates">Отправлять присутствие</string>
   <string name="receive_presence_updates">Получать присутствие</string>
@@ -147,6 +152,7 @@
   <string name="account_status_policy_violation">Нарушение правил</string>
   <string name="account_status_incompatible_server">Несовместимый сервер</string>
   <string name="account_status_stream_error">Ошибка потока</string>
+  <string name="account_status_stream_opening_error">Ошибка открытия потока</string>
   <string name="encryption_choice_unencrypted">Без шифра</string>
   <string name="encryption_choice_otr">OTR</string>
   <string name="encryption_choice_pgp">OpenPGP</string>
@@ -221,13 +227,15 @@
   <string name="delete_bookmark">Удалить закладку</string>
   <string name="bookmark_already_exists">Такая закладка уже существует</string>
   <string name="action_edit_subject">Редактировать тему конференции</string>
+  <string name="topic">Тема</string>
   <string name="joining_conference">Вход в конференцию…</string>
   <string name="leave">Покинуть</string>
   <string name="contact_added_you">Собеседник добавил вас в список контактов</string>
   <string name="add_back">Добавить в ответ</string>
   <string name="contact_has_read_up_to_this_point">%s прочит. сообщ. до этого момента</string>
-  <string name="contacts_have_read_up_to_this_point">%s прочитал(а) сообщения до этого момента</string>
+  <string name="contacts_have_read_up_to_this_point">%s прочитали сообщения до этого момента</string>
   <string name="contacts_and_n_more_have_read_up_to_this_point">%1$s+ ещё %2$d прочитали сообщения до этого момента</string>
+  <string name="everyone_has_read_up_to_this_point">Все прочитали сообщения до этого момента</string>
   <string name="publish">Опубликовать</string>
   <string name="touch_to_choose_picture">Нажмите на аватар, чтобы выбрать новую фотографию из галереи</string>
   <string name="publishing">Установка…</string>
@@ -284,10 +292,12 @@
   <string name="check_x_filesize_on_host">Проверить размер %1$s на %2$s</string>
   <string name="message_options">Опции сообщения</string>
   <string name="quote">Цитировать</string>
+  <string name="paste_as_quote">Вставить как цитату</string>
   <string name="copy_original_url">Копировать адрес ссылки</string>
   <string name="send_again">Отправить ещё раз</string>
   <string name="file_url">URL файла</string>
   <string name="url_copied_to_clipboard">Ссылка скопирована в буфер обмена</string>
+  <string name="jabber_id_copied_to_clipboard">Jabber ID скопирован в буфер обмена</string>
   <string name="scan_qr_code">Сканировать 2D штрихкод</string>
   <string name="show_qr_code">Показать 2D штрихкод</string>
   <string name="show_block_list">Показать чёрный список</string>
@@ -314,6 +324,8 @@
   <string name="file_deleted">Файл был удалён</string>
   <string name="no_application_found_to_open_file">Не найдено приложения для открытия файла</string>
   <string name="no_application_found_to_open_link">Не найдено приложения, способного открыть эту ссылку</string>
+  <string name="no_application_found_to_view_contact">Не найдено приложения для просмотра контакта</string>
+  <string name="pref_show_dynamic_tags">Динамические тэги</string>
   <string name="pref_show_dynamic_tags_summary">Отображать теги только для чтения под контактами</string>
   <string name="enable_notifications">Включить уведомления</string>
   <string name="no_conference_server_found">Сервер конференции не найден</string>
@@ -413,7 +425,10 @@
   <string name="none">Нет</string>
   <string name="recently_used">Последнее выбранное</string>
   <string name="choose_quick_action">Выбрать быстрое действие</string>
+  <string name="search_contacts">Поиск контактов</string>
+  <string name="search_groups">Поиск конференций</string>
   <string name="send_private_message">Отправить частное сообщение</string>
+  <string name="user_has_left_conference">%1$s покинул конференцию!</string>
   <string name="username">Имя пользователя</string>
   <string name="username_hint">Имя пользователя</string>
   <string name="invalid_username">Недопустимое имя пользователя</string>
@@ -478,8 +493,6 @@
   <string name="notify_only_when_highlighted">Уведомлять только при упоминании</string>
   <string name="notify_never">Без уведомления</string>
   <string name="notify_paused">Уведомления приостановлены</string>
-  <string name="pref_picture_compression">Сжать изображения</string>
-  <string name="pref_picture_compression_summary">Изменить размер и сжать изображения</string>
   <string name="always">Всегда</string>
   <string name="automatically">Автоматически</string>
   <string name="battery_optimizations_enabled">Оптимизации энергопотребления разрешены</string>
@@ -658,6 +671,12 @@
   <string name="medium">Средний</string>
   <string name="large">Большой</string>
   <string name="undo">отменить</string>
+  <string name="action_copy_location">Копировать местоположение</string>
+  <string name="action_share_location">Поделиться местоположением</string>
+  <string name="title_activity_share_location">Поделиться местоположением</string>
+  <string name="title_activity_show_location">Показать местоположение</string>
   <string name="share">Поделиться</string>
   <string name="please_wait">Пожалуйста, подождите…</string>
+  <string name="search_messages">Поиск сообщений</string>
+  <string name="copy_jabber_id">Копировать Jabber ID</string>
 </resources>

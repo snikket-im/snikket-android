@@ -487,8 +487,6 @@
   <string name="notify_only_when_highlighted">只在被提到时通知</string>
   <string name="notify_never">禁用通知</string>
   <string name="notify_paused">暂停通知</string>
-  <string name="pref_picture_compression">压缩图片</string>
-  <string name="pref_picture_compression_summary">裁剪并压缩图片</string>
   <string name="always">总是</string>
   <string name="automatically">自动</string>
   <string name="battery_optimizations_enabled">启用节电模式</string>

@@ -469,8 +469,6 @@
   <string name="notify_only_when_highlighted">Varsle bare når fremhevet</string>
   <string name="notify_never">Varslinger deaktivert</string>
   <string name="notify_paused">Varslinger pauset</string>
-  <string name="pref_picture_compression">Komprimer bilder</string>
-  <string name="pref_picture_compression_summary">Endre størrelse og komprimer bilder</string>
   <string name="always">Alltid</string>
   <string name="automatically">Automatisk</string>
   <string name="battery_optimizations_enabled">Batterioptimaliseringer aktivert</string>

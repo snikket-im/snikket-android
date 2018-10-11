@@ -336,8 +336,6 @@
   </plurals>
   <string name="sync_with_contacts">Sinkronkan dengan kontak</string>
   <string name="notify_on_all_messages">Tampilkan notifikasi untuk semua pesan</string>
-  <string name="pref_picture_compression">Kompres Gambar</string>
-  <string name="pref_picture_compression_summary">Rubah ukuran dan kompres gambar</string>
   <string name="always">Selalu</string>
   <string name="automatically">Secara otomatis</string>
   <string name="battery_optimizations_enabled">Pengoptimalan baterai diaktifkan</string>

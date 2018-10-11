@@ -489,8 +489,6 @@
   <string name="notify_only_when_highlighted">Notificar só cando é mencionada</string>
   <string name="notify_never">Notificacións deshabilitadas</string>
   <string name="notify_paused">Notificacións pausadas</string>
-  <string name="pref_picture_compression">Comprimir imaxes</string>
-  <string name="pref_picture_compression_summary">Redimensionar e comprimir imaxes</string>
   <string name="always">Sempre</string>
   <string name="automatically">Automáticamente</string>
   <string name="battery_optimizations_enabled">Optimizacións de batería habilitadas</string>

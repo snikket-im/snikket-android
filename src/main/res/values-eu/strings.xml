@@ -489,8 +489,6 @@
   <string name="notify_only_when_highlighted">Jakinarazi aipatua izaterakoan soilik</string>
   <string name="notify_never">Jakinarazpenak ezgaituta</string>
   <string name="notify_paused">Jakinarazpenak gelditu dira</string>
-  <string name="pref_picture_compression">Irudiak konprimatu</string>
-  <string name="pref_picture_compression_summary">Irudiak konprimatu eta neurriz aldatu</string>
   <string name="always">Beti</string>
   <string name="automatically">Automatikoki</string>
   <string name="battery_optimizations_enabled">Bateriaren optimizazioak gaituta</string>

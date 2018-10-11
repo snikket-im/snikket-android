@@ -419,8 +419,6 @@
   <string name="notify_on_all_messages">Tüm iletilerde uyar</string>
   <string name="notify_never">Uyarılar devre dışı</string>
   <string name="notify_paused">Uyarılar geçici olarak durduruldu</string>
-  <string name="pref_picture_compression">Resimleri sıkıştır</string>
-  <string name="pref_picture_compression_summary">Resimleri yeniden boyutlandır ve sıkıştır</string>
   <string name="always">Her zaman</string>
   <string name="automatically">Kendiliğinden</string>
   <string name="battery_optimizations_enabled">Pil optimizasyonu devrede</string>

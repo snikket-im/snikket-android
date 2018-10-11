@@ -77,6 +77,9 @@
   <string name="sharing_files_please_wait">Trimitere fișiere. Te rog asteaptă...</string>
   <string name="action_clear_history">Șterge istoric</string>
   <string name="clear_conversation_history">Șterge istoricul conversației</string>
+  <string name="clear_histor_msg">Sigur doriți să ștergeți toate mesajele din această conversație?\n\n<b>Atenție:</b> Această acțiune nu va șterge copiile acestor mesaje care sunt stocate pe alte dispozitive sau servere.</string>
+  <string name="delete_file_dialog">Șterge fișierul</string>
+  <string name="delete_file_dialog_msg">Sigur doriți să ștergeți acest fișier?\n\n<b>Atenție:</b> Această acțiune nu va șterge copiile acestui fișier care sunt stocate pe alte dispozitive sau servere.</string>
   <string name="also_end_conversation">Închide conversația după ștergere</string>
   <string name="choose_presence">Alegeți dispozitiv</string>
   <string name="send_unencrypted_message">Trimite mesaje necriptate</string>
@@ -492,8 +495,6 @@
   <string name="notify_only_when_highlighted">Notifică doar atunci când cineva vă menționează numele</string>
   <string name="notify_never">Notificări dezactivate</string>
   <string name="notify_paused">Notificări suspendate</string>
-  <string name="pref_picture_compression">Comprimă imaginile</string>
-  <string name="pref_picture_compression_summary">Redimensionează și comprimă imaginile</string>
   <string name="always">Mereu</string>
   <string name="automatically">Automat</string>
   <string name="battery_optimizations_enabled">Optimizare baterie activată</string>

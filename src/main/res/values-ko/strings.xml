@@ -416,8 +416,6 @@
   <string name="notify_on_all_messages">모든 메세지를 알림</string>
   <string name="notify_never">알림 해제됨</string>
   <string name="notify_paused">알림 일시중지됨</string>
-  <string name="pref_picture_compression">사진 압축</string>
-  <string name="pref_picture_compression_summary">사진 크기 조정 및 압축</string>
   <string name="always">항상</string>
   <string name="automatically">자동</string>
   <string name="battery_optimizations_enabled">배터리 최적화 사용됨</string>

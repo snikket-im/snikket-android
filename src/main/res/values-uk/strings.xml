@@ -433,8 +433,6 @@
   <string name="notify_only_when_highlighted">Повідомляти, лише якщо згадують</string>
   <string name="notify_never">Сповіщення вимкнено</string>
   <string name="notify_paused">Сповіщення призупинено</string>
-  <string name="pref_picture_compression">Стискати зображення</string>
-  <string name="pref_picture_compression_summary">Змінювати розмір та стискати зображення</string>
   <string name="always">Завжди</string>
   <string name="automatically">Автоматично</string>
   <string name="battery_optimizations_enabled">Оптимізацію батареї задіяно</string>

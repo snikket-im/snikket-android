@@ -434,8 +434,6 @@
   <string name="notify_only_when_highlighted">قم بإخطاري عندما يقوم أحدهم بذكري </string>
   <string name="notify_never">تعطيل الإخطارات</string>
   <string name="notify_paused">الإشعارات موقفة</string>
-  <string name="pref_picture_compression">ضغط الصور</string>
-  <string name="pref_picture_compression_summary">تغيير حجم الصور وضغطها</string>
   <string name="always">دائماً</string>
   <string name="automatically">آليا</string>
   <string name="battery_optimizations_enabled">وضع تحسين أداء البطارية مفعّل</string>

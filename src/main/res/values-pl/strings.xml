@@ -77,6 +77,9 @@
   <string name="sharing_files_please_wait">Udostępnianie plików. Proszę czekać...</string>
   <string name="action_clear_history">Wyczyść historię</string>
   <string name="clear_conversation_history">Wyczyść historię konwersacji</string>
+  <string name="clear_histor_msg">Czy na pewno usunąć wszystkie wiadomości powiązane z konwersacją?\n\n<b>Uwaga:</b> Działanie nie wpływa na wiadomości przechowywane na innych urządzeniach lub serwerach.</string>
+  <string name="delete_file_dialog">Usuń plik</string>
+  <string name="delete_file_dialog_msg">Czy na pewno usunąć ten plik?\n\n<b>Uwaga:</b> Działanie nie wpływa na kopie pliku przechowywane na innych urządzeniach lub serwerach.</string>
   <string name="also_end_conversation">po czym zakończ tę rozmowę</string>
   <string name="choose_presence">Wybierz urządzenie</string>
   <string name="send_unencrypted_message">Wyślij wiadomość bez szyfrowania</string>
@@ -494,8 +497,6 @@
   <string name="notify_only_when_highlighted">Powiadamiaj tylko w przypadku wzmianki o mnie</string>
   <string name="notify_never">Powiadomienia wyłączone</string>
   <string name="notify_paused">Powiadomienia wstrzymane</string>
-  <string name="pref_picture_compression">Kompresuj obrazki</string>
-  <string name="pref_picture_compression_summary">Zmień rozmiar i kompresuj obrazki</string>
   <string name="always">Zawsze</string>
   <string name="automatically">Automatycznie</string>
   <string name="battery_optimizations_enabled">Optymalizacje zużycia baterii włączone</string>

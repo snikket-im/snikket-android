@@ -495,8 +495,6 @@ concediu permís per accedir als teus contactes.</string>
   <string name="notify_only_when_highlighted">Notifica només quan s\'esmenta</string>
   <string name="notify_never">S\'han desactivat les notificacions</string>
   <string name="notify_paused">S\'han pausat les notificacions</string>
-  <string name="pref_picture_compression">Comprimeix imatges</string>
-  <string name="pref_picture_compression_summary">Canviar la mida i comprimir imatges</string>
   <string name="always">Sempre</string>
   <string name="automatically">Automàticament</string>
   <string name="battery_optimizations_enabled">Optimitzacions de la bateria habilitades</string>

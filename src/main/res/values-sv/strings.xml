@@ -423,8 +423,6 @@
   <string name="notify_on_all_messages">Notifiera för alla meddelanden</string>
   <string name="notify_never">Notifieringar deaktiverade</string>
   <string name="notify_paused">Notifieringar pausade</string>
-  <string name="pref_picture_compression">Komprimera bilder</string>
-  <string name="pref_picture_compression_summary">Storleksjustera och komprimera bilder</string>
   <string name="always">Alltid</string>
   <string name="automatically">Automatiskt</string>
   <string name="battery_optimizations_enabled">Batterioptimeringar aktiverade</string>
