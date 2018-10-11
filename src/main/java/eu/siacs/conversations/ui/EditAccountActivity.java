@@ -122,6 +122,7 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
 		public void onClick(final View v) {
 			final String password = mPassword.getText().toString();
 			final boolean wasDisabled = mAccount != null && mAccount.getStatus() == Account.State.DISABLED;
+			final boolean accountInfoEdited = accountInfoEdited();
 
 			if (!mInitMode && passwordChangedInMagicCreateMode()) {
 				gotoChangePassword(password);
@@ -130,7 +131,7 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
 			if (mInitMode && mAccount != null) {
 				mAccount.setOption(Account.OPTION_DISABLED, false);
 			}
-			if (mAccount != null && mAccount.getStatus() == Account.State.DISABLED && !accountInfoEdited()) {
+			if (mAccount != null && mAccount.getStatus() == Account.State.DISABLED && !accountInfoEdited) {
 				mAccount.setOption(Account.OPTION_DISABLED, false);
 				if (!xmppConnectionService.updateAccount(mAccount)) {
 					Toast.makeText(EditAccountActivity.this, R.string.unable_to_update_account, Toast.LENGTH_SHORT).show();
@@ -146,7 +147,7 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
 			}
 
 			XmppConnection connection = mAccount == null ? null : mAccount.getXmppConnection();
-			boolean openRegistrationUrl = registerNewAccount && mAccount != null && mAccount.getStatus() == Account.State.REGISTRATION_WEB;
+			boolean openRegistrationUrl = registerNewAccount && !accountInfoEdited && mAccount != null && mAccount.getStatus() == Account.State.REGISTRATION_WEB;
 			boolean openPaymentUrl = mAccount != null && mAccount.getStatus() == Account.State.PAYMENT_REQUIRED;
 			final boolean redirectionWorthyStatus = openPaymentUrl || openRegistrationUrl;
 			URL url = connection != null && redirectionWorthyStatus ? connection.getRedirectionUrl() : null;
@@ -485,7 +486,7 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
 			} else {
 				XmppConnection connection = mAccount == null ? null : mAccount.getXmppConnection();
 				URL url = connection != null && mAccount.getStatus() == Account.State.REGISTRATION_WEB ? connection.getRedirectionUrl() : null;
-				if (url != null && this.binding.accountRegisterNew.isChecked()) {
+				if (url != null && this.binding.accountRegisterNew.isChecked() && !accountInfoEdited) {
 					this.mSaveButton.setText(R.string.open_website);
 				} else {
 					this.mSaveButton.setText(R.string.next);
