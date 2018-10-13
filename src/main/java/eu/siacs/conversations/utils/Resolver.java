@@ -301,7 +301,8 @@ public class Resolver {
             } catch (UnknownHostException e) {
                 result.ip = null;
             }
-            result.hostname = DNSName.from(cursor.getString(cursor.getColumnIndex(HOSTNAME)));
+            final String hostname = cursor.getString(cursor.getColumnIndex(HOSTNAME));
+            result.hostname = hostname == null ? null : DNSName.from(hostname);
             result.port = cursor.getInt(cursor.getColumnIndex(PORT));
             result.priority = cursor.getInt(cursor.getColumnIndex(PRIORITY));
             result.authenticated = cursor.getInt(cursor.getColumnIndex(AUTHENTICATED)) > 0;
@@ -393,7 +394,7 @@ public class Resolver {
         public ContentValues toContentValues() {
             final ContentValues contentValues = new ContentValues();
             contentValues.put(IP, ip == null ? null : ip.getAddress());
-            contentValues.put(HOSTNAME, hostname.toString());
+            contentValues.put(HOSTNAME, hostname == null ? null : hostname.toString());
             contentValues.put(PORT, port);
             contentValues.put(PRIORITY, priority);
             contentValues.put(DIRECT_TLS, directTls ? 1 : 0);
