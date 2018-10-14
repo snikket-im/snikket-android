@@ -493,6 +493,8 @@
   <string name="notify_only_when_highlighted">Notifica solo quando menzionato</string>
   <string name="notify_never">Notifiche disattivate</string>
   <string name="notify_paused">Notifiche in pausa</string>
+  <string name="pref_picture_compression">Compressione immagini</string>
+  <string name="pref_picture_compression_summary">Ridimensiona e comprimi le immagini</string>
   <string name="always">Sempre</string>
   <string name="automatically">Automaticamente</string>
   <string name="battery_optimizations_enabled">Ottimizzazioni batteria attivate</string>
@@ -558,6 +560,7 @@
   <string name="allow">Consenti</string>
   <string name="no_permission_to_access_x">Nessuna autorizzazione per accedere a %s</string>
   <string name="remote_server_not_found">Server remoto non trovato</string>
+  <string name="remote_server_timeout">Scadenza server remoto</string>
   <string name="unable_to_update_account">Impossibile aggiornare l\'account</string>
   <string name="report_jid_as_spammer">Questo JID invia messaggi non richiesti.</string>
   <string name="pref_delete_omemo_identities">Elimina identità OMEMO</string>
@@ -737,4 +740,9 @@
   <string name="media_browser">Browser multimediale</string>
   <string name="export_channel_name">Esportazione cronologia</string>
   <string name="security_violation_not_attaching_file">File omesso per violazione di sicurezza.</string>
+  <string name="pref_video_compression">Qualità video</string>
+  <string name="pref_video_compression_summary">Una qualità inferiore comporta file più piccoli</string>
+  <string name="video_360p">Media (360p)</string>
+  <string name="video_720p">Alta (720p)</string>
+  <string name="cancelled">annullato</string>
 </resources>

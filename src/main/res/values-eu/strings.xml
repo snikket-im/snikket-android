@@ -77,6 +77,9 @@
   <string name="sharing_files_please_wait">Fitxategiak partekatzen. Mesedez itxaron...</string>
   <string name="action_clear_history">Historia garbitu</string>
   <string name="clear_conversation_history">Elkarrizketa historia garbitu</string>
+  <string name="clear_histor_msg">Elkarrizketa honetako mezu guztiak ezabatu nahi al dituzu?\n\n<b>Abisua:</b> Honek ez du beste gailu edo zerbitzarietan gordetako mezuen kopiak ezabatuko.</string>
+  <string name="delete_file_dialog">Fitxategia ezabatu</string>
+  <string name="delete_file_dialog_msg">Fitxategi hau ezabatu nahi al duzu?\n\n<b>Abisua:</b> Honek ez du beste gailu edo zerbitzarietan gordetako fitxategi honen kopiak ezabatuko.</string>
   <string name="also_end_conversation">Elkarrizketa hau jarraian amaitu</string>
   <string name="choose_presence">Gailua aukeratu</string>
   <string name="send_unencrypted_message">Enkriptatu gabeko mezua bidali</string>
@@ -150,6 +153,7 @@
   <string name="account_status_policy_violation">Politikaren urraketa</string>
   <string name="account_status_incompatible_server">Zerbitzari ez bateragarria</string>
   <string name="account_status_stream_error">Akatsa korrontean</string>
+  <string name="account_status_stream_opening_error">Akatsa korrontea irekitzerakoan</string>
   <string name="encryption_choice_unencrypted">Enkriptatu gabe</string>
   <string name="encryption_choice_otr">OTR</string>
   <string name="encryption_choice_pgp">OpenPGP</string>
@@ -489,6 +493,8 @@
   <string name="notify_only_when_highlighted">Jakinarazi aipatua izaterakoan soilik</string>
   <string name="notify_never">Jakinarazpenak ezgaituta</string>
   <string name="notify_paused">Jakinarazpenak gelditu dira</string>
+  <string name="pref_picture_compression">Irudiak konprimatu</string>
+  <string name="pref_picture_compression_summary">Irudiak konprimatu eta neurriz aldatu</string>
   <string name="always">Beti</string>
   <string name="automatically">Automatikoki</string>
   <string name="battery_optimizations_enabled">Bateriaren optimizazioak gaituta</string>
@@ -554,6 +560,7 @@
   <string name="allow">Baimendu</string>
   <string name="no_permission_to_access_x">%s(e)ra sartzeko baimenik ez</string>
   <string name="remote_server_not_found">Urruneko zerbitzaria ez da aurkitu</string>
+  <string name="remote_server_timeout">Denbora agortu da urruneko zerbitzarian</string>
   <string name="unable_to_update_account">Ezin izan da kontua eguneratu</string>
   <string name="report_jid_as_spammer">JIDa nahi gabeko mezuen bidaltzaile gisa salatu</string>
   <string name="pref_delete_omemo_identities">OMEMO nortasunak ezabatu</string>
@@ -732,4 +739,10 @@
   <string name="view_media">Ikusi multimedia</string>
   <string name="media_browser">Multimedia nabigatzailea</string>
   <string name="export_channel_name">Historiaren esportazioa</string>
+  <string name="security_violation_not_attaching_file">Fitxategia alde batera utzita segurtasun hauste bategatik.</string>
+  <string name="pref_video_compression">Bideoen kalitatea</string>
+  <string name="pref_video_compression_summary">Kalitate baxuagoarekin fitxategi txikiagoak lortzen dira</string>
+  <string name="video_360p">Ertaina (360p)</string>
+  <string name="video_720p">Altua (720p)</string>
+  <string name="cancelled">utzita</string>
 </resources>

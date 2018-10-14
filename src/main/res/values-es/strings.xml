@@ -493,6 +493,8 @@
   <string name="notify_only_when_highlighted">Notificar solo cuando eres mencionado</string>
   <string name="notify_never">Notificaciones deshabilitadas</string>
   <string name="notify_paused">Notificaciones pausadas</string>
+  <string name="pref_picture_compression">Compresión de imagen</string>
+  <string name="pref_picture_compression_summary">Redimensionar y comprimir las imágenes</string>
   <string name="always">Siempre</string>
   <string name="automatically">Automáticamente</string>
   <string name="battery_optimizations_enabled">Optimizaciones de uso de batería habilitadas</string>
@@ -558,6 +560,7 @@
   <string name="allow">Permitir</string>
   <string name="no_permission_to_access_x">Sin permiso de acceso a %s</string>
   <string name="remote_server_not_found">Servidor no encontrado</string>
+  <string name="remote_server_timeout">Tiempo de espera agotado al servidor remoto</string>
   <string name="unable_to_update_account">No se ha podido actualizar la cuenta</string>
   <string name="report_jid_as_spammer">Reportar a este Id Jabber por enviar mensajes no deseados</string>
   <string name="pref_delete_omemo_identities">Eliminar identidades OMEMO</string>
@@ -737,4 +740,9 @@
   <string name="media_browser">Galería</string>
   <string name="export_channel_name">Exportar historial</string>
   <string name="security_violation_not_attaching_file">Fichero omitido por violación de seguridad</string>
+  <string name="pref_video_compression">Calidad del video</string>
+  <string name="pref_video_compression_summary">Calidad más baja indica archivos más pequeños</string>
+  <string name="video_360p">Medio (360p)</string>
+  <string name="video_720p">Alta (720p)</string>
+  <string name="cancelled">cancelado</string>
 </resources>
