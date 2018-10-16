@@ -1,5 +1,8 @@
 # Changelog
 
+### Version 2.3.3
+* Fixed connection issues with user@ip type JIDs
+
 ### Version 2.3.2
 * Fixed OMEMO on Android 5.1 & 6.0
 * Added setting for video quality
