@@ -355,7 +355,7 @@ public class XmppConnection implements Runnable {
                         localSocket.setSoTimeout(Config.SOCKET_TIMEOUT * 1000);
                         if (startXmpp(localSocket)) {
                             localSocket.setSoTimeout(0); //reset to 0; once the connection is established we don’t want this
-                            if (!result.equals(storedBackupResult)) {
+                            if (!hardcoded && !result.equals(storedBackupResult)) {
                                 mXmppConnectionService.databaseBackend.saveResolverResult(domain, result);
                             }
                             break; // successfully connected to server that speaks xmpp
