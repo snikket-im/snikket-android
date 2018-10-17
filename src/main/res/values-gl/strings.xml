@@ -77,6 +77,9 @@
   <string name="sharing_files_please_wait">Compartindo ficheiros. Por favor agarde...</string>
   <string name="action_clear_history">Limpar historial</string>
   <string name="clear_conversation_history">Limpar historial de conversa</string>
+  <string name="clear_histor_msg">Está segura de querer eliminar todas as mensaxes de esta conversación¿\n\n<b>Aviso:</b> Esto non eliminará as copias de esas mensaxes que están gardadas en outros dispositivos ou servidores.</string>
+  <string name="delete_file_dialog">Eliminar ficheiro</string>
+  <string name="delete_file_dialog_msg">Está segura de querer eliminar este ficheiro?\n\n<b>Aviso:</b> Esto non eliminará as copias de este ficheiro que están gardadas en outros dispositivos ou servidores.</string>
   <string name="also_end_conversation">Finalizar esta conversación tras o proceso</string>
   <string name="choose_presence">Escoller dispositivo</string>
   <string name="send_unencrypted_message">Enviar mensaxe non cifrada</string>
@@ -150,6 +153,7 @@
   <string name="account_status_policy_violation">Violación da política</string>
   <string name="account_status_incompatible_server">Servidor incompatible</string>
   <string name="account_status_stream_error">Erro de fluxo</string>
+  <string name="account_status_stream_opening_error">Fallo ao abrir o fluxo</string>
   <string name="encryption_choice_unencrypted">Non cifrado</string>
   <string name="encryption_choice_otr">OTR</string>
   <string name="encryption_choice_pgp">OpenPGP</string>
@@ -489,6 +493,8 @@
   <string name="notify_only_when_highlighted">Notificar só cando é mencionada</string>
   <string name="notify_never">Notificacións deshabilitadas</string>
   <string name="notify_paused">Notificacións pausadas</string>
+  <string name="pref_picture_compression">Compresión de imaxes</string>
+  <string name="pref_picture_compression_summary">Escalar e comprimir imaxes</string>
   <string name="always">Sempre</string>
   <string name="automatically">Automáticamente</string>
   <string name="battery_optimizations_enabled">Optimizacións de batería habilitadas</string>
@@ -554,6 +560,7 @@
   <string name="allow">Permitir</string>
   <string name="no_permission_to_access_x">Se permiso para acceder %s</string>
   <string name="remote_server_not_found">Non se atopa o servidor remoto</string>
+  <string name="remote_server_timeout">Espera do servidor remoto</string>
   <string name="unable_to_update_account">Non se puido actualizar a conta</string>
   <string name="report_jid_as_spammer">Informe de este JID como emisor de mensaxes non desexadas.</string>
   <string name="pref_delete_omemo_identities">Borrar identidades OMEMO</string>
@@ -732,4 +739,10 @@
   <string name="view_media">Ver medios</string>
   <string name="media_browser">Navegador de medios</string>
   <string name="export_channel_name">Exportar historial</string>
+  <string name="security_violation_not_attaching_file">Ficheiro omitido debido a transgresión da seguridade.</string>
+  <string name="pref_video_compression">Calidade de vídeo</string>
+  <string name="pref_video_compression_summary">Menor calidade significa ficheiros máis pequenos</string>
+  <string name="video_360p">Media (360p)</string>
+  <string name="video_720p">Alta (720p)</string>
+  <string name="cancelled">cancelada</string>
 </resources>

@@ -77,6 +77,7 @@
   <string name="sharing_files_please_wait">正在分享文件，请稍候…</string>
   <string name="action_clear_history">清除历史记录</string>
   <string name="clear_conversation_history">清除会话记录</string>
+  <string name="delete_file_dialog">删除文件</string>
   <string name="also_end_conversation">之后结束此会话</string>
   <string name="choose_presence">选择设备</string>
   <string name="send_unencrypted_message">发送未加密的信息</string>
@@ -150,6 +151,7 @@
   <string name="account_status_policy_violation">违反政策</string>
   <string name="account_status_incompatible_server">服务器不兼容</string>
   <string name="account_status_stream_error">流错误</string>
+  <string name="account_status_stream_opening_error">流打开错误</string>
   <string name="encryption_choice_unencrypted">未加密</string>
   <string name="encryption_choice_otr">OTR</string>
   <string name="encryption_choice_pgp">OpenPGP</string>
@@ -487,6 +489,8 @@
   <string name="notify_only_when_highlighted">只在被提到时通知</string>
   <string name="notify_never">禁用通知</string>
   <string name="notify_paused">暂停通知</string>
+  <string name="pref_picture_compression">图像压缩</string>
+  <string name="pref_picture_compression_summary">调整大小并压缩图像</string>
   <string name="always">总是</string>
   <string name="automatically">自动</string>
   <string name="battery_optimizations_enabled">启用节电模式</string>
@@ -554,6 +558,7 @@
   <string name="allow">允许</string>
   <string name="no_permission_to_access_x">没有访问 %s 的许可</string>
   <string name="remote_server_not_found">找不到远程服务器</string>
+  <string name="remote_server_timeout">远程服务器超时</string>
   <string name="unable_to_update_account">无法更新账户</string>
   <string name="report_jid_as_spammer">报告这个 JID 发送不想要的消息。</string>
   <string name="pref_delete_omemo_identities">删除 OMEMO 身份</string>
@@ -723,4 +728,10 @@
   <string name="pref_more_notification_settings">通知设置</string>
   <string name="pref_more_notification_settings_summary">重要性，声音，振动</string>
   <string name="video_compression_channel_name">视频压缩</string>
+  <string name="export_channel_name">导出历史记录</string>
+  <string name="pref_video_compression">视频质量</string>
+  <string name="pref_video_compression_summary">画质越低意味着文件越小</string>
+  <string name="video_360p">中（360p）</string>
+  <string name="video_720p">高（720p）</string>
+  <string name="cancelled">已取消</string>
 </resources>
