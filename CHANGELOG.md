@@ -1,5 +1,8 @@
 # Changelog
 
+### Version 2.3.4
+* Fixed sending OMEMO files to ChatSecure
+
 ### Version 2.3.3
 * Fixed connection issues with user@ip type JIDs
 
