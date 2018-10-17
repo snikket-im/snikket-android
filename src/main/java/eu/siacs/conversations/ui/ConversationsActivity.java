@@ -76,6 +76,7 @@ import eu.siacs.conversations.ui.util.ActivityResult;
 import eu.siacs.conversations.ui.util.ConversationMenuConfigurator;
 import eu.siacs.conversations.ui.util.MenuDoubleTabUtil;
 import eu.siacs.conversations.ui.util.PendingItem;
+import eu.siacs.conversations.utils.AccountUtils;
 import eu.siacs.conversations.utils.EmojiWrapper;
 import eu.siacs.conversations.utils.ExceptionHelper;
 import eu.siacs.conversations.utils.SignupUtils;
@@ -377,6 +378,7 @@ public class ConversationsActivity extends XmppActivity implements OnConversatio
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.activity_conversations, menu);
+        AccountUtils.showHideMenuItems(menu);
         MenuItem qrCodeScanMenuItem = menu.findItem(R.id.action_scan_qr_code);
         if (qrCodeScanMenuItem != null) {
             if (isCameraFeatureAvailable()) {

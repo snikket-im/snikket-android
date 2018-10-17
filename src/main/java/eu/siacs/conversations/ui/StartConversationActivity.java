@@ -75,6 +75,7 @@ import eu.siacs.conversations.ui.util.JidDialog;
 import eu.siacs.conversations.ui.util.MenuDoubleTabUtil;
 import eu.siacs.conversations.ui.util.PendingItem;
 import eu.siacs.conversations.ui.util.SoftKeyboardUtils;
+import eu.siacs.conversations.utils.AccountUtils;
 import eu.siacs.conversations.utils.XmppUri;
 import eu.siacs.conversations.xmpp.OnUpdateBlocklist;
 import eu.siacs.conversations.xmpp.XmppConnection;
@@ -580,6 +581,7 @@ public class StartConversationActivity extends XmppActivity implements XmppConne
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		getMenuInflater().inflate(R.menu.start_conversation, menu);
+		AccountUtils.showHideMenuItems(menu);
 		MenuItem menuHideOffline = menu.findItem(R.id.action_hide_offline);
 		MenuItem joinGroupChat = menu.findItem(R.id.action_join_conference);
 		MenuItem qrCodeScanMenuItem = menu.findItem(R.id.action_scan_qr_code);

@@ -46,6 +46,7 @@ import eu.siacs.conversations.ui.util.Attachment;
 import eu.siacs.conversations.ui.util.GridManager;
 import eu.siacs.conversations.ui.util.JidDialog;
 import eu.siacs.conversations.ui.util.MenuDoubleTabUtil;
+import eu.siacs.conversations.utils.AccountUtils;
 import eu.siacs.conversations.utils.Compatibility;
 import eu.siacs.conversations.utils.IrregularUnicodeDetector;
 import eu.siacs.conversations.utils.UIHelper;
@@ -280,6 +281,7 @@ public class ContactDetailsActivity extends OmemoActivity implements OnAccountUp
     @Override
     public boolean onCreateOptionsMenu(final Menu menu) {
         getMenuInflater().inflate(R.menu.contact_details, menu);
+        AccountUtils.showHideMenuItems(menu);
         MenuItem block = menu.findItem(R.id.action_block);
         MenuItem unblock = menu.findItem(R.id.action_unblock);
         MenuItem edit = menu.findItem(R.id.action_edit_contact);

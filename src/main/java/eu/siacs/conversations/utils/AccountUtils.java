@@ -2,6 +2,8 @@ package eu.siacs.conversations.utils;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.Toast;
 
 import java.util.List;
@@ -9,6 +11,7 @@ import java.util.List;
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.services.XmppConnectionService;
+import eu.siacs.conversations.ui.XmppActivity;
 
 public class AccountUtils {
 
@@ -49,11 +52,23 @@ public class AccountUtils {
         }
     }
 
+    public static void launchManageAccount(XmppActivity xmppActivity) {
+        Account account = getFirstEnabled(xmppActivity.xmppConnectionService);
+        xmppActivity.switchToAccount(account);
+    }
+
     private static Class getManageAccountActivityClass() {
         try {
             return Class.forName("eu.siacs.conversations.ui.ManageAccountActivity");
         } catch (ClassNotFoundException e) {
             return null;
         }
+    }
+
+    public static void showHideMenuItems(final Menu menu) {
+        final MenuItem manageAccounts = menu.findItem(R.id.action_accounts);
+        final MenuItem manageAccount = menu.findItem(R.id.action_account);
+        manageAccount.setVisible(MANAGE_ACCOUNT_ACTIVITY == null);
+        manageAccounts.setVisible(MANAGE_ACCOUNT_ACTIVITY != null);
     }
 }

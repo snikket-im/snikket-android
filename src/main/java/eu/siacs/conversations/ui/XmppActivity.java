@@ -46,7 +46,6 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -55,7 +54,6 @@ import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.RejectedExecutionException;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
@@ -340,6 +338,9 @@ public abstract class XmppActivity extends ActionBarActivity {
 				break;
 			case R.id.action_accounts:
 				AccountUtils.launchManageAccounts(this);
+				break;
+			case R.id.action_account:
+				AccountUtils.launchManageAccount(this);
 				break;
 			case android.R.id.home:
 				finish();

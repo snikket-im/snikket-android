@@ -57,6 +57,7 @@ import eu.siacs.conversations.ui.util.MenuDoubleTabUtil;
 import eu.siacs.conversations.ui.util.MucDetailsContextMenuHelper;
 import eu.siacs.conversations.ui.util.MyLinkify;
 import eu.siacs.conversations.ui.util.SoftKeyboardUtils;
+import eu.siacs.conversations.utils.AccountUtils;
 import eu.siacs.conversations.utils.Compatibility;
 import eu.siacs.conversations.utils.EmojiWrapper;
 import eu.siacs.conversations.utils.StringUtils;
@@ -419,6 +420,7 @@ public class ConferenceDetailsActivity extends XmppActivity implements OnConvers
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.muc_details, menu);
+        AccountUtils.showHideMenuItems(menu);
         return super.onCreateOptionsMenu(menu);
     }
 

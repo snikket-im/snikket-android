@@ -44,6 +44,11 @@
         app:showAsAction="never"
         android:title="@string/action_accounts"/>
     <item
+        android:id="@+id/action_account"
+        android:orderInCategory="90"
+        android:title="@string/action_account"
+        app:showAsAction="never"/>
+    <item
         android:id="@+id/action_settings"
         android:orderInCategory="100"
         app:showAsAction="never"
