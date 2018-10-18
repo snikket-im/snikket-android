@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    package="eu.siacs.conversations">
+
+    <application tools:ignore="GoogleAppIndexingWarning">
+        <activity
+            android:name=".ui.EnterPhoneNumberActivity"
+            android:label="@string/verify_your_phone_number"
+            android:launchMode="singleTask" />
+
+    </application>
+</manifest>
