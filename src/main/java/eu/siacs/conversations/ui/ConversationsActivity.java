@@ -92,6 +92,7 @@ public class ConversationsActivity extends XmppActivity implements OnConversatio
     public static final String EXTRA_AS_QUOTE = "as_quote";
     public static final String EXTRA_NICK = "nick";
     public static final String EXTRA_IS_PRIVATE_MESSAGE = "pm";
+    public static final String EXTRA_DO_NOT_APPEND = "do_not_append";
 
     private static List<String> VIEW_AND_SHARE_ACTIONS = Arrays.asList(
             ACTION_VIEW_CONVERSATION,

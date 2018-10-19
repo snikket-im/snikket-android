@@ -746,4 +746,5 @@
     <string name="video_360p">Medium (360p)</string>
     <string name="video_720p">High (720p)</string>
     <string name="cancelled">cancelled</string>
+    <string name="already_drafting_message">You are already drafting a message.</string>
 </resources>

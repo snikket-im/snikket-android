@@ -27,6 +27,7 @@ import android.os.SystemClock;
 import android.support.v13.view.inputmethod.InputConnectionCompat;
 import android.support.v13.view.inputmethod.InputContentInfoCompat;
 import android.text.Editable;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
@@ -1995,6 +1996,7 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
         final String nick = extras.getString(ConversationsActivity.EXTRA_NICK);
         final boolean asQuote = extras.getBoolean(ConversationsActivity.EXTRA_AS_QUOTE);
         final boolean pm = extras.getBoolean(ConversationsActivity.EXTRA_IS_PRIVATE_MESSAGE, false);
+        final boolean doNotAppend = extras.getBoolean(ConversationsActivity.EXTRA_DO_NOT_APPEND, false);
         final List<Uri> uris = extractUris(extras);
         if (uris != null && uris.size() > 0) {
             final List<Uri> cleanedUris = cleanUris(new ArrayList<>(uris));
@@ -2021,7 +2023,7 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
             if (text != null && asQuote) {
                 quoteText(text);
             } else {
-                appendText(text);
+                appendText(text, doNotAppend);
             }
         }
         final Message message = downloadUuid == null ? null : conversation.findMessageWithFileAndUuid(downloadUuid);
@@ -2545,11 +2547,16 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
         builder.create().show();
     }
 
-    public void appendText(String text) {
+    public void appendText(String text, final boolean doNotAppend) {
         if (text == null) {
             return;
         }
-        String previous = this.binding.textinput.getText().toString();
+        final Editable editable = this.binding.textinput.getText();
+        String previous =  editable == null ? "" : editable.toString();
+        if (doNotAppend && !TextUtils.isEmpty(previous)) {
+            Toast.makeText(getActivity(),R.string.already_drafting_message, Toast.LENGTH_LONG).show();
+            return;
+        }
         if (UIHelper.isLastLineQuote(previous)) {
             text = '\n' + text;
         } else if (previous.length() != 0 && !Character.isWhitespace(previous.charAt(previous.length() - 1))) {
