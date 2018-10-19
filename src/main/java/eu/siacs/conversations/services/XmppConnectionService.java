@@ -225,11 +225,11 @@ public class XmppConnectionService extends Service {
             mJingleConnectionManager.deliverPacket(account, packet);
         }
     };
-    private HttpConnectionManager mHttpConnectionManager = new HttpConnectionManager(
-            this);
+    private HttpConnectionManager mHttpConnectionManager = new HttpConnectionManager(this);
     private AvatarService mAvatarService = new AvatarService(this);
     private MessageArchiveService mMessageArchiveService = new MessageArchiveService(this);
     private PushManagementService mPushManagementService = new PushManagementService(this);
+    private QuickConversationsService mQuickConversationsService = new QuickConversationsService(this);
     private final ConversationsFileObserver fileObserver = new ConversationsFileObserver(
             Environment.getExternalStorageDirectory().getAbsolutePath()
     ) {
@@ -3681,6 +3681,10 @@ public class XmppConnectionService extends Service {
 	public MessageArchiveService getMessageArchiveService() {
 		return this.mMessageArchiveService;
 	}
+
+	public QuickConversationsService getQuickConversationsService() {
+        return this.mQuickConversationsService;
+    }
 
 	public List<Contact> findContacts(Jid jid, String accountJid) {
 		ArrayList<Contact> contacts = new ArrayList<>();

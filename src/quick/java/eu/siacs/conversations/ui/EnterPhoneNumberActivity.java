@@ -18,13 +18,14 @@ import android.widget.TextView;
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.databinding.ActivityEnterNumberBinding;
+import eu.siacs.conversations.services.QuickConversationsService;
 import eu.siacs.conversations.ui.drawable.TextDrawable;
 import eu.siacs.conversations.utils.PhoneNumberUtilWrapper;
 import io.michaelrocks.libphonenumber.android.NumberParseException;
 import io.michaelrocks.libphonenumber.android.PhoneNumberUtil;
 import io.michaelrocks.libphonenumber.android.Phonenumber;
 
-public class EnterPhoneNumberActivity extends XmppActivity {
+public class EnterPhoneNumberActivity extends XmppActivity implements QuickConversationsService.OnVerificationRequested {
 
     private static final int REQUEST_CHOOSE_COUNTRY = 0x1234;
 
@@ -69,7 +70,7 @@ public class EnterPhoneNumberActivity extends XmppActivity {
 
     @Override
     void onBackendConnected() {
-
+        xmppConnectionService.getQuickConversationsService().addOnVerificationRequestedListener(this);
     }
 
     @Override
@@ -98,6 +99,14 @@ public class EnterPhoneNumberActivity extends XmppActivity {
             savedInstanceState.putString("region", this.region);
         }
         super.onSaveInstanceState(savedInstanceState);
+    }
+
+    @Override
+    public void onStop() {
+        if (xmppConnectionService != null) {
+            xmppConnectionService.getQuickConversationsService().removeOnVerificationRequestedListener(this);
+        }
+        super.onStop();
     }
 
     private void onNextClick(View v) {
@@ -133,7 +142,7 @@ public class EnterPhoneNumberActivity extends XmppActivity {
     }
 
     private void onPhoneNumberEntered(Phonenumber.PhoneNumber phoneNumber) {
-
+        xmppConnectionService.getQuickConversationsService().requestVerification(phoneNumber);
     }
 
     @Override
@@ -149,4 +158,13 @@ public class EnterPhoneNumberActivity extends XmppActivity {
         }
     }
 
+    @Override
+    public void onVerificationRequestFailed(int code) {
+
+    }
+
+    @Override
+    public void onVerificationRequested() {
+        Log.d(Config.LOGTAG,"requested");
+    }
 }

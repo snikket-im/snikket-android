@@ -41,8 +41,11 @@ public class PhoneNumberUtilWrapper {
     }
 
     public static String normalize(Context context, String number) throws NumberParseException {
-        final PhoneNumberUtil instance = getInstance(context);
-        return instance.format(instance.parse(number, getUserCountry(context)), PhoneNumberUtil.PhoneNumberFormat.E164);
+        return normalize(context, getInstance(context).parse(number, getUserCountry(context)));
+    }
+
+    public static String normalize(Context context, Phonenumber.PhoneNumber phoneNumber) {
+        return getInstance(context).format(phoneNumber, PhoneNumberUtil.PhoneNumberFormat.E164);
     }
 
     public static PhoneNumberUtil getInstance(final Context context) {
