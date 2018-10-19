@@ -16,16 +16,13 @@ import java.security.SecureRandom;
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.entities.Account;
+import eu.siacs.conversations.utils.CryptoHelper;
 import rocks.xmpp.addr.Jid;
 
 public class MagicCreateActivity extends XmppActivity implements TextWatcher {
 
 	private TextView mFullJidDisplay;
 	private EditText mUsername;
-	private SecureRandom mRandom;
-
-	private static final String CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456780+-/#$!?";
-	private static final int PW_LENGTH = 10;
 
 	@Override
 	protected void refreshUiReal() {
@@ -57,7 +54,6 @@ public class MagicCreateActivity extends XmppActivity implements TextWatcher {
 		configureActionBar(getSupportActionBar());
 		mFullJidDisplay = findViewById(R.id.full_jid);
 		mUsername = findViewById(R.id.username);
-		mRandom = new SecureRandom();
 		Button next = findViewById(R.id.create_account);
 		next.setOnClickListener(v -> {
 			try {
@@ -70,7 +66,7 @@ public class MagicCreateActivity extends XmppActivity implements TextWatcher {
 					mUsername.setError(null);
 					Account account = xmppConnectionService.findAccountByJid(jid);
 					if (account == null) {
-						account = new Account(jid, createPassword());
+						account = new Account(jid, CryptoHelper.createPassword(new SecureRandom()));
 						account.setOption(Account.OPTION_REGISTER, true);
 						account.setOption(Account.OPTION_DISABLED, true);
 						account.setOption(Account.OPTION_MAGIC_CREATE, true);
@@ -90,14 +86,6 @@ public class MagicCreateActivity extends XmppActivity implements TextWatcher {
 			}
 		});
 		mUsername.addTextChangedListener(this);
-	}
-
-	private String createPassword() {
-		StringBuilder builder = new StringBuilder(PW_LENGTH);
-		for (int i = 0; i < PW_LENGTH; ++i) {
-			builder.append(CHARS.charAt(mRandom.nextInt(CHARS.length() - 1)));
-		}
-		return builder.toString();
 	}
 
 	@Override
