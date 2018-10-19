@@ -7,7 +7,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
+import io.michaelrocks.libphonenumber.android.NumberParseException;
 import io.michaelrocks.libphonenumber.android.PhoneNumberUtil;
+import io.michaelrocks.libphonenumber.android.Phonenumber;
 
 public class PhoneNumberUtilWrapper {
 
@@ -38,10 +40,15 @@ public class PhoneNumberUtilWrapper {
         return locale.getCountry();
     }
 
+    public static String normalize(Context context, String number) throws NumberParseException {
+        final PhoneNumberUtil instance = getInstance(context);
+        return instance.format(instance.parse(number, getUserCountry(context)), PhoneNumberUtil.PhoneNumberFormat.E164);
+    }
+
     public static PhoneNumberUtil getInstance(final Context context) {
         PhoneNumberUtil localInstance = instance;
         if (localInstance == null) {
-            synchronized (PhoneNumberUtilWrapper.class){
+            synchronized (PhoneNumberUtilWrapper.class) {
                 localInstance = instance;
                 if (localInstance == null) {
                     instance = localInstance = PhoneNumberUtil.createInstance(context);
@@ -54,7 +61,7 @@ public class PhoneNumberUtilWrapper {
 
     public static List<Country> getCountries(final Context context) {
         List<Country> countries = new ArrayList<>();
-        for(String region : getInstance(context).getSupportedRegions()) {
+        for (String region : getInstance(context).getSupportedRegions()) {
             countries.add(new Country(region, getInstance(context).getCountryCodeForRegion(region)));
         }
         return countries;
@@ -66,7 +73,7 @@ public class PhoneNumberUtilWrapper {
         private final String region;
         private final int code;
 
-        Country(String region, int code ) {
+        Country(String region, int code) {
             this.name = getCountryForCode(region);
             this.region = region;
             this.code = code;
@@ -81,7 +88,7 @@ public class PhoneNumberUtilWrapper {
         }
 
         public String getCode() {
-            return '+'+String.valueOf(code);
+            return '+' + String.valueOf(code);
         }
 
         @Override

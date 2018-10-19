@@ -24,7 +24,7 @@ import io.michaelrocks.libphonenumber.android.NumberParseException;
 import io.michaelrocks.libphonenumber.android.PhoneNumberUtil;
 import io.michaelrocks.libphonenumber.android.Phonenumber;
 
-public class EnterPhoneNumberActivity extends AppCompatActivity {
+public class EnterPhoneNumberActivity extends XmppActivity {
 
     private static final int REQUEST_CHOOSE_COUNTRY = 0x1234;
 
@@ -61,6 +61,16 @@ public class EnterPhoneNumberActivity extends AppCompatActivity {
             }
         }
     };
+
+    @Override
+    protected void refreshUiReal() {
+
+    }
+
+    @Override
+    void onBackendConnected() {
+
+    }
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
