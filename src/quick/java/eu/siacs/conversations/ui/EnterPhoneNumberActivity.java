@@ -1,6 +1,7 @@
 package eu.siacs.conversations.ui;
 
 import android.app.AlertDialog;
+import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -10,7 +11,9 @@ import android.text.Html;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
+import android.widget.TextView;
 
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
@@ -22,6 +25,8 @@ import io.michaelrocks.libphonenumber.android.PhoneNumberUtil;
 import io.michaelrocks.libphonenumber.android.Phonenumber;
 
 public class EnterPhoneNumberActivity extends AppCompatActivity {
+
+    private static final int REQUEST_CHOOSE_COUNTRY = 0x1234;
 
     private ActivityEnterNumberBinding binding;
     private String region = null;
@@ -40,8 +45,11 @@ public class EnterPhoneNumberActivity extends AppCompatActivity {
         public void afterTextChanged(Editable editable) {
             final String text = editable.toString();
             try {
+                final int oldCode = region != null ? PhoneNumberUtilWrapper.getInstance(EnterPhoneNumberActivity.this).getCountryCodeForRegion(region) : 0;
                 final int code = Integer.parseInt(text);
-                region = PhoneNumberUtilWrapper.getInstance(EnterPhoneNumberActivity.this).getRegionCodeForCountryCode(code);
+                if (oldCode != code) {
+                    region = PhoneNumberUtilWrapper.getInstance(EnterPhoneNumberActivity.this).getRegionCodeForCountryCode(code);
+                }
                 if ("ZZ".equals(region)) {
                     binding.country.setText(TextUtils.isEmpty(text) ? R.string.choose_a_country : R.string.invalid_country_code);
                 } else {
@@ -57,16 +65,29 @@ public class EnterPhoneNumberActivity extends AppCompatActivity {
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        String region = savedInstanceState != null ? savedInstanceState.getString("region") : null;
+        if (region != null) {
+            this.region = region;
+        } else {
+            this.region = PhoneNumberUtilWrapper.getUserCountry(this);
+        }
+
         this.binding = DataBindingUtil.setContentView(this, R.layout.activity_enter_number);
         this.binding.countryCode.setCompoundDrawables(new TextDrawable(this.binding.countryCode, "+"), null, null, null);
         this.binding.country.setOnClickListener(this::onSelectCountryClick);
         this.binding.next.setOnClickListener(this::onNextClick);
         setSupportActionBar((Toolbar) this.binding.toolbar);
-
-
         this.binding.countryCode.addTextChangedListener(this.countryCodeTextWatcher);
-        this.region = PhoneNumberUtilWrapper.getUserCountry(this);
         this.binding.countryCode.setText(String.valueOf(PhoneNumberUtilWrapper.getInstance(this).getCountryCodeForRegion(this.region)));
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle savedInstanceState) {
+        if (this.region != null) {
+            savedInstanceState.putString("region", this.region);
+        }
+        super.onSaveInstanceState(savedInstanceState);
     }
 
     private void onNextClick(View v) {
@@ -97,11 +118,25 @@ public class EnterPhoneNumberActivity extends AppCompatActivity {
     }
 
     private void onSelectCountryClick(View view) {
-
+        Intent intent = new Intent(this, ChooseCountryActivity.class);
+        startActivityForResult(intent, REQUEST_CHOOSE_COUNTRY);
     }
 
     private void onPhoneNumberEntered(Phonenumber.PhoneNumber phoneNumber) {
 
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, final Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK && requestCode == REQUEST_CHOOSE_COUNTRY) {
+            String region = data.getStringExtra("region");
+            if (region != null) {
+                this.region = region;
+                final int countryCode = PhoneNumberUtilWrapper.getInstance(this).getCountryCodeForRegion(region);
+                this.binding.countryCode.setText(String.valueOf(countryCode));
+            }
+        }
     }
 
 }

@@ -3,6 +3,8 @@ package eu.siacs.conversations.utils;
 import android.content.Context;
 import android.telephony.TelephonyManager;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 
 import io.michaelrocks.libphonenumber.android.PhoneNumberUtil;
@@ -48,6 +50,44 @@ public class PhoneNumberUtilWrapper {
             }
         }
         return localInstance;
+    }
+
+    public static List<Country> getCountries(final Context context) {
+        List<Country> countries = new ArrayList<>();
+        for(String region : getInstance(context).getSupportedRegions()) {
+            countries.add(new Country(region, getInstance(context).getCountryCodeForRegion(region)));
+        }
+        return countries;
+
+    }
+
+    public static class Country implements Comparable<Country> {
+        private final String name;
+        private final String region;
+        private final int code;
+
+        Country(String region, int code ) {
+            this.name = getCountryForCode(region);
+            this.region = region;
+            this.code = code;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public String getRegion() {
+            return region;
+        }
+
+        public String getCode() {
+            return '+'+String.valueOf(code);
+        }
+
+        @Override
+        public int compareTo(Country o) {
+            return name.compareTo(o.name);
+        }
     }
 
 }

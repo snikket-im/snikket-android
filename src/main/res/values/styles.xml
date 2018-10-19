@@ -14,6 +14,14 @@
         <item name="android:textSize">?TextSizeSubhead</item>
     </style>
 
+    <style name="TextAppearance.Conversations.Subhead.Bold" parent="TextAppearance.Conversations.Subhead">
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="TextAppearance.Conversations.Subhead.Bold.Secondary" parent="TextAppearance.Conversations.Subhead.Bold">
+        <item name="android:textColor">?android:textColorSecondary</item>
+    </style>
+
     <style name="TextAppearance.Conversations.Body2" parent="TextAppearance.AppCompat.Body2">
         <item name="android:textSize">?TextSizeBody2</item>
     </style>
