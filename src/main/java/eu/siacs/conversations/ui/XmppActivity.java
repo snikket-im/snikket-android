@@ -449,26 +449,26 @@ public abstract class XmppActivity extends ActionBarActivity {
 	}
 
 	public void switchToConversation(Conversation conversation) {
-		switchToConversation(conversation, null, false);
+		switchToConversation(conversation, null);
 	}
 
 	public void switchToConversationAndQuote(Conversation conversation, String text) {
-		switchToConversation(conversation, text, true, null, false, false);
+		switchToConversation(conversation, text, true, null, false);
 	}
 
-	public void switchToConversation(Conversation conversation, String text, boolean newTask) {
-		switchToConversation(conversation, text, false, null, false, newTask);
+	public void switchToConversation(Conversation conversation, String text) {
+		switchToConversation(conversation, text, false, null, false);
 	}
 
 	public void highlightInMuc(Conversation conversation, String nick) {
-		switchToConversation(conversation, null, false, nick, false, false);
+		switchToConversation(conversation, null, false, nick, false);
 	}
 
 	public void privateMsgInMuc(Conversation conversation, String nick) {
-		switchToConversation(conversation, null, false, nick, true, false);
+		switchToConversation(conversation, null, false, nick, true);
 	}
 
-	private void switchToConversation(Conversation conversation, String text, boolean asQuote, String nick, boolean pm, boolean newTask) {
+	private void switchToConversation(Conversation conversation, String text, boolean asQuote, String nick, boolean pm) {
 		Intent intent = new Intent(this, ConversationsActivity.class);
 		intent.setAction(ConversationsActivity.ACTION_VIEW_CONVERSATION);
 		intent.putExtra(ConversationsActivity.EXTRA_CONVERSATION, conversation.getUuid());
@@ -482,14 +482,7 @@ public abstract class XmppActivity extends ActionBarActivity {
 			intent.putExtra(ConversationsActivity.EXTRA_NICK, nick);
 			intent.putExtra(ConversationsActivity.EXTRA_IS_PRIVATE_MESSAGE, pm);
 		}
-		if (newTask) {
-			intent.setFlags(intent.getFlags()
-					| Intent.FLAG_ACTIVITY_NEW_TASK
-					| Intent.FLAG_ACTIVITY_SINGLE_TOP);
-		} else {
-			intent.setFlags(intent.getFlags()
-					| Intent.FLAG_ACTIVITY_CLEAR_TOP);
-		}
+		intent.setFlags(intent.getFlags() | Intent.FLAG_ACTIVITY_CLEAR_TOP);
 		startActivity(intent);
 		finish();
 	}
@@ -596,18 +589,6 @@ public abstract class XmppActivity extends ActionBarActivity {
 				}
 			});
 		}
-	}
-
-	protected boolean noAccountUsesPgp() {
-		if (!hasPgp()) {
-			return true;
-		}
-		for (Account account : xmppConnectionService.getAccounts()) {
-			if (account.getPgpId() != 0) {
-				return false;
-			}
-		}
-		return true;
 	}
 
 	@SuppressWarnings("deprecation")

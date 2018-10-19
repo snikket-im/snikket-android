@@ -547,7 +547,7 @@ public class StartConversationActivity extends XmppActivity implements XmppConne
 		Conversation conversation = xmppConnectionService
 				.findOrCreateConversation(contact.getAccount(),
 						contact.getJid(), false, true);
-		switchToConversation(conversation, body, false);
+		switchToConversation(conversation, body);
 	}
 
 	@Override
@@ -777,7 +777,7 @@ public class StartConversationActivity extends XmppActivity implements XmppConne
 		if (invite.isAction(XmppUri.ACTION_JOIN)) {
 			Conversation muc = xmppConnectionService.findFirstMuc(invite.getJid());
 			if (muc != null) {
-				switchToConversation(muc, invite.getBody(), false);
+				switchToConversation(muc, invite.getBody());
 				return true;
 			} else {
 				showJoinConferenceDialog(invite.getJid().asBareJid().toString());
