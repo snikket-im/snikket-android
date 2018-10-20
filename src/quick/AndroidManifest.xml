@@ -14,5 +14,10 @@
             android:label="@string/choose_a_country"
             android:launchMode="singleTask" />
 
+        <activity
+            android:name=".ui.VerifyActivity"
+            android:launchMode="singleTask"
+            android:label="@string/verify_your_phone_number"/>
+
     </application>
 </manifest>

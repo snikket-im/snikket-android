@@ -165,6 +165,9 @@ public class EnterPhoneNumberActivity extends XmppActivity implements QuickConve
 
     @Override
     public void onVerificationRequested() {
-        Log.d(Config.LOGTAG,"requested");
+        runOnUiThread(() -> {
+            startActivity(new Intent(this,VerifyActivity.class));
+            finish();
+        });
     }
 }

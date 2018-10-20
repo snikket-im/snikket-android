@@ -10,6 +10,7 @@ import java.util.Locale;
 import io.michaelrocks.libphonenumber.android.NumberParseException;
 import io.michaelrocks.libphonenumber.android.PhoneNumberUtil;
 import io.michaelrocks.libphonenumber.android.Phonenumber;
+import rocks.xmpp.addr.Jid;
 
 public class PhoneNumberUtilWrapper {
 
@@ -38,6 +39,16 @@ public class PhoneNumberUtilWrapper {
         }
         Locale locale = Locale.getDefault();
         return locale.getCountry();
+    }
+
+    public static String prettyPhoneNumber(Context context, Jid jid) {
+        PhoneNumberUtil phoneNumberUtil = getInstance(context);
+        try {
+            Phonenumber.PhoneNumber phoneNumber = phoneNumberUtil.parse(jid.getEscapedLocal(), "de");
+            return phoneNumberUtil.format(phoneNumber, PhoneNumberUtil.PhoneNumberFormat.INTERNATIONAL);
+        } catch (Exception e) {
+            return jid.getEscapedLocal();
+        }
     }
 
     public static String normalize(Context context, String number) throws NumberParseException {

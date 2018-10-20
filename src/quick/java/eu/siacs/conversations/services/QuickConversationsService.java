@@ -3,12 +3,14 @@ package eu.siacs.conversations.services;
 
 import android.util.Log;
 
+import java.security.SecureRandom;
 import java.util.Collections;
 import java.util.Set;
 import java.util.WeakHashMap;
 
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.entities.Account;
+import eu.siacs.conversations.utils.CryptoHelper;
 import eu.siacs.conversations.utils.PhoneNumberUtilWrapper;
 import io.michaelrocks.libphonenumber.android.Phonenumber;
 import rocks.xmpp.addr.Jid;
@@ -39,7 +41,9 @@ public class QuickConversationsService {
     public void requestVerification(Phonenumber.PhoneNumber phoneNumber) {
         String local = PhoneNumberUtilWrapper.normalize(service, phoneNumber);
         Log.d(Config.LOGTAG,"requesting verification for "+PhoneNumberUtilWrapper.normalize(service,phoneNumber));
-        Account account = new Account(Jid.of(local,"quick.conversations.im",null),"foo");
+        Account account = new Account(Jid.of(local,"quick.conversations.im",null), CryptoHelper.createPassword(new SecureRandom()));
+        account.setOption(Account.OPTION_DISABLED, true);
+        account.setOption(Account.OPTION_UNVERIFIED, true);
         service.createAccount(account);
         synchronized (mOnVerificationRequested) {
             for(OnVerificationRequested onVerificationRequested : mOnVerificationRequested) {
