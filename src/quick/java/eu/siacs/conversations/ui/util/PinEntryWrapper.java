@@ -9,8 +9,12 @@ import android.widget.LinearLayout;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Pattern;
+
 
 public class PinEntryWrapper {
+
+    private static Pattern PIN_STRING_PATTERN = Pattern.compile("^[0-9]{6}$");
 
     private final List<EditText> digits = new ArrayList<>();
 
@@ -68,6 +72,10 @@ public class PinEntryWrapper {
                         return true;
                     }
                 }
+                if (current != 0) {
+                    digits.get(0).requestFocus();
+                    return true;
+                }
             }
         }
         return false;
@@ -90,4 +98,42 @@ public class PinEntryWrapper {
         }
     }
 
+    public String getPin() {
+        char[] chars = new char[digits.size()];
+        for(int i = 0; i < chars.length; ++i) {
+            final String input = digits.get(i).getText().toString();
+            chars[i] = input.length() != 1 ? ' ' : input.charAt(0);
+        }
+        return String.valueOf(chars);
+    }
+
+    public void setPin(String pin) {
+        char[] chars = pin.toCharArray();
+        for(int i = 0; i < digits.size(); ++i) {
+            if (i < chars.length) {
+                final Editable editable = digits.get(i).getText();
+                editable.clear();
+                editable.append(Character.isDigit(chars[i]) ? String.valueOf(chars[i]) : "");
+            }
+        }
+    }
+
+    public boolean isEmpty() {
+        for(EditText digit : digits) {
+            if (digit.getText().length() > 0) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public static boolean isPin(CharSequence pin) {
+        return pin != null && PIN_STRING_PATTERN.matcher(pin).matches();
+    }
+
+    public void clear() {
+        for(int i = digits.size() - 1; i >= 0; --i) {
+            digits.get(i).getText().clear();
+        }
+    }
 }

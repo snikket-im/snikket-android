@@ -9,155 +9,176 @@
 
         <include
             android:id="@+id/toolbar"
-            layout="@layout/toolbar"/>
-        <ScrollView
+            layout="@layout/toolbar" />
+
+        <android.support.design.widget.CoordinatorLayout
+            android:id="@+id/coordinator"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:fillViewport="true">
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="match_parent">
 
-            <LinearLayout
-                android:id="@+id/instructions"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentTop="true"
-                android:layout_centerHorizontal="true"
-                android:gravity="center_horizontal"
-                android:orientation="vertical"
-                android:padding="16dp">
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:fillViewport="true">
 
-                <TextView
-                    android:id="@+id/we_have_sent"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/we_have_sent_you_an_sms"
-                    android:textAppearance="@style/TextAppearance.Conversations.Subhead" />
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/please_enter_pin"
-                    android:textAppearance="@style/TextAppearance.Conversations.Body1" />
-            </LinearLayout>
+                    <LinearLayout
+                        android:id="@+id/instructions"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentTop="true"
+                        android:layout_centerHorizontal="true"
+                        android:gravity="center_horizontal"
+                        android:orientation="vertical"
+                        android:padding="16dp">
 
-            <LinearLayout
-                android:id="@+id/pin_box"
-                android:layout_width="230sp"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/instructions"
-                android:layout_centerHorizontal="true">
-                <EditText
-                    android:layout_width="35sp"
-                    android:layout_height="wrap_content"
-                    android:digits="1234567890"
-                    android:inputType="number"
-                    android:maxLength="1"
-                    android:textSize="40sp"
-                    android:gravity="center"
-                    android:textIsSelectable="false"
-                    />
-                <Space
-                    android:layout_width="0dp"
-                    android:layout_height="0dp"
-                    android:layout_weight="1"/>
-                <EditText
-                    android:layout_width="35sp"
-                    android:layout_height="wrap_content"
-                    android:digits="1234567890"
-                    android:inputType="number"
-                    android:maxLength="1"
-                    android:textSize="40sp"
-                    android:gravity="center"
-                    android:textIsSelectable="false"
-                    />
-                <Space
-                    android:layout_width="0dp"
-                    android:layout_height="0dp"
-                    android:layout_weight="1"/>
-                <EditText
-                    android:layout_width="35sp"
-                    android:layout_height="wrap_content"
-                    android:digits="1234567890"
-                    android:inputType="number"
-                    android:maxLength="1"
-                    android:textSize="40sp"
-                    android:gravity="center"
-                    android:textIsSelectable="false"
-                    />
-                <Space
-                    android:layout_width="0dp"
-                    android:layout_height="0dp"
-                    android:layout_weight="1"/>
-                <EditText
-                    android:layout_width="35sp"
-                    android:layout_height="wrap_content"
-                    android:digits="1234567890"
-                    android:inputType="number"
-                    android:maxLength="1"
-                    android:textSize="40sp"
-                    android:gravity="center"
-                    android:textIsSelectable="false"
-                    />
-                <Space
-                    android:layout_width="0dp"
-                    android:layout_height="0dp"
-                    android:layout_weight="1"/>
-                <EditText
-                    android:layout_width="35sp"
-                    android:layout_height="wrap_content"
-                    android:digits="1234567890"
-                    android:inputType="number"
-                    android:maxLength="1"
-                    android:textSize="40sp"
-                    android:gravity="center"
-                    android:textIsSelectable="false"
-                    />
-                <Space
-                    android:layout_width="0dp"
-                    android:layout_height="0dp"
-                    android:layout_weight="1"/>
-                <EditText
-                    android:layout_width="35sp"
-                    android:layout_height="wrap_content"
-                    android:digits="1234567890"
-                    android:inputType="number"
-                    android:maxLength="1"
-                    android:textSize="40sp"
-                    android:gravity="center"
-                    android:textIsSelectable="false"
-                    />
-            </LinearLayout>
-            <Button
-                android:id="@+id/next"
-                android:layout_alignParentBottom="true"
-                android:layout_alignParentEnd="true"
-                style="@style/Widget.Conversations.Button.Borderless"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/next"
-                android:textColor="?colorAccent"/>
+                        <TextView
+                            android:id="@+id/we_have_sent"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/we_have_sent_you_an_sms"
+                            android:textAppearance="@style/TextAppearance.Conversations.Subhead" />
 
-            <Button
-                android:id="@+id/back"
-                android:layout_alignParentBottom="true"
-                android:layout_alignParentStart="true"
-                style="@style/Widget.Conversations.Button.Borderless"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/back"
-                android:textColor="?android:textColorSecondary" />
-                <Button
-                    android:layout_centerHorizontal="true"
-                    android:layout_below="@+id/pin_box"
-                    android:id="@+id/resend_sms"
-                    style="@style/Widget.Conversations.Button.Borderless"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/resend_sms"
-                    android:textColor="?android:textColorSecondary"/>
-        </RelativeLayout>
-        </ScrollView>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/please_enter_pin"
+                            android:textAppearance="@style/TextAppearance.Conversations.Body1" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/pin_box"
+                        android:layout_width="230sp"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/instructions"
+                        android:layout_centerHorizontal="true">
+
+                        <EditText
+                            android:layout_width="35sp"
+                            android:layout_height="wrap_content"
+                            android:digits="1234567890"
+                            android:gravity="center"
+                            android:imeOptions="flagNoExtractUi"
+                            android:inputType="number"
+                            android:maxLength="1"
+                            android:textIsSelectable="false"
+                            android:textSize="40sp" />
+
+                        <Space
+                            android:layout_width="0dp"
+                            android:layout_height="0dp"
+                            android:layout_weight="1" />
+
+                        <EditText
+                            android:layout_width="35sp"
+                            android:layout_height="wrap_content"
+                            android:digits="1234567890"
+                            android:gravity="center"
+                            android:imeOptions="flagNoExtractUi"
+                            android:inputType="number"
+                            android:maxLength="1"
+                            android:textIsSelectable="false"
+                            android:textSize="40sp" />
+
+                        <Space
+                            android:layout_width="0dp"
+                            android:layout_height="0dp"
+                            android:layout_weight="1" />
+
+                        <EditText
+                            android:layout_width="35sp"
+                            android:layout_height="wrap_content"
+                            android:digits="1234567890"
+                            android:gravity="center"
+                            android:imeOptions="flagNoExtractUi"
+                            android:inputType="number"
+                            android:maxLength="1"
+                            android:textIsSelectable="false"
+                            android:textSize="40sp" />
+
+                        <Space
+                            android:layout_width="0dp"
+                            android:layout_height="0dp"
+                            android:layout_weight="1" />
+
+                        <EditText
+                            android:layout_width="35sp"
+                            android:layout_height="wrap_content"
+                            android:digits="1234567890"
+                            android:gravity="center"
+                            android:imeOptions="flagNoExtractUi"
+                            android:inputType="number"
+                            android:maxLength="1"
+                            android:textIsSelectable="false"
+                            android:textSize="40sp" />
+
+                        <Space
+                            android:layout_width="0dp"
+                            android:layout_height="0dp"
+                            android:layout_weight="1" />
+
+                        <EditText
+                            android:layout_width="35sp"
+                            android:layout_height="wrap_content"
+                            android:digits="1234567890"
+                            android:gravity="center"
+                            android:imeOptions="flagNoExtractUi"
+                            android:inputType="number"
+                            android:maxLength="1"
+                            android:textIsSelectable="false"
+                            android:textSize="40sp" />
+
+                        <Space
+                            android:layout_width="0dp"
+                            android:layout_height="0dp"
+                            android:layout_weight="1" />
+
+                        <EditText
+                            android:layout_width="35sp"
+                            android:layout_height="wrap_content"
+                            android:digits="1234567890"
+                            android:gravity="center"
+                            android:imeOptions="flagNoExtractUi"
+                            android:inputType="number"
+                            android:maxLength="1"
+                            android:textIsSelectable="false"
+                            android:textSize="40sp" />
+                    </LinearLayout>
+
+                    <Button
+                        android:id="@+id/next"
+                        style="@style/Widget.Conversations.Button.Borderless"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_alignParentBottom="true"
+                        android:text="@string/next"
+                        android:textColor="?colorAccent" />
+
+                    <Button
+                        android:id="@+id/back"
+                        style="@style/Widget.Conversations.Button.Borderless"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentStart="true"
+                        android:layout_alignParentBottom="true"
+                        android:text="@string/back"
+                        android:textColor="?android:textColorSecondary" />
+
+                    <Button
+                        android:id="@+id/resend_sms"
+                        style="@style/Widget.Conversations.Button.Borderless"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/pin_box"
+                        android:layout_centerHorizontal="true"
+                        android:text="@string/resend_sms"
+                        android:textColor="?android:textColorSecondary" />
+                </RelativeLayout>
+            </ScrollView>
+        </android.support.design.widget.CoordinatorLayout>
     </LinearLayout>
 </layout>

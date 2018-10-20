@@ -7,6 +7,10 @@
         android:orientation="vertical">
 
         <include android:id="@+id/toolbar" layout="@layout/toolbar" />
+        <android.support.design.widget.CoordinatorLayout
+            android:id="@+id/coordinator"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
         <ScrollView
             android:layout_width="match_parent"
@@ -36,12 +40,13 @@
                     android:orientation="vertical">
 
                     <EditText
+                        android:imeOptions="flagNoExtractUi"
                         android:id="@+id/country"
                         style="@style/Widget.Conversations.EditText"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:cursorVisible="false"
-                        android:drawableRight="@drawable/ic_arrow_drop_down_black_18dp"
+                        android:drawableEnd="@drawable/ic_arrow_drop_down_black_18dp"
                         android:focusable="false"
                         android:gravity="bottom|center_horizontal"
                         android:longClickable="false" />
@@ -52,6 +57,7 @@
                         android:orientation="horizontal">
 
                         <EditText
+                            android:imeOptions="flagNoExtractUi"
                             android:id="@+id/country_code"
                             style="@style/Widget.Conversations.EditText"
                             android:layout_width="0dp"
@@ -64,6 +70,7 @@
                             android:maxLines="1" />
 
                         <EditText
+                            android:imeOptions="flagNoExtractUi"
                             android:id="@+id/number"
                             style="@style/Widget.Conversations.EditText"
                             android:layout_width="0dp"
@@ -87,5 +94,6 @@
                     android:textColor="?colorAccent"/>
             </RelativeLayout>
         </ScrollView>
+        </android.support.design.widget.CoordinatorLayout>
     </LinearLayout>
 </layout>

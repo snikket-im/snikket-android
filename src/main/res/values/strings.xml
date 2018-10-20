@@ -764,4 +764,5 @@
     <string name="please_enter_pin">Please enter the 6 digit pin below.</string>
     <string name="resend_sms">Resend SMS</string>
     <string name="back">back</string>
+    <string name="possible_pin">Automatically pasted possible pin from clipboard.</string>
 </resources>
