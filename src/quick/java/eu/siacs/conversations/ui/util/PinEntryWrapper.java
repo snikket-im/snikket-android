@@ -64,7 +64,8 @@ public class PinEntryWrapper {
         }
         if (v instanceof EditText) {
             final EditText editText = (EditText) v;
-            if (keyCode == KeyEvent.KEYCODE_DEL && editText.getText().length() == 0) {
+            final boolean cursorAtZero = editText.getSelectionEnd() == 0 && editText.getSelectionStart() == 0;
+            if (keyCode == KeyEvent.KEYCODE_DEL && (cursorAtZero || editText.getText().length() == 0)) {
                 final int current = digits.indexOf(editText);
                 for (int i = current - 1; i >= 0; --i) {
                     if (digits.get(i).getText().length() > 0) {
@@ -100,7 +101,7 @@ public class PinEntryWrapper {
 
     public String getPin() {
         char[] chars = new char[digits.size()];
-        for(int i = 0; i < chars.length; ++i) {
+        for (int i = 0; i < chars.length; ++i) {
             final String input = digits.get(i).getText().toString();
             chars[i] = input.length() != 1 ? ' ' : input.charAt(0);
         }
@@ -109,7 +110,7 @@ public class PinEntryWrapper {
 
     public void setPin(String pin) {
         char[] chars = pin.toCharArray();
-        for(int i = 0; i < digits.size(); ++i) {
+        for (int i = 0; i < digits.size(); ++i) {
             if (i < chars.length) {
                 final Editable editable = digits.get(i).getText();
                 editable.clear();
@@ -118,8 +119,17 @@ public class PinEntryWrapper {
         }
     }
 
-    public boolean isEmpty() {
+    public void setEnabled(boolean enabled) {
         for(EditText digit : digits) {
+            digit.setEnabled(enabled);
+            digit.setCursorVisible(enabled);
+            digit.setFocusable(enabled);
+            digit.setFocusableInTouchMode(enabled);
+        }
+    }
+
+    public boolean isEmpty() {
+        for (EditText digit : digits) {
             if (digit.getText().length() > 0) {
                 return false;
             }
@@ -127,12 +137,12 @@ public class PinEntryWrapper {
         return true;
     }
 
-    public static boolean isPin(CharSequence pin) {
+    public static boolean isValidPin(CharSequence pin) {
         return pin != null && PIN_STRING_PATTERN.matcher(pin).matches();
     }
 
     public void clear() {
-        for(int i = digits.size() - 1; i >= 0; --i) {
+        for (int i = digits.size() - 1; i >= 0; --i) {
             digits.get(i).getText().clear();
         }
     }

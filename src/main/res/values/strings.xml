@@ -761,8 +761,13 @@
     <string name="search_countries">Search countries</string>
     <string name="verify_x">Verify %s</string>
     <string name="we_have_sent_you_an_sms"><![CDATA[We have sent you an SMS to <b>%s</b>.]]></string>
-    <string name="please_enter_pin">Please enter the 6 digit pin below.</string>
+    <string name="please_enter_pin_below">Please enter the 6 digit pin below.</string>
     <string name="resend_sms">Resend SMS</string>
     <string name="back">back</string>
     <string name="possible_pin">Automatically pasted possible pin from clipboard.</string>
+    <string name="please_enter_pin">Please enter your 6 digit pin.</string>
+    <string name="abort_registration_procedure">Are you sure you want to abort the registration procedure?</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="verifying">Verifying…</string>
 </resources>

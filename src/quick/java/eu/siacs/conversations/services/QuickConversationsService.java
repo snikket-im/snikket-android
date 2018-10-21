@@ -7,6 +7,7 @@ import java.security.SecureRandom;
 import java.util.Collections;
 import java.util.Set;
 import java.util.WeakHashMap;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.entities.Account;
@@ -20,7 +21,9 @@ public class QuickConversationsService {
     private final XmppConnectionService service;
 
     private final Set<OnVerificationRequested> mOnVerificationRequested = Collections.newSetFromMap(new WeakHashMap<>());
-    private final Set<OnVerified> mOnVerified = Collections.newSetFromMap(new WeakHashMap<>());
+    private final Set<OnVerification> mOnVerification = Collections.newSetFromMap(new WeakHashMap<>());
+
+    private final AtomicBoolean mVerificationInProgress = new AtomicBoolean(false);
 
     QuickConversationsService(XmppConnectionService xmppConnectionService) {
         this.service = xmppConnectionService;
@@ -38,6 +41,18 @@ public class QuickConversationsService {
         }
     }
 
+    public void addOnVerificationListener(OnVerification onVerification) {
+        synchronized (mOnVerification) {
+            mOnVerification.add(onVerification);
+        }
+    }
+
+    public void removeOnVerificationListener(OnVerification onVerification) {
+        synchronized (mOnVerification) {
+            mOnVerification.remove(onVerification);
+        }
+    }
+
     public void requestVerification(Phonenumber.PhoneNumber phoneNumber) {
         String local = PhoneNumberUtilWrapper.normalize(service, phoneNumber);
         Log.d(Config.LOGTAG,"requesting verification for "+PhoneNumberUtilWrapper.normalize(service,phoneNumber));
@@ -52,12 +67,35 @@ public class QuickConversationsService {
         }
     }
 
+    public void verify(Account account, String pin) {
+        if (mVerificationInProgress.compareAndSet(false, true)) {
+            new Thread(() -> {
+                try {
+                    Thread.sleep(5000);
+                    synchronized (mOnVerification) {
+                        for (OnVerification onVerification : mOnVerification) {
+                            onVerification.onVerificationFailed();
+                        }
+                    }
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                } finally {
+                    mVerificationInProgress.set(false);
+                }
+            }).start();
+        }
+    }
+
+    public boolean isVerifying() {
+        return mVerificationInProgress.get();
+    }
+
     public interface OnVerificationRequested {
         void onVerificationRequestFailed(int code);
         void onVerificationRequested();
     }
 
-    public interface OnVerified {
+    public interface OnVerification {
         void onVerificationFailed();
         void onVerificationSucceeded();
     }
