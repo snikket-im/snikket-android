@@ -30,7 +30,10 @@ public class EnterPhoneNumberActivity extends XmppActivity implements QuickConve
     private static final int REQUEST_CHOOSE_COUNTRY = 0x1234;
 
     private ActivityEnterNumberBinding binding;
+
     private String region = null;
+    private boolean requestingVerification = false;
+
     private final TextWatcher countryCodeTextWatcher = new TextWatcher() {
         @Override
         public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -78,6 +81,7 @@ public class EnterPhoneNumberActivity extends XmppActivity implements QuickConve
         super.onCreate(savedInstanceState);
 
         String region = savedInstanceState != null ? savedInstanceState.getString("region") : null;
+        boolean requestingVerification = savedInstanceState != null && savedInstanceState.getBoolean("requesting_verification", false);
         if (region != null) {
             this.region = region;
         } else {
@@ -91,6 +95,7 @@ public class EnterPhoneNumberActivity extends XmppActivity implements QuickConve
         setSupportActionBar((Toolbar) this.binding.toolbar);
         this.binding.countryCode.addTextChangedListener(this.countryCodeTextWatcher);
         this.binding.countryCode.setText(String.valueOf(PhoneNumberUtilWrapper.getInstance(this).getCountryCodeForRegion(this.region)));
+        setRequestingVerificationState(requestingVerification);
     }
 
     @Override
@@ -98,6 +103,7 @@ public class EnterPhoneNumberActivity extends XmppActivity implements QuickConve
         if (this.region != null) {
             savedInstanceState.putString("region", this.region);
         }
+        savedInstanceState.putBoolean("requesting_verification", this.requestingVerification);
         super.onSaveInstanceState(savedInstanceState);
     }
 
@@ -142,7 +148,17 @@ public class EnterPhoneNumberActivity extends XmppActivity implements QuickConve
     }
 
     private void onPhoneNumberEntered(Phonenumber.PhoneNumber phoneNumber) {
+        setRequestingVerificationState(true);
         xmppConnectionService.getQuickConversationsService().requestVerification(phoneNumber);
+    }
+
+    private void setRequestingVerificationState(boolean requesting) {
+        this.requestingVerification = requesting;
+        this.binding.countryCode.setEnabled(!requesting);
+        this.binding.country.setEnabled(!requesting);
+        this.binding.number.setEnabled(!requesting);
+        this.binding.next.setEnabled(!requesting);
+        this.binding.next.setText(requesting ? R.string.requesting_sms : R.string.next);
     }
 
     @Override
@@ -160,13 +176,25 @@ public class EnterPhoneNumberActivity extends XmppActivity implements QuickConve
 
     @Override
     public void onVerificationRequestFailed(int code) {
-
+        runOnUiThread(()->{
+            setRequestingVerificationState(false);
+        });
     }
 
     @Override
     public void onVerificationRequested() {
         runOnUiThread(() -> {
-            startActivity(new Intent(this,VerifyActivity.class));
+            startActivity(new Intent(this, VerifyActivity.class));
+            finish();
+        });
+    }
+
+    @Override
+    public void onVerificationRequestedRetryAt(long timestamp) {
+        runOnUiThread(() -> {
+            Intent intent = new Intent(this, VerifyActivity.class);
+            intent.putExtra(VerifyActivity.EXTRA_RETRY_SMS_AFTER, timestamp);
+            startActivity(intent);
             finish();
         });
     }

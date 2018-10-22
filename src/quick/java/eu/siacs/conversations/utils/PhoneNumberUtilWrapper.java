@@ -41,14 +41,16 @@ public class PhoneNumberUtilWrapper {
         return locale.getCountry();
     }
 
-    public static String prettyPhoneNumber(Context context, Jid jid) {
-        PhoneNumberUtil phoneNumberUtil = getInstance(context);
+    public static String toFormattedPhoneNumber(Context context, Jid jid) {
         try {
-            Phonenumber.PhoneNumber phoneNumber = phoneNumberUtil.parse(jid.getEscapedLocal(), "de");
-            return phoneNumberUtil.format(phoneNumber, PhoneNumberUtil.PhoneNumberFormat.INTERNATIONAL);
+            return getInstance(context).format(toPhoneNumber(context, jid), PhoneNumberUtil.PhoneNumberFormat.INTERNATIONAL);
         } catch (Exception e) {
             return jid.getEscapedLocal();
         }
+    }
+
+    public static Phonenumber.PhoneNumber toPhoneNumber(Context context, Jid jid) throws NumberParseException {
+        return getInstance(context).parse(jid.getEscapedLocal(), "de");
     }
 
     public static String normalize(Context context, String number) throws NumberParseException {

@@ -39,7 +39,7 @@
                             android:id="@+id/we_have_sent"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="@string/we_have_sent_you_an_sms"
+                            android:text="@string/we_have_sent_you_an_sms_to_x"
                             android:textAppearance="@style/TextAppearance.Conversations.Subhead" />
 
                         <TextView

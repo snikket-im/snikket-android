@@ -24,7 +24,11 @@ public class Plain extends SaslMechanism {
 
 	@Override
 	public String getClientFirstMessage() {
-		final String sasl = '\u0000' + account.getUsername() + '\u0000' + account.getPassword();
-		return Base64.encodeToString(sasl.getBytes(Charset.defaultCharset()), Base64.NO_WRAP);
+		return getMessage(account.getUsername(), account.getPassword());
+	}
+
+	public static String getMessage(String username, String password) {
+		final String message = '\u0000' + username + '\u0000' + password;
+		return Base64.encodeToString(message.getBytes(Charset.defaultCharset()), Base64.NO_WRAP);
 	}
 }
