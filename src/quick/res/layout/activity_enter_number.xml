@@ -33,7 +33,7 @@
                 <LinearLayout
                     android:id="@+id/phone_number_box"
                     android:layout_width="256dp"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
                     android:layout_above="@+id/next"
                     android:layout_below="@+id/instructions"
                     android:layout_centerHorizontal="true"
@@ -82,6 +82,13 @@
                             android:longClickable="false"
                             android:maxLines="1" />
                     </LinearLayout>
+
+                    <ProgressBar
+                        android:id="@+id/progressBar"
+                        style="?android:attr/progressBarStyle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center" />
                 </LinearLayout>
                 <Button
                     android:id="@+id/next"

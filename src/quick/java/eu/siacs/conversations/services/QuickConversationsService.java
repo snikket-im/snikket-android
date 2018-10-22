@@ -18,6 +18,8 @@ import java.util.Set;
 import java.util.WeakHashMap;
 import java.util.concurrent.atomic.AtomicBoolean;
 
+import javax.net.ssl.SSLHandshakeException;
+
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.crypto.sasl.Plain;
 import eu.siacs.conversations.entities.Account;
@@ -33,8 +35,10 @@ public class QuickConversationsService {
     public static final int API_ERROR_OTHER = -1;
     public static final int API_ERROR_UNKNOWN_HOST = -2;
     public static final int API_ERROR_CONNECT = -3;
+    public static final int API_ERROR_SSL_HANDSHAKE = -4;
+    public static final int API_ERROR_AIRPLANE_MODE = -5;
 
-    private static final String BASE_URL = "https://venus.fritz.box:4567";
+    private static final String BASE_URL = "http://venus.fritz.box:4567";
 
     private final XmppConnectionService service;
 
@@ -145,7 +149,7 @@ public class QuickConversationsService {
         }
     }
 
-    public void verify(Account account, String pin) {
+    public void verify(final Account account, String pin) {
         /**
          * POST /password
          * authentication gesetzt mit telephone nummber und verification code
@@ -177,6 +181,9 @@ public class QuickConversationsService {
                     connection.connect();
                     final int code = connection.getResponseCode();
                     if (code == 200) {
+                        account.setOption(Account.OPTION_UNVERIFIED, false);
+                        account.setOption(Account.OPTION_DISABLED, false);
+                        service.updateAccount(account);
                         synchronized (mOnVerification) {
                             for (OnVerification onVerification : mOnVerification) {
                                 onVerification.onVerificationSucceeded();
@@ -210,11 +217,15 @@ public class QuickConversationsService {
         }
     }
 
-    private static int getApiErrorCode(Exception e) {
-        if (e instanceof UnknownHostException) {
+    private int getApiErrorCode(Exception e) {
+        if (!service.hasInternetConnection()) {
+            return API_ERROR_AIRPLANE_MODE;
+        } else if (e instanceof UnknownHostException) {
             return API_ERROR_UNKNOWN_HOST;
         } else if (e instanceof ConnectException) {
             return API_ERROR_CONNECT;
+        } else if (e instanceof SSLHandshakeException) {
+            return API_ERROR_SSL_HANDSHAKE;
         } else {
             Log.d(Config.LOGTAG,e.getClass().getName());
             return API_ERROR_OTHER;

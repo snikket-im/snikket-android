@@ -13,14 +13,13 @@ import android.os.SystemClock;
 import android.support.design.widget.Snackbar;
 import android.support.v7.widget.Toolbar;
 import android.text.Html;
-import android.util.Log;
 import android.view.View;
 
-import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.databinding.ActivityVerifyBinding;
 import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.services.QuickConversationsService;
+import eu.siacs.conversations.ui.util.ApiErrorDialogHelper;
 import eu.siacs.conversations.ui.util.PinEntryWrapper;
 import eu.siacs.conversations.utils.AccountUtils;
 import eu.siacs.conversations.utils.PhoneNumberUtilWrapper;
@@ -32,7 +31,8 @@ import static android.content.ClipDescription.MIMETYPE_TEXT_PLAIN;
 public class VerifyActivity extends XmppActivity implements ClipboardManager.OnPrimaryClipChangedListener, QuickConversationsService.OnVerification, QuickConversationsService.OnVerificationRequested {
 
     public static final String EXTRA_RETRY_SMS_AFTER = "retry_sms_after";
-
+    private static final String EXTRA_RETRY_VERIFICATION_AFTER = "retry_verification_after";
+    private final Handler mHandler = new Handler();
     private ActivityVerifyBinding binding;
     private Account account;
     private PinEntryWrapper pinEntryWrapper;
@@ -41,15 +41,20 @@ public class VerifyActivity extends XmppActivity implements ClipboardManager.OnP
     private boolean verifying = false;
     private boolean requestingVerification = false;
     private long retrySmsAfter = 0;
-
-    private final Handler mHandler = new Handler();
-
-
     private final Runnable SMS_TIMEOUT_UPDATER = new Runnable() {
         @Override
         public void run() {
             if (setTimeoutLabelInResendButton()) {
-                mHandler.postDelayed(this,300);
+                mHandler.postDelayed(this, 300);
+            }
+        }
+    };
+    private long retryVerificationAfter = 0;
+    private final Runnable VERIFICATION_TIMEOUT_UPDATER = new Runnable() {
+        @Override
+        public void run() {
+            if (setTimeoutLabelInNextButton()) {
+                mHandler.postDelayed(this, 300);
             }
         }
     };
@@ -59,12 +64,26 @@ public class VerifyActivity extends XmppActivity implements ClipboardManager.OnP
             long remaining = retrySmsAfter - SystemClock.elapsedRealtime();
             if (remaining >= 0) {
                 binding.resendSms.setEnabled(false);
-                binding.resendSms.setText(getString(R.string.resend_sms_in, TimeframeUtils.resolve(VerifyActivity.this,remaining)));
+                binding.resendSms.setText(getString(R.string.resend_sms_in, TimeframeUtils.resolve(VerifyActivity.this, remaining)));
                 return true;
             }
         }
         binding.resendSms.setEnabled(true);
         binding.resendSms.setText(R.string.resend_sms);
+        return false;
+    }
+
+    private boolean setTimeoutLabelInNextButton() {
+        if (retryVerificationAfter != 0) {
+            long remaining = retryVerificationAfter - SystemClock.elapsedRealtime();
+            if (remaining >= 0) {
+                binding.next.setEnabled(false);
+                binding.next.setText(getString(R.string.wait_x, TimeframeUtils.resolve(VerifyActivity.this, remaining)));
+                return true;
+            }
+        }
+        this.binding.next.setEnabled(!verifying);
+        this.binding.next.setText(verifying ? R.string.verifying : R.string.next);
         return false;
     }
 
@@ -75,7 +94,8 @@ public class VerifyActivity extends XmppActivity implements ClipboardManager.OnP
         boolean verifying = savedInstanceState != null && savedInstanceState.getBoolean("verifying");
         boolean requestingVerification = savedInstanceState != null && savedInstanceState.getBoolean("requesting_verification", false);
         this.pasted = savedInstanceState != null ? savedInstanceState.getString("pasted") : null;
-        this.retrySmsAfter = savedInstanceState != null ? savedInstanceState.getLong(EXTRA_RETRY_SMS_AFTER,0L) : 0L;
+        this.retrySmsAfter = savedInstanceState != null ? savedInstanceState.getLong(EXTRA_RETRY_SMS_AFTER, 0L) : 0L;
+        this.retryVerificationAfter = savedInstanceState != null ? savedInstanceState.getLong(EXTRA_RETRY_VERIFICATION_AFTER, 0L) : 0L;
         this.binding = DataBindingUtil.setContentView(this, R.layout.activity_verify);
         setSupportActionBar((Toolbar) this.binding.toolbar);
         this.pinEntryWrapper = new PinEntryWrapper(binding.pinBox);
@@ -182,6 +202,7 @@ public class VerifyActivity extends XmppActivity implements ClipboardManager.OnP
         savedInstanceState.putBoolean("verifying", this.verifying);
         savedInstanceState.putBoolean("requesting_verification", this.requestingVerification);
         savedInstanceState.putLong(EXTRA_RETRY_SMS_AFTER, this.retrySmsAfter);
+        savedInstanceState.putLong(EXTRA_RETRY_VERIFICATION_AFTER, this.retryVerificationAfter);
         if (this.pasted != null) {
             savedInstanceState.putString("pasted", this.pasted);
         }
@@ -192,8 +213,13 @@ public class VerifyActivity extends XmppActivity implements ClipboardManager.OnP
     public void onStart() {
         super.onStart();
         clipboardManager.addPrimaryClipChangedListener(this);
+        final Intent intent = getIntent();
+        this.retrySmsAfter = intent != null ? intent.getLongExtra(EXTRA_RETRY_SMS_AFTER, this.retrySmsAfter) : this.retrySmsAfter;
         if (this.retrySmsAfter > 0) {
             mHandler.post(SMS_TIMEOUT_UPDATER);
+        }
+        if (this.retryVerificationAfter > 0) {
+            mHandler.post(VERIFICATION_TIMEOUT_UPDATER);
         }
     }
 
@@ -201,6 +227,7 @@ public class VerifyActivity extends XmppActivity implements ClipboardManager.OnP
     public void onStop() {
         super.onStop();
         mHandler.removeCallbacks(SMS_TIMEOUT_UPDATER);
+        mHandler.removeCallbacks(VERIFICATION_TIMEOUT_UPDATER);
         clipboardManager.removePrimaryClipChangedListener(this);
         if (xmppConnectionService != null) {
             xmppConnectionService.getQuickConversationsService().removeOnVerificationListener(this);
@@ -233,6 +260,14 @@ public class VerifyActivity extends XmppActivity implements ClipboardManager.OnP
         }
     }
 
+    private void performPostVerificationRedirect() {
+        Intent intent = new Intent(this, PublishProfilePictureActivity.class);
+        intent.putExtra(PublishProfilePictureActivity.EXTRA_ACCOUNT, account.getJid().asBareJid().toEscapedString());
+        intent.putExtra("setup", true);
+        startActivity(intent);
+        finish();
+    }
+
     @Override
     public void onPrimaryClipChanged() {
         this.pasted = null;
@@ -242,39 +277,49 @@ public class VerifyActivity extends XmppActivity implements ClipboardManager.OnP
     }
 
     @Override
-    public void onVerificationFailed(int code) {
+    public void onVerificationFailed(final int code) {
         runOnUiThread(() -> {
             setVerifyingState(false);
+            if (code == 401) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                builder.setMessage(R.string.incorrect_pin);
+                builder.setPositiveButton(R.string.ok, null);
+                builder.create().show();
+            } else {
+                ApiErrorDialogHelper.create(this, code).show();
+            }
         });
-        Log.d(Config.LOGTAG,"code="+code);
     }
 
     @Override
     public void onVerificationSucceeded() {
-
+        runOnUiThread(this::performPostVerificationRedirect);
     }
 
     @Override
     public void onVerificationRetryAt(long timestamp) {
-
+        this.retryVerificationAfter = timestamp;
+        runOnUiThread(() -> setVerifyingState(false));
+        mHandler.removeCallbacks(VERIFICATION_TIMEOUT_UPDATER);
+        runOnUiThread(VERIFICATION_TIMEOUT_UPDATER);
     }
 
     //send sms again button callback
     @Override
     public void onVerificationRequestFailed(int code) {
-        runOnUiThread(()->{
+        runOnUiThread(() -> {
             setRequestingVerificationState(false);
+            ApiErrorDialogHelper.create(this, code).show();
         });
-        Log.d(Config.LOGTAG,"code="+code);
     }
 
     //send sms again button callback
     @Override
     public void onVerificationRequested() {
-        runOnUiThread(()-> {
+        runOnUiThread(() -> {
             setRequestingVerificationState(false);
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            builder.setMessage(R.string.we_have_sent_you_the_sms_again);
+            builder.setMessage(R.string.we_have_sent_you_another_sms);
             builder.setPositiveButton(R.string.ok, null);
             builder.create().show();
         });
@@ -283,7 +328,7 @@ public class VerifyActivity extends XmppActivity implements ClipboardManager.OnP
     @Override
     public void onVerificationRequestedRetryAt(long timestamp) {
         this.retrySmsAfter = timestamp;
-        runOnUiThread(()-> setRequestingVerificationState(false));
+        runOnUiThread(() -> setRequestingVerificationState(false));
         mHandler.removeCallbacks(SMS_TIMEOUT_UPDATER);
         runOnUiThread(SMS_TIMEOUT_UPDATER);
     }

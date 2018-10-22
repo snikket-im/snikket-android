@@ -761,10 +761,11 @@
     <string name="search_countries">Search countries</string>
     <string name="verify_x">Verify %s</string>
     <string name="we_have_sent_you_an_sms_to_x"><![CDATA[We have sent you an SMS to <b>%s</b>.]]></string>
-    <string name="we_have_sent_you_the_sms_again">We have sent you the SMS again.</string>
+    <string name="we_have_sent_you_another_sms">We have sent you another SMS with a 6 digit code.</string>
     <string name="please_enter_pin_below">Please enter the 6 digit pin below.</string>
     <string name="resend_sms">Resend SMS</string>
     <string name="resend_sms_in">Resend SMS (%s)</string>
+    <string name="wait_x">Please wait (%s)</string>
     <string name="back">back</string>
     <string name="possible_pin">Automatically pasted possible pin from clipboard.</string>
     <string name="please_enter_pin">Please enter your 6 digit pin.</string>
@@ -773,4 +774,13 @@
     <string name="no">No</string>
     <string name="verifying">Verifying…</string>
     <string name="requesting_sms">Requesting SMS…</string>
+    <string name="incorrect_pin">The pin you have entered is incorrect.</string>
+    <string name="unknown_api_error_network">Unknown network error.</string>
+    <string name="unknown_api_error_response">Unknown response from server.</string>
+    <string name="unable_to_connect_to_server">Unable to connect to server.</string>
+    <string name="unable_to_establish_secure_connection">Unable to establish secure connection.</string>
+    <string name="unable_to_find_server">Unable to find server.</string>
+    <string name="invalid_user_input">Invalid user input</string>
+    <string name="temporarily_unavailable">Temporarily unavailable. Try again later.</string>
+    <string name="no_network_connection">No network connection.</string>
 </resources>

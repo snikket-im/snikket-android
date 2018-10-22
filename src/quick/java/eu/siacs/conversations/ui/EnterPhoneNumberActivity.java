@@ -20,6 +20,7 @@ import eu.siacs.conversations.R;
 import eu.siacs.conversations.databinding.ActivityEnterNumberBinding;
 import eu.siacs.conversations.services.QuickConversationsService;
 import eu.siacs.conversations.ui.drawable.TextDrawable;
+import eu.siacs.conversations.ui.util.ApiErrorDialogHelper;
 import eu.siacs.conversations.utils.PhoneNumberUtilWrapper;
 import io.michaelrocks.libphonenumber.android.NumberParseException;
 import io.michaelrocks.libphonenumber.android.PhoneNumberUtil;
@@ -32,8 +33,6 @@ public class EnterPhoneNumberActivity extends XmppActivity implements QuickConve
     private ActivityEnterNumberBinding binding;
 
     private String region = null;
-    private boolean requestingVerification = false;
-
     private final TextWatcher countryCodeTextWatcher = new TextWatcher() {
         @Override
         public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -65,6 +64,7 @@ public class EnterPhoneNumberActivity extends XmppActivity implements QuickConve
             }
         }
     };
+    private boolean requestingVerification = false;
 
     @Override
     protected void refreshUiReal() {
@@ -159,6 +159,8 @@ public class EnterPhoneNumberActivity extends XmppActivity implements QuickConve
         this.binding.number.setEnabled(!requesting);
         this.binding.next.setEnabled(!requesting);
         this.binding.next.setText(requesting ? R.string.requesting_sms : R.string.next);
+        this.binding.progressBar.setVisibility(requesting ? View.VISIBLE : View.GONE);
+        this.binding.progressBar.setIndeterminate(requesting);
     }
 
     @Override
@@ -176,8 +178,9 @@ public class EnterPhoneNumberActivity extends XmppActivity implements QuickConve
 
     @Override
     public void onVerificationRequestFailed(int code) {
-        runOnUiThread(()->{
+        runOnUiThread(() -> {
             setRequestingVerificationState(false);
+            ApiErrorDialogHelper.create(this, code).show();
         });
     }
 
