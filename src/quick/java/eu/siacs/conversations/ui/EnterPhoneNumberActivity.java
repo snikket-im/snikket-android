@@ -10,7 +10,9 @@ import android.text.Html;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
+import android.widget.EditText;
 
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
@@ -92,6 +94,23 @@ public class EnterPhoneNumberActivity extends XmppActivity implements QuickConve
         setSupportActionBar((Toolbar) this.binding.toolbar);
         this.binding.countryCode.addTextChangedListener(this.countryCodeTextWatcher);
         this.binding.countryCode.setText(String.valueOf(PhoneNumberUtilWrapper.getInstance(this).getCountryCodeForRegion(this.region)));
+        this.binding.number.setOnKeyListener((v, keyCode, event) -> {
+            if (event.getAction() != KeyEvent.ACTION_DOWN) {
+                return false;
+            }
+            final EditText editText = (EditText) v;
+            final boolean cursorAtZero = editText.getSelectionEnd() == 0 && editText.getSelectionStart() == 0;
+            if (keyCode == KeyEvent.KEYCODE_DEL && (cursorAtZero || editText.getText().length() == 0)) {
+                final Editable countryCode = this.binding.countryCode.getText();
+                if (countryCode.length() > 0) {
+                    countryCode.delete(countryCode.length() - 1, countryCode.length());
+                    this.binding.countryCode.setSelection(countryCode.length());
+                }
+                this.binding.countryCode.requestFocus();
+                return true;
+            }
+            return false;
+        });
         setRequestingVerificationState(requestingVerification);
     }
 
