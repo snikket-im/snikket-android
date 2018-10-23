@@ -77,7 +77,6 @@ public class PublishProfilePictureActivity extends XmppActivity implements XmppC
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_publish_profile_picture);
         setSupportActionBar(findViewById(R.id.toolbar));
-        configureActionBar(getSupportActionBar());
 
         this.avatar = findViewById(R.id.account_image);
         this.cancelButton = findViewById(R.id.cancel_button);
@@ -158,12 +157,13 @@ public class PublishProfilePictureActivity extends XmppActivity implements XmppC
     @Override
     protected void onStart() {
         super.onStart();
-        if (getIntent() != null) {
-            this.mInitialAccountSetup = getIntent().getBooleanExtra("setup", false);
-        }
+        final Intent intent = getIntent();
+        this.mInitialAccountSetup = intent != null && intent.getBooleanExtra("setup", false);
+
         if (this.mInitialAccountSetup) {
             this.cancelButton.setText(R.string.skip);
         }
+        configureActionBar(getSupportActionBar(), !this.mInitialAccountSetup);
     }
 
     protected void loadImageIntoPreview(Uri uri) {
