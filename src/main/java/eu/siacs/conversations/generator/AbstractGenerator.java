@@ -69,7 +69,11 @@ public abstract class AbstractGenerator {
 	}
 
 	public String getIdentityName() {
-		return mXmppConnectionService.getString(R.string.app_name) + " " + getIdentityVersion();
+		return mXmppConnectionService.getString(R.string.app_name) + ' ' + getIdentityVersion();
+	}
+
+	public String getUserAgent() {
+		return mXmppConnectionService.getString(R.string.app_name) + '/' + getIdentityVersion();
 	}
 
 	String getIdentityType() {

@@ -1,7 +1,9 @@
 package eu.siacs.conversations.services;
 
 
+import android.content.SharedPreferences;
 import android.os.SystemClock;
+import android.preference.PreferenceManager;
 import android.util.Log;
 
 import java.io.BufferedWriter;
@@ -10,11 +12,12 @@ import java.io.OutputStreamWriter;
 import java.net.ConnectException;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.net.URLConnection;
 import java.net.UnknownHostException;
 import java.security.SecureRandom;
 import java.util.Collections;
+import java.util.Locale;
 import java.util.Set;
+import java.util.UUID;
 import java.util.WeakHashMap;
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -39,6 +42,8 @@ public class QuickConversationsService {
     public static final int API_ERROR_AIRPLANE_MODE = -5;
 
     private static final String BASE_URL = "http://venus.fritz.box:4567";
+
+    private static final String INSTALLATION_ID = "eu.siacs.conversations.installation-id";
 
     private final XmppConnectionService service;
 
@@ -78,14 +83,6 @@ public class QuickConversationsService {
 
     public void requestVerification(Phonenumber.PhoneNumber phoneNumber) {
         final String e164 = PhoneNumberUtilWrapper.normalize(service, phoneNumber);
-
-        /**
-         * GET /authentication/+phoneNumber
-         *
-         * - returns too many requests, (sms ist unterwegs), retry after seconden -- auf jeden fall in nächste activity (verify activity) weiter leiten weil es sein kann das sms noch ankommt
-         * - returns OK; success (auch in activity weiter lassen. aber ohne error paramater; dh send again button is activ; und vielleicht kurzer toast bzw snackbar
-         * - returns invalid request user error wenn die phone number falsch ist
-         */
         if (mVerificationRequestInProgress.compareAndSet(false, true)) {
             new Thread(() -> {
                 try {
@@ -96,6 +93,7 @@ public class QuickConversationsService {
                     HttpURLConnection connection = (HttpURLConnection) url.openConnection();
                     connection.setConnectTimeout(Config.SOCKET_TIMEOUT * 1000);
                     connection.setReadTimeout(Config.SOCKET_TIMEOUT * 1000);
+                    setHeader(connection);
                     final int code = connection.getResponseCode();
                     if (code == 200) {
                         createAccountAndWait(phoneNumber, 0L);
@@ -150,16 +148,6 @@ public class QuickConversationsService {
     }
 
     public void verify(final Account account, String pin) {
-        /**
-         * POST /password
-         * authentication gesetzt mit telephone nummber und verification code
-         * body = password
-         *
-         * retry after, too many requests
-         * code wrong
-         * OK (weiterleiten auf publish avatar activity
-         *
-         */
         if (mVerificationInProgress.compareAndSet(false, true)) {
             new Thread(() -> {
                 try {
@@ -172,6 +160,7 @@ public class QuickConversationsService {
                     connection.setReadTimeout(Config.SOCKET_TIMEOUT * 1000);
                     connection.setRequestMethod("POST");
                     connection.setRequestProperty("Authorization", Plain.getMessage(account.getUsername(), pin));
+                    setHeader(connection);
                     final OutputStream os = connection.getOutputStream();
                     final BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(os, "UTF-8"));
                     writer.write(account.getPassword());
@@ -217,6 +206,25 @@ public class QuickConversationsService {
         }
     }
 
+    private void setHeader(HttpURLConnection connection) {
+        connection.setRequestProperty("User-Agent", service.getIqGenerator().getUserAgent());
+        connection.setRequestProperty("Installation-Id", getInstallationId());
+        connection.setRequestProperty("Accept-Language", Locale.getDefault().getLanguage());
+    }
+
+    private String getInstallationId() {
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(service);
+        String id = preferences.getString(INSTALLATION_ID, null);
+        if (id != null) {
+            return id;
+        } else {
+            id = UUID.randomUUID().toString();
+            preferences.edit().putString(INSTALLATION_ID, id).apply();
+            return id;
+        }
+
+    }
+
     private int getApiErrorCode(Exception e) {
         if (!service.hasInternetConnection()) {
             return API_ERROR_AIRPLANE_MODE;
@@ -227,7 +235,7 @@ public class QuickConversationsService {
         } else if (e instanceof SSLHandshakeException) {
             return API_ERROR_SSL_HANDSHAKE;
         } else {
-            Log.d(Config.LOGTAG,e.getClass().getName());
+            Log.d(Config.LOGTAG, e.getClass().getName());
             return API_ERROR_OTHER;
         }
     }

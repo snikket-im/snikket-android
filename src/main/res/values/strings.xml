@@ -754,7 +754,7 @@
     <string name="choose_a_country">Choose a country</string>
     <string name="phone_number">phone number</string>
     <string name="verify_your_phone_number">Verify your phone number</string>
-    <string name="enter_country_code_and_phone_number">Quick Conversations will send an SMS message (carrier charges may apply) to verify your phone number. Enter your country code and phone number:</string>
+    <string name="enter_country_code_and_phone_number">Quicksy will send an SMS message (carrier charges may apply) to verify your phone number. Enter your country code and phone number:</string>
     <string name="we_will_be_verifying"><![CDATA[We will be verifying the phone number<br/><br/><b>%s</b><br/><br/>Is this OK, or would you like to edit the number?]]></string>
     <string name="not_a_valid_phone_number">%s is not a valid phone number.</string>
     <string name="please_enter_your_phone_number">Please enter your phone number.</string>
@@ -783,4 +783,9 @@
     <string name="invalid_user_input">Invalid user input</string>
     <string name="temporarily_unavailable">Temporarily unavailable. Try again later.</string>
     <string name="no_network_connection">No network connection.</string>
+    <string name="try_again_in_x">Please try again in %s</string>
+    <string name="rate_limited">You are rate limited</string>
+    <string name="too_many_attempts">Too many attempts</string>
+    <string name="the_app_is_out_of_date">You are using an out of date version of this app.</string>
+    <string name="update">Update</string>
 </resources>

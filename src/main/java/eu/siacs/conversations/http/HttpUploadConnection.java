@@ -166,7 +166,7 @@ public class HttpUploadConnection implements Transferable {
 			connection.setUseCaches(false);
 			connection.setRequestMethod("PUT");
 			connection.setFixedLengthStreamingMode(expectedFileSize);
-			connection.setRequestProperty("User-Agent",mXmppConnectionService.getIqGenerator().getIdentityName());
+			connection.setRequestProperty("User-Agent",mXmppConnectionService.getIqGenerator().getUserAgent());
 			if(slot.getHeaders() != null) {
 				for(HashMap.Entry<String,String> entry : slot.getHeaders().entrySet()) {
 					connection.setRequestProperty(entry.getKey(),entry.getValue());

@@ -104,7 +104,7 @@ android {
         quick {
             dimension "mode"
             applicationId = "im.conversations.quick"
-            resValue "string", "app_name", "Quick Conversations"
+            resValue "string", "app_name", "Quicksy"
             resValue "string", "applicationId", applicationId
         }
 

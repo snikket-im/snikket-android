@@ -288,7 +288,7 @@ public class HttpDownloadConnection implements Transferable {
 				}
 				connection.setUseCaches(false);
 				Log.d(Config.LOGTAG, "url: " + connection.getURL().toString());
-				connection.setRequestProperty("User-Agent", mXmppConnectionService.getIqGenerator().getIdentityName());
+				connection.setRequestProperty("User-Agent", mXmppConnectionService.getIqGenerator().getUserAgent());
 				if (connection instanceof HttpsURLConnection) {
 					mHttpConnectionManager.setupTrustManager((HttpsURLConnection) connection, interactive);
 				}
@@ -367,7 +367,7 @@ public class HttpDownloadConnection implements Transferable {
 					mHttpConnectionManager.setupTrustManager((HttpsURLConnection) connection, interactive);
 				}
 				connection.setUseCaches(false);
-				connection.setRequestProperty("User-Agent", mXmppConnectionService.getIqGenerator().getIdentityName());
+				connection.setRequestProperty("User-Agent", mXmppConnectionService.getIqGenerator().getUserAgent());
 				final boolean tryResume = file.exists() && file.getKey() == null && file.getSize() > 0;
 				long resumeSize = 0;
 				long expected = file.getExpectedSize();

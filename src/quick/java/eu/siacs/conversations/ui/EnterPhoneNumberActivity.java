@@ -4,23 +4,20 @@ import android.app.AlertDialog;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.Html;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.View;
-import android.widget.TextView;
 
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.databinding.ActivityEnterNumberBinding;
 import eu.siacs.conversations.services.QuickConversationsService;
 import eu.siacs.conversations.ui.drawable.TextDrawable;
-import eu.siacs.conversations.ui.util.ApiErrorDialogHelper;
+import eu.siacs.conversations.ui.util.ApiDialogHelper;
 import eu.siacs.conversations.utils.PhoneNumberUtilWrapper;
 import io.michaelrocks.libphonenumber.android.NumberParseException;
 import io.michaelrocks.libphonenumber.android.PhoneNumberUtil;
@@ -180,7 +177,7 @@ public class EnterPhoneNumberActivity extends XmppActivity implements QuickConve
     public void onVerificationRequestFailed(int code) {
         runOnUiThread(() -> {
             setRequestingVerificationState(false);
-            ApiErrorDialogHelper.create(this, code).show();
+            ApiDialogHelper.createError(this, code).show();
         });
     }
 

@@ -19,7 +19,7 @@ import eu.siacs.conversations.R;
 import eu.siacs.conversations.databinding.ActivityVerifyBinding;
 import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.services.QuickConversationsService;
-import eu.siacs.conversations.ui.util.ApiErrorDialogHelper;
+import eu.siacs.conversations.ui.util.ApiDialogHelper;
 import eu.siacs.conversations.ui.util.PinEntryWrapper;
 import eu.siacs.conversations.utils.AccountUtils;
 import eu.siacs.conversations.utils.PhoneNumberUtilWrapper;
@@ -286,7 +286,7 @@ public class VerifyActivity extends XmppActivity implements ClipboardManager.OnP
                 builder.setPositiveButton(R.string.ok, null);
                 builder.create().show();
             } else {
-                ApiErrorDialogHelper.create(this, code).show();
+                ApiDialogHelper.createError(this, code).show();
             }
         });
     }
@@ -299,7 +299,10 @@ public class VerifyActivity extends XmppActivity implements ClipboardManager.OnP
     @Override
     public void onVerificationRetryAt(long timestamp) {
         this.retryVerificationAfter = timestamp;
-        runOnUiThread(() -> setVerifyingState(false));
+        runOnUiThread(() -> {
+            ApiDialogHelper.createTooManyAttempts(this).show();
+            setVerifyingState(false);
+        });
         mHandler.removeCallbacks(VERIFICATION_TIMEOUT_UPDATER);
         runOnUiThread(VERIFICATION_TIMEOUT_UPDATER);
     }
@@ -309,7 +312,7 @@ public class VerifyActivity extends XmppActivity implements ClipboardManager.OnP
     public void onVerificationRequestFailed(int code) {
         runOnUiThread(() -> {
             setRequestingVerificationState(false);
-            ApiErrorDialogHelper.create(this, code).show();
+            ApiDialogHelper.createError(this, code).show();
         });
     }
 
@@ -328,7 +331,10 @@ public class VerifyActivity extends XmppActivity implements ClipboardManager.OnP
     @Override
     public void onVerificationRequestedRetryAt(long timestamp) {
         this.retrySmsAfter = timestamp;
-        runOnUiThread(() -> setRequestingVerificationState(false));
+        runOnUiThread(() -> {
+            ApiDialogHelper.createRateLimited(this, timestamp).show();
+            setRequestingVerificationState(false);
+        });
         mHandler.removeCallbacks(SMS_TIMEOUT_UPDATER);
         runOnUiThread(SMS_TIMEOUT_UPDATER);
     }
