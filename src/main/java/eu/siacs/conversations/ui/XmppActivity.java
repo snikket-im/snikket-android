@@ -964,12 +964,12 @@ public abstract class XmppActivity extends ActionBarActivity {
 		}
 
 		@Override
-		protected void onPostExecute(Bitmap bitmap) {
-			if (bitmap != null && !isCancelled()) {
+		protected void onPostExecute(final Bitmap bitmap) {
+			if (!isCancelled()) {
 				final ImageView imageView = imageViewReference.get();
 				if (imageView != null) {
 					imageView.setImageBitmap(bitmap);
-					imageView.setBackgroundColor(0x00000000);
+					imageView.setBackgroundColor(bitmap == null ? 0xff333333 : 0x00000000);
 				}
 			}
 		}
