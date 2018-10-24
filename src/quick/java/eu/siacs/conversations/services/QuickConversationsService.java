@@ -256,6 +256,10 @@ public class QuickConversationsService {
         return mVerificationRequestInProgress.get();
     }
 
+    public static boolean isQuicksy() {
+        return true;
+    }
+
     public interface OnVerificationRequested {
         void onVerificationRequestFailed(int code);
 

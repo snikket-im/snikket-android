@@ -58,6 +58,7 @@ import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.entities.Presence;
 import eu.siacs.conversations.entities.PresenceTemplate;
 import eu.siacs.conversations.services.BarcodeProvider;
+import eu.siacs.conversations.services.QuickConversationsService;
 import eu.siacs.conversations.services.XmppConnectionService;
 import eu.siacs.conversations.services.XmppConnectionService.OnAccountUpdate;
 import eu.siacs.conversations.services.XmppConnectionService.OnCaptchaRequested;
@@ -940,7 +941,7 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
 
 		}
 
-		final boolean editable = !mAccount.isOptionSet(Account.OPTION_LOGGED_IN_SUCCESSFULLY);
+		final boolean editable = !mAccount.isOptionSet(Account.OPTION_LOGGED_IN_SUCCESSFULLY) && !QuickConversationsService.isQuicksy();
 		this.binding.accountJid.setEnabled(editable);
 		this.binding.accountJid.setFocusable(editable);
 		this.binding.accountJid.setFocusableInTouchMode(editable);
