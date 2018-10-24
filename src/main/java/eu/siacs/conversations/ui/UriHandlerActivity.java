@@ -117,6 +117,7 @@ public class UriHandlerActivity extends AppCompatActivity {
                     intent.putExtra("body", body);
                 } else {
                     intent = new Intent(this, StartConversationActivity.class);
+                    intent.setAction(Intent.ACTION_VIEW);
                     intent.setData(uri);
                     intent.putExtra("account", accounts.get(0).toEscapedString());
                 }
