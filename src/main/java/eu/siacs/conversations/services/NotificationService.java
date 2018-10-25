@@ -103,7 +103,7 @@ public class NotificationService {
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
-    public void initializeChannels() {
+    void initializeChannels() {
         final Context c = mXmppConnectionService;
         final NotificationManager notificationManager = c.getSystemService(NotificationManager.class);
         if (notificationManager == null) {
@@ -401,8 +401,8 @@ public class NotificationService {
                 if (!summaryOnly) {
                     for (Map.Entry<String, ArrayList<Message>> entry : notifications.entrySet()) {
                         String uuid = entry.getKey();
-                        final boolean notifyThis =  notifyOnlyOneChild ? conversations.contains(uuid) : notify;
-                        Builder singleBuilder = buildSingleConversations(entry.getValue(),notifyThis, quiteHours);
+                        final boolean notifyThis = notifyOnlyOneChild ? conversations.contains(uuid) : notify;
+                        Builder singleBuilder = buildSingleConversations(entry.getValue(), notifyThis, quiteHours);
                         if (!notifyOnlyOneChild) {
                             singleBuilder.setGroupAlertBehavior(NotificationCompat.GROUP_ALERT_SUMMARY);
                         }
@@ -930,8 +930,9 @@ public class NotificationService {
         } else {
             intent = new Intent(mXmppConnectionService, EditAccountActivity.class);
             intent.putExtra("jid", errors.get(0).getJid().asBareJid().toEscapedString());
+            intent.putExtra(EditAccountActivity.EXTRA_OPENED_FROM_NOTIFICATION, true);
         }
-        mBuilder.setContentIntent(PendingIntent.getActivity(mXmppConnectionService,145, intent, PendingIntent.FLAG_UPDATE_CURRENT));
+        mBuilder.setContentIntent(PendingIntent.getActivity(mXmppConnectionService, 145, intent, PendingIntent.FLAG_UPDATE_CURRENT));
         if (Compatibility.runsTwentySix()) {
             mBuilder.setChannelId("error");
         }
