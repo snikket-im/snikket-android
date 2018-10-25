@@ -63,6 +63,7 @@ import eu.siacs.conversations.entities.Contact;
 import eu.siacs.conversations.entities.Conversation;
 import eu.siacs.conversations.entities.ListItem;
 import eu.siacs.conversations.entities.Presence;
+import eu.siacs.conversations.services.QuickConversationsService;
 import eu.siacs.conversations.services.XmppConnectionService;
 import eu.siacs.conversations.services.XmppConnectionService.OnRosterUpdate;
 import eu.siacs.conversations.ui.adapter.ListItemAdapter;
@@ -217,7 +218,7 @@ public class StartConversationActivity extends XmppActivity implements XmppConne
 		} else {
 			ArrayAdapter<String> adapter = new ArrayAdapter<>(context,
 					R.layout.simple_list_item,
-					Arrays.asList(context.getString(R.string.no_accounts)));
+					Collections.singletonList(context.getString(R.string.no_accounts)));
 			adapter.setDropDownViewResource(R.layout.simple_list_item);
 			spinner.setAdapter(adapter);
 			spinner.setEnabled(false);
@@ -295,7 +296,7 @@ public class StartConversationActivity extends XmppActivity implements XmppConne
 
 		final SharedPreferences preferences = getPreferences();
 
-		this.mHideOfflineContacts = preferences.getBoolean("hide_offline", false);
+		this.mHideOfflineContacts = !QuickConversationsService.isQuicksy() && preferences.getBoolean("hide_offline", false);
 
 		final boolean startSearching = preferences.getBoolean("start_searching",getResources().getBoolean(R.bool.start_searching));
 
@@ -588,7 +589,12 @@ public class StartConversationActivity extends XmppActivity implements XmppConne
 		MenuItem qrCodeScanMenuItem = menu.findItem(R.id.action_scan_qr_code);
 		joinGroupChat.setVisible(binding.startConversationViewPager.getCurrentItem() == 1);
 		qrCodeScanMenuItem.setVisible(isCameraFeatureAvailable());
-		menuHideOffline.setChecked(this.mHideOfflineContacts);
+		if (QuickConversationsService.isQuicksy()) {
+			menuHideOffline.setVisible(false);
+		} else {
+			menuHideOffline.setVisible(true);
+			menuHideOffline.setChecked(this.mHideOfflineContacts);
+		}
 		mMenuSearchView = menu.findItem(R.id.action_search);
 		mMenuSearchView.setOnActionExpandListener(mOnActionExpandListener);
 		View mSearchView = mMenuSearchView.getActionView();
@@ -622,7 +628,7 @@ public class StartConversationActivity extends XmppActivity implements XmppConne
 				return true;
 			case R.id.action_hide_offline:
 				mHideOfflineContacts = !item.isChecked();
-				getPreferences().edit().putBoolean("hide_offline", mHideOfflineContacts).commit();
+				getPreferences().edit().putBoolean("hide_offline", mHideOfflineContacts).apply();
 				if (mSearchEditText != null) {
 					filter(mSearchEditText.getText().toString());
 				}
@@ -747,7 +753,7 @@ public class StartConversationActivity extends XmppActivity implements XmppConne
 			}
 		}
 		Fragment fragment = getSupportFragmentManager().findFragmentByTag(FRAGMENT_TAG_DIALOG);
-		if (fragment != null && fragment instanceof OnBackendConnected) {
+		if (fragment instanceof OnBackendConnected) {
 			Log.d(Config.LOGTAG, "calling on backend connected on dialog");
 			((OnBackendConnected) fragment).onBackendConnected();
 		}
@@ -1099,7 +1105,7 @@ public class StartConversationActivity extends XmppActivity implements XmppConne
 		FragmentManager fragmentManager;
 		MyListFragment[] fragments;
 
-		public ListPagerAdapter(FragmentManager fm) {
+		ListPagerAdapter(FragmentManager fm) {
 			fragmentManager = fm;
 			fragments = new MyListFragment[2];
 		}
