@@ -125,7 +125,7 @@ public class QuickConversationsService {
     private void createAccountAndWait(Phonenumber.PhoneNumber phoneNumber, final long timestamp) {
         String local = PhoneNumberUtilWrapper.normalize(service, phoneNumber);
         Log.d(Config.LOGTAG, "requesting verification for " + PhoneNumberUtilWrapper.normalize(service, phoneNumber));
-        Jid jid = Jid.of(local, "quick.conversations.im", null);
+        Jid jid = Jid.of(local, Config.QUICKSY_DOMAIN, null);
         Account account = AccountUtils.getFirst(service);
         if (account == null || !account.getJid().asBareJid().equals(jid.asBareJid())) {
             if (account != null) {

@@ -7,9 +7,16 @@ import android.widget.Filter;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Locale;
+import java.util.regex.Pattern;
+
+import eu.siacs.conversations.Config;
 
 public class KnownHostsAdapter extends ArrayAdapter<String> {
+
+    private static Pattern E164_PATTERN = Pattern.compile("^\\+?[1-9]\\d{1,14}$");
+
     private ArrayList<String> domains;
     private Filter domainFilter = new Filter() {
 
@@ -19,8 +26,12 @@ public class KnownHostsAdapter extends ArrayAdapter<String> {
             final String[] split = constraint == null ? new String[0] : constraint.toString().split("@");
             if (split.length == 1) {
                 final String local = split[0].toLowerCase(Locale.ENGLISH);
-                for (String domain : domains) {
-                    suggestions.add(local + "@" + domain);
+                if (Config.QUICKSY_DOMAIN != null && E164_PATTERN.matcher(local).matches()) {
+                    suggestions.add(local + '@' + Config.QUICKSY_DOMAIN);
+                } else {
+                    for (String domain : domains) {
+                        suggestions.add(local + '@' + domain);
+                    }
                 }
             } else if (split.length == 2) {
                 final String localPart = split[0].toLowerCase(Locale.ENGLISH);
@@ -56,6 +67,7 @@ public class KnownHostsAdapter extends ArrayAdapter<String> {
     public KnownHostsAdapter(Context context, int viewResourceId, Collection<String> mKnownHosts) {
         super(context, viewResourceId, new ArrayList<>());
         domains = new ArrayList<>(mKnownHosts);
+        Collections.sort(domains);
     }
 
     public KnownHostsAdapter(Context context, int viewResourceId) {
@@ -65,6 +77,7 @@ public class KnownHostsAdapter extends ArrayAdapter<String> {
 
     public void refresh(Collection<String> knownHosts) {
         domains = new ArrayList<>(knownHosts);
+        Collections.sort(domains);
         notifyDataSetChanged();
     }
 

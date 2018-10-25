@@ -3544,12 +3544,15 @@ public class XmppConnectionService extends Service {
 			for (final Contact contact : account.getRoster().getContacts()) {
 				if (contact.showInRoster()) {
 					final String server = contact.getServer();
-					if (server != null && !hosts.contains(server)) {
+					if (server != null) {
 						hosts.add(server);
 					}
 				}
 			}
 		}
+		if (Config.QUICKSY_DOMAIN != null) {
+		    hosts.remove(Config.QUICKSY_DOMAIN); //we only want to show this when we type a e164 number
+        }
 		if (Config.DOMAIN_LOCK != null) {
 			hosts.add(Config.DOMAIN_LOCK);
 		}
