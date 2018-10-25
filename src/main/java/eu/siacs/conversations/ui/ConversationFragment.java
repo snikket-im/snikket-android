@@ -2537,7 +2537,7 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
                     public void error(final int error, Message message) {
                         getActivity().runOnUiThread(() -> {
                             doneSendingPgpMessage();
-                            Toast.makeText(getActivity(), R.string.unable_to_connect_to_keychain, Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getActivity(), error == 0 ? R.string.unable_to_connect_to_keychain : error, Toast.LENGTH_SHORT).show();
                         });
 
                     }

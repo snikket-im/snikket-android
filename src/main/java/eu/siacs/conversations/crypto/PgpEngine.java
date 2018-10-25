@@ -2,6 +2,8 @@ package eu.siacs.conversations.crypto;
 
 import android.app.PendingIntent;
 import android.content.Intent;
+import android.os.Parcelable;
+import android.support.annotation.StringRes;
 import android.util.Log;
 
 import org.openintents.openpgp.OpenPgpError;
@@ -39,7 +41,8 @@ public class PgpEngine {
 
 	private static void logError(Account account, OpenPgpError error) {
 		if (error != null) {
-			Log.d(Config.LOGTAG, account.getJid().asBareJid().toString() + ": OpenKeychain error '" + error.getMessage() + "' code=" + error.getErrorId());
+			error.describeContents();
+			Log.d(Config.LOGTAG, account.getJid().asBareJid().toString() + ": OpenKeychain error '" + error.getMessage() + "' code=" + error.getErrorId()+" class="+error.getClass().getName());
 		} else {
 			Log.d(Config.LOGTAG, account.getJid().asBareJid().toString() + ": OpenKeychain error with no message");
 		}
@@ -94,8 +97,16 @@ public class PgpEngine {
 						callback.userInputRequried(result.getParcelableExtra(OpenPgpApi.RESULT_INTENT), message);
 						break;
 					case OpenPgpApi.RESULT_CODE_ERROR:
-						logError(conversation.getAccount(), result.getParcelableExtra(OpenPgpApi.RESULT_ERROR));
-						callback.error(R.string.openpgp_error, message);
+						OpenPgpError error = result.getParcelableExtra(OpenPgpApi.RESULT_ERROR);
+						String errorMessage = error != null ? error.getMessage() : null;
+						@StringRes final int res;
+						if (errorMessage != null && errorMessage.startsWith("Bad key for encryption")) {
+							res = R.string.bad_key_for_encryption;
+						} else {
+							res = R.string.openpgp_error;
+						}
+						logError(conversation.getAccount(), error);
+						callback.error(res, message);
 						break;
 				}
 			});
@@ -174,7 +185,7 @@ public class PgpEngine {
 			case OpenPgpApi.RESULT_CODE_USER_INTERACTION_REQUIRED:
 				return 0;
 			case OpenPgpApi.RESULT_CODE_ERROR:
-				logError(account, (OpenPgpError) result.getParcelableExtra(OpenPgpApi.RESULT_ERROR));
+				logError(account, result.getParcelableExtra(OpenPgpApi.RESULT_ERROR));
 				return 0;
 		}
 		return 0;
