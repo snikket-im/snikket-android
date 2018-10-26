@@ -1,5 +1,10 @@
 # Changelog
 
+### Version 2.3.5
+* Fixed group chat mentions when nick ends in . (dot)
+* Fixed Conversations not asking for permissions after direct share
+* Fixed CVE-2018-18467
+
 ### Version 2.3.4
 * Fixed sending OMEMO files to ChatSecure
 
