@@ -3332,11 +3332,11 @@ public class XmppConnectionService extends Service {
 	}
 
 	public boolean useTorToConnect() {
-		return Config.FORCE_ORBOT || getBooleanPreference("use_tor", R.bool.use_tor);
+		return QuickConversationsService.isFull() && getBooleanPreference("use_tor", R.bool.use_tor);
 	}
 
 	public boolean showExtendedConnectionOptions() {
-		return getBooleanPreference("show_connection_options", R.bool.show_connection_options);
+		return QuickConversationsService.isFull() && getBooleanPreference("show_connection_options", R.bool.show_connection_options);
 	}
 
 	public boolean broadcastLastActivity() {

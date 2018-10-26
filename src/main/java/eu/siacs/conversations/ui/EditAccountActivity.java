@@ -623,8 +623,8 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
 			}
 		}
 		SharedPreferences preferences = getPreferences();
-		mUseTor = Config.FORCE_ORBOT || preferences.getBoolean("use_tor", false);
-		this.mShowOptions = mUseTor || preferences.getBoolean("show_connection_options", false);
+		mUseTor = QuickConversationsService.isFull() && preferences.getBoolean("use_tor", getResources().getBoolean(R.bool.use_tor));
+		this.mShowOptions = mUseTor || (QuickConversationsService.isFull() && preferences.getBoolean("show_connection_options", getResources().getBoolean(R.bool.show_connection_options)));
 		this.binding.namePort.setVisibility(mShowOptions ? View.VISIBLE : View.GONE);
 	}
 
@@ -888,7 +888,7 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
 
 		}
 
-		final boolean editable = !mAccount.isOptionSet(Account.OPTION_LOGGED_IN_SUCCESSFULLY) && !QuickConversationsService.isQuicksy();
+		final boolean editable = !mAccount.isOptionSet(Account.OPTION_LOGGED_IN_SUCCESSFULLY) && QuickConversationsService.isFull();
 		this.binding.accountJid.setEnabled(editable);
 		this.binding.accountJid.setFocusable(editable);
 		this.binding.accountJid.setFocusableInTouchMode(editable);

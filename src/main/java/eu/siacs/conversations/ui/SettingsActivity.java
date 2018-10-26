@@ -38,6 +38,7 @@ import eu.siacs.conversations.crypto.OmemoSetting;
 import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.services.ExportLogsService;
 import eu.siacs.conversations.services.MemorizingTrustManager;
+import eu.siacs.conversations.services.QuickConversationsService;
 import eu.siacs.conversations.ui.util.StyledAttributes;
 import eu.siacs.conversations.utils.GeoHelper;
 import eu.siacs.conversations.utils.TimeframeUtils;
@@ -91,7 +92,7 @@ public class SettingsActivity extends XmppActivity implements
 
 		changeOmemoSettingSummary();
 
-		if (Config.FORCE_ORBOT) {
+		if (QuickConversationsService.isQuicksy()) {
 			PreferenceCategory connectionOptions = (PreferenceCategory) mSettingsFragment.findPreference("connection_options");
 			PreferenceScreen expert = (PreferenceScreen) mSettingsFragment.findPreference("expert");
 			if (connectionOptions != null) {

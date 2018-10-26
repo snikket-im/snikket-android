@@ -11,4 +11,8 @@ public class QuickConversationsService {
     public static boolean isQuicksy() {
         return false;
     }
+
+    public static boolean isFull() {
+        return true;
+    }
 }

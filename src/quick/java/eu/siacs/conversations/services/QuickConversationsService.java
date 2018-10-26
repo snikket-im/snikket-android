@@ -260,6 +260,10 @@ public class QuickConversationsService {
         return true;
     }
 
+    public static boolean isFull() {
+        return false;
+    }
+
     public interface OnVerificationRequested {
         void onVerificationRequestFailed(int code);
 
