@@ -108,7 +108,6 @@
   <string name="pref_confirm_messages">Xác nhận tin nhắn</string>
   <string name="pref_confirm_messages_summary">Báo cho liên hệ của bạn biết khi bạn đã nhận và đọc tin nhắn</string>
   <string name="pref_ui_options">UI</string>
-  <string name="openpgp_error">OpenKeychain đã báo cáo một lỗi</string>
   <string name="accept">Chấp thuận</string>
   <string name="error">Đã có lỗi xảy ra</string>
   <string name="your_account">Tài khoản của bạn</string>

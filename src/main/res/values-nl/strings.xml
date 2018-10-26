@@ -121,7 +121,8 @@
   <string name="pref_confirm_messages">Bevestig berichten</string>
   <string name="pref_confirm_messages_summary">Laat je contacten weten wanneer je hun berichten ontvangen en gelezen hebt</string>
   <string name="pref_ui_options">Gebruikersomgeving</string>
-  <string name="openpgp_error">OpenKeychain rapporteerde een fout</string>
+  <string name="openpgp_error">OpenKeychain rapporteerde een fout.</string>
+  <string name="bad_key_for_encryption">Slechte versleutelingsleutel.</string>
   <string name="accept">Aanvaarden</string>
   <string name="error">Er is een fout opgetreden</string>
   <string name="recording_error">Fout</string>
@@ -745,4 +746,5 @@
   <string name="video_360p">Gemiddeld (360p)</string>
   <string name="video_720p">Hoog (720p)</string>
   <string name="cancelled">geannuleerd</string>
+  <string name="already_drafting_message">Je bent al een bericht aan het opstellen.</string>
 </resources>

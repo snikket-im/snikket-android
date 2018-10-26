@@ -77,6 +77,9 @@
   <string name="sharing_files_please_wait">Compartilhando arquivos. Por favor, aguarde...</string>
   <string name="action_clear_history">Limpar o histórico</string>
   <string name="clear_conversation_history">Limpa o histórico de conversas</string>
+  <string name="clear_histor_msg">Deseja realmente excluir todas as mensagens dessa conversa?\n\n<b>Atenção:</b> Isso não excluirá cópias dessas mensagens armazenadas em outros dispositivos ou servidores.</string>
+  <string name="delete_file_dialog">Excluir arquivo</string>
+  <string name="delete_file_dialog_msg">Deseja realmente excluir este arquivo?\n\n<b>Atenção:</b> Isso não excluirá cópias deste arquivo armazenadas em outros dispositivos ou servidores.</string>
   <string name="also_end_conversation">Encerrar essa conversa em seguida</string>
   <string name="choose_presence">Selecione o dispositivo</string>
   <string name="send_unencrypted_message">Enviar mensagem não criptografada</string>
@@ -118,7 +121,6 @@
   <string name="pref_confirm_messages">Confirmação de mensagens</string>
   <string name="pref_confirm_messages_summary">Permite que seus contatos saibam quando você recebeu e leu as mensagens deles.</string>
   <string name="pref_ui_options">IU</string>
-  <string name="openpgp_error">O OpenKeychain informou um erro</string>
   <string name="accept">Aceitar</string>
   <string name="error">Ocorreu um erro</string>
   <string name="recording_error">Erro</string>
@@ -150,6 +152,7 @@
   <string name="account_status_policy_violation">Violação de política</string>
   <string name="account_status_incompatible_server">Servidor incompatível</string>
   <string name="account_status_stream_error">Erro de fluxo</string>
+  <string name="account_status_stream_opening_error">Erro na abertura do fluxo</string>
   <string name="encryption_choice_unencrypted">Descriptografada</string>
   <string name="encryption_choice_otr">OTR</string>
   <string name="encryption_choice_pgp">OpenPGP</string>
@@ -489,6 +492,8 @@
   <string name="notify_only_when_highlighted">Notificar somente quando for mencionado</string>
   <string name="notify_never">Notificações desabilitadas</string>
   <string name="notify_paused">Notificações pausadas</string>
+  <string name="pref_picture_compression">Compressão de imagem</string>
+  <string name="pref_picture_compression_summary">Redimensiona e comprime as imagens</string>
   <string name="always">Sempre</string>
   <string name="automatically">Automaticamente</string>
   <string name="battery_optimizations_enabled">Otimizações de bateria habilitadas</string>
@@ -554,6 +559,7 @@
   <string name="allow">Permitir</string>
   <string name="no_permission_to_access_x">Sem permissão para acessar %s</string>
   <string name="remote_server_not_found">O servidor remoto não foi encontrado</string>
+  <string name="remote_server_timeout">Tempo esgotado para o servidor remoto</string>
   <string name="unable_to_update_account">Não foi possível atualizar a conta</string>
   <string name="report_jid_as_spammer">Informe que esse JID está enviando mensagens indesejáveis</string>
   <string name="pref_delete_omemo_identities">Excluir identidades OMEMO</string>
@@ -732,4 +738,10 @@
   <string name="view_media">Ver mídia</string>
   <string name="media_browser">Navegador de mídia</string>
   <string name="export_channel_name">Exportar histórico</string>
+  <string name="security_violation_not_attaching_file">Arquivo omitido devido a violação de segurança</string>
+  <string name="pref_video_compression">Qualidade do vídeo</string>
+  <string name="pref_video_compression_summary">Qualidade baixa significa arquivos menores</string>
+  <string name="video_360p">Média (360p)</string>
+  <string name="video_720p">Alta (720p)</string>
+  <string name="cancelled">cancelado</string>
 </resources>

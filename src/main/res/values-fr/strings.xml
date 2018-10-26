@@ -77,6 +77,9 @@
   <string name="sharing_files_please_wait">Partage des fichiers. Veuillez patienter...</string>
   <string name="action_clear_history">Vider l\'historique</string>
   <string name="clear_conversation_history">Vider l\'historique de la conversation</string>
+  <string name="clear_histor_msg">Êtes-vous sûr de vouloir supprimer tous les messages de cette conversation ?\n\n <b>Avertissement :</b> Cela ne supprimera pas les copies des messages qui sont stockés sur d\'autres appareils ou serveurs.</string>
+  <string name="delete_file_dialog">Supprimer le fichier</string>
+  <string name="delete_file_dialog_msg">Êtes-vous sûr de vouloir supprimer ce fichier ?\n\n <b>Avertissement :</b> Cela ne supprimera pas les copies de ce fichier qui sont stockés sur d\'autres appareils ou serveurs.</string>
   <string name="also_end_conversation">Fermer cette conversation ensuite</string>
   <string name="choose_presence">Choisir l\'appareil</string>
   <string name="send_unencrypted_message">Envoyer un message en clair</string>
@@ -118,7 +121,6 @@
   <string name="pref_confirm_messages">Confirmation de lecture</string>
   <string name="pref_confirm_messages_summary">Informer vos contacts quand vous avez reçu et lu leurs messages</string>
   <string name="pref_ui_options">Interface</string>
-  <string name="openpgp_error">OpenKeychain a signalé une erreur</string>
   <string name="accept">Accepter</string>
   <string name="error">Une erreur s\'est produite</string>
   <string name="recording_error">Erreur</string>
@@ -150,6 +152,7 @@
   <string name="account_status_policy_violation">Violation de politique</string>
   <string name="account_status_incompatible_server">Serveur incompatible</string>
   <string name="account_status_stream_error">Erreur de flux</string>
+  <string name="account_status_stream_opening_error">Erreur d\'ouverture du flux</string>
   <string name="encryption_choice_unencrypted">Non chiffré</string>
   <string name="encryption_choice_otr">OTR</string>
   <string name="encryption_choice_pgp">OpenPGP</string>
@@ -489,6 +492,8 @@
   <string name="notify_only_when_highlighted">Notifier seulement en cas de mention</string>
   <string name="notify_never">Notifications désactivées</string>
   <string name="notify_paused">Notifications en pause</string>
+  <string name="pref_picture_compression">Compression de l\'image</string>
+  <string name="pref_picture_compression_summary">Redimensionner et compresser les images</string>
   <string name="always">Toujours</string>
   <string name="automatically">Automatiquement</string>
   <string name="battery_optimizations_enabled">Optimisations de batterie activées</string>
@@ -554,6 +559,7 @@
   <string name="allow">Autoriser</string>
   <string name="no_permission_to_access_x">Permission d\'accéder à %s refusée</string>
   <string name="remote_server_not_found">Serveur distant non trouvé</string>
+  <string name="remote_server_timeout">Dépassement du délai du serveur distant</string>
   <string name="unable_to_update_account">Mise à jour du compte impossible</string>
   <string name="report_jid_as_spammer">Signaler ce JID comme envoyant des messages non sollicités.</string>
   <string name="pref_delete_omemo_identities">Effacer les identités OMEMO</string>
@@ -732,4 +738,10 @@
   <string name="view_media">Voir les média</string>
   <string name="media_browser">Navigateur de média</string>
   <string name="export_channel_name">Exportation de l\'historique</string>
+  <string name="security_violation_not_attaching_file">Fichier omis en raison d\'une violation de la sécurité.</string>
+  <string name="pref_video_compression">Qualité de la vidéo</string>
+  <string name="pref_video_compression_summary">Une qualité inférieure signifie des fichiers plus petits</string>
+  <string name="video_360p">Moyenne (360p)</string>
+  <string name="video_720p">Haute (720p)</string>
+  <string name="cancelled">Annulé</string>
 </resources>

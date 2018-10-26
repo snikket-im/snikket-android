@@ -107,7 +107,6 @@
   <string name="pref_never_send_crash_summary">Zasláním detailů o důvodu selhání pomůžete dalšímu vývoji aplikace Konverzace</string>
   <string name="pref_confirm_messages">Potvrzovat zprávy</string>
   <string name="pref_ui_options">UI</string>
-  <string name="openpgp_error">OpenKeychain nahlásil chybu</string>
   <string name="accept">Přijmout</string>
   <string name="error">Došlo k chybě</string>
   <string name="your_account">Váš účet</string>

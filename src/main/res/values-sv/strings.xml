@@ -109,7 +109,6 @@
   <string name="pref_confirm_messages">Bekräfta meddelanden</string>
   <string name="pref_confirm_messages_summary">Låt dina kontakter veta när du har mottagit och läst deras meddelanden</string>
   <string name="pref_ui_options">Gränssnitt</string>
-  <string name="openpgp_error">OpenKeychain rapporterade ett fel</string>
   <string name="accept">Acceptera</string>
   <string name="error">Ett fel har inträffat</string>
   <string name="your_account">Ditt konto</string>

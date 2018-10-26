@@ -119,7 +119,6 @@
   <string name="pref_confirm_messages">确认消息</string>
   <string name="pref_confirm_messages_summary">让对方知道你收到并阅读了他们的消息</string>
   <string name="pref_ui_options">用户界面</string>
-  <string name="openpgp_error">OpenKeychain 报告了一个错误</string>
   <string name="accept">接受</string>
   <string name="error">产生了一个错误</string>
   <string name="recording_error">错误</string>

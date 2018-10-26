@@ -115,7 +115,6 @@
   <string name="pref_confirm_messages">メッセージの確認</string>
   <string name="pref_confirm_messages_summary">あなたがメッセージを受信して読んだときに、連絡先に知らせます</string>
   <string name="pref_ui_options">UI</string>
-  <string name="openpgp_error">OpenKeychain がエラーを報告しました</string>
   <string name="accept">受付</string>
   <string name="error">エラーが発生しました</string>
   <string name="your_account">あなたのアカウント</string>

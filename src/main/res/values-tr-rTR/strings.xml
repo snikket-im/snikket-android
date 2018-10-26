@@ -108,7 +108,6 @@
   <string name="pref_confirm_messages">İletileri onayla</string>
   <string name="pref_confirm_messages_summary">Onların iletilerini aldığınızda ve okuduğunuzda, kişilerinizin bunu bilmesini sağlayın</string>
   <string name="pref_ui_options">Arabirim</string>
-  <string name="openpgp_error">OpenKeychain bir hata bildirdi</string>
   <string name="accept">Kabul et</string>
   <string name="error">Bir hata oluştu</string>
   <string name="your_account">Hesabınız</string>

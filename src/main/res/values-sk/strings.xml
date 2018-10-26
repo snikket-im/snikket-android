@@ -87,7 +87,6 @@
   <string name="pref_never_send_crash">Neodosielať detaily o zlyhaní aplikácie</string>
   <string name="pref_never_send_crash_summary">Zaslaním detailov o dôvode zlyhania pomáhate ďalšiemu vývoju aplikácie Conversations</string>
   <string name="pref_confirm_messages">Potvrdzovať správy</string>
-  <string name="openpgp_error">OpenKeychain nahlásil chybu</string>
   <string name="accept">Prijať</string>
   <string name="error">Došlo k chybe</string>
   <string name="your_account">Váš účet</string>

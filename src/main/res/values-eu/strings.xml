@@ -121,7 +121,6 @@
   <string name="pref_confirm_messages">Mezuak egiaztatu</string>
   <string name="pref_confirm_messages_summary">Zure kontaktuak haien mezuak noiz jaso eta irakurri dituzun jakin dezaten baimendu</string>
   <string name="pref_ui_options">Erabiltzaile-interfazea</string>
-  <string name="openpgp_error">OpenKeychainek akats baten berri eman du</string>
   <string name="accept">Onartu</string>
   <string name="error">Akats bat gertatu da</string>
   <string name="recording_error">Akatsa</string>

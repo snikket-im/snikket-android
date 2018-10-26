@@ -77,6 +77,9 @@
   <string name="sharing_files_please_wait">Fájlok megosztása. Kérlek várj...</string>
   <string name="action_clear_history">Előzmények törlése</string>
   <string name="clear_conversation_history">Beszélgetés előzményének törlése</string>
+  <string name="clear_histor_msg">Biztosan szeretnéd az üzeneteket törölni ebben a beszélgetésben?\n\n<b>Figyelem:</b> Ez nem törli más eszközökön vagy szervereken tárolt üzeneteidet.</string>
+  <string name="delete_file_dialog">Fájl törlése</string>
+  <string name="delete_file_dialog_msg">Biztosan szeretnéd ezt a fájlt törölni?\n\n<b>Figyelem:</b> Ez nem törli más eszközökön vagy szervereken tárolt fájljaidat.</string>
   <string name="also_end_conversation">A beszélgetést is fejezze be</string>
   <string name="choose_presence">Eszköz kiválasztása</string>
   <string name="send_unencrypted_message">Titkosítatlan üzenetküldés</string>
@@ -118,7 +121,6 @@
   <string name="pref_confirm_messages">Üzenetek megerősítése</string>
   <string name="pref_confirm_messages_summary">Jelzed az ismerőseidnek, hogy megkaptad és elolvastad az üzeneteiket</string>
   <string name="pref_ui_options">Kezelőfelület</string>
-  <string name="openpgp_error">Az OpenKeychain hibát jelzett</string>
   <string name="accept">Elfogad</string>
   <string name="error">Hiba történt</string>
   <string name="recording_error">Hiba</string>
@@ -150,6 +152,7 @@
   <string name="account_status_policy_violation">Irányelv megsértése</string>
   <string name="account_status_incompatible_server">Nem kompatibilis szerver</string>
   <string name="account_status_stream_error">Adatfolyam hiba</string>
+  <string name="account_status_stream_opening_error">Adatfolyam megnyitási hiba</string>
   <string name="encryption_choice_unencrypted">Titkosítatlan</string>
   <string name="encryption_choice_otr">OTR</string>
   <string name="encryption_choice_pgp">OpenPGP</string>
@@ -489,6 +492,8 @@
   <string name="notify_only_when_highlighted">Csak akkor értesítsen, ha megemlítenek</string>
   <string name="notify_never">Értesítések letiltva</string>
   <string name="notify_paused">Értesítések szüneteltetve</string>
+  <string name="pref_picture_compression">Kép tömörítés</string>
+  <string name="pref_picture_compression_summary">Átméretezi és tömöríti a képeket</string>
   <string name="always">Mindig</string>
   <string name="automatically">Automatikusan</string>
   <string name="battery_optimizations_enabled">Akkumulátor optimalizációk engedélyezve</string>
@@ -554,6 +559,7 @@
   <string name="allow">Megenged</string>
   <string name="no_permission_to_access_x">Nincs jogosultságod, hogy hozzáférj ehhez: %s</string>
   <string name="remote_server_not_found">A távoli szerver nem található</string>
+  <string name="remote_server_timeout">Távoli szerver időtúllépés</string>
   <string name="unable_to_update_account">Nem sikerült frissíteni a fiókot</string>
   <string name="report_jid_as_spammer">Jelentse ezt a JID-et, mint nemkívánatos üzenetek küldőjét.</string>
   <string name="pref_delete_omemo_identities">OMEMO identitások törlése</string>
@@ -732,4 +738,10 @@
   <string name="view_media">Multimédia megtekintése</string>
   <string name="media_browser">Multimédia böngésző</string>
   <string name="export_channel_name">Előzmény export</string>
+  <string name="security_violation_not_attaching_file">A fájl ki lett hagyva a biztonság megsértése miatt.</string>
+  <string name="pref_video_compression">Videó minőség</string>
+  <string name="pref_video_compression_summary">Alacsonyabb minőség kisebb fájlt jelent</string>
+  <string name="video_360p">Közepes (360p)</string>
+  <string name="video_720p">Magas (720p)</string>
+  <string name="cancelled">visszavonva</string>
 </resources>

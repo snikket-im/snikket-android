@@ -121,7 +121,6 @@
   <string name="pref_confirm_messages">Confirmă mesajele</string>
   <string name="pref_confirm_messages_summary">Contactele sunt notificate atunci când ați primit un mesaj și l-ați citit</string>
   <string name="pref_ui_options">Opțiuni interfață</string>
-  <string name="openpgp_error">OpenKeychain a raportat o eroare</string>
   <string name="accept">Acceptă</string>
   <string name="error">A apărut o eroare</string>
   <string name="recording_error">Eroare</string>
@@ -315,7 +314,7 @@
   <string name="notification_export_logs_title">Se scrie jurnal pe card SD</string>
   <string name="choose_file">Alegeți un fișier</string>
   <string name="receiving_x_file">Primesc %1$s (%2$d%% complet)</string>
-  <string name="download_x_file">Descarca %s</string>
+  <string name="download_x_file">Descarcă %s</string>
   <string name="delete_x_file">Șterge %s</string>
   <string name="file">fișier</string>
   <string name="open_x_file">Deschide %s</string>

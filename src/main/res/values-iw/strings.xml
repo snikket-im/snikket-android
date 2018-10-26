@@ -90,7 +90,6 @@
   <string name="pref_never_send_crash">לעולם אל תשלח דיווחי קריסה</string>
   <string name="pref_never_send_crash_summary">על ידי שליחת עקבות מחסנית אתה עוזר להתקדמות הפיתוח של Conversations</string>
   <string name="pref_confirm_messages">אשר הודעות</string>
-  <string name="openpgp_error">אפליקציית OpenKeychain דיווחה על שגיאה</string>
   <string name="accept">קבל</string>
   <string name="error">אירעה שגיאה</string>
   <string name="your_account">החשבון שלך</string>

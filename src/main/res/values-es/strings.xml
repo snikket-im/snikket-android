@@ -121,7 +121,6 @@
   <string name="pref_confirm_messages">Confirmar mensajes</string>
   <string name="pref_confirm_messages_summary">Permitir a tus contactos saber cuando has recibido y leído sus mensajes</string>
   <string name="pref_ui_options">Pantalla</string>
-  <string name="openpgp_error">OpenKeychain reportó un error</string>
   <string name="accept">Aceptar</string>
   <string name="error">Ha ocurrido un error</string>
   <string name="recording_error">Error</string>

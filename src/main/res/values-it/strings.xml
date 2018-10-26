@@ -121,7 +121,6 @@
   <string name="pref_confirm_messages">Conferma messaggi</string>
   <string name="pref_confirm_messages_summary">Fai sapere ai tuoi contatti quando hai ricevuto e letto i loro messaggi</string>
   <string name="pref_ui_options">Interfaccia utente</string>
-  <string name="openpgp_error">OpenKeychain ha riportato un errore</string>
   <string name="accept">Accetta</string>
   <string name="error">Si è verificato un errore</string>
   <string name="recording_error">Errore</string>
@@ -736,7 +735,7 @@
   <string name="pref_more_notification_settings">Impostazioni di notifica</string>
   <string name="pref_more_notification_settings_summary">Importanza, suono, vibrazione</string>
   <string name="video_compression_channel_name">Compressione video</string>
-  <string name="view_media">Vedi il media</string>
+  <string name="view_media">Vedi i media</string>
   <string name="media_browser">Browser multimediale</string>
   <string name="export_channel_name">Esportazione cronologia</string>
   <string name="security_violation_not_attaching_file">File omesso per violazione di sicurezza.</string>
