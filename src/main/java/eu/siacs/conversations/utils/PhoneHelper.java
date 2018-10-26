@@ -24,55 +24,6 @@ public class PhoneHelper {
 		return Settings.Secure.getString(context.getContentResolver(), Settings.Secure.ANDROID_ID);
 	}
 
-	public static void loadPhoneContacts(Context context, final OnPhoneContactsLoadedListener listener) {
-		final List<Bundle> phoneContacts = new ArrayList<>();
-		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M
-				&& context.checkSelfPermission(Manifest.permission.READ_CONTACTS) != PackageManager.PERMISSION_GRANTED) {
-			listener.onPhoneContactsLoaded(phoneContacts);
-			return;
-		}
-		final String[] PROJECTION = new String[]{ContactsContract.Data._ID,
-				ContactsContract.Data.DISPLAY_NAME,
-				ContactsContract.Data.PHOTO_URI,
-				ContactsContract.Data.LOOKUP_KEY,
-				ContactsContract.CommonDataKinds.Im.DATA};
-
-		final String SELECTION = "(" + ContactsContract.Data.MIMETYPE + "=\""
-				+ ContactsContract.CommonDataKinds.Im.CONTENT_ITEM_TYPE
-				+ "\") AND (" + ContactsContract.CommonDataKinds.Im.PROTOCOL
-				+ "=\"" + ContactsContract.CommonDataKinds.Im.PROTOCOL_JABBER
-				+ "\")";
-
-		CursorLoader mCursorLoader = new NotThrowCursorLoader(context,
-				ContactsContract.Data.CONTENT_URI, PROJECTION, SELECTION, null,
-				null);
-		mCursorLoader.registerListener(0, (arg0, c) -> {
-			if (c != null) {
-				while (c.moveToNext()) {
-					Bundle contact = new Bundle();
-					contact.putInt("phoneid", c.getInt(c.getColumnIndex(ContactsContract.Data._ID)));
-					contact.putString("displayname", c.getString(c.getColumnIndex(ContactsContract.Data.DISPLAY_NAME)));
-					contact.putString("photouri", c.getString(c.getColumnIndex(ContactsContract.Data.PHOTO_URI)));
-					contact.putString("lookup", c.getString(c.getColumnIndex(ContactsContract.Data.LOOKUP_KEY)));
-					contact.putString("jid", c.getString(c.getColumnIndex(ContactsContract.CommonDataKinds.Im.DATA)));
-					phoneContacts.add(contact);
-				}
-				c.close();
-			}
-
-			if (listener != null) {
-				listener.onPhoneContactsLoaded(phoneContacts);
-			}
-		});
-		try {
-			mCursorLoader.startLoading();
-		} catch (RejectedExecutionException e) {
-			if (listener != null) {
-				listener.onPhoneContactsLoaded(phoneContacts);
-			}
-		}
-	}
-
 	public static Uri getProfilePictureUri(Context context) {
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && context.checkSelfPermission(Manifest.permission.READ_CONTACTS) != PackageManager.PERMISSION_GRANTED) {
 			return null;
@@ -103,23 +54,5 @@ public class PhoneHelper {
 		} else {
 			return "unknown";
 		}
-	}
-
-	private static class NotThrowCursorLoader extends CursorLoader {
-
-		private NotThrowCursorLoader(Context c, Uri u, String[] p, String s, String[] sa, String so) {
-			super(c, u, p, s, sa, so);
-		}
-
-		@Override
-		public Cursor loadInBackground() {
-
-			try {
-				return (super.loadInBackground());
-			} catch (Throwable e) {
-				return (null);
-			}
-		}
-
 	}
 }

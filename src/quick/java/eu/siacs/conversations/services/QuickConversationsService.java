@@ -24,6 +24,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import javax.net.ssl.SSLHandshakeException;
 
 import eu.siacs.conversations.Config;
+import eu.siacs.conversations.android.PhoneNumberContact;
 import eu.siacs.conversations.crypto.sasl.Plain;
 import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.utils.AccountUtils;
@@ -262,6 +263,14 @@ public class QuickConversationsService {
 
     public static boolean isFull() {
         return false;
+    }
+
+    public void considerSync() {
+        PhoneNumberContact.load(service, contacts -> {
+            for(PhoneNumberContact c : contacts) {
+                Log.d(Config.LOGTAG, "Display Name=" + c.getDisplayName() + ", number=" +  c.getPhoneNumber()+", uri="+c.getLookupUri());
+            }
+        });
     }
 
     public interface OnVerificationRequested {

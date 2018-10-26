@@ -25,7 +25,7 @@ import rocks.xmpp.addr.Jid;
 public class ShortcutService {
 
     private final XmppConnectionService xmppConnectionService;
-    private final ReplacingSerialSingleThreadExecutor replacingSerialSingleThreadExecutor = new ReplacingSerialSingleThreadExecutor(false);
+    private final ReplacingSerialSingleThreadExecutor replacingSerialSingleThreadExecutor = new ReplacingSerialSingleThreadExecutor(ShortcutService.class.getSimpleName());
 
     public ShortcutService(XmppConnectionService xmppConnectionService) {
         this.xmppConnectionService = xmppConnectionService;

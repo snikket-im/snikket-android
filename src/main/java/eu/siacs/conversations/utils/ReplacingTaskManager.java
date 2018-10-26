@@ -42,7 +42,7 @@ public class ReplacingTaskManager {
 		synchronized (this.executors) {
 			executor = this.executors.get(account);
 			if (executor == null) {
-				executor = new ReplacingSerialSingleThreadExecutor(false);
+				executor = new ReplacingSerialSingleThreadExecutor(ReplacingTaskManager.class.getSimpleName());
 				this.executors.put(account, executor);
 			}
 			executor.execute(runnable);

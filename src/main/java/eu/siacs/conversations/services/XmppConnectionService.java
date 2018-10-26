@@ -71,6 +71,7 @@ import java.util.concurrent.atomic.AtomicLong;
 
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
+import eu.siacs.conversations.android.JabberIdContact;
 import eu.siacs.conversations.crypto.OmemoSetting;
 import eu.siacs.conversations.crypto.PgpDecryptionService;
 import eu.siacs.conversations.crypto.PgpEngine;
@@ -115,7 +116,6 @@ import eu.siacs.conversations.utils.ConversationsFileObserver;
 import eu.siacs.conversations.utils.CryptoHelper;
 import eu.siacs.conversations.utils.ExceptionHelper;
 import eu.siacs.conversations.utils.MimeUtils;
-import eu.siacs.conversations.utils.OnPhoneContactsLoadedListener;
 import eu.siacs.conversations.utils.PhoneHelper;
 import eu.siacs.conversations.utils.QuickLoader;
 import eu.siacs.conversations.utils.ReplacingSerialSingleThreadExecutor;
@@ -192,7 +192,7 @@ public class XmppConnectionService extends Service {
         }
     };
     public DatabaseBackend databaseBackend;
-    private ReplacingSerialSingleThreadExecutor mContactMergerExecutor = new ReplacingSerialSingleThreadExecutor(true);
+    private ReplacingSerialSingleThreadExecutor mContactMergerExecutor = new ReplacingSerialSingleThreadExecutor("ContactMerger");
     private long mLastActivity = 0;
     private FileBackend fileBackend = new FileBackend(this);
     private MemorizingTrustManager mMemorizingTrustManager;
@@ -1519,45 +1519,36 @@ public class XmppConnectionService extends Service {
 	}
 
 	public void loadPhoneContacts() {
-		mContactMergerExecutor.execute(() -> PhoneHelper.loadPhoneContacts(XmppConnectionService.this, new OnPhoneContactsLoadedListener() {
-			@Override
-			public void onPhoneContactsLoaded(List<Bundle> phoneContacts) {
-				Log.d(Config.LOGTAG, "start merging phone contacts with roster");
-				for (Account account : accounts) {
-					List<Contact> withSystemAccounts = account.getRoster().getWithSystemAccounts();
-					for (Bundle phoneContact : phoneContacts) {
-						Jid jid;
-						try {
-							jid = Jid.of(phoneContact.getString("jid"));
-						} catch (final IllegalArgumentException e) {
-							continue;
-						}
-						final Contact contact = account.getRoster().getContact(jid);
-						String systemAccount = phoneContact.getInt("phoneid")
-								+ "#"
-								+ phoneContact.getString("lookup");
-						contact.setSystemAccount(systemAccount);
-						boolean needsCacheClean = contact.setPhotoUri(phoneContact.getString("photouri"));
-						needsCacheClean |= contact.setSystemName(phoneContact.getString("displayname"));
-						if (needsCacheClean) {
-							getAvatarService().clear(contact);
-						}
-						withSystemAccounts.remove(contact);
-					}
-					for (Contact contact : withSystemAccounts) {
-						contact.setSystemAccount(null);
-						boolean needsCacheClean = contact.setPhotoUri(null);
-						needsCacheClean |= contact.setSystemName(null);
-						if (needsCacheClean) {
-							getAvatarService().clear(contact);
-						}
-					}
-				}
-				Log.d(Config.LOGTAG, "finished merging phone contacts");
-				mShortcutService.refresh(mInitialAddressbookSyncCompleted.compareAndSet(false, true));
-				updateRosterUi();
-			}
-		}));
+        mContactMergerExecutor.execute(() -> {
+            JabberIdContact.load(this, contacts -> {
+                Log.d(Config.LOGTAG, "start merging phone contacts with roster");
+                for (Account account : accounts) {
+                    List<Contact> withSystemAccounts = account.getRoster().getWithSystemAccounts();
+                    for (JabberIdContact jidContact : contacts) {
+                        final Contact contact = account.getRoster().getContact(jidContact.getJid());
+                        contact.setSystemAccount(jidContact.getLookupUri());
+                        boolean needsCacheClean = contact.setPhotoUri(jidContact.getPhotoUri());
+                        needsCacheClean |= contact.setSystemName(jidContact.getDisplayName());
+                        if (needsCacheClean) {
+                            getAvatarService().clear(contact);
+                        }
+                        withSystemAccounts.remove(contact);
+                    }
+                    for (Contact contact : withSystemAccounts) {
+                        contact.setSystemAccount(null);
+                        boolean needsCacheClean = contact.setPhotoUri(null);
+                        needsCacheClean |= contact.setSystemName(null);
+                        if (needsCacheClean) {
+                            getAvatarService().clear(contact);
+                        }
+                    }
+                }
+                Log.d(Config.LOGTAG, "finished merging phone contacts");
+                mShortcutService.refresh(mInitialAddressbookSyncCompleted.compareAndSet(false, true));
+                updateRosterUi();
+            });
+            mQuickConversationsService.considerSync();
+        });
 	}
 
 

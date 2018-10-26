@@ -15,4 +15,8 @@ public class QuickConversationsService {
     public static boolean isFull() {
         return true;
     }
+
+    public void considerSync() {
+
+    }
 }
