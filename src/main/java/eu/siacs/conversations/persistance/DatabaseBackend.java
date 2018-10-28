@@ -911,7 +911,7 @@ public class DatabaseBackend extends SQLiteOpenHelper {
 		final SQLiteDatabase db = this.getWritableDatabase();
 		db.beginTransaction();
 		for (Contact contact : roster.getContacts()) {
-			if (contact.getOption(Contact.Options.IN_ROSTER) || contact.getAvatarFilename() != null) {
+			if (contact.getOption(Contact.Options.IN_ROSTER) || contact.getAvatarFilename() != null || contact.getOption(Contact.Options.SYNCED_VIA_OTHER)) {
 				db.insert(Contact.TABLENAME, null, contact.getContentValues());
 			} else {
 				String where = Contact.ACCOUNT + "=? AND " + Contact.JID + "=?";

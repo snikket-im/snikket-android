@@ -2,6 +2,7 @@ package eu.siacs.conversations.services;
 
 
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.SystemClock;
 import android.preference.PreferenceManager;
 import android.util.Log;
@@ -15,6 +16,7 @@ import java.net.URL;
 import java.net.UnknownHostException;
 import java.security.SecureRandom;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
@@ -269,16 +271,39 @@ public class QuickConversationsService extends AbstractQuickConversationsService
     public void considerSync() {
         Map<String, PhoneNumberContact> contacts = PhoneNumberContact.load(service);
         for (Account account : service.getAccounts()) {
-            considerSync(account, contacts);
+            refresh(account, contacts.values());
+            if (!considerSync(account, contacts)) {
+                service.syncRoster(account);
+            }
         }
     }
 
-    private void considerSync(Account account, final Map<String, PhoneNumberContact> contacts) {
+    private void refresh(Account account, Collection<PhoneNumberContact> contacts) {
+        for(Contact contact : account.getRoster().getWithSystemAccounts(PhoneNumberContact.class)) {
+            final Uri uri = contact.getSystemAccount();
+            if (uri == null) {
+                continue;
+            }
+            PhoneNumberContact phoneNumberContact = findByUri(contacts, uri);
+            final boolean needsCacheClean;
+            if (phoneNumberContact != null) {
+                needsCacheClean = contact.setPhoneContact(phoneNumberContact);
+            } else {
+                needsCacheClean = contact.unsetPhoneContact(PhoneNumberContact.class);
+                Log.d(Config.LOGTAG,uri.toString()+" vanished from address book");
+            }
+            if (needsCacheClean) {
+                service.getAvatarService().clear(contact);
+            }
+        }
+    }
+
+    private boolean considerSync(Account account, final Map<String, PhoneNumberContact> contacts) {
         XmppConnection xmppConnection = account.getXmppConnection();
         Jid syncServer = xmppConnection == null ? null : xmppConnection.findDiscoItemByFeature(Namespace.SYNCHRONIZATION);
         if (syncServer == null) {
             Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": skipping sync. no sync server found");
-            return;
+            return false;
         }
         Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": sending phone list to " + syncServer);
         List<Element> entries = new ArrayList<>();
@@ -315,7 +340,18 @@ public class QuickConversationsService extends AbstractQuickConversationsService
                     }
                 }
             }
+            service.syncRoster(account);
         });
+        return true;
+    }
+
+    private static PhoneNumberContact findByUri(Collection<PhoneNumberContact> haystack, Uri needle) {
+        for(PhoneNumberContact contact : haystack) {
+            if (needle.equals(contact.getLookupUri())) {
+                return contact;
+            }
+        }
+        return null;
     }
 
     public static class Entry {

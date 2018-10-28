@@ -21,6 +21,7 @@ import java.util.Locale;
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.android.AbstractPhoneContact;
+import eu.siacs.conversations.android.JabberIdContact;
 import eu.siacs.conversations.android.PhoneNumberContact;
 import eu.siacs.conversations.utils.JidHelper;
 import eu.siacs.conversations.utils.UIHelper;
@@ -529,7 +530,7 @@ public class Contact implements ListItem, Blockable {
 	}
 
 	public static int getOption(Class<? extends AbstractPhoneContact> clazz) {
-		if (clazz == PhoneNumberContact.class) {
+		if (clazz == JabberIdContact.class) {
 			return Options.SYNCED_VIA_ADDRESSBOOK;
 		} else {
 			return Options.SYNCED_VIA_OTHER;
@@ -546,6 +547,6 @@ public class Contact implements ListItem, Blockable {
 		public static final int DIRTY_PUSH = 6;
 		public static final int DIRTY_DELETE = 7;
 		private static final int SYNCED_VIA_ADDRESSBOOK = 8;
-		private static final int SYNCED_VIA_OTHER = 9;
+		public static final int SYNCED_VIA_OTHER = 9;
 	}
 }
