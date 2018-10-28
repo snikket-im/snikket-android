@@ -27,14 +27,17 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import javax.net.ssl.SSLHandshakeException;
 
 import eu.siacs.conversations.Config;
+import eu.siacs.conversations.android.JabberIdContact;
 import eu.siacs.conversations.android.PhoneNumberContact;
 import eu.siacs.conversations.crypto.sasl.Plain;
 import eu.siacs.conversations.entities.Account;
+import eu.siacs.conversations.entities.Contact;
 import eu.siacs.conversations.utils.AccountUtils;
 import eu.siacs.conversations.utils.CryptoHelper;
 import eu.siacs.conversations.utils.PhoneNumberUtilWrapper;
 import eu.siacs.conversations.xml.Element;
 import eu.siacs.conversations.xml.Namespace;
+import eu.siacs.conversations.xmpp.OnIqPacketReceived;
 import eu.siacs.conversations.xmpp.XmppConnection;
 import eu.siacs.conversations.xmpp.stanzas.IqPacket;
 import io.michaelrocks.libphonenumber.android.Phonenumber;
@@ -61,6 +64,14 @@ public class QuickConversationsService extends AbstractQuickConversationsService
 
     QuickConversationsService(XmppConnectionService xmppConnectionService) {
         super(xmppConnectionService);
+    }
+
+    private static long retryAfter(HttpURLConnection connection) {
+        try {
+            return SystemClock.elapsedRealtime() + (Long.parseLong(connection.getHeaderField("Retry-After")) * 1000L);
+        } catch (Exception e) {
+            return 0;
+        }
     }
 
     public void addOnVerificationRequestedListener(OnVerificationRequested onVerificationRequested) {
@@ -246,14 +257,6 @@ public class QuickConversationsService extends AbstractQuickConversationsService
         }
     }
 
-    private static long retryAfter(HttpURLConnection connection) {
-        try {
-            return SystemClock.elapsedRealtime() + (Long.parseLong(connection.getHeaderField("Retry-After")) * 1000L);
-        } catch (Exception e) {
-            return 0;
-        }
-    }
-
     public boolean isVerifying() {
         return mVerificationInProgress.get();
     }
@@ -265,29 +268,94 @@ public class QuickConversationsService extends AbstractQuickConversationsService
     @Override
     public void considerSync() {
         Map<String, PhoneNumberContact> contacts = PhoneNumberContact.load(service);
-        for(Account account : service.getAccounts()) {
+        for (Account account : service.getAccounts()) {
             considerSync(account, contacts);
         }
     }
 
-    private void considerSync(Account account, Map<String, PhoneNumberContact> contacts) {
+    private void considerSync(Account account, final Map<String, PhoneNumberContact> contacts) {
         XmppConnection xmppConnection = account.getXmppConnection();
         Jid syncServer = xmppConnection == null ? null : xmppConnection.findDiscoItemByFeature(Namespace.SYNCHRONIZATION);
         if (syncServer == null) {
-            Log.d(Config.LOGTAG,account.getJid().asBareJid()+": skipping sync. no sync server found");
+            Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": skipping sync. no sync server found");
             return;
         }
-        Log.d(Config.LOGTAG,account.getJid().asBareJid()+": sending phone list to "+syncServer);
+        Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": sending phone list to " + syncServer);
         List<Element> entries = new ArrayList<>();
-        for(PhoneNumberContact c : contacts.values()) {
-            entries.add(new Element("entry").setAttribute("number",c.getPhoneNumber()));
+        for (PhoneNumberContact c : contacts.values()) {
+            entries.add(new Element("entry").setAttribute("number", c.getPhoneNumber()));
         }
-        Element phoneBook = new Element("phone-book",Namespace.SYNCHRONIZATION);
-        phoneBook.setChildren(entries);
-        IqPacket iqPacket = new IqPacket(IqPacket.TYPE.GET);
-        iqPacket.setTo(syncServer);
-        iqPacket.addChild(phoneBook);
-        service.sendIqPacket(account, iqPacket, null);
+        IqPacket query = new IqPacket(IqPacket.TYPE.GET);
+        query.setTo(syncServer);
+        query.addChild(new Element("phone-book", Namespace.SYNCHRONIZATION).setChildren(entries));
+        service.sendIqPacket(account, query, (a, response) -> {
+            if (response.getType() == IqPacket.TYPE.RESULT) {
+                List<Contact> withSystemAccounts = account.getRoster().getWithSystemAccounts(PhoneNumberContact.class);
+                final Element phoneBook = response.findChild("phone-book", Namespace.SYNCHRONIZATION);
+                if (phoneBook != null) {
+                    for(Entry entry : Entry.ofPhoneBook(phoneBook)) {
+                        PhoneNumberContact phoneContact = contacts.get(entry.getNumber());
+                        if (phoneContact == null) {
+                            continue;
+                        }
+                        for(Jid jid : entry.getJids()) {
+                            Contact contact = account.getRoster().getContact(jid);
+                            final boolean needsCacheClean = contact.setPhoneContact(phoneContact);
+                            if (needsCacheClean) {
+                                service.getAvatarService().clear(contact);
+                            }
+                            withSystemAccounts.remove(contact);
+                        }
+                    }
+                }
+                for (Contact contact : withSystemAccounts) {
+                    boolean needsCacheClean = contact.unsetPhoneContact(JabberIdContact.class);
+                    if (needsCacheClean) {
+                        service.getAvatarService().clear(contact);
+                    }
+                }
+            }
+        });
+    }
+
+    public static class Entry {
+        private final List<Jid> jids;
+        private final String number;
+
+        private Entry(String number, List<Jid> jids) {
+            this.number = number;
+            this.jids = jids;
+        }
+
+        public static Entry of(Element element) {
+            final String number = element.getAttribute("number");
+            final List<Jid> jids = new ArrayList<>();
+            for (Element jidElement : element.getChildren()) {
+                String content = jidElement.getContent();
+                if (content != null) {
+                    jids.add(Jid.of(content));
+                }
+            }
+            return new Entry(number, jids);
+        }
+
+        public static List<Entry> ofPhoneBook(Element phoneBook) {
+            List<Entry> entries = new ArrayList<>();
+            for (Element entry : phoneBook.getChildren()) {
+                if ("entry".equals(entry.getName())) {
+                    entries.add(of(entry));
+                }
+            }
+            return entries;
+        }
+
+        public List<Jid> getJids() {
+            return jids;
+        }
+
+        public String getNumber() {
+            return number;
+        }
     }
 
     public interface OnVerificationRequested {

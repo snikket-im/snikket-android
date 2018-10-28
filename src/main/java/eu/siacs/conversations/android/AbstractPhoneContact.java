@@ -5,7 +5,7 @@ import android.net.Uri;
 import android.provider.ContactsContract;
 import android.text.TextUtils;
 
-abstract class AbstractPhoneContact {
+public abstract class AbstractPhoneContact {
 
     private final Uri lookupUri;
     private final String displayName;

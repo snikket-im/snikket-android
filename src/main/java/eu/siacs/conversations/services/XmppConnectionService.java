@@ -1523,21 +1523,17 @@ public class XmppConnectionService extends Service {
             Map<Jid, JabberIdContact> contacts = JabberIdContact.load(this);
             Log.d(Config.LOGTAG, "start merging phone contacts with roster");
             for (Account account : accounts) {
-                List<Contact> withSystemAccounts = account.getRoster().getWithSystemAccounts();
+                List<Contact> withSystemAccounts = account.getRoster().getWithSystemAccounts(JabberIdContact.class);
                 for (JabberIdContact jidContact : contacts.values()) {
                     final Contact contact = account.getRoster().getContact(jidContact.getJid());
-                    contact.setSystemAccount(jidContact.getLookupUri());
-                    boolean needsCacheClean = contact.setPhotoUri(jidContact.getPhotoUri());
-                    needsCacheClean |= contact.setSystemName(jidContact.getDisplayName());
+                    boolean needsCacheClean = contact.setPhoneContact(jidContact);
                     if (needsCacheClean) {
                         getAvatarService().clear(contact);
                     }
                     withSystemAccounts.remove(contact);
                 }
                 for (Contact contact : withSystemAccounts) {
-                    contact.setSystemAccount(null);
-                    boolean needsCacheClean = contact.setPhotoUri(null);
-                    needsCacheClean |= contact.setSystemName(null);
+                    boolean needsCacheClean = contact.unsetPhoneContact(JabberIdContact.class);
                     if (needsCacheClean) {
                         getAvatarService().clear(contact);
                     }

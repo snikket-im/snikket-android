@@ -53,8 +53,12 @@ public class PhoneNumberUtilWrapper {
         return getInstance(context).parse(jid.getEscapedLocal(), "de");
     }
 
-    public static String normalize(Context context, String number) throws NumberParseException {
-        return normalize(context, getInstance(context).parse(number, getUserCountry(context)));
+    public static String normalize(Context context, String input) throws IllegalArgumentException, NumberParseException {
+        final Phonenumber.PhoneNumber number = getInstance(context).parse(input, getUserCountry(context));
+        if (!getInstance(context).isValidNumber(number)) {
+            throw new IllegalArgumentException("Not a valid phone number");
+        }
+        return normalize(context, number);
     }
 
     public static String normalize(Context context, Phonenumber.PhoneNumber phoneNumber) {
