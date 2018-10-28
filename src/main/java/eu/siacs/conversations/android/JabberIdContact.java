@@ -10,6 +10,7 @@ import android.util.Log;
 
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.Map;
 
 import eu.siacs.conversations.Config;
 import rocks.xmpp.addr.Jid;
@@ -31,10 +32,9 @@ public class JabberIdContact extends AbstractPhoneContact {
         return jid;
     }
 
-    public static void load(Context context, OnPhoneContactsLoaded<JabberIdContact> callback) {
+    public static Map<Jid, JabberIdContact> load(Context context) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && context.checkSelfPermission(Manifest.permission.READ_CONTACTS) != PackageManager.PERMISSION_GRANTED) {
-            callback.onPhoneContactsLoaded(Collections.emptyList());
-            return;
+            return Collections.emptyMap();
         }
         final String[] PROJECTION = new String[]{ContactsContract.Data._ID,
                 ContactsContract.Data.DISPLAY_NAME,
@@ -51,8 +51,7 @@ public class JabberIdContact extends AbstractPhoneContact {
         try {
             cursor = context.getContentResolver().query(ContactsContract.Data.CONTENT_URI, PROJECTION, SELECTION, null, null);
         } catch (Exception e) {
-            callback.onPhoneContactsLoaded(Collections.emptyList());
-            return;
+            return Collections.emptyMap();
         }
         final HashMap<Jid, JabberIdContact> contacts = new HashMap<>();
         while (cursor != null && cursor.moveToNext()) {
@@ -69,6 +68,6 @@ public class JabberIdContact extends AbstractPhoneContact {
         if (cursor != null) {
             cursor.close();
         }
-        callback.onPhoneContactsLoaded(contacts.values());
+        return contacts;
     }
 }

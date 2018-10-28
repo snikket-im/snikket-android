@@ -14,8 +14,11 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.UnknownHostException;
 import java.security.SecureRandom;
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 import java.util.WeakHashMap;
@@ -30,10 +33,14 @@ import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.utils.AccountUtils;
 import eu.siacs.conversations.utils.CryptoHelper;
 import eu.siacs.conversations.utils.PhoneNumberUtilWrapper;
+import eu.siacs.conversations.xml.Element;
+import eu.siacs.conversations.xml.Namespace;
+import eu.siacs.conversations.xmpp.XmppConnection;
+import eu.siacs.conversations.xmpp.stanzas.IqPacket;
 import io.michaelrocks.libphonenumber.android.Phonenumber;
 import rocks.xmpp.addr.Jid;
 
-public class QuickConversationsService {
+public class QuickConversationsService extends AbstractQuickConversationsService {
 
 
     public static final int API_ERROR_OTHER = -1;
@@ -46,8 +53,6 @@ public class QuickConversationsService {
 
     private static final String INSTALLATION_ID = "eu.siacs.conversations.installation-id";
 
-    private final XmppConnectionService service;
-
     private final Set<OnVerificationRequested> mOnVerificationRequested = Collections.newSetFromMap(new WeakHashMap<>());
     private final Set<OnVerification> mOnVerification = Collections.newSetFromMap(new WeakHashMap<>());
 
@@ -55,7 +60,7 @@ public class QuickConversationsService {
     private final AtomicBoolean mVerificationRequestInProgress = new AtomicBoolean(false);
 
     QuickConversationsService(XmppConnectionService xmppConnectionService) {
-        this.service = xmppConnectionService;
+        super(xmppConnectionService);
     }
 
     public void addOnVerificationRequestedListener(OnVerificationRequested onVerificationRequested) {
@@ -257,20 +262,32 @@ public class QuickConversationsService {
         return mVerificationRequestInProgress.get();
     }
 
-    public static boolean isQuicksy() {
-        return true;
-    }
-
-    public static boolean isFull() {
-        return false;
-    }
-
+    @Override
     public void considerSync() {
-        PhoneNumberContact.load(service, contacts -> {
-            for(PhoneNumberContact c : contacts) {
-                Log.d(Config.LOGTAG, "Display Name=" + c.getDisplayName() + ", number=" +  c.getPhoneNumber()+", uri="+c.getLookupUri());
-            }
-        });
+        Map<String, PhoneNumberContact> contacts = PhoneNumberContact.load(service);
+        for(Account account : service.getAccounts()) {
+            considerSync(account, contacts);
+        }
+    }
+
+    private void considerSync(Account account, Map<String, PhoneNumberContact> contacts) {
+        XmppConnection xmppConnection = account.getXmppConnection();
+        Jid syncServer = xmppConnection == null ? null : xmppConnection.findDiscoItemByFeature(Namespace.SYNCHRONIZATION);
+        if (syncServer == null) {
+            Log.d(Config.LOGTAG,account.getJid().asBareJid()+": skipping sync. no sync server found");
+            return;
+        }
+        Log.d(Config.LOGTAG,account.getJid().asBareJid()+": sending phone list to "+syncServer);
+        List<Element> entries = new ArrayList<>();
+        for(PhoneNumberContact c : contacts.values()) {
+            entries.add(new Element("entry").setAttribute("number",c.getPhoneNumber()));
+        }
+        Element phoneBook = new Element("phone-book",Namespace.SYNCHRONIZATION);
+        phoneBook.setChildren(entries);
+        IqPacket iqPacket = new IqPacket(IqPacket.TYPE.GET);
+        iqPacket.setTo(syncServer);
+        iqPacket.addChild(phoneBook);
+        service.sendIqPacket(account, iqPacket, null);
     }
 
     public interface OnVerificationRequested {

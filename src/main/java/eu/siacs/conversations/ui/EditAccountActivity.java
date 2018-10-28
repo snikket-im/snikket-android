@@ -28,16 +28,9 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.Button;
-import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
-import android.widget.TableLayout;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import org.openintents.openpgp.util.OpenPgpUtils;
@@ -623,8 +616,8 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
 			}
 		}
 		SharedPreferences preferences = getPreferences();
-		mUseTor = QuickConversationsService.isFull() && preferences.getBoolean("use_tor", getResources().getBoolean(R.bool.use_tor));
-		this.mShowOptions = mUseTor || (QuickConversationsService.isFull() && preferences.getBoolean("show_connection_options", getResources().getBoolean(R.bool.show_connection_options)));
+		mUseTor = QuickConversationsService.isConversations() && preferences.getBoolean("use_tor", getResources().getBoolean(R.bool.use_tor));
+		this.mShowOptions = mUseTor || (QuickConversationsService.isConversations() && preferences.getBoolean("show_connection_options", getResources().getBoolean(R.bool.show_connection_options)));
 		this.binding.namePort.setVisibility(mShowOptions ? View.VISIBLE : View.GONE);
 	}
 
@@ -888,7 +881,7 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
 
 		}
 
-		final boolean editable = !mAccount.isOptionSet(Account.OPTION_LOGGED_IN_SUCCESSFULLY) && QuickConversationsService.isFull();
+		final boolean editable = !mAccount.isOptionSet(Account.OPTION_LOGGED_IN_SUCCESSFULLY) && QuickConversationsService.isConversations();
 		this.binding.accountJid.setEnabled(editable);
 		this.binding.accountJid.setFocusable(editable);
 		this.binding.accountJid.setFocusableInTouchMode(editable);

@@ -49,7 +49,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -296,7 +295,7 @@ public class StartConversationActivity extends XmppActivity implements XmppConne
 
 		final SharedPreferences preferences = getPreferences();
 
-		this.mHideOfflineContacts = QuickConversationsService.isFull() && preferences.getBoolean("hide_offline", false);
+		this.mHideOfflineContacts = QuickConversationsService.isConversations() && preferences.getBoolean("hide_offline", false);
 
 		final boolean startSearching = preferences.getBoolean("start_searching",getResources().getBoolean(R.bool.start_searching));
 

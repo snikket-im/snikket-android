@@ -1520,33 +1520,32 @@ public class XmppConnectionService extends Service {
 
 	public void loadPhoneContacts() {
         mContactMergerExecutor.execute(() -> {
-            JabberIdContact.load(this, contacts -> {
-                Log.d(Config.LOGTAG, "start merging phone contacts with roster");
-                for (Account account : accounts) {
-                    List<Contact> withSystemAccounts = account.getRoster().getWithSystemAccounts();
-                    for (JabberIdContact jidContact : contacts) {
-                        final Contact contact = account.getRoster().getContact(jidContact.getJid());
-                        contact.setSystemAccount(jidContact.getLookupUri());
-                        boolean needsCacheClean = contact.setPhotoUri(jidContact.getPhotoUri());
-                        needsCacheClean |= contact.setSystemName(jidContact.getDisplayName());
-                        if (needsCacheClean) {
-                            getAvatarService().clear(contact);
-                        }
-                        withSystemAccounts.remove(contact);
+            Map<Jid, JabberIdContact> contacts = JabberIdContact.load(this);
+            Log.d(Config.LOGTAG, "start merging phone contacts with roster");
+            for (Account account : accounts) {
+                List<Contact> withSystemAccounts = account.getRoster().getWithSystemAccounts();
+                for (JabberIdContact jidContact : contacts.values()) {
+                    final Contact contact = account.getRoster().getContact(jidContact.getJid());
+                    contact.setSystemAccount(jidContact.getLookupUri());
+                    boolean needsCacheClean = contact.setPhotoUri(jidContact.getPhotoUri());
+                    needsCacheClean |= contact.setSystemName(jidContact.getDisplayName());
+                    if (needsCacheClean) {
+                        getAvatarService().clear(contact);
                     }
-                    for (Contact contact : withSystemAccounts) {
-                        contact.setSystemAccount(null);
-                        boolean needsCacheClean = contact.setPhotoUri(null);
-                        needsCacheClean |= contact.setSystemName(null);
-                        if (needsCacheClean) {
-                            getAvatarService().clear(contact);
-                        }
+                    withSystemAccounts.remove(contact);
+                }
+                for (Contact contact : withSystemAccounts) {
+                    contact.setSystemAccount(null);
+                    boolean needsCacheClean = contact.setPhotoUri(null);
+                    needsCacheClean |= contact.setSystemName(null);
+                    if (needsCacheClean) {
+                        getAvatarService().clear(contact);
                     }
                 }
-                Log.d(Config.LOGTAG, "finished merging phone contacts");
-                mShortcutService.refresh(mInitialAddressbookSyncCompleted.compareAndSet(false, true));
-                updateRosterUi();
-            });
+            }
+            Log.d(Config.LOGTAG, "finished merging phone contacts");
+            mShortcutService.refresh(mInitialAddressbookSyncCompleted.compareAndSet(false, true));
+            updateRosterUi();
             mQuickConversationsService.considerSync();
         });
 	}
@@ -3323,11 +3322,11 @@ public class XmppConnectionService extends Service {
 	}
 
 	public boolean useTorToConnect() {
-		return QuickConversationsService.isFull() && getBooleanPreference("use_tor", R.bool.use_tor);
+		return QuickConversationsService.isConversations() && getBooleanPreference("use_tor", R.bool.use_tor);
 	}
 
 	public boolean showExtendedConnectionOptions() {
-		return QuickConversationsService.isFull() && getBooleanPreference("show_connection_options", R.bool.show_connection_options);
+		return QuickConversationsService.isConversations() && getBooleanPreference("show_connection_options", R.bool.show_connection_options);
 	}
 
 	public boolean broadcastLastActivity() {

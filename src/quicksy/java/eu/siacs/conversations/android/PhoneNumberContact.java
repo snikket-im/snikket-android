@@ -10,6 +10,7 @@ import android.util.Log;
 
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.Map;
 
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.utils.PhoneNumberUtilWrapper;
@@ -32,10 +33,9 @@ public class PhoneNumberContact extends AbstractPhoneContact {
         }
     }
 
-    public static void load(Context context, OnPhoneContactsLoaded<PhoneNumberContact> callback) {
+    public static Map<String, PhoneNumberContact> load(Context context) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && context.checkSelfPermission(Manifest.permission.READ_CONTACTS) != PackageManager.PERMISSION_GRANTED) {
-            callback.onPhoneContactsLoaded(Collections.emptyList());
-            return;
+            return Collections.emptyMap();
         }
         final String[] PROJECTION = new String[]{ContactsContract.Data._ID,
                 ContactsContract.Data.DISPLAY_NAME,
@@ -46,8 +46,7 @@ public class PhoneNumberContact extends AbstractPhoneContact {
         try {
             cursor = context.getContentResolver().query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI, PROJECTION, null, null, null);
         } catch (Exception e) {
-            callback.onPhoneContactsLoaded(Collections.emptyList());
-            return;
+            return Collections.emptyMap();
         }
         final HashMap<String, PhoneNumberContact> contacts = new HashMap<>();
         while (cursor != null && cursor.moveToNext()) {
@@ -64,6 +63,6 @@ public class PhoneNumberContact extends AbstractPhoneContact {
         if (cursor != null) {
             cursor.close();
         }
-        callback.onPhoneContactsLoaded(contacts.values());
+        return contacts;
     }
 }
