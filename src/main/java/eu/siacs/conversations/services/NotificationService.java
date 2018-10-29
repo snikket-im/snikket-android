@@ -890,9 +890,10 @@ public class NotificationService {
             cancel(ERROR_NOTIFICATION_ID);
             return;
         }
+        final boolean showAllErrors = QuickConversationsService.isConversations();
         final List<Account> errors = new ArrayList<>();
         for (final Account account : mXmppConnectionService.getAccounts()) {
-            if (account.hasErrorStatus() && account.showErrorNotification()) {
+            if (account.hasErrorStatus() && account.showErrorNotification() && (showAllErrors || account.getLastErrorStatus() == Account.State.UNAUTHORIZED)) {
                 errors.add(account);
             }
         }

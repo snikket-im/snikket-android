@@ -64,6 +64,8 @@ public class QuickConversationsService extends AbstractQuickConversationsService
     private final AtomicBoolean mVerificationInProgress = new AtomicBoolean(false);
     private final AtomicBoolean mVerificationRequestInProgress = new AtomicBoolean(false);
 
+    private Attempt mLastSyncAttempt = new Attempt(0,0);
+
     QuickConversationsService(XmppConnectionService xmppConnectionService) {
         super(xmppConnectionService);
     }
@@ -299,6 +301,12 @@ public class QuickConversationsService extends AbstractQuickConversationsService
     }
 
     private boolean considerSync(Account account, final Map<String, PhoneNumberContact> contacts) {
+        final int hash = contacts.keySet().hashCode();
+        Log.d(Config.LOGTAG,account.getJid().asBareJid()+": consider sync of "+hash);
+        if (!mLastSyncAttempt.retry(hash)) {
+            Log.d(Config.LOGTAG,account.getJid().asBareJid()+": do not attempt sync");
+            return false;
+        }
         XmppConnection xmppConnection = account.getXmppConnection();
         Jid syncServer = xmppConnection == null ? null : xmppConnection.findDiscoItemByFeature(Namespace.SYNCHRONIZATION);
         if (syncServer == null) {
@@ -313,6 +321,7 @@ public class QuickConversationsService extends AbstractQuickConversationsService
         IqPacket query = new IqPacket(IqPacket.TYPE.GET);
         query.setTo(syncServer);
         query.addChild(new Element("phone-book", Namespace.SYNCHRONIZATION).setChildren(entries));
+        mLastSyncAttempt = Attempt.create(hash);
         service.sendIqPacket(account, query, (a, response) -> {
             if (response.getType() == IqPacket.TYPE.RESULT) {
                 List<Contact> withSystemAccounts = account.getRoster().getWithSystemAccounts(PhoneNumberContact.class);
@@ -334,13 +343,14 @@ public class QuickConversationsService extends AbstractQuickConversationsService
                     }
                 }
                 for (Contact contact : withSystemAccounts) {
-                    boolean needsCacheClean = contact.unsetPhoneContact(JabberIdContact.class);
+                    final boolean needsCacheClean = contact.unsetPhoneContact(PhoneNumberContact.class);
                     if (needsCacheClean) {
                         service.getAvatarService().clear(contact);
                     }
                 }
             }
             service.syncRoster(account);
+            service.updateRosterUi();
         });
         return true;
     }
@@ -352,6 +362,24 @@ public class QuickConversationsService extends AbstractQuickConversationsService
             }
         }
         return null;
+    }
+
+    private static class Attempt {
+        private final long timestamp;
+        private int hash;
+
+        private Attempt(long timestamp, int hash) {
+            this.timestamp = timestamp;
+            this.hash = hash;
+        }
+
+        public static Attempt create(int hash) {
+            return new Attempt(SystemClock.elapsedRealtime(), hash);
+        }
+
+        public boolean retry(int hash) {
+            return hash != this.hash || SystemClock.elapsedRealtime() - timestamp >= Config.CONTACT_SYNC_RETRY_INTERVAL;
+        }
     }
 
     public static class Entry {

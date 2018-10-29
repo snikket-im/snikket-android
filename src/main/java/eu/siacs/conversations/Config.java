@@ -48,6 +48,8 @@ public final class Config {
 
 	public static final boolean ALLOW_NON_TLS_CONNECTIONS = false; //very dangerous. you should have a good reason to set this to true
 
+	public static final long CONTACT_SYNC_RETRY_INTERVAL = 1000L * 60 * 5;
+
 
 	//Notification settings
 	public static final boolean HIDE_MESSAGE_TEXT_IN_NOTIFICATION = false;

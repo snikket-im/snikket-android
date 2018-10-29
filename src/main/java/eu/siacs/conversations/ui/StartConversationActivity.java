@@ -726,6 +726,7 @@ public class StartConversationActivity extends XmppActivity implements XmppConne
 
 	@Override
 	protected void onBackendConnected() {
+		xmppConnectionService.getQuickConversationsService().considerSync();
 		if (mPostponedActivityResult != null) {
 			onActivityResult(mPostponedActivityResult.first, RESULT_OK, mPostponedActivityResult.second);
 			this.mPostponedActivityResult = null;

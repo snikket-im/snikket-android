@@ -67,6 +67,7 @@ public class Account extends AbstractEntity {
     protected String password;
     protected int options = 0;
     protected State status = State.OFFLINE;
+    private State lastErrorStatus = State.OFFLINE;
     protected String resource;
     protected String avatar;
     protected String hostname = null;
@@ -263,8 +264,15 @@ public class Account extends AbstractEntity {
         }
     }
 
+    public State getLastErrorStatus() {
+        return this.lastErrorStatus;
+    }
+
     public void setStatus(final State status) {
         this.status = status;
+        if (status.isError) {
+            this.lastErrorStatus = status;
+        }
     }
 
     public State getTrueStatus() {
