@@ -34,6 +34,7 @@ import eu.siacs.conversations.android.PhoneNumberContact;
 import eu.siacs.conversations.crypto.sasl.Plain;
 import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.entities.Contact;
+import eu.siacs.conversations.entities.Entry;
 import eu.siacs.conversations.utils.AccountUtils;
 import eu.siacs.conversations.utils.CryptoHelper;
 import eu.siacs.conversations.utils.PhoneNumberUtilWrapper;
@@ -286,7 +287,7 @@ public class QuickConversationsService extends AbstractQuickConversationsService
             if (uri == null) {
                 continue;
             }
-            PhoneNumberContact phoneNumberContact = findByUri(contacts, uri);
+            PhoneNumberContact phoneNumberContact = PhoneNumberContact.findByUri(contacts, uri);
             final boolean needsCacheClean;
             if (phoneNumberContact != null) {
                 needsCacheClean = contact.setPhoneContact(phoneNumberContact);
@@ -320,13 +321,17 @@ public class QuickConversationsService extends AbstractQuickConversationsService
         }
         IqPacket query = new IqPacket(IqPacket.TYPE.GET);
         query.setTo(syncServer);
-        query.addChild(new Element("phone-book", Namespace.SYNCHRONIZATION).setChildren(entries));
+        Element book = new Element("phone-book", Namespace.SYNCHRONIZATION).setChildren(entries);
+        String statusQuo = Entry.statusQuo(contacts.values(), account.getRoster().getWithSystemAccounts(PhoneNumberContact.class));
+        Log.d(Config.LOGTAG,"status quo="+statusQuo);
+        book.setAttribute("ver",statusQuo);
+        query.addChild(book);
         mLastSyncAttempt = Attempt.create(hash);
         service.sendIqPacket(account, query, (a, response) -> {
             if (response.getType() == IqPacket.TYPE.RESULT) {
-                List<Contact> withSystemAccounts = account.getRoster().getWithSystemAccounts(PhoneNumberContact.class);
                 final Element phoneBook = response.findChild("phone-book", Namespace.SYNCHRONIZATION);
                 if (phoneBook != null) {
+                    List<Contact> withSystemAccounts = account.getRoster().getWithSystemAccounts(PhoneNumberContact.class);
                     for(Entry entry : Entry.ofPhoneBook(phoneBook)) {
                         PhoneNumberContact phoneContact = contacts.get(entry.getNumber());
                         if (phoneContact == null) {
@@ -341,12 +346,14 @@ public class QuickConversationsService extends AbstractQuickConversationsService
                             withSystemAccounts.remove(contact);
                         }
                     }
-                }
-                for (Contact contact : withSystemAccounts) {
-                    final boolean needsCacheClean = contact.unsetPhoneContact(PhoneNumberContact.class);
-                    if (needsCacheClean) {
-                        service.getAvatarService().clear(contact);
+                    for (Contact contact : withSystemAccounts) {
+                        final boolean needsCacheClean = contact.unsetPhoneContact(PhoneNumberContact.class);
+                        if (needsCacheClean) {
+                            service.getAvatarService().clear(contact);
+                        }
                     }
+                } else {
+                    Log.d(Config.LOGTAG,account.getJid().asBareJid()+": phone number contact list remains unchanged");
                 }
             }
             service.syncRoster(account);
@@ -355,14 +362,6 @@ public class QuickConversationsService extends AbstractQuickConversationsService
         return true;
     }
 
-    private static PhoneNumberContact findByUri(Collection<PhoneNumberContact> haystack, Uri needle) {
-        for(PhoneNumberContact contact : haystack) {
-            if (needle.equals(contact.getLookupUri())) {
-                return contact;
-            }
-        }
-        return null;
-    }
 
     private static class Attempt {
         private final long timestamp;
@@ -379,46 +378,6 @@ public class QuickConversationsService extends AbstractQuickConversationsService
 
         public boolean retry(int hash) {
             return hash != this.hash || SystemClock.elapsedRealtime() - timestamp >= Config.CONTACT_SYNC_RETRY_INTERVAL;
-        }
-    }
-
-    public static class Entry {
-        private final List<Jid> jids;
-        private final String number;
-
-        private Entry(String number, List<Jid> jids) {
-            this.number = number;
-            this.jids = jids;
-        }
-
-        public static Entry of(Element element) {
-            final String number = element.getAttribute("number");
-            final List<Jid> jids = new ArrayList<>();
-            for (Element jidElement : element.getChildren()) {
-                String content = jidElement.getContent();
-                if (content != null) {
-                    jids.add(Jid.of(content));
-                }
-            }
-            return new Entry(number, jids);
-        }
-
-        public static List<Entry> ofPhoneBook(Element phoneBook) {
-            List<Entry> entries = new ArrayList<>();
-            for (Element entry : phoneBook.getChildren()) {
-                if ("entry".equals(entry.getName())) {
-                    entries.add(of(entry));
-                }
-            }
-            return entries;
-        }
-
-        public List<Jid> getJids() {
-            return jids;
-        }
-
-        public String getNumber() {
-            return number;
         }
     }
 

@@ -4,10 +4,12 @@ import android.Manifest;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
+import android.net.Uri;
 import android.os.Build;
 import android.provider.ContactsContract;
 import android.util.Log;
 
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
@@ -64,5 +66,14 @@ public class PhoneNumberContact extends AbstractPhoneContact {
             cursor.close();
         }
         return contacts;
+    }
+
+    public static PhoneNumberContact findByUri(Collection<PhoneNumberContact> haystack, Uri needle) {
+        for(PhoneNumberContact contact : haystack) {
+            if (needle.equals(contact.getLookupUri())) {
+                return contact;
+            }
+        }
+        return null;
     }
 }
