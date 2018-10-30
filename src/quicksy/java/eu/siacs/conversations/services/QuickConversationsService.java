@@ -55,7 +55,7 @@ public class QuickConversationsService extends AbstractQuickConversationsService
     public static final int API_ERROR_SSL_HANDSHAKE = -4;
     public static final int API_ERROR_AIRPLANE_MODE = -5;
 
-    private static final String BASE_URL = "http://venus.fritz.box:4567";
+    private static final String BASE_URL = "https://api.quicksy.im";
 
     private static final String INSTALLATION_ID = "eu.siacs.conversations.installation-id";
 

@@ -104,7 +104,7 @@ android {
 
         quicksy {
             dimension "mode"
-            applicationId = "im.conversations.quick"
+            applicationId = "im.quicksy.client"
             resValue "string", "app_name", "Quicksy"
             resValue "string", "applicationId", applicationId
             buildConfigField "String", "LOGTAG", "\"quicksy\""

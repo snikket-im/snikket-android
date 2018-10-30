@@ -280,9 +280,9 @@ public class VerifyActivity extends XmppActivity implements ClipboardManager.OnP
     public void onVerificationFailed(final int code) {
         runOnUiThread(() -> {
             setVerifyingState(false);
-            if (code == 401) {
+            if (code == 401 || code == 404) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(this);
-                builder.setMessage(R.string.incorrect_pin);
+                builder.setMessage(code == 404 ? R.string.pin_expired : R.string.incorrect_pin);
                 builder.setPositiveButton(R.string.ok, null);
                 builder.create().show();
             } else {

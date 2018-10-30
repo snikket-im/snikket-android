@@ -775,6 +775,7 @@
     <string name="verifying">Verifying…</string>
     <string name="requesting_sms">Requesting SMS…</string>
     <string name="incorrect_pin">The pin you have entered is incorrect.</string>
+    <string name="pin_expired">The pin we have sent you has expired.</string>
     <string name="unknown_api_error_network">Unknown network error.</string>
     <string name="unknown_api_error_response">Unknown response from server.</string>
     <string name="unable_to_connect_to_server">Unable to connect to server.</string>
