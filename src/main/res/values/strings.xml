@@ -780,6 +780,7 @@
     <string name="unable_to_connect_to_server">Unable to connect to server.</string>
     <string name="unable_to_establish_secure_connection">Unable to establish secure connection.</string>
     <string name="unable_to_find_server">Unable to find server.</string>
+    <string name="something_went_wrong_processing_your_request">Something went wrong processing your request.</string>
     <string name="invalid_user_input">Invalid user input</string>
     <string name="temporarily_unavailable">Temporarily unavailable. Try again later.</string>
     <string name="no_network_connection">No network connection.</string>
