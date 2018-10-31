@@ -19,4 +19,6 @@ public abstract class AbstractQuickConversationsService {
     public static boolean isConversations() {
         return "conversations".equals(BuildConfig.FLAVOR_mode);
     }
+
+    public abstract void signalAccountStateChange();
 }

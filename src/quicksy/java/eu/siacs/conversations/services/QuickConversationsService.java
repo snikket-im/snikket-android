@@ -24,6 +24,8 @@ import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 import java.util.WeakHashMap;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import javax.net.ssl.SSLHandshakeException;
@@ -64,8 +66,9 @@ public class QuickConversationsService extends AbstractQuickConversationsService
 
     private final AtomicBoolean mVerificationInProgress = new AtomicBoolean(false);
     private final AtomicBoolean mVerificationRequestInProgress = new AtomicBoolean(false);
+    private CountDownLatch awaitingAccountStateChange;
 
-    private Attempt mLastSyncAttempt = new Attempt(0,0);
+    private Attempt mLastSyncAttempt = new Attempt(0, 0);
 
     QuickConversationsService(XmppConnectionService xmppConnectionService) {
         super(xmppConnectionService);
@@ -144,6 +147,13 @@ public class QuickConversationsService extends AbstractQuickConversationsService
 
     }
 
+    public void signalAccountStateChange() {
+        if (awaitingAccountStateChange != null && awaitingAccountStateChange.getCount() > 0) {
+            Log.d(Config.LOGTAG, "signaled state change");
+            awaitingAccountStateChange.countDown();
+        }
+    }
+
     private void createAccountAndWait(Phonenumber.PhoneNumber phoneNumber, final long timestamp) {
         String local = PhoneNumberUtilWrapper.normalize(service, phoneNumber);
         Log.d(Config.LOGTAG, "requesting verification for " + PhoneNumberUtilWrapper.normalize(service, phoneNumber));
@@ -194,7 +204,13 @@ public class QuickConversationsService extends AbstractQuickConversationsService
                     if (code == 200) {
                         account.setOption(Account.OPTION_UNVERIFIED, false);
                         account.setOption(Account.OPTION_DISABLED, false);
+                        awaitingAccountStateChange = new CountDownLatch(1);
                         service.updateAccount(account);
+                        try {
+                            awaitingAccountStateChange.await(5, TimeUnit.SECONDS);
+                        } catch (InterruptedException e) {
+                            Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": timer expired while waiting for account to connect");
+                        }
                         synchronized (mOnVerification) {
                             for (OnVerification onVerification : mOnVerification) {
                                 onVerification.onVerificationSucceeded();
@@ -282,7 +298,7 @@ public class QuickConversationsService extends AbstractQuickConversationsService
     }
 
     private void refresh(Account account, Collection<PhoneNumberContact> contacts) {
-        for(Contact contact : account.getRoster().getWithSystemAccounts(PhoneNumberContact.class)) {
+        for (Contact contact : account.getRoster().getWithSystemAccounts(PhoneNumberContact.class)) {
             final Uri uri = contact.getSystemAccount();
             if (uri == null) {
                 continue;
@@ -293,7 +309,7 @@ public class QuickConversationsService extends AbstractQuickConversationsService
                 needsCacheClean = contact.setPhoneContact(phoneNumberContact);
             } else {
                 needsCacheClean = contact.unsetPhoneContact(PhoneNumberContact.class);
-                Log.d(Config.LOGTAG,uri.toString()+" vanished from address book");
+                Log.d(Config.LOGTAG, uri.toString() + " vanished from address book");
             }
             if (needsCacheClean) {
                 service.getAvatarService().clear(contact);
@@ -303,9 +319,9 @@ public class QuickConversationsService extends AbstractQuickConversationsService
 
     private boolean considerSync(Account account, final Map<String, PhoneNumberContact> contacts) {
         final int hash = contacts.keySet().hashCode();
-        Log.d(Config.LOGTAG,account.getJid().asBareJid()+": consider sync of "+hash);
+        Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": consider sync of " + hash);
         if (!mLastSyncAttempt.retry(hash)) {
-            Log.d(Config.LOGTAG,account.getJid().asBareJid()+": do not attempt sync");
+            Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": do not attempt sync");
             return false;
         }
         XmppConnection xmppConnection = account.getXmppConnection();
@@ -323,8 +339,7 @@ public class QuickConversationsService extends AbstractQuickConversationsService
         query.setTo(syncServer);
         Element book = new Element("phone-book", Namespace.SYNCHRONIZATION).setChildren(entries);
         String statusQuo = Entry.statusQuo(contacts.values(), account.getRoster().getWithSystemAccounts(PhoneNumberContact.class));
-        Log.d(Config.LOGTAG,"status quo="+statusQuo);
-        book.setAttribute("ver",statusQuo);
+        book.setAttribute("ver", statusQuo);
         query.addChild(book);
         mLastSyncAttempt = Attempt.create(hash);
         service.sendIqPacket(account, query, (a, response) -> {
@@ -332,12 +347,12 @@ public class QuickConversationsService extends AbstractQuickConversationsService
                 final Element phoneBook = response.findChild("phone-book", Namespace.SYNCHRONIZATION);
                 if (phoneBook != null) {
                     List<Contact> withSystemAccounts = account.getRoster().getWithSystemAccounts(PhoneNumberContact.class);
-                    for(Entry entry : Entry.ofPhoneBook(phoneBook)) {
+                    for (Entry entry : Entry.ofPhoneBook(phoneBook)) {
                         PhoneNumberContact phoneContact = contacts.get(entry.getNumber());
                         if (phoneContact == null) {
                             continue;
                         }
-                        for(Jid jid : entry.getJids()) {
+                        for (Jid jid : entry.getJids()) {
                             Contact contact = account.getRoster().getContact(jid);
                             final boolean needsCacheClean = contact.setPhoneContact(phoneContact);
                             if (needsCacheClean) {
@@ -353,7 +368,7 @@ public class QuickConversationsService extends AbstractQuickConversationsService
                         }
                     }
                 } else {
-                    Log.d(Config.LOGTAG,account.getJid().asBareJid()+": phone number contact list remains unchanged");
+                    Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": phone number contact list remains unchanged");
                 }
             }
             service.syncRoster(account);
@@ -362,6 +377,22 @@ public class QuickConversationsService extends AbstractQuickConversationsService
         return true;
     }
 
+
+    public interface OnVerificationRequested {
+        void onVerificationRequestFailed(int code);
+
+        void onVerificationRequested();
+
+        void onVerificationRequestedRetryAt(long timestamp);
+    }
+
+    public interface OnVerification {
+        void onVerificationFailed(int code);
+
+        void onVerificationSucceeded();
+
+        void onVerificationRetryAt(long timestamp);
+    }
 
     private static class Attempt {
         private final long timestamp;
@@ -379,21 +410,5 @@ public class QuickConversationsService extends AbstractQuickConversationsService
         public boolean retry(int hash) {
             return hash != this.hash || SystemClock.elapsedRealtime() - timestamp >= Config.CONTACT_SYNC_RETRY_INTERVAL;
         }
-    }
-
-    public interface OnVerificationRequested {
-        void onVerificationRequestFailed(int code);
-
-        void onVerificationRequested();
-
-        void onVerificationRequestedRetryAt(long timestamp);
-    }
-
-    public interface OnVerification {
-        void onVerificationFailed(int code);
-
-        void onVerificationSucceeded();
-
-        void onVerificationRetryAt(long timestamp);
     }
 }

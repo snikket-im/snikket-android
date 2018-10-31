@@ -322,6 +322,11 @@ public class XmppConnectionService extends Service {
         public void onStatusChanged(final Account account) {
             XmppConnection connection = account.getXmppConnection();
             updateAccountUi();
+
+            if (account.getStatus() == Account.State.ONLINE || account.getStatus().isError()) {
+                mQuickConversationsService.signalAccountStateChange();
+            }
+
             if (account.getStatus() == Account.State.ONLINE) {
                 synchronized (mLowPingTimeoutMode) {
                     if (mLowPingTimeoutMode.remove(account.getJid().asBareJid())) {

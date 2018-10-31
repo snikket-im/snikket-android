@@ -1,7 +1,6 @@
 package eu.siacs.conversations.entities;
 
 import android.util.Base64;
-import android.util.Log;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -10,7 +9,6 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
-import eu.siacs.conversations.Config;
 import eu.siacs.conversations.android.PhoneNumberContact;
 import eu.siacs.conversations.xml.Element;
 import rocks.xmpp.addr.Jid;
@@ -71,7 +69,6 @@ public class Entry implements Comparable<Entry> {
         } catch (NoSuchAlgorithmException e) {
             return "";
         }
-        Log.d(Config.LOGTAG,"status quo string: "+builder.toString());
         byte[] sha1 = md.digest(builder.toString().getBytes());
         return new String(Base64.encode(sha1, Base64.DEFAULT)).trim();
     }

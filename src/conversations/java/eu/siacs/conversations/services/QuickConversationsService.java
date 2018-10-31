@@ -10,4 +10,9 @@ public class QuickConversationsService extends AbstractQuickConversationsService
     public void considerSync() {
 
     }
+
+    @Override
+    public void signalAccountStateChange() {
+
+    }
 }
