@@ -860,12 +860,11 @@ public class StartConversationActivity extends XmppActivity implements XmppConne
 	protected void filterContacts(String needle) {
 		this.contacts.clear();
 		final List<Account> accounts = xmppConnectionService.getAccounts();
-		final boolean singleAccountActive = isSingleAccountActive(accounts);
 		for (Account account : accounts) {
 			if (account.getStatus() != Account.State.DISABLED) {
 				for (Contact contact : account.getRoster().getContacts()) {
 					Presence.Status s = contact.getShownStatus();
-					if ((contact.showInRoster() || (singleAccountActive && contact.showInPhoneBook())) && contact.match(this, needle)
+					if (contact.showInContactList() && contact.match(this, needle)
 							&& (!this.mHideOfflineContacts
 							|| (needle != null && !needle.trim().isEmpty())
 							|| s.compareTo(Presence.Status.OFFLINE) < 0)) {

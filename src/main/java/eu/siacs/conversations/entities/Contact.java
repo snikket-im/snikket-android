@@ -4,7 +4,6 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
-import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
 
@@ -22,7 +21,6 @@ import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.android.AbstractPhoneContact;
 import eu.siacs.conversations.android.JabberIdContact;
-import eu.siacs.conversations.android.PhoneNumberContact;
 import eu.siacs.conversations.utils.JidHelper;
 import eu.siacs.conversations.utils.UIHelper;
 import eu.siacs.conversations.xml.Element;
@@ -164,9 +162,6 @@ public class Contact implements ListItem, Blockable {
 		}
 		if (isBlocked()) {
 			tags.add(new Tag(context.getString(R.string.blocked), 0xff2e2f3b));
-		}
-		if (showInPhoneBook()) {
-			tags.add(new Tag(context.getString(R.string.phone_book), 0xFF1E88E5));
 		}
 		return tags;
 	}
@@ -341,8 +336,8 @@ public class Contact implements ListItem, Blockable {
 				|| (this.getOption(Contact.Options.DIRTY_PUSH));
 	}
 
-	public boolean showInPhoneBook() {
-		return systemAccount != null;
+	public boolean showInContactList() {
+		return showInRoster() || getOption(Options.SYNCED_VIA_OTHER);
 	}
 
 	public void parseSubscriptionFromElement(Element item) {

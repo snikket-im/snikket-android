@@ -725,7 +725,6 @@
     <string name="providing_a_name_is_optional">Providing a name is optional</string>
     <string name="create_dialog_group_chat_name">Group chat name</string>
     <string name="conference_destroyed">This group chat has been destroyed</string>
-    <string name="phone_book">Address book</string>
     <string name="unable_to_save_recording">Unable to save recording</string>
     <string name="foreground_service_channel_name">Foreground service</string>
     <string name="foreground_service_channel_description">This notification category is used to display a permanent notification indicating that Conversations is running.</string>

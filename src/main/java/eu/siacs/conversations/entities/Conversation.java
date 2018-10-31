@@ -929,9 +929,8 @@ public class Conversation extends AbstractEntity implements Blockable, Comparabl
 		final Contact contact = getContact();
 		return mode == MODE_SINGLE
 				&& !contact.isOwnServer()
-				&& !contact.showInRoster()
+				&& !contact.showInContactList()
 				&& !contact.isSelf()
-				&& !contact.showInPhoneBook()
 				&& sentMessagesCount() == 0;
 	}
 
