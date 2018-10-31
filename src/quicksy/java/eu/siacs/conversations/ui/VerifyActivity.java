@@ -15,6 +15,8 @@ import android.support.v7.widget.Toolbar;
 import android.text.Html;
 import android.view.View;
 
+import java.util.concurrent.atomic.AtomicBoolean;
+
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.databinding.ActivityVerifyBinding;
 import eu.siacs.conversations.entities.Account;
@@ -58,6 +60,7 @@ public class VerifyActivity extends XmppActivity implements ClipboardManager.OnP
             }
         }
     };
+    private final AtomicBoolean redirectInProgress = new AtomicBoolean(false);
 
     private boolean setTimeoutLabelInResendButton() {
         if (retrySmsAfter != 0) {
@@ -191,6 +194,10 @@ public class VerifyActivity extends XmppActivity implements ClipboardManager.OnP
         if (this.account == null) {
             return;
         }
+        if (!account.isOptionSet(Account.OPTION_UNVERIFIED) && !account.isOptionSet(Account.OPTION_DISABLED)) {
+            runOnUiThread(this::performPostVerificationRedirect);
+            return;
+        }
         this.binding.weHaveSent.setText(Html.fromHtml(getString(R.string.we_have_sent_you_an_sms_to_x, PhoneNumberUtilWrapper.toFormattedPhoneNumber(this, this.account.getJid()))));
         setVerifyingState(xmppConnectionService.getQuickConversationsService().isVerifying());
         setRequestingVerificationState(xmppConnectionService.getQuickConversationsService().isRequestingVerification());
@@ -261,11 +268,13 @@ public class VerifyActivity extends XmppActivity implements ClipboardManager.OnP
     }
 
     private void performPostVerificationRedirect() {
-        Intent intent = new Intent(this, PublishProfilePictureActivity.class);
-        intent.putExtra(PublishProfilePictureActivity.EXTRA_ACCOUNT, account.getJid().asBareJid().toEscapedString());
-        intent.putExtra("setup", true);
-        startActivity(intent);
-        finish();
+        if (redirectInProgress.compareAndSet(false, true)) {
+            Intent intent = new Intent(this, PublishProfilePictureActivity.class);
+            intent.putExtra(PublishProfilePictureActivity.EXTRA_ACCOUNT, account.getJid().asBareJid().toEscapedString());
+            intent.putExtra("setup", true);
+            startActivity(intent);
+            finish();
+        }
     }
 
     @Override

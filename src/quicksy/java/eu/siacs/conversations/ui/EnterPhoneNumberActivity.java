@@ -14,12 +14,16 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.widget.EditText;
 
+import java.util.concurrent.atomic.AtomicBoolean;
+
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.databinding.ActivityEnterNumberBinding;
+import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.services.QuickConversationsService;
 import eu.siacs.conversations.ui.drawable.TextDrawable;
 import eu.siacs.conversations.ui.util.ApiDialogHelper;
+import eu.siacs.conversations.utils.AccountUtils;
 import eu.siacs.conversations.utils.PhoneNumberUtilWrapper;
 import io.michaelrocks.libphonenumber.android.NumberParseException;
 import io.michaelrocks.libphonenumber.android.PhoneNumberUtil;
@@ -30,6 +34,8 @@ public class EnterPhoneNumberActivity extends XmppActivity implements QuickConve
     private static final int REQUEST_CHOOSE_COUNTRY = 0x1234;
 
     private ActivityEnterNumberBinding binding;
+
+    private final AtomicBoolean redirectInProgress = new AtomicBoolean(false);
 
     private String region = null;
     private final TextWatcher countryCodeTextWatcher = new TextWatcher() {
@@ -73,6 +79,10 @@ public class EnterPhoneNumberActivity extends XmppActivity implements QuickConve
     @Override
     void onBackendConnected() {
         xmppConnectionService.getQuickConversationsService().addOnVerificationRequestedListener(this);
+        final Account account = AccountUtils.getFirst(xmppConnectionService);
+        if (account != null) {
+            runOnUiThread(this::performRedirectToVerificationActivity);
+        }
     }
 
     @Override
@@ -192,6 +202,22 @@ public class EnterPhoneNumberActivity extends XmppActivity implements QuickConve
         }
     }
 
+    private void performRedirectToVerificationActivity(long timestamp) {
+        if (redirectInProgress.compareAndSet(false, true)) {
+            Intent intent = new Intent(this, VerifyActivity.class);
+            intent.putExtra(VerifyActivity.EXTRA_RETRY_SMS_AFTER, timestamp);
+            startActivity(intent);
+            finish();
+        }
+    }
+
+    private void performRedirectToVerificationActivity() {
+        if (redirectInProgress.compareAndSet(false, true)) {
+            startActivity(new Intent(this, VerifyActivity.class));
+            finish();
+        }
+    }
+
     @Override
     public void onVerificationRequestFailed(int code) {
         runOnUiThread(() -> {
@@ -202,19 +228,11 @@ public class EnterPhoneNumberActivity extends XmppActivity implements QuickConve
 
     @Override
     public void onVerificationRequested() {
-        runOnUiThread(() -> {
-            startActivity(new Intent(this, VerifyActivity.class));
-            finish();
-        });
+        runOnUiThread(this::performRedirectToVerificationActivity);
     }
 
     @Override
     public void onVerificationRequestedRetryAt(long timestamp) {
-        runOnUiThread(() -> {
-            Intent intent = new Intent(this, VerifyActivity.class);
-            intent.putExtra(VerifyActivity.EXTRA_RETRY_SMS_AFTER, timestamp);
-            startActivity(intent);
-            finish();
-        });
+        runOnUiThread(() -> performRedirectToVerificationActivity(timestamp));
     }
 }
