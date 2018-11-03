@@ -26,7 +26,9 @@ import rocks.xmpp.addr.Jid;
 
 public final class MucDetailsContextMenuHelper {
     public static void configureMucDetailsContextMenu(Activity activity, Menu menu, Conversation conversation, User user) {
+        final MucOptions mucOptions = conversation.getMucOptions();
         final boolean advancedMode = PreferenceManager.getDefaultSharedPreferences(activity).getBoolean("advanced_muc_mode", false);
+        MenuItem sendPrivateMessage = menu.findItem(R.id.send_private_message);
         if (user != null && user.getRealJid() != null) {
             MenuItem showContactDetails = menu.findItem(R.id.action_contact_details);
             MenuItem startConversation = menu.findItem(R.id.start_conversation);
@@ -68,9 +70,8 @@ public final class MucDetailsContextMenuHelper {
                     removeAdminPrivileges.setVisible(true);
                 }
             }
+            sendPrivateMessage.setVisible(!mucOptions.isPrivateAndNonAnonymous() && mucOptions.allowPm() && user.getRole().ranks(MucOptions.Role.VISITOR));
         } else {
-            final MucOptions mucOptions = conversation.getMucOptions();
-            MenuItem sendPrivateMessage = menu.findItem(R.id.send_private_message);
             sendPrivateMessage.setVisible(true);
             sendPrivateMessage.setEnabled(user != null && mucOptions.allowPm() && user.getRole().ranks(MucOptions.Role.VISITOR));
         }
