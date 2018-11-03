@@ -15,8 +15,6 @@ import java.util.Set;
 
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.crypto.axolotl.FingerprintStatus;
-import eu.siacs.conversations.http.AesGcmURLStreamHandler;
-import eu.siacs.conversations.ui.adapter.MessageAdapter;
 import eu.siacs.conversations.utils.CryptoHelper;
 import eu.siacs.conversations.utils.Emoticons;
 import eu.siacs.conversations.utils.GeoHelper;
@@ -290,7 +288,7 @@ public class Message extends AbstractEntity {
 				return null;
 			} else {
 				return this.conversation.getAccount().getRoster()
-						.getContactFromRoster(this.trueCounterpart);
+						.getContactFromContactList(this.trueCounterpart);
 			}
 		}
 	}

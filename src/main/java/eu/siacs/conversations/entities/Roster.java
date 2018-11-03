@@ -10,21 +10,21 @@ import rocks.xmpp.addr.Jid;
 
 
 public class Roster {
-	final Account account;
-	final HashMap<Jid, Contact> contacts = new HashMap<>();
+	private final Account account;
+	private final HashMap<Jid, Contact> contacts = new HashMap<>();
 	private String version = null;
 
 	public Roster(Account account) {
 		this.account = account;
 	}
 
-	public Contact getContactFromRoster(Jid jid) {
+	public Contact getContactFromContactList(Jid jid) {
 		if (jid == null) {
 			return null;
 		}
 		synchronized (this.contacts) {
 			Contact contact = contacts.get(jid.asBareJid());
-			if (contact != null && contact.showInRoster()) {
+			if (contact != null && contact.showInContactList()) {
 				return contact;
 			} else {
 				return null;

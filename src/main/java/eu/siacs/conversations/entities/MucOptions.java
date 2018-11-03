@@ -719,7 +719,7 @@ public class MucOptions {
 
         public Contact getContact() {
             if (fullJid != null) {
-                return getAccount().getRoster().getContactFromRoster(realJid);
+                return getAccount().getRoster().getContactFromContactList(realJid);
             } else if (realJid != null) {
                 return getAccount().getRoster().getContact(realJid);
             } else {

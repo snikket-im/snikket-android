@@ -3685,7 +3685,7 @@ public class XmppConnectionService extends Service {
 		for (Account account : getAccounts()) {
 			if ((account.isEnabled() || accountJid != null)
 					&& (accountJid == null || accountJid.equals(account.getJid().asBareJid().toString()))) {
-				Contact contact = account.getRoster().getContactFromRoster(jid);
+				Contact contact = account.getRoster().getContactFromContactList(jid);
 				if (contact != null) {
 					contacts.add(contact);
 				}

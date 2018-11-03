@@ -433,7 +433,7 @@ public class ConferenceDetailsActivity extends XmppActivity implements OnConvers
             this.mSelectedUser = user;
             String name;
             final Contact contact = user.getContact();
-            if (contact != null && contact.showInRoster()) {
+            if (contact != null && contact.showInContactList()) {
                 name = contact.getDisplayName();
             } else if (user.getRealJid() != null) {
                 name = user.getRealJid().asBareJid().toString();

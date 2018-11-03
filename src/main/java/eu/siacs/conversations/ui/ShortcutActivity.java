@@ -55,7 +55,7 @@ public class ShortcutActivity extends AbstractSearchableListItemActivity{
         for (final Account account : xmppConnectionService.getAccounts()) {
             if (account.getStatus() != Account.State.DISABLED) {
                 for (final Contact contact : account.getRoster().getContacts()) {
-                    if (contact.showInRoster()
+                    if (contact.showInContactList()
                             && contact.match(this, needle)) {
                         getListItems().add(contact);
                     }
