@@ -144,6 +144,12 @@ android {
             }
             res {
                 srcDir 'src/playstoreCompat/res'
+                srcDir 'src/quicksyPlaystore/res'
+            }
+        }
+        quicksyPlaystoreSystem {
+            res {
+                srcDir 'src/quicksyPlaystore/res'
             }
         }
         conversationsFreeCompat {
@@ -157,6 +163,12 @@ android {
             }
             res {
                 srcDir 'src/playstoreCompat/res'
+                srcDir 'src/conversationsPlaystore/res'
+            }
+        }
+        conversationsPlaystoreSystem {
+            res {
+                srcDir 'src/conversationsPlaystore/res'
             }
         }
     }
