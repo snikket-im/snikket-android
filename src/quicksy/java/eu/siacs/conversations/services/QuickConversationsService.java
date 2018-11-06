@@ -57,7 +57,9 @@ public class QuickConversationsService extends AbstractQuickConversationsService
     public static final int API_ERROR_SSL_HANDSHAKE = -4;
     public static final int API_ERROR_AIRPLANE_MODE = -5;
 
-    private static final String BASE_URL = "https://api.quicksy.im";
+    private static final String API_DOMAIN = "api."+Config.QUICKSY_DOMAIN;
+
+    private static final String BASE_URL = "https://"+API_DOMAIN;
 
     private static final String INSTALLATION_ID = "eu.siacs.conversations.installation-id";
 
@@ -68,7 +70,7 @@ public class QuickConversationsService extends AbstractQuickConversationsService
     private final AtomicBoolean mVerificationRequestInProgress = new AtomicBoolean(false);
     private CountDownLatch awaitingAccountStateChange;
 
-    private Attempt mLastSyncAttempt = new Attempt(0, 0);
+    private Attempt mLastSyncAttempt = Attempt.NULL;
 
     QuickConversationsService(XmppConnectionService xmppConnectionService) {
         super(xmppConnectionService);
@@ -111,9 +113,6 @@ public class QuickConversationsService extends AbstractQuickConversationsService
         if (mVerificationRequestInProgress.compareAndSet(false, true)) {
             new Thread(() -> {
                 try {
-
-                    Thread.sleep(5000);
-
                     final URL url = new URL(BASE_URL + "/authentication/" + e164);
                     HttpURLConnection connection = (HttpURLConnection) url.openConnection();
                     connection.setConnectTimeout(Config.SOCKET_TIMEOUT * 1000);
@@ -183,9 +182,6 @@ public class QuickConversationsService extends AbstractQuickConversationsService
         if (mVerificationInProgress.compareAndSet(false, true)) {
             new Thread(() -> {
                 try {
-
-                    Thread.sleep(5000);
-
                     final URL url = new URL(BASE_URL + "/password");
                     final HttpURLConnection connection = (HttpURLConnection) url.openConnection();
                     connection.setConnectTimeout(Config.SOCKET_TIMEOUT * 1000);
@@ -324,12 +320,7 @@ public class QuickConversationsService extends AbstractQuickConversationsService
             Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": do not attempt sync");
             return false;
         }
-        XmppConnection xmppConnection = account.getXmppConnection();
-        Jid syncServer = xmppConnection == null ? null : xmppConnection.findDiscoItemByFeature(Namespace.SYNCHRONIZATION);
-        if (syncServer == null) {
-            Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": skipping sync. no sync server found");
-            return false;
-        }
+        final Jid syncServer = Jid.of(API_DOMAIN);
         Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": sending phone list to " + syncServer);
         List<Element> entries = new ArrayList<>();
         for (PhoneNumberContact c : contacts.values()) {
@@ -370,6 +361,10 @@ public class QuickConversationsService extends AbstractQuickConversationsService
                 } else {
                     Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": phone number contact list remains unchanged");
                 }
+            } else if (response.getType() == IqPacket.TYPE.TIMEOUT) {
+                mLastSyncAttempt = Attempt.NULL;
+            } else {
+                Log.d(Config.LOGTAG,account.getJid().asBareJid()+": failed to sync contact list with api server");
             }
             service.syncRoster(account);
             service.updateRosterUi();
@@ -397,6 +392,8 @@ public class QuickConversationsService extends AbstractQuickConversationsService
     private static class Attempt {
         private final long timestamp;
         private int hash;
+
+        private static final Attempt NULL = new Attempt(0,0);
 
         private Attempt(long timestamp, int hash) {
             this.timestamp = timestamp;
