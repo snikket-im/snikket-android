@@ -22,7 +22,7 @@ public class QuickConversationsService extends AbstractQuickConversationsService
     }
 
     @Override
-    public void considerSync(boolean force) {
+    public void considerSyncBackground(boolean force) {
 
     }
 }

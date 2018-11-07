@@ -292,7 +292,7 @@ public class XmppConnectionService extends Service {
             }
             account.getRoster().clearPresences();
             mJingleConnectionManager.cancelInTransmission();
-            mQuickConversationsService.considerSync();
+            mQuickConversationsService.considerSyncBackground(false);
             fetchRosterFromServer(account);
             if (!account.getXmppConnection().getFeatures().bookmarksConversion()) {
                 fetchBookmarks(account);

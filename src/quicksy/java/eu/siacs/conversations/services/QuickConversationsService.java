@@ -41,6 +41,7 @@ import eu.siacs.conversations.entities.Entry;
 import eu.siacs.conversations.utils.AccountUtils;
 import eu.siacs.conversations.utils.CryptoHelper;
 import eu.siacs.conversations.utils.PhoneNumberUtilWrapper;
+import eu.siacs.conversations.utils.SerialSingleThreadExecutor;
 import eu.siacs.conversations.xml.Element;
 import eu.siacs.conversations.xml.Namespace;
 import eu.siacs.conversations.xmpp.OnIqPacketReceived;
@@ -58,9 +59,9 @@ public class QuickConversationsService extends AbstractQuickConversationsService
     public static final int API_ERROR_SSL_HANDSHAKE = -4;
     public static final int API_ERROR_AIRPLANE_MODE = -5;
 
-    private static final String API_DOMAIN = "api."+Config.QUICKSY_DOMAIN;
+    private static final String API_DOMAIN = "api." + Config.QUICKSY_DOMAIN;
 
-    private static final String BASE_URL = "https://"+API_DOMAIN;
+    private static final String BASE_URL = "https://" + API_DOMAIN;
 
     private static final String INSTALLATION_ID = "eu.siacs.conversations.installation-id";
 
@@ -73,6 +74,8 @@ public class QuickConversationsService extends AbstractQuickConversationsService
     private CountDownLatch awaitingAccountStateChange;
 
     private Attempt mLastSyncAttempt = Attempt.NULL;
+
+    private final SerialSingleThreadExecutor mSerialSingleThreadExecutor = new SerialSingleThreadExecutor(QuickConversationsService.class.getSimpleName());
 
     QuickConversationsService(XmppConnectionService xmppConnectionService) {
         super(xmppConnectionService);
@@ -296,7 +299,18 @@ public class QuickConversationsService extends AbstractQuickConversationsService
     }
 
     @Override
-    public void considerSync(boolean forced) {
+    public void considerSyncBackground(final boolean forced) {
+        mRunningSyncJobs.incrementAndGet();
+        mSerialSingleThreadExecutor.execute(() -> {
+            considerSync(forced);
+            if (mRunningSyncJobs.decrementAndGet() == 0) {
+                service.updateRosterUi();
+            }
+        });
+    }
+
+
+    private void considerSync(boolean forced) {
         Map<String, PhoneNumberContact> contacts = PhoneNumberContact.load(service);
         for (Account account : service.getAccounts()) {
             refresh(account, contacts.values());
@@ -378,7 +392,7 @@ public class QuickConversationsService extends AbstractQuickConversationsService
             } else if (response.getType() == IqPacket.TYPE.TIMEOUT) {
                 mLastSyncAttempt = Attempt.NULL;
             } else {
-                Log.d(Config.LOGTAG,account.getJid().asBareJid()+": failed to sync contact list with api server");
+                Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": failed to sync contact list with api server");
             }
             mRunningSyncJobs.decrementAndGet();
             service.syncRoster(account);
@@ -408,7 +422,7 @@ public class QuickConversationsService extends AbstractQuickConversationsService
         private final long timestamp;
         private int hash;
 
-        private static final Attempt NULL = new Attempt(0,0);
+        private static final Attempt NULL = new Attempt(0, 0);
 
         private Attempt(long timestamp, int hash) {
             this.timestamp = timestamp;

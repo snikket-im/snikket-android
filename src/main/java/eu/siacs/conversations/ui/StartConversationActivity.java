@@ -728,7 +728,7 @@ public class StartConversationActivity extends XmppActivity implements XmppConne
 
 	@Override
 	protected void onBackendConnected() {
-		xmppConnectionService.getQuickConversationsService().considerSync();
+		xmppConnectionService.getQuickConversationsService().considerSyncBackground(false);
 		if (mPostponedActivityResult != null) {
 			onActivityResult(mPostponedActivityResult.first, RESULT_OK, mPostponedActivityResult.second);
 			this.mPostponedActivityResult = null;
@@ -1008,7 +1008,7 @@ public class StartConversationActivity extends XmppActivity implements XmppConne
 	public void onRefresh() {
 		Log.d(Config.LOGTAG,"user requested to refresh");
 		if (QuickConversationsService.isQuicksy() && xmppConnectionService != null) {
-			xmppConnectionService.getQuickConversationsService().considerSync(true);
+			xmppConnectionService.getQuickConversationsService().considerSyncBackground(true);
 		}
 	}
 

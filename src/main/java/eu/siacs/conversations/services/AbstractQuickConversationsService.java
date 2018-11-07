@@ -24,5 +24,5 @@ public abstract class AbstractQuickConversationsService {
 
     public abstract boolean isSynchronizing();
 
-    public abstract void considerSync(boolean force);
+    public abstract void considerSyncBackground(boolean force);
 }
