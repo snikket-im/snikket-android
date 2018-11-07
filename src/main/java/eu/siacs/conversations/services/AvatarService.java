@@ -66,14 +66,14 @@ public class AvatarService implements OnAdvancedStreamFeaturesLoaded {
 		if (avatar != null || cachedOnly) {
 			return avatar;
 		}
-		if (contact.getProfilePhoto() != null) {
-			avatar = mXmppConnectionService.getFileBackend().cropCenterSquare(Uri.parse(contact.getProfilePhoto()), size);
-		}
-		if (avatar == null && contact.getAvatarFilename() != null) {
+		if (contact.getAvatarFilename() != null) {
 			avatar = mXmppConnectionService.getFileBackend().getAvatar(contact.getAvatarFilename(), size);
 		}
+		if (avatar == null && contact.getProfilePhoto() != null) {
+			avatar = mXmppConnectionService.getFileBackend().cropCenterSquare(Uri.parse(contact.getProfilePhoto()), size);
+		}
 		if (avatar == null) {
-			avatar = get(contact.getDisplayName(), contact.getJid().asBareJid().toString(), size, cachedOnly);
+			avatar = get(contact.getDisplayName(), contact.getJid().asBareJid().toString(), size, false);
 		}
 		this.mXmppConnectionService.getBitmapCache().put(KEY, avatar);
 		return avatar;
@@ -147,10 +147,10 @@ public class AvatarService implements OnAdvancedStreamFeaturesLoaded {
 		if (avatar == null) {
 			Contact contact = user.getContact();
 			if (contact != null) {
-				avatar = get(contact, size, cachedOnly);
+				avatar = get(contact, size, false);
 			} else {
 				String seed = user.getRealJid() != null ? user.getRealJid().asBareJid().toString() : null;
-				avatar = get(user.getName(), seed, size, cachedOnly);
+				avatar = get(user.getName(), seed, size, false);
 			}
 		}
 		this.mXmppConnectionService.getBitmapCache().put(KEY, avatar);
@@ -510,11 +510,10 @@ public class AvatarService implements OnAdvancedStreamFeaturesLoaded {
 		Contact contact = user.getContact();
 		if (contact != null) {
 			Uri uri = null;
-			if (contact.getProfilePhoto() != null) {
+			if (contact.getAvatarFilename() != null) {
+				uri = mXmppConnectionService.getFileBackend().getAvatarUri(contact.getAvatarFilename());
+			} else if (contact.getProfilePhoto() != null) {
 				uri = Uri.parse(contact.getProfilePhoto());
-			} else if (contact.getAvatarFilename() != null) {
-				uri = mXmppConnectionService.getFileBackend().getAvatarUri(
-						contact.getAvatarFilename());
 			}
 			if (drawTile(canvas, uri, left, top, right, bottom)) {
 				return true;

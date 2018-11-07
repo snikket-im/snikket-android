@@ -22,6 +22,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.ListFragment;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
@@ -72,13 +73,14 @@ import eu.siacs.conversations.ui.util.JidDialog;
 import eu.siacs.conversations.ui.util.MenuDoubleTabUtil;
 import eu.siacs.conversations.ui.util.PendingItem;
 import eu.siacs.conversations.ui.util.SoftKeyboardUtils;
+import eu.siacs.conversations.ui.widget.SwipeRefreshListFragment;
 import eu.siacs.conversations.utils.AccountUtils;
 import eu.siacs.conversations.utils.XmppUri;
 import eu.siacs.conversations.xmpp.OnUpdateBlocklist;
 import eu.siacs.conversations.xmpp.XmppConnection;
 import rocks.xmpp.addr.Jid;
 
-public class StartConversationActivity extends XmppActivity implements XmppConnectionService.OnConversationUpdate, OnRosterUpdate, OnUpdateBlocklist, CreateConferenceDialog.CreateConferenceDialogListener, JoinConferenceDialog.JoinConferenceDialogListener {
+public class StartConversationActivity extends XmppActivity implements XmppConnectionService.OnConversationUpdate, OnRosterUpdate, OnUpdateBlocklist, CreateConferenceDialog.CreateConferenceDialogListener, JoinConferenceDialog.JoinConferenceDialogListener, SwipeRefreshLayout.OnRefreshListener {
 
 	public static final String EXTRA_INVITE_URI = "eu.siacs.conversations.invite_uri";
 
@@ -757,6 +759,9 @@ public class StartConversationActivity extends XmppActivity implements XmppConne
 			Log.d(Config.LOGTAG, "calling on backend connected on dialog");
 			((OnBackendConnected) fragment).onBackendConnected();
 		}
+		if (QuickConversationsService.isQuicksy()) {
+			setRefreshing(xmppConnectionService.getQuickConversationsService().isSynchronizing());
+		}
 	}
 
 	protected boolean processViewIntent(@NonNull Intent intent) {
@@ -877,16 +882,6 @@ public class StartConversationActivity extends XmppActivity implements XmppConne
 		mContactsAdapter.notifyDataSetChanged();
 	}
 
-	private static boolean isSingleAccountActive(final List<Account> accounts) {
-		int i = 0;
-		for(Account account : accounts) {
-			if (account.getStatus() != Account.State.DISABLED) {
-				++i;
-			}
-		}
-		return i == 1;
-	}
-
 	protected void filterConferences(String needle) {
 		this.conferences.clear();
 		for (Account account : xmppConnectionService.getAccounts()) {
@@ -924,6 +919,9 @@ public class StartConversationActivity extends XmppActivity implements XmppConne
 			filter(mSearchEditText.getText().toString());
 		}
 		configureHomeButton();
+		if (QuickConversationsService.isQuicksy()) {
+			setRefreshing(xmppConnectionService.getQuickConversationsService().isSynchronizing());
+		}
 	}
 
 	@Override
@@ -1006,7 +1004,23 @@ public class StartConversationActivity extends XmppActivity implements XmppConne
 		refreshUi();
 	}
 
-	public static class MyListFragment extends ListFragment {
+	@Override
+	public void onRefresh() {
+		Log.d(Config.LOGTAG,"user requested to refresh");
+		if (QuickConversationsService.isQuicksy() && xmppConnectionService != null) {
+			xmppConnectionService.getQuickConversationsService().considerSync(true);
+		}
+	}
+
+
+	private void setRefreshing(boolean refreshing) {
+		MyListFragment fragment = (MyListFragment) mListPagerAdapter.getItem(0);
+		if (fragment != null) {
+			fragment.setRefreshing(refreshing);
+		}
+	}
+
+	public static class MyListFragment extends SwipeRefreshListFragment {
 		private AdapterView.OnItemClickListener mOnItemClickListener;
 		private int mResContextMenu;
 
@@ -1164,10 +1178,12 @@ public class StartConversationActivity extends XmppActivity implements XmppConne
 					listFragment.setContextMenu(R.menu.conference_context);
 					listFragment.setOnListItemClickListener((arg0, arg1, p, arg3) -> openConversationForBookmark(p));
 				} else {
-
 					listFragment.setListAdapter(mContactsAdapter);
 					listFragment.setContextMenu(R.menu.contact_context);
 					listFragment.setOnListItemClickListener((arg0, arg1, p, arg3) -> openConversationForContact(p));
+					if (QuickConversationsService.isQuicksy()) {
+						listFragment.setOnRefreshListener(StartConversationActivity.this);
+					}
 				}
 				fragments[position] = listFragment;
 			}

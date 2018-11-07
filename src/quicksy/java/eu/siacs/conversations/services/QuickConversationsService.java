@@ -27,6 +27,7 @@ import java.util.WeakHashMap;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import javax.net.ssl.SSLHandshakeException;
 
@@ -68,6 +69,7 @@ public class QuickConversationsService extends AbstractQuickConversationsService
 
     private final AtomicBoolean mVerificationInProgress = new AtomicBoolean(false);
     private final AtomicBoolean mVerificationRequestInProgress = new AtomicBoolean(false);
+    private final AtomicInteger mRunningSyncJobs = new AtomicInteger(0);
     private CountDownLatch awaitingAccountStateChange;
 
     private Attempt mLastSyncAttempt = Attempt.NULL;
@@ -282,12 +284,23 @@ public class QuickConversationsService extends AbstractQuickConversationsService
         return mVerificationRequestInProgress.get();
     }
 
+
+    @Override
+    public boolean isSynchronizing() {
+        return mRunningSyncJobs.get() > 0;
+    }
+
     @Override
     public void considerSync() {
+        considerSync(false);
+    }
+
+    @Override
+    public void considerSync(boolean forced) {
         Map<String, PhoneNumberContact> contacts = PhoneNumberContact.load(service);
         for (Account account : service.getAccounts()) {
             refresh(account, contacts.values());
-            if (!considerSync(account, contacts)) {
+            if (!considerSync(account, contacts, forced)) {
                 service.syncRoster(account);
             }
         }
@@ -313,13 +326,14 @@ public class QuickConversationsService extends AbstractQuickConversationsService
         }
     }
 
-    private boolean considerSync(Account account, final Map<String, PhoneNumberContact> contacts) {
+    private boolean considerSync(Account account, final Map<String, PhoneNumberContact> contacts, final boolean forced) {
         final int hash = contacts.keySet().hashCode();
         Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": consider sync of " + hash);
-        if (!mLastSyncAttempt.retry(hash)) {
+        if (!mLastSyncAttempt.retry(hash) && !forced) {
             Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": do not attempt sync");
             return false;
         }
+        mRunningSyncJobs.incrementAndGet();
         final Jid syncServer = Jid.of(API_DOMAIN);
         Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": sending phone list to " + syncServer);
         List<Element> entries = new ArrayList<>();
@@ -366,6 +380,7 @@ public class QuickConversationsService extends AbstractQuickConversationsService
             } else {
                 Log.d(Config.LOGTAG,account.getJid().asBareJid()+": failed to sync contact list with api server");
             }
+            mRunningSyncJobs.decrementAndGet();
             service.syncRoster(account);
             service.updateRosterUi();
         });

@@ -21,4 +21,8 @@ public abstract class AbstractQuickConversationsService {
     }
 
     public abstract void signalAccountStateChange();
+
+    public abstract boolean isSynchronizing();
+
+    public abstract void considerSync(boolean force);
 }

@@ -15,4 +15,14 @@ public class QuickConversationsService extends AbstractQuickConversationsService
     public void signalAccountStateChange() {
 
     }
+
+    @Override
+    public boolean isSynchronizing() {
+        return false;
+    }
+
+    @Override
+    public void considerSync(boolean force) {
+
+    }
 }
