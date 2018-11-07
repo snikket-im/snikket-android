@@ -368,7 +368,7 @@ Make sure to have ANDROID_HOME point to your Android SDK. Use the Android SDK Ma
 
     git clone https://github.com/siacs/Conversations.git
     cd Conversations
-    ./gradlew assembleFreeSystemDebug
+    ./gradlew assembleConversationsFreeSystemDebug
 
 There are two build flavors available. *free* and *playstore*. Unless you know what you are doing you only need *free*.
 
