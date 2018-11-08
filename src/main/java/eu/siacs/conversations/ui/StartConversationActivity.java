@@ -6,6 +6,7 @@ import android.app.Dialog;
 import android.app.PendingIntent;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
@@ -27,7 +28,12 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
+import android.text.Html;
+import android.text.SpannableString;
+import android.text.Spanned;
 import android.text.TextWatcher;
+import android.text.method.LinkMovementMethod;
+import android.text.util.Linkify;
 import android.util.Log;
 import android.util.Pair;
 import android.view.ContextMenu;
@@ -320,12 +326,14 @@ public class StartConversationActivity extends XmppActivity implements XmppConne
 		} else if (startSearching && mInitialSearchValue.peek() == null) {
 			mInitialSearchValue.push("");
 		}
+		mRequestedContactsPermission.set(savedInstanceState != null && savedInstanceState.getBoolean("requested_contacts_permission",false));
 	}
 
 	@Override
 	public void onSaveInstanceState(Bundle savedInstanceState) {
 		Intent pendingIntent = pendingViewIntent.peek();
 		savedInstanceState.putParcelable("intent", pendingIntent != null ? pendingIntent : getIntent());
+		savedInstanceState.putBoolean("requested_contacts_permission",mRequestedContactsPermission.get());
 		savedInstanceState.putBoolean("created_by_view_intent",createdByViewIntent);
 		if (mMenuSearchView != null && mMenuSearchView.isActionViewExpanded()) {
 			savedInstanceState.putString("search", mSearchEditText != null ? mSearchEditText.getText().toString() : null);
@@ -691,10 +699,23 @@ public class StartConversationActivity extends XmppActivity implements XmppConne
 					if (shouldShowRequestPermissionRationale(Manifest.permission.READ_CONTACTS)) {
 						AlertDialog.Builder builder = new AlertDialog.Builder(this);
 						builder.setTitle(R.string.sync_with_contacts);
-						builder.setMessage(R.string.sync_with_contacts_long);
+						if (QuickConversationsService.isQuicksy()) {
+							builder.setMessage(Html.fromHtml(getString(R.string.sync_with_contacts_quicksy)));
+                        } else {
+                            builder.setMessage(R.string.sync_with_contacts_long);
+                        }
 						builder.setPositiveButton(R.string.next, (dialog, which) -> requestPermissions(new String[]{Manifest.permission.READ_CONTACTS}, REQUEST_SYNC_CONTACTS));
 						builder.setOnDismissListener(dialog -> requestPermissions(new String[]{Manifest.permission.READ_CONTACTS}, REQUEST_SYNC_CONTACTS));
-						builder.create().show();
+						builder.setCancelable(false);
+						AlertDialog dialog = builder.create();
+						dialog.setCanceledOnTouchOutside(false);
+						dialog.setOnShowListener(dialogInterface -> {
+							final TextView tv =  dialog.findViewById(android.R.id.message);
+							if (tv != null) {
+								tv.setMovementMethod(LinkMovementMethod.getInstance());
+							}
+						});
+						dialog.show();
 					} else {
 						requestPermissions(new String[]{Manifest.permission.READ_CONTACTS}, REQUEST_SYNC_CONTACTS);
 					}
@@ -709,6 +730,9 @@ public class StartConversationActivity extends XmppActivity implements XmppConne
 			if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
 				ScanActivity.onRequestPermissionResult(this, requestCode, grantResults);
 				if (requestCode == REQUEST_SYNC_CONTACTS && xmppConnectionServiceBound) {
+					if (QuickConversationsService.isQuicksy()) {
+						setRefreshing(true);
+					}
 					xmppConnectionService.loadPhoneContacts();
 					xmppConnectionService.startContactObserver();
 				}
@@ -728,7 +752,10 @@ public class StartConversationActivity extends XmppActivity implements XmppConne
 
 	@Override
 	protected void onBackendConnected() {
-		xmppConnectionService.getQuickConversationsService().considerSyncBackground(false);
+
+		if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M || checkSelfPermission(Manifest.permission.READ_CONTACTS) == PackageManager.PERMISSION_GRANTED) {
+			xmppConnectionService.getQuickConversationsService().considerSyncBackground(false);
+		}
 		if (mPostponedActivityResult != null) {
 			onActivityResult(mPostponedActivityResult.first, RESULT_OK, mPostponedActivityResult.second);
 			this.mPostponedActivityResult = null;
