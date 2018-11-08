@@ -1205,6 +1205,16 @@ public class XmppConnectionService extends Service {
         }
         final Conversation conversation = (Conversation) message.getConversation();
         account.deactivateGracePeriod();
+
+
+        if (QuickConversationsService.isQuicksy() && conversation.getMode() == Conversation.MODE_SINGLE) {
+            final Contact contact = conversation.getContact();
+            if (!contact.showInRoster() && contact.getOption(Contact.Options.SYNCED_VIA_OTHER)) {
+                Log.d(Config.LOGTAG,account.getJid().asBareJid()+": adding "+contact.getJid()+" on sending message");
+                createContact(contact, true);
+            }
+        }
+
         MessagePacket packet = null;
         final boolean addToConversation = (conversation.getMode() != Conversation.MODE_MULTI
                 || !Patches.BAD_MUC_REFLECTION.contains(account.getServerIdentity()))
