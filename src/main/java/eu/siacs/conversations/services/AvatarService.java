@@ -460,7 +460,7 @@ public class AvatarService implements OnAdvancedStreamFeaturesLoaded {
 	}*/
 
 	public Bitmap get(final String name, String seed, final int size, boolean cachedOnly) {
-		final String KEY = key(seed == null ? name : seed, size);
+		final String KEY = key(seed == null ? name : name+"\0"+seed, size);
 		Bitmap bitmap = mXmppConnectionService.getBitmapCache().get(KEY);
 		if (bitmap != null || cachedOnly) {
 			return bitmap;
