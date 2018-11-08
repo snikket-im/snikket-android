@@ -209,7 +209,6 @@
             android:windowSoftInputMode="stateAlwaysHidden"/>
         <activity
             android:name=".ui.AboutActivity"
-            android:label="@string/title_activity_about"
             android:parentActivityName=".ui.SettingsActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"

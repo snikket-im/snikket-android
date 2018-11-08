@@ -342,7 +342,5 @@
             android:summary="@string/pref_never_send_crash_summary"
             android:title="@string/pref_never_send_crash" />
     </PreferenceCategory>
-    <eu.siacs.conversations.ui.AboutPreference
-        android:summary="@string/pref_about_conversations_summary"
-        android:title="@string/title_activity_about" />
+    <eu.siacs.conversations.ui.AboutPreference/>
 </PreferenceScreen>
