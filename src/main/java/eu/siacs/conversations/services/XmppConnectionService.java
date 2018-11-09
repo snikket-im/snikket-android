@@ -285,11 +285,19 @@ public class XmppConnectionService extends Service {
                     }
                 }
             }
-            boolean needsUpdating = account.setOption(Account.OPTION_LOGGED_IN_SUCCESSFULLY, true);
-            needsUpdating |= account.setOption(Account.OPTION_HTTP_UPLOAD_AVAILABLE, account.getXmppConnection().getFeatures().httpUpload(0));
-            if (needsUpdating) {
+            boolean loggedInSuccessfully = account.setOption(Account.OPTION_LOGGED_IN_SUCCESSFULLY, true);
+            boolean gainedFeature = account.setOption(Account.OPTION_HTTP_UPLOAD_AVAILABLE, account.getXmppConnection().getFeatures().httpUpload(0));
+            if (loggedInSuccessfully || gainedFeature) {
                 databaseBackend.updateAccount(account);
             }
+
+            if (loggedInSuccessfully) {
+                if (!TextUtils.isEmpty(account.getDisplayName())) {
+                    Log.d(Config.LOGTAG,account.getJid().asBareJid()+": display name wasn't empty on first log in. publishing");
+                    publishDisplayName(account);
+                }
+            }
+
             account.getRoster().clearPresences();
             mJingleConnectionManager.cancelInTransmission();
             mQuickConversationsService.considerSyncBackground(false);
@@ -3828,14 +3836,17 @@ public class XmppConnectionService extends Service {
 
 	public void publishDisplayName(Account account) {
 		String displayName = account.getDisplayName();
-		if (displayName != null && !displayName.isEmpty()) {
-			IqPacket publish = mIqGenerator.publishNick(displayName);
-			sendIqPacket(account, publish, (account1, packet) -> {
-				if (packet.getType() == IqPacket.TYPE.ERROR) {
-					Log.d(Config.LOGTAG, account1.getJid().asBareJid() + ": could not publish nick");
-				}
-			});
-		}
+		final IqPacket request;
+		if (TextUtils.isEmpty(displayName)) {
+            request = mIqGenerator.deleteNode(Namespace.NICK);
+		} else {
+            request = mIqGenerator.publishNick(displayName);
+        }
+        sendIqPacket(account, request, (account1, packet) -> {
+            if (packet.getType() == IqPacket.TYPE.ERROR) {
+                Log.d(Config.LOGTAG, account1.getJid().asBareJid() + ": unable to modify nick name "+packet.toString());
+            }
+        });
 	}
 
 	public ServiceDiscoveryResult getCachedServiceDiscoveryResult(Pair<String, String> key) {

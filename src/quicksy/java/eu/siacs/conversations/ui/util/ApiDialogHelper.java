@@ -39,6 +39,9 @@ public class ApiDialogHelper {
             case 403:
                 res = R.string.the_app_is_out_of_date;
                 break;
+            case 409:
+                res = R.string.logged_in_with_another_device;
+                break;
             case 500:
                 res = R.string.something_went_wrong_processing_your_request;
                 break;

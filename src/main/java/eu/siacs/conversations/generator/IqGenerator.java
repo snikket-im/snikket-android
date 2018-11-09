@@ -127,8 +127,15 @@ public class IqGenerator extends AbstractGenerator {
 
 	public IqPacket publishNick(String nick) {
 		final Element item = new Element("item");
-		item.addChild("nick", "http://jabber.org/protocol/nick").setContent(nick);
-		return publish("http://jabber.org/protocol/nick", item);
+		item.addChild("nick", Namespace.NICK).setContent(nick);
+		return publish(Namespace.NICK, item);
+	}
+
+	public IqPacket deleteNode(String node) {
+		IqPacket packet = new IqPacket(IqPacket.TYPE.SET);
+		final Element pubsub = packet.addChild("pubsub", Namespace.PUBSUB_OWNER);
+		pubsub.addChild("delete").setAttribute("node",node);
+		return packet;
 	}
 
 	public IqPacket publishAvatar(Avatar avatar) {

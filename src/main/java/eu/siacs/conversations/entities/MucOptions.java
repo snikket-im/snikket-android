@@ -2,6 +2,7 @@ package eu.siacs.conversations.entities;
 
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -380,7 +381,12 @@ public class MucOptions {
         } else if (!conversation.getJid().isBareJid()) {
             return conversation.getJid().getResource();
         } else {
-            return JidHelper.localPartOrFallback(account.getJid());
+            final String displayName = account.getDisplayName();
+            if (TextUtils.isEmpty(displayName)) {
+                return JidHelper.localPartOrFallback(account.getJid());
+            } else {
+                return displayName;
+            }
         }
     }
 

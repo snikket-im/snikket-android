@@ -80,6 +80,10 @@
         <item name="android:textColor">?android:textColorSecondary</item>
     </style>
 
+    <style name="TextAppearance.Conversations.Body1.Tertiary" parent="TextAppearance.Conversations.Body1">
+        <item name="android:textColor">?android:textColorTertiary</item>
+    </style>
+
     <style name="TextAppearance.Conversations.Fingerprint" parent="TextAppearance.Conversations.Body1">
         <item name="android:fontFamily" tools:targetApi="jelly_bean">monospace</item>
         <item name="android:typeface">monospace</item>

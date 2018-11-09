@@ -515,6 +515,9 @@
     <string name="share_uri_with">Share URI with…</string>
     <string name="welcome_header" translatable="false">Join the Conversation</string>
     <string name="welcome_text">Jabber is a provider independent instant messaging network. You can use this client with what ever Jabber server you choose.\nHowever for your convenience we made it easy to create an account on conversations.im¹; a provider specially suited for the use with Conversations.</string>
+    <string name="welcome_header_quicksy" translatable="false">Have some Quick Conversations</string>
+    <string name="welcome_text_quicksy"><![CDATA[Quicksy is a spin off of the popular Jabber/XMPP client Conversations with automatic contact discovery.<br><br>You sign up with your phone number and Quicksy will automatically—based on the phone numbers in your address book—suggest possible contacts to you.<br><br>By signing up you agree to our <a href="https://quicksy.im/#privacy">privacy policy</a>.]]></string>
+    <string name="agree_and_continue">Agree &amp; continue</string>
     <string name="magic_create_text">We will guide you through the process of creating an account on conversations.im.¹\nWhen picking conversations.im as a provider you will be able to communicate with users of other providers by giving them your full Jabber ID.</string>
     <string name="your_full_jid_will_be">Your full Jabber ID will be: %s</string>
     <string name="create_account">Create Account</string>
@@ -789,4 +792,9 @@
     <string name="too_many_attempts">Too many attempts</string>
     <string name="the_app_is_out_of_date">You are using an out of date version of this app.</string>
     <string name="update">Update</string>
+    <string name="logged_in_with_another_device">This phone number is currently logged in with another device.</string>
+    <string name="enter_your_name_instructions">Please enter your name to let people, who don’t have you in their address books, know who you are.</string>
+    <string name="your_name">Your name</string>
+    <string name="enter_your_name">Enter your name</string>
+    <string name="no_name_set_instructions">Use the edit button to set your name.</string>
 </resources>

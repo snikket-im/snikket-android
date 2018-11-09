@@ -269,9 +269,7 @@ public class VerifyActivity extends XmppActivity implements ClipboardManager.OnP
 
     private void performPostVerificationRedirect() {
         if (redirectInProgress.compareAndSet(false, true)) {
-            Intent intent = new Intent(this, PublishProfilePictureActivity.class);
-            intent.putExtra(PublishProfilePictureActivity.EXTRA_ACCOUNT, account.getJid().asBareJid().toEscapedString());
-            intent.putExtra("setup", true);
+            Intent intent = new Intent(this, EnterNameActivity.class);
             startActivity(intent);
             finish();
         }
