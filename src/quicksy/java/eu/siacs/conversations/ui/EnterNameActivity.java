@@ -6,16 +6,21 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 
+import java.util.concurrent.atomic.AtomicBoolean;
+
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.databinding.ActivityEnterNameBinding;
 import eu.siacs.conversations.entities.Account;
+import eu.siacs.conversations.services.XmppConnectionService;
 import eu.siacs.conversations.utils.AccountUtils;
 
-public class EnterNameActivity extends XmppActivity {
+public class EnterNameActivity extends XmppActivity implements XmppConnectionService.OnAccountUpdate {
 
     private ActivityEnterNameBinding binding;
 
     private Account account;
+
+    private AtomicBoolean setNick = new AtomicBoolean(false);
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
@@ -23,6 +28,7 @@ public class EnterNameActivity extends XmppActivity {
         this.binding = DataBindingUtil.setContentView(this, R.layout.activity_enter_name);
         setSupportActionBar((Toolbar) this.binding.toolbar);
         this.binding.next.setOnClickListener(this::next);
+        this.setNick.set(savedInstanceState != null && savedInstanceState.getBoolean("set_nick",false));
     }
 
     private void next(View view) {
@@ -43,12 +49,33 @@ public class EnterNameActivity extends XmppActivity {
     }
 
     @Override
-    protected void refreshUiReal() {
+    public void onSaveInstanceState(Bundle savedInstanceState) {
+        savedInstanceState.putBoolean("set_nick", this.setNick.get());
+        super.onSaveInstanceState(savedInstanceState);
+    }
 
+    @Override
+    protected void refreshUiReal() {
+        checkSuggestPreviousNick();
     }
 
     @Override
     void onBackendConnected() {
         this.account = AccountUtils.getFirst(xmppConnectionService);
+        checkSuggestPreviousNick();
+    }
+
+    private void checkSuggestPreviousNick() {
+        String displayName = this.account == null ? null : this.account.getDisplayName();
+        if (displayName != null) {
+            if (setNick.compareAndSet(false, true) && this.binding.name.getText().length() == 0) {
+                this.binding.name.getText().append(displayName);
+            }
+        }
+    }
+
+    @Override
+    public void onAccountUpdate() {
+        refreshUi();
     }
 }

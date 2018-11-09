@@ -724,6 +724,7 @@ public abstract class XmppActivity extends ActionBarActivity {
 			SoftKeyboardUtils.hideSoftKeyboard(binding.inputEditText);
 			dialog.dismiss();
 		}));
+		dialog.setCanceledOnTouchOutside(false);
 		dialog.setOnDismissListener(dialog1 -> {
 			SoftKeyboardUtils.hideSoftKeyboard(binding.inputEditText);
         });
@@ -774,10 +775,6 @@ public abstract class XmppActivity extends ActionBarActivity {
 			return true;
 		}
 		return false;
-	}
-
-	protected boolean neverCompressPictures() {
-		return getPreferences().getString("picture_compression", getResources().getString(R.string.picture_compression)).equals("never");
 	}
 
 	protected boolean manuallyChangePresence() {
