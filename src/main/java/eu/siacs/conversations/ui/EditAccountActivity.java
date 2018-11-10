@@ -61,6 +61,7 @@ import eu.siacs.conversations.ui.util.MenuDoubleTabUtil;
 import eu.siacs.conversations.ui.util.PendingItem;
 import eu.siacs.conversations.ui.util.SoftKeyboardUtils;
 import eu.siacs.conversations.utils.CryptoHelper;
+import eu.siacs.conversations.utils.Resolver;
 import eu.siacs.conversations.utils.SignupUtils;
 import eu.siacs.conversations.utils.UIHelper;
 import eu.siacs.conversations.utils.XmppUri;
@@ -544,7 +545,7 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
         this.binding.hostname.addTextChangedListener(mTextWatcher);
         this.binding.hostname.setOnFocusChangeListener(mEditTextFocusListener);
         this.binding.clearDevices.setOnClickListener(v -> showWipePepDialog());
-        this.binding.port.setText("5222");
+        this.binding.port.setText(String.valueOf(Resolver.DEFAULT_PORT_XMPP));
         this.binding.port.addTextChangedListener(mTextWatcher);
         this.binding.saveButton.setOnClickListener(this.mSaveButtonClickListener);
         this.binding.cancelButton.setOnClickListener(this.mCancelButtonClickListener);
@@ -556,6 +557,7 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
         if (Config.DISALLOW_REGISTRATION_IN_UI) {
             this.binding.accountRegisterNew.setVisibility(View.GONE);
         }
+        this.binding.yourNameBox.setVisibility(QuickConversationsService.isQuicksy() ? View.VISIBLE : View.GONE);
         this.binding.actionEditYourName.setOnClickListener(this::onEditYourNameClicked);
     }
 
