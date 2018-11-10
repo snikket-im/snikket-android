@@ -404,7 +404,7 @@ public class StartConversationActivity extends XmppActivity implements XmppConne
 	}
 
 	protected void openConversationsForBookmark(Bookmark bookmark) {
-		Jid jid = bookmark.getJid();
+		final Jid jid = bookmark.getFullJid();
 		if (jid == null) {
 			Toast.makeText(this, R.string.invalid_jid, Toast.LENGTH_SHORT).show();
 			return;

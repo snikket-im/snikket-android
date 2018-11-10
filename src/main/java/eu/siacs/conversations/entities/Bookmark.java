@@ -82,6 +82,11 @@ public class Bookmark extends Element implements ListItem {
 		return this.jid;
 	}
 
+	public Jid getFullJid() {
+		final String nick = getNick();
+		return jid == null || nick == null || nick.trim().isEmpty() ? jid : jid.withResource(nick);
+	}
+
 	@Override
 	public List<Tag> getTags(Context context) {
 		ArrayList<Tag> tags = new ArrayList<>();
@@ -155,7 +160,12 @@ public class Bookmark extends Element implements ListItem {
 		if (this.conversation != null) {
 			this.conversation.clear();
 		}
-		this.conversation = new WeakReference<>(conversation);
+		if (conversation == null) {
+			this.conversation = null;
+		} else {
+			this.conversation = new WeakReference<>(conversation);
+			conversation.getMucOptions().notifyOfBookmarkNick(getNick());
+		}
 	}
 
 	public String getBookmarkName() {

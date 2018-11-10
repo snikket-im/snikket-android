@@ -42,6 +42,9 @@ public class MucOptions {
     private Error error = Error.NONE;
     private User self;
     private String password = null;
+
+    private boolean tookProposedNickFromBookmark = false;
+
     public MucOptions(Conversation conversation) {
         this.account = conversation.getAccount();
         this.conversation = conversation;
@@ -91,6 +94,16 @@ public class MucOptions {
             for (User user : users) {
                 user.chatState = Config.DEFAULT_CHATSTATE;
             }
+        }
+    }
+
+    public boolean isTookProposedNickFromBookmark() {
+        return tookProposedNickFromBookmark;
+    }
+
+    void notifyOfBookmarkNick(String nick) {
+        if (nick != null && nick.trim().equals(getSelf().getFullJid().getResource())) {
+            this.tookProposedNickFromBookmark = true;
         }
     }
 
@@ -374,10 +387,11 @@ public class MucOptions {
     }
 
     private String getProposedNick() {
-        if (conversation.getBookmark() != null
-                && conversation.getBookmark().getNick() != null
-                && !conversation.getBookmark().getNick().trim().isEmpty()) {
-            return conversation.getBookmark().getNick().trim();
+        final Bookmark bookmark = this.conversation.getBookmark();
+        final String bookmarkedNick = bookmark == null ? null : bookmark.getNick();
+        if (bookmarkedNick != null && !bookmarkedNick.trim().isEmpty()) {
+            this.tookProposedNickFromBookmark = true;
+            return bookmarkedNick.trim();
         } else if (!conversation.getJid().isBareJid()) {
             return conversation.getJid().getResource();
         } else {
