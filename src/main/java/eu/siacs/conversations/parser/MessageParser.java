@@ -28,6 +28,7 @@ import eu.siacs.conversations.entities.ReceiptRequest;
 import eu.siacs.conversations.http.HttpConnectionManager;
 import eu.siacs.conversations.http.P1S3UrlStreamHandler;
 import eu.siacs.conversations.services.MessageArchiveService;
+import eu.siacs.conversations.services.QuickConversationsService;
 import eu.siacs.conversations.services.XmppConnectionService;
 import eu.siacs.conversations.utils.CryptoHelper;
 import eu.siacs.conversations.xml.Namespace;
@@ -229,6 +230,9 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
     private void setNick(Account account, Jid user, String nick) {
         if (user.asBareJid().equals(account.getJid().asBareJid())) {
             account.setDisplayName(nick);
+            if (QuickConversationsService.isQuicksy()) {
+                mXmppConnectionService.getAvatarService().clear(account);
+            }
         } else {
             Contact contact = account.getRoster().getContact(user);
             if (contact.setPresenceName(nick)) {

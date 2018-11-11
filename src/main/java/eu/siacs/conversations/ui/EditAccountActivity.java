@@ -567,8 +567,13 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
             updateDisplayName(displayName);
             mAccount.setDisplayName(displayName);
             xmppConnectionService.publishDisplayName(mAccount);
+            refreshAvatar();
             return null;
         }, true);
+    }
+
+    private void refreshAvatar() {
+        binding.avater.setImageBitmap(avatarService().get(mAccount, (int) getResources().getDimension(R.dimen.avatar_on_details_screen_size)));
     }
 
     @Override

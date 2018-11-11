@@ -3849,6 +3849,7 @@ public class XmppConnectionService extends Service {
 		} else {
             request = mIqGenerator.publishNick(displayName);
         }
+        mAvatarService.clear(account);
         sendIqPacket(account, request, (account1, packet) -> {
             if (packet.getType() == IqPacket.TYPE.ERROR) {
                 Log.d(Config.LOGTAG, account1.getJid().asBareJid() + ": unable to modify nick name "+packet.toString());
