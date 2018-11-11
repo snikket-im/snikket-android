@@ -31,8 +31,6 @@ import android.util.DisplayMetrics;
 import android.util.Log;
 import android.util.Pair;
 
-import org.conscrypt.Conscrypt;
-
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -73,7 +71,7 @@ public class NotificationService {
     private static final String CONVERSATIONS_GROUP = "eu.siacs.conversations";
     private static final int NOTIFICATION_ID_MULTIPLIER = 1024 * 1024;
     private static final int NOTIFICATION_ID = 2 * NOTIFICATION_ID_MULTIPLIER;
-    public static final int FOREGROUND_NOTIFICATION_ID = NOTIFICATION_ID_MULTIPLIER * 4;
+    static final int FOREGROUND_NOTIFICATION_ID = NOTIFICATION_ID_MULTIPLIER * 4;
     private static final int ERROR_NOTIFICATION_ID = NOTIFICATION_ID_MULTIPLIER * 6;
     private final XmppConnectionService mXmppConnectionService;
     private final LinkedHashMap<String, ArrayList<Message>> notifications = new LinkedHashMap<>();
@@ -226,7 +224,7 @@ public class NotificationService {
         }
     }
 
-    public void pushFromDirectReply(final Message message) {
+    void pushFromDirectReply(final Message message) {
         synchronized (notifications) {
             pushToStack(message);
             updateNotification(false);
@@ -252,8 +250,7 @@ public class NotificationService {
 
     private List<String> getBacklogConversations(Account account) {
         final List<String> conversations = new ArrayList<>();
-        for (Iterator<Map.Entry<Conversation, AtomicInteger>> it = mBacklogMessageCounter.entrySet().iterator(); it.hasNext(); ) {
-            Map.Entry<Conversation, AtomicInteger> entry = it.next();
+        for (Map.Entry<Conversation, AtomicInteger> entry : mBacklogMessageCounter.entrySet()) {
             if (entry.getKey().getAccount() == account) {
                 conversations.add(entry.getKey().getUuid());
             }
@@ -274,7 +271,7 @@ public class NotificationService {
         return count;
     }
 
-    public void finishBacklog(boolean notify) {
+    void finishBacklog(boolean notify) {
         finishBacklog(notify, null);
     }
 
@@ -369,7 +366,7 @@ public class NotificationService {
         updateNotification(notify, null, false);
     }
 
-    public void updateNotification(final boolean notify, final List<String> conversations) {
+    private void updateNotification(final boolean notify, final List<String> conversations) {
         updateNotification(notify, conversations, false);
     }
 
@@ -885,7 +882,7 @@ public class NotificationService {
         return PendingIntent.getActivity(mXmppConnectionService, 0, new Intent(mXmppConnectionService, ConversationsActivity.class), 0);
     }
 
-    public void updateErrorNotification() {
+    void updateErrorNotification() {
         if (Config.SUPPRESS_ERROR_NOTIFICATION) {
             cancel(ERROR_NOTIFICATION_ID);
             return;
@@ -897,7 +894,7 @@ public class NotificationService {
                 errors.add(account);
             }
         }
-        if (Compatibility.keepForegroundService(mXmppConnectionService)) {
+        if (mXmppConnectionService.foregroundNotificationNeedsUpdatingWhenErrorStateChanges()) {
             notify(FOREGROUND_NOTIFICATION_ID, createForegroundNotification());
         }
         final Notification.Builder mBuilder = new Notification.Builder(mXmppConnectionService);
@@ -940,7 +937,7 @@ public class NotificationService {
         notify(ERROR_NOTIFICATION_ID, mBuilder.build());
     }
 
-    public void updateFileAddingNotification(int current, Message message) {
+    void updateFileAddingNotification(int current, Message message) {
         Notification.Builder mBuilder = new Notification.Builder(mXmppConnectionService);
         mBuilder.setContentTitle(mXmppConnectionService.getString(R.string.transcoding_video));
         mBuilder.setProgress(100, current, false);
@@ -954,7 +951,7 @@ public class NotificationService {
         notify(FOREGROUND_NOTIFICATION_ID, notification);
     }
 
-    public void dismissForcedForegroundNotification() {
+    void dismissForcedForegroundNotification() {
         cancel(FOREGROUND_NOTIFICATION_ID);
     }
 

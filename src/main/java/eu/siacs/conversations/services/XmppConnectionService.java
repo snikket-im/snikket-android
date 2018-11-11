@@ -1105,6 +1105,10 @@ public class XmppConnectionService extends Service {
         Log.d(Config.LOGTAG,"ForegroundService: "+(status?"on":"off"));
     }
 
+    public boolean foregroundNotificationNeedsUpdatingWhenErrorStateChanges() {
+        return !mForceForegroundService.get() && Compatibility.keepForegroundService(this) && hasEnabledAccounts();
+    }
+
     @Override
     public void onTaskRemoved(final Intent rootIntent) {
         super.onTaskRemoved(rootIntent);
