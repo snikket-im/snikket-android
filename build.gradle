@@ -73,9 +73,9 @@ android {
 
     defaultConfig {
         minSdkVersion 19
-        targetSdkVersion 25
-        versionCode 297
-        versionName "2.3.5"
+        targetSdkVersion 28
+        versionCode 299
+        versionName "2.3.6"
         archivesBaseName += "-$versionName"
         applicationId "eu.siacs.conversations"
         resValue "string", "applicationId", applicationId
@@ -206,7 +206,7 @@ android {
     }
 
     lintOptions {
-        disable 'MissingTranslation', 'InvalidPackage', 'MissingQuantity', 'AppCompatResource'
+        disable 'ExtraTranslation', 'MissingTranslation', 'InvalidPackage', 'MissingQuantity', 'AppCompatResource'
     }
 
     subprojects {

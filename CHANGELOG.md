@@ -1,5 +1,9 @@
 # Changelog
 
+### Version 2.3.6
+* Improved handling of bookmark nicks
+* Show send PM menu entry in anonymous MUCs
+
 ### Version 2.3.5
 * Fixed group chat mentions when nick ends in . (dot)
 * Fixed Conversations not asking for permissions after direct share
