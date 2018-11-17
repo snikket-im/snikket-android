@@ -560,6 +560,11 @@ public class XmppConnectionService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         final String action = intent == null ? null : intent.getAction();
+        final boolean needsForegroundService = intent != null && intent.getBooleanExtra(EventReceiver.EXTRA_NEEDS_FOREGROUND_SERVICE, false);
+        if (needsForegroundService) {
+            Log.d(Config.LOGTAG,"toggle forced foreground service after receiving event");
+            toggleForegroundService(true);
+        }
         String pushedAccountHash = null;
         boolean interactive = false;
         if (action != null) {
@@ -1093,8 +1098,12 @@ public class XmppConnectionService extends Service {
     }
 
     public void toggleForegroundService() {
+        toggleForegroundService(false);
+    }
+
+    private void toggleForegroundService(boolean force) {
         final boolean status;
-        if (mForceForegroundService.get() || (Compatibility.keepForegroundService(this) && hasEnabledAccounts())) {
+        if (force || mForceForegroundService.get() || (Compatibility.keepForegroundService(this) && hasEnabledAccounts())) {
             startForeground(NotificationService.FOREGROUND_NOTIFICATION_ID, this.mNotificationService.createForegroundNotification());
             status = true;
         } else {
