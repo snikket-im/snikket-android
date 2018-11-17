@@ -1167,10 +1167,14 @@ public class StartConversationActivity extends XmppActivity implements XmppConne
 		@NonNull
 		@Override
 		public Fragment instantiateItem(@NonNull ViewGroup container, int position) {
-			Fragment fragment = getItem(position);
-			FragmentTransaction trans = fragmentManager.beginTransaction();
+			final Fragment fragment = getItem(position);
+			final FragmentTransaction trans = fragmentManager.beginTransaction();
 			trans.add(container.getId(), fragment, "fragment:" + position);
-			trans.commit();
+			try {
+				trans.commit();
+			} catch (IllegalStateException e) {
+				//ignore
+			}
 			return fragment;
 		}
 
