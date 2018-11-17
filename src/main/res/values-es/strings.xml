@@ -121,6 +121,8 @@
   <string name="pref_confirm_messages">Confirmar mensajes</string>
   <string name="pref_confirm_messages_summary">Permitir a tus contactos saber cuando has recibido y leído sus mensajes</string>
   <string name="pref_ui_options">Pantalla</string>
+  <string name="openpgp_error">OpenKeychain reportó un error.</string>
+  <string name="bad_key_for_encryption">Clave errónea para el cifrado.</string>
   <string name="accept">Aceptar</string>
   <string name="error">Ha ocurrido un error</string>
   <string name="recording_error">Error</string>
@@ -265,8 +267,6 @@
   <string name="pref_allow_message_correction_summary">Permitir a tus contactos editar mensajes previamente enviados</string>
   <string name="pref_expert_options">Opciones para expertos</string>
   <string name="pref_expert_options_summary">Por favor, cuidado con estas opciones</string>
-  <string name="title_activity_about">Acerca de Conversations</string>
-  <string name="pref_about_conversations_summary">Información de compilación y licencia</string>
   <string name="title_pref_quiet_hours">Horario de silencio</string>
   <string name="title_pref_quiet_hours_start_time">Hora de comienzo</string>
   <string name="title_pref_quiet_hours_end_time">Hora de fin</string>
@@ -487,7 +487,6 @@
   <string name="no_storage_permission">Conversations necesita acceder al almacenamiento externo</string>
   <string name="no_camera_permission">Conversations necesita acceder a la cámara</string>
   <string name="sync_with_contacts">Sincronizar contactos</string>
-  <string name="sync_with_contacts_long">Conversations quiere cruzar tu lista de contactos de XMPP con tus contactos del móvil para mostrar sus nombres completos y sus fotos de perfil.\n\nConversations solo leerá tus contactos y los cruzará localmente sin subirlos a tu servidor.\n\nEl sistema te preguntará ahora para conceder los permisos de acceso a tus contactos del móvil.</string>
   <string name="notify_on_all_messages">Notificar para todos los mensajes</string>
   <string name="notify_only_when_highlighted">Notificar solo cuando eres mencionado</string>
   <string name="notify_never">Notificaciones deshabilitadas</string>
@@ -721,7 +720,6 @@
   <string name="providing_a_name_is_optional">Añadir un nombre es opcional</string>
   <string name="create_dialog_group_chat_name">Nombre de la Conversación en grupo</string>
   <string name="conference_destroyed">Esta conversación en grupo ha sido destruida</string>
-  <string name="phone_book">Libreta de direcciones</string>
   <string name="unable_to_save_recording">No se ha podido grabar la grabación</string>
   <string name="foreground_service_channel_name">Servicio en primer plano</string>
   <string name="foreground_service_channel_description">Esta categoría de notificación se usa para mostrar una notificación permantente indicando que Conversations está ejecutándose.</string>
@@ -744,4 +742,5 @@
   <string name="video_360p">Medio (360p)</string>
   <string name="video_720p">Alta (720p)</string>
   <string name="cancelled">cancelado</string>
+  <string name="already_drafting_message">Ya estás redactando un mensaje.</string>
 </resources>

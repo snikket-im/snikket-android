@@ -195,8 +195,6 @@
   <string name="ignore">Ignorovať</string>
   <string name="without_mutual_presence_updates"><b>Varovanie:</b> Odoslanie bez povolenia zmien stavu môže spôsobiť nečakané problémy na obidvoch stranách.\n\n<small>Prejdi na detaily kontaktu pre overenie povolenia o zmenách stavu.</small></string>
   <string name="pref_expert_options_summary">S týmto narábajte veľmi opatrne, prosím</string>
-  <string name="title_activity_about">O Conversations</string>
-  <string name="pref_about_conversations_summary">Informácie o tvorbe a licencii</string>
   <string name="title_pref_quiet_hours">Tichý režim</string>
   <string name="title_pref_quiet_hours_start_time">Čas začiatku</string>
   <string name="title_pref_quiet_hours_end_time">Čas konca</string>

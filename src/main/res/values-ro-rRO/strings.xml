@@ -121,6 +121,8 @@
   <string name="pref_confirm_messages">Confirmă mesajele</string>
   <string name="pref_confirm_messages_summary">Contactele sunt notificate atunci când ați primit un mesaj și l-ați citit</string>
   <string name="pref_ui_options">Opțiuni interfață</string>
+  <string name="openpgp_error">OpenKeychain a raportat o eroare.</string>
+  <string name="bad_key_for_encryption">Cheie invalidă pentru criptare.</string>
   <string name="accept">Acceptă</string>
   <string name="error">A apărut o eroare</string>
   <string name="recording_error">Eroare</string>
@@ -265,8 +267,6 @@
   <string name="pref_allow_message_correction_summary">Contactele pot să își editeze mesajele scrise în trecut</string>
   <string name="pref_expert_options">Opțiuni expert</string>
   <string name="pref_expert_options_summary">Vă rugăm să aveți grijă cu acestea</string>
-  <string name="title_activity_about">Despre Conversations</string>
-  <string name="pref_about_conversations_summary">Informații despre versiune și licență</string>
   <string name="title_pref_quiet_hours">Ore de liniște</string>
   <string name="title_pref_quiet_hours_start_time">Ora de începere</string>
   <string name="title_pref_quiet_hours_end_time">Ora de terminare</string>
@@ -489,7 +489,6 @@
   <string name="no_storage_permission">Conversations are nevoie de acces la stocarea externă</string>
   <string name="no_camera_permission">Conversations are nevoie de acces la camera foto</string>
   <string name="sync_with_contacts">Sincronizează cu contactele</string>
-  <string name="sync_with_contacts_long">Conversations dorește să potrivească lista de contacte XMPP cu cea din dispozitiv pentru a putea afișa numele lor complete și avatarele.\n\nConversations doar va citi și potrivi local fără să le încarce pe vreun server.\n\nUrmează să fiți întrebați dacă doriți să permiteți accesul la contacte.</string>
   <string name="notify_on_all_messages">Notifică la toate mesajele</string>
   <string name="notify_only_when_highlighted">Notifică doar atunci când cineva vă menționează numele</string>
   <string name="notify_never">Notificări dezactivate</string>
@@ -731,7 +730,6 @@ sau chiar pierderea mesajelor.\nÎn continuare veți fi rugați să dezactivați
   <string name="providing_a_name_is_optional">Setarea numelui este opțională</string>
   <string name="create_dialog_group_chat_name">Titlul discuției de grup</string>
   <string name="conference_destroyed">Această discuție de grup a fost distrusă</string>
-  <string name="phone_book">Agendă</string>
   <string name="unable_to_save_recording">Nu s-a putut salva înregistrarea</string>
   <string name="foreground_service_channel_name">Serviciul activ în prim-plan</string>
   <string name="foreground_service_channel_description">Această categorie de notificări este folosită pentru a arăta o notificare permanentă ce indică rularea Conversations</string>
@@ -754,4 +752,5 @@ sau chiar pierderea mesajelor.\nÎn continuare veți fi rugați să dezactivați
   <string name="video_360p">Medie (360p)</string>
   <string name="video_720p">Mare (720p)</string>
   <string name="cancelled">anulat</string>
+  <string name="already_drafting_message">Deja aveți ciorna unui mesaj.</string>
 </resources>

@@ -261,8 +261,6 @@
   <string name="pref_allow_message_correction_summary">Дозвољава вашим контактима да ретроактивно уређују њихове поруке</string>
   <string name="pref_expert_options">Поставке за стручњаке</string>
   <string name="pref_expert_options_summary">Будите пажљиви са овим</string>
-  <string name="title_activity_about">О Конверзацији</string>
-  <string name="pref_about_conversations_summary">Подаци о издању и лиценци</string>
   <string name="title_pref_quiet_hours">Тихи сати</string>
   <string name="title_pref_quiet_hours_start_time">Време почетка</string>
   <string name="title_pref_quiet_hours_end_time">Време завршетка</string>
@@ -481,7 +479,6 @@
   <string name="shared_images_with_x">Подељене слике са %s</string>
   <string name="shared_text_with_x">Подељен текст са %s</string>
   <string name="sync_with_contacts">Синхронизуј са контактима</string>
-  <string name="sync_with_contacts_long">Конверзација жели да поклапи ваш ИксМПП именик са контактима на вашем уређају да би приказала њихова пуна имена и аватаре.\n\nКонверзација ће само да очита ваше контакте и упореди их локално без отпремања на сервер.\n\nСада ћете бити упитани за дозволу приступа вашим контактима.</string>
   <string name="notify_on_all_messages">Обавештења за све поруке</string>
   <string name="notify_never">Обавештења искључена</string>
   <string name="notify_paused">Обавештења паузирана</string>
@@ -662,7 +659,6 @@
   <string name="providing_a_name_is_optional">Име је опционо</string>
   <string name="create_dialog_group_chat_name">Назив групног ћаскања</string>
   <string name="conference_destroyed">Ово групно ћаскање је обрисано</string>
-  <string name="phone_book">Адресар</string>
   <string name="notification_group_messages">Поруке</string>
   <string name="messages_channel_name">Поруке</string>
   <string name="silent_messages_channel_name">Тихе поруке</string>

@@ -267,8 +267,6 @@
   <string name="pref_allow_message_correction_summary">Sta je contacten toe hun berichten na het versturen te verbeteren</string>
   <string name="pref_expert_options">Instellingen voor experts</string>
   <string name="pref_expert_options_summary">Wees voorzichtig met deze instellingen</string>
-  <string name="title_activity_about">Over Conversations</string>
-  <string name="pref_about_conversations_summary">Build en licentie-informatie</string>
   <string name="title_pref_quiet_hours">Stille uren</string>
   <string name="title_pref_quiet_hours_start_time">Begintijd</string>
   <string name="title_pref_quiet_hours_end_time">Eindtijd</string>
@@ -489,7 +487,6 @@
   <string name="no_storage_permission">Conversations heeft toegang nodig tot de externe opslag</string>
   <string name="no_camera_permission">Conversations heeft toegang nodig tot de camera</string>
   <string name="sync_with_contacts">Synchroniseer met contacten</string>
-  <string name="sync_with_contacts_long">Conversations wil je XMPP-contacten met je systeemcontacten vergelijken om hun volledige namen en avatars te tonen.\n\nConversations zal je contacten enkel lokaal lezen en vergelijken zonder ze te uploaden naar je server.\n\nJe zal nu gevraagd worden Conversations toegang te verlenen tot je contacten.</string>
   <string name="notify_on_all_messages">Melding bij alle berichten</string>
   <string name="notify_only_when_highlighted">Melding enkel wanneer aangesproken</string>
   <string name="notify_never">Meldingen uitgeschakeld</string>
@@ -723,7 +720,6 @@
   <string name="providing_a_name_is_optional">Naam is niet vereist</string>
   <string name="create_dialog_group_chat_name">Gespreksnaam</string>
   <string name="conference_destroyed">Dit groepsgesprek is verwijderd</string>
-  <string name="phone_book">Adresboek</string>
   <string name="unable_to_save_recording">Kan opname niet opslaan</string>
   <string name="foreground_service_channel_name">Voorgronddienst</string>
   <string name="foreground_service_channel_description">Deze meldingscategorie wordt gebruikt om een permanente melding weer te geven dat Conversations wordt uitgevoerd.</string>

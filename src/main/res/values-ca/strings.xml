@@ -260,8 +260,6 @@
   <string name="pref_allow_message_correction_summary">Permet que els contactes editin de manera retroactiva els missatges</string>
   <string name="pref_expert_options">Configuració d\'experts</string>
   <string name="pref_expert_options_summary">Aneu amb cura</string>
-  <string name="title_activity_about">Quant al Conversations</string>
-  <string name="pref_about_conversations_summary">Informació sobre la construció i la seva llicència</string>
   <string name="title_pref_quiet_hours">Hores de silenci</string>
   <string name="title_pref_quiet_hours_start_time">Hora d\'inici</string>
   <string name="title_pref_quiet_hours_end_time">Hora de finalització</string>
@@ -485,11 +483,6 @@ mentrestant.</string>
   <string name="no_storage_permission">Conversations necessita accés a emmagatzematge extern</string>
   <string name="no_camera_permission">Conversations necessita accés a la càmera</string>
   <string name="sync_with_contacts">Sincronitza amb contactes</string>
-  <string name="sync_with_contacts_long">Conversations vol coincidir amb la vostra llista XMPP amb els vostres contactes per 
-mostrar els noms i avatars complets.\n\nConversations només 
-llegeix els vostres contactes i els relacionaran localment sense haver
- de penjar-les al vostre servidor.\n\nAra se us demanarà que 
-concediu permís per accedir als teus contactes.</string>
   <string name="notify_on_all_messages">Notifica a tots els missatges</string>
   <string name="notify_only_when_highlighted">Notifica només quan s\'esmenta</string>
   <string name="notify_never">S\'han desactivat les notificacions</string>
@@ -731,5 +724,4 @@ que l\'administrador del servidor llegeixi els missatges, però pot ser l\'únic
   <string name="providing_a_name_is_optional">Proporcionar un nom és opcional</string>
   <string name="create_dialog_group_chat_name">Nom del xat en grup</string>
   <string name="conference_destroyed">Aquest xat en grup ha estat destruït</string>
-  <string name="phone_book">Agenda d\'adreces</string>
 </resources>

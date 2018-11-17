@@ -232,8 +232,6 @@
   <string name="pref_allow_message_correction_summary">친구들이 메세지를 소급 수정할 수 있도록 허가</string>
   <string name="pref_expert_options">전문가 설정</string>
   <string name="pref_expert_options_summary">설정시 주의하시기 바랍니다</string>
-  <string name="title_activity_about">Conversations에 대해서 </string>
-  <string name="pref_about_conversations_summary">빌드 및 라이센스 정보 </string>
   <string name="title_pref_quiet_hours">무음 시간대 </string>
   <string name="title_pref_quiet_hours_start_time">시작 시간 </string>
   <string name="title_pref_quiet_hours_end_time">마감 시간 </string>
@@ -411,7 +409,6 @@
   <string name="shared_images_with_x">%s로 이미지를 공유</string>
   <string name="shared_text_with_x">%s 에서 텍스트를 공유</string>
   <string name="sync_with_contacts">연락처와 동기화</string>
-  <string name="sync_with_contacts_long">Conversations는 XMPP 명단과 연락처 명단을 대조시켜서 이름과 아바타를 표시하고자 합니다.\n\nConversations는 당신의 서버에 업로드하지 않고 기기 내부적으로만 연락처를 읽고 대조를 할 것입니다.\n\n이제 연락처에 접근할 권한을 당신에게 물어볼 것입니다.</string>
   <string name="notify_on_all_messages">모든 메세지를 알림</string>
   <string name="notify_never">알림 해제됨</string>
   <string name="notify_paused">알림 일시중지됨</string>

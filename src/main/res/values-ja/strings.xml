@@ -253,8 +253,6 @@
   <string name="pref_allow_message_correction_summary">連絡先が、遡及的に自分のメッセージを編集することを許可します</string>
   <string name="pref_expert_options">エキスパート設定</string>
   <string name="pref_expert_options_summary">ご利用は注意してください</string>
-  <string name="title_activity_about">Conversations について</string>
-  <string name="pref_about_conversations_summary">ビルドおよびライセンス情報</string>
   <string name="title_pref_quiet_hours">消音時間</string>
   <string name="title_pref_quiet_hours_start_time">開始時間</string>
   <string name="title_pref_quiet_hours_end_time">終了時間</string>
@@ -455,7 +453,6 @@
   <string name="shared_images_with_x">%s で画像を共有</string>
   <string name="shared_text_with_x">%s でテキストを共有</string>
   <string name="sync_with_contacts">連絡先と同期</string>
-  <string name="sync_with_contacts_long">Conversations はフルネームやアバターを表示するために、連絡先と XMPP 名簿と一致するようにしたいです。\n\nConversations は、サーバーにアップロードすることはなく、ローカルで連絡先を読んで一致させるだけです。\n\n今、連絡先へのアクセス許可を付与するように求められます。</string>
   <string name="notify_on_all_messages">すべてのメッセージで通知</string>
   <string name="notify_only_when_highlighted">メンションされたときにのみ通知</string>
   <string name="notify_never">通知は無効</string>

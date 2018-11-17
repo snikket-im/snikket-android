@@ -265,8 +265,6 @@
   <string name="pref_allow_message_correction_summary">Permite que seus contatos editem suas mensagens retroativamente.</string>
   <string name="pref_expert_options">Configurações avançadas</string>
   <string name="pref_expert_options_summary">Por favor, use com cuidado.</string>
-  <string name="title_activity_about">Sobre o Conversations</string>
-  <string name="pref_about_conversations_summary">Informações de licenciamento e construção.</string>
   <string name="title_pref_quiet_hours">Horário de sossego</string>
   <string name="title_pref_quiet_hours_start_time">Início</string>
   <string name="title_pref_quiet_hours_end_time">Fim</string>
@@ -487,7 +485,6 @@
   <string name="no_storage_permission">O Conversations necessita de acesso ao armazenamento externo</string>
   <string name="no_camera_permission">O Conversations necessita de acesso à câmera</string>
   <string name="sync_with_contacts">Sincronizar com os contatos</string>
-  <string name="sync_with_contacts_long">O Conversations quer procurar por correspondências entre contatos da sua conta Jabber e do seu telefone, para complementar as informações de nome completo e avatares\n\nO Conversations fará a verificação localmente, sem enviar nenhuma informação sua para o servidor\n\nVocê será solicitado a fornecer permissão de acesso aos seus contatos agora.</string>
   <string name="notify_on_all_messages">Notificar em todas as mensagens</string>
   <string name="notify_only_when_highlighted">Notificar somente quando for mencionado</string>
   <string name="notify_never">Notificações desabilitadas</string>
@@ -721,7 +718,6 @@
   <string name="providing_a_name_is_optional">O fornecimento do nome é opcional</string>
   <string name="create_dialog_group_chat_name">Nome da conversa em grupo</string>
   <string name="conference_destroyed">Essa conversa em grupo foi destruída</string>
-  <string name="phone_book">Livro de endereços</string>
   <string name="unable_to_save_recording">Não foi possível salvar a gravação</string>
   <string name="foreground_service_channel_name">Serviço ativo</string>
   <string name="foreground_service_channel_description">Essa categoria de notificação é utilizada para exibir uma notificação permanente indicando que o Conversations está em execução.</string>

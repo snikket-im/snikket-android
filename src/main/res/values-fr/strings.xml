@@ -265,8 +265,6 @@
   <string name="pref_allow_message_correction_summary">Permet à vos contacts d\'éditer leurs messages rétroactivement</string>
   <string name="pref_expert_options">Paramètres avancés</string>
   <string name="pref_expert_options_summary">À utiliser avec précaution.</string>
-  <string name="title_activity_about">À propos</string>
-  <string name="pref_about_conversations_summary">Informations sur la version et les licences</string>
   <string name="title_pref_quiet_hours">Heures tranquilles</string>
   <string name="title_pref_quiet_hours_start_time">Heure de début</string>
   <string name="title_pref_quiet_hours_end_time">Heure de fin</string>
@@ -487,7 +485,6 @@
   <string name="no_storage_permission">Conversations a besoin d\'accéder au stockage externe</string>
   <string name="no_camera_permission">Conversations a besoin d\'accéder à l\'appareil photo</string>
   <string name="sync_with_contacts">Synchroniser avec contacts</string>
-  <string name="sync_with_contacts_long">Conversations souhaite associer vos contacts XMPP avec les contacts de votre appareil, pour utiliser leur nom complet et leur avatar.\n\nConversations va uniquement lire vos contacts et les associer localement, sans les envoyer sur le serveur XMPP.\n\nVotre appareil va maintenant vous demander la permission d\'accéder à vos contacts.</string>
   <string name="notify_on_all_messages">Notifier pour tous les messages</string>
   <string name="notify_only_when_highlighted">Notifier seulement en cas de mention</string>
   <string name="notify_never">Notifications désactivées</string>
@@ -721,7 +718,6 @@
   <string name="providing_a_name_is_optional">Fournir un nom est facultatif</string>
   <string name="create_dialog_group_chat_name">Nom de la conversation de groupe</string>
   <string name="conference_destroyed">Cette conversation de groupe a été supprimée</string>
-  <string name="phone_book">Carnet d\'adresses</string>
   <string name="unable_to_save_recording">Impossible de sauvegarder l\'enregistrement</string>
   <string name="foreground_service_channel_name">Service au premier plan</string>
   <string name="foreground_service_channel_description">Cette catégorie de notification est utilisée pour afficher une notification permanente indiquant que Conversations est en cours.</string>

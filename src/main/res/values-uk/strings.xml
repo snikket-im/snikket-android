@@ -238,8 +238,6 @@
   <string name="pref_allow_message_correction_summary">Дозволити контактам редагувати свої повідомлення після відправки</string>
   <string name="pref_expert_options">Експертні налаштування</string>
   <string name="pref_expert_options_summary">Будь ласка, будьте обережними з цим</string>
-  <string name="title_activity_about">Про Розмови</string>
-  <string name="pref_about_conversations_summary">Інформація про збірку та ліцензію</string>
   <string name="title_pref_quiet_hours">Години тиші</string>
   <string name="title_pref_quiet_hours_start_time">Час початку</string>
   <string name="title_pref_quiet_hours_end_time">Час завершення</string>
@@ -427,7 +425,6 @@
   <string name="shared_images_with_x">Поділився зображеннями з %s</string>
   <string name="shared_text_with_x">Поділився текстом з %s</string>
   <string name="sync_with_contacts">Синхронізувати контакти</string>
-  <string name="sync_with_contacts_long">Програма хоче співставити Ваш список XMPP розмов з вашою книгою контактів, щоб показати повні імена та аватари контактів.\n\nПрограма лише прочитає Ваші контакти і співставить їх локально без завантаження їх до Вашого сервера.\n\nЗараз Вас попросять надати дозвіл для доступу до Ваших контактів.</string>
   <string name="notify_on_all_messages">Сповіщати про всі повідомлення</string>
   <string name="notify_only_when_highlighted">Повідомляти, лише якщо згадують</string>
   <string name="notify_never">Сповіщення вимкнено</string>

@@ -233,8 +233,6 @@
   <string name="pref_allow_message_correction_summary">Kişilerinizin geçmiş iletilerini düzeltmelerine izin ver</string>
   <string name="pref_expert_options">Uzman seçenekleri</string>
   <string name="pref_expert_options_summary">Lütfen dikkatli olun</string>
-  <string name="title_activity_about">Conversations hakkında</string>
-  <string name="pref_about_conversations_summary">Geliştirme ve lisans bilgisi</string>
   <string name="title_pref_quiet_hours">Sessiz Saatler</string>
   <string name="title_pref_quiet_hours_start_time">Başlangıç zamanı</string>
   <string name="title_pref_quiet_hours_end_time">Bitiş zamanı</string>
@@ -414,7 +412,6 @@
   <string name="shared_images_with_x">%s ile paylaşılan resimler</string>
   <string name="shared_text_with_x">%s ile paylaşılan metin</string>
   <string name="sync_with_contacts">Kişilerle senkronize et</string>
-  <string name="sync_with_contacts_long">Conversations XMPP listenizi telefon rehberinizle eşleştirerek kişilerin tam adlarını ve avatarlarını göstermek istiyor.\n\nConversations telefon rehberinizi yalnızca okuyacak ve onları sunucunuza yüklemeden eşleştirecek.\n\nŞimdi telefon rehberinize erişilmesine izin vermeniz istenecek.</string>
   <string name="notify_on_all_messages">Tüm iletilerde uyar</string>
   <string name="notify_never">Uyarılar devre dışı</string>
   <string name="notify_paused">Uyarılar geçici olarak durduruldu</string>

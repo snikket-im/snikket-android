@@ -244,8 +244,6 @@
   <string name="pref_security_settings">Ασφάλεια</string>
   <string name="pref_allow_message_correction">Να επιτρέπεται η διόρθωση μηνυμάτων</string>
   <string name="pref_expert_options_summary">Παρακαλώ να είστε προσεκτικοί με αυτά</string>
-  <string name="title_activity_about">Σχετικά με το Conversations</string>
-  <string name="pref_about_conversations_summary">Πληροφορίες δημιουργίας και αδειών</string>
   <string name="title_pref_quiet_hours">Ώρες ησυχίας</string>
   <string name="title_pref_quiet_hours_start_time">Ώρα έναρξης</string>
   <string name="title_pref_quiet_hours_end_time">Ώρα λήξης</string>

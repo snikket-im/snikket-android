@@ -242,8 +242,6 @@
   <string name="pref_allow_message_correction_summary">السماح لمراسليك بتعديل رسائلهم</string>
   <string name="pref_expert_options">إعدادات متقدمة</string>
   <string name="pref_expert_options_summary">كن حذراً مع هذه من فضلك</string>
-  <string name="title_activity_about">عن تطبيق المحادثات Conversations</string>
-  <string name="pref_about_conversations_summary">معلومات حول التطبيق و الرخصة</string>
   <string name="title_pref_quiet_hours">ساعات السكون</string>
   <string name="title_pref_quiet_hours_start_time">وقت البداية</string>
   <string name="title_pref_quiet_hours_end_time">وقت النهاية</string>

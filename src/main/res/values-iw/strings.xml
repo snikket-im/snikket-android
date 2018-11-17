@@ -197,8 +197,6 @@
   <string name="ignore">התעלם</string>
   <string name="without_mutual_presence_updates"><b>אזהרה:</b>שליחה ללא הרשאות עדכוני נוכחות הדדיות עלולה לגרום לתוצאות בלתי צפויות.\n\n<small>השתמש בתפריט \"פרטי משתמש\" ואשר עדכוני נוכחות</small></string>
   <string name="pref_expert_options_summary">נא להיזהר!</string>
-  <string name="title_activity_about">אודות Conversations</string>
-  <string name="pref_about_conversations_summary">אודות גרסה ורישיון </string>
   <string name="title_pref_quiet_hours">שעות שקטות</string>
   <string name="title_pref_quiet_hours_start_time">זמן התחלה</string>
   <string name="title_pref_quiet_hours_end_time">זמן סיום</string>
@@ -347,5 +345,4 @@
   <string name="shared_file_with_x">שתף קובץ בעזרת %s</string>
   <string name="shared_image_with_x">שתף תמונה בעזרת %s</string>
   <string name="sync_with_contacts">סנכרן עם אנשי קשר</string>
-  <string name="sync_with_contacts_long">‏Conversations מבקשת להתאים את רשימת XMPP שלך עם אנשי הקשר שלך כדי להציג את השמות המלאים שלהם כולל אווטארים.\n\nConversations רק תקרא את אנשי הקשר שלך ותתאים אותם באופן מקומי מבלי להעלות אותם לשרת שלך.\n\nכעת אתה תתבקש להעניק הרשאה כדי לגשת להתקן שלך.</string>
 </resources>

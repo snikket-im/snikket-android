@@ -255,8 +255,6 @@
   <string name="pref_allow_message_correction_summary">La dine kontakter korrigere sine meldinger i ettertid</string>
   <string name="pref_expert_options">Ekspertinnstillinger</string>
   <string name="pref_expert_options_summary">Vær forsiktig med disse</string>
-  <string name="title_activity_about">Om Conversations</string>
-  <string name="pref_about_conversations_summary">Utgave og lisensinformasjon</string>
   <string name="title_pref_quiet_hours">Stille tidsavgrensning</string>
   <string name="title_pref_quiet_hours_start_time">Oppstart</string>
   <string name="title_pref_quiet_hours_end_time">Avslutning</string>
@@ -463,7 +461,6 @@
   <string name="shared_images_with_x">Del bilder med %s</string>
   <string name="shared_text_with_x">Del tekst med %s</string>
   <string name="sync_with_contacts">Synkroniser med kontakter</string>
-  <string name="sync_with_contacts_long">Conversations vil jamføre din XMPP-kontaktliste med dine kontakter for å vise dem med navn og profilbilde.\n\nConversations leser bare dine kontakter for å jamføre dem lokalt, uten å laste dem opp til tjeneren din.\n\nDu kommer nå til å bli spurt om tilgangstillatelse til dine kontakter.</string>
   <string name="notify_on_all_messages">Varsle ved alle meldinger</string>
   <string name="notify_only_when_highlighted">Varsle bare når fremhevet</string>
   <string name="notify_never">Varslinger deaktivert</string>

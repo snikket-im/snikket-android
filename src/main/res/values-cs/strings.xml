@@ -231,8 +231,6 @@
   <string name="pref_allow_message_correction_summary">Povolí kontaktům zpětné upravování jejich zpráv</string>
   <string name="pref_expert_options">Expertní nastavení</string>
   <string name="pref_expert_options_summary">S tímto zacházejte velmi opatrně</string>
-  <string name="title_activity_about">O aplikaci Conversations</string>
-  <string name="pref_about_conversations_summary">Informace o sestavení a licenci</string>
   <string name="title_pref_quiet_hours">Tichý režim</string>
   <string name="title_pref_quiet_hours_start_time">Odkdy</string>
   <string name="title_pref_quiet_hours_end_time">Dokdy</string>
@@ -410,7 +408,6 @@
   <string name="shared_images_with_x">Obrázky sdíleny s %s</string>
   <string name="shared_text_with_x">Text sdílen s %s</string>
   <string name="sync_with_contacts">Synchronizovat s kontakty</string>
-  <string name="sync_with_contacts_long">Aplikace Conversations by ráda porovnala svůj XMPP seznam s vašimi kontakty, aby mohla zobrazit plná jména a avatary.\n\nConversations načte a porovná kontakty pouze lokálně, bez jejich nahrávání na server.\n\nNyní budete dotázáni na udělení práv pro přístup k seznamu kontaktů.</string>
   <string name="notify_on_all_messages">Upozorňovat na všechny zprávy</string>
   <string name="notify_never">Upozornění vypnuta</string>
   <string name="notify_paused">Upozornění pozastavena</string>

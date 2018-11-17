@@ -228,8 +228,6 @@
   <string name="ignore">Bỏ qua</string>
   <string name="without_mutual_presence_updates"><b>Cảnh báo:</b> Gửi mà không có cập nhật hiện diện của nhau có thể gây ra vấn đề khó lường.\n\n<small>Vào chi tiết liên hệ để xác minh đăng ký hiện diện của bạn.</small></string>
   <string name="pref_expert_options_summary">Xin hãy cẩn trọng với chúng</string>
-  <string name="title_activity_about">Thông tin về Conversations</string>
-  <string name="pref_about_conversations_summary">Thông tin bản dựng và giấy phép</string>
   <string name="title_pref_quiet_hours">Giờ yên lặng</string>
   <string name="title_pref_quiet_hours_start_time">Thời gian bắt đầu</string>
   <string name="title_pref_quiet_hours_end_time">Thời gian kết thúc</string>
@@ -379,7 +377,6 @@
   <string name="shared_file_with_x">Chia sẻ tập tin với %s</string>
   <string name="shared_image_with_x">Chia sẻ hình với %s</string>
   <string name="sync_with_contacts">Đồng bộ với danh bạ</string>
-  <string name="sync_with_contacts_long">Conversations muốn so sánh danh sách bạn bè XMPP với danh bạ của bạn để hiện tên đầy đủ và ảnh đại diện của họ.\n\nConversations sẽ chỉ đọc danh bạ và so sánh trên thiết bị chứ không tải lên máy chủ.\n\nBây giờ, bạn sẽ được hỏi trao quyền truy cập danh bạ.</string>
   <string name="notify_on_all_messages">Thông báo tất cả tin nhắn</string>
   <string name="notify_never">Đã tắt thông báo</string>
   <string name="notify_paused">Đã dừng thông báo</string>

@@ -267,8 +267,6 @@
   <string name="pref_allow_message_correction_summary">Позволяване на контактите да редактират съобщенията си след като са ги изпратили.</string>
   <string name="pref_expert_options">Експертни настройки</string>
   <string name="pref_expert_options_summary">Моля, бъдете внимателни с тези</string>
-  <string name="title_activity_about">Относно Conversations</string>
-  <string name="pref_about_conversations_summary">Информация за версията и лицензите</string>
   <string name="title_pref_quiet_hours">Тихи часове</string>
   <string name="title_pref_quiet_hours_start_time">Начало</string>
   <string name="title_pref_quiet_hours_end_time">Край</string>
@@ -489,7 +487,6 @@
   <string name="no_storage_permission">Conversations се нуждае от достъп до външно място за съхранение</string>
   <string name="no_camera_permission">Conversations се нуждае от достъп до камерата</string>
   <string name="sync_with_contacts">Синхронизиране с контактите</string>
-  <string name="sync_with_contacts_long">Conversations иска да съчетае Вашия списък в XMPP с контактите Ви, за да показва пълните им имена и снимки..\n\nConversations единствено ще чете контактите Ви и ще ги използва вътрешно, без да ги качва на сървъра Ви.\n\nЩе бъдете помолен/а за позволение за достъп до контактите Ви.</string>
   <string name="notify_on_all_messages">Известяване за всички съобщения</string>
   <string name="notify_only_when_highlighted">Известяване само при споменаване</string>
   <string name="notify_never">Известията са изключени</string>
@@ -723,7 +720,6 @@
   <string name="providing_a_name_is_optional">Въвеждането на име не е задължитално</string>
   <string name="create_dialog_group_chat_name">Име на груповия разговор</string>
   <string name="conference_destroyed">Този групов разговор е унищожен</string>
-  <string name="phone_book">Адресен указател</string>
   <string name="unable_to_save_recording">Записът не може да бъде запазен</string>
   <string name="foreground_service_channel_name">Услуга на преден план</string>
   <string name="foreground_service_channel_description">Тази категория известия се използва за показване на постоянно известие, което показва, че Conversations работи.</string>

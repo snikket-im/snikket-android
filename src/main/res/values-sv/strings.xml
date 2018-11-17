@@ -237,8 +237,6 @@
   <string name="pref_allow_message_correction_summary">Tillåt att dina kontakter kan ändra sina meddelanden i efterhand</string>
   <string name="pref_expert_options">Expertinställningar</string>
   <string name="pref_expert_options_summary">Var försiktig med dem</string>
-  <string name="title_activity_about">Om Conversations</string>
-  <string name="pref_about_conversations_summary">Bygg- och licensinformation</string>
   <string name="title_pref_quiet_hours">Tysta timmar</string>
   <string name="title_pref_quiet_hours_start_time">Starttid</string>
   <string name="title_pref_quiet_hours_end_time">Sluttid</string>
@@ -418,7 +416,6 @@
   <string name="shared_images_with_x">Delade bilder med %s</string>
   <string name="shared_text_with_x">Delade text med %s</string>
   <string name="sync_with_contacts">Synkronisera med kontakter</string>
-  <string name="sync_with_contacts_long">Conversations vill matcha din XMPP-kontaktlista med dina kontakter för att visa deras namn och profilbild.\n\nConversations läser endast dina kontakter för att matcha dem lokalt utan att ladda upp dem till din server.\n\nDu kommer nu få frågan om tillåtelse för att använda kontakterna.</string>
   <string name="notify_on_all_messages">Notifiera för alla meddelanden</string>
   <string name="notify_never">Notifieringar deaktiverade</string>
   <string name="notify_paused">Notifieringar pausade</string>

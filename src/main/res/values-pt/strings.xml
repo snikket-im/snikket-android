@@ -245,8 +245,6 @@
   <string name="pref_allow_message_correction_summary">Permitir que os seus contactos editem as suas mensagens depois de enviadas</string>
   <string name="pref_expert_options">Definições avançadas</string>
   <string name="pref_expert_options_summary">Por favor tenha cuidado com estas</string>
-  <string name="title_activity_about">Sobre Conversations</string>
-  <string name="pref_about_conversations_summary">Informação de licença e construção</string>
   <string name="title_pref_quiet_hours">Horas de tranquilidade</string>
   <string name="title_pref_quiet_hours_start_time">Hora de início</string>
   <string name="title_pref_quiet_hours_end_time">Hora de fim</string>
@@ -453,7 +451,6 @@
   <string name="no_storage_permission">Conversations necessita de acesso ao armazenamento externo</string>
   <string name="no_camera_permission">Conversations necessita de acesso à câmara</string>
   <string name="sync_with_contacts">Sincronizar com contactos</string>
-  <string name="sync_with_contacts_long">A aplicação Conversations deseja fazer a correspondência entre a sua lista de contactos XMPP e os seus contactos para mostrar os seus nomes completos e os seus avatares.\n\nA aplicação Conversations irá apenas ler os seus contactos e fazer a correspondência localmente sem enviar os dados para o seu servidor.\n\nIrá agora ser-lhe pedido para dar permissão para aceder aos seus contactos.</string>
   <string name="notify_on_all_messages">Notificar em todas as mensagens</string>
   <string name="notify_only_when_highlighted">Notificar apenas quando mencionado</string>
   <string name="notify_never">Notificações desativadas</string>

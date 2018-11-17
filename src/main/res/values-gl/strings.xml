@@ -121,6 +121,8 @@
   <string name="pref_confirm_messages">Confirmación de mensaxes</string>
   <string name="pref_confirm_messages_summary">Permitir aos seus contactos saber si recibeu e leu as súas mensaxes</string>
   <string name="pref_ui_options">Interface</string>
+  <string name="openpgp_error">OpenKeychain informou de un fallo.</string>
+  <string name="bad_key_for_encryption">Chave incorrecta para cifrar.</string>
   <string name="accept">Aceptar</string>
   <string name="error">Produciuse un erro</string>
   <string name="recording_error">Fallo</string>
@@ -265,8 +267,6 @@
   <string name="pref_allow_message_correction_summary">Permitir aos seus contactos editar as súas mensaxes de xeito retroactivo</string>
   <string name="pref_expert_options">Axustes de experto</string>
   <string name="pref_expert_options_summary">Por favor teña coidado con estos axustes</string>
-  <string name="title_activity_about">Sobre o Conversations</string>
-  <string name="pref_about_conversations_summary">Información da compilación e licenza</string>
   <string name="title_pref_quiet_hours">Non molestar</string>
   <string name="title_pref_quiet_hours_start_time">Hora de inicio</string>
   <string name="title_pref_quiet_hours_end_time">Hora de finalización</string>
@@ -487,7 +487,6 @@
   <string name="no_storage_permission">Conversations necesita acceso ao almacenamiento externo</string>
   <string name="no_camera_permission">Conversations necesita acceso á cámara</string>
   <string name="sync_with_contacts">Sincronice con todos os contactos</string>
-  <string name="sync_with_contacts_long">Conversations quere comparar a súa lista XMPP cos seus contactos para mostrar os seus nomes completos e avatares.\n\nConversations só fará esta comprobación de xeito local sen subilos ao servidor.\n\nAgora pediráselle conceder permiso para acceder aos seus contactos.</string>
   <string name="notify_on_all_messages">Notificar todas as mensaxes</string>
   <string name="notify_only_when_highlighted">Notificar só cando é mencionada</string>
   <string name="notify_never">Notificacións deshabilitadas</string>
@@ -721,7 +720,6 @@
   <string name="providing_a_name_is_optional">Proporcionar un nome é optativo</string>
   <string name="create_dialog_group_chat_name">Nome da conversa de grupo</string>
   <string name="conference_destroyed">Esta conversa de grupo foi destruída</string>
-  <string name="phone_book">Axenda de direccións</string>
   <string name="unable_to_save_recording">Non se puido gardar a gravación</string>
   <string name="foreground_service_channel_name">Servizo en segundo plano</string>
   <string name="foreground_service_channel_description">Esta categoría de notificacións utilízase para mostrar unha notificación permanente indicando que Conversations está a funcionar.</string>
@@ -744,4 +742,5 @@
   <string name="video_360p">Media (360p)</string>
   <string name="video_720p">Alta (720p)</string>
   <string name="cancelled">cancelada</string>
+  <string name="already_drafting_message">Xa está a escribir un borrador.</string>
 </resources>

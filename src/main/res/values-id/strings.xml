@@ -205,8 +205,6 @@
   <string name="ignore">Abaikan</string>
   <string name="without_mutual_presence_updates"><b>Perhatian</b> Mengirim ini tanpa kehadiran sesama pembaruan bisa menyebabkan masalah tak terduga.\n\n<small>Pergi ke kontak untuk memverifikasi langganan kehadiran anda.</small></string>
   <string name="pref_expert_options_summary">Harap berhati-hati dengan ini</string>
-  <string name="title_activity_about">Tentang Conversations</string>
-  <string name="pref_about_conversations_summary">Build dan informasi lisensi</string>
   <string name="title_pref_quiet_hours">Waktu sunyi</string>
   <string name="title_pref_quiet_hours_start_time">Waktu mulai</string>
   <string name="title_pref_quiet_hours_end_time">Waktu selesai</string>

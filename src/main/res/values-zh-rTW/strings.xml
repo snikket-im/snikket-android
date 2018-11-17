@@ -237,8 +237,6 @@
   <string name="pref_allow_message_correction_summary">允許您的連絡人追回編輯他們的訊息</string>
   <string name="pref_expert_options">高級設置</string>
   <string name="pref_expert_options_summary">請謹慎使用</string>
-  <string name="title_activity_about">關於 Conversations</string>
-  <string name="pref_about_conversations_summary">編譯及許可證資訊</string>
   <string name="title_pref_quiet_hours">靜默時間段</string>
   <string name="title_pref_quiet_hours_start_time">開始時間</string>
   <string name="title_pref_quiet_hours_end_time">結束時間</string>
@@ -416,7 +414,6 @@
   <string name="shared_images_with_x">跟 %s 分享的圖片</string>
   <string name="shared_text_with_x">跟 %s 分享的文字資料</string>
   <string name="sync_with_contacts">與連絡人同步</string>
-  <string name="sync_with_contacts_long">Conversations 會匹配你的 XMPP 花名冊與你的連絡人，以顯示他們的全名和頭像。\n\nConversations 只會讀取你的連絡人並在本地匹配，不會上傳到你的伺服器。\n\n現在將要詢問你是否給予訪問你連絡人的許可權。</string>
   <string name="notify_on_all_messages">為所有訊息顯示通知</string>
   <string name="notify_never">關閉通知</string>
   <string name="notify_paused">暫停通知</string>

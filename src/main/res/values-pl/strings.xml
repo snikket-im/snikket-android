@@ -121,6 +121,8 @@
   <string name="pref_confirm_messages">Potwierdzenia wiadomości</string>
   <string name="pref_confirm_messages_summary">Zezwól na wysyłanie do osób z twojej listy kontaktów informacji o tym, kiedy otrzymałeś i przeczytałeś wiadomość od nich</string>
   <string name="pref_ui_options">UI</string>
+  <string name="openpgp_error">OpenKeychain zgłosiło błąd.</string>
+  <string name="bad_key_for_encryption">Zły klucz szyfrowania.</string>
   <string name="accept">Akceptuj</string>
   <string name="error">Wystąpił błąd</string>
   <string name="recording_error">Błąd</string>
@@ -265,8 +267,6 @@
   <string name="pref_allow_message_correction_summary">Pozwól swoim kontaktom poprawiać wiadomości</string>
   <string name="pref_expert_options">Ustawienia zaawansowane</string>
   <string name="pref_expert_options_summary">Modyfikuj ustawienia ostrożnie</string>
-  <string name="title_activity_about">O Conversations</string>
-  <string name="pref_about_conversations_summary">Informacje o kompilacji i licencji</string>
   <string name="title_pref_quiet_hours">Godziny ciszy</string>
   <string name="title_pref_quiet_hours_start_time">Początek</string>
   <string name="title_pref_quiet_hours_end_time">Koniec</string>
@@ -491,7 +491,6 @@
   <string name="no_storage_permission">Conversations potrzebuje dostępu do zewnętrznej pamięci</string>
   <string name="no_camera_permission">Conversations potrzebuje dostępu do aparatu</string>
   <string name="sync_with_contacts">Synchronizuj z kontaktami</string>
-  <string name="sync_with_contacts_long">Conversations chce dopasować Twoje kontakty XMPP z listą kontaktów w telefonie, by uzupełnić ich pełne imiona oraz awatary.\nConversations jedynie przeczyta Twoje kontakty i dopasuje je lokalnie, bez wysyłania na Twój serwer.\n\nZostaniesz teraz poproszony o przydzielenie pozwolenia na odczyt Twoich kontaktów.</string>
   <string name="notify_on_all_messages">Powiadom o wszystkich wiadomościach</string>
   <string name="notify_only_when_highlighted">Powiadamiaj tylko w przypadku wzmianki o mnie</string>
   <string name="notify_never">Powiadomienia wyłączone</string>
@@ -740,7 +739,6 @@ Administrator twojego serwera będzie mógł czytać twoje wiadomości, ale moż
   <string name="providing_a_name_is_optional">Nie trzeba podawać nazwy</string>
   <string name="create_dialog_group_chat_name">Nazwa konferencji</string>
   <string name="conference_destroyed">Ta konferencja została usunięta</string>
-  <string name="phone_book">Książka adresowa</string>
   <string name="unable_to_save_recording">Nie można zapisać nagrania</string>
   <string name="foreground_service_channel_name">Usługa na pierwszym planie</string>
   <string name="foreground_service_channel_description">Ta kategoria powiadomień jest używana aby wyświetlać stałe powiadomienie oznaczające, że Conversations działa</string>
@@ -763,4 +761,5 @@ Administrator twojego serwera będzie mógł czytać twoje wiadomości, ale moż
   <string name="video_360p">Średnia (360p)</string>
   <string name="video_720p">Wysoka (720p)</string>
   <string name="cancelled">anulowane</string>
+  <string name="already_drafting_message">Już tworzysz nową wiadomość.</string>
 </resources>

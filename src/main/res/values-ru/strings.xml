@@ -264,8 +264,6 @@
   <string name="pref_allow_message_correction_summary">Позволить контактам редактировать сообщения</string>
   <string name="pref_expert_options">Расширенные настройки</string>
   <string name="pref_expert_options_summary">Пожалуйста, будьте осторожны с данными настройками</string>
-  <string name="title_activity_about">О Conversations</string>
-  <string name="pref_about_conversations_summary">Информация о билде и лицензировании</string>
   <string name="title_pref_quiet_hours">Тихие часы</string>
   <string name="title_pref_quiet_hours_start_time">Начало</string>
   <string name="title_pref_quiet_hours_end_time">Окончание</string>
@@ -487,7 +485,6 @@
   <string name="no_storage_permission">Conversations требуется доступ к внешнему хранилищу</string>
   <string name="no_camera_permission">Conversations требуется доступ к камере</string>
   <string name="sync_with_contacts">Синхронизировать с контактами</string>
-  <string name="sync_with_contacts_long">Conversations ожидает совпадения вашего XMPP ростера с вашими контактами для отображения их полных имен и аватаров.\n\nConversations только считает ваши контакты и сопоставит их локально без отправки их на ваш сервер.\n\nСейчас вы получите запрос на разрешение доступа к вашим контактам.</string>
   <string name="notify_on_all_messages">Все сообщения</string>
   <string name="notify_only_when_highlighted">Уведомлять только при упоминании</string>
   <string name="notify_never">Без уведомления</string>
