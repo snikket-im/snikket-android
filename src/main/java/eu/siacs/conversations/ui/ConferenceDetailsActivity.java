@@ -698,11 +698,10 @@ public class ConferenceDetailsActivity extends XmppActivity implements OnConvers
 
     private void displayToast(final String msg) {
         runOnUiThread(() -> {
-            try {
-                Toast.makeText(ConferenceDetailsActivity.this, msg, Toast.LENGTH_SHORT).show();
-            } catch (WindowManager.BadTokenException e) {
-                Log.e(Config.LOGTAG,"unable to display toast '"+msg+"'. Activity not running");
+            if (isFinishing()) {
+                return;
             }
+            Toast.makeText(ConferenceDetailsActivity.this, msg, Toast.LENGTH_SHORT).show();
         });
     }
 
