@@ -297,7 +297,6 @@
   <string name="send_again">重新发送</string>
   <string name="file_url">文件URL</string>
   <string name="url_copied_to_clipboard">已经拷贝URL到剪贴板</string>
-  <string name="jabber_id_copied_to_clipboard">已将Jabber ID复制到剪贴板</string>
   <string name="web_address">web地址</string>
   <string name="scan_qr_code">扫描二维码</string>
   <string name="show_qr_code">显示二维码</string>

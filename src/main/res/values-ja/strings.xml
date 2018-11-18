@@ -281,7 +281,6 @@
   <string name="send_again">再送</string>
   <string name="file_url">ファイル URL</string>
   <string name="url_copied_to_clipboard">URL をクリップボードにコピーしました</string>
-  <string name="jabber_id_copied_to_clipboard">Jabber ID をクリップボードにコピーしました</string>
   <string name="scan_qr_code">2D バーコードをスキャン</string>
   <string name="show_qr_code">2D バーコードを表示</string>
   <string name="show_block_list">ブロックリストを表示</string>

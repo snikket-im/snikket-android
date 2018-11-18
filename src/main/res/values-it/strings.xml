@@ -298,7 +298,6 @@
   <string name="send_again">Invia di nuovo</string>
   <string name="file_url">URL del file</string>
   <string name="url_copied_to_clipboard">URL copiato negli appunti</string>
-  <string name="jabber_id_copied_to_clipboard">ID Jabberd copiato negli appunti</string>
   <string name="web_address">indirizzo web</string>
   <string name="scan_qr_code">Scansiona codice a barre 2D</string>
   <string name="show_qr_code">Mostra codice a barre 2D</string>

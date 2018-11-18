@@ -294,7 +294,6 @@
   <string name="send_again">Отправить ещё раз</string>
   <string name="file_url">URL файла</string>
   <string name="url_copied_to_clipboard">Ссылка скопирована в буфер обмена</string>
-  <string name="jabber_id_copied_to_clipboard">Jabber ID скопирован в буфер обмена</string>
   <string name="scan_qr_code">Сканировать 2D штрихкод</string>
   <string name="show_qr_code">Показать 2D штрихкод</string>
   <string name="show_block_list">Показать чёрный список</string>

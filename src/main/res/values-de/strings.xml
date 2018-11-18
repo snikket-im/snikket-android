@@ -3,6 +3,7 @@
   <string name="action_settings">Einstellungen</string>
   <string name="action_add">Neue Unterhaltung</string>
   <string name="action_accounts">Konten verwalten</string>
+  <string name="action_account">Konto verwalten</string>
   <string name="action_end_conversation">Unterhaltung beenden</string>
   <string name="action_contact_details">Kontaktdetails</string>
   <string name="action_muc_details">Gruppenchatdetails</string>
@@ -122,7 +123,7 @@
   <string name="pref_confirm_messages_summary">Informiere deine Kontakte, wenn du eine Nachricht empfangen und gelesen hast</string>
   <string name="pref_ui_options">Benutzeroberfläche</string>
   <string name="openpgp_error">OpenKeychain meldete einen Fehler.</string>
-  <string name="bad_key_for_encryption">Fehlerhafter Schlüssel für die Verschlüsselung</string>
+  <string name="bad_key_for_encryption">Fehlerhafter Schlüssel für die Verschlüsselung.</string>
   <string name="accept">Annehmen</string>
   <string name="error">Ein Fehler ist aufgetreten</string>
   <string name="recording_error">Fehler</string>
@@ -267,6 +268,7 @@
   <string name="pref_allow_message_correction_summary">Erlaube deinen Kontakten das nachträgliche Korrigieren ihrer Nachrichten</string>
   <string name="pref_expert_options">Experteneinstellungen</string>
   <string name="pref_expert_options_summary">Hier bitte vorsichtig sein</string>
+  <string name="title_activity_about_x">Über %s</string>
   <string name="title_pref_quiet_hours">Ruhige Stunden</string>
   <string name="title_pref_quiet_hours_start_time">Beginn</string>
   <string name="title_pref_quiet_hours_end_time">Ende</string>
@@ -298,7 +300,6 @@
   <string name="send_again">Erneut senden</string>
   <string name="file_url">Datei-URL</string>
   <string name="url_copied_to_clipboard">URL in die Zwischenablage kopiert</string>
-  <string name="jabber_id_copied_to_clipboard">Jabber-ID in die Zwischenablage kopiert</string>
   <string name="web_address">Internetadresse</string>
   <string name="scan_qr_code">Barcode scannen</string>
   <string name="show_qr_code">Barcode anzeigen</string>
@@ -421,7 +422,7 @@
     <item quantity="one">%d Zertifikat gelöscht</item>
     <item quantity="other">%d Zertifikate gelöscht</item>
   </plurals>
-  <string name="pref_quick_action_summary">Ersetze Absende-Knopf durch Schnell-Tasten</string>
+  <string name="pref_quick_action_summary">Ersetze \"Senden\"-Schaltfläche durch Schnell-Tasten</string>
   <string name="pref_quick_action">Schnell-Tasten</string>
   <string name="none">Keine</string>
   <string name="recently_used">Zuletzt verwendet</string>
@@ -487,6 +488,7 @@
   <string name="no_storage_permission">Conversations benötigt Zugriff auf den externen Speicher</string>
   <string name="no_camera_permission">Conversations benötigt Zugriff auf die Kamera</string>
   <string name="sync_with_contacts">Mit Kontakten synchronisieren</string>
+  <string name="sync_with_contacts_long">Conversations möchte deine serverseitige Kontaktliste mit deinem lokalen Adressbuch abgleichen, um die vollständigen Namen und Avatare deiner Kontakte anzuzeigen.\n\nConversations wird deine Kontakte nur lokal lesen, abgleichen und überträgt diese nicht auf den Server.\n\nDu wirst nun gefragt, ob du den Zugriff auf deine Kontakte erlauben möchtest. </string>
   <string name="notify_on_all_messages">Bei allen Nachrichten benachrichtigen</string>
   <string name="notify_only_when_highlighted">Nur benachrichtigen, wenn ich erwähnt werde</string>
   <string name="notify_never">Benachrichtigungen deaktiviert</string>
@@ -510,6 +512,7 @@
   <string name="no_application_to_share_uri">Keine Anwendung zum Teilen der URI gefunden</string>
   <string name="share_uri_with">Teile URI mit…</string>
   <string name="welcome_text">Jabber ist ein anbieterunabhängiges Instant Messaging Netzwerk. Du kannst diesen Client mit jedem beliebigen Jabber-Server nutzen.\nUm es dir leicht zu machen, haben wir die Möglichkeit geschaffen, ein Konto auf conversations.im¹ anzulegen; ein Anbieter, der speziell für die Verwendung mit Conversations geeignet ist.</string>
+  <string name="agree_and_continue">Zustimmen &amp; fortfahren</string>
   <string name="magic_create_text">Wir führen dich durch den Prozess der Kontoerstellung auf conversations.im.¹\nWenn du conversations.im als Provider wählst, kannst du mit Nutzern anderer Anbieter kommunizieren, indem du ihnen deine vollständige Jabber-ID gibst.</string>
   <string name="your_full_jid_will_be">Deine vollständige Jabber ID lautet: %s</string>
   <string name="create_account">Konto erstellen</string>
@@ -743,4 +746,48 @@
   <string name="video_720p">Hoch (720p)</string>
   <string name="cancelled">abgebrochen</string>
   <string name="already_drafting_message">Du bist bereits dabei, eine Nachricht zu verfassen.</string>
+  <string name="feature_not_implemented">Funktion nicht implementiert</string>
+  <string name="invalid_country_code">Ungültige Landesvorwahl</string>
+  <string name="choose_a_country">Land auswählen</string>
+  <string name="phone_number">Telefonnummer</string>
+  <string name="verify_your_phone_number">Telefonnummer überprüfen</string>
+  <string name="enter_country_code_and_phone_number">Quicksy sendet eine SMS-Nachricht (es können Gebühren anfallen), um deine Telefonnummer zu überprüfen. Gib deine Landesvorwahl und Telefonnummer ein:</string>
+  <string name="not_a_valid_phone_number">%s ist keine gültige Telefonnummer.</string>
+  <string name="please_enter_your_phone_number">Gib bitte deine Telefonnummer ein.</string>
+  <string name="search_countries">Land suchen</string>
+  <string name="verify_x">Überprüfe %s</string>
+  <string name="we_have_sent_you_another_sms">Wir haben dir eine weitere SMS mit einem 6-stelligen Code geschickt.</string>
+  <string name="please_enter_pin_below">Gib bitte den 6-stellige PIN unten ein.</string>
+  <string name="resend_sms">SMS erneut versenden</string>
+  <string name="resend_sms_in">SMS erneut versenden (%s)</string>
+  <string name="wait_x">Bitte warten (%s)</string>
+  <string name="back">zurück</string>
+  <string name="possible_pin">Mögliche PIN aus der Zwischenablage automatisch eingefügt.</string>
+  <string name="please_enter_pin">Gib bitte deine 6-stellige PIN ein.</string>
+  <string name="abort_registration_procedure">Bist du sicher, dass du den Registrierungsprozess abbrechen willst?</string>
+  <string name="yes">Ja</string>
+  <string name="no">Nein</string>
+  <string name="verifying">Überprüfen...</string>
+  <string name="requesting_sms">SMS anfordern...</string>
+  <string name="incorrect_pin">Die eingegebene PIN ist falsch.</string>
+  <string name="pin_expired">Die von uns zugesandte PIN ist abgelaufen.</string>
+  <string name="unknown_api_error_network">Unbekannter Netzwerkfehler.</string>
+  <string name="unknown_api_error_response">Unbekannte Rückmeldung vom Server.</string>
+  <string name="unable_to_connect_to_server">Verbindung zum Server kann nicht hergestellt werden.</string>
+  <string name="unable_to_establish_secure_connection">Sichere Verbindung konnte nicht hergestellt werden.</string>
+  <string name="unable_to_find_server">Server konnte nicht gefunden werden.</string>
+  <string name="something_went_wrong_processing_your_request">Etwas ist bei der Bearbeitung deiner Anfrage schief gelaufen.</string>
+  <string name="invalid_user_input">Ungültige Benutzereingabe</string>
+  <string name="temporarily_unavailable">Vorübergehend nicht verfügbar. Versuche es später noch einmal.</string>
+  <string name="no_network_connection">Keine Netzwerkverbindung.</string>
+  <string name="try_again_in_x">Bitte versuche es erneut in %s</string>
+  <string name="rate_limited">Du bist limitiert</string>
+  <string name="too_many_attempts">Zu viele Versuche</string>
+  <string name="the_app_is_out_of_date">Du verwendest eine veraltete Version dieser App.</string>
+  <string name="update">Update</string>
+  <string name="logged_in_with_another_device">Diese Telefonnummer ist derzeit mit einem anderen Gerät verknüpft.</string>
+  <string name="enter_your_name_instructions">Bitte gib deinen Namen ein und lass Leute, die dich nicht in ihren Adressbüchern haben, wissen, wer du bist.</string>
+  <string name="your_name">Dein Name</string>
+  <string name="enter_your_name">Deinen Namen eingeben</string>
+  <string name="no_name_set_instructions">Benutze die \"Bearbeiten\"-Schaltfläche, um deinen Namen festzulegen.</string>
 </resources>

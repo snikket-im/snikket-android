@@ -291,7 +291,6 @@
   <string name="send_again">Пошаљи поново</string>
   <string name="file_url">УРЛ фајла</string>
   <string name="url_copied_to_clipboard">УРЛ је копиран на клипборд</string>
-  <string name="jabber_id_copied_to_clipboard">Џабер ИД је копиран на клипборд</string>
   <string name="web_address">веб адреса</string>
   <string name="scan_qr_code">Очитај 2Д бар-кôд</string>
   <string name="show_qr_code">Прикажи 2Д бар-кôд</string>

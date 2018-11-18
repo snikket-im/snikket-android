@@ -3,6 +3,7 @@
   <string name="action_settings">Setări</string>
   <string name="action_add">Conversație nouă</string>
   <string name="action_accounts">Configurează conturile</string>
+  <string name="action_account">Configurează contul</string>
   <string name="action_end_conversation">Închide conversația</string>
   <string name="action_contact_details">Detalii contact</string>
   <string name="action_muc_details">Detalii discuție de grup</string>
@@ -267,6 +268,7 @@
   <string name="pref_allow_message_correction_summary">Contactele pot să își editeze mesajele scrise în trecut</string>
   <string name="pref_expert_options">Opțiuni expert</string>
   <string name="pref_expert_options_summary">Vă rugăm să aveți grijă cu acestea</string>
+  <string name="title_activity_about_x">%s</string>
   <string name="title_pref_quiet_hours">Ore de liniște</string>
   <string name="title_pref_quiet_hours_start_time">Ora de începere</string>
   <string name="title_pref_quiet_hours_end_time">Ora de terminare</string>
@@ -298,7 +300,6 @@
   <string name="send_again">Trimite din nou</string>
   <string name="file_url">Adresă fișier</string>
   <string name="url_copied_to_clipboard">Adresă copiată în memorie</string>
-  <string name="jabber_id_copied_to_clipboard">Adresă ID Jabber copiată în memorie</string>
   <string name="web_address">adresă web</string>
   <string name="scan_qr_code">Scanează cod de bare 2D</string>
   <string name="show_qr_code">Arată cod de bare 2D</string>
@@ -489,6 +490,8 @@
   <string name="no_storage_permission">Conversations are nevoie de acces la stocarea externă</string>
   <string name="no_camera_permission">Conversations are nevoie de acces la camera foto</string>
   <string name="sync_with_contacts">Sincronizează cu contactele</string>
+  <string name="sync_with_contacts_long">Conversations dorește să potrivească lista de contacte de pe server cu cea din dispozitiv pentru a putea afișa numele lor complete și avatarele.\n\nConversations doar va citi și potrivi local fără să le încarce pe server.\n\nUrmează să fiți întrebați dacă doriți să permiteți accesul la contacte.</string>
+  <string name="sync_with_contacts_quicksy"><![CDATA[Quicksy are nevoie să poată accesa numerele de telefon ale contactelor dumneavoastră pentru a putea sugera posibile contacte ce sunt deja pe Quicksy.<br><br>Nu vom stoca o copie a acestor numere the telefon.\n\nPentru mai multe informații puteți citii <a href="https://quicksy.im/#privacy">politica noastră de confidențialitate</a>.<br><br>Urmează să fiți întrebați dacă doriți să permiteți accesul la contacte.]]></string>
   <string name="notify_on_all_messages">Notifică la toate mesajele</string>
   <string name="notify_only_when_highlighted">Notifică doar atunci când cineva vă menționează numele</string>
   <string name="notify_never">Notificări dezactivate</string>
@@ -514,6 +517,8 @@ sau chiar pierderea mesajelor.\nÎn continuare veți fi rugați să dezactivați
   <string name="no_application_to_share_uri">Nu s-a găsit nici o aplicație care să partajeze adresa</string>
   <string name="share_uri_with">Partajează adresa cu...</string>
   <string name="welcome_text">Jabber este o rețea de mesagerie instant ce nu depinde de un anumit furnizor. Aveți posibilitatea să utilizați acest client cu orice server Jabber doriți.\nTotuși, pentru confortul dumneavoastră, am facilitat crearea unui cont pe conversations.im¹; un furnizor potrivit pentru utilizarea cu aplicația Conversations.</string>
+  <string name="welcome_text_quicksy"><![CDATA[Quicksy este o versiune a popularului client Jabber/XMPP Conversations cu descoperire automată a contactelor.<br><br>Vă înscrieți cu numărul de telefon și Quicksy—pe baza numerelor de telefon din agenda dumneavoastră—vă va sugera automat posibile contacte.<br><br>Înscriindu-vă sunteți de acord cu <a href="https://quicksy.im/#privacy">politica noastră de confidențialitate</a>.]]></string>
+  <string name="agree_and_continue">De acord &amp; continuă</string>
   <string name="magic_create_text">Vă vom ghida prin procesul de creare al unui cont pe conversations.im.¹\nCând alegeți conversations.im ca furnizor veți putea comunica cu utilizatorii altor furnizori oferindu-le ID-ul dumneavoastră Jabber.</string>
   <string name="your_full_jid_will_be">ID-ul Jabber va fi: %s</string>
   <string name="create_account">Creează cont</string>
@@ -753,4 +758,50 @@ sau chiar pierderea mesajelor.\nÎn continuare veți fi rugați să dezactivați
   <string name="video_720p">Mare (720p)</string>
   <string name="cancelled">anulat</string>
   <string name="already_drafting_message">Deja aveți ciorna unui mesaj.</string>
+  <string name="feature_not_implemented">Opțiune neimplementată</string>
+  <string name="invalid_country_code">Cod de țarä invalid</string>
+  <string name="choose_a_country">Alegeți o țarä</string>
+  <string name="phone_number">numär de telefon</string>
+  <string name="verify_your_phone_number">Verificare număr de telefon</string>
+  <string name="enter_country_code_and_phone_number">Quicksy va trimite un mesaj SMS (pot exista costuri în funcție de furnizor) pentru a vă verifica numărul de telefon. Introduceți codul țării dumneavoastră si numărul de telefon:</string>
+  <string name="we_will_be_verifying"><![CDATA[Vă vom verifica numărul de telefon<br/><br/><b>%s</b><br/><br/>Este în regulă sau ați dori să editați numărul?]]></string>
+  <string name="not_a_valid_phone_number">%s nu este un număr de telefon valid.</string>
+  <string name="please_enter_your_phone_number">Vă rugăm să vă introduceți numărul de telefon.</string>
+  <string name="search_countries">Caută țări</string>
+  <string name="verify_x">Verifică %s</string>
+  <string name="we_have_sent_you_an_sms_to_x"><![CDATA[V-am trimis un SMS la <b>%s</b>.]]></string>
+  <string name="we_have_sent_you_another_sms">V-am trimis un alt SMS cu un cod de 6 cifre.</string>
+  <string name="please_enter_pin_below">Vă rugăm să introduceți codul de 6 cifre mai jos.</string>
+  <string name="resend_sms">Retrimitere SMS</string>
+  <string name="resend_sms_in">Retrimite SMS (%s)</string>
+  <string name="wait_x">%s</string>
+  <string name="back">înapoi</string>
+  <string name="possible_pin">S-a copiat automat un posibil cod din memorie</string>
+  <string name="please_enter_pin">Vä rugăm să vă introduceți codul de 6 cifre.</string>
+  <string name="abort_registration_procedure">Sigur doriți să anulați procedura de înregistrare?</string>
+  <string name="yes">Da</string>
+  <string name="no">Nu</string>
+  <string name="verifying">Verificare...</string>
+  <string name="requesting_sms">Se cere SMS...</string>
+  <string name="incorrect_pin">Codul introdus este incorect.</string>
+  <string name="pin_expired">Codul pe care vi l-am trimis a expirat.</string>
+  <string name="unknown_api_error_network">Eroare de rețea necunoscută.</string>
+  <string name="unknown_api_error_response">Räspuns necunoscut de la server.</string>
+  <string name="unable_to_connect_to_server">Nu se poate face conexiunea la server.</string>
+  <string name="unable_to_establish_secure_connection">Nu se poate realiza o conexiune securizată.</string>
+  <string name="unable_to_find_server">Nu se poate găsi serverul.</string>
+  <string name="something_went_wrong_processing_your_request">Ceva nu a mers bine în timpul procesării cererii dumneavoastră.</string>
+  <string name="invalid_user_input">Introducere invalidă utilizator</string>
+  <string name="temporarily_unavailable">Indisponibil temporar. Încercați din nou mai târziu.</string>
+  <string name="no_network_connection">Nu există conexiune la internet.</string>
+  <string name="try_again_in_x">Vă rugăm să încercați din nou peste %s</string>
+  <string name="rate_limited">Rată de încercări limitată</string>
+  <string name="too_many_attempts">Prea multe încercări</string>
+  <string name="the_app_is_out_of_date">Folosiți o versiune prea veche a acestei aplicații.</string>
+  <string name="update">Actualizare</string>
+  <string name="logged_in_with_another_device">Acest număr de telefon este momentan autentificat pe un alt dispozitiv.</string>
+  <string name="enter_your_name_instructions">Vă rugăm să vă introduceți numele pentru a informa persoanele care nu vă au în agendă cine sunteți.</string>
+  <string name="your_name">Numele dumneavoastă</string>
+  <string name="enter_your_name">Introducețivä numele</string>
+  <string name="no_name_set_instructions">Folosiți butonul de editare pentru a vă seta numele.</string>
 </resources>

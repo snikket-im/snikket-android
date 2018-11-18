@@ -296,7 +296,6 @@
   <string name="send_again">Enviar novamente</string>
   <string name="file_url">URL do arquivo</string>
   <string name="url_copied_to_clipboard">URL copiada para a área de transferência</string>
-  <string name="jabber_id_copied_to_clipboard">O ID do Jabberd foi copiado para a área de transferência</string>
   <string name="web_address">endereço web</string>
   <string name="scan_qr_code">Capturar código de barras 2D</string>
   <string name="show_qr_code">Exibir código de barras 2D</string>

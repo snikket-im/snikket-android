@@ -291,7 +291,6 @@
   <string name="send_again">Envia una altra vegada</string>
   <string name="file_url">URL del fitxer</string>
   <string name="url_copied_to_clipboard">URL copiada al portapapers</string>
-  <string name="jabber_id_copied_to_clipboard">ID de Jabberd copiada al portapapers</string>
   <string name="web_address">Adreça Web</string>
   <string name="scan_qr_code">Escaneja el codi de barres 2D</string>
   <string name="show_qr_code">Mostra el codi de barres 2D</string>

@@ -3,6 +3,7 @@
   <string name="action_settings">Настройки</string>
   <string name="action_add">Нов разговор</string>
   <string name="action_accounts">Управление на профилите</string>
+  <string name="action_account">Управление на профила</string>
   <string name="action_end_conversation">Край на този разговор</string>
   <string name="action_contact_details">Подробности за контакта</string>
   <string name="action_muc_details">Подробности за груповия разговор</string>
@@ -267,6 +268,7 @@
   <string name="pref_allow_message_correction_summary">Позволяване на контактите да редактират съобщенията си след като са ги изпратили.</string>
   <string name="pref_expert_options">Експертни настройки</string>
   <string name="pref_expert_options_summary">Моля, бъдете внимателни с тези</string>
+  <string name="title_activity_about_x">Относно %s</string>
   <string name="title_pref_quiet_hours">Тихи часове</string>
   <string name="title_pref_quiet_hours_start_time">Начало</string>
   <string name="title_pref_quiet_hours_end_time">Край</string>
@@ -298,7 +300,6 @@
   <string name="send_again">Повторно изпращане</string>
   <string name="file_url">Адрес на файла</string>
   <string name="url_copied_to_clipboard">Копиране на адреса</string>
-  <string name="jabber_id_copied_to_clipboard">Jabber идентификаторът е копиран</string>
   <string name="web_address">уеб адрес</string>
   <string name="scan_qr_code">Сканиране на 2-измерен баркод</string>
   <string name="show_qr_code">Показване на 2-измерен баркод</string>
@@ -487,6 +488,8 @@
   <string name="no_storage_permission">Conversations се нуждае от достъп до външно място за съхранение</string>
   <string name="no_camera_permission">Conversations се нуждае от достъп до камерата</string>
   <string name="sync_with_contacts">Синхронизиране с контактите</string>
+  <string name="sync_with_contacts_long">Conversations иска да съчетае сървърния Ви списък с контактите с адресния указател на устройството Ви, за да показва пълните имена и снимките на контактите Ви.\n\nConversations единствено ще чете контактите Ви и ще ги използва вътрешно, без да ги качва на сървъра Ви.\n\nЩе бъдете помолен/а за позволение за достъп до контактите Ви.</string>
+  <string name="sync_with_contacts_quicksy"><![CDATA[Quicksy се нуждае от достъп до телефонните номера на контактите Ви, за да прави предложения относно контакти, които вероятно вече са регистрирани в системата на Quicksy.<br><br>Ние няма да пазим копия на тези телефонни номера.\n\nЗа повече информация, прочетете <a href="https://quicksy.im/#privacy">декларацията ни за поверителност</a>.<br><br>Сега ще Ви помолим да дадете достъп до контактите си.]]></string>
   <string name="notify_on_all_messages">Известяване за всички съобщения</string>
   <string name="notify_only_when_highlighted">Известяване само при споменаване</string>
   <string name="notify_never">Известията са изключени</string>
@@ -510,6 +513,8 @@
   <string name="no_application_to_share_uri">Няма намерено приложение за споделяне на адреса</string>
   <string name="share_uri_with">Споделяне на адреса с…</string>
   <string name="welcome_text">Jabber е мрежа за общуване чрез мигновени съобщения, която не е обвързана с конкретен доставчик. Можете да използвате клиента с всеки сървър, който работи с Jabber.\nЗа Ваше удобство, ние предоставяме лесен начин да си създадете профил в conversations.im¹ — сървър, пригоден да работи добре с Conversations.</string>
+  <string name="welcome_text_quicksy"><![CDATA[Quicksy е леко променен вариант на популярния клиент за Jabber/XMPP – Conversations, като включва функционалност за автоматично откриване на контактите.<br><br>След като се впишете чрез телефонния си номер, Quicksy ще използва телефонните номера в адресния Ви указател, за да Ви предложи възможни контакти.<br><br>Регистрирайки се, Вие се съгласявате с нашата <a href="https://quicksy.im/#privacy">декларация за поверителност</a>.]]></string>
+  <string name="agree_and_continue">Съгласяване и продължаване</string>
   <string name="magic_create_text">Ще преминем заедно с Вас през процеса за създаване на профил в conversations.im.¹\nАко изберете да използвате conversations.im, ще можете да общувате с потребители, използващи други сървъри, като им дадете своя пълен Jabber идентификатор.</string>
   <string name="your_full_jid_will_be">Вашият пълен Jabber идентификатор ще бъде: %s</string>
   <string name="create_account">Създаване на профил</string>
@@ -743,4 +748,50 @@
   <string name="video_720p">Високо (720p)</string>
   <string name="cancelled">отказано</string>
   <string name="already_drafting_message">Вече пишете чернова на съобщение.</string>
+  <string name="feature_not_implemented">Функционалността не е реализирана</string>
+  <string name="invalid_country_code">Грешен код на държава</string>
+  <string name="choose_a_country">Изберете държава</string>
+  <string name="phone_number">тел. номер</string>
+  <string name="verify_your_phone_number">Потвърдете телефонния си номер</string>
+  <string name="enter_country_code_and_phone_number">Quicksy ще Ви изпрати мобилно съобщение (може да се приложат таксите на мобилния оператор), за да се потвърди телефонния Ви номер. Въведете кода на държавата си и телефонния си номер:</string>
+  <string name="we_will_be_verifying"><![CDATA[Ще потвърдим телефонния номер<br/><br/><b>%s</b><br/><br/>Правилен ли е той, или искате да го промените?]]></string>
+  <string name="not_a_valid_phone_number">%s не е правилен телефонен номер.</string>
+  <string name="please_enter_your_phone_number">Моля, въведете телефонния си номер.</string>
+  <string name="search_countries">Търсене на държави</string>
+  <string name="verify_x">Потвърждаване на %s</string>
+  <string name="we_have_sent_you_an_sms_to_x"><![CDATA[Изпратихме Ви мобилно съобщение до <b>%s</b>.]]></string>
+  <string name="we_have_sent_you_another_sms">Изпратихме Ви още едно мобилно съобщение с 6-цифрен код.</string>
+  <string name="please_enter_pin_below">Моля, въведете 6-цифрения код по-долу.</string>
+  <string name="resend_sms">Повторно изпращане на съобщението</string>
+  <string name="resend_sms_in">Повторно изпращане на съобщението (%s)</string>
+  <string name="wait_x">Моля, изчакайте (%s)</string>
+  <string name="back">назад</string>
+  <string name="possible_pin">Вероятният код беше копиран автоматично.</string>
+  <string name="please_enter_pin">Моля, въведете 6-цифрения си код.</string>
+  <string name="abort_registration_procedure">Наистина ли искате да прекратите процеса на регистрация?</string>
+  <string name="yes">Да</string>
+  <string name="no">Не</string>
+  <string name="verifying">Потвърждаване…</string>
+  <string name="requesting_sms">Изискване на мобилно съобщение…</string>
+  <string name="incorrect_pin">Въведеният код е неправилен.</string>
+  <string name="pin_expired">Кодът, който Ви изпратихме, е с изтекла давност.</string>
+  <string name="unknown_api_error_network">Неизвестна мрежова грешка.</string>
+  <string name="unknown_api_error_response">Непознат отговор от сървъра.</string>
+  <string name="unable_to_connect_to_server">Връзката със сървъра е невъзможна.</string>
+  <string name="unable_to_establish_secure_connection">Не може да се установи защитена връзка.</string>
+  <string name="unable_to_find_server">Сървърът не може да бъде намерен.</string>
+  <string name="something_went_wrong_processing_your_request">Нещо се обърка при обработването на заявката Ви.</string>
+  <string name="invalid_user_input">Неправилно въведени данни</string>
+  <string name="temporarily_unavailable">Временно недостъпно. Опитайте отново по-късно.</string>
+  <string name="no_network_connection">Няма връзка с мрежата.</string>
+  <string name="try_again_in_x">Моля, опитайте отново след %s</string>
+  <string name="rate_limited">Имате времево ограничение</string>
+  <string name="too_many_attempts">Твърде много опити</string>
+  <string name="the_app_is_out_of_date">Използвате остаряла версия на приложението.</string>
+  <string name="update">Обновяване</string>
+  <string name="logged_in_with_another_device">Този телефонен номер в момента се използва на друго устройство.</string>
+  <string name="enter_your_name_instructions">Моля, въведете името си, за да могат хората, които Ви нямат в адресните си указатели, да знаят кой сте.</string>
+  <string name="your_name">Името Ви</string>
+  <string name="enter_your_name">Въведете името си</string>
+  <string name="no_name_set_instructions">Използвайте бутона за редактиране, за да въведете името си.</string>
 </resources>

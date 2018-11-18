@@ -298,7 +298,6 @@
   <string name="send_again">Berriro bidali</string>
   <string name="file_url">Fitxategiaren URLa</string>
   <string name="url_copied_to_clipboard">URLa arbelera kopiatu da</string>
-  <string name="jabber_id_copied_to_clipboard">Jabber IDa arbelera kopiatu da</string>
   <string name="web_address">web helbidea</string>
   <string name="scan_qr_code">2D barra kodea eskaneatu</string>
   <string name="show_qr_code">2D barra kodea erakutsi</string>

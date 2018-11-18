@@ -298,7 +298,6 @@
   <string name="send_again">Volver a enviar</string>
   <string name="file_url">URL de archivo</string>
   <string name="url_copied_to_clipboard">URL copiada al portapapeles</string>
-  <string name="jabber_id_copied_to_clipboard">Identificador Jabber copiado al portapapeles</string>
   <string name="web_address">dirección web</string>
   <string name="scan_qr_code">Escanear código QR</string>
   <string name="show_qr_code">Mostrar código QR</string>

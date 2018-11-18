@@ -298,7 +298,6 @@
   <string name="send_again">Elküldi újra</string>
   <string name="file_url">Fájl URL-je</string>
   <string name="url_copied_to_clipboard">URL vágólapra másolása</string>
-  <string name="jabber_id_copied_to_clipboard">A Jabberd azonosítót a vágólapra másoltuk</string>
   <string name="web_address">webcím</string>
   <string name="scan_qr_code">2D vonalkód olvasás</string>
   <string name="show_qr_code">2D vonalkód mutatása</string>
