@@ -17,12 +17,14 @@ import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.SpannableStringBuilder;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -92,8 +94,8 @@ public class ConferenceDetailsActivity extends XmppActivity implements OnConvers
     private UiCallback<Conversation> renameCallback = new UiCallback<Conversation>() {
         @Override
         public void success(Conversation object) {
+            displayToast(getString(R.string.your_nick_has_been_changed));
             runOnUiThread(() -> {
-                Toast.makeText(ConferenceDetailsActivity.this, getString(R.string.your_nick_has_been_changed), Toast.LENGTH_SHORT).show();
                 updateView();
             });
 
@@ -101,7 +103,7 @@ public class ConferenceDetailsActivity extends XmppActivity implements OnConvers
 
         @Override
         public void error(final int errorCode, Conversation object) {
-            runOnUiThread(() -> Toast.makeText(ConferenceDetailsActivity.this, getString(errorCode), Toast.LENGTH_SHORT).show());
+            displayToast(getString(errorCode));
         }
 
         @Override
@@ -695,7 +697,13 @@ public class ConferenceDetailsActivity extends XmppActivity implements OnConvers
     }
 
     private void displayToast(final String msg) {
-        runOnUiThread(() -> Toast.makeText(ConferenceDetailsActivity.this, msg, Toast.LENGTH_SHORT).show());
+        runOnUiThread(() -> {
+            try {
+                Toast.makeText(ConferenceDetailsActivity.this, msg, Toast.LENGTH_SHORT).show();
+            } catch (WindowManager.BadTokenException e) {
+                Log.e(Config.LOGTAG,"unable to display toast '"+msg+"'. Activity not running");
+            }
+        });
     }
 
     public void loadAvatar(User user, ImageView imageView) {
