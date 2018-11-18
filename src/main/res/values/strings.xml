@@ -300,7 +300,7 @@
     <string name="send_again">Send again</string>
     <string name="file_url">File URL</string>
     <string name="url_copied_to_clipboard">Copied URL to clipboard</string>
-    <string name="jabber_id_copied_to_clipboard">Copied Jabber ID ID to clipboard</string>
+    <string name="jabber_id_copied_to_clipboard">Copied Jabber ID to clipboard</string>
     <string name="error_message_copied_to_clipboard">Copied error message to clipboard</string>
     <string name="web_address">web address</string>
     <string name="scan_qr_code">Scan 2D Barcode</string>
