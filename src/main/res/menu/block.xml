@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
+        android:id="@+id/reject"
+        android:title="@string/reject_request"/>
+    <item
         android:id="@+id/block_domain"
         android:title="@string/block_entire_domain" />
     <item

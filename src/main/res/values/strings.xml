@@ -797,4 +797,5 @@
     <string name="your_name">Your name</string>
     <string name="enter_your_name">Enter your name</string>
     <string name="no_name_set_instructions">Use the edit button to set your name.</string>
+    <string name="reject_request">Reject request</string>
 </resources>

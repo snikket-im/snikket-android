@@ -2071,25 +2071,28 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
 
     private boolean showBlockSubmenu(View view) {
         final Jid jid = conversation.getJid();
-        if (jid.getLocal() == null) {
-            BlockContactDialog.show(activity, conversation);
-        } else {
-            PopupMenu popupMenu = new PopupMenu(getActivity(), view);
-            popupMenu.inflate(R.menu.block);
-            popupMenu.setOnMenuItemClickListener(menuItem -> {
-                Blockable blockable;
-                switch (menuItem.getItemId()) {
-                    case R.id.block_domain:
-                        blockable = conversation.getAccount().getRoster().getContact(Jid.ofDomain(jid.getDomain()));
-                        break;
-                    default:
-                        blockable = conversation;
-                }
-                BlockContactDialog.show(activity, blockable);
-                return true;
-            });
-            popupMenu.show();
-        }
+        final boolean showReject = !conversation.isWithStranger() && conversation.getContact().getOption(Contact.Options.PENDING_SUBSCRIPTION_REQUEST);
+        PopupMenu popupMenu = new PopupMenu(getActivity(), view);
+        popupMenu.inflate(R.menu.block);
+        popupMenu.getMenu().findItem(R.id.block_contact).setVisible(jid.getLocal() != null);
+        popupMenu.getMenu().findItem(R.id.reject).setVisible(showReject);
+        popupMenu.setOnMenuItemClickListener(menuItem -> {
+            Blockable blockable;
+            switch (menuItem.getItemId()) {
+                case R.id.reject:
+                    activity.xmppConnectionService.stopPresenceUpdatesTo(conversation.getContact());
+                    updateSnackBar(conversation);
+                    return true;
+                case R.id.block_domain:
+                    blockable = conversation.getAccount().getRoster().getContact(Jid.ofDomain(jid.getDomain()));
+                    break;
+                default:
+                    blockable = conversation;
+            }
+            BlockContactDialog.show(activity, blockable);
+            return true;
+        });
+        popupMenu.show();
         return true;
     }
 

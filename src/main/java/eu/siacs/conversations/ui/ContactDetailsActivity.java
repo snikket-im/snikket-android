@@ -77,7 +77,7 @@ public class ContactDetailsActivity extends OmemoActivity implements OnAccountUp
         public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
             if (isChecked) {
                 if (contact.getOption(Contact.Options.PENDING_SUBSCRIPTION_REQUEST)) {
-                    xmppConnectionService.sendPresencePacket(contact.getAccount(), xmppConnectionService.getPresenceGenerator().sendPresenceUpdatesTo(contact));
+                    xmppConnectionService.stopPresenceUpdatesTo(contact);
                 } else {
                     contact.setOption(Contact.Options.PREEMPTIVE_GRANT);
                 }
