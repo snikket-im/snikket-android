@@ -60,6 +60,7 @@ import eu.siacs.conversations.ui.adapter.PresenceTemplateAdapter;
 import eu.siacs.conversations.ui.util.MenuDoubleTabUtil;
 import eu.siacs.conversations.ui.util.PendingItem;
 import eu.siacs.conversations.ui.util.SoftKeyboardUtils;
+import eu.siacs.conversations.ui.util.StyledAttributes;
 import eu.siacs.conversations.utils.CryptoHelper;
 import eu.siacs.conversations.utils.Resolver;
 import eu.siacs.conversations.utils.SignupUtils;
@@ -893,17 +894,22 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
         this.binding.accountJid.setEnabled(editable);
         this.binding.accountJid.setFocusable(editable);
         this.binding.accountJid.setFocusableInTouchMode(editable);
+        this.binding.accountJid.setCursorVisible(editable);
 
 
         final String displayName = mAccount.getDisplayName();
         updateDisplayName(displayName);
 
 
-        if (mAccount.isOptionSet(Account.OPTION_MAGIC_CREATE) || !mAccount.isOptionSet(Account.OPTION_LOGGED_IN_SUCCESSFULLY)) {
-            this.binding.accountPasswordLayout.setPasswordVisibilityToggleEnabled(true);
-        } else {
-            this.binding.accountPasswordLayout.setPasswordVisibilityToggleEnabled(false);
-        }
+        final boolean tooglePassword = mAccount.isOptionSet(Account.OPTION_MAGIC_CREATE) || !mAccount.isOptionSet(Account.OPTION_LOGGED_IN_SUCCESSFULLY);
+        final boolean editPassword = !mAccount.isOptionSet(Account.OPTION_MAGIC_CREATE) || (!mAccount.isOptionSet(Account.OPTION_LOGGED_IN_SUCCESSFULLY) && QuickConversationsService.isConversations());
+
+        this.binding.accountPasswordLayout.setPasswordVisibilityToggleEnabled(tooglePassword);
+
+        this.binding.accountPassword.setFocusable(editPassword);
+        this.binding.accountPassword.setFocusableInTouchMode(editPassword);
+        this.binding.accountPassword.setCursorVisible(editPassword);
+        this.binding.accountPassword.setEnabled(editPassword);
 
         if (!mInitMode) {
             this.binding.avater.setVisibility(View.VISIBLE);

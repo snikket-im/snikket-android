@@ -169,6 +169,7 @@ public class QuickConversationsService extends AbstractQuickConversationsService
             }
             account = new Account(jid, CryptoHelper.createPassword(new SecureRandom()));
             account.setOption(Account.OPTION_DISABLED, true);
+            account.setOption(Account.OPTION_MAGIC_CREATE, true);
             account.setOption(Account.OPTION_UNVERIFIED, true);
             service.createAccount(account);
         }

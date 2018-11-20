@@ -15,6 +15,7 @@
     <attr name="color_background_tertiary" format="reference|color"/>
     <attr name="color_background_secondary" format="reference|color"/>
     <attr name="color_background_primary" format="reference|color"/>
+    <attr name="edit_text_color" format="reference|color"/>
     <attr name="color_warning" format="reference|color"/>
     <attr name="EmojiColor" format="reference|color"/>
 

@@ -67,6 +67,7 @@
                                     android:layout_height="wrap_content"
                                     android:imeOptions="actionNext"
                                     android:inputType="textEmailAddress"
+                                    android:textColor="?attr/edit_text_color"
                                     style="@style/Widget.Conversations.EditText"/>
                             </android.support.design.widget.TextInputLayout>
 
@@ -88,6 +89,7 @@
                                     android:layout_alignParentTop="true"
                                     android:hint="@string/password"
                                     android:inputType="textPassword"
+                                    android:textColor="?attr/edit_text_color"
                                     style="@style/Widget.Conversations.EditText"/>
                             </android.support.design.widget.TextInputLayout>
 
