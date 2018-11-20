@@ -4,7 +4,7 @@
     <string name="action_add">New conversation</string>
     <string name="action_accounts">Manage accounts</string>
     <string name="action_account">Manage account</string>
-    <string name="action_end_conversation">End this conversation</string>
+    <string name="action_end_conversation">Close this conversation</string>
     <string name="action_contact_details">Contact details</string>
     <string name="action_muc_details">Group chat details</string>
     <string name="action_secure">Secure conversation</string>
@@ -81,7 +81,7 @@
     <string name="clear_histor_msg">Are you sure you want to delete all messages within this conversation?\n\n<b>Warning:</b> This will not delete copies of those messages that are stored on other devices or servers.</string>
     <string name="delete_file_dialog">Delete file</string>
     <string name="delete_file_dialog_msg">Are you sure you want to delete this file?\n\n<b>Warning:</b> This will not delete copies of this file that are stored on other devices or servers. </string>
-    <string name="also_end_conversation">End this conversation afterwards</string>
+    <string name="also_end_conversation">Close this conversation afterwards</string>
     <string name="choose_presence">Choose device</string>
     <string name="send_unencrypted_message">Send unencrypted message</string>
     <string name="send_message">Send message</string>
