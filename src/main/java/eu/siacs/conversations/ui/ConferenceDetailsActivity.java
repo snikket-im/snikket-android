@@ -66,6 +66,7 @@ import eu.siacs.conversations.utils.StringUtils;
 import eu.siacs.conversations.utils.StylingHelper;
 import eu.siacs.conversations.utils.UIHelper;
 import eu.siacs.conversations.utils.XmppUri;
+import me.drakeet.support.toast.ToastCompat;
 import rocks.xmpp.addr.Jid;
 
 import static eu.siacs.conversations.entities.Bookmark.printableValue;
@@ -701,7 +702,7 @@ public class ConferenceDetailsActivity extends XmppActivity implements OnConvers
             if (isFinishing()) {
                 return;
             }
-            Toast.makeText(ConferenceDetailsActivity.this, msg, Toast.LENGTH_SHORT).show();
+            ToastCompat.makeText(this, msg, Toast.LENGTH_SHORT).show();
         });
     }
 
