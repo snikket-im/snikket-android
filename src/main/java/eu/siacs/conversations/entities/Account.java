@@ -270,7 +270,7 @@ public class Account extends AbstractEntity {
 
     public void setStatus(final State status) {
         this.status = status;
-        if (status.isError) {
+        if (status.isError || status == State.ONLINE) {
             this.lastErrorStatus = status;
         }
     }
