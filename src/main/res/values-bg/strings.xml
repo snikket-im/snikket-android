@@ -4,6 +4,7 @@
   <string name="action_add">Нов разговор</string>
   <string name="action_accounts">Управление на профилите</string>
   <string name="action_account">Управление на профила</string>
+  <string name="action_end_conversation">Затваряне на този разговор</string>
   <string name="action_contact_details">Подробности за контакта</string>
   <string name="action_muc_details">Подробности за груповия разговор</string>
   <string name="action_secure">Защитен разговор</string>
@@ -80,6 +81,7 @@
   <string name="clear_histor_msg">Наистина ли искате да изтриете всички съобщения в този разговор?\n\n<b>Внимание:</b> Това няма да изтрие копията на тези съобщения, които се съхраняват на други устройства или сървъри.</string>
   <string name="delete_file_dialog">Изтриване на файла</string>
   <string name="delete_file_dialog_msg">Наистина ли искате да изтриете този файл?\n\n<b>Внимание:</b> Това няма да изтрие копията на файла, които се съхраняват на други устройства или сървъри.</string>
+  <string name="also_end_conversation">Затваряне на този разговор след това</string>
   <string name="choose_presence">Изберете устройство</string>
   <string name="send_unencrypted_message">Изпр. на нешифр. съобщение</string>
   <string name="send_message">Изпращане на съобщение</string>

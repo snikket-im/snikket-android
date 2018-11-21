@@ -4,6 +4,7 @@
   <string name="action_add">Nieuw gesprek</string>
   <string name="action_accounts">Accounts beheren</string>
   <string name="action_account">Account beheren</string>
+  <string name="action_end_conversation">Dit gesprek sluiten</string>
   <string name="action_contact_details">Contactgegevens</string>
   <string name="action_muc_details">Gespreksgegevens</string>
   <string name="action_secure">Beveiligd gesprek</string>
@@ -80,6 +81,7 @@
   <string name="clear_histor_msg">Weet je zeker dat je alle berichten in dit gesprek wil verwijderen?\n\n<b>Waarschuwing:</b> Dit zal kopieën van deze berichten die opgeslagen zijn op andere apparaten of servers niet verwijderen.</string>
   <string name="delete_file_dialog">Bestand verwijderen</string>
   <string name="delete_file_dialog_msg">Weet je zeker dat je dit bestand wil verwijderen?\n\n<b>Waarschuwing:</b> Dit zal kopieën van dit bericht die opgeslagen zijn op andere apparaten of servers niet verwijderen.</string>
+  <string name="also_end_conversation">Dit gesprek nadien sluiten</string>
   <string name="choose_presence">Apparaat kiezen</string>
   <string name="send_unencrypted_message">Verstuur onversleuteld bericht</string>
   <string name="send_message">Verstuur bericht</string>
