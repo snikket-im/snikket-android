@@ -3,7 +3,6 @@
   <string name="action_settings">Налаштування</string>
   <string name="action_add">Нова розмова</string>
   <string name="action_accounts">Впорядкувати облікові записи</string>
-  <string name="action_end_conversation">Завершити цю розмову</string>
   <string name="action_contact_details">Деталі контакту</string>
   <string name="action_secure">Захищена розмова</string>
   <string name="action_add_account">Додати обліковий запис</string>
@@ -68,7 +67,6 @@
   <string name="sharing_files_please_wait">Поширюю файли. Зачекайте, будь ласка…</string>
   <string name="action_clear_history">Очистити історію</string>
   <string name="clear_conversation_history">Очистити історію розмов</string>
-  <string name="also_end_conversation">Завершити цю розмову опісля</string>
   <string name="choose_presence">Вибрати пристрій</string>
   <string name="send_unencrypted_message">Відправити незашифроване повідомлення</string>
   <string name="send_message">Відправити повідомленн</string>

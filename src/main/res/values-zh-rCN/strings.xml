@@ -3,7 +3,6 @@
   <string name="action_settings">设置</string>
   <string name="action_add">新会话</string>
   <string name="action_accounts">管理账户</string>
-  <string name="action_end_conversation">结束会话</string>
   <string name="action_contact_details">联系人详情</string>
   <string name="action_muc_details">群聊详情</string>
   <string name="action_secure">安全对话</string>
@@ -79,7 +78,6 @@
   <string name="clear_conversation_history">清除会话记录</string>
   <string name="clear_histor_msg">您确定要删除此对话中的所有消息吗？\n\n<b>警告：</b>这不会删除存储在其他设备或服务器上的那些消息的副本。</string>
   <string name="delete_file_dialog">删除文件</string>
-  <string name="also_end_conversation">之后结束此会话</string>
   <string name="choose_presence">选择设备</string>
   <string name="send_unencrypted_message">发送未加密的信息</string>
   <string name="send_message">发送信息</string>

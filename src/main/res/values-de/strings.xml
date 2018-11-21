@@ -4,7 +4,7 @@
   <string name="action_add">Neue Unterhaltung</string>
   <string name="action_accounts">Konten verwalten</string>
   <string name="action_account">Konto verwalten</string>
-  <string name="action_end_conversation">Unterhaltung beenden</string>
+  <string name="action_end_conversation">Diese Unterhaltung beenden</string>
   <string name="action_contact_details">Kontaktdetails</string>
   <string name="action_muc_details">Gruppenchatdetails</string>
   <string name="action_secure">Verschlüsselte Unterhaltung</string>
@@ -300,6 +300,8 @@
   <string name="send_again">Erneut senden</string>
   <string name="file_url">Datei-URL</string>
   <string name="url_copied_to_clipboard">URL in die Zwischenablage kopiert</string>
+  <string name="jabber_id_copied_to_clipboard">Jabber-ID in die Zwischenablage kopiert</string>
+  <string name="error_message_copied_to_clipboard">Fehlermeldung in die Zwischenablage kopiert</string>
   <string name="web_address">Internetadresse</string>
   <string name="scan_qr_code">Barcode scannen</string>
   <string name="show_qr_code">Barcode anzeigen</string>
@@ -489,6 +491,7 @@
   <string name="no_camera_permission">Conversations benötigt Zugriff auf die Kamera</string>
   <string name="sync_with_contacts">Mit Kontakten synchronisieren</string>
   <string name="sync_with_contacts_long">Conversations möchte deine serverseitige Kontaktliste mit deinem lokalen Adressbuch abgleichen, um die vollständigen Namen und Avatare deiner Kontakte anzuzeigen.\n\nConversations wird deine Kontakte nur lokal lesen, abgleichen und überträgt diese nicht auf den Server.\n\nDu wirst nun gefragt, ob du den Zugriff auf deine Kontakte erlauben möchtest. </string>
+  <string name="sync_with_contacts_quicksy"><![CDATA[Quicksy benötigt Zugriff auf die Telefonnummern deiner Kontakte, um Vorschläge für mögliche Kontakte zu machen, die bereits bei Quicksy sind.<br><br>Wir werden keine Kopie dieser Telefonnummern speichern.\n\nFür weitere Informationen lies unsere <a href="https://quicksy.im/#privacy">Datenschutzerklärung</a>.<br><br>Du wirst nun gefragt, ob du den Zugriff auf deine Kontakte erlauben möchtest.]]></string>
   <string name="notify_on_all_messages">Bei allen Nachrichten benachrichtigen</string>
   <string name="notify_only_when_highlighted">Nur benachrichtigen, wenn ich erwähnt werde</string>
   <string name="notify_never">Benachrichtigungen deaktiviert</string>
@@ -512,6 +515,7 @@
   <string name="no_application_to_share_uri">Keine Anwendung zum Teilen der URI gefunden</string>
   <string name="share_uri_with">Teile URI mit…</string>
   <string name="welcome_text">Jabber ist ein anbieterunabhängiges Instant Messaging Netzwerk. Du kannst diesen Client mit jedem beliebigen Jabber-Server nutzen.\nUm es dir leicht zu machen, haben wir die Möglichkeit geschaffen, ein Konto auf conversations.im¹ anzulegen; ein Anbieter, der speziell für die Verwendung mit Conversations geeignet ist.</string>
+  <string name="welcome_text_quicksy"><![CDATA[Quicksy ist ein Ableger des beliebten Jabber/XMPP-Clients Conversations mit automatischer Kontakterkennung.<br><br>Du registrierst dich mit deiner Telefonnummer und Quicksy wird automatisch auf der Grundlage der Telefonnummern in deinem Adressbuch mögliche Kontakte vorschlagen.<br><br>Mit der Anmeldung erklärst du dich mit unserer <a href="https://quicksy.im/#privacy">Datenschutzerklärung</a>einverstanden.]]></string>
   <string name="agree_and_continue">Zustimmen &amp; fortfahren</string>
   <string name="magic_create_text">Wir führen dich durch den Prozess der Kontoerstellung auf conversations.im.¹\nWenn du conversations.im als Provider wählst, kannst du mit Nutzern anderer Anbieter kommunizieren, indem du ihnen deine vollständige Jabber-ID gibst.</string>
   <string name="your_full_jid_will_be">Deine vollständige Jabber ID lautet: %s</string>
@@ -731,7 +735,7 @@
   <string name="error_channel_description">Diese Benachrichtigungsart wird verwendet, um eine Benachrichtigung anzuzeigen, falls es ein Problem bei der Verbindung zu einem Konto gibt.</string>
   <string name="notification_group_messages">Nachrichten</string>
   <string name="messages_channel_name">Nachrichten</string>
-  <string name="silent_messages_channel_name">Lautlose Benachrichtigungen</string>
+  <string name="silent_messages_channel_name">Lautlose Nachrichten</string>
   <string name="silent_messages_channel_description">Diese Benachrichtigungsart wird verwendet, um Benachrichtigungen anzuzeigen, die keinen Ton auslösen sollen. Zum Beispiel, wenn du auf einem anderen Gerät aktiv bist (Schonfrist).</string>
   <string name="pref_more_notification_settings">Benachrichtigungseinstellungen</string>
   <string name="pref_more_notification_settings_summary">Wichtigkeit, Klang, Vibrationen</string>
@@ -752,10 +756,12 @@
   <string name="phone_number">Telefonnummer</string>
   <string name="verify_your_phone_number">Telefonnummer überprüfen</string>
   <string name="enter_country_code_and_phone_number">Quicksy sendet eine SMS-Nachricht (es können Gebühren anfallen), um deine Telefonnummer zu überprüfen. Gib deine Landesvorwahl und Telefonnummer ein:</string>
+  <string name="we_will_be_verifying"><![CDATA[Wir werden die Telefonnummer <br/><br/><b>%s</b><br/><br/>überprüfen. Ist das Ordnung oder möchtest du die Nummer bearbeiten?]]></string>
   <string name="not_a_valid_phone_number">%s ist keine gültige Telefonnummer.</string>
   <string name="please_enter_your_phone_number">Gib bitte deine Telefonnummer ein.</string>
   <string name="search_countries">Land suchen</string>
   <string name="verify_x">Überprüfe %s</string>
+  <string name="we_have_sent_you_an_sms_to_x"><![CDATA[Wir haben dir eine SMS an <b>%s</b>geschickt.]]></string>
   <string name="we_have_sent_you_another_sms">Wir haben dir eine weitere SMS mit einem 6-stelligen Code geschickt.</string>
   <string name="please_enter_pin_below">Gib bitte den 6-stellige PIN unten ein.</string>
   <string name="resend_sms">SMS erneut versenden</string>
@@ -790,4 +796,5 @@
   <string name="your_name">Dein Name</string>
   <string name="enter_your_name">Deinen Namen eingeben</string>
   <string name="no_name_set_instructions">Benutze die \"Bearbeiten\"-Schaltfläche, um deinen Namen festzulegen.</string>
+  <string name="reject_request">Anfrage ablehnen</string>
 </resources>

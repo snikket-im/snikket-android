@@ -4,7 +4,6 @@
   <string name="action_add">Nieuw gesprek</string>
   <string name="action_accounts">Accounts beheren</string>
   <string name="action_account">Account beheren</string>
-  <string name="action_end_conversation">Gesprek beëindigen</string>
   <string name="action_contact_details">Contactgegevens</string>
   <string name="action_muc_details">Gespreksgegevens</string>
   <string name="action_secure">Beveiligd gesprek</string>
@@ -81,7 +80,6 @@
   <string name="clear_histor_msg">Weet je zeker dat je alle berichten in dit gesprek wil verwijderen?\n\n<b>Waarschuwing:</b> Dit zal kopieën van deze berichten die opgeslagen zijn op andere apparaten of servers niet verwijderen.</string>
   <string name="delete_file_dialog">Bestand verwijderen</string>
   <string name="delete_file_dialog_msg">Weet je zeker dat je dit bestand wil verwijderen?\n\n<b>Waarschuwing:</b> Dit zal kopieën van dit bericht die opgeslagen zijn op andere apparaten of servers niet verwijderen.</string>
-  <string name="also_end_conversation">Dit gesprek na afloop beëindigen</string>
   <string name="choose_presence">Apparaat kiezen</string>
   <string name="send_unencrypted_message">Verstuur onversleuteld bericht</string>
   <string name="send_message">Verstuur bericht</string>
@@ -300,6 +298,8 @@
   <string name="send_again">Opnieuw versturen</string>
   <string name="file_url">Bestands-URL</string>
   <string name="url_copied_to_clipboard">URL gekopieerd naar klembord</string>
+  <string name="jabber_id_copied_to_clipboard">Jabber-ID gekopieerd naar klembord</string>
+  <string name="error_message_copied_to_clipboard">Foutmelding gekopieerd naar klembord</string>
   <string name="web_address">webadres</string>
   <string name="scan_qr_code">2D-streepjescode scannen</string>
   <string name="show_qr_code">2D-streepjescode tonen</string>
@@ -750,6 +750,8 @@
   <string name="choose_a_country">Kies een land</string>
   <string name="phone_number">telefoonnummer</string>
   <string name="verify_your_phone_number">Verifieer je telefoonnummer</string>
+  <string name="enter_country_code_and_phone_number">Quicksy zal een sms sturen om je telefoonnummer te bevestigen. Voer je landcode en telefoonnummer in:</string>
+  <string name="we_will_be_verifying"><![CDATA[We gaan het volgende telefoonnummer verifiëren:<br/><br/><b>%s</b><br/><br/>Is dit oké, of wil je het nummer bewerken?]]></string>
   <string name="not_a_valid_phone_number">%s is geen geldig telefoonnummer.</string>
   <string name="please_enter_your_phone_number">Voer je telefoonnummer in.</string>
   <string name="search_countries">Landen doorzoeken</string>
@@ -789,4 +791,5 @@
   <string name="your_name">Je naam</string>
   <string name="enter_your_name">Voer je naam in</string>
   <string name="no_name_set_instructions">Gebruik de knop \'bewerken\' op je naam in te stellen.</string>
+  <string name="reject_request">Verzoek afwijzen</string>
 </resources>

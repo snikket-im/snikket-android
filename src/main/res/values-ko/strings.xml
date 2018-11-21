@@ -3,7 +3,6 @@
   <string name="action_settings">설정</string>
   <string name="action_add">새 대화</string>
   <string name="action_accounts">계정 </string>
-  <string name="action_end_conversation">이 대화 </string>
   <string name="action_contact_details">연락처 정보</string>
   <string name="action_secure">안전한 대화 </string>
   <string name="action_add_account">계정 추가 </string>
@@ -68,7 +67,6 @@
   <string name="sharing_files_please_wait">파일을 공유중입니다. 기다리세요...</string>
   <string name="action_clear_history">기록 삭제 </string>
   <string name="clear_conversation_history">대화 기록 삭제 </string>
-  <string name="also_end_conversation">나중에 이 대화 끝내기 </string>
   <string name="choose_presence">기기 선택</string>
   <string name="send_unencrypted_message">암호화하지 않은 메세지 전송</string>
   <string name="send_message_to_x">%s 에게 매세지 보내기 </string>

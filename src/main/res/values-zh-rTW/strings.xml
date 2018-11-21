@@ -3,7 +3,6 @@
   <string name="action_settings">設定</string>
   <string name="action_add">新對話</string>
   <string name="action_accounts">管理帳戶</string>
-  <string name="action_end_conversation">結束對話</string>
   <string name="action_contact_details">聯絡人詳情</string>
   <string name="action_secure">安全對話</string>
   <string name="action_add_account">新增帳戶</string>
@@ -68,7 +67,6 @@
   <string name="sharing_files_please_wait">正在分享檔案中，請稍候…</string>
   <string name="action_clear_history">清除歷史記錄</string>
   <string name="clear_conversation_history">清除會話記錄</string>
-  <string name="also_end_conversation">結束此會話以後</string>
   <string name="choose_presence">選擇設備</string>
   <string name="send_unencrypted_message">發送未加密的訊息</string>
   <string name="send_message">送訊息</string>

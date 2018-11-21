@@ -3,7 +3,6 @@
   <string name="action_settings">הגדרות</string>
   <string name="action_add">שיחה חדשה</string>
   <string name="action_accounts">נהל חשבונות</string>
-  <string name="action_end_conversation">סיים שיחה זו</string>
   <string name="action_contact_details">פרטי איש קשר</string>
   <string name="action_secure">דיון מאובטח</string>
   <string name="action_add_account">הוסף חשבון</string>
@@ -65,7 +64,6 @@
   <string name="preparing_image">מכין תמונה לשליחה</string>
   <string name="action_clear_history">נקה היסטוריה</string>
   <string name="clear_conversation_history">נקה היסטוריית שיחה</string>
-  <string name="also_end_conversation">סיים את השיחה לאחר מכן</string>
   <string name="send_unencrypted_message">שלח הודעה בלתי מוצפנת</string>
   <string name="send_omemo_message">של הודעה בהצפנת OMEMO</string>
   <string name="send_pgp_message">שלח הודעה בהצפנת OpenPGP</string>

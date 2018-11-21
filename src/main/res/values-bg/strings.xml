@@ -4,7 +4,6 @@
   <string name="action_add">Нов разговор</string>
   <string name="action_accounts">Управление на профилите</string>
   <string name="action_account">Управление на профила</string>
-  <string name="action_end_conversation">Край на този разговор</string>
   <string name="action_contact_details">Подробности за контакта</string>
   <string name="action_muc_details">Подробности за груповия разговор</string>
   <string name="action_secure">Защитен разговор</string>
@@ -81,7 +80,6 @@
   <string name="clear_histor_msg">Наистина ли искате да изтриете всички съобщения в този разговор?\n\n<b>Внимание:</b> Това няма да изтрие копията на тези съобщения, които се съхраняват на други устройства или сървъри.</string>
   <string name="delete_file_dialog">Изтриване на файла</string>
   <string name="delete_file_dialog_msg">Наистина ли искате да изтриете този файл?\n\n<b>Внимание:</b> Това няма да изтрие копията на файла, които се съхраняват на други устройства или сървъри.</string>
-  <string name="also_end_conversation">Приключване на този разговор след това</string>
   <string name="choose_presence">Изберете устройство</string>
   <string name="send_unencrypted_message">Изпр. на нешифр. съобщение</string>
   <string name="send_message">Изпращане на съобщение</string>
@@ -300,6 +298,8 @@
   <string name="send_again">Повторно изпращане</string>
   <string name="file_url">Адрес на файла</string>
   <string name="url_copied_to_clipboard">Копиране на адреса</string>
+  <string name="jabber_id_copied_to_clipboard">Jabber идентификаторът е копиран</string>
+  <string name="error_message_copied_to_clipboard">Съобщението за грешка е копирано</string>
   <string name="web_address">уеб адрес</string>
   <string name="scan_qr_code">Сканиране на 2-измерен баркод</string>
   <string name="show_qr_code">Показване на 2-измерен баркод</string>
@@ -794,4 +794,5 @@
   <string name="your_name">Името Ви</string>
   <string name="enter_your_name">Въведете името си</string>
   <string name="no_name_set_instructions">Използвайте бутона за редактиране, за да въведете името си.</string>
+  <string name="reject_request">Отхвърляне на заявката</string>
 </resources>

@@ -3,7 +3,6 @@
   <string name="action_settings">Axustes</string>
   <string name="action_add">Nova conversa</string>
   <string name="action_accounts">Xestionar contas</string>
-  <string name="action_end_conversation">Terminar conversa</string>
   <string name="action_contact_details">Detalles do contacto</string>
   <string name="action_muc_details">Detalles da conversa de grupo</string>
   <string name="action_secure">Conversa segura</string>
@@ -80,7 +79,6 @@
   <string name="clear_histor_msg">Está segura de querer eliminar todas as mensaxes de esta conversación¿\n\n<b>Aviso:</b> Esto non eliminará as copias de esas mensaxes que están gardadas en outros dispositivos ou servidores.</string>
   <string name="delete_file_dialog">Eliminar ficheiro</string>
   <string name="delete_file_dialog_msg">Está segura de querer eliminar este ficheiro?\n\n<b>Aviso:</b> Esto non eliminará as copias de este ficheiro que están gardadas en outros dispositivos ou servidores.</string>
-  <string name="also_end_conversation">Finalizar esta conversación tras o proceso</string>
   <string name="choose_presence">Escoller dispositivo</string>
   <string name="send_unencrypted_message">Enviar mensaxe non cifrada</string>
   <string name="send_message">Enviar mensaxe</string>

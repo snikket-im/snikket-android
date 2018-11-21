@@ -3,7 +3,6 @@
   <string name="action_settings">Ayarlar</string>
   <string name="action_add">Yeni konuşma</string>
   <string name="action_accounts">Hesapları yönet</string>
-  <string name="action_end_conversation">Konuşmayı sonlandır</string>
   <string name="action_contact_details">Kişi bilgileri</string>
   <string name="action_secure">Güvenli konuşma</string>
   <string name="action_add_account">Hesap ekle</string>
@@ -68,7 +67,6 @@
   <string name="sharing_files_please_wait">Dosyalar Paylaşılıyor. Lütfen bekleyin...</string>
   <string name="action_clear_history">Geçmişi sil</string>
   <string name="clear_conversation_history">Konuşma geçmişini sil</string>
-  <string name="also_end_conversation">Sonrasında bu konuşmayı sonlandır</string>
   <string name="choose_presence">Aygıt seç</string>
   <string name="send_unencrypted_message">Şifrelenmemiş ileti gönder</string>
   <string name="send_message_to_x">%s kişisine ileti gönder</string>

@@ -3,7 +3,7 @@
   <string name="action_settings">Impostazioni</string>
   <string name="action_add">Nuova conversazione</string>
   <string name="action_accounts">Gestisci account</string>
-  <string name="action_end_conversation">Termina questa conversazione</string>
+  <string name="action_account">Gestisci account</string>
   <string name="action_contact_details">Dettagli del contatto</string>
   <string name="action_muc_details">Dettagli chat di gruppo</string>
   <string name="action_secure">Conversazione sicura</string>
@@ -80,7 +80,6 @@
   <string name="clear_histor_msg">Sei sicuro di voler eliminare tutti i messaggi di questa conversazione?\n\n<b>Attenzione:</b> non verranno eliminate copie di questi messaggi memorizzati in altri dispositivi o server.</string>
   <string name="delete_file_dialog">Elimina file</string>
   <string name="delete_file_dialog_msg">Sei sicuro di voler eliminare questo file?\n\n<b>Attenzione:</b> non verranno eliminate copie di questo file memorizzate in altri dispositivi o server. </string>
-  <string name="also_end_conversation">Termina questa conversazione successivamente</string>
   <string name="choose_presence">Scegli un dispositivo</string>
   <string name="send_unencrypted_message">Invia messaggio non cifrato</string>
   <string name="send_message">Invia messaggio</string>
@@ -267,6 +266,7 @@
   <string name="pref_allow_message_correction_summary">Consenti ai tuoi contatti di modificare retroattivamente i loro messaggi</string>
   <string name="pref_expert_options">Impostazioni esperto</string>
   <string name="pref_expert_options_summary">Fai attenzione con queste impostazioni</string>
+  <string name="title_activity_about_x">Informazioni su %s</string>
   <string name="title_pref_quiet_hours">Ore di quiete</string>
   <string name="title_pref_quiet_hours_start_time">Orario inizio</string>
   <string name="title_pref_quiet_hours_end_time">Orario fine</string>
@@ -298,6 +298,8 @@
   <string name="send_again">Invia di nuovo</string>
   <string name="file_url">URL del file</string>
   <string name="url_copied_to_clipboard">URL copiato negli appunti</string>
+  <string name="jabber_id_copied_to_clipboard">ID Jabber copiato negli appunti</string>
+  <string name="error_message_copied_to_clipboard">Messaggio di errore copiato negli appunti</string>
   <string name="web_address">indirizzo web</string>
   <string name="scan_qr_code">Scansiona codice a barre 2D</string>
   <string name="show_qr_code">Mostra codice a barre 2D</string>
@@ -486,6 +488,8 @@
   <string name="no_storage_permission">Conversations ha bisogno di accedere all\'archiviazione esterna</string>
   <string name="no_camera_permission">Conversations ha bisogno di accedere alla fotocamera</string>
   <string name="sync_with_contacts">Sincronizza con i contatti</string>
+  <string name="sync_with_contacts_long">Conversations vuole confrontare il tuo elenco di contatti lato server con la tua rubrica locale per mostrare i nomi ed avatar dei contatti.\n\nConversations leggerà solamente i contatti e li confronterà localmente senza caricarli sul server.\n\nTi verrà ora chiesta l\'autorizzazione di accedere ai tuoi contatti.</string>
+  <string name="sync_with_contacts_quicksy"><![CDATA[Quicksy richiede l\'accesso ai numeri di telefono dei tuoi contatti per dare suggerimenti su possibili contatti già presenti su Quicksy.<br><br>Non salveremo una copia di quei numeri di telefono.\n\nPer maggiori informazioni leggi la nostra <a href="https://quicksy.im/#privacy">politica sulla privacy</a>.<br><br>Ti verrà ora chiesta l\'autorizzazione di accedere ai tuoi contatti.]]></string>
   <string name="notify_on_all_messages">Notifica per tutti i messaggi</string>
   <string name="notify_only_when_highlighted">Notifica solo quando menzionato</string>
   <string name="notify_never">Notifiche disattivate</string>
@@ -509,6 +513,8 @@
   <string name="no_application_to_share_uri">Nessuna applicazione trovata per condividere l\'URI</string>
   <string name="share_uri_with">Condividi l\'URI con...</string>
   <string name="welcome_text">Jabber è una rete di messaggeria istantanea indipendente dal provider. Puoi usare questo client con qualsiasi server Jabber scelto.\nComunque, per tua comodità, abbiamo semplificato la creazione di un account su conversations.im¹; un provider particolarmente adatto all\'uso con Conversations.</string>
+  <string name="welcome_text_quicksy"><![CDATA[Quicksy è una variante del popolare client Jabber/XMPP Conversations con ricerca automatica dei contatti.<br><br>Ti registri con il tuo numero di telefono e Quicksy ti suggerirà—in base ai numeri di telefono nella tua rubrica—automaticamente i possibili contatti.<br><br>Registrandoti accetti la nostra <a href="https://quicksy.im/#privacy">politica sulla privacy</a>.]]></string>
+  <string name="agree_and_continue">Accetta e continua</string>
   <string name="magic_create_text">Ti guideremo nel processo di creazione di un account su conversations.im.¹\nQuando scegli conversations.im come provider potrai comunicare con utenti di altri provider dando il tuo ID Jabber completo.</string>
   <string name="your_full_jid_will_be">Il tuo ID Jabber completo sarà: %s</string>
   <string name="create_account">Crea account</string>
@@ -742,4 +748,50 @@
   <string name="video_720p">Alta (720p)</string>
   <string name="cancelled">annullato</string>
   <string name="already_drafting_message">Hai già un messaggio in bozze.</string>
+  <string name="feature_not_implemented">Funzionalità non implementata</string>
+  <string name="invalid_country_code">Codice nazionale non valido</string>
+  <string name="choose_a_country">Scegli una nazione</string>
+  <string name="phone_number">numero di telefono</string>
+  <string name="verify_your_phone_number">Verifica il tuo numero di telefono</string>
+  <string name="enter_country_code_and_phone_number">Quicksy invierà un SMS (possono essere applicati costi dal gestore) per verificare il tuo numero. Inserisci il tuo codice nazionale e numero di telefono:</string>
+  <string name="we_will_be_verifying"><![CDATA[Verificheremo il numero di telefono<br/><br/><b>%s</b><br/><br/>È corretto o vuoi modificare il numero?]]></string>
+  <string name="not_a_valid_phone_number">%s non è un numero di telefono valido.</string>
+  <string name="please_enter_your_phone_number">Inserisci il tuo numero di telefono:</string>
+  <string name="search_countries">Cerca nazioni</string>
+  <string name="verify_x">Verifica %s</string>
+  <string name="we_have_sent_you_an_sms_to_x"><![CDATA[Ti abbiamo inviato un SMS a <b>%s</b>.]]></string>
+  <string name="we_have_sent_you_another_sms">Ti abbiamo inviato un altro SMS con un codice di 6 cifre.</string>
+  <string name="please_enter_pin_below">Inserisci il pin di 6 cifre qua sotto.</string>
+  <string name="resend_sms">Reinvia SMS</string>
+  <string name="resend_sms_in">Reinvia SMS (%s)</string>
+  <string name="wait_x">Attendere prego (%s)</string>
+  <string name="back">indietro</string>
+  <string name="possible_pin">Possibile pin incollato automaticamente dagli appunti.</string>
+  <string name="please_enter_pin">Inserisci il pin di 6 cifre.</string>
+  <string name="abort_registration_procedure">Sei sicuro di voler annullare la procedura di registrazione?</string>
+  <string name="yes">Sì</string>
+  <string name="no">No</string>
+  <string name="verifying">Verifica…</string>
+  <string name="requesting_sms">Richiesta SMS…</string>
+  <string name="incorrect_pin">Il pin che hai inserito è sbagliato.</string>
+  <string name="pin_expired">Il pin che ti abbiamo inviato è scaduto.</string>
+  <string name="unknown_api_error_network">Errore di rete sconosciuto.</string>
+  <string name="unknown_api_error_response">Risposta dal server sconosciuta.</string>
+  <string name="unable_to_connect_to_server">Impossibile connettersi al server.</string>
+  <string name="unable_to_establish_secure_connection">Impossibile stabilire una connessione sicura.</string>
+  <string name="unable_to_find_server">Impossibile trovare il server.</string>
+  <string name="something_went_wrong_processing_your_request">Qualcosa è andato storto elaborando la tua richiesta.</string>
+  <string name="invalid_user_input">Input utente non valido</string>
+  <string name="temporarily_unavailable">Temporaneamente non disponibile. Riprova più tardi.</string>
+  <string name="no_network_connection">Nessuna connessione di rete.</string>
+  <string name="try_again_in_x">Riprova in %s</string>
+  <string name="too_many_attempts">Troppi tentativi</string>
+  <string name="the_app_is_out_of_date">Stai usando una versione obsoleta di questa app.</string>
+  <string name="update">Aggiorna</string>
+  <string name="logged_in_with_another_device">Questo numero di telefono è attualmente connesso con un altro dispositivo.</string>
+  <string name="enter_your_name_instructions">Inserisci il tuo nome per far sapere chi sei alle persone che non ti hanno nelle loro rubriche.</string>
+  <string name="your_name">Il tuo nome</string>
+  <string name="enter_your_name">Inserisci il tuo nome</string>
+  <string name="no_name_set_instructions">Usa il pulsante modifica per impostare il tuo nome.</string>
+  <string name="reject_request">Rifiuta la richiesta</string>
 </resources>

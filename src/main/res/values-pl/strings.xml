@@ -3,7 +3,7 @@
   <string name="action_settings">Ustawienia</string>
   <string name="action_add">Nowa konwersacja</string>
   <string name="action_accounts">Zarządzaj kontami</string>
-  <string name="action_end_conversation">Zakończ konwersację</string>
+  <string name="action_account">Zarządzaj kontem</string>
   <string name="action_contact_details">Szczegóły kontaktu</string>
   <string name="action_muc_details">Szczegóły konferencji</string>
   <string name="action_secure">Konwersacja szyfrowana</string>
@@ -80,7 +80,6 @@
   <string name="clear_histor_msg">Czy na pewno usunąć wszystkie wiadomości powiązane z konwersacją?\n\n<b>Uwaga:</b> Działanie nie wpływa na wiadomości przechowywane na innych urządzeniach lub serwerach.</string>
   <string name="delete_file_dialog">Usuń plik</string>
   <string name="delete_file_dialog_msg">Czy na pewno usunąć ten plik?\n\n<b>Uwaga:</b> Działanie nie wpływa na kopie pliku przechowywane na innych urządzeniach lub serwerach.</string>
-  <string name="also_end_conversation">po czym zakończ tę rozmowę</string>
   <string name="choose_presence">Wybierz urządzenie</string>
   <string name="send_unencrypted_message">Wyślij wiadomość bez szyfrowania</string>
   <string name="send_message">Wyślij wiadomość</string>
@@ -267,6 +266,7 @@
   <string name="pref_allow_message_correction_summary">Pozwól swoim kontaktom poprawiać wiadomości</string>
   <string name="pref_expert_options">Ustawienia zaawansowane</string>
   <string name="pref_expert_options_summary">Modyfikuj ustawienia ostrożnie</string>
+  <string name="title_activity_about_x">O %s</string>
   <string name="title_pref_quiet_hours">Godziny ciszy</string>
   <string name="title_pref_quiet_hours_start_time">Początek</string>
   <string name="title_pref_quiet_hours_end_time">Koniec</string>
@@ -298,6 +298,8 @@
   <string name="send_again">Wyślij ponownie</string>
   <string name="file_url">URL pliku</string>
   <string name="url_copied_to_clipboard">Skopiowano URL do schowka</string>
+  <string name="jabber_id_copied_to_clipboard">Skopiowano Jabber ID do schowka</string>
+  <string name="error_message_copied_to_clipboard">Skopiowano komunikat błędu do schowka</string>
   <string name="web_address">adres URL</string>
   <string name="scan_qr_code">Zeskanuj kod</string>
   <string name="show_qr_code">Pokaż kod QR</string>
@@ -761,4 +763,6 @@ Administrator twojego serwera będzie mógł czytać twoje wiadomości, ale moż
   <string name="video_720p">Wysoka (720p)</string>
   <string name="cancelled">anulowane</string>
   <string name="already_drafting_message">Już tworzysz nową wiadomość.</string>
+  <string name="yes">Tak</string>
+  <string name="no">Nie</string>
 </resources>

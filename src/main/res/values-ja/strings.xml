@@ -3,7 +3,7 @@
   <string name="action_settings">設定</string>
   <string name="action_add">新しい会話</string>
   <string name="action_accounts">アカウントの管理</string>
-  <string name="action_end_conversation">この会話を終了</string>
+  <string name="action_account">アカウントの管理</string>
   <string name="action_contact_details">連絡先の詳細</string>
   <string name="action_muc_details">談話室の詳細</string>
   <string name="action_secure">安全に会話</string>
@@ -20,6 +20,8 @@
   <string name="title_activity_sharewith">会話で共有</string>
   <string name="title_activity_start_conversation">会話の開始</string>
   <string name="title_activity_choose_contact">連絡先を選択</string>
+  <string name="title_activity_choose_contacts">連絡先の選択</string>
+  <string name="title_activity_share_via_account">アカウントで共有</string>
   <string name="title_activity_block_list">ブロックリスト</string>
   <string name="just_now">ちょうど今</string>
   <string name="minute_ago">1 分前</string>
@@ -41,6 +43,7 @@
   <string name="block_domain_text">%s からの連絡をすべてブロックしますか?</string>
   <string name="unblock_domain_text">%s からの連絡をすべてブロック解除しますか?</string>
   <string name="contact_blocked">連絡先をブロックしました</string>
+  <string name="blocked">ブロックしました</string>
   <string name="remove_bookmark_text">ブックマークとして %s を削除しますか? このブックマークに関連した会話は削除されません。</string>
   <string name="register_account">サーバーに新しいアカウントを登録</string>
   <string name="change_password_on_server">サーバーのパスワードを変更</string>
@@ -74,7 +77,7 @@
   <string name="sharing_files_please_wait">フィルを共有しています。しばらくお待ちください…</string>
   <string name="action_clear_history">履歴をクリア</string>
   <string name="clear_conversation_history">会話履歴をクリア</string>
-  <string name="also_end_conversation">その後、この会話を終了</string>
+  <string name="delete_file_dialog">ファイルを削除</string>
   <string name="choose_presence">デバイスを選択</string>
   <string name="send_unencrypted_message">暗号化されていないメッセージを送信</string>
   <string name="send_message">メッセージを送信</string>
@@ -631,4 +634,10 @@
   <string name="gif">GIF</string>
   <string name="copy_link">ウェブアドレスをコピー</string>
   <string name="copy_jabber_id">Jabber ID をコピー</string>
+  <string name="yes">はい</string>
+  <string name="no">いいえ</string>
+  <string name="verifying">検証しています…</string>
+  <string name="requesting_sms">SMSを要求しています…</string>
+  <string name="something_went_wrong_processing_your_request">要求の処理中に、何か問題が発生しました。</string>
+  <string name="reject_request">要求を拒否</string>
 </resources>

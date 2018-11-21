@@ -3,7 +3,6 @@
   <string name="action_settings">Innstillinger</string>
   <string name="action_add">Ny samtale</string>
   <string name="action_accounts">Kontobehandling</string>
-  <string name="action_end_conversation">Avslutt denne samtalen</string>
   <string name="action_contact_details">Kontaktdetaljer</string>
   <string name="action_muc_details">Gruppesludringsdetaljer</string>
   <string name="action_secure">Sikret samtale</string>
@@ -74,7 +73,6 @@
   <string name="sharing_files_please_wait">Deler filer. Vent…</string>
   <string name="action_clear_history">Tøm historikk</string>
   <string name="clear_conversation_history">Tøm samtalehistorikk</string>
-  <string name="also_end_conversation">Avslutt denne samtalen etterpå</string>
   <string name="choose_presence">Velg enhet</string>
   <string name="send_unencrypted_message">Send ukryptert melding</string>
   <string name="send_message">Send melding</string>

@@ -3,7 +3,6 @@
   <string name="action_settings">Поставке</string>
   <string name="action_add">Нова преписка</string>
   <string name="action_accounts">Управљај налозима</string>
-  <string name="action_end_conversation">Окончај преписку</string>
   <string name="action_contact_details">Детаљи контакта</string>
   <string name="action_muc_details">Детаљи групног ћаскања</string>
   <string name="action_secure">Безбедна преписка</string>
@@ -77,7 +76,6 @@
   <string name="sharing_files_please_wait">Делим фајлове, сачекајте…</string>
   <string name="action_clear_history">Очисти историјат</string>
   <string name="clear_conversation_history">Брисање историјата преписки</string>
-  <string name="also_end_conversation">Окончај ову преписку након тога</string>
   <string name="choose_presence">Изаберите уређај</string>
   <string name="send_unencrypted_message">Пошаљи нешифровану поруку</string>
   <string name="send_message">Пошаљи поруку</string>

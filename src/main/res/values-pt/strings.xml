@@ -3,7 +3,6 @@
   <string name="action_settings">Definições</string>
   <string name="action_add">Nova conversa</string>
   <string name="action_accounts">Gerir contas</string>
-  <string name="action_end_conversation">Finalizar essa conversa</string>
   <string name="action_contact_details">Detalhes do contacto</string>
   <string name="action_secure">Conversa segura</string>
   <string name="action_add_account">Adicionar conta</string>
@@ -75,7 +74,6 @@
   <string name="sharing_files_please_wait">Partilhando os ficheiros. Por favor aguarde...</string>
   <string name="action_clear_history">Limpar histórico</string>
   <string name="clear_conversation_history">Limpar o histórico de conversas</string>
-  <string name="also_end_conversation">Terminar esta conversa depois</string>
   <string name="choose_presence">Escolher dispositivo</string>
   <string name="send_unencrypted_message">Enviar mensagem não cifrada</string>
   <string name="send_message">Enviar mensagem</string>

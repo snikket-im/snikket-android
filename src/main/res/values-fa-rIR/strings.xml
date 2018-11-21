@@ -3,7 +3,6 @@
   <string name="action_settings">تنظیمات</string>
   <string name="action_add">مکالمه جدید</string>
   <string name="action_accounts">مدیریت حساب های کاربری</string>
-  <string name="action_end_conversation">اتمام مکالمه</string>
   <string name="action_contact_details">جزییات مخاطب</string>
   <string name="action_muc_details">جزئیات چت گروهی</string>
   <string name="action_secure">مکالمه امن</string>
@@ -69,7 +68,6 @@
   <string name="sharing_files_please_wait">در حال به اشتراک گذاری فایل ها. لطفا صبور باشید...</string>
   <string name="action_clear_history">پاک سازی تاریخچه</string>
   <string name="clear_conversation_history">پاک سازی تاریخچه گفتگو ها</string>
-  <string name="also_end_conversation">سپس گفتگو را خاتمه بده</string>
   <string name="choose_presence">انتخاب دستگاه</string>
   <string name="send_unencrypted_message">پیام رمز نشده ارسال کن</string>
   <string name="send_message">ارسال پیام</string>

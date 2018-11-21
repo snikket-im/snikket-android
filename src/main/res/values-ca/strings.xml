@@ -3,7 +3,6 @@
   <string name="action_settings">Preferències</string>
   <string name="action_add">Nova conversa</string>
   <string name="action_accounts">Gestiona els comptes</string>
-  <string name="action_end_conversation">Finalitza la conversa</string>
   <string name="action_contact_details">Detalls del contacte</string>
   <string name="action_muc_details">Detalls del xat de grup</string>
   <string name="action_secure">Conversa segura</string>
@@ -77,7 +76,6 @@
   <string name="sharing_files_please_wait">S\'estan compartint els fitxers. Espereu...</string>
   <string name="action_clear_history">Neteja l\'historial</string>
   <string name="clear_conversation_history">Neteja l\'historial de la conversa</string>
-  <string name="also_end_conversation">Finalitza aquesta conversa després</string>
   <string name="choose_presence">Tria el dispositiu</string>
   <string name="send_unencrypted_message">Envia un missatge no xifrat</string>
   <string name="send_message">Envia un missatge</string>

@@ -3,7 +3,6 @@
   <string name="action_settings">Configurações</string>
   <string name="action_add">Nova conversa</string>
   <string name="action_accounts">Gerenciar contas</string>
-  <string name="action_end_conversation">Encerrar essa conversa</string>
   <string name="action_contact_details">Detalhes do contato</string>
   <string name="action_muc_details">Detalhes da conversa em grupo</string>
   <string name="action_secure">Conversa segura</string>
@@ -80,7 +79,6 @@
   <string name="clear_histor_msg">Deseja realmente excluir todas as mensagens dessa conversa?\n\n<b>Atenção:</b> Isso não excluirá cópias dessas mensagens armazenadas em outros dispositivos ou servidores.</string>
   <string name="delete_file_dialog">Excluir arquivo</string>
   <string name="delete_file_dialog_msg">Deseja realmente excluir este arquivo?\n\n<b>Atenção:</b> Isso não excluirá cópias deste arquivo armazenadas em outros dispositivos ou servidores.</string>
-  <string name="also_end_conversation">Encerrar essa conversa em seguida</string>
   <string name="choose_presence">Selecione o dispositivo</string>
   <string name="send_unencrypted_message">Enviar mensagem não criptografada</string>
   <string name="send_message">Enviar mensagem</string>

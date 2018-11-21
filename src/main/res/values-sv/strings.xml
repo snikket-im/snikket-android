@@ -3,7 +3,6 @@
   <string name="action_settings">Inställningar</string>
   <string name="action_add">Ny konversation</string>
   <string name="action_accounts">Kontoinställningar</string>
-  <string name="action_end_conversation">Avsluta denna konversation</string>
   <string name="action_contact_details">Kontaktdetaljer</string>
   <string name="action_secure">Säker konversation</string>
   <string name="action_add_account">Lägg till konto</string>
@@ -68,7 +67,6 @@
   <string name="sharing_files_please_wait">Delar filer. Vänta...</string>
   <string name="action_clear_history">Rensa historik</string>
   <string name="clear_conversation_history">Rensa konversationshistorik</string>
-  <string name="also_end_conversation">Avsluta denna konversation efteråt</string>
   <string name="choose_presence">Välj enhet</string>
   <string name="send_unencrypted_message">Skicka okrypterat meddelande</string>
   <string name="send_message">Skicka meddelande</string>

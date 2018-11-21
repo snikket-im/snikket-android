@@ -3,7 +3,7 @@
   <string name="action_settings">Beállítások</string>
   <string name="action_add">Új beszélgetés</string>
   <string name="action_accounts">Fiókok kezelése</string>
-  <string name="action_end_conversation">Beszélgetés befejezése</string>
+  <string name="action_account">Fiók kezelése</string>
   <string name="action_contact_details">Kapcsolat részletek</string>
   <string name="action_muc_details">Konferencia részletei</string>
   <string name="action_secure">Biztonságos beszélgetés</string>
@@ -80,7 +80,6 @@
   <string name="clear_histor_msg">Biztosan szeretnéd az üzeneteket törölni ebben a beszélgetésben?\n\n<b>Figyelem:</b> Ez nem törli más eszközökön vagy szervereken tárolt üzeneteidet.</string>
   <string name="delete_file_dialog">Fájl törlése</string>
   <string name="delete_file_dialog_msg">Biztosan szeretnéd ezt a fájlt törölni?\n\n<b>Figyelem:</b> Ez nem törli más eszközökön vagy szervereken tárolt fájljaidat.</string>
-  <string name="also_end_conversation">A beszélgetést is fejezze be</string>
   <string name="choose_presence">Eszköz kiválasztása</string>
   <string name="send_unencrypted_message">Titkosítatlan üzenetküldés</string>
   <string name="send_message">Üzenet küldése</string>
@@ -267,6 +266,7 @@
   <string name="pref_allow_message_correction_summary">Visszamenőlegesen is megengedi az üzenetek szerkesztését</string>
   <string name="pref_expert_options">Haladó beállítások</string>
   <string name="pref_expert_options_summary">Kérlek, légy óvatos!</string>
+  <string name="title_activity_about_x">Róla: %s</string>
   <string name="title_pref_quiet_hours">Csöndes órák</string>
   <string name="title_pref_quiet_hours_start_time">Kezdése</string>
   <string name="title_pref_quiet_hours_end_time">Befejezése</string>
@@ -298,6 +298,8 @@
   <string name="send_again">Elküldi újra</string>
   <string name="file_url">Fájl URL-je</string>
   <string name="url_copied_to_clipboard">URL vágólapra másolása</string>
+  <string name="jabber_id_copied_to_clipboard">A Jabber azonosítót a vágólapra másoltuk</string>
+  <string name="error_message_copied_to_clipboard">A hibaüzenetet a vágólapra másoltuk</string>
   <string name="web_address">webcím</string>
   <string name="scan_qr_code">2D vonalkód olvasás</string>
   <string name="show_qr_code">2D vonalkód mutatása</string>
@@ -486,6 +488,8 @@
   <string name="no_storage_permission">A Conversations-nek hozzáférésre lenne szüksége a külső tárhelyhez</string>
   <string name="no_camera_permission">A Conversations-nek hozzáférésre lenne szüksége a kamerához</string>
   <string name="sync_with_contacts">Szinkronizáljon a névjegyekkel</string>
+  <string name="sync_with_contacts_long">A Conversations szeretné megfeleltetni a szerver oldali partnerlistát  a helyi címjegyzékkel, hogy megmutassa az ismerősök teljes nevét és arcképet.\n\nA Conversations csak olvassa a névjegyeit és helyileg felelteti meg őket anélkül, hogy feltöltené azokat a szerverre.\n\nMost meg lesz kérdezve, hogy engedélyezi-e a névjegyekhez való hozzáférést.</string>
+  <string name="sync_with_contacts_quicksy"><![CDATA[A Quicksy-nek hozzáférést kell kapnia a ismerősei telefonszámához, hogy javaslatokat tegyen a lehetséges Quicksy-kapcsolatokról.<br><br>E telefonszámok másolatát nem tároljuk.\n\nTöbb információért olvassa el az <a href="https://quicksy.im/#privacy">adatvédelmi irányelvek</a>.<br><br>Most megkérjük, adjon engedélyt a névjegyek eléréséhez.]]></string>
   <string name="notify_on_all_messages">Értesítsen minden üzenetnél</string>
   <string name="notify_only_when_highlighted">Csak akkor értesítsen, ha megemlítenek</string>
   <string name="notify_never">Értesítések letiltva</string>
@@ -509,6 +513,8 @@
   <string name="no_application_to_share_uri">Nem találtunk URI-t használó alkalmazást</string>
   <string name="share_uri_with">Megosztás URI-ként</string>
   <string name="welcome_text">A Jabber egy szolgáltató független, azonnali üzenetküldő hálózat. Ezt az ügyfél programot bármelyik Jabber szerverhez használhatja.\nDe a könnyebbség kedvéért létrehozhat egy fiókot a conversations.im¹ szolgáltatón is; ami kifejezetten a Conversations programmal való használatra lett tervezve.</string>
+  <string name="welcome_text_quicksy"><![CDATA[A Quicksy a népszerű Conversations Jabber / XMPP kliens mellékhajtása automatikus kapcsolat felfedezéssel.<br><br>Regisztrál a telefonszámával, és a Quicksy automatikusan - a címjegyzékben szereplő telefonszámok alapján - jelzi a lehetséges kapcsolatokat.<br><br>A feliratkozással elfogadja az<a href="https://quicksy.im/#privacy">adatvédelmi irányelvet</a>.]]></string>
+  <string name="agree_and_continue">Egyetért &amp; folytatás</string>
   <string name="magic_create_text">Végigvezetjük a fiók létrehozás folyamatán a conversations.im-en.¹ \ nHa a conversations.im-et választja szolgáltatójának, akkor képes lesz kommunikálni a más szolgáltatóknál lévő felhasználókkal, ha megadja nekik a teljes Jabber azonosítóját.</string>
   <string name="your_full_jid_will_be">A teljes Jabber azonosítód ez lesz: %s</string>
   <string name="create_account">Fiók létrehozása</string>
@@ -742,4 +748,51 @@
   <string name="video_720p">Magas (720p)</string>
   <string name="cancelled">visszavonva</string>
   <string name="already_drafting_message">Már írja az üzenet vázlatát.</string>
+  <string name="feature_not_implemented">A funkció nem működik</string>
+  <string name="invalid_country_code">Érvénytelen országkód</string>
+  <string name="choose_a_country">Válassz egy országot</string>
+  <string name="phone_number">telefonszám</string>
+  <string name="verify_your_phone_number">Erősítsd meg a telefonszámod</string>
+  <string name="enter_country_code_and_phone_number">A Quicksy SMS-üzenetet küld (a szolgáltató díjat számolhat fel), hogy ellenőrizze a telefonszámát. Írja be az ország kódját és telefonszámát:</string>
+  <string name="we_will_be_verifying"><![CDATA[Ellenőrizni fogjuk a telefonszámát<br/><br/><b>%s</b><br/><br/>Ez rendben van, vagy szeretné szerkeszteni a számot?]]></string>
+  <string name="not_a_valid_phone_number">%s nem egy valós telefonszám.</string>
+  <string name="please_enter_your_phone_number">Kérlek add meg a telefonszámod.</string>
+  <string name="search_countries">Országok keresése</string>
+  <string name="verify_x">Ellenőrzés %s</string>
+  <string name="we_have_sent_you_an_sms_to_x"><![CDATA[Küldtünk egy SMS-t erre: <b>%s</b>.]]></string>
+  <string name="we_have_sent_you_another_sms">Küldtünk neked egy másik 6 számjegyű kódot SMS-ben.</string>
+  <string name="please_enter_pin_below">Kérjük adja meg az alábbi 6 számjegyű PIN-t.</string>
+  <string name="resend_sms">SMS újraküldése</string>
+  <string name="resend_sms_in">SMS újraküldése (%s)</string>
+  <string name="wait_x">Kérjük várjon (%s)</string>
+  <string name="back">vissza</string>
+  <string name="possible_pin">Automatikusan beillesztett lehetséges PIN a vágólapról.</string>
+  <string name="please_enter_pin">Kérjük adja meg a 6 számjegyű PIN-t.</string>
+  <string name="abort_registration_procedure">Biztosan meg akarja szakítani a regisztrációs folyamatot?</string>
+  <string name="yes">Igen</string>
+  <string name="no">Nem</string>
+  <string name="verifying">Ellenőrzés...</string>
+  <string name="requesting_sms">SMS kérése...</string>
+  <string name="incorrect_pin">A beírt PIN helytelen.</string>
+  <string name="pin_expired">A PIN amit küldtünk lejárt.</string>
+  <string name="unknown_api_error_network">Ismeretlen hálózati hiba.</string>
+  <string name="unknown_api_error_response">Ismeretlen válasz a szervertől.</string>
+  <string name="unable_to_connect_to_server">Nem sikerül a szerverhez csatlakozni.</string>
+  <string name="unable_to_establish_secure_connection">Nem sikerül biztonságos kapcsolatot létrehozni.</string>
+  <string name="unable_to_find_server">Nem sikerül szervert találni.</string>
+  <string name="something_went_wrong_processing_your_request">Valami hiba történt a kérelem feldolgozása során.</string>
+  <string name="invalid_user_input">Érvénytelen felhasználói bevitel</string>
+  <string name="temporarily_unavailable">Ideiglenesen nem elérhető. Próbáld újra később.</string>
+  <string name="no_network_connection">Nincs hálózati kapcsolat.</string>
+  <string name="try_again_in_x">Kérjük próbálja meg %s múlva</string>
+  <string name="rate_limited">Az Ön rátája limitált</string>
+  <string name="too_many_attempts">Túl sok próbálkozás</string>
+  <string name="the_app_is_out_of_date">Az alkalmazás elavult verzióját használja.</string>
+  <string name="update">Frissítés</string>
+  <string name="logged_in_with_another_device">Ez a telefonszám jelenleg egy másik eszközzel van bejelentkezve.</string>
+  <string name="enter_your_name_instructions">Kérjük, adja meg nevét, hogy az emberek, akiknek nincs benne a címjegyzékében, tudják, kicsoda Ön.</string>
+  <string name="your_name">A neve</string>
+  <string name="enter_your_name">Adja meg nevét</string>
+  <string name="no_name_set_instructions">A szerkesztő gombbal állítsa be a nevét.</string>
+  <string name="reject_request">Kérés elutasítása</string>
 </resources>

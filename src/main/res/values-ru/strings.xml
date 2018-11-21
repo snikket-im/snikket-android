@@ -3,7 +3,6 @@
   <string name="action_settings">Настройки</string>
   <string name="action_add">Новая беседа</string>
   <string name="action_accounts">Управление аккаунтами</string>
-  <string name="action_end_conversation">Закончить текущую беседу</string>
   <string name="action_contact_details">Сведения о контакте</string>
   <string name="action_muc_details">Подробности конференции</string>
   <string name="action_secure">Защищённая беседа</string>
@@ -79,7 +78,6 @@
   <string name="clear_histor_msg">Вы хотите удалить все сообщения в этой беседе?\n\n<b>Предупреждение:</b> Данная операция не повлияет на сообщения, хранящиеся на других устройствах или серверах.</string>
   <string name="delete_file_dialog">Удалить файл</string>
   <string name="delete_file_dialog_msg">Вы уверены, что хотите удалить этот файл?\n\n<b>Предупреждение:</b> Данная операция не удалит копии этого файла, хранящиеся на других устройствах или серверах.</string>
-  <string name="also_end_conversation">Закончить эту беседу впоследствии</string>
   <string name="choose_presence">Выберите устройство</string>
   <string name="send_unencrypted_message">Нешифрованное сообщение</string>
   <string name="send_message">Сообщение</string>

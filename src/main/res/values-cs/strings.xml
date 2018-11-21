@@ -3,7 +3,6 @@
   <string name="action_settings">Nastavení</string>
   <string name="action_add">Nová konverzace</string>
   <string name="action_accounts">Nastavení účtů</string>
-  <string name="action_end_conversation">Ukončit tuto konverzaci</string>
   <string name="action_contact_details">Detaily kontaktu</string>
   <string name="action_secure">Zabezpečená konverzace</string>
   <string name="action_add_account">Přidat účet</string>
@@ -68,7 +67,6 @@
   <string name="sharing_files_please_wait">Sdílení souborů. Chvíli strpení...</string>
   <string name="action_clear_history">Smazat historii</string>
   <string name="clear_conversation_history">Smaže historii konverzací</string>
-  <string name="also_end_conversation">Poté ukončit tuto konverzaci</string>
   <string name="choose_presence">Vybrat přístroj</string>
   <string name="send_unencrypted_message">Odeslat nešifrovanou zprávu</string>
   <string name="send_message_to_x">Odeslat zprávu pro %s</string>

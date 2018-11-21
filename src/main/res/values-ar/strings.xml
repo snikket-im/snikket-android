@@ -3,7 +3,6 @@
   <string name="action_settings">الإعدادات</string>
   <string name="action_add">محادثة جديدة</string>
   <string name="action_accounts">إدارة الحسابات</string>
-  <string name="action_end_conversation">إنهاء المحادثة</string>
   <string name="action_contact_details">بيانات جهة الإتصال</string>
   <string name="action_muc_details">تفاصيل مجموعة المحادثة</string>
   <string name="action_secure">تشفير المحادثة</string>
@@ -74,7 +73,6 @@
   <string name="sharing_files_please_wait">جاري إرسال الملفات.  الرجاء الإنتظار ...</string>
   <string name="action_clear_history">حذف سجل المحفوظات</string>
   <string name="clear_conversation_history">حذف سجل المحفوظات للمحادثة</string>
-  <string name="also_end_conversation">قم بإنهاء هذه المحادثة بعد ذلك</string>
   <string name="choose_presence">إختر جهازاً</string>
   <string name="send_unencrypted_message">إرسال رسالة غير مشفرة</string>
   <string name="send_message">إبعث رسالة</string>

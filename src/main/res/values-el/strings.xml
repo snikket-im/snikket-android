@@ -3,7 +3,6 @@
   <string name="action_settings">Ρυθμίσεις</string>
   <string name="action_add">Νέα συζήτηση</string>
   <string name="action_accounts">Διαχείριση λογαριασμών</string>
-  <string name="action_end_conversation">Λήξη συζήτησης</string>
   <string name="action_contact_details">Λεπτομέρειες επαφής</string>
   <string name="action_muc_details">Λεπτομέρειες ομαδικής συζήτησης</string>
   <string name="action_secure">Ασφαλής συζήτηση</string>
@@ -74,7 +73,6 @@
   <string name="sharing_files_please_wait">Διαμοιρασμός φακέλων. Παρακαλώ περιμένετε...</string>
   <string name="action_clear_history">Καθαρισμός ιστορικού</string>
   <string name="clear_conversation_history">Καθαρισμός ιστορικού Συζήτησης</string>
-  <string name="also_end_conversation">Τέλος συζήτησης</string>
   <string name="choose_presence">Επιλογή συσκευής</string>
   <string name="send_unencrypted_message">Αποστολή κρυπτογραφημένου μηνύματος</string>
   <string name="send_message">Αποστολή μηνύματος</string>

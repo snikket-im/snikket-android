@@ -3,7 +3,6 @@
   <string name="action_settings">Nastavenia</string>
   <string name="action_add">Nová konverzácia</string>
   <string name="action_accounts">Nastavenie účtov</string>
-  <string name="action_end_conversation">Ukončiť túto konverzáciu</string>
   <string name="action_contact_details">Detaily kontaktu</string>
   <string name="action_secure">Zabezpečená konverzácia</string>
   <string name="action_add_account">Pridať účet</string>
@@ -63,7 +62,6 @@
   <string name="preparing_image">Pripravujem obrázok na prenos</string>
   <string name="action_clear_history">Vymazať históriu</string>
   <string name="clear_conversation_history">Vymazať históriu konverzácií</string>
-  <string name="also_end_conversation">Neskôr ukončiť konverzáciu</string>
   <string name="send_unencrypted_message">Poslať nezašifrovanú správu</string>
   <string name="send_omemo_message">Poslať OMEMO šifrovanú správu</string>
   <string name="send_pgp_message">Poslať OpenPGP šifrovanú správu</string>
