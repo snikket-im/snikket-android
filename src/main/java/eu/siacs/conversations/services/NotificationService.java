@@ -195,9 +195,9 @@ public class NotificationService {
             return false;
         }
         final SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(mXmppConnectionService);
-        final long startTime = preferences.getLong("quiet_hours_start", TimePreference.DEFAULT_VALUE) % Config.MILLISECONDS_IN_DAY;
-        final long endTime = preferences.getLong("quiet_hours_end", TimePreference.DEFAULT_VALUE) % Config.MILLISECONDS_IN_DAY;
-        final long nowTime = Calendar.getInstance().getTimeInMillis() % Config.MILLISECONDS_IN_DAY;
+        final long startTime = TimePreference.minutesToTimestamp(preferences.getLong("quiet_hours_start", TimePreference.DEFAULT_VALUE));
+        final long endTime = TimePreference.minutesToTimestamp(preferences.getLong("quiet_hours_end", TimePreference.DEFAULT_VALUE));
+        final long nowTime = Calendar.getInstance().getTimeInMillis();
 
         if (endTime < startTime) {
             return nowTime > startTime || nowTime < endTime;

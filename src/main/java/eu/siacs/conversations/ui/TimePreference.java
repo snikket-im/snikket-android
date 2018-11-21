@@ -12,6 +12,7 @@ import java.text.DateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
+
 public class TimePreference extends DialogPreference implements Preference.OnPreferenceChangeListener {
 	private TimePicker picker = null;
 	public final static long DEFAULT_VALUE = 0;
@@ -25,11 +26,12 @@ public class TimePreference extends DialogPreference implements Preference.OnPre
 		persistLong(time);
 		notifyDependencyChange(shouldDisableDependents());
 		notifyChanged();
+		updateSummary(time);
 	}
 
-	protected void updateSummary(final long time) {
+	private void updateSummary(final long time) {
 		final DateFormat dateFormat = android.text.format.DateFormat.getTimeFormat(getContext());
-		final Date date = new Date(time);
+		final Date date = minutesToCalender(time).getTime();
 		setSummary(dateFormat.format(date.getTime()));
 	}
 
@@ -40,21 +42,14 @@ public class TimePreference extends DialogPreference implements Preference.OnPre
 		return picker;
 	}
 
-	protected Calendar getPersistedTime() {
-		final Calendar c = Calendar.getInstance();
-		c.setTimeInMillis(getPersistedLong(DEFAULT_VALUE));
-
-		return c;
-	}
-
 	@SuppressWarnings("NullableProblems")
 	@Override
 	protected void onBindDialogView(final View v) {
 		super.onBindDialogView(v);
-		final Calendar c = getPersistedTime();
+		long time = getPersistedLong(DEFAULT_VALUE);
 
-		picker.setCurrentHour(c.get(Calendar.HOUR_OF_DAY));
-		picker.setCurrentMinute(c.get(Calendar.MINUTE));
+		picker.setCurrentHour((int) (time / 60));
+		picker.setCurrentMinute((int) (time % 60));
 	}
 
 	@Override
@@ -62,17 +57,19 @@ public class TimePreference extends DialogPreference implements Preference.OnPre
 		super.onDialogClosed(positiveResult);
 
 		if (positiveResult) {
-			final Calendar c = Calendar.getInstance();
-			c.set(Calendar.MINUTE, picker.getCurrentMinute());
-			c.set(Calendar.HOUR_OF_DAY, picker.getCurrentHour());
-
-
-			if (!callChangeListener(c.getTimeInMillis())) {
-				return;
-			}
-
-			setTime(c.getTimeInMillis());
+			setTime(picker.getCurrentHour() * 60 + picker.getCurrentMinute());
 		}
+	}
+
+	private static Calendar minutesToCalender(long time) {
+		final Calendar c = Calendar.getInstance();
+		c.set(Calendar.HOUR_OF_DAY, (int) ((time % (24 * 60)) / 60));
+		c.set(Calendar.MINUTE, (int) ((time % (24 * 60)) % 60));
+		return c;
+	}
+
+	public static long minutesToTimestamp(long time) {
+		return minutesToCalender(time).getTimeInMillis();
 	}
 
 	@Override
