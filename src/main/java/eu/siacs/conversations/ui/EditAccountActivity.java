@@ -136,10 +136,6 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
             final boolean wasDisabled = mAccount != null && mAccount.getStatus() == Account.State.DISABLED;
             final boolean accountInfoEdited = accountInfoEdited();
 
-            if (!mInitMode && passwordChangedInMagicCreateMode()) {
-                gotoChangePassword(password);
-                return;
-            }
             if (mInitMode && mAccount != null) {
                 mAccount.setOption(Account.OPTION_DISABLED, false);
             }
@@ -450,10 +446,7 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
     protected void updateSaveButton() {
         boolean accountInfoEdited = accountInfoEdited();
 
-        if (!mInitMode && passwordChangedInMagicCreateMode()) {
-            this.binding.saveButton.setText(R.string.change_password);
-            this.binding.saveButton.setEnabled(true);
-        } else if (accountInfoEdited && !mInitMode) {
+        if (accountInfoEdited && !mInitMode) {
             this.binding.saveButton.setText(R.string.save);
             this.binding.saveButton.setEnabled(true);
         } else if (mAccount != null
@@ -510,14 +503,6 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
             unmodified = this.mAccount.getJid().asBareJid().toString();
         }
         return !unmodified.equals(this.binding.accountJid.getText().toString());
-    }
-
-    protected boolean passwordChangedInMagicCreateMode() {
-        return mAccount != null
-                && mAccount.isOptionSet(Account.OPTION_MAGIC_CREATE)
-                && !this.mAccount.getPassword().equals(this.binding.accountPassword.getText().toString())
-                && !this.jidEdited()
-                && mAccount.isOnlineAndConnected();
     }
 
     @Override
