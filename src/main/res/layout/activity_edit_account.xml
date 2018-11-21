@@ -82,7 +82,7 @@
                                 app:hintTextAppearance="@style/TextAppearance.Conversations.Design.Hint"
                                 app:errorTextAppearance="@style/TextAppearance.Conversations.Design.Error">
 
-                                <android.support.design.widget.TextInputEditText
+                                <eu.siacs.conversations.ui.widget.TextInputEditText
                                     android:id="@+id/account_password"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
