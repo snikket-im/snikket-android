@@ -1,5 +1,9 @@
 # Changelog
 
+### Version 2.3.7
+* long press on 'allow' or 'add back' snackbar to bring up 'reject'
+* bug fixes for Android 9
+
 ### Version 2.3.6
 * Improved handling of bookmark nicks
 * Show send PM menu entry in anonymous MUCs
