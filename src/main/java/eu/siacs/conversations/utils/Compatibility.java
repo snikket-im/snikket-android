@@ -54,7 +54,7 @@ public class Compatibility {
             final PackageManager packageManager = context.getPackageManager();
             final ApplicationInfo applicationInfo = packageManager.getApplicationInfo(context.getPackageName(), 0);
             return applicationInfo == null || applicationInfo.targetSdkVersion >= 26;
-        } catch (PackageManager.NameNotFoundException e) {
+        } catch (PackageManager.NameNotFoundException | RuntimeException e) {
             return true; //when in doubt…
         }
     }

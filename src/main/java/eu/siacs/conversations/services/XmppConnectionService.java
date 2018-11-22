@@ -864,15 +864,19 @@ public class XmppConnectionService extends Service {
     @SuppressLint("NewApi")
     @SuppressWarnings("deprecation")
     public boolean isInteractive() {
-        final PowerManager pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
+        try {
+            final PowerManager pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
 
-        final boolean isScreenOn;
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
-            isScreenOn = pm.isScreenOn();
-        } else {
-            isScreenOn = pm.isInteractive();
+            final boolean isScreenOn;
+            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
+                isScreenOn = pm.isScreenOn();
+            } else {
+                isScreenOn = pm.isInteractive();
+            }
+            return isScreenOn;
+        } catch (RuntimeException e) {
+            return false;
         }
-        return isScreenOn;
     }
 
     private boolean isPhoneSilenced() {
