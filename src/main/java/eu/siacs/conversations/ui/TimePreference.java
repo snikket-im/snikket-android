@@ -48,8 +48,8 @@ public class TimePreference extends DialogPreference implements Preference.OnPre
 		super.onBindDialogView(v);
 		long time = getPersistedLong(DEFAULT_VALUE);
 
-		picker.setCurrentHour((int) (time / 60));
-		picker.setCurrentMinute((int) (time % 60));
+		picker.setCurrentHour((int) ((time % (24 * 60)) / 60));
+		picker.setCurrentMinute((int) ((time % (24 * 60)) % 60));
 	}
 
 	@Override
@@ -80,12 +80,8 @@ public class TimePreference extends DialogPreference implements Preference.OnPre
 	@Override
 	protected void onSetInitialValue(final boolean restorePersistedValue, final Object defaultValue) {
 		long time;
-		if (defaultValue == null) {
-			time = restorePersistedValue ? getPersistedLong(DEFAULT_VALUE) : DEFAULT_VALUE;
-		} else if (defaultValue instanceof Long) {
+		if (defaultValue instanceof Long) {
 			time = restorePersistedValue ? getPersistedLong((Long) defaultValue) : (Long) defaultValue;
-		} else if (defaultValue instanceof Calendar) {
-			time = restorePersistedValue ? getPersistedLong(((Calendar)defaultValue).getTimeInMillis()) : ((Calendar)defaultValue).getTimeInMillis();
 		} else {
 			time = restorePersistedValue ? getPersistedLong(DEFAULT_VALUE) : DEFAULT_VALUE;
 		}
