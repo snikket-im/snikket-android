@@ -432,7 +432,7 @@
   <string name="choose_quick_action">Alegeți acțiunea rapidă</string>
   <string name="search_contacts">Caută contacte</string>
   <string name="search_groups">Caută discuții de grup</string>
-  <string name="send_private_message">trimite mesaj privat</string>
+  <string name="send_private_message">Trimite mesaj privat</string>
   <string name="user_has_left_conference">%1$s a părăsit discuția de grup!</string>
   <string name="username">Nume utilizator</string>
   <string name="username_hint">Nume utilizator</string>

@@ -4,6 +4,7 @@
   <string name="action_add">Nowa konwersacja</string>
   <string name="action_accounts">Zarządzaj kontami</string>
   <string name="action_account">Zarządzaj kontem</string>
+  <string name="action_end_conversation">Zamknij konwersację</string>
   <string name="action_contact_details">Szczegóły kontaktu</string>
   <string name="action_muc_details">Szczegóły konferencji</string>
   <string name="action_secure">Konwersacja szyfrowana</string>
@@ -80,6 +81,7 @@
   <string name="clear_histor_msg">Czy na pewno usunąć wszystkie wiadomości powiązane z konwersacją?\n\n<b>Uwaga:</b> Działanie nie wpływa na wiadomości przechowywane na innych urządzeniach lub serwerach.</string>
   <string name="delete_file_dialog">Usuń plik</string>
   <string name="delete_file_dialog_msg">Czy na pewno usunąć ten plik?\n\n<b>Uwaga:</b> Działanie nie wpływa na kopie pliku przechowywane na innych urządzeniach lub serwerach.</string>
+  <string name="also_end_conversation">Zamknij konwersację po zakończeniu</string>
   <string name="choose_presence">Wybierz urządzenie</string>
   <string name="send_unencrypted_message">Wyślij wiadomość bez szyfrowania</string>
   <string name="send_message">Wyślij wiadomość</string>
