@@ -50,6 +50,7 @@ import eu.siacs.conversations.entities.Message;
 import eu.siacs.conversations.entities.PresenceTemplate;
 import eu.siacs.conversations.entities.Roster;
 import eu.siacs.conversations.entities.ServiceDiscoveryResult;
+import eu.siacs.conversations.services.QuickConversationsService;
 import eu.siacs.conversations.services.ShortcutService;
 import eu.siacs.conversations.utils.CryptoHelper;
 import eu.siacs.conversations.utils.FtsUtils;
@@ -62,7 +63,7 @@ import rocks.xmpp.addr.Jid;
 public class DatabaseBackend extends SQLiteOpenHelper {
 
 	private static final String DATABASE_NAME = "history";
-	private static final int DATABASE_VERSION = 42;
+	private static final int DATABASE_VERSION = 43;
 	private static DatabaseBackend instance = null;
 	private static String CREATE_CONTATCS_STATEMENT = "create table "
 			+ Contact.TABLENAME + "(" + Contact.ACCOUNT + " TEXT, "
@@ -517,6 +518,14 @@ public class DatabaseBackend extends SQLiteOpenHelper {
 
 		if (oldVersion < 42 && newVersion >= 42) {
 			db.execSQL("DROP TRIGGER IF EXISTS after_message_delete");
+		}
+		if (QuickConversationsService.isQuicksy() && oldVersion < 43 && newVersion >= 43) {
+			List<Account> accounts = getAccounts(db);
+			for (Account account : accounts) {
+				account.setOption(Account.OPTION_MAGIC_CREATE, true);
+				db.update(Account.TABLENAME, account.getContentValues(), Account.UUID
+						+ "=?", new String[]{account.getUuid()});
+			}
 		}
 	}
 
