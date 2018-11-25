@@ -3,6 +3,8 @@
   <string name="action_settings">Axustes</string>
   <string name="action_add">Nova conversa</string>
   <string name="action_accounts">Xestionar contas</string>
+  <string name="action_account">Xestionar conta</string>
+  <string name="action_end_conversation">Pechar esta conversa</string>
   <string name="action_contact_details">Detalles do contacto</string>
   <string name="action_muc_details">Detalles da conversa de grupo</string>
   <string name="action_secure">Conversa segura</string>
@@ -79,6 +81,7 @@
   <string name="clear_histor_msg">Está segura de querer eliminar todas as mensaxes de esta conversación¿\n\n<b>Aviso:</b> Esto non eliminará as copias de esas mensaxes que están gardadas en outros dispositivos ou servidores.</string>
   <string name="delete_file_dialog">Eliminar ficheiro</string>
   <string name="delete_file_dialog_msg">Está segura de querer eliminar este ficheiro?\n\n<b>Aviso:</b> Esto non eliminará as copias de este ficheiro que están gardadas en outros dispositivos ou servidores.</string>
+  <string name="also_end_conversation">Pechar esta conversa a posteriori</string>
   <string name="choose_presence">Escoller dispositivo</string>
   <string name="send_unencrypted_message">Enviar mensaxe non cifrada</string>
   <string name="send_message">Enviar mensaxe</string>
@@ -265,6 +268,7 @@
   <string name="pref_allow_message_correction_summary">Permitir aos seus contactos editar as súas mensaxes de xeito retroactivo</string>
   <string name="pref_expert_options">Axustes de experto</string>
   <string name="pref_expert_options_summary">Por favor teña coidado con estos axustes</string>
+  <string name="title_activity_about_x">Acerca de %s</string>
   <string name="title_pref_quiet_hours">Non molestar</string>
   <string name="title_pref_quiet_hours_start_time">Hora de inicio</string>
   <string name="title_pref_quiet_hours_end_time">Hora de finalización</string>
@@ -296,6 +300,8 @@
   <string name="send_again">Enviar de novo</string>
   <string name="file_url">URL do ficheiro</string>
   <string name="url_copied_to_clipboard">URL copiado ao portapapeis</string>
+  <string name="jabber_id_copied_to_clipboard">ID Jabber copiado ao portapapeis</string>
+  <string name="error_message_copied_to_clipboard">Mensaxe do fallo copiado ao portapapeis</string>
   <string name="web_address">Dirección Web</string>
   <string name="scan_qr_code">Escanear código de barras 2D</string>
   <string name="show_qr_code">Mostar código de barras 2D</string>
@@ -484,6 +490,8 @@
   <string name="no_storage_permission">Conversations necesita acceso ao almacenamiento externo</string>
   <string name="no_camera_permission">Conversations necesita acceso á cámara</string>
   <string name="sync_with_contacts">Sincronice con todos os contactos</string>
+  <string name="sync_with_contacts_long">Conversations quere confrontar a súa lista de contactos no servidor coa súa libreta de enderezos local para mostrarlle os nomes completos e avatares.\n\nConversations só lerá os seus contactos de xeito local e sen subilos ao servidor.\n\nA continuación pediráselle permiso para acceder aos contactos.</string>
+  <string name="sync_with_contacts_quicksy"><![CDATA[Quicksy precisa acceder ao número de teléfono dos contactos para facer suxestións sobre posibles contactos que xa están en Quicksy.<br><br>Non gardaremos unha copia de esos números de teléfono.\n\nPara máis información lea a nosa <a href="https://quicksy.im/#privacy">política de intimidade</a>.<br><br>A continuación pediráselle permiso para acceder aos contactos.]]></string>
   <string name="notify_on_all_messages">Notificar todas as mensaxes</string>
   <string name="notify_only_when_highlighted">Notificar só cando é mencionada</string>
   <string name="notify_never">Notificacións deshabilitadas</string>
@@ -507,6 +515,8 @@
   <string name="no_application_to_share_uri">Non se atopou un aplicativo para compartir URI</string>
   <string name="share_uri_with">Compartir URI con...</string>
   <string name="welcome_text">Jabber é una rede de mensajería instantánea independente do proveedor. Podes usar este cliente con calquera servidor Jabber que elixas.\nCon todo, para a túa comodidade facilitamos a creación dunha conta en conversations.im¹; un proveedor especialmente adecuado para o uso con Conversations.</string>
+  <string name="welcome_text_quicksy"><![CDATA[Quicksy é un proxecto derivado do popular cliente Jabber/XMPP Conversations con descubrimento automático de contactos.<br><br>Vostede rexístrase co seu número de teléfono e Quicksy suxerirá automáticamente —baseándose nos números de teléfono da súa axenda— posibles contactos para vostede.<br><br>Ao rexistrarse vostede acepta a nosa <a href="https://quicksy.im/#privacy">política de intimidade</a>.]]></string>
+  <string name="agree_and_continue">Aceptar &amp; continuar</string>
   <string name="magic_create_text">Guiarémola a través do proceso de crear unha conta en conversations.im.\nCando escolla conversations.im como proveedor poderá comunicarse con outras usuarias de outros proveedores que lle proporcionen un ID Jabber completo.</string>
   <string name="your_full_jid_will_be">O seu ID Jabber será: %s</string>
   <string name="create_account">Crear conta</string>
@@ -740,4 +750,51 @@
   <string name="video_720p">Alta (720p)</string>
   <string name="cancelled">cancelada</string>
   <string name="already_drafting_message">Xa está a escribir un borrador.</string>
+  <string name="feature_not_implemented">Característica non implementada</string>
+  <string name="invalid_country_code">Código de país non válido</string>
+  <string name="choose_a_country">Escolla un país</string>
+  <string name="phone_number">número de teléfono</string>
+  <string name="verify_your_phone_number">Valide o seu número de teléfono</string>
+  <string name="enter_country_code_and_phone_number">Quicsy enviaralle unha mensaxe SMS (poderíanse aplicar cargos) para validar o seu número de teléfono. Introduza o código de país e número de teléfono.</string>
+  <string name="we_will_be_verifying"><![CDATA[Validaremos o número de teléfono<br/><br/><b>%s</b><br/><br/>É correcto, ou quere modificar o número?]]></string>
+  <string name="not_a_valid_phone_number">%s non é un número de teléfono válido.</string>
+  <string name="please_enter_your_phone_number">Por favor introduza o seu número de teléfono.</string>
+  <string name="search_countries">Buscar países</string>
+  <string name="verify_x">Validar %s</string>
+  <string name="we_have_sent_you_an_sms_to_x"><![CDATA[Enviámoslle un SMS a <b>%s</b>.]]></string>
+  <string name="we_have_sent_you_another_sms">Enviamoslle outro SMS con un código de 6 díxitos.</string>
+  <string name="please_enter_pin_below">Por favor, introduza o pin de 6 díxitos inferior.</string>
+  <string name="resend_sms">Reenviar SMS</string>
+  <string name="resend_sms_in">Reenviar SMS (%s)</string>
+  <string name="wait_x">Agarde por favor (%s)</string>
+  <string name="back">atrás</string>
+  <string name="possible_pin">Copiado automático desde o portapapeis.</string>
+  <string name="please_enter_pin">Por favor, introduza o pin de 6 díxitos.</string>
+  <string name="abort_registration_procedure">Seguro que quere cancelar o proceso de rexistro?</string>
+  <string name="yes">Si</string>
+  <string name="no">Non</string>
+  <string name="verifying">Validando...</string>
+  <string name="requesting_sms">Solicitando SMS...</string>
+  <string name="incorrect_pin">O pin introducido non é correcto.</string>
+  <string name="pin_expired">O pin que lle enviamos caducou.</string>
+  <string name="unknown_api_error_network">Fallo descoñecido na rede.</string>
+  <string name="unknown_api_error_response">Resposta descoñecida desde o servidor.</string>
+  <string name="unable_to_connect_to_server">Non se puido conectar co servidor.</string>
+  <string name="unable_to_establish_secure_connection">Non se puido establecer unha conexión segura.</string>
+  <string name="unable_to_find_server">Non se atopou o servidor.</string>
+  <string name="something_went_wrong_processing_your_request">Algo fallou ao xestionar a súa solicitude.</string>
+  <string name="invalid_user_input">Datos inválidos do usuario</string>
+  <string name="temporarily_unavailable">Non dispoñible temporalmente. Inténteo máis tarde.</string>
+  <string name="no_network_connection">Se conexión a rede.</string>
+  <string name="try_again_in_x">Inténteo de novo en %s</string>
+  <string name="rate_limited">Taxa de transferencia limitada</string>
+  <string name="too_many_attempts">Demasiados intentos</string>
+  <string name="the_app_is_out_of_date">Está a utilizar unha versión desactualizada de esta app.</string>
+  <string name="update">Actualizar</string>
+  <string name="logged_in_with_another_device">Este número de teléfono está actualmente ligado a outro dispositivo.</string>
+  <string name="enter_your_name_instructions">Por favor, introduza o seu nome para permitir que a xente que non o ten na axenda de enderezos sepa quen é vostede.</string>
+  <string name="your_name">O seu nome</string>
+  <string name="enter_your_name">Introduza o seu nome</string>
+  <string name="no_name_set_instructions">Utilice o botón editar para escribir o seu nome.</string>
+  <string name="reject_request">Rexeitar solicitude</string>
 </resources>

@@ -3,6 +3,8 @@
   <string name="action_settings">Ajustes</string>
   <string name="action_add">Nueva conversación</string>
   <string name="action_accounts">Gestionar cuentas</string>
+  <string name="action_account">Gestionar cuenta</string>
+  <string name="action_end_conversation">Cerrar esta conversación</string>
   <string name="action_contact_details">Detalles del contacto</string>
   <string name="action_muc_details">Detalles de conversación</string>
   <string name="action_secure">Conversación segura</string>
@@ -265,6 +267,7 @@
   <string name="pref_allow_message_correction_summary">Permitir a tus contactos editar mensajes previamente enviados</string>
   <string name="pref_expert_options">Opciones para expertos</string>
   <string name="pref_expert_options_summary">Por favor, cuidado con estas opciones</string>
+  <string name="title_activity_about_x">Acerca de %s</string>
   <string name="title_pref_quiet_hours">Horario de silencio</string>
   <string name="title_pref_quiet_hours_start_time">Hora de comienzo</string>
   <string name="title_pref_quiet_hours_end_time">Hora de fin</string>
@@ -296,6 +299,8 @@
   <string name="send_again">Volver a enviar</string>
   <string name="file_url">URL de archivo</string>
   <string name="url_copied_to_clipboard">URL copiada al portapapeles</string>
+  <string name="jabber_id_copied_to_clipboard">Identificador Jabber copiado al portapapeles</string>
+  <string name="error_message_copied_to_clipboard">Mensaje de error copiado al portapapeles </string>
   <string name="web_address">dirección web</string>
   <string name="scan_qr_code">Escanear código QR</string>
   <string name="show_qr_code">Mostrar código QR</string>
@@ -484,6 +489,8 @@
   <string name="no_storage_permission">Conversations necesita acceder al almacenamiento externo</string>
   <string name="no_camera_permission">Conversations necesita acceder a la cámara</string>
   <string name="sync_with_contacts">Sincronizar contactos</string>
+  <string name="sync_with_contacts_long">Conversations quiere cruzar tu lista de contactos del servidor con tus contactos del móvil para mostrar sus nombres completos y sus fotos de perfil.\n\nConversations solo leerá tus contactos y los cruzará localmente sin subirlos a tu servidor.\n\nEl sistema te preguntará ahora para conceder los permisos de acceso a tus contactos del móvil. </string>
+  <string name="sync_with_contacts_quicksy"><![CDATA[Quicksy necesita acceso a los números de teléfonos de tu agenda de contactos para hacerte sugerencias de posibles contactos que ya estén en Quicksy.<br><br>No guardaremos una copia de estos números de teléfono.\n\nPara más información puedes leer nuestra política de privacidad<a href="https://quicksy.im/#privacy">.<br><br>El sistema te preguntará ahora para conceder los permisos de acceso a tus contactos del móvil.]]></string>
   <string name="notify_on_all_messages">Notificar para todos los mensajes</string>
   <string name="notify_only_when_highlighted">Notificar solo cuando eres mencionado</string>
   <string name="notify_never">Notificaciones deshabilitadas</string>
@@ -507,6 +514,8 @@
   <string name="no_application_to_share_uri">No se ha encontrado ninguna aplicación para compartir la URI</string>
   <string name="share_uri_with">Compartir URI con...</string>
   <string name="welcome_text">Jabber es una red de mensajería instantánea independiente del proveedor. Puedes usar este cliente con cualquier servidor Jabber que elijas.\nSin embargo, para tu conveniencia, hacemos de forma sencilla la creación de una cuenta en conversations.im¹; un proveedor especialmente especializado para el uso con Conversations.</string>
+  <string name="welcome_text_quicksy"><![CDATA[Quicksy es un derivado del popular cliente de Jabber/XMPP Conversations con detección automática de contactos.<br><br>El registro se realiza con tu número de teléfono y Quicksy automáticamente—basado en los teléfonos de tu agenda de contactos—te sugerirá posibles contactos.<br><br>Registrándote en Quicksy aceptas nuestra<a href="https://quicksy.im/#privacy"> política de privacidad</a>.]]></string>
+  <string name="agree_and_continue">Aceptar &amp; continuar</string>
   <string name="magic_create_text">Te guiaremos durante el proceso de creación de la cuenta en conversations.im.¹\nCuando selecciones conversations.im como proveedor podrás comunicarte con usuarios de otros servidores mediante tu identificador Jabber.</string>
   <string name="your_full_jid_will_be">Tu identificador Jabber será: %s</string>
   <string name="create_account">Crear cuenta</string>
@@ -740,4 +749,10 @@
   <string name="video_720p">Alta (720p)</string>
   <string name="cancelled">cancelado</string>
   <string name="already_drafting_message">Ya estás redactando un mensaje.</string>
+  <string name="feature_not_implemented">Funcionalidad no implementada</string>
+  <string name="invalid_country_code">Código de país no válido</string>
+  <string name="choose_a_country">Elige un país</string>
+  <string name="phone_number">número de teléfono</string>
+  <string name="verify_your_phone_number">Verifica tu número de teléfono</string>
+  <string name="enter_country_code_and_phone_number">Quicksy te enviará un mensaje SMS (se podrían aplicar cargos) para verificar tu número de teléfono. Introduce tu código de país y tu número de teléfono:</string>
 </resources>
