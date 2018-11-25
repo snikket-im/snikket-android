@@ -586,7 +586,7 @@ public class AxolotlService implements OnAdvancedStreamFeaturesLoaded {
 			@Override
 			public void onIqPacketReceived(Account account, IqPacket packet) {
 				final Element error = packet.getType() == IqPacket.TYPE.ERROR ? packet.findChild("error") : null;
-				final boolean preConditionNotMet = error != null && error.hasChild("precondition-not-met", Namespace.PUBSUB_ERROR);
+				final boolean preConditionNotMet = PublishOptions.preconditionNotMet(packet);
 				if (firstAttempt && preConditionNotMet) {
 					Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": precondition wasn't met for device list. pushing node configuration");
 					mXmppConnectionService.pushNodeConfiguration(account, AxolotlService.PEP_DEVICE_LIST, publishOptions, new XmppConnectionService.OnConfigurationPushed() {
@@ -802,8 +802,7 @@ public class AxolotlService implements OnAdvancedStreamFeaturesLoaded {
 		mXmppConnectionService.sendIqPacket(account, publish, new OnIqPacketReceived() {
 			@Override
 			public void onIqPacketReceived(final Account account, IqPacket packet) {
-				final Element error = packet.getType() == IqPacket.TYPE.ERROR ? packet.findChild("error") : null;
-				final boolean preconditionNotMet = error != null && error.hasChild("precondition-not-met", Namespace.PUBSUB_ERROR);
+				final boolean preconditionNotMet = PublishOptions.preconditionNotMet(packet);
 				if (firstAttempt && preconditionNotMet) {
 					Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": precondition wasn't met for bundle. pushing node configuration");
 					final String node = AxolotlService.PEP_BUNDLES + ":" + getOwnDeviceId();
@@ -830,7 +829,7 @@ public class AxolotlService implements OnAdvancedStreamFeaturesLoaded {
 					if (preconditionNotMet) {
 						Log.d(Config.LOGTAG,getLogprefix(account) + "bundle precondition still not met after second attempt");
 					} else {
-						Log.d(Config.LOGTAG, getLogprefix(account) + "Error received while publishing bundle: " + error);
+						Log.d(Config.LOGTAG, getLogprefix(account) + "Error received while publishing bundle: " + packet.toString());
 					}
 					pepBroken = true;
 				}

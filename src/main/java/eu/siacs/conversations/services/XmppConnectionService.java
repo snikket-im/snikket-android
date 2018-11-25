@@ -1473,9 +1473,7 @@ public class XmppConnectionService extends Service {
             if (response.getType() == IqPacket.TYPE.RESULT) {
                 return;
             }
-            final Element error = response.getType() == IqPacket.TYPE.ERROR ? response.findChild("error") : null;
-            final boolean preconditionNotMet = error != null && error.hasChild("precondition-not-met", Namespace.PUBSUB_ERROR);
-            if (retry && preconditionNotMet) {
+            if (retry && PublishOptions.preconditionNotMet(response)) {
                 pushNodeConfiguration(account, node, options, new OnConfigurationPushed() {
                     @Override
                     public void onPushSucceeded() {
@@ -2940,33 +2938,39 @@ public class XmppConnectionService extends Service {
 		});
 	}
 
-	public void publishAvatar(Account account, final Avatar avatar, final OnAvatarPublication callback) {
-		IqPacket packet = this.mIqGenerator.publishAvatar(avatar);
+    public void publishAvatar(Account account, final Avatar avatar, final OnAvatarPublication callback) {
+        final Bundle options;
+        if (account.getXmppConnection().getFeatures().pepPublishOptions()) {
+            options = PublishOptions.openAccess();
+        } else {
+            options = null;
+        }
+        publishAvatar(account, avatar, options, true, callback);
+    }
+
+	public void publishAvatar(Account account, final Avatar avatar, final Bundle options, final boolean retry, final OnAvatarPublication callback) {
+        Log.d(Config.LOGTAG,account.getJid().asBareJid()+": publishing avatar. options="+options);
+		IqPacket packet = this.mIqGenerator.publishAvatar(avatar, options);
 		this.sendIqPacket(account, packet, new OnIqPacketReceived() {
 
 			@Override
 			public void onIqPacketReceived(Account account, IqPacket result) {
 				if (result.getType() == IqPacket.TYPE.RESULT) {
-					final IqPacket packet = XmppConnectionService.this.mIqGenerator.publishAvatarMetadata(avatar);
-					sendIqPacket(account, packet, new OnIqPacketReceived() {
-						@Override
-						public void onIqPacketReceived(Account account, IqPacket result) {
-							if (result.getType() == IqPacket.TYPE.RESULT) {
-								if (account.setAvatar(avatar.getFilename())) {
-									getAvatarService().clear(account);
-									databaseBackend.updateAccount(account);
-								}
-								Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": published avatar " + (avatar.size / 1024) + "KiB");
-								if (callback != null) {
-									callback.onAvatarPublicationSucceeded();
-								}
-							} else {
-								if (callback != null) {
-									callback.onAvatarPublicationFailed(R.string.error_publish_avatar_server_reject);
-								}
-							}
-						}
-					});
+                    publishAvatarMetadata(account, avatar, options,true, callback);
+                } else if (retry && PublishOptions.preconditionNotMet(result)) {
+				    pushNodeConfiguration(account, "urn:xmpp:avatar:data", options, new OnConfigurationPushed() {
+                        @Override
+                        public void onPushSucceeded() {
+                            Log.d(Config.LOGTAG,account.getJid().asBareJid()+": changed node configuration for avatar node");
+                            publishAvatar(account, avatar, options, false, callback);
+                        }
+
+                        @Override
+                        public void onPushFailed() {
+                            Log.d(Config.LOGTAG,account.getJid().asBareJid()+": unable to change node configuration for avatar node");
+                            publishAvatar(account, avatar, null, false, callback);
+                        }
+                    });
 				} else {
 					Element error = result.findChild("error");
 					Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": server rejected avatar " + (avatar.size / 1024) + "KiB " + (error != null ? error.toString() : ""));
@@ -2977,6 +2981,43 @@ public class XmppConnectionService extends Service {
 			}
 		});
 	}
+
+	public void publishAvatarMetadata(Account account, final Avatar avatar, final Bundle options, final boolean retry, final OnAvatarPublication callback) {
+        final IqPacket packet = XmppConnectionService.this.mIqGenerator.publishAvatarMetadata(avatar, options);
+        sendIqPacket(account, packet, new OnIqPacketReceived() {
+            @Override
+            public void onIqPacketReceived(Account account, IqPacket result) {
+                if (result.getType() == IqPacket.TYPE.RESULT) {
+                    if (account.setAvatar(avatar.getFilename())) {
+                        getAvatarService().clear(account);
+                        databaseBackend.updateAccount(account);
+                    }
+                    Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": published avatar " + (avatar.size / 1024) + "KiB");
+                    if (callback != null) {
+                        callback.onAvatarPublicationSucceeded();
+                    }
+                } else if (retry && PublishOptions.preconditionNotMet(result)) {
+                    pushNodeConfiguration(account, "urn:xmpp:avatar:metadata", options, new OnConfigurationPushed() {
+                        @Override
+                        public void onPushSucceeded() {
+                            Log.d(Config.LOGTAG,account.getJid().asBareJid()+": changed node configuration for avatar meta data node");
+                            publishAvatarMetadata(account, avatar, options,false, callback);
+                        }
+
+                        @Override
+                        public void onPushFailed() {
+                            Log.d(Config.LOGTAG,account.getJid().asBareJid()+": unable to change node configuration for avatar meta data node");
+                            publishAvatarMetadata(account, avatar,  null,false, callback);
+                        }
+                    });
+                } else {
+                    if (callback != null) {
+                        callback.onAvatarPublicationFailed(R.string.error_publish_avatar_server_reject);
+                    }
+                }
+            }
+        });
+    }
 
 	public void republishAvatarIfNeeded(Account account) {
 		if (account.getAxolotlService().isPepBroken()) {

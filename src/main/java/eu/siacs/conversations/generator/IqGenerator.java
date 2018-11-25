@@ -138,12 +138,12 @@ public class IqGenerator extends AbstractGenerator {
 		return packet;
 	}
 
-	public IqPacket publishAvatar(Avatar avatar) {
+	public IqPacket publishAvatar(Avatar avatar, Bundle options) {
 		final Element item = new Element("item");
 		item.setAttribute("id", avatar.sha1sum);
 		final Element data = item.addChild("data", "urn:xmpp:avatar:data");
 		data.setContent(avatar.image);
-		return publish("urn:xmpp:avatar:data", item);
+		return publish("urn:xmpp:avatar:data", item, options);
 	}
 
 	public IqPacket publishElement(final String namespace,final Element element, final Bundle options) {
@@ -153,7 +153,7 @@ public class IqGenerator extends AbstractGenerator {
 		return publish(namespace, item, options);
 	}
 
-	public IqPacket publishAvatarMetadata(final Avatar avatar) {
+	public IqPacket publishAvatarMetadata(final Avatar avatar, final Bundle options) {
 		final Element item = new Element("item");
 		item.setAttribute("id", avatar.sha1sum);
 		final Element metadata = item
@@ -164,7 +164,7 @@ public class IqGenerator extends AbstractGenerator {
 		info.setAttribute("height", avatar.height);
 		info.setAttribute("width", avatar.height);
 		info.setAttribute("type", avatar.type);
-		return publish("urn:xmpp:avatar:metadata", item);
+		return publish("urn:xmpp:avatar:metadata", item, options);
 	}
 
 	public IqPacket retrievePepAvatar(final Avatar avatar) {
