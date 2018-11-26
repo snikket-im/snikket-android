@@ -1,11 +1,14 @@
 package eu.siacs.conversations.generator;
 
+import android.text.TextUtils;
+
 import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.entities.Contact;
 import eu.siacs.conversations.entities.MucOptions;
 import eu.siacs.conversations.entities.Presence;
 import eu.siacs.conversations.services.XmppConnectionService;
 import eu.siacs.conversations.xml.Element;
+import eu.siacs.conversations.xml.Namespace;
 import eu.siacs.conversations.xmpp.stanzas.PresencePacket;
 
 public class PresenceGenerator extends AbstractGenerator {
@@ -23,7 +26,12 @@ public class PresenceGenerator extends AbstractGenerator {
 	}
 
 	public PresencePacket requestPresenceUpdatesFrom(Contact contact) {
-		return subscription("subscribe", contact);
+		PresencePacket packet = subscription("subscribe", contact);
+		String displayName = contact.getAccount().getDisplayName();
+		if (!TextUtils.isEmpty(displayName)) {
+			packet.addChild("nick",Namespace.NICK).setContent(displayName);
+		}
+		return packet;
 	}
 
 	public PresencePacket stopPresenceUpdatesFrom(Contact contact) {

@@ -23,6 +23,7 @@ import eu.siacs.conversations.Config;
 import eu.siacs.conversations.crypto.OmemoSetting;
 import eu.siacs.conversations.crypto.PgpDecryptionService;
 import eu.siacs.conversations.crypto.axolotl.AxolotlService;
+import eu.siacs.conversations.services.QuickConversationsService;
 import eu.siacs.conversations.utils.JidHelper;
 import eu.siacs.conversations.xmpp.InvalidJid;
 import eu.siacs.conversations.xmpp.chatstate.ChatState;
@@ -498,7 +499,7 @@ public class Conversation extends AbstractEntity implements Blockable, Comparabl
 					return contactJid.getLocal() != null ? contactJid.getLocal() : contactJid;
 				}
 			}
-		} else if (isWithStranger()) {
+		} else if ((QuickConversationsService.isConversations() || !Config.QUICKSY_DOMAIN.equals(contactJid.getDomain())) && isWithStranger()) {
 			return contactJid;
 		} else {
 			return this.getContact().getDisplayName();

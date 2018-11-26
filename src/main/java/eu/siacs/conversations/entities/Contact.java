@@ -21,6 +21,7 @@ import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.android.AbstractPhoneContact;
 import eu.siacs.conversations.android.JabberIdContact;
+import eu.siacs.conversations.services.QuickConversationsService;
 import eu.siacs.conversations.utils.JidHelper;
 import eu.siacs.conversations.utils.UIHelper;
 import eu.siacs.conversations.xml.Element;
@@ -133,7 +134,7 @@ public class Contact implements ListItem, Blockable {
 			return this.systemName;
 		} else if (!TextUtils.isEmpty(this.serverName)) {
 			return this.serverName;
-		} else if (!TextUtils.isEmpty(this.presenceName) && mutualPresenceSubscription()) {
+		} else if (!TextUtils.isEmpty(this.presenceName) && ((QuickConversationsService.isQuicksy() && Config.QUICKSY_DOMAIN.equals(jid.getDomain())) ||mutualPresenceSubscription())) {
 			return this.presenceName;
 		} else if (jid.getLocal() != null) {
 			return JidHelper.localPartOrFallback(jid);

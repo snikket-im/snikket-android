@@ -260,9 +260,6 @@ public class PresenceParser extends AbstractParser implements
 		final Contact contact = account.getRoster().getContact(from);
 		if (type == null) {
 			final String resource = from.isBareJid() ? "" : from.getResource();
-			if (contact.setPresenceName(packet.findChildContent("nick", Namespace.NICK))) {
-				mXmppConnectionService.getAvatarService().clear(contact);
-			}
 			Avatar avatar = Avatar.parsePresence(packet.findChild("x", "vcard-temp:x:update"));
 			if (avatar != null && (!contact.isSelf() || account.getAvatar() == null)) {
 				avatar.owner = from.asBareJid();
@@ -341,6 +338,9 @@ public class PresenceParser extends AbstractParser implements
 			}
 			mXmppConnectionService.onContactStatusChanged.onContactStatusChanged(contact, false);
 		} else if (type.equals("subscribe")) {
+			if (contact.setPresenceName(packet.findChildContent("nick", Namespace.NICK))) {
+				mXmppConnectionService.getAvatarService().clear(contact);
+			}
 			if (contact.getOption(Contact.Options.PREEMPTIVE_GRANT)) {
 				mXmppConnectionService.sendPresencePacket(account,
 						mPresenceGenerator.sendPresenceUpdatesTo(contact));
