@@ -4,6 +4,7 @@
   <string name="action_add">Elkarrizketa berria</string>
   <string name="action_accounts">Kontuak kudeatu</string>
   <string name="action_account">Kontua kudeatu</string>
+  <string name="action_end_conversation">Elkarrizketa hau itxi</string>
   <string name="action_contact_details">Kontaktuaren xehetasunak</string>
   <string name="action_muc_details">Taldearen xehetasunak</string>
   <string name="action_secure">Elkarrizketa segurua</string>
@@ -80,6 +81,7 @@
   <string name="clear_histor_msg">Elkarrizketa honetako mezu guztiak ezabatu nahi al dituzu?\n\n<b>Abisua:</b> Honek ez du beste gailu edo zerbitzarietan gordetako mezuen kopiak ezabatuko.</string>
   <string name="delete_file_dialog">Fitxategia ezabatu</string>
   <string name="delete_file_dialog_msg">Fitxategi hau ezabatu nahi al duzu?\n\n<b>Abisua:</b> Honek ez du beste gailu edo zerbitzarietan gordetako fitxategi honen kopiak ezabatuko.</string>
+  <string name="also_end_conversation">Elkarrizketa hau jarraian itxi</string>
   <string name="choose_presence">Gailua aukeratu</string>
   <string name="send_unencrypted_message">Enkriptatu gabeko mezua bidali</string>
   <string name="send_message">Mezua bidali</string>
