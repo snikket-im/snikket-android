@@ -477,7 +477,7 @@
   <string name="hostname_or_onion">Zerbitzari- edo .onion-helbidea</string>
   <string name="not_a_valid_port">Hau ez da ataka zenbaki balioduna</string>
   <string name="not_valid_hostname">Hau ez da ostalari izen balioduna</string>
-  <string name="connected_accounts">%2$dtik %1$d kontu konektatuta</string>
+  <string name="connected_accounts">%2$d tik %1$d kontu konektatuta</string>
   <plurals name="x_messages">
     <item quantity="one">mezu %d</item>
     <item quantity="other">%d mezu</item>

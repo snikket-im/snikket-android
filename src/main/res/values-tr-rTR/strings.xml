@@ -399,7 +399,7 @@
   <string name="hostname_or_onion">Sunucu- veya .onion-Address</string>
   <string name="not_a_valid_port">Bu bağlantı noktası geçerli değil</string>
   <string name="not_valid_hostname">Bu sunucu geçerli değil</string>
-  <string name="connected_accounts"> %2$d hesabın %1$ kadarı bağlandı</string>
+  <string name="connected_accounts"> %2$d hesabın %1$d kadarı bağlandı</string>
   <plurals name="x_messages">
     <item quantity="one">%d ileti</item>
     <item quantity="other">%d ileti</item>

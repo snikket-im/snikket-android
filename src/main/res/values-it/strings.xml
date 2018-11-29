@@ -4,6 +4,7 @@
   <string name="action_add">Nuova conversazione</string>
   <string name="action_accounts">Gestisci account</string>
   <string name="action_account">Gestisci account</string>
+  <string name="action_end_conversation">Chiudi questa conversazione</string>
   <string name="action_contact_details">Dettagli del contatto</string>
   <string name="action_muc_details">Dettagli chat di gruppo</string>
   <string name="action_secure">Conversazione sicura</string>
@@ -80,6 +81,7 @@
   <string name="clear_histor_msg">Sei sicuro di voler eliminare tutti i messaggi di questa conversazione?\n\n<b>Attenzione:</b> non verranno eliminate copie di questi messaggi memorizzati in altri dispositivi o server.</string>
   <string name="delete_file_dialog">Elimina file</string>
   <string name="delete_file_dialog_msg">Sei sicuro di voler eliminare questo file?\n\n<b>Attenzione:</b> non verranno eliminate copie di questo file memorizzate in altri dispositivi o server. </string>
+  <string name="also_end_conversation">Chiudi questa conversazione successivamente</string>
   <string name="choose_presence">Scegli un dispositivo</string>
   <string name="send_unencrypted_message">Invia messaggio non cifrato</string>
   <string name="send_message">Invia messaggio</string>
