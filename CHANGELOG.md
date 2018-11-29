@@ -1,5 +1,9 @@
 # Changelog
 
+### Version 2.3.8
+* make PEP avatars public to play nice with Prosody 0.11
+* Fixed re-sending failed files in group chats
+
 ### Version 2.3.7
 * long press on 'allow' or 'add back' snackbar to bring up 'reject'
 * bug fixes for Android 9
