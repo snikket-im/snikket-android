@@ -3,10 +3,14 @@ package eu.siacs.conversations.entities;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.text.SpannableStringBuilder;
+import android.util.Log;
+
+import org.json.JSONException;
 
 import java.lang.ref.WeakReference;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -86,7 +90,7 @@ public class Message extends AbstractEntity {
 	protected int type;
 	protected boolean carbon = false;
 	protected boolean oob = false;
-	protected String edited = null;
+	protected List<Edited> edits = new ArrayList<>();
 	protected String relativeFilePath;
 	protected boolean read = true;
 	protected String remoteMsgId = null;
@@ -160,10 +164,10 @@ public class Message extends AbstractEntity {
 		this.serverMsgId = serverMsgId;
 		this.axolotlFingerprint = fingerprint;
 		this.read = read;
-		this.edited = edited;
+		this.edits = Edited.fromJson(edited);
 		this.oob = oob;
 		this.errorMessage = errorMessage;
-		this.readByMarkers = readByMarkers == null ? new HashSet<ReadByMarker>() : readByMarkers;
+		this.readByMarkers = readByMarkers == null ? new HashSet<>() : readByMarkers;
 		this.markable = markable;
 	}
 
@@ -256,7 +260,11 @@ public class Message extends AbstractEntity {
 		values.put(SERVER_MSG_ID, serverMsgId);
 		values.put(FINGERPRINT, axolotlFingerprint);
 		values.put(READ, read ? 1 : 0);
-		values.put(EDITED, edited);
+		try {
+			values.put(EDITED, Edited.toJson(edits));
+		} catch (JSONException e) {
+			Log.e(Config.LOGTAG,"error persisting json for edits",e);
+		}
 		values.put(OOB, oob ? 1 : 0);
 		values.put(ERROR_MESSAGE, errorMessage);
 		values.put(READ_BY_MARKERS, ReadByMarker.toJson(readByMarkers).toString());
@@ -413,12 +421,12 @@ public class Message extends AbstractEntity {
 		this.carbon = carbon;
 	}
 
-	public void setEdited(String edited) {
-		this.edited = edited;
+	public void putEdited(String edited, String serverMsgId) {
+		this.edits.add(new Edited(edited, serverMsgId));
 	}
 
 	public boolean edited() {
-		return this.edited != null;
+		return this.edits.size() > 0;
 	}
 
 	public void setTrueCounterpart(Jid trueCounterpart) {
@@ -470,7 +478,9 @@ public class Message extends AbstractEntity {
 
 	public boolean similar(Message message) {
 		if (type != TYPE_PRIVATE && this.serverMsgId != null && message.getServerMsgId() != null) {
-			return this.serverMsgId.equals(message.getServerMsgId());
+			return this.serverMsgId.equals(message.getServerMsgId()) || Edited.wasPreviouslyEditedServerMsgId(edits, message.getServerMsgId());
+		} else if (Edited.wasPreviouslyEditedServerMsgId(edits, message.getServerMsgId())) {
+			return true;
 		} else if (this.body == null || this.counterpart == null) {
 			return false;
 		} else {
@@ -485,7 +495,7 @@ public class Message extends AbstractEntity {
 			final boolean matchingCounterpart = this.counterpart.equals(message.getCounterpart());
 			if (message.getRemoteMsgId() != null) {
 				final boolean hasUuid = CryptoHelper.UUID_PATTERN.matcher(message.getRemoteMsgId()).matches();
-				if (hasUuid && this.edited != null && matchingCounterpart && this.edited.equals(message.getRemoteMsgId())) {
+				if (hasUuid && matchingCounterpart && Edited.wasPreviouslyEditedRemoteMsgId(edits, message.getRemoteMsgId())) {
 					return true;
 				}
 				return (message.getRemoteMsgId().equals(this.remoteMsgId) || message.getRemoteMsgId().equals(this.uuid))
@@ -686,7 +696,11 @@ public class Message extends AbstractEntity {
 	}
 
 	public String getEditedId() {
-		return edited;
+		if (edits.size() > 0) {
+			return edits.get(edits.size() - 1).getEditedId();
+		} else {
+			throw new IllegalStateException("Attempting to store unedited message");
+		}
 	}
 
 	public void setOob(boolean isOob) {

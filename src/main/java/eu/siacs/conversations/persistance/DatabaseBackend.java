@@ -902,11 +902,10 @@ public class DatabaseBackend extends SQLiteOpenHelper {
 		return db.update(Message.TABLENAME, message.getContentValues(), Message.UUID + "=?", args) == 1;
 	}
 
-	public void updateMessage(Message message, String uuid) {
+	public boolean updateMessage(Message message, String uuid) {
 		SQLiteDatabase db = this.getWritableDatabase();
 		String[] args = {uuid};
-		db.update(Message.TABLENAME, message.getContentValues(), Message.UUID
-				+ "=?", args);
+		return db.update(Message.TABLENAME, message.getContentValues(), Message.UUID + "=?", args) == 1;
 	}
 
 	public void readRoster(Roster roster) {

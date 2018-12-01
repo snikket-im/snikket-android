@@ -746,7 +746,8 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
         } else {
             message = conversation.getCorrectingMessage();
             message.setBody(body);
-            message.setEdited(message.getUuid());
+            message.putEdited(message.getUuid(), message.getServerMsgId());
+            message.setServerMsgId(null);
             message.setUuid(UUID.randomUUID().toString());
         }
         switch (conversation.getNextEncryption()) {

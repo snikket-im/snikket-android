@@ -518,7 +518,7 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
                             final String uuid = replacedMessage.getUuid();
                             replacedMessage.setUuid(UUID.randomUUID().toString());
                             replacedMessage.setBody(message.getBody());
-                            replacedMessage.setEdited(replacedMessage.getRemoteMsgId());
+                            replacedMessage.putEdited(replacedMessage.getRemoteMsgId(), replacedMessage.getServerMsgId());
                             replacedMessage.setRemoteMsgId(remoteMsgId);
                             if (replacedMessage.getServerMsgId() == null || message.getServerMsgId() != null) {
                                 replacedMessage.setServerMsgId(message.getServerMsgId());
