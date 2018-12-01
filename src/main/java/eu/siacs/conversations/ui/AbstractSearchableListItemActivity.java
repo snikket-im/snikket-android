@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -13,6 +14,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,7 +24,7 @@ import eu.siacs.conversations.databinding.ActivityChooseContactBinding;
 import eu.siacs.conversations.entities.ListItem;
 import eu.siacs.conversations.ui.adapter.ListItemAdapter;
 
-public abstract class AbstractSearchableListItemActivity extends XmppActivity {
+public abstract class AbstractSearchableListItemActivity extends XmppActivity implements TextView.OnEditorActionListener {
 	protected ActivityChooseContactBinding binding;
 	private final List<ListItem> listItems = new ArrayList<>();
 	private ArrayAdapter<ListItem> mListItemsAdapter;
@@ -33,15 +35,10 @@ public abstract class AbstractSearchableListItemActivity extends XmppActivity {
 
 		@Override
 		public boolean onMenuItemActionExpand(final MenuItem item) {
-			mSearchEditText.post(new Runnable() {
-
-				@Override
-				public void run() {
-					mSearchEditText.requestFocus();
-					final InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-					imm.showSoftInput(mSearchEditText,
-							InputMethodManager.SHOW_IMPLICIT);
-				}
+			mSearchEditText.post(() -> {
+				mSearchEditText.requestFocus();
+				final InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+				imm.showSoftInput(mSearchEditText, InputMethodManager.SHOW_IMPLICIT);
 			});
 
 			return true;
@@ -50,8 +47,7 @@ public abstract class AbstractSearchableListItemActivity extends XmppActivity {
 		@Override
 		public boolean onMenuItemActionCollapse(final MenuItem item) {
 			final InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-			imm.hideSoftInputFromWindow(mSearchEditText.getWindowToken(),
-					InputMethodManager.HIDE_IMPLICIT_ONLY);
+			imm.hideSoftInputFromWindow(mSearchEditText.getWindowToken(), InputMethodManager.HIDE_IMPLICIT_ONLY);
 			mSearchEditText.setText("");
 			filterContacts();
 			return true;
@@ -108,8 +104,10 @@ public abstract class AbstractSearchableListItemActivity extends XmppActivity {
 		getMenuInflater().inflate(R.menu.choose_contact, menu);
 		final MenuItem menuSearchView = menu.findItem(R.id.action_search);
 		final View mSearchView = menuSearchView.getActionView();
-		mSearchEditText = (EditText) mSearchView.findViewById(R.id.search_field);
+		mSearchEditText = mSearchView.findViewById(R.id.search_field);
 		mSearchEditText.addTextChangedListener(mSearchTextWatcher);
+		mSearchEditText.setHint(R.string.search_contacts);
+		mSearchEditText.setOnEditorActionListener(this);
 		menuSearchView.setOnActionExpandListener(mOnActionExpandListener);
 		return true;
 	}
@@ -128,5 +126,10 @@ public abstract class AbstractSearchableListItemActivity extends XmppActivity {
 	@Override
 	void onBackendConnected() {
 		filterContacts();
+	}
+
+	@Override
+	public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+		return false;
 	}
 }
