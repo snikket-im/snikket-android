@@ -264,6 +264,7 @@ public final class CryptoHelper {
                 return R.string.encryption_choice_otr;
             case Message.ENCRYPTION_AXOLOTL:
             case Message.ENCRYPTION_AXOLOTL_NOT_FOR_THIS_DEVICE:
+            case Message.ENCRYPTION_AXOLOTL_FAILED:
                 return R.string.encryption_choice_omemo;
             case Message.ENCRYPTION_NONE:
                 return R.string.encryption_choice_unencrypted;

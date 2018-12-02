@@ -292,6 +292,8 @@ public class UIHelper {
 			return new Pair<>(context.getString(R.string.decryption_failed), true);
 		} else if (message.getEncryption() == Message.ENCRYPTION_AXOLOTL_NOT_FOR_THIS_DEVICE) {
 			return new Pair<>(context.getString(R.string.not_encrypted_for_this_device), true);
+		} else if (message.getEncryption() == Message.ENCRYPTION_AXOLOTL_FAILED) {
+			return new Pair<>(context.getString(R.string.omemo_decryption_failed), true);
 		} else if (message.getType() == Message.TYPE_FILE || message.getType() == Message.TYPE_IMAGE) {
 			return new Pair<>(getFileDescriptionString(context, message), true);
 		} else {

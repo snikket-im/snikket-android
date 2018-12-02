@@ -697,6 +697,7 @@
     <string name="medium">Medium</string>
     <string name="large">Large</string>
     <string name="not_encrypted_for_this_device">Message was not encrypted for this device.</string>
+    <string name="omemo_decryption_failed">Failed to decrypt OMEMO message.</string>
     <string name="undo">undo</string>
     <string name="location_disabled">Location sharing is disabled</string>
     <string name="action_fix_to_location">Fix position</string>

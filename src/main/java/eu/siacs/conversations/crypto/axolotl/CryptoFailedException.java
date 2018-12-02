@@ -6,6 +6,10 @@ public class CryptoFailedException extends Exception {
 		super(msg);
 	}
 
+	public CryptoFailedException(String msg, Exception e) {
+		super(msg, e);
+	}
+
 	public CryptoFailedException(Exception e){
 		super(e);
 	}

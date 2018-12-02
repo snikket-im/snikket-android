@@ -79,34 +79,35 @@ public class XmppAxolotlSession implements Comparable<XmppAxolotlSession> {
 	}
 
 	@Nullable
-	public byte[] processReceiving(AxolotlKey encryptedKey) throws CryptoFailedException {
+	byte[] processReceiving(AxolotlKey encryptedKey) throws CryptoFailedException {
 		byte[] plaintext;
 		FingerprintStatus status = getTrust();
 		if (!status.isCompromised()) {
 			try {
-				if (encryptedKey.prekey) {
-					PreKeySignalMessage preKeySignalMessage = new PreKeySignalMessage(encryptedKey.key);
-					Optional<Integer> optionalPreKeyId = preKeySignalMessage.getPreKeyId();
-					IdentityKey identityKey = preKeySignalMessage.getIdentityKey();
-					if (!optionalPreKeyId.isPresent()) {
-						throw new CryptoFailedException("PreKeyWhisperMessage did not contain a PreKeyId");
-					}
-					preKeyId = optionalPreKeyId.get();
-					if (this.identityKey != null && !this.identityKey.equals(identityKey)) {
-						throw new CryptoFailedException("Received PreKeyWhisperMessage but preexisting identity key changed.");
-					}
-					this.identityKey = identityKey;
-					plaintext = cipher.decrypt(preKeySignalMessage);
-				} else {
-					SignalMessage signalMessage = new SignalMessage(encryptedKey.key);
-					plaintext = cipher.decrypt(signalMessage);
-					preKeyId = null; //better safe than sorry because we use that to do special after prekey handling
-				}
-			} catch (InvalidVersionException | InvalidKeyException | LegacyMessageException | InvalidMessageException | DuplicateMessageException | NoSessionException | InvalidKeyIdException | UntrustedIdentityException e) {
-				if (!(e instanceof DuplicateMessageException)) {
-					e.printStackTrace();
-				}
-				throw new CryptoFailedException("Error decrypting WhisperMessage " + e.getClass().getSimpleName() + ": " + e.getMessage());
+                if (encryptedKey.prekey) {
+                    PreKeySignalMessage preKeySignalMessage = new PreKeySignalMessage(encryptedKey.key);
+                    Optional<Integer> optionalPreKeyId = preKeySignalMessage.getPreKeyId();
+                    IdentityKey identityKey = preKeySignalMessage.getIdentityKey();
+                    if (!optionalPreKeyId.isPresent()) {
+                        throw new CryptoFailedException("PreKeyWhisperMessage did not contain a PreKeyId");
+                    }
+                    preKeyId = optionalPreKeyId.get();
+                    if (this.identityKey != null && !this.identityKey.equals(identityKey)) {
+                        throw new CryptoFailedException("Received PreKeyWhisperMessage but preexisting identity key changed.");
+                    }
+                    this.identityKey = identityKey;
+                    plaintext = cipher.decrypt(preKeySignalMessage);
+                } else {
+                    SignalMessage signalMessage = new SignalMessage(encryptedKey.key);
+                    try {
+                        plaintext = cipher.decrypt(signalMessage);
+                    } catch (InvalidMessageException | NoSessionException e) {
+                        throw new BrokenSessionException(this.remoteAddress, e);
+                    }
+                    preKeyId = null; //better safe than sorry because we use that to do special after prekey handling
+                }
+			} catch (InvalidVersionException | InvalidKeyException | LegacyMessageException | InvalidMessageException | DuplicateMessageException | InvalidKeyIdException | UntrustedIdentityException e) {
+				throw new CryptoFailedException("Error decrypting SignalMessage", e);
 			}
 			if (!status.isActive()) {
 				setTrust(status.toActive());

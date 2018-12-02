@@ -1096,7 +1096,7 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
         }
         if (m.getType() != Message.TYPE_STATUS) {
 
-            if (m.getEncryption() == Message.ENCRYPTION_AXOLOTL_NOT_FOR_THIS_DEVICE) {
+            if (m.getEncryption() == Message.ENCRYPTION_AXOLOTL_NOT_FOR_THIS_DEVICE || m.getEncryption() == Message.ENCRYPTION_AXOLOTL_FAILED) {
                 return;
             }
 

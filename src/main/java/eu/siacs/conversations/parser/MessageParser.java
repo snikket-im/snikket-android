@@ -16,6 +16,7 @@ import java.util.UUID;
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.crypto.axolotl.AxolotlService;
+import eu.siacs.conversations.crypto.axolotl.BrokenSessionException;
 import eu.siacs.conversations.crypto.axolotl.NotEncryptedForThisDeviceException;
 import eu.siacs.conversations.crypto.axolotl.XmppAxolotlMessage;
 import eu.siacs.conversations.entities.Account;
@@ -107,7 +108,7 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
         return false;
     }
 
-    private Message parseAxolotlChat(Element axolotlMessage, Jid from, Conversation conversation, int status, boolean postpone) {
+    private Message parseAxolotlChat(Element axolotlMessage, Jid from, Conversation conversation, int status, boolean checkedForDuplicates, boolean postpone) {
         final AxolotlService service = conversation.getAccount().getAxolotlService();
         final XmppAxolotlMessage xmppAxolotlMessage;
         try {
@@ -120,6 +121,14 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
             final XmppAxolotlMessage.XmppAxolotlPlaintextMessage plaintextMessage;
             try {
                 plaintextMessage = service.processReceivingPayloadMessage(xmppAxolotlMessage, postpone);
+            } catch (BrokenSessionException e) {
+                if (checkedForDuplicates) {
+                    service.reportBrokenSessionException(e, postpone);
+                    return new Message(conversation, "", Message.ENCRYPTION_AXOLOTL_FAILED, status);
+                } else {
+                    Log.d(Config.LOGTAG,"ignoring broken session exception because checkForDuplicase failed");
+                    return null;
+                }
             } catch (NotEncryptedForThisDeviceException e) {
                 return new Message(conversation, "", Message.ENCRYPTION_AXOLOTL_NOT_FOR_THIS_DEVICE, status);
             }
@@ -424,12 +433,15 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
                     fallbacksBySourceId = Collections.emptySet();
                     origin = from;
                 }
+
+                final boolean checkedForDuplicates = serverMsgId != null && remoteMsgId != null && !conversation.possibleDuplicate(serverMsgId, remoteMsgId);
+
                 if (origin != null) {
-                    message = parseAxolotlChat(axolotlEncrypted, origin, conversation, status, query != null);
+                    message = parseAxolotlChat(axolotlEncrypted, origin, conversation, status,  checkedForDuplicates,query != null);
                 } else {
                     Message trial = null;
                     for (Jid fallback : fallbacksBySourceId) {
-                        trial = parseAxolotlChat(axolotlEncrypted, fallback, conversation, status, query != null);
+                        trial = parseAxolotlChat(axolotlEncrypted, fallback, conversation, status, checkedForDuplicates && fallbacksBySourceId.size() == 1, query != null);
                         if (trial != null) {
                             Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": decoded muc message using fallback");
                             origin = fallback;
@@ -606,7 +618,7 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
 
             if (message.getEncryption() == Message.ENCRYPTION_PGP) {
                 notify = conversation.getAccount().getPgpDecryptionService().decrypt(message, notify);
-            } else if (message.getEncryption() == Message.ENCRYPTION_AXOLOTL_NOT_FOR_THIS_DEVICE) {
+            } else if (message.getEncryption() == Message.ENCRYPTION_AXOLOTL_NOT_FOR_THIS_DEVICE || message.getEncryption() == Message.ENCRYPTION_AXOLOTL_FAILED) {
                 notify = false;
             }
 

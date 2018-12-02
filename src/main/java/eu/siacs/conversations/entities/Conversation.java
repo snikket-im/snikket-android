@@ -702,6 +702,20 @@ public class Conversation extends AbstractEntity implements Blockable, Comparabl
 		}
 	}
 
+	public boolean possibleDuplicate(final String serverMsgId, final String remoteMsgId) {
+		if (serverMsgId == null || remoteMsgId == null) {
+			return false;
+		}
+		synchronized (this.messages) {
+			for(Message message : this.messages) {
+				if (serverMsgId.equals(message.getServerMsgId()) || remoteMsgId.equals(message.getRemoteMsgId())) {
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+
 	public MamReference getLastMessageTransmitted() {
 		final MamReference lastClear = getLastClearHistory();
 		MamReference lastReceived = new MamReference(0);
