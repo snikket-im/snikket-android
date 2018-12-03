@@ -39,6 +39,7 @@ import java.net.URL;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import eu.siacs.conversations.Config;
@@ -64,6 +65,7 @@ import eu.siacs.conversations.ui.util.StyledAttributes;
 import eu.siacs.conversations.utils.CryptoHelper;
 import eu.siacs.conversations.utils.Resolver;
 import eu.siacs.conversations.utils.SignupUtils;
+import eu.siacs.conversations.utils.TorServiceUtils;
 import eu.siacs.conversations.utils.UIHelper;
 import eu.siacs.conversations.utils.XmppUri;
 import eu.siacs.conversations.xml.Element;
@@ -82,7 +84,9 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
 
     private static final int REQUEST_DATA_SAVER = 0xf244;
     private static final int REQUEST_CHANGE_STATUS = 0xee11;
+    private static final int REQUEST_ORBOT = 0xff22;
     private final PendingItem<PresenceTemplate> mPendingPresenceTemplate = new PendingItem<>();
+    private final AtomicBoolean mPendingReconnect = new AtomicBoolean(false);
     private AlertDialog mCaptchaDialog = null;
     private Jid jidToEdit;
     private boolean mInitMode = false;
@@ -155,8 +159,17 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
             }
 
             XmppConnection connection = mAccount == null ? null : mAccount.getXmppConnection();
-            boolean openRegistrationUrl = registerNewAccount && !accountInfoEdited && mAccount != null && mAccount.getStatus() == Account.State.REGISTRATION_WEB;
-            boolean openPaymentUrl = mAccount != null && mAccount.getStatus() == Account.State.PAYMENT_REQUIRED;
+            final boolean startOrbot = mAccount != null && mAccount.getStatus() == Account.State.TOR_NOT_AVAILABLE;
+            if (startOrbot) {
+                if (TorServiceUtils.isOrbotInstalled(EditAccountActivity.this)) {
+                    TorServiceUtils.startOrbot(EditAccountActivity.this, REQUEST_ORBOT);
+                } else {
+                    TorServiceUtils.downloadOrbot(EditAccountActivity.this, REQUEST_ORBOT);
+                }
+                return;
+            }
+            final boolean openRegistrationUrl = registerNewAccount && !accountInfoEdited && mAccount != null && mAccount.getStatus() == Account.State.REGISTRATION_WEB;
+            final boolean openPaymentUrl = mAccount != null && mAccount.getStatus() == Account.State.PAYMENT_REQUIRED;
             final boolean redirectionWorthyStatus = openPaymentUrl || openRegistrationUrl;
             URL url = connection != null && redirectionWorthyStatus ? connection.getRedirectionUrl() : null;
             if (url != null && !wasDisabled) {
@@ -420,6 +433,13 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
                 Log.d(Config.LOGTAG, "pgp result not ok");
             }
         }
+        if (requestCode == REQUEST_ORBOT) {
+            if (xmppConnectionService != null && mAccount != null) {
+                xmppConnectionService.reconnectAccountInBackground(mAccount);
+            } else {
+                mPendingReconnect.set(true);
+            }
+        }
     }
 
     @Override
@@ -456,6 +476,12 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
         } else if (mAccount != null && mAccount.getStatus() == Account.State.DISABLED && !mInitMode) {
             this.binding.saveButton.setEnabled(true);
             this.binding.saveButton.setText(R.string.enable);
+        } else if (torNeedsInstall(mAccount)) {
+            this.binding.saveButton.setEnabled(true);
+            this.binding.saveButton.setText(R.string.install_orbot);
+        } else if (torNeedsStart(mAccount)) {
+            this.binding.saveButton.setEnabled(true);
+            this.binding.saveButton.setText(R.string.start_orbot);
         } else {
             this.binding.saveButton.setEnabled(true);
             if (!mInitMode) {
@@ -483,6 +509,14 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
                 }
             }
         }
+    }
+
+    private boolean torNeedsInstall(final Account account) {
+        return account != null && account.getStatus() == Account.State.TOR_NOT_AVAILABLE && !TorServiceUtils.isOrbotInstalled(this);
+    }
+
+    private boolean torNeedsStart(final Account account) {
+        return account != null && account.getStatus() == Account.State.TOR_NOT_AVAILABLE;
     }
 
     protected boolean accountInfoEdited() {
@@ -685,6 +719,11 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
         }
 
         if (mAccount != null) {
+
+            if (mPendingReconnect.compareAndSet(true, false)) {
+                xmppConnectionService.reconnectAccountInBackground(mAccount);
+            }
+
             this.mInitMode |= this.mAccount.isOptionSet(Account.OPTION_REGISTER);
             this.mUsernameMode |= mAccount.isOptionSet(Account.OPTION_MAGIC_CREATE) && mAccount.isOptionSet(Account.OPTION_REGISTER);
             if (this.mAccount.getPrivateKeyAlias() != null) {
