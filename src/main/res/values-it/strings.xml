@@ -695,6 +695,7 @@
   <string name="medium">Medio</string>
   <string name="large">Grande</string>
   <string name="not_encrypted_for_this_device">Il messaggio non è stato criptato per questo dispositivo.</string>
+  <string name="omemo_decryption_failed">Decifrazione del messaggio OMEMO fallita.</string>
   <string name="undo">annulla</string>
   <string name="location_disabled">La condivisione della posizione è disattivata</string>
   <string name="action_fix_to_location">Fissa la posizione</string>
@@ -796,4 +797,7 @@
   <string name="enter_your_name">Inserisci il tuo nome</string>
   <string name="no_name_set_instructions">Usa il pulsante modifica per impostare il tuo nome.</string>
   <string name="reject_request">Rifiuta la richiesta</string>
+  <string name="install_orbot">Installa Orbot</string>
+  <string name="start_orbot">Avvia Orbot</string>
+  <string name="no_market_app_installed">Nessuna app market installata.</string>
 </resources>

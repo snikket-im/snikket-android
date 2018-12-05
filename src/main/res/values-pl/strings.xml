@@ -495,6 +495,7 @@
   <string name="no_camera_permission">Conversations potrzebuje dostępu do aparatu</string>
   <string name="sync_with_contacts">Synchronizuj z kontaktami</string>
   <string name="sync_with_contacts_long">Conversations chce dopasować Twoje kontakty XMPP z listą kontaktów w telefonie, by uzupełnić ich pełne imiona oraz awatary.\nConversations jedynie przeczyta Twoje kontakty i dopasuje je lokalnie, bez wysyłania na Twój serwer.\n\nZostaniesz teraz poproszony o przydzielenie pozwolenia na odczyt Twoich kontaktów.</string>
+  <string name="sync_with_contacts_quicksy"><![CDATA[Quicksy potrzebuje dostępu do numerów telefonów twoich kontaktów aby zasugerować ci kontakty które już używają Quicksy. <br><br> Nie przechowujemy kopii tych numerów.\n\nAby uzyskać więcej informacji przeczytaj naszą <a href="https://quicksy.im/#privacy">politykę prywatności</a>. <br><br>Zostaniesz poproszony o pozwolenie na dostęp do twoich kontaktów.]]></string>
   <string name="notify_on_all_messages">Powiadom o wszystkich wiadomościach</string>
   <string name="notify_only_when_highlighted">Powiadamiaj tylko w przypadku wzmianki o mnie</string>
   <string name="notify_never">Powiadomienia wyłączone</string>
@@ -520,6 +521,7 @@
   <string name="welcome_text">Jabber to niezależna sieć komunikacji natychmiastowej. Możesz użyć tego klienta z dowolnym serwerem który wybierzesz.
 Dla twojej wygody ułatwiliśmy stworzenie konta na conversations.im; serwerze dostosowanym do Conversations.</string>
   <string name="welcome_text_quicksy"><![CDATA[Quicksy to klient Jabbera/XMPP oparty na Conversations z automatycznym odkrywaniem konetaktów. <br><br> Zapisujesz się swoim numerem telefonu i Quicksy automatycznie — na podstawie numerów telefonów w twojej książce adresowej — zasugeruje możliwe kontakty. <br><br> Zapisując się zgadzasz się na naszą <a href="https://quicksy.im/#privacy">politykę prywatności</a>.]]></string>
+  <string name="agree_and_continue">Zgoda i kontynuuj</string>
   <string name="magic_create_text">Przeprowadzimy Cię przez proces tworzenia konta na conversations.im.\nKiedy wybierzesz konto na serwerze conversations.im, będziesz mógł komunikować się z użytkownikami na innych serwerach podając im swój pełen Jabber ID.</string>
   <string name="your_full_jid_will_be">Twój pełen Jabber ID będzie następujący: %s</string>
   <string name="create_account">Utwórz konto</string>
@@ -773,10 +775,13 @@ Administrator twojego serwera będzie mógł czytać twoje wiadomości, ale moż
   <string name="choose_a_country">Wybierz kraj</string>
   <string name="phone_number">numer telefonu</string>
   <string name="verify_your_phone_number">Zweryfikuj swój numer telefonu</string>
+  <string name="enter_country_code_and_phone_number">Quicksy wyśle SMS (mogą być naliczane koszty) aby zweryfikować numer telefonu. Wpisz kod kraju i numer telefonu.</string>
+  <string name="we_will_be_verifying"><![CDATA[Zweryfikujemy numer telefonu <br/><br/><b>%s</b><br/><br/>Czy wszystko się zgadza czy też chciałbyś zmienić numer?]]></string>
   <string name="not_a_valid_phone_number">%s nie jest prawidłowym numerem telefonu</string>
   <string name="please_enter_your_phone_number">Proszę wpisać swój numer telefonu.</string>
   <string name="search_countries">Przeszukaj kraje</string>
   <string name="verify_x">Zweryfikuj %s</string>
+  <string name="we_have_sent_you_an_sms_to_x"><![CDATA[Wysłaliśmy SMS do <b>%s</b>.]]></string>
   <string name="we_have_sent_you_another_sms">Wysłaliśmy kolejny SMS z 6 cyfrowym kodem.</string>
   <string name="please_enter_pin_below">Proszę wpisać 6-cyfrowy PIN poniżej.</string>
   <string name="resend_sms">Wyślij SMSa ponownie</string>
@@ -807,7 +812,12 @@ Administrator twojego serwera będzie mógł czytać twoje wiadomości, ale moż
   <string name="the_app_is_out_of_date">Używasz przestarzałej wersji aplikacji.</string>
   <string name="update">Aktualizuj</string>
   <string name="logged_in_with_another_device">Twój numer telefonu jest aktualnie zalogowany na innym urządzeniu.</string>
+  <string name="enter_your_name_instructions">Proszę wpisać swoją nazwę aby ludzie którzy mają ciebie w kontaktach wiedzieli kim jesteś.</string>
   <string name="your_name">Twoja nazwa</string>
   <string name="enter_your_name">Wpisz swoją nazwę</string>
+  <string name="no_name_set_instructions">Użyj przycisku edycji aby ustawić swoją nazwę.</string>
   <string name="reject_request">Odrzuć żądanie</string>
+  <string name="install_orbot">Zainstaluj Orbot</string>
+  <string name="start_orbot">Uruchom Orbot</string>
+  <string name="no_market_app_installed">Aplikacja marketu niezainstalowana.</string>
 </resources>
