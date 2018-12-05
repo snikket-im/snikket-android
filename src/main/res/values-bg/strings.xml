@@ -695,6 +695,7 @@
   <string name="medium">Среден</string>
   <string name="large">Голям</string>
   <string name="not_encrypted_for_this_device">Съобщението не е било шифровано за това устройство.</string>
+  <string name="omemo_decryption_failed">Съобщението OMEMO не може да бъде дешифровано.</string>
   <string name="undo">отмяна</string>
   <string name="location_disabled">Споделянето на местоположението е изключено</string>
   <string name="action_fix_to_location">Фиксиране на позицията</string>
@@ -797,4 +798,7 @@
   <string name="enter_your_name">Въведете името си</string>
   <string name="no_name_set_instructions">Използвайте бутона за редактиране, за да въведете името си.</string>
   <string name="reject_request">Отхвърляне на заявката</string>
+  <string name="install_orbot">Инсталиране на Orbot</string>
+  <string name="start_orbot">Пускане на Orbot</string>
+  <string name="no_market_app_installed">Няма инсталирано приложение за инсталиране на приложения.</string>
 </resources>

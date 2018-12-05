@@ -3,6 +3,8 @@
   <string name="action_settings">Preferències</string>
   <string name="action_add">Nova conversa</string>
   <string name="action_accounts">Gestiona els comptes</string>
+  <string name="action_account">Administrar compte</string>
+  <string name="action_end_conversation">Tancar aquesta conversa</string>
   <string name="action_contact_details">Detalls del contacte</string>
   <string name="action_muc_details">Detalls del xat de grup</string>
   <string name="action_secure">Conversa segura</string>
@@ -76,6 +78,10 @@
   <string name="sharing_files_please_wait">S\'estan compartint els fitxers. Espereu...</string>
   <string name="action_clear_history">Neteja l\'historial</string>
   <string name="clear_conversation_history">Neteja l\'historial de la conversa</string>
+  <string name="clear_histor_msg">Estàs segur que vols esborrar tots els missatges d\'aquesta conversa?\n\n <b> Advertiment: </b> Això no eliminarà les còpies dels missatges emmagatzemats en altres dispositius o servidors.</string>
+  <string name="delete_file_dialog">Eliminar arxiu</string>
+  <string name="delete_file_dialog_msg">Estàs segur que vols esborrar aquest arxiu?\n\n <b> Advertiment: </b> Això no eliminarà les còpies d\'aquest arxiu que estiguin emmagatzemades en altres dispositius o servidors.</string>
+  <string name="also_end_conversation">Tanca aquesta conversa després</string>
   <string name="choose_presence">Tria el dispositiu</string>
   <string name="send_unencrypted_message">Envia un missatge no xifrat</string>
   <string name="send_message">Envia un missatge</string>
@@ -116,8 +122,11 @@
   <string name="pref_confirm_messages">Confirma els missatges</string>
   <string name="pref_confirm_messages_summary">Feu saber als vostres contactes quan heu rebut i llegit els seus missatges</string>
   <string name="pref_ui_options">UI</string>
+  <string name="openpgp_error">OpenKeychain va reportar un error.</string>
+  <string name="bad_key_for_encryption">Clau dolenta per encriptar.</string>
   <string name="accept">Accepta</string>
   <string name="error">S\'ha produït un error</string>
+  <string name="recording_error">Error</string>
   <string name="your_account">El vostre compte</string>
   <string name="send_presence_updates">Envia actualitzacions de presència</string>
   <string name="receive_presence_updates">Rep actualitzacions de presència</string>
@@ -146,6 +155,7 @@
   <string name="account_status_policy_violation">Violació de la política</string>
   <string name="account_status_incompatible_server">Servidor incompatible</string>
   <string name="account_status_stream_error">Error de transmissió</string>
+  <string name="account_status_stream_opening_error">Error d\'obertura de la transmissió</string>
   <string name="encryption_choice_unencrypted">Sense xifrar</string>
   <string name="encryption_choice_otr">OTR</string>
   <string name="encryption_choice_pgp">OpenPGP</string>
@@ -258,6 +268,7 @@
   <string name="pref_allow_message_correction_summary">Permet que els contactes editin de manera retroactiva els missatges</string>
   <string name="pref_expert_options">Configuració d\'experts</string>
   <string name="pref_expert_options_summary">Aneu amb cura</string>
+  <string name="title_activity_about_x">Sobre 1%s</string>
   <string name="title_pref_quiet_hours">Hores de silenci</string>
   <string name="title_pref_quiet_hours_start_time">Hora d\'inici</string>
   <string name="title_pref_quiet_hours_end_time">Hora de finalització</string>
@@ -289,6 +300,8 @@
   <string name="send_again">Envia una altra vegada</string>
   <string name="file_url">URL del fitxer</string>
   <string name="url_copied_to_clipboard">URL copiada al portapapers</string>
+  <string name="jabber_id_copied_to_clipboard">Copia l\'ID de Jabber al portapapers</string>
+  <string name="error_message_copied_to_clipboard">Missatge d\'error copiat al portapapers</string>
   <string name="web_address">Adreça Web</string>
   <string name="scan_qr_code">Escaneja el codi de barres 2D</string>
   <string name="show_qr_code">Mostra el codi de barres 2D</string>
@@ -480,10 +493,14 @@ mentrestant.</string>
   <string name="no_storage_permission">Conversations necessita accés a emmagatzematge extern</string>
   <string name="no_camera_permission">Conversations necessita accés a la càmera</string>
   <string name="sync_with_contacts">Sincronitza amb contactes</string>
+  <string name="sync_with_contacts_long">Conversations vol fer coincidir la seva llista de contactes del costat del servidor amb la seva llibreta d\'adreces local per mostrar els noms complets dels seus contactes i avatars.\n\nConversations només llegirà els seus contactes i intentarà coincidir a nivell local sense pujar-los al seu servidor.\n\nSe li demanarà que concedeixi permís per accedir als seus contactes.</string>
+  <string name="sync_with_contacts_quicksy"><![CDATA[Quicksy necessita accés als números de telèfon dels seus contactes per fer suggeriments sobre possibles contactes que ja estan en Quicksy.<br> <br> No guardarem una còpia d\'aquests números de telèfon.\n\nPer a més informació llegeixi la nostra <a href="https://quicksy.im/#privacy">política de privadesa</a> <br> <br> Ara se us demanarà que concediu permís per accedir als vostres contactes.]]></string>
   <string name="notify_on_all_messages">Notifica a tots els missatges</string>
   <string name="notify_only_when_highlighted">Notifica només quan s\'esmenta</string>
   <string name="notify_never">S\'han desactivat les notificacions</string>
   <string name="notify_paused">S\'han pausat les notificacions</string>
+  <string name="pref_picture_compression">Compressió d\'imatge</string>
+  <string name="pref_picture_compression_summary">Redimensionar i comprimir imatges</string>
   <string name="always">Sempre</string>
   <string name="automatically">Automàticament</string>
   <string name="battery_optimizations_enabled">Optimitzacions de la bateria habilitades</string>
@@ -507,6 +524,7 @@ missatges.\n\nAra se us demanarà que desactiveu-las.</string>
   <string name="welcome_text">Jabber és una xarxa de missatgeria instantània independent del proveïdor. Podeu
  utilitzar aquest client amb el servidor de Jabber que trieu.\nPerò 
 per a la seva comoditat hem facilitat crear un compte a converses.im¹; un proveïdor especialment indicat per a l\'ús amb Conversations.</string>
+  <string name="welcome_text_quicksy"><![CDATA[Quicksy és un spin off de les populars Converses client Jabber/XMPP amb detecció automàtica de contactes. <br> <br> Vostè es registra amb el seu número de telèfon i Quicksy es basarà automàticament en els números de telèfon de la seva llibreta d\'adreces per suggerir-li possibles contactes. <br> <br> En registrar-se vostè accepta la nostra <a href="https://quicksy.im/#privacy"> política de privadesa </a>. ]]></string>
   <string name="magic_create_text">Us guiarem pel procés de creació d\'un compte a conversations.im.¹\nQuan 
 trieu conversations.im com a proveïdor, podreu comunicar-vos amb els usuaris 
 d\'altres proveïdors donant-los la vostra ID Jabber completa.</string>

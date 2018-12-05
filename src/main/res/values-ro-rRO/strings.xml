@@ -705,6 +705,7 @@ sau chiar pierderea mesajelor.\nÎn continuare veți fi rugați să dezactivați
   <string name="medium">Medie</string>
   <string name="large">Mare</string>
   <string name="not_encrypted_for_this_device">Mesajul nu a fost criptat pentru acest dispozitiv.</string>
+  <string name="omemo_decryption_failed">Nu s-a reușit decriptarea mesajului OMEMO.</string>
   <string name="undo">anulează</string>
   <string name="location_disabled">Partajarea locației este dezactivată</string>
   <string name="action_fix_to_location">Blochează poziția</string>
@@ -807,4 +808,7 @@ sau chiar pierderea mesajelor.\nÎn continuare veți fi rugați să dezactivați
   <string name="enter_your_name">Introducețivä numele</string>
   <string name="no_name_set_instructions">Folosiți butonul de editare pentru a vă seta numele.</string>
   <string name="reject_request">Refuză cererea</string>
+  <string name="install_orbot">Instalare Orbot</string>
+  <string name="start_orbot">Pornire Orbot</string>
+  <string name="no_market_app_installed">Nici un magazin de aplicații instalat.</string>
 </resources>

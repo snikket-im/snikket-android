@@ -515,7 +515,7 @@
   <string name="no_application_to_share_uri">Keine Anwendung zum Teilen der URI gefunden</string>
   <string name="share_uri_with">Teile URI mit…</string>
   <string name="welcome_text">Jabber ist ein anbieterunabhängiges Instant Messaging Netzwerk. Du kannst diesen Client mit jedem beliebigen Jabber-Server nutzen.\nUm es dir leicht zu machen, haben wir die Möglichkeit geschaffen, ein Konto auf conversations.im¹ anzulegen; ein Anbieter, der speziell für die Verwendung mit Conversations geeignet ist.</string>
-  <string name="welcome_text_quicksy"><![CDATA[Quicksy ist ein Ableger des beliebten Jabber/XMPP-Clients Conversations mit automatischer Kontakterkennung.<br><br>Du registrierst dich mit deiner Telefonnummer und Quicksy wird automatisch auf der Grundlage der Telefonnummern in deinem Adressbuch mögliche Kontakte vorschlagen.<br><br>Mit der Anmeldung erklärst du dich mit unserer <a href="https://quicksy.im/#privacy">Datenschutzerklärung</a>einverstanden.]]></string>
+  <string name="welcome_text_quicksy"><![CDATA[Quicksy ist ein Ableger des beliebten Jabber/XMPP-Clients Conversations mit automatischer Kontakterkennung.<br><br>Du registrierst dich mit deiner Telefonnummer und Quicksy wird automatisch auf der Grundlage der Telefonnummern in deinem Adressbuch mögliche Kontakte vorschlagen.<br><br>Mit der Anmeldung erklärst du dich mit unserer <a href="https://quicksy.im/#privacy">Datenschutzerklärung</a> einverstanden.]]></string>
   <string name="agree_and_continue">Zustimmen &amp; fortfahren</string>
   <string name="magic_create_text">Wir führen dich durch den Prozess der Kontoerstellung auf conversations.im.¹\nWenn du conversations.im als Provider wählst, kannst du mit Nutzern anderer Anbieter kommunizieren, indem du ihnen deine vollständige Jabber-ID gibst.</string>
   <string name="your_full_jid_will_be">Deine vollständige Jabber ID lautet: %s</string>
@@ -695,6 +695,7 @@
   <string name="medium">Mittel</string>
   <string name="large">Groß</string>
   <string name="not_encrypted_for_this_device">Die Nachricht wurde nicht für dieses Gerät verschlüsselt.</string>
+  <string name="omemo_decryption_failed">Die OMEMO-Nachricht konnte nicht entschlüsselt werden.</string>
   <string name="undo">rückgängig</string>
   <string name="location_disabled">Standort teilen ist deaktiviert</string>
   <string name="action_fix_to_location">Position fixieren</string>
@@ -797,4 +798,7 @@
   <string name="enter_your_name">Deinen Namen eingeben</string>
   <string name="no_name_set_instructions">Benutze die \"Bearbeiten\"-Schaltfläche, um deinen Namen festzulegen.</string>
   <string name="reject_request">Anfrage ablehnen</string>
+  <string name="install_orbot">Orbot installieren</string>
+  <string name="start_orbot">Orbot starten</string>
+  <string name="no_market_app_installed">Kein App-Store installiert.</string>
 </resources>
