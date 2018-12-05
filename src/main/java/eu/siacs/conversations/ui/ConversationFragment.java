@@ -595,8 +595,8 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
     }
 
     private ScrollState getScrollPosition() {
-        final ListView listView = this.binding.messagesView;
-        if (listView.getCount() == 0 || listView.getLastVisiblePosition() == listView.getCount() - 1) {
+        final ListView listView = this.binding == null ? null : this.binding.messagesView;
+        if (listView == null || listView.getCount() == 0 || listView.getLastVisiblePosition() == listView.getCount() - 1) {
             return null;
         } else {
             final int pos = listView.getFirstVisiblePosition();
