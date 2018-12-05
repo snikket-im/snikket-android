@@ -47,7 +47,6 @@ import java.util.regex.Matcher;
 
 import javax.net.ssl.KeyManager;
 import javax.net.ssl.SSLContext;
-import javax.net.ssl.SSLSession;
 import javax.net.ssl.SSLSocket;
 import javax.net.ssl.SSLSocketFactory;
 import javax.net.ssl.X509KeyManager;
@@ -75,7 +74,6 @@ import eu.siacs.conversations.services.MessageArchiveService;
 import eu.siacs.conversations.services.NotificationService;
 import eu.siacs.conversations.services.XmppConnectionService;
 import eu.siacs.conversations.utils.CryptoHelper;
-import eu.siacs.conversations.utils.IP;
 import eu.siacs.conversations.utils.Patterns;
 import eu.siacs.conversations.utils.Resolver;
 import eu.siacs.conversations.utils.SSLSocketHelper;
@@ -157,6 +155,7 @@ public class XmppConnection implements Runnable {
     private long lastConnect = 0;
     private long lastSessionStarted = 0;
     private long lastDiscoStarted = 0;
+    private boolean isMamPreferenceAlways = false;
     private AtomicInteger mPendingServiceDiscoveries = new AtomicInteger(0);
     private AtomicBoolean mWaitForDisco = new AtomicBoolean(true);
     private AtomicBoolean mWaitingForSmCatchup = new AtomicBoolean(false);
@@ -1170,6 +1169,7 @@ public class XmppConnection implements Runnable {
             Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": server caps came from cache");
             disco.put(Jid.of(account.getServer()), discoveryResult);
         }
+        discoverMamPreferences();
         sendServiceDiscoveryInfo(account.getJid().asBareJid());
         if (!requestDiscoItemsFirst) {
             sendServiceDiscoveryItems(Jid.of(account.getServer()));
@@ -1211,6 +1211,21 @@ public class XmppConnection implements Runnable {
                 }
             }
         });
+    }
+
+    private void discoverMamPreferences() {
+        IqPacket request = new IqPacket(IqPacket.TYPE.GET);
+        request.addChild("prefs", MessageArchiveService.Version.MAM_2.namespace);
+        sendIqPacket(request, (account, response) -> {
+           if (response.getType() == IqPacket.TYPE.RESULT) {
+               Element prefs = response.findChild("prefs", MessageArchiveService.Version.MAM_2.namespace);
+               isMamPreferenceAlways = "always".equals(prefs == null ? null : prefs.getAttribute("default"));
+           }
+        });
+    }
+
+    public boolean isMamPreferenceAlways() {
+        return isMamPreferenceAlways;
     }
 
     private void finalizeBind() {

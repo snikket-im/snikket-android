@@ -307,7 +307,7 @@ public class XmppConnectionService extends Service {
             }
             final boolean flexible = account.getXmppConnection().getFeatures().flexibleOfflineMessageRetrieval();
             final boolean catchup = getMessageArchiveService().inCatchup(account);
-            if (flexible && catchup) {
+            if (flexible && catchup && account.getXmppConnection().isMamPreferenceAlways()) {
                 sendIqPacket(account, mIqGenerator.purgeOfflineMessages(), (acc, packet) -> {
                     if (packet.getType() == IqPacket.TYPE.RESULT) {
                         Log.d(Config.LOGTAG, acc.getJid().asBareJid() + ": successfully purged offline messages");
