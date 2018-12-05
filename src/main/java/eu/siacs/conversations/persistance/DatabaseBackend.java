@@ -1178,10 +1178,10 @@ public class DatabaseBackend extends SQLiteOpenHelper {
 		db.insert(SQLiteAxolotlStore.PREKEY_TABLENAME, null, values);
 	}
 
-	public void deletePreKey(Account account, int preKeyId) {
+	public int deletePreKey(Account account, int preKeyId) {
 		SQLiteDatabase db = this.getWritableDatabase();
 		String[] args = {account.getUuid(), Integer.toString(preKeyId)};
-		db.delete(SQLiteAxolotlStore.PREKEY_TABLENAME,
+		return db.delete(SQLiteAxolotlStore.PREKEY_TABLENAME,
 				SQLiteAxolotlStore.ACCOUNT + "=? AND "
 						+ SQLiteAxolotlStore.ID + "=?",
 				args);

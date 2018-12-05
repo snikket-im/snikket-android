@@ -16,6 +16,7 @@ import org.whispersystems.libsignal.state.SignedPreKeyRecord;
 import org.whispersystems.libsignal.util.KeyHelper;
 
 import java.security.cert.X509Certificate;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -54,6 +55,8 @@ public class SQLiteAxolotlStore implements SignalProtocolStore {
 	private IdentityKeyPair identityKeyPair;
 	private int localRegistrationId;
 	private int currentPreKeyId = 0;
+
+	private final HashSet<Integer> preKeysMarkedForRemoval = new HashSet<>();
 
 	private final LruCache<String, FingerprintStatus> trustCache =
 			new LruCache<String, FingerprintStatus>(NUM_TRUSTS_TO_CACHE) {
@@ -385,7 +388,23 @@ public class SQLiteAxolotlStore implements SignalProtocolStore {
 	 */
 	@Override
 	public void removePreKey(int preKeyId) {
-		mXmppConnectionService.databaseBackend.deletePreKey(account, preKeyId);
+		Log.d(Config.LOGTAG,"mark prekey for removal "+preKeyId);
+		synchronized (preKeysMarkedForRemoval) {
+			preKeysMarkedForRemoval.add(preKeyId);
+		}
+	}
+
+
+	public boolean flushPreKeys() {
+		Log.d(Config.LOGTAG,"flushing pre keys");
+		int count = 0;
+		synchronized (preKeysMarkedForRemoval) {
+			for(Integer preKeyId : preKeysMarkedForRemoval) {
+				count += mXmppConnectionService.databaseBackend.deletePreKey(account, preKeyId);
+			}
+			preKeysMarkedForRemoval.clear();
+		}
+		return count > 0;
 	}
 
 	// --------------------------------------
