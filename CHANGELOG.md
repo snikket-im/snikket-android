@@ -1,5 +1,9 @@
 # Changelog
 
+### Version 2.3.9
+* OMEMO stability improvements
+* Context menu wen long pressing avatar in 1:1 chat
+
 ### Version 2.3.8
 * make PEP avatars public to play nice with Prosody 0.11
 * Fixed re-sending failed files in group chats
