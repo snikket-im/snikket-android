@@ -214,12 +214,14 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
             Log.d(Config.LOGTAG, AxolotlService.getLogprefix(account) + "Received PEP device list " + deviceIds + " update from " + from + ", processing... ");
             AxolotlService axolotlService = account.getAxolotlService();
             axolotlService.registerDevices(from, deviceIds);
-        } else if (Namespace.BOOKMARKS.equals(node)) {
-            Log.d(Config.LOGTAG, "received bookmarks from " + from);
-            if (account.getJid().asBareJid().equals(from)) {
+        } else if (Namespace.BOOKMARKS.equals(node) && account.getJid().asBareJid().equals(from)) {
+            if (account.getXmppConnection().getFeatures().bookmarksConversion()) {
                 final Element i = items.findChild("item");
                 final Element storage = i == null ? null : i.findChild("storage", Namespace.BOOKMARKS);
                 mXmppConnectionService.processBookmarks(account, storage);
+                Log.d(Config.LOGTAG,account.getJid().asBareJid()+": processing bookmark PEP event");
+            } else {
+                Log.d(Config.LOGTAG,account.getJid().asBareJid()+": ignoring bookmark PEP event because bookmark conversion was not detected");
             }
         }
     }
