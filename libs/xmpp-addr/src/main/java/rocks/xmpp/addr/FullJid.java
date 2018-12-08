@@ -29,10 +29,9 @@ import rocks.xmpp.precis.PrecisProfiles;
 import rocks.xmpp.util.cache.LruCache;
 
 import java.net.IDN;
-import java.nio.charset.StandardCharsets;
+import java.nio.charset.Charset;
 import java.text.Normalizer;
 import java.util.Map;
-import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -109,6 +108,10 @@ final class FullJid extends AbstractJid {
 
         final String unescapedLocalPart;
 
+        if (domain == null) {
+            throw new NullPointerException();
+        }
+
         if (doUnescape) {
             unescapedLocalPart = unescape(local);
         } else {
@@ -126,7 +129,7 @@ final class FullJid extends AbstractJid {
         // character MUST be stripped before any other canonicalization steps
         // are taken.
         // Also validate, that the domain name can be converted to ASCII, i.e. validate the domain name (e.g. must not start with "_").
-        final String strDomain = IDN.toASCII(LABEL_SEPARATOR_FINAL.matcher(Objects.requireNonNull(domain)).replaceAll(""), IDN.USE_STD3_ASCII_RULES);
+        final String strDomain = IDN.toASCII(LABEL_SEPARATOR_FINAL.matcher(domain).replaceAll(""), IDN.USE_STD3_ASCII_RULES);
         enforcedLocalPart = escapedLocalPart != null ? PrecisProfiles.USERNAME_CASE_MAPPED.enforce(escapedLocalPart) : null;
         enforcedResource = resource != null ? PrecisProfiles.OPAQUE_STRING.enforce(resource) : null;
         // See https://tools.ietf.org/html/rfc5895#section-2
@@ -152,7 +155,7 @@ final class FullJid extends AbstractJid {
 
                 @Override
                 public Jid withLocal(CharSequence local) {
-                    if (Objects.equals(local, this.getLocal())) {
+                    if (local == this.getLocal() || local != null && local.equals(this.getLocal())) {
                         return this;
                     }
                     return new FullJid(local, getDomain(), getResource(), false, null);
@@ -160,7 +163,7 @@ final class FullJid extends AbstractJid {
 
                 @Override
                 public Jid withResource(CharSequence resource) {
-                    if (Objects.equals(resource, this.getResource())) {
+                    if (resource == this.getResource() || resource != null && resource.equals(this.getResource())) {
                         return this;
                     }
                     return new FullJid(getLocal(), getDomain(), resource, false, asBareJid());
@@ -168,7 +171,10 @@ final class FullJid extends AbstractJid {
 
                 @Override
                 public Jid atSubdomain(CharSequence subdomain) {
-                    return new FullJid(getLocal(), Objects.requireNonNull(subdomain) + "." + getDomain(), getResource(), false, null);
+                    if (subdomain == null) {
+                        throw new NullPointerException();
+                    }
+                    return new FullJid(getLocal(), subdomain + "." + getDomain(), getResource(), false, null);
                 }
 
                 @Override
@@ -206,7 +212,9 @@ final class FullJid extends AbstractJid {
      * @see <a href="https://xmpp.org/extensions/xep-0106.html">XEP-0106: JID Escaping</a>
      */
     static Jid of(String jid, final boolean doUnescape) {
-        Objects.requireNonNull(jid, "jid must not be null.");
+        if (jid == null) {
+            throw new NullPointerException("jid must not be null.");
+        }
 
         jid = jid.trim();
 
@@ -278,7 +286,9 @@ final class FullJid extends AbstractJid {
     }
 
     private static void validateDomain(String domain) {
-        Objects.requireNonNull(domain, "domain must not be null.");
+        if (domain == null) {
+            throw new NullPointerException("domain must not be null.");
+        }
         if (domain.contains("@")) {
             // Prevent misuse of API.
             throw new IllegalArgumentException("domain must not contain a '@' sign");
@@ -297,7 +307,7 @@ final class FullJid extends AbstractJid {
             if (value.length() == 0) {
                 throw new IllegalArgumentException(part + " must not be empty.");
             }
-            if (value.toString().getBytes(StandardCharsets.UTF_8).length > 1023) {
+            if (value.toString().getBytes(Charset.forName("UTF-8")).length > 1023) {
                 throw new IllegalArgumentException(part + " must not be greater than 1023 bytes.");
             }
         }
@@ -391,7 +401,7 @@ final class FullJid extends AbstractJid {
      */
     @Override
     public final Jid withLocal(CharSequence local) {
-        if (Objects.equals(local, this.getLocal())) {
+        if (local == this.getLocal() || local != null && local.equals(this.getLocal())) {
             return this;
         }
         return new FullJid(local, getDomain(), getResource(), false, null);
@@ -408,7 +418,7 @@ final class FullJid extends AbstractJid {
      */
     @Override
     public final Jid withResource(CharSequence resource) {
-        if (Objects.equals(resource, this.getResource())) {
+        if (resource == this.getResource() || resource != null && resource.equals(this.getResource())) {
             return this;
         }
         return new FullJid(getLocal(), getDomain(), resource, false, asBareJid());
@@ -424,7 +434,10 @@ final class FullJid extends AbstractJid {
      */
     @Override
     public final Jid atSubdomain(CharSequence subdomain) {
-        return new FullJid(getLocal(), Objects.requireNonNull(subdomain) + "." + getDomain(), getResource(), false, null);
+        if (subdomain != null) {
+            throw new NullPointerException();
+        }
+        return new FullJid(getLocal(), subdomain + "." + getDomain(), getResource(), false, null);
     }
 
     /**

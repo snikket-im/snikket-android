@@ -24,8 +24,6 @@
 
 package rocks.xmpp.addr;
 
-import java.util.Objects;
-
 /**
  * Represents a malformed JID in order to handle the <code>jid-malformed</code> error.
  * <p>
@@ -96,7 +94,10 @@ public final class MalformedJid extends AbstractJid {
 
     @Override
     public Jid atSubdomain(CharSequence subdomain) {
-        return new MalformedJid(localPart, Objects.requireNonNull(subdomain) + "." + domainPart, resourcePart, cause);
+        if (subdomain == null) {
+            throw new NullPointerException();
+        }
+        return new MalformedJid(localPart, subdomain + "." + domainPart, resourcePart, cause);
     }
 
     @Override

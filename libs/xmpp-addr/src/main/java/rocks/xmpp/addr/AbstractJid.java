@@ -25,7 +25,7 @@
 package rocks.xmpp.addr;
 
 import java.text.Collator;
-import java.util.Objects;
+import java.util.Arrays;
 
 /**
  * Abstract Jid implementation for both full and bare JIDs.
@@ -75,14 +75,14 @@ abstract class AbstractJid implements Jid {
         }
         Jid other = (Jid) o;
 
-        return Objects.equals(getLocal(), other.getLocal())
-                && Objects.equals(getDomain(), other.getDomain())
-                && Objects.equals(getResource(), other.getResource());
+        return (getLocal() == other.getLocal() || getLocal() != null && getLocal().equals(other.getLocal()))
+            && (getDomain() == other.getDomain() || getDomain() != null && getDomain().equals(other.getDomain()))
+            && (getResource() == other.getResource() || getResource() != null && getResource().equals(other.getResource()));
     }
 
     @Override
     public final int hashCode() {
-        return Objects.hash(getLocal(), getDomain(), getResource());
+        return Arrays.hashCode(new String[]{getLocal(), getDomain(), getResource()});
     }
 
     /**
