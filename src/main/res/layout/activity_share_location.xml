@@ -29,7 +29,8 @@
                     android:layout_margin="16dp"
                     app:backgroundTint="?colorPrimary"
                     android:contentDescription="@string/action_unfix_from_location"
-                    android:src="?attr/icon_gps_fixed"/>
+                    android:src="?attr/icon_gps_fixed"
+                    android:layout_alignParentRight="true" />
 
 
             <org.osmdroid.views.MapView

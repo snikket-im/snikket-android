@@ -65,7 +65,9 @@ public class Resolver {
             final Field useHardcodedDnsServers = DNSClient.class.getDeclaredField("useHardcodedDnsServers");
             useHardcodedDnsServers.setAccessible(true);
             useHardcodedDnsServers.setBoolean(dnsClient, false);
-        } catch (NoSuchFieldException | IllegalAccessException e) {
+        } catch (NoSuchFieldException e) {
+            Log.e(Config.LOGTAG, "Unable to disable hardcoded DNS servers", e);
+        } catch (IllegalAccessException e) {
             Log.e(Config.LOGTAG, "Unable to disable hardcoded DNS servers", e);
         }
     }
