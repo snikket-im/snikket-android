@@ -803,4 +803,5 @@
     <string name="install_orbot">Install Orbot</string>
     <string name="start_orbot">Start Orbot</string>
     <string name="no_market_app_installed">No market app installed.</string>
+    <string name="group_chat_will_make_your_jabber_id_public">This group chat will make your Jabber ID public</string>
 </resources>

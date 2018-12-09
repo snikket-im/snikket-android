@@ -2298,6 +2298,13 @@ public class XmppConnectionService extends Service {
 				private void join(Conversation conversation) {
 					Account account = conversation.getAccount();
 					final MucOptions mucOptions = conversation.getMucOptions();
+
+					if (mucOptions.nonanonymous() && !mucOptions.membersOnly() && !conversation.getBooleanAttribute("accept_non_anonymous", false)) {
+					    mucOptions.setError(MucOptions.Error.NON_ANONYMOUS);
+					    updateConversationUi();
+					    return;
+                    }
+
 					final Jid joinJid = mucOptions.getSelf().getFullJid();
 					Log.d(Config.LOGTAG, account.getJid().asBareJid().toString() + ": joining conversation " + joinJid.toString());
 					PresencePacket packet = mPresenceGenerator.selfPresence(account, Presence.Status.ONLINE, mucOptions.nonanonymous() || onConferenceJoined != null);
