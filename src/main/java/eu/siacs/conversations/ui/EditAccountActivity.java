@@ -1143,7 +1143,7 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
 
     private void showOsOptimizationWarning(boolean showBatteryWarning, boolean showDataSaverWarning) {
         this.binding.osOptimization.setVisibility(showBatteryWarning || showDataSaverWarning ? View.VISIBLE : View.GONE);
-        if (showDataSaverWarning) {
+        if (showDataSaverWarning && android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
             this.binding.osOptimizationHeadline.setText(R.string.data_saver_enabled);
             this.binding.osOptimizationBody.setText(R.string.data_saver_enabled_explained);
             this.binding.osOptimizationDisable.setText(R.string.allow);
@@ -1157,7 +1157,7 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
                     Toast.makeText(EditAccountActivity.this, R.string.device_does_not_support_data_saver, Toast.LENGTH_SHORT).show();
                 }
             });
-        } else if (showBatteryWarning) {
+        } else if (showBatteryWarning && android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
             this.binding.osOptimizationDisable.setText(R.string.disable);
             this.binding.osOptimizationHeadline.setText(R.string.battery_optimizations_enabled);
             this.binding.osOptimizationBody.setText(R.string.battery_optimizations_enabled_explained);

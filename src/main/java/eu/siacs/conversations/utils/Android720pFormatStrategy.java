@@ -2,6 +2,8 @@ package eu.siacs.conversations.utils;
 
 import android.media.MediaCodecInfo;
 import android.media.MediaFormat;
+import android.os.Build;
+import android.support.annotation.RequiresApi;
 import android.util.Log;
 
 import net.ypresto.androidtranscoder.format.MediaFormatExtraConstants;
@@ -26,6 +28,7 @@ public class Android720pFormatStrategy implements MediaFormatStrategy {
         mAudioChannels = 2;
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR2)
     @Override
     public MediaFormat createVideoOutputFormat(MediaFormat inputFormat) {
         int width = inputFormat.getInteger(MediaFormat.KEY_WIDTH);

@@ -41,10 +41,12 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.databinding.DataBindingUtil;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.support.annotation.IdRes;
 import android.support.annotation.NonNull;
+import android.support.annotation.RequiresApi;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
@@ -218,6 +220,7 @@ public class ConversationsActivity extends XmppActivity implements OnConversatio
     private void openBatteryOptimizationDialogIfNeeded() {
         if (hasAccountWithoutPush()
                 && isOptimizingBattery()
+                && android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M
                 && getPreferences().getBoolean(getBatteryOptimizationPreferenceKey(), true)) {
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             builder.setTitle(R.string.battery_optimizations_enabled);

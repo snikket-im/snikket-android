@@ -19,6 +19,7 @@ import android.os.Environment;
 import android.os.ParcelFileDescriptor;
 import android.provider.MediaStore;
 import android.provider.OpenableColumns;
+import android.support.annotation.RequiresApi;
 import android.support.v4.content.FileProvider;
 import android.system.Os;
 import android.system.StructStat;
@@ -299,7 +300,12 @@ public class FileBackend {
         if (dimensions != null) {
             return dimensions;
         }
-        int rotation = extractRotationFromMediaRetriever(metadataRetriever);
+        final int rotation;
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.JELLY_BEAN_MR1) {
+            rotation = extractRotationFromMediaRetriever(metadataRetriever);
+        } else {
+            rotation = 0;
+        }
         boolean rotated = rotation == 90 || rotation == 270;
         int height;
         try {
@@ -320,6 +326,7 @@ public class FileBackend {
         return rotated ? new Dimensions(width, height) : new Dimensions(height, width);
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
     private static int extractRotationFromMediaRetriever(MediaMetadataRetriever metadataRetriever) {
         String r = metadataRetriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_VIDEO_ROTATION);
         try {

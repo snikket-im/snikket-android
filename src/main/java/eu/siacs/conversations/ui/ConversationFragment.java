@@ -1522,7 +1522,9 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
             switch (attachmentChoice) {
                 case ATTACHMENT_CHOICE_CHOOSE_IMAGE:
                     intent.setAction(Intent.ACTION_GET_CONTENT);
-                    intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2) {
+                        intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
+                    }
                     intent.setType("image/*");
                     chooser = true;
                     break;
@@ -1540,7 +1542,9 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
                 case ATTACHMENT_CHOICE_CHOOSE_FILE:
                     chooser = true;
                     intent.setType("*/*");
-                    intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2) {
+                        intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
+                    }
                     intent.addCategory(Intent.CATEGORY_OPENABLE);
                     intent.setAction(Intent.ACTION_GET_CONTENT);
                     break;

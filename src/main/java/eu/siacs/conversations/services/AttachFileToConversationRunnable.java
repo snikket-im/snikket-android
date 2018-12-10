@@ -5,6 +5,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.ParcelFileDescriptor;
 import android.preference.PreferenceManager;
+import android.support.annotation.RequiresApi;
 import android.util.Log;
 
 import net.ypresto.androidtranscoder.MediaTranscoder;
@@ -88,6 +89,7 @@ public class AttachFileToConversationRunnable implements Runnable, MediaTranscod
 		}
 	}
 
+	@RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR2)
 	private void processAsVideo() throws FileNotFoundException {
 		Log.d(Config.LOGTAG,"processing file as video");
 		mXmppConnectionService.startForcingForegroundNotification();
@@ -158,7 +160,7 @@ public class AttachFileToConversationRunnable implements Runnable, MediaTranscod
 
 	@Override
 	public void run() {
-		if (isVideoMessage) {
+		if (isVideoMessage && Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2) {
 			try {
 				processAsVideo();
 			} catch (FileNotFoundException e) {
