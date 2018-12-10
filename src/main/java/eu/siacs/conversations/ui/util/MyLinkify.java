@@ -29,6 +29,7 @@
 
 package eu.siacs.conversations.ui.util;
 
+import android.os.Build;
 import android.text.Editable;
 import android.text.util.Linkify;
 
@@ -80,7 +81,7 @@ public class MyLinkify {
         if (end < cs.length()) {
             // Reject strings that were probably matched only because they contain a dot followed by
             // by some known TLD (see also comment for WORD_BOUNDARY in Patterns.java)
-            if (Character.isAlphabetic(cs.charAt(end-1)) && Character.isAlphabetic(cs.charAt(end))) {
+            if (isAlphabetic(cs.charAt(end-1)) && isAlphabetic(cs.charAt(end))) {
                 return false;
             }
         }
@@ -92,6 +93,24 @@ public class MyLinkify {
         XmppUri uri = new XmppUri(s.subSequence(start, end).toString());
         return uri.isJidValid();
     };
+
+    private static boolean isAlphabetic(final int code) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            return Character.isAlphabetic(code);
+        }
+
+        switch (Character.getType(code)) {
+            case Character.UPPERCASE_LETTER:
+            case Character.LOWERCASE_LETTER:
+            case Character.TITLECASE_LETTER:
+            case Character.MODIFIER_LETTER:
+            case Character.OTHER_LETTER:
+            case Character.LETTER_NUMBER:
+                return true;
+            default:
+                return false;
+        }
+    }
 
     public static void addLinks(Editable body, boolean includeGeo) {
         Linkify.addLinks(body, Patterns.XMPP_PATTERN, "xmpp", XMPPURI_MATCH_FILTER, null);

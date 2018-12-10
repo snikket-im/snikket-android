@@ -1,1 +1,2 @@
+include ':libs:xmpp-addr'
 rootProject.name = 'Conversations'

@@ -19,6 +19,7 @@
             android:layout_alignParentTop="true"
             android:alpha="?attr/delete_icon_alpha"
             android:background="?attr/selectableItemBackgroundBorderless"
-            android:src="?attr/icon_cancel"/>
+            android:src="?attr/icon_cancel"
+            android:layout_alignParentRight="true" />
     </RelativeLayout>
 </layout>

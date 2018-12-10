@@ -21,7 +21,8 @@
             android:listSelector="@android:color/transparent"
             android:stackFromBottom="true"
             android:transcriptMode="normal"
-            tools:listitem="@layout/message_sent">
+            tools:listitem="@layout/message_sent"
+            android:layout_alignParentLeft="true">
         </ListView>
 
         <android.support.design.widget.FloatingActionButton
@@ -35,7 +36,8 @@
             android:src="?attr/icon_scroll_down"
             app:fabSize="mini"
             android:visibility="gone"
-            app:useCompatPadding="true"/>
+            app:useCompatPadding="true"
+            android:layout_alignParentRight="true" />
 
         <eu.siacs.conversations.ui.widget.UnreadCountCustomView
             android:id="@+id/unread_count_custom_view"
@@ -47,7 +49,10 @@
             android:layout_marginEnd="8dp"
             android:elevation="8dp"
             android:visibility="gone"
-            app:backgroundColor="?attr/unread_count" />
+            app:backgroundColor="?attr/unread_count"
+            android:layout_alignRight="@+id/scroll_to_bottom_button"
+            tools:ignore="RtlCompat"
+            android:layout_marginRight="8dp" />
 
         <RelativeLayout
             android:id="@+id/textsend"
@@ -55,7 +60,8 @@
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:layout_alignParentStart="true"
-            android:background="?attr/color_background_primary">
+            android:background="?attr/color_background_primary"
+            android:layout_alignParentLeft="true">
 
             <android.support.v7.widget.RecyclerView
                 android:visibility="gone"
@@ -68,7 +74,9 @@
                 android:orientation="horizontal"
                 app:layoutManager="android.support.v7.widget.LinearLayoutManager"
                 android:paddingTop="8dp"
-                android:requiresFadingEdge="horizontal">
+                android:requiresFadingEdge="horizontal"
+                android:layout_alignParentLeft="true"
+                android:layout_toLeftOf="@+id/textSendButton">
 
             </android.support.v7.widget.RecyclerView>
 
@@ -89,7 +97,9 @@
                 android:paddingBottom="12dp"
                 android:paddingLeft="8dp"
                 android:paddingRight="8dp"
-                android:paddingTop="12dp">
+                android:paddingTop="12dp"
+                android:layout_alignParentLeft="true"
+                android:layout_toLeftOf="@+id/textSendButton">
 
                 <requestFocus/>
             </eu.siacs.conversations.ui.widget.EditMessage>
@@ -102,7 +112,8 @@
                 android:layout_centerVertical="true"
                 android:background="?attr/color_background_primary"
                 android:contentDescription="@string/send_message"
-                android:src="?attr/ic_send_text_offline"/>
+                android:src="?attr/ic_send_text_offline"
+                android:layout_alignParentRight="true" />
         </RelativeLayout>
 
         <RelativeLayout
@@ -125,7 +136,10 @@
                 android:layout_centerVertical="true"
                 android:layout_toStartOf="@+id/snackbar_action"
                 android:paddingStart="24dp"
-                android:textAppearance="@style/TextAppearance.Conversations.Body1.OnDark"/>
+                android:textAppearance="@style/TextAppearance.Conversations.Body1.OnDark"
+                android:layout_alignParentLeft="true"
+                android:paddingLeft="24dp"
+                android:layout_toLeftOf="@+id/snackbar_action" />
 
             <TextView
                 android:id="@+id/snackbar_action"
@@ -139,7 +153,8 @@
                 android:paddingTop="16dp"
                 android:textAllCaps="true"
                 android:textAppearance="@style/TextAppearance.Conversations.Body1.OnDark"
-                android:textStyle="bold"/>
+                android:textStyle="bold"
+                android:layout_alignParentRight="true" />
         </RelativeLayout>
 
     </RelativeLayout>

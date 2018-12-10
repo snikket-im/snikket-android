@@ -28,6 +28,7 @@
             android:contentDescription="@string/action_unfix_from_location"
             android:src="?attr/icon_directions"
             app:backgroundTint="?colorPrimary"
-            app:tint="@color/white"/>
+            app:tint="@color/white"
+            android:layout_alignParentRight="true" />
     </RelativeLayout>
 </layout>

@@ -1,0 +1,14 @@
+apply plugin: 'java-library'
+
+repositories {
+    google()
+    jcenter()
+    mavenCentral()
+}
+
+dependencies {
+    implementation 'rocks.xmpp:precis:1.0.0'
+}
+
+sourceCompatibility = "8"
+targetCompatibility = "8"
