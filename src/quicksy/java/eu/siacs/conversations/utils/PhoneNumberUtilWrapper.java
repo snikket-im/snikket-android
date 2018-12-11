@@ -22,25 +22,6 @@ public class PhoneNumberUtilWrapper {
         return locale.getDisplayCountry();
     }
 
-    public static String getUserCountry(Context context) {
-        try {
-            final TelephonyManager tm = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
-            final String simCountry = tm.getSimCountryIso();
-            if (simCountry != null && simCountry.length() == 2) { // SIM country code is available
-                return simCountry.toUpperCase(Locale.US);
-            } else if (tm.getPhoneType() != TelephonyManager.PHONE_TYPE_CDMA) { // device is not 3G (would be unreliable)
-                String networkCountry = tm.getNetworkCountryIso();
-                if (networkCountry != null && networkCountry.length() == 2) { // network country code is available
-                    return networkCountry.toUpperCase(Locale.US);
-                }
-            }
-        } catch (Exception e) {
-            // fallthrough
-        }
-        Locale locale = Locale.getDefault();
-        return locale.getCountry();
-    }
-
     public static String toFormattedPhoneNumber(Context context, Jid jid) {
         try {
             return getInstance(context).format(toPhoneNumber(context, jid), PhoneNumberUtil.PhoneNumberFormat.INTERNATIONAL);
@@ -54,7 +35,7 @@ public class PhoneNumberUtilWrapper {
     }
 
     public static String normalize(Context context, String input) throws IllegalArgumentException, NumberParseException {
-        final Phonenumber.PhoneNumber number = getInstance(context).parse(input, getUserCountry(context));
+        final Phonenumber.PhoneNumber number = getInstance(context).parse(input, LocationProvider.getUserCountry(context));
         if (!getInstance(context).isValidNumber(number)) {
             throw new IllegalArgumentException("Not a valid phone number");
         }

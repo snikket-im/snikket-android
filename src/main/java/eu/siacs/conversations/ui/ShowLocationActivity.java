@@ -30,11 +30,12 @@ import eu.siacs.conversations.ui.util.LocationHelper;
 import eu.siacs.conversations.ui.util.UriHelper;
 import eu.siacs.conversations.ui.widget.Marker;
 import eu.siacs.conversations.ui.widget.MyLocation;
+import eu.siacs.conversations.utils.LocationProvider;
 
 
 public class ShowLocationActivity extends LocationActivity implements LocationListener {
 
-	private GeoPoint loc = Config.Map.INITIAL_POS;
+	private GeoPoint loc = LocationProvider.FALLBACK;
 	private ActivityShowLocationBinding binding;
 
 

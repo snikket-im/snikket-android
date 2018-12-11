@@ -54,7 +54,7 @@ public class AttachFileToConversationRunnable implements Runnable, MediaTranscod
 	}
 
 	boolean isVideoMessage() {
-		return this.isVideoMessage;
+		return this.isVideoMessage && Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2;
 	}
 
 	private void processAsFile() {
@@ -160,7 +160,7 @@ public class AttachFileToConversationRunnable implements Runnable, MediaTranscod
 
 	@Override
 	public void run() {
-		if (isVideoMessage && Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2) {
+		if (this.isVideoMessage()) {
 			try {
 				processAsVideo();
 			} catch (FileNotFoundException e) {

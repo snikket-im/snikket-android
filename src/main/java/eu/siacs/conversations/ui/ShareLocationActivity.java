@@ -22,6 +22,7 @@ import eu.siacs.conversations.databinding.ActivityShareLocationBinding;
 import eu.siacs.conversations.ui.util.LocationHelper;
 import eu.siacs.conversations.ui.widget.Marker;
 import eu.siacs.conversations.ui.widget.MyLocation;
+import eu.siacs.conversations.utils.LocationProvider;
 import eu.siacs.conversations.utils.ThemeHelper;
 
 public class ShareLocationActivity extends LocationActivity implements LocationListener {
@@ -55,7 +56,7 @@ public class ShareLocationActivity extends LocationActivity implements LocationL
 		this.binding = DataBindingUtil.setContentView(this,R.layout.activity_share_location);
 		setSupportActionBar((Toolbar) binding.toolbar);
 		configureActionBar(getSupportActionBar());
-		setupMapView(binding.map, Config.Map.INITIAL_POS);
+		setupMapView(binding.map, LocationProvider.getGeoPoint(this));
 
 		this.binding.cancelButton.setOnClickListener(view -> {
 			setResult(RESULT_CANCELED);
