@@ -2,8 +2,6 @@ package eu.siacs.conversations;
 
 import android.graphics.Bitmap;
 
-import org.osmdroid.util.GeoPoint;
-
 import java.util.Collections;
 import java.util.List;
 
