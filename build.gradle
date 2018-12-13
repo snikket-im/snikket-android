@@ -31,8 +31,10 @@ ext {
 }
 
 dependencies {
-    playstoreImplementation('com.google.firebase:firebase-messaging:15.0.2') {
+    playstoreImplementation('com.google.firebase:firebase-messaging:17.3.4') {
         exclude group: 'com.google.firebase', module: 'firebase-core'
+        exclude group: 'com.google.firebase', module: 'firebase-analytics'
+        exclude group: 'com.google.firebase', module: 'firebase-measurement-connector'
     }
     implementation 'org.sufficientlysecure:openpgp-api:10.0'
     implementation ('com.theartofdev.edmodo:android-image-cropper:2.7.+') {
