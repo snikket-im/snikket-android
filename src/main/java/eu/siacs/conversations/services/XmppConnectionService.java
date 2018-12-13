@@ -802,8 +802,6 @@ public class XmppConnectionService extends Service {
             getPgpEngine().encrypt(message, new UiCallback<Message>() {
                 @Override
                 public void success(Message message) {
-                    message.setEncryption(Message.ENCRYPTION_DECRYPTED);
-                    sendMessage(message);
                     if (dismissAfterReply) {
                         markRead((Conversation) message.getConversation(), true);
                     } else {

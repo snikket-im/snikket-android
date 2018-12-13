@@ -29,7 +29,7 @@ import eu.siacs.conversations.utils.MimeUtils;
 
 public class PgpDecryptionService {
 
-	protected final ArrayDeque<Message> messages = new ArrayDeque();
+	protected final ArrayDeque<Message> messages = new ArrayDeque<>();
 	protected final HashSet<Message> pendingNotifications = new HashSet<>();
 	private final XmppConnectionService mXmppConnectionService;
 	private OpenPgpApi openPgpApi = null;
