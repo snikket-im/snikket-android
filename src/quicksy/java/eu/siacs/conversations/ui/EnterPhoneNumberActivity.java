@@ -24,6 +24,7 @@ import eu.siacs.conversations.services.QuickConversationsService;
 import eu.siacs.conversations.ui.drawable.TextDrawable;
 import eu.siacs.conversations.ui.util.ApiDialogHelper;
 import eu.siacs.conversations.utils.AccountUtils;
+import eu.siacs.conversations.utils.LocationProvider;
 import eu.siacs.conversations.utils.PhoneNumberUtilWrapper;
 import io.michaelrocks.libphonenumber.android.NumberParseException;
 import io.michaelrocks.libphonenumber.android.PhoneNumberUtil;
@@ -94,7 +95,7 @@ public class EnterPhoneNumberActivity extends XmppActivity implements QuickConve
         if (region != null) {
             this.region = region;
         } else {
-            this.region = PhoneNumberUtilWrapper.getUserCountry(this);
+            this.region = LocationProvider.getUserCountry(this);
         }
 
         this.binding = DataBindingUtil.setContentView(this, R.layout.activity_enter_number);

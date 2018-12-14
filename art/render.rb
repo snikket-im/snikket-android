@@ -11,7 +11,6 @@ resolutions = {
 	}
 
 images = {
-	'quicksy_launcher.svg' => ['quicksy/launcher', 48],
 	'main_logo.svg' => ['conversations/main_logo', 200],
     'quicksy_main_logo.svg' => ['quicksy/main_logo', 200],
     'splash_logo.svg' => ['conversations/splash_logo', 144],
@@ -24,7 +23,8 @@ images = {
 	'play_gif_white.svg' => ['play_gif_white', 128],
     'play_video_black.svg' => ['play_video_black', 128],
     'play_gif_black.svg' => ['play_gif_black', 128],
-	'conversations_mono.svg' => ['ic_notification', 24],
+	'conversations_mono.svg' => ['conversations/ic_notification', 24],
+    'quicksy_mono.svg' => ['quicksy/ic_notification', 24],
 	'ic_received_indicator.svg' => ['ic_received_indicator', 12],
 	'ic_send_text_offline.svg' => ['ic_send_text_offline', 36],
 	'ic_send_text_offline_white.svg' => ['ic_send_text_offline_white', 36],

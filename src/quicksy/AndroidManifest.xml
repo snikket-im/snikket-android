@@ -4,7 +4,7 @@
     package="eu.siacs.conversations">
 
     <application
-        android:icon="@drawable/launcher"
+        android:icon="@mipmap/new_launcher"
         tools:ignore="GoogleAppIndexingWarning"
         tools:replace="android:icon">
         <activity
