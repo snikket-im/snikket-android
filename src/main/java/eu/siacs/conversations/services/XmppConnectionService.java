@@ -1401,7 +1401,7 @@ public class XmppConnectionService extends Service {
             if (response.getType() == IqPacket.TYPE.RESULT) {
                 final Element query1 = response.query();
                 final Element storage = query1.findChild("storage", "storage:bookmarks");
-                processBookmarks(a, storage);
+                processBookmarks(a, storage, false);
             } else {
                 Log.d(Config.LOGTAG, a.getJid().asBareJid() + ": could not fetch bookmarks");
             }
@@ -1409,9 +1409,9 @@ public class XmppConnectionService extends Service {
         sendIqPacket(account, iqPacket, callback);
     }
 
-    public void processBookmarks(Account account, Element storage) {
+    public void processBookmarks(Account account, Element storage, final boolean pep) {
         final HashMap<Jid, Bookmark> bookmarks = new HashMap<>();
-        final boolean autojoin = respectAutojoin();
+        final boolean synchronizeWithBookmarks = synchronizeWithBookmarks();
         if (storage != null) {
             for (final Element item : storage.getChildren()) {
                 if (item.getName().equals("conference")) {
@@ -1420,10 +1420,20 @@ public class XmppConnectionService extends Service {
                     if (old != null && old.getBookmarkName() != null && bookmark.getBookmarkName() == null) {
                         bookmark.setBookmarkName(old.getBookmarkName());
                     }
+                    if (bookmark.getJid() == null) {
+                        continue;
+                    }
                     Conversation conversation = find(bookmark);
                     if (conversation != null) {
+                        if (conversation.getMode() != Conversation.MODE_MULTI) {
+                            continue;
+                        }
                         bookmark.setConversation(conversation);
-                    } else if (bookmark.autojoin() && bookmark.getJid() != null && autojoin) {
+                        if (pep && synchronizeWithBookmarks && !bookmark.autojoin()) {
+                            Log.d(Config.LOGTAG,account.getJid().asBareJid()+": archiving conference ("+conversation.getJid()+") after receiving pep");
+                            archiveConversation(conversation, false);
+                        }
+                    } else if (synchronizeWithBookmarks && bookmark.autojoin()) {
                         conversation = findOrCreateConversation(account, bookmark.getFullJid(), true, true, false);
                         bookmark.setConversation(conversation);
                     }
@@ -1831,6 +1841,10 @@ public class XmppConnectionService extends Service {
 	}
 
 	public void archiveConversation(Conversation conversation) {
+	    archiveConversation(conversation, true);
+    }
+
+	private void archiveConversation(Conversation conversation, final boolean maySyncronizeWithBookmarks) {
 		getNotificationService().clear(conversation);
 		conversation.setStatus(Conversation.STATUS_ARCHIVED);
 		conversation.setNextMessage(null);
@@ -1839,7 +1853,7 @@ public class XmppConnectionService extends Service {
 			if (conversation.getMode() == Conversation.MODE_MULTI) {
 				if (conversation.getAccount().getStatus() == Account.State.ONLINE) {
 					Bookmark bookmark = conversation.getBookmark();
-					if (bookmark != null && bookmark.autojoin() && respectAutojoin()) {
+					if (maySyncronizeWithBookmarks && bookmark != null && bookmark.autojoin() && synchronizeWithBookmarks()) {
 						bookmark.setAutojoin(false);
 						pushBookmarks(bookmark.getAccount());
 					}
@@ -2342,11 +2356,19 @@ public class XmppConnectionService extends Service {
 
 				@Override
 				public void onConferenceConfigurationFetched(Conversation conversation) {
+				    if (conversation.getStatus() == Conversation.STATUS_ARCHIVED) {
+				        Log.d(Config.LOGTAG,account.getJid().asBareJid()+": conversation ("+conversation.getJid()+") got archived before IQ result");
+				        return;
+                    }
 					join(conversation);
 				}
 
 				@Override
 				public void onFetchFailed(final Conversation conversation, Element error) {
+                    if (conversation.getStatus() == Conversation.STATUS_ARCHIVED) {
+                        Log.d(Config.LOGTAG,account.getJid().asBareJid()+": conversation ("+conversation.getJid()+") got archived before IQ result");
+                        return;
+                    }
 					if (error != null && "remote-server-not-found".equals(error.getName())) {
 						conversation.getMucOptions().setError(MucOptions.Error.SERVER_NOT_FOUND);
 						updateConversationUi();
@@ -2434,7 +2456,7 @@ public class XmppConnectionService extends Service {
 		if (conversation.getMode() == Conversation.MODE_MULTI) {
 			conversation.getMucOptions().setPassword(password);
 			if (conversation.getBookmark() != null) {
-				if (respectAutojoin()) {
+				if (synchronizeWithBookmarks()) {
 					conversation.getBookmark().setAutojoin(true);
 				}
 				pushBookmarks(conversation.getAccount());
@@ -3411,7 +3433,7 @@ public class XmppConnectionService extends Service {
 		return getBooleanPreference("chat_states", R.bool.chat_states);
 	}
 
-	private boolean respectAutojoin() {
+	private boolean synchronizeWithBookmarks() {
 		return getBooleanPreference("autojoin", R.bool.autojoin);
 	}
 
