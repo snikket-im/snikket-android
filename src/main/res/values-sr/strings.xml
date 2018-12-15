@@ -269,8 +269,6 @@
   <string name="pref_use_indicate_received_summary">Означи примљене поруке зеленом квачицом, ако је подржано</string>
   <string name="pref_use_send_button_to_indicate_status_summary">Боја дугмета за слање показује стање контакта</string>
   <string name="pref_expert_options_other">Остало</string>
-  <string name="pref_autojoin">Аутоматски ме придружуј групним ћаскањима</string>
-  <string name="pref_autojoin_summary">Поштовање опције аутоматског придруживања у обележивачу групног ћаскања</string>
   <string name="toast_message_omemo_fingerprint">ОМЕМО отисак копиран на клипборд!</string>
   <string name="conference_banned">Забрањени сте на овом групном ћаскању</string>
   <string name="conference_members_only">Ово групно ћаскање је само за чланове</string>

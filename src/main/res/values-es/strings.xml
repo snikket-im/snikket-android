@@ -279,8 +279,6 @@
   <string name="pref_use_indicate_received_summary">Cuando el contacto reciba el mensaje será indicado con una marca verde. Cuidado, esto podría no funcionar en todos los casos.</string>
   <string name="pref_use_send_button_to_indicate_status_summary">El color del botón enviar indica el estado del contacto</string>
   <string name="pref_expert_options_other">Otros</string>
-  <string name="pref_autojoin">Unirse automáticamente a conversaciones en grupo</string>
-  <string name="pref_autojoin_summary">Respetar la opción de los marcadores de unirse automáticamente a las conversaciones en grupo</string>
   <string name="toast_message_omemo_fingerprint">¡Huella digital OMEMO copiada al portapapeles!</string>
   <string name="conference_banned">Tu entrada a esta conversación en grupo ha sido prohibida</string>
   <string name="conference_members_only">Esta conversación en grupo es solo para miembros</string>

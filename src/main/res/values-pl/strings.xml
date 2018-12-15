@@ -279,8 +279,6 @@
   <string name="pref_use_indicate_received_summary">Jeżeli to możliwe, oznaczaj dostarczone wiadomości zielonym haczykiem</string>
   <string name="pref_use_send_button_to_indicate_status_summary">Koloruj przycisk wysyłania w zależności od statusu kontaktu</string>
   <string name="pref_expert_options_other">Inne</string>
-  <string name="pref_autojoin">Automatycznie dołączaj do konferencji</string>
-  <string name="pref_autojoin_summary">Respektuj flagę autodołączenia do konferencji z zakładek</string>
   <string name="toast_message_omemo_fingerprint">Odcisk klucza OMEMO został skopiowany do schowka!</string>
   <string name="conference_banned">Zbanowany</string>
   <string name="conference_members_only">Konferencja tylko dla użytkowników</string>

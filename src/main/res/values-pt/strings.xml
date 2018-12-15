@@ -253,7 +253,6 @@
   <string name="pref_use_indicate_received_summary">Mensagens recebidas serão marcadas com um visto verde se suportado</string>
   <string name="pref_use_send_button_to_indicate_status_summary">Colorir o botão de enviar para indicar o estado do contacto</string>
   <string name="pref_expert_options_other">Outros</string>
-  <string name="pref_autojoin">Juntar-se automaticamente a conversas de grupo</string>
   <string name="toast_message_omemo_fingerprint">Impressão digital OMEMO copiada para a área de transferência!</string>
   <string name="conference_banned">Está banido desta conversa de grupo</string>
   <string name="conference_members_only">Esta conversa de grupo é apenas para membros</string>

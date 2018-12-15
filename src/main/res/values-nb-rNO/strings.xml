@@ -263,8 +263,6 @@
   <string name="pref_use_indicate_received_summary">Mottatte meldinger vil bli avmerket i grønt hvis støttet</string>
   <string name="pref_use_send_button_to_indicate_status_summary">Fargelegg send-knapp for å indikere kontakt-status</string>
   <string name="pref_expert_options_other">Annet</string>
-  <string name="pref_autojoin">Ta del i gruppesludringer automatisk</string>
-  <string name="pref_autojoin_summary">Respekter flagget for automatisk tilknytning i gruppesludringsbokmerker</string>
   <string name="toast_message_omemo_fingerprint">OMEMO-fingeravtrykk kopiert til utklippstavle!</string>
   <string name="conference_banned">Du er bannlyst fra denne gruppesludringen</string>
   <string name="conference_members_only">Denne gruppesludringen er kun for medlemmer</string>

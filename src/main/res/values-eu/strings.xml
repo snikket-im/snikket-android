@@ -279,8 +279,6 @@
   <string name="pref_use_indicate_received_summary">Jasotako mezuak marka berde batekin markatuko dira. Baliteke kasu guztietan ez funtzionatzea.</string>
   <string name="pref_use_send_button_to_indicate_status_summary">Bidaltze botoia koloreztatu kontaktu baten egoera adierazteko</string>
   <string name="pref_expert_options_other">Besteak</string>
-  <string name="pref_autojoin">Taldeetara automatikoki batu</string>
-  <string name="pref_autojoin_summary">Automatikoki batzeko marka errespetatu taldeen laster-marketan</string>
   <string name="toast_message_omemo_fingerprint">OMEMO hatz-marka arbelara kopiatu da</string>
   <string name="conference_banned">Talde honetara sartzea debekatuta duzu</string>
   <string name="conference_members_only">Talde hau kideentzat da soilik</string>

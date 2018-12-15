@@ -279,8 +279,6 @@
   <string name="pref_use_indicate_received_summary">Els missatges rebuts seràn marcats amb uns ticks verds si ho admet</string>
   <string name="pref_use_send_button_to_indicate_status_summary">Pintar el botó d\'enviament per indicar l\'estatus del contacte</string>
   <string name="pref_expert_options_other">Altres</string>
-  <string name="pref_autojoin">Uniu-vos automàticament als xats de grup</string>
-  <string name="pref_autojoin_summary">Respecta l\'indicador d\'autoentrada als marcadors de xat de grup</string>
   <string name="toast_message_omemo_fingerprint">S\'ha copiat l\'empremta digital d\'OMEMO al porta-retalls.</string>
   <string name="conference_banned">Estàs prohibit en aquest xat de grup</string>
   <string name="conference_members_only">Aquest xat en grup només és de membres</string>

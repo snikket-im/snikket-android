@@ -279,8 +279,6 @@
   <string name="pref_use_indicate_received_summary">Indien ondersteund, worden ontvangen berichten met een groen vinkje aangeduid</string>
   <string name="pref_use_send_button_to_indicate_status_summary">Kleur verstuur-knop in om status van contact weer te geven</string>
   <string name="pref_expert_options_other">Andere</string>
-  <string name="pref_autojoin">Automatisch deelnemen aan groepsgesprekken</string>
-  <string name="pref_autojoin_summary">Respecteer de autojoin-vlag bij groepsgespreksbladwijzers</string>
   <string name="toast_message_omemo_fingerprint">OMEMO-vingerafdruk gekopieerd naar klembord!</string>
   <string name="conference_banned">Je bent verbannen uit dit groepsgesprek</string>
   <string name="conference_members_only">Dit groepsgesprek is enkel voor leden</string>

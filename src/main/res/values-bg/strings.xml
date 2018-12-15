@@ -279,8 +279,6 @@
   <string name="pref_use_indicate_received_summary">Получените съобщения ще бъдат отбелязани със зелена отметка, ако това се поддържа</string>
   <string name="pref_use_send_button_to_indicate_status_summary">Оцветяване на бутона за изпращане в зависимост от състоянието на контакта</string>
   <string name="pref_expert_options_other">Други</string>
-  <string name="pref_autojoin">Автоматично присъединяване в груповите разговори</string>
-  <string name="pref_autojoin_summary">Спазване на флага за автоматично присъединяване в отметките на груповите разговори</string>
   <string name="toast_message_omemo_fingerprint">Отпечатъкът OMEMO е копиран!</string>
   <string name="conference_banned">Достъпът Ви до този групов разговор е забранен</string>
   <string name="conference_members_only">Този групов разговор е само за членове</string>

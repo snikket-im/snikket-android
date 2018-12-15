@@ -279,8 +279,6 @@
   <string name="pref_use_indicate_received_summary">Empfangene Nachrichten werden mit einem grünen Häkchen markiert. Bitte beachte, dass dies nicht in allen Fällen funktioniert.</string>
   <string name="pref_use_send_button_to_indicate_status_summary">\"Senden\"-Schaltfläche einfärben, um den Online-Status des Kontakts anzuzeigen</string>
   <string name="pref_expert_options_other">Sonstiges</string>
-  <string name="pref_autojoin">Gruppenchats automatisch beitreten</string>
-  <string name="pref_autojoin_summary">Autojoin-Flag in Gruppenchatlesezeichen beachten</string>
   <string name="toast_message_omemo_fingerprint">OMEMO-Fingerabdruck in die Zwischenablage kopiert!</string>
   <string name="conference_banned">Du wurdest aus diesem Gruppenchat ausgeschlossen</string>
   <string name="conference_members_only">Dieser Gruppenchat ist nur für Mitglieder</string>

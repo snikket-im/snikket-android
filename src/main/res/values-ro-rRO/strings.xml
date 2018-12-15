@@ -279,8 +279,6 @@
   <string name="pref_use_indicate_received_summary">Mesajele primite vor fi marcate cu o bifa verde, dacă este suportat</string>
   <string name="pref_use_send_button_to_indicate_status_summary">Colorează butonul de trimitere pentru a indica starea contactului</string>
   <string name="pref_expert_options_other">Altele</string>
-  <string name="pref_autojoin">Alătură-te automat discuțiilor de grup</string>
-  <string name="pref_autojoin_summary">Respectă setarea de alăturare automată la o discuție de grup conform semnului de carte</string>
   <string name="toast_message_omemo_fingerprint">Amprentă OMEMO copiată în memorie!</string>
   <string name="conference_banned">V-a fost interzis accesul la această discuție de grup</string>
   <string name="conference_members_only">Această discuție de grup este rezervată membrilor</string>

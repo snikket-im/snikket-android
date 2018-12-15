@@ -279,8 +279,6 @@
   <string name="pref_use_indicate_received_summary">I messaggi ricevuti verranno contrassegnati con una spunta verde se supportato</string>
   <string name="pref_use_send_button_to_indicate_status_summary">Colora il pulsante di invio per indicare lo stato del contatto</string>
   <string name="pref_expert_options_other">Altro</string>
-  <string name="pref_autojoin">Unisciti automaticamente alle chat di gruppo</string>
-  <string name="pref_autojoin_summary">Rispetta l\'opzione di entrata automatica nei segnalibri di chat di gruppo</string>
   <string name="toast_message_omemo_fingerprint">impronta OMEMO copiata negli appunti|</string>
   <string name="conference_banned">Sei stato bandito da questa chat di gruppo</string>
   <string name="conference_members_only">Questa chat di gruppo è solo per membri</string>

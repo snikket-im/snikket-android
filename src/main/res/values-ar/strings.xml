@@ -247,7 +247,6 @@
   <string name="pref_quiet_hours_summary">سوف تكتم التنبيهات إبان ساعات السكون</string>
   <string name="pref_use_indicate_received">طلب تقارير تسليم الرسائل</string>
   <string name="pref_expert_options_other">أخرى</string>
-  <string name="pref_autojoin">إنضمام تلقائي إلى فِرَق المحادثة</string>
   <string name="toast_message_omemo_fingerprint">تم نسخ بصمة OMEMO إلى الحافظة !</string>
   <string name="conference_banned">حسابك محظور للإلتحاق بمجموعة المحادثة هذه</string>
   <string name="conference_members_only">هذه المجموعة متاحة للأعضاء المنتمين إليها فقط</string>

@@ -266,7 +266,6 @@
   <string name="pref_use_indicate_received_summary">サポートされている場合、受信したメッセージに緑色のチェックマークが付きます</string>
   <string name="pref_use_send_button_to_indicate_status_summary">送信ボタンに連絡先ステータスを示す色が付きます</string>
   <string name="pref_expert_options_other">その他</string>
-  <string name="pref_autojoin">自動で談話室に参加</string>
   <string name="toast_message_omemo_fingerprint">OMEMO フィンガープリントをクリップボードにコピーしました!</string>
   <string name="conference_banned">この談話室から締め出されています</string>
   <string name="conference_members_only">この談話室はメンバー制です</string>
