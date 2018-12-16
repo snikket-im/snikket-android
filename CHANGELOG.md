@@ -2,7 +2,7 @@
 
 ### Version 2.3.9
 * OMEMO stability improvements
-* Context menu wen long pressing avatar in 1:1 chat
+* Context menu when long pressing avatar in 1:1 chat
 
 ### Version 2.3.8
 * make PEP avatars public to play nice with Prosody 0.11
@@ -35,7 +35,7 @@
 ### Version 2.3.1
 * Stronger compression for video files
 * Use SNI on STARTTLS to fix gtalk
-* Fix Quite Hours on Android 8+
+* Fix Quiet Hours on Android 8+
 * Use Consistent Color Generation (XEP-0392)
 
 ### Version 2.3.0
