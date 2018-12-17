@@ -1773,7 +1773,7 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
             if (scrollState != null) {
                 outState.putParcelable(STATE_SCROLL_POSITION, scrollState);
             }
-            final ArrayList<Attachment> attachments = mediaPreviewAdapter.getAttachments();
+            final ArrayList<Attachment> attachments = mediaPreviewAdapter == null ? new ArrayList<>() : mediaPreviewAdapter.getAttachments();
             if (attachments.size() > 0) {
                 outState.putParcelableArrayList(STATE_MEDIA_PREVIEWS, attachments);
             }
