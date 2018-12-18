@@ -1311,7 +1311,11 @@ public class XmppConnection implements Runnable {
             throw new IOException();
         } else if (streamError.hasChild("host-unknown")) {
             throw new StateChangingException(Account.State.HOST_UNKNOWN);
-        } else if (streamError.hasChild("policy-violation")) {
+        } else if (streamError.hasChild("policy-violation")) { ;
+            final String text = streamError.findChildContent("text");
+            if (text != null) {
+                Log.d(Config.LOGTAG,account.getJid().asBareJid()+": policy violation. "+text);
+            }
             throw new StateChangingException(Account.State.POLICY_VIOLATION);
         } else {
             Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": stream error " + streamError.toString());
