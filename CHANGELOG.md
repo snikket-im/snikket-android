@@ -1,5 +1,10 @@
 # Changelog
 
+### Version 2.3.10
+* lower minimum required Android version to 4.1
+* Synchronize group chat join/leaves across multiple clients
+* Fixed sending PGP encrypted messages from quick reply
+
 ### Version 2.3.9
 * OMEMO stability improvements
 * Context menu when long pressing avatar in 1:1 chat
