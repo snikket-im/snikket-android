@@ -591,10 +591,11 @@ public class XmppConnection implements Runnable {
                 boolean accountUiNeedsRefresh = false;
                 synchronized (NotificationService.CATCHUP_LOCK) {
                     if (mWaitingForSmCatchup.compareAndSet(true, false)) {
-                        int count = mSmCatchupMessageCounter.get();
-                        Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": SM catchup complete (" + count + ")");
+                        final int messageCount = mSmCatchupMessageCounter.get();
+                        final int pendingIQs = packetCallbacks.size();
+                        Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": SM catchup complete (messages=" + messageCount + ", pending IQs="+pendingIQs+")");
                         accountUiNeedsRefresh = true;
-                        if (count > 0) {
+                        if (messageCount > 0) {
                             mXmppConnectionService.getNotificationService().finishBacklog(true, account);
                         }
                     }
