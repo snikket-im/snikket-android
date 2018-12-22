@@ -142,13 +142,13 @@ public class Attachment implements Parcelable {
                 for (int i = 0; i < clipData.getItemCount(); ++i) {
                     final Uri uri = clipData.getItemAt(i).getUri();
                     Log.d(Config.LOGTAG,"uri="+uri+" contentType="+contentType);
-                    final String mime = contentType != null ? contentType : MimeUtils.guessMimeTypeFromUri(context, uri);
+                    final String mime = MimeUtils.guessMimeTypeFromUriAndMime(context, uri, contentType);
                     Log.d(Config.LOGTAG,"mime="+mime);
                     uris.add(new Attachment(uri, type, mime));
                 }
             }
         } else {
-            final String mime = contentType != null ? contentType : MimeUtils.guessMimeTypeFromUri(context, data);
+            final String mime = MimeUtils.guessMimeTypeFromUriAndMime(context, data, contentType);
             uris.add(new Attachment(data, type, mime));
         }
         return uris;

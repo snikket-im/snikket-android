@@ -47,7 +47,7 @@ public class AttachFileToConversationRunnable implements Runnable, MediaTranscod
 		this.mXmppConnectionService = xmppConnectionService;
 		this.message = message;
 		this.callback = callback;
-		final String mimeType = type != null ? type : MimeUtils.guessMimeTypeFromUri(mXmppConnectionService, uri);
+		final String mimeType = MimeUtils.guessMimeTypeFromUriAndMime(mXmppConnectionService, uri, type);
 		final int autoAcceptFileSize = mXmppConnectionService.getResources().getInteger(R.integer.auto_accept_filesize);
 		this.originalFileSize = FileBackend.getFileSize(mXmppConnectionService,uri);
 		this.isVideoMessage = (mimeType != null && mimeType.startsWith("video/")) && originalFileSize > autoAcceptFileSize;

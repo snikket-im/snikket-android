@@ -337,6 +337,7 @@ public class MessageArchiveService implements OnAdvancedStreamFeaturesLoaded {
 			query.getConversation().setFirstMamReference(first == null ? null : first.getContent());
 		}
 		if (complete || relevant == null || abort) {
+			//TODO: FIX done logic to look at complete. using count is probably unreliable because it can be ommited and doesn’t work with paging.
 			boolean done;
 			if (query.isCatchup()) {
 				done = false;

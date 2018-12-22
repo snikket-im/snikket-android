@@ -482,6 +482,8 @@ public class UIHelper {
 			return context.getString(R.string.apk);
 		} else if (mime.contains("vcard")) {
 			return context.getString(R.string.vcard);
+		} else if (mime.equals("application/epub+zip") || mime.equals("application/vnd.amazon.mobi8-ebook")) {
+			return context.getString(R.string.ebook);
 		} else {
 			return mime;
 		}

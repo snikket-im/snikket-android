@@ -570,7 +570,7 @@ public class FileBackend {
     }
 
     public void copyFileToPrivateStorage(Message message, Uri uri, String type) throws FileCopyException {
-        String mime = type != null ? type : MimeUtils.guessMimeTypeFromUri(mXmppConnectionService, uri);
+        String mime = MimeUtils.guessMimeTypeFromUriAndMime(mXmppConnectionService, uri, type);
         Log.d(Config.LOGTAG, "copy " + uri.toString() + " to private storage (mime=" + mime + ")");
         String extension = MimeUtils.guessExtensionFromMimeType(mime);
         if (extension == null) {

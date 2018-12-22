@@ -16,6 +16,7 @@
 package eu.siacs.conversations.utils;
 import android.content.Context;
 import android.net.Uri;
+import android.util.Log;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -26,6 +27,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
 
+import eu.siacs.conversations.Config;
 import eu.siacs.conversations.entities.Transferable;
 
 /**
@@ -49,6 +51,7 @@ public final class MimeUtils {
         // by guessExtensionFromMimeType.
         add("application/andrew-inset", "ez");
         add("application/dsptype", "tsp");
+        add("application/epub+zip","pub");
         add("application/hta", "hta");
         add("application/mac-binhex40", "hqx");
         add("application/mathematica", "nb");
@@ -64,6 +67,9 @@ public final class MimeUtils {
         add("application/rdf+xml", "rdf");
         add("application/rss+xml", "rss");
         add("application/zip", "zip");
+        add("application/vnd.amazon.mobi8-ebook","azw3");
+        add("application/vnd.amazon.mobi8-ebook","azw");
+        add("application/vnd.amazon.mobi8-ebook","kfx");
         add("application/vnd.android.package-archive", "apk");
         add("application/vnd.cinderella", "cdy");
         add("application/vnd.ms-pki.stl", "stl");
@@ -493,6 +499,19 @@ public final class MimeUtils {
         return mimeTypeToExtensionMap.get(mimeType.split(";")[0]);
     }
 
+    public static String guessMimeTypeFromUriAndMime(final Context context, final Uri uri, final String mime) {
+        Log.d(Config.LOGTAG,"guessMimeTypeFromUriAndMime "+uri+" and mime="+mime);
+        if (mime == null || mime.equals("application/octet-stream")) {
+            final String guess = guessMimeTypeFromUri(context, uri);
+            if (guess != null) {
+                return guess;
+            } else {
+                return mime;
+            }
+        }
+        return guessMimeTypeFromUri(context ,uri);
+    }
+
     public static String guessMimeTypeFromUri(Context context, Uri uri) {
         // try the content resolver
         String mimeType;
@@ -502,11 +521,14 @@ public final class MimeUtils {
             mimeType = null;
         }
         // try the extension
-        if (mimeType == null && uri.getPath() != null) {
+        if ((mimeType == null || mimeType.equals("application/octet-stream")) && uri.getPath() != null) {
             String path = uri.getPath();
             int start = path.lastIndexOf('.') + 1;
             if (start < path.length()) {
-                mimeType = MimeUtils.guessMimeTypeFromExtension(path.substring(start));
+                final String guess = MimeUtils.guessMimeTypeFromExtension(path.substring(start));
+                if (guess != null) {
+                    mimeType = guess;
+                }
             }
         }
         // sometimes this works (as with the commit content api)

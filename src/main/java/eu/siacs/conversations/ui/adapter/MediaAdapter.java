@@ -77,6 +77,8 @@ public class MediaAdapter extends RecyclerView.Adapter<MediaAdapter.MediaViewHol
                 attr = R.attr.media_preview_app;
             } else if (mime.equals("application/zip") || mime.equals("application/rar")) {
                 attr = R.attr.media_preview_archive;
+            } else if (mime.equals("application/epub+zip") || mime.equals("application/vnd.amazon.mobi8-ebook")) {
+                attr = R.attr.media_preview_ebook;
             } else if (DOCUMENT_MIMES.contains(mime)) {
                 attr = R.attr.media_preview_document;
             } else {
