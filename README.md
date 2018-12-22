@@ -163,6 +163,11 @@ Note: This is kind of a weird quirk in OpenFire. Most other servers would just t
 
 Maybe you attempted to use the Jabber ID `test@b.tld` because `a.tld` doesn’t point to the correct host. In that case you might have to enable the extended connection settings in the expert settings of Conversations and set a host name.
 
+### I get 'Stream opening error'. What does that mean?
+
+In most cases this error is caused by ejabberd advertising support for TLSv1.3 but not properly supporting it. This can happen if the openssl version on the server already supports TLSv1.3 but the fast\_tls wrapper library used by ejabberd not (properly) support it. Upgrading fast\_tls and ejabberd or - theoretically - downgrading openssl should fix the issue. A work around is to explicity disable TLSv1.3 support in the ejabberd configuration. More information can be found on [this issue on the ejabberd issue tracker](https://github.com/processone/ejabberd/issues/2614).
+
+
 #### I’m getting this annoying permanent notification
 Starting with Conversations 2.3.6 Conversations releases distributed over the Google Play Store will display a permanent notification if you are running it on Android 8 and above. This is a rule that it is essentially enforced by the Google Play Store (you won’t have the problem if you are getting your app from F-Droid).
 
