@@ -51,7 +51,7 @@ public final class MimeUtils {
         // by guessExtensionFromMimeType.
         add("application/andrew-inset", "ez");
         add("application/dsptype", "tsp");
-        add("application/epub+zip","pub");
+        add("application/epub+zip","epub");
         add("application/hta", "hta");
         add("application/mac-binhex40", "hqx");
         add("application/mathematica", "nb");
@@ -181,6 +181,7 @@ public final class MimeUtils {
         add("application/x-maker", "book");
         add("application/x-maker", "fbdoc");
         add("application/x-mif", "mif");
+        add("application/x-mobipocket-ebook","mobi");
         add("application/x-ms-wmd", "wmd");
         add("application/x-ms-wmz", "wmz");
         add("application/x-msi", "msi");
