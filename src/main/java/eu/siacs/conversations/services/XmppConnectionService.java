@@ -1853,9 +1853,16 @@ public class XmppConnectionService extends Service {
 			if (conversation.getMode() == Conversation.MODE_MULTI) {
 				if (conversation.getAccount().getStatus() == Account.State.ONLINE) {
 					Bookmark bookmark = conversation.getBookmark();
-					if (maySyncronizeWithBookmarks && bookmark != null && bookmark.autojoin() && synchronizeWithBookmarks()) {
-						bookmark.setAutojoin(false);
-						pushBookmarks(bookmark.getAccount());
+					if (maySyncronizeWithBookmarks && bookmark != null && synchronizeWithBookmarks()) {
+						if (conversation.getMucOptions().getError() == MucOptions.Error.DESTROYED) {
+							Account account = bookmark.getAccount();
+							bookmark.setConversation(null);
+							account.getBookmarks().remove(bookmark);
+							pushBookmarks(account);
+						} else if (bookmark.autojoin()) {
+							bookmark.setAutojoin(false);
+							pushBookmarks(bookmark.getAccount());
+						}
 					}
 				}
 				leaveMuc(conversation);
