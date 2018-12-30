@@ -32,6 +32,11 @@
         app:showAsAction="never"
         android:title="@string/delete_bookmark"/>
     <item
+        android:id="@+id/action_destroy_room"
+        android:orderInCategory="82"
+        app:showAsAction="never"
+        android:title="@string/destroy_room"/>
+    <item
         android:id="@+id/action_advanced_mode"
         android:checkable="true"
         android:checked="false"
