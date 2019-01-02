@@ -2712,6 +2712,12 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
         if (pendingTakePhotoUri.clear()) {
             Log.e(Config.LOGTAG, "cleared pending photo uri");
         }
+        if (pendingConversationsUuid.clear()) {
+            Log.e(Config.LOGTAG,"cleared pending conversations uuid");
+        }
+        if (pendingMediaPreviews.clear()) {
+            Log.e(Config.LOGTAG,"cleared pending media previews");
+        }
     }
 
     public Conversation getConversation() {
