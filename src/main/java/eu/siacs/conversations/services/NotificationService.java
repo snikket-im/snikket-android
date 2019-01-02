@@ -23,8 +23,10 @@ import android.support.v4.app.NotificationCompat.BigPictureStyle;
 import android.support.v4.app.NotificationCompat.Builder;
 import android.support.v4.app.NotificationManagerCompat;
 import android.support.v4.app.NotificationCompat.CarExtender.UnreadConversation;
+import android.support.v4.app.Person;
 import android.support.v4.app.RemoteInput;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.graphics.drawable.IconCompat;
 import android.text.SpannableString;
 import android.text.style.StyleSpan;
 import android.util.DisplayMetrics;
@@ -61,6 +63,7 @@ import eu.siacs.conversations.utils.Compatibility;
 import eu.siacs.conversations.utils.GeoHelper;
 import eu.siacs.conversations.utils.UIHelper;
 import eu.siacs.conversations.xmpp.XmppConnection;
+import rocks.xmpp.addr.Jid;
 
 public class NotificationService {
 
@@ -623,15 +626,54 @@ public class NotificationService {
         }
     }
 
+    private Person getPerson(Message message) {
+        final Contact contact = message.getContact();
+        final Person.Builder builder = new Person.Builder();
+        if (contact != null) {
+            builder.setName(contact.getDisplayName());
+            final Uri uri = contact.getSystemAccount();
+            if (uri != null) {
+                builder.setUri(uri.toString());
+            }
+        } else {
+            builder.setName(UIHelper.getMessageDisplayName(message));
+        }
+        IconCompat icon = getIcon(message);
+        if (icon != null) {
+            builder.setIcon(icon);
+        }
+        return builder.build();
+    }
+
+    private IconCompat getIcon(Message message) {
+        final Contact contact;
+        if (message.getConversation().getMode() == Conversation.MODE_SINGLE) {
+            contact = message.getContact();
+        } else {
+            Jid jid = message.getTrueCounterpart();
+            contact = jid == null ? null : message.getConversation().getAccount().getRoster().getContact(jid);
+        }
+        if (contact != null) {
+            if (contact.getProfilePhoto() != null && QuickConversationsService.isConversations()) {
+                return IconCompat.createWithContentUri(contact.getProfilePhoto());
+            }
+            if (contact.getAvatarFilename() != null) {
+                return IconCompat.createWithContentUri(mXmppConnectionService.getFileBackend().getAvatarUri(contact.getAvatarFilename()));
+            }
+        }
+        return null;
+    }
+
     private void modifyForTextOnly(final Builder builder, final UnreadConversation.Builder uBuilder, final ArrayList<Message> messages) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            NotificationCompat.MessagingStyle messagingStyle = new NotificationCompat.MessagingStyle(mXmppConnectionService.getString(R.string.me));
+            final Person me = new Person.Builder().setName(mXmppConnectionService.getString(R.string.me)).build();
+            NotificationCompat.MessagingStyle messagingStyle = new NotificationCompat.MessagingStyle(me);
             final Conversation conversation = (Conversation) messages.get(0).getConversation();
             if (conversation.getMode() == Conversation.MODE_MULTI) {
                 messagingStyle.setConversationTitle(conversation.getName());
             }
             for (Message message : messages) {
-                String sender = message.getStatus() == Message.STATUS_RECEIVED ? UIHelper.getMessageDisplayName(message) : null;
+                final Person sender = message.getStatus() == Message.STATUS_RECEIVED ? getPerson(message) : null;
                 messagingStyle.addMessage(UIHelper.getMessagePreview(mXmppConnectionService, message).first, message.getTimeSent(), sender);
             }
             builder.setStyle(messagingStyle);
