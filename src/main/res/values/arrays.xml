@@ -116,10 +116,12 @@
 	<string-array name="video_compression_values">
 		<item>360</item>
 		<item>720</item>
+		<item>uncompressed</item>
 	</string-array>
 
 	<string-array name="video_compression_entries">
 		<item>@string/video_360p</item>
 		<item>@string/video_720p</item>
+		<item>@string/video_original</item>
 	</string-array>
 </resources>

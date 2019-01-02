@@ -805,4 +805,5 @@
     <string name="no_market_app_installed">No market app installed.</string>
     <string name="group_chat_will_make_your_jabber_id_public">This group chat will make your Jabber ID public</string>
     <string name="ebook">e-book</string>
+    <string name="video_original">Original (uncompressed)</string>
 </resources>
