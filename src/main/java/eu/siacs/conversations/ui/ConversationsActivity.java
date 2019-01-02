@@ -529,6 +529,7 @@ public class ConversationsActivity extends XmppActivity implements OnConversatio
     protected void onNewIntent(final Intent intent) {
         if (isViewOrShareIntent(intent)) {
             if (xmppConnectionService != null) {
+                clearPendingViewIntent();
                 processViewIntent(intent);
             } else {
                 pendingViewIntent.push(intent);
