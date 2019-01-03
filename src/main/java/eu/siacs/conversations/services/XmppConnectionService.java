@@ -1410,6 +1410,7 @@ public class XmppConnectionService extends Service {
     }
 
     public void processBookmarks(Account account, Element storage, final boolean pep) {
+        final Set<Jid> previousBookmarks = account.getBookmarkedJids();
         final HashMap<Jid, Bookmark> bookmarks = new HashMap<>();
         final boolean synchronizeWithBookmarks = synchronizeWithBookmarks();
         if (storage != null) {
@@ -1423,6 +1424,7 @@ public class XmppConnectionService extends Service {
                     if (bookmark.getJid() == null) {
                         continue;
                     }
+                    previousBookmarks.remove(bookmark.getJid().asBareJid());
                     Conversation conversation = find(bookmark);
                     if (conversation != null) {
                         if (conversation.getMode() != Conversation.MODE_MULTI) {
@@ -1436,6 +1438,16 @@ public class XmppConnectionService extends Service {
                     } else if (synchronizeWithBookmarks && bookmark.autojoin()) {
                         conversation = findOrCreateConversation(account, bookmark.getFullJid(), true, true, false);
                         bookmark.setConversation(conversation);
+                    }
+                }
+            }
+            if (pep && synchronizeWithBookmarks) {
+                Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": " + previousBookmarks.size() + " bookmarks have been removed");
+                for (Jid jid : previousBookmarks) {
+                    final Conversation conversation = find(account, jid);
+                    if (conversation != null && conversation.getMucOptions().getError() == MucOptions.Error.DESTROYED) {
+                        Log.d(Config.LOGTAG,account.getJid().asBareJid()+": archiving destroyed conference ("+conversation.getJid()+") after receiving pep");
+                        archiveConversation(conversation, false);
                     }
                 }
             }
@@ -1479,8 +1491,7 @@ public class XmppConnectionService extends Service {
     }
 
 	private void pushNodeAndEnforcePublishOptions(final Account account, final String node, final Element element, final Bundle options, final boolean retry) {
-        IqPacket packet = mIqGenerator.publishElement(node, element, options);
-        Log.d(Config.LOGTAG,packet.toString());
+        final IqPacket packet = mIqGenerator.publishElement(node, element, options);
         sendIqPacket(account, packet, (a, response) -> {
             if (response.getType() == IqPacket.TYPE.RESULT) {
                 return;

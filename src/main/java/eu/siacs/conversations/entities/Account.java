@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.CopyOnWriteArraySet;
 
@@ -470,6 +471,17 @@ public class Account extends AbstractEntity {
 
     public void setBookmarks(final CopyOnWriteArrayList<Bookmark> bookmarks) {
         this.bookmarks = bookmarks;
+    }
+
+    public Set<Jid> getBookmarkedJids() {
+        final Set<Jid> jids = new HashSet<>();
+        for(final Bookmark bookmark : this.bookmarks) {
+            final Jid jid = bookmark.getJid();
+            if (jid != null) {
+                jids.add(jid.asBareJid());
+            }
+        }
+        return jids;
     }
 
     public boolean hasBookmarkFor(final Jid conferenceJid) {
