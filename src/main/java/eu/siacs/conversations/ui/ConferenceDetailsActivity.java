@@ -72,7 +72,7 @@ import rocks.xmpp.addr.Jid;
 import static eu.siacs.conversations.entities.Bookmark.printableValue;
 import static eu.siacs.conversations.utils.StringUtils.changed;
 
-public class ConferenceDetailsActivity extends XmppActivity implements OnConversationUpdate, OnMucRosterUpdate, XmppConnectionService.OnAffiliationChanged, XmppConnectionService.OnRoleChanged, XmppConnectionService.OnConfigurationPushed, TextWatcher, OnMediaLoaded {
+public class ConferenceDetailsActivity extends XmppActivity implements OnConversationUpdate, OnMucRosterUpdate, XmppConnectionService.OnAffiliationChanged, XmppConnectionService.OnRoleChanged, XmppConnectionService.OnConfigurationPushed, XmppConnectionService.OnRoomDestroy, TextWatcher, OnMediaLoaded {
     public static final String ACTION_VIEW_MUC = "view_muc";
 
     private static final float INACTIVE_ALPHA = 0.4684f; //compromise between dark and light theme
@@ -319,6 +319,9 @@ public class ConferenceDetailsActivity extends XmppActivity implements OnConvers
             case R.id.action_delete_bookmark:
                 deleteBookmark();
                 break;
+            case R.id.action_destroy_room:
+                destroyRoom();
+                break;
             case R.id.action_advanced_mode:
                 this.mAdvancedMode = !menuItem.isChecked();
                 menuItem.setChecked(this.mAdvancedMode);
@@ -406,6 +409,7 @@ public class ConferenceDetailsActivity extends XmppActivity implements OnConvers
         MenuItem menuItemSaveBookmark = menu.findItem(R.id.action_save_as_bookmark);
         MenuItem menuItemDeleteBookmark = menu.findItem(R.id.action_delete_bookmark);
         MenuItem menuItemAdvancedMode = menu.findItem(R.id.action_advanced_mode);
+        MenuItem menuItemDestroyRoom = menu.findItem(R.id.action_destroy_room);
         menuItemAdvancedMode.setChecked(mAdvancedMode);
         if (mConversation == null) {
             return true;
@@ -417,6 +421,7 @@ public class ConferenceDetailsActivity extends XmppActivity implements OnConvers
             menuItemDeleteBookmark.setVisible(false);
             menuItemSaveBookmark.setVisible(true);
         }
+        menuItemDestroyRoom.setVisible(mConversation.getMucOptions().getSelf().getAffiliation().ranks(MucOptions.Affiliation.OWNER));
         return true;
     }
 
@@ -479,6 +484,19 @@ public class ConferenceDetailsActivity extends XmppActivity implements OnConvers
         bookmark.setConversation(null);
         xmppConnectionService.pushBookmarks(account);
         updateView();
+    }
+
+    protected void destroyRoom() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(R.string.destroy_room);
+        builder.setMessage(R.string.destroy_room_dialog);
+        builder.setPositiveButton(R.string.ok, (dialog, which) -> {
+            xmppConnectionService.destroyRoom(mConversation, ConferenceDetailsActivity.this);
+        });
+        builder.setNegativeButton(R.string.cancel, null);
+        final AlertDialog dialog = builder.create();
+        dialog.setCanceledOnTouchOutside(false);
+        dialog.show();
     }
 
     @Override
@@ -685,6 +703,15 @@ public class ConferenceDetailsActivity extends XmppActivity implements OnConvers
     @Override
     public void onRoleChangeFailed(String nick, int resId) {
         displayToast(getString(resId, nick));
+    }
+
+    @Override
+    public void onRoomDestroySucceeded() {
+        finish();
+    }
+    @Override
+    public void onRoomDestroyFailed() {
+        displayToast(getString(R.string.could_not_destroy_room));
     }
 
     @Override

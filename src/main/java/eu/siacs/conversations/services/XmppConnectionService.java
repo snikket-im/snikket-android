@@ -2829,6 +2829,26 @@ public class XmppConnectionService extends Service {
 		});
 	}
 
+    public void destroyRoom(final Conversation conversation, final OnRoomDestroy callback) {
+        IqPacket request = new IqPacket(IqPacket.TYPE.SET);
+        request.setTo(conversation.getJid().asBareJid());
+        request.query("http://jabber.org/protocol/muc#owner").addChild("destroy");
+        sendIqPacket(conversation.getAccount(), request, new OnIqPacketReceived() {
+            @Override
+            public void onIqPacketReceived(Account account, IqPacket packet) {
+                if (packet.getType() == IqPacket.TYPE.RESULT) {
+                    if (callback != null) {
+                        callback.onRoomDestroySucceeded();
+                    }
+                } else if (packet.getType() == IqPacket.TYPE.ERROR) {
+                    if (callback != null) {
+                        callback.onRoomDestroyFailed();
+                    }
+                }
+            }
+        });
+    }
+
 	private void disconnect(Account account, boolean force) {
 		if ((account.getStatus() == Account.State.ONLINE)
 				|| (account.getStatus() == Account.State.DISABLED)) {
@@ -4146,6 +4166,12 @@ public class XmppConnectionService extends Service {
 
 		void onPasswordChangeFailed();
 	}
+
+    public interface OnRoomDestroy {
+        void onRoomDestroySucceeded();
+
+        void onRoomDestroyFailed();
+    }
 
 	public interface OnAffiliationChanged {
 		void onAffiliationChangedSuccessful(Jid jid);
