@@ -3,7 +3,7 @@
     <string name="default_resource">Phone</string>
     <bool name="portrait_only">true</bool>
     <bool name="enter_is_send">false</bool>
-    <bool name="notifications_from_strangers">false</bool>
+    <bool name="notifications_from_strangers">true</bool>
     <bool name="headsup_notifications">false</bool>
     <bool name="dnd_on_silent_mode">false</bool>
     <bool name="treat_vibrate_as_silent">false</bool>
