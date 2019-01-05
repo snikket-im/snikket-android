@@ -9,6 +9,7 @@ import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
 import java.security.SecureRandom;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.crypto.BadPaddingException;
@@ -42,7 +43,7 @@ public class XmppAxolotlMessage {
 	private byte[] ciphertext = null;
 	private byte[] authtagPlusInnerKey = null;
 	private byte[] iv = null;
-	private final SparseArray<XmppAxolotlSession.AxolotlKey> keys;
+	private final List<XmppAxolotlSession.AxolotlKey> keys;
 	private final Jid from;
 	private final int sourceDeviceId;
 
@@ -110,7 +111,7 @@ public class XmppAxolotlMessage {
 			throw new IllegalArgumentException("invalid source id");
 		}
 		List<Element> keyElements = header.getChildren();
-		this.keys = new SparseArray<>();
+		this.keys = new ArrayList<>();
 		for (Element keyElement : keyElements) {
 			switch (keyElement.getName()) {
 				case KEYTAG:
@@ -118,7 +119,7 @@ public class XmppAxolotlMessage {
 						Integer recipientId = Integer.parseInt(keyElement.getAttribute(REMOTEID));
 						byte[] key = Base64.decode(keyElement.getContent().trim(), Base64.DEFAULT);
 						boolean isPreKey =keyElement.getAttributeAsBoolean("prekey");
-						this.keys.put(recipientId, new XmppAxolotlSession.AxolotlKey(key,isPreKey));
+						this.keys.add(new XmppAxolotlSession.AxolotlKey(recipientId, key,isPreKey));
 					} catch (NumberFormatException e) {
 						throw new IllegalArgumentException("invalid remote id");
 					}
@@ -143,7 +144,7 @@ public class XmppAxolotlMessage {
 	XmppAxolotlMessage(Jid from, int sourceDeviceId) {
 		this.from = from;
 		this.sourceDeviceId = sourceDeviceId;
-		this.keys = new SparseArray<>();
+		this.keys = new ArrayList<>();
 		this.iv = generateIv();
 		this.innerKey = generateKey();
 	}
@@ -232,7 +233,7 @@ public class XmppAxolotlMessage {
 			key = session.processSending(innerKey, ignoreSessionTrust);
 		}
 		if (key != null) {
-			keys.put(session.getRemoteAddress().getDeviceId(), key);
+			keys.add(key);
 		}
 	}
 
@@ -248,13 +249,13 @@ public class XmppAxolotlMessage {
 		Element encryptionElement = new Element(CONTAINERTAG, AxolotlService.PEP_PREFIX);
 		Element headerElement = encryptionElement.addChild(HEADER);
 		headerElement.setAttribute(SOURCEID, sourceDeviceId);
-		for(int i = 0; i < keys.size(); ++i) {
+		for(XmppAxolotlSession.AxolotlKey key : keys) {
 			Element keyElement = new Element(KEYTAG);
-			keyElement.setAttribute(REMOTEID, keys.keyAt(i));
-			if (keys.valueAt(i).prekey) {
+			keyElement.setAttribute(REMOTEID, key.deviceId);
+			if (key.prekey) {
 				keyElement.setAttribute("prekey","true");
 			}
-			keyElement.setContent(Base64.encodeToString(keys.valueAt(i).key, Base64.NO_WRAP));
+			keyElement.setContent(Base64.encodeToString(key.key, Base64.NO_WRAP));
 			headerElement.addChild(keyElement);
 		}
 		headerElement.addChild(IVTAG).setContent(Base64.encodeToString(iv, Base64.NO_WRAP));
@@ -266,11 +267,16 @@ public class XmppAxolotlMessage {
 	}
 
 	private byte[] unpackKey(XmppAxolotlSession session, Integer sourceDeviceId) throws CryptoFailedException {
-		XmppAxolotlSession.AxolotlKey encryptedKey = keys.get(sourceDeviceId);
-		if (encryptedKey == null) {
+		ArrayList<XmppAxolotlSession.AxolotlKey> possibleKeys = new ArrayList<>();
+		for(XmppAxolotlSession.AxolotlKey key : keys) {
+			if (key.deviceId == sourceDeviceId) {
+				possibleKeys.add(key);
+			}
+		}
+		if (possibleKeys.size() == 0) {
 			throw new NotEncryptedForThisDeviceException();
 		}
-		return session.processReceiving(encryptedKey);
+		return session.processReceiving(possibleKeys);
 	}
 
 	XmppAxolotlKeyTransportMessage getParameters(XmppAxolotlSession session, Integer sourceDeviceId) throws CryptoFailedException {
