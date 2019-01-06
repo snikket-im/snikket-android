@@ -51,19 +51,19 @@ dependencies {
     conversationsFreeCompatImplementation "com.android.support:support-emoji-bundled:$supportLibVersion"
     quicksyFreeCompatImplementation "com.android.support:support-emoji-bundled:$supportLibVersion"
     implementation 'org.bouncycastle:bcmail-jdk15on:1.58'
-    implementation 'com.google.zxing:core:3.3.0'
+    implementation 'com.google.zxing:core:3.3.3'
     implementation 'de.measite.minidns:minidns-hla:0.2.4'
     implementation 'me.leolin:ShortcutBadger:1.1.22@aar'
     implementation 'org.whispersystems:signal-protocol-java:2.6.2'
     implementation 'com.makeramen:roundedimageview:2.3.0'
     implementation "com.wefika:flowlayout:0.4.1"
-    implementation 'net.ypresto.androidtranscoder:android-transcoder:0.2.0'
+    implementation 'net.ypresto.androidtranscoder:android-transcoder:0.3.0'
     implementation project(':libs:xmpp-addr')
-    implementation 'org.osmdroid:osmdroid-android:6.0.1'
+    implementation 'org.osmdroid:osmdroid-android:6.0.3'
     implementation 'org.hsluv:hsluv:0.2'
     implementation 'org.conscrypt:conscrypt-android:1.3.0'
     implementation 'me.drakeet.support:toastcompat:1.1.0'
-    quicksyImplementation 'io.michaelrocks:libphonenumber-android:8.9.14'
+    quicksyImplementation 'io.michaelrocks:libphonenumber-android:8.10.1'
 }
 
 ext {
