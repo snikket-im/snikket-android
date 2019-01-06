@@ -11,12 +11,12 @@ import android.os.Build;
 import android.support.v4.content.ContextCompat;
 
 import org.osmdroid.util.GeoPoint;
+import org.osmdroid.util.TileSystem;
 import org.osmdroid.views.MapView;
 import org.osmdroid.views.overlay.mylocation.SimpleLocationOverlay;
 
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
-import microsoft.mappoint.TileSystem;
 
 public class MyLocation extends SimpleLocationOverlay {
 	private final GeoPoint position;
