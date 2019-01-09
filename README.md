@@ -171,11 +171,11 @@ In most cases this error is caused by ejabberd advertising support for TLSv1.3 b
 #### I’m getting this annoying permanent notification
 Starting with Conversations 2.3.6 Conversations releases distributed over the Google Play Store will display a permanent notification if you are running it on Android 8 and above. This is a rule that it is essentially enforced by the Google Play Store (you won’t have the problem if you are getting your app from F-Droid).
 
-However you can disable the notification via settings of the operating system. (Not settings in Conversations.).o
+However you can disable the notification via settings of the operating system. (Not settings in Conversations.)
 
-The battery consumption and the entire behaviour of Conversations will remain the same (as good or as bad as it was before). Why is Google doing this to you? We have no idea.
+**The battery consumption and the entire behaviour of Conversations will remain the same (as good or as bad as it was before). Why is Google doing this to you? We have no idea.**
 
-#### Android &lt;= 7.1
+##### Android &lt;= 7.1
 The foreground notification is still controlled over the expert settings within Conversations as it always has been.
 
 ##### Android 8.x
