@@ -647,9 +647,13 @@ public class NotificationService {
 
     private void modifyForTextOnly(final Builder builder, final UnreadConversation.Builder uBuilder, final ArrayList<Message> messages) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            final Person me = new Person.Builder().setName(mXmppConnectionService.getString(R.string.me)).build();
-            NotificationCompat.MessagingStyle messagingStyle = new NotificationCompat.MessagingStyle(me);
             final Conversation conversation = (Conversation) messages.get(0).getConversation();
+            final Person.Builder meBuilder = new Person.Builder().setName(mXmppConnectionService.getString(R.string.me));
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+                meBuilder.setIcon(IconCompat.createWithBitmap(mXmppConnectionService.getAvatarService().get(conversation.getAccount(), AvatarService.getSystemUiAvatarSize(mXmppConnectionService))));
+            }
+            final Person me = meBuilder.build();
+            NotificationCompat.MessagingStyle messagingStyle = new NotificationCompat.MessagingStyle(me);
             final boolean multiple = conversation.getMode() == Conversation.MODE_MULTI;
             if (multiple) {
                 messagingStyle.setConversationTitle(conversation.getName());
