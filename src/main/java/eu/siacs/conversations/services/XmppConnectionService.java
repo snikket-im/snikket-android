@@ -562,7 +562,7 @@ public class XmppConnectionService extends Service {
         final String action = intent == null ? null : intent.getAction();
         final boolean needsForegroundService = intent != null && intent.getBooleanExtra(EventReceiver.EXTRA_NEEDS_FOREGROUND_SERVICE, false);
         if (needsForegroundService) {
-            Log.d(Config.LOGTAG,"toggle forced foreground service after receiving event");
+            Log.d(Config.LOGTAG,"toggle forced foreground service after receiving event (action="+action+")");
             toggleForegroundService(true);
         }
         String pushedAccountHash = null;
