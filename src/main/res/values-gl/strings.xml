@@ -228,6 +228,9 @@
   <string name="conference_address_example">sala@xuntanza.exemplo.com/nick</string>
   <string name="save_as_bookmark">Gardar como marcador</string>
   <string name="delete_bookmark">Eliminar marcador</string>
+  <string name="destroy_room">Destruír a conversa en grupo</string>
+  <string name="destroy_room_dialog">Está segura de querer destruír esta conversa en grupo?\n\n<b>Aviso:</b> A conversa en grupo será totalmente eliminada do servidor.</string>
+  <string name="could_not_destroy_room">Non se desfixo a conversa en grupo</string>
   <string name="bookmark_already_exists">Este marcador xa existe</string>
   <string name="action_edit_subject">Editar o tema da conversa en grupo</string>
   <string name="topic">Asunto</string>
@@ -279,6 +282,8 @@
   <string name="pref_use_indicate_received_summary">As mensaxes recibidas marcaránse cun sinal verde si este está admitido</string>
   <string name="pref_use_send_button_to_indicate_status_summary">Boton de enviar de cor para indicar o estado do contacto</string>
   <string name="pref_expert_options_other">Outro</string>
+  <string name="pref_autojoin">Sincronizar cos marcadores</string>
+  <string name="pref_autojoin_summary">Unirse e deixar conversas de grupo de acordo coa marca auto-unirse nos seus marcadores.</string>
   <string name="toast_message_omemo_fingerprint">Copiouse a pegada dixital OMEMO ao portapapeis!</string>
   <string name="conference_banned">Vostede non pode acceder a esta conversa en grupo</string>
   <string name="conference_members_only">Esta conversa en grupo é so para membros</string>
@@ -711,7 +716,7 @@
   <string name="gif">GIF</string>
   <string name="view_conversation">Ver conversa</string>
   <string name="pref_use_share_location_plugin">Engadido para Compartir Localización</string>
-  <string name="pref_use_share_location_plugin_summary">Utilice o Engadido para Compartir Localización en lugar do mapa incluído</string>
+  <string name="pref_use_share_location_plugin_summary">Utilice o Engadido de Compartir Localización no lugar do mapa incluíndo</string>
   <string name="copy_link">Copiar a dirección web</string>
   <string name="copy_jabber_id">Copiar a ID de Jabber</string>
   <string name="p1_s3_filetransfer">Compartición de ficheiro HTTP para S3</string>
@@ -799,4 +804,7 @@
   <string name="install_orbot">Instalar Orbot</string>
   <string name="start_orbot">Iniciar Orbot</string>
   <string name="no_market_app_installed">Non ten loxa de aplicacións instalada.</string>
+  <string name="group_chat_will_make_your_jabber_id_public">Esta conversa de grupo revelará o seu ID Jabber</string>
+  <string name="ebook">e-book</string>
+  <string name="video_original">Orixinal (non comprimido)</string>
 </resources>

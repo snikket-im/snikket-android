@@ -708,7 +708,6 @@
   <string name="gif">GIF</string>
   <string name="view_conversation">Beszélgetés megtekintése</string>
   <string name="pref_use_share_location_plugin">Helymegosztás bővítmény</string>
-  <string name="pref_use_share_location_plugin_summary">Használja a Helymegosztás bővítményt a beépített térkép helyett</string>
   <string name="copy_link">Webcím másolása</string>
   <string name="copy_jabber_id">Jabber azonosító másolása</string>
   <string name="p1_s3_filetransfer">HTTP fájlmegosztás S3-nak</string>

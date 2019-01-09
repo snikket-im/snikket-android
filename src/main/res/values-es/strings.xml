@@ -228,6 +228,9 @@
   <string name="conference_address_example">sala@salas.ejemplo.com/nick</string>
   <string name="save_as_bookmark">Guardar en marcadores</string>
   <string name="delete_bookmark">Eliminar marcador</string>
+  <string name="destroy_room">Destruir conversación en grupo</string>
+  <string name="destroy_room_dialog">¿Estás seguro de que quieres destruir esta conversación en grupo?\n\n<b>Aviso:</b>La conversación en grupo será eliminada completamente en el servidor.</string>
+  <string name="could_not_destroy_room">No se ha podido destruir la conversación en grupo</string>
   <string name="bookmark_already_exists">Este marcador ya existe</string>
   <string name="action_edit_subject">Editar asunto de la conversación</string>
   <string name="topic">Asunto</string>
@@ -279,6 +282,8 @@
   <string name="pref_use_indicate_received_summary">Cuando el contacto reciba el mensaje será indicado con una marca verde. Cuidado, esto podría no funcionar en todos los casos.</string>
   <string name="pref_use_send_button_to_indicate_status_summary">El color del botón enviar indica el estado del contacto</string>
   <string name="pref_expert_options_other">Otros</string>
+  <string name="pref_autojoin">Sincronizar marcadores</string>
+  <string name="pref_autojoin_summary">Unirse y salir de las conversaciones en grupo de acuerdo con la marca de unirse automáticamente de tus marcadores.</string>
   <string name="toast_message_omemo_fingerprint">¡Huella digital OMEMO copiada al portapapeles!</string>
   <string name="conference_banned">Tu entrada a esta conversación en grupo ha sido prohibida</string>
   <string name="conference_members_only">Esta conversación en grupo es solo para miembros</string>
@@ -711,7 +716,7 @@
   <string name="gif">GIF</string>
   <string name="view_conversation">Ver conversación</string>
   <string name="pref_use_share_location_plugin">Plugin para Compartir Ubicación</string>
-  <string name="pref_use_share_location_plugin_summary">Usar el Plugin externo para Compartir Ubicación en lugar del propio de la aplicación.</string>
+  <string name="pref_use_share_location_plugin_summary">Usar el Plugin Compartir Ubicación en lugar del propio de la aplicación</string>
   <string name="copy_link">Copiar dirección web</string>
   <string name="copy_jabber_id">Copiar Identificador Jabber</string>
   <string name="p1_s3_filetransfer">Compartición de Archivos mediante S3</string>
@@ -786,6 +791,7 @@
   <string name="temporarily_unavailable">Temporalmente no disponible. Inténtalo más tarde.</string>
   <string name="no_network_connection">No hay conexión de red.</string>
   <string name="try_again_in_x">Por favor, inténtalo en %s</string>
+  <string name="rate_limited">Tienes una tasa limitada</string>
   <string name="too_many_attempts">Demasiados intentos</string>
   <string name="the_app_is_out_of_date">Estás usando una versión desactualizada de esta aplicación.</string>
   <string name="update">Actualizar</string>
@@ -794,7 +800,11 @@
   <string name="your_name">Tu nombre</string>
   <string name="enter_your_name">Introduce tu nombre</string>
   <string name="no_name_set_instructions">Usa este botón para establecer tu nombre.</string>
+  <string name="reject_request">Rechazar petición</string>
   <string name="install_orbot">Instalar Orbot</string>
   <string name="start_orbot">Iniciar Orbot</string>
   <string name="no_market_app_installed">No hay tienda de aplicaciones instalada.</string>
+  <string name="group_chat_will_make_your_jabber_id_public">Esta conversación en grupo hará visible públicamente tu Identificador Jabber</string>
+  <string name="ebook">e-book</string>
+  <string name="video_original">Original (sin comprimir)</string>
 </resources>

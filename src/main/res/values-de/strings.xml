@@ -228,6 +228,9 @@
   <string name="conference_address_example">raum@conference.beispiel.de/Nickname</string>
   <string name="save_as_bookmark">Zur Kontaktliste hinzufügen</string>
   <string name="delete_bookmark">Von Kontaktliste entfernen</string>
+  <string name="destroy_room">Gruppenchat löschen</string>
+  <string name="destroy_room_dialog">Bist du sicher, dass du diesen Gruppenchat löschen willst?\n\n<b>Achtung:</b> Der Gruppenchat wird dabei vollständig auf dem Server gelöscht.</string>
+  <string name="could_not_destroy_room">Gruppenchat konnte nicht gelöscht werden</string>
   <string name="bookmark_already_exists">Die Konferenz befindet sich bereits auf deiner Kontaktliste</string>
   <string name="action_edit_subject">Gruppenchatthema bearbeiten</string>
   <string name="topic">Thema</string>
@@ -279,6 +282,8 @@
   <string name="pref_use_indicate_received_summary">Empfangene Nachrichten werden mit einem grünen Häkchen markiert. Bitte beachte, dass dies nicht in allen Fällen funktioniert.</string>
   <string name="pref_use_send_button_to_indicate_status_summary">\"Senden\"-Schaltfläche einfärben, um den Online-Status des Kontakts anzuzeigen</string>
   <string name="pref_expert_options_other">Sonstiges</string>
+  <string name="pref_autojoin">Mit Lesezeichen synchronisieren</string>
+  <string name="pref_autojoin_summary">Tritt Gruppenchats bei und verlasse sie entsprechend der Auto-Join-Funktion in deinen Lesezeichen.</string>
   <string name="toast_message_omemo_fingerprint">OMEMO-Fingerabdruck in die Zwischenablage kopiert!</string>
   <string name="conference_banned">Du wurdest aus diesem Gruppenchat ausgeschlossen</string>
   <string name="conference_members_only">Dieser Gruppenchat ist nur für Mitglieder</string>
@@ -725,7 +730,7 @@
   <string name="group_chat_name">Name</string>
   <string name="providing_a_name_is_optional">Angabe eines Namens ist optional</string>
   <string name="create_dialog_group_chat_name">Gruppenchatname</string>
-  <string name="conference_destroyed">Dieser Gruppenchat wurde aufgelöst</string>
+  <string name="conference_destroyed">Dieser Gruppenchat wurde gelöscht</string>
   <string name="unable_to_save_recording">Aufnahme kann nicht gespeichert werden</string>
   <string name="foreground_service_channel_name">Vordergrunddienst</string>
   <string name="foreground_service_channel_description">Diese Benachrichtigungsart wird verwendet, um eine permanente Benachrichtigung anzuzeigen, die anzeigt, dass Conversations gerade ausgeführt wird.</string>
@@ -799,4 +804,7 @@
   <string name="install_orbot">Orbot installieren</string>
   <string name="start_orbot">Orbot starten</string>
   <string name="no_market_app_installed">Kein App-Store installiert.</string>
+  <string name="group_chat_will_make_your_jabber_id_public">Dieser Gruppenchat wird deine Jabber-ID veröffentlichen.</string>
+  <string name="ebook">E-Book</string>
+  <string name="video_original">Original (unkomprimiert)</string>
 </resources>

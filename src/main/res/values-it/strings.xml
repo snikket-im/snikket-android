@@ -228,6 +228,9 @@
   <string name="conference_address_example">stanza@conferenza.esempio.com/nick</string>
   <string name="save_as_bookmark">Salva come segnalibro</string>
   <string name="delete_bookmark">Elimina segnalibro</string>
+  <string name="destroy_room">Distruggi chat di gruppo</string>
+  <string name="destroy_room_dialog">Sei sicuro di voler distruggere questa chat di gruppo?\n\n<b>Attenzione:</b> la chat di gruppo verrà completamente rimossa dal server.</string>
+  <string name="could_not_destroy_room">Distruzione della chat di gruppo fallita</string>
   <string name="bookmark_already_exists">Questo segnalibro esiste già</string>
   <string name="action_edit_subject">Modifica titolo chat di gruppo</string>
   <string name="topic">Argomento</string>
@@ -279,6 +282,8 @@
   <string name="pref_use_indicate_received_summary">I messaggi ricevuti verranno contrassegnati con una spunta verde se supportato</string>
   <string name="pref_use_send_button_to_indicate_status_summary">Colora il pulsante di invio per indicare lo stato del contatto</string>
   <string name="pref_expert_options_other">Altro</string>
+  <string name="pref_autojoin">Sincronizza con i segnalibri</string>
+  <string name="pref_autojoin_summary">Entra ed esci dalle chat di gruppo rispettando l\'opzione di entrata automatica nei tuoi segnalibri.</string>
   <string name="toast_message_omemo_fingerprint">impronta OMEMO copiata negli appunti|</string>
   <string name="conference_banned">Sei stato bandito da questa chat di gruppo</string>
   <string name="conference_members_only">Questa chat di gruppo è solo per membri</string>
@@ -711,7 +716,7 @@
   <string name="gif">GIF</string>
   <string name="view_conversation">Vedi conversazione</string>
   <string name="pref_use_share_location_plugin">Plugin Condivisione Posizione</string>
-  <string name="pref_use_share_location_plugin_summary">Usa il Plugin Condivisione Posizione al posto della mappa integrata</string>
+  <string name="pref_use_share_location_plugin_summary">Usa il plugin Condividi Posizione al posto della mappa integrata</string>
   <string name="copy_link">Copia indirizzo web</string>
   <string name="copy_jabber_id">Copia ID Jabber</string>
   <string name="p1_s3_filetransfer">Condivisione file in HTTP per S3</string>
@@ -786,6 +791,7 @@
   <string name="temporarily_unavailable">Temporaneamente non disponibile. Riprova più tardi.</string>
   <string name="no_network_connection">Nessuna connessione di rete.</string>
   <string name="try_again_in_x">Riprova in %s</string>
+  <string name="rate_limited">Hai limiti di utilizzo</string>
   <string name="too_many_attempts">Troppi tentativi</string>
   <string name="the_app_is_out_of_date">Stai usando una versione obsoleta di questa app.</string>
   <string name="update">Aggiorna</string>
@@ -798,4 +804,7 @@
   <string name="install_orbot">Installa Orbot</string>
   <string name="start_orbot">Avvia Orbot</string>
   <string name="no_market_app_installed">Nessuna app market installata.</string>
+  <string name="group_chat_will_make_your_jabber_id_public">Questa chat di gruppo renderà pubblico il tuo ID Jabber</string>
+  <string name="ebook">e-book</string>
+  <string name="video_original">Originale (non compresso)</string>
 </resources>

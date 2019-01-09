@@ -228,6 +228,9 @@
   <string name="conference_address_example">camera@conferinta.exemplu.ro/numeutilizator</string>
   <string name="save_as_bookmark">Salvează semn de carte</string>
   <string name="delete_bookmark">Șterge semn de carte</string>
+  <string name="destroy_room">Distruge discuția de grup</string>
+  <string name="destroy_room_dialog">Sigur doriți distrugerea acestei discuții de grup?\n\n<b>Atenție:</b> Discuția de grup v-a fi complet ștearsä de pe server.</string>
+  <string name="could_not_destroy_room">Nu s-a putut distruge discuția de grup</string>
   <string name="bookmark_already_exists">Acest semn de carte exista</string>
   <string name="action_edit_subject">Editează subiectul discuției de grup</string>
   <string name="topic">Subiect discuție</string>
@@ -279,6 +282,8 @@
   <string name="pref_use_indicate_received_summary">Mesajele primite vor fi marcate cu o bifa verde, dacă este suportat</string>
   <string name="pref_use_send_button_to_indicate_status_summary">Colorează butonul de trimitere pentru a indica starea contactului</string>
   <string name="pref_expert_options_other">Altele</string>
+  <string name="pref_autojoin">Sincronizează cu semnele de carte</string>
+  <string name="pref_autojoin_summary">Alătură-te sau părăsește discuțiile de grup în mod automat în funcție de setarea din semnele de carte.</string>
   <string name="toast_message_omemo_fingerprint">Amprentă OMEMO copiată în memorie!</string>
   <string name="conference_banned">V-a fost interzis accesul la această discuție de grup</string>
   <string name="conference_members_only">Această discuție de grup este rezervată membrilor</string>
@@ -721,7 +726,7 @@ sau chiar pierderea mesajelor.\nÎn continuare veți fi rugați să dezactivați
   <string name="gif">GIF</string>
   <string name="view_conversation">Arată conversația</string>
   <string name="pref_use_share_location_plugin">Extensia Share Location</string>
-  <string name="pref_use_share_location_plugin_summary">Folosește localizarea cu extensia în locul hărții incluse</string>
+  <string name="pref_use_share_location_plugin_summary">Folosește extensia Share Location în loc de harta inclusă</string>
   <string name="copy_link">Copiază adresa web</string>
   <string name="copy_jabber_id">Copiază ID Jabber</string>
   <string name="p1_s3_filetransfer">Partajare fișiere prin HTTP pentru S3</string>
@@ -809,4 +814,7 @@ sau chiar pierderea mesajelor.\nÎn continuare veți fi rugați să dezactivați
   <string name="install_orbot">Instalare Orbot</string>
   <string name="start_orbot">Pornire Orbot</string>
   <string name="no_market_app_installed">Nici un magazin de aplicații instalat.</string>
+  <string name="group_chat_will_make_your_jabber_id_public">Aceastä discuție de grup vä face ID-ul Jabber public</string>
+  <string name="ebook">carte electronică</string>
+  <string name="video_original">Original (necompresat)</string>
 </resources>

@@ -279,6 +279,8 @@
   <string name="pref_use_indicate_received_summary">Jasotako mezuak marka berde batekin markatuko dira. Baliteke kasu guztietan ez funtzionatzea.</string>
   <string name="pref_use_send_button_to_indicate_status_summary">Bidaltze botoia koloreztatu kontaktu baten egoera adierazteko</string>
   <string name="pref_expert_options_other">Besteak</string>
+  <string name="pref_autojoin">Laster-markekin sinkronizatu</string>
+  <string name="pref_autojoin_summary">Taldeetan sartu eta taldeak utzi zure laster-marken auto-batu markaren arabera.</string>
   <string name="toast_message_omemo_fingerprint">OMEMO hatz-marka arbelara kopiatu da</string>
   <string name="conference_banned">Talde honetara sartzea debekatuta duzu</string>
   <string name="conference_members_only">Talde hau kideentzat da soilik</string>
@@ -690,6 +692,7 @@
   <string name="medium">Ertaina</string>
   <string name="large">Handia</string>
   <string name="not_encrypted_for_this_device">Mezua ez da enkriptatu gailu honentzat.</string>
+  <string name="omemo_decryption_failed">Ezin izan da OMEMO mezua desenkriptatu.</string>
   <string name="undo">desegin</string>
   <string name="location_disabled">Kokapena partekatzea ezgaituta dago</string>
   <string name="action_fix_to_location">Kokapena finkatu</string>
@@ -707,7 +710,6 @@
   <string name="gif">GIF</string>
   <string name="view_conversation">Elkarrizketa ikusi</string>
   <string name="pref_use_share_location_plugin">Kokapena partekatzeko plugina</string>
-  <string name="pref_use_share_location_plugin_summary">Erabili kokapena partekatzeko plugina mapa erabili beharrean</string>
   <string name="copy_link">Web helbidea kopiatu</string>
   <string name="copy_jabber_id">Jabber IDa kopiatu</string>
   <string name="p1_s3_filetransfer">HTTP fitxategiak partekatzea S3rentzako</string>
@@ -792,4 +794,8 @@
   <string name="enter_your_name">Idatzi zure izena</string>
   <string name="no_name_set_instructions">Erabili ezazu editatu botoia zure izena ezartzeko.</string>
   <string name="reject_request">Eskaera ukatu</string>
+  <string name="install_orbot">Orbot instalatu</string>
+  <string name="start_orbot">Orbot abiarazi</string>
+  <string name="no_market_app_installed">Merkatuko aplikazioa ez instalatuta.</string>
+  <string name="group_chat_will_make_your_jabber_id_public">Talde honek zure Jabber ID publikoa egingo du</string>
 </resources>

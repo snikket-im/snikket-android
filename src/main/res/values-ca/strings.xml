@@ -722,7 +722,6 @@ que l\'administrador del servidor llegeixi els missatges, però pot ser l\'únic
   <string name="gif">GIF</string>
   <string name="view_conversation">Veure conversa</string>
   <string name="pref_use_share_location_plugin">Plugin per Compartir Ubicació</string>
-  <string name="pref_use_share_location_plugin_summary">Utilitzi el plugin Compartir ubicació en lloc d\'incorporar el mapa</string>
   <string name="copy_link">Copiar adreça web</string>
   <string name="copy_jabber_id">Copiar ID de Jabber</string>
   <string name="p1_s3_filetransfer">Ús compartit d\'arxius HTTP per a S3</string>

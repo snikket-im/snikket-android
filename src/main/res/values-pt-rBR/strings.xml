@@ -709,7 +709,6 @@
   <string name="gif">GIF</string>
   <string name="view_conversation">Ver conversa</string>
   <string name="pref_use_share_location_plugin">Plugin de Compartilhamento de Localização</string>
-  <string name="pref_use_share_location_plugin_summary">Use o Plugin de Compartilhamento de Localização ao invés do mapa nativo</string>
   <string name="copy_link">Copiar endereço web</string>
   <string name="copy_jabber_id">Copiar ID do Jabber</string>
   <string name="p1_s3_filetransfer">Compartilhamento de arquivos via HTTP para S3</string>

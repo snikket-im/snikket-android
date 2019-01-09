@@ -228,6 +228,9 @@
   <string name="conference_address_example">стая@беседа.сървър.com/псевдоним</string>
   <string name="save_as_bookmark">Запазване като отметка</string>
   <string name="delete_bookmark">Изтриване на отметка</string>
+  <string name="destroy_room">Унищожаване на груповия разговор</string>
+  <string name="destroy_room_dialog">Наистина ли искате да унищожите този групов разговор?\n\n<b>Внимание:</b> Груповият разговор ще бъде премахнат от сървъра.</string>
+  <string name="could_not_destroy_room">Груповият разговор не може да бъде унищожен</string>
   <string name="bookmark_already_exists">Вече съществува такава отметка</string>
   <string name="action_edit_subject">Редактиране на темата на груповия разговор</string>
   <string name="topic">Тема</string>
@@ -279,6 +282,8 @@
   <string name="pref_use_indicate_received_summary">Получените съобщения ще бъдат отбелязани със зелена отметка, ако това се поддържа</string>
   <string name="pref_use_send_button_to_indicate_status_summary">Оцветяване на бутона за изпращане в зависимост от състоянието на контакта</string>
   <string name="pref_expert_options_other">Други</string>
+  <string name="pref_autojoin">Синхронизиране с отметките</string>
+  <string name="pref_autojoin_summary">Присъединяване и напускане на групови разговори според флага за автоматично присъединяване в отметките.</string>
   <string name="toast_message_omemo_fingerprint">Отпечатъкът OMEMO е копиран!</string>
   <string name="conference_banned">Достъпът Ви до този групов разговор е забранен</string>
   <string name="conference_members_only">Този групов разговор е само за членове</string>
@@ -799,4 +804,7 @@
   <string name="install_orbot">Инсталиране на Orbot</string>
   <string name="start_orbot">Пускане на Orbot</string>
   <string name="no_market_app_installed">Няма инсталирано приложение за инсталиране на приложения.</string>
+  <string name="group_chat_will_make_your_jabber_id_public">Този групов разговор ще направи Jabber идентификатора Ви публичен</string>
+  <string name="ebook">е-книга</string>
+  <string name="video_original">Оригинално (некомпресирано)</string>
 </resources>

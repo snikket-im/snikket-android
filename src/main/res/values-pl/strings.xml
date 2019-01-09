@@ -233,7 +233,7 @@
   <string name="topic">Temat</string>
   <string name="joining_conference">Dołączanie do konferencji</string>
   <string name="leave">Opuść pokój</string>
-  <string name="contact_added_you">Kontakt został dodany do listy</string>
+  <string name="contact_added_you">Kontakt dodał ciebie do swojej listy kontaktów</string>
   <string name="add_back">Również dodaj</string>
   <string name="contact_has_read_up_to_this_point">%s przeczytał do tego miejsca</string>
   <string name="contacts_have_read_up_to_this_point">%s przeczytali do tego miejsca</string>
@@ -279,6 +279,8 @@
   <string name="pref_use_indicate_received_summary">Jeżeli to możliwe, oznaczaj dostarczone wiadomości zielonym haczykiem</string>
   <string name="pref_use_send_button_to_indicate_status_summary">Koloruj przycisk wysyłania w zależności od statusu kontaktu</string>
   <string name="pref_expert_options_other">Inne</string>
+  <string name="pref_autojoin">Synchronizuj z zakładkami</string>
+  <string name="pref_autojoin_summary">Dołączaj i wychodź z konferencji przy użyciu flagi automatycznego dołączania z zakładek</string>
   <string name="toast_message_omemo_fingerprint">Odcisk klucza OMEMO został skopiowany do schowka!</string>
   <string name="conference_banned">Zbanowany</string>
   <string name="conference_members_only">Konferencja tylko dla użytkowników</string>
@@ -730,7 +732,6 @@ Administrator twojego serwera będzie mógł czytać twoje wiadomości, ale moż
   <string name="gif">GIF</string>
   <string name="view_conversation">Pokaż konwersację</string>
   <string name="pref_use_share_location_plugin">Wtyczka Udostępniania Lokalizacji</string>
-  <string name="pref_use_share_location_plugin_summary">Użyj Wtyczki Udostępniania Lokalizacji zamiast wbudowanej mapy</string>
   <string name="copy_link">Skopiuj URL</string>
   <string name="copy_jabber_id">Skopiuj JID</string>
   <string name="p1_s3_filetransfer">Udostępnianie plików przez HTTP S3</string>
@@ -818,4 +819,5 @@ Administrator twojego serwera będzie mógł czytać twoje wiadomości, ale moż
   <string name="install_orbot">Zainstaluj Orbot</string>
   <string name="start_orbot">Uruchom Orbot</string>
   <string name="no_market_app_installed">Aplikacja marketu niezainstalowana.</string>
+  <string name="group_chat_will_make_your_jabber_id_public">Każdy uczestnik tej konferencji będzie mógł zobaczyć twój prawdziwy Jabber ID</string>
 </resources>

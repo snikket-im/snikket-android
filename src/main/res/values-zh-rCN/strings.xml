@@ -693,7 +693,6 @@
   <string name="gif">GIF</string>
   <string name="view_conversation">查看对话</string>
   <string name="pref_use_share_location_plugin">分享位置插件</string>
-  <string name="pref_use_share_location_plugin_summary">使用分享位置插件而不是地图内置</string>
   <string name="copy_link">复制web地址</string>
   <string name="copy_jabber_id">复制Jabber ID</string>
   <string name="p1_s3_filetransfer">用于S3的HTTP文件共享</string>
