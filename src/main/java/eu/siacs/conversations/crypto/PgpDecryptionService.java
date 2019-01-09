@@ -135,6 +135,7 @@ public class PgpDecryptionService {
 	}
 
 	private void executeApi(Message message) {
+		boolean skipNotificationPush = false;
 		synchronized (message) {
 			Intent params = userInteractionResult != null ? userInteractionResult : new Intent();
 			params.setAction(OpenPgpApi.ACTION_DECRYPT_VERIFY);
@@ -209,8 +210,9 @@ public class PgpDecryptionService {
 							mXmppConnectionService.getFileBackend().updateFileParams(message, url);
 							message.setEncryption(Message.ENCRYPTION_DECRYPTED);
 							inputFile.delete();
-							mXmppConnectionService.getFileBackend().updateMediaScanner(outputFile);
 							mXmppConnectionService.updateMessage(message);
+							skipNotificationPush = true;
+							mXmppConnectionService.getFileBackend().updateMediaScanner(outputFile, () -> notifyIfPending(message));
 							break;
 						case OpenPgpApi.RESULT_CODE_USER_INTERACTION_REQUIRED:
 							synchronized (PgpDecryptionService.this) {
@@ -231,7 +233,9 @@ public class PgpDecryptionService {
 				}
 			}
 		}
-		notifyIfPending(message);
+		if (!skipNotificationPush) {
+			notifyIfPending(message);
+		}
 	}
 
 	private synchronized void notifyIfPending(Message message) {

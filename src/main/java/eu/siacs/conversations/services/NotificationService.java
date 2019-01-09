@@ -519,7 +519,7 @@ public class NotificationService {
             } else {
                 Message message;
                 //TODO starting with Android 9 we might want to put images in MessageStyle
-                if ((message = getImage(messages)) != null) {
+                if (Build.VERSION.SDK_INT < Build.VERSION_CODES.P && (message = getImage(messages)) != null) {
                     modifyForImage(mBuilder, mUnreadBuilder, message, messages);
                 } else {
                     modifyForTextOnly(mBuilder, mUnreadBuilder, messages);
@@ -656,7 +656,16 @@ public class NotificationService {
             }
             for (Message message : messages) {
                 final Person sender = message.getStatus() == Message.STATUS_RECEIVED ? getPerson(message) : null;
-                messagingStyle.addMessage(UIHelper.getMessagePreview(mXmppConnectionService, message).first, message.getTimeSent(), sender);
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P && isImageMessage(message)) {
+                    final Uri dataUri = FileBackend.getMediaUri(mXmppConnectionService,mXmppConnectionService.getFileBackend().getFile(message));
+                    NotificationCompat.MessagingStyle.Message imageMessage = new NotificationCompat.MessagingStyle.Message(UIHelper.getMessagePreview(mXmppConnectionService, message).first, message.getTimeSent(), sender);
+                    if (dataUri != null) {
+                        imageMessage.setData(message.getMimeType(), dataUri);
+                    }
+                    messagingStyle.addMessage(imageMessage);
+                } else {
+                    messagingStyle.addMessage(UIHelper.getMessagePreview(mXmppConnectionService, message).first, message.getTimeSent(), sender);
+                }
             }
             messagingStyle.setGroupConversation(multiple);
             builder.setStyle(messagingStyle);
@@ -703,14 +712,18 @@ public class NotificationService {
             if (message.getStatus() != Message.STATUS_RECEIVED) {
                 return null;
             }
-            if (message.getType() != Message.TYPE_TEXT
-                    && message.getTransferable() == null
-                    && message.getEncryption() != Message.ENCRYPTION_PGP
-                    && message.getFileParams().height > 0) {
+            if (isImageMessage(message)) {
                 image = message;
             }
         }
         return image;
+    }
+
+    private static boolean isImageMessage(Message message) {
+        return message.getType() != Message.TYPE_TEXT
+                && message.getTransferable() == null
+                && message.getEncryption() != Message.ENCRYPTION_PGP
+                && message.getFileParams().height > 0;
     }
 
     private Message getFirstDownloadableMessage(final Iterable<Message> messages) {

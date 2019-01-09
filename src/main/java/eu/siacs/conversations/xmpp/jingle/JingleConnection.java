@@ -122,8 +122,11 @@ public class JingleConnection implements Transferable {
 					if (message.getEncryption() == Message.ENCRYPTION_PGP) {
 						account.getPgpDecryptionService().decrypt(message, true);
 					} else {
-						JingleConnection.this.mXmppConnectionService.getNotificationService().push(message);
+						mXmppConnectionService.getFileBackend().updateMediaScanner(file, () -> JingleConnection.this.mXmppConnectionService.getNotificationService().push(message));
+
 					}
+					Log.d(Config.LOGTAG,"successfully transmitted file:" + file.getAbsolutePath()+" ("+ CryptoHelper.bytesToHex(file.getSha1Sum())+")");
+					return;
 				}
 			} else {
 				if (ftVersion == Content.Version.FT_5) { //older Conversations will break when receiving a session-info

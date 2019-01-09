@@ -13,6 +13,7 @@ import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.RectF;
 import android.media.MediaMetadataRetriever;
+import android.media.MediaScannerConnection;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
@@ -406,13 +407,55 @@ public class FileBackend {
         }
     }
 
+    public static Uri getMediaUri(Context context, File file) {
+        final String filePath = file.getAbsolutePath();
+        final Cursor cursor = context.getContentResolver().query(
+                MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
+                new String[] { MediaStore.Images.Media._ID },
+                MediaStore.Images.Media.DATA + "=? ",
+                new String[] { filePath }, null);
+        if (cursor != null && cursor.moveToFirst()) {
+            final int id = cursor.getInt(cursor.getColumnIndex(MediaStore.MediaColumns._ID));
+            cursor.close();
+            return Uri.withAppendedPath(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, String.valueOf(id));
+        } else {
+            return null;
+        }
+    }
+
     public void updateMediaScanner(File file) {
+        updateMediaScanner(file, null);
+    }
+
+    public void updateMediaScanner(File file, final Runnable callback) {
         if (!isInDirectoryThatShouldNotBeScanned(mXmppConnectionService, file)) {
-            Intent intent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
+            MediaScannerConnection.scanFile(mXmppConnectionService, new String[]{file.getAbsolutePath()}, null, new MediaScannerConnection.MediaScannerConnectionClient() {
+                @Override
+                public void onMediaScannerConnected() {
+
+                }
+
+                @Override
+                public void onScanCompleted(String path, Uri uri) {
+                    if (callback != null && file.getAbsolutePath().equals(path)) {
+                        callback.run();
+                    } else {
+                        Log.d(Config.LOGTAG,"media scanner scanned wrong file");
+                        if (callback != null) {
+                            callback.run();
+                        }
+                    }
+                }
+            });
+            return;
+            /*Intent intent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
             intent.setData(Uri.fromFile(file));
-            mXmppConnectionService.sendBroadcast(intent);
+            mXmppConnectionService.sendBroadcast(intent);*/
         } else if (file.getAbsolutePath().startsWith(getAppMediaDirectory(mXmppConnectionService))) {
             createNoMedia(file.getParentFile());
+        }
+        if (callback != null) {
+            callback.run();
         }
     }
 
