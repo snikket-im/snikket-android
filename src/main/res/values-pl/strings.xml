@@ -228,6 +228,9 @@
   <string name="conference_address_example">konferencja@konferencje.example.com/nick</string>
   <string name="save_as_bookmark">Dodaj jako zakładkę</string>
   <string name="delete_bookmark">Usuń zakładkę</string>
+  <string name="destroy_room">Usuń konferencję</string>
+  <string name="destroy_room_dialog">Czy jesteś pewien, że chcesz usunąć tą konferencję?\n\n<b>Ostrzeżenie:</b> Ta konferencja zostanie całkowicie usunięta na serwerze.</string>
+  <string name="could_not_destroy_room">Usuwanie konferencji nieudane</string>
   <string name="bookmark_already_exists">Zakładka już istnieje</string>
   <string name="action_edit_subject">Edytuj tytuł konferencji</string>
   <string name="topic">Temat</string>
@@ -732,6 +735,7 @@ Administrator twojego serwera będzie mógł czytać twoje wiadomości, ale moż
   <string name="gif">GIF</string>
   <string name="view_conversation">Pokaż konwersację</string>
   <string name="pref_use_share_location_plugin">Wtyczka Udostępniania Lokalizacji</string>
+  <string name="pref_use_share_location_plugin_summary">Użyj Wtyczki Udostępniania Lokalizacji zamiast wbudowanej mapy</string>
   <string name="copy_link">Skopiuj URL</string>
   <string name="copy_jabber_id">Skopiuj JID</string>
   <string name="p1_s3_filetransfer">Udostępnianie plików przez HTTP S3</string>
@@ -820,4 +824,6 @@ Administrator twojego serwera będzie mógł czytać twoje wiadomości, ale moż
   <string name="start_orbot">Uruchom Orbot</string>
   <string name="no_market_app_installed">Aplikacja marketu niezainstalowana.</string>
   <string name="group_chat_will_make_your_jabber_id_public">Każdy uczestnik tej konferencji będzie mógł zobaczyć twój prawdziwy Jabber ID</string>
+  <string name="ebook">e-book</string>
+  <string name="video_original">Oryginalne (nieskompresowane)</string>
 </resources>
