@@ -1,5 +1,6 @@
 package eu.siacs.conversations.services;
 
+import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -48,6 +49,8 @@ public class AvatarService implements OnAdvancedStreamFeaturesLoaded {
 	private static final int TRANSPARENT = 0x00000000;
 	private static final int PLACEHOLDER_COLOR = 0xFF202020;
 
+	public static final int SYSTEM_UI_AVATAR_SIZE = 48;
+
 	private static final String PREFIX_CONTACT = "contact";
 	private static final String PREFIX_CONVERSATION = "conversation";
 	private static final String PREFIX_ACCOUNT = "account";
@@ -60,6 +63,10 @@ public class AvatarService implements OnAdvancedStreamFeaturesLoaded {
 
 	AvatarService(XmppConnectionService service) {
 		this.mXmppConnectionService = service;
+	}
+
+	public static int getSystemUiAvatarSize(final Context context) {
+		return (int) (SYSTEM_UI_AVATAR_SIZE * context.getResources().getDisplayMetrics().density);
 	}
 
 	private Bitmap get(final Contact contact, final int size, boolean cachedOnly) {

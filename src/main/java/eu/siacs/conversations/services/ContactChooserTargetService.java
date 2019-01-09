@@ -44,7 +44,7 @@ public class ContactChooserTargetService extends ChooserTargetService implements
 			}
 			mXmppConnectionService.populateWithOrderedConversations(conversations, false);
 			final ComponentName componentName = new ComponentName(this, ConversationsActivity.class);
-			final int pixel = (int) (48 * getResources().getDisplayMetrics().density);
+			final int pixel = AvatarService.getSystemUiAvatarSize(this);
 			for(Conversation conversation : conversations) {
 				if (conversation.sentMessagesCount() == 0) {
 					continue;

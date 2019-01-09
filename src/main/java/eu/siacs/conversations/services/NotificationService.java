@@ -11,6 +11,7 @@ import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.Typeface;
+import android.graphics.drawable.Icon;
 import android.media.AudioAttributes;
 import android.media.RingtoneManager;
 import android.net.Uri;
@@ -510,13 +511,14 @@ public class NotificationService {
             final Conversation conversation = (Conversation) messages.get(0).getConversation();
             final UnreadConversation.Builder mUnreadBuilder = new UnreadConversation.Builder(conversation.getName().toString());
             mBuilder.setLargeIcon(mXmppConnectionService.getAvatarService()
-                    .get(conversation, getPixel(64)));
+                    .get(conversation, AvatarService.getSystemUiAvatarSize(mXmppConnectionService)));
             mBuilder.setContentTitle(conversation.getName());
             if (Config.HIDE_MESSAGE_TEXT_IN_NOTIFICATION) {
                 int count = messages.size();
                 mBuilder.setContentText(mXmppConnectionService.getResources().getQuantityString(R.plurals.x_messages, count, count));
             } else {
                 Message message;
+                //TODO starting with Android 9 we might want to put images in MessageStyle
                 if ((message = getImage(messages)) != null) {
                     modifyForImage(mBuilder, mUnreadBuilder, message, messages);
                 } else {
@@ -602,8 +604,7 @@ public class NotificationService {
     private void modifyForImage(final Builder builder, final UnreadConversation.Builder uBuilder,
                                 final Message message, final ArrayList<Message> messages) {
         try {
-            final Bitmap bitmap = mXmppConnectionService.getFileBackend()
-                    .getThumbnail(message, getPixel(288), false);
+            final Bitmap bitmap = mXmppConnectionService.getFileBackend().getThumbnail(message, getPixel(288), false);
             final ArrayList<Message> tmp = new ArrayList<>();
             for (final Message msg : messages) {
                 if (msg.getType() == Message.TYPE_TEXT
@@ -638,30 +639,10 @@ public class NotificationService {
         } else {
             builder.setName(UIHelper.getMessageDisplayName(message));
         }
-        IconCompat icon = getIcon(message);
-        if (icon != null) {
-            builder.setIcon(icon);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+            builder.setIcon(IconCompat.createWithBitmap(mXmppConnectionService.getAvatarService().get(message, AvatarService.getSystemUiAvatarSize(mXmppConnectionService), false)));
         }
         return builder.build();
-    }
-
-    private IconCompat getIcon(Message message) {
-        final Contact contact;
-        if (message.getConversation().getMode() == Conversation.MODE_SINGLE) {
-            contact = message.getContact();
-        } else {
-            Jid jid = message.getTrueCounterpart();
-            contact = jid == null ? null : message.getConversation().getAccount().getRoster().getContact(jid);
-        }
-        if (contact != null) {
-            if (contact.getProfilePhoto() != null && QuickConversationsService.isConversations()) {
-                return IconCompat.createWithContentUri(contact.getProfilePhoto());
-            }
-            if (contact.getAvatarFilename() != null) {
-                return IconCompat.createWithContentUri(mXmppConnectionService.getFileBackend().getAvatarUri(contact.getAvatarFilename()));
-            }
-        }
-        return null;
     }
 
     private void modifyForTextOnly(final Builder builder, final UnreadConversation.Builder uBuilder, final ArrayList<Message> messages) {
@@ -669,13 +650,15 @@ public class NotificationService {
             final Person me = new Person.Builder().setName(mXmppConnectionService.getString(R.string.me)).build();
             NotificationCompat.MessagingStyle messagingStyle = new NotificationCompat.MessagingStyle(me);
             final Conversation conversation = (Conversation) messages.get(0).getConversation();
-            if (conversation.getMode() == Conversation.MODE_MULTI) {
+            final boolean multiple = conversation.getMode() == Conversation.MODE_MULTI;
+            if (multiple) {
                 messagingStyle.setConversationTitle(conversation.getName());
             }
             for (Message message : messages) {
                 final Person sender = message.getStatus() == Message.STATUS_RECEIVED ? getPerson(message) : null;
                 messagingStyle.addMessage(UIHelper.getMessagePreview(mXmppConnectionService, message).first, message.getTimeSent(), sender);
             }
+            messagingStyle.setGroupConversation(multiple);
             builder.setStyle(messagingStyle);
         } else {
             if (messages.get(0).getConversation().getMode() == Conversation.MODE_SINGLE) {
