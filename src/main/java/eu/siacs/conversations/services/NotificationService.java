@@ -726,6 +726,7 @@ public class NotificationService {
     private static boolean isImageMessage(Message message) {
         return message.getType() != Message.TYPE_TEXT
                 && message.getTransferable() == null
+                && !message.isDeleted()
                 && message.getEncryption() != Message.ENCRYPTION_PGP
                 && message.getFileParams().height > 0;
     }

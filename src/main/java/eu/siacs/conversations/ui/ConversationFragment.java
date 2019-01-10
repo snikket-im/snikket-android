@@ -1059,7 +1059,7 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
                 return;
             }
 
-            final boolean deleted = t != null && t instanceof TransferablePlaceholder;
+            final boolean deleted = m.isDeleted();
             final boolean encrypted = m.getEncryption() == Message.ENCRYPTION_DECRYPTION_FAILED
                     || m.getEncryption() == Message.ENCRYPTION_PGP;
             final boolean receiving = m.getStatus() == Message.STATUS_RECEIVED && (t instanceof JingleConnection || t instanceof HttpDownloadConnection);
@@ -1638,7 +1638,8 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
         builder.setMessage(R.string.delete_file_dialog_msg);
         builder.setPositiveButton(R.string.confirm, (dialog, which) -> {
             if (activity.xmppConnectionService.getFileBackend().deleteFile(message)) {
-                message.setTransferable(new TransferablePlaceholder(Transferable.STATUS_DELETED));
+                message.setDeleted(true);
+                activity.xmppConnectionService.updateMessage(message, false);
                 activity.onConversationsListItemUpdated();
                 refresh();
             }
@@ -1672,7 +1673,9 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
                 }
             } else {
                 Toast.makeText(activity, R.string.file_deleted, Toast.LENGTH_SHORT).show();
-                message.setTransferable(new TransferablePlaceholder(Transferable.STATUS_DELETED));
+                //TODO check if we have storage permission
+                message.setDeleted(true);
+                activity.xmppConnectionService.updateMessage(message, false);
                 activity.onConversationsListItemUpdated();
                 refresh();
                 return;

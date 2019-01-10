@@ -45,6 +45,7 @@ import org.openintents.openpgp.IOpenPgpService2;
 import org.openintents.openpgp.util.OpenPgpApi;
 import org.openintents.openpgp.util.OpenPgpServiceConnection;
 
+import java.io.File;
 import java.net.URL;
 import java.security.SecureRandom;
 import java.security.Security;
@@ -84,7 +85,6 @@ import eu.siacs.conversations.entities.Bookmark;
 import eu.siacs.conversations.entities.Contact;
 import eu.siacs.conversations.entities.Conversation;
 import eu.siacs.conversations.entities.Conversational;
-import eu.siacs.conversations.entities.DownloadableFile;
 import eu.siacs.conversations.entities.Message;
 import eu.siacs.conversations.entities.MucOptions;
 import eu.siacs.conversations.entities.MucOptions.OnRenameListener;
@@ -92,8 +92,6 @@ import eu.siacs.conversations.entities.Presence;
 import eu.siacs.conversations.entities.PresenceTemplate;
 import eu.siacs.conversations.entities.Roster;
 import eu.siacs.conversations.entities.ServiceDiscoveryResult;
-import eu.siacs.conversations.entities.Transferable;
-import eu.siacs.conversations.entities.TransferablePlaceholder;
 import eu.siacs.conversations.generator.AbstractGenerator;
 import eu.siacs.conversations.generator.IqGenerator;
 import eu.siacs.conversations.generator.MessageGenerator;
@@ -235,7 +233,6 @@ public class XmppConnectionService extends Service {
     ) {
         @Override
         public void onEvent(int event, String path) {
-            Log.d(Config.LOGTAG,"event "+event+" path="+path);
             markFileDeleted(path);
         }
     };
@@ -1010,6 +1007,7 @@ public class XmppConnectionService extends Service {
         if (Compatibility.hasStoragePermission(this)) {
             Log.d(Config.LOGTAG, "starting file observer");
             new Thread(fileObserver::startWatching).start();
+            mFileAddingExecutor.execute(this::checkForDeletedFiles);
         }
         if (Config.supportOpenPgp()) {
             this.pgpServiceConnection = new OpenPgpServiceConnection(this, "org.sufficientlysecure.keychain", new OpenPgpServiceConnection.OnBound() {
@@ -1047,6 +1045,22 @@ public class XmppConnectionService extends Service {
         }
     }
 
+    private void checkForDeletedFiles() {
+        final List<String> deletedUuids = new ArrayList<>();
+        final List<DatabaseBackend.FilePath> relativeFilePaths = databaseBackend.getAllNonDeletedFilePath();
+        for(final DatabaseBackend.FilePath filePath : relativeFilePaths) {
+            final File file = fileBackend.getFileForPath(filePath.path);
+            if (!file.exists()) {
+                deletedUuids.add(filePath.uuid.toString());
+            }
+        }
+        Log.d(Config.LOGTAG,"found "+deletedUuids.size()+" deleted files on start up. total="+relativeFilePaths.size());
+        if (deletedUuids.size() > 0) {
+            databaseBackend.markFileAsDeleted(deletedUuids);
+            markUuidsAsDeletedFiles(deletedUuids);
+        }
+    }
+
     public void startContactObserver() {
         getContentResolver().registerContentObserver(ContactsContract.Contacts.CONTENT_URI, true, new ContentObserver(null) {
             @Override
@@ -1081,6 +1095,7 @@ public class XmppConnectionService extends Service {
 
     public void restartFileObserver() {
         Log.d(Config.LOGTAG, "restarting file observer");
+        mFileAddingExecutor.execute(this::checkForDeletedFiles);
         new Thread(fileObserver::restartWatching).start();
     }
 
@@ -1575,7 +1590,6 @@ public class XmppConnectionService extends Service {
 
 	private void restoreMessages(Conversation conversation) {
 		conversation.addAll(0, databaseBackend.getMessages(conversation, Config.PAGE_SIZE));
-		checkDeletedFiles(conversation);
 		conversation.findUnsentTextMessages(message -> markMessage(message, Message.STATUS_WAITING));
 		conversation.findUnreadMessages(message -> mNotificationService.pushFromBacklog(message));
 	}
@@ -1617,39 +1631,23 @@ public class XmppConnectionService extends Service {
 		return this.conversations;
 	}
 
-	private void checkDeletedFiles(Conversation conversation) {
-		conversation.findMessagesWithFiles(message -> {
-			if (!getFileBackend().isFileAvailable(message)) {
-				message.setTransferable(new TransferablePlaceholder(Transferable.STATUS_DELETED));
-				final int s = message.getStatus();
-				if (s == Message.STATUS_WAITING || s == Message.STATUS_OFFERED || s == Message.STATUS_UNSEND) {
-					markMessage(message, Message.STATUS_SEND_FAILED);
-				}
-			}
-		});
+	private void markFileDeleted(final String path) {
+        final File file = new File(path);
+        final boolean isInternalFile = fileBackend.isInternalFile(file);
+        final List<String> uuids = databaseBackend.markFileAsDeleted(file, isInternalFile);
+		Log.d(Config.LOGTAG, "deleted file " + path+" internal="+isInternalFile+", database hits="+uuids.size());
+		markUuidsAsDeletedFiles(uuids);
 	}
 
-	private void markFileDeleted(final String path) {
-		Log.d(Config.LOGTAG, "deleted file " + path);
-		for (Conversation conversation : getConversations()) {
-			conversation.findMessagesWithFiles(message -> {
-				DownloadableFile file = fileBackend.getFile(message);
-				if (file.getAbsolutePath().equals(path)) {
-					if (!file.exists()) {
-						message.setTransferable(new TransferablePlaceholder(Transferable.STATUS_DELETED));
-						final int s = message.getStatus();
-						if (s == Message.STATUS_WAITING || s == Message.STATUS_OFFERED || s == Message.STATUS_UNSEND) {
-							markMessage(message, Message.STATUS_SEND_FAILED);
-						} else {
-							updateConversationUi();
-						}
-					} else {
-						Log.d(Config.LOGTAG, "found matching message for file " + path + " but file still exists");
-					}
-				}
-			});
-		}
-	}
+	private void markUuidsAsDeletedFiles(List<String> uuids) {
+        boolean deleted = false;
+        for (Conversation conversation : getConversations()) {
+            deleted |= conversation.markAsDeleted(uuids);
+        }
+        if (deleted) {
+            updateConversationUi();
+        }
+    }
 
 	public void populateWithOrderedConversations(final List<Conversation> list) {
 		populateWithOrderedConversations(list, true);
@@ -1686,7 +1684,6 @@ public class XmppConnectionService extends Service {
 			List<Message> messages = databaseBackend.getMessages(conversation, 50, timestamp);
 			if (messages.size() > 0) {
 				conversation.addAll(0, messages);
-				checkDeletedFiles(conversation);
 				callback.onMoreMessagesLoaded(messages.size(), conversation);
 			} else if (conversation.hasMessagesLeftOnServer()
 					&& account.isOnlineAndConnected()
@@ -1835,7 +1832,6 @@ public class XmppConnectionService extends Service {
 						}
 					}
 				}
-				checkDeletedFiles(c);
 				if (joinAfterCreate) {
 					joinMuc(c);
 				}

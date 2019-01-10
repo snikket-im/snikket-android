@@ -28,6 +28,7 @@ import java.security.cert.CertificateException;
 import java.security.cert.CertificateFactory;
 import java.security.cert.X509Certificate;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -63,7 +64,7 @@ import rocks.xmpp.addr.Jid;
 public class DatabaseBackend extends SQLiteOpenHelper {
 
 	private static final String DATABASE_NAME = "history";
-	private static final int DATABASE_VERSION = 43;
+	private static final int DATABASE_VERSION = 44;
 	private static DatabaseBackend instance = null;
 	private static String CREATE_CONTATCS_STATEMENT = "create table "
 			+ Contact.TABLENAME + "(" + Contact.ACCOUNT + " TEXT, "
@@ -165,6 +166,9 @@ public class DatabaseBackend extends SQLiteOpenHelper {
 
 	private static String CREATE_MESSAGE_TIME_INDEX = "create INDEX message_time_index ON " + Message.TABLENAME + "(" + Message.TIME_SENT + ")";
 	private static String CREATE_MESSAGE_CONVERSATION_INDEX = "create INDEX message_conversation_index ON " + Message.TABLENAME + "(" + Message.CONVERSATION + ")";
+	private static String CREATE_MESSAGE_DELETED_INDEX = "create index message_deleted_index ON "+ Message.TABLENAME + "(" + Message.DELETED + ")";
+	private static String CREATE_MESSAGE_RELATIVE_FILE_PATH_INDEX = "create INDEX message_file_path_index ON " + Message.TABLENAME + "(" + Message.RELATIVE_FILE_PATH + ")";
+	private static String CREATE_MESSAGE_TYPE_INDEX = "create INDEX message_type_index ON " + Message.TABLENAME + "(" + Message.TYPE + ")";
 
 	private static String CREATE_MESSAGE_INDEX_TABLE = "CREATE VIRTUAL TABLE messages_index USING FTS4(uuid TEXT PRIMARY KEY, body TEXT)";
 	private static String CREATE_MESSAGE_INSERT_TRIGGER = "CREATE TRIGGER after_message_insert AFTER INSERT ON " + Message.TABLENAME + " BEGIN INSERT INTO messages_index (uuid,body) VALUES (new.uuid,new.body); END;";
@@ -236,12 +240,16 @@ public class DatabaseBackend extends SQLiteOpenHelper {
 				+ Message.ERROR_MESSAGE + " TEXT,"
 				+ Message.READ_BY_MARKERS + " TEXT,"
 				+ Message.MARKABLE + " NUMBER DEFAULT 0,"
+				+ Message.DELETED + " NUMBER DEFAULT 0,"
 				+ Message.REMOTE_MSG_ID + " TEXT, FOREIGN KEY("
 				+ Message.CONVERSATION + ") REFERENCES "
 				+ Conversation.TABLENAME + "(" + Conversation.UUID
 				+ ") ON DELETE CASCADE);");
 		db.execSQL(CREATE_MESSAGE_TIME_INDEX);
 		db.execSQL(CREATE_MESSAGE_CONVERSATION_INDEX);
+		db.execSQL(CREATE_MESSAGE_DELETED_INDEX);
+		db.execSQL(CREATE_MESSAGE_RELATIVE_FILE_PATH_INDEX);
+		db.execSQL(CREATE_MESSAGE_TYPE_INDEX);
 		db.execSQL(CREATE_CONTATCS_STATEMENT);
 		db.execSQL(CREATE_DISCOVERY_RESULTS_STATEMENT);
 		db.execSQL(CREATE_SESSIONS_STATEMENT);
@@ -527,6 +535,13 @@ public class DatabaseBackend extends SQLiteOpenHelper {
 						+ "=?", new String[]{account.getUuid()});
 			}
 		}
+
+		if (oldVersion < 44 && newVersion >= 44) {
+			db.execSQL("ALTER TABLE " + Message.TABLENAME + " ADD COLUMN " + Message.DELETED + " NUMBER DEFAULT 0");
+			db.execSQL(CREATE_MESSAGE_DELETED_INDEX);
+			db.execSQL(CREATE_MESSAGE_RELATIVE_FILE_PATH_INDEX);
+			db.execSQL(CREATE_MESSAGE_TYPE_INDEX);
+		}
 	}
 
 	private void canonicalizeJids(SQLiteDatabase db) {
@@ -790,9 +805,58 @@ public class DatabaseBackend extends SQLiteOpenHelper {
 		};
 	}
 
+	public List<String> markFileAsDeleted(final File file, final boolean internal) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        String selection;
+        String[] selectionArgs;
+        if (internal) {
+            selection = Message.RELATIVE_FILE_PATH+" IN(?,?) and type in (1,2)";
+            selectionArgs = new String[]{file.getAbsolutePath(),file.getName()};
+        } else {
+            selection = Message.RELATIVE_FILE_PATH+"=? and type in (1,2)";
+            selectionArgs = new String[]{file.getAbsolutePath()};
+        }
+        final List<String> uuids = new ArrayList<>();
+        Cursor cursor = db.query(Message.TABLENAME,new String[]{Message.UUID},selection,selectionArgs,null,null,null);
+        while(cursor != null && cursor.moveToNext()) {
+            uuids.add(cursor.getString(0));
+        }
+        if (cursor != null) {
+            cursor.close();
+        }
+        markFileAsDeleted(uuids);
+        return uuids;
+    }
+
+    public void markFileAsDeleted(List<String> uuids) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        final ContentValues contentValues = new ContentValues();
+        final String where = Message.UUID+"=?";
+        contentValues.put(Message.DELETED,1);
+        db.beginTransaction();
+        for(String uuid : uuids) {
+            db.update(Message.TABLENAME, contentValues, where, new String[]{uuid});
+        }
+        db.setTransactionSuccessful();
+        db.endTransaction();
+    }
+
+    public List<FilePath> getAllNonDeletedFilePath() {
+        final SQLiteDatabase db = this.getReadableDatabase();
+        final Cursor cursor = db.query(Message.TABLENAME,new String[]{Message.UUID,Message.RELATIVE_FILE_PATH},"type in (1,2) and deleted=0",null,null,null,null);
+        final List<FilePath> list = new ArrayList<>();
+        while (cursor != null && cursor.moveToNext()) {
+            list.add(new FilePath(cursor.getString(0),cursor.getString(1)));
+        }
+        if (cursor != null) {
+            cursor.close();
+        }
+        return list;
+    }
+
 	public List<FilePath> getRelativeFilePaths(String account, Jid jid, int limit) {
 		SQLiteDatabase db = this.getReadableDatabase();
-		final String SQL = "select uuid,relativeFilePath from messages where type in (1,2) and conversationUuid=(select uuid from conversations where accountUuid=? and (contactJid=? or contactJid like ?)) order by timeSent desc";
+		final String SQL = "select uuid,relativeFilePath from messages where type in (1,2) and deleted=0 and conversationUuid=(select uuid from conversations where accountUuid=? and (contactJid=? or contactJid like ?)) order by timeSent desc";
 		final String[] args = {account, jid.toEscapedString(), jid.toEscapedString()+"/%"};
 		Cursor cursor = db.rawQuery(SQL+(limit > 0 ? " limit "+String.valueOf(limit) : ""), args);
 		List<FilePath> filesPaths = new ArrayList<>();

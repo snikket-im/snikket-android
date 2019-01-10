@@ -206,6 +206,19 @@ public class Conversation extends AbstractEntity implements Blockable, Comparabl
 		return null;
 	}
 
+	public boolean markAsDeleted(final List<String> uuids) {
+		boolean deleted = false;
+		synchronized (this.messages) {
+			for(Message message : this.messages) {
+				if (uuids.contains(message.getUuid())) {
+					message.setDeleted(true);
+					deleted = true;
+				}
+			}
+		}
+		return deleted;
+	}
+
 	public void clearMessages() {
 		synchronized (this.messages) {
 			this.messages.clear();

@@ -271,8 +271,6 @@ public class UIHelper {
 				case Transferable.STATUS_OFFER_CHECK_FILESIZE:
 					return new Pair<>(context.getString(R.string.x_file_offered_for_download,
 							getFileDescriptionString(context, message)), true);
-				case Transferable.STATUS_DELETED:
-					return new Pair<>(context.getString(R.string.file_deleted), true);
 				case Transferable.STATUS_FAILED:
 					return new Pair<>(context.getString(R.string.file_transmission_failed), true);
 				case Transferable.STATUS_UPLOADING:
@@ -286,6 +284,8 @@ public class UIHelper {
 				default:
 					return new Pair<>("", false);
 			}
+		} else if (message.isFileOrImage() && message.isDeleted()) {
+			return new Pair<>(context.getString(R.string.file_deleted), true);
 		} else if (message.getEncryption() == Message.ENCRYPTION_PGP) {
 			return new Pair<>(context.getString(R.string.pgp_message), true);
 		} else if (message.getEncryption() == Message.ENCRYPTION_DECRYPTION_FAILED) {
@@ -294,7 +294,7 @@ public class UIHelper {
 			return new Pair<>(context.getString(R.string.not_encrypted_for_this_device), true);
 		} else if (message.getEncryption() == Message.ENCRYPTION_AXOLOTL_FAILED) {
 			return new Pair<>(context.getString(R.string.omemo_decryption_failed), true);
-		} else if (message.getType() == Message.TYPE_FILE || message.getType() == Message.TYPE_IMAGE) {
+		} else if (message.isFileOrImage()) {
 			return new Pair<>(getFileDescriptionString(context, message), true);
 		} else {
 			final String body = MessageUtils.filterLtrRtl(message.getBody());

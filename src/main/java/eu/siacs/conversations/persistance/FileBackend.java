@@ -473,6 +473,10 @@ public class FileBackend {
         return getFile(message, true);
     }
 
+    public DownloadableFile getFileForPath(String path) {
+        return getFileForPath(path,MimeUtils.guessMimeTypeFromExtension(MimeUtils.extractRelevantExtension(path)));
+    }
+
     public DownloadableFile getFileForPath(String path, String mime) {
         final DownloadableFile file;
         if (path.startsWith("/")) {
@@ -487,6 +491,11 @@ public class FileBackend {
             }
         }
         return file;
+    }
+
+    public boolean isInternalFile(final File file) {
+        final File internalFile = getFileForPath(file.getName());
+        return file.getAbsolutePath().equals(internalFile.getAbsolutePath());
     }
 
     public DownloadableFile getFile(Message message, boolean decrypted) {
@@ -1187,6 +1196,7 @@ public class FileBackend {
             body.append("|0|0|").append(getMediaRuntime(file));
         }
         message.setBody(body.toString());
+        message.setDeleted(false);
     }
 
     public int getMediaRuntime(Uri uri) {
