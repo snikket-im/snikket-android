@@ -1089,7 +1089,7 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
                     copyLink.setVisible(true);
                 }
             }
-            if (m.getEncryption() == Message.ENCRYPTION_DECRYPTION_FAILED) {
+            if (m.getEncryption() == Message.ENCRYPTION_DECRYPTION_FAILED && !deleted) {
                 retryDecryption.setVisible(true);
             }
             if (!showError

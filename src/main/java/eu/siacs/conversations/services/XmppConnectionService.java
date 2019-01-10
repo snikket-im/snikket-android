@@ -1635,8 +1635,8 @@ public class XmppConnectionService extends Service {
         final File file = new File(path);
         final boolean isInternalFile = fileBackend.isInternalFile(file);
         final List<String> uuids = databaseBackend.markFileAsDeleted(file, isInternalFile);
-		Log.d(Config.LOGTAG, "deleted file " + path+" internal="+isInternalFile+", database hits="+uuids.size());
-		markUuidsAsDeletedFiles(uuids);
+        Log.d(Config.LOGTAG, "deleted file " + path+" internal="+isInternalFile+", database hits="+uuids.size());
+        markUuidsAsDeletedFiles(uuids);
 	}
 
 	private void markUuidsAsDeletedFiles(List<String> uuids) {

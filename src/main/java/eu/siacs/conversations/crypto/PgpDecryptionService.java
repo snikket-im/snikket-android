@@ -209,10 +209,10 @@ public class PgpDecryptionService {
 							URL url = message.getFileParams().url;
 							mXmppConnectionService.getFileBackend().updateFileParams(message, url);
 							message.setEncryption(Message.ENCRYPTION_DECRYPTED);
+							mXmppConnectionService.updateMessage(message);
 							if (!inputFile.delete()) {
 								Log.w(Config.LOGTAG,"unable to delete pgp encrypted source file "+inputFile.getAbsolutePath());
 							}
-							mXmppConnectionService.updateMessage(message);
 							skipNotificationPush = true;
 							mXmppConnectionService.getFileBackend().updateMediaScanner(outputFile, () -> notifyIfPending(message));
 							break;
