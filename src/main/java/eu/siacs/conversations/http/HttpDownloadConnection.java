@@ -369,9 +369,10 @@ public class HttpDownloadConnection implements Transferable {
 				}
 				connection.setUseCaches(false);
 				connection.setRequestProperty("User-Agent", mXmppConnectionService.getIqGenerator().getUserAgent());
-				final boolean tryResume = file.exists() && file.getKey() == null && file.getSize() > 0;
+				final long expected = file.getExpectedSize();
+				final boolean tryResume = file.exists() && file.getKey() == null && file.getSize() > 0 && file.getSize() < expected;
 				long resumeSize = 0;
-				long expected = file.getExpectedSize();
+
 				if (tryResume) {
 					resumeSize = file.getSize();
 					Log.d(Config.LOGTAG, "http download trying resume after" + resumeSize + " of " + expected);
