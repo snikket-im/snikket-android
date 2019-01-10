@@ -518,13 +518,8 @@ public class FileBackend {
         List<Attachment> attachments = new ArrayList<>();
         for(DatabaseBackend.FilePath relativeFilePath : relativeFilePaths) {
             final String mime = MimeUtils.guessMimeTypeFromExtension(MimeUtils.extractRelevantExtension(relativeFilePath.path));
-            Log.d(Config.LOGTAG,"mime="+mime);
-            File file = getFileForPath(relativeFilePath.path, mime);
-            if (file.exists()) {
-                attachments.add(Attachment.of(relativeFilePath.uuid, file,mime));
-            } else {
-                Log.d(Config.LOGTAG,"file "+file.getAbsolutePath()+" doesnt exist");
-            }
+            final File file = getFileForPath(relativeFilePath.path, mime);
+            attachments.add(Attachment.of(relativeFilePath.uuid, file, mime));
         }
         return attachments;
     }
