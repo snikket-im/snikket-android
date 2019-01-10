@@ -9,8 +9,10 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
+import android.view.KeyEvent;
 import android.widget.AutoCompleteTextView;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -64,6 +66,10 @@ public class JoinConferenceDialog extends DialogFragment implements OnBackendCon
 		AlertDialog dialog = builder.create();
 		dialog.show();
 		dialog.getButton(DialogInterface.BUTTON_POSITIVE).setOnClickListener(view -> mListener.onJoinDialogPositiveClick(dialog, binding.account, binding.jid, binding.bookmark.isChecked()));
+		binding.jid.setOnEditorActionListener((v, actionId, event) -> {
+			mListener.onJoinDialogPositiveClick(dialog, binding.account, binding.jid, binding.bookmark.isChecked());
+			return true;
+		});
 		return dialog;
 	}
 

@@ -8,9 +8,11 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -50,6 +52,10 @@ public class CreateConferenceDialog extends DialogFragment {
         builder.setPositiveButton(R.string.choose_participants, (dialog, which) -> mListener.onCreateDialogPositiveClick(binding.account, binding.groupChatName.getText().toString().trim()));
         builder.setNegativeButton(R.string.cancel, null);
         DelayedHintHelper.setHint(R.string.providing_a_name_is_optional, binding.groupChatName);
+        binding.groupChatName.setOnEditorActionListener((v, actionId, event) -> {
+            mListener.onCreateDialogPositiveClick(binding.account, binding.groupChatName.getText().toString().trim());
+            return true;
+        });
         return builder.create();
     }
 
