@@ -141,7 +141,7 @@ public class ShareWithActivity extends XmppActivity implements XmppConnectionSer
             this.share.uris = intent.getParcelableArrayListExtra(Intent.EXTRA_STREAM);
         }
         if (xmppConnectionServiceBound) {
-            xmppConnectionService.populateWithOrderedConversations(mConversations, this.share.uris.size() == 0);
+            xmppConnectionService.populateWithOrderedConversations(mConversations, this.share.uris.size() == 0, false);
         }
 
     }
@@ -195,7 +195,8 @@ public class ShareWithActivity extends XmppActivity implements XmppConnectionSer
     }
 
     public void refreshUiReal() {
-        xmppConnectionService.populateWithOrderedConversations(mConversations, this.share != null && this.share.uris.size() == 0);
+        //TODO inject desired order to not resort on refresh
+        xmppConnectionService.populateWithOrderedConversations(mConversations, this.share != null && this.share.uris.size() == 0, false);
         mAdapter.notifyDataSetChanged();
     }
 }
