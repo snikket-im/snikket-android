@@ -1,55 +1,60 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/open_with"
+        android:title="@string/open_with"
+        android:visible="false" />
 
     <item
         android:id="@+id/share_with"
         android:title="@string/share_with"
-        android:visible="false"/>
+        android:visible="false" />
 
     <item
         android:id="@+id/copy_message"
         android:title="@string/copy_to_clipboard"
-        android:visible="false"/>
+        android:visible="false" />
 
     <item
         android:id="@+id/copy_link"
         android:title="@string/copy_link"
-        android:visible="false"/>
+        android:visible="false" />
     <item
         android:id="@+id/quote_message"
         android:title="@string/quote"
-        android:visible="false"/>
+        android:visible="false" />
 
     <item
         android:id="@+id/retry_decryption"
         android:title="@string/retry_decryption"
-        android:visible="false"/>
+        android:visible="false" />
     <item
         android:id="@+id/correct_message"
         android:title="@string/correct_message"
-        android:visible="false"/>
+        android:visible="false" />
     <item
         android:id="@+id/copy_url"
         android:title="@string/copy_original_url"
-        android:visible="false"/>
+        android:visible="false" />
     <item
         android:id="@+id/show_error_message"
         android:title="@string/show_error_message"
-        android:visible="false"/>
+        android:visible="false" />
     <item
         android:id="@+id/send_again"
         android:title="@string/send_again"
-        android:visible="false"/>
+        android:visible="false" />
     <item
         android:id="@+id/download_file"
         android:title="@string/download_x_file"
-        android:visible="false"/>
+        android:visible="false" />
     <item
         android:id="@+id/cancel_transmission"
         android:title="@string/cancel_transmission"
-        android:visible="false"/>
+        android:visible="false" />
     <item
         android:id="@+id/delete_file"
         android:title="@string/delete_x_file"
-        android:visible="false"/>
+        android:visible="false" />
 </menu>

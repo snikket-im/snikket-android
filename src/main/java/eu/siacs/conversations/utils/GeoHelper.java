@@ -7,6 +7,8 @@ import android.content.SharedPreferences;
 import android.net.Uri;
 import android.preference.PreferenceManager;
 
+import org.osmdroid.util.GeoPoint;
+
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
@@ -46,42 +48,43 @@ public class GeoHelper {
 		}
 	}
 
-	public static ArrayList<Intent> createGeoIntentsFromMessage(Context context, Message message) {
-		final ArrayList<Intent> intents = new ArrayList<>();
-		Matcher matcher = GEO_URI.matcher(message.getBody());
+	private static GeoPoint parseGeoPoint(String body) throws IllegalArgumentException {
+		Matcher matcher = GEO_URI.matcher(body);
 		if (!matcher.matches()) {
-			return intents;
+			throw new IllegalArgumentException("Invalid geo uri");
 		}
 		double latitude;
 		double longitude;
 		try {
 			latitude = Double.parseDouble(matcher.group(1));
 			if (latitude > 90.0 || latitude < -90.0) {
-				return intents;
+				throw new IllegalArgumentException("Invalid geo uri");
 			}
 			longitude = Double.parseDouble(matcher.group(2));
 			if (longitude > 180.0 || longitude < -180.0) {
-				return intents;
+				throw new IllegalArgumentException("Invalid geo uri");
 			}
-		} catch (NumberFormatException nfe) {
+		} catch (NumberFormatException e) {
+			throw new IllegalArgumentException("Invalid geo uri",e);
+		}
+		return new GeoPoint(latitude, longitude);
+	}
+
+	public static ArrayList<Intent> createGeoIntentsFromMessage(Context context, Message message) {
+		final ArrayList<Intent> intents = new ArrayList<>();
+		final GeoPoint geoPoint;
+		try {
+			geoPoint = parseGeoPoint(message.getBody());
+		} catch (IllegalArgumentException e) {
 			return intents;
 		}
 		final Conversational conversation = message.getConversation();
-		String label;
-		if (conversation instanceof Conversation && conversation.getMode() == Conversation.MODE_SINGLE && message.getStatus() == Message.STATUS_RECEIVED) {
-			try {
-				label = "(" + URLEncoder.encode(((Conversation)conversation).getName().toString(), "UTF-8") + ")";
-			} catch (UnsupportedEncodingException e) {
-				label = "";
-			}
-		} else {
-			label = "";
-		}
+		final String label = getLabel(context, message);
 
 		if (isLocationPluginInstalledAndDesired(context)) {
 			Intent locationPluginIntent = new Intent(SHOW_LOCATION_PACKAGE_NAME);
-			locationPluginIntent.putExtra("latitude", latitude);
-			locationPluginIntent.putExtra("longitude", longitude);
+			locationPluginIntent.putExtra("latitude", geoPoint.getLatitude());
+			locationPluginIntent.putExtra("longitude", geoPoint.getLongitude());
 			if (message.getStatus() != Message.STATUS_RECEIVED) {
 				locationPluginIntent.putExtra("jid", conversation.getAccount().getJid().toString());
 				locationPluginIntent.putExtra("name", conversation.getAccount().getJid().getLocal());
@@ -98,18 +101,46 @@ public class GeoHelper {
 		} else {
 			Intent intent = new Intent(context, ShowLocationActivity.class);
 			intent.setAction(SHOW_LOCATION_PACKAGE_NAME);
-			intent.putExtra("latitude", latitude);
-			intent.putExtra("longitude", longitude);
+			intent.putExtra("latitude", geoPoint.getLatitude());
+			intent.putExtra("longitude", geoPoint.getLongitude());
 			intents.add(intent);
 		}
 
-		Intent geoIntent = new Intent(Intent.ACTION_VIEW);
-		geoIntent.setData(Uri.parse("geo:" + String.valueOf(latitude) + "," + String.valueOf(longitude) + "?q=" + String.valueOf(latitude) + "," + String.valueOf(longitude) + label));
-		intents.add(geoIntent);
+		intents.add(geoIntent(geoPoint, label));
 
 		Intent httpIntent = new Intent(Intent.ACTION_VIEW);
-		httpIntent.setData(Uri.parse("https://maps.google.com/maps?q=loc:"+String.valueOf(latitude) + "," + String.valueOf(longitude) +label));
+		httpIntent.setData(Uri.parse("https://maps.google.com/maps?q=loc:"+String.valueOf(geoPoint.getLatitude()) + "," + String.valueOf(geoPoint.getLongitude()) +label));
 		intents.add(httpIntent);
 		return intents;
+	}
+
+	public static void view(Context context, Message message) {
+		final GeoPoint geoPoint = parseGeoPoint(message.getBody());
+		final String label = getLabel(context, message);
+		context.startActivity(geoIntent(geoPoint,label));
+	}
+
+	private static Intent geoIntent(GeoPoint geoPoint, String label) {
+		Intent geoIntent = new Intent(Intent.ACTION_VIEW);
+		geoIntent.setData(Uri.parse("geo:" + String.valueOf(geoPoint.getLatitude()) + "," + String.valueOf(geoPoint.getLongitude()) + "?q=" + String.valueOf(geoPoint.getLatitude()) + "," + String.valueOf(geoPoint.getLongitude()) + "("+ label+")"));
+		return geoIntent;
+	}
+
+	public static boolean openInOsmAnd(Context context, Message message) {
+		final GeoPoint geoPoint = parseGeoPoint(message.getBody());
+		final String label = getLabel(context, message);
+		return geoIntent(geoPoint,label).resolveActivity(context.getPackageManager()) != null;
+	}
+
+	private static String getLabel(Context context, Message message) {
+		if(message.getStatus() == Message.STATUS_RECEIVED) {
+			try {
+				return URLEncoder.encode(UIHelper.getMessageDisplayName(message),"UTF-8");
+			} catch (UnsupportedEncodingException e) {
+				throw new AssertionError(e);
+			}
+		} else {
+			return context.getString(R.string.me);
+		}
 	}
 }

@@ -809,4 +809,5 @@
     <string name="group_chat_will_make_your_jabber_id_public">This group chat will make your Jabber ID public</string>
     <string name="ebook">e-book</string>
     <string name="video_original">Original (uncompressed)</string>
+    <string name="open_with">Open with…</string>
 </resources>
