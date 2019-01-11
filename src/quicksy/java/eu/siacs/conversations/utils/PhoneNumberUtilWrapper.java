@@ -24,7 +24,7 @@ public class PhoneNumberUtilWrapper {
 
     public static String toFormattedPhoneNumber(Context context, Jid jid) {
         try {
-            return getInstance(context).format(toPhoneNumber(context, jid), PhoneNumberUtil.PhoneNumberFormat.INTERNATIONAL);
+            return getInstance(context).format(toPhoneNumber(context, jid), PhoneNumberUtil.PhoneNumberFormat.INTERNATIONAL).replace(' ','\u202F');
         } catch (Exception e) {
             return jid.getEscapedLocal();
         }

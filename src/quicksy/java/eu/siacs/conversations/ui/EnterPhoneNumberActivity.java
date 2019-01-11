@@ -151,7 +151,7 @@ public class EnterPhoneNumberActivity extends XmppActivity implements QuickConve
             this.binding.countryCode.setText(String.valueOf(phoneNumber.getCountryCode()));
             number.clear();
             number.append(String.valueOf(phoneNumber.getNationalNumber()));
-            final String formattedPhoneNumber = PhoneNumberUtilWrapper.getInstance(this).format(phoneNumber, PhoneNumberUtil.PhoneNumberFormat.INTERNATIONAL);
+            final String formattedPhoneNumber = PhoneNumberUtilWrapper.getInstance(this).format(phoneNumber, PhoneNumberUtil.PhoneNumberFormat.INTERNATIONAL).replace(' ','\u202F');
 
             if (PhoneNumberUtilWrapper.getInstance(this).isValidNumber(phoneNumber)) {
                 builder.setMessage(Html.fromHtml(getString(R.string.we_will_be_verifying, formattedPhoneNumber)));
