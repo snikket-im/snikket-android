@@ -6,3 +6,9 @@ lang_map = af_ZA: af-rZA, am_ET: am-rET, ar_AE: ar-rAE, ar_BH: ar-rBH, ar_DZ: ar
 file_filter = src/main/res/values-<lang>/strings.xml
 source_file = src/main/res/values/strings.xml
 source_lang = en
+
+[conversations.quicksy-strings]
+file_filter = src/quicksy/res/values-<lang>/strings.xml
+source_file = src/quicksy/res/values/strings.xml
+source_lang = en
+type = ANDROID
