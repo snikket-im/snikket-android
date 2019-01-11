@@ -330,25 +330,25 @@ To use OpenPGP you have to install the open source app
 manage accounts and choose renew PGP announcement from the contextual menu.
 
 #### OMEMO is grayed out. What do I do?
-OMEMO has two requirements: Your server and the server of your contact need to support PEP. Both of you can verify that individually by opening your account details and selecting ```Server info``` from the menu. The appearing table should list PEP as available. The second requirement is mutual presence subscription. You can verify that by opening the contact details and see if both check boxes *Send presence updates* and *Receive presence updates* are checked.
+OMEMO is only available in 1:1 chats and private (members-only, non-anonymous) group chats. Encrypting public group chats makes little to no sense since anyone (including a hypothetical attacker) can join and a user couldn’t possibily verify all participants anyway. Furthermore for a lot of public group chat it is desirable to give new comers access to the full history.
 
-#### How does the encryption for conferences work?
+#### OMEMO doesn’t work. I get a 'Something went wrong' message in the 'Trust OMEMO Fingerprints' screen.
+OMEMO has two requirements: Your server and the server of your contact need to support PEP. Both of you can verify that individually by opening your account details and selecting ```Server info``` from the menu. The appearing table should list PEP as available. The second requirement is that the initial sender needs to have access to the published key material. This can either be achieved by having mutual presence subscription (you can verify that by opening the contact details and see if both check boxes *Send presence updates* and *Receive presence updates* are checked) or by using a server that makes the public key material accessible to anyone. In the [Compliance Tester](https://compliance.conversations.im) this is indicated by the 'OMEMO' feature. Since it is very common that the first messages are exchanged *before* adding each other to the contact list it is desirable to use servers that have 'OMEMO support'.
 
-For conferences only OMEMO and OpenPGP are supported as encryption method..
+#### How does the encryption for group chats work?
 
 ##### OMEMO
 
-OMEMO encryption works only in private (members only) conferences that are non-anonymous.
+OMEMO encryption works only in private (members only) conferences that are non-anonymous. Non-anonymous (being able to discover the real JID of other participants) is a technical requirement to discover the key material. Members only is a sort of arbitrary requirement imposed by Conversations. (see 'OMEMO is grayed out')
 
 The server of all participants need to pass the OMEMO [Compliance Test](https://conversations.im/compliance/).
-In other words they either need to run version 18.01+ of ejabberd or have the `omemo_all_access` module installed on Prosody.
+In other words they either need to run Ejabberd 18.01+ or Prosody 0.11+.
+
+(Alternatively it would also work if all participants had each other in their contact list; But that rarely is the case in larger group chats.)
 
 The owner of a conference can make a public conference private by going into the conference
 details and hit the settings button (the one with the gears) and select both *private* and
 *members only*.
-
-If OMEMO is grayed out long pressing the lock icon will reveal some quick hints on why OMEMO
-is disabled.
 
 ##### OpenPGP
 
