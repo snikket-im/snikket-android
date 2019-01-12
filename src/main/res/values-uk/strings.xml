@@ -309,7 +309,6 @@
   <string name="account_details">Деталі облікового запису</string>
   <string name="confirm">Підтвердити</string>
   <string name="try_again">Спробуйте ще</string>
-  <string name="conversations_foreground_service">Розмови</string>
   <string name="pref_keep_foreground_service">Підтримувати сервіс на першому плані</string>
   <string name="pref_keep_foreground_service_summary">Не дає операційній системі припиняти Ваш зв\'язок</string>
   <string name="pref_export_logs">Експортувати історію</string>

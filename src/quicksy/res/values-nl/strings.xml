@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="crash_report_title">Quicksy is gecrasht</string>
+    <string name="crash_report_message">Door het versturen van crashrapportages help je de ontwikkeling van Quicksy.\n\n<b>Waarschuwing:</b> Deze app zal je XMPP-account gebruiken om de crashrapportages te versturen naar de ontwikkelaars.</string>
+    <string name="openkeychain_required_long">Quicksy gebruikt een derde partij app genaamd <b>OpenKeychain</b> om berichten te versleutelen en ontsleutelen, en om publieke sleutels te beheren.\n\nOpenKeychain is beschikbaar onder de GPLv3 en beschikbaar op F-Droid en Google Play.\n\n<small>(Herstart Conversations na installatie.)</small></string>
+    <string name="touch_to_open_conversations">Druk om Quicksy te openen</string>
+    <string name="no_storage_permission">Quicksy heeft toegang nodig tot je externe opslag</string>
+    <string name="no_camera_permission">Quicksy heeft toegang nodig tot je camera</string>
+    <string name="pref_broadcast_last_activity_summary">Laat je contactpersonen weten wanneer je Quicksy gebruikt</string>
+    <string name="device_does_not_support_data_saver">Je apparaat heeft geen ondersteuning voor het uitschakelen van gegevensbesparing voor Quicky.</string>
+    <string name="huawei_protected_apps_summary">Om meldingen te blijven ontvangen, zelfs als het scherm uit staat, moet je Quicksy toevoegen aan de lijst met beschermde apps.</string>
+    <string name="no_microphone_permission">Quicksy heeft toegang nodig tot je microfoon</string>
+    </resources>

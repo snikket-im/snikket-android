@@ -289,7 +289,6 @@
   <string name="account_details">アカウントの詳細</string>
   <string name="confirm">確認</string>
   <string name="try_again">再度実行してください</string>
-  <string name="conversations_foreground_service">Conversations</string>
   <string name="pref_keep_foreground_service">サービスをフォアグラウンドに保持</string>
   <string name="pref_keep_foreground_service_summary">オペレーティングシステムが接続を切断するのを防止します</string>
   <string name="pref_export_logs">履歴をエクスポート</string>

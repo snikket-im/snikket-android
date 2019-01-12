@@ -215,7 +215,6 @@
   <string name="account_details">Detaily účtu</string>
   <string name="confirm">Potvrdiť</string>
   <string name="try_again">Skúste znova</string>
-  <string name="conversations_foreground_service">Konverzácie</string>
   <string name="pref_keep_foreground_service">Ponechať službu v prvom pláne</string>
   <string name="pref_keep_foreground_service_summary">Zamedzí operačnému systému ukončiť pripojenie </string>
   <string name="choose_file">Vybrať súbor</string>

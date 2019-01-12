@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="openkeychain_required_long">Quicksy requiert une application tierce nommée <b>OpenKeychain</b> pour chiffrer et déchiffrer les messages.\n\nOpenKeychain est sous licence GPLv3 et est disponible sur F-Droid et Google Play.\n\n<small>(Veuillez redémarrer Quicksy après l\'installation de l\'app)</small></string>
+    <string name="contacts_have_no_pgp_keys">Quicksy ne peut pas chiffrer vos messages car votre contact n\'a pas communiqué sa clef publique.\n\n<small>Demandez-lui de configurer OpenPGP.</small></string>
+    <string name="pref_notification_grace_period_summary">Durée d\'inactivité de Quicksy après avoir repéré un changement sur un autre appareil</string>
+    <string name="pref_never_send_crash_summary">En envoyant des logs vous aidez le développement de Quicksy.</string>
+    </resources>

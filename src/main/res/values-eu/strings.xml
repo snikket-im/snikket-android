@@ -309,7 +309,6 @@
   <string name="account_details">Kontuaren xehetasunak</string>
   <string name="confirm">Baieztatu</string>
   <string name="try_again">Saiatu berriz</string>
-  <string name="conversations_foreground_service">Conversations</string>
   <string name="pref_keep_foreground_service">Zerbitzua aurreko planoan mantendu</string>
   <string name="pref_keep_foreground_service_summary">Sistema eragileak zure konexioa hiltzea galarazten du</string>
   <string name="pref_export_logs">Historia esportatu</string>

@@ -257,7 +257,6 @@
   <string name="account_details">계정 정보 </string>
   <string name="confirm">확인 </string>
   <string name="try_again">다시 시도하세요 </string>
-  <string name="conversations_foreground_service">Conversations</string>
   <string name="pref_keep_foreground_service">포어그라운드에서 서비스 유지 </string>
   <string name="pref_keep_foreground_service_summary">운영체제가 접속을 해제하지 못하도록 예방합니다 </string>
   <string name="pref_export_logs">히스토리 내보내기</string>

@@ -285,7 +285,6 @@
   <string name="account_details">Kontodetaljer</string>
   <string name="confirm">Bekreft</string>
   <string name="try_again">Prøv igjen</string>
-  <string name="conversations_foreground_service">Conversations</string>
   <string name="pref_keep_foreground_service">Forgrunnstjeneste</string>
   <string name="pref_keep_foreground_service_summary">Forhindrer operativsystemet fra å drepe tilkoblingen din</string>
   <string name="pref_export_logs">Eksporter historikk</string>

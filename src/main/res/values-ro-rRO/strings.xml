@@ -312,7 +312,6 @@
   <string name="account_details">Detalii cont</string>
   <string name="confirm">Confirmă</string>
   <string name="try_again">Încearcă din nou</string>
-  <string name="conversations_foreground_service">Conversations</string>
   <string name="pref_keep_foreground_service">Păstrează serviciul activ în prim-plan</string>
   <string name="pref_keep_foreground_service_summary">Previne închiderea conexiunii de către sistemul de operare</string>
   <string name="pref_export_logs">Exportă istoric</string>
@@ -817,4 +816,5 @@ sau chiar pierderea mesajelor.\nÎn continuare veți fi rugați să dezactivați
   <string name="group_chat_will_make_your_jabber_id_public">Aceastä discuție de grup vä face ID-ul Jabber public</string>
   <string name="ebook">carte electronică</string>
   <string name="video_original">Original (necompresat)</string>
+  <string name="open_with">Deschide cu…</string>
 </resources>

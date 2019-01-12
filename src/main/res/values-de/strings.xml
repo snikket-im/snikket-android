@@ -100,7 +100,7 @@
   <string name="offering">angeboten…</string>
   <string name="waiting">warten…</string>
   <string name="no_pgp_key">Kein OpenPGP-Schlüssel gefunden</string>
-  <string name="contact_has_no_pgp_key">Conversations ist nicht in der Lage, deine Nachrichten zu verschlüsseln, weil dein Kontakt seinen oder ihren Schlüssel nicht preisgibt.\n\n<small>Bitte sag deinem Kontakt, er oder sie möge OpenPGP einrichten.</small></string>
+  <string name="contact_has_no_pgp_key">Conversations ist nicht in der Lage, deine Nachrichten zu verschlüsseln, weil dein Kontakt seinen oder ihren Schlüssel nicht preisgibt.\n\n<small>Bitte sage deinem Kontakt, er oder sie möge OpenPGP einrichten.</small></string>
   <string name="no_pgp_keys">Keine OpenPGP-Schlüssel gefunden</string>
   <string name="contacts_have_no_pgp_keys">Conversations ist nicht in der Lage, deine Nachrichten zu verschlüsseln, weil deine Kontakte ihren öffentlichen Schlüssel nicht preisgeben.\n\n<small>Bitte sage deinen Kontakten, sie mögen OpenPGP einrichten.</small></string>
   <string name="pref_general">Allgemeines</string>
@@ -115,7 +115,7 @@
   <string name="pref_sound">Benachrichtigungston</string>
   <string name="pref_sound_summary">Benachrichtigungston wiedergeben</string>
   <string name="pref_notification_grace_period">Schonfrist</string>
-  <string name="pref_notification_grace_period_summary">Deaktiviere Benachrichtigungen für eine kurze Zeit nach Erhalt einer Nachricht, die von einem anderen deiner Clients kommt</string>
+  <string name="pref_notification_grace_period_summary">Zeitspanne, in der Conversations still bleibt, nachdem es Aktivitäten auf einem anderen Gerät erkannt hat.</string>
   <string name="pref_advanced_options">Erweitert</string>
   <string name="pref_never_send_crash">Niemals Absturzberichte senden</string>
   <string name="pref_never_send_crash_summary">Wenn du Absturzberichte einschickst, hilfst du Conversations stetig zu verbessern</string>
@@ -312,7 +312,6 @@
   <string name="account_details">Kontodetails</string>
   <string name="confirm">Bestätigen</string>
   <string name="try_again">Erneut versuchen</string>
-  <string name="conversations_foreground_service">Conversations</string>
   <string name="pref_keep_foreground_service">Dienst im Vordergrund ausführen</string>
   <string name="pref_keep_foreground_service_summary">Verhindert, dass Android Conversations beendet und die Verbindung unterbricht</string>
   <string name="pref_export_logs">Nachrichtenverlauf exportieren</string>
@@ -503,9 +502,9 @@
   <string name="pref_picture_compression_summary">Bildgröße ändern und komprimieren</string>
   <string name="always">Immer</string>
   <string name="automatically">Automatisch</string>
-  <string name="battery_optimizations_enabled">Batterieoptimierung aktiv</string>
-  <string name="battery_optimizations_enabled_explained">Dein Telefon verwendet Batterioptimierungen bei Conversations, welche verspätete Benachrichtigungen oder Nachrichtenverlust verursachen können.\nEs wird empfohlen, diese zu deaktivieren.</string>
-  <string name="battery_optimizations_enabled_dialog">Dein Telefon verwendet Batterioptimierungen bei Conversations, welche verspätete Benachrichtigungen oder Nachrichtenverlust verursachen können.\n\nDu wirst nun gefragt, diese zu deaktivieren.</string>
+  <string name="battery_optimizations_enabled">Akkuoptimierung aktiv</string>
+  <string name="battery_optimizations_enabled_explained">Dein Telefon verwendet Akkuoptimierungen bei Conversations, welche verspätete Benachrichtigungen oder Nachrichtenverlust verursachen können.\nEs wird empfohlen, diese zu deaktivieren.</string>
+  <string name="battery_optimizations_enabled_dialog">Dein Telefon verwendet Akkuoptimierungen bei Conversations, welche verspätete Benachrichtigungen oder Nachrichtenverlust verursachen können.\n\nDu wirst nun gefragt, diese zu deaktivieren.</string>
   <string name="disable">Deaktivieren</string>
   <string name="selection_too_large">Der ausgewählte Bereich ist zu groß</string>
   <string name="no_accounts">(Keine aktivierten Konten)</string>
@@ -534,7 +533,7 @@
   <string name="presence_xa">Nicht verfügbar</string>
   <string name="presence_dnd">Beschäftigt</string>
   <string name="secure_password_generated">Ein sicheres Passwort wurde erstellt</string>
-  <string name="device_does_not_support_battery_op">Dein Gerät unterstützt kein Ausschalten der Batterieoptimierung</string>
+  <string name="device_does_not_support_battery_op">Dein Gerät unterstützt kein Ausschalten der Akkuoptimierung</string>
   <string name="registration_please_wait">Registrierung fehlgeschlagen: Bitte später versuchen</string>
   <string name="registration_password_too_weak">Registrierung fehlgeschlagen: Passwort zu schwach</string>
   <string name="dialog_title_create_conference">Gruppenchat erstellen</string>
@@ -542,9 +541,9 @@
   <string name="creating_conference">Erstelle Gruppenchat…</string>
   <string name="invite_again">Erneut einladen</string>
   <string name="gp_disable">Deaktivieren</string>
-  <string name="gp_short">kurz</string>
-  <string name="gp_medium">mittel</string>
-  <string name="gp_long">lang</string>
+  <string name="gp_short">Kurz</string>
+  <string name="gp_medium">Mittel</string>
+  <string name="gp_long">Lang</string>
   <string name="pref_broadcast_last_activity">Letzte Benutzeraktivität veröffentlichen</string>
   <string name="pref_broadcast_last_activity_summary">Informiere deine Kontakte, wann du Conversations nutzt</string>
   <string name="pref_privacy">Privatsphäre</string>
@@ -678,7 +677,7 @@
   <string name="edit_status_message_title">Statusnachricht bearbeiten</string>
   <string name="edit_status_message">Statusnachricht bearbeiten</string>
   <string name="disable_encryption">Verschlüsselung deaktivieren</string>
-  <string name="error_trustkey_general">Conversations ist nicht in der Lage, verschlüsselte Nachrichten an  %1$s zu senden. Dies kann daran liegen, dass dein Kontakt einen veralteten Server oder Client verwendet, der mit OMEMO nicht umgehen kann.</string>
+  <string name="error_trustkey_general">Conversations ist nicht in der Lage, verschlüsselte Nachrichten an %1$s zu senden. Dies kann daran liegen, dass dein Kontakt einen veralteten Server oder Client verwendet, der mit OMEMO nicht umgehen kann.</string>
   <string name="error_trustkey_device_list">Geräteliste konnte nicht abgerufen werden</string>
   <string name="error_trustkey_bundle">Gerätebündel konnten nicht abgerufen werden</string>
   <string name="error_trustkey_hint_mutual">Tipp: In manchen Fällen kann dies behoben werden, indem man sich gegenseitig zu den Kontaktlisten hinzufügt.</string>
@@ -765,7 +764,7 @@
   <string name="please_enter_your_phone_number">Gib bitte deine Telefonnummer ein.</string>
   <string name="search_countries">Land suchen</string>
   <string name="verify_x">Überprüfe %s</string>
-  <string name="we_have_sent_you_an_sms_to_x"><![CDATA[Wir haben dir eine SMS an <b>%s</b>geschickt.]]></string>
+  <string name="we_have_sent_you_an_sms_to_x"><![CDATA[Wir haben dir eine SMS an <b>%s</b> geschickt.]]></string>
   <string name="we_have_sent_you_another_sms">Wir haben dir eine weitere SMS mit einem 6-stelligen Code geschickt.</string>
   <string name="please_enter_pin_below">Gib bitte den 6-stellige PIN unten ein.</string>
   <string name="resend_sms">SMS erneut versenden</string>
@@ -807,4 +806,5 @@
   <string name="group_chat_will_make_your_jabber_id_public">Dieser Gruppenchat wird deine Jabber-ID veröffentlichen.</string>
   <string name="ebook">E-Book</string>
   <string name="video_original">Original (unkomprimiert)</string>
+  <string name="open_with">Öffnen mit...</string>
 </resources>

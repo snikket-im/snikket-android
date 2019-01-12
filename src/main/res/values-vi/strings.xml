@@ -249,7 +249,6 @@
   <string name="account_details">Chi tiết tài khoản</string>
   <string name="confirm">Xác nhận</string>
   <string name="try_again">Thử lại</string>
-  <string name="conversations_foreground_service">Conversations</string>
   <string name="pref_keep_foreground_service">Giữ dịch vụ luôn chạy</string>
   <string name="pref_keep_foreground_service_summary">Ngăn hệ điều hành ngắt kết nối của bạn</string>
   <string name="notification_export_logs_title">Đang chép nhật ký vào thẻ SD</string>

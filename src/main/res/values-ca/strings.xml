@@ -307,7 +307,6 @@
   <string name="account_details">Detalls del compte</string>
   <string name="confirm">Confirmar</string>
   <string name="try_again">Intenta una altra vegada</string>
-  <string name="conversations_foreground_service">Converses</string>
   <string name="pref_keep_foreground_service">Mantenir el servei en primer pla</string>
   <string name="pref_keep_foreground_service_summary">Evitar que el sistema operatiu desconnecti la connexió</string>
   <string name="pref_export_logs">Exportació de l\'historial</string>

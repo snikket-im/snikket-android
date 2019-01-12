@@ -300,7 +300,6 @@
   <string name="account_details">账户详情</string>
   <string name="confirm">确认</string>
   <string name="try_again">再试一遍</string>
-  <string name="conversations_foreground_service">Conversations</string>
   <string name="pref_keep_foreground_service">保持前台服务</string>
   <string name="pref_keep_foreground_service_summary">防止操作系统中断你的连接</string>
   <string name="pref_export_logs">导出历史记录</string>

@@ -312,7 +312,6 @@
   <string name="account_details">Dettagli account</string>
   <string name="confirm">Conferma</string>
   <string name="try_again">Prova di nuovo</string>
-  <string name="conversations_foreground_service">Conversations</string>
   <string name="pref_keep_foreground_service">Mantieni il servizio in primo piano</string>
   <string name="pref_keep_foreground_service_summary">Evita che il sistema operativo chiuda la connessione</string>
   <string name="pref_export_logs">Esporta la cronologia</string>

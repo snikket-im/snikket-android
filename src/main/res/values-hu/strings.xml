@@ -305,7 +305,6 @@
   <string name="account_details">Fiók részletek</string>
   <string name="confirm">Jóváhagy</string>
   <string name="try_again">megpróbálja újra</string>
-  <string name="conversations_foreground_service">Beszélgetések</string>
   <string name="pref_keep_foreground_service">Előtérben futtassa a programot</string>
   <string name="pref_keep_foreground_service_summary">Megakadályozza az operációs rendszert abban, hogy megszakítsa a kapcsolatot a szerverrel a háttérben</string>
   <string name="pref_export_logs">Előzmények mentése</string>

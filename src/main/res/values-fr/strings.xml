@@ -300,7 +300,6 @@
   <string name="account_details">Détails du compte</string>
   <string name="confirm">Confirmer</string>
   <string name="try_again">Réessayer</string>
-  <string name="conversations_foreground_service">Conversations</string>
   <string name="pref_keep_foreground_service">Garder le service au 1er plan</string>
   <string name="pref_keep_foreground_service_summary">Évite que le système ne ferme votre connexion.</string>
   <string name="pref_export_logs">Exporter l\'historique</string>

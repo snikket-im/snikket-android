@@ -312,7 +312,6 @@
   <string name="account_details">Подробности за профила</string>
   <string name="confirm">Потвърждаване</string>
   <string name="try_again">Повторен опит</string>
-  <string name="conversations_foreground_service">Conversations</string>
   <string name="pref_keep_foreground_service">Услугата да е на преден план</string>
   <string name="pref_keep_foreground_service_summary">Предотвратява прекъсването на връзката Ви от операционната система</string>
   <string name="pref_export_logs">Изнасяне на историята</string>
@@ -807,4 +806,5 @@
   <string name="group_chat_will_make_your_jabber_id_public">Този групов разговор ще направи Jabber идентификатора Ви публичен</string>
   <string name="ebook">е-книга</string>
   <string name="video_original">Оригинално (некомпресирано)</string>
+  <string name="open_with">Отваряне с…</string>
 </resources>

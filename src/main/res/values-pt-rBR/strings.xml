@@ -307,7 +307,6 @@
   <string name="account_details">Detalhes da conta</string>
   <string name="confirm">Confirmar</string>
   <string name="try_again">Tentar novamente</string>
-  <string name="conversations_foreground_service">Conversations</string>
   <string name="pref_keep_foreground_service">Manter o serviço em segundo plano</string>
   <string name="pref_keep_foreground_service_summary">Impede que o sistema operacional encerre sua conexão.</string>
   <string name="pref_export_logs">Exportar histórico</string>

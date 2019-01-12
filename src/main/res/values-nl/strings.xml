@@ -312,7 +312,6 @@
   <string name="account_details">Accountgegevens</string>
   <string name="confirm">Bevestigen</string>
   <string name="try_again">Opnieuw proberen</string>
-  <string name="conversations_foreground_service">Conversations</string>
   <string name="pref_keep_foreground_service">Dienst in voorgrond houden</string>
   <string name="pref_keep_foreground_service_summary">Belet het besturingssysteem je verbinding te onderbreken</string>
   <string name="pref_export_logs">Geschiedenis exporteren</string>
@@ -805,4 +804,5 @@
   <string name="group_chat_will_make_your_jabber_id_public">Dit groepsgesprek openbaart je Jabber ID</string>
   <string name="ebook">e-boek</string>
   <string name="video_original">Origineel (zonder compressie)</string>
+  <string name="open_with">Openen met...</string>
 </resources>

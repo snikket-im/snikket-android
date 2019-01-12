@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="crash_report_title">Quicksy fallou</string>
+    <string name="crash_report_message">Ao enviar lotes de rexistro está a axudar no desenvolvemento de Quicksy\n<b>Aviso:</b> vai utilizar a súa conta XMPP para enviar o rexistro ao equipo de desenvolvemento.</string>
+    <string name="openkeychain_required_long">Quicksy utiliza unha app de terceiros chamada <b>OpenKeychain</b> para cifrar e descifrar as mensaxes e xestionar a súas chaves públicas.\n\nOpenKeychain en licenza GPLv3 e está dispoñible en F-Droid e Google Play.\n\n<small>(Por favor, reinicie Quicksy ao rematar).</small></string>
+    <string name="contact_has_no_pgp_key">Quicksy non pode cifrar as súas mensaxes porque os seu contacto non publicou as sua chave pública.\n\n<small>Por favor, solicite ao contacto configure OpenPGP.</small></string>
+    </resources>

@@ -294,7 +294,6 @@
   <string name="account_details">Детаљи налога</string>
   <string name="confirm">Потврди</string>
   <string name="try_again">Покушај поново</string>
-  <string name="conversations_foreground_service">Конверзација</string>
   <string name="pref_keep_foreground_service">Држи сервис у првом плану</string>
   <string name="pref_keep_foreground_service_summary">Спречава оперативни систем да прекине вашу везу</string>
   <string name="pref_export_logs">Извези историјат</string>

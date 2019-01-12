@@ -225,7 +225,6 @@
   <string name="account_details">Detil akun</string>
   <string name="confirm">Konfirmasi</string>
   <string name="try_again">Coba lagi</string>
-  <string name="conversations_foreground_service">Percakapan</string>
   <string name="pref_keep_foreground_service">Jaga layanan di latar depan</string>
   <string name="pref_keep_foreground_service_summary">Cegah sistem operasi mematikan koneksi</string>
   <string name="choose_file">Pilih berkas</string>

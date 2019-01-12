@@ -312,7 +312,6 @@
   <string name="account_details">Detalles da conta</string>
   <string name="confirm">Confirmar</string>
   <string name="try_again">Inténteo de novo</string>
-  <string name="conversations_foreground_service">Conversations</string>
   <string name="pref_keep_foreground_service">Manter servizo en primeiro plano</string>
   <string name="pref_keep_foreground_service_summary">Evita que o sistema operativo corte a súa conexión</string>
   <string name="pref_export_logs">Exportar historial</string>
@@ -807,4 +806,5 @@
   <string name="group_chat_will_make_your_jabber_id_public">Esta conversa de grupo revelará o seu ID Jabber</string>
   <string name="ebook">e-book</string>
   <string name="video_original">Orixinal (non comprimido)</string>
+  <string name="open_with">Abrir con...</string>
 </resources>

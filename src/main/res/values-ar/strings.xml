@@ -267,7 +267,6 @@
   <string name="account_details">تفاصيل الحساب</string>
   <string name="confirm">تأكيد</string>
   <string name="try_again">حاول مرة أخرى</string>
-  <string name="conversations_foreground_service">المحادثات</string>
   <string name="pref_keep_foreground_service">احتفظ بالتطبيق يعمل في المقدمة</string>
   <string name="pref_keep_foreground_service_summary">منع نظام التشغيل من انهاء اتصالك</string>
   <string name="pref_export_logs">تصدير التأريخ</string>
