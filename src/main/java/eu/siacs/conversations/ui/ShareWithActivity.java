@@ -81,8 +81,6 @@ public class ShareWithActivity extends XmppActivity implements XmppConnectionSer
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        new EmojiService(this).init();
-
         setContentView(R.layout.activity_share_with);
 
         setSupportActionBar(findViewById(R.id.toolbar));
