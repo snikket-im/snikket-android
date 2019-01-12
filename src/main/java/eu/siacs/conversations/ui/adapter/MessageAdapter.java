@@ -898,16 +898,8 @@ public class MessageAdapter extends ArrayAdapter<Message> implements CopyTextVie
 			ActivityCompat.requestPermissions(activity, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, ConversationsActivity.REQUEST_OPEN_MESSAGE);
 			return;
 		}
-		DownloadableFile file = activity.xmppConnectionService.getFileBackend().getFile(message);
-		if (!file.exists()) {
-			Toast.makeText(activity, R.string.file_deleted, Toast.LENGTH_SHORT).show();
-			return;
-		}
-		String mime = file.getMimeType();
-		if (mime == null) {
-			mime = "*/*";
-		}
-		ViewUtil.view(activity, file, mime);
+		final DownloadableFile file = activity.xmppConnectionService.getFileBackend().getFile(message);
+		ViewUtil.view(activity, file);
 	}
 
 	public void showLocation(Message message) {

@@ -14,6 +14,7 @@ import java.util.List;
 
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
+import eu.siacs.conversations.entities.DownloadableFile;
 import eu.siacs.conversations.persistance.FileBackend;
 
 public class ViewUtil {
@@ -21,6 +22,18 @@ public class ViewUtil {
     public static void view(Context context, Attachment attachment) {
         File file = new File(attachment.getUri().getPath());
         final String mime = attachment.getMime() == null ? "*/*" : attachment.getMime();
+        view(context, file, mime);
+    }
+
+    public static void view (Context context, DownloadableFile file) {
+        if (!file.exists()) {
+            Toast.makeText(context, R.string.file_deleted, Toast.LENGTH_SHORT).show();
+            return;
+        }
+        String mime = file.getMimeType();
+        if (mime == null) {
+            mime = "*/*";
+        }
         view(context, file, mime);
     }
 

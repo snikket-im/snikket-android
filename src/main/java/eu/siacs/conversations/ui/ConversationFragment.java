@@ -100,6 +100,7 @@ import eu.siacs.conversations.ui.util.ScrollState;
 import eu.siacs.conversations.ui.util.SendButtonAction;
 import eu.siacs.conversations.ui.util.SendButtonTool;
 import eu.siacs.conversations.ui.util.ShareUtil;
+import eu.siacs.conversations.ui.util.ViewUtil;
 import eu.siacs.conversations.ui.widget.EditMessage;
 import eu.siacs.conversations.utils.Compatibility;
 import eu.siacs.conversations.utils.GeoHelper;
@@ -1135,7 +1136,8 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
             if (showError) {
                 showErrorMessage.setVisible(true);
             }
-            if (m.isGeoUri() && GeoHelper.openInOsmAnd(getActivity(),m)) {
+            final String mime = m.isFileOrImage() ? m.getMimeType() : null;
+            if ((m.isGeoUri() && GeoHelper.openInOsmAnd(getActivity(),m)) || (mime != null && mime.startsWith("audio/"))) {
                 openWith.setVisible(true);
             }
         }
@@ -1630,6 +1632,9 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
     private void openWith(final Message message) {
         if (message.isGeoUri()) {
             GeoHelper.view(getActivity(),message);
+        } else {
+            final DownloadableFile file = activity.xmppConnectionService.getFileBackend().getFile(message);
+            ViewUtil.view(activity, file);
         }
     }
 
