@@ -55,7 +55,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Hashtable;
@@ -255,6 +254,8 @@ public class XmppConnectionService extends Service {
             return false;
         }
     };
+
+    private boolean destroyed = false;
 
     private int unreadCount = -1;
 
@@ -963,6 +964,7 @@ public class XmppConnectionService extends Service {
     @SuppressLint("TrulyRandom")
     @Override
     public void onCreate() {
+        this.destroyed = false;
         OmemoSetting.load(this);
         ExceptionHelper.init(getApplicationContext());
         try {
@@ -1007,7 +1009,7 @@ public class XmppConnectionService extends Service {
         }
         if (Compatibility.hasStoragePermission(this)) {
             Log.d(Config.LOGTAG, "starting file observer");
-            new Thread(fileObserver::startWatching).start();
+            mFileAddingExecutor.execute(this.fileObserver::startWatching);
             mFileAddingExecutor.execute(this::checkForDeletedFiles);
         }
         if (Config.supportOpenPgp()) {
@@ -1047,9 +1049,17 @@ public class XmppConnectionService extends Service {
     }
 
     private void checkForDeletedFiles() {
+        if (destroyed) {
+            Log.d(Config.LOGTAG, "Do not check for deleted files because service has been destroyed");
+            return;
+        }
         final List<String> deletedUuids = new ArrayList<>();
         final List<DatabaseBackend.FilePath> relativeFilePaths = databaseBackend.getAllNonDeletedFilePath();
         for(final DatabaseBackend.FilePath filePath : relativeFilePaths) {
+            if (destroyed) {
+                Log.d(Config.LOGTAG, "Stop checking for deleted files because service has been destroyed");
+                return;
+            }
             final File file = fileBackend.getFileForPath(filePath.path);
             if (!file.exists()) {
                 deletedUuids.add(filePath.uuid.toString());
@@ -1096,8 +1106,8 @@ public class XmppConnectionService extends Service {
 
     public void restartFileObserver() {
         Log.d(Config.LOGTAG, "restarting file observer");
+        mFileAddingExecutor.execute(this.fileObserver::restartWatching);
         mFileAddingExecutor.execute(this::checkForDeletedFiles);
-        new Thread(fileObserver::restartWatching).start();
     }
 
     public void toggleScreenEventReceiver() {

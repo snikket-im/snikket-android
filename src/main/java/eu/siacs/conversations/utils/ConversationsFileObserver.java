@@ -8,6 +8,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Stack;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import eu.siacs.conversations.Config;
 
@@ -21,16 +22,26 @@ public abstract class ConversationsFileObserver {
 
     private final String path;
     private final List<SingleFileObserver> mObservers = new ArrayList<>();
+    private final AtomicBoolean shouldStop = new AtomicBoolean(true);
 
     protected ConversationsFileObserver(String path) {
         this.path = path;
     }
 
-    public synchronized void startWatching() {
+    public void startWatching() {
+        shouldStop.set(false);
+        startWatchingInternal();
+    }
+
+    private synchronized void startWatchingInternal() {
         Stack<String> stack = new Stack<>();
         stack.push(path);
 
         while (!stack.empty()) {
+            if (shouldStop.get()) {
+                Log.d(Config.LOGTAG,"file observer received command to stop");
+                return;
+            }
             String parent = stack.pop();
             mObservers.add(new SingleFileObserver(parent, FileObserver.DELETE| FileObserver.MOVED_FROM));
             final File path = new File(parent);
@@ -39,6 +50,10 @@ public abstract class ConversationsFileObserver {
                 continue;
             }
             for(File file : files) {
+                if (shouldStop.get()) {
+                    Log.d(Config.LOGTAG,"file observer received command to stop");
+                    return;
+                }
                 if (file.isDirectory() && file.getName().charAt(0) != '.') {
                     final String currentPath = file.getAbsolutePath();
                     if (depth(file) <= 8 && !stack.contains(currentPath) && !observing(currentPath)) {
@@ -69,7 +84,12 @@ public abstract class ConversationsFileObserver {
         return false;
     }
 
-    public synchronized void stopWatching() {
+    public void stopWatching() {
+        shouldStop.set(true);
+        stopWatchingInternal();
+    }
+
+    private synchronized void stopWatchingInternal() {
         for(FileObserver observer : mObservers) {
             observer.stopWatching();
         }
