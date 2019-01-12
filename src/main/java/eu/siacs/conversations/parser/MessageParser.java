@@ -543,7 +543,6 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
                             }
                             extractChatState(mXmppConnectionService.find(account, counterpart.asBareJid()), isTypeGroupChat, packet);
                             mXmppConnectionService.updateMessage(replacedMessage, uuid);
-                            mXmppConnectionService.getNotificationService().updateNotification(false);
                             if (mXmppConnectionService.confirmMessages()
                                     && replacedMessage.getStatus() == Message.STATUS_RECEIVED
                                     && (replacedMessage.trusted() || replacedMessage.getType() == Message.TYPE_PRIVATE)
@@ -557,6 +556,7 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
                                 conversation.getAccount().getPgpDecryptionService().decrypt(replacedMessage, false);
                             }
                         }
+                        mXmppConnectionService.getNotificationService().updateNotification();
                         return;
                     } else {
                         Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": received message correction but verification didn't check out");
