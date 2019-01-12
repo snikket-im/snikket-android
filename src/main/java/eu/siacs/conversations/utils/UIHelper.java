@@ -314,6 +314,9 @@ public class UIHelper {
 				SpannableStringBuilder builder = new SpannableStringBuilder();
 				for (CharSequence l : CharSequenceUtils.split(styledBody, '\n')) {
 					if (l.length() > 0) {
+						if (l.toString().equals("```")) {
+							continue;
+						}
 						char first = l.charAt(0);
 						if ((first != '>' || !isPositionFollowedByQuoteableCharacter(l, 0)) && first != '\u00bb') {
 							CharSequence line = CharSequenceUtils.trim(l);
