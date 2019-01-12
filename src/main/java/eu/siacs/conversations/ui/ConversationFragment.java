@@ -101,6 +101,7 @@ import eu.siacs.conversations.ui.util.SendButtonAction;
 import eu.siacs.conversations.ui.util.SendButtonTool;
 import eu.siacs.conversations.ui.util.ShareUtil;
 import eu.siacs.conversations.ui.widget.EditMessage;
+import eu.siacs.conversations.utils.Compatibility;
 import eu.siacs.conversations.utils.GeoHelper;
 import eu.siacs.conversations.utils.MessageUtils;
 import eu.siacs.conversations.utils.NickValidityChecker;
@@ -1668,8 +1669,8 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
                 return;
             }
             final Conversation conversation = (Conversation) message.getConversation();
-            DownloadableFile file = activity.xmppConnectionService.getFileBackend().getFile(message);
-            if (file.exists()) {
+            final DownloadableFile file = activity.xmppConnectionService.getFileBackend().getFile(message);
+            if ((file.exists() && file.canRead()) || message.hasFileOnRemoteHost()) {
                 final XmppConnection xmppConnection = conversation.getAccount().getXmppConnection();
                 if (!message.hasFileOnRemoteHost()
                         && xmppConnection != null
@@ -1685,9 +1686,11 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
                     });
                     return;
                 }
+            } else if (!Compatibility.hasStoragePermission(getActivity())) {
+                Toast.makeText(activity, R.string.no_storage_permission, Toast.LENGTH_SHORT).show();
+                return;
             } else {
                 Toast.makeText(activity, R.string.file_deleted, Toast.LENGTH_SHORT).show();
-                //TODO check if we have storage permission
                 message.setDeleted(true);
                 activity.xmppConnectionService.updateMessage(message, false);
                 activity.onConversationsListItemUpdated();
