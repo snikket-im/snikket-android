@@ -1169,9 +1169,9 @@ public class FileBackend {
     public void updateFileParams(Message message, URL url) {
         DownloadableFile file = getFile(message);
         final String mime = file.getMimeType();
-        boolean image = message.getType() == Message.TYPE_IMAGE || (mime != null && mime.startsWith("image/"));
-        boolean video = mime != null && mime.startsWith("video/");
-        boolean audio = mime != null && mime.startsWith("audio/");
+        final boolean image = message.getType() == Message.TYPE_IMAGE || (mime != null && mime.startsWith("image/"));
+        final boolean video = mime != null && mime.startsWith("video/");
+        final boolean audio = mime != null && mime.startsWith("audio/");
         final StringBuilder body = new StringBuilder();
         if (url != null) {
             body.append(url.toString());
@@ -1192,17 +1192,9 @@ public class FileBackend {
         }
         message.setBody(body.toString());
         message.setDeleted(false);
+        message.setType(image ? Message.TYPE_IMAGE : Message.TYPE_FILE);
     }
 
-    public int getMediaRuntime(Uri uri) {
-        try {
-            MediaMetadataRetriever mediaMetadataRetriever = new MediaMetadataRetriever();
-            mediaMetadataRetriever.setDataSource(mXmppConnectionService, uri);
-            return Integer.parseInt(mediaMetadataRetriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION));
-        } catch (RuntimeException e) {
-            return 0;
-        }
-    }
 
     private int getMediaRuntime(File file) {
         try {

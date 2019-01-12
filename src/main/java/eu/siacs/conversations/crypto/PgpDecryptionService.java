@@ -177,7 +177,7 @@ public class PgpDecryptionService {
 						mXmppConnectionService.updateMessage(message);
 						break;
 				}
-			} else if (message.getType() == Message.TYPE_IMAGE || message.getType() == Message.TYPE_FILE) {
+			} else if (message.isFileOrImage()) {
 				try {
 					final DownloadableFile inputFile = mXmppConnectionService.getFileBackend().getFile(message, false);
 					final DownloadableFile outputFile = mXmppConnectionService.getFileBackend().getFile(message, true);

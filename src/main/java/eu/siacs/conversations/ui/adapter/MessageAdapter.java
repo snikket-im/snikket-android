@@ -217,7 +217,7 @@ public class MessageAdapter extends ArrayAdapter<Message> implements CopyTextVie
 		final Transferable transferable = message.getTransferable();
 		boolean multiReceived = message.getConversation().getMode() == Conversation.MODE_MULTI
 				&& message.getMergedStatus() <= Message.STATUS_RECEIVED;
-		if (message.getType() == Message.TYPE_IMAGE || message.getType() == Message.TYPE_FILE || transferable != null) {
+		if (message.isFileOrImage() || transferable != null) {
 			FileParams params = message.getFileParams();
 			if (params.size > (1.5 * 1024 * 1024)) {
 				filesize = Math.round(params.size * 1f / (1024 * 1024)) + " MiB";
