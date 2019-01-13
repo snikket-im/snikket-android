@@ -21,4 +21,5 @@ sau chiar pierderea mesajelor.\nÎn continuare veți fi rugați să dezactivați
     <string name="error_trustkey_general">Quicksy nu poate trimite mesaje criptate către %1$s. Aceasta se poate întâmpla dacă acest contact folosește un server sau un client învechit ce nu suportă OMEMO.</string>
     <string name="no_microphone_permission">Quicksy are nevoie de acces la microfon</string>
     <string name="foreground_service_channel_description">Această categorie de notificări este folosită pentru a arăta o notificare permanentă ce indică rularea Quicksy</string>
-    </resources>
+    <string name="set_profile_picture">Poză profil Quicksy</string>
+</resources>

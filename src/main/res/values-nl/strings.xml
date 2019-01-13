@@ -805,4 +805,6 @@
   <string name="ebook">e-boek</string>
   <string name="video_original">Origineel (zonder compressie)</string>
   <string name="open_with">Openen met...</string>
+  <string name="set_profile_picture">Conversations-profielafbeelding</string>
+  <string name="choose_account">Kies een account</string>
 </resources>

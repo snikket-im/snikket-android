@@ -817,4 +817,6 @@ sau chiar pierderea mesajelor.\nÎn continuare veți fi rugați să dezactivați
   <string name="ebook">carte electronică</string>
   <string name="video_original">Original (necompresat)</string>
   <string name="open_with">Deschide cu…</string>
+  <string name="set_profile_picture">Poză profil Conversations</string>
+  <string name="choose_account">Alegeți contul</string>
 </resources>

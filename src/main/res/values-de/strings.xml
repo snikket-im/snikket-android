@@ -807,4 +807,6 @@
   <string name="ebook">E-Book</string>
   <string name="video_original">Original (unkomprimiert)</string>
   <string name="open_with">Öffnen mit...</string>
+  <string name="set_profile_picture">Conversations Profilbild</string>
+  <string name="choose_account">Konto auswählen</string>
 </resources>

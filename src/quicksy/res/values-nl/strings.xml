@@ -10,4 +10,6 @@
     <string name="device_does_not_support_data_saver">Je apparaat heeft geen ondersteuning voor het uitschakelen van gegevensbesparing voor Quicky.</string>
     <string name="huawei_protected_apps_summary">Om meldingen te blijven ontvangen, zelfs als het scherm uit staat, moet je Quicksy toevoegen aan de lijst met beschermde apps.</string>
     <string name="no_microphone_permission">Quicksy heeft toegang nodig tot je microfoon</string>
-    </resources>
+    <string name="foreground_service_channel_description">Deze meldingscategorie wordt gebruikt om een permanente melding te tonen dat Quicksy wordt uitgevoerd.</string>
+    <string name="set_profile_picture">Quicksy-profielafbeelding</string>
+</resources>
