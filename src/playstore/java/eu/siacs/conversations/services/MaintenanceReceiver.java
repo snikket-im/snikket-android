@@ -29,12 +29,7 @@ public class MaintenanceReceiver extends BroadcastReceiver {
 				FirebaseInstanceId.getInstance().deleteInstanceId();
 				final Intent intent = new Intent(context, XmppConnectionService.class);
 				intent.setAction(XmppConnectionService.ACTION_FCM_TOKEN_REFRESH);
-				if (Compatibility.runsAndTargetsTwentySix(context)) {
-					intent.putExtra(EventReceiver.EXTRA_NEEDS_FOREGROUND_SERVICE, true);
-					ContextCompat.startForegroundService(context, intent);
-				} else {
-					context.startService(intent);
-				}
+				Compatibility.startService(context, intent);
 			} catch (IOException e) {
 				Log.d(Config.LOGTAG, "unable to renew instance token", e);
 			}

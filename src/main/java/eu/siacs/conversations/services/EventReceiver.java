@@ -25,16 +25,7 @@ public class EventReceiver extends BroadcastReceiver {
         }
         final String action = originalIntent.getAction();
         if (action.equals("ui") || hasEnabledAccounts(context)) {
-            try {
-                if (Compatibility.runsAndTargetsTwentySix(context)) {
-                    intentForService.putExtra(EXTRA_NEEDS_FOREGROUND_SERVICE, true);
-                    ContextCompat.startForegroundService(context, intentForService);
-                } else {
-                    context.startService(intentForService);
-                }
-            } catch (RuntimeException e) {
-                Log.d(Config.LOGTAG, "EventReceiver was unable to start service");
-            }
+            Compatibility.startService(context, intentForService);
         } else {
             Log.d(Config.LOGTAG, "EventReceiver ignored action " + intentForService.getAction());
         }
