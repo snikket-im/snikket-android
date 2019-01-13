@@ -2538,12 +2538,15 @@ public class XmppConnectionService extends Service {
 	}
 
 	private boolean hasEnabledAccounts() {
-		for (Account account : this.accounts) {
-			if (account.isEnabled()) {
-				return true;
-			}
-		}
-		return false;
+	    if (this.accounts == null) {
+	        return false;
+	    }
+	    for (Account account : this.accounts) {
+	        if (account.isEnabled()) {
+	            return true;
+	        }
+	    }
+	    return false;
 	}
 
 
