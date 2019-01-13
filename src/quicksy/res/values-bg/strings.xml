@@ -19,4 +19,4 @@
     <string name="error_trustkey_general">Quicksy не може да изпраща шифровани съобщения до %1$s. Възможно е Вашият контакт да използва остарял сървър или клиент, който не може да работи с OMEMO.</string>
     <string name="no_microphone_permission">Quicksy се нуждае от достъп до микрофона</string>
     <string name="foreground_service_channel_description">Тази категория известия се използва за показване на постоянно известие, което показва, че Quicksy работи.</string>
-</resources>
+    </resources>

@@ -19,4 +19,4 @@
     <string name="error_trustkey_general">Quicksy ist nicht in der Lage, verschlüsselte Nachrichten an %1$s zu senden. Dies kann daran liegen, dass dein Kontakt einen veralteten Server oder Client verwendet, der mit OMEMO nicht umgehen kann.</string>
     <string name="no_microphone_permission">Quicksy benötigt Zugriff auf das Mikrofon</string>
     <string name="foreground_service_channel_description">Diese Benachrichtigungsart wird verwendet, um eine permanente Benachrichtigung anzuzeigen, die anzeigt, dass Quicksy gerade ausgeführt wird.</string>
-</resources>
+    </resources>

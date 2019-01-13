@@ -19,4 +19,4 @@
     <string name="error_trustkey_general">Το Quicksy αδυνατεί να στείλει κρυπτογραφημένα μηνύματα στην επαφή %1$s. Αυτό μπορεί να συμβαίνει γιατί η επαφή σας χρησιμοποιεί παλιότερο διακομιστή ή πρόγραμμα που δε μπορεί να χειριστεί κρυπτογράφηση OMEMO.</string>
     <string name="no_microphone_permission">Το Quicksy χρειάζεται πρόσβαση στο μικρόφωνο</string>
     <string name="foreground_service_channel_description">Αυτή η κατηγορία ειδοποιήσεων χρησιμοποιείται για την εμφάνιση μιας μόνιμης ειδοποίησης που δείχνει πως εκτελείται το Quicksy.</string>
-</resources>
+    </resources>
