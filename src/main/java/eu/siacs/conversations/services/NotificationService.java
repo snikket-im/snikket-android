@@ -900,15 +900,17 @@ public class NotificationService {
         final Notification.Builder mBuilder = new Notification.Builder(mXmppConnectionService);
         mBuilder.setContentTitle(mXmppConnectionService.getString(R.string.app_name));
         if (Compatibility.runsAndTargetsTwentySix(mXmppConnectionService) || Config.SHOW_CONNECTED_ACCOUNTS) {
-            List<Account> accounts = mXmppConnectionService.getAccounts();
+            final List<Account> accounts = mXmppConnectionService.getAccounts();
             int enabled = 0;
             int connected = 0;
-            for (Account account : accounts) {
-                if (account.isOnlineAndConnected()) {
-                    connected++;
-                    enabled++;
-                } else if (account.isEnabled()) {
-                    enabled++;
+            if (accounts != null) {
+                for (Account account : accounts) {
+                    if (account.isOnlineAndConnected()) {
+                        connected++;
+                        enabled++;
+                    } else if (account.isEnabled()) {
+                        enabled++;
+                    }
                 }
             }
             mBuilder.setContentText(mXmppConnectionService.getString(R.string.connected_accounts, connected, enabled));
