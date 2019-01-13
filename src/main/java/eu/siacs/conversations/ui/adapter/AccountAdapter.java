@@ -6,9 +6,7 @@ import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.SwitchCompat;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,7 +21,6 @@ import java.util.concurrent.RejectedExecutionException;
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.entities.Account;
-import eu.siacs.conversations.ui.ManageAccountActivity;
 import eu.siacs.conversations.ui.XmppActivity;
 import eu.siacs.conversations.ui.util.StyledAttributes;
 import eu.siacs.conversations.utils.UIHelper;
@@ -85,8 +82,8 @@ public class AccountAdapter extends ArrayAdapter<Account> {
 			tglAccountState.setVisibility(View.GONE);
 		}
 		tglAccountState.setOnCheckedChangeListener((compoundButton, b) -> {
-			if (b == isDisabled && activity instanceof ManageAccountActivity) {
-				((ManageAccountActivity) activity).onClickTglAccountState(account, b);
+			if (b == isDisabled && activity instanceof OnTglAccountState) {
+				((OnTglAccountState) activity).onClickTglAccountState(account, b);
 			}
 		});
 		return view;
@@ -137,6 +134,11 @@ public class AccountAdapter extends ArrayAdapter<Account> {
 				}
 			}
 		}
+	}
+
+
+	public interface OnTglAccountState {
+		void onClickTglAccountState(Account account, boolean state);
 	}
 
 	public static boolean cancelPotentialWork(Account account, ImageView imageView) {

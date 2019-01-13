@@ -15,6 +15,8 @@ import android.widget.Toast;
 
 import com.theartofdev.edmodo.cropper.CropImage;
 
+import java.util.concurrent.atomic.AtomicBoolean;
+
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.entities.Account;
@@ -34,6 +36,7 @@ public class PublishProfilePictureActivity extends XmppActivity implements XmppC
     private Account account;
     private boolean support = false;
     private boolean publishing = false;
+    private AtomicBoolean handledExternalUri = new AtomicBoolean(false);
     private OnLongClickListener backToDefaultListener = new OnLongClickListener() {
 
         @Override
@@ -103,6 +106,19 @@ public class PublishProfilePictureActivity extends XmppActivity implements XmppC
         });
         this.avatar.setOnClickListener(v -> chooseAvatar());
         this.defaultUri = PhoneHelper.getProfilePictureUri(getApplicationContext());
+        if (savedInstanceState != null) {
+            this.avatarUri = savedInstanceState.getParcelable("uri");
+            this.handledExternalUri.set(savedInstanceState.getBoolean("handle_external_uri",false));
+        }
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        if (this.avatarUri != null) {
+            outState.putParcelable("uri", this.avatarUri);
+        }
+        outState.putBoolean("handle_external_uri", handledExternalUri.get());
+        super.onSaveInstanceState(outState);
     }
 
 
@@ -160,10 +176,20 @@ public class PublishProfilePictureActivity extends XmppActivity implements XmppC
         final Intent intent = getIntent();
         this.mInitialAccountSetup = intent != null && intent.getBooleanExtra("setup", false);
 
+        final Uri uri = intent != null ? intent.getData() : null;
+
+        if (uri != null && handledExternalUri.compareAndSet(false,true)) {
+            CropImage.activity(uri).setOutputCompressFormat(Bitmap.CompressFormat.PNG)
+                .setAspectRatio(1, 1)
+                .setMinCropResultSize(Config.AVATAR_SIZE, Config.AVATAR_SIZE)
+                .start(this);
+            return;
+        }
+
         if (this.mInitialAccountSetup) {
             this.cancelButton.setText(R.string.skip);
         }
-        configureActionBar(getSupportActionBar(), !this.mInitialAccountSetup);
+        configureActionBar(getSupportActionBar(), !this.mInitialAccountSetup && !handledExternalUri.get());
     }
 
     protected void loadImageIntoPreview(Uri uri) {

@@ -30,11 +30,6 @@ public class ShareViaAccountActivity extends XmppActivity {
             accountList.clear();
             accountList.addAll(xmppConnectionService.getAccounts());
         }
-        ActionBar actionBar = getSupportActionBar();
-        if (actionBar != null) {
-            actionBar.setHomeButtonEnabled(this.accountList.size() > 0);
-            actionBar.setDisplayHomeAsUpEnabled(this.accountList.size() > 0);
-        }
         mAccountAdapter.notifyDataSetChanged();
     }
 

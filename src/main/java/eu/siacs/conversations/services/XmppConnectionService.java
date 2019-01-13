@@ -8,6 +8,7 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
 import android.content.BroadcastReceiver;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
@@ -104,6 +105,7 @@ import eu.siacs.conversations.parser.MessageParser;
 import eu.siacs.conversations.parser.PresenceParser;
 import eu.siacs.conversations.persistance.DatabaseBackend;
 import eu.siacs.conversations.persistance.FileBackend;
+import eu.siacs.conversations.ui.ChooseAccountForProfilePictureActivity;
 import eu.siacs.conversations.ui.SettingsActivity;
 import eu.siacs.conversations.ui.UiCallback;
 import eu.siacs.conversations.ui.interfaces.OnAvatarPublication;
@@ -1002,8 +1004,10 @@ public class XmppConnectionService extends Service {
             editor.putBoolean(SettingsActivity.KEEP_FOREGROUND_SERVICE, true);
             Log.d(Config.LOGTAG, Build.MANUFACTURER + " is on blacklist. enabling foreground service");
         }
-        editor.putBoolean(EventReceiver.SETTING_ENABLED_ACCOUNTS, hasEnabledAccounts()).apply();
+        final boolean hasEnabledAccounts = hasEnabledAccounts();
+        editor.putBoolean(EventReceiver.SETTING_ENABLED_ACCOUNTS, hasEnabledAccounts).apply();
         editor.apply();
+        toggleSetProfilePictureActivity(hasEnabledAccounts);
 
         restoreFromDatabase();
 
@@ -1942,8 +1946,20 @@ public class XmppConnectionService extends Service {
 	}
 
 	private void syncEnabledAccountSetting() {
-		getPreferences().edit().putBoolean(EventReceiver.SETTING_ENABLED_ACCOUNTS, hasEnabledAccounts()).apply();
+	    final boolean hasEnabledAccounts = hasEnabledAccounts();
+		getPreferences().edit().putBoolean(EventReceiver.SETTING_ENABLED_ACCOUNTS, hasEnabledAccounts).apply();
+		toggleSetProfilePictureActivity(hasEnabledAccounts);
 	}
+
+	private void toggleSetProfilePictureActivity(final boolean enabled) {
+	    try {
+	        final ComponentName name = new ComponentName(this, ChooseAccountForProfilePictureActivity.class);
+	        final int targetState =  enabled ? PackageManager.COMPONENT_ENABLED_STATE_ENABLED : PackageManager.COMPONENT_ENABLED_STATE_DISABLED;
+            getPackageManager().setComponentEnabledSetting(name, targetState, PackageManager.DONT_KILL_APP);
+        } catch (IllegalStateException e) {
+	        Log.d(Config.LOGTAG,"unable to toggle profile picture actvitiy");
+        }
+    }
 
 	public void createAccountFromKey(final String alias, final OnAccountCreated callback) {
 		new Thread(() -> {

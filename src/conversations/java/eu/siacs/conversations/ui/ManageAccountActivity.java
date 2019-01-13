@@ -35,7 +35,7 @@ import eu.siacs.conversations.ui.util.MenuDoubleTabUtil;
 import eu.siacs.conversations.xmpp.XmppConnection;
 import rocks.xmpp.addr.Jid;
 
-public class ManageAccountActivity extends XmppActivity implements OnAccountUpdate, KeyChainAliasCallback, XmppConnectionService.OnAccountCreated {
+public class ManageAccountActivity extends XmppActivity implements OnAccountUpdate, KeyChainAliasCallback, XmppConnectionService.OnAccountCreated, AccountAdapter.OnTglAccountState {
 
 	private final String STATE_SELECTED_ACCOUNT = "selected_account";
 
@@ -88,17 +88,10 @@ public class ManageAccountActivity extends XmppActivity implements OnAccountUpda
 			}
 		}
 
-		accountListView = (ListView) findViewById(R.id.account_list);
+		accountListView = findViewById(R.id.account_list);
 		this.mAccountAdapter = new AccountAdapter(this, accountList);
 		accountListView.setAdapter(this.mAccountAdapter);
-		accountListView.setOnItemClickListener(new OnItemClickListener() {
-
-			@Override
-			public void onItemClick(AdapterView<?> arg0, View view,
-									int position, long arg3) {
-				switchToAccount(accountList.get(position));
-			}
-		});
+		accountListView.setOnItemClickListener((arg0, view, position, arg3) -> switchToAccount(accountList.get(position)));
 		registerForContextMenu(accountListView);
 	}
 
@@ -244,6 +237,7 @@ public class ManageAccountActivity extends XmppActivity implements OnAccountUpda
 		}
 	}
 
+	@Override
 	public void onClickTglAccountState(Account account, boolean enable) {
 		if (enable) {
 			enableAccount(account);

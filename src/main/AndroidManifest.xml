@@ -164,6 +164,16 @@
         <activity
             android:name=".ui.ChangePasswordActivity"
             android:label="@string/change_password_on_server"/>
+        <activity android:name=".ui.ChooseAccountForProfilePictureActivity"
+            android:label="@string/choose_account"
+            android:enabled="false">
+            <intent-filter android:label="@string/set_profile_picture">
+                <action android:name="android.intent.action.ATTACH_DATA"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+
+                <data android:mimeType="image/*"/>
+            </intent-filter>
+        </activity>
         <activity
             android:name=".ui.ShareViaAccountActivity"
             android:label="@string/title_activity_share_via_account"
