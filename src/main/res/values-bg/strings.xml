@@ -807,4 +807,6 @@
   <string name="ebook">е-книга</string>
   <string name="video_original">Оригинално (некомпресирано)</string>
   <string name="open_with">Отваряне с…</string>
+  <string name="set_profile_picture">Профилна снимка за Conversations</string>
+  <string name="choose_account">Изберете профил</string>
 </resources>
