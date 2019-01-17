@@ -1755,6 +1755,10 @@ public class XmppConnection implements Runnable {
             return hasDiscoFeature(account.getJid().asBareJid(), Namespace.BOOKMARKS_CONVERSION) && pepPublishOptions();
         }
 
+        public boolean avatarConversion() {
+            return hasDiscoFeature(account.getJid().asBareJid(), Namespace.AVATAR_CONVERSION) && pepPublishOptions();
+        }
+
         public boolean blocking() {
             return hasDiscoFeature(Jid.of(account.getServer()), Namespace.BLOCKING);
         }

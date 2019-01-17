@@ -415,10 +415,14 @@ public class Contact implements ListItem, Blockable {
 	}
 
 	public boolean setAvatar(Avatar avatar) {
+		return setAvatar(avatar, false);
+	}
+
+	public boolean setAvatar(Avatar avatar, boolean previouslyOmittedPepFetch) {
 		if (this.avatar != null && this.avatar.equals(avatar)) {
 			return false;
 		} else {
-			if (this.avatar != null && this.avatar.origin == Avatar.Origin.PEP && avatar.origin == Avatar.Origin.VCARD) {
+			if (!previouslyOmittedPepFetch && this.avatar != null && this.avatar.origin == Avatar.Origin.PEP && avatar.origin == Avatar.Origin.VCARD) {
 				return false;
 			}
 			this.avatar = avatar;

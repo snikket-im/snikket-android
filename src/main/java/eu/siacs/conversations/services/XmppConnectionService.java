@@ -180,7 +180,8 @@ public class XmppConnectionService extends Service {
     private final IBinder mBinder = new XmppConnectionBinder();
     private final List<Conversation> conversations = new CopyOnWriteArrayList<>();
     private final IqGenerator mIqGenerator = new IqGenerator(this);
-    private final List<String> mInProgressAvatarFetches = new ArrayList<>();
+    private final Set<String> mInProgressAvatarFetches = new HashSet<>();
+    private final Set<String> mOmittedPepAvatarFetches = new HashSet<>();
     private final HashSet<Jid> mLowPingTimeoutMode = new HashSet<>();
     private final OnIqPacketReceived mDefaultIqHandler = (account, packet) -> {
         if (packet.getType() != IqPacket.TYPE.RESULT) {
@@ -3122,6 +3123,7 @@ public class XmppConnectionService extends Service {
                     if (account.setAvatar(avatar.getFilename())) {
                         getAvatarService().clear(account);
                         databaseBackend.updateAccount(account);
+                        notifyAccountAvatarHasChanged(account);
                     }
                     Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": published avatar " + (avatar.size / 1024) + "KiB");
                     if (callback != null) {
@@ -3201,18 +3203,22 @@ public class XmppConnectionService extends Service {
 	public void fetchAvatar(Account account, final Avatar avatar, final UiCallback<Avatar> callback) {
 		final String KEY = generateFetchKey(account, avatar);
 		synchronized (this.mInProgressAvatarFetches) {
-			if (!this.mInProgressAvatarFetches.contains(KEY)) {
-				switch (avatar.origin) {
-					case PEP:
-						this.mInProgressAvatarFetches.add(KEY);
-						fetchAvatarPep(account, avatar, callback);
-						break;
-					case VCARD:
-						this.mInProgressAvatarFetches.add(KEY);
-						fetchAvatarVcard(account, avatar, callback);
-						break;
-				}
-			}
+		    if (mInProgressAvatarFetches.add(KEY)) {
+                switch (avatar.origin) {
+                    case PEP:
+                        this.mInProgressAvatarFetches.add(KEY);
+                        fetchAvatarPep(account, avatar, callback);
+                        break;
+                    case VCARD:
+                        this.mInProgressAvatarFetches.add(KEY);
+                        fetchAvatarVcard(account, avatar, callback);
+                        break;
+                }
+            } else if (avatar.origin == Avatar.Origin.PEP) {
+		        mOmittedPepAvatarFetches.add(KEY);
+            } else {
+		        Log.d(Config.LOGTAG,account.getJid().asBareJid()+": already fetching "+avatar.origin+" avatar for "+avatar.owner);
+            }
 		}
 	}
 
@@ -3274,8 +3280,11 @@ public class XmppConnectionService extends Service {
 		this.sendIqPacket(account, packet, new OnIqPacketReceived() {
 			@Override
 			public void onIqPacketReceived(Account account, IqPacket packet) {
+			    final boolean previouslyOmittedPepFetch;
 				synchronized (mInProgressAvatarFetches) {
-					mInProgressAvatarFetches.remove(generateFetchKey(account, avatar));
+				    final String KEY = generateFetchKey(account, avatar);
+					mInProgressAvatarFetches.remove(KEY);
+					previouslyOmittedPepFetch = mOmittedPepAvatarFetches.remove(KEY);
 				}
 				if (packet.getType() == IqPacket.TYPE.RESULT) {
 					Element vCard = packet.findChild("vCard", "vcard-temp");
@@ -3285,7 +3294,7 @@ public class XmppConnectionService extends Service {
 						avatar.image = image;
 						if (getFileBackend().save(avatar)) {
 							Log.d(Config.LOGTAG, account.getJid().asBareJid()
-									+ ": successfully fetched vCard avatar for " + avatar.owner);
+									+ ": successfully fetched vCard avatar for " + avatar.owner+" omittedPep="+previouslyOmittedPepFetch);
 							if (avatar.owner.isBareJid()) {
 								if (account.getJid().asBareJid().equals(avatar.owner) && account.getAvatar() == null) {
 									Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": had no avatar. replacing with vcard");
@@ -3295,7 +3304,7 @@ public class XmppConnectionService extends Service {
 									updateAccountUi();
 								} else {
 									Contact contact = account.getRoster().getContact(avatar.owner);
-									if (contact.setAvatar(avatar)) {
+									if (contact.setAvatar(avatar, previouslyOmittedPepFetch)) {
 										syncRoster(account);
 										getAvatarService().clear(contact);
 										updateRosterUi();
@@ -3362,6 +3371,23 @@ public class XmppConnectionService extends Service {
 			}
 		});
 	}
+
+	public void notifyAccountAvatarHasChanged(final Account account) {
+	    final XmppConnection connection = account.getXmppConnection();
+	    if (connection != null && connection.getFeatures().bookmarksConversion()) {
+            Log.d(Config.LOGTAG,account.getJid().asBareJid()+": avatar changed. resending presence to online group chats");
+            for(Conversation conversation : conversations) {
+                if (conversation.getAccount() == account && conversation.getMode() == Conversational.MODE_MULTI) {
+                    final MucOptions mucOptions = conversation.getMucOptions();
+                    if (mucOptions.online()) {
+                        PresencePacket packet = mPresenceGenerator.selfPresence(account, Presence.Status.ONLINE, mucOptions.nonanonymous());
+                        packet.setTo(mucOptions.getSelf().getFullJid());
+                        connection.sendPresencePacket(packet);
+                    }
+                }
+            }
+        }
+    }
 
 	public void deleteContactOnServer(Contact contact) {
 		contact.resetOption(Contact.Options.PREEMPTIVE_GRANT);
