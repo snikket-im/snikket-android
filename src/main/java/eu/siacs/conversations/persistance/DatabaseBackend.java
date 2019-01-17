@@ -849,7 +849,7 @@ public class DatabaseBackend extends SQLiteOpenHelper {
 
     public List<FilePath> getAllNonDeletedFilePath() {
         final SQLiteDatabase db = this.getReadableDatabase();
-        final Cursor cursor = db.query(Message.TABLENAME, new String[]{Message.UUID, Message.RELATIVE_FILE_PATH}, "type in (1,2) and deleted=0", null, null, null, null);
+        final Cursor cursor = db.query(Message.TABLENAME, new String[]{Message.UUID, Message.RELATIVE_FILE_PATH}, "type in (1,2) and deleted=0 and "+Message.RELATIVE_FILE_PATH+" is not null", null, null, null, null);
         final List<FilePath> list = new ArrayList<>();
         while (cursor != null && cursor.moveToNext()) {
             list.add(new FilePath(cursor.getString(0), cursor.getString(1)));
@@ -862,7 +862,7 @@ public class DatabaseBackend extends SQLiteOpenHelper {
 
     public List<FilePath> getRelativeFilePaths(String account, Jid jid, int limit) {
         SQLiteDatabase db = this.getReadableDatabase();
-        final String SQL = "select uuid,relativeFilePath from messages where type in (1,2) and deleted=0 and conversationUuid=(select uuid from conversations where accountUuid=? and (contactJid=? or contactJid like ?)) order by timeSent desc";
+        final String SQL = "select uuid,relativeFilePath from messages where type in (1,2) and deleted=0 and "+Message.RELATIVE_FILE_PATH+" is not null and conversationUuid=(select uuid from conversations where accountUuid=? and (contactJid=? or contactJid like ?)) order by timeSent desc";
         final String[] args = {account, jid.toEscapedString(), jid.toEscapedString() + "/%"};
         Cursor cursor = db.rawQuery(SQL + (limit > 0 ? " limit " + String.valueOf(limit) : ""), args);
         List<FilePath> filesPaths = new ArrayList<>();
