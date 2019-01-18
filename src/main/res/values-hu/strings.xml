@@ -4,6 +4,7 @@
   <string name="action_add">Új beszélgetés</string>
   <string name="action_accounts">Fiókok kezelése</string>
   <string name="action_account">Fiók kezelése</string>
+  <string name="action_end_conversation">Beszélgetés bezárása</string>
   <string name="action_contact_details">Kapcsolat részletek</string>
   <string name="action_muc_details">Konferencia részletei</string>
   <string name="action_secure">Biztonságos beszélgetés</string>
@@ -80,6 +81,7 @@
   <string name="clear_histor_msg">Biztosan szeretnéd az üzeneteket törölni ebben a beszélgetésben?\n\n<b>Figyelem:</b> Ez nem törli más eszközökön vagy szervereken tárolt üzeneteidet.</string>
   <string name="delete_file_dialog">Fájl törlése</string>
   <string name="delete_file_dialog_msg">Biztosan szeretnéd ezt a fájlt törölni?\n\n<b>Figyelem:</b> Ez nem törli más eszközökön vagy szervereken tárolt fájljaidat.</string>
+  <string name="also_end_conversation">A beszélgetést is zárja be</string>
   <string name="choose_presence">Eszköz kiválasztása</string>
   <string name="send_unencrypted_message">Titkosítatlan üzenetküldés</string>
   <string name="send_message">Üzenet küldése</string>
@@ -226,6 +228,9 @@
   <string name="conference_address_example">room@conference.example.com/nick</string>
   <string name="save_as_bookmark">Könyvjelzőkhöz hozzáadás</string>
   <string name="delete_bookmark">Könyvjelző törlése</string>
+  <string name="destroy_room">Konferencia megszüntetése</string>
+  <string name="destroy_room_dialog">Biztos, hogy meg akarod szüntetni ezt a konferenciát?\n\n<b>Figyelem:</b> A konferencia véglegesen törlődik a szerverről.</string>
+  <string name="could_not_destroy_room">Nem lehetett megszüntetni a konferenciát</string>
   <string name="bookmark_already_exists">A könyvjelző már létezik</string>
   <string name="action_edit_subject">Konferencia témájának beállítása</string>
   <string name="topic">Téma</string>
@@ -266,7 +271,7 @@
   <string name="pref_allow_message_correction_summary">Visszamenőlegesen is megengedi az üzenetek szerkesztését</string>
   <string name="pref_expert_options">Haladó beállítások</string>
   <string name="pref_expert_options_summary">Kérlek, légy óvatos!</string>
-  <string name="title_activity_about_x">Róla: %s</string>
+  <string name="title_activity_about_x">A programról %s</string>
   <string name="title_pref_quiet_hours">Csöndes órák</string>
   <string name="title_pref_quiet_hours_start_time">Kezdése</string>
   <string name="title_pref_quiet_hours_end_time">Befejezése</string>
@@ -277,6 +282,8 @@
   <string name="pref_use_indicate_received_summary">A megkapott üzenetek egy zöld pipával lesznek jelölve ha támogatott ez a funkció</string>
   <string name="pref_use_send_button_to_indicate_status_summary">Kiszínezi a küldés gombot, hogy jelezze a partner állapotát</string>
   <string name="pref_expert_options_other">Egyéb</string>
+  <string name="pref_autojoin">Szinkronizáljon könyvjelzőkkel</string>
+  <string name="pref_autojoin_summary">Csatlakozzon és hagyja ott a csoportos beszélgetéseket a könyvjelzők automatikus csatlakozásának megfelelően.</string>
   <string name="toast_message_omemo_fingerprint">Az OMEMO ujjlenyomat vágólapra lett másolva!</string>
   <string name="conference_banned">Ki vagy tiltva ebből a konferenciából</string>
   <string name="conference_members_only">Ez a konferencia csak tagoknak szól</string>
@@ -690,6 +697,7 @@
   <string name="medium">Közepes</string>
   <string name="large">Nagy</string>
   <string name="not_encrypted_for_this_device">Az üzenet nem volt titkosított erre az eszközre.</string>
+  <string name="omemo_decryption_failed">Nem sikerült az OMEMO üzenet visszafejtése.</string>
   <string name="undo">visszacsinál</string>
   <string name="location_disabled">A helymegosztás le van tiltva</string>
   <string name="action_fix_to_location">Pozíció fixálása</string>
@@ -707,6 +715,7 @@
   <string name="gif">GIF</string>
   <string name="view_conversation">Beszélgetés megtekintése</string>
   <string name="pref_use_share_location_plugin">Helymegosztás bővítmény</string>
+  <string name="pref_use_share_location_plugin_summary">A beépített térkép helyett használja a \"Share Location Plugin\"-t</string>
   <string name="copy_link">Webcím másolása</string>
   <string name="copy_jabber_id">Jabber azonosító másolása</string>
   <string name="p1_s3_filetransfer">HTTP fájlmegosztás S3-nak</string>
@@ -791,4 +800,13 @@
   <string name="enter_your_name">Adja meg nevét</string>
   <string name="no_name_set_instructions">A szerkesztő gombbal állítsa be a nevét.</string>
   <string name="reject_request">Kérés elutasítása</string>
+  <string name="install_orbot">Orbot telepítése</string>
+  <string name="start_orbot">Orbot indítása</string>
+  <string name="no_market_app_installed">Nincs telepítve piaci alkalmazás.</string>
+  <string name="group_chat_will_make_your_jabber_id_public">Ez a csevegés nyilvánossá teszi a Jabber azonosítóját</string>
+  <string name="ebook">e-könyv</string>
+  <string name="video_original">Eredeti (tömörítetlen)</string>
+  <string name="open_with">Megnyitni ezzel...</string>
+  <string name="set_profile_picture">Conversations profilkép</string>
+  <string name="choose_account">Válasszon fiókot</string>
 </resources>

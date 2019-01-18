@@ -19,4 +19,5 @@
     <string name="error_trustkey_general">Quicksy no puede enviar mensajes cifrados a %1$s. Esto puede deberse a que tu contacto está usando un servidor o un cliente desactualizado que no puede manejar las claves OMEMO.</string>
     <string name="no_microphone_permission">Quicksy necesita acceder al micrófono</string>
     <string name="foreground_service_channel_description">Esta categoría de notificación se usa para mostrar una notificación permantente indicando que Quicksy está ejecutándose.</string>
-    </resources>
+    <string name="set_profile_picture">Foto de perfil en Quicksy</string>
+</resources>
