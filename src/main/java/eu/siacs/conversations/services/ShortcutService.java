@@ -124,6 +124,7 @@ public class ShortcutService {
         intent.setAction(Intent.ACTION_VIEW);
         intent.setData(Uri.parse("xmpp:"+contact.getJid().asBareJid().toString()));
         intent.putExtra("account",contact.getAccount().getJid().asBareJid().toString());
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP| Intent.FLAG_ACTIVITY_SINGLE_TOP);
         return intent;
     }
 
