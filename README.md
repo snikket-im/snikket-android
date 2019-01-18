@@ -169,14 +169,14 @@ In most cases this error is caused by ejabberd advertising support for TLSv1.3 b
 
 
 #### I’m getting this annoying permanent notification
-Starting with Conversations 2.3.6 Conversations releases distributed over the Google Play Store will display a permanent notification if you are running it on Android 8 and above. This is a rule that it is essentially enforced by the Google Play Store (you won’t have the problem if you are getting your app from F-Droid).
+Starting with Conversations 2.3.6 Conversations releases distributed over the Google Play Store will display a permanent notification if you are running it on Android 8 and above. This is a rule that it is essentially enforced by the Google Play Store. (You won’t have the problem  of a *forced* foreground notification if you are getting your app from F-Droid.)
 
 However you can disable the notification via settings of the operating system. (Not settings in Conversations.)
 
 **The battery consumption and the entire behaviour of Conversations will remain the same (as good or as bad as it was before). Why is Google doing this to you? We have no idea.**
 
 ##### Android &lt;= 7.1
-The foreground notification is still controlled over the expert settings within Conversations as it always has been.
+The foreground notification is still controlled over the expert settings within Conversations as it always has been. Whether or not you need to enable it depends on how aggressive the non-standard 'power saving' features are that your phone vendor has built into the operating system.
 
 ##### Android 8.x
 Long press the permanent notification and disable that particular type of notification by moving the slider to the left. This will make the notification disappear but create another notification (this time created by the operating system itself.) that will complain about Conversations (and other apps) using battery. Starting with Android 8.1 you can disable that notification again with the same method described above.
