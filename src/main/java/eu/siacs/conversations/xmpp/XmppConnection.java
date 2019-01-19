@@ -346,9 +346,8 @@ public class XmppConnection implements Runnable {
 
                             if (!tlsFactoryVerifier.verifier.verify(account.getServer(), verifiedHostname, ((SSLSocket) localSocket).getSession())) {
                                 Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": TLS certificate verification failed");
-                                if (!iterator.hasNext()) {
-                                    throw new StateChangingException(Account.State.TLS_ERROR);
-                                }
+                                FileBackend.close(localSocket);
+                                throw new StateChangingException(Account.State.TLS_ERROR);
                             }
                         }
                         localSocket.setSoTimeout(Config.SOCKET_TIMEOUT * 1000);
@@ -359,13 +358,13 @@ public class XmppConnection implements Runnable {
                             }
                             break; // successfully connected to server that speaks xmpp
                         } else {
-                            localSocket.close();
-                            if (!iterator.hasNext()) {
-                                throw new StateChangingException(Account.State.STREAM_OPENING_ERROR);
-                            }
+                            FileBackend.close(localSocket);
+                            throw new StateChangingException(Account.State.STREAM_OPENING_ERROR);
                         }
                     } catch (final StateChangingException e) {
-                        throw e;
+                        if (!iterator.hasNext()) {
+                            throw e;
+                        }
                     } catch (InterruptedException e) {
                         Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": thread was interrupted before beginning stream");
                         return;
