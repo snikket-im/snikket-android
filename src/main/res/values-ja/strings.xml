@@ -4,6 +4,7 @@
   <string name="action_add">新しい会話</string>
   <string name="action_accounts">アカウントの管理</string>
   <string name="action_account">アカウントの管理</string>
+  <string name="action_end_conversation">この会話を閉じる</string>
   <string name="action_contact_details">連絡先の詳細</string>
   <string name="action_muc_details">談話室の詳細</string>
   <string name="action_secure">安全に会話</string>
@@ -77,7 +78,10 @@
   <string name="sharing_files_please_wait">フィルを共有しています。しばらくお待ちください…</string>
   <string name="action_clear_history">履歴をクリア</string>
   <string name="clear_conversation_history">会話履歴をクリア</string>
+  <string name="clear_histor_msg">この会話のすべてのメッセージを削除してもよろしいですか?\n\n<b>警告:</b> これは、他のデバイスやサーバーに保存されているメッセージのコピーは削除しません。</string>
   <string name="delete_file_dialog">ファイルを削除</string>
+  <string name="delete_file_dialog_msg">このファイルを削除してもよろしいですか?\n\n<b>警告:</b> これは、他のデバイスやサーバーに保存されているファイルのコピーは削除しません。</string>
+  <string name="also_end_conversation">その後、この会話を閉じる</string>
   <string name="choose_presence">デバイスを選択</string>
   <string name="send_unencrypted_message">暗号化されていないメッセージを送信</string>
   <string name="send_message">メッセージを送信</string>
@@ -118,8 +122,11 @@
   <string name="pref_confirm_messages">メッセージの確認</string>
   <string name="pref_confirm_messages_summary">あなたがメッセージを受信して読んだときに、連絡先に知らせます</string>
   <string name="pref_ui_options">UI</string>
+  <string name="openpgp_error">OpenKeychain がエラーを報告しました。</string>
+  <string name="bad_key_for_encryption">暗号化の鍵が不正です。</string>
   <string name="accept">受付</string>
   <string name="error">エラーが発生しました</string>
+  <string name="recording_error">エラー</string>
   <string name="your_account">あなたのアカウント</string>
   <string name="send_presence_updates">参加アップデートを送信</string>
   <string name="receive_presence_updates">参加アップデートを受信</string>
@@ -148,6 +155,7 @@
   <string name="account_status_policy_violation">ポリシー違反</string>
   <string name="account_status_incompatible_server">互換性のないサーバー</string>
   <string name="account_status_stream_error">ストリーム エラー</string>
+  <string name="account_status_stream_opening_error">ストリームを開く際にエラー</string>
   <string name="encryption_choice_unencrypted">暗号化されていない</string>
   <string name="encryption_choice_otr">OTR</string>
   <string name="encryption_choice_pgp">OpenPGP</string>
@@ -220,13 +228,20 @@
   <string name="conference_address_example">room@conference.example.com/nick</string>
   <string name="save_as_bookmark">ブックマークとして保存</string>
   <string name="delete_bookmark">ブックマークを削除</string>
+  <string name="destroy_room">グループチャットを破棄する</string>
+  <string name="destroy_room_dialog">このグループチャットを破棄してもよろしいですか?\n\n<b>警告:</b> グループチャットはサーバーから完全に削除されます。</string>
+  <string name="could_not_destroy_room">グループチャットを削除できません</string>
   <string name="bookmark_already_exists">このブックマークはすでに存在します</string>
   <string name="action_edit_subject">談話室の題を編集</string>
+  <string name="topic">トピック</string>
   <string name="joining_conference">談話室に参加しています…</string>
   <string name="leave">退出</string>
   <string name="contact_added_you">連絡先があなたを連絡先リストに追加しました</string>
   <string name="add_back">戻りを追加</string>
   <string name="contact_has_read_up_to_this_point">%s はここまで読みました</string>
+  <string name="contacts_have_read_up_to_this_point">%s はここまで読みました</string>
+  <string name="contacts_and_n_more_have_read_up_to_this_point">%1$s +%2$d 以上ここまで読みました</string>
+  <string name="everyone_has_read_up_to_this_point">全員ここまで読みました</string>
   <string name="publish">公開</string>
   <string name="touch_to_choose_picture">アバターをタッチしてギャラリーから画像を選択します</string>
   <string name="publishing">公開中…</string>
@@ -256,6 +271,7 @@
   <string name="pref_allow_message_correction_summary">連絡先が、遡及的に自分のメッセージを編集することを許可します</string>
   <string name="pref_expert_options">エキスパート設定</string>
   <string name="pref_expert_options_summary">ご利用は注意してください</string>
+  <string name="title_activity_about_x">%s について</string>
   <string name="title_pref_quiet_hours">消音時間</string>
   <string name="title_pref_quiet_hours_start_time">開始時間</string>
   <string name="title_pref_quiet_hours_end_time">終了時間</string>
@@ -266,9 +282,12 @@
   <string name="pref_use_indicate_received_summary">サポートされている場合、受信したメッセージに緑色のチェックマークが付きます</string>
   <string name="pref_use_send_button_to_indicate_status_summary">送信ボタンに連絡先ステータスを示す色が付きます</string>
   <string name="pref_expert_options_other">その他</string>
+  <string name="pref_autojoin">ブックマークと同期</string>
+  <string name="pref_autojoin_summary">ブックマークの自動参加フラグに従って、グループチャットに参加したり退席します。</string>
   <string name="toast_message_omemo_fingerprint">OMEMO フィンガープリントをクリップボードにコピーしました!</string>
   <string name="conference_banned">この談話室から締め出されています</string>
   <string name="conference_members_only">この談話室はメンバー制です</string>
+  <string name="conference_resource_constraint">リソース制約</string>
   <string name="conference_kicked">この談話室から蹴り出されています</string>
   <string name="conference_shutdown">このグループチャットは閉鎖されました</string>
   <string name="conference_unknown_error">既にこの談話室に参加していません</string>
@@ -279,10 +298,14 @@
   <string name="check_x_filesize_on_host">%2$s で %1$s のサイズを確認</string>
   <string name="message_options">メッセージオプション</string>
   <string name="quote">引用</string>
+  <string name="paste_as_quote">引用として貼り付け</string>
   <string name="copy_original_url">元の URL をコピー</string>
   <string name="send_again">再送</string>
   <string name="file_url">ファイル URL</string>
   <string name="url_copied_to_clipboard">URL をクリップボードにコピーしました</string>
+  <string name="jabber_id_copied_to_clipboard">Jabber ID をクリップボードにコピーしました</string>
+  <string name="error_message_copied_to_clipboard">エラーメッセージをクリップボードにコピーしました</string>
+  <string name="web_address">ウェブアドレス</string>
   <string name="scan_qr_code">2D バーコードをスキャン</string>
   <string name="show_qr_code">2D バーコードを表示</string>
   <string name="show_block_list">ブロックリストを表示</string>
@@ -307,6 +330,9 @@
   <string name="file_transmission_failed">ファイル転送に失敗しました</string>
   <string name="file_deleted">ファイルを削除しました</string>
   <string name="no_application_found_to_open_file">ファイルを開くアプリケーションが見つかりません</string>
+  <string name="no_application_found_to_open_link">リンクを開くアプリケーションが見つかりません</string>
+  <string name="no_application_found_to_view_contact">連絡先を表示するアプリケーションが見つかりません</string>
+  <string name="pref_show_dynamic_tags">ダイナミック タグ</string>
   <string name="pref_show_dynamic_tags_summary">連絡先の下に、読み取り専用タグを表示します</string>
   <string name="enable_notifications">通知を有効にする</string>
   <string name="no_conference_server_found">談話室のサーバーが見つかりませんでした</string>
@@ -318,6 +344,7 @@
   <string name="clear_other_devices_desc">OMEMO のアナウンスから他のすべてのデバイスをクリアしてもよろしいですか? お使いのデバイスが次回接続したとき、それらは自分自身を再アナウンスしますが、それらはその間に送信されたメッセージを受信できない場合があります。</string>
   <string name="error_no_keys_to_trust_server_error">この連絡先で使用可能な鍵がありません。\nサーバーから新しい鍵を取得できませんでした。連絡先のサーバーに問題がある可能性があります。</string>
   <string name="error_no_keys_to_trust_presence">この連絡先で利用可能な鍵はありません。\n相互存在サブスクリプションあることを確認してください。</string>
+  <string name="error_trustkeys_title">何か問題が発生しました。</string>
   <string name="fetching_history_from_server">サーバーから履歴を取得中</string>
   <string name="no_more_history_on_server">サーバーにこれ以上履歴はありません</string>
   <string name="updating">アップデート中…</string>
@@ -339,10 +366,14 @@
   <string name="remove_membership">メンバーシップを取消</string>
   <string name="grant_admin_privileges">管理者権限を付与</string>
   <string name="remove_admin_privileges">管理者権限を取消</string>
+  <string name="remove_from_room">グループチャットから削除</string>
   <string name="could_not_change_affiliation">%s の所属を変更できません</string>
   <string name="ban_from_conference">談話室から蹴り出す</string>
+  <string name="removing_from_public_conference">公開グループチャットから %s を削除しようとしています。これを行う唯一の方法は、永久にそのユーザーを禁止することです。</string>
   <string name="ban_now">今すぐ禁止</string>
   <string name="could_not_change_role">%s の役割を変更できません</string>
+  <string name="public_conference">公開アクセス可能なグループチャット</string>
+  <string name="private_conference">プライベート、メンバーのみグループチャット</string>
   <string name="conference_options">談話室のオプション</string>
   <string name="members_only">プライベート、メンバーのみ</string>
   <string name="non_anonymous">匿名でない</string>
@@ -352,6 +383,7 @@
   <string name="could_not_modify_conference_options">談話室のオプションを変更できませんでした</string>
   <string name="never">なし</string>
   <string name="until_further_notice">通知があるまで</string>
+  <string name="snooze">スヌーズ</string>
   <string name="reply">返信する</string>
   <string name="mark_as_read">既読にする</string>
   <string name="pref_input_options">入力</string>
@@ -398,6 +430,8 @@
   <string name="none">なし</string>
   <string name="recently_used">最近使用した</string>
   <string name="choose_quick_action">クイックアクションの選択</string>
+  <string name="search_contacts">連絡先を検索</string>
+  <string name="search_groups">グループチャットを検索</string>
   <string name="send_private_message">プライベートメッセージを送信</string>
   <string name="user_has_left_conference">%1$s は談話室を退出しました</string>
   <string name="username">ユーザー名</string>
@@ -411,6 +445,7 @@
   <string name="account_status_bind_failure">バインド失敗</string>
   <string name="account_status_host_unknown">サーバーがドメインに対応しません</string>
   <string name="server_info_broken">壊れています</string>
+  <string name="pref_presence_settings">可用性</string>
   <string name="pref_away_when_screen_off">画面がオフのときは離席</string>
   <string name="pref_away_when_screen_off_summary">画面がオフになっているとき、リソースを離席としてマークします</string>
   <string name="pref_dnd_on_silent_mode">サイレントモード時 “邪魔しないで”</string>
@@ -452,11 +487,16 @@
   <string name="shared_image_with_x">%s で画像を共有</string>
   <string name="shared_images_with_x">%s で画像を共有</string>
   <string name="shared_text_with_x">%s でテキストを共有</string>
+  <string name="no_storage_permission">Conversations は外部ストレージにアクセスが必要です</string>
+  <string name="no_camera_permission">Conversations はカメラにアクセスが必要です</string>
   <string name="sync_with_contacts">連絡先と同期</string>
+  <string name="sync_with_contacts_long">Conversations は氏名とアバターを表示するために、サーバーサイドのアドレス帳をローカルのアドレス帳を一致させようとします。\n\nConversations は、サーバーにアップロードすることなく、ローカルの連絡先を読み込んで一致させるだけです。\n\n今、連絡先へのアクセス許可を付与するように求められます。</string>
   <string name="notify_on_all_messages">すべてのメッセージで通知</string>
   <string name="notify_only_when_highlighted">メンションされたときにのみ通知</string>
   <string name="notify_never">通知は無効</string>
   <string name="notify_paused">通知は一時停止</string>
+  <string name="pref_picture_compression">画像の圧縮</string>
+  <string name="pref_picture_compression_summary">画像のサイズ変更と圧縮</string>
   <string name="always">常に</string>
   <string name="automatically">自動</string>
   <string name="battery_optimizations_enabled">バッテリー最適化が有効</string>
@@ -638,4 +678,5 @@
   <string name="requesting_sms">SMSを要求しています…</string>
   <string name="something_went_wrong_processing_your_request">要求の処理中に、何か問題が発生しました。</string>
   <string name="reject_request">要求を拒否</string>
+  <string name="set_profile_picture">Conversations プロフィール写真</string>
 </resources>
