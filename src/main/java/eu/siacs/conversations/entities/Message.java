@@ -491,7 +491,7 @@ public class Message extends AbstractEntity {
 		return Collections.unmodifiableSet(this.readByMarkers);
 	}
 
-	public boolean similar(Message message) {
+	boolean similar(Message message) {
 		if (type != TYPE_PRIVATE && this.serverMsgId != null && message.getServerMsgId() != null) {
 			return this.serverMsgId.equals(message.getServerMsgId()) || Edited.wasPreviouslyEditedServerMsgId(edits, message.getServerMsgId());
 		} else if (Edited.wasPreviouslyEditedServerMsgId(edits, message.getServerMsgId())) {
