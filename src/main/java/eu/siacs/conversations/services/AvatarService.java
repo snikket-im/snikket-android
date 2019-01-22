@@ -511,7 +511,11 @@ public class AvatarService implements OnAdvancedStreamFeaturesLoaded {
 		return bitmap;
 	}
 
-	private Bitmap getImpl(final String name, final String seed, final int size) {
+	public static Bitmap get(final Jid jid, final int size) {
+		return getImpl(jid.asBareJid().toEscapedString(), null, size);
+	}
+
+	private static Bitmap getImpl(final String name, final String seed, final int size) {
 		Bitmap bitmap = Bitmap.createBitmap(size, size, Bitmap.Config.ARGB_8888);
 		Canvas canvas = new Canvas(bitmap);
 		final String trimmedName = name == null ? "" : name.trim();
@@ -528,7 +532,7 @@ public class AvatarService implements OnAdvancedStreamFeaturesLoaded {
 		return PREFIX_GENERIC + "_" + name + "_" + String.valueOf(size);
 	}
 
-	private boolean drawTile(Canvas canvas, String letter, int tileColor, int left, int top, int right, int bottom) {
+	private static boolean drawTile(Canvas canvas, String letter, int tileColor, int left, int top, int right, int bottom) {
 		letter = letter.toUpperCase(Locale.getDefault());
 		Paint tilePaint = new Paint(), textPaint = new Paint();
 		tilePaint.setColor(tileColor);
@@ -591,7 +595,7 @@ public class AvatarService implements OnAdvancedStreamFeaturesLoaded {
 		return drawTile(canvas, name, name, left, top, right, bottom);
 	}
 
-	private boolean drawTile(Canvas canvas, String name, String seed, int left, int top, int right, int bottom) {
+	private static boolean drawTile(Canvas canvas, String name, String seed, int left, int top, int right, int bottom) {
 		if (name != null) {
 			final String letter = getFirstLetter(name);
 			final int color = UIHelper.getColorForName(seed == null ? name : seed);

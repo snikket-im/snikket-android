@@ -245,7 +245,8 @@
         <activity android:name=".ui.MediaBrowserActivity"
             android:label="@string/media_browser"/>
 
-        <service android:name=".services.ExportLogsService"/>
+        <service android:name=".services.ExportBackupService"/>
+        <service android:name=".services.ImportBackupService"/>
         <service
             android:name=".services.ContactChooserTargetService"
             android:permission="android.permission.BIND_CHOOSER_TARGET_SERVICE">

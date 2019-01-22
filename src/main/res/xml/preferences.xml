@@ -330,9 +330,9 @@
                     android:summary="@string/pref_keep_foreground_service_summary"
                     android:title="@string/pref_keep_foreground_service" />
                 <Preference
-                    android:key="export_logs"
-                    android:summary="@string/pref_export_logs_summary"
-                    android:title="@string/pref_export_logs" />
+                    android:key="create_backup"
+                    android:summary="@string/pref_create_backup_summary"
+                    android:title="@string/pref_create_backup" />
             </PreferenceCategory>
         </PreferenceScreen>
 

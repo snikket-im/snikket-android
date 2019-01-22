@@ -6,9 +6,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:paddingLeft="?attr/dialog_horizontal_padding"
-        android:paddingRight="?attr/dialog_horizontal_padding"
-        android:paddingTop="?attr/dialog_vertical_padding">
+        android:padding="?dialogPreferredPadding">
 
         <android.support.design.widget.TextInputLayout
             android:id="@+id/input_layout"

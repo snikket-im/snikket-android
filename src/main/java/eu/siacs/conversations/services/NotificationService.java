@@ -112,6 +112,8 @@ public class NotificationService {
             return;
         }
 
+        notificationManager.deleteNotificationChannel("export");
+
         notificationManager.createNotificationChannelGroup(new NotificationChannelGroup("status", c.getString(R.string.notification_group_status_information)));
         notificationManager.createNotificationChannelGroup(new NotificationChannelGroup("chats", c.getString(R.string.notification_group_messages)));
         final NotificationChannel foregroundServiceChannel = new NotificationChannel("foreground",
@@ -136,8 +138,8 @@ public class NotificationService {
         videoCompressionChannel.setGroup("status");
         notificationManager.createNotificationChannel(videoCompressionChannel);
 
-        final NotificationChannel exportChannel = new NotificationChannel("export",
-                c.getString(R.string.export_channel_name),
+        final NotificationChannel exportChannel = new NotificationChannel("backup",
+                c.getString(R.string.backup_channel_name),
                 NotificationManager.IMPORTANCE_LOW);
         exportChannel.setShowBadge(false);
         exportChannel.setGroup("status");

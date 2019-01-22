@@ -21,8 +21,6 @@ import android.preference.PreferenceManager;
 import android.preference.PreferenceScreen;
 import android.provider.MediaStore;
 import android.util.Log;
-import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Toast;
 
 import java.io.File;
@@ -36,7 +34,8 @@ import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.crypto.OmemoSetting;
 import eu.siacs.conversations.entities.Account;
-import eu.siacs.conversations.services.ExportLogsService;
+import eu.siacs.conversations.persistance.FileBackend;
+import eu.siacs.conversations.services.ExportBackupService;
 import eu.siacs.conversations.services.MemorizingTrustManager;
 import eu.siacs.conversations.services.QuickConversationsService;
 import eu.siacs.conversations.ui.util.StyledAttributes;
@@ -59,7 +58,7 @@ public class SettingsActivity extends XmppActivity implements
 	public static final String SHOW_DYNAMIC_TAGS = "show_dynamic_tags";
 	public static final String OMEMO_SETTING = "omemo";
 
-	public static final int REQUEST_WRITE_LOGS = 0xbf8701;
+	public static final int REQUEST_CREATE_BACKUP = 0xbf8701;
 	private SettingsFragment mSettingsFragment;
 
 	@Override
@@ -219,11 +218,12 @@ public class SettingsActivity extends XmppActivity implements
 			});
 		}
 
-		final Preference exportLogsPreference = mSettingsFragment.findPreference("export_logs");
-		if (exportLogsPreference != null) {
-			exportLogsPreference.setOnPreferenceClickListener(preference -> {
-				if (hasStoragePermission(REQUEST_WRITE_LOGS)) {
-					startExport();
+		final Preference createBackupPreference = mSettingsFragment.findPreference("create_backup");
+		if (createBackupPreference != null) {
+			createBackupPreference.setSummary(getString(R.string.pref_create_backup_summary, FileBackend.getBackupDirectory(this)));
+			createBackupPreference.setOnPreferenceClickListener(preference -> {
+				if (hasStoragePermission(REQUEST_CREATE_BACKUP)) {
+					createBackup();
 				}
 				return true;
 			});
@@ -399,16 +399,16 @@ public class SettingsActivity extends XmppActivity implements
 	public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
 		if (grantResults.length > 0)
 			if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-				if (requestCode == REQUEST_WRITE_LOGS) {
-					startExport();
+				if (requestCode == REQUEST_CREATE_BACKUP) {
+					createBackup();
 				}
 			} else {
 				Toast.makeText(this, R.string.no_storage_permission, Toast.LENGTH_SHORT).show();
 			}
 	}
 
-	private void startExport() {
-		ContextCompat.startForegroundService(this, new Intent(this, ExportLogsService.class));
+	private void createBackup() {
+		ContextCompat.startForegroundService(this, new Intent(this, ExportBackupService.class));
 	}
 
 	private void displayToast(final String msg) {
