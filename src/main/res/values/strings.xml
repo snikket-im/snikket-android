@@ -317,7 +317,7 @@
     <string name="pref_create_backup">Create backup</string>
     <string name="pref_create_backup_summary">Write backup files to %s</string>
     <string name="notification_create_backup_title">Creating backup files</string>
-    <string name="notification_restore_backup_title">Restoring backup</string>
+    <string name="restoring_backup">Restoring backup</string>
     <string name="notification_restored_backup_title">Your backup has been restored</string>
     <string name="notification_restored_backup_subtitle">Do not forget to enable the account.</string>
     <string name="choose_file">Choose file</string>
@@ -816,7 +816,7 @@
     <string name="restore">Restore</string>
     <string name="enter_password_to_restore">Enter your password for the account %s to restore the backup.</string>
     <string name="restore_warning">Do not use the restore backup feature in an attempt to clone (run simultaneously) an installation. Restoring a backup is only meant for migrations or in case you’ve lost the original device.</string>
-    <string name="unable_to_restore_backup">Unable to restore backup</string>
-    <string name="unable_to_decrypt_backup">Unable to decrypt backup</string>
-    <string name="backup_channel_name"><![CDATA[Backup & Restore]]></string>
+    <string name="unable_to_restore_backup">Unable to restore backup.</string>
+    <string name="unable_to_decrypt_backup">Unable to decrypt backup. Is the password correct?</string>
+    <string name="backup_channel_name">Backup &amp; Restore</string>
 </resources>
