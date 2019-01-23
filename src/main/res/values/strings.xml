@@ -400,7 +400,6 @@
     <string name="pdf_document">PDF document</string>
     <string name="apk">Android App</string>
     <string name="vcard">Contact</string>
-    <string name="touch_to_open_conversations">Touch to open Conversations</string>
     <string name="avatar_has_been_published">Avatar has been published!</string>
     <string name="sending_x_file">Sending %s</string>
     <string name="offering_x_file">Offering %s</string>

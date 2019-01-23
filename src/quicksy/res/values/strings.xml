@@ -7,7 +7,6 @@
     <string name="contacts_have_no_pgp_keys">Quicksy is unable to encrypt your messages because your contacts are not announcing their public key.\n\n<small>Please ask your contacts to setup OpenPGP.</small></string>
     <string name="pref_notification_grace_period_summary">The length of time Quicksy keeps quiet after seeing activity on another device</string>
     <string name="pref_never_send_crash_summary">By sending in stack traces you are helping the ongoing development of Quicksy</string>
-    <string name="touch_to_open_conversations">Touch to open Quicksy</string>
     <string name="no_storage_permission">Quicksy needs access to external storage</string>
     <string name="no_camera_permission">Quicksy needs access to the camera</string>
     <string name="battery_optimizations_enabled_explained">Your device is doing some heavy battery optimizations on Quicksy that might lead to delayed notifications or even message loss.\nIt is recommended to disable those.</string>

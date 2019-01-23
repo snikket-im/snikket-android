@@ -51,7 +51,6 @@ public final class Config {
 
 	//Notification settings
 	public static final boolean HIDE_MESSAGE_TEXT_IN_NOTIFICATION = false;
-	public static final boolean SHOW_CONNECTED_ACCOUNTS = false; //show number of connected accounts in foreground notification
 	public static final boolean ALWAYS_NOTIFY_BY_DEFAULT = false;
 	public static final boolean SUPPRESS_ERROR_NOTIFICATION = false;
 
