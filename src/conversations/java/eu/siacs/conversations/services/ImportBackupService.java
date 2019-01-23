@@ -103,6 +103,7 @@ public class ImportBackupService extends Service {
 
     public void loadBackupFiles(OnBackupFilesLoaded onBackupFilesLoaded) {
         executor.execute(() -> {
+            List<Jid> accounts = mDatabaseBackend.getAccountJids(false);
             final ArrayList<BackupFile> backupFiles = new ArrayList<>();
             final Set<String> apps = new HashSet<>(Arrays.asList("Conversations", "Quicksy", getString(R.string.app_name)));
             for (String app : apps) {
@@ -114,7 +115,12 @@ public class ImportBackupService extends Service {
                 for (File file : directory.listFiles()) {
                     if (file.isFile() && file.getName().endsWith(".ceb")) {
                         try {
-                            backupFiles.add(BackupFile.read(file));
+                            final BackupFile backupFile = BackupFile.read(file);
+                            if (accounts.contains(backupFile.getHeader().getJid())) {
+                                Log.d(Config.LOGTAG,"skipping backup for "+backupFile.getHeader().getJid());
+                            } else {
+                                backupFiles.add(backupFile);
+                            }
                         } catch (IOException e) {
                             Log.d(Config.LOGTAG, "unable to read backup file ", e);
                         }
@@ -153,7 +159,6 @@ public class ImportBackupService extends Service {
             BufferedReader reader = new BufferedReader(new InputStreamReader(gzipInputStream, "UTF-8"));
             String line;
             StringBuilder multiLineQuery = null;
-            int error = 0;
             while ((line = reader.readLine()) != null) {
                 int count = count(line, '\'');
                 if (multiLineQuery != null) {
@@ -171,7 +176,6 @@ public class ImportBackupService extends Service {
                     }
                 }
             }
-            Log.d(Config.LOGTAG, "done reading file");
             final Jid jid = backupFileHeader.getJid();
             Cursor countCursor = db.rawQuery("select count(messages.uuid) from messages join conversations on conversations.uuid=messages.conversationUuid join accounts on conversations.accountUuid=accounts.uuid where accounts.username=? and accounts.server=?", new String[]{jid.getEscapedLocal(), jid.getDomain()});
             countCursor.moveToFirst();

@@ -917,11 +917,11 @@ public class DatabaseBackend extends SQLiteOpenHelper {
         return getAccounts(db);
     }
 
-    public List<Jid> getAccountJids() {
+    public List<Jid> getAccountJids(final boolean enabledOnly) {
         SQLiteDatabase db = this.getReadableDatabase();
         final List<Jid> jids = new ArrayList<>();
         final String[] columns = new String[]{Account.USERNAME, Account.SERVER};
-        String where = "not options & (1 <<1)";
+        String where = enabledOnly ? "not options & (1 <<1)" : null;
         Cursor cursor = db.query(Account.TABLENAME, columns, where, null, null, null, null);
         try {
             while (cursor.moveToNext()) {

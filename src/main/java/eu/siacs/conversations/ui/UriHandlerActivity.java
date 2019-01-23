@@ -85,7 +85,7 @@ public class UriHandlerActivity extends AppCompatActivity {
     private void handleUri(Uri uri, final boolean scanned) {
         final Intent intent;
         final XmppUri xmppUri = new XmppUri(uri);
-        final List<Jid> accounts = DatabaseBackend.getInstance(this).getAccountJids(); //TODO only look at enabled accounts
+        final List<Jid> accounts = DatabaseBackend.getInstance(this).getAccountJids(true);
 
         if (accounts.size() == 0) {
             if (xmppUri.isJidValid()) {
