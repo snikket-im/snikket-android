@@ -3,21 +3,25 @@ package eu.siacs.conversations.ui;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
-import android.support.v4.content.ContextCompat;
+import android.support.annotation.NonNull;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
+import android.widget.Toast;
 
 import java.util.List;
 
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.entities.Account;
-import eu.siacs.conversations.services.ImportBackupService;
-import eu.siacs.conversations.utils.XmppUri;
+
+import static eu.siacs.conversations.utils.PermissionUtils.allGranted;
+import static eu.siacs.conversations.utils.PermissionUtils.writeGranted;
 
 public class WelcomeActivity extends XmppActivity {
+
+    private static final int REQUEST_IMPORT_BACKUP = 0x63fb;
 
     @Override
     protected void refreshUiReal() {
@@ -90,10 +94,32 @@ public class WelcomeActivity extends XmppActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.action_import_backup) {
-            startActivity(new Intent(this, ImportBackupActivity.class));
+            if (hasStoragePermission(REQUEST_IMPORT_BACKUP)) {
+                startActivity(new Intent(this, ImportBackupActivity.class));
+            }
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String permissions[], @NonNull int[] grantResults) {
+        if (grantResults.length > 0) {
+            if (allGranted(grantResults)) {
+                switch (requestCode) {
+                    case REQUEST_IMPORT_BACKUP:
+                        startActivity(new Intent(this, ImportBackupActivity.class));
+                        break;
+                }
+            } else {
+                Toast.makeText(this, R.string.no_storage_permission, Toast.LENGTH_SHORT).show();
+            }
+        }
+        if (writeGranted(grantResults, permissions)) {
+            if (xmppConnectionService != null) {
+                xmppConnectionService.restartFileObserver();
+            }
+        }
     }
 
     public void addInviteUri(Intent intent) {

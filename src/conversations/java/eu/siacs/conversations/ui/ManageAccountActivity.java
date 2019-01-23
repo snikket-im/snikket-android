@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.security.KeyChain;
 import android.security.KeyChainAliasCallback;
+import android.support.annotation.NonNull;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.util.Pair;
@@ -35,9 +36,14 @@ import eu.siacs.conversations.ui.util.MenuDoubleTabUtil;
 import eu.siacs.conversations.xmpp.XmppConnection;
 import rocks.xmpp.addr.Jid;
 
+import static eu.siacs.conversations.utils.PermissionUtils.allGranted;
+import static eu.siacs.conversations.utils.PermissionUtils.writeGranted;
+
 public class ManageAccountActivity extends XmppActivity implements OnAccountUpdate, KeyChainAliasCallback, XmppConnectionService.OnAccountCreated, AccountAdapter.OnTglAccountState {
 
     private final String STATE_SELECTED_ACCOUNT = "selected_account";
+
+    private static final int REQUEST_IMPORT_BACKUP = 0x63fb;
 
     protected Account selectedAccount = null;
     protected Jid selectedAccountJid = null;
@@ -201,7 +207,9 @@ public class ManageAccountActivity extends XmppActivity implements OnAccountUpda
                 startActivity(new Intent(this, EditAccountActivity.class));
                 break;
             case R.id.action_import_backup:
-                startActivity(new Intent(this, ImportBackupActivity.class));
+                if (hasStoragePermission(REQUEST_IMPORT_BACKUP)) {
+                    startActivity(new Intent(this, ImportBackupActivity.class));
+                }
                 break;
             case R.id.action_disable_all:
                 disableAllAccounts();
@@ -216,6 +224,27 @@ public class ManageAccountActivity extends XmppActivity implements OnAccountUpda
                 break;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String permissions[], @NonNull int[] grantResults) {
+        if (grantResults.length > 0) {
+            if (allGranted(grantResults)) {
+                switch (requestCode) {
+                    case REQUEST_IMPORT_BACKUP:
+                        startActivity(new Intent(this, ImportBackupActivity.class));
+                        break;
+                }
+            } else {
+                Toast.makeText(this, R.string.no_storage_permission, Toast.LENGTH_SHORT).show();
+            }
+        }
+        if (writeGranted(grantResults, permissions)) {
+            if (xmppConnectionService != null) {
+                xmppConnectionService.restartFileObserver();
+            }
+        }
     }
 
     @Override

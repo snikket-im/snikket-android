@@ -5,6 +5,7 @@ import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Binder;
 import android.os.IBinder;
@@ -20,13 +21,13 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.WeakHashMap;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.zip.GZIPInputStream;
 
-import javax.crypto.AEADBadTagException;
 import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
 import javax.crypto.CipherInputStream;
@@ -41,6 +42,7 @@ import eu.siacs.conversations.ui.ManageAccountActivity;
 import eu.siacs.conversations.utils.BackupFileHeader;
 import eu.siacs.conversations.utils.Compatibility;
 import eu.siacs.conversations.utils.SerialSingleThreadExecutor;
+import rocks.xmpp.addr.Jid;
 
 import static eu.siacs.conversations.services.ExportBackupService.CIPHERMODE;
 import static eu.siacs.conversations.services.ExportBackupService.KEYTYPE;
@@ -49,13 +51,10 @@ import static eu.siacs.conversations.services.ExportBackupService.PROVIDER;
 public class ImportBackupService extends Service {
 
     private static final int NOTIFICATION_ID = 21;
-
+    private static AtomicBoolean running = new AtomicBoolean(false);
     private final ImportBackupServiceBinder binder = new ImportBackupServiceBinder();
     private final SerialSingleThreadExecutor executor = new SerialSingleThreadExecutor(getClass().getSimpleName());
-
     private final Set<OnBackupProcessed> mOnBackupProcessedListeners = Collections.newSetFromMap(new WeakHashMap<>());
-
-    private static AtomicBoolean running = new AtomicBoolean(false);
     private DatabaseBackend mDatabaseBackend;
     private NotificationManager notificationManager;
 
@@ -85,7 +84,6 @@ public class ImportBackupService extends Service {
         if (password == null || file == null) {
             return START_NOT_STICKY;
         }
-        Log.d(Config.LOGTAG, "on start command");
         if (running.compareAndSet(false, true)) {
             executor.execute(() -> {
                 startForegroundService();
@@ -106,7 +104,8 @@ public class ImportBackupService extends Service {
     public void loadBackupFiles(OnBackupFilesLoaded onBackupFilesLoaded) {
         executor.execute(() -> {
             final ArrayList<BackupFile> backupFiles = new ArrayList<>();
-            for (String app : Arrays.asList("Conversations", "Quicksy")) {
+            final Set<String> apps = new HashSet<>(Arrays.asList("Conversations", "Quicksy", getString(R.string.app_name)));
+            for (String app : apps) {
                 final File directory = new File(FileBackend.getBackupDirectory(app));
                 if (!directory.exists() || !directory.isDirectory()) {
                     Log.d(Config.LOGTAG, "directory not found: " + directory.getAbsolutePath());
@@ -154,9 +153,11 @@ public class ImportBackupService extends Service {
             BufferedReader reader = new BufferedReader(new InputStreamReader(gzipInputStream, "UTF-8"));
             String line;
             StringBuilder multiLineQuery = null;
+            int error = 0;
             while ((line = reader.readLine()) != null) {
                 int count = count(line, '\'');
                 if (multiLineQuery != null) {
+                    multiLineQuery.append('\n');
                     multiLineQuery.append(line);
                     if (count % 2 == 1) {
                         db.execSQL(multiLineQuery.toString());
@@ -171,6 +172,12 @@ public class ImportBackupService extends Service {
                 }
             }
             Log.d(Config.LOGTAG, "done reading file");
+            final Jid jid = backupFileHeader.getJid();
+            Cursor countCursor = db.rawQuery("select count(messages.uuid) from messages join conversations on conversations.uuid=messages.conversationUuid join accounts on conversations.accountUuid=accounts.uuid where accounts.username=? and accounts.server=?", new String[]{jid.getEscapedLocal(), jid.getDomain()});
+            countCursor.moveToFirst();
+            int count = countCursor.getInt(0);
+            Log.d(Config.LOGTAG, "restored " + count + " messages");
+            countCursor.close();
             stopBackgroundService();
             synchronized (mOnBackupProcessedListeners) {
                 for (OnBackupProcessed l : mOnBackupProcessedListeners) {
@@ -207,7 +214,7 @@ public class ImportBackupService extends Service {
                 .setAutoCancel(true)
                 .setContentIntent(PendingIntent.getActivity(this, 145, new Intent(this, ManageAccountActivity.class), PendingIntent.FLAG_UPDATE_CURRENT))
                 .setSmallIcon(R.drawable.ic_unarchive_white_24dp);
-        notificationManager.notify(NOTIFICATION_ID,mBuilder.build());
+        notificationManager.notify(NOTIFICATION_ID, mBuilder.build());
     }
 
     private void stopBackgroundService() {
@@ -230,6 +237,18 @@ public class ImportBackupService extends Service {
     @Override
     public IBinder onBind(Intent intent) {
         return this.binder;
+    }
+
+    public interface OnBackupFilesLoaded {
+        void onBackupFilesLoaded(List<BackupFile> files);
+    }
+
+    public interface OnBackupProcessed {
+        void onBackupRestored();
+
+        void onBackupDecryptionFailed();
+
+        void onBackupRestoreFailed();
     }
 
     public static class BackupFile {
@@ -262,15 +281,5 @@ public class ImportBackupService extends Service {
         public ImportBackupService getService() {
             return ImportBackupService.this;
         }
-    }
-
-    public interface OnBackupFilesLoaded {
-        void onBackupFilesLoaded(List<BackupFile> files);
-    }
-
-    public interface OnBackupProcessed {
-        void onBackupRestored();
-        void onBackupDecryptionFailed();
-        void onBackupRestoreFailed();
     }
 }

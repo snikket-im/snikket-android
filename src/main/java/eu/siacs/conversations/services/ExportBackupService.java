@@ -49,33 +49,14 @@ public class ExportBackupService extends Service {
     public static final String PROVIDER = "BC";
 
     private static final int NOTIFICATION_ID = 19;
+    private static final int PAGE_SIZE = 20;
     private static AtomicBoolean running = new AtomicBoolean(false);
     private DatabaseBackend mDatabaseBackend;
     private List<Account> mAccounts;
     private NotificationManager notificationManager;
 
-    @Override
-    public void onCreate() {
-        mDatabaseBackend = DatabaseBackend.getInstance(getBaseContext());
-        mAccounts = mDatabaseBackend.getAccounts();
-        notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-    }
-
-    @Override
-    public int onStartCommand(Intent intent, int flags, int startId) {
-        if (running.compareAndSet(false, true)) {
-            new Thread(() -> {
-                export();
-                stopForeground(true);
-                running.set(false);
-                stopSelf();
-            }).start();
-        }
-        return START_NOT_STICKY;
-    }
-
     private static void accountExport(SQLiteDatabase db, String uuid, PrintWriter writer) {
-        StringBuilder builder = new StringBuilder();
+        final StringBuilder builder = new StringBuilder();
         final Cursor accountCursor = db.query(Account.TABLENAME, null, Account.UUID + "=?", new String[]{uuid}, null, null, null);
         while (accountCursor != null && accountCursor.moveToNext()) {
             builder.append("INSERT INTO ").append(Account.TABLENAME).append("(");
@@ -95,10 +76,8 @@ public class ExportBackupService extends Service {
                     builder.append("NULL");
                 } else if (value.matches("\\d+")) {
                     int intValue = Integer.parseInt(value);
-                    Log.d(Config.LOGTAG,"reading int value. "+intValue);
                     if (Account.OPTIONS.equals(accountCursor.getColumnName(i))) {
                         intValue |= 1 << Account.OPTION_DISABLED;
-                        Log.d(Config.LOGTAG,"modified int value "+intValue);
                     }
                     builder.append(intValue);
                 } else {
@@ -109,99 +88,19 @@ public class ExportBackupService extends Service {
             builder.append(';');
             builder.append('\n');
         }
-        Log.d(Config.LOGTAG,builder.toString());
         if (accountCursor != null) {
             accountCursor.close();
         }
         writer.append(builder.toString());
     }
 
-    private void messageExport(SQLiteDatabase db, String uuid, PrintWriter writer, Progress progress) {
-        Cursor cursor = db.rawQuery("select messages.* from messages join conversations on conversations.uuid=messages.conversationUuid where conversations.accountUuid=?", new String[]{uuid});
-        int size = cursor != null ? cursor.getCount() : 0;
-        Log.d(Config.LOGTAG, "exporting " + size + " messages");
-        int i = 0;
-        int p = 0;
-        while (cursor != null && cursor.moveToNext()) {
-            writer.write(cursorToString(Message.TABLENAME, cursor, 20));
-            if (i + 20 > size) {
-                i = size;
-            } else {
-                i += 20;
-            }
-            final int percentage = i * 100 / size;
-            if (p < percentage) {
-                p = percentage;
-                notificationManager.notify(NOTIFICATION_ID,progress.build(p));
-                Log.d(Config.LOGTAG, "percentage=" + p);
-            }
-        }
-        if (cursor != null) {
-            cursor.close();
-        }
-    }
-
     private static void simpleExport(SQLiteDatabase db, String table, String column, String uuid, PrintWriter writer) {
         final Cursor cursor = db.query(table, null, column + "=?", new String[]{uuid}, null, null, null);
         while (cursor != null && cursor.moveToNext()) {
-            writer.write(cursorToString(table, cursor, 20));
+            writer.write(cursorToString(table, cursor, PAGE_SIZE));
         }
         if (cursor != null) {
             cursor.close();
-        }
-    }
-
-    private void export() {
-        NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(getBaseContext(), "backup");
-        mBuilder.setContentTitle(getString(R.string.notification_create_backup_title))
-                .setSmallIcon(R.drawable.ic_archive_white_24dp)
-                .setProgress(1, 0, false);
-        startForeground(NOTIFICATION_ID, mBuilder.build());
-        try {
-            int count = 0;
-            final int max = this.mAccounts.size();
-            final SecureRandom secureRandom = new SecureRandom();
-            for (Account account : this.mAccounts) {
-                final byte[] IV = new byte[12];
-                final byte[] salt = new byte[16];
-                secureRandom.nextBytes(IV);
-                secureRandom.nextBytes(salt);
-                final BackupFileHeader backupFileHeader = new BackupFileHeader(getString(R.string.app_name),account.getJid(),System.currentTimeMillis(),IV,salt);
-                final Progress progress = new Progress(mBuilder, max, count);
-                final File file = new File(FileBackend.getBackupDirectory(this)+account.getJid().asBareJid().toEscapedString()+".ceb");
-                if (file.getParentFile().mkdirs()) {
-                    Log.d(Config.LOGTAG,"created backup directory "+file.getParentFile().getAbsolutePath());
-                }
-                final FileOutputStream fileOutputStream = new FileOutputStream(file);
-                final DataOutputStream dataOutputStream = new DataOutputStream(fileOutputStream);
-                backupFileHeader.write(dataOutputStream);
-                dataOutputStream.flush();
-
-                final Cipher cipher = Compatibility.twentyEight() ? Cipher.getInstance(CIPHERMODE) : Cipher.getInstance(CIPHERMODE, PROVIDER);
-                byte[] key = getKey(account.getPassword(), salt);
-                Log.d(Config.LOGTAG,backupFileHeader.toString());
-                SecretKeySpec keySpec = new SecretKeySpec(key, KEYTYPE);
-                IvParameterSpec ivSpec = new IvParameterSpec(IV);
-                cipher.init(Cipher.ENCRYPT_MODE, keySpec, ivSpec);
-                CipherOutputStream cipherOutputStream = new CipherOutputStream(fileOutputStream, cipher);
-
-                GZIPOutputStream gzipOutputStream = new GZIPOutputStream(cipherOutputStream);
-                PrintWriter writer = new PrintWriter(gzipOutputStream);
-                SQLiteDatabase db = this.mDatabaseBackend.getReadableDatabase();
-                final String uuid = account.getUuid();
-                accountExport(db, uuid, writer);
-                simpleExport(db, Conversation.TABLENAME, Conversation.ACCOUNT, uuid, writer);
-                messageExport(db, uuid, writer, progress);
-                for(String table : Arrays.asList(SQLiteAxolotlStore.PREKEY_TABLENAME, SQLiteAxolotlStore.SIGNED_PREKEY_TABLENAME, SQLiteAxolotlStore.SESSION_TABLENAME, SQLiteAxolotlStore.IDENTITIES_TABLENAME)) {
-                    simpleExport(db, table, SQLiteAxolotlStore.ACCOUNT,uuid,writer);
-                }
-                writer.flush();
-                writer.close();
-                Log.d(Config.LOGTAG, "written backup to " + file.getAbsoluteFile());
-                count++;
-            }
-        } catch (Exception e) {
-            Log.d(Config.LOGTAG, "unable to create backup ", e);
         }
     }
 
@@ -215,8 +114,16 @@ public class ExportBackupService extends Service {
     }
 
     private static String cursorToString(String tablename, Cursor cursor, int max) {
+        return cursorToString(tablename, cursor, max, false);
+    }
+
+    private static String cursorToString(String tablename, Cursor cursor, int max, boolean ignore) {
         StringBuilder builder = new StringBuilder();
-        builder.append("INSERT INTO ").append(tablename).append("(");
+        builder.append("INSERT ");
+        if (ignore) {
+            builder.append("OR IGNORE ");
+        }
+        builder.append("INTO ").append(tablename).append("(");
         for (int i = 0; i < cursor.getColumnCount(); ++i) {
             if (i != 0) {
                 builder.append(',');
@@ -229,7 +136,7 @@ public class ExportBackupService extends Service {
                 builder.append(',');
             }
             appendValues(cursor, builder);
-            if (!cursor.moveToNext()) {
+            if (i < max - 1 && !cursor.moveToNext()) {
                 break;
             }
         }
@@ -258,6 +165,105 @@ public class ExportBackupService extends Service {
     }
 
     @Override
+    public void onCreate() {
+        mDatabaseBackend = DatabaseBackend.getInstance(getBaseContext());
+        mAccounts = mDatabaseBackend.getAccounts();
+        notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+    }
+
+    @Override
+    public int onStartCommand(Intent intent, int flags, int startId) {
+        if (running.compareAndSet(false, true)) {
+            new Thread(() -> {
+                export();
+                stopForeground(true);
+                running.set(false);
+                stopSelf();
+            }).start();
+            return START_STICKY;
+        }
+        return START_NOT_STICKY;
+    }
+
+    private void messageExport(SQLiteDatabase db, String uuid, PrintWriter writer, Progress progress) {
+        Cursor cursor = db.rawQuery("select messages.* from messages join conversations on conversations.uuid=messages.conversationUuid where conversations.accountUuid=?", new String[]{uuid});
+        int size = cursor != null ? cursor.getCount() : 0;
+        Log.d(Config.LOGTAG, "exporting " + size + " messages");
+        int i = 0;
+        int p = 0;
+        while (cursor != null && cursor.moveToNext()) {
+            writer.write(cursorToString(Message.TABLENAME, cursor, PAGE_SIZE, false));
+            if (i + PAGE_SIZE > size) {
+                i = size;
+            } else {
+                i += PAGE_SIZE;
+            }
+            final int percentage = i * 100 / size;
+            if (p < percentage) {
+                p = percentage;
+                notificationManager.notify(NOTIFICATION_ID, progress.build(p));
+            }
+        }
+        if (cursor != null) {
+            cursor.close();
+        }
+    }
+
+    private void export() {
+        NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(getBaseContext(), "backup");
+        mBuilder.setContentTitle(getString(R.string.notification_create_backup_title))
+                .setSmallIcon(R.drawable.ic_archive_white_24dp)
+                .setProgress(1, 0, false);
+        startForeground(NOTIFICATION_ID, mBuilder.build());
+        try {
+            int count = 0;
+            final int max = this.mAccounts.size();
+            final SecureRandom secureRandom = new SecureRandom();
+            for (Account account : this.mAccounts) {
+                final byte[] IV = new byte[12];
+                final byte[] salt = new byte[16];
+                secureRandom.nextBytes(IV);
+                secureRandom.nextBytes(salt);
+                final BackupFileHeader backupFileHeader = new BackupFileHeader(getString(R.string.app_name), account.getJid(), System.currentTimeMillis(), IV, salt);
+                final Progress progress = new Progress(mBuilder, max, count);
+                final File file = new File(FileBackend.getBackupDirectory(this) + account.getJid().asBareJid().toEscapedString() + ".ceb");
+                if (file.getParentFile().mkdirs()) {
+                    Log.d(Config.LOGTAG, "created backup directory " + file.getParentFile().getAbsolutePath());
+                }
+                final FileOutputStream fileOutputStream = new FileOutputStream(file);
+                final DataOutputStream dataOutputStream = new DataOutputStream(fileOutputStream);
+                backupFileHeader.write(dataOutputStream);
+                dataOutputStream.flush();
+
+                final Cipher cipher = Compatibility.twentyEight() ? Cipher.getInstance(CIPHERMODE) : Cipher.getInstance(CIPHERMODE, PROVIDER);
+                byte[] key = getKey(account.getPassword(), salt);
+                Log.d(Config.LOGTAG, backupFileHeader.toString());
+                SecretKeySpec keySpec = new SecretKeySpec(key, KEYTYPE);
+                IvParameterSpec ivSpec = new IvParameterSpec(IV);
+                cipher.init(Cipher.ENCRYPT_MODE, keySpec, ivSpec);
+                CipherOutputStream cipherOutputStream = new CipherOutputStream(fileOutputStream, cipher);
+
+                GZIPOutputStream gzipOutputStream = new GZIPOutputStream(cipherOutputStream);
+                PrintWriter writer = new PrintWriter(gzipOutputStream);
+                SQLiteDatabase db = this.mDatabaseBackend.getReadableDatabase();
+                final String uuid = account.getUuid();
+                accountExport(db, uuid, writer);
+                simpleExport(db, Conversation.TABLENAME, Conversation.ACCOUNT, uuid, writer);
+                messageExport(db, uuid, writer, progress);
+                for (String table : Arrays.asList(SQLiteAxolotlStore.PREKEY_TABLENAME, SQLiteAxolotlStore.SIGNED_PREKEY_TABLENAME, SQLiteAxolotlStore.SESSION_TABLENAME, SQLiteAxolotlStore.IDENTITIES_TABLENAME)) {
+                    simpleExport(db, table, SQLiteAxolotlStore.ACCOUNT, uuid, writer);
+                }
+                writer.flush();
+                writer.close();
+                Log.d(Config.LOGTAG, "written backup to " + file.getAbsoluteFile());
+                count++;
+            }
+        } catch (Exception e) {
+            Log.d(Config.LOGTAG, "unable to create backup ", e);
+        }
+    }
+
+    @Override
     public IBinder onBind(Intent intent) {
         return null;
     }
@@ -274,7 +280,7 @@ public class ExportBackupService extends Service {
         }
 
         private Notification build(int percentage) {
-            builder.setProgress(max * 100,count * 100 + percentage,false);
+            builder.setProgress(max * 100, count * 100 + percentage, false);
             return builder.build();
         }
     }
