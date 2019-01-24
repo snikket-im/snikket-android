@@ -97,17 +97,21 @@ public class AccountAdapter extends ArrayAdapter<Account> {
         }
     }
 
-    class BitmapWorkerTask extends AsyncTask<Account, Void, Bitmap> {
+    private static class BitmapWorkerTask extends AsyncTask<Account, Void, Bitmap> {
         private final WeakReference<ImageView> imageViewReference;
         private Account account = null;
 
-        public BitmapWorkerTask(ImageView imageView) {
+        BitmapWorkerTask(ImageView imageView) {
             imageViewReference = new WeakReference<>(imageView);
         }
 
         @Override
         protected Bitmap doInBackground(Account... params) {
             this.account = params[0];
+            final XmppActivity activity = XmppActivity.find(imageViewReference);
+            if (activity == null) {
+                return null;
+            }
             return activity.avatarService().get(this.account, activity.getPixel(48), isCancelled());
         }
 
@@ -123,7 +127,7 @@ public class AccountAdapter extends ArrayAdapter<Account> {
         }
     }
 
-    public void loadAvatar(Account account, ImageView imageView) {
+    private void loadAvatar(Account account, ImageView imageView) {
         if (cancelPotentialWork(account, imageView)) {
             final Bitmap bm = activity.avatarService().get(account, activity.getPixel(48), true);
             if (bm != null) {
@@ -149,7 +153,7 @@ public class AccountAdapter extends ArrayAdapter<Account> {
         void onClickTglAccountState(Account account, boolean state);
     }
 
-    public static boolean cancelPotentialWork(Account account, ImageView imageView) {
+    private static boolean cancelPotentialWork(Account account, ImageView imageView) {
         final BitmapWorkerTask bitmapWorkerTask = getBitmapWorkerTask(imageView);
 
         if (bitmapWorkerTask != null) {
@@ -177,12 +181,12 @@ public class AccountAdapter extends ArrayAdapter<Account> {
     static class AsyncDrawable extends BitmapDrawable {
         private final WeakReference<BitmapWorkerTask> bitmapWorkerTaskReference;
 
-        public AsyncDrawable(Resources res, Bitmap bitmap, BitmapWorkerTask bitmapWorkerTask) {
+        AsyncDrawable(Resources res, Bitmap bitmap, BitmapWorkerTask bitmapWorkerTask) {
             super(res, bitmap);
             bitmapWorkerTaskReference = new WeakReference<>(bitmapWorkerTask);
         }
 
-        public BitmapWorkerTask getBitmapWorkerTask() {
+        BitmapWorkerTask getBitmapWorkerTask() {
             return bitmapWorkerTaskReference.get();
         }
     }

@@ -1,128 +1,134 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-             xmlns:app="http://schemas.android.com/apk/res-auto"
-             android:layout_width="fill_parent"
-             android:layout_height="wrap_content"
-             android:descendantFocusability="blocksDescendants">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <FrameLayout
-        android:id="@+id/frame"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:background="?attr/color_background_primary">
+        android:descendantFocusability="blocksDescendants">
 
-        <RelativeLayout
+        <FrameLayout
+            android:id="@+id/frame"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:background="?android:selectableItemBackground"
-            android:orientation="horizontal"
-            android:padding="8dp">
-
-            <com.makeramen.roundedimageview.RoundedImageView
-                android:id="@+id/conversation_image"
-                android:layout_width="56dp"
-                android:layout_height="56dp"
-                android:layout_alignParentLeft="true"
-                android:scaleType="centerCrop"
-                app:riv_corner_radius="2dp"/>
+            android:background="?attr/color_background_primary">
 
             <RelativeLayout
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_toRightOf="@+id/conversation_image"
-                android:paddingLeft="@dimen/avatar_item_distance">
+                android:background="?android:selectableItemBackground"
+                android:orientation="horizontal"
+                android:padding="8dp">
 
-                <TextView
-                    android:id="@+id/conversation_name"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignLeft="@+id/conversation_lastwrapper"
-                    android:layout_toLeftOf="@+id/conversation_lastupdate"
-                    android:paddingRight="4dp"
-                    android:maxLines="1"
-                    android:ellipsize="end"
-                    android:textAppearance="@style/TextAppearance.Conversations.Subhead" />
+                <com.makeramen.roundedimageview.RoundedImageView
+                    android:id="@+id/conversation_image"
+                    android:layout_width="56dp"
+                    android:layout_height="56dp"
+                    android:layout_alignParentLeft="true"
+                    android:scaleType="centerCrop"
+                    app:riv_corner_radius="2dp" />
 
                 <RelativeLayout
-                    android:id="@+id/conversation_lastwrapper"
-                    android:layout_width="match_parent"
+                    android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@id/conversation_name"
-                    android:layout_marginTop="4dp">
+                    android:layout_centerVertical="true"
+                    android:layout_toRightOf="@+id/conversation_image"
+                    android:paddingLeft="@dimen/avatar_item_distance">
 
                     <TextView
-                        android:id="@+id/sender_name"
+                        android:id="@+id/conversation_name"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:minHeight="?attr/IconSize"
-                        android:layout_centerVertical="true"
-                        android:gravity="center_vertical"
-                        android:layout_alignParentLeft="true"
-                        android:text="@string/me"
-                        android:layout_marginRight="?attr/TextSeparation"
-                        android:textAppearance="@style/TextAppearance.Conversations.Body1.Secondary"
-                        android:visibility="visible"/>
+                        android:layout_alignLeft="@+id/conversation_lastwrapper"
+                        android:layout_toLeftOf="@+id/conversation_lastupdate"
+                        android:paddingRight="4dp"
+                        android:maxLines="1"
+                        android:ellipsize="end"
+                        android:textAppearance="@style/TextAppearance.Conversations.Subhead" />
 
-                    <LinearLayout android:layout_width="match_parent"
-                                  android:layout_height="wrap_content"
-                                  android:layout_centerVertical="true"
-                                  android:orientation="horizontal"
-                                  android:layout_toRightOf="@id/sender_name"
-                                  android:layout_alignWithParentIfMissing="true"
-                                  android:layout_toLeftOf="@+id/notification_status"
-                                  android:id="@+id/txt_img_wrapper">
-                      <ImageView
-                            android:id="@+id/conversation_lastmsg_img"
-                            android:layout_width="?attr/IconSize"
-                            android:layout_height="?attr/IconSize"
-                            android:layout_marginRight="?attr/TextSeparation"/>
+                    <RelativeLayout
+                        android:id="@+id/conversation_lastwrapper"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/conversation_name"
+                        android:layout_marginTop="4dp">
 
                         <TextView
-                            android:id="@+id/conversation_lastmsg"
-                            android:layout_width="match_parent"
+                            android:id="@+id/sender_name"
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:minHeight="?attr/IconSize"
+                            android:layout_centerVertical="true"
                             android:gravity="center_vertical"
-                            android:scrollHorizontally="false"
-                            android:maxLines="1"
-                            android:ellipsize="end"
-                            android:textAppearance="@style/TextAppearance.Conversations.Body1"/>
-                    </LinearLayout>
-                    <ImageView
-                        android:visibility="visible"
-                        android:id="@+id/notification_status"
-                        android:layout_width="?attr/IconSize"
-                        android:layout_height="?attr/IconSize"
-                        android:layout_toLeftOf="@+id/unread_count"
-                        android:layout_alignWithParentIfMissing="true"
-                        android:layout_centerVertical="true"
-                        android:layout_marginLeft="4dp"
-                        android:alpha="?attr/icon_alpha"
-                        android:src="?attr/icon_notifications"
-                        />
-                    <eu.siacs.conversations.ui.widget.UnreadCountCustomView
-                        android:id="@+id/unread_count"
-                        android:layout_width="?attr/IconSize"
-                        android:layout_height="?attr/IconSize"
-                        android:layout_centerVertical="true"
-                        android:layout_marginLeft="3dp"
-                        android:layout_marginTop="2dp"
-                        android:layout_marginBottom="1dp"
-                        android:visibility="gone"
+                            android:layout_alignParentLeft="true"
+                            android:text="@string/me"
+                            android:layout_marginRight="?attr/TextSeparation"
+                            android:textAppearance="@style/TextAppearance.Conversations.Body1.Secondary"
+                            android:visibility="visible" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:orientation="horizontal"
+                            android:layout_toRightOf="@id/sender_name"
+                            android:layout_alignWithParentIfMissing="true"
+                            android:layout_toLeftOf="@+id/notification_status"
+                            android:id="@+id/txt_img_wrapper">
+
+                            <ImageView
+                                android:id="@+id/conversation_lastmsg_img"
+                                android:layout_width="?attr/IconSize"
+                                android:layout_height="?attr/IconSize"
+                                android:layout_marginRight="?attr/TextSeparation" />
+
+                            <TextView
+                                android:id="@+id/conversation_lastmsg"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:minHeight="?attr/IconSize"
+                                android:gravity="center_vertical"
+                                android:scrollHorizontally="false"
+                                android:maxLines="1"
+                                android:ellipsize="end"
+                                android:textAppearance="@style/TextAppearance.Conversations.Body1" />
+                        </LinearLayout>
+
+                        <ImageView
+                            android:visibility="visible"
+                            android:id="@+id/notification_status"
+                            android:layout_width="?attr/IconSize"
+                            android:layout_height="?attr/IconSize"
+                            android:layout_toLeftOf="@+id/unread_count"
+                            android:layout_alignWithParentIfMissing="true"
+                            android:layout_centerVertical="true"
+                            android:layout_marginLeft="4dp"
+                            android:alpha="?attr/icon_alpha"
+                            android:src="?attr/icon_notifications" />
+
+                        <eu.siacs.conversations.ui.widget.UnreadCountCustomView
+                            android:id="@+id/unread_count"
+                            android:layout_width="?attr/IconSize"
+                            android:layout_height="?attr/IconSize"
+                            android:layout_centerVertical="true"
+                            android:layout_marginLeft="3dp"
+                            android:layout_marginTop="2dp"
+                            android:layout_marginBottom="1dp"
+                            android:visibility="gone"
+                            android:layout_alignParentRight="true"
+                            app:backgroundColor="?attr/unread_count" />
+
+                    </RelativeLayout>
+
+                    <TextView
+                        android:id="@+id/conversation_lastupdate"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignBaseline="@+id/conversation_name"
                         android:layout_alignParentRight="true"
-                        app:backgroundColor="?attr/unread_count" />
-
+                        android:gravity="right"
+                        android:textAppearance="@style/TextAppearance.Conversations.Caption" />
                 </RelativeLayout>
-
-                <TextView
-                    android:id="@+id/conversation_lastupdate"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignBaseline="@+id/conversation_name"
-                    android:layout_alignParentRight="true"
-                    android:gravity="right"
-                    android:textAppearance="@style/TextAppearance.Conversations.Caption"/>
             </RelativeLayout>
-        </RelativeLayout>
+        </FrameLayout>
     </FrameLayout>
-</FrameLayout>
+</layout>

@@ -893,7 +893,7 @@ public abstract class XmppActivity extends ActionBarActivity {
 			if (cancelPotentialWork(message, imageView)) {
 				imageView.setBackgroundColor(0xff333333);
 				imageView.setImageDrawable(null);
-				final BitmapWorkerTask task = new BitmapWorkerTask(this, imageView);
+				final BitmapWorkerTask task = new BitmapWorkerTask(imageView);
 				final AsyncDrawable asyncDrawable = new AsyncDrawable(
 						getResources(), null, task);
 				imageView.setImageDrawable(asyncDrawable);
@@ -944,11 +944,9 @@ public abstract class XmppActivity extends ActionBarActivity {
 
 	static class BitmapWorkerTask extends AsyncTask<Message, Void, Bitmap> {
 		private final WeakReference<ImageView> imageViewReference;
-		private final WeakReference<XmppActivity> activity;
 		private Message message = null;
 
-		private BitmapWorkerTask(XmppActivity activity, ImageView imageView) {
-			this.activity = new WeakReference<>(activity);
+		private BitmapWorkerTask(ImageView imageView) {
 			this.imageViewReference = new WeakReference<>(imageView);
 		}
 
@@ -959,7 +957,7 @@ public abstract class XmppActivity extends ActionBarActivity {
 			}
 			message = params[0];
 			try {
-				XmppActivity activity = this.activity.get();
+				final XmppActivity activity = find(imageViewReference);
 				if (activity != null && activity.xmppConnectionService != null) {
 					return activity.xmppConnectionService.getFileBackend().getThumbnail(message, (int) (activity.metrics.density * 288), false);
 				} else {
@@ -993,5 +991,17 @@ public abstract class XmppActivity extends ActionBarActivity {
 		private BitmapWorkerTask getBitmapWorkerTask() {
 			return bitmapWorkerTaskReference.get();
 		}
+	}
+
+	public static XmppActivity find(WeakReference<ImageView> viewWeakReference) {
+		final View view = viewWeakReference.get();
+		if (view == null) {
+			return null;
+		}
+		final Context context = view.getContext();
+		if (context instanceof XmppActivity) {
+			return (XmppActivity) context;
+		}
+		return null;
 	}
 }

@@ -88,7 +88,7 @@ public class MediaAdapter extends RecyclerView.Adapter<MediaAdapter.MediaViewHol
         return attr;
     }
 
-    public static void renderPreview(Context context, Attachment attachment, ImageView imageView) {
+    static void renderPreview(Context context, Attachment attachment, ImageView imageView) {
         imageView.setBackgroundColor(StyledAttributes.getColor(context, R.attr.color_background_tertiary));
         imageView.setImageAlpha(Math.round(StyledAttributes.getFloat(context, R.attr.icon_alpha) * 255));
         imageView.setImageDrawable(StyledAttributes.getDrawable(context, getImageAttr(attachment)));
@@ -160,7 +160,7 @@ public class MediaAdapter extends RecyclerView.Adapter<MediaAdapter.MediaViewHol
             } else {
                 imageView.setBackgroundColor(0xff333333);
                 imageView.setImageDrawable(null);
-                final BitmapWorkerTask task = new BitmapWorkerTask(imageView);
+                final BitmapWorkerTask task = new BitmapWorkerTask(mediaSize, imageView);
                 final AsyncDrawable asyncDrawable = new AsyncDrawable(activity.getResources(), null, task);
                 imageView.setImageDrawable(asyncDrawable);
                 try {
@@ -199,17 +199,23 @@ public class MediaAdapter extends RecyclerView.Adapter<MediaAdapter.MediaViewHol
         }
     }
 
-    class BitmapWorkerTask extends AsyncTask<Attachment, Void, Bitmap> {
+    private static class BitmapWorkerTask extends AsyncTask<Attachment, Void, Bitmap> {
         private final WeakReference<ImageView> imageViewReference;
         private Attachment attachment = null;
+        private final int mediaSize;
 
-        BitmapWorkerTask(ImageView imageView) {
+        BitmapWorkerTask(int mediaSize, ImageView imageView) {
+            this.mediaSize = mediaSize;
             imageViewReference = new WeakReference<>(imageView);
         }
 
         @Override
         protected Bitmap doInBackground(Attachment... params) {
             this.attachment = params[0];
+            final XmppActivity activity = XmppActivity.find(imageViewReference);
+            if (activity == null) {
+                return null;
+            }
             return activity.xmppConnectionService.getFileBackend().getPreviewForUri(this.attachment, mediaSize, false);
         }
 

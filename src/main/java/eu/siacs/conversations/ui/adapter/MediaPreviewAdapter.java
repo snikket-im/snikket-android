@@ -157,7 +157,7 @@ public class MediaPreviewAdapter extends RecyclerView.Adapter<MediaPreviewAdapte
         }
     }
 
-    class BitmapWorkerTask extends AsyncTask<Attachment, Void, Bitmap> {
+    private static class BitmapWorkerTask extends AsyncTask<Attachment, Void, Bitmap> {
         private final WeakReference<ImageView> imageViewReference;
         private Attachment attachment = null;
 
@@ -167,14 +167,12 @@ public class MediaPreviewAdapter extends RecyclerView.Adapter<MediaPreviewAdapte
 
         @Override
         protected Bitmap doInBackground(Attachment... params) {
-            Activity activity = conversationFragment.getActivity();
-            if (activity instanceof XmppActivity) {
-                final XmppActivity xmppActivity = (XmppActivity) activity;
-                this.attachment = params[0];
-                return xmppActivity.xmppConnectionService.getFileBackend().getPreviewForUri(this.attachment, Math.round(xmppActivity.getResources().getDimension(R.dimen.media_preview_size)), false);
-            } else {
+            this.attachment = params[0];
+            final XmppActivity activity = XmppActivity.find(imageViewReference);
+            if (activity == null) {
                 return null;
             }
+            return activity.xmppConnectionService.getFileBackend().getPreviewForUri(this.attachment, Math.round(activity.getResources().getDimension(R.dimen.media_preview_size)), false);
         }
 
         @Override

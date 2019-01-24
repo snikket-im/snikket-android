@@ -902,7 +902,7 @@ public class MessageAdapter extends ArrayAdapter<Message> implements CopyTextVie
 		ViewUtil.view(activity, file);
 	}
 
-	public void showLocation(Message message) {
+	private void showLocation(Message message) {
 		for (Intent intent : GeoHelper.createGeoIntentsFromMessage(activity, message)) {
 			if (intent.resolveActivity(getContext().getPackageManager()) != null) {
 				getContext().startActivity(intent);
@@ -918,7 +918,7 @@ public class MessageAdapter extends ArrayAdapter<Message> implements CopyTextVie
 		this.mUseGreenBackground = p.getBoolean("use_green_background", activity.getResources().getBoolean(R.bool.use_green_background));
 	}
 
-	public void loadAvatar(Message message, ImageView imageView, int size) {
+	private void loadAvatar(Message message, ImageView imageView, int size) {
 		if (cancelPotentialWork(message, imageView)) {
 			final Bitmap bm = activity.avatarService().get(message, size, true);
 			if (bm != null) {
@@ -1037,12 +1037,12 @@ public class MessageAdapter extends ArrayAdapter<Message> implements CopyTextVie
 		}
 	}
 
-	class BitmapWorkerTask extends AsyncTask<Message, Void, Bitmap> {
+	private static class BitmapWorkerTask extends AsyncTask<Message, Void, Bitmap> {
 		private final WeakReference<ImageView> imageViewReference;
 		private final int size;
 		private Message message = null;
 
-		public BitmapWorkerTask(ImageView imageView, int size) {
+		BitmapWorkerTask(ImageView imageView, int size) {
 			imageViewReference = new WeakReference<>(imageView);
 			this.size = size;
 		}
@@ -1050,6 +1050,10 @@ public class MessageAdapter extends ArrayAdapter<Message> implements CopyTextVie
 		@Override
 		protected Bitmap doInBackground(Message... params) {
 			this.message = params[0];
+			final XmppActivity activity = XmppActivity.find(imageViewReference);
+			if (activity == null) {
+				return null;
+			}
 			return activity.avatarService().get(this.message, size, isCancelled());
 		}
 
