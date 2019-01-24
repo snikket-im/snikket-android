@@ -847,12 +847,25 @@ public class DatabaseBackend extends SQLiteOpenHelper {
         db.endTransaction();
     }
 
-    public List<FilePath> getAllNonDeletedFilePath() {
+    public void markFilesAsChanged(List<FilePathInfo> files) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        final String where = Message.UUID + "=?";
+        db.beginTransaction();
+        for (FilePathInfo info : files) {
+            final ContentValues contentValues = new ContentValues();
+            contentValues.put(Message.DELETED, info.deleted ? 1 : 0);
+            db.update(Message.TABLENAME, contentValues, where, new String[]{info.uuid.toString()});
+        }
+        db.setTransactionSuccessful();
+        db.endTransaction();
+    }
+
+    public List<FilePathInfo> getFilePathInfo() {
         final SQLiteDatabase db = this.getReadableDatabase();
-        final Cursor cursor = db.query(Message.TABLENAME, new String[]{Message.UUID, Message.RELATIVE_FILE_PATH}, "type in (1,2) and deleted=0 and "+Message.RELATIVE_FILE_PATH+" is not null", null, null, null, null);
-        final List<FilePath> list = new ArrayList<>();
+        final Cursor cursor = db.query(Message.TABLENAME, new String[]{Message.UUID, Message.RELATIVE_FILE_PATH, Message.DELETED}, "type in (1,2) and "+Message.RELATIVE_FILE_PATH+" is not null", null, null, null, null);
+        final List<FilePathInfo> list = new ArrayList<>();
         while (cursor != null && cursor.moveToNext()) {
-            list.add(new FilePath(cursor.getString(0), cursor.getString(1)));
+            list.add(new FilePathInfo(cursor.getString(0), cursor.getString(1), cursor.getInt(2) > 0));
         }
         if (cursor != null) {
             cursor.close();
@@ -880,6 +893,21 @@ public class DatabaseBackend extends SQLiteOpenHelper {
         private FilePath(String uuid, String path) {
             this.uuid = UUID.fromString(uuid);
             this.path = path;
+        }
+    }
+
+    public static class FilePathInfo extends FilePath {
+        public boolean deleted;
+
+        private FilePathInfo(String uuid, String path, boolean deleted) {
+            super(uuid,path);
+            this.deleted = deleted;
+        }
+
+        public boolean setDeleted(boolean deleted) {
+            final boolean changed = deleted != this.deleted;
+            this.deleted = deleted;
+            return changed;
         }
     }
 

@@ -1063,22 +1063,24 @@ public class XmppConnectionService extends Service {
             Log.d(Config.LOGTAG, "Do not check for deleted files because service has been destroyed");
             return;
         }
-        final List<String> deletedUuids = new ArrayList<>();
-        final List<DatabaseBackend.FilePath> relativeFilePaths = databaseBackend.getAllNonDeletedFilePath();
-        for(final DatabaseBackend.FilePath filePath : relativeFilePaths) {
+        final long start = SystemClock.elapsedRealtime();
+        final List<DatabaseBackend.FilePathInfo> relativeFilePaths = databaseBackend.getFilePathInfo();
+        final List<DatabaseBackend.FilePathInfo> changed = new ArrayList<>();
+        for(final DatabaseBackend.FilePathInfo filePath : relativeFilePaths) {
             if (destroyed) {
                 Log.d(Config.LOGTAG, "Stop checking for deleted files because service has been destroyed");
                 return;
             }
             final File file = fileBackend.getFileForPath(filePath.path);
-            if (!file.exists()) {
-                deletedUuids.add(filePath.uuid.toString());
+            if (filePath.setDeleted(!file.exists())) {
+                changed.add(filePath);
             }
         }
-        Log.d(Config.LOGTAG,"found "+deletedUuids.size()+" deleted files on start up. total="+relativeFilePaths.size());
-        if (deletedUuids.size() > 0) {
-            databaseBackend.markFileAsDeleted(deletedUuids);
-            markUuidsAsDeletedFiles(deletedUuids);
+        final long duration = SystemClock.elapsedRealtime() - start;
+        Log.d(Config.LOGTAG,"found "+changed.size()+" changed files on start up. total="+relativeFilePaths.size()+". ("+duration+"ms)");
+        if (changed.size() > 0) {
+            databaseBackend.markFilesAsChanged(changed);
+            markChangedFiles(changed);
         }
     }
 
@@ -1667,6 +1669,16 @@ public class XmppConnectionService extends Service {
             deleted |= conversation.markAsDeleted(uuids);
         }
         if (deleted) {
+            updateConversationUi();
+        }
+    }
+
+    private void markChangedFiles(List<DatabaseBackend.FilePathInfo> infos) {
+        boolean changed = false;
+        for (Conversation conversation : getConversations()) {
+            changed |= conversation.markAsChanged(infos);
+        }
+        if (changed) {
             updateConversationUi();
         }
     }

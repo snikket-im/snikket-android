@@ -23,6 +23,7 @@ import eu.siacs.conversations.Config;
 import eu.siacs.conversations.crypto.OmemoSetting;
 import eu.siacs.conversations.crypto.PgpDecryptionService;
 import eu.siacs.conversations.crypto.axolotl.AxolotlService;
+import eu.siacs.conversations.persistance.DatabaseBackend;
 import eu.siacs.conversations.services.QuickConversationsService;
 import eu.siacs.conversations.utils.JidHelper;
 import eu.siacs.conversations.xmpp.InvalidJid;
@@ -207,6 +208,24 @@ public class Conversation extends AbstractEntity implements Blockable, Comparabl
 			}
 		}
 		return deleted;
+	}
+
+	public boolean markAsChanged(final List<DatabaseBackend.FilePathInfo> files) {
+		boolean changed = false;
+		final PgpDecryptionService pgpDecryptionService = account.getPgpDecryptionService();
+		synchronized (this.messages) {
+			for(Message message : this.messages) {
+				for(final DatabaseBackend.FilePathInfo file : files)
+				if (file.uuid.toString().equals(message.getUuid())) {
+					message.setDeleted(file.deleted);
+					changed = true;
+					if (file.deleted && message.getEncryption() == Message.ENCRYPTION_PGP && pgpDecryptionService != null) {
+						pgpDecryptionService.discard(message);
+					}
+				}
+			}
+		}
+		return changed;
 	}
 
 	public void clearMessages() {
