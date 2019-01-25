@@ -80,6 +80,8 @@ public class AvatarService implements OnAdvancedStreamFeaturesLoaded {
 			return get((Message) avatarable, size, cachedOnly);
 		} else if (avatarable instanceof ListItem) {
 			return get((ListItem) avatarable, size, cachedOnly);
+		} else if (avatarable instanceof MucOptions.User) {
+			return get((MucOptions.User) avatarable, size, cachedOnly);
 		}
 		throw new AssertionError("AvatarService does not know how to generate avatar from "+avatarable.getClass().getName());
 

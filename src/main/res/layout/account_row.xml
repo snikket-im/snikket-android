@@ -5,7 +5,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="?android:selectableItemBackground"
+        android:background="?selectableItemBackground"
         android:paddingLeft="8dp"
         android:paddingBottom="8dp"
         android:paddingTop="8dp">

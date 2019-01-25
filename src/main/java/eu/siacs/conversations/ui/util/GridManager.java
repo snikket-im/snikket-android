@@ -29,7 +29,8 @@ public class GridManager {
                 }
                 final ColumnInfo columnInfo = calculateColumnCount(context, recyclerView.getMeasuredWidth(), desiredSize);
                 Log.d(Config.LOGTAG, "final count " + columnInfo.count);
-                if (recyclerView.getAdapter().getItemCount() != 0) {
+                final RecyclerView.Adapter adapter = recyclerView.getAdapter();
+                if (adapter != null && adapter.getItemCount() != 0) {
                     Log.e(Config.LOGTAG, "adapter already has items; just go with it now");
                     return;
                 }

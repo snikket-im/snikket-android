@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+    <eu.siacs.conversations.ui.widget.SquareFrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="2dp"
+        android:background="?selectableItemBackground">
+        <ImageView
+            android:id="@+id/avatar"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/black54"
+            android:scaleType="centerInside"/>
+    </eu.siacs.conversations.ui.widget.SquareFrameLayout>
+</layout>
