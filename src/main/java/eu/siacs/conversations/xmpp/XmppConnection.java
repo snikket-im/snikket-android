@@ -260,7 +260,7 @@ public class XmppConnection implements Runnable {
             final boolean extended = mXmppConnectionService.showExtendedConnectionOptions();
             if (useTor) {
                 String destination;
-                if (account.getHostname().isEmpty()) {
+                if (account.getHostname().isEmpty() || account.isOnion()) {
                     destination = account.getServer();
                 } else {
                     destination = account.getHostname();
@@ -839,7 +839,7 @@ public class XmppConnection implements Runnable {
 
     private void processStreamFeatures(final Tag currentTag) throws XmlPullParserException, IOException {
         this.streamFeatures = tagReader.readElement(currentTag);
-        final boolean isSecure = features.encryptionEnabled || Config.ALLOW_NON_TLS_CONNECTIONS;
+        final boolean isSecure = features.encryptionEnabled || Config.ALLOW_NON_TLS_CONNECTIONS || account.isOnion();
         final boolean needsBinding = !isBound && !account.isOptionSet(Account.OPTION_REGISTER);
         if (this.streamFeatures.hasChild("starttls") && !features.encryptionEnabled) {
             sendStartTLS();
