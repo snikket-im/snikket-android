@@ -336,7 +336,7 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
                 binding.xa.setChecked(true);
                 break;
             case AWAY:
-                binding.xa.setChecked(true);
+                binding.away.setChecked(true);
                 break;
             default:
                 binding.online.setChecked(true);
