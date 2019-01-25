@@ -58,6 +58,7 @@ import eu.siacs.conversations.services.XmppConnectionService.OnAccountUpdate;
 import eu.siacs.conversations.services.XmppConnectionService.OnCaptchaRequested;
 import eu.siacs.conversations.ui.adapter.KnownHostsAdapter;
 import eu.siacs.conversations.ui.adapter.PresenceTemplateAdapter;
+import eu.siacs.conversations.ui.util.AvatarWorkerTask;
 import eu.siacs.conversations.ui.util.MenuDoubleTabUtil;
 import eu.siacs.conversations.ui.util.PendingItem;
 import eu.siacs.conversations.ui.util.SoftKeyboardUtils;
@@ -604,7 +605,7 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
     }
 
     private void refreshAvatar() {
-        binding.avater.setImageBitmap(avatarService().get(mAccount, (int) getResources().getDimension(R.dimen.avatar_on_details_screen_size)));
+        AvatarWorkerTask.loadAvatar(mAccount,binding.avater,R.dimen.avatar_on_details_screen_size);
     }
 
     @Override
@@ -952,7 +953,7 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
 
         if (!mInitMode) {
             this.binding.avater.setVisibility(View.VISIBLE);
-            this.binding.avater.setImageBitmap(avatarService().get(this.mAccount, (int) getResources().getDimension(R.dimen.avatar_on_details_screen_size)));
+            AvatarWorkerTask.loadAvatar(mAccount,binding.avater,R.dimen.avatar_on_details_screen_size);
         } else {
             this.binding.avater.setVisibility(View.GONE);
         }

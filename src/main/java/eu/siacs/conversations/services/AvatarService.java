@@ -13,6 +13,7 @@ import android.graphics.Typeface;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.support.annotation.ColorInt;
 import android.support.annotation.DrawableRes;
 import android.support.annotation.Nullable;
 import android.support.v4.content.res.ResourcesCompat;
@@ -41,6 +42,7 @@ import eu.siacs.conversations.entities.MucOptions;
 import eu.siacs.conversations.utils.UIHelper;
 import eu.siacs.conversations.xmpp.OnAdvancedStreamFeaturesLoaded;
 import eu.siacs.conversations.xmpp.XmppConnection;
+import eu.siacs.conversations.xmpp.pep.Avatar;
 import rocks.xmpp.addr.Jid;
 
 public class AvatarService implements OnAdvancedStreamFeaturesLoaded {
@@ -67,6 +69,20 @@ public class AvatarService implements OnAdvancedStreamFeaturesLoaded {
 
 	public static int getSystemUiAvatarSize(final Context context) {
 		return (int) (SYSTEM_UI_AVATAR_SIZE * context.getResources().getDisplayMetrics().density);
+	}
+
+	public Bitmap get(final Avatarable avatarable, final int size, final boolean cachedOnly) {
+		if (avatarable instanceof Account) {
+			return get((Account) avatarable,size,cachedOnly);
+		} else if (avatarable instanceof Conversation) {
+			return get((Conversation) avatarable, size, cachedOnly);
+		} else if (avatarable instanceof Message) {
+			return get((Message) avatarable, size, cachedOnly);
+		} else if (avatarable instanceof ListItem) {
+			return get((ListItem) avatarable, size, cachedOnly);
+		}
+		throw new AssertionError("AvatarService does not know how to generate avatar from "+avatarable.getClass().getName());
+
 	}
 
 	private Bitmap get(final Contact contact, final int size, boolean cachedOnly) {
@@ -645,5 +661,9 @@ public class AvatarService implements OnAdvancedStreamFeaturesLoaded {
 
 	private static String emptyOnNull(@Nullable Jid value) {
 		return value == null ? "" : value.toString();
+	}
+
+	public interface Avatarable {
+		@ColorInt int getAvatarBackgroundColor();
 	}
 }

@@ -181,4 +181,9 @@ public class Bookmark extends Element implements ListItem {
 		}
 		return StringUtils.changed(before, name);
 	}
+
+	@Override
+	public int getAvatarBackgroundColor() {
+		return UIHelper.getColorForName(jid != null ? jid.asBareJid().toString() : getDisplayName());
+	}
 }

@@ -2,21 +2,11 @@ package eu.siacs.conversations.ui.adapter;
 
 import android.Manifest;
 import android.app.Activity;
-import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
-import android.content.pm.ResolveInfo;
-import android.content.res.Resources;
-import android.graphics.Bitmap;
-import android.graphics.Color;
 import android.graphics.Typeface;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
-import android.net.Uri;
-import android.os.AsyncTask;
 import android.preference.PreferenceManager;
-import android.support.annotation.ColorInt;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.text.Spannable;
@@ -28,7 +18,6 @@ import android.text.style.ForegroundColorSpan;
 import android.text.style.RelativeSizeSpan;
 import android.text.style.StyleSpan;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.ActionMode;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -43,10 +32,8 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.lang.ref.WeakReference;
 import java.net.URL;
 import java.util.List;
-import java.util.concurrent.RejectedExecutionException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -64,12 +51,13 @@ import eu.siacs.conversations.http.P1S3UrlStreamHandler;
 import eu.siacs.conversations.persistance.FileBackend;
 import eu.siacs.conversations.services.MessageArchiveService;
 import eu.siacs.conversations.services.NotificationService;
-import eu.siacs.conversations.ui.ConversationsActivity;
 import eu.siacs.conversations.ui.ConversationFragment;
+import eu.siacs.conversations.ui.ConversationsActivity;
 import eu.siacs.conversations.ui.XmppActivity;
 import eu.siacs.conversations.ui.service.AudioPlayer;
 import eu.siacs.conversations.ui.text.DividerSpan;
 import eu.siacs.conversations.ui.text.QuoteSpan;
+import eu.siacs.conversations.ui.util.AvatarWorkerTask;
 import eu.siacs.conversations.ui.util.MyLinkify;
 import eu.siacs.conversations.ui.util.ViewUtil;
 import eu.siacs.conversations.ui.widget.ClickableMovementMethod;
@@ -109,30 +97,6 @@ public class MessageAdapter extends ArrayAdapter<Message> implements CopyTextVie
 	}
 
 
-	public static boolean cancelPotentialWork(Message message, ImageView imageView) {
-		final BitmapWorkerTask bitmapWorkerTask = getBitmapWorkerTask(imageView);
-
-		if (bitmapWorkerTask != null) {
-			final Message oldMessage = bitmapWorkerTask.message;
-			if (oldMessage == null || message != oldMessage) {
-				bitmapWorkerTask.cancel(true);
-			} else {
-				return false;
-			}
-		}
-		return true;
-	}
-
-	private static BitmapWorkerTask getBitmapWorkerTask(ImageView imageView) {
-		if (imageView != null) {
-			final Drawable drawable = imageView.getDrawable();
-			if (drawable instanceof AsyncDrawable) {
-				final AsyncDrawable asyncDrawable = (AsyncDrawable) drawable;
-				return asyncDrawable.getBitmapWorkerTask();
-			}
-		}
-		return null;
-	}
 
 	private static void resetClickListener(View... views) {
 		for (View view : views) {
@@ -704,10 +668,10 @@ public class MessageAdapter extends ArrayAdapter<Message> implements CopyTextVie
 				boolean showAvatar;
 				if (conversation.getMode() == Conversation.MODE_SINGLE) {
 					showAvatar = true;
-					loadAvatar(message, viewHolder.contact_picture, activity.getPixel(32));
+					AvatarWorkerTask.loadAvatar(message, viewHolder.contact_picture, R.dimen.avatar_on_status_message);
 				} else if (message.getCounterpart() != null || message.getTrueCounterpart() != null || (message.getCounterparts() != null && message.getCounterparts().size() > 0)) {
 					showAvatar = true;
-					loadAvatar(message, viewHolder.contact_picture, activity.getPixel(32));
+					AvatarWorkerTask.loadAvatar(message, viewHolder.contact_picture, R.dimen.avatar_on_status_message);
 				} else {
 					showAvatar = false;
 				}
@@ -720,7 +684,7 @@ public class MessageAdapter extends ArrayAdapter<Message> implements CopyTextVie
 			}
 			return view;
 		} else {
-			loadAvatar(message, viewHolder.contact_picture, activity.getPixel(48));
+			AvatarWorkerTask.loadAvatar(message, viewHolder.contact_picture, R.dimen.avatar);
 		}
 
 		resetClickListener(viewHolder.message_box, viewHolder.messageBody);
@@ -918,32 +882,6 @@ public class MessageAdapter extends ArrayAdapter<Message> implements CopyTextVie
 		this.mUseGreenBackground = p.getBoolean("use_green_background", activity.getResources().getBoolean(R.bool.use_green_background));
 	}
 
-	private void loadAvatar(Message message, ImageView imageView, int size) {
-		if (cancelPotentialWork(message, imageView)) {
-			final Bitmap bm = activity.avatarService().get(message, size, true);
-			if (bm != null) {
-				cancelPotentialWork(message, imageView);
-				imageView.setImageBitmap(bm);
-				imageView.setBackgroundColor(Color.TRANSPARENT);
-			} else {
-				@ColorInt int bg;
-				if (message.getType() == Message.TYPE_STATUS && message.getCounterparts() != null && message.getCounterparts().size() > 1) {
-					bg = Color.TRANSPARENT;
-				} else {
-					bg = UIHelper.getColorForName(UIHelper.getMessageDisplayName(message));
-				}
-				imageView.setBackgroundColor(bg);
-				imageView.setImageDrawable(null);
-				final BitmapWorkerTask task = new BitmapWorkerTask(imageView, size);
-				final AsyncDrawable asyncDrawable = new AsyncDrawable(activity.getResources(), null, task);
-				imageView.setImageDrawable(asyncDrawable);
-				try {
-					task.execute(message);
-				} catch (final RejectedExecutionException ignored) {
-				}
-			}
-		}
-	}
 
 	public void setHighlightedTerm(List<String> terms) {
 		this.highlightedTerm = terms == null ? null : StylingHelper.filterHighlightedWords(terms);
@@ -978,18 +916,6 @@ public class MessageAdapter extends ArrayAdapter<Message> implements CopyTextVie
 		protected TextView encryption;
 	}
 
-	static class AsyncDrawable extends BitmapDrawable {
-		private final WeakReference<BitmapWorkerTask> bitmapWorkerTaskReference;
-
-		public AsyncDrawable(Resources res, Bitmap bitmap, BitmapWorkerTask bitmapWorkerTask) {
-			super(res, bitmap);
-			bitmapWorkerTaskReference = new WeakReference<>(bitmapWorkerTask);
-		}
-
-		public BitmapWorkerTask getBitmapWorkerTask() {
-			return bitmapWorkerTaskReference.get();
-		}
-	}
 
 	private class MessageBodyActionModeCallback implements ActionMode.Callback {
 
@@ -1034,38 +960,6 @@ public class MessageAdapter extends ArrayAdapter<Message> implements CopyTextVie
 
 		@Override
 		public void onDestroyActionMode(ActionMode mode) {
-		}
-	}
-
-	private static class BitmapWorkerTask extends AsyncTask<Message, Void, Bitmap> {
-		private final WeakReference<ImageView> imageViewReference;
-		private final int size;
-		private Message message = null;
-
-		BitmapWorkerTask(ImageView imageView, int size) {
-			imageViewReference = new WeakReference<>(imageView);
-			this.size = size;
-		}
-
-		@Override
-		protected Bitmap doInBackground(Message... params) {
-			this.message = params[0];
-			final XmppActivity activity = XmppActivity.find(imageViewReference);
-			if (activity == null) {
-				return null;
-			}
-			return activity.avatarService().get(this.message, size, isCancelled());
-		}
-
-		@Override
-		protected void onPostExecute(Bitmap bitmap) {
-			if (bitmap != null && !isCancelled()) {
-				final ImageView imageView = imageViewReference.get();
-				if (imageView != null) {
-					imageView.setImageBitmap(bitmap);
-					imageView.setBackgroundColor(0x00000000);
-				}
-			}
 		}
 	}
 }

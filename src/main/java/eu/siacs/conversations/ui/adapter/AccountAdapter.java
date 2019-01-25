@@ -22,6 +22,7 @@ import eu.siacs.conversations.R;
 import eu.siacs.conversations.databinding.AccountRowBinding;
 import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.ui.XmppActivity;
+import eu.siacs.conversations.ui.util.AvatarWorkerTask;
 import eu.siacs.conversations.ui.util.StyledAttributes;
 import eu.siacs.conversations.utils.UIHelper;
 
@@ -59,7 +60,7 @@ public class AccountAdapter extends ArrayAdapter<Account> {
         } else {
             viewHolder.binding.accountJid.setText(account.getJid().asBareJid().toString());
         }
-        loadAvatar(account, viewHolder.binding.accountImage);
+        AvatarWorkerTask.loadAvatar(account, viewHolder.binding.accountImage, R.dimen.avatar);
         viewHolder.binding.accountStatus.setText(getContext().getString(account.getStatus().getReadableId()));
         switch (account.getStatus()) {
             case ONLINE:
@@ -97,97 +98,10 @@ public class AccountAdapter extends ArrayAdapter<Account> {
         }
     }
 
-    private static class BitmapWorkerTask extends AsyncTask<Account, Void, Bitmap> {
-        private final WeakReference<ImageView> imageViewReference;
-        private Account account = null;
-
-        BitmapWorkerTask(ImageView imageView) {
-            imageViewReference = new WeakReference<>(imageView);
-        }
-
-        @Override
-        protected Bitmap doInBackground(Account... params) {
-            this.account = params[0];
-            final XmppActivity activity = XmppActivity.find(imageViewReference);
-            if (activity == null) {
-                return null;
-            }
-            return activity.avatarService().get(this.account, activity.getPixel(48), isCancelled());
-        }
-
-        @Override
-        protected void onPostExecute(Bitmap bitmap) {
-            if (bitmap != null && !isCancelled()) {
-                final ImageView imageView = imageViewReference.get();
-                if (imageView != null) {
-                    imageView.setImageBitmap(bitmap);
-                    imageView.setBackgroundColor(0x00000000);
-                }
-            }
-        }
-    }
-
-    private void loadAvatar(Account account, ImageView imageView) {
-        if (cancelPotentialWork(account, imageView)) {
-            final Bitmap bm = activity.avatarService().get(account, activity.getPixel(48), true);
-            if (bm != null) {
-                cancelPotentialWork(account, imageView);
-                imageView.setImageBitmap(bm);
-                imageView.setBackgroundColor(0x00000000);
-            } else {
-                imageView.setBackgroundColor(UIHelper.getColorForName(account.getJid().asBareJid().toString()));
-                imageView.setImageDrawable(null);
-                final BitmapWorkerTask task = new BitmapWorkerTask(imageView);
-                final AsyncDrawable asyncDrawable = new AsyncDrawable(activity.getResources(), null, task);
-                imageView.setImageDrawable(asyncDrawable);
-                try {
-                    task.execute(account);
-                } catch (final RejectedExecutionException ignored) {
-                }
-            }
-        }
-    }
 
 
     public interface OnTglAccountState {
         void onClickTglAccountState(Account account, boolean state);
     }
 
-    private static boolean cancelPotentialWork(Account account, ImageView imageView) {
-        final BitmapWorkerTask bitmapWorkerTask = getBitmapWorkerTask(imageView);
-
-        if (bitmapWorkerTask != null) {
-            final Account oldAccount = bitmapWorkerTask.account;
-            if (oldAccount == null || account != oldAccount) {
-                bitmapWorkerTask.cancel(true);
-            } else {
-                return false;
-            }
-        }
-        return true;
-    }
-
-    private static BitmapWorkerTask getBitmapWorkerTask(ImageView imageView) {
-        if (imageView != null) {
-            final Drawable drawable = imageView.getDrawable();
-            if (drawable instanceof AsyncDrawable) {
-                final AsyncDrawable asyncDrawable = (AsyncDrawable) drawable;
-                return asyncDrawable.getBitmapWorkerTask();
-            }
-        }
-        return null;
-    }
-
-    static class AsyncDrawable extends BitmapDrawable {
-        private final WeakReference<BitmapWorkerTask> bitmapWorkerTaskReference;
-
-        AsyncDrawable(Resources res, Bitmap bitmap, BitmapWorkerTask bitmapWorkerTask) {
-            super(res, bitmap);
-            bitmapWorkerTaskReference = new WeakReference<>(bitmapWorkerTask);
-        }
-
-        BitmapWorkerTask getBitmapWorkerTask() {
-            return bitmapWorkerTaskReference.get();
-        }
-    }
 }

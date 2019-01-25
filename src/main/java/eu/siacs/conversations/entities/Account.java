@@ -22,12 +22,14 @@ import eu.siacs.conversations.R;
 import eu.siacs.conversations.crypto.PgpDecryptionService;
 import eu.siacs.conversations.crypto.axolotl.AxolotlService;
 import eu.siacs.conversations.crypto.axolotl.XmppAxolotlSession;
+import eu.siacs.conversations.services.AvatarService;
 import eu.siacs.conversations.services.XmppConnectionService;
+import eu.siacs.conversations.utils.UIHelper;
 import eu.siacs.conversations.utils.XmppUri;
 import eu.siacs.conversations.xmpp.XmppConnection;
 import rocks.xmpp.addr.Jid;
 
-public class Account extends AbstractEntity {
+public class Account extends AbstractEntity implements AvatarService.Avatarable {
 
     public static final String TABLENAME = "accounts";
 
@@ -577,6 +579,11 @@ public class Account extends AbstractEntity {
 
     public boolean isOnlineAndConnected() {
         return this.getStatus() == State.ONLINE && this.getXmppConnection() != null;
+    }
+
+    @Override
+    public int getAvatarBackgroundColor() {
+        return UIHelper.getColorForName(jid.asBareJid().toString());
     }
 
     public enum State {

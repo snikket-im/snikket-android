@@ -537,7 +537,12 @@ public class Contact implements ListItem, Blockable {
 		}
 	}
 
-    public final class Options {
+	@Override
+	public int getAvatarBackgroundColor() {
+		return UIHelper.getColorForName(jid != null ? jid.asBareJid().toString() : getDisplayName());
+	}
+
+	public final class Options {
 		public static final int TO = 0;
 		public static final int FROM = 1;
 		public static final int ASKING = 2;

@@ -4,10 +4,11 @@ import android.content.Context;
 
 import java.util.List;
 
+import eu.siacs.conversations.services.AvatarService;
 import rocks.xmpp.addr.Jid;
 
 
-public interface ListItem extends Comparable<ListItem> {
+public interface ListItem extends Comparable<ListItem>, AvatarService.Avatarable {
 	String getDisplayName();
 
 	Jid getJid();

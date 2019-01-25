@@ -2,6 +2,8 @@ package eu.siacs.conversations.entities;
 
 import android.content.ContentValues;
 import android.database.Cursor;
+import android.graphics.Color;
+import android.support.annotation.ColorInt;
 import android.text.SpannableStringBuilder;
 import android.util.Log;
 
@@ -19,6 +21,7 @@ import java.util.Set;
 
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.crypto.axolotl.FingerprintStatus;
+import eu.siacs.conversations.services.AvatarService;
 import eu.siacs.conversations.utils.CryptoHelper;
 import eu.siacs.conversations.utils.Emoticons;
 import eu.siacs.conversations.utils.GeoHelper;
@@ -27,7 +30,7 @@ import eu.siacs.conversations.utils.MimeUtils;
 import eu.siacs.conversations.utils.UIHelper;
 import rocks.xmpp.addr.Jid;
 
-public class Message extends AbstractEntity {
+public class Message extends AbstractEntity implements AvatarService.Avatarable  {
 
 	public static final String TABLENAME = "messages";
 
@@ -625,6 +628,15 @@ public class Message extends AbstractEntity {
 
 	public List<MucOptions.User> getCounterparts() {
 		return this.counterparts;
+	}
+
+	@Override
+	public int getAvatarBackgroundColor() {
+		if (type == Message.TYPE_STATUS && getCounterparts() != null && getCounterparts().size() > 1) {
+			return Color.TRANSPARENT;
+		} else {
+			return UIHelper.getColorForName(UIHelper.getMessageDisplayName(this));
+		}
 	}
 
 	public static class MergeSeparator {

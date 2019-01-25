@@ -2,6 +2,7 @@ package eu.siacs.conversations.entities;
 
 import android.content.ContentValues;
 import android.database.Cursor;
+import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
@@ -24,8 +25,10 @@ import eu.siacs.conversations.crypto.OmemoSetting;
 import eu.siacs.conversations.crypto.PgpDecryptionService;
 import eu.siacs.conversations.crypto.axolotl.AxolotlService;
 import eu.siacs.conversations.persistance.DatabaseBackend;
+import eu.siacs.conversations.services.AvatarService;
 import eu.siacs.conversations.services.QuickConversationsService;
 import eu.siacs.conversations.utils.JidHelper;
+import eu.siacs.conversations.utils.UIHelper;
 import eu.siacs.conversations.xmpp.InvalidJid;
 import eu.siacs.conversations.xmpp.chatstate.ChatState;
 import eu.siacs.conversations.xmpp.mam.MamReference;
@@ -34,7 +37,7 @@ import rocks.xmpp.addr.Jid;
 import static eu.siacs.conversations.entities.Bookmark.printableValue;
 
 
-public class Conversation extends AbstractEntity implements Blockable, Comparable<Conversation>, Conversational {
+public class Conversation extends AbstractEntity implements Blockable, Comparable<Conversation>, Conversational, AvatarService.Avatarable {
 	public static final String TABLENAME = "conversations";
 
 	public static final int STATUS_AVAILABLE = 0;
@@ -989,6 +992,11 @@ public class Conversation extends AbstractEntity implements Blockable, Comparabl
 			}
 		}
 		return 0;
+	}
+
+	@Override
+	public int getAvatarBackgroundColor() {
+		return UIHelper.getColorForName(getName().toString());
 	}
 
 	public interface OnMessageFound {
