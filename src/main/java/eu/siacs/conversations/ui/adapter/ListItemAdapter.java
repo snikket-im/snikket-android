@@ -27,8 +27,10 @@ import eu.siacs.conversations.entities.ListItem;
 import eu.siacs.conversations.ui.SettingsActivity;
 import eu.siacs.conversations.ui.XmppActivity;
 import eu.siacs.conversations.ui.util.AvatarWorkerTask;
+import eu.siacs.conversations.ui.util.StyledAttributes;
 import eu.siacs.conversations.utils.EmojiWrapper;
 import eu.siacs.conversations.utils.IrregularUnicodeDetector;
+import eu.siacs.conversations.utils.ThemeHelper;
 import eu.siacs.conversations.utils.UIHelper;
 import rocks.xmpp.addr.Jid;
 
@@ -68,6 +70,7 @@ public class ListItemAdapter extends ArrayAdapter<ListItem> {
 		} else {
 			viewHolder = (ViewHolder) view.getTag();
 		}
+		view.setBackground(StyledAttributes.getDrawable(view.getContext(),R.attr.list_item_background));
 
 		List<ListItem.Tag> tags = item.getTags(activity);
 		if (tags.size() == 0 || !this.showDynamicTags) {

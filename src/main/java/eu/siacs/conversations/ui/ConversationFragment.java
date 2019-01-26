@@ -2740,7 +2740,7 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
                 popupMenu.inflate(R.menu.muc_details_context);
                 final Menu menu = popupMenu.getMenu();
                 MucDetailsContextMenuHelper.configureMucDetailsContextMenu(activity, menu, conversation, user);
-                popupMenu.setOnMenuItemClickListener(menuItem -> MucDetailsContextMenuHelper.onContextItemSelected(menuItem, user, conversation, activity));
+                popupMenu.setOnMenuItemClickListener(menuItem -> MucDetailsContextMenuHelper.onContextItemSelected(menuItem, user, activity));
             } else {
                 final Contact contact = message.getContact();
                 if (contact.isSelf()) {

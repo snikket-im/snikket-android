@@ -9,19 +9,14 @@ import android.support.v7.util.DiffUtil;
 import android.support.v7.widget.RecyclerView;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
-import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.PopupMenu;
 
 import org.openintents.openpgp.util.OpenPgpUtils;
-
-import java.util.List;
 
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.crypto.PgpEngine;
 import eu.siacs.conversations.databinding.ContactBinding;
-import eu.siacs.conversations.databinding.UserPreviewBinding;
 import eu.siacs.conversations.entities.Contact;
 import eu.siacs.conversations.entities.MucOptions;
 import eu.siacs.conversations.services.XmppConnectionService;
@@ -29,15 +24,24 @@ import eu.siacs.conversations.ui.ConferenceDetailsActivity;
 import eu.siacs.conversations.ui.XmppActivity;
 import eu.siacs.conversations.ui.util.AvatarWorkerTask;
 import eu.siacs.conversations.ui.util.MucDetailsContextMenuHelper;
+import rocks.xmpp.addr.Jid;
 
 public class UserAdapter extends ListAdapter<MucOptions.User, UserAdapter.ViewHolder> implements View.OnCreateContextMenuListener {
-
-    private MucOptions.User selectedUser = null;
 
     static final DiffUtil.ItemCallback<MucOptions.User> DIFF = new DiffUtil.ItemCallback<MucOptions.User>() {
         @Override
         public boolean areItemsTheSame(@NonNull MucOptions.User a, @NonNull MucOptions.User b) {
-            return a == b;
+            final Jid fullA = a.getFullJid();
+            final Jid fullB = b.getFullJid();
+            final Jid realA = a.getRealJid();
+            final Jid realB = b.getRealJid();
+            if (fullA != null && fullB != null) {
+                return fullA.equals(fullB);
+            } else if (realA != null && realB != null) {
+                return realA.equals(realB);
+            } else {
+                return false;
+            }
         }
 
         @Override
@@ -46,6 +50,7 @@ public class UserAdapter extends ListAdapter<MucOptions.User, UserAdapter.ViewHo
         }
     };
     private final boolean advancedMode;
+    private MucOptions.User selectedUser = null;
 
     public UserAdapter(final boolean advancedMode) {
         super(DIFF);
@@ -116,23 +121,7 @@ public class UserAdapter extends ListAdapter<MucOptions.User, UserAdapter.ViewHo
 
     @Override
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
-        final XmppActivity activity = XmppActivity.find(v);
-        final Object tag = v.getTag();
-        if (tag instanceof MucOptions.User && activity != null) {
-            activity.getMenuInflater().inflate(R.menu.muc_details_context, menu);
-            final MucOptions.User user = (MucOptions.User) tag;
-            String name;
-            final Contact contact = user.getContact();
-            if (contact != null && contact.showInContactList()) {
-                name = contact.getDisplayName();
-            } else if (user.getRealJid() != null) {
-                name = user.getRealJid().asBareJid().toString();
-            } else {
-                name = user.getName();
-            }
-            menu.setHeaderTitle(name);
-            MucDetailsContextMenuHelper.configureMucDetailsContextMenu(activity, menu, user.getConversation(), user);
-        }
+        MucDetailsContextMenuHelper.onCreateContextMenu(menu,v);
     }
 
     class ViewHolder extends RecyclerView.ViewHolder {

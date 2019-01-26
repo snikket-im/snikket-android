@@ -7,8 +7,10 @@ import android.support.v7.app.AlertDialog;
 import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.style.TypefaceSpan;
+import android.view.ContextMenu;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.entities.Contact;
@@ -20,11 +22,33 @@ import eu.siacs.conversations.services.XmppConnectionService;
 import eu.siacs.conversations.ui.ConferenceDetailsActivity;
 import eu.siacs.conversations.ui.ConversationFragment;
 import eu.siacs.conversations.ui.ConversationsActivity;
+import eu.siacs.conversations.ui.MucUsersActivity;
 import eu.siacs.conversations.ui.XmppActivity;
 import rocks.xmpp.addr.Jid;
 
 
 public final class MucDetailsContextMenuHelper {
+
+    public static void onCreateContextMenu(ContextMenu menu, View v) {
+        final XmppActivity activity = XmppActivity.find(v);
+        final Object tag = v.getTag();
+        if (tag instanceof MucOptions.User && activity != null) {
+            activity.getMenuInflater().inflate(R.menu.muc_details_context, menu);
+            final MucOptions.User user = (MucOptions.User) tag;
+            String name;
+            final Contact contact = user.getContact();
+            if (contact != null && contact.showInContactList()) {
+                name = contact.getDisplayName();
+            } else if (user.getRealJid() != null) {
+                name = user.getRealJid().asBareJid().toString();
+            } else {
+                name = user.getName();
+            }
+            menu.setHeaderTitle(name);
+            MucDetailsContextMenuHelper.configureMucDetailsContextMenu(activity, menu, user.getConversation(), user);
+        }
+    }
+
     public static void configureMucDetailsContextMenu(Activity activity, Menu menu, Conversation conversation, User user) {
         final MucOptions mucOptions = conversation.getMucOptions();
         final boolean advancedMode = PreferenceManager.getDefaultSharedPreferences(activity).getBoolean("advanced_muc_mode", false);
@@ -45,7 +69,7 @@ public final class MucDetailsContextMenuHelper {
             if (contact != null && contact.showInRoster()) {
                 showContactDetails.setVisible(!contact.isSelf());
             }
-            if (activity instanceof ConferenceDetailsActivity && user.getRole() == MucOptions.Role.NONE) {
+            if ((activity instanceof ConferenceDetailsActivity || activity instanceof MucUsersActivity) && user.getRole() == MucOptions.Role.NONE) {
                 invite.setVisible(true);
             }
             if (self.getAffiliation().ranks(MucOptions.Affiliation.ADMIN) &&
@@ -77,7 +101,8 @@ public final class MucDetailsContextMenuHelper {
         }
     }
 
-    public static boolean onContextItemSelected(MenuItem item, User user, Conversation conversation, XmppActivity activity) {
+    public static boolean onContextItemSelected(MenuItem item, User user, XmppActivity activity) {
+        final Conversation conversation = user.getConversation();
         final XmppConnectionService.OnAffiliationChanged onAffiliationChanged = activity instanceof XmppConnectionService.OnAffiliationChanged ? (XmppConnectionService.OnAffiliationChanged) activity : null;
         final XmppConnectionService.OnRoleChanged onRoleChanged = activity instanceof XmppConnectionService.OnRoleChanged ? (XmppConnectionService.OnRoleChanged) activity : null;
         Jid jid = user.getRealJid();
@@ -89,7 +114,7 @@ public final class MucDetailsContextMenuHelper {
                 }
                 return true;
             case R.id.start_conversation:
-                startConversation(user, conversation, activity);
+                startConversation(user, activity);
                 return true;
             case R.id.give_admin_privileges:
                 activity.xmppConnectionService.changeAffiliationInConference(conversation, jid, MucOptions.Affiliation.ADMIN, onAffiliationChanged);
@@ -104,7 +129,7 @@ public final class MucDetailsContextMenuHelper {
                 activity.xmppConnectionService.changeAffiliationInConference(conversation, jid, MucOptions.Affiliation.MEMBER, onAffiliationChanged);
                 return true;
             case R.id.remove_from_room:
-                removeFromRoom(user, conversation, activity, onAffiliationChanged, onRoleChanged);
+                removeFromRoom(user, activity, onAffiliationChanged, onRoleChanged);
                 return true;
             case R.id.ban_from_conference:
                 activity.xmppConnectionService.changeAffiliationInConference(conversation, jid, MucOptions.Affiliation.OUTCAST, onAffiliationChanged);
@@ -130,7 +155,8 @@ public final class MucDetailsContextMenuHelper {
         }
     }
 
-    public static void removeFromRoom(final User user, Conversation conversation, XmppActivity activity, XmppConnectionService.OnAffiliationChanged onAffiliationChanged, XmppConnectionService.OnRoleChanged onRoleChanged) {
+    private static void removeFromRoom(final User user, XmppActivity activity, XmppConnectionService.OnAffiliationChanged onAffiliationChanged, XmppConnectionService.OnRoleChanged onRoleChanged) {
+        final Conversation conversation = user.getConversation();
         if (conversation.getMucOptions().membersOnly()) {
             activity.xmppConnectionService.changeAffiliationInConference(conversation, user.getRealJid(), MucOptions.Affiliation.NONE, onAffiliationChanged);
             if (user.getRole() != MucOptions.Role.NONE) {
@@ -157,9 +183,9 @@ public final class MucDetailsContextMenuHelper {
         }
     }
 
-    public static void startConversation(User user, Conversation conversation, XmppActivity activity) {
+    private static void startConversation(User user, XmppActivity activity) {
         if (user.getRealJid() != null) {
-            Conversation newConversation = activity.xmppConnectionService.findOrCreateConversation(conversation.getAccount(), user.getRealJid().asBareJid(), false, true);
+            Conversation newConversation = activity.xmppConnectionService.findOrCreateConversation(user.getAccount(), user.getRealJid().asBareJid(), false, true);
             activity.switchToConversation(newConversation);
         }
     }

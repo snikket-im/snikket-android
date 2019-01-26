@@ -40,6 +40,7 @@ import eu.siacs.conversations.ui.util.Attachment;
 import eu.siacs.conversations.ui.util.AvatarWorkerTask;
 import eu.siacs.conversations.ui.util.GridManager;
 import eu.siacs.conversations.ui.util.MenuDoubleTabUtil;
+import eu.siacs.conversations.ui.util.MucDetailsContextMenuHelper;
 import eu.siacs.conversations.ui.util.MyLinkify;
 import eu.siacs.conversations.ui.util.SoftKeyboardUtils;
 import eu.siacs.conversations.utils.AccountUtils;
@@ -288,6 +289,14 @@ public class ConferenceDetailsActivity extends XmppActivity implements OnConvers
                 break;
         }
         return super.onOptionsItemSelected(menuItem);
+    }
+
+    @Override
+    public boolean onContextItemSelected(MenuItem item) {
+        if (!MucDetailsContextMenuHelper.onContextItemSelected(item, mUserPreviewAdapter.getSelectedUser(), this)) {
+            return super.onContextItemSelected(item);
+        }
+        return true;
     }
 
     public void onMucEditButtonClicked(View v) {
@@ -558,7 +567,7 @@ public class ConferenceDetailsActivity extends XmppActivity implements OnConvers
                 }
             }
         });
-        this.mUserPreviewAdapter.setUserList(MucOptions.sub(users, GridManager.getCurrentColumnCount(binding.users)));
+        this.mUserPreviewAdapter.submitList(MucOptions.sub(users, GridManager.getCurrentColumnCount(binding.users)));
         this.binding.invite.setVisibility(mucOptions.canInvite() ? View.VISIBLE : View.GONE);
 
     }
