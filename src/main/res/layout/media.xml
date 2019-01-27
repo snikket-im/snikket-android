@@ -3,7 +3,8 @@
     <eu.siacs.conversations.ui.widget.SquareFrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:padding="2dp">
+        android:padding="2dp"
+        android:background="?selectableItemBackground">
         <ImageView
             android:id="@+id/media"
             android:layout_width="match_parent"

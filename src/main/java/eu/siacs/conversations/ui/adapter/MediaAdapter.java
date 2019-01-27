@@ -137,7 +137,7 @@ public class MediaAdapter extends RecyclerView.Adapter<MediaAdapter.MediaViewHol
             cancelPotentialWork(attachment, holder.binding.media);
             renderPreview(activity, attachment, holder.binding.media);
         }
-        holder.binding.media.setOnClickListener(v -> ViewUtil.view(activity, attachment));
+        holder.binding.getRoot().setOnClickListener(v -> ViewUtil.view(activity, attachment));
     }
 
     public void setAttachments(List<Attachment> attachments) {
