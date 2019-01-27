@@ -2737,7 +2737,7 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
         }
         final PopupMenu popupMenu = new PopupMenu(getActivity(), v);
         final Contact contact = message.getContact();
-        if (message.getStatus() <= Message.STATUS_RECEIVED || (contact != null && contact.isSelf())) {
+        if (message.getStatus() <= Message.STATUS_RECEIVED && (contact == null  || !contact.isSelf())) {
             if (message.getConversation().getMode() == Conversation.MODE_MULTI) {
                 final Jid cp = message.getCounterpart();
                 if (cp == null || cp.isBareJid()) {
