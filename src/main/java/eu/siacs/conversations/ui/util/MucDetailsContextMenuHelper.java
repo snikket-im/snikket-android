@@ -102,6 +102,10 @@ public final class MucDetailsContextMenuHelper {
     }
 
     public static boolean onContextItemSelected(MenuItem item, User user, XmppActivity activity) {
+        return onContextItemSelected(item, user, activity, null);
+    }
+
+    public static boolean onContextItemSelected(MenuItem item, User user, XmppActivity activity, final String fingerprint) {
         final Conversation conversation = user.getConversation();
         final XmppConnectionService.OnAffiliationChanged onAffiliationChanged = activity instanceof XmppConnectionService.OnAffiliationChanged ? (XmppConnectionService.OnAffiliationChanged) activity : null;
         final XmppConnectionService.OnRoleChanged onRoleChanged = activity instanceof XmppConnectionService.OnRoleChanged ? (XmppConnectionService.OnRoleChanged) activity : null;
@@ -110,7 +114,7 @@ public final class MucDetailsContextMenuHelper {
             case R.id.action_contact_details:
                 Contact contact = user.getContact();
                 if (contact != null) {
-                    activity.switchToContactDetails(contact);
+                    activity.switchToContactDetails(contact, fingerprint);
                 }
                 return true;
             case R.id.start_conversation:
