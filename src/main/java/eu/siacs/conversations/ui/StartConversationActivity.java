@@ -21,6 +21,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.ListFragment;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -55,6 +56,9 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.leinardi.android.speeddial.SpeedDialActionItem;
+import com.leinardi.android.speeddial.SpeedDialView;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -79,6 +83,7 @@ import eu.siacs.conversations.ui.util.JidDialog;
 import eu.siacs.conversations.ui.util.MenuDoubleTabUtil;
 import eu.siacs.conversations.ui.util.PendingItem;
 import eu.siacs.conversations.ui.util.SoftKeyboardUtils;
+import eu.siacs.conversations.ui.util.StyledAttributes;
 import eu.siacs.conversations.ui.widget.SwipeRefreshListFragment;
 import eu.siacs.conversations.utils.AccountUtils;
 import eu.siacs.conversations.utils.XmppUri;
@@ -122,7 +127,9 @@ public class StartConversationActivity extends XmppActivity implements XmppConne
 					imm.showSoftInput(mSearchEditText, InputMethodManager.SHOW_IMPLICIT);
 				}
 			});
-
+			if (binding.speedDial.isOpen()) {
+				binding.speedDial.close();
+			}
 			return true;
 		}
 
@@ -272,25 +279,33 @@ public class StartConversationActivity extends XmppActivity implements XmppConne
 		Toolbar toolbar = (Toolbar) binding.toolbar;
 		setSupportActionBar(toolbar);
 		configureActionBar(getSupportActionBar());
-		this.binding.fab.setOnClickListener((v) -> {
-			if (binding.startConversationViewPager.getCurrentItem() == 0) {
-				String searchString = mSearchEditText != null ? mSearchEditText.getText().toString() : null;
-				if (searchString != null && !searchString.trim().isEmpty()) {
-					try {
-						Jid jid = Jid.of(searchString);
-						if (jid.getLocal() != null && jid.isBareJid() && jid.getDomain().contains(".")) {
-							showCreateContactDialog(jid.toString(), null);
-							return;
+		this.binding.speedDial.setOnChangeListener(new SpeedDialView.OnChangeListener() {
+			@Override
+			public boolean onMainActionSelected() {
+				if (binding.startConversationViewPager.getCurrentItem() == 0) {
+					String searchString = mSearchEditText != null ? mSearchEditText.getText().toString() : null;
+					if (searchString != null && !searchString.trim().isEmpty()) {
+						try {
+							Jid jid = Jid.of(searchString);
+							if (jid.getLocal() != null && jid.isBareJid() && jid.getDomain().contains(".")) {
+								showCreateContactDialog(jid.toString(), null);
+								return false;
+							}
+						} catch (IllegalArgumentException ignored) {
+							//ignore and fall through
 						}
-					} catch (IllegalArgumentException ignored) {
-						//ignore and fall through
 					}
+					showCreateContactDialog(null, null);
 				}
-				showCreateContactDialog(null, null);
-			} else {
-				showCreateConferenceDialog();
+				return false;
+			}
+
+			@Override
+			public void onToggleChanged(boolean isOpen) {
+
 			}
 		});
+
 		binding.tabLayout.setupWithViewPager(binding.startConversationViewPager);
 		binding.startConversationViewPager.addOnPageChangeListener(mOnPageChangeListener);
 		mListPagerAdapter = new ListPagerAdapter(getSupportFragmentManager());
@@ -326,6 +341,17 @@ public class StartConversationActivity extends XmppActivity implements XmppConne
 			mInitialSearchValue.push("");
 		}
 		mRequestedContactsPermission.set(savedInstanceState != null && savedInstanceState.getBoolean("requested_contacts_permission",false));
+		binding.speedDial.setOnActionSelectedListener(actionItem -> {
+			switch (actionItem.getId()) {
+				case R.id.enter:
+					showJoinConferenceDialog(null);
+					break;
+				case R.id.create:
+					showCreateConferenceDialog();
+					break;
+			}
+			return false;
+		});
 	}
 
 	@Override
@@ -593,9 +619,7 @@ public class StartConversationActivity extends XmppActivity implements XmppConne
 		getMenuInflater().inflate(R.menu.start_conversation, menu);
 		AccountUtils.showHideMenuItems(menu);
 		MenuItem menuHideOffline = menu.findItem(R.id.action_hide_offline);
-		MenuItem joinGroupChat = menu.findItem(R.id.action_join_conference);
 		MenuItem qrCodeScanMenuItem = menu.findItem(R.id.action_scan_qr_code);
-		joinGroupChat.setVisible(binding.startConversationViewPager.getCurrentItem() == 1);
 		qrCodeScanMenuItem.setVisible(isCameraFeatureAvailable());
 		if (QuickConversationsService.isQuicksy()) {
 			menuHideOffline.setVisible(false);
@@ -627,9 +651,6 @@ public class StartConversationActivity extends XmppActivity implements XmppConne
 		switch (item.getItemId()) {
 			case android.R.id.home:
 				navigateBack();
-				return true;
-			case R.id.action_join_conference:
-				showJoinConferenceDialog(null);
 				return true;
 			case R.id.action_scan_qr_code:
 				UriHandlerActivity.scan(this);
@@ -927,10 +948,12 @@ public class StartConversationActivity extends XmppActivity implements XmppConne
 		@DrawableRes final int fabDrawable;
 		if (binding.startConversationViewPager.getCurrentItem() == 0) {
 			fabDrawable = R.drawable.ic_person_add_white_24dp;
+			binding.speedDial.clearActionItems();
 		} else {
 			fabDrawable = R.drawable.ic_group_add_white_24dp;
+			binding.speedDial.inflate(R.menu.start_conversation_group_fab);
 		}
-		binding.fab.setImageResource(fabDrawable);
+		binding.speedDial.setMainFabClosedDrawable(ContextCompat.getDrawable(this,fabDrawable));
 		invalidateOptionsMenu();
 	}
 
@@ -952,6 +975,10 @@ public class StartConversationActivity extends XmppActivity implements XmppConne
 
 	@Override
 	public void onBackPressed() {
+		if (binding.speedDial.isOpen()) {
+			binding.speedDial.close();
+			return;
+		}
 		navigateBack();
 	}
 

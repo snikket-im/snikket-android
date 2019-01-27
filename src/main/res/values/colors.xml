@@ -12,8 +12,10 @@
 	<color name="grey50">#fffafafa</color>
 	<color name="grey200">#ffeeeeee</color>
 	<color name="grey300">#ffe0e0e0</color>
+	<color name="grey300_40">#66e0e0e0</color>
 	<color name="grey500">#ff9e9e9e</color>
 	<color name="grey700">#ff616161</color>
+	<color name="grey700_40">#66616161</color>
 	<color name="grey800">#ff424242</color>
 	<color name="grey900">#ff282828</color>
 	<color name="red500">#fff44336</color>

@@ -822,4 +822,6 @@
     <string name="unable_to_restore_backup">Unable to restore backup.</string>
     <string name="unable_to_decrypt_backup">Unable to decrypt backup. Is the password correct?</string>
     <string name="backup_channel_name">Backup &amp; Restore</string>
+    <string name="enter_jabber_id">Enter Jabber ID</string>
+    <string name="create_group_chat">Create group chat</string>
 </resources>

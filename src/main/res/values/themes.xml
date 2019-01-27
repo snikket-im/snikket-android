@@ -10,6 +10,7 @@
         <item name="color_background_primary">@color/grey50</item>
         <item name="color_background_secondary">@color/grey200</item>
         <item name="color_background_tertiary">@color/grey300</item>
+        <item name="color_background_overlay">@color/grey300_40</item>
         <item name="color_warning">@color/red_a700</item>
         <item name="TextColorOnline">@color/green600</item>
         <item name="TextColorError">@color/red800</item>
@@ -122,6 +123,7 @@
         <item name="color_background_primary">@color/grey800</item>
         <item name="color_background_secondary">@color/grey900</item>
         <item name="color_background_tertiary">@color/grey700</item>
+        <item name="color_background_overlay">@color/grey700_40</item>
         <item name="activity_background_search">@drawable/search_background_dark</item>
         <item name="activity_background_no_results">@drawable/no_results_background_dark</item>
         <item name="list_item_background">@drawable/list_item_background_dark</item>
