@@ -11,8 +11,8 @@ import java.net.Proxy;
 import java.net.URL;
 import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.CopyOnWriteArrayList;
 
 import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.HttpsURLConnection;
@@ -25,68 +25,86 @@ import eu.siacs.conversations.entities.Message;
 import eu.siacs.conversations.services.AbstractConnectionManager;
 import eu.siacs.conversations.services.XmppConnectionService;
 import eu.siacs.conversations.utils.TLSSocketFactory;
-import eu.siacs.conversations.xmpp.OnAdvancedStreamFeaturesLoaded;
 
 public class HttpConnectionManager extends AbstractConnectionManager {
 
-	public HttpConnectionManager(XmppConnectionService service) {
-		super(service);
-	}
+    private final List<HttpDownloadConnection> downloadConnections = new ArrayList<>();
+    private final List<HttpUploadConnection> uploadConnections = new ArrayList<>();
 
-	private List<HttpDownloadConnection> downloadConnections = new CopyOnWriteArrayList<>();
-	private List<HttpUploadConnection> uploadConnections = new CopyOnWriteArrayList<>();
+    public HttpConnectionManager(XmppConnectionService service) {
+        super(service);
+    }
 
-	public HttpDownloadConnection createNewDownloadConnection(Message message) {
-		return this.createNewDownloadConnection(message, false);
-	}
+    public static Proxy getProxy() throws IOException {
+        return new Proxy(Proxy.Type.HTTP, new InetSocketAddress(InetAddress.getByAddress(new byte[]{127, 0, 0, 1}), 8118));
+    }
 
-	public HttpDownloadConnection createNewDownloadConnection(Message message, boolean interactive) {
-		HttpDownloadConnection connection = new HttpDownloadConnection(this);
-		connection.init(message,interactive);
-		this.downloadConnections.add(connection);
-		return connection;
-	}
+    public void createNewDownloadConnection(Message message) {
+        this.createNewDownloadConnection(message, false);
+    }
 
-	public void createNewUploadConnection(Message message, boolean delay) {
-		HttpUploadConnection connection = new HttpUploadConnection(Method.determine(message.getConversation().getAccount()), this);
-		connection.init(message,delay);
-		this.uploadConnections.add(connection);
-	}
+    public void createNewDownloadConnection(final Message message, boolean interactive) {
+        synchronized (this.downloadConnections) {
+            for(HttpDownloadConnection connection : this.downloadConnections) {
+                if (connection.getMessage() == message) {
+                    Log.d(Config.LOGTAG, message.getConversation().getAccount().getJid().asBareJid() + ": download already in progress");
+                    return;
+                }
+            }
+            final HttpDownloadConnection connection = new HttpDownloadConnection(message, this);
+            connection.init(interactive);
+            this.downloadConnections.add(connection);
+        }
+    }
 
-	public boolean checkConnection(Message message) {
-		final Account account = message.getConversation().getAccount();
-		final URL url = message.getFileParams().url;
-		if (url.getProtocol().equalsIgnoreCase(P1S3UrlStreamHandler.PROTOCOL_NAME) && account.getStatus() != Account.State.ONLINE) {
-			return false;
-		}
-		return mXmppConnectionService.hasInternetConnection();
-	}
+    public void createNewUploadConnection(final Message message, boolean delay) {
+        synchronized (this.uploadConnections) {
+            for (HttpUploadConnection connection : this.uploadConnections) {
+                if (connection.getMessage() == message) {
+                    Log.d(Config.LOGTAG, message.getConversation().getAccount().getJid().asBareJid() + ": upload already in progress");
+                    return;
+                }
+            }
+            HttpUploadConnection connection = new HttpUploadConnection(message, Method.determine(message.getConversation().getAccount()), this);
+            connection.init(delay);
+            this.uploadConnections.add(connection);
+        }
+    }
 
-	public void finishConnection(HttpDownloadConnection connection) {
-		this.downloadConnections.remove(connection);
-	}
+    public boolean checkConnection(Message message) {
+        final Account account = message.getConversation().getAccount();
+        final URL url = message.getFileParams().url;
+        if (url.getProtocol().equalsIgnoreCase(P1S3UrlStreamHandler.PROTOCOL_NAME) && account.getStatus() != Account.State.ONLINE) {
+            return false;
+        }
+        return mXmppConnectionService.hasInternetConnection();
+    }
 
-	public void finishUploadConnection(HttpUploadConnection httpUploadConnection) {
-		this.uploadConnections.remove(httpUploadConnection);
-	}
+    void finishConnection(HttpDownloadConnection connection) {
+        synchronized (this.downloadConnections) {
+            this.downloadConnections.remove(connection);
+        }
+    }
 
-	public void setupTrustManager(final HttpsURLConnection connection, final boolean interactive) {
-		final X509TrustManager trustManager;
-		final HostnameVerifier hostnameVerifier = mXmppConnectionService.getMemorizingTrustManager().wrapHostnameVerifier(new StrictHostnameVerifier(), interactive);
-		if (interactive) {
-			trustManager = mXmppConnectionService.getMemorizingTrustManager().getInteractive();
-		} else {
-			trustManager = mXmppConnectionService.getMemorizingTrustManager().getNonInteractive();
-		}
-		try {
-			final SSLSocketFactory sf = new TLSSocketFactory(new X509TrustManager[]{trustManager}, mXmppConnectionService.getRNG());
-			connection.setSSLSocketFactory(sf);
-			connection.setHostnameVerifier(hostnameVerifier);
-		} catch (final KeyManagementException | NoSuchAlgorithmException ignored) {
-		}
-	}
+    void finishUploadConnection(HttpUploadConnection httpUploadConnection) {
+        synchronized (this.uploadConnections) {
+            this.uploadConnections.remove(httpUploadConnection);
+        }
+    }
 
-	public static Proxy getProxy() throws IOException {
-		return new Proxy(Proxy.Type.HTTP, new InetSocketAddress(InetAddress.getByAddress(new byte[]{127,0,0,1}), 8118));
-	}
+    void setupTrustManager(final HttpsURLConnection connection, final boolean interactive) {
+        final X509TrustManager trustManager;
+        final HostnameVerifier hostnameVerifier = mXmppConnectionService.getMemorizingTrustManager().wrapHostnameVerifier(new StrictHostnameVerifier(), interactive);
+        if (interactive) {
+            trustManager = mXmppConnectionService.getMemorizingTrustManager().getInteractive();
+        } else {
+            trustManager = mXmppConnectionService.getMemorizingTrustManager().getNonInteractive();
+        }
+        try {
+            final SSLSocketFactory sf = new TLSSocketFactory(new X509TrustManager[]{trustManager}, mXmppConnectionService.getRNG());
+            connection.setSSLSocketFactory(sf);
+            connection.setHostnameVerifier(hostnameVerifier);
+        } catch (final KeyManagementException | NoSuchAlgorithmException ignored) {
+        }
+    }
 }

@@ -39,7 +39,7 @@ public class HttpDownloadConnection implements Transferable {
 	private XmppConnectionService mXmppConnectionService;
 
 	private URL mUrl;
-	private Message message;
+	private final Message message;
 	private DownloadableFile file;
 	private int mStatus = Transferable.STATUS_UNKNOWN;
 	private boolean acceptedAutomatically = false;
@@ -48,7 +48,8 @@ public class HttpDownloadConnection implements Transferable {
 	private boolean canceled = false;
 	private Method method = Method.HTTP_UPLOAD;
 
-	HttpDownloadConnection(HttpConnectionManager manager) {
+	HttpDownloadConnection(Message message, HttpConnectionManager manager) {
+		this.message = message;
 		this.mHttpConnectionManager = manager;
 		this.mXmppConnectionService = manager.getXmppConnectionService();
 		this.mUseTor = mXmppConnectionService.useTorToConnect();
@@ -68,12 +69,7 @@ public class HttpDownloadConnection implements Transferable {
 		}
 	}
 
-	public void init(Message message) {
-		init(message, false);
-	}
-
-	public void init(Message message, boolean interactive) {
-		this.message = message;
+	public void init(boolean interactive) {
 		this.message.setTransferable(this);
 		try {
 			if (message.hasFileOnRemoteHost()) {
@@ -193,6 +189,10 @@ public class HttpDownloadConnection implements Transferable {
 	@Override
 	public int getProgress() {
 		return this.mProgress;
+	}
+
+	public Message getMessage() {
+		return message;
 	}
 
 	private class FileSizeChecker implements Runnable {
