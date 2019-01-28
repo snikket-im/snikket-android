@@ -55,7 +55,7 @@ import rocks.xmpp.addr.Jid;
 import static eu.siacs.conversations.entities.Bookmark.printableValue;
 import static eu.siacs.conversations.utils.StringUtils.changed;
 
-public class ConferenceDetailsActivity extends XmppActivity implements OnConversationUpdate, OnMucRosterUpdate, XmppConnectionService.OnAffiliationChanged, XmppConnectionService.OnRoleChanged, XmppConnectionService.OnConfigurationPushed, XmppConnectionService.OnRoomDestroy, TextWatcher, OnMediaLoaded {
+public class ConferenceDetailsActivity extends XmppActivity implements OnConversationUpdate, OnMucRosterUpdate, XmppConnectionService.OnAffiliationChanged, XmppConnectionService.OnConfigurationPushed, XmppConnectionService.OnRoomDestroy, TextWatcher, OnMediaLoaded {
     public static final String ACTION_VIEW_MUC = "view_muc";
 
     private Conversation mConversation;
@@ -593,16 +593,6 @@ public class ConferenceDetailsActivity extends XmppActivity implements OnConvers
     @Override
     public void onAffiliationChangeFailed(Jid jid, int resId) {
         displayToast(getString(resId, jid.asBareJid().toString()));
-    }
-
-    @Override
-    public void onRoleChangedSuccessful(String nick) {
-
-    }
-
-    @Override
-    public void onRoleChangeFailed(String nick, int resId) {
-        displayToast(getString(resId, nick));
     }
 
     @Override

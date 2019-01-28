@@ -1,7 +1,6 @@
 package eu.siacs.conversations.ui.util;
 
 import android.app.Activity;
-import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AlertDialog;
 import android.text.SpannableString;
@@ -13,11 +12,11 @@ import android.view.MenuItem;
 import android.view.View;
 
 import eu.siacs.conversations.Config;
+import eu.siacs.conversations.R;
 import eu.siacs.conversations.entities.Contact;
 import eu.siacs.conversations.entities.Conversation;
 import eu.siacs.conversations.entities.MucOptions;
 import eu.siacs.conversations.entities.MucOptions.User;
-import eu.siacs.conversations.R;
 import eu.siacs.conversations.services.XmppConnectionService;
 import eu.siacs.conversations.ui.ConferenceDetailsActivity;
 import eu.siacs.conversations.ui.ConversationFragment;
@@ -108,7 +107,6 @@ public final class MucDetailsContextMenuHelper {
     public static boolean onContextItemSelected(MenuItem item, User user, XmppActivity activity, final String fingerprint) {
         final Conversation conversation = user.getConversation();
         final XmppConnectionService.OnAffiliationChanged onAffiliationChanged = activity instanceof XmppConnectionService.OnAffiliationChanged ? (XmppConnectionService.OnAffiliationChanged) activity : null;
-        final XmppConnectionService.OnRoleChanged onRoleChanged = activity instanceof XmppConnectionService.OnRoleChanged ? (XmppConnectionService.OnRoleChanged) activity : null;
         Jid jid = user.getRealJid();
         switch (item.getItemId()) {
             case R.id.action_contact_details:
@@ -133,12 +131,12 @@ public final class MucDetailsContextMenuHelper {
                 activity.xmppConnectionService.changeAffiliationInConference(conversation, jid, MucOptions.Affiliation.MEMBER, onAffiliationChanged);
                 return true;
             case R.id.remove_from_room:
-                removeFromRoom(user, activity, onAffiliationChanged, onRoleChanged);
+                removeFromRoom(user, activity, onAffiliationChanged);
                 return true;
             case R.id.ban_from_conference:
                 activity.xmppConnectionService.changeAffiliationInConference(conversation, jid, MucOptions.Affiliation.OUTCAST, onAffiliationChanged);
                 if (user.getRole() != MucOptions.Role.NONE) {
-                    activity.xmppConnectionService.changeRoleInConference(conversation, user.getName(), MucOptions.Role.NONE, onRoleChanged);
+                    activity.xmppConnectionService.changeRoleInConference(conversation, user.getName(), MucOptions.Role.NONE);
                 }
                 return true;
             case R.id.send_private_message:
@@ -159,12 +157,12 @@ public final class MucDetailsContextMenuHelper {
         }
     }
 
-    private static void removeFromRoom(final User user, XmppActivity activity, XmppConnectionService.OnAffiliationChanged onAffiliationChanged, XmppConnectionService.OnRoleChanged onRoleChanged) {
+    private static void removeFromRoom(final User user, XmppActivity activity, XmppConnectionService.OnAffiliationChanged onAffiliationChanged) {
         final Conversation conversation = user.getConversation();
         if (conversation.getMucOptions().membersOnly()) {
             activity.xmppConnectionService.changeAffiliationInConference(conversation, user.getRealJid(), MucOptions.Affiliation.NONE, onAffiliationChanged);
             if (user.getRole() != MucOptions.Role.NONE) {
-                activity.xmppConnectionService.changeRoleInConference(conversation, user.getName(), MucOptions.Role.NONE, onRoleChanged);
+                activity.xmppConnectionService.changeRoleInConference(conversation, user.getName(), MucOptions.Role.NONE);
             }
         } else {
             AlertDialog.Builder builder = new AlertDialog.Builder(activity);
@@ -180,7 +178,7 @@ public final class MucDetailsContextMenuHelper {
             builder.setPositiveButton(R.string.ban_now, (dialog, which) -> {
                 activity.xmppConnectionService.changeAffiliationInConference(conversation, user.getRealJid(), MucOptions.Affiliation.OUTCAST, onAffiliationChanged);
                 if (user.getRole() != MucOptions.Role.NONE) {
-                    activity.xmppConnectionService.changeRoleInConference(conversation, user.getName(), MucOptions.Role.NONE, onRoleChanged);
+                    activity.xmppConnectionService.changeRoleInConference(conversation, user.getName(), MucOptions.Role.NONE);
                 }
             });
             builder.create().show();

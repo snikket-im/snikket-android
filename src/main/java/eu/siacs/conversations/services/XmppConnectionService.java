@@ -2919,20 +2919,14 @@ public class XmppConnectionService extends Service {
 		sendIqPacket(conference.getAccount(), request, mDefaultIqHandler);
 	}
 
-	public void changeRoleInConference(final Conversation conference, final String nick, MucOptions.Role role, final OnRoleChanged callback) {
+	public void changeRoleInConference(final Conversation conference, final String nick, MucOptions.Role role) {
 		IqPacket request = this.mIqGenerator.changeRole(conference, nick, role.toString());
 		Log.d(Config.LOGTAG, request.toString());
-		sendIqPacket(conference.getAccount(), request, new OnIqPacketReceived() {
-			@Override
-			public void onIqPacketReceived(Account account, IqPacket packet) {
-				Log.d(Config.LOGTAG, packet.toString());
-				if (packet.getType() == IqPacket.TYPE.RESULT) {
-					callback.onRoleChangedSuccessful(nick);
-				} else {
-					callback.onRoleChangeFailed(nick, R.string.could_not_change_role);
-				}
-			}
-		});
+		sendIqPacket(conference.getAccount(), request, (account, packet) -> {
+            if (packet.getType() != IqPacket.TYPE.RESULT) {
+                Log.d(Config.LOGTAG,account.getJid().asBareJid()+" unable to change role of "+nick);
+            }
+        });
 	}
 
     public void destroyRoom(final Conversation conversation, final OnRoomDestroy callback) {
@@ -4308,12 +4302,6 @@ public class XmppConnectionService extends Service {
 		void onAffiliationChangedSuccessful(Jid jid);
 
 		void onAffiliationChangeFailed(Jid jid, int resId);
-	}
-
-	public interface OnRoleChanged {
-		void onRoleChangedSuccessful(String nick);
-
-		void onRoleChangeFailed(String nick, int resid);
 	}
 
 	public interface OnConversationUpdate {

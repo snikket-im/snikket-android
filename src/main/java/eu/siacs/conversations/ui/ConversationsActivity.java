@@ -88,7 +88,7 @@ import rocks.xmpp.addr.Jid;
 
 import static eu.siacs.conversations.ui.ConversationFragment.REQUEST_DECRYPT_PGP;
 
-public class ConversationsActivity extends XmppActivity implements OnConversationSelected, OnConversationArchived, OnConversationsListItemUpdated, OnConversationRead, XmppConnectionService.OnAccountUpdate, XmppConnectionService.OnConversationUpdate, XmppConnectionService.OnRosterUpdate, OnUpdateBlocklist, XmppConnectionService.OnShowErrorToast, XmppConnectionService.OnAffiliationChanged, XmppConnectionService.OnRoleChanged {
+public class ConversationsActivity extends XmppActivity implements OnConversationSelected, OnConversationArchived, OnConversationsListItemUpdated, OnConversationRead, XmppConnectionService.OnAccountUpdate, XmppConnectionService.OnConversationUpdate, XmppConnectionService.OnRosterUpdate, OnUpdateBlocklist, XmppConnectionService.OnShowErrorToast, XmppConnectionService.OnAffiliationChanged {
 
     public static final String ACTION_VIEW_CONVERSATION = "eu.siacs.conversations.action.VIEW";
     public static final String EXTRA_CONVERSATION = "conversationUuid";
@@ -424,16 +424,6 @@ public class ConversationsActivity extends XmppActivity implements OnConversatio
     @Override
     public void onAffiliationChangeFailed(Jid jid, int resId) {
         displayToast(getString(resId, jid.asBareJid().toString()));
-    }
-
-    @Override
-    public void onRoleChangedSuccessful(String nick) {
-
-    }
-
-    @Override
-    public void onRoleChangeFailed(String nick, int resId) {
-        displayToast(getString(resId, nick));
     }
 
     private void openConversation(Conversation conversation, Bundle extras) {
