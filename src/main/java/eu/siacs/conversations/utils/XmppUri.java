@@ -166,7 +166,7 @@ public class XmppUri {
 	private boolean hasAction(String query, String action) {
 		for (String pair : query == null ? new String[0] : query.split(";")) {
 			final String[] parts = pair.split("=", 2);
-			if (parts.length == 1 && parts[0].equals(action)) {
+			if (parts.length == 1 && parts[0].toLowerCase(Locale.US).startsWith(action)) {
 				return true;
 			}
 		}
