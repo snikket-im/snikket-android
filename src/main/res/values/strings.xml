@@ -368,6 +368,8 @@
     <string name="remove_membership">Revoke membership</string>
     <string name="grant_admin_privileges">Grant admin privileges</string>
     <string name="remove_admin_privileges">Revoke admin privileges</string>
+    <string name="grant_owner_privileges">Grant owner privileges</string>
+    <string name="remove_owner_privileges">Revoke owner privileges</string>
     <string name="remove_from_room">Remove from group chat</string>
     <string name="could_not_change_affiliation">Could not change affiliation of %s</string>
     <string name="ban_from_conference">Ban from group chat</string>
