@@ -2,7 +2,6 @@ package eu.siacs.conversations.parser;
 
 import android.util.Log;
 
-import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,7 +10,6 @@ import eu.siacs.conversations.Config;
 import eu.siacs.conversations.crypto.PgpEngine;
 import eu.siacs.conversations.crypto.axolotl.AxolotlService;
 import eu.siacs.conversations.entities.Account;
-import eu.siacs.conversations.entities.Bookmark;
 import eu.siacs.conversations.entities.Contact;
 import eu.siacs.conversations.entities.Conversation;
 import eu.siacs.conversations.entities.Message;
@@ -99,7 +97,7 @@ public class PresenceParser extends AbstractParser implements
 									+mucOptions.getConversation().getJid().asBareJid()
 									+"' created. pushing default configuration");
 							mXmppConnectionService.pushConferenceConfiguration(mucOptions.getConversation(),
-									IqGenerator.defaultRoomConfiguration(),
+									IqGenerator.defaultGroupChatConfiguration(),
 									null);
 						}
 						if (mXmppConnectionService.getPgpEngine() != null) {

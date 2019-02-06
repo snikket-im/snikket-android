@@ -474,6 +474,7 @@ public class ConferenceDetailsActivity extends XmppActivity implements OnConvers
         } else {
             account = mConversation.getAccount().getJid().asBareJid().toString();
         }
+        setTitle(mucOptions.isPrivateAndNonAnonymous() ? R.string.action_muc_details : R.string.channel_details);
         this.binding.editMucNameButton.setVisibility((self.getAffiliation().ranks(MucOptions.Affiliation.OWNER) || mucOptions.canChangeSubject()) ? View.VISIBLE : View.GONE);
         this.binding.detailsAccount.setText(getString(R.string.using_account, account));
         this.binding.jid.setText(mConversation.getJid().asBareJid().toEscapedString());

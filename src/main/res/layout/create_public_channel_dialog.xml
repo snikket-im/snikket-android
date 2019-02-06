@@ -6,14 +6,11 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:paddingBottom="8dp"
-        android:paddingLeft="24dp"
-        android:paddingRight="24dp"
-        android:paddingTop="16dp">
+        android:padding="?dialogPreferredPadding">
 
         <TextView
             style="@style/InputLabel"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/your_account"/>
 
@@ -23,7 +20,23 @@
             android:layout_height="wrap_content"/>
 
         <android.support.design.widget.TextInputLayout
-            android:id="@+id/account_jid_layout"
+            android:id="@+id/name_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:errorTextAppearance="@style/TextAppearance.Conversations.Design.Error"
+            app:hintTextAppearance="@style/TextAppearance.Conversations.Design.Hint">
+
+            <eu.siacs.conversations.ui.widget.EmojiWrapperEditText
+                android:id="@+id/group_chat_name"
+                style="@style/Widget.Conversations.EditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/create_dialog_channel_name"
+                android:imeOptions="actionNext|flagNoExtractUi"/>
+        </android.support.design.widget.TextInputLayout>
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/xmpp_address_layout"
+            android:visibility="gone"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/xmpp_address"
@@ -38,14 +51,5 @@
                 android:inputType="textEmailAddress"
                 android:imeOptions="actionDone|flagNoExtractUi"/>
         </android.support.design.widget.TextInputLayout>
-
-        <CheckBox
-            android:id="@+id/bookmark"
-            style="@style/Widget.Conversations.CheckBox"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:checked="true"
-            android:text="@string/save_as_bookmark"/>
     </LinearLayout>
 </layout>

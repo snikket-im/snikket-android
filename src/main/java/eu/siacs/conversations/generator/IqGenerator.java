@@ -456,12 +456,24 @@ public class IqGenerator extends AbstractGenerator {
 		return packet;
 	}
 
-	public static Bundle defaultRoomConfiguration() {
+	public static Bundle defaultGroupChatConfiguration() {
 		Bundle options = new Bundle();
 		options.putString("muc#roomconfig_persistentroom", "1");
 		options.putString("muc#roomconfig_membersonly", "1");
 		options.putString("muc#roomconfig_publicroom", "0");
 		options.putString("muc#roomconfig_whois", "anyone");
+		options.putString("muc#roomconfig_enablearchiving", "1"); //prosody
+		options.putString("mam", "1"); //ejabberd community
+		options.putString("muc#roomconfig_mam","1"); //ejabberd saas
+		return options;
+	}
+
+	public static Bundle defaultChannelConfiguration() {
+		Bundle options = new Bundle();
+		options.putString("muc#roomconfig_persistentroom", "1");
+		options.putString("muc#roomconfig_membersonly", "0");
+		options.putString("muc#roomconfig_publicroom", "1");
+		options.putString("muc#roomconfig_whois", "moderators");
 		options.putString("muc#roomconfig_enablearchiving", "1"); //prosody
 		options.putString("mam", "1"); //ejabberd community
 		options.putString("muc#roomconfig_mam","1"); //ejabberd saas

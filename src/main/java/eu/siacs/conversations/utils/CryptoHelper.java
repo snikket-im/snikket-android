@@ -63,7 +63,8 @@ public final class CryptoHelper {
     }
 
     public static String pronounceable(SecureRandom random) {
-        char[] output = new char[random.nextInt(4) * 2 + 5];
+        final int rand = random.nextInt(4);
+        char[] output = new char[rand * 2 + (5 - rand)];
         boolean vowel = random.nextBoolean();
         for (int i = 0; i < output.length; ++i) {
             output[i] = vowel ? VOWELS[random.nextInt(VOWELS.length)] : CONSONANTS[random.nextInt(CONSONANTS.length)];

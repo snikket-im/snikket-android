@@ -7,6 +7,7 @@
     <string name="action_end_conversation">Close this conversation</string>
     <string name="action_contact_details">Contact details</string>
     <string name="action_muc_details">Group chat details</string>
+    <string name="channel_details">Channel details</string>
     <string name="action_secure">Secure conversation</string>
     <string name="action_add_account">Add account</string>
     <string name="action_edit_contact">Edit name</string>
@@ -211,12 +212,9 @@
     <string name="fetching_keys">Fetching keys…</string>
     <string name="done">Done</string>
     <string name="decrypt">Decrypt</string>
-    <string name="conferences">Group chats</string>
+    <string name="bookmarks">Bookmarks</string>
     <string name="search">Search</string>
-    <string name="dialog_title_create_contact">Create Contact</string>
     <string name="enter_contact">Enter Contact</string>
-    <string name="join_conference">Join group chat</string>
-    <string name="dialog_title_join_conference">Join Group Chat</string>
     <string name="delete_contact">Delete contact</string>
     <string name="view_contact_details">View contact details</string>
     <string name="block_contact">Block contact</string>
@@ -225,8 +223,8 @@
     <string name="select">Select</string>
     <string name="contact_already_exists">The contact already exists</string>
     <string name="join">Join</string>
-    <string name="conference_address">Group chat address</string>
-    <string name="conference_address_example">room@conference.example.com/nick</string>
+    <string name="channel_full_jid_example">channel@conference.example.com/nick</string>
+    <string name="channel_bare_jid_example">channel@conference.example.com</string>
     <string name="save_as_bookmark">Save as bookmark</string>
     <string name="delete_bookmark">Delete bookmark</string>
     <string name="destroy_room">Destroy group chat</string>
@@ -416,7 +414,8 @@
     <string name="no_application_found_to_display_location">No application found to display location</string>
     <string name="location">Location</string>
     <string name="title_undo_swipe_out_conversation">Conversation closed</string>
-    <string name="title_undo_swipe_out_muc">Left group chat</string>
+    <string name="title_undo_swipe_out_group_chat">Left private group chat</string>
+    <string name="title_undo_swipe_out_channel">Left public channel</string>
     <string name="pref_dont_trust_system_cas_title">Don’t trust system CAs</string>
     <string name="pref_dont_trust_system_cas_summary">All certificates must be manually approved</string>
     <string name="pref_remove_trusted_certificates_title">Remove certificates</string>
@@ -541,7 +540,6 @@
     <string name="device_does_not_support_battery_op">Your device does not support opting out of battery optimization</string>
     <string name="registration_please_wait">Registration failed: Try again later</string>
     <string name="registration_password_too_weak">Registration failed: Password too weak</string>
-    <string name="dialog_title_create_conference">Create Group Chat</string>
     <string name="choose_participants">Choose participants</string>
     <string name="creating_conference">Creating group chat…</string>
     <string name="invite_again">Invite again</string>
@@ -824,4 +822,16 @@
     <string name="backup_channel_name">Backup &amp; Restore</string>
     <string name="enter_jabber_id">Enter Jabber ID</string>
     <string name="create_group_chat">Create group chat</string>
+    <string name="join_public_channel">Join public channel</string>
+    <string name="create_private_group_chat">Create private group chat</string>
+    <string name="create_public_channel">Create public channel</string>
+    <string name="create_dialog_channel_name">Channel name</string>
+    <string name="xmpp_address">XMPP address</string>
+    <string name="please_enter_name">Please provide a name for the channel</string>
+    <string name="please_enter_xmpp_address">Please provide an XMPP address</string>
+    <string name="this_is_an_xmpp_address">This is an XMPP address. Please provide a name.</string>
+    <string name="creating_channel">Creating public channel…</string>
+    <string name="channel_already_exists">This channel already exits</string>
+    <string name="joined_an_existing_channel">You’ve joined an existing channel</string>
+    <string name="unable_to_set_channel_configuration">Unable to set channel configuration</string>
 </resources>

@@ -46,10 +46,10 @@
             app:backgroundTint="?colorPrimary"
             android:layout_alignParentRight="true"
             android:layout_alignParentBottom="true"
-            app:sdMainFabClosedSrc="@drawable/ic_person_add_white_24dp"
+            app:sdMainFabClosedSrc="@drawable/ic_add_white_24dp"
             app:sdMainFabClosedBackgroundColor="?colorPrimary"
-            app:sdMainFabOpenedSrc="@drawable/ic_close_white_24dp"
             app:sdMainFabOpenedBackgroundColor="?colorPrimaryDark"
+            app:sdUseReverseAnimationOnClose="true"
             app:sdOverlayLayout="@id/overlay"/>
     </RelativeLayout>
 </layout>

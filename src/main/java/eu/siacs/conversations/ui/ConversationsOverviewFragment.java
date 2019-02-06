@@ -55,6 +55,7 @@ import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.databinding.FragmentConversationsOverviewBinding;
 import eu.siacs.conversations.entities.Conversation;
+import eu.siacs.conversations.entities.Conversational;
 import eu.siacs.conversations.ui.adapter.ConversationAdapter;
 import eu.siacs.conversations.ui.interfaces.OnConversationArchived;
 import eu.siacs.conversations.ui.interfaces.OnConversationSelected;
@@ -133,14 +134,23 @@ public class ConversationsOverviewFragment extends XmppFragment {
 			if (activity instanceof OnConversationArchived) {
 				((OnConversationArchived) activity).onConversationArchived(swipedConversation.peek());
 			}
-			boolean isMuc = swipedConversation.peek().getMode() == Conversation.MODE_MULTI;
-			int title = isMuc ? R.string.title_undo_swipe_out_muc : R.string.title_undo_swipe_out_conversation;
+			final Conversation c = swipedConversation.peek();
+			final int title;
+			if (c.getMode() == Conversational.MODE_MULTI) {
+				if (c.getMucOptions().isPrivateAndNonAnonymous()) {
+					title = R.string.title_undo_swipe_out_group_chat;
+				} else {
+					title = R.string.title_undo_swipe_out_channel;
+				}
+			} else {
+				title = R.string.title_undo_swipe_out_conversation;
+			}
 
 			final Snackbar snackbar = Snackbar.make(binding.list, title, 5000)
 					.setAction(R.string.undo, v -> {
 						pendingActionHelper.undo();
-						Conversation c = swipedConversation.pop();
-						conversationsAdapter.insert(c, position);
+						Conversation conversation = swipedConversation.pop();
+						conversationsAdapter.insert(conversation, position);
 						if (formerlySelected) {
 							if (activity instanceof OnConversationSelected) {
 								((OnConversationSelected) activity).onConversationSelected(c);
@@ -167,9 +177,9 @@ public class ConversationsOverviewFragment extends XmppFragment {
 				if (snackbar.isShownOrQueued()) {
 					snackbar.dismiss();
 				}
-				Conversation c = swipedConversation.pop();
-				if(c != null){
-					if (!c.isRead() && c.getMode() == Conversation.MODE_SINGLE) {
+				final Conversation conversation = swipedConversation.pop();
+				if(conversation != null){
+					if (!conversation.isRead() && conversation.getMode() == Conversation.MODE_SINGLE) {
 						return;
 					}
 					activity.xmppConnectionService.archiveConversation(c);

@@ -36,7 +36,7 @@
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:inputType="textEmailAddress"
-                android:imeOptions="actionDone"/>
+                android:imeOptions="actionDone|flagNoExtractUi"/>
         </android.support.design.widget.TextInputLayout>
     </LinearLayout>
 </layout>

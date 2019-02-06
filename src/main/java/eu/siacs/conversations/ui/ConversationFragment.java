@@ -952,6 +952,7 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
             if (conversation.getMode() == Conversation.MODE_MULTI) {
                 menuContactDetails.setVisible(false);
                 menuInviteContact.setVisible(conversation.getMucOptions().canInvite());
+                menuMucDetails.setTitle(conversation.getMucOptions().isPrivateAndNonAnonymous() ? R.string.action_muc_details : R.string.channel_details);
             } else {
                 menuContactDetails.setVisible(!this.conversation.withSelf());
                 menuMucDetails.setVisible(false);

@@ -34,7 +34,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/create_dialog_group_chat_name"
-                android:imeOptions="actionNext"/>
+                android:imeOptions="actionNext|flagNoExtractUi"/>
         </android.support.design.widget.TextInputLayout>
     </LinearLayout>
 </layout>
