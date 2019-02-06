@@ -232,6 +232,16 @@
                         android:layout_height="wrap_content"
                         android:orientation="vertical">
 
+                        <TextView
+                            android:id="@+id/no_users_hints"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:paddingTop="@dimen/card_padding_regular"
+                            android:paddingEnd="@dimen/card_padding_regular"
+                            android:paddingStart="@dimen/card_padding_regular"
+                            android:text="@string/no_users_hint_channel"
+                            android:textAppearance="@style/TextAppearance.Conversations.Body2"/>
+
                         <android.support.v7.widget.RecyclerView
                             android:id="@+id/users"
                             android:layout_width="match_parent"

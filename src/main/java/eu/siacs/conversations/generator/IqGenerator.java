@@ -462,6 +462,8 @@ public class IqGenerator extends AbstractGenerator {
 		options.putString("muc#roomconfig_membersonly", "1");
 		options.putString("muc#roomconfig_publicroom", "0");
 		options.putString("muc#roomconfig_whois", "anyone");
+		options.putString("muc#roomconfig_changesubject", "0");
+		options.putString("muc#roomconfig_allowinvites", "0");
 		options.putString("muc#roomconfig_enablearchiving", "1"); //prosody
 		options.putString("mam", "1"); //ejabberd community
 		options.putString("muc#roomconfig_mam","1"); //ejabberd saas
@@ -474,6 +476,7 @@ public class IqGenerator extends AbstractGenerator {
 		options.putString("muc#roomconfig_membersonly", "0");
 		options.putString("muc#roomconfig_publicroom", "1");
 		options.putString("muc#roomconfig_whois", "moderators");
+		options.putString("muc#roomconfig_changesubject", "0");
 		options.putString("muc#roomconfig_enablearchiving", "1"); //prosody
 		options.putString("mam", "1"); //ejabberd community
 		options.putString("muc#roomconfig_mam","1"); //ejabberd saas

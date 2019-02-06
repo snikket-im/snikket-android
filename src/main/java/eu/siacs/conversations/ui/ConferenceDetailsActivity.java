@@ -40,6 +40,7 @@ import eu.siacs.conversations.ui.util.Attachment;
 import eu.siacs.conversations.ui.util.AvatarWorkerTask;
 import eu.siacs.conversations.ui.util.GridManager;
 import eu.siacs.conversations.ui.util.MenuDoubleTabUtil;
+import eu.siacs.conversations.ui.util.MucConfiguration;
 import eu.siacs.conversations.ui.util.MucDetailsContextMenuHelper;
 import eu.siacs.conversations.ui.util.MyLinkify;
 import eu.siacs.conversations.ui.util.SoftKeyboardUtils;
@@ -124,53 +125,16 @@ public class ConferenceDetailsActivity extends XmppActivity implements OnConvers
         public void onClick(View v) {
             final MucOptions mucOptions = mConversation.getMucOptions();
             AlertDialog.Builder builder = new AlertDialog.Builder(ConferenceDetailsActivity.this);
-            builder.setTitle(R.string.conference_options);
-            final String[] options;
-            final boolean[] values;
-            if (mAdvancedMode) {
-                options = new String[]{
-                        getString(R.string.members_only),
-                        getString(R.string.moderated),
-                        getString(R.string.non_anonymous)
-                };
-                values = new boolean[]{
-                        mucOptions.membersOnly(),
-                        mucOptions.moderated(),
-                        mucOptions.nonanonymous()
-                };
-            } else {
-                options = new String[]{
-                        getString(R.string.members_only),
-                        getString(R.string.non_anonymous)
-                };
-                values = new boolean[]{
-                        mucOptions.membersOnly(),
-                        mucOptions.nonanonymous()
-                };
-            }
-            builder.setMultiChoiceItems(options, values, (dialog, which, isChecked) -> values[which] = isChecked);
+            MucConfiguration configuration = MucConfiguration.get(ConferenceDetailsActivity.this, mucOptions);
+            builder.setTitle(configuration.title);
+            final boolean[] values = configuration.values;
+            builder.setMultiChoiceItems(configuration.names, values, (dialog, which, isChecked) -> values[which] = isChecked);
             builder.setNegativeButton(R.string.cancel, null);
             builder.setPositiveButton(R.string.confirm, (dialog, which) -> {
-                if (!mucOptions.membersOnly() && values[0]) {
-                    xmppConnectionService.changeAffiliationsInConference(mConversation,
-                            MucOptions.Affiliation.NONE,
-                            MucOptions.Affiliation.MEMBER);
-                }
-                Bundle options1 = new Bundle();
-                options1.putString("muc#roomconfig_membersonly", values[0] ? "1" : "0");
-                if (values.length == 2) {
-                    options1.putString("muc#roomconfig_whois", values[1] ? "anyone" : "moderators");
-                } else if (values.length == 3) {
-                    options1.putString("muc#roomconfig_moderatedroom", values[1] ? "1" : "0");
-                    options1.putString("muc#roomconfig_whois", values[2] ? "anyone" : "moderators");
-                }
-                options1.putString("muc#roomconfig_persistentroom", "1");
-                final boolean whois = values.length == 2 ? values[1] : values[2];
-                if (values[0] == whois) {
-                    options1.putString("muc#roomconfig_publicroom", whois ? "0" : "1");
-                }
+                Bundle options = configuration.toBundle(values);
+                options.putString("muc#roomconfig_persistentroom", "1");
                 xmppConnectionService.pushConferenceConfiguration(mConversation,
-                        options1,
+                        options,
                         ConferenceDetailsActivity.this);
             });
             builder.create().show();
@@ -508,14 +472,17 @@ public class ConferenceDetailsActivity extends XmppActivity implements OnConvers
         this.binding.mucYourNick.setText(mucOptions.getActualNick());
         if (mucOptions.online()) {
             this.binding.usersWrapper.setVisibility(View.VISIBLE);
-            this.binding.mucSettings.setVisibility(View.VISIBLE);
             this.binding.mucInfoMore.setVisibility(this.mAdvancedMode ? View.VISIBLE : View.GONE);
             this.binding.mucRole.setVisibility(View.VISIBLE);
             this.binding.mucRole.setText(getStatus(self));
-            if (mucOptions.membersOnly()) {
-                this.binding.mucConferenceType.setText(R.string.private_conference);
+            if (mucOptions.getSelf().getAffiliation().ranks(MucOptions.Affiliation.OWNER)) {
+                this.binding.mucSettings.setVisibility(View.VISIBLE);
+                this.binding.mucConferenceType.setText(MucConfiguration.describe(this,mucOptions));
+            } else if (!mucOptions.isPrivateAndNonAnonymous() && mucOptions.nonanonymous()) {
+                this.binding.mucSettings.setVisibility(View.VISIBLE);
+                this.binding.mucConferenceType.setText(R.string.group_chat_will_make_your_jabber_id_public);
             } else {
-                this.binding.mucConferenceType.setText(R.string.public_conference);
+                this.binding.mucSettings.setVisibility(View.GONE);
             }
             if (mucOptions.mamSupport()) {
                 this.binding.mucInfoMam.setText(R.string.server_info_available);
@@ -552,7 +519,7 @@ public class ConferenceDetailsActivity extends XmppActivity implements OnConvers
             this.binding.notificationStatusText.setText(R.string.notify_only_when_highlighted);
             this.binding.notificationStatusButton.setImageResource(ic_notifications_none);
         }
-        List<User> users = mucOptions.getUsers();
+        final List<User> users = mucOptions.getUsers();
         Collections.sort(users, (a, b) -> {
             if (b.getAffiliation().outranks(a.getAffiliation())) {
                 return 1;
@@ -570,6 +537,14 @@ public class ConferenceDetailsActivity extends XmppActivity implements OnConvers
         });
         this.mUserPreviewAdapter.submitList(MucOptions.sub(users, GridManager.getCurrentColumnCount(binding.users)));
         this.binding.invite.setVisibility(mucOptions.canInvite() ? View.VISIBLE : View.GONE);
+        this.binding.showUsers.setVisibility(users.size() > 0 ? View.VISIBLE : View.GONE);
+        this.binding.usersWrapper.setVisibility(users.size() > 0 || mucOptions.canInvite() ? View.VISIBLE : View.GONE);
+        if (users.size() == 0) {
+            this.binding.noUsersHints.setText(mucOptions.isPrivateAndNonAnonymous() ? R.string.no_users_hint_group_chat : R.string.no_users_hint_channel);
+            this.binding.noUsersHints.setVisibility(View.VISIBLE);
+        } else {
+            this.binding.noUsersHints.setVisibility(View.GONE);
+        }
 
     }
 

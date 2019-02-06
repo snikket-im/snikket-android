@@ -154,13 +154,21 @@ public class MucOptions {
     }
 
     public boolean canInvite() {
-        Field field = getRoomInfoForm().getFieldByName("muc#roomconfig_allowinvites");
-        return !membersOnly() || self.getRole().ranks(Role.MODERATOR) || (field != null && "1".equals(field.getValue()));
+        return !membersOnly() || self.getRole().ranks(Role.MODERATOR) || allowInvites();
+    }
+
+    public boolean allowInvites() {
+        final Field field = getRoomInfoForm().getFieldByName("muc#roomconfig_allowinvites");
+        return field != null && "1".equals(field.getValue());
     }
 
     public boolean canChangeSubject() {
-        Field field = getRoomInfoForm().getFieldByName("muc#roominfo_changesubject");
-        return self.getRole().ranks(Role.MODERATOR) || (field != null && "1".equals(field.getValue()));
+        return self.getRole().ranks(Role.MODERATOR) || participantsCanChangeSubject();
+    }
+
+    public boolean participantsCanChangeSubject() {
+        final Field field = getRoomInfoForm().getFieldByName("muc#roominfo_changesubject");
+        return field != null && "1".equals(field.getValue());
     }
 
     public boolean allowPm() {
