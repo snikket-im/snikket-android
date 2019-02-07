@@ -156,7 +156,6 @@
                                 android:layout_alignParentStart="true"
                                 android:layout_centerVertical="true"
                                 android:layout_toStartOf="@+id/change_conference_button"
-                                android:text="@string/private_conference"
                                 android:textAppearance="@style/TextAppearance.Conversations.Body1"
                                 android:layout_alignParentLeft="true"
                                 android:layout_toLeftOf="@+id/change_conference_button" />

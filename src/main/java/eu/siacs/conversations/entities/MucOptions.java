@@ -511,7 +511,7 @@ public class MucOptions {
         return users;
     }
 
-    public String createNameFromParticipants() {
+    String createNameFromParticipants() {
         List<User> users = getUsersRelevantForNameAndAvatar();
         if (users.size() >= 2) {
             StringBuilder builder = new StringBuilder();

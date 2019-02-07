@@ -83,11 +83,17 @@ public class ConversationMenuConfigurator {
 		final MenuItem pgp = menu.findItem(R.id.encryption_choice_pgp);
 		final MenuItem axolotl = menu.findItem(R.id.encryption_choice_axolotl);
 
+		final int next = conversation.getNextEncryption();
+
 		boolean visible;
 		if (OmemoSetting.isAlways()) {
 			visible = false;
 		} else if (conversation.getMode() == Conversation.MODE_MULTI) {
-			visible = (Config.supportOpenPgp() || Config.supportOmemo()) && Config.multipleEncryptionChoices();
+			if (next == Message.ENCRYPTION_NONE && !conversation.isPrivateAndNonAnonymous() && !conversation.getBooleanAttribute(Conversation.ATTRIBUTE_FORMERLY_PRIVATE_NON_ANONYMOUS, false)) {
+				visible = false;
+			} else {
+				visible = (Config.supportOpenPgp() || Config.supportOmemo()) && Config.multipleEncryptionChoices();
+			}
 		} else {
 			visible = Config.multipleEncryptionChoices();
 		}
@@ -105,10 +111,6 @@ public class ConversationMenuConfigurator {
 		pgp.setVisible(Config.supportOpenPgp());
 		none.setVisible(Config.supportUnencrypted() || conversation.getMode() == Conversation.MODE_MULTI);
 		axolotl.setVisible(Config.supportOmemo());
-		final AxolotlService axolotlService = conversation.getAccount().getAxolotlService();
-		if (axolotlService == null || !axolotlService.isConversationAxolotlCapable(conversation)) {
-			axolotl.setEnabled(false);
-		}
 		switch (conversation.getNextEncryption()) {
 			case Message.ENCRYPTION_NONE:
 				none.setChecked(true);

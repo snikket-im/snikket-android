@@ -1254,34 +1254,39 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
         if (conversation == null) {
             return;
         }
+        final boolean updated;
         switch (item.getItemId()) {
             case R.id.encryption_choice_none:
-                conversation.setNextEncryption(Message.ENCRYPTION_NONE);
+                updated = conversation.setNextEncryption(Message.ENCRYPTION_NONE);
                 item.setChecked(true);
                 break;
             case R.id.encryption_choice_pgp:
                 if (activity.hasPgp()) {
                     if (conversation.getAccount().getPgpSignature() != null) {
-                        conversation.setNextEncryption(Message.ENCRYPTION_PGP);
+                        updated = conversation.setNextEncryption(Message.ENCRYPTION_PGP);
                         item.setChecked(true);
                     } else {
+                        updated = false;
                         activity.announcePgp(conversation.getAccount(), conversation, null, activity.onOpenPGPKeyPublished);
                     }
                 } else {
                     activity.showInstallPgpDialog();
+                    updated = false;
                 }
                 break;
             case R.id.encryption_choice_axolotl:
                 Log.d(Config.LOGTAG, AxolotlService.getLogprefix(conversation.getAccount())
                         + "Enabled axolotl for Contact " + conversation.getContact().getJid());
-                conversation.setNextEncryption(Message.ENCRYPTION_AXOLOTL);
+                updated = conversation.setNextEncryption(Message.ENCRYPTION_AXOLOTL);
                 item.setChecked(true);
                 break;
             default:
-                conversation.setNextEncryption(Message.ENCRYPTION_NONE);
+                updated = conversation.setNextEncryption(Message.ENCRYPTION_NONE);
                 break;
         }
-        activity.xmppConnectionService.updateConversation(conversation);
+        if (updated) {
+            activity.xmppConnectionService.updateConversation(conversation);
+        }
         updateChatMsgHint();
         getActivity().invalidateOptionsMenu();
         activity.refreshUi();

@@ -371,13 +371,13 @@
     <string name="grant_owner_privileges">Grant owner privileges</string>
     <string name="remove_owner_privileges">Revoke owner privileges</string>
     <string name="remove_from_room">Remove from group chat</string>
+    <string name="remove_from_channel">Remove from channel</string>
     <string name="could_not_change_affiliation">Could not change affiliation of %s</string>
     <string name="ban_from_conference">Ban from group chat</string>
+    <string name="ban_from_channel">Ban from channel</string>
     <string name="removing_from_public_conference">You are trying to remove %s from a public group chat. The only way to do that is to ban that user for ever.</string>
     <string name="ban_now">Ban now</string>
     <string name="could_not_change_role">Could not change role of %s</string>
-    <string name="public_conference">Publicly accessible group chat</string>
-    <string name="private_conference">Private, members only group chat</string>
     <string name="conference_options">Private group chat configuration</string>
     <string name="channel_options">Public channel configuration</string>
     <string name="members_only">Private, members only</string>
@@ -846,6 +846,7 @@
     <string name="anyone_can_invite_others">Anyone can invite others.</string>
     <string name="jabber_ids_are_visible_to_admins">Jabber IDs are visible to admins.</string>
     <string name="jabber_ids_are_visible_to_anyone">Jabber IDs are visible to anyone.</string>
-    <string name="no_users_hint_channel">This public channel has no participants.</string>
+    <string name="no_users_hint_channel">This public channel has no participants. Invite your contacts or use the share button to distribute its XMPP address.</string>
     <string name="no_users_hint_group_chat">This private group chat has no participants.</string>
+    <string name="manage_permission">Manage permissions</string>
 </resources>

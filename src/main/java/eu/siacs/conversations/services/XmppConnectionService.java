@@ -1310,6 +1310,12 @@ public class XmppConnectionService extends Service {
         boolean saveInDb = addToConversation;
         message.setStatus(Message.STATUS_WAITING);
 
+        if (message.getEncryption() != Message.ENCRYPTION_NONE && conversation.getMode() == Conversation.MODE_MULTI && conversation.isPrivateAndNonAnonymous()) {
+            if (conversation.setAttribute(Conversation.ATTRIBUTE_FORMERLY_PRIVATE_NON_ANONYMOUS, true)) {
+                databaseBackend.updateConversation(conversation);
+            }
+        }
+
         if (account.isOnlineAndConnected()) {
             switch (message.getEncryption()) {
                 case Message.ENCRYPTION_NONE:

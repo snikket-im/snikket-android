@@ -63,7 +63,10 @@ public final class MucDetailsContextMenuHelper {
             MenuItem removeOwnerPrivileges = menu.findItem(R.id.revoke_owner_privileges);
             MenuItem removeAdminPrivileges = menu.findItem(R.id.remove_admin_privileges);
             MenuItem removeFromRoom = menu.findItem(R.id.remove_from_room);
+            MenuItem managePermisisons = menu.findItem(R.id.manage_permissions);
+            removeFromRoom.setTitle(isGroupChat ? R.string.remove_from_room : R.string.remove_from_channel);
             MenuItem banFromConference = menu.findItem(R.id.ban_from_conference);
+            banFromConference.setTitle(isGroupChat ? R.string.ban_from_conference : R.string.ban_from_channel);
             MenuItem invite = menu.findItem(R.id.invite);
             startConversation.setVisible(true);
             final Contact contact = user.getContact();
@@ -74,8 +77,10 @@ public final class MucDetailsContextMenuHelper {
             if ((activity instanceof ConferenceDetailsActivity || activity instanceof MucUsersActivity) && user.getRole() == MucOptions.Role.NONE) {
                 invite.setVisible(true);
             }
-            if (self.getAffiliation().ranks(MucOptions.Affiliation.ADMIN) && self.getAffiliation().outranks(user.getAffiliation())) {
+            boolean managePermissionsVisible = false;
+            if ((self.getAffiliation().ranks(MucOptions.Affiliation.ADMIN) && self.getAffiliation().outranks(user.getAffiliation())) || self.getAffiliation() == MucOptions.Affiliation.OWNER) {
                 if (advancedMode) {
+                    managePermissionsVisible = true;
                     if (!user.getAffiliation().ranks(MucOptions.Affiliation.MEMBER)) {
                         giveMembership.setVisible(true);
                     } else if (user.getAffiliation() == MucOptions.Affiliation.MEMBER) {
@@ -86,12 +91,14 @@ public final class MucDetailsContextMenuHelper {
                     }
                 } else {
                     if (!Config.DISABLE_BAN || conversation.getMucOptions().membersOnly()) {
+                        managePermissionsVisible = true;
                         removeFromRoom.setVisible(true);
                     }
                 }
             }
             if (self.getAffiliation().ranks(MucOptions.Affiliation.OWNER)) {
                 if (isGroupChat || advancedMode || user.getAffiliation() == MucOptions.Affiliation.OWNER) {
+                    managePermissionsVisible = true;
                     if (!user.getAffiliation().ranks(MucOptions.Affiliation.OWNER)) {
                         giveOwnerPrivileges.setVisible(true);
                     } else if (user.getAffiliation() == MucOptions.Affiliation.OWNER){
@@ -99,6 +106,7 @@ public final class MucDetailsContextMenuHelper {
                     }
                 }
                 if (!isGroupChat || advancedMode || user.getAffiliation() == MucOptions.Affiliation.ADMIN) {
+                    managePermissionsVisible = true;
                     if (!user.getAffiliation().ranks(MucOptions.Affiliation.ADMIN)) {
                         giveAdminPrivileges.setVisible(true);
                     } else if (user.getAffiliation() == MucOptions.Affiliation.ADMIN) {
@@ -106,6 +114,7 @@ public final class MucDetailsContextMenuHelper {
                     }
                 }
             }
+            managePermisisons.setVisible(managePermissionsVisible);
             sendPrivateMessage.setVisible(!isGroupChat && mucOptions.allowPm() && user.getRole().ranks(MucOptions.Role.VISITOR));
         } else {
             sendPrivateMessage.setVisible(true);

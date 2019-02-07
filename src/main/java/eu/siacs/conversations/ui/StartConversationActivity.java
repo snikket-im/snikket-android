@@ -479,7 +479,7 @@ public class StartConversationActivity extends XmppActivity implements XmppConne
 		EnterJidDialog dialog = EnterJidDialog.newInstance(
 				mActivatedAccounts,
 				getString(R.string.add_contact),
-				getString(R.string.create),
+				getString(R.string.add),
 				prefilledJid,
 				null,
 				invite == null || !invite.hasFingerprints()

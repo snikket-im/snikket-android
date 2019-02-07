@@ -840,40 +840,6 @@ public class AxolotlService implements OnAdvancedStreamFeaturesLoaded {
 		});
 	}
 
-	public enum AxolotlCapability {
-		FULL,
-		MISSING_PRESENCE,
-		MISSING_KEYS,
-		WRONG_CONFIGURATION,
-		NO_MEMBERS
-	}
-
-	public boolean isConversationAxolotlCapable(Conversation conversation) {
-		return conversation.isSingleOrPrivateAndNonAnonymous();
-	}
-
-	public Pair<AxolotlCapability, Jid> isConversationAxolotlCapableDetailed(Conversation conversation) {
-		if (conversation.isSingleOrPrivateAndNonAnonymous()) {
-			final List<Jid> jids = getCryptoTargets(conversation);
-			for (Jid jid : jids) {
-				if (!hasAny(jid) && (!deviceIds.containsKey(jid) || deviceIds.get(jid).isEmpty())) {
-					if (conversation.getAccount().getRoster().getContact(jid).mutualPresenceSubscription()) {
-						return new Pair<>(AxolotlCapability.MISSING_KEYS, jid);
-					} else {
-						return new Pair<>(AxolotlCapability.MISSING_PRESENCE, jid);
-					}
-				}
-			}
-			if (jids.size() > 0) {
-				return new Pair<>(AxolotlCapability.FULL, null);
-			} else {
-				return new Pair<>(AxolotlCapability.NO_MEMBERS, null);
-			}
-		} else {
-			return new Pair<>(AxolotlCapability.WRONG_CONFIGURATION, null);
-		}
-	}
-
 	public List<Jid> getCryptoTargets(Conversation conversation) {
 		final List<Jid> jids;
 		if (conversation.getMode() == Conversation.MODE_SINGLE) {
