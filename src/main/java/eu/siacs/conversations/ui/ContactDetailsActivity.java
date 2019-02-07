@@ -139,7 +139,11 @@ public class ContactDetailsActivity extends OmemoActivity implements OnAccountUp
             } else {
                 Intent intent = new Intent(Intent.ACTION_VIEW);
                 intent.setData(systemAccount);
-                startActivity(intent);
+                try {
+                    startActivity(intent);
+                } catch (ActivityNotFoundException e) {
+                    Toast.makeText(ContactDetailsActivity.this, R.string.no_application_found_to_view_contact, Toast.LENGTH_SHORT).show();
+                }
             }
         }
     };
