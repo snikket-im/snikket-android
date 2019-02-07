@@ -1,5 +1,12 @@
 # Changelog
 
+### Version 2.4.0
+* New Backup / Restore feature
+* Clearly distinguish between (private) group chats and (public) channels
+* Redesigned participants view for group chats and channels
+* Redesigned create new contact/group chat/channel flow in Start Conversation screen
+
+
 ### Version 2.3.12
 * Fixed rare crash on start up
 * Fixed avatar not being refreshed in group chats
