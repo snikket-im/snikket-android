@@ -22,7 +22,7 @@ public class MucConfiguration {
         this.options = options;
     }
 
-    public static MucConfiguration get(Context context, MucOptions mucOptions) {
+    public static MucConfiguration get(Context context, boolean advanced, MucOptions mucOptions) {
         if (mucOptions.isPrivateAndNonAnonymous()) {
             String[] names = new String[]{
                     context.getString(R.string.allow_participants_to_edit_subject),
@@ -38,18 +38,39 @@ public class MucConfiguration {
             };
             return new MucConfiguration(R.string.conference_options, names, values, options);
         } else {
-            String[] names = new String[]{
-                    context.getString(R.string.non_anonymous),
-                    context.getString(R.string.allow_participants_to_edit_subject),
-            };
-            boolean[] values = new boolean[]{
-                    mucOptions.nonanonymous(),
-                    mucOptions.participantsCanChangeSubject()
-            };
-            final Option[] options = new Option[]{
-                    new Option("muc#roomconfig_whois","anyone","moderators"),
-                    new Option("muc#roomconfig_changesubject")
-            };
+            final String[] names;
+            final boolean[] values;
+            final Option[] options;
+            if (advanced) {
+                names = new String[]{
+                        context.getString(R.string.non_anonymous),
+                        context.getString(R.string.allow_participants_to_edit_subject),
+                        context.getString(R.string.moderated)
+                };
+                values = new boolean[]{
+                        mucOptions.nonanonymous(),
+                        mucOptions.participantsCanChangeSubject(),
+                        mucOptions.moderated()
+                };
+                options = new Option[]{
+                        new Option("muc#roomconfig_whois", "anyone", "moderators"),
+                        new Option("muc#roomconfig_changesubject"),
+                        new Option("muc#roomconfig_moderatedroom")
+                };
+            } else {
+                names = new String[]{
+                        context.getString(R.string.non_anonymous),
+                        context.getString(R.string.allow_participants_to_edit_subject),
+                };
+                values = new boolean[]{
+                        mucOptions.nonanonymous(),
+                        mucOptions.participantsCanChangeSubject()
+                };
+                options = new Option[]{
+                        new Option("muc#roomconfig_whois", "anyone", "moderators"),
+                        new Option("muc#roomconfig_changesubject")
+                };
+            }
             return new MucConfiguration(R.string.channel_options, names, values, options);
         }
     }

@@ -125,7 +125,7 @@ public class ConferenceDetailsActivity extends XmppActivity implements OnConvers
         public void onClick(View v) {
             final MucOptions mucOptions = mConversation.getMucOptions();
             AlertDialog.Builder builder = new AlertDialog.Builder(ConferenceDetailsActivity.this);
-            MucConfiguration configuration = MucConfiguration.get(ConferenceDetailsActivity.this, mucOptions);
+            MucConfiguration configuration = MucConfiguration.get(ConferenceDetailsActivity.this, mAdvancedMode, mucOptions);
             builder.setTitle(configuration.title);
             final boolean[] values = configuration.values;
             builder.setMultiChoiceItems(configuration.names, values, (dialog, which, isChecked) -> values[which] = isChecked);

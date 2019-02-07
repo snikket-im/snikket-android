@@ -364,8 +364,8 @@
     <string name="outcast">Outcast</string>
     <string name="member">Member</string>
     <string name="advanced_mode">Advanced mode</string>
-    <string name="grant_membership">Grant membership</string>
-    <string name="remove_membership">Revoke membership</string>
+    <string name="grant_membership">Grant member privileges</string>
+    <string name="remove_membership">Revoke member privileges</string>
     <string name="grant_admin_privileges">Grant admin privileges</string>
     <string name="remove_admin_privileges">Revoke admin privileges</string>
     <string name="grant_owner_privileges">Grant owner privileges</string>
@@ -375,14 +375,14 @@
     <string name="could_not_change_affiliation">Could not change affiliation of %s</string>
     <string name="ban_from_conference">Ban from group chat</string>
     <string name="ban_from_channel">Ban from channel</string>
-    <string name="removing_from_public_conference">You are trying to remove %s from a public group chat. The only way to do that is to ban that user for ever.</string>
+    <string name="removing_from_public_conference">You are trying to remove %s from a public channel. The only way to do that is to ban that user for ever.</string>
     <string name="ban_now">Ban now</string>
     <string name="could_not_change_role">Could not change role of %s</string>
     <string name="conference_options">Private group chat configuration</string>
     <string name="channel_options">Public channel configuration</string>
     <string name="members_only">Private, members only</string>
     <string name="non_anonymous">Make Jabber IDs visible to anyone</string>
-    <string name="moderated">Moderated</string>
+    <string name="moderated">Make channel moderated</string>
     <string name="you_are_not_participating">You are not participating</string>
     <string name="modified_conference_options">Modified group chat options!</string>
     <string name="could_not_modify_conference_options">Could not modify group chat options</string>
@@ -848,5 +848,5 @@
     <string name="jabber_ids_are_visible_to_anyone">Jabber IDs are visible to anyone.</string>
     <string name="no_users_hint_channel">This public channel has no participants. Invite your contacts or use the share button to distribute its XMPP address.</string>
     <string name="no_users_hint_group_chat">This private group chat has no participants.</string>
-    <string name="manage_permission">Manage permissions</string>
+    <string name="manage_permission">Manage privileges</string>
 </resources>
