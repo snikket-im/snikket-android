@@ -355,9 +355,12 @@ public class ConferenceDetailsActivity extends XmppActivity implements OnConvers
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+        final boolean groupChat = mConversation != null && mConversation.isPrivateAndNonAnonymous();
         getMenuInflater().inflate(R.menu.muc_details, menu);
         final MenuItem share = menu.findItem(R.id.action_share);
-        share.setVisible(mConversation != null && !mConversation.isPrivateAndNonAnonymous());
+        share.setVisible(groupChat);
+        final MenuItem destroy = menu.findItem(R.id.action_destroy_room);
+        destroy.setTitle(groupChat ? R.string.destroy_room : R.string.destroy_channel);
         AccountUtils.showHideMenuItems(menu);
         return super.onCreateOptionsMenu(menu);
     }
@@ -387,9 +390,10 @@ public class ConferenceDetailsActivity extends XmppActivity implements OnConvers
     }
 
     protected void destroyRoom() {
+        final boolean groupChat = mConversation != null && mConversation.isPrivateAndNonAnonymous();
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle(R.string.destroy_room);
-        builder.setMessage(R.string.destroy_room_dialog);
+        builder.setTitle(groupChat ? R.string.destroy_room : R.string.destroy_channel);
+        builder.setMessage(groupChat ? R.string.destroy_room_dialog : R.string.destroy_channel_dialog);
         builder.setPositiveButton(R.string.ok, (dialog, which) -> {
             xmppConnectionService.destroyRoom(mConversation, ConferenceDetailsActivity.this);
         });
@@ -580,7 +584,8 @@ public class ConferenceDetailsActivity extends XmppActivity implements OnConvers
 
     @Override
     public void onRoomDestroyFailed() {
-        displayToast(getString(R.string.could_not_destroy_room));
+        final boolean groupChat = mConversation != null && mConversation.isPrivateAndNonAnonymous();
+        displayToast(getString(groupChat ? R.string.could_not_destroy_room : R.string.could_not_destroy_channel));
     }
 
     @Override
