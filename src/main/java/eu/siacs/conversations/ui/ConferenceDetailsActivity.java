@@ -358,7 +358,7 @@ public class ConferenceDetailsActivity extends XmppActivity implements OnConvers
         final boolean groupChat = mConversation != null && mConversation.isPrivateAndNonAnonymous();
         getMenuInflater().inflate(R.menu.muc_details, menu);
         final MenuItem share = menu.findItem(R.id.action_share);
-        share.setVisible(groupChat);
+        share.setVisible(!groupChat);
         final MenuItem destroy = menu.findItem(R.id.action_destroy_room);
         destroy.setTitle(groupChat ? R.string.destroy_room : R.string.destroy_channel);
         AccountUtils.showHideMenuItems(menu);
