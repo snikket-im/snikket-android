@@ -5,4 +5,5 @@
 	<dimen name="audio_player_width">288dp</dimen>
 	<dimen name="avatar_on_details_screen_size">72dp</dimen>
 	<dimen name="media_size">64dp</dimen> <!-- ideally not larger than avatar_on_details_screen -->
+	<dimen name="sd_label_max_width">288dp</dimen>
 </resources>
