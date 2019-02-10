@@ -508,7 +508,7 @@
 ### Version 1.7.2
 * decode PGP messages in background
 
-####Versrion 1.7.1
+### Version 1.7.1
 * performance improvements when opening a conversation
 
 ### Version 1.7.0
