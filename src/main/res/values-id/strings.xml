@@ -261,14 +261,11 @@
   <string name="outcast">Orang buangan</string>
   <string name="member">Member</string>
   <string name="advanced_mode">Mode lanjut</string>
-  <string name="grant_membership">Memberikan keanggotaan</string>
-  <string name="remove_membership">Cabut keanggotaan</string>
   <string name="grant_admin_privileges">Memberikan hak istimewa admin</string>
   <string name="remove_admin_privileges">Mencabut hak istimewa admin</string>
   <string name="could_not_change_affiliation">Tidak bisa mengubah afiliasi %s</string>
   <string name="ban_now">Tendang sekarang</string>
   <string name="could_not_change_role">Tidak dapat merumah role %s</string>
-  <string name="non_anonymous">Non Anonymous</string>
   <string name="you_are_not_participating">Anda tidak berpartisipasi</string>
   <string name="never">Tidak pernah</string>
   <string name="until_further_notice">Sampai pemberitahuan selanjutnya</string>
@@ -283,7 +280,6 @@
   <string name="pdf_document">Berkas PDF</string>
   <string name="apk">Apl Android</string>
   <string name="vcard">Kontak</string>
-  <string name="touch_to_open_conversations">Sentuh untuk membuka Conversations</string>
   <string name="avatar_has_been_published">Avatar telah diterbitkan!</string>
   <string name="sending_x_file">Mengirim %s</string>
   <string name="offering_x_file">Menawarkan %s</string>

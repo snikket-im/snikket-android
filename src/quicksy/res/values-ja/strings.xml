@@ -7,7 +7,6 @@
     <string name="contacts_have_no_pgp_keys">連絡先が公開鍵を通知しないため、Quicksy はあなたのメッセージを暗号化することができません。\n\n<small>連絡先に OpenPGP をセットアップするように依頼してください。</small></string>
     <string name="pref_notification_grace_period_summary">別のデバイスで活動を見た後、Quicksy を静かにする時間の長さ</string>
     <string name="pref_never_send_crash_summary">スタックトレースを送信することで、あなたは Quicksy の継続的な開発を支援しています</string>
-    <string name="touch_to_open_conversations">タッチして Quicksy を開く</string>
     <string name="no_storage_permission">Quicksy は外部ストレージにアクセスが必要です</string>
     <string name="no_camera_permission">Quicksy はカメラにアクセスが必要です</string>
     <string name="battery_optimizations_enabled_explained">お使いのデバイスは、Quicksy で通知の遅延やメッセージの損失につながる可能性のある、いくつかの重いバッテリーの最適化を行っています。\nそれらを無効にすることをお勧めします。</string>

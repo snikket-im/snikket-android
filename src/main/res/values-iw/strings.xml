@@ -219,7 +219,6 @@
   <string name="try_again">נסה שוב</string>
   <string name="pref_keep_foreground_service">השאר שירות ב Foreground</string>
   <string name="pref_keep_foreground_service_summary">מונע ממערכת ההפעלה לנתק את החיבור לשרת</string>
-  <string name="notification_export_logs_title">מייצא logs לכרטיס זיכרון</string>
   <string name="choose_file">בחר קובץ</string>
   <string name="receiving_x_file">מקבל %1$s ( הושלם %2$d%% )</string>
   <string name="download_x_file">הורד %s</string>
@@ -254,16 +253,12 @@
   <string name="no_affiliation">אין שיוך</string>
   <string name="member">חבר בקבוצה</string>
   <string name="advanced_mode">מצב מתקדם</string>
-  <string name="grant_membership">הענק חברות בקבוצה</string>
-  <string name="remove_membership">בטל חברות בקבוצה</string>
   <string name="grant_admin_privileges">הענק הרשאות מנהל</string>
   <string name="remove_admin_privileges">שלול הרשאות מנהל</string>
   <string name="could_not_change_affiliation">לא ניתן לשנות את השיוך של %s</string>
   <string name="ban_now">חסום עכשיו</string>
   <string name="could_not_change_role">לא ניתן לשנות את התפקיד של %s</string>
   <string name="members_only">פרטי, חברים בלבד</string>
-  <string name="non_anonymous">לא-אנונימי</string>
-  <string name="moderated">Moderated</string>
   <string name="you_are_not_participating">אינך משתתף</string>
   <string name="never">לעולם לא</string>
   <string name="until_further_notice">עד אחרית הימים</string>
@@ -277,7 +272,6 @@
   <string name="pdf_document">מסמך PDF</string>
   <string name="apk">אפליקציית אנדרויד</string>
   <string name="vcard">איש קשר</string>
-  <string name="touch_to_open_conversations">לחץ כדי לפתוח את Conversations</string>
   <string name="avatar_has_been_published">תמונת הפרופיל פורסמה!</string>
   <string name="sending_x_file">שולח %s</string>
   <string name="offering_x_file">מציע %s</string>

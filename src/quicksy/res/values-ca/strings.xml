@@ -7,7 +7,6 @@
     <string name="contacts_have_no_pgp_keys">Quicksy no pot encriptar els seus missatges perquè els seus contactes no estan anunciant la seva clau pública.\n\n<small>Si us plau, demani als seus contactes que configurin OpenPGP.</small></string>
     <string name="pref_notification_grace_period_summary">El temps que Quicksy roman en silenci després de veure activitat en un altre dispositiu.</string>
     <string name="pref_never_send_crash_summary">En enviar les traces de les piles, vostè està ajudant al desenvolupament continu de Quicksy</string>
-    <string name="touch_to_open_conversations">Toc per obrir Quicksy</string>
     <string name="no_storage_permission">Quicksy necessita accés a emmagatzematge extern</string>
     <string name="no_camera_permission">Quicksy necessita accés a la càmera</string>
     <string name="battery_optimizations_enabled_explained">El seu dispositiu està realitzant algunes optimitzacions de bateria en Quicksy que poden provocar notificacions retardades o fins i tot la pèrdua de missatges.</string>

@@ -210,12 +210,8 @@
   <string name="fetching_keys">Pobieranie kluczy...</string>
   <string name="done">Ukończono</string>
   <string name="decrypt">Odszyfruj</string>
-  <string name="conferences">Konferencje</string>
   <string name="search">Szukaj</string>
-  <string name="dialog_title_create_contact">Utwórz kontakt</string>
   <string name="enter_contact">Wpisz kontakt</string>
-  <string name="join_conference">Dołącz do konferencji</string>
-  <string name="dialog_title_join_conference">Dołącz do konferencji</string>
   <string name="delete_contact">Usuń kontakt</string>
   <string name="view_contact_details">Szczegóły kontaktu</string>
   <string name="block_contact">Zablokuj kontakt</string>
@@ -224,8 +220,6 @@
   <string name="select">Wybierz</string>
   <string name="contact_already_exists">Kontakt już istnieje</string>
   <string name="join">Dołącz</string>
-  <string name="conference_address">Adres konferencji</string>
-  <string name="conference_address_example">konferencja@konferencje.example.com/nick</string>
   <string name="save_as_bookmark">Dodaj jako zakładkę</string>
   <string name="delete_bookmark">Usuń zakładkę</string>
   <string name="destroy_room">Usuń konferencję</string>
@@ -314,9 +308,6 @@
   <string name="try_again">Spróbuj ponownie</string>
   <string name="pref_keep_foreground_service">Usługa na pierwszym planie</string>
   <string name="pref_keep_foreground_service_summary">Uniemożliwia systemowi przerwanie połączenia</string>
-  <string name="pref_export_logs">Wyeksportuj historię rozmów</string>
-  <string name="pref_export_logs_summary">Zapisz historię rozmów na karcie SD</string>
-  <string name="notification_export_logs_title">Zapisywanie historii na karcie SD...</string>
   <string name="choose_file">Wybierz plik</string>
   <string name="receiving_x_file">Odbieranie %1$s (ukończono %2$d%%)</string>
   <string name="download_x_file">Pobierz %s</string>
@@ -362,22 +353,14 @@
   <string name="outcast">Wykluczony</string>
   <string name="member">Członek</string>
   <string name="advanced_mode">Tryb zaawansowany</string>
-  <string name="grant_membership">Przyznaj członkostwo</string>
-  <string name="remove_membership">Cofnij członkostwo</string>
   <string name="grant_admin_privileges">Przyznaj uprawnienia administratora</string>
   <string name="remove_admin_privileges">Odbierz uprawnienia administratora</string>
   <string name="remove_from_room">Usuń z konferencji</string>
   <string name="could_not_change_affiliation">Nie udało się zmienić stanowiska dla %s</string>
   <string name="ban_from_conference">Zbanuj</string>
-  <string name="removing_from_public_conference">Próbujesz usunąć %s z publicznego pokoju. Jedyne co można zrobić to zbanować użytkownika na stałe.</string>
   <string name="ban_now">Zbanuj teraz</string>
   <string name="could_not_change_role">Nie udało się zmienić funkcji %s</string>
-  <string name="public_conference">Publiczne konferencje</string>
-  <string name="private_conference">Prywatne konferencje</string>
-  <string name="conference_options">Opcje konferencji</string>
   <string name="members_only">Prywatne, tylko dla członków.</string>
-  <string name="non_anonymous">Nieanonimowa</string>
-  <string name="moderated">Moderowany</string>
   <string name="you_are_not_participating">Nie bierzesz udziału</string>
   <string name="modified_conference_options">Ustawienia konferencji zostały zmodyfikowane</string>
   <string name="could_not_modify_conference_options">Nie można zmodyfikować ustawień konferencji</string>
@@ -397,7 +380,6 @@
   <string name="pdf_document">Dokument PDF</string>
   <string name="apk">Aplikacja Androida</string>
   <string name="vcard">Kontakt</string>
-  <string name="touch_to_open_conversations">Dotknij, aby otworzyć Conversations</string>
   <string name="avatar_has_been_published">Avatar został pomyślnie opublikowany!</string>
   <string name="sending_x_file">Wysyłanie %s</string>
   <string name="offering_x_file">Oferowanie %s</string>
@@ -413,7 +395,6 @@
   <string name="no_application_found_to_display_location">Nie odnaleziono aplikacji do wyświetlenia lokalizacji</string>
   <string name="location">Lokalizacja</string>
   <string name="title_undo_swipe_out_conversation">Zamknięto konwersację</string>
-  <string name="title_undo_swipe_out_muc">Opuszczono konferencję</string>
   <string name="pref_dont_trust_system_cas_title">Nie ufaj certyfikatom systemowym</string>
   <string name="pref_dont_trust_system_cas_summary">Wymagaj ręcznego potwierdzania certyfikatów</string>
   <string name="pref_remove_trusted_certificates_title">Usuń certyfikaty</string>
@@ -434,7 +415,6 @@
   <string name="recently_used">Ostatnio używana</string>
   <string name="choose_quick_action">Wybierz szybką akcję</string>
   <string name="search_contacts">Przeszukuj kontakty</string>
-  <string name="search_groups">Przeszukuj konferencje</string>
   <string name="send_private_message">Wyślij wiadomość prywatną</string>
   <string name="user_has_left_conference">%1$s opuścił konferencję!</string>
   <string name="username">Nazwa użytkownika</string>
@@ -541,7 +521,6 @@ Dla twojej wygody ułatwiliśmy stworzenie konta na conversations.im; serwerze d
   <string name="device_does_not_support_battery_op">Twoje urządzenie nie pozwala na wyłączenie optymalizacji baterii</string>
   <string name="registration_please_wait">Rejestracja nie powiodła się: spróbuj później</string>
   <string name="registration_password_too_weak">Rejestracja nie powiodła się: hasło zbyt słabe</string>
-  <string name="dialog_title_create_conference">Utwórz konferencję</string>
   <string name="choose_participants">Wybierz członków</string>
   <string name="creating_conference">Tworzenie konferencji</string>
   <string name="invite_again">Zaproś ponownie</string>
@@ -764,7 +743,6 @@ Administrator twojego serwera będzie mógł czytać twoje wiadomości, ale moż
   <string name="video_compression_channel_name">Kompresja wideo</string>
   <string name="view_media">Pokaż media</string>
   <string name="media_browser">Przeglądarka mediów</string>
-  <string name="export_channel_name">Eksport historii</string>
   <string name="security_violation_not_attaching_file">Plik pominięty w związku z naruszeniem bezpieczeństwa.</string>
   <string name="pref_video_compression">Jakość wideo</string>
   <string name="pref_video_compression_summary">Niższa jakość gwarantuje mniejszy rozmiar</string>
@@ -822,7 +800,9 @@ Administrator twojego serwera będzie mógł czytać twoje wiadomości, ale moż
   <string name="install_orbot">Zainstaluj Orbot</string>
   <string name="start_orbot">Uruchom Orbot</string>
   <string name="no_market_app_installed">Aplikacja marketu niezainstalowana.</string>
-  <string name="group_chat_will_make_your_jabber_id_public">Każdy uczestnik tej konferencji będzie mógł zobaczyć twój prawdziwy Jabber ID</string>
   <string name="ebook">e-book</string>
   <string name="video_original">Oryginalne (nieskompresowane)</string>
+  <string name="open_with">Otwórz za pomocą...</string>
+  <string name="set_profile_picture">Obrazek profilowy Conversations</string>
+  <string name="choose_account">Wybierz konto</string>
 </resources>

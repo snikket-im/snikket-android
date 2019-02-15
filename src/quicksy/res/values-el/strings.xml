@@ -7,7 +7,6 @@
     <string name="contacts_have_no_pgp_keys">Το Quicksy αδυνατεί να κρυπτογραφήσει τα μηνύματά σας γιατί οι επαφές σας δεν ανακοινώνουν το δημόσιο κλειδί τους.\n\n<small>Παρακαλώ ζητήστε από τις επαφές σας να εγκαταστήσουν το OpenPGP.</small></string>
     <string name="pref_notification_grace_period_summary">Η διάρκεια του χρόνου που το Quicksy σταματάει τη λειτουργία του καθώς ανιχνεύθηκε δραστηριόητα σε άλλη συσκευή</string>
     <string name="pref_never_send_crash_summary">Στέλνοντας ίχνη στοίβας βοηθάτε την συνεχόμενη ανάπτυξη του Quicksy</string>
-    <string name="touch_to_open_conversations">Επιλέξτε για να ανοίξετε το Quicksy</string>
     <string name="no_storage_permission">Το Quicksy χρειάζεται πρόσβαση στον εξωτερικό αποθηκευτικό χώρο</string>
     <string name="no_camera_permission">Το Quicksy χρειάζεται πρόσβαση στην φωτογραφική μηχανή</string>
     <string name="battery_optimizations_enabled_explained">Η συσκευή σας χρησιμοποιεί βελτιστοποίηση στην χρήση μπαταρίας του Quicksy που μπορεί να οδηγήσει σε αργοπορημένες ειδοποιήσεις ή ακόμα και σε απώλεια μηνυμάτων.\nΠροτείνεται να την απενεργοποιήσετε.</string>

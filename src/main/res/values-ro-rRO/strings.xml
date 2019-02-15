@@ -210,12 +210,8 @@
   <string name="fetching_keys">Se preiau cheile...</string>
   <string name="done">Gata</string>
   <string name="decrypt">Decriptează</string>
-  <string name="conferences">Discuții de grup</string>
   <string name="search">Caută</string>
-  <string name="dialog_title_create_contact">Creează contact</string>
   <string name="enter_contact">Introduceți contact</string>
-  <string name="join_conference">Alătură-te unei discuții de grup</string>
-  <string name="dialog_title_join_conference">Alătură-te unei discuții de grup</string>
   <string name="delete_contact">Șterge contact</string>
   <string name="view_contact_details">Arată detalii contact</string>
   <string name="block_contact">Blochează contact</string>
@@ -224,8 +220,6 @@
   <string name="select">Selectează</string>
   <string name="contact_already_exists">Contactul exista deja</string>
   <string name="join">Alatura-te</string>
-  <string name="conference_address">Adresă discuție de grup</string>
-  <string name="conference_address_example">camera@conferinta.exemplu.ro/numeutilizator</string>
   <string name="save_as_bookmark">Salvează semn de carte</string>
   <string name="delete_bookmark">Șterge semn de carte</string>
   <string name="destroy_room">Distruge discuția de grup</string>
@@ -314,9 +308,6 @@
   <string name="try_again">Încearcă din nou</string>
   <string name="pref_keep_foreground_service">Păstrează serviciul activ în prim-plan</string>
   <string name="pref_keep_foreground_service_summary">Previne închiderea conexiunii de către sistemul de operare</string>
-  <string name="pref_export_logs">Exportă istoric</string>
-  <string name="pref_export_logs_summary">Scrie istoricul conversațiilor pe cardul SD</string>
-  <string name="notification_export_logs_title">Se scrie jurnal pe card SD</string>
   <string name="choose_file">Alegeți un fișier</string>
   <string name="receiving_x_file">Primesc %1$s (%2$d%% complet)</string>
   <string name="download_x_file">Descarcă %s</string>
@@ -362,22 +353,14 @@
   <string name="outcast">proscris</string>
   <string name="member">Membru</string>
   <string name="advanced_mode">Mod avansat</string>
-  <string name="grant_membership">Acorda calitatea de membru</string>
-  <string name="remove_membership">Abroga calitatea de membru</string>
   <string name="grant_admin_privileges">Acordă privilegiile de administrator</string>
   <string name="remove_admin_privileges">Abrogă privilegiile de administrator</string>
   <string name="remove_from_room">Înlătură din discuția de grup</string>
   <string name="could_not_change_affiliation">Nu s-a putut schimba afilierea lui %s</string>
   <string name="ban_from_conference">Interzice accesul la discuția de grup</string>
-  <string name="removing_from_public_conference">Încercați să înlăturați pe %s dintr-o discuție de grup publică. Singurul mod în care puteți face asta este sa blocați contactul pentru totdeauna.</string>
   <string name="ban_now">Interzice accesul acum</string>
   <string name="could_not_change_role">Nu s-a putut schimba rolul lui %s</string>
-  <string name="public_conference">Discuție de grup accesibilă public</string>
-  <string name="private_conference">Discuție de grup privată, accesibilă numai membrilor</string>
-  <string name="conference_options">Opțiuni discuție de grup</string>
   <string name="members_only">Privat, numai pentru membri</string>
-  <string name="non_anonymous">Ne anonim</string>
-  <string name="moderated">Monitorizata</string>
   <string name="you_are_not_participating">Nu participați</string>
   <string name="modified_conference_options">Opțiuni discuție de grup modificate!</string>
   <string name="could_not_modify_conference_options">Nu s-au putut modifica opțiunile discuției de grup</string>
@@ -397,7 +380,6 @@
   <string name="pdf_document">document PDF</string>
   <string name="apk">Aplicație Android</string>
   <string name="vcard">Contact</string>
-  <string name="touch_to_open_conversations">Atingeți pentru a deschide Conversations</string>
   <string name="avatar_has_been_published">Avatarul a fost publicat!</string>
   <string name="sending_x_file">Trimit %s</string>
   <string name="offering_x_file">Ofer %s</string>
@@ -413,7 +395,6 @@
   <string name="no_application_found_to_display_location">Nu s-a găsit nici o aplicație care să afișeze locația</string>
   <string name="location">Locatie</string>
   <string name="title_undo_swipe_out_conversation">Conversație închisă</string>
-  <string name="title_undo_swipe_out_muc">A părăsit discuția de grup</string>
   <string name="pref_dont_trust_system_cas_title">Nu ai încredere în CA din sistem</string>
   <string name="pref_dont_trust_system_cas_summary">Toate certificatele trebuie aprobate manual</string>
   <string name="pref_remove_trusted_certificates_title">Înlătură certificatele</string>
@@ -433,7 +414,6 @@
   <string name="recently_used">Folosită recent</string>
   <string name="choose_quick_action">Alegeți acțiunea rapidă</string>
   <string name="search_contacts">Caută contacte</string>
-  <string name="search_groups">Caută discuții de grup</string>
   <string name="send_private_message">Trimite mesaj privat</string>
   <string name="user_has_left_conference">%1$s a părăsit discuția de grup!</string>
   <string name="username">Nume utilizator</string>
@@ -540,7 +520,6 @@ sau chiar pierderea mesajelor.\nÎn continuare veți fi rugați să dezactivați
   <string name="device_does_not_support_battery_op">Dispozitivul dumneavoastră nu suportă dezactivarea optimizării de baterie pentru această aplicație</string>
   <string name="registration_please_wait">Înregistrare eșuată: Încercați din nou mai târziu</string>
   <string name="registration_password_too_weak">Înregistrare eșuată: Parolă nesigură</string>
-  <string name="dialog_title_create_conference">Creează discuție de grup</string>
   <string name="choose_participants">Alegeți participanți</string>
   <string name="creating_conference">Se creează discuția de grup...</string>
   <string name="invite_again">Trimite din nou invitația</string>
@@ -648,8 +627,8 @@ sau chiar pierderea mesajelor.\nÎn continuare veți fi rugați să dezactivați
   <string name="corresponding_conversations_closed">Conversațiile corespunzătoare au fost închise.</string>
   <string name="contact_blocked_past_tense">Contact blocat.</string>
   <string name="pref_notifications_from_strangers">Notificări de la persoane necunoscute</string>
-  <string name="pref_notifications_from_strangers_summary">Nu veți fi deranjat(ă) atunci când o persoană care nu este în lista de contacte vă scrie.</string>
-  <string name="received_message_from_stranger">Mesaj primit de la o persoana necunoscuta</string>
+  <string name="pref_notifications_from_strangers_summary">Primire notificări și pentru mesajele de la persoane care nu sunt în lista de contacte.</string>
+  <string name="received_message_from_stranger">Mesaj primit de la o persoană necunoscută</string>
   <string name="block_stranger">Blocare contact necunoscut</string>
   <string name="block_entire_domain">Blocare tot domeniu</string>
   <string name="online_right_now">conectat acum</string>
@@ -755,7 +734,6 @@ sau chiar pierderea mesajelor.\nÎn continuare veți fi rugați să dezactivați
   <string name="video_compression_channel_name">Compresie video</string>
   <string name="view_media">Vizualizare fișiere media</string>
   <string name="media_browser">Vizualizare fișiere media</string>
-  <string name="export_channel_name">Export istoric</string>
   <string name="security_violation_not_attaching_file">Fișier omis ca urmare a unei probleme de securitate.</string>
   <string name="pref_video_compression">Calitate video</string>
   <string name="pref_video_compression_summary">O calitate micä înseamnă fișiere mai mici</string>
@@ -813,7 +791,6 @@ sau chiar pierderea mesajelor.\nÎn continuare veți fi rugați să dezactivați
   <string name="install_orbot">Instalare Orbot</string>
   <string name="start_orbot">Pornire Orbot</string>
   <string name="no_market_app_installed">Nici un magazin de aplicații instalat.</string>
-  <string name="group_chat_will_make_your_jabber_id_public">Aceastä discuție de grup vä face ID-ul Jabber public</string>
   <string name="ebook">carte electronică</string>
   <string name="video_original">Original (necompresat)</string>
   <string name="open_with">Deschide cu…</string>

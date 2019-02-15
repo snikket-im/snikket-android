@@ -210,12 +210,8 @@
   <string name="fetching_keys">Schlüssel werden abgerufen …</string>
   <string name="done">Fertig</string>
   <string name="decrypt">Entschlüsseln</string>
-  <string name="conferences">Gruppenchats</string>
   <string name="search">Suchen</string>
-  <string name="dialog_title_create_contact">Kontakt erstellen</string>
   <string name="enter_contact">Kontakt eingeben</string>
-  <string name="join_conference">Gruppenchat beitreten</string>
-  <string name="dialog_title_join_conference">Gruppenchat beitreten</string>
   <string name="delete_contact">Kontakt löschen</string>
   <string name="view_contact_details">Kontaktdetails anzeigen</string>
   <string name="block_contact">Kontakt sperren</string>
@@ -224,8 +220,6 @@
   <string name="select">Auswählen</string>
   <string name="contact_already_exists">Der Kontakt existiert bereits</string>
   <string name="join">Beitreten</string>
-  <string name="conference_address">Gruppenchatadresse</string>
-  <string name="conference_address_example">raum@conference.beispiel.de/Nickname</string>
   <string name="save_as_bookmark">Zur Kontaktliste hinzufügen</string>
   <string name="delete_bookmark">Von Kontaktliste entfernen</string>
   <string name="destroy_room">Gruppenchat löschen</string>
@@ -303,8 +297,8 @@
   <string name="send_again">Erneut senden</string>
   <string name="file_url">Datei-URL</string>
   <string name="url_copied_to_clipboard">URL in die Zwischenablage kopiert</string>
-  <string name="jabber_id_copied_to_clipboard">Jabber-ID in die Zwischenablage kopiert</string>
-  <string name="error_message_copied_to_clipboard">Fehlermeldung in die Zwischenablage kopiert</string>
+  <string name="jabber_id_copied_to_clipboard">Jabber-ID in Zwischenablage kopiert</string>
+  <string name="error_message_copied_to_clipboard">Fehlermeldung in Zwischenablage kopiert</string>
   <string name="web_address">Internetadresse</string>
   <string name="scan_qr_code">Barcode scannen</string>
   <string name="show_qr_code">Barcode anzeigen</string>
@@ -314,9 +308,6 @@
   <string name="try_again">Erneut versuchen</string>
   <string name="pref_keep_foreground_service">Dienst im Vordergrund ausführen</string>
   <string name="pref_keep_foreground_service_summary">Verhindert, dass Android Conversations beendet und die Verbindung unterbricht</string>
-  <string name="pref_export_logs">Nachrichtenverlauf exportieren</string>
-  <string name="pref_export_logs_summary">Chatverlauf auf SD-Karte schreiben</string>
-  <string name="notification_export_logs_title">Chats werden auf SD-Karte geschrieben</string>
   <string name="choose_file">Datei auswählen</string>
   <string name="receiving_x_file">Empfange %1$s (%2$d%% abgeschlossen)</string>
   <string name="download_x_file">%s herunterladen</string>
@@ -362,22 +353,14 @@
   <string name="outcast">Ausgeschlossen</string>
   <string name="member">Mitglied</string>
   <string name="advanced_mode">Erweiterter Modus</string>
-  <string name="grant_membership">Mitgliedschaft gewähren</string>
-  <string name="remove_membership">Mitgliedschaft entziehen</string>
   <string name="grant_admin_privileges">Administratorrechte gewähren</string>
   <string name="remove_admin_privileges">Administratorrechte entziehen</string>
   <string name="remove_from_room">Aus Gruppenchat entfernen</string>
   <string name="could_not_change_affiliation">Zugehörigkeit von %s konnte nicht verändert werden</string>
   <string name="ban_from_conference">Vom Gruppenchat ausschließen</string>
-  <string name="removing_from_public_conference">Du versuchst %s aus einem öffentlichen Gruppenchat zu entfernen. Die einzige Möglichkeit, dies dauerhaft zu tun, ist den Kontakt von diesem Gruppenchat auszuschließen.</string>
   <string name="ban_now">Kontakt ausschließen</string>
   <string name="could_not_change_role">Rolle von %s konnte nicht geändert werden</string>
-  <string name="public_conference">Öffentlich zugänglicher Gruppenchat</string>
-  <string name="private_conference">Privater Gruppenchat, nur für Mitglieder</string>
-  <string name="conference_options">Gruppenchatoptionen</string>
   <string name="members_only">Privat, nur Mitglieder</string>
-  <string name="non_anonymous">De-anonymisiert</string>
-  <string name="moderated">Moderiert</string>
   <string name="you_are_not_participating">Du bist kein Mitglied</string>
   <string name="modified_conference_options">Gruppenchatoptionen wurden modifiziert!</string>
   <string name="could_not_modify_conference_options">Gruppenchatoptionen konnten nicht modifiziert werden</string>
@@ -397,7 +380,6 @@
   <string name="pdf_document">PDF-Dokument</string>
   <string name="apk">Android App</string>
   <string name="vcard">Kontakt</string>
-  <string name="touch_to_open_conversations">Antippen, um Conversations zu öffnen</string>
   <string name="avatar_has_been_published">Avatar wurde veröffentlicht!</string>
   <string name="sending_x_file">%s wird gesendet</string>
   <string name="offering_x_file">%s wird angeboten</string>
@@ -413,7 +395,6 @@
   <string name="no_application_found_to_display_location">Keine Anwendung für die Standortanzeige gefunden</string>
   <string name="location">Standort</string>
   <string name="title_undo_swipe_out_conversation">Unterhaltung beendet</string>
-  <string name="title_undo_swipe_out_muc">Gruppenchat verlassen</string>
   <string name="pref_dont_trust_system_cas_title">Zertifizierungsstellen nicht vertrauen</string>
   <string name="pref_dont_trust_system_cas_summary">Alle Zertifikate müssen manuell bestätigt werden</string>
   <string name="pref_remove_trusted_certificates_title">Zertifikate löschen</string>
@@ -432,7 +413,6 @@
   <string name="recently_used">Zuletzt verwendet</string>
   <string name="choose_quick_action">Wähle Schnell-Taste</string>
   <string name="search_contacts">Kontakte durchsuchen</string>
-  <string name="search_groups">Gruppenchats durchsuchen</string>
   <string name="send_private_message">Private Nachricht senden</string>
   <string name="user_has_left_conference">%1$s hat den Gruppenchat verlassen!</string>
   <string name="username">Benutzername</string>
@@ -536,7 +516,6 @@
   <string name="device_does_not_support_battery_op">Dein Gerät unterstützt kein Ausschalten der Akkuoptimierung</string>
   <string name="registration_please_wait">Registrierung fehlgeschlagen: Bitte später versuchen</string>
   <string name="registration_password_too_weak">Registrierung fehlgeschlagen: Passwort zu schwach</string>
-  <string name="dialog_title_create_conference">Gruppenchat erstellen</string>
   <string name="choose_participants">Mitglieder wählen</string>
   <string name="creating_conference">Erstelle Gruppenchat…</string>
   <string name="invite_again">Erneut einladen</string>
@@ -715,7 +694,7 @@
   <string name="gif">GIF</string>
   <string name="view_conversation">Unterhaltung anzeigen</string>
   <string name="pref_use_share_location_plugin"> Plugin zum Standort teilen</string>
-  <string name="pref_use_share_location_plugin_summary">Verwende das Plugin zum Standort teilen anstelle der eingebauten Karte</string>
+  <string name="pref_use_share_location_plugin_summary">Verwende das Plugin zum Teilen des Standorts anstatt der integrierten Karte</string>
   <string name="copy_link">Internetadresse kopieren</string>
   <string name="copy_jabber_id">Jabber-ID kopieren</string>
   <string name="p1_s3_filetransfer">HTTP-Dateifreigabe für S3</string>
@@ -745,7 +724,6 @@
   <string name="video_compression_channel_name">Video komprimieren</string>
   <string name="view_media">Medien anzeigen</string>
   <string name="media_browser">Medienbrowser</string>
-  <string name="export_channel_name">Verlauf exportieren</string>
   <string name="security_violation_not_attaching_file">Die Datei wurde aufgrund von Sicherheitsverletzungen ausgelassen.</string>
   <string name="pref_video_compression">Videoqualität</string>
   <string name="pref_video_compression_summary">Geringere Qualität ermöglicht kleinere Dateien</string>
@@ -803,10 +781,9 @@
   <string name="install_orbot">Orbot installieren</string>
   <string name="start_orbot">Orbot starten</string>
   <string name="no_market_app_installed">Kein App-Store installiert.</string>
-  <string name="group_chat_will_make_your_jabber_id_public">Dieser Gruppenchat wird deine Jabber-ID veröffentlichen.</string>
   <string name="ebook">E-Book</string>
   <string name="video_original">Original (unkomprimiert)</string>
   <string name="open_with">Öffnen mit...</string>
-  <string name="set_profile_picture">Conversations Profilbild</string>
+  <string name="set_profile_picture">Conversations-Profilbild</string>
   <string name="choose_account">Konto auswählen</string>
 </resources>

@@ -206,12 +206,8 @@
   <string name="fetching_keys">Récupération des clefs...</string>
   <string name="done">Terminé</string>
   <string name="decrypt">Déchiffrer</string>
-  <string name="conferences">Conversations de groupe</string>
   <string name="search">Rechercher</string>
-  <string name="dialog_title_create_contact">Créer un contact</string>
   <string name="enter_contact">Ajouter contact</string>
-  <string name="join_conference">Rejoindre la conversation de groupe</string>
-  <string name="dialog_title_join_conference">Rejoindre la conversation de Groupe</string>
   <string name="delete_contact">Supprimer un contact</string>
   <string name="view_contact_details">Afficher les détails du contact</string>
   <string name="block_contact">Bloquer le contact</string>
@@ -220,8 +216,6 @@
   <string name="select">Sélectionner</string>
   <string name="contact_already_exists">Le contact existe déjà</string>
   <string name="join">Rejoindre</string>
-  <string name="conference_address">Adresse de la conversation de groupe</string>
-  <string name="conference_address_example">salle@conference.exemple.com/pseudo</string>
   <string name="save_as_bookmark">Enregistrer comme favori</string>
   <string name="delete_bookmark">Supprimer le favori</string>
   <string name="bookmark_already_exists">Le favori existe déjà</string>
@@ -302,9 +296,6 @@
   <string name="try_again">Réessayer</string>
   <string name="pref_keep_foreground_service">Garder le service au 1er plan</string>
   <string name="pref_keep_foreground_service_summary">Évite que le système ne ferme votre connexion.</string>
-  <string name="pref_export_logs">Exporter l\'historique</string>
-  <string name="pref_export_logs_summary">Sauvegarder l\'historique des conversations sur la carte SD</string>
-  <string name="notification_export_logs_title">Sauvegarde des historiques sur la carte SD...</string>
   <string name="choose_file">Choix du fichier</string>
   <string name="receiving_x_file">Réception %1$s (%2$d%% complété)</string>
   <string name="download_x_file">Télécharger %s</string>
@@ -350,22 +341,14 @@
   <string name="outcast">Banni</string>
   <string name="member">Membre</string>
   <string name="advanced_mode">Mode expert</string>
-  <string name="grant_membership">Accorder le statut de membre</string>
-  <string name="remove_membership">Révoquer le statut de membre</string>
   <string name="grant_admin_privileges">Accorder des privilèges d\'administrateur</string>
   <string name="remove_admin_privileges">Révoquer des privilèges d\'administrateur</string>
   <string name="remove_from_room">Supprimer du groupe de discussion</string>
   <string name="could_not_change_affiliation">Impossible de changer l\'affiliation de %s</string>
   <string name="ban_from_conference">Bannir de la conversation</string>
-  <string name="removing_from_public_conference">Vous essayez d\'exclure %s d\'une conversation de groupe publique. La seule façon de faire cela est de bannir cet utilisateur à jamais. </string>
   <string name="ban_now">Bannir maintenant</string>
   <string name="could_not_change_role">Impossible de changer le rôle de %s</string>
-  <string name="public_conference">Conversations de groupe publiques</string>
-  <string name="private_conference">Conversations de groupe privées, réservée aux membres</string>
-  <string name="conference_options">Options du groupe de discussion</string>
   <string name="members_only">Privé, membres uniquement</string>
-  <string name="non_anonymous">Non anonyme</string>
-  <string name="moderated">Modéré</string>
   <string name="you_are_not_participating">Vous ne participez pas</string>
   <string name="modified_conference_options">Options de groupe de discussion modifiées!</string>
   <string name="could_not_modify_conference_options">mpossible de modifier les options de groupe de discussion</string>
@@ -385,7 +368,6 @@
   <string name="pdf_document">document PDF</string>
   <string name="apk">Application Android</string>
   <string name="vcard">Contact</string>
-  <string name="touch_to_open_conversations">Cliquez pour ouvrir Conversations</string>
   <string name="avatar_has_been_published">L\'avatar a été publié !</string>
   <string name="sending_x_file">%s en cours d\'envoi</string>
   <string name="offering_x_file">En train de proposer un(e) %s</string>
@@ -401,7 +383,6 @@
   <string name="no_application_found_to_display_location">Aucune application trouvée pour afficher la position</string>
   <string name="location">Position</string>
   <string name="title_undo_swipe_out_conversation">Conversation fermée</string>
-  <string name="title_undo_swipe_out_muc">Quitter le groupe de discussion</string>
   <string name="pref_dont_trust_system_cas_title">Ne pas utiliser les CAs système</string>
   <string name="pref_dont_trust_system_cas_summary">Tous les certificats doivent être approuvés manuellement.</string>
   <string name="pref_remove_trusted_certificates_title">Retirer les certificats</string>
@@ -420,7 +401,6 @@
   <string name="recently_used">Dernière utilisée</string>
   <string name="choose_quick_action">Sélectionner l\'action rapide</string>
   <string name="search_contacts"> Rechercher dans les contacts</string>
-  <string name="search_groups">Rechercher dans les conversations de groupe</string>
   <string name="send_private_message">Envoyer un message privé</string>
   <string name="user_has_left_conference">%1$s a quitté le groupe de discussion !</string>
   <string name="username">Identifiant</string>
@@ -520,7 +500,6 @@
   <string name="device_does_not_support_battery_op">Les optimisations de batterie ne peuvent pas être désactivées sur votre appareil</string>
   <string name="registration_please_wait">L\'enregistrement a échoué : Réessayer plus tard</string>
   <string name="registration_password_too_weak">Échec de l\'enregistrement : le mot de passe n\'est pas assez fort</string>
-  <string name="dialog_title_create_conference">Créer un groupe de discussion</string>
   <string name="choose_participants">Choisir les participants</string>
   <string name="creating_conference">Création d\'un groupe de discussion...</string>
   <string name="invite_again">Inviter à nouveau</string>
@@ -727,7 +706,6 @@
   <string name="video_compression_channel_name">Compression vidéo</string>
   <string name="view_media">Voir les média</string>
   <string name="media_browser">Navigateur de média</string>
-  <string name="export_channel_name">Exportation de l\'historique</string>
   <string name="security_violation_not_attaching_file">Fichier omis en raison d\'une violation de la sécurité.</string>
   <string name="pref_video_compression">Qualité de la vidéo</string>
   <string name="pref_video_compression_summary">Une qualité inférieure signifie des fichiers plus petits</string>

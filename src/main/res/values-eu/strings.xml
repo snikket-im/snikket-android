@@ -210,12 +210,8 @@
   <string name="fetching_keys">Gakoak eskuratzen...</string>
   <string name="done">Eginda</string>
   <string name="decrypt">Desenkriptatu</string>
-  <string name="conferences">Taldeak</string>
   <string name="search">Bilatu</string>
-  <string name="dialog_title_create_contact">Kontaktua sortu</string>
   <string name="enter_contact">Kontaktua sartu</string>
-  <string name="join_conference">Taldera batu</string>
-  <string name="dialog_title_join_conference">Taldera batu</string>
   <string name="delete_contact">Kontaktua ezabatu</string>
   <string name="view_contact_details">Kontaktuaren xehetasunak ikusi</string>
   <string name="block_contact">Kontaktua blokeatu</string>
@@ -224,10 +220,11 @@
   <string name="select">Hautatu</string>
   <string name="contact_already_exists">Kontaktua existitzen da dagoeneko</string>
   <string name="join">Batu</string>
-  <string name="conference_address">Taldearen helbidea</string>
-  <string name="conference_address_example">gela@konferentzia.adibidea.eus/ezizena</string>
   <string name="save_as_bookmark">Gorde laster-marka bezala</string>
   <string name="delete_bookmark">Laster-marka ezabatu</string>
+  <string name="destroy_room">Taldea deuseztatu</string>
+  <string name="destroy_room_dialog">Talde hau deuseztatu nahi duzu?\n\n<b>Abisua:</b> Taldea guztiz ezabatuko da zerbitzaritik.</string>
+  <string name="could_not_destroy_room">Ezin izan da taldea deuseztatu</string>
   <string name="bookmark_already_exists">Laster-marka hau existitzen da dagoeneko</string>
   <string name="action_edit_subject">Taldearen gaia editatu</string>
   <string name="topic">Gaia</string>
@@ -311,9 +308,6 @@
   <string name="try_again">Saiatu berriz</string>
   <string name="pref_keep_foreground_service">Zerbitzua aurreko planoan mantendu</string>
   <string name="pref_keep_foreground_service_summary">Sistema eragileak zure konexioa hiltzea galarazten du</string>
-  <string name="pref_export_logs">Historia esportatu</string>
-  <string name="pref_export_logs_summary">Elkarrizketen historiaren erregistroak SD txartelean gorde</string>
-  <string name="notification_export_logs_title">Erregistroak SD txartelean gordetzen</string>
   <string name="choose_file">Fitxategia aukeratu</string>
   <string name="receiving_x_file">%1$s jasotzen (%2$d%% osatua)</string>
   <string name="download_x_file">%s deskargatu</string>
@@ -359,22 +353,14 @@
   <string name="outcast">Baztertutakoa</string>
   <string name="member">Kidea</string>
   <string name="advanced_mode">Modu aurreratua</string>
-  <string name="grant_membership">Bazkidetza eman</string>
-  <string name="remove_membership">Bazkidetza ezezaztu</string>
   <string name="grant_admin_privileges">Administratzaile baimenak eman</string>
   <string name="remove_admin_privileges">Administratzaile baimenak ezeztatu</string>
   <string name="remove_from_room">Taldetik kendu</string>
   <string name="could_not_change_affiliation">%s(r)en afiliazioa ezin izan da aldatu</string>
   <string name="ban_from_conference">Taldean egotea debekatu</string>
-  <string name="removing_from_public_conference">%s talde publiko batetik ateratzen saiatzen ari zara. Hori lortzeko modu bakarra erabiltzaile hori betiko debekatzea da.</string>
   <string name="ban_now">Debekatu orain</string>
   <string name="could_not_change_role">%s(r)en rola ezin izan da aldatu</string>
-  <string name="public_conference">Publikoki edonor sar daiteken taldea</string>
-  <string name="private_conference">Talde pribatua, kideentzat soilik</string>
-  <string name="conference_options">Taldearen aukerak</string>
   <string name="members_only">Pribatua, kideentzat soilik</string>
-  <string name="non_anonymous">Ez anonimoa</string>
-  <string name="moderated">Moderatua</string>
   <string name="you_are_not_participating">Ez zara parte hartzen ari</string>
   <string name="modified_conference_options">Taldearen aukerak aldatu dira</string>
   <string name="could_not_modify_conference_options">Ezin izan dira taldearen aukerak aldatu</string>
@@ -394,7 +380,6 @@
   <string name="pdf_document">PDF dokumentua</string>
   <string name="apk">Android aplikazioa</string>
   <string name="vcard">Kontaktua</string>
-  <string name="touch_to_open_conversations">Ikutu Conversations irekitzeko</string>
   <string name="avatar_has_been_published">Profileko argazkia argitaratu da</string>
   <string name="sending_x_file">%s bidaltzen</string>
   <string name="offering_x_file">%s eskeintzen...</string>
@@ -410,7 +395,6 @@
   <string name="no_application_found_to_display_location">Kokapena erakutsi dezakeen aplikaziorik ez da aurkitu</string>
   <string name="location">Kokapena</string>
   <string name="title_undo_swipe_out_conversation">Elkarrizketa itxi egin da</string>
-  <string name="title_undo_swipe_out_muc">Taldea utzi egin da</string>
   <string name="pref_dont_trust_system_cas_title">Sistemaren CAtaz ez fidatu</string>
   <string name="pref_dont_trust_system_cas_summary">Ziurtagiri guztiak eskuz onartu behar dira</string>
   <string name="pref_remove_trusted_certificates_title">Ziurtagiriak kendu</string>
@@ -429,7 +413,6 @@
   <string name="recently_used">Azkenengo aldiz erabilitakoa</string>
   <string name="choose_quick_action">Ekintza azkarra aukeratu</string>
   <string name="search_contacts">Kontaktuak bilatu</string>
-  <string name="search_groups">Talde elkarrizketak bilatu</string>
   <string name="send_private_message">Mezu pribatua bidali</string>
   <string name="user_has_left_conference">%1$s(e)k taldea utzi du</string>
   <string name="username">Erabiltzaile izena</string>
@@ -530,7 +513,6 @@
   <string name="device_does_not_support_battery_op">Zure gailuak ez du bateria optimizatzeko aukerarik ematen</string>
   <string name="registration_please_wait">Erregistroak huts egin du: saiatu berriz beranduago</string>
   <string name="registration_password_too_weak">Erregistroa huts egin du: pasahitza ahulegia da</string>
-  <string name="dialog_title_create_conference">Taldea sortu</string>
   <string name="choose_participants">Parte hartzaileak hautatu</string>
   <string name="creating_conference">Taldea sortzen…</string>
   <string name="invite_again">Berriz gonbidatu</string>
@@ -709,6 +691,7 @@
   <string name="gif">GIF</string>
   <string name="view_conversation">Elkarrizketa ikusi</string>
   <string name="pref_use_share_location_plugin">Kokapena partekatzeko plugina</string>
+  <string name="pref_use_share_location_plugin_summary">Erabili kokapena partekatzeko plugina mapa erabili beharrean</string>
   <string name="copy_link">Web helbidea kopiatu</string>
   <string name="copy_jabber_id">Jabber IDa kopiatu</string>
   <string name="p1_s3_filetransfer">HTTP fitxategiak partekatzea S3rentzako</string>
@@ -738,7 +721,6 @@
   <string name="video_compression_channel_name">Bideoen konprimatzea</string>
   <string name="view_media">Ikusi multimedia</string>
   <string name="media_browser">Multimedia nabigatzailea</string>
-  <string name="export_channel_name">Historiaren esportazioa</string>
   <string name="security_violation_not_attaching_file">Fitxategia alde batera utzita segurtasun hauste bategatik.</string>
   <string name="pref_video_compression">Bideoen kalitatea</string>
   <string name="pref_video_compression_summary">Kalitate baxuagoarekin fitxategi txikiagoak lortzen dira</string>
@@ -796,5 +778,9 @@
   <string name="install_orbot">Orbot instalatu</string>
   <string name="start_orbot">Orbot abiarazi</string>
   <string name="no_market_app_installed">Merkatuko aplikazioa ez instalatuta.</string>
-  <string name="group_chat_will_make_your_jabber_id_public">Talde honek zure Jabber ID publikoa egingo du</string>
+  <string name="ebook">e-booka</string>
+  <string name="video_original">Jatorrizkoa (konprimatu gabea)</string>
+  <string name="open_with">Ireki honekin…</string>
+  <string name="set_profile_picture">Conversations profil argazkia</string>
+  <string name="choose_account">Kontua hautatu</string>
 </resources>

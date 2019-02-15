@@ -122,8 +122,8 @@
   <string name="pref_confirm_messages">Bevestig berichten</string>
   <string name="pref_confirm_messages_summary">Laat je contacten weten wanneer je hun berichten ontvangen en gelezen hebt</string>
   <string name="pref_ui_options">Gebruikersomgeving</string>
-  <string name="openpgp_error">OpenKeychain rapporteerde een fout.</string>
-  <string name="bad_key_for_encryption">Slechte versleutelingsleutel.</string>
+  <string name="openpgp_error">OpenKeychain gaf een fout weer.</string>
+  <string name="bad_key_for_encryption">Slechte sleutel voor versleuteling.</string>
   <string name="accept">Aanvaarden</string>
   <string name="error">Er is een fout opgetreden</string>
   <string name="recording_error">Fout</string>
@@ -210,12 +210,8 @@
   <string name="fetching_keys">Sleutels ophalen…</string>
   <string name="done">Klaar</string>
   <string name="decrypt">Ontsleutelen</string>
-  <string name="conferences">Groepsgesprekken</string>
   <string name="search">Zoeken</string>
-  <string name="dialog_title_create_contact">Contact aanmaken</string>
   <string name="enter_contact">Contact invoeren</string>
-  <string name="join_conference">Deelnemen aan groepsgesprek</string>
-  <string name="dialog_title_join_conference">Deelnemen aan groepsgesprek</string>
   <string name="delete_contact">Contact verwijderen</string>
   <string name="view_contact_details">Contactgegevens bekijken</string>
   <string name="block_contact">Contact blokkeren</string>
@@ -224,8 +220,6 @@
   <string name="select">Selecteren</string>
   <string name="contact_already_exists">Het contact bestaat al</string>
   <string name="join">Deelnemen</string>
-  <string name="conference_address">Gespreksadres</string>
-  <string name="conference_address_example">ruimte@groepsgesprek.voorbeeld.be/naam</string>
   <string name="save_as_bookmark">Opslaan als bladwijzer</string>
   <string name="delete_bookmark">Bladwijzer verwijderen</string>
   <string name="destroy_room">Groepsgesprek vernietigen</string>
@@ -314,9 +308,6 @@
   <string name="try_again">Opnieuw proberen</string>
   <string name="pref_keep_foreground_service">Dienst in voorgrond houden</string>
   <string name="pref_keep_foreground_service_summary">Belet het besturingssysteem je verbinding te onderbreken</string>
-  <string name="pref_export_logs">Geschiedenis exporteren</string>
-  <string name="pref_export_logs_summary">Gespreksgeschiedenis schrijven naar SD-kaart</string>
-  <string name="notification_export_logs_title">Logs schrijven naar SD-kaart</string>
   <string name="choose_file">Bestand kiezen</string>
   <string name="receiving_x_file">Ontvangen van %1$s (%2$d%% voltooid)</string>
   <string name="download_x_file">%s downloaden</string>
@@ -331,7 +322,7 @@
   <string name="file_deleted">Het bestand is verwijderd</string>
   <string name="no_application_found_to_open_file">Geen applicatie om bestand te openen</string>
   <string name="no_application_found_to_open_link">Geen applicatie om verwijzing te openen</string>
-  <string name="no_application_found_to_view_contact">Geen applicatie om contact weer te geven</string>
+  <string name="no_application_found_to_view_contact">Geen app om contact weer te geven</string>
   <string name="pref_show_dynamic_tags">Dynamische tags</string>
   <string name="pref_show_dynamic_tags_summary">Toon enkel-lezen tags onder contacten</string>
   <string name="enable_notifications">Meldingen inschakelen</string>
@@ -362,22 +353,14 @@
   <string name="outcast">Verstoteling</string>
   <string name="member">Lid</string>
   <string name="advanced_mode">Geavanceerde modus</string>
-  <string name="grant_membership">Lidmaatschap verlenen</string>
-  <string name="remove_membership">Lidmaatschap ontzeggen</string>
   <string name="grant_admin_privileges">Beheerdersprivileges verlenen</string>
   <string name="remove_admin_privileges">Beheerdersprivileges ontzeggen</string>
   <string name="remove_from_room">Verwijderen uit groepsgesprek</string>
   <string name="could_not_change_affiliation">Kon aansluiting niet wijzigen</string>
   <string name="ban_from_conference">Verbannen uit groepsgesprek</string>
-  <string name="removing_from_public_conference">Je probeert %s te verwijderen uit een publiek groepsgesprek. De enige manier om dat te doen is door hem/haar voorgoed te verbannen.</string>
   <string name="ban_now">Nu verbannen</string>
   <string name="could_not_change_role">Kon rol van %s niet wijzigen</string>
-  <string name="public_conference">Openbaar groepsgesprek</string>
-  <string name="private_conference">Privé groepsgesprek, enkel toegankelijk voor leden</string>
-  <string name="conference_options">Gespreksopties</string>
   <string name="members_only">Privé, enkel leden</string>
-  <string name="non_anonymous">Niet anoniem</string>
-  <string name="moderated">Gemodereerd</string>
   <string name="you_are_not_participating">Je neemt geen deel</string>
   <string name="modified_conference_options">Gespreksopties aangepast!</string>
   <string name="could_not_modify_conference_options">Kon gespreksopties niet aanpassen</string>
@@ -397,7 +380,6 @@
   <string name="pdf_document">PDF-document</string>
   <string name="apk">Android-applicatie</string>
   <string name="vcard">Contact</string>
-  <string name="touch_to_open_conversations">Tik om Conversations te openen</string>
   <string name="avatar_has_been_published">Avatar is gepubliceerd!</string>
   <string name="sending_x_file">Bezig met versturen van %s</string>
   <string name="offering_x_file">Bezig met aanbieden van %s</string>
@@ -413,7 +395,6 @@
   <string name="no_application_found_to_display_location">Geen applicatie om locatie weer te geven</string>
   <string name="location">Locatie</string>
   <string name="title_undo_swipe_out_conversation">Gesprek gesloten</string>
-  <string name="title_undo_swipe_out_muc">Groepsgesprek verlaten</string>
   <string name="pref_dont_trust_system_cas_title">Systeem-CA\'s niet vertrouwen</string>
   <string name="pref_dont_trust_system_cas_summary">Alle certificaten moeten handmatig goedgekeurd worden</string>
   <string name="pref_remove_trusted_certificates_title">Certificaten verwijderen</string>
@@ -432,7 +413,6 @@
   <string name="recently_used">Recent gebruikt</string>
   <string name="choose_quick_action">Snelle actie kiezen</string>
   <string name="search_contacts">Contacten zoeken</string>
-  <string name="search_groups">Groepsgesprekken zoeken</string>
   <string name="send_private_message">Privébericht sturen</string>
   <string name="user_has_left_conference">%1$s heeft het groepsgesprek verlaten!</string>
   <string name="username">Gebruikersnaam</string>
@@ -493,6 +473,7 @@
   <string name="no_camera_permission">Conversations heeft toegang nodig tot de camera</string>
   <string name="sync_with_contacts">Synchroniseer met contacten</string>
   <string name="sync_with_contacts_long">Conversations wil je server-contactpersonen vergelijken met je lokale contactpersonen om hun volledige namen en gebruikersafbeeldingen te tonen.\n\nConversations leest je contactpersonen enkel lokaal uit en vergelijkt deze zonder ze te uploaden naar je server.\n\nJe wordt nu gevraagd om Conversations toegang te verlenen tot je contactpersonen.</string>
+  <string name="sync_with_contacts_quicksy"><![CDATA[Quicksy heeft toegang nodig tot de telefoonnummers van je contacten om je te kunnen tonen welke contacten al Quicksy gebruiken.<br><br>We bewaren geen kopie van deze telefoonnummers.\n\nVoor meer informatie, bekijk ons <a href="https://quicksy.im/#privacy">privacybeleid</a>.<br><br>Je wordt nu gevraagd om toegang te verlenen tot je contactpersonen.]]></string>
   <string name="notify_on_all_messages">Melding bij alle berichten</string>
   <string name="notify_only_when_highlighted">Melding enkel wanneer aangesproken</string>
   <string name="notify_never">Meldingen uitgeschakeld</string>
@@ -516,6 +497,7 @@
   <string name="no_application_to_share_uri">Geen applicatie om URI te delen</string>
   <string name="share_uri_with">URI delen met…</string>
   <string name="welcome_text">Jabber is een provider-onafhankelijk berichtennetwerk. Je kan deze cliënt gebruiken met elke willekeurige Jabber-server.\nOm het je gemakkelijker te maken kun je simpelweg een account aanmaken conversations.im¹; een provider speciaal geschikt voor Conversations.</string>
+  <string name="welcome_text_quicksy"><![CDATA[Quicksy is een afgeleide van de populaire Jabber/XMPP-cliënt Conversations, met automatische contactontdekking.<br><br>Je meldt je aan met je telefoonnummer en Quicksy zal automatisch—gebaseerd op de telefoonnummers in je adresboek—mogelijke contacten aanbevelen.<br><br>Door je aan te melden, stem je in met ons <a href="https://quicksy.im/#privacy">privacybeleid</a>.]]></string>
   <string name="agree_and_continue">Akkoord gaan &amp; doorgaan</string>
   <string name="magic_create_text">We zullen je helpen een account op conversations.im¹ aan te maken.\nWanneer je conversations.im als je provider kiest kan je met gebruikers van andere providers communiceren door hen je volledige Jabber-ID te geven.</string>
   <string name="your_full_jid_will_be">Je volledige Jabber-ID zal %s zijn</string>
@@ -534,7 +516,6 @@
   <string name="device_does_not_support_battery_op">Je apparaat ondersteunt het uitschakelen van batterij-optimalisatie niet</string>
   <string name="registration_please_wait">Registratie mislukt: probeer later opnieuw</string>
   <string name="registration_password_too_weak">Registratie mislukt: wachtwoord te zwak</string>
-  <string name="dialog_title_create_conference">Groepsgesprek aanmaken</string>
   <string name="choose_participants">Kies deelnemers</string>
   <string name="creating_conference">Groepsgesprek aanmaken…</string>
   <string name="invite_again">Opnieuw uitnodigen</string>
@@ -743,7 +724,6 @@
   <string name="video_compression_channel_name">Videocompressie</string>
   <string name="view_media">Media bekijken</string>
   <string name="media_browser">Mediabrowser</string>
-  <string name="export_channel_name">Geschiedenis exporteren</string>
   <string name="security_violation_not_attaching_file">Bestand weggelaten wegens beveiligingsovertreding.</string>
   <string name="pref_video_compression">Videokwaliteit</string>
   <string name="pref_video_compression_summary">Een lagere kwaliteit zorgt voor kleinere bestanden</string>
@@ -756,7 +736,7 @@
   <string name="choose_a_country">Kies een land</string>
   <string name="phone_number">telefoonnummer</string>
   <string name="verify_your_phone_number">Verifieer je telefoonnummer</string>
-  <string name="enter_country_code_and_phone_number">Quicksy zal een sms sturen om je telefoonnummer te bevestigen. Voer je landcode en telefoonnummer in:</string>
+  <string name="enter_country_code_and_phone_number">Quicksy zal een sms sturen om je telefoonnummer te bevestigen (providerkosten mogelijk van toepassing). Voer je landcode en telefoonnummer in:</string>
   <string name="we_will_be_verifying"><![CDATA[We gaan het volgende telefoonnummer verifiëren:<br/><br/><b>%s</b><br/><br/>Is dit oké, of wil je het nummer bewerken?]]></string>
   <string name="not_a_valid_phone_number">%s is geen geldig telefoonnummer.</string>
   <string name="please_enter_your_phone_number">Voer je telefoonnummer in.</string>
@@ -769,13 +749,13 @@
   <string name="resend_sms_in">Sms opnieuw versturen (%s)</string>
   <string name="wait_x">Even geduld (%s)</string>
   <string name="back">terug</string>
-  <string name="possible_pin">Mogelijke code van het klembord is automatisch geplakt.</string>
+  <string name="possible_pin">Mogelijke pincode is automatisch van het klembord geplakt.</string>
   <string name="please_enter_pin">Voer je 6-cijferige code in.</string>
   <string name="abort_registration_procedure">Weet je zeker dat je de registratieprocedure wilt stopzetten?</string>
   <string name="yes">Ja</string>
   <string name="no">Nee</string>
-  <string name="verifying">Bezig met verifiëren...</string>
-  <string name="requesting_sms">Bezig met aanvragen van sms...</string>
+  <string name="verifying">Bezig met verifiëren…</string>
+  <string name="requesting_sms">Bezig met aanvragen van sms…</string>
   <string name="incorrect_pin">De ingevoerde code is onjuist.</string>
   <string name="pin_expired">De toegestuurde code is verlopen.</string>
   <string name="unknown_api_error_network">Onbekende netwerkfout.</string>
@@ -789,22 +769,21 @@
   <string name="no_network_connection">Geen netwerkverbinding.</string>
   <string name="try_again_in_x">Probeer het opnieuw over %s</string>
   <string name="rate_limited">Je bent beperkt</string>
-  <string name="too_many_attempts">Teveel pogingen</string>
+  <string name="too_many_attempts">Te veel pogingen</string>
   <string name="the_app_is_out_of_date">Je gebruikt een verouderde versie van deze app.</string>
   <string name="update">Bijwerken</string>
   <string name="logged_in_with_another_device">Dit telefoonnummer is al in gebruik op een ander apparaat.</string>
   <string name="enter_your_name_instructions">Voer je naam in om mensen buiten je adresboek te laten weten wie je bent.</string>
   <string name="your_name">Je naam</string>
   <string name="enter_your_name">Voer je naam in</string>
-  <string name="no_name_set_instructions">Gebruik de knop \'bewerken\' op je naam in te stellen.</string>
+  <string name="no_name_set_instructions">Gebruik de knop ‘Bewerken’ om je naam in te stellen.</string>
   <string name="reject_request">Verzoek afwijzen</string>
   <string name="install_orbot">Orbot installeren</string>
   <string name="start_orbot">Orbot starten</string>
   <string name="no_market_app_installed">Geen app-winkel geïnstalleerd.</string>
-  <string name="group_chat_will_make_your_jabber_id_public">Dit groepsgesprek openbaart je Jabber ID</string>
   <string name="ebook">e-boek</string>
   <string name="video_original">Origineel (zonder compressie)</string>
-  <string name="open_with">Openen met...</string>
+  <string name="open_with">Openen met…</string>
   <string name="set_profile_picture">Conversations-profielafbeelding</string>
   <string name="choose_account">Kies een account</string>
 </resources>

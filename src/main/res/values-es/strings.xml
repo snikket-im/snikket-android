@@ -210,12 +210,8 @@
   <string name="fetching_keys">Buscando claves...</string>
   <string name="done">Hecho</string>
   <string name="decrypt">Descifrar</string>
-  <string name="conferences">Conversaciones en grupo</string>
   <string name="search">Buscar</string>
-  <string name="dialog_title_create_contact">Crear Contacto</string>
   <string name="enter_contact">Introducir contacto</string>
-  <string name="join_conference">Unirse a conversación en grupo</string>
-  <string name="dialog_title_join_conference">Unirse a Conversación en Grupo</string>
   <string name="delete_contact">Eliminar contacto</string>
   <string name="view_contact_details">Ver detalles del contacto</string>
   <string name="block_contact">Bloquear contacto</string>
@@ -224,8 +220,6 @@
   <string name="select">Seleccionar</string>
   <string name="contact_already_exists">El contacto ya existe</string>
   <string name="join">Unirse</string>
-  <string name="conference_address">Dirección</string>
-  <string name="conference_address_example">sala@salas.ejemplo.com/nick</string>
   <string name="save_as_bookmark">Guardar en marcadores</string>
   <string name="delete_bookmark">Eliminar marcador</string>
   <string name="destroy_room">Destruir conversación en grupo</string>
@@ -314,9 +308,6 @@
   <string name="try_again">Intentar de nuevo</string>
   <string name="pref_keep_foreground_service">Servicio en primer plano</string>
   <string name="pref_keep_foreground_service_summary">Mantener el servicio en primer plano previene que el sistema cierre la conexión</string>
-  <string name="pref_export_logs">Exportar historial</string>
-  <string name="pref_export_logs_summary">Escribir historial de conversación en la tarjeta SD</string>
-  <string name="notification_export_logs_title">Escribiendo logs en la tarjeta SD</string>
   <string name="choose_file">Seleccionar archivo</string>
   <string name="receiving_x_file">Recibiendo %1$s (%2$d%% completado)</string>
   <string name="download_x_file">Descargar %s</string>
@@ -362,22 +353,14 @@
   <string name="outcast">Rechazado</string>
   <string name="member">Miembro</string>
   <string name="advanced_mode">Modo avanzado</string>
-  <string name="grant_membership">Convertir en miembro</string>
-  <string name="remove_membership">Revocar privilegios de miembro</string>
   <string name="grant_admin_privileges">Conceder privilegios de administrador</string>
   <string name="remove_admin_privileges">Revocar privilegios de administrador</string>
   <string name="remove_from_room">Expulsar de la conversación</string>
   <string name="could_not_change_affiliation">No se puede cambiar la afiliación de %s</string>
   <string name="ban_from_conference">Prohibir entrada en la conversación</string>
-  <string name="removing_from_public_conference">Estás intentando expulsar a %s de una conversación en grupo de acceso público. La única forma de hacer esto es prohibir su entrada para siempre.</string>
   <string name="ban_now">Prohibir ahora</string>
   <string name="could_not_change_role">No se puede cambiar el rol de %s</string>
-  <string name="public_conference">Conversación de acceso público</string>
-  <string name="private_conference">Conversación privada, solo para miembros</string>
-  <string name="conference_options">Opciones de conversación</string>
   <string name="members_only">Privada, solo miembros</string>
-  <string name="non_anonymous">No anónima</string>
-  <string name="moderated">Moderada</string>
   <string name="you_are_not_participating">No estás participando</string>
   <string name="modified_conference_options">¡Modificadas las opciones de la conversación!</string>
   <string name="could_not_modify_conference_options">No se pueden modificar las opciones de la conversación</string>
@@ -397,7 +380,6 @@
   <string name="pdf_document">documento PDF</string>
   <string name="apk">Android App</string>
   <string name="vcard">Contacto</string>
-  <string name="touch_to_open_conversations">Pulsa para abrir Conversations</string>
   <string name="avatar_has_been_published">¡La imagen de perfil ha sido publicada!</string>
   <string name="sending_x_file">Enviando %s</string>
   <string name="offering_x_file">Ofreciendo %s</string>
@@ -413,7 +395,6 @@
   <string name="no_application_found_to_display_location">No se ha encontrado ninguna aplicación para mostrar la ubicación</string>
   <string name="location">Ubicación</string>
   <string name="title_undo_swipe_out_conversation">Conversación cerrada</string>
-  <string name="title_undo_swipe_out_muc">Salir de la conversación</string>
   <string name="pref_dont_trust_system_cas_title">No confiar en los CAs del sistema</string>
   <string name="pref_dont_trust_system_cas_summary">Todos los certificados deben ser aprobados manualmente</string>
   <string name="pref_remove_trusted_certificates_title">Eliminar certificados</string>
@@ -432,7 +413,6 @@
   <string name="recently_used">Usada más recientemente</string>
   <string name="choose_quick_action">Elegir acción rápida</string>
   <string name="search_contacts">Buscar contactos</string>
-  <string name="search_groups">Buscar conversaciones en grupo</string>
   <string name="send_private_message">Enviar mensaje privado</string>
   <string name="user_has_left_conference">%1$s ha dejado la conversación!</string>
   <string name="username">Usuario</string>
@@ -536,7 +516,6 @@
   <string name="device_does_not_support_battery_op">Tu dispositivo no soporta la opción de optimización de batería</string>
   <string name="registration_please_wait">El registro falló. Prueba de nuevo más tarde</string>
   <string name="registration_password_too_weak">Error en el registro: La contraseña es demasiado débil</string>
-  <string name="dialog_title_create_conference">Crear Conversación en Grupo</string>
   <string name="choose_participants">Elige a los participantes</string>
   <string name="creating_conference">Creando conversación en grupo...</string>
   <string name="invite_again">Invitar de nuevo</string>
@@ -745,7 +724,6 @@
   <string name="video_compression_channel_name">Compresión de video</string>
   <string name="view_media">Ver galería</string>
   <string name="media_browser">Galería</string>
-  <string name="export_channel_name">Exportar historial</string>
   <string name="security_violation_not_attaching_file">Fichero omitido por violación de seguridad</string>
   <string name="pref_video_compression">Calidad del video</string>
   <string name="pref_video_compression_summary">Calidad más baja indica archivos más pequeños</string>
@@ -803,7 +781,6 @@
   <string name="install_orbot">Instalar Orbot</string>
   <string name="start_orbot">Iniciar Orbot</string>
   <string name="no_market_app_installed">No hay tienda de aplicaciones instalada.</string>
-  <string name="group_chat_will_make_your_jabber_id_public">Esta conversación en grupo hará visible públicamente tu Identificador Jabber</string>
   <string name="ebook">e-book</string>
   <string name="video_original">Original (sin comprimir)</string>
   <string name="open_with">Abrir con...</string>

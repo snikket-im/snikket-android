@@ -211,12 +211,8 @@
   <string name="fetching_keys">Ανάσυρση κλειδιών...</string>
   <string name="done">Έγινε</string>
   <string name="decrypt">Αποκρυπτογράφηση</string>
-  <string name="conferences">Ομαδικές συζητήσεις</string>
   <string name="search">Αναζήτηση</string>
-  <string name="dialog_title_create_contact">Δημιούργησε Επαφή</string>
   <string name="enter_contact">Πρόσθεσε επαφή</string>
-  <string name="join_conference">Συμμετοχή σε ομαδική συζήτηση</string>
-  <string name="dialog_title_join_conference">Συμμετοχή σε Ομαδική Συζήτηση</string>
   <string name="delete_contact">Διαγραφή επαφής</string>
   <string name="view_contact_details">Λεπτομέρειες επαφής</string>
   <string name="block_contact">Αποκλεισμός επαφής</string>
@@ -225,8 +221,6 @@
   <string name="select">Επιλογή</string>
   <string name="contact_already_exists">Η επαφή υπάρχει ήδη</string>
   <string name="join">Συμμετοχή</string>
-  <string name="conference_address">Διεύθυνση ομαδικής συζήτησης</string>
-  <string name="conference_address_example">room@conference.example.com/nick</string>
   <string name="save_as_bookmark">Αποθήκευση σαν σελιδοδείκτη</string>
   <string name="delete_bookmark">Διαγραφή σελιδοδείκτη</string>
   <string name="destroy_room">Καταστροφή ομαδικής συζήτησης</string>
@@ -315,9 +309,6 @@
   <string name="try_again">Επανάληψη</string>
   <string name="pref_keep_foreground_service">Διατήρηση της υπηρεσίας στο προσκήνιο</string>
   <string name="pref_keep_foreground_service_summary">Αποτρέπει τον τερματισμό της σύνδεσης από το λειτουργικό σύστημα</string>
-  <string name="pref_export_logs">Εξαγωγή ιστορικού</string>
-  <string name="pref_export_logs_summary">Εγγραφή του ιστορικού μηνυμάτων στην κάρτα SD</string>
-  <string name="notification_export_logs_title">Εγγραφή καταγραφών στην κάρτα SD</string>
   <string name="choose_file">Επιλογή αρχείου</string>
   <string name="receiving_x_file">Λήψη %1$s (ολοκληρώθηκε %2$d%%)</string>
   <string name="download_x_file">Μεταφόρτωση του %s</string>
@@ -363,22 +354,14 @@
   <string name="outcast">Απόκληρος</string>
   <string name="member">Μέλος</string>
   <string name="advanced_mode">Κατάσταση για προχωρημένους</string>
-  <string name="grant_membership">Απόδοση ιδιότητας μέλους</string>
-  <string name="remove_membership">Ανάκληση ιδιότητας μέλους</string>
   <string name="grant_admin_privileges">Απόδοση δικαιωμάτων διαχειριστή</string>
   <string name="remove_admin_privileges">Ανάκληση δικαιωμάτων διαχειριστή</string>
   <string name="remove_from_room">Αφαίρεση από την ομάδική συζήτηση</string>
   <string name="could_not_change_affiliation">Δεν ήταν δυνατή η αλλαγή του δεσμού της επαφής %s</string>
   <string name="ban_from_conference">Αποκλεισμός από την ομαδική συζήτηση</string>
-  <string name="removing_from_public_conference">Προσπαθείτε να αφαιρέσετε την επαφή %s από μια δημόσια ομαδική συζήτηση. Ο μόνος τρόπος να γίνει αυτό είναι να αποκλείσετε αυτόν τον χρήστη για πάντα.</string>
   <string name="ban_now">Αποκλεισμός τώρα</string>
   <string name="could_not_change_role">Δεν ήταν δυνατή η αλλαγή ρόλου της επαφής %s</string>
-  <string name="public_conference">Ομαδική συζήτηση δημόσιας πρόσβασης</string>
-  <string name="private_conference">Ιδιωτική ομαδική συζήτηση, μόνο για μέλη</string>
-  <string name="conference_options">Επιλογές ομαδικής συζήτησης</string>
   <string name="members_only">Ιδιωτική, μόνο για μέλη</string>
-  <string name="non_anonymous">Μη-ανώνυμα</string>
-  <string name="moderated">Συντονιζόμενη</string>
   <string name="you_are_not_participating">Δεν συμμετέχετε</string>
   <string name="modified_conference_options">Μεταβολή των επιλογών ομαδικής συζήτησης!</string>
   <string name="could_not_modify_conference_options">Δεν ήταν δυνατή η μεταβολή των επιλογών ομαδικής συζήτησης</string>
@@ -398,7 +381,6 @@
   <string name="pdf_document">έγγραφο PDF</string>
   <string name="apk">Εφαρμογή Android</string>
   <string name="vcard">Επαφή</string>
-  <string name="touch_to_open_conversations">Επιλέξτε για να ανοίξετε το Conversations</string>
   <string name="avatar_has_been_published">Η εικόνα προφίλ έχει δημοσιευτεί!</string>
   <string name="sending_x_file">Αποστολή του %s</string>
   <string name="offering_x_file">Προσφορά του %s</string>
@@ -414,7 +396,6 @@
   <string name="no_application_found_to_display_location">Δεν βρέθηκε εφαρμογή για την απεικόνιση τοποθεσίας</string>
   <string name="location">Τοποθεσία</string>
   <string name="title_undo_swipe_out_conversation">Η συζήτηση έκλεισε</string>
-  <string name="title_undo_swipe_out_muc">Έφυγε από την ομαδική συζήτηση</string>
   <string name="pref_dont_trust_system_cas_title">Μη έμπιστες αρχές πιστοποίησης συστήματος</string>
   <string name="pref_dont_trust_system_cas_summary">Όλα τα πιστοποιητικά πρέπει να εγκριθούν χειροκίνητα</string>
   <string name="pref_remove_trusted_certificates_title">Αφαίρεση πιστοποιητικών</string>
@@ -433,7 +414,6 @@
   <string name="recently_used">Πιο πρόσφατα χρησιμοποιημένη</string>
   <string name="choose_quick_action">Επιλογή γρήγορης ενέργειας</string>
   <string name="search_contacts">Αναζήτηση επαφών</string>
-  <string name="search_groups">Αναζήτηση ομαδικών συζητήσεων</string>
   <string name="send_private_message">Αποστολή ιδιωτικού μηνύματος</string>
   <string name="user_has_left_conference">Η επαφή %1$s έφυγε από την ομαδική συζήτηση!</string>
   <string name="username">Όνομα χρήστη</string>
@@ -537,7 +517,6 @@
   <string name="device_does_not_support_battery_op">Η συσκευή σας δεν υποστηρίζει την απενεργοποίηση βελτιστοποίησης χρήσης μπαταρίας</string>
   <string name="registration_please_wait">Η εγγραφή απέτυχε: Προσπαθήστε αργότερα</string>
   <string name="registration_password_too_weak">Η εγγραφή απέτυχε: Το συνθηματικό είναι πολύ ασθενές</string>
-  <string name="dialog_title_create_conference">Δημιουργία Ομαδικής Συζήτησης</string>
   <string name="choose_participants">Επιλογή συμμετεχόντων</string>
   <string name="creating_conference">Δημιουργία ομαδικής συζήτησης...</string>
   <string name="invite_again">Πρόσκληση ξανά</string>
@@ -746,7 +725,6 @@
   <string name="video_compression_channel_name">Συμπίεση βίντεο</string>
   <string name="view_media">Εμφάνιση μέσου</string>
   <string name="media_browser">Περιηγητης μέσων</string>
-  <string name="export_channel_name">Εξαγωγή ιστορικού</string>
   <string name="security_violation_not_attaching_file">Το αρχείο παραλείπεται λόγω παραβίασης ασφάλειας.</string>
   <string name="pref_video_compression">Ποιότητα βίντεο</string>
   <string name="pref_video_compression_summary">Μικρότερη ποιότητα σημαίνει μικρότερα αρχεία</string>
@@ -804,7 +782,6 @@
   <string name="install_orbot">Εγκατάσταση Orbot</string>
   <string name="start_orbot">Εκκίνηση Orbot</string>
   <string name="no_market_app_installed">Δεν υπάρχει εγκατεστημένη εφαργμογή διαχείρισης εφαρμογών.</string>
-  <string name="group_chat_will_make_your_jabber_id_public">Αυτή η ομαδική συζήτηση θα κάνει την ταυτότητά Jabber σας δημόσια</string>
   <string name="ebook">ηλεκτρονικό βιβλίο</string>
   <string name="video_original">Αρχικό (μη συμπιεσμένο)</string>
   <string name="open_with">Άνοιγμα με...</string>

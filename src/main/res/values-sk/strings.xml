@@ -249,14 +249,11 @@
   <string name="outcast">Vylúčený</string>
   <string name="member">Člen</string>
   <string name="advanced_mode">Rozšírený režim</string>
-  <string name="grant_membership">Povoliť členstvo</string>
-  <string name="remove_membership">Odobrať členstvo</string>
   <string name="grant_admin_privileges">Povoliť administrátorské výsady</string>
   <string name="remove_admin_privileges">Odobrať administrátorské výsady</string>
   <string name="could_not_change_affiliation">Nepodarilo sa zmeniť pripojenie užívateľa %s</string>
   <string name="ban_now">Vylúčiť</string>
   <string name="could_not_change_role">Nepodarilo sa zmeniť úlohu %s</string>
-  <string name="non_anonymous">Neanonymný</string>
   <string name="you_are_not_participating">Nezúčastňujete sa</string>
   <string name="never">Nikdy</string>
   <string name="until_further_notice">Až do odvolania</string>
@@ -270,7 +267,6 @@
   <string name="pdf_document">dokument PDF</string>
   <string name="apk">Android App</string>
   <string name="vcard">Kontakt</string>
-  <string name="touch_to_open_conversations">Kliknite na spustenie Conversations</string>
   <string name="avatar_has_been_published">Avatar sa publikoval!</string>
   <string name="sending_x_file">Posielam %s</string>
   <string name="offering_x_file">Ponúkam %s</string>

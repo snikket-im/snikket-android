@@ -210,12 +210,8 @@
   <string name="fetching_keys">Изтегляне на ключове…</string>
   <string name="done">Готово</string>
   <string name="decrypt">Дешифроване</string>
-  <string name="conferences">Групови разговори</string>
   <string name="search">Търсене</string>
-  <string name="dialog_title_create_contact">Създаване на контакт</string>
   <string name="enter_contact">Въведете контакт</string>
-  <string name="join_conference">Присъединяване в групов разговор</string>
-  <string name="dialog_title_join_conference">Присъединяване в групов разговор</string>
   <string name="delete_contact">Изтриване на контакта</string>
   <string name="view_contact_details">Преглед на подр. за контакта</string>
   <string name="block_contact">Блокиране на контакт</string>
@@ -224,8 +220,6 @@
   <string name="select">Избиране</string>
   <string name="contact_already_exists">Контактът вече съществува</string>
   <string name="join">Присъединяване</string>
-  <string name="conference_address">Адрес на груповия разговор</string>
-  <string name="conference_address_example">стая@беседа.сървър.com/псевдоним</string>
   <string name="save_as_bookmark">Запазване като отметка</string>
   <string name="delete_bookmark">Изтриване на отметка</string>
   <string name="destroy_room">Унищожаване на груповия разговор</string>
@@ -314,9 +308,6 @@
   <string name="try_again">Повторен опит</string>
   <string name="pref_keep_foreground_service">Услугата да е на преден план</string>
   <string name="pref_keep_foreground_service_summary">Предотвратява прекъсването на връзката Ви от операционната система</string>
-  <string name="pref_export_logs">Изнасяне на историята</string>
-  <string name="pref_export_logs_summary">Записване на журналите на разговорите в картата с памет</string>
-  <string name="notification_export_logs_title">Записване на журналите в картата с памет</string>
   <string name="choose_file">Изберете файл</string>
   <string name="receiving_x_file">Получаване на %1$s (%2$d%% завършено)</string>
   <string name="download_x_file">Сваляне на %s</string>
@@ -362,22 +353,14 @@
   <string name="outcast">Отхвърлен</string>
   <string name="member">Член</string>
   <string name="advanced_mode">Разширен режим</string>
-  <string name="grant_membership">Даване на членство</string>
-  <string name="remove_membership">Отмяна на членството</string>
   <string name="grant_admin_privileges">Даване на администраторски права</string>
   <string name="remove_admin_privileges">Отмяна на администраторските права</string>
   <string name="remove_from_room">Премахване от груповия разговор</string>
   <string name="could_not_change_affiliation">Неуспешна промяна на принадлежността на %s</string>
   <string name="ban_from_conference">Забраняване на достъпа до груповия разговор</string>
-  <string name="removing_from_public_conference">Опитвате се да премахнете %s от публичен групов разговор. Единственият начин да направите това е да забраните достъпа на този потребител завинаги.</string>
   <string name="ban_now">Забраняване на достъпа сега</string>
   <string name="could_not_change_role">Неуспешна промяна на ролята на %s</string>
-  <string name="public_conference">Публично достъпен групов разговор</string>
-  <string name="private_conference">Частен групов разговор, само за членове</string>
-  <string name="conference_options">Настройки на груповия разговор</string>
   <string name="members_only">Частно, само за членове</string>
-  <string name="non_anonymous">Не-анонимна</string>
-  <string name="moderated">С модератор</string>
   <string name="you_are_not_participating">Вие не участвате</string>
   <string name="modified_conference_options">Настройките на груповия разговор бяха променени!</string>
   <string name="could_not_modify_conference_options">Неуспешна промяна на настройките на груповия разговор</string>
@@ -397,7 +380,6 @@
   <string name="pdf_document">PDF документ</string>
   <string name="apk">Приложение за Андроид</string>
   <string name="vcard">Контакт</string>
-  <string name="touch_to_open_conversations">Докоснете, за да отворите Conversations</string>
   <string name="avatar_has_been_published">Аватарът беше публикуван!</string>
   <string name="sending_x_file">Изпращане на %s</string>
   <string name="offering_x_file">Предлагане на %s</string>
@@ -413,7 +395,6 @@
   <string name="no_application_found_to_display_location">Няма намерено приложение за показване на местоположението</string>
   <string name="location">Местоположение</string>
   <string name="title_undo_swipe_out_conversation">Conversation се затвори</string>
-  <string name="title_undo_swipe_out_muc">Напуснахте груповия разговор</string>
   <string name="pref_dont_trust_system_cas_title">Да не се вярва на системните сертификати</string>
   <string name="pref_dont_trust_system_cas_summary">Всички сертификати трябва да бъдат одобрени на ръка</string>
   <string name="pref_remove_trusted_certificates_title">Премахване на сертификатите</string>
@@ -432,7 +413,6 @@
   <string name="recently_used">Използвани наскоро</string>
   <string name="choose_quick_action">Изберете бързо действие</string>
   <string name="search_contacts">Търсене в контактите</string>
-  <string name="search_groups">Търсене в груповите разговори</string>
   <string name="send_private_message">Изпращане на лично съобщение</string>
   <string name="user_has_left_conference">%1$s напусна груповия разговор!</string>
   <string name="username">Потребителско име</string>
@@ -536,7 +516,6 @@
   <string name="device_does_not_support_battery_op">Устройството Ви не поддържа изключването на оптимизациите за използването на батерията</string>
   <string name="registration_please_wait">Неуспешна регистрация. Опитайте отново по-късно</string>
   <string name="registration_password_too_weak">Неуспешна регистрация: паролата е твърде слаба</string>
-  <string name="dialog_title_create_conference">Създаване на групов разговор</string>
   <string name="choose_participants">Изберете участниците</string>
   <string name="creating_conference">Създаване на групов разговор…</string>
   <string name="invite_again">Канене отново</string>
@@ -745,7 +724,6 @@
   <string name="video_compression_channel_name">Компресия на видеото</string>
   <string name="view_media">Преглед на медийното съдържание</string>
   <string name="media_browser">Разглеждане на медийното съдържание</string>
-  <string name="export_channel_name">Изнасяне на историята</string>
   <string name="security_violation_not_attaching_file">Файлът е пропуснат поради нарушение на сигурността.</string>
   <string name="pref_video_compression">Качество на видеото</string>
   <string name="pref_video_compression_summary">По-ниското качество означава, че файловете ще са по-малки</string>
@@ -803,7 +781,6 @@
   <string name="install_orbot">Инсталиране на Orbot</string>
   <string name="start_orbot">Пускане на Orbot</string>
   <string name="no_market_app_installed">Няма инсталирано приложение за инсталиране на приложения.</string>
-  <string name="group_chat_will_make_your_jabber_id_public">Този групов разговор ще направи Jabber идентификатора Ви публичен</string>
   <string name="ebook">е-книга</string>
   <string name="video_original">Оригинално (некомпресирано)</string>
   <string name="open_with">Отваряне с…</string>

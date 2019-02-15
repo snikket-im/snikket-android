@@ -195,7 +195,6 @@
   <string name="select">Seç</string>
   <string name="contact_already_exists">Kişi zaten mevcut</string>
   <string name="join">Katıl</string>
-  <string name="conference_address_example">oda@toplanti.ornek.com/nick</string>
   <string name="save_as_bookmark">Yer imi olarak kaydet</string>
   <string name="delete_bookmark">Yer imini sil</string>
   <string name="bookmark_already_exists">Bu yer imi zaten mevcut</string>
@@ -260,9 +259,6 @@
   <string name="try_again">Yeniden deneyin</string>
   <string name="pref_keep_foreground_service">Ön planda çalışmaya devam etsin</string>
   <string name="pref_keep_foreground_service_summary">İşletim sisteminin bağlantınızı koparmasına engel olur</string>
-  <string name="pref_export_logs">Geçmişi dışarı aktar</string>
-  <string name="pref_export_logs_summary">Conversations geçmiş kayıtlarını SD karta yaz</string>
-  <string name="notification_export_logs_title">Kayıtları SD karta yazıyor</string>
   <string name="choose_file">Dosya seç</string>
   <string name="receiving_x_file">%1$s alıyor/(%2$d%% tamamlandı)</string>
   <string name="download_x_file">%s indir</string>
@@ -300,16 +296,12 @@
   <string name="outcast">Bağlantısız</string>
   <string name="member">Üye</string>
   <string name="advanced_mode">Gelişmiş kip</string>
-  <string name="grant_membership">Üyeliğe onay ver</string>
-  <string name="remove_membership">Üyeliği geri çevir</string>
   <string name="grant_admin_privileges">Yönetici imtiyazlarını kabul et</string>
   <string name="remove_admin_privileges">Yönetici imtiyazlarını geri çevir</string>
   <string name="could_not_change_affiliation">%s kişisinin ortaklığı değiştirilemedi</string>
   <string name="ban_now">Şimdi men et</string>
   <string name="could_not_change_role">%s kişisinin rolü değiştirilemedi</string>
   <string name="members_only">Özel, yalnızca üyeler</string>
-  <string name="non_anonymous">Anonim olmayan</string>
-  <string name="moderated">Denetli</string>
   <string name="you_are_not_participating">Katılımcı değilsiniz</string>
   <string name="never">Hiçbir zaman</string>
   <string name="until_further_notice">İkinci bildirime kadar</string>
@@ -324,7 +316,6 @@
   <string name="pdf_document">PDF belgesi</string>
   <string name="apk">Android uygulaması</string>
   <string name="vcard">Kişi</string>
-  <string name="touch_to_open_conversations">Conversations’ı başlatmak için dokunun</string>
   <string name="avatar_has_been_published">Avatar yayımlandı!</string>
   <string name="sending_x_file">%s gönderiliyor</string>
   <string name="offering_x_file">%s sunuluyor</string>

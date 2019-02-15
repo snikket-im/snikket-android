@@ -204,12 +204,8 @@
   <string name="fetching_keys">Получение ключей…</string>
   <string name="done">Готово</string>
   <string name="decrypt">Расшифровать</string>
-  <string name="conferences">Конференции</string>
   <string name="search">Поиск</string>
-  <string name="dialog_title_create_contact">Создание контакта</string>
   <string name="enter_contact">Добавить контакт</string>
-  <string name="join_conference">Присоединиться к конференции</string>
-  <string name="dialog_title_join_conference">Присоединиться к конференции</string>
   <string name="delete_contact">Удалить контакт</string>
   <string name="view_contact_details">Посмотреть данные контакта</string>
   <string name="block_contact">Заблокировать контакт</string>
@@ -218,8 +214,6 @@
   <string name="select">Выбрать</string>
   <string name="contact_already_exists">Контакт уже существует</string>
   <string name="join">Присоединиться</string>
-  <string name="conference_address">Адрес конференции</string>
-  <string name="conference_address_example">room@conference.example.com/nick</string>
   <string name="save_as_bookmark">Сохранить закладку</string>
   <string name="delete_bookmark">Удалить закладку</string>
   <string name="bookmark_already_exists">Такая закладка уже существует</string>
@@ -298,9 +292,6 @@
   <string name="try_again">Повторить</string>
   <string name="pref_keep_foreground_service">Оставить службу на переднем плане</string>
   <string name="pref_keep_foreground_service_summary">Не позволяет операционной системе закрыть ваше соединение</string>
-  <string name="pref_export_logs">Экспорт истории</string>
-  <string name="pref_export_logs_summary">Записать историю бесед на SD карту</string>
-  <string name="notification_export_logs_title">Запись истории на SD карту</string>
   <string name="choose_file">Выбрать файл</string>
   <string name="receiving_x_file">%1$s загружается (%2$d%% выполнено)</string>
   <string name="download_x_file">Загрузить %s</string>
@@ -346,22 +337,14 @@
   <string name="outcast">Заблокирован</string>
   <string name="member">Участник</string>
   <string name="advanced_mode">Расширенный режим</string>
-  <string name="grant_membership">Предоставить участие</string>
-  <string name="remove_membership">Отменить участие</string>
   <string name="grant_admin_privileges">Назначить администратором</string>
   <string name="remove_admin_privileges">Снять административные права</string>
   <string name="remove_from_room">Убрать из конференции</string>
   <string name="could_not_change_affiliation">Не удалось изменить принадлежность %s</string>
   <string name="ban_from_conference">Заблокировать из конференции</string>
-  <string name="removing_from_public_conference">Вы пытаетесь заблокировать %s из публичной конференции. Единственный способ — это  запретить доступ этому пользователю навсегда. </string>
   <string name="ban_now">Заблокировать</string>
   <string name="could_not_change_role">Не удалось сменить роль %s</string>
-  <string name="public_conference">Публичная конференция</string>
-  <string name="private_conference">Приватная конференция</string>
-  <string name="conference_options">Настройки конференции</string>
   <string name="members_only">Приватная</string>
-  <string name="non_anonymous">Неанонимная</string>
-  <string name="moderated">Модерируемая</string>
   <string name="you_are_not_participating">Вы не участвуете</string>
   <string name="modified_conference_options">Настройки конференции изменены!</string>
   <string name="could_not_modify_conference_options">Не удалось изменить настройки конференции</string>
@@ -380,7 +363,6 @@
   <string name="pdf_document">PDF-документ</string>
   <string name="apk">Приложение Android</string>
   <string name="vcard">Контакт</string>
-  <string name="touch_to_open_conversations">Коснитесь, чтобы открыть Conversations</string>
   <string name="avatar_has_been_published">Аватар загружен!</string>
   <string name="sending_x_file">Отправляется %s</string>
   <string name="offering_x_file">Предложен %s</string>
@@ -396,7 +378,6 @@
   <string name="no_application_found_to_display_location">Не найдено приложений для отображения местоположения</string>
   <string name="location">Местоположение</string>
   <string name="title_undo_swipe_out_conversation">Беседа окончена</string>
-  <string name="title_undo_swipe_out_muc">Покинул конференцию</string>
   <string name="pref_dont_trust_system_cas_title">Не доверять системным УЦ</string>
   <string name="pref_dont_trust_system_cas_summary">Все сертификаты должны быть подтверждены вручную</string>
   <string name="pref_remove_trusted_certificates_title">Удалить сертификаты</string>
@@ -417,7 +398,6 @@
   <string name="recently_used">Последнее выбранное</string>
   <string name="choose_quick_action">Выбрать быстрое действие</string>
   <string name="search_contacts">Поиск контактов</string>
-  <string name="search_groups">Поиск конференций</string>
   <string name="send_private_message">Отправить частное сообщение</string>
   <string name="user_has_left_conference">%1$s покинул конференцию!</string>
   <string name="username">Имя пользователя</string>
@@ -514,7 +494,6 @@
   <string name="device_does_not_support_battery_op">Ваше устройство не поддерживает отключение оптимизации энергопотребления</string>
   <string name="registration_please_wait">Регистрация не удалась: повторите попытку позднее</string>
   <string name="registration_password_too_weak">Регистрация не удалась: слишком слабый пароль</string>
-  <string name="dialog_title_create_conference">Создать конференцию</string>
   <string name="choose_participants">Выбрать участников</string>
   <string name="creating_conference">Создание конференции…</string>
   <string name="invite_again">Пригласить ещё раз</string>

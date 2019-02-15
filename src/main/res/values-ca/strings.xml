@@ -210,12 +210,8 @@
   <string name="fetching_keys">S\'estan obtenint les claus...</string>
   <string name="done">Fet</string>
   <string name="decrypt">Desxifra</string>
-  <string name="conferences">Xats de grup</string>
   <string name="search">Cerca</string>
-  <string name="dialog_title_create_contact">Crea un contacte</string>
   <string name="enter_contact">Introduïu un contacte</string>
-  <string name="join_conference">Uniu-vos al xat en grup</string>
-  <string name="dialog_title_join_conference">Uniu-vos al xat en grup</string>
   <string name="delete_contact">Suprimeix el contacte</string>
   <string name="view_contact_details">Veure els detalls del contacte</string>
   <string name="block_contact">Bloqueja el contacte</string>
@@ -224,8 +220,6 @@
   <string name="select">Seleccioneu</string>
   <string name="contact_already_exists">El contacte ja existeix</string>
   <string name="join">Entra</string>
-  <string name="conference_address">Direcció del xat de grup</string>
-  <string name="conference_address_example">room@conference.example.com/nick</string>
   <string name="save_as_bookmark">Desa com a marcador</string>
   <string name="delete_bookmark">Elimina dels marcadors</string>
   <string name="bookmark_already_exists">Aquest marcador ja existeix</string>
@@ -309,9 +303,6 @@
   <string name="try_again">Intenta una altra vegada</string>
   <string name="pref_keep_foreground_service">Mantenir el servei en primer pla</string>
   <string name="pref_keep_foreground_service_summary">Evitar que el sistema operatiu desconnecti la connexió</string>
-  <string name="pref_export_logs">Exportació de l\'historial</string>
-  <string name="pref_export_logs_summary">Escriviu el registre d\'històrial de converses a la targeta SD</string>
-  <string name="notification_export_logs_title">Escrivint registres a la targeta SD</string>
   <string name="choose_file">Escolliu un arxiu</string>
   <string name="receiving_x_file">Rebent %1$s (%2$d%% completat)</string>
   <string name="download_x_file">Descargat %s</string>
@@ -360,22 +351,14 @@ mentrestant.</string>
   <string name="outcast">Outcast</string>
   <string name="member">Membre</string>
   <string name="advanced_mode">Mode avançat</string>
-  <string name="grant_membership">Admetre l\'afiliació</string>
-  <string name="remove_membership">Rebocar l\'afiliació</string>
   <string name="grant_admin_privileges">Admetre privilegis d\'administrador</string>
   <string name="remove_admin_privileges">Rebocar privilegis d\'administrador</string>
   <string name="remove_from_room">Suprimeix del xat de grup</string>
   <string name="could_not_change_affiliation">No s\'ha pogut canviar l\'afiliació del %s</string>
   <string name="ban_from_conference">Prohibició del xat en grup</string>
-  <string name="removing_from_public_conference">Esteu intentant eliminar %s d\'un xat de grup públic. L\'única manera de fer-ho és prohibir l\'usuari per sempre.</string>
   <string name="ban_now">Banejat ara</string>
   <string name="could_not_change_role">No s\'ha pogut canviar les regles de %s</string>
-  <string name="public_conference">Xat de grup amb accés públic</string>
-  <string name="private_conference">Xat en grup privat, només membres</string>
-  <string name="conference_options">Opcions de xat en grup</string>
   <string name="members_only">Privat, només membres</string>
-  <string name="non_anonymous">Sense anonimat</string>
-  <string name="moderated">Moderat</string>
   <string name="you_are_not_participating">No esteu participant</string>
   <string name="modified_conference_options">S\'han modificat les opcions de xat en grup.</string>
   <string name="could_not_modify_conference_options">No s\'han pogut modificar les opcions de xat de grup</string>
@@ -395,7 +378,6 @@ mentrestant.</string>
   <string name="pdf_document">Document PDF</string>
   <string name="apk">Aplicació d\'Android</string>
   <string name="vcard">Contacte</string>
-  <string name="touch_to_open_conversations">Tocar per obrir les conversacions</string>
   <string name="avatar_has_been_published">L\'avatar ha sigut publicat!</string>
   <string name="sending_x_file">Enviant %s</string>
   <string name="offering_x_file">Oferint %s</string>
@@ -411,7 +393,6 @@ mentrestant.</string>
   <string name="no_application_found_to_display_location">No s\'ha trobat cap aplicació per mostrar la localització</string>
   <string name="location">Localització</string>
   <string name="title_undo_swipe_out_conversation">Conversa tancada</string>
-  <string name="title_undo_swipe_out_muc">Sortir del xat en grup</string>
   <string name="pref_dont_trust_system_cas_title">No confiar en les CAs del sistema</string>
   <string name="pref_dont_trust_system_cas_summary">Tots els certificats han de ser aprovats manualment</string>
   <string name="pref_remove_trusted_certificates_title">Eliminar certificats</string>
@@ -430,7 +411,6 @@ mentrestant.</string>
   <string name="recently_used">Ús més recent</string>
   <string name="choose_quick_action">Trieu una acció ràpida</string>
   <string name="search_contacts">Buscar contactes</string>
-  <string name="search_groups">Buscar xats en grup</string>
   <string name="send_private_message">Envia un missatge privat</string>
   <string name="user_has_left_conference">%1$s ha deixat el xat del grup!</string>
   <string name="username">Nom d\'usuari</string>
@@ -541,7 +521,6 @@ d\'altres proveïdors donant-los la vostra ID Jabber completa.</string>
   <string name="device_does_not_support_battery_op">El dispositiu no admet l\'exclusió de l\'optimització de la bateria</string>
   <string name="registration_please_wait">Error de registre: torna-ho a provar més tard</string>
   <string name="registration_password_too_weak">Ha fallat la inscripció: la contrasenya és massa feble</string>
-  <string name="dialog_title_create_conference">Crea un Xat en Grup</string>
   <string name="choose_participants">Tria els participants</string>
   <string name="creating_conference">S\'està creant el xat en grup...</string>
   <string name="invite_again">Torna a convidar</string>

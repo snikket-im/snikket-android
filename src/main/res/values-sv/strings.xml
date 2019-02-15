@@ -199,7 +199,6 @@
   <string name="select">Välj</string>
   <string name="contact_already_exists">Kontakten finns redan</string>
   <string name="join">Gå med</string>
-  <string name="conference_address_example">room@conference.example.com/nick</string>
   <string name="save_as_bookmark">Spara som bokmärke</string>
   <string name="delete_bookmark">Ta bort bokmärke</string>
   <string name="bookmark_already_exists">Detta bokmärke finns redan</string>
@@ -264,9 +263,6 @@
   <string name="try_again">Försök igen</string>
   <string name="pref_keep_foreground_service">Håll tjänst i förgrunden</string>
   <string name="pref_keep_foreground_service_summary">Förehindrar operativsystemet att ta ner uppkopplingen</string>
-  <string name="pref_export_logs">Exportera historik</string>
-  <string name="pref_export_logs_summary">Skriv loggar av konversationer till SD-kort</string>
-  <string name="notification_export_logs_title">Skriver loggar till SD-kort</string>
   <string name="choose_file">Välj fil</string>
   <string name="receiving_x_file">Tar emot %1$s (%2$d%% klart)</string>
   <string name="download_x_file">Ladda ner %s</string>
@@ -304,16 +300,12 @@
   <string name="outcast">Utstött</string>
   <string name="member">Medlem</string>
   <string name="advanced_mode">Avancerat läge</string>
-  <string name="grant_membership">Bevilja medlemsskap</string>
-  <string name="remove_membership">Återkalla medlemskap</string>
   <string name="grant_admin_privileges">Bevilja administratörsbehörighet</string>
   <string name="remove_admin_privileges">Återkalla administratörsbehörighet</string>
   <string name="could_not_change_affiliation">Kunde inte ändra tillhörigheten för %s</string>
   <string name="ban_now">Bannlys nu</string>
   <string name="could_not_change_role">Kunde inte ändra rollen för %s</string>
   <string name="members_only">Privat, medlemsskap krävs</string>
-  <string name="non_anonymous">Icke-anonymt</string>
-  <string name="moderated">Modererad</string>
   <string name="you_are_not_participating">Du deltar ej</string>
   <string name="never">Aldrig</string>
   <string name="until_further_notice">Tills vidare</string>
@@ -328,7 +320,6 @@
   <string name="pdf_document">PDF-dokument</string>
   <string name="apk">Android-app</string>
   <string name="vcard">Kontakt</string>
-  <string name="touch_to_open_conversations">Tryck för att öppna Conversations</string>
   <string name="avatar_has_been_published">Avatarbild har publicerats!</string>
   <string name="sending_x_file">Skickar %s</string>
   <string name="offering_x_file">Erbjuder %s</string>

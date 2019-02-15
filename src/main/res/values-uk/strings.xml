@@ -210,12 +210,8 @@
   <string name="fetching_keys">Отримую ключі…</string>
   <string name="done">Зроблено</string>
   <string name="decrypt">Розшифрувати</string>
-  <string name="conferences">Групи</string>
   <string name="search">Пошук</string>
-  <string name="dialog_title_create_contact">Створити контакт</string>
   <string name="enter_contact">Увести контакт</string>
-  <string name="join_conference">Приєднатися до групи</string>
-  <string name="dialog_title_join_conference">Приєднатися до групи</string>
   <string name="delete_contact">Видалити контакт</string>
   <string name="view_contact_details">Переглянути деталі контакту</string>
   <string name="block_contact">Заблокувати контакт</string>
@@ -224,10 +220,12 @@
   <string name="select">Вибрати</string>
   <string name="contact_already_exists">Контакт уже існує</string>
   <string name="join">Долучитися</string>
-  <string name="conference_address">Адреса групи</string>
-  <string name="conference_address_example">room@conference.example.com/nick</string>
   <string name="save_as_bookmark">Зберегти як закладку</string>
   <string name="delete_bookmark">Видалити закладку</string>
+  <string name="destroy_room">Видалити груповий чат</string>
+  <string name="destroy_room_dialog">Ви впевнені що бажаєте видалити цей груповий чат?\n\n 1
+Увага:  1  Груповий чат буде видалений з сервера.</string>
+  <string name="could_not_destroy_room">Видалити цей груповий чат не вдалось</string>
   <string name="bookmark_already_exists">Ця закладка вже існує</string>
   <string name="action_edit_subject">Редагувати тему групи</string>
   <string name="topic">Тема</string>
@@ -311,9 +309,6 @@
   <string name="try_again">Спробуйте ще</string>
   <string name="pref_keep_foreground_service">Підтримувати сервіс на першому плані</string>
   <string name="pref_keep_foreground_service_summary">Не дає операційній системі припиняти Ваш зв\'язок</string>
-  <string name="pref_export_logs">Експортувати історію</string>
-  <string name="pref_export_logs_summary">Записати журнали історії листування до картки SD</string>
-  <string name="notification_export_logs_title">Записую журнали на носій</string>
   <string name="choose_file">Вибрати файл</string>
   <string name="receiving_x_file">Отримання %1$s (%2$d%% завершено)</string>
   <string name="download_x_file">Завантажити %s</string>
@@ -359,22 +354,14 @@
   <string name="outcast">Вигнанець</string>
   <string name="member">Учасник</string>
   <string name="advanced_mode">Розширений режим</string>
-  <string name="grant_membership">Надати право участі</string>
-  <string name="remove_membership">Відкликати право участі</string>
   <string name="grant_admin_privileges">Дати права адміністратора</string>
   <string name="remove_admin_privileges">Відкликати права адміністратора</string>
   <string name="remove_from_room">Видалити з групи</string>
   <string name="could_not_change_affiliation">Не можу змінити пов\'язаність з %s</string>
   <string name="ban_from_conference">Заборонити доступ до групи</string>
-  <string name="removing_from_public_conference">Ви намагаєтеся видалити %s з публічної групи. Єдиний спосіб цього досягти – це заборонити цьому користувачеві доступ назавжди.</string>
   <string name="ban_now">Вигнати зараз</string>
   <string name="could_not_change_role">Не можу змінити роль %s</string>
-  <string name="public_conference">Публічна група</string>
-  <string name="private_conference">Приватна група, лише для учасників</string>
-  <string name="conference_options">Налаштування групи</string>
   <string name="members_only">Приватно, лише для членів</string>
-  <string name="non_anonymous">Не анонімно</string>
-  <string name="moderated">Модеровано</string>
   <string name="you_are_not_participating">Ви не берете участі</string>
   <string name="modified_conference_options">Налаштування групи змінено!</string>
   <string name="could_not_modify_conference_options">Не вдалося змінити налаштування групи</string>
@@ -394,7 +381,6 @@
   <string name="pdf_document">PDF документ</string>
   <string name="apk">програма Android</string>
   <string name="vcard">Контакт</string>
-  <string name="touch_to_open_conversations">Торкніться, щоб відкрити Розмови</string>
   <string name="avatar_has_been_published">Іконку користувача опубліковано!</string>
   <string name="sending_x_file">Відправка %s</string>
   <string name="offering_x_file">Пропозиція %s</string>
@@ -410,7 +396,6 @@
   <string name="no_application_found_to_display_location">Не знайдено програми, щоб показати місцезнаходження</string>
   <string name="location">Місцезнаходження</string>
   <string name="title_undo_swipe_out_conversation">Розмову закрито</string>
-  <string name="title_undo_swipe_out_muc">Вийшла з групи</string>
   <string name="pref_dont_trust_system_cas_title">Не довіряти системним центрам сертифікації</string>
   <string name="pref_dont_trust_system_cas_summary">Усі сертифікати мають бути підтверджені вручну</string>
   <string name="pref_remove_trusted_certificates_title">Видалити сертифікати</string>
@@ -431,7 +416,6 @@
   <string name="recently_used">Остання, що використана</string>
   <string name="choose_quick_action">Вибрати швидку дію</string>
   <string name="search_contacts">Шукати в контактах</string>
-  <string name="search_groups">Шукати в групах</string>
   <string name="send_private_message">Відправити приватне повідомлення</string>
   <string name="user_has_left_conference">%1$s залишила групу!</string>
   <string name="username">Ім\'я користувача</string>
@@ -537,7 +521,6 @@
   <string name="device_does_not_support_battery_op">Ваш пристрій не підтримує відключення оптимізації батареї</string>
   <string name="registration_please_wait">Реєстрація не вдалася: Спробуйте ще раз пізніше</string>
   <string name="registration_password_too_weak">Реєстрація не відбулася: пароль занадто слабкий.</string>
-  <string name="dialog_title_create_conference">Створити групу</string>
   <string name="choose_participants">Вибрати учасників</string>
   <string name="creating_conference">Створення групи…</string>
   <string name="invite_again">Запросити знову</string>
@@ -728,6 +711,7 @@
   <string name="gif">GIF</string>
   <string name="view_conversation">Переглянути розмову</string>
   <string name="pref_use_share_location_plugin">Додаток поширення місцезнаходження</string>
+  <string name="pref_use_share_location_plugin_summary">Використовувати додаток поширення місце-знаходження замість вбудованої карти</string>
   <string name="copy_link">Скопіювати веб адресу</string>
   <string name="copy_jabber_id">Скопіювати Jabber ID</string>
   <string name="p1_s3_filetransfer">Доступ до файлів по HTTP для S3</string>
@@ -757,7 +741,6 @@
   <string name="video_compression_channel_name">Стиснення відео</string>
   <string name="view_media">Перегляд медіа</string>
   <string name="media_browser">Переглядач медіа</string>
-  <string name="export_channel_name">Вивантажити історію</string>
   <string name="security_violation_not_attaching_file">Файл пропущено через порушення безпеки.</string>
   <string name="pref_video_compression">Якість відео</string>
   <string name="pref_video_compression_summary">Менша якість означає менші файли</string>
@@ -815,5 +798,9 @@
   <string name="install_orbot">Встановити Orbot</string>
   <string name="start_orbot">Запустити Orbot</string>
   <string name="no_market_app_installed">Не знайдено програми для пошуку й встановлення нових програм.</string>
-  <string name="group_chat_will_make_your_jabber_id_public">Ця група розкриє Ваш Jabber ID загалу</string>
+  <string name="ebook">електронна книга</string>
+  <string name="video_original">Оригінал (не стиснений)</string>
+  <string name="open_with">Відкрити за допомогою...</string>
+  <string name="set_profile_picture">Фото профілю чату</string>
+  <string name="choose_account">Виберіть обліковий запис</string>
 </resources>

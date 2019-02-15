@@ -201,12 +201,8 @@
   <string name="fetching_keys">Добављам кључеве…</string>
   <string name="done">Готово</string>
   <string name="decrypt">Дешифруј</string>
-  <string name="conferences">Групна ћаскања</string>
   <string name="search">Тражи</string>
-  <string name="dialog_title_create_contact">Направи контакт</string>
   <string name="enter_contact">Унеси контакт</string>
-  <string name="join_conference">Придружи се групном ћаскању</string>
-  <string name="dialog_title_join_conference">Придружи се групном ћаскању</string>
   <string name="delete_contact">Обриши контакт</string>
   <string name="view_contact_details">Прикажи детаље контакта</string>
   <string name="block_contact">Блокирај контакт</string>
@@ -215,8 +211,6 @@
   <string name="select">Изабери</string>
   <string name="contact_already_exists">Контакт већ постоји</string>
   <string name="join">Придружи се</string>
-  <string name="conference_address">Адреса групног ћаскања</string>
-  <string name="conference_address_example">soba@konferencija.primer.com/nadimak</string>
   <string name="save_as_bookmark">Сачувај као обележивач</string>
   <string name="delete_bookmark">Обриши обележивач</string>
   <string name="bookmark_already_exists">Овај обележивач већ постоји</string>
@@ -296,9 +290,6 @@
   <string name="try_again">Покушај поново</string>
   <string name="pref_keep_foreground_service">Држи сервис у првом плану</string>
   <string name="pref_keep_foreground_service_summary">Спречава оперативни систем да прекине вашу везу</string>
-  <string name="pref_export_logs">Извези историјат</string>
-  <string name="pref_export_logs_summary">Упис историјата преписки на СД картицу</string>
-  <string name="notification_export_logs_title">Уписујем записе на СД картицу</string>
   <string name="choose_file">Изабери фајл</string>
   <string name="receiving_x_file">Примам %1$s (%2$d%% завршено)</string>
   <string name="download_x_file">Преузми %s</string>
@@ -344,8 +335,6 @@
   <string name="outcast">Изгнаник</string>
   <string name="member">Члан</string>
   <string name="advanced_mode">Напредни режим</string>
-  <string name="grant_membership">Одобри чланство</string>
-  <string name="remove_membership">Опозови чланство</string>
   <string name="grant_admin_privileges">Одобри админ. привилегије</string>
   <string name="remove_admin_privileges">Одобри админ. привилегије</string>
   <string name="remove_from_room">Уклони из групног ћаскања</string>
@@ -353,12 +342,7 @@
   <string name="ban_from_conference">Забрани за групно ћаскање</string>
   <string name="ban_now">Забрани одмах</string>
   <string name="could_not_change_role">Не могох да изменим улогу за %s</string>
-  <string name="public_conference">Јавно доступно групно ћаскање</string>
-  <string name="private_conference">Лично групно ћаскање, само за чланове</string>
-  <string name="conference_options">Опције групног ћаскања</string>
   <string name="members_only">Лична, само чланови</string>
-  <string name="non_anonymous">Неанонимна</string>
-  <string name="moderated">Уређивана</string>
   <string name="you_are_not_participating">Не учествујете</string>
   <string name="modified_conference_options">Опције групног ћаскања измењене!</string>
   <string name="could_not_modify_conference_options">Не могу да изменим опције групног ћаскања</string>
@@ -378,7 +362,6 @@
   <string name="pdf_document">ПДФ документ</string>
   <string name="apk">Апликација за Андроид</string>
   <string name="vcard">Контакт</string>
-  <string name="touch_to_open_conversations">Тапните да отворите Конверзацију</string>
   <string name="avatar_has_been_published">Аватар је објављен!</string>
   <string name="sending_x_file">Шаљем %s</string>
   <string name="offering_x_file">Нудим %s</string>
@@ -394,7 +377,6 @@
   <string name="no_application_found_to_display_location">Нема апликације за приказ локације</string>
   <string name="location">Локација</string>
   <string name="title_undo_swipe_out_conversation">Преписка затворена</string>
-  <string name="title_undo_swipe_out_muc">Напусти групно ћаскање</string>
   <string name="pref_dont_trust_system_cas_title">Не поуздај се у системска сертификациона тела</string>
   <string name="pref_dont_trust_system_cas_summary">Сви сертификати морају ручно да се одобре</string>
   <string name="pref_remove_trusted_certificates_title">Уклони сертификате</string>
@@ -414,7 +396,6 @@
   <string name="recently_used">Недавно коришћена</string>
   <string name="choose_quick_action">Изаберите брзу радњу</string>
   <string name="search_contacts">Тражи контакте</string>
-  <string name="search_groups">Тражи групна ћаскања</string>
   <string name="send_private_message">Пошаљи личну поруку</string>
   <string name="user_has_left_conference">%1$s напусти групно ћаскање!</string>
   <string name="username">Корисничко име</string>
@@ -506,7 +487,6 @@
   <string name="device_does_not_support_battery_op">Ваш уређај не подржава искључивање оптимизације батерије</string>
   <string name="registration_please_wait">Регистрација није успела: покушајте поново касније</string>
   <string name="registration_password_too_weak">Регистрација није успела: лозинка преслаба</string>
-  <string name="dialog_title_create_conference">Направи групно ћаскање</string>
   <string name="choose_participants">Додај учеснике</string>
   <string name="creating_conference">Правим групно ћаскање…</string>
   <string name="invite_again">Пошаљи поново</string>

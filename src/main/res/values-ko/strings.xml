@@ -194,7 +194,6 @@
   <string name="select">선택</string>
   <string name="contact_already_exists">이미 존재하는 연락처입니다 </string>
   <string name="join">참석 </string>
-  <string name="conference_address_example">room@conference.example.com/nick</string>
   <string name="save_as_bookmark">즐겨찾기로 저장 </string>
   <string name="delete_bookmark">즐겨찾기 삭제 </string>
   <string name="bookmark_already_exists">즐겨찾기가 이미 존재합니다 </string>
@@ -259,9 +258,6 @@
   <string name="try_again">다시 시도하세요 </string>
   <string name="pref_keep_foreground_service">포어그라운드에서 서비스 유지 </string>
   <string name="pref_keep_foreground_service_summary">운영체제가 접속을 해제하지 못하도록 예방합니다 </string>
-  <string name="pref_export_logs">히스토리 내보내기</string>
-  <string name="pref_export_logs_summary">SD카드에 히스토리 로그 쓰기</string>
-  <string name="notification_export_logs_title">기록을 SD 카드에 쓰는 중</string>
   <string name="choose_file">파일 선택 </string>
   <string name="receiving_x_file">수신중 %1$s (%2$d%% 완료) </string>
   <string name="download_x_file">%s 다운로드 </string>
@@ -299,16 +295,12 @@
   <string name="outcast">추방됨 </string>
   <string name="member">멤버 </string>
   <string name="advanced_mode">고급 모드 </string>
-  <string name="grant_membership">멤버십 허가 </string>
-  <string name="remove_membership">멤버십 철회 </string>
   <string name="grant_admin_privileges">관리자 특권 허가 </string>
   <string name="remove_admin_privileges">관리자 특권 철회 </string>
   <string name="could_not_change_affiliation">%s 의 관련 여부를 변경할 수 없습니다 </string>
   <string name="ban_now">지금 금지 </string>
   <string name="could_not_change_role">%s 의 역할을 변경할 수 없습니다 </string>
   <string name="members_only">멤버 전용 (사설)</string>
-  <string name="non_anonymous">익명 아님 </string>
-  <string name="moderated">중재됨</string>
   <string name="you_are_not_participating">당신은 참여하고 있지 않습니다</string>
   <string name="never">안함 </string>
   <string name="until_further_notice">나중에 알릴때까지 </string>
@@ -323,7 +315,6 @@
   <string name="pdf_document">PDF 문서 </string>
   <string name="apk">안드로이드 앱 </string>
   <string name="vcard">연락처 </string>
-  <string name="touch_to_open_conversations">터치해서 Conversations 열기 </string>
   <string name="avatar_has_been_published">아바타가 공개되었습니다 </string>
   <string name="sending_x_file">%s 전송중 </string>
   <string name="offering_x_file">%s 제공중 </string>

@@ -193,7 +193,6 @@
   <string name="select">Vybrat</string>
   <string name="contact_already_exists">Kontakt již existuje</string>
   <string name="join">Vstoupit</string>
-  <string name="conference_address_example">room@conference.example.com/nick</string>
   <string name="save_as_bookmark">Uložit jako záložku</string>
   <string name="delete_bookmark">Smazat záložku</string>
   <string name="bookmark_already_exists">Tato záložka již existuje</string>
@@ -255,9 +254,6 @@
   <string name="try_again">Zkusit znovu</string>
   <string name="pref_keep_foreground_service">Ponechat službu v popředí</string>
   <string name="pref_keep_foreground_service_summary">Zamezit operačnímu systému v ukončení připojení</string>
-  <string name="pref_export_logs">Exportovat historii</string>
-  <string name="pref_export_logs_summary">Zapsat logy konverzací na SD kartu</string>
-  <string name="notification_export_logs_title">Zapisování logů na SD kartu</string>
   <string name="choose_file">Vybrat soubor</string>
   <string name="receiving_x_file">Přijímám %1$s (%2$d%% dokončeno)</string>
   <string name="download_x_file">Stáhnout %s</string>
@@ -295,16 +291,12 @@
   <string name="outcast">Vyloučený</string>
   <string name="member">Člen</string>
   <string name="advanced_mode">Pokročilý mód</string>
-  <string name="grant_membership">Povolit členství</string>
-  <string name="remove_membership">Odebrat členství</string>
   <string name="grant_admin_privileges">Povolit administrátorská oprávnění</string>
   <string name="remove_admin_privileges">Odebrat administrátorská oprávnění</string>
   <string name="could_not_change_affiliation">Nelze změnit připojení uživatele %s</string>
   <string name="ban_now">Vypovědět</string>
   <string name="could_not_change_role">Nelze změnit roli uživatele %s</string>
   <string name="members_only">Soukromé, pouze pro členy</string>
-  <string name="non_anonymous">Neanonymní</string>
-  <string name="moderated">Moderováno</string>
   <string name="you_are_not_participating">Neúčastníte se</string>
   <string name="never">Nikdy</string>
   <string name="until_further_notice">Než opět změním</string>
@@ -319,7 +311,6 @@
   <string name="pdf_document">dokument PDF</string>
   <string name="apk">Aplikace pro Android</string>
   <string name="vcard">Kontakt</string>
-  <string name="touch_to_open_conversations">Ťuknout pro otevření Konverzace</string>
   <string name="avatar_has_been_published">Avatar byl zveřejněn!</string>
   <string name="sending_x_file">Odesílám %s</string>
   <string name="offering_x_file">Nabízím %s</string>

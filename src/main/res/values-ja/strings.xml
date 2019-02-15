@@ -210,12 +210,8 @@
   <string name="fetching_keys">鍵の取得中…</string>
   <string name="done">完了</string>
   <string name="decrypt">復号化</string>
-  <string name="conferences">談話室</string>
   <string name="search">検索</string>
-  <string name="dialog_title_create_contact">連絡先を作成</string>
   <string name="enter_contact">連絡先を入力</string>
-  <string name="join_conference">談話室に参加</string>
-  <string name="dialog_title_join_conference">談話室に参加</string>
   <string name="delete_contact">連絡先を削除</string>
   <string name="view_contact_details">連絡先の詳細を表示</string>
   <string name="block_contact">連絡先をブロック</string>
@@ -224,8 +220,6 @@
   <string name="select">選択</string>
   <string name="contact_already_exists">連絡先はすでに存在します</string>
   <string name="join">参加</string>
-  <string name="conference_address">談話室のアドレス</string>
-  <string name="conference_address_example">room@conference.example.com/nick</string>
   <string name="save_as_bookmark">ブックマークとして保存</string>
   <string name="delete_bookmark">ブックマークを削除</string>
   <string name="destroy_room">グループチャットを破棄する</string>
@@ -314,9 +308,6 @@
   <string name="try_again">再度実行してください</string>
   <string name="pref_keep_foreground_service">サービスをフォアグラウンドに保持</string>
   <string name="pref_keep_foreground_service_summary">オペレーティングシステムが接続を切断するのを防止します</string>
-  <string name="pref_export_logs">履歴をエクスポート</string>
-  <string name="pref_export_logs_summary">会話履歴ログを SD カードに書き込みます</string>
-  <string name="notification_export_logs_title">ログを SD カードに書き込み中</string>
   <string name="choose_file">ファイルの選択</string>
   <string name="receiving_x_file">%1$s 受信中 (%2$d%% 完了)</string>
   <string name="download_x_file">%s のダウンロード</string>
@@ -362,22 +353,14 @@
   <string name="outcast">追放</string>
   <string name="member">メンバー</string>
   <string name="advanced_mode">詳細モード</string>
-  <string name="grant_membership">メンバーシップを付与</string>
-  <string name="remove_membership">メンバーシップを取消</string>
   <string name="grant_admin_privileges">管理者権限を付与</string>
   <string name="remove_admin_privileges">管理者権限を取消</string>
   <string name="remove_from_room">グループチャットから削除</string>
   <string name="could_not_change_affiliation">%s の所属を変更できません</string>
   <string name="ban_from_conference">談話室から蹴り出す</string>
-  <string name="removing_from_public_conference">公開グループチャットから %s を削除しようとしています。これを行う唯一の方法は、永久にそのユーザーを禁止することです。</string>
   <string name="ban_now">今すぐ禁止</string>
   <string name="could_not_change_role">%s の役割を変更できません</string>
-  <string name="public_conference">公開アクセス可能なグループチャット</string>
-  <string name="private_conference">プライベート、メンバーのみグループチャット</string>
-  <string name="conference_options">談話室のオプション</string>
   <string name="members_only">プライベート、メンバーのみ</string>
-  <string name="non_anonymous">匿名でない</string>
-  <string name="moderated">司会</string>
   <string name="you_are_not_participating">あなたは参加していません</string>
   <string name="modified_conference_options">談話室のオプションが変更されました!</string>
   <string name="could_not_modify_conference_options">談話室のオプションを変更できませんでした</string>
@@ -397,7 +380,6 @@
   <string name="pdf_document">PDF 文書</string>
   <string name="apk">Android アプリ</string>
   <string name="vcard">連絡先</string>
-  <string name="touch_to_open_conversations">タッチして Conversations を開く</string>
   <string name="avatar_has_been_published">アバターを公開しました!</string>
   <string name="sending_x_file">%s の送信中</string>
   <string name="offering_x_file">%s の依頼中</string>
@@ -413,7 +395,6 @@
   <string name="no_application_found_to_display_location">位置を表示するアプリケーションが見つかりません</string>
   <string name="location">位置</string>
   <string name="title_undo_swipe_out_conversation">会話が閉じられました</string>
-  <string name="title_undo_swipe_out_muc">談話室を退出</string>
   <string name="pref_dont_trust_system_cas_title">システムの CA を信頼しない</string>
   <string name="pref_dont_trust_system_cas_summary">すべての証明書を手動で承認する必要があります</string>
   <string name="pref_remove_trusted_certificates_title">証明書を削除</string>
@@ -431,7 +412,6 @@
   <string name="recently_used">最近使用した</string>
   <string name="choose_quick_action">クイックアクションの選択</string>
   <string name="search_contacts">連絡先を検索</string>
-  <string name="search_groups">グループチャットを検索</string>
   <string name="send_private_message">プライベートメッセージを送信</string>
   <string name="user_has_left_conference">%1$s は談話室を退出しました</string>
   <string name="username">ユーザー名</string>
@@ -528,7 +508,6 @@
   <string name="device_does_not_support_battery_op">お使いのデバイスはバッテリー最適化の停止をサポートしていません</string>
   <string name="registration_please_wait">登録に失敗しました: 後でもう一度試してください</string>
   <string name="registration_password_too_weak">登録に失敗しました: パスワードが弱すぎます</string>
-  <string name="dialog_title_create_conference">談話室を作成</string>
   <string name="choose_participants">参加者を選択</string>
   <string name="creating_conference">談話室を作成しています…</string>
   <string name="invite_again">もう一度招待</string>

@@ -63,7 +63,7 @@
   <string name="save">Salva</string>
   <string name="ok">OK</string>
   <string name="crash_report_title">Errore di Conversations</string>
-  <string name="crash_report_message">Se scegli di inviare una segnalazione dell’errore aiuterai lo sviluppo di Conversations\n<b>Attenzione:</b> Questo utilizzerà il tuo account XMPP per inviare la segnalazione agli sviluppatori.</string>
+  <string name="crash_report_message">Se scegli di inviare una segnalazione dell’errore aiuterai lo sviluppo di Conversations\n<b>Attenzione:</b> ciò utilizzerà il tuo account XMPP per inviare la segnalazione agli sviluppatori.</string>
   <string name="send_now">Invia adesso</string>
   <string name="send_never">Non chiedere più</string>
   <string name="problem_connecting_to_account">Impossibile collegarsi tramite questo utente</string>
@@ -210,12 +210,8 @@
   <string name="fetching_keys">Ricezione chiavi...</string>
   <string name="done">Fatto</string>
   <string name="decrypt">Decripta</string>
-  <string name="conferences">Chat di gruppo</string>
   <string name="search">Cerca</string>
-  <string name="dialog_title_create_contact">Crea un contatto</string>
   <string name="enter_contact">Inserisci contatto</string>
-  <string name="join_conference">Unisciti alla chat</string>
-  <string name="dialog_title_join_conference">Unisciti alla chat di gruppo</string>
   <string name="delete_contact">Elimina contatto</string>
   <string name="view_contact_details">Mostra dettagli contatto</string>
   <string name="block_contact">Blocca contatto</string>
@@ -224,8 +220,6 @@
   <string name="select">Seleziona</string>
   <string name="contact_already_exists">Il contatto esiste già</string>
   <string name="join">Entra</string>
-  <string name="conference_address">Indirizzo chat di gruppo</string>
-  <string name="conference_address_example">stanza@conferenza.esempio.com/nick</string>
   <string name="save_as_bookmark">Salva come segnalibro</string>
   <string name="delete_bookmark">Elimina segnalibro</string>
   <string name="destroy_room">Distruggi chat di gruppo</string>
@@ -265,7 +259,7 @@
   <string name="request_presence_updates">Richiedi gli aggiornamenti della presenza dal tuo contatto.\n\n<small>Questo verrà usato per determinare quali client sta usando il tuo contatto.</small></string>
   <string name="request_now">Rechiedi adesso</string>
   <string name="ignore">Ignora</string>
-  <string name="without_mutual_presence_updates"><b>Attenzione:</b> Inviando questo messaggio senza aggiornamenti della presenza reciproci potrebbe causare problemi inaspettati.\n\n<small>Vai nei dettagli del contatto per verificare le tue sottoscrizioni alla presenza.</small></string>
+  <string name="without_mutual_presence_updates"><b>Attenzione:</b> inviando questo messaggio senza aggiornamenti della presenza reciproci potrebbe causare problemi inaspettati.\n\n<small>Vai nei dettagli del contatto per verificare le tue sottoscrizioni alla presenza.</small></string>
   <string name="pref_security_settings">Sicurezza</string>
   <string name="pref_allow_message_correction">Permetti correzione del messaggio</string>
   <string name="pref_allow_message_correction_summary">Consenti ai tuoi contatti di modificare retroattivamente i loro messaggi</string>
@@ -314,9 +308,6 @@
   <string name="try_again">Prova di nuovo</string>
   <string name="pref_keep_foreground_service">Mantieni il servizio in primo piano</string>
   <string name="pref_keep_foreground_service_summary">Evita che il sistema operativo chiuda la connessione</string>
-  <string name="pref_export_logs">Esporta la cronologia</string>
-  <string name="pref_export_logs_summary">Scrivi la cronologia delle conversazioni nella scheda SD</string>
-  <string name="notification_export_logs_title">Scrittura log su scheda SD</string>
   <string name="choose_file">Scegli un file</string>
   <string name="receiving_x_file">Ricezione di %1$s file (%2$d%% completato)</string>
   <string name="download_x_file">Scarica %s</string>
@@ -362,22 +353,14 @@
   <string name="outcast">Emarginato</string>
   <string name="member">Membro</string>
   <string name="advanced_mode">Modalità avanzata</string>
-  <string name="grant_membership">Concedi appartenenza</string>
-  <string name="remove_membership">Revoca appartenenza</string>
   <string name="grant_admin_privileges">Concedi i privilegi di amministratore</string>
   <string name="remove_admin_privileges">Revoca i privilegi di amministratore</string>
   <string name="remove_from_room">Rimuovi dalla chat di gruppo</string>
   <string name="could_not_change_affiliation">Impossibile cambiare l’affiliazione di %s</string>
   <string name="ban_from_conference">Bandisci dalla chat di gruppo</string>
-  <string name="removing_from_public_conference">Stai cercando di rimuovere %s da una chat di gruppo pubblica. L\'unico modo per farlo è bandire per sempre quell\'utente.</string>
   <string name="ban_now">Bandisci</string>
   <string name="could_not_change_role">Impossibile cambiare ruolo di %s</string>
-  <string name="public_conference">Chat di gruppo pubblicamente accessibile</string>
-  <string name="private_conference">Chat di gruppo privata, solo per membri</string>
-  <string name="conference_options">Opzioni chat di gruppo</string>
   <string name="members_only">Privato, solo membri</string>
-  <string name="non_anonymous">Non anonimo</string>
-  <string name="moderated">Moderata</string>
   <string name="you_are_not_participating">Non stai partecipando</string>
   <string name="modified_conference_options">Opzioni della chat di gruppo modificate!</string>
   <string name="could_not_modify_conference_options">Impossibile modificare le opzioni della chat di gruppo</string>
@@ -397,7 +380,6 @@
   <string name="pdf_document">Documento PDF</string>
   <string name="apk">Applicazione Android</string>
   <string name="vcard">Contatto</string>
-  <string name="touch_to_open_conversations">Tocca per avviare Conversations</string>
   <string name="avatar_has_been_published">Il tuo avatar è stato pubblicato!</string>
   <string name="sending_x_file">Invio %s</string>
   <string name="offering_x_file">Offrendo %s</string>
@@ -413,7 +395,6 @@
   <string name="no_application_found_to_display_location">Non è stata trovata alcuna applicazione per mostrare la posizione</string>
   <string name="location">Posizione</string>
   <string name="title_undo_swipe_out_conversation">Conversazione interrotta</string>
-  <string name="title_undo_swipe_out_muc">Chat di gruppo abbandonata</string>
   <string name="pref_dont_trust_system_cas_title">Non ti fidare delle CA di sistema</string>
   <string name="pref_dont_trust_system_cas_summary">Tutti i certificati devono essere accettati manualmente</string>
   <string name="pref_remove_trusted_certificates_title">Elimina i certificati</string>
@@ -432,7 +413,6 @@
   <string name="recently_used">Usati recentemente</string>
   <string name="choose_quick_action">Scegli azione rapida</string>
   <string name="search_contacts">Cerca contatti</string>
-  <string name="search_groups">Cerca chat di gruppo</string>
   <string name="send_private_message">Invia messaggio privato</string>
   <string name="user_has_left_conference">%1$s ha abbandonato la chat di gruppo!</string>
   <string name="username">Utente</string>
@@ -536,7 +516,6 @@
   <string name="device_does_not_support_battery_op">Il tuo dispositivo non supporta l\'esclusione per l\'ottimizzazione della batteria</string>
   <string name="registration_please_wait">Registrazione fallita: riprova più tardi</string>
   <string name="registration_password_too_weak">Registrazione fallita: password troppo debole</string>
-  <string name="dialog_title_create_conference">Crea una chat di gruppo</string>
   <string name="choose_participants">Scegli i partecipanti</string>
   <string name="creating_conference">Creazione chat di gruppo...</string>
   <string name="invite_again">Invita di nuovo</string>
@@ -745,7 +724,6 @@
   <string name="video_compression_channel_name">Compressione video</string>
   <string name="view_media">Vedi i media</string>
   <string name="media_browser">Browser multimediale</string>
-  <string name="export_channel_name">Esportazione cronologia</string>
   <string name="security_violation_not_attaching_file">File omesso per violazione di sicurezza.</string>
   <string name="pref_video_compression">Qualità video</string>
   <string name="pref_video_compression_summary">Una qualità inferiore comporta file più piccoli</string>
@@ -803,7 +781,9 @@
   <string name="install_orbot">Installa Orbot</string>
   <string name="start_orbot">Avvia Orbot</string>
   <string name="no_market_app_installed">Nessuna app market installata.</string>
-  <string name="group_chat_will_make_your_jabber_id_public">Questa chat di gruppo renderà pubblico il tuo ID Jabber</string>
   <string name="ebook">e-book</string>
   <string name="video_original">Originale (non compresso)</string>
+  <string name="open_with">Apri con…</string>
+  <string name="set_profile_picture">Immagine profilo di Conversations</string>
+  <string name="choose_account">Scegli account</string>
 </resources>

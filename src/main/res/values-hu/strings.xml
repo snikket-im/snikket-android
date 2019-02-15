@@ -210,12 +210,8 @@
   <string name="fetching_keys">Kulcsok beszerzése...</string>
   <string name="done">Kész</string>
   <string name="decrypt">Dekódol</string>
-  <string name="conferences">Konferenciák</string>
   <string name="search">Keresés</string>
-  <string name="dialog_title_create_contact">Névjegy létrehozása</string>
   <string name="enter_contact">Névjegy megadása</string>
-  <string name="join_conference">Konferenciához csatlakozás</string>
-  <string name="dialog_title_join_conference">Konferenciához Csatlakozás</string>
   <string name="delete_contact">Névjegy törlése</string>
   <string name="view_contact_details">Ismerős névjegyének részletei</string>
   <string name="block_contact">Ismerős tiltása</string>
@@ -224,8 +220,6 @@
   <string name="select">Kiválaszt</string>
   <string name="contact_already_exists">A névjegy már létezik</string>
   <string name="join">Csatlakozik</string>
-  <string name="conference_address">Konferencia cím</string>
-  <string name="conference_address_example">room@conference.example.com/nick</string>
   <string name="save_as_bookmark">Könyvjelzőkhöz hozzáadás</string>
   <string name="delete_bookmark">Könyvjelző törlése</string>
   <string name="destroy_room">Konferencia megszüntetése</string>
@@ -314,9 +308,6 @@
   <string name="try_again">megpróbálja újra</string>
   <string name="pref_keep_foreground_service">Előtérben futtassa a programot</string>
   <string name="pref_keep_foreground_service_summary">Megakadályozza az operációs rendszert abban, hogy megszakítsa a kapcsolatot a szerverrel a háttérben</string>
-  <string name="pref_export_logs">Előzmények mentése</string>
-  <string name="pref_export_logs_summary">A beszélgetések tartalmának naplóját lementi az SD kártyára</string>
-  <string name="notification_export_logs_title">Naplók kiírása az SD kártyára</string>
   <string name="choose_file">Fájl kiválasztása</string>
   <string name="receiving_x_file">%1$s fogadás alatt (%2$d%% kész)</string>
   <string name="download_x_file">%s letöltése</string>
@@ -362,22 +353,14 @@
   <string name="outcast">Kiközösített</string>
   <string name="member">Tag</string>
   <string name="advanced_mode">Haladó mód</string>
-  <string name="grant_membership">Tagság megadása</string>
-  <string name="remove_membership">Tagság visszavonása</string>
   <string name="grant_admin_privileges">Admin jogok megadása</string>
   <string name="remove_admin_privileges">Admin jogok visszavonása</string>
   <string name="remove_from_room">Konferenciából eltávolítás</string>
   <string name="could_not_change_affiliation">%s hovatartozását nem lehetett megváltoztatni</string>
   <string name="ban_from_conference">Konferenciából kitiltás</string>
-  <string name="removing_from_public_conference">Ön megpróbálta eltávolítani %s nevű tagot a nyilvános konferenciából. Az egyetlen módja ennek, hogy tiltja a felhasználót örökre.</string>
   <string name="ban_now">Kitiltás most</string>
   <string name="could_not_change_role">Nem lehetett %s szerepét megváltoztatni</string>
-  <string name="public_conference">Nyilvánosan hozzáférhető konferencia</string>
-  <string name="private_conference">Privát, csak tagoknak konferencia</string>
-  <string name="conference_options">Konferencia beállítások</string>
   <string name="members_only">Privát, csak tagoknak</string>
-  <string name="non_anonymous">Nem névtelen</string>
-  <string name="moderated">Moderált</string>
   <string name="you_are_not_participating">Nem vagy résztvevő</string>
   <string name="modified_conference_options">Módosította a konferencia beállításokat!</string>
   <string name="could_not_modify_conference_options">Nem tudta módosítani a konferencia beállításokat!</string>
@@ -397,7 +380,6 @@
   <string name="pdf_document">PDF dokumentum</string>
   <string name="apk">Android applikáció</string>
   <string name="vcard">Névjegy</string>
-  <string name="touch_to_open_conversations">A Conversations megnyitásához érintse meg</string>
   <string name="avatar_has_been_published">A önarckép publikálva lett!</string>
   <string name="sending_x_file">Küldés alatt: %s</string>
   <string name="offering_x_file">Felajánlás alatt: %s</string>
@@ -413,7 +395,6 @@
   <string name="no_application_found_to_display_location">Nincs alkalmazás a helyzetének megjelenítéséhez</string>
   <string name="location">Hely</string>
   <string name="title_undo_swipe_out_conversation">A beszélgetés lezárult</string>
-  <string name="title_undo_swipe_out_muc">A konferenciát elhagyta</string>
   <string name="pref_dont_trust_system_cas_title">Ne bízzon a rendszer hitelesítésekben</string>
   <string name="pref_dont_trust_system_cas_summary">Minden tanúsítványt kézzel kell jóváhagyni</string>
   <string name="pref_remove_trusted_certificates_title">Tanúsítványok eltávolítása</string>
@@ -432,7 +413,6 @@
   <string name="recently_used">Legutóbb használt</string>
   <string name="choose_quick_action">Gyors gomb funkciója</string>
   <string name="search_contacts">Névjegyek keresése</string>
-  <string name="search_groups">Konferenciák keresése</string>
   <string name="send_private_message">Privát üzenet küldése</string>
   <string name="user_has_left_conference">%1$s elhagyta a konferenciát!</string>
   <string name="username">Felhasználónév</string>
@@ -536,7 +516,6 @@
   <string name="device_does_not_support_battery_op">Az Eszközöd nem támogatja az akkumulátor-optimalizálás kikapcsolását</string>
   <string name="registration_please_wait">Regisztráció nem sikerült: Próbálkozzon később</string>
   <string name="registration_password_too_weak">Regisztráció nem sikerült: Jelszó túl gyenge</string>
-  <string name="dialog_title_create_conference">Konferencia Létrehozása</string>
   <string name="choose_participants">Válaszd ki a résztvevőket</string>
   <string name="creating_conference">Konferencia létrehozása ...</string>
   <string name="invite_again">Meghívja újra</string>
@@ -745,7 +724,6 @@
   <string name="video_compression_channel_name">Videó tömörítés</string>
   <string name="view_media">Multimédia megtekintése</string>
   <string name="media_browser">Multimédia böngésző</string>
-  <string name="export_channel_name">Előzmény export</string>
   <string name="security_violation_not_attaching_file">A fájl ki lett hagyva a biztonság megsértése miatt.</string>
   <string name="pref_video_compression">Videó minőség</string>
   <string name="pref_video_compression_summary">Alacsonyabb minőség kisebb fájlt jelent</string>
@@ -803,7 +781,6 @@
   <string name="install_orbot">Orbot telepítése</string>
   <string name="start_orbot">Orbot indítása</string>
   <string name="no_market_app_installed">Nincs telepítve piaci alkalmazás.</string>
-  <string name="group_chat_will_make_your_jabber_id_public">Ez a csevegés nyilvánossá teszi a Jabber azonosítóját</string>
   <string name="ebook">e-könyv</string>
   <string name="video_original">Eredeti (tömörítetlen)</string>
   <string name="open_with">Megnyitni ezzel...</string>

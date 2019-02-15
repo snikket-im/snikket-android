@@ -7,7 +7,6 @@
     <string name="contacts_have_no_pgp_keys">Quicksy nu poate cripta mesajele dumneavoastră către contactele care nu își anunță cheia publică.\n\n<small>Vă rugăm să cereți contactelor să configureze OpenPGP.</small></string>
     <string name="pref_notification_grace_period_summary">Durata de timp cât Quicksy păstrează liniștea după ce a observat activitate pe un alt dispozitiv</string>
     <string name="pref_never_send_crash_summary">Trimițând datele despre erori ajutați la continuarea dezvoltării aplicației Quicksy</string>
-    <string name="touch_to_open_conversations">Atingeți pentru a deschide Quicksy</string>
     <string name="no_storage_permission">Quicksy are nevoie de acces la stocarea externă</string>
     <string name="no_camera_permission">Quicksy are nevoie de acces la camera foto</string>
     <string name="battery_optimizations_enabled_explained">Dispozitivul dumneavoastră încearcă să optimizeze agresiv consumul bateriei pentru Quicksy, asta poate duce la notificări întârziate sau chiar pierderea mesajelor.\nEste recomandat sa dezactivați aceste optimizări.</string>
