@@ -2,7 +2,7 @@
 <resources>
     <string name="crash_report_title">Quicksy is gecrasht</string>
     <string name="crash_report_message">Door het versturen van crashrapportages help je de ontwikkeling van Quicksy.\n\n<b>Waarschuwing:</b> Deze app zal je XMPP-account gebruiken om de crashrapportages te versturen naar de ontwikkelaars.</string>
-    <string name="openkeychain_required_long">Quicksy gebruikt een derdepartijapp genaamd </b>OpenKeychain</b> om berichten te versleutelen en ontsleutelen, en om publieke sleutels te beheren.\n\nOpenKeychain is beschikbaar onder de GPLv3 en beschikbaar op F-Droid en Google Play.\n\n<small>(Herstart Quicksy na installatie.)</small></string>
+    <string name="openkeychain_required_long">Quicksy gebruikt een derdepartijapp genaamd <b>OpenKeychain</b> om berichten te versleutelen en ontsleutelen, en om publieke sleutels te beheren.\n\nOpenKeychain is beschikbaar onder de GPLv3 en beschikbaar op F-Droid en Google Play.\n\n<small>(Herstart Quicksy na installatie.)</small></string>
     <string name="contact_has_no_pgp_key">Quicksy kan je berichten niet versleutelen omdat je contact geen publieke sleutel heeft ingesteld.\n\n<small>Vraag je contact om OpenPGP te configureren.</small></string>
     <string name="contacts_have_no_pgp_keys">Quicksy kan je berichten niet versleutelen omdat je contacten geen publieke sleutel hebben ingesteld.\n\n<small>Vraag je contacten om OpenPGP te configureren.</small></string>
     <string name="pref_notification_grace_period_summary">Hoe lang Quicksy stil blijft na activiteit op een ander apparaat waar te nemen</string>
