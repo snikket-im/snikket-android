@@ -82,8 +82,9 @@ public class UserAdapter extends ListAdapter<MucOptions.User, UserAdapter.ViewHo
         final String name = user.getName();
         final Contact contact = user.getContact();
         if (contact != null) {
-            viewHolder.binding.contactDisplayName.setText(contact.getDisplayName());
-            if (name != null) {
+            final String displayName = contact.getDisplayName();
+            viewHolder.binding.contactDisplayName.setText(displayName);
+            if (name != null && !name.equals(displayName)) {
                 viewHolder.binding.contactJid.setText(String.format("%s \u2022 %s", name, ConferenceDetailsActivity.getStatus(viewHolder.binding.getRoot().getContext(), user, advancedMode)));
             } else {
                 viewHolder.binding.contactJid.setText(ConferenceDetailsActivity.getStatus(viewHolder.binding.getRoot().getContext(), user, advancedMode));
