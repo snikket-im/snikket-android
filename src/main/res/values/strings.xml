@@ -317,8 +317,10 @@
     <string name="pref_keep_foreground_service">Keep service in foreground</string>
     <string name="pref_keep_foreground_service_summary">Prevents the operating system from killing your connection</string>
     <string name="pref_create_backup">Create backup</string>
-    <string name="pref_create_backup_summary">Write backup files to %s</string>
+    <string name="pref_create_backup_summary">Backup files will be stored in %s</string>
     <string name="notification_create_backup_title">Creating backup files</string>
+    <string name="notification_backup_created_title">Your backup has been created</string>
+    <string name="notification_backup_created_subtitle">The backup files have been stored in %s</string>
     <string name="restoring_backup">Restoring backup</string>
     <string name="notification_restored_backup_title">Your backup has been restored</string>
     <string name="notification_restored_backup_subtitle">Do not forget to enable the account.</string>

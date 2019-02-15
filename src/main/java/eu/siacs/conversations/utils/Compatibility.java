@@ -42,6 +42,10 @@ public class Compatibility {
         return Build.VERSION.SDK_INT >= Build.VERSION_CODES.O;
     }
 
+    public static boolean runsTwentyFour() {
+        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.N;
+    }
+
     public static boolean twentyEight() {
         return Build.VERSION.SDK_INT >= Build.VERSION_CODES.P;
     }
@@ -64,8 +68,22 @@ public class Compatibility {
         }
     }
 
+    private static boolean targetsTwentyFour(Context context) {
+        try {
+            final PackageManager packageManager = context.getPackageManager();
+            final ApplicationInfo applicationInfo = packageManager.getApplicationInfo(context.getPackageName(), 0);
+            return applicationInfo == null || applicationInfo.targetSdkVersion >= 24;
+        } catch (PackageManager.NameNotFoundException | RuntimeException e) {
+            return true; //when in doubt…
+        }
+    }
+
     public static boolean runsAndTargetsTwentySix(Context context) {
         return runsTwentySix() && targetsTwentySix(context);
+    }
+
+    public static boolean runsAndTargetsTwentyFour(Context context) {
+        return runsTwentyFour() && targetsTwentyFour(context);
     }
 
     public static boolean keepForegroundService(Context context) {
