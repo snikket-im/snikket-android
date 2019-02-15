@@ -442,7 +442,7 @@
     <string name="recently_used">Most recently used</string>
     <string name="choose_quick_action">Choose quick action</string>
     <string name="search_contacts">Search contacts</string>
-    <string name="search_groups">Search group chats</string>
+    <string name="search_bookmarks">Search bookmarks</string>
     <string name="send_private_message">Send private message</string>
     <string name="user_has_left_conference">%1$s has left the group chat!</string>
     <string name="username">Username</string>
