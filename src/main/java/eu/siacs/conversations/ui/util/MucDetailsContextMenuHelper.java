@@ -93,7 +93,6 @@ public final class MucDetailsContextMenuHelper {
                     }
                 } else {
                     if (!Config.DISABLE_BAN || conversation.getMucOptions().membersOnly()) {
-                        managePermissionsVisible = true;
                         removeFromRoom.setVisible(true);
                     }
                 }
