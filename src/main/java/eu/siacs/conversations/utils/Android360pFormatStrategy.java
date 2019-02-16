@@ -53,11 +53,14 @@ public class Android360pFormatStrategy implements MediaFormatStrategy {
             return null;
         }
         MediaFormat format = MediaFormat.createVideoFormat("video/avc", outWidth, outHeight);
-        // From Nexus 4 Camera in 720p
         format.setInteger(MediaFormat.KEY_BIT_RATE, mVideoBitrate);
         format.setInteger(MediaFormat.KEY_FRAME_RATE, 30);
         format.setInteger(MediaFormat.KEY_I_FRAME_INTERVAL, 3);
         format.setInteger(MediaFormat.KEY_COLOR_FORMAT, MediaCodecInfo.CodecCapabilities.COLOR_FormatSurface);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            format.setInteger(MediaFormat.KEY_PROFILE ,MediaCodecInfo.CodecProfileLevel.AVCProfileBaseline);
+            format.setInteger(MediaFormat.KEY_LEVEL, MediaCodecInfo.CodecProfileLevel.AVCLevel13);
+        }
         return format;
     }
 
