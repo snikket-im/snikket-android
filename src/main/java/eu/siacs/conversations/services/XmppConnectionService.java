@@ -4,6 +4,7 @@ import android.Manifest;
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.app.AlarmManager;
+import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
@@ -1151,13 +1152,19 @@ public class XmppConnectionService extends Service {
     private void toggleForegroundService(boolean force) {
         final boolean status;
         if (force || mForceDuringOnCreate.get() || mForceForegroundService.get() || (Compatibility.keepForegroundService(this) && hasEnabledAccounts())) {
-            startForeground(NotificationService.FOREGROUND_NOTIFICATION_ID, this.mNotificationService.createForegroundNotification());
+            final Notification notification = this.mNotificationService.createForegroundNotification();
+            startForeground(NotificationService.FOREGROUND_NOTIFICATION_ID, notification);
+            if (!mForceForegroundService.get()) {
+                mNotificationService.notify(NotificationService.FOREGROUND_NOTIFICATION_ID, notification);
+            }
             status = true;
         } else {
             stopForeground(true);
             status = false;
         }
-        mNotificationService.dismissForcedForegroundNotification(); //if the channel was changed the previous call might fail
+        if (!mForceForegroundService.get()) {
+            mNotificationService.dismissForcedForegroundNotification(); //if the channel was changed the previous call might fail
+        }
         Log.d(Config.LOGTAG,"ForegroundService: "+(status?"on":"off"));
     }
 
