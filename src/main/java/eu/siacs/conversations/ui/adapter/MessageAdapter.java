@@ -219,10 +219,23 @@ public class MessageAdapter extends ArrayAdapter<Message> implements CopyTextVie
 				}
 				break;
 			case Message.STATUS_SEND_FAILED:
-				if (Message.ERROR_MESSAGE_CANCELLED.equals(message.getErrorMessage())) {
+				final String errorMessage = message.getErrorMessage();
+				if (Message.ERROR_MESSAGE_CANCELLED.equals(errorMessage)) {
 					info = getContext().getString(R.string.cancelled);
 				} else {
-					info = getContext().getString(R.string.send_failed);
+					final String[] errorParts = errorMessage.split("\\u001f", 2);
+					if (errorParts.length == 2) {
+						switch (errorParts[0]) {
+							case "file-too-large":
+								info = getContext().getString(R.string.file_too_large);
+								break;
+							default:
+								info = getContext().getString(R.string.send_failed);
+								break;
+						}
+					} else {
+						info = getContext().getString(R.string.send_failed);
+					}
 				}
 				error = true;
 				break;

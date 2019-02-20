@@ -1,8 +1,11 @@
 package eu.siacs.conversations.parser;
 
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 
 import eu.siacs.conversations.entities.Account;
@@ -127,14 +130,36 @@ public abstract class AbstractParser {
 	public static String extractErrorMessage(Element packet) {
 		final Element error = packet.findChild("error");
 		if (error != null && error.getChildren().size() > 0) {
+			final List<String> errorNames = orderedElementNames(error.getChildren());
 			final String text = error.findChildContent("text");
 			if (text != null && !text.trim().isEmpty()) {
-				return text;
-			} else {
-				return error.getChildren().get(0).getName().replace("-"," ");
+				return prefixError(errorNames)+text;
+			} else if (errorNames.size() > 0){
+				return prefixError(errorNames)+errorNames.get(0).replace("-"," ");
 			}
-		} else {
-			return null;
 		}
+		return null;
+	}
+
+	private static String prefixError(List<String> errorNames) {
+		if (errorNames.size() > 0) {
+			return errorNames.get(0)+'\u001f';
+		}
+		return "";
+	}
+
+	private static List<String> orderedElementNames(List<Element> children) {
+		List<String> names = new ArrayList<>();
+		for(Element child : children) {
+			final String name = child.getName();
+			if (name != null && !name.equals("text")) {
+				if ("urn:ietf:params:xml:ns:xmpp-stanzas".equals(child.getNamespace())) {
+					names.add(name);
+				} else {
+					names.add(0, name);
+				}
+			}
+		}
+		return names;
 	}
 }
