@@ -171,11 +171,8 @@
   <string name="mgmt_account_are_you_sure">Ziur al zaude?</string>
   <string name="mgmt_account_delete_confirm_text">Zure kontua ezabatzen baduzu, zure elkarrizketen historia guztia galduko da</string>
   <string name="attach_record_voice">Ahotsa grabatu</string>
-  <string name="account_settings_jabber_id">Jabber IDa</string>
-  <string name="block_jabber_id">Jabber IDa blokeatu</string>
   <string name="account_settings_example_jabber_id">erabiltzailea@adibidea.com</string>
   <string name="password">Pasahitza</string>
-  <string name="invalid_jid">Hau ez da Jabber ID baliodun bat</string>
   <string name="error_out_of_memory">Memoriarik gabe. Irudia handiegia da</string>
   <string name="add_phone_book_text">%s zure helbideen liburura gehitu nahi duzu?</string>
   <string name="server_info_show_more">Zerbitzariaren informazioa</string>
@@ -297,7 +294,6 @@
   <string name="send_again">Berriro bidali</string>
   <string name="file_url">Fitxategiaren URLa</string>
   <string name="url_copied_to_clipboard">URLa arbelera kopiatu da</string>
-  <string name="jabber_id_copied_to_clipboard">Jabber IDa arbelera kopiatu da</string>
   <string name="error_message_copied_to_clipboard">Akats mezua arbelera kopiatu da</string>
   <string name="web_address">web helbidea</string>
   <string name="scan_qr_code">2D barra kodea eskaneatu</string>
@@ -446,7 +442,6 @@
   <string name="captcha_required">Captcha beharrezkoa da</string>
   <string name="captcha_hint">Sar ezazu goiko irudiko testua</string>
   <string name="certificate_chain_is_not_trusted">Ziurtagiriaren katea ez da fidagarria</string>
-  <string name="jid_does_not_match_certificate">Jabber IDa ez du ziurtagiriarekin bat egiten</string>
   <string name="action_renew_certificate">Ziurtagiria berriztu</string>
   <string name="error_fetching_omemo_key">Akatsa OMEMO gakoa eskuratzerakoan!</string>
   <string name="verified_omemo_key_with_certificate">OMEMO gakoa ziurtagiriarekin egiaztatuta!</string>
@@ -494,10 +489,7 @@
   <string name="security_error_invalid_file_access">Segurtasun akatsa: fitxategi sarrera baliogabea</string>
   <string name="no_application_to_share_uri">Ez da aplikaziorik aurkitu URIa partekatzeko</string>
   <string name="share_uri_with">URIa honekin partekatu...</string>
-  <string name="welcome_text">Jabber hornitzaleez independiente den protokolo bat da. Bezero hau aukeratzen duzun edozein Jabber zerbitzariarekin erabili dezakezu.\nHala ere zure erosotasunerako conversations.im¹-en, Conversationsekin bereziki erabiltzeko egokia den hornitzaile batean, kontu bat sortzea erraz egin dugu.</string>
   <string name="agree_and_continue">Onartu eta jarraitu</string>
-  <string name="magic_create_text">conversations.im-en kontu bat sortzeko prozesuan zehar gidatuko zaitugu.\nconversations.im¹ hornitzaile bezala aukeratzerakoan beste hornitzaileen erabiltzaileekin komunikatzeko gai izango zara haiei zure Jabber ID osoa emanez.</string>
-  <string name="your_full_jid_will_be">Zure Jabber ID osoa %s izango da</string>
   <string name="create_account">Kontua sortu</string>
   <string name="use_own_provider">Nire hornitzale propioa erabili</string>
   <string name="pick_your_username">Aukeratu zure erabiltzaile izena</string>
@@ -631,7 +623,6 @@
   <string name="yesterday">Atzo</string>
   <string name="pref_validate_hostname">Ostalariaren izena DNSSECekin balioztatu</string>
   <string name="pref_validate_hostname_summary">Ostalariaren izena balioztatuta daukaten zerbitzarien ziurtagiriak egiaztatutzat hartzen dira</string>
-  <string name="certificate_does_not_contain_jid">Ziurtagiriak ez dauka Jabber ID baliodun bat</string>
   <string name="server_info_partial">partziala</string>
   <string name="attach_record_video">Bideoa grabatu</string>
   <string name="copy_to_clipboard">Arbelera kopiatu</string>
@@ -693,7 +684,6 @@
   <string name="pref_use_share_location_plugin">Kokapena partekatzeko plugina</string>
   <string name="pref_use_share_location_plugin_summary">Erabili kokapena partekatzeko plugina mapa erabili beharrean</string>
   <string name="copy_link">Web helbidea kopiatu</string>
-  <string name="copy_jabber_id">Jabber IDa kopiatu</string>
   <string name="p1_s3_filetransfer">HTTP fitxategiak partekatzea S3rentzako</string>
   <string name="pref_start_search">Bilaketa zuzena</string>
   <string name="pref_start_search_summary">\'Elkarrizketa hasi\' pantailan teklatua ireki eta kurtsorea bilaketa eremuan jarri</string>

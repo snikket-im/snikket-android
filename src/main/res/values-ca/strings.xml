@@ -171,11 +171,8 @@
   <string name="mgmt_account_are_you_sure">N\'esteu segur?</string>
   <string name="mgmt_account_delete_confirm_text">Si suprimiu el vostre compte, es perdrà tot l\'historial de la conversa</string>
   <string name="attach_record_voice">Enregistra veu</string>
-  <string name="account_settings_jabber_id">Identificació de Jabber</string>
-  <string name="block_jabber_id">Bloqueja la identificació de Jabber</string>
   <string name="account_settings_example_jabber_id">username@example.com</string>
   <string name="password">Contrasenya</string>
-  <string name="invalid_jid">Aquesta identificació de Jabber no és vàlida</string>
   <string name="error_out_of_memory">Memòria exhaurida. La imatge és massa gran.</string>
   <string name="add_phone_book_text">Voleu afegir a %s a la vostra llibreta d\'adreces?</string>
   <string name="server_info_show_more">Informació del servidor</string>
@@ -292,7 +289,6 @@
   <string name="send_again">Envia una altra vegada</string>
   <string name="file_url">URL del fitxer</string>
   <string name="url_copied_to_clipboard">URL copiada al portapapers</string>
-  <string name="jabber_id_copied_to_clipboard">Copia l\'ID de Jabber al portapapers</string>
   <string name="error_message_copied_to_clipboard">Missatge d\'error copiat al portapapers</string>
   <string name="web_address">Adreça Web</string>
   <string name="scan_qr_code">Escaneja el codi de barres 2D</string>
@@ -444,7 +440,6 @@ mentrestant.</string>
   <string name="captcha_required">Es necessita Captcha</string>
   <string name="captcha_hint">Introduïu el text de la imatge de dalt</string>
   <string name="certificate_chain_is_not_trusted">La cadena de certificats no és de confiança</string>
-  <string name="jid_does_not_match_certificate">L\'identificador de Jabber no coincideix amb el certificat</string>
   <string name="action_renew_certificate">Renova el certificat</string>
   <string name="error_fetching_omemo_key">S\'ha produït un error en obtenir la clau OMEMO!.</string>
   <string name="verified_omemo_key_with_certificate">Clau OMEMO verificada amb certificat!</string>
@@ -498,14 +493,6 @@ missatges.\n\nAra se us demanarà que desactiveu-las.</string>
   <string name="security_error_invalid_file_access">Error de seguretat: accés d\'arxiu no vàlid</string>
   <string name="no_application_to_share_uri">No s\'ha trobat cap aplicació que comparteixi URI</string>
   <string name="share_uri_with">Comparteix l\'URI amb...</string>
-  <string name="welcome_text">Jabber és una xarxa de missatgeria instantània independent del proveïdor. Podeu
- utilitzar aquest client amb el servidor de Jabber que trieu.\nPerò 
-per a la seva comoditat hem facilitat crear un compte a converses.im¹; un proveïdor especialment indicat per a l\'ús amb Conversations.</string>
-  <string name="welcome_text_quicksy"><![CDATA[Quicksy és un spin off de les populars Converses client Jabber/XMPP amb detecció automàtica de contactes. <br> <br> Vostè es registra amb el seu número de telèfon i Quicksy es basarà automàticament en els números de telèfon de la seva llibreta d\'adreces per suggerir-li possibles contactes. <br> <br> En registrar-se vostè accepta la nostra <a href="https://quicksy.im/#privacy"> política de privadesa </a>. ]]></string>
-  <string name="magic_create_text">Us guiarem pel procés de creació d\'un compte a conversations.im.¹\nQuan 
-trieu conversations.im com a proveïdor, podreu comunicar-vos amb els usuaris 
-d\'altres proveïdors donant-los la vostra ID Jabber completa.</string>
-  <string name="your_full_jid_will_be">La vostra Jabber ID completa serà: %s</string>
   <string name="create_account">Crear compte</string>
   <string name="use_own_provider">Utilitza el meu propi proveïdor</string>
   <string name="pick_your_username">Tria el teu nom d\'usuari</string>
@@ -639,7 +626,6 @@ d\'altres proveïdors donant-los la vostra ID Jabber completa.</string>
   <string name="yesterday">Ahir</string>
   <string name="pref_validate_hostname">Valideu el nom del servidor amb DNSSEC</string>
   <string name="pref_validate_hostname_summary">Els certificats de servidor que contenen el nom de host validat es consideren verificats</string>
-  <string name="certificate_does_not_contain_jid">El certificat no conté una identificació de Jabber</string>
   <string name="server_info_partial">parcial</string>
   <string name="attach_record_video">Grava vídeo</string>
   <string name="copy_to_clipboard">Copiar al portapapers</string>
@@ -701,7 +687,6 @@ que l\'administrador del servidor llegeixi els missatges, però pot ser l\'únic
   <string name="view_conversation">Veure conversa</string>
   <string name="pref_use_share_location_plugin">Plugin per Compartir Ubicació</string>
   <string name="copy_link">Copiar adreça web</string>
-  <string name="copy_jabber_id">Copiar ID de Jabber</string>
   <string name="p1_s3_filetransfer">Ús compartit d\'arxius HTTP per a S3</string>
   <string name="pref_start_search">Recerca directa</string>
   <string name="pref_start_search_summary">En la pantalla \'Iniciar conversa\' obri el teclat i col·loqui el cursor en el camp de recerca</string>

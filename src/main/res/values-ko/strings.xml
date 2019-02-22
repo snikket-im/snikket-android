@@ -146,11 +146,8 @@
   <string name="mgmt_account_enable">계정 사용 </string>
   <string name="mgmt_account_are_you_sure">확실합니까? </string>
   <string name="attach_record_voice">녹음 </string>
-  <string name="account_settings_jabber_id">Jabber ID</string>
-  <string name="block_jabber_id">Jabber ID 차단</string>
   <string name="account_settings_example_jabber_id">username@example.com</string>
   <string name="password">암호 </string>
-  <string name="invalid_jid">올바른 Jabber ID가 아닙니다 </string>
   <string name="error_out_of_memory">메모리 부족. 이미지 용량이 너무 큽니다 </string>
   <string name="add_phone_book_text">주소록에 %s를 추가하시겠습니까?</string>
   <string name="server_info_show_more">서버 정보 </string>
@@ -374,7 +371,6 @@
   <string name="captcha_required">Captcha가 필요함</string>
   <string name="captcha_hint">위의 이미지에서 텍스트를 입력하십시오</string>
   <string name="certificate_chain_is_not_trusted">인증서 체인을 신뢰할 수 없습니다</string>
-  <string name="jid_does_not_match_certificate">Jabber ID가 인증서와 일치하지 않습니다</string>
   <string name="action_renew_certificate">인증서 갱신</string>
   <string name="error_fetching_omemo_key">OMEMO key를 가져오는 도중 오류가 발생했습니다</string>
   <string name="verified_omemo_key_with_certificate">OMEMO 키와 인증서 검증됨</string>
@@ -415,8 +411,6 @@
   <string name="security_error_invalid_file_access">보안 오류 : 잘못된 파일 액세스</string>
   <string name="no_application_to_share_uri">URI를 공유하는 응용 프로그램을 찾을 수 없습니다</string>
   <string name="share_uri_with">URI를 공유할 대상...</string>
-  <string name="magic_create_text">conversations. im 계정을 만드는 단계를 안내합니다. \n 제공자로 conversations. im을 선택하면 당신의 완전한 Jabber ID를 지정하여 다른 공급자의 사용자와 통신 할 수 있습니다.</string>
-  <string name="your_full_jid_will_be">나의 전체 Jabber ID: %s</string>
   <string name="create_account">계정 생성</string>
   <string name="use_own_provider">다른 서버 이용</string>
   <string name="pick_your_username">유저네임을 고르세요</string>

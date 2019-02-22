@@ -151,11 +151,8 @@
   <string name="mgmt_account_are_you_sure">確定?</string>
   <string name="mgmt_account_delete_confirm_text">刪除帳號會導致聊天紀錄全部不見</string>
   <string name="attach_record_voice">錄音</string>
-  <string name="account_settings_jabber_id">Jabber ID</string>
-  <string name="block_jabber_id">封鎖 Jabber 識別碼</string>
   <string name="account_settings_example_jabber_id">username@example.com</string>
   <string name="password">密碼</string>
-  <string name="invalid_jid">該 Jabber ID 無效</string>
   <string name="error_out_of_memory">空間不足。圖片過大</string>
   <string name="add_phone_book_text">是否添加 %s 到地址薄？</string>
   <string name="server_info_show_more">伺服器資訊</string>
@@ -379,7 +376,6 @@
   <string name="captcha_required">需要驗證碼</string>
   <string name="captcha_hint">輸入上圖中的文字</string>
   <string name="certificate_chain_is_not_trusted">憑證連結不受信任</string>
-  <string name="jid_does_not_match_certificate">Jabber ID 與證書不匹配</string>
   <string name="action_renew_certificate">更新證書</string>
   <string name="error_fetching_omemo_key">獲取 OMEMO 金鑰錯誤！</string>
   <string name="verified_omemo_key_with_certificate">請用證書驗證 OMEMO 金鑰！</string>
@@ -422,8 +418,6 @@
   <string name="security_error_invalid_file_access">安全錯誤：檔案存取無效</string>
   <string name="no_application_to_share_uri">找不到可以分享網址(URI)的應用程式</string>
   <string name="share_uri_with">分享網址(URI)…</string>
-  <string name="magic_create_text">我們將會引導你完成在 conversations.im¹ 上註冊帳號的過程。\n當獲得了 conversations.im 提供的帳號以後，你可以通過添加使用其他提供商的好友的完整 Jabber ID 來與他們聯絡。</string>
-  <string name="your_full_jid_will_be">您完整的 Jabble ID 是：%s </string>
   <string name="create_account">創建帳戶</string>
   <string name="use_own_provider">使用我自己的服務端</string>
   <string name="pick_your_username">輸入您的用戶名</string>

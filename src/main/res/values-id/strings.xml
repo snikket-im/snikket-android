@@ -135,10 +135,8 @@
   <string name="mgmt_account_enable">Aktifkan Akun</string>
   <string name="mgmt_account_are_you_sure">Apakah Anda yakin.?</string>
   <string name="attach_record_voice">Rekam suara</string>
-  <string name="account_settings_jabber_id">Jabber ID</string>
   <string name="account_settings_example_jabber_id">username@example.com</string>
   <string name="password">Password</string>
-  <string name="invalid_jid">Jabber ID tidak valid</string>
   <string name="error_out_of_memory">Memori habis. Gambar terlalu besar</string>
   <string name="server_info_show_more">Info Server</string>
   <string name="server_info_mam">XEP-0313: MAM</string>
@@ -337,7 +335,6 @@
   <string name="correct_message">Perbaiki pesan</string>
   <string name="send_corrected_message">Kirim perbaikan pesan</string>
   <string name="share_uri_with">Bagikan URI dengan...</string>
-  <string name="your_full_jid_will_be">Jabber ID anda akan seperti: %s</string>
   <string name="create_account">Buat Akun</string>
   <string name="pick_your_username">Pilih username anda</string>
   <string name="status_message">Status</string>

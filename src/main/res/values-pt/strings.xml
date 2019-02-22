@@ -152,11 +152,8 @@
   <string name="mgmt_account_are_you_sure">Tem a certeza?</string>
   <string name="mgmt_account_delete_confirm_text">Se apagar a sua conta todo o seu histórico de conversas será perdido</string>
   <string name="attach_record_voice">Gravar voz</string>
-  <string name="account_settings_jabber_id">ID Jabber</string>
-  <string name="block_jabber_id">Bloquear ID Jabber</string>
   <string name="account_settings_example_jabber_id">nomedeutilizador@exemplo.com</string>
   <string name="password">Palavra-passe</string>
-  <string name="invalid_jid">Esse não é um ID Jabber válido</string>
   <string name="error_out_of_memory">Memória insuficiente. A imagem é muito grande</string>
   <string name="add_phone_book_text">Deseja adicionar %s aos seus contactos?</string>
   <string name="server_info_show_more">Informações do servidor</string>
@@ -403,7 +400,6 @@
   <string name="captcha_required">Captcha obrigatório</string>
   <string name="captcha_hint">Escreva o texto da imagem acima</string>
   <string name="certificate_chain_is_not_trusted">A cadeia de certificados não é confiável</string>
-  <string name="jid_does_not_match_certificate">O ID Jabber não coincide com o certificado</string>
   <string name="action_renew_certificate">Renovar certificado</string>
   <string name="error_fetching_omemo_key">Erro ao obter a chave OMEMO!</string>
   <string name="verified_omemo_key_with_certificate">A chave OMEMO foi verificada com o certificado!</string>
@@ -449,7 +445,6 @@
   <string name="security_error_invalid_file_access">Erro de segurança: Acesso ao ficheiro inválido</string>
   <string name="no_application_to_share_uri">Não foi encontrada nenhuma aplicação para partilhar o URI</string>
   <string name="share_uri_with">Partilhar URI com...</string>
-  <string name="your_full_jid_will_be">O seu ID Jabber completo será: %s</string>
   <string name="create_account">Criar conta</string>
   <string name="pick_your_username">Escolha o seu nome de utilizador</string>
   <string name="pref_manually_change_presence">Gerir manualmente a disponibilidade</string>

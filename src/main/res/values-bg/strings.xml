@@ -7,6 +7,7 @@
   <string name="action_end_conversation">Затваряне на този разговор</string>
   <string name="action_contact_details">Подробности за контакта</string>
   <string name="action_muc_details">Подробности за груповия разговор</string>
+  <string name="channel_details">Подробности за канала</string>
   <string name="action_secure">Защитен разговор</string>
   <string name="action_add_account">Добавяне на профил</string>
   <string name="action_edit_contact">Редактиране на името</string>
@@ -171,11 +172,8 @@
   <string name="mgmt_account_are_you_sure">Сигурни ли сте?</string>
   <string name="mgmt_account_delete_confirm_text">Ако изтриете профила си, ще загубите цялата история на разговорите си</string>
   <string name="attach_record_voice">Запис на глас</string>
-  <string name="account_settings_jabber_id">Jabber идентификатор</string>
-  <string name="block_jabber_id">Блокиране на Jabber идентификатор</string>
   <string name="account_settings_example_jabber_id">username@example.com</string>
   <string name="password">Парола</string>
-  <string name="invalid_jid">Това не е правилен Jabber идентификатор</string>
   <string name="error_out_of_memory">Няма достатъчно памет. Изображението е твърде голямо.</string>
   <string name="add_phone_book_text">Искате ли да добавите %s към адресния си указател?</string>
   <string name="server_info_show_more">Инф. за сървъра</string>
@@ -297,7 +295,6 @@
   <string name="send_again">Повторно изпращане</string>
   <string name="file_url">Адрес на файла</string>
   <string name="url_copied_to_clipboard">Копиране на адреса</string>
-  <string name="jabber_id_copied_to_clipboard">Jabber идентификаторът е копиран</string>
   <string name="error_message_copied_to_clipboard">Съобщението за грешка е копирано</string>
   <string name="web_address">уеб адрес</string>
   <string name="scan_qr_code">Сканиране на 2-измерен баркод</string>
@@ -446,7 +443,6 @@
   <string name="captcha_required">Проверката е задължителна</string>
   <string name="captcha_hint">Въведете текста от горното изображение</string>
   <string name="certificate_chain_is_not_trusted">Сертификатът не е потвърден</string>
-  <string name="jid_does_not_match_certificate">Jabber идентификатора не съответства на сертификата</string>
   <string name="action_renew_certificate">Подновяване на сертификата</string>
   <string name="error_fetching_omemo_key">Грешка при получаването на ключа за OMEMO!</string>
   <string name="verified_omemo_key_with_certificate">Ключът за OMEMO беше потвърден със сертификат!</string>
@@ -496,11 +492,7 @@
   <string name="security_error_invalid_file_access">Грешка в сигурността: неправилен достъп до файл</string>
   <string name="no_application_to_share_uri">Няма намерено приложение за споделяне на адреса</string>
   <string name="share_uri_with">Споделяне на адреса с…</string>
-  <string name="welcome_text">Jabber е мрежа за общуване чрез мигновени съобщения, която не е обвързана с конкретен доставчик. Можете да използвате клиента с всеки сървър, който работи с Jabber.\nЗа Ваше удобство, ние предоставяме лесен начин да си създадете профил в conversations.im¹ — сървър, пригоден да работи добре с Conversations.</string>
-  <string name="welcome_text_quicksy"><![CDATA[Quicksy е леко променен вариант на популярния клиент за Jabber/XMPP – Conversations, като включва функционалност за автоматично откриване на контактите.<br><br>След като се впишете чрез телефонния си номер, Quicksy ще използва телефонните номера в адресния Ви указател, за да Ви предложи възможни контакти.<br><br>Регистрирайки се, Вие се съгласявате с нашата <a href="https://quicksy.im/#privacy">декларация за поверителност</a>.]]></string>
   <string name="agree_and_continue">Съгласяване и продължаване</string>
-  <string name="magic_create_text">Ще преминем заедно с Вас през процеса за създаване на профил в conversations.im.¹\nАко изберете да използвате conversations.im, ще можете да общувате с потребители, използващи други сървъри, като им дадете своя пълен Jabber идентификатор.</string>
-  <string name="your_full_jid_will_be">Вашият пълен Jabber идентификатор ще бъде: %s</string>
   <string name="create_account">Създаване на профил</string>
   <string name="use_own_provider">Използване на собствен сървър</string>
   <string name="pick_your_username">Изберете потребителското си име</string>
@@ -634,7 +626,6 @@
   <string name="yesterday">Вчера</string>
   <string name="pref_validate_hostname">Проверка на името на сървъра чрез DNSSEC</string>
   <string name="pref_validate_hostname_summary">Сървърните сертификати, които съдържат проверено име на сървъра, се смятат за потвърдени</string>
-  <string name="certificate_does_not_contain_jid">Сертификатът не съдържа Jabber идентификатор</string>
   <string name="server_info_partial">частично</string>
   <string name="attach_record_video">Запис на видео</string>
   <string name="copy_to_clipboard">Копиране в буфера</string>
@@ -696,7 +687,6 @@
   <string name="pref_use_share_location_plugin">Разширение за споделяне на местоположението</string>
   <string name="pref_use_share_location_plugin_summary">Използване на разширението за споделяне на местоположението вместо вградената карта</string>
   <string name="copy_link">Копиране на уеб адрес</string>
-  <string name="copy_jabber_id">Копиране на Jabber идентификатор</string>
   <string name="p1_s3_filetransfer">Споделяне на файлове през HTTP за S3</string>
   <string name="pref_start_search">Директно търсене</string>
   <string name="pref_start_search_summary">На екрана за „Започване на разговор“ да се отваря клавиатурата и да се поставя курсорът в полето за търсене</string>

@@ -126,10 +126,8 @@
   <string name="mgmt_account_enable">הפעל חשבון</string>
   <string name="mgmt_account_are_you_sure">האם אתה בטוח?</string>
   <string name="attach_record_voice">הקלט קול</string>
-  <string name="account_settings_jabber_id">מזהה Jabber</string>
   <string name="account_settings_example_jabber_id">username@example.com</string>
   <string name="password">סיסמה</string>
-  <string name="invalid_jid">מזהה ה Jabber אינו תקין</string>
   <string name="error_out_of_memory">חסר זיכרון. תצלום גדול מדי</string>
   <string name="server_info_show_more">פרטי השרת</string>
   <string name="server_info_mam">XEP-0313: MAM - היסטוריית שרת</string>
@@ -318,7 +316,6 @@
   <string name="authenticate_with_certificate">השאר ריק כדי להזדהות בלי תעודה</string>
   <string name="captcha_required">דרוש טקסט Captcha</string>
   <string name="certificate_chain_is_not_trusted">שרשרת תעודה אינה מהימנה</string>
-  <string name="jid_does_not_match_certificate">אין התאמה בין מזהה Jabber לבין תעודה</string>
   <string name="action_renew_certificate">חידוש תעודה</string>
   <string name="error_fetching_omemo_key">שגיאה בתפיסת OMEMO!</string>
   <string name="pref_use_tor">התחבר דרך Tor</string>

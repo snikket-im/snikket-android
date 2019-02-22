@@ -147,11 +147,8 @@
   <string name="mgmt_account_enable">Hesabı etkinleştir</string>
   <string name="mgmt_account_are_you_sure">Emin misiniz?</string>
   <string name="attach_record_voice">Ses kaydet</string>
-  <string name="account_settings_jabber_id">Jabber ID</string>
-  <string name="block_jabber_id">Jabber ID engelle</string>
   <string name="account_settings_example_jabber_id">kullanıcıadı@ornek.com</string>
   <string name="password">parola</string>
-  <string name="invalid_jid">Jabber ID geçersiz</string>
   <string name="error_out_of_memory">Yetersiz bellek. Görüntü dosyası çok büyük.</string>
   <string name="add_phone_book_text">%s kişisini listenize eklemek ister misiniz?</string>
   <string name="server_info_show_more">Sunucu bilgisi</string>
@@ -376,7 +373,6 @@
   <string name="captcha_required">Captcha gerekli</string>
   <string name="captcha_hint">Resimdeki yazıyı girin</string>
   <string name="certificate_chain_is_not_trusted">Sertifika zinciri güvenilir değil</string>
-  <string name="jid_does_not_match_certificate">Jabber ID sertifikayla eşleşmiyor</string>
   <string name="action_renew_certificate">Sertifikayı yenile</string>
   <string name="error_fetching_omemo_key">OMEMO anahtarı alınırken hata oluştu!</string>
   <string name="verified_omemo_key_with_certificate">Sertifikalı OMEMO anahtarı onaylandı!</string>
@@ -418,8 +414,6 @@
   <string name="security_error_invalid_file_access">Güvenlik hatası: Geçersiz dosya erişimi</string>
   <string name="no_application_to_share_uri">URI paylaşmak için uygulama bulunamadı</string>
   <string name="share_uri_with">URI paylaş ile...</string>
-  <string name="magic_create_text">conversation.im sağlayıcısında hesap açma sürecinde size yol göstereceğiz.\nconversation.im\'i bir servis sağlayıcı olarak kullandığınızda diğer sağlayıcıları kullananlarla tam Jabber kimliğinizi vererek iletişim kurabilirsiniz.</string>
-  <string name="your_full_jid_will_be">Tam Jabber kimliğiniz %s olacak</string>
   <string name="create_account">Hesap Oluştur</string>
   <string name="use_own_provider">Kendi sağlayıcımı kullan</string>
   <string name="pick_your_username">Kullanıcı adınızı seçin</string>

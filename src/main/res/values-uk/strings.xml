@@ -171,11 +171,8 @@
   <string name="mgmt_account_are_you_sure">Ви впевнені?</string>
   <string name="mgmt_account_delete_confirm_text">Якщо ви видалите ваш обліковий запис, буде втрачено всю історію листування</string>
   <string name="attach_record_voice">Записати голос</string>
-  <string name="account_settings_jabber_id">Jabber ID</string>
-  <string name="block_jabber_id">Заблокувати Jabber ID</string>
   <string name="account_settings_example_jabber_id">username@example.com</string>
   <string name="password">Пароль</string>
-  <string name="invalid_jid">Це не є дійсним Jabber ID</string>
   <string name="error_out_of_memory">Пам\'ять вичерпано. Завелике зображення.</string>
   <string name="add_phone_book_text">Бажаєте додати %s до своєї книги контактів?</string>
   <string name="server_info_show_more">Інформація про сервер</string>
@@ -298,7 +295,6 @@
   <string name="send_again">Надіслати знову</string>
   <string name="file_url">URL файла</string>
   <string name="url_copied_to_clipboard">URL скопійовано до комірки обміну</string>
-  <string name="jabber_id_copied_to_clipboard">Jabber ID скопійовано до комірки обміну</string>
   <string name="error_message_copied_to_clipboard">Текст повідомлення про помилку скопійовано до комірки обміну</string>
   <string name="web_address">веб адреса</string>
   <string name="scan_qr_code">Розпізнати QR-код</string>
@@ -449,7 +445,6 @@
   <string name="captcha_required">Потрібно вирішити головоломку</string>
   <string name="captcha_hint">Уведіть текст із зображення вище</string>
   <string name="certificate_chain_is_not_trusted">Ланцюжок сертифікатів не довірений</string>
-  <string name="jid_does_not_match_certificate">Jabber ID не відповідає сертифікату</string>
   <string name="action_renew_certificate">Оновити сертифікат</string>
   <string name="error_fetching_omemo_key">Помилка отримання ключа OMEMO!</string>
   <string name="verified_omemo_key_with_certificate">Ключ OMEMO звірено з сертифікатом!</string>
@@ -501,11 +496,7 @@
   <string name="security_error_invalid_file_access">Помилка безпеки: Недійсний доступ до файлу</string>
   <string name="no_application_to_share_uri">Не знайдено програми, щоб поділитися URI</string>
   <string name="share_uri_with">Поділитися URI з…</string>
-  <string name="welcome_text">Jabber забезпечує незалежну мережу обміну миттєвими повідомленнями. Ви можете використовувати цю програму з будь-яким сервером Jabber на Ваш вибір.\nЗадля Вашої зручності ми зробили простим створити обліковий запис на conversations.im¹; це один із серверів, який спеціально налаштований для цієї програми.</string>
-  <string name="welcome_text_quicksy"><![CDATA[Ця програма («Quicksy») — версія популярного Jabber/XMPP клієнта «Conversations», яка дозволяє автоматично знайти контакти.<br><br>Ви реєструєтеся зі своїм номером телефону, а програма автоматично, виходячи з номерів телефонів у Вашій книзі контактів, пропонує Вам можливі контакти.<br><br>Реєструючись, Ви надаєте згоду з нашою <a href="https://quicksy.im/#privacy">політикою конфіденційності</a>.]]></string>
   <string name="agree_and_continue">Прийняти й продовжити</string>
-  <string name="magic_create_text">Ми допоможемо вам крок за кроком створити обліковий запис на conversations.im.¹\nОбравши conversations.im постачальником послуг, ви зможете спілкуватися з користувачами інших постачальників, надавши їм ваш повний Jabber ID.</string>
-  <string name="your_full_jid_will_be">Ваш повний Jabber ID буде: %s</string>
   <string name="create_account">Створити обліковий запис</string>
   <string name="use_own_provider">Використати мого власного провайдера</string>
   <string name="pick_your_username">Оберіть Ваше ім\'я користувача</string>
@@ -651,7 +642,6 @@
   <string name="yesterday">Учора</string>
   <string name="pref_validate_hostname">Перевіряти адресу з допомогою DNSSEC</string>
   <string name="pref_validate_hostname_summary">Сертифікати, які містять завірену адресу, вважаються засвідченими</string>
-  <string name="certificate_does_not_contain_jid">Сертифікат не містить ідентифікатора Jabber ID</string>
   <string name="server_info_partial">частково</string>
   <string name="attach_record_video">Записати відео</string>
   <string name="copy_to_clipboard">Скопіювати до комірки обміну</string>
@@ -713,7 +703,6 @@
   <string name="pref_use_share_location_plugin">Додаток поширення місцезнаходження</string>
   <string name="pref_use_share_location_plugin_summary">Використовувати додаток поширення місце-знаходження замість вбудованої карти</string>
   <string name="copy_link">Скопіювати веб адресу</string>
-  <string name="copy_jabber_id">Скопіювати Jabber ID</string>
   <string name="p1_s3_filetransfer">Доступ до файлів по HTTP для S3</string>
   <string name="pref_start_search">Безпосередній пошук</string>
   <string name="pref_start_search_summary">На екрані початку розмови відкривати клавіатуру й розміщувати курсор в поле пошуку</string>

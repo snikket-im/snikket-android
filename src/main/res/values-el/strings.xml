@@ -172,11 +172,8 @@
   <string name="mgmt_account_are_you_sure">Είστε βέβαιοι;</string>
   <string name="mgmt_account_delete_confirm_text">Αν διαγράψετε το λογαριαγμό σας, ολόκληρο το ιστορικό συζήτησης θα χαθεί</string>
   <string name="attach_record_voice">Εγγραφή φωνής</string>
-  <string name="account_settings_jabber_id">ταυτότητα Jabber</string>
-  <string name="block_jabber_id">Μπλοκάρετε Jabber ID</string>
   <string name="account_settings_example_jabber_id">username@example.com</string>
   <string name="password">Συνθηματικό</string>
-  <string name="invalid_jid">Αυτή δεν είναι έγκυρη ταυτότητα Jabber</string>
   <string name="error_out_of_memory">Πλήρης μνήμη. Η εικόνα είναι πολύ μεγάλη</string>
   <string name="add_phone_book_text">Θέλετε να προσθέσετε %s στην ατζέντα σας?</string>
   <string name="server_info_show_more">Πληροφορίες διακομιστή</string>
@@ -298,7 +295,6 @@
   <string name="send_again">Αποστολή ξανά</string>
   <string name="file_url">Διεύθυνση URL αρχείου</string>
   <string name="url_copied_to_clipboard">Η διεύθυνση URL αντιγράφηκε στο πρόχειρο</string>
-  <string name="jabber_id_copied_to_clipboard">Η ταυτότητα Jabber αντιγράφηκε στο πρόχειρο</string>
   <string name="error_message_copied_to_clipboard">Το μήνυμα λάθους αντιγράφηκε στο πρόχειρο</string>
   <string name="web_address">διεύθυνση ιστού</string>
   <string name="scan_qr_code">Σάρωση 2D γραμμοκώδικα</string>
@@ -447,7 +443,6 @@
   <string name="captcha_required">Απαραίτηση η χρήση Captcha</string>
   <string name="captcha_hint">Εισάγετε το κείμενο από την παραπάνω εικόνα</string>
   <string name="certificate_chain_is_not_trusted">Η αλυσίδα του πιστοποιητικού δεν είναι έμπιστη</string>
-  <string name="jid_does_not_match_certificate">Η ταυτότητα Jabber δεν ταιριάζει με το πιστοποιητικό</string>
   <string name="action_renew_certificate">Ανανέωση πιστοποιητικού</string>
   <string name="error_fetching_omemo_key">Σφάλμα μεταφόρτωσης κλειδιού OMEMO!</string>
   <string name="verified_omemo_key_with_certificate">Επαληθεύτηκε το κλειδί OMEMO με πιστοποιητικό!</string>
@@ -497,11 +492,7 @@
   <string name="security_error_invalid_file_access">Σφάλμα ασφάλειας: Μη έγκυρη πρόσβαση σε αρχείο</string>
   <string name="no_application_to_share_uri">Δεν βρέθηκε εφαρμογή για να μοιραστείτε την διεύθυνση URI</string>
   <string name="share_uri_with">Διαμοιρασμός της διεύθυνσης URI με...</string>
-  <string name="welcome_text">Το Jabber είναι ένα δίκτυο αποστολής και λήψης άμεσων μηνυμάτων ανεξάρτητο από πάροχο. Μπορείτε να χρησιμοποιήσετε αυτό το πρόγραμμα με οποιονδήποτε διακομιστή Jabber επιλέξετε.\nΓια διευκόλυνσή σας πάντως έχουμε κάνει εύκολη τη διαδικασία δημιουργίας ενός λογαριασμού στο conversations.im¹; έναν πάροχο ειδικά σχεδιασμένο για χρήση με το Conversations.</string>
-  <string name="welcome_text_quicksy"><![CDATA[Το Quicksy είναι ένα παρακλάδι του δημοφιλούς προγράμματος Jabber/XMPP Conversations με αυτόματη εύρεση επαφών.<br><br>Εγγράφεστε με τον τηλεφωνικό σας αριθμό και το Quicksy αυτόματα — με βάση τους τηλεφωνικούς αριθμούς στο βιβλίο διευθύνσεών σας — προτείνει πιθανές επαφές για εσάς.<br><br>Με την εγγραφή σας συμφωνείτε με την <a href="https://quicksy.im/#privacy">πολιτική απορρήτου</a> μας.]]></string>
   <string name="agree_and_continue">Συμφωνώ &amp; προχωρήστε</string>
-  <string name="magic_create_text">Θα σας καθοδηγήσουμε στη διαδικασία δημιουργίας ενός λογαριασμού στο Conversations.im.¹\nΕπιλέγοντας το conversations.im ως πάροχο θα μπορείτε να επικοινωνήσετε με χρήστες άλλων παρόχων δίνοντάς τους την πλήρη ταυτότητα Jabber σας.</string>
-  <string name="your_full_jid_will_be">Η πλήρης ταυτότητα Jabber σας θα είναι: %s</string>
   <string name="create_account">Δημιουργία λογαριασμού</string>
   <string name="use_own_provider">Χρήση του δικού μου παρόχου</string>
   <string name="pick_your_username">Επιλογή ονόματος χρήστη</string>
@@ -635,7 +626,6 @@
   <string name="yesterday">Χτες</string>
   <string name="pref_validate_hostname">Επαλήθευση ονόματος μηχανήματος με χρήση DNSSEC</string>
   <string name="pref_validate_hostname_summary">Τα πιστοποιητικά διακομιστή που περιέχουν το επικυρωμένο όνομα μηχανήματος θεωρούνται επαληθευμένα</string>
-  <string name="certificate_does_not_contain_jid">Το πιστοποιητικό δεν περιέχει ταυτότητα Jabber</string>
   <string name="server_info_partial">μερικώς</string>
   <string name="attach_record_video">Εγγραφή βίντεο</string>
   <string name="copy_to_clipboard">Αντιγραφή στο πρόχειρο</string>
@@ -697,7 +687,6 @@
   <string name="pref_use_share_location_plugin">Πρόσθετο διαμοιρασμού τοποθεσίας</string>
   <string name="pref_use_share_location_plugin_summary">Χρήση του πρόσθετου διαμοιρασμού τοποθεσίας αντί για τον ενσωματωμένο χάρτη</string>
   <string name="copy_link">Αντιγραφή διεύθυνσης ιστού</string>
-  <string name="copy_jabber_id">Αντιγραφή ταυτότητας Jabber</string>
   <string name="p1_s3_filetransfer">Διαμοιρασμός αρχείων μέσω HTTP για S3</string>
   <string name="pref_start_search">Άμεση αναζήτηση</string>
   <string name="pref_start_search_summary">Άνοιγμα πληκτρολογίου και τοποθέτηση του δείκτη στο πεδίο αναζήτησης στην οθόνη \'Έναρξη συζήτησης\'</string>

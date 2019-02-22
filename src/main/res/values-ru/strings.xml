@@ -165,11 +165,8 @@
   <string name="mgmt_account_are_you_sure">Вы уверены?</string>
   <string name="mgmt_account_delete_confirm_text">Если вы удалите аккаунт, будет потеряна вся история переписки.</string>
   <string name="attach_record_voice">Запись голоса</string>
-  <string name="account_settings_jabber_id">Jabber ID</string>
-  <string name="block_jabber_id">Заблокировать Jabber ID</string>
   <string name="account_settings_example_jabber_id">username@example.com</string>
   <string name="password">Пароль</string>
-  <string name="invalid_jid">Недопустимый Jabber ID</string>
   <string name="error_out_of_memory">Недостаточно памяти. Изображение слишком большое</string>
   <string name="add_phone_book_text">Вы хотите добавить %s в вашу адресную книгу?</string>
   <string name="server_info_show_more">Информация о сервере</string>
@@ -431,7 +428,6 @@
   <string name="captcha_required">Необходима проверка</string>
   <string name="captcha_hint">Введите текст с изображения</string>
   <string name="certificate_chain_is_not_trusted">Цепочка сертификата не доверена</string>
-  <string name="jid_does_not_match_certificate">Jabber ID не соответствует сертификату</string>
   <string name="action_renew_certificate">Обновить сертификат</string>
   <string name="error_fetching_omemo_key">Ошибка при получении OMEMO ключа!</string>
   <string name="verified_omemo_key_with_certificate">Проверен OMEMO ключ с сертификатом!</string>
@@ -479,8 +475,6 @@
   <string name="security_error_invalid_file_access">Ошибка безопасности: недействительный доступ к файлу</string>
   <string name="no_application_to_share_uri">Не найдено приложения для отправки</string>
   <string name="share_uri_with">Отправить URI…</string>
-  <string name="magic_create_text">Мы поможем Вам создать аккаунт на conversations.im¹.\nВыбрав conversations.im в качестве провайдера, вы сможете общаться с пользователями других провайдеров, сообщив им свой полный Jabber ID.</string>
-  <string name="your_full_jid_will_be">Ваш полный Jabber ID: %s</string>
   <string name="create_account">Создать аккаунт</string>
   <string name="use_own_provider">Использовать свой провайдер</string>
   <string name="pick_your_username">Выберите имя пользователя</string>
@@ -621,7 +615,6 @@
   <string name="yesterday">Вчера</string>
   <string name="pref_validate_hostname">Проверить имя сервера с помощью DNSSEC</string>
   <string name="pref_validate_hostname_summary">Серверные сертификаты, содержащие проверенное имя хоста, считаются проверенными</string>
-  <string name="certificate_does_not_contain_jid">Сертификат не содержит Jabber ID</string>
   <string name="server_info_partial">частичный</string>
   <string name="attach_record_video">Записать видео</string>
   <string name="copy_to_clipboard">Скопировать в буфер обмена</string>
@@ -647,5 +640,4 @@
   <string name="share">Поделиться</string>
   <string name="please_wait">Пожалуйста, подождите…</string>
   <string name="search_messages">Поиск сообщений</string>
-  <string name="copy_jabber_id">Копировать Jabber ID</string>
 </resources>

@@ -147,10 +147,8 @@
   <string name="mgmt_account_enable">Bật tài khoản</string>
   <string name="mgmt_account_are_you_sure">Bạn chắc chứ?</string>
   <string name="attach_record_voice">Ghi âm</string>
-  <string name="account_settings_jabber_id">ID Jabber</string>
   <string name="account_settings_example_jabber_id">username@example.com</string>
   <string name="password">Mật khẩu</string>
-  <string name="invalid_jid">ID Jabber này không hợp lệ</string>
   <string name="error_out_of_memory">Hết bộ nhớ. Ảnh quá lớn</string>
   <string name="add_phone_book_text">Bạn có muốn thêm %s vào danh bạ?</string>
   <string name="server_info_show_more">Thông tin máy chủ</string>
@@ -348,7 +346,6 @@
   <string name="authenticate_with_certificate">Bỏ trống để xác minh với chứng nhận</string>
   <string name="captcha_required">Yêu cầu hình xác minh</string>
   <string name="certificate_chain_is_not_trusted">Chuỗi chứng nhận không được tin tưởng</string>
-  <string name="jid_does_not_match_certificate">ID Jabber không khớp với chứng nhận</string>
   <string name="action_renew_certificate">Gia hạn chứng nhận</string>
   <string name="error_fetching_omemo_key">Lỗi nhập khoá OMEMO!</string>
   <string name="verified_omemo_key_with_certificate">Khoá OMEMO đã xác minh với chứng nhận!</string>

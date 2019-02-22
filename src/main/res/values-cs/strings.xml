@@ -146,10 +146,8 @@
   <string name="mgmt_account_enable">Povolit účet</string>
   <string name="mgmt_account_are_you_sure">Jste si jisti?</string>
   <string name="attach_record_voice">Nahrát hlas</string>
-  <string name="account_settings_jabber_id">Jabber ID</string>
   <string name="account_settings_example_jabber_id">jmeno@server.cz</string>
   <string name="password">Heslo</string>
-  <string name="invalid_jid">Toto není platné Jabber ID</string>
   <string name="error_out_of_memory">Nedostatek paměti. Obrázek je příliš velký</string>
   <string name="add_phone_book_text">Chcete přidat %s do svého adresáře?</string>
   <string name="server_info_show_more">Údaje serveru</string>
@@ -370,7 +368,6 @@
   <string name="captcha_required">Captcha vyžadována</string>
   <string name="captcha_hint">Zadejte text z obrázku výše</string>
   <string name="certificate_chain_is_not_trusted">Řetězec certifikátů není důvěryhodný</string>
-  <string name="jid_does_not_match_certificate">Jabber ID neodpovídá certifikátu</string>
   <string name="action_renew_certificate">Obnovit certifikát</string>
   <string name="error_fetching_omemo_key">Chyba získání OMEMO klíče!</string>
   <string name="verified_omemo_key_with_certificate">OMEMO klíč ověřen certifikátem!</string>
@@ -414,8 +411,6 @@
   <string name="security_error_invalid_file_access">Chyba zabezpečení: Neplatný přístup k souboru</string>
   <string name="no_application_to_share_uri">Nebyla nalezena aplikace pro sdílení URI</string>
   <string name="share_uri_with">Sdílet URI s...</string>
-  <string name="magic_create_text">Provedeme vás procesem založení uživatelského účtu u conversations.im.¹\nVybráním conversations.im za svého poskytovatele budete moci komunikovat s uživateli u jiných poskytovatelů, poté co jim sdělíte své Jabber ID.</string>
-  <string name="your_full_jid_will_be">Vaše celé Jabber ID bude: %s</string>
   <string name="create_account">Vytvořit účet</string>
   <string name="use_own_provider">Použít vlastního provozovatele</string>
   <string name="pick_your_username">Zadejte své uživatelské jméno</string>

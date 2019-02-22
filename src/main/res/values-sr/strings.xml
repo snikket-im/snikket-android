@@ -162,11 +162,8 @@
   <string name="mgmt_account_are_you_sure">Да ли сте сигурни?</string>
   <string name="mgmt_account_delete_confirm_text">Ако обришете ваш налог изгубићете сав историјат преписке</string>
   <string name="attach_record_voice">Сними глас</string>
-  <string name="account_settings_jabber_id">Џабер ИД</string>
-  <string name="block_jabber_id">Блокирај Џабер ИД</string>
   <string name="account_settings_example_jabber_id">korisnickoime@primer.com</string>
   <string name="password">Лозинка</string>
-  <string name="invalid_jid">Ово није исправан Џабер ИД</string>
   <string name="error_out_of_memory">Нестало меморије. Слика је превелика</string>
   <string name="add_phone_book_text">Желите ли да додате %s у ваш именик?</string>
   <string name="server_info_show_more">Подаци о серверу</string>
@@ -429,7 +426,6 @@
   <string name="captcha_required">Потребна стопка</string>
   <string name="captcha_hint">Унесите текст са слике изнад</string>
   <string name="certificate_chain_is_not_trusted">Ланац сертификата није поуздан</string>
-  <string name="jid_does_not_match_certificate">Џабер ИД не одговара сертификату</string>
   <string name="action_renew_certificate">Обнови сертификат</string>
   <string name="error_fetching_omemo_key">Грешка добављања ОМЕМО кључа!</string>
   <string name="verified_omemo_key_with_certificate">Оверен ОМЕМО кључ помоћу сертификата!</string>
@@ -472,8 +468,6 @@
   <string name="security_error_invalid_file_access">Безбедносна грешка: неисправан приступ фајлу</string>
   <string name="no_application_to_share_uri">Нема апликације за дељење веза</string>
   <string name="share_uri_with">Подели везу помоћу…</string>
-  <string name="magic_create_text">Водићемо вас кроз процес прављења налога на conversations.im.¹\nАко изаберете conversations.im за даваоца услуге моћи ћете да комуницирате са корисницима других сервера ако им дате ваш Џабер ИД.</string>
-  <string name="your_full_jid_will_be">Ваш пуни Џабер ИД ће бити: %s</string>
   <string name="create_account">Направи налог</string>
   <string name="use_own_provider">Користићу сопствени провајдер</string>
   <string name="pick_your_username">Одредите ваше корисничко име</string>
@@ -598,7 +592,6 @@
   <string name="application_found_to_open_website">Нема апликације за отварање вебсајта</string>
   <string name="today">Данас</string>
   <string name="yesterday">Јуче</string>
-  <string name="certificate_does_not_contain_jid">Сертификат не садржи Џабер ИД</string>
   <string name="server_info_partial">делимично</string>
   <string name="attach_record_video">Сними видео</string>
   <string name="copy_to_clipboard">Копирај на клипборд</string>
@@ -623,7 +616,6 @@
   <string name="search_messages">Тражи поруке</string>
   <string name="view_conversation">Погледај преписку</string>
   <string name="copy_link">Копирај веб адресу</string>
-  <string name="copy_jabber_id">Копирај Џабер ИД</string>
   <string name="group_chat_avatar">Аватар групног ћаскања</string>
   <string name="host_does_not_support_group_chat_avatars">Домаћин не подржава аватар групног ћаскања</string>
   <string name="only_the_owner_can_change_group_chat_avatar">Само власник може да промени аватар групног ћаскања</string>

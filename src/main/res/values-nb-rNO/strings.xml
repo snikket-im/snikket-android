@@ -158,11 +158,8 @@
   <string name="mgmt_account_are_you_sure">Bekreft.</string>
   <string name="mgmt_account_delete_confirm_text">Hvis du sletter kontoen din, vil hele samtalehistorikken gå tapt.</string>
   <string name="attach_record_voice">Ta opp stemme</string>
-  <string name="account_settings_jabber_id">Jabber-ID</string>
-  <string name="block_jabber_id">Blokker XMPP-ID</string>
   <string name="account_settings_example_jabber_id">brukernavn@eksempel.no</string>
   <string name="password">Passord</string>
-  <string name="invalid_jid">Dette er ikke en gyldig Jabber-ID</string>
   <string name="error_out_of_memory">Slapp opp for minne, bildet er for stort</string>
   <string name="add_phone_book_text">Ønsker du å legge %s til i din kontaktliste?</string>
   <string name="server_info_show_more">Tjenerinfo</string>
@@ -413,7 +410,6 @@
   <string name="captcha_required">CAPTCHA-påkrevd</string>
   <string name="captcha_hint">Skriv inn teksten fra bildet ovenfor</string>
   <string name="certificate_chain_is_not_trusted">Sertifikat-kjeden er ikke betrodd</string>
-  <string name="jid_does_not_match_certificate">Jabber-ID-en samsvarer ikke med sertifikatet</string>
   <string name="action_renew_certificate">Forny sertifikat</string>
   <string name="error_fetching_omemo_key">Feil ved innhenting av OMEMO-nøkkel!</string>
   <string name="verified_omemo_key_with_certificate">Bekreftet OMEMO-nøkkel med sertifikat!</string>
@@ -457,8 +453,6 @@
   <string name="security_error_invalid_file_access">Sikkerhetsfeil: Ugyldig filtilgang</string>
   <string name="no_application_to_share_uri">Fant inget program til deling av URI</string>
   <string name="share_uri_with">Del URI med…</string>
-  <string name="magic_create_text">Vi geleider deg gjennom prosessen med å opprette en konto på conversations.im.¹\nNår du velger conversations.im som tilbyder vil du kunne snakke med brukere fra andre tilbyder ved å gi dem din fulle XMPP-ID.</string>
-  <string name="your_full_jid_will_be">Din fulle Jabber-ID vil være: %s</string>
   <string name="create_account">Opprett konto</string>
   <string name="use_own_provider">Bruk min egen tilbyder</string>
   <string name="pick_your_username">Velg ditt brukernavn</string>
@@ -562,7 +556,6 @@
   <string name="yesterday">I går</string>
   <string name="pref_validate_hostname">Gyldig vertsnavn med DNSSEC</string>
   <string name="pref_validate_hostname_summary">Tjenersertifikat som inneholder gyldige vertsnavn anses som bekreftet</string>
-  <string name="certificate_does_not_contain_jid">Tjenersertifikatet inneholder ikke en Jabber-ID</string>
   <string name="server_info_partial">delvis</string>
   <string name="attach_record_video">Ta opp video</string>
   <string name="copy_to_clipboard">Kopier til utklippstavle</string>

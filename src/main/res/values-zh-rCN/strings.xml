@@ -167,11 +167,8 @@
   <string name="mgmt_account_are_you_sure">确定?</string>
   <string name="mgmt_account_delete_confirm_text">如果您删除帐户，您的整个聊天记录将会丢失</string>
   <string name="attach_record_voice">录音</string>
-  <string name="account_settings_jabber_id">Jabber ID</string>
-  <string name="block_jabber_id">屏蔽 Jabber ID</string>
   <string name="account_settings_example_jabber_id">username@example.com</string>
   <string name="password">密码</string>
-  <string name="invalid_jid">该 Jabber ID 无效</string>
   <string name="error_out_of_memory">空间不足。图片过大</string>
   <string name="add_phone_book_text">是否添加 %s 到地址薄？</string>
   <string name="server_info_show_more">服务器信息</string>
@@ -433,7 +430,6 @@
   <string name="captcha_required">需要验证码</string>
   <string name="captcha_hint">输入上图中的文字</string>
   <string name="certificate_chain_is_not_trusted">证书链不受信任</string>
-  <string name="jid_does_not_match_certificate">Jabber ID 与证书不匹配</string>
   <string name="action_renew_certificate">更新证书</string>
   <string name="error_fetching_omemo_key">获取 OMEMO 密钥错误！</string>
   <string name="verified_omemo_key_with_certificate">请用证书验证 OMEMO 密钥！</string>
@@ -482,9 +478,6 @@
   <string name="security_error_invalid_file_access">安全错误：文件访问权限无效</string>
   <string name="no_application_to_share_uri">未找到可以分享此链接的应用</string>
   <string name="share_uri_with">分享链接……</string>
-  <string name="welcome_text">Jabber 是一个独立即时通讯网络服务商。无论您选择何种 Jabber 服务器，您都可使用本客户端\n但是为了让您更方便些，我们希望您在 conversations.im¹ 创建账号，它专门为 Conversations 服务。</string>
-  <string name="magic_create_text">我们将会引导你完成在 conversations.im¹ 上注册账号的过程。\n当获得了 conversations.im 提供的账号以后，你可以通过添加使用其他提供商的好友的完整 Jabber ID 来与他们联络。</string>
-  <string name="your_full_jid_will_be">您完整的 Jabble ID 是：%s </string>
   <string name="create_account">创建账户</string>
   <string name="use_own_provider">使用我自己的服务端</string>
   <string name="pick_your_username">输入您的用户名</string>
@@ -612,7 +605,6 @@
   <string name="yesterday">昨天</string>
   <string name="pref_validate_hostname">使用 DNSSEC 来验证主机名</string>
   <string name="pref_validate_hostname_summary">包含已验证的主机名的服务器证书被认为是已验证的</string>
-  <string name="certificate_does_not_contain_jid">证书不包含一个 Jabber ID</string>
   <string name="server_info_partial">部分的</string>
   <string name="attach_record_video">录制视频</string>
   <string name="copy_to_clipboard">复制</string>
@@ -672,7 +664,6 @@
   <string name="view_conversation">查看对话</string>
   <string name="pref_use_share_location_plugin">分享位置插件</string>
   <string name="copy_link">复制web地址</string>
-  <string name="copy_jabber_id">复制Jabber ID</string>
   <string name="p1_s3_filetransfer">用于S3的HTTP文件共享</string>
   <string name="pref_start_search">直接搜索</string>
   <string name="pref_start_search_summary">在“开始对话”屏幕上打开键盘并将光标放在搜索栏中</string>

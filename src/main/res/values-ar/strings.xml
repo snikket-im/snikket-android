@@ -158,11 +158,8 @@
   <string name="mgmt_account_are_you_sure">هل أنت متأكد ؟</string>
   <string name="mgmt_account_delete_confirm_text">إذا قمت حذفت حسابك، فسوف تفقد سجل محادثاتك بالكامل</string>
   <string name="attach_record_voice">تسجيل صوت</string>
-  <string name="account_settings_jabber_id">حساب جابر</string>
-  <string name="block_jabber_id">حظر معرف جابر</string>
   <string name="account_settings_example_jabber_id">username@example.com</string>
   <string name="password">كلمة السر</string>
-  <string name="invalid_jid">حساب جابر غير صالح</string>
   <string name="error_out_of_memory">خارج الذاكرة. الصورة كبيرة جدا</string>
   <string name="add_phone_book_text">هل تود إضافة %s إلى سجل عناوينك ؟</string>
   <string name="server_info_show_more">معلومات عن المضيف</string>
@@ -387,7 +384,6 @@
   <string name="captcha_required">رمز الكابتشا ضروري</string>
   <string name="captcha_hint">قم بإدخال الرموز المتواجدة في الصورة</string>
   <string name="certificate_chain_is_not_trusted">سلسلة الشهادة غير موثوق فيها</string>
-  <string name="jid_does_not_match_certificate">معرف ID جابر لا يتطابق مع الشهادة</string>
   <string name="action_renew_certificate">تجديد الشهادة</string>
   <string name="error_fetching_omemo_key">خطأ أثناء جلب مفتاح أوميمو OMEMO !</string>
   <string name="device_does_not_support_certificates">إنّ جهازك لا يدعم اختيار شهادات العملاء !</string>
@@ -431,7 +427,6 @@
   <string name="security_error_invalid_file_access">خطأ في الأمان : نفاذ غير سليم إلى ملف</string>
   <string name="no_application_to_share_uri">تعذر العثور على تطبيق يُمكنُ بواسطته مشاركة الرابط</string>
   <string name="share_uri_with">شارك الرابط مع ...</string>
-  <string name="your_full_jid_will_be">سوف تكون هويتك الكاملة على جابر كالتالي : %s</string>
   <string name="create_account">إنشاء حساب</string>
   <string name="use_own_provider">إستخدم مزودي الخاص</string>
   <string name="pick_your_username">إختر إسم المستخدم</string>
@@ -567,7 +562,6 @@
   <string name="today">اليوم</string>
   <string name="yesterday">البارحة</string>
   <string name="pref_validate_hostname">التحقق من صحة إسم المضيف بواسطة DNSSEC</string>
-  <string name="certificate_does_not_contain_jid">الشهادة لا تحتوي على مُعرّف جابر ID</string>
   <string name="server_info_partial">جُزْئِيًّا</string>
   <string name="attach_record_video">تسجيل فيديو</string>
   <string name="copy_to_clipboard">النسخ إلى الحافظة</string>

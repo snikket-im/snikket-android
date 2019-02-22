@@ -171,11 +171,8 @@
   <string name="mgmt_account_are_you_sure">Biztos vagy ebben?</string>
   <string name="mgmt_account_delete_confirm_text">Ha törli fiókját, az egész beszélgetési előzménye elvész</string>
   <string name="attach_record_voice">Hang felvétele</string>
-  <string name="account_settings_jabber_id">Jabber azonosító</string>
-  <string name="block_jabber_id">Jabber azonosító blokkolása</string>
   <string name="account_settings_example_jabber_id">felhasznalo@peldaoldal.com</string>
   <string name="password">Jelszó</string>
-  <string name="invalid_jid">Nem érvényes Jabber azonosító</string>
   <string name="error_out_of_memory">Nincs elég memória. Képfájl túl nagy</string>
   <string name="add_phone_book_text">Szeretnéd %s nevű személyt hozzáadni a névjegyzékhez?</string>
   <string name="server_info_show_more">Szerver részletek</string>
@@ -297,7 +294,6 @@
   <string name="send_again">Elküldi újra</string>
   <string name="file_url">Fájl URL-je</string>
   <string name="url_copied_to_clipboard">URL vágólapra másolása</string>
-  <string name="jabber_id_copied_to_clipboard">A Jabber azonosítót a vágólapra másoltuk</string>
   <string name="error_message_copied_to_clipboard">A hibaüzenetet a vágólapra másoltuk</string>
   <string name="web_address">webcím</string>
   <string name="scan_qr_code">2D vonalkód olvasás</string>
@@ -446,7 +442,6 @@
   <string name="captcha_required">Captcha szükséges</string>
   <string name="captcha_hint">Írja be a fenti képen található szöveget</string>
   <string name="certificate_chain_is_not_trusted">A tanúsítványlánc nem megbízható</string>
-  <string name="jid_does_not_match_certificate">A Jabber azonosító nem egyezik a tanúsítvánnyal</string>
   <string name="action_renew_certificate">Tanúsítvány megújítása</string>
   <string name="error_fetching_omemo_key">Hiba történt az OMEMO kulcs megszerzésében!</string>
   <string name="verified_omemo_key_with_certificate">Igazolt OMEMO kulcs tanúsítvánnyal!</string>
@@ -496,11 +491,7 @@
   <string name="security_error_invalid_file_access">Biztonsági hiba: Érvénytelen fájl hozzáférés</string>
   <string name="no_application_to_share_uri">Nem találtunk URI-t használó alkalmazást</string>
   <string name="share_uri_with">Megosztás URI-ként</string>
-  <string name="welcome_text">A Jabber egy szolgáltató független, azonnali üzenetküldő hálózat. Ezt az ügyfél programot bármelyik Jabber szerverhez használhatja.\nDe a könnyebbség kedvéért létrehozhat egy fiókot a conversations.im¹ szolgáltatón is; ami kifejezetten a Conversations programmal való használatra lett tervezve.</string>
-  <string name="welcome_text_quicksy"><![CDATA[A Quicksy a népszerű Conversations Jabber / XMPP kliens mellékhajtása automatikus kapcsolat felfedezéssel.<br><br>Regisztrál a telefonszámával, és a Quicksy automatikusan - a címjegyzékben szereplő telefonszámok alapján - jelzi a lehetséges kapcsolatokat.<br><br>A feliratkozással elfogadja az<a href="https://quicksy.im/#privacy">adatvédelmi irányelvet</a>.]]></string>
   <string name="agree_and_continue">Egyetért &amp; folytatás</string>
-  <string name="magic_create_text">Végigvezetjük a fiók létrehozás folyamatán a conversations.im-en.¹ \ nHa a conversations.im-et választja szolgáltatójának, akkor képes lesz kommunikálni a más szolgáltatóknál lévő felhasználókkal, ha megadja nekik a teljes Jabber azonosítóját.</string>
-  <string name="your_full_jid_will_be">A teljes Jabber azonosítód ez lesz: %s</string>
   <string name="create_account">Fiók létrehozása</string>
   <string name="use_own_provider">Saját szolgáltató használata</string>
   <string name="pick_your_username">Válassz felhasználónevet</string>
@@ -634,7 +625,6 @@
   <string name="yesterday">Tegnap</string>
   <string name="pref_validate_hostname">Gazdanév validálása DNSSEC-el</string>
   <string name="pref_validate_hostname_summary">A hitelesített gazdanevet tartalmazó kiszolgálói tanúsítványok hitelesek</string>
-  <string name="certificate_does_not_contain_jid">A tanúsítvány nem tartalmaz Jabber azonosítót</string>
   <string name="server_info_partial">részleges</string>
   <string name="attach_record_video">Videó felvétele</string>
   <string name="copy_to_clipboard">Másolja a vágólapra</string>
@@ -696,7 +686,6 @@
   <string name="pref_use_share_location_plugin">Helymegosztás bővítmény</string>
   <string name="pref_use_share_location_plugin_summary">A beépített térkép helyett használja a \"Share Location Plugin\"-t</string>
   <string name="copy_link">Webcím másolása</string>
-  <string name="copy_jabber_id">Jabber azonosító másolása</string>
   <string name="p1_s3_filetransfer">HTTP fájlmegosztás S3-nak</string>
   <string name="pref_start_search">Közvetlen keresés</string>
   <string name="pref_start_search_summary">A \"Beszélgessünk\" képernyőn nyissa meg a billentyűzetet, és helyezze a kurzort a keresőmezőbe</string>

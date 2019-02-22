@@ -171,11 +171,8 @@
   <string name="mgmt_account_are_you_sure">よろしいですか?</string>
   <string name="mgmt_account_delete_confirm_text">アカウントを削除すると、会話履歴すべてが失われます</string>
   <string name="attach_record_voice">音声を録音</string>
-  <string name="account_settings_jabber_id">Jabber ID</string>
-  <string name="block_jabber_id">Jabber ID をブロック</string>
   <string name="account_settings_example_jabber_id">username@example.com</string>
   <string name="password">パスワード</string>
-  <string name="invalid_jid">これは有効な Jabber ID ではありません</string>
   <string name="error_out_of_memory">メモリ不足です。画像が大きすぎます</string>
   <string name="add_phone_book_text">%s をお使いのアドレス帳に追加しますか?</string>
   <string name="server_info_show_more">サーバー情報</string>
@@ -297,7 +294,6 @@
   <string name="send_again">再送</string>
   <string name="file_url">ファイル URL</string>
   <string name="url_copied_to_clipboard">URL をクリップボードにコピーしました</string>
-  <string name="jabber_id_copied_to_clipboard">Jabber ID をクリップボードにコピーしました</string>
   <string name="error_message_copied_to_clipboard">エラーメッセージをクリップボードにコピーしました</string>
   <string name="web_address">ウェブアドレス</string>
   <string name="scan_qr_code">2D バーコードをスキャン</string>
@@ -445,7 +441,6 @@
   <string name="captcha_required">キャプチャが必要です</string>
   <string name="captcha_hint">上の画像からテキストを入力してください</string>
   <string name="certificate_chain_is_not_trusted">証明書チェーンは信頼済ではありません</string>
-  <string name="jid_does_not_match_certificate">Jabber ID が証明書と一致しません</string>
   <string name="action_renew_certificate">証明書を更新</string>
   <string name="error_fetching_omemo_key">OMEMO 鍵の取得中にエラー!</string>
   <string name="verified_omemo_key_with_certificate">OMEMO 鍵の取得中にエラー!</string>
@@ -493,8 +488,6 @@
   <string name="security_error_invalid_file_access">セキュリティエラー: 不正なファイルアクセス</string>
   <string name="no_application_to_share_uri">URI を共有するアプリケーションが見つかりません</string>
   <string name="share_uri_with">…で URI を共有</string>
-  <string name="magic_create_text">conversations.imのアカウントを作成する手順をガイドします。\nプロバイダーとしてconversations.imを選択すると、あなたの完全なJabber IDを指定することによって、他のプロバイダーのユーザと通信することができるようになります。</string>
-  <string name="your_full_jid_will_be">あなたの完全な Jabber ID は: %s</string>
   <string name="create_account">アカウントを作成</string>
   <string name="use_own_provider">独自のプロバイダーを使用する</string>
   <string name="pick_your_username">ユーザー名を選択</string>
@@ -616,7 +609,6 @@
   <string name="yesterday">昨日</string>
   <string name="pref_validate_hostname">DNSSEC でホスト名を検証</string>
   <string name="pref_validate_hostname_summary">検証されたホスト名を含むサーバー証明書は検証済みと見なされます</string>
-  <string name="certificate_does_not_contain_jid">証明書に Jabber ID が含まれていません</string>
   <string name="server_info_partial">一時的</string>
   <string name="attach_record_video">ビデオを録画</string>
   <string name="copy_to_clipboard">クリップボードにコピー</string>
@@ -650,7 +642,6 @@
   <string name="search_messages">メッセージを検索</string>
   <string name="gif">GIF</string>
   <string name="copy_link">ウェブアドレスをコピー</string>
-  <string name="copy_jabber_id">Jabber ID をコピー</string>
   <string name="yes">はい</string>
   <string name="no">いいえ</string>
   <string name="verifying">検証しています…</string>

@@ -123,10 +123,8 @@
   <string name="mgmt_account_enable">Povoliť účet</string>
   <string name="mgmt_account_are_you_sure">Ste si istý?</string>
   <string name="attach_record_voice">Nahrať hlas</string>
-  <string name="account_settings_jabber_id">Jabber ID</string>
   <string name="account_settings_example_jabber_id">meno@priklad.com</string>
   <string name="password">Heslo</string>
-  <string name="invalid_jid">Toto nie je platné Jabber ID</string>
   <string name="error_out_of_memory">Nedostatok pamäti. Obrázok je príliš veľký</string>
   <string name="server_info_show_more">Informácie o serveri</string>
   <string name="server_info_mam">XEP-0313: MAM</string>
