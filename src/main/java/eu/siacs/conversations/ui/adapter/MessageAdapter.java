@@ -222,7 +222,7 @@ public class MessageAdapter extends ArrayAdapter<Message> implements CopyTextVie
 				final String errorMessage = message.getErrorMessage();
 				if (Message.ERROR_MESSAGE_CANCELLED.equals(errorMessage)) {
 					info = getContext().getString(R.string.cancelled);
-				} else {
+				} else if (errorMessage != null) {
 					final String[] errorParts = errorMessage.split("\\u001f", 2);
 					if (errorParts.length == 2) {
 						switch (errorParts[0]) {
@@ -236,6 +236,8 @@ public class MessageAdapter extends ArrayAdapter<Message> implements CopyTextVie
 					} else {
 						info = getContext().getString(R.string.send_failed);
 					}
+				} else {
+					info = getContext().getString(R.string.send_failed);
 				}
 				error = true;
 				break;
