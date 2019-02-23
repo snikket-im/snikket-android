@@ -1,5 +1,8 @@
 # Changelog
 
+### Version 2.4.1
+* Fixed crash in message view
+
 ### Version 2.4.0
 * New Backup / Restore feature
 * Clearly distinguish between (private) group chats and (public) channels
