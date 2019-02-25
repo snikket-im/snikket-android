@@ -23,6 +23,7 @@ import eu.siacs.conversations.databinding.ActivityImportBackupBinding;
 import eu.siacs.conversations.databinding.DialogEnterPasswordBinding;
 import eu.siacs.conversations.services.ImportBackupService;
 import eu.siacs.conversations.ui.adapter.BackupFileAdapter;
+import eu.siacs.conversations.utils.ThemeHelper;
 
 public class ImportBackupActivity extends ActionBarActivity implements ServiceConnection, ImportBackupService.OnBackupFilesLoaded, BackupFileAdapter.OnItemClickedListener, ImportBackupService.OnBackupProcessed {
 
@@ -31,8 +32,12 @@ public class ImportBackupActivity extends ActionBarActivity implements ServiceCo
     private BackupFileAdapter backupFileAdapter;
     private ImportBackupService service;
 
+    private int mTheme;
+
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
+        this.mTheme = ThemeHelper.find(this);
+        setTheme(this.mTheme);
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_import_backup);
         setSupportActionBar((Toolbar) binding.toolbar);
@@ -45,7 +50,12 @@ public class ImportBackupActivity extends ActionBarActivity implements ServiceCo
     @Override
     public void onStart() {
         super.onStart();
-        bindService(new Intent(this, ImportBackupService.class), this, Context.BIND_AUTO_CREATE);
+        final int theme = ThemeHelper.find(this);
+        if (this.mTheme != theme) {
+            recreate();
+        } else {
+            bindService(new Intent(this, ImportBackupService.class), this, Context.BIND_AUTO_CREATE);
+        }
     }
 
     @Override
