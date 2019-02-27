@@ -3,6 +3,7 @@ package eu.siacs.conversations.services;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
@@ -20,6 +21,10 @@ public class EventReceiver extends BroadcastReceiver {
         final Intent intentForService = new Intent(context, XmppConnectionService.class);
         if (originalIntent.getAction() != null) {
             intentForService.setAction(originalIntent.getAction());
+            final Bundle extras = originalIntent.getExtras();
+            if (extras != null) {
+                intentForService.putExtras(extras);
+            }
         } else {
             intentForService.setAction("other");
         }
