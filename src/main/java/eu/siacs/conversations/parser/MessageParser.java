@@ -503,8 +503,13 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
                 } else {
                     trueCounterpart = fallback;
                 }
-                if (trueCounterpart != null && trueCounterpart.asBareJid().equals(account.getJid().asBareJid())) {
-                    status = isTypeGroupChat ? Message.STATUS_SEND_RECEIVED : Message.STATUS_SEND;
+                if (trueCounterpart != null) {
+                    if (trueCounterpart.asBareJid().equals(account.getJid().asBareJid())) {
+                        status = isTypeGroupChat ? Message.STATUS_SEND_RECEIVED : Message.STATUS_SEND;
+                    } else {
+                        status = Message.STATUS_RECEIVED;
+                        message.setCarbon(false);
+                    }
                 }
                 message.setStatus(status);
                 message.setTrueCounterpart(trueCounterpart);
