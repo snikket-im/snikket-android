@@ -1,5 +1,8 @@
 # Changelog
 
+### Version 2.4.2
+* Fix image preview on older Android version
+
 ### Version 2.4.1
 * Fixed crash in message view
 
