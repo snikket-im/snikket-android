@@ -9,6 +9,7 @@ import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.ComponentName;
 import android.content.Context;
+import android.content.ContextWrapper;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentSender.SendIntentException;
@@ -1000,9 +1001,12 @@ public abstract class XmppActivity extends ActionBarActivity {
 	}
 
 	public static XmppActivity find(@NonNull final View view) {
-		final Context context = view.getContext();
-		if (context instanceof XmppActivity) {
-			return (XmppActivity) context;
+		Context context = view.getContext();
+		while (context instanceof ContextWrapper) {
+			if (context instanceof XmppActivity) {
+				return (XmppActivity) context;
+			}
+			context = ((ContextWrapper)context).getBaseContext();
 		}
 		return null;
 	}
