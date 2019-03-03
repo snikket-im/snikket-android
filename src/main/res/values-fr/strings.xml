@@ -486,7 +486,7 @@
   <string name="no_camera_permission">Conversations a besoin d\'accéder à l\'appareil photo</string>
   <string name="sync_with_contacts">Synchroniser avec contacts</string>
   <string name="sync_with_contacts_long">Conversations veut faire correspondre votre liste de contacts côté serveur avec votre carnet d\'adresses local pour afficher les noms complets et les avatars de vos contacts. \ N \ nLes conversions liront uniquement vos contacts et les feront correspondre localement sans les télécharger sur votre serveur. \ N \ nVous allez maintenant être invité à donner la permission d\'accéder à vos contacts.</string>
-  <string name="sync_with_contacts_quicksy">&lt;! [CDATA [Quicksy a besoin d'accéder aux numéros de téléphone de vos contacts pour vous suggérer des contacts éventuels déjà connectés.&lt;br&gt;&lt;br&gt; Nous ne stockerons pas de copie de ces numéros. \ N \ nPour plus d'informations, lisez notre &lt;a href="https://quicksy.im/#privacy"&gt;politique de confidentialité&lt;/a&gt;. &lt;br&gt;&lt;br&gt;maintenant être invité à donner la permission d'accéder à vos contacts.]]&gt;</string>
+  <string name="sync_with_contacts_quicksy"><![CDATA[Quicksy a besoin d\'accéder aux numéros de téléphone de vos contacts pour vous suggérer des contacts éventuels déjà connectés.<br><br> Nous ne stockerons pas de copie de ces numéros. \ N \ nPour plus d\'informations, lisez notre <a href="https://quicksy.im/#privacy">politique de confidentialité</a>. <br><br>maintenant être invité à donner la permission d\'accéder à vos contacts.]]></string>
   <string name="notify_on_all_messages">Notifier pour tous les messages</string>
   <string name="notify_only_when_highlighted">Notifier seulement en cas de mention</string>
   <string name="notify_never">Notifications désactivées</string>
@@ -510,7 +510,7 @@
   <string name="no_application_to_share_uri">Aucune application trouvée pour partager l\'URI</string>
   <string name="share_uri_with">Partager l\'URI avec...</string>
   <string name="welcome_text">XMPP est un réseau de messagerie instantanée indépendant du fournisseur. Vous pouvez utiliser ce client avec le serveur XMPP de votre choix. \ NCependant, pour votre commodité, nous avons facilité la création d\'un compte pour les conversations.im¹; un fournisseur spécialement adapté à l\'utilisation avec Conversations.</string>
-  <string name="welcome_text_quicksy">&lt;! [CDATA [Quicksy est une version du populaire client XMPP Conversations avec découverte automatique des contacts.&lt;br&gt;&lt;br&gt;Vous vous inscrivez avec votre numéro de téléphone et Quicksy va automatiquement, en fonction des numéros de votre carnet d’adresses, vous suggérer d’éventuels contacts.&lt;br&gt;&lt;br&gt; en vous inscrivant, vous acceptez notre &lt;a href="https://quicksy.im/#privacy"&gt;politique de confidentialité&lt;/a&gt;.]]&gt;</string>
+  <string name="welcome_text_quicksy"><![CDATA[Quicksy est une version du populaire client XMPP Conversations avec découverte automatique des contacts.<br><br>Vous vous inscrivez avec votre numéro de téléphone et Quicksy va automatiquement, en fonction des numéros de votre carnet d’adresses, vous suggérer d’éventuels contacts.<br><br> en vous inscrivant, vous acceptez notre <a href="https://quicksy.im/#privacy">politique de confidentialité</a>.]]></string>
   <string name="agree_and_continue">Accepter &amp; continuer</string>
   <string name="magic_create_text">Nous vous guiderons tout au long du processus de création d\'un compte sur conversations.im.¹ \ nLorsque vous sélectionnerez conversations.im en tant que fournisseur, vous pourrez communiquer avec les utilisateurs d\'autres fournisseurs en leur fournissant votre adresse XMPP complète.</string>
   <string name="your_full_jid_will_be">Votre adresse XMPP complète sera : %s</string>
@@ -752,12 +752,12 @@
   <string name="phone_number">Numéro de téléphone</string>
   <string name="verify_your_phone_number">Vérifier votre numéro de téléphone</string>
   <string name="enter_country_code_and_phone_number">Quicksy va envoyer un message SMS (des frais opérateurs sont possibles) pour vérifier votre numéro de téléphone. Entrez votre code pays et votre No de téléphone.</string>
-  <string name="we_will_be_verifying">&lt;! [CDATA [Nous vérifierons le numéro de téléphone&lt;br/&gt;&lt;br/&gt;&lt;b&gt;%s&lt;/b&gt;&lt;br/&gt;&lt;br/&gt;. Est-ce correct ou souhaitez-vous modifier le numéro?]]&gt;</string>
+  <string name="we_will_be_verifying"><![CDATA[Nous vérifierons le numéro de téléphone<br/><br/><b>%s</b><br/><br/>. Est-ce correct ou souhaitez-vous modifier le numéro?]]></string>
   <string name="not_a_valid_phone_number">%s n\'est pas un numéro de téléphone valide.</string>
   <string name="please_enter_your_phone_number">Veuillez saisir votre numéro de téléphone.</string>
   <string name="search_countries">Recherche de pays</string>
   <string name="verify_x">Vérifier %s</string>
-  <string name="we_have_sent_you_an_sms_to_x">&lt;! [CDATA [Nous vous avons envoyé un SMS à&lt;b&gt;%s&lt;/b&gt;.]]&gt;</string>
+  <string name="we_have_sent_you_an_sms_to_x"><![CDATA[Nous vous avons envoyé un SMS à<b>%s</b>.]]></string>
   <string name="we_have_sent_you_another_sms">Nous vous avons envoyé un autre SMS avec un code à 6 chiffres.</string>
   <string name="please_enter_pin_below">Veuillez saisir ci-dessous le code PIN à 6 chiffres.</string>
   <string name="resend_sms">Renvoyer un SMS.</string>
