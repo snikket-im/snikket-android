@@ -413,11 +413,16 @@ public class FileBackend {
 
     public static Uri getMediaUri(Context context, File file) {
         final String filePath = file.getAbsolutePath();
-        final Cursor cursor = context.getContentResolver().query(
-                MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
-                new String[] { MediaStore.Images.Media._ID },
-                MediaStore.Images.Media.DATA + "=? ",
-                new String[] { filePath }, null);
+        final Cursor cursor;
+        try {
+            cursor = context.getContentResolver().query(
+                    MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
+                    new String[]{MediaStore.Images.Media._ID},
+                    MediaStore.Images.Media.DATA + "=? ",
+                    new String[]{filePath}, null);
+        } catch (SecurityException e) {
+            return null;
+        }
         if (cursor != null && cursor.moveToFirst()) {
             final int id = cursor.getInt(cursor.getColumnIndex(MediaStore.MediaColumns._ID));
             cursor.close();
