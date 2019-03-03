@@ -845,10 +845,10 @@ Administrator twojego serwera będzie mógł czytać twoje wiadomości, ale moż
   <string name="unable_to_decrypt_backup">Nie można odszyfrować kopii zapasowej. Czy hasło jest poprawne?</string>
   <string name="backup_channel_name">Kopia i Przywracanie</string>
   <string name="enter_jabber_id">Wpisz adres XMPP</string>
-  <string name="create_group_chat">Stwórz rozmowę grupową</string>
+  <string name="create_group_chat">Nowa rozmowa grupowa</string>
   <string name="join_public_channel">Dołącz do kanału publicznego</string>
-  <string name="create_private_group_chat">Stwórz prywatną rozmowę grupową</string>
-  <string name="create_public_channel">Stwórz kanał publiczny</string>
+  <string name="create_private_group_chat">Nowa prywatna rozmowa grupowa</string>
+  <string name="create_public_channel">Nowy kanał publiczny</string>
   <string name="create_dialog_channel_name">Nazwa kanału</string>
   <string name="xmpp_address">Adres XMPP</string>
   <string name="please_enter_name">Podaj nazwę kanału</string>

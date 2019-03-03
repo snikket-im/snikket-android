@@ -7,6 +7,7 @@
   <string name="action_end_conversation">Beszélgetés bezárása</string>
   <string name="action_contact_details">Kapcsolat részletek</string>
   <string name="action_muc_details">Konferencia részletei</string>
+  <string name="channel_details">Csatorna részletei</string>
   <string name="action_secure">Biztonságos beszélgetés</string>
   <string name="action_add_account">Fiók hozzáadása</string>
   <string name="action_edit_contact">Név szerkesztése</string>
@@ -51,6 +52,7 @@
   <string name="share_with">Megosztás...</string>
   <string name="start_conversation">Beszélgetés kezdeményezése</string>
   <string name="invite_contact">Ismerős meghívása</string>
+  <string name="invite">Meghív</string>
   <string name="contacts">Névjegyek</string>
   <string name="contact">Kapcsolat</string>
   <string name="cancel">Mégse</string>
@@ -171,8 +173,11 @@
   <string name="mgmt_account_are_you_sure">Biztos vagy ebben?</string>
   <string name="mgmt_account_delete_confirm_text">Ha törli fiókját, az egész beszélgetési előzménye elvész</string>
   <string name="attach_record_voice">Hang felvétele</string>
+  <string name="account_settings_jabber_id">XMPP cím</string>
+  <string name="block_jabber_id">XMPP cím blokkolása</string>
   <string name="account_settings_example_jabber_id">felhasznalo@peldaoldal.com</string>
   <string name="password">Jelszó</string>
+  <string name="invalid_jid">Ez nem egy érvényes XMPP cím</string>
   <string name="error_out_of_memory">Nincs elég memória. Képfájl túl nagy</string>
   <string name="add_phone_book_text">Szeretnéd %s nevű személyt hozzáadni a névjegyzékhez?</string>
   <string name="server_info_show_more">Szerver részletek</string>
@@ -207,6 +212,7 @@
   <string name="fetching_keys">Kulcsok beszerzése...</string>
   <string name="done">Kész</string>
   <string name="decrypt">Dekódol</string>
+  <string name="bookmarks">Könyvjelzők</string>
   <string name="search">Keresés</string>
   <string name="enter_contact">Névjegy megadása</string>
   <string name="delete_contact">Névjegy törlése</string>
@@ -217,11 +223,16 @@
   <string name="select">Kiválaszt</string>
   <string name="contact_already_exists">A névjegy már létezik</string>
   <string name="join">Csatlakozik</string>
+  <string name="channel_full_jid_example">channel@conference.example.com/nick</string>
+  <string name="channel_bare_jid_example">channel@conference.example.com</string>
   <string name="save_as_bookmark">Könyvjelzőkhöz hozzáadás</string>
   <string name="delete_bookmark">Könyvjelző törlése</string>
   <string name="destroy_room">Konferencia megszüntetése</string>
+  <string name="destroy_channel">Csatorna megszűntetése</string>
   <string name="destroy_room_dialog">Biztos, hogy meg akarod szüntetni ezt a konferenciát?\n\n<b>Figyelem:</b> A konferencia véglegesen törlődik a szerverről.</string>
+  <string name="destroy_channel_dialog">Biztos, hogy meg akarod szüntetni ezt a nyilvános csatornát?\n\n<b>Figyelem:</b> A csatorna véglegesen törlődik a szerverről.</string>
   <string name="could_not_destroy_room">Nem lehetett megszüntetni a konferenciát</string>
+  <string name="could_not_destroy_channel">Nem lehet megszüntetni a csatornát</string>
   <string name="bookmark_already_exists">A könyvjelző már létezik</string>
   <string name="action_edit_subject">Konferencia témájának beállítása</string>
   <string name="topic">Téma</string>
@@ -294,6 +305,7 @@
   <string name="send_again">Elküldi újra</string>
   <string name="file_url">Fájl URL-je</string>
   <string name="url_copied_to_clipboard">URL vágólapra másolása</string>
+  <string name="jabber_id_copied_to_clipboard">XMPP cím a vágólapra másolva</string>
   <string name="error_message_copied_to_clipboard">A hibaüzenetet a vágólapra másoltuk</string>
   <string name="web_address">webcím</string>
   <string name="scan_qr_code">2D vonalkód olvasás</string>
@@ -304,6 +316,14 @@
   <string name="try_again">megpróbálja újra</string>
   <string name="pref_keep_foreground_service">Előtérben futtassa a programot</string>
   <string name="pref_keep_foreground_service_summary">Megakadályozza az operációs rendszert abban, hogy megszakítsa a kapcsolatot a szerverrel a háttérben</string>
+  <string name="pref_create_backup">Biztonsági mentés</string>
+  <string name="pref_create_backup_summary">A biztonsági mentési fájlok tárolva lesznek, itt: %s</string>
+  <string name="notification_create_backup_title">Biztonsági fájlok létrehozása</string>
+  <string name="notification_backup_created_title">A biztonsági mentés létrejött</string>
+  <string name="notification_backup_created_subtitle">A biztonsági mentési fájlok el lettek tárolva itt: %s</string>
+  <string name="restoring_backup">A biztonsági mentés visszaállítása</string>
+  <string name="notification_restored_backup_title">A biztonsági mentés visszaállt</string>
+  <string name="notification_restored_backup_subtitle">Ne felejtse el engedélyezni a fiókot.</string>
   <string name="choose_file">Fájl kiválasztása</string>
   <string name="receiving_x_file">%1$s fogadás alatt (%2$d%% kész)</string>
   <string name="download_x_file">%s letöltése</string>
@@ -349,6 +369,8 @@
   <string name="outcast">Kiközösített</string>
   <string name="member">Tag</string>
   <string name="advanced_mode">Haladó mód</string>
+  <string name="grant_membership">Tag jogkör megadása</string>
+  <string name="remove_membership">Tag jogkör megvonása</string>
   <string name="grant_admin_privileges">Admin jogok megadása</string>
   <string name="remove_admin_privileges">Admin jogok visszavonása</string>
   <string name="remove_from_room">Konferenciából eltávolítás</string>

@@ -117,7 +117,7 @@
   <string name="pref_notification_grace_period">Період очікування</string>
   <string name="pref_notification_grace_period_summary">Період часу, протягом якого програма не сповіщає, після діяльності на іншому пристрої</string>
   <string name="pref_advanced_options">Розширені</string>
-  <string name="pref_never_send_crash">Ніколи не надсилати звіти про збої</string>
+  <string name="pref_never_send_crash">Не надсилати звіти про збої</string>
   <string name="pref_never_send_crash_summary">Надсилаючи траси стеку викликів Ви допомагаєте розробці Розмов, яка продовжується</string>
   <string name="pref_confirm_messages">Повідомлення-підтвердження</string>
   <string name="pref_confirm_messages_summary">Дайте знати вашим контактам, коли ви отримали й прочитали повідомлення</string>
@@ -171,8 +171,11 @@
   <string name="mgmt_account_are_you_sure">Ви впевнені?</string>
   <string name="mgmt_account_delete_confirm_text">Якщо ви видалите ваш обліковий запис, буде втрачено всю історію листування</string>
   <string name="attach_record_voice">Записати голос</string>
+  <string name="account_settings_jabber_id">XMPP адреса</string>
+  <string name="block_jabber_id">Заблокувати XMPP адресу</string>
   <string name="account_settings_example_jabber_id">username@example.com</string>
   <string name="password">Пароль</string>
+  <string name="invalid_jid">Не вірний XMPP адрес</string>
   <string name="error_out_of_memory">Пам\'ять вичерпано. Завелике зображення.</string>
   <string name="add_phone_book_text">Бажаєте додати %s до своєї книги контактів?</string>
   <string name="server_info_show_more">Інформація про сервер</string>
@@ -350,14 +353,20 @@
   <string name="outcast">Вигнанець</string>
   <string name="member">Учасник</string>
   <string name="advanced_mode">Розширений режим</string>
+  <string name="grant_membership">Надати право участі</string>
+  <string name="remove_membership">Відкликати право участі</string>
   <string name="grant_admin_privileges">Дати права адміністратора</string>
   <string name="remove_admin_privileges">Відкликати права адміністратора</string>
   <string name="remove_from_room">Видалити з групи</string>
   <string name="could_not_change_affiliation">Не можу змінити пов\'язаність з %s</string>
   <string name="ban_from_conference">Заборонити доступ до групи</string>
+  <string name="removing_from_public_conference">Щоб видалити %s з публічної групи, забороніть йому доступ назавжди.</string>
   <string name="ban_now">Вигнати зараз</string>
   <string name="could_not_change_role">Не можу змінити роль %s</string>
+  <string name="conference_options">Налаштування приватного чату</string>
   <string name="members_only">Приватно, лише для членів</string>
+  <string name="non_anonymous">Зробити XMPP адрес доступним для всіх</string>
+  <string name="moderated">Зробити канал модерованим</string>
   <string name="you_are_not_participating">Ви не берете участі</string>
   <string name="modified_conference_options">Налаштування групи змінено!</string>
   <string name="could_not_modify_conference_options">Не вдалося змінити налаштування групи</string>
@@ -445,6 +454,7 @@
   <string name="captcha_required">Потрібно вирішити головоломку</string>
   <string name="captcha_hint">Уведіть текст із зображення вище</string>
   <string name="certificate_chain_is_not_trusted">Ланцюжок сертифікатів не довірений</string>
+  <string name="jid_does_not_match_certificate">XMPP адрес не відповідає сертифікату</string>
   <string name="action_renew_certificate">Оновити сертифікат</string>
   <string name="error_fetching_omemo_key">Помилка отримання ключа OMEMO!</string>
   <string name="verified_omemo_key_with_certificate">Ключ OMEMO звірено з сертифікатом!</string>
@@ -479,7 +489,7 @@
   <string name="notify_never">Сповіщення вимкнено</string>
   <string name="notify_paused">Сповіщення призупинено</string>
   <string name="pref_picture_compression">Стиснення зображень</string>
-  <string name="pref_picture_compression_summary">Змінювати розмір і стискати зображення</string>
+  <string name="pref_picture_compression_summary">Змінити розмір і стиснути зображення</string>
   <string name="always">Завжди</string>
   <string name="automatically">Автоматично</string>
   <string name="battery_optimizations_enabled">Оптимізацію батареї задіяно</string>
@@ -496,6 +506,10 @@
   <string name="security_error_invalid_file_access">Помилка безпеки: Недійсний доступ до файлу</string>
   <string name="no_application_to_share_uri">Не знайдено програми, щоб поділитися URI</string>
   <string name="share_uri_with">Поділитися URI з…</string>
+  <string name="welcome_text">XMPP є незалежною мережею обміну миттєвими повідомленнями. . 
+Ви можете використовувати цей клієнт з будь-яким XMPP-сервером.
+\nДля Вашої зручності Ви можете використовувати Conversations з сервісом conversations.im¹; який є оптимізований для використання з Conversations. 
+</string>
   <string name="agree_and_continue">Прийняти й продовжити</string>
   <string name="create_account">Створити обліковий запис</string>
   <string name="use_own_provider">Використати мого власного провайдера</string>
@@ -642,6 +656,7 @@
   <string name="yesterday">Учора</string>
   <string name="pref_validate_hostname">Перевіряти адресу з допомогою DNSSEC</string>
   <string name="pref_validate_hostname_summary">Сертифікати, які містять завірену адресу, вважаються засвідченими</string>
+  <string name="certificate_does_not_contain_jid">Сертифікат не містить XMPP адресу</string>
   <string name="server_info_partial">частково</string>
   <string name="attach_record_video">Записати відео</string>
   <string name="copy_to_clipboard">Скопіювати до комірки обміну</string>
@@ -703,6 +718,7 @@
   <string name="pref_use_share_location_plugin">Додаток поширення місцезнаходження</string>
   <string name="pref_use_share_location_plugin_summary">Використовувати додаток поширення місце-знаходження замість вбудованої карти</string>
   <string name="copy_link">Скопіювати веб адресу</string>
+  <string name="copy_jabber_id">Скопіювати XMPP адресу</string>
   <string name="p1_s3_filetransfer">Доступ до файлів по HTTP для S3</string>
   <string name="pref_start_search">Безпосередній пошук</string>
   <string name="pref_start_search_summary">На екрані початку розмови відкривати клавіатуру й розміщувати курсор в поле пошуку</string>
