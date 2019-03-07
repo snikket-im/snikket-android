@@ -145,25 +145,32 @@ public class ExportBackupService extends Service {
         return cursorToString(tablename, cursor, max, false);
     }
 
-    private static String cursorToString(String tablename, Cursor cursor, int max, boolean ignore) {
+    private static String cursorToString(final String tablename, final Cursor cursor, int max, boolean ignore) {
+        final boolean identities = SQLiteAxolotlStore.IDENTITIES_TABLENAME.equals(tablename);
         StringBuilder builder = new StringBuilder();
         builder.append("INSERT ");
         if (ignore) {
             builder.append("OR IGNORE ");
         }
         builder.append("INTO ").append(tablename).append("(");
+        int skipColumn = -1;
         for (int i = 0; i < cursor.getColumnCount(); ++i) {
+            final String name = cursor.getColumnName(i);
+            if (identities && SQLiteAxolotlStore.TRUSTED.equals(name)) {
+                skipColumn = i;
+                continue;
+            }
             if (i != 0) {
                 builder.append(',');
             }
-            builder.append(cursor.getColumnName(i));
+            builder.append(name);
         }
         builder.append(") VALUES");
         for (int i = 0; i < max; ++i) {
             if (i != 0) {
                 builder.append(',');
             }
-            appendValues(cursor, builder);
+            appendValues(cursor, builder, skipColumn);
             if (i < max - 1 && !cursor.moveToNext()) {
                 break;
             }
@@ -173,9 +180,12 @@ public class ExportBackupService extends Service {
         return builder.toString();
     }
 
-    private static void appendValues(Cursor cursor, StringBuilder builder) {
+    private static void appendValues(final Cursor cursor, final StringBuilder builder, final int skipColumn) {
         builder.append("(");
         for (int i = 0; i < cursor.getColumnCount(); ++i) {
+            if (i == skipColumn) {
+                continue;
+            }
             if (i != 0) {
                 builder.append(',');
             }
