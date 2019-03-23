@@ -183,13 +183,7 @@ public class MessageAdapter extends ArrayAdapter<Message> implements CopyTextVie
 				&& message.getMergedStatus() <= Message.STATUS_RECEIVED;
 		if (message.isFileOrImage() || transferable != null) {
 			FileParams params = message.getFileParams();
-			if (params.size > (1.5 * 1024 * 1024)) {
-				filesize = Math.round(params.size * 1f / (1024 * 1024)) + " MiB";
-			} else if (params.size >= 1024) {
-				filesize = Math.round(params.size * 1f / 1024) + " KiB";
-			} else if (params.size > 0) {
-				filesize = params.size + " B";
-			}
+			filesize = params.size > 0 ? UIHelper.filesizeToString(params.size) : null;
 			if (transferable != null && transferable.getStatus() == Transferable.STATUS_FAILED) {
 				error = true;
 			}
