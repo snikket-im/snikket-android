@@ -71,7 +71,7 @@
   <string name="problem_connecting_to_account">Es gibt Probleme beim Verbindungsaufbau mit einem Konto</string>
   <string name="problem_connecting_to_accounts">Es gibt Probleme beim Verbindungsaufbau mit mehreren Konten</string>
   <string name="touch_to_fix">Hier antippen, um deine Konten zu verwalten</string>
-  <string name="attach_file">Datei anfügen</string>
+  <string name="attach_file">Datei hinzufügen</string>
   <string name="not_in_roster">Der Kontakt ist nicht in deiner Kontaktliste. Möchtest du ihn hinzufügen?</string>
   <string name="add_contact">Kontakt hinzufügen</string>
   <string name="send_failed">Zustellung fehlgeschlagen</string>
@@ -854,4 +854,5 @@
   <string name="manage_permission">Rechte verwalten</string>
   <string name="search_participants">Teilnehmer suchen</string>
   <string name="file_too_large">Datei ist zu groß</string>
+  <string name="attach">Hinzufügen</string>
 </resources>

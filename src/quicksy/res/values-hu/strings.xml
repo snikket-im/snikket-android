@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="crash_report_title">A Quicksy összeomlott</string>
+    <string name="crash_report_message">A verem nyomkövetések beküldésével segíthet a Quicksy folyamatos fejlesztésében\n<b>Figyelem:</b> Ez az XMPP fiókját fogja használni az adatok fejlesztőhöz való elküldéshez.</string>
+    <string name="openkeychain_required_long">A Quicksy egy harmadik fél által biztosított alkalmazást, az <b>OpenKeychain</b>-t használja az üzenetek titkosítására és a nyilvános kulcsok kezelésére.\n\nAz OpenKeychain GPLv3 engedélyes és letölthető az F-Droid-ról és a Google Play-ről.\n\n<small>(Kérjük, ezután indítsa újra a Quicksy-t.)</small></string>
+    <string name="contact_has_no_pgp_key">A Quicksy nem tudja titkosítani az üzeneteit, mert a kapcsolata nem jelenti be a nyilvános kulcsát.\n\n<small>Kérje meg a kapcsolatát, hogy állítsa be az OpenPGP-t.</small></string>
+    <string name="contacts_have_no_pgp_keys">A Quicksy nem képes titkosítani az üzeneteket, mert az ismerősei nem jelentik be a nyilvános kulcsaikat.\n\n<small> Kérje meg az ismerőseit, hogy állítsák be az OpenPGP-t.</small></string>
+    <string name="pref_notification_grace_period_summary">A Quicksy csendben marad ennyi ideig, miután aktivitást észlelt másik eszközön</string>
+    <string name="pref_never_send_crash_summary">A verem nyomkövetések beküldésével segíthet a Quicksy folyamatos fejlesztésében</string>
+    <string name="no_storage_permission">A Quicksy-nek hozzáférésre lenne szüksége a külső tárhelyhez</string>
+    <string name="no_camera_permission">A Quicksy-nek hozzáférésre lenne szüksége a kamerához</string>
+    <string name="battery_optimizations_enabled_explained">A készülék erős akkumulátor optimalizálást végez a Quicksy programon, ami késleltetett értesítésekhez, vagy akár üzenetek elvesztéséhet is vezethet.\nJavasolt kikapcsolni ezt.</string>
+    <string name="battery_optimizations_enabled_dialog">A készülék erős akkumulátor optimalizálást végez a Quicksy programon, ami késleltetett értesítésekhez, vagy akár üzenetek elvesztéséhet is vezethet.\nMost megkérnénk az optimalizáció letiltására.</string>
+    <string name="pref_broadcast_last_activity_summary">Jelezze az ismerőseinek, hogy mikor használja a Quicksy-t</string>
+    <string name="data_saver_enabled_explained">Az operációs rendszer korlátozza a Quicksy hozzáférését az internethez, amikor az a háttérben fut. Ahhoz, hogy értesítéseket kapjon az új üzenetekről aktív Adatspórolás esetén is, lehetővé kell tennie a Quicksy korlátlan hozzáférését.\nA Quicksy továbbra is arra törekszik, hogy spóroljon az adatforgalmon, ha ez lehetséges.</string>
+    <string name="device_does_not_support_data_saver">Az eszköze nem támogatja az adatspórolás letiltását.</string>
+    <string name="huawei_protected_apps_summary">Ha értesítést szeretne kapni, még akkor is, ha a képernyő ki van kapcsolva, hozzá kell adnia a Quicksy-t a védett alkalmazások listájához.</string>
+    <string name="error_trustkey_general">A Quicksy nem tud titkosított üzeneteket küldeni neki: %1$s. Ez azért történhetett, mert a kapcsolattartója olyan elavult kiszolgálót vagy ügyfélprogramot használ ami nem tudja kezelni az OMEMO-t.</string>
+    <string name="no_microphone_permission">A Quicksy-nek hozzáférésre lenne szüksége a mikrofonhoz</string>
+    <string name="foreground_service_channel_description">Ez az értesítési kategória állandó értesítést jelenít meg arról, hogy a Quicksy fut.</string>
+    <string name="set_profile_picture">Quicksy profilkép</string>
+</resources>

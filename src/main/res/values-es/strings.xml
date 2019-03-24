@@ -854,4 +854,5 @@
   <string name="manage_permission">Gestionar privilegios</string>
   <string name="search_participants">Buscar participantes</string>
   <string name="file_too_large">Archivo demasiado grande</string>
+  <string name="attach">Adjuntar</string>
 </resources>

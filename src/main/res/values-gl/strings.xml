@@ -27,7 +27,7 @@
   <string name="title_activity_block_list">Lista de bloqueo</string>
   <string name="just_now">agora</string>
   <string name="minute_ago">Hai 1 min</string>
-  <string name="minutes_ago">min</string>
+  <string name="minutes_ago">hai %d minutos</string>
   <string name="unread_conversations">conversas sen ler</string>
   <string name="sending">enviando…</string>
   <string name="message_decrypting">Descifrando a mensaxe. Por favor agarde...</string>
@@ -854,4 +854,5 @@
   <string name="manage_permission">Xestionar privilexios</string>
   <string name="search_participants">Buscar participantes</string>
   <string name="file_too_large">Ficheiro demasiado grande</string>
+  <string name="attach">Anexar</string>
 </resources>

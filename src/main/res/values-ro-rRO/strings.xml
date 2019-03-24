@@ -864,4 +864,5 @@ sau chiar pierderea mesajelor.\nÎn continuare veți fi rugați să dezactivați
   <string name="manage_permission">Gestionare privilegii</string>
   <string name="search_participants">Caută participanți</string>
   <string name="file_too_large">Fișier prea mare</string>
+  <string name="attach">Atașează</string>
 </resources>
