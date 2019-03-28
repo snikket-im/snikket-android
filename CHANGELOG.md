@@ -1,5 +1,9 @@
 # Changelog
 
+### Version 2.4.3
+* Fixed display of private messages sent from another client
+* Fixed backup creation on long time installations
+
 ### Version 2.4.2
 * Fix image preview on older Android version
 
