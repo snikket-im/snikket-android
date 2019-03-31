@@ -49,6 +49,7 @@ import org.openintents.openpgp.util.OpenPgpServiceConnection;
 
 import java.io.File;
 import java.net.URL;
+import java.nio.channels.Channel;
 import java.security.SecureRandom;
 import java.security.Security;
 import java.security.cert.CertificateException;
@@ -84,6 +85,7 @@ import eu.siacs.conversations.crypto.axolotl.XmppAxolotlMessage;
 import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.entities.Blockable;
 import eu.siacs.conversations.entities.Bookmark;
+import eu.siacs.conversations.entities.ChannelSearchResult;
 import eu.siacs.conversations.entities.Contact;
 import eu.siacs.conversations.entities.Conversation;
 import eu.siacs.conversations.entities.Conversational;
@@ -112,6 +114,7 @@ import eu.siacs.conversations.ui.UiCallback;
 import eu.siacs.conversations.ui.interfaces.OnAvatarPublication;
 import eu.siacs.conversations.ui.interfaces.OnMediaLoaded;
 import eu.siacs.conversations.ui.interfaces.OnSearchResultsAvailable;
+import eu.siacs.conversations.utils.AccountUtils;
 import eu.siacs.conversations.utils.Compatibility;
 import eu.siacs.conversations.utils.ConversationsFileObserver;
 import eu.siacs.conversations.utils.CryptoHelper;
@@ -793,6 +796,58 @@ public class XmppConnectionService extends Service {
             }
         }
         return pingNow;
+    }
+
+    public void discoverChannels(String query, OnChannelSearchResultsFound listener) {
+        IqPacket packet = new IqPacket(IqPacket.TYPE.GET);
+        packet.setTo(Config.CHANNEL_DISCOVERY);
+        Element search = packet.addChild("search","https://xmlns.zombofant.net/muclumbus/search/1.0");
+        search.addChild("set","http://jabber.org/protocol/rsm").addChild("max").setContent("100");
+        Bundle bundle = new Bundle();
+        if (!TextUtils.isEmpty(query)) {
+            bundle.putString("q",query);
+        }
+        Data data = Data.create("https://xmlns.zombofant.net/muclumbus/search/1.0#params", bundle);
+        search.addChild(data);
+        final Account account = AccountUtils.getFirstEnabled(this);
+        if (account == null) {
+            return;
+        }
+        sendIqPacket(account, packet, new OnIqPacketReceived() {
+            @Override
+            public void onIqPacketReceived(Account account, IqPacket response) {
+                ArrayList<ChannelSearchResult> searchResults = new ArrayList<>();
+                if (response.getType() == IqPacket.TYPE.RESULT) {
+                    Element result = response.findChild("result","https://xmlns.zombofant.net/muclumbus/search/1.0");
+                    if (result != null) {
+                        for(Element child : result.getChildren()) {
+                            if ("item".equals(child.getName())) {
+                                String name = child.findChildContent("name");
+                                String description = child.findChildContent("description");
+                                Jid room = child.getAttributeAsJid("address");
+                                if (room != null) {
+                                    searchResults.add(new ChannelSearchResult(name,description,room));
+                                } else {
+                                    Log.d(Config.LOGTAG,"skipping because room was null");
+                                }
+                            }
+                        }
+                    } else {
+                        Log.d(Config.LOGTAG,"result was null");
+                    }
+                } else {
+                    Log.d(Config.LOGTAG,response.toString());
+                }
+                if (listener != null) {
+                    listener.onChannelSearchResultsFound(searchResults);
+                }
+
+            }
+        });
+    }
+
+    public interface OnChannelSearchResultsFound {
+        void onChannelSearchResultsFound(List<ChannelSearchResult> results);
     }
 
     public boolean isDataSaverDisabled() {

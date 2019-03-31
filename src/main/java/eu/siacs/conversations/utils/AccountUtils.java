@@ -6,8 +6,10 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.services.XmppConnectionService;
@@ -21,6 +23,20 @@ public class AccountUtils {
         MANAGE_ACCOUNT_ACTIVITY = getManageAccountActivityClass();
     }
 
+
+    public static List<String> getEnabledAccounts(final XmppConnectionService service) {
+        ArrayList<String> accounts = new ArrayList<>();
+        for (Account account : service.getAccounts()) {
+            if (account.getStatus() != Account.State.DISABLED) {
+                if (Config.DOMAIN_LOCK != null) {
+                    accounts.add(account.getJid().getLocal());
+                } else {
+                    accounts.add(account.getJid().asBareJid().toString());
+                }
+            }
+        }
+        return accounts;
+    }
 
     public static Account getFirstEnabled(XmppConnectionService service) {
         final List<Account> accounts = service.getAccounts();

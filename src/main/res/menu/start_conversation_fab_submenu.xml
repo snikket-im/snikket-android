@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
+        android:id="@+id/discover_public_channels"
+        android:title="@string/discover_channels"
+        android:icon="@drawable/ic_search_white_24dp"/>
+    <item
         android:id="@+id/join_public_channel"
         android:title="@string/join_public_channel"
         android:icon="@drawable/ic_input_white_24dp"/>

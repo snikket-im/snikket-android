@@ -283,6 +283,7 @@
         <activity
             android:name=".ui.MucUsersActivity"
             android:label="@string/group_chat_members" />
+        <activity android:label="@string/discover_channels" android:name=".ui.ChannelDiscoveryActivity"/>
     </application>
 
 </manifest>

@@ -33,6 +33,7 @@ import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.entities.Bookmark;
+import eu.siacs.conversations.entities.ChannelSearchResult;
 import eu.siacs.conversations.entities.Contact;
 import eu.siacs.conversations.entities.Conversation;
 import eu.siacs.conversations.entities.Conversational;
@@ -82,9 +83,15 @@ public class AvatarService implements OnAdvancedStreamFeaturesLoaded {
 			return get((ListItem) avatarable, size, cachedOnly);
 		} else if (avatarable instanceof MucOptions.User) {
 			return get((MucOptions.User) avatarable, size, cachedOnly);
+		} else if (avatarable instanceof ChannelSearchResult) {
+			return get((ChannelSearchResult) avatarable, size, cachedOnly);
 		}
 		throw new AssertionError("AvatarService does not know how to generate avatar from "+avatarable.getClass().getName());
 
+	}
+
+	private Bitmap get(final ChannelSearchResult result, final int size, boolean cacheOnly) {
+		return get(result.getName(), result.getRoom().asBareJid().toEscapedString(), size, cacheOnly);
 	}
 
 	private Bitmap get(final Contact contact, final int size, boolean cachedOnly) {

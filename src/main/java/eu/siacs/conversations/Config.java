@@ -40,6 +40,9 @@ public final class Config {
     public static final String DOMAIN_LOCK = null; //only allow account creation for this domain
     public static final String MAGIC_CREATE_DOMAIN = "conversations.im";
     public static final String QUICKSY_DOMAIN = "quicksy.im";
+
+    public static final Jid CHANNEL_DISCOVERY = Jid.of("rodrigo.de.mucobedo@dreckshal.de");
+
     public static final boolean DISALLOW_REGISTRATION_IN_UI = false; //hide the register checkbox
 
     public static final boolean USE_RANDOM_RESOURCE_ON_EVERY_BIND = false;
