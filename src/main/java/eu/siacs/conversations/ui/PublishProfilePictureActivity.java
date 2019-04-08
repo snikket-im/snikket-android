@@ -68,7 +68,7 @@ public class PublishProfilePictureActivity extends XmppActivity implements XmppC
     public void onAvatarPublicationFailed(int res) {
         runOnUiThread(() -> {
             hintOrWarning.setText(res);
-            hintOrWarning.setTextColor(getWarningTextColor());
+            hintOrWarning.setTextAppearance(this,R.style.TextAppearance_Conversations_Body1_Warning);
             hintOrWarning.setVisibility(View.VISIBLE);
             publishing = false;
             togglePublishButton(true, R.string.publish);
@@ -208,7 +208,7 @@ public class PublishProfilePictureActivity extends XmppActivity implements XmppC
         if (bm == null) {
             togglePublishButton(false, R.string.publish);
             this.hintOrWarning.setVisibility(View.VISIBLE);
-            this.hintOrWarning.setTextColor(getWarningTextColor());
+            this.hintOrWarning.setTextAppearance(this,R.style.TextAppearance_Conversations_Body1_Warning);
             this.hintOrWarning.setText(R.string.error_publish_avatar_converting);
             return;
         }
@@ -219,7 +219,7 @@ public class PublishProfilePictureActivity extends XmppActivity implements XmppC
         } else {
             togglePublishButton(false, R.string.publish);
             this.hintOrWarning.setVisibility(View.VISIBLE);
-            this.hintOrWarning.setTextColor(getWarningTextColor());
+            this.hintOrWarning.setTextAppearance(this,R.style.TextAppearance_Conversations_Body1_Warning);
             if (account.getStatus() == Account.State.ONLINE) {
                 this.hintOrWarning.setText(R.string.error_publish_avatar_no_server_support);
             } else {

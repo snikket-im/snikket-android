@@ -92,8 +92,6 @@ public abstract class XmppActivity extends ActionBarActivity {
 	public XmppConnectionService xmppConnectionService;
 	public boolean xmppConnectionServiceBound = false;
 
-	protected int mColorRed;
-
 	protected static final String FRAGMENT_TAG_DIALOG = "dialog";
 
 	private boolean isCameraFeatureAvailable = false;
@@ -400,9 +398,6 @@ public abstract class XmppActivity extends ActionBarActivity {
 		ExceptionHelper.init(getApplicationContext());
 		new EmojiService(this).init();
 		this.isCameraFeatureAvailable = getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA);
-
-		mColorRed = ContextCompat.getColor(this, R.color.red800);
-
 		this.mTheme = findTheme();
 		setTheme(this.mTheme);
 
@@ -765,15 +760,6 @@ public abstract class XmppActivity extends ActionBarActivity {
 				mPendingConferenceInvite = null;
 			}
 		}
-	}
-
-	public int getWarningTextColor() {
-		return this.mColorRed;
-	}
-
-	public int getPixel(int dp) {
-		DisplayMetrics metrics = getResources().getDisplayMetrics();
-		return ((int) (dp * metrics.density));
 	}
 
 	public boolean copyTextToClipboard(String text, int labelResId) {
