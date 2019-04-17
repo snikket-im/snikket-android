@@ -706,7 +706,7 @@
   <string name="medium">Mittel</string>
   <string name="large">Groß</string>
   <string name="not_encrypted_for_this_device">Die Nachricht wurde nicht für dieses Gerät verschlüsselt.</string>
-  <string name="omemo_decryption_failed">Die OMEMO-Nachricht konnte nicht entschlüsselt werden.</string>
+  <string name="omemo_decryption_failed">OMEMO-Nachricht konnte nicht entschlüsselt werden.</string>
   <string name="undo">rückgängig</string>
   <string name="location_disabled">Standort teilen ist deaktiviert</string>
   <string name="action_fix_to_location">Position fixieren</string>
@@ -756,7 +756,7 @@
   <string name="view_users">Teilnehmer anzeigen</string>
   <string name="group_chat_members">Teilnehmer</string>
   <string name="media_browser">Medienbrowser</string>
-  <string name="security_violation_not_attaching_file">Die Datei wurde aufgrund von Sicherheitsverletzungen ausgelassen.</string>
+  <string name="security_violation_not_attaching_file">Datei wurde aufgrund von Sicherheitsverletzungen ausgelassen.</string>
   <string name="pref_video_compression">Videoqualität</string>
   <string name="pref_video_compression_summary">Geringere Qualität ermöglicht kleinere Dateien</string>
   <string name="video_360p">Mittel (360p)</string>

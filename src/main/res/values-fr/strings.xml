@@ -229,7 +229,7 @@
   <string name="delete_bookmark">Supprimer le favori</string>
   <string name="destroy_room">Détruire le chat en groupe</string>
   <string name="destroy_channel">Détruire le canal</string>
-  <string name="destroy_room_dialog">Voulez-vous vraiment détruire cette discussion de groupe? \ N \ n<b>Avertissement:</b> la discussion de groupe sera complètement supprimée du serveur.</string>
+  <string name="destroy_room_dialog">Voulez-vous vraiment détruire cette discussion de groupe?\n\n<b>Avertissement:</b> la discussion de groupe sera complètement supprimée du serveur.</string>
   <string name="destroy_channel_dialog">Êtes-vous sûr de vouloir détruire ce canal public? \ On \ <b>Avertissement:</b> le canal sera complètement supprimé du serveur.</string>
   <string name="could_not_destroy_room">Impossible de détruire le chat en groupe</string>
   <string name="could_not_destroy_channel">Impossible de détruire le canal</string>
@@ -502,8 +502,8 @@
   <string name="no_storage_permission">Conversations a besoin d\'accéder au stockage externe</string>
   <string name="no_camera_permission">Conversations a besoin d\'accéder à l\'appareil photo</string>
   <string name="sync_with_contacts">Synchroniser avec contacts</string>
-  <string name="sync_with_contacts_long">Conversations veut faire correspondre votre liste de contacts côté serveur avec votre carnet d\'adresses local pour afficher les noms complets et les avatars de vos contacts. \ N \ nLes conversions liront uniquement vos contacts et les feront correspondre localement sans les télécharger sur votre serveur. \ N \ nVous allez maintenant être invité à donner la permission d\'accéder à vos contacts.</string>
-  <string name="sync_with_contacts_quicksy"><![CDATA[Quicksy a besoin d\'accéder aux numéros de téléphone de vos contacts pour vous suggérer des contacts éventuels déjà connectés.<br><br> Nous ne stockerons pas de copie de ces numéros. \ N \ nPour plus d\'informations, lisez notre <a href="https://quicksy.im/#privacy">politique de confidentialité</a>. <br><br>maintenant être invité à donner la permission d\'accéder à vos contacts.]]></string>
+  <string name="sync_with_contacts_long">Conversations veut faire correspondre votre liste de contacts côté serveur avec votre carnet d\'adresses local pour afficher les noms complets et les avatars de vos contacts.\n\nLes conversions liront uniquement vos contacts et les feront correspondre localement sans les télécharger sur votre serveur.\n\nVous allez maintenant être invité à donner la permission d\'accéder à vos contacts.</string>
+  <string name="sync_with_contacts_quicksy"><![CDATA[Quicksy a besoin d\'accéder aux numéros de téléphone de vos contacts pour vous suggérer des contacts éventuels déjà connectés.<br><br> Nous ne stockerons pas de copie de ces numéros.\n\nPour plus d\'informations, lisez notre <a href="https://quicksy.im/#privacy">politique de confidentialité</a>. <br><br>maintenant être invité à donner la permission d\'accéder à vos contacts.]]></string>
   <string name="notify_on_all_messages">Notifier pour tous les messages</string>
   <string name="notify_only_when_highlighted">Notifier seulement en cas de mention</string>
   <string name="notify_never">Notifications désactivées</string>
@@ -529,7 +529,7 @@
   <string name="welcome_text">XMPP est un réseau de messagerie instantanée indépendant du fournisseur. Vous pouvez utiliser ce client avec le serveur XMPP de votre choix. \ NCependant, pour votre commodité, nous avons facilité la création d\'un compte pour les conversations.im¹; un fournisseur spécialement adapté à l\'utilisation avec Conversations.</string>
   <string name="welcome_text_quicksy"><![CDATA[Quicksy est une version du populaire client XMPP Conversations avec découverte automatique des contacts.<br><br>Vous vous inscrivez avec votre numéro de téléphone et Quicksy va automatiquement, en fonction des numéros de votre carnet d’adresses, vous suggérer d’éventuels contacts.<br><br> en vous inscrivant, vous acceptez notre <a href="https://quicksy.im/#privacy">politique de confidentialité</a>.]]></string>
   <string name="agree_and_continue">Accepter &amp; continuer</string>
-  <string name="magic_create_text">Nous vous guiderons tout au long du processus de création d\'un compte sur conversations.im.¹ \ nLorsque vous sélectionnerez conversations.im en tant que fournisseur, vous pourrez communiquer avec les utilisateurs d\'autres fournisseurs en leur fournissant votre adresse XMPP complète.</string>
+  <string name="magic_create_text">Nous vous guiderons tout au long du processus de création d\'un compte sur conversations.im.¹\nLorsque vous sélectionnerez conversations.im en tant que fournisseur, vous pourrez communiquer avec les utilisateurs d\'autres fournisseurs en leur fournissant votre adresse XMPP complète.</string>
   <string name="your_full_jid_will_be">Votre adresse XMPP complète sera : %s</string>
   <string name="create_account">Créer un compte</string>
   <string name="use_own_provider">Utiliser votre propre fournisseur</string>

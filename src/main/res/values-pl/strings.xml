@@ -872,4 +872,5 @@ Administrator twojego serwera będzie mógł czytać twoje wiadomości, ale moż
   <string name="manage_permission">Zarządzaj uprawnieniami</string>
   <string name="search_participants">Wyszukaj uczestników</string>
   <string name="file_too_large">Plik jest zbyt duży</string>
+  <string name="attach">Dołącz</string>
 </resources>

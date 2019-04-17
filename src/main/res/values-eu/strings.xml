@@ -502,6 +502,7 @@
   <string name="no_storage_permission">Conversationsek kanpoko biltegirako sarbidea behar du</string>
   <string name="no_camera_permission">Conversationsek kamerarako sarbidea behar du</string>
   <string name="sync_with_contacts">Kontaktuekin sinkronizatu</string>
+  <string name="sync_with_contacts_long">Conversationsek zerbitzariko zure kontaktuen zerrenda eta zure helbide liburu lokala uztartu nahi ditu haien izenak eta argazkiak erakusteko.\n\nConversationsek zure kontaktuak modu lokalean soilik irakurri eta uztartuko ditu, zure zerbitzarira kargatu gabe.\n\nJarraian baimenak eskatuko zaizkizu zure kontaktuetara sartu ahal izateko.</string>
   <string name="notify_on_all_messages">Mezu guztiak jakinarazi</string>
   <string name="notify_only_when_highlighted">Jakinarazi aipatua izaterakoan soilik</string>
   <string name="notify_never">Jakinarazpenak ezgaituta</string>
@@ -524,7 +525,9 @@
   <string name="security_error_invalid_file_access">Segurtasun akatsa: fitxategi sarrera baliogabea</string>
   <string name="no_application_to_share_uri">Ez da aplikaziorik aurkitu URIa partekatzeko</string>
   <string name="share_uri_with">URIa honekin partekatu...</string>
+  <string name="welcome_text">XMPP hornitzaleez independiente den protokolo bat da. Bezero hau aukeratzen duzun edozein XMPP zerbitzariarekin erabili dezakezu.\nHala ere zure erosotasunerako conversations.im¹-en, Conversationsekin bereziki erabiltzeko egokia den hornitzaile batean, kontu bat sortzea erraz egin dugu.</string>
   <string name="agree_and_continue">Onartu eta jarraitu</string>
+  <string name="magic_create_text">conversations.im-en kontu bat sortzeko prozesuan zehar gidatuko zaitugu.\nconversations.im¹ hornitzaile bezala aukeratzerakoan beste hornitzaileen erabiltzaileekin komunikatzeko gai izango zara haiei zure XMPP helbide osoa emanez.</string>
   <string name="your_full_jid_will_be">Zure XMPP helbide osoa hau izango da: %s</string>
   <string name="create_account">Kontua sortu</string>
   <string name="use_own_provider">Nire hornitzale propioa erabili</string>
@@ -817,6 +820,7 @@
   <string name="restore_backup">Babes-kopia berrezarri</string>
   <string name="restore">Berrezarri</string>
   <string name="enter_password_to_restore">Sartu %s kontuaren pasahitza babes-kopia berrezartzeko.</string>
+  <string name="restore_warning">Ez erabili babes-kopiak berrezartzeko ezaugarria instalazio bat klonatzeko (aldi berean exekutatzeko). Babes-kopia bat berrezartzea migrazioetarako edo jatorrizko gailua galdu duzunerako da soilik.</string>
   <string name="unable_to_restore_backup">Ezin izan da babes-kopia berrezarri.</string>
   <string name="unable_to_decrypt_backup">Ezin izan da babes-kopia desenkriptatu. Pasahitza zuzena da?</string>
   <string name="backup_channel_name">Babes-kopiak egin eta berrezarri</string>
@@ -848,4 +852,5 @@
   <string name="manage_permission">Baimenak kudeatu</string>
   <string name="search_participants">Parte-hartzaileak bilatu</string>
   <string name="file_too_large">Fitxategia handiegia da</string>
+  <string name="attach">Erantsi</string>
 </resources>
