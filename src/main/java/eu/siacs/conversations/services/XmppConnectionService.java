@@ -920,7 +920,7 @@ public class XmppConnectionService extends Service {
                 }
             }
             if (account.setShowErrorNotification(true)) {
-                databaseBackend.updateAccount(account);
+                mDatabaseWriterExecutor.execute(() -> databaseBackend.updateAccount(account));
             }
         }
         mNotificationService.updateErrorNotification();
@@ -931,7 +931,7 @@ public class XmppConnectionService extends Service {
             if (account.hasErrorStatus()) {
                 Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": dismissing error notification");
                 if (account.setShowErrorNotification(false)) {
-                    databaseBackend.updateAccount(account);
+                    mDatabaseWriterExecutor.execute(() -> databaseBackend.updateAccount(account));
                 }
             }
         }
