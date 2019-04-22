@@ -41,7 +41,7 @@ public final class Config {
     public static final String MAGIC_CREATE_DOMAIN = "conversations.im";
     public static final String QUICKSY_DOMAIN = "quicksy.im";
 
-    public static final Jid CHANNEL_DISCOVERY = Jid.of("rodrigo.de.mucobedo@dreckshal.de");
+    public static final String CHANNEL_DISCOVERY = "https://search.jabbercat.org";
 
     public static final boolean DISALLOW_REGISTRATION_IN_UI = false; //hide the register checkbox
 

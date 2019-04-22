@@ -49,7 +49,6 @@ import org.openintents.openpgp.util.OpenPgpServiceConnection;
 
 import java.io.File;
 import java.net.URL;
-import java.nio.channels.Channel;
 import java.security.SecureRandom;
 import java.security.Security;
 import java.security.cert.CertificateException;
@@ -69,6 +68,9 @@ import java.util.Set;
 import java.util.WeakHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicLong;
 
@@ -85,7 +87,6 @@ import eu.siacs.conversations.crypto.axolotl.XmppAxolotlMessage;
 import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.entities.Blockable;
 import eu.siacs.conversations.entities.Bookmark;
-import eu.siacs.conversations.entities.ChannelSearchResult;
 import eu.siacs.conversations.entities.Contact;
 import eu.siacs.conversations.entities.Conversation;
 import eu.siacs.conversations.entities.Conversational;
@@ -102,6 +103,7 @@ import eu.siacs.conversations.generator.MessageGenerator;
 import eu.siacs.conversations.generator.PresenceGenerator;
 import eu.siacs.conversations.http.HttpConnectionManager;
 import eu.siacs.conversations.http.CustomURLStreamHandlerFactory;
+import eu.siacs.conversations.http.services.MuclumbusService;
 import eu.siacs.conversations.parser.AbstractParser;
 import eu.siacs.conversations.parser.IqParser;
 import eu.siacs.conversations.parser.MessageParser;
@@ -114,7 +116,6 @@ import eu.siacs.conversations.ui.UiCallback;
 import eu.siacs.conversations.ui.interfaces.OnAvatarPublication;
 import eu.siacs.conversations.ui.interfaces.OnMediaLoaded;
 import eu.siacs.conversations.ui.interfaces.OnSearchResultsAvailable;
-import eu.siacs.conversations.utils.AccountUtils;
 import eu.siacs.conversations.utils.Compatibility;
 import eu.siacs.conversations.utils.ConversationsFileObserver;
 import eu.siacs.conversations.utils.CryptoHelper;
@@ -154,6 +155,11 @@ import eu.siacs.conversations.xmpp.stanzas.IqPacket;
 import eu.siacs.conversations.xmpp.stanzas.MessagePacket;
 import eu.siacs.conversations.xmpp.stanzas.PresencePacket;
 import me.leolin.shortcutbadger.ShortcutBadger;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 import rocks.xmpp.addr.Jid;
 
 public class XmppConnectionService extends Service {
@@ -236,6 +242,7 @@ public class XmppConnectionService extends Service {
     private AvatarService mAvatarService = new AvatarService(this);
     private MessageArchiveService mMessageArchiveService = new MessageArchiveService(this);
     private PushManagementService mPushManagementService = new PushManagementService(this);
+    private MuclumbusService muclumbusService;
     private QuickConversationsService mQuickConversationsService = new QuickConversationsService(this);
     private final ConversationsFileObserver fileObserver = new ConversationsFileObserver(
             Environment.getExternalStorageDirectory().getAbsolutePath()
@@ -798,56 +805,61 @@ public class XmppConnectionService extends Service {
         return pingNow;
     }
 
-    public void discoverChannels(String query, OnChannelSearchResultsFound listener) {
-        IqPacket packet = new IqPacket(IqPacket.TYPE.GET);
-        packet.setTo(Config.CHANNEL_DISCOVERY);
-        Element search = packet.addChild("search","https://xmlns.zombofant.net/muclumbus/search/1.0");
-        search.addChild("set","http://jabber.org/protocol/rsm").addChild("max").setContent("100");
-        Bundle bundle = new Bundle();
-        if (!TextUtils.isEmpty(query)) {
-            bundle.putString("q",query);
+    public void discoverChannels(String query, OnChannelSearchResultsFound onChannelSearchResultsFound) {
+        Log.d(Config.LOGTAG,"discover channels. query="+query);
+        if (query == null || query.trim().isEmpty()) {
+            discoverChannelsInternal(onChannelSearchResultsFound);
+        } else {
+            discoverChannelsInternal(query, onChannelSearchResultsFound);
         }
-        Data data = Data.create("https://xmlns.zombofant.net/muclumbus/search/1.0#params", bundle);
-        search.addChild(data);
-        final Account account = AccountUtils.getFirstEnabled(this);
-        if (account == null) {
-            return;
-        }
-        sendIqPacket(account, packet, new OnIqPacketReceived() {
-            @Override
-            public void onIqPacketReceived(Account account, IqPacket response) {
-                ArrayList<ChannelSearchResult> searchResults = new ArrayList<>();
-                if (response.getType() == IqPacket.TYPE.RESULT) {
-                    Element result = response.findChild("result","https://xmlns.zombofant.net/muclumbus/search/1.0");
-                    if (result != null) {
-                        for(Element child : result.getChildren()) {
-                            if ("item".equals(child.getName())) {
-                                String name = child.findChildContent("name");
-                                String description = child.findChildContent("description");
-                                Jid room = child.getAttributeAsJid("address");
-                                if (room != null) {
-                                    searchResults.add(new ChannelSearchResult(name,description,room));
-                                } else {
-                                    Log.d(Config.LOGTAG,"skipping because room was null");
-                                }
-                            }
-                        }
-                    } else {
-                        Log.d(Config.LOGTAG,"result was null");
+    }
+
+    private void discoverChannelsInternal(OnChannelSearchResultsFound listener) {
+        Call<MuclumbusService.Rooms> call = muclumbusService.getRooms(1);
+        try {
+            call.enqueue(new Callback<MuclumbusService.Rooms>() {
+                @Override
+                public void onResponse(Call<MuclumbusService.Rooms> call, Response<MuclumbusService.Rooms> response) {
+                    final MuclumbusService.Rooms body = response.body();
+                    if (body == null) {
+                        return;
                     }
-                } else {
-                    Log.d(Config.LOGTAG,response.toString());
-                }
-                if (listener != null) {
-                    listener.onChannelSearchResultsFound(searchResults);
+                    listener.onChannelSearchResultsFound(body.items);
                 }
 
+                @Override
+                public void onFailure(Call<MuclumbusService.Rooms> call, Throwable throwable) {
+
+                }
+            });
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void discoverChannelsInternal(String query, OnChannelSearchResultsFound listener) {
+        Call<MuclumbusService.SearchResult> searchResultCall = muclumbusService.search(new MuclumbusService.SearchRequest(query));
+
+        searchResultCall.enqueue(new Callback<MuclumbusService.SearchResult>() {
+            @Override
+            public void onResponse(Call<MuclumbusService.SearchResult> call, Response<MuclumbusService.SearchResult> response) {
+                System.out.println(response.message());
+                MuclumbusService.SearchResult body = response.body();
+                if (body == null) {
+                    return;
+                }
+                listener.onChannelSearchResultsFound(body.result.items);
+            }
+
+            @Override
+            public void onFailure(Call<MuclumbusService.SearchResult> call, Throwable throwable) {
+                throwable.printStackTrace();
             }
         });
     }
 
     public interface OnChannelSearchResultsFound {
-        void onChannelSearchResultsFound(List<ChannelSearchResult> results);
+        void onChannelSearchResultsFound(List<MuclumbusService.Room> results);
     }
 
     public boolean isDataSaverDisabled() {
@@ -1118,6 +1130,13 @@ public class XmppConnectionService extends Service {
         }
         mForceDuringOnCreate.set(false);
         toggleForegroundService();
+
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(Config.CHANNEL_DISCOVERY)
+                .addConverterFactory(GsonConverterFactory.create())
+                .callbackExecutor(Executors.newSingleThreadExecutor())
+                .build();
+        muclumbusService = retrofit.create(MuclumbusService.class);
     }
 
     private void checkForDeletedFiles() {

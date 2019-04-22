@@ -2,13 +2,12 @@ package eu.siacs.conversations.ui;
 
 import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.text.Html;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -17,19 +16,18 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 
-import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.databinding.ActivityChannelDiscoveryBinding;
 import eu.siacs.conversations.entities.Account;
-import eu.siacs.conversations.entities.ChannelSearchResult;
 import eu.siacs.conversations.entities.Conversation;
+import eu.siacs.conversations.http.services.MuclumbusService;
 import eu.siacs.conversations.services.XmppConnectionService;
 import eu.siacs.conversations.ui.adapter.ChannelSearchResultAdapter;
+import eu.siacs.conversations.ui.util.PendingItem;
 import eu.siacs.conversations.ui.util.SoftKeyboardUtils;
 import eu.siacs.conversations.utils.AccountUtils;
 import rocks.xmpp.addr.Jid;
@@ -40,6 +38,9 @@ public class ChannelDiscoveryActivity extends XmppActivity implements MenuItem.O
 
     private final ChannelSearchResultAdapter adapter = new ChannelSearchResultAdapter();
 
+    private final PendingItem<String> mInitialSearchValue = new PendingItem<>();
+
+    private MenuItem mMenuSearchView;
     private EditText mSearchEditText;
 
     private boolean optedIn = false;
@@ -52,7 +53,13 @@ public class ChannelDiscoveryActivity extends XmppActivity implements MenuItem.O
     @Override
     void onBackendConnected() {
         if (optedIn) {
-            xmppConnectionService.discoverChannels(null, this);
+            String query;
+            if (mMenuSearchView != null && mMenuSearchView.isActionViewExpanded()) {
+                query = mSearchEditText.getText().toString();
+            } else {
+                query = mInitialSearchValue.peek();
+            }
+            xmppConnectionService.discoverChannels(query, this);
         }
     }
 
@@ -65,17 +72,32 @@ public class ChannelDiscoveryActivity extends XmppActivity implements MenuItem.O
         binding.list.setAdapter(this.adapter);
         this.adapter.setOnChannelSearchResultSelectedListener(this);
         optedIn = getPreferences().getBoolean(CHANNEL_DISCOVERY_OPT_IN, false);
+
+        final String search = savedInstanceState == null ? null : savedInstanceState.getString("search");
+        if (search != null) {
+            mInitialSearchValue.push(search);
+        }
+
     }
 
     @Override
     public boolean onCreateOptionsMenu(final Menu menu) {
         getMenuInflater().inflate(R.menu.muc_users_activity, menu);
-        final MenuItem menuSearchView = menu.findItem(R.id.action_search);
-        final View mSearchView = menuSearchView.getActionView();
+        mMenuSearchView = menu.findItem(R.id.action_search);
+        final View mSearchView = mMenuSearchView.getActionView();
         mSearchEditText = mSearchView.findViewById(R.id.search_field);
         mSearchEditText.setHint(R.string.search_channels);
+        String initialSearchValue = mInitialSearchValue.pop();
+        if (initialSearchValue != null) {
+            mMenuSearchView.expandActionView();
+            mSearchEditText.append(initialSearchValue);
+            mSearchEditText.requestFocus();
+            if (optedIn) {
+                xmppConnectionService.discoverChannels(initialSearchValue, this);
+            }
+        }
         mSearchEditText.setOnEditorActionListener(this);
-        menuSearchView.setOnActionExpandListener(this);
+        mMenuSearchView.setOnActionExpandListener(this);
         return true;
     }
 
@@ -117,6 +139,14 @@ public class ChannelDiscoveryActivity extends XmppActivity implements MenuItem.O
         }
     }
 
+    @Override
+    public void onSaveInstanceState(Bundle savedInstanceState) {
+        if (mMenuSearchView != null && mMenuSearchView.isActionViewExpanded()) {
+            savedInstanceState.putString("search", mSearchEditText != null ? mSearchEditText.getText().toString() : null);
+        }
+        super.onSaveInstanceState(savedInstanceState);
+    }
+
     private void optIn() {
         SharedPreferences preferences = getPreferences();
         preferences.edit().putBoolean(CHANNEL_DISCOVERY_OPT_IN,true).apply();
@@ -135,13 +165,13 @@ public class ChannelDiscoveryActivity extends XmppActivity implements MenuItem.O
     }
 
     @Override
-    public void onChannelSearchResultsFound(List<ChannelSearchResult> results) {
+    public void onChannelSearchResultsFound(List<MuclumbusService.Room> results) {
         runOnUiThread(() -> adapter.submitList(results));
 
     }
 
     @Override
-    public void onChannelSearchResult(final ChannelSearchResult result) {
+    public void onChannelSearchResult(final MuclumbusService.Room result) {
         List<String> accounts = AccountUtils.getEnabledAccounts(xmppConnectionService);
         if (accounts.size() == 1) {
             joinChannelSearchResult(accounts.get(0),result);
@@ -157,7 +187,7 @@ public class ChannelDiscoveryActivity extends XmppActivity implements MenuItem.O
 
     }
 
-    public void joinChannelSearchResult(String accountJid, ChannelSearchResult result) {
+    public void joinChannelSearchResult(String accountJid, MuclumbusService.Room result) {
         Account account = xmppConnectionService.findAccountByJid(Jid.of(accountJid));
         final Conversation conversation = xmppConnectionService.findOrCreateConversation(account, result.getRoom(), true, true, true);
         switchToConversation(conversation);

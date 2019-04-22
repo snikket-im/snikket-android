@@ -12,21 +12,21 @@ import android.view.ViewGroup;
 
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.databinding.SearchResultItemBinding;
-import eu.siacs.conversations.entities.ChannelSearchResult;
+import eu.siacs.conversations.http.services.MuclumbusService;
 import eu.siacs.conversations.ui.util.AvatarWorkerTask;
 
-public class ChannelSearchResultAdapter extends ListAdapter<ChannelSearchResult, ChannelSearchResultAdapter.ViewHolder> {
+public class ChannelSearchResultAdapter extends ListAdapter<MuclumbusService.Room, ChannelSearchResultAdapter.ViewHolder> {
 
     private OnChannelSearchResultSelected listener;
 
-    private static final DiffUtil.ItemCallback<ChannelSearchResult> DIFF = new DiffUtil.ItemCallback<ChannelSearchResult>() {
+    private static final DiffUtil.ItemCallback<MuclumbusService.Room> DIFF = new DiffUtil.ItemCallback<MuclumbusService.Room>() {
         @Override
-        public boolean areItemsTheSame(@NonNull ChannelSearchResult a, @NonNull ChannelSearchResult b) {
+        public boolean areItemsTheSame(@NonNull MuclumbusService.Room a, @NonNull MuclumbusService.Room b) {
             return false;
         }
 
         @Override
-        public boolean areContentsTheSame(@NonNull ChannelSearchResult a, @NonNull ChannelSearchResult b) {
+        public boolean areContentsTheSame(@NonNull MuclumbusService.Room a, @NonNull MuclumbusService.Room b) {
             return a.equals(b);
         }
     };
@@ -43,7 +43,7 @@ public class ChannelSearchResultAdapter extends ListAdapter<ChannelSearchResult,
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder viewHolder, int position) {
-        final ChannelSearchResult searchResult = getItem(position);
+        final MuclumbusService.Room searchResult = getItem(position);
         viewHolder.binding.name.setText(searchResult.getName());
         final String description = searchResult.getDescription();
         if (TextUtils.isEmpty(description)) {
@@ -73,6 +73,6 @@ public class ChannelSearchResultAdapter extends ListAdapter<ChannelSearchResult,
     }
 
     public interface OnChannelSearchResultSelected {
-        void onChannelSearchResult(ChannelSearchResult result);
+        void onChannelSearchResult(MuclumbusService.Room result);
     }
 }
