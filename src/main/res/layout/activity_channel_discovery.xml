@@ -14,18 +14,26 @@
             layout="@layout/toolbar" />
 
 
+        <ProgressBar
+            android:id="@+id/progressBar"
+            style="?android:attr/progressBarStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_anchor="@+id/list"
+            android:layout_gravity="center_horizontal"/>
+
         <android.support.design.widget.CoordinatorLayout
             android:id="@+id/coordinator"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="?attr/color_background_primary">
-
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/list"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="?attr/color_background_primary"
                 android:orientation="vertical"
+                android:visibility="gone"
                 app:layoutManager="android.support.v7.widget.LinearLayoutManager" />
         </android.support.design.widget.CoordinatorLayout>
 

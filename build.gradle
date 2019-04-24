@@ -66,6 +66,7 @@ dependencies {
     implementation "com.leinardi.android:speed-dial:2.0.1"
     implementation 'com.squareup.retrofit2:retrofit:2.5.0'
     implementation 'com.squareup.retrofit2:converter-gson:2.5.0'
+    implementation 'com.google.guava:guava:27.1-android'
     quicksyImplementation 'io.michaelrocks:libphonenumber-android:8.10.1'
 }
 

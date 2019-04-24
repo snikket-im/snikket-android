@@ -209,6 +209,7 @@ public class XmppConnectionService extends Service {
     private FileBackend fileBackend = new FileBackend(this);
     private MemorizingTrustManager mMemorizingTrustManager;
     private NotificationService mNotificationService = new NotificationService(this);
+    private ChannelDiscoveryService mChannelDiscoveryService = new ChannelDiscoveryService(this);
     private ShortcutService mShortcutService = new ShortcutService(this);
     private AtomicBoolean mInitialAddressbookSyncCompleted = new AtomicBoolean(false);
     private AtomicBoolean mForceForegroundService = new AtomicBoolean(false);
@@ -242,7 +243,6 @@ public class XmppConnectionService extends Service {
     private AvatarService mAvatarService = new AvatarService(this);
     private MessageArchiveService mMessageArchiveService = new MessageArchiveService(this);
     private PushManagementService mPushManagementService = new PushManagementService(this);
-    private MuclumbusService muclumbusService;
     private QuickConversationsService mQuickConversationsService = new QuickConversationsService(this);
     private final ConversationsFileObserver fileObserver = new ConversationsFileObserver(
             Environment.getExternalStorageDirectory().getAbsolutePath()
@@ -805,61 +805,8 @@ public class XmppConnectionService extends Service {
         return pingNow;
     }
 
-    public void discoverChannels(String query, OnChannelSearchResultsFound onChannelSearchResultsFound) {
-        Log.d(Config.LOGTAG,"discover channels. query="+query);
-        if (query == null || query.trim().isEmpty()) {
-            discoverChannelsInternal(onChannelSearchResultsFound);
-        } else {
-            discoverChannelsInternal(query, onChannelSearchResultsFound);
-        }
-    }
-
-    private void discoverChannelsInternal(OnChannelSearchResultsFound listener) {
-        Call<MuclumbusService.Rooms> call = muclumbusService.getRooms(1);
-        try {
-            call.enqueue(new Callback<MuclumbusService.Rooms>() {
-                @Override
-                public void onResponse(Call<MuclumbusService.Rooms> call, Response<MuclumbusService.Rooms> response) {
-                    final MuclumbusService.Rooms body = response.body();
-                    if (body == null) {
-                        return;
-                    }
-                    listener.onChannelSearchResultsFound(body.items);
-                }
-
-                @Override
-                public void onFailure(Call<MuclumbusService.Rooms> call, Throwable throwable) {
-
-                }
-            });
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    private void discoverChannelsInternal(String query, OnChannelSearchResultsFound listener) {
-        Call<MuclumbusService.SearchResult> searchResultCall = muclumbusService.search(new MuclumbusService.SearchRequest(query));
-
-        searchResultCall.enqueue(new Callback<MuclumbusService.SearchResult>() {
-            @Override
-            public void onResponse(Call<MuclumbusService.SearchResult> call, Response<MuclumbusService.SearchResult> response) {
-                System.out.println(response.message());
-                MuclumbusService.SearchResult body = response.body();
-                if (body == null) {
-                    return;
-                }
-                listener.onChannelSearchResultsFound(body.result.items);
-            }
-
-            @Override
-            public void onFailure(Call<MuclumbusService.SearchResult> call, Throwable throwable) {
-                throwable.printStackTrace();
-            }
-        });
-    }
-
-    public interface OnChannelSearchResultsFound {
-        void onChannelSearchResultsFound(List<MuclumbusService.Room> results);
+    public void discoverChannels(String query, ChannelDiscoveryService.OnChannelSearchResultsFound onChannelSearchResultsFound) {
+        mChannelDiscoveryService.discover(query, onChannelSearchResultsFound);
     }
 
     public boolean isDataSaverDisabled() {
@@ -1130,13 +1077,6 @@ public class XmppConnectionService extends Service {
         }
         mForceDuringOnCreate.set(false);
         toggleForegroundService();
-
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(Config.CHANNEL_DISCOVERY)
-                .addConverterFactory(GsonConverterFactory.create())
-                .callbackExecutor(Executors.newSingleThreadExecutor())
-                .build();
-        muclumbusService = retrofit.create(MuclumbusService.class);
     }
 
     private void checkForDeletedFiles() {

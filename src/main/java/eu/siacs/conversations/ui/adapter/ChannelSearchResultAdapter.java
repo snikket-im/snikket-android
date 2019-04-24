@@ -22,7 +22,7 @@ public class ChannelSearchResultAdapter extends ListAdapter<MuclumbusService.Roo
     private static final DiffUtil.ItemCallback<MuclumbusService.Room> DIFF = new DiffUtil.ItemCallback<MuclumbusService.Room>() {
         @Override
         public boolean areItemsTheSame(@NonNull MuclumbusService.Room a, @NonNull MuclumbusService.Room b) {
-            return false;
+            return a.address != null && a.address.equals(b.address);
         }
 
         @Override

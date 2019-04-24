@@ -1,5 +1,7 @@
 package eu.siacs.conversations.http.services;
 
+import com.google.common.base.Objects;
+
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
@@ -31,12 +33,8 @@ public interface MuclumbusService {
     class Room implements AvatarService.Avatarable {
 
         public String address;
-        public int nusers;
-        public boolean is_open;
-        public String anonymity_mode;
         public String name;
         public String description;
-        public String language;
 
         public String getName() {
             return name;
@@ -58,6 +56,21 @@ public interface MuclumbusService {
         public int getAvatarBackgroundColor() {
             Jid room = getRoom();
             return UIHelper.getColorForName(room != null ? room.asBareJid().toEscapedString() : name);
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+            Room room = (Room) o;
+            return Objects.equal(address, room.address) &&
+                    Objects.equal(name, room.name) &&
+                    Objects.equal(description, room.description);
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hashCode(address, name, description);
         }
     }
 

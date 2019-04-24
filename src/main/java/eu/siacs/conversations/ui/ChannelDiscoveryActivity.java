@@ -2,7 +2,6 @@ package eu.siacs.conversations.ui;
 
 import android.app.AlertDialog;
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
@@ -25,18 +24,20 @@ import eu.siacs.conversations.databinding.ActivityChannelDiscoveryBinding;
 import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.entities.Conversation;
 import eu.siacs.conversations.http.services.MuclumbusService;
-import eu.siacs.conversations.services.XmppConnectionService;
+import eu.siacs.conversations.services.ChannelDiscoveryService;
 import eu.siacs.conversations.ui.adapter.ChannelSearchResultAdapter;
 import eu.siacs.conversations.ui.util.PendingItem;
 import eu.siacs.conversations.ui.util.SoftKeyboardUtils;
 import eu.siacs.conversations.utils.AccountUtils;
 import rocks.xmpp.addr.Jid;
 
-public class ChannelDiscoveryActivity extends XmppActivity implements MenuItem.OnActionExpandListener, TextView.OnEditorActionListener, XmppConnectionService.OnChannelSearchResultsFound, ChannelSearchResultAdapter.OnChannelSearchResultSelected {
+public class ChannelDiscoveryActivity extends XmppActivity implements MenuItem.OnActionExpandListener, TextView.OnEditorActionListener, ChannelDiscoveryService.OnChannelSearchResultsFound, ChannelSearchResultAdapter.OnChannelSearchResultSelected {
 
     private static final String CHANNEL_DISCOVERY_OPT_IN = "channel_discovery_opt_in";
 
     private final ChannelSearchResultAdapter adapter = new ChannelSearchResultAdapter();
+
+    private ActivityChannelDiscoveryBinding binding;
 
     private final PendingItem<String> mInitialSearchValue = new PendingItem<>();
 
@@ -66,7 +67,7 @@ public class ChannelDiscoveryActivity extends XmppActivity implements MenuItem.O
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        ActivityChannelDiscoveryBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_channel_discovery);
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_channel_discovery);
         setSupportActionBar((Toolbar) binding.toolbar);
         configureActionBar(getSupportActionBar(), true);
         binding.list.setAdapter(this.adapter);
@@ -116,11 +117,16 @@ public class ChannelDiscoveryActivity extends XmppActivity implements MenuItem.O
         final InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(mSearchEditText.getWindowToken(), InputMethodManager.HIDE_IMPLICIT_ONLY);
         mSearchEditText.setText("");
-        adapter.submitList(Collections.emptyList());
+        toggleLoadingScreen();
         if (optedIn) {
             xmppConnectionService.discoverChannels(null, this);
         }
         return true;
+    }
+
+    private void toggleLoadingScreen() {
+        adapter.submitList(Collections.emptyList());
+        binding.progressBar.setVisibility(View.VISIBLE);
     }
 
     @Override
@@ -159,14 +165,18 @@ public class ChannelDiscoveryActivity extends XmppActivity implements MenuItem.O
         if (optedIn) {
             xmppConnectionService.discoverChannels(v.getText().toString(), this);
         }
-        adapter.submitList(Collections.emptyList());
+        toggleLoadingScreen();
         SoftKeyboardUtils.hideSoftKeyboard(this);
         return true;
     }
 
     @Override
     public void onChannelSearchResultsFound(List<MuclumbusService.Room> results) {
-        runOnUiThread(() -> adapter.submitList(results));
+        runOnUiThread(() -> {
+            adapter.submitList(results);
+            binding.list.setVisibility(View.VISIBLE);
+            binding.progressBar.setVisibility(View.GONE);
+        });
 
     }
 
