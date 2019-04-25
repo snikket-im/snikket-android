@@ -2592,7 +2592,7 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
         if (status == Account.State.ONLINE && conversation.setOutgoingChatState(ChatState.COMPOSING)) {
             service.sendChatState(conversation);
         }
-        updateSendButton();
+        runOnUiThread(this::updateSendButton);
     }
 
     @Override
@@ -2618,15 +2618,15 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
             service.sendChatState(conversation);
         }
         if (storeNextMessage()) {
-            activity.onConversationsListItemUpdated();
+            runOnUiThread(() -> activity.onConversationsListItemUpdated());
         }
-        updateSendButton();
+        runOnUiThread(this::updateSendButton);
     }
 
     @Override
     public void onTextChanged() {
         if (conversation != null && conversation.getCorrectingMessage() != null) {
-            updateSendButton();
+            runOnUiThread(this::updateSendButton);
         }
     }
 
