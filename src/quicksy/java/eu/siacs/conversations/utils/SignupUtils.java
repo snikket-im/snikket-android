@@ -16,9 +16,12 @@ import eu.siacs.conversations.ui.VerifyActivity;
 
 public class SignupUtils {
 
+    public static Intent getSignUpIntent(Activity activity, boolean ignored) {
+        return getSignUpIntent(activity);
+    }
+
     public static Intent getSignUpIntent(Activity activity) {
-        final Intent intent = new Intent(activity, EnterPhoneNumberActivity.class);
-        return intent;
+        return new Intent(activity, EnterPhoneNumberActivity.class);
     }
 
     public static Intent getRedirectionIntent(ConversationsActivity activity) {

@@ -2,18 +2,19 @@ package eu.siacs.conversations.ui;
 
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
+import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Button;
 import android.widget.Toast;
 
 import java.util.List;
 
 import eu.siacs.conversations.R;
+import eu.siacs.conversations.databinding.ActivityWelcomeBinding;
 import eu.siacs.conversations.entities.Account;
 
 import static eu.siacs.conversations.utils.PermissionUtils.allGranted;
@@ -55,24 +56,18 @@ public class WelcomeActivity extends XmppActivity {
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         }
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.welcome);
-        setSupportActionBar(findViewById(R.id.toolbar));
-        final ActionBar ab = getSupportActionBar();
-        if (ab != null) {
-            ab.setDisplayShowHomeEnabled(false);
-            ab.setDisplayHomeAsUpEnabled(false);
-        }
-        final Button createAccount = findViewById(R.id.create_account);
-        createAccount.setOnClickListener(v -> {
-            final Intent intent = new Intent(WelcomeActivity.this, MagicCreateActivity.class);
-            intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+        ActivityWelcomeBinding binding = DataBindingUtil.setContentView(this,R.layout.activity_welcome);
+        setSupportActionBar((Toolbar) binding.toolbar);
+        configureActionBar(getSupportActionBar(), false);
+        binding.registerNewAccount.setOnClickListener(v -> {
+            final Intent intent = new Intent(this, PickServerActivity.class);
             addInviteUri(intent);
             startActivity(intent);
         });
-        final Button useOwnProvider = findViewById(R.id.use_own_provider);
-        useOwnProvider.setOnClickListener(v -> {
+        binding.useExisting.setOnClickListener(v -> {
             List<Account> accounts = xmppConnectionService.getAccounts();
             Intent intent = new Intent(WelcomeActivity.this, EditAccountActivity.class);
+            intent.putExtra(EditAccountActivity.EXTRA_FORCE_REGISTER,false);
             if (accounts.size() == 1) {
                 intent.putExtra("jid", accounts.get(0).getJid().asBareJid().toString());
                 intent.putExtra("init", true);

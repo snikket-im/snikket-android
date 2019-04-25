@@ -527,7 +527,6 @@
     <string name="no_application_to_share_uri">No application found to share URI</string>
     <string name="share_uri_with">Share URI with…</string>
     <string name="welcome_header" translatable="false">Join the Conversation</string>
-    <string name="welcome_text">XMPP is a provider independent instant messaging network. You can use this client with what ever XMPP server you choose.\nHowever for your convenience we made it easy to create an account on conversations.im¹; a provider specially suited for the use with Conversations.</string>
     <string name="welcome_header_quicksy" translatable="false">Have some Quick Conversations</string>
     <string name="welcome_text_quicksy"><![CDATA[Quicksy is a spin off of the popular XMPP client Conversations with automatic contact discovery.<br><br>You sign up with your phone number and Quicksy will automatically—based on the phone numbers in your address book—suggest possible contacts to you.<br><br>By signing up you agree to our <a href="https://quicksy.im/#privacy">privacy policy</a>.]]></string>
     <string name="agree_and_continue">Agree &amp; continue</string>
@@ -861,4 +860,7 @@
     <string name="search_channels">Search channels</string>
     <string name="channel_discovery_opt_in_title">Possible privacy violation!</string>
     <string name="channel_discover_opt_in_message"><![CDATA[Channel discovery uses a third party service called <a href="https://search.jabbercat.org">search.jabbercat.org</a>.<br><br>Using this feature will transmit your IP address and search terms to that service. See their <a href="https://search.jabbercat.org/privacy">Privacy Policy</a> for more information.]]></string>
+    <string name="i_already_have_an_account">I already have an account</string>
+    <string name="add_existing_account">Add existing account</string>
+    <string name="register_new_account">Register new account</string>
 </resources>
