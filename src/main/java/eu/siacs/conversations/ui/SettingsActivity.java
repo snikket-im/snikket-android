@@ -384,6 +384,7 @@ public class SettingsActivity extends XmppActivity implements
 			reconnectAccounts();
 		} else if (name.equals("use_tor")) {
 			reconnectAccounts();
+			xmppConnectionService.reinitializeMuclumbusService();
 		} else if (name.equals(AUTOMATIC_MESSAGE_DELETION)) {
 			xmppConnectionService.expireOldMessages(true);
 		} else if (name.equals(THEME)) {

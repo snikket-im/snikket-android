@@ -805,6 +805,10 @@ public class XmppConnectionService extends Service {
         return pingNow;
     }
 
+    public void reinitializeMuclumbusService() {
+        mChannelDiscoveryService.initializeMuclumbusService();
+    }
+
     public void discoverChannels(String query, ChannelDiscoveryService.OnChannelSearchResultsFound onChannelSearchResultsFound) {
         mChannelDiscoveryService.discover(query, onChannelSearchResultsFound);
     }
@@ -992,6 +996,7 @@ public class XmppConnectionService extends Service {
         if (Compatibility.runsTwentySix()) {
             mNotificationService.initializeChannels();
         }
+        mChannelDiscoveryService.initializeMuclumbusService();
         mForceDuringOnCreate.set(Compatibility.runsAndTargetsTwentySix(this));
         toggleForegroundService();
         this.destroyed = false;

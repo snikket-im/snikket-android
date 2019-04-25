@@ -7,12 +7,16 @@ import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
 
+import java.io.IOException;
+import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
 import eu.siacs.conversations.Config;
+import eu.siacs.conversations.http.HttpConnectionManager;
 import eu.siacs.conversations.http.services.MuclumbusService;
+import okhttp3.OkHttpClient;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -24,19 +28,31 @@ public class ChannelDiscoveryService {
     private final XmppConnectionService service;
 
 
-    private final MuclumbusService muclumbusService;
+    private MuclumbusService muclumbusService;
 
     private final Cache<String, List<MuclumbusService.Room>> cache;
 
     public ChannelDiscoveryService(XmppConnectionService service) {
         this.service = service;
+        this.cache = CacheBuilder.newBuilder().expireAfterWrite(5, TimeUnit.MINUTES).build();
+    }
+
+    public void initializeMuclumbusService() {
+        OkHttpClient.Builder builder = new OkHttpClient.Builder();
+        if (service.useTorToConnect()) {
+            try {
+                builder.proxy(HttpConnectionManager.getProxy());
+            } catch (IOException e) {
+                throw new RuntimeException("Unable to use Tor proxy", e);
+            }
+        }
         Retrofit retrofit = new Retrofit.Builder()
+                .client(builder.build())
                 .baseUrl(Config.CHANNEL_DISCOVERY)
                 .addConverterFactory(GsonConverterFactory.create())
                 .callbackExecutor(Executors.newSingleThreadExecutor())
                 .build();
         this.muclumbusService = retrofit.create(MuclumbusService.class);
-        this.cache = CacheBuilder.newBuilder().expireAfterWrite(5, TimeUnit.MINUTES).build();
     }
 
     public void discover(String query, OnChannelSearchResultsFound onChannelSearchResultsFound) {
@@ -70,7 +86,8 @@ public class ChannelDiscoveryService {
 
                 @Override
                 public void onFailure(Call<MuclumbusService.Rooms> call, Throwable throwable) {
-
+                    Log.d(Config.LOGTAG, "Unable to query muclumbus on "+Config.CHANNEL_DISCOVERY, throwable);
+                    listener.onChannelSearchResultsFound(Collections.emptyList());
                 }
             });
         } catch (Exception e) {
@@ -95,7 +112,8 @@ public class ChannelDiscoveryService {
 
             @Override
             public void onFailure(Call<MuclumbusService.SearchResult> call, Throwable throwable) {
-                throwable.printStackTrace();
+                Log.d(Config.LOGTAG, "Unable to query muclumbus on "+Config.CHANNEL_DISCOVERY, throwable);
+                listener.onChannelSearchResultsFound(Collections.emptyList());
             }
         });
     }
