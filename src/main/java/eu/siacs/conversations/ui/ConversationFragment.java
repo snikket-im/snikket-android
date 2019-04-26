@@ -432,6 +432,9 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
                                 conversation.setDraftMessage(null);
                             } else if (conversation.getMode() == Conversation.MODE_MULTI) {
                                 conversation.setNextCounterpart(null);
+                                binding.textinput.setText("");
+                            } else {
+                                binding.textinput.setText("");
                             }
                             updateChatMsgHint();
                             updateSendButton();
@@ -455,11 +458,11 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
 
     private static ConversationFragment findConversationFragment(Activity activity) {
         Fragment fragment = activity.getFragmentManager().findFragmentById(R.id.main_fragment);
-        if (fragment != null && fragment instanceof ConversationFragment) {
+        if (fragment instanceof ConversationFragment) {
             return (ConversationFragment) fragment;
         }
         fragment = activity.getFragmentManager().findFragmentById(R.id.secondary_fragment);
-        if (fragment != null && fragment instanceof ConversationFragment) {
+        if (fragment instanceof ConversationFragment) {
             return (ConversationFragment) fragment;
         }
         return null;

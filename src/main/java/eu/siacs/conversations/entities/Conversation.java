@@ -60,6 +60,7 @@ public class Conversation extends AbstractEntity implements Blockable, Comparabl
 	private static final String ATTRIBUTE_NEXT_MESSAGE_TIMESTAMP = "next_message_timestamp";
 	private static final String ATTRIBUTE_CRYPTO_TARGETS = "crypto_targets";
 	private static final String ATTRIBUTE_NEXT_ENCRYPTION = "next_encryption";
+	private static final String ATTRIBUTE_CORRECTING_MESSAGE = "correcting_message";
 	static final String ATTRIBUTE_MEMBERS_ONLY = "members_only";
 	static final String ATTRIBUTE_MODERATED = "moderated";
 	static final String ATTRIBUTE_NON_ANONYMOUS = "non_anonymous";
@@ -82,7 +83,6 @@ public class Conversation extends AbstractEntity implements Blockable, Comparabl
 	private ChatState mOutgoingChatState = Config.DEFAULT_CHATSTATE;
 	private ChatState mIncomingChatState = Config.DEFAULT_CHATSTATE;
 	private String mFirstMamReference = null;
-	private Message correctingMessage;
 
 	public Conversation(final String name, final Account account, final Jid contactJid,
 	                    final int mode) {
@@ -424,15 +424,14 @@ public class Conversation extends AbstractEntity implements Blockable, Comparabl
 		setAttribute(ATTRIBUTE_CRYPTO_TARGETS, acceptedTargets);
 	}
 
-	//TODO store uuid in attribute
 	public boolean setCorrectingMessage(Message correctingMessage) {
-		this.correctingMessage = correctingMessage;
+		setAttribute(ATTRIBUTE_CORRECTING_MESSAGE,correctingMessage == null ? null : correctingMessage.getUuid());
 		return correctingMessage == null && draftMessage != null;
 	}
 
-	//TODO: dynamically find by uuid
 	public Message getCorrectingMessage() {
-		return this.correctingMessage;
+		final String uuid = getAttribute(ATTRIBUTE_CORRECTING_MESSAGE);
+		return uuid == null ? null : findSentMessageWithUuid(uuid);
 	}
 
 	public boolean withSelf() {
