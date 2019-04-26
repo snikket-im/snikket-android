@@ -1,5 +1,10 @@
 # Changelog
 
+### Version 2.5.0
+* Added channel search via search.jabbercat.org
+* Reworked onboarding screens
+* Warn when trying to enter domain address or channel address in Add Contact dialog
+
 ### Version 2.4.3
 * Fixed display of private messages sent from another client
 * Fixed backup creation on long time installations
