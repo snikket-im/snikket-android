@@ -495,7 +495,8 @@ public class StartConversationActivity extends XmppActivity implements XmppConne
 				getString(R.string.add),
 				prefilledJid,
 				null,
-				invite == null || !invite.hasFingerprints()
+				invite == null || !invite.hasFingerprints(),
+				true
 		);
 
 		dialog.setOnEnterJidDialogPositiveListener((accountJid, contactJid) -> {

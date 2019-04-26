@@ -73,7 +73,8 @@ public class BlocklistActivity extends AbstractSearchableListItemActivity implem
 				getString(R.string.block),
 				null,
 				account.getJid().asBareJid().toString(),
-				true
+				true,
+				false
 		);
 
 		dialog.setOnEnterJidDialogPositiveListener((accountJid, contactJid) -> {
