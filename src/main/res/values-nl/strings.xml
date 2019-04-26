@@ -526,7 +526,6 @@
   <string name="security_error_invalid_file_access">Beveiligingsfout: Ongeldige bestandstoegang</string>
   <string name="no_application_to_share_uri">Geen applicatie om URI te delen</string>
   <string name="share_uri_with">URI delen met…</string>
-  <string name="welcome_text">XMPP is een provider-onafhankelijk berichtennetwerk. Je kan deze cliënt gebruiken met eender welke XMPP-server.\nOm het je gemakkelijker te maken kun je simpelweg een account aanmaken op conversations.im¹; een provider speciaal geschikt voor Conversations.</string>
   <string name="welcome_text_quicksy"><![CDATA[Quicksy is een afgeleide van de populaire XMPP-cliënt Conversations, met automatische contactontdekking.<br><br>Je meldt je aan met je telefoonnummer en Quicksy zal automatisch—gebaseerd op de telefoonnummers in je adresboek—mogelijke contacten aanbevelen.<br><br>Door je aan te melden, stem je in met ons <a href="https://quicksy.im/#privacy">privacybeleid</a>.]]></string>
   <string name="agree_and_continue">Akkoord gaan &amp; doorgaan</string>
   <string name="magic_create_text">We zullen je helpen een account op conversations.im¹ aan te maken.\nWanneer je conversations.im als je provider kiest kan je met gebruikers van andere providers communiceren door hen je volledige XMPP-adres te geven.</string>

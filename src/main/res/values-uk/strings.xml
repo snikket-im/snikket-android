@@ -506,10 +506,6 @@
   <string name="security_error_invalid_file_access">Помилка безпеки: Недійсний доступ до файлу</string>
   <string name="no_application_to_share_uri">Не знайдено програми, щоб поділитися URI</string>
   <string name="share_uri_with">Поділитися URI з…</string>
-  <string name="welcome_text">XMPP є незалежною мережею обміну миттєвими повідомленнями. . 
-Ви можете використовувати цей клієнт з будь-яким XMPP-сервером.
-\nДля Вашої зручності Ви можете використовувати Conversations з сервісом conversations.im¹; який є оптимізований для використання з Conversations. 
-</string>
   <string name="agree_and_continue">Прийняти й продовжити</string>
   <string name="create_account">Створити обліковий запис</string>
   <string name="use_own_provider">Використати мого власного провайдера</string>

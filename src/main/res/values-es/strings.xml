@@ -526,7 +526,6 @@
   <string name="security_error_invalid_file_access">Error de seguridad: Acceso a fichero inválido</string>
   <string name="no_application_to_share_uri">No se ha encontrado ninguna aplicación para compartir la URI</string>
   <string name="share_uri_with">Compartir URI con...</string>
-  <string name="welcome_text">XMPP es una red de mensajería instantánea independiente del proveedor. Puedes usar este cliente con cualquier servidor XMPP que elijas.\nSin embargo, para tu conveniencia, hacemos de forma sencilla la creación de una cuenta en conversations.im¹; un proveedor especialmente especializado para el uso con Conversations</string>
   <string name="welcome_text_quicksy"><![CDATA[Quicksy es un derivado del popular cliente XMPP Conversations con detección automática de contactos.<br><br>El registro se realiza con tu número de teléfono y Quicksy automáticamente—basado en los teléfonos de tu agenda de contactos—te sugerirá posibles contactos.<br><br>Registrándote en Quicksy aceptas nuestra <a href="https://quicksy.im/#privacy">política de privacidad</a>.]]> </string>
   <string name="agree_and_continue">Aceptar &amp; continuar</string>
   <string name="magic_create_text">Te guiaremos durante el proceso de creación de la cuenta en conversations.im.¹\nCuando selecciones conversations.im como proveedor podrás comunicarte con usuarios de otros servidores proporcionándoles tu dirección XMPP completa. </string>

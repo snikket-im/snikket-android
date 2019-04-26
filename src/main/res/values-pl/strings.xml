@@ -71,7 +71,7 @@
   <string name="problem_connecting_to_account">Nie można połączyć się z kontem</string>
   <string name="problem_connecting_to_accounts">Nie można połączyć się z wieloma kontami</string>
   <string name="touch_to_fix">Dotknij tutaj aby zarządzać swoimi kontami</string>
-  <string name="attach_file">Dołącz plik</string>
+  <string name="attach_file">Załącz plik</string>
   <string name="not_in_roster">Kontakt nie należy do Twojej listy kontaktów. Czy chcesz go dodać?</string>
   <string name="add_contact">Dodaj kontakt</string>
   <string name="send_failed">wysyłanie nie powiodło się</string>
@@ -530,7 +530,6 @@
   <string name="security_error_invalid_file_access">Błąd bezpieczeństwa: nieprawidłowy dostęp do pliku</string>
   <string name="no_application_to_share_uri">Nie odnaleziono aplikacji skojarzonej z URI</string>
   <string name="share_uri_with">Udostępnij URI za pomocą...</string>
-  <string name="welcome_text">XMPP to niezależna od dostawcy sieć komunikacji natychmiastowej. Możesz użyć tej aplikacji z dowolnym serwerem XMPP jaki wybierzesz.\nJednak dla twojej wygody ułatwiliśmy stworzenie konta na conversations.im¹; dostawcy specjalnego dobrego do Conversations.</string>
   <string name="welcome_text_quicksy"><![CDATA[Quicksy to modyfikacja poparnego klienta XMPP Conversations, z automatycznym wykrywaniem kontaktów.<br><br>Zapisujesz się przy użyciu numeru telefonu i Quicksy automatycznie - na podstawie numerów telefonów w książce adresowej - zasugeruje potencjalne kontakty dla ciebie.<br><br>Zapisując się zgadzasz się na naszą <a href="https://quicksy.im/#privacy">politykę prywatności</a>.]]></string>
   <string name="agree_and_continue">Zgoda i kontynuuj</string>
   <string name="magic_create_text">Poprowadzimy ciebie przez proces tworzenia konta na conversations.im.¹\nKiedy wybierzesz conversations.im jako dostawcę będziesz mógł komunikować się z innymi osobami jeśli znasz ich pełen adres XMPP.</string>
@@ -872,5 +871,5 @@ Administrator twojego serwera będzie mógł czytać twoje wiadomości, ale moż
   <string name="manage_permission">Zarządzaj uprawnieniami</string>
   <string name="search_participants">Wyszukaj uczestników</string>
   <string name="file_too_large">Plik jest zbyt duży</string>
-  <string name="attach">Dołącz</string>
+  <string name="attach">Załącz</string>
 </resources>

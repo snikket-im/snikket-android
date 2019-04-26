@@ -530,7 +530,6 @@ sau chiar pierderea mesajelor.\nÎn continuare veți fi rugați să dezactivați
   <string name="security_error_invalid_file_access">Eroare de securitate.: Acces fișier invalid</string>
   <string name="no_application_to_share_uri">Nu s-a găsit nici o aplicație care să partajeze adresa</string>
   <string name="share_uri_with">Partajează adresa cu...</string>
-  <string name="welcome_text">XMPP este o rețea de mesagerie instant ce nu depinde de un anumit furnizor. Aveți posibilitatea să utilizați acest client cu orice server XMPP doriți.\nTotuși, pentru confortul dumneavoastră, am facilitat crearea unui cont pe conversations.im¹; un furnizor potrivit pentru utilizarea cu aplicația Conversations.</string>
   <string name="welcome_text_quicksy"><![CDATA[Quicksy este o versiune a popularului client XMPP Conversations cu descoperire automată a contactelor.<br><br>Vă înscrieți cu numărul de telefon și Quicksy—pe baza numerelor de telefon din agenda dumneavoastră—vă va sugera automat posibile contacte.<br><br>Înscriindu-vă sunteți de acord cu <a href="https://quicksy.im/#privacy">politica noastră de confidențialitate</a>.]]></string>
   <string name="agree_and_continue">De acord &amp; continuă</string>
   <string name="magic_create_text">Vă vom ghida prin procesul de creare al unui cont pe conversations.im.¹\nCând alegeți conversations.im ca furnizor veți putea comunica cu utilizatorii altor furnizori oferindu-le adresa dumneavoastră completă XMPP.</string>

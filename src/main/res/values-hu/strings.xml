@@ -526,7 +526,6 @@
   <string name="security_error_invalid_file_access">Biztonsági hiba: Érvénytelen fájl hozzáférés</string>
   <string name="no_application_to_share_uri">Nem találtunk URI-t használó alkalmazást</string>
   <string name="share_uri_with">Megosztás URI-ként</string>
-  <string name="welcome_text">Az XMPP egy szolgáltató független, azonnali üzenetküldő hálózat. Ezt az ügyfél programot bármelyik XMPP szerverhez használhatja.\nDe a könnyebbség kedvéért létrehozhat egy fiókot a conversations.im¹ szolgáltatón is; ami kifejezetten a Conversations programmal való használatra lett tervezve.</string>
   <string name="welcome_text_quicksy"><![CDATA[A Quicksy a népszerű Conversations XMPP kliens mellékhajtása automatikus kapcsolat felfedezéssel.<br><br>Regisztráljon a telefonszámával, és a Quicksy automatikusan – a címjegyzékében szereplő telefonszámok alapján – jelzi a lehetséges kapcsolatokat.<br><br>A regisztrációval elfogadja az<a href="https://quicksy.im/#privacy">adatvédelmi irányelveinket</a>.]]></string>
   <string name="agree_and_continue">Egyetért &amp; folytatás</string>
   <string name="magic_create_text">Végigvezetjük a conversations.im-en való fiók létrehozás folyamatán.¹\nHa a conversations.im-et választja szolgáltatójának, akkor képes lesz kommunikálni a más szolgáltatóknál lévő felhasználókkal, ha megadja nekik a teljes XMPP címét.</string>

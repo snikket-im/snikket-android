@@ -525,7 +525,6 @@
   <string name="security_error_invalid_file_access">Segurtasun akatsa: fitxategi sarrera baliogabea</string>
   <string name="no_application_to_share_uri">Ez da aplikaziorik aurkitu URIa partekatzeko</string>
   <string name="share_uri_with">URIa honekin partekatu...</string>
-  <string name="welcome_text">XMPP hornitzaleez independiente den protokolo bat da. Bezero hau aukeratzen duzun edozein XMPP zerbitzariarekin erabili dezakezu.\nHala ere zure erosotasunerako conversations.im¹-en, Conversationsekin bereziki erabiltzeko egokia den hornitzaile batean, kontu bat sortzea erraz egin dugu.</string>
   <string name="agree_and_continue">Onartu eta jarraitu</string>
   <string name="magic_create_text">conversations.im-en kontu bat sortzeko prozesuan zehar gidatuko zaitugu.\nconversations.im¹ hornitzaile bezala aukeratzerakoan beste hornitzaileen erabiltzaileekin komunikatzeko gai izango zara haiei zure XMPP helbide osoa emanez.</string>
   <string name="your_full_jid_will_be">Zure XMPP helbide osoa hau izango da: %s</string>
