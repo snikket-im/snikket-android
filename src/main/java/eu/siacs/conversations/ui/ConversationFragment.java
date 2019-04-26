@@ -1568,7 +1568,6 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
             }
         };
         if (account.httpUploadAvailable() || attachmentChoice == ATTACHMENT_CHOICE_LOCATION) {
-            conversation.setNextCounterpart(null);
             callback.onPresenceSelected();
         } else {
             activity.selectPresence(conversation, callback);
