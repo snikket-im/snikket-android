@@ -807,7 +807,7 @@ public class StartConversationActivity extends XmppActivity implements XmppConne
 		if (QuickConversationsService.isQuicksy()) {
 			setRefreshing(xmppConnectionService.getQuickConversationsService().isSynchronizing());
 		}
-		if (QuickConversationsService.isConversations() && this.contacts.size() == 0 && this.conferences.size() == 0 && mOpenedFab.compareAndSet(false,true)) {
+		if (QuickConversationsService.isConversations() && AccountUtils.hasEnabledAccounts(xmppConnectionService) && this.contacts.size() == 0 && this.conferences.size() == 0 && mOpenedFab.compareAndSet(false,true)) {
 			binding.speedDial.open();
 		}
 	}
