@@ -424,11 +424,13 @@ public class Conversation extends AbstractEntity implements Blockable, Comparabl
 		setAttribute(ATTRIBUTE_CRYPTO_TARGETS, acceptedTargets);
 	}
 
+	//TODO store uuid in attribute
 	public boolean setCorrectingMessage(Message correctingMessage) {
 		this.correctingMessage = correctingMessage;
 		return correctingMessage == null && draftMessage != null;
 	}
 
+	//TODO: dynamically find by uuid
 	public Message getCorrectingMessage() {
 		return this.correctingMessage;
 	}
