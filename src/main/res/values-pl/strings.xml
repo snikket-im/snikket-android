@@ -872,4 +872,14 @@ Administrator twojego serwera będzie mógł czytać twoje wiadomości, ale moż
   <string name="search_participants">Wyszukaj uczestników</string>
   <string name="file_too_large">Plik jest zbyt duży</string>
   <string name="attach">Załącz</string>
+  <string name="discover_channels">Odkryj kanały</string>
+  <string name="search_channels">Wyszukaj kanał</string>
+  <string name="channel_discovery_opt_in_title">Możliwe naruszenie prywatności!</string>
+  <string name="channel_discover_opt_in_message"><![CDATA[Odkrywanie kanałów używa usługi firmy trzeciej <a href="https://search.jabbercat.org">search.jabbercat.org</a>. <br><br>Używając tej funkcji twój adres IP oraz kryteria wyszukiwania zostaną wysłane do tej usługi. Sprawdź <a href="https://search.jabbercat.org/privacy">Politykę Prywatności</a> aby uzyskać więcej informacji.]]></string>
+  <string name="i_already_have_an_account">Już mam konto</string>
+  <string name="add_existing_account">Dodaj istniejące konto</string>
+  <string name="register_new_account">Zarejestruj nowe konto</string>
+  <string name="this_looks_like_a_domain">To wygląda jak nazwa domeny</string>
+  <string name="add_anway">Dodaj i tak</string>
+  <string name="this_looks_like_channel">To wygląda jak adres kanału</string>
 </resources>

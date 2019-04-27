@@ -323,7 +323,7 @@
   <string name="notification_backup_created_subtitle">De back-upbestanden zijn opgeslagen in %s</string>
   <string name="restoring_backup">Bezig met herstellen van back-up...</string>
   <string name="notification_restored_backup_title">Je back-up is hersteld</string>
-  <string name="notification_restored_backup_subtitle">Vergeet niet om het account in te schakelen.</string>
+  <string name="notification_restored_backup_subtitle">Vergeet niet om de account in te schakelen.</string>
   <string name="choose_file">Bestand kiezen</string>
   <string name="receiving_x_file">Ontvangen van %1$s (%2$d%% voltooid)</string>
   <string name="download_x_file">%s downloaden</string>
@@ -854,4 +854,14 @@
   <string name="search_participants">Deelnemers zoeken</string>
   <string name="file_too_large">Bestand te groot</string>
   <string name="attach">Bijvoegen</string>
+  <string name="discover_channels">Kanalen ontdekken</string>
+  <string name="search_channels">Kanalen doorzoeken</string>
+  <string name="channel_discovery_opt_in_title">Mogelijke privacyschending!</string>
+  <string name="channel_discover_opt_in_message"><![CDATA[Kanaalontdekking maakt gebruik van een derdepartijdienst genaamd <a href="https://search.jabbercat.org">search.jabbercat.org</a>.<br><br>Door deze functie te gebruiken, zullen je IP-adres en zoekopdrachten naar die dienst verstuurd worden. Bekijk hun <a href="https://search.jabbercat.org/privacy">privacybeleid</a> voor meer informatie.]]></string>
+  <string name="i_already_have_an_account">Ik heb al een account</string>
+  <string name="add_existing_account">Bestaande account toevoegen</string>
+  <string name="register_new_account">Nieuwe account registreren</string>
+  <string name="this_looks_like_a_domain">Dit lijkt op een domeinadres</string>
+  <string name="add_anway">Tóch toevoegen</string>
+  <string name="this_looks_like_channel">Dit lijkt op een kanaaladres</string>
 </resources>

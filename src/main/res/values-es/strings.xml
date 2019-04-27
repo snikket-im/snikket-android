@@ -854,4 +854,14 @@
   <string name="search_participants">Buscar participantes</string>
   <string name="file_too_large">Archivo demasiado grande</string>
   <string name="attach">Adjuntar</string>
+  <string name="discover_channels">Descubrir canales</string>
+  <string name="search_channels">Buscar canales</string>
+  <string name="channel_discovery_opt_in_title">¡Posible violación de privacidad!</string>
+  <string name="channel_discover_opt_in_message"><![CDATA[La búsqueda de canales usa un servicio de terceros llamado search.jabbercat.org<a href="https://search.jabbercat.org">. <br><br>Usando esta funcionalidad transmitirás tu dirección IP y los términos buscados a este servicio. Ver su <a href="https://search.jabbercat.org/privacy">Política de Privacidad</a> para más información.]]></string>
+  <string name="i_already_have_an_account">Ya tengo una cuenta</string>
+  <string name="add_existing_account">Añadir una cuenta existente</string>
+  <string name="register_new_account">Registrar una cuenta nueva</string>
+  <string name="this_looks_like_a_domain">Esto parece una dirección de dominio</string>
+  <string name="add_anway">Añadir de todas formas</string>
+  <string name="this_looks_like_channel">Esto parece una dirección de un canal</string>
 </resources>

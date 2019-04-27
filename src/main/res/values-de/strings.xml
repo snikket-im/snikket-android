@@ -854,4 +854,14 @@
   <string name="search_participants">Teilnehmer suchen</string>
   <string name="file_too_large">Datei ist zu groß</string>
   <string name="attach">Hinzufügen</string>
+  <string name="discover_channels">Channels entdecken</string>
+  <string name="search_channels">Channels suchen</string>
+  <string name="channel_discovery_opt_in_title">Mögliche Datenschutzverletzung!</string>
+  <string name="channel_discover_opt_in_message"><![CDATA[Die Channel-Entdeckung verwendet einen Drittanbieterservice namens <a href="https://search.jabbercat.org">search.jabbercat.org</a>.<br><br>Wenn du diese Funktion verwendest, werden deine IP-Adresse und deine Suchbegriffe an diesen Dienst übertragen. Weitere Informationen findest du in der <a href="https://search.jabbercat.org/privacy">Datenschutzerklärung</a>.]]></string>
+  <string name="i_already_have_an_account">Ich habe bereits ein Konto</string>
+  <string name="add_existing_account">Vorhandenes Konto hinzufügen</string>
+  <string name="register_new_account">Neues Konto erstellen</string>
+  <string name="this_looks_like_a_domain">Dies sieht aus wie eine Domain-Adresse</string>
+  <string name="add_anway">Trotzdem hinzufügen</string>
+  <string name="this_looks_like_channel">Dies sieht aus wie eine Channel-Adresse</string>
 </resources>
