@@ -111,6 +111,15 @@ public class Attachment implements Parcelable {
         this.uuid = UUID.randomUUID();
     }
 
+    public static boolean canBeSendInband(final List<Attachment> attachments) {
+        for(Attachment attachment : attachments) {
+            if (attachment.type != Type.LOCATION) {
+                return false;
+            }
+        }
+        return true;
+    }
+
     public static List<Attachment> of(final Context context, Uri uri, Type type) {
         final String mime = type == Type.LOCATION ?null :MimeUtils.guessMimeTypeFromUri(context, uri);
         return Collections.singletonList(new Attachment(uri, type, mime));
