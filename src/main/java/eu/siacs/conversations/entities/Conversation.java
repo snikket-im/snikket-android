@@ -486,7 +486,7 @@ public class Conversation extends AbstractEntity implements Blockable, Comparabl
 				final Message message = messages.get(i);
 				if (message.getStatus() <= Message.STATUS_RECEIVED
 						&& (message.markable || isPrivateAndNonAnonymousMuc)
-						&& message.getType() != Message.TYPE_PRIVATE) {
+						&& !message.isPrivateMessage()) {
 					return message;
 				}
 			}
@@ -748,7 +748,7 @@ public class Conversation extends AbstractEntity implements Blockable, Comparabl
 		synchronized (this.messages) {
 			for (int i = this.messages.size() - 1; i >= 0; --i) {
 				final Message message = this.messages.get(i);
-				if (message.getType() == Message.TYPE_PRIVATE) {
+				if (message.isPrivateMessage()) {
 					continue; //it's unsafe to use private messages as anchor. They could be coming from user archive
 				}
 				if (message.getStatus() == Message.STATUS_RECEIVED || message.isCarbon() || message.getServerMsgId() != null) {

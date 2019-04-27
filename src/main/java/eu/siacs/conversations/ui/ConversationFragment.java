@@ -728,14 +728,7 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
         final Message message;
         if (conversation.getCorrectingMessage() == null) {
             message = new Message(conversation, body, conversation.getNextEncryption());
-            if (conversation.getMode() == Conversation.MODE_MULTI) {
-                final Jid nextCounterpart = conversation.getNextCounterpart();
-                if (nextCounterpart != null) {
-                    message.setCounterpart(nextCounterpart);
-                    message.setTrueCounterpart(conversation.getMucOptions().getTrueCounterpart(nextCounterpart));
-                    message.setType(Message.TYPE_PRIVATE);
-                }
-            }
+            Message.configurePrivateMessage(message);
         } else {
             message = conversation.getCorrectingMessage();
             message.setBody(body);

@@ -551,7 +551,7 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
                             mXmppConnectionService.updateMessage(replacedMessage, uuid);
                             if (mXmppConnectionService.confirmMessages()
                                     && replacedMessage.getStatus() == Message.STATUS_RECEIVED
-                                    && (replacedMessage.trusted() || replacedMessage.getType() == Message.TYPE_PRIVATE)
+                                    && (replacedMessage.trusted() || replacedMessage.isPrivateMessage()) //TODO do we really want to send receipts for all PMs?
                                     && remoteMsgId != null
                                     && !selfAddressed
                                     && !isTypeGroupChat) {
@@ -577,7 +577,7 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
             }
 
             boolean checkForDuplicates = (isTypeGroupChat && packet.hasChild("delay", "urn:xmpp:delay"))
-                    || message.getType() == Message.TYPE_PRIVATE
+                    || message.isPrivateMessage()
                     || message.getServerMsgId() != null
                     || (query == null && mXmppConnectionService.getMessageArchiveService().isCatchupInProgress(conversation));
             if (checkForDuplicates) {
@@ -637,7 +637,7 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
 
             if (mXmppConnectionService.confirmMessages()
                     && message.getStatus() == Message.STATUS_RECEIVED
-                    && (message.trusted() || message.getType() == Message.TYPE_PRIVATE)
+                    && (message.trusted() || message.isPrivateMessage())
                     && remoteMsgId != null
                     && !selfAddressed
                     && !isTypeGroupChat) {

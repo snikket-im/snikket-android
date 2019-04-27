@@ -868,7 +868,7 @@ public class NotificationService {
                 return false;
             }
             final Matcher m = highlight.matcher(message.getBody());
-            return (m.find() || message.getType() == Message.TYPE_PRIVATE);
+            return (m.find() || message.isPrivateMessage());
         } else {
             return false;
         }

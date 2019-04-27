@@ -32,6 +32,8 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.common.base.Strings;
+
 import java.net.URL;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -70,6 +72,7 @@ import eu.siacs.conversations.utils.GeoHelper;
 import eu.siacs.conversations.utils.StylingHelper;
 import eu.siacs.conversations.utils.UIHelper;
 import eu.siacs.conversations.xmpp.mam.MamReference;
+import rocks.xmpp.addr.Jid;
 
 public class MessageAdapter extends ArrayAdapter<Message> implements CopyTextView.CopyHandler {
 
@@ -439,7 +442,7 @@ public class MessageAdapter extends ArrayAdapter<Message> implements CopyTextVie
 				body.setSpan(new DividerSpan(true), start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 			}
 			boolean startsWithQuote = handleTextQuotes(body, darkBackground);
-			if (message.getType() != Message.TYPE_PRIVATE) {
+			if (!message.isPrivateMessage()) {
 				if (hasMeCommand) {
 					body.setSpan(new StyleSpan(Typeface.BOLD_ITALIC), 0, nick.length(),
 							Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
@@ -449,13 +452,8 @@ public class MessageAdapter extends ArrayAdapter<Message> implements CopyTextVie
 				if (message.getStatus() <= Message.STATUS_RECEIVED) {
 					privateMarker = activity.getString(R.string.private_message);
 				} else {
-					final String to;
-					if (message.getCounterpart() != null) {
-						to = message.getCounterpart().getResource();
-					} else {
-						to = "";
-					}
-					privateMarker = activity.getString(R.string.private_message_to, to);
+					Jid cp = message.getCounterpart();
+					privateMarker = activity.getString(R.string.private_message_to, Strings.nullToEmpty(cp == null ? null : cp.getResource()));
 				}
 				body.insert(0, privateMarker);
 				int privateMarkerIndex = privateMarker.length();
@@ -506,27 +504,27 @@ public class MessageAdapter extends ArrayAdapter<Message> implements CopyTextVie
 		}
 	}
 
-	private void displayDownloadableMessage(ViewHolder viewHolder, final Message message, String text) {
+	private void displayDownloadableMessage(ViewHolder viewHolder, final Message message, String text, final boolean darkBackground) {
+		toggleWhisperInfo(viewHolder, message, darkBackground);
 		viewHolder.image.setVisibility(View.GONE);
-		viewHolder.messageBody.setVisibility(View.GONE);
 		viewHolder.audioPlayer.setVisibility(View.GONE);
 		viewHolder.download_button.setVisibility(View.VISIBLE);
 		viewHolder.download_button.setText(text);
 		viewHolder.download_button.setOnClickListener(v -> ConversationFragment.downloadFile(activity, message));
 	}
 
-	private void displayOpenableMessage(ViewHolder viewHolder, final Message message) {
+	private void displayOpenableMessage(ViewHolder viewHolder, final Message message, final boolean darkBackground) {
+		toggleWhisperInfo(viewHolder, message, darkBackground);
 		viewHolder.image.setVisibility(View.GONE);
-		viewHolder.messageBody.setVisibility(View.GONE);
 		viewHolder.audioPlayer.setVisibility(View.GONE);
 		viewHolder.download_button.setVisibility(View.VISIBLE);
 		viewHolder.download_button.setText(activity.getString(R.string.open_x_file, UIHelper.getFileDescriptionString(activity, message)));
 		viewHolder.download_button.setOnClickListener(v -> openDownloadable(message));
 	}
 
-	private void displayLocationMessage(ViewHolder viewHolder, final Message message) {
+	private void displayLocationMessage(ViewHolder viewHolder, final Message message, final boolean darkBackground) {
+		toggleWhisperInfo(viewHolder, message, darkBackground);
 		viewHolder.image.setVisibility(View.GONE);
-		viewHolder.messageBody.setVisibility(View.GONE);
 		viewHolder.audioPlayer.setVisibility(View.GONE);
 		viewHolder.download_button.setVisibility(View.VISIBLE);
 		viewHolder.download_button.setText(R.string.show_location);
@@ -534,8 +532,8 @@ public class MessageAdapter extends ArrayAdapter<Message> implements CopyTextVie
 	}
 
 	private void displayAudioMessage(ViewHolder viewHolder, Message message, boolean darkBackground) {
+		toggleWhisperInfo(viewHolder, message, darkBackground);
 		viewHolder.image.setVisibility(View.GONE);
-		viewHolder.messageBody.setVisibility(View.GONE);
 		viewHolder.download_button.setVisibility(View.GONE);
 		final RelativeLayout audioPlayer = viewHolder.audioPlayer;
 		audioPlayer.setVisibility(View.VISIBLE);
@@ -543,9 +541,9 @@ public class MessageAdapter extends ArrayAdapter<Message> implements CopyTextVie
 		this.audioPlayer.init(audioPlayer, message);
 	}
 
-	private void displayImageMessage(ViewHolder viewHolder, final Message message) {
+	private void displayImageMessage(ViewHolder viewHolder, final Message message, final boolean darkBackground) {
+		toggleWhisperInfo(viewHolder, message, darkBackground);
 		viewHolder.download_button.setVisibility(View.GONE);
-		viewHolder.messageBody.setVisibility(View.GONE);
 		viewHolder.audioPlayer.setVisibility(View.GONE);
 		viewHolder.image.setVisibility(View.VISIBLE);
 		FileParams params = message.getFileParams();
@@ -570,6 +568,25 @@ public class MessageAdapter extends ArrayAdapter<Message> implements CopyTextVie
 		viewHolder.image.setLayoutParams(layoutParams);
 		activity.loadBitmap(message, viewHolder.image);
 		viewHolder.image.setOnClickListener(v -> openDownloadable(message));
+	}
+
+	private void toggleWhisperInfo(ViewHolder viewHolder, final Message message, final boolean darkBackground) {
+		if (message.isPrivateMessage()) {
+			final String privateMarker;
+			if (message.getStatus() <= Message.STATUS_RECEIVED) {
+				privateMarker = activity.getString(R.string.private_message);
+			} else {
+				Jid cp = message.getCounterpart();
+				privateMarker = activity.getString(R.string.private_message_to, Strings.nullToEmpty(cp == null ? null : cp.getResource()));
+			}
+			final SpannableString body = new SpannableString(privateMarker);
+			body.setSpan(new ForegroundColorSpan(getMessageTextColor(darkBackground, false)), 0, privateMarker.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+			body.setSpan(new StyleSpan(Typeface.BOLD), 0, privateMarker.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+			viewHolder.messageBody.setText(body);
+			viewHolder.messageBody.setVisibility(View.VISIBLE);
+		} else {
+			viewHolder.messageBody.setVisibility(View.GONE);
+		}
 	}
 
 	private void loadMoreMessages(Conversation conversation) {
@@ -722,19 +739,19 @@ public class MessageAdapter extends ArrayAdapter<Message> implements CopyTextVie
 		final Transferable transferable = message.getTransferable();
 		if (message.isDeleted() || (transferable != null && transferable.getStatus() != Transferable.STATUS_UPLOADING)) {
 			if (transferable != null && transferable.getStatus() == Transferable.STATUS_OFFER) {
-				displayDownloadableMessage(viewHolder, message, activity.getString(R.string.download_x_file, UIHelper.getFileDescriptionString(activity, message)));
+				displayDownloadableMessage(viewHolder, message, activity.getString(R.string.download_x_file, UIHelper.getFileDescriptionString(activity, message)), darkBackground);
 			} else if (transferable != null && transferable.getStatus() == Transferable.STATUS_OFFER_CHECK_FILESIZE) {
-				displayDownloadableMessage(viewHolder, message, activity.getString(R.string.check_x_filesize, UIHelper.getFileDescriptionString(activity, message)));
+				displayDownloadableMessage(viewHolder, message, activity.getString(R.string.check_x_filesize, UIHelper.getFileDescriptionString(activity, message)), darkBackground);
 			} else {
 				displayInfoMessage(viewHolder, UIHelper.getMessagePreview(activity, message).first, darkBackground);
 			}
 		} else if (message.isFileOrImage() && message.getEncryption() != Message.ENCRYPTION_PGP && message.getEncryption() != Message.ENCRYPTION_DECRYPTION_FAILED) {
 			if (message.getFileParams().width > 0 && message.getFileParams().height > 0) {
-				displayImageMessage(viewHolder, message);
+				displayImageMessage(viewHolder, message, darkBackground);
 			} else if (message.getFileParams().runtime > 0) {
 				displayAudioMessage(viewHolder, message, darkBackground);
 			} else {
-				displayOpenableMessage(viewHolder, message);
+				displayOpenableMessage(viewHolder, message, darkBackground);
 			}
 		} else if (message.getEncryption() == Message.ENCRYPTION_PGP) {
 			if (account.isPgpDecryptionServiceConnected()) {
@@ -756,7 +773,7 @@ public class MessageAdapter extends ArrayAdapter<Message> implements CopyTextVie
 			displayInfoMessage(viewHolder, activity.getString(R.string.omemo_decryption_failed), darkBackground);
 		} else {
 			if (message.isGeoUri()) {
-				displayLocationMessage(viewHolder, message);
+				displayLocationMessage(viewHolder, message, darkBackground);
 			} else if (message.bodyIsOnlyEmojis() && message.getType() != Message.TYPE_PRIVATE) {
 				displayEmojiMessage(viewHolder, message.getBody().trim(), darkBackground);
 			} else if (message.treatAsDownloadable()) {
@@ -766,19 +783,22 @@ public class MessageAdapter extends ArrayAdapter<Message> implements CopyTextVie
 						displayDownloadableMessage(viewHolder,
 								message,
 								activity.getString(R.string.check_x_filesize,
-										UIHelper.getFileDescriptionString(activity, message)));
+										UIHelper.getFileDescriptionString(activity, message)),
+								darkBackground);
 					} else {
 						displayDownloadableMessage(viewHolder,
 								message,
 								activity.getString(R.string.check_x_filesize_on_host,
 										UIHelper.getFileDescriptionString(activity, message),
-										url.getHost()));
+										url.getHost()),
+								darkBackground);
 					}
 				} catch (Exception e) {
 					displayDownloadableMessage(viewHolder,
 							message,
 							activity.getString(R.string.check_x_filesize,
-									UIHelper.getFileDescriptionString(activity, message)));
+									UIHelper.getFileDescriptionString(activity, message)),
+							darkBackground);
 				}
 			} else {
 				displayTextMessage(viewHolder, message, darkBackground, type);

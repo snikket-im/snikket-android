@@ -1,7 +1,5 @@
 package eu.siacs.conversations.generator;
 
-import android.util.Log;
-
 import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -13,7 +11,6 @@ import eu.siacs.conversations.Config;
 import eu.siacs.conversations.crypto.axolotl.AxolotlService;
 import eu.siacs.conversations.crypto.axolotl.XmppAxolotlMessage;
 import eu.siacs.conversations.entities.Account;
-import eu.siacs.conversations.entities.Contact;
 import eu.siacs.conversations.entities.Conversation;
 import eu.siacs.conversations.entities.Message;
 import eu.siacs.conversations.http.P1S3UrlStreamHandler;
@@ -43,7 +40,7 @@ public class MessageGenerator extends AbstractGenerator {
 			if (this.mXmppConnectionService.indicateReceived() && !isWithSelf) {
 				packet.addChild("request", "urn:xmpp:receipts");
 			}
-		} else if (message.getType() == Message.TYPE_PRIVATE) { //TODO files and images might be private as well
+		} else if (message.isPrivateMessage()) {
 			packet.setTo(message.getCounterpart());
 			packet.setType(MessagePacket.TYPE_CHAT);
 			packet.addChild("x", "http://jabber.org/protocol/muc#user");
@@ -54,7 +51,7 @@ public class MessageGenerator extends AbstractGenerator {
 			packet.setTo(message.getCounterpart().asBareJid());
 			packet.setType(MessagePacket.TYPE_GROUPCHAT);
 		}
-		if (conversation.isSingleOrPrivateAndNonAnonymous() && message.getType() != Message.TYPE_PRIVATE) {
+		if (conversation.isSingleOrPrivateAndNonAnonymous() && !message.isPrivateMessage()) {
 			packet.addChild("markable", "urn:xmpp:chat-markers:0");
 		}
 		packet.setFrom(account.getJid());

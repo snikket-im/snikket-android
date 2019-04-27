@@ -1178,6 +1178,7 @@ public class FileBackend {
     public void updateFileParams(Message message, URL url) {
         DownloadableFile file = getFile(message);
         final String mime = file.getMimeType();
+        final boolean privateMessage = message.isPrivateMessage();
         final boolean image = message.getType() == Message.TYPE_IMAGE || (mime != null && mime.startsWith("image/"));
         final boolean video = mime != null && mime.startsWith("video/");
         final boolean audio = mime != null && mime.startsWith("audio/");
@@ -1201,7 +1202,7 @@ public class FileBackend {
         }
         message.setBody(body.toString());
         message.setDeleted(false);
-        message.setType(image ? Message.TYPE_IMAGE : Message.TYPE_FILE);
+        message.setType(privateMessage ? Message.TYPE_PRIVATE_FILE : (image ? Message.TYPE_IMAGE : Message.TYPE_FILE));
     }
 
 

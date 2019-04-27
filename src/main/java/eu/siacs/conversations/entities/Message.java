@@ -57,6 +57,7 @@ public class Message extends AbstractEntity implements AvatarService.Avatarable 
 	public static final int TYPE_FILE = 2;
 	public static final int TYPE_STATUS = 3;
 	public static final int TYPE_PRIVATE = 4;
+	public static final int TYPE_PRIVATE_FILE = 5;
 
 	public static final String CONVERSATION = "conversationUuid";
 	public static final String COUNTERPART = "counterpart";
@@ -495,7 +496,7 @@ public class Message extends AbstractEntity implements AvatarService.Avatarable 
 	}
 
 	boolean similar(Message message) {
-		if (type != TYPE_PRIVATE && this.serverMsgId != null && message.getServerMsgId() != null) {
+		if (!isPrivateMessage() && this.serverMsgId != null && message.getServerMsgId() != null) {
 			return this.serverMsgId.equals(message.getServerMsgId()) || Edited.wasPreviouslyEditedServerMsgId(edits, message.getServerMsgId());
 		} else if (Edited.wasPreviouslyEditedServerMsgId(edits, message.getServerMsgId())) {
 			return true;
@@ -837,8 +838,12 @@ public class Message extends AbstractEntity implements AvatarService.Avatarable 
 		this.mPreviousMessage = null;
 	}
 
+	public boolean isPrivateMessage() {
+		return type == TYPE_PRIVATE || type == TYPE_PRIVATE_FILE;
+	}
+
 	public boolean isFileOrImage() {
-		return type == TYPE_FILE || type == TYPE_IMAGE;
+		return type == TYPE_FILE || type == TYPE_IMAGE || type == TYPE_PRIVATE_FILE;
 	}
 
 	public boolean hasFileOnRemoteHost() {
@@ -914,5 +919,32 @@ public class Message extends AbstractEntity implements AvatarService.Avatarable 
 			return ENCRYPTION_AXOLOTL;
 		}
 		return encryption;
+	}
+
+	public static boolean configurePrivateMessage(final Message message) {
+		return configurePrivateMessage(message, false);
+	}
+
+	public static boolean configurePrivateFileMessage(final Message message) {
+		return configurePrivateMessage(message, true);
+	}
+
+	private static boolean configurePrivateMessage(final Message message, final boolean isFile) {
+		final Conversation conversation;
+		if (message.conversation instanceof Conversation) {
+			conversation = (Conversation) message.conversation;
+		} else {
+			return false;
+		}
+		if (conversation.getMode() == Conversation.MODE_MULTI) {
+			final Jid nextCounterpart = conversation.getNextCounterpart();
+			if (nextCounterpart != null) {
+				message.setCounterpart(nextCounterpart);
+				message.setTrueCounterpart(conversation.getMucOptions().getTrueCounterpart(nextCounterpart));
+				message.setType(isFile ? Message.TYPE_PRIVATE_FILE : Message.TYPE_PRIVATE);
+				return true;
+			}
+		}
+		return false;
 	}
 }

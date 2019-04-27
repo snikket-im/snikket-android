@@ -442,7 +442,8 @@ public class HttpDownloadConnection implements Transferable {
 		}
 
 		private void updateImageBounds() {
-			message.setType(Message.TYPE_FILE);
+			final boolean privateMessage = message.isPrivateMessage();
+			message.setType(privateMessage ? Message.TYPE_PRIVATE_FILE : Message.TYPE_FILE);
 			final URL url;
 			final String ref = mUrl.getRef();
 			if (method == Method.P1_S3) {

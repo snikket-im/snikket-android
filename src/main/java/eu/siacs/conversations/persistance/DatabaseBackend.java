@@ -812,14 +812,14 @@ public class DatabaseBackend extends SQLiteOpenHelper {
         if (internal) {
             final String name = file.getName();
             if (name.endsWith(".pgp")) {
-                selection = "(" + Message.RELATIVE_FILE_PATH + " IN(?,?) OR (" + Message.RELATIVE_FILE_PATH + "=? and encryption in(1,4))) and type in (1,2)";
+                selection = "(" + Message.RELATIVE_FILE_PATH + " IN(?,?) OR (" + Message.RELATIVE_FILE_PATH + "=? and encryption in(1,4))) and type in (1,2,5)";
                 selectionArgs = new String[]{file.getAbsolutePath(), name, name.substring(0, name.length() - 4)};
             } else {
-                selection = Message.RELATIVE_FILE_PATH + " IN(?,?) and type in (1,2)";
+                selection = Message.RELATIVE_FILE_PATH + " IN(?,?) and type in (1,2,5)";
                 selectionArgs = new String[]{file.getAbsolutePath(), name};
             }
         } else {
-            selection = Message.RELATIVE_FILE_PATH + "=? and type in (1,2)";
+            selection = Message.RELATIVE_FILE_PATH + "=? and type in (1,2,5)";
             selectionArgs = new String[]{file.getAbsolutePath()};
         }
         final List<String> uuids = new ArrayList<>();
@@ -862,7 +862,7 @@ public class DatabaseBackend extends SQLiteOpenHelper {
 
     public List<FilePathInfo> getFilePathInfo() {
         final SQLiteDatabase db = this.getReadableDatabase();
-        final Cursor cursor = db.query(Message.TABLENAME, new String[]{Message.UUID, Message.RELATIVE_FILE_PATH, Message.DELETED}, "type in (1,2) and "+Message.RELATIVE_FILE_PATH+" is not null", null, null, null, null);
+        final Cursor cursor = db.query(Message.TABLENAME, new String[]{Message.UUID, Message.RELATIVE_FILE_PATH, Message.DELETED}, "type in (1,2,5) and "+Message.RELATIVE_FILE_PATH+" is not null", null, null, null, null);
         final List<FilePathInfo> list = new ArrayList<>();
         while (cursor != null && cursor.moveToNext()) {
             list.add(new FilePathInfo(cursor.getString(0), cursor.getString(1), cursor.getInt(2) > 0));
@@ -875,7 +875,7 @@ public class DatabaseBackend extends SQLiteOpenHelper {
 
     public List<FilePath> getRelativeFilePaths(String account, Jid jid, int limit) {
         SQLiteDatabase db = this.getReadableDatabase();
-        final String SQL = "select uuid,relativeFilePath from messages where type in (1,2) and deleted=0 and "+Message.RELATIVE_FILE_PATH+" is not null and conversationUuid=(select uuid from conversations where accountUuid=? and (contactJid=? or contactJid like ?)) order by timeSent desc";
+        final String SQL = "select uuid,relativeFilePath from messages where type in (1,2,5) and deleted=0 and "+Message.RELATIVE_FILE_PATH+" is not null and conversationUuid=(select uuid from conversations where accountUuid=? and (contactJid=? or contactJid like ?)) order by timeSent desc";
         final String[] args = {account, jid.toEscapedString(), jid.toEscapedString() + "/%"};
         Cursor cursor = db.rawQuery(SQL + (limit > 0 ? " limit " + String.valueOf(limit) : ""), args);
         List<FilePath> filesPaths = new ArrayList<>();
