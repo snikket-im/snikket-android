@@ -12,3 +12,10 @@ file_filter = src/quicksy/res/values-<lang>/strings.xml
 source_file = src/quicksy/res/values/strings.xml
 source_lang = en
 type = ANDROID
+
+[conversations.conversations-strings]
+file_filter = src/conversations/res/values-<lang>/strings.xml
+source_file = src/conversations/res/values/strings.xml
+source_lang = en
+type = ANDROID
+
