@@ -192,7 +192,7 @@ public class ExportBackupService extends Service {
             final String value = cursor.getString(i);
             if (value == null) {
                 builder.append("NULL");
-            } else if (value.matches("\\d+")) {
+            } else if (value.matches("[0-9]+")) {
                 builder.append(value);
             } else {
                 DatabaseUtils.appendEscapedSQLString(builder, value);
