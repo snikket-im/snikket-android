@@ -922,7 +922,7 @@ public class XmppConnection implements Runnable {
 
     private void sendRegistryRequest() {
         final IqPacket register = new IqPacket(IqPacket.TYPE.GET);
-        register.query("jabber:iq:register");
+        register.query(Namespace.REGISTER);
         register.setTo(Jid.of(account.getServer()));
         sendUnmodifiedIqPacket(register, (account, packet) -> {
             if (packet.getType() == IqPacket.TYPE.TIMEOUT) {
@@ -931,12 +931,12 @@ public class XmppConnection implements Runnable {
             if (packet.getType() == IqPacket.TYPE.ERROR) {
                 throw new StateChangingError(Account.State.REGISTRATION_FAILED);
             }
-            final Element query = packet.query("jabber:iq:register");
+            final Element query = packet.query(Namespace.REGISTER);
             if (query.hasChild("username") && (query.hasChild("password"))) {
                 final IqPacket register1 = new IqPacket(IqPacket.TYPE.SET);
                 final Element username = new Element("username").setContent(account.getUsername());
                 final Element password = new Element("password").setContent(account.getPassword());
-                register1.query("jabber:iq:register").addChild(username);
+                register1.query(Namespace.REGISTER).addChild(username);
                 register1.query().addChild(password);
                 register1.setFrom(account.getJid().asBareJid());
                 sendUnmodifiedIqPacket(register1, registrationResponseListener, true);
