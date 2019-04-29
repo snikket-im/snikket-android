@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="pick_a_server">Scegli il tuo provider XMPP</string>
+    <string name="use_conversations.im">Usa conversations.im</string>
+    <string name="create_new_account">Crea un nuovo account</string>
+    <string name="do_you_have_an_account">Possiedi già un account XMPP? Questo succede se stai già usando un diverso client XMPP o hai già usato prima Conversations. In caso negativo puoi creare un account XMPP adesso.
+Suggerimento: alcuni provider di email forniscono anche un account XMPP.</string>
+    <string name="server_select_text">XMPP è una rete di instant messaging indipendente dal provider. Puoi usare questo client con qualsiasi server XMPP.
+In ogni caso per facilitare puoi creare facilmente un account su conversations.im, un provider pensato apposta per essere usato con Conversations.</string>
+
+</resources>

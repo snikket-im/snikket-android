@@ -853,4 +853,15 @@
   <string name="manage_permission">Gérer les privilèges</string>
   <string name="search_participants">Rechercher des participants</string>
   <string name="file_too_large">Fichier trop volumineux</string>
+  <string name="attach">Joindre</string>
+  <string name="discover_channels">Découverte des canaux</string>
+  <string name="search_channels">Recherche des canaux</string>
+  <string name="channel_discovery_opt_in_title">Violation possible de la confidentialité !</string>
+  <string name="channel_discover_opt_in_message"><![CDATA[La découverte de chaînes utilise un service tiers appelé <a href="https://search.jabbercat.org">search.jabbercat.org</a> qui transmet votre adresse IP et les termes de recherche à ce service. Voir leur <a href="https://search.jabbercat.org/privacy">politique de confidentialité</a> pour plus d\'informations]]>.</string>
+  <string name="i_already_have_an_account">J\'ai déjà un compte</string>
+  <string name="add_existing_account">Ajouter un compte existant</string>
+  <string name="register_new_account">Enregistrer un nouveau compte</string>
+  <string name="this_looks_like_a_domain">Ceci ressemble à une adresse de domaine</string>
+  <string name="add_anway">Ajouter quand même</string>
+  <string name="this_looks_like_channel">Ceci ressemble à une adresse de canal</string>
 </resources>
