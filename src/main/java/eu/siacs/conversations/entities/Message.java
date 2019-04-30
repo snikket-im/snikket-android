@@ -3,7 +3,6 @@ package eu.siacs.conversations.entities;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.graphics.Color;
-import android.support.annotation.ColorInt;
 import android.text.SpannableStringBuilder;
 import android.util.Log;
 
@@ -181,35 +180,11 @@ public class Message extends AbstractEntity implements AvatarService.Avatarable 
 	}
 
 	public static Message fromCursor(Cursor cursor, Conversation conversation) {
-		Jid jid;
-		try {
-			String value = cursor.getString(cursor.getColumnIndex(COUNTERPART));
-			if (value != null) {
-				jid = Jid.of(value);
-			} else {
-				jid = null;
-			}
-		} catch (IllegalArgumentException e) {
-			jid = null;
-		} catch (IllegalStateException e) {
-			return null; // message too long?
-		}
-		Jid trueCounterpart;
-		try {
-			String value = cursor.getString(cursor.getColumnIndex(TRUE_COUNTERPART));
-			if (value != null) {
-				trueCounterpart = Jid.of(value);
-			} else {
-				trueCounterpart = null;
-			}
-		} catch (IllegalArgumentException e) {
-			trueCounterpart = null;
-		}
 		return new Message(conversation,
 				cursor.getString(cursor.getColumnIndex(UUID)),
 				cursor.getString(cursor.getColumnIndex(CONVERSATION)),
-				jid,
-				trueCounterpart,
+				fromString(cursor.getString(cursor.getColumnIndex(COUNTERPART))),
+				fromString(cursor.getString(cursor.getColumnIndex(TRUE_COUNTERPART))),
 				cursor.getString(cursor.getColumnIndex(BODY)),
 				cursor.getLong(cursor.getColumnIndex(TIME_SENT)),
 				cursor.getInt(cursor.getColumnIndex(ENCRYPTION)),
@@ -227,6 +202,17 @@ public class Message extends AbstractEntity implements AvatarService.Avatarable 
 				ReadByMarker.fromJsonString(cursor.getString(cursor.getColumnIndex(READ_BY_MARKERS))),
 				cursor.getInt(cursor.getColumnIndex(MARKABLE)) > 0,
 				cursor.getInt(cursor.getColumnIndex(DELETED)) > 0);
+	}
+
+	private static Jid fromString(String value) {
+		try {
+			if (value != null) {
+				return Jid.of(value);
+			}
+		} catch (IllegalArgumentException e) {
+			return null;
+		}
+		return null;
 	}
 
 	public static Message createStatusMessage(Conversation conversation, String body) {
