@@ -1003,16 +1003,17 @@ public class JingleConnection implements Transferable {
 	}
 
 	private void sendCandidateError() {
+		Log.d(Config.LOGTAG,"sending canditate error");
 		JinglePacket packet = bootstrapPacket("transport-info");
 		Content content = new Content(this.contentCreator, this.contentName);
 		content.setTransportId(this.transportId);
 		content.socks5transport().addChild("candidate-error");
 		packet.setContent(content);
 		this.sentCandidate = true;
+		this.sendJinglePacket(packet);
 		if (receivedCandidate && mJingleStatus == JINGLE_STATUS_ACCEPTED) {
 			connect();
 		}
-		this.sendJinglePacket(packet);
 	}
 
 	public int getJingleStatus() {
