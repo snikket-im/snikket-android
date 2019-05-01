@@ -422,8 +422,8 @@
   <string name="no_application_found_to_display_location">Kokapena erakutsi dezakeen aplikaziorik ez da aurkitu</string>
   <string name="location">Kokapena</string>
   <string name="title_undo_swipe_out_conversation">Elkarrizketa itxi egin da</string>
-  <string name="title_undo_swipe_out_group_chat">Talde pribatua utzi</string>
-  <string name="title_undo_swipe_out_channel">Kanal publikoa utzi</string>
+  <string name="title_undo_swipe_out_group_chat">Talde pribatua utzi da</string>
+  <string name="title_undo_swipe_out_channel">Kanal publikoa utzi da</string>
   <string name="pref_dont_trust_system_cas_title">Sistemaren CAtaz ez fidatu</string>
   <string name="pref_dont_trust_system_cas_summary">Ziurtagiri guztiak eskuz onartu behar dira</string>
   <string name="pref_remove_trusted_certificates_title">Ziurtagiriak kendu</string>
@@ -852,4 +852,14 @@
   <string name="search_participants">Parte-hartzaileak bilatu</string>
   <string name="file_too_large">Fitxategia handiegia da</string>
   <string name="attach">Erantsi</string>
+  <string name="discover_channels">Kanalak aurkitu</string>
+  <string name="search_channels">Kanalak bilatu</string>
+  <string name="channel_discovery_opt_in_title">Balizko pribatutasun urraketa!</string>
+  <string name="channel_discover_opt_in_message"><![CDATA[Kanalak aurkitzeko ezaugarriak <a href="https://search.jabbercat.org">search.jabbercat.org</a> izeneko hirugarren zerbitzu bat erabiltzen du.<br><br>Ezaugarri hau erabiltzeak zure IP helbidea eta bilatutako testua zerbitzu horretara bidaltzea dakar. Ikusi beren <a href="https://search.jabbercat.org/privacy">pribatutasun politika</a> informazio gehiago lortzeko.]]></string>
+  <string name="i_already_have_an_account">Badaukat kontu bat dagoeneko</string>
+  <string name="add_existing_account">Gehitu existitzen den kontu bat</string>
+  <string name="register_new_account">Kontu berria erregistratu</string>
+  <string name="this_looks_like_a_domain">Honek domeinu helbide baten itxura dauka</string>
+  <string name="add_anway">Gehitu hala ere</string>
+  <string name="this_looks_like_channel">Honek kanal helbide baten itxura dauka</string>
 </resources>
