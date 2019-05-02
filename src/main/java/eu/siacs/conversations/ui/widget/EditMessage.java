@@ -87,16 +87,20 @@ public class EditMessage extends EmojiWrapperEditText {
     }
 
     private void triggerKeyboardEvents(final int length) {
+        final KeyboardListener listener = this.keyboardListener;
+        if (listener == null) {
+            return;
+        }
         this.mTypingHandler.removeCallbacks(mTypingTimeout);
         this.mTypingHandler.postDelayed(mTypingTimeout, Config.TYPING_TIMEOUT * 1000);
         if (!isUserTyping && length > 0) {
             this.isUserTyping = true;
-            this.keyboardListener.onTypingStarted();
+            listener.onTypingStarted();
         } else if (length == 0) {
             this.isUserTyping = false;
-            this.keyboardListener.onTextDeleted();
+            listener.onTextDeleted();
         }
-        this.keyboardListener.onTextChanged();
+        listener.onTextChanged();
     }
 
     public void setKeyboardListener(KeyboardListener listener) {
