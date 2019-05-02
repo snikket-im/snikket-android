@@ -4,9 +4,11 @@ import com.google.common.base.Objects;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import eu.siacs.conversations.services.AvatarService;
+import eu.siacs.conversations.utils.LanguageUtils;
 import eu.siacs.conversations.utils.UIHelper;
 import retrofit2.Call;
 import retrofit2.http.Body;
@@ -35,6 +37,7 @@ public interface MuclumbusService {
         public String address;
         public String name;
         public String description;
+        public String language;
 
         public String getName() {
             return name;
@@ -50,6 +53,10 @@ public interface MuclumbusService {
             } catch (IllegalArgumentException e) {
                 return null;
             }
+        }
+
+        public String getLanguage() {
+            return LanguageUtils.convert(language);
         }
 
         @Override

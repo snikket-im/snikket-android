@@ -10,6 +10,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import java.util.Locale;
+
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.databinding.SearchResultItemBinding;
 import eu.siacs.conversations.http.services.MuclumbusService;
@@ -38,7 +40,7 @@ public class ChannelSearchResultAdapter extends ListAdapter<MuclumbusService.Roo
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
-        return new ViewHolder(DataBindingUtil.inflate(LayoutInflater.from(viewGroup.getContext()), R.layout.search_result_item,viewGroup,false));
+        return new ViewHolder(DataBindingUtil.inflate(LayoutInflater.from(viewGroup.getContext()), R.layout.search_result_item, viewGroup, false));
     }
 
     @Override
@@ -46,11 +48,18 @@ public class ChannelSearchResultAdapter extends ListAdapter<MuclumbusService.Roo
         final MuclumbusService.Room searchResult = getItem(position);
         viewHolder.binding.name.setText(searchResult.getName());
         final String description = searchResult.getDescription();
+        final String language = searchResult.getLanguage();
         if (TextUtils.isEmpty(description)) {
             viewHolder.binding.description.setVisibility(View.GONE);
         } else {
             viewHolder.binding.description.setText(description);
             viewHolder.binding.description.setVisibility(View.VISIBLE);
+        }
+        if (language == null || language.length() != 2) {
+            viewHolder.binding.language.setVisibility(View.GONE);
+        } else {
+            viewHolder.binding.language.setText(language.toUpperCase(Locale.ENGLISH));
+            viewHolder.binding.language.setVisibility(View.VISIBLE);
         }
         viewHolder.binding.room.setText(searchResult.getRoom().asBareJid().toString());
         AvatarWorkerTask.loadAvatar(searchResult, viewHolder.binding.avatar, R.dimen.avatar);

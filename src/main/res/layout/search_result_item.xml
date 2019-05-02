@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -14,35 +15,49 @@
             android:layout_height="48dp"
             android:layout_alignParentLeft="true"
             android:scaleType="centerCrop"
-            app:riv_corner_radius="2dp"/>
+            app:riv_corner_radius="2dp" />
 
-        <LinearLayout
+        <RelativeLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_toRightOf="@+id/avatar"
-            android:orientation="vertical"
-            android:layout_marginLeft="@dimen/avatar_item_distance">
+            android:layout_marginLeft="@dimen/avatar_item_distance"
+            android:layout_toRightOf="@+id/avatar">
 
             <TextView
                 android:id="@+id/name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:singleLine="true"
-                android:textAppearance="@style/TextAppearance.Conversations.Subhead"/>
+                android:textAppearance="@style/TextAppearance.Conversations.Subhead"
+                tools:text="Proosdy IM Chat trantu" />
+
+            <TextView
+                android:id="@+id/language"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@id/name"
+                android:layout_marginLeft="8sp"
+                android:layout_toRightOf="@id/name"
+                android:singleLine="true"
+                android:textAppearance="@style/TextAppearance.Conversations.Caption"
+                tools:text="EN" />
 
             <TextView
                 android:id="@+id/description"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_below="@id/name"
                 android:maxLines="2"
-                android:textAppearance="@style/TextAppearance.Conversations.Body1"/>
+                android:textAppearance="@style/TextAppearance.Conversations.Body1" />
+
             <TextView
                 android:id="@+id/room"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_below="@id/description"
                 android:maxLines="2"
-                android:textAppearance="@style/TextAppearance.Conversations.Body1.Secondary"/>
-        </LinearLayout>
+                android:textAppearance="@style/TextAppearance.Conversations.Body1.Secondary" />
+        </RelativeLayout>
 
     </RelativeLayout>
 </layout>
