@@ -2,7 +2,7 @@
 
 ### Version 2.5.1
 * minor bug fixes
-* Set own OMEMO devices to inactive after not seing them for 14 days. (was 7 days)
+* Set own OMEMO devices to inactive after not seeing them for 14 days. (was 7 days)
 
 ### Version 2.5.0
 * Added channel search via search.jabbercat.org
