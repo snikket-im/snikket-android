@@ -60,6 +60,10 @@ public class JingleCandidate {
 	}
 
 	public void setType(String type) {
+		if (type == null) {
+			this.type = TYPE_UNKNOWN;
+			return;
+		}
         switch (type) {
             case "proxy":
                 this.type = TYPE_PROXY;
