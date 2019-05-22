@@ -436,6 +436,9 @@ public class ConferenceDetailsActivity extends XmppActivity implements OnConvers
 
     private void updateView() {
         invalidateOptionsMenu();
+        if (mConversation == null) {
+            return;
+        }
         final MucOptions mucOptions = mConversation.getMucOptions();
         final User self = mucOptions.getSelf();
         String account;

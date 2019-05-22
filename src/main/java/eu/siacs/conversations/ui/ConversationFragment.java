@@ -2606,7 +2606,12 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
             service.sendChatState(conversation);
         }
         if (storeNextMessage()) {
-            runOnUiThread(() -> activity.onConversationsListItemUpdated());
+            runOnUiThread(() -> {
+                if (activity == null) {
+                    return;
+                }
+                activity.onConversationsListItemUpdated();
+            });
         }
         runOnUiThread(this::updateSendButton);
     }
