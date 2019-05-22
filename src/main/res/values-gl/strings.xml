@@ -854,14 +854,14 @@
   <string name="search_participants">Buscar participantes</string>
   <string name="file_too_large">Ficheiro demasiado grande</string>
   <string name="attach">Anexar</string>
-  <string name="discover_channels">Descubrir canles</string>
-  <string name="search_channels">Buscar canles</string>
+  <string name="discover_channels">Descubrir canales</string>
+  <string name="search_channels">Buscar canales</string>
   <string name="channel_discovery_opt_in_title">Posible intrusión na intimidade!</string>
-  <string name="channel_discover_opt_in_message"><![CDATA[O descubrimento de canles utiliza un servizo de terceiros chamado <a href="https://search.jabbercat.org">search.jabbercat.org</a>.<br><br>Ao utilizar esta característica transmitirá o seu enderezo IP e os termos de busca a ese servizo. Lea a súa <a href="https://search.jabbercat.org/privacy">Política de Intimidade</a> para máis información.]]></string>
+  <string name="channel_discover_opt_in_message"><![CDATA[O descubrimento de canales utiliza un servizo de terceiros chamado <a href="https://search.jabbercat.org">search.jabbercat.org</a>.<br><br>Ao utilizar esta característica transmitirá o seu enderezo IP e os termos de busca a ese servizo. Lea a súa <a href="https://search.jabbercat.org/privacy">Política de Intimidade</a> para máis información.]]></string>
   <string name="i_already_have_an_account">Xa teño unha conta</string>
   <string name="add_existing_account">Engadir conta existente</string>
   <string name="register_new_account">Rexistrar unha nova conta</string>
   <string name="this_looks_like_a_domain">Esto semella un enderezo de dominio</string>
   <string name="add_anway">Engadir igualmente</string>
-  <string name="this_looks_like_channel">Esto semella o enderezo de unha canle</string>
+  <string name="this_looks_like_channel">Esto semella o enderezo de un canal</string>
 </resources>
