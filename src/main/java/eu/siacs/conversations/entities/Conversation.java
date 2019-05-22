@@ -576,7 +576,9 @@ public class Conversation extends AbstractEntity implements Blockable, Comparabl
 		values.put(CREATED, created);
 		values.put(STATUS, status);
 		values.put(MODE, mode);
-		values.put(ATTRIBUTES, attributes.toString());
+		synchronized (this.attributes) {
+			values.put(ATTRIBUTES, attributes.toString());
+		}
 		return values;
 	}
 
