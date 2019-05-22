@@ -94,7 +94,7 @@ public class ChannelDiscoveryActivity extends XmppActivity implements MenuItem.O
             mMenuSearchView.expandActionView();
             mSearchEditText.append(initialSearchValue);
             mSearchEditText.requestFocus();
-            if (optedIn) {
+            if (optedIn && xmppConnectionService != null) {
                 xmppConnectionService.discoverChannels(initialSearchValue, this);
             }
         }
