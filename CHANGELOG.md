@@ -1,5 +1,8 @@
 # Changelog
 
+### Version 2.5.2
+* bug fixes
+
 ### Version 2.5.1
 * minor bug fixes
 * Set own OMEMO devices to inactive after not seeing them for 14 days. (was 7 days)
