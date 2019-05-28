@@ -1,6 +1,5 @@
 package eu.siacs.conversations.utils;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -17,7 +16,6 @@ import java.util.regex.Pattern;
 
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.entities.Contact;
-import eu.siacs.conversations.entities.Conversation;
 import eu.siacs.conversations.entities.Conversational;
 import eu.siacs.conversations.entities.Message;
 import eu.siacs.conversations.ui.ShareLocationActivity;
@@ -28,7 +26,7 @@ public class GeoHelper {
 	private static final String SHARE_LOCATION_PACKAGE_NAME = "eu.siacs.conversations.location.request";
 	private static final String SHOW_LOCATION_PACKAGE_NAME = "eu.siacs.conversations.location.show";
 
-	public static Pattern GEO_URI = Pattern.compile("geo:(-?\\d+(?:\\.\\d+)?),(-?\\d+(?:\\.\\d+)?)(?:,-?\\d+(?:\\.\\d+)?)?(?:;crs=[\\w-]+)?(?:;u=\\d+(?:\\.\\d+)?)?(?:;[\\w-]+=(?:[\\w-_.!~*'()]|%[\\da-f][\\da-f])+)*", Pattern.CASE_INSENSITIVE);
+	public static Pattern GEO_URI = Pattern.compile("geo:(-?\\d+(?:\\.\\d+)?),(-?\\d+(?:\\.\\d+)?)(?:,-?\\d+(?:\\.\\d+)?)?(?:;crs=[\\w-]+)?(?:;u=\\d+(?:\\.\\d+)?)?(?:;[\\w-]+=(?:[\\w-_.!~*'()]|%[\\da-f][\\da-f])+)*(\\?z=\\d+)?", Pattern.CASE_INSENSITIVE);
 
 	public static boolean isLocationPluginInstalled(Context context) {
 		return new Intent(SHARE_LOCATION_PACKAGE_NAME).resolveActivity(context.getPackageManager()) != null;

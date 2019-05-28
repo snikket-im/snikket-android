@@ -21,6 +21,7 @@ import eu.siacs.conversations.entities.Conversation;
 import eu.siacs.conversations.services.XmppConnectionService;
 import eu.siacs.conversations.ui.adapter.ConversationAdapter;
 import eu.siacs.conversations.ui.service.EmojiService;
+import eu.siacs.conversations.utils.GeoHelper;
 import rocks.xmpp.addr.Jid;
 
 public class ShareWithActivity extends XmppActivity implements XmppConnectionService.OnConversationUpdate {
@@ -126,10 +127,14 @@ public class ShareWithActivity extends XmppActivity implements XmppConnectionSer
         }
         final String type = intent.getType();
         final String action = intent.getAction();
+        final Uri data = intent.getData();
         if (Intent.ACTION_SEND.equals(action)) {
             final String text = intent.getStringExtra(Intent.EXTRA_TEXT);
             final Uri uri = intent.getParcelableExtra(Intent.EXTRA_STREAM);
-            if (type != null && uri != null && (text == null || !type.equals("text/plain"))) {
+            if (data != null && "geo".equals(data.getScheme())) {
+                this.share.uris.clear();
+                this.share.uris.add(data);
+            } else if (type != null && uri != null && (text == null || !type.equals("text/plain"))) {
                 this.share.uris.clear();
                 this.share.uris.add(uri);
             } else {
