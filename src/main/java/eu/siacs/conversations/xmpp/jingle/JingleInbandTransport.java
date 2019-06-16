@@ -154,6 +154,7 @@ public class JingleInbandTransport extends JingleTransport {
 			if (count == -1) {
 				sendClose();
 				file.setSha1Sum(digest.digest());
+				Log.d(Config.LOGTAG,account.getJid().asBareJid()+": sendNextBlock() count was -1");
 				this.onFileTransmissionStatusChanged.onFileTransmitted(file);
 				fileInputStream.close();
 				return;
@@ -181,6 +182,7 @@ public class JingleInbandTransport extends JingleTransport {
 			} else {
 				sendClose();
 				file.setSha1Sum(digest.digest());
+				Log.d(Config.LOGTAG,account.getJid().asBareJid()+": sendNextBlock() remaining size");
 				this.onFileTransmissionStatusChanged.onFileTransmitted(file);
 				fileInputStream.close();
 			}
@@ -204,6 +206,7 @@ public class JingleInbandTransport extends JingleTransport {
 				file.setSha1Sum(digest.digest());
 				fileOutputStream.flush();
 				fileOutputStream.close();
+				Log.d(Config.LOGTAG,account.getJid().asBareJid()+": receive next block nothing remaining");
 				this.onFileTransmissionStatusChanged.onFileTransmitted(file);
 			} else {
 				connection.updateProgress((int) ((((double) (this.fileSize - this.remainingSize)) / this.fileSize) * 100));
