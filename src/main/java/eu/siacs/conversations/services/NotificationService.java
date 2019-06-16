@@ -517,7 +517,6 @@ public class NotificationService {
         final Builder mBuilder = new NotificationCompat.Builder(mXmppConnectionService, quietHours ? "quiet_hours" : (notify ? "messages" : "silent_messages"));
         if (messages.size() >= 1) {
             final Conversation conversation = (Conversation) messages.get(0).getConversation();
-            final UnreadConversation.Builder mUnreadBuilder = new UnreadConversation.Builder(conversation.getName().toString());
             mBuilder.setLargeIcon(mXmppConnectionService.getAvatarService()
                     .get(conversation, AvatarService.getSystemUiAvatarSize(mXmppConnectionService)));
             mBuilder.setContentTitle(conversation.getName());
@@ -528,28 +527,31 @@ public class NotificationService {
                 Message message;
                 //TODO starting with Android 9 we might want to put images in MessageStyle
                 if (Build.VERSION.SDK_INT < Build.VERSION_CODES.P && (message = getImage(messages)) != null) {
-                    modifyForImage(mBuilder, mUnreadBuilder, message, messages);
+                    modifyForImage(mBuilder, message, messages);
                 } else {
-                    modifyForTextOnly(mBuilder, mUnreadBuilder, messages);
+                    modifyForTextOnly(mBuilder, messages);
                 }
                 RemoteInput remoteInput = new RemoteInput.Builder("text_reply").setLabel(UIHelper.getMessageHint(mXmppConnectionService, conversation)).build();
                 PendingIntent markAsReadPendingIntent = createReadPendingIntent(conversation);
                 NotificationCompat.Action markReadAction = new NotificationCompat.Action.Builder(
                         R.drawable.ic_drafts_white_24dp,
                         mXmppConnectionService.getString(R.string.mark_as_read),
-                        markAsReadPendingIntent).build();
+                        markAsReadPendingIntent)
+                        .setSemanticAction(NotificationCompat.Action.SEMANTIC_ACTION_MARK_AS_READ)
+                        .setShowsUserInterface(false)
+                        .build();
                 String replyLabel = mXmppConnectionService.getString(R.string.reply);
                 NotificationCompat.Action replyAction = new NotificationCompat.Action.Builder(
                         R.drawable.ic_send_text_offline,
                         replyLabel,
-                        createReplyIntent(conversation, false)).addRemoteInput(remoteInput).build();
+                        createReplyIntent(conversation, false))
+                        .setSemanticAction(NotificationCompat.Action.SEMANTIC_ACTION_REPLY)
+                        .setShowsUserInterface(false)
+                        .addRemoteInput(remoteInput).build();
                 NotificationCompat.Action wearReplyAction = new NotificationCompat.Action.Builder(R.drawable.ic_wear_reply,
                         replyLabel,
                         createReplyIntent(conversation, true)).addRemoteInput(remoteInput).build();
                 mBuilder.extend(new NotificationCompat.WearableExtender().addAction(wearReplyAction));
-                mUnreadBuilder.setReplyAction(createReplyIntent(conversation, true), remoteInput);
-                mUnreadBuilder.setReadPendingIntent(markAsReadPendingIntent);
-                mBuilder.extend(new NotificationCompat.CarExtender().setUnreadConversation(mUnreadBuilder.build()));
                 int addedActionsCount = 1;
                 mBuilder.addAction(markReadAction);
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
@@ -609,8 +611,7 @@ public class NotificationService {
         return mBuilder;
     }
 
-    private void modifyForImage(final Builder builder, final UnreadConversation.Builder uBuilder,
-                                final Message message, final ArrayList<Message> messages) {
+    private void modifyForImage(final Builder builder, final Message message, final ArrayList<Message> messages) {
         try {
             final Bitmap bitmap = mXmppConnectionService.getFileBackend().getThumbnail(message, getPixel(288), false);
             final ArrayList<Message> tmp = new ArrayList<>();
@@ -631,7 +632,7 @@ public class NotificationService {
             }
             builder.setStyle(bigPictureStyle);
         } catch (final IOException e) {
-            modifyForTextOnly(builder, uBuilder, messages);
+            modifyForTextOnly(builder, messages);
         }
     }
 
@@ -653,7 +654,7 @@ public class NotificationService {
         return builder.build();
     }
 
-    private void modifyForTextOnly(final Builder builder, final UnreadConversation.Builder uBuilder, final ArrayList<Message> messages) {
+    private void modifyForTextOnly(final Builder builder,  final ArrayList<Message> messages) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             final Conversation conversation = (Conversation) messages.get(0).getConversation();
             final Person.Builder meBuilder = new Person.Builder().setName(mXmppConnectionService.getString(R.string.me));
@@ -705,15 +706,6 @@ public class NotificationService {
                 } else {
                     builder.setContentText(mXmppConnectionService.getResources().getQuantityString(R.plurals.x_messages, count, count));
                 }
-            }
-        }
-        /** message preview for Android Auto **/
-        for (Message message : messages) {
-            Pair<CharSequence, Boolean> preview = UIHelper.getMessagePreview(mXmppConnectionService, message);
-            // only show user written text
-            if (!preview.second) {
-                uBuilder.addMessage(preview.first.toString());
-                uBuilder.setLatestTimestamp(message.getTimeSent());
             }
         }
     }
