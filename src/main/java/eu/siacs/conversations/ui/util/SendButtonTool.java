@@ -42,7 +42,10 @@ import eu.siacs.conversations.utils.UIHelper;
 
 public class SendButtonTool {
 
-	public static SendButtonAction getAction(Activity activity, Conversation c, String text) {
+	public static SendButtonAction getAction(final Activity activity, final Conversation c, final String text) {
+		if (activity == null) {
+			return SendButtonAction.TEXT;
+		}
 		final SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(activity);
 		final boolean empty = text.length() == 0;
 		final boolean conference = c.getMode() == Conversation.MODE_MULTI;
@@ -60,14 +63,14 @@ public class SendButtonTool {
 					return SendButtonAction.CANCEL;
 				} else {
 					String setting = preferences.getString("quick_action", activity.getResources().getString(R.string.quick_action));
-					if (!setting.equals("none") && UIHelper.receivedLocationQuestion(c.getLatestMessage())) {
+					if (!"none".equals(setting) && UIHelper.receivedLocationQuestion(c.getLatestMessage())) {
 						return SendButtonAction.SEND_LOCATION;
 					} else {
-						if (setting.equals("recent")) {
+						if ("recent".equals(setting)) {
 							setting = preferences.getString(ConversationFragment.RECENTLY_USED_QUICK_ACTION, SendButtonAction.TEXT.toString());
-							return SendButtonAction.valueOfOrDefault(setting, SendButtonAction.TEXT);
+							return SendButtonAction.valueOfOrDefault(setting);
 						} else {
-							return SendButtonAction.valueOfOrDefault(setting, SendButtonAction.TEXT);
+							return SendButtonAction.valueOfOrDefault(setting);
 						}
 					}
 				}
