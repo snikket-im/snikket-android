@@ -155,11 +155,14 @@ public class HttpUploadConnection implements Transferable {
 		PowerManager.WakeLock wakeLock = mHttpConnectionManager.createWakeLock("http_upload_"+message.getUuid());
 		try {
 			fileInputStream = new FileInputStream(file);
+			final String slotHostname = slot.getPutUrl().getHost();
+			final boolean onionSlot = slotHostname != null && slotHostname.endsWith(".onion");
 			final int expectedFileSize = (int) file.getExpectedSize();
 			final int readTimeout = (expectedFileSize / 2048) + Config.SOCKET_TIMEOUT; //assuming a minimum transfer speed of 16kbit/s
 			wakeLock.acquire(readTimeout);
 			Log.d(Config.LOGTAG, "uploading to " + slot.getPutUrl().toString()+ " w/ read timeout of "+readTimeout+"s");
-			if (mUseTor || message.getConversation().getAccount().isOnion()) {
+
+			if (mUseTor || message.getConversation().getAccount().isOnion() || onionSlot) {
 				connection = (HttpURLConnection) slot.getPutUrl().openConnection(HttpConnectionManager.getProxy());
 			} else {
 				connection = (HttpURLConnection) slot.getPutUrl().openConnection();

@@ -276,7 +276,9 @@ public class HttpDownloadConnection implements Transferable {
 				Log.d(Config.LOGTAG, "retrieve file size. interactive:" + String.valueOf(interactive));
 				changeStatus(STATUS_CHECKING);
 				HttpURLConnection connection;
-				if (mUseTor || message.getConversation().getAccount().isOnion()) {
+				final String hostname = mUrl.getHost();
+				final boolean onion = hostname != null && hostname.endsWith(".onion");
+				if (mUseTor || message.getConversation().getAccount().isOnion() || onion) {
 					connection = (HttpURLConnection) mUrl.openConnection(HttpConnectionManager.getProxy());
 				} else {
 					connection = (HttpURLConnection) mUrl.openConnection();
