@@ -101,7 +101,7 @@ public final class Config {
 
 
     public static final boolean DISABLE_PROXY_LOOKUP = false; //useful to debug ibb
-    public static final boolean DISABLE_HTTP_UPLOAD = true;
+    public static final boolean DISABLE_HTTP_UPLOAD = false;
     public static final boolean EXTENDED_SM_LOGGING = false; // log stanza counts
     public static final boolean BACKGROUND_STANZA_LOGGING = false; //log all stanzas that were received while the app is in background
     public static final boolean RESET_ATTEMPT_COUNT_ON_NETWORK_CHANGE = true; //setting to true might increase power consumption
