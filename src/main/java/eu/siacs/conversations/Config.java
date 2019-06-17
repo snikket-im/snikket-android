@@ -150,7 +150,7 @@ public final class Config {
             "TLS_RSA_WITH_AES_256_CBC_SHA",
     };
 
-    public static final String WEAK_CIPHER_PATTERNS[] = {
+    public static final String[] WEAK_CIPHER_PATTERNS = {
             "_NULL_",
             "_EXPORT_",
             "_anon_",
