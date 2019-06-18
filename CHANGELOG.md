@@ -1,5 +1,9 @@
 # Changelog
 
+### Version 2.5.3
+* bug fixes for peer to peer file transfer (Jingle)
+* fixed server info for unlimited/unknown max file size
+
 ### Version 2.5.2
 * bug fixes
 
