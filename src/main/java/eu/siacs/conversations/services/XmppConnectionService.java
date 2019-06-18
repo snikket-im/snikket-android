@@ -372,7 +372,13 @@ public class XmppConnectionService extends Service {
                 }
                 List<Conversation> conversations = getConversations();
                 for (Conversation conversation : conversations) {
-                    if (conversation.getAccount() == account && !account.pendingConferenceJoins.contains(conversation)) {
+                    final boolean inProgressJoin;
+                    synchronized (account.inProgressConferenceJoins) {
+                        inProgressJoin = account.inProgressConferenceJoins.contains(conversation);
+                    }
+                    if (conversation.getAccount() == account
+                            && !account.pendingConferenceJoins.contains(conversation)
+                            && !inProgressJoin) {
                         sendUnsentMessages(conversation);
                     }
                 }
@@ -1347,7 +1353,12 @@ public class XmppConnectionService extends Service {
             }
         }
 
-        if (account.isOnlineAndConnected()) {
+        final boolean inProgressJoin;
+        synchronized (account.inProgressConferenceJoins) {
+            inProgressJoin = conversation.getMode() == Conversational.MODE_MULTI && account.inProgressConferenceJoins.contains(conversation);
+        }
+
+        if (account.isOnlineAndConnected() && !inProgressJoin) {
             switch (message.getEncryption()) {
                 case Message.ENCRYPTION_NONE:
                     if (message.needsUploading()) {
@@ -2468,6 +2479,9 @@ public class XmppConnectionService extends Service {
 		account.pendingConferenceJoins.remove(conversation);
 		account.pendingConferenceLeaves.remove(conversation);
 		if (account.getStatus() == Account.State.ONLINE) {
+		    synchronized (account.inProgressConferenceJoins) {
+                account.inProgressConferenceJoins.add(conversation);
+            }
 			sendPresencePacket(account, mPresenceGenerator.leave(conversation.getMucOptions()));
 			conversation.resetMucOptions();
 			if (onConferenceJoined != null) {
@@ -2523,7 +2537,10 @@ public class XmppConnectionService extends Service {
 							saveConversationAsBookmark(conversation, null);
 						}
 					}
-					sendUnsentMessages(conversation);
+					synchronized (account.inProgressConferenceJoins) {
+                        account.inProgressConferenceJoins.remove(conversation);
+                        sendUnsentMessages(conversation);
+                    }
 				}
 
 				@Override
@@ -2539,9 +2556,13 @@ public class XmppConnectionService extends Service {
 				public void onFetchFailed(final Conversation conversation, Element error) {
                     if (conversation.getStatus() == Conversation.STATUS_ARCHIVED) {
                         Log.d(Config.LOGTAG,account.getJid().asBareJid()+": conversation ("+conversation.getJid()+") got archived before IQ result");
+
                         return;
                     }
 					if (error != null && "remote-server-not-found".equals(error.getName())) {
+					    synchronized (account.inProgressConferenceJoins) {
+                            account.inProgressConferenceJoins.remove(conversation);
+                        }
 						conversation.getMucOptions().setError(MucOptions.Error.SERVER_NOT_FOUND);
 						updateConversationUi();
 					} else {

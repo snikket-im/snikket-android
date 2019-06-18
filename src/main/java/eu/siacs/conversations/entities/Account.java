@@ -66,6 +66,7 @@ public class Account extends AbstractEntity implements AvatarService.Avatarable 
     private final Collection<Jid> blocklist = new CopyOnWriteArraySet<>();
     public List<Conversation> pendingConferenceJoins = new CopyOnWriteArrayList<>();
     public List<Conversation> pendingConferenceLeaves = new CopyOnWriteArrayList<>();
+    public final Set<Conversation> inProgressConferenceJoins = new HashSet<>();
     protected Jid jid;
     protected String password;
     protected int options = 0;
