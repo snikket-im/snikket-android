@@ -22,6 +22,7 @@ import eu.siacs.conversations.crypto.axolotl.XmppAxolotlMessage;
 import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.entities.Contact;
 import eu.siacs.conversations.entities.Conversation;
+import eu.siacs.conversations.entities.Conversational;
 import eu.siacs.conversations.entities.Message;
 import eu.siacs.conversations.entities.MucOptions;
 import eu.siacs.conversations.entities.ReadByMarker;
@@ -264,6 +265,17 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
                         packet.getId(),
                         Message.STATUS_SEND_FAILED,
                         extractErrorMessage(packet));
+                final Element error = packet.findChild("error");
+                final boolean notAcceptable = error != null && error.hasChild("not-acceptable");
+                if (notAcceptable) {
+                    Conversation conversation = mXmppConnectionService.find(account,from);
+                    if (conversation != null && conversation.getMode() == Conversational.MODE_MULTI) {
+                        if (conversation.getMucOptions().online()) {
+                            Log.d(Config.LOGTAG,account.getJid().asBareJid()+": received not-acceptable error for seemingly online muc at "+from);
+                            mXmppConnectionService.mucSelfPingAndRejoin(conversation);
+                        }
+                    }
+                }
             }
             return true;
         }
