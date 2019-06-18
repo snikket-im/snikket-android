@@ -1974,7 +1974,7 @@ public class XmppConnectionService extends Service {
 	    archiveConversation(conversation, true);
     }
 
-	private void archiveConversation(Conversation conversation, final boolean maySyncronizeWithBookmarks) {
+	private void archiveConversation(Conversation conversation, final boolean maySynchronizeWithBookmarks) {
 		getNotificationService().clear(conversation);
 		conversation.setStatus(Conversation.STATUS_ARCHIVED);
 		conversation.setNextMessage(null);
@@ -1983,7 +1983,7 @@ public class XmppConnectionService extends Service {
 			if (conversation.getMode() == Conversation.MODE_MULTI) {
 				if (conversation.getAccount().getStatus() == Account.State.ONLINE) {
 					Bookmark bookmark = conversation.getBookmark();
-					if (maySyncronizeWithBookmarks && bookmark != null && synchronizeWithBookmarks()) {
+					if (maySynchronizeWithBookmarks && bookmark != null && synchronizeWithBookmarks()) {
 						if (conversation.getMucOptions().getError() == MucOptions.Error.DESTROYED) {
 							Account account = bookmark.getAccount();
 							bookmark.setConversation(null);
@@ -2430,6 +2430,26 @@ public class XmppConnectionService extends Service {
 			}
 		}
 	}
+
+	public void mucSelfPingAndRejoin(final Conversation conversation) {
+	    final Jid self = conversation.getMucOptions().getSelf().getFullJid();
+	    final IqPacket ping = new IqPacket(IqPacket.TYPE.GET);
+	    ping.setTo(self);
+	    ping.addChild("ping", Namespace.PING);
+	    sendIqPacket(conversation.getAccount(), ping, (account, response) -> {
+	        if (response.getType() == IqPacket.TYPE.ERROR) {
+	            Element error = response.findChild("error");
+	            if (error == null || error.hasChild("service-unavailable") || error.hasChild("feature-not-implemented") || error.hasChild("item-not-found")) {
+	                Log.d(Config.LOGTAG,account.getJid().asBareJid()+": ping to "+self+" came back as ignorable error");
+                } else {
+	                Log.d(Config.LOGTAG,account.getJid().asBareJid()+": ping to "+self+" failed. attempting rejoin");
+	                joinMuc(conversation);
+                }
+            } else if (response.getType() == IqPacket.TYPE.RESULT) {
+	            Log.d(Config.LOGTAG,account.getJid().asBareJid()+": ping to "+self+" came back fine");
+            }
+        });
+    }
 
 	public void joinMuc(Conversation conversation) {
 		joinMuc(conversation, null, false);
