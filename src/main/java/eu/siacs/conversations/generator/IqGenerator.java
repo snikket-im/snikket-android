@@ -436,16 +436,26 @@ public class IqGenerator extends AbstractGenerator {
 		return packet;
 	}
 
-	public IqPacket enablePush(Jid jid, String node, String secret) {
+	public IqPacket enablePush(final Jid jid, final String node, final String secret) {
 		IqPacket packet = new IqPacket(IqPacket.TYPE.SET);
-		Element enable = packet.addChild("enable", "urn:xmpp:push:0");
+		Element enable = packet.addChild("enable", Namespace.PUSH);
 		enable.setAttribute("jid", jid.toString());
 		enable.setAttribute("node", node);
-		Data data = new Data();
-		data.setFormType(Namespace.PUBSUB_PUBLISH_OPTIONS);
-		data.put("secret", secret);
-		data.submit();
-		enable.addChild(data);
+		if (secret != null) {
+			Data data = new Data();
+			data.setFormType(Namespace.PUBSUB_PUBLISH_OPTIONS);
+			data.put("secret", secret);
+			data.submit();
+			enable.addChild(data);
+		}
+		return packet;
+	}
+
+	public IqPacket disablePush(final Jid jid, final String node) {
+		IqPacket packet = new IqPacket(IqPacket.TYPE.SET);
+		Element disable = packet.addChild("disable", Namespace.PUSH);
+		disable.setAttribute("jid", jid.toString());
+		disable.setAttribute("node", node);
 		return packet;
 	}
 

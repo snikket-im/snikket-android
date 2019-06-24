@@ -1819,8 +1819,8 @@ public class XmppConnection implements Runnable {
         }
 
         public boolean push() {
-            return hasDiscoFeature(account.getJid().asBareJid(), "urn:xmpp:push:0")
-                    || hasDiscoFeature(Jid.of(account.getServer()), "urn:xmpp:push:0");
+            return hasDiscoFeature(account.getJid().asBareJid(), Namespace.PUSH)
+                    || hasDiscoFeature(Jid.of(account.getServer()), Namespace.PUSH);
         }
 
         public boolean rosterVersioning() {

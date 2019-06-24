@@ -17,6 +17,7 @@ import eu.siacs.conversations.services.AvatarService;
 import eu.siacs.conversations.services.MessageArchiveService;
 import eu.siacs.conversations.utils.JidHelper;
 import eu.siacs.conversations.utils.UIHelper;
+import eu.siacs.conversations.xml.Namespace;
 import eu.siacs.conversations.xmpp.chatstate.ChatState;
 import eu.siacs.conversations.xmpp.forms.Data;
 import eu.siacs.conversations.xmpp.forms.Field;
@@ -111,6 +112,10 @@ public class MucOptions {
 
     public boolean mamSupport() {
         return MessageArchiveService.Version.has(getFeatures());
+    }
+
+    public boolean push() {
+        return getFeatures().contains(Namespace.PUSH);
     }
 
     public boolean updateConfiguration(ServiceDiscoveryResult serviceDiscoveryResult) {
