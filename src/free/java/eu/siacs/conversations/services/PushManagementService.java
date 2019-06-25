@@ -1,6 +1,7 @@
 package eu.siacs.conversations.services;
 
 import eu.siacs.conversations.entities.Account;
+import eu.siacs.conversations.entities.Conversation;
 
 public class PushManagementService {
 
@@ -10,7 +11,15 @@ public class PushManagementService {
 		this.mXmppConnectionService = service;
 	}
 
-	public void registerPushTokenOnServer(Account account) {
+	void registerPushTokenOnServer(Account account) {
+		//stub implementation. only affects playstore flavor
+	}
+
+	void registerPushTokenOnServer(Conversation conversation) {
+		//stub implementation. only affects playstore flavor
+	}
+
+	void disablePushOnServer(Conversation conversation) {
 		//stub implementation. only affects playstore flavor
 	}
 

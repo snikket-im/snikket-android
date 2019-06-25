@@ -2583,31 +2583,35 @@ public class XmppConnectionService extends Service {
 		}
 	}
 
-	private void enableMucPush(final Conversation conversation) {
-	    final Account account = conversation.getAccount();
-	    final Jid room = conversation.getJid().asBareJid();
+	private void enableDirectMucPush(final Conversation conversation) {
+        final Account account = conversation.getAccount();
+        final Jid room = conversation.getJid().asBareJid();
         final IqPacket enable = mIqGenerator.enablePush(conversation.getAccount().getJid(), conversation.getUuid(), null);
         enable.setTo(room);
         sendIqPacket(account, enable, (a, response) -> {
             if (response.getType() == IqPacket.TYPE.RESULT) {
-                Log.d(Config.LOGTAG,a.getJid().asBareJid()+": enabled push for muc "+room);
+                Log.d(Config.LOGTAG,a.getJid().asBareJid()+": enabled direct push for muc "+room);
             } else if (response.getType() == IqPacket.TYPE.ERROR) {
-                Log.d(Config.LOGTAG,a.getJid().asBareJid()+": unable to enable push for muc "+room+" "+response.getError());
+                Log.d(Config.LOGTAG,a.getJid().asBareJid()+": unable to enable direct push for muc "+room+" "+response.getError());
             }
         });
-
     }
 
-    private void disableMucPush(final Conversation conversation) {
+	private void enableMucPush(final Conversation conversation) {
+	    enableDirectMucPush(conversation);
+        mPushManagementService.registerPushTokenOnServer(conversation);
+    }
+
+    private void disableDirectMucPush(final Conversation conversation) {
         final Account account = conversation.getAccount();
         final Jid room = conversation.getJid().asBareJid();
         final IqPacket disable = mIqGenerator.disablePush(conversation.getAccount().getJid(), conversation.getUuid());
         disable.setTo(room);
         sendIqPacket(account, disable, (a, response) -> {
             if (response.getType() == IqPacket.TYPE.RESULT) {
-                Log.d(Config.LOGTAG,a.getJid().asBareJid()+": disabled push for muc "+room);
+                Log.d(Config.LOGTAG,a.getJid().asBareJid()+": disabled direct push for muc "+room);
             } else if (response.getType() == IqPacket.TYPE.ERROR) {
-                Log.d(Config.LOGTAG,a.getJid().asBareJid()+": unable to disable push for muc "+room+" "+response.getError());
+                Log.d(Config.LOGTAG,a.getJid().asBareJid()+": unable to disable direct push for muc "+room+" "+response.getError());
             }
         });
     }
@@ -2792,7 +2796,8 @@ public class XmppConnectionService extends Service {
 		account.pendingConferenceLeaves.remove(conversation);
 		if (account.getStatus() == Account.State.ONLINE || now) {
 		    if (conversation.getMucOptions().push()) {
-		        disableMucPush(conversation);
+		        disableDirectMucPush(conversation);
+		        mPushManagementService.disablePushOnServer(conversation);
             }
 			sendPresencePacket(conversation.getAccount(), mPresenceGenerator.leave(conversation.getMucOptions()));
 			conversation.getMucOptions().setOffline();
@@ -4063,6 +4068,7 @@ public class XmppConnectionService extends Service {
 		for (Account account : getAccounts()) {
 			if (account.isOnlineAndConnected() && mPushManagementService.available(account)) {
 				mPushManagementService.registerPushTokenOnServer(account);
+				//TODO renew mucs
 			}
 		}
 	}
