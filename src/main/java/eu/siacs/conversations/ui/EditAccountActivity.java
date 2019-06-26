@@ -104,7 +104,7 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
     private final UiCallback<Avatar> mAvatarFetchCallback = new UiCallback<Avatar>() {
 
         @Override
-        public void userInputRequried(final PendingIntent pi, final Avatar avatar) {
+        public void userInputRequired(final PendingIntent pi, final Avatar avatar) {
             finishInitialSetup(avatar);
         }
 
@@ -917,7 +917,7 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
             }
 
             @Override
-            public void userInputRequried(PendingIntent pi, String object) {
+            public void userInputRequired(PendingIntent pi, String object) {
                 mPendingPresenceTemplate.push(template);
                 try {
                     startIntentSenderForResult(pi.getIntentSender(), REQUEST_CHANGE_STATUS, null, 0, 0, 0);

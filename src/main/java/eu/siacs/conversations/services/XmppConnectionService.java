@@ -592,6 +592,7 @@ public class XmppConnectionService extends Service {
             toggleForegroundService(true);
         }
         String pushedAccountHash = null;
+        String pushedChannelHash = null;
         boolean interactive = false;
         if (action != null) {
             final String uuid = intent.getStringExtra("uuid");
@@ -704,6 +705,7 @@ public class XmppConnectionService extends Service {
                     break;
                 case ACTION_FCM_MESSAGE_RECEIVED:
                     pushedAccountHash = intent.getStringExtra("account");
+                    pushedChannelHash = intent.getStringExtra("channel");
                     Log.d(Config.LOGTAG, "push message arrived in service. account=" + pushedAccountHash);
                     break;
                 case Intent.ACTION_SEND:
@@ -717,13 +719,18 @@ public class XmppConnectionService extends Service {
         synchronized (this) {
             WakeLockHelper.acquire(wakeLock);
             boolean pingNow = ConnectivityManager.CONNECTIVITY_ACTION.equals(action) || (Config.POST_CONNECTIVITY_CHANGE_PING_INTERVAL > 0 && ACTION_POST_CONNECTIVITY_CHANGE.equals(action));
-            HashSet<Account> pingCandidates = new HashSet<>();
+            final HashSet<Account> pingCandidates = new HashSet<>();
+            final String androidId = PhoneHelper.getAndroidId(this);
             for (Account account : accounts) {
+                final boolean pushWasMeantForThisAccount = CryptoHelper.getAccountFingerprint(account, androidId).equals(pushedAccountHash);
                 pingNow |= processAccountState(account,
                         interactive,
                         "ui".equals(action),
-                        CryptoHelper.getAccountFingerprint(account, PhoneHelper.getAndroidId(this)).equals(pushedAccountHash),
+                        pushWasMeantForThisAccount,
                         pingCandidates);
+                if (pushWasMeantForThisAccount && pushedChannelHash != null) {
+                    checkMucStillJoined(account, pushedAccountHash, androidId);
+                }
             }
             if (pingNow) {
                 for (Account account : pingCandidates) {
@@ -816,6 +823,20 @@ public class XmppConnectionService extends Service {
         return pingNow;
     }
 
+    private void checkMucStillJoined(final Account account, final String hash, final String androidId) {
+        for(final Conversation conversation : this.conversations) {
+            if (conversation.getAccount() == account && conversation.getMode() == Conversational.MODE_MULTI) {
+                Jid jid = conversation.getJid().asBareJid();
+                final String currentHash = CryptoHelper.getFingerprint(jid, androidId);
+                if (currentHash.equals(hash)) {
+                    Log.d(Config.LOGTAG,account.getJid().asBareJid()+": received cloud push notification for MUC "+jid);
+                    return;
+                }
+            }
+        }
+        mPushManagementService.unregisterChannel(account, hash);
+    }
+
     public void reinitializeMuclumbusService() {
         mChannelDiscoveryService.initializeMuclumbusService();
     }
@@ -854,7 +875,7 @@ public class XmppConnectionService extends Service {
                 }
 
                 @Override
-                public void userInputRequried(PendingIntent pi, Message object) {
+                public void userInputRequired(PendingIntent pi, Message object) {
 
                 }
             });

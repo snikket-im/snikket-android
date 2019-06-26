@@ -137,7 +137,7 @@ public abstract class XmppActivity extends ActionBarActivity {
 		}
 
 		@Override
-		public void userInputRequried(PendingIntent pi, Conversation object) {
+		public void userInputRequired(PendingIntent pi, Conversation object) {
 
 		}
 	};
@@ -565,7 +565,7 @@ public abstract class XmppActivity extends ActionBarActivity {
 			xmppConnectionService.getPgpEngine().generateSignature(intent, account, status, new UiCallback<String>() {
 
 				@Override
-				public void userInputRequried(PendingIntent pi, String signature) {
+				public void userInputRequired(PendingIntent pi, String signature) {
 					try {
 						startIntentSenderForResult(pi.getIntentSender(), REQUEST_ANNOUNCE_PGP, null, 0, 0, 0);
 					} catch (final SendIntentException ignored) {
@@ -625,7 +625,7 @@ public abstract class XmppActivity extends ActionBarActivity {
 			}
 
 			@Override
-			public void userInputRequried(PendingIntent pi, Account object) {
+			public void userInputRequired(PendingIntent pi, Account object) {
 				try {
 					startIntentSenderForResult(pi.getIntentSender(),
 							REQUEST_CHOOSE_PGP_ID, null, 0, 0, 0);

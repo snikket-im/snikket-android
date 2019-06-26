@@ -83,7 +83,7 @@ public class ConferenceDetailsActivity extends XmppActivity implements OnConvers
         }
 
         @Override
-        public void userInputRequried(PendingIntent pi, Conversation object) {
+        public void userInputRequired(PendingIntent pi, Conversation object) {
 
         }
     };

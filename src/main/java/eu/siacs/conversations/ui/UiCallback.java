@@ -7,5 +7,5 @@ public interface UiCallback<T> {
 
 	void error(int errorCode, T object);
 
-	void userInputRequried(PendingIntent pi, T object);
+	void userInputRequired(PendingIntent pi, T object);
 }

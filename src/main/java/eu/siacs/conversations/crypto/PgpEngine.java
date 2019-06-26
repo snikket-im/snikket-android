@@ -2,7 +2,6 @@ package eu.siacs.conversations.crypto;
 
 import android.app.PendingIntent;
 import android.content.Intent;
-import android.os.Parcelable;
 import android.support.annotation.StringRes;
 import android.util.Log;
 
@@ -94,7 +93,7 @@ public class PgpEngine {
 
 						break;
 					case OpenPgpApi.RESULT_CODE_USER_INTERACTION_REQUIRED:
-						callback.userInputRequried(result.getParcelableExtra(OpenPgpApi.RESULT_INTENT), message);
+						callback.userInputRequired(result.getParcelableExtra(OpenPgpApi.RESULT_INTENT), message);
 						break;
 					case OpenPgpApi.RESULT_CODE_ERROR:
 						OpenPgpError error = result.getParcelableExtra(OpenPgpApi.RESULT_ERROR);
@@ -133,7 +132,7 @@ public class PgpEngine {
 							callback.success(message);
 							break;
 						case OpenPgpApi.RESULT_CODE_USER_INTERACTION_REQUIRED:
-							callback.userInputRequried(result.getParcelableExtra(OpenPgpApi.RESULT_INTENT), message);
+							callback.userInputRequired(result.getParcelableExtra(OpenPgpApi.RESULT_INTENT), message);
 							break;
 						case OpenPgpApi.RESULT_CODE_ERROR:
 							logError(conversation.getAccount(), result.getParcelableExtra(OpenPgpApi.RESULT_ERROR));
@@ -200,7 +199,7 @@ public class PgpEngine {
 					callback.success(account);
 					return;
 				case OpenPgpApi.RESULT_CODE_USER_INTERACTION_REQUIRED:
-					callback.userInputRequried(result.getParcelableExtra(OpenPgpApi.RESULT_INTENT), account);
+					callback.userInputRequired(result.getParcelableExtra(OpenPgpApi.RESULT_INTENT), account);
 					return;
 				case OpenPgpApi.RESULT_CODE_ERROR:
 					logError(account, result.getParcelableExtra(OpenPgpApi.RESULT_ERROR));
@@ -249,7 +248,7 @@ public class PgpEngine {
 					callback.success(signatureBuilder.toString());
 					return;
 				case OpenPgpApi.RESULT_CODE_USER_INTERACTION_REQUIRED:
-					callback.userInputRequried(result.getParcelableExtra(OpenPgpApi.RESULT_INTENT), status);
+					callback.userInputRequired(result.getParcelableExtra(OpenPgpApi.RESULT_INTENT), status);
 					return;
 				case OpenPgpApi.RESULT_CODE_ERROR:
 					OpenPgpError error = result.getParcelableExtra(OpenPgpApi.RESULT_ERROR);
@@ -276,7 +275,7 @@ public class PgpEngine {
 						callback.success(contact);
 						return;
 					case OpenPgpApi.RESULT_CODE_USER_INTERACTION_REQUIRED:
-						callback.userInputRequried(result.getParcelableExtra(OpenPgpApi.RESULT_INTENT), contact);
+						callback.userInputRequired(result.getParcelableExtra(OpenPgpApi.RESULT_INTENT), contact);
 						return;
 					case OpenPgpApi.RESULT_CODE_ERROR:
 						logError(contact.getAccount(), result.getParcelableExtra(OpenPgpApi.RESULT_ERROR));

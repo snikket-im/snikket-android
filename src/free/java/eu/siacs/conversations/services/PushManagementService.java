@@ -19,6 +19,10 @@ public class PushManagementService {
 		//stub implementation. only affects playstore flavor
 	}
 
+	void unregisterChannel(Account account, String hash) {
+		//stub implementation. only affects playstore flavor
+	}
+
 	void disablePushOnServer(Conversation conversation) {
 		//stub implementation. only affects playstore flavor
 	}

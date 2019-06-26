@@ -443,6 +443,20 @@ public class IqGenerator extends AbstractGenerator {
 		return packet;
 	}
 
+	public IqPacket unregisterChannelOnAppServer(Jid appServer, String deviceId, String channel) {
+		final IqPacket packet = new IqPacket(IqPacket.TYPE.SET);
+		packet.setTo(appServer);
+		final Element command = packet.addChild("command", Namespace.COMMANDS);
+		command.setAttribute("node", "unregister-push-fcm");
+		command.setAttribute("action", "execute");
+		final Data data = new Data();
+		data.put("channel", channel);
+		data.put("android-id", deviceId);
+		data.submit();
+		command.addChild(data);
+		return packet;
+	}
+
 	public IqPacket enablePush(final Jid jid, final String node, final String secret) {
 		IqPacket packet = new IqPacket(IqPacket.TYPE.SET);
 		Element enable = packet.addChild("enable", Namespace.PUSH);

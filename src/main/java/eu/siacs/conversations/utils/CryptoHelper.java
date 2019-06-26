@@ -246,8 +246,12 @@ public final class CryptoHelper {
         return prettifyFingerprintCert(bytesToHex(fingerprint));
     }
 
+    public static String getFingerprint(Jid jid, String androidId) {
+        return getFingerprint(jid.toEscapedString() + "\00" + androidId);
+    }
+
     public static String getAccountFingerprint(Account account, String androidId) {
-        return getFingerprint(account.getJid().asBareJid().toEscapedString() + "\00" + androidId);
+        return getFingerprint(account.getJid().asBareJid(), androidId);
     }
 
     public static String getFingerprint(String value) {

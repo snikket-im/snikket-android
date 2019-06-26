@@ -63,6 +63,19 @@ public class PushManagementService {
         });
     }
 
+    public void unregisterChannel(final Account account, final String channel) {
+        final String androidId = PhoneHelper.getAndroidId(mXmppConnectionService);
+        final Jid appServer = getAppServer();
+        final IqPacket packet = mXmppConnectionService.getIqGenerator().unregisterChannelOnAppServer(appServer, androidId, channel);
+        mXmppConnectionService.sendIqPacket(account, packet, (a, response) -> {
+            if (response.getType() == IqPacket.TYPE.RESULT) {
+                Log.d(Config.LOGTAG,a.getJid().asBareJid()+": successfully unregistered channel");
+            } else if (response.getType() == IqPacket.TYPE.ERROR) {
+                Log.d(Config.LOGTAG, a.getJid().asBareJid()+": unable to unregister channel with hash "+channel);
+            }
+        });
+    }
+
     void registerPushTokenOnServer(final Conversation conversation) {
         Log.d(Config.LOGTAG, conversation.getAccount().getJid().asBareJid() + ": room "+conversation.getJid().asBareJid()+" has push support");
         retrieveFcmInstanceToken(token -> {
