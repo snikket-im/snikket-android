@@ -64,8 +64,8 @@ public class Account extends AbstractEntity implements AvatarService.Avatarable 
     protected final JSONObject keys;
     private final Roster roster = new Roster(this);
     private final Collection<Jid> blocklist = new CopyOnWriteArraySet<>();
-    public List<Conversation> pendingConferenceJoins = new CopyOnWriteArrayList<>();
-    public List<Conversation> pendingConferenceLeaves = new CopyOnWriteArrayList<>();
+    public final Set<Conversation> pendingConferenceJoins = new HashSet<>();
+    public final Set<Conversation> pendingConferenceLeaves = new HashSet<>();
     public final Set<Conversation> inProgressConferenceJoins = new HashSet<>();
     public final Set<Conversation> inProgressConferencePings = new HashSet<>();
     protected Jid jid;

@@ -382,20 +382,33 @@ public class XmppConnectionService extends Service {
                     synchronized (account.inProgressConferenceJoins) {
                         inProgressJoin = account.inProgressConferenceJoins.contains(conversation);
                     }
+                    final boolean pendingJoin;
+                    synchronized (account.pendingConferenceJoins) {
+                        pendingJoin = account.pendingConferenceJoins.contains(conversation);
+                    }
                     if (conversation.getAccount() == account
-                            && !account.pendingConferenceJoins.contains(conversation)
+                            && !pendingJoin
                             && !inProgressJoin) {
                         sendUnsentMessages(conversation);
                     }
                 }
-                for (Conversation conversation : account.pendingConferenceLeaves) {
+                final List<Conversation> pendingLeaves;
+                synchronized (account.pendingConferenceLeaves) {
+                    pendingLeaves = new ArrayList<>(account.pendingConferenceLeaves);
+                    account.pendingConferenceLeaves.clear();
+
+                }
+                for (Conversation conversation : pendingLeaves) {
                     leaveMuc(conversation);
                 }
-                account.pendingConferenceLeaves.clear();
-                for (Conversation conversation : account.pendingConferenceJoins) {
+                final List<Conversation> pendingJoins;
+                synchronized (account.pendingConferenceJoins) {
+                    pendingJoins = new ArrayList<>(account.pendingConferenceJoins);
+                    account.pendingConferenceJoins.clear();
+                }
+                for (Conversation conversation : pendingJoins) {
                     joinMuc(conversation);
                 }
-                account.pendingConferenceJoins.clear();
                 scheduleWakeUpCall(Config.PING_MAX_INTERVAL, account.getUuid().hashCode());
             } else if (account.getStatus() == Account.State.OFFLINE || account.getStatus() == Account.State.DISABLED) {
                 resetSendingToWaiting(account);
@@ -2518,9 +2531,13 @@ public class XmppConnectionService extends Service {
 	}
 
 	private void joinMuc(Conversation conversation, final OnConferenceJoined onConferenceJoined, final boolean followedInvite) {
-		Account account = conversation.getAccount();
-		account.pendingConferenceJoins.remove(conversation);
-		account.pendingConferenceLeaves.remove(conversation);
+		final Account account = conversation.getAccount();
+		synchronized (account.pendingConferenceJoins) {
+            account.pendingConferenceJoins.remove(conversation);
+        }
+        synchronized (account.pendingConferenceLeaves) {
+            account.pendingConferenceLeaves.remove(conversation);
+        }
 		if (account.getStatus() == Account.State.ONLINE) {
 		    synchronized (account.inProgressConferenceJoins) {
                 account.inProgressConferenceJoins.add(conversation);
@@ -2619,7 +2636,9 @@ public class XmppConnectionService extends Service {
 			});
 			updateConversationUi();
 		} else {
-			account.pendingConferenceJoins.add(conversation);
+		    synchronized (account.pendingConferenceJoins) {
+                account.pendingConferenceJoins.add(conversation);
+            }
 			conversation.resetMucOptions();
 			conversation.setHasMessagesLeftOnServer(false);
 			updateConversationUi();
@@ -2834,9 +2853,13 @@ public class XmppConnectionService extends Service {
 	}
 
 	private void leaveMuc(Conversation conversation, boolean now) {
-		Account account = conversation.getAccount();
-		account.pendingConferenceJoins.remove(conversation);
-		account.pendingConferenceLeaves.remove(conversation);
+		final Account account = conversation.getAccount();
+		synchronized (account.pendingConferenceJoins) {
+            account.pendingConferenceJoins.remove(conversation);
+        }
+        synchronized (account.pendingConferenceLeaves) {
+            account.pendingConferenceLeaves.remove(conversation);
+        }
 		if (account.getStatus() == Account.State.ONLINE || now) {
 		    if (conversation.getMucOptions().push()) {
 		        disableDirectMucPush(conversation);
@@ -2850,7 +2873,9 @@ public class XmppConnectionService extends Service {
 			}
 			Log.d(Config.LOGTAG, conversation.getAccount().getJid().asBareJid() + ": leaving muc " + conversation.getJid());
 		} else {
-			account.pendingConferenceLeaves.add(conversation);
+		    synchronized (account.pendingConferenceLeaves) {
+                account.pendingConferenceLeaves.add(conversation);
+            }
 		}
 	}
 
