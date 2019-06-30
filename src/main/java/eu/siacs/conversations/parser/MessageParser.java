@@ -266,12 +266,12 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
                         Message.STATUS_SEND_FAILED,
                         extractErrorMessage(packet));
                 final Element error = packet.findChild("error");
-                final boolean notAcceptable = error != null && error.hasChild("not-acceptable");
-                if (notAcceptable) {
+                final boolean pingWorthyError = error != null && (error.hasChild("not-acceptable") || error.hasChild("remote-server-timeout") || error.hasChild("remote-server-not-found"));
+                if (pingWorthyError) {
                     Conversation conversation = mXmppConnectionService.find(account,from);
                     if (conversation != null && conversation.getMode() == Conversational.MODE_MULTI) {
                         if (conversation.getMucOptions().online()) {
-                            Log.d(Config.LOGTAG,account.getJid().asBareJid()+": received not-acceptable error for seemingly online muc at "+from);
+                            Log.d(Config.LOGTAG,account.getJid().asBareJid()+": received ping worthy error for seemingly online muc at "+from);
                             mXmppConnectionService.mucSelfPingAndRejoin(conversation);
                         }
                     }
