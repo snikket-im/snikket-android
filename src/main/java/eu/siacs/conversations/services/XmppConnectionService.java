@@ -2046,6 +2046,10 @@ public class XmppConnectionService extends Service {
 						}
 					}
 				}
+                if (conversation.getMucOptions().push()) {
+                    disableDirectMucPush(conversation);
+                    mPushManagementService.disablePushOnServer(conversation);
+                }
 				leaveMuc(conversation);
 			} else {
 				if (conversation.getContact().getOption(Contact.Options.PENDING_SUBSCRIPTION_REQUEST)) {
@@ -2861,10 +2865,6 @@ public class XmppConnectionService extends Service {
             account.pendingConferenceLeaves.remove(conversation);
         }
 		if (account.getStatus() == Account.State.ONLINE || now) {
-		    if (conversation.getMucOptions().push()) {
-		        disableDirectMucPush(conversation);
-		        mPushManagementService.disablePushOnServer(conversation);
-            }
 			sendPresencePacket(conversation.getAccount(), mPresenceGenerator.leave(conversation.getMucOptions()));
 			conversation.getMucOptions().setOffline();
 			Bookmark bookmark = conversation.getBookmark();
