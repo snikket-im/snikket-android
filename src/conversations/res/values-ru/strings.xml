@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="pick_a_server">Выберите своего XMPP-провайдера</string>
+    <string name="use_conversations.im">Использовать conversations.im</string>
+    <string name="create_new_account">Создать новый аккаунт</string>
+    </resources>
