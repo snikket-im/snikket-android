@@ -2284,7 +2284,10 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
             status = Presence.Status.OFFLINE;
         }
         this.binding.textSendButton.setTag(action);
-        this.binding.textSendButton.setImageResource(SendButtonTool.getSendButtonImageResource(getActivity(), action, status));
+        final Activity activity = getActivity();
+        if (activity != null) {
+            this.binding.textSendButton.setImageResource(SendButtonTool.getSendButtonImageResource(activity, action, status));
+        }
     }
 
     protected void updateStatusMessages() {
