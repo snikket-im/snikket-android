@@ -7,7 +7,7 @@ import org.hsluv.HUSLColorConverter;
 
 import java.security.MessageDigest;
 
-public class XEP0392Helper {
+class XEP0392Helper {
 
     private static double angle(String nickname) {
         try {
@@ -20,7 +20,7 @@ public class XEP0392Helper {
         }
     }
 
-    public static int rgbFromNick(String name) {
+    static int rgbFromNick(String name) {
         double[] hsluv = new double[3];
         hsluv[0] = angle(name) * 360;
         hsluv[1] = 100;
