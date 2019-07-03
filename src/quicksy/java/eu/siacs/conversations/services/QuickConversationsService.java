@@ -203,7 +203,7 @@ public class QuickConversationsService extends AbstractQuickConversationsService
                     os.close();
                     connection.connect();
                     final int code = connection.getResponseCode();
-                    if (code == 200) {
+                    if (code == 200 || code == 201) {
                         account.setOption(Account.OPTION_UNVERIFIED, false);
                         account.setOption(Account.OPTION_DISABLED, false);
                         awaitingAccountStateChange = new CountDownLatch(1);
