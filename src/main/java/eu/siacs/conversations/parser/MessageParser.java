@@ -610,7 +610,7 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
                     } else {
                         serverMsgIdUpdated = false;
                     }
-                    Log.d(Config.LOGTAG, "skipping duplicate message with " + message.getCounterpart() + ". serverMsgIdUpdated=" + Boolean.toString(serverMsgIdUpdated));
+                    Log.d(Config.LOGTAG, "skipping duplicate message with " + message.getCounterpart() + ". serverMsgIdUpdated=" + serverMsgIdUpdated);
                     return;
                 }
             }

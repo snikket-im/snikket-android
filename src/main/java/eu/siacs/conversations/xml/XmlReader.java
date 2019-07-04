@@ -6,14 +6,15 @@ import android.util.Xml;
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 
+import java.io.Closeable;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
 import eu.siacs.conversations.Config;
 
-public class XmlReader {
-	private XmlPullParser parser;
+public class XmlReader implements Closeable {
+	private final XmlPullParser parser;
 	private InputStream is;
 
 	public XmlReader() {
@@ -46,6 +47,11 @@ public class XmlReader {
 		} catch (XmlPullParserException e) {
 			throw new IOException("error resetting parser");
 		}
+	}
+
+	@Override
+	public void close() {
+		this.is = null;
 	}
 
 	public Tag readTag() throws IOException {
