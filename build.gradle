@@ -31,7 +31,7 @@ ext {
 }
 
 dependencies {
-    playstoreImplementation('com.google.firebase:firebase-messaging:19.0.1') {
+    playstoreImplementation('com.google.firebase:firebase-messaging:17.3.4') {
         exclude group: 'com.google.firebase', module: 'firebase-core'
         exclude group: 'com.google.firebase', module: 'firebase-analytics'
         exclude group: 'com.google.firebase', module: 'firebase-measurement-connector'
@@ -67,7 +67,7 @@ dependencies {
     implementation 'com.squareup.retrofit2:retrofit:2.5.0'
     implementation 'com.squareup.retrofit2:converter-gson:2.5.0'
     implementation 'com.google.guava:guava:27.1-android'
-    quicksyImplementation 'io.michaelrocks:libphonenumber-android:8.10.13'
+    quicksyImplementation 'io.michaelrocks:libphonenumber-android:8.10.1'
 }
 
 ext {
