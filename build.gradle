@@ -31,7 +31,7 @@ ext {
 }
 
 dependencies {
-    playstoreImplementation('com.google.firebase:firebase-messaging:17.3.4') {
+    playstoreImplementation('com.google.firebase:firebase-messaging:19.0.1') {
         exclude group: 'com.google.firebase', module: 'firebase-core'
         exclude group: 'com.google.firebase', module: 'firebase-analytics'
         exclude group: 'com.google.firebase', module: 'firebase-measurement-connector'
@@ -51,7 +51,7 @@ dependencies {
     conversationsFreeCompatImplementation "com.android.support:support-emoji-bundled:$supportLibVersion"
     quicksyFreeCompatImplementation "com.android.support:support-emoji-bundled:$supportLibVersion"
     implementation 'org.bouncycastle:bcmail-jdk15on:1.58'
-    implementation 'com.google.zxing:core:3.3.3'
+    implementation 'com.google.zxing:core:3.4.0'
     implementation 'de.measite.minidns:minidns-hla:0.2.4'
     implementation 'me.leolin:ShortcutBadger:1.1.22@aar'
     implementation 'org.whispersystems:signal-protocol-java:2.6.2'
@@ -59,15 +59,15 @@ dependencies {
     implementation "com.wefika:flowlayout:0.4.1"
     implementation 'net.ypresto.androidtranscoder:android-transcoder:0.3.0'
     implementation project(':libs:xmpp-addr')
-    implementation 'org.osmdroid:osmdroid-android:6.0.3'
+    implementation 'org.osmdroid:osmdroid-android:6.1.0'
     implementation 'org.hsluv:hsluv:0.2'
-    implementation 'org.conscrypt:conscrypt-android:1.3.0'
+    implementation 'org.conscrypt:conscrypt-android:2.1.0'
     implementation 'me.drakeet.support:toastcompat:1.1.0'
     implementation "com.leinardi.android:speed-dial:2.0.1"
     implementation 'com.squareup.retrofit2:retrofit:2.5.0'
     implementation 'com.squareup.retrofit2:converter-gson:2.5.0'
     implementation 'com.google.guava:guava:27.1-android'
-    quicksyImplementation 'io.michaelrocks:libphonenumber-android:8.10.1'
+    quicksyImplementation 'io.michaelrocks:libphonenumber-android:8.10.14'
 }
 
 ext {
@@ -81,8 +81,8 @@ android {
     defaultConfig {
         minSdkVersion 16
         targetSdkVersion 28
-        versionCode 331
-        versionName "2.5.4-beta"
+        versionCode 332
+        versionName "2.5.4-beta.2"
         archivesBaseName += "-$versionName"
         applicationId "eu.siacs.conversations"
         resValue "string", "applicationId", applicationId
