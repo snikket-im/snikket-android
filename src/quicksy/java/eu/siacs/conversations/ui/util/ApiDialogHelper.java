@@ -42,6 +42,9 @@ public class ApiDialogHelper {
             case 409:
                 res = R.string.logged_in_with_another_device;
                 break;
+            case 451:
+                res = R.string.not_available_in_your_country;
+                break;
             case 500:
                 res = R.string.something_went_wrong_processing_your_request;
                 break;
