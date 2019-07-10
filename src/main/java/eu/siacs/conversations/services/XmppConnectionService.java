@@ -4251,17 +4251,15 @@ public class XmppConnectionService extends Service {
 	public boolean sendBlockRequest(final Blockable blockable, boolean reportSpam) {
 		if (blockable != null && blockable.getBlockedJid() != null) {
 			final Jid jid = blockable.getBlockedJid();
-			this.sendIqPacket(blockable.getAccount(), getIqGenerator().generateSetBlockRequest(jid, reportSpam), new OnIqPacketReceived() {
-
-				@Override
-				public void onIqPacketReceived(final Account account, final IqPacket packet) {
-					if (packet.getType() == IqPacket.TYPE.RESULT) {
-						account.getBlocklist().add(jid);
-						updateBlocklistUi(OnUpdateBlocklist.Status.BLOCKED);
-					}
-				}
-			});
-			if (removeBlockedConversations(blockable.getAccount(), jid)) {
+			this.sendIqPacket(blockable.getAccount(), getIqGenerator().generateSetBlockRequest(jid, reportSpam), (a, response) -> {
+                if (response.getType() == IqPacket.TYPE.RESULT) {
+                    a.getBlocklist().add(jid);
+                    updateBlocklistUi(OnUpdateBlocklist.Status.BLOCKED);
+                }
+            });
+			if (blockable.getBlockedJid().isFullJid()) {
+			    return false;
+            } else if (removeBlockedConversations(blockable.getAccount(), jid)) {
 				updateConversationUi();
 				return true;
 			} else {

@@ -305,7 +305,7 @@ public class IqGenerator extends AbstractGenerator {
 	public IqPacket generateSetBlockRequest(final Jid jid, boolean reportSpam) {
 		final IqPacket iq = new IqPacket(IqPacket.TYPE.SET);
 		final Element block = iq.addChild("block", Namespace.BLOCKING);
-		final Element item = block.addChild("item").setAttribute("jid", jid.asBareJid().toString());
+		final Element item = block.addChild("item").setAttribute("jid", jid.toEscapedString());
 		if (reportSpam) {
 			item.addChild("report", "urn:xmpp:reporting:0").addChild("spam");
 		}
@@ -316,7 +316,7 @@ public class IqGenerator extends AbstractGenerator {
 	public IqPacket generateSetUnblockRequest(final Jid jid) {
 		final IqPacket iq = new IqPacket(IqPacket.TYPE.SET);
 		final Element block = iq.addChild("unblock", Namespace.BLOCKING);
-		block.addChild("item").setAttribute("jid", jid.asBareJid().toString());
+		block.addChild("item").setAttribute("jid", jid.toEscapedString());
 		return iq;
 	}
 

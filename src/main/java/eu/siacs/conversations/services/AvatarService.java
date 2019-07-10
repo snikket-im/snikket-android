@@ -37,6 +37,7 @@ import eu.siacs.conversations.entities.Conversational;
 import eu.siacs.conversations.entities.ListItem;
 import eu.siacs.conversations.entities.Message;
 import eu.siacs.conversations.entities.MucOptions;
+import eu.siacs.conversations.entities.RawBlockable;
 import eu.siacs.conversations.http.services.MuclumbusService;
 import eu.siacs.conversations.utils.UIHelper;
 import eu.siacs.conversations.xmpp.OnAdvancedStreamFeaturesLoaded;
@@ -272,7 +273,9 @@ public class AvatarService implements OnAdvancedStreamFeaturesLoaded {
 	}
 
 	public Bitmap get(ListItem item, int size, boolean cachedOnly) {
-		if (item instanceof Contact) {
+		if (item instanceof RawBlockable) {
+			return get(item.getDisplayName(), item.getJid().toEscapedString(), size, cachedOnly);
+		} else if (item instanceof Contact) {
 			return get((Contact) item, size, cachedOnly);
 		} else if (item instanceof Bookmark) {
 			Bookmark bookmark = (Bookmark) item;

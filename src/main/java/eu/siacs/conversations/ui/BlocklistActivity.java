@@ -10,7 +10,10 @@ import java.util.Collections;
 
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.entities.Account;
+import eu.siacs.conversations.entities.Blockable;
 import eu.siacs.conversations.entities.Contact;
+import eu.siacs.conversations.entities.ListItem;
+import eu.siacs.conversations.entities.RawBlockable;
 import eu.siacs.conversations.ui.interfaces.OnBackendConnected;
 import eu.siacs.conversations.xmpp.OnUpdateBlocklist;
 import rocks.xmpp.addr.Jid;
@@ -23,7 +26,7 @@ public class BlocklistActivity extends AbstractSearchableListItemActivity implem
 	public void onCreate(final Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		getListView().setOnItemLongClickListener((parent, view, position, id) -> {
-			BlockContactDialog.show(BlocklistActivity.this, (Contact) getListItems().get(position));
+			BlockContactDialog.show(BlocklistActivity.this, (Blockable) getListItems().get(position));
 			return true;
 		});
 		this.binding.fab.show();
@@ -50,9 +53,14 @@ public class BlocklistActivity extends AbstractSearchableListItemActivity implem
 		getListItems().clear();
 		if (account != null) {
 			for (final Jid jid : account.getBlocklist()) {
-				final Contact contact = account.getRoster().getContact(jid);
-				if (contact.match(this, needle) && contact.isBlocked()) {
-					getListItems().add(contact);
+				ListItem item;
+				if (jid.isFullJid()) {
+					item = new RawBlockable(account, jid);
+				} else {
+					item = account.getRoster().getContact(jid);
+				}
+				if (item.match(this, needle)) {
+					getListItems().add(item);
 				}
 			}
 			Collections.sort(getListItems());
@@ -78,8 +86,8 @@ public class BlocklistActivity extends AbstractSearchableListItemActivity implem
 		);
 
 		dialog.setOnEnterJidDialogPositiveListener((accountJid, contactJid) -> {
-			Contact contact = account.getRoster().getContact(contactJid);
-			if (xmppConnectionService.sendBlockRequest(contact, false)) {
+			Blockable blockable = new RawBlockable(account, contactJid);
+			if (xmppConnectionService.sendBlockRequest(blockable, false)) {
 				Toast.makeText(BlocklistActivity.this, R.string.corresponding_conversations_closed, Toast.LENGTH_SHORT).show();
 			}
 			return true;
@@ -101,4 +109,5 @@ public class BlocklistActivity extends AbstractSearchableListItemActivity implem
 	public void OnUpdateBlocklist(final OnUpdateBlocklist.Status status) {
 		refreshUi();
 	}
+
 }
