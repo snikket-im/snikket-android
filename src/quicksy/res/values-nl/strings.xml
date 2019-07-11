@@ -19,4 +19,4 @@
     <string name="no_microphone_permission">Quicksy heeft toegang nodig tot de microfoon</string>
     <string name="foreground_service_channel_description">Deze meldingscategorie wordt gebruikt om een permanente melding weer te geven dat Quicksy wordt uitgevoerd.</string>
     <string name="set_profile_picture">Quicksy-profielafbeelding</string>
-</resources>
+    </resources>

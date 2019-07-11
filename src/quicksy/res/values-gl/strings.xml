@@ -19,4 +19,5 @@
     <string name="no_microphone_permission">Quicksy precisa acceder ao micrófono</string>
     <string name="foreground_service_channel_description">Esta categoría de notificacións utilízase para mostrar unha notificación permanente que indica que Quicksy está funcionando.</string>
     <string name="set_profile_picture">Imaxe de perfil Quicksy</string>
+    <string name="not_available_in_your_country">Quicksy non está dispoñible no seu país.</string>
 </resources>

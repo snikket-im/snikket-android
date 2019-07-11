@@ -17,6 +17,8 @@
   <string name="action_unblock_contact">Deblochează contact</string>
   <string name="action_block_domain">Blochează domeniu</string>
   <string name="action_unblock_domain">Deblochează domeniu</string>
+  <string name="action_block_participant">Blochează participant</string>
+  <string name="action_unblock_participant">Deblochează participant</string>
   <string name="title_activity_manage_accounts">Configurează conturile</string>
   <string name="title_activity_settings">Setări</string>
   <string name="title_activity_sharewith">Partajează într-o conversație</string>

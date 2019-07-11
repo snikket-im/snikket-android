@@ -19,4 +19,4 @@
     <string name="no_microphone_permission">Програма потребує доступу до мікрофона</string>
     <string name="foreground_service_channel_description">Цей вид сповіщень показує постійне сповіщення про те, що ця програма працює.</string>
     <string name="set_profile_picture">Зображення профілю для Quicksy</string>
-</resources>
+    </resources>

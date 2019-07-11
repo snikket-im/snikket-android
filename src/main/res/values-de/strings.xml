@@ -17,6 +17,8 @@
   <string name="action_unblock_contact">Kontakt entsperren</string>
   <string name="action_block_domain">Domain sperren</string>
   <string name="action_unblock_domain">Domain entsperren</string>
+  <string name="action_block_participant">Teilnehmer sperren</string>
+  <string name="action_unblock_participant">Teilnehmer entsperren</string>
   <string name="title_activity_manage_accounts">Konten verwalten</string>
   <string name="title_activity_settings">Einstellungen</string>
   <string name="title_activity_sharewith">Mit Unterhaltung teilen</string>

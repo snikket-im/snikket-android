@@ -17,6 +17,8 @@
   <string name="action_unblock_contact">Desbloquear contacto</string>
   <string name="action_block_domain">Bloquear dominio</string>
   <string name="action_unblock_domain">Desbloquear dominio</string>
+  <string name="action_block_participant">Bloquear persoa</string>
+  <string name="action_unblock_participant">Desbloquear persoa</string>
   <string name="title_activity_manage_accounts">Xestionar contas</string>
   <string name="title_activity_settings">Axustes</string>
   <string name="title_activity_sharewith">Compartir na conversa</string>

@@ -19,4 +19,4 @@
     <string name="no_microphone_permission">Quicksy はマイクにアクセスが必要です</string>
     <string name="foreground_service_channel_description">この通知カテゴリーは Quicksy が実行されていることを表示する、永続的な通知を表示するために使用されます。</string>
     <string name="set_profile_picture">Quicksy プロフィール写真</string>
-</resources>
+    </resources>

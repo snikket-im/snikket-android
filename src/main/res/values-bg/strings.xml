@@ -776,4 +776,10 @@
   <string name="open_with">Отваряне с…</string>
   <string name="set_profile_picture">Профилна снимка за Conversations</string>
   <string name="choose_account">Изберете профил</string>
+  <string name="restore_backup">Възстановяване от резервно копие</string>
+  <string name="restore">Възстановяване</string>
+  <string name="enter_password_to_restore">Въведете паролата си за профила %s, за да направите възстановяване от резервно копие.</string>
+  <string name="restore_warning">Не използвайте възможността за възстановяване от резервно копие, за да клонирате (да изпълнявате едновременно) инсталацията. Възстановяването от резервно копие е предназначено за мигриране или в случай, че сте загубили устройството си.</string>
+  <string name="unable_to_restore_backup">Не може да се направи възстановяване от резервно копие.</string>
+  <string name="unable_to_decrypt_backup">Резервното копие не може да бъде дешифрирано. Правилна ли е паролата?</string>
 </resources>

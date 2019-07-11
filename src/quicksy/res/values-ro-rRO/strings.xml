@@ -21,4 +21,5 @@ sau chiar pierderea mesajelor.\nÎn continuare veți fi rugați să dezactivați
     <string name="no_microphone_permission">Quicksy are nevoie de acces la microfon</string>
     <string name="foreground_service_channel_description">Această categorie de notificări este folosită pentru a arăta o notificare permanentă ce indică rularea Quicksy</string>
     <string name="set_profile_picture">Poză profil Quicksy</string>
+    <string name="not_available_in_your_country">Quicksy nu este disponibilă în țara dumneavoastră.</string>
 </resources>

@@ -6,4 +6,4 @@
     <string name="pref_broadcast_last_activity_summary">إجعل كلّ جهات إتصالك تعلم أنك تستعمل كويكسي</string>
     <string name="no_microphone_permission">كويكسي يحتاج الإتصال بالمايكروفون</string>
     <string name="set_profile_picture">صورة حساب كويكسي</string>
-</resources>
+    </resources>
