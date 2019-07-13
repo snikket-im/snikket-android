@@ -1,5 +1,8 @@
 # Changelog
 
+### Version 2.5.4
+* stability improvements for group chats and channels
+
 ### Version 2.5.3
 * bug fixes for peer to peer file transfer (Jingle)
 * fixed server info for unlimited/unknown max file size
