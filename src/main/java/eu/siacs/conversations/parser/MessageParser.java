@@ -543,7 +543,8 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
                     final boolean fingerprintsMatch = replacedMessage.getFingerprint() == null
                             || replacedMessage.getFingerprint().equals(message.getFingerprint());
                     final boolean trueCountersMatch = replacedMessage.getTrueCounterpart() != null
-                            && replacedMessage.getTrueCounterpart().equals(message.getTrueCounterpart());
+                            && message.getTrueCounterpart() != null
+                            && replacedMessage.getTrueCounterpart().asBareJid().equals(message.getTrueCounterpart().asBareJid());
                     final boolean mucUserMatches = query == null && replacedMessage.sameMucUser(message); //can not be checked when using mam
                     final boolean duplicate = conversation.hasDuplicateMessage(message);
                     if (fingerprintsMatch && (trueCountersMatch || !conversationMultiMode || mucUserMatches) && !duplicate) {
