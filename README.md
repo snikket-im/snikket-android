@@ -100,10 +100,9 @@ Buying the App from the Play Store will also give you access to our [beta test](
 
 #### I don't have a Google Account but I would still like to make a contribution
 
-I accept donations over PayPal, bank transfer and various crypto currencies. For donations via PayPal you
-can use the email address `donate@siacs.eu` or the button below.
+I accept donations over PayPal, bank transfer and various crypto currencies. For donations via PayPal use the button below:
 
-[![Donate with PayPal](https://www.paypalobjects.com/en_US/i/btn/btn_donate_LG.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=CW3SYT3KG5PDL)
+[![Donate with PayPal](http://paypal.me/ConversationsIM)
 
 **Disclaimer:** I'm not a huge fan of PayPal and their business policies. For
 larger contributions please get in touch with me beforehand and we can talk
