@@ -1,12 +1,12 @@
 #### General information
 
-* **Version:** eg 1.21.0
-* **Device:** eg Google Nexus 5
-* **Android Version:** eg Android 6.0 Stock or Android 5.1 Cyanogenmod
-* **Server name:** eg conversations.im, jabber.at or self hosted
+* **Version:** 2.5.3
+* **Device:** Xiaomi Mi A1
+* **Android Version:**  Android 9 (stock)
+* **Server name:** conversations.im, jabber.at or self hosted
 * **Server software:** ejabberd 16.04 or prosody 0.10 (if known)
-* **Installed server modules:** eg Stream Managment, CSI, MAM
-* **Conversations source:** eg PlayStore, PlayStore Beta Channel, F-Droid, self build (latest HEAD)
+* **Installed server modules:** Stream Managment, CSI, MAM
+* **Conversations source:** PlayStore, PlayStore Beta Channel, F-Droid, self build (latest HEAD)
 
 
 #### Steps to reproduce
