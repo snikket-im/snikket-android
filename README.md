@@ -102,7 +102,7 @@ Buying the App from the Play Store will also give you access to our [beta test](
 
 I accept donations over PayPal, bank transfer and various crypto currencies. For donations via PayPal use the button below:
 
-[![Donate with PayPal](http://paypal.me/ConversationsIM)
+[![Donate with PayPal](https://www.paypalobjects.com/en_US/i/btn/btn_donate_LG.gif)](https://www.paypal.me/ConversationsIM)
 
 **Disclaimer:** I'm not a huge fan of PayPal and their business policies. For
 larger contributions please get in touch with me beforehand and we can talk
