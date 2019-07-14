@@ -17,6 +17,8 @@
   <string name="action_unblock_contact">Odblokuj kontakt</string>
   <string name="action_block_domain">Zablokuj domenę</string>
   <string name="action_unblock_domain">Odblokuj domenę</string>
+  <string name="action_block_participant">Zablokuj użytkownika</string>
+  <string name="action_unblock_participant">Odblokuj użytkownika</string>
   <string name="title_activity_manage_accounts">Zarządzaj kontami</string>
   <string name="title_activity_settings">Ustawienia</string>
   <string name="title_activity_sharewith">Udostępnij w konwersacji</string>
@@ -205,8 +207,8 @@
   <string name="openpgp_key_id">ID klucza OpenPGP</string>
   <string name="omemo_fingerprint">Odcisk OMEMO</string>
   <string name="omemo_fingerprint_x509">Odcisk v\\OMEMO</string>
-  <string name="omemo_fingerprint_selected_message">Odcisk OMEMO wiadomości</string>
-  <string name="omemo_fingerprint_x509_selected_message">Odcisk v\\OMEMO wiadomości</string>
+  <string name="omemo_fingerprint_selected_message">Odcisk OMEMO tej wiadomości</string>
+  <string name="omemo_fingerprint_x509_selected_message">Odcisk v\\OMEMO tej wiadomości</string>
   <string name="other_devices">Pozostałe urządzenia</string>
   <string name="trust_omemo_fingerprints">Zaufane odciski OMEMO</string>
   <string name="fetching_keys">Pobieranie kluczy...</string>
