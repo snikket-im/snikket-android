@@ -868,4 +868,7 @@
     <string name="this_looks_like_a_domain">This looks like a domain address</string>
     <string name="add_anway">Add anyway</string>
     <string name="this_looks_like_channel">This looks like a channel address</string>
+    <string name="share_backup_files">Share backup files</string>
+    <string name="conversations_backup">Conversations backup</string>
+    <string name="event">Event</string>
 </resources>

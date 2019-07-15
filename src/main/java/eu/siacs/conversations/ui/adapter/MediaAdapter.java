@@ -23,6 +23,7 @@ import java.util.concurrent.RejectedExecutionException;
 
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.databinding.MediaBinding;
+import eu.siacs.conversations.services.ExportBackupService;
 import eu.siacs.conversations.ui.XmppActivity;
 import eu.siacs.conversations.ui.util.Attachment;
 import eu.siacs.conversations.ui.util.StyledAttributes;
@@ -79,6 +80,8 @@ public class MediaAdapter extends RecyclerView.Adapter<MediaAdapter.MediaViewHol
                 attr = R.attr.media_preview_archive;
             } else if (mime.equals("application/epub+zip") || mime.equals("application/vnd.amazon.mobi8-ebook")) {
                 attr = R.attr.media_preview_ebook;
+            } else if (mime.equals(ExportBackupService.MIME_TYPE)) {
+                attr = R.attr.media_preview_backup;
             } else if (DOCUMENT_MIMES.contains(mime)) {
                 attr = R.attr.media_preview_document;
             } else {

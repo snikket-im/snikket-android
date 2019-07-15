@@ -94,6 +94,7 @@ public class ConversationAdapter extends RecyclerView.Adapter<ConversationAdapte
                     imageResource = activity.getThemeResource(R.attr.ic_attach_location, R.drawable.ic_attach_location);
                     showPreviewText = false;
                 } else {
+                    //TODO move this into static MediaPreview method and use same icons as in MediaAdapter
                     final String mime = message.getMimeType();
                     switch (mime == null ? "" : mime.split("/")[0]) {
                         case "image":

@@ -63,6 +63,7 @@
     <attr name="media_preview_calendar" format="reference"/>
     <attr name="media_preview_archive" format="reference" />
     <attr name="media_preview_ebook" format="reference"/>
+    <attr name="media_preview_backup" format="reference"/>
     <attr name="media_preview_unknown" format="reference" />
 
 

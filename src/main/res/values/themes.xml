@@ -74,6 +74,7 @@
         <item type="reference" name="media_preview_calendar">@drawable/ic_event_black_48dp</item>
         <item type="reference" name="media_preview_archive">@drawable/ic_archive_black_48dp</item>
         <item type="reference" name="media_preview_ebook">@drawable/ic_book_black_48dp</item>
+        <item type="reference" name="media_preview_backup">@drawable/ic_backup_black_48dp</item>
         <item type="reference" name="media_preview_unknown">@drawable/ic_help_black_48dp</item>
 
         <item type="reference" name="icon_add_group">@drawable/ic_group_add_white_24dp</item>
@@ -187,6 +188,7 @@
         <item type="reference" name="media_preview_calendar">@drawable/ic_event_white_48dp</item>
         <item type="reference" name="media_preview_archive">@drawable/ic_archive_white_48dp</item>
         <item type="reference" name="media_preview_ebook">@drawable/ic_book_white_48dp</item>
+        <item type="reference" name="media_preview_backup">@drawable/ic_backup_white_48dp</item>
         <item type="reference" name="media_preview_unknown">@drawable/ic_help_white_48dp</item>
 
         <item type="reference" name="icon_add_group">@drawable/ic_group_add_white_24dp</item>
