@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.net.Uri;
 import android.os.Binder;
 import android.os.IBinder;
 import android.support.v4.app.NotificationCompat;
@@ -16,18 +17,20 @@ import java.io.BufferedReader;
 import java.io.DataInputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.WeakHashMap;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.zip.GZIPInputStream;
+import java.util.zip.ZipException;
 
 import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
@@ -81,14 +84,22 @@ public class ImportBackupService extends Service {
             return START_NOT_STICKY;
         }
         final String password = intent.getStringExtra("password");
-        final String file = intent.getStringExtra("file");
-        if (password == null || file == null) {
+        final Uri data = intent.getData();
+        final Uri uri;
+        if (data == null) {
+            final String file = intent.getStringExtra("file");
+            uri = file == null ? null : Uri.fromFile(new File(file));
+        } else {
+            uri = data;
+        }
+
+        if (password == null || uri == null) {
             return START_NOT_STICKY;
         }
         if (running.compareAndSet(false, true)) {
             executor.execute(() -> {
                 startForegroundService();
-                final boolean success = importBackup(new File(file), password);
+                final boolean success = importBackup(uri, password);
                 stopForeground(true);
                 running.set(false);
                 if (success) {
@@ -122,7 +133,7 @@ public class ImportBackupService extends Service {
                         try {
                             final BackupFile backupFile = BackupFile.read(file);
                             if (accounts.contains(backupFile.getHeader().getJid())) {
-                                Log.d(Config.LOGTAG,"skipping backup for "+backupFile.getHeader().getJid());
+                                Log.d(Config.LOGTAG, "skipping backup for " + backupFile.getHeader().getJid());
                             } else {
                                 backupFiles.add(backupFile);
                             }
@@ -145,21 +156,43 @@ public class ImportBackupService extends Service {
         startForeground(NOTIFICATION_ID, mBuilder.build());
     }
 
-    private boolean importBackup(File file, String password) {
-        Log.d(Config.LOGTAG, "importing backup from file " + file.getAbsolutePath());
+    private boolean importBackup(Uri uri, String password) {
+        Log.d(Config.LOGTAG, "importing backup from " + uri);
+        if (password == null || password.isEmpty()) {
+            synchronized (mOnBackupProcessedListeners) {
+                for (OnBackupProcessed l : mOnBackupProcessedListeners) {
+                    l.onBackupDecryptionFailed();
+                }
+            }
+            return false;
+        }
         try {
             SQLiteDatabase db = mDatabaseBackend.getWritableDatabase();
-            final FileInputStream fileInputStream = new FileInputStream(file);
-            final DataInputStream dataInputStream = new DataInputStream(fileInputStream);
-            BackupFileHeader backupFileHeader = BackupFileHeader.read(dataInputStream);
+            final InputStream inputStream;
+            if ("file".equals(uri.getScheme())) {
+                inputStream = new FileInputStream(new File(uri.getPath()));
+            } else {
+                inputStream = getContentResolver().openInputStream(uri);
+            }
+            final DataInputStream dataInputStream = new DataInputStream(inputStream);
+            final BackupFileHeader backupFileHeader = BackupFileHeader.read(dataInputStream);
             Log.d(Config.LOGTAG, backupFileHeader.toString());
+
+            if (mDatabaseBackend.getAccountJids(false).contains(backupFileHeader.getJid())) {
+                synchronized (mOnBackupProcessedListeners) {
+                    for (OnBackupProcessed l : mOnBackupProcessedListeners) {
+                        l.onAccountAlreadySetup();
+                    }
+                }
+                return false;
+            }
 
             final Cipher cipher = Compatibility.twentyEight() ? Cipher.getInstance(CIPHERMODE) : Cipher.getInstance(CIPHERMODE, PROVIDER);
             byte[] key = ExportBackupService.getKey(password, backupFileHeader.getSalt());
             SecretKeySpec keySpec = new SecretKeySpec(key, KEYTYPE);
             IvParameterSpec ivSpec = new IvParameterSpec(backupFileHeader.getIv());
             cipher.init(Cipher.DECRYPT_MODE, keySpec, ivSpec);
-            CipherInputStream cipherInputStream = new CipherInputStream(fileInputStream, cipher);
+            CipherInputStream cipherInputStream = new CipherInputStream(inputStream, cipher);
 
             GZIPInputStream gzipInputStream = new GZIPInputStream(cipherInputStream);
             BufferedReader reader = new BufferedReader(new InputStreamReader(gzipInputStream, "UTF-8"));
@@ -197,12 +230,7 @@ public class ImportBackupService extends Service {
             return true;
         } catch (Exception e) {
             Throwable throwable = e.getCause();
-            final boolean reasonWasCrypto;
-            if (throwable instanceof BadPaddingException) {
-                reasonWasCrypto = true;
-            } else {
-                reasonWasCrypto = false;
-            }
+            final boolean reasonWasCrypto = throwable instanceof BadPaddingException || e instanceof ZipException;
             synchronized (mOnBackupProcessedListeners) {
                 for (OnBackupProcessed l : mOnBackupProcessedListeners) {
                     if (reasonWasCrypto) {
@@ -212,7 +240,7 @@ public class ImportBackupService extends Service {
                     }
                 }
             }
-            Log.d(Config.LOGTAG, "error restoring backup " + file.getAbsolutePath(), e);
+            Log.d(Config.LOGTAG, "error restoring backup " + uri, e);
             return false;
         }
     }
@@ -259,14 +287,16 @@ public class ImportBackupService extends Service {
         void onBackupDecryptionFailed();
 
         void onBackupRestoreFailed();
+
+        void onAccountAlreadySetup();
     }
 
     public static class BackupFile {
-        private final File file;
+        private final Uri uri;
         private final BackupFileHeader header;
 
-        private BackupFile(File file, BackupFileHeader header) {
-            this.file = file;
+        private BackupFile(Uri uri, BackupFileHeader header) {
+            this.uri = uri;
             this.header = header;
         }
 
@@ -275,15 +305,26 @@ public class ImportBackupService extends Service {
             final DataInputStream dataInputStream = new DataInputStream(fileInputStream);
             BackupFileHeader backupFileHeader = BackupFileHeader.read(dataInputStream);
             fileInputStream.close();
-            return new BackupFile(file, backupFileHeader);
+            return new BackupFile(Uri.fromFile(file), backupFileHeader);
+        }
+
+        public static BackupFile read(final Context context, final Uri uri) throws IOException {
+            final InputStream inputStream = context.getContentResolver().openInputStream(uri);
+            if (inputStream == null) {
+                throw new FileNotFoundException();
+            }
+            final DataInputStream dataInputStream = new DataInputStream(inputStream);
+            BackupFileHeader backupFileHeader = BackupFileHeader.read(dataInputStream);
+            inputStream.close();
+            return new BackupFile(uri, backupFileHeader);
         }
 
         public BackupFileHeader getHeader() {
             return header;
         }
 
-        public File getFile() {
-            return file;
+        public Uri getUri() {
+            return uri;
         }
     }
 

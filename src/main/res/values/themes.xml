@@ -98,6 +98,7 @@
         <item type="reference" name="icon_secure">@drawable/ic_lock_open_white_24dp</item>
         <item type="reference" name="icon_settings">@drawable/ic_settings_black_24dp</item>
         <item type="reference" name="icon_share">@drawable/ic_share_white_24dp</item>
+        <item type="reference" name="ic_cloud_download">@drawable/ic_cloud_download_white_24dp</item>
         <item type="reference" name="icon_scan_qr_code">@drawable/ic_qr_code_scan_white_24dp</item>
         <item type="reference" name="icon_scroll_down">@drawable/ic_scroll_to_end_black</item>
 
@@ -212,6 +213,7 @@
         <item type="reference" name="icon_secure">@drawable/ic_lock_open_white_24dp</item>
         <item type="reference" name="icon_settings">@drawable/ic_settings_white_24dp</item>
         <item type="reference" name="icon_share">@drawable/ic_share_white_24dp</item>
+        <item type="reference" name="ic_cloud_download">@drawable/ic_cloud_download_white_24dp</item>
         <item type="reference" name="icon_scan_qr_code">@drawable/ic_qr_code_scan_white_24dp</item>
         <item type="reference" name="icon_scroll_down">@drawable/ic_scroll_to_end_white</item>
 

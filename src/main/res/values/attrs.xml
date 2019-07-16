@@ -43,6 +43,9 @@
     <attr name="ic_attach_photo" format="reference"/>
     <attr name="ic_attach_record" format="reference"/>
 
+
+    <attr name="ic_cloud_download" format="reference"/>
+
     <attr name="message_bubble_received_monochrome" format="reference"/>
     <attr name="message_bubble_sent" format="reference"/>
     <attr name="message_bubble_received_green" format="reference"/>
