@@ -2,6 +2,7 @@ package eu.siacs.conversations.ui;
 
 import android.content.ComponentName;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.databinding.DataBindingUtil;
@@ -140,23 +141,32 @@ public class ImportBackupActivity extends ActionBarActivity implements ServiceCo
                 finish();
             }
         });
-        builder.setPositiveButton(R.string.restore, (dialog, which) -> {
-            final String password = enterPasswordBinding.accountPassword.getEditableText().toString();
-            final Uri uri = backupFile.getUri();
-            Intent intent = new Intent(this, ImportBackupService.class);
-            intent.setAction(Intent.ACTION_SEND);
-            intent.putExtra("password", password);
-            if ("file".equals(uri.getScheme())) {
-                intent.putExtra("file", uri.getPath());
-            } else {
-                intent.setData(uri);
-                intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-            }
-            setLoadingState(true);
-            ContextCompat.startForegroundService(this, intent);
-        });
+        builder.setPositiveButton(R.string.restore, null);
         builder.setCancelable(false);
-        builder.create().show();
+        final AlertDialog dialog = builder.create();
+        dialog.setOnShowListener((d) -> {
+            dialog.getButton(DialogInterface.BUTTON_POSITIVE).setOnClickListener(v -> {
+                final String password = enterPasswordBinding.accountPassword.getEditableText().toString();
+                if (password.isEmpty()) {
+                    enterPasswordBinding.accountPasswordLayout.setError(getString(R.string.please_enter_password));
+                    return;
+                }
+                final Uri uri = backupFile.getUri();
+                Intent intent = new Intent(this, ImportBackupService.class);
+                intent.setAction(Intent.ACTION_SEND);
+                intent.putExtra("password", password);
+                if ("file".equals(uri.getScheme())) {
+                    intent.putExtra("file", uri.getPath());
+                } else {
+                    intent.setData(uri);
+                    intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                }
+                setLoadingState(true);
+                ContextCompat.startForegroundService(this, intent);
+                d.dismiss();
+            });
+        });
+        dialog.show();
     }
 
     private void setLoadingState(final boolean loadingState) {

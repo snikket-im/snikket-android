@@ -93,7 +93,7 @@ public class ImportBackupService extends Service {
             uri = data;
         }
 
-        if (password == null || uri == null) {
+        if (password == null || password.isEmpty() || uri == null) {
             return START_NOT_STICKY;
         }
         if (running.compareAndSet(false, true)) {
@@ -158,14 +158,6 @@ public class ImportBackupService extends Service {
 
     private boolean importBackup(Uri uri, String password) {
         Log.d(Config.LOGTAG, "importing backup from " + uri);
-        if (password == null || password.isEmpty()) {
-            synchronized (mOnBackupProcessedListeners) {
-                for (OnBackupProcessed l : mOnBackupProcessedListeners) {
-                    l.onBackupDecryptionFailed();
-                }
-            }
-            return false;
-        }
         try {
             SQLiteDatabase db = mDatabaseBackend.getWritableDatabase();
             final InputStream inputStream;
