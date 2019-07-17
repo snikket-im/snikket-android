@@ -151,7 +151,13 @@ public class PushManagementService {
             if (!task.isSuccessful()) {
                 Log.d(Config.LOGTAG, "unable to get Firebase instance token", task.getException());
             }
-            final InstanceIdResult result = task.getResult();
+            final InstanceIdResult result;
+            try {
+                result = task.getResult();
+            } catch (Exception e) {
+                Log.d(Config.LOGTAG, "unable to get Firebase instance token due to bug in library ", e);
+                return;
+            }
             if (result != null) {
                 instanceTokenRetrieved.onGcmInstanceTokenRetrieved(result.getToken());
             }
