@@ -21,7 +21,7 @@ public class AndroidUsingLinkProperties extends AbstractDNSServerLookupMechanism
 
     private final Context context;
 
-    protected AndroidUsingLinkProperties(Context context) {
+    AndroidUsingLinkProperties(Context context) {
         super(AndroidUsingLinkProperties.class.getSimpleName(), AndroidUsingExec.PRIORITY - 1);
         this.context = context;
     }
@@ -34,32 +34,31 @@ public class AndroidUsingLinkProperties extends AbstractDNSServerLookupMechanism
     @Override
     @TargetApi(21)
     public String[] getDnsServerAddresses() {
-        ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
-        Network[] networks = connectivityManager == null ? null : connectivityManager.getAllNetworks();
+        final ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        final Network[] networks = connectivityManager == null ? null : connectivityManager.getAllNetworks();
         if (networks == null) {
             return new String[0];
         }
         final Network activeNetwork = getActiveNetwork(connectivityManager);
-        List<String> servers = new ArrayList<>();
+        final List<String> servers = new ArrayList<>();
         int vpnOffset = 0;
         for(Network network : networks) {
             LinkProperties linkProperties = connectivityManager.getLinkProperties(network);
             if (linkProperties == null) {
                 continue;
             }
-            NetworkInfo networkInfo = connectivityManager.getNetworkInfo(network);
+            final NetworkInfo networkInfo = connectivityManager.getNetworkInfo(network);
             final boolean isActiveNetwork = network.equals(activeNetwork);
-            if (networkInfo != null && isActiveNetwork && networkInfo.getType() == ConnectivityManager.TYPE_VPN) {
+            final boolean isVpn = networkInfo != null && networkInfo.getType() == ConnectivityManager.TYPE_VPN;
+            if (isActiveNetwork && isVpn) {
                 final List<String> tmp = getIPv4First(linkProperties.getDnsServers());
                 servers.addAll(0, tmp);
                 vpnOffset += tmp.size();
-            } else if (hasDefaultRoute(linkProperties) || isActiveNetwork) {
+            } else if (hasDefaultRoute(linkProperties) || isActiveNetwork || activeNetwork == null || isVpn) {
                 servers.addAll(vpnOffset, getIPv4First(linkProperties.getDnsServers()));
-            } else {
-                servers.addAll(getIPv4First(linkProperties.getDnsServers()));
             }
         }
-        return servers.toArray(new String[servers.size()]);
+        return servers.toArray(new String[0]);
     }
 
     @TargetApi(23)
@@ -69,11 +68,11 @@ public class AndroidUsingLinkProperties extends AbstractDNSServerLookupMechanism
 
     private static List<String> getIPv4First(List<InetAddress> in) {
         List<String> out = new ArrayList<>();
-        for(InetAddress addr : in) {
-            if (addr instanceof Inet4Address) {
-                out.add(0, addr.getHostAddress());
+        for(InetAddress address : in) {
+            if (address instanceof Inet4Address) {
+                out.add(0, address.getHostAddress());
             } else {
-                out.add(addr.getHostAddress());
+                out.add(address.getHostAddress());
             }
         }
         return out;
