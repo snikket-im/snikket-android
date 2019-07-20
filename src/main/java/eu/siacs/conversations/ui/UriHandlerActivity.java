@@ -90,6 +90,7 @@ public class UriHandlerActivity extends AppCompatActivity {
         if (accounts.size() == 0) {
             if (xmppUri.isJidValid()) {
                 intent = SignupUtils.getSignUpIntent(this);
+                intent.putExtra(StartConversationActivity.EXTRA_INVITE_URI, xmppUri.toString());
                 startActivity(intent);
             } else {
                 Toast.makeText(this, R.string.invalid_jid, Toast.LENGTH_SHORT).show();

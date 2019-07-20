@@ -20,13 +20,12 @@ public class SignupUtils {
     }
 
     public static Intent getSignUpIntent(final Activity activity, final boolean toServerChooser) {
-        Intent intent;
+        final Intent intent;
         if (toServerChooser) {
             intent = new Intent(activity, PickServerActivity.class);
         } else {
             intent = new Intent(activity, WelcomeActivity.class);
         }
-        StartConversationActivity.addInviteUri(intent, activity.getIntent());
         return intent;
     }
 
