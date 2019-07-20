@@ -119,12 +119,18 @@ public class PinEntryWrapper {
         }
     }
 
-    public void setEnabled(boolean enabled) {
-        for(EditText digit : digits) {
+    public void setEnabled(final boolean enabled) {
+        for (EditText digit : digits) {
             digit.setEnabled(enabled);
             digit.setCursorVisible(enabled);
             digit.setFocusable(enabled);
             digit.setFocusableInTouchMode(enabled);
+        }
+        if (enabled) {
+            final EditText last = digits.get(digits.size() - 1);
+            if (last.getEditableText().length() > 0) {
+                last.requestFocus();
+            }
         }
     }
 
