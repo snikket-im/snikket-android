@@ -22,6 +22,7 @@ import java.security.cert.X509Certificate;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Locale;
 
 import javax.net.ssl.SSLSession;
 
@@ -80,14 +81,14 @@ public class XmppDomainVerifier implements DomainHostnameVerifier {
                         break;
                     }
                     Log.d(LOGTAG, "comparing " + needle.substring(i) + " and " + entry.substring(1));
-                    if (needle.substring(i).equals(entry.substring(1))) {
+                    if (needle.substring(i).equalsIgnoreCase(entry.substring(1))) {
                         Log.d(LOGTAG, "domain " + needle + " matched " + entry);
                         return true;
                     }
                     offset = i + 1;
                 }
             } else {
-                if (entry.equals(needle)) {
+                if (entry.equalsIgnoreCase(needle)) {
                     Log.d(LOGTAG, "domain " + needle + " matched " + entry);
                     return true;
                 }
@@ -117,25 +118,25 @@ public class XmppDomainVerifier implements DomainHostnameVerifier {
             List<String> domains = new ArrayList<>();
             if (alternativeNames != null) {
                 for (List<?> san : alternativeNames) {
-                    Integer type = (Integer) san.get(0);
+                    final Integer type = (Integer) san.get(0);
                     if (type == 0) {
-                        Pair<String, String> otherName = parseOtherName((byte[]) san.get(1));
-                        if (otherName != null) {
+                        final Pair<String, String> otherName = parseOtherName((byte[]) san.get(1));
+                        if (otherName != null && otherName.first != null && otherName.second != null) {
                             switch (otherName.first) {
                                 case SRV_NAME:
-                                    srvNames.add(otherName.second);
+                                    srvNames.add(otherName.second.toLowerCase(Locale.US));
                                     break;
                                 case XMPP_ADDR:
-                                    xmppAddrs.add(otherName.second);
+                                    xmppAddrs.add(otherName.second.toLowerCase(Locale.US));
                                     break;
                                 default:
                                     Log.d(LOGTAG, "oid: " + otherName.first + " value: " + otherName.second);
                             }
                         }
                     } else if (type == 2) {
-                        Object value = san.get(1);
+                        final Object value = san.get(1);
                         if (value instanceof String) {
-                            domains.add((String) value);
+                            domains.add(((String) value).toLowerCase(Locale.US));
                         }
                     }
                 }
