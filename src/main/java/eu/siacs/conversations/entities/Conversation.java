@@ -285,7 +285,7 @@ public class Conversation extends AbstractEntity implements Blockable, Comparabl
 		final ArrayList<Message> results = new ArrayList<>();
 		synchronized (this.messages) {
 			for (Message message : this.messages) {
-				if (message.getType() != Message.TYPE_IMAGE && message.getStatus() == Message.STATUS_UNSEND) {
+				if ((message.getType() == Message.TYPE_TEXT || message.hasFileOnRemoteHost()) && message.getStatus() == Message.STATUS_UNSEND) {
 					results.add(message);
 				}
 			}
