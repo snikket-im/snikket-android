@@ -1,5 +1,9 @@
 # Changelog
 
+### Version 2.5.5
+* allow backups to be restored from anywhere
+* bug fixes
+
 ### Version 2.5.4
 * stability improvements for group chats and channels
 
