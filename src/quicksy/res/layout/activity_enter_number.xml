@@ -46,7 +46,9 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:cursorVisible="false"
+                        android:inputType="textNoSuggestions"
                         android:drawableEnd="@drawable/ic_arrow_drop_down_black_18dp"
+                        android:drawableRight="@drawable/ic_arrow_drop_down_black_18dp"
                         android:focusable="false"
                         android:gravity="bottom|center_horizontal"
                         android:longClickable="false" />
