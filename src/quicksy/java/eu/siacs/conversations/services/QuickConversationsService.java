@@ -8,13 +8,17 @@ import android.preference.PreferenceManager;
 import android.util.Log;
 
 import java.io.BufferedWriter;
+import java.io.IOException;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.net.ConnectException;
 import java.net.HttpURLConnection;
+import java.net.SocketTimeoutException;
 import java.net.URL;
 import java.net.UnknownHostException;
+import java.security.GeneralSecurityException;
 import java.security.SecureRandom;
+import java.security.cert.CertificateException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -29,10 +33,11 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import javax.net.ssl.SSLException;
 import javax.net.ssl.SSLHandshakeException;
+import javax.net.ssl.SSLPeerUnverifiedException;
 
 import eu.siacs.conversations.Config;
-import eu.siacs.conversations.android.JabberIdContact;
 import eu.siacs.conversations.android.PhoneNumberContact;
 import eu.siacs.conversations.crypto.sasl.Plain;
 import eu.siacs.conversations.entities.Account;
@@ -44,8 +49,6 @@ import eu.siacs.conversations.utils.PhoneNumberUtilWrapper;
 import eu.siacs.conversations.utils.SerialSingleThreadExecutor;
 import eu.siacs.conversations.xml.Element;
 import eu.siacs.conversations.xml.Namespace;
-import eu.siacs.conversations.xmpp.OnIqPacketReceived;
-import eu.siacs.conversations.xmpp.XmppConnection;
 import eu.siacs.conversations.xmpp.stanzas.IqPacket;
 import io.michaelrocks.libphonenumber.android.Phonenumber;
 import rocks.xmpp.addr.Jid;
@@ -58,6 +61,9 @@ public class QuickConversationsService extends AbstractQuickConversationsService
     public static final int API_ERROR_CONNECT = -3;
     public static final int API_ERROR_SSL_HANDSHAKE = -4;
     public static final int API_ERROR_AIRPLANE_MODE = -5;
+    public static final int API_ERROR_SSL_CERTIFICATE = -6;
+    public static final int API_ERROR_SSL_GENERAL = -7;
+    public static final int API_ERROR_TIMEOUT = -8;
 
     private static final String API_DOMAIN = "api." + Config.QUICKSY_DOMAIN;
 
@@ -135,7 +141,7 @@ public class QuickConversationsService extends AbstractQuickConversationsService
                             }
                         }
                     }
-                } catch (Exception e) {
+                } catch (IOException e) {
                     final int code = getApiErrorCode(e);
                     synchronized (mOnVerificationRequested) {
                         for (OnVerificationRequested onVerificationRequested : mOnVerificationRequested) {
@@ -232,7 +238,7 @@ public class QuickConversationsService extends AbstractQuickConversationsService
                             }
                         }
                     }
-                } catch (Exception e) {
+                } catch (IOException e) {
                     final int code = getApiErrorCode(e);
                     synchronized (mOnVerification) {
                         for (OnVerification onVerification : mOnVerification) {
@@ -265,7 +271,7 @@ public class QuickConversationsService extends AbstractQuickConversationsService
 
     }
 
-    private int getApiErrorCode(Exception e) {
+    private int getApiErrorCode(final Exception e) {
         if (!service.hasInternetConnection()) {
             return API_ERROR_AIRPLANE_MODE;
         } else if (e instanceof UnknownHostException) {
@@ -274,6 +280,12 @@ public class QuickConversationsService extends AbstractQuickConversationsService
             return API_ERROR_CONNECT;
         } else if (e instanceof SSLHandshakeException) {
             return API_ERROR_SSL_HANDSHAKE;
+        } else if (e instanceof SSLPeerUnverifiedException || e instanceof CertificateException) {
+            return API_ERROR_SSL_CERTIFICATE;
+        } else if (e instanceof SSLException || e instanceof GeneralSecurityException) {
+            return API_ERROR_SSL_GENERAL;
+        } else if (e instanceof SocketTimeoutException) {
+            return API_ERROR_TIMEOUT;
         } else {
             Log.d(Config.LOGTAG, e.getClass().getName());
             return API_ERROR_OTHER;

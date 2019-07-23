@@ -20,4 +20,7 @@
     <string name="foreground_service_channel_description">This notification category is used to display a permanent notification indicating that Quicksy is running.</string>
     <string name="set_profile_picture">Quicksy profile picture</string>
     <string name="not_available_in_your_country">Quicksy is not available in your country.</string>
+    <string name="unable_to_verify_server_identity">Unable to verify server identity.</string>
+    <string name="unknown_security_error">Unknown security error.</string>
+    <string name="timeout_while_connecting_to_server">Timeout while connecting to server.</string>
 </resources>

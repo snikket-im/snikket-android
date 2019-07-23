@@ -33,6 +33,15 @@ public class ApiDialogHelper {
             case QuickConversationsService.API_ERROR_UNKNOWN_HOST:
                 res = R.string.unable_to_find_server;
                 break;
+            case QuickConversationsService.API_ERROR_SSL_CERTIFICATE:
+                res = R.string.unable_to_verify_server_identity;
+                break;
+            case QuickConversationsService.API_ERROR_SSL_GENERAL:
+                res = R.string.unknown_security_error;
+                break;
+            case QuickConversationsService.API_ERROR_TIMEOUT:
+                res = R.string.timeout_while_connecting_to_server;
+                break;
             case 400:
                 res = R.string.invalid_user_input;
                 break;
