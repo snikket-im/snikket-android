@@ -17,6 +17,8 @@
   <string name="action_unblock_contact">Sblocca contatto</string>
   <string name="action_block_domain">Blocca dominio</string>
   <string name="action_unblock_domain">Sblocca dominio</string>
+  <string name="action_block_participant">Blocca partecipante</string>
+  <string name="action_unblock_participant">Sblocca partecipante</string>
   <string name="title_activity_manage_accounts">Gestisci account</string>
   <string name="title_activity_settings">Impostazioni</string>
   <string name="title_activity_sharewith">Condividi con Conversation</string>
