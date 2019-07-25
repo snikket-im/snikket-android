@@ -137,7 +137,7 @@ public class ImportBackupService extends Service {
                             } else {
                                 backupFiles.add(backupFile);
                             }
-                        } catch (IOException e) {
+                        } catch (IOException | IllegalArgumentException e) {
                             Log.d(Config.LOGTAG, "unable to read backup file ", e);
                         }
                     }

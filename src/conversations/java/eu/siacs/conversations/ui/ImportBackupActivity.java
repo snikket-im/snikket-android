@@ -124,7 +124,7 @@ public class ImportBackupActivity extends ActionBarActivity implements ServiceCo
         try {
             final ImportBackupService.BackupFile backupFile = ImportBackupService.BackupFile.read(this, uri);
             showEnterPasswordDialog(backupFile, finishOnCancel);
-        } catch (IOException e) {
+        } catch (IOException | IllegalArgumentException e) {
             Snackbar.make(binding.coordinator, R.string.not_a_backup_file, Snackbar.LENGTH_LONG).show();
         }
     }

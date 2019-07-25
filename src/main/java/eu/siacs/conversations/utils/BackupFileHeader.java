@@ -49,7 +49,7 @@ public class BackupFileHeader {
     public static BackupFileHeader read(DataInputStream inputStream) throws IOException {
         final int version = inputStream.readInt();
         if (version > VERSION) {
-            throw new IllegalArgumentException("Backup File version was "+version+" but app only supports up to version "+VERSION);
+            throw new IllegalArgumentException("Backup File version was " + version + " but app only supports up to version " + VERSION);
         }
         String app = inputStream.readUTF();
         String jid = inputStream.readUTF();
@@ -59,7 +59,7 @@ public class BackupFileHeader {
         byte[] salt = new byte[16];
         inputStream.readFully(salt);
 
-        return new BackupFileHeader(app,Jid.of(jid),timestamp,iv,salt);
+        return new BackupFileHeader(app, Jid.of(jid), timestamp, iv, salt);
 
     }
 
