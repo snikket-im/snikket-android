@@ -12,6 +12,7 @@ import android.view.MenuItem;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import eu.siacs.conversations.Config;
@@ -142,7 +143,8 @@ public class ShareWithActivity extends XmppActivity implements XmppConnectionSer
                 this.share.text = text;
             }
         } else if (Intent.ACTION_SEND_MULTIPLE.equals(action)) {
-            this.share.uris = intent.getParcelableArrayListExtra(Intent.EXTRA_STREAM);
+            final ArrayList<Uri> uris = intent.getParcelableArrayListExtra(Intent.EXTRA_STREAM);
+            this.share.uris = uris == null ? new ArrayList<>() : uris;
         }
         if (xmppConnectionServiceBound) {
             xmppConnectionService.populateWithOrderedConversations(mConversations, this.share.uris.size() == 0, false);
