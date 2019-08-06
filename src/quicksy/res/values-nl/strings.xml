@@ -19,4 +19,8 @@
     <string name="no_microphone_permission">Quicksy heeft toegang nodig tot de microfoon</string>
     <string name="foreground_service_channel_description">Deze meldingscategorie wordt gebruikt om een permanente melding weer te geven dat Quicksy wordt uitgevoerd.</string>
     <string name="set_profile_picture">Quicksy-profielafbeelding</string>
-    </resources>
+    <string name="not_available_in_your_country">Quicksy is niet beschikbaar in je land.</string>
+    <string name="unable_to_verify_server_identity">Kan serveridentiteit niet verifiëren.</string>
+    <string name="unknown_security_error">Onbekende beveiligingsfout.</string>
+    <string name="timeout_while_connecting_to_server">Time-out bij verbinden met server.</string>
+</resources>

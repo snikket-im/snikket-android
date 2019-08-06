@@ -876,4 +876,10 @@ sau chiar pierderea mesajelor.\nÎn continuare veți fi rugați să dezactivați
   <string name="this_looks_like_a_domain">Aceasta pare să fie o adresă de domeniu</string>
   <string name="add_anway">Adaugă oricum</string>
   <string name="this_looks_like_channel">Aceasta pare o adresă de canal</string>
+  <string name="share_backup_files">Partajează fișierele copiei de siguranță</string>
+  <string name="conversations_backup">Copie de siguranță Conversations</string>
+  <string name="open_backup">Deschide o copie de siguranță</string>
+  <string name="not_a_backup_file">Fișierul selectat nu este o copie de siguranța Conversations</string>
+  <string name="account_already_setup">Acest cont a fost deja configurat</string>
+  <string name="please_enter_password">Va rugăm să introduceți parola pentru acest cont</string>
 </resources>

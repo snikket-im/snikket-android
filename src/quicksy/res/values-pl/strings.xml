@@ -20,4 +20,4 @@
     <string name="foreground_service_channel_description">Ta kategoria powiadomień jest używana do wyświetlania ciągłego powiadomienia o tym, że Quicksy działa.</string>
     <string name="set_profile_picture">Obrazek profilowy Quicksy</string>
     <string name="not_available_in_your_country">Quicksy nie jest dostępne w twoim kraju</string>
-</resources>
+    </resources>

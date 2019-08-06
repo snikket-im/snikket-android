@@ -20,4 +20,4 @@
     <string name="foreground_service_channel_description">Questa categoria di notifiche è usata per mostrare una notifica permanente per indicare che Quicksy è in esecuzione.</string>
     <string name="set_profile_picture">Immagine profilo di Quicksy</string>
     <string name="not_available_in_your_country">Quicksy non è disponibile nella tua nazione.</string>
-</resources>
+    </resources>

@@ -20,4 +20,4 @@
     <string name="foreground_service_channel_description">Тази категория известия се използва за показване на постоянно известие, което показва, че Quicksy работи.</string>
     <string name="set_profile_picture">Профилна снимка за Quicksy</string>
     <string name="not_available_in_your_country">Quicksy не може да се използва във Вашата страна.</string>
-</resources>
+    </resources>

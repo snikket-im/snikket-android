@@ -866,4 +866,11 @@
   <string name="this_looks_like_a_domain">Dies sieht aus wie eine Domain-Adresse</string>
   <string name="add_anway">Trotzdem hinzufügen</string>
   <string name="this_looks_like_channel">Dies sieht aus wie eine Channel-Adresse</string>
+  <string name="share_backup_files">Sicherungsdateien teilen</string>
+  <string name="conversations_backup">Sicherung für Conversations</string>
+  <string name="event">Ereignis</string>
+  <string name="open_backup">Sicherung öffnen</string>
+  <string name="not_a_backup_file">Die von dir ausgewählte Datei ist keine Sicherungsdatei von Conversations</string>
+  <string name="account_already_setup">Dieses Konto wurde bereits eingerichtet</string>
+  <string name="please_enter_password">Bitte gib das Passwort für dieses Konto ein</string>
 </resources>

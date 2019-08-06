@@ -866,4 +866,11 @@
   <string name="this_looks_like_a_domain">Esto semella un enderezo de dominio</string>
   <string name="add_anway">Engadir igualmente</string>
   <string name="this_looks_like_channel">Esto semella o enderezo de un canal</string>
+  <string name="share_backup_files">Compartir ficheiros de respaldo</string>
+  <string name="conversations_backup">Respaldar Conversations</string>
+  <string name="event">Evento</string>
+  <string name="open_backup">Abrir respaldo</string>
+  <string name="not_a_backup_file">O ficheiro seleccionado non é un ficheiro de respaldo Conversations</string>
+  <string name="account_already_setup">Esta conta xa foi configurada</string>
+  <string name="please_enter_password">Introduza o contrasinal de esta conta</string>
 </resources>

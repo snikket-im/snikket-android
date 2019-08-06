@@ -22,4 +22,7 @@ sau chiar pierderea mesajelor.\nÎn continuare veți fi rugați să dezactivați
     <string name="foreground_service_channel_description">Această categorie de notificări este folosită pentru a arăta o notificare permanentă ce indică rularea Quicksy</string>
     <string name="set_profile_picture">Poză profil Quicksy</string>
     <string name="not_available_in_your_country">Quicksy nu este disponibilă în țara dumneavoastră.</string>
+    <string name="unable_to_verify_server_identity">Nu s-a putut verifica identitatea serverului.</string>
+    <string name="unknown_security_error">Eroare de securitate necunoscută.</string>
+    <string name="timeout_while_connecting_to_server">A expirat timpul de așteptare conexiune server.</string>
 </resources>

@@ -17,6 +17,8 @@
   <string name="action_unblock_contact">Kontaktua desblokeatu</string>
   <string name="action_block_domain">Domeinua blokeatu</string>
   <string name="action_unblock_domain">Domeinua desblokeatu</string>
+  <string name="action_block_participant">Parte-hartzailea blokeatu</string>
+  <string name="action_unblock_participant">Parte-hartzaileari blokeoa kendu</string>
   <string name="title_activity_manage_accounts">Kontuak kudeatu</string>
   <string name="title_activity_settings">Ezarpenak</string>
   <string name="title_activity_sharewith">Elkarrizketa batekin partekatu</string>

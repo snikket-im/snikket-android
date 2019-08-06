@@ -17,6 +17,8 @@
   <string name="action_unblock_contact">Contact deblokkeren</string>
   <string name="action_block_domain">Domein blokkeren</string>
   <string name="action_unblock_domain">Domein deblokkeren</string>
+  <string name="action_block_participant">Deelnemer blokkeren</string>
+  <string name="action_unblock_participant">Deelnemer deblokkeren</string>
   <string name="title_activity_manage_accounts">Accounts beheren</string>
   <string name="title_activity_settings">Instellingen</string>
   <string name="title_activity_sharewith">Delen in gesprek</string>
@@ -864,4 +866,11 @@
   <string name="this_looks_like_a_domain">Dit lijkt op een domeinadres</string>
   <string name="add_anway">Tóch toevoegen</string>
   <string name="this_looks_like_channel">Dit lijkt op een kanaaladres</string>
+  <string name="share_backup_files">Back-upbestanden delen</string>
+  <string name="conversations_backup">Back-up van Conversations</string>
+  <string name="event">Gebeurtenis</string>
+  <string name="open_backup">Back-up openen</string>
+  <string name="not_a_backup_file">Het geselecteerde bestand is geen Conversations-back-upbestand</string>
+  <string name="account_already_setup">Deze account is al ingesteld</string>
+  <string name="please_enter_password">Voer het wachtwoord voor deze account in</string>
 </resources>

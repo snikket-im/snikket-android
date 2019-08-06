@@ -19,4 +19,8 @@
     <string name="no_microphone_permission">A Quicksy-nek hozzáférésre lenne szüksége a mikrofonhoz</string>
     <string name="foreground_service_channel_description">Ez az értesítési kategória állandó értesítést jelenít meg arról, hogy a Quicksy fut.</string>
     <string name="set_profile_picture">Quicksy profilkép</string>
-    </resources>
+    <string name="not_available_in_your_country">A Quicksy nem érhető el az Ön országában.</string>
+    <string name="unable_to_verify_server_identity">Nem sikerült ellenőrizni a szerver azonosságát.</string>
+    <string name="unknown_security_error">Ismeretlen biztonsági hiba.</string>
+    <string name="timeout_while_connecting_to_server">Időtúllépés történt a szerverhez való csatlakozás közben.</string>
+</resources>

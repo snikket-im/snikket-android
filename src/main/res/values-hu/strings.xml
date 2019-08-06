@@ -17,6 +17,8 @@
   <string name="action_unblock_contact">Tiltás feloldása</string>
   <string name="action_block_domain">Tartomány tiltása</string>
   <string name="action_unblock_domain">Tartomány feloldása</string>
+  <string name="action_block_participant">Résztvevő letiltása</string>
+  <string name="action_unblock_participant">Résztvevő feloldása</string>
   <string name="title_activity_manage_accounts">Fiókok kezelése</string>
   <string name="title_activity_settings">Beállítások</string>
   <string name="title_activity_sharewith">Megosztás Conversation-nel</string>
@@ -864,4 +866,7 @@
   <string name="this_looks_like_a_domain">Ez egy domain címnek tűnik</string>
   <string name="add_anway">Akkor is adja hozzá</string>
   <string name="this_looks_like_channel">Ez egy csatorna címnek tűnik</string>
+  <string name="share_backup_files">Biztonsági mentések megosztása</string>
+  <string name="event">Esemény</string>
+  <string name="open_backup">Biztonsági mentés megnyitása</string>
 </resources>
