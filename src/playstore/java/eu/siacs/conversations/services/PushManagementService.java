@@ -147,7 +147,14 @@ public class PushManagementService {
     }
 
     private void retrieveFcmInstanceToken(final OnGcmInstanceTokenRetrieved instanceTokenRetrieved) {
-        FirebaseInstanceId.getInstance().getInstanceId().addOnCompleteListener(task -> {
+        final FirebaseInstanceId firebaseInstanceId;
+        try {
+            firebaseInstanceId = FirebaseInstanceId.getInstance();
+        } catch (IllegalStateException e) {
+            Log.d(Config.LOGTAG, "unable to get firebase instance token ",e);
+            return;
+        }
+        firebaseInstanceId.getInstanceId().addOnCompleteListener(task -> {
             if (!task.isSuccessful()) {
                 Log.d(Config.LOGTAG, "unable to get Firebase instance token", task.getException());
             }
