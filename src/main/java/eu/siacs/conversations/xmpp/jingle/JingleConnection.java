@@ -841,18 +841,17 @@ public class JingleConnection implements Transferable {
 
     private boolean receiveFallbackToIbb(JinglePacket packet) {
         Log.d(Config.LOGTAG, "receiving fallack to ibb");
-        String receivedBlockSize = packet.getJingleContent().ibbTransport()
-                .getAttribute("block-size");
+        final String receivedBlockSize = packet.getJingleContent().ibbTransport().getAttribute("block-size");
         if (receivedBlockSize != null) {
-            int bs = Integer.parseInt(receivedBlockSize);
-            if (bs > this.ibbBlockSize) {
+            final int bs = Integer.parseInt(receivedBlockSize);
+            if (bs < this.ibbBlockSize) {
                 this.ibbBlockSize = bs;
             }
         }
         this.transportId = packet.getJingleContent().getTransportId();
         this.transport = new JingleInbandTransport(this, this.transportId, this.ibbBlockSize);
 
-        JinglePacket answer = bootstrapPacket("transport-accept");
+        final JinglePacket answer = bootstrapPacket("transport-accept");
 
         final Content content = new Content(contentCreator, contentName);
         content.setFileOffer(fileOffer, ftVersion);
