@@ -884,4 +884,11 @@ Administrator twojego serwera będzie mógł czytać twoje wiadomości, ale moż
   <string name="this_looks_like_a_domain">To wygląda jak nazwa domeny</string>
   <string name="add_anway">Dodaj i tak</string>
   <string name="this_looks_like_channel">To wygląda jak adres kanału</string>
+  <string name="share_backup_files">Udostępnij pliki kopii zapasowych</string>
+  <string name="conversations_backup">Kopia zapasowa Conversations</string>
+  <string name="event">Zdarzenie</string>
+  <string name="open_backup">Otwórz kopię zapasową</string>
+  <string name="not_a_backup_file">Plik który otworzyłeś nie jest plikiem kopii zapasowej Conversations</string>
+  <string name="account_already_setup">To konto zostało już ustawione</string>
+  <string name="please_enter_password">Proszę podać hasło dla tego konta</string>
 </resources>

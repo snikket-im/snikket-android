@@ -867,6 +867,10 @@
   <string name="add_anway">Akkor is adja hozzá</string>
   <string name="this_looks_like_channel">Ez egy csatorna címnek tűnik</string>
   <string name="share_backup_files">Biztonsági mentések megosztása</string>
+  <string name="conversations_backup">Conversations biztonsági mentés</string>
   <string name="event">Esemény</string>
   <string name="open_backup">Biztonsági mentés megnyitása</string>
+  <string name="not_a_backup_file">A kiválasztott fájl nem a Conversations biztonsági mentése</string>
+  <string name="account_already_setup">Ez a fiók már be lett állítva</string>
+  <string name="please_enter_password">Kérem, adja meg a fiókhoz tartozó jelszót</string>
 </resources>
