@@ -1205,8 +1205,21 @@ public class XmppConnection implements Runnable {
                 if (advancedStreamFeaturesLoaded && (jid.equals(Jid.of(account.getServer())) || jid.equals(account.getJid().asBareJid()))) {
                     enableAdvancedStreamFeatures();
                 }
-            } else {
+            } else if (packet.getType() == IqPacket.TYPE.ERROR) {
                 Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": could not query disco info for " + jid.toString());
+                final boolean serverOrAccount = jid.equals(Jid.of(account.getServer())) || jid.equals(account.getJid().asBareJid());
+                final boolean advancedStreamFeaturesLoaded;
+                if (serverOrAccount) {
+                    synchronized (XmppConnection.this.disco) {
+                        disco.put(jid, ServiceDiscoveryResult.empty());
+                        advancedStreamFeaturesLoaded = disco.containsKey(Jid.of(account.getServer())) && disco.containsKey(account.getJid().asBareJid());
+                    }
+                } else {
+                    advancedStreamFeaturesLoaded = false;
+                }
+                if (advancedStreamFeaturesLoaded) {
+                    enableAdvancedStreamFeatures();
+                }
             }
             if (packet.getType() != IqPacket.TYPE.TIMEOUT) {
                 if (mPendingServiceDiscoveries.decrementAndGet() == 0

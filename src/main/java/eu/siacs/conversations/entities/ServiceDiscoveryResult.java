@@ -86,6 +86,18 @@ public class ServiceDiscoveryResult {
 			}
 		}
 	}
+	
+	private ServiceDiscoveryResult() {
+		this.hash = "sha-1";
+		this.features = Collections.emptyList();
+		this.identities = Collections.emptyList();
+		this.ver = null;
+		this.forms = Collections.emptyList();
+	}
+
+	public static ServiceDiscoveryResult empty() {
+		return new ServiceDiscoveryResult();
+	}
 
 	public ServiceDiscoveryResult(Cursor cursor) throws JSONException {
 		this(
