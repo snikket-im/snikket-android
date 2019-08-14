@@ -428,11 +428,11 @@ public class XmppConnectionService extends Service {
                     final int next = connection.getTimeToNextAttempt();
                     final boolean lowPingTimeoutMode = isInLowPingTimeoutMode(account);
                     if (next <= 0) {
-                        Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": error connecting account. reconnecting now. lowPingTimeout=" + Boolean.toString(lowPingTimeoutMode));
+                        Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": error connecting account. reconnecting now. lowPingTimeout=" + lowPingTimeoutMode);
                         reconnectAccount(account, true, false);
                     } else {
                         final int attempt = connection.getAttempt() + 1;
-                        Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": error connecting account. try again in " + next + "s for the " + attempt + " time. lowPingTimeout=" + Boolean.toString(lowPingTimeoutMode));
+                        Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": error connecting account. try again in " + next + "s for the " + attempt + " time. lowPingTimeout=" + lowPingTimeoutMode);
                         scheduleWakeUpCall(next, account.getUuid().hashCode());
                     }
                 }
@@ -1522,7 +1522,6 @@ public class XmppConnectionService extends Service {
                     packet.addChild(ChatState.toElement(conversation.getOutgoingChatState()));
                 }
             }
-            Log.d(Config.LOGTAG,packet.toString());
             sendMessagePacket(account, packet);
         }
     }
