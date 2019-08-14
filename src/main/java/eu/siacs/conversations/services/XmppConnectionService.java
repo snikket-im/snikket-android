@@ -1395,7 +1395,7 @@ public class XmppConnectionService extends Service {
 
         final boolean inProgressJoin;
         synchronized (account.inProgressConferenceJoins) {
-            inProgressJoin = conversation.getMode() == Conversational.MODE_MULTI && account.inProgressConferenceJoins.contains(conversation);
+            inProgressJoin = conversation.getMode() == Conversational.MODE_MULTI && (account.inProgressConferenceJoins.contains(conversation) || account.pendingConferenceJoins.contains(conversation));
         }
 
         if (account.isOnlineAndConnected() && !inProgressJoin) {
@@ -2546,8 +2546,10 @@ public class XmppConnectionService extends Service {
 		    synchronized (account.inProgressConferenceJoins) {
                 account.inProgressConferenceJoins.add(conversation);
             }
-			sendPresencePacket(account, mPresenceGenerator.leave(conversation.getMucOptions()));
-			conversation.resetMucOptions();
+            if (Config.MUC_LEAVE_BEFORE_JOIN) {
+                sendPresencePacket(account, mPresenceGenerator.leave(conversation.getMucOptions()));
+            }
+            conversation.resetMucOptions();
 			if (onConferenceJoined != null) {
 				conversation.getMucOptions().flagNoAutoPushConfiguration();
 			}
