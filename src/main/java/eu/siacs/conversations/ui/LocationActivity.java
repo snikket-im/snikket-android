@@ -24,13 +24,11 @@ import org.osmdroid.api.IMapController;
 import org.osmdroid.config.Configuration;
 import org.osmdroid.config.IConfigurationProvider;
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory;
-import org.osmdroid.tileprovider.tilesource.XYTileSource;
 import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.CustomZoomButtonsController;
 import org.osmdroid.views.MapView;
 import org.osmdroid.views.overlay.Overlay;
 
-import java.io.File;
 import java.io.IOException;
 
 import eu.siacs.conversations.BuildConfig;
@@ -41,7 +39,6 @@ import eu.siacs.conversations.services.QuickConversationsService;
 import eu.siacs.conversations.ui.util.LocationHelper;
 import eu.siacs.conversations.ui.widget.Marker;
 import eu.siacs.conversations.ui.widget.MyLocation;
-import eu.siacs.conversations.utils.LocationProvider;
 import eu.siacs.conversations.utils.ThemeHelper;
 
 public abstract class LocationActivity extends ActionBarActivity implements LocationListener {
@@ -136,7 +133,7 @@ public abstract class LocationActivity extends ActionBarActivity implements Loca
 		map.setTileSource(TileSourceFactory.MAPNIK);
 		map.getZoomController().setVisibility(CustomZoomButtonsController.Visibility.NEVER);
 		map.setMultiTouchControls(true);
-		map.setTilesScaledToDpi(true);
+		map.setTilesScaledToDpi(false);
 		mapController = map.getController();
 		mapController.setZoom(Config.Map.INITIAL_ZOOM_LEVEL);
 		mapController.setCenter(pos);
