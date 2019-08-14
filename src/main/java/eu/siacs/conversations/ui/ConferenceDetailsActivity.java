@@ -257,6 +257,11 @@ public class ConferenceDetailsActivity extends XmppActivity implements OnConvers
 
     @Override
     public boolean onContextItemSelected(MenuItem item) {
+        final User user = mUserPreviewAdapter.getSelectedUser();
+        if (user == null) {
+            Toast.makeText(this, R.string.unable_to_perform_this_action, Toast.LENGTH_SHORT).show();
+            return true;
+        }
         if (!MucDetailsContextMenuHelper.onContextItemSelected(item, mUserPreviewAdapter.getSelectedUser(), this)) {
             return super.onContextItemSelected(item);
         }
