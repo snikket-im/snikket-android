@@ -873,4 +873,5 @@
   <string name="not_a_backup_file">O ficheiro seleccionado non é un ficheiro de respaldo Conversations</string>
   <string name="account_already_setup">Esta conta xa foi configurada</string>
   <string name="please_enter_password">Introduza o contrasinal de esta conta</string>
+  <string name="unable_to_perform_this_action">Non se puido completar a acción</string>
 </resources>

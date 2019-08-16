@@ -873,4 +873,5 @@
   <string name="not_a_backup_file">Die von dir ausgewählte Datei ist keine Sicherungsdatei von Conversations</string>
   <string name="account_already_setup">Dieses Konto wurde bereits eingerichtet</string>
   <string name="please_enter_password">Bitte gib das Passwort für dieses Konto ein</string>
+  <string name="unable_to_perform_this_action">Diese Aktion kann nicht ausgeführt werden</string>
 </resources>

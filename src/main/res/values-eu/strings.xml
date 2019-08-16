@@ -864,4 +864,11 @@
   <string name="this_looks_like_a_domain">Honek domeinu helbide baten itxura dauka</string>
   <string name="add_anway">Gehitu hala ere</string>
   <string name="this_looks_like_channel">Honek kanal helbide baten itxura dauka</string>
+  <string name="share_backup_files">Babes-kopia fitxategiak partekatu</string>
+  <string name="conversations_backup">Conversations babes-kopia</string>
+  <string name="event">Gertaera</string>
+  <string name="open_backup">Babes-kopia ireki</string>
+  <string name="not_a_backup_file">Hautatu duzun fitxategia ez da Conversations babes-kopia bat</string>
+  <string name="account_already_setup">Kontu hau konfiguratuta dago jada</string>
+  <string name="please_enter_password">Mesedez idatzi ezazu kontu honetarako pasahitza</string>
 </resources>
