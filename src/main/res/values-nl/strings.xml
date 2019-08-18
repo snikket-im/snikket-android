@@ -873,4 +873,5 @@
   <string name="not_a_backup_file">Het geselecteerde bestand is geen Conversations-back-upbestand</string>
   <string name="account_already_setup">Deze account is al ingesteld</string>
   <string name="please_enter_password">Voer het wachtwoord voor deze account in</string>
+  <string name="unable_to_perform_this_action">Kan deze actie niet uitvoeren</string>
 </resources>

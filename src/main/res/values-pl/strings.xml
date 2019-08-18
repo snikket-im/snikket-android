@@ -891,4 +891,5 @@ Administrator twojego serwera będzie mógł czytać twoje wiadomości, ale moż
   <string name="not_a_backup_file">Plik który otworzyłeś nie jest plikiem kopii zapasowej Conversations</string>
   <string name="account_already_setup">To konto zostało już ustawione</string>
   <string name="please_enter_password">Proszę podać hasło dla tego konta</string>
+  <string name="unable_to_perform_this_action">Nie można wykonać tej akcji</string>
 </resources>

@@ -883,4 +883,5 @@ sau chiar pierderea mesajelor.\nÎn continuare veți fi rugați să dezactivați
   <string name="not_a_backup_file">Fișierul selectat nu este o copie de siguranța Conversations</string>
   <string name="account_already_setup">Acest cont a fost deja configurat</string>
   <string name="please_enter_password">Va rugăm să introduceți parola pentru acest cont</string>
+  <string name="unable_to_perform_this_action">Nu se poate realiza această acțiune</string>
 </resources>
