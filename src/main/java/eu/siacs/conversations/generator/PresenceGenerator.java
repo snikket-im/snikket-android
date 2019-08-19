@@ -50,15 +50,20 @@ public class PresenceGenerator extends AbstractGenerator {
 		return selfPresence(account, status, true);
 	}
 
-	public PresencePacket selfPresence(Account account, Presence.Status status, boolean includePgpAnnouncement) {
-		PresencePacket packet = new PresencePacket();
-		if(status.toShowString() != null) {
-			packet.addChild("show").setContent(status.toShowString());
-		}
-		packet.setFrom(account.getJid());
-		final String sig = account.getPgpSignature();
-		if (includePgpAnnouncement && sig != null && mXmppConnectionService.getPgpEngine() != null) {
-			packet.addChild("x", "jabber:x:signed").setContent(sig);
+	public PresencePacket selfPresence(final Account account, final Presence.Status status, final boolean personal) {
+		final PresencePacket packet = new PresencePacket();
+		if (personal) {
+			final String sig = account.getPgpSignature();
+			final String message = account.getPresenceStatusMessage();
+			if(status.toShowString() != null) {
+				packet.addChild("show").setContent(status.toShowString());
+			}
+			if (!TextUtils.isEmpty(message)) {
+				packet.addChild(new Element("status").setContent(message));
+			}
+			if (sig != null && mXmppConnectionService.getPgpEngine() != null) {
+				packet.addChild("x", "jabber:x:signed").setContent(sig);
+			}
 		}
 		final String capHash = getCapHash(account);
 		if (capHash != null) {

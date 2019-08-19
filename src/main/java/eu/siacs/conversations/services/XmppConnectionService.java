@@ -68,12 +68,8 @@ import java.util.Set;
 import java.util.WeakHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicLong;
-
 
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
@@ -101,9 +97,8 @@ import eu.siacs.conversations.generator.AbstractGenerator;
 import eu.siacs.conversations.generator.IqGenerator;
 import eu.siacs.conversations.generator.MessageGenerator;
 import eu.siacs.conversations.generator.PresenceGenerator;
-import eu.siacs.conversations.http.HttpConnectionManager;
 import eu.siacs.conversations.http.CustomURLStreamHandlerFactory;
-import eu.siacs.conversations.http.services.MuclumbusService;
+import eu.siacs.conversations.http.HttpConnectionManager;
 import eu.siacs.conversations.parser.AbstractParser;
 import eu.siacs.conversations.parser.IqParser;
 import eu.siacs.conversations.parser.MessageParser;
@@ -129,9 +124,9 @@ import eu.siacs.conversations.utils.Resolver;
 import eu.siacs.conversations.utils.SerialSingleThreadExecutor;
 import eu.siacs.conversations.utils.StringUtils;
 import eu.siacs.conversations.utils.WakeLockHelper;
-import eu.siacs.conversations.xml.Namespace;
 import eu.siacs.conversations.utils.XmppUri;
 import eu.siacs.conversations.xml.Element;
+import eu.siacs.conversations.xml.Namespace;
 import eu.siacs.conversations.xmpp.OnBindListener;
 import eu.siacs.conversations.xmpp.OnContactStatusChanged;
 import eu.siacs.conversations.xmpp.OnIqPacketReceived;
@@ -155,11 +150,6 @@ import eu.siacs.conversations.xmpp.stanzas.IqPacket;
 import eu.siacs.conversations.xmpp.stanzas.MessagePacket;
 import eu.siacs.conversations.xmpp.stanzas.PresencePacket;
 import me.leolin.shortcutbadger.ShortcutBadger;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 import rocks.xmpp.addr.Jid;
 
 public class XmppConnectionService extends Service {
@@ -2834,15 +2824,8 @@ public class XmppConnectionService extends Service {
 				}
 			});
 
-			PresencePacket packet = new PresencePacket();
-			packet.setTo(joinJid);
-			packet.setFrom(conversation.getAccount().getJid());
-
-			String sig = account.getPgpSignature();
-			if (sig != null) {
-				packet.addChild("status").setContent("online");
-				packet.addChild("x", "jabber:x:signed").setContent(sig);
-			}
+            final PresencePacket packet = mPresenceGenerator.selfPresence(account, Presence.Status.ONLINE, options.nonanonymous());
+            packet.setTo(joinJid);
 			sendPresencePacket(account, packet);
 		} else {
 			conversation.setContactJid(joinJid);
@@ -4112,11 +4095,7 @@ public class XmppConnectionService extends Service {
 		} else {
 			status = getTargetPresence();
 		}
-		PresencePacket packet = mPresenceGenerator.selfPresence(account, status);
-		String message = account.getPresenceStatusMessage();
-		if (message != null && !message.isEmpty()) {
-			packet.addChild(new Element("status").setContent(message));
-		}
+		final PresencePacket packet = mPresenceGenerator.selfPresence(account, status);
 		if (mLastActivity > 0 && includeIdleTimestamp) {
 			long since = Math.min(mLastActivity, System.currentTimeMillis()); //don't send future dates
 			packet.addChild("idle", Namespace.IDLE).setAttribute("since", AbstractGenerator.getTimestamp(since));
