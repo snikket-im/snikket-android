@@ -2801,7 +2801,13 @@ public class XmppConnectionService extends Service {
 		final Bookmark bookmark = conversation.getBookmark();
 		final String bookmarkedNick = bookmark == null ? null : bookmark.getNick();
         if (bookmark != null && (tookProposedNickFromBookmark || TextUtils.isEmpty(bookmarkedNick)) && !full.getResource().equals(bookmarkedNick)) {
-            Log.d(Config.LOGTAG, conversation.getAccount().getJid().asBareJid() + ": persist nick '" + full.getResource() + "' into bookmark for " + conversation.getJid().asBareJid());
+            final Account account = conversation.getAccount();
+            final String defaultNick = MucOptions.defaultNick(account);
+            if (TextUtils.isEmpty(bookmarkedNick) && full.getResource().equals(defaultNick)) {
+                Log.d(Config.LOGTAG,account.getJid().asBareJid()+": do not overwrite empty bookmark nick with default nick for "+conversation.getJid().asBareJid());
+                return;
+            }
+            Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": persist nick '" + full.getResource() + "' into bookmark for " + conversation.getJid().asBareJid());
             bookmark.setNick(full.getResource());
             pushBookmarks(bookmark.getAccount());
         }
@@ -4420,11 +4426,12 @@ public class XmppConnectionService extends Service {
 	}
 
 	public void saveConversationAsBookmark(Conversation conversation, String name) {
-		Account account = conversation.getAccount();
-		Bookmark bookmark = new Bookmark(account, conversation.getJid().asBareJid());
-		if (!conversation.getJid().isBareJid()) {
-			bookmark.setNick(conversation.getJid().getResource());
-		}
+		final Account account = conversation.getAccount();
+		final Bookmark bookmark = new Bookmark(account, conversation.getJid().asBareJid());
+		final String nick = conversation.getJid().getResource();
+        if (nick != null && !nick.isEmpty() && !nick.equals(MucOptions.defaultNick(account))) {
+            bookmark.setNick(nick);
+        }
 		if (!TextUtils.isEmpty(name)) {
 			bookmark.setBookmarkName(name);
 		}

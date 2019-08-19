@@ -62,6 +62,7 @@ import eu.siacs.conversations.entities.Bookmark;
 import eu.siacs.conversations.entities.Contact;
 import eu.siacs.conversations.entities.Conversation;
 import eu.siacs.conversations.entities.ListItem;
+import eu.siacs.conversations.entities.MucOptions;
 import eu.siacs.conversations.entities.Presence;
 import eu.siacs.conversations.services.QuickConversationsService;
 import eu.siacs.conversations.services.XmppConnectionService;
@@ -1021,8 +1022,8 @@ public class StartConversationActivity extends XmppActivity implements XmppConne
 			} else {
 				final Bookmark bookmark = new Bookmark(account, conferenceJid.asBareJid());
 				bookmark.setAutojoin(getBooleanPreference("autojoin", R.bool.autojoin));
-				String nick = conferenceJid.getResource();
-				if (nick != null && !nick.isEmpty()) {
+				final String nick = conferenceJid.getResource();
+				if (nick != null && !nick.isEmpty() && !nick.equals(MucOptions.defaultNick(account))) {
 					bookmark.setNick(nick);
 				}
 				account.getBookmarks().add(bookmark);

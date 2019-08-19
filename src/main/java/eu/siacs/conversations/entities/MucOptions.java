@@ -426,12 +426,16 @@ public class MucOptions {
         } else if (!conversation.getJid().isBareJid()) {
             return conversation.getJid().getResource();
         } else {
-            final String displayName = normalize(account.getJid(), account.getDisplayName());
-            if (displayName == null) {
-                return JidHelper.localPartOrFallback(account.getJid());
-            } else {
-                return displayName;
-            }
+            return defaultNick(account);
+        }
+    }
+
+    public static String defaultNick(final Account account) {
+        final String displayName = normalize(account.getJid(), account.getDisplayName());
+        if (displayName == null) {
+            return JidHelper.localPartOrFallback(account.getJid());
+        } else {
+            return displayName;
         }
     }
 
