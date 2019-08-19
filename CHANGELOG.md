@@ -1,5 +1,9 @@
 # Changelog
 
+### Version 2.5.6
+* fixes for Jingle file transfer
+* fixed some rare crashes
+
 ### Version 2.5.5
 * allow backups to be restored from anywhere
 * bug fixes
