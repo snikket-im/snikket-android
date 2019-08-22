@@ -177,12 +177,10 @@ public class JingleInbandTransport extends JingleTransport {
 			this.account.getXmppConnection().sendIqPacket(iq, this.onAckReceived);
 			this.account.getXmppConnection().r(); //don't fill up stanza queue too much
 			this.seq++;
-			if (this.remainingSize > 0) {
-				connection.updateProgress((int) ((((double) (this.fileSize - this.remainingSize)) / this.fileSize) * 100));
-			} else {
+			connection.updateProgress((int) ((((double) (this.fileSize - this.remainingSize)) / this.fileSize) * 100));
+			if (this.remainingSize <= 0) {
 				sendClose();
 				file.setSha1Sum(digest.digest());
-				Log.d(Config.LOGTAG,account.getJid().asBareJid()+": sendNextBlock() remaining size");
 				this.onFileTransmissionStatusChanged.onFileTransmitted(file);
 				fileInputStream.close();
 			}
