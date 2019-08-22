@@ -866,4 +866,12 @@
   <string name="this_looks_like_a_domain">Questo sembra un indirizzo di dominio</string>
   <string name="add_anway">Aggiungere comunque</string>
   <string name="this_looks_like_channel">Questo sembra un indirizzo di canale</string>
+  <string name="share_backup_files">Condividi file di backup</string>
+  <string name="conversations_backup">Backup di Conversations</string>
+  <string name="event">Evento</string>
+  <string name="open_backup">Apri backup</string>
+  <string name="not_a_backup_file">Il file selezionato non è un file di backup di Conversations</string>
+  <string name="account_already_setup">Questo account è già stato configurato</string>
+  <string name="please_enter_password">Inserisci la password per questo account</string>
+  <string name="unable_to_perform_this_action">Impossibile eseguire questa azione</string>
 </resources>
