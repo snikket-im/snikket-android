@@ -1254,15 +1254,15 @@ public class XmppConnection implements Runnable {
     }
 
     private void enableAdvancedStreamFeatures() {
-        if (getFeatures().carbons() && !features.carbonsEnabled) {
-            sendEnableCarbons();
-        }
         if (getFeatures().blocking() && !features.blockListRequested) {
             Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": Requesting block list");
             this.sendIqPacket(getIqGenerator().generateGetBlockList(), mXmppConnectionService.getIqParser());
         }
         for (final OnAdvancedStreamFeaturesLoaded listener : advancedStreamFeaturesLoadedListeners) {
             listener.onAdvancedStreamFeaturesAvailable(account);
+        }
+        if (getFeatures().carbons() && !features.carbonsEnabled) {
+            sendEnableCarbons();
         }
     }
 
