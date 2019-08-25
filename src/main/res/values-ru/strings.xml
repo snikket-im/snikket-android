@@ -699,4 +699,6 @@
   <string name="create_private_group_chat">Создать закрытую конференцию</string>
   <string name="create_public_channel">Создать публичный канал</string>
   <string name="discover_channels">Найти каналы</string>
+  <string name="i_already_have_an_account">У меня уже есть аккаунт</string>
+  <string name="add_existing_account">Добавить существующий аккаунт</string>
 </resources>
