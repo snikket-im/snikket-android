@@ -40,6 +40,7 @@ public class ShareWithActivity extends XmppActivity implements XmppConnectionSer
         public String account;
         public String contact;
         public String text;
+        public boolean asQuote = false;
     }
 
     private Share share;
@@ -132,6 +133,7 @@ public class ShareWithActivity extends XmppActivity implements XmppConnectionSer
         if (Intent.ACTION_SEND.equals(action)) {
             final String text = intent.getStringExtra(Intent.EXTRA_TEXT);
             final Uri uri = intent.getParcelableExtra(Intent.EXTRA_STREAM);
+            final boolean asQuote = intent.getBooleanExtra(ConversationsActivity.EXTRA_AS_QUOTE, false);
 
             if (data != null && "geo".equals(data.getScheme())) {
                 this.share.uris.clear();
@@ -141,6 +143,7 @@ public class ShareWithActivity extends XmppActivity implements XmppConnectionSer
                 this.share.uris.add(uri);
             } else {
                 this.share.text = text;
+                this.share.asQuote = asQuote;
             }
         } else if (Intent.ACTION_SEND_MULTIPLE.equals(action)) {
             final ArrayList<Uri> uris = intent.getParcelableArrayListExtra(Intent.EXTRA_STREAM);
@@ -195,6 +198,7 @@ public class ShareWithActivity extends XmppActivity implements XmppConnectionSer
         } else if (share.text != null) {
             intent.setAction(ConversationsActivity.ACTION_VIEW_CONVERSATION);
             intent.putExtra(Intent.EXTRA_TEXT, share.text);
+            intent.putExtra(ConversationsActivity.EXTRA_AS_QUOTE, share.asQuote);
         }
         startActivity(intent);
         finish();

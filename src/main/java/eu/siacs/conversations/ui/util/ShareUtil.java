@@ -30,16 +30,11 @@
 package eu.siacs.conversations.ui.util;
 
 import android.content.ActivityNotFoundException;
-import android.content.Context;
 import android.content.Intent;
-import android.support.v4.content.ContextCompat;
-import android.util.Log;
 import android.widget.Toast;
 
-import java.net.URL;
 import java.util.regex.Matcher;
 
-import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.entities.DownloadableFile;
 import eu.siacs.conversations.entities.Message;
@@ -58,9 +53,11 @@ public class ShareUtil {
 		if (message.isGeoUri()) {
 			shareIntent.putExtra(Intent.EXTRA_TEXT, message.getBody());
 			shareIntent.setType("text/plain");
+			shareIntent.putExtra(ConversationsActivity.EXTRA_AS_QUOTE, true);
 		} else if (!message.isFileOrImage()) {
 			shareIntent.putExtra(Intent.EXTRA_TEXT, message.getMergedBody().toString());
 			shareIntent.setType("text/plain");
+			shareIntent.putExtra(ConversationsActivity.EXTRA_AS_QUOTE, true);
 		} else {
 			final DownloadableFile file = activity.xmppConnectionService.getFileBackend().getFile(message);
 			try {
