@@ -51,7 +51,9 @@ dependencies {
     conversationsFreeCompatImplementation "com.android.support:support-emoji-bundled:$supportLibVersion"
     quicksyFreeCompatImplementation "com.android.support:support-emoji-bundled:$supportLibVersion"
     implementation 'org.bouncycastle:bcmail-jdk15on:1.58'
-    implementation 'com.google.zxing:core:3.4.0'
+    //zxing stopped supporting Java 7 so we have to stick with 3.3.3
+    //https://github.com/zxing/zxing/issues/1170
+    implementation 'com.google.zxing:core:3.3.3'
     implementation 'de.measite.minidns:minidns-hla:0.2.4'
     implementation 'me.leolin:ShortcutBadger:1.1.22@aar'
     implementation 'org.whispersystems:signal-protocol-java:2.6.2'
