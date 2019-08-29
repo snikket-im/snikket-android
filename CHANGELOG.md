@@ -1,5 +1,9 @@
 # Changelog
 
+### Version 2.5.7
+* fixed crash when scanning QR codes on Android 6 and lower
+* when sharing a message from and to Conversations insert it as quote
+
 ### Version 2.5.6
 * fixes for Jingle file transfer
 * fixed some rare crashes
