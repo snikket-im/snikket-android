@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="pick_a_server">Επιλέξτε τον πάροχο XMPP σας</string>
+    <string name="use_conversations.im">Χρήση του conversations.im</string>
+    <string name="create_new_account">Δημιουργία νέου λογαριασμού</string>
+    <string name="do_you_have_an_account">Έχετε ήδη λογαριασμό XMPP; Αυτό μπορεί να συμβαίνει αν ήδη χρησιμοποιείτε ένα άλλο πρόγραμμα XMPP ή έχετε χρησιμοποιήσει το Conversations παλιότερα. Αν όχι, μπορείτε να δημιουργήσετε ένα νέο λογαριασμό XMPP τώρα.\nΧρήσιμη πληροφορία: Κάποιοι πάροχοι e-mail παρέχουν επίσης και λογαριασμούς XMPP.</string>
+    <string name="server_select_text">Το XMPP είναι ένα δίκτυο άμεσης ανταλλαγής μηνυμάτων ανεξάρτητο παρόχου. Μπορείτε να χρησιμοποιήσετε αυτό το πρόγραμμα με όποιον διακομιστή XMPP επιθυμείτε.\nΓια διευκόλυνση πάντως μπορείτε να δημιουργήσετε έναν λογαριασμό στο conversations.im¹, έναν πάροχο ειδικά σχεδιασμένο για χρήση με το Conversations.</string>
+
+</resources>
