@@ -171,7 +171,8 @@ public class JingleConnection implements Transferable {
 
         @Override
         public void failed() {
-            Log.d(Config.LOGTAG, "proxy activation failed");
+            Log.d(Config.LOGTAG, account.getJid().asBareJid()+": proxy activation failed");
+            //TODO: when initiating send fallback to ibb
         }
     };
 
@@ -303,14 +304,7 @@ public class JingleConnection implements Transferable {
         if (this.initialTransport == Transport.IBB) {
             this.sendInitRequest();
         } else {
-
-            final List<JingleCandidate> directCandidates = DirectConnectionUtils.getLocalCandidates(account.getJid());
-            for (JingleCandidate directCandidate : directCandidates) {
-                final JingleSocks5Transport socksConnection = new JingleSocks5Transport(this, directCandidate);
-                connections.put(directCandidate.getCid(), socksConnection);
-                candidates.add(directCandidate);
-            }
-
+            gatherAndConnectDirectCandidates();
             this.mJingleConnectionManager.getPrimaryCandidate(account, (success, candidate) -> {
                 if (success) {
                     final JingleSocks5Transport socksConnection = new JingleSocks5Transport(this, candidate);
@@ -340,6 +334,24 @@ public class JingleConnection implements Transferable {
             });
         }
 
+    }
+
+    private void gatherAndConnectDirectCandidates() {
+        final List<JingleCandidate> directCandidates;
+        if (Config.USE_DIRECT_JINGLE_CANDIDATES) {
+            if (account.isOnion() || mXmppConnectionService.useTorToConnect()) {
+                directCandidates = Collections.emptyList();
+            } else {
+                directCandidates = DirectConnectionUtils.getLocalCandidates(account.getJid());
+            }
+        } else {
+            directCandidates = Collections.emptyList();
+        }
+        for (JingleCandidate directCandidate : directCandidates) {
+            final JingleSocks5Transport socksConnection = new JingleSocks5Transport(this, directCandidate);
+            connections.put(directCandidate.getCid(), socksConnection);
+            candidates.add(directCandidate);
+        }
     }
 
     private void upgradeNamespace() {
@@ -570,6 +582,7 @@ public class JingleConnection implements Transferable {
     }
 
     private void sendAcceptSocks() {
+        gatherAndConnectDirectCandidates();
         this.mJingleConnectionManager.getPrimaryCandidate(this.account, (success, candidate) -> {
             final JinglePacket packet = bootstrapPacket("session-accept");
             final Content content = new Content(contentCreator, contentName);
@@ -600,7 +613,7 @@ public class JingleConnection implements Transferable {
                     }
                 });
             } else {
-                Log.d(Config.LOGTAG, "did not find a primary candidate for ourself");
+                Log.d(Config.LOGTAG, "did not find a primary candidate for ourselves");
                 content.socks5transport().setChildren(getCandidatesAsElements());
                 packet.setContent(content);
                 sendJinglePacket(packet);
@@ -762,6 +775,7 @@ public class JingleConnection implements Transferable {
                         if (response.getType() != IqPacket.TYPE.RESULT) {
                             Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": " + response.toString());
                             onProxyActivated.failed();
+                            //TODO send proxy-error
                         } else {
                             onProxyActivated.success();
                             sendProxyActivated(connection.getCandidate().getCid());
