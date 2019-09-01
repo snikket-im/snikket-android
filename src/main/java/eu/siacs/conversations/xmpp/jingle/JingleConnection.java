@@ -11,7 +11,6 @@ import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map.Entry;
@@ -303,9 +302,15 @@ public class JingleConnection implements Transferable {
         this.transportId = this.mJingleConnectionManager.nextRandomId();
         if (this.initialTransport == Transport.IBB) {
             this.sendInitRequest();
-        } else if (this.candidates.size() > 0) {
-            this.sendInitRequest(); //TODO we will never get here? Can probably be removed
         } else {
+
+            final List<JingleCandidate> directCandidates = DirectConnectionUtils.getLocalCandidates(account.getJid());
+            for (JingleCandidate directCandidate : directCandidates) {
+                final JingleSocks5Transport socksConnection = new JingleSocks5Transport(this, directCandidate);
+                connections.put(directCandidate.getCid(), socksConnection);
+                candidates.add(directCandidate);
+            }
+
             this.mJingleConnectionManager.getPrimaryCandidate(account, (success, candidate) -> {
                 if (success) {
                     final JingleSocks5Transport socksConnection = new JingleSocks5Transport(this, candidate);
@@ -690,7 +695,7 @@ public class JingleConnection implements Transferable {
                 onProxyActivated.failed();
                 return true;
             } else if (content.socks5transport().hasChild("candidate-error")) {
-                Log.d(Config.LOGTAG, "received candidate error");
+                Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": received candidate error");
                 this.receivedCandidate = true;
                 if (mJingleStatus == JINGLE_STATUS_ACCEPTED && this.sentCandidate) {
                     this.connect();
@@ -728,7 +733,7 @@ public class JingleConnection implements Transferable {
         final JingleSocks5Transport connection = chooseConnection();
         this.transport = connection;
         if (connection == null) {
-            Log.d(Config.LOGTAG, "could not find suitable candidate");
+            Log.d(Config.LOGTAG, account.getJid().asBareJid()+": could not find suitable candidate");
             this.disconnectSocks5Connections();
             if (initiating()) {
                 this.sendFallbackToIbb();
@@ -755,6 +760,7 @@ public class JingleConnection implements Transferable {
                             .setContent(this.getCounterPart().toString());
                     mXmppConnectionService.sendIqPacket(account, activation, (account, response) -> {
                         if (response.getType() != IqPacket.TYPE.RESULT) {
+                            Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": " + response.toString());
                             onProxyActivated.failed();
                         } else {
                             onProxyActivated.success();
@@ -1052,7 +1058,7 @@ public class JingleConnection implements Transferable {
     }
 
     private void sendCandidateError() {
-        Log.d(Config.LOGTAG, "sending candidate error");
+        Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": sending candidate error");
         JinglePacket packet = bootstrapPacket("transport-info");
         Content content = new Content(this.contentCreator, this.contentName);
         content.setTransportId(this.transportId);

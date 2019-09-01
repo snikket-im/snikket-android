@@ -127,7 +127,9 @@ public class JingleCandidate {
 		element.setAttribute("cid", this.getCid());
 		element.setAttribute("host", this.getHost());
 		element.setAttribute("port", Integer.toString(this.getPort()));
-		element.setAttribute("jid", this.getJid().toString());
+		if (jid != null) {
+			element.setAttribute("jid", jid.toEscapedString());
+		}
 		element.setAttribute("priority", Integer.toString(this.getPriority()));
 		if (this.getType() == TYPE_DIRECT) {
 			element.setAttribute("type", "direct");

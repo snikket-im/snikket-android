@@ -39,6 +39,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.URL;
 import java.security.DigestOutputStream;
@@ -351,6 +352,15 @@ public class FileBackend {
     }
 
     public static void close(final Socket socket) {
+        if (socket != null) {
+            try {
+                socket.close();
+            } catch (IOException e) {
+            }
+        }
+    }
+
+    public static void close(final ServerSocket socket) {
         if (socket != null) {
             try {
                 socket.close();

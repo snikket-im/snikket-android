@@ -20,6 +20,9 @@ public class SocksSocketFactory {
 		proxyOs.write(new byte[]{0x05, 0x01, 0x00});
 		byte[] response = new byte[2];
 		proxyIs.read(response);
+		if (response[0] != 0x05 || response[1] != 0x00) {
+			throw new SocksConnectionException();
+		}
 		byte[] dest = destination.getBytes();
 		ByteBuffer request = ByteBuffer.allocate(7 + dest.length);
 		request.put(new byte[]{0x05, 0x01, 0x00, 0x03});
@@ -32,6 +35,15 @@ public class SocksSocketFactory {
 		if (response[1] != 0x00) {
 			throw new SocksConnectionException();
 		}
+	}
+
+	public static boolean contains(byte needle, byte[] haystack) {
+		for(byte hay : haystack) {
+			if (hay == needle) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 	public static Socket createSocket(InetSocketAddress address, String destination, int port) throws IOException {

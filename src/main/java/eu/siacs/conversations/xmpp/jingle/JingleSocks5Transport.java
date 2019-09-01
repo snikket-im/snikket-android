@@ -6,9 +6,12 @@ import android.util.Log;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.net.InetAddress;
 import java.net.InetSocketAddress;
+import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketAddress;
+import java.nio.ByteBuffer;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
@@ -29,6 +32,7 @@ public class JingleSocks5Transport extends JingleTransport {
     private InputStream inputStream;
     private boolean isEstablished = false;
     private boolean activated = false;
+    private ServerSocket serverSocket;
     private Socket socket;
 
     JingleSocks5Transport(JingleConnection jingleConnection, JingleCandidate candidate) {
@@ -56,6 +60,88 @@ public class JingleSocks5Transport extends JingleTransport {
         }
         messageDigest.reset();
         this.destination = CryptoHelper.bytesToHex(messageDigest.digest(destBuilder.toString().getBytes()));
+        if (candidate.isOurs() && candidate.getType() == JingleCandidate.TYPE_DIRECT) {
+            createServerSocket();
+        }
+    }
+
+    private void createServerSocket() {
+        try {
+            serverSocket = new ServerSocket();
+            serverSocket.bind(new InetSocketAddress(InetAddress.getByName(candidate.getHost()), candidate.getPort()));
+            new Thread(() -> {
+                try {
+                    final Socket socket = serverSocket.accept();
+                    new Thread(() -> {
+                        try {
+                            acceptIncomingSocketConnection(socket);
+                        } catch (IOException e) {
+                            Log.d(Config.LOGTAG,"unable to read from socket",e);
+
+                        }
+                    }).start();
+                } catch (IOException e) {
+                    if (!serverSocket.isClosed()) {
+                        Log.d(Config.LOGTAG, "unable to accept socket", e);
+                    }
+                }
+            }).start();
+        } catch (IOException e) {
+            Log.d(Config.LOGTAG,"unable to bind server socket ",e);
+        }
+    }
+
+    private void acceptIncomingSocketConnection(Socket socket) throws IOException {
+        Log.d(Config.LOGTAG, "accepted connection from " + socket.getInetAddress().getHostAddress());
+        byte[] authBegin = new byte[2];
+        InputStream inputStream = socket.getInputStream();
+        OutputStream outputStream = socket.getOutputStream();
+        inputStream.read(authBegin);
+        if (authBegin[0] != 0x5) {
+            socket.close();
+        }
+        short methodCount = authBegin[1];
+        byte[] methods = new byte[methodCount];
+        inputStream.read(methods);
+        if (SocksSocketFactory.contains((byte) 0x00, methods)) {
+            outputStream.write(new byte[]{0x05,0x00});
+        } else {
+            outputStream.write(new byte[]{0x05,(byte) 0xff});
+        }
+        byte[] connectCommand = new byte[4];
+        inputStream.read(connectCommand);
+        if (connectCommand[0] == 0x05 && connectCommand[1] == 0x01 && connectCommand[3] == 0x03) {
+            int destinationCount = inputStream.read();
+            byte[] destination = new byte[destinationCount];
+            inputStream.read(destination);
+            int port = inputStream.read();
+            final String receivedDestination = new String(destination);
+            Log.d(Config.LOGTAG, "received destination " + receivedDestination + ":" + port + " - expected " + this.destination);
+            final ByteBuffer response = ByteBuffer.allocate(7 + destination.length);
+            final byte[] responseHeader;
+            final boolean success;
+            if (receivedDestination.equals(this.destination)) {
+                responseHeader = new byte[]{0x05, 0x00, 0x00, 0x03};
+                success = true;
+            } else {
+                responseHeader = new byte[]{0x05, 0x04, 0x00, 0x03};
+                success = false;
+            }
+            response.put(responseHeader);
+            response.put((byte) destination.length);
+            response.put(destination);
+            response.putShort((short) port);
+            outputStream.write(response.array());
+            outputStream.flush();
+            if (success) {
+                this.socket = socket;
+                this.inputStream = inputStream;
+                this.outputStream = outputStream;
+                this.isEstablished = true;
+            }
+        } else {
+            socket.close();
+        }
     }
 
     public void connect(final OnTransportConnected callback) {
@@ -71,7 +157,9 @@ public class JingleSocks5Transport extends JingleTransport {
                 }
                 inputStream = socket.getInputStream();
                 outputStream = socket.getOutputStream();
+                socket.setSoTimeout(5000);
                 SocksSocketFactory.createSocksConnection(socket, destination, 0);
+                socket.setSoTimeout(0);
                 isEstablished = true;
                 callback.established();
             } catch (IOException e) {
@@ -182,6 +270,7 @@ public class JingleSocks5Transport extends JingleTransport {
         FileBackend.close(inputStream);
         FileBackend.close(outputStream);
         FileBackend.close(socket);
+        FileBackend.close(serverSocket);
     }
 
     public boolean isEstablished() {
