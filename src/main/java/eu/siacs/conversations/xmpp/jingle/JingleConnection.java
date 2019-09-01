@@ -11,6 +11,7 @@ import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map.Entry;
@@ -303,7 +304,7 @@ public class JingleConnection implements Transferable {
         if (this.initialTransport == Transport.IBB) {
             this.sendInitRequest();
         } else if (this.candidates.size() > 0) {
-            this.sendInitRequest();
+            this.sendInitRequest(); //TODO we will never get here? Can probably be removed
         } else {
             this.mJingleConnectionManager.getPrimaryCandidate(account, (success, candidate) -> {
                 if (success) {
@@ -635,7 +636,7 @@ public class JingleConnection implements Transferable {
 
     private boolean receiveAccept(JinglePacket packet) {
         if (this.mJingleStatus != JINGLE_STATUS_INITIATED) {
-            Log.d(Config.LOGTAG,account.getJid().asBareJid()+": received out of order session-accept");
+            Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": received out of order session-accept");
             return false;
         }
         this.mJingleStatus = JINGLE_STATUS_ACCEPTED;
@@ -654,7 +655,7 @@ public class JingleConnection implements Transferable {
                         this.ibbBlockSize = bs;
                     }
                 } catch (Exception e) {
-                    Log.d(Config.LOGTAG,account.getJid().asBareJid()+": unable to parse block size in session-accept");
+                    Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": unable to parse block size in session-accept");
                 }
             }
             this.transport = new JingleInbandTransport(this, this.transportId, this.ibbBlockSize);
@@ -850,7 +851,7 @@ public class JingleConnection implements Transferable {
                     this.ibbBlockSize = bs;
                 }
             } catch (NumberFormatException e) {
-                Log.d(Config.LOGTAG,account.getJid().asBareJid()+": unable to parse block size in transport-replace");
+                Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": unable to parse block size in transport-replace");
             }
         }
         this.transportId = packet.getJingleContent().getTransportId();
@@ -889,7 +890,7 @@ public class JingleConnection implements Transferable {
                         this.ibbBlockSize = bs;
                     }
                 } catch (NumberFormatException e) {
-                    Log.d(Config.LOGTAG, account.getJid().asBareJid()+": unable to parse block size in transport-accept");
+                    Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": unable to parse block size in transport-accept");
                 }
             }
             this.transport = new JingleInbandTransport(this, this.transportId, this.ibbBlockSize);
@@ -1087,6 +1088,7 @@ public class JingleConnection implements Transferable {
     }
 
     private void mergeCandidates(List<JingleCandidate> candidates) {
+        Collections.sort(candidates, (a, b) -> Integer.compare(b.getPriority(), a.getPriority()));
         for (JingleCandidate c : candidates) {
             mergeCandidate(c);
         }
