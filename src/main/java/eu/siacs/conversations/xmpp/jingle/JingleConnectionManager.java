@@ -81,8 +81,7 @@ public class JingleConnectionManager extends AbstractConnectionManager {
 		this.connections.remove(connection);
 	}
 
-	public void getPrimaryCandidate(Account account,
-			final OnPrimaryCandidateFound listener) {
+	public void getPrimaryCandidate(final Account account, final boolean initiator, final OnPrimaryCandidateFound listener) {
 		if (Config.DISABLE_PROXY_LOOKUP) {
 			listener.onPrimaryCandidateFound(false, null);
 			return;
@@ -107,7 +106,7 @@ public class JingleConnectionManager extends AbstractConnectionManager {
 								candidate.setPort(Integer.parseInt(port));
 								candidate.setType(JingleCandidate.TYPE_PROXY);
 								candidate.setJid(proxy);
-								candidate.setPriority(655360 + 65535);
+								candidate.setPriority(655360 + (initiator ? 10 : 20));
 								primaryCandidates.put(account.getJid().asBareJid(),candidate);
 								listener.onPrimaryCandidateFound(true,candidate);
 							} catch (final NumberFormatException e) {

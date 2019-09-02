@@ -307,7 +307,7 @@ public class JingleConnection implements Transferable {
             this.sendInitRequest();
         } else {
             gatherAndConnectDirectCandidates();
-            this.mJingleConnectionManager.getPrimaryCandidate(account, (success, candidate) -> {
+            this.mJingleConnectionManager.getPrimaryCandidate(account, initiating(), (success, candidate) -> {
                 if (success) {
                     final JingleSocks5Transport socksConnection = new JingleSocks5Transport(this, candidate);
                     connections.put(candidate.getCid(), socksConnection);
@@ -585,7 +585,7 @@ public class JingleConnection implements Transferable {
 
     private void sendAcceptSocks() {
         gatherAndConnectDirectCandidates();
-        this.mJingleConnectionManager.getPrimaryCandidate(this.account, (success, candidate) -> {
+        this.mJingleConnectionManager.getPrimaryCandidate(this.account, initiating(), (success, candidate) -> {
             final JinglePacket packet = bootstrapPacket("session-accept");
             final Content content = new Content(contentCreator, contentName);
             content.setFileOffer(fileOffer, ftVersion);
