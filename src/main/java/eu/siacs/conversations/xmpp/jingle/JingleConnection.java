@@ -43,6 +43,8 @@ import rocks.xmpp.addr.Jid;
 
 public class JingleConnection implements Transferable {
 
+    private static final String JET_OMEMO_CIPHER = "urn:xmpp:ciphers:aes-128-gcm-nopadding";
+
     private static final int JINGLE_STATUS_INITIATED = 0;
     private static final int JINGLE_STATUS_ACCEPTED = 1;
     private static final int JINGLE_STATUS_FINISHED = 4;
@@ -72,6 +74,7 @@ public class JingleConnection implements Transferable {
     private String contentName;
     private String contentCreator;
     private Transport initialTransport;
+    private boolean remoteSupportsOmemoJet;
 
     private int mProgress = 0;
 
@@ -295,8 +298,10 @@ public class JingleConnection implements Transferable {
         this.contentName = this.mJingleConnectionManager.nextRandomId();
         this.message = message;
         this.account = message.getConversation().getAccount();
-        upgradeNamespace();
-        this.initialTransport = getRemoteFeatures().contains(Namespace.JINGLE_TRANSPORTS_S5B) ? Transport.SOCKS : Transport.IBB;
+        final List<String> remoteFeatures = getRemoteFeatures();
+        upgradeNamespace(remoteFeatures);
+        this.initialTransport = remoteFeatures.contains(Namespace.JINGLE_TRANSPORTS_S5B) ? Transport.SOCKS : Transport.IBB;
+        this.remoteSupportsOmemoJet = remoteFeatures.contains(Namespace.JINGLE_ENCRYPTED_TRANSPORT_OMEMO);
         this.message.setTransferable(this);
         this.mStatus = Transferable.STATUS_UPLOADING;
         this.initiator = this.account.getJid();
@@ -356,11 +361,10 @@ public class JingleConnection implements Transferable {
         }
     }
 
-    private void upgradeNamespace() {
-        List<String> features = getRemoteFeatures();
-        if (features.contains(Content.Version.FT_5.getNamespace())) {
+    private void upgradeNamespace(List<String> remoteFeatures) {
+        if (remoteFeatures.contains(Content.Version.FT_5.getNamespace())) {
             this.ftVersion = Content.Version.FT_5;
-        } else if (features.contains(Content.Version.FT_4.getNamespace())) {
+        } else if (remoteFeatures.contains(Content.Version.FT_4.getNamespace())) {
             this.ftVersion = Content.Version.FT_4;
         }
     }
@@ -430,6 +434,13 @@ public class JingleConnection implements Transferable {
 
         if (fileOffer != null) {
             Element encrypted = fileOffer.findChild("encrypted", AxolotlService.PEP_PREFIX);
+            if (encrypted == null) {
+                final Element security = content.findChild("security", Namespace.JINGLE_ENCRYPTED_TRANSPORT);
+                if (security != null && AxolotlService.PEP_PREFIX.equals(security.getAttribute("type"))) {
+                    Log.d(Config.LOGTAG, account.getJid().asBareJid()+": received jingle file offer with JET");
+                    encrypted = security.findChild("encrypted", AxolotlService.PEP_PREFIX);
+                }
+            }
             if (encrypted != null) {
                 this.mXmppAxolotlMessage = XmppAxolotlMessage.fromElement(encrypted, packet.getFrom().asBareJid());
             }
@@ -520,7 +531,18 @@ public class JingleConnection implements Transferable {
                 this.file.setKey(mXmppAxolotlMessage.getInnerKey());
                 this.file.setIv(mXmppAxolotlMessage.getIV());
                 this.file.setExpectedSize(file.getSize() + 16);
-                content.setFileOffer(this.file, false, this.ftVersion).addChild(mXmppAxolotlMessage.toElement());
+                final Element file = content.setFileOffer(this.file, false, this.ftVersion);
+                if (remoteSupportsOmemoJet) {
+                    Log.d(Config.LOGTAG, account.getJid().asBareJid()+": remote announced support for JET");
+                    final Element security = new Element("security", Namespace.JINGLE_ENCRYPTED_TRANSPORT);
+                    security.setAttribute("name", this.contentName);
+                    security.setAttribute("cipher", JET_OMEMO_CIPHER);
+                    security.setAttribute("type", AxolotlService.PEP_PREFIX);
+                    security.addChild(mXmppAxolotlMessage.toElement());
+                    content.addChild(security);
+                } else {
+                    file.addChild(mXmppAxolotlMessage.toElement());
+                }
             } else {
                 this.file.setExpectedSize(file.getSize());
                 content.setFileOffer(this.file, false, this.ftVersion);
@@ -754,6 +776,8 @@ public class JingleConnection implements Transferable {
                 this.sendFallbackToIbb();
             }
         } else {
+            final JingleCandidate candidate = connection.getCandidate();
+            Log.d(Config.LOGTAG, account.getJid().asBareJid()+": elected candidate "+candidate.getHost()+":"+candidate.getPort());
             this.mJingleStatus = JINGLE_STATUS_TRANSMITTING;
             if (connection.needsActivation()) {
                 if (connection.getCandidate().isOurs()) {

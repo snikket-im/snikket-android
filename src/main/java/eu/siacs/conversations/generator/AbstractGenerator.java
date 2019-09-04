@@ -29,6 +29,8 @@ public abstract class AbstractGenerator {
 			Content.Version.FT_5.getNamespace(),
 			Namespace.JINGLE_TRANSPORTS_S5B,
 			Namespace.JINGLE_TRANSPORTS_IBB,
+			Namespace.JINGLE_ENCRYPTED_TRANSPORT,
+			Namespace.JINGLE_ENCRYPTED_TRANSPORT_OMEMO,
 			"http://jabber.org/protocol/muc",
 			"jabber:x:conference",
 			Namespace.OOB,

@@ -16,6 +16,7 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
 import eu.siacs.conversations.Config;
+import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.entities.DownloadableFile;
 import eu.siacs.conversations.persistance.FileBackend;
 import eu.siacs.conversations.services.AbstractConnectionManager;
@@ -134,11 +135,14 @@ public class JingleSocks5Transport extends JingleTransport {
             outputStream.write(response.array());
             outputStream.flush();
             if (success) {
+                Log.d(Config.LOGTAG,connection.getAccount().getJid().asBareJid()+": successfully processed connection to candidate "+candidate.getHost()+":"+candidate.getPort());
                 this.socket = socket;
                 this.inputStream = inputStream;
                 this.outputStream = outputStream;
                 this.isEstablished = true;
                 FileBackend.close(serverSocket);
+            } else {
+                this.socket.close();
             }
         } else {
             socket.close();
@@ -174,6 +178,7 @@ public class JingleSocks5Transport extends JingleTransport {
         new Thread(() -> {
             InputStream fileInputStream = null;
             final PowerManager.WakeLock wakeLock = connection.getConnectionManager().createWakeLock("jingle_send_" + connection.getSessionId());
+            long transmitted = 0;
             try {
                 wakeLock.acquire();
                 MessageDigest digest = MessageDigest.getInstance("SHA-1");
@@ -186,7 +191,6 @@ public class JingleSocks5Transport extends JingleTransport {
                 }
                 final InputStream innerInputStream = AbstractConnectionManager.upgrade(file, fileInputStream);
                 long size = file.getExpectedSize();
-                long transmitted = 0;
                 int count;
                 byte[] buffer = new byte[8192];
                 while ((count = innerInputStream.read(buffer)) > 0) {
@@ -201,7 +205,8 @@ public class JingleSocks5Transport extends JingleTransport {
                     callback.onFileTransmitted(file);
                 }
             } catch (Exception e) {
-                Log.d(Config.LOGTAG, connection.getAccount().getJid().asBareJid() + ": " + e.getMessage());
+                final Account account = connection.getAccount();
+                Log.d(Config.LOGTAG, account.getJid().asBareJid()+": failed sending file after "+transmitted+"/"+file.getExpectedSize()+" ("+ socket.getInetAddress()+":"+socket.getPort()+")", e);
                 callback.onFileTransferAborted();
             } finally {
                 FileBackend.close(fileInputStream);
