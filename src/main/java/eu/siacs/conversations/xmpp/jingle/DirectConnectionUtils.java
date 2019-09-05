@@ -26,9 +26,10 @@ public class DirectConnectionUtils {
             final Enumeration<InetAddress> inetAddressEnumeration = networkInterface.getInetAddresses();
             while (inetAddressEnumeration.hasMoreElements()) {
                 final InetAddress inetAddress = inetAddressEnumeration.nextElement();
-                if (!inetAddress.isLoopbackAddress()) {
-                    addresses.add(inetAddress);
+                if (inetAddress.isLoopbackAddress() || inetAddress.isLinkLocalAddress()) {
+                    continue;
                 }
+                addresses.add(inetAddress);
             }
         }
         return addresses;

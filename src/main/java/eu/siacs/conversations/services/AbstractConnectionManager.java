@@ -26,6 +26,7 @@ import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.entities.DownloadableFile;
 import eu.siacs.conversations.utils.Compatibility;
+import eu.siacs.conversations.utils.CryptoHelper;
 
 public class AbstractConnectionManager {
 

@@ -110,15 +110,12 @@ public class JingleCandidate {
 	}
 
 	public static JingleCandidate parse(Element candidate) {
-		JingleCandidate parsedCandidate = new JingleCandidate(
-				candidate.getAttribute("cid"), false);
+		JingleCandidate parsedCandidate = new JingleCandidate(candidate.getAttribute("cid"), false);
 		parsedCandidate.setHost(candidate.getAttribute("host"));
 		parsedCandidate.setJid(InvalidJid.getNullForInvalid(candidate.getAttributeAsJid("jid")));
 		parsedCandidate.setType(candidate.getAttribute("type"));
-		parsedCandidate.setPriority(Integer.parseInt(candidate
-				.getAttribute("priority")));
-		parsedCandidate
-				.setPort(Integer.parseInt(candidate.getAttribute("port")));
+		parsedCandidate.setPriority(Integer.parseInt(candidate.getAttribute("priority")));
+		parsedCandidate.setPort(Integer.parseInt(candidate.getAttribute("port")));
 		return parsedCandidate;
 	}
 
