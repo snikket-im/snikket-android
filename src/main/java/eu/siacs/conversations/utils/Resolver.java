@@ -76,11 +76,15 @@ public class Resolver {
         Result result = new Result();
         result.hostname = DNSName.from(hostname);
         result.port = port;
-        result.directTls = port == 443 || port == 5223;
+        result.directTls = useDirectTls(port);
         result.authenticated = true;
         return Collections.singletonList(result);
     }
 
+
+    public static boolean useDirectTls(final int port) {
+        return port == 443 || port == 5223;
+    }
 
     public static List<Result> resolve(String domain) {
         final  List<Result> ipResults = fromIpAddress(domain);

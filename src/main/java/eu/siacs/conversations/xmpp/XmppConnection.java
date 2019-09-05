@@ -267,8 +267,18 @@ public class XmppConnection implements Runnable {
                     destination = account.getHostname();
                     this.verifiedHostname = destination;
                 }
-                Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": connect to " + destination + " via Tor");
-                localSocket = SocksSocketFactory.createSocketOverTor(destination, account.getPort());
+
+                final int port = account.getPort();
+                final boolean directTls = Resolver.useDirectTls(port);
+
+                Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": connect to " + destination + " via Tor. directTls="+directTls);
+                localSocket = SocksSocketFactory.createSocketOverTor(destination, port);
+
+                if (directTls) {
+                    localSocket = upgradeSocketToTls(localSocket);
+                    features.encryptionEnabled = true;
+                }
+
                 try {
                     startXmpp(localSocket);
                 } catch (InterruptedException e) {
@@ -328,29 +338,13 @@ public class XmppConnection implements Runnable {
                                     + result.getHostname().toString() + ":" + result.getPort() + " tls: " + features.encryptionEnabled);
                         }
 
-                        if (!features.encryptionEnabled) {
-                            localSocket = new Socket();
-                            localSocket.connect(addr, Config.SOCKET_TIMEOUT * 1000);
-                        } else {
-                            final TlsFactoryVerifier tlsFactoryVerifier = getTlsFactoryVerifier();
-                            localSocket = tlsFactoryVerifier.factory.createSocket();
+                        localSocket = new Socket();
+                        localSocket.connect(addr, Config.SOCKET_TIMEOUT * 1000);
 
-                            if (localSocket == null) {
-                                throw new IOException("could not initialize ssl socket");
-                            }
-
-                            SSLSocketHelper.setSecurity((SSLSocket) localSocket);
-                            SSLSocketHelper.setHostname((SSLSocket) localSocket, account.getServer());
-                            SSLSocketHelper.setApplicationProtocol((SSLSocket) localSocket, "xmpp-client");
-
-                            localSocket.connect(addr, Config.SOCKET_TIMEOUT * 1000);
-
-                            if (!tlsFactoryVerifier.verifier.verify(account.getServer(), verifiedHostname, ((SSLSocket) localSocket).getSession())) {
-                                Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": TLS certificate verification failed");
-                                FileBackend.close(localSocket);
-                                throw new StateChangingException(Account.State.TLS_ERROR);
-                            }
+                        if (features.encryptionEnabled) {
+                            localSocket = upgradeSocketToTls(localSocket);
                         }
+
                         localSocket.setSoTimeout(Config.SOCKET_TIMEOUT * 1000);
                         if (startXmpp(localSocket)) {
                             localSocket.setSoTimeout(0); //reset to 0; once the connection is established we don’t want this
@@ -383,6 +377,8 @@ public class XmppConnection implements Runnable {
         } catch (final StateChangingException e) {
             this.changeStatus(e.state);
         } catch (final UnknownHostException | ConnectException e) {
+            this.changeStatus(Account.State.SERVER_NOT_FOUND);
+        } catch (final SocksSocketFactory.HostNotFoundException e) {
             this.changeStatus(Account.State.SERVER_NOT_FOUND);
         } catch (final SocksSocketFactory.SocksProxyNotFoundException e) {
             this.changeStatus(Account.State.TOR_NOT_AVAILABLE);
@@ -796,46 +792,41 @@ public class XmppConnection implements Runnable {
 
     private void switchOverToTls() throws XmlPullParserException, IOException {
         tagReader.readTag();
+        final Socket socket = this.socket;
+        final SSLSocket sslSocket = upgradeSocketToTls(socket);
+        tagReader.setInputStream(sslSocket.getInputStream());
+        tagWriter.setOutputStream(sslSocket.getOutputStream());
+        sendStartStream();
+        Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": TLS connection established");
+        features.encryptionEnabled = true;
+        final Tag tag = tagReader.readTag();
+        if (tag != null && tag.isStart("stream")) {
+            SSLSocketHelper.log(account, sslSocket);
+            processStream();
+        } else {
+            throw new StateChangingException(Account.State.STREAM_OPENING_ERROR);
+        }
+        sslSocket.close();
+    }
+
+    private SSLSocket upgradeSocketToTls(final Socket socket) throws IOException {
+        final TlsFactoryVerifier tlsFactoryVerifier;
         try {
-            final TlsFactoryVerifier tlsFactoryVerifier = getTlsFactoryVerifier();
-            final InetAddress address = socket == null ? null : socket.getInetAddress();
-
-            if (address == null) {
-                throw new IOException("could not setup ssl");
-            }
-
-            final SSLSocket sslSocket = (SSLSocket) tlsFactoryVerifier.factory.createSocket(socket, address.getHostAddress(), socket.getPort(), true);
-
-
-            if (sslSocket == null) {
-                throw new IOException("could not initialize ssl socket");
-            }
-
-            SSLSocketHelper.setSecurity(sslSocket);
-            SSLSocketHelper.setHostname(sslSocket, account.getServer());
-            SSLSocketHelper.setApplicationProtocol(sslSocket, "xmpp-client");
-
-            if (!tlsFactoryVerifier.verifier.verify(account.getServer(), this.verifiedHostname, sslSocket.getSession())) {
-                Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": TLS certificate verification failed");
-                throw new StateChangingException(Account.State.TLS_ERROR);
-            }
-            tagReader.setInputStream(sslSocket.getInputStream());
-            tagWriter.setOutputStream(sslSocket.getOutputStream());
-            sendStartStream();
-            Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": TLS connection established");
-            features.encryptionEnabled = true;
-            final Tag tag = tagReader.readTag();
-            if (tag != null && tag.isStart("stream")) {
-                SSLSocketHelper.log(account, sslSocket);
-                processStream();
-            } else {
-                throw new StateChangingException(Account.State.STREAM_OPENING_ERROR);
-            }
-            sslSocket.close();
-        } catch (final NoSuchAlgorithmException | KeyManagementException e1) {
-            Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": TLS certificate verification failed");
+            tlsFactoryVerifier = getTlsFactoryVerifier();
+        } catch (final NoSuchAlgorithmException | KeyManagementException e) {
             throw new StateChangingException(Account.State.TLS_ERROR);
         }
+        final InetAddress address = socket.getInetAddress();
+        final SSLSocket sslSocket = (SSLSocket) tlsFactoryVerifier.factory.createSocket(socket, address.getHostAddress(), socket.getPort(), true);
+        SSLSocketHelper.setSecurity(sslSocket);
+        SSLSocketHelper.setHostname(sslSocket, account.getServer());
+        SSLSocketHelper.setApplicationProtocol(sslSocket, "xmpp-client");
+        if (!tlsFactoryVerifier.verifier.verify(account.getServer(), this.verifiedHostname, sslSocket.getSession())) {
+            Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": TLS certificate verification failed");
+            FileBackend.close(sslSocket);
+            throw new StateChangingException(Account.State.TLS_ERROR);
+        }
+        return sslSocket;
     }
 
     private void processStreamFeatures(final Tag currentTag) throws XmlPullParserException, IOException {
