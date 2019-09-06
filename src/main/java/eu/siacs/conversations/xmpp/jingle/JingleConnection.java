@@ -430,13 +430,16 @@ public class JingleConnection implements Transferable {
         }
         this.fileOffer = content.getFileOffer(this.ftVersion);
 
+
         if (fileOffer != null) {
+            boolean remoteIsUsingJet = false;
             Element encrypted = fileOffer.findChild("encrypted", AxolotlService.PEP_PREFIX);
             if (encrypted == null) {
                 final Element security = content.findChild("security", Namespace.JINGLE_ENCRYPTED_TRANSPORT);
                 if (security != null && AxolotlService.PEP_PREFIX.equals(security.getAttribute("type"))) {
                     Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": received jingle file offer with JET");
                     encrypted = security.findChild("encrypted", AxolotlService.PEP_PREFIX);
+                    remoteIsUsingJet = true;
                 }
             }
             if (encrypted != null) {
@@ -479,7 +482,10 @@ public class JingleConnection implements Transferable {
                     }
                 }
                 message.resetFileParams();
-                this.file.setExpectedSize(size);
+                //legacy OMEMO encrypted file transfers reported the file size after encryption
+                //JET reports the plain text size. however lower levels of our receiving code still
+                //expect the cipher text size. so we just + 16 bytes (auth tag size) here
+                this.file.setExpectedSize(size + (remoteIsUsingJet ? 16 : 0));
                 if (mJingleConnectionManager.hasStoragePermission()
                         && size < this.mJingleConnectionManager.getAutoAcceptFileSize()
                         && mXmppConnectionService.isDataSaverDisabled()) {
@@ -528,7 +534,9 @@ public class JingleConnection implements Transferable {
             if (message.getEncryption() == Message.ENCRYPTION_AXOLOTL) {
                 this.file.setKey(mXmppAxolotlMessage.getInnerKey());
                 this.file.setIv(mXmppAxolotlMessage.getIV());
-                this.file.setExpectedSize(file.getSize() + 16);
+                //legacy OMEMO encrypted file transfer reported file size of the encrypted file
+                //JET uses the file size of the plain text file. The difference is only 16 bytes (auth tag)
+                this.file.setExpectedSize(file.getSize() + (this.remoteSupportsOmemoJet ? 0 : 16));
                 final Element file = content.setFileOffer(this.file, false, this.ftVersion);
                 if (remoteSupportsOmemoJet) {
                     Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": remote announced support for JET");
