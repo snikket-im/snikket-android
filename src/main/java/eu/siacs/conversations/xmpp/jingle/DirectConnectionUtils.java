@@ -1,8 +1,10 @@
 package eu.siacs.conversations.xmpp.jingle;
 
+import java.net.Inet6Address;
 import java.net.InetAddress;
 import java.net.NetworkInterface;
 import java.net.SocketException;
+import java.net.UnknownHostException;
 import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.Enumeration;
@@ -29,7 +31,16 @@ public class DirectConnectionUtils {
                 if (inetAddress.isLoopbackAddress() || inetAddress.isLinkLocalAddress()) {
                     continue;
                 }
-                addresses.add(inetAddress);
+                if (inetAddress instanceof Inet6Address) {
+                    //let's get rid of scope
+                    try {
+                        addresses.add(Inet6Address.getByAddress(inetAddress.getAddress()));
+                    } catch (UnknownHostException e) {
+                        //ignored
+                    }
+                } else {
+                    addresses.add(inetAddress);
+                }
             }
         }
         return addresses;
