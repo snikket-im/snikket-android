@@ -11,7 +11,6 @@ import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.Typeface;
-import android.graphics.drawable.Icon;
 import android.media.AudioAttributes;
 import android.media.RingtoneManager;
 import android.net.Uri;
@@ -23,7 +22,6 @@ import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.NotificationCompat.BigPictureStyle;
 import android.support.v4.app.NotificationCompat.Builder;
 import android.support.v4.app.NotificationManagerCompat;
-import android.support.v4.app.NotificationCompat.CarExtender.UnreadConversation;
 import android.support.v4.app.Person;
 import android.support.v4.app.RemoteInput;
 import android.support.v4.content.ContextCompat;
@@ -32,7 +30,6 @@ import android.text.SpannableString;
 import android.text.style.StyleSpan;
 import android.util.DisplayMetrics;
 import android.util.Log;
-import android.util.Pair;
 
 import java.io.File;
 import java.io.IOException;
@@ -64,7 +61,6 @@ import eu.siacs.conversations.utils.Compatibility;
 import eu.siacs.conversations.utils.GeoHelper;
 import eu.siacs.conversations.utils.UIHelper;
 import eu.siacs.conversations.xmpp.XmppConnection;
-import rocks.xmpp.addr.Jid;
 
 public class NotificationService {
 
@@ -469,10 +465,7 @@ public class NotificationService {
     private Builder buildMultipleConversation(final boolean notify, final boolean quietHours) {
         final Builder mBuilder = new NotificationCompat.Builder(mXmppConnectionService, quietHours ? "quiet_hours" : (notify ? "messages" : "silent_messages"));
         final NotificationCompat.InboxStyle style = new NotificationCompat.InboxStyle();
-        style.setBigContentTitle(notifications.size()
-                + " "
-                + mXmppConnectionService
-                .getString(R.string.unread_conversations));
+        style.setBigContentTitle(mXmppConnectionService.getString(R.string.x_unread_conversations,notifications.size()));
         final StringBuilder names = new StringBuilder();
         Conversation conversation = null;
         for (final ArrayList<Message> messages : notifications.values()) {
@@ -497,10 +490,8 @@ public class NotificationService {
         if (names.length() >= 2) {
             names.delete(names.length() - 2, names.length());
         }
-        mBuilder.setContentTitle(notifications.size()
-                + " "
-                + mXmppConnectionService
-                .getString(R.string.unread_conversations));
+        mBuilder.setContentTitle(mXmppConnectionService.getString(R.string.x_unread_conversations, notifications.size()));
+        mBuilder.setTicker(mXmppConnectionService.getString(R.string.x_unread_conversations, notifications.size()));
         mBuilder.setContentText(names.toString());
         mBuilder.setStyle(style);
         if (conversation != null) {
@@ -627,8 +618,11 @@ public class NotificationService {
                 CharSequence text = getMergedBodies(tmp);
                 bigPictureStyle.setSummaryText(text);
                 builder.setContentText(text);
+                builder.setTicker(text);
             } else {
-                builder.setContentText(UIHelper.getFileDescriptionString(mXmppConnectionService, message));
+                final String description = UIHelper.getFileDescriptionString(mXmppConnectionService, message);
+                builder.setContentText(description);
+                builder.setTicker(description);
             }
             builder.setStyle(bigPictureStyle);
         } catch (final IOException e) {
@@ -685,7 +679,9 @@ public class NotificationService {
         } else {
             if (messages.get(0).getConversation().getMode() == Conversation.MODE_SINGLE) {
                 builder.setStyle(new NotificationCompat.BigTextStyle().bigText(getMergedBodies(messages)));
-                builder.setContentText(UIHelper.getMessagePreview(mXmppConnectionService, messages.get(messages.size()-1)).first);
+                final CharSequence preview = UIHelper.getMessagePreview(mXmppConnectionService, messages.get(messages.size()-1)).first;
+                builder.setContentText(preview);
+                builder.setTicker(preview);
                 builder.setNumber(messages.size());
             } else {
                 final NotificationCompat.InboxStyle style = new NotificationCompat.InboxStyle();
@@ -703,8 +699,11 @@ public class NotificationService {
                     styledString = new SpannableString(name + ": " + messages.get(0).getBody());
                     styledString.setSpan(new StyleSpan(Typeface.BOLD), 0, name.length(), 0);
                     builder.setContentText(styledString);
+                    builder.setTicker(styledString);
                 } else {
-                    builder.setContentText(mXmppConnectionService.getResources().getQuantityString(R.plurals.x_messages, count, count));
+                    final String text = mXmppConnectionService.getResources().getQuantityString(R.plurals.x_messages, count, count);
+                    builder.setContentText(text);
+                    builder.setTicker(text);
                 }
             }
         }
