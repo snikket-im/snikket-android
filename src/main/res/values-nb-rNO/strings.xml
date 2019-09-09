@@ -24,7 +24,6 @@
   <string name="just_now">akkurat nå</string>
   <string name="minute_ago">1 minutt siden</string>
   <string name="minutes_ago">%d minutter siden</string>
-  <string name="unread_conversations">uleste samtaler</string>
   <string name="sending">sender...</string>
   <string name="message_decrypting">Dekrypterer melding mens du venter.</string>
   <string name="pgp_message">OpenPGP-kryptert melding</string>

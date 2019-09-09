@@ -27,7 +27,6 @@
   <string name="just_now">Ara</string>
   <string name="minute_ago">fa 1 min</string>
   <string name="minutes_ago">fa %d mins</string>
-  <string name="unread_conversations">Converses sense llegir o no llegides</string>
   <string name="sending">enviant…</string>
   <string name="message_decrypting">Desxifrant el missatge. Espereu…</string>
   <string name="pgp_message">Missatge xifrat amb OpenPGP</string>

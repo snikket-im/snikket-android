@@ -30,7 +30,6 @@
   <string name="just_now">przed chwilą</string>
   <string name="minute_ago">minutę temu</string>
   <string name="minutes_ago">%d minut temu</string>
-  <string name="unread_conversations">nieprzeczytanych konwersacji</string>
   <string name="sending">wysyłanie...</string>
   <string name="message_decrypting">Odszyfrowywanie wiadomości. To zajmie tylko chwilę...</string>
   <string name="pgp_message">Wiadomość zaszyfrowana OpenPGP</string>

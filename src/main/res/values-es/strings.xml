@@ -30,7 +30,6 @@
   <string name="just_now">ahora</string>
   <string name="minute_ago">hace 1 min</string>
   <string name="minutes_ago">hace %d min</string>
-  <string name="unread_conversations">conversaciones por leer</string>
   <string name="sending">enviando…</string>
   <string name="message_decrypting">Descifrando mensaje. Por favor, espera...</string>
   <string name="pgp_message">Mensaje cifrado con OpenPGP</string>

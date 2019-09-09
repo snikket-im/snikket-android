@@ -28,7 +28,6 @@
   <string name="just_now">À l\'instant</string>
   <string name="minute_ago">Il y a 1 minute</string>
   <string name="minutes_ago">Il y a %d minutes</string>
-  <string name="unread_conversations">Conversations non lues</string>
   <string name="sending">Envoi…</string>
   <string name="message_decrypting">Déchiffrement du message. Veuillez patienter...</string>
   <string name="pgp_message">Message chiffré avec OpenPGP</string>

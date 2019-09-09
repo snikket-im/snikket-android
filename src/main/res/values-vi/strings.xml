@@ -21,7 +21,6 @@
   <string name="just_now">mới đây</string>
   <string name="minute_ago">1 phút trước</string>
   <string name="minutes_ago">%d phút trước</string>
-  <string name="unread_conversations">Các hội thoại chưa đọc</string>
   <string name="sending">đang gửi...</string>
   <string name="message_decrypting">Đang giải mã tin nhắn. Xin chờ...</string>
   <string name="pgp_message">Tin nhắn mã hoá bằng OpenPGP</string>

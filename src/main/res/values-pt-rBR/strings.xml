@@ -17,6 +17,8 @@
   <string name="action_unblock_contact">Desbloquear contato</string>
   <string name="action_block_domain">Bloquear domínio</string>
   <string name="action_unblock_domain">Desbloquear domínio</string>
+  <string name="action_block_participant">Bloquear participante</string>
+  <string name="action_unblock_participant">Desbloquear participante</string>
   <string name="title_activity_manage_accounts">Gerenciar contas</string>
   <string name="title_activity_settings">Configurações</string>
   <string name="title_activity_sharewith">Compartilhar com a conversa</string>
@@ -28,7 +30,7 @@
   <string name="just_now">agora</string>
   <string name="minute_ago">1 minuto atrás</string>
   <string name="minutes_ago">%d minutos atrás</string>
-  <string name="unread_conversations">conversas não lidas</string>
+  <string name="x_unread_conversations">%d conversas não lidas</string>
   <string name="sending">enviando...</string>
   <string name="message_decrypting">Descriptografando a mensagem. Por favor, aguarde...</string>
   <string name="pgp_message">Mensagem criptografada via OpenPGP</string>
@@ -864,4 +866,12 @@
   <string name="this_looks_like_a_domain">Isso se parece com um endereço de domínio</string>
   <string name="add_anway">Adicionar mesmo assim</string>
   <string name="this_looks_like_channel">Isso se parece com um endereço de canal</string>
+  <string name="share_backup_files">Compartilhar arquivos de backup</string>
+  <string name="conversations_backup">Backup do Conversations</string>
+  <string name="event">Evento</string>
+  <string name="open_backup">Abrir backup</string>
+  <string name="not_a_backup_file">O arquivo que você selecionou não é um backup do Conversations</string>
+  <string name="account_already_setup">Esta conta já foi configurada</string>
+  <string name="please_enter_password">Por favor, digite a senha para esta conta</string>
+  <string name="unable_to_perform_this_action">Não foi possível executar essa ação</string>
 </resources>

@@ -21,7 +21,6 @@
   <string name="just_now">právě teď</string>
   <string name="minute_ago">před minutou</string>
   <string name="minutes_ago">před %d minutami</string>
-  <string name="unread_conversations">nepřečtené konverzace</string>
   <string name="sending">odesílám…</string>
   <string name="message_decrypting">Dešifrování zprávy. Chvíli strpení...</string>
   <string name="pgp_message">OpenPGP šifrovaná zpráva</string>

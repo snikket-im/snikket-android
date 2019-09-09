@@ -20,7 +20,6 @@
   <string name="just_now">práve teraz</string>
   <string name="minute_ago">pred 1 minútou</string>
   <string name="minutes_ago">pred %d minútami</string>
-  <string name="unread_conversations">neprečítané konverzácie</string>
   <string name="sending">posielam...</string>
   <string name="nick_in_use">Prezývka už existuje</string>
   <string name="admin">Administrátor</string>

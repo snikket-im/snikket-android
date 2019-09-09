@@ -30,7 +30,6 @@
   <string name="just_now">μόλις τώρα</string>
   <string name="minute_ago">πριν από 1 λεπτό</string>
   <string name="minutes_ago">πριν από %d λεπτά</string>
-  <string name="unread_conversations">μη αναγνωσμένες Συζητήσεις</string>
   <string name="sending">αποστολή...</string>
   <string name="message_decrypting">Αποκρυπτογράφηση μηνύματος. Παρακαλώ περιμένετε...</string>
   <string name="pgp_message">OpenPGP κρυπτογραφημένο μήνυμα</string>

@@ -20,7 +20,6 @@
   <string name="just_now">ממש עכשיו</string>
   <string name="minute_ago">לפני דקה</string>
   <string name="minutes_ago">לפני %d דקות</string>
-  <string name="unread_conversations">שיחות שלא נקראו</string>
   <string name="sending">שולח...</string>
   <string name="message_decrypting">כעת מפענח צופן הודעה. אנא המתן…</string>
   <string name="pgp_message">הודעה מוצפנת OpenPGP</string>

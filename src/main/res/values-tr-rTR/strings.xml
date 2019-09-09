@@ -21,7 +21,6 @@
   <string name="just_now">şimdi</string>
   <string name="minute_ago">1 dakika önce</string>
   <string name="minutes_ago">%d dakika önc</string>
-  <string name="unread_conversations">okunmamış konuşmalar</string>
   <string name="sending">gönderiyor…</string>
   <string name="message_decrypting">İleti deşifre ediliyor. Lütfen bekleyin…</string>
   <string name="pgp_message">OpenPGP şifreli ileti</string>

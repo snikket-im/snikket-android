@@ -28,7 +28,6 @@
   <string name="just_now">ちょうど今</string>
   <string name="minute_ago">1 分前</string>
   <string name="minutes_ago">%d 分前</string>
-  <string name="unread_conversations">未読の会話</string>
   <string name="sending">送信中…</string>
   <string name="message_decrypting">メッセージを復号化しています。しばらくお待ちください…</string>
   <string name="pgp_message">OpenPGP 暗号化メッセージ</string>

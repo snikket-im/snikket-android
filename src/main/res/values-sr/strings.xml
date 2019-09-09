@@ -25,7 +25,6 @@
   <string name="just_now">управо сад</string>
   <string name="minute_ago">пре минут</string>
   <string name="minutes_ago">пре %d минута</string>
-  <string name="unread_conversations">непрочитане преписке</string>
   <string name="sending">шаљем…</string>
   <string name="message_decrypting">Дешифрујем поруку, сачекајте…</string>
   <string name="pgp_message">ОпенПГП шифрована порука</string>

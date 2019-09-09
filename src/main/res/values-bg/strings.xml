@@ -28,7 +28,6 @@
   <string name="just_now">току-що</string>
   <string name="minute_ago">преди 1 минута</string>
   <string name="minutes_ago">преди %d минути</string>
-  <string name="unread_conversations">непрочетени разговори</string>
   <string name="sending">изпращане…</string>
   <string name="message_decrypting">Дешифроване на съобщението. Моля, изчакайте…</string>
   <string name="pgp_message">Съобщение, шифр. чрез OpenPGP</string>

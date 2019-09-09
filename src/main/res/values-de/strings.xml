@@ -30,7 +30,7 @@
   <string name="just_now">gerade</string>
   <string name="minute_ago">vor einer Minute</string>
   <string name="minutes_ago">vor %d Minuten</string>
-  <string name="unread_conversations">ungelesene Unterhaltungen</string>
+  <string name="x_unread_conversations">%d ungelesene Unterhaltungen</string>
   <string name="sending">senden…</string>
   <string name="message_decrypting">Nachricht wird entschlüsselt. Bitte warten …</string>
   <string name="pgp_message">OpenPGP-verschlüsselte Nachricht</string>

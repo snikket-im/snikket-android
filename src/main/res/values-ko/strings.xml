@@ -21,7 +21,6 @@
   <string name="just_now">방금 </string>
   <string name="minute_ago">1분 전 </string>
   <string name="minutes_ago">%d 분 전 </string>
-  <string name="unread_conversations">읽지 않은 대화 </string>
   <string name="sending">보내는중... </string>
   <string name="message_decrypting">메세지 복호화중입니다. 기다리세요...</string>
   <string name="pgp_message">OpenPGP로 암호화된 메세지</string>

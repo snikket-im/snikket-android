@@ -21,7 +21,6 @@
   <string name="just_now">just nu</string>
   <string name="minute_ago">1 min sedan</string>
   <string name="minutes_ago">%d min sedan</string>
-  <string name="unread_conversations">olästa konversationer</string>
   <string name="sending">skickar…</string>
   <string name="message_decrypting">Avkrypterar meddelande. Vänta…</string>
   <string name="pgp_message">OpenPGP-krypterat meddelande</string>
