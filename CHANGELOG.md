@@ -1,5 +1,10 @@
 # Changelog
 
+## Version 2.5.8
+* fixed connection issues over Tor
+* P2P file transfer (Jingle) now offers direct candidates
+* Support XEP-0396: Jingle Encrypted Transports - OMEMO
+
 ### Version 2.5.7
 * fixed crash when scanning QR codes on Android 6 and lower
 * when sharing a message from and to Conversations insert it as quote
