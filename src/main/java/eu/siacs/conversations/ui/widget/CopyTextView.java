@@ -1,14 +1,12 @@
 package eu.siacs.conversations.ui.widget;
 
-import android.annotation.TargetApi;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
-import android.os.Build;
+import android.support.v7.widget.AppCompatTextView;
 import android.util.AttributeSet;
-import android.widget.TextView;
 
-public class CopyTextView extends TextView {
+public class CopyTextView extends AppCompatTextView {
 
 	public CopyTextView(Context context) {
 		super(context);
@@ -22,14 +20,8 @@ public class CopyTextView extends TextView {
 		super(context, attrs, defStyleAttr);
 	}
 
-	@SuppressWarnings("unused")
-	@TargetApi(Build.VERSION_CODES.LOLLIPOP)
-	public CopyTextView(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
-		super(context, attrs, defStyleAttr, defStyleRes);
-	}
-
 	public interface CopyHandler {
-		public String transformTextForCopy(CharSequence text, int start, int end);
+		String transformTextForCopy(CharSequence text, int start, int end);
 	}
 
 	private CopyHandler copyHandler;
@@ -40,7 +32,7 @@ public class CopyTextView extends TextView {
 
 	@Override
 	public boolean onTextContextMenuItem(int id) {
-		CharSequence text = getText();
+		final CharSequence text = getText();
 		int min = 0;
 		int max = text.length();
 		if (isFocused()) {

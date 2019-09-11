@@ -954,7 +954,7 @@ public class NotificationService {
                 createTryAgainIntent());
         mBuilder.setDeleteIntent(createDismissErrorIntent());
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            mBuilder.setVisibility(NotificationCompat.VISIBILITY_PRIVATE);
+            mBuilder.setVisibility(Notification.VISIBILITY_PRIVATE);
             mBuilder.setSmallIcon(R.drawable.ic_warning_white_24dp);
         } else {
             mBuilder.setSmallIcon(R.drawable.ic_stat_alert_warning);
