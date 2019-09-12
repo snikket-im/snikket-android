@@ -135,7 +135,7 @@ public class XmppAxolotlMessage {
 					break;
 			}
 		}
-		Element payloadElement = axolotlMessage.findChild(PAYLOAD); //TODO make sure we only have _one_ paypload
+		final Element payloadElement = axolotlMessage.findChildEnsureSingle(PAYLOAD, AxolotlService.PEP_PREFIX);
 		if (payloadElement != null) {
 			ciphertext = Base64.decode(payloadElement.getContent().trim(), Base64.DEFAULT);
 		}
