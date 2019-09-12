@@ -33,6 +33,7 @@ import eu.siacs.conversations.services.MessageArchiveService;
 import eu.siacs.conversations.services.QuickConversationsService;
 import eu.siacs.conversations.services.XmppConnectionService;
 import eu.siacs.conversations.utils.CryptoHelper;
+import eu.siacs.conversations.xml.LocalizedContent;
 import eu.siacs.conversations.xml.Namespace;
 import eu.siacs.conversations.xml.Element;
 import eu.siacs.conversations.xmpp.InvalidJid;
@@ -328,7 +329,7 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
         if (timestamp == null) {
             timestamp = AbstractParser.parseTimestamp(original, AbstractParser.parseTimestamp(packet));
         }
-        final String body = packet.getBody();
+        final LocalizedContent body = packet.getBody();
         final Element mucUserElement = packet.findChild("x", "http://jabber.org/protocol/muc#user");
         final String pgpEncrypted = packet.findChildContent("x", "jabber:x:encrypted");
         final Element replaceElement = packet.findChild("replace", "urn:xmpp:message-correct:0");
@@ -337,7 +338,7 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
         final URL xP1S3url = xP1S3 == null ? null : P1S3UrlStreamHandler.of(xP1S3);
         final String oobUrl = oob != null ? oob.findChildContent("url") : null;
         final String replacementId = replaceElement == null ? null : replaceElement.getAttribute("id");
-        final Element axolotlEncrypted = packet.findChild(XmppAxolotlMessage.CONTAINERTAG, AxolotlService.PEP_PREFIX);
+        final Element axolotlEncrypted = packet.findChild(XmppAxolotlMessage.CONTAINERTAG, AxolotlService.PEP_PREFIX); //TODO make sure we only have _one_ axolotl element!
         int status;
         final Jid counterpart;
         final Jid to = packet.getTo();
@@ -409,10 +410,13 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
                     if (mXmppConnectionService.markMessage(conversation, remoteMsgId, status, serverMsgId)) {
                         return;
                     } else if (remoteMsgId == null || Config.IGNORE_ID_REWRITE_IN_MUC) {
-                        Message message = conversation.findSentMessageWithBody(packet.getBody());
-                        if (message != null) {
-                            mXmppConnectionService.markMessage(message, status);
-                            return;
+                        LocalizedContent localizedBody = packet.getBody();
+                        if (localizedBody != null) {
+                            Message message = conversation.findSentMessageWithBody(localizedBody.content);
+                            if (message != null) {
+                                mXmppConnectionService.markMessage(message, status);
+                                return;
+                            }
                         }
                     }
                 } else {
@@ -491,7 +495,10 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
                     message.setEncryption(Message.ENCRYPTION_DECRYPTED);
                 }
             } else {
-                message = new Message(conversation, body, Message.ENCRYPTION_NONE, status);
+                message = new Message(conversation, body.content, Message.ENCRYPTION_NONE, status);
+                if (body.count > 1) {
+                    message.setBodyLanguage(body.language);
+                }
             }
 
             message.setCounterpart(counterpart);
@@ -499,7 +506,7 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
             message.setServerMsgId(serverMsgId);
             message.setCarbon(isCarbon);
             message.setTime(timestamp);
-            if (body != null && body.equals(oobUrl)) {
+            if (body != null && body.content != null && body.content.equals(oobUrl)) {
                 message.setOob(true);
                 if (CryptoHelper.isPgpEncryptedUrl(oobUrl)) {
                     message.setEncryption(Message.ENCRYPTION_DECRYPTED);
@@ -702,11 +709,11 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
             }
 
             if (isTypeGroupChat) {
-                if (packet.hasChild("subject")) {
+                if (packet.hasChild("subject")) { //TODO usually we would want to check for lack of body; however some servers do set a body :(
                     if (conversation != null && conversation.getMode() == Conversation.MODE_MULTI) {
                         conversation.setHasMessagesLeftOnServer(conversation.countMessages() > 0);
-                        String subject = packet.findInternationalizedChildContent("subject");
-                        if (conversation.getMucOptions().setSubject(subject)) {
+                        final LocalizedContent subject = packet.findInternationalizedChildContentInDefaultNamespace("subject");
+                        if (subject != null && conversation.getMucOptions().setSubject(subject.content)) {
                             mXmppConnectionService.updateConversation(conversation);
                         }
                         mXmppConnectionService.updateConversationUi();

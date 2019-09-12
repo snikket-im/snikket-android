@@ -80,6 +80,7 @@ import eu.siacs.conversations.utils.SSLSocketHelper;
 import eu.siacs.conversations.utils.SocksSocketFactory;
 import eu.siacs.conversations.utils.XmlHelper;
 import eu.siacs.conversations.xml.Element;
+import eu.siacs.conversations.xml.LocalizedContent;
 import eu.siacs.conversations.xml.Namespace;
 import eu.siacs.conversations.xml.Tag;
 import eu.siacs.conversations.xml.TagWriter;
@@ -1334,7 +1335,7 @@ public class XmppConnection implements Runnable {
         final Tag stream = Tag.start("stream:stream");
         stream.setAttribute("to", account.getServer());
         stream.setAttribute("version", "1.0");
-        stream.setAttribute("xml:lang", "en");
+        stream.setAttribute("xml:lang", LocalizedContent.STREAM_LANGUAGE);
         stream.setAttribute("xmlns", "jabber:client");
         stream.setAttribute("xmlns:stream", "http://etherx.jabber.org/streams");
         tagWriter.writeTag(stream);
