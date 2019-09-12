@@ -22,10 +22,12 @@ public class LocalizedContent {
 
     public static LocalizedContent get(final Element element, String name) {
         final HashMap<String, String> contents = new HashMap<>();
+        final String parentLanguage = element.getAttribute("xml:lang");
         for(Element child : element.children) {
             if (name.equals(child.getName())) {
                 final String namespace = child.getNamespace();
-                final String lang = child.getAttribute("xml:lang");
+                final String childLanguage = child.getAttribute("xml:lang");
+                final String lang = childLanguage == null ? parentLanguage : childLanguage;
                 final String content = child.getContent();
                 if (content != null && (namespace == null || "jabber:client".equals(namespace))) {
                     if (contents.put(lang, content) != null) {
