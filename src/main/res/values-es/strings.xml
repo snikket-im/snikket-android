@@ -30,6 +30,7 @@
   <string name="just_now">ahora</string>
   <string name="minute_ago">hace 1 min</string>
   <string name="minutes_ago">hace %d min</string>
+  <string name="x_unread_conversations">%dconversaciones sin leer</string>
   <string name="sending">enviando…</string>
   <string name="message_decrypting">Descifrando mensaje. Por favor, espera...</string>
   <string name="pgp_message">Mensaje cifrado con OpenPGP</string>
@@ -872,4 +873,5 @@
   <string name="not_a_backup_file">El fichero seleccionado no es un respaldo de Conversations</string>
   <string name="account_already_setup">Esta cuenta ya fue configurada</string>
   <string name="please_enter_password">Por favor ingrese la contraseña para esta cuenta</string>
+  <string name="unable_to_perform_this_action">No se ha podido realizar esta acción</string>
 </resources>

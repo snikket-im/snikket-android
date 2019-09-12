@@ -30,6 +30,7 @@
   <string name="just_now">în acest moment</string>
   <string name="minute_ago">acum un minut</string>
   <string name="minutes_ago">acum %d minute</string>
+  <string name="x_unread_conversations">%d conversații necitite</string>
   <string name="sending">trimitere...</string>
   <string name="message_decrypting">Decriptez mesaj. Te rog așteaptă...</string>
   <string name="pgp_message">Mesaj criptat cu OpenPGP</string>
