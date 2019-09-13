@@ -116,6 +116,8 @@ public final class Config {
     public static final boolean IGNORE_ID_REWRITE_IN_MUC = true;
     public static final boolean MUC_LEAVE_BEFORE_JOIN = true;
 
+    public static final boolean USE_LMC_VERSION_1_1 = false;
+
     public static final long MAM_MAX_CATCHUP = MILLISECONDS_IN_DAY * 5;
     public static final int MAM_MAX_MESSAGES = 750;
 

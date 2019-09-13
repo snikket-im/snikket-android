@@ -437,6 +437,15 @@ public class Message extends AbstractEntity implements AvatarService.Avatarable 
 		this.edits.add(new Edited(edited, serverMsgId));
 	}
 
+	public boolean remoteMsgIdMatchInEdit(String id) {
+		for(Edited edit : this.edits) {
+			if (id.equals(edit.getEditedId())) {
+				return true;
+			}
+		}
+		return false;
+	}
+
 	public String getBodyLanguage() {
 		return this.bodyLanguage;
 	}
@@ -727,6 +736,14 @@ public class Message extends AbstractEntity implements AvatarService.Avatarable 
 	public String getEditedId() {
 		if (edits.size() > 0) {
 			return edits.get(edits.size() - 1).getEditedId();
+		} else {
+			throw new IllegalStateException("Attempting to store unedited message");
+		}
+	}
+
+	public String getEditedIdWireFormat() {
+		if (edits.size() > 0) {
+			return edits.get(Config.USE_LMC_VERSION_1_1 ? 0 : edits.size() - 1).getEditedId();
 		} else {
 			throw new IllegalStateException("Attempting to store unedited message");
 		}

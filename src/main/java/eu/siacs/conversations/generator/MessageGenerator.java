@@ -58,7 +58,7 @@ public class MessageGenerator extends AbstractGenerator {
 		packet.setId(message.getUuid());
 		packet.addChild("origin-id", Namespace.STANZA_IDS).setAttribute("id", message.getUuid());
 		if (message.edited()) {
-			packet.addChild("replace", "urn:xmpp:message-correct:0").setAttribute("id", message.getEditedId());
+			packet.addChild("replace", "urn:xmpp:message-correct:0").setAttribute("id", message.getEditedIdWireFormat());
 		}
 		return packet;
 	}
