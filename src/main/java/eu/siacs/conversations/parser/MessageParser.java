@@ -125,8 +125,13 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
                 plaintextMessage = service.processReceivingPayloadMessage(xmppAxolotlMessage, postpone);
             } catch (BrokenSessionException e) {
                 if (checkedForDuplicates) {
-                    service.reportBrokenSessionException(e, postpone);
-                    return new Message(conversation, "", Message.ENCRYPTION_AXOLOTL_FAILED, status);
+                    if (service.trustedOrPreviouslyResponded(from.asBareJid())) {
+                        service.reportBrokenSessionException(e, postpone);
+                        return new Message(conversation, "", Message.ENCRYPTION_AXOLOTL_FAILED, status);
+                    } else {
+                        Log.d(Config.LOGTAG, "ignoring broken session exception because contact was not trusted");
+                        return new Message(conversation, "", Message.ENCRYPTION_AXOLOTL_FAILED, status);
+                    }
                 } else {
                     Log.d(Config.LOGTAG,"ignoring broken session exception because checkForDuplicates failed");
                     //TODO should be still emit a failed message?
