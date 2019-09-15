@@ -2190,6 +2190,7 @@ public class XmppConnectionService extends Service {
 						leaveMuc(conversation);
 					}
 					conversations.remove(conversation);
+					mNotificationService.clear(conversation);
 				}
 			}
 			if (account.getXmppConnection() != null) {
@@ -2204,7 +2205,7 @@ public class XmppConnectionService extends Service {
 			this.accounts.remove(account);
 			this.mRosterSyncTaskManager.clear(account);
 			updateAccountUi();
-			getNotificationService().updateErrorNotification();
+			mNotificationService.updateErrorNotification();
 			syncEnabledAccountSetting();
 			toggleForegroundService();
 		}
