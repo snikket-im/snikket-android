@@ -1552,7 +1552,8 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
                 intent = GeoHelper.getFetchIntent(activity);
                 break;
         }
-        if (intent.resolveActivity(getActivity().getPackageManager()) != null) {
+        final Context context = getActivity();
+        if (context != null && intent.resolveActivity(context.getPackageManager()) != null) {
             if (chooser) {
                 startActivityForResult(
                         Intent.createChooser(intent, getString(R.string.perform_action_with)),

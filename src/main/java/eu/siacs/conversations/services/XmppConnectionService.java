@@ -2551,6 +2551,9 @@ public class XmppConnectionService extends Service {
 					final MucOptions mucOptions = conversation.getMucOptions();
 
 					if (mucOptions.nonanonymous() && !mucOptions.membersOnly() && !conversation.getBooleanAttribute("accept_non_anonymous", false)) {
+					    synchronized (account.inProgressConferenceJoins) {
+                            account.inProgressConferenceJoins.remove(conversation);
+                        }
 					    mucOptions.setError(MucOptions.Error.NON_ANONYMOUS);
 					    updateConversationUi();
                         if (onConferenceJoined != null) {
@@ -2990,31 +2993,31 @@ public class XmppConnectionService extends Service {
 			@Override
 			public void onIqPacketReceived(Account account, IqPacket packet) {
 				if (packet.getType() == IqPacket.TYPE.RESULT) {
+                    final MucOptions mucOptions = conversation.getMucOptions();
+                    final Bookmark bookmark = conversation.getBookmark();
+                    final boolean sameBefore = StringUtils.equals(bookmark == null ? null : bookmark.getBookmarkName(), mucOptions.getName());
 
-					final MucOptions mucOptions = conversation.getMucOptions();
-					final Bookmark bookmark = conversation.getBookmark();
-					final boolean sameBefore = StringUtils.equals(bookmark == null ? null : bookmark.getBookmarkName(), mucOptions.getName());
+                    if (mucOptions.updateConfiguration(new ServiceDiscoveryResult(packet))) {
+                        Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": muc configuration changed for " + conversation.getJid().asBareJid());
+                        updateConversation(conversation);
+                    }
 
-					if (mucOptions.updateConfiguration(new ServiceDiscoveryResult(packet))) {
-						Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": muc configuration changed for " + conversation.getJid().asBareJid());
-						updateConversation(conversation);
-					}
-
-					if (bookmark != null && (sameBefore || bookmark.getBookmarkName() == null)) {
-						if (bookmark.setBookmarkName(StringUtils.nullOnEmpty(mucOptions.getName()))) {
-							pushBookmarks(account);
-						}
-					}
-
-
-					if (callback != null) {
-						callback.onConferenceConfigurationFetched(conversation);
-					}
+                    if (bookmark != null && (sameBefore || bookmark.getBookmarkName() == null)) {
+                        if (bookmark.setBookmarkName(StringUtils.nullOnEmpty(mucOptions.getName()))) {
+                            pushBookmarks(account);
+                        }
+                    }
 
 
+                    if (callback != null) {
+                        callback.onConferenceConfigurationFetched(conversation);
+                    }
 
-					updateConversationUi();
-				} else if (packet.getType() == IqPacket.TYPE.ERROR) {
+
+                    updateConversationUi();
+                } else if (packet.getType() == IqPacket.TYPE.TIMEOUT) {
+                    Log.d(Config.LOGTAG,account.getJid().asBareJid()+": received timeout waiting for conference configuration fetch");
+				} else {
 					if (callback != null) {
 						callback.onFetchFailed(conversation, packet.getError());
 					}

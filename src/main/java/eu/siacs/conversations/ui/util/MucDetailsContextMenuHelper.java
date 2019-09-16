@@ -147,6 +147,8 @@ public final class MucDetailsContextMenuHelper {
                 activity.xmppConnectionService.changeAffiliationInConference(conversation, jid, MucOptions.Affiliation.ADMIN, onAffiliationChanged);
                 return true;
             case R.id.give_membership:
+            case R.id.remove_admin_privileges:
+            case R.id.revoke_owner_privileges:
                 activity.xmppConnectionService.changeAffiliationInConference(conversation, jid, MucOptions.Affiliation.MEMBER, onAffiliationChanged);
                 return true;
             case R.id.give_owner_privileges:
@@ -154,10 +156,6 @@ public final class MucDetailsContextMenuHelper {
                 return true;
             case R.id.remove_membership:
                 activity.xmppConnectionService.changeAffiliationInConference(conversation, jid, MucOptions.Affiliation.NONE, onAffiliationChanged);
-                return true;
-            case R.id.remove_admin_privileges:
-            case R.id.revoke_owner_privileges:
-                activity.xmppConnectionService.changeAffiliationInConference(conversation, jid, MucOptions.Affiliation.MEMBER, onAffiliationChanged);
                 return true;
             case R.id.remove_from_room:
                 removeFromRoom(user, activity, onAffiliationChanged);
