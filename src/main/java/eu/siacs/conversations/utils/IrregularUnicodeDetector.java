@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Daniel Gultsch All rights reserved.
+ * Copyright (c) 2018-2019, Daniel Gultsch All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without modification,
  * are permitted provided that the following conditions are met:
@@ -40,6 +40,8 @@ import android.text.style.ForegroundColorSpan;
 import android.util.LruCache;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -57,6 +59,7 @@ public class IrregularUnicodeDetector {
 
 	private static final Map<Character.UnicodeBlock, Character.UnicodeBlock> NORMALIZATION_MAP;
 	private static final LruCache<Jid, PatternTuple> CACHE = new LruCache<>(4096);
+	private static final List<String> AMBIGUOUS_CYRILLIC = Arrays.asList("а","г","е","ѕ","і","q","о","р","с","у");
 
 	static {
 		Map<Character.UnicodeBlock, Character.UnicodeBlock> temp = new HashMap<>();
@@ -185,11 +188,39 @@ public class IrregularUnicodeDetector {
 	private static Set<String> findIrregularCodePoints(String word) {
 		Set<String> codePoints;
 		if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N) {
-			codePoints = eliminateFirstAndGetCodePointsCompat(mapCompat(word));
+			final Map<Character.UnicodeBlock, List<String>> map = mapCompat(word);
+			final Set<String> set = asSet(map);
+			if (containsOnlyAmbiguousCyrillic(set)) {
+				return set;
+			}
+			codePoints = eliminateFirstAndGetCodePointsCompat(map);
 		} else {
-			codePoints = eliminateFirstAndGetCodePoints(map(word));
+			final Map<Character.UnicodeScript, List<String>> map = map(word);
+			final Set<String> set = asSet(map);
+			if (containsOnlyAmbiguousCyrillic(set)) {
+				return set;
+			}
+			codePoints = eliminateFirstAndGetCodePoints(map);
 		}
 		return codePoints;
+	}
+
+	private static Set<String> asSet(Map<?, List<String>> map) {
+		final Set<String> flat = new HashSet<>();
+		for(List<String> value : map.values()) {
+			flat.addAll(value);
+		}
+		return flat;
+	}
+
+
+	private static boolean containsOnlyAmbiguousCyrillic(Collection<String> codePoints) {
+		for (String codePoint : codePoints) {
+			if (!AMBIGUOUS_CYRILLIC.contains(codePoint)) {
+				return false;
+			}
+		}
+		return true;
 	}
 
 	private static PatternTuple find(Jid jid) {
