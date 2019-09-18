@@ -1,11 +1,10 @@
 package eu.siacs.conversations.services;
 
+import android.support.annotation.NonNull;
 import android.util.Log;
 
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
-import com.google.common.cache.CacheLoader;
-import com.google.common.cache.LoadingCache;
 
 import java.io.IOException;
 import java.util.Collections;
@@ -32,12 +31,12 @@ public class ChannelDiscoveryService {
 
     private final Cache<String, List<MuclumbusService.Room>> cache;
 
-    public ChannelDiscoveryService(XmppConnectionService service) {
+    ChannelDiscoveryService(XmppConnectionService service) {
         this.service = service;
         this.cache = CacheBuilder.newBuilder().expireAfterWrite(5, TimeUnit.MINUTES).build();
     }
 
-    public void initializeMuclumbusService() {
+    void initializeMuclumbusService() {
         OkHttpClient.Builder builder = new OkHttpClient.Builder();
         if (service.useTorToConnect()) {
             try {
@@ -55,7 +54,7 @@ public class ChannelDiscoveryService {
         this.muclumbusService = retrofit.create(MuclumbusService.class);
     }
 
-    public void discover(String query, OnChannelSearchResultsFound onChannelSearchResultsFound) {
+    void discover(String query, OnChannelSearchResultsFound onChannelSearchResultsFound) {
         final boolean all = query == null || query.trim().isEmpty();
         Log.d(Config.LOGTAG, "discover channels. query=" + query);
         List<MuclumbusService.Room> result = cache.getIfPresent(all ? "" : query);
@@ -75,9 +74,11 @@ public class ChannelDiscoveryService {
         try {
             call.enqueue(new Callback<MuclumbusService.Rooms>() {
                 @Override
-                public void onResponse(Call<MuclumbusService.Rooms> call, Response<MuclumbusService.Rooms> response) {
+                public void onResponse(@NonNull Call<MuclumbusService.Rooms> call, @NonNull Response<MuclumbusService.Rooms> response) {
                     final MuclumbusService.Rooms body = response.body();
                     if (body == null) {
+                        Log.d(Config.LOGTAG, "code from muclumbus=" + response.code());
+                        listener.onChannelSearchResultsFound(Collections.emptyList());
                         return;
                     }
                     cache.put("", body.items);
@@ -85,8 +86,8 @@ public class ChannelDiscoveryService {
                 }
 
                 @Override
-                public void onFailure(Call<MuclumbusService.Rooms> call, Throwable throwable) {
-                    Log.d(Config.LOGTAG, "Unable to query muclumbus on "+Config.CHANNEL_DISCOVERY, throwable);
+                public void onFailure(@NonNull Call<MuclumbusService.Rooms> call, @NonNull Throwable throwable) {
+                    Log.d(Config.LOGTAG, "Unable to query muclumbus on " + Config.CHANNEL_DISCOVERY, throwable);
                     listener.onChannelSearchResultsFound(Collections.emptyList());
                 }
             });
@@ -100,10 +101,11 @@ public class ChannelDiscoveryService {
 
         searchResultCall.enqueue(new Callback<MuclumbusService.SearchResult>() {
             @Override
-            public void onResponse(Call<MuclumbusService.SearchResult> call, Response<MuclumbusService.SearchResult> response) {
-                System.out.println(response.message());
-                MuclumbusService.SearchResult body = response.body();
+            public void onResponse(@NonNull Call<MuclumbusService.SearchResult> call, @NonNull Response<MuclumbusService.SearchResult> response) {
+                final MuclumbusService.SearchResult body = response.body();
                 if (body == null) {
+                    Log.d(Config.LOGTAG, "code from muclumbus=" + response.code());
+                    listener.onChannelSearchResultsFound(Collections.emptyList());
                     return;
                 }
                 cache.put(query, body.result.items);
@@ -111,8 +113,8 @@ public class ChannelDiscoveryService {
             }
 
             @Override
-            public void onFailure(Call<MuclumbusService.SearchResult> call, Throwable throwable) {
-                Log.d(Config.LOGTAG, "Unable to query muclumbus on "+Config.CHANNEL_DISCOVERY, throwable);
+            public void onFailure(@NonNull Call<MuclumbusService.SearchResult> call, @NonNull Throwable throwable) {
+                Log.d(Config.LOGTAG, "Unable to query muclumbus on " + Config.CHANNEL_DISCOVERY, throwable);
                 listener.onChannelSearchResultsFound(Collections.emptyList());
             }
         });
