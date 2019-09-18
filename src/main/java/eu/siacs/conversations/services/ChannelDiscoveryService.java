@@ -38,7 +38,8 @@ public class ChannelDiscoveryService {
     }
 
     void initializeMuclumbusService() {
-        OkHttpClient.Builder builder = new OkHttpClient.Builder();
+        final OkHttpClient.Builder builder = new OkHttpClient.Builder();
+
         if (service.useTorToConnect()) {
             try {
                 builder.proxy(HttpConnectionManager.getProxy());
@@ -57,7 +58,6 @@ public class ChannelDiscoveryService {
 
     void discover(String query, OnChannelSearchResultsFound onChannelSearchResultsFound) {
         final boolean all = query == null || query.trim().isEmpty();
-        Log.d(Config.LOGTAG, "discover channels. query=" + query);
         List<MuclumbusService.Room> result = cache.getIfPresent(all ? "" : query);
         if (result != null) {
             onChannelSearchResultsFound.onChannelSearchResultsFound(result);
@@ -98,7 +98,8 @@ public class ChannelDiscoveryService {
     }
 
     private void discoverChannels(final String query, OnChannelSearchResultsFound listener) {
-        Call<MuclumbusService.SearchResult> searchResultCall = muclumbusService.search(new MuclumbusService.SearchRequest(query));
+        MuclumbusService.SearchRequest searchRequest = new MuclumbusService.SearchRequest(query);
+        Call<MuclumbusService.SearchResult> searchResultCall = muclumbusService.search(searchRequest);
 
         searchResultCall.enqueue(new Callback<MuclumbusService.SearchResult>() {
             @Override

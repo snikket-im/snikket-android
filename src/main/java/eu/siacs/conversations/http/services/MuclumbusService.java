@@ -4,7 +4,6 @@ import com.google.common.base.Objects;
 
 import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 import eu.siacs.conversations.services.AvatarService;
@@ -83,7 +82,7 @@ public interface MuclumbusService {
 
     class SearchRequest {
 
-        public Set<String> keywords;
+        public final Set<String> keywords;
 
         public SearchRequest(String keyword) {
             this.keywords = Collections.singleton(keyword);
