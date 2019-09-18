@@ -16,6 +16,7 @@ import eu.siacs.conversations.Config;
 import eu.siacs.conversations.http.HttpConnectionManager;
 import eu.siacs.conversations.http.services.MuclumbusService;
 import okhttp3.OkHttpClient;
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -77,8 +78,8 @@ public class ChannelDiscoveryService {
                 public void onResponse(@NonNull Call<MuclumbusService.Rooms> call, @NonNull Response<MuclumbusService.Rooms> response) {
                     final MuclumbusService.Rooms body = response.body();
                     if (body == null) {
-                        Log.d(Config.LOGTAG, "code from muclumbus=" + response.code());
                         listener.onChannelSearchResultsFound(Collections.emptyList());
+                        logError(response);
                         return;
                     }
                     cache.put("", body.items);
@@ -104,8 +105,8 @@ public class ChannelDiscoveryService {
             public void onResponse(@NonNull Call<MuclumbusService.SearchResult> call, @NonNull Response<MuclumbusService.SearchResult> response) {
                 final MuclumbusService.SearchResult body = response.body();
                 if (body == null) {
-                    Log.d(Config.LOGTAG, "code from muclumbus=" + response.code());
                     listener.onChannelSearchResultsFound(Collections.emptyList());
+                    logError(response);
                     return;
                 }
                 cache.put(query, body.result.items);
@@ -118,6 +119,19 @@ public class ChannelDiscoveryService {
                 listener.onChannelSearchResultsFound(Collections.emptyList());
             }
         });
+    }
+
+    private static void logError(final Response response) {
+        final ResponseBody errorBody = response.errorBody();
+        Log.d(Config.LOGTAG, "code from muclumbus=" + response.code());
+        if (errorBody == null) {
+            return;
+        }
+        try {
+            Log.d(Config.LOGTAG,"error body="+errorBody.string());
+        } catch (IOException e) {
+            //ignored
+        }
     }
 
     public interface OnChannelSearchResultsFound {

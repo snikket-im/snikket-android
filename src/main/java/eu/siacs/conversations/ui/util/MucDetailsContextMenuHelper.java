@@ -178,7 +178,7 @@ public final class MucDetailsContextMenuHelper {
                 return true;
             case R.id.invite:
                 if (user.getAffiliation().ranks(MucOptions.Affiliation.MEMBER)) {
-                    activity.xmppConnectionService.directInvite(conversation, jid);
+                    activity.xmppConnectionService.directInvite(conversation, jid.asBareJid());
                 } else {
                     activity.xmppConnectionService.invite(conversation, jid);
                 }

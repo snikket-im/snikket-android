@@ -193,6 +193,10 @@ public class MessageGenerator extends AbstractGenerator {
 		if (password != null) {
 			x.setAttribute("password", password);
 		}
+		if (contact.isFullJid()) {
+			packet.addChild("no-store", "urn:xmpp:hints");
+			packet.addChild("no-copy", "urn:xmpp:hints");
+		}
 		return packet;
 	}
 

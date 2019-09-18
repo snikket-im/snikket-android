@@ -2947,9 +2947,11 @@ public class XmppConnectionService extends Service {
 								for (Jid invite : jids) {
 									invite(conversation, invite);
 								}
-								if (account.countPresences() > 1) {
-									directInvite(conversation, account.getJid().asBareJid());
-								}
+								for(String resource : account.getSelfContact().getPresences().toResourceArray()) {
+								    Jid other = account.getJid().withResource(resource);
+								    Log.d(Config.LOGTAG,account.getJid().asBareJid()+": sending direct invite to "+other);
+								    directInvite(conversation, other);
+                                }
 								saveConversationAsBookmark(conversation, name);
 								if (callback != null) {
 									callback.success(conversation);
@@ -3077,7 +3079,6 @@ public class XmppConnectionService extends Service {
 				if (packet.getType() == IqPacket.TYPE.RESULT) {
 					Data data = Data.parse(packet.query().findChild("x", Namespace.DATA));
 					data.submit(options);
-					Log.d(Config.LOGTAG,data.toString());
 					IqPacket set = new IqPacket(IqPacket.TYPE.SET);
 					set.setTo(conversation.getJid().asBareJid());
 					set.query("http://jabber.org/protocol/muc#owner").addChild(data);
