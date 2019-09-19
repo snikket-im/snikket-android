@@ -1383,10 +1383,8 @@ public class XmppConnectionService extends Service {
             }
         }
 
-        final boolean inProgressJoin;
-        synchronized (account.inProgressConferenceJoins) {
-            inProgressJoin = conversation.getMode() == Conversational.MODE_MULTI && (account.inProgressConferenceJoins.contains(conversation) || account.pendingConferenceJoins.contains(conversation));
-        }
+        final boolean inProgressJoin = isJoinInProgress(conversation);
+
 
         if (account.isOnlineAndConnected() && !inProgressJoin) {
             switch (message.getEncryption()) {
@@ -1513,6 +1511,23 @@ public class XmppConnectionService extends Service {
                 }
             }
             sendMessagePacket(account, packet);
+        }
+    }
+
+    private boolean isJoinInProgress(final Conversation conversation) {
+        final Account account = conversation.getAccount();
+        synchronized (account.inProgressConferenceJoins) {
+            if (conversation.getMode() == Conversational.MODE_MULTI) {
+                final boolean inProgress = account.inProgressConferenceJoins.contains(conversation);
+                final boolean pending = account.pendingConferenceJoins.contains(conversation);
+                final boolean inProgressJoin = inProgress || pending;
+                if (inProgressJoin) {
+                    Log.d(Config.LOGTAG,account.getJid().asBareJid()+": holding back message to group. inProgress="+inProgress+", pending="+pending);
+                }
+                return inProgressJoin;
+            } else {
+                return false;
+            }
         }
     }
 

@@ -803,9 +803,8 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
                                 mXmppConnectionService.markRead(conversation);
                             }
                         } else if (!counterpart.isBareJid() && trueJid != null) {
-                            ReadByMarker readByMarker = ReadByMarker.from(counterpart, trueJid);
+                            final ReadByMarker readByMarker = ReadByMarker.from(counterpart, trueJid);
                             if (message.addReadByMarker(readByMarker)) {
-                                Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": added read by (" + readByMarker.getRealJid() + ") to message '" + message.getBody() + "'");
                                 mXmppConnectionService.updateMessage(message, false);
                             }
                         }
