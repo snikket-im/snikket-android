@@ -142,7 +142,7 @@ public class JingleSocks5Transport extends JingleTransport {
                 this.isEstablished = true;
                 FileBackend.close(serverSocket);
             } else {
-                this.socket.close();
+                FileBackend.close(socket);
             }
         } else {
             socket.close();
