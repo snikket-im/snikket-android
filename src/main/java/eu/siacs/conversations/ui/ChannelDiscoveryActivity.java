@@ -37,11 +37,8 @@ public class ChannelDiscoveryActivity extends XmppActivity implements MenuItem.O
     private static final String CHANNEL_DISCOVERY_OPT_IN = "channel_discovery_opt_in";
 
     private final ChannelSearchResultAdapter adapter = new ChannelSearchResultAdapter();
-
-    private ActivityChannelDiscoveryBinding binding;
-
     private final PendingItem<String> mInitialSearchValue = new PendingItem<>();
-
+    private ActivityChannelDiscoveryBinding binding;
     private MenuItem mMenuSearchView;
     private EditText mSearchEditText;
 
@@ -196,6 +193,19 @@ public class ChannelDiscoveryActivity extends XmppActivity implements MenuItem.O
             builder.create().show();
         }
 
+    }
+
+    @Override
+    public boolean onContextItemSelected(MenuItem item) {
+        final MuclumbusService.Room room = adapter.getCurrent();
+        if (room != null) {
+            switch (item.getItemId()) {
+                case R.id.share_with:
+                    StartConversationActivity.shareAsChannel(this, room.address);
+                    return true;
+            }
+        }
+        return false;
     }
 
     public void joinChannelSearchResult(String accountJid, MuclumbusService.Room result) {

@@ -405,14 +405,18 @@ public class StartConversationActivity extends XmppActivity implements XmppConne
 
 	protected void shareBookmarkUri(int position) {
 		Bookmark bookmark = (Bookmark) conferences.get(position);
+		shareAsChannel(this, bookmark.getJid().asBareJid().toEscapedString());
+	}
+
+	public static void shareAsChannel(final Context context, final String address) {
 		Intent shareIntent = new Intent();
 		shareIntent.setAction(Intent.ACTION_SEND);
-		shareIntent.putExtra(Intent.EXTRA_TEXT, "xmpp:" + bookmark.getJid().asBareJid().toEscapedString() + "?join");
+		shareIntent.putExtra(Intent.EXTRA_TEXT, "xmpp:" + address + "?join");
 		shareIntent.setType("text/plain");
 		try {
-			startActivity(Intent.createChooser(shareIntent, getText(R.string.share_uri_with)));
+			context.startActivity(Intent.createChooser(shareIntent, context.getText(R.string.share_uri_with)));
 		} catch (ActivityNotFoundException e) {
-			Toast.makeText(this, R.string.no_application_to_share_uri, Toast.LENGTH_SHORT).show();
+			Toast.makeText(context, R.string.no_application_to_share_uri, Toast.LENGTH_SHORT).show();
 		}
 	}
 
