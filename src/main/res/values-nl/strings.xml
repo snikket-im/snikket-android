@@ -30,6 +30,7 @@
   <string name="just_now">zojuist</string>
   <string name="minute_ago">1 min. geleden</string>
   <string name="minutes_ago">%d min. geleden</string>
+  <string name="x_unread_conversations">%d ongelezen gesprekken</string>
   <string name="sending">versturen…</string>
   <string name="message_decrypting">Bericht aan het ontsleutelen. Even geduld…</string>
   <string name="pgp_message">OpenPGP-versleuteld bericht</string>
