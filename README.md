@@ -285,7 +285,11 @@ Conversations is trying to get rid of old behaviours and set an example for
 other clients.
 
 #### Translations
-Translations are managed on [Transifex](https://www.transifex.com/projects/p/conversations/)
+Translations are managed on [Transifex](https://www.transifex.com/projects/p/conversations/).
+If you want to become a translator  Please register on transifex, apply to join
+the translation team and then step by our group chat on
+[conversations@conference.siacs.eu](xmpp:conversations@conference.siacs.eu?join)
+and introduce yourself to `iNPUTmice` so he can approve your join request.
 
 #### How do I backup / move Conversations to a new device?
 On the one hand Conversations supports Message Archive Management to keep a server side history of your messages so when migrating to a new device that device can display your entire history. However that does not work if you enable OMEMO due to its forward secrecy. (Read [The State of Mobile XMPP in 2016](https://gultsch.de/xmpp_2016.html) especially the section on encryption.)
