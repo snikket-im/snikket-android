@@ -13,6 +13,9 @@ import android.provider.ContactsContract.Contacts;
 import android.provider.ContactsContract.Intents;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
+import android.text.Spannable;
+import android.text.SpannableString;
+import android.text.style.RelativeSizeSpan;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -49,6 +52,7 @@ import eu.siacs.conversations.ui.util.JidDialog;
 import eu.siacs.conversations.ui.util.MenuDoubleTabUtil;
 import eu.siacs.conversations.utils.AccountUtils;
 import eu.siacs.conversations.utils.Compatibility;
+import eu.siacs.conversations.utils.Emoticons;
 import eu.siacs.conversations.utils.IrregularUnicodeDetector;
 import eu.siacs.conversations.utils.UIHelper;
 import eu.siacs.conversations.utils.XmppUri;
@@ -328,14 +332,19 @@ public class ContactDetailsActivity extends OmemoActivity implements OnAccountUp
             List<String> statusMessages = contact.getPresences().getStatusMessages();
             if (statusMessages.size() == 0) {
                 binding.statusMessage.setVisibility(View.GONE);
+            } else if (statusMessages.size() == 1) {
+                final String message = statusMessages.get(0);
+                binding.statusMessage.setVisibility(View.VISIBLE);
+                final Spannable span = new SpannableString(message);
+                if (Emoticons.isOnlyEmoji(message)) {
+                    span.setSpan(new RelativeSizeSpan(2.0f), 0, message.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+                }
+                binding.statusMessage.setText(span);
             } else {
                 StringBuilder builder = new StringBuilder();
                 binding.statusMessage.setVisibility(View.VISIBLE);
                 int s = statusMessages.size();
                 for (int i = 0; i < s; ++i) {
-                    if (s > 1) {
-                        builder.append("• ");
-                    }
                     builder.append(statusMessages.get(i));
                     if (i < s - 1) {
                         builder.append("\n");
