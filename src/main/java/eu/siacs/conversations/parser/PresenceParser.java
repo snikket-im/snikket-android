@@ -60,7 +60,7 @@ public class PresenceParser extends AbstractParser implements
 		final Jid from = packet.getFrom();
 		if (!from.isBareJid()) {
 			final String type = packet.getAttribute("type");
-			final Element x = packet.findChild("x", "http://jabber.org/protocol/muc#user");
+			final Element x = packet.findChild("x", Namespace.MUC_USER);
 			Avatar avatar = Avatar.parsePresence(packet.findChild("x", "vcard-temp:x:update"));
 			final List<String> codes = getStatusCodes(x);
 			if (type == null) {
@@ -364,7 +364,7 @@ public class PresenceParser extends AbstractParser implements
 
 	@Override
 	public void onPresencePacketReceived(Account account, PresencePacket packet) {
-		if (packet.hasChild("x", "http://jabber.org/protocol/muc#user")) {
+		if (packet.hasChild("x", Namespace.MUC_USER)) {
 			this.parseConferencePresence(packet, account);
 		} else if (packet.hasChild("x", "http://jabber.org/protocol/muc")) {
 			this.parseConferencePresence(packet, account);

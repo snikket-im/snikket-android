@@ -153,31 +153,28 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
         return null;
     }
 
-    private Invite extractInvite(Account account, Element message) {
-        Element x = message.findChild("x", "http://jabber.org/protocol/muc#user");
-        if (x != null) {
-            Element invite = x.findChild("invite");
+    private Invite extractInvite(Element message) {
+        final Element mucUser = message.findChild("x", Namespace.MUC_USER);
+        if (mucUser != null) {
+            Element invite = mucUser.findChild("invite");
             if (invite != null) {
-                String password = x.findChildContent("password");
+                String password = mucUser.findChildContent("password");
                 Jid from = InvalidJid.getNullForInvalid(invite.getAttributeAsJid("from"));
-                Contact contact = from == null ? null : account.getRoster().getContact(from);
                 Jid room = InvalidJid.getNullForInvalid(message.getAttributeAsJid("from"));
                 if (room == null) {
                     return null;
                 }
-                return new Invite(room, password, contact);
+                return new Invite(room, password, false, from);
             }
-        } else {
-            x = message.findChild("x", "jabber:x:conference");
-            if (x != null) {
-                Jid from = InvalidJid.getNullForInvalid(message.getAttributeAsJid("from"));
-                Contact contact = from == null ? null : account.getRoster().getContact(from);
-                Jid room = InvalidJid.getNullForInvalid(x.getAttributeAsJid("jid"));
-                if (room == null) {
-                    return null;
-                }
-                return new Invite(room, x.getAttribute("password"), contact);
+        }
+        final Element conference = message.findChild("x", "jabber:x:conference");
+        if (conference != null) {
+            Jid from = InvalidJid.getNullForInvalid(message.getAttributeAsJid("from"));
+            Jid room = InvalidJid.getNullForInvalid(conference.getAttributeAsJid("jid"));
+            if (room == null) {
+                return null;
             }
+            return new Invite(room, conference.getAttribute("password"), true, from);
         }
         return null;
     }
@@ -335,7 +332,7 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
             timestamp = AbstractParser.parseTimestamp(original, AbstractParser.parseTimestamp(packet));
         }
         final LocalizedContent body = packet.getBody();
-        final Element mucUserElement = packet.findChild("x", "http://jabber.org/protocol/muc#user");
+        final Element mucUserElement = packet.findChild("x", Namespace.MUC_USER);
         final String pgpEncrypted = packet.findChildContent("x", "jabber:x:encrypted");
         final Element replaceElement = packet.findChild("replace", "urn:xmpp:message-correct:0");
         final Element oob = packet.findChild("x", Namespace.OOB);
@@ -383,9 +380,16 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
             selfAddressed = false;
         }
 
-        Invite invite = extractInvite(account, packet);
-        if (invite != null && invite.execute(account)) {
-            return;
+        final Invite invite = extractInvite(packet);
+        if (invite != null) {
+            if (isTypeGroupChat) {
+                Log.d(Config.LOGTAG,account.getJid().asBareJid()+": ignoring invite to "+invite.jid+" because type=groupchat");
+            } else if (invite.direct && (mucUserElement != null || invite.inviter == null || mXmppConnectionService.isMuc(account, invite.inviter))) {
+                Log.d(Config.LOGTAG, account.getJid().asBareJid()+": ignoring direct invite to "+invite.jid+" because it was received in MUC");
+            } else {
+                invite.execute(account);
+                return;
+            }
         }
 
         if ((body != null || pgpEncrypted != null || (axolotlEncrypted != null && axolotlEncrypted.hasChild("payload")) || oobUrl != null || xP1S3 != null) && !isMucStatusMessage) {
@@ -884,11 +888,13 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
     private class Invite {
         final Jid jid;
         final String password;
-        final Contact inviter;
+        final boolean direct;
+        final Jid inviter;
 
-        Invite(Jid jid, String password, Contact inviter) {
+        Invite(Jid jid, String password, boolean direct, Jid inviter) {
             this.jid = jid;
             this.password = password;
+            this.direct = direct;
             this.inviter = inviter;
         }
 
@@ -901,7 +907,8 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
                 } else {
                     conversation.getMucOptions().setPassword(password);
                     mXmppConnectionService.databaseBackend.updateConversation(conversation);
-                    mXmppConnectionService.joinMuc(conversation, inviter != null && inviter.mutualPresenceSubscription());
+                    final Contact contact = inviter != null ? account.getRoster().getContactFromContactList(inviter) : null;
+                    mXmppConnectionService.joinMuc(conversation, contact != null && contact.mutualPresenceSubscription());
                     mXmppConnectionService.updateConversationUi();
                 }
                 return true;
