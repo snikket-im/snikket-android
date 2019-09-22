@@ -288,7 +288,7 @@ other clients.
 Translations are managed on [Transifex](https://www.transifex.com/projects/p/conversations/).
 If you want to become a translator  Please register on transifex, apply to join
 the translation team and then step by our group chat on
-[conversations@conference.siacs.eu](xmpp:conversations@conference.siacs.eu?join)
+[conversations@conference.siacs.eu](https://conversations.im/j/conversations@conference.siacs.eu)
 and introduce yourself to `iNPUTmice` so he can approve your join request.
 
 #### How do I backup / move Conversations to a new device?
