@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="pick_a_server">اختر مزود خدمة XMPP الخاص بك</string>
+    <string name="use_conversations.im">استخدِم conversations.im</string>
+    <string name="create_new_account">أنشئ حسابًا جديدًا</string>
+    </resources>

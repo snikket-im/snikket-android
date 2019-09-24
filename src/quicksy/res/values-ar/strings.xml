@@ -6,4 +6,5 @@
     <string name="pref_broadcast_last_activity_summary">إجعل كلّ جهات إتصالك تعلم أنك تستعمل كويكسي</string>
     <string name="no_microphone_permission">كويكسي يحتاج الإتصال بالمايكروفون</string>
     <string name="set_profile_picture">صورة حساب كويكسي</string>
+    <string name="not_available_in_your_country">إن كويكسي Quicksy غير متوفر في بلدكم.</string>
     </resources>
