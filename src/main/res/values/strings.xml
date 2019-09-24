@@ -876,4 +876,5 @@
     <string name="account_already_setup">This account has already been setup</string>
     <string name="please_enter_password">Please enter the password for this account</string>
     <string name="unable_to_perform_this_action">Unable to perform this action</string>
+    <string name="open_join_dialog">Join public channel…</string>
 </resources>

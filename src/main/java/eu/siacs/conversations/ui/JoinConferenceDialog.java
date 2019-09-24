@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.databinding.DataBindingUtil;
 import android.support.annotation.NonNull;
+import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.DialogFragment;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -65,9 +66,9 @@ public class JoinConferenceDialog extends DialogFragment implements OnBackendCon
 		builder.setNegativeButton(R.string.cancel, null);
 		AlertDialog dialog = builder.create();
 		dialog.show();
-		dialog.getButton(DialogInterface.BUTTON_POSITIVE).setOnClickListener(view -> mListener.onJoinDialogPositiveClick(dialog, binding.account, binding.jid, binding.bookmark.isChecked()));
+		dialog.getButton(DialogInterface.BUTTON_POSITIVE).setOnClickListener(view -> mListener.onJoinDialogPositiveClick(dialog, binding.account, binding.accountJidLayout, binding.jid, binding.bookmark.isChecked()));
 		binding.jid.setOnEditorActionListener((v, actionId, event) -> {
-			mListener.onJoinDialogPositiveClick(dialog, binding.account, binding.jid, binding.bookmark.isChecked());
+			mListener.onJoinDialogPositiveClick(dialog, binding.account, binding.accountJidLayout, binding.jid, binding.bookmark.isChecked());
 			return true;
 		});
 		return dialog;
@@ -116,6 +117,6 @@ public class JoinConferenceDialog extends DialogFragment implements OnBackendCon
 	}
 
 	public interface JoinConferenceDialogListener {
-		void onJoinDialogPositiveClick(Dialog dialog, Spinner spinner, AutoCompleteTextView jid, boolean isBookmarkChecked);
+		void onJoinDialogPositiveClick(Dialog dialog, Spinner spinner, TextInputLayout jidLayout, AutoCompleteTextView jid, boolean isBookmarkChecked);
 	}
 }
