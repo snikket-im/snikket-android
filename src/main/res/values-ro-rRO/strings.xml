@@ -413,7 +413,7 @@
   <string name="sending_x_file">Trimit %s</string>
   <string name="offering_x_file">Ofer %s</string>
   <string name="hide_offline">Ascunde deconectat</string>
-  <string name="contact_is_typing">%s tasteaza...</string>
+  <string name="contact_is_typing">%s tastează...</string>
   <string name="contact_has_stopped_typing">%s s-a oprit din scris</string>
   <string name="contacts_are_typing">%s tastează...</string>
   <string name="contacts_have_stopped_typing">%s s-au oprit din scris</string>
