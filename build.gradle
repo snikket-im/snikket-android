@@ -63,13 +63,14 @@ dependencies {
     implementation project(':libs:xmpp-addr')
     implementation 'org.osmdroid:osmdroid-android:6.1.0'
     implementation 'org.hsluv:hsluv:0.2'
-    implementation 'org.conscrypt:conscrypt-android:2.1.0'
+    implementation 'org.conscrypt:conscrypt-android:2.2.1'
     implementation 'me.drakeet.support:toastcompat:1.1.0'
     implementation "com.leinardi.android:speed-dial:2.0.1"
     implementation 'com.squareup.retrofit2:retrofit:2.6.1'
     implementation 'com.squareup.retrofit2:converter-gson:2.6.1'
+    implementation 'com.squareup.okhttp3:okhttp:3.14.3'
     implementation 'com.google.guava:guava:27.1-android'
-    quicksyImplementation 'io.michaelrocks:libphonenumber-android:8.10.1'
+    quicksyImplementation 'io.michaelrocks:libphonenumber-android:8.10.16'
 }
 
 ext {
