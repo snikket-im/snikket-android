@@ -19,4 +19,8 @@
     <string name="no_microphone_permission">Quicksy需要麦克风权限</string>
     <string name="foreground_service_channel_description">此通知类别用于显示表明Quicksy正在运行的永久通知。</string>
     <string name="set_profile_picture">Quicksy个人资料图片</string>
-    </resources>
+    <string name="not_available_in_your_country">Quicksy在您的国家无服务。</string>
+    <string name="unable_to_verify_server_identity">无法确认服务器身份</string>
+    <string name="unknown_security_error">未知安全错误</string>
+    <string name="timeout_while_connecting_to_server">服务器已超时</string>
+</resources>
