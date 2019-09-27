@@ -33,4 +33,5 @@ public final class Namespace {
 	public static final String JINGLE_ENCRYPTED_TRANSPORT = "urn:xmpp:jingle:jet:0";
 	public static final String JINGLE_ENCRYPTED_TRANSPORT_OMEMO = "urn:xmpp:jingle:jet-omemo:0";
 	public static final String MUC_USER = "http://jabber.org/protocol/muc#user";
+	public static final String BOOKMARK = "urn:xmpp:bookmarks:0";
 }

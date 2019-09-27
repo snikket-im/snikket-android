@@ -6,10 +6,12 @@ import android.util.Pair;
 import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 
@@ -20,6 +22,7 @@ import eu.siacs.conversations.crypto.axolotl.BrokenSessionException;
 import eu.siacs.conversations.crypto.axolotl.NotEncryptedForThisDeviceException;
 import eu.siacs.conversations.crypto.axolotl.XmppAxolotlMessage;
 import eu.siacs.conversations.entities.Account;
+import eu.siacs.conversations.entities.Bookmark;
 import eu.siacs.conversations.entities.Contact;
 import eu.siacs.conversations.entities.Conversation;
 import eu.siacs.conversations.entities.Conversational;
@@ -224,11 +227,14 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
             if (account.getXmppConnection().getFeatures().bookmarksConversion()) {
                 final Element i = items.findChild("item");
                 final Element storage = i == null ? null : i.findChild("storage", Namespace.BOOKMARKS);
-                mXmppConnectionService.processBookmarks(account, storage, true);
+                Collection<Bookmark> bookmarks = Bookmark.parseFromStorage(storage, account);
+                mXmppConnectionService.processBookmarksInitial(account, bookmarks, true);
                 Log.d(Config.LOGTAG,account.getJid().asBareJid()+": processing bookmark PEP event");
             } else {
                 Log.d(Config.LOGTAG,account.getJid().asBareJid()+": ignoring bookmark PEP event because bookmark conversion was not detected");
             }
+        } else {
+            Log.d(Config.LOGTAG,account.getJid().asBareJid()+" received pubsub notification for node="+node);
         }
     }
 

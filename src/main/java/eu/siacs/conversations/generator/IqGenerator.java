@@ -125,6 +125,10 @@ public class IqGenerator extends AbstractGenerator {
 		return packet;
 	}
 
+	public IqPacket retrieveBookmarks() {
+		return retrieve(Namespace.BOOKMARK, null);
+	}
+
 	public IqPacket publishNick(String nick) {
 		final Element item = new Element("item");
 		item.addChild("nick", Namespace.NICK).setContent(nick);
@@ -146,9 +150,13 @@ public class IqGenerator extends AbstractGenerator {
 		return publish("urn:xmpp:avatar:data", item, options);
 	}
 
-	public IqPacket publishElement(final String namespace,final Element element, final Bundle options) {
+	public IqPacket publishElement(final String namespace, final Element element, final Bundle options) {
+		return publishElement(namespace, element, "curent", options);
+	}
+
+	public IqPacket publishElement(final String namespace,final Element element, String id, final Bundle options) {
 		final Element item = new Element("item");
-		item.setAttribute("id","current");
+		item.setAttribute("id",id);
 		item.addChild(element);
 		return publish(namespace, item, options);
 	}
@@ -220,6 +228,19 @@ public class IqGenerator extends AbstractGenerator {
 			list.addChild(device);
 		}
 		return publish(AxolotlService.PEP_DEVICE_LIST, item, publishOptions);
+	}
+
+	public Element publishBookmarkItem(final Bookmark bookmark) {
+		final String name = bookmark.getBookmarkName();
+		final String nick = bookmark.getNick();
+		final Element conference = new Element("conference", Namespace.BOOKMARK);
+		if (name != null) {
+			conference.setAttribute("name", name);
+		}
+		if (nick != null) {
+			conference.addChild("nick").setContent(nick);
+		}
+		return conference;
 	}
 
 	public IqPacket publishBundles(final SignedPreKeyRecord signedPreKeyRecord, final IdentityKey identityKey,

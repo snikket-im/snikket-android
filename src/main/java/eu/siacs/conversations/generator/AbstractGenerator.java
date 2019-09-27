@@ -38,7 +38,8 @@ public abstract class AbstractGenerator {
 			"http://jabber.org/protocol/disco#info",
 			"urn:xmpp:avatar:metadata+notify",
 			Namespace.NICK+"+notify",
-			Namespace.BOOKMARKS+"+notify",
+			//Namespace.BOOKMARKS+"+notify",
+			Namespace.BOOKMARK+"+notify",
 			"urn:xmpp:ping",
 			"jabber:iq:version",
 			"http://jabber.org/protocol/chatstates"

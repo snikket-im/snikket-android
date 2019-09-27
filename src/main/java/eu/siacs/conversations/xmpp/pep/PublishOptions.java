@@ -25,6 +25,15 @@ public class PublishOptions {
         return options;
     }
 
+    public static Bundle persistentWhitelistAccessMaxItems() {
+        final Bundle options = new Bundle();
+        options.putString("pubsub#persist_items","true");
+        options.putString("pubsub#access_model", "whitelist");
+        options.putString("pubsub#send_last_published_item","never");
+        options.putString("pubsub#max_items","128"); //YOLO!
+        return options;
+    }
+
     public static boolean preconditionNotMet(IqPacket response) {
         final Element error = response.getType() == IqPacket.TYPE.ERROR ? response.findChild("error") : null;
         return error != null && error.hasChild("precondition-not-met", Namespace.PUBSUB_ERROR);

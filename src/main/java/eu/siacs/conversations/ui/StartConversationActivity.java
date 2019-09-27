@@ -431,7 +431,7 @@ public class StartConversationActivity extends XmppActivity implements XmppConne
 		bookmark.setConversation(conversation);
 		if (!bookmark.autojoin() && getPreferences().getBoolean("autojoin", getResources().getBoolean(R.bool.autojoin))) {
 			bookmark.setAutojoin(true);
-			xmppConnectionService.pushBookmarks(bookmark.getAccount());
+			xmppConnectionService.createBookmark(bookmark.getAccount(), bookmark);
 		}
 		SoftKeyboardUtils.hideSoftKeyboard(this);
 		switchToConversation(conversation);
@@ -480,7 +480,7 @@ public class StartConversationActivity extends XmppActivity implements XmppConne
 			bookmark.setConversation(null);
 			Account account = bookmark.getAccount();
 			account.getBookmarks().remove(bookmark);
-			xmppConnectionService.pushBookmarks(account);
+			xmppConnectionService.deleteBookmark(account, bookmark);
 			filter(mSearchEditText.getText().toString());
 		});
 		builder.create().show();
@@ -1042,7 +1042,7 @@ public class StartConversationActivity extends XmppActivity implements XmppConne
 					bookmark.setNick(nick);
 				}
 				account.getBookmarks().add(bookmark);
-				xmppConnectionService.pushBookmarks(account);
+				xmppConnectionService.createBookmark(account, bookmark);
 				final Conversation conversation = xmppConnectionService
 						.findOrCreateConversation(account, conferenceJid, true, true, true);
 				bookmark.setConversation(conversation);

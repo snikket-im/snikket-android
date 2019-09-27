@@ -313,9 +313,12 @@ public class XmppConnectionService extends Service {
             mJingleConnectionManager.cancelInTransmission();
             mQuickConversationsService.considerSyncBackground(false);
             fetchRosterFromServer(account);
-            if (!account.getXmppConnection().getFeatures().bookmarksConversion()) {
+
+            fetchBookmarks2(account);
+
+            /*if (!account.getXmppConnection().getFeatures().bookmarksConversion()) {
                 fetchBookmarks(account);
-            }
+            }*/
             final boolean flexible = account.getXmppConnection().getFeatures().flexibleOfflineMessageRetrieval();
             final boolean catchup = getMessageArchiveService().inCatchup(account);
             if (flexible && catchup && account.getXmppConnection().isMamPreferenceAlways()) {
@@ -1559,7 +1562,8 @@ public class XmppConnectionService extends Service {
             if (response.getType() == IqPacket.TYPE.RESULT) {
                 final Element query1 = response.query();
                 final Element storage = query1.findChild("storage", "storage:bookmarks");
-                processBookmarks(a, storage, false);
+                Collection<Bookmark> bookmarks = Bookmark.parseFromStorage(storage, account);
+                processBookmarksInitial(a, bookmarks, false);
             } else {
                 Log.d(Config.LOGTAG, a.getJid().asBareJid() + ": could not fetch bookmarks");
             }
@@ -1567,59 +1571,63 @@ public class XmppConnectionService extends Service {
         sendIqPacket(account, iqPacket, callback);
     }
 
-    public void processBookmarks(Account account, Element storage, final boolean pep) {
-        final Set<Jid> previousBookmarks = account.getBookmarkedJids();
-        final HashMap<Jid, Bookmark> bookmarks = new HashMap<>();
-        final boolean synchronizeWithBookmarks = synchronizeWithBookmarks();
-        if (storage != null) {
-            for (final Element item : storage.getChildren()) {
-                if (item.getName().equals("conference")) {
-                    final Bookmark bookmark = Bookmark.parse(item, account);
-                    Bookmark old = bookmarks.put(bookmark.getJid(), bookmark);
-                    if (old != null && old.getBookmarkName() != null && bookmark.getBookmarkName() == null) {
-                        bookmark.setBookmarkName(old.getBookmarkName());
-                    }
-                    if (bookmark.getJid() == null) {
-                        continue;
-                    }
-                    previousBookmarks.remove(bookmark.getJid().asBareJid());
-                    Conversation conversation = find(bookmark);
-                    if (conversation != null) {
-                        if (conversation.getMode() != Conversation.MODE_MULTI) {
-                            continue;
-                        }
-                        bookmark.setConversation(conversation);
-                        if (pep && synchronizeWithBookmarks && !bookmark.autojoin()) {
-                            Log.d(Config.LOGTAG,account.getJid().asBareJid()+": archiving conference ("+conversation.getJid()+") after receiving pep");
-                            archiveConversation(conversation, false);
-                        }
-                    } else if (synchronizeWithBookmarks && bookmark.autojoin()) {
-                        conversation = findOrCreateConversation(account, bookmark.getFullJid(), true, true, false);
-                        bookmark.setConversation(conversation);
-                    }
+    public void fetchBookmarks2(final Account account) {
+        final IqPacket retrieve = mIqGenerator.retrieveBookmarks();
+        sendIqPacket(account, retrieve, new OnIqPacketReceived() {
+            @Override
+            public void onIqPacketReceived(final Account account, final IqPacket response) {
+                if (response.getType() == IqPacket.TYPE.RESULT) {
+                    final Element pubsub = response.findChild("pubsub", Namespace.PUBSUB);
+                    final Collection<Bookmark> bookmarks = Bookmark.parseFromPubsub(pubsub, account);
+                    Log.d(Config.LOGTAG,"bookmarks2 "+pubsub);
+                    Log.d(Config.LOGTAG,"bookmarks2"+ bookmarks);
+                    processBookmarksInitial(account, bookmarks, true);
                 }
             }
-            if (pep && synchronizeWithBookmarks) {
-                Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": " + previousBookmarks.size() + " bookmarks have been removed");
-                for (Jid jid : previousBookmarks) {
-                    final Conversation conversation = find(account, jid);
-                    if (conversation != null && conversation.getMucOptions().getError() == MucOptions.Error.DESTROYED) {
-                        Log.d(Config.LOGTAG,account.getJid().asBareJid()+": archiving destroyed conference ("+conversation.getJid()+") after receiving pep");
-                        archiveConversation(conversation, false);
-                    }
-                }
-            }
-        }
-        account.setBookmarks(new CopyOnWriteArrayList<>(bookmarks.values()));
+        });
     }
 
-    public void pushBookmarks(Account account) {
-        final XmppConnection connection = account.getXmppConnection();
-        if (connection != null && connection.getFeatures().bookmarksConversion()) {
-            pushBookmarksPep(account);
-        } else {
-            pushBookmarksPrivateXml(account);
+    public void processBookmarksInitial(Account account, Collection<Bookmark> bookmarks, final boolean pep) {
+        final Set<Jid> previousBookmarks = account.getBookmarkedJids();
+        final boolean synchronizeWithBookmarks = synchronizeWithBookmarks();
+        for (Bookmark bookmark : bookmarks) {
+            previousBookmarks.remove(bookmark.getJid().asBareJid());
+            Conversation conversation = find(bookmark);
+            if (conversation != null) {
+                if (conversation.getMode() != Conversation.MODE_MULTI) {
+                    continue;
+                }
+                bookmark.setConversation(conversation);
+                if (pep && synchronizeWithBookmarks && !bookmark.autojoin()) {
+                    Log.d(Config.LOGTAG,account.getJid().asBareJid()+": archiving conference ("+conversation.getJid()+") after receiving pep");
+                    archiveConversation(conversation, false);
+                }
+            } else if (synchronizeWithBookmarks && bookmark.autojoin()) {
+                conversation = findOrCreateConversation(account, bookmark.getFullJid(), true, true, false);
+                bookmark.setConversation(conversation);
+            }
         }
+        if (pep && synchronizeWithBookmarks) {
+            Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": " + previousBookmarks.size() + " bookmarks have been removed");
+            for (Jid jid : previousBookmarks) {
+                final Conversation conversation = find(account, jid);
+                if (conversation != null && conversation.getMucOptions().getError() == MucOptions.Error.DESTROYED) {
+                    Log.d(Config.LOGTAG,account.getJid().asBareJid()+": archiving destroyed conference ("+conversation.getJid()+") after receiving pep");
+                    archiveConversation(conversation, false);
+                }
+            }
+        }
+        account.setBookmarks(new CopyOnWriteArrayList<>(bookmarks));
+    }
+
+    public void createBookmark(final Account account, final Bookmark bookmark) {
+        final Element item = mIqGenerator.publishBookmarkItem(bookmark);
+        pushNodeAndEnforcePublishOptions(account, Namespace.BOOKMARK, item, bookmark.getJid().asBareJid().toEscapedString(), PublishOptions.persistentWhitelistAccessMaxItems());
+    }
+
+    public void deleteBookmark(final Account account, final Bookmark bookmark) {
+        final XmppConnection connection = account.getXmppConnection();
+
     }
 
     private void pushBookmarksPrivateXml(Account account) {
@@ -1643,14 +1651,18 @@ public class XmppConnectionService extends Service {
 
     }
 
-
     private void pushNodeAndEnforcePublishOptions(final Account account, final String node, final Element element, final Bundle options) {
-        pushNodeAndEnforcePublishOptions(account, node, element, options, true);
+        pushNodeAndEnforcePublishOptions(account, node, element, null, options, true);
 
     }
 
-	private void pushNodeAndEnforcePublishOptions(final Account account, final String node, final Element element, final Bundle options, final boolean retry) {
-        final IqPacket packet = mIqGenerator.publishElement(node, element, options);
+    private void pushNodeAndEnforcePublishOptions(final Account account, final String node, final Element element, final String id, final Bundle options) {
+        pushNodeAndEnforcePublishOptions(account, node, element, id, options, true);
+
+    }
+
+	private void pushNodeAndEnforcePublishOptions(final Account account, final String node, final Element element, final String id, final Bundle options, final boolean retry) {
+        final IqPacket packet = mIqGenerator.publishElement(node, element, id, options);
         sendIqPacket(account, packet, (a, response) -> {
             if (response.getType() == IqPacket.TYPE.RESULT) {
                 return;
@@ -1659,7 +1671,7 @@ public class XmppConnectionService extends Service {
                 pushNodeConfiguration(account, node, options, new OnConfigurationPushed() {
                     @Override
                     public void onPushSucceeded() {
-                        pushNodeAndEnforcePublishOptions(account, node, element, options, false);
+                        pushNodeAndEnforcePublishOptions(account, node, element, id, options, false);
                     }
 
                     @Override
@@ -2043,10 +2055,10 @@ public class XmppConnectionService extends Service {
 							Account account = bookmark.getAccount();
 							bookmark.setConversation(null);
 							account.getBookmarks().remove(bookmark);
-							pushBookmarks(account);
+							deleteBookmark(account, bookmark);
 						} else if (bookmark.autojoin()) {
 							bookmark.setAutojoin(false);
-							pushBookmarks(bookmark.getAccount());
+							createBookmark(bookmark.getAccount(), bookmark);
 						}
 					}
 				}
@@ -2767,10 +2779,11 @@ public class XmppConnectionService extends Service {
 		if (conversation.getMode() == Conversation.MODE_MULTI) {
 			conversation.getMucOptions().setPassword(password);
 			if (conversation.getBookmark() != null) {
+			    final Bookmark bookmark = conversation.getBookmark();
 				if (synchronizeWithBookmarks()) {
-					conversation.getBookmark().setAutojoin(true);
+					bookmark.setAutojoin(true);
 				}
-				pushBookmarks(conversation.getAccount());
+				createBookmark(conversation.getAccount(), bookmark);
 			}
 			updateConversation(conversation);
 			joinMuc(conversation);
@@ -2824,7 +2837,7 @@ public class XmppConnectionService extends Service {
             }
             Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": persist nick '" + full.getResource() + "' into bookmark for " + conversation.getJid().asBareJid());
             bookmark.setNick(full.getResource());
-            pushBookmarks(bookmark.getAccount());
+            createBookmark(bookmark.getAccount(), bookmark);
         }
 	}
 
@@ -2859,7 +2872,7 @@ public class XmppConnectionService extends Service {
 				Bookmark bookmark = conversation.getBookmark();
 				if (bookmark != null) {
 					bookmark.setNick(nick);
-					pushBookmarks(bookmark.getAccount());
+					createBookmark(bookmark.getAccount(), bookmark);
 				}
 				joinMuc(conversation);
 			}
@@ -3027,7 +3040,7 @@ public class XmppConnectionService extends Service {
 
                     if (bookmark != null && (sameBefore || bookmark.getBookmarkName() == null)) {
                         if (bookmark.setBookmarkName(StringUtils.nullOnEmpty(mucOptions.getName()))) {
-                            pushBookmarks(account);
+                            createBookmark(account, bookmark);
                         }
                     }
 
@@ -4442,7 +4455,7 @@ public class XmppConnectionService extends Service {
 		}
 		bookmark.setAutojoin(getPreferences().getBoolean("autojoin", getResources().getBoolean(R.bool.autojoin)));
 		account.getBookmarks().add(bookmark);
-		pushBookmarks(account);
+		createBookmark(account, bookmark);
 		bookmark.setConversation(conversation);
 	}
 
