@@ -314,11 +314,13 @@ public class XmppConnectionService extends Service {
             mQuickConversationsService.considerSyncBackground(false);
             fetchRosterFromServer(account);
 
-            fetchBookmarks2(account);
+            final XmppConnection connection = account.getXmppConnection();
 
-            /*if (!account.getXmppConnection().getFeatures().bookmarksConversion()) {
+            if (connection.getFeatures().bookmarks2()) {
+                fetchBookmarks2(account);
+            } else if (!account.getXmppConnection().getFeatures().bookmarksConversion()) {
                 fetchBookmarks(account);
-            }*/
+            }
             final boolean flexible = account.getXmppConnection().getFeatures().flexibleOfflineMessageRetrieval();
             final boolean catchup = getMessageArchiveService().inCatchup(account);
             if (flexible && catchup && account.getXmppConnection().isMamPreferenceAlways()) {
@@ -1579,8 +1581,6 @@ public class XmppConnectionService extends Service {
                 if (response.getType() == IqPacket.TYPE.RESULT) {
                     final Element pubsub = response.findChild("pubsub", Namespace.PUBSUB);
                     final Collection<Bookmark> bookmarks = Bookmark.parseFromPubsub(pubsub, account);
-                    Log.d(Config.LOGTAG,"bookmarks2 "+pubsub);
-                    Log.d(Config.LOGTAG,"bookmarks2"+ bookmarks);
                     processBookmarksInitial(account, bookmarks, true);
                 }
             }
@@ -1621,13 +1621,32 @@ public class XmppConnectionService extends Service {
     }
 
     public void createBookmark(final Account account, final Bookmark bookmark) {
-        final Element item = mIqGenerator.publishBookmarkItem(bookmark);
-        pushNodeAndEnforcePublishOptions(account, Namespace.BOOKMARK, item, bookmark.getJid().asBareJid().toEscapedString(), PublishOptions.persistentWhitelistAccessMaxItems());
+        final XmppConnection connection = account.getXmppConnection();
+        if (connection.getFeatures().bookmarks2()) {
+            final Element item = mIqGenerator.publishBookmarkItem(bookmark);
+            pushNodeAndEnforcePublishOptions(account, Namespace.BOOKMARK, item, bookmark.getJid().asBareJid().toEscapedString(), PublishOptions.persistentWhitelistAccessMaxItems());
+        } else if (connection.getFeatures().bookmarksConversion()) {
+            pushBookmarksPep(account);
+        } else {
+            pushBookmarksPrivateXml(account);
+        }
     }
 
     public void deleteBookmark(final Account account, final Bookmark bookmark) {
         final XmppConnection connection = account.getXmppConnection();
-
+        if (connection.getFeatures().bookmarksConversion()) {
+            IqPacket request = mIqGenerator.deleteItem(Namespace.BOOKMARK, bookmark.getJid().asBareJid().toEscapedString());
+            sendIqPacket(account, request, new OnIqPacketReceived() {
+                @Override
+                public void onIqPacketReceived(Account account, IqPacket packet) {
+                    Log.d(Config.LOGTAG,packet.toString());
+                }
+            });
+        } else if (connection.getFeatures().bookmarksConversion()) {
+            pushBookmarksPep(account);
+        } else {
+            pushBookmarksPrivateXml(account);
+        }
     }
 
     private void pushBookmarksPrivateXml(Account account) {

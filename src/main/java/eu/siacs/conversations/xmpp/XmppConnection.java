@@ -1878,5 +1878,9 @@ public class XmppConnection implements Runnable {
         public boolean stanzaIds() {
             return hasDiscoFeature(account.getJid().asBareJid(), Namespace.STANZA_IDS);
         }
+
+        public boolean bookmarks2() {
+            return true; //hasDiscoFeature(account.getJid().asBareJid(), Namespace.BOOKMARK);
+        }
     }
 }
