@@ -874,4 +874,5 @@
   <string name="account_already_setup">Esta conta xa foi configurada</string>
   <string name="please_enter_password">Introduza o contrasinal de esta conta</string>
   <string name="unable_to_perform_this_action">Non se puido completar a acción</string>
+  <string name="open_join_dialog">Unirse a canle pública...</string>
 </resources>

@@ -884,4 +884,5 @@ sau chiar pierderea mesajelor.\nÎn continuare veți fi rugați să dezactivați
   <string name="account_already_setup">Acest cont a fost deja configurat</string>
   <string name="please_enter_password">Va rugăm să introduceți parola pentru acest cont</string>
   <string name="unable_to_perform_this_action">Nu se poate realiza această acțiune</string>
+  <string name="open_join_dialog">Alătură-te unui canal public...</string>
 </resources>
