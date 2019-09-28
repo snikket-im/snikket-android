@@ -53,11 +53,10 @@ public class ShareUtil {
 		if (message.isGeoUri()) {
 			shareIntent.putExtra(Intent.EXTRA_TEXT, message.getBody());
 			shareIntent.setType("text/plain");
-			shareIntent.putExtra(ConversationsActivity.EXTRA_AS_QUOTE, true);
 		} else if (!message.isFileOrImage()) {
 			shareIntent.putExtra(Intent.EXTRA_TEXT, message.getMergedBody().toString());
 			shareIntent.setType("text/plain");
-			shareIntent.putExtra(ConversationsActivity.EXTRA_AS_QUOTE, true);
+			shareIntent.putExtra(ConversationsActivity.EXTRA_AS_QUOTE, message.getStatus() == Message.STATUS_RECEIVED);
 		} else {
 			final DownloadableFile file = activity.xmppConnectionService.getFileBackend().getFile(message);
 			try {
