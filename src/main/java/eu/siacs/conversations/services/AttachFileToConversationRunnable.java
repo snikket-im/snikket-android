@@ -1,5 +1,6 @@
 package eu.siacs.conversations.services;
 
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Build;
@@ -177,7 +178,11 @@ public class AttachFileToConversationRunnable implements Runnable, MediaTranscod
 	}
 
 	private String getVideoCompression() {
-		final SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(mXmppConnectionService);
-		return preferences.getString("video_compression", mXmppConnectionService.getResources().getString(R.string.video_compression));
+		return getVideoCompression(mXmppConnectionService);
+	}
+
+	public static String getVideoCompression(final Context context) {
+		final SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+		return preferences.getString("video_compression", context.getResources().getString(R.string.video_compression));
 	}
 }

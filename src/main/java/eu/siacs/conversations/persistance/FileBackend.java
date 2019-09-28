@@ -56,6 +56,7 @@ import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.entities.DownloadableFile;
 import eu.siacs.conversations.entities.Message;
+import eu.siacs.conversations.services.AttachFileToConversationRunnable;
 import eu.siacs.conversations.services.XmppConnectionService;
 import eu.siacs.conversations.ui.RecordingActivity;
 import eu.siacs.conversations.ui.util.Attachment;
@@ -111,6 +112,7 @@ public class FileBackend {
     }
 
     public static boolean allFilesUnderSize(Context context, List<Attachment> attachments, long max) {
+        final boolean compressVideo = !AttachFileToConversationRunnable.getVideoCompression(context).equals("uncompressed");
         if (max <= 0) {
             Log.d(Config.LOGTAG, "server did not report max file size for http upload");
             return true; //exception to be compatible with HTTP Upload < v0.2
@@ -120,7 +122,7 @@ public class FileBackend {
                 continue;
             }
             String mime = attachment.getMime();
-            if (mime != null && mime.startsWith("video/")) {
+            if (mime != null && mime.startsWith("video/") && compressVideo) {
                 try {
                     Dimensions dimensions = FileBackend.getVideoDimensions(context, attachment.getUri());
                     if (dimensions.getMin() > 720) {
