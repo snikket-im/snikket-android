@@ -2199,6 +2199,7 @@ public class XmppConnectionService extends Service {
 
 	public void deleteAccount(final Account account) {
 		synchronized (this.conversations) {
+		    account.getAxolotlService().deleteOmemoIdentity();
 			for (final Conversation conversation : conversations) {
 				if (conversation.getAccount() == account) {
 					if (conversation.getMode() == Conversation.MODE_MULTI) {
@@ -2209,7 +2210,7 @@ public class XmppConnectionService extends Service {
 				}
 			}
 			if (account.getXmppConnection() != null) {
-				new Thread(() -> disconnect(account, true)).start();
+				new Thread(() -> disconnect(account, false)).start();
 			}
 			final Runnable runnable = () -> {
 				if (!databaseBackend.deleteAccount(account)) {
