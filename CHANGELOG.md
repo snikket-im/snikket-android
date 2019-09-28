@@ -1,7 +1,10 @@
 # Changelog
 
+### Version 2.5.11
+* Fixed crash on Android <5.0
+
 ### Version 2.5.10
-* Fixed crash on Android 8.0 + 8.1
+* Fixed crash on Xiaomi devices running Android 8.0 + 8.1
 
 ### Version 2.5.9
 * fixed minor security issues
