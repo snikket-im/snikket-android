@@ -3,19 +3,15 @@ package eu.siacs.conversations.entities;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.util.Log;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import java.util.concurrent.CopyOnWriteArrayList;
 
-import eu.siacs.conversations.Config;
 import eu.siacs.conversations.utils.StringUtils;
 import eu.siacs.conversations.utils.UIHelper;
 import eu.siacs.conversations.xml.Element;
@@ -65,7 +61,7 @@ public class Bookmark extends Element implements ListItem {
 			return Collections.emptyMap();
 		}
 		final Element items = pubsub.findChild("items");
-		if (items != null && Namespace.BOOKMARK.equals(items.getAttribute("node"))) {
+		if (items != null && Namespace.BOOKMARKS2.equals(items.getAttribute("node"))) {
 			final Map<Jid, Bookmark> bookmarks = new HashMap<>();
 			for(Element item : items.getChildren()) {
 				if (item.getName().equals("item")) {
@@ -92,7 +88,7 @@ public class Bookmark extends Element implements ListItem {
 	}
 
 	public static Bookmark parseFromItem(Element item, Account account) {
-		final Element conference = item.findChild("conference", Namespace.BOOKMARK);
+		final Element conference = item.findChild("conference", Namespace.BOOKMARKS2);
 		if (conference == null) {
 			return null;
 		}

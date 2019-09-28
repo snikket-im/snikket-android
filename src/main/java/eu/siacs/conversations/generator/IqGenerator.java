@@ -126,7 +126,7 @@ public class IqGenerator extends AbstractGenerator {
     }
 
     public IqPacket retrieveBookmarks() {
-        return retrieve(Namespace.BOOKMARK, null);
+        return retrieve(Namespace.BOOKMARKS2, null);
     }
 
     public IqPacket publishNick(String nick) {
@@ -243,13 +243,15 @@ public class IqGenerator extends AbstractGenerator {
     public Element publishBookmarkItem(final Bookmark bookmark) {
         final String name = bookmark.getBookmarkName();
         final String nick = bookmark.getNick();
-        final Element conference = new Element("conference", Namespace.BOOKMARK);
+        final boolean autojoin = bookmark.autojoin();
+        final Element conference = new Element("conference", Namespace.BOOKMARKS2);
         if (name != null) {
             conference.setAttribute("name", name);
         }
         if (nick != null) {
             conference.addChild("nick").setContent(nick);
         }
+        conference.setAttribute("autojoin",String.valueOf(autojoin));
         return conference;
     }
 

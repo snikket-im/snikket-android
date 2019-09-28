@@ -1880,7 +1880,7 @@ public class XmppConnection implements Runnable {
         }
 
         public boolean bookmarks2() {
-            return hasDiscoFeature(account.getJid().asBareJid(), Namespace.BOOKMARK);
+            return Config.USE_BOOKMARKS2 || hasDiscoFeature(account.getJid().asBareJid(), Namespace.BOOKMARKS2_COMPAT);
         }
     }
 }

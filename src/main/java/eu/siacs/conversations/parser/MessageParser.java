@@ -6,7 +6,6 @@ import android.util.Pair;
 import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
@@ -233,7 +232,7 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
             } else {
                 Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": ignoring bookmark PEP event because bookmark conversion was not detected");
             }
-        } else if (Namespace.BOOKMARK.equals(node) && account.getJid().asBareJid().equals(from)) {
+        } else if (Namespace.BOOKMARKS2.equals(node) && account.getJid().asBareJid().equals(from)) {
             final Element item = items.findChild("item");
             final Element retract = items.findChild("retract");
             if (item != null) {
@@ -261,7 +260,7 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
         if (Namespace.NICK.equals(node)) {
             Log.d(Config.LOGTAG, "parsing nick delete event from " + from);
             setNick(account, from, null);
-        } else if (Namespace.BOOKMARK.equals(node) && account.getJid().asBareJid().equals(from)) {
+        } else if (Namespace.BOOKMARKS2.equals(node) && account.getJid().asBareJid().equals(from)) {
             account.setBookmarks(Collections.emptyMap());
             Log.d(Config.LOGTAG,account.getJid().asBareJid()+": deleted bookmarks node");
         }
@@ -270,7 +269,7 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
     private void parsePurgeEvent(final Element event, final Jid from, final Account account) {
         final Element purge = event.findChild("purge");
         final String node = purge == null ? null : purge.getAttribute("node");
-        if (Namespace.BOOKMARK.equals(node) && account.getJid().asBareJid().equals(from)) {
+        if (Namespace.BOOKMARKS2.equals(node) && account.getJid().asBareJid().equals(from)) {
             account.setBookmarks(Collections.emptyMap());
             Log.d(Config.LOGTAG,account.getJid().asBareJid()+": purged bookmarks");
         }
