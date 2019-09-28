@@ -41,43 +41,43 @@ public class Bookmark extends Element implements ListItem {
 		this.account = account;
 	}
 
-	public static Collection<Bookmark> parseFromStorage(Element storage, Account account) {
+	public static Map<Jid, Bookmark> parseFromStorage(Element storage, Account account) {
 		if (storage == null) {
-			return Collections.emptyList();
+			return Collections.emptyMap();
 		}
 		final HashMap<Jid, Bookmark> bookmarks = new HashMap<>();
 		for (final Element item : storage.getChildren()) {
 			if (item.getName().equals("conference")) {
 				final Bookmark bookmark = Bookmark.parse(item, account);
 				if (bookmark != null) {
-					final Bookmark old = bookmarks.put(bookmark.getJid(), bookmark);
+					final Bookmark old = bookmarks.put(bookmark.jid, bookmark);
 					if (old != null && old.getBookmarkName() != null && bookmark.getBookmarkName() == null) {
 						bookmark.setBookmarkName(old.getBookmarkName());
 					}
 				}
 			}
 		}
-		return bookmarks.values();
+		return bookmarks;
 	}
 
-	public static Collection<Bookmark> parseFromPubsub(Element pubsub, Account account) {
+	public static Map<Jid, Bookmark> parseFromPubsub(Element pubsub, Account account) {
 		if (pubsub == null) {
-			return Collections.emptyList();
+			return Collections.emptyMap();
 		}
 		final Element items = pubsub.findChild("items");
 		if (items != null && Namespace.BOOKMARK.equals(items.getAttribute("node"))) {
-			final List<Bookmark> bookmarks = new ArrayList<>();
+			final Map<Jid, Bookmark> bookmarks = new HashMap<>();
 			for(Element item : items.getChildren()) {
 				if (item.getName().equals("item")) {
 					final Bookmark bookmark = Bookmark.parseFromItem(item, account);
 					if (bookmark != null) {
-						bookmarks.add(bookmark);
+						bookmarks.put(bookmark.jid, bookmark);
 					}
 				}
 			}
 			return bookmarks;
 		}
-		return Collections.emptyList();
+		return Collections.emptyMap();
 	}
 
 	public static Bookmark parse(Element element, Account account) {

@@ -478,8 +478,7 @@ public class StartConversationActivity extends XmppActivity implements XmppConne
 		builder.setMessage(JidDialog.style(this, R.string.remove_bookmark_text, bookmark.getJid().toEscapedString()));
 		builder.setPositiveButton(R.string.delete, (dialog, which) -> {
 			bookmark.setConversation(null);
-			Account account = bookmark.getAccount();
-			account.getBookmarks().remove(bookmark);
+			final Account account = bookmark.getAccount();
 			xmppConnectionService.deleteBookmark(account, bookmark);
 			filter(mSearchEditText.getText().toString());
 		});
@@ -1041,7 +1040,6 @@ public class StartConversationActivity extends XmppActivity implements XmppConne
 				if (nick != null && !nick.isEmpty() && !nick.equals(MucOptions.defaultNick(account))) {
 					bookmark.setNick(nick);
 				}
-				account.getBookmarks().add(bookmark);
 				xmppConnectionService.createBookmark(account, bookmark);
 				final Conversation conversation = xmppConnectionService
 						.findOrCreateConversation(account, conferenceJid, true, true, true);

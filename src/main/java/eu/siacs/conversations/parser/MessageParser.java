@@ -227,11 +227,29 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
             if (account.getXmppConnection().getFeatures().bookmarksConversion()) {
                 final Element i = items.findChild("item");
                 final Element storage = i == null ? null : i.findChild("storage", Namespace.BOOKMARKS);
-                Collection<Bookmark> bookmarks = Bookmark.parseFromStorage(storage, account);
+                Map<Jid, Bookmark> bookmarks = Bookmark.parseFromStorage(storage, account);
                 mXmppConnectionService.processBookmarksInitial(account, bookmarks, true);
-                Log.d(Config.LOGTAG,account.getJid().asBareJid()+": processing bookmark PEP event");
+                Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": processing bookmark PEP event");
             } else {
-                Log.d(Config.LOGTAG,account.getJid().asBareJid()+": ignoring bookmark PEP event because bookmark conversion was not detected");
+                Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": ignoring bookmark PEP event because bookmark conversion was not detected");
+            }
+        } else if (Namespace.BOOKMARK.equals(node) && account.getJid().asBareJid().equals(from)) {
+            final Element item = items.findChild("item");
+            final Element retract = items.findChild("retract");
+            if (item != null) {
+                final Bookmark bookmark = Bookmark.parseFromItem(item, account);
+                if (bookmark != null) {
+                    //TODO find conversation
+                    account.putBookmark(bookmark);
+                    //TODO handle autojoin
+                }
+            }
+            if (retract != null) {
+                final Jid id = InvalidJid.getNullForInvalid(retract.getAttributeAsJid("id"));
+                if (id != null) {
+                    account.removeBookmark(id);
+                    Log.d(Config.LOGTAG,account.getJid().asBareJid()+": deleted bookmark for "+id);
+                }
             }
         } else {
             Log.d(Config.LOGTAG,account.getJid().asBareJid()+" received pubsub notification for node="+node);

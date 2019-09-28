@@ -147,6 +147,7 @@ public class IqGenerator extends AbstractGenerator {
         final Element pubsub = packet.addChild("pubsub", Namespace.PUBSUB);
         final Element retract = pubsub.addChild("retract");
         retract.setAttribute("node", node);
+        retract.setAttribute("notify","true");
         retract.addChild("item").setAttribute("id", id);
         return packet;
     }
