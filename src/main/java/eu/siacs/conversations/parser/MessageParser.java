@@ -258,13 +258,22 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
 
     private void parseDeleteEvent(final Element event, final Jid from, final Account account) {
         final Element delete = event.findChild("delete");
-        if (delete == null) {
-            return;
-        }
-        String node = delete.getAttribute("node");
+        final String node = delete == null ? null : delete.getAttribute("node");
         if (Namespace.NICK.equals(node)) {
             Log.d(Config.LOGTAG, "parsing nick delete event from " + from);
             setNick(account, from, null);
+        } else if (Namespace.BOOKMARK.equals(node) && account.getJid().asBareJid().equals(from)) {
+            account.setBookmarks(Collections.emptyMap());
+            Log.d(Config.LOGTAG,account.getJid().asBareJid()+": deleted bookmarks node");
+        }
+    }
+
+    private void parsePurgeEvent(final Element event, final Jid from, final Account account) {
+        final Element purge = event.findChild("purge");
+        final String node = purge == null ? null : purge.getAttribute("node");
+        if (Namespace.BOOKMARK.equals(node) && account.getJid().asBareJid().equals(from)) {
+            account.setBookmarks(Collections.emptyMap());
+            Log.d(Config.LOGTAG,account.getJid().asBareJid()+": purged bookmarks");
         }
     }
 
@@ -859,6 +868,8 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
                 parseEvent(event, original.getFrom(), account);
             } else if (event.hasChild("delete")) {
                 parseDeleteEvent(event, original.getFrom(), account);
+            } else if (event.hasChild("purge")) {
+                parsePurgeEvent(event, original.getFrom(), account);
             }
         }
 
