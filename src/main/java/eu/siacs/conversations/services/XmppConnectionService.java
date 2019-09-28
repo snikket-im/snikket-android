@@ -1621,6 +1621,16 @@ public class XmppConnectionService extends Service {
             if (pep && synchronizeWithBookmarks && !bookmark.autojoin()) {
                 Log.d(Config.LOGTAG,account.getJid().asBareJid()+": archiving conference ("+conversation.getJid()+") after receiving pep");
                 archiveConversation(conversation, false);
+            } else {
+                final MucOptions mucOptions = conversation.getMucOptions();
+                if (mucOptions.getError() == MucOptions.Error.NICK_IN_USE) {
+                    final String current = mucOptions.getActualNick();
+                    final String proposed = mucOptions.getProposedNick();
+                    if (current != null && !current.equals(proposed)) {
+                        Log.d(Config.LOGTAG,account.getJid().asBareJid()+": proposed nick changed after bookmark push "+current+"->"+proposed);
+                        joinMuc(conversation);
+                    }
+                }
             }
         } else if (synchronizeWithBookmarks && bookmark.autojoin()) {
             conversation = findOrCreateConversation(account, bookmark.getFullJid(), true, true, false);

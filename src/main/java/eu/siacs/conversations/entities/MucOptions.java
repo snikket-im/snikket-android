@@ -417,7 +417,7 @@ public class MucOptions {
         }
     }
 
-    private String getProposedNick() {
+    public String getProposedNick() {
         final Bookmark bookmark = this.conversation.getBookmark();
         final String bookmarkedNick = normalize(account.getJid(), bookmark == null ? null : bookmark.getNick());
         if (bookmarkedNick != null) {
