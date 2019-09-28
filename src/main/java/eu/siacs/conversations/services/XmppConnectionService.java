@@ -1592,32 +1592,46 @@ public class XmppConnectionService extends Service {
         final boolean synchronizeWithBookmarks = synchronizeWithBookmarks();
         for (Bookmark bookmark : bookmarks.values()) {
             previousBookmarks.remove(bookmark.getJid().asBareJid());
-            Conversation conversation = find(bookmark);
-            if (conversation != null) {
-                if (conversation.getMode() != Conversation.MODE_MULTI) {
-                    continue;
-                }
-                bookmark.setConversation(conversation);
-                if (pep && synchronizeWithBookmarks && !bookmark.autojoin()) {
-                    Log.d(Config.LOGTAG,account.getJid().asBareJid()+": archiving conference ("+conversation.getJid()+") after receiving pep");
-                    archiveConversation(conversation, false);
-                }
-            } else if (synchronizeWithBookmarks && bookmark.autojoin()) {
-                conversation = findOrCreateConversation(account, bookmark.getFullJid(), true, true, false);
-                bookmark.setConversation(conversation);
-            }
+            processModifiedBookmark(bookmark, pep, synchronizeWithBookmarks);
         }
         if (pep && synchronizeWithBookmarks) {
             Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": " + previousBookmarks.size() + " bookmarks have been removed");
             for (Jid jid : previousBookmarks) {
-                final Conversation conversation = find(account, jid);
-                if (conversation != null && conversation.getMucOptions().getError() == MucOptions.Error.DESTROYED) {
-                    Log.d(Config.LOGTAG,account.getJid().asBareJid()+": archiving destroyed conference ("+conversation.getJid()+") after receiving pep");
-                    archiveConversation(conversation, false);
-                }
+                processDeletedBookmark(account, jid);
             }
         }
         account.setBookmarks(bookmarks);
+    }
+
+    public void processDeletedBookmark(Account account, Jid jid) {
+        final Conversation conversation = find(account, jid);
+        if (conversation != null && conversation.getMucOptions().getError() == MucOptions.Error.DESTROYED) {
+            Log.d(Config.LOGTAG,account.getJid().asBareJid()+": archiving destroyed conference ("+conversation.getJid()+") after receiving pep");
+            archiveConversation(conversation, false);
+        }
+    }
+
+    private void processModifiedBookmark(Bookmark bookmark, final boolean pep, final boolean synchronizeWithBookmarks) {
+        final Account account = bookmark.getAccount();
+        Conversation conversation = find(bookmark);
+        if (conversation != null) {
+            if (conversation.getMode() != Conversation.MODE_MULTI) {
+                return;
+            }
+            bookmark.setConversation(conversation);
+            if (pep && synchronizeWithBookmarks && !bookmark.autojoin()) {
+                Log.d(Config.LOGTAG,account.getJid().asBareJid()+": archiving conference ("+conversation.getJid()+") after receiving pep");
+                archiveConversation(conversation, false);
+            }
+        } else if (synchronizeWithBookmarks && bookmark.autojoin()) {
+            conversation = findOrCreateConversation(account, bookmark.getFullJid(), true, true, false);
+            bookmark.setConversation(conversation);
+        }
+    }
+
+    public void processModifiedBookmark(Bookmark bookmark) {
+        final boolean synchronizeWithBookmarks = synchronizeWithBookmarks();
+        processModifiedBookmark(bookmark, true, synchronizeWithBookmarks);
     }
 
     public void createBookmark(final Account account, final Bookmark bookmark) {
