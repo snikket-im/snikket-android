@@ -1,17 +1,21 @@
 package eu.siacs.conversations.ui.adapter;
 
+import android.content.ActivityNotFoundException;
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.Resources;
 import android.databinding.DataBindingUtil;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
@@ -20,6 +24,7 @@ import java.util.concurrent.RejectedExecutionException;
 
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.databinding.MediaPreviewBinding;
+import eu.siacs.conversations.persistance.FileBackend;
 import eu.siacs.conversations.ui.ConversationFragment;
 import eu.siacs.conversations.ui.XmppActivity;
 import eu.siacs.conversations.ui.util.Attachment;
@@ -54,11 +59,24 @@ public class MediaPreviewAdapter extends RecyclerView.Adapter<MediaPreviewAdapte
             MediaAdapter.renderPreview(context, attachment, holder.binding.mediaPreview);
         }
         holder.binding.deleteButton.setOnClickListener(v -> {
-            int pos = mediaPreviews.indexOf(attachment);
+            final int pos = mediaPreviews.indexOf(attachment);
             mediaPreviews.remove(pos);
             notifyItemRemoved(pos);
             conversationFragment.toggleInputMethod();
         });
+        holder.binding.mediaPreview.setOnClickListener(v -> view(context, attachment));
+    }
+
+    private static void view(final Context context, Attachment attachment) {
+        final Intent view = new Intent(Intent.ACTION_VIEW);
+        final Uri uri = FileBackend.getUriForUri(context, attachment.getUri());
+        view.setDataAndType(uri, attachment.getMime());
+        view.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+        try {
+            context.startActivity(view);
+        } catch (ActivityNotFoundException e) {
+            Toast.makeText(context, R.string.no_application_found_to_open_file, Toast.LENGTH_SHORT).show();
+        }
     }
 
     public void addMediaPreviews(List<Attachment> attachments) {

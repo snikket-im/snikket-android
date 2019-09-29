@@ -193,6 +193,14 @@ public class FileBackend {
         return Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM) + "/Camera/";
     }
 
+    public static Uri getUriForUri(Context context, Uri uri) {
+        if ("file".equals(uri.getScheme())) {
+            return getUriForFile(context, new File(uri.getPath()));
+        } else {
+            return uri;
+        }
+    }
+
     public static Uri getUriForFile(Context context, File file) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N || Config.ONLY_INTERNAL_STORAGE) {
             try {
