@@ -320,7 +320,7 @@ public class JingleConnection implements Transferable {
 
                         @Override
                         public void failed() {
-                            Log.d(Config.LOGTAG, "connection to our own proxy65 candidate failed");
+                            Log.d(Config.LOGTAG, String.format("connection to our own proxy65 candidate failed (%s:%d)", candidate.getHost(), candidate.getPort()));
                             sendInitRequest();
                         }
 
