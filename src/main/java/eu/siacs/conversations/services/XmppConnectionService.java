@@ -3776,11 +3776,11 @@ public class XmppConnectionService extends Service {
 
 
 	public void markMessage(Message message, int status, String errorMessage) {
-		final int c = message.getStatus();
-		if (status == Message.STATUS_SEND_FAILED && (c == Message.STATUS_SEND_RECEIVED || c == Message.STATUS_SEND_DISPLAYED)) {
+		final int oldStatus = message.getStatus();
+		if (status == Message.STATUS_SEND_FAILED && (oldStatus == Message.STATUS_SEND_RECEIVED || oldStatus == Message.STATUS_SEND_DISPLAYED)) {
 			return;
 		}
-		if (status == Message.STATUS_SEND_RECEIVED && c == Message.STATUS_SEND_DISPLAYED) {
+		if (status == Message.STATUS_SEND_RECEIVED && oldStatus == Message.STATUS_SEND_DISPLAYED) {
 			return;
 		}
 		message.setErrorMessage(errorMessage);
