@@ -270,9 +270,10 @@ public class JingleConnection implements Transferable {
         IqPacket response;
         if (returnResult) {
             response = packet.generateResponse(IqPacket.TYPE.RESULT);
-
         } else {
             response = packet.generateResponse(IqPacket.TYPE.ERROR);
+            final Element error = response.addChild("error").setAttribute("type", "cancel");
+            error.addChild("not-acceptable", "urn:ietf:params:xml:ns:xmpp-stanzas");
         }
         mXmppConnectionService.sendIqPacket(account, response, null);
     }
@@ -933,8 +934,9 @@ public class JingleConnection implements Transferable {
 
     private boolean receiveTransportAccept(JinglePacket packet) {
         if (packet.getJingleContent().hasIbbTransport()) {
-            String receivedBlockSize = packet.getJingleContent().ibbTransport()
-                    .getAttribute("block-size");
+            final Element ibbTransport = packet.getJingleContent().ibbTransport();
+            final String receivedBlockSize = ibbTransport.getAttribute("block-size");
+            final String sid = ibbTransport.getAttribute("sid");
             if (receivedBlockSize != null) {
                 try {
                     int bs = Integer.parseInt(receivedBlockSize);
@@ -947,6 +949,10 @@ public class JingleConnection implements Transferable {
             }
             this.transport = new JingleInbandTransport(this, this.transportId, this.ibbBlockSize);
 
+            if (sid == null || !sid.equals(this.transportId)) {
+                Log.w(Config.LOGTAG,String.format("%s: sid in transport-accept (%s) did not match our sid (%s) ", account.getJid().asBareJid(), sid, transportId));
+            }
+
             //might be receive instead if we are not initiating
             if (initiating()) {
                 this.transport.connect(onIbbTransportConnected);
@@ -955,6 +961,7 @@ public class JingleConnection implements Transferable {
             }
             return true;
         } else {
+            Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": received invalid transport-accept");
             return false;
         }
     }
