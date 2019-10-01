@@ -861,7 +861,7 @@
     <string name="discover_channels">Discover channels</string>
     <string name="search_channels">Search channels</string>
     <string name="channel_discovery_opt_in_title">Possible privacy violation!</string>
-    <string name="channel_discover_opt_in_message"><![CDATA[Channel discovery uses a third party service called <a href="https://search.jabbercat.org">search.jabbercat.org</a>.<br><br>Using this feature will transmit your IP address and search terms to that service. See their <a href="https://search.jabbercat.org/privacy">Privacy Policy</a> for more information.]]></string>
+    <string name="channel_discover_opt_in_message"><![CDATA[Channel discovery uses a third party service called <a href="https://search.jabber.network">search.jabber.network</a>.<br><br>Using this feature will transmit your IP address and search terms to that service. See their <a href="https://search.jabber.network/privacy">Privacy Policy</a> for more information.]]></string>
     <string name="i_already_have_an_account">I already have an account</string>
     <string name="add_existing_account">Add existing account</string>
     <string name="register_new_account">Register new account</string>
