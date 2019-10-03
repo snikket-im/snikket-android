@@ -15,8 +15,8 @@ public class SocksSocketFactory {
 	private static final byte[] LOCALHOST = new byte[]{127,0,0,1};
 
 	public static void createSocksConnection(Socket socket, String destination, int port) throws IOException {
-		InputStream proxyIs = socket.getInputStream();
-		OutputStream proxyOs = socket.getOutputStream();
+		final InputStream proxyIs = socket.getInputStream();
+		final OutputStream proxyOs = socket.getOutputStream();
 		proxyOs.write(new byte[]{0x05, 0x01, 0x00});
 		byte[] response = new byte[2];
 		proxyIs.read(response);
@@ -24,7 +24,7 @@ public class SocksSocketFactory {
 			throw new SocksConnectionException("Socks 5 handshake failed");
 		}
 		byte[] dest = destination.getBytes();
-		ByteBuffer request = ByteBuffer.allocate(7 + dest.length);
+		final ByteBuffer request = ByteBuffer.allocate(7 + dest.length);
 		request.put(new byte[]{0x05, 0x01, 0x00, 0x03});
 		request.put((byte) dest.length);
 		request.put(dest);

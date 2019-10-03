@@ -26,6 +26,10 @@ import eu.siacs.conversations.utils.WakeLockHelper;
 import eu.siacs.conversations.xmpp.jingle.stanzas.Content;
 
 public class JingleSocks5Transport extends JingleTransport {
+
+    private static final int SOCKET_TIMEOUT_DIRECT = 3000;
+    private static final int SOCKET_TIMEOUT_PROXY = 5000;
+
     private final JingleCandidate candidate;
     private final JingleConnection connection;
     private final String destination;
@@ -92,8 +96,9 @@ public class JingleSocks5Transport extends JingleTransport {
         }
     }
 
-    private void acceptIncomingSocketConnection(Socket socket) throws IOException {
+    private void acceptIncomingSocketConnection(final Socket socket) throws IOException {
         Log.d(Config.LOGTAG, "accepted connection from " + socket.getInetAddress().getHostAddress());
+        socket.setSoTimeout(SOCKET_TIMEOUT_DIRECT);
         final byte[] authBegin = new byte[2];
         final InputStream inputStream = socket.getInputStream();
         final OutputStream outputStream = socket.getOutputStream();
@@ -136,6 +141,7 @@ public class JingleSocks5Transport extends JingleTransport {
             outputStream.flush();
             if (success) {
                 Log.d(Config.LOGTAG,connection.getAccount().getJid().asBareJid()+": successfully processed connection to candidate "+candidate.getHost()+":"+candidate.getPort());
+                socket.setSoTimeout(0);
                 this.socket = socket;
                 this.inputStream = inputStream;
                 this.outputStream = outputStream;
@@ -151,6 +157,7 @@ public class JingleSocks5Transport extends JingleTransport {
 
     public void connect(final OnTransportConnected callback) {
         new Thread(() -> {
+            final int timeout = candidate.getType() == JingleCandidate.TYPE_DIRECT ? SOCKET_TIMEOUT_DIRECT : SOCKET_TIMEOUT_PROXY;
             try {
                 final boolean useTor = connection.getAccount().isOnion() || connection.getConnectionManager().getXmppConnectionService().useTorToConnect();
                 if (useTor) {
@@ -158,11 +165,11 @@ public class JingleSocks5Transport extends JingleTransport {
                 } else {
                     socket = new Socket();
                     SocketAddress address = new InetSocketAddress(candidate.getHost(), candidate.getPort());
-                    socket.connect(address, 5000);
+                    socket.connect(address, timeout);
                 }
                 inputStream = socket.getInputStream();
                 outputStream = socket.getOutputStream();
-                socket.setSoTimeout(5000);
+                socket.setSoTimeout(timeout);
                 SocksSocketFactory.createSocksConnection(socket, destination, 0);
                 socket.setSoTimeout(0);
                 isEstablished = true;
