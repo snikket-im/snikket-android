@@ -52,7 +52,7 @@ public class SocksSocketFactory {
 		return false;
 	}
 
-	public static Socket createSocket(InetSocketAddress address, String destination, int port) throws IOException {
+	private static Socket createSocket(InetSocketAddress address, String destination, int port) throws IOException {
 		Socket socket = new Socket();
 		try {
 			socket.connect(address, Config.CONNECT_TIMEOUT * 1000);
