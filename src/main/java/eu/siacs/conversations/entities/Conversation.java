@@ -307,8 +307,10 @@ public class Conversation extends AbstractEntity implements Blockable, Comparabl
 		synchronized (this.messages) {
 			for (int i = this.messages.size() - 1; i >= 0; --i) {
 				final Message message = messages.get(i);
-				if (counterpart.equals(message.getCounterpart())
-						&& ((message.getStatus() == Message.STATUS_RECEIVED) == received)
+				final boolean counterpartMatch = mode == MODE_SINGLE ?
+					counterpart.asBareJid().equals(message.getCounterpart().asBareJid()) :
+					counterpart.equals(message.getCounterpart());
+				if (counterpartMatch && ((message.getStatus() == Message.STATUS_RECEIVED) == received)
 						&& (carbon == message.isCarbon() || received)) {
 					final boolean idMatch = id.equals(message.getRemoteMsgId()) || message.remoteMsgIdMatchInEdit(id);
 					if (idMatch && !message.isFileOrImage() && !message.treatAsDownloadable()) {
