@@ -142,7 +142,7 @@ public class JingleConnection implements Transferable {
 
         @Override
         public void onFileTransferAborted() {
-            JingleConnection.this.sendCancel(); //TODO probably send connectivity error instead?
+            JingleConnection.this.sendSessionTerminate("connectivity-error");
             JingleConnection.this.fail();
         }
     };
@@ -227,12 +227,12 @@ public class JingleConnection implements Transferable {
             Reason reason = packet.getReason();
             if (reason != null) {
                 if (reason.hasChild("cancel")) {
-                    //TODO mark as 'cancelled'
+                    this.cancelled = true;
                     this.fail();
                 } else if (reason.hasChild("success")) {
                     this.receiveSuccess();
                 } else {
-                    this.fail();
+                    this.fail(reason.getName());
                 }
             } else {
                 this.fail();
@@ -411,8 +411,6 @@ public class JingleConnection implements Transferable {
         this.contentName = content.getAttribute("name");
         this.transportId = content.getTransportId();
 
-        //TODO change this to positive or negative response instead of fail directly
-        mXmppConnectionService.sendIqPacket(account, packet.generateResponse(IqPacket.TYPE.RESULT), null);
 
         if (this.initialTransport == Transport.SOCKS) {
             this.mergeCandidates(JingleCandidate.parse(content.socks5transport().getChildren()));
@@ -423,20 +421,20 @@ public class JingleConnection implements Transferable {
                     this.ibbBlockSize = Math.min(Integer.parseInt(receivedBlockSize), this.ibbBlockSize);
                 } catch (NumberFormatException e) {
                     Log.d(Config.LOGTAG, "number format exception " + e.getMessage());
-                    this.sendCancel();
+                    respondToIq(packet, false);
                     this.fail();
                     return;
                 }
             } else {
                 Log.d(Config.LOGTAG, "received block size was null");
-                this.sendCancel();
+                respondToIq(packet, false);
                 this.fail();
                 return;
             }
         }
         this.ftVersion = content.getVersion();
         if (ftVersion == null) {
-            this.sendCancel();
+            respondToIq(packet, false);
             this.fail();
             return;
         }
@@ -498,6 +496,9 @@ public class JingleConnection implements Transferable {
                 //JET reports the plain text size. however lower levels of our receiving code still
                 //expect the cipher text size. so we just + 16 bytes (auth tag size) here
                 this.file.setExpectedSize(size + (remoteIsUsingJet ? 16 : 0));
+
+                respondToIq(packet, true);
+
                 if (mJingleConnectionManager.hasStoragePermission()
                         && size < this.mJingleConnectionManager.getAutoAcceptFileSize()
                         && mXmppConnectionService.isDataSaverDisabled()) {
@@ -515,13 +516,9 @@ public class JingleConnection implements Transferable {
                     this.mXmppConnectionService.getNotificationService().push(message);
                 }
                 Log.d(Config.LOGTAG, "receiving file: expecting size of " + this.file.getExpectedSize());
-            } else {
-                this.sendCancel();
-                this.fail();
+                return;
             }
-        } else {
-            this.sendCancel();
-            this.fail();
+            respondToIq(packet, false);
         }
     }
 
@@ -569,7 +566,7 @@ public class JingleConnection implements Transferable {
             try {
                 this.mFileInputStream = new FileInputStream(file);
             } catch (FileNotFoundException e) {
-                abort();
+                fail(e.getMessage());
                 return;
             }
             content.setTransportId(this.transportId);
@@ -746,7 +743,7 @@ public class JingleConnection implements Transferable {
                         connection.setActivated(true);
                     } else {
                         Log.d(Config.LOGTAG, "activated connection not found");
-                        this.sendCancel();
+                        sendSessionTerminate("failed-transport");
                         this.fail();
                     }
                 }
@@ -884,11 +881,7 @@ public class JingleConnection implements Transferable {
     }
 
     private void sendSuccess() {
-        JinglePacket packet = bootstrapPacket("session-terminate");
-        Reason reason = new Reason();
-        reason.addChild("success");
-        packet.setReason(reason);
-        this.sendJinglePacket(packet);
+        sendSessionTerminate("success");
         this.disconnectSocks5Connections();
         this.mJingleStatus = JINGLE_STATUS_FINISHED;
         this.message.setStatus(Message.STATUS_RECEIVED);
@@ -999,18 +992,18 @@ public class JingleConnection implements Transferable {
     @Override
     public void cancel() {
         this.cancelled = true;
-        abort();
+        abort("cancel");
     }
 
-    public void abort() {
+    void abort(final String reason) {
         this.disconnectSocks5Connections();
         if (this.transport instanceof JingleInbandTransport) {
             this.transport.disconnect();
         }
-        this.sendCancel();
+        sendSessionTerminate(reason);
         this.mJingleConnectionManager.finishConnection(this);
         if (responding()) {
-            this.message.setTransferable(new TransferablePlaceholder(Transferable.STATUS_FAILED));
+            this.message.setTransferable(new TransferablePlaceholder(cancelled ? Transferable.STATUS_CANCELLED : Transferable.STATUS_FAILED));
             if (this.file != null) {
                 file.delete();
             }
@@ -1035,7 +1028,7 @@ public class JingleConnection implements Transferable {
         FileBackend.close(mFileOutputStream);
         if (this.message != null) {
             if (responding()) {
-                this.message.setTransferable(new TransferablePlaceholder(Transferable.STATUS_FAILED));
+                this.message.setTransferable(new TransferablePlaceholder(cancelled ? Transferable.STATUS_CANCELLED : Transferable.STATUS_FAILED));
                 if (this.file != null) {
                     file.delete();
                 }
@@ -1050,11 +1043,11 @@ public class JingleConnection implements Transferable {
         this.mJingleConnectionManager.finishConnection(this);
     }
 
-    private void sendCancel() {
-        JinglePacket packet = bootstrapPacket("session-terminate");
-        Reason reason = new Reason();
-        reason.addChild("cancel");
-        packet.setReason(reason);
+    private void sendSessionTerminate(String reason) {
+        final JinglePacket packet = bootstrapPacket("session-terminate");
+        final Reason r = new Reason();
+        r.addChild(reason);
+        packet.setReason(r);
         this.sendJinglePacket(packet);
     }
 

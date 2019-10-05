@@ -188,7 +188,7 @@ public class MessageAdapter extends ArrayAdapter<Message> implements CopyTextVie
 		if (message.isFileOrImage() || transferable != null) {
 			FileParams params = message.getFileParams();
 			filesize = params.size > 0 ? UIHelper.filesizeToString(params.size) : null;
-			if (transferable != null && transferable.getStatus() == Transferable.STATUS_FAILED) {
+			if (transferable != null && (transferable.getStatus() == Transferable.STATUS_FAILED || transferable.getStatus() == Transferable.STATUS_CANCELLED)) {
 				error = true;
 			}
 		}
@@ -207,10 +207,6 @@ public class MessageAdapter extends ArrayAdapter<Message> implements CopyTextVie
 				info = getContext().getString(R.string.offering);
 				break;
 			case Message.STATUS_SEND_RECEIVED:
-				if (mIndicateReceived) {
-					viewHolder.indicatorReceived.setVisibility(View.VISIBLE);
-				}
-				break;
 			case Message.STATUS_SEND_DISPLAYED:
 				if (mIndicateReceived) {
 					viewHolder.indicatorReceived.setVisibility(View.VISIBLE);

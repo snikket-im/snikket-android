@@ -274,6 +274,8 @@ public class UIHelper {
 							getFileDescriptionString(context, message)), true);
 				case Transferable.STATUS_FAILED:
 					return new Pair<>(context.getString(R.string.file_transmission_failed), true);
+				case Transferable.STATUS_CANCELLED:
+					return new Pair<>(context.getString(R.string.file_transmission_cancelled), true);
 				case Transferable.STATUS_UPLOADING:
 					if (message.getStatus() == Message.STATUS_OFFERED) {
 						return new Pair<>(context.getString(R.string.offering_x_file,
