@@ -232,7 +232,12 @@ public class JingleConnection implements Transferable {
                 } else if (reason.hasChild("success")) {
                     this.receiveSuccess();
                 } else {
-                    this.fail(reason.getName());
+                    final List<Element> children = reason.getChildren();
+                    if (children.size() == 1) {
+                        this.fail(children.get(0).getName());
+                    } else {
+                        this.fail();
+                    }
                 }
             } else {
                 this.fail();
