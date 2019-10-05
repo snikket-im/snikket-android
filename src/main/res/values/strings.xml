@@ -337,6 +337,7 @@
     <string name="x_file_offered_for_download">%s offered for download</string>
     <string name="cancel_transmission">Cancel transmission</string>
     <string name="file_transmission_failed">file transmission failed</string>
+    <string name="file_transmission_cancelled">file transmission cancelled</string>
     <string name="file_deleted">The file has been deleted</string>
     <string name="no_application_found_to_open_file">No application found to open file</string>
     <string name="no_application_found_to_open_link">No application found to open link</string>

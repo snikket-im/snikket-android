@@ -142,7 +142,7 @@ public class JingleConnection implements Transferable {
 
         @Override
         public void onFileTransferAborted() {
-            JingleConnection.this.sendCancel();
+            JingleConnection.this.sendCancel(); //TODO probably send connectivity error instead?
             JingleConnection.this.fail();
         }
     };
@@ -222,12 +222,12 @@ public class JingleConnection implements Transferable {
         return this.message.getCounterpart();
     }
 
-    public void deliverPacket(JinglePacket packet) {
-        boolean returnResult = true;
+    void deliverPacket(JinglePacket packet) {
         if (packet.isAction("session-terminate")) {
             Reason reason = packet.getReason();
             if (reason != null) {
                 if (reason.hasChild("cancel")) {
+                    //TODO mark as 'cancelled'
                     this.fail();
                 } else if (reason.hasChild("success")) {
                     this.receiveSuccess();
@@ -238,11 +238,11 @@ public class JingleConnection implements Transferable {
                 this.fail();
             }
         } else if (packet.isAction("session-accept")) {
-            returnResult = receiveAccept(packet);
+            receiveAccept(packet);
         } else if (packet.isAction("session-info")) {
-            Element checksum = packet.getChecksum();
-            Element file = checksum == null ? null : checksum.findChild("file");
-            Element hash = file == null ? null : file.findChild("hash", "urn:xmpp:hashes:2");
+            final Element checksum = packet.getChecksum();
+            final Element file = checksum == null ? null : checksum.findChild("file");
+            final Element hash = file == null ? null : file.findChild("hash", "urn:xmpp:hashes:2");
             if (hash != null && "sha-1".equalsIgnoreCase(hash.getAttribute("algo"))) {
                 try {
                     this.expectedHash = Base64.decode(hash.getContent(), Base64.DEFAULT);
@@ -250,31 +250,41 @@ public class JingleConnection implements Transferable {
                     this.expectedHash = new byte[0];
                 }
             }
+            respondToIq(packet, true);
         } else if (packet.isAction("transport-info")) {
-            returnResult = receiveTransportInfo(packet);
+            receiveTransportInfo(packet);
         } else if (packet.isAction("transport-replace")) {
             if (packet.getJingleContent().hasIbbTransport()) {
-                returnResult = this.receiveFallbackToIbb(packet);
+                receiveFallbackToIbb(packet);
             } else {
-                returnResult = false;
-                Log.d(Config.LOGTAG, "trying to fallback to something unknown"
-                        + packet.toString());
+                Log.d(Config.LOGTAG, "trying to fallback to something unknown" + packet.toString());
+                respondToIq(packet, false);
             }
         } else if (packet.isAction("transport-accept")) {
-            returnResult = this.receiveTransportAccept(packet);
+            receiveTransportAccept(packet);
         } else {
-            Log.d(Config.LOGTAG, "packet arrived in connection. action was "
-                    + packet.getAction());
-            returnResult = false;
+            Log.d(Config.LOGTAG, "packet arrived in connection. action was " + packet.getAction());
+            respondToIq(packet, false);
         }
-        IqPacket response;
-        if (returnResult) {
+    }
+
+    private void respondToIq(final IqPacket packet, final boolean result) {
+        final IqPacket response;
+        if (result) {
             response = packet.generateResponse(IqPacket.TYPE.RESULT);
         } else {
             response = packet.generateResponse(IqPacket.TYPE.ERROR);
             final Element error = response.addChild("error").setAttribute("type", "cancel");
             error.addChild("not-acceptable", "urn:ietf:params:xml:ns:xmpp-stanzas");
         }
+        mXmppConnectionService.sendIqPacket(account, response, null);
+    }
+
+    private void respondToIqWithOutOfOrder(final IqPacket packet) {
+        final IqPacket response = packet.generateResponse(IqPacket.TYPE.ERROR);
+        final Element error = response.addChild("error").setAttribute("type", "wait");
+        error.addChild("unexpected-request", "urn:ietf:params:xml:ns:xmpp-stanzas");
+        error.addChild("out-of-order", "urn:xmpp:jingle:errors:1");
         mXmppConnectionService.sendIqPacket(account, response, null);
     }
 
@@ -401,6 +411,7 @@ public class JingleConnection implements Transferable {
         this.contentName = content.getAttribute("name");
         this.transportId = content.getTransportId();
 
+        //TODO change this to positive or negative response instead of fail directly
         mXmppConnectionService.sendIqPacket(account, packet.generateResponse(IqPacket.TYPE.RESULT), null);
 
         if (this.initialTransport == Transport.SOCKS) {
@@ -686,18 +697,19 @@ public class JingleConnection implements Transferable {
         mXmppConnectionService.sendIqPacket(account, packet, callback);
     }
 
-    private boolean receiveAccept(JinglePacket packet) {
+    private void receiveAccept(JinglePacket packet) {
         if (this.mJingleStatus != JINGLE_STATUS_INITIATED) {
             Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": received out of order session-accept");
-            return false;
+            respondToIqWithOutOfOrder(packet);
+            return;
         }
         this.mJingleStatus = JINGLE_STATUS_ACCEPTED;
         mXmppConnectionService.markMessage(message, Message.STATUS_UNSEND);
         Content content = packet.getJingleContent();
         if (content.hasSocks5Transport()) {
+            respondToIq(packet, true);
             mergeCandidates(JingleCandidate.parse(content.socks5transport().getChildren()));
             this.connectNextCandidate();
-            return true;
         } else if (content.hasIbbTransport()) {
             String receivedBlockSize = packet.getJingleContent().ibbTransport().getAttribute("block-size");
             if (receivedBlockSize != null) {
@@ -710,18 +722,19 @@ public class JingleConnection implements Transferable {
                     Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": unable to parse block size in session-accept");
                 }
             }
+            respondToIq(packet, true);
             this.transport = new JingleInbandTransport(this, this.transportId, this.ibbBlockSize);
             this.transport.connect(onIbbTransportConnected);
-            return true;
         } else {
-            return false;
+            respondToIq(packet, false);
         }
     }
 
-    private boolean receiveTransportInfo(JinglePacket packet) {
-        Content content = packet.getJingleContent();
+    private void receiveTransportInfo(JinglePacket packet) {
+        final Content content = packet.getJingleContent();
         if (content.hasSocks5Transport()) {
             if (content.socks5transport().hasChild("activated")) {
+                respondToIq(packet, true);
                 if ((this.transport != null) && (this.transport instanceof JingleSocks5Transport)) {
                     onProxyActivated.success();
                 } else {
@@ -737,17 +750,16 @@ public class JingleConnection implements Transferable {
                         this.fail();
                     }
                 }
-                return true;
             } else if (content.socks5transport().hasChild("proxy-error")) {
+                respondToIq(packet, true);
                 onProxyActivated.failed();
-                return true;
             } else if (content.socks5transport().hasChild("candidate-error")) {
                 Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": received candidate error");
+                respondToIq(packet, true);
                 this.receivedCandidate = true;
                 if (mJingleStatus == JINGLE_STATUS_ACCEPTED && this.sentCandidate) {
                     this.connect();
                 }
-                return true;
             } else if (content.socks5transport().hasChild("candidate-used")) {
                 String cid = content.socks5transport().findChild("candidate-used").getAttribute("cid");
                 if (cid != null) {
@@ -755,8 +767,10 @@ public class JingleConnection implements Transferable {
                     JingleCandidate candidate = getCandidate(cid);
                     if (candidate == null) {
                         Log.d(Config.LOGTAG, "could not find candidate with cid=" + cid);
-                        return false;
+                        respondToIq(packet, false);
+                        return;
                     }
+                    respondToIq(packet, true);
                     candidate.flagAsUsedByCounterpart();
                     this.receivedCandidate = true;
                     if (mJingleStatus == JINGLE_STATUS_ACCEPTED && this.sentCandidate) {
@@ -764,15 +778,14 @@ public class JingleConnection implements Transferable {
                     } else {
                         Log.d(Config.LOGTAG, "ignoring because file is already in transmission or we haven't sent our candidate yet status=" + mJingleStatus + " sentCandidate=" + sentCandidate);
                     }
-                    return true;
                 } else {
-                    return false;
+                    respondToIq(packet, false);
                 }
             } else {
-                return false;
+                respondToIq(packet, false);
             }
         } else {
-            return true;
+            respondToIq(packet, true);
         }
     }
 
@@ -897,7 +910,7 @@ public class JingleConnection implements Transferable {
     }
 
 
-    private boolean receiveFallbackToIbb(JinglePacket packet) {
+    private void receiveFallbackToIbb(JinglePacket packet) {
         Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": receiving fallback to ibb");
         final String receivedBlockSize = packet.getJingleContent().ibbTransport().getAttribute("block-size");
         if (receivedBlockSize != null) {
@@ -920,6 +933,7 @@ public class JingleConnection implements Transferable {
         content.ibbTransport().setAttribute("sid", this.transportId);
         answer.setContent(content);
 
+        respondToIq(packet, true);
 
         if (initiating()) {
             this.sendJinglePacket(answer, (account, response) -> {
@@ -932,10 +946,9 @@ public class JingleConnection implements Transferable {
             this.transport.receive(file, onFileTransmissionStatusChanged);
             this.sendJinglePacket(answer);
         }
-        return true;
     }
 
-    private boolean receiveTransportAccept(JinglePacket packet) {
+    private void receiveTransportAccept(JinglePacket packet) {
         if (packet.getJingleContent().hasIbbTransport()) {
             final Element ibbTransport = packet.getJingleContent().ibbTransport();
             final String receivedBlockSize = ibbTransport.getAttribute("block-size");
@@ -955,17 +968,16 @@ public class JingleConnection implements Transferable {
             if (sid == null || !sid.equals(this.transportId)) {
                 Log.w(Config.LOGTAG, String.format("%s: sid in transport-accept (%s) did not match our sid (%s) ", account.getJid().asBareJid(), sid, transportId));
             }
-
+            respondToIq(packet, true);
             //might be receive instead if we are not initiating
             if (initiating()) {
                 this.transport.connect(onIbbTransportConnected);
             } else {
                 this.transport.receive(file, onFileTransmissionStatusChanged);
             }
-            return true;
         } else {
             Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": received invalid transport-accept");
-            return false;
+            respondToIq(packet, false);
         }
     }
 
