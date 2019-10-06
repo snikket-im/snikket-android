@@ -1,5 +1,8 @@
 # Changelog
 
+### Version 2.5.12
+* Jingle file transfer fixes
+
 ### Version 2.5.11
 * Fixed crash on Android <5.0
 
