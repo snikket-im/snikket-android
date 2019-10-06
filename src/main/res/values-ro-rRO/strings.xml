@@ -869,7 +869,6 @@ sau chiar pierderea mesajelor.\nÎn continuare veți fi rugați să dezactivați
   <string name="discover_channels">Descoperă canale publice</string>
   <string name="search_channels">Caută canale publice</string>
   <string name="channel_discovery_opt_in_title">Posibilă încălcare a intimității!</string>
-  <string name="channel_discover_opt_in_message"><![CDATA[Descoperirea de canale publice folosește un serviciu terț numit <a href="https://search.jabbercat.org">search.jabbercat.org</a>.<br><br>Folosind această funcție se va transmite adresa dumneavoastră IP și cuvintele căutate către acest serviciu. Pentru mai multe informații citiți <a href="https://search.jabbercat.org/privacy">Politica de confidențialitate</a> a serviciului.]]></string>
   <string name="i_already_have_an_account">Eu am deja un cont</string>
   <string name="add_existing_account">Adaugă un cont existent</string>
   <string name="register_new_account">Înregistrează un cont nou</string>

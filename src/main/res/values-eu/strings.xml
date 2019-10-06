@@ -856,7 +856,6 @@
   <string name="discover_channels">Kanalak aurkitu</string>
   <string name="search_channels">Kanalak bilatu</string>
   <string name="channel_discovery_opt_in_title">Balizko pribatutasun urraketa!</string>
-  <string name="channel_discover_opt_in_message"><![CDATA[Kanalak aurkitzeko ezaugarriak <a href="https://search.jabbercat.org">search.jabbercat.org</a> izeneko hirugarren zerbitzu bat erabiltzen du.<br><br>Ezaugarri hau erabiltzeak zure IP helbidea eta bilatutako testua zerbitzu horretara bidaltzea dakar. Ikusi beren <a href="https://search.jabbercat.org/privacy">pribatutasun politika</a> informazio gehiago lortzeko.]]></string>
   <string name="i_already_have_an_account">Badaukat kontu bat dagoeneko</string>
   <string name="add_existing_account">Gehitu existitzen den kontu bat</string>
   <string name="register_new_account">Kontu berria erregistratu</string>

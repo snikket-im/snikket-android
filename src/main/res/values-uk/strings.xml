@@ -873,7 +873,6 @@
   <string name="discover_channels">Знайти канали</string>
   <string name="search_channels">Шукати канали</string>
   <string name="channel_discovery_opt_in_title">Можливе порушення приватності!</string>
-  <string name="channel_discover_opt_in_message"><![CDATA[Пошук каналів використовує сторонній сервіс з назвою <a href="https://search.jabbercat.org">search.jabbercat.org</a>.<br><br>Використання цієї функції передає Вашу IP адресу та пошукові запити цьому сервісу. Перегляньте їхню <a href="https://search.jabbercat.org/privacy">політику конфіденційності</a>, щоб отримати більше інформації.]]></string>
   <string name="i_already_have_an_account">Я вже маю обліковий запис</string>
   <string name="add_existing_account">Додати наявний обліковий запис</string>
   <string name="register_new_account">Зареєструвати новий обліковий запис</string>

@@ -859,7 +859,6 @@
   <string name="discover_channels">Descobrir canais</string>
   <string name="search_channels">Pesquisar canais</string>
   <string name="channel_discovery_opt_in_title">Provável violação de privacidade!</string>
-  <string name="channel_discover_opt_in_message"><![CDATA[A descoberta de canais utiliza um serviço de terceiros chamado <a href="https://search.jabbercat.org">search.jabbercat.org</a>.<br><br>Ao usar esse recurso, você enviará o seu endereço IP e termos de pesquisa para esse serviço. Veja sua <a href="https://search.jabbercat.org/privacy">Política de Privacidade</a> para maiores informações.]]></string>
   <string name="i_already_have_an_account">Eu já tenho uma conta.</string>
   <string name="add_existing_account">Adicionar uma conta já existente</string>
   <string name="register_new_account">Registrar uma nova conta</string>

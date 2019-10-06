@@ -859,7 +859,6 @@
   <string name="discover_channels">Ανακάλυψη καναλιών</string>
   <string name="search_channels">Αναζήτηση καναλιών</string>
   <string name="channel_discovery_opt_in_title">Πιθανή παραβίαση ιδιωτικότητας!</string>
-  <string name="channel_discover_opt_in_message"><![CDATA[Η ανακάλυψη καναλιού χρησιμοποιεί μια τρίτη υπηρεσία που λέγεται <a href="https://search.jabbercat.org">search.jabbercat.org</a>.<br><br>Χρησιμοποιώντας αυτή τη λειτουργία θα μεταβιβαστεί η διεύθυνση IP σας και οι όροι αναζήτησης σε αυτή την υπηρεσία. Δείτε την <a href="https://search.jabbercat.org/privacy">Πολιτική Ιδιωτικότητας</a> της για περισσότερες πληροφορίες.]]></string>
   <string name="i_already_have_an_account">Έχω ήδη λογαριασμό</string>
   <string name="add_existing_account">Προσθήκη υπάρχοντος λογαριασμού</string>
   <string name="register_new_account">Εγγραφή νέου λογαριασμού</string>

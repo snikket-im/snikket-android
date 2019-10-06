@@ -19,4 +19,8 @@
     <string name="no_microphone_permission">Quicksy doit avoir accès au microphone</string>
     <string name="foreground_service_channel_description">Cette catégorie de notification est utilisée pour afficher une notification permanente indiquant que Quicksy est en cours d\'exécution.</string>
     <string name="set_profile_picture">Photo de profil Quicksy</string>
-    </resources>
+    <string name="not_available_in_your_country">Quicksy n\'est pas disponible dans votre pays.</string>
+    <string name="unable_to_verify_server_identity">Vérification de l\'identité du serveur impossible.</string>
+    <string name="unknown_security_error">Erreur de sécurité inconnue.</string>
+    <string name="timeout_while_connecting_to_server">Timeout lors de la connexion au serveur.</string>
+</resources>

@@ -7,7 +7,7 @@
   <string name="action_end_conversation">Fermer cette conversation</string>
   <string name="action_contact_details">Détails du contact</string>
   <string name="action_muc_details">Détails de la conversation de groupe</string>
-  <string name="channel_details">Détails de la chaîne</string>
+  <string name="channel_details">Détails du canal</string>
   <string name="action_secure">Conversation sécurisée</string>
   <string name="action_add_account">Ajouter un compte</string>
   <string name="action_edit_contact">Modifier le nom</string>
@@ -17,6 +17,8 @@
   <string name="action_unblock_contact">Débloquer le contact</string>
   <string name="action_block_domain">Bloquer le domaine</string>
   <string name="action_unblock_domain">Débloquer le domaine</string>
+  <string name="action_block_participant">Bloquer le participant</string>
+  <string name="action_unblock_participant">Débloquer le participant</string>
   <string name="title_activity_manage_accounts">Gestion des comptes</string>
   <string name="title_activity_settings">Paramètres</string>
   <string name="title_activity_sharewith">Partager avec Conversation</string>
@@ -28,6 +30,7 @@
   <string name="just_now">À l\'instant</string>
   <string name="minute_ago">Il y a 1 minute</string>
   <string name="minutes_ago">Il y a %d minutes</string>
+  <string name="x_unread_conversations">%d conversations non lues</string>
   <string name="sending">Envoi…</string>
   <string name="message_decrypting">Déchiffrement du message. Veuillez patienter...</string>
   <string name="pgp_message">Message chiffré avec OpenPGP</string>
@@ -334,6 +337,7 @@
   <string name="x_file_offered_for_download">%s proposé à télécharger</string>
   <string name="cancel_transmission">Annuler l\'envoi</string>
   <string name="file_transmission_failed">Échec de l\'envoi du fichier</string>
+  <string name="file_transmission_cancelled">Transfert de fichier annulé</string>
   <string name="file_deleted">Le fichier a été supprimé</string>
   <string name="no_application_found_to_open_file">Aucune application disponible pour ouvrir le fichier</string>
   <string name="no_application_found_to_open_link">Aucune application trouvée pour ouvrir le lien</string>
@@ -703,7 +707,7 @@
   <string name="small">Petite</string>
   <string name="medium">Moyenne</string>
   <string name="large">Grande</string>
-  <string name="not_encrypted_for_this_device">OMEMO sera utilisé par défaut pour toute nouvelle conversation.</string>
+  <string name="not_encrypted_for_this_device">Le message n\'était pas chiffré pour cet appareil.</string>
   <string name="omemo_decryption_failed">Échec de déchiffrement du message OMEMO.</string>
   <string name="undo">annuler</string>
   <string name="location_disabled">Le partage de positionnement est désactivé.</string>
@@ -847,7 +851,7 @@
   <string name="anyone_can_invite_others">N\'importe qui peut inviter d\'autres personnes.</string>
   <string name="jabber_ids_are_visible_to_admins">Les adresses XMPP sont visibles par les administrateurs.</string>
   <string name="jabber_ids_are_visible_to_anyone">Les adresses XMPP sont visibles par tous.</string>
-  <string name="no_users_hint_channel">Cette chaîne publique n\'a pas de participants. Invitez vos contacts ou utilisez le bouton de partage pour distribuer son adresse XMPP.</string>
+  <string name="no_users_hint_channel">Ce canal publique n\'a pas de participants. Invitez vos contacts ou utilisez le bouton de partage pour distribuer son adresse XMPP.</string>
   <string name="no_users_hint_group_chat">Ce chat de groupe privé n\'a aucun participant.</string>
   <string name="manage_permission">Gérer les privilèges</string>
   <string name="search_participants">Rechercher des participants</string>
@@ -856,11 +860,20 @@
   <string name="discover_channels">Découverte des canaux</string>
   <string name="search_channels">Recherche des canaux</string>
   <string name="channel_discovery_opt_in_title">Violation possible de la confidentialité !</string>
-  <string name="channel_discover_opt_in_message"><![CDATA[La découverte de chaînes utilise un service tiers appelé <a href="https://search.jabbercat.org">search.jabbercat.org</a> qui transmet votre adresse IP et les termes de recherche à ce service. Voir leur <a href="https://search.jabbercat.org/privacy">politique de confidentialité</a> pour plus d\'informations]]>.</string>
+  <string name="channel_discover_opt_in_message"><![CDATA[Channel discovery utilise un service tiers appelé <a href="https://search.jabber.network">search.jabber.network</a>.<br><br>L\'utilisation de cette fonction transmettra votre adresse IP et les termes de recherche à ce service. Veuillez consulter leur <a href="https://search.jabber.network/privacy">Politique de confidentialité</a> pour plus d\'information.]]></string>
   <string name="i_already_have_an_account">J\'ai déjà un compte</string>
   <string name="add_existing_account">Ajouter un compte existant</string>
   <string name="register_new_account">Enregistrer un nouveau compte</string>
   <string name="this_looks_like_a_domain">Ceci ressemble à une adresse de domaine</string>
   <string name="add_anway">Ajouter quand même</string>
   <string name="this_looks_like_channel">Ceci ressemble à une adresse de canal</string>
+  <string name="share_backup_files">Partager les fichiers de sauvegardes</string>
+  <string name="conversations_backup">Sauvegarder les conversations</string>
+  <string name="event">Événement </string>
+  <string name="open_backup">Ouvrir sauvegarde</string>
+  <string name="not_a_backup_file">Le fichier sélectionné n\'est pas une sauvegarde de Conversations</string>
+  <string name="account_already_setup">Ce compte a déjà été configuré</string>
+  <string name="please_enter_password">Veuillez saisir le mot de passe pour ce compte</string>
+  <string name="unable_to_perform_this_action">Action impossible à réaliser</string>
+  <string name="open_join_dialog">Rejoindre le canal public ...</string>
 </resources>

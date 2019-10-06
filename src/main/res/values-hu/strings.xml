@@ -858,7 +858,6 @@
   <string name="discover_channels">Csatornák felderítése</string>
   <string name="search_channels">Csatornák keresése</string>
   <string name="channel_discovery_opt_in_title">Magánélet lehetséges megsértése!</string>
-  <string name="channel_discover_opt_in_message"><![CDATA[A csatorna felderítés egy harmadik fél által biztosított szolgáltatást használ: <a href="https://search.jabbercat.org">search.jabbercat.org</a>.<br><br>Ezen funkció használata során át fog kerülni az IP címe és a keresési kifejezés ahhoz a szolgáltatáshoz. További információért tekintse meg az <a href="https://search.jabbercat.org/privacy">Adatvédelmi Irányelveiket</a>.]]></string>
   <string name="i_already_have_an_account">Már rendelkezem fiókkal</string>
   <string name="add_existing_account">Már létező fiók hozzáadása</string>
   <string name="register_new_account">Új fiók létrehozása</string>

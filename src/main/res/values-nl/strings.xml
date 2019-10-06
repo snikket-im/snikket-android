@@ -337,6 +337,7 @@
   <string name="x_file_offered_for_download">%s aangeboden om te downloaden</string>
   <string name="cancel_transmission">Bestandsoverdracht annuleren</string>
   <string name="file_transmission_failed">bestandsoverdracht mislukt</string>
+  <string name="file_transmission_cancelled">bestandsoverdracht geannuleerd</string>
   <string name="file_deleted">Het bestand is verwijderd</string>
   <string name="no_application_found_to_open_file">Geen applicatie om bestand te openen</string>
   <string name="no_application_found_to_open_link">Geen applicatie om verwijzing te openen</string>
@@ -859,7 +860,7 @@
   <string name="discover_channels">Kanalen ontdekken</string>
   <string name="search_channels">Kanalen doorzoeken</string>
   <string name="channel_discovery_opt_in_title">Mogelijke privacyschending!</string>
-  <string name="channel_discover_opt_in_message"><![CDATA[Kanaalontdekking maakt gebruik van een derdepartijdienst genaamd <a href="https://search.jabbercat.org">search.jabbercat.org</a>.<br><br>Door deze functie te gebruiken, zullen je IP-adres en zoekopdrachten naar die dienst verstuurd worden. Bekijk hun <a href="https://search.jabbercat.org/privacy">privacybeleid</a> voor meer informatie.]]></string>
+  <string name="channel_discover_opt_in_message"><![CDATA[Kanaalontdekking maakt gebruik van een derdepartijdienst genaamd <a href="https://search.jabber.network">search.jabber.network</a>.<br><br>Door deze functie te gebruiken, zullen je IP-adres en zoekopdrachten naar die dienst verstuurd worden. Bekijk hun <a href="https://search.jabber.network/privacy">privacybeleid</a> voor meer informatie.]]></string>
   <string name="i_already_have_an_account">Ik heb al een account</string>
   <string name="add_existing_account">Bestaande account toevoegen</string>
   <string name="register_new_account">Nieuwe account registreren</string>
@@ -874,4 +875,5 @@
   <string name="account_already_setup">Deze account is al ingesteld</string>
   <string name="please_enter_password">Voer het wachtwoord voor deze account in</string>
   <string name="unable_to_perform_this_action">Kan deze actie niet uitvoeren</string>
+  <string name="open_join_dialog">Deelnemen aan openbaar kanaal…</string>
 </resources>
