@@ -337,6 +337,7 @@
   <string name="x_file_offered_for_download">%s zum Herunterladen angeboten</string>
   <string name="cancel_transmission">Übertragung abbrechen</string>
   <string name="file_transmission_failed">Übertragung fehlgeschlagen</string>
+  <string name="file_transmission_cancelled">Übertragung abgebrochen</string>
   <string name="file_deleted">Datei wurde gelöscht</string>
   <string name="no_application_found_to_open_file">Keine Anwendung zum Öffnen der Datei gefunden</string>
   <string name="no_application_found_to_open_link">Keine Anwendung zum Öffnen des Links gefunden</string>
@@ -859,6 +860,7 @@
   <string name="discover_channels">Channels entdecken</string>
   <string name="search_channels">Channels suchen</string>
   <string name="channel_discovery_opt_in_title">Mögliche Datenschutzverletzung!</string>
+  <string name="channel_discover_opt_in_message"><![CDATA[Die Channel-Entdeckung verwendet einen Drittanbieterservice namens <a href="https://search.jabber.network">search.jabber.network</a>.<br><br>Wenn du diese Funktion verwendest, werden deine IP-Adresse und deine Suchbegriffe an diesen Dienst übertragen. Weitere Informationen findest du in der <a href="https://search.jabber.network/privacy">Datenschutzerklärung</a>.]]></string>
   <string name="i_already_have_an_account">Ich habe bereits ein Konto</string>
   <string name="add_existing_account">Vorhandenes Konto hinzufügen</string>
   <string name="register_new_account">Neues Konto erstellen</string>

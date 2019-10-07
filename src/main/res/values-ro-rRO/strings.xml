@@ -337,6 +337,7 @@
   <string name="x_file_offered_for_download">%s - fișier oferit spre descărcare</string>
   <string name="cancel_transmission">Anulează transmisiunea</string>
   <string name="file_transmission_failed">transmisie fișier eșuată</string>
+  <string name="file_transmission_cancelled">transmisia fișierului a fost anulată</string>
   <string name="file_deleted">Fișierul a fost șters</string>
   <string name="no_application_found_to_open_file">Nu s-a găsit nici o aplicație care să deschidă fișierul</string>
   <string name="no_application_found_to_open_link">Nu s-a găsit nici o aplicație care să deschidă legătura</string>
@@ -869,6 +870,7 @@ sau chiar pierderea mesajelor.\nÎn continuare veți fi rugați să dezactivați
   <string name="discover_channels">Descoperă canale publice</string>
   <string name="search_channels">Caută canale publice</string>
   <string name="channel_discovery_opt_in_title">Posibilă încălcare a intimității!</string>
+  <string name="channel_discover_opt_in_message"><![CDATA[Descoperirea de canale publice folosește un serviciu terț numit <a href="https://search.jabber.network">search.jabber.network</a>.<br><br>Folosind această funcție se va transmite adresa dumneavoastră IP și cuvintele căutate către acest serviciu. Pentru mai multe informații citiți <a href="https://search.jabber.network/privacy">Politica de confidențialitate</a> a serviciului.]]></string>
   <string name="i_already_have_an_account">Eu am deja un cont</string>
   <string name="add_existing_account">Adaugă un cont existent</string>
   <string name="register_new_account">Înregistrează un cont nou</string>
