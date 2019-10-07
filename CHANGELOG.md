@@ -2,6 +2,7 @@
 
 ### Version 2.5.12
 * Jingle file transfer fixes
+* Fixed OMEMO self healing (after backup restore) on servers w/o MAM
 
 ### Version 2.5.11
 * Fixed crash on Android <5.0
