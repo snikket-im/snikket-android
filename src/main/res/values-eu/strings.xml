@@ -30,6 +30,7 @@
   <string name="just_now">orain</string>
   <string name="minute_ago">min 1 lehenago</string>
   <string name="minutes_ago">%d min lehenago</string>
+  <string name="x_unread_conversations">Irakurrik gabeko %d elkarrizketa</string>
   <string name="sending">bidaltzen…</string>
   <string name="message_decrypting">Mezua desenkriptatzen. Mesedez itxaron…</string>
   <string name="pgp_message">OpenPGPz enkriptatutako mezua</string>
@@ -336,6 +337,7 @@
   <string name="x_file_offered_for_download">%s deskargatzeko eskeinita</string>
   <string name="cancel_transmission">Transmisioa utzi</string>
   <string name="file_transmission_failed">fitxategi transmisioak huts egin du</string>
+  <string name="file_transmission_cancelled">fitxategiaren transmisioa utzi egin da</string>
   <string name="file_deleted">Fitxategia ezabatu egin da</string>
   <string name="no_application_found_to_open_file">Fitxategia ireki dezakeen aplikaziorik ez da aurkitu</string>
   <string name="no_application_found_to_open_link">Ez da lotura hau ireki dezakeen aplikaziorik aurkitu</string>
@@ -856,6 +858,7 @@
   <string name="discover_channels">Kanalak aurkitu</string>
   <string name="search_channels">Kanalak bilatu</string>
   <string name="channel_discovery_opt_in_title">Balizko pribatutasun urraketa!</string>
+  <string name="channel_discover_opt_in_message"><![CDATA[Kanalak aurkitzeko ezaugarriak <a href="https://search.jabber.network">search.jabber.network</a>. izeneko hirugarren zerbitzu bat erabiltzen du.<br><br>Ezaugarri hau erabiltzeak zure IP helbidea eta bilatutako testua zerbitzu horretara bidaltzea dakar. Ikusi beren <a href="https://search.jabber.network/privacy">pribatutasun politika</a> informazio gehiago lortzeko.]]></string>
   <string name="i_already_have_an_account">Badaukat kontu bat dagoeneko</string>
   <string name="add_existing_account">Gehitu existitzen den kontu bat</string>
   <string name="register_new_account">Kontu berria erregistratu</string>
@@ -869,4 +872,6 @@
   <string name="not_a_backup_file">Hautatu duzun fitxategia ez da Conversations babes-kopia bat</string>
   <string name="account_already_setup">Kontu hau konfiguratuta dago jada</string>
   <string name="please_enter_password">Mesedez idatzi ezazu kontu honetarako pasahitza</string>
+  <string name="unable_to_perform_this_action">Ezin izan da ekintza hau burutu</string>
+  <string name="open_join_dialog">Kanal publiko batean sartu…</string>
 </resources>
