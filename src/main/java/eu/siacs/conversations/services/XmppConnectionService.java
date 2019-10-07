@@ -1659,7 +1659,7 @@ public class XmppConnectionService extends Service {
     public void deleteBookmark(final Account account, final Bookmark bookmark) {
         account.removeBookmark(bookmark);
         final XmppConnection connection = account.getXmppConnection();
-        if (connection.getFeatures().bookmarksConversion()) {
+        if (connection.getFeatures().bookmarks2()) {
             IqPacket request = mIqGenerator.deleteItem(Namespace.BOOKMARKS2, bookmark.getJid().asBareJid().toEscapedString());
             sendIqPacket(account, request, (a, response) -> {
                 if (response.getType() == IqPacket.TYPE.ERROR) {
