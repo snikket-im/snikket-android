@@ -225,13 +225,13 @@ public class ChannelDiscoveryActivity extends XmppActivity implements MenuItem.O
         final Conversation conversation = xmppConnectionService.findOrCreateConversation(account, result.getRoom(), true, true, true);
         Bookmark bookmark = conversation.getBookmark();
         if (bookmark != null) {
-            if (!bookmark.autojoin() && syncAutojoin) {
-                conversation.getBookmark().setAutojoin(true);
+            if (!bookmark.autojoin() && syncAutoJoin) {
+                bookmark.setAutojoin(true);
                 xmppConnectionService.createBookmark(account, bookmark);
             }
         } else {
             bookmark = new Bookmark(account, conversation.getJid().asBareJid());
-            bookmark.setAutojoin(syncAutojoin);
+            bookmark.setAutojoin(syncAutoJoin);
             xmppConnectionService.createBookmark(account, bookmark);
         }
         switchToConversation(conversation);
