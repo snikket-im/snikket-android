@@ -13,6 +13,7 @@ import android.view.View;
 
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
+import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.entities.Contact;
 import eu.siacs.conversations.entities.Conversation;
 import eu.siacs.conversations.entities.MucOptions;
@@ -71,8 +72,8 @@ public final class MucDetailsContextMenuHelper {
             startConversation.setVisible(true);
             final Contact contact = user.getContact();
             final User self = conversation.getMucOptions().getSelf();
-            if (contact != null && contact.showInRoster()) {
-                showContactDetails.setVisible(!contact.isSelf());
+            if ((contact != null && contact.showInRoster()) || mucOptions.isPrivateAndNonAnonymous()) {
+                showContactDetails.setVisible(contact == null || !contact.isSelf());
             }
             if ((activity instanceof ConferenceDetailsActivity || activity instanceof MucUsersActivity) && user.getRole() == MucOptions.Role.NONE) {
                 invite.setVisible(true);
@@ -135,7 +136,9 @@ public final class MucDetailsContextMenuHelper {
         Jid jid = user.getRealJid();
         switch (item.getItemId()) {
             case R.id.action_contact_details:
-                Contact contact = user.getContact();
+                final Jid realJid = user.getRealJid();
+                final Account account = conversation.getAccount();
+                final Contact contact = realJid == null ? null : account.getRoster().getContact(realJid);
                 if (contact != null) {
                     activity.switchToContactDetails(contact, fingerprint);
                 }
