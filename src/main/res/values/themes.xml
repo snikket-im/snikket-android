@@ -18,6 +18,7 @@
 
         <item name="activity_background_search">@drawable/search_background_light</item>
         <item name="activity_background_no_results">@drawable/no_results_background_light</item>
+        <item name="activity_primary_background_no_results">@drawable/no_results_primary_background_light</item>
         <item name="list_item_background">@drawable/list_item_background_light</item>
 
         <item name="EmojiColor">@color/black</item>
@@ -127,6 +128,7 @@
         <item name="color_background_overlay">@color/black26</item>
         <item name="activity_background_search">@drawable/search_background_dark</item>
         <item name="activity_background_no_results">@drawable/no_results_background_dark</item>
+        <item name="activity_primary_background_no_results">@drawable/no_results_primary_background_dark</item>
         <item name="list_item_background">@drawable/list_item_background_dark</item>
         <item name="color_warning">@color/red_a100</item>
 

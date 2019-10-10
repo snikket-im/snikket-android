@@ -32,6 +32,7 @@ import eu.siacs.conversations.services.ChannelDiscoveryService;
 import eu.siacs.conversations.ui.adapter.ChannelSearchResultAdapter;
 import eu.siacs.conversations.ui.util.PendingItem;
 import eu.siacs.conversations.ui.util.SoftKeyboardUtils;
+import eu.siacs.conversations.ui.util.StyledAttributes;
 import eu.siacs.conversations.utils.AccountUtils;
 import rocks.xmpp.addr.Jid;
 
@@ -128,6 +129,7 @@ public class ChannelDiscoveryActivity extends XmppActivity implements MenuItem.O
     private void toggleLoadingScreen() {
         adapter.submitList(Collections.emptyList());
         binding.progressBar.setVisibility(View.VISIBLE);
+        binding.list.setBackgroundColor(StyledAttributes.getColor(this, R.attr.color_background_primary));
     }
 
     @Override
@@ -172,11 +174,16 @@ public class ChannelDiscoveryActivity extends XmppActivity implements MenuItem.O
     }
 
     @Override
-    public void onChannelSearchResultsFound(List<MuclumbusService.Room> results) {
+    public void onChannelSearchResultsFound(final List<MuclumbusService.Room> results) {
         runOnUiThread(() -> {
             adapter.submitList(results);
             binding.list.setVisibility(View.VISIBLE);
             binding.progressBar.setVisibility(View.GONE);
+            if (results.size() == 0) {
+                binding.list.setBackground(StyledAttributes.getDrawable(this, R.attr.activity_primary_background_no_results));
+            } else {
+                binding.list.setBackgroundColor(StyledAttributes.getColor(this, R.attr.color_background_primary));
+            }
         });
 
     }
