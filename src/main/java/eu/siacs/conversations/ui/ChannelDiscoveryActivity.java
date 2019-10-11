@@ -166,10 +166,10 @@ public class ChannelDiscoveryActivity extends XmppActivity implements MenuItem.O
     @Override
     public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
         if (optedIn) {
+            toggleLoadingScreen();
+            SoftKeyboardUtils.hideSoftKeyboard(this);
             xmppConnectionService.discoverChannels(v.getText().toString(), this);
         }
-        toggleLoadingScreen();
-        SoftKeyboardUtils.hideSoftKeyboard(this);
         return true;
     }
 
@@ -177,7 +177,6 @@ public class ChannelDiscoveryActivity extends XmppActivity implements MenuItem.O
     public void onChannelSearchResultsFound(final List<MuclumbusService.Room> results) {
         runOnUiThread(() -> {
             adapter.submitList(results);
-            binding.list.setVisibility(View.VISIBLE);
             binding.progressBar.setVisibility(View.GONE);
             if (results.size() == 0) {
                 binding.list.setBackground(StyledAttributes.getDrawable(this, R.attr.activity_primary_background_no_results));
