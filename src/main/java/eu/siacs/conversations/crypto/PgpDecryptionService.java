@@ -201,6 +201,9 @@ public class PgpDecryptionService {
 								if (fixedFile.getParentFile().mkdirs()) {
 									Log.d(Config.LOGTAG,"created parent directories for "+fixedFile.getAbsolutePath());
 								}
+								synchronized (mXmppConnectionService.FILENAMES_TO_IGNORE_DELETION) {
+									mXmppConnectionService.FILENAMES_TO_IGNORE_DELETION.add(outputFile.getAbsolutePath());
+								}
 								if (outputFile.renameTo(fixedFile)) {
 									Log.d(Config.LOGTAG, "renamed " + outputFile.getAbsolutePath() + " to " + fixedFile.getAbsolutePath());
 									message.setRelativeFilePath(path);
