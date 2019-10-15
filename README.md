@@ -110,7 +110,7 @@ about bank transfer (SEPA).
 
 ##### Crypto currencies
 
-Bitcoin: `1AeqNAcg85APAZj9BZfAjdFCC5zesqXp2B`
+Bitcoin: `3KAD8vew6tPZDjiUJNnZ3YUoUxrCEVNwFL`
 
 Bitcoin Cash: `16ABkXzYAwWz8Y5DcWFfbBRqL63g3hzEaU`
 
