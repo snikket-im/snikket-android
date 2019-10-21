@@ -210,7 +210,7 @@ section of this document.
 
 #### I need professional support with Conversations or setting up my server
 
-I'm available for hire. Contact me at `inputmice@siacs.eu`.
+I'm available for hire. Contact information can be found on [my website](https://gultsch.de).
 
 #### How does the address book integration work?
 
