@@ -563,14 +563,16 @@ public class NotificationService {
                 if (addedActionsCount < 3) {
                     final Message firstLocationMessage = getFirstLocationMessage(messages);
                     if (firstLocationMessage != null) {
-                        String label = mXmppConnectionService.getResources().getString(R.string.show_location);
-                        PendingIntent pendingShowLocationIntent = createShowLocationIntent(firstLocationMessage);
-                        NotificationCompat.Action locationAction = new NotificationCompat.Action.Builder(
-                                R.drawable.ic_room_white_24dp,
-                                label,
-                                pendingShowLocationIntent).build();
-                        mBuilder.addAction(locationAction);
-                        ++addedActionsCount;
+                        final PendingIntent pendingShowLocationIntent = createShowLocationIntent(firstLocationMessage);
+                        if (pendingShowLocationIntent != null) {
+                            final String label = mXmppConnectionService.getResources().getString(R.string.show_location);
+                            NotificationCompat.Action locationAction = new NotificationCompat.Action.Builder(
+                                    R.drawable.ic_room_white_24dp,
+                                    label,
+                                    pendingShowLocationIntent).build();
+                            mBuilder.addAction(locationAction);
+                            ++addedActionsCount;
+                        }
                     }
                 }
                 if (addedActionsCount < 3) {
@@ -766,7 +768,7 @@ public class NotificationService {
                 return PendingIntent.getActivity(mXmppConnectionService, generateRequestCode(message.getConversation(), 18), intent, PendingIntent.FLAG_UPDATE_CURRENT);
             }
         }
-        return createOpenConversationsIntent();
+        return null;
     }
 
     private PendingIntent createContentIntent(final String conversationUuid, final String downloadMessageUuid) {
@@ -906,7 +908,10 @@ public class NotificationService {
             }
         }
         mBuilder.setContentText(mXmppConnectionService.getString(R.string.connected_accounts, connected, enabled));
-        mBuilder.setContentIntent(createOpenConversationsIntent());
+        final PendingIntent openIntent = createOpenConversationsIntent();
+        if (openIntent != null) {
+            mBuilder.setContentIntent(openIntent);
+        }
         mBuilder.setWhen(0);
         mBuilder.setPriority(Notification.PRIORITY_MIN);
         mBuilder.setSmallIcon(connected > 0 ? R.drawable.ic_link_white_24dp : R.drawable.ic_link_off_white_24dp);
@@ -920,7 +925,11 @@ public class NotificationService {
     }
 
     private PendingIntent createOpenConversationsIntent() {
-        return PendingIntent.getActivity(mXmppConnectionService, 0, new Intent(mXmppConnectionService, ConversationsActivity.class), 0);
+        try {
+            return PendingIntent.getActivity(mXmppConnectionService, 0, new Intent(mXmppConnectionService, ConversationsActivity.class), 0);
+        } catch (RuntimeException e) {
+            return null;
+        }
     }
 
     void updateErrorNotification() {
