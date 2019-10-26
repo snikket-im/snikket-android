@@ -335,7 +335,7 @@ public class MucOptions {
     }
 
     public boolean isContactInRoom(Contact contact) {
-        return findUserByRealJid(contact.getJid().asBareJid()) != null;
+        return contact != null && findUserByRealJid(contact.getJid().asBareJid()) != null;
     }
 
     public boolean isUserInRoom(Jid jid) {
