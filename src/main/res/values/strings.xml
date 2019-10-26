@@ -119,7 +119,7 @@
     <string name="pref_sound">Ringtone</string>
     <string name="pref_sound_summary">Play sound when a new message arrives</string>
     <string name="pref_notification_grace_period">Grace Period</string>
-    <string name="pref_notification_grace_period_summary">The length of time Conversations keeps quiet after seeing activity on another device</string>
+    <string name="pref_notification_grace_period_summary">The length of time notifications are silenced after detecting activity on one of your other devices.</string>
     <string name="pref_advanced_options">Advanced</string>
     <string name="pref_never_send_crash">Never send crash reports</string>
     <string name="pref_never_send_crash_summary">By sending in stack traces you are helping the ongoing development of Conversations</string>
