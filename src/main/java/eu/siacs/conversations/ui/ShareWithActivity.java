@@ -200,7 +200,12 @@ public class ShareWithActivity extends XmppActivity implements XmppConnectionSer
             intent.putExtra(Intent.EXTRA_TEXT, share.text);
             intent.putExtra(ConversationsActivity.EXTRA_AS_QUOTE, share.asQuote);
         }
-        startActivity(intent);
+        try {
+            startActivity(intent);
+        } catch (SecurityException e) {
+            Toast.makeText(this, R.string.sharing_application_not_grant_permission, Toast.LENGTH_SHORT).show();
+            return;
+        }
         finish();
     }
 
