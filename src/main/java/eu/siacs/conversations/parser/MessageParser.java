@@ -827,6 +827,9 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
             final Jid sender = InvalidJid.getNullForInvalid(displayed.getAttributeAsJid("sender"));
             if (packet.fromAccount(account) && !selfAddressed) {
                 dismissNotification(account, counterpart, query);
+                if (query == null) {
+                    activateGracePeriod(account);
+                }
             } else if (isTypeGroupChat) {
                 Conversation conversation = mXmppConnectionService.find(account, counterpart.asBareJid());
                 if (conversation != null && id != null && sender != null) {
