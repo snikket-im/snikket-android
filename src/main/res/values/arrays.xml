@@ -124,4 +124,14 @@
 		<item>@string/video_720p</item>
 		<item>@string/video_original</item>
 	</string-array>
+
+	<string-array name="channel_discovery_entries">
+		<item>@string/jabber_network</item>
+		<item>@string/local_server</item>
+	</string-array>
+
+	<string-array name="channel_discover_values">
+		<item>JABBER_NETWORK</item>
+		<item>LOCAL_SERVER</item>
+	</string-array>
 </resources>

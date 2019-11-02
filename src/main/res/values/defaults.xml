@@ -43,4 +43,5 @@
     <bool name="use_share_location_plugin">false</bool>
     <bool name="start_searching">false</bool>
     <string name="video_compression">360</string>
+    <string name="default_channel_discovery">JABBER_NETWORK</string>
 </resources>

@@ -38,6 +38,7 @@ import eu.siacs.conversations.entities.ListItem;
 import eu.siacs.conversations.entities.Message;
 import eu.siacs.conversations.entities.MucOptions;
 import eu.siacs.conversations.entities.RawBlockable;
+import eu.siacs.conversations.entities.Room;
 import eu.siacs.conversations.http.services.MuclumbusService;
 import eu.siacs.conversations.utils.UIHelper;
 import eu.siacs.conversations.xmpp.OnAdvancedStreamFeaturesLoaded;
@@ -81,14 +82,14 @@ public class AvatarService implements OnAdvancedStreamFeaturesLoaded {
 			return get((ListItem) avatarable, size, cachedOnly);
 		} else if (avatarable instanceof MucOptions.User) {
 			return get((MucOptions.User) avatarable, size, cachedOnly);
-		} else if (avatarable instanceof MuclumbusService.Room) {
-			return get((MuclumbusService.Room) avatarable, size, cachedOnly);
+		} else if (avatarable instanceof Room) {
+			return get((Room) avatarable, size, cachedOnly);
 		}
 		throw new AssertionError("AvatarService does not know how to generate avatar from "+avatarable.getClass().getName());
 
 	}
 
-	private Bitmap get(final MuclumbusService.Room result, final int size, boolean cacheOnly) {
+	private Bitmap get(final Room result, final int size, boolean cacheOnly) {
 		final Jid room = result.getRoom();
 		Conversation conversation = room != null ? mXmppConnectionService.findFirstMuc(room) : null;
 		if (conversation != null) {

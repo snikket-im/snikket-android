@@ -879,4 +879,9 @@
     <string name="unable_to_perform_this_action">Unable to perform this action</string>
     <string name="open_join_dialog">Join public channel…</string>
     <string name="sharing_application_not_grant_permission">The sharing application did not grant permission to access this file.</string>
+    <string name="group_chats_and_channels"><![CDATA[Group Chats & Channels]]></string>
+    <string name="jabber_network">jabber.network</string>
+    <string name="local_server">Local server</string>
+    <string name="pref_channel_discovery_summary">Most users should choose ‘jabber.network’ for better suggestions from the entirety of the public XMPP ecosystem.</string>
+    <string name="pref_channel_discovery">Channel discovery method</string>
 </resources>

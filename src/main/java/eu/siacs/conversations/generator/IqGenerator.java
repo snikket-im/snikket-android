@@ -565,4 +565,18 @@ public class IqGenerator extends AbstractGenerator {
         }
         return packet;
     }
+
+    public IqPacket queryDiscoItems(Jid jid) {
+        IqPacket packet = new IqPacket(IqPacket.TYPE.GET);
+        packet.setTo(jid);
+        packet.addChild("query",Namespace.DISCO_ITEMS);
+        return packet;
+    }
+
+    public IqPacket queryDiscoInfo(Jid jid) {
+        IqPacket packet = new IqPacket(IqPacket.TYPE.GET);
+        packet.setTo(jid);
+        packet.addChild("query",Namespace.DISCO_INFO);
+        return packet;
+    }
 }

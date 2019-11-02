@@ -16,26 +16,26 @@ import java.util.Locale;
 
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.databinding.SearchResultItemBinding;
-import eu.siacs.conversations.http.services.MuclumbusService;
+import eu.siacs.conversations.entities.Room;
 import eu.siacs.conversations.ui.XmppActivity;
 import eu.siacs.conversations.ui.util.AvatarWorkerTask;
 import rocks.xmpp.addr.Jid;
 
-public class ChannelSearchResultAdapter extends ListAdapter<MuclumbusService.Room, ChannelSearchResultAdapter.ViewHolder> implements View.OnCreateContextMenuListener {
+public class ChannelSearchResultAdapter extends ListAdapter<Room, ChannelSearchResultAdapter.ViewHolder> implements View.OnCreateContextMenuListener {
 
-    private static final DiffUtil.ItemCallback<MuclumbusService.Room> DIFF = new DiffUtil.ItemCallback<MuclumbusService.Room>() {
+    private static final DiffUtil.ItemCallback<Room> DIFF = new DiffUtil.ItemCallback<Room>() {
         @Override
-        public boolean areItemsTheSame(@NonNull MuclumbusService.Room a, @NonNull MuclumbusService.Room b) {
+        public boolean areItemsTheSame(@NonNull Room a, @NonNull Room b) {
             return a.address != null && a.address.equals(b.address);
         }
 
         @Override
-        public boolean areContentsTheSame(@NonNull MuclumbusService.Room a, @NonNull MuclumbusService.Room b) {
+        public boolean areContentsTheSame(@NonNull Room a, @NonNull Room b) {
             return a.equals(b);
         }
     };
     private OnChannelSearchResultSelected listener;
-    private MuclumbusService.Room current;
+    private Room current;
 
     public ChannelSearchResultAdapter() {
         super(DIFF);
@@ -49,7 +49,7 @@ public class ChannelSearchResultAdapter extends ListAdapter<MuclumbusService.Roo
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder viewHolder, int position) {
-        final MuclumbusService.Room searchResult = getItem(position);
+        final Room searchResult = getItem(position);
         viewHolder.binding.name.setText(searchResult.getName());
         final String description = searchResult.getDescription();
         final String language = searchResult.getLanguage();
@@ -78,7 +78,7 @@ public class ChannelSearchResultAdapter extends ListAdapter<MuclumbusService.Roo
         this.listener = listener;
     }
 
-    public MuclumbusService.Room getCurrent() {
+    public Room getCurrent() {
         return this.current;
     }
 
@@ -86,15 +86,14 @@ public class ChannelSearchResultAdapter extends ListAdapter<MuclumbusService.Roo
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
         final Activity activity = XmppActivity.find(v);
         final Object tag = v.getTag();
-        if (activity != null && tag instanceof MuclumbusService.Room) {
+        if (activity != null && tag instanceof Room) {
             activity.getMenuInflater().inflate(R.menu.channel_item_context, menu);
-            this.current = (MuclumbusService.Room) tag;
+            this.current = (Room) tag;
         }
     }
 
-
     public interface OnChannelSearchResultSelected {
-        void onChannelSearchResult(MuclumbusService.Room result);
+        void onChannelSearchResult(Room result);
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {

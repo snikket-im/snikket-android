@@ -34,6 +34,7 @@ import android.provider.ContactsContract;
 import android.security.KeyChain;
 import android.support.annotation.BoolRes;
 import android.support.annotation.IntegerRes;
+import android.support.annotation.NonNull;
 import android.support.v4.app.RemoteInput;
 import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
@@ -41,6 +42,8 @@ import android.util.DisplayMetrics;
 import android.util.Log;
 import android.util.LruCache;
 import android.util.Pair;
+
+import com.google.common.base.Strings;
 
 import org.conscrypt.Conscrypt;
 import org.openintents.openpgp.IOpenPgpService2;
@@ -857,8 +860,8 @@ public class XmppConnectionService extends Service {
         mChannelDiscoveryService.initializeMuclumbusService();
     }
 
-    public void discoverChannels(String query, ChannelDiscoveryService.OnChannelSearchResultsFound onChannelSearchResultsFound) {
-        mChannelDiscoveryService.discover(query, onChannelSearchResultsFound);
+    public void discoverChannels(String query, ChannelDiscoveryService.Method method, ChannelDiscoveryService.OnChannelSearchResultsFound onChannelSearchResultsFound) {
+        mChannelDiscoveryService.discover(Strings.nullToEmpty(query).trim(), method, onChannelSearchResultsFound);
     }
 
     public boolean isDataSaverDisabled() {
@@ -2244,6 +2247,7 @@ public class XmppConnectionService extends Service {
             getNotificationService().updateErrorNotification();
             toggleForegroundService();
             syncEnabledAccountSetting();
+            mChannelDiscoveryService.cleanCache();
             return true;
         } else {
             return false;
@@ -3086,9 +3090,7 @@ public class XmppConnectionService extends Service {
     }
 
     public void fetchConferenceConfiguration(final Conversation conversation, final OnConferenceConfigurationFetched callback) {
-        IqPacket request = new IqPacket(IqPacket.TYPE.GET);
-        request.setTo(conversation.getJid().asBareJid());
-        request.query("http://jabber.org/protocol/disco#info");
+        IqPacket request = mIqGenerator.queryDiscoInfo(conversation.getJid().asBareJid());
         sendIqPacket(conversation.getAccount(), request, new OnIqPacketReceived() {
             @Override
             public void onIqPacketReceived(Account account, IqPacket packet) {
@@ -4437,7 +4439,7 @@ public class XmppConnectionService extends Service {
                 request.setTo(jid);
                 final String node = presence.getNode();
                 final String ver = presence.getVer();
-                final Element query = request.query("http://jabber.org/protocol/disco#info");
+                final Element query = request.query(Namespace.DISCO_INFO);
                 if (node != null && ver != null) {
                     query.setAttribute("node", node + "#" + ver);
                 }

@@ -1,6 +1,7 @@
 package eu.siacs.conversations.parser;
 
 import android.support.annotation.NonNull;
+import android.text.TextUtils;
 import android.util.Base64;
 import android.util.Log;
 import android.util.Pair;
@@ -27,12 +28,15 @@ import eu.siacs.conversations.crypto.axolotl.AxolotlService;
 import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.entities.Contact;
 import eu.siacs.conversations.entities.Conversation;
+import eu.siacs.conversations.entities.Room;
+import eu.siacs.conversations.services.ChannelDiscoveryService;
 import eu.siacs.conversations.services.XmppConnectionService;
 import eu.siacs.conversations.xml.Namespace;
 import eu.siacs.conversations.xml.Element;
 import eu.siacs.conversations.xmpp.InvalidJid;
 import eu.siacs.conversations.xmpp.OnIqPacketReceived;
 import eu.siacs.conversations.xmpp.OnUpdateBlocklist;
+import eu.siacs.conversations.xmpp.forms.Data;
 import eu.siacs.conversations.xmpp.stanzas.IqPacket;
 import rocks.xmpp.addr.Jid;
 
@@ -415,6 +419,57 @@ public class IqParser extends AbstractParser implements OnIqPacketReceived {
                 account.getXmppConnection().sendIqPacket(response, null);
             }
         }
+    }
+
+
+    public static List<Jid> items(IqPacket packet) {
+        ArrayList<Jid> items = new ArrayList<>();
+        final Element query = packet.findChild("query", Namespace.DISCO_ITEMS);
+        if (query == null) {
+            return items;
+        }
+        for(Element child : query.getChildren()) {
+            if ("item".equals(child.getName())) {
+                Jid jid = child.getAttributeAsJid("jid");
+                if (jid != null) {
+                    items.add(jid);
+                }
+            }
+        }
+        return items;
+    }
+
+    public static Room parseRoom(IqPacket packet) {
+        final Element query = packet.findChild("query", Namespace.DISCO_INFO);
+        if(query == null) {
+            return null;
+        }
+        final Element x = query.findChild("x");
+        if (x == null) {
+            return null;
+        }
+        final Element identity = query.findChild("identity");
+        Data data = Data.parse(x);
+        String address = packet.getFrom().toEscapedString();
+        String name = identity == null ? null : identity.getAttribute("name");
+        String roomName = data.getValue("muc#roomconfig_roomname");;
+        String description = data.getValue("muc#roominfo_description");
+        String language = data.getValue("muc#roominfo_lang");
+        String occupants = data.getValue("muc#roominfo_occupants");
+        int nusers;
+        try {
+            nusers = occupants == null ? 0 : Integer.parseInt(occupants);
+        } catch (NumberFormatException e) {
+            nusers = 0;
+        }
+
+        return new Room(
+                address,
+                TextUtils.isEmpty(roomName) ? name : roomName,
+                description,
+                language,
+                nusers
+        );
     }
 
 }
