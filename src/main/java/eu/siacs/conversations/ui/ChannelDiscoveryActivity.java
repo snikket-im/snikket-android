@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v7.widget.Toolbar;
 import android.text.Html;
+import android.text.method.LinkMovementMethod;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -158,6 +159,13 @@ public class ChannelDiscoveryActivity extends XmppActivity implements MenuItem.O
             builder.setPositiveButton(R.string.confirm, (dialog, which) -> optIn());
             builder.setOnCancelListener(dialog -> finish());
             final AlertDialog dialog = builder.create();
+            dialog.setOnShowListener(d -> {
+                final TextView textView = dialog.findViewById(android.R.id.message);
+                if (textView == null) {
+                    return;
+                }
+                textView.setMovementMethod(LinkMovementMethod.getInstance());
+            });
             dialog.setCanceledOnTouchOutside(false);
             dialog.show();
         }
