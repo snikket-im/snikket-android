@@ -228,20 +228,22 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
                     removeErrorsOnAllBut(binding.hostnameLayout);
                     return;
                 }
-                try {
-                    numericPort = Integer.parseInt(port);
-                    if (numericPort < 0 || numericPort > 65535) {
+                if (!hostname.isEmpty()) {
+                    try {
+                        numericPort = Integer.parseInt(port);
+                        if (numericPort < 0 || numericPort > 65535) {
+                            binding.portLayout.setError(getString(R.string.not_a_valid_port));
+                            removeErrorsOnAllBut(binding.portLayout);
+                            binding.port.requestFocus();
+                            return;
+                        }
+
+                    } catch (NumberFormatException e) {
                         binding.portLayout.setError(getString(R.string.not_a_valid_port));
                         removeErrorsOnAllBut(binding.portLayout);
                         binding.port.requestFocus();
                         return;
                     }
-
-                } catch (NumberFormatException e) {
-                    binding.portLayout.setError(getString(R.string.not_a_valid_port));
-                    removeErrorsOnAllBut(binding.portLayout);
-                    binding.port.requestFocus();
-                    return;
                 }
             }
 
@@ -477,8 +479,13 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
     }
 
     private void updatePortLayout() {
-        String hostname = this.binding.hostname.getText().toString();
-        this.binding.portLayout.setEnabled(!TextUtils.isEmpty(hostname));
+        final String hostname = this.binding.hostname.getText().toString();
+        if (TextUtils.isEmpty(hostname)) {
+            this.binding.portLayout.setEnabled(false);
+            this.binding.portLayout.setError(null);
+        } else {
+            this.binding.portLayout.setEnabled(true);
+        }
     }
 
     protected void updateSaveButton() {
@@ -613,7 +620,7 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
     }
 
     private void refreshAvatar() {
-        AvatarWorkerTask.loadAvatar(mAccount,binding.avater,R.dimen.avatar_on_details_screen_size);
+        AvatarWorkerTask.loadAvatar(mAccount, binding.avater, R.dimen.avatar_on_details_screen_size);
     }
 
     @Override
@@ -683,9 +690,9 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
             }
             boolean init = intent.getBooleanExtra("init", false);
             boolean openedFromNotification = intent.getBooleanExtra(EXTRA_OPENED_FROM_NOTIFICATION, false);
-            Log.d(Config.LOGTAG,"extras "+intent.getExtras());
-            this.mForceRegister = intent.hasExtra(EXTRA_FORCE_REGISTER) ? intent.getBooleanExtra(EXTRA_FORCE_REGISTER,false) : null;
-            Log.d(Config.LOGTAG,"force register="+mForceRegister);
+            Log.d(Config.LOGTAG, "extras " + intent.getExtras());
+            this.mForceRegister = intent.hasExtra(EXTRA_FORCE_REGISTER) ? intent.getBooleanExtra(EXTRA_FORCE_REGISTER, false) : null;
+            Log.d(Config.LOGTAG, "force register=" + mForceRegister);
             this.mInitMode = init || this.jidToEdit == null;
             this.messageFingerprint = intent.getStringExtra("fingerprint");
             if (!mInitMode) {
@@ -975,7 +982,7 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
 
         if (!mInitMode) {
             this.binding.avater.setVisibility(View.VISIBLE);
-            AvatarWorkerTask.loadAvatar(mAccount,binding.avater,R.dimen.avatar_on_details_screen_size);
+            AvatarWorkerTask.loadAvatar(mAccount, binding.avater, R.dimen.avatar_on_details_screen_size);
         } else {
             this.binding.avater.setVisibility(View.GONE);
         }
