@@ -93,7 +93,7 @@ public class Compatibility {
     public static void removeUnusedPreferences(SettingsFragment settingsFragment) {
         List<PreferenceCategory> categories = Arrays.asList(
                 (PreferenceCategory) settingsFragment.findPreference("notification_category"),
-                (PreferenceCategory) settingsFragment.findPreference("other_expert_category"));
+                (PreferenceCategory) settingsFragment.findPreference("advanced"));
         for (String key : (runsTwentySix() ? UNUSED_SETTINGS_POST_TWENTYSIX : UNUESD_SETTINGS_PRE_TWENTYSIX)) {
             Preference preference = settingsFragment.findPreference(key);
             if (preference != null) {

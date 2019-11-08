@@ -185,6 +185,14 @@
             android:title="@string/pref_font_size" />
     </PreferenceCategory>
     <PreferenceCategory
+        android:key="backup_category"
+        android:title="@string/backup">
+        <Preference
+            android:key="create_backup"
+            android:summary="@string/pref_create_backup_summary"
+            android:title="@string/pref_create_backup" />
+    </PreferenceCategory>
+    <PreferenceCategory
         android:key="advanced"
         android:title="@string/pref_advanced_options">
         <CheckBoxPreference
@@ -192,6 +200,12 @@
             android:key="never_send"
             android:summary="@string/pref_never_send_crash_summary"
             android:title="@string/pref_never_send_crash" />
+
+        <CheckBoxPreference
+            android:defaultValue="@bool/enable_foreground_service"
+            android:key="enable_foreground_service"
+            android:summary="@string/pref_keep_foreground_service_summary"
+            android:title="@string/pref_keep_foreground_service" />
 
         <PreferenceScreen
             android:key="expert"
@@ -320,19 +334,6 @@
                     android:summary="@string/pref_channel_discovery_summary"
                     android:title="@string/pref_channel_discovery" />
             </PreferenceCategory>
-            <PreferenceCategory
-                android:key="other_expert_category"
-                android:title="@string/pref_expert_options_other">
-                <CheckBoxPreference
-                    android:defaultValue="@bool/enable_foreground_service"
-                    android:key="enable_foreground_service"
-                    android:summary="@string/pref_keep_foreground_service_summary"
-                    android:title="@string/pref_keep_foreground_service" />
-                <Preference
-                    android:key="create_backup"
-                    android:summary="@string/pref_create_backup_summary"
-                    android:title="@string/pref_create_backup" />
-            </PreferenceCategory>
             <intent
                 android:action="android.intent.action.VIEW"
                 android:targetClass="eu.siacs.conversations.ui.SettingsActivity"
@@ -343,5 +344,7 @@
             </intent>
         </PreferenceScreen>
     </PreferenceCategory>
-    <eu.siacs.conversations.ui.AboutPreference />
+    <PreferenceCategory android:title="@string/category_about">
+        <eu.siacs.conversations.ui.AboutPreference />
+    </PreferenceCategory>
 </PreferenceScreen>

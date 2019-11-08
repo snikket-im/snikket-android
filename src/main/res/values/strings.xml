@@ -880,4 +880,6 @@
     <string name="local_server">Local server</string>
     <string name="pref_channel_discovery_summary">Most users should choose ‘jabber.network’ for better suggestions from the entirety of the public XMPP ecosystem.</string>
     <string name="pref_channel_discovery">Channel discovery method</string>
+    <string name="backup">Backup</string>
+    <string name="category_about">About</string>
 </resources>
