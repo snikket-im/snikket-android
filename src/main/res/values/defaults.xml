@@ -32,7 +32,6 @@
     <bool name="manually_change_presence">false</bool>
     <bool name="away_when_screen_off">false</bool>
     <bool name="autojoin">true</bool>
-    <bool name="indicate_received">false</bool>
     <bool name="enable_foreground_service">false</bool>
     <bool name="never_send">false</bool>
     <bool name="validate_hostname">false</bool>

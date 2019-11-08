@@ -282,8 +282,6 @@
     <string name="title_pref_enable_quiet_hours">Enable quiet hours</string>
     <string name="pref_quiet_hours_summary">Notifications will be silenced during quiet hours</string>
     <string name="pref_use_send_button_to_indicate_status">Send button indicates status</string>
-    <string name="pref_use_indicate_received">Request message receipts</string>
-    <string name="pref_use_indicate_received_summary">Received messages will be marked with a green tick if supported</string>
     <string name="pref_use_send_button_to_indicate_status_summary">Colorize send button to indicate contact status</string>
     <string name="pref_expert_options_other">Other</string>
     <string name="pref_autojoin">Synchronize with bookmarks</string>

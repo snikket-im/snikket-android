@@ -329,11 +329,6 @@
                 android:key="other_expert_category"
                 android:title="@string/pref_expert_options_other">
                 <CheckBoxPreference
-                    android:defaultValue="@bool/indicate_received"
-                    android:key="indicate_received"
-                    android:summary="@string/pref_use_indicate_received_summary"
-                    android:title="@string/pref_use_indicate_received" />
-                <CheckBoxPreference
                     android:defaultValue="@bool/enable_foreground_service"
                     android:key="enable_foreground_service"
                     android:summary="@string/pref_keep_foreground_service_summary"

@@ -89,7 +89,6 @@ public class MessageAdapter extends ArrayAdapter<Message> implements CopyTextVie
 	private DisplayMetrics metrics;
 	private OnContactPictureClicked mOnContactPictureClickedListener;
 	private OnContactPictureLongClicked mOnContactPictureLongClickedListener;
-	private boolean mIndicateReceived = false;
 	private boolean mUseGreenBackground = false;
 	private OnQuoteListener onQuoteListener;
 	public MessageAdapter(XmppActivity activity, List<Message> messages) {
@@ -208,9 +207,7 @@ public class MessageAdapter extends ArrayAdapter<Message> implements CopyTextVie
 				break;
 			case Message.STATUS_SEND_RECEIVED:
 			case Message.STATUS_SEND_DISPLAYED:
-				if (mIndicateReceived) {
-					viewHolder.indicatorReceived.setVisibility(View.VISIBLE);
-				}
+				viewHolder.indicatorReceived.setVisibility(View.VISIBLE);
 				break;
 			case Message.STATUS_SEND_FAILED:
 				final String errorMessage = message.getErrorMessage();
@@ -910,7 +907,6 @@ public class MessageAdapter extends ArrayAdapter<Message> implements CopyTextVie
 
 	public void updatePreferences() {
 		SharedPreferences p = PreferenceManager.getDefaultSharedPreferences(activity);
-		this.mIndicateReceived = p.getBoolean("indicate_received", activity.getResources().getBoolean(R.bool.indicate_received));
 		this.mUseGreenBackground = p.getBoolean("use_green_background", activity.getResources().getBoolean(R.bool.use_green_background));
 	}
 

@@ -3906,10 +3906,6 @@ public class XmppConnectionService extends Service {
         return getBooleanPreference("autojoin", R.bool.autojoin);
     }
 
-    public boolean indicateReceived() {
-        return getBooleanPreference("indicate_received", R.bool.indicate_received);
-    }
-
     public boolean useTorToConnect() {
         return QuickConversationsService.isConversations() && getBooleanPreference("use_tor", R.bool.use_tor);
     }

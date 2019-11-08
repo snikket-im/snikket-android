@@ -37,16 +37,14 @@ public class MessageGenerator extends AbstractGenerator {
 		if (conversation.getMode() == Conversation.MODE_SINGLE) {
 			packet.setTo(message.getCounterpart());
 			packet.setType(MessagePacket.TYPE_CHAT);
-			if (this.mXmppConnectionService.indicateReceived() && !isWithSelf) {
+			if (!isWithSelf) {
 				packet.addChild("request", "urn:xmpp:receipts");
 			}
 		} else if (message.isPrivateMessage()) {
 			packet.setTo(message.getCounterpart());
 			packet.setType(MessagePacket.TYPE_CHAT);
 			packet.addChild("x", "http://jabber.org/protocol/muc#user");
-			if (this.mXmppConnectionService.indicateReceived()) {
-				packet.addChild("request", "urn:xmpp:receipts");
-			}
+			packet.addChild("request", "urn:xmpp:receipts");
 		} else {
 			packet.setTo(message.getCounterpart().asBareJid());
 			packet.setType(MessagePacket.TYPE_GROUPCHAT);
