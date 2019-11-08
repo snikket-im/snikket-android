@@ -206,10 +206,6 @@
   <string name="title_pref_quiet_hours_end_time">Waktu selesai</string>
   <string name="title_pref_enable_quiet_hours">Aktifkan waktu sunyi</string>
   <string name="pref_quiet_hours_summary">Pemberitahuan akan disunyukan ketika jam sunyi.</string>
-  <string name="pref_use_send_button_to_indicate_status">Tombol kirim menunjukan statusnya</string>
-  <string name="pref_use_indicate_received">Permintaan penerimaan pesan</string>
-  <string name="pref_use_indicate_received_summary">Pesan yang diterima akan ditambahkan centang hijau jika didukung</string>
-  <string name="pref_use_send_button_to_indicate_status_summary">Warnai tombol kirim untuk mengindikasikan status kontak</string>
   <string name="pref_expert_options_other">Lainnya</string>
   <string name="using_account">menggunakan akun %s</string>
   <string name="not_connected_try_again">Anda tidak terhubung. Coba lagi nanti</string>
@@ -325,7 +321,6 @@
   <string name="sync_with_contacts">Sinkronkan dengan kontak</string>
   <string name="notify_on_all_messages">Tampilkan notifikasi untuk semua pesan</string>
   <string name="always">Selalu</string>
-  <string name="automatically">Secara otomatis</string>
   <string name="battery_optimizations_enabled">Pengoptimalan baterai diaktifkan</string>
   <string name="disable">Non-aktifkan</string>
   <string name="selection_too_large">Area yang dipilih terlalu besar</string>

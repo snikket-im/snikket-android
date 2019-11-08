@@ -118,7 +118,6 @@
   <string name="pref_sound">Csengőhang</string>
   <string name="pref_sound_summary">Hangeffekt lejátszása új üzenet érkezésekor</string>
   <string name="pref_notification_grace_period">Türelmi idő</string>
-  <string name="pref_notification_grace_period_summary">A szoftver csendben marad ennyi ideig, miután aktivitást észlelt másik eszközön</string>
   <string name="pref_advanced_options">Fejlett funkciók</string>
   <string name="pref_never_send_crash">Ne küldjön programhiba jelentéseket</string>
   <string name="pref_never_send_crash_summary">A hibák jelentésével segíted a Conversations program fejlesztését</string>
@@ -280,10 +279,6 @@
   <string name="title_pref_quiet_hours_end_time">Befejezése</string>
   <string name="title_pref_enable_quiet_hours">Csöndes órák engedélyezése</string>
   <string name="pref_quiet_hours_summary">Értesítések el lesznek némítva a csöndes órákban</string>
-  <string name="pref_use_send_button_to_indicate_status">A küldés gomb jelzi az állapotot</string>
-  <string name="pref_use_indicate_received">Üzenet nyugták kérése</string>
-  <string name="pref_use_indicate_received_summary">A megkapott üzenetek egy zöld pipával lesznek jelölve ha támogatott ez a funkció</string>
-  <string name="pref_use_send_button_to_indicate_status_summary">Kiszínezi a küldés gombot, hogy jelezze a partner állapotát</string>
   <string name="pref_expert_options_other">Egyéb</string>
   <string name="pref_autojoin">Szinkronizáljon könyvjelzőkkel</string>
   <string name="pref_autojoin_summary">Csatlakozzon és hagyja ott a csoportos beszélgetéseket a könyvjelzők automatikus csatlakozásának megfelelően.</string>
@@ -510,9 +505,7 @@
   <string name="notify_never">Értesítések letiltva</string>
   <string name="notify_paused">Értesítések szüneteltetve</string>
   <string name="pref_picture_compression">Kép tömörítés</string>
-  <string name="pref_picture_compression_summary">Átméretezi és tömöríti a képeket</string>
   <string name="always">Mindig</string>
-  <string name="automatically">Automatikusan</string>
   <string name="battery_optimizations_enabled">Akkumulátor optimalizációk engedélyezve</string>
   <string name="battery_optimizations_enabled_explained">A készülék erős akkumulátor optimalizálást végez a Conversations programon, ami késleltetett értesítésekhez, vagy akár üzenetek elvesztéséhet is vezethet.\nJavasolt kikapcsolni ezt.</string>
   <string name="battery_optimizations_enabled_dialog">A készülék erős akkumulátor optimalizálást végez a Conversations programon, ami késleltetett értesítésekhez, vagy akár üzenetek elvesztéséhet is vezethet.\nMost meg lesz kérve az optimalizáció letiltására.</string>

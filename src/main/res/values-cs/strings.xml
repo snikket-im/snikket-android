@@ -98,7 +98,6 @@
   <string name="pref_sound">Tón upozornění</string>
   <string name="pref_sound_summary">Přehrát zvuk při přijetí nové zprávy</string>
   <string name="pref_notification_grace_period">Časová lhůta</string>
-  <string name="pref_notification_grace_period_summary">Časová lhůta po kterou bude Conversations v tichém režimu při zaznamenání aktivity na jiném přístroji</string>
   <string name="pref_advanced_options">Rozšířené</string>
   <string name="pref_never_send_crash">Neodesílat detaily o pádu aplikace</string>
   <string name="pref_never_send_crash_summary">Zasláním detailů o důvodu selhání pomůžete dalšímu vývoji aplikace Konverzace</string>
@@ -230,10 +229,6 @@
   <string name="title_pref_quiet_hours_end_time">Dokdy</string>
   <string name="title_pref_enable_quiet_hours">Povolit tichý režim</string>
   <string name="pref_quiet_hours_summary">Upozornění budou během tichého režimu ztlumena</string>
-  <string name="pref_use_send_button_to_indicate_status">Tlačítko pro odeslání zobrazuje stav</string>
-  <string name="pref_use_indicate_received">Požadovat oznámení o přijetí</string>
-  <string name="pref_use_indicate_received_summary">Přijaté zprávy budou označeny zeleně, pokud je funkce podporována</string>
-  <string name="pref_use_send_button_to_indicate_status_summary">Obarvit tlačítko odesílání barvou indikující stavu kontaktu</string>
   <string name="pref_expert_options_other">Další</string>
   <string name="toast_message_omemo_fingerprint">OMEMO otisk zkopírován do schránky!</string>
   <string name="using_account">za použití účtu %s</string>
@@ -396,7 +391,6 @@
   <string name="notify_never">Upozornění vypnuta</string>
   <string name="notify_paused">Upozornění pozastavena</string>
   <string name="always">Vždy</string>
-  <string name="automatically">Automaticky</string>
   <string name="battery_optimizations_enabled">Povolena optimalizace využití baterie</string>
   <string name="battery_optimizations_enabled_explained">Tento přístroj provádí agresivní optimalizace využití baterie pro aplikaci Conversations. Ty mohou způsobit zpoždění upozornění nebo ztrátu zpráv.\nJe doporučeno tyto vypnout.</string>
   <string name="battery_optimizations_enabled_dialog">Tento přístroj provádí agresivní optimalizace využití baterie pro aplikaci Conversations. Ty mohou způsobit zpoždění upozornění nebo ztrátu zpráv.\nnyní budete vyzváni k jejich vypnutí.</string>

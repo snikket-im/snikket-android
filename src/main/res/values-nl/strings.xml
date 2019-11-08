@@ -119,7 +119,6 @@
   <string name="pref_sound">Meldingstoon</string>
   <string name="pref_sound_summary">Geluid afspelen wanneer een nieuw bericht ontvangen wordt</string>
   <string name="pref_notification_grace_period">Uitstelperiode</string>
-  <string name="pref_notification_grace_period_summary">Hoe lang Conversations stil blijft na activiteit op een ander apparaat waar te nemen</string>
   <string name="pref_advanced_options">Geavanceerd</string>
   <string name="pref_never_send_crash">Verstuur nooit crashrapportages</string>
   <string name="pref_never_send_crash_summary">Door crashrapportages te versturen help je de ontwikkeling van Conversations</string>
@@ -281,10 +280,6 @@
   <string name="title_pref_quiet_hours_end_time">Eindtijd</string>
   <string name="title_pref_enable_quiet_hours">Stille uren inschakelen</string>
   <string name="pref_quiet_hours_summary">Tijdens stille uren worden meldingen onderdrukt</string>
-  <string name="pref_use_send_button_to_indicate_status">Verstuur-knop toont status aan</string>
-  <string name="pref_use_indicate_received">Vraag ontvangstbevestigingen</string>
-  <string name="pref_use_indicate_received_summary">Indien ondersteund, worden ontvangen berichten met een groen vinkje aangeduid</string>
-  <string name="pref_use_send_button_to_indicate_status_summary">Kleur verstuur-knop in om status van contact weer te geven</string>
   <string name="pref_expert_options_other">Andere</string>
   <string name="pref_autojoin">Synchroniseren met bladwijzers</string>
   <string name="pref_autojoin_summary">Neem deel aan en verlaat groepsgesprekken op basis van de automatische deelname-optie in je bladwijzers.</string>
@@ -512,9 +507,7 @@
   <string name="notify_never">Meldingen uitgeschakeld</string>
   <string name="notify_paused">Meldingen gepauzeerd</string>
   <string name="pref_picture_compression">Afbeeldingscompressie</string>
-  <string name="pref_picture_compression_summary">Afbeeldingen verkleinen en comprimeren</string>
   <string name="always">Altijd</string>
-  <string name="automatically">Automatisch</string>
   <string name="battery_optimizations_enabled">Batterij-optimalisaties ingeschakeld</string>
   <string name="battery_optimizations_enabled_explained">Je apparaat voert sterke batterij-optimalisaties uit op Conversations, die kunnen leiden tot vertraagde meldingen of zelfs verlies van berichten.\nHet is aangeraden deze optimalisaties uit te schakelen.</string>
   <string name="battery_optimizations_enabled_dialog">Je apparaat voert sterke batterij-optimalisaties uit op Conversations, die kunnen leiden tot vertraagde meldingen of zelfs verlies van berichten.\nJe zal nu gevraagd worden deze optimalisaties uit te schakelen.</string>

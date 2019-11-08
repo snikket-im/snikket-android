@@ -119,7 +119,7 @@
   <string name="pref_sound">Dzwonek</string>
   <string name="pref_sound_summary">Odtwórz dźwięk gdy nadejdzie wiadomość</string>
   <string name="pref_notification_grace_period">Czas bez powiadomień</string>
-  <string name="pref_notification_grace_period_summary">Czas od ostatniej aktywności na innym urządzeniu, przez który Conversations nie odzywa się</string>
+  <string name="pref_notification_grace_period_summary">Długość czasu kiedy powiadomienia są uśpione po wykryciu aktywności na jednym z twoich innych urządzeń.</string>
   <string name="pref_advanced_options">Zaawansowane</string>
   <string name="pref_never_send_crash">Nie wysyłaj raportów awarii</string>
   <string name="pref_never_send_crash_summary">Wysyłając ślady stosu pomagasz rozwijać Conversations</string>
@@ -281,10 +281,6 @@
   <string name="title_pref_quiet_hours_end_time">Koniec</string>
   <string name="title_pref_enable_quiet_hours">Włącz godziny ciszy</string>
   <string name="pref_quiet_hours_summary">Powiadomienia będą wyciszone w wybranym przedziale czasu</string>
-  <string name="pref_use_send_button_to_indicate_status">Przycisk wysyłania wskazuje status</string>
-  <string name="pref_use_indicate_received">Raporty dostarczenia</string>
-  <string name="pref_use_indicate_received_summary">Jeżeli to możliwe, oznaczaj dostarczone wiadomości zielonym haczykiem</string>
-  <string name="pref_use_send_button_to_indicate_status_summary">Koloruj przycisk wysyłania w zależności od statusu kontaktu</string>
   <string name="pref_expert_options_other">Inne</string>
   <string name="pref_autojoin">Synchronizuj z zakładkami</string>
   <string name="pref_autojoin_summary">Dołączaj i wychodź z konferencji przy użyciu flagi automatycznego dołączania z zakładek</string>
@@ -337,6 +333,7 @@
   <string name="x_file_offered_for_download">Zaproponowano pobranie pliku %s</string>
   <string name="cancel_transmission">Anuluj przesyłanie</string>
   <string name="file_transmission_failed">Przesyłanie pliku nie powiodło się</string>
+  <string name="file_transmission_cancelled">transmisja pliku anulowana</string>
   <string name="file_deleted">Plik został usunięty</string>
   <string name="no_application_found_to_open_file">Nie odnaleziono aplikacji skojarzonej z typem pliku</string>
   <string name="no_application_found_to_open_link">Brak aplikacji do otwarcia linka</string>
@@ -515,9 +512,7 @@
   <string name="notify_never">Powiadomienia wyłączone</string>
   <string name="notify_paused">Powiadomienia wstrzymane</string>
   <string name="pref_picture_compression">Kompresja obrazów</string>
-  <string name="pref_picture_compression_summary">Zmień rozmiar i kompresuj obrazki</string>
   <string name="always">Zawsze</string>
-  <string name="automatically">Automatycznie</string>
   <string name="battery_optimizations_enabled">Optymalizacje zużycia baterii włączone</string>
   <string name="battery_optimizations_enabled_explained">Twoje urządzenie wykonuje poważnie optymalizacje zużycia baterii przez Conversations, które mogą powodować opóźnienie powiadomień lub nawet utratę wiadomości.\nZaleca się ich wyłączenie.</string>
   <string name="battery_optimizations_enabled_dialog">Twoje urządzenie wykonuje poważnie optymalizacje zużycia baterii przez Conversations, które mogą powodować opóźnienie powiadomień lub nawet utratę wiadomości.\nZostaniesz teraz poproszony o ich wyłączenie</string>
@@ -877,6 +872,7 @@ Administrator twojego serwera będzie mógł czytać twoje wiadomości, ale moż
   <string name="discover_channels">Odkryj kanały</string>
   <string name="search_channels">Wyszukaj kanał</string>
   <string name="channel_discovery_opt_in_title">Możliwe naruszenie prywatności!</string>
+  <string name="channel_discover_opt_in_message"><![CDATA[Odkrywanie kanałów używa usługi firmy trzeciej <a href="https://search.jabber.network">search.jabber.network</a>. <br><br>Używając tej funkcji twój adres IP oraz kryteria wyszukiwania zostaną wysłane do tej usługi. Sprawdź <a href="https://search.jabber.network/privacy">Politykę Prywatności</a> aby uzyskać więcej informacji.]]></string>
   <string name="i_already_have_an_account">Już mam konto</string>
   <string name="add_existing_account">Dodaj istniejące konto</string>
   <string name="register_new_account">Zarejestruj nowe konto</string>
@@ -892,4 +888,5 @@ Administrator twojego serwera będzie mógł czytać twoje wiadomości, ale moż
   <string name="please_enter_password">Proszę podać hasło dla tego konta</string>
   <string name="unable_to_perform_this_action">Nie można wykonać tej akcji</string>
   <string name="open_join_dialog">Dołącz do publicznego kanału...</string>
+  <string name="sharing_application_not_grant_permission">Aplikacja udostępniająca nie udzieliła pozwolenia na dostęp do tego pliku.</string>
 </resources>

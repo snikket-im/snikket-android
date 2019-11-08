@@ -99,7 +99,6 @@
   <string name="pref_sound">鈴聲</string>
   <string name="pref_sound_summary">收到新訊息時響鈴</string>
   <string name="pref_notification_grace_period">靜默期限</string>
-  <string name="pref_notification_grace_period_summary">發現在其它設備上的活動後，Conversations保持安靜的時間</string>
   <string name="pref_advanced_options">高級</string>
   <string name="pref_never_send_crash">總不發送崩潰報告</string>
   <string name="pref_never_send_crash_summary">發送堆疊跟蹤説明 Conversations 開發人員</string>
@@ -235,10 +234,6 @@
   <string name="title_pref_quiet_hours_end_time">結束時間</string>
   <string name="title_pref_enable_quiet_hours">啟用靜默時間段</string>
   <string name="pref_quiet_hours_summary">在靜默時間段內通知將保持靜音</string>
-  <string name="pref_use_send_button_to_indicate_status">發送按鈕顯示狀態</string>
-  <string name="pref_use_indicate_received">請求訊息回復</string>
-  <string name="pref_use_indicate_received_summary">如果支援收到的訊息將會以綠色勾號標識</string>
-  <string name="pref_use_send_button_to_indicate_status_summary">發送按鈕採用其他顏色以示發送狀態的區別</string>
   <string name="pref_expert_options_other">其他</string>
   <string name="toast_message_omemo_fingerprint">OMEMO 指紋已拷貝到剪貼板！</string>
   <string name="using_account">用帳戶  %s</string>
@@ -401,7 +396,6 @@
   <string name="notify_never">關閉通知</string>
   <string name="notify_paused">暫停通知</string>
   <string name="always">總是</string>
-  <string name="automatically">自動</string>
   <string name="battery_optimizations_enabled">啟用節電模式</string>
   <string name="battery_optimizations_enabled_explained">你的設備正在為Conversations進行電池優化，這可能導致通知的延遲甚至訊息的丟失。
 建議不要這樣做</string>

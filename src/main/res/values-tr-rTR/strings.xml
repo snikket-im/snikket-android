@@ -98,7 +98,6 @@
   <string name="pref_sound">Zil sesi</string>
   <string name="pref_sound_summary">Yeni bir ileti geldiğinde sesli bildir</string>
   <string name="pref_notification_grace_period">Mühlet</string>
-  <string name="pref_notification_grace_period_summary">Başka bir aygıt üstünde etkinlik algılandığında Conversations\'ın sessiz kalma süresi</string>
   <string name="pref_advanced_options">Gelişmiş</string>
   <string name="pref_never_send_crash">Asla çöküş raporu gönderme</string>
   <string name="pref_never_send_crash_summary">Çöküş raporu göndermeniz Conversations’ın geliştirilmesine katkıda bulunacaktır.</string>
@@ -231,10 +230,6 @@
   <string name="title_pref_quiet_hours_end_time">Bitiş zamanı</string>
   <string name="title_pref_enable_quiet_hours">Sessiz saatleri etkinleştir</string>
   <string name="pref_quiet_hours_summary">Bildirimler sessiz saatler boyunca sessize alınacaktır</string>
-  <string name="pref_use_send_button_to_indicate_status">Gönder düğmesi durum bildirsin</string>
-  <string name="pref_use_indicate_received">İleti alındısı iste</string>
-  <string name="pref_use_indicate_received_summary">Alınan iletiler, eğer destekleniyorsa, yeşil bir tikle işaretlenecektir.</string>
-  <string name="pref_use_send_button_to_indicate_status_summary">Gönder butonunu kişinin durumuna göre renklendir</string>
   <string name="pref_expert_options_other">Diğer</string>
   <string name="toast_message_omemo_fingerprint">OMEMO parmak izi panoya kopyalandı!</string>
   <string name="using_account">%s hesabını kullanarak</string>
@@ -399,7 +394,6 @@
   <string name="notify_never">Uyarılar devre dışı</string>
   <string name="notify_paused">Uyarılar geçici olarak durduruldu</string>
   <string name="always">Her zaman</string>
-  <string name="automatically">Kendiliğinden</string>
   <string name="battery_optimizations_enabled">Pil optimizasyonu devrede</string>
   <string name="battery_optimizations_enabled_explained">Aygıtınız Conversations üzerinde yoğun pil iyileştirmesi yaptığı için bildirimlerde gecikmeler olabilir üstelik bazı ileti kayıpları yaşanabilir.\nBu durumla karşılaşamamak için devre dışı bırakmanız önerilir. </string>
   <string name="battery_optimizations_enabled_dialog">Aygıtınız Conversations üzerinde yoğun pil iyileştirmesi yaptığı için bildirimlerde gecikmeler olabilir üstelik bazı ileti kayıpları yaşanabilir.\n Şimdi bunları devre dışı bırakmanız istenecek.</string>

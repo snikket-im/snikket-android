@@ -118,7 +118,6 @@
   <string name="pref_sound">Ήχος</string>
   <string name="pref_sound_summary">Κουδούνισμα όταν δέχεστε νέο μήνυμα</string>
   <string name="pref_notification_grace_period">Περίοδος Χάριτος</string>
-  <string name="pref_notification_grace_period_summary">Η διάρκεια του χρόνου που το Conversations σταματάει τη λειτουργία του καθώς ανιχνεύθηκε δραστηριόητα σε άλλη συσκευή</string>
   <string name="pref_advanced_options">Προχωρημένος</string>
   <string name="pref_never_send_crash">Να μην αποστέλλονται αναφορές λαθών</string>
   <string name="pref_never_send_crash_summary">Στέλνοντας ίχνη στοίβας βοηθάτε την συνεχόμενη ανάπτυξη του Conversations</string>
@@ -281,10 +280,6 @@
   <string name="title_pref_quiet_hours_end_time">Ώρα λήξης</string>
   <string name="title_pref_enable_quiet_hours">Ενεργοποίηση ωρών ησυχίας</string>
   <string name="pref_quiet_hours_summary">Οι ειδοποιήσεις θα σιγαστούν κατά τις ώρες ησυχίας</string>
-  <string name="pref_use_send_button_to_indicate_status">Το κουμπί αποστολής υποδηλώνει την κατάσταση</string>
-  <string name="pref_use_indicate_received">Αίτηση για αποδείξεις μηνυμάτων</string>
-  <string name="pref_use_indicate_received_summary">Τα ληφθέντα μηνύματα θα σημειώνονται με ένα πράσινο τικ, αν αυτό υποστηρίζεται</string>
-  <string name="pref_use_send_button_to_indicate_status_summary">Χρωματισμός του κουμπιού αποστολής ως ένδειξη κατάστασης επαφής</string>
   <string name="pref_expert_options_other">Άλλο</string>
   <string name="pref_autojoin">Συγχρονισμός με σελιδοδείκτες</string>
   <string name="pref_autojoin_summary">Συμμετοχή και έξοδος από ομαδικές συζητήσεις σύμφωνα με την επιλογή αυτόματης συμμετοχής στους σελιδοδείκτες σας.</string>
@@ -511,9 +506,7 @@
   <string name="notify_never">Απενεργοποίηση ειδοποιήσεων</string>
   <string name="notify_paused">Παύση ειδοποιήσεων</string>
   <string name="pref_picture_compression">Συμπίεση εικόνας</string>
-  <string name="pref_picture_compression_summary">Σμίκρυνση και συμπίεση εικόνων</string>
   <string name="always">Πάντα</string>
-  <string name="automatically">Αυτόματα</string>
   <string name="battery_optimizations_enabled">Ενεργοποίηση βελτιστοποίησης χρήσης μπαταρίας</string>
   <string name="battery_optimizations_enabled_explained">Η συσκευή σας χρησιμοποιεί βελτιστοποίηση στην χρήση μπαταρίας του Conversations που μπορεί να οδηγήσει σε αργοπορημένες ειδοποιήσεις ή ακόμα και σε απώλεια μηνυμάτων.\nΠροτείνεται να την απενεργοποιήσετε</string>
   <string name="battery_optimizations_enabled_dialog">Η συσκευή σας χρησιμοποιεί βελτιστοποίηση στην χρήση μπαταρίας του Conversations που μπορεί να οδηγήσει σε αργοπορημένες ειδοποιήσεις ή ακόμα και σε απώλεια μηνυμάτων.\nΘα σας ζητηθεί να την απενεργοποιήσετε.</string>

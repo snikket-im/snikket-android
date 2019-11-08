@@ -119,7 +119,6 @@
   <string name="pref_sound">Dei-tonua</string>
   <string name="pref_sound_summary">Mezu berri bat heltzerakoan dei-tonua jo</string>
   <string name="pref_notification_grace_period">Grazia epea</string>
-  <string name="pref_notification_grace_period_summary">Beste gailu batean aktibitatea ikusi ostean Conversationsek isilik mantentzen den denbora</string>
   <string name="pref_advanced_options">Aurreratua</string>
   <string name="pref_never_send_crash">Gelditze txostenik ez bidali inoiz</string>
   <string name="pref_never_send_crash_summary">Akats harraskak bidaliz Conversationsen garapenean laguntzen duzu</string>
@@ -281,10 +280,6 @@
   <string name="title_pref_quiet_hours_end_time">Amaiera ordua</string>
   <string name="title_pref_enable_quiet_hours">Ordu lasaiak gaitu</string>
   <string name="pref_quiet_hours_summary">Jakinarazpenak isilaraziko dira ordu lasaiak iraun bitartean </string>
-  <string name="pref_use_send_button_to_indicate_status">Bidaltze botoiak egoera adierazten du</string>
-  <string name="pref_use_indicate_received">Mezuen jasotzea eskatu</string>
-  <string name="pref_use_indicate_received_summary">Jasotako mezuak marka berde batekin markatuko dira. Baliteke kasu guztietan ez funtzionatzea.</string>
-  <string name="pref_use_send_button_to_indicate_status_summary">Bidaltze botoia koloreztatu kontaktu baten egoera adierazteko</string>
   <string name="pref_expert_options_other">Besteak</string>
   <string name="pref_autojoin">Laster-markekin sinkronizatu</string>
   <string name="pref_autojoin_summary">Taldeetan sartu eta taldeak utzi zure laster-marken auto-batu markaren arabera.</string>
@@ -511,9 +506,7 @@
   <string name="notify_never">Jakinarazpenak ezgaituta</string>
   <string name="notify_paused">Jakinarazpenak gelditu dira</string>
   <string name="pref_picture_compression">Irudiak konprimatu</string>
-  <string name="pref_picture_compression_summary">Irudiak konprimatu eta neurriz aldatu</string>
   <string name="always">Beti</string>
-  <string name="automatically">Automatikoki</string>
   <string name="battery_optimizations_enabled">Bateriaren optimizazioak gaituta</string>
   <string name="battery_optimizations_enabled_explained">Zure gailua jakinarazpen atzeratuak edota mezuen galera ekar lezaketen bateriaren optimizazio handiak egiten ari da Conversationsen.\nHoriek ezgaitzea gomendatzen da.</string>
   <string name="battery_optimizations_enabled_dialog">Zure gailua jakinarazpen atzeratuak edota mezuen galera ekar lezaketen bateriaren optimizazio handiak egiten ari da Conversationsen.\nJarraian hauek ezgaitzea eskatuko zaizu.</string>

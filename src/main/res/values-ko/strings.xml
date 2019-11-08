@@ -230,10 +230,6 @@
   <string name="title_pref_quiet_hours_end_time">마감 시간 </string>
   <string name="title_pref_enable_quiet_hours">무음 시간대 사용 </string>
   <string name="pref_quiet_hours_summary">무음 시간대에는 알림이 해제됩니다 </string>
-  <string name="pref_use_send_button_to_indicate_status">전송 버튼이 상태를 나타냄</string>
-  <string name="pref_use_indicate_received">메세지 영수증 요청</string>
-  <string name="pref_use_indicate_received_summary">만약 지원될 경우, 수신된 메세지는 초록색 기호로 표시됩니다. </string>
-  <string name="pref_use_send_button_to_indicate_status_summary">연락처 상태를 표시하기 위해 전송 버튼을 색칠함 </string>
   <string name="pref_expert_options_other">기타 </string>
   <string name="toast_message_omemo_fingerprint">OMEMO 핑거프린트가 클립보드에 복사되었습니다</string>
   <string name="using_account">using account %s</string>
@@ -396,7 +392,6 @@
   <string name="notify_never">알림 해제됨</string>
   <string name="notify_paused">알림 일시중지됨</string>
   <string name="always">항상</string>
-  <string name="automatically">자동</string>
   <string name="battery_optimizations_enabled">배터리 최적화 사용됨</string>
   <string name="battery_optimizations_enabled_explained">당신의 기기는 메세지를 받지 못하게 되거나 알림을 지연시킬 수도 있는 고강도의 배터리 최적화를 Conversations에 하고 있습니다.\n배터리 최적화를 해제하는 것을 추천합니다.</string>
   <string name="battery_optimizations_enabled_dialog">당신의 기기는 메세지를 받지 못하게 되거나 알림을 지연시킬 수도 있는 고강도의 배터리 최적화를 Conversations에 하고 있습니다.\n이것을 해제할 것인지 물어볼 것입니다.</string>

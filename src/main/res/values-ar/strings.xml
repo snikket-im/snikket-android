@@ -260,7 +260,6 @@
   <string name="title_pref_quiet_hours_end_time">وقت النهاية</string>
   <string name="title_pref_enable_quiet_hours">تفعيل ساعات السكون</string>
   <string name="pref_quiet_hours_summary">سوف تكتم التنبيهات إبان ساعات السكون</string>
-  <string name="pref_use_indicate_received">طلب تقارير تسليم الرسائل</string>
   <string name="pref_expert_options_other">أخرى</string>
   <string name="pref_autojoin">زامِن مع الفواصل المرجعية</string>
   <string name="toast_message_omemo_fingerprint">تم نسخ بصمة OMEMO إلى الحافظة !</string>
@@ -279,6 +278,7 @@
   <string name="copy_original_url">أنسخ الرابط الأصلي</string>
   <string name="send_again">أعد الإرسال</string>
   <string name="file_url">رابط الملف</string>
+  <string name="url_copied_to_clipboard">تم نسخ الرابط إلى الحافظة</string>
   <string name="jabber_id_copied_to_clipboard">تم نسخ عنوان الـ XMPP إلى الحافظة</string>
   <string name="error_message_copied_to_clipboard">تم نسخ رسالة الخطأ إلى الحافظة</string>
   <string name="web_address">عنوان الويب</string>
@@ -341,6 +341,7 @@
   <string name="remove_from_channel">أزله مِن القناة</string>
   <string name="could_not_change_affiliation">لا يمكن تغيير انتساب %s</string>
   <string name="ban_from_conference">الحظر من دخول مجموعة المحادثة</string>
+  <string name="ban_from_channel">اطرده مِن القناة</string>
   <string name="ban_now">حظر الآن</string>
   <string name="could_not_change_role">لا يمكن تغيير دول %s</string>
   <string name="channel_options">إعدادات القناة العمومية</string>
@@ -447,9 +448,7 @@
   <string name="notify_never">تعطيل الإخطارات</string>
   <string name="notify_paused">الإشعارات موقفة</string>
   <string name="pref_picture_compression">ضغط الصورة</string>
-  <string name="pref_picture_compression_summary">تغيير حجم الصور وضغطها</string>
   <string name="always">دائماً</string>
-  <string name="automatically">آليا</string>
   <string name="battery_optimizations_enabled">وضع تحسين أداء البطارية مفعّل</string>
   <string name="disable">تعطيل</string>
   <string name="selection_too_large">المساحة المحددة كبيرة جدا</string>
@@ -655,6 +654,7 @@
   <string name="notification_group_messages">رسائل</string>
   <string name="messages_channel_name">رسائل</string>
   <string name="pref_more_notification_settings">إعدادات الإشعار</string>
+  <string name="pref_more_notification_settings_summary">الأهمية ، الصوت ، الإهتزاز</string>
   <string name="video_compression_channel_name">ضغط الفيديو</string>
   <string name="view_media">اعرض الوسائط</string>
   <string name="view_users">اعرض المشارِكين</string>

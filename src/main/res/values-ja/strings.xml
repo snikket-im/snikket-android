@@ -115,7 +115,6 @@
   <string name="pref_sound">着信音</string>
   <string name="pref_sound_summary">新しいメッセージが届いたときにサウンドを再生します</string>
   <string name="pref_notification_grace_period">猶予期間</string>
-  <string name="pref_notification_grace_period_summary">別のデバイスで活動を見た後、Conversations を静かにする時間の長さ</string>
   <string name="pref_advanced_options">詳細</string>
   <string name="pref_never_send_crash">クラッシュレポートを送信しない</string>
   <string name="pref_never_send_crash_summary">スタックトレースを送信することで、あなたは Conversations の継続的な開発を支援しています</string>
@@ -273,10 +272,6 @@
   <string name="title_pref_quiet_hours_end_time">終了時間</string>
   <string name="title_pref_enable_quiet_hours">消音時間を有効にする</string>
   <string name="pref_quiet_hours_summary">消音時間の間、通知は無音になります</string>
-  <string name="pref_use_send_button_to_indicate_status">送信ボタンにステータスを示す</string>
-  <string name="pref_use_indicate_received">要求メッセージの受信</string>
-  <string name="pref_use_indicate_received_summary">サポートされている場合、受信したメッセージに緑色のチェックマークが付きます</string>
-  <string name="pref_use_send_button_to_indicate_status_summary">送信ボタンに連絡先ステータスを示す色が付きます</string>
   <string name="pref_expert_options_other">その他</string>
   <string name="pref_autojoin">ブックマークと同期</string>
   <string name="pref_autojoin_summary">ブックマークの自動参加フラグに従って、グループチャットに参加したり退席します。</string>
@@ -476,9 +471,7 @@
   <string name="notify_never">通知は無効</string>
   <string name="notify_paused">通知は一時停止</string>
   <string name="pref_picture_compression">画像の圧縮</string>
-  <string name="pref_picture_compression_summary">画像のサイズ変更と圧縮</string>
   <string name="always">常に</string>
-  <string name="automatically">自動</string>
   <string name="battery_optimizations_enabled">バッテリー最適化が有効</string>
   <string name="battery_optimizations_enabled_explained">お使いのデバイスは、Conversations で、通知の遅延やメッセージの損失につながる可能性のある、いくつかの重いバッテリーの最適化を行っています。\nそれらを無効にすることをお勧めします。</string>
   <string name="battery_optimizations_enabled_dialog">お使いのデバイスは、Conversations で通知の遅延やメッセージの損失につながる可能性のある、いくつかの重いバッテリーの最適化を行っています。\n\n今、それらを無効にするように求められます。</string>

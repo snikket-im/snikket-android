@@ -114,7 +114,6 @@
   <string name="pref_sound">Звук уведомления</string>
   <string name="pref_sound_summary">Звук при поступлении новых сообщений</string>
   <string name="pref_notification_grace_period">Грейс-период</string>
-  <string name="pref_notification_grace_period_summary">Промежуток времени, в течение которого Conversations хранит молчание при обнаружении активности на другом устройстве</string>
   <string name="pref_advanced_options">Дополнительно</string>
   <string name="pref_never_send_crash">Не отправлять отчёты об ошибках</string>
   <string name="pref_never_send_crash_summary">Отправляя отчёты об ошибках, вы помогаете исправить и улучшить Conversations</string>
@@ -268,10 +267,6 @@
   <string name="title_pref_quiet_hours_end_time">Окончание</string>
   <string name="title_pref_enable_quiet_hours">Включить режим «тихих часов»</string>
   <string name="pref_quiet_hours_summary">Уведомления будут отключены во время «тихих часов»</string>
-  <string name="pref_use_send_button_to_indicate_status">Использовать кнопку-индикатор</string>
-  <string name="pref_use_indicate_received">Запрос в получении сообщения</string>
-  <string name="pref_use_indicate_received_summary">Если поддерживается, поступившие сообщения будут отмечены зелёной галочкой</string>
-  <string name="pref_use_send_button_to_indicate_status_summary">Раскрасить кнопку отправить, указывая текущий статус собеседника</string>
   <string name="pref_expert_options_other">Другие</string>
   <string name="toast_message_omemo_fingerprint">OMEMO отпечаток скопирован в буфер обмена!</string>
   <string name="conference_banned">Вы заблокированы из этой конференции</string>
@@ -482,9 +477,7 @@
   <string name="notify_never">Без уведомления</string>
   <string name="notify_paused">Уведомления приостановлены</string>
   <string name="pref_picture_compression">Сжатие изображений</string>
-  <string name="pref_picture_compression_summary">Изменять размер и сжимать изображения</string>
   <string name="always">Всегда</string>
-  <string name="automatically">Автоматически</string>
   <string name="battery_optimizations_enabled">Оптимизации энергопотребления разрешены</string>
   <string name="battery_optimizations_enabled_explained">Ваше устройство использует сильные оптимизации энергопотребления, что может привести к задержке уведомлений и даже потере сообщений.\nРекомендуется их отключить.</string>
   <string name="battery_optimizations_enabled_dialog">Ваше устройство использует сильные оптимизации энергопотребления, что может привести к задержке уведомлений и даже потере сообщений.\nСейчас появится предложение их отключить.</string>

@@ -115,7 +115,6 @@
   <string name="pref_sound">So d\'avís</string>
   <string name="pref_sound_summary">Reprodueix un so quan arribi un missatge nou</string>
   <string name="pref_notification_grace_period">Període de gràcia</string>
-  <string name="pref_notification_grace_period_summary">El temps que el Conversations guarda silenci després de veure activitat en un altre dispositiu</string>
   <string name="pref_advanced_options">Avançat</string>
   <string name="pref_never_send_crash">Mai enviïs informes d\'errors</string>
   <string name="pref_never_send_crash_summary">Amb l\'enviament de traces d\'execució ajudeu al desenvolupament futur del Conversations</string>
@@ -268,10 +267,6 @@
   <string name="title_pref_quiet_hours_end_time">Hora de finalització</string>
   <string name="title_pref_enable_quiet_hours">Habilitar hores de silenci</string>
   <string name="pref_quiet_hours_summary">Les notificacions seràn silenciades a les hores de silenci</string>
-  <string name="pref_use_send_button_to_indicate_status">Botó d\'indicació de l\'estatus enviar</string>
-  <string name="pref_use_indicate_received">Rebuts de sol.licituds dels missatges</string>
-  <string name="pref_use_indicate_received_summary">Els missatges rebuts seràn marcats amb uns ticks verds si ho admet</string>
-  <string name="pref_use_send_button_to_indicate_status_summary">Pintar el botó d\'enviament per indicar l\'estatus del contacte</string>
   <string name="pref_expert_options_other">Altres</string>
   <string name="toast_message_omemo_fingerprint">S\'ha copiat l\'empremta digital d\'OMEMO al porta-retalls.</string>
   <string name="conference_banned">Estàs prohibit en aquest xat de grup</string>
@@ -479,9 +474,7 @@ mentrestant.</string>
   <string name="notify_never">S\'han desactivat les notificacions</string>
   <string name="notify_paused">S\'han pausat les notificacions</string>
   <string name="pref_picture_compression">Compressió d\'imatge</string>
-  <string name="pref_picture_compression_summary">Redimensionar i comprimir imatges</string>
   <string name="always">Sempre</string>
-  <string name="automatically">Automàticament</string>
   <string name="battery_optimizations_enabled">Optimitzacions de la bateria habilitades</string>
   <string name="battery_optimizations_enabled_explained">El vostre dispositiu fa algunes optimitzacions pesades de la bateria i Conversations 
 pot provocar notificacions retardades o fins i tot pèrdua de 

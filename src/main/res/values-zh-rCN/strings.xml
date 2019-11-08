@@ -119,7 +119,6 @@
   <string name="pref_sound">铃声</string>
   <string name="pref_sound_summary">收到新消息时响铃</string>
   <string name="pref_notification_grace_period">静默期限</string>
-  <string name="pref_notification_grace_period_summary">发现在其它设备上的活动后，Conversations保持安静的时间</string>
   <string name="pref_advanced_options">高级</string>
   <string name="pref_never_send_crash">从不发送崩溃报告</string>
   <string name="pref_never_send_crash_summary">通过发送堆栈跟踪，您可以帮助Conversations持续发展</string>
@@ -281,10 +280,6 @@
   <string name="title_pref_quiet_hours_end_time">结束时间</string>
   <string name="title_pref_enable_quiet_hours">启用静默时间段</string>
   <string name="pref_quiet_hours_summary">在静默时间段内通知将保持静音</string>
-  <string name="pref_use_send_button_to_indicate_status">发送按钮显示状态</string>
-  <string name="pref_use_indicate_received">请求消息回执</string>
-  <string name="pref_use_indicate_received_summary">如果支持，收到的消息将标记为绿色对勾</string>
-  <string name="pref_use_send_button_to_indicate_status_summary">着色发送按钮以示联系人状态</string>
   <string name="pref_expert_options_other">其他</string>
   <string name="pref_autojoin">同步书签</string>
   <string name="pref_autojoin_summary">根据书签中的自动加入标记加入并离开群聊。</string>
@@ -509,9 +504,7 @@
   <string name="notify_never">禁用通知</string>
   <string name="notify_paused">暂停通知</string>
   <string name="pref_picture_compression">图像压缩</string>
-  <string name="pref_picture_compression_summary">调整大小并压缩图像</string>
   <string name="always">总是</string>
-  <string name="automatically">自动</string>
   <string name="battery_optimizations_enabled">启用节电模式</string>
   <string name="battery_optimizations_enabled_explained">你的设备正在为Conversations进行电池优化，这可能导致通知的延迟甚至消息的丢失。
 建议不要这样做</string>

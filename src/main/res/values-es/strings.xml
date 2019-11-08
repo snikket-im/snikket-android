@@ -119,7 +119,6 @@
   <string name="pref_sound">Tono</string>
   <string name="pref_sound_summary">Reproduce tono con la notificación</string>
   <string name="pref_notification_grace_period">Periodo de gracia</string>
-  <string name="pref_notification_grace_period_summary">Periodo de tiempo en el que Conversations deshabilita las notificaciones tras ver que tienes actividad en otro de tus dispositivos</string>
   <string name="pref_advanced_options">Avanzado</string>
   <string name="pref_never_send_crash">Nunca informar de errores</string>
   <string name="pref_never_send_crash_summary">Si envías registros de error ayudas al desarrollo de Conversations</string>
@@ -281,10 +280,6 @@
   <string name="title_pref_quiet_hours_end_time">Hora de fin</string>
   <string name="title_pref_enable_quiet_hours">Habilitar horario de silencio</string>
   <string name="pref_quiet_hours_summary">Las notificaciones serán silenciadas durante el horario de silencio</string>
-  <string name="pref_use_send_button_to_indicate_status">Botón enviar indica estado</string>
-  <string name="pref_use_indicate_received">Solicitar entrega de mensaje</string>
-  <string name="pref_use_indicate_received_summary">Cuando el contacto reciba el mensaje será indicado con una marca verde. Cuidado, esto podría no funcionar en todos los casos.</string>
-  <string name="pref_use_send_button_to_indicate_status_summary">El color del botón enviar indica el estado del contacto</string>
   <string name="pref_expert_options_other">Otros</string>
   <string name="pref_autojoin">Sincronizar marcadores</string>
   <string name="pref_autojoin_summary">Unirse y salir de las conversaciones en grupo de acuerdo con la marca de unirse automáticamente de tus marcadores.</string>
@@ -511,9 +506,7 @@
   <string name="notify_never">Notificaciones deshabilitadas</string>
   <string name="notify_paused">Notificaciones pausadas</string>
   <string name="pref_picture_compression">Compresión de imagen</string>
-  <string name="pref_picture_compression_summary">Redimensionar y comprimir las imágenes</string>
   <string name="always">Siempre</string>
-  <string name="automatically">Automáticamente</string>
   <string name="battery_optimizations_enabled">Optimizaciones de uso de batería habilitadas</string>
   <string name="battery_optimizations_enabled_explained">Tu dispositivo está realizando optimizaciones de uso de batería en Conversations que pueden hacer que los mensajes se retrasen o incluso hacer que se pierdan.\nEs recomendable deshabilitarlas.</string>
   <string name="battery_optimizations_enabled_dialog">Tu dispositivo está realizando optimizaciones de uso de batería en Conversations que pueden hacer que los mensajes se retrasen o incluso hacer que se pierdan.\n\nEl sistema te preguntará ahora para deshabilitarlas.</string>

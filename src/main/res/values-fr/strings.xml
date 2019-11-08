@@ -119,7 +119,7 @@
   <string name="pref_sound">Sonnerie</string>
   <string name="pref_sound_summary">Jouer un son lors de la réception d\'un message</string>
   <string name="pref_notification_grace_period">Période sans notification</string>
-  <string name="pref_notification_grace_period_summary">Durée d\'inactivité de Conversations après avoir repéré un changement sur un autre appareil</string>
+  <string name="pref_notification_grace_period_summary">La durée pendant laquelle les notifications sont désactivées après la détection d\'une activité sur l\'un de vos autres appareils.</string>
   <string name="pref_advanced_options">Avancé</string>
   <string name="pref_never_send_crash">Ne pas envoyer de rapports d\'erreurs</string>
   <string name="pref_never_send_crash_summary">En envoyant des logs vous aidez le développement de Conversations.</string>
@@ -281,10 +281,6 @@
   <string name="title_pref_quiet_hours_end_time">Heure de fin</string>
   <string name="title_pref_enable_quiet_hours">Activer les heures tranquilles</string>
   <string name="pref_quiet_hours_summary">Les notifications seront muettes pendant les heures tranquilles.</string>
-  <string name="pref_use_send_button_to_indicate_status">Statut sur le bouton Envoyer</string>
-  <string name="pref_use_indicate_received">Accusés de réception</string>
-  <string name="pref_use_indicate_received_summary">Les messages reçus seront marqués d\'une coche verte (si supporté).</string>
-  <string name="pref_use_send_button_to_indicate_status_summary">Le bouton Envoyer change de couleur pour indiquer le statut du contact.</string>
   <string name="pref_expert_options_other">Autres</string>
   <string name="pref_autojoin">Synchroniser avec les signets</string>
   <string name="pref_autojoin_summary">Rejoignez et quittez les discussions de groupe en fonction de l\'indicateur de jointure automatique dans vos favoris.</string>
@@ -512,9 +508,7 @@
   <string name="notify_never">Notifications désactivées</string>
   <string name="notify_paused">Notifications en pause</string>
   <string name="pref_picture_compression">Compression de l\'image</string>
-  <string name="pref_picture_compression_summary">Redimensionner et compresser les images</string>
   <string name="always">Toujours</string>
-  <string name="automatically">Automatiquement</string>
   <string name="battery_optimizations_enabled">Optimisations de batterie activées</string>
   <string name="battery_optimizations_enabled_explained">Votre appareil applique sur Conversations des optimisations de batterie très strictes qui pourraient provoquer des retards dans les notifications, voire des pertes de messages.\nNous vous recommandons de les désactiver.</string>
   <string name="battery_optimizations_enabled_dialog">Votre appareil applique sur Conversations des optimisations de batterie très strictes qui pourraient provoquer des retards dans les notifications, voire des pertes de messages.\nVous allez maintenant avoir la possibilité de les désactiver.</string>
@@ -876,4 +870,5 @@
   <string name="please_enter_password">Veuillez saisir le mot de passe pour ce compte</string>
   <string name="unable_to_perform_this_action">Action impossible à réaliser</string>
   <string name="open_join_dialog">Rejoindre le canal public ...</string>
+  <string name="sharing_application_not_grant_permission">L\'application de partage n\'a pas accordé la permission d\'accéder à ce fichier.</string>
 </resources>

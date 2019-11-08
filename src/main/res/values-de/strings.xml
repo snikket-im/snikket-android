@@ -119,7 +119,7 @@
   <string name="pref_sound">Benachrichtigungston</string>
   <string name="pref_sound_summary">Benachrichtigungston wiedergeben</string>
   <string name="pref_notification_grace_period">Schonfrist</string>
-  <string name="pref_notification_grace_period_summary">Zeitspanne, in der Conversations still bleibt, nachdem es Aktivitäten auf einem anderen Gerät erkannt hat.</string>
+  <string name="pref_notification_grace_period_summary">Die Zeitspanne, in der Benachrichtigungen nach der Erkennung von Aktivitäten auf einem deiner anderen Geräte unterdrückt werden.</string>
   <string name="pref_advanced_options">Erweitert</string>
   <string name="pref_never_send_crash">Niemals Absturzberichte senden</string>
   <string name="pref_never_send_crash_summary">Wenn du Absturzberichte einschickst, hilfst du Conversations stetig zu verbessern</string>
@@ -281,10 +281,6 @@
   <string name="title_pref_quiet_hours_end_time">Ende</string>
   <string name="title_pref_enable_quiet_hours">Ruhige Stunden aktivieren</string>
   <string name="pref_quiet_hours_summary">Benachrichtigungen sind während der ruhigen Stunden stumm.</string>
-  <string name="pref_use_send_button_to_indicate_status">\"Senden\"-Schaltfläche zeigt Online-Status an</string>
-  <string name="pref_use_indicate_received">Empfangsbestätigungen anfragen</string>
-  <string name="pref_use_indicate_received_summary">Empfangene Nachrichten werden mit einem grünen Häkchen markiert. Bitte beachte, dass dies nicht in allen Fällen funktioniert.</string>
-  <string name="pref_use_send_button_to_indicate_status_summary">\"Senden\"-Schaltfläche einfärben, um den Online-Status des Kontakts anzuzeigen</string>
   <string name="pref_expert_options_other">Sonstiges</string>
   <string name="pref_autojoin">Mit Lesezeichen synchronisieren</string>
   <string name="pref_autojoin_summary">Tritt Gruppenchats bei und verlasse sie entsprechend der Auto-Join-Funktion in deinen Lesezeichen.</string>
@@ -512,9 +508,7 @@
   <string name="notify_never">Benachrichtigungen deaktiviert</string>
   <string name="notify_paused">Benachrichtigungen pausiert</string>
   <string name="pref_picture_compression">Bilder komprimieren</string>
-  <string name="pref_picture_compression_summary">Bildgröße ändern und komprimieren</string>
   <string name="always">Immer</string>
-  <string name="automatically">Automatisch</string>
   <string name="battery_optimizations_enabled">Akkuoptimierung aktiv</string>
   <string name="battery_optimizations_enabled_explained">Dein Telefon verwendet Akkuoptimierungen bei Conversations, welche verspätete Benachrichtigungen oder Nachrichtenverlust verursachen können.\nEs wird empfohlen, diese zu deaktivieren.</string>
   <string name="battery_optimizations_enabled_dialog">Dein Telefon verwendet Akkuoptimierungen bei Conversations, welche verspätete Benachrichtigungen oder Nachrichtenverlust verursachen können.\n\nDu wirst nun gefragt, diese zu deaktivieren.</string>
@@ -876,4 +870,5 @@
   <string name="please_enter_password">Bitte gib das Passwort für dieses Konto ein</string>
   <string name="unable_to_perform_this_action">Diese Aktion kann nicht ausgeführt werden</string>
   <string name="open_join_dialog">Öffentlichen Channel beitreten...</string>
+  <string name="sharing_application_not_grant_permission">Die App zum Teilen hat keine Berechtigung für den Zugriff auf diese Datei erteilt.</string>
 </resources>

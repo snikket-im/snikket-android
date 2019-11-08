@@ -241,10 +241,6 @@
   <string name="title_pref_quiet_hours_end_time">Hora de fim</string>
   <string name="title_pref_enable_quiet_hours">Ativar horas de tranquilidade</string>
   <string name="pref_quiet_hours_summary">Notificações serão silenciadas nas horas de tranquilidade</string>
-  <string name="pref_use_send_button_to_indicate_status">O botão de enviar indica o estado</string>
-  <string name="pref_use_indicate_received">Solicitar recibo de mensagem</string>
-  <string name="pref_use_indicate_received_summary">Mensagens recebidas serão marcadas com um visto verde se suportado</string>
-  <string name="pref_use_send_button_to_indicate_status_summary">Colorir o botão de enviar para indicar o estado do contacto</string>
   <string name="pref_expert_options_other">Outros</string>
   <string name="toast_message_omemo_fingerprint">Impressão digital OMEMO copiada para a área de transferência!</string>
   <string name="conference_banned">Está banido desta conversa de grupo</string>
@@ -429,7 +425,6 @@
   <string name="notify_never">Notificações desativadas</string>
   <string name="notify_paused">Notificações interrompidas</string>
   <string name="always">Sempre</string>
-  <string name="automatically">Automaticamente</string>
   <string name="battery_optimizations_enabled">Otimizações da bateria ativadas</string>
   <string name="battery_optimizations_enabled_explained">O seu dispositivo está a fazer otimizações de bateria bastante agressivas na aplicação Conversations que poderão levar a notificações atrasadas ou até mesmo a perda de mensagens.\nÉ recomendado que as desative.</string>
   <string name="battery_optimizations_enabled_dialog">O seu dispositivo está a fazer otimizações de bateria bastantes agressivas na aplicação Conversations que poderão levar a notificações atrasadas ou até mesmo perda de mensagens.\n\nIrá-lhe agora ser pedido para desativá-las.</string>

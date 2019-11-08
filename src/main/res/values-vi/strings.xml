@@ -98,7 +98,6 @@
   <string name="pref_sound">Âm báo</string>
   <string name="pref_sound_summary">Chơi nhạc báo khi có tin nhắn mới</string>
   <string name="pref_notification_grace_period">Thời gian gia hạn thông báo</string>
-  <string name="pref_notification_grace_period_summary">Khoảng thời gian Conversations giữ yên lặng sau khi xem hoạt động trên một thiết bị khác</string>
   <string name="pref_advanced_options">Nâng cao</string>
   <string name="pref_never_send_crash">Không bao giờ gửi báo cáo dừng chạy</string>
   <string name="pref_never_send_crash_summary">Bằng việc gửi báo cáo hoạt động, bạn đang hỗ trợ nhóm phát triển của Conversations</string>
@@ -227,10 +226,6 @@
   <string name="title_pref_quiet_hours_end_time">Thời gian kết thúc</string>
   <string name="title_pref_enable_quiet_hours">Bật giờ yên lặng</string>
   <string name="pref_quiet_hours_summary">Thông báo sẽ được tắt trong giờ yên lặng</string>
-  <string name="pref_use_send_button_to_indicate_status">Nút gửi biểu thị trạng thái</string>
-  <string name="pref_use_indicate_received">Yêu cầu thông báo nhận tin nhắn</string>
-  <string name="pref_use_indicate_received_summary">Các tin nhắn đã nhận sẽ được đánh dấu kiểm màu xanh lá nếu được hỗ trợ</string>
-  <string name="pref_use_send_button_to_indicate_status_summary">Tô màu nút gửi để biểu thị trạng thái của liên hệ</string>
   <string name="pref_expert_options_other">Khác</string>
   <string name="toast_message_omemo_fingerprint">Đã chép dấu vân tay OMEMO vào clipboard!</string>
   <string name="using_account">đang dùng tài khoản %s</string>
@@ -367,7 +362,6 @@
   <string name="notify_never">Đã tắt thông báo</string>
   <string name="notify_paused">Đã dừng thông báo</string>
   <string name="always">Luôn luôn</string>
-  <string name="automatically">Tự động</string>
   <string name="battery_optimizations_enabled">Đã bật tối ưu pin</string>
   <string name="battery_optimizations_enabled_explained">Thiết bị đang thực hiện tối ưu hoá pin trên Conversations và nó có thể gây trì hoãn thông báo hay thậm chí làm mất tin nhắn.\nBạn nên tắt chế độ đó đi.</string>
   <string name="battery_optimizations_enabled_dialog">Thiết bị đang thực hiện tối ưu hoá pin trên Conversations và nó có thể gây trì hoãn thông báo hay thậm chí làm mất tin nhắn.\n\nBây giờ, bạn sẽ được yêu cầu tắt chế độ đó đi.</string>

@@ -197,10 +197,6 @@
   <string name="title_pref_quiet_hours_end_time">זמן סיום</string>
   <string name="title_pref_enable_quiet_hours">הפעל \"שעות שקטות\"</string>
   <string name="pref_quiet_hours_summary">ההתראות יושבתו במהלך שעות שקטות</string>
-  <string name="pref_use_send_button_to_indicate_status">לחצן השליחה מעיד על הסטטוס</string>
-  <string name="pref_use_indicate_received">בקש אימות הגעת הודעות</string>
-  <string name="pref_use_indicate_received_summary">יופיע סימן \"וי\" ליד כל הודעה שהתקבלה על ידי איש הקשר, במידה והפעולה נתמכת על ידי איש הקשר.</string>
-  <string name="pref_use_send_button_to_indicate_status_summary">צבעו של לחצן שליחת ההודעות יעיד על סטטוס איש הקשר.</string>
   <string name="pref_expert_options_other">אחר</string>
   <string name="toast_message_omemo_fingerprint">טביעת אצבע של OMEMO הועתקה</string>
   <string name="using_account">משתמש בחשבון: %s</string>

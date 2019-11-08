@@ -108,7 +108,6 @@
   <string name="pref_sound">Звук</string>
   <string name="pref_sound_summary">Пуштање звука кад стигне нова порука</string>
   <string name="pref_notification_grace_period">Период одгоде</string>
-  <string name="pref_notification_grace_period_summary">Период тишине након што Конверзација запази активност на другом уређају</string>
   <string name="pref_advanced_options">Напредно</string>
   <string name="pref_never_send_crash">Никад не шаљи извештаје о паду</string>
   <string name="pref_never_send_crash_summary">Слањем контратрага помажете текући развој Конверзације</string>
@@ -254,10 +253,6 @@
   <string name="title_pref_quiet_hours_end_time">Време завршетка</string>
   <string name="title_pref_enable_quiet_hours">Укључи тихе сате</string>
   <string name="pref_quiet_hours_summary">Обавештења ће бити ућуткана за време тихих сати</string>
-  <string name="pref_use_send_button_to_indicate_status">Дугме слања показује стање</string>
-  <string name="pref_use_indicate_received">Захтевај потврде порука</string>
-  <string name="pref_use_indicate_received_summary">Означи примљене поруке зеленом квачицом, ако је подржано</string>
-  <string name="pref_use_send_button_to_indicate_status_summary">Боја дугмета за слање показује стање контакта</string>
   <string name="pref_expert_options_other">Остало</string>
   <string name="toast_message_omemo_fingerprint">ОМЕМО отисак копиран на клипборд!</string>
   <string name="conference_banned">Забрањени сте на овом групном ћаскању</string>
@@ -453,7 +448,6 @@
   <string name="notify_never">Обавештења искључена</string>
   <string name="notify_paused">Обавештења паузирана</string>
   <string name="always">увек</string>
-  <string name="automatically">аутоматски</string>
   <string name="battery_optimizations_enabled">Оптимизација батерије је укључена</string>
   <string name="battery_optimizations_enabled_explained">Ваш уређај користи оптимизацију потрошње батерије за Конверзацију што може да доведе до застоја обавештења или чак губитка порука.\nПрепоручљиво је да то искључите.</string>
   <string name="battery_optimizations_enabled_dialog">Ваш уређај користи оптимизацију потрошње батерије за Конверзацију што може да доведе до застоја обавештења или чак губитка порука.\n\nСада ћете бити упитани да то искључите.</string>

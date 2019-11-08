@@ -195,10 +195,6 @@
   <string name="title_pref_quiet_hours_end_time">Čas konca</string>
   <string name="title_pref_enable_quiet_hours">Povoliť tichý režim</string>
   <string name="pref_quiet_hours_summary">Upozornenia budú počas tichého režimu stlmené</string>
-  <string name="pref_use_send_button_to_indicate_status">Tlačidlo pre odoslanie zobrazuje stav</string>
-  <string name="pref_use_indicate_received">Požadovať oznámenie o prijatí</string>
-  <string name="pref_use_indicate_received_summary">Prijaté správy budú označené zelenou kvačkou. Toto nemusí vždy plne fungovať.</string>
-  <string name="pref_use_send_button_to_indicate_status_summary">Vyfarbiť tlačidlo pre odoslanie na určenie stavu kontaktu</string>
   <string name="pref_expert_options_other">Ďalší</string>
   <string name="using_account">Používa sa účet %s</string>
   <string name="checking_x">Overiť %s na HTTP host</string>

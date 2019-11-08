@@ -119,7 +119,7 @@
   <string name="pref_sound">Sunet de notificare</string>
   <string name="pref_sound_summary">Notificare sonoră atunci când este primit un mesaj nou</string>
   <string name="pref_notification_grace_period">Perioadă de grație</string>
-  <string name="pref_notification_grace_period_summary">Durata de timp cât Conversations păstrează liniștea după ce a observat activitate pe un alt dispozitiv</string>
+  <string name="pref_notification_grace_period_summary">Durata de timp cât notificările sunt ascunse după ce s-a observat activitate pe un alt dispozitiv al dumneavoastră.</string>
   <string name="pref_advanced_options">Opțiuni avansate</string>
   <string name="pref_never_send_crash">Nu trimite rapoarte de erori</string>
   <string name="pref_never_send_crash_summary">Trimițând datele despre erori ajutați la continuarea dezvoltării aplicației Conversations</string>
@@ -281,10 +281,6 @@
   <string name="title_pref_quiet_hours_end_time">Ora de terminare</string>
   <string name="title_pref_enable_quiet_hours">Activează orar de liniște</string>
   <string name="pref_quiet_hours_summary">Notificările vor fi reduse la tăcere în timpul orelor de liniște</string>
-  <string name="pref_use_send_button_to_indicate_status">Butonul de trimitere indică starea</string>
-  <string name="pref_use_indicate_received">Cere raport de primire</string>
-  <string name="pref_use_indicate_received_summary">Mesajele primite vor fi marcate cu o bifa verde, dacă este suportat</string>
-  <string name="pref_use_send_button_to_indicate_status_summary">Colorează butonul de trimitere pentru a indica starea contactului</string>
   <string name="pref_expert_options_other">Altele</string>
   <string name="pref_autojoin">Sincronizează cu semnele de carte</string>
   <string name="pref_autojoin_summary">Alătură-te sau părăsește discuțiile de grup în mod automat în funcție de setarea din semnele de carte.</string>
@@ -514,9 +510,7 @@
   <string name="notify_never">Notificări dezactivate</string>
   <string name="notify_paused">Notificări suspendate</string>
   <string name="pref_picture_compression">Compresie imagini</string>
-  <string name="pref_picture_compression_summary">Redimensionează și comprimă imaginile</string>
   <string name="always">Mereu</string>
-  <string name="automatically">Automat</string>
   <string name="battery_optimizations_enabled">Optimizare baterie activată</string>
   <string name="battery_optimizations_enabled_explained">Dispozitivul dumneavoastră încearcă să optimizeze agresiv consumul bateriei pentru Conversations, asta poate duce la notificări întârziate sau chiar pierderea mesajelor.\nEste recomandat sa dezactivați aceste optimizări.</string>
   <string name="battery_optimizations_enabled_dialog">Dispozitivul dumneavoastră încearcă să optimizeze agresiv consumul 
@@ -886,4 +880,5 @@ sau chiar pierderea mesajelor.\nÎn continuare veți fi rugați să dezactivați
   <string name="please_enter_password">Va rugăm să introduceți parola pentru acest cont</string>
   <string name="unable_to_perform_this_action">Nu se poate realiza această acțiune</string>
   <string name="open_join_dialog">Alătură-te unui canal public...</string>
+  <string name="sharing_application_not_grant_permission">Aplicația care a partajat nu a permis accesul la acest fișier.</string>
 </resources>

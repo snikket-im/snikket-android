@@ -117,7 +117,6 @@
   <string name="pref_sound">Meddelandesignal</string>
   <string name="pref_sound_summary">Spela ljud när meddelande tagits emot</string>
   <string name="pref_notification_grace_period">Notifieringsfrist</string>
-  <string name="pref_notification_grace_period_summary">Hur lång tid Conversations är tyst efter aktivitet på en annan enhet</string>
   <string name="pref_advanced_options">Avancerat</string>
   <string name="pref_never_send_crash">Skicka aldrig krasch-rapporter</string>
   <string name="pref_never_send_crash_summary">Genom att skicka in stack traces hjälper du utvecklarna av Conversations</string>
@@ -265,10 +264,6 @@
   <string name="title_pref_quiet_hours_end_time">Sluttid</string>
   <string name="title_pref_enable_quiet_hours">Aktivera tysta timmar</string>
   <string name="pref_quiet_hours_summary">Notifieringar kommer vara tysta under tysta timmar</string>
-  <string name="pref_use_send_button_to_indicate_status">Skickaknappen indikerar status</string>
-  <string name="pref_use_indicate_received">Begär mottagningskvitto</string>
-  <string name="pref_use_indicate_received_summary">Mottagna meddelanden markeras med en grön bock om det stöds</string>
-  <string name="pref_use_send_button_to_indicate_status_summary">Färglägg skickaknappen för att indikera kontaktens status</string>
   <string name="pref_expert_options_other">Annat</string>
   <string name="pref_autojoin">Synkronisera med bokmärken</string>
   <string name="toast_message_omemo_fingerprint">OMEMO-fingeravtryck har kopierats till urklipp!</string>
@@ -459,9 +454,7 @@
   <string name="notify_never">Notifieringar deaktiverade</string>
   <string name="notify_paused">Notifieringar pausade</string>
   <string name="pref_picture_compression">Bildkomprimering</string>
-  <string name="pref_picture_compression_summary">Ändra storlek på och komprimera bilder</string>
   <string name="always">Alltid</string>
-  <string name="automatically">Automatiskt</string>
   <string name="battery_optimizations_enabled">Batterioptimeringar aktiverade</string>
   <string name="battery_optimizations_enabled_explained">Din enhet har kraftiga batterioptimeringar som påverkar Conversations på så sätt att inkommande meddelanden kan försenas eller kan till och med gå förlorade.\nDet är rekommenderat att deaktivera batterioptimeringarna.</string>
   <string name="battery_optimizations_enabled_dialog">Din enhet har kraftiga batterioptimeringar som påverkar Conversations på så sätt att inkommande meddelanden kan försenas eller kan till och med gå förlorade.\nDu kommer nu att bli ombedd att stänga av batterioptimeringarna för Conversations.</string>

@@ -105,7 +105,6 @@
   <string name="pref_sound">Ringetone</string>
   <string name="pref_sound_summary">Spill en lyd når en ny melding ankommer</string>
   <string name="pref_notification_grace_period">Fristperiode</string>
-  <string name="pref_notification_grace_period_summary">Mengden tid Conversations forholder seg rolig i, etter å ha sett aktivitet på en annen enhet</string>
   <string name="pref_advanced_options">Avansert</string>
   <string name="pref_never_send_crash">Aldri send kræsjrapporter</string>
   <string name="pref_never_send_crash_summary">Ved å sende inn stabelsporinger hjelper du den pågående utviklingen av Conversations</string>
@@ -248,10 +247,6 @@
   <string name="title_pref_quiet_hours_end_time">Avslutning</string>
   <string name="title_pref_enable_quiet_hours">Aktiver stille tidsavgrensning</string>
   <string name="pref_quiet_hours_summary">Varslinger blir ikke spilt under stilletid</string>
-  <string name="pref_use_send_button_to_indicate_status">Forsendelsesknappstatus</string>
-  <string name="pref_use_indicate_received">Forespør meldingskvitteringer</string>
-  <string name="pref_use_indicate_received_summary">Mottatte meldinger vil bli avmerket i grønt hvis støttet</string>
-  <string name="pref_use_send_button_to_indicate_status_summary">Fargelegg send-knapp for å indikere kontakt-status</string>
   <string name="pref_expert_options_other">Annet</string>
   <string name="toast_message_omemo_fingerprint">OMEMO-fingeravtrykk kopiert til utklippstavle!</string>
   <string name="conference_banned">Du er bannlyst fra denne gruppesludringen</string>
@@ -437,7 +432,6 @@
   <string name="notify_never">Varslinger deaktivert</string>
   <string name="notify_paused">Varslinger pauset</string>
   <string name="always">Alltid</string>
-  <string name="automatically">Automatisk</string>
   <string name="battery_optimizations_enabled">Batterioptimaliseringer aktivert</string>
   <string name="battery_optimizations_enabled_explained">Enheten din gjør noen tunge batterioptimaliseringer på Conversations som kan føre til forsinkede varslinger eller tap av meldinger.\nDet anbefales at du deaktiverer disse.</string>
   <string name="battery_optimizations_enabled_dialog">Enheten din gjør noen tunge batterioptimaliseringer på Conversations som kan føre til forsinkede varslinger eller tap av meldinger.\n\nDu vil nå bli bedt om å deaktivere disse.</string>
