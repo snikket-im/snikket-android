@@ -1,5 +1,11 @@
 # Changelog
 
+### Version 2.6.0
+* Introduce expert setting to perform channel discovery on local server instead of [search.jabber.network](https://search.jabber.network)
+* Enable delivery check marks by default and remove setting
+* Enable ‘Send button indicates status’ by default and remove setting
+* Move Backup and Foreground Service settings to main screen
+
 ### Version 2.5.12
 * Jingle file transfer fixes
 * Fixed OMEMO self healing (after backup restore) on servers w/o MAM
