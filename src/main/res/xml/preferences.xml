@@ -157,11 +157,6 @@
             android:summary="@string/pref_use_green_background_summary"
             android:title="@string/pref_use_green_background" />
         <CheckBoxPreference
-            android:defaultValue="@bool/send_button_status"
-            android:key="send_button_status"
-            android:summary="@string/pref_use_send_button_to_indicate_status_summary"
-            android:title="@string/pref_use_send_button_to_indicate_status" />
-        <CheckBoxPreference
             android:defaultValue="@bool/show_dynamic_tags"
             android:key="show_dynamic_tags"
             android:summary="@string/pref_show_dynamic_tags_summary"

@@ -2267,7 +2267,6 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
 
     public void updateSendButton() {
         boolean hasAttachments = mediaPreviewAdapter != null && mediaPreviewAdapter.hasAttachments();
-        boolean useSendButtonToIndicateStatus = activity != null && PreferenceManager.getDefaultSharedPreferences(activity).getBoolean("send_button_status", getResources().getBoolean(R.bool.send_button_status));
         final Conversation c = this.conversation;
         final Presence.Status status;
         final String text = this.binding.textinput == null ? "" : this.binding.textinput.getText().toString();
@@ -2277,7 +2276,7 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
         } else {
             action = SendButtonTool.getAction(getActivity(), c, text);
         }
-        if (useSendButtonToIndicateStatus && c.getAccount().getStatus() == Account.State.ONLINE) {
+        if (c.getAccount().getStatus() == Account.State.ONLINE) {
             if (activity != null && activity.xmppConnectionService != null && activity.xmppConnectionService.getMessageArchiveService().isCatchingUp(c)) {
                 status = Presence.Status.OFFLINE;
             } else if (c.getMode() == Conversation.MODE_SINGLE) {
