@@ -512,9 +512,9 @@
     <string name="notify_never">Notifications disabled</string>
     <string name="notify_paused">Notifications paused</string>
     <string name="pref_picture_compression">Image Compression</string>
-    <string name="pref_picture_compression_summary">Resize and compress images</string>
+    <string name="pref_picture_compression_summary">Hint: Use ‘Choose file’ instead of ‘Choose picture’ to send individual images uncompressed regardless of this setting.</string>
     <string name="always">Always</string>
-    <string name="automatically">Automatically</string>
+    <string name="large_images_only">Large images only</string>
     <string name="battery_optimizations_enabled">Battery optimizations enabled</string>
     <string name="battery_optimizations_enabled_explained">Your device is doing some heavy battery optimizations on Conversations that might lead to delayed notifications or even message loss.\nIt is recommended to disable those.</string>
     <string name="battery_optimizations_enabled_dialog">Your device is doing some heavy battery optimizations on Conversations that might lead to delayed notifications or even message loss.\n\nYou will now be asked to disable those.</string>

@@ -62,7 +62,7 @@
 
 	<string-array name="picture_compression_entries">
 		<item>@string/never</item>
-		<item>@string/automatically</item>
+		<item>@string/large_images_only</item>
 		<item>@string/always</item>
 	</string-array>
 
