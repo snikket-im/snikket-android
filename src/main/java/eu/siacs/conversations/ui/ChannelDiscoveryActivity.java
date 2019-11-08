@@ -168,7 +168,14 @@ public class ChannelDiscoveryActivity extends XmppActivity implements MenuItem.O
             });
             dialog.setCanceledOnTouchOutside(false);
             dialog.show();
+            holdLoading();
         }
+    }
+
+    private void holdLoading() {
+        adapter.submitList(Collections.emptyList());
+        binding.progressBar.setVisibility(View.GONE);
+        binding.list.setBackgroundColor(StyledAttributes.getColor(this, R.attr.color_background_primary));
     }
 
     @Override
@@ -183,6 +190,7 @@ public class ChannelDiscoveryActivity extends XmppActivity implements MenuItem.O
         SharedPreferences preferences = getPreferences();
         preferences.edit().putBoolean(CHANNEL_DISCOVERY_OPT_IN, true).apply();
         optedIn = true;
+        toggleLoadingScreen();
         xmppConnectionService.discoverChannels(null, this.method, this);
     }
 
