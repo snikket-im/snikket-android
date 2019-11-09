@@ -507,10 +507,11 @@ public class JingleConnection implements Transferable {
 
                 respondToIq(packet, true);
 
-                if (mJingleConnectionManager.hasStoragePermission()
+                if (account.getRoster().getContact(from).showInContactList()
+                        && mJingleConnectionManager.hasStoragePermission()
                         && size < this.mJingleConnectionManager.getAutoAcceptFileSize()
                         && mXmppConnectionService.isDataSaverDisabled()) {
-                    Log.d(Config.LOGTAG, "auto accepting file from " + packet.getFrom());
+                    Log.d(Config.LOGTAG, "auto accepting file from " + from);
                     this.acceptedAutomatically = true;
                     this.sendAccept();
                 } else {
