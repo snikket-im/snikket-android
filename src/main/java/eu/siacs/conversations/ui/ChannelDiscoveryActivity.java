@@ -31,6 +31,7 @@ import eu.siacs.conversations.entities.Bookmark;
 import eu.siacs.conversations.entities.Conversation;
 import eu.siacs.conversations.entities.Room;
 import eu.siacs.conversations.services.ChannelDiscoveryService;
+import eu.siacs.conversations.services.QuickConversationsService;
 import eu.siacs.conversations.ui.adapter.ChannelSearchResultAdapter;
 import eu.siacs.conversations.ui.util.PendingItem;
 import eu.siacs.conversations.ui.util.SoftKeyboardUtils;
@@ -88,6 +89,9 @@ public class ChannelDiscoveryActivity extends XmppActivity implements MenuItem.O
     }
 
     private static ChannelDiscoveryService.Method getMethod(final Context c) {
+        if (QuickConversationsService.isQuicksy()) {
+            return ChannelDiscoveryService.Method.JABBER_NETWORK;
+        }
         final SharedPreferences p = PreferenceManager.getDefaultSharedPreferences(c);
         final String m = p.getString("channel_discovery_method", c.getString(R.string.default_channel_discovery));
         try {

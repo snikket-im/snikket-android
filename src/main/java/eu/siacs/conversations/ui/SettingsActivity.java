@@ -92,10 +92,15 @@ public class SettingsActivity extends XmppActivity implements
 		changeOmemoSettingSummary();
 
 		if (QuickConversationsService.isQuicksy()) {
-			PreferenceCategory connectionOptions = (PreferenceCategory) mSettingsFragment.findPreference("connection_options");
+			final PreferenceCategory connectionOptions = (PreferenceCategory) mSettingsFragment.findPreference("connection_options");
+			final PreferenceCategory groupChats = (PreferenceCategory) mSettingsFragment.findPreference("group_chats");
+			final Preference channelDiscoveryMethod = mSettingsFragment.findPreference("channel_discovery_method");
 			PreferenceScreen expert = (PreferenceScreen) mSettingsFragment.findPreference("expert");
 			if (connectionOptions != null) {
 				expert.removePreference(connectionOptions);
+			}
+			if (groupChats != null && channelDiscoveryMethod != null) {
+				groupChats.removePreference(channelDiscoveryMethod);
 			}
 		}
 
