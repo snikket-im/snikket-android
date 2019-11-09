@@ -922,11 +922,13 @@ public class JingleConnection implements Transferable {
             respondToIqWithOutOfOrder(packet);
             return;
         }
-        if (mJingleStatus != JINGLE_STATUS_ACCEPTED && !proxyActivationFailed) {
+        final boolean validState = mJingleStatus == JINGLE_STATUS_ACCEPTED || (proxyActivationFailed && mJingleStatus == JINGLE_STATUS_TRANSMITTING);
+        if (!validState) {
             Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": received out of order transport-replace");
             respondToIqWithOutOfOrder(packet);
             return;
         }
+        this.proxyActivationFailed = false; //fallback received; now we no longer need to accept another one;
         Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": receiving fallback to ibb");
         final String receivedBlockSize = packet.getJingleContent().ibbTransport().getAttribute("block-size");
         if (receivedBlockSize != null) {
@@ -970,11 +972,13 @@ public class JingleConnection implements Transferable {
             respondToIqWithOutOfOrder(packet);
             return;
         }
-        if (this.mJingleStatus != JINGLE_STATUS_ACCEPTED) {
+        final boolean validState = mJingleStatus == JINGLE_STATUS_ACCEPTED || (proxyActivationFailed && mJingleStatus == JINGLE_STATUS_TRANSMITTING);
+        if (!validState) {
             Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": received out of order transport-accept");
             respondToIqWithOutOfOrder(packet);
             return;
         }
+        this.proxyActivationFailed = false; //fallback accepted; now we no longer need to accept another one;
         if (packet.getJingleContent().hasIbbTransport()) {
             final Element ibbTransport = packet.getJingleContent().ibbTransport();
             final String receivedBlockSize = ibbTransport.getAttribute("block-size");
