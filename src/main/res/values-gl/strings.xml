@@ -508,7 +508,9 @@
   <string name="notify_never">Notificacións desactivadas</string>
   <string name="notify_paused">Notificacións pausadas</string>
   <string name="pref_picture_compression">Compresión de imaxes</string>
+  <string name="pref_picture_compression_summary">Truco: Utiliza \'Escoller ficheiro\' no lugar de \'Escoller imaxe\' para enviar imaxes individuais sen comprimir obviando este axuste.</string>
   <string name="always">Sempre</string>
+  <string name="large_images_only">Só imaxes grandes</string>
   <string name="battery_optimizations_enabled">Optimizacións de batería activadas</string>
   <string name="battery_optimizations_enabled_explained">O seu dispositivo está a realizar algunhas optimizacións de batería extremas en Conversations que poderían levar a notificacións con retraso ou incluso perda das mesmas.\nÉ recomendado desactivalas.</string>
   <string name="battery_optimizations_enabled_dialog">O seu dispositivo está facendo unhas optimizacións de batería moi fortes en Conversations que poderían facer que se retrasasen algunhas mensaxes ou incluso se perdesen.\n\nAgora pediráselle que se desactive as mesmas.</string>
@@ -871,4 +873,11 @@
   <string name="unable_to_perform_this_action">Non se puido completar a acción</string>
   <string name="open_join_dialog">Unirse a canle pública...</string>
   <string name="sharing_application_not_grant_permission">A aplicación que comparte non proporciona permiso para acceder ao ficheiro.</string>
+  <string name="group_chats_and_channels"><![CDATA[Conversas grupo & Canles]]></string>
+  <string name="jabber_network">jabber.network</string>
+  <string name="local_server">Servidor local</string>
+  <string name="pref_channel_discovery_summary">A maioría das usuarias debería escoller \'jabber.network\' para obter mellores suxestións desde o ecosistema público XMPP.</string>
+  <string name="pref_channel_discovery">Método de descubrimento de canles</string>
+  <string name="backup">Respaldo</string>
+  <string name="category_about">Acerca de</string>
 </resources>

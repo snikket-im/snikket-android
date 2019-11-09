@@ -510,7 +510,9 @@
   <string name="notify_never">Notificări dezactivate</string>
   <string name="notify_paused">Notificări suspendate</string>
   <string name="pref_picture_compression">Compresie imagini</string>
+  <string name="pref_picture_compression_summary">Notă: Folosiți \'Alegeți un fișier\' în loc de \'Alegeți o imagine\' pentru a trimite imaginile necomprimate ignorând această setare.</string>
   <string name="always">Mereu</string>
+  <string name="large_images_only">Doar imaginile mari</string>
   <string name="battery_optimizations_enabled">Optimizare baterie activată</string>
   <string name="battery_optimizations_enabled_explained">Dispozitivul dumneavoastră încearcă să optimizeze agresiv consumul bateriei pentru Conversations, asta poate duce la notificări întârziate sau chiar pierderea mesajelor.\nEste recomandat sa dezactivați aceste optimizări.</string>
   <string name="battery_optimizations_enabled_dialog">Dispozitivul dumneavoastră încearcă să optimizeze agresiv consumul 
@@ -881,4 +883,11 @@ sau chiar pierderea mesajelor.\nÎn continuare veți fi rugați să dezactivați
   <string name="unable_to_perform_this_action">Nu se poate realiza această acțiune</string>
   <string name="open_join_dialog">Alătură-te unui canal public...</string>
   <string name="sharing_application_not_grant_permission">Aplicația care a partajat nu a permis accesul la acest fișier.</string>
+  <string name="group_chats_and_channels"><![CDATA[Discuții de grup & Canale]]></string>
+  <string name="jabber_network">jabber.network</string>
+  <string name="local_server">Server local</string>
+  <string name="pref_channel_discovery_summary">Cei mai mulți utilizatori ar trebui să aleagă \'jabber.network\' pentru a primi sugestii mai bune din întregul ecosistem XMPP.</string>
+  <string name="pref_channel_discovery">Metoda de descoperire a canalelor</string>
+  <string name="backup">Copie de siguranță</string>
+  <string name="category_about">Despre</string>
 </resources>

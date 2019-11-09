@@ -512,7 +512,9 @@
   <string name="notify_never">Powiadomienia wyłączone</string>
   <string name="notify_paused">Powiadomienia wstrzymane</string>
   <string name="pref_picture_compression">Kompresja obrazów</string>
+  <string name="pref_picture_compression_summary">Podpowiedź: Użyj \'Wybierz plik\' zamiast \'Wybierz obraz\' aby wysłać poszczególne obrazki bez kompresji bez względu na to ustawienie. </string>
   <string name="always">Zawsze</string>
+  <string name="large_images_only">Tylko duże obrazki</string>
   <string name="battery_optimizations_enabled">Optymalizacje zużycia baterii włączone</string>
   <string name="battery_optimizations_enabled_explained">Twoje urządzenie wykonuje poważnie optymalizacje zużycia baterii przez Conversations, które mogą powodować opóźnienie powiadomień lub nawet utratę wiadomości.\nZaleca się ich wyłączenie.</string>
   <string name="battery_optimizations_enabled_dialog">Twoje urządzenie wykonuje poważnie optymalizacje zużycia baterii przez Conversations, które mogą powodować opóźnienie powiadomień lub nawet utratę wiadomości.\nZostaniesz teraz poproszony o ich wyłączenie</string>
@@ -889,4 +891,11 @@ Administrator twojego serwera będzie mógł czytać twoje wiadomości, ale moż
   <string name="unable_to_perform_this_action">Nie można wykonać tej akcji</string>
   <string name="open_join_dialog">Dołącz do publicznego kanału...</string>
   <string name="sharing_application_not_grant_permission">Aplikacja udostępniająca nie udzieliła pozwolenia na dostęp do tego pliku.</string>
+  <string name="group_chats_and_channels"><![CDATA[Rozmowy grupowe i kanały]]></string>
+  <string name="jabber_network">jabber.network</string>
+  <string name="local_server">Serwer lokalny</string>
+  <string name="pref_channel_discovery_summary">Większość użytkowników powinna wybrać \'jabber.network\' dla lepszych sugestii z całego ekosystemu XMPP. </string>
+  <string name="pref_channel_discovery">Metoda odkrywania kanałów</string>
+  <string name="backup">Kopia zapasowa</string>
+  <string name="category_about">O aplikacji</string>
 </resources>
