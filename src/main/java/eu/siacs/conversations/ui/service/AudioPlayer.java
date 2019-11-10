@@ -346,8 +346,12 @@ public class AudioPlayer implements View.OnClickListener, MediaPlayer.OnCompleti
             return false;
         }
         final ViewHolder viewHolder = ViewHolder.get(audioPlayer);
-        viewHolder.progress.setProgress(current * 100 / duration);
-        viewHolder.runtime.setText(formatTime(current) + " / " + formatTime(duration));
+        if (duration <= 0) {
+            viewHolder.progress.setProgress(100);
+        } else {
+            viewHolder.progress.setProgress(current * 100 / duration);
+        }
+        viewHolder.runtime.setText(String.format("%s / %s", formatTime(current), formatTime(duration)));
         return true;
     }
 
