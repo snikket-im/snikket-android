@@ -18,12 +18,7 @@
 
 <p align="center">
     <a href="https://play.google.com/store/apps/details?id=eu.siacs.conversations&amp;referrer=utm_source%3Dgithub">
-       <img src="https://conversations.im/images/en-play-badge.png"
-            alt="Google Play">
-            </a>
-    <a href="http://www.amazon.com/dp/B00WD35AAC/">
-        <img src="https://images-na.ssl-images-amazon.com/images/G/01/AmazonMobileApps/amazon-apps-store-us-black.png"
-             alt="Amazon App Store">
+       <img src="https://conversations.im/images/en-play-badge.png" alt="Google Play">
     </a>
 </p>
 
