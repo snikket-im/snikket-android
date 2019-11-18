@@ -179,7 +179,7 @@ public class MemorizingTrustManager {
 		File dir = app.getDir(KEYSTORE_DIR, Context.MODE_PRIVATE);
 		keyStoreFile = new File(dir + File.separator + KEYSTORE_FILE);
 
-		poshCacheDir = app.getFilesDir().getAbsolutePath()+"/posh_cache/";
+		poshCacheDir = app.getCacheDir().getAbsolutePath()+"/posh_cache/";
 
 		appKeyStore = loadAppKeyStore();
 	}
@@ -427,14 +427,18 @@ public class MemorizingTrustManager {
 			} catch (CertificateException e) {
 				boolean trustSystemCAs = !PreferenceManager.getDefaultSharedPreferences(master).getBoolean("dont_trust_system_cas", false);
 				if (domain != null && isServer && trustSystemCAs && !isIp(domain)) {
-					String hash = getBase64Hash(chain[0],"SHA-256");
-					List<String> fingerprints = getPoshFingerprints(domain);
-					if (hash != null && fingerprints.contains(hash)) {
-						Log.d("mtm","trusted cert fingerprint of "+domain+" via posh");
-						return;
+					final String hash = getBase64Hash(chain[0],"SHA-256");
+					final List<String> fingerprints = getPoshFingerprints(domain);
+					if (hash != null && fingerprints.size() > 0) {
+						if (fingerprints.contains(hash)) {
+							Log.d("mtm","trusted cert fingerprint of "+domain+" via posh");
+							return;
+						}
+						if (getPoshCacheFile(domain).delete()) {
+							Log.d("mtm", "deleted posh file for "+domain+" after not being able to verify");
+						}
 					}
 				}
-				e.printStackTrace();
 				if (interactive) {
 					interactCert(chain, authType, e);
 				} else {
