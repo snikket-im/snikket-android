@@ -338,7 +338,9 @@ public class Contact implements ListItem, Blockable {
 	}
 
 	public boolean showInContactList() {
-		return showInRoster() || getOption(Options.SYNCED_VIA_OTHER);
+		return showInRoster()
+				|| getOption(Options.SYNCED_VIA_OTHER)
+				|| (QuickConversationsService.isQuicksy() && systemAccount != null);
 	}
 
 	public void parseSubscriptionFromElement(Element item) {
