@@ -843,7 +843,8 @@ public class AxolotlService implements OnAdvancedStreamFeaturesLoaded {
 		final String node = AxolotlService.PEP_BUNDLES + ":" + getOwnDeviceId();
 		final IqPacket deleteBundleNode = mXmppConnectionService.getIqGenerator().deleteNode(node);
 		mXmppConnectionService.sendIqPacket(account, deleteBundleNode, null);
-		publishDeviceIdsAndRefineAccessModel(getOwnDeviceIds());
+		final Set<Integer> ownDeviceIds = getOwnDeviceIds();
+		publishDeviceIdsAndRefineAccessModel(ownDeviceIds == null ? Collections.emptySet() : ownDeviceIds);
 	}
 
 	public List<Jid> getCryptoTargets(Conversation conversation) {
