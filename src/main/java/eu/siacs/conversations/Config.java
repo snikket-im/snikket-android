@@ -90,7 +90,7 @@ public final class Config {
     public static final int REFRESH_UI_INTERVAL = 500;
 
     public static final int MAX_DISPLAY_MESSAGE_CHARS = 4096;
-    public static final int MAX_STORAGE_MESSAGE_CHARS = 1024 * 1024; //1MB
+    public static final int MAX_STORAGE_MESSAGE_CHARS = 2 * 1024 * 1024; //2MB
 
     public static final long MILLISECONDS_IN_DAY = 24 * 60 * 60 * 1000;
 

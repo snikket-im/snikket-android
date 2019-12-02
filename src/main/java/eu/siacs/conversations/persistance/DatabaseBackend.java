@@ -52,6 +52,7 @@ import eu.siacs.conversations.entities.ServiceDiscoveryResult;
 import eu.siacs.conversations.services.QuickConversationsService;
 import eu.siacs.conversations.services.ShortcutService;
 import eu.siacs.conversations.utils.CryptoHelper;
+import eu.siacs.conversations.utils.CursorUtils;
 import eu.siacs.conversations.utils.FtsUtils;
 import eu.siacs.conversations.utils.MimeUtils;
 import eu.siacs.conversations.utils.Resolver;
@@ -754,12 +755,10 @@ public class DatabaseBackend extends SQLiteOpenHelper {
                     null, null, Message.TIME_SENT + " DESC",
                     String.valueOf(limit));
         }
+        CursorUtils.upgradeCursorWindowSize(cursor);
         while (cursor.moveToNext()) {
             try {
-                final Message message = Message.fromCursor(cursor, conversation);
-                if (message != null) {
-                    list.add(0, message);
-                }
+                list.add(0, Message.fromCursor(cursor, conversation));
             } catch (Exception e) {
                 Log.e(Config.LOGTAG,"unable to restore message");
             }
