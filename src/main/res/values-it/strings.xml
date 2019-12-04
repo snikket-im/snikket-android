@@ -119,6 +119,7 @@
   <string name="pref_sound">Suono di notifica</string>
   <string name="pref_sound_summary">Esegui un suono quando arriva un nuovo messaggio</string>
   <string name="pref_notification_grace_period">Periodo di grazia</string>
+  <string name="pref_notification_grace_period_summary">Il periodo di tempo in cui le notifiche vengono silenziate dopo aver rilevato attività su uno dei tuoi altri dispositivi.</string>
   <string name="pref_advanced_options">Avanzate</string>
   <string name="pref_never_send_crash">Non inviare mai segnalazioni di errore</string>
   <string name="pref_never_send_crash_summary">Se scegli di inviare una segnalazione dell’errore aiuterai lo sviluppo di Conversations</string>
@@ -337,8 +338,8 @@
   <string name="no_application_found_to_open_file">Nessuna applicazione trovata per aprire il file</string>
   <string name="no_application_found_to_open_link">Nessuna applicazione trovata per aprire il link</string>
   <string name="no_application_found_to_view_contact">Nessuna applicazione trovata per vedere il contatto</string>
-  <string name="pref_show_dynamic_tags">Tag dinamici</string>
-  <string name="pref_show_dynamic_tags_summary">Mostra tag in sola lettura sotto i contatti</string>
+  <string name="pref_show_dynamic_tags">Etichette dinamiche</string>
+  <string name="pref_show_dynamic_tags_summary">Mostra etichette in sola lettura sotto i contatti</string>
   <string name="enable_notifications">Attiva le notifiche</string>
   <string name="no_conference_server_found">Nessun server per chat di gruppo trovato</string>
   <string name="conference_creation_failed">Creazione della chat di gruppo fallita!</string>
@@ -507,7 +508,9 @@
   <string name="notify_never">Notifiche disattivate</string>
   <string name="notify_paused">Notifiche in pausa</string>
   <string name="pref_picture_compression">Compressione immagini</string>
+  <string name="pref_picture_compression_summary">Suggerimento: usa \"Scegli un file\" invece di \"Scegli un\'immagine\" per inviare singole immagini non compresse a prescindere da questa impostazione.</string>
   <string name="always">Sempre</string>
+  <string name="large_images_only">Solo immagini grandi</string>
   <string name="battery_optimizations_enabled">Ottimizzazioni batteria attivate</string>
   <string name="battery_optimizations_enabled_explained">Il tuo dispositivo sta facendo delle ingenti ottimizzazioni della batteria per Conversations che potrebbero portare ritardi alle notifiche o anche perdita di messaggi.\nSi consiglia di disattivarle.</string>
   <string name="battery_optimizations_enabled_dialog">Il tuo dispositivo sta facendo delle ingenti ottimizzazioni della batteria per Conversations che potrebbero portare ritardi alle notifiche o anche perdita di messaggi.\n\nTi verrà ora chiesto di disattivarle.</string>
@@ -869,4 +872,12 @@
   <string name="please_enter_password">Inserisci la password per questo account</string>
   <string name="unable_to_perform_this_action">Impossibile eseguire questa azione</string>
   <string name="open_join_dialog">Entra in un canale pubblico...</string>
+  <string name="sharing_application_not_grant_permission">L\'applicazione di condivisione non ha concesso l\'autorizzazione per accedere a questo file.</string>
+  <string name="group_chats_and_channels"><![CDATA[Chat di gruppo e canali]]></string>
+  <string name="jabber_network">jabber.network</string>
+  <string name="local_server">Server locale</string>
+  <string name="pref_channel_discovery_summary">La maggior parte degli utenti dovrebbe scegliere ‘jabber.network’ per migliori suggerimenti dall\'intero ecosistema XMPP pubblico.</string>
+  <string name="pref_channel_discovery">Metodo di scoperta canali</string>
+  <string name="backup">Backup</string>
+  <string name="category_about">Al riguardo</string>
 </resources>

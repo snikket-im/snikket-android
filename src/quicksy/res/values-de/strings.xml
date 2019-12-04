@@ -20,7 +20,7 @@
     <string name="foreground_service_channel_description">Diese Benachrichtigungsart wird verwendet, um eine permanente Benachrichtigung anzuzeigen, die anzeigt, dass Quicksy gerade ausgeführt wird.</string>
     <string name="set_profile_picture">Quicksy Profilbild</string>
     <string name="not_available_in_your_country">Quicksy ist in deinem Land nicht verfügbar.</string>
-    <string name="unable_to_verify_server_identity">Die Überprüfung der Serveridentität ist nicht möglich.</string>
+    <string name="unable_to_verify_server_identity">Überprüfung der Serveridentität ist nicht möglich.</string>
     <string name="unknown_security_error">Unbekannter Sicherheitsfehler.</string>
     <string name="timeout_while_connecting_to_server">Zeitüberschreitung bei der Verbindung zum Server.</string>
 </resources>
