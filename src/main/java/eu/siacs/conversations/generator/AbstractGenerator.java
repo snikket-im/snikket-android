@@ -99,8 +99,8 @@ public abstract class AbstractGenerator {
 		for (String feature : getFeatures(account)) {
 			s.append(feature).append('<');
 		}
-		byte[] sha1 = md.digest(s.toString().getBytes());
-		return new String(Base64.encode(sha1, Base64.DEFAULT)).trim();
+		final byte[] sha1 = md.digest(s.toString().getBytes());
+		return Base64.encodeToString(sha1, Base64.NO_WRAP);
 	}
 
 	public static String getTimestamp(long time) {

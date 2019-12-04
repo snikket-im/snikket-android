@@ -160,10 +160,6 @@ public class IqGenerator extends AbstractGenerator {
         return publish("urn:xmpp:avatar:data", item, options);
     }
 
-    public IqPacket publishElement(final String namespace, final Element element, final Bundle options) {
-        return publishElement(namespace, element, "curent", options);
-    }
-
     public IqPacket publishElement(final String namespace, final Element element, String id, final Bundle options) {
         final Element item = new Element("item");
         item.setAttribute("id", id);
@@ -263,17 +259,17 @@ public class IqGenerator extends AbstractGenerator {
         final Element signedPreKeyPublic = bundle.addChild("signedPreKeyPublic");
         signedPreKeyPublic.setAttribute("signedPreKeyId", signedPreKeyRecord.getId());
         ECPublicKey publicKey = signedPreKeyRecord.getKeyPair().getPublicKey();
-        signedPreKeyPublic.setContent(Base64.encodeToString(publicKey.serialize(), Base64.DEFAULT));
+        signedPreKeyPublic.setContent(Base64.encodeToString(publicKey.serialize(), Base64.NO_WRAP));
         final Element signedPreKeySignature = bundle.addChild("signedPreKeySignature");
-        signedPreKeySignature.setContent(Base64.encodeToString(signedPreKeyRecord.getSignature(), Base64.DEFAULT));
+        signedPreKeySignature.setContent(Base64.encodeToString(signedPreKeyRecord.getSignature(), Base64.NO_WRAP));
         final Element identityKeyElement = bundle.addChild("identityKey");
-        identityKeyElement.setContent(Base64.encodeToString(identityKey.serialize(), Base64.DEFAULT));
+        identityKeyElement.setContent(Base64.encodeToString(identityKey.serialize(), Base64.NO_WRAP));
 
         final Element prekeys = bundle.addChild("prekeys", AxolotlService.PEP_PREFIX);
         for (PreKeyRecord preKeyRecord : preKeyRecords) {
             final Element prekey = prekeys.addChild("preKeyPublic");
             prekey.setAttribute("preKeyId", preKeyRecord.getId());
-            prekey.setContent(Base64.encodeToString(preKeyRecord.getKeyPair().getPublicKey().serialize(), Base64.DEFAULT));
+            prekey.setContent(Base64.encodeToString(preKeyRecord.getKeyPair().getPublicKey().serialize(), Base64.NO_WRAP));
         }
 
         return publish(AxolotlService.PEP_BUNDLES + ":" + deviceId, item, publishOptions);
@@ -287,13 +283,13 @@ public class IqGenerator extends AbstractGenerator {
         for (int i = 0; i < certificates.length; ++i) {
             try {
                 Element certificate = chain.addChild("certificate");
-                certificate.setContent(Base64.encodeToString(certificates[i].getEncoded(), Base64.DEFAULT));
+                certificate.setContent(Base64.encodeToString(certificates[i].getEncoded(), Base64.NO_WRAP));
                 certificate.setAttribute("index", i);
             } catch (CertificateEncodingException e) {
                 Log.d(Config.LOGTAG, "could not encode certificate");
             }
         }
-        verification.addChild("signature").setContent(Base64.encodeToString(signature, Base64.DEFAULT));
+        verification.addChild("signature").setContent(Base64.encodeToString(signature, Base64.NO_WRAP));
         return publish(AxolotlService.PEP_VERIFICATION + ":" + deviceId, item);
     }
 

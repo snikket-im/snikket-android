@@ -11,7 +11,7 @@ public class CursorUtils {
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.P) {
             if (cursor instanceof AbstractWindowedCursor) {
                 final AbstractWindowedCursor windowedCursor = (AbstractWindowedCursor) cursor;
-                windowedCursor.setWindow(new CursorWindow("8k", 8 * 1024 * 1024));
+                windowedCursor.setWindow(new CursorWindow("8M", 8 * 1024 * 1024));
             }
             if (cursor instanceof SQLiteCursor) {
                 ((SQLiteCursor) cursor).setFillWindowForwardOnly(true);

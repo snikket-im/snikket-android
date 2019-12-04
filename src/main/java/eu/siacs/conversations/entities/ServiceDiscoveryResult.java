@@ -158,7 +158,7 @@ public class ServiceDiscoveryResult {
 	}
 
 	public String getVer() {
-		return new String(Base64.encode(this.ver, Base64.DEFAULT)).trim();
+		return Base64.encodeToString(this.ver, Base64.NO_WRAP);
 	}
 
 	public List<Identity> getIdentities() {
