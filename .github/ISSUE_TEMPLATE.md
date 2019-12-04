@@ -1,10 +1,10 @@
 #### General information
 
-* **Version:** 2.5.3
+* **Version:** 2.6.0
 * **Device:** Xiaomi Mi A1
 * **Android Version:**  Android 9 (stock)
 * **Server name:** conversations.im, jabber.at or self hosted
-* **Server software:** ejabberd 16.04 or prosody 0.10 (if known)
+* **Server software:** ejabberd 19.09.1 or prosody 0.11.3 (if known)
 * **Installed server modules:** Stream Managment, CSI, MAM
 * **Conversations source:** PlayStore, PlayStore Beta Channel, F-Droid, self build (latest HEAD)
 
