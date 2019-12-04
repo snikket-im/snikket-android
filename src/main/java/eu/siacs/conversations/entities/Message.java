@@ -97,7 +97,7 @@ public class Message extends AbstractEntity implements AvatarService.Avatarable 
 	protected boolean deleted = false;
 	protected boolean carbon = false;
 	protected boolean oob = false;
-	protected List<Edited> edits = new ArrayList<>();
+	protected List<Edit> edits = new ArrayList<>();
 	protected String relativeFilePath;
 	protected boolean read = true;
 	protected String remoteMsgId = null;
@@ -174,7 +174,7 @@ public class Message extends AbstractEntity implements AvatarService.Avatarable 
 		this.serverMsgId = serverMsgId;
 		this.axolotlFingerprint = fingerprint;
 		this.read = read;
-		this.edits = Edited.fromJson(edited);
+		this.edits = Edit.fromJson(edited);
 		this.oob = oob;
 		this.errorMessage = errorMessage;
 		this.readByMarkers = readByMarkers == null ? new HashSet<>() : readByMarkers;
@@ -263,7 +263,7 @@ public class Message extends AbstractEntity implements AvatarService.Avatarable 
 		values.put(FINGERPRINT, axolotlFingerprint);
 		values.put(READ, read ? 1 : 0);
 		try {
-			values.put(EDITED, Edited.toJson(edits));
+			values.put(EDITED, Edit.toJson(edits));
 		} catch (JSONException e) {
 			Log.e(Config.LOGTAG,"error persisting json for edits",e);
 		}
@@ -434,11 +434,14 @@ public class Message extends AbstractEntity implements AvatarService.Avatarable 
 	}
 
 	public void putEdited(String edited, String serverMsgId) {
-		this.edits.add(new Edited(edited, serverMsgId));
+		final Edit edit = new Edit(edited, serverMsgId);
+		if (this.edits.size() < 128 && !this.edits.contains(edit)) {
+			this.edits.add(edit);
+		}
 	}
 
-	public boolean remoteMsgIdMatchInEdit(String id) {
-		for(Edited edit : this.edits) {
+	boolean remoteMsgIdMatchInEdit(String id) {
+		for(Edit edit : this.edits) {
 			if (id.equals(edit.getEditedId())) {
 				return true;
 			}
@@ -507,8 +510,8 @@ public class Message extends AbstractEntity implements AvatarService.Avatarable 
 
 	boolean similar(Message message) {
 		if (!isPrivateMessage() && this.serverMsgId != null && message.getServerMsgId() != null) {
-			return this.serverMsgId.equals(message.getServerMsgId()) || Edited.wasPreviouslyEditedServerMsgId(edits, message.getServerMsgId());
-		} else if (Edited.wasPreviouslyEditedServerMsgId(edits, message.getServerMsgId())) {
+			return this.serverMsgId.equals(message.getServerMsgId()) || Edit.wasPreviouslyEditedServerMsgId(edits, message.getServerMsgId());
+		} else if (Edit.wasPreviouslyEditedServerMsgId(edits, message.getServerMsgId())) {
 			return true;
 		} else if (this.body == null || this.counterpart == null) {
 			return false;
@@ -524,7 +527,7 @@ public class Message extends AbstractEntity implements AvatarService.Avatarable 
 			final boolean matchingCounterpart = this.counterpart.equals(message.getCounterpart());
 			if (message.getRemoteMsgId() != null) {
 				final boolean hasUuid = CryptoHelper.UUID_PATTERN.matcher(message.getRemoteMsgId()).matches();
-				if (hasUuid && matchingCounterpart && Edited.wasPreviouslyEditedRemoteMsgId(edits, message.getRemoteMsgId())) {
+				if (hasUuid && matchingCounterpart && Edit.wasPreviouslyEditedRemoteMsgId(edits, message.getRemoteMsgId())) {
 					return true;
 				}
 				return (message.getRemoteMsgId().equals(this.remoteMsgId) || message.getRemoteMsgId().equals(this.uuid))
