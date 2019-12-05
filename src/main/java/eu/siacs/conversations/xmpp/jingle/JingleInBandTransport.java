@@ -15,7 +15,6 @@ import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.entities.DownloadableFile;
 import eu.siacs.conversations.persistance.FileBackend;
 import eu.siacs.conversations.services.AbstractConnectionManager;
-import eu.siacs.conversations.utils.CryptoHelper;
 import eu.siacs.conversations.xml.Element;
 import eu.siacs.conversations.xmpp.OnIqPacketReceived;
 import eu.siacs.conversations.xmpp.stanzas.IqPacket;
@@ -70,6 +69,7 @@ public class JingleInbandTransport extends JingleTransport {
     }
 
     private void sendClose() {
+        Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": sending ibb close");
         IqPacket iq = new IqPacket(IqPacket.TYPE.SET);
         iq.setTo(this.counterpart);
         Element close = iq.addChild("close", "http://jabber.org/protocol/ibb");
@@ -178,9 +178,9 @@ public class JingleInbandTransport extends JingleTransport {
             this.seq++;
             connection.updateProgress((int) ((((double) (this.fileSize - this.remainingSize)) / this.fileSize) * 100));
             if (this.remainingSize <= 0) {
-                sendClose();
                 file.setSha1Sum(digest.digest());
                 this.onFileTransmissionStatusChanged.onFileTransmitted(file);
+                sendClose();
                 fileInputStream.close();
             }
         } catch (IOException e) {
@@ -200,14 +200,23 @@ public class JingleInbandTransport extends JingleTransport {
             this.fileOutputStream.write(buffer);
             this.digest.update(buffer);
             if (this.remainingSize <= 0) {
-                file.setSha1Sum(digest.digest());
-                fileOutputStream.flush();
-                fileOutputStream.close();
-                Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": receive next block nothing remaining");
-                this.onFileTransmissionStatusChanged.onFileTransmitted(file);
+                Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": received last block. waiting for close");
             } else {
                 connection.updateProgress((int) ((((double) (this.fileSize - this.remainingSize)) / this.fileSize) * 100));
             }
+        } catch (Exception e) {
+            Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": " + e.getMessage());
+            FileBackend.close(fileOutputStream);
+            this.onFileTransmissionStatusChanged.onFileTransferAborted();
+        }
+    }
+
+    private void done() {
+        try {
+            file.setSha1Sum(digest.digest());
+            fileOutputStream.flush();
+            fileOutputStream.close();
+            this.onFileTransmissionStatusChanged.onFileTransmitted(file);
         } catch (Exception e) {
             Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": " + e.getMessage());
             FileBackend.close(fileOutputStream);
@@ -235,10 +244,16 @@ public class JingleInbandTransport extends JingleTransport {
             this.connected = false;
             this.account.getXmppConnection().sendIqPacket(
                     packet.generateResponse(IqPacket.TYPE.RESULT), null);
-            Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": received ibb close");
+            if (this.remainingSize <= 0) {
+                Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": received ibb close. done");
+                done();
+            } else {
+                Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": received ibb close with " + this.remainingSize + " remaining");
+                FileBackend.close(fileOutputStream);
+                this.onFileTransmissionStatusChanged.onFileTransferAborted();
+            }
         } else {
-            Log.d(Config.LOGTAG, payload.toString());
-            // TODO some sort of exception
+            this.account.getXmppConnection().sendIqPacket(packet.generateResponse(IqPacket.TYPE.ERROR), null);
         }
     }
 }
