@@ -15,7 +15,7 @@ import eu.siacs.conversations.Config;
 
 public class KnownHostsAdapter extends ArrayAdapter<String> {
 
-    private static Pattern E164_PATTERN = Pattern.compile("^\\+?[1-9]\\d{1,14}$");
+    private static Pattern E164_PATTERN = Pattern.compile("^\\+[1-9]\\d{1,14}$");
 
     private ArrayList<String> domains;
     private Filter domainFilter = new Filter() {
