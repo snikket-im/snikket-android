@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="pick_a_server">Válassza ki az XMPP szolgáltatóját</string>
-    <string name="use_conversations.im">conversations.im használata</string>
+    <string name="use_conversations.im">A conversations.im használata</string>
     <string name="create_new_account">Új fiók létrehozása</string>
     <string name="do_you_have_an_account">Már rendelkezik XMPP fiókkal? Ez az eset állhat fenn, ha már egy másik XMPP klienst használ vagy ha már korábban használta a Conversations-t. Ha nem, akkor most létrehozhat egy új XMPP fiókot.\nTipp: Egyes e-mail szolgáltatók is biztosítanak XMPP fiókokat is.</string>
     <string name="server_select_text">Az XMPP egy szolgáltató független, azonnali üzenetküldő hálózat. Ezt az ügyfél programot bármelyik XMPP szerverhez használhatja.\nDe a könnyebbség kedvéért létrehozhat egy fiókot a conversations.im¹ szolgáltatón is; ami kifejezetten a Conversations programmal való használatra lett tervezve.</string>

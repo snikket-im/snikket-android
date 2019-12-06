@@ -124,7 +124,7 @@
   <string name="pref_never_send_crash">Nunca enviar informe de erros</string>
   <string name="pref_never_send_crash_summary">Enviando volcados de pilas axudas ao desenvolvemento de Conversations</string>
   <string name="pref_confirm_messages">Confirmación de mensaxes</string>
-  <string name="pref_confirm_messages_summary">Permitir aos seus contactos saber si recibiu e leu as súas mensaxes</string>
+  <string name="pref_confirm_messages_summary">Permitir aos seus contactos saber si recibeu e leu as súas mensaxes</string>
   <string name="pref_ui_options">Interface</string>
   <string name="openpgp_error">OpenKeychain informou de un fallo.</string>
   <string name="bad_key_for_encryption">Chave incorrecta para cifrar.</string>
@@ -557,7 +557,7 @@
   <string name="pref_theme_options">Decorado</string>
   <string name="pref_theme_options_summary">Escolla a gama de cores</string>
   <string name="pref_theme_light">Decorado claro</string>
-  <string name="pref_theme_dark">Decorado oscuro</string>
+  <string name="pref_theme_dark">Decorado escuro</string>
   <string name="pref_use_green_background">Fondo verde</string>
   <string name="pref_use_green_background_summary">Utilizar fondo verde para mensaxes recibidas</string>
   <string name="unable_to_connect_to_keychain">Non se puido conectar con OpenKeychain</string>
@@ -691,9 +691,9 @@
   <string name="disable_encryption_message">¿Está segura de que quere desactivar o cifrado OMEMO para esta conversación? Isto permitirá que o administrador do seu servidor lea as súas mensaxes, pero pode ser a única forma de comunicarse con persoas que usan clientes obsoletos.</string>
   <string name="disable_now">Desactivar agora</string>
   <string name="draft">Borrador:</string>
-  <string name="pref_omemo_setting">Encriptación OMEMO</string>
+  <string name="pref_omemo_setting">Cifrado OMEMO</string>
   <string name="pref_omemo_setting_summary_always">OMEMO sempre se utilizará para charlas individuais e privadas en grupo.</string>
-  <string name="pref_omemo_setting_summary_default_on">OMEMO utilizarase por defecto para as novas conversacións.</string>
+  <string name="pref_omemo_setting_summary_default_on">OMEMO utilizarase por defecto para as novas conversas.</string>
   <string name="pref_omemo_setting_summary_default_off">OMEMO terá que ser activado explícitamente para novas conversacións.</string>
   <string name="create_shortcut">Crear acceso directo</string>
   <string name="pref_font_size">Tamaño da fonte</string>
