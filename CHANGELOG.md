@@ -1,5 +1,10 @@
 # Changelog
 
+### Version 2.6.1
+* fixes for Jingle IBB file transfer
+* fixes for repeated corrections filling up the database
+* switched to Last Message Correction v1.1
+
 ### Version 2.6.0
 * Introduce expert setting to perform channel discovery on local server instead of [search.jabber.network](https://search.jabber.network)
 * Enable delivery check marks by default and remove setting
