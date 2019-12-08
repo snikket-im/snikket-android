@@ -195,7 +195,7 @@ public class DatabaseBackend extends SQLiteOpenHelper {
     @Override
     public void onConfigure(SQLiteDatabase db) {
         db.execSQL("PRAGMA foreign_keys=ON");
-        db.rawQuery("PRAGMA secure_delete=ON", null);
+        db.rawQuery("PRAGMA secure_delete=ON", null).close();
     }
 
     @Override
@@ -548,7 +548,12 @@ public class DatabaseBackend extends SQLiteOpenHelper {
         }
 
         if (oldVersion < 46 && newVersion >= 46) {
+            final long start = SystemClock.elapsedRealtime();
+            db.rawQuery("PRAGMA secure_delete = FALSE", null).close();
             db.execSQL("update "+Message.TABLENAME+" set "+Message.EDITED+"=NULL");
+            db.rawQuery("PRAGMA secure_delete=ON", null).close();
+            final long diff = SystemClock.elapsedRealtime() - start;
+            Log.d(Config.LOGTAG,"deleted old edit information in "+diff+"ms");
         }
     }
 
@@ -584,14 +589,14 @@ public class DatabaseBackend extends SQLiteOpenHelper {
             String newJid;
             try {
                 newJid = Jid.of(cursor.getString(cursor.getColumnIndex(Contact.JID))).toString();
-            } catch (IllegalArgumentException ignored) {
+            } catch (final IllegalArgumentException e) {
                 Log.e(Config.LOGTAG, "Failed to migrate Contact JID "
                         + cursor.getString(cursor.getColumnIndex(Contact.JID))
-                        + ": " + ignored + ". Skipping...");
+                        + ":  Skipping...", e);
                 continue;
             }
 
-            String updateArgs[] = {
+            final String[] updateArgs = {
                     newJid,
                     cursor.getString(cursor.getColumnIndex(Contact.ACCOUNT)),
                     cursor.getString(cursor.getColumnIndex(Contact.JID)),
