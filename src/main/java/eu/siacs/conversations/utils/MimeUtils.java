@@ -16,6 +16,7 @@
 package eu.siacs.conversations.utils;
 import android.content.Context;
 import android.net.Uri;
+import android.os.Build;
 import android.util.Log;
 
 import java.io.File;
@@ -268,6 +269,7 @@ public final class MimeUtils {
         add("image/ico", "cur");
         add("image/ico", "ico");
         add("image/ief", "ief");
+        add("image/heic","heic");
         // add ".jpg" first so it will be the default for guessExtensionFromMimeType
         add("image/jpeg", "jpg");
         add("image/jpeg", "jpeg");
