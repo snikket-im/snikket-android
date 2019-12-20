@@ -416,7 +416,7 @@ public class HttpDownloadConnection implements Transferable {
 
 				if (tryResume) {
 					resumeSize = file.getSize();
-					Log.d(Config.LOGTAG, "http download trying resume after" + resumeSize + " of " + expected);
+					Log.d(Config.LOGTAG, "http download trying resume after " + resumeSize + " of " + expected);
 					connection.setRequestProperty("Range", "bytes=" + resumeSize + "-");
 				}
 				connection.setConnectTimeout(Config.SOCKET_TIMEOUT * 1000);
