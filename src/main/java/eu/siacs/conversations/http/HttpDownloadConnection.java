@@ -4,7 +4,10 @@ import android.os.PowerManager;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
+import com.google.common.io.ByteStreams;
+
 import java.io.BufferedInputStream;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -90,7 +93,12 @@ public class HttpDownloadConnection implements Transferable {
 				ext = extension.main;
 			}
 			message.setRelativeFilePath(message.getUuid() + (ext != null ? ("." + ext) : ""));
-			this.file = mXmppConnectionService.getFileBackend().getFile(message, false);
+			if (message.getEncryption() == Message.ENCRYPTION_AXOLOTL) {
+				this.file = new DownloadableFile(mXmppConnectionService.getCacheDir().getAbsolutePath() + "/" + message.getUuid());
+				Log.d(Config.LOGTAG, "create temporary OMEMO encrypted file: " + this.file.getAbsolutePath() + "(" + message.getMimeType() + ")");
+			} else {
+				this.file = mXmppConnectionService.getFileBackend().getFile(message, false);
+			}
 			final String reference = mUrl.getRef();
 			if (reference != null && AesGcmURLStreamHandler.IV_KEY.matcher(reference).matches()) {
 				this.file.setKeyAndIv(CryptoHelper.hexToBytes(reference));
@@ -131,7 +139,41 @@ public class HttpDownloadConnection implements Transferable {
 		mHttpConnectionManager.updateConversationUi(true);
 	}
 
-	private void finish() {
+	private void decryptOmemoFile() throws Exception {
+		final DownloadableFile outputFile = mXmppConnectionService.getFileBackend().getFile(message, true);
+
+		if (outputFile.getParentFile().mkdirs()) {
+			Log.d(Config.LOGTAG, "created parent directories for " + outputFile.getAbsolutePath());
+		}
+
+		try {
+			outputFile.createNewFile();
+			final InputStream is = new FileInputStream(this.file);
+
+			outputFile.setKey(this.file.getKey());
+			outputFile.setIv(this.file.getIv());
+			final OutputStream os = AbstractConnectionManager.createOutputStream(outputFile, false, true);
+
+			ByteStreams.copy(is, os);
+
+			FileBackend.close(is);
+			FileBackend.close(os);
+
+			if (!file.delete()) {
+				Log.w(Config.LOGTAG,"unable to delete temporary OMEMO encrypted file " + file.getAbsolutePath());
+			}
+
+			message.setRelativeFilePath(outputFile.getPath());
+		} catch (IOException e) {
+			message.setEncryption(Message.ENCRYPTION_DECRYPTION_FAILED);
+			mXmppConnectionService.updateMessage(message);
+		}
+	}
+
+	private void finish() throws Exception {
+		if (message.getEncryption() == Message.ENCRYPTION_AXOLOTL)	{
+			decryptOmemoFile();
+		}
 		message.setTransferable(null);
 		mHttpConnectionManager.finishConnection(this);
 		boolean notify = acceptedAutomatically && !message.isRead();
@@ -337,8 +379,8 @@ public class HttpDownloadConnection implements Transferable {
 			try {
 				changeStatus(STATUS_DOWNLOADING);
 				download();
-				updateImageBounds();
 				finish();
+				updateImageBounds();
 			} catch (SSLHandshakeException e) {
 				changeStatus(STATUS_OFFER);
 			} catch (Exception e) {
@@ -369,7 +411,7 @@ public class HttpDownloadConnection implements Transferable {
 				connection.setUseCaches(false);
 				connection.setRequestProperty("User-Agent", mXmppConnectionService.getIqGenerator().getUserAgent());
 				final long expected = file.getExpectedSize();
-				final boolean tryResume = file.exists() && file.getKey() == null && file.getSize() > 0 && file.getSize() < expected;
+				final boolean tryResume = file.exists() && file.getSize() > 0 && file.getSize() < expected;
 				long resumeSize = 0;
 
 				if (tryResume) {
@@ -388,7 +430,7 @@ public class HttpDownloadConnection implements Transferable {
 					Log.d(Config.LOGTAG, "server resumed");
 					transmitted = file.getSize();
 					updateProgress(Math.round(((double) transmitted / expected) * 100));
-					os = AbstractConnectionManager.createAppendedOutputStream(file);
+					os = AbstractConnectionManager.createOutputStream(file, true, false);
 					if (os == null) {
 						throw new FileWriterException();
 					}
@@ -406,7 +448,7 @@ public class HttpDownloadConnection implements Transferable {
 					if (!file.exists() && !file.createNewFile()) {
 						throw new FileWriterException();
 					}
-					os = AbstractConnectionManager.createOutputStream(file);
+					os = AbstractConnectionManager.createOutputStream(file, false, false);
 				}
 				int count;
 				byte[] buffer = new byte[4096];
