@@ -53,20 +53,11 @@ public class AbstractConnectionManager {
         }
     }
 
-
-    public static OutputStream createAppendedOutputStream(DownloadableFile file) {
-        return createOutputStream(file, true);
-    }
-
-    public static OutputStream createOutputStream(DownloadableFile file) {
-        return createOutputStream(file, false);
-    }
-
-    private static OutputStream createOutputStream(DownloadableFile file, boolean append) {
+    public static OutputStream createOutputStream(DownloadableFile file, boolean append, boolean decrypt) {
         FileOutputStream os;
         try {
             os = new FileOutputStream(file, append);
-            if (file.getKey() == null) {
+            if (file.getKey() == null || !decrypt) {
                 return os;
             }
         } catch (FileNotFoundException e) {
