@@ -58,6 +58,8 @@ public class AvatarService implements OnAdvancedStreamFeaturesLoaded {
 	private static final String PREFIX_ACCOUNT = "account";
 	private static final String PREFIX_GENERIC = "generic";
 
+	private static final String CHANNEL_SYMBOL = "#";
+
 	final private ArrayList<Integer> sizes = new ArrayList<>();
 	final private HashMap<String, Set<String>> conversationDependentKeys = new HashMap<>();
 
@@ -95,7 +97,7 @@ public class AvatarService implements OnAdvancedStreamFeaturesLoaded {
 		if (conversation != null) {
 			return get(conversation,size,cacheOnly);
 		}
-		return get(result.getName(), room != null ? room.asBareJid().toEscapedString() : result.getName(), size, cacheOnly);
+		return get(CHANNEL_SYMBOL, room != null ? room.asBareJid().toEscapedString() : result.getName(), size, cacheOnly);
 	}
 
 	private Bitmap get(final Contact contact, final int size, boolean cachedOnly) {
@@ -339,12 +341,16 @@ public class AvatarService implements OnAdvancedStreamFeaturesLoaded {
 		bitmap = mXmppConnectionService.getFileBackend().getAvatar(mucOptions.getAvatar(), size);
 
 		if (bitmap == null) {
-			final List<MucOptions.User> users = mucOptions.getUsersRelevantForNameAndAvatar();
-			if (users.size() == 0) {
-				Conversation c = mucOptions.getConversation();
-				bitmap = getImpl(c.getName().toString(), c.getJid().asBareJid().toString(), size);
+			Conversation c = mucOptions.getConversation();
+			if (mucOptions.isPrivateAndNonAnonymous()) {
+				final List<MucOptions.User> users = mucOptions.getUsersRelevantForNameAndAvatar();
+				if (users.size() == 0) {
+					bitmap = getImpl(c.getName().toString(), c.getJid().asBareJid().toString(), size);
+				} else {
+					bitmap = getImpl(users, size);
+				}
 			} else {
-				bitmap = getImpl(users, size);
+				bitmap = getImpl(CHANNEL_SYMBOL, c.getJid().asBareJid().toString(), size);
 			}
 		}
 
@@ -628,7 +634,7 @@ public class AvatarService implements OnAdvancedStreamFeaturesLoaded {
 
 	private static boolean drawTile(Canvas canvas, String name, String seed, int left, int top, int right, int bottom) {
 		if (name != null) {
-			final String letter = getFirstLetter(name);
+			final String letter = name.equals(CHANNEL_SYMBOL) ? name : getFirstLetter(name);
 			final int color = UIHelper.getColorForName(seed == null ? name : seed);
 			drawTile(canvas, letter, color, left, top, right, bottom);
 			return true;

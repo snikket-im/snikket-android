@@ -296,6 +296,10 @@ public class HttpDownloadConnection implements Transferable {
 				retrieveFailed(e);
 				return;
 			}
+			//TODO at this stage we probably also want to persist the file size in the body of the
+			// message via a similar mechansim as updateFileParams() - essentially body needs to read
+			// "url|filesize"
+			// afterwards a file that failed to download mid way will not display 'check file size' anymore
 			file.setExpectedSize(size);
 			message.resetFileParams();
 			if (mHttpConnectionManager.hasStoragePermission()
