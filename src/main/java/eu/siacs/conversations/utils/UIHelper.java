@@ -306,7 +306,7 @@ public class UIHelper {
 						UIHelper.getMessageDisplayName(message) + " "), false);
 			} else if (message.isGeoUri()) {
 				return new Pair<>(context.getString(R.string.location), true);
-			} else if (message.treatAsDownloadable()) {
+			} else if (message.treatAsDownloadable() || MessageUtils.unInitiatedButKnownSize(message)) {
 				return new Pair<>(context.getString(R.string.x_file_offered_for_download,
 						getFileDescriptionString(context, message)), true);
 			} else {

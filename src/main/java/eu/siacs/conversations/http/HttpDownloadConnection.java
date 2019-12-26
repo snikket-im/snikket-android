@@ -74,8 +74,11 @@ public class HttpDownloadConnection implements Transferable {
 	public void init(boolean interactive) {
 		this.message.setTransferable(this);
 		try {
+			final Message.FileParams fileParams = message.getFileParams();
 			if (message.hasFileOnRemoteHost()) {
-				mUrl = CryptoHelper.toHttpsUrl(message.getFileParams().url);
+				mUrl = CryptoHelper.toHttpsUrl(fileParams.url);
+			} else if (message.isOOb() && fileParams.url != null && fileParams.size > 0) {
+				mUrl = fileParams.url;
 			} else {
 				mUrl = CryptoHelper.toHttpsUrl(new URL(message.getBody().split("\n")[0]));
 			}
@@ -139,7 +142,7 @@ public class HttpDownloadConnection implements Transferable {
 		mHttpConnectionManager.updateConversationUi(true);
 	}
 
-	private void decryptOmemoFile() throws Exception {
+	private void decryptOmemoFile() {
 		final DownloadableFile outputFile = mXmppConnectionService.getFileBackend().getFile(message, true);
 
 		if (outputFile.getParentFile().mkdirs()) {
@@ -171,9 +174,6 @@ public class HttpDownloadConnection implements Transferable {
 	}
 
 	private void finish() throws Exception {
-		if (message.getEncryption() == Message.ENCRYPTION_AXOLOTL)	{
-			decryptOmemoFile();
-		}
 		message.setTransferable(null);
 		mHttpConnectionManager.finishConnection(this);
 		boolean notify = acceptedAutomatically && !message.isRead();
@@ -187,6 +187,12 @@ public class HttpDownloadConnection implements Transferable {
 				mXmppConnectionService.getNotificationService().push(message);
 			}
 		});
+	}
+
+	private void decryptIfNeeded() {
+		if (message.getEncryption() == Message.ENCRYPTION_AXOLOTL)	{
+			decryptOmemoFile();
+		}
 	}
 
 	private void changeStatus(int status) {
@@ -296,10 +302,10 @@ public class HttpDownloadConnection implements Transferable {
 				retrieveFailed(e);
 				return;
 			}
-			//TODO at this stage we probably also want to persist the file size in the body of the
-			// message via a similar mechansim as updateFileParams() - essentially body needs to read
-			// "url|filesize"
-			// afterwards a file that failed to download mid way will not display 'check file size' anymore
+			final Message.FileParams fileParams = message.getFileParams();
+			FileBackend.updateFileParams(message, fileParams.url, size);
+			message.setOob(true);
+			mXmppConnectionService.databaseBackend.updateMessage(message, true);
 			file.setExpectedSize(size);
 			message.resetFileParams();
 			if (mHttpConnectionManager.hasStoragePermission()
@@ -383,8 +389,9 @@ public class HttpDownloadConnection implements Transferable {
 			try {
 				changeStatus(STATUS_DOWNLOADING);
 				download();
-				finish();
+				decryptIfNeeded();
 				updateImageBounds();
+				finish();
 			} catch (SSLHandshakeException e) {
 				changeStatus(STATUS_OFFER);
 			} catch (Exception e) {

@@ -91,4 +91,8 @@ public class MessageUtils {
 	public static String filterLtrRtl(String body) {
 		return LTR_RTL.matcher(body).replaceFirst(EMPTY_STRING);
 	}
+
+	public static boolean unInitiatedButKnownSize(Message message) {
+		return message.getType() == Message.TYPE_TEXT && message.getTransferable() == null && message.isOOb() && message.getFileParams().size > 0 && message.getFileParams().url != null;
+	}
 }

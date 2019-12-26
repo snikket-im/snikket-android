@@ -653,6 +653,10 @@ public class Message extends AbstractEntity implements AvatarService.Avatarable 
 		}
 	}
 
+	public boolean isOOb() {
+		return oob;
+	}
+
 	public static class MergeSeparator {
 	}
 

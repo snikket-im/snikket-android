@@ -1424,8 +1424,10 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
                 Log.d(Config.LOGTAG, "type: " + transferable.getClass().getName());
                 Toast.makeText(getActivity(), R.string.not_connected_try_again, Toast.LENGTH_SHORT).show();
             }
-        } else if (message.treatAsDownloadable() || message.hasFileOnRemoteHost()) {
+        } else if (message.treatAsDownloadable() || message.hasFileOnRemoteHost() || MessageUtils.unInitiatedButKnownSize(message)) {
             createNewConnection(message);
+        } else {
+            Log.d(Config.LOGTAG,message.getConversation().getAccount()+": unable to start downloadable");
         }
     }
 
