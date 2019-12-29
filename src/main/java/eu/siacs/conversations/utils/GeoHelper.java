@@ -125,9 +125,13 @@ public class GeoHelper {
 	}
 
 	public static boolean openInOsmAnd(Context context, Message message) {
-		final GeoPoint geoPoint = parseGeoPoint(message.getBody());
-		final String label = getLabel(context, message);
-		return geoIntent(geoPoint,label).resolveActivity(context.getPackageManager()) != null;
+		try {
+			final GeoPoint geoPoint = parseGeoPoint(message.getBody());
+			final String label = getLabel(context, message);
+			return geoIntent(geoPoint, label).resolveActivity(context.getPackageManager()) != null;
+		} catch (IllegalArgumentException e) {
+			return false;
+		}
 	}
 
 	private static String getLabel(Context context, Message message) {
