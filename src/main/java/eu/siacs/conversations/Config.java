@@ -94,7 +94,9 @@ public final class Config {
 
     public static final long MILLISECONDS_IN_DAY = 24 * 60 * 60 * 1000;
 
-    public static final long OMEMO_AUTO_EXPIRY = 14 * MILLISECONDS_IN_DAY;
+    //remove *other* omemo devices from *your* device list announcement after not seeing any activity from them for 42 days. They will automatically add themselves after coming back online.
+    public static final long OMEMO_AUTO_EXPIRY = 42 * MILLISECONDS_IN_DAY;
+    
     public static final boolean REMOVE_BROKEN_DEVICES = false;
     public static final boolean OMEMO_PADDING = false;
     public static final boolean PUT_AUTH_TAG_INTO_KEY = true;
