@@ -882,4 +882,5 @@
     <string name="pref_channel_discovery">Channel discovery method</string>
     <string name="backup">Backup</string>
     <string name="category_about">About</string>
+    <string name="openstreetmap_credit">© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors</string>
 </resources>
