@@ -753,7 +753,6 @@
     <string name="pref_more_notification_settings_summary">Importance, Sound, Vibrate</string>
     <string name="video_compression_channel_name">Video compression</string>
     <string name="view_media">View media</string>
-    <string name="view_users">View participants</string>
     <string name="group_chat_members">Participants</string>
     <string name="media_browser">Media browser</string>
     <string name="security_violation_not_attaching_file">File omitted due to security violation.</string>
@@ -882,5 +881,9 @@
     <string name="pref_channel_discovery">Channel discovery method</string>
     <string name="backup">Backup</string>
     <string name="category_about">About</string>
+    <plurals name="view_users">
+        <item quantity="one">View %1$d Participant</item>
+        <item quantity="other">View %1$d Participants</item>
+    </plurals>
     <string name="openstreetmap_credit">© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors</string>
 </resources>
