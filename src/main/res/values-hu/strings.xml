@@ -21,7 +21,7 @@
   <string name="action_unblock_participant">Résztvevő tiltásának feloldása</string>
   <string name="title_activity_manage_accounts">Fiókok kezelése</string>
   <string name="title_activity_settings">Beállítások</string>
-  <string name="title_activity_sharewith">Megosztás a Conversationnel</string>
+  <string name="title_activity_sharewith">Megosztás a Conversations alkalmazással</string>
   <string name="title_activity_start_conversation">Beszélgetés indítása</string>
   <string name="title_activity_choose_contact">Partner kiválasztása</string>
   <string name="title_activity_choose_contacts">Partnerek kiválasztása</string>
@@ -499,7 +499,7 @@
   <string name="shared_images_with_x">%s partnerrel megosztott képek</string>
   <string name="shared_text_with_x">%s partnerrel megosztott szöveg</string>
   <string name="no_storage_permission">A Conversations alkalmazásnak hozzáférésre van szüksége a külső tárolóhoz</string>
-  <string name="no_camera_permission">A Conversations alkalmazásnak hozzáférésre van szüksége a kamerához</string>
+  <string name="no_camera_permission">A Conversations alkalmazásnak kamera-hozzáférésre van szüksége</string>
   <string name="sync_with_contacts">Szinkronizálás a partnerekkel</string>
   <string name="sync_with_contacts_long">A Conversations szeretné megfeleltetni a kiszolgáló oldali partnerlistát  a helyi címjegyzékkel, hogy megjelenítse a partnerek teljes nevét és profilképét.\n\nA Conversations csak olvassa a névjegyeit, és helyileg felelteti meg őket, anélkül hogy feltöltené azokat a kiszolgálóra.\n\nMost arra fogják kérni, hogy adjon jogosultságot a névjegyek eléréséhez.</string>
   <string name="sync_with_contacts_quicksy"><![CDATA[A Quicksy alkalmazásnak hozzáférés szükséges a partnerei telefonszámához, hogy javaslatokat tegyen a lehetséges partnerekről, akik már csatlakoztak a Quicksy-hez.<br><br>A telefonszámok másolatát nem fogjuk eltárolni.\n\nTovábbi információkért olvassa el az <a href="https://quicksy.im/#privacy">adatvédelmi irányelveinket</a>.<br><br>Most arra fogják kérni, hogy adjon jogosultságot a névjegyek eléréséhez.]]></string>
@@ -678,7 +678,7 @@
   <string name="mtm_connect_anyway">Mindenképp szeretne csatlakozni?</string>
   <string name="mtm_cert_details">Tanúsítvány részletei:</string>
   <string name="once">Egyszer</string>
-  <string name="qr_code_scanner_needs_access_to_camera">A QR-kód olvasónak kamerahozzáférésre van szüksége</string>
+  <string name="qr_code_scanner_needs_access_to_camera">A QR-kód olvasónak kamera-hozzáférésre van szüksége</string>
   <string name="pref_scroll_to_bottom">Görgessen az aljára</string>
   <string name="pref_scroll_to_bottom_summary">Görgessen le egy üzenet elküldése után</string>
   <string name="edit_status_message_title">Állapotüzenet szerkesztése</string>
@@ -717,7 +717,7 @@
   <string name="share">Megosztás</string>
   <string name="unable_to_start_recording">Nem sikerült elindítani a rögzítést</string>
   <string name="please_wait">Kérem várjon…</string>
-  <string name="no_microphone_permission">A Conversations alkalmazásnak mikrofonhozzáférésre van szüksége</string>
+  <string name="no_microphone_permission">A Conversations alkalmazásnak mikrofon-hozzáférésre van szüksége</string>
   <string name="search_messages">Üzenetek keresése</string>
   <string name="gif">GIF</string>
   <string name="view_conversation">Beszélgetés megtekintése</string>
@@ -739,7 +739,7 @@
   <string name="conference_destroyed">Ezt a csoportos csevegést megszüntették</string>
   <string name="unable_to_save_recording">Nem sikerült elmenteni a felvételt</string>
   <string name="foreground_service_channel_name">Előtér szolgáltatás</string>
-  <string name="foreground_service_channel_description">Ezt az értesítési kategóriát egy állandó értesítés megjelenítéséhez használják, beleértve azt is, hogy a Conversations fut.</string>
+  <string name="foreground_service_channel_description">Ezt az értesítési kategóriát egy állandó értesítés megjelenítéséhez használják, jelezve azt, hogy a Conversations fut.</string>
   <string name="notification_group_status_information">Állapotinformációk</string>
   <string name="error_channel_name">Kapcsolódási problémák</string>
   <string name="error_channel_description">Ezt az értesítési kategóriát egy értesítés megjelenítéséhez használják abban az esetben, ha probléma merül fel a fiókhoz való kapcsolódásnál.</string>

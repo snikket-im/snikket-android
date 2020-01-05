@@ -95,7 +95,7 @@
   <string name="send_pgp_message">Trimite mesaj criptat cu OpenPGP</string>
   <string name="your_nick_has_been_changed">Numele dumneavoastră a fost schimbat</string>
   <string name="send_unencrypted">Trimite necriptat</string>
-  <string name="decryption_failed">Decriptarea a eșuat. Poate nu aveții cheia privată corectă.</string>
+  <string name="decryption_failed">Decriptarea a eșuat. Poate nu aveți cheia privată corectă.</string>
   <string name="openkeychain_required">OpenKeychain</string>
   <string name="openkeychain_required_long">Conversations utilizează o aplicație externă <b>OpenKeychain</b> pentru a cripta și decripta mesaje și a administra cheile publice.\n\nOpenKeychain este licențiat sub GPLv3 și se poate instala din F-Droid și Google Play.\n\n<small>(Vă rugăm să reporniți Conversations după)</small></string>
   <string name="restart">Repornește</string>
@@ -175,11 +175,11 @@
   <string name="mgmt_account_are_you_sure">Sigur doriți asta?</string>
   <string name="mgmt_account_delete_confirm_text">Dacă vă ștergeți contul, întregul istoric de conversații va fi pierdut</string>
   <string name="attach_record_voice">Înregistrare voce</string>
-  <string name="account_settings_jabber_id">Adresä XMPP</string>
+  <string name="account_settings_jabber_id">Adresă XMPP</string>
   <string name="block_jabber_id">Blochează adresă XMPP</string>
   <string name="account_settings_example_jabber_id">numeutilizator@exemplu.ro</string>
   <string name="password">Parolă</string>
-  <string name="invalid_jid">Acesta nu este o adresă XMPP valabilă</string>
+  <string name="invalid_jid">Aceasta nu este o adresă XMPP valabilă</string>
   <string name="error_out_of_memory">Memorie epuizată. Imaginea este prea mare.</string>
   <string name="add_phone_book_text">Vreți să adăugați pe %s în lista de contacte?</string>
   <string name="server_info_show_more">Informații server</string>
@@ -231,7 +231,7 @@
   <string name="delete_bookmark">Șterge semn de carte</string>
   <string name="destroy_room">Distruge discuția de grup</string>
   <string name="destroy_channel">Distruge canal</string>
-  <string name="destroy_room_dialog">Sigur doriți distrugerea acestei discuții de grup?\n\n<b>Atenție:</b> Discuția de grup v-a fi complet ștearsä de pe server.</string>
+  <string name="destroy_room_dialog">Sigur doriți distrugerea acestei discuții de grup?\n\n<b>Atenție:</b> Discuția de grup v-a fi complet ștearsă de pe server.</string>
   <string name="destroy_channel_dialog">Sigur doriți distrugerea acestui canal public?\n\n<b>Atenție:</b> Canalul public v-a fi complet șters de pe server.</string>
   <string name="could_not_destroy_room">Nu s-a putut distruge discuția de grup</string>
   <string name="could_not_destroy_channel">Nu s-a putut distruge canalul</string>
@@ -560,8 +560,8 @@ sau chiar pierderea mesajelor.\nÎn continuare veți fi rugați să dezactivați
   <string name="pref_privacy">Intimitate</string>
   <string name="pref_theme_options">Temă</string>
   <string name="pref_theme_options_summary">Selecție paletă culori interfață</string>
-  <string name="pref_theme_light">Tema luminoasă</string>
-  <string name="pref_theme_dark">Tema întunecată</string>
+  <string name="pref_theme_light">Luminoasă</string>
+  <string name="pref_theme_dark">Întunecată</string>
   <string name="pref_use_green_background">Fundal verde</string>
   <string name="pref_use_green_background_summary">Pentru mesajele primite</string>
   <string name="unable_to_connect_to_keychain">Nu s-a putut contacta OpenKeychain</string>
@@ -689,7 +689,7 @@ sau chiar pierderea mesajelor.\nÎn continuare veți fi rugați să dezactivați
   <string name="mtm_cert_details">Detalii certificat:</string>
   <string name="once">Doar o dată</string>
   <string name="qr_code_scanner_needs_access_to_camera">Scanerul de coduri QR are nevoie de acces la camera foto</string>
-  <string name="pref_scroll_to_bottom">Derulează în jos</string>
+  <string name="pref_scroll_to_bottom">Derulează până jos</string>
   <string name="pref_scroll_to_bottom_summary">După trimiterea unui mesaj derulează până la sfârșit</string>
   <string name="edit_status_message_title">Editare mesaj de stare</string>
   <string name="edit_status_message">Editare mesaj de stare</string>
@@ -766,15 +766,15 @@ sau chiar pierderea mesajelor.\nÎn continuare veți fi rugați să dezactivați
   <string name="media_browser">Vizualizare fișiere media</string>
   <string name="security_violation_not_attaching_file">Fișier omis ca urmare a unei probleme de securitate.</string>
   <string name="pref_video_compression">Calitate video</string>
-  <string name="pref_video_compression_summary">O calitate micä înseamnă fișiere mai mici</string>
+  <string name="pref_video_compression_summary">O calitate mică înseamnă fișiere mai mici</string>
   <string name="video_360p">Medie (360p)</string>
   <string name="video_720p">Mare (720p)</string>
   <string name="cancelled">anulat</string>
   <string name="already_drafting_message">Deja aveți ciorna unui mesaj.</string>
   <string name="feature_not_implemented">Opțiune neimplementată</string>
-  <string name="invalid_country_code">Cod de țarä invalid</string>
-  <string name="choose_a_country">Alegeți o țarä</string>
-  <string name="phone_number">numär de telefon</string>
+  <string name="invalid_country_code">Cod de țară invalid</string>
+  <string name="choose_a_country">Alegeți o țară</string>
+  <string name="phone_number">număr de telefon</string>
   <string name="verify_your_phone_number">Verificare număr de telefon</string>
   <string name="enter_country_code_and_phone_number">Quicksy va trimite un mesaj SMS (pot exista costuri în funcție de furnizor) pentru a vă verifica numărul de telefon. Introduceți codul țării dumneavoastră si numărul de telefon:</string>
   <string name="we_will_be_verifying"><![CDATA[Vă vom verifica numărul de telefon<br/><br/><b>%s</b><br/><br/>Este în regulă sau ați dori să editați numărul?]]></string>
@@ -790,7 +790,7 @@ sau chiar pierderea mesajelor.\nÎn continuare veți fi rugați să dezactivați
   <string name="wait_x">%s</string>
   <string name="back">înapoi</string>
   <string name="possible_pin">S-a copiat automat un posibil cod din memorie</string>
-  <string name="please_enter_pin">Vä rugăm să vă introduceți codul de 6 cifre.</string>
+  <string name="please_enter_pin">Vă rugăm să vă introduceți codul de 6 cifre.</string>
   <string name="abort_registration_procedure">Sigur doriți să anulați procedura de înregistrare?</string>
   <string name="yes">Da</string>
   <string name="no">Nu</string>
@@ -799,7 +799,7 @@ sau chiar pierderea mesajelor.\nÎn continuare veți fi rugați să dezactivați
   <string name="incorrect_pin">Codul introdus este incorect.</string>
   <string name="pin_expired">Codul pe care vi l-am trimis a expirat.</string>
   <string name="unknown_api_error_network">Eroare de rețea necunoscută.</string>
-  <string name="unknown_api_error_response">Räspuns necunoscut de la server.</string>
+  <string name="unknown_api_error_response">Răspuns necunoscut de la server.</string>
   <string name="unable_to_connect_to_server">Nu se poate face conexiunea la server.</string>
   <string name="unable_to_establish_secure_connection">Nu se poate realiza o conexiune securizată.</string>
   <string name="unable_to_find_server">Nu se poate găsi serverul.</string>
@@ -815,7 +815,7 @@ sau chiar pierderea mesajelor.\nÎn continuare veți fi rugați să dezactivați
   <string name="logged_in_with_another_device">Acest număr de telefon este momentan autentificat pe un alt dispozitiv.</string>
   <string name="enter_your_name_instructions">Vă rugăm să vă introduceți numele pentru a informa persoanele care nu vă au în agendă cine sunteți.</string>
   <string name="your_name">Numele dumneavoastă</string>
-  <string name="enter_your_name">Introducețivä numele</string>
+  <string name="enter_your_name">Introducețivă numele</string>
   <string name="no_name_set_instructions">Folosiți butonul de editare pentru a vă seta numele.</string>
   <string name="reject_request">Refuză cererea</string>
   <string name="install_orbot">Instalare Orbot</string>
@@ -840,7 +840,7 @@ sau chiar pierderea mesajelor.\nÎn continuare veți fi rugați să dezactivați
   <string name="create_private_group_chat">Creează discuție de grup privată</string>
   <string name="create_public_channel">Creează canal public</string>
   <string name="create_dialog_channel_name">Nume canal</string>
-  <string name="xmpp_address">Adresä XMPP</string>
+  <string name="xmpp_address">Adresă XMPP</string>
   <string name="please_enter_name">Vă rugăm să furnizați un nume pentru canal</string>
   <string name="please_enter_xmpp_address">Vă rugăm să furnizați o adresă XMPP</string>
   <string name="this_is_an_xmpp_address">Aceasta este o adresă XMPP. Vă rugăm să furnizați un nume.</string>
@@ -877,7 +877,7 @@ sau chiar pierderea mesajelor.\nÎn continuare veți fi rugați să dezactivați
   <string name="conversations_backup">Copie de siguranță Conversations</string>
   <string name="event">Eveniment</string>
   <string name="open_backup">Deschide o copie de siguranță</string>
-  <string name="not_a_backup_file">Fișierul selectat nu este o copie de siguranța Conversations</string>
+  <string name="not_a_backup_file">Fișierul selectat nu este o copie de siguranță Conversations</string>
   <string name="account_already_setup">Acest cont a fost deja configurat</string>
   <string name="please_enter_password">Va rugăm să introduceți parola pentru acest cont</string>
   <string name="unable_to_perform_this_action">Nu se poate realiza această acțiune</string>

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="pick_a_server">Изберете вашият XMPP доставчик</string>
+    <string name="use_conversations.im">Използвайте conversations.im</string>
+    <string name="create_new_account">Създаване не нов профил</string>
+    <string name="do_you_have_an_account">Имате ли вече XMPP профил? Това може да се случи, ако вече използвате друг клиент на XMPP или сте използвали преди това Conversations. Ако не, можете да създадете нов XMPP профил в момента.\nСъвет: Някои доставчици на имейл също предоставят XMPP профили.
+ </string>
+    </resources>
