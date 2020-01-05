@@ -604,7 +604,6 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
         if (Config.DISALLOW_REGISTRATION_IN_UI) {
             this.binding.accountRegisterNew.setVisibility(View.GONE);
         }
-        this.binding.yourNameBox.setVisibility(QuickConversationsService.isQuicksy() ? View.VISIBLE : View.GONE);
         this.binding.actionEditYourName.setOnClickListener(this::onEditYourNameClicked);
     }
 

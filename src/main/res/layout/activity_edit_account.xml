@@ -471,16 +471,11 @@
                             </TableRow>
                         </TableLayout>
 
-                        <View
-                            android:layout_width="match_parent"
-                            android:layout_height="8dp"/>
-
                         <RelativeLayout
                             android:id="@+id/your_name_box"
                             android:layout_width="wrap_content"
                             android:layout_height="match_parent"
-                            android:visibility="gone"
-                            android:layout_marginTop="24dp">
+                            android:layout_marginTop="12dp">
 
                             <LinearLayout
                                 android:layout_width="wrap_content"
@@ -522,7 +517,7 @@
                             android:id="@+id/pgp_fingerprint_box"
                             android:layout_width="wrap_content"
                             android:layout_height="match_parent"
-                            android:layout_marginTop="16dp">
+                            android:layout_marginTop="12dp">
 
                             <LinearLayout
                                 android:layout_width="wrap_content"
@@ -563,7 +558,7 @@
                             android:id="@+id/axolotl_fingerprint_box"
                             android:layout_width="wrap_content"
                             android:layout_height="match_parent"
-                            android:layout_marginTop="16dp">
+                            android:layout_marginTop="12dp">
 
                             <LinearLayout
                                 android:layout_width="wrap_content"
