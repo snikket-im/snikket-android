@@ -87,7 +87,6 @@
         <item type="reference" name="icon_edit">@drawable/ic_edit_white_24dp</item>
         <item type="reference" name="icon_edit_body">@drawable/ic_edit_black_24dp</item>
         <item type="reference" name="icon_save">@drawable/ic_save_black_24dp</item>
-        <item type="reference" name="icon_done">@drawable/ic_done_black_24dp</item>
         <item type="reference" name="icon_group">@drawable/ic_group_white_24dp</item>
         <item type="reference" name="icon_new">@drawable/ic_add_white_24dp</item>
         <item type="reference" name="icon_quote">@drawable/ic_reply_white_24dp</item>
@@ -202,7 +201,6 @@
         <item type="reference" name="icon_edit">@drawable/ic_edit_white_24dp</item>
         <item type="reference" name="icon_edit_body">@drawable/ic_edit_white_24dp</item>
         <item type="reference" name="icon_save">@drawable/ic_save_white_24dp</item>
-        <item type="reference" name="icon_done">@drawable/ic_done_black_24dp</item>
         <item type="reference" name="icon_group">@drawable/ic_group_white_24dp</item>
         <item type="reference" name="icon_new">@drawable/ic_add_white_24dp</item>
         <item type="reference" name="icon_quote">@drawable/ic_reply_white_24dp</item>
