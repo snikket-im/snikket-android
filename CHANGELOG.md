@@ -1,5 +1,11 @@
 # Changelog
 
+### Version 2.6.2
+* let users set their own nick name
+* resume download of OMEMO encrypted files
+* Channels now use '#' as symbol in avatar
+* Quicksy uses 'always' as OMEMO encryption default (hides lock icon)
+
 ### Version 2.6.1
 * fixes for Jingle IBB file transfer
 * fixes for repeated corrections filling up the database
