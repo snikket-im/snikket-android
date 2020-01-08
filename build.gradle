@@ -37,7 +37,7 @@ dependencies {
         exclude group: 'com.google.firebase', module: 'firebase-measurement-connector'
     }
     implementation 'org.sufficientlysecure:openpgp-api:10.0'
-    implementation ('com.theartofdev.edmodo:android-image-cropper:2.7.+') {
+    implementation('com.theartofdev.edmodo:android-image-cropper:2.7.+') {
         exclude group: 'com.android.support', module: 'appcompat-v7'
         exclude group: 'com.android.support', module: 'exifinterface'
     }
@@ -66,8 +66,12 @@ dependencies {
     implementation 'org.conscrypt:conscrypt-android:2.2.1'
     implementation 'me.drakeet.support:toastcompat:1.1.0'
     implementation "com.leinardi.android:speed-dial:2.0.1"
-    implementation 'com.squareup.retrofit2:retrofit:2.7.1'
-    implementation 'com.squareup.retrofit2:converter-gson:2.7.1'
+    implementation("com.squareup.retrofit2:retrofit:2.7.1") {
+        exclude group: "com.squareup.okhttp3", "module": "okhttp"
+    }
+    implementation("com.squareup.retrofit2:converter-gson:2.7.1") {
+        exclude group: "com.squareup.okhttp3", "module": "okhttp"
+    }
     implementation 'com.squareup.okhttp3:okhttp:3.12.7'
     implementation 'com.google.guava:guava:27.1-android'
     quicksyImplementation 'io.michaelrocks:libphonenumber-android:8.11.1'
@@ -197,7 +201,6 @@ android {
             versionNameSuffix "d"
         }
     }
-
 
 
     if (new File("signing.properties").exists()) {
