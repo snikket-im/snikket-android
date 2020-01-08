@@ -751,7 +751,6 @@
   <string name="pref_more_notification_settings_summary">Wichtigkeit, Klang, Vibrationen</string>
   <string name="video_compression_channel_name">Video komprimieren</string>
   <string name="view_media">Medien anzeigen</string>
-  <string name="view_users">Teilnehmer anzeigen</string>
   <string name="group_chat_members">Teilnehmer</string>
   <string name="media_browser">Medienbrowser</string>
   <string name="security_violation_not_attaching_file">Datei wurde aufgrund von Sicherheitsverletzungen ausgelassen.</string>

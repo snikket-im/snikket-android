@@ -165,8 +165,8 @@ public class XmppAxolotlMessage {
 	}
 
 	private static byte[] generateIv() {
-		SecureRandom random = new SecureRandom();
-		byte[] iv = new byte[16];
+		final SecureRandom random = new SecureRandom();
+		byte[] iv = new byte[Config.TWELVE_BYTE_IV ? 12 : 16];
 		random.nextBytes(iv);
 		return iv;
 	}

@@ -749,7 +749,6 @@
   <string name="pref_more_notification_settings_summary">Importance, son, vibration</string>
   <string name="video_compression_channel_name">Compression vidéo</string>
   <string name="view_media">Voir les média</string>
-  <string name="view_users">Voir les participants</string>
   <string name="group_chat_members">Participants</string>
   <string name="media_browser">Navigateur de média</string>
   <string name="security_violation_not_attaching_file">Fichier omis en raison d\'une violation de la sécurité.</string>

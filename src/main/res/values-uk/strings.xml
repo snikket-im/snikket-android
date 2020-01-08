@@ -761,7 +761,6 @@
   <string name="pref_more_notification_settings_summary">Важливість, звук, вібрація</string>
   <string name="video_compression_channel_name">Стиснення відео</string>
   <string name="view_media">Перегляд медіа</string>
-  <string name="view_users">Переглянути учасників</string>
   <string name="group_chat_members">Учасники</string>
   <string name="media_browser">Переглядач медіа</string>
   <string name="security_violation_not_attaching_file">Файл пропущено через порушення безпеки.</string>

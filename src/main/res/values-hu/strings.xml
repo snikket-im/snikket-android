@@ -751,7 +751,6 @@
   <string name="pref_more_notification_settings_summary">Fontosság, hang, rezgés</string>
   <string name="video_compression_channel_name">Videó tömörítése</string>
   <string name="view_media">Média megtekintése</string>
-  <string name="view_users">Résztvevők megtekintése</string>
   <string name="group_chat_members">Résztvevők</string>
   <string name="media_browser">Médiaböngésző</string>
   <string name="security_violation_not_attaching_file">A fájl ki lett hagyva a biztonság megsértése miatt.</string>

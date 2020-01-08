@@ -747,7 +747,6 @@
   <string name="pref_more_notification_settings_summary">Σημασία, Ήχος, Δόνηση</string>
   <string name="video_compression_channel_name">Συμπίεση βίντεο</string>
   <string name="view_media">Εμφάνιση μέσου</string>
-  <string name="view_users">Εμφάνιση συμμετεχόντων</string>
   <string name="group_chat_members">Συμμετέχοντες</string>
   <string name="media_browser">Περιηγητης μέσων</string>
   <string name="security_violation_not_attaching_file">Το αρχείο παραλείπεται λόγω παραβίασης ασφάλειας.</string>

@@ -769,7 +769,6 @@ Administrator twojego serwera będzie mógł czytać twoje wiadomości, ale moż
   <string name="pref_more_notification_settings_summary">Ważność, Dźwięk, Wibracja</string>
   <string name="video_compression_channel_name">Kompresja wideo</string>
   <string name="view_media">Pokaż media</string>
-  <string name="view_users">Pokaż członków</string>
   <string name="group_chat_members">Uczestnicy</string>
   <string name="media_browser">Przeglądarka mediów</string>
   <string name="security_violation_not_attaching_file">Plik pominięty w związku z naruszeniem bezpieczeństwa.</string>
@@ -898,4 +897,11 @@ Administrator twojego serwera będzie mógł czytać twoje wiadomości, ale moż
   <string name="pref_channel_discovery">Metoda odkrywania kanałów</string>
   <string name="backup">Kopia zapasowa</string>
   <string name="category_about">O aplikacji</string>
+  <plurals name="view_users">
+    <item quantity="one">Pokaż %1$d uczestnika</item>
+    <item quantity="few">Pokaż %1$d uczestników</item>
+    <item quantity="many">Pokaż %1$d uczestników</item>
+    <item quantity="other">Pokaż %1$d uczestników</item>
+  </plurals>
+  <string name="openstreetmap_credit">© autorzy <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> </string>
 </resources>

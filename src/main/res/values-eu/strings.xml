@@ -746,7 +746,6 @@
   <string name="pref_more_notification_settings_summary">Garrantzia, soinua, dardara</string>
   <string name="video_compression_channel_name">Bideoen konprimatzea</string>
   <string name="view_media">Ikusi multimedia</string>
-  <string name="view_users">Parte-hartzaileak ikusi</string>
   <string name="group_chat_members">Parte-hartzaileak</string>
   <string name="media_browser">Multimedia nabigatzailea</string>
   <string name="security_violation_not_attaching_file">Fitxategia alde batera utzita segurtasun hauste bategatik.</string>

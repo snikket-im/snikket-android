@@ -748,7 +748,6 @@
   <string name="pref_more_notification_settings_summary">Belang, geluid, trillen</string>
   <string name="video_compression_channel_name">Videocompressie</string>
   <string name="view_media">Media bekijken</string>
-  <string name="view_users">Deelnemers bekijken</string>
   <string name="group_chat_members">Deelnemers</string>
   <string name="media_browser">Mediabrowser</string>
   <string name="security_violation_not_attaching_file">Bestand weggelaten wegens beveiligingsovertreding.</string>

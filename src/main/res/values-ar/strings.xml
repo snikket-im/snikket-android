@@ -657,7 +657,6 @@
   <string name="pref_more_notification_settings_summary">الأهمية ، الصوت ، الإهتزاز</string>
   <string name="video_compression_channel_name">ضغط الفيديو</string>
   <string name="view_media">اعرض الوسائط</string>
-  <string name="view_users">اعرض المشارِكين</string>
   <string name="group_chat_members">المشارِكون</string>
   <string name="pref_video_compression">جودة الفيديو</string>
   <string name="video_360p">متوسط (360ب)</string>

@@ -740,7 +740,6 @@
   <string name="pref_more_notification_settings_summary">重要性，声音，振动</string>
   <string name="video_compression_channel_name">视频压缩</string>
   <string name="view_media">查看媒体文件</string>
-  <string name="view_users">查看成员</string>
   <string name="group_chat_members">成员</string>
   <string name="media_browser">媒体浏览器</string>
   <string name="security_violation_not_attaching_file">文件由于违反安全策略而被删除。</string>

@@ -761,7 +761,6 @@ sau chiar pierderea mesajelor.\nÎn continuare veți fi rugați să dezactivați
   <string name="pref_more_notification_settings_summary">Importanță, sunete, vibrații</string>
   <string name="video_compression_channel_name">Compresie video</string>
   <string name="view_media">Vizualizare fișiere media</string>
-  <string name="view_users">Arată participanții</string>
   <string name="group_chat_members">Participanți</string>
   <string name="media_browser">Vizualizare fișiere media</string>
   <string name="security_violation_not_attaching_file">Fișier omis ca urmare a unei probleme de securitate.</string>
@@ -890,4 +889,10 @@ sau chiar pierderea mesajelor.\nÎn continuare veți fi rugați să dezactivați
   <string name="pref_channel_discovery">Metoda de descoperire a canalelor</string>
   <string name="backup">Copie de siguranță</string>
   <string name="category_about">Despre</string>
+  <plurals name="view_users">
+    <item quantity="one">Arată %1$d participant</item>
+    <item quantity="few">Arată %1$d participanți</item>
+    <item quantity="other">Arată %1$d de participanți</item>
+  </plurals>
+  <string name="openstreetmap_credit">© Colaboratorii <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a></string>
 </resources>
