@@ -857,7 +857,8 @@ public class StartConversationActivity extends XmppActivity implements XmppConne
 				showJoinConferenceDialog(invite.getJid().asBareJid().toString());
 				return false;
 			}
-		} else if (contacts.size() == 0) {
+		} else if (contacts.size() == 0) { //TODO or init mode
+			//TODO if init mode; prefill dialog with account jid
 			showCreateContactDialog(invite.getJid().toString(), invite);
 			return false;
 		} else if (contacts.size() == 1) {
@@ -1279,7 +1280,8 @@ public class StartConversationActivity extends XmppActivity implements XmppConne
 
 	public static void addInviteUri(Intent to, Intent from) {
 		if (from != null && from.hasExtra(EXTRA_INVITE_URI)) {
-			to.putExtra(EXTRA_INVITE_URI, from.getStringExtra(EXTRA_INVITE_URI));
+			final String invite = from.getStringExtra(EXTRA_INVITE_URI);
+			to.putExtra(EXTRA_INVITE_URI, invite);
 		}
 	}
 
@@ -1287,17 +1289,14 @@ public class StartConversationActivity extends XmppActivity implements XmppConne
 
 		public String account;
 
-		public boolean forceDialog = false;
+		boolean forceDialog = false;
 
-		public Invite(final Uri uri) {
+
+		Invite(final String uri) {
 			super(uri);
 		}
 
-		public Invite(final String uri) {
-			super(uri);
-		}
-
-		public Invite(Uri uri, boolean safeSource) {
+		Invite(Uri uri, boolean safeSource) {
 			super(uri, safeSource);
 		}
 

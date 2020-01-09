@@ -20,10 +20,10 @@ public class SignupUtils {
         return true;
     }
 
-    public static Intent getTokenRegistrationIntent(final Activity activity, String domain, String preauth) {
+    public static Intent getTokenRegistrationIntent(final Activity activity, String domain, String preAuth) {
         final Intent intent = new Intent(activity, MagicCreateActivity.class);
         intent.putExtra(MagicCreateActivity.EXTRA_DOMAIN, domain);
-        intent.putExtra(MagicCreateActivity.EXTRA_PRE_AUTH, preauth);
+        intent.putExtra(MagicCreateActivity.EXTRA_PRE_AUTH, preAuth);
         return intent;
     }
 

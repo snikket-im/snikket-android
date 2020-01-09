@@ -29,6 +29,7 @@ public class XmppUri {
 	public static final String ACTION_JOIN = "join";
 	public static final String ACTION_MESSAGE = "message";
 	public static final String ACTION_REGISTER = "register";
+	public static final String ACTION_ROSTER = "roster";
 
 	public XmppUri(String uri) {
 		try {
