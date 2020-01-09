@@ -55,6 +55,7 @@ public class PublishProfilePictureActivity extends XmppActivity implements XmppC
                 Intent intent = new Intent(getApplicationContext(), StartConversationActivity.class);
                 StartConversationActivity.addInviteUri(intent, getIntent());
                 intent.putExtra("init", true);
+                intent.putExtra(EXTRA_ACCOUNT, account.getJid().asBareJid().toEscapedString());
                 startActivity(intent);
             }
             Toast.makeText(PublishProfilePictureActivity.this,
@@ -100,6 +101,7 @@ public class PublishProfilePictureActivity extends XmppActivity implements XmppC
                     intent.putExtra("init", true);
                 }
                 StartConversationActivity.addInviteUri(intent, getIntent());
+                intent.putExtra(EXTRA_ACCOUNT, account.getJid().asBareJid().toEscapedString());
                 startActivity(intent);
             }
             finish();

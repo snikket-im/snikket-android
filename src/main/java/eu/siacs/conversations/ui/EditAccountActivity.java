@@ -435,6 +435,7 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
                 if (wasFirstAccount) {
                     intent.putExtra("init", true);
                 }
+                intent.putExtra(EXTRA_ACCOUNT, mAccount.getJid().asBareJid().toEscapedString());
             } else {
                 intent = new Intent(getApplicationContext(), PublishProfilePictureActivity.class);
                 intent.putExtra(EXTRA_ACCOUNT, mAccount.getJid().asBareJid().toString());

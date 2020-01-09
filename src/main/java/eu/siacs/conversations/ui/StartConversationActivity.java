@@ -499,7 +499,7 @@ public class StartConversationActivity extends XmppActivity implements XmppConne
 				getString(R.string.add_contact),
 				getString(R.string.add),
 				prefilledJid,
-				null,
+				invite == null ? null : invite.account,
 				invite == null || !invite.hasFingerprints(),
 				true
 		);
@@ -821,7 +821,8 @@ public class StartConversationActivity extends XmppActivity implements XmppConne
 	protected boolean processViewIntent(@NonNull Intent intent) {
 		final String inviteUri = intent.getStringExtra(EXTRA_INVITE_URI);
 		if (inviteUri != null) {
-			Invite invite = new Invite(inviteUri);
+			final Invite invite = new Invite(inviteUri);
+			invite.account = intent.getStringExtra(EXTRA_ACCOUNT);
 			if (invite.isJidValid()) {
 				return invite.invite();
 			}
@@ -836,7 +837,7 @@ public class StartConversationActivity extends XmppActivity implements XmppConne
 				Uri uri = intent.getData();
 				if (uri != null) {
 					Invite invite = new Invite(intent.getData(), intent.getBooleanExtra("scanned", false));
-					invite.account = intent.getStringExtra("account");
+					invite.account = intent.getStringExtra(EXTRA_ACCOUNT);
 					invite.forceDialog = intent.getBooleanExtra("force_dialog", false);
 					return invite.invite();
 				} else {
@@ -857,8 +858,7 @@ public class StartConversationActivity extends XmppActivity implements XmppConne
 				showJoinConferenceDialog(invite.getJid().asBareJid().toString());
 				return false;
 			}
-		} else if (contacts.size() == 0) { //TODO or init mode
-			//TODO if init mode; prefill dialog with account jid
+		} else if (contacts.size() == 0) {
 			showCreateContactDialog(invite.getJid().toString(), invite);
 			return false;
 		} else if (contacts.size() == 1) {
