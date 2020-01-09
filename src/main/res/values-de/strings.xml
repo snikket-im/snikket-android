@@ -879,4 +879,9 @@
   <string name="pref_channel_discovery">Channelsuchmethode</string>
   <string name="backup">Sicherungskopie</string>
   <string name="category_about">Über</string>
+  <plurals name="view_users">
+    <item quantity="one">%1$d Teilnehmer anzeigen</item>
+    <item quantity="other">%1$d Teilnehmer anzeigen</item>
+  </plurals>
+  <string name="openstreetmap_credit">© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> Beitragende</string>
 </resources>

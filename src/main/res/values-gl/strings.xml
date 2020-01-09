@@ -285,7 +285,7 @@
   <string name="pref_autojoin">Sincronizar cos marcadores</string>
   <string name="pref_autojoin_summary">Unirse e deixar conversas de grupo de acordo coa marca auto-unirse nos seus marcadores.</string>
   <string name="toast_message_omemo_fingerprint">Copiouse a pegada dixital OMEMO ao portapapeis!</string>
-  <string name="conference_banned">Vostede non pode acceder a esta conversa en grupo</string>
+  <string name="conference_banned">Non podes acceder a esta conversa en grupo</string>
   <string name="conference_members_only">Esta conversa en grupo é so para membros</string>
   <string name="conference_resource_constraint">Restrición do recurso</string>
   <string name="conference_kicked">Xa foi expulsado de esta conversa en grupo</string>
@@ -387,7 +387,7 @@
   <string name="members_only">Privada, só para membros</string>
   <string name="non_anonymous">Facer os enderezos XMPP visibles para calquera</string>
   <string name="moderated">Establecer canal como moderado</string>
-  <string name="you_are_not_participating">Vostede non está a participar</string>
+  <string name="you_are_not_participating">Non estás a participar</string>
   <string name="modified_conference_options">¡Opcións da conversa en grupo modificadas!</string>
   <string name="could_not_modify_conference_options">Non se puideron modificar as opcións da conversa en grupo</string>
   <string name="never">Nunca</string>
@@ -525,7 +525,7 @@
   <string name="security_error_invalid_file_access">Fallo na seguridade: Acceso non válido ao ficheiro</string>
   <string name="no_application_to_share_uri">Non se atopou un aplicativo para compartir URI</string>
   <string name="share_uri_with">Compartir URI con...</string>
-  <string name="welcome_text_quicksy"><![CDATA[Quicksy é un derivado do popular cliente XMPP Conversations con descubrimento automático de contactos.<br><br>Pode rexistrarse co seu número de teléfono e Quicksy suxeriralle automáticamente —tomando os números da súa libreta de enderezos como referencia—  posibles contactos para vostede.<br><br>Ao rexistarse vostede acepta a nosa <a href="https://quicksy.im/#privacy">política de intimidade</a>.]]></string>
+  <string name="welcome_text_quicksy"><![CDATA[Quicksy é un derivado do popular cliente XMPP Conversations con descubrimento automático de contactos.<br><br>Podes rexistrarte co teu número de teléfono e Quicksy suxerillache automáticamente —tomando os números da túa libreta de enderezos como referencia—  posibles contactos para ti.<br><br>Ao rexistrarte aceptas a nosa <a href="https://quicksy.im/#privacy">política de intimidade</a>.]]></string>
   <string name="agree_and_continue">Aceptar &amp; continuar</string>
   <string name="magic_create_text">Guiarémola a través do proceso de creación de unha conta en conversations.im.¹\nAo escoller a conversations.im como fornecedor poderá comunicar con usuarias de outros fornecedores proporcionándolles o seu enderezo XMPP completo.</string>
   <string name="your_full_jid_will_be">O seu enderezo XMPP completo será: %s</string>
@@ -802,7 +802,7 @@
   <string name="the_app_is_out_of_date">Está a utilizar unha versión desactualizada de esta app.</string>
   <string name="update">Actualizar</string>
   <string name="logged_in_with_another_device">Este número de teléfono está actualmente ligado a outro dispositivo.</string>
-  <string name="enter_your_name_instructions">Por favor, introduza o seu nome para permitir que a xente que non o ten na axenda de enderezos sepa quen é vostede.</string>
+  <string name="enter_your_name_instructions">Por favor, escribe o teu nome para permitir que a xente que non te ten na axenda de enderezos sepa quen es.</string>
   <string name="your_name">O seu nome</string>
   <string name="enter_your_name">Introduza o seu nome</string>
   <string name="no_name_set_instructions">Utilice o botón editar para escribir o seu nome.</string>
@@ -879,4 +879,9 @@
   <string name="pref_channel_discovery">Método de descubrimento de canles</string>
   <string name="backup">Respaldo</string>
   <string name="category_about">Acerca de</string>
+  <plurals name="view_users">
+    <item quantity="one">Ver %1$d Participante</item>
+    <item quantity="other">Ver %1$d Participantes</item>
+  </plurals>
+  <string name="openstreetmap_credit">© contribuíntes <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a></string>
 </resources>
