@@ -13,6 +13,7 @@ import eu.siacs.conversations.ui.ManageAccountActivity;
 import eu.siacs.conversations.ui.PickServerActivity;
 import eu.siacs.conversations.ui.StartConversationActivity;
 import eu.siacs.conversations.ui.WelcomeActivity;
+import rocks.xmpp.addr.Jid;
 
 public class SignupUtils {
 
@@ -20,9 +21,14 @@ public class SignupUtils {
         return true;
     }
 
-    public static Intent getTokenRegistrationIntent(final Activity activity, String domain, String preAuth) {
+    public static Intent getTokenRegistrationIntent(final Activity activity, Jid jid, String preAuth) {
         final Intent intent = new Intent(activity, MagicCreateActivity.class);
-        intent.putExtra(MagicCreateActivity.EXTRA_DOMAIN, domain);
+        if (jid.isDomainJid()) {
+            intent.putExtra(MagicCreateActivity.EXTRA_DOMAIN, jid.getDomain());
+        } else {
+            intent.putExtra(MagicCreateActivity.EXTRA_DOMAIN, jid.getDomain());
+            intent.putExtra(MagicCreateActivity.EXTRA_USERNAME, jid.getEscapedLocal());
+        }
         intent.putExtra(MagicCreateActivity.EXTRA_PRE_AUTH, preAuth);
         return intent;
     }

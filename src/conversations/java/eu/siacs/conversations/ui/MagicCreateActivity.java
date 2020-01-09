@@ -8,9 +8,6 @@ import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import java.security.SecureRandom;
@@ -26,9 +23,11 @@ public class MagicCreateActivity extends XmppActivity implements TextWatcher {
 
     public static final String EXTRA_DOMAIN = "domain";
     public static final String EXTRA_PRE_AUTH = "pre_auth";
+    public static final String EXTRA_USERNAME = "username";
 
     private MagicCreateBinding binding;
     private String domain;
+    private String username;
     private String preAuth;
 
     @Override
@@ -55,6 +54,7 @@ public class MagicCreateActivity extends XmppActivity implements TextWatcher {
         final Intent data = getIntent();
         this.domain = data == null ? null : data.getStringExtra(EXTRA_DOMAIN);
         this.preAuth = data == null ? null : data.getStringExtra(EXTRA_PRE_AUTH);
+        this.username = data == null ? null : data.getStringExtra(EXTRA_USERNAME);
         if (getResources().getBoolean(R.bool.portrait_only)) {
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         }
@@ -62,7 +62,14 @@ public class MagicCreateActivity extends XmppActivity implements TextWatcher {
         this.binding = DataBindingUtil.setContentView(this, R.layout.magic_create);
         setSupportActionBar((Toolbar) this.binding.toolbar);
         configureActionBar(getSupportActionBar(), this.domain == null);
-        if (domain != null) {
+        if (username != null && domain != null) {
+            binding.title.setText(R.string.your_server_invitation);
+            binding.instructions.setText(getString(R.string.magic_create_text_fixed, domain));
+            binding.finePrint.setVisibility(View.INVISIBLE);
+            binding.username.setEnabled(false);
+            binding.username.setText(this.username);
+            updateFullJidInformation(this.username);
+        } else if (domain != null) {
             binding.instructions.setText(getString(R.string.magic_create_text_on_x, domain));
             binding.finePrint.setVisibility(View.INVISIBLE);
         }
@@ -70,12 +77,18 @@ public class MagicCreateActivity extends XmppActivity implements TextWatcher {
             try {
                 final String username = binding.username.getText().toString();
                 final Jid jid;
-                if (this.domain == null) {
-                    jid = Jid.ofLocalAndDomain(username, Config.MAGIC_CREATE_DOMAIN);
-                } else {
+                final boolean fixedUsername;
+                if (this.domain != null && this.username != null) {
+                    fixedUsername = true;
+                    jid = Jid.ofLocalAndDomain(this.username, this.domain);
+                } else if (this.domain != null) {
+                    fixedUsername = false;
                     jid = Jid.ofLocalAndDomain(username, this.domain);
+                } else {
+                    fixedUsername = false;
+                    jid = Jid.ofLocalAndDomain(username, Config.MAGIC_CREATE_DOMAIN);
                 }
-                if (!jid.getEscapedLocal().equals(jid.getLocal()) || username.length() < 3) {
+                if (!jid.getEscapedLocal().equals(jid.getLocal()) || (this.username == null && username.length() < 3)) {
                     binding.username.setError(getString(R.string.invalid_username));
                     binding.username.requestFocus();
                 } else {
@@ -86,6 +99,7 @@ public class MagicCreateActivity extends XmppActivity implements TextWatcher {
                         account.setOption(Account.OPTION_REGISTER, true);
                         account.setOption(Account.OPTION_DISABLED, true);
                         account.setOption(Account.OPTION_MAGIC_CREATE, true);
+                        account.setOption(Account.OPTION_FIXED_USERNAME, fixedUsername);
                         if (this.preAuth != null) {
                             account.setKey(Account.PRE_AUTH_REGISTRATION_TOKEN, this.preAuth);
                         }
@@ -118,23 +132,26 @@ public class MagicCreateActivity extends XmppActivity implements TextWatcher {
     }
 
     @Override
-    public void afterTextChanged(Editable s) {
-        if (s.toString().trim().length() > 0) {
+    public void afterTextChanged(final Editable s) {
+        updateFullJidInformation(s.toString());
+    }
+
+    private void updateFullJidInformation(final String username) {
+        if (username.trim().isEmpty()) {
+            binding.fullJid.setVisibility(View.INVISIBLE);
+        } else {
             try {
                 binding.fullJid.setVisibility(View.VISIBLE);
                 final Jid jid;
                 if (this.domain == null) {
-                    jid = Jid.ofLocalAndDomain(s.toString(), Config.MAGIC_CREATE_DOMAIN);
+                    jid = Jid.ofLocalAndDomain(username, Config.MAGIC_CREATE_DOMAIN);
                 } else {
-                    jid = Jid.ofLocalAndDomain(s.toString(), this.domain);
+                    jid = Jid.ofLocalAndDomain(username, this.domain);
                 }
                 binding.fullJid.setText(getString(R.string.your_full_jid_will_be, jid.toEscapedString()));
             } catch (IllegalArgumentException e) {
                 binding.fullJid.setVisibility(View.INVISIBLE);
             }
-
-        } else {
-            binding.fullJid.setVisibility(View.INVISIBLE);
         }
     }
 }

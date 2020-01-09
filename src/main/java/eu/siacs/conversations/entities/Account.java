@@ -61,6 +61,7 @@ public class Account extends AbstractEntity implements AvatarService.Avatarable 
     public static final int OPTION_LOGGED_IN_SUCCESSFULLY = 6;
     public static final int OPTION_HTTP_UPLOAD_AVAILABLE = 7;
     public static final int OPTION_UNVERIFIED = 8;
+    public static final int OPTION_FIXED_USERNAME = 9;
     private static final String KEY_PGP_SIGNATURE = "pgp_signature";
     private static final String KEY_PGP_ID = "pgp_id";
     public final HashSet<Pair<String, String>> inProgressDiscoFetches = new HashSet<>();

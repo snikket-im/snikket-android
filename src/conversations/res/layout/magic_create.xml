@@ -38,6 +38,7 @@
                         android:layout_weight="1" />
 
                     <TextView
+                        android:id="@+id/title"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/pick_your_username"
@@ -57,6 +58,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_horizontal"
                         android:hint="@string/username_hint"
+                        android:textColor="?attr/edit_text_color"
                         android:inputType="textNoSuggestions" />
 
                     <TextView

@@ -407,7 +407,14 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
         final Jid jid = mAccount == null ? null : mAccount.getJid();
 
         if (SignupUtils.isSupportTokenRegistry() && jid != null && magicCreate && !jid.getDomain().equals(Config.MAGIC_CREATE_DOMAIN)) {
-            final Intent intent = SignupUtils.getTokenRegistrationIntent(this, jid.getDomain(), mAccount.getKey(Account.PRE_AUTH_REGISTRATION_TOKEN));
+            final Jid preset;
+            if (mAccount.isOptionSet(Account.OPTION_FIXED_USERNAME)) {
+                preset = jid.asBareJid();
+            } else {
+                preset = Jid.ofDomain(jid.getDomain());
+            }
+            final Intent intent = SignupUtils.getTokenRegistrationIntent(this, preset, mAccount.getKey(Account.PRE_AUTH_REGISTRATION_TOKEN));
+            StartConversationActivity.addInviteUri(intent, getIntent());
             startActivity(intent);
             return;
         }
@@ -415,6 +422,7 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
 
         if (xmppConnectionService.getAccounts().size() == 0 && Config.MAGIC_CREATE_DOMAIN != null) {
             Intent intent = SignupUtils.getSignUpIntent(this, mForceRegister != null && mForceRegister);
+            StartConversationActivity.addInviteUri(intent, getIntent());
             startActivity(intent);
         }
     }
@@ -972,7 +980,7 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
 
         }
 
-        final boolean editable = !mAccount.isOptionSet(Account.OPTION_LOGGED_IN_SUCCESSFULLY) && QuickConversationsService.isConversations();
+        final boolean editable = !mAccount.isOptionSet(Account.OPTION_LOGGED_IN_SUCCESSFULLY) && !mAccount.isOptionSet(Account.OPTION_FIXED_USERNAME) && QuickConversationsService.isConversations();
         this.binding.accountJid.setEnabled(editable);
         this.binding.accountJid.setFocusable(editable);
         this.binding.accountJid.setFocusableInTouchMode(editable);
