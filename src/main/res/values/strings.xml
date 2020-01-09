@@ -155,6 +155,7 @@
     <string name="account_status_regis_conflict">Username already in use</string>
     <string name="account_status_regis_success">Registration completed</string>
     <string name="account_status_regis_not_sup">Server does not support registration</string>
+    <string name="account_status_regis_invalid_token">Invalid registration token</string>
     <string name="account_status_tls_error">TLS negotiation failed</string>
     <string name="account_status_policy_violation">Policy violation</string>
     <string name="account_status_incompatible_server">Incompatible server</string>

@@ -112,6 +112,7 @@ public class XmppConnection implements Runnable {
         public void onIqPacketReceived(Account account, IqPacket packet) {
             if (packet.getType() == IqPacket.TYPE.RESULT) {
                 account.setOption(Account.OPTION_REGISTER, false);
+                Log.d(Config.LOGTAG, account.getJid().asBareJid()+": successfully registered new account on server");
                 throw new StateChangingError(Account.State.REGISTRATION_SUCCESSFUL);
             } else {
                 final List<String> PASSWORD_TOO_WEAK_MSGS = Arrays.asList(
@@ -838,7 +839,7 @@ public class XmppConnection implements Runnable {
             sendStartTLS();
         } else if (this.streamFeatures.hasChild("register") && account.isOptionSet(Account.OPTION_REGISTER)) {
             if (isSecure) {
-                sendRegistryRequest();
+                register();
             } else {
                 Log.d(Config.LOGTAG,account.getJid().asBareJid()+": unable to find STARTTLS for registration process "+ XmlHelper.printElementNames(this.streamFeatures));
                 throw new StateChangingException(Account.State.INCOMPATIBLE_SERVER);
@@ -910,6 +911,26 @@ public class XmppConnection implements Runnable {
             mechanisms.add(child.getContent());
         }
         return mechanisms;
+    }
+
+
+    private void register() {
+        final String preAuth = account.getKey(Account.PRE_AUTH_REGISTRATION_TOKEN);
+        if (preAuth != null && features.invite()) {
+            final IqPacket preAuthRequest = new IqPacket(IqPacket.TYPE.SET);
+            preAuthRequest.addChild("preauth", Namespace.PARS).setAttribute("token", preAuth);
+            sendUnmodifiedIqPacket(preAuthRequest, (account, response) -> {
+                if (response.getType() == IqPacket.TYPE.RESULT) {
+                    sendRegistryRequest();
+                } else {
+                    final Element error = response.getError();
+                    Log.d(Config.LOGTAG,account.getJid().asBareJid()+": failed to pre auth. "+error);
+                    throw new StateChangingError(Account.State.REGISTRATION_INVALID_TOKEN);
+                }
+            }, true);
+        } else {
+            sendRegistryRequest();
+        }
     }
 
     private void sendRegistryRequest() {
@@ -1774,6 +1795,10 @@ public class XmppConnection implements Runnable {
 
         public boolean register() {
             return hasDiscoFeature(Jid.of(account.getServer()), Namespace.REGISTER);
+        }
+
+        public boolean invite() {
+            return connection.streamFeatures != null && connection.streamFeatures.hasChild("register", Namespace.INVITE);
         }
 
         public boolean sm() {

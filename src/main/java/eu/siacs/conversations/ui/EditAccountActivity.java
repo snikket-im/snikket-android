@@ -403,6 +403,16 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
             xmppConnectionService.deleteAccount(mAccount);
         }
 
+        final boolean magicCreate = mAccount != null && mAccount.isOptionSet(Account.OPTION_MAGIC_CREATE) && !mAccount.isOptionSet(Account.OPTION_LOGGED_IN_SUCCESSFULLY);
+        final Jid jid = mAccount == null ? null : mAccount.getJid();
+
+        if (SignupUtils.isSupportTokenRegistry() && jid != null && magicCreate && !jid.getDomain().equals(Config.MAGIC_CREATE_DOMAIN)) {
+            final Intent intent = SignupUtils.getTokenRegistrationIntent(this, jid.getDomain(), mAccount.getKey(Account.PRE_AUTH_REGISTRATION_TOKEN));
+            startActivity(intent);
+            return;
+        }
+
+
         if (xmppConnectionService.getAccounts().size() == 0 && Config.MAGIC_CREATE_DOMAIN != null) {
             Intent intent = SignupUtils.getSignUpIntent(this, mForceRegister != null && mForceRegister);
             startActivity(intent);
@@ -816,6 +826,9 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
             return false;
         }
         switch (item.getItemId()) {
+            case android.R.id.home:
+                deleteAccountAndReturnIfNecessary();
+                break;
             case R.id.action_show_block_list:
                 final Intent showBlocklistIntent = new Intent(this, BlocklistActivity.class);
                 showBlocklistIntent.putExtra(EXTRA_ACCOUNT, mAccount.getJid().toString());

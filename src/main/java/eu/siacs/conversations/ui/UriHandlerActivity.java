@@ -9,12 +9,14 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.widget.Toast;
 
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.persistance.DatabaseBackend;
 import eu.siacs.conversations.utils.SignupUtils;
@@ -86,6 +88,18 @@ public class UriHandlerActivity extends AppCompatActivity {
         final Intent intent;
         final XmppUri xmppUri = new XmppUri(uri);
         final List<Jid> accounts = DatabaseBackend.getInstance(this).getAccountJids(true);
+
+        if (SignupUtils.isSupportTokenRegistry() && xmppUri.isJidValid() && xmppUri.isAction(XmppUri.ACTION_REGISTER)) {
+            final String preauth = xmppUri.getParamater("preauth");
+            final Jid jid = xmppUri.getJid();
+            if (jid.isDomainJid()) {
+                intent = SignupUtils.getTokenRegistrationIntent(this, jid.getDomain(), preauth);
+                startActivity(intent);
+                return;
+            }
+            Log.d(Config.LOGTAG,"attempting to register on "+jid+" with preauth="+preauth);
+            return;
+        }
 
         if (accounts.size() == 0) {
             if (xmppUri.isJidValid()) {

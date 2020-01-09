@@ -37,4 +37,6 @@ public final class Namespace {
 	public static final String MUC_USER = "http://jabber.org/protocol/muc#user";
 	public static final String BOOKMARKS2 = "urn:xmpp:bookmarks:0";
 	public static final String BOOKMARKS2_COMPAT = BOOKMARKS2+"#compat";
+	public static final String INVITE = "urn:xmpp:invite";
+	public static final String PARS = "urn:xmpp:pars:0";
 }

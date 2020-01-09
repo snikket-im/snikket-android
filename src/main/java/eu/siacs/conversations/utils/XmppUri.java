@@ -28,6 +28,7 @@ public class XmppUri {
 
 	public static final String ACTION_JOIN = "join";
 	public static final String ACTION_MESSAGE = "message";
+	public static final String ACTION_REGISTER = "register";
 
 	public XmppUri(String uri) {
 		try {
@@ -192,6 +193,10 @@ public class XmppUri {
 
 	public String getName() {
 		return parameters.get("name");
+	}
+
+	public String getParamater(String key) {
+		return this.parameters.get(key);
 	}
 
 	public List<Fingerprint> getFingerprints() {

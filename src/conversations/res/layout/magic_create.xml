@@ -1,97 +1,112 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <include layout="@layout/toolbar" />
+    <LinearLayout
 
-    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:fillViewport="true">
-        <RelativeLayout
+        android:orientation="vertical">
+
+        <include layout="@layout/toolbar" android:id="@+id/toolbar"/>
+
+        <ScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="?attr/color_background_primary">
+            android:fillViewport="true">
 
-            <LinearLayout
-                android:id="@+id/linearLayout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true"
-                android:minHeight="256dp"
-                android:orientation="vertical"
-                android:paddingBottom="10dp"
-                android:paddingLeft="16dp"
-                android:paddingRight="16dp">
-                <Space
-                    android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_weight="1"/>
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/pick_your_username"
-                    android:textAppearance="@style/TextAppearance.Conversations.Title"/>
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:text="@string/magic_create_text"
-                    android:textAppearance="@style/TextAppearance.Conversations.Body1"/>
-                <EditText
-                    android:id="@+id/username"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:hint="@string/username_hint"
-                    android:inputType="textNoSuggestions"/>
-                <TextView
-                    android:id="@+id/full_jid"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:text="@string/your_full_jid_will_be"
-                    android:textAppearance="@style/TextAppearance.Conversations.Caption"
-                    android:visibility="invisible"/>
-                <Button
-                    android:id="@+id/create_account"
-                    style="@style/Widget.Conversations.Button.Borderless"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="right"
-                    android:text="@string/next"
-                    android:textColor="?colorAccent"/>
-            </LinearLayout>
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_above="@+id/linearLayout"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true">
-                <ImageView
+                android:layout_height="wrap_content"
+                android:background="?attr/color_background_primary">
+
+                <LinearLayout
+                    android:id="@+id/linearLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentBottom="true"
+                    android:minHeight="256dp"
+                    android:orientation="vertical"
+                    android:paddingLeft="16dp"
+                    android:paddingRight="16dp"
+                    android:paddingBottom="10dp">
+
+                    <Space
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="1" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/pick_your_username"
+                        android:textAppearance="@style/TextAppearance.Conversations.Title" />
+
+                    <TextView
+                        android:id="@+id/instructions"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:text="@string/magic_create_text"
+                        android:textAppearance="@style/TextAppearance.Conversations.Body1" />
+
+                    <EditText
+                        android:id="@+id/username"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:hint="@string/username_hint"
+                        android:inputType="textNoSuggestions" />
+
+                    <TextView
+                        android:id="@+id/full_jid"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:text="@string/your_full_jid_will_be"
+                        android:textAppearance="@style/TextAppearance.Conversations.Caption"
+                        android:visibility="invisible" />
+
+                    <Button
+                        android:id="@+id/create_account"
+                        style="@style/Widget.Conversations.Button.Borderless"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="right"
+                        android:text="@string/next"
+                        android:textColor="?colorAccent" />
+                </LinearLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_above="@+id/linearLayout"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentLeft="true">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerHorizontal="true"
+                        android:layout_centerVertical="true"
+                        android:padding="8dp"
+                        android:src="@drawable/main_logo" />
+                </RelativeLayout>
+
+                <TextView
+                    android:id="@+id/fine_print"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
                     android:layout_centerHorizontal="true"
-                    android:layout_centerVertical="true"
-                    android:padding="8dp"
-                    android:src="@drawable/main_logo"/>
+                    android:maxLines="1"
+                    android:paddingLeft="8dp"
+                    android:paddingRight="8dp"
+                    android:text="@string/free_for_six_month"
+                    android:textColor="?android:textColorSecondary"
+                    android:textSize="@dimen/fineprint_size" />
             </RelativeLayout>
-            <TextView
-                android:paddingLeft="8dp"
-                android:paddingRight="8dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
-                android:textColor="?android:textColorSecondary"
-                android:textSize="@dimen/fineprint_size"
-                android:maxLines="1"
-                android:text="@string/free_for_six_month"
-                android:layout_centerHorizontal="true"/>
-        </RelativeLayout>
-    </ScrollView>
-</LinearLayout>
+        </ScrollView>
+    </LinearLayout>
+</layout>

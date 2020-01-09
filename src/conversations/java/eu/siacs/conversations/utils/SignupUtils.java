@@ -8,12 +8,24 @@ import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.services.XmppConnectionService;
 import eu.siacs.conversations.ui.ConversationsActivity;
 import eu.siacs.conversations.ui.EditAccountActivity;
+import eu.siacs.conversations.ui.MagicCreateActivity;
 import eu.siacs.conversations.ui.ManageAccountActivity;
 import eu.siacs.conversations.ui.PickServerActivity;
 import eu.siacs.conversations.ui.StartConversationActivity;
 import eu.siacs.conversations.ui.WelcomeActivity;
 
 public class SignupUtils {
+
+    public static boolean isSupportTokenRegistry() {
+        return true;
+    }
+
+    public static Intent getTokenRegistrationIntent(final Activity activity, String domain, String preauth) {
+        final Intent intent = new Intent(activity, MagicCreateActivity.class);
+        intent.putExtra(MagicCreateActivity.EXTRA_DOMAIN, domain);
+        intent.putExtra(MagicCreateActivity.EXTRA_PRE_AUTH, preauth);
+        return intent;
+    }
 
     public static Intent getSignUpIntent(final Activity activity) {
         return getSignUpIntent(activity, false);
