@@ -9,10 +9,12 @@ import android.util.Log;
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.ui.ConversationsActivity;
+import eu.siacs.conversations.ui.EditAccountActivity;
 import eu.siacs.conversations.ui.EnterPhoneNumberActivity;
 import eu.siacs.conversations.ui.StartConversationActivity;
 import eu.siacs.conversations.ui.TosActivity;
 import eu.siacs.conversations.ui.VerifyActivity;
+import rocks.xmpp.addr.Jid;
 
 public class SignupUtils {
 
@@ -44,5 +46,13 @@ public class SignupUtils {
         }
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         return intent;
+    }
+
+    public static boolean isSupportTokenRegistry() {
+        return false;
+    }
+
+    public static Intent getTokenRegistrationIntent(Activity activity, Jid preset, String key) {
+        return null;
     }
 }
