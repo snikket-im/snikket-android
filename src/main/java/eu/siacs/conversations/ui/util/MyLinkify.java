@@ -91,7 +91,7 @@ public class MyLinkify {
 
     private static final Linkify.MatchFilter XMPPURI_MATCH_FILTER = (s, start, end) -> {
         XmppUri uri = new XmppUri(s.subSequence(start, end).toString());
-        return uri.isJidValid();
+        return uri.isValidJid();
     };
 
     private static boolean isAlphabetic(final int code) {

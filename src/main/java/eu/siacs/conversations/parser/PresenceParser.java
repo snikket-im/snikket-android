@@ -193,7 +193,7 @@ public class PresenceParser extends AbstractParser implements
 					final Jid alternate;
 					if (gone != null) {
 						final XmppUri xmppUri = new XmppUri(gone);
-						if (xmppUri.isJidValid()) {
+						if (xmppUri.isValidJid()) {
 							alternate = xmppUri.getJid();
 						} else {
 							alternate = null;

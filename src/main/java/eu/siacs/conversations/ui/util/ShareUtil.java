@@ -132,7 +132,7 @@ public class ShareUtil {
 		Matcher xmppPatternMatcher = Patterns.XMPP_PATTERN.matcher(body);
 		if (xmppPatternMatcher.find()) {
 			try {
-				return new XmppUri(body.substring(xmppPatternMatcher.start(), xmppPatternMatcher.end())).isJidValid();
+				return new XmppUri(body.substring(xmppPatternMatcher.start(), xmppPatternMatcher.end())).isValidJid();
 			} catch (Exception e) {
 				return false;
 			}

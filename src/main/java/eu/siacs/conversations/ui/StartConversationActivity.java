@@ -823,7 +823,7 @@ public class StartConversationActivity extends XmppActivity implements XmppConne
 		if (inviteUri != null) {
 			final Invite invite = new Invite(inviteUri);
 			invite.account = intent.getStringExtra(EXTRA_ACCOUNT);
-			if (invite.isJidValid()) {
+			if (invite.isValidJid()) {
 				return invite.invite();
 			}
 		}
@@ -1020,7 +1020,7 @@ public class StartConversationActivity extends XmppActivity implements XmppConne
 			conferenceJid = Jid.of(input);
 		} catch (final IllegalArgumentException e) {
 			final XmppUri xmppUri = new XmppUri(input);
-			if (xmppUri.isJidValid() && xmppUri.isAction(XmppUri.ACTION_JOIN)) {
+			if (xmppUri.isValidJid() && xmppUri.isAction(XmppUri.ACTION_JOIN)) {
 				final Editable editable = jid.getEditableText();
 				editable.clear();
 				editable.append(xmppUri.getJid().toEscapedString());
@@ -1301,7 +1301,7 @@ public class StartConversationActivity extends XmppActivity implements XmppConne
 		}
 
 		boolean invite() {
-			if (!isJidValid()) {
+			if (!isValidJid()) {
 				Toast.makeText(StartConversationActivity.this, R.string.invalid_jid, Toast.LENGTH_SHORT).show();
 				return false;
 			}

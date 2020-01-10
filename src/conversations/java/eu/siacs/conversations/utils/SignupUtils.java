@@ -17,6 +17,8 @@ import rocks.xmpp.addr.Jid;
 
 public class SignupUtils {
 
+    public static final String INSTALL_REFERRER = "install_referrer";
+
     public static boolean isSupportTokenRegistry() {
         return true;
     }

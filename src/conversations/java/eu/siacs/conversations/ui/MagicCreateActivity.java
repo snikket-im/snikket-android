@@ -1,12 +1,15 @@
 package eu.siacs.conversations.ui;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
@@ -17,6 +20,7 @@ import eu.siacs.conversations.R;
 import eu.siacs.conversations.databinding.MagicCreateBinding;
 import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.utils.CryptoHelper;
+import eu.siacs.conversations.utils.SignupUtils;
 import rocks.xmpp.addr.Jid;
 
 public class MagicCreateActivity extends XmppActivity implements TextWatcher {
@@ -119,6 +123,14 @@ public class MagicCreateActivity extends XmppActivity implements TextWatcher {
             }
         });
         binding.username.addTextChangedListener(this);
+    }
+
+    @Override
+    public void onDestroy() {
+        Log.d(Config.LOGTAG,"purge install referrer");
+        final SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        preferences.edit().remove(SignupUtils.INSTALL_REFERRER).apply();
+        super.onDestroy();
     }
 
     @Override

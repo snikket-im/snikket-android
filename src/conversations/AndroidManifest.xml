@@ -11,32 +11,42 @@
         <activity
             android:name=".ui.WelcomeActivity"
             android:label="@string/app_name"
-            android:launchMode="singleTask"/>
+            android:launchMode="singleTask" />
         <activity
             android:name=".ui.PickServerActivity"
             android:label="@string/create_new_account"
-            android:launchMode="singleTask"/>
+            android:launchMode="singleTask" />
         <activity
             android:name=".ui.MagicCreateActivity"
             android:label="@string/create_new_account"
-            android:launchMode="singleTask"/>
+            android:launchMode="singleTask" />
         <activity
             android:name=".ui.ImportBackupActivity"
             android:label="@string/restore_backup"
             android:launchMode="singleTask">
             <intent-filter>
-                <action android:name="android.intent.action.VIEW"/>
+                <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />
+
                 <data android:mimeType="application/vnd.conversations.backup" />
                 <data android:scheme="content" />
             </intent-filter>
             <intent-filter>
-                <action android:name="android.intent.action.VIEW"/>
+                <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />
+
                 <data android:mimeType="application/vnd.conversations.backup" />
                 <data android:scheme="file" />
             </intent-filter>
         </activity>
 
+        <receiver
+            android:name=".services.InstallReferrerService"
+            android:enabled="true"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="com.android.vending.INSTALL_REFERRER" />
+            </intent-filter>
+        </receiver>
     </application>
 </manifest>

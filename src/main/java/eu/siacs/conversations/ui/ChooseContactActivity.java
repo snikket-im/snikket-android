@@ -348,7 +348,7 @@ public class ChooseContactActivity extends AbstractSearchableListItemActivity im
         if (activityResult.resultCode == RESULT_OK && activityResult.requestCode == ScanActivity.REQUEST_SCAN_QR_CODE) {
             String result = activityResult.data.getStringExtra(ScanActivity.INTENT_EXTRA_RESULT);
             XmppUri uri = new XmppUri(result == null ? "" : result);
-            if (uri.isJidValid()) {
+            if (uri.isValidJid()) {
                 showEnterJidDialog(uri);
             }
         }
