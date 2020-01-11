@@ -886,5 +886,4 @@
         <item quantity="one">View %1$d Participant</item>
         <item quantity="other">View %1$d Participants</item>
     </plurals>
-    <string name="openstreetmap_credit">© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors</string>
 </resources>
