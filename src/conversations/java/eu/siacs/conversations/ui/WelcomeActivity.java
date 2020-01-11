@@ -1,7 +1,9 @@
 package eu.siacs.conversations.ui;
 
+import android.Manifest;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
+import android.content.pm.PackageManager;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -12,6 +14,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import java.util.Arrays;
 import java.util.List;
 
 import eu.siacs.conversations.Config;
@@ -32,8 +35,15 @@ public class WelcomeActivity extends XmppActivity {
 
     private XmppUri inviteUri;
 
+    public static void launch(AppCompatActivity activity) {
+        Intent intent = new Intent(activity, WelcomeActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        activity.startActivity(intent);
+        activity.overridePendingTransition(0, 0);
+    }
+
     public void onInstallReferrerDiscovered(final String referrer) {
-        Log.d(Config.LOGTAG,"welcome activity: on install referrer discovered "+referrer);
+        Log.d(Config.LOGTAG, "welcome activity: on install referrer discovered " + referrer);
         if (referrer != null) {
             final XmppUri xmppUri = new XmppUri(referrer);
             runOnUiThread(() -> processXmppUri(xmppUri));
@@ -110,7 +120,7 @@ public class WelcomeActivity extends XmppActivity {
             startActivity(intent);
         });
         binding.useExisting.setOnClickListener(v -> {
-            List<Account> accounts = xmppConnectionService.getAccounts();
+            final List<Account> accounts = xmppConnectionService.getAccounts();
             Intent intent = new Intent(WelcomeActivity.this, EditAccountActivity.class);
             intent.putExtra(EditAccountActivity.EXTRA_FORCE_REGISTER, false);
             if (accounts.size() == 1) {
@@ -128,22 +138,29 @@ public class WelcomeActivity extends XmppActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.welcome_menu, menu);
+        final MenuItem scan = menu.findItem(R.id.action_scan_qr_code);
+        scan.setVisible(getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA));
         return super.onCreateOptionsMenu(menu);
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == R.id.action_import_backup) {
-            if (hasStoragePermission(REQUEST_IMPORT_BACKUP)) {
-                startActivity(new Intent(this, ImportBackupActivity.class));
-            }
-            return true;
+        switch (item.getItemId()) {
+            case R.id.action_import_backup:
+                if (hasStoragePermission(REQUEST_IMPORT_BACKUP)) {
+                    startActivity(new Intent(this, ImportBackupActivity.class));
+                }
+                break;
+            case R.id.action_scan_qr_code:
+                UriHandlerActivity.scan(this);
+                break;
         }
         return super.onOptionsItemSelected(item);
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String permissions[], @NonNull int[] grantResults) {
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        UriHandlerActivity.onRequestPermissionResult(this, requestCode, grantResults);
         if (grantResults.length > 0) {
             if (allGranted(grantResults)) {
                 switch (requestCode) {
@@ -151,7 +168,7 @@ public class WelcomeActivity extends XmppActivity {
                         startActivity(new Intent(this, ImportBackupActivity.class));
                         break;
                 }
-            } else {
+            } else if (Arrays.asList(permissions).contains(Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
                 Toast.makeText(this, R.string.no_storage_permission, Toast.LENGTH_SHORT).show();
             }
         }
@@ -168,16 +185,9 @@ public class WelcomeActivity extends XmppActivity {
             final String invite = from.getStringExtra(StartConversationActivity.EXTRA_INVITE_URI);
             to.putExtra(StartConversationActivity.EXTRA_INVITE_URI, invite);
         } else if (this.inviteUri != null) {
-            Log.d(Config.LOGTAG,"injecting referrer uri into on-boarding flow");
+            Log.d(Config.LOGTAG, "injecting referrer uri into on-boarding flow");
             to.putExtra(StartConversationActivity.EXTRA_INVITE_URI, this.inviteUri.toString());
         }
-    }
-
-    public static void launch(AppCompatActivity activity) {
-        Intent intent = new Intent(activity, WelcomeActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        activity.startActivity(intent);
-        activity.overridePendingTransition(0, 0);
     }
 
 }
