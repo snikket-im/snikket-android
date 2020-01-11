@@ -1,14 +1,9 @@
 package eu.siacs.conversations.ui;
 
-import android.content.BroadcastReceiver;
-import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
-import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -23,7 +18,7 @@ import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.databinding.ActivityWelcomeBinding;
 import eu.siacs.conversations.entities.Account;
-import eu.siacs.conversations.services.InstallReferrerService;
+import eu.siacs.conversations.utils.InstallReferrerUtils;
 import eu.siacs.conversations.utils.SignupUtils;
 import eu.siacs.conversations.utils.XmppUri;
 import rocks.xmpp.addr.Jid;
@@ -37,18 +32,13 @@ public class WelcomeActivity extends XmppActivity {
 
     private XmppUri inviteUri;
 
-    private BroadcastReceiver installReferrerBroadcastReceiver = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent data) {
-            final String invite = data.getStringExtra(StartConversationActivity.EXTRA_INVITE_URI);
-            if (invite == null) {
-                return;
-            }
-            Log.d(Config.LOGTAG, "welcome activity received install referrer uri: " + invite);
-            final XmppUri xmppUri = new XmppUri(invite);
-            processXmppUri(xmppUri);
+    public void onInstallReferrerDiscovered(final String referrer) {
+        Log.d(Config.LOGTAG,"welcome activity: on install referrer discovered "+referrer);
+        if (referrer != null) {
+            final XmppUri xmppUri = new XmppUri(referrer);
+            runOnUiThread(() -> processXmppUri(xmppUri));
         }
-    };
+    }
 
     private boolean processXmppUri(final XmppUri xmppUri) {
         if (xmppUri.isValidJid()) {
@@ -90,14 +80,11 @@ public class WelcomeActivity extends XmppActivity {
         if (this.mTheme != theme) {
             recreate();
         }
-        final IntentFilter intentFilter = new IntentFilter();
-        intentFilter.addAction(InstallReferrerService.INSTALL_REFERRER_BROADCAST_ACTION);
-        registerReceiver(installReferrerBroadcastReceiver, intentFilter);
+        new InstallReferrerUtils(this);
     }
 
     @Override
     public void onStop() {
-        unregisterReceiver(installReferrerBroadcastReceiver);
         super.onStop();
     }
 
@@ -114,12 +101,6 @@ public class WelcomeActivity extends XmppActivity {
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         }
         super.onCreate(savedInstanceState);
-        final SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
-        final String referrer = preferences.getString(SignupUtils.INSTALL_REFERRER,null);
-        final XmppUri referrerUri = referrer == null ? null : new XmppUri(referrer);
-        if (referrerUri != null && processXmppUri(referrerUri)) {
-            return;
-        }
         ActivityWelcomeBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_welcome);
         setSupportActionBar((Toolbar) binding.toolbar);
         configureActionBar(getSupportActionBar(), false);

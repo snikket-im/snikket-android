@@ -39,14 +39,5 @@
                 <data android:scheme="file" />
             </intent-filter>
         </activity>
-
-        <receiver
-            android:name=".services.InstallReferrerService"
-            android:enabled="true"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="com.android.vending.INSTALL_REFERRER" />
-            </intent-filter>
-        </receiver>
     </application>
 </manifest>

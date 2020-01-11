@@ -22,6 +22,8 @@ configurations {
     playstoreImplementation
     compatImplementation
     conversationsFreeCompatImplementation
+    conversationsPlaystoreCompatImplementation
+    conversationsPlaystoreSystemImplementation
     quicksyFreeCompatImplementation
     quicksyImplementation
 }
@@ -36,6 +38,8 @@ dependencies {
         exclude group: 'com.google.firebase', module: 'firebase-analytics'
         exclude group: 'com.google.firebase', module: 'firebase-measurement-connector'
     }
+    conversationsPlaystoreCompatImplementation("com.android.installreferrer:installreferrer:1.1")
+    conversationsPlaystoreSystemImplementation("com.android.installreferrer:installreferrer:1.1")
     implementation 'org.sufficientlysecure:openpgp-api:10.0'
     implementation('com.theartofdev.edmodo:android-image-cropper:2.7.+') {
         exclude group: 'com.android.support', module: 'appcompat-v7'
@@ -86,8 +90,8 @@ android {
     defaultConfig {
         minSdkVersion 16
         targetSdkVersion 28
-        versionCode 353
-        versionName "2.6.2"
+        versionCode 359
+        versionName "2.6.3-alpha.6"
         archivesBaseName += "-$versionName"
         applicationId "eu.siacs.conversations"
         resValue "string", "applicationId", applicationId
@@ -147,12 +151,12 @@ android {
     sourceSets {
         quicksyFreeCompat {
             java {
-                srcDirs 'src/freeCompat/java'
+                srcDir 'src/freeCompat/java'
             }
         }
         quicksyPlaystoreCompat {
             java {
-                srcDirs 'src/playstoreCompat/java'
+                srcDir 'src/playstoreCompat/java'
             }
             res {
                 srcDir 'src/playstoreCompat/res'
@@ -166,12 +170,19 @@ android {
         }
         conversationsFreeCompat {
             java {
-                srcDirs 'src/freeCompat/java'
+                srcDir 'src/freeCompat/java'
+                srcDir 'src/conversationsFree/java'
+            }
+        }
+        conversationsFreeSystem {
+            java {
+                srcDir 'src/conversationsFree/java'
             }
         }
         conversationsPlaystoreCompat {
             java {
-                srcDirs 'src/playstoreCompat/java'
+                srcDir 'src/playstoreCompat/java'
+                srcDir 'src/conversationsPlaystore/java'
             }
             res {
                 srcDir 'src/playstoreCompat/res'
@@ -179,6 +190,9 @@ android {
             }
         }
         conversationsPlaystoreSystem {
+            java {
+                srcDir 'src/conversationsPlaystore/java'
+            }
             res {
                 srcDir 'src/conversationsPlaystore/res'
             }
