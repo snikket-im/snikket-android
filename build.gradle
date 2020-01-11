@@ -93,10 +93,10 @@ android {
         versionCode 360
         versionName "2.6.3"
         archivesBaseName += "-$versionName"
-        applicationId "eu.siacs.conversations"
+        applicationId "chat.snikket.android"
         resValue "string", "applicationId", applicationId
-        resValue "string", "app_name", "Conversations"
-        buildConfigField "String", "LOGTAG", "\"conversations\""
+        resValue "string", "app_name", "Snikket"
+        buildConfigField "String", "LOGTAG", "\"snikket\""
     }
 
     dataBinding {

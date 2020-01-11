@@ -66,7 +66,7 @@ public class NotificationService {
 
     public static final Object CATCHUP_LOCK = new Object();
 
-    private static final int LED_COLOR = 0xff00ff00;
+    private static final int LED_COLOR = 0xffffff00;
 
     private static final String CONVERSATIONS_GROUP = "eu.siacs.conversations";
     private static final int NOTIFICATION_ID_MULTIPLIER = 1024 * 1024;
@@ -361,7 +361,7 @@ public class NotificationService {
     }
 
     private void setNotificationColor(final Builder mBuilder) {
-        mBuilder.setColor(ContextCompat.getColor(mXmppConnectionService, R.color.green600));
+        mBuilder.setColor(ContextCompat.getColor(mXmppConnectionService, R.color.snikket600)); //will be darkened even more by the OS
     }
 
     public void updateNotification() {

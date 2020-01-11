@@ -31,11 +31,20 @@
 	<color name="green800">#ff2E7D32</color>
 	<color name="green900">#ff1B5E20</color>
 
-	<color name="green700_desaturated">#ff4d8e50</color> <!-- desaturated by 15 -->
-	<color name="green900_desaturated">#ff295e2d</color> <!-- desaturated by 15 -->
+	<color name="green700_desaturated">#ffb69e3c</color> <!-- yellow, desaturated by 15 -->
+	<color name="green900_desaturated">#ff766624</color> <!-- desaturated by 15 -->
 
 	<!-- scanner -->
 	<color name="scan_result_dots">#c04CAF50</color>
 
 	<color name="blue500">#ff2196f3</color>
+
+
+	<color name="snikket500">#ffFEDA06</color>
+	<color name="snikket600">#ffdbbc04</color>
+	<color name="snikket700">#ffb99e03</color>
+	<color name="snikket800">#ff988202</color>
+	<color name="snikket900">#ff786601</color>
+
+	<color name="snikket_blue">#ff408DCA</color>
 </resources>
