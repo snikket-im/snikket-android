@@ -879,4 +879,8 @@
   <string name="pref_channel_discovery">Método para la búsqueda de Canales</string>
   <string name="backup">Copia de respaldo</string>
   <string name="category_about">Acerca de</string>
+  <plurals name="view_users">
+    <item quantity="one">Ver %1$d Participante</item>
+    <item quantity="other">Ver %1$d Participantes</item>
+  </plurals>
 </resources>

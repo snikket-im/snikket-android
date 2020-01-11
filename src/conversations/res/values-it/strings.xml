@@ -7,5 +7,4 @@
 Suggerimento: alcuni provider di email forniscono anche un account XMPP.</string>
     <string name="server_select_text">XMPP è una rete di instant messaging indipendente dal provider. Puoi usare questo client con qualsiasi server XMPP.
 In ogni caso per facilitare puoi creare facilmente un account su conversations.im, un provider pensato apposta per essere usato con Conversations.</string>
-
-</resources>
+    </resources>

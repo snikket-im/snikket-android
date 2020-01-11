@@ -894,5 +894,4 @@ sau chiar pierderea mesajelor.\nÎn continuare veți fi rugați să dezactivați
     <item quantity="few">Arată %1$d participanți</item>
     <item quantity="other">Arată %1$d de participanți</item>
   </plurals>
-  <string name="openstreetmap_credit">© Colaboratorii <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a></string>
 </resources>

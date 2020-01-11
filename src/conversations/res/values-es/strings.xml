@@ -5,5 +5,4 @@
     <string name="create_new_account">Crear nueva cuenta</string>
     <string name="do_you_have_an_account">¿Ya tienes una cuenta XMPP? Este puede ser el caso si ya estás usando un cliente XMPP diferente o has usado Conversations anteriormente. Si no es así, puedes crear una nueva cuenta XMPP ahora mismo.\nConsejo: Algunos proveedores de email también ofrecen una cuenta XMPP.</string>
     <string name="server_select_text">XMPP es una red de mensajería instantánea independiente del proveedor. Puedes usar este cliente con cualquier servidor XMPP que elijas.\nSin embargo, para tu conveniencia, hacemos de forma sencilla la creación de una cuenta en conversations.im¹; un proveedor especializado para el uso con Conversations </string>
-
-</resources>
+    </resources>

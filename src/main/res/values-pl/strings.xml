@@ -903,5 +903,4 @@ Administrator twojego serwera będzie mógł czytać twoje wiadomości, ale moż
     <item quantity="many">Pokaż %1$d uczestników</item>
     <item quantity="other">Pokaż %1$d uczestników</item>
   </plurals>
-  <string name="openstreetmap_credit">© autorzy <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> </string>
 </resources>

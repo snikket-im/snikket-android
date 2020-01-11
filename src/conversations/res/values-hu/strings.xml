@@ -5,5 +5,4 @@
     <string name="create_new_account">Új fiók létrehozása</string>
     <string name="do_you_have_an_account">Már rendelkezik XMPP-fiókkal? Ez az eset állhat fenn, ha már egy másik XMPP-klienst használ, vagy ha már korábban használta a Conversations alkalmazást. Ha nem, akkor most létrehozhat egy új XMPP-fiókot.\nTipp: egyes e-mail szolgáltatók is biztosítanak XMPP-fiókokat.</string>
     <string name="server_select_text">Az XMPP egy szolgáltatófüggetlen, azonnali üzenetküldő hálózat. Ezt a kliensprogramot bármely XMPP-kiszolgálóhoz használhatja.\nAzonban a kényelem érdekében megkönnyítettük a conversations.im¹ szolgáltatón való fióklétrehozást, ami kifejezetten a Conversations alkalmazással történő használatra lett tervezve.</string>
-
-</resources>
+    </resources>

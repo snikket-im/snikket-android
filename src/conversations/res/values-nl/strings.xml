@@ -5,5 +5,4 @@
     <string name="create_new_account">Nieuwe account registreren</string>
     <string name="do_you_have_an_account">Heb je al een XMPP-account? Als je al een andere XMPP-cliënt gebruikt, of Conversations vroeger al eens hebt gebruikt, is dit waarschijnlijk het geval. Zo niet, kan je nu een nieuwe XMPP-account aanmaken.\nTip: sommige e-mailproviders bieden ook XMPP-accounts aan.</string>
     <string name="server_select_text">XMPP is een provider-onafhankelijk berichtennetwerk. Je kan deze cliënt gebruiken met eender welke XMPP-server.\nOm het je gemakkelijker te maken kun je simpelweg een account aanmaken op conversations.im¹; een provider speciaal geschikt voor Conversations.</string>
-
-</resources>
+    </resources>

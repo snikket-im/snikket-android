@@ -883,5 +883,4 @@
     <item quantity="one">Ver %1$d Participante</item>
     <item quantity="other">Ver %1$d Participantes</item>
   </plurals>
-  <string name="openstreetmap_credit">© contribuíntes <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a></string>
 </resources>
