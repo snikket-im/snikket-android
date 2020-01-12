@@ -34,11 +34,11 @@ public final class Config {
 
     public static final String LOGTAG = BuildConfig.LOGTAG;
 
-    public static final Jid BUG_REPORTS = Jid.of("bugs@conversations.im");
+    public static final Jid BUG_REPORTS = Jid.of("bugs@snikket.org");
 
 
     public static final String DOMAIN_LOCK = null; //only allow account creation for this domain
-    public static final String MAGIC_CREATE_DOMAIN = "conversations.im";
+    public static final String MAGIC_CREATE_DOMAIN = "snikket.im";
     public static final String QUICKSY_DOMAIN = "quicksy.im";
 
     public static final String CHANNEL_DISCOVERY = "https://search.jabber.network";

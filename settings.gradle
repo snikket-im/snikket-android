@@ -1,2 +1,2 @@
 include ':libs:xmpp-addr'
-rootProject.name = 'Conversations'
+rootProject.name = 'Snikket'
