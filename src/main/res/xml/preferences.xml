@@ -154,8 +154,8 @@
         <CheckBoxPreference
             android:defaultValue="@bool/use_green_background"
             android:key="use_green_background"
-            android:summary="@string/pref_use_green_background_summary"
-            android:title="@string/pref_use_green_background" />
+            android:summary="@string/pref_use_yellow_background_summary"
+            android:title="@string/pref_use_yellow_background" />
         <CheckBoxPreference
             android:defaultValue="@bool/show_dynamic_tags"
             android:key="show_dynamic_tags"
