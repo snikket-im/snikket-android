@@ -1,10 +1,12 @@
 package eu.siacs.conversations.ui;
 
 import android.Manifest;
+import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.databinding.DataBindingUtil;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -114,23 +116,14 @@ public class WelcomeActivity extends XmppActivity {
         ActivityWelcomeBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_welcome);
         setSupportActionBar((Toolbar) binding.toolbar);
         configureActionBar(getSupportActionBar(), false);
-        binding.registerNewAccount.setOnClickListener(v -> {
-            final Intent intent = new Intent(this, PickServerActivity.class);
-            addInviteUri(intent);
-            startActivity(intent);
-        });
-        binding.useExisting.setOnClickListener(v -> {
-            final List<Account> accounts = xmppConnectionService.getAccounts();
-            Intent intent = new Intent(WelcomeActivity.this, EditAccountActivity.class);
-            intent.putExtra(EditAccountActivity.EXTRA_FORCE_REGISTER, false);
-            if (accounts.size() == 1) {
-                intent.putExtra("jid", accounts.get(0).getJid().asBareJid().toString());
-                intent.putExtra("init", true);
-            } else if (accounts.size() >= 1) {
-                intent = new Intent(WelcomeActivity.this, ManageAccountActivity.class);
+        binding.learnMore.setOnClickListener(v -> {
+            final Intent intent = new Intent(Intent.ACTION_VIEW);
+            intent.setData(Uri.parse("https://snikket.org/app/learn/"));
+            try {
+                startActivity(intent);
+            } catch (ActivityNotFoundException e) {
+                Toast.makeText(this,R.string.no_application_found_to_open_link, Toast.LENGTH_LONG).show();
             }
-            addInviteUri(intent);
-            startActivity(intent);
         });
 
     }

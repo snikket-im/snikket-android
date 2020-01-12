@@ -33,41 +33,24 @@
                     android:paddingRight="16dp"
                     android:paddingBottom="10dp">
 
-                    <Space
-                        android:layout_width="match_parent"
-                        android:layout_height="0dp"
-                        android:layout_weight="1" />
-
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/welcome_header"
-                        android:textAppearance="@style/TextAppearance.Conversations.Title" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
-                        android:text="@string/do_you_have_an_account"
+                        android:text="@string/snikket_intro"
                         android:textAppearance="@style/TextAppearance.Conversations.Body1" />
 
                     <Button
-                        android:id="@+id/register_new_account"
+                        android:layout_marginTop="16dp"
+                        android:id="@+id/learn_more"
                         style="@style/Widget.Conversations.Button.Borderless"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="right"
-                        android:text="@string/create_new_account"
+                        android:paddingLeft="0dp"
+                        android:paddingRight="0dp"
+                        android:layout_gravity="left"
+                        android:text="@string/learn_more"
                         android:textColor="?colorAccent" />
 
-                    <Button
-                        android:id="@+id/use_existing"
-                        style="@style/Widget.Conversations.Button.Borderless"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="right"
-                        android:text="@string/i_already_have_an_account"
-                        android:textColor="?android:textColorSecondary" />
                 </LinearLayout>
 
                 <RelativeLayout
