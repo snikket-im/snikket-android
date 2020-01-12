@@ -93,7 +93,7 @@ android {
         versionCode 360
         versionName "2.6.3"
         archivesBaseName += "-$versionName"
-        applicationId "chat.snikket.android"
+        applicationId "org.snikket.android"
         resValue "string", "applicationId", applicationId
         resValue "string", "app_name", "Snikket"
         buildConfigField "String", "LOGTAG", "\"snikket\""
