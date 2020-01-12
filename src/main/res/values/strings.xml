@@ -66,8 +66,8 @@
     <string name="unblock">Unblock</string>
     <string name="save">Save</string>
     <string name="ok">OK</string>
-    <string name="crash_report_title">Conversations has crashed</string>
-    <string name="crash_report_message">By sending in stack traces you are helping the ongoing development of Conversations\n<b>Warning:</b> This will use your XMPP account to send the stack trace to the developer.</string>
+    <string name="crash_report_title">Snikket has crashed</string>
+    <string name="crash_report_message">By sending in stack traces you are helping the ongoing development of Snikket\n<b>Warning:</b> This will use your XMPP account to send the stack trace to the developer.</string>
     <string name="send_now">Send now</string>
     <string name="send_never">Never ask again</string>
     <string name="problem_connecting_to_account">Unable to connect to account</string>
@@ -97,16 +97,16 @@
     <string name="send_unencrypted">Send unencrypted</string>
     <string name="decryption_failed">Decryption failed. Maybe you don’t have the proper private key.</string>
     <string name="openkeychain_required">OpenKeychain</string>
-    <string name="openkeychain_required_long">Conversations utilizes a third party app called <b>OpenKeychain</b> to encrypt and decrypt messages and to manage your public keys.\n\nOpenKeychain is licensed under GPLv3 and available on F-Droid and Google Play.\n\n<small>(Please restart Conversations afterwards.)</small></string>
+    <string name="openkeychain_required_long">Snikket utilizes a third party app called <b>OpenKeychain</b> to encrypt and decrypt messages and to manage your public keys.\n\nOpenKeychain is licensed under GPLv3 and available on F-Droid and Google Play.\n\n<small>(Please restart Snikket afterwards.)</small></string>
     <string name="restart">Restart</string>
     <string name="install">Install</string>
     <string name="openkeychain_not_installed">Please install OpenKeychain</string>
     <string name="offering">offering…</string>
     <string name="waiting">waiting…</string>
     <string name="no_pgp_key">No OpenPGP Key found</string>
-    <string name="contact_has_no_pgp_key">Conversations is unable to encrypt your messages because your contact is not announcing his or hers public key.\n\n<small>Please ask your contact to setup OpenPGP.</small></string>
+    <string name="contact_has_no_pgp_key">Snikket is unable to encrypt your messages because your contact is not announcing his or hers public key.\n\n<small>Please ask your contact to setup OpenPGP.</small></string>
     <string name="no_pgp_keys">No OpenPGP Keys found</string>
-    <string name="contacts_have_no_pgp_keys">Conversations is unable to encrypt your messages because your contacts are not announcing their public key.\n\n<small>Please ask your contacts to setup OpenPGP.</small></string>
+    <string name="contacts_have_no_pgp_keys">Snikket is unable to encrypt your messages because your contacts are not announcing their public key.\n\n<small>Please ask your contacts to setup OpenPGP.</small></string>
     <string name="pref_general">General</string>
     <string name="pref_accept_files">Accept files</string>
     <string name="pref_accept_files_summary">Automatically accept files smaller than…</string>
@@ -122,7 +122,7 @@
     <string name="pref_notification_grace_period_summary">The length of time notifications are silenced after detecting activity on one of your other devices.</string>
     <string name="pref_advanced_options">Advanced</string>
     <string name="pref_never_send_crash">Never send crash reports</string>
-    <string name="pref_never_send_crash_summary">By sending in stack traces you are helping the ongoing development of Conversations</string>
+    <string name="pref_never_send_crash_summary">By sending in stack traces you are helping the ongoing development of Snikket</string>
     <string name="pref_confirm_messages">Confirm Messages</string>
     <string name="pref_confirm_messages_summary">Let your contacts know when you have received and read their messages</string>
     <string name="pref_ui_options">UI</string>
@@ -499,10 +499,10 @@
     <string name="shared_image_with_x">Shared image with %s</string>
     <string name="shared_images_with_x">Shared images with %s</string>
     <string name="shared_text_with_x">Shared text with %s</string>
-    <string name="no_storage_permission">Conversations needs access to external storage</string>
-    <string name="no_camera_permission">Conversations needs access to the camera</string>
+    <string name="no_storage_permission">Snikket needs access to external storage</string>
+    <string name="no_camera_permission">Snikket needs access to the camera</string>
     <string name="sync_with_contacts">Synchronize with contacts</string>
-    <string name="sync_with_contacts_long">Conversations wants to match your server side contact list with your local address book to show your contacts’ full names and avatars.\n\nConversations will only read your contacts and match them locally without uploading them to your server.\n\nYou will now be asked to grant permission to access your contacts.</string>
+    <string name="sync_with_contacts_long">Snikket wants to match your server side contact list with your local address book to show your contacts’ full names and avatars.\n\nSnikket will only read your contacts and match them locally without uploading them to your server.\n\nYou will now be asked to grant permission to access your contacts.</string>
     <string name="sync_with_contacts_quicksy"><![CDATA[Quicksy needs access to your contacts’ phone numbers to make suggestions about possible contacts who are already on Quicksy.<br><br>We will not store a copy of those phone numbers.\n\nFor more information read our <a href="https://quicksy.im/#privacy">privacy policy</a>.<br><br>You will now be asked to grant permission to access your contacts.]]></string>
     <string name="notify_on_all_messages">Notify on all messages</string>
     <string name="notify_only_when_highlighted">Notify only when mentioned</string>
@@ -513,8 +513,8 @@
     <string name="always">Always</string>
     <string name="large_images_only">Large images only</string>
     <string name="battery_optimizations_enabled">Battery optimizations enabled</string>
-    <string name="battery_optimizations_enabled_explained">Your device is doing some heavy battery optimizations on Conversations that might lead to delayed notifications or even message loss.\nIt is recommended to disable those.</string>
-    <string name="battery_optimizations_enabled_dialog">Your device is doing some heavy battery optimizations on Conversations that might lead to delayed notifications or even message loss.\n\nYou will now be asked to disable those.</string>
+    <string name="battery_optimizations_enabled_explained">Your device is doing some heavy battery optimizations on Snikket that might lead to delayed notifications or even message loss.\nIt is recommended to disable those.</string>
+    <string name="battery_optimizations_enabled_dialog">Your device is doing some heavy battery optimizations on Snikket that might lead to delayed notifications or even message loss.\n\nYou will now be asked to disable those.</string>
     <string name="disable">Disable</string>
     <string name="selection_too_large">The selected area is too large</string>
     <string name="no_accounts">(No activated accounts)</string>
@@ -527,8 +527,8 @@
     <string name="no_application_to_share_uri">No application found to share URI</string>
     <string name="share_uri_with">Share URI with…</string>
     <string name="welcome_header" translatable="false">Join the Conversation</string>
-    <string name="welcome_header_quicksy" translatable="false">Have some Quick Conversations</string>
-    <string name="welcome_text_quicksy"><![CDATA[Quicksy is a spin off of the popular XMPP client Conversations with automatic contact discovery.<br><br>You sign up with your phone number and Quicksy will automatically—based on the phone numbers in your address book—suggest possible contacts to you.<br><br>By signing up you agree to our <a href="https://quicksy.im/#privacy">privacy policy</a>.]]></string>
+    <string name="welcome_header_quicksy" translatable="false">Have some Quick Snikket</string>
+    <string name="welcome_text_quicksy"><![CDATA[Quicksy is a spin off of the popular XMPP client Snikket with automatic contact discovery.<br><br>You sign up with your phone number and Quicksy will automatically—based on the phone numbers in your address book—suggest possible contacts to you.<br><br>By signing up you agree to our <a href="https://quicksy.im/#privacy">privacy policy</a>.]]></string>
     <string name="agree_and_continue">Agree &amp; continue</string>
     <string name="magic_create_text">We will guide you through the process of creating an account on conversations.im.¹\nWhen picking conversations.im as a provider you will be able to communicate with users of other providers by giving them your full XMPP address.</string>
     <string name="your_full_jid_will_be">Your full XMPP address will be: %s</string>
@@ -555,7 +555,7 @@
     <string name="gp_medium">Medium</string>
     <string name="gp_long">Long</string>
     <string name="pref_broadcast_last_activity">Broadcast Last User Interaction</string>
-    <string name="pref_broadcast_last_activity_summary">Let all your contacts know when you use Conversations</string>
+    <string name="pref_broadcast_last_activity_summary">Let all your contacts know when you use Snikket</string>
     <string name="pref_privacy">Privacy</string>
     <string name="pref_theme_options">Theme</string>
     <string name="pref_theme_options_summary">Select the color palette</string>
@@ -587,8 +587,8 @@
     <string name="show_error_message">Show error message</string>
     <string name="error_message">Error Message</string>
     <string name="data_saver_enabled">Data saver enabled</string>
-    <string name="data_saver_enabled_explained">Your operating system is restricting Conversations from accessing the Internet when in background. To receive notifications of new messages you should allow Conversations unrestricted access when Data saver is on.\nConversations will still make an effort to save data when possible.</string>
-    <string name="device_does_not_support_data_saver">Your device does not support disabling Data saver for Conversations.</string>
+    <string name="data_saver_enabled_explained">Your operating system is restricting Snikket from accessing the Internet when in background. To receive notifications of new messages you should allow Snikket unrestricted access when Data saver is on.\nSnikket will still make an effort to save data when possible.</string>
+    <string name="device_does_not_support_data_saver">Your device does not support disabling Data saver for Snikket.</string>
     <string name="error_unable_to_create_temporary_file">Unable to create temporary file</string>
     <string name="this_device_has_been_verified">This device has been verified</string>
     <string name="copy_fingerprint">Copy fingerprint</string>
@@ -673,7 +673,7 @@
     <string name="message">Message</string>
     <string name="private_messages_are_disabled">Private messages are disabled</string>
     <string name="huawei_protected_apps">Protected Apps</string>
-    <string name="huawei_protected_apps_summary">To keep receiving notifications, even when the screen is turned off, you need to add Conversations to the list of protected apps.</string>
+    <string name="huawei_protected_apps_summary">To keep receiving notifications, even when the screen is turned off, you need to add Snikket to the list of protected apps.</string>
     <string name="mtm_accept_cert">Accept Unknown Certificate?</string>
     <string name="mtm_trust_anchor">The server certificate is not signed by a known Certificate Authority.</string>
     <string name="mtm_accept_servername">Accept Mismatching Server Name?</string>
@@ -687,7 +687,7 @@
     <string name="edit_status_message_title">Edit Status Message</string>
     <string name="edit_status_message">Edit status message</string>
     <string name="disable_encryption">Disable encryption</string>
-    <string name="error_trustkey_general">Conversations is unable to send encrypted messages to %1$s. This may be due to your contact using an outdated server or client that can not handle OMEMO.</string>
+    <string name="error_trustkey_general">Snikket is unable to send encrypted messages to %1$s. This may be due to your contact using an outdated server or client that can not handle OMEMO.</string>
     <string name="error_trustkey_device_list">Unable to fetch device list</string>
     <string name="error_trustkey_bundle">Unable to fetch device bundles</string>
     <string name="error_trustkey_hint_mutual">Hint: In some cases this can be fixed by adding each other your contact lists.</string>
@@ -720,7 +720,7 @@
     <string name="share">Share</string>
     <string name="unable_to_start_recording">Unable to start recording</string>
     <string name="please_wait">Please wait…</string>
-    <string name="no_microphone_permission">Conversations needs access to the microphone</string>
+    <string name="no_microphone_permission">Snikket needs access to the microphone</string>
     <string name="search_messages">Search messages</string>
     <string name="gif">GIF</string>
     <string name="view_conversation">View conversation</string>
@@ -742,7 +742,7 @@
     <string name="conference_destroyed">This group chat has been destroyed</string>
     <string name="unable_to_save_recording">Unable to save recording</string>
     <string name="foreground_service_channel_name">Foreground service</string>
-    <string name="foreground_service_channel_description">This notification category is used to display a permanent notification indicating that Conversations is running.</string>
+    <string name="foreground_service_channel_description">This notification category is used to display a permanent notification indicating that Snikket is running.</string>
     <string name="notification_group_status_information">Status Information</string>
     <string name="error_channel_name">Connectivity Problems</string>
     <string name="error_channel_description">This notification category is used to display a notification in case there is a problem connecting to an account.</string>
@@ -817,7 +817,7 @@
     <string name="ebook">e-book</string>
     <string name="video_original">Original (uncompressed)</string>
     <string name="open_with">Open with…</string>
-    <string name="set_profile_picture">Conversations profile picture</string>
+    <string name="set_profile_picture">Snikket profile picture</string>
     <string name="choose_account">Choose account</string>
     <string name="restore_backup">Restore backup</string>
     <string name="restore">Restore</string>
@@ -866,10 +866,10 @@
     <string name="add_anway">Add anyway</string>
     <string name="this_looks_like_channel">This looks like a channel address</string>
     <string name="share_backup_files">Share backup files</string>
-    <string name="conversations_backup">Conversations backup</string>
+    <string name="conversations_backup">Snikket backup</string>
     <string name="event">Event</string>
     <string name="open_backup">Open backup</string>
-    <string name="not_a_backup_file">The file you selected is not a Conversations backup file</string>
+    <string name="not_a_backup_file">The file you selected is not a Snikket backup file</string>
     <string name="account_already_setup">This account has already been setup</string>
     <string name="please_enter_password">Please enter the password for this account</string>
     <string name="unable_to_perform_this_action">Unable to perform this action</string>
