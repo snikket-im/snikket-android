@@ -1,5 +1,9 @@
 # Changelog
 
+### Version 2.6.3
+
+* Support for ?register and ?register;preauth XMPP uri parameters
+
 ### Version 2.6.2
 * let users set their own nick name
 * resume download of OMEMO encrypted files
