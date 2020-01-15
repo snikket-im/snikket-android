@@ -182,7 +182,7 @@ public class HttpDownloadConnection implements Transferable {
 		}
 	}
 
-	private void finish() throws Exception {
+	private void finish() {
 		message.setTransferable(null);
 		mHttpConnectionManager.finishConnection(this);
 		boolean notify = acceptedAutomatically && !message.isRead();
@@ -191,6 +191,7 @@ public class HttpDownloadConnection implements Transferable {
 		}
 		mHttpConnectionManager.updateConversationUi(true);
 		final boolean notifyAfterScan = notify;
+		final DownloadableFile file = mXmppConnectionService.getFileBackend().getFile(message, true);
 		mXmppConnectionService.getFileBackend().updateMediaScanner(file, () -> {
 			if (notifyAfterScan) {
 				mXmppConnectionService.getNotificationService().push(message);
