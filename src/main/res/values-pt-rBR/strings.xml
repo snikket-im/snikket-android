@@ -155,6 +155,7 @@
   <string name="account_status_regis_conflict">Esse nome de usuário já está em uso</string>
   <string name="account_status_regis_success">Registro efetuado com sucesso</string>
   <string name="account_status_regis_not_sup">O servidor não aceita o registro</string>
+  <string name="account_status_regis_invalid_token">Token de registro inválido</string>
   <string name="account_status_tls_error">Não foi possível efetuar a negociação TLS</string>
   <string name="account_status_policy_violation">Violação de política</string>
   <string name="account_status_incompatible_server">Servidor incompatível</string>
@@ -508,7 +509,7 @@
   <string name="notify_never">Notificações desabilitadas</string>
   <string name="notify_paused">Notificações pausadas</string>
   <string name="pref_picture_compression">Compressão de imagem</string>
-  <string name="pref_picture_compression_summary">Dica: Use \'Selecione o arquivo\' em vez de \'Selecionar uma imagem\' para enviar uma cópia da imagem original, sem redução de qualidade.</string>
+  <string name="pref_picture_compression_summary">Dica: Use \'Selecionar o arquivo\' ao invés de \'Selecionar a imagem\' para enviar uma cópia da imagem original, sem redução de qualidade.</string>
   <string name="always">Sempre</string>
   <string name="large_images_only">Apenas imagens grandes</string>
   <string name="battery_optimizations_enabled">Otimizações de bateria habilitadas</string>
@@ -872,11 +873,15 @@
   <string name="unable_to_perform_this_action">Não foi possível executar essa ação</string>
   <string name="open_join_dialog">Entrar no canal público...</string>
   <string name="sharing_application_not_grant_permission">O aplicativo de compartilhamento não permitiu o acesso a esse arquivo.</string>
-  <string name="group_chats_and_channels"><![CDATA[Conversas em grupo & Canais]]></string>
+  <string name="group_chats_and_channels"><![CDATA[Conversas em Grupo & Canais]]></string>
   <string name="jabber_network">jabber.network</string>
   <string name="local_server">Servidor local</string>
-  <string name="pref_channel_discovery_summary">A maioria dos usuários deve escolher \'jabber.network\' para melhores sugestões de toda rede pública do XMPP</string>
+  <string name="pref_channel_discovery_summary">A maioria dos usuários deve escolher \'jabber.network\' para melhores sugestões de toda rede pública do XMPP.</string>
   <string name="pref_channel_discovery">Método de descoberta de canais</string>
   <string name="backup">Backup</string>
   <string name="category_about">Sobre</string>
+  <plurals name="view_users">
+    <item quantity="one">Ver %1$d participante</item>
+    <item quantity="other">Ver %1$d participantes</item>
+  </plurals>
 </resources>

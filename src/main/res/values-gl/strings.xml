@@ -155,6 +155,7 @@
   <string name="account_status_regis_conflict">O identificador xa está en uso</string>
   <string name="account_status_regis_success">Rexistro completado</string>
   <string name="account_status_regis_not_sup">O servidor non soporta rexistros</string>
+  <string name="account_status_regis_invalid_token">O testemuño de rexistro non é válido</string>
   <string name="account_status_tls_error">Fallo a negociación TLS</string>
   <string name="account_status_policy_violation">Violación da política</string>
   <string name="account_status_incompatible_server">Servidor incompatible</string>

@@ -155,6 +155,7 @@
   <string name="account_status_regis_conflict">Nume de utilizator deja alocat</string>
   <string name="account_status_regis_success">Înregistrare completă</string>
   <string name="account_status_regis_not_sup">Acest server nu permite înregistrarea</string>
+  <string name="account_status_regis_invalid_token">Simbol de înregistrare invalid</string>
   <string name="account_status_tls_error">Negociere TLS eşuată</string>
   <string name="account_status_policy_violation">Încălcare condiții furnizare serviciu</string>
   <string name="account_status_incompatible_server">Server incompatibil</string>
