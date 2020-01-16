@@ -324,6 +324,7 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
         if (handleErrorMessage(account, original)) {
             return;
         }
+        Log.d(Config.LOGTAG,original.toString());
         final MessagePacket packet;
         Long timestamp = null;
         boolean isCarbon = false;

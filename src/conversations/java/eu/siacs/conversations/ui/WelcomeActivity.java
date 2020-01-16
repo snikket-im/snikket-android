@@ -52,12 +52,12 @@ public class WelcomeActivity extends XmppActivity {
 
     private boolean processXmppUri(final XmppUri xmppUri) {
         if (xmppUri.isValidJid()) {
-            final String preauth = xmppUri.getParamater("preauth");
+            final String preauth = xmppUri.getParameter("preauth");
             final Jid jid = xmppUri.getJid();
             final Intent intent;
             if (xmppUri.isAction(XmppUri.ACTION_REGISTER)) {
                 intent = SignupUtils.getTokenRegistrationIntent(this, jid, preauth);
-            } else if (xmppUri.isAction(XmppUri.ACTION_ROSTER) && "y".equals(xmppUri.getParamater("ibr"))) {
+            } else if (xmppUri.isAction(XmppUri.ACTION_ROSTER) && "y".equals(xmppUri.getParameter("ibr"))) {
                 intent = SignupUtils.getTokenRegistrationIntent(this, Jid.ofDomain(jid.getDomain()), preauth);
                 intent.putExtra(StartConversationActivity.EXTRA_INVITE_URI, xmppUri.toString());
             } else {
