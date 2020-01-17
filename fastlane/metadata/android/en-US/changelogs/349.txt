@@ -1,0 +1,4 @@
+* Introduce expert setting to perform channel discovery on local server instead of search.jabber.network
+* Enable delivery check marks by default and remove setting
+* Enable ‘Send button indicates status’ by default and remove setting
+* Move Backup and Foreground Service settings to main screen

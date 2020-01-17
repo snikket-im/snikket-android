@@ -1,0 +1,4 @@
+* let users set their own nick name
+* resume download of OMEMO encrypted files
+* Channels now use '#' as symbol in avatar
+* Quicksy uses 'always' as OMEMO encryption default (hides lock icon)
