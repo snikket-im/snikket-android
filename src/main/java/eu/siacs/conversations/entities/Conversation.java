@@ -76,8 +76,8 @@ public class Conversation extends AbstractEntity implements Blockable, Comparabl
 	private Jid nextCounterpart;
 	private transient MucOptions mucOptions = null;
 	private boolean messagesLeftOnServer = true;
-	private ChatState mOutgoingChatState = Config.DEFAULT_CHATSTATE;
-	private ChatState mIncomingChatState = Config.DEFAULT_CHATSTATE;
+	private ChatState mOutgoingChatState = Config.DEFAULT_CHAT_STATE;
+	private ChatState mIncomingChatState = Config.DEFAULT_CHAT_STATE;
 	private String mFirstMamReference = null;
 
 	public Conversation(final String name, final Account account, final Jid contactJid,

@@ -94,7 +94,7 @@ public class MucOptions {
     public void resetChatState() {
         synchronized (users) {
             for (User user : users) {
-                user.chatState = Config.DEFAULT_CHATSTATE;
+                user.chatState = Config.DEFAULT_CHAT_STATE;
             }
         }
     }
@@ -746,7 +746,7 @@ public class MucOptions {
         private long pgpKeyId = 0;
         private Avatar avatar;
         private MucOptions options;
-        private ChatState chatState = Config.DEFAULT_CHATSTATE;
+        private ChatState chatState = Config.DEFAULT_CHAT_STATE;
 
         public User(MucOptions options, Jid fullJid) {
             this.options = options;
