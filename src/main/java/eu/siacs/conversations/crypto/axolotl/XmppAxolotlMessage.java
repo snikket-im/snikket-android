@@ -288,6 +288,7 @@ public class XmppAxolotlMessage {
 		byte[] key = unpackKey(session, sourceDeviceId);
 		if (key != null) {
 			try {
+				//TODO remove support for *not* having auth tag in key
 				if (key.length >= 32) {
 					int authtaglength = key.length - 16;
 					Log.d(Config.LOGTAG,"found auth tag as part of omemo key");
