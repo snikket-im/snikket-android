@@ -559,6 +559,7 @@
     <string name="pref_privacy">Privacy</string>
     <string name="pref_theme_options">Theme</string>
     <string name="pref_theme_options_summary">Select the color palette</string>
+    <string name="pref_theme_automatic">Automatic</string>
     <string name="pref_theme_light">Light theme</string>
     <string name="pref_theme_dark">Dark theme</string>
     <string name="pref_use_green_background">Green Background</string>
