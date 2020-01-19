@@ -155,6 +155,7 @@
   <string name="account_status_regis_conflict">Nazwa jest już w użyciu</string>
   <string name="account_status_regis_success">Zarejestrowano pomyślnie</string>
   <string name="account_status_regis_not_sup">Serwer nie umożliwia rejestracji</string>
+  <string name="account_status_regis_invalid_token">Nieprawidłowy żeton rejestracji</string>
   <string name="account_status_tls_error">Nie powiodła się negocjacja TLS</string>
   <string name="account_status_policy_violation">Naruszenie zasad</string>
   <string name="account_status_incompatible_server">Serwer niekompatybilny</string>

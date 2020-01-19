@@ -155,6 +155,7 @@
   <string name="account_status_regis_conflict">A felhasználónév már használatban van</string>
   <string name="account_status_regis_success">Regisztráció befejezve</string>
   <string name="account_status_regis_not_sup">A kiszolgáló nem támogatja a regisztrációt</string>
+  <string name="account_status_regis_invalid_token">Érvénytelen regisztrációs token</string>
   <string name="account_status_tls_error">A TLS-egyeztetés sikertelen</string>
   <string name="account_status_policy_violation">Irányelv megsértése</string>
   <string name="account_status_incompatible_server">Nem kompatibilis kiszolgáló</string>
@@ -879,4 +880,8 @@
   <string name="pref_channel_discovery">Csatornafelderítés módszere</string>
   <string name="backup">Biztonsági mentés</string>
   <string name="category_about">Névjegy</string>
+  <plurals name="view_users">
+    <item quantity="one">%1$d résztvevő megtekintése</item>
+    <item quantity="other">%1$d résztvevő megtekintése</item>
+  </plurals>
 </resources>
