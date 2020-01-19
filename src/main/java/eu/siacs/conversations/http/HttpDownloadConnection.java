@@ -173,10 +173,6 @@ public class HttpDownloadConnection implements Transferable {
         if (!file.delete()) {
             Log.w(Config.LOGTAG, "unable to delete temporary OMEMO encrypted file " + file.getAbsolutePath());
         }
-
-        //TODO can this be skipped?
-        //message.setRelativeFilePath(outputFile.getPath());
-
     }
 
     private void finish() {
@@ -488,7 +484,7 @@ public class HttpDownloadConnection implements Transferable {
                     throw new FileWriterException();
                 }
             } catch (CancellationException | IOException e) {
-                Log.d(Config.LOGTAG, "http download failed " + e.getMessage());
+                Log.d(Config.LOGTAG, message.getConversation().getAccount().getJid().asBareJid() + ": http download failed", e);
                 throw e;
             } finally {
                 FileBackend.close(os);
