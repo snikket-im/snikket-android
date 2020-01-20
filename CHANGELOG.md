@@ -1,5 +1,9 @@
 # Changelog
 
+### Version 2.6.4
+
+* Support automatic theme switching on Android 10
+
 ### Version 2.6.3
 
 * Support for ?register and ?register;preauth XMPP uri parameters
