@@ -76,6 +76,7 @@ public class HttpDownloadConnection implements Transferable {
             } else if (message.isFileOrImage()) {
                 message.setType(Message.TYPE_TEXT);
             }
+            message.setOob(true);
             message.setDeleted(false);
             mXmppConnectionService.updateMessage(message);
         }
