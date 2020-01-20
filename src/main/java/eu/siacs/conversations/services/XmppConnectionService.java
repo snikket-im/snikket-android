@@ -1854,6 +1854,9 @@ public class XmppConnectionService extends Service {
         for (Conversation conversation : getConversations()) {
             deleted |= conversation.markAsDeleted(uuids);
         }
+        for(final String uuid : uuids) {
+            evictPreview(uuid);
+        }
         if (deleted) {
             updateConversationUi();
         }
@@ -4573,6 +4576,12 @@ public class XmppConnectionService extends Service {
         IqPacket set = new IqPacket(IqPacket.TYPE.SET);
         set.addChild(prefs);
         sendIqPacket(account, set, null);
+    }
+
+    public void evictPreview(String uuid) {
+        if (mBitmapCache.remove(uuid) != null) {
+            Log.d(Config.LOGTAG,"deleted cached preview");
+        }
     }
 
     public interface OnMamPreferencesFetched {
