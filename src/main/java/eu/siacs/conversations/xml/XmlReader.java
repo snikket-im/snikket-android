@@ -87,8 +87,7 @@ public class XmlReader implements Closeable {
 		return null;
 	}
 
-	public Element readElement(Tag currentTag) throws XmlPullParserException,
-			IOException {
+	public Element readElement(Tag currentTag) throws IOException {
 		Element element = new Element(currentTag.getName());
 		element.setAttributes(currentTag.getAttributes());
 		Tag nextTag = this.readTag();
