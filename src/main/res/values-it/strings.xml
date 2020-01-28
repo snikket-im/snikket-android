@@ -155,6 +155,7 @@
   <string name="account_status_regis_conflict">Nome utente già in uso</string>
   <string name="account_status_regis_success">Registrazione completata</string>
   <string name="account_status_regis_not_sup">Il Server non supporta la registrazione</string>
+  <string name="account_status_regis_invalid_token">Token di registrazione non valido</string>
   <string name="account_status_tls_error">Negoziazione TLS fallita</string>
   <string name="account_status_policy_violation">Violazione della policy</string>
   <string name="account_status_incompatible_server">Server non compatibile</string>
@@ -879,4 +880,8 @@
   <string name="pref_channel_discovery">Metodo di scoperta canali</string>
   <string name="backup">Backup</string>
   <string name="category_about">Al riguardo</string>
+  <plurals name="view_users">
+    <item quantity="one">Vedi %1$d partecipante</item>
+    <item quantity="other">Vedi %1$d partecipanti</item>
+  </plurals>
 </resources>
