@@ -1,0 +1,11 @@
+The Snikket app allows you to join a worldwide communication network. Use the app for communicating with friends, family and colleagues without surrendering your data to large corporations.
+
+ℹ️ Important Note: To get started with the app you need an invite to a Snikket service, or run your own. The app will not work unless you have an invite to join a Snikket service.
+
+Snikket allows you to use a service provided by someone you trust. This could be an organisation, simply a techie friend or family member.
+
+Both the app and service are 100% free and open-source software.
+
+Learn more at https://snikket.org/app/learn/
+
+This app is based on the awesome XMPP client, Conversations.
