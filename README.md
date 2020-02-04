@@ -189,7 +189,7 @@ If you don’t want this simply pick a server which does not offer Push Notifica
 
 You can find a detailed description of how your server, the app server and FCM are interacting with each other in the [README](https://github.com/iNPUTmice/p2/blob/master/README.md) of the Conversations App Server.
 
- ¹ Your server only needs to support the server side of [XEP-0357: Push Notifications](http://xmpp.org/extensions/xep-0357.html). If you use the Play Store version you do **not** need to run your own app server. The server modules are called *mod_cloud_notify* on Prosody and *mod_push* on ejabberd.
+ ¹ If you use the Play Store version you do **not** need to run your own app server. Your server only needs to support the server side of [XEP-0357: Push Notifications](http://xmpp.org/extensions/xep-0357.html) and [XEP-0198: Stream Management](https://xmpp.org/extensions/xep-0198.html). The prosody server modules are called *mod_cloud_notify* and *mod_smacks*. The ejabberd server modules are called *mod_push* and *mod_stream_mgmt*.
 
 
 #### But why do I need a permanent notification if I use Google Push?
