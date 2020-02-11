@@ -926,6 +926,7 @@ public class FileBackend {
             Dimensions dimensions = scalePdfDimensions(new Dimensions(page.getHeight(), page.getWidth()));
             final Bitmap rendered = Bitmap.createBitmap(dimensions.width, dimensions.height, Bitmap.Config.ARGB_8888);
             page.render(rendered, null, null, PdfRenderer.Page.RENDER_MODE_FOR_DISPLAY);
+            drawOverlay(rendered, R.drawable.open_pdf_black, 0.75f);
             return rendered;
         } catch (IOException e) {
             Log.d(Config.LOGTAG, "unable to render PDF document preview", e);
