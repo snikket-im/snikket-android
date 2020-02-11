@@ -86,7 +86,7 @@
   <string name="delete_file_dialog">Șterge fișierul</string>
   <string name="delete_file_dialog_msg">Sigur doriți să ștergeți acest fișier?\n\n<b>Atenție:</b> Această acțiune nu va șterge copiile acestui fișier care sunt stocate pe alte dispozitive sau servere.</string>
   <string name="also_end_conversation">Închide conversația după ștergere</string>
-  <string name="choose_presence">Alegeți dispozitiv</string>
+  <string name="choose_presence">Alege dispozitiv</string>
   <string name="send_unencrypted_message">Trimite mesaje necriptate</string>
   <string name="send_message">Trimite mesaj</string>
   <string name="send_message_to_x">Trimite mesaj către %s</string>
@@ -135,7 +135,7 @@
   <string name="send_presence_updates">Trimite actualizări de prezență</string>
   <string name="receive_presence_updates">Primește actualizări de prezență</string>
   <string name="ask_for_presence_updates">Cere actualizări de prezență</string>
-  <string name="attach_choose_picture">Alegeți o imagine</string>
+  <string name="attach_choose_picture">Alege o imagine</string>
   <string name="attach_take_picture">Fă o poză</string>
   <string name="preemptively_grant">Acorda anticipat cererea de abonare</string>
   <string name="error_not_an_image_file">Fișierul selectat nu este o imagine</string>
@@ -323,7 +323,7 @@
   <string name="restoring_backup">Se restaurează din copia de siguranță</string>
   <string name="notification_restored_backup_title">Copia de siguranță a fost restaurată</string>
   <string name="notification_restored_backup_subtitle">Nu uitați să activați contul.</string>
-  <string name="choose_file">Alegeți un fișier</string>
+  <string name="choose_file">Alege un fișier</string>
   <string name="receiving_x_file">Primesc %1$s (%2$d%% complet)</string>
   <string name="download_x_file">Descarcă %s</string>
   <string name="delete_x_file">Șterge %s</string>
@@ -561,6 +561,7 @@ sau chiar pierderea mesajelor.\nÎn continuare veți fi rugați să dezactivați
   <string name="pref_privacy">Intimitate</string>
   <string name="pref_theme_options">Temă</string>
   <string name="pref_theme_options_summary">Selecție paletă culori interfață</string>
+  <string name="pref_theme_automatic">Automată</string>
   <string name="pref_theme_light">Luminoasă</string>
   <string name="pref_theme_dark">Întunecată</string>
   <string name="pref_use_green_background">Fundal verde</string>

@@ -557,6 +557,7 @@
   <string name="pref_privacy">Privacy</string>
   <string name="pref_theme_options">Tema</string>
   <string name="pref_theme_options_summary">Seleziona il colore</string>
+  <string name="pref_theme_automatic">Automatico</string>
   <string name="pref_theme_light">Tema chiaro</string>
   <string name="pref_theme_dark">Tema scuro</string>
   <string name="pref_use_green_background">Sfondo verde</string>

@@ -557,6 +557,7 @@
   <string name="pref_privacy">Privatsphäre</string>
   <string name="pref_theme_options">Design</string>
   <string name="pref_theme_options_summary">Wähle die Farbpalette aus</string>
+  <string name="pref_theme_automatic">Automatisch</string>
   <string name="pref_theme_light">Helles Design</string>
   <string name="pref_theme_dark">Dunkles Design</string>
   <string name="pref_use_green_background">Grüner Hintergrund</string>

@@ -561,6 +561,7 @@
   <string name="pref_privacy">Prywatność</string>
   <string name="pref_theme_options">Skórka</string>
   <string name="pref_theme_options_summary">Wybierz paletę kolorów</string>
+  <string name="pref_theme_automatic">Automatycznie</string>
   <string name="pref_theme_light">Jasna skórka</string>
   <string name="pref_theme_dark">Ciemna skórka</string>
   <string name="pref_use_green_background">Zielone tło</string>

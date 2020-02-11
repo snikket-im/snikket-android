@@ -34,7 +34,7 @@
   <string name="sending">enviando…</string>
   <string name="message_decrypting">Descifrando a mensaxe. Por favor agarde...</string>
   <string name="pgp_message">Mensaxe cifrado con OpenPGP</string>
-  <string name="nick_in_use">O apodo xa está en uso</string>
+  <string name="nick_in_use">O alcume xa está en uso</string>
   <string name="invalid_muc_nick">Alcume non válido</string>
   <string name="admin">Admin</string>
   <string name="owner">Dono</string>
@@ -93,7 +93,7 @@
   <string name="send_omemo_message">Enviar mensaxe cifrada con OMEMO</string>
   <string name="send_omemo_x509_message">Enviar mensaxe cifrada v\\OMEMO</string>
   <string name="send_pgp_message">Enviar mensaxe cifrado con OpenPGP</string>
-  <string name="your_nick_has_been_changed">Modificouse o teu apodo</string>
+  <string name="your_nick_has_been_changed">Modificouse o teu alcume</string>
   <string name="send_unencrypted">Enviar sen cifrar</string>
   <string name="decryption_failed">Fallou o descifrado. Quizábeis non teñas a clave privada apropiada.</string>
   <string name="openkeychain_required">OpenKeychain</string>
@@ -557,6 +557,7 @@
   <string name="pref_privacy">Intimidade</string>
   <string name="pref_theme_options">Decorado</string>
   <string name="pref_theme_options_summary">Escolla a gama de cores</string>
+  <string name="pref_theme_automatic">Automático</string>
   <string name="pref_theme_light">Decorado claro</string>
   <string name="pref_theme_dark">Decorado escuro</string>
   <string name="pref_use_green_background">Fondo verde</string>
