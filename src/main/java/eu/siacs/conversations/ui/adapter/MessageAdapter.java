@@ -540,15 +540,15 @@ public class MessageAdapter extends ArrayAdapter<Message> implements CopyTextVie
 		this.audioPlayer.init(audioPlayer, message);
 	}
 
-	private void displayImageMessage(ViewHolder viewHolder, final Message message, final boolean darkBackground) {
+	private void displayMediaPreviewMessage(ViewHolder viewHolder, final Message message, final boolean darkBackground) {
 		toggleWhisperInfo(viewHolder, message, darkBackground);
 		viewHolder.download_button.setVisibility(View.GONE);
 		viewHolder.audioPlayer.setVisibility(View.GONE);
 		viewHolder.image.setVisibility(View.VISIBLE);
-		FileParams params = message.getFileParams();
-		double target = metrics.density * 288;
-		int scaledW;
-		int scaledH;
+		final FileParams params = message.getFileParams();
+		final double target = metrics.density * 288;
+		final int scaledW;
+		final int scaledH;
 		if (Math.max(params.height, params.width) * metrics.density <= target) {
 			scaledW = (int) (params.width * metrics.density);
 			scaledH = (int) (params.height * metrics.density);
@@ -747,7 +747,7 @@ public class MessageAdapter extends ArrayAdapter<Message> implements CopyTextVie
 			}
 		} else if (message.isFileOrImage() && message.getEncryption() != Message.ENCRYPTION_PGP && message.getEncryption() != Message.ENCRYPTION_DECRYPTION_FAILED) {
 			if (message.getFileParams().width > 0 && message.getFileParams().height > 0) {
-				displayImageMessage(viewHolder, message, darkBackground);
+				displayMediaPreviewMessage(viewHolder, message, darkBackground);
 			} else if (message.getFileParams().runtime > 0) {
 				displayAudioMessage(viewHolder, message, darkBackground);
 			} else {
