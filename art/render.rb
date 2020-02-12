@@ -24,6 +24,7 @@ images = {
     'play_video_black.svg' => ['play_video_black', 128],
     'play_gif_black.svg' => ['play_gif_black', 128],
     'open_pdf_black.svg' => ['open_pdf_black', 128],
+    'open_pdf_white.svg' => ['open_pdf_white', 128],
 	'conversations_mono.svg' => ['conversations/ic_notification', 24],
     'quicksy_mono.svg' => ['quicksy/ic_notification', 24],
 	'ic_send_text_offline.svg' => ['ic_send_text_offline', 36],

@@ -825,7 +825,7 @@ public class FileBackend {
                 } else if (mime.startsWith("video/")) {
                     thumbnail = getVideoPreview(file, size);
                 } else {
-                    Bitmap fullsize = getFullsizeImagePreview(file, size);
+                    Bitmap fullsize = getFullSizeImagePreview(file, size);
                     if (fullsize == null) {
                         throw new FileNotFoundException();
                     }
@@ -844,7 +844,7 @@ public class FileBackend {
         return thumbnail;
     }
 
-    private Bitmap getFullsizeImagePreview(File file, int size) {
+    private Bitmap getFullSizeImagePreview(File file, int size) {
         BitmapFactory.Options options = new BitmapFactory.Options();
         options.inSampleSize = calcSampleSize(file, size);
         try {
@@ -886,6 +886,21 @@ public class FileBackend {
         return record < 0;
     }
 
+    private boolean paintOverlayBlackPdf(final Bitmap bitmap) {
+        final int h = bitmap.getHeight();
+        final int w = bitmap.getWidth();
+        int white = 0;
+        for (int y = 0; y < h; ++y) {
+            for (int x = 0; x < w; ++x) {
+                int pixel = bitmap.getPixel(x, y);
+                if ((Color.red(pixel) * 0.299 + Color.green(pixel) * 0.587 + Color.blue(pixel) * 0.114) > 186) {
+                    white++;
+                }
+            }
+        }
+        return white > (h * w * 0.4f);
+    }
+
     private Bitmap cropCenterSquareVideo(Uri uri, int size) {
         MediaMetadataRetriever metadataRetriever = new MediaMetadataRetriever();
         Bitmap frame;
@@ -925,8 +940,9 @@ public class FileBackend {
             final PdfRenderer.Page page = pdfRenderer.openPage(0);
             Dimensions dimensions = scalePdfDimensions(new Dimensions(page.getHeight(), page.getWidth()));
             final Bitmap rendered = Bitmap.createBitmap(dimensions.width, dimensions.height, Bitmap.Config.ARGB_8888);
+            rendered.eraseColor(0xffffffff);
             page.render(rendered, null, null, PdfRenderer.Page.RENDER_MODE_FOR_DISPLAY);
-            drawOverlay(rendered, R.drawable.open_pdf_black, 0.75f);
+            drawOverlay(rendered, paintOverlayBlackPdf(rendered) ? R.drawable.open_pdf_black : R.drawable.open_pdf_white, 0.75f);
             return rendered;
         } catch (IOException e) {
             Log.d(Config.LOGTAG, "unable to render PDF document preview", e);
