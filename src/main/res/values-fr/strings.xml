@@ -844,7 +844,7 @@
   <string name="anyone_can_invite_others">N\'importe qui peut inviter d\'autres personnes.</string>
   <string name="jabber_ids_are_visible_to_admins">Les adresses XMPP sont visibles par les administrateurs.</string>
   <string name="jabber_ids_are_visible_to_anyone">Les adresses XMPP sont visibles par tous.</string>
-  <string name="no_users_hint_channel">Ce canal publique n\'a pas de participants. Invitez vos contacts ou utilisez le bouton de partage pour distribuer son adresse XMPP.</string>
+  <string name="no_users_hint_channel">Ce canal public n\'a pas de participants. Invitez vos contacts ou utilisez le bouton de partage pour distribuer son adresse XMPP.</string>
   <string name="no_users_hint_group_chat">Ce chat de groupe privé n\'a aucun participant.</string>
   <string name="manage_permission">Gérer les privilèges</string>
   <string name="search_participants">Rechercher des participants</string>
