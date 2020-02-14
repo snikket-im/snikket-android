@@ -44,6 +44,7 @@ import java.util.List;
 import java.util.UUID;
 
 import eu.siacs.conversations.Config;
+import eu.siacs.conversations.utils.Compatibility;
 import eu.siacs.conversations.utils.MimeUtils;
 
 public class Attachment implements Parcelable {
@@ -164,7 +165,13 @@ public class Attachment implements Parcelable {
     }
 
     public boolean renderThumbnail() {
-        return type == Type.IMAGE || (type == Type.FILE && mime != null && (mime.startsWith("video/") || mime.startsWith("image/")));
+        return type == Type.IMAGE  || (type == Type.FILE && mime != null && renderFileThumbnail(mime));
+    }
+
+    private static boolean renderFileThumbnail(final String mime) {
+        return mime.startsWith("video/")
+                || mime.startsWith("image/")
+                || (Compatibility.runsTwentyOne() && "application/pdf".equals(mime));
     }
 
     public Uri getUri() {

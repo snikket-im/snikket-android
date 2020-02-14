@@ -424,18 +424,22 @@ public class FileBackend {
     }
 
     public Bitmap getPreviewForUri(Attachment attachment, int size, boolean cacheOnly) {
-        final String key = "attachment_" + attachment.getUuid().toString() + "_" + String.valueOf(size);
+        final String key = "attachment_" + attachment.getUuid().toString() + "_" + size;
         final LruCache<String, Bitmap> cache = mXmppConnectionService.getBitmapCache();
         Bitmap bitmap = cache.get(key);
         if (bitmap != null || cacheOnly) {
             return bitmap;
         }
-        if (attachment.getMime() != null && attachment.getMime().startsWith("video/")) {
+        final String mime = attachment.getMime();
+        if ("application/pdf".equals(mime) && Compatibility.runsTwentyOne()) {
+            bitmap = cropCenterSquarePdf(attachment.getUri(), size);
+            drawOverlay(bitmap, paintOverlayBlackPdf(bitmap) ? R.drawable.open_pdf_black : R.drawable.open_pdf_white, 0.75f);
+        } else if (mime != null && mime.startsWith("video/")) {
             bitmap = cropCenterSquareVideo(attachment.getUri(), size);
             drawOverlay(bitmap, paintOverlayBlack(bitmap) ? R.drawable.play_video_black : R.drawable.play_video_white, 0.75f);
         } else {
             bitmap = cropCenterSquare(attachment.getUri(), size);
-            if (bitmap != null && "image/gif".equals(attachment.getMime())) {
+            if (bitmap != null && "image/gif".equals(mime)) {
                 Bitmap withGifOverlay = bitmap.copy(Bitmap.Config.ARGB_8888, true);
                 drawOverlay(withGifOverlay, paintOverlayBlack(withGifOverlay) ? R.drawable.play_gif_black : R.drawable.play_gif_white, 1.0f);
                 bitmap.recycle();
@@ -936,12 +940,7 @@ public class FileBackend {
     private Bitmap getPdfDocumentPreview(final File file, final int size) {
         try {
             final ParcelFileDescriptor fileDescriptor = ParcelFileDescriptor.open(file, ParcelFileDescriptor.MODE_READ_ONLY);
-            final PdfRenderer pdfRenderer = new PdfRenderer(fileDescriptor);
-            final PdfRenderer.Page page = pdfRenderer.openPage(0);
-            Dimensions dimensions = scalePdfDimensions(new Dimensions(page.getHeight(), page.getWidth()));
-            final Bitmap rendered = Bitmap.createBitmap(dimensions.width, dimensions.height, Bitmap.Config.ARGB_8888);
-            rendered.eraseColor(0xffffffff);
-            page.render(rendered, null, null, PdfRenderer.Page.RENDER_MODE_FOR_DISPLAY);
+            final Bitmap rendered = renderPdfDocument(fileDescriptor, size, true);
             drawOverlay(rendered, paintOverlayBlackPdf(rendered) ? R.drawable.open_pdf_black : R.drawable.open_pdf_white, 0.75f);
             return rendered;
         } catch (IOException e) {
@@ -950,6 +949,34 @@ public class FileBackend {
             placeholder.eraseColor(0xff000000);
             return placeholder;
         }
+    }
+
+
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+    private Bitmap cropCenterSquarePdf(final Uri uri, final int size) {
+        try {
+            ParcelFileDescriptor fileDescriptor = mXmppConnectionService.getContentResolver().openFileDescriptor(uri, "r");
+            final Bitmap bitmap = renderPdfDocument(fileDescriptor, size, false);
+            return cropCenterSquare(bitmap, size);
+        } catch (Exception e) {
+            final Bitmap placeholder = Bitmap.createBitmap(size, size, Bitmap.Config.ARGB_8888);
+            placeholder.eraseColor(0xff000000);
+            return placeholder;
+        }
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+    private Bitmap renderPdfDocument(ParcelFileDescriptor fileDescriptor, int targetSize, boolean fit) throws IOException {
+        final PdfRenderer pdfRenderer = new PdfRenderer(fileDescriptor);
+        final PdfRenderer.Page page = pdfRenderer.openPage(0);
+        final Dimensions dimensions = scalePdfDimensions(new Dimensions(page.getHeight(), page.getWidth()), targetSize, fit);
+        final Bitmap rendered = Bitmap.createBitmap(dimensions.width, dimensions.height, Bitmap.Config.ARGB_8888);
+        rendered.eraseColor(0xffffffff);
+        page.render(rendered, null, null, PdfRenderer.Page.RENDER_MODE_FOR_DISPLAY);
+        page.close();
+        pdfRenderer.close();
+        fileDescriptor.close();
+        return rendered;
     }
 
     public Uri getTakePhotoUri() {
@@ -1339,8 +1366,12 @@ public class FileBackend {
     private Dimensions scalePdfDimensions(Dimensions in) {
         final DisplayMetrics displayMetrics = mXmppConnectionService.getResources().getDisplayMetrics();
         final int target = (int) (displayMetrics.density * 288);
+        return scalePdfDimensions(in, target, true);
+    }
+
+    private static Dimensions scalePdfDimensions(final Dimensions in, final int target, final boolean fit) {
         final int w, h;
-        if (in.width <= in.height) {
+        if (fit == (in.width <= in.height)) {
             w = Math.max((int) (in.width / ((double) in.height / target)), 1);
             h = target;
         } else {
