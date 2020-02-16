@@ -1147,7 +1147,10 @@ public class StartConversationActivity extends XmppActivity implements XmppConne
 			final AdapterView.AdapterContextMenuInfo acmi = (AdapterContextMenuInfo) menuInfo;
 			if (mResContextMenu == R.menu.conference_context) {
 				activity.conference_context_id = acmi.position;
-				//TODO hide share if known to be private
+				final Bookmark bookmark = (Bookmark) activity.conferences.get(acmi.position);
+				final Conversation conversation = bookmark.getConversation();
+				final MenuItem share = menu.findItem(R.id.context_share_uri);
+				share.setVisible(conversation == null || !conversation.isPrivateAndNonAnonymous());
 			} else if (mResContextMenu == R.menu.contact_context) {
 				activity.contact_context_id = acmi.position;
 				final Contact contact = (Contact) activity.contacts.get(acmi.position);
@@ -1158,7 +1161,7 @@ public class StartConversationActivity extends XmppActivity implements XmppConne
 					showContactDetailsItem.setVisible(false);
 				}
 				deleteContactMenuItem.setVisible(contact.showInRoster() && !contact.getOption(Contact.Options.SYNCED_VIA_OTHER));
-				XmppConnection xmpp = contact.getAccount().getXmppConnection();
+				final XmppConnection xmpp = contact.getAccount().getXmppConnection();
 				if (xmpp != null && xmpp.getFeatures().blocking() && !contact.isSelf()) {
 					if (contact.isBlocked()) {
 						blockUnblockItem.setTitle(R.string.unblock_contact);
