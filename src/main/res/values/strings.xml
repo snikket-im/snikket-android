@@ -236,7 +236,6 @@
     <string name="destroy_channel_dialog">Are you sure you want to destroy this public channel?\n\n<b>Warning:</b> The channel will be completely removed on the server.</string>
     <string name="could_not_destroy_room">Could not destroy group chat</string>
     <string name="could_not_destroy_channel">Could not destroy channel</string>
-    <string name="bookmark_already_exists">This bookmark already exists</string>
     <string name="action_edit_subject">Edit group chat subject</string>
     <string name="topic">Topic</string>
     <string name="joining_conference">Joining group chat…</string>

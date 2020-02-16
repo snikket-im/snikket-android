@@ -508,13 +508,7 @@ public class Account extends AbstractEntity implements AvatarService.Avatarable 
         }
     }
 
-    public boolean hasBookmarkFor(final Jid jid) {
-        synchronized (this.bookmarks) {
-            return this.bookmarks.containsKey(jid.asBareJid());
-        }
-    }
-
-    Bookmark getBookmark(final Jid jid) {
+    public Bookmark getBookmark(final Jid jid) {
         synchronized (this.bookmarks) {
             return this.bookmarks.get(jid.asBareJid());
         }

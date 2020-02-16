@@ -1032,10 +1032,12 @@ public class StartConversationActivity extends XmppActivity implements XmppConne
 		}
 
 		if (isBookmarkChecked) {
-			if (account.hasBookmarkFor(conferenceJid)) {
-				layout.setError(getString(R.string.bookmark_already_exists));
+			Bookmark bookmark = account.getBookmark(conferenceJid);
+			if (bookmark != null) {
+				dialog.dismiss();
+				openConversationsForBookmark(bookmark);
 			} else {
-				final Bookmark bookmark = new Bookmark(account, conferenceJid.asBareJid());
+				bookmark = new Bookmark(account, conferenceJid.asBareJid());
 				bookmark.setAutojoin(getBooleanPreference("autojoin", R.bool.autojoin));
 				final String nick = conferenceJid.getResource();
 				if (nick != null && !nick.isEmpty() && !nick.equals(MucOptions.defaultNick(account))) {
@@ -1145,6 +1147,7 @@ public class StartConversationActivity extends XmppActivity implements XmppConne
 			final AdapterView.AdapterContextMenuInfo acmi = (AdapterContextMenuInfo) menuInfo;
 			if (mResContextMenu == R.menu.conference_context) {
 				activity.conference_context_id = acmi.position;
+				//TODO hide share if known to be private
 			} else if (mResContextMenu == R.menu.contact_context) {
 				activity.contact_context_id = acmi.position;
 				final Contact contact = (Contact) activity.contacts.get(acmi.position);
