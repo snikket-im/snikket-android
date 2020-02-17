@@ -236,7 +236,6 @@
   <string name="destroy_channel_dialog">Biztosan meg szeretné szüntetni ezt a nyilvános csatornát?\n\n<b>Figyelmeztetés:</b> A csatorna teljesen el lesz távolítva a kiszolgálóról.</string>
   <string name="could_not_destroy_room">Nem sikerült megszüntetni a csoportos csevegést</string>
   <string name="could_not_destroy_channel">Nem sikerült megszüntetni a csatornát</string>
-  <string name="bookmark_already_exists">A könyvjelző már létezik</string>
   <string name="action_edit_subject">Csoportos csevegés tárgyának szerkesztése</string>
   <string name="topic">Téma</string>
   <string name="joining_conference">Csatlakozás csoportos csevegéshez…</string>

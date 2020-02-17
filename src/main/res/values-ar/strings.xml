@@ -219,7 +219,6 @@
   <string name="destroy_channel">دمر القناة</string>
   <string name="could_not_destroy_room">لم نتمكن مِن تدمير فريق المحادثة</string>
   <string name="could_not_destroy_channel">لم نتمكن مِن تدمير القناة</string>
-  <string name="bookmark_already_exists">موجوده بالمفضلة سابقا</string>
   <string name="action_edit_subject">تعديل موضوع مجموعة المحادثة</string>
   <string name="topic">الموضوع</string>
   <string name="joining_conference">في صدد الإنظمام إلى مجموعة المحادثة ...</string>

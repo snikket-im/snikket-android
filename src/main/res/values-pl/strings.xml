@@ -236,7 +236,6 @@
   <string name="destroy_channel_dialog">Czy na pewno chcesz usunąć ten kanał publiczny?\n\n<b>Ostrzeżenie:</b> Ten kanał zostanie całkowicie usunięty z serwera.</string>
   <string name="could_not_destroy_room">Usuwanie konferencji nieudane</string>
   <string name="could_not_destroy_channel">Nie można usunąć kanału</string>
-  <string name="bookmark_already_exists">Zakładka już istnieje</string>
   <string name="action_edit_subject">Edytuj tytuł konferencji</string>
   <string name="topic">Temat</string>
   <string name="joining_conference">Dołączanie do konferencji</string>

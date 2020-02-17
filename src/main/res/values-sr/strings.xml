@@ -208,7 +208,6 @@
   <string name="join">Придружи се</string>
   <string name="save_as_bookmark">Сачувај као обележивач</string>
   <string name="delete_bookmark">Обриши обележивач</string>
-  <string name="bookmark_already_exists">Овај обележивач већ постоји</string>
   <string name="action_edit_subject">Уреди предмет групног ћаскања</string>
   <string name="topic">Тема</string>
   <string name="joining_conference">Улазим у групно ћаскање…</string>

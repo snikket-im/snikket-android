@@ -221,7 +221,6 @@
   <string name="destroy_room">Унищожаване на груповия разговор</string>
   <string name="destroy_room_dialog">Наистина ли искате да унищожите този групов разговор?\n\n<b>Внимание:</b> Груповият разговор ще бъде премахнат от сървъра.</string>
   <string name="could_not_destroy_room">Груповият разговор не може да бъде унищожен</string>
-  <string name="bookmark_already_exists">Вече съществува такава отметка</string>
   <string name="action_edit_subject">Редактиране на темата на груповия разговор</string>
   <string name="topic">Тема</string>
   <string name="joining_conference">Присъединяване в групов разговор…</string>

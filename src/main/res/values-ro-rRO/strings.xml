@@ -27,7 +27,7 @@
   <string name="title_activity_choose_contacts">Alegeți contactele</string>
   <string name="title_activity_share_via_account">Partajează cu cont</string>
   <string name="title_activity_block_list">Listă contacte blocate</string>
-  <string name="just_now">în acest moment</string>
+  <string name="just_now">acum</string>
   <string name="minute_ago">acum un minut</string>
   <string name="minutes_ago">acum %d minute</string>
   <string name="x_unread_conversations">%d conversații necitite</string>
@@ -236,7 +236,6 @@
   <string name="destroy_channel_dialog">Sigur doriți distrugerea acestui canal public?\n\n<b>Atenție:</b> Canalul public v-a fi complet șters de pe server.</string>
   <string name="could_not_destroy_room">Nu s-a putut distruge discuția de grup</string>
   <string name="could_not_destroy_channel">Nu s-a putut distruge canalul</string>
-  <string name="bookmark_already_exists">Acest semn de carte există deja</string>
   <string name="action_edit_subject">Editează subiectul discuției de grup</string>
   <string name="topic">Subiect discuție</string>
   <string name="joining_conference">Vă alăturați discuției de grup...</string>

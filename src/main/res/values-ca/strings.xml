@@ -221,7 +221,6 @@
   <string name="delete_bookmark">Elimina dels marcadors</string>
   <string name="destroy_room">Destrueix el xat en grup</string>
   <string name="destroy_channel">Destrueix el canal</string>
-  <string name="bookmark_already_exists">Aquest marcador ja existeix</string>
   <string name="action_edit_subject">Edita el tema del xat de grup</string>
   <string name="topic">Assumpte</string>
   <string name="joining_conference">S\'està unint al xat de grup…</string>

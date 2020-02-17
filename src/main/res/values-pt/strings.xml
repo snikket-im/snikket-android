@@ -199,7 +199,6 @@
   <string name="join">Juntar</string>
   <string name="save_as_bookmark">Guardar como favorito</string>
   <string name="delete_bookmark">Apagar favorito</string>
-  <string name="bookmark_already_exists">O favorito já existe</string>
   <string name="action_edit_subject">Editar tema da conversa em grupo</string>
   <string name="topic">Tópico</string>
   <string name="leave">Sair</string>

@@ -236,7 +236,6 @@
   <string name="destroy_channel_dialog">Está segura de que quere eliminar o canal?\n\n<b>Aviso:</b> O canal eliminarase completamente do servidor.</string>
   <string name="could_not_destroy_room">Non se desfixo a conversa en grupo</string>
   <string name="could_not_destroy_channel">Non se puido eliminar o canal</string>
-  <string name="bookmark_already_exists">Este marcador xa existe</string>
   <string name="action_edit_subject">Editar o tema da conversa en grupo</string>
   <string name="topic">Asunto</string>
   <string name="joining_conference">Entrando na conversa en grupo</string>

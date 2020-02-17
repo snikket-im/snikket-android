@@ -232,7 +232,6 @@
   <string name="destroy_channel_dialog">Упевнені, що бажаєте знищити цей публічний канал?\n\n<b>Увага:</b> Канал буде повністю знищено та видалено з сервера.</string>
   <string name="could_not_destroy_room">Видалити цей груповий чат не вдалось</string>
   <string name="could_not_destroy_channel">Не вдалося знищити канал</string>
-  <string name="bookmark_already_exists">Ця закладка вже існує</string>
   <string name="action_edit_subject">Редагувати тему групи</string>
   <string name="topic">Тема</string>
   <string name="joining_conference">Приєднання до групи…</string>

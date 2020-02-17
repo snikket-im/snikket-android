@@ -226,7 +226,6 @@
   <string name="destroy_room">グループチャットを破棄する</string>
   <string name="destroy_room_dialog">このグループチャットを破棄してもよろしいですか?\n\n<b>警告:</b> グループチャットはサーバーから完全に削除されます。</string>
   <string name="could_not_destroy_room">グループチャットを削除できません</string>
-  <string name="bookmark_already_exists">このブックマークはすでに存在します</string>
   <string name="action_edit_subject">談話室の題を編集</string>
   <string name="topic">トピック</string>
   <string name="joining_conference">談話室に参加しています…</string>

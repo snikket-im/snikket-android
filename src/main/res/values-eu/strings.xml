@@ -234,7 +234,6 @@
   <string name="destroy_channel_dialog">Kanal publiko hau deuseztatu nahi duzu?\n\n<b>Abisua:</b> Kanala zerbitzaritik guztiz kenduko da.</string>
   <string name="could_not_destroy_room">Ezin izan da taldea deuseztatu</string>
   <string name="could_not_destroy_channel">Ezin izan da kanala deuseztatu</string>
-  <string name="bookmark_already_exists">Laster-marka hau existitzen da dagoeneko</string>
   <string name="action_edit_subject">Taldearen gaia editatu</string>
   <string name="topic">Gaia</string>
   <string name="joining_conference">Taldera batzen...</string>

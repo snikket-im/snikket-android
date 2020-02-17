@@ -236,7 +236,6 @@
   <string name="destroy_channel_dialog">¿Estás seguro de que quieres destruir este canal público?\n\n<b>Aviso:</b>El canal será eliminado completamente en el servidor.</string>
   <string name="could_not_destroy_room">No se ha podido destruir la conversación en grupo</string>
   <string name="could_not_destroy_channel">No se ha podido destruir el canal</string>
-  <string name="bookmark_already_exists">Este marcador ya existe</string>
   <string name="action_edit_subject">Editar asunto de la conversación</string>
   <string name="topic">Asunto</string>
   <string name="joining_conference">Uniéndose a conversación...</string>

@@ -234,7 +234,6 @@
   <string name="destroy_channel_dialog">Είστε βέβαιοι ότι θέλετε να καταστρέψετε αυτό το δημόσιο κανάλι;\n\n<b>Προσοχή:</b>Το κανάλι θα διαγραφεί πλήρως από τον διακομιστή.</string>
   <string name="could_not_destroy_room">Δεν ήταν δυνατή η καταστροφή της ομαδικής συζήτησης</string>
   <string name="could_not_destroy_channel">Δεν ήταν δυνατή η καταστροφή του καναλιού</string>
-  <string name="bookmark_already_exists">Αυτός ο σελιδοδείκτης υπάρχει ήδη</string>
   <string name="action_edit_subject">Επεξεργασία θέματος ομαδικής συζήτησης</string>
   <string name="topic">Θέμα</string>
   <string name="joining_conference">Συμμετοχή σε ομαδική συζήτηση...</string>
