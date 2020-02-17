@@ -292,6 +292,7 @@
     <string name="conference_shutdown">The group chat was shut down</string>
     <string name="conference_unknown_error">You are no longer in this group chat</string>
     <string name="using_account">using account %s</string>
+    <string name="hosted_on">hosted on %s</string>
     <string name="checking_x">Checking %s on HTTP host</string>
     <string name="not_connected_try_again">You are not connected. Try again later</string>
     <string name="check_x_filesize">Check %s size</string>
