@@ -1,5 +1,10 @@
 # Changelog
 
+### Version 2.7.0
+
+* Provide PDF preview on Android 5+
+* Use 12 byte IVs for OMEMO
+
 ### Version 2.6.4
 
 * Support automatic theme switching on Android 10
