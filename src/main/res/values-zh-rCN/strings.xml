@@ -21,7 +21,7 @@
   <string name="action_unblock_participant">解封成员</string>
   <string name="title_activity_manage_accounts">管理账户</string>
   <string name="title_activity_settings">设置</string>
-  <string name="title_activity_sharewith">通过Conversations分享</string>
+  <string name="title_activity_sharewith">通过畅聊分享</string>
   <string name="title_activity_start_conversation">开始聊天</string>
   <string name="title_activity_choose_contact">选择联系人</string>
   <string name="title_activity_choose_contacts">选择联系人</string>
@@ -66,8 +66,8 @@
   <string name="unblock">解除屏蔽</string>
   <string name="save">保存</string>
   <string name="ok">完成</string>
-  <string name="crash_report_title">Conversations已崩溃</string>
-  <string name="crash_report_message">通过发送堆栈跟踪，您可以帮助Conversations持续发展\n<b>警告：</b>这将使用您的XMPP帐户将堆栈跟踪发送给开发人员。</string>
+  <string name="crash_report_title">畅聊已崩溃</string>
+  <string name="crash_report_message">通过发送堆栈跟踪，您可以帮助畅聊持续发展\n<b>警告：</b>这将使用您的XMPP帐户将堆栈跟踪发送给开发人员。</string>
   <string name="send_now">立即发送</string>
   <string name="send_never">不再询问</string>
   <string name="problem_connecting_to_account">无法连接至账户</string>
@@ -97,16 +97,16 @@
   <string name="send_unencrypted">不加密发送</string>
   <string name="decryption_failed">解密失败，可能是私钥不正确。</string>
   <string name="openkeychain_required">OpenKeychain</string>
-  <string name="openkeychain_required_long">Conversations 使用了第三方app <b>OpenKeychain</b> 来加密、解密信息并管理您的密钥。\n\nOpenKeychain 遵循 GPLv3 并且可以在 F-Droid 和 Google Play 上获取。\n\n<small>（之后请重启 Conversations）</small></string>
+  <string name="openkeychain_required_long">畅聊使用了第三方app <b>OpenKeychain</b> 来加密、解密信息并管理您的密钥。\n\nOpenKeychain 遵循 GPLv3 并且可以在 F-Droid 和 Google Play 上获取。\n\n<small>（之后请重启畅聊）</small></string>
   <string name="restart">重启</string>
   <string name="install">安装</string>
-  <string name="openkeychain_not_installed">请安装 OpenKeychain 以解密</string>
+  <string name="openkeychain_not_installed">请安装OpenKeychain以解密</string>
   <string name="offering">输入…</string>
   <string name="waiting">等待…</string>
   <string name="no_pgp_key">未发现 OpenPGP 密钥</string>
-  <string name="contact_has_no_pgp_key">Conversations 无法加密信息，因为联系人未提供他/她的公钥。\n\n<small>请通知联系人设置 OpenPGP。</small></string>
+  <string name="contact_has_no_pgp_key">畅聊无法加密信息，因为联系人未提供他/她的公钥。\n\n<small>请通知联系人设置 OpenPGP。</small></string>
   <string name="no_pgp_keys">未找到 OpenPGP 密钥</string>
-  <string name="contacts_have_no_pgp_keys">因您的联系人未公布公钥，Conversations未能成功加密您的信息.\n\n<small>请通知联系人设置OpenPGP.</small></string>
+  <string name="contacts_have_no_pgp_keys">因您的联系人未公布公钥，畅聊未能成功加密您的信息.\n\n<small>请通知联系人设置OpenPGP.</small></string>
   <string name="pref_general">常规</string>
   <string name="pref_accept_files">接收文件</string>
   <string name="pref_accept_files_summary">自动接收小于 … 的文件</string>
@@ -122,7 +122,7 @@
   <string name="pref_notification_grace_period_summary">在您的其他设备之一上检测到活动之后，时间通知的长度将被静音。</string>
   <string name="pref_advanced_options">高级</string>
   <string name="pref_never_send_crash">从不发送崩溃报告</string>
-  <string name="pref_never_send_crash_summary">通过发送堆栈跟踪，您可以帮助Conversations持续发展</string>
+  <string name="pref_never_send_crash_summary">通过发送堆栈跟踪，您可以帮助畅聊持续发展</string>
   <string name="pref_confirm_messages">确认消息</string>
   <string name="pref_confirm_messages_summary">让对方知道你收到并阅读了他们的消息</string>
   <string name="pref_ui_options">用户界面</string>
@@ -197,13 +197,13 @@
   <string name="server_info_unavailable">无效</string>
   <string name="missing_public_keys">缺少公钥通知</string>
   <string name="last_seen_now">刚刚查看过</string>
-  <string name="last_seen_min">1 分钟前查看过</string>
-  <string name="last_seen_mins">%d 分钟前查看过</string>
-  <string name="last_seen_hour">1 小时前查看过</string>
-  <string name="last_seen_hours">%d 小时前查看过</string>
-  <string name="last_seen_day">1 天前查看过</string>
-  <string name="last_seen_days">%d 天前查看过</string>
-  <string name="install_openkeychain">加密信息. 请安装 OpenKeychain 以解密。</string>
+  <string name="last_seen_min">1分钟前查看过</string>
+  <string name="last_seen_mins">%d分钟前查看过</string>
+  <string name="last_seen_hour">1小时前查看过</string>
+  <string name="last_seen_hours">%d小时前查看过</string>
+  <string name="last_seen_day">1天前查看过</string>
+  <string name="last_seen_days">%d天前查看过</string>
+  <string name="install_openkeychain">加密信息。请安装OpenKeychain以解密。</string>
   <string name="openpgp_messages_found">发现 OpenPGP 加密信息</string>
   <string name="openpgp_key_id">OpenPGP 密钥 ID</string>
   <string name="omemo_fingerprint">OMEMO 指纹</string>
@@ -292,6 +292,7 @@
   <string name="conference_shutdown">这个群组已被关闭</string>
   <string name="conference_unknown_error">您已不在该群组</string>
   <string name="using_account">使用帐户%s</string>
+  <string name="hosted_on">托管于%s</string>
   <string name="checking_x">正在 HTTP 服务器中检查 %s</string>
   <string name="not_connected_try_again">你没有连接。请稍后重试</string>
   <string name="check_x_filesize">检查 %s 大小</string>
@@ -496,8 +497,8 @@
   <string name="shared_image_with_x">图片已分享给%s</string>
   <string name="shared_images_with_x">多张图片已分享给%s</string>
   <string name="shared_text_with_x">文本已分享给%s</string>
-  <string name="no_storage_permission">Conversations 需要外部储存权限</string>
-  <string name="no_camera_permission">Conversations 需要摄像头权限</string>
+  <string name="no_storage_permission">畅聊需要外部储存权限</string>
+  <string name="no_camera_permission">畅聊需要摄像头权限</string>
   <string name="sync_with_contacts">同步联系人</string>
   <string name="sync_with_contacts_long">将服务器端联系人与本地联系人匹配可以显示联系人的全名与头像。\n\n此应用只在本地读取并匹配联系人。\n\n现在应用将请求联系人权限。</string>
   <string name="sync_with_contacts_quicksy"><![CDATA[Quicksy可以匹配您的通讯录以确定哪些人已经在使用此应用。<br><br>我们并不储存这些号码。\n\n更多信息请阅读<a href="https://quicksy.im/#privacy">隐私政策</a>。接下来将请求通讯录权限。]]></string>
@@ -508,10 +509,11 @@
   <string name="pref_picture_compression">图像压缩</string>
   <string name="pref_picture_compression_summary">提示：使用“选择文件”而不是“选择图片”来发送未经压缩的单个图像，无论此设置如何。</string>
   <string name="always">总是</string>
+  <string name="large_images_only">仅大图片</string>
   <string name="battery_optimizations_enabled">启用节电模式</string>
-  <string name="battery_optimizations_enabled_explained">你的设备正在为Conversations进行电池优化，这可能导致通知的延迟甚至消息的丢失。
+  <string name="battery_optimizations_enabled_explained">你的设备正在为畅聊进行电池优化，这可能导致通知的延迟甚至消息的丢失。
 建议不要这样做</string>
-  <string name="battery_optimizations_enabled_dialog">你的设备正在为Conversations进行电池优化，这可能导致通知的延迟甚至消息的丢失。
+  <string name="battery_optimizations_enabled_dialog">你的设备正在为畅聊进行电池优化，这可能导致通知的延迟甚至消息的丢失。
 你将会被提示禁用该功能。</string>
   <string name="disable">禁用</string>
   <string name="selection_too_large">选择区域过大</string>
@@ -550,10 +552,11 @@
   <string name="gp_medium">中</string>
   <string name="gp_long">长</string>
   <string name="pref_broadcast_last_activity">广播最后打开该应用的时间</string>
-  <string name="pref_broadcast_last_activity_summary">让你的所有联系人知道你使用Conversations的时间</string>
+  <string name="pref_broadcast_last_activity_summary">让你的所有联系人知道你使用畅聊的时间</string>
   <string name="pref_privacy">隐私</string>
   <string name="pref_theme_options">主题</string>
   <string name="pref_theme_options_summary">选择调色板</string>
+  <string name="pref_theme_automatic">自动</string>
   <string name="pref_theme_light">明亮主题</string>
   <string name="pref_theme_dark">黑暗主题</string>
   <string name="pref_use_green_background">绿色背景</string>
@@ -662,7 +665,7 @@
   <string name="message">消息</string>
   <string name="private_messages_are_disabled">禁止私信</string>
   <string name="huawei_protected_apps">受保护的应用</string>
-  <string name="huawei_protected_apps_summary">为了在屏幕关闭时也可收到消息提醒，您需要将 Conversations 加入受保护的应用列表。</string>
+  <string name="huawei_protected_apps_summary">为了在屏幕关闭时也可收到消息提醒，您需要将畅聊加入受保护的应用列表。</string>
   <string name="mtm_accept_cert">接受未知的证书？</string>
   <string name="mtm_trust_anchor">服务器证书未经已知证书机构签发。</string>
   <string name="mtm_accept_servername">接受不匹配的服务器名称？</string>
@@ -676,7 +679,7 @@
   <string name="edit_status_message_title">编辑状态信息</string>
   <string name="edit_status_message">编辑状态信息</string>
   <string name="disable_encryption">禁用加密</string>
-  <string name="error_trustkey_general">Conversations无法向%1$s发送加密信息。这可能是由于您的联系人使用了无法处理OMEMO的过时服务器或客户端。</string>
+  <string name="error_trustkey_general">畅聊无法向%1$s发送加密信息。这可能是由于您的联系人使用了无法处理OMEMO的过时服务器或客户端。</string>
   <string name="error_trustkey_device_list">无法获取设备列表</string>
   <string name="error_trustkey_bundle">无法获取设备包</string>
   <string name="error_trustkey_hint_mutual">提示：某些情况下，可以将对方加入联系人列表，以解决此问题。</string>
@@ -709,7 +712,7 @@
   <string name="share">分享</string>
   <string name="unable_to_start_recording">无法开始录音</string>
   <string name="please_wait">请等待……</string>
-  <string name="no_microphone_permission">Conversations需要访问麦克风</string>
+  <string name="no_microphone_permission">畅聊需要访问麦克风</string>
   <string name="search_messages">搜索消息</string>
   <string name="gif">GIF</string>
   <string name="view_conversation">查看对话</string>
@@ -731,7 +734,7 @@
   <string name="conference_destroyed">群聊已被解散</string>
   <string name="unable_to_save_recording">无法保存录音</string>
   <string name="foreground_service_channel_name">前台服务</string>
-  <string name="foreground_service_channel_description">此通知类别用于显示表明Conversations正在运行的永久通知。</string>
+  <string name="foreground_service_channel_description">此通知类别用于显示表明畅聊正在运行的永久通知。</string>
   <string name="notification_group_status_information">状态信息</string>
   <string name="error_channel_name">连接问题</string>
   <string name="error_channel_description">此通知类别用于显示一旦帐户连接出现问题的通知。</string>
@@ -862,6 +865,13 @@
   <string name="please_enter_password">请输入此账户的密码</string>
   <string name="unable_to_perform_this_action">无法执行此操作</string>
   <string name="open_join_dialog">加入公开群聊</string>
+  <string name="sharing_application_not_grant_permission">分享程序没有访问文件的权限</string>
+  <string name="group_chats_and_channels"><![CDATA[群聊与频道]]> </string>
+  <string name="local_server">本地服务器</string>
+  <string name="pref_channel_discovery">频道发现方法</string>
   <string name="backup">备份</string>
   <string name="category_about">关于</string>
+  <plurals name="view_users">
+    <item quantity="other">查看%1$d成员</item>
+  </plurals>
 </resources>

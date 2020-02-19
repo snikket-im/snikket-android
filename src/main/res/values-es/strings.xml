@@ -292,6 +292,7 @@
   <string name="conference_shutdown">La conversación en grupo ha sido cerrada</string>
   <string name="conference_unknown_error">Ya no estás dentro de esta conversación en grupo</string>
   <string name="using_account">Usando cuenta %s</string>
+  <string name="hosted_on">alojado en %s</string>
   <string name="checking_x">Comprobando %s en servidor HTTP</string>
   <string name="not_connected_try_again">No estás conectado. Inténtalo más tarde</string>
   <string name="check_x_filesize">Comprobar tamaño de %s</string>

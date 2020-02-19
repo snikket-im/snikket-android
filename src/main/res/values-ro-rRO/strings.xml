@@ -292,6 +292,7 @@
   <string name="conference_shutdown">Discuția de grup a fost închisă</string>
   <string name="conference_unknown_error">Nu mai sunteți în această discuție de grup</string>
   <string name="using_account">folosind cont %s</string>
+  <string name="hosted_on">găzduit pe %s</string>
   <string name="checking_x">Verifica %s pe gazda HTTP</string>
   <string name="not_connected_try_again">Nu sunteți conectat(ă). Încercați din nou mai târziu</string>
   <string name="check_x_filesize">Verifica marimea %s</string>

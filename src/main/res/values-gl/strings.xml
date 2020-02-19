@@ -292,6 +292,7 @@
   <string name="conference_shutdown">A conversa en grupo foi apagada</string>
   <string name="conference_unknown_error">Xa non estás nesta conversa en grupo</string>
   <string name="using_account">utilizando a conta %s</string>
+  <string name="hosted_on">hospedado en %s</string>
   <string name="checking_x">Comprobando %s no servidor HTTP</string>
   <string name="not_connected_try_again">Non está conectada. Inténteo máis tarde</string>
   <string name="check_x_filesize">Comprobando o tamaño de %s</string>

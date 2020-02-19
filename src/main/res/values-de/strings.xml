@@ -291,7 +291,8 @@
   <string name="conference_kicked">Du wurdest aus diesem Gruppchat geworfen</string>
   <string name="conference_shutdown">Gruppenchat wurde geschlossen</string>
   <string name="conference_unknown_error">Du bist nicht länger in diesem Gruppenchat</string>
-  <string name="using_account">Verwendetes Konto: %s</string>
+  <string name="using_account">verwende Konto %s</string>
+  <string name="hosted_on">gehostet bei %s</string>
   <string name="checking_x">%s auf HTTP-Host wird überprüft</string>
   <string name="not_connected_try_again">Nicht verbunden, bitte später versuchen</string>
   <string name="check_x_filesize">%s-Größe prüfen</string>
