@@ -61,7 +61,9 @@ public class Resolver {
             final Field dnsClientField = ReliableDNSClient.class.getDeclaredField("dnsClient");
             dnsClientField.setAccessible(true);
             final DNSClient dnsClient = (DNSClient) dnsClientField.get(reliableDNSClient);
-            dnsClient.getDataSource().setTimeout(3000);
+            if (dnsClient != null) {
+                dnsClient.getDataSource().setTimeout(3000);
+            }
             final Field useHardcodedDnsServers = DNSClient.class.getDeclaredField("useHardcodedDnsServers");
             useHardcodedDnsServers.setAccessible(true);
             useHardcodedDnsServers.setBoolean(dnsClient, false);
@@ -176,7 +178,7 @@ public class Resolver {
                 final List<Result> ipv4s = resolveIp(record, A.class, result.isAuthenticData(), directTls);
                 if (ipv4s.size() == 0) {
                     Result resolverResult = Result.fromRecord(record, directTls);
-                    resolverResult.authenticated = resolverResult.isAuthenticated();
+                    resolverResult.authenticated = result.isAuthenticData();
                     ipv4s.add(resolverResult);
                 }
                 synchronized (results) {
@@ -210,7 +212,7 @@ public class Resolver {
             ResolverResult<D> results = resolveWithFallback(srv.name, type, authenticated);
             for (D record : results.getAnswersOrEmptySet()) {
                 Result resolverResult = Result.fromRecord(srv, directTls);
-                resolverResult.authenticated = results.isAuthenticData() && authenticated;
+                resolverResult.authenticated = results.isAuthenticData() && authenticated; //TODO technically it doesn’t matter if the IP was authenticated
                 resolverResult.ip = record.getInetAddress();
                 list.add(resolverResult);
             }

@@ -651,7 +651,7 @@ public class AxolotlService implements OnAdvancedStreamFeaturesLoaded {
                                      final boolean wipe,
                                      final boolean firstAttempt) {
         final Bundle publishOptions = account.getXmppConnection().getFeatures().pepPublishOptions() ? PublishOptions.openAccess() : null;
-        IqPacket publish = mXmppConnectionService.getIqGenerator().publishBundles(
+        final IqPacket publish = mXmppConnectionService.getIqGenerator().publishBundles(
                 signedPreKeyRecord, axolotlStore.getIdentityKeyPair().getPublicKey(),
                 preKeyRecords, getOwnDeviceId(), publishOptions);
         Log.d(Config.LOGTAG, AxolotlService.getLogprefix(account) + ": Bundle " + getOwnDeviceId() + " in PEP not current. Publishing...");
