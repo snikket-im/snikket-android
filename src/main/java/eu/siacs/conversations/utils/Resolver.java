@@ -40,7 +40,7 @@ public class Resolver {
     public static final int DEFAULT_PORT_XMPP = 5222;
 
     private static final String DIRECT_TLS_SERVICE = "_xmpps-client";
-    private static final String STARTTLS_SERICE = "_xmpp-client";
+    private static final String STARTTLS_SERVICE = "_xmpp-client";
 
     private static XmppConnectionService SERVICE = null;
 
@@ -166,7 +166,7 @@ public class Resolver {
     }
 
     private static List<Result> resolveSrv(String domain, final boolean directTls) throws IOException {
-        DNSName dnsName = DNSName.from((directTls ? DIRECT_TLS_SERVICE : STARTTLS_SERICE) + "._tcp." + domain);
+        DNSName dnsName = DNSName.from((directTls ? DIRECT_TLS_SERVICE : STARTTLS_SERVICE) + "._tcp." + domain);
         ResolverResult<SRV> result = resolveWithFallback(dnsName, SRV.class);
         final List<Result> results = new ArrayList<>();
         final List<Thread> threads = new ArrayList<>();
