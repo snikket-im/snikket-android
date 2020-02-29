@@ -368,7 +368,7 @@ public class Resolver {
         public String toString() {
             return "Result{" +
                     "ip='" + (ip == null ? null : ip.getHostAddress()) + '\'' +
-                    ", hostame='" + hostname.toString() + '\'' +
+                    ", hostame='" + (hostname == null ? null : hostname.toString()) + '\'' +
                     ", port=" + port +
                     ", directTls=" + directTls +
                     ", authenticated=" + authenticated +
