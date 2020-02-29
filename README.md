@@ -197,7 +197,7 @@ FCM (Google Push) allows an app to wake up from *Doze* which is (as the name sug
 
 #### Conversations doesn’t work for me. Where can I get help?
 
-You can join our conference room on `conversations@conference.siacs.eu`.
+You can join our conference room on [`conversations@conference.siacs.eu`](https://conversations.im/j/conversations@conference.siacs.eu).
 A lot of people in there are able to answer basic questions about the usage of
 Conversations or can provide you with tips on running your own XMPP server. If
 you found a bug or your app crashes please read the Developer / Report Bugs
