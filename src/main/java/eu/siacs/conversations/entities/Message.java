@@ -613,6 +613,8 @@ public class Message extends AbstractEntity implements AvatarService.Avatarable 
 						this.getBody().length() + message.getBody().length() <= Config.MAX_DISPLAY_MESSAGE_CHARS &&
 						!message.isGeoUri() &&
 						!this.isGeoUri() &&
+						!message.isOOb() &&
+						!this.isOOb() &&
 						!message.treatAsDownloadable() &&
 						!this.treatAsDownloadable() &&
 						!message.getBody().startsWith(ME_COMMAND) &&
