@@ -1838,7 +1838,7 @@ public class XmppConnectionService extends Service {
     private void markFileDeleted(final String path) {
         synchronized (FILENAMES_TO_IGNORE_DELETION) {
             if (FILENAMES_TO_IGNORE_DELETION.remove(path)) {
-                Log.d(Config.LOGTAG,"ignored deletion of "+path);
+                Log.d(Config.LOGTAG, "ignored deletion of " + path);
                 return;
             }
         }
@@ -1854,7 +1854,7 @@ public class XmppConnectionService extends Service {
         for (Conversation conversation : getConversations()) {
             deleted |= conversation.markAsDeleted(uuids);
         }
-        for(final String uuid : uuids) {
+        for (final String uuid : uuids) {
             evictPreview(uuid);
         }
         if (deleted) {
@@ -3172,16 +3172,20 @@ public class XmppConnectionService extends Service {
             conversation.setAttribute("accept_non_anonymous", true);
             updateConversation(conversation);
         }
-        IqPacket request = new IqPacket(IqPacket.TYPE.GET);
+        if (options.containsKey("muc#roomconfig_moderatedroom")) {
+            final boolean moderated = "1".equals(options.getString("muc#roomconfig_moderatedroom"));
+            options.putString("members_by_default", moderated ? "0" : "1");
+        }
+        final IqPacket request = new IqPacket(IqPacket.TYPE.GET);
         request.setTo(conversation.getJid().asBareJid());
         request.query("http://jabber.org/protocol/muc#owner");
         sendIqPacket(conversation.getAccount(), request, new OnIqPacketReceived() {
             @Override
             public void onIqPacketReceived(Account account, IqPacket packet) {
                 if (packet.getType() == IqPacket.TYPE.RESULT) {
-                    Data data = Data.parse(packet.query().findChild("x", Namespace.DATA));
+                    final Data data = Data.parse(packet.query().findChild("x", Namespace.DATA));
                     data.submit(options);
-                    IqPacket set = new IqPacket(IqPacket.TYPE.SET);
+                    final IqPacket set = new IqPacket(IqPacket.TYPE.SET);
                     set.setTo(conversation.getJid().asBareJid());
                     set.query("http://jabber.org/protocol/muc#owner").addChild(data);
                     sendIqPacket(account, set, new OnIqPacketReceived() {
@@ -4580,7 +4584,7 @@ public class XmppConnectionService extends Service {
 
     public void evictPreview(String uuid) {
         if (mBitmapCache.remove(uuid) != null) {
-            Log.d(Config.LOGTAG,"deleted cached preview");
+            Log.d(Config.LOGTAG, "deleted cached preview");
         }
     }
 
