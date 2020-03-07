@@ -292,6 +292,7 @@
   <string name="conference_shutdown">La chat di gruppo è stata chiusa</string>
   <string name="conference_unknown_error">Non sei più in questa chat di gruppo</string>
   <string name="using_account">usando l’account %s</string>
+  <string name="hosted_on">ospitato su %s</string>
   <string name="checking_x">Controllo %s su host HTTP</string>
   <string name="not_connected_try_again">Non sei connesso. Riprova più tardi</string>
   <string name="check_x_filesize">Controlla dimensione %s</string>

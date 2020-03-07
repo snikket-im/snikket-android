@@ -1,26 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="crash_report_title">Quicksy fallou</string>
-    <string name="crash_report_message">Ao enviar lotes de rexistro está a axudar no desenvolvemento de Quicksy\n<b>Aviso:</b> vai utilizar a súa conta XMPP para enviar o rexistro ao equipo de desenvolvemento.</string>
-    <string name="openkeychain_required_long">Quicksy utiliza unha app de terceiros chamada <b>OpenKeychain</b> para cifrar e descifrar as mensaxes e xestionar a súas chaves públicas.\n\nOpenKeychain en licenza GPLv3 e está dispoñible en F-Droid e Google Play.\n\n<small>(Por favor, reinicie Quicksy ao rematar).</small></string>
-    <string name="contact_has_no_pgp_key">Quicksy non pode cifrar as súas mensaxes porque os seu contacto non publicou as sua chave pública.\n\n<small>Por favor, solicite ao contacto configure OpenPGP.</small></string>
-    <string name="contacts_have_no_pgp_keys">Quicksy non pode cifrar as súas mensaxes porque os seus contactos non están a publicar a súa chave pública.\n\n<small>Por favor, pídalle aos seus contactos que configuren OpenPGP.</small></string>
+    <string name="crash_report_message">Ao enviar lotes de rexistro estás a axudar no desenvolvemento de Quicksy\n<b>Aviso:</b> vas utilizar a tua conta XMPP para enviar o rexistro ao equipo de desenvolvemento.</string>
+    <string name="openkeychain_required_long">Quicksy utiliza unha app de terceiros chamada <b>OpenKeychain</b> para cifrar e descifrar as mensaxes e xestionar a tuas chaves públicas.\n\nOpenKeychain ten licenza GPLv3 e está dispoñible en F-Droid e Google Play.\n\n<small>(Por favor, reinicia Quicksy ao rematar).</small></string>
+    <string name="contact_has_no_pgp_key">Quicksy non pode cifrar as tuas mensaxes porque o teu contacto non publicou as sua chave pública.\n\n<small>Por favor, solicita ao contacto que configure OpenPGP.</small></string>
+    <string name="contacts_have_no_pgp_keys">Quicksy non pode cifrar as tuas mensaxes porque os teus contactos non están a publicar a súa chave pública.\n\n<small>Por favor, pídelle aos teus contactos que configuren OpenPGP.</small></string>
     <string name="pref_notification_grace_period_summary">O período de tempo que Quicksy permanece acalado tras ver actividade en outro dispositivo</string>
-    <string name="pref_never_send_crash_summary">Enviando trazas de rexistro está axudando ao desenvolvemento de Quicksy</string>
+    <string name="pref_never_send_crash_summary">Enviando trazas de rexistro estás axudando ao desenvolvemento de Quicksy</string>
     <string name="no_storage_permission">Quicksy precisa acceso ao almacenamento externo</string>
     <string name="no_camera_permission">Quicksy precisa acceso a cámara</string>
-    <string name="battery_optimizations_enabled_explained">O seu dispositivo está a realizar optimizacións de batería intensivas con Quicksy que poderían levar a que as notificacións tarden en chegar ou que as mensaxes se perdan.\nRecomendamos desactivalas.</string>
-    <string name="battery_optimizations_enabled_dialog">O seu dispositivo está a realizar optimizacións de batería moi fortes con Quicksy que poderían levar a que se retrasen as notificacións ou que se perdan mensaxes.\n\nPediráselle que as desactive.</string>
-    <string name="pref_broadcast_last_activity_summary">Permitir a todos os seus contactos saber cando está a utilizar Quicksy</string>
-    <string name="data_saver_enabled_explained">O seu sistema operativo está restrinxindo o acceso a internet en segundo plano para Quicksy. Para recibir notificacións ou novas mensaxes debería permitir a Quicksy acceso non limitado cando se activa o aforro de datos.\nQuicksy esforzarase en aforrar datos cando sexa posible.</string>
-    <string name="device_does_not_support_data_saver">O seu dispositivo non soporta a desactivación do aforro de datos para Quicksy.</string>
-    <string name="huawei_protected_apps_summary">Para seguir recibindo notificacións, mesmo coa pantalla apagada, precisa engadir a Quicksy na lista de apps protexidas.</string>
-    <string name="error_trustkey_general">Quicksy non pode enviar mensaxes cifradas a %1$s. Esto podería deberse a que o seu contacto utiliza un servidor antigo ou un cliente sen soporte OMEMO.</string>
+    <string name="battery_optimizations_enabled_explained">O teu dispositivo está a realizar optimizacións de batería intensivas con Quicksy que poderían levar a que as notificacións tarden en chegar ou que as mensaxes se perdan.\nRecomendamos desactivalas.</string>
+    <string name="battery_optimizations_enabled_dialog">O teu dispositivo está a realizar optimizacións de batería moi fortes con Quicksy que poderían levar a que se retrasen as notificacións ou que se perdan mensaxes.\n\nVaiche solicitar que as desactives.</string>
+    <string name="pref_broadcast_last_activity_summary">Permitir a todos os teus contactos saber cando estás a utilizar Quicksy</string>
+    <string name="data_saver_enabled_explained">O teu sistema operativo está restrinxindo o acceso a internet en segundo plano para Quicksy. Para recibir notificacións ou novas mensaxes deberías permitir a Quicksy acceso non limitado cando se activa o aforro de datos.\nQuicksy esforzarase en aforrar datos cando sexa posible.</string>
+    <string name="device_does_not_support_data_saver">O teu dispositivo non soporta a desactivación do aforro de datos para Quicksy.</string>
+    <string name="huawei_protected_apps_summary">Para seguir recibindo notificacións, mesmo coa pantalla apagada, precisas engadir a Quicksy na lista de apps protexidas.</string>
+    <string name="error_trustkey_general">Quicksy non pode enviar mensaxes cifradas a %1$s. Esto podería deberse a que o teu contacto utiliza un servidor antigo ou un cliente sen soporte OMEMO.</string>
     <string name="no_microphone_permission">Quicksy precisa acceder ao micrófono</string>
     <string name="foreground_service_channel_description">Esta categoría de notificacións utilízase para mostrar unha notificación permanente que indica que Quicksy está funcionando.</string>
     <string name="set_profile_picture">Imaxe de perfil Quicksy</string>
-    <string name="not_available_in_your_country">Quicksy non está dispoñible no seu país.</string>
-    <string name="unable_to_verify_server_identity">Non se puido validar a identidade do servidor.</string>
+    <string name="not_available_in_your_country">Quicksy non está dispoñible no teu país.</string>
+    <string name="unable_to_verify_server_identity">Non se puido verificar a identidade do servidor.</string>
     <string name="unknown_security_error">Fallo de seguridade descoñecido.</string>
     <string name="timeout_while_connecting_to_server">Caducou a conexión mentras conectaba co servidor.</string>
 </resources>

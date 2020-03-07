@@ -292,6 +292,7 @@
   <string name="conference_shutdown">Konferencja została zamknięta</string>
   <string name="conference_unknown_error">Nie uczestniczysz już w tej konferencji</string>
   <string name="using_account">używając konta %s</string>
+  <string name="hosted_on">udostępnione na %s</string>
   <string name="checking_x">Sprawdzanie %s na hoście HTTP</string>
   <string name="not_connected_try_again">Brak połączenia. Spróbuj ponownie później</string>
   <string name="check_x_filesize">Sprawdź rozmiar %s</string>

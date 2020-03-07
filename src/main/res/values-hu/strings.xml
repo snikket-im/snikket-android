@@ -292,6 +292,7 @@
   <string name="conference_shutdown">A csoportos csevegés le lett állítva</string>
   <string name="conference_unknown_error">Többé már nincs ebben a csoportos csevegésben</string>
   <string name="using_account">használt fiók: %s</string>
+  <string name="hosted_on">kiszolgálva itt: %s</string>
   <string name="checking_x"> %s ellenőrzése a HTTP gépen</string>
   <string name="not_connected_try_again">Nincs kapcsolódva. Próbálja meg később újra</string>
   <string name="check_x_filesize"> %s méretének ellenőrzése</string>
@@ -556,6 +557,7 @@
   <string name="pref_privacy">Adatvédelem</string>
   <string name="pref_theme_options">Téma</string>
   <string name="pref_theme_options_summary">Színpaletta kiválasztása</string>
+  <string name="pref_theme_automatic">Automatikus</string>
   <string name="pref_theme_light">Világos téma</string>
   <string name="pref_theme_dark">Sötét téma</string>
   <string name="pref_use_green_background">Zöld háttér</string>
