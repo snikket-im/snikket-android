@@ -1157,7 +1157,7 @@ public class AxolotlService implements OnAdvancedStreamFeaturesLoaded {
 
     @Nullable
     public XmppAxolotlMessage encrypt(Message message) {
-        final XmppAxolotlMessage axolotlMessage = new XmppAxolotlMessage(account.getJid().asBareJid(), getOwnDeviceId());
+        final XmppAxolotlMessage axolotlMessage = new XmppAxolotlMessage(account.getJid().asBareJid(), getOwnDeviceId(), true);
         final String content;
         if (message.hasFileOnRemoteHost()) {
             content = message.getFileParams().url.toString();
@@ -1201,7 +1201,7 @@ public class AxolotlService implements OnAdvancedStreamFeaturesLoaded {
         executor.execute(new Runnable() {
             @Override
             public void run() {
-                final XmppAxolotlMessage axolotlMessage = new XmppAxolotlMessage(account.getJid().asBareJid(), getOwnDeviceId());
+                final XmppAxolotlMessage axolotlMessage = new XmppAxolotlMessage(account.getJid().asBareJid(), getOwnDeviceId(), false);
                 if (buildHeader(axolotlMessage, conversation)) {
                     onMessageCreatedCallback.run(axolotlMessage);
                 } else {
@@ -1362,7 +1362,7 @@ public class AxolotlService implements OnAdvancedStreamFeaturesLoaded {
     }
 
     private void completeSession(XmppAxolotlSession session) {
-        final XmppAxolotlMessage axolotlMessage = new XmppAxolotlMessage(account.getJid().asBareJid(), getOwnDeviceId());
+        final XmppAxolotlMessage axolotlMessage = new XmppAxolotlMessage(account.getJid().asBareJid(), getOwnDeviceId(), true);
         axolotlMessage.addDevice(session, true);
         try {
             final Jid jid = Jid.of(session.getRemoteAddress().getName());

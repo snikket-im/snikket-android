@@ -105,11 +105,20 @@ public class HttpUploadConnection implements Transferable {
 		} else {
 			this.mime = this.file.getMimeType();
 		}
+		final long originalFileSize = file.getSize();
 		this.delayed = delay;
 		if (Config.ENCRYPT_ON_HTTP_UPLOADED
 				|| message.getEncryption() == Message.ENCRYPTION_AXOLOTL
 				|| message.getEncryption() == Message.ENCRYPTION_OTR) {
-			this.key = new byte[Config.TWELVE_BYTE_IV ? 44 : 48];
+			//ok, this is going to sound super crazy but on Android 9+ a 12 byte IV will use the
+			//internal conscrypt library (provided by the OS) instead of bounce castle, while 16 bytes
+			//will still 'fallback' to bounce castle even on Android 9+ because conscrypt doesnt
+			//have support for anything but 12.
+			//For large files conscrypt has extremely bad performance; so why not always use 16 you ask?
+			//well the ecosystem was moving and some clients like Monal *only* support 16
+			//so the result of this code is that we can only send 'small' files to Monal.
+			//'small' was relatively arbitrarily choose and correlates to roughly 'small' compressed images
+			this.key = new byte[originalFileSize <= 786432 ? 44 : 48];
 			mXmppConnectionService.getRNG().nextBytes(this.key);
 			this.file.setKeyAndIv(this.key);
 		}
@@ -128,7 +137,7 @@ public class HttpUploadConnection implements Transferable {
 			md5 = null;
 		}
 
-		this.file.setExpectedSize(file.getSize() + (file.getKey() != null ? 16 : 0));
+		this.file.setExpectedSize(originalFileSize + (file.getKey() != null ? 16 : 0));
 		message.resetFileParams();
 		this.mSlotRequester.request(method, account, file, mime, md5, new SlotRequester.OnSlotRequested() {
 			@Override

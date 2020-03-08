@@ -85,11 +85,11 @@ public class XmppAxolotlMessage {
         }
     }
 
-    XmppAxolotlMessage(Jid from, int sourceDeviceId) {
+    XmppAxolotlMessage(Jid from, int sourceDeviceId, final boolean twelveByteIv) {
         this.from = from;
         this.sourceDeviceId = sourceDeviceId;
         this.keys = new ArrayList<>();
-        this.iv = generateIv();
+        this.iv = generateIv(twelveByteIv);
         this.innerKey = generateKey();
     }
 
@@ -115,14 +115,13 @@ public class XmppAxolotlMessage {
             generator.init(128);
             return generator.generateKey().getEncoded();
         } catch (NoSuchAlgorithmException e) {
-            Log.e(Config.LOGTAG, e.getMessage());
-            return null;
+            throw new IllegalStateException(e);
         }
     }
 
-    private static byte[] generateIv() {
+    private static byte[] generateIv(final boolean twelveByteIv) {
         final SecureRandom random = new SecureRandom();
-        byte[] iv = new byte[Config.TWELVE_BYTE_IV ? 12 : 16];
+        byte[] iv = new byte[twelveByteIv ? 12 : 16];
         random.nextBytes(iv);
         return iv;
     }
