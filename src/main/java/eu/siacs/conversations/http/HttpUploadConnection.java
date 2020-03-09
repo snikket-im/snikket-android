@@ -115,7 +115,7 @@ public class HttpUploadConnection implements Transferable {
 			//will still 'fallback' to bounce castle even on Android 9+ because conscrypt doesnt
 			//have support for anything but 12.
 			//For large files conscrypt has extremely bad performance; so why not always use 16 you ask?
-			//well the ecosystem was moving and some clients like Monal *only* support 16
+			//well the ecosystem was moving and some clients like Monal *only* support 12
 			//so the result of this code is that we can only send 'small' files to Monal.
 			//'small' was relatively arbitrarily choose and correlates to roughly 'small' compressed images
 			this.key = new byte[originalFileSize <= 786432 ? 44 : 48];
