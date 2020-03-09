@@ -54,7 +54,7 @@ dependencies {
     compatImplementation "com.android.support:support-emoji-appcompat:$supportLibVersion"
     conversationsFreeCompatImplementation "com.android.support:support-emoji-bundled:$supportLibVersion"
     quicksyFreeCompatImplementation "com.android.support:support-emoji-bundled:$supportLibVersion"
-    implementation 'org.bouncycastle:bcmail-jdk15on:1.58'
+    implementation 'org.bouncycastle:bcmail-jdk15on:1.64'
     //zxing stopped supporting Java 7 so we have to stick with 3.3.3
     //https://github.com/zxing/zxing/issues/1170
     implementation 'com.google.zxing:core:3.3.3'
@@ -90,7 +90,7 @@ android {
     defaultConfig {
         minSdkVersion 16
         targetSdkVersion 28
-        versionCode 365
+        versionCode 366
         versionName "2.7.1"
         archivesBaseName += "-$versionName"
         applicationId "eu.siacs.conversations"

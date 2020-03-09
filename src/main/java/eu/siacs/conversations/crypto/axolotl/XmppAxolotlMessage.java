@@ -85,11 +85,11 @@ public class XmppAxolotlMessage {
         }
     }
 
-    XmppAxolotlMessage(Jid from, int sourceDeviceId, final boolean twelveByteIv) {
+    XmppAxolotlMessage(Jid from, int sourceDeviceId) {
         this.from = from;
         this.sourceDeviceId = sourceDeviceId;
         this.keys = new ArrayList<>();
-        this.iv = generateIv(twelveByteIv);
+        this.iv = generateIv();
         this.innerKey = generateKey();
     }
 
@@ -119,9 +119,9 @@ public class XmppAxolotlMessage {
         }
     }
 
-    private static byte[] generateIv(final boolean twelveByteIv) {
+    private static byte[] generateIv() {
         final SecureRandom random = new SecureRandom();
-        byte[] iv = new byte[twelveByteIv ? 12 : 16];
+        final byte[] iv = new byte[12];
         random.nextBytes(iv);
         return iv;
     }
