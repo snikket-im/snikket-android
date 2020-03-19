@@ -171,7 +171,7 @@ However you can disable the notification via settings of the operating system. (
 
 **The battery consumption and the entire behaviour of Conversations will remain the same (as good or as bad as it was before). Why is Google doing this to you? We have no idea.**
 
-##### Android &lt;= 7.1
+##### Android &lt;= 7.1 or Conversations from F-Droid (all Android versions)
 The foreground notification is still controlled over the expert settings within Conversations as it always has been. Whether or not you need to enable it depends on how aggressive the non-standard 'power saving' features are that your phone vendor has built into the operating system.
 
 ##### Android 8.x
