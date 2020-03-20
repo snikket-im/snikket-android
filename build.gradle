@@ -6,7 +6,7 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.5.3'
+        classpath 'com.android.tools.build:gradle:3.6.1'
     }
 }
 
@@ -33,13 +33,14 @@ ext {
 }
 
 dependencies {
+    //should remain that low because later versions introduce dependency to androidx (not sure exactly from what version)
     playstoreImplementation('com.google.firebase:firebase-messaging:17.3.4') {
         exclude group: 'com.google.firebase', module: 'firebase-core'
         exclude group: 'com.google.firebase', module: 'firebase-analytics'
         exclude group: 'com.google.firebase', module: 'firebase-measurement-connector'
     }
-    conversationsPlaystoreCompatImplementation("com.android.installreferrer:installreferrer:1.1")
-    conversationsPlaystoreSystemImplementation("com.android.installreferrer:installreferrer:1.1")
+    conversationsPlaystoreCompatImplementation("com.android.installreferrer:installreferrer:1.1.2")
+    conversationsPlaystoreSystemImplementation("com.android.installreferrer:installreferrer:1.1.2")
     implementation 'org.sufficientlysecure:openpgp-api:10.0'
     implementation('com.theartofdev.edmodo:android-image-cropper:2.7.+') {
         exclude group: 'com.android.support', module: 'appcompat-v7'
@@ -74,7 +75,7 @@ dependencies {
     implementation "com.squareup.retrofit2:retrofit:2.6.4"
     implementation "com.squareup.retrofit2:converter-gson:2.6.4"
     //okhttp needs to stick with 3.12.x
-    implementation 'com.squareup.okhttp3:okhttp:3.12.7'
+    implementation 'com.squareup.okhttp3:okhttp:3.12.10'
     implementation 'com.google.guava:guava:27.1-android'
     quicksyImplementation 'io.michaelrocks:libphonenumber-android:8.11.1'
 }
