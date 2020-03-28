@@ -155,6 +155,7 @@
   <string name="account_status_regis_conflict">Identifiant déjà utilisé</string>
   <string name="account_status_regis_success">Enregistrement réussi</string>
   <string name="account_status_regis_not_sup">Le serveur ne permet pas l\'enregistrement</string>
+  <string name="account_status_regis_invalid_token">Jeton d’inscription invalide</string>
   <string name="account_status_tls_error">La négociation TLS a echoué</string>
   <string name="account_status_policy_violation">Violation de politique</string>
   <string name="account_status_incompatible_server">Serveur incompatible</string>
@@ -291,6 +292,7 @@
   <string name="conference_shutdown">La discussion de groupe a été interrompue</string>
   <string name="conference_unknown_error">Vous n\'appartenez plus à ce groupe de discussion</string>
   <string name="using_account">avec le compte %s</string>
+  <string name="hosted_on">hébergé sur %s</string>
   <string name="checking_x">Vérification de %s sur l\'hôte HTTP</string>
   <string name="not_connected_try_again">Vous n\'êtes pas connecté. Essayez plus tard.</string>
   <string name="check_x_filesize">Vérification de la taille de %s</string>
@@ -507,7 +509,9 @@
   <string name="notify_never">Notifications désactivées</string>
   <string name="notify_paused">Notifications en pause</string>
   <string name="pref_picture_compression">Compression de l\'image</string>
+  <string name="pref_picture_compression_summary">Remarque : Utiliser « Choisir un fichier » au lieu de « Choisir une image » pour envoyer des images individuelles non compressées sans tenir compte de ce paramètre.</string>
   <string name="always">Toujours</string>
+  <string name="large_images_only">Grandes images seulement</string>
   <string name="battery_optimizations_enabled">Optimisations de batterie activées</string>
   <string name="battery_optimizations_enabled_explained">Votre appareil applique sur Conversations des optimisations de batterie très strictes qui pourraient provoquer des retards dans les notifications, voire des pertes de messages.\nNous vous recommandons de les désactiver.</string>
   <string name="battery_optimizations_enabled_dialog">Votre appareil applique sur Conversations des optimisations de batterie très strictes qui pourraient provoquer des retards dans les notifications, voire des pertes de messages.\nVous allez maintenant avoir la possibilité de les désactiver.</string>
@@ -553,6 +557,7 @@
   <string name="pref_privacy">Confidentialité</string>
   <string name="pref_theme_options">Thème</string>
   <string name="pref_theme_options_summary">Choisir la palette de couleurs</string>
+  <string name="pref_theme_automatic">Automatique</string>
   <string name="pref_theme_light">Thème Clair</string>
   <string name="pref_theme_dark">Thème Sombre</string>
   <string name="pref_use_green_background">Fond Vert</string>
@@ -869,4 +874,15 @@
   <string name="unable_to_perform_this_action">Action impossible à réaliser</string>
   <string name="open_join_dialog">Rejoindre le canal public ...</string>
   <string name="sharing_application_not_grant_permission">L\'application de partage n\'a pas accordé la permission d\'accéder à ce fichier.</string>
+  <string name="group_chats_and_channels"><![CDATA[Canaux et salons de discussion]]></string>
+  <string name="jabber_network">jabber.network</string>
+  <string name="local_server">Serveur local</string>
+  <string name="pref_channel_discovery_summary">La plupart des utilisateurs devraient choisir « jabber.network » pour de meilleures suggestions provenant de l’écosystème public entier de XMPP.</string>
+  <string name="pref_channel_discovery">Méthode de découverte des canaux</string>
+  <string name="backup">Sauvegarde</string>
+  <string name="category_about">À propos</string>
+  <plurals name="view_users">
+    <item quantity="one">Voir %1$d participant</item>
+    <item quantity="other">Voir %1$d participants</item>
+  </plurals>
 </resources>

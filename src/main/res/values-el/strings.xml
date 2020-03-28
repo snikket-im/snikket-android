@@ -30,6 +30,7 @@
   <string name="just_now">μόλις τώρα</string>
   <string name="minute_ago">πριν από 1 λεπτό</string>
   <string name="minutes_ago">πριν από %d λεπτά</string>
+  <string name="x_unread_conversations">%d αδιάβαστες συζητήσεις</string>
   <string name="sending">αποστολή...</string>
   <string name="message_decrypting">Αποκρυπτογράφηση μηνύματος. Παρακαλώ περιμένετε...</string>
   <string name="pgp_message">OpenPGP κρυπτογραφημένο μήνυμα</string>
@@ -118,6 +119,7 @@
   <string name="pref_sound">Ήχος</string>
   <string name="pref_sound_summary">Κουδούνισμα όταν δέχεστε νέο μήνυμα</string>
   <string name="pref_notification_grace_period">Περίοδος Χάριτος</string>
+  <string name="pref_notification_grace_period_summary">Ο χρόνος σίγασης ειδοποιήσεων αφότου ανιχνευθεί δραστηριότητα σε μια από τις άλλες συσκευές σας.</string>
   <string name="pref_advanced_options">Προχωρημένος</string>
   <string name="pref_never_send_crash">Να μην αποστέλλονται αναφορές λαθών</string>
   <string name="pref_never_send_crash_summary">Στέλνοντας ίχνη στοίβας βοηθάτε την συνεχόμενη ανάπτυξη του Conversations</string>
@@ -153,6 +155,7 @@
   <string name="account_status_regis_conflict">Το όνομα χρησιμοποιείται ήδη</string>
   <string name="account_status_regis_success">Ολοκλήρωση εγγραφής</string>
   <string name="account_status_regis_not_sup">Ο διακομιστής δεν υποστηρίζει εγγραφή</string>
+  <string name="account_status_regis_invalid_token">Άκυρο κουπόνι εγγραφής</string>
   <string name="account_status_tls_error">TLS αποτυχία επικοινωνίας</string>
   <string name="account_status_policy_violation">Πολιτική παραβίασης</string>
   <string name="account_status_incompatible_server">Μη συμβατός διακομιστής</string>
@@ -331,6 +334,7 @@
   <string name="x_file_offered_for_download">το %s προσφέρθηκε για μεταφόρτωση</string>
   <string name="cancel_transmission">Ακύρωση μετάδοσης</string>
   <string name="file_transmission_failed">η μετάδοση του αρχείου απέτυχε</string>
+  <string name="file_transmission_cancelled">η μεταφορά αρχείου ακυρώθηκε</string>
   <string name="file_deleted">Το αρχείο έχει διαγραφεί</string>
   <string name="no_application_found_to_open_file">Δεν βρέθηκε εφαρμογή για να ανοίξει το αρχείο</string>
   <string name="no_application_found_to_open_link">Δεν βρέθηκε εφαρμογή για να ανοίξει τον σύνδεσμο</string>
@@ -506,6 +510,7 @@
   <string name="notify_paused">Παύση ειδοποιήσεων</string>
   <string name="pref_picture_compression">Συμπίεση εικόνας</string>
   <string name="always">Πάντα</string>
+  <string name="large_images_only">Μεγάλες εικόνες μόνο</string>
   <string name="battery_optimizations_enabled">Ενεργοποίηση βελτιστοποίησης χρήσης μπαταρίας</string>
   <string name="battery_optimizations_enabled_explained">Η συσκευή σας χρησιμοποιεί βελτιστοποίηση στην χρήση μπαταρίας του Conversations που μπορεί να οδηγήσει σε αργοπορημένες ειδοποιήσεις ή ακόμα και σε απώλεια μηνυμάτων.\nΠροτείνεται να την απενεργοποιήσετε</string>
   <string name="battery_optimizations_enabled_dialog">Η συσκευή σας χρησιμοποιεί βελτιστοποίηση στην χρήση μπαταρίας του Conversations που μπορεί να οδηγήσει σε αργοπορημένες ειδοποιήσεις ή ακόμα και σε απώλεια μηνυμάτων.\nΘα σας ζητηθεί να την απενεργοποιήσετε.</string>
@@ -551,6 +556,7 @@
   <string name="pref_privacy">Ιδιωτικότητα</string>
   <string name="pref_theme_options">Θέμα</string>
   <string name="pref_theme_options_summary">Επιλογή παλέτας χρωμάτων</string>
+  <string name="pref_theme_automatic">Αυτόματο</string>
   <string name="pref_theme_light">Ανοιχτόχρωμο θέμα</string>
   <string name="pref_theme_dark">Σκουρόχρωμο θέμα</string>
   <string name="pref_use_green_background">Πράσινο φόντο</string>
@@ -864,4 +870,16 @@
   <string name="account_already_setup">Αυτός ο λογαριασμός έχει προστεθεί ήδη</string>
   <string name="please_enter_password">Παρακαλώ εισάγετε τον κωδικό για αυτό το λογαριασμό</string>
   <string name="unable_to_perform_this_action">Αδυναμία εκτέλεσης αυτής της λειτουργίας</string>
+  <string name="open_join_dialog">Είσοδος σε δημόσιο κανάλι...</string>
+  <string name="sharing_application_not_grant_permission">Η εφαρμογή από την οποία έγινε διαμοίραση δεν έδωσε δικαιώματα πρόσβασης στο αρχείο.</string>
+  <string name="group_chats_and_channels"><![CDATA[Ομαδικές συνομιλίες & Κανάλια]]></string>
+  <string name="local_server">Τοπικός διακομιστής</string>
+  <string name="pref_channel_discovery_summary">Οι περισσότεροι χρήστες πρέπει να επιλέξουν  ‘jabber.network’ για καλύτερες προτάσεις από το σύνολο του οικοσυστήματος XMPP.</string>
+  <string name="pref_channel_discovery">Μέθοδος ανακάλυψης καναλιού</string>
+  <string name="backup">Αντίγραφο ασφαλείας</string>
+  <string name="category_about">Σχετικά με</string>
+  <plurals name="view_users">
+    <item quantity="one">Εμφάνιση %1$d συμμετέχοντα</item>
+    <item quantity="other">Εμφάνιση %1$d συμμετεχόντων</item>
+  </plurals>
 </resources>

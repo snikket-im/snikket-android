@@ -292,6 +292,7 @@
   <string name="conference_shutdown">A conversa em grupo foi encerrada</string>
   <string name="conference_unknown_error">Você não está mais nesta conversa em grupo</string>
   <string name="using_account">usando a conta %s</string>
+  <string name="hosted_on">hospedado em %s</string>
   <string name="checking_x">Verificando %s no host HTTP</string>
   <string name="not_connected_try_again">Você não está conectado. Tente novamente mais tarde.</string>
   <string name="check_x_filesize">Verificar o tamanho de %s</string>
@@ -556,6 +557,7 @@
   <string name="pref_privacy">Privacidade</string>
   <string name="pref_theme_options">Tema</string>
   <string name="pref_theme_options_summary">Selecione a paleta de cores</string>
+  <string name="pref_theme_automatic">Automático</string>
   <string name="pref_theme_light">Tema claro</string>
   <string name="pref_theme_dark">Tema escuro</string>
   <string name="pref_use_green_background">Fundo verde</string>

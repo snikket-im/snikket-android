@@ -507,6 +507,7 @@
   <string name="notify_paused">Meldingen gepauzeerd</string>
   <string name="pref_picture_compression">Afbeeldingscompressie</string>
   <string name="always">Altijd</string>
+  <string name="large_images_only">Enkel grote afbeeldingen</string>
   <string name="battery_optimizations_enabled">Batterij-optimalisaties ingeschakeld</string>
   <string name="battery_optimizations_enabled_explained">Je apparaat voert sterke batterij-optimalisaties uit op Conversations, die kunnen leiden tot vertraagde meldingen of zelfs verlies van berichten.\nHet is aangeraden deze optimalisaties uit te schakelen.</string>
   <string name="battery_optimizations_enabled_dialog">Je apparaat voert sterke batterij-optimalisaties uit op Conversations, die kunnen leiden tot vertraagde meldingen of zelfs verlies van berichten.\nJe zal nu gevraagd worden deze optimalisaties uit te schakelen.</string>
@@ -552,6 +553,7 @@
   <string name="pref_privacy">Privacy</string>
   <string name="pref_theme_options">Thema</string>
   <string name="pref_theme_options_summary">Kies het kleurenpalet</string>
+  <string name="pref_theme_automatic">Automatisch</string>
   <string name="pref_theme_light">Licht thema</string>
   <string name="pref_theme_dark">Donker thema</string>
   <string name="pref_use_green_background">Groene achtergrond</string>
@@ -867,4 +869,6 @@
   <string name="please_enter_password">Voer het wachtwoord voor deze account in</string>
   <string name="unable_to_perform_this_action">Kan deze actie niet uitvoeren</string>
   <string name="open_join_dialog">Deelnemen aan openbaar kanaal…</string>
+  <string name="local_server">Lokale server</string>
+  <string name="category_about">Over</string>
 </resources>
