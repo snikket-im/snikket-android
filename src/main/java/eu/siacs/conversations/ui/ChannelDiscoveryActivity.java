@@ -18,6 +18,7 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.Collections;
 import java.util.List;
@@ -224,10 +225,12 @@ public class ChannelDiscoveryActivity extends XmppActivity implements MenuItem.O
 
     @Override
     public void onChannelSearchResult(final Room result) {
-        List<String> accounts = AccountUtils.getEnabledAccounts(xmppConnectionService);
+        final List<String> accounts = AccountUtils.getEnabledAccounts(xmppConnectionService);
         if (accounts.size() == 1) {
             joinChannelSearchResult(accounts.get(0), result);
-        } else if (accounts.size() > 0) {
+        } else if (accounts.size() == 0) {
+            Toast.makeText(this, R.string.please_enable_your_account_first, Toast.LENGTH_LONG).show();
+        } else {
             final AtomicReference<String> account = new AtomicReference<>(accounts.get(0));
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             builder.setTitle(R.string.choose_account);

@@ -883,6 +883,7 @@
     <string name="pref_channel_discovery">Channel discovery method</string>
     <string name="backup">Backup</string>
     <string name="category_about">About</string>
+    <string name="please_enable_your_account_first">Please enable your account first</string>
     <plurals name="view_users">
         <item quantity="one">View %1$d Participant</item>
         <item quantity="other">View %1$d Participants</item>
