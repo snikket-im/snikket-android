@@ -1,121 +1,98 @@
 package eu.siacs.conversations.xmpp.jingle.stanzas;
 
-import android.util.Base64;
+import android.support.annotation.NonNull;
+
+import com.google.common.base.CaseFormat;
+import com.google.common.base.Preconditions;
 
 import eu.siacs.conversations.xml.Element;
+import eu.siacs.conversations.xml.Namespace;
 import eu.siacs.conversations.xmpp.stanzas.IqPacket;
-import rocks.xmpp.addr.Jid;
 
 public class JinglePacket extends IqPacket {
 
-
-	//get rid of that BS and set/get directly
-    Content content = null;
-    Reason reason = null;
-    Element checksum = null;
-    Element jingle = new Element("jingle");
-
-    //get rid of what ever that is; maybe throw illegal state to ensure we are only calling setContent etc
-    @Override
-    public Element addChild(Element child) {
-        if ("jingle".equals(child.getName())) {
-            Element contentElement = child.findChild("content");
-            if (contentElement != null) {
-                this.content = new Content();
-                this.content.setChildren(contentElement.getChildren());
-                this.content.setAttributes(contentElement.getAttributes());
-            }
-            Element reasonElement = child.findChild("reason");
-            if (reasonElement != null) {
-                this.reason = new Reason();
-                this.reason.setChildren(reasonElement.getChildren());
-                this.reason.setAttributes(reasonElement.getAttributes());
-            }
-            this.checksum = child.findChild("checksum");
-            this.jingle.setAttributes(child.getAttributes());
-        }
-        return child;
+    private JinglePacket() {
+        super();
     }
 
-    public JinglePacket setContent(Content content) { //take content interface
-        this.content = content;
-        return this;
+    public JinglePacket(final Action action, final String sessionId) {
+        super(TYPE.SET);
+        final Element jingle = addChild("jingle", Namespace.JINGLE);
+        jingle.setAttribute("sid", sessionId);
+        jingle.setAttribute("action", action.toString());
+    }
+
+    public static JinglePacket upgrade(final IqPacket iqPacket) {
+        Preconditions.checkArgument(iqPacket.hasChild("jingle", Namespace.JINGLE));
+        final JinglePacket jinglePacket = new JinglePacket();
+        jinglePacket.setAttributes(iqPacket.getAttributes());
+        jinglePacket.setChildren(iqPacket.getChildren());
+        return jinglePacket;
     }
 
     public Content getJingleContent() {
-        if (this.content == null) {
-            this.content = new Content();
-        }
-        return this.content;
+        final Element content = getJingleChild("content");
+        return content == null ? null : Content.upgrade(content);
+    }
+
+    public void setJingleContent(final Content content) { //take content interface
+        setJingleChild(content);
     }
 
     public Reason getReason() {
-        return this.reason;
+        final Element reason = getJingleChild("reason");
+        return reason == null ? null : Reason.upgrade(reason);
     }
 
-    public JinglePacket setReason(Reason reason) {
-        this.reason = reason;
-        return this;
+    public void setReason(final Reason reason) {
+        final Element jingle = findChild("jingle", Namespace.JINGLE);
+        jingle.addChild(reason);
     }
 
-    public Element getChecksum() {
-        return this.checksum;
+    public Element getJingleChild(final String name) {
+        final Element jingle = findChild("jingle", Namespace.JINGLE);
+        return jingle == null ? null :  jingle.findChild(name);
     }
 
-    //should be unnecessary if we set and get directly
-    private void build() {
-        this.children.clear();
-        this.jingle.clearChildren();
-        this.jingle.setAttribute("xmlns", "urn:xmpp:jingle:1");
-        if (this.content != null) {
-            jingle.addChild(this.content);
-        }
-        if (this.reason != null) {
-            jingle.addChild(this.reason);
-        }
-        if (this.checksum != null) {
-            jingle.addChild(checksum);
-        }
-        this.children.add(jingle);
-        this.setAttribute("type", "set");
+    public void setJingleChild(final Element child) {
+        final Element jingle = findChild("jingle", Namespace.JINGLE);
+        jingle.addChild(child);
     }
 
     public String getSessionId() {
-        return this.jingle.getAttribute("sid");
+        return findChild("jingle", Namespace.JINGLE).getAttribute("sid");
     }
 
-    public void setSessionId(String sid) {
-        this.jingle.setAttribute("sid", sid);
+    public Action getAction() {
+        return Action.of(findChild("jingle", Namespace.JINGLE).getAttribute("action"));
     }
 
-    @Override
-    public String toString() {
-        this.build();
-        return super.toString();
-    }
+    public enum Action {
+        CONTENT_ACCEPT,
+        CONTENT_ADD,
+        CONTENT_MODIFY,
+        CONTENT_REJECT,
+        CONTENT_REMOVE,
+        DESCRIPTION_INFO,
+        SECURITY_INFO,
+        SESSION_ACCEPT,
+        SESSION_INFO,
+        SESSION_INITIATE,
+        SESSION_TERMINATE,
+        TRANSPORT_ACCEPT,
+        TRANSPORT_INFO,
+        TRANSPORT_REJECT,
+        TRANSPORT_REPLACE;
 
-    //use enum for action
-    public String getAction() {
-        return this.jingle.getAttribute("action");
-    }
+        public static Action of(final String value) {
+            //TODO handle invalid
+            return Action.valueOf(CaseFormat.LOWER_HYPHEN.to(CaseFormat.UPPER_UNDERSCORE, value));
+        }
 
-    public void setAction(String action) {
-        this.jingle.setAttribute("action", action);
-    }
-
-    public void setInitiator(final Jid initiator) {
-        this.jingle.setAttribute("initiator", initiator.toString());
-    }
-
-    public boolean isAction(String action) {
-        return action.equalsIgnoreCase(this.getAction());
-    }
-
-    public void addChecksum(byte[] sha1Sum, String namespace) {
-        this.checksum = new Element("checksum", namespace);
-        checksum.setAttribute("creator", "initiator");
-        checksum.setAttribute("name", "a-file-offer");
-        Element hash = checksum.addChild("file").addChild("hash", "urn:xmpp:hashes:2");
-        hash.setAttribute("algo", "sha-1").setContent(Base64.encodeToString(sha1Sum, Base64.NO_WRAP));
+        @Override
+        @NonNull
+        public String toString() {
+            return CaseFormat.UPPER_UNDERSCORE.to(CaseFormat.LOWER_HYPHEN, super.toString());
+        }
     }
 }

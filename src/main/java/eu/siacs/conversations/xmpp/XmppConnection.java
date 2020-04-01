@@ -669,8 +669,8 @@ public class XmppConnection implements Runnable {
     }
 
     private @NonNull
-    Element processPacket(final Tag currentTag, final int packetType) throws XmlPullParserException, IOException {
-        Element element;
+    Element processPacket(final Tag currentTag, final int packetType) throws IOException {
+        final Element element;
         switch (packetType) {
             case PACKET_IQ:
                 element = new IqPacket();
@@ -691,16 +691,7 @@ public class XmppConnection implements Runnable {
         }
         while (!nextTag.isEnd(element.getName())) {
             if (!nextTag.isNo()) {
-                final Element child = tagReader.readElement(nextTag);
-                final String type = currentTag.getAttribute("type");
-                if (packetType == PACKET_IQ
-                        && "jingle".equals(child.getName())
-                        && ("set".equalsIgnoreCase(type) || "get"
-                        .equalsIgnoreCase(type))) {
-                    element = new JinglePacket();
-                    element.setAttributes(currentTag.getAttributes());
-                }
-                element.addChild(child);
+                element.addChild(tagReader.readElement(nextTag));
             }
             nextTag = tagReader.readTag();
             if (nextTag == null) {
@@ -720,7 +711,11 @@ public class XmppConnection implements Runnable {
         if (Config.BACKGROUND_STANZA_LOGGING && mXmppConnectionService.checkListeners()) {
             Log.d(Config.LOGTAG, "[background stanza] " + element);
         }
-        return element;
+        if (element instanceof IqPacket && element.hasChild("jingle", Namespace.JINGLE)) {
+            return JinglePacket.upgrade((IqPacket) element);
+        } else {
+            return element;
+        }
     }
 
     private void processIq(final Tag currentTag) throws XmlPullParserException, IOException {

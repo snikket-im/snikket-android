@@ -221,15 +221,7 @@ public class XmppConnectionService extends Service {
     };
     private PresenceGenerator mPresenceGenerator = new PresenceGenerator(this);
     private List<Account> accounts;
-    private JingleConnectionManager mJingleConnectionManager = new JingleConnectionManager(
-            this);
-    private final OnJinglePacketReceived jingleListener = new OnJinglePacketReceived() {
-
-        @Override
-        public void onJinglePacketReceived(Account account, JinglePacket packet) {
-            mJingleConnectionManager.deliverPacket(account, packet);
-        }
-    };
+    private JingleConnectionManager mJingleConnectionManager = new JingleConnectionManager(this);
     private HttpConnectionManager mHttpConnectionManager = new HttpConnectionManager(this);
     private AvatarService mAvatarService = new AvatarService(this);
     private MessageArchiveService mMessageArchiveService = new MessageArchiveService(this);
@@ -1327,7 +1319,7 @@ public class XmppConnectionService extends Service {
         connection.setOnStatusChangedListener(this.statusListener);
         connection.setOnPresencePacketReceivedListener(this.mPresenceParser);
         connection.setOnUnregisteredIqPacketReceivedListener(this.mIqParser);
-        connection.setOnJinglePacketReceivedListener(this.jingleListener);
+        connection.setOnJinglePacketReceivedListener(((a, jp) -> mJingleConnectionManager.deliverPacket(a, jp)));
         connection.setOnBindListener(this.mOnBindListener);
         connection.setOnMessageAcknowledgeListener(this.mOnMessageAcknowledgedListener);
         connection.addOnAdvancedStreamFeaturesAvailableListener(this.mMessageArchiveService);

@@ -1,42 +1,42 @@
 package eu.siacs.conversations.xmpp.jingle.stanzas;
 
+import android.support.annotation.NonNull;
+
+import com.google.common.base.Preconditions;
+
+import java.util.Locale;
+
 import eu.siacs.conversations.entities.DownloadableFile;
 import eu.siacs.conversations.xml.Element;
 import eu.siacs.conversations.xml.Namespace;
 
 public class Content extends Element {
+    private String transportId;
 
 
     //refactor to getDescription and getTransport
     //return either FileTransferDescription or GenericDescription or RtpDescription (all extend Description interface)
 
-    public enum Version {
-        FT_3("urn:xmpp:jingle:apps:file-transfer:3"),
-        FT_4("urn:xmpp:jingle:apps:file-transfer:4"),
-        FT_5("urn:xmpp:jingle:apps:file-transfer:5");
-
-        private final String namespace;
-
-        Version(String namespace) {
-            this.namespace = namespace;
-        }
-
-        public String getNamespace() {
-            return namespace;
-        }
-    }
-
-    private String transportId;
-
-    public Content() {
-        super("content");
-    }
-
-    public Content(String creator, String name) {
-        super("content");
-        this.setAttribute("creator", creator);
-        this.setAttribute("senders", creator);
+    public Content(final Creator creator, final String name) {
+        super("content", Namespace.JINGLE);
+        this.setAttribute("creator", creator.toString());
         this.setAttribute("name", name);
+    }
+
+    private Content() {
+        super("content", Namespace.JINGLE);
+    }
+
+    public static Content upgrade(final Element element) {
+        Preconditions.checkArgument("content".equals(element.getName()));
+        final Content content = new Content();
+        content.setAttributes(element.getAttributes());
+        content.setChildren(element.getChildren());
+        return content;
+    }
+
+    public Creator getCreator() {
+        return Creator.of(getAttribute("creator"));
     }
 
     public Version getVersion() {
@@ -48,10 +48,6 @@ public class Content extends Element {
             return Version.FT_5;
         }
         return null;
-    }
-
-    public void setTransportId(String sid) {
-        this.transportId = sid;
     }
 
     public Element setFileOffer(DownloadableFile actualFile, boolean otr, Version version) {
@@ -106,6 +102,10 @@ public class Content extends Element {
         return this.transportId;
     }
 
+    public void setTransportId(String sid) {
+        this.transportId = sid;
+    }
+
     public Element socks5transport() {
         Element transport = this.findChild("transport", Namespace.JINGLE_TRANSPORTS_S5B);
         if (transport == null) {
@@ -130,5 +130,49 @@ public class Content extends Element {
 
     public boolean hasIbbTransport() {
         return this.hasChild("transport", Namespace.JINGLE_TRANSPORTS_IBB);
+    }
+
+    public enum Version {
+        FT_3("urn:xmpp:jingle:apps:file-transfer:3"),
+        FT_4("urn:xmpp:jingle:apps:file-transfer:4"),
+        FT_5("urn:xmpp:jingle:apps:file-transfer:5");
+
+        private final String namespace;
+
+        Version(String namespace) {
+            this.namespace = namespace;
+        }
+
+        public String getNamespace() {
+            return namespace;
+        }
+    }
+
+    public enum Creator {
+        INITIATOR, RESPONDER;
+
+        public static Creator of(final String value) {
+            return Creator.valueOf(value.toUpperCase(Locale.ROOT));
+        }
+
+        @Override
+        @NonNull
+        public String toString() {
+            return super.toString().toLowerCase(Locale.ROOT);
+        }
+    }
+
+    public enum Senders {
+        BOTH, INITIATOR, NONE, RESPONDER;
+
+        public static Senders of(final String value) {
+            return Senders.valueOf(value.toUpperCase(Locale.ROOT));
+        }
+
+        @Override
+        @NonNull
+        public String toString() {
+            return super.toString().toLowerCase(Locale.ROOT);
+        }
     }
 }

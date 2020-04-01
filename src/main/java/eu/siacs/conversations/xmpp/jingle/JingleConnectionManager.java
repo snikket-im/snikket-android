@@ -33,7 +33,7 @@ public class JingleConnectionManager extends AbstractConnectionManager {
 
     public void deliverPacket(final Account account, final JinglePacket packet) {
         final AbstractJingleConnection.Id id = AbstractJingleConnection.Id.of(account, packet);
-        if (packet.isAction("session-initiate")) { //TODO check that id doesn't exist yet
+        if (packet.getAction() == JinglePacket.Action.SESSION_INITIATE) { //TODO check that id doesn't exist yet
             JingleFileTransferConnection connection = new JingleFileTransferConnection(this, id);
             connection.init(account, packet);
             connections.put(id, connection);

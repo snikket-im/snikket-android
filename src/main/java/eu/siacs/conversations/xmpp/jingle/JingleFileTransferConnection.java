@@ -31,7 +31,6 @@ import eu.siacs.conversations.entities.TransferablePlaceholder;
 import eu.siacs.conversations.parser.IqParser;
 import eu.siacs.conversations.persistance.FileBackend;
 import eu.siacs.conversations.services.AbstractConnectionManager;
-import eu.siacs.conversations.services.XmppConnectionService;
 import eu.siacs.conversations.utils.CryptoHelper;
 import eu.siacs.conversations.xml.Element;
 import eu.siacs.conversations.xml.Namespace;
@@ -70,7 +69,7 @@ public class JingleFileTransferConnection extends AbstractJingleConnection imple
     private boolean proxyActivationFailed = false;
 
     private String contentName;
-    private String contentCreator;
+    private Content.Creator contentCreator;
     private Transport initialTransport;
     private boolean remoteSupportsOmemoJet;
 
@@ -104,10 +103,15 @@ public class JingleFileTransferConnection extends AbstractJingleConnection imple
         @Override
         public void onFileTransmitted(DownloadableFile file) {
             if (responding()) {
-                if (expectedHash.length > 0 && !Arrays.equals(expectedHash, file.getSha1Sum())) {
-                    Log.d(Config.LOGTAG, id.account.getJid().asBareJid() + ": hashes did not match");
+                if (expectedHash.length > 0) {
+                    if (Arrays.equals(expectedHash, file.getSha1Sum())) {
+                        Log.d(Config.LOGTAG, id.account.getJid().asBareJid() + ": received file matched the expected hash");
+                    } else {
+                        Log.d(Config.LOGTAG, id.account.getJid().asBareJid() + ": hashes did not match");
+                    }
+                } else {
+                    Log.d(Config.LOGTAG, id.account.getJid().asBareJid() + ": other party did not include file hash in file transfer");
                 }
-                Log.d(Config.LOGTAG, id.account.getJid().asBareJid() + ": file transmitted(). we are responding");
                 sendSuccess();
                 xmppConnectionService.getFileBackend().updateFileParams(message);
                 xmppConnectionService.databaseBackend.createMessage(message);
@@ -219,10 +223,10 @@ public class JingleFileTransferConnection extends AbstractJingleConnection imple
         }
         final File parent = this.file.getParentFile();
         if (parent != null && parent.mkdirs()) {
-            Log.d(Config.LOGTAG,"created parent directories for file "+file.getAbsolutePath());
+            Log.d(Config.LOGTAG, "created parent directories for file " + file.getAbsolutePath());
         }
         if (this.file.createNewFile()) {
-            Log.d(Config.LOGTAG,"created output file "+file.getAbsolutePath());
+            Log.d(Config.LOGTAG, "created output file " + file.getAbsolutePath());
         }
         this.mFileOutputStream = AbstractConnectionManager.createOutputStream(this.file, false, true);
         return this.mFileOutputStream;
@@ -230,7 +234,9 @@ public class JingleFileTransferConnection extends AbstractJingleConnection imple
 
     @Override
     void deliverPacket(final JinglePacket packet) {
-        if (packet.isAction("session-terminate")) {
+        final JinglePacket.Action action = packet.getAction();
+        //TODO switch case
+        if (action == JinglePacket.Action.SESSION_TERMINATE) {
             Reason reason = packet.getReason();
             if (reason != null) {
                 if (reason.hasChild("cancel")) {
@@ -249,10 +255,10 @@ public class JingleFileTransferConnection extends AbstractJingleConnection imple
             } else {
                 this.fail();
             }
-        } else if (packet.isAction("session-accept")) {
+        } else if (action == JinglePacket.Action.SESSION_ACCEPT) {
             receiveAccept(packet);
-        } else if (packet.isAction("session-info")) {
-            final Element checksum = packet.getChecksum();
+        } else if (action == JinglePacket.Action.SESSION_INFO) {
+            final Element checksum = packet.getJingleChild("checksum");
             final Element file = checksum == null ? null : checksum.findChild("file");
             final Element hash = file == null ? null : file.findChild("hash", "urn:xmpp:hashes:2");
             if (hash != null && "sha-1".equalsIgnoreCase(hash.getAttribute("algo"))) {
@@ -263,16 +269,16 @@ public class JingleFileTransferConnection extends AbstractJingleConnection imple
                 }
             }
             respondToIq(packet, true);
-        } else if (packet.isAction("transport-info")) {
+        } else if (action == JinglePacket.Action.TRANSPORT_INFO) {
             receiveTransportInfo(packet);
-        } else if (packet.isAction("transport-replace")) {
+        } else if (action == JinglePacket.Action.TRANSPORT_REPLACE) {
             if (packet.getJingleContent().hasIbbTransport()) {
                 receiveFallbackToIbb(packet);
             } else {
                 Log.d(Config.LOGTAG, "trying to fallback to something unknown" + packet.toString());
                 respondToIq(packet, false);
             }
-        } else if (packet.isAction("transport-accept")) {
+        } else if (action == JinglePacket.Action.TRANSPORT_ACCEPT) {
             receiveTransportAccept(packet);
         } else {
             Log.d(Config.LOGTAG, "packet arrived in connection. action was " + packet.getAction());
@@ -317,7 +323,7 @@ public class JingleFileTransferConnection extends AbstractJingleConnection imple
 
     private void init(Message message, XmppAxolotlMessage xmppAxolotlMessage) {
         this.mXmppAxolotlMessage = xmppAxolotlMessage;
-        this.contentCreator = "initiator";
+        this.contentCreator = Content.Creator.INITIATOR;
         this.contentName = JingleConnectionManager.nextRandomId();
         this.message = message;
         final List<String> remoteFeatures = getRemoteFeatures();
@@ -413,7 +419,7 @@ public class JingleFileTransferConnection extends AbstractJingleConnection imple
         this.initiator = this.id.counterPart;
         this.responder = this.id.account.getJid();
         final Content content = packet.getJingleContent();
-        this.contentCreator = content.getAttribute("creator");
+        this.contentCreator = content.getCreator();
         this.initialTransport = content.hasSocks5Transport() ? Transport.SOCKS : Transport.IBB;
         this.contentName = content.getAttribute("name");
         this.transportId = content.getTransportId();
@@ -531,8 +537,8 @@ public class JingleFileTransferConnection extends AbstractJingleConnection imple
     }
 
     private void sendInitRequest() {
-        JinglePacket packet = this.bootstrapPacket("session-initiate");
-        Content content = new Content(this.contentCreator, this.contentName);
+        final JinglePacket packet = this.bootstrapPacket(JinglePacket.Action.SESSION_INITIATE);
+        final Content content = new Content(this.contentCreator, this.contentName);
         if (message.isFileOrImage()) {
             content.setTransportId(this.transportId);
             this.file = this.xmppConnectionService.getFileBackend().getFile(message, false);
@@ -574,7 +580,7 @@ public class JingleFileTransferConnection extends AbstractJingleConnection imple
                 Log.d(Config.LOGTAG, String.format("%s: sending S5B offer with %d candidates", id.account.getJid().asBareJid(), candidates.size()));
                 content.socks5transport().setChildren(candidates);
             }
-            packet.setContent(content);
+            packet.setJingleContent(content);
             this.sendJinglePacket(packet, (account, response) -> {
                 if (response.getType() == IqPacket.TYPE.RESULT) {
                     Log.d(Config.LOGTAG, id.account.getJid().asBareJid() + ": other party received offer");
@@ -593,8 +599,15 @@ public class JingleFileTransferConnection extends AbstractJingleConnection imple
     }
 
     private void sendHash() {
-        JinglePacket packet = this.bootstrapPacket("session-info");
-        packet.addChecksum(file.getSha1Sum(), ftVersion.getNamespace());
+
+        final Element checksum = new Element("checksum", ftVersion.getNamespace());
+        checksum.setAttribute("creator", "initiator");
+        checksum.setAttribute("name", "a-file-offer");
+        Element hash = checksum.addChild("file").addChild("hash", "urn:xmpp:hashes:2");
+        hash.setAttribute("algo", "sha-1").setContent(Base64.encodeToString(file.getSha1Sum(), Base64.NO_WRAP));
+
+        final JinglePacket packet = this.bootstrapPacket(JinglePacket.Action.SESSION_INFO);
+        packet.setJingleChild(checksum);
         this.sendJinglePacket(packet);
     }
 
@@ -622,7 +635,7 @@ public class JingleFileTransferConnection extends AbstractJingleConnection imple
     private void sendAcceptSocks() {
         gatherAndConnectDirectCandidates();
         this.jingleConnectionManager.getPrimaryCandidate(this.id.account, initiating(), (success, candidate) -> {
-            final JinglePacket packet = bootstrapPacket("session-accept");
+            final JinglePacket packet = bootstrapPacket(JinglePacket.Action.SESSION_ACCEPT);
             final Content content = new Content(contentCreator, contentName);
             content.setFileOffer(fileOffer, ftVersion);
             content.setTransportId(transportId);
@@ -635,7 +648,7 @@ public class JingleFileTransferConnection extends AbstractJingleConnection imple
                     public void failed() {
                         Log.d(Config.LOGTAG, "connection to our own proxy65 candidate failed");
                         content.socks5transport().setChildren(getCandidatesAsElements());
-                        packet.setContent(content);
+                        packet.setJingleContent(content);
                         sendJinglePacket(packet);
                         connectNextCandidate();
                     }
@@ -645,7 +658,7 @@ public class JingleFileTransferConnection extends AbstractJingleConnection imple
                         Log.d(Config.LOGTAG, "connected to proxy65 candidate");
                         mergeCandidate(candidate);
                         content.socks5transport().setChildren(getCandidatesAsElements());
-                        packet.setContent(content);
+                        packet.setJingleContent(content);
                         sendJinglePacket(packet);
                         connectNextCandidate();
                     }
@@ -653,7 +666,7 @@ public class JingleFileTransferConnection extends AbstractJingleConnection imple
             } else {
                 Log.d(Config.LOGTAG, "did not find a proxy65 candidate for ourselves");
                 content.socks5transport().setChildren(getCandidatesAsElements());
-                packet.setContent(content);
+                packet.setJingleContent(content);
                 sendJinglePacket(packet);
                 connectNextCandidate();
             }
@@ -662,23 +675,19 @@ public class JingleFileTransferConnection extends AbstractJingleConnection imple
 
     private void sendAcceptIbb() {
         this.transport = new JingleInBandTransport(this, this.transportId, this.ibbBlockSize);
-        final JinglePacket packet = bootstrapPacket("session-accept");
+        final JinglePacket packet = bootstrapPacket(JinglePacket.Action.SESSION_ACCEPT);
         final Content content = new Content(contentCreator, contentName);
         content.setFileOffer(fileOffer, ftVersion);
         content.setTransportId(transportId);
         content.ibbTransport().setAttribute("block-size", this.ibbBlockSize);
-        packet.setContent(content);
+        packet.setJingleContent(content);
         this.transport.receive(file, onFileTransmissionStatusChanged);
         this.sendJinglePacket(packet);
     }
 
-    private JinglePacket bootstrapPacket(String action) {
-        JinglePacket packet = new JinglePacket();
-        packet.setAction(action);
-        packet.setFrom(id.account.getJid());
+    private JinglePacket bootstrapPacket(JinglePacket.Action action) {
+        final JinglePacket packet = new JinglePacket(action, this.id.sessionId);
         packet.setTo(id.counterPart);
-        packet.setSessionId(this.id.sessionId);
-        packet.setInitiator(this.initiator);
         return packet;
     }
 
@@ -893,13 +902,13 @@ public class JingleFileTransferConnection extends AbstractJingleConnection imple
 
     private void sendFallbackToIbb() {
         Log.d(Config.LOGTAG, id.account.getJid().asBareJid() + ": sending fallback to ibb");
-        JinglePacket packet = this.bootstrapPacket("transport-replace");
+        JinglePacket packet = this.bootstrapPacket(JinglePacket.Action.TRANSPORT_REPLACE);
         Content content = new Content(this.contentCreator, this.contentName);
-        this.transportId = this.jingleConnectionManager.nextRandomId();
+        this.transportId = JingleConnectionManager.nextRandomId();
         content.setTransportId(this.transportId);
         content.ibbTransport().setAttribute("block-size",
                 Integer.toString(this.ibbBlockSize));
-        packet.setContent(content);
+        packet.setJingleContent(content);
         this.sendJinglePacket(packet);
     }
 
@@ -932,12 +941,12 @@ public class JingleFileTransferConnection extends AbstractJingleConnection imple
         this.transportId = packet.getJingleContent().getTransportId();
         this.transport = new JingleInBandTransport(this, this.transportId, this.ibbBlockSize);
 
-        final JinglePacket answer = bootstrapPacket("transport-accept");
+        final JinglePacket answer = bootstrapPacket(JinglePacket.Action.TRANSPORT_ACCEPT);
 
         final Content content = new Content(contentCreator, contentName);
         content.ibbTransport().setAttribute("block-size", this.ibbBlockSize);
         content.ibbTransport().setAttribute("sid", this.transportId);
-        answer.setContent(content);
+        answer.setJingleContent(content);
 
         respondToIq(packet, true);
 
@@ -1067,7 +1076,7 @@ public class JingleFileTransferConnection extends AbstractJingleConnection imple
     }
 
     private void sendSessionTerminate(String reason) {
-        final JinglePacket packet = bootstrapPacket("session-terminate");
+        final JinglePacket packet = bootstrapPacket(JinglePacket.Action.SESSION_TERMINATE);
         final Reason r = new Reason();
         r.addChild(reason);
         packet.setReason(r);
@@ -1120,29 +1129,29 @@ public class JingleFileTransferConnection extends AbstractJingleConnection imple
     }
 
     private void sendProxyActivated(String cid) {
-        final JinglePacket packet = bootstrapPacket("transport-info");
+        final JinglePacket packet = bootstrapPacket(JinglePacket.Action.TRANSPORT_INFO);
         final Content content = new Content(this.contentCreator, this.contentName);
         content.setTransportId(this.transportId);
         content.socks5transport().addChild("activated").setAttribute("cid", cid);
-        packet.setContent(content);
+        packet.setJingleContent(content);
         this.sendJinglePacket(packet);
     }
 
     private void sendProxyError() {
-        final JinglePacket packet = bootstrapPacket("transport-info");
+        final JinglePacket packet = bootstrapPacket(JinglePacket.Action.TRANSPORT_INFO);
         final Content content = new Content(this.contentCreator, this.contentName);
         content.setTransportId(this.transportId);
         content.socks5transport().addChild("proxy-error");
-        packet.setContent(content);
+        packet.setJingleContent(content);
         this.sendJinglePacket(packet);
     }
 
     private void sendCandidateUsed(final String cid) {
-        JinglePacket packet = bootstrapPacket("transport-info");
+        JinglePacket packet = bootstrapPacket(JinglePacket.Action.TRANSPORT_INFO);
         Content content = new Content(this.contentCreator, this.contentName);
         content.setTransportId(this.transportId);
         content.socks5transport().addChild("candidate-used").setAttribute("cid", cid);
-        packet.setContent(content);
+        packet.setJingleContent(content);
         this.sentCandidate = true;
         if ((receivedCandidate) && (mJingleStatus == JINGLE_STATUS_ACCEPTED)) {
             connect();
@@ -1152,11 +1161,11 @@ public class JingleFileTransferConnection extends AbstractJingleConnection imple
 
     private void sendCandidateError() {
         Log.d(Config.LOGTAG, id.account.getJid().asBareJid() + ": sending candidate error");
-        JinglePacket packet = bootstrapPacket("transport-info");
+        JinglePacket packet = bootstrapPacket(JinglePacket.Action.TRANSPORT_INFO);
         Content content = new Content(this.contentCreator, this.contentName);
         content.setTransportId(this.transportId);
         content.socks5transport().addChild("candidate-error");
-        packet.setContent(content);
+        packet.setJingleContent(content);
         this.sentCandidate = true;
         this.sendJinglePacket(packet);
         if (receivedCandidate && mJingleStatus == JINGLE_STATUS_ACCEPTED) {
@@ -1253,7 +1262,7 @@ public class JingleFileTransferConnection extends AbstractJingleConnection imple
         return this.mProgress;
     }
 
-    public AbstractConnectionManager getConnectionManager() {
+    AbstractConnectionManager getConnectionManager() {
         return this.jingleConnectionManager;
     }
 

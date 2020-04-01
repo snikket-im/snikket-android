@@ -33,6 +33,7 @@ public final class Namespace {
 	public static final String PING = "urn:xmpp:ping";
 	public static final String PUSH = "urn:xmpp:push:0";
 	public static final String COMMANDS = "http://jabber.org/protocol/commands";
+	public static final String JINGLE = "urn:xmpp:jingle:1";
 	public static final String JINGLE_ENCRYPTED_TRANSPORT = "urn:xmpp:jingle:jet:0";
 	public static final String JINGLE_ENCRYPTED_TRANSPORT_OMEMO = "urn:xmpp:jingle:jet-omemo:0";
 	public static final String MUC_USER = "http://jabber.org/protocol/muc#user";
