@@ -1353,7 +1353,7 @@ public class XmppConnectionService extends Service {
                 || message.getConversation().getMode() == Conversation.MODE_MULTI) {
             mHttpConnectionManager.createNewUploadConnection(message, delay);
         } else {
-            mJingleConnectionManager.createNewConnection(message);
+            mJingleConnectionManager.startJingleFileTransfer(message);
         }
     }
 

@@ -33,7 +33,7 @@ public class JingleInBandTransport extends JingleTransport {
     private boolean connected = true;
 
     private DownloadableFile file;
-    private final JingleConnection connection;
+    private final JingleFileTransferConnection connection;
 
     private InputStream fileInputStream = null;
     private InputStream innerInputStream = null;
@@ -60,10 +60,10 @@ public class JingleInBandTransport extends JingleTransport {
         }
     };
 
-    JingleInBandTransport(final JingleConnection connection, final String sid, final int blockSize) {
+    JingleInBandTransport(final JingleFileTransferConnection connection, final String sid, final int blockSize) {
         this.connection = connection;
-        this.account = connection.getAccount();
-        this.counterpart = connection.getCounterPart();
+        this.account = connection.getId().account;
+        this.counterpart = connection.getId().counterPart;
         this.blockSize = blockSize;
         this.sessionId = sid;
     }

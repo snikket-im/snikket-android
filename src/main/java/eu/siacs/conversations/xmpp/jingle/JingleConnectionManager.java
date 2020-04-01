@@ -1,13 +1,13 @@
 package eu.siacs.conversations.xmpp.jingle;
 
-import android.annotation.SuppressLint;
 import android.util.Log;
 
-import java.math.BigInteger;
-import java.security.SecureRandom;
+import com.google.common.base.Preconditions;
+
 import java.util.HashMap;
-import java.util.List;
-import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.Map;
+import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.entities.Account;
@@ -15,74 +15,63 @@ import eu.siacs.conversations.entities.Message;
 import eu.siacs.conversations.entities.Transferable;
 import eu.siacs.conversations.services.AbstractConnectionManager;
 import eu.siacs.conversations.services.XmppConnectionService;
-import eu.siacs.conversations.xml.Namespace;
 import eu.siacs.conversations.xml.Element;
+import eu.siacs.conversations.xml.Namespace;
 import eu.siacs.conversations.xmpp.OnIqPacketReceived;
 import eu.siacs.conversations.xmpp.jingle.stanzas.JinglePacket;
 import eu.siacs.conversations.xmpp.stanzas.IqPacket;
 import rocks.xmpp.addr.Jid;
 
 public class JingleConnectionManager extends AbstractConnectionManager {
-    private List<JingleConnection> connections = new CopyOnWriteArrayList<>();
+    private Map<AbstractJingleConnection.Id, AbstractJingleConnection> connections = new ConcurrentHashMap<>();
 
     private HashMap<Jid, JingleCandidate> primaryCandidates = new HashMap<>();
-
-    @SuppressLint("TrulyRandom")
-    private SecureRandom random = new SecureRandom();
 
     public JingleConnectionManager(XmppConnectionService service) {
         super(service);
     }
 
-    public void deliverPacket(Account account, JinglePacket packet) {
-        if (packet.isAction("session-initiate")) {
-            JingleConnection connection = new JingleConnection(this);
+    public void deliverPacket(final Account account, final JinglePacket packet) {
+        final AbstractJingleConnection.Id id = AbstractJingleConnection.Id.of(account, packet);
+        if (packet.isAction("session-initiate")) { //TODO check that id doesn't exist yet
+            JingleFileTransferConnection connection = new JingleFileTransferConnection(this, id);
             connection.init(account, packet);
-            connections.add(connection);
+            connections.put(id, connection);
         } else {
-            for (JingleConnection connection : connections) {
-                if (connection.getAccount() == account
-                        && connection.getSessionId().equals(
-                        packet.getSessionId())
-                        && connection.getCounterPart().equals(packet.getFrom())) {
-                    connection.deliverPacket(packet);
-                    return;
-                }
+            final AbstractJingleConnection abstractJingleConnection = connections.get(id);
+            if (abstractJingleConnection != null) {
+                abstractJingleConnection.deliverPacket(packet);
+            } else {
+                Log.d(Config.LOGTAG, "unable to route jingle packet: " + packet);
+                IqPacket response = packet.generateResponse(IqPacket.TYPE.ERROR);
+                Element error = response.addChild("error");
+                error.setAttribute("type", "cancel");
+                error.addChild("item-not-found",
+                        "urn:ietf:params:xml:ns:xmpp-stanzas");
+                error.addChild("unknown-session", "urn:xmpp:jingle:errors:1");
+                account.getXmppConnection().sendIqPacket(response, null);
             }
-            Log.d(Config.LOGTAG, "unable to route jingle packet: " + packet);
-            IqPacket response = packet.generateResponse(IqPacket.TYPE.ERROR);
-            Element error = response.addChild("error");
-            error.setAttribute("type", "cancel");
-            error.addChild("item-not-found",
-                    "urn:ietf:params:xml:ns:xmpp-stanzas");
-            error.addChild("unknown-session", "urn:xmpp:jingle:errors:1");
-            account.getXmppConnection().sendIqPacket(response, null);
         }
     }
 
-    public JingleConnection createNewConnection(Message message) {
-        Transferable old = message.getTransferable();
+    public void startJingleFileTransfer(final Message message) {
+        Preconditions.checkArgument(message.isFileOrImage(), "Message is not of type file or image");
+        final Transferable old = message.getTransferable();
         if (old != null) {
             old.cancel();
         }
-        JingleConnection connection = new JingleConnection(this);
+        final AbstractJingleConnection.Id id = AbstractJingleConnection.Id.of(message);
+        final JingleFileTransferConnection connection = new JingleFileTransferConnection(this, id);
         mXmppConnectionService.markMessage(message, Message.STATUS_WAITING);
         connection.init(message);
-        this.connections.add(connection);
-        return connection;
+        this.connections.put(id, connection);
     }
 
-    public JingleConnection createNewConnection(final JinglePacket packet) {
-        JingleConnection connection = new JingleConnection(this);
-        this.connections.add(connection);
-        return connection;
+    void finishConnection(final AbstractJingleConnection connection) {
+        this.connections.remove(connection.getId());
     }
 
-    public void finishConnection(JingleConnection connection) {
-        this.connections.remove(connection);
-    }
-
-    public void getPrimaryCandidate(final Account account, final boolean initiator, final OnPrimaryCandidateFound listener) {
+    void getPrimaryCandidate(final Account account, final boolean initiator, final OnPrimaryCandidateFound listener) {
         if (Config.DISABLE_PROXY_LOOKUP) {
             listener.onPrimaryCandidateFound(false, null);
             return;
@@ -97,7 +86,7 @@ public class JingleConnectionManager extends AbstractConnectionManager {
 
                     @Override
                     public void onIqPacketReceived(Account account, IqPacket packet) {
-                        Element streamhost = packet.query().findChild("streamhost", Namespace.BYTE_STREAMS);
+                        final Element streamhost = packet.query().findChild("streamhost", Namespace.BYTE_STREAMS);
                         final String host = streamhost == null ? null : streamhost.getAttribute("host");
                         final String port = streamhost == null ? null : streamhost.getAttribute("port");
                         if (host != null && port != null) {
@@ -112,7 +101,6 @@ public class JingleConnectionManager extends AbstractConnectionManager {
                                 listener.onPrimaryCandidateFound(true, candidate);
                             } catch (final NumberFormatException e) {
                                 listener.onPrimaryCandidateFound(false, null);
-                                return;
                             }
                         } else {
                             listener.onPrimaryCandidateFound(false, null);
@@ -129,31 +117,30 @@ public class JingleConnectionManager extends AbstractConnectionManager {
         }
     }
 
-    public String nextRandomId() {
-        return new BigInteger(50, random).toString(32);
+    static String nextRandomId() {
+        return UUID.randomUUID().toString();
     }
 
     public void deliverIbbPacket(Account account, IqPacket packet) {
         String sid = null;
         Element payload = null;
-        if (packet.hasChild("open", "http://jabber.org/protocol/ibb")) {
-            payload = packet.findChild("open", "http://jabber.org/protocol/ibb");
+        if (packet.hasChild("open", Namespace.IBB)) {
+            payload = packet.findChild("open", Namespace.IBB);
             sid = payload.getAttribute("sid");
-        } else if (packet.hasChild("data", "http://jabber.org/protocol/ibb")) {
-            payload = packet.findChild("data", "http://jabber.org/protocol/ibb");
+        } else if (packet.hasChild("data", Namespace.IBB)) {
+            payload = packet.findChild("data", Namespace.IBB);
             sid = payload.getAttribute("sid");
-        } else if (packet.hasChild("close", "http://jabber.org/protocol/ibb")) {
-            payload = packet.findChild("close", "http://jabber.org/protocol/ibb");
+        } else if (packet.hasChild("close", Namespace.IBB)) {
+            payload = packet.findChild("close", Namespace.IBB);
             sid = payload.getAttribute("sid");
         }
         if (sid != null) {
-            for (JingleConnection connection : connections) {
-                if (connection.getAccount() == account
-                        && connection.hasTransportId(sid)) {
-                    JingleTransport transport = connection.getTransport();
+            for (final AbstractJingleConnection connection : this.connections.values()) {
+                if (connection instanceof JingleFileTransferConnection) {
+                    final JingleFileTransferConnection fileTransfer = (JingleFileTransferConnection) connection;
+                    final JingleTransport transport = fileTransfer.getTransport();
                     if (transport instanceof JingleInBandTransport) {
-                        JingleInBandTransport inbandTransport = (JingleInBandTransport) transport;
-                        inbandTransport.deliverPayload(packet, payload);
+                        ((JingleInBandTransport) transport).deliverPayload(packet, payload);
                         return;
                     }
                 }
@@ -164,10 +151,10 @@ public class JingleConnectionManager extends AbstractConnectionManager {
     }
 
     public void cancelInTransmission() {
-        for (JingleConnection connection : this.connections) {
-            if (connection.getJingleStatus() == JingleConnection.JINGLE_STATUS_TRANSMITTING) {
+        for (AbstractJingleConnection connection : this.connections.values()) {
+            /*if (connection.getJingleStatus() == JingleFileTransferConnection.JINGLE_STATUS_TRANSMITTING) {
                 connection.abort("connectivity-error");
-            }
+            }*/
         }
     }
 }

@@ -6,6 +6,10 @@ import eu.siacs.conversations.xml.Namespace;
 
 public class Content extends Element {
 
+
+    //refactor to getDescription and getTransport
+    //return either FileTransferDescription or GenericDescription or RtpDescription (all extend Description interface)
+
     public enum Version {
         FT_3("urn:xmpp:jingle:apps:file-transfer:3"),
         FT_4("urn:xmpp:jingle:apps:file-transfer:4"),
