@@ -3,6 +3,8 @@ package eu.siacs.conversations.xmpp.jingle;
 import android.util.Base64;
 import android.util.Log;
 
+import com.google.common.base.Preconditions;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -36,6 +38,7 @@ import eu.siacs.conversations.xml.Element;
 import eu.siacs.conversations.xml.Namespace;
 import eu.siacs.conversations.xmpp.OnIqPacketReceived;
 import eu.siacs.conversations.xmpp.jingle.stanzas.Content;
+import eu.siacs.conversations.xmpp.jingle.stanzas.FileTransferDescription;
 import eu.siacs.conversations.xmpp.jingle.stanzas.JinglePacket;
 import eu.siacs.conversations.xmpp.jingle.stanzas.Reason;
 import eu.siacs.conversations.xmpp.stanzas.IqPacket;
@@ -50,7 +53,6 @@ public class JingleFileTransferConnection extends AbstractJingleConnection imple
     private static final int JINGLE_STATUS_FINISHED = 4;
     private static final int JINGLE_STATUS_FAILED = 99;
     private static final int JINGLE_STATUS_OFFERED = -1;
-    private Content.Version ftVersion = Content.Version.FT_3;
 
     private int ibbBlockSize = 8192;
 
@@ -63,7 +65,7 @@ public class JingleFileTransferConnection extends AbstractJingleConnection imple
     private ConcurrentHashMap<String, JingleSocks5Transport> connections = new ConcurrentHashMap<>();
 
     private String transportId;
-    private Element fileOffer;
+    private FileTransferDescription description;
     private DownloadableFile file = null;
 
     private boolean proxyActivationFailed = false;
@@ -130,7 +132,7 @@ public class JingleFileTransferConnection extends AbstractJingleConnection imple
                     id.account.getPgpDecryptionService().decrypt(message, true);
                 }
             } else {
-                if (ftVersion == Content.Version.FT_5) { //older Conversations will break when receiving a session-info
+                if (description.getVersion() == FileTransferDescription.Version.FT_5) { //older Conversations will break when receiving a session-info
                     sendHash();
                 }
                 if (message.getEncryption() == Message.ENCRYPTION_PGP) {
@@ -236,7 +238,9 @@ public class JingleFileTransferConnection extends AbstractJingleConnection imple
     void deliverPacket(final JinglePacket packet) {
         final JinglePacket.Action action = packet.getAction();
         //TODO switch case
-        if (action == JinglePacket.Action.SESSION_TERMINATE) {
+        if (action == JinglePacket.Action.SESSION_INITIATE) {
+            init(packet);
+        } else if (action == JinglePacket.Action.SESSION_TERMINATE) {
             Reason reason = packet.getReason();
             if (reason != null) {
                 if (reason.hasChild("cancel")) {
@@ -307,6 +311,7 @@ public class JingleFileTransferConnection extends AbstractJingleConnection imple
     }
 
     public void init(final Message message) {
+        Preconditions.checkArgument(message.isFileOrImage());
         if (message.getEncryption() == Message.ENCRYPTION_AXOLOTL) {
             Conversation conversation = (Conversation) message.getConversation();
             conversation.getAccount().getAxolotlService().prepareKeyTransportMessage(conversation, xmppAxolotlMessage -> {
@@ -321,13 +326,13 @@ public class JingleFileTransferConnection extends AbstractJingleConnection imple
         }
     }
 
-    private void init(Message message, XmppAxolotlMessage xmppAxolotlMessage) {
+    private void init(final Message message, final XmppAxolotlMessage xmppAxolotlMessage) {
         this.mXmppAxolotlMessage = xmppAxolotlMessage;
         this.contentCreator = Content.Creator.INITIATOR;
         this.contentName = JingleConnectionManager.nextRandomId();
         this.message = message;
         final List<String> remoteFeatures = getRemoteFeatures();
-        upgradeNamespace(remoteFeatures);
+        final FileTransferDescription.Version remoteVersion = getAvailableFileTransferVersion(remoteFeatures);
         this.initialTransport = remoteFeatures.contains(Namespace.JINGLE_TRANSPORTS_S5B) ? Transport.SOCKS : Transport.IBB;
         this.remoteSupportsOmemoJet = remoteFeatures.contains(Namespace.JINGLE_ENCRYPTED_TRANSPORT_OMEMO);
         this.message.setTransferable(this);
@@ -335,6 +340,7 @@ public class JingleFileTransferConnection extends AbstractJingleConnection imple
         this.initiator = this.id.account.getJid();
         this.responder = this.id.counterPart;
         this.transportId = JingleConnectionManager.nextRandomId();
+        this.setupDescription(remoteVersion);
         if (this.initialTransport == Transport.IBB) {
             this.sendInitRequest();
         } else {
@@ -386,11 +392,13 @@ public class JingleFileTransferConnection extends AbstractJingleConnection imple
         }
     }
 
-    private void upgradeNamespace(List<String> remoteFeatures) {
-        if (remoteFeatures.contains(Content.Version.FT_5.getNamespace())) {
-            this.ftVersion = Content.Version.FT_5;
-        } else if (remoteFeatures.contains(Content.Version.FT_4.getNamespace())) {
-            this.ftVersion = Content.Version.FT_4;
+    private FileTransferDescription.Version getAvailableFileTransferVersion(List<String> remoteFeatures) {
+        if (remoteFeatures.contains(FileTransferDescription.Version.FT_5.getNamespace())) {
+            return FileTransferDescription.Version.FT_5;
+        } else if (remoteFeatures.contains(FileTransferDescription.Version.FT_4.getNamespace())) {
+            return FileTransferDescription.Version.FT_4;
+        } else {
+            return FileTransferDescription.Version.FT_3;
         }
     }
 
@@ -406,11 +414,9 @@ public class JingleFileTransferConnection extends AbstractJingleConnection imple
         }
     }
 
-    public void init(Account account, JinglePacket packet) { //should move to deliverPacket
+    private void init(JinglePacket packet) { //should move to deliverPacket
         this.mJingleStatus = JINGLE_STATUS_INITIATED;
-        Conversation conversation = this.xmppConnectionService
-                .findOrCreateConversation(account,
-                        packet.getFrom().asBareJid(), false, false);
+        final Conversation conversation = this.xmppConnectionService.findOrCreateConversation(id.account, id.counterPart.asBareJid(), false, false);
         this.message = new Message(conversation, "", Message.ENCRYPTION_NONE);
         this.message.setStatus(Message.STATUS_RECEIVED);
         this.mStatus = Transferable.STATUS_OFFER;
@@ -445,14 +451,10 @@ public class JingleFileTransferConnection extends AbstractJingleConnection imple
                 return;
             }
         }
-        this.ftVersion = content.getVersion();
-        if (ftVersion == null) {
-            respondToIq(packet, false);
-            this.fail();
-            return;
-        }
-        this.fileOffer = content.getFileOffer(this.ftVersion);
 
+        this.description = (FileTransferDescription) content.getDescription();
+
+        final Element fileOffer = this.description.getFileOffer();
 
         if (fileOffer != null) {
             boolean remoteIsUsingJet = false;
@@ -536,71 +538,76 @@ public class JingleFileTransferConnection extends AbstractJingleConnection imple
         }
     }
 
+    private void setupDescription(final FileTransferDescription.Version version) {
+        this.file = this.xmppConnectionService.getFileBackend().getFile(message, false);
+        final FileTransferDescription description;
+        if (message.getEncryption() == Message.ENCRYPTION_AXOLOTL) {
+            this.file.setKey(mXmppAxolotlMessage.getInnerKey());
+            this.file.setIv(mXmppAxolotlMessage.getIV());
+            //legacy OMEMO encrypted file transfer reported file size of the encrypted file
+            //JET uses the file size of the plain text file. The difference is only 16 bytes (auth tag)
+            this.file.setExpectedSize(file.getSize() + (this.remoteSupportsOmemoJet ? 0 : 16));
+            if (remoteSupportsOmemoJet) {
+                description = FileTransferDescription.of(this.file, version, null);
+            } else {
+                description = FileTransferDescription.of(this.file, version, this.mXmppAxolotlMessage);
+            }
+        } else {
+            this.file.setExpectedSize(file.getSize());
+            description = FileTransferDescription.of(this.file, version, null);
+        }
+        this.description = description;
+    }
+
     private void sendInitRequest() {
         final JinglePacket packet = this.bootstrapPacket(JinglePacket.Action.SESSION_INITIATE);
         final Content content = new Content(this.contentCreator, this.contentName);
-        if (message.isFileOrImage()) {
-            content.setTransportId(this.transportId);
-            this.file = this.xmppConnectionService.getFileBackend().getFile(message, false);
-            if (message.getEncryption() == Message.ENCRYPTION_AXOLOTL) {
-                this.file.setKey(mXmppAxolotlMessage.getInnerKey());
-                this.file.setIv(mXmppAxolotlMessage.getIV());
-                //legacy OMEMO encrypted file transfer reported file size of the encrypted file
-                //JET uses the file size of the plain text file. The difference is only 16 bytes (auth tag)
-                this.file.setExpectedSize(file.getSize() + (this.remoteSupportsOmemoJet ? 0 : 16));
-                final Element file = content.setFileOffer(this.file, false, this.ftVersion);
-                if (remoteSupportsOmemoJet) {
-                    Log.d(Config.LOGTAG, id.account.getJid().asBareJid() + ": remote announced support for JET");
-                    final Element security = new Element("security", Namespace.JINGLE_ENCRYPTED_TRANSPORT);
-                    security.setAttribute("name", this.contentName);
-                    security.setAttribute("cipher", JET_OMEMO_CIPHER);
-                    security.setAttribute("type", AxolotlService.PEP_PREFIX);
-                    security.addChild(mXmppAxolotlMessage.toElement());
-                    content.addChild(security);
-                } else {
-                    file.addChild(mXmppAxolotlMessage.toElement());
-                }
-            } else {
-                this.file.setExpectedSize(file.getSize());
-                content.setFileOffer(this.file, false, this.ftVersion);
-            }
-            message.resetFileParams();
-            try {
-                this.mFileInputStream = new FileInputStream(file);
-            } catch (FileNotFoundException e) {
-                fail(e.getMessage());
-                return;
-            }
-            content.setTransportId(this.transportId);
-            if (this.initialTransport == Transport.IBB) {
-                content.ibbTransport().setAttribute("block-size", Integer.toString(this.ibbBlockSize));
-                Log.d(Config.LOGTAG, id.account.getJid().asBareJid() + ": sending IBB offer");
-            } else {
-                final List<Element> candidates = getCandidatesAsElements();
-                Log.d(Config.LOGTAG, String.format("%s: sending S5B offer with %d candidates", id.account.getJid().asBareJid(), candidates.size()));
-                content.socks5transport().setChildren(candidates);
-            }
-            packet.setJingleContent(content);
-            this.sendJinglePacket(packet, (account, response) -> {
-                if (response.getType() == IqPacket.TYPE.RESULT) {
-                    Log.d(Config.LOGTAG, id.account.getJid().asBareJid() + ": other party received offer");
-                    if (mJingleStatus == JINGLE_STATUS_OFFERED) {
-                        mJingleStatus = JINGLE_STATUS_INITIATED;
-                        xmppConnectionService.markMessage(message, Message.STATUS_OFFERED);
-                    } else {
-                        Log.d(Config.LOGTAG, "received ack for offer when status was " + mJingleStatus);
-                    }
-                } else {
-                    fail(IqParser.extractErrorMessage(response));
-                }
-            });
-
+        content.setTransportId(this.transportId);
+        if (message.getEncryption() == Message.ENCRYPTION_AXOLOTL && remoteSupportsOmemoJet) {
+            Log.d(Config.LOGTAG, id.account.getJid().asBareJid() + ": remote announced support for JET");
+            final Element security = new Element("security", Namespace.JINGLE_ENCRYPTED_TRANSPORT);
+            security.setAttribute("name", this.contentName);
+            security.setAttribute("cipher", JET_OMEMO_CIPHER);
+            security.setAttribute("type", AxolotlService.PEP_PREFIX);
+            security.addChild(mXmppAxolotlMessage.toElement());
+            content.addChild(security);
         }
+        content.setDescription(this.description);
+        message.resetFileParams();
+        try {
+            this.mFileInputStream = new FileInputStream(file);
+        } catch (FileNotFoundException e) {
+            fail(e.getMessage());
+            return;
+        }
+        content.setTransportId(this.transportId);
+        if (this.initialTransport == Transport.IBB) {
+            content.ibbTransport().setAttribute("block-size", Integer.toString(this.ibbBlockSize));
+            Log.d(Config.LOGTAG, id.account.getJid().asBareJid() + ": sending IBB offer");
+        } else {
+            final List<Element> candidates = getCandidatesAsElements();
+            Log.d(Config.LOGTAG, String.format("%s: sending S5B offer with %d candidates", id.account.getJid().asBareJid(), candidates.size()));
+            content.socks5transport().setChildren(candidates);
+        }
+        packet.setJingleContent(content);
+        this.sendJinglePacket(packet, (account, response) -> {
+            if (response.getType() == IqPacket.TYPE.RESULT) {
+                Log.d(Config.LOGTAG, id.account.getJid().asBareJid() + ": other party received offer");
+                if (mJingleStatus == JINGLE_STATUS_OFFERED) {
+                    mJingleStatus = JINGLE_STATUS_INITIATED;
+                    xmppConnectionService.markMessage(message, Message.STATUS_OFFERED);
+                } else {
+                    Log.d(Config.LOGTAG, "received ack for offer when status was " + mJingleStatus);
+                }
+            } else {
+                fail(IqParser.extractErrorMessage(response));
+            }
+        });
+
     }
 
     private void sendHash() {
-
-        final Element checksum = new Element("checksum", ftVersion.getNamespace());
+        final Element checksum = new Element("checksum", description.getVersion().getNamespace());
         checksum.setAttribute("creator", "initiator");
         checksum.setAttribute("name", "a-file-offer");
         Element hash = checksum.addChild("file").addChild("hash", "urn:xmpp:hashes:2");
@@ -637,7 +644,7 @@ public class JingleFileTransferConnection extends AbstractJingleConnection imple
         this.jingleConnectionManager.getPrimaryCandidate(this.id.account, initiating(), (success, candidate) -> {
             final JinglePacket packet = bootstrapPacket(JinglePacket.Action.SESSION_ACCEPT);
             final Content content = new Content(contentCreator, contentName);
-            content.setFileOffer(fileOffer, ftVersion);
+            content.setDescription(this.description);
             content.setTransportId(transportId);
             if (success && candidate != null && !equalCandidateExists(candidate)) {
                 final JingleSocks5Transport socksConnection = new JingleSocks5Transport(this, candidate);
@@ -677,7 +684,7 @@ public class JingleFileTransferConnection extends AbstractJingleConnection imple
         this.transport = new JingleInBandTransport(this, this.transportId, this.ibbBlockSize);
         final JinglePacket packet = bootstrapPacket(JinglePacket.Action.SESSION_ACCEPT);
         final Content content = new Content(contentCreator, contentName);
-        content.setFileOffer(fileOffer, ftVersion);
+        content.setDescription(this.description);
         content.setTransportId(transportId);
         content.ibbTransport().setAttribute("block-size", this.ibbBlockSize);
         packet.setJingleContent(content);
@@ -812,7 +819,7 @@ public class JingleFileTransferConnection extends AbstractJingleConnection imple
             if (connection.needsActivation()) {
                 if (connection.getCandidate().isOurs()) {
                     final String sid;
-                    if (ftVersion == Content.Version.FT_3) {
+                    if (description.getVersion() == FileTransferDescription.Version.FT_3) {
                         Log.d(Config.LOGTAG, id.account.getJid().asBareJid() + ": use session ID instead of transport ID to activate proxy");
                         sid = id.sessionId;
                     } else {
@@ -1220,12 +1227,8 @@ public class JingleFileTransferConnection extends AbstractJingleConnection imple
         return this.transportId;
     }
 
-    public Content.Version getFtVersion() {
-        return this.ftVersion;
-    }
-
-    public boolean hasTransportId(String sid) {
-        return sid.equals(this.transportId);
+    public FileTransferDescription.Version getFtVersion() {
+        return this.description.getVersion();
     }
 
     public JingleTransport getTransport() {

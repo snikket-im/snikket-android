@@ -24,6 +24,7 @@ import eu.siacs.conversations.utils.CryptoHelper;
 import eu.siacs.conversations.utils.SocksSocketFactory;
 import eu.siacs.conversations.utils.WakeLockHelper;
 import eu.siacs.conversations.xmpp.jingle.stanzas.Content;
+import eu.siacs.conversations.xmpp.jingle.stanzas.FileTransferDescription;
 
 public class JingleSocks5Transport extends JingleTransport {
 
@@ -52,7 +53,7 @@ public class JingleSocks5Transport extends JingleTransport {
         this.connection = jingleConnection;
         this.account = jingleConnection.getId().account;
         final StringBuilder destBuilder = new StringBuilder();
-        if (this.connection.getFtVersion() == Content.Version.FT_3) {
+        if (this.connection.getFtVersion() == FileTransferDescription.Version.FT_3) {
             Log.d(Config.LOGTAG, this.account.getJid().asBareJid() + ": using session Id instead of transport Id for proxy destination");
             destBuilder.append(this.connection.getId().sessionId);
         } else {
@@ -132,7 +133,7 @@ public class JingleSocks5Transport extends JingleTransport {
                 responseHeader = new byte[]{0x05, 0x00, 0x00, 0x03};
                 success = true;
             } else {
-                Log.d(Config.LOGTAG,this.account.getJid().asBareJid()+": destination mismatch. received "+receivedDestination+" (expected "+this.destination+")");
+                Log.d(Config.LOGTAG, this.account.getJid().asBareJid() + ": destination mismatch. received " + receivedDestination + " (expected " + this.destination + ")");
                 responseHeader = new byte[]{0x05, 0x04, 0x00, 0x03};
                 success = false;
             }
@@ -143,7 +144,7 @@ public class JingleSocks5Transport extends JingleTransport {
             outputStream.write(response.array());
             outputStream.flush();
             if (success) {
-                Log.d(Config.LOGTAG,this.account.getJid().asBareJid()+": successfully processed connection to candidate "+candidate.getHost()+":"+candidate.getPort());
+                Log.d(Config.LOGTAG, this.account.getJid().asBareJid() + ": successfully processed connection to candidate " + candidate.getHost() + ":" + candidate.getPort());
                 socket.setSoTimeout(0);
                 this.socket = socket;
                 this.inputStream = inputStream;
@@ -216,7 +217,7 @@ public class JingleSocks5Transport extends JingleTransport {
                 }
             } catch (Exception e) {
                 final Account account = this.account;
-                Log.d(Config.LOGTAG, account.getJid().asBareJid()+": failed sending file after "+transmitted+"/"+file.getExpectedSize()+" ("+ socket.getInetAddress()+":"+socket.getPort()+")", e);
+                Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": failed sending file after " + transmitted + "/" + file.getExpectedSize() + " (" + socket.getInetAddress() + ":" + socket.getPort() + ")", e);
                 callback.onFileTransferAborted();
             } finally {
                 FileBackend.close(fileInputStream);

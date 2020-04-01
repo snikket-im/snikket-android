@@ -18,6 +18,8 @@ import eu.siacs.conversations.services.XmppConnectionService;
 import eu.siacs.conversations.xml.Element;
 import eu.siacs.conversations.xml.Namespace;
 import eu.siacs.conversations.xmpp.OnIqPacketReceived;
+import eu.siacs.conversations.xmpp.jingle.stanzas.Content;
+import eu.siacs.conversations.xmpp.jingle.stanzas.FileTransferDescription;
 import eu.siacs.conversations.xmpp.jingle.stanzas.JinglePacket;
 import eu.siacs.conversations.xmpp.stanzas.IqPacket;
 import rocks.xmpp.addr.Jid;
@@ -34,9 +36,17 @@ public class JingleConnectionManager extends AbstractConnectionManager {
     public void deliverPacket(final Account account, final JinglePacket packet) {
         final AbstractJingleConnection.Id id = AbstractJingleConnection.Id.of(account, packet);
         if (packet.getAction() == JinglePacket.Action.SESSION_INITIATE) { //TODO check that id doesn't exist yet
-            JingleFileTransferConnection connection = new JingleFileTransferConnection(this, id);
-            connection.init(account, packet);
+            final Content content = packet.getJingleContent();
+            final String descriptionNamespace = content == null ? null : content.getDescriptionNamespace();
+            final AbstractJingleConnection connection;
+            if (FileTransferDescription.NAMESPACES.contains(descriptionNamespace)) {
+                connection = new JingleFileTransferConnection(this, id);
+            } else {
+                //TODO return feature-not-implemented
+                return;
+            }
             connections.put(id, connection);
+            connection.deliverPacket(packet);
         } else {
             final AbstractJingleConnection abstractJingleConnection = connections.get(id);
             if (abstractJingleConnection != null) {

@@ -20,14 +20,14 @@ import eu.siacs.conversations.services.XmppConnectionService;
 import eu.siacs.conversations.utils.PhoneHelper;
 import eu.siacs.conversations.xml.Namespace;
 import eu.siacs.conversations.xmpp.XmppConnection;
-import eu.siacs.conversations.xmpp.jingle.stanzas.Content;
+import eu.siacs.conversations.xmpp.jingle.stanzas.FileTransferDescription;
 
 public abstract class AbstractGenerator {
 	private final String[] FEATURES = {
-			"urn:xmpp:jingle:1",
-			Content.Version.FT_3.getNamespace(),
-			Content.Version.FT_4.getNamespace(),
-			Content.Version.FT_5.getNamespace(),
+			Namespace.JINGLE,
+			FileTransferDescription.Version.FT_3.getNamespace(),
+			FileTransferDescription.Version.FT_4.getNamespace(),
+			FileTransferDescription.Version.FT_5.getNamespace(),
 			Namespace.JINGLE_TRANSPORTS_S5B,
 			Namespace.JINGLE_TRANSPORTS_IBB,
 			Namespace.JINGLE_ENCRYPTED_TRANSPORT,

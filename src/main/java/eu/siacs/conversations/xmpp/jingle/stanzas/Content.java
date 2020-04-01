@@ -39,58 +39,35 @@ public class Content extends Element {
         return Creator.of(getAttribute("creator"));
     }
 
-    public Version getVersion() {
-        if (hasChild("description", Version.FT_3.namespace)) {
-            return Version.FT_3;
-        } else if (hasChild("description", Version.FT_4.namespace)) {
-            return Version.FT_4;
-        } else if (hasChild("description", Version.FT_5.namespace)) {
-            return Version.FT_5;
-        }
-        return null;
+    public Senders getSenders() {
+        return Senders.of(getAttribute("senders"));
     }
 
-    public Element setFileOffer(DownloadableFile actualFile, boolean otr, Version version) {
-        Element description = this.addChild("description", version.namespace);
-        Element file;
-        if (version == Version.FT_3) {
-            Element offer = description.addChild("offer");
-            file = offer.addChild("file");
-        } else {
-            file = description.addChild("file");
-        }
-        file.addChild("size").setContent(Long.toString(actualFile.getExpectedSize()));
-        if (otr) {
-            file.addChild("name").setContent(actualFile.getName() + ".otr");
-        } else {
-            file.addChild("name").setContent(actualFile.getName());
-        }
-        return file;
+    public void setSenders(Senders senders) {
+        this.setAttribute("senders", senders.toString());
     }
 
-    public Element getFileOffer(Version version) {
-        Element description = this.findChild("description", version.namespace);
+    public GenericDescription getDescription() {
+        final Element description = this.findChild("description");
         if (description == null) {
             return null;
         }
-        if (version == Version.FT_3) {
-            Element offer = description.findChild("offer");
-            if (offer == null) {
-                return null;
-            }
-            return offer.findChild("file");
+        final String xmlns = description.getNamespace();
+        if (FileTransferDescription.NAMESPACES.contains(xmlns)) {
+            return FileTransferDescription.upgrade(description);
         } else {
-            return description.findChild("file");
+            return GenericDescription.upgrade(description);
         }
     }
 
-    public void setFileOffer(Element fileOffer, Version version) {
-        Element description = this.addChild("description", version.namespace);
-        if (version == Version.FT_3) {
-            description.addChild("offer").addChild(fileOffer);
-        } else {
-            description.addChild(fileOffer);
-        }
+    public void setDescription(final GenericDescription description) {
+        Preconditions.checkNotNull(description);
+        this.addChild(description);
+    }
+
+    public String getDescriptionNamespace() {
+        final Element description = this.findChild("description");
+        return description == null ? null : description.getNamespace();
     }
 
     public String getTransportId() {
@@ -130,22 +107,6 @@ public class Content extends Element {
 
     public boolean hasIbbTransport() {
         return this.hasChild("transport", Namespace.JINGLE_TRANSPORTS_IBB);
-    }
-
-    public enum Version {
-        FT_3("urn:xmpp:jingle:apps:file-transfer:3"),
-        FT_4("urn:xmpp:jingle:apps:file-transfer:4"),
-        FT_5("urn:xmpp:jingle:apps:file-transfer:5");
-
-        private final String namespace;
-
-        Version(String namespace) {
-            this.namespace = namespace;
-        }
-
-        public String getNamespace() {
-            return namespace;
-        }
     }
 
     public enum Creator {
