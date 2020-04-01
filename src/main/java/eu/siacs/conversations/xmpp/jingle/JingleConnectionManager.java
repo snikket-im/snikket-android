@@ -122,8 +122,8 @@ public class JingleConnectionManager extends AbstractConnectionManager {
     }
 
     public void deliverIbbPacket(Account account, IqPacket packet) {
-        String sid = null;
-        Element payload = null;
+        final String sid;
+        final Element payload;
         if (packet.hasChild("open", Namespace.IBB)) {
             payload = packet.findChild("open", Namespace.IBB);
             sid = payload.getAttribute("sid");
@@ -133,6 +133,9 @@ public class JingleConnectionManager extends AbstractConnectionManager {
         } else if (packet.hasChild("close", Namespace.IBB)) {
             payload = packet.findChild("close", Namespace.IBB);
             sid = payload.getAttribute("sid");
+        } else {
+            payload = null;
+            sid = null;
         }
         if (sid != null) {
             for (final AbstractJingleConnection connection : this.connections.values()) {
@@ -140,7 +143,10 @@ public class JingleConnectionManager extends AbstractConnectionManager {
                     final JingleFileTransferConnection fileTransfer = (JingleFileTransferConnection) connection;
                     final JingleTransport transport = fileTransfer.getTransport();
                     if (transport instanceof JingleInBandTransport) {
-                        ((JingleInBandTransport) transport).deliverPayload(packet, payload);
+                        final JingleInBandTransport inBandTransport = (JingleInBandTransport) transport;
+                        if (inBandTransport.matches(account, sid)) {
+                            inBandTransport.deliverPayload(packet, payload);
+                        }
                         return;
                     }
                 }

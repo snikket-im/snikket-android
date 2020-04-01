@@ -3,6 +3,8 @@ package eu.siacs.conversations.xmpp.jingle;
 import android.util.Base64;
 import android.util.Log;
 
+import com.google.common.base.Preconditions;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -77,6 +79,10 @@ public class JingleInBandTransport extends JingleTransport {
         this.account.getXmppConnection().sendIqPacket(iq, null);
     }
 
+    public boolean matches(final Account account, final String sessionId) {
+        return this.account == account && this.sessionId.equals(sessionId);
+    }
+
     public void connect(final OnTransportConnected callback) {
         IqPacket iq = new IqPacket(IqPacket.TYPE.SET);
         iq.setTo(this.counterpart);
@@ -96,7 +102,7 @@ public class JingleInBandTransport extends JingleTransport {
 
     @Override
     public void receive(DownloadableFile file, OnFileTransmissionStatusChanged callback) {
-        this.onFileTransmissionStatusChanged = callback;
+        this.onFileTransmissionStatusChanged = Preconditions.checkNotNull(callback);
         this.file = file;
         try {
             this.digest = MessageDigest.getInstance("SHA-1");
@@ -116,7 +122,7 @@ public class JingleInBandTransport extends JingleTransport {
 
     @Override
     public void send(DownloadableFile file, OnFileTransmissionStatusChanged callback) {
-        this.onFileTransmissionStatusChanged = callback;
+        this.onFileTransmissionStatusChanged = Preconditions.checkNotNull(callback);
         this.file = file;
         try {
             this.remainingSize = this.file.getExpectedSize();
@@ -205,7 +211,7 @@ public class JingleInBandTransport extends JingleTransport {
                 connection.updateProgress((int) ((((double) (this.fileSize - this.remainingSize)) / this.fileSize) * 100));
             }
         } catch (Exception e) {
-            Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": " + e.getMessage());
+            Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": " + e.getMessage(), e);
             FileBackend.close(fileOutputStream);
             this.onFileTransmissionStatusChanged.onFileTransferAborted();
         }
