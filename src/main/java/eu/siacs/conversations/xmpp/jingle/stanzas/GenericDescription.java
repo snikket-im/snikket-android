@@ -6,7 +6,7 @@ import eu.siacs.conversations.xml.Element;
 
 public class GenericDescription extends Element {
 
-    protected GenericDescription(String name, final String namespace) {
+    GenericDescription(String name, final String namespace) {
         super(name, namespace);
     }
 

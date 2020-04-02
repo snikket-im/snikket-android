@@ -11,11 +11,6 @@ import eu.siacs.conversations.xml.Element;
 import eu.siacs.conversations.xml.Namespace;
 
 public class Content extends Element {
-    private String transportId;
-
-
-    //refactor to getDescription and getTransport
-    //return either FileTransferDescription or GenericDescription or RtpDescription (all extend Description interface)
 
     public Content(final Creator creator, final String name) {
         super("content", Namespace.JINGLE);
@@ -70,43 +65,24 @@ public class Content extends Element {
         return description == null ? null : description.getNamespace();
     }
 
-    public String getTransportId() {
-        if (hasSocks5Transport()) {
-            this.transportId = socks5transport().getAttribute("sid");
-        } else if (hasIbbTransport()) {
-            this.transportId = ibbTransport().getAttribute("sid");
+    public GenericTransportInfo getTransport() {
+        final Element transport = this.findChild("transport");
+        final String namespace = transport == null ? null : transport.getNamespace();
+        if (Namespace.JINGLE_TRANSPORTS_IBB.equals(namespace)) {
+            return IbbTransportInfo.upgrade(transport);
+        } else if (Namespace.JINGLE_TRANSPORTS_S5B.equals(namespace)) {
+            return S5BTransportInfo.upgrade(transport);
+        } else if (Namespace.JINGLE_TRANSPORT_ICE_UDP.equals(namespace)) {
+            return IceUdpTransportInfo.upgrade(transport);
+        } else if (transport != null) {
+            return GenericTransportInfo.upgrade(transport);
+        } else {
+            return null;
         }
-        return this.transportId;
     }
 
-    public void setTransportId(String sid) {
-        this.transportId = sid;
-    }
-
-    public Element socks5transport() {
-        Element transport = this.findChild("transport", Namespace.JINGLE_TRANSPORTS_S5B);
-        if (transport == null) {
-            transport = this.addChild("transport", Namespace.JINGLE_TRANSPORTS_S5B);
-            transport.setAttribute("sid", this.transportId);
-        }
-        return transport;
-    }
-
-    public Element ibbTransport() {
-        Element transport = this.findChild("transport", Namespace.JINGLE_TRANSPORTS_IBB);
-        if (transport == null) {
-            transport = this.addChild("transport", Namespace.JINGLE_TRANSPORTS_IBB);
-            transport.setAttribute("sid", this.transportId);
-        }
-        return transport;
-    }
-
-    public boolean hasSocks5Transport() {
-        return this.hasChild("transport", Namespace.JINGLE_TRANSPORTS_S5B);
-    }
-
-    public boolean hasIbbTransport() {
-        return this.hasChild("transport", Namespace.JINGLE_TRANSPORTS_IBB);
+    public void setTransport(GenericTransportInfo transportInfo) {
+        this.addChild(transportInfo);
     }
 
     public enum Creator {
