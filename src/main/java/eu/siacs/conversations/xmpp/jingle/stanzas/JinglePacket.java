@@ -11,6 +11,8 @@ import eu.siacs.conversations.xmpp.stanzas.IqPacket;
 
 public class JinglePacket extends IqPacket {
 
+    //TODO add support for groups: https://xmpp.org/extensions/xep-0338.html
+
     private JinglePacket() {
         super();
     }
@@ -30,6 +32,7 @@ public class JinglePacket extends IqPacket {
         return jinglePacket;
     }
 
+    //TODO can have multiple contents
     public Content getJingleContent() {
         final Element content = getJingleChild("content");
         return content == null ? null : Content.upgrade(content);

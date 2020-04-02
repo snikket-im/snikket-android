@@ -72,4 +72,15 @@ public abstract class AbstractJingleConnection {
             return Objects.hashCode(account.getJid(), with, sessionId);
         }
     }
+
+
+    public enum State {
+        NULL, //default value; nothing has been sent or received yet
+        PROPOSED,
+        ACCEPTED,
+        PROCEED,
+        SESSION_INITIALIZED, //equal to 'PENDING'
+        SESSION_ACCEPTED, //equal to 'ACTIVE'
+        TERMINATED //equal to 'ENDED'
+    }
 }
