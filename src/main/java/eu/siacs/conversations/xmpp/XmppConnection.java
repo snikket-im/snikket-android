@@ -718,7 +718,7 @@ public class XmppConnection implements Runnable {
         }
     }
 
-    private void processIq(final Tag currentTag) throws XmlPullParserException, IOException {
+    private void processIq(final Tag currentTag) throws IOException {
         final IqPacket packet = (IqPacket) processPacket(currentTag, PACKET_IQ);
         if (!packet.valid()) {
             Log.e(Config.LOGTAG, "encountered invalid iq from='" + packet.getFrom() + "' to='" + packet.getTo() + "'");
@@ -731,8 +731,8 @@ public class XmppConnection implements Runnable {
         } else {
             OnIqPacketReceived callback = null;
             synchronized (this.packetCallbacks) {
-                if (packetCallbacks.containsKey(packet.getId())) {
-                    final Pair<IqPacket, OnIqPacketReceived> packetCallbackDuple = packetCallbacks.get(packet.getId());
+                final Pair<IqPacket, OnIqPacketReceived> packetCallbackDuple = packetCallbacks.get(packet.getId());
+                if (packetCallbackDuple != null) {
                     // Packets to the server should have responses from the server
                     if (packetCallbackDuple.first.toServer(account)) {
                         if (packet.fromServer(account)) {
