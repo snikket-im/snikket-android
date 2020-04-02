@@ -39,7 +39,8 @@ public abstract class AbstractGenerator {
 			Namespace.JINGLE_TRANSPORT_ICE_UDP,
 			Namespace.JINGLE_FEATURE_AUDIO,
 			Namespace.JINGLE_FEATURE_VIDEO,
-			Namespace.JINGLE_APP_RTP,
+			Namespace.JINGLE_APPS_RTP,
+			Namespace.JINGLE_APPS_DTLS,
 
 			"http://jabber.org/protocol/muc",
 			"jabber:x:conference",

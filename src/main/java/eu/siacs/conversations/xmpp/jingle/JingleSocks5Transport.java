@@ -23,7 +23,6 @@ import eu.siacs.conversations.services.AbstractConnectionManager;
 import eu.siacs.conversations.utils.CryptoHelper;
 import eu.siacs.conversations.utils.SocksSocketFactory;
 import eu.siacs.conversations.utils.WakeLockHelper;
-import eu.siacs.conversations.xmpp.jingle.stanzas.Content;
 import eu.siacs.conversations.xmpp.jingle.stanzas.FileTransferDescription;
 
 public class JingleSocks5Transport extends JingleTransport {
@@ -61,9 +60,9 @@ public class JingleSocks5Transport extends JingleTransport {
         }
         if (candidate.isOurs()) {
             destBuilder.append(this.account.getJid());
-            destBuilder.append(this.connection.getId().counterPart);
+            destBuilder.append(this.connection.getId().with);
         } else {
-            destBuilder.append(this.connection.getId().counterPart);
+            destBuilder.append(this.connection.getId().with);
             destBuilder.append(this.account.getJid());
         }
         messageDigest.reset();

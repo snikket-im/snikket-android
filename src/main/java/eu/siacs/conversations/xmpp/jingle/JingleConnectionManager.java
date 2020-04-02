@@ -22,6 +22,7 @@ import eu.siacs.conversations.xmpp.jingle.stanzas.Content;
 import eu.siacs.conversations.xmpp.jingle.stanzas.FileTransferDescription;
 import eu.siacs.conversations.xmpp.jingle.stanzas.JinglePacket;
 import eu.siacs.conversations.xmpp.stanzas.IqPacket;
+import eu.siacs.conversations.xmpp.stanzas.MessagePacket;
 import rocks.xmpp.addr.Jid;
 
 public class JingleConnectionManager extends AbstractConnectionManager {
@@ -35,13 +36,16 @@ public class JingleConnectionManager extends AbstractConnectionManager {
 
     public void deliverPacket(final Account account, final JinglePacket packet) {
         final AbstractJingleConnection.Id id = AbstractJingleConnection.Id.of(account, packet);
-        if (packet.getAction() == JinglePacket.Action.SESSION_INITIATE) { //TODO check that id doesn't exist yet
+        final AbstractJingleConnection existingJingleConnection = connections.get(id);
+        if (existingJingleConnection != null) {
+            existingJingleConnection.deliverPacket(packet);
+        } else if (packet.getAction() == JinglePacket.Action.SESSION_INITIATE) {
             final Content content = packet.getJingleContent();
             final String descriptionNamespace = content == null ? null : content.getDescriptionNamespace();
             final AbstractJingleConnection connection;
             if (FileTransferDescription.NAMESPACES.contains(descriptionNamespace)) {
                 connection = new JingleFileTransferConnection(this, id);
-            } else if (Namespace.JINGLE_APP_RTP.equals(descriptionNamespace)) {
+            } else if (Namespace.JINGLE_APPS_RTP.equals(descriptionNamespace)) {
                 connection = new JingleRtpConnection(this, id);
             } else {
                 //TODO return feature-not-implemented
@@ -50,20 +54,51 @@ public class JingleConnectionManager extends AbstractConnectionManager {
             connections.put(id, connection);
             connection.deliverPacket(packet);
         } else {
-            final AbstractJingleConnection abstractJingleConnection = connections.get(id);
-            if (abstractJingleConnection != null) {
-                abstractJingleConnection.deliverPacket(packet);
-            } else {
-                Log.d(Config.LOGTAG, "unable to route jingle packet: " + packet);
-                IqPacket response = packet.generateResponse(IqPacket.TYPE.ERROR);
-                Element error = response.addChild("error");
-                error.setAttribute("type", "cancel");
-                error.addChild("item-not-found",
-                        "urn:ietf:params:xml:ns:xmpp-stanzas");
-                error.addChild("unknown-session", "urn:xmpp:jingle:errors:1");
-                account.getXmppConnection().sendIqPacket(response, null);
-            }
+            Log.d(Config.LOGTAG, "unable to route jingle packet: " + packet);
+            final IqPacket response = packet.generateResponse(IqPacket.TYPE.ERROR);
+            final Element error = response.addChild("error");
+            error.setAttribute("type", "cancel");
+            error.addChild("item-not-found", "urn:ietf:params:xml:ns:xmpp-stanzas");
+            error.addChild("unknown-session", "urn:xmpp:jingle:errors:1");
+            account.getXmppConnection().sendIqPacket(response, null);
         }
+    }
+
+    public void deliverMessage(final Account account, final Jid to, final Jid from, final Element message) {
+        Preconditions.checkArgument(Namespace.JINGLE_MESSAGE.equals(message.getNamespace()));
+        final String sessionId = message.getAttribute("id");
+        if (sessionId == null) {
+            return;
+        }
+        final Jid with;
+        if (account.getJid().asBareJid().equals(from.asBareJid())) {
+            with = to;
+        } else {
+            with = from;
+        }
+        Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": received jingle message from " + from + " with=" + with + " " + message);
+        final AbstractJingleConnection.Id id = AbstractJingleConnection.Id.of(account, with, sessionId);
+        final AbstractJingleConnection existingJingleConnection = connections.get(id);
+        if (existingJingleConnection != null) {
+            if (existingJingleConnection instanceof JingleRtpConnection) {
+                ((JingleRtpConnection) existingJingleConnection).deliveryMessage(to, from, message);
+            } else {
+                Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": " + existingJingleConnection.getClass().getName() + " does not support jingle messages");
+            }
+        } else if ("propose".equals(message.getName())) {
+            final Element description = message.findChild("description");
+            final String namespace = description == null ? null : description.getNamespace();
+            if (Namespace.JINGLE_APPS_RTP.equals(namespace)) {
+                final JingleRtpConnection rtpConnection = new JingleRtpConnection(this, id);
+                this.connections.put(id, rtpConnection);
+                rtpConnection.deliveryMessage(to, from, message);
+            } else {
+                Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": unable to react to proposed " + namespace + " session");
+            }
+        } else {
+            Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": retrieved out of order jingle message");
+        }
+
     }
 
     public void startJingleFileTransfer(final Message message) {

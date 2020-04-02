@@ -30,19 +30,23 @@ public abstract class AbstractJingleConnection {
 
     public static class Id {
         public final Account account;
-        public final Jid counterPart;
+        public final Jid with;
         public final String sessionId;
 
-        private Id(final Account account, final Jid counterPart, final String sessionId) {
-            Preconditions.checkNotNull(counterPart);
-            Preconditions.checkArgument(counterPart.isFullJid());
+        private Id(final Account account, final Jid with, final String sessionId) {
+            Preconditions.checkNotNull(with);
+            Preconditions.checkArgument(with.isFullJid());
             this.account = account;
-            this.counterPart = counterPart;
+            this.with = with;
             this.sessionId = sessionId;
         }
 
         public static Id of(Account account, JinglePacket jinglePacket) {
             return new Id(account, jinglePacket.getFrom(), jinglePacket.getSessionId());
+        }
+
+        public static Id of(Account account, Jid with, final String sessionId) {
+            return new Id(account, with, sessionId);
         }
 
         public static Id of(Message message) {
@@ -59,13 +63,13 @@ public abstract class AbstractJingleConnection {
             if (o == null || getClass() != o.getClass()) return false;
             Id id = (Id) o;
             return Objects.equal(account.getJid(), id.account.getJid()) &&
-                    Objects.equal(counterPart, id.counterPart) &&
+                    Objects.equal(with, id.with) &&
                     Objects.equal(sessionId, id.sessionId);
         }
 
         @Override
         public int hashCode() {
-            return Objects.hashCode(account.getJid(), counterPart, sessionId);
+            return Objects.hashCode(account.getJid(), with, sessionId);
         }
     }
 }

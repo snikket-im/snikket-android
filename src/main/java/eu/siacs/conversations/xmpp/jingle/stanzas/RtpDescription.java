@@ -14,8 +14,8 @@ public class RtpDescription extends GenericDescription {
 
     public static RtpDescription upgrade(final Element element) {
         Preconditions.checkArgument("description".equals(element.getName()), "Name of provided element is not description");
-        Preconditions.checkArgument(Namespace.JINGLE_APP_RTP.equals(element.getNamespace()), "Element does not match the jingle rtp namespace");
-        final RtpDescription description = new RtpDescription("description", Namespace.JINGLE_APP_RTP);
+        Preconditions.checkArgument(Namespace.JINGLE_APPS_RTP.equals(element.getNamespace()), "Element does not match the jingle rtp namespace");
+        final RtpDescription description = new RtpDescription("description", Namespace.JINGLE_APPS_RTP);
         description.setAttributes(element.getAttributes());
         description.setChildren(element.getChildren());
         return description;

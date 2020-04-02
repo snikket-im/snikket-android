@@ -4,11 +4,7 @@ import android.util.Base64;
 import android.util.Log;
 
 import com.google.common.base.Preconditions;
-import com.google.common.base.Predicate;
 import com.google.common.collect.Collections2;
-import com.google.common.collect.Lists;
-
-import org.checkerframework.checker.nullness.compatqual.NullableDecl;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -351,7 +347,7 @@ public class JingleFileTransferConnection extends AbstractJingleConnection imple
         this.message.setTransferable(this);
         this.mStatus = Transferable.STATUS_UPLOADING;
         this.initiator = this.id.account.getJid();
-        this.responder = this.id.counterPart;
+        this.responder = this.id.with;
         this.transportId = JingleConnectionManager.nextRandomId();
         this.setupDescription(remoteVersion);
         if (this.initialTransport == IbbTransportInfo.class) {
@@ -416,7 +412,7 @@ public class JingleFileTransferConnection extends AbstractJingleConnection imple
     }
 
     private List<String> getRemoteFeatures() {
-        final Jid jid = this.id.counterPart;
+        final Jid jid = this.id.with;
         String resource = jid != null ? jid.getResource() : null;
         if (resource != null) {
             Presence presence = this.id.account.getRoster().getContact(jid).getPresences().getPresences().get(resource);
@@ -428,14 +424,15 @@ public class JingleFileTransferConnection extends AbstractJingleConnection imple
     }
 
     private void init(JinglePacket packet) { //should move to deliverPacket
+        //TODO if not 'OFFERED' reply with out-of-order
         this.mJingleStatus = JINGLE_STATUS_INITIATED;
-        final Conversation conversation = this.xmppConnectionService.findOrCreateConversation(id.account, id.counterPart.asBareJid(), false, false);
+        final Conversation conversation = this.xmppConnectionService.findOrCreateConversation(id.account, id.with.asBareJid(), false, false);
         this.message = new Message(conversation, "", Message.ENCRYPTION_NONE);
         this.message.setStatus(Message.STATUS_RECEIVED);
         this.mStatus = Transferable.STATUS_OFFER;
         this.message.setTransferable(this);
-        this.message.setCounterpart(this.id.counterPart);
-        this.initiator = this.id.counterPart;
+        this.message.setCounterpart(this.id.with);
+        this.initiator = this.id.with;
         this.responder = this.id.account.getJid();
         final Content content = packet.getJingleContent();
         final GenericTransportInfo transportInfo = content.getTransport();
@@ -527,11 +524,11 @@ public class JingleFileTransferConnection extends AbstractJingleConnection imple
 
                 respondToIq(packet, true);
 
-                if (id.account.getRoster().getContact(id.counterPart).showInContactList()
+                if (id.account.getRoster().getContact(id.with).showInContactList()
                         && jingleConnectionManager.hasStoragePermission()
                         && size < this.jingleConnectionManager.getAutoAcceptFileSize()
                         && xmppConnectionService.isDataSaverDisabled()) {
-                    Log.d(Config.LOGTAG, "auto accepting file from " + id.counterPart);
+                    Log.d(Config.LOGTAG, "auto accepting file from " + id.with);
                     this.acceptedAutomatically = true;
                     this.sendAccept();
                 } else {
@@ -697,7 +694,7 @@ public class JingleFileTransferConnection extends AbstractJingleConnection imple
 
     private JinglePacket bootstrapPacket(JinglePacket.Action action) {
         final JinglePacket packet = new JinglePacket(action, this.id.sessionId);
-        packet.setTo(id.counterPart);
+        packet.setTo(id.with);
         return packet;
     }
 
@@ -837,7 +834,7 @@ public class JingleFileTransferConnection extends AbstractJingleConnection imple
                     activation.query("http://jabber.org/protocol/bytestreams")
                             .setAttribute("sid", sid);
                     activation.query().addChild("activate")
-                            .setContent(this.id.counterPart.toEscapedString());
+                            .setContent(this.id.with.toEscapedString());
                     xmppConnectionService.sendIqPacket(this.id.account, activation, (account, response) -> {
                         if (response.getType() != IqPacket.TYPE.RESULT) {
                             Log.d(Config.LOGTAG, id.account.getJid().asBareJid() + ": " + response.toString());

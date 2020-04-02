@@ -65,7 +65,7 @@ public class JingleInBandTransport extends JingleTransport {
     JingleInBandTransport(final JingleFileTransferConnection connection, final String sid, final int blockSize) {
         this.connection = connection;
         this.account = connection.getId().account;
-        this.counterpart = connection.getId().counterPart;
+        this.counterpart = connection.getId().with;
         this.blockSize = blockSize;
         this.sessionId = sid;
     }
