@@ -25,6 +25,8 @@ import eu.siacs.conversations.xmpp.jingle.stanzas.FileTransferDescription;
 public abstract class AbstractGenerator {
 	private final String[] FEATURES = {
 			Namespace.JINGLE,
+
+			//Jingle File Transfer
 			FileTransferDescription.Version.FT_3.getNamespace(),
 			FileTransferDescription.Version.FT_4.getNamespace(),
 			FileTransferDescription.Version.FT_5.getNamespace(),
@@ -32,6 +34,13 @@ public abstract class AbstractGenerator {
 			Namespace.JINGLE_TRANSPORTS_IBB,
 			Namespace.JINGLE_ENCRYPTED_TRANSPORT,
 			Namespace.JINGLE_ENCRYPTED_TRANSPORT_OMEMO,
+
+			//VoIP
+			Namespace.JINGLE_TRANSPORT_ICE_UDP,
+			Namespace.JINGLE_FEATURE_AUDIO,
+			Namespace.JINGLE_FEATURE_VIDEO,
+			Namespace.JINGLE_APP_RTP,
+
 			"http://jabber.org/protocol/muc",
 			"jabber:x:conference",
 			Namespace.OOB,

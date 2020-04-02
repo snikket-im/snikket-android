@@ -30,6 +30,9 @@ public final class Namespace {
 	public static final String JINGLE_TRANSPORTS_S5B = "urn:xmpp:jingle:transports:s5b:1";
 	public static final String JINGLE_TRANSPORTS_IBB = "urn:xmpp:jingle:transports:ibb:1";
 	public static final String JINGLE_TRANSPORT_ICE_UDP = "urn:xmpp:jingle:transports:ice-udp:1";
+	public static final String JINGLE_APP_RTP = "urn:xmpp:jingle:apps:rtp:1";
+	public static final String JINGLE_FEATURE_AUDIO = "urn:xmpp:jingle:apps:rtp:audio";
+	public static final String JINGLE_FEATURE_VIDEO = "urn:xmpp:jingle:apps:rtp:video";
 	public static final String IBB = "http://jabber.org/protocol/ibb";
 	public static final String PING = "urn:xmpp:ping";
 	public static final String PUSH = "urn:xmpp:push:0";

@@ -41,6 +41,8 @@ public class JingleConnectionManager extends AbstractConnectionManager {
             final AbstractJingleConnection connection;
             if (FileTransferDescription.NAMESPACES.contains(descriptionNamespace)) {
                 connection = new JingleFileTransferConnection(this, id);
+            } else if (Namespace.JINGLE_APP_RTP.equals(descriptionNamespace)) {
+                connection = new JingleRtpConnection(this, id);
             } else {
                 //TODO return feature-not-implemented
                 return;
