@@ -81,7 +81,7 @@ public class JingleConnectionManager extends AbstractConnectionManager {
         final AbstractJingleConnection existingJingleConnection = connections.get(id);
         if (existingJingleConnection != null) {
             if (existingJingleConnection instanceof JingleRtpConnection) {
-                ((JingleRtpConnection) existingJingleConnection).deliveryMessage(to, from, message);
+                ((JingleRtpConnection) existingJingleConnection).deliveryMessage(from, message);
             } else {
                 Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": " + existingJingleConnection.getClass().getName() + " does not support jingle messages");
             }
@@ -91,7 +91,7 @@ public class JingleConnectionManager extends AbstractConnectionManager {
             if (Namespace.JINGLE_APPS_RTP.equals(namespace)) {
                 final JingleRtpConnection rtpConnection = new JingleRtpConnection(this, id, with);
                 this.connections.put(id, rtpConnection);
-                rtpConnection.deliveryMessage(to, from, message);
+                rtpConnection.deliveryMessage(from, message);
             } else {
                 Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": unable to react to proposed " + namespace + " session");
             }

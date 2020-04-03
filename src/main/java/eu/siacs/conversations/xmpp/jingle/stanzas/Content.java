@@ -30,6 +30,10 @@ public class Content extends Element {
         return content;
     }
 
+    public String getContentName() {
+        return this.getAttribute("name");
+    }
+
     public Creator getCreator() {
         return Creator.of(getAttribute("creator"));
     }

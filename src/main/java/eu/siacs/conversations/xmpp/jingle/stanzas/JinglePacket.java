@@ -1,10 +1,15 @@
 package eu.siacs.conversations.xmpp.jingle.stanzas;
 
 import android.support.annotation.NonNull;
+import android.util.Log;
 
 import com.google.common.base.CaseFormat;
 import com.google.common.base.Preconditions;
+import com.google.common.collect.ImmutableMap;
 
+import java.util.Map;
+
+import eu.siacs.conversations.Config;
 import eu.siacs.conversations.xml.Element;
 import eu.siacs.conversations.xml.Namespace;
 import eu.siacs.conversations.xmpp.stanzas.IqPacket;
@@ -37,6 +42,18 @@ public class JinglePacket extends IqPacket {
     public Content getJingleContent() {
         final Element content = getJingleChild("content");
         return content == null ? null : Content.upgrade(content);
+    }
+
+    public Map<String, Content> getJingleContents() {
+        final Element jingle = findChild("jingle", Namespace.JINGLE);
+        ImmutableMap.Builder<String, Content> builder = new ImmutableMap.Builder<>();
+        for (final Element child : jingle.getChildren()) {
+            if ("content".equals(child.getName())) {
+                final Content content = Content.upgrade(child);
+                builder.put(content.getContentName(), content);
+            }
+        }
+        return builder.build();
     }
 
     public void setJingleContent(final Content content) { //take content interface
