@@ -51,9 +51,11 @@ public class Content extends Element {
         if (description == null) {
             return null;
         }
-        final String xmlns = description.getNamespace();
-        if (FileTransferDescription.NAMESPACES.contains(xmlns)) {
+        final String namespace = description.getNamespace();
+        if (FileTransferDescription.NAMESPACES.contains(namespace)) {
             return FileTransferDescription.upgrade(description);
+        } else if (Namespace.JINGLE_APPS_RTP.equals(namespace)) {
+            return RtpDescription.upgrade(description);
         } else {
             return GenericDescription.upgrade(description);
         }

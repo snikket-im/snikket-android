@@ -38,7 +38,7 @@ public class JinglePacket extends IqPacket {
         return jinglePacket;
     }
 
-    //TODO can have multiple contents
+    //TODO deprecate this somehow and make file transfer fail if there are multiple (or something)
     public Content getJingleContent() {
         final Element content = getJingleChild("content");
         return content == null ? null : Content.upgrade(content);

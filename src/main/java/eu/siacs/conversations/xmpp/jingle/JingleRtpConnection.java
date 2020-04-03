@@ -73,12 +73,30 @@ public class JingleRtpConnection extends AbstractJingleConnection {
         final State oldState = this.state;
         if (transition(State.SESSION_INITIALIZED)) {
             if (oldState == State.PROCEED) {
+                processContents(contents);
                 sendSessionAccept();
             } else {
                 //TODO start ringing
             }
         } else {
             Log.d(Config.LOGTAG, String.format("%s: received session-initiate while in state %s", id.account.getJid().asBareJid(), state));
+        }
+    }
+
+    private void processContents(final Map<String,DescriptionTransport> contents) {
+        for(Map.Entry<String,DescriptionTransport> content : contents.entrySet()) {
+            final DescriptionTransport descriptionTransport = content.getValue();
+            final RtpDescription rtpDescription = descriptionTransport.description;
+            Log.d(Config.LOGTAG,"receive content with name "+content.getKey()+" and media="+rtpDescription.getMedia());
+            for(RtpDescription.PayloadType payloadType : rtpDescription.getPayloadTypes()) {
+                Log.d(Config.LOGTAG,"payload type: "+payloadType.toString());
+            }
+            for(RtpDescription.RtpHeaderExtension extension : rtpDescription.getHeaderExtensions()) {
+                Log.d(Config.LOGTAG,"extension: "+extension.toString());
+            }
+            final IceUdpTransportInfo iceUdpTransportInfo = descriptionTransport.transport;
+            Log.d(Config.LOGTAG,"transport: "+descriptionTransport.transport);
+            Log.d(Config.LOGTAG,"fingerprint "+iceUdpTransportInfo.getFingerprint());
         }
     }
 
@@ -175,7 +193,7 @@ public class JingleRtpConnection extends AbstractJingleConnection {
         }
     }
 
-    private static class DescriptionTransport {
+    public static class DescriptionTransport {
         private final RtpDescription description;
         private final IceUdpTransportInfo transport;
 
@@ -192,6 +210,7 @@ public class JingleRtpConnection extends AbstractJingleConnection {
             if (description instanceof RtpDescription) {
                 rtpDescription = (RtpDescription) description;
             } else {
+                Log.d(Config.LOGTAG,"description was "+description);
                 throw new IllegalArgumentException("Content does not contain RtpDescription");
             }
             if (transportInfo instanceof IceUdpTransportInfo) {
@@ -203,13 +222,13 @@ public class JingleRtpConnection extends AbstractJingleConnection {
         }
 
         public static Map<String, DescriptionTransport> of(final Map<String,Content> contents) {
-            return Maps.transformValues(contents, new Function<Content, DescriptionTransport>() {
+            return ImmutableMap.copyOf(Maps.transformValues(contents, new Function<Content, DescriptionTransport>() {
                 @NullableDecl
                 @Override
                 public DescriptionTransport apply(@NullableDecl Content content) {
                     return content == null ? null : of(content);
                 }
-            });
+            }));
         }
     }
 
