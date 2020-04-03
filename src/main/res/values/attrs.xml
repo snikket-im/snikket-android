@@ -85,6 +85,7 @@
     <attr name="icon_new" format="reference"/>
     <attr name="icon_new_attachment" format="reference"/>
     <attr name="icon_not_secure" format="reference"/>
+    <attr name="icon_call" format="reference"/>
     <attr name="icon_quote" format="reference"/>
     <attr name="icon_refresh" format="reference"/>
     <attr name="icon_remove" format="reference"/>

@@ -116,6 +116,7 @@ import eu.siacs.conversations.utils.UIHelper;
 import eu.siacs.conversations.xmpp.XmppConnection;
 import eu.siacs.conversations.xmpp.chatstate.ChatState;
 import eu.siacs.conversations.xmpp.jingle.JingleFileTransferConnection;
+import eu.siacs.conversations.xmpp.jingle.RtpCapability;
 import rocks.xmpp.addr.Jid;
 
 import static eu.siacs.conversations.ui.XmppActivity.EXTRA_ACCOUNT;
@@ -950,6 +951,7 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
         final MenuItem menuInviteContact = menu.findItem(R.id.action_invite);
         final MenuItem menuMute = menu.findItem(R.id.action_mute);
         final MenuItem menuUnmute = menu.findItem(R.id.action_unmute);
+        final MenuItem menuCall = menu.findItem(R.id.action_call);
 
 
         if (conversation != null) {
@@ -957,7 +959,9 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
                 menuContactDetails.setVisible(false);
                 menuInviteContact.setVisible(conversation.getMucOptions().canInvite());
                 menuMucDetails.setTitle(conversation.getMucOptions().isPrivateAndNonAnonymous() ? R.string.action_muc_details : R.string.channel_details);
+                menuCall.setVisible(false);
             } else {
+                menuCall.setVisible(RtpCapability.check(conversation.getContact()) != RtpCapability.Capability.NONE);
                 menuContactDetails.setVisible(!this.conversation.withSelf());
                 menuMucDetails.setVisible(false);
                 final XmppConnectionService service = activity.xmppConnectionService;

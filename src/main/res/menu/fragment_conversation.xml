@@ -1,23 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
-      xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
         android:id="@+id/action_security"
         android:icon="?attr/icon_not_secure"
         android:orderInCategory="20"
-        app:showAsAction="always"
-        android:title="@string/action_secure">
+        android:title="@string/action_secure"
+        app:showAsAction="always">
         <menu>
-            <group android:checkableBehavior="single" >
+            <group android:checkableBehavior="single">
                 <item
                     android:id="@+id/encryption_choice_none"
-                    android:title="@string/encryption_choice_unencrypted"/>
+                    android:title="@string/encryption_choice_unencrypted" />
                 <item
                     android:id="@+id/encryption_choice_axolotl"
-                    android:title="@string/encryption_choice_omemo"/>
+                    android:title="@string/encryption_choice_omemo" />
                 <item
                     android:id="@+id/encryption_choice_pgp"
-                    android:title="@string/encryption_choice_pgp"/>
+                    android:title="@string/encryption_choice_pgp" />
             </group>
         </menu>
     </item>
@@ -25,76 +25,82 @@
         android:id="@+id/action_attach_file"
         android:icon="?attr/icon_new_attachment"
         android:orderInCategory="30"
-        app:showAsAction="always"
-        android:title="@string/attach_file">
+        android:title="@string/attach_file"
+        app:showAsAction="always">
         <menu>
 
             <item
                 android:id="@+id/attach_choose_file"
-                android:title="@string/choose_file"
-                android:icon="?attr/ic_attach_document"/>
+                android:icon="?attr/ic_attach_document"
+                android:title="@string/choose_file" />
 
             <item
                 android:id="@+id/attach_choose_picture"
-                android:title="@string/attach_choose_picture"
-                android:icon="?attr/ic_attach_photo"/>
+                android:icon="?attr/ic_attach_photo"
+                android:title="@string/attach_choose_picture" />
 
             <item
                 android:id="@+id/attach_take_picture"
-                android:title="@string/attach_take_picture"
-                android:icon="?attr/ic_attach_camera"/>
+                android:icon="?attr/ic_attach_camera"
+                android:title="@string/attach_take_picture" />
 
             <item
                 android:id="@+id/attach_record_video"
-                android:title="@string/attach_record_video"
-                android:icon="?attr/ic_attach_videocam"/>
+                android:icon="?attr/ic_attach_videocam"
+                android:title="@string/attach_record_video" />
 
             <item
                 android:id="@+id/attach_record_voice"
-                android:title="@string/attach_record_voice"
-                android:icon="?attr/ic_attach_record"/>
+                android:icon="?attr/ic_attach_record"
+                android:title="@string/attach_record_voice" />
 
             <item
                 android:id="@+id/attach_location"
-                android:title="@string/send_location"
-                android:icon="?attr/ic_attach_location"/>
+                android:icon="?attr/ic_attach_location"
+                android:title="@string/send_location" />
         </menu>
     </item>
     <item
+        android:id="@+id/action_call"
+        android:icon="?attr/icon_call"
+        android:orderInCategory="35"
+        android:title="@string/make_call"
+        app:showAsAction="always" />
+    <item
         android:id="@+id/action_contact_details"
         android:orderInCategory="40"
-        app:showAsAction="never"
-        android:title="@string/action_contact_details"/>
+        android:title="@string/action_contact_details"
+        app:showAsAction="never" />
     <item
         android:id="@+id/action_muc_details"
         android:icon="?attr/icon_group"
         android:orderInCategory="40"
-        app:showAsAction="never"
-        android:title="@string/action_muc_details"/>
+        android:title="@string/action_muc_details"
+        app:showAsAction="never" />
     <item
         android:id="@+id/action_invite"
         android:orderInCategory="45"
-        app:showAsAction="never"
-        android:title="@string/invite_contact"/>
+        android:title="@string/invite_contact"
+        app:showAsAction="never" />
     <item
         android:id="@+id/action_clear_history"
         android:orderInCategory="50"
-        app:showAsAction="never"
-        android:title="@string/action_clear_history"/>
+        android:title="@string/action_clear_history"
+        app:showAsAction="never" />
     <item
         android:id="@+id/action_archive"
         android:orderInCategory="60"
-        app:showAsAction="never"
-        android:title="@string/action_end_conversation"/>
+        android:title="@string/action_end_conversation"
+        app:showAsAction="never" />
     <item
         android:id="@+id/action_mute"
         android:orderInCategory="70"
-        app:showAsAction="never"
-        android:title="@string/disable_notifications"/>
+        android:title="@string/disable_notifications"
+        app:showAsAction="never" />
 
     <item
         android:id="@+id/action_unmute"
         android:orderInCategory="71"
-        app:showAsAction="never"
-        android:title="@string/enable_notifications"/>
+        android:title="@string/enable_notifications"
+        app:showAsAction="never" />
 </menu>
