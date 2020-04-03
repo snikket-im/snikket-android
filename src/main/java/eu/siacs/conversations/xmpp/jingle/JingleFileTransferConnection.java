@@ -66,7 +66,6 @@ public class JingleFileTransferConnection extends AbstractJingleConnection imple
     private int mJingleStatus = JINGLE_STATUS_OFFERED; //migrate to enum
     private int mStatus = Transferable.STATUS_UNKNOWN;
     private Message message;
-    private Jid initiator;
     private Jid responder;
     private List<JingleCandidate> candidates = new ArrayList<>();
     private ConcurrentHashMap<String, JingleSocks5Transport> connections = new ConcurrentHashMap<>();
@@ -178,7 +177,7 @@ public class JingleFileTransferConnection extends AbstractJingleConnection imple
 
         @Override
         public void success() {
-            if (initiator.equals(id.account.getJid())) {
+            if (isInitiator()) {
                 Log.d(Config.LOGTAG, "we were initiating. sending file");
                 transport.send(file, onFileTransmissionStatusChanged);
             } else {
@@ -191,14 +190,14 @@ public class JingleFileTransferConnection extends AbstractJingleConnection imple
         public void failed() {
             Log.d(Config.LOGTAG, id.account.getJid().asBareJid() + ": proxy activation failed");
             proxyActivationFailed = true;
-            if (initiating()) {
+            if (isInitiator()) {
                 sendFallbackToIbb();
             }
         }
     };
 
-    public JingleFileTransferConnection(JingleConnectionManager jingleConnectionManager, Id id) {
-        super(jingleConnectionManager, id);
+    public JingleFileTransferConnection(JingleConnectionManager jingleConnectionManager, Id id, Jid initiator) {
+        super(jingleConnectionManager, id, initiator);
     }
 
     private static long parseLong(final Element element, final long l) {
@@ -213,13 +212,11 @@ public class JingleFileTransferConnection extends AbstractJingleConnection imple
         }
     }
 
+    //TODO get rid and use isInitiator() instead
     private boolean responding() {
         return responder != null && responder.equals(id.account.getJid());
     }
 
-    private boolean initiating() {
-        return initiator.equals(id.account.getJid());
-    }
 
     InputStream getFileInputStream() {
         return this.mFileInputStream;
@@ -346,7 +343,6 @@ public class JingleFileTransferConnection extends AbstractJingleConnection imple
         this.remoteSupportsOmemoJet = remoteFeatures.contains(Namespace.JINGLE_ENCRYPTED_TRANSPORT_OMEMO);
         this.message.setTransferable(this);
         this.mStatus = Transferable.STATUS_UPLOADING;
-        this.initiator = this.id.account.getJid();
         this.responder = this.id.with;
         this.transportId = JingleConnectionManager.nextRandomId();
         this.setupDescription(remoteVersion);
@@ -354,7 +350,7 @@ public class JingleFileTransferConnection extends AbstractJingleConnection imple
             this.sendInitRequest();
         } else {
             gatherAndConnectDirectCandidates();
-            this.jingleConnectionManager.getPrimaryCandidate(id.account, initiating(), (success, candidate) -> {
+            this.jingleConnectionManager.getPrimaryCandidate(id.account, isInitiator(), (success, candidate) -> {
                 if (success) {
                     final JingleSocks5Transport socksConnection = new JingleSocks5Transport(this, candidate);
                     connections.put(candidate.getCid(), socksConnection);
@@ -432,7 +428,6 @@ public class JingleFileTransferConnection extends AbstractJingleConnection imple
         this.mStatus = Transferable.STATUS_OFFER;
         this.message.setTransferable(this);
         this.message.setCounterpart(this.id.with);
-        this.initiator = this.id.with;
         this.responder = this.id.account.getJid();
         final Content content = packet.getJingleContent();
         final GenericTransportInfo transportInfo = content.getTransport();
@@ -643,7 +638,7 @@ public class JingleFileTransferConnection extends AbstractJingleConnection imple
 
     private void sendAcceptSocks() {
         gatherAndConnectDirectCandidates();
-        this.jingleConnectionManager.getPrimaryCandidate(this.id.account, initiating(), (success, candidate) -> {
+        this.jingleConnectionManager.getPrimaryCandidate(this.id.account, isInitiator(), (success, candidate) -> {
             final JinglePacket packet = bootstrapPacket(JinglePacket.Action.SESSION_ACCEPT);
             final Content content = new Content(contentCreator, contentName);
             content.setDescription(this.description);
@@ -810,7 +805,7 @@ public class JingleFileTransferConnection extends AbstractJingleConnection imple
         if (connection == null) {
             Log.d(Config.LOGTAG, id.account.getJid().asBareJid() + ": could not find suitable candidate");
             this.disconnectSocks5Connections();
-            if (initiating()) {
+            if (isInitiator()) {
                 this.sendFallbackToIbb();
             }
         } else {
@@ -852,7 +847,7 @@ public class JingleFileTransferConnection extends AbstractJingleConnection imple
                                     + " was a proxy. waiting for other party to activate");
                 }
             } else {
-                if (initiating()) {
+                if (isInitiator()) {
                     Log.d(Config.LOGTAG, "we were initiating. sending file");
                     connection.send(file, onFileTransmissionStatusChanged);
                 } else {
@@ -882,7 +877,7 @@ public class JingleFileTransferConnection extends AbstractJingleConnection imple
                     } else if (connection.getCandidate().getPriority() == currentConnection
                             .getCandidate().getPriority()) {
                         // Log.d(Config.LOGTAG,"found two candidates with same priority");
-                        if (initiating()) {
+                        if (isInitiator()) {
                             if (currentConnection.getCandidate().isOurs()) {
                                 connection = currentConnection;
                             }
@@ -920,7 +915,7 @@ public class JingleFileTransferConnection extends AbstractJingleConnection imple
 
 
     private void receiveFallbackToIbb(final JinglePacket packet, final IbbTransportInfo transportInfo) {
-        if (initiating()) {
+        if (isInitiator()) {
             Log.d(Config.LOGTAG, id.account.getJid().asBareJid() + ": received out of order transport-replace (we were initiating)");
             respondToIqWithOutOfOrder(packet);
             return;
@@ -950,7 +945,7 @@ public class JingleFileTransferConnection extends AbstractJingleConnection imple
 
         respondToIq(packet, true);
 
-        if (initiating()) {
+        if (isInitiator()) {
             this.sendJinglePacket(answer, (account, response) -> {
                 if (response.getType() == IqPacket.TYPE.RESULT) {
                     Log.d(Config.LOGTAG, id.account.getJid().asBareJid() + " recipient ACKed our transport-accept. creating ibb");
@@ -992,7 +987,7 @@ public class JingleFileTransferConnection extends AbstractJingleConnection imple
             }
             respondToIq(packet, true);
             //might be receive instead if we are not initiating
-            if (initiating()) {
+            if (isInitiator()) {
                 this.transport.connect(onIbbTransportConnected);
             }
         } else {
@@ -1002,7 +997,7 @@ public class JingleFileTransferConnection extends AbstractJingleConnection imple
     }
 
     private void receiveSuccess() {
-        if (initiating()) {
+        if (isInitiator()) {
             this.mJingleStatus = JINGLE_STATUS_FINISHED;
             this.xmppConnectionService.markMessage(this.message, Message.STATUS_SEND_RECEIVED);
             this.disconnectSocks5Connections();

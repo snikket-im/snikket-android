@@ -22,7 +22,6 @@ import eu.siacs.conversations.xmpp.jingle.stanzas.Content;
 import eu.siacs.conversations.xmpp.jingle.stanzas.FileTransferDescription;
 import eu.siacs.conversations.xmpp.jingle.stanzas.JinglePacket;
 import eu.siacs.conversations.xmpp.stanzas.IqPacket;
-import eu.siacs.conversations.xmpp.stanzas.MessagePacket;
 import rocks.xmpp.addr.Jid;
 
 public class JingleConnectionManager extends AbstractConnectionManager {
@@ -40,13 +39,14 @@ public class JingleConnectionManager extends AbstractConnectionManager {
         if (existingJingleConnection != null) {
             existingJingleConnection.deliverPacket(packet);
         } else if (packet.getAction() == JinglePacket.Action.SESSION_INITIATE) {
+            final Jid from = packet.getFrom();
             final Content content = packet.getJingleContent();
             final String descriptionNamespace = content == null ? null : content.getDescriptionNamespace();
             final AbstractJingleConnection connection;
             if (FileTransferDescription.NAMESPACES.contains(descriptionNamespace)) {
-                connection = new JingleFileTransferConnection(this, id);
+                connection = new JingleFileTransferConnection(this, id, from);
             } else if (Namespace.JINGLE_APPS_RTP.equals(descriptionNamespace)) {
-                connection = new JingleRtpConnection(this, id);
+                connection = new JingleRtpConnection(this, id, from);
             } else {
                 //TODO return feature-not-implemented
                 return;
@@ -89,7 +89,7 @@ public class JingleConnectionManager extends AbstractConnectionManager {
             final Element description = message.findChild("description");
             final String namespace = description == null ? null : description.getNamespace();
             if (Namespace.JINGLE_APPS_RTP.equals(namespace)) {
-                final JingleRtpConnection rtpConnection = new JingleRtpConnection(this, id);
+                final JingleRtpConnection rtpConnection = new JingleRtpConnection(this, id, with);
                 this.connections.put(id, rtpConnection);
                 rtpConnection.deliveryMessage(to, from, message);
             } else {
@@ -107,11 +107,12 @@ public class JingleConnectionManager extends AbstractConnectionManager {
         if (old != null) {
             old.cancel();
         }
+        final Account account = message.getConversation().getAccount();
         final AbstractJingleConnection.Id id = AbstractJingleConnection.Id.of(message);
-        final JingleFileTransferConnection connection = new JingleFileTransferConnection(this, id);
+        final JingleFileTransferConnection connection = new JingleFileTransferConnection(this, id, account.getJid());
         mXmppConnectionService.markMessage(message, Message.STATUS_WAITING);
-        connection.init(message);
         this.connections.put(id, connection);
+        connection.init(message);
     }
 
     void finishConnection(final AbstractJingleConnection connection) {

@@ -14,11 +14,17 @@ public abstract class AbstractJingleConnection {
     protected final JingleConnectionManager jingleConnectionManager;
     protected final XmppConnectionService xmppConnectionService;
     protected final Id id;
+    protected final Jid initiator;
 
-    public AbstractJingleConnection(final JingleConnectionManager jingleConnectionManager, final Id id) {
+    AbstractJingleConnection(final JingleConnectionManager jingleConnectionManager, final Id id, final Jid initiator) {
         this.jingleConnectionManager = jingleConnectionManager;
         this.xmppConnectionService = jingleConnectionManager.getXmppConnectionService();
         this.id = id;
+        this.initiator = initiator;
+    }
+
+    boolean isInitiator() {
+        return initiator.equals(id.account.getJid());
     }
 
     abstract void deliverPacket(JinglePacket jinglePacket);

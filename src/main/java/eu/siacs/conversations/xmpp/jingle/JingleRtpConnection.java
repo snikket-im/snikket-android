@@ -29,8 +29,8 @@ public class JingleRtpConnection extends AbstractJingleConnection {
     private State state = State.NULL;
 
 
-    public JingleRtpConnection(JingleConnectionManager jingleConnectionManager, Id id) {
-        super(jingleConnectionManager, id);
+    public JingleRtpConnection(JingleConnectionManager jingleConnectionManager, Id id, Jid initiator) {
+        super(jingleConnectionManager, id, initiator);
     }
 
     @Override

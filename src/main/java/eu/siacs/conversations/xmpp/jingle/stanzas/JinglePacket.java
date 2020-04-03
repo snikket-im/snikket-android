@@ -8,6 +8,7 @@ import com.google.common.base.Preconditions;
 import eu.siacs.conversations.xml.Element;
 import eu.siacs.conversations.xml.Namespace;
 import eu.siacs.conversations.xmpp.stanzas.IqPacket;
+import rocks.xmpp.addr.Jid;
 
 public class JinglePacket extends IqPacket {
 
@@ -52,9 +53,21 @@ public class JinglePacket extends IqPacket {
         jingle.addChild(reason);
     }
 
+    //RECOMMENDED for session-initiate, NOT RECOMMENDED otherwise
+    public void setInitiator(final Jid initiator) {
+        Preconditions.checkArgument(initiator.isFullJid(), "initiator should be a full JID");
+        findChild("jingle", Namespace.JINGLE).setAttribute("initiator", initiator.toEscapedString());
+    }
+
+    //RECOMMENDED for session-accept, NOT RECOMMENDED otherwise
+    public void setResponder(Jid responder) {
+        Preconditions.checkArgument(responder.isFullJid(), "responder should be a full JID");
+        findChild("jingle", Namespace.JINGLE).setAttribute("responder", responder.toEscapedString());
+    }
+
     public Element getJingleChild(final String name) {
         final Element jingle = findChild("jingle", Namespace.JINGLE);
-        return jingle == null ? null :  jingle.findChild(name);
+        return jingle == null ? null : jingle.findChild(name);
     }
 
     public void setJingleChild(final Element child) {
