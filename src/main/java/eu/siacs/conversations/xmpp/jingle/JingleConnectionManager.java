@@ -2,15 +2,19 @@ package eu.siacs.conversations.xmpp.jingle;
 
 import android.util.Log;
 
+import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.entities.Account;
+import eu.siacs.conversations.entities.Contact;
 import eu.siacs.conversations.entities.Message;
 import eu.siacs.conversations.entities.Transferable;
 import eu.siacs.conversations.services.AbstractConnectionManager;
@@ -22,10 +26,12 @@ import eu.siacs.conversations.xmpp.jingle.stanzas.Content;
 import eu.siacs.conversations.xmpp.jingle.stanzas.FileTransferDescription;
 import eu.siacs.conversations.xmpp.jingle.stanzas.JinglePacket;
 import eu.siacs.conversations.xmpp.stanzas.IqPacket;
+import eu.siacs.conversations.xmpp.stanzas.MessagePacket;
 import rocks.xmpp.addr.Jid;
 
 public class JingleConnectionManager extends AbstractConnectionManager {
-    private Map<AbstractJingleConnection.Id, AbstractJingleConnection> connections = new ConcurrentHashMap<>();
+    private final Set<RtpSessionProposal> rtpSessionProposals = new HashSet<>();
+    private final Map<AbstractJingleConnection.Id, AbstractJingleConnection> connections = new ConcurrentHashMap<>();
 
     private HashMap<Jid, JingleCandidate> primaryCandidates = new HashMap<>();
 
@@ -94,6 +100,22 @@ public class JingleConnectionManager extends AbstractConnectionManager {
                 rtpConnection.deliveryMessage(from, message);
             } else {
                 Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": unable to react to proposed " + namespace + " session");
+            }
+        } else if ("proceed".equals(message.getName())) {
+            if (!with.equals(from)) {
+                Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": ignore carbon copied proceed");
+                return;
+            }
+            final RtpSessionProposal proposal = new RtpSessionProposal(account, with.asBareJid(), sessionId);
+            synchronized (rtpSessionProposals) {
+                if (rtpSessionProposals.remove(proposal)) {
+                    final JingleRtpConnection rtpConnection = new JingleRtpConnection(this, id, account.getJid());
+                    this.connections.put(id, rtpConnection);
+                    rtpConnection.transitionOrThrow(AbstractJingleConnection.State.PROPOSED);
+                    rtpConnection.deliveryMessage(from, message);
+                } else {
+                    Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": no rtp session proposal found for " + with);
+                }
             }
         } else {
             Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": retrieved out of order jingle message");
@@ -165,6 +187,16 @@ public class JingleConnectionManager extends AbstractConnectionManager {
         }
     }
 
+    public void proposeJingleRtpSession(final Account account, final Contact contact) {
+        final RtpSessionProposal proposal = RtpSessionProposal.of(account, contact.getJid().asBareJid());
+        synchronized (this.rtpSessionProposals) {
+            this.rtpSessionProposals.add(proposal);
+            final MessagePacket messagePacket = mXmppConnectionService.getMessageGenerator().sessionProposal(proposal);
+            Log.d(Config.LOGTAG,messagePacket.toString());
+            mXmppConnectionService.sendMessagePacket(account, messagePacket);
+        }
+    }
+
     static String nextRandomId() {
         return UUID.randomUUID().toString();
     }
@@ -209,6 +241,37 @@ public class JingleConnectionManager extends AbstractConnectionManager {
             /*if (connection.getJingleStatus() == JingleFileTransferConnection.JINGLE_STATUS_TRANSMITTING) {
                 connection.abort("connectivity-error");
             }*/
+        }
+    }
+
+    public static class RtpSessionProposal {
+        private final Account account;
+        public final Jid with;
+        public final String sessionId;
+
+        private RtpSessionProposal(Account account, Jid with, String sessionId) {
+            this.account = account;
+            this.with = with;
+            this.sessionId = sessionId;
+        }
+
+        public static RtpSessionProposal of(Account account, Jid with) {
+            return new RtpSessionProposal(account, with, UUID.randomUUID().toString());
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+            RtpSessionProposal proposal = (RtpSessionProposal) o;
+            return Objects.equal(account.getJid(), proposal.account.getJid()) &&
+                    Objects.equal(with, proposal.with) &&
+                    Objects.equal(sessionId, proposal.sessionId);
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hashCode(account.getJid(), with, sessionId);
         }
     }
 }

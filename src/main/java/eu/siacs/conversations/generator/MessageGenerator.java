@@ -18,6 +18,7 @@ import eu.siacs.conversations.services.XmppConnectionService;
 import eu.siacs.conversations.xml.Element;
 import eu.siacs.conversations.xml.Namespace;
 import eu.siacs.conversations.xmpp.chatstate.ChatState;
+import eu.siacs.conversations.xmpp.jingle.JingleConnectionManager;
 import eu.siacs.conversations.xmpp.stanzas.MessagePacket;
 import rocks.xmpp.addr.Jid;
 
@@ -229,6 +230,15 @@ public class MessageGenerator extends AbstractGenerator {
 		packet.setTo(to);
 		packet.addChild("received", "urn:xmpp:receipts").setAttribute("id", id);
 		packet.addChild("store", "urn:xmpp:hints");
+		return packet;
+	}
+
+	public MessagePacket sessionProposal(JingleConnectionManager.RtpSessionProposal proposal) {
+		final MessagePacket packet = new MessagePacket();
+		packet.setTo(proposal.with);
+		final Element propose = packet.addChild("propose", Namespace.JINGLE_MESSAGE);
+		propose.setAttribute("id", proposal.sessionId);
+		propose.addChild("description", Namespace.JINGLE_APPS_RTP);
 		return packet;
 	}
 }

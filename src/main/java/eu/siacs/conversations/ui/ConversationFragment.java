@@ -199,7 +199,7 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
     private OnClickListener acceptJoin = new OnClickListener() {
         @Override
         public void onClick(View v) {
-            conversation.setAttribute("accept_non_anonymous",true);
+            conversation.setAttribute("accept_non_anonymous", true);
             activity.xmppConnectionService.updateConversation(conversation);
             activity.xmppConnectionService.joinMuc(conversation);
         }
@@ -1127,7 +1127,7 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
                 showErrorMessage.setVisible(true);
             }
             final String mime = m.isFileOrImage() ? m.getMimeType() : null;
-            if ((m.isGeoUri() && GeoHelper.openInOsmAnd(getActivity(),m)) || (mime != null && mime.startsWith("audio/"))) {
+            if ((m.isGeoUri() && GeoHelper.openInOsmAnd(getActivity(), m)) || (mime != null && mime.startsWith("audio/"))) {
                 openWith.setVisible(true);
             }
         }
@@ -1232,10 +1232,18 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
                     BlockContactDialog.show((XmppActivity) activity, conversation);
                 }
                 break;
+            case R.id.action_call:
+                triggerRtpSession();
+                break;
             default:
                 break;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void triggerRtpSession() {
+        final Contact contact = conversation.getContact();
+        activity.xmppConnectionService.getJingleConnectionManager().proposeJingleRtpSession(conversation.getAccount(), contact);
     }
 
     private void handleAttachmentSelection(MenuItem item) {
@@ -1431,7 +1439,7 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
         } else if (message.treatAsDownloadable() || message.hasFileOnRemoteHost() || MessageUtils.unInitiatedButKnownSize(message)) {
             createNewConnection(message);
         } else {
-            Log.d(Config.LOGTAG,message.getConversation().getAccount()+": unable to start downloadable");
+            Log.d(Config.LOGTAG, message.getConversation().getAccount() + ": unable to start downloadable");
         }
     }
 
@@ -1621,7 +1629,7 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
 
     private void openWith(final Message message) {
         if (message.isGeoUri()) {
-            GeoHelper.view(getActivity(),message);
+            GeoHelper.view(getActivity(), message);
         } else {
             final DownloadableFile file = activity.xmppConnectionService.getFileBackend().getFile(message);
             ViewUtil.view(activity, file);
@@ -1641,8 +1649,8 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
         }
         builder.setMessage(displayError);
         builder.setNegativeButton(R.string.copy_to_clipboard, (dialog, which) -> {
-            activity.copyTextToClipboard(displayError,R.string.error_message);
-            Toast.makeText(activity,R.string.error_message_copied_to_clipboard, Toast.LENGTH_SHORT).show();
+            activity.copyTextToClipboard(displayError, R.string.error_message);
+            Toast.makeText(activity, R.string.error_message_copied_to_clipboard, Toast.LENGTH_SHORT).show();
         });
         builder.setPositiveButton(R.string.confirm, null);
         builder.create().show();
@@ -2744,10 +2752,10 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
             Log.e(Config.LOGTAG, "cleared pending photo uri");
         }
         if (pendingConversationsUuid.clear()) {
-            Log.e(Config.LOGTAG,"cleared pending conversations uuid");
+            Log.e(Config.LOGTAG, "cleared pending conversations uuid");
         }
         if (pendingMediaPreviews.clear()) {
-            Log.e(Config.LOGTAG,"cleared pending media previews");
+            Log.e(Config.LOGTAG, "cleared pending media previews");
         }
     }
 
@@ -2765,7 +2773,7 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
         }
         final PopupMenu popupMenu = new PopupMenu(getActivity(), v);
         final Contact contact = message.getContact();
-        if (message.getStatus() <= Message.STATUS_RECEIVED && (contact == null  || !contact.isSelf())) {
+        if (message.getStatus() <= Message.STATUS_RECEIVED && (contact == null || !contact.isSelf())) {
             if (message.getConversation().getMode() == Conversation.MODE_MULTI) {
                 final Jid cp = message.getCounterpart();
                 if (cp == null || cp.isBareJid()) {

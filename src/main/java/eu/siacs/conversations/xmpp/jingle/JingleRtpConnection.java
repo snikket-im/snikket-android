@@ -128,7 +128,7 @@ public class JingleRtpConnection extends AbstractJingleConnection {
     private void receiveProceed(final Jid from, final Element proceed) {
         if (from.equals(id.with)) {
             if (isInitiator()) {
-                if (transition(State.SESSION_INITIALIZED)) {
+                if (transition(State.PROCEED)) {
                     this.sendSessionInitiate();
                 } else {
                     Log.d(Config.LOGTAG, String.format("%s: ignoring proceed because already in %s", id.account.getJid().asBareJid(), this.state));
@@ -142,7 +142,7 @@ public class JingleRtpConnection extends AbstractJingleConnection {
     }
 
     private void sendSessionInitiate() {
-
+        Log.d(Config.LOGTAG,id.account.getJid().asBareJid()+": sending session-initiate");
     }
 
     private void sendSessionAccept() {
@@ -167,7 +167,7 @@ public class JingleRtpConnection extends AbstractJingleConnection {
         final MessagePacket messagePacket = new MessagePacket();
         messagePacket.setTo(id.with);
         //Note that Movim needs 'accept', correct is 'proceed' https://github.com/movim/movim/issues/916
-        messagePacket.addChild("accept", Namespace.JINGLE_MESSAGE).setAttribute("id", id.sessionId);
+        messagePacket.addChild("proceed", Namespace.JINGLE_MESSAGE).setAttribute("id", id.sessionId);
         Log.d(Config.LOGTAG, messagePacket.toString());
         xmppConnectionService.sendMessagePacket(id.account, messagePacket);
     }
@@ -187,7 +187,7 @@ public class JingleRtpConnection extends AbstractJingleConnection {
         }
     }
 
-    private void transitionOrThrow(final State target) {
+    public void transitionOrThrow(final State target) {
         if (!transition(target)) {
             throw new IllegalStateException(String.format("Unable to transition from %s to %s", this.state, target));
         }
