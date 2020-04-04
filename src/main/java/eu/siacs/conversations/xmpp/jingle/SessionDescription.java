@@ -11,11 +11,11 @@ import eu.siacs.conversations.Config;
 
 public class SessionDescription {
 
-    private final int version;
-    private final String name;
-    private final String connectionData;
-    private final List<Attribute> attributes;
-    private final List<Media> media;
+    public final int version;
+    public final String name;
+    public final String connectionData;
+    public final List<Attribute> attributes;
+    public final List<Media> media;
 
 
     public SessionDescription(int version, String name, String connectionData, List<Attribute> attributes, List<Media> media) {
@@ -36,10 +36,10 @@ public class SessionDescription {
         MediaBuilder currentMediaBuilder = null;
         ImmutableList.Builder<Attribute> attributeBuilder = new ImmutableList.Builder<>();
         ImmutableList.Builder<Media> mediaBuilder = new ImmutableList.Builder<>();
-        for(final String line : input.split("\n")) {
-            final String[] pair = line.split("=",2);
+        for (final String line : input.split("\n")) {
+            final String[] pair = line.split("=", 2);
             if (pair.length < 2 || pair[0].length() != 1) {
-                Log.d(Config.LOGTAG,"skipping sdp parsing on line "+line);
+                Log.d(Config.LOGTAG, "skipping sdp parsing on line " + line);
                 continue;
             }
             final char key = pair[0].charAt(0);
@@ -63,7 +63,8 @@ public class SessionDescription {
                     break;
                 case 'm':
                     if (currentMediaBuilder == null) {
-                        sessionDescriptionBuilder.setAttributes(attributeBuilder.build());;
+                        sessionDescriptionBuilder.setAttributes(attributeBuilder.build());
+                        ;
                     } else {
                         currentMediaBuilder.setAttributes(attributeBuilder.build());
                         mediaBuilder.add(currentMediaBuilder.createMedia());
@@ -76,12 +77,12 @@ public class SessionDescription {
                         currentMediaBuilder.setPort(ignorantIntParser(parts[1]));
                         currentMediaBuilder.setProtocol(parts[2]);
                         ImmutableList.Builder<Integer> formats = new ImmutableList.Builder<>();
-                        for(int i = 3; i < parts.length; ++i) {
+                        for (int i = 3; i < parts.length; ++i) {
                             formats.add(ignorantIntParser(parts[i]));
                         }
                         currentMediaBuilder.setFormats(formats.build());
                     } else {
-                        Log.d(Config.LOGTAG,"skipping media line "+line);
+                        Log.d(Config.LOGTAG, "skipping media line " + line);
                     }
                     break;
             }
@@ -104,8 +105,8 @@ public class SessionDescription {
     }
 
     public static class Attribute {
-        private final String key;
-        private final String value;
+        public final String key;
+        public final String value;
 
         public Attribute(String key, String value) {
             this.key = key;
@@ -113,9 +114,9 @@ public class SessionDescription {
         }
 
         public static Attribute parse(String input) {
-            final String[] pair = input.split(":",2);
+            final String[] pair = input.split(":", 2);
             if (pair.length == 2) {
-                return new Attribute(pair[0],pair[1]);
+                return new Attribute(pair[0], pair[1]);
             } else {
                 return new Attribute(pair[0], null);
             }
@@ -125,12 +126,12 @@ public class SessionDescription {
     }
 
     public static class Media {
-        private final String media;
-        private final int port;
-        private final String protocol;
-        private final List<Integer> formats;
-        private final String connectionData;
-        private final List<Attribute> attributes;
+        public final String media;
+        public final int port;
+        public final String protocol;
+        public final List<Integer> formats;
+        public final String connectionData;
+        public final List<Attribute> attributes;
 
         public Media(String media, int port, String protocol, List<Integer> formats, String connectionData, List<Attribute> attributes) {
             this.media = media;

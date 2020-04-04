@@ -11,6 +11,7 @@
 -keep class com.google.android.gms.**
 
 -keep class org.openintents.openpgp.*
+-keep class org.webrtc.** { *; }
 
 -dontwarn org.bouncycastle.mail.**
 -dontwarn org.bouncycastle.x509.util.LDAPStoreHelper

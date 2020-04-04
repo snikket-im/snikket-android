@@ -52,6 +52,8 @@ public class RtpDescription extends GenericDescription {
     //TODO: support for https://xmpp.org/extensions/xep-0293.html
 
 
+    //XEP-0294: Jingle RTP Header Extensions Negotiation
+    //maps to `extmap:$id $uri`
     public static class RtpHeaderExtension extends Element {
 
         private RtpHeaderExtension() {
@@ -76,6 +78,7 @@ public class RtpDescription extends GenericDescription {
         }
     }
 
+    //maps to `rtpmap $id $name/$clockrate/$channels`
     public static class PayloadType extends Element {
 
         private PayloadType(String name, String xmlns) {
@@ -132,6 +135,8 @@ public class RtpDescription extends GenericDescription {
         }
     }
 
+    //map to `fmtp $id key=value;key=value
+    //where id is the id of the parent payload-type
     public static class Parameter extends Element {
 
         private Parameter() {

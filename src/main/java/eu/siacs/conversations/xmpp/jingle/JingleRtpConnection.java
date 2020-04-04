@@ -8,8 +8,19 @@ import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
 
 import org.checkerframework.checker.nullness.compatqual.NullableDecl;
+import org.webrtc.AudioSource;
+import org.webrtc.AudioTrack;
+import org.webrtc.DataChannel;
+import org.webrtc.IceCandidate;
+import org.webrtc.MediaConstraints;
+import org.webrtc.MediaStream;
+import org.webrtc.PeerConnection;
+import org.webrtc.PeerConnectionFactory;
+import org.webrtc.RtpReceiver;
+import org.webrtc.SdpObserver;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Map;
 
 import eu.siacs.conversations.Config;
@@ -66,10 +77,10 @@ public class JingleRtpConnection extends AbstractJingleConnection {
         try {
             contents = DescriptionTransport.of(jinglePacket.getJingleContents());
         } catch (IllegalArgumentException | NullPointerException e) {
-            Log.d(Config.LOGTAG,id.account.getJid().asBareJid()+": improperly formatted contents",e);
+            Log.d(Config.LOGTAG, id.account.getJid().asBareJid() + ": improperly formatted contents", e);
             return;
         }
-        Log.d(Config.LOGTAG,"processing session-init with "+contents.size()+" contents");
+        Log.d(Config.LOGTAG, "processing session-init with " + contents.size() + " contents");
         final State oldState = this.state;
         if (transition(State.SESSION_INITIALIZED)) {
             if (oldState == State.PROCEED) {
@@ -83,20 +94,20 @@ public class JingleRtpConnection extends AbstractJingleConnection {
         }
     }
 
-    private void processContents(final Map<String,DescriptionTransport> contents) {
-        for(Map.Entry<String,DescriptionTransport> content : contents.entrySet()) {
+    private void processContents(final Map<String, DescriptionTransport> contents) {
+        for (Map.Entry<String, DescriptionTransport> content : contents.entrySet()) {
             final DescriptionTransport descriptionTransport = content.getValue();
             final RtpDescription rtpDescription = descriptionTransport.description;
-            Log.d(Config.LOGTAG,"receive content with name "+content.getKey()+" and media="+rtpDescription.getMedia());
-            for(RtpDescription.PayloadType payloadType : rtpDescription.getPayloadTypes()) {
-                Log.d(Config.LOGTAG,"payload type: "+payloadType.toString());
+            Log.d(Config.LOGTAG, "receive content with name " + content.getKey() + " and media=" + rtpDescription.getMedia());
+            for (RtpDescription.PayloadType payloadType : rtpDescription.getPayloadTypes()) {
+                Log.d(Config.LOGTAG, "payload type: " + payloadType.toString());
             }
-            for(RtpDescription.RtpHeaderExtension extension : rtpDescription.getHeaderExtensions()) {
-                Log.d(Config.LOGTAG,"extension: "+extension.toString());
+            for (RtpDescription.RtpHeaderExtension extension : rtpDescription.getHeaderExtensions()) {
+                Log.d(Config.LOGTAG, "extension: " + extension.toString());
             }
             final IceUdpTransportInfo iceUdpTransportInfo = descriptionTransport.transport;
-            Log.d(Config.LOGTAG,"transport: "+descriptionTransport.transport);
-            Log.d(Config.LOGTAG,"fingerprint "+iceUdpTransportInfo.getFingerprint());
+            Log.d(Config.LOGTAG, "transport: " + descriptionTransport.transport);
+            Log.d(Config.LOGTAG, "fingerprint " + iceUdpTransportInfo.getFingerprint());
         }
     }
 
@@ -142,11 +153,12 @@ public class JingleRtpConnection extends AbstractJingleConnection {
     }
 
     private void sendSessionInitiate() {
-        Log.d(Config.LOGTAG,id.account.getJid().asBareJid()+": sending session-initiate");
+        setupWebRTC();
+        Log.d(Config.LOGTAG, id.account.getJid().asBareJid() + ": sending session-initiate");
     }
 
     private void sendSessionAccept() {
-        Log.d(Config.LOGTAG,"sending session-accept");
+        Log.d(Config.LOGTAG, "sending session-accept");
     }
 
     public void pickUpCall() {
@@ -160,6 +172,110 @@ public class JingleRtpConnection extends AbstractJingleConnection {
             default:
                 throw new IllegalStateException("Can not pick up call from " + this.state);
         }
+    }
+
+    private void setupWebRTC() {
+        PeerConnectionFactory.initialize(
+                PeerConnectionFactory.InitializationOptions.builder(xmppConnectionService).createInitializationOptions()
+        );
+        final PeerConnectionFactory.Options options = new PeerConnectionFactory.Options();
+        PeerConnectionFactory peerConnectionFactory = PeerConnectionFactory.builder().createPeerConnectionFactory();
+
+        final AudioSource audioSource = peerConnectionFactory.createAudioSource(new MediaConstraints());
+
+        final AudioTrack audioTrack = peerConnectionFactory.createAudioTrack("my-audio-track", audioSource);
+        final MediaStream stream = peerConnectionFactory.createLocalMediaStream("my-media-stream");
+        stream.addTrack(audioTrack);
+
+
+        PeerConnection peer = peerConnectionFactory.createPeerConnection(Collections.emptyList(), new PeerConnection.Observer() {
+            @Override
+            public void onSignalingChange(PeerConnection.SignalingState signalingState) {
+
+            }
+
+            @Override
+            public void onIceConnectionChange(PeerConnection.IceConnectionState iceConnectionState) {
+
+            }
+
+            @Override
+            public void onIceConnectionReceivingChange(boolean b) {
+
+            }
+
+            @Override
+            public void onIceGatheringChange(PeerConnection.IceGatheringState iceGatheringState) {
+
+            }
+
+            @Override
+            public void onIceCandidate(IceCandidate iceCandidate) {
+
+            }
+
+            @Override
+            public void onIceCandidatesRemoved(IceCandidate[] iceCandidates) {
+
+            }
+
+            @Override
+            public void onAddStream(MediaStream mediaStream) {
+
+            }
+
+            @Override
+            public void onRemoveStream(MediaStream mediaStream) {
+
+            }
+
+            @Override
+            public void onDataChannel(DataChannel dataChannel) {
+
+            }
+
+            @Override
+            public void onRenegotiationNeeded() {
+
+            }
+
+            @Override
+            public void onAddTrack(RtpReceiver rtpReceiver, MediaStream[] mediaStreams) {
+
+            }
+        });
+
+        peer.addStream(stream);
+
+        peer.createOffer(new SdpObserver() {
+
+            @Override
+            public void onCreateSuccess(org.webrtc.SessionDescription description) {
+                final SessionDescription sessionDescription = SessionDescription.parse(description.description);
+                for (SessionDescription.Media media : sessionDescription.media) {
+                    Log.d(Config.LOGTAG, "media: " + media.protocol);
+                    for (SessionDescription.Attribute attribute : media.attributes) {
+                        Log.d(Config.LOGTAG, "attribute key=" + attribute.key + ", value=" + attribute.value);
+                    }
+                }
+                Log.d(Config.LOGTAG, sessionDescription.toString());
+            }
+
+            @Override
+            public void onSetSuccess() {
+
+            }
+
+            @Override
+            public void onCreateFailure(String s) {
+
+            }
+
+            @Override
+            public void onSetFailure(String s) {
+
+            }
+        }, new MediaConstraints());
     }
 
     private void pickupCallFromProposed() {
@@ -210,7 +326,7 @@ public class JingleRtpConnection extends AbstractJingleConnection {
             if (description instanceof RtpDescription) {
                 rtpDescription = (RtpDescription) description;
             } else {
-                Log.d(Config.LOGTAG,"description was "+description);
+                Log.d(Config.LOGTAG, "description was " + description);
                 throw new IllegalArgumentException("Content does not contain RtpDescription");
             }
             if (transportInfo instanceof IceUdpTransportInfo) {
@@ -221,7 +337,7 @@ public class JingleRtpConnection extends AbstractJingleConnection {
             return new DescriptionTransport(rtpDescription, iceUdpTransportInfo);
         }
 
-        public static Map<String, DescriptionTransport> of(final Map<String,Content> contents) {
+        public static Map<String, DescriptionTransport> of(final Map<String, Content> contents) {
             return ImmutableMap.copyOf(Maps.transformValues(contents, new Function<Content, DescriptionTransport>() {
                 @NullableDecl
                 @Override
