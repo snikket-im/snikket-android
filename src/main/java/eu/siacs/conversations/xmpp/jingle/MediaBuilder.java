@@ -1,5 +1,7 @@
 package eu.siacs.conversations.xmpp.jingle;
 
+import com.google.common.collect.ArrayListMultimap;
+
 import java.util.List;
 
 public class MediaBuilder {
@@ -8,7 +10,7 @@ public class MediaBuilder {
     private String protocol;
     private List<Integer> formats;
     private String connectionData;
-    private List<SessionDescription.Attribute> attributes;
+    private ArrayListMultimap<String,String> attributes;
 
     public MediaBuilder setMedia(String media) {
         this.media = media;
@@ -35,7 +37,7 @@ public class MediaBuilder {
         return this;
     }
 
-    public MediaBuilder setAttributes(List<SessionDescription.Attribute> attributes) {
+    public MediaBuilder setAttributes(ArrayListMultimap<String,String> attributes) {
         this.attributes = attributes;
         return this;
     }

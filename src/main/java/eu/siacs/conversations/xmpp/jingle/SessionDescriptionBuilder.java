@@ -1,12 +1,14 @@
 package eu.siacs.conversations.xmpp.jingle;
 
+import com.google.common.collect.ArrayListMultimap;
+
 import java.util.List;
 
 public class SessionDescriptionBuilder {
     private int version;
     private String name;
     private String connectionData;
-    private List<SessionDescription.Attribute> attributes;
+    private ArrayListMultimap<String,String> attributes;
     private List<SessionDescription.Media> media;
 
     public SessionDescriptionBuilder setVersion(int version) {
@@ -24,7 +26,7 @@ public class SessionDescriptionBuilder {
         return this;
     }
 
-    public SessionDescriptionBuilder setAttributes(List<SessionDescription.Attribute> attributes) {
+    public SessionDescriptionBuilder setAttributes(ArrayListMultimap<String,String> attributes) {
         this.attributes = attributes;
         return this;
     }

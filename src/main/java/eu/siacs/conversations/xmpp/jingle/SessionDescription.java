@@ -1,7 +1,9 @@
 package eu.siacs.conversations.xmpp.jingle;
 
 import android.util.Log;
+import android.util.Pair;
 
+import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.ImmutableList;
 
 import java.util.List;
@@ -14,11 +16,11 @@ public class SessionDescription {
     public final int version;
     public final String name;
     public final String connectionData;
-    public final List<Attribute> attributes;
+    public final ArrayListMultimap<String, String> attributes;
     public final List<Media> media;
 
 
-    public SessionDescription(int version, String name, String connectionData, List<Attribute> attributes, List<Media> media) {
+    public SessionDescription(int version, String name, String connectionData, ArrayListMultimap<String, String> attributes, List<Media> media) {
         this.version = version;
         this.name = name;
         this.connectionData = connectionData;
@@ -34,10 +36,10 @@ public class SessionDescription {
     public static SessionDescription parse(final String input) {
         final SessionDescriptionBuilder sessionDescriptionBuilder = new SessionDescriptionBuilder();
         MediaBuilder currentMediaBuilder = null;
-        ImmutableList.Builder<Attribute> attributeBuilder = new ImmutableList.Builder<>();
+        ArrayListMultimap<String, String> attributeMap = ArrayListMultimap.create();
         ImmutableList.Builder<Media> mediaBuilder = new ImmutableList.Builder<>();
         for (final String line : input.split("\n")) {
-            final String[] pair = line.split("=", 2);
+            final String[] pair = line.trim().split("=", 2);
             if (pair.length < 2 || pair[0].length() != 1) {
                 Log.d(Config.LOGTAG, "skipping sdp parsing on line " + line);
                 continue;
@@ -59,17 +61,18 @@ public class SessionDescription {
                     sessionDescriptionBuilder.setName(value);
                     break;
                 case 'a':
-                    attributeBuilder.add(Attribute.parse(value));
+                    final Pair<String, String> attribute = parseAttribute(value);
+                    attributeMap.put(attribute.first, attribute.second);
                     break;
                 case 'm':
                     if (currentMediaBuilder == null) {
-                        sessionDescriptionBuilder.setAttributes(attributeBuilder.build());
+                        sessionDescriptionBuilder.setAttributes(attributeMap);
                         ;
                     } else {
-                        currentMediaBuilder.setAttributes(attributeBuilder.build());
+                        currentMediaBuilder.setAttributes(attributeMap);
                         mediaBuilder.add(currentMediaBuilder.createMedia());
                     }
-                    attributeBuilder = new ImmutableList.Builder<>();
+                    attributeMap = ArrayListMultimap.create();
                     currentMediaBuilder = new MediaBuilder();
                     final String[] parts = value.split(" ");
                     if (parts.length >= 3) {
@@ -89,14 +92,14 @@ public class SessionDescription {
 
         }
         if (currentMediaBuilder != null) {
-            currentMediaBuilder.setAttributes(attributeBuilder.build());
+            currentMediaBuilder.setAttributes(attributeMap);
             mediaBuilder.add(currentMediaBuilder.createMedia());
         }
         sessionDescriptionBuilder.setMedia(mediaBuilder.build());
         return sessionDescriptionBuilder.createSessionDescription();
     }
 
-    private static int ignorantIntParser(final String input) {
+    public static int ignorantIntParser(final String input) {
         try {
             return Integer.parseInt(input);
         } catch (NumberFormatException e) {
@@ -104,25 +107,13 @@ public class SessionDescription {
         }
     }
 
-    public static class Attribute {
-        public final String key;
-        public final String value;
-
-        public Attribute(String key, String value) {
-            this.key = key;
-            this.value = value;
+    public static Pair<String, String> parseAttribute(final String input) {
+        final String[] pair = input.split(":", 2);
+        if (pair.length == 2) {
+            return new Pair<>(pair[0], pair[1]);
+        } else {
+            return new Pair<>(pair[0], "");
         }
-
-        public static Attribute parse(String input) {
-            final String[] pair = input.split(":", 2);
-            if (pair.length == 2) {
-                return new Attribute(pair[0], pair[1]);
-            } else {
-                return new Attribute(pair[0], null);
-            }
-        }
-
-
     }
 
     public static class Media {
@@ -131,9 +122,9 @@ public class SessionDescription {
         public final String protocol;
         public final List<Integer> formats;
         public final String connectionData;
-        public final List<Attribute> attributes;
+        public final ArrayListMultimap<String, String> attributes;
 
-        public Media(String media, int port, String protocol, List<Integer> formats, String connectionData, List<Attribute> attributes) {
+        public Media(String media, int port, String protocol, List<Integer> formats, String connectionData, ArrayListMultimap<String, String> attributes) {
             this.media = media;
             this.port = port;
             this.protocol = protocol;

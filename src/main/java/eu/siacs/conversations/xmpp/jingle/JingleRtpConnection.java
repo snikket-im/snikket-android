@@ -252,11 +252,9 @@ public class JingleRtpConnection extends AbstractJingleConnection {
             @Override
             public void onCreateSuccess(org.webrtc.SessionDescription description) {
                 final SessionDescription sessionDescription = SessionDescription.parse(description.description);
+                Log.d(Config.LOGTAG,"description: "+description.description);
                 for (SessionDescription.Media media : sessionDescription.media) {
-                    Log.d(Config.LOGTAG, "media: " + media.protocol);
-                    for (SessionDescription.Attribute attribute : media.attributes) {
-                        Log.d(Config.LOGTAG, "attribute key=" + attribute.key + ", value=" + attribute.value);
-                    }
+                    Log.d(Config.LOGTAG, RtpDescription.of(media).toString());
                 }
                 Log.d(Config.LOGTAG, sessionDescription.toString());
             }
