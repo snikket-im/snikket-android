@@ -1,12 +1,16 @@
 package eu.siacs.conversations.xmpp.jingle.stanzas;
 
 import android.util.Log;
+import android.util.Pair;
 
 import com.google.common.base.Preconditions;
+import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.ImmutableList;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.xml.Element;
@@ -66,6 +70,14 @@ public class RtpDescription extends GenericDescription {
             super("rtcp-fb", Namespace.JINGLE_RTP_FEEDBACK_NEGOTIATION);
         }
 
+        public FeedbackNegotiation(String type, String subType) {
+            super("rtcp-fb", Namespace.JINGLE_RTP_FEEDBACK_NEGOTIATION);
+            this.setAttribute("type", type);
+            if (subType != null) {
+                this.setAttribute("subtype", subType);
+            }
+        }
+
         public String getType() {
             return this.getAttribute("type");
         }
@@ -96,6 +108,13 @@ public class RtpDescription extends GenericDescription {
     }
 
     public static class FeedbackNegotiationTrrInt extends Element {
+
+        private FeedbackNegotiationTrrInt(int value) {
+            super("rtcp-fb-trr-int", Namespace.JINGLE_RTP_FEEDBACK_NEGOTIATION);
+            this.setAttribute("value", value);
+        }
+
+
         private FeedbackNegotiationTrrInt() {
             super("rtcp-fb-trr-int", Namespace.JINGLE_RTP_FEEDBACK_NEGOTIATION);
         }
@@ -105,11 +124,8 @@ public class RtpDescription extends GenericDescription {
             if (value == null) {
                 return 0;
             }
-            try {
-                return Integer.parseInt(value);
-            } catch (NumberFormatException e) {
-                return 0;
-            }
+            return SessionDescription.ignorantIntParser(value);
+
         }
 
         private static FeedbackNegotiationTrrInt upgrade(final Element element) {
@@ -169,7 +185,7 @@ public class RtpDescription extends GenericDescription {
             if (pair.length == 2) {
                 final String id = pair[0];
                 final String uri = pair[1];
-                return new RtpHeaderExtension(id,uri);
+                return new RtpHeaderExtension(id, uri);
             } else {
                 return null;
             }
@@ -185,7 +201,7 @@ public class RtpDescription extends GenericDescription {
 
         public PayloadType(String id, String name, int clockRate, int channels) {
             super("payload-type", Namespace.JINGLE_APPS_RTP);
-            this.setAttribute("id",id);
+            this.setAttribute("id", id);
             this.setAttribute("name", name);
             this.setAttribute("clockrate", clockRate);
             if (channels != 1) {
@@ -252,7 +268,7 @@ public class RtpDescription extends GenericDescription {
         }
 
         public static PayloadType ofSdpString(final String sdp) {
-            final String[] pair = sdp.split(" ",2);
+            final String[] pair = sdp.split(" ", 2);
             if (pair.length == 2) {
                 final String id = pair[0];
                 final String[] parts = pair[1].split("/");
@@ -263,12 +279,24 @@ public class RtpDescription extends GenericDescription {
                     if (parts.length >= 3) {
                         channels = SessionDescription.ignorantIntParser(parts[2]);
                     } else {
-                        channels =1;
+                        channels = 1;
                     }
-                    return new PayloadType(id,name,clockRate,channels);
+                    return new PayloadType(id, name, clockRate, channels);
                 }
             }
             return null;
+        }
+
+        public void addChildren(final List<Element> children) {
+            if (children != null) {
+                this.children.addAll(children);
+            }
+        }
+
+        public void addParameters(List<Parameter> parameters) {
+            if (parameters != null) {
+                this.children.addAll(parameters);
+            }
         }
     }
 
@@ -301,6 +329,23 @@ public class RtpDescription extends GenericDescription {
             parameter.setChildren(element.getChildren());
             return parameter;
         }
+
+        public static Pair<String, List<Parameter>> ofSdpString(final String sdp) {
+            final String[] pair = sdp.split(" ");
+            if (pair.length == 2) {
+                final String id = pair[0];
+                ImmutableList.Builder<Parameter> builder = new ImmutableList.Builder<>();
+                for (final String parameter : pair[1].split(";")) {
+                    final String[] parts = parameter.split("=", 2);
+                    if (parts.length == 2) {
+                        builder.add(new Parameter(parts[0], parts[1]));
+                    }
+                }
+                return new Pair<>(id, builder.build());
+            } else {
+                return null;
+            }
+        }
     }
 
     public enum Media {
@@ -322,18 +367,50 @@ public class RtpDescription extends GenericDescription {
 
     public static RtpDescription of(final SessionDescription.Media media) {
         final RtpDescription rtpDescription = new RtpDescription();
-        for(final String rtpmap : media.attributes.get("rtpmap")) {
+        final Map<String, List<Parameter>> parameterMap = new HashMap<>();
+        ArrayListMultimap<String, Element> feedbackNegotiationMap = ArrayListMultimap.create();
+        for (final String rtcpFb : media.attributes.get("rtcp-fb")) {
+            final String[] parts = rtcpFb.split(" ");
+            if (parts.length >= 2) {
+                final String id = parts[0];
+                final String type = parts[1];
+                final String subType = parts.length >= 3 ? parts[2] : null;
+                if ("trr-int".equals(type)) {
+                    if (subType != null) {
+                        feedbackNegotiationMap.put(id, new FeedbackNegotiationTrrInt(SessionDescription.ignorantIntParser(subType)));
+                    }
+                } else {
+                    feedbackNegotiationMap.put(id, new FeedbackNegotiation(type, subType));
+                }
+            }
+        }
+        for (final String fmtp : media.attributes.get("fmtp")) {
+            final Pair<String, List<Parameter>> pair = Parameter.ofSdpString(fmtp);
+            if (pair != null) {
+                parameterMap.put(pair.first, pair.second);
+            }
+        }
+        rtpDescription.addChildren(feedbackNegotiationMap.get("*"));
+        for (final String rtpmap : media.attributes.get("rtpmap")) {
             final PayloadType payloadType = PayloadType.ofSdpString(rtpmap);
             if (payloadType != null) {
+                payloadType.addParameters(parameterMap.get(payloadType.getId()));
+                payloadType.addChildren(feedbackNegotiationMap.get(payloadType.getId()));
                 rtpDescription.addChild(payloadType);
             }
         }
-        for(final String extmap : media.attributes.get("extmap")) {
+        for (final String extmap : media.attributes.get("extmap")) {
             final RtpHeaderExtension extension = RtpHeaderExtension.ofSdpString(extmap);
             if (extension != null) {
                 rtpDescription.addChild(extension);
             }
         }
         return rtpDescription;
+    }
+
+    private void addChildren(List<Element> elements) {
+        if (elements != null) {
+            this.children.addAll(elements);
+        }
     }
 }
