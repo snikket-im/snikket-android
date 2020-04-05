@@ -91,7 +91,7 @@ public class RtpContentMap {
 
         public static DescriptionTransport of(final SessionDescription sessionDescription, final SessionDescription.Media media) {
             final RtpDescription rtpDescription = RtpDescription.of(media);
-            final IceUdpTransportInfo transportInfo = new IceUdpTransportInfo();
+            final IceUdpTransportInfo transportInfo = IceUdpTransportInfo.of(sessionDescription, media);
             return new DescriptionTransport(rtpDescription, transportInfo);
         }
 

@@ -1,16 +1,19 @@
 package eu.siacs.conversations.xmpp.jingle.stanzas;
 
 import com.google.common.base.Preconditions;
+import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.Iterables;
 
 import java.util.List;
 
 import eu.siacs.conversations.xml.Element;
 import eu.siacs.conversations.xml.Namespace;
+import eu.siacs.conversations.xmpp.jingle.SessionDescription;
 
 public class IceUdpTransportInfo extends GenericTransportInfo {
 
-    public IceUdpTransportInfo() {
+    private IceUdpTransportInfo() {
         super("transport", Namespace.JINGLE_TRANSPORT_ICE_UDP);
     }
 
@@ -21,7 +24,7 @@ public class IceUdpTransportInfo extends GenericTransportInfo {
 
     public List<Candidate> getCandidates() {
         final ImmutableList.Builder<Candidate> builder = new ImmutableList.Builder<>();
-        for(final Element child : getChildren()) {
+        for (final Element child : getChildren()) {
             if ("candidate".equals(child.getName())) {
                 builder.add(Candidate.upgrade(child));
             }
@@ -36,6 +39,24 @@ public class IceUdpTransportInfo extends GenericTransportInfo {
         transportInfo.setAttributes(element.getAttributes());
         transportInfo.setChildren(element.getChildren());
         return transportInfo;
+    }
+
+    public static IceUdpTransportInfo of(SessionDescription sessionDescription, SessionDescription.Media media) {
+        final String ufrag = Iterables.getFirst(media.attributes.get("ice-ufrag"), null);
+        final String pwd = Iterables.getFirst(media.attributes.get("ice-pwd"), null);
+        IceUdpTransportInfo iceUdpTransportInfo = new IceUdpTransportInfo();
+        if (ufrag != null) {
+            iceUdpTransportInfo.setAttribute("ufrag", ufrag);
+        }
+        if (pwd != null) {
+            iceUdpTransportInfo.setAttribute("pwd", pwd);
+        }
+        final Fingerprint fingerprint = Fingerprint.of(sessionDescription, media);
+        if (fingerprint != null) {
+            iceUdpTransportInfo.addChild(fingerprint);
+        }
+        return iceUdpTransportInfo;
+
     }
 
     public static class Candidate extends Element {
@@ -135,6 +156,29 @@ public class IceUdpTransportInfo extends GenericTransportInfo {
             fingerprint.setAttributes(element.getAttributes());
             fingerprint.setContent(element.getContent());
             return fingerprint;
+        }
+
+        private static Fingerprint of(ArrayListMultimap<String, String> attributes) {
+            final String fingerprint = Iterables.getFirst(attributes.get("fingerprint"), null);
+            final String setup = Iterables.getFirst(attributes.get("setup"), null);
+            if (setup != null && fingerprint != null) {
+                final String[] fingerprintParts = fingerprint.split(" ", 2);
+                if (fingerprintParts.length == 2) {
+                    final String hash = fingerprintParts[0];
+                    final String actualFingerprint = fingerprintParts[1];
+                    final Fingerprint element = new Fingerprint();
+                    element.setAttribute("hash", hash);
+                    element.setAttribute("setup", setup);
+                    element.setContent(actualFingerprint);
+                    return element;
+                }
+            }
+            return null;
+        }
+
+        public static Fingerprint of(final SessionDescription sessionDescription, final SessionDescription.Media media) {
+            final Fingerprint fingerprint = of(media.attributes);
+            return fingerprint == null ? of(sessionDescription.attributes) : fingerprint;
         }
     }
 }
