@@ -118,6 +118,8 @@ public class SessionDescription {
         if (currentMediaBuilder != null) {
             currentMediaBuilder.setAttributes(attributeMap);
             mediaBuilder.add(currentMediaBuilder.createMedia());
+        } else {
+            sessionDescriptionBuilder.setAttributes(attributeMap);
         }
         sessionDescriptionBuilder.setMedia(mediaBuilder.build());
         return sessionDescriptionBuilder.createSessionDescription();
@@ -130,12 +132,9 @@ public class SessionDescription {
         final Group group = contentMap.group;
         if (group != null) {
             attributeMap.put("group", group.getSemantics() + " " + Joiner.on(' ').join(group.getIdentificationTags()));
-        } else {
-            Log.d(Config.LOGTAG,"group was null");
         }
 
-        //random additional attributes
-
+        attributeMap.put("msid-semantic", " WMS my-media-stream");
 
         for (Map.Entry<String, RtpContentMap.DescriptionTransport> entry : contentMap.contents.entrySet()) {
             final String name = entry.getKey();
@@ -172,6 +171,7 @@ public class SessionDescription {
                     mediaAttributes.put("rtcp-fb", payloadType.getId() + " trr-int " + feedbackNegotiationTrrInt.getValue());
                 }
             }
+
             for (RtpDescription.FeedbackNegotiation feedbackNegotiation : description.getFeedbackNegotiations()) {
                 mediaAttributes.put("rtcp-fb", "* " + feedbackNegotiation.getType() + (Strings.isNullOrEmpty(feedbackNegotiation.getSubType()) ? "" : " " + feedbackNegotiation.getSubType()));
             }
@@ -181,11 +181,18 @@ public class SessionDescription {
             for (RtpDescription.RtpHeaderExtension extension : description.getHeaderExtensions()) {
                 mediaAttributes.put("extmap", extension.getId() + " " + extension.getUri());
             }
+            for (RtpDescription.Source source : description.getSources()) {
+                for (RtpDescription.Source.Parameter parameter : source.getParameters()) {
+                    mediaAttributes.put("ssrc", source.getSsrcId() + " " + parameter.getParameterName() + ":" + parameter.getParameterValue());
+                }
+            }
+
             mediaAttributes.put("mid", name);
 
             //random additional attributes
-            mediaAttributes.put("sendrecv","");
-            mediaAttributes.put("rtcp-mux","");
+            mediaAttributes.put("rtcp", "9 IN IP4 0.0.0.0");
+            mediaAttributes.put("sendrecv", "");
+            mediaAttributes.put("rtcp-mux", "");
 
             final MediaBuilder mediaBuilder = new MediaBuilder();
             mediaBuilder.setMedia(description.getMedia().toString().toLowerCase(Locale.ROOT));
@@ -227,8 +234,8 @@ public class SessionDescription {
         final StringBuilder s = new StringBuilder()
                 .append("v=").append(version).append(LINE_DIVIDER)
                 .append("o=- 8770656990916039506 2 IN IP4 127.0.0.1").append(LINE_DIVIDER) //what ever that means
-                .append("t=0 0").append(LINE_DIVIDER)
-                .append("s=").append(name).append(LINE_DIVIDER);
+                .append("s=").append(name).append(LINE_DIVIDER)
+                .append("t=0 0").append(LINE_DIVIDER);
         appendAttributes(s, attributes);
         for (Media media : this.media) {
             s.append("m=").append(media.media).append(' ').append(media.port).append(' ').append(media.protocol).append(' ').append(Joiner.on(' ').join(media.formats)).append(LINE_DIVIDER);

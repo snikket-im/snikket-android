@@ -92,20 +92,6 @@ public class JingleRtpConnection extends AbstractJingleConnection {
     }
 
     private void processContents(final RtpContentMap contentMap) {
-        for (Map.Entry<String, RtpContentMap.DescriptionTransport> content : contentMap.contents.entrySet()) {
-            final RtpContentMap.DescriptionTransport descriptionTransport = content.getValue();
-            final RtpDescription rtpDescription = descriptionTransport.description;
-            Log.d(Config.LOGTAG, "receive content with name " + content.getKey() + " and media=" + rtpDescription.getMedia());
-            for (RtpDescription.PayloadType payloadType : rtpDescription.getPayloadTypes()) {
-                Log.d(Config.LOGTAG, "payload type: " + payloadType.toString());
-            }
-            for (RtpDescription.RtpHeaderExtension extension : rtpDescription.getHeaderExtensions()) {
-                Log.d(Config.LOGTAG, "extension: " + extension.toString());
-            }
-            final IceUdpTransportInfo iceUdpTransportInfo = descriptionTransport.transport;
-            Log.d(Config.LOGTAG, "transport: " + descriptionTransport.transport);
-            Log.d(Config.LOGTAG, "fingerprint " + iceUdpTransportInfo.getFingerprint());
-        }
         setupWebRTC();
         org.webrtc.SessionDescription sessionDescription = new org.webrtc.SessionDescription(org.webrtc.SessionDescription.Type.OFFER, SessionDescription.of(contentMap).toString());
         Log.d(Config.LOGTAG, "debug print for sessionDescription:" + sessionDescription.description);
