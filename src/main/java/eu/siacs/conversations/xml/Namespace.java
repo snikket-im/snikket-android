@@ -36,6 +36,7 @@ public final class Namespace {
     public static final String JINGLE_TRANSPORT_ICE_UDP = "urn:xmpp:jingle:transports:ice-udp:1";
     public static final String JINGLE_APPS_RTP = "urn:xmpp:jingle:apps:rtp:1";
     public static final String JINGLE_APPS_DTLS = "urn:xmpp:jingle:apps:dtls:0";
+    public static final String JINGLE_APPS_GROUPING = "urn:xmpp:jingle:apps:grouping:0";
     public static final String JINGLE_FEATURE_AUDIO = "urn:xmpp:jingle:apps:rtp:audio";
     public static final String JINGLE_FEATURE_VIDEO = "urn:xmpp:jingle:apps:rtp:video";
     public static final String JINGLE_RTP_HEADER_EXTENSIONS = "urn:xmpp:jingle:apps:rtp:rtp-hdrext:0";

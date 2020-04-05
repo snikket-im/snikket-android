@@ -1,7 +1,6 @@
 package eu.siacs.conversations.xmpp.jingle.stanzas;
 
 import android.support.annotation.NonNull;
-import android.util.Log;
 
 import com.google.common.base.CaseFormat;
 import com.google.common.base.Preconditions;
@@ -9,7 +8,6 @@ import com.google.common.collect.ImmutableMap;
 
 import java.util.Map;
 
-import eu.siacs.conversations.Config;
 import eu.siacs.conversations.xml.Element;
 import eu.siacs.conversations.xml.Namespace;
 import eu.siacs.conversations.xmpp.stanzas.IqPacket;
@@ -44,6 +42,15 @@ public class JinglePacket extends IqPacket {
         return content == null ? null : Content.upgrade(content);
     }
 
+    public Group getGroup() {
+        final Element group = this.findChild("group", Namespace.JINGLE_APPS_GROUPING);
+        return group == null ? null : Group.upgrade(group);
+    }
+
+    public void addGroup(final Group group) {
+        this.addJingleChild(group);
+    }
+
     public Map<String, Content> getJingleContents() {
         final Element jingle = findChild("jingle", Namespace.JINGLE);
         ImmutableMap.Builder<String, Content> builder = new ImmutableMap.Builder<>();
@@ -56,8 +63,8 @@ public class JinglePacket extends IqPacket {
         return builder.build();
     }
 
-    public void setJingleContent(final Content content) { //take content interface
-        setJingleChild(content);
+    public void addJingleContent(final Content content) { //take content interface
+        addJingleChild(content);
     }
 
     public Reason getReason() {
@@ -87,7 +94,7 @@ public class JinglePacket extends IqPacket {
         return jingle == null ? null : jingle.findChild(name);
     }
 
-    public void setJingleChild(final Element child) {
+    public void addJingleChild(final Element child) {
         final Element jingle = findChild("jingle", Namespace.JINGLE);
         jingle.addChild(child);
     }

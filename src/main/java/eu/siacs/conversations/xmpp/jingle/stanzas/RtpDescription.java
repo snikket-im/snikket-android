@@ -19,6 +19,11 @@ import eu.siacs.conversations.xmpp.jingle.SessionDescription;
 public class RtpDescription extends GenericDescription {
 
 
+    private RtpDescription(final String media) {
+        super("description", Namespace.JINGLE_APPS_RTP);
+        this.setAttribute("media", media);
+    }
+
     private RtpDescription() {
         super("description", Namespace.JINGLE_APPS_RTP);
     }
@@ -447,7 +452,7 @@ public class RtpDescription extends GenericDescription {
     }
 
     public static RtpDescription of(final SessionDescription.Media media) {
-        final RtpDescription rtpDescription = new RtpDescription();
+        final RtpDescription rtpDescription = new RtpDescription(media.media);
         final Map<String, List<Parameter>> parameterMap = new HashMap<>();
         final ArrayListMultimap<String, Element> feedbackNegotiationMap = ArrayListMultimap.create();
         final ArrayListMultimap<String, Source.Parameter> sourceParameterMap = ArrayListMultimap.create();

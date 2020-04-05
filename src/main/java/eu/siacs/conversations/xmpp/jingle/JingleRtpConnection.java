@@ -2,12 +2,9 @@ package eu.siacs.conversations.xmpp.jingle;
 
 import android.util.Log;
 
-import com.google.common.base.Function;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.Maps;
 
-import org.checkerframework.checker.nullness.compatqual.NullableDecl;
 import org.webrtc.AudioSource;
 import org.webrtc.AudioTrack;
 import org.webrtc.DataChannel;
@@ -26,9 +23,6 @@ import java.util.Map;
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.xml.Element;
 import eu.siacs.conversations.xml.Namespace;
-import eu.siacs.conversations.xmpp.jingle.stanzas.Content;
-import eu.siacs.conversations.xmpp.jingle.stanzas.GenericDescription;
-import eu.siacs.conversations.xmpp.jingle.stanzas.GenericTransportInfo;
 import eu.siacs.conversations.xmpp.jingle.stanzas.IceUdpTransportInfo;
 import eu.siacs.conversations.xmpp.jingle.stanzas.JinglePacket;
 import eu.siacs.conversations.xmpp.jingle.stanzas.RtpDescription;
@@ -73,18 +67,18 @@ public class JingleRtpConnection extends AbstractJingleConnection {
             //TODO respond with out-of-order
             return;
         }
-        final Map<String, DescriptionTransport> contents;
+        final RtpContentMap contentMap;
         try {
-            contents = DescriptionTransport.of(jinglePacket.getJingleContents());
+            contentMap = RtpContentMap.of(jinglePacket);
         } catch (IllegalArgumentException | NullPointerException e) {
             Log.d(Config.LOGTAG, id.account.getJid().asBareJid() + ": improperly formatted contents", e);
             return;
         }
-        Log.d(Config.LOGTAG, "processing session-init with " + contents.size() + " contents");
+        Log.d(Config.LOGTAG, "processing session-init with " + contentMap.contents.size() + " contents");
         final State oldState = this.state;
         if (transition(State.SESSION_INITIALIZED)) {
             if (oldState == State.PROCEED) {
-                processContents(contents);
+                processContents(contentMap);
                 sendSessionAccept();
             } else {
                 //TODO start ringing
@@ -94,9 +88,9 @@ public class JingleRtpConnection extends AbstractJingleConnection {
         }
     }
 
-    private void processContents(final Map<String, DescriptionTransport> contents) {
-        for (Map.Entry<String, DescriptionTransport> content : contents.entrySet()) {
-            final DescriptionTransport descriptionTransport = content.getValue();
+    private void processContents(final RtpContentMap contentMap) {
+        for (Map.Entry<String, RtpContentMap.DescriptionTransport> content : contentMap.contents.entrySet()) {
+            final RtpContentMap.DescriptionTransport descriptionTransport = content.getValue();
             final RtpDescription rtpDescription = descriptionTransport.description;
             Log.d(Config.LOGTAG, "receive content with name " + content.getKey() + " and media=" + rtpDescription.getMedia());
             for (RtpDescription.PayloadType payloadType : rtpDescription.getPayloadTypes()) {
@@ -154,7 +148,11 @@ public class JingleRtpConnection extends AbstractJingleConnection {
 
     private void sendSessionInitiate() {
         setupWebRTC();
-        Log.d(Config.LOGTAG, id.account.getJid().asBareJid() + ": sending session-initiate");
+        Log.d(Config.LOGTAG, id.account.getJid().asBareJid() + ": prepare session-initiate");
+    }
+
+    private void sendSessionInitiate(RtpContentMap rtpContentMap) {
+        Log.d(Config.LOGTAG, rtpContentMap.toJinglePacket(JinglePacket.Action.SESSION_INITIATE, id.sessionId).toString());
     }
 
     private void sendSessionAccept() {
@@ -252,11 +250,9 @@ public class JingleRtpConnection extends AbstractJingleConnection {
             @Override
             public void onCreateSuccess(org.webrtc.SessionDescription description) {
                 final SessionDescription sessionDescription = SessionDescription.parse(description.description);
-                Log.d(Config.LOGTAG,"description: "+description.description);
-                for (SessionDescription.Media media : sessionDescription.media) {
-                    Log.d(Config.LOGTAG, RtpDescription.of(media).toString());
-                }
-                Log.d(Config.LOGTAG, sessionDescription.toString());
+                Log.d(Config.LOGTAG, "description: " + description.description);
+                final RtpContentMap rtpContentMap = RtpContentMap.of(sessionDescription);
+                sendSessionInitiate(rtpContentMap);
             }
 
             @Override
@@ -306,44 +302,4 @@ public class JingleRtpConnection extends AbstractJingleConnection {
             throw new IllegalStateException(String.format("Unable to transition from %s to %s", this.state, target));
         }
     }
-
-    public static class DescriptionTransport {
-        private final RtpDescription description;
-        private final IceUdpTransportInfo transport;
-
-        public DescriptionTransport(final RtpDescription description, final IceUdpTransportInfo transport) {
-            this.description = description;
-            this.transport = transport;
-        }
-
-        public static DescriptionTransport of(final Content content) {
-            final GenericDescription description = content.getDescription();
-            final GenericTransportInfo transportInfo = content.getTransport();
-            final RtpDescription rtpDescription;
-            final IceUdpTransportInfo iceUdpTransportInfo;
-            if (description instanceof RtpDescription) {
-                rtpDescription = (RtpDescription) description;
-            } else {
-                Log.d(Config.LOGTAG, "description was " + description);
-                throw new IllegalArgumentException("Content does not contain RtpDescription");
-            }
-            if (transportInfo instanceof IceUdpTransportInfo) {
-                iceUdpTransportInfo = (IceUdpTransportInfo) transportInfo;
-            } else {
-                throw new IllegalArgumentException("Content does not contain ICE-UDP transport");
-            }
-            return new DescriptionTransport(rtpDescription, iceUdpTransportInfo);
-        }
-
-        public static Map<String, DescriptionTransport> of(final Map<String, Content> contents) {
-            return ImmutableMap.copyOf(Maps.transformValues(contents, new Function<Content, DescriptionTransport>() {
-                @NullableDecl
-                @Override
-                public DescriptionTransport apply(@NullableDecl Content content) {
-                    return content == null ? null : of(content);
-                }
-            }));
-        }
-    }
-
 }

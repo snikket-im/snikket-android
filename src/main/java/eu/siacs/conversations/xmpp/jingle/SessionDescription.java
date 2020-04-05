@@ -28,7 +28,7 @@ public class SessionDescription {
         this.media = media;
     }
 
-    public static SessionDescription parse(final Map<String, JingleRtpConnection.DescriptionTransport> contents) {
+    public static SessionDescription parse(final Map<String, RtpContentMap.DescriptionTransport> contents) {
         final SessionDescriptionBuilder sessionDescriptionBuilder = new SessionDescriptionBuilder();
         return sessionDescriptionBuilder.createSessionDescription();
     }
