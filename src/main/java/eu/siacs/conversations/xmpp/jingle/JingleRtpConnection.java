@@ -156,6 +156,7 @@ public class JingleRtpConnection extends AbstractJingleConnection {
         this.initialRtpContentMap = rtpContentMap;
         final JinglePacket sessionInitiate = rtpContentMap.toJinglePacket(JinglePacket.Action.SESSION_INITIATE, id.sessionId);
         Log.d(Config.LOGTAG, sessionInitiate.toString());
+        Log.d(Config.LOGTAG,"here is what we think the sdp looks like"+SessionDescription.of(rtpContentMap).toString());
         send(sessionInitiate);
     }
 
@@ -235,8 +236,6 @@ public class JingleRtpConnection extends AbstractJingleConnection {
             public void onIceCandidate(IceCandidate iceCandidate) {
                 IceUdpTransportInfo.Candidate candidate = IceUdpTransportInfo.Candidate.fromSdpAttribute(iceCandidate.sdp);
                 Log.d(Config.LOGTAG, "onIceCandidate: " + iceCandidate.sdp);
-                Log.d(Config.LOGTAG, "xml: " + candidate.toString());
-                Log.d(Config.LOGTAG, "mid: " + iceCandidate.sdpMid);
                 sendTransportInfo(iceCandidate.sdpMid, candidate);
 
             }

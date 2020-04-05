@@ -206,7 +206,7 @@ public class RtpDescription extends GenericDescription {
         }
     }
 
-    //maps to `rtpmap $id $name/$clockrate/$channels`
+    //maps to `rtpmap:$id $name/$clockrate/$channels`
     public static class PayloadType extends Element {
 
         private PayloadType() {
@@ -223,9 +223,20 @@ public class RtpDescription extends GenericDescription {
             }
         }
 
+        public String toSdpAttribute() {
+            final int channels = getChannels();
+            return getId()+" "+getPayloadTypeName()+"/"+getClockRate()+(channels == 1 ? "" : "/"+channels);
+        }
+
+        public int getIntId() {
+            final String id = this.getAttribute("id");
+            return id == null ? 0 : SessionDescription.ignorantIntParser(id);
+        }
+
         public String getId() {
             return this.getAttribute("id");
         }
+
 
         public String getPayloadTypeName() {
             return this.getAttribute("name");
@@ -342,6 +353,19 @@ public class RtpDescription extends GenericDescription {
             parameter.setAttributes(element.getAttributes());
             parameter.setChildren(element.getChildren());
             return parameter;
+        }
+
+        public static String toSdpString(final String id, List<Parameter> parameters) {
+            final StringBuilder stringBuilder = new StringBuilder();
+            stringBuilder.append(id).append(' ');
+            for(int i = 0; i < parameters.size(); ++i) {
+                Parameter p = parameters.get(i);
+                stringBuilder.append(p.getParameterName()).append('=').append(p.getParameterValue());
+                if (i != parameters.size() - 1) {
+                    stringBuilder.append(';');
+                }
+            }
+            return stringBuilder.toString();
         }
 
         public static Pair<String, List<Parameter>> ofSdpString(final String sdp) {
