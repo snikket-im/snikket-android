@@ -43,7 +43,8 @@ public class JinglePacket extends IqPacket {
     }
 
     public Group getGroup() {
-        final Element group = this.findChild("group", Namespace.JINGLE_APPS_GROUPING);
+        final Element jingle = findChild("jingle", Namespace.JINGLE);
+        final Element group = jingle.findChild("group", Namespace.JINGLE_APPS_GROUPING);
         return group == null ? null : Group.upgrade(group);
     }
 

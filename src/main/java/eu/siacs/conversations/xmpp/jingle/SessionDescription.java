@@ -21,7 +21,7 @@ public class SessionDescription {
 
     private final static String LINE_DIVIDER = "\r\n";
     private final static String HARDCODED_MEDIA_PROTOCOL = "UDP/TLS/RTP/SAVPF"; //probably only true for DTLS-SRTP aka when we have a fingerprint
-    private final static int HARDCODED_MEDIA_PORT = 1;
+    private final static int HARDCODED_MEDIA_PORT = 9;
     private final static String HARDCODED_ICE_OPTIONS = "trickle renomination";
     private final static String HARDCODED_CONNECTION = "IN IP4 0.0.0.0";
 
@@ -130,6 +130,8 @@ public class SessionDescription {
         final Group group = contentMap.group;
         if (group != null) {
             attributeMap.put("group", group.getSemantics() + " " + Joiner.on(' ').join(group.getIdentificationTags()));
+        } else {
+            Log.d(Config.LOGTAG,"group was null");
         }
 
         //random additional attributes
@@ -196,7 +198,7 @@ public class SessionDescription {
 
         }
         sessionDescriptionBuilder.setVersion(0);
-        sessionDescriptionBuilder.setName(" ");
+        sessionDescriptionBuilder.setName("-");
         sessionDescriptionBuilder.setMedia(mediaListBuilder.build());
         sessionDescriptionBuilder.setAttributes(attributeMap);
 
@@ -224,6 +226,8 @@ public class SessionDescription {
     public String toString() {
         final StringBuilder s = new StringBuilder()
                 .append("v=").append(version).append(LINE_DIVIDER)
+                .append("o=- 8770656990916039506 2 IN IP4 127.0.0.1").append(LINE_DIVIDER) //what ever that means
+                .append("t=0 0").append(LINE_DIVIDER)
                 .append("s=").append(name).append(LINE_DIVIDER);
         appendAttributes(s, attributes);
         for (Media media : this.media) {

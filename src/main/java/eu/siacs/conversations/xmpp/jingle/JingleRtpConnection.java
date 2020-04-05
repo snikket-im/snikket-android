@@ -43,6 +43,7 @@ public class JingleRtpConnection extends AbstractJingleConnection {
 
     private State state = State.NULL;
     private RtpContentMap initialRtpContentMap;
+    private PeerConnection peerConnection;
 
 
     public JingleRtpConnection(JingleConnectionManager jingleConnectionManager, Id id, Jid initiator) {
@@ -63,6 +64,7 @@ public class JingleRtpConnection extends AbstractJingleConnection {
     }
 
     private void receiveSessionInitiate(final JinglePacket jinglePacket) {
+        Log.d(Config.LOGTAG,jinglePacket.toString());
         if (isInitiator()) {
             Log.d(Config.LOGTAG, String.format("%s: received session-initiate even though we were initiating", id.account.getJid().asBareJid()));
             //TODO respond with out-of-order
@@ -104,6 +106,31 @@ public class JingleRtpConnection extends AbstractJingleConnection {
             Log.d(Config.LOGTAG, "transport: " + descriptionTransport.transport);
             Log.d(Config.LOGTAG, "fingerprint " + iceUdpTransportInfo.getFingerprint());
         }
+        setupWebRTC();
+        org.webrtc.SessionDescription sessionDescription = new org.webrtc.SessionDescription(org.webrtc.SessionDescription.Type.OFFER, SessionDescription.of(contentMap).toString());
+        Log.d(Config.LOGTAG, "debug print for sessionDescription:" + sessionDescription.description);
+        this.peerConnection.setRemoteDescription(new SdpObserver() {
+            @Override
+            public void onCreateSuccess(org.webrtc.SessionDescription sessionDescription) {
+
+            }
+
+            @Override
+            public void onSetSuccess() {
+                Log.d(Config.LOGTAG, "onSetSuccess() for setRemoteDescription");
+            }
+
+            @Override
+            public void onCreateFailure(String s) {
+
+            }
+
+            @Override
+            public void onSetFailure(String s) {
+                Log.d(Config.LOGTAG, "onSetFailure() for setRemoteDescription. " + s);
+
+            }
+        }, sessionDescription);
     }
 
     void deliveryMessage(final Jid from, final Element message) {
@@ -148,15 +175,16 @@ public class JingleRtpConnection extends AbstractJingleConnection {
     }
 
     private void sendSessionInitiate() {
-        setupWebRTC();
         Log.d(Config.LOGTAG, id.account.getJid().asBareJid() + ": prepare session-initiate");
+        setupWebRTC();
+        createOffer();
     }
 
     private void sendSessionInitiate(RtpContentMap rtpContentMap) {
         this.initialRtpContentMap = rtpContentMap;
         final JinglePacket sessionInitiate = rtpContentMap.toJinglePacket(JinglePacket.Action.SESSION_INITIATE, id.sessionId);
         Log.d(Config.LOGTAG, sessionInitiate.toString());
-        Log.d(Config.LOGTAG,"here is what we think the sdp looks like"+SessionDescription.of(rtpContentMap).toString());
+        Log.d(Config.LOGTAG, "here is what we think the sdp looks like" + SessionDescription.of(rtpContentMap).toString());
         send(sessionInitiate);
     }
 
@@ -211,7 +239,7 @@ public class JingleRtpConnection extends AbstractJingleConnection {
         stream.addTrack(audioTrack);
 
 
-        PeerConnection peerConnection = peerConnectionFactory.createPeerConnection(Collections.emptyList(), new PeerConnection.Observer() {
+        this.peerConnection = peerConnectionFactory.createPeerConnection(Collections.emptyList(), new PeerConnection.Observer() {
             @Override
             public void onSignalingChange(PeerConnection.SignalingState signalingState) {
 
@@ -272,7 +300,10 @@ public class JingleRtpConnection extends AbstractJingleConnection {
         });
 
         peerConnection.addStream(stream);
+    }
 
+    private void createOffer() {
+        Log.d(Config.LOGTAG, "createOffer()");
         peerConnection.createOffer(new SdpObserver() {
 
             @Override
