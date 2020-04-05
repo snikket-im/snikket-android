@@ -40,6 +40,7 @@ public final class Namespace {
     public static final String JINGLE_FEATURE_VIDEO = "urn:xmpp:jingle:apps:rtp:video";
     public static final String JINGLE_RTP_HEADER_EXTENSIONS = "urn:xmpp:jingle:apps:rtp:rtp-hdrext:0";
     public static final String JINGLE_RTP_FEEDBACK_NEGOTIATION = "urn:xmpp:jingle:apps:rtp:rtcp-fb:0";
+    public static final String JINGLE_RTP_SOURCE_SPECIFIC_MEDIA_ATTRIBUTES = "urn:xmpp:jingle:apps:rtp:ssma:0";
     public static final String IBB = "http://jabber.org/protocol/ibb";
     public static final String PING = "urn:xmpp:ping";
     public static final String PUSH = "urn:xmpp:push:0";

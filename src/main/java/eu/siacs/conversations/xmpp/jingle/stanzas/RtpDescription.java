@@ -1,18 +1,17 @@
 package eu.siacs.conversations.xmpp.jingle.stanzas;
 
-import android.util.Log;
 import android.util.Pair;
 
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.ImmutableList;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
-import eu.siacs.conversations.Config;
 import eu.siacs.conversations.xml.Element;
 import eu.siacs.conversations.xml.Namespace;
 import eu.siacs.conversations.xmpp.jingle.SessionDescription;
@@ -51,6 +50,16 @@ public class RtpDescription extends GenericDescription {
         for (final Element child : getChildren()) {
             if ("rtp-hdrext".equals(child.getName()) && Namespace.JINGLE_RTP_HEADER_EXTENSIONS.equals(child.getNamespace())) {
                 builder.add(RtpHeaderExtension.upgrade(child));
+            }
+        }
+        return builder.build();
+    }
+
+    public List<Source> getSources() {
+        final ImmutableList.Builder<Source> builder = new ImmutableList.Builder<>();
+        for (final Element child : this.children) {
+            if ("source".equals(child.getName()) && Namespace.JINGLE_RTP_SOURCE_SPECIFIC_MEDIA_ATTRIBUTES.equals(child.getNamespace())) {
+                builder.add(Source.upgrade(child));
             }
         }
         return builder.build();
@@ -348,6 +357,78 @@ public class RtpDescription extends GenericDescription {
         }
     }
 
+    //XEP-0339: Source-Specific Media Attributes in Jingle
+    //maps to `a=ssrc:<ssrc-id> <attribute>:<value>`
+    public static class Source extends Element {
+
+        private Source() {
+            super("source", Namespace.JINGLE_RTP_SOURCE_SPECIFIC_MEDIA_ATTRIBUTES);
+        }
+
+        public Source(String ssrcId, Collection<Parameter> parameters) {
+            super("source", Namespace.JINGLE_RTP_SOURCE_SPECIFIC_MEDIA_ATTRIBUTES);
+            this.setAttribute("ssrc", ssrcId);
+            for (Parameter parameter : parameters) {
+                this.addChild(parameter);
+            }
+        }
+
+        public String getSsrcId() {
+            return this.getAttribute("ssrc");
+        }
+
+        public List<Parameter> getParameters() {
+            ImmutableList.Builder<Parameter> builder = new ImmutableList.Builder<>();
+            for (Element child : this.children) {
+                if ("parameter".equals(child.getName())) {
+                    builder.add(Parameter.upgrade(child));
+                }
+            }
+            return builder.build();
+        }
+
+        public static Source upgrade(final Element element) {
+            Preconditions.checkArgument("source".equals(element.getName()));
+            Preconditions.checkArgument(Namespace.JINGLE_RTP_SOURCE_SPECIFIC_MEDIA_ATTRIBUTES.equals(element.getNamespace()));
+            final Source source = new Source();
+            source.setChildren(element.getChildren());
+            source.setAttributes(element.getAttributes());
+            return source;
+        }
+
+        public static class Parameter extends Element {
+
+            public String getParameterName() {
+                return this.getAttribute("name");
+            }
+
+            public String getParameterValue() {
+                return this.getAttribute("value");
+            }
+
+            private Parameter() {
+                super("parameter");
+            }
+
+            public Parameter(final String attribute, final String value) {
+                super("parameter");
+                this.setAttribute("name", attribute);
+                if (value != null) {
+                    this.setAttribute("value", value);
+                }
+            }
+
+            public static Parameter upgrade(final Element element) {
+                Preconditions.checkArgument("parameter".equals(element.getName()));
+                Parameter parameter = new Parameter();
+                parameter.setAttributes(element.getAttributes());
+                parameter.setChildren(element.getChildren());
+                return parameter;
+            }
+        }
+
+    }
+
     public enum Media {
         VIDEO, AUDIO, UNKNOWN;
 
@@ -368,7 +449,8 @@ public class RtpDescription extends GenericDescription {
     public static RtpDescription of(final SessionDescription.Media media) {
         final RtpDescription rtpDescription = new RtpDescription();
         final Map<String, List<Parameter>> parameterMap = new HashMap<>();
-        ArrayListMultimap<String, Element> feedbackNegotiationMap = ArrayListMultimap.create();
+        final ArrayListMultimap<String, Element> feedbackNegotiationMap = ArrayListMultimap.create();
+        final ArrayListMultimap<String, Source.Parameter> sourceParameterMap = ArrayListMultimap.create();
         for (final String rtcpFb : media.attributes.get("rtcp-fb")) {
             final String[] parts = rtcpFb.split(" ");
             if (parts.length >= 2) {
@@ -382,6 +464,16 @@ public class RtpDescription extends GenericDescription {
                 } else {
                     feedbackNegotiationMap.put(id, new FeedbackNegotiation(type, subType));
                 }
+            }
+        }
+        for (final String ssrc : media.attributes.get(("ssrc"))) {
+            final String[] parts = ssrc.split(" ", 2);
+            if (parts.length == 2) {
+                final String id = parts[0];
+                final String[] subParts = parts[1].split(":", 2);
+                final String attribute = subParts[0];
+                final String value = subParts.length == 2 ? subParts[1] : null;
+                sourceParameterMap.put(id, new Source.Parameter(attribute, value));
             }
         }
         for (final String fmtp : media.attributes.get("fmtp")) {
@@ -404,6 +496,9 @@ public class RtpDescription extends GenericDescription {
             if (extension != null) {
                 rtpDescription.addChild(extension);
             }
+        }
+        for (Map.Entry<String, Collection<Source.Parameter>> source : sourceParameterMap.asMap().entrySet()) {
+            rtpDescription.addChild(new Source(source.getKey(), source.getValue()));
         }
         return rtpDescription;
     }
