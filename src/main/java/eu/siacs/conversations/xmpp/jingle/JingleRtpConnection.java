@@ -42,6 +42,7 @@ public class JingleRtpConnection extends AbstractJingleConnection {
     }
 
     private State state = State.NULL;
+    private RtpContentMap initialRtpContentMap;
 
 
     public JingleRtpConnection(JingleConnectionManager jingleConnectionManager, Id id, Jid initiator) {
@@ -152,8 +153,31 @@ public class JingleRtpConnection extends AbstractJingleConnection {
     }
 
     private void sendSessionInitiate(RtpContentMap rtpContentMap) {
-        Log.d(Config.LOGTAG, rtpContentMap.toJinglePacket(JinglePacket.Action.SESSION_INITIATE, id.sessionId).toString());
+        this.initialRtpContentMap = rtpContentMap;
+        final JinglePacket sessionInitiate = rtpContentMap.toJinglePacket(JinglePacket.Action.SESSION_INITIATE, id.sessionId);
+        Log.d(Config.LOGTAG, sessionInitiate.toString());
+        send(sessionInitiate);
     }
+
+    private void sendTransportInfo(final String contentName, IceUdpTransportInfo.Candidate candidate) {
+        final RtpContentMap transportInfo;
+        try {
+            transportInfo = this.initialRtpContentMap.transportInfo(contentName, candidate);
+        } catch (Exception e) {
+            Log.d(Config.LOGTAG, id.account.getJid().asBareJid() + ": unable to prepare transport-info from candidate for content=" + contentName);
+            return;
+        }
+        final JinglePacket jinglePacket = transportInfo.toJinglePacket(JinglePacket.Action.TRANSPORT_INFO, id.sessionId);
+        Log.d(Config.LOGTAG, jinglePacket.toString());
+        send(jinglePacket);
+    }
+
+    private void send(final JinglePacket jinglePacket) {
+        jinglePacket.setTo(id.with);
+        //TODO track errors
+        xmppConnectionService.sendIqPacket(id.account, jinglePacket, null);
+    }
+
 
     private void sendSessionAccept() {
         Log.d(Config.LOGTAG, "sending session-accept");
@@ -186,7 +210,7 @@ public class JingleRtpConnection extends AbstractJingleConnection {
         stream.addTrack(audioTrack);
 
 
-        PeerConnection peer = peerConnectionFactory.createPeerConnection(Collections.emptyList(), new PeerConnection.Observer() {
+        PeerConnection peerConnection = peerConnectionFactory.createPeerConnection(Collections.emptyList(), new PeerConnection.Observer() {
             @Override
             public void onSignalingChange(PeerConnection.SignalingState signalingState) {
 
@@ -204,11 +228,16 @@ public class JingleRtpConnection extends AbstractJingleConnection {
 
             @Override
             public void onIceGatheringChange(PeerConnection.IceGatheringState iceGatheringState) {
-
+                Log.d(Config.LOGTAG, "onIceGatheringChange() " + iceGatheringState);
             }
 
             @Override
             public void onIceCandidate(IceCandidate iceCandidate) {
+                IceUdpTransportInfo.Candidate candidate = IceUdpTransportInfo.Candidate.fromSdpAttribute(iceCandidate.sdp);
+                Log.d(Config.LOGTAG, "onIceCandidate: " + iceCandidate.sdp);
+                Log.d(Config.LOGTAG, "xml: " + candidate.toString());
+                Log.d(Config.LOGTAG, "mid: " + iceCandidate.sdpMid);
+                sendTransportInfo(iceCandidate.sdpMid, candidate);
 
             }
 
@@ -243,9 +272,9 @@ public class JingleRtpConnection extends AbstractJingleConnection {
             }
         });
 
-        peer.addStream(stream);
+        peerConnection.addStream(stream);
 
-        peer.createOffer(new SdpObserver() {
+        peerConnection.createOffer(new SdpObserver() {
 
             @Override
             public void onCreateSuccess(org.webrtc.SessionDescription description) {
@@ -253,6 +282,27 @@ public class JingleRtpConnection extends AbstractJingleConnection {
                 Log.d(Config.LOGTAG, "description: " + description.description);
                 final RtpContentMap rtpContentMap = RtpContentMap.of(sessionDescription);
                 sendSessionInitiate(rtpContentMap);
+                peerConnection.setLocalDescription(new SdpObserver() {
+                    @Override
+                    public void onCreateSuccess(org.webrtc.SessionDescription sessionDescription) {
+
+                    }
+
+                    @Override
+                    public void onSetSuccess() {
+                        Log.d(Config.LOGTAG, "onSetSuccess()");
+                    }
+
+                    @Override
+                    public void onCreateFailure(String s) {
+
+                    }
+
+                    @Override
+                    public void onSetFailure(String s) {
+
+                    }
+                }, description);
             }
 
             @Override

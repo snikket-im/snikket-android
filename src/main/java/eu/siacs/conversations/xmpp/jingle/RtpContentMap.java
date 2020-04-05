@@ -54,11 +54,25 @@ public class RtpContentMap {
         }
         for (Map.Entry<String, DescriptionTransport> entry : this.contents.entrySet()) {
             final Content content = new Content(Content.Creator.INITIATOR, entry.getKey());
-            content.addChild(entry.getValue().description);
+            if (entry.getValue().description != null) {
+                content.addChild(entry.getValue().description);
+            }
             content.addChild(entry.getValue().transport);
             jinglePacket.addJingleContent(content);
         }
         return jinglePacket;
+    }
+
+    public RtpContentMap transportInfo(final String contentName, final IceUdpTransportInfo.Candidate candidate) {
+        final RtpContentMap.DescriptionTransport descriptionTransport =  contents.get(contentName);
+        final IceUdpTransportInfo transportInfo = descriptionTransport == null ? null : descriptionTransport.transport;
+        if (transportInfo == null) {
+            throw new IllegalArgumentException("Unable to find transport info for content name "+contentName);
+        }
+        final IceUdpTransportInfo newTransportInfo = transportInfo.cloneWrapper();
+        newTransportInfo.addChild(candidate);
+        return new RtpContentMap(null, ImmutableMap.of(contentName, new DescriptionTransport(null,newTransportInfo)));
+
     }
 
     public static class DescriptionTransport {
