@@ -5,16 +5,7 @@ import android.util.Log;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 
-import org.webrtc.AudioSource;
-import org.webrtc.AudioTrack;
-import org.webrtc.DataChannel;
 import org.webrtc.IceCandidate;
-import org.webrtc.MediaConstraints;
-import org.webrtc.MediaStream;
-import org.webrtc.PeerConnection;
-import org.webrtc.PeerConnectionFactory;
-import org.webrtc.RtpReceiver;
-import org.webrtc.SdpObserver;
 
 import java.util.ArrayDeque;
 import java.util.Arrays;
@@ -32,7 +23,7 @@ import eu.siacs.conversations.xmpp.jingle.stanzas.JinglePacket;
 import eu.siacs.conversations.xmpp.stanzas.MessagePacket;
 import rocks.xmpp.addr.Jid;
 
-public class JingleRtpConnection extends AbstractJingleConnection {
+public class JingleRtpConnection extends AbstractJingleConnection implements WebRTCWrapper.EventCallback {
 
     private static final Map<State, Collection<State>> VALID_TRANSITIONS;
 
@@ -41,14 +32,15 @@ public class JingleRtpConnection extends AbstractJingleConnection {
         transitionBuilder.put(State.NULL, ImmutableList.of(State.PROPOSED, State.SESSION_INITIALIZED));
         transitionBuilder.put(State.PROPOSED, ImmutableList.of(State.ACCEPTED, State.PROCEED));
         transitionBuilder.put(State.PROCEED, ImmutableList.of(State.SESSION_INITIALIZED));
+        transitionBuilder.put(State.SESSION_INITIALIZED, ImmutableList.of(State.SESSION_ACCEPTED));
         VALID_TRANSITIONS = transitionBuilder.build();
     }
 
-    private State state = State.NULL;
-    private RtpContentMap initialRtpContentMap;
-    private PeerConnection peerConnection;
-
+    private final WebRTCWrapper webRTCWrapper = new WebRTCWrapper(this);
     private final ArrayDeque<IceCandidate> pendingIceCandidates = new ArrayDeque<>();
+    private State state = State.NULL;
+    private RtpContentMap initiatorRtpContentMap;
+    private RtpContentMap responderRtpContentMap;
 
 
     public JingleRtpConnection(JingleConnectionManager jingleConnectionManager, Id id, Jid initiator) {
@@ -80,21 +72,22 @@ public class JingleRtpConnection extends AbstractJingleConnection {
                 Log.d(Config.LOGTAG, id.account.getJid().asBareJid() + ": improperly formatted contents", e);
                 return;
             }
-            final Group originalGroup = this.initialRtpContentMap != null ? this.initialRtpContentMap.group : null;
+            //TODO pick proper rtpContentMap
+            final Group originalGroup = this.initiatorRtpContentMap != null ? this.initiatorRtpContentMap.group : null;
             final List<String> identificationTags = originalGroup == null ? Collections.emptyList() : originalGroup.getIdentificationTags();
             if (identificationTags.size() == 0) {
-                Log.w(Config.LOGTAG,id.account.getJid().asBareJid()+": no identification tags found in initial offer. we won't be able to calculate mLineIndices");
+                Log.w(Config.LOGTAG, id.account.getJid().asBareJid() + ": no identification tags found in initial offer. we won't be able to calculate mLineIndices");
             }
-            for(final Map.Entry<String, RtpContentMap.DescriptionTransport> content : contentMap.contents.entrySet()) {
+            for (final Map.Entry<String, RtpContentMap.DescriptionTransport> content : contentMap.contents.entrySet()) {
                 final String ufrag = content.getValue().transport.getAttribute("ufrag");
-                for(final IceUdpTransportInfo.Candidate candidate : content.getValue().transport.getCandidates()) {
+                for (final IceUdpTransportInfo.Candidate candidate : content.getValue().transport.getCandidates()) {
                     final String sdp = candidate.toSdpAttribute(ufrag);
                     final String sdpMid = content.getKey();
                     final int mLineIndex = identificationTags.indexOf(sdpMid);
                     final IceCandidate iceCandidate = new IceCandidate(sdpMid, mLineIndex, sdp);
-                    Log.d(Config.LOGTAG,"received candidate: "+iceCandidate);
+                    Log.d(Config.LOGTAG, "received candidate: " + iceCandidate);
                     if (isInState(State.SESSION_ACCEPTED)) {
-                        this.peerConnection.addIceCandidate(iceCandidate);
+                        this.webRTCWrapper.addIceCandidate(iceCandidate);
                     } else {
                         this.pendingIceCandidates.push(iceCandidate);
                     }
@@ -106,7 +99,6 @@ public class JingleRtpConnection extends AbstractJingleConnection {
     }
 
     private void receiveSessionInitiate(final JinglePacket jinglePacket) {
-        Log.d(Config.LOGTAG, jinglePacket.toString());
         if (isInitiator()) {
             Log.d(Config.LOGTAG, String.format("%s: received session-initiate even though we were initiating", id.account.getJid().asBareJid()));
             //TODO respond with out-of-order
@@ -123,11 +115,12 @@ public class JingleRtpConnection extends AbstractJingleConnection {
         Log.d(Config.LOGTAG, "processing session-init with " + contentMap.contents.size() + " contents");
         final State oldState = this.state;
         if (transition(State.SESSION_INITIALIZED)) {
-            this.initialRtpContentMap = contentMap;
+            this.initiatorRtpContentMap = contentMap;
             if (oldState == State.PROCEED) {
-                processContents(contentMap);
+                Log.d(Config.LOGTAG, "automatically accepting");
                 sendSessionAccept();
             } else {
+                Log.d(Config.LOGTAG, "start ringing");
                 //TODO start ringing
             }
         } else {
@@ -135,32 +128,35 @@ public class JingleRtpConnection extends AbstractJingleConnection {
         }
     }
 
-    private void processContents(final RtpContentMap contentMap) {
+    private void sendSessionAccept() {
+        final RtpContentMap rtpContentMap = this.initiatorRtpContentMap;
+        if (rtpContentMap == null) {
+            throw new IllegalStateException("intital RTP Content Map has not been set");
+        }
         setupWebRTC();
-        org.webrtc.SessionDescription sessionDescription = new org.webrtc.SessionDescription(org.webrtc.SessionDescription.Type.OFFER, SessionDescription.of(contentMap).toString());
-        Log.d(Config.LOGTAG, "debug print for sessionDescription:" + sessionDescription.description);
-        this.peerConnection.setRemoteDescription(new SdpObserver() {
-            @Override
-            public void onCreateSuccess(org.webrtc.SessionDescription sessionDescription) {
+        final org.webrtc.SessionDescription offer = new org.webrtc.SessionDescription(
+                org.webrtc.SessionDescription.Type.OFFER,
+                SessionDescription.of(rtpContentMap).toString()
+        );
+        try {
+            this.webRTCWrapper.setRemoteDescription(offer).get();
+            org.webrtc.SessionDescription webRTCSessionDescription = this.webRTCWrapper.createAnswer().get();
+            this.webRTCWrapper.setLocalDescription(webRTCSessionDescription);
+            final SessionDescription sessionDescription = SessionDescription.parse(webRTCSessionDescription.description);
+            final RtpContentMap respondingRtpContentMap = RtpContentMap.of(sessionDescription);
+            sendSessionAccept(respondingRtpContentMap);
+        } catch (Exception e) {
+            Log.d(Config.LOGTAG, "unable to send session accept", e);
 
-            }
+        }
+    }
 
-            @Override
-            public void onSetSuccess() {
-                Log.d(Config.LOGTAG, "onSetSuccess() for setRemoteDescription");
-            }
-
-            @Override
-            public void onCreateFailure(String s) {
-
-            }
-
-            @Override
-            public void onSetFailure(String s) {
-                Log.d(Config.LOGTAG, "onSetFailure() for setRemoteDescription. " + s);
-
-            }
-        }, sessionDescription);
+    private void sendSessionAccept(final RtpContentMap rtpContentMap) {
+        this.responderRtpContentMap = rtpContentMap;
+        this.transitionOrThrow(State.SESSION_ACCEPTED);
+        final JinglePacket sessionAccept = rtpContentMap.toJinglePacket(JinglePacket.Action.SESSION_ACCEPT, id.sessionId);
+        Log.d(Config.LOGTAG, sessionAccept.toString());
+        send(sessionAccept);
     }
 
     void deliveryMessage(final Jid from, final Element message) {
@@ -178,6 +174,7 @@ public class JingleRtpConnection extends AbstractJingleConnection {
 
     private void receivePropose(final Jid from, final Element propose) {
         final boolean originatedFromMyself = from.asBareJid().equals(id.account.getJid().asBareJid());
+        //TODO we can use initiator logic here
         if (originatedFromMyself) {
             Log.d(Config.LOGTAG, id.account.getJid().asBareJid() + ": saw proposal from mysql. ignoring");
         } else if (transition(State.PROPOSED)) {
@@ -207,21 +204,31 @@ public class JingleRtpConnection extends AbstractJingleConnection {
     private void sendSessionInitiate() {
         Log.d(Config.LOGTAG, id.account.getJid().asBareJid() + ": prepare session-initiate");
         setupWebRTC();
-        createOffer();
+        try {
+            org.webrtc.SessionDescription webRTCSessionDescription = this.webRTCWrapper.createOffer().get();
+            final SessionDescription sessionDescription = SessionDescription.parse(webRTCSessionDescription.description);
+            Log.d(Config.LOGTAG, "description: " + webRTCSessionDescription.description);
+            final RtpContentMap rtpContentMap = RtpContentMap.of(sessionDescription);
+            sendSessionInitiate(rtpContentMap);
+            this.webRTCWrapper.setLocalDescription(webRTCSessionDescription).get();
+        } catch (Exception e) {
+            Log.d(Config.LOGTAG, "unable to sendSessionInitiate", e);
+        }
     }
 
     private void sendSessionInitiate(RtpContentMap rtpContentMap) {
-        this.initialRtpContentMap = rtpContentMap;
+        this.initiatorRtpContentMap = rtpContentMap;
+        this.transitionOrThrow(State.SESSION_INITIALIZED);
         final JinglePacket sessionInitiate = rtpContentMap.toJinglePacket(JinglePacket.Action.SESSION_INITIATE, id.sessionId);
         Log.d(Config.LOGTAG, sessionInitiate.toString());
-        Log.d(Config.LOGTAG, "here is what we think the sdp looks like" + SessionDescription.of(rtpContentMap).toString());
         send(sessionInitiate);
     }
 
     private void sendTransportInfo(final String contentName, IceUdpTransportInfo.Candidate candidate) {
         final RtpContentMap transportInfo;
         try {
-            transportInfo = this.initialRtpContentMap.transportInfo(contentName, candidate);
+            //TODO when responding use responderRtpContentMap
+            transportInfo = this.initiatorRtpContentMap.transportInfo(contentName, candidate);
         } catch (Exception e) {
             Log.d(Config.LOGTAG, id.account.getJid().asBareJid() + ": unable to prepare transport-info from candidate for content=" + contentName);
             return;
@@ -238,10 +245,6 @@ public class JingleRtpConnection extends AbstractJingleConnection {
     }
 
 
-    private void sendSessionAccept() {
-        Log.d(Config.LOGTAG, "sending session-accept");
-    }
-
     public void pickUpCall() {
         switch (this.state) {
             case PROPOSED:
@@ -256,133 +259,8 @@ public class JingleRtpConnection extends AbstractJingleConnection {
     }
 
     private void setupWebRTC() {
-        PeerConnectionFactory.initialize(
-                PeerConnectionFactory.InitializationOptions.builder(xmppConnectionService).createInitializationOptions()
-        );
-        final PeerConnectionFactory.Options options = new PeerConnectionFactory.Options();
-        PeerConnectionFactory peerConnectionFactory = PeerConnectionFactory.builder().createPeerConnectionFactory();
-
-        final AudioSource audioSource = peerConnectionFactory.createAudioSource(new MediaConstraints());
-
-        final AudioTrack audioTrack = peerConnectionFactory.createAudioTrack("my-audio-track", audioSource);
-        final MediaStream stream = peerConnectionFactory.createLocalMediaStream("my-media-stream");
-        stream.addTrack(audioTrack);
-
-
-        final List<PeerConnection.IceServer> iceServers = ImmutableList.of(
-                PeerConnection.IceServer.builder("stun:xmpp.conversations.im:3478").createIceServer()
-        );
-        this.peerConnection = peerConnectionFactory.createPeerConnection(iceServers, new PeerConnection.Observer() {
-            @Override
-            public void onSignalingChange(PeerConnection.SignalingState signalingState) {
-
-            }
-
-            @Override
-            public void onIceConnectionChange(PeerConnection.IceConnectionState iceConnectionState) {
-
-            }
-
-            @Override
-            public void onIceConnectionReceivingChange(boolean b) {
-
-            }
-
-            @Override
-            public void onIceGatheringChange(PeerConnection.IceGatheringState iceGatheringState) {
-                Log.d(Config.LOGTAG, "onIceGatheringChange() " + iceGatheringState);
-            }
-
-            @Override
-            public void onIceCandidate(IceCandidate iceCandidate) {
-                IceUdpTransportInfo.Candidate candidate = IceUdpTransportInfo.Candidate.fromSdpAttribute(iceCandidate.sdp);
-                Log.d(Config.LOGTAG, "onIceCandidate: " + iceCandidate.sdp + " mLineIndex=" + iceCandidate.sdpMLineIndex);
-                sendTransportInfo(iceCandidate.sdpMid, candidate);
-
-            }
-
-            @Override
-            public void onIceCandidatesRemoved(IceCandidate[] iceCandidates) {
-
-            }
-
-            @Override
-            public void onAddStream(MediaStream mediaStream) {
-
-            }
-
-            @Override
-            public void onRemoveStream(MediaStream mediaStream) {
-
-            }
-
-            @Override
-            public void onDataChannel(DataChannel dataChannel) {
-
-            }
-
-            @Override
-            public void onRenegotiationNeeded() {
-
-            }
-
-            @Override
-            public void onAddTrack(RtpReceiver rtpReceiver, MediaStream[] mediaStreams) {
-
-            }
-        });
-
-        peerConnection.addStream(stream);
-    }
-
-    private void createOffer() {
-        Log.d(Config.LOGTAG, "createOffer()");
-        peerConnection.createOffer(new SdpObserver() {
-
-            @Override
-            public void onCreateSuccess(org.webrtc.SessionDescription description) {
-                final SessionDescription sessionDescription = SessionDescription.parse(description.description);
-                Log.d(Config.LOGTAG, "description: " + description.description);
-                final RtpContentMap rtpContentMap = RtpContentMap.of(sessionDescription);
-                sendSessionInitiate(rtpContentMap);
-                peerConnection.setLocalDescription(new SdpObserver() {
-                    @Override
-                    public void onCreateSuccess(org.webrtc.SessionDescription sessionDescription) {
-
-                    }
-
-                    @Override
-                    public void onSetSuccess() {
-                        Log.d(Config.LOGTAG, "onSetSuccess()");
-                    }
-
-                    @Override
-                    public void onCreateFailure(String s) {
-
-                    }
-
-                    @Override
-                    public void onSetFailure(String s) {
-
-                    }
-                }, description);
-            }
-
-            @Override
-            public void onSetSuccess() {
-
-            }
-
-            @Override
-            public void onCreateFailure(String s) {
-
-            }
-
-            @Override
-            public void onSetFailure(String s) {
-
-            }
-        }, new MediaConstraints());
+        this.webRTCWrapper.setup(this.xmppConnectionService);
+        this.webRTCWrapper.initializePeerConnection();
     }
 
     private void pickupCallFromProposed() {
@@ -418,5 +296,12 @@ public class JingleRtpConnection extends AbstractJingleConnection {
         if (!transition(target)) {
             throw new IllegalStateException(String.format("Unable to transition from %s to %s", this.state, target));
         }
+    }
+
+    @Override
+    public void onIceCandidate(final IceCandidate iceCandidate) {
+        final IceUdpTransportInfo.Candidate candidate = IceUdpTransportInfo.Candidate.fromSdpAttribute(iceCandidate.sdp);
+        Log.d(Config.LOGTAG, "onIceCandidate: " + iceCandidate.sdp + " mLineIndex=" + iceCandidate.sdpMLineIndex);
+        sendTransportInfo(iceCandidate.sdpMid, candidate);
     }
 }
