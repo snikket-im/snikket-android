@@ -47,6 +47,17 @@ public class RtpContentMap {
         return new RtpContentMap(group, contentMapBuilder.build());
     }
 
+    public void requireContentDescriptions() {
+        if (this.contents.size() == 0) {
+            throw new IllegalStateException("No contents available");
+        }
+        for(Map.Entry<String,DescriptionTransport> entry : this.contents.entrySet()) {
+            if (entry.getValue().description == null) {
+                throw new IllegalStateException(String.format("%s is lacking content description", entry.getKey()));
+            }
+        }
+    }
+
     public JinglePacket toJinglePacket(final JinglePacket.Action action, final String sessionId) {
         final JinglePacket jinglePacket = new JinglePacket(action, sessionId);
         if (this.group != null) {
@@ -89,7 +100,9 @@ public class RtpContentMap {
             final GenericTransportInfo transportInfo = content.getTransport();
             final RtpDescription rtpDescription;
             final IceUdpTransportInfo iceUdpTransportInfo;
-            if (description instanceof RtpDescription) {
+            if (description == null) {
+                rtpDescription = null;
+            } else if (description instanceof RtpDescription) {
                 rtpDescription = (RtpDescription) description;
             } else {
                 Log.d(Config.LOGTAG, "description was " + description);

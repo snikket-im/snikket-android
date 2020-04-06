@@ -2,14 +2,22 @@ package eu.siacs.conversations.xmpp.jingle.stanzas;
 
 import android.util.Log;
 
+import com.google.common.base.Function;
+import com.google.common.base.Joiner;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ArrayListMultimap;
+import com.google.common.collect.Collections2;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Iterables;
+import com.google.common.collect.Lists;
 
+import org.checkerframework.checker.nullness.compatqual.NullableDecl;
+
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.List;
+import java.util.Map;
 
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.xml.Element;
@@ -144,6 +152,43 @@ public class IceUdpTransportInfo extends GenericTransportInfo {
             return candidate;
         }
 
+        public String toSdpAttribute(final String ufrag) {
+            final String foundation = this.getAttribute("foundation");
+            final String component = this.getAttribute("component");
+            final String transport = this.getAttribute("protocol");
+            final String priority = this.getAttribute("priority");
+            final String connectionAddress = this.getAttribute("ip");
+            final String port = this.getAttribute("port");
+            final Map<String,String> additionalParameter = new HashMap<>();
+            final String relAddr = this.getAttribute("rel-addr");
+            if (relAddr != null) {
+                additionalParameter.put("raddr",relAddr);
+            }
+            final String relPort = this.getAttribute("rel-port");
+            if (relPort != null) {
+                additionalParameter.put("rport", relPort);
+            }
+            final String generation = this.getAttribute("generation");
+            if (generation != null) {
+                additionalParameter.put("generation", generation);
+            }
+            if (ufrag != null) {
+                additionalParameter.put("ufrag", ufrag);
+            }
+            final String parametersString = Joiner.on(' ').join(Collections2.transform(additionalParameter.entrySet(), input -> String.format("%s %s",input.getKey(),input.getValue())));
+            return String.format(
+                    "candidate:%s %s %s %s %s %s %s",
+                    foundation,
+                    component,
+                    transport,
+                    priority,
+                    connectionAddress,
+                    port,
+                    parametersString
+
+            );
+        }
+
         // https://tools.ietf.org/html/draft-ietf-mmusic-ice-sip-sdp-39#section-5.1
         public static Candidate fromSdpAttribute(final String attribute) {
             final String[] pair = attribute.split(":", 2);
@@ -164,6 +209,8 @@ public class IceUdpTransportInfo extends GenericTransportInfo {
                     candidate.setAttribute("component", component);
                     candidate.setAttribute("foundation", foundation);
                     candidate.setAttribute("generation", additional.get("generation"));
+                    candidate.setAttribute("rel-addr", additional.get("raddr"));
+                    candidate.setAttribute("rel-port", additional.get("rport"));
                     candidate.setAttribute("ip", connectionAddress);
                     candidate.setAttribute("port", port);
                     candidate.setAttribute("priority", priority);

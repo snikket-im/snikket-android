@@ -16,16 +16,19 @@ import org.webrtc.PeerConnectionFactory;
 import org.webrtc.RtpReceiver;
 import org.webrtc.SdpObserver;
 
+import java.util.ArrayDeque;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.List;
 import java.util.Map;
 
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.xml.Element;
 import eu.siacs.conversations.xml.Namespace;
+import eu.siacs.conversations.xmpp.jingle.stanzas.Group;
 import eu.siacs.conversations.xmpp.jingle.stanzas.IceUdpTransportInfo;
 import eu.siacs.conversations.xmpp.jingle.stanzas.JinglePacket;
-import eu.siacs.conversations.xmpp.jingle.stanzas.RtpDescription;
 import eu.siacs.conversations.xmpp.stanzas.MessagePacket;
 import rocks.xmpp.addr.Jid;
 
@@ -45,6 +48,8 @@ public class JingleRtpConnection extends AbstractJingleConnection {
     private RtpContentMap initialRtpContentMap;
     private PeerConnection peerConnection;
 
+    private final ArrayDeque<IceCandidate> pendingIceCandidates = new ArrayDeque<>();
+
 
     public JingleRtpConnection(JingleConnectionManager jingleConnectionManager, Id id, Jid initiator) {
         super(jingleConnectionManager, id, initiator);
@@ -57,14 +62,51 @@ public class JingleRtpConnection extends AbstractJingleConnection {
             case SESSION_INITIATE:
                 receiveSessionInitiate(jinglePacket);
                 break;
+            case TRANSPORT_INFO:
+                receiveTransportInfo(jinglePacket);
+                break;
             default:
                 Log.d(Config.LOGTAG, String.format("%s: received unhandled jingle action %s", id.account.getJid().asBareJid(), jinglePacket.getAction()));
                 break;
         }
     }
 
+    private void receiveTransportInfo(final JinglePacket jinglePacket) {
+        if (isInState(State.SESSION_INITIALIZED, State.SESSION_ACCEPTED)) {
+            final RtpContentMap contentMap;
+            try {
+                contentMap = RtpContentMap.of(jinglePacket);
+            } catch (IllegalArgumentException | NullPointerException e) {
+                Log.d(Config.LOGTAG, id.account.getJid().asBareJid() + ": improperly formatted contents", e);
+                return;
+            }
+            final Group originalGroup = this.initialRtpContentMap != null ? this.initialRtpContentMap.group : null;
+            final List<String> identificationTags = originalGroup == null ? Collections.emptyList() : originalGroup.getIdentificationTags();
+            if (identificationTags.size() == 0) {
+                Log.w(Config.LOGTAG,id.account.getJid().asBareJid()+": no identification tags found in initial offer. we won't be able to calculate mLineIndices");
+            }
+            for(final Map.Entry<String, RtpContentMap.DescriptionTransport> content : contentMap.contents.entrySet()) {
+                final String ufrag = content.getValue().transport.getAttribute("ufrag");
+                for(final IceUdpTransportInfo.Candidate candidate : content.getValue().transport.getCandidates()) {
+                    final String sdp = candidate.toSdpAttribute(ufrag);
+                    final String sdpMid = content.getKey();
+                    final int mLineIndex = identificationTags.indexOf(sdpMid);
+                    final IceCandidate iceCandidate = new IceCandidate(sdpMid, mLineIndex, sdp);
+                    Log.d(Config.LOGTAG,"received candidate: "+iceCandidate);
+                    if (isInState(State.SESSION_ACCEPTED)) {
+                        this.peerConnection.addIceCandidate(iceCandidate);
+                    } else {
+                        this.pendingIceCandidates.push(iceCandidate);
+                    }
+                }
+            }
+        } else {
+            Log.d(Config.LOGTAG, id.account.getJid().asBareJid() + ": received transport info while in state=" + this.state);
+        }
+    }
+
     private void receiveSessionInitiate(final JinglePacket jinglePacket) {
-        Log.d(Config.LOGTAG,jinglePacket.toString());
+        Log.d(Config.LOGTAG, jinglePacket.toString());
         if (isInitiator()) {
             Log.d(Config.LOGTAG, String.format("%s: received session-initiate even though we were initiating", id.account.getJid().asBareJid()));
             //TODO respond with out-of-order
@@ -73,13 +115,15 @@ public class JingleRtpConnection extends AbstractJingleConnection {
         final RtpContentMap contentMap;
         try {
             contentMap = RtpContentMap.of(jinglePacket);
-        } catch (IllegalArgumentException | NullPointerException e) {
+            contentMap.requireContentDescriptions();
+        } catch (IllegalArgumentException | IllegalStateException | NullPointerException e) {
             Log.d(Config.LOGTAG, id.account.getJid().asBareJid() + ": improperly formatted contents", e);
             return;
         }
         Log.d(Config.LOGTAG, "processing session-init with " + contentMap.contents.size() + " contents");
         final State oldState = this.state;
         if (transition(State.SESSION_INITIALIZED)) {
+            this.initialRtpContentMap = contentMap;
             if (oldState == State.PROCEED) {
                 processContents(contentMap);
                 sendSessionAccept();
@@ -225,7 +269,10 @@ public class JingleRtpConnection extends AbstractJingleConnection {
         stream.addTrack(audioTrack);
 
 
-        this.peerConnection = peerConnectionFactory.createPeerConnection(Collections.emptyList(), new PeerConnection.Observer() {
+        final List<PeerConnection.IceServer> iceServers = ImmutableList.of(
+                PeerConnection.IceServer.builder("stun:xmpp.conversations.im:3478").createIceServer()
+        );
+        this.peerConnection = peerConnectionFactory.createPeerConnection(iceServers, new PeerConnection.Observer() {
             @Override
             public void onSignalingChange(PeerConnection.SignalingState signalingState) {
 
@@ -249,7 +296,7 @@ public class JingleRtpConnection extends AbstractJingleConnection {
             @Override
             public void onIceCandidate(IceCandidate iceCandidate) {
                 IceUdpTransportInfo.Candidate candidate = IceUdpTransportInfo.Candidate.fromSdpAttribute(iceCandidate.sdp);
-                Log.d(Config.LOGTAG, "onIceCandidate: " + iceCandidate.sdp);
+                Log.d(Config.LOGTAG, "onIceCandidate: " + iceCandidate.sdp + " mLineIndex=" + iceCandidate.sdpMLineIndex);
                 sendTransportInfo(iceCandidate.sdpMid, candidate);
 
             }
@@ -350,6 +397,10 @@ public class JingleRtpConnection extends AbstractJingleConnection {
 
     private void pickupCallFromSessionInitialized() {
 
+    }
+
+    private synchronized boolean isInState(State... state) {
+        return Arrays.asList(state).contains(this.state);
     }
 
     private synchronized boolean transition(final State target) {
