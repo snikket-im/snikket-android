@@ -1,6 +1,7 @@
 package eu.siacs.conversations.xmpp.jingle;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.util.concurrent.Futures;
@@ -25,6 +26,8 @@ import java.util.List;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import eu.siacs.conversations.Config;
+
 public class WebRTCWrapper {
 
     private final EventCallback eventCallback;
@@ -32,7 +35,13 @@ public class WebRTCWrapper {
     private final PeerConnection.Observer peerConnectionObserver = new PeerConnection.Observer() {
         @Override
         public void onSignalingChange(PeerConnection.SignalingState signalingState) {
+            Log.d(Config.LOGTAG, "onSignalingChange(" + signalingState + ")");
 
+        }
+
+        @Override
+        public void onConnectionChange(PeerConnection.PeerConnectionState newState) {
+            Log.d(Config.LOGTAG, "onConnectionChange(" + newState + ")");
         }
 
         @Override
@@ -62,7 +71,10 @@ public class WebRTCWrapper {
 
         @Override
         public void onAddStream(MediaStream mediaStream) {
-
+            Log.d(Config.LOGTAG, "onAddStream");
+            for(AudioTrack audioTrack : mediaStream.audioTracks) {
+                Log.d(Config.LOGTAG,"remote? - audioTrack enabled:"+audioTrack.enabled()+" state="+audioTrack.state());
+            }
         }
 
         @Override
@@ -82,6 +94,7 @@ public class WebRTCWrapper {
 
         @Override
         public void onAddTrack(RtpReceiver rtpReceiver, MediaStream[] mediaStreams) {
+            Log.d(Config.LOGTAG, "onAddTrack()");
 
         }
     };
@@ -105,6 +118,7 @@ public class WebRTCWrapper {
         final AudioSource audioSource = peerConnectionFactory.createAudioSource(new MediaConstraints());
 
         final AudioTrack audioTrack = peerConnectionFactory.createAudioTrack("my-audio-track", audioSource);
+        Log.d(Config.LOGTAG,"audioTrack enabled:"+audioTrack.enabled()+" state="+audioTrack.state());
         final MediaStream stream = peerConnectionFactory.createLocalMediaStream("my-media-stream");
         stream.addTrack(audioTrack);
 
@@ -117,6 +131,8 @@ public class WebRTCWrapper {
             throw new IllegalStateException("Unable to create PeerConnection");
         }
         peerConnection.addStream(stream);
+        peerConnection.setAudioPlayout(true);
+        peerConnection.setAudioRecording(true);
         this.peerConnection = peerConnection;
     }
 
@@ -167,7 +183,7 @@ public class WebRTCWrapper {
 
                 @Override
                 public void onSetFailure(String s) {
-                    future.setException(new IllegalArgumentException("unable to set local session description: "+s));
+                    future.setException(new IllegalArgumentException("unable to set local session description: " + s));
 
                 }
             }, sessionDescription);
@@ -186,7 +202,7 @@ public class WebRTCWrapper {
 
                 @Override
                 public void onSetFailure(String s) {
-                    future.setException(new IllegalArgumentException("unable to set remote session description: "+s));
+                    future.setException(new IllegalArgumentException("unable to set remote session description: " + s));
 
                 }
             }, sessionDescription);
@@ -210,6 +226,10 @@ public class WebRTCWrapper {
             throw new IllegalStateException("initialize PeerConnection first");
         }
         peerConnection.addIceCandidate(iceCandidate);
+    }
+
+    public PeerConnection.PeerConnectionState getState() {
+        return this.peerConnection.connectionState();
     }
 
     private static abstract class SetSdpObserver implements SdpObserver {
