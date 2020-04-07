@@ -889,6 +889,7 @@
     <string name="rtp_state_connecting">Connecting</string>
     <string name="rtp_state_connected">Connected</string>
     <string name="rtp_state_accepting_call">Accepting call</string>
+    <string name="rtp_state_ending_call">Ending call</string>
     <plurals name="view_users">
         <item quantity="one">View %1$d Participant</item>
         <item quantity="other">View %1$d Participants</item>

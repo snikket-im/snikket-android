@@ -317,6 +317,8 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
                     return RtpEndUserState.CONNECTED;
                 } else if (state == PeerConnection.PeerConnectionState.NEW || state == PeerConnection.PeerConnectionState.CONNECTING) {
                     return RtpEndUserState.CONNECTING;
+                } else if (state == PeerConnection.PeerConnectionState.CLOSED) {
+                    return RtpEndUserState.ENDING_CALL;
                 } else {
                     return RtpEndUserState.FAILED;
                 }
@@ -340,6 +342,14 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
 
     public void rejectCall() {
         Log.d(Config.LOGTAG, "todo rejecting call");
+    }
+
+    public void endCall() {
+        if (isInState(State.SESSION_INITIALIZED, State.SESSION_ACCEPTED)) {
+            webRTCWrapper.close();
+        } else {
+            Log.d(Config.LOGTAG, id.account.getJid().asBareJid() + ": called 'endCall' while in state " + this.state);
+        }
     }
 
     private void setupWebRTC() {
@@ -392,6 +402,7 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
 
     @Override
     public void onConnectionChange(PeerConnection.PeerConnectionState newState) {
+        Log.d(Config.LOGTAG,id.account.getJid().asBareJid()+": PeerConnectionState changed to "+newState);
         updateEndUserState();
     }
 

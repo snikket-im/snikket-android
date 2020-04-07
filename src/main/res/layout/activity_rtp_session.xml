@@ -54,7 +54,22 @@
                 app:backgroundTint="@color/red700"
                 app:elevation="4dp"
                 app:fabCustomSize="72dp"
-                app:maxImageSize="36dp" />
+                app:maxImageSize="36dp"
+                android:visibility="gone"
+                tools:visibility="visible"/>
+
+            <android.support.design.widget.FloatingActionButton
+                android:id="@+id/end_call"
+                android:layout_width="wrap_content"
+                android:layout_margin="16dp"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:src="@drawable/ic_call_end_white_48dp"
+                app:backgroundTint="@color/red700"
+                app:elevation="4dp"
+                app:fabCustomSize="72dp"
+                app:maxImageSize="36dp"
+                android:visibility="gone"/>
 
             <android.support.design.widget.FloatingActionButton
                 android:id="@+id/accept_call"
@@ -68,7 +83,9 @@
                 app:backgroundTint="@color/green700"
                 app:elevation="4dp"
                 app:fabCustomSize="72dp"
-                app:maxImageSize="36dp" />
+                app:maxImageSize="36dp"
+                android:visibility="gone"
+                tools:visibility="visible"/>
         </RelativeLayout>
 
     </RelativeLayout>

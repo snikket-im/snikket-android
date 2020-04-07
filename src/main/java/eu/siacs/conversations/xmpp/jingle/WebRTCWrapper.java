@@ -81,8 +81,8 @@ public class WebRTCWrapper {
         @Override
         public void onAddStream(MediaStream mediaStream) {
             Log.d(Config.LOGTAG, "onAddStream");
-            for(AudioTrack audioTrack : mediaStream.audioTracks) {
-                Log.d(Config.LOGTAG,"remote? - audioTrack enabled:"+audioTrack.enabled()+" state="+audioTrack.state());
+            for (AudioTrack audioTrack : mediaStream.audioTracks) {
+                Log.d(Config.LOGTAG, "remote? - audioTrack enabled:" + audioTrack.enabled() + " state=" + audioTrack.state());
             }
             final List<VideoTrack> videoTracks = mediaStream.videoTracks;
             if (videoTracks.size() > 0) {
@@ -130,8 +130,8 @@ public class WebRTCWrapper {
 
         CameraVideoCapturer capturer = null;
         Camera1Enumerator camera1Enumerator = new Camera1Enumerator();
-        for(String deviceName : camera1Enumerator.getDeviceNames()) {
-            Log.d(Config.LOGTAG,"camera device name: "+deviceName);
+        for (String deviceName : camera1Enumerator.getDeviceNames()) {
+            Log.d(Config.LOGTAG, "camera device name: " + deviceName);
             if (camera1Enumerator.isFrontFacing(deviceName)) {
                 capturer = camera1Enumerator.createCapturer(deviceName, new CameraVideoCapturer.CameraEventsHandler() {
                     @Override
@@ -151,12 +151,12 @@ public class WebRTCWrapper {
 
                     @Override
                     public void onCameraOpening(String s) {
-                        Log.d(Config.LOGTAG,"onCameraOpening");
+                        Log.d(Config.LOGTAG, "onCameraOpening");
                     }
 
                     @Override
                     public void onFirstFrameAvailable() {
-                        Log.d(Config.LOGTAG,"onFirstFrameAvailable");
+                        Log.d(Config.LOGTAG, "onFirstFrameAvailable");
                     }
 
                     @Override
@@ -179,7 +179,7 @@ public class WebRTCWrapper {
         final AudioSource audioSource = peerConnectionFactory.createAudioSource(new MediaConstraints());
 
         final AudioTrack audioTrack = peerConnectionFactory.createAudioTrack("my-audio-track", audioSource);
-        Log.d(Config.LOGTAG,"audioTrack enabled:"+audioTrack.enabled()+" state="+audioTrack.state());
+        Log.d(Config.LOGTAG, "audioTrack enabled:" + audioTrack.enabled() + " state=" + audioTrack.state());
         final MediaStream stream = peerConnectionFactory.createLocalMediaStream("my-media-stream");
         stream.addTrack(audioTrack);
         //stream.addTrack(videoTrack);
@@ -200,6 +200,9 @@ public class WebRTCWrapper {
         this.peerConnection = peerConnection;
     }
 
+    public void close() {
+        requirePeerConnection().close();
+    }
 
 
     public ListenableFuture<SessionDescription> createOffer() {
@@ -287,15 +290,19 @@ public class WebRTCWrapper {
     }
 
     public void addIceCandidate(IceCandidate iceCandidate) {
+        requirePeerConnection().addIceCandidate(iceCandidate);
+    }
+
+    public PeerConnection.PeerConnectionState getState() {
+        return requirePeerConnection().connectionState();
+    }
+
+    private PeerConnection requirePeerConnection() {
         final PeerConnection peerConnection = this.peerConnection;
         if (peerConnection == null) {
             throw new IllegalStateException("initialize PeerConnection first");
         }
-        peerConnection.addIceCandidate(iceCandidate);
-    }
-
-    public PeerConnection.PeerConnectionState getState() {
-        return this.peerConnection.connectionState();
+        return peerConnection;
     }
 
     private static abstract class SetSdpObserver implements SdpObserver {
@@ -329,6 +336,7 @@ public class WebRTCWrapper {
 
     public interface EventCallback {
         void onIceCandidate(IceCandidate iceCandidate);
+
         void onConnectionChange(PeerConnection.PeerConnectionState newState);
     }
 }
