@@ -29,17 +29,19 @@ public class RtpSessionActivity extends XmppActivity implements XmppConnectionSe
 
     private ActivityRtpSessionBinding binding;
 
+    @Override
     public void onCreate(Bundle savedInstanceState) {
-        getWindow().addFlags(
-                WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON
-                        | WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD
-                        | WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED
-                        | WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON);
         super.onCreate(savedInstanceState);
         this.binding = DataBindingUtil.setContentView(this, R.layout.activity_rtp_session);
         this.binding.rejectCall.setOnClickListener(this::rejectCall);
         this.binding.endCall.setOnClickListener(this::endCall);
         this.binding.acceptCall.setOnClickListener(this::acceptCall);
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        Log.d(Config.LOGTAG,"RtpSessionActivity.onStart()");
     }
 
     private void endCall(View view) {
