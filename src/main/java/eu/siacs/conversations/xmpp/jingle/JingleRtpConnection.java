@@ -228,12 +228,7 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
 
     private void startRinging() {
         Log.d(Config.LOGTAG, id.account.getJid().asBareJid() + ": received call from " + id.with + ". start ringing");
-        final Intent intent = new Intent(xmppConnectionService, RtpSessionActivity.class);
-        intent.putExtra(RtpSessionActivity.EXTRA_ACCOUNT, id.account.getJid().asBareJid().toEscapedString());
-        intent.putExtra(RtpSessionActivity.EXTRA_WITH, id.with.toEscapedString());
-        intent.putExtra(RtpSessionActivity.EXTRA_SESSION_ID, id.sessionId);
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        xmppConnectionService.startActivity(intent);
+        xmppConnectionService.getNotificationService().showIncomingCallNotification(id);
     }
 
     private void receiveProceed(final Jid from, final Element proceed) {
@@ -342,6 +337,7 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
 
     public void rejectCall() {
         Log.d(Config.LOGTAG, "todo rejecting call");
+        xmppConnectionService.getNotificationService().cancelIncomingCallNotification();
     }
 
     public void endCall() {
@@ -359,6 +355,7 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
 
     private void acceptCallFromProposed() {
         transitionOrThrow(State.PROCEED);
+        xmppConnectionService.getNotificationService().cancelIncomingCallNotification();
         final MessagePacket messagePacket = new MessagePacket();
         messagePacket.setTo(id.with);
         //Note that Movim needs 'accept', correct is 'proceed' https://github.com/movim/movim/issues/916
@@ -368,7 +365,8 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
     }
 
     private void acceptCallFromSessionInitialized() {
-
+        xmppConnectionService.getNotificationService().cancelIncomingCallNotification();
+        throw new IllegalStateException("accepting from this state has not been implemented yet");
     }
 
     private synchronized boolean isInState(State... state) {

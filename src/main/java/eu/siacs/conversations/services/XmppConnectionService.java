@@ -107,6 +107,7 @@ import eu.siacs.conversations.parser.PresenceParser;
 import eu.siacs.conversations.persistance.DatabaseBackend;
 import eu.siacs.conversations.persistance.FileBackend;
 import eu.siacs.conversations.ui.ChooseAccountForProfilePictureActivity;
+import eu.siacs.conversations.ui.RtpSessionActivity;
 import eu.siacs.conversations.ui.SettingsActivity;
 import eu.siacs.conversations.ui.UiCallback;
 import eu.siacs.conversations.ui.interfaces.OnAvatarPublication;
@@ -165,6 +166,7 @@ public class XmppConnectionService extends Service {
     public static final String ACTION_IDLE_PING = "idle_ping";
     public static final String ACTION_FCM_TOKEN_REFRESH = "fcm_token_refresh";
     public static final String ACTION_FCM_MESSAGE_RECEIVED = "fcm_message_received";
+    public static final String ACTION_DISMISS_CALL = "dismiss_call";
     private static final String ACTION_POST_CONNECTIVITY_CHANGE = "eu.siacs.conversations.POST_CONNECTIVITY_CHANGE";
 
     private static final String SETTING_LAST_ACTIVITY_TS = "last_activity_timestamp";
@@ -637,6 +639,10 @@ public class XmppConnectionService extends Service {
                             Log.d(Config.LOGTAG, "unable to process clear notification");
                         }
                     });
+                    break;
+                case ACTION_DISMISS_CALL:
+                    final String sessionId = intent.getStringExtra(RtpSessionActivity.EXTRA_SESSION_ID);
+                    Log.d(Config.LOGTAG,"received intent to dismiss call with session id "+sessionId);
                     break;
                 case ACTION_DISMISS_ERROR_NOTIFICATIONS:
                     dismissErrorNotifications();

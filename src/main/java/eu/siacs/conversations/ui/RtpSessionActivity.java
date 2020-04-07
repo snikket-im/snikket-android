@@ -25,6 +25,8 @@ public class RtpSessionActivity extends XmppActivity implements XmppConnectionSe
     public static final String EXTRA_WITH = "with";
     public static final String EXTRA_SESSION_ID = "session_id";
 
+    public static final String ACTION_ACCEPT = "accept";
+
     private WeakReference<JingleRtpConnection> rtpConnectionReference;
 
     private ActivityRtpSessionBinding binding;
@@ -32,6 +34,12 @@ public class RtpSessionActivity extends XmppActivity implements XmppConnectionSe
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON
+                | WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD
+                | WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED
+                | WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON)
+        ;
+        Log.d(Config.LOGTAG, "RtpSessionActivity.onCreate()");
         this.binding = DataBindingUtil.setContentView(this, R.layout.activity_rtp_session);
         this.binding.rejectCall.setOnClickListener(this::rejectCall);
         this.binding.endCall.setOnClickListener(this::endCall);
@@ -41,7 +49,7 @@ public class RtpSessionActivity extends XmppActivity implements XmppConnectionSe
     @Override
     public void onStart() {
         super.onStart();
-        Log.d(Config.LOGTAG,"RtpSessionActivity.onStart()");
+        Log.d(Config.LOGTAG, "RtpSessionActivity.onStart()");
     }
 
     private void endCall(View view) {
@@ -78,8 +86,13 @@ public class RtpSessionActivity extends XmppActivity implements XmppConnectionSe
             this.rtpConnectionReference = reference;
             binding.with.setText(getWith().getDisplayName());
             final RtpEndUserState currentState = requireRtpConnection().getEndUserState();
+            final String action = intent.getAction();
             updateStateDisplay(currentState);
             updateButtonConfiguration(currentState);
+            if (ACTION_ACCEPT.equals(action)) {
+                Log.d(Config.LOGTAG,"intent action was accept");
+                requireRtpConnection().acceptCall();
+            }
         }
     }
 
@@ -137,12 +150,12 @@ public class RtpSessionActivity extends XmppActivity implements XmppConnectionSe
     public void onJingleRtpConnectionUpdate(Account account, Jid with, RtpEndUserState state) {
         final AbstractJingleConnection.Id id = requireRtpConnection().getId();
         if (account == id.account && id.with.equals(with)) {
-            runOnUiThread(()->{
+            runOnUiThread(() -> {
                 updateStateDisplay(state);
                 updateButtonConfiguration(state);
             });
         } else {
-            Log.d(Config.LOGTAG,"received update for other rtp session");
+            Log.d(Config.LOGTAG, "received update for other rtp session");
         }
 
     }
