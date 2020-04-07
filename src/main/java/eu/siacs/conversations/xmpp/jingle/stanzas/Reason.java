@@ -1,20 +1,23 @@
 package eu.siacs.conversations.xmpp.jingle.stanzas;
 
-import com.google.common.base.Preconditions;
+import android.support.annotation.NonNull;
 
-import eu.siacs.conversations.xml.Element;
+import com.google.common.base.CaseFormat;
 
-public class Reason extends Element {
+public enum Reason {
+	SUCCESS, DECLINE, BUSY, CANCEL, CONNECTIVITY_ERROR, FAILED_TRANSPORT, TIMEOUT, UNKNOWN;
 
-	public Reason() {
-		super("reason");
+	public static Reason of(final String value) {
+		try {
+			return Reason.valueOf(CaseFormat.LOWER_HYPHEN.to(CaseFormat.UPPER_UNDERSCORE, value));
+		} catch (Exception e) {
+			return UNKNOWN;
+		}
 	}
 
-	public static Reason upgrade(final Element element) {
-		Preconditions.checkArgument("reason".equals(element.getName()));
-		final Reason reason = new Reason();
-		reason.setAttributes(element.getAttributes());
-		reason.setChildren(element.getChildren());
-		return reason;
+	@Override
+	@NonNull
+	public String toString() {
+		return CaseFormat.UPPER_UNDERSCORE.to(CaseFormat.LOWER_HYPHEN, super.toString());
 	}
 }

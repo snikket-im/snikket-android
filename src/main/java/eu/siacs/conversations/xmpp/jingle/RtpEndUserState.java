@@ -9,5 +9,7 @@ public enum RtpEndUserState {
     ACCEPTED_ON_OTHER_DEVICE, //received 'accept' from one of our own devices
     ACCEPTING_CALL, //'proceed' message has been sent; but no session-initiate has been received
     ENDING_CALL, //libwebrt says 'closed' but session-terminate hasnt gone through
-    FAILED //something went wrong. TODO needs more concrete error states
+    ENDED, //close UI
+    DECLINED_OR_BUSY, //other party declined; no retry button
+    CONNECTIVITY_ERROR //network error; retry button
 }

@@ -156,7 +156,7 @@ public class JingleFileTransferConnection extends AbstractJingleConnection imple
 
         @Override
         public void onFileTransferAborted() {
-            JingleFileTransferConnection.this.sendSessionTerminate("connectivity-error");
+            JingleFileTransferConnection.this.sendSessionTerminate(Reason.CONNECTIVITY_ERROR);
             JingleFileTransferConnection.this.fail();
         }
     };
@@ -245,23 +245,20 @@ public class JingleFileTransferConnection extends AbstractJingleConnection imple
         if (action == JinglePacket.Action.SESSION_INITIATE) {
             init(packet);
         } else if (action == JinglePacket.Action.SESSION_TERMINATE) {
-            Reason reason = packet.getReason();
-            if (reason != null) {
-                if (reason.hasChild("cancel")) {
+            final Reason reason = packet.getReason();
+            switch (reason) {
+                case CANCEL:
                     this.cancelled = true;
                     this.fail();
-                } else if (reason.hasChild("success")) {
+                    break;
+                case SUCCESS:
                     this.receiveSuccess();
-                } else {
-                    final List<Element> children = reason.getChildren();
-                    if (children.size() == 1) {
-                        this.fail(children.get(0).getName());
-                    } else {
-                        this.fail();
-                    }
-                }
-            } else {
-                this.fail();
+                    break;
+                default:
+                    Log.d(Config.LOGTAG, id.account.getJid().asBareJid() + ": received session-terminate with reason " + reason);
+                    this.fail();
+                    break;
+
             }
         } else if (action == JinglePacket.Action.SESSION_ACCEPT) {
             receiveAccept(packet);
@@ -756,7 +753,7 @@ public class JingleFileTransferConnection extends AbstractJingleConnection imple
                         connection.setActivated(true);
                     } else {
                         Log.d(Config.LOGTAG, "activated connection not found");
-                        sendSessionTerminate("failed-transport");
+                        sendSessionTerminate(Reason.FAILED_TRANSPORT);
                         this.fail();
                     }
                 }
@@ -894,7 +891,7 @@ public class JingleFileTransferConnection extends AbstractJingleConnection imple
     }
 
     private void sendSuccess() {
-        sendSessionTerminate("success");
+        sendSessionTerminate(Reason.SUCCESS);
         this.disconnectSocks5Connections();
         this.mJingleStatus = JINGLE_STATUS_FINISHED;
         this.message.setStatus(Message.STATUS_RECEIVED);
@@ -1014,10 +1011,10 @@ public class JingleFileTransferConnection extends AbstractJingleConnection imple
     @Override
     public void cancel() {
         this.cancelled = true;
-        abort("cancel");
+        abort(Reason.CANCEL);
     }
 
-    void abort(final String reason) {
+    void abort(final Reason reason) {
         this.disconnectSocks5Connections();
         if (this.transport instanceof JingleInBandTransport) {
             this.transport.disconnect();
@@ -1065,11 +1062,9 @@ public class JingleFileTransferConnection extends AbstractJingleConnection imple
         this.jingleConnectionManager.finishConnection(this);
     }
 
-    private void sendSessionTerminate(String reason) {
+    private void sendSessionTerminate(Reason reason) {
         final JinglePacket packet = bootstrapPacket(JinglePacket.Action.SESSION_TERMINATE);
-        final Reason r = new Reason();
-        r.addChild(reason);
-        packet.setReason(r);
+        packet.setReason(reason);
         this.sendJinglePacket(packet);
     }
 

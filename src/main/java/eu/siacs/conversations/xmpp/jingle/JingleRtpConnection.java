@@ -23,6 +23,7 @@ import eu.siacs.conversations.xml.Namespace;
 import eu.siacs.conversations.xmpp.jingle.stanzas.Group;
 import eu.siacs.conversations.xmpp.jingle.stanzas.IceUdpTransportInfo;
 import eu.siacs.conversations.xmpp.jingle.stanzas.JinglePacket;
+import eu.siacs.conversations.xmpp.jingle.stanzas.Reason;
 import eu.siacs.conversations.xmpp.stanzas.MessagePacket;
 import rocks.xmpp.addr.Jid;
 
@@ -33,7 +34,7 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
     static {
         final ImmutableMap.Builder<State, Collection<State>> transitionBuilder = new ImmutableMap.Builder<>();
         transitionBuilder.put(State.NULL, ImmutableList.of(State.PROPOSED, State.SESSION_INITIALIZED));
-        transitionBuilder.put(State.PROPOSED, ImmutableList.of(State.ACCEPTED, State.PROCEED));
+        transitionBuilder.put(State.PROPOSED, ImmutableList.of(State.ACCEPTED, State.PROCEED, State.REJECTED));
         transitionBuilder.put(State.PROCEED, ImmutableList.of(State.SESSION_INITIALIZED));
         transitionBuilder.put(State.SESSION_INITIALIZED, ImmutableList.of(State.SESSION_ACCEPTED));
         VALID_TRANSITIONS = transitionBuilder.build();
@@ -63,10 +64,34 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
             case SESSION_ACCEPT:
                 receiveSessionAccept(jinglePacket);
                 break;
+            case SESSION_TERMINATE:
+                receiveSessionTerminate(jinglePacket);
+                break;
             default:
                 Log.d(Config.LOGTAG, String.format("%s: received unhandled jingle action %s", id.account.getJid().asBareJid(), jinglePacket.getAction()));
                 break;
         }
+    }
+
+    private void receiveSessionTerminate(final JinglePacket jinglePacket) {
+        final Reason reason = jinglePacket.getReason();
+        switch (reason) {
+            case SUCCESS:
+                transitionOrThrow(State.TERMINATED_SUCCESS);
+                break;
+            case DECLINE:
+            case BUSY:
+                transitionOrThrow(State.TERMINATED_DECLINED_OR_BUSY);
+                break;
+            case CANCEL:
+            case TIMEOUT:
+                transitionOrThrow(State.TERMINATED_CANCEL_OR_TIMEOUT);
+                break;
+            default:
+                transitionOrThrow(State.TERMINATED_CONNECTIVITY_ERROR);
+                break;
+        }
+        jingleConnectionManager.finishConnection(this);
     }
 
     private void receiveTransportInfo(final JinglePacket jinglePacket) {
@@ -315,10 +340,24 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
                 } else if (state == PeerConnection.PeerConnectionState.CLOSED) {
                     return RtpEndUserState.ENDING_CALL;
                 } else {
-                    return RtpEndUserState.FAILED;
+                    return RtpEndUserState.ENDING_CALL;
                 }
+            case REJECTED:
+            case TERMINATED_DECLINED_OR_BUSY:
+                if (isInitiator()) {
+                    return RtpEndUserState.DECLINED_OR_BUSY;
+                } else {
+                    return RtpEndUserState.ENDED;
+                }
+            case TERMINATED_SUCCESS:
+            case ACCEPTED:
+            case RETRACTED:
+            case TERMINATED_CANCEL_OR_TIMEOUT:
+                return RtpEndUserState.ENDED;
+            case TERMINATED_CONNECTIVITY_ERROR:
+                return RtpEndUserState.CONNECTIVITY_ERROR;
         }
-        return RtpEndUserState.FAILED;
+        throw new IllegalStateException(String.format("%s has no equivalent EndUserState", this.state));
     }
 
 
@@ -331,19 +370,34 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
                 acceptCallFromSessionInitialized();
                 break;
             default:
-                throw new IllegalStateException("Can not pick up call from " + this.state);
+                throw new IllegalStateException("Can not accept call from " + this.state);
         }
     }
 
     public void rejectCall() {
-        Log.d(Config.LOGTAG, "todo rejecting call");
-        xmppConnectionService.getNotificationService().cancelIncomingCallNotification();
+        switch (this.state) {
+            case PROPOSED:
+                rejectCallFromProposed();
+                break;
+            default:
+                throw new IllegalStateException("Can not reject call from " + this.state);
+        }
     }
 
     public void endCall() {
+
+        //TODO from `propose` we call `retract`
+
         if (isInState(State.SESSION_INITIALIZED, State.SESSION_ACCEPTED)) {
+            //TODO during session_initialized we might not have a peer connection yet (if the session was initialized directly)
+
+            //TODO from session_initialized we call `cancel`
+
+            //TODO from session_accepted we call `success`
+
             webRTCWrapper.close();
         } else {
+            //TODO during earlier stages we want to retract the proposal etc
             Log.d(Config.LOGTAG, id.account.getJid().asBareJid() + ": called 'endCall' while in state " + this.state);
         }
     }
@@ -356,10 +410,23 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
     private void acceptCallFromProposed() {
         transitionOrThrow(State.PROCEED);
         xmppConnectionService.getNotificationService().cancelIncomingCallNotification();
+        //Note that Movim needs 'accept', correct is 'proceed' https://github.com/movim/movim/issues/916
+        this.sendJingleMessage("proceed");
+
+        //TODO send `accept` to self
+    }
+
+    private void rejectCallFromProposed() {
+        transitionOrThrow(State.REJECTED);
+        xmppConnectionService.getNotificationService().cancelIncomingCallNotification();
+        this.sendJingleMessage("reject");
+        jingleConnectionManager.finishConnection(this);
+    }
+
+    private void sendJingleMessage(final String action) {
         final MessagePacket messagePacket = new MessagePacket();
         messagePacket.setTo(id.with);
-        //Note that Movim needs 'accept', correct is 'proceed' https://github.com/movim/movim/issues/916
-        messagePacket.addChild("proceed", Namespace.JINGLE_MESSAGE).setAttribute("id", id.sessionId);
+        messagePacket.addChild(action, Namespace.JINGLE_MESSAGE).setAttribute("id", id.sessionId);
         Log.d(Config.LOGTAG, messagePacket.toString());
         xmppConnectionService.sendMessagePacket(id.account, messagePacket);
     }
@@ -400,7 +467,7 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
 
     @Override
     public void onConnectionChange(PeerConnection.PeerConnectionState newState) {
-        Log.d(Config.LOGTAG,id.account.getJid().asBareJid()+": PeerConnectionState changed to "+newState);
+        Log.d(Config.LOGTAG, id.account.getJid().asBareJid() + ": PeerConnectionState changed to " + newState);
         updateEndUserState();
     }
 

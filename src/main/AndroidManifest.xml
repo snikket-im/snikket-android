@@ -289,7 +289,8 @@
         <activity
             android:name=".ui.ChannelDiscoveryActivity"
             android:label="@string/discover_channels" />
-        <activity android:name=".ui.RtpSessionActivity" />
+        <activity android:name=".ui.RtpSessionActivity"
+            android:launchMode="singleTop"/>
     </application>
 
 </manifest>

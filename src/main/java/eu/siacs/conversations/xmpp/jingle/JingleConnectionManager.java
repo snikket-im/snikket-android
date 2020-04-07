@@ -271,6 +271,16 @@ public class JingleConnectionManager extends AbstractConnectionManager {
         }
     }
 
+    public void rejectRtpSession(final String sessionId) {
+        for(final AbstractJingleConnection connection : this.connections.values()) {
+            if (connection.getId().sessionId.equals(sessionId)) {
+                if (connection instanceof JingleRtpConnection) {
+                    ((JingleRtpConnection) connection).rejectCall();
+                }
+            }
+        }
+    }
+
     public static class RtpSessionProposal {
         private final Account account;
         public final Jid with;

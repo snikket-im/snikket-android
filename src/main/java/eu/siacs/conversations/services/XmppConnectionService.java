@@ -643,6 +643,7 @@ public class XmppConnectionService extends Service {
                 case ACTION_DISMISS_CALL:
                     final String sessionId = intent.getStringExtra(RtpSessionActivity.EXTRA_SESSION_ID);
                     Log.d(Config.LOGTAG,"received intent to dismiss call with session id "+sessionId);
+                    mJingleConnectionManager.rejectRtpSession(sessionId);
                     break;
                 case ACTION_DISMISS_ERROR_NOTIFICATIONS:
                     dismissErrorNotifications();

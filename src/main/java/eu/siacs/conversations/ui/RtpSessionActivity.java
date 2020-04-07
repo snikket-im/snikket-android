@@ -71,6 +71,15 @@ public class RtpSessionActivity extends XmppActivity implements XmppConnectionSe
     }
 
     @Override
+    public void onNewIntent(final Intent intent) {
+        super.onNewIntent(intent);
+        if (ACTION_ACCEPT.equals(intent.getAction())) {
+            Log.d(Config.LOGTAG,"accepting through onNewIntent()");
+            requireRtpConnection().acceptCall();
+        }
+    }
+
+    @Override
     void onBackendConnected() {
         final Intent intent = getIntent();
         final Account account = extractAccount(intent);
@@ -150,6 +159,10 @@ public class RtpSessionActivity extends XmppActivity implements XmppConnectionSe
     public void onJingleRtpConnectionUpdate(Account account, Jid with, RtpEndUserState state) {
         final AbstractJingleConnection.Id id = requireRtpConnection().getId();
         if (account == id.account && id.with.equals(with)) {
+            if (state == RtpEndUserState.ENDED) {
+                finish();
+                return;
+            }
             runOnUiThread(() -> {
                 updateStateDisplay(state);
                 updateButtonConfiguration(state);

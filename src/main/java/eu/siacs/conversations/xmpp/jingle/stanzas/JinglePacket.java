@@ -70,12 +70,20 @@ public class JinglePacket extends IqPacket {
 
     public Reason getReason() {
         final Element reason = getJingleChild("reason");
-        return reason == null ? null : Reason.upgrade(reason);
+        if (reason == null) {
+            return Reason.UNKNOWN;
+        }
+        for(Element child : reason.getChildren()) {
+            if (!"text".equals(child.getName())) {
+                return Reason.of(child.getName());
+            }
+        }
+        return Reason.UNKNOWN;
     }
 
     public void setReason(final Reason reason) {
         final Element jingle = findChild("jingle", Namespace.JINGLE);
-        jingle.addChild(reason);
+        jingle.addChild(new Element("reason").addChild(reason.toString()));
     }
 
     //RECOMMENDED for session-initiate, NOT RECOMMENDED otherwise

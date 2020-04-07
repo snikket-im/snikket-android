@@ -364,8 +364,8 @@ public class NotificationService {
         fullScreenIntent.putExtra(RtpSessionActivity.EXTRA_ACCOUNT, id.account.getJid().asBareJid().toEscapedString());
         fullScreenIntent.putExtra(RtpSessionActivity.EXTRA_WITH, id.with.toEscapedString());
         fullScreenIntent.putExtra(RtpSessionActivity.EXTRA_SESSION_ID, id.sessionId);
-        fullScreenIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        fullScreenIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        //fullScreenIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        //fullScreenIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         return PendingIntent.getActivity(mXmppConnectionService, requestCode, fullScreenIntent, PendingIntent.FLAG_UPDATE_CURRENT);
     }
 
