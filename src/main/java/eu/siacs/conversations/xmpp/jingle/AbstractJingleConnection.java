@@ -11,6 +11,8 @@ import rocks.xmpp.addr.Jid;
 
 public abstract class AbstractJingleConnection {
 
+    public static final String JINGLE_MESSAGE_ID_PREFIX = "jm-propose-";
+
     protected final JingleConnectionManager jingleConnectionManager;
     protected final XmppConnectionService xmppConnectionService;
     protected final Id id;

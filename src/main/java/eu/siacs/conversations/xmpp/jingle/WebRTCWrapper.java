@@ -11,6 +11,9 @@ import com.google.common.util.concurrent.SettableFuture;
 
 import org.webrtc.AudioSource;
 import org.webrtc.AudioTrack;
+import org.webrtc.Camera1Capturer;
+import org.webrtc.Camera1Enumerator;
+import org.webrtc.CameraVideoCapturer;
 import org.webrtc.DataChannel;
 import org.webrtc.IceCandidate;
 import org.webrtc.MediaConstraints;
@@ -20,6 +23,9 @@ import org.webrtc.PeerConnectionFactory;
 import org.webrtc.RtpReceiver;
 import org.webrtc.SdpObserver;
 import org.webrtc.SessionDescription;
+import org.webrtc.VideoCapturer;
+import org.webrtc.VideoSource;
+import org.webrtc.VideoTrack;
 
 import java.util.List;
 
@@ -29,6 +35,9 @@ import javax.annotation.Nullable;
 import eu.siacs.conversations.Config;
 
 public class WebRTCWrapper {
+
+    private VideoTrack localVideoTrack = null;
+    private VideoTrack remoteVideoTrack = null;
 
     private final EventCallback eventCallback;
 
@@ -75,6 +84,11 @@ public class WebRTCWrapper {
             for(AudioTrack audioTrack : mediaStream.audioTracks) {
                 Log.d(Config.LOGTAG,"remote? - audioTrack enabled:"+audioTrack.enabled()+" state="+audioTrack.state());
             }
+            final List<VideoTrack> videoTracks = mediaStream.videoTracks;
+            if (videoTracks.size() > 0) {
+                Log.d(Config.LOGTAG, "more than zero remote video tracks found. using first");
+                remoteVideoTrack = videoTracks.get(0);
+            }
         }
 
         @Override
@@ -112,8 +126,55 @@ public class WebRTCWrapper {
     }
 
     public void initializePeerConnection() {
-        final PeerConnectionFactory.Options options = new PeerConnectionFactory.Options();
         PeerConnectionFactory peerConnectionFactory = PeerConnectionFactory.builder().createPeerConnectionFactory();
+
+        CameraVideoCapturer capturer = null;
+        Camera1Enumerator camera1Enumerator = new Camera1Enumerator();
+        for(String deviceName : camera1Enumerator.getDeviceNames()) {
+            Log.d(Config.LOGTAG,"camera device name: "+deviceName);
+            if (camera1Enumerator.isFrontFacing(deviceName)) {
+                capturer = camera1Enumerator.createCapturer(deviceName, new CameraVideoCapturer.CameraEventsHandler() {
+                    @Override
+                    public void onCameraError(String s) {
+
+                    }
+
+                    @Override
+                    public void onCameraDisconnected() {
+
+                    }
+
+                    @Override
+                    public void onCameraFreezed(String s) {
+
+                    }
+
+                    @Override
+                    public void onCameraOpening(String s) {
+                        Log.d(Config.LOGTAG,"onCameraOpening");
+                    }
+
+                    @Override
+                    public void onFirstFrameAvailable() {
+                        Log.d(Config.LOGTAG,"onFirstFrameAvailable");
+                    }
+
+                    @Override
+                    public void onCameraClosed() {
+
+                    }
+                });
+            }
+        }
+
+        /*if (capturer != null) {
+            capturer.initialize();
+            Log.d(Config.LOGTAG,"start capturing");
+            capturer.startCapture(800,600,30);
+        }*/
+
+        final VideoSource videoSource = peerConnectionFactory.createVideoSource(false);
+        final VideoTrack videoTrack = peerConnectionFactory.createVideoTrack("my-video-track", videoSource);
 
         final AudioSource audioSource = peerConnectionFactory.createAudioSource(new MediaConstraints());
 
@@ -121,6 +182,9 @@ public class WebRTCWrapper {
         Log.d(Config.LOGTAG,"audioTrack enabled:"+audioTrack.enabled()+" state="+audioTrack.state());
         final MediaStream stream = peerConnectionFactory.createLocalMediaStream("my-media-stream");
         stream.addTrack(audioTrack);
+        //stream.addTrack(videoTrack);
+
+        this.localVideoTrack = videoTrack;
 
 
         final List<PeerConnection.IceServer> iceServers = ImmutableList.of(
@@ -135,6 +199,8 @@ public class WebRTCWrapper {
         peerConnection.setAudioRecording(true);
         this.peerConnection = peerConnection;
     }
+
+
 
     public ListenableFuture<SessionDescription> createOffer() {
         return Futures.transformAsync(getPeerConnectionFuture(), peerConnection -> {

@@ -19,6 +19,7 @@
 	<color name="grey800">#ff424242</color>
 	<color name="grey900">#ff282828</color>
 	<color name="red500">#fff44336</color>
+	<color name="red700">#ffD32F2F</color>
 	<color name="red_a700">#ffd50000</color>
 	<color name="red_a100">#ffff8a80</color>
 	<color name="red800">#ffc62828</color>

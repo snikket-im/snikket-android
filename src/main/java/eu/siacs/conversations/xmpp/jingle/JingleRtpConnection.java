@@ -1,5 +1,6 @@
 package eu.siacs.conversations.xmpp.jingle;
 
+import android.content.Intent;
 import android.util.Log;
 
 import com.google.common.collect.ImmutableList;
@@ -15,6 +16,7 @@ import java.util.List;
 import java.util.Map;
 
 import eu.siacs.conversations.Config;
+import eu.siacs.conversations.ui.RtpSessionActivity;
 import eu.siacs.conversations.xml.Element;
 import eu.siacs.conversations.xml.Namespace;
 import eu.siacs.conversations.xmpp.jingle.stanzas.Group;
@@ -217,11 +219,19 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
         if (originatedFromMyself) {
             Log.d(Config.LOGTAG, id.account.getJid().asBareJid() + ": saw proposal from mysql. ignoring");
         } else if (transition(State.PROPOSED)) {
-            //TODO start ringing or something
-            pickUpCall();
+            startRinging();
         } else {
             Log.d(Config.LOGTAG, id.account.getJid() + ": ignoring session proposal because already in " + state);
         }
+    }
+
+    private void startRinging() {
+        Log.d(Config.LOGTAG, id.account.getJid().asBareJid() + ": received call from " + id.with + ". start ringing");
+        final Intent intent = new Intent(xmppConnectionService, RtpSessionActivity.class);
+        intent.putExtra(RtpSessionActivity.EXTRA_ACCOUNT, id.account.getJid().asBareJid().toEscapedString());
+        intent.putExtra(RtpSessionActivity.EXTRA_WITH, id.with.toEscapedString());
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        xmppConnectionService.startActivity(intent);
     }
 
     private void receiveProceed(final Jid from, final Element proceed) {

@@ -30,7 +30,7 @@ import eu.siacs.conversations.xmpp.stanzas.MessagePacket;
 import rocks.xmpp.addr.Jid;
 
 public class JingleConnectionManager extends AbstractConnectionManager {
-    private final Set<RtpSessionProposal> rtpSessionProposals = new HashSet<>();
+    private final HashMap<RtpSessionProposal, DeviceDiscoveryState> rtpSessionProposals = new HashMap<>();
     private final Map<AbstractJingleConnection.Id, AbstractJingleConnection> connections = new ConcurrentHashMap<>();
 
     private HashMap<Jid, JingleCandidate> primaryCandidates = new HashMap<>();
@@ -108,7 +108,7 @@ public class JingleConnectionManager extends AbstractConnectionManager {
             }
             final RtpSessionProposal proposal = new RtpSessionProposal(account, with.asBareJid(), sessionId);
             synchronized (rtpSessionProposals) {
-                if (rtpSessionProposals.remove(proposal)) {
+                if (rtpSessionProposals.remove(proposal) != null) {
                     final JingleRtpConnection rtpConnection = new JingleRtpConnection(this, id, account.getJid());
                     this.connections.put(id, rtpConnection);
                     rtpConnection.transitionOrThrow(AbstractJingleConnection.State.PROPOSED);
@@ -190,7 +190,7 @@ public class JingleConnectionManager extends AbstractConnectionManager {
     public void proposeJingleRtpSession(final Account account, final Contact contact) {
         final RtpSessionProposal proposal = RtpSessionProposal.of(account, contact.getJid().asBareJid());
         synchronized (this.rtpSessionProposals) {
-            this.rtpSessionProposals.add(proposal);
+            this.rtpSessionProposals.put(proposal, DeviceDiscoveryState.SEARCHING);
             final MessagePacket messagePacket = mXmppConnectionService.getMessageGenerator().sessionProposal(proposal);
             Log.d(Config.LOGTAG,messagePacket.toString());
             mXmppConnectionService.sendMessagePacket(account, messagePacket);
@@ -244,6 +244,23 @@ public class JingleConnectionManager extends AbstractConnectionManager {
         }
     }
 
+    public void updateProposedSessionDiscovered(Account account, Jid from, String sessionId, final DeviceDiscoveryState target) {
+        final RtpSessionProposal sessionProposal = new RtpSessionProposal(account,from.asBareJid(),sessionId);
+        synchronized (this.rtpSessionProposals) {
+            final DeviceDiscoveryState currentState = rtpSessionProposals.get(sessionProposal);
+            if (currentState == null) {
+                Log.d(Config.LOGTAG,"unable to find session proposal for session id "+sessionId);
+                return;
+            }
+            if (currentState == DeviceDiscoveryState.DISCOVERED) {
+                Log.d(Config.LOGTAG,"session proposal already at discovered. not going to fall back");
+                return;
+            }
+            this.rtpSessionProposals.put(sessionProposal, target);
+            Log.d(Config.LOGTAG,account.getJid().asBareJid()+": flagging session "+sessionId+" as "+target);
+        }
+    }
+
     public static class RtpSessionProposal {
         private final Account account;
         public final Jid with;
@@ -273,5 +290,9 @@ public class JingleConnectionManager extends AbstractConnectionManager {
         public int hashCode() {
             return Objects.hashCode(account.getJid(), with, sessionId);
         }
+    }
+
+    public enum DeviceDiscoveryState {
+        SEARCHING, DISCOVERED, FAILED
     }
 }

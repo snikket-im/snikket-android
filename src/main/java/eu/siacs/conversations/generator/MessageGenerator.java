@@ -19,6 +19,7 @@ import eu.siacs.conversations.xml.Element;
 import eu.siacs.conversations.xml.Namespace;
 import eu.siacs.conversations.xmpp.chatstate.ChatState;
 import eu.siacs.conversations.xmpp.jingle.JingleConnectionManager;
+import eu.siacs.conversations.xmpp.jingle.JingleRtpConnection;
 import eu.siacs.conversations.xmpp.stanzas.MessagePacket;
 import rocks.xmpp.addr.Jid;
 
@@ -233,12 +234,14 @@ public class MessageGenerator extends AbstractGenerator {
 		return packet;
 	}
 
-	public MessagePacket sessionProposal(JingleConnectionManager.RtpSessionProposal proposal) {
+	public MessagePacket sessionProposal(final JingleConnectionManager.RtpSessionProposal proposal) {
 		final MessagePacket packet = new MessagePacket();
 		packet.setTo(proposal.with);
+		packet.setId(JingleRtpConnection.JINGLE_MESSAGE_ID_PREFIX+proposal.sessionId);
 		final Element propose = packet.addChild("propose", Namespace.JINGLE_MESSAGE);
 		propose.setAttribute("id", proposal.sessionId);
 		propose.addChild("description", Namespace.JINGLE_APPS_RTP);
+		packet.addChild("request", "urn:xmpp:receipts");
 		return packet;
 	}
 }

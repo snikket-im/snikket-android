@@ -31,6 +31,7 @@
         <item name="TextSizeBody2">14sp</item>
         <item name="TextSizeSubhead">16sp</item>
         <item name="TextSizeTitle">20sp</item>
+        <item name="TextSizeDisplay2">45sp</item>
         <item name="TextSizeInput">16sp</item>
         <item name="TextSeparation">5sp</item>
         <item name="IconSize">18sp</item>

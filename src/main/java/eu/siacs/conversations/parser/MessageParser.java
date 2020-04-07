@@ -43,6 +43,8 @@ import eu.siacs.conversations.xml.Element;
 import eu.siacs.conversations.xmpp.InvalidJid;
 import eu.siacs.conversations.xmpp.OnMessagePacketReceived;
 import eu.siacs.conversations.xmpp.chatstate.ChatState;
+import eu.siacs.conversations.xmpp.jingle.JingleConnectionManager;
+import eu.siacs.conversations.xmpp.jingle.JingleRtpConnection;
 import eu.siacs.conversations.xmpp.pep.Avatar;
 import eu.siacs.conversations.xmpp.stanzas.MessagePacket;
 import rocks.xmpp.addr.Jid;
@@ -301,11 +303,18 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
 
     private boolean handleErrorMessage(Account account, MessagePacket packet) {
         if (packet.getType() == MessagePacket.TYPE_ERROR) {
-            Jid from = packet.getFrom();
-            if (from != null) {
+            final Jid from = packet.getFrom();
+            final String id = packet.getId();
+            if (from != null && id != null) {
+                if (id.startsWith(JingleRtpConnection.JINGLE_MESSAGE_ID_PREFIX)) {
+                    final String sessionId = id.substring(JingleRtpConnection.JINGLE_MESSAGE_ID_PREFIX.length());
+                    mXmppConnectionService.getJingleConnectionManager()
+                            .updateProposedSessionDiscovered(account, from, sessionId, JingleConnectionManager.DeviceDiscoveryState.FAILED);
+                    return true;
+                }
                 mXmppConnectionService.markMessage(account,
                         from.asBareJid(),
-                        packet.getId(),
+                        id,
                         Message.STATUS_SEND_FAILED,
                         extractErrorMessage(packet));
                 final Element error = packet.findChild("error");
@@ -815,7 +824,11 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
             if (!isTypeGroupChat) {
                 for (Element child : packet.getChildren()) {
                     if (Namespace.JINGLE_MESSAGE.equals(child.getNamespace()) && JINGLE_MESSAGE_ELEMENT_NAMES.contains(child.getName())) {
+                        if (!account.getJid().asBareJid().equals(from.asBareJid())) {
+                            processMessageReceipts(account, packet, query);
+                        }
                         mXmppConnectionService.getJingleConnectionManager().deliverMessage(account, packet.getTo(), packet.getFrom(), child);
+                        break;
                     }
                 }
             }
@@ -831,8 +844,14 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
                 if (query != null && id != null && packet.getTo() != null) {
                     query.removePendingReceiptRequest(new ReceiptRequest(packet.getTo(), id));
                 }
-            } else {
-                mXmppConnectionService.markMessage(account, from.asBareJid(), received.getAttribute("id"), Message.STATUS_SEND_RECEIVED);
+            } else if (id != null) {
+                if (id.startsWith(JingleRtpConnection.JINGLE_MESSAGE_ID_PREFIX)) {
+                    final String sessionId = id.substring(JingleRtpConnection.JINGLE_MESSAGE_ID_PREFIX.length());
+                    mXmppConnectionService.getJingleConnectionManager()
+                            .updateProposedSessionDiscovered(account, from, sessionId, JingleConnectionManager.DeviceDiscoveryState.DISCOVERED);
+                } else {
+                    mXmppConnectionService.markMessage(account, from.asBareJid(), id, Message.STATUS_SEND_RECEIVED);
+                }
             }
         }
         Element displayed = packet.findChild("displayed", "urn:xmpp:chat-markers:0");
