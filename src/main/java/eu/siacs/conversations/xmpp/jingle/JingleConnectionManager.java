@@ -5,6 +5,7 @@ import android.util.Log;
 import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
 
+import java.lang.ref.WeakReference;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -242,6 +243,15 @@ public class JingleConnectionManager extends AbstractConnectionManager {
                 connection.abort("connectivity-error");
             }*/
         }
+    }
+
+    public WeakReference<JingleRtpConnection> findJingleRtpConnection(Account account, Jid with, String sessionId) {
+        final AbstractJingleConnection.Id id = AbstractJingleConnection.Id.of(account, Jid.ofEscaped(with), sessionId);
+        final AbstractJingleConnection connection = connections.get(id);
+        if (connection instanceof JingleRtpConnection) {
+            return new WeakReference<>((JingleRtpConnection) connection);
+        }
+        return null;
     }
 
     public void updateProposedSessionDiscovered(Account account, Jid from, String sessionId, final DeviceDiscoveryState target) {

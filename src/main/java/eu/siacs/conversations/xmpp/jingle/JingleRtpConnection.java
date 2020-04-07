@@ -7,6 +7,7 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 
 import org.webrtc.IceCandidate;
+import org.webrtc.PeerConnection;
 
 import java.util.ArrayDeque;
 import java.util.Arrays;
@@ -230,6 +231,7 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
         final Intent intent = new Intent(xmppConnectionService, RtpSessionActivity.class);
         intent.putExtra(RtpSessionActivity.EXTRA_ACCOUNT, id.account.getJid().asBareJid().toEscapedString());
         intent.putExtra(RtpSessionActivity.EXTRA_WITH, id.with.toEscapedString());
+        intent.putExtra(RtpSessionActivity.EXTRA_SESSION_ID, id.sessionId);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         xmppConnectionService.startActivity(intent);
     }
@@ -293,18 +295,51 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
         xmppConnectionService.sendIqPacket(id.account, jinglePacket, null);
     }
 
-
-    public void pickUpCall() {
+    public RtpEndUserState getEndUserState() {
         switch (this.state) {
             case PROPOSED:
-                pickupCallFromProposed();
+                if (isInitiator()) {
+                    return RtpEndUserState.RINGING;
+                } else {
+                    return RtpEndUserState.INCOMING_CALL;
+                }
+            case PROCEED:
+                if (isInitiator()) {
+                    return RtpEndUserState.CONNECTING;
+                } else {
+                    return RtpEndUserState.ACCEPTING_CALL;
+                }
+            case SESSION_INITIALIZED:
+                return RtpEndUserState.CONNECTING;
+            case SESSION_ACCEPTED:
+                final PeerConnection.PeerConnectionState state = webRTCWrapper.getState();
+                if (state == PeerConnection.PeerConnectionState.CONNECTED) {
+                    return RtpEndUserState.CONNECTED;
+                } else if (state == PeerConnection.PeerConnectionState.NEW || state == PeerConnection.PeerConnectionState.CONNECTING) {
+                    return RtpEndUserState.CONNECTING;
+                } else {
+                    return RtpEndUserState.FAILED;
+                }
+        }
+        return RtpEndUserState.FAILED;
+    }
+
+
+    public void acceptCall() {
+        switch (this.state) {
+            case PROPOSED:
+                acceptCallFromProposed();
                 break;
             case SESSION_INITIALIZED:
-                pickupCallFromSessionInitialized();
+                acceptCallFromSessionInitialized();
                 break;
             default:
                 throw new IllegalStateException("Can not pick up call from " + this.state);
         }
+    }
+
+    public void rejectCall() {
+        Log.d(Config.LOGTAG, "todo rejecting call");
     }
 
     private void setupWebRTC() {
@@ -312,7 +347,7 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
         this.webRTCWrapper.initializePeerConnection();
     }
 
-    private void pickupCallFromProposed() {
+    private void acceptCallFromProposed() {
         transitionOrThrow(State.PROCEED);
         final MessagePacket messagePacket = new MessagePacket();
         messagePacket.setTo(id.with);
@@ -322,7 +357,7 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
         xmppConnectionService.sendMessagePacket(id.account, messagePacket);
     }
 
-    private void pickupCallFromSessionInitialized() {
+    private void acceptCallFromSessionInitialized() {
 
     }
 
@@ -335,6 +370,7 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
         if (validTransitions != null && validTransitions.contains(target)) {
             this.state = target;
             Log.d(Config.LOGTAG, id.account.getJid().asBareJid() + ": transitioned into " + target);
+            updateEndUserState();
             return true;
         } else {
             return false;
@@ -352,5 +388,14 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
         final IceUdpTransportInfo.Candidate candidate = IceUdpTransportInfo.Candidate.fromSdpAttribute(iceCandidate.sdp);
         Log.d(Config.LOGTAG, "sending candidate: " + iceCandidate.toString());
         sendTransportInfo(iceCandidate.sdpMid, candidate);
+    }
+
+    @Override
+    public void onConnectionChange(PeerConnection.PeerConnectionState newState) {
+        updateEndUserState();
+    }
+
+    private void updateEndUserState() {
+        xmppConnectionService.notifyJingleRtpConnectionUpdate(id.account, id.with, getEndUserState());
     }
 }

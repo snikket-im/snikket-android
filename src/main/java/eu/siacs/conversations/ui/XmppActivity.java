@@ -305,6 +305,9 @@ public abstract class XmppActivity extends ActionBarActivity {
 		if (this instanceof OnKeyStatusUpdated) {
 			this.xmppConnectionService.setOnKeyStatusUpdatedListener((OnKeyStatusUpdated) this);
 		}
+		if (this instanceof XmppConnectionService.OnJingleRtpConnectionUpdate) {
+			this.xmppConnectionService.setOnRtpConnectionUpdateListener((XmppConnectionService.OnJingleRtpConnectionUpdate) this);
+		}
 	}
 
 	protected void unregisterListeners() {
@@ -331,6 +334,9 @@ public abstract class XmppActivity extends ActionBarActivity {
 		}
 		if (this instanceof OnKeyStatusUpdated) {
 			this.xmppConnectionService.removeOnNewKeysAvailableListener((OnKeyStatusUpdated) this);
+		}
+		if (this instanceof XmppConnectionService.OnJingleRtpConnectionUpdate) {
+			this.xmppConnectionService.removeRtpConnectionUpdateListener((XmppConnectionService.OnJingleRtpConnectionUpdate) this);
 		}
 	}
 
@@ -388,13 +394,18 @@ public abstract class XmppActivity extends ActionBarActivity {
 		}
 	}
 
+	@SuppressLint("UnsupportedChromeOsCameraSystemFeature")
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		metrics = getResources().getDisplayMetrics();
 		ExceptionHelper.init(getApplicationContext());
 		new EmojiService(this).init();
-		this.isCameraFeatureAvailable = getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA);
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+			this.isCameraFeatureAvailable = getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA_ANY);
+		} else {
+			this.isCameraFeatureAvailable = getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA);
+		}
 		this.mTheme = findTheme();
 		setTheme(this.mTheme);
 
@@ -851,7 +862,7 @@ public abstract class XmppActivity extends ActionBarActivity {
 	}
 
 	protected Account extractAccount(Intent intent) {
-		String jid = intent != null ? intent.getStringExtra(EXTRA_ACCOUNT) : null;
+		final String jid = intent != null ? intent.getStringExtra(EXTRA_ACCOUNT) : null;
 		try {
 			return jid != null ? xmppConnectionService.findAccountByJid(Jid.of(jid)) : null;
 		} catch (IllegalArgumentException e) {

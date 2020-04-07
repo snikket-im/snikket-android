@@ -143,6 +143,7 @@ import eu.siacs.conversations.xmpp.chatstate.ChatState;
 import eu.siacs.conversations.xmpp.forms.Data;
 import eu.siacs.conversations.xmpp.jingle.JingleConnectionManager;
 import eu.siacs.conversations.xmpp.jingle.OnJinglePacketReceived;
+import eu.siacs.conversations.xmpp.jingle.RtpEndUserState;
 import eu.siacs.conversations.xmpp.jingle.stanzas.JinglePacket;
 import eu.siacs.conversations.xmpp.mam.MamReference;
 import eu.siacs.conversations.xmpp.pep.Avatar;
@@ -267,6 +268,7 @@ public class XmppConnectionService extends Service {
     private final Set<OnUpdateBlocklist> mOnUpdateBlocklist = Collections.newSetFromMap(new WeakHashMap<OnUpdateBlocklist, Boolean>());
     private final Set<OnMucRosterUpdate> mOnMucRosterUpdate = Collections.newSetFromMap(new WeakHashMap<OnMucRosterUpdate, Boolean>());
     private final Set<OnKeyStatusUpdated> mOnKeyStatusUpdated = Collections.newSetFromMap(new WeakHashMap<OnKeyStatusUpdated, Boolean>());
+    private final Set<OnJingleRtpConnectionUpdate> onJingleRtpConnectionUpdate = Collections.newSetFromMap(new WeakHashMap<OnJingleRtpConnectionUpdate, Boolean>());
 
     private final Object LISTENER_LOCK = new Object();
 
@@ -2467,6 +2469,30 @@ public class XmppConnectionService extends Service {
         }
     }
 
+    public void setOnRtpConnectionUpdateListener(final OnJingleRtpConnectionUpdate listener) {
+        final boolean remainingListeners;
+        synchronized (LISTENER_LOCK) {
+            remainingListeners = checkListeners();
+            if (!this.onJingleRtpConnectionUpdate.add(listener)) {
+                Log.w(Config.LOGTAG, listener.getClass().getName() + " is already registered as OnJingleRtpConnectionUpdate");
+            }
+        }
+        if (remainingListeners) {
+            switchToForeground();
+        }
+    }
+
+    public void removeRtpConnectionUpdateListener(final OnJingleRtpConnectionUpdate listener) {
+        final boolean remainingListeners;
+        synchronized (LISTENER_LOCK) {
+            this.onJingleRtpConnectionUpdate.remove(listener);
+            remainingListeners = checkListeners();
+        }
+        if (remainingListeners) {
+            switchToBackground();
+        }
+    }
+
     public void setOnMucRosterUpdateListener(OnMucRosterUpdate listener) {
         final boolean remainingListeners;
         synchronized (LISTENER_LOCK) {
@@ -2499,6 +2525,7 @@ public class XmppConnectionService extends Service {
                 && this.mOnMucRosterUpdate.size() == 0
                 && this.mOnUpdateBlocklist.size() == 0
                 && this.mOnShowErrorToasts.size() == 0
+                && this.onJingleRtpConnectionUpdate.size() == 0
                 && this.mOnKeyStatusUpdated.size() == 0);
     }
 
@@ -3943,6 +3970,12 @@ public class XmppConnectionService extends Service {
         }
     }
 
+    public void notifyJingleRtpConnectionUpdate(final Account account, final Jid with, final RtpEndUserState state) {
+        for(OnJingleRtpConnectionUpdate listener : threadSafeList(this.onJingleRtpConnectionUpdate)) {
+            listener.onJingleRtpConnectionUpdate(account, with, state);
+        }
+    }
+
     public void updateAccountUi() {
         for (OnAccountUpdate listener : threadSafeList(this.mOnAccountUpdates)) {
             listener.onAccountUpdate();
@@ -3986,9 +4019,9 @@ public class XmppConnectionService extends Service {
         }
     }
 
-    public Account findAccountByJid(final Jid accountJid) {
-        for (Account account : this.accounts) {
-            if (account.getJid().asBareJid().equals(accountJid.asBareJid())) {
+    public Account findAccountByJid(final Jid jid) {
+        for (final Account account : this.accounts) {
+            if (account.getJid().asBareJid().equals(jid.asBareJid())) {
                 return account;
             }
         }
@@ -4618,6 +4651,10 @@ public class XmppConnectionService extends Service {
 
     public interface OnConversationUpdate {
         void onConversationUpdate();
+    }
+
+    public interface OnJingleRtpConnectionUpdate {
+        void onJingleRtpConnectionUpdate(final Account account, final Jid with, final RtpEndUserState state);
     }
 
     public interface OnAccountUpdate {

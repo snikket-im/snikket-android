@@ -50,7 +50,7 @@ public class WebRTCWrapper {
 
         @Override
         public void onConnectionChange(PeerConnection.PeerConnectionState newState) {
-            Log.d(Config.LOGTAG, "onConnectionChange(" + newState + ")");
+            eventCallback.onConnectionChange(newState);
         }
 
         @Override
@@ -329,5 +329,6 @@ public class WebRTCWrapper {
 
     public interface EventCallback {
         void onIceCandidate(IceCandidate iceCandidate);
+        void onConnectionChange(PeerConnection.PeerConnectionState newState);
     }
 }
