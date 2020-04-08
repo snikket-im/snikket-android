@@ -897,6 +897,7 @@
     <string name="rtp_state_finding_device">Locating devices</string>
     <string name="rtp_state_ringing">Ringing</string>
     <string name="rtp_state_declined_or_busy">Busy</string>
+    <string name="rtp_state_connectivity_error">Unable to connect call</string>
     <plurals name="view_users">
         <item quantity="one">View %1$d Participant</item>
         <item quantity="other">View %1$d Participants</item>

@@ -14,6 +14,7 @@ import org.webrtc.AudioTrack;
 import org.webrtc.Camera1Capturer;
 import org.webrtc.Camera1Enumerator;
 import org.webrtc.CameraVideoCapturer;
+import org.webrtc.CandidatePairChangeEvent;
 import org.webrtc.DataChannel;
 import org.webrtc.IceCandidate;
 import org.webrtc.MediaConstraints;
@@ -56,6 +57,12 @@ public class WebRTCWrapper {
         @Override
         public void onIceConnectionChange(PeerConnection.IceConnectionState iceConnectionState) {
 
+        }
+
+        @Override
+        public void onSelectedCandidatePairChanged(CandidatePairChangeEvent event) {
+            Log.d(Config.LOGTAG, "remote candidate selected: " + event.remote);
+            Log.d(Config.LOGTAG, "local candidate selected: " + event.local);
         }
 
         @Override

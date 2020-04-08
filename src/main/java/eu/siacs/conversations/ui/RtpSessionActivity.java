@@ -1,6 +1,7 @@
 package eu.siacs.conversations.ui;
 
 import android.content.Intent;
+import android.content.res.ColorStateList;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.util.Log;
@@ -47,9 +48,6 @@ public class RtpSessionActivity extends XmppActivity implements XmppConnectionSe
         ;
         Log.d(Config.LOGTAG, "RtpSessionActivity.onCreate()");
         this.binding = DataBindingUtil.setContentView(this, R.layout.activity_rtp_session);
-        this.binding.rejectCall.setOnClickListener(this::rejectCall);
-        this.binding.endCall.setOnClickListener(this::endCall);
-        this.binding.acceptCall.setOnClickListener(this::acceptCall);
     }
 
     @Override
@@ -166,14 +164,20 @@ public class RtpSessionActivity extends XmppActivity implements XmppConnectionSe
                 break;
             case DECLINED_OR_BUSY:
                 binding.status.setText(R.string.rtp_state_declined_or_busy);
+            case CONNECTIVITY_ERROR:
+                binding.status.setText(R.string.rtp_state_connectivity_error);
                 break;
         }
     }
 
     private void updateButtonConfiguration(final RtpEndUserState state) {
         if (state == RtpEndUserState.INCOMING_CALL) {
+            this.binding.rejectCall.setOnClickListener(this::rejectCall);
+            this.binding.rejectCall.setImageResource(R.drawable.ic_call_end_white_48dp);
             this.binding.rejectCall.show();
             this.binding.endCall.hide();
+            this.binding.acceptCall.setOnClickListener(this::acceptCall);
+            this.binding.acceptCall.setImageResource(R.drawable.ic_call_white_48dp);
             this.binding.acceptCall.show();
         } else if (state == RtpEndUserState.ENDING_CALL) {
             this.binding.rejectCall.hide();
@@ -181,17 +185,29 @@ public class RtpSessionActivity extends XmppActivity implements XmppConnectionSe
             this.binding.acceptCall.hide();
         } else if (state == RtpEndUserState.DECLINED_OR_BUSY) {
             this.binding.rejectCall.hide();
+            this.binding.endCall.setOnClickListener(this::exit);
             this.binding.endCall.setImageResource(R.drawable.ic_clear_white_48dp);
             this.binding.endCall.show();
-            this.binding.endCall.setOnClickListener(this::exit);
             this.binding.acceptCall.hide();
+        } else if (state == RtpEndUserState.CONNECTIVITY_ERROR) {
+            this.binding.rejectCall.setOnClickListener(this::exit);
+            this.binding.rejectCall.setImageResource(R.drawable.ic_clear_white_48dp);
+            this.binding.rejectCall.show();
+            this.binding.endCall.hide();
+            this.binding.acceptCall.setOnClickListener(this::retry);
+            this.binding.acceptCall.setImageResource(R.drawable.ic_replay_white_48dp);
+            this.binding.acceptCall.show();
         } else {
             this.binding.rejectCall.hide();
+            this.binding.endCall.setOnClickListener(this::endCall);
             this.binding.endCall.setImageResource(R.drawable.ic_call_end_white_48dp);
             this.binding.endCall.show();
-            this.binding.endCall.setOnClickListener(this::endCall);
             this.binding.acceptCall.hide();
         }
+    }
+
+    private void retry(View view) {
+
     }
 
     private void exit(View view) {
