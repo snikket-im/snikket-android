@@ -239,8 +239,25 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
             case "reject":
                 receiveReject(from, message);
                 break;
+            case "accept":
+                receiveAccept(from, message);
+                break;
             default:
                 break;
+        }
+    }
+
+    private void receiveAccept(Jid from, Element message) {
+        final boolean originatedFromMyself = from.asBareJid().equals(id.account.getJid().asBareJid());
+        if (originatedFromMyself) {
+            if (transition(State.ACCEPTED)) {
+                this.xmppConnectionService.getNotificationService().cancelIncomingCallNotification();
+                this.jingleConnectionManager.finishConnection(this);
+            } else {
+                Log.d(Config.LOGTAG,id.account.getJid().asBareJid()+": unable to transition to accept because already in state="+this.state);
+            }
+        } else {
+            Log.d(Config.LOGTAG,id.account.getJid().asBareJid()+": ignoring 'accept' from "+from);
         }
     }
 
@@ -252,10 +269,10 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
                 this.xmppConnectionService.getNotificationService().cancelIncomingCallNotification();
                 this.jingleConnectionManager.finishConnection(this);
             } else {
-                Log.d(Config.LOGTAG,"not able to transition into REJECTED because already in "+this.state);
+                Log.d(Config.LOGTAG, "not able to transition into REJECTED because already in " + this.state);
             }
         } else {
-            Log.d(Config.LOGTAG,id.account.getJid()+": ignoring reject from "+from+" for session with "+id.with);
+            Log.d(Config.LOGTAG, id.account.getJid() + ": ignoring reject from " + from + " for session with " + id.with);
         }
     }
 
@@ -289,7 +306,7 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
             }
         } else if (from.asBareJid().equals(id.account.getJid().asBareJid())) {
             if (transition(State.ACCEPTED)) {
-                Log.d(Config.LOGTAG,id.account.getJid().asBareJid()+": moved session with "+id.with+" into state accepted after received carbon copied procced");
+                Log.d(Config.LOGTAG, id.account.getJid().asBareJid() + ": moved session with " + id.with + " into state accepted after received carbon copied procced");
                 this.xmppConnectionService.getNotificationService().cancelIncomingCallNotification();
                 this.jingleConnectionManager.finishConnection(this);
             }
@@ -381,6 +398,8 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
                     return RtpEndUserState.CONNECTING;
                 } else if (state == PeerConnection.PeerConnectionState.CLOSED) {
                     return RtpEndUserState.ENDING_CALL;
+                } else if (state == PeerConnection.PeerConnectionState.FAILED) {
+                    return RtpEndUserState.CONNECTIVITY_ERROR;
                 } else {
                     return RtpEndUserState.ENDING_CALL;
                 }
@@ -452,10 +471,8 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
     private void acceptCallFromProposed() {
         transitionOrThrow(State.PROCEED);
         xmppConnectionService.getNotificationService().cancelIncomingCallNotification();
-        //Note that Movim needs 'accept', correct is 'proceed' https://github.com/movim/movim/issues/916
+        this.sendJingleMessage("accept", id.account.getJid().asBareJid());
         this.sendJingleMessage("proceed");
-
-        //TODO send `accept` to self
     }
 
     private void rejectCallFromProposed() {
@@ -466,9 +483,13 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
     }
 
     private void sendJingleMessage(final String action) {
+        sendJingleMessage(action, id.with);
+    }
+
+    private void sendJingleMessage(final String action, final Jid to) {
         final MessagePacket messagePacket = new MessagePacket();
         messagePacket.setType(MessagePacket.TYPE_CHAT); //we want to carbon copy those
-        messagePacket.setTo(id.with);
+        messagePacket.setTo(to);
         messagePacket.addChild(action, Namespace.JINGLE_MESSAGE).setAttribute("id", id.sessionId);
         Log.d(Config.LOGTAG, messagePacket.toString());
         xmppConnectionService.sendMessagePacket(id.account, messagePacket);

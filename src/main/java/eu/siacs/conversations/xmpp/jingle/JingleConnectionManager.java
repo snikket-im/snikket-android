@@ -77,6 +77,19 @@ public class JingleConnectionManager extends AbstractConnectionManager {
         if (sessionId == null) {
             return;
         }
+        if ("accept".equals(message.getName())) {
+            for (AbstractJingleConnection connection : connections.values()) {
+                if (connection instanceof JingleRtpConnection) {
+                    final JingleRtpConnection rtpConnection = (JingleRtpConnection) connection;
+                    final AbstractJingleConnection.Id id = connection.getId();
+                    if (id.account == account && id.sessionId.equals(sessionId)) {
+                        rtpConnection.deliveryMessage(from, message);
+                        return;
+                    }
+                }
+            }
+            return;
+        }
         final boolean carbonCopy = from.asBareJid().equals(account.getJid().asBareJid());
         final Jid with;
         if (account.getJid().asBareJid().equals(from.asBareJid())) {
