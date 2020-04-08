@@ -207,8 +207,15 @@ public class WebRTCWrapper {
         this.peerConnection = peerConnection;
     }
 
-    public void close() {
+    public void closeOrThrow() {
         requirePeerConnection().close();
+    }
+
+    public void close() {
+        final PeerConnection peerConnection = this.peerConnection;
+        if (peerConnection != null) {
+            peerConnection.close();
+        }
     }
 
 

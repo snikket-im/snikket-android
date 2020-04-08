@@ -83,7 +83,7 @@ public class JinglePacket extends IqPacket {
 
     public void setReason(final Reason reason) {
         final Element jingle = findChild("jingle", Namespace.JINGLE);
-        jingle.addChild(new Element("reason").addChild(reason.toString()));
+        jingle.addChild("reason").addChild(reason.toString());
     }
 
     //RECOMMENDED for session-initiate, NOT RECOMMENDED otherwise

@@ -164,6 +164,7 @@ public class RtpSessionActivity extends XmppActivity implements XmppConnectionSe
                 break;
             case DECLINED_OR_BUSY:
                 binding.status.setText(R.string.rtp_state_declined_or_busy);
+                break;
             case CONNECTIVITY_ERROR:
                 binding.status.setText(R.string.rtp_state_connectivity_error);
                 break;

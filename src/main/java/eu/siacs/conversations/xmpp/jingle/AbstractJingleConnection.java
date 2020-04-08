@@ -90,6 +90,7 @@ public abstract class AbstractJingleConnection {
         REJECTED,
         RETRACTED,
         SESSION_INITIALIZED, //equal to 'PENDING'
+        SESSION_INITIALIZED_PRE_APPROVED,
         SESSION_ACCEPTED, //equal to 'ACTIVE'
         TERMINATED_SUCCESS, //equal to 'ENDED' (after successful call) ui will just close
         TERMINATED_DECLINED_OR_BUSY, //equal to 'ENDED' (after other party declined the call)

@@ -33,8 +33,10 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
         final ImmutableMap.Builder<State, Collection<State>> transitionBuilder = new ImmutableMap.Builder<>();
         transitionBuilder.put(State.NULL, ImmutableList.of(State.PROPOSED, State.SESSION_INITIALIZED));
         transitionBuilder.put(State.PROPOSED, ImmutableList.of(State.ACCEPTED, State.PROCEED, State.REJECTED, State.RETRACTED));
-        transitionBuilder.put(State.PROCEED, ImmutableList.of(State.SESSION_INITIALIZED));
-        transitionBuilder.put(State.SESSION_INITIALIZED, ImmutableList.of(State.SESSION_ACCEPTED));
+        transitionBuilder.put(State.PROCEED, ImmutableList.of(State.SESSION_INITIALIZED_PRE_APPROVED));
+        transitionBuilder.put(State.SESSION_INITIALIZED, ImmutableList.of(State.SESSION_ACCEPTED, State.TERMINATED_CANCEL_OR_TIMEOUT));
+        transitionBuilder.put(State.SESSION_INITIALIZED_PRE_APPROVED, ImmutableList.of(State.SESSION_ACCEPTED, State.TERMINATED_CANCEL_OR_TIMEOUT));
+        transitionBuilder.put(State.SESSION_ACCEPTED, ImmutableList.of(State.TERMINATED_SUCCESS, State.TERMINATED_CONNECTIVITY_ERROR));
         VALID_TRANSITIONS = transitionBuilder.build();
     }
 
@@ -73,27 +75,33 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
 
     private void receiveSessionTerminate(final JinglePacket jinglePacket) {
         final Reason reason = jinglePacket.getReason();
-        switch (reason) {
-            case SUCCESS:
-                transitionOrThrow(State.TERMINATED_SUCCESS);
-                break;
-            case DECLINE:
-            case BUSY:
-                transitionOrThrow(State.TERMINATED_DECLINED_OR_BUSY);
-                break;
-            case CANCEL:
-            case TIMEOUT:
-                transitionOrThrow(State.TERMINATED_CANCEL_OR_TIMEOUT);
-                break;
-            default:
-                transitionOrThrow(State.TERMINATED_CONNECTIVITY_ERROR);
-                break;
+        final State previous = this.state;
+        Log.d(Config.LOGTAG, id.account.getJid().asBareJid() + ": received session terminate reason=" + reason + " while in state " + previous);
+        webRTCWrapper.close();
+        transitionOrThrow(reasonToState(reason));
+        if (previous == State.PROPOSED || previous == State.SESSION_INITIALIZED) {
+            xmppConnectionService.getNotificationService().cancelIncomingCallNotification();
         }
         jingleConnectionManager.finishConnection(this);
     }
 
+    private static State reasonToState(Reason reason) {
+        switch (reason) {
+            case SUCCESS:
+                return State.TERMINATED_SUCCESS;
+            case DECLINE:
+            case BUSY:
+                return State.TERMINATED_DECLINED_OR_BUSY;
+            case CANCEL:
+            case TIMEOUT:
+                return State.TERMINATED_CANCEL_OR_TIMEOUT;
+            default:
+                return State.TERMINATED_CONNECTIVITY_ERROR;
+        }
+    }
+
     private void receiveTransportInfo(final JinglePacket jinglePacket) {
-        if (isInState(State.SESSION_INITIALIZED, State.SESSION_ACCEPTED)) {
+        if (isInState(State.SESSION_INITIALIZED, State.SESSION_INITIALIZED_PRE_APPROVED, State.SESSION_ACCEPTED)) {
             final RtpContentMap contentMap;
             try {
                 contentMap = RtpContentMap.of(jinglePacket);
@@ -142,10 +150,15 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
             return;
         }
         Log.d(Config.LOGTAG, "processing session-init with " + contentMap.contents.size() + " contents");
-        final State oldState = this.state;
-        if (transition(State.SESSION_INITIALIZED)) {
+        final State target;
+        if (this.state == State.PROCEED) {
+            target = State.SESSION_INITIALIZED_PRE_APPROVED;
+        } else {
+            target = State.SESSION_INITIALIZED;
+        }
+        if (transition(target)) {
             this.initiatorRtpContentMap = contentMap;
-            if (oldState == State.PROCEED) {
+            if (target == State.SESSION_INITIALIZED_PRE_APPROVED) {
                 Log.d(Config.LOGTAG, "automatically accepting");
                 sendSessionAccept();
             } else {
@@ -254,10 +267,10 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
                 this.xmppConnectionService.getNotificationService().cancelIncomingCallNotification();
                 this.jingleConnectionManager.finishConnection(this);
             } else {
-                Log.d(Config.LOGTAG,id.account.getJid().asBareJid()+": unable to transition to accept because already in state="+this.state);
+                Log.d(Config.LOGTAG, id.account.getJid().asBareJid() + ": unable to transition to accept because already in state=" + this.state);
             }
         } else {
-            Log.d(Config.LOGTAG,id.account.getJid().asBareJid()+": ignoring 'accept' from "+from);
+            Log.d(Config.LOGTAG, id.account.getJid().asBareJid() + ": ignoring 'accept' from " + from);
         }
     }
 
@@ -297,7 +310,7 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
         if (from.equals(id.with)) {
             if (isInitiator()) {
                 if (transition(State.PROCEED)) {
-                    this.sendSessionInitiate();
+                    this.sendSessionInitiate(State.SESSION_INITIALIZED_PRE_APPROVED);
                 } else {
                     Log.d(Config.LOGTAG, String.format("%s: ignoring proceed because already in %s", id.account.getJid().asBareJid(), this.state));
                 }
@@ -331,7 +344,7 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
         }
     }
 
-    private void sendSessionInitiate() {
+    private void sendSessionInitiate(final State targetState) {
         Log.d(Config.LOGTAG, id.account.getJid().asBareJid() + ": prepare session-initiate");
         setupWebRTC();
         try {
@@ -339,19 +352,29 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
             final SessionDescription sessionDescription = SessionDescription.parse(webRTCSessionDescription.description);
             Log.d(Config.LOGTAG, "description: " + webRTCSessionDescription.description);
             final RtpContentMap rtpContentMap = RtpContentMap.of(sessionDescription);
-            sendSessionInitiate(rtpContentMap);
+            sendSessionInitiate(rtpContentMap, targetState);
             this.webRTCWrapper.setLocalDescription(webRTCSessionDescription).get();
         } catch (Exception e) {
             Log.d(Config.LOGTAG, "unable to sendSessionInitiate", e);
         }
     }
 
-    private void sendSessionInitiate(RtpContentMap rtpContentMap) {
+    private void sendSessionInitiate(RtpContentMap rtpContentMap, final State targetState) {
         this.initiatorRtpContentMap = rtpContentMap;
-        this.transitionOrThrow(State.SESSION_INITIALIZED);
+        this.transitionOrThrow(targetState);
         final JinglePacket sessionInitiate = rtpContentMap.toJinglePacket(JinglePacket.Action.SESSION_INITIATE, id.sessionId);
         Log.d(Config.LOGTAG, sessionInitiate.toString());
         send(sessionInitiate);
+    }
+
+    private void sendSessionTerminate(final Reason reason) {
+        final State target = reasonToState(reason);
+        transitionOrThrow(target);
+        final JinglePacket jinglePacket = new JinglePacket(JinglePacket.Action.SESSION_TERMINATE, id.sessionId);
+        jinglePacket.setReason(reason);
+        send(jinglePacket);
+        Log.d(Config.LOGTAG, jinglePacket.toString());
+        jingleConnectionManager.finishConnection(this);
     }
 
     private void sendTransportInfo(final String contentName, IceUdpTransportInfo.Candidate candidate) {
@@ -377,6 +400,7 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
     public RtpEndUserState getEndUserState() {
         switch (this.state) {
             case PROPOSED:
+            case SESSION_INITIALIZED:
                 if (isInitiator()) {
                     return RtpEndUserState.RINGING;
                 } else {
@@ -388,7 +412,7 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
                 } else {
                     return RtpEndUserState.ACCEPTING_CALL;
                 }
-            case SESSION_INITIALIZED:
+            case SESSION_INITIALIZED_PRE_APPROVED:
                 return RtpEndUserState.CONNECTING;
             case SESSION_ACCEPTED:
                 final PeerConnection.PeerConnectionState state = webRTCWrapper.getState();
@@ -446,20 +470,14 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
     }
 
     public void endCall() {
-
-        //TODO from `propose` we call `retract`
-
-        if (isInState(State.SESSION_INITIALIZED, State.SESSION_ACCEPTED)) {
-            //TODO during session_initialized we might not have a peer connection yet (if the session was initialized directly)
-
-            //TODO from session_initialized we call `cancel`
-
-            //TODO from session_accepted we call `success`
-
+        if (isInitiator() && isInState(State.SESSION_INITIALIZED)) {
             webRTCWrapper.close();
+            sendSessionTerminate(Reason.CANCEL);
+        } else if (isInState(State.SESSION_INITIALIZED, State.SESSION_INITIALIZED_PRE_APPROVED, State.SESSION_ACCEPTED)) {
+            webRTCWrapper.close();
+            sendSessionTerminate(Reason.SUCCESS);
         } else {
-            //TODO during earlier stages we want to retract the proposal etc
-            Log.d(Config.LOGTAG, id.account.getJid().asBareJid() + ": called 'endCall' while in state " + this.state);
+            throw new IllegalStateException("called 'endCall' while in state " + this.state);
         }
     }
 
@@ -530,9 +548,12 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
     }
 
     @Override
-    public void onConnectionChange(PeerConnection.PeerConnectionState newState) {
+    public void onConnectionChange(final PeerConnection.PeerConnectionState newState) {
         Log.d(Config.LOGTAG, id.account.getJid().asBareJid() + ": PeerConnectionState changed to " + newState);
         updateEndUserState();
+        if (newState == PeerConnection.PeerConnectionState.FAILED) { //TODO guard this in isState(initiated,initated_approved,accepted) otherwise it might fire too late
+            sendSessionTerminate(Reason.CONNECTIVITY_ERROR);
+        }
     }
 
     private void updateEndUserState() {
