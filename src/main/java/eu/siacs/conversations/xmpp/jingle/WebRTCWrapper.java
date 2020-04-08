@@ -132,7 +132,7 @@ public class WebRTCWrapper {
         );
     }
 
-    public void initializePeerConnection() {
+    public void initializePeerConnection(final List<PeerConnection.IceServer> iceServers) {
         PeerConnectionFactory peerConnectionFactory = PeerConnectionFactory.builder().createPeerConnectionFactory();
 
         CameraVideoCapturer capturer = null;
@@ -193,10 +193,6 @@ public class WebRTCWrapper {
 
         this.localVideoTrack = videoTrack;
 
-
-        final List<PeerConnection.IceServer> iceServers = ImmutableList.of(
-                PeerConnection.IceServer.builder("stun:xmpp.conversations.im:3478").createIceServer()
-        );
         final PeerConnection peerConnection = peerConnectionFactory.createPeerConnection(iceServers, peerConnectionObserver);
         if (peerConnection == null) {
             throw new IllegalStateException("Unable to create PeerConnection");

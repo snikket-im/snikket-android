@@ -1902,5 +1902,9 @@ public class XmppConnection implements Runnable {
         public boolean bookmarks2() {
             return Config.USE_BOOKMARKS2 /* || hasDiscoFeature(account.getJid().asBareJid(), Namespace.BOOKMARKS2_COMPAT)*/;
         }
+
+        public boolean extendedServiceDiscovery() {
+            return hasDiscoFeature(Jid.of(account.getServer()),Namespace.EXTERNAL_SERVICE_DISCOVERY);
+        }
     }
 }

@@ -16,12 +16,15 @@ import java.util.List;
 import java.util.Map;
 
 import eu.siacs.conversations.Config;
+import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.xml.Element;
 import eu.siacs.conversations.xml.Namespace;
+import eu.siacs.conversations.xmpp.OnIqPacketReceived;
 import eu.siacs.conversations.xmpp.jingle.stanzas.Group;
 import eu.siacs.conversations.xmpp.jingle.stanzas.IceUdpTransportInfo;
 import eu.siacs.conversations.xmpp.jingle.stanzas.JinglePacket;
 import eu.siacs.conversations.xmpp.jingle.stanzas.Reason;
+import eu.siacs.conversations.xmpp.stanzas.IqPacket;
 import eu.siacs.conversations.xmpp.stanzas.MessagePacket;
 import rocks.xmpp.addr.Jid;
 
@@ -49,6 +52,21 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
 
     public JingleRtpConnection(JingleConnectionManager jingleConnectionManager, Id id, Jid initiator) {
         super(jingleConnectionManager, id, initiator);
+    }
+
+    private static State reasonToState(Reason reason) {
+        switch (reason) {
+            case SUCCESS:
+                return State.TERMINATED_SUCCESS;
+            case DECLINE:
+            case BUSY:
+                return State.TERMINATED_DECLINED_OR_BUSY;
+            case CANCEL:
+            case TIMEOUT:
+                return State.TERMINATED_CANCEL_OR_TIMEOUT;
+            default:
+                return State.TERMINATED_CONNECTIVITY_ERROR;
+        }
     }
 
     @Override
@@ -83,21 +101,6 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
             xmppConnectionService.getNotificationService().cancelIncomingCallNotification();
         }
         jingleConnectionManager.finishConnection(this);
-    }
-
-    private static State reasonToState(Reason reason) {
-        switch (reason) {
-            case SUCCESS:
-                return State.TERMINATED_SUCCESS;
-            case DECLINE:
-            case BUSY:
-                return State.TERMINATED_DECLINED_OR_BUSY;
-            case CANCEL:
-            case TIMEOUT:
-                return State.TERMINATED_CANCEL_OR_TIMEOUT;
-            default:
-                return State.TERMINATED_CONNECTIVITY_ERROR;
-        }
     }
 
     private void receiveTransportInfo(final JinglePacket jinglePacket) {
@@ -211,22 +214,24 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
         if (rtpContentMap == null) {
             throw new IllegalStateException("initiator RTP Content Map has not been set");
         }
-        setupWebRTC();
-        final org.webrtc.SessionDescription offer = new org.webrtc.SessionDescription(
-                org.webrtc.SessionDescription.Type.OFFER,
-                SessionDescription.of(rtpContentMap).toString()
-        );
-        try {
-            this.webRTCWrapper.setRemoteDescription(offer).get();
-            org.webrtc.SessionDescription webRTCSessionDescription = this.webRTCWrapper.createAnswer().get();
-            final SessionDescription sessionDescription = SessionDescription.parse(webRTCSessionDescription.description);
-            final RtpContentMap respondingRtpContentMap = RtpContentMap.of(sessionDescription);
-            sendSessionAccept(respondingRtpContentMap);
-            this.webRTCWrapper.setLocalDescription(webRTCSessionDescription);
-        } catch (Exception e) {
-            Log.d(Config.LOGTAG, "unable to send session accept", e);
+        discoverIceServers(iceServers -> {
+            setupWebRTC(iceServers);
+            final org.webrtc.SessionDescription offer = new org.webrtc.SessionDescription(
+                    org.webrtc.SessionDescription.Type.OFFER,
+                    SessionDescription.of(rtpContentMap).toString()
+            );
+            try {
+                this.webRTCWrapper.setRemoteDescription(offer).get();
+                org.webrtc.SessionDescription webRTCSessionDescription = this.webRTCWrapper.createAnswer().get();
+                final SessionDescription sessionDescription = SessionDescription.parse(webRTCSessionDescription.description);
+                final RtpContentMap respondingRtpContentMap = RtpContentMap.of(sessionDescription);
+                sendSessionAccept(respondingRtpContentMap);
+                this.webRTCWrapper.setLocalDescription(webRTCSessionDescription);
+            } catch (Exception e) {
+                Log.d(Config.LOGTAG, "unable to send session accept", e);
 
-        }
+            }
+        });
     }
 
     private void sendSessionAccept(final RtpContentMap rtpContentMap) {
@@ -346,17 +351,19 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
 
     private void sendSessionInitiate(final State targetState) {
         Log.d(Config.LOGTAG, id.account.getJid().asBareJid() + ": prepare session-initiate");
-        setupWebRTC();
-        try {
-            org.webrtc.SessionDescription webRTCSessionDescription = this.webRTCWrapper.createOffer().get();
-            final SessionDescription sessionDescription = SessionDescription.parse(webRTCSessionDescription.description);
-            Log.d(Config.LOGTAG, "description: " + webRTCSessionDescription.description);
-            final RtpContentMap rtpContentMap = RtpContentMap.of(sessionDescription);
-            sendSessionInitiate(rtpContentMap, targetState);
-            this.webRTCWrapper.setLocalDescription(webRTCSessionDescription).get();
-        } catch (Exception e) {
-            Log.d(Config.LOGTAG, "unable to sendSessionInitiate", e);
-        }
+        discoverIceServers(iceServers -> {
+            setupWebRTC(iceServers);
+            try {
+                org.webrtc.SessionDescription webRTCSessionDescription = this.webRTCWrapper.createOffer().get();
+                final SessionDescription sessionDescription = SessionDescription.parse(webRTCSessionDescription.description);
+                Log.d(Config.LOGTAG, "description: " + webRTCSessionDescription.description);
+                final RtpContentMap rtpContentMap = RtpContentMap.of(sessionDescription);
+                sendSessionInitiate(rtpContentMap, targetState);
+                this.webRTCWrapper.setLocalDescription(webRTCSessionDescription).get();
+            } catch (Exception e) {
+                Log.d(Config.LOGTAG, "unable to sendSessionInitiate", e);
+            }
+        });
     }
 
     private void sendSessionInitiate(RtpContentMap rtpContentMap, final State targetState) {
@@ -481,9 +488,9 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
         }
     }
 
-    private void setupWebRTC() {
+    private void setupWebRTC(final List<PeerConnection.IceServer> iceServers) {
         this.webRTCWrapper.setup(this.xmppConnectionService);
-        this.webRTCWrapper.initializePeerConnection();
+        this.webRTCWrapper.initializePeerConnection(iceServers);
     }
 
     private void acceptCallFromProposed() {
@@ -558,5 +565,52 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
 
     private void updateEndUserState() {
         xmppConnectionService.notifyJingleRtpConnectionUpdate(id.account, id.with, id.sessionId, getEndUserState());
+    }
+
+    private void discoverIceServers(final OnIceServersDiscovered onIceServersDiscovered) {
+        if (id.account.getXmppConnection().getFeatures().extendedServiceDiscovery()) {
+            final IqPacket request = new IqPacket(IqPacket.TYPE.GET);
+            request.setTo(Jid.of(id.account.getJid().getDomain()));
+            request.addChild("services", Namespace.EXTERNAL_SERVICE_DISCOVERY);
+            xmppConnectionService.sendIqPacket(id.account, request, (account, response) -> {
+                ImmutableList.Builder<PeerConnection.IceServer> listBuilder = new ImmutableList.Builder<>();
+                if (response.getType() == IqPacket.TYPE.RESULT) {
+                    final Element services = response.findChild("services", Namespace.EXTERNAL_SERVICE_DISCOVERY);
+                    final List<Element> children = services == null ? Collections.emptyList() : services.getChildren();
+                    for (final Element child : children) {
+                        if ("service".equals(child.getName())) {
+                            final String type = child.getAttribute("type");
+                            final String host = child.getAttribute("host");
+                            final String port = child.getAttribute("port");
+                            final String transport = child.getAttribute("transport");
+                            final String username = child.getAttribute("username");
+                            final String password = child.getAttribute("password");
+                            if (Arrays.asList("stun", "type").contains(type) && host != null && port != null && "udp".equals(transport)) {
+                                PeerConnection.IceServer.Builder iceServerBuilder = PeerConnection.IceServer.builder(String.format("%s:%s:%s", type, host, port));
+                                if (username != null && password != null) {
+                                    iceServerBuilder.setUsername(username);
+                                    iceServerBuilder.setPassword(password);
+                                }
+                                final PeerConnection.IceServer iceServer = iceServerBuilder.createIceServer();
+                                Log.d(Config.LOGTAG, id.account.getJid().asBareJid() + ": discovered ICE Server: " + iceServer);
+                                listBuilder.add(iceServer);
+                            }
+                        }
+                    }
+                }
+                List<PeerConnection.IceServer> iceServers = listBuilder.build();
+                if (iceServers.size() == 0) {
+                    Log.w(Config.LOGTAG, id.account.getJid().asBareJid() + ": no ICE server found " + response);
+                }
+                onIceServersDiscovered.onIceServersDiscovered(iceServers);
+            });
+        } else {
+            Log.w(Config.LOGTAG, id.account.getJid().asBareJid() + ": has no external service discovery");
+            onIceServersDiscovered.onIceServersDiscovered(Collections.emptyList());
+        }
+    }
+
+    private interface OnIceServersDiscovered {
+        void onIceServersDiscovered(List<PeerConnection.IceServer> iceServers);
     }
 }

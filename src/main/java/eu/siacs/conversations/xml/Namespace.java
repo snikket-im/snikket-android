@@ -3,6 +3,7 @@ package eu.siacs.conversations.xml;
 public final class Namespace {
     public static final String DISCO_ITEMS = "http://jabber.org/protocol/disco#items";
     public static final String DISCO_INFO = "http://jabber.org/protocol/disco#info";
+    public static final String EXTERNAL_SERVICE_DISCOVERY = "urn:xmpp:extdisco:2";
     public static final String BLOCKING = "urn:xmpp:blocking";
     public static final String ROSTER = "jabber:iq:roster";
     public static final String REGISTER = "jabber:iq:register";
