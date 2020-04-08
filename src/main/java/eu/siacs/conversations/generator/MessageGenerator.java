@@ -236,6 +236,7 @@ public class MessageGenerator extends AbstractGenerator {
 
 	public MessagePacket sessionProposal(final JingleConnectionManager.RtpSessionProposal proposal) {
 		final MessagePacket packet = new MessagePacket();
+        packet.setType(MessagePacket.TYPE_CHAT); //we want to carbon copy those
 		packet.setTo(proposal.with);
 		packet.setId(JingleRtpConnection.JINGLE_MESSAGE_ID_PREFIX+proposal.sessionId);
 		final Element propose = packet.addChild("propose", Namespace.JINGLE_MESSAGE);
@@ -247,6 +248,7 @@ public class MessageGenerator extends AbstractGenerator {
 
 	public MessagePacket sessionRetract(final JingleConnectionManager.RtpSessionProposal proposal) {
 		final MessagePacket packet = new MessagePacket();
+        packet.setType(MessagePacket.TYPE_CHAT); //we want to carbon copy those
 		packet.setTo(proposal.with);
 		final Element propose = packet.addChild("retract", Namespace.JINGLE_MESSAGE);
 		propose.setAttribute("id", proposal.sessionId);

@@ -236,8 +236,26 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
             case "retract":
                 receiveRetract(from, message);
                 break;
+            case "reject":
+                receiveReject(from, message);
+                break;
             default:
                 break;
+        }
+    }
+
+    private void receiveReject(Jid from, Element message) {
+        final boolean originatedFromMyself = from.asBareJid().equals(id.account.getJid().asBareJid());
+        //reject from another one of my clients
+        if (originatedFromMyself) {
+            if (transition(State.REJECTED)) {
+                this.xmppConnectionService.getNotificationService().cancelIncomingCallNotification();
+                this.jingleConnectionManager.finishConnection(this);
+            } else {
+                Log.d(Config.LOGTAG,"not able to transition into REJECTED because already in "+this.state);
+            }
+        } else {
+            Log.d(Config.LOGTAG,id.account.getJid()+": ignoring reject from "+from+" for session with "+id.with);
         }
     }
 
@@ -269,7 +287,14 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
             } else {
                 Log.d(Config.LOGTAG, String.format("%s: ignoring proceed because we were not initializing", id.account.getJid().asBareJid()));
             }
+        } else if (from.asBareJid().equals(id.account.getJid().asBareJid())) {
+            if (transition(State.ACCEPTED)) {
+                Log.d(Config.LOGTAG,id.account.getJid().asBareJid()+": moved session with "+id.with+" into state accepted after received carbon copied procced");
+                this.xmppConnectionService.getNotificationService().cancelIncomingCallNotification();
+                this.jingleConnectionManager.finishConnection(this);
+            }
         } else {
+            //TODO a carbon copied proceed from another client of mine has the same logic as `accept`
             Log.d(Config.LOGTAG, String.format("%s: ignoring proceed from %s. was expected from %s", id.account.getJid().asBareJid(), from, id.with));
         }
     }
@@ -442,6 +467,7 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
 
     private void sendJingleMessage(final String action) {
         final MessagePacket messagePacket = new MessagePacket();
+        messagePacket.setType(MessagePacket.TYPE_CHAT); //we want to carbon copy those
         messagePacket.setTo(id.with);
         messagePacket.addChild(action, Namespace.JINGLE_MESSAGE).setAttribute("id", id.sessionId);
         Log.d(Config.LOGTAG, messagePacket.toString());

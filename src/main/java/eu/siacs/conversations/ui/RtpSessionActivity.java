@@ -8,7 +8,6 @@ import android.view.View;
 import android.view.WindowManager;
 
 import java.lang.ref.WeakReference;
-import java.util.Arrays;
 
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
@@ -22,6 +21,8 @@ import eu.siacs.conversations.xmpp.jingle.RtpEndUserState;
 import rocks.xmpp.addr.Jid;
 
 import static java.util.Arrays.asList;
+
+//TODO if last state was BUSY (or RETRY); we want to reset action to view or something so we don’t automatically call again on recreate
 
 public class RtpSessionActivity extends XmppActivity implements XmppConnectionService.OnJingleRtpConnectionUpdate {
 
