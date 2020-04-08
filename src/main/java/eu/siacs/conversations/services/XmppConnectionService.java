@@ -3977,9 +3977,9 @@ public class XmppConnectionService extends Service {
         }
     }
 
-    public void notifyJingleRtpConnectionUpdate(final Account account, final Jid with, final RtpEndUserState state) {
+    public void notifyJingleRtpConnectionUpdate(final Account account, final Jid with, final String sessionId, final RtpEndUserState state) {
         for(OnJingleRtpConnectionUpdate listener : threadSafeList(this.onJingleRtpConnectionUpdate)) {
-            listener.onJingleRtpConnectionUpdate(account, with, state);
+            listener.onJingleRtpConnectionUpdate(account, with, sessionId, state);
         }
     }
 
@@ -4661,7 +4661,7 @@ public class XmppConnectionService extends Service {
     }
 
     public interface OnJingleRtpConnectionUpdate {
-        void onJingleRtpConnectionUpdate(final Account account, final Jid with, final RtpEndUserState state);
+        void onJingleRtpConnectionUpdate(final Account account, final Jid with, final String sessionId, final RtpEndUserState state);
     }
 
     public interface OnAccountUpdate {

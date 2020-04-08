@@ -894,6 +894,8 @@
     <string name="rtp_state_ending_call">Ending call</string>
     <string name="answer_call">Answer</string>
     <string name="dismiss_call">Dismiss</string>
+    <string name="rtp_state_finding_device">Locating devices</string>
+    <string name="rtp_state_ringing">Ringing</string>
     <plurals name="view_users">
         <item quantity="one">View %1$d Participant</item>
         <item quantity="other">View %1$d Participants</item>

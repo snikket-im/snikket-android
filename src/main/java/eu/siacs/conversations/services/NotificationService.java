@@ -351,7 +351,7 @@ public class NotificationService {
         builder.addAction(new NotificationCompat.Action.Builder(
                 R.drawable.ic_call_white_24dp,
                 mXmppConnectionService.getString(R.string.answer_call),
-                createPendingRtpSession(id, RtpSessionActivity.ACTION_ACCEPT, 103))
+                createPendingRtpSession(id, RtpSessionActivity.ACTION_ACCEPT_CALL, 103))
                 .build());
         final Notification notification = builder.build();
         notification.flags = notification.flags | Notification.FLAG_INSISTENT;

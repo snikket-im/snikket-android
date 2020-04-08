@@ -188,12 +188,52 @@ public class JingleConnectionManager extends AbstractConnectionManager {
         }
     }
 
-    public void proposeJingleRtpSession(final Account account, final Contact contact) {
-        final RtpSessionProposal proposal = RtpSessionProposal.of(account, contact.getJid().asBareJid());
+    public void retractSessionProposal(final Account account, final Jid with) {
         synchronized (this.rtpSessionProposals) {
+            RtpSessionProposal matchingProposal = null;
+            for (RtpSessionProposal proposal : this.rtpSessionProposals.keySet()) {
+                if (proposal.account == account && with.asBareJid().equals(proposal.with)) {
+                    matchingProposal = proposal;
+                    break;
+                }
+            }
+            if (matchingProposal != null) {
+                this.rtpSessionProposals.remove(matchingProposal);
+                final MessagePacket messagePacket = mXmppConnectionService.getMessageGenerator().sessionRetract(matchingProposal);
+                Log.d(Config.LOGTAG, messagePacket.toString());
+                mXmppConnectionService.sendMessagePacket(account, messagePacket);
+
+            }
+        }
+    }
+
+    public void proposeJingleRtpSession(final Account account, final Jid with) {
+        synchronized (this.rtpSessionProposals) {
+            for (Map.Entry<RtpSessionProposal, DeviceDiscoveryState> entry : this.rtpSessionProposals.entrySet()) {
+                RtpSessionProposal proposal = entry.getKey();
+                if (proposal.account == account && with.asBareJid().equals(proposal.with)) {
+                    final DeviceDiscoveryState preexistingState = entry.getValue();
+                    if (preexistingState != null && preexistingState != DeviceDiscoveryState.FAILED) {
+                        mXmppConnectionService.notifyJingleRtpConnectionUpdate(
+                                account,
+                                with,
+                                proposal.sessionId,
+                                preexistingState.toEndUserState()
+                        );
+                        return;
+                    }
+                }
+            }
+            final RtpSessionProposal proposal = RtpSessionProposal.of(account, with.asBareJid());
             this.rtpSessionProposals.put(proposal, DeviceDiscoveryState.SEARCHING);
+            mXmppConnectionService.notifyJingleRtpConnectionUpdate(
+                    account,
+                    proposal.with,
+                    proposal.sessionId,
+                    RtpEndUserState.FINDING_DEVICE
+            );
             final MessagePacket messagePacket = mXmppConnectionService.getMessageGenerator().sessionProposal(proposal);
-            Log.d(Config.LOGTAG,messagePacket.toString());
+            Log.d(Config.LOGTAG, messagePacket.toString());
             mXmppConnectionService.sendMessagePacket(account, messagePacket);
         }
     }
@@ -255,24 +295,25 @@ public class JingleConnectionManager extends AbstractConnectionManager {
     }
 
     public void updateProposedSessionDiscovered(Account account, Jid from, String sessionId, final DeviceDiscoveryState target) {
-        final RtpSessionProposal sessionProposal = new RtpSessionProposal(account,from.asBareJid(),sessionId);
+        final RtpSessionProposal sessionProposal = new RtpSessionProposal(account, from.asBareJid(), sessionId);
         synchronized (this.rtpSessionProposals) {
             final DeviceDiscoveryState currentState = rtpSessionProposals.get(sessionProposal);
             if (currentState == null) {
-                Log.d(Config.LOGTAG,"unable to find session proposal for session id "+sessionId);
+                Log.d(Config.LOGTAG, "unable to find session proposal for session id " + sessionId);
                 return;
             }
             if (currentState == DeviceDiscoveryState.DISCOVERED) {
-                Log.d(Config.LOGTAG,"session proposal already at discovered. not going to fall back");
+                Log.d(Config.LOGTAG, "session proposal already at discovered. not going to fall back");
                 return;
             }
             this.rtpSessionProposals.put(sessionProposal, target);
-            Log.d(Config.LOGTAG,account.getJid().asBareJid()+": flagging session "+sessionId+" as "+target);
+            mXmppConnectionService.notifyJingleRtpConnectionUpdate(account, sessionProposal.with, sessionProposal.sessionId, target.toEndUserState());
+            Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": flagging session " + sessionId + " as " + target);
         }
     }
 
     public void rejectRtpSession(final String sessionId) {
-        for(final AbstractJingleConnection connection : this.connections.values()) {
+        for (final AbstractJingleConnection connection : this.connections.values()) {
             if (connection.getId().sessionId.equals(sessionId)) {
                 if (connection instanceof JingleRtpConnection) {
                     ((JingleRtpConnection) connection).rejectCall();
@@ -313,6 +354,17 @@ public class JingleConnectionManager extends AbstractConnectionManager {
     }
 
     public enum DeviceDiscoveryState {
-        SEARCHING, DISCOVERED, FAILED
+        SEARCHING, DISCOVERED, FAILED;
+
+        public RtpEndUserState toEndUserState() {
+            switch (this) {
+                case SEARCHING:
+                    return RtpEndUserState.FINDING_DEVICE;
+                case DISCOVERED:
+                    return RtpEndUserState.RINGING;
+                default:
+                    return RtpEndUserState.CONNECTIVITY_ERROR;
+            }
+        }
     }
 }

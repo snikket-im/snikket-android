@@ -244,4 +244,13 @@ public class MessageGenerator extends AbstractGenerator {
 		packet.addChild("request", "urn:xmpp:receipts");
 		return packet;
 	}
+
+	public MessagePacket sessionRetract(final JingleConnectionManager.RtpSessionProposal proposal) {
+		final MessagePacket packet = new MessagePacket();
+		packet.setTo(proposal.with);
+		final Element propose = packet.addChild("retract", Namespace.JINGLE_MESSAGE);
+		propose.setAttribute("id", proposal.sessionId);
+		propose.addChild("description", Namespace.JINGLE_APPS_RTP);
+		return packet;
+	}
 }

@@ -1,6 +1,5 @@
 package eu.siacs.conversations.xmpp.jingle;
 
-import android.content.Intent;
 import android.util.Log;
 
 import com.google.common.collect.ImmutableList;
@@ -17,7 +16,6 @@ import java.util.List;
 import java.util.Map;
 
 import eu.siacs.conversations.Config;
-import eu.siacs.conversations.ui.RtpSessionActivity;
 import eu.siacs.conversations.xml.Element;
 import eu.siacs.conversations.xml.Namespace;
 import eu.siacs.conversations.xmpp.jingle.stanzas.Group;
@@ -34,7 +32,7 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
     static {
         final ImmutableMap.Builder<State, Collection<State>> transitionBuilder = new ImmutableMap.Builder<>();
         transitionBuilder.put(State.NULL, ImmutableList.of(State.PROPOSED, State.SESSION_INITIALIZED));
-        transitionBuilder.put(State.PROPOSED, ImmutableList.of(State.ACCEPTED, State.PROCEED, State.REJECTED));
+        transitionBuilder.put(State.PROPOSED, ImmutableList.of(State.ACCEPTED, State.PROCEED, State.REJECTED, State.RETRACTED));
         transitionBuilder.put(State.PROCEED, ImmutableList.of(State.SESSION_INITIALIZED));
         transitionBuilder.put(State.SESSION_INITIALIZED, ImmutableList.of(State.SESSION_ACCEPTED));
         VALID_TRANSITIONS = transitionBuilder.build();
@@ -234,6 +232,10 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
                 break;
             case "proceed":
                 receiveProceed(from, message);
+                break;
+            case "retract":
+                receiveRetract(from, message);
+                break;
             default:
                 break;
         }
@@ -269,6 +271,21 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
             }
         } else {
             Log.d(Config.LOGTAG, String.format("%s: ignoring proceed from %s. was expected from %s", id.account.getJid().asBareJid(), from, id.with));
+        }
+    }
+
+    private void receiveRetract(final Jid from, final Element retract) {
+        if (from.equals(id.with)) {
+            if (transition(State.RETRACTED)) {
+                xmppConnectionService.getNotificationService().cancelIncomingCallNotification();
+                Log.d(Config.LOGTAG, id.account.getJid().asBareJid() + ": session with " + id.with + " has been retracted");
+                //TODO create missed call notification/message
+                jingleConnectionManager.finishConnection(this);
+            } else {
+                Log.d(Config.LOGTAG, "ignoring retract because already in " + this.state);
+            }
+        } else {
+            Log.d(Config.LOGTAG, id.account.getJid().asBareJid() + ": received retract from " + from + ". expected retract from" + id.with + ". ignoring");
         }
     }
 
@@ -472,6 +489,6 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
     }
 
     private void updateEndUserState() {
-        xmppConnectionService.notifyJingleRtpConnectionUpdate(id.account, id.with, getEndUserState());
+        xmppConnectionService.notifyJingleRtpConnectionUpdate(id.account, id.with, id.sessionId, getEndUserState());
     }
 }

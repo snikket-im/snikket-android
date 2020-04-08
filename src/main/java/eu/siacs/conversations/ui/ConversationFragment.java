@@ -1243,7 +1243,11 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
 
     private void triggerRtpSession() {
         final Contact contact = conversation.getContact();
-        activity.xmppConnectionService.getJingleConnectionManager().proposeJingleRtpSession(conversation.getAccount(), contact);
+        final Intent intent = new Intent(activity, RtpSessionActivity.class);
+        intent.setAction(RtpSessionActivity.ACTION_MAKE_VOICE_CALL);
+        intent.putExtra(RtpSessionActivity.EXTRA_ACCOUNT, contact.getAccount().getJid().toEscapedString());
+        intent.putExtra(RtpSessionActivity.EXTRA_WITH, contact.getJid().asBareJid().toEscapedString());
+        startActivity(intent);
     }
 
     private void handleAttachmentSelection(MenuItem item) {
