@@ -162,6 +162,10 @@ public class RtpSessionActivity extends XmppActivity implements XmppConnectionSe
                 break;
             case RINGING:
                 binding.status.setText(R.string.rtp_state_ringing);
+                break;
+            case DECLINED_OR_BUSY:
+                binding.status.setText(R.string.rtp_state_declined_or_busy);
+                break;
         }
     }
 
@@ -174,11 +178,23 @@ public class RtpSessionActivity extends XmppActivity implements XmppConnectionSe
             this.binding.rejectCall.hide();
             this.binding.endCall.hide();
             this.binding.acceptCall.hide();
+        } else if (state == RtpEndUserState.DECLINED_OR_BUSY) {
+            this.binding.rejectCall.hide();
+            this.binding.endCall.setImageResource(R.drawable.ic_clear_white_48dp);
+            this.binding.endCall.show();
+            this.binding.endCall.setOnClickListener(this::exit);
+            this.binding.acceptCall.hide();
         } else {
             this.binding.rejectCall.hide();
+            this.binding.endCall.setImageResource(R.drawable.ic_call_end_white_48dp);
             this.binding.endCall.show();
+            this.binding.endCall.setOnClickListener(this::endCall);
             this.binding.acceptCall.hide();
         }
+    }
+
+    private void exit(View view) {
+        finish();
     }
 
     private Contact getWith() {
@@ -197,7 +213,7 @@ public class RtpSessionActivity extends XmppActivity implements XmppConnectionSe
 
     @Override
     public void onJingleRtpConnectionUpdate(Account account, Jid with, final String sessionId, RtpEndUserState state) {
-        Log.d(Config.LOGTAG,"onJingleRtpConnectionUpdate("+state+")");
+        Log.d(Config.LOGTAG, "onJingleRtpConnectionUpdate(" + state + ")");
         if (with.isBareJid()) {
             updateRtpSessionProposalState(with, state);
             return;

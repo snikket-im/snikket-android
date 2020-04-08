@@ -77,6 +77,7 @@ public class JingleConnectionManager extends AbstractConnectionManager {
         if (sessionId == null) {
             return;
         }
+        final boolean carbonCopy = from.asBareJid().equals(account.getJid().asBareJid());
         final Jid with;
         if (account.getJid().asBareJid().equals(from.asBareJid())) {
             with = to;
@@ -103,7 +104,7 @@ public class JingleConnectionManager extends AbstractConnectionManager {
                 Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": unable to react to proposed " + namespace + " session");
             }
         } else if ("proceed".equals(message.getName())) {
-            if (!with.equals(from)) {
+            if (carbonCopy) {
                 Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": ignore carbon copied proceed");
                 return;
             }
@@ -115,7 +116,20 @@ public class JingleConnectionManager extends AbstractConnectionManager {
                     rtpConnection.transitionOrThrow(AbstractJingleConnection.State.PROPOSED);
                     rtpConnection.deliveryMessage(from, message);
                 } else {
-                    Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": no rtp session proposal found for " + with);
+                    Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": no rtp session proposal found for " + with + " to deliver proceed");
+                }
+            }
+        } else if ("reject".equals(message.getName())) {
+            if (carbonCopy) {
+                Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": ignore carbon copied reject");
+                return;
+            }
+            final RtpSessionProposal proposal = new RtpSessionProposal(account, with.asBareJid(), sessionId);
+            synchronized (rtpSessionProposals) {
+                if (rtpSessionProposals.remove(proposal) != null) {
+                    mXmppConnectionService.notifyJingleRtpConnectionUpdate(account, proposal.with, proposal.sessionId, RtpEndUserState.DECLINED_OR_BUSY);
+                } else {
+                    Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": no rtp session proposal found for " + with + " to deliver reject");
                 }
             }
         } else {
