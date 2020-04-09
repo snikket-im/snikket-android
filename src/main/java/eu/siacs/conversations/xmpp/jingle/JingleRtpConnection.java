@@ -183,6 +183,7 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
         try {
             contentMap = RtpContentMap.of(jinglePacket);
             contentMap.requireContentDescriptions();
+            //TODO requireTransportWithDtls();
         } catch (IllegalArgumentException | IllegalStateException | NullPointerException e) {
             respondOk(jinglePacket);
             sendSessionTerminate(Reason.FAILED_APPLICATION);
@@ -222,6 +223,7 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
         try {
             contentMap = RtpContentMap.of(jinglePacket);
             contentMap.requireContentDescriptions();
+            //TODO requireTransportWithDtls();
         } catch (IllegalArgumentException | IllegalStateException | NullPointerException e) {
             respondOk(jinglePacket);
             Log.d(Config.LOGTAG, id.account.getJid().asBareJid() + ": improperly formatted contents in session-accept", e);

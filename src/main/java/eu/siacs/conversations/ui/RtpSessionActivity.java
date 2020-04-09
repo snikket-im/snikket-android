@@ -29,6 +29,7 @@ public class RtpSessionActivity extends XmppActivity implements XmppConnectionSe
 
     public static final String EXTRA_WITH = "with";
     public static final String EXTRA_SESSION_ID = "session_id";
+    public static final String EXTRA_LAST_REPORTED_STATE = "last_reported_state";
 
     public static final String ACTION_ACCEPT_CALL = "action_accept_call";
     public static final String ACTION_MAKE_VOICE_CALL = "action_make_voice_call";
@@ -107,6 +108,15 @@ public class RtpSessionActivity extends XmppActivity implements XmppConnectionSe
         } else if (asList(ACTION_MAKE_VIDEO_CALL, ACTION_MAKE_VOICE_CALL).contains(intent.getAction())) {
             xmppConnectionService.getJingleConnectionManager().proposeJingleRtpSession(account, with);
             binding.with.setText(account.getRoster().getContact(with).getDisplayName());
+        } else if (Intent.ACTION_VIEW.equals(intent.getAction())) {
+            final String extraLastState = intent.getStringExtra(EXTRA_LAST_REPORTED_STATE);
+            if (extraLastState != null) {
+                Log.d(Config.LOGTAG, "restored last state from intent extra");
+                RtpEndUserState state = RtpEndUserState.valueOf(extraLastState);
+                updateButtonConfiguration(state);
+                updateStateDisplay(state);
+            }
+            binding.with.setText(account.getRoster().getContact(with).getDisplayName());
         }
     }
 
@@ -172,6 +182,10 @@ public class RtpSessionActivity extends XmppActivity implements XmppConnectionSe
             case APPLICATION_ERROR:
                 binding.status.setText(R.string.rtp_state_application_failure);
                 break;
+            case ENDED:
+                throw new IllegalStateException("Activity should have called finish()");
+            default:
+                throw new IllegalStateException(String.format("State %s has not been handled in UI", state));
         }
     }
 
@@ -212,7 +226,7 @@ public class RtpSessionActivity extends XmppActivity implements XmppConnectionSe
     }
 
     private void retry(View view) {
-
+        Log.d(Config.LOGTAG,"attempting retry");
     }
 
     private void exit(View view) {
@@ -237,7 +251,7 @@ public class RtpSessionActivity extends XmppActivity implements XmppConnectionSe
     public void onJingleRtpConnectionUpdate(Account account, Jid with, final String sessionId, RtpEndUserState state) {
         Log.d(Config.LOGTAG, "onJingleRtpConnectionUpdate(" + state + ")");
         if (with.isBareJid()) {
-            updateRtpSessionProposalState(with, state);
+            updateRtpSessionProposalState(account, with, state);
             return;
         }
         if (this.rtpConnectionReference == null) {
@@ -250,6 +264,8 @@ public class RtpSessionActivity extends XmppActivity implements XmppConnectionSe
             if (state == RtpEndUserState.ENDED) {
                 finish();
                 return;
+            } else if (asList(RtpEndUserState.APPLICATION_ERROR, RtpEndUserState.DECLINED_OR_BUSY, RtpEndUserState.CONNECTIVITY_ERROR).contains(state)) {
+                resetIntent(account, with, state);
             }
             runOnUiThread(() -> {
                 updateStateDisplay(state);
@@ -260,17 +276,27 @@ public class RtpSessionActivity extends XmppActivity implements XmppConnectionSe
         }
     }
 
-    private void updateRtpSessionProposalState(Jid with, RtpEndUserState state) {
-        final Intent intent = getIntent();
-        final String intentExtraWith = intent == null ? null : intent.getStringExtra(EXTRA_WITH);
-        if (intentExtraWith == null) {
+    private void updateRtpSessionProposalState(final Account account, final Jid with, final RtpEndUserState state) {
+        final Intent currentIntent = getIntent();
+        final String withExtra = currentIntent == null ? null : currentIntent.getStringExtra(EXTRA_WITH);
+        if (withExtra == null) {
             return;
         }
-        if (Jid.ofEscaped(intentExtraWith).asBareJid().equals(with)) {
+        if (Jid.ofEscaped(withExtra).asBareJid().equals(with)) {
             runOnUiThread(() -> {
                 updateStateDisplay(state);
                 updateButtonConfiguration(state);
             });
+            resetIntent(account, with, state);
         }
+    }
+
+    private void resetIntent(final Account account, Jid with, final RtpEndUserState state) {
+        Log.d(Config.LOGTAG, "resetting intent");
+        final Intent intent = new Intent(Intent.ACTION_VIEW);
+        intent.putExtra(EXTRA_WITH, with.asBareJid().toEscapedString());
+        intent.putExtra(EXTRA_ACCOUNT, account.getJid().toEscapedString());
+        intent.putExtra(EXTRA_LAST_REPORTED_STATE, state.toString());
+        setIntent(intent);
     }
 }
