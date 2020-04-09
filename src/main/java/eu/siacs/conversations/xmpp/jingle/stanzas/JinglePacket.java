@@ -4,6 +4,7 @@ import android.support.annotation.NonNull;
 
 import com.google.common.base.CaseFormat;
 import com.google.common.base.Preconditions;
+import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableMap;
 
 import java.util.Map;
@@ -81,9 +82,13 @@ public class JinglePacket extends IqPacket {
         return Reason.UNKNOWN;
     }
 
-    public void setReason(final Reason reason) {
+    public void setReason(final Reason reason, final String text) {
         final Element jingle = findChild("jingle", Namespace.JINGLE);
-        jingle.addChild("reason").addChild(reason.toString());
+        final Element reasonElement = jingle.addChild("reason");
+        reasonElement.addChild(reason.toString());
+        if (!Strings.isNullOrEmpty(text)) {
+            reasonElement.addChild("text").setContent(text);
+        }
     }
 
     //RECOMMENDED for session-initiate, NOT RECOMMENDED otherwise

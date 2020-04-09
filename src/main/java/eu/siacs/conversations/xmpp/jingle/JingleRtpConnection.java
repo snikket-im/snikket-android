@@ -246,10 +246,10 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
         final SessionDescription sessionDescription;
         try {
             sessionDescription = SessionDescription.of(contentMap);
-        } catch (IllegalArgumentException e) {
+        } catch (final IllegalArgumentException e) {
             Log.d(Config.LOGTAG, id.account.getJid().asBareJid() + ": unable convert offer from session-accept to SDP", e);
             webRTCWrapper.close();
-            sendSessionTerminate(Reason.FAILED_APPLICATION);
+            sendSessionTerminate(Reason.FAILED_APPLICATION, e.getMessage());
             return;
         }
         org.webrtc.SessionDescription answer = new org.webrtc.SessionDescription(
@@ -276,8 +276,7 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
         } catch (final IllegalArgumentException e) {
             Log.d(Config.LOGTAG, id.account.getJid().asBareJid() + ": unable convert offer from session-initiate to SDP", e);
             webRTCWrapper.close();
-            sendSessionTerminate(Reason.FAILED_APPLICATION);
-            ;
+            sendSessionTerminate(Reason.FAILED_APPLICATION, e.getMessage());
             return;
         }
         sendSessionAccept(offer);
@@ -470,10 +469,14 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
     }
 
     private void sendSessionTerminate(final Reason reason) {
+        sendSessionTerminate(reason, null);
+    }
+
+    private void sendSessionTerminate(final Reason reason, final String text) {
         final State target = reasonToState(reason);
         transitionOrThrow(target);
         final JinglePacket jinglePacket = new JinglePacket(JinglePacket.Action.SESSION_TERMINATE, id.sessionId);
-        jinglePacket.setReason(reason);
+        jinglePacket.setReason(reason, text);
         send(jinglePacket);
         Log.d(Config.LOGTAG, jinglePacket.toString());
         jingleConnectionManager.finishConnection(this);

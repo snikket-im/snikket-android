@@ -1064,7 +1064,7 @@ public class JingleFileTransferConnection extends AbstractJingleConnection imple
 
     private void sendSessionTerminate(Reason reason) {
         final JinglePacket packet = bootstrapPacket(JinglePacket.Action.SESSION_TERMINATE);
-        packet.setReason(reason);
+        packet.setReason(reason, null);
         this.sendJinglePacket(packet);
     }
 
