@@ -95,6 +95,7 @@ public abstract class AbstractJingleConnection {
         TERMINATED_SUCCESS, //equal to 'ENDED' (after successful call) ui will just close
         TERMINATED_DECLINED_OR_BUSY, //equal to 'ENDED' (after other party declined the call)
         TERMINATED_CONNECTIVITY_ERROR, //equal to 'ENDED' (but after network failures; ui will display retry button)
-        TERMINATED_CANCEL_OR_TIMEOUT //more or less the same as retracted; caller pressed end call before session was accepted
+        TERMINATED_CANCEL_OR_TIMEOUT, //more or less the same as retracted; caller pressed end call before session was accepted
+        TERMINATED_APPLICATION_FAILURE
     }
 }

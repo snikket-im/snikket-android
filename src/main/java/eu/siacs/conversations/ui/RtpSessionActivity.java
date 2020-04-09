@@ -169,6 +169,9 @@ public class RtpSessionActivity extends XmppActivity implements XmppConnectionSe
             case CONNECTIVITY_ERROR:
                 binding.status.setText(R.string.rtp_state_connectivity_error);
                 break;
+            case APPLICATION_ERROR:
+                binding.status.setText(R.string.rtp_state_application_failure);
+                break;
         }
     }
 
@@ -191,7 +194,7 @@ public class RtpSessionActivity extends XmppActivity implements XmppConnectionSe
             this.binding.endCall.setImageResource(R.drawable.ic_clear_white_48dp);
             this.binding.endCall.show();
             this.binding.acceptCall.hide();
-        } else if (state == RtpEndUserState.CONNECTIVITY_ERROR) {
+        } else if (state == RtpEndUserState.CONNECTIVITY_ERROR || state == RtpEndUserState.APPLICATION_ERROR) {
             this.binding.rejectCall.setOnClickListener(this::exit);
             this.binding.rejectCall.setImageResource(R.drawable.ic_clear_white_48dp);
             this.binding.rejectCall.show();

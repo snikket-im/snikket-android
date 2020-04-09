@@ -132,7 +132,7 @@ public class WebRTCWrapper {
         );
     }
 
-    public void initializePeerConnection(final List<PeerConnection.IceServer> iceServers) {
+    public void initializePeerConnection(final List<PeerConnection.IceServer> iceServers) throws InitializationException {
         PeerConnectionFactory peerConnectionFactory = PeerConnectionFactory.builder().createPeerConnectionFactory();
 
         CameraVideoCapturer capturer = null;
@@ -195,7 +195,7 @@ public class WebRTCWrapper {
 
         final PeerConnection peerConnection = peerConnectionFactory.createPeerConnection(iceServers, peerConnectionObserver);
         if (peerConnection == null) {
-            throw new IllegalStateException("Unable to create PeerConnection");
+            throw new InitializationException("Unable to create PeerConnection");
         }
         peerConnection.addStream(stream);
         peerConnection.setAudioPlayout(true);
@@ -341,6 +341,13 @@ public class WebRTCWrapper {
         @Override
         public void onSetFailure(String s) {
             throw new IllegalStateException("Not able to use CreateSdpObserver");
+        }
+    }
+
+    public static class InitializationException extends Exception {
+
+        private InitializationException(String message) {
+            super(message);
         }
     }
 

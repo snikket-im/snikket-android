@@ -55,20 +55,25 @@ public class JingleConnectionManager extends AbstractConnectionManager {
             } else if (Namespace.JINGLE_APPS_RTP.equals(descriptionNamespace)) {
                 connection = new JingleRtpConnection(this, id, from);
             } else {
-                //TODO return feature-not-implemented
+                respondWithJingleError(account, packet, "unsupported-info", "feature-not-implemented", "cancel");
                 return;
             }
             connections.put(id, connection);
             connection.deliverPacket(packet);
         } else {
             Log.d(Config.LOGTAG, "unable to route jingle packet: " + packet);
-            final IqPacket response = packet.generateResponse(IqPacket.TYPE.ERROR);
-            final Element error = response.addChild("error");
-            error.setAttribute("type", "cancel");
-            error.addChild("item-not-found", "urn:ietf:params:xml:ns:xmpp-stanzas");
-            error.addChild("unknown-session", "urn:xmpp:jingle:errors:1");
-            account.getXmppConnection().sendIqPacket(response, null);
+            respondWithJingleError(account, packet, "unknown-session", "item-not-found", "cancel");
+
         }
+    }
+
+    public void respondWithJingleError(final Account account, final IqPacket original, String jingleCondition, String condition, String conditionType) {
+        final IqPacket response = original.generateResponse(IqPacket.TYPE.ERROR);
+        final Element error = response.addChild("error");
+        error.setAttribute("type", conditionType);
+        error.addChild(condition, "urn:ietf:params:xml:ns:xmpp-stanzas");
+        error.addChild(jingleCondition, "urn:xmpp:jingle:errors:1");
+        account.getXmppConnection().sendIqPacket(response, null);
     }
 
     public void deliverMessage(final Account account, final Jid to, final Jid from, final Element message) {

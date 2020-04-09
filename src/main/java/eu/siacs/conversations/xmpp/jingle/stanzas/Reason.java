@@ -5,7 +5,7 @@ import android.support.annotation.NonNull;
 import com.google.common.base.CaseFormat;
 
 public enum Reason {
-	SUCCESS, DECLINE, BUSY, CANCEL, CONNECTIVITY_ERROR, FAILED_TRANSPORT, TIMEOUT, UNKNOWN;
+	SUCCESS, DECLINE, BUSY, CANCEL, CONNECTIVITY_ERROR, FAILED_TRANSPORT, FAILED_APPLICATION, TIMEOUT, UNKNOWN;
 
 	public static Reason of(final String value) {
 		try {

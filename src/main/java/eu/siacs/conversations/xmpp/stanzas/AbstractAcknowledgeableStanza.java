@@ -31,6 +31,18 @@ abstract public class AbstractAcknowledgeableStanza extends AbstractStanza {
 		return null;
 	}
 
+	public String getErrorCondition() {
+		Element error = findChild("error");
+		if (error != null) {
+			for(Element element : error.getChildren()) {
+				if (!element.getName().equals("text")) {
+					return element.getName();
+				}
+			}
+		}
+		return null;
+	}
+
 	public boolean valid() {
 		return InvalidJid.isValid(getFrom()) && InvalidJid.isValid(getTo());
 	}
