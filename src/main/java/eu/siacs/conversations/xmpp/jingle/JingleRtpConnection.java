@@ -214,14 +214,26 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
         if (rtpContentMap == null) {
             throw new IllegalStateException("initiator RTP Content Map has not been set");
         }
+        final SessionDescription offer;
+        try {
+            offer = SessionDescription.of(rtpContentMap);
+        } catch (final IllegalArgumentException e) {
+            Log.d(Config.LOGTAG, id.account.getJid().asBareJid() + ": unable to process offer", e);
+            //TODO terminate session with application error
+            return;
+        }
+        sendSessionAccept(offer);
+    }
+
+    private void sendSessionAccept(SessionDescription offer) {
         discoverIceServers(iceServers -> {
             setupWebRTC(iceServers);
-            final org.webrtc.SessionDescription offer = new org.webrtc.SessionDescription(
+            final org.webrtc.SessionDescription sdp = new org.webrtc.SessionDescription(
                     org.webrtc.SessionDescription.Type.OFFER,
-                    SessionDescription.of(rtpContentMap).toString()
+                    offer.toString()
             );
             try {
-                this.webRTCWrapper.setRemoteDescription(offer).get();
+                this.webRTCWrapper.setRemoteDescription(sdp).get();
                 org.webrtc.SessionDescription webRTCSessionDescription = this.webRTCWrapper.createAnswer().get();
                 final SessionDescription sessionDescription = SessionDescription.parse(webRTCSessionDescription.description);
                 final RtpContentMap respondingRtpContentMap = RtpContentMap.of(sessionDescription);

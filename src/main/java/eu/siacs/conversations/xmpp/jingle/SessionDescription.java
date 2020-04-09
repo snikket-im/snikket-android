@@ -158,32 +158,80 @@ public class SessionDescription {
             }
             final ImmutableList.Builder<Integer> formatBuilder = new ImmutableList.Builder<>();
             for (RtpDescription.PayloadType payloadType : description.getPayloadTypes()) {
+                final String id = payloadType.getId();
+                if (Strings.isNullOrEmpty(id)) {
+                    throw new IllegalArgumentException("Payload type is missing id");
+                }
+                if (!isInt(id)) {
+                    throw new IllegalArgumentException("Payload id is not numeric");
+                }
                 formatBuilder.add(payloadType.getIntId());
                 mediaAttributes.put("rtpmap", payloadType.toSdpAttribute());
                 List<RtpDescription.Parameter> parameters = payloadType.getParameters();
                 if (parameters.size() > 0) {
-                    mediaAttributes.put("fmtp", RtpDescription.Parameter.toSdpString(payloadType.getId(), parameters));
+                    mediaAttributes.put("fmtp", RtpDescription.Parameter.toSdpString(id, parameters));
                 }
                 for (RtpDescription.FeedbackNegotiation feedbackNegotiation : payloadType.getFeedbackNegotiations()) {
-                    mediaAttributes.put("rtcp-fb", payloadType.getId() + " " + feedbackNegotiation.getType() + (Strings.isNullOrEmpty(feedbackNegotiation.getSubType()) ? "" : " " + feedbackNegotiation.getSubType()));
+                    final String type = feedbackNegotiation.getType();
+                    final String subtype = feedbackNegotiation.getSubType();
+                    if (Strings.isNullOrEmpty(type)) {
+                        throw new IllegalArgumentException("a feedback for payload-type " + id + " negotiation is missing type");
+                    }
+                    mediaAttributes.put("rtcp-fb", id + " " + type + (Strings.isNullOrEmpty(subtype) ? "" : " " + subtype));
                 }
                 for (RtpDescription.FeedbackNegotiationTrrInt feedbackNegotiationTrrInt : payloadType.feedbackNegotiationTrrInts()) {
-                    mediaAttributes.put("rtcp-fb", payloadType.getId() + " trr-int " + feedbackNegotiationTrrInt.getValue());
+                    mediaAttributes.put("rtcp-fb", id + " trr-int " + feedbackNegotiationTrrInt.getValue());
                 }
             }
 
             for (RtpDescription.FeedbackNegotiation feedbackNegotiation : description.getFeedbackNegotiations()) {
-                mediaAttributes.put("rtcp-fb", "* " + feedbackNegotiation.getType() + (Strings.isNullOrEmpty(feedbackNegotiation.getSubType()) ? "" : " " + feedbackNegotiation.getSubType()));
+                final String type = feedbackNegotiation.getType();
+                final String subtype = feedbackNegotiation.getSubType();
+                if (Strings.isNullOrEmpty(type)) {
+                    throw new IllegalArgumentException("a feedback negotiation is missing type");
+                }
+                mediaAttributes.put("rtcp-fb", "* " + type + (Strings.isNullOrEmpty(subtype) ? "" : " " + subtype));
             }
             for (RtpDescription.FeedbackNegotiationTrrInt feedbackNegotiationTrrInt : description.feedbackNegotiationTrrInts()) {
                 mediaAttributes.put("rtcp-fb", "* trr-int " + feedbackNegotiationTrrInt.getValue());
             }
             for (RtpDescription.RtpHeaderExtension extension : description.getHeaderExtensions()) {
-                mediaAttributes.put("extmap", extension.getId() + " " + extension.getUri());
+                final String id = extension.getId();
+                final String uri = extension.getUri();
+                if (Strings.isNullOrEmpty(id)) {
+                    throw new IllegalArgumentException("A header extension is missing id");
+                }
+                if (Strings.isNullOrEmpty(uri)) {
+                    throw new IllegalArgumentException("A header extension is missing uri");
+                }
+                mediaAttributes.put("extmap", id + " " + uri);
+            }
+            for (RtpDescription.SourceGroup sourceGroup : description.getSourceGroups()) {
+                final String semantics = sourceGroup.getSemantics();
+                final List<String> groups = sourceGroup.getSsrcs();
+                if (Strings.isNullOrEmpty(semantics)) {
+                    throw new IllegalArgumentException("A SSRC group is missing semantics attribute");
+                }
+                if (groups.size() == 0) {
+                    throw new IllegalArgumentException("A SSRC group is missing SSRC ids");
+                }
+                mediaAttributes.put("ssrc-group", String.format("%s %s", semantics, Joiner.on(' ').join(groups)));
             }
             for (RtpDescription.Source source : description.getSources()) {
                 for (RtpDescription.Source.Parameter parameter : source.getParameters()) {
-                    mediaAttributes.put("ssrc", source.getSsrcId() + " " + parameter.getParameterName() + ":" + parameter.getParameterValue());
+                    final String id = source.getSsrcId();
+                    final String parameterName = parameter.getParameterName();
+                    final String parameterValue = parameter.getParameterValue();
+                    if (Strings.isNullOrEmpty(id)) {
+                        throw new IllegalArgumentException("A source specific media attribute is missing the id");
+                    }
+                    if (Strings.isNullOrEmpty(parameterName)) {
+                        throw new IllegalArgumentException("A source specific media attribute is missing its name");
+                    }
+                    if (Strings.isNullOrEmpty(parameterValue)) {
+                        throw new IllegalArgumentException("A source specific media attribute is missing its value");
+                    }
+                    mediaAttributes.put("ssrc", id + " " + parameter.getParameterName() + ":" + parameter.getParameterValue());
                 }
             }
 
@@ -220,6 +268,18 @@ public class SessionDescription {
         }
     }
 
+    public static boolean isInt(final String input) {
+        if (input == null) {
+            return false;
+        }
+        try {
+            Integer.parseInt(input);
+            return true;
+        } catch (NumberFormatException e) {
+            return false;
+        }
+    }
+
     public static Pair<String, String> parseAttribute(final String input) {
         final String[] pair = input.split(":", 2);
         if (pair.length == 2) {
@@ -233,6 +293,7 @@ public class SessionDescription {
     public String toString() {
         final StringBuilder s = new StringBuilder()
                 .append("v=").append(version).append(LINE_DIVIDER)
+                //TODO randomize or static
                 .append("o=- 8770656990916039506 2 IN IP4 127.0.0.1").append(LINE_DIVIDER) //what ever that means
                 .append("s=").append(name).append(LINE_DIVIDER)
                 .append("t=0 0").append(LINE_DIVIDER);

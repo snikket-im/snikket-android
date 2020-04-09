@@ -70,6 +70,16 @@ public class RtpDescription extends GenericDescription {
         return builder.build();
     }
 
+    public List<SourceGroup> getSourceGroups() {
+        final ImmutableList.Builder<SourceGroup> builder = new ImmutableList.Builder<>();
+        for (final Element child : this.children) {
+            if ("ssrc-group".equals(child.getName()) && Namespace.JINGLE_RTP_SOURCE_SPECIFIC_MEDIA_ATTRIBUTES.equals(child.getNamespace())) {
+                builder.add(SourceGroup.upgrade(child));
+            }
+        }
+        return builder.build();
+    }
+
     public static RtpDescription upgrade(final Element element) {
         Preconditions.checkArgument("description".equals(element.getName()), "Name of provided element is not description");
         Preconditions.checkArgument(Namespace.JINGLE_APPS_RTP.equals(element.getNamespace()), "Element does not match the jingle rtp namespace");
@@ -456,6 +466,39 @@ public class RtpDescription extends GenericDescription {
             }
         }
 
+    }
+
+    public static class SourceGroup extends Element {
+
+        private SourceGroup() {
+            super("ssrc-group", Namespace.JINGLE_RTP_SOURCE_SPECIFIC_MEDIA_ATTRIBUTES);
+        }
+
+        public String getSemantics() {
+            return this.getAttribute("semantics");
+        }
+
+        public List<String> getSsrcs() {
+            ImmutableList.Builder<String> builder = new ImmutableList.Builder<>();
+            for(Element child : this.children) {
+                if ("source".equals(child.getName())) {
+                    final String ssrc = child.getAttribute("ssrc");
+                    if (ssrc != null) {
+                        builder.add(ssrc);
+                    }
+                }
+            }
+            return builder.build();
+        }
+
+        public static SourceGroup upgrade(final Element element) {
+            Preconditions.checkArgument("ssrc-group".equals(element.getName()));
+            Preconditions.checkArgument(Namespace.JINGLE_RTP_SOURCE_SPECIFIC_MEDIA_ATTRIBUTES.equals(element.getNamespace()));
+            final SourceGroup group = new SourceGroup();
+            group.setChildren(element.getChildren());
+            group.setAttributes(element.getAttributes());
+            return group;
+        }
     }
 
     public enum Media {
