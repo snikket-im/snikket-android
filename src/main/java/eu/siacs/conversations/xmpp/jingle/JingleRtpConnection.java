@@ -16,10 +16,8 @@ import java.util.List;
 import java.util.Map;
 
 import eu.siacs.conversations.Config;
-import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.xml.Element;
 import eu.siacs.conversations.xml.Namespace;
-import eu.siacs.conversations.xmpp.OnIqPacketReceived;
 import eu.siacs.conversations.xmpp.jingle.stanzas.Group;
 import eu.siacs.conversations.xmpp.jingle.stanzas.IceUdpTransportInfo;
 import eu.siacs.conversations.xmpp.jingle.stanzas.JinglePacket;
@@ -36,9 +34,9 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
         final ImmutableMap.Builder<State, Collection<State>> transitionBuilder = new ImmutableMap.Builder<>();
         transitionBuilder.put(State.NULL, ImmutableList.of(State.PROPOSED, State.SESSION_INITIALIZED));
         transitionBuilder.put(State.PROPOSED, ImmutableList.of(State.ACCEPTED, State.PROCEED, State.REJECTED, State.RETRACTED));
-        transitionBuilder.put(State.PROCEED, ImmutableList.of(State.SESSION_INITIALIZED_PRE_APPROVED));
-        transitionBuilder.put(State.SESSION_INITIALIZED, ImmutableList.of(State.SESSION_ACCEPTED, State.TERMINATED_CANCEL_OR_TIMEOUT));
-        transitionBuilder.put(State.SESSION_INITIALIZED_PRE_APPROVED, ImmutableList.of(State.SESSION_ACCEPTED, State.TERMINATED_CANCEL_OR_TIMEOUT));
+        transitionBuilder.put(State.PROCEED, ImmutableList.of(State.SESSION_INITIALIZED_PRE_APPROVED, State.TERMINATED_SUCCESS));
+        transitionBuilder.put(State.SESSION_INITIALIZED, ImmutableList.of(State.SESSION_ACCEPTED, State.TERMINATED_CANCEL_OR_TIMEOUT, State.TERMINATED_DECLINED_OR_BUSY));
+        transitionBuilder.put(State.SESSION_INITIALIZED_PRE_APPROVED, ImmutableList.of(State.SESSION_ACCEPTED, State.TERMINATED_CANCEL_OR_TIMEOUT, State.TERMINATED_DECLINED_OR_BUSY));
         transitionBuilder.put(State.SESSION_ACCEPTED, ImmutableList.of(State.TERMINATED_SUCCESS, State.TERMINATED_CONNECTIVITY_ERROR));
         VALID_TRANSITIONS = transitionBuilder.build();
     }
@@ -130,6 +128,7 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
                         this.webRTCWrapper.addIceCandidate(iceCandidate);
                     } else {
                         this.pendingIceCandidates.push(iceCandidate);
+                        Log.d(Config.LOGTAG, id.account.getJid().asBareJid() + ": put ICE candidate on backlog");
                     }
                 }
             }
@@ -162,11 +161,11 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
         if (transition(target)) {
             this.initiatorRtpContentMap = contentMap;
             if (target == State.SESSION_INITIALIZED_PRE_APPROVED) {
-                Log.d(Config.LOGTAG, "automatically accepting");
+                Log.d(Config.LOGTAG, id.account.getJid().asBareJid() + ": automatically accepting session-initiate");
                 sendSessionAccept();
             } else {
-                Log.d(Config.LOGTAG, "start ringing");
-                //TODO start ringing
+                Log.d(Config.LOGTAG, id.account.getJid().asBareJid() + ": received not pre-approved session-initiate. start ringing");
+                startRinging();
             }
         } else {
             Log.d(Config.LOGTAG, String.format("%s: received session-initiate while in state %s", id.account.getJid().asBareJid(), state));
@@ -427,12 +426,16 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
                 }
             case PROCEED:
                 if (isInitiator()) {
-                    return RtpEndUserState.CONNECTING;
+                    return RtpEndUserState.RINGING;
                 } else {
                     return RtpEndUserState.ACCEPTING_CALL;
                 }
             case SESSION_INITIALIZED_PRE_APPROVED:
-                return RtpEndUserState.CONNECTING;
+                if (isInitiator()) {
+                    return RtpEndUserState.RINGING;
+                } else {
+                    return RtpEndUserState.CONNECTING;
+                }
             case SESSION_ACCEPTED:
                 final PeerConnection.PeerConnectionState state = webRTCWrapper.getState();
                 if (state == PeerConnection.PeerConnectionState.CONNECTED) {
@@ -483,21 +486,33 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
             case PROPOSED:
                 rejectCallFromProposed();
                 break;
+            case SESSION_INITIALIZED:
+                rejectCallFromSessionInitiate();
+                break;
             default:
                 throw new IllegalStateException("Can not reject call from " + this.state);
         }
     }
 
     public void endCall() {
-        if (isInitiator() && isInState(State.SESSION_INITIALIZED)) {
+        if (isInState(State.PROCEED)) {
+            Log.d(Config.LOGTAG, id.account.getJid().asBareJid() + ": ending call while in state PROCEED just means ending the connection");
+            webRTCWrapper.close();
+            jingleConnectionManager.finishConnection(this);
+            transitionOrThrow(State.TERMINATED_SUCCESS); //arguably this wasn't success; but not a real failure either
+            return;
+        }
+        if (isInitiator() && isInState(State.SESSION_INITIALIZED, State.SESSION_INITIALIZED_PRE_APPROVED)) {
             webRTCWrapper.close();
             sendSessionTerminate(Reason.CANCEL);
-        } else if (isInState(State.SESSION_INITIALIZED, State.SESSION_INITIALIZED_PRE_APPROVED, State.SESSION_ACCEPTED)) {
+            return;
+        }
+        if (isInState(State.SESSION_INITIALIZED, State.SESSION_INITIALIZED_PRE_APPROVED, State.SESSION_ACCEPTED)) {
             webRTCWrapper.close();
             sendSessionTerminate(Reason.SUCCESS);
-        } else {
-            throw new IllegalStateException("called 'endCall' while in state " + this.state);
+            return;
         }
+        throw new IllegalStateException("called 'endCall' while in state " + this.state);
     }
 
     private void setupWebRTC(final List<PeerConnection.IceServer> iceServers) {
@@ -519,6 +534,12 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
         jingleConnectionManager.finishConnection(this);
     }
 
+    private void rejectCallFromSessionInitiate() {
+        webRTCWrapper.close();
+        sendSessionTerminate(Reason.DECLINE);
+        xmppConnectionService.getNotificationService().cancelIncomingCallNotification();
+    }
+
     private void sendJingleMessage(final String action) {
         sendJingleMessage(action, id.with);
     }
@@ -534,7 +555,7 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
 
     private void acceptCallFromSessionInitialized() {
         xmppConnectionService.getNotificationService().cancelIncomingCallNotification();
-        throw new IllegalStateException("accepting from this state has not been implemented yet");
+        sendSessionAccept();
     }
 
     private synchronized boolean isInState(State... state) {
