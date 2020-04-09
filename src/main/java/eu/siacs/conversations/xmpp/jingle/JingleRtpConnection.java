@@ -110,7 +110,7 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
                 Log.d(Config.LOGTAG, id.account.getJid().asBareJid() + ": improperly formatted contents", e);
                 return;
             }
-            final RtpContentMap rtpContentMap = isInitiator() ? this.initiatorRtpContentMap : this.responderRtpContentMap;
+            final RtpContentMap rtpContentMap = isInitiator() ? this.responderRtpContentMap : this.initiatorRtpContentMap;
             final Group originalGroup = rtpContentMap != null ? rtpContentMap.group : null;
             final List<String> identificationTags = originalGroup == null ? Collections.emptyList() : originalGroup.getIdentificationTags();
             if (identificationTags.size() == 0) {
@@ -123,11 +123,11 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
                     final String sdpMid = content.getKey();
                     final int mLineIndex = identificationTags.indexOf(sdpMid);
                     final IceCandidate iceCandidate = new IceCandidate(sdpMid, mLineIndex, sdp);
-                    Log.d(Config.LOGTAG, "received candidate: " + iceCandidate);
                     if (isInState(State.SESSION_ACCEPTED)) {
+                        Log.d(Config.LOGTAG, "received candidate: " + iceCandidate);
                         this.webRTCWrapper.addIceCandidate(iceCandidate);
                     } else {
-                        this.pendingIceCandidates.push(iceCandidate);
+                        this.pendingIceCandidates.offer(iceCandidate);
                         Log.d(Config.LOGTAG, id.account.getJid().asBareJid() + ": put ICE candidate on backlog");
                     }
                 }
@@ -233,6 +233,7 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
             );
             try {
                 this.webRTCWrapper.setRemoteDescription(sdp).get();
+                addIceCandidatesFromBlackLog();
                 org.webrtc.SessionDescription webRTCSessionDescription = this.webRTCWrapper.createAnswer().get();
                 final SessionDescription sessionDescription = SessionDescription.parse(webRTCSessionDescription.description);
                 final RtpContentMap respondingRtpContentMap = RtpContentMap.of(sessionDescription);
@@ -243,6 +244,14 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
 
             }
         });
+    }
+
+    private void addIceCandidatesFromBlackLog() {
+        while (!this.pendingIceCandidates.isEmpty()) {
+            final IceCandidate iceCandidate = this.pendingIceCandidates.poll();
+            this.webRTCWrapper.addIceCandidate(iceCandidate);
+            Log.d(Config.LOGTAG, id.account.getJid().asBareJid() + ": added ICE candidate from back log " + iceCandidate);
+        }
     }
 
     private void sendSessionAccept(final RtpContentMap rtpContentMap) {
