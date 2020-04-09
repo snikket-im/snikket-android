@@ -109,6 +109,7 @@ import eu.siacs.conversations.utils.GeoHelper;
 import eu.siacs.conversations.utils.MessageUtils;
 import eu.siacs.conversations.utils.NickValidityChecker;
 import eu.siacs.conversations.utils.Patterns;
+import eu.siacs.conversations.utils.PermissionUtils;
 import eu.siacs.conversations.utils.QuickLoader;
 import eu.siacs.conversations.utils.StylingHelper;
 import eu.siacs.conversations.utils.TimeframeUtils;
@@ -138,6 +139,7 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
     public static final int REQUEST_START_DOWNLOAD = 0x0210;
     public static final int REQUEST_ADD_EDITOR_CONTENT = 0x0211;
     public static final int REQUEST_COMMIT_ATTACHMENTS = 0x0212;
+    public static final int REQUEST_START_AUDIO_CALL = 0x213;
     public static final int ATTACHMENT_CHOICE_CHOOSE_IMAGE = 0x0301;
     public static final int ATTACHMENT_CHOICE_TAKE_PHOTO = 0x0302;
     public static final int ATTACHMENT_CHOICE_CHOOSE_FILE = 0x0303;
@@ -1233,12 +1235,18 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
                 }
                 break;
             case R.id.action_call:
-                triggerRtpSession();
+                checkPermissionAndTriggerRtpSession();
                 break;
             default:
                 break;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void checkPermissionAndTriggerRtpSession() {
+        if (hasPermissions(REQUEST_START_AUDIO_CALL, Manifest.permission.RECORD_AUDIO)) {
+            triggerRtpSession();
+        }
     }
 
     private void triggerRtpSession() {
@@ -1383,7 +1391,7 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String permissions[], @NonNull int[] grantResults) {
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         if (grantResults.length > 0) {
             if (allGranted(grantResults)) {
                 switch (requestCode) {
@@ -1399,6 +1407,9 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
                         break;
                     case REQUEST_COMMIT_ATTACHMENTS:
                         commitAttachments();
+                        break;
+                    case REQUEST_START_AUDIO_CALL:
+                        triggerRtpSession();
                         break;
                     default:
                         attachFile(requestCode);

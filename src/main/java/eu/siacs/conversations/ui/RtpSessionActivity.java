@@ -1,14 +1,24 @@
 package eu.siacs.conversations.ui;
 
+import android.Manifest;
+import android.app.Activity;
 import android.content.Intent;
-import android.content.res.ColorStateList;
+import android.content.pm.PackageManager;
 import android.databinding.DataBindingUtil;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.StringRes;
+import android.support.v4.app.ActivityCompat;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.Toast;
+
+import com.google.common.collect.ImmutableList;
 
 import java.lang.ref.WeakReference;
+import java.util.List;
 
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
@@ -16,16 +26,20 @@ import eu.siacs.conversations.databinding.ActivityRtpSessionBinding;
 import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.entities.Contact;
 import eu.siacs.conversations.services.XmppConnectionService;
+import eu.siacs.conversations.utils.PermissionUtils;
 import eu.siacs.conversations.xmpp.jingle.AbstractJingleConnection;
 import eu.siacs.conversations.xmpp.jingle.JingleRtpConnection;
 import eu.siacs.conversations.xmpp.jingle.RtpEndUserState;
 import rocks.xmpp.addr.Jid;
 
+import static eu.siacs.conversations.utils.PermissionUtils.getFirstDenied;
 import static java.util.Arrays.asList;
 
 //TODO if last state was BUSY (or RETRY); we want to reset action to view or something so we don’t automatically call again on recreate
 
 public class RtpSessionActivity extends XmppActivity implements XmppConnectionService.OnJingleRtpConnectionUpdate {
+
+    private static final int REQUEST_ACCEPT_CALL = 0x1111;
 
     public static final String EXTRA_WITH = "with";
     public static final String EXTRA_SESSION_ID = "session_id";
@@ -75,7 +89,13 @@ public class RtpSessionActivity extends XmppActivity implements XmppConnectionSe
     }
 
     private void acceptCall(View view) {
-        requireRtpConnection().acceptCall();
+        requestPermissionsAndAcceptCall();
+    }
+
+    private void requestPermissionsAndAcceptCall() {
+        if (PermissionUtils.hasPermission(this, ImmutableList.of(Manifest.permission.RECORD_AUDIO), REQUEST_ACCEPT_CALL)) {
+            requireRtpConnection().acceptCall();
+        }
     }
 
     @Override
@@ -89,7 +109,7 @@ public class RtpSessionActivity extends XmppActivity implements XmppConnectionSe
         //TODO reinitialize
         if (ACTION_ACCEPT_CALL.equals(intent.getAction())) {
             Log.d(Config.LOGTAG, "accepting through onNewIntent()");
-            requireRtpConnection().acceptCall();
+            requestPermissionsAndAcceptCall();
         }
     }
 
@@ -103,7 +123,7 @@ public class RtpSessionActivity extends XmppActivity implements XmppConnectionSe
             initializeActivityWithRunningRapSession(account, with, sessionId);
             if (ACTION_ACCEPT_CALL.equals(intent.getAction())) {
                 Log.d(Config.LOGTAG, "intent action was accept");
-                requireRtpConnection().acceptCall();
+                requestPermissionsAndAcceptCall();
             }
         } else if (asList(ACTION_MAKE_VIDEO_CALL, ACTION_MAKE_VOICE_CALL).contains(intent.getAction())) {
             xmppConnectionService.getJingleConnectionManager().proposeJingleRtpSession(account, with);
@@ -117,6 +137,27 @@ public class RtpSessionActivity extends XmppActivity implements XmppConnectionSe
                 updateStateDisplay(state);
             }
             binding.with.setText(account.getRoster().getContact(with).getDisplayName());
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (PermissionUtils.allGranted(grantResults)) {
+            if (requestCode == REQUEST_ACCEPT_CALL) {
+                requireRtpConnection().acceptCall();
+            }
+        } else {
+            @StringRes int res;
+            final String firstDenied = getFirstDenied(grantResults, permissions);
+            if (Manifest.permission.RECORD_AUDIO.equals(firstDenied)) {
+                res = R.string.no_microphone_permission;
+            } else if (Manifest.permission.CAMERA.equals(firstDenied)) {
+                res = R.string.no_camera_permission;
+            } else {
+                throw new IllegalStateException("Invalid permission result request");
+            }
+            Toast.makeText(this, res, Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -226,7 +267,7 @@ public class RtpSessionActivity extends XmppActivity implements XmppConnectionSe
     }
 
     private void retry(View view) {
-        Log.d(Config.LOGTAG,"attempting retry");
+        Log.d(Config.LOGTAG, "attempting retry");
     }
 
     private void exit(View view) {
