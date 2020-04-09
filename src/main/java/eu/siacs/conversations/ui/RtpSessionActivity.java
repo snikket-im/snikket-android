@@ -85,6 +85,7 @@ public class RtpSessionActivity extends XmppActivity implements XmppConnectionSe
     @Override
     public void onNewIntent(final Intent intent) {
         super.onNewIntent(intent);
+        //TODO reinitialize
         if (ACTION_ACCEPT_CALL.equals(intent.getAction())) {
             Log.d(Config.LOGTAG, "accepting through onNewIntent()");
             requireRtpConnection().acceptCall();

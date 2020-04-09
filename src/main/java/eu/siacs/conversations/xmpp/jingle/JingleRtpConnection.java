@@ -2,8 +2,10 @@ package eu.siacs.conversations.xmpp.jingle;
 
 import android.util.Log;
 
+import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
+import com.google.common.primitives.Ints;
 
 import org.webrtc.IceCandidate;
 import org.webrtc.PeerConnection;
@@ -600,7 +602,7 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
     public void onConnectionChange(final PeerConnection.PeerConnectionState newState) {
         Log.d(Config.LOGTAG, id.account.getJid().asBareJid() + ": PeerConnectionState changed to " + newState);
         updateEndUserState();
-        if (newState == PeerConnection.PeerConnectionState.FAILED) { //TODO guard this in isState(initiated,initated_approved,accepted) otherwise it might fire too late
+        if (newState == PeerConnection.PeerConnectionState.FAILED) { //TODO guard this in isState(initiated,initiated_approved,accepted) otherwise it might fire too late
             sendSessionTerminate(Reason.CONNECTIVITY_ERROR);
         }
     }
@@ -623,15 +625,28 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
                         if ("service".equals(child.getName())) {
                             final String type = child.getAttribute("type");
                             final String host = child.getAttribute("host");
-                            final String port = child.getAttribute("port");
+                            final String sport = child.getAttribute("port");
+                            final Integer port = sport == null ? null : Ints.tryParse(sport);
                             final String transport = child.getAttribute("transport");
                             final String username = child.getAttribute("username");
                             final String password = child.getAttribute("password");
-                            if (Arrays.asList("stun", "type").contains(type) && host != null && port != null && "udp".equals(transport)) {
-                                PeerConnection.IceServer.Builder iceServerBuilder = PeerConnection.IceServer.builder(String.format("%s:%s:%s", type, host, port));
+                            if (Strings.isNullOrEmpty(host) || port == null) {
+                                continue;
+                            }
+                            if (port < 0 || port > 65535) {
+                                continue;
+                            }
+                            if (Arrays.asList("stun", "turn").contains(type) || Arrays.asList("udp", "tcp").contains(transport)) {
+                                //TODO wrap ipv6 addresses
+                                PeerConnection.IceServer.Builder iceServerBuilder = PeerConnection.IceServer.builder(String.format("%s:%s:%s?transport=%s", type, host, port, transport));
                                 if (username != null && password != null) {
                                     iceServerBuilder.setUsername(username);
                                     iceServerBuilder.setPassword(password);
+                                } else if (Arrays.asList("turn", "turns").contains(type)) {
+                                    //The WebRTC spec requires throwing an InvalidAccessError when username (from libwebrtc source coder)
+                                    //https://chromium.googlesource.com/external/webrtc/+/master/pc/ice_server_parsing.cc
+                                    Log.d(Config.LOGTAG, id.account.getJid().asBareJid() + ": skipping " + type + "/" + transport + " without username and password");
+                                    continue;
                                 }
                                 final PeerConnection.IceServer iceServer = iceServerBuilder.createIceServer();
                                 Log.d(Config.LOGTAG, id.account.getJid().asBareJid() + ": discovered ICE Server: " + iceServer);
