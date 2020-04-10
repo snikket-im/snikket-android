@@ -84,7 +84,7 @@ public class RtpSessionActivity extends XmppActivity implements XmppConnectionSe
             final Account account = extractAccount(intent);
             final Jid with = Jid.of(intent.getStringExtra(EXTRA_WITH));
             xmppConnectionService.getJingleConnectionManager().retractSessionProposal(account, with.asBareJid());
-            finishAndReleaseWakeLock();
+            finish();
         } else {
             requireRtpConnection().endCall();
         }
@@ -92,7 +92,7 @@ public class RtpSessionActivity extends XmppActivity implements XmppConnectionSe
 
     private void rejectCall(View view) {
         requireRtpConnection().rejectCall();
-        finishAndReleaseWakeLock();
+        finish();
     }
 
     private void acceptCall(View view) {
@@ -123,11 +123,6 @@ public class RtpSessionActivity extends XmppActivity implements XmppConnectionSe
         }
     }
 
-    private void finishAndReleaseWakeLock() {
-        releaseWakeLock();
-        finish();
-    }
-
     private void releaseWakeLock() {
         if (this.mProximityWakeLock != null && mProximityWakeLock.isHeld()) {
             Log.d(Config.LOGTAG, "releasing wake lock");
@@ -153,6 +148,7 @@ public class RtpSessionActivity extends XmppActivity implements XmppConnectionSe
             if (ACTION_ACCEPT_CALL.equals(intent.getAction())) {
                 Log.d(Config.LOGTAG, "accepting call from onNewIntent()");
                 requestPermissionsAndAcceptCall();
+                resetIntent(intent.getExtras());
             }
         } else {
             throw new IllegalStateException("received onNewIntent without sessionId");
@@ -170,6 +166,7 @@ public class RtpSessionActivity extends XmppActivity implements XmppConnectionSe
             if (ACTION_ACCEPT_CALL.equals(intent.getAction())) {
                 Log.d(Config.LOGTAG, "intent action was accept");
                 requestPermissionsAndAcceptCall();
+                resetIntent(intent.getExtras());
             }
         } else if (asList(ACTION_MAKE_VIDEO_CALL, ACTION_MAKE_VOICE_CALL).contains(intent.getAction())) {
             proposeJingleRtpSession(account, with);
@@ -213,6 +210,14 @@ public class RtpSessionActivity extends XmppActivity implements XmppConnectionSe
     }
 
     @Override
+    public void onStop() {
+        if (!isChangingConfigurations()) {
+            releaseWakeLock();
+        }
+        super.onStop();
+    }
+
+    @Override
     public void onBackPressed() {
         endCall();
         super.onBackPressed();
@@ -223,13 +228,13 @@ public class RtpSessionActivity extends XmppActivity implements XmppConnectionSe
         final WeakReference<JingleRtpConnection> reference = xmppConnectionService.getJingleConnectionManager()
                 .findJingleRtpConnection(account, with, sessionId);
         if (reference == null || reference.get() == null) {
-            finishAndReleaseWakeLock();
+            finish();
             return;
         }
         this.rtpConnectionReference = reference;
         final RtpEndUserState currentState = requireRtpConnection().getEndUserState();
         if (currentState == RtpEndUserState.ENDED) {
-            finishAndReleaseWakeLock();
+            finish();
             return;
         }
         binding.with.setText(getWith().getDisplayName());
@@ -334,7 +339,7 @@ public class RtpSessionActivity extends XmppActivity implements XmppConnectionSe
     }
 
     private void exit(View view) {
-        finishAndReleaseWakeLock();
+        finish();
     }
 
     private Contact getWith() {
@@ -369,7 +374,7 @@ public class RtpSessionActivity extends XmppActivity implements XmppConnectionSe
         final AbstractJingleConnection.Id id = requireRtpConnection().getId();
         if (account == id.account && id.with.equals(with) && id.sessionId.equals(sessionId)) {
             if (state == RtpEndUserState.ENDED) {
-                finishAndReleaseWakeLock();
+                finish();
                 return;
             } else if (asList(RtpEndUserState.APPLICATION_ERROR, RtpEndUserState.DECLINED_OR_BUSY, RtpEndUserState.CONNECTIVITY_ERROR).contains(state)) {
                 resetIntent(account, with, state);
@@ -399,8 +404,13 @@ public class RtpSessionActivity extends XmppActivity implements XmppConnectionSe
         }
     }
 
+    private void resetIntent(final Bundle extras) {
+        final Intent intent = new Intent(Intent.ACTION_VIEW);
+        intent.putExtras(extras);
+        setIntent(intent);
+    }
+
     private void resetIntent(final Account account, Jid with, final RtpEndUserState state) {
-        Log.d(Config.LOGTAG, "resetting intent");
         final Intent intent = new Intent(Intent.ACTION_VIEW);
         intent.putExtra(EXTRA_WITH, with.asBareJid().toEscapedString());
         intent.putExtra(EXTRA_ACCOUNT, account.getJid().toEscapedString());

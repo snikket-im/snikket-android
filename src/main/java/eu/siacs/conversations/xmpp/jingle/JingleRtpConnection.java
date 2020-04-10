@@ -664,6 +664,10 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
             sendSessionTerminate(Reason.SUCCESS);
             return;
         }
+        if (isInState(State.TERMINATED_APPLICATION_FAILURE, State.TERMINATED_CONNECTIVITY_ERROR, State.TERMINATED_DECLINED_OR_BUSY)) {
+            Log.d(Config.LOGTAG, "ignoring request to end call because already in state " + this.state);
+            return;
+        }
         throw new IllegalStateException("called 'endCall' while in state " + this.state + ". isInitiator=" + isInitiator());
     }
 
