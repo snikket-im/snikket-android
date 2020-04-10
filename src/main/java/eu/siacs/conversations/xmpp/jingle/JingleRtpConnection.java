@@ -639,6 +639,10 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
     }
 
     public void endCall() {
+        if (isInState(State.PROPOSED) && !isInitiator()) {
+            rejectCallFromProposed();
+            return;
+        }
         if (isInState(State.PROCEED)) {
             Log.d(Config.LOGTAG, id.account.getJid().asBareJid() + ": ending call while in state PROCEED just means ending the connection");
             webRTCWrapper.close();
@@ -651,12 +655,16 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
             sendSessionTerminate(Reason.CANCEL);
             return;
         }
-        if (isInState(State.SESSION_INITIALIZED, State.SESSION_INITIALIZED_PRE_APPROVED, State.SESSION_ACCEPTED)) {
+        if (isInState(State.SESSION_INITIALIZED)) {
+            rejectCallFromSessionInitiate();
+            return;
+        }
+        if (isInState(State.SESSION_INITIALIZED_PRE_APPROVED, State.SESSION_ACCEPTED)) {
             webRTCWrapper.close();
             sendSessionTerminate(Reason.SUCCESS);
             return;
         }
-        throw new IllegalStateException("called 'endCall' while in state " + this.state);
+        throw new IllegalStateException("called 'endCall' while in state " + this.state + ". isInitiator=" + isInitiator());
     }
 
     private void setupWebRTC(final List<PeerConnection.IceServer> iceServers) throws WebRTCWrapper.InitializationException {

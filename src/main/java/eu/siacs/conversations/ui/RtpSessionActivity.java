@@ -68,6 +68,10 @@ public class RtpSessionActivity extends XmppActivity implements XmppConnectionSe
     }
 
     private void endCall(View view) {
+        endCall();
+    }
+
+    private void endCall() {
         if (this.rtpConnectionReference == null) {
             final Intent intent = getIntent();
             final Account account = extractAccount(intent);
@@ -163,6 +167,12 @@ public class RtpSessionActivity extends XmppActivity implements XmppConnectionSe
             }
             Toast.makeText(this, res, Toast.LENGTH_SHORT).show();
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        endCall();
+        super.onBackPressed();
     }
 
 
