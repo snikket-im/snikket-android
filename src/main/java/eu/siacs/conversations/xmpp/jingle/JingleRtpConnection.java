@@ -60,21 +60,25 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
         ));
         transitionBuilder.put(State.SESSION_INITIALIZED, ImmutableList.of(
                 State.SESSION_ACCEPTED,
-                State.TERMINATED_CANCEL_OR_TIMEOUT,
+                State.TERMINATED_SUCCESS,
                 State.TERMINATED_DECLINED_OR_BUSY,
-                State.TERMINATED_APPLICATION_FAILURE,
-                State.TERMINATED_CONNECTIVITY_ERROR //at this state used for IQ errors and IQ timeouts
+                State.TERMINATED_CONNECTIVITY_ERROR,  //at this state used for IQ errors and IQ timeouts
+                State.TERMINATED_CANCEL_OR_TIMEOUT,
+                State.TERMINATED_APPLICATION_FAILURE
         ));
         transitionBuilder.put(State.SESSION_INITIALIZED_PRE_APPROVED, ImmutableList.of(
                 State.SESSION_ACCEPTED,
-                State.TERMINATED_CANCEL_OR_TIMEOUT,
+                State.TERMINATED_SUCCESS,
                 State.TERMINATED_DECLINED_OR_BUSY,
-                State.TERMINATED_APPLICATION_FAILURE,
-                State.TERMINATED_CONNECTIVITY_ERROR //at this state used for IQ errors and IQ timeouts
+                State.TERMINATED_CONNECTIVITY_ERROR,  //at this state used for IQ errors and IQ timeouts
+                State.TERMINATED_CANCEL_OR_TIMEOUT,
+                State.TERMINATED_APPLICATION_FAILURE
         ));
         transitionBuilder.put(State.SESSION_ACCEPTED, ImmutableList.of(
                 State.TERMINATED_SUCCESS,
+                State.TERMINATED_DECLINED_OR_BUSY,
                 State.TERMINATED_CONNECTIVITY_ERROR,
+                State.TERMINATED_CANCEL_OR_TIMEOUT,
                 State.TERMINATED_APPLICATION_FAILURE
         ));
         VALID_TRANSITIONS = transitionBuilder.build();
