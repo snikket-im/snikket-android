@@ -18,7 +18,6 @@ import eu.siacs.conversations.entities.Message;
 import eu.siacs.conversations.entities.Transferable;
 import eu.siacs.conversations.services.AbstractConnectionManager;
 import eu.siacs.conversations.services.XmppConnectionService;
-import eu.siacs.conversations.ui.util.Attachment;
 import eu.siacs.conversations.xml.Element;
 import eu.siacs.conversations.xml.Namespace;
 import eu.siacs.conversations.xmpp.OnIqPacketReceived;
@@ -47,7 +46,11 @@ public class JingleConnectionManager extends AbstractConnectionManager {
     }
 
     public void deliverPacket(final Account account, final JinglePacket packet) {
-        //TODO check that sessionId is not null
+        final String sessionId = packet.getSessionId();
+        if (sessionId == null) {
+            respondWithJingleError(account, packet, "unknown-session", "item-not-found", "cancel");
+            return;
+        }
         final AbstractJingleConnection.Id id = AbstractJingleConnection.Id.of(account, packet);
         final AbstractJingleConnection existingJingleConnection = connections.get(id);
         if (existingJingleConnection != null) {
@@ -78,7 +81,6 @@ public class JingleConnectionManager extends AbstractConnectionManager {
         } else {
             Log.d(Config.LOGTAG, "unable to route jingle packet: " + packet);
             respondWithJingleError(account, packet, "unknown-session", "item-not-found", "cancel");
-
         }
     }
 

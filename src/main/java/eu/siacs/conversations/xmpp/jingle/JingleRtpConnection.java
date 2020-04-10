@@ -30,6 +30,12 @@ import rocks.xmpp.addr.Jid;
 
 public class JingleRtpConnection extends AbstractJingleConnection implements WebRTCWrapper.EventCallback {
 
+    public static final List<State> STATES_SHOWING_ONGOING_CALL = Arrays.asList(
+            State.PROCEED,
+            State.SESSION_INITIALIZED,
+            State.SESSION_INITIALIZED_PRE_APPROVED,
+            State.SESSION_ACCEPTED
+    );
     private static final Map<State, Collection<State>> VALID_TRANSITIONS;
 
     static {
@@ -73,13 +79,6 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
         ));
         VALID_TRANSITIONS = transitionBuilder.build();
     }
-
-    public static final List<State> STATES_SHOWING_ONGOING_CALL = Arrays.asList(
-            State.PROCEED,
-            State.SESSION_INITIALIZED,
-            State.SESSION_INITIALIZED_PRE_APPROVED,
-            State.SESSION_ACCEPTED
-    );
 
     private final WebRTCWrapper webRTCWrapper = new WebRTCWrapper(this);
     private final ArrayDeque<IceCandidate> pendingIceCandidates = new ArrayDeque<>();
@@ -196,7 +195,7 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
             contentMap.requireDTLSFingerprint();
         } catch (final IllegalArgumentException | IllegalStateException | NullPointerException e) {
             respondOk(jinglePacket);
-            sendSessionTerminate(Reason.FAILED_APPLICATION);
+            sendSessionTerminate(Reason.FAILED_APPLICATION, e.getMessage());
             Log.d(Config.LOGTAG, id.account.getJid().asBareJid() + ": improperly formatted contents", e);
             return;
         }
@@ -238,7 +237,7 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
             respondOk(jinglePacket);
             Log.d(Config.LOGTAG, id.account.getJid().asBareJid() + ": improperly formatted contents in session-accept", e);
             webRTCWrapper.close();
-            sendSessionTerminate(Reason.FAILED_APPLICATION);
+            sendSessionTerminate(Reason.FAILED_APPLICATION, e.getMessage());
             return;
         }
         Log.d(Config.LOGTAG, "processing session-accept with " + contentMap.contents.size() + " contents");
