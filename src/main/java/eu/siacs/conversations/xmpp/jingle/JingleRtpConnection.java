@@ -249,7 +249,7 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
         final SessionDescription sessionDescription;
         try {
             sessionDescription = SessionDescription.of(contentMap);
-        } catch (final IllegalArgumentException e) {
+        } catch (final IllegalArgumentException | NullPointerException e) {
             Log.d(Config.LOGTAG, id.account.getJid().asBareJid() + ": unable convert offer from session-accept to SDP", e);
             webRTCWrapper.close();
             sendSessionTerminate(Reason.FAILED_APPLICATION, e.getMessage());
@@ -276,7 +276,7 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
         final SessionDescription offer;
         try {
             offer = SessionDescription.of(rtpContentMap);
-        } catch (final IllegalArgumentException e) {
+        } catch (final IllegalArgumentException | NullPointerException e) {
             Log.d(Config.LOGTAG, id.account.getJid().asBareJid() + ": unable convert offer from session-initiate to SDP", e);
             webRTCWrapper.close();
             sendSessionTerminate(Reason.FAILED_APPLICATION, e.getMessage());

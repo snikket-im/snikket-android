@@ -145,10 +145,7 @@ public class RtpDescription extends GenericDescription {
 
         public int getValue() {
             final String value = getAttribute("value");
-            if (value == null) {
-                return 0;
-            }
-            return SessionDescription.ignorantIntParser(value);
+            return Integer.parseInt(value);
 
         }
 
