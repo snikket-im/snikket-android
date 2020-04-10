@@ -2,11 +2,15 @@ package eu.siacs.conversations.ui;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.PowerManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.StringRes;
+import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
@@ -15,6 +19,7 @@ import android.widget.Toast;
 import com.google.common.collect.ImmutableList;
 
 import java.lang.ref.WeakReference;
+import java.util.Arrays;
 
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
@@ -35,6 +40,8 @@ import static java.util.Arrays.asList;
 
 public class RtpSessionActivity extends XmppActivity implements XmppConnectionService.OnJingleRtpConnectionUpdate {
 
+    private static final String PROXIMITY_WAKE_LOCK_TAG = "conversations:in-rtp-session";
+
     private static final int REQUEST_ACCEPT_CALL = 0x1111;
 
     public static final String EXTRA_WITH = "with";
@@ -48,6 +55,7 @@ public class RtpSessionActivity extends XmppActivity implements XmppConnectionSe
     private WeakReference<JingleRtpConnection> rtpConnectionReference;
 
     private ActivityRtpSessionBinding binding;
+    private PowerManager.WakeLock mProximityWakeLock;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -55,8 +63,7 @@ public class RtpSessionActivity extends XmppActivity implements XmppConnectionSe
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON
                 | WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD
                 | WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED
-                | WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON)
-        ;
+                | WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON);
         Log.d(Config.LOGTAG, "RtpSessionActivity.onCreate()");
         this.binding = DataBindingUtil.setContentView(this, R.layout.activity_rtp_session);
     }
@@ -77,7 +84,7 @@ public class RtpSessionActivity extends XmppActivity implements XmppConnectionSe
             final Account account = extractAccount(intent);
             final Jid with = Jid.of(intent.getStringExtra(EXTRA_WITH));
             xmppConnectionService.getJingleConnectionManager().retractSessionProposal(account, with.asBareJid());
-            finish();
+            finishAndReleaseWakeLock();
         } else {
             requireRtpConnection().endCall();
         }
@@ -85,7 +92,7 @@ public class RtpSessionActivity extends XmppActivity implements XmppConnectionSe
 
     private void rejectCall(View view) {
         requireRtpConnection().rejectCall();
-        finish();
+        finishAndReleaseWakeLock();
     }
 
     private void acceptCall(View view) {
@@ -94,7 +101,38 @@ public class RtpSessionActivity extends XmppActivity implements XmppConnectionSe
 
     private void requestPermissionsAndAcceptCall() {
         if (PermissionUtils.hasPermission(this, ImmutableList.of(Manifest.permission.RECORD_AUDIO), REQUEST_ACCEPT_CALL)) {
+            putScreenInCallMode();
             requireRtpConnection().acceptCall();
+        }
+    }
+
+    @SuppressLint("WakelockTimeout")
+    private void putScreenInCallMode() {
+        getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+        final PowerManager powerManager = (PowerManager) getSystemService(Context.POWER_SERVICE);
+        if (powerManager == null) {
+            Log.e(Config.LOGTAG, "power manager not available");
+            return;
+        }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            this.mProximityWakeLock = powerManager.newWakeLock(PowerManager.PROXIMITY_SCREEN_OFF_WAKE_LOCK, PROXIMITY_WAKE_LOCK_TAG);
+            if (!this.mProximityWakeLock.isHeld()) {
+                Log.d(Config.LOGTAG, "acquiring wake lock");
+                this.mProximityWakeLock.acquire();
+            }
+        }
+    }
+
+    private void finishAndReleaseWakeLock() {
+        releaseWakeLock();
+        finish();
+    }
+
+    private void releaseWakeLock() {
+        if (this.mProximityWakeLock != null && mProximityWakeLock.isHeld()) {
+            Log.d(Config.LOGTAG, "releasing wake lock");
+            this.mProximityWakeLock.release();
+            this.mProximityWakeLock = null;
         }
     }
 
@@ -134,7 +172,7 @@ public class RtpSessionActivity extends XmppActivity implements XmppConnectionSe
                 requestPermissionsAndAcceptCall();
             }
         } else if (asList(ACTION_MAKE_VIDEO_CALL, ACTION_MAKE_VOICE_CALL).contains(intent.getAction())) {
-            xmppConnectionService.getJingleConnectionManager().proposeJingleRtpSession(account, with);
+            proposeJingleRtpSession(account, with);
             binding.with.setText(account.getRoster().getContact(with).getDisplayName());
         } else if (Intent.ACTION_VIEW.equals(intent.getAction())) {
             final String extraLastState = intent.getStringExtra(EXTRA_LAST_REPORTED_STATE);
@@ -146,6 +184,11 @@ public class RtpSessionActivity extends XmppActivity implements XmppConnectionSe
             }
             binding.with.setText(account.getRoster().getContact(with).getDisplayName());
         }
+    }
+
+    private void proposeJingleRtpSession(final Account account, final Jid with) {
+        xmppConnectionService.getJingleConnectionManager().proposeJingleRtpSession(account, with);
+        putScreenInCallMode();
     }
 
     @Override
@@ -180,13 +223,13 @@ public class RtpSessionActivity extends XmppActivity implements XmppConnectionSe
         final WeakReference<JingleRtpConnection> reference = xmppConnectionService.getJingleConnectionManager()
                 .findJingleRtpConnection(account, with, sessionId);
         if (reference == null || reference.get() == null) {
-            finish();
+            finishAndReleaseWakeLock();
             return;
         }
         this.rtpConnectionReference = reference;
         final RtpEndUserState currentState = requireRtpConnection().getEndUserState();
         if (currentState == RtpEndUserState.ENDED) {
-            finish();
+            finishAndReleaseWakeLock();
             return;
         }
         binding.with.setText(getWith().getDisplayName());
@@ -238,7 +281,7 @@ public class RtpSessionActivity extends XmppActivity implements XmppConnectionSe
                 binding.status.setText(R.string.rtp_state_application_failure);
                 break;
             case ENDED:
-                throw new IllegalStateException("Activity should have called finish()");
+                throw new IllegalStateException("Activity should have called finishAndReleaseWakeLock();");
             default:
                 throw new IllegalStateException(String.format("State %s has not been handled in UI", state));
         }
@@ -287,11 +330,11 @@ public class RtpSessionActivity extends XmppActivity implements XmppConnectionSe
         final Account account = extractAccount(intent);
         final Jid with = Jid.of(intent.getStringExtra(EXTRA_WITH));
         this.rtpConnectionReference = null;
-        xmppConnectionService.getJingleConnectionManager().proposeJingleRtpSession(account, with);
+        proposeJingleRtpSession(account, with);
     }
 
     private void exit(View view) {
-        finish();
+        finishAndReleaseWakeLock();
     }
 
     private Contact getWith() {
@@ -310,6 +353,9 @@ public class RtpSessionActivity extends XmppActivity implements XmppConnectionSe
 
     @Override
     public void onJingleRtpConnectionUpdate(Account account, Jid with, final String sessionId, RtpEndUserState state) {
+        if (Arrays.asList(RtpEndUserState.APPLICATION_ERROR, RtpEndUserState.DECLINED_OR_BUSY, RtpEndUserState.DECLINED_OR_BUSY).contains(state)) {
+            releaseWakeLock();
+        }
         Log.d(Config.LOGTAG, "onJingleRtpConnectionUpdate(" + state + ")");
         if (with.isBareJid()) {
             updateRtpSessionProposalState(account, with, state);
@@ -323,7 +369,7 @@ public class RtpSessionActivity extends XmppActivity implements XmppConnectionSe
         final AbstractJingleConnection.Id id = requireRtpConnection().getId();
         if (account == id.account && id.with.equals(with) && id.sessionId.equals(sessionId)) {
             if (state == RtpEndUserState.ENDED) {
-                finish();
+                finishAndReleaseWakeLock();
                 return;
             } else if (asList(RtpEndUserState.APPLICATION_ERROR, RtpEndUserState.DECLINED_OR_BUSY, RtpEndUserState.CONNECTIVITY_ERROR).contains(state)) {
                 resetIntent(account, with, state);
