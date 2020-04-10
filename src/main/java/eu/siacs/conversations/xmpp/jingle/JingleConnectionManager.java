@@ -127,15 +127,17 @@ public class JingleConnectionManager extends AbstractConnectionManager {
             }
             return;
         }
-        final boolean carbonCopy = from.asBareJid().equals(account.getJid().asBareJid());
-        final Jid with;
-        if (account.getJid().asBareJid().equals(from.asBareJid())) {
-            with = to;
+        final boolean addressedToSelf = from.asBareJid().equals(account.getJid().asBareJid());
+        final AbstractJingleConnection.Id id;
+        if (addressedToSelf) {
+            if (to.isFullJid()) {
+                id = AbstractJingleConnection.Id.of(account, to, sessionId);
+            } else {
+                return;
+            }
         } else {
-            with = from;
+            id = AbstractJingleConnection.Id.of(account, from, sessionId);
         }
-        Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": received jingle message from " + from + " with=" + with + " " + message);
-        final AbstractJingleConnection.Id id = AbstractJingleConnection.Id.of(account, with, sessionId);
         final AbstractJingleConnection existingJingleConnection = connections.get(id);
         if (existingJingleConnection != null) {
             if (existingJingleConnection instanceof JingleRtpConnection) {
@@ -145,9 +147,9 @@ public class JingleConnectionManager extends AbstractConnectionManager {
             }
             return;
         }
-        if (carbonCopy) {
+
+        if (addressedToSelf) {
             Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": ignore jingle message from self");
-            return;
         }
 
         if ("propose".equals(message.getName())) {
@@ -158,7 +160,7 @@ public class JingleConnectionManager extends AbstractConnectionManager {
                     final MessagePacket reject = mXmppConnectionService.getMessageGenerator().sessionReject(from, sessionId);
                     mXmppConnectionService.sendMessagePacket(account, reject);
                 } else {
-                    final JingleRtpConnection rtpConnection = new JingleRtpConnection(this, id, with);
+                    final JingleRtpConnection rtpConnection = new JingleRtpConnection(this, id, from);
                     this.connections.put(id, rtpConnection);
                     rtpConnection.deliveryMessage(from, message);
                 }
@@ -167,7 +169,7 @@ public class JingleConnectionManager extends AbstractConnectionManager {
             }
         } else if ("proceed".equals(message.getName())) {
 
-            final RtpSessionProposal proposal = new RtpSessionProposal(account, with.asBareJid(), sessionId);
+            final RtpSessionProposal proposal = new RtpSessionProposal(account, from.asBareJid(), sessionId);
             synchronized (rtpSessionProposals) {
                 if (rtpSessionProposals.remove(proposal) != null) {
                     final JingleRtpConnection rtpConnection = new JingleRtpConnection(this, id, account.getJid());
@@ -175,16 +177,16 @@ public class JingleConnectionManager extends AbstractConnectionManager {
                     rtpConnection.transitionOrThrow(AbstractJingleConnection.State.PROPOSED);
                     rtpConnection.deliveryMessage(from, message);
                 } else {
-                    Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": no rtp session proposal found for " + with + " to deliver proceed");
+                    Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": no rtp session proposal found for " + from + " to deliver proceed");
                 }
             }
         } else if ("reject".equals(message.getName())) {
-            final RtpSessionProposal proposal = new RtpSessionProposal(account, with.asBareJid(), sessionId);
+            final RtpSessionProposal proposal = new RtpSessionProposal(account, from.asBareJid(), sessionId);
             synchronized (rtpSessionProposals) {
                 if (rtpSessionProposals.remove(proposal) != null) {
                     mXmppConnectionService.notifyJingleRtpConnectionUpdate(account, proposal.with, proposal.sessionId, RtpEndUserState.DECLINED_OR_BUSY);
                 } else {
-                    Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": no rtp session proposal found for " + with + " to deliver reject");
+                    Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": no rtp session proposal found for " + from + " to deliver reject");
                 }
             }
         } else {
