@@ -4,6 +4,7 @@ import android.util.Log;
 
 import com.google.common.base.Function;
 import com.google.common.base.Preconditions;
+import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Maps;
@@ -51,9 +52,22 @@ public class RtpContentMap {
         if (this.contents.size() == 0) {
             throw new IllegalStateException("No contents available");
         }
-        for(Map.Entry<String,DescriptionTransport> entry : this.contents.entrySet()) {
+        for (Map.Entry<String, DescriptionTransport> entry : this.contents.entrySet()) {
             if (entry.getValue().description == null) {
                 throw new IllegalStateException(String.format("%s is lacking content description", entry.getKey()));
+            }
+        }
+    }
+
+    public void requireDTLSFingerprint() {
+        if (this.contents.size() == 0) {
+            throw new IllegalStateException("No contents available");
+        }
+        for (Map.Entry<String, DescriptionTransport> entry : this.contents.entrySet()) {
+            final IceUdpTransportInfo transport = entry.getValue().transport;
+            final IceUdpTransportInfo.Fingerprint fingerprint = transport.getFingerprint();
+            if (fingerprint == null || Strings.isNullOrEmpty(fingerprint.getContent()) || Strings.isNullOrEmpty(fingerprint.getHash())) {
+                throw new SecurityException(String.format("Use of DTLS-SRTP (XEP-0320) is required for content %s", entry.getKey()));
             }
         }
     }
@@ -75,14 +89,14 @@ public class RtpContentMap {
     }
 
     public RtpContentMap transportInfo(final String contentName, final IceUdpTransportInfo.Candidate candidate) {
-        final RtpContentMap.DescriptionTransport descriptionTransport =  contents.get(contentName);
+        final RtpContentMap.DescriptionTransport descriptionTransport = contents.get(contentName);
         final IceUdpTransportInfo transportInfo = descriptionTransport == null ? null : descriptionTransport.transport;
         if (transportInfo == null) {
-            throw new IllegalArgumentException("Unable to find transport info for content name "+contentName);
+            throw new IllegalArgumentException("Unable to find transport info for content name " + contentName);
         }
         final IceUdpTransportInfo newTransportInfo = transportInfo.cloneWrapper();
         newTransportInfo.addChild(candidate);
-        return new RtpContentMap(null, ImmutableMap.of(contentName, new DescriptionTransport(null,newTransportInfo)));
+        return new RtpContentMap(null, ImmutableMap.of(contentName, new DescriptionTransport(null, newTransportInfo)));
 
     }
 

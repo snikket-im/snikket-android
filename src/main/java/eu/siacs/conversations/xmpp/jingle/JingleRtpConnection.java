@@ -81,7 +81,7 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
     private RtpContentMap responderRtpContentMap;
 
 
-    public JingleRtpConnection(JingleConnectionManager jingleConnectionManager, Id id, Jid initiator) {
+    JingleRtpConnection(JingleConnectionManager jingleConnectionManager, Id id, Jid initiator) {
         super(jingleConnectionManager, id, initiator);
     }
 
@@ -186,8 +186,8 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
         try {
             contentMap = RtpContentMap.of(jinglePacket);
             contentMap.requireContentDescriptions();
-            //TODO requireTransportWithDtls();
-        } catch (IllegalArgumentException | IllegalStateException | NullPointerException e) {
+            contentMap.requireDTLSFingerprint();
+        } catch (final IllegalArgumentException | IllegalStateException | NullPointerException e) {
             respondOk(jinglePacket);
             sendSessionTerminate(Reason.FAILED_APPLICATION);
             Log.d(Config.LOGTAG, id.account.getJid().asBareJid() + ": improperly formatted contents", e);
@@ -226,7 +226,7 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
         try {
             contentMap = RtpContentMap.of(jinglePacket);
             contentMap.requireContentDescriptions();
-            //TODO requireTransportWithDtls();
+            contentMap.requireDTLSFingerprint();
         } catch (IllegalArgumentException | IllegalStateException | NullPointerException e) {
             respondOk(jinglePacket);
             Log.d(Config.LOGTAG, id.account.getJid().asBareJid() + ": improperly formatted contents in session-accept", e);
@@ -348,6 +348,15 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
                 break;
             default:
                 break;
+        }
+    }
+
+    void deliverFailedProceed() {
+        Log.d(Config.LOGTAG, id.account.getJid().asBareJid() + ": receive message error for proceed message");
+        if (transition(State.TERMINATED_CONNECTIVITY_ERROR)) {
+            webRTCWrapper.close();
+            Log.d(Config.LOGTAG, id.account.getJid().asBareJid() + ": transitioned into connectivity error");
+            this.jingleConnectionManager.finishConnection(this);
         }
     }
 
@@ -533,7 +542,7 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
     }
 
     private void terminateWithOutOfOrder(final JinglePacket jinglePacket) {
-        Log.d(Config.LOGTAG,id.account.getJid().asBareJid()+": terminating session with out-of-order");
+        Log.d(Config.LOGTAG, id.account.getJid().asBareJid() + ": terminating session with out-of-order");
         webRTCWrapper.close();
         transitionOrThrow(State.TERMINATED_APPLICATION_FAILURE);
         respondWithOutOfOrder(jinglePacket);
@@ -681,6 +690,9 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
 
     private void sendJingleMessage(final String action, final Jid to) {
         final MessagePacket messagePacket = new MessagePacket();
+        if ("proceed".equals(action)) {
+            messagePacket.setId(JINGLE_MESSAGE_PROCEED_ID_PREFIX + id.sessionId);
+        }
         messagePacket.setType(MessagePacket.TYPE_CHAT); //we want to carbon copy those
         messagePacket.setTo(to);
         messagePacket.addChild(action, Namespace.JINGLE_MESSAGE).setAttribute("id", id.sessionId);

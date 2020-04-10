@@ -306,10 +306,15 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
             final Jid from = packet.getFrom();
             final String id = packet.getId();
             if (from != null && id != null) {
-                if (id.startsWith(JingleRtpConnection.JINGLE_MESSAGE_ID_PREFIX)) {
-                    final String sessionId = id.substring(JingleRtpConnection.JINGLE_MESSAGE_ID_PREFIX.length());
+                if (id.startsWith(JingleRtpConnection.JINGLE_MESSAGE_PROPOSE_ID_PREFIX)) {
+                    final String sessionId = id.substring(JingleRtpConnection.JINGLE_MESSAGE_PROPOSE_ID_PREFIX.length());
                     mXmppConnectionService.getJingleConnectionManager()
                             .updateProposedSessionDiscovered(account, from, sessionId, JingleConnectionManager.DeviceDiscoveryState.FAILED);
+                    return true;
+                }
+                if (id.startsWith(JingleRtpConnection.JINGLE_MESSAGE_PROCEED_ID_PREFIX)) {
+                    final String sessionId = id.substring(JingleRtpConnection.JINGLE_MESSAGE_PROCEED_ID_PREFIX.length());
+                    mXmppConnectionService.getJingleConnectionManager().failProceed(account, from, sessionId);
                     return true;
                 }
                 mXmppConnectionService.markMessage(account,
@@ -845,8 +850,8 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
                     query.removePendingReceiptRequest(new ReceiptRequest(packet.getTo(), id));
                 }
             } else if (id != null) {
-                if (id.startsWith(JingleRtpConnection.JINGLE_MESSAGE_ID_PREFIX)) {
-                    final String sessionId = id.substring(JingleRtpConnection.JINGLE_MESSAGE_ID_PREFIX.length());
+                if (id.startsWith(JingleRtpConnection.JINGLE_MESSAGE_PROPOSE_ID_PREFIX)) {
+                    final String sessionId = id.substring(JingleRtpConnection.JINGLE_MESSAGE_PROPOSE_ID_PREFIX.length());
                     mXmppConnectionService.getJingleConnectionManager()
                             .updateProposedSessionDiscovered(account, from, sessionId, JingleConnectionManager.DeviceDiscoveryState.DISCOVERED);
                 } else {

@@ -354,6 +354,14 @@ public class JingleConnectionManager extends AbstractConnectionManager {
         }
     }
 
+    public void failProceed(Account account, final Jid with, String sessionId) {
+        final AbstractJingleConnection.Id id = AbstractJingleConnection.Id.of(account, with, sessionId);
+        final AbstractJingleConnection existingJingleConnection = connections.get(id);
+        if (existingJingleConnection instanceof JingleRtpConnection) {
+            ((JingleRtpConnection) existingJingleConnection).deliverFailedProceed();
+        }
+    }
+
     public static class RtpSessionProposal {
         private final Account account;
         public final Jid with;
