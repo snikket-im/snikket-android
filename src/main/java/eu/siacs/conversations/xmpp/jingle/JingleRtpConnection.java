@@ -49,19 +49,22 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
         transitionBuilder.put(State.PROCEED, ImmutableList.of(
                 State.SESSION_INITIALIZED_PRE_APPROVED,
                 State.TERMINATED_SUCCESS,
-                State.TERMINATED_APPLICATION_FAILURE
+                State.TERMINATED_APPLICATION_FAILURE,
+                State.TERMINATED_CONNECTIVITY_ERROR //at this state used for error bounces of the proceed message
         ));
         transitionBuilder.put(State.SESSION_INITIALIZED, ImmutableList.of(
                 State.SESSION_ACCEPTED,
                 State.TERMINATED_CANCEL_OR_TIMEOUT,
                 State.TERMINATED_DECLINED_OR_BUSY,
-                State.TERMINATED_APPLICATION_FAILURE
+                State.TERMINATED_APPLICATION_FAILURE,
+                State.TERMINATED_CONNECTIVITY_ERROR //at this state used for IQ errors and IQ timeouts
         ));
         transitionBuilder.put(State.SESSION_INITIALIZED_PRE_APPROVED, ImmutableList.of(
                 State.SESSION_ACCEPTED,
                 State.TERMINATED_CANCEL_OR_TIMEOUT,
                 State.TERMINATED_DECLINED_OR_BUSY,
-                State.TERMINATED_APPLICATION_FAILURE
+                State.TERMINATED_APPLICATION_FAILURE,
+                State.TERMINATED_CONNECTIVITY_ERROR //at this state used for IQ errors and IQ timeouts
         ));
         transitionBuilder.put(State.SESSION_ACCEPTED, ImmutableList.of(
                 State.TERMINATED_SUCCESS,
@@ -169,14 +172,14 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
             }
         } else {
             Log.d(Config.LOGTAG, id.account.getJid().asBareJid() + ": received transport info while in state=" + this.state);
-            respondWithOutOfOrder(jinglePacket);
+            terminateWithOutOfOrder(jinglePacket);
         }
     }
 
     private void receiveSessionInitiate(final JinglePacket jinglePacket) {
         if (isInitiator()) {
             Log.d(Config.LOGTAG, String.format("%s: received session-initiate even though we were initiating", id.account.getJid().asBareJid()));
-            respondWithOutOfOrder(jinglePacket);
+            terminateWithOutOfOrder(jinglePacket);
             return;
         }
         final RtpContentMap contentMap;
@@ -209,14 +212,14 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
             }
         } else {
             Log.d(Config.LOGTAG, String.format("%s: received session-initiate while in state %s", id.account.getJid().asBareJid(), state));
-            respondWithOutOfOrder(jinglePacket);
+            terminateWithOutOfOrder(jinglePacket);
         }
     }
 
     private void receiveSessionAccept(final JinglePacket jinglePacket) {
         if (!isInitiator()) {
             Log.d(Config.LOGTAG, String.format("%s: received session-accept even though we were responding", id.account.getJid().asBareJid()));
-            respondWithOutOfOrder(jinglePacket);
+            terminateWithOutOfOrder(jinglePacket);
             return;
         }
         final RtpContentMap contentMap;
@@ -527,6 +530,14 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
                 this.jingleConnectionManager.finishConnection(this);
             }
         });
+    }
+
+    private void terminateWithOutOfOrder(final JinglePacket jinglePacket) {
+        Log.d(Config.LOGTAG,id.account.getJid().asBareJid()+": terminating session with out-of-order");
+        webRTCWrapper.close();
+        transitionOrThrow(State.TERMINATED_APPLICATION_FAILURE);
+        respondWithOutOfOrder(jinglePacket);
+        jingleConnectionManager.finishConnection(this);
     }
 
     private void respondWithOutOfOrder(final JinglePacket jinglePacket) {
