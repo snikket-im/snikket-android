@@ -1244,10 +1244,15 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
     }
 
     private void checkPermissionAndTriggerRtpSession() {
+        if (activity.xmppConnectionService.useTorToConnect() || conversation.getAccount().isOnion()) {
+            Toast.makeText(activity, R.string.disable_tor_to_make_call, Toast.LENGTH_SHORT).show();
+            return;
+        }
         if (hasPermissions(REQUEST_START_AUDIO_CALL, Manifest.permission.RECORD_AUDIO)) {
             triggerRtpSession();
         }
     }
+
 
     private void triggerRtpSession() {
         final Contact contact = conversation.getContact();

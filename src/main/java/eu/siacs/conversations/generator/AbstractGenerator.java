@@ -34,14 +34,6 @@ public abstract class AbstractGenerator {
 			Namespace.JINGLE_TRANSPORTS_IBB,
 			Namespace.JINGLE_ENCRYPTED_TRANSPORT,
 			Namespace.JINGLE_ENCRYPTED_TRANSPORT_OMEMO,
-
-			//VoIP
-			Namespace.JINGLE_TRANSPORT_ICE_UDP,
-			Namespace.JINGLE_FEATURE_AUDIO,
-			Namespace.JINGLE_FEATURE_VIDEO,
-			Namespace.JINGLE_APPS_RTP,
-			Namespace.JINGLE_APPS_DTLS,
-
 			"http://jabber.org/protocol/muc",
 			"jabber:x:conference",
 			Namespace.OOB,
@@ -62,6 +54,14 @@ public abstract class AbstractGenerator {
 	};
 	private final String[] PRIVACY_SENSITIVE = {
 			"urn:xmpp:time" //XEP-0202: Entity Time leaks time zone
+	};
+
+	private final String[] VOIP_NAMESPACES = {
+			Namespace.JINGLE_TRANSPORT_ICE_UDP,
+			Namespace.JINGLE_FEATURE_AUDIO,
+			Namespace.JINGLE_FEATURE_VIDEO,
+			Namespace.JINGLE_APPS_RTP,
+			Namespace.JINGLE_APPS_DTLS,
 	};
 	private String mVersion = null;
 
@@ -132,6 +132,7 @@ public abstract class AbstractGenerator {
 		}
 		if (!mXmppConnectionService.useTorToConnect() && !account.isOnion()) {
 			features.addAll(Arrays.asList(PRIVACY_SENSITIVE));
+			features.addAll(Arrays.asList(VOIP_NAMESPACES));
 		}
 		if (mXmppConnectionService.broadcastLastActivity()) {
 			features.add(Namespace.IDLE);

@@ -59,7 +59,7 @@ public class JingleConnectionManager extends AbstractConnectionManager {
             final AbstractJingleConnection connection;
             if (FileTransferDescription.NAMESPACES.contains(descriptionNamespace)) {
                 connection = new JingleFileTransferConnection(this, id, from);
-            } else if (Namespace.JINGLE_APPS_RTP.equals(descriptionNamespace)) { //and not using Tor
+            } else if (Namespace.JINGLE_APPS_RTP.equals(descriptionNamespace) && !usesTor(account)) {
                 if (isBusy()) {
                     mXmppConnectionService.sendIqPacket(account, packet.generateResponse(IqPacket.TYPE.RESULT), null);
                     final JinglePacket sessionTermination = new JinglePacket(JinglePacket.Action.SESSION_TERMINATE, id.sessionId);
@@ -80,6 +80,10 @@ public class JingleConnectionManager extends AbstractConnectionManager {
             respondWithJingleError(account, packet, "unknown-session", "item-not-found", "cancel");
 
         }
+    }
+
+    private boolean usesTor(final Account account) {
+        return account.isOnion() || mXmppConnectionService.useTorToConnect();
     }
 
     private boolean isBusy() {
@@ -147,7 +151,7 @@ public class JingleConnectionManager extends AbstractConnectionManager {
         if ("propose".equals(message.getName())) {
             final Element description = message.findChild("description");
             final String namespace = description == null ? null : description.getNamespace();
-            if (Namespace.JINGLE_APPS_RTP.equals(namespace)) { //and not using Tor
+            if (Namespace.JINGLE_APPS_RTP.equals(namespace) && !usesTor(account)) {
                 if (isBusy()) {
                     final MessagePacket reject = mXmppConnectionService.getMessageGenerator().sessionReject(from, sessionId);
                     mXmppConnectionService.sendMessagePacket(account, reject);

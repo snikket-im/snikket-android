@@ -902,6 +902,7 @@
     <string name="rtp_state_application_failure">Application failure</string>
     <string name="hang_up">Hang up</string>
     <string name="ongoing_call">Ongoing call</string>
+    <string name="disable_tor_to_make_call">Disable Tor to make calls</string>
     <plurals name="view_users">
         <item quantity="one">View %1$d Participant</item>
         <item quantity="other">View %1$d Participants</item>
