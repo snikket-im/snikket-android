@@ -1,15 +1,12 @@
 package eu.siacs.conversations.ui;
 
 import android.Manifest;
-import android.app.Activity;
+import android.annotation.SuppressLint;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.databinding.DataBindingUtil;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.StringRes;
-import android.support.v4.app.ActivityCompat;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
@@ -18,7 +15,6 @@ import android.widget.Toast;
 import com.google.common.collect.ImmutableList;
 
 import java.lang.ref.WeakReference;
-import java.util.List;
 
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
@@ -106,10 +102,18 @@ public class RtpSessionActivity extends XmppActivity implements XmppConnectionSe
     @Override
     public void onNewIntent(final Intent intent) {
         super.onNewIntent(intent);
-        //TODO reinitialize
-        if (ACTION_ACCEPT_CALL.equals(intent.getAction())) {
-            Log.d(Config.LOGTAG, "accepting through onNewIntent()");
-            requestPermissionsAndAcceptCall();
+        final Account account = extractAccount(intent);
+        final Jid with = Jid.of(intent.getStringExtra(EXTRA_WITH));
+        final String sessionId = intent.getStringExtra(EXTRA_SESSION_ID);
+        if (sessionId != null) {
+            Log.d(Config.LOGTAG, "reinitializing from onNewIntent()");
+            initializeActivityWithRunningRapSession(account, with, sessionId);
+            if (ACTION_ACCEPT_CALL.equals(intent.getAction())) {
+                Log.d(Config.LOGTAG, "accepting call from onNewIntent()");
+                requestPermissionsAndAcceptCall();
+            }
+        } else {
+            throw new IllegalStateException("received onNewIntent without sessionId");
         }
     }
 
@@ -230,44 +234,50 @@ public class RtpSessionActivity extends XmppActivity implements XmppConnectionSe
         }
     }
 
+    @SuppressLint("RestrictedApi")
     private void updateButtonConfiguration(final RtpEndUserState state) {
         if (state == RtpEndUserState.INCOMING_CALL) {
             this.binding.rejectCall.setOnClickListener(this::rejectCall);
             this.binding.rejectCall.setImageResource(R.drawable.ic_call_end_white_48dp);
-            this.binding.rejectCall.show();
-            this.binding.endCall.hide();
+            this.binding.rejectCall.setVisibility(View.VISIBLE);
+            this.binding.endCall.setVisibility(View.INVISIBLE);
             this.binding.acceptCall.setOnClickListener(this::acceptCall);
             this.binding.acceptCall.setImageResource(R.drawable.ic_call_white_48dp);
-            this.binding.acceptCall.show();
+            this.binding.acceptCall.setVisibility(View.VISIBLE);
         } else if (state == RtpEndUserState.ENDING_CALL) {
-            this.binding.rejectCall.hide();
-            this.binding.endCall.hide();
-            this.binding.acceptCall.hide();
+            this.binding.rejectCall.setVisibility(View.INVISIBLE);
+            this.binding.endCall.setVisibility(View.INVISIBLE);
+            this.binding.acceptCall.setVisibility(View.INVISIBLE);
         } else if (state == RtpEndUserState.DECLINED_OR_BUSY) {
-            this.binding.rejectCall.hide();
+            this.binding.rejectCall.setVisibility(View.INVISIBLE);
             this.binding.endCall.setOnClickListener(this::exit);
             this.binding.endCall.setImageResource(R.drawable.ic_clear_white_48dp);
-            this.binding.endCall.show();
-            this.binding.acceptCall.hide();
+            this.binding.endCall.setVisibility(View.VISIBLE);
+            this.binding.acceptCall.setVisibility(View.INVISIBLE);
         } else if (state == RtpEndUserState.CONNECTIVITY_ERROR || state == RtpEndUserState.APPLICATION_ERROR) {
             this.binding.rejectCall.setOnClickListener(this::exit);
             this.binding.rejectCall.setImageResource(R.drawable.ic_clear_white_48dp);
-            this.binding.rejectCall.show();
-            this.binding.endCall.hide();
+            this.binding.rejectCall.setVisibility(View.VISIBLE);
+            this.binding.endCall.setVisibility(View.INVISIBLE);
             this.binding.acceptCall.setOnClickListener(this::retry);
             this.binding.acceptCall.setImageResource(R.drawable.ic_replay_white_48dp);
-            this.binding.acceptCall.show();
+            this.binding.acceptCall.setVisibility(View.VISIBLE);
         } else {
-            this.binding.rejectCall.hide();
+            this.binding.rejectCall.setVisibility(View.INVISIBLE);
             this.binding.endCall.setOnClickListener(this::endCall);
             this.binding.endCall.setImageResource(R.drawable.ic_call_end_white_48dp);
-            this.binding.endCall.show();
-            this.binding.acceptCall.hide();
+            this.binding.endCall.setVisibility(View.VISIBLE);
+            this.binding.acceptCall.setVisibility(View.INVISIBLE);
         }
     }
 
     private void retry(View view) {
         Log.d(Config.LOGTAG, "attempting retry");
+        final Intent intent = getIntent();
+        final Account account = extractAccount(intent);
+        final Jid with = Jid.of(intent.getStringExtra(EXTRA_WITH));
+        this.rtpConnectionReference = null;
+        xmppConnectionService.getJingleConnectionManager().proposeJingleRtpSession(account, with);
     }
 
     private void exit(View view) {
@@ -314,6 +324,7 @@ public class RtpSessionActivity extends XmppActivity implements XmppConnectionSe
             });
         } else {
             Log.d(Config.LOGTAG, "received update for other rtp session");
+            //TODO if we only ever have one; we might just switch over? Maybe!
         }
     }
 
