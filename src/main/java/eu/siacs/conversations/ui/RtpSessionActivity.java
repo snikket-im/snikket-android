@@ -237,6 +237,9 @@ public class RtpSessionActivity extends XmppActivity implements XmppConnectionSe
             finish();
             return;
         }
+        if (JingleRtpConnection.STATES_SHOWING_ONGOING_CALL.contains(requireRtpConnection().getState())) {
+            putScreenInCallMode();
+        }
         binding.with.setText(getWith().getDisplayName());
         updateStateDisplay(currentState);
         updateButtonConfiguration(currentState);

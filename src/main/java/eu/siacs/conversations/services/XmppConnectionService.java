@@ -167,6 +167,7 @@ public class XmppConnectionService extends Service {
     public static final String ACTION_FCM_TOKEN_REFRESH = "fcm_token_refresh";
     public static final String ACTION_FCM_MESSAGE_RECEIVED = "fcm_message_received";
     public static final String ACTION_DISMISS_CALL = "dismiss_call";
+    public static final String ACTION_END_CALL = "end_call";
     private static final String ACTION_POST_CONNECTIVITY_CHANGE = "eu.siacs.conversations.POST_CONNECTIVITY_CHANGE";
 
     private static final String SETTING_LAST_ACTIVITY_TS = "last_activity_timestamp";
@@ -640,10 +641,17 @@ public class XmppConnectionService extends Service {
                         }
                     });
                     break;
-                case ACTION_DISMISS_CALL:
+                case ACTION_DISMISS_CALL: {
                     final String sessionId = intent.getStringExtra(RtpSessionActivity.EXTRA_SESSION_ID);
-                    Log.d(Config.LOGTAG,"received intent to dismiss call with session id "+sessionId);
+                    Log.d(Config.LOGTAG, "received intent to dismiss call with session id " + sessionId);
                     mJingleConnectionManager.rejectRtpSession(sessionId);
+                }
+                break;
+                case ACTION_END_CALL: {
+                    final String sessionId = intent.getStringExtra(RtpSessionActivity.EXTRA_SESSION_ID);
+                    Log.d(Config.LOGTAG, "received intent to end call with session id " + sessionId);
+                    mJingleConnectionManager.endRtpSession(sessionId);
+                }
                     break;
                 case ACTION_DISMISS_ERROR_NOTIFICATIONS:
                     dismissErrorNotifications();
@@ -3978,7 +3986,7 @@ public class XmppConnectionService extends Service {
     }
 
     public void notifyJingleRtpConnectionUpdate(final Account account, final Jid with, final String sessionId, final RtpEndUserState state) {
-        for(OnJingleRtpConnectionUpdate listener : threadSafeList(this.onJingleRtpConnectionUpdate)) {
+        for (OnJingleRtpConnectionUpdate listener : threadSafeList(this.onJingleRtpConnectionUpdate)) {
             listener.onJingleRtpConnectionUpdate(account, with, sessionId, state);
         }
     }

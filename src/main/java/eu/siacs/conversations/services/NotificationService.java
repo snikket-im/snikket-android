@@ -76,6 +76,7 @@ public class NotificationService {
     private static final int NOTIFICATION_ID = NOTIFICATION_ID_MULTIPLIER * 2;
     private static final int ERROR_NOTIFICATION_ID = NOTIFICATION_ID_MULTIPLIER * 6;
     private static final int INCOMING_CALL_NOTIFICATION_ID = NOTIFICATION_ID_MULTIPLIER * 8;
+    private static final int ONGOING_CALL_NOTIFICATION_ID = NOTIFICATION_ID_MULTIPLIER * 10;
     private final XmppConnectionService mXmppConnectionService;
     private final LinkedHashMap<String, ArrayList<Message>> notifications = new LinkedHashMap<>();
     private final HashMap<Conversation, AtomicInteger> mBacklogMessageCounter = new HashMap<>();
@@ -165,6 +166,13 @@ public class NotificationService {
         incomingCallsChannel.enableLights(true);
         incomingCallsChannel.setGroup("calls");
         notificationManager.createNotificationChannel(incomingCallsChannel);
+
+        final NotificationChannel ongoingCallsChannel = new NotificationChannel("ongoing_calls",
+                c.getString(R.string.ongoing_calls_channel_name),
+                NotificationManager.IMPORTANCE_LOW);
+        ongoingCallsChannel.setShowBadge(false);
+        ongoingCallsChannel.setGroup("calls");
+        notificationManager.createNotificationChannel(ongoingCallsChannel);
 
 
         final NotificationChannel messagesChannel = new NotificationChannel("messages",
@@ -333,7 +341,6 @@ public class NotificationService {
         fullScreenIntent.putExtra(RtpSessionActivity.EXTRA_SESSION_ID, id.sessionId);
         fullScreenIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         fullScreenIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        final PendingIntent pendingIntent = PendingIntent.getActivity(mXmppConnectionService, 101, fullScreenIntent, PendingIntent.FLAG_UPDATE_CURRENT);
         final NotificationCompat.Builder builder = new NotificationCompat.Builder(mXmppConnectionService, "incoming_calls");
         builder.setSmallIcon(R.drawable.ic_call_white_24dp);
         builder.setContentTitle(mXmppConnectionService.getString(R.string.rtp_state_incoming_call));
@@ -346,7 +353,7 @@ public class NotificationService {
         builder.addAction(new NotificationCompat.Action.Builder(
                 R.drawable.ic_call_end_white_48dp,
                 mXmppConnectionService.getString(R.string.dismiss_call),
-                createDismissCall(id.sessionId, 102))
+                createCallAction(id.sessionId, XmppConnectionService.ACTION_DISMISS_CALL, 102))
                 .build());
         builder.addAction(new NotificationCompat.Action.Builder(
                 R.drawable.ic_call_white_24dp,
@@ -356,6 +363,26 @@ public class NotificationService {
         final Notification notification = builder.build();
         notification.flags = notification.flags | Notification.FLAG_INSISTENT;
         notify(INCOMING_CALL_NOTIFICATION_ID, builder.build());
+    }
+
+    public void showOngoingCallNotification(final AbstractJingleConnection.Id id) {
+        final NotificationCompat.Builder builder = new NotificationCompat.Builder(mXmppConnectionService, "ongoing_calls");
+        builder.setSmallIcon(R.drawable.ic_call_white_24dp);
+        builder.setContentTitle(mXmppConnectionService.getString(R.string.ongoing_call));
+        builder.setContentText(id.account.getRoster().getContact(id.with).getDisplayName());
+        builder.setVisibility(NotificationCompat.VISIBILITY_PUBLIC);
+        builder.setPriority(NotificationCompat.PRIORITY_HIGH);
+        builder.setCategory(NotificationCompat.CATEGORY_CALL);
+        builder.setContentIntent(createPendingRtpSession(id, Intent.ACTION_VIEW, 101));
+        builder.setOngoing(true);
+        builder.addAction(new NotificationCompat.Action.Builder(
+                R.drawable.ic_call_end_white_48dp,
+                mXmppConnectionService.getString(R.string.hang_up),
+                createCallAction(id.sessionId, XmppConnectionService.ACTION_END_CALL, 104))
+                .build());
+        final Notification notification = builder.build();
+        notification.flags = notification.flags | Notification.FLAG_INSISTENT;
+        notify(ONGOING_CALL_NOTIFICATION_ID, builder.build());
     }
 
     private PendingIntent createPendingRtpSession(final AbstractJingleConnection.Id id, final String action, final int requestCode) {
@@ -371,6 +398,10 @@ public class NotificationService {
 
     public void cancelIncomingCallNotification() {
         cancel(INCOMING_CALL_NOTIFICATION_ID);
+    }
+
+    public void cancelOngoingCallNotification() {
+        cancel(ONGOING_CALL_NOTIFICATION_ID);
     }
 
     private void pushNow(final Message message) {
@@ -899,9 +930,9 @@ public class NotificationService {
         return PendingIntent.getService(mXmppConnectionService, generateRequestCode(conversation, 16), intent, PendingIntent.FLAG_UPDATE_CURRENT);
     }
 
-    private PendingIntent createDismissCall(String sessionId, int requestCode) {
+    private PendingIntent createCallAction(String sessionId, final String action, int requestCode) {
         final Intent intent = new Intent(mXmppConnectionService, XmppConnectionService.class);
-        intent.setAction(XmppConnectionService.ACTION_DISMISS_CALL);
+        intent.setAction(action);
         intent.setPackage(mXmppConnectionService.getPackageName());
         intent.putExtra(RtpSessionActivity.EXTRA_SESSION_ID, sessionId);
         return PendingIntent.getService(mXmppConnectionService, requestCode, intent, PendingIntent.FLAG_UPDATE_CURRENT);

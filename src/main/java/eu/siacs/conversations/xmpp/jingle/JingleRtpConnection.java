@@ -74,6 +74,13 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
         VALID_TRANSITIONS = transitionBuilder.build();
     }
 
+    public static final List<State> STATES_SHOWING_ONGOING_CALL = Arrays.asList(
+            State.PROCEED,
+            State.SESSION_INITIALIZED,
+            State.SESSION_INITIALIZED_PRE_APPROVED,
+            State.SESSION_ACCEPTED
+    );
+
     private final WebRTCWrapper webRTCWrapper = new WebRTCWrapper(this);
     private final ArrayDeque<IceCandidate> pendingIceCandidates = new ArrayDeque<>();
     private State state = State.NULL;
@@ -727,6 +734,7 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
             this.state = target;
             Log.d(Config.LOGTAG, id.account.getJid().asBareJid() + ": transitioned into " + target);
             updateEndUserState();
+            updateOngoingCallNotification();
             return true;
         } else {
             return false;
@@ -757,6 +765,14 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
 
     private void updateEndUserState() {
         xmppConnectionService.notifyJingleRtpConnectionUpdate(id.account, id.with, id.sessionId, getEndUserState());
+    }
+
+    private void updateOngoingCallNotification() {
+        if (STATES_SHOWING_ONGOING_CALL.contains(this.state)) {
+            xmppConnectionService.getNotificationService().showOngoingCallNotification(id);
+        } else {
+            xmppConnectionService.getNotificationService().cancelOngoingCallNotification();
+        }
     }
 
     private void discoverIceServers(final OnIceServersDiscovered onIceServersDiscovered) {
@@ -813,6 +829,10 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
             Log.w(Config.LOGTAG, id.account.getJid().asBareJid() + ": has no external service discovery");
             onIceServersDiscovered.onIceServersDiscovered(Collections.emptyList());
         }
+    }
+
+    public State getState() {
+        return this.state;
     }
 
     private interface OnIceServersDiscovered {

@@ -1,21 +1,19 @@
 package eu.siacs.conversations.xmpp.jingle;
 
+import android.util.Base64;
 import android.util.Log;
 
 import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
 
 import java.lang.ref.WeakReference;
+import java.security.SecureRandom;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
-import java.util.Set;
-import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.entities.Account;
-import eu.siacs.conversations.entities.Contact;
 import eu.siacs.conversations.entities.Message;
 import eu.siacs.conversations.entities.Transferable;
 import eu.siacs.conversations.services.AbstractConnectionManager;
@@ -271,7 +269,9 @@ public class JingleConnectionManager extends AbstractConnectionManager {
     }
 
     static String nextRandomId() {
-        return UUID.randomUUID().toString();
+        final byte[] id = new byte[16];
+        new SecureRandom().nextBytes(id);
+        return Base64.encodeToString(id, Base64.NO_WRAP | Base64.NO_PADDING);
     }
 
     public void deliverIbbPacket(Account account, IqPacket packet) {
@@ -354,6 +354,16 @@ public class JingleConnectionManager extends AbstractConnectionManager {
         }
     }
 
+    public void endRtpSession(final String sessionId) {
+        for (final AbstractJingleConnection connection : this.connections.values()) {
+            if (connection.getId().sessionId.equals(sessionId)) {
+                if (connection instanceof JingleRtpConnection) {
+                    ((JingleRtpConnection) connection).endCall();
+                }
+            }
+        }
+    }
+
     public void failProceed(Account account, final Jid with, String sessionId) {
         final AbstractJingleConnection.Id id = AbstractJingleConnection.Id.of(account, with, sessionId);
         final AbstractJingleConnection existingJingleConnection = connections.get(id);
@@ -374,7 +384,7 @@ public class JingleConnectionManager extends AbstractConnectionManager {
         }
 
         public static RtpSessionProposal of(Account account, Jid with) {
-            return new RtpSessionProposal(account, with, UUID.randomUUID().toString());
+            return new RtpSessionProposal(account, with, nextRandomId());
         }
 
         @Override
