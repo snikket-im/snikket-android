@@ -18,12 +18,14 @@ import eu.siacs.conversations.entities.Message;
 import eu.siacs.conversations.entities.Transferable;
 import eu.siacs.conversations.services.AbstractConnectionManager;
 import eu.siacs.conversations.services.XmppConnectionService;
+import eu.siacs.conversations.ui.util.Attachment;
 import eu.siacs.conversations.xml.Element;
 import eu.siacs.conversations.xml.Namespace;
 import eu.siacs.conversations.xmpp.OnIqPacketReceived;
 import eu.siacs.conversations.xmpp.jingle.stanzas.Content;
 import eu.siacs.conversations.xmpp.jingle.stanzas.FileTransferDescription;
 import eu.siacs.conversations.xmpp.jingle.stanzas.JinglePacket;
+import eu.siacs.conversations.xmpp.jingle.stanzas.Reason;
 import eu.siacs.conversations.xmpp.stanzas.IqPacket;
 import eu.siacs.conversations.xmpp.stanzas.MessagePacket;
 import rocks.xmpp.addr.Jid;
@@ -38,7 +40,14 @@ public class JingleConnectionManager extends AbstractConnectionManager {
         super(service);
     }
 
+    static String nextRandomId() {
+        final byte[] id = new byte[16];
+        new SecureRandom().nextBytes(id);
+        return Base64.encodeToString(id, Base64.NO_WRAP | Base64.NO_PADDING);
+    }
+
     public void deliverPacket(final Account account, final JinglePacket packet) {
+        //TODO check that sessionId is not null
         final AbstractJingleConnection.Id id = AbstractJingleConnection.Id.of(account, packet);
         final AbstractJingleConnection existingJingleConnection = connections.get(id);
         if (existingJingleConnection != null) {
@@ -50,7 +59,15 @@ public class JingleConnectionManager extends AbstractConnectionManager {
             final AbstractJingleConnection connection;
             if (FileTransferDescription.NAMESPACES.contains(descriptionNamespace)) {
                 connection = new JingleFileTransferConnection(this, id, from);
-            } else if (Namespace.JINGLE_APPS_RTP.equals(descriptionNamespace)) {
+            } else if (Namespace.JINGLE_APPS_RTP.equals(descriptionNamespace)) { //and not using Tor
+                if (isBusy()) {
+                    mXmppConnectionService.sendIqPacket(account, packet.generateResponse(IqPacket.TYPE.RESULT), null);
+                    final JinglePacket sessionTermination = new JinglePacket(JinglePacket.Action.SESSION_TERMINATE, id.sessionId);
+                    sessionTermination.setTo(id.with);
+                    sessionTermination.setReason(Reason.BUSY, null);
+                    mXmppConnectionService.sendIqPacket(account, sessionTermination, null);
+                    return;
+                }
                 connection = new JingleRtpConnection(this, id, from);
             } else {
                 respondWithJingleError(account, packet, "unsupported-info", "feature-not-implemented", "cancel");
@@ -62,6 +79,17 @@ public class JingleConnectionManager extends AbstractConnectionManager {
             Log.d(Config.LOGTAG, "unable to route jingle packet: " + packet);
             respondWithJingleError(account, packet, "unknown-session", "item-not-found", "cancel");
 
+        }
+    }
+
+    private boolean isBusy() {
+        for (AbstractJingleConnection connection : this.connections.values()) {
+            if (connection instanceof JingleRtpConnection) {
+                return true;
+            }
+        }
+        synchronized (this.rtpSessionProposals) {
+            return this.rtpSessionProposals.containsValue(DeviceDiscoveryState.DISCOVERED) || this.rtpSessionProposals.containsValue(DeviceDiscoveryState.SEARCHING);
         }
     }
 
@@ -109,21 +137,30 @@ public class JingleConnectionManager extends AbstractConnectionManager {
             } else {
                 Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": " + existingJingleConnection.getClass().getName() + " does not support jingle messages");
             }
-        } else if ("propose".equals(message.getName())) {
+            return;
+        }
+        if (carbonCopy) {
+            Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": ignore jingle message from self");
+            return;
+        }
+
+        if ("propose".equals(message.getName())) {
             final Element description = message.findChild("description");
             final String namespace = description == null ? null : description.getNamespace();
-            if (Namespace.JINGLE_APPS_RTP.equals(namespace)) {
-                final JingleRtpConnection rtpConnection = new JingleRtpConnection(this, id, with);
-                this.connections.put(id, rtpConnection);
-                rtpConnection.deliveryMessage(from, message);
+            if (Namespace.JINGLE_APPS_RTP.equals(namespace)) { //and not using Tor
+                if (isBusy()) {
+                    final MessagePacket reject = mXmppConnectionService.getMessageGenerator().sessionReject(from, sessionId);
+                    mXmppConnectionService.sendMessagePacket(account, reject);
+                } else {
+                    final JingleRtpConnection rtpConnection = new JingleRtpConnection(this, id, with);
+                    this.connections.put(id, rtpConnection);
+                    rtpConnection.deliveryMessage(from, message);
+                }
             } else {
                 Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": unable to react to proposed " + namespace + " session");
             }
         } else if ("proceed".equals(message.getName())) {
-            if (carbonCopy) {
-                Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": ignore carbon copied proceed");
-                return;
-            }
+
             final RtpSessionProposal proposal = new RtpSessionProposal(account, with.asBareJid(), sessionId);
             synchronized (rtpSessionProposals) {
                 if (rtpSessionProposals.remove(proposal) != null) {
@@ -136,10 +173,6 @@ public class JingleConnectionManager extends AbstractConnectionManager {
                 }
             }
         } else if ("reject".equals(message.getName())) {
-            if (carbonCopy) {
-                Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": ignore carbon copied reject");
-                return;
-            }
             final RtpSessionProposal proposal = new RtpSessionProposal(account, with.asBareJid(), sessionId);
             synchronized (rtpSessionProposals) {
                 if (rtpSessionProposals.remove(proposal) != null) {
@@ -268,12 +301,6 @@ public class JingleConnectionManager extends AbstractConnectionManager {
         }
     }
 
-    static String nextRandomId() {
-        final byte[] id = new byte[16];
-        new SecureRandom().nextBytes(id);
-        return Base64.encodeToString(id, Base64.NO_WRAP | Base64.NO_PADDING);
-    }
-
     public void deliverIbbPacket(Account account, IqPacket packet) {
         final String sid;
         final Element payload;
@@ -372,10 +399,25 @@ public class JingleConnectionManager extends AbstractConnectionManager {
         }
     }
 
+    public enum DeviceDiscoveryState {
+        SEARCHING, DISCOVERED, FAILED;
+
+        public RtpEndUserState toEndUserState() {
+            switch (this) {
+                case SEARCHING:
+                    return RtpEndUserState.FINDING_DEVICE;
+                case DISCOVERED:
+                    return RtpEndUserState.RINGING;
+                default:
+                    return RtpEndUserState.CONNECTIVITY_ERROR;
+            }
+        }
+    }
+
     public static class RtpSessionProposal {
-        private final Account account;
         public final Jid with;
         public final String sessionId;
+        private final Account account;
 
         private RtpSessionProposal(Account account, Jid with, String sessionId) {
             this.account = account;
@@ -400,21 +442,6 @@ public class JingleConnectionManager extends AbstractConnectionManager {
         @Override
         public int hashCode() {
             return Objects.hashCode(account.getJid(), with, sessionId);
-        }
-    }
-
-    public enum DeviceDiscoveryState {
-        SEARCHING, DISCOVERED, FAILED;
-
-        public RtpEndUserState toEndUserState() {
-            switch (this) {
-                case SEARCHING:
-                    return RtpEndUserState.FINDING_DEVICE;
-                case DISCOVERED:
-                    return RtpEndUserState.RINGING;
-                default:
-                    return RtpEndUserState.CONNECTIVITY_ERROR;
-            }
         }
     }
 }

@@ -213,6 +213,7 @@ public class RtpSessionActivity extends XmppActivity implements XmppConnectionSe
     public void onStop() {
         if (!isChangingConfigurations()) {
             releaseWakeLock();
+            //TODO maybe we want to finish if call had ended
         }
         super.onStop();
     }

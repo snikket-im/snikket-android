@@ -255,4 +255,14 @@ public class MessageGenerator extends AbstractGenerator {
 		propose.addChild("description", Namespace.JINGLE_APPS_RTP);
 		return packet;
 	}
+
+	public MessagePacket sessionReject(final Jid with, final String sessionId) {
+		final MessagePacket packet = new MessagePacket();
+		packet.setType(MessagePacket.TYPE_CHAT); //we want to carbon copy those
+		packet.setTo(with);
+		final Element propose = packet.addChild("reject", Namespace.JINGLE_MESSAGE);
+		propose.setAttribute("id", sessionId);
+		propose.addChild("description", Namespace.JINGLE_APPS_RTP);
+		return packet;
+	}
 }
