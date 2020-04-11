@@ -1273,7 +1273,7 @@ public class XmppConnectionService extends Service {
     }
 
     public boolean foregroundNotificationNeedsUpdatingWhenErrorStateChanges() {
-        return !mForceForegroundService.get() && Compatibility.keepForegroundService(this) && hasEnabledAccounts();
+        return !mForceForegroundService.get() && ongoingCall.get() == null && Compatibility.keepForegroundService(this) && hasEnabledAccounts();
     }
 
     @Override

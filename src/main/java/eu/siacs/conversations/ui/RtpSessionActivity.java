@@ -115,7 +115,9 @@ public class RtpSessionActivity extends XmppActivity implements XmppConnectionSe
             return;
         }
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            this.mProximityWakeLock = powerManager.newWakeLock(PowerManager.PROXIMITY_SCREEN_OFF_WAKE_LOCK, PROXIMITY_WAKE_LOCK_TAG);
+            if (this.mProximityWakeLock == null) {
+                this.mProximityWakeLock = powerManager.newWakeLock(PowerManager.PROXIMITY_SCREEN_OFF_WAKE_LOCK, PROXIMITY_WAKE_LOCK_TAG);
+            }
             if (!this.mProximityWakeLock.isHeld()) {
                 Log.d(Config.LOGTAG, "acquiring wake lock");
                 this.mProximityWakeLock.acquire();
@@ -139,6 +141,7 @@ public class RtpSessionActivity extends XmppActivity implements XmppConnectionSe
     @Override
     public void onNewIntent(final Intent intent) {
         super.onNewIntent(intent);
+        //TODO. deal with 'pending intent' in case background service isn’t here yet.
         final Account account = extractAccount(intent);
         final Jid with = Jid.of(intent.getStringExtra(EXTRA_WITH));
         final String sessionId = intent.getStringExtra(EXTRA_SESSION_ID);
@@ -211,10 +214,8 @@ public class RtpSessionActivity extends XmppActivity implements XmppConnectionSe
 
     @Override
     public void onStop() {
-        if (!isChangingConfigurations()) {
-            releaseWakeLock();
-            //TODO maybe we want to finish if call had ended
-        }
+        releaseWakeLock();
+        //TODO maybe we want to finish if call had ended
         super.onStop();
     }
 

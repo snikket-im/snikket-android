@@ -1105,10 +1105,6 @@ public class NotificationService {
         notify(FOREGROUND_NOTIFICATION_ID, notification);
     }
 
-    void dismissForcedForegroundNotification() {
-        cancel(FOREGROUND_NOTIFICATION_ID);
-    }
-
     private void notify(String tag, int id, Notification notification) {
         final NotificationManagerCompat notificationManager = NotificationManagerCompat.from(mXmppConnectionService);
         try {
