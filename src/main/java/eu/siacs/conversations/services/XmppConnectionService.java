@@ -71,6 +71,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicLong;
+import java.util.concurrent.atomic.AtomicReference;
 
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
@@ -142,6 +143,7 @@ import eu.siacs.conversations.xmpp.Patches;
 import eu.siacs.conversations.xmpp.XmppConnection;
 import eu.siacs.conversations.xmpp.chatstate.ChatState;
 import eu.siacs.conversations.xmpp.forms.Data;
+import eu.siacs.conversations.xmpp.jingle.AbstractJingleConnection;
 import eu.siacs.conversations.xmpp.jingle.JingleConnectionManager;
 import eu.siacs.conversations.xmpp.jingle.OnJinglePacketReceived;
 import eu.siacs.conversations.xmpp.jingle.RtpEndUserState;
@@ -209,6 +211,7 @@ public class XmppConnectionService extends Service {
     private AtomicBoolean mInitialAddressbookSyncCompleted = new AtomicBoolean(false);
     private AtomicBoolean mForceForegroundService = new AtomicBoolean(false);
     private AtomicBoolean mForceDuringOnCreate = new AtomicBoolean(false);
+    private AtomicReference<AbstractJingleConnection.Id> ongoingCall = new AtomicReference<>();
     private OnMessagePacketReceived mMessageParser = new MessageParser(this);
     private OnPresencePacketReceived mPresenceParser = new PresenceParser(this);
     private IqParser mIqParser = new IqParser(this);
@@ -1227,11 +1230,31 @@ public class XmppConnectionService extends Service {
         toggleForegroundService(false);
     }
 
+    public void setOngoingCall(AbstractJingleConnection.Id id) {
+        ongoingCall.set(id);
+        toggleForegroundService(false);
+    }
+
+    public void removeOngoingCall(AbstractJingleConnection.Id id) {
+        if (ongoingCall.compareAndSet(id, null)) {
+            toggleForegroundService(false);
+        }
+    }
+
     private void toggleForegroundService(boolean force) {
         final boolean status;
-        if (force || mForceDuringOnCreate.get() || mForceForegroundService.get() || (Compatibility.keepForegroundService(this) && hasEnabledAccounts())) {
-            final Notification notification = this.mNotificationService.createForegroundNotification();
-            startForeground(NotificationService.FOREGROUND_NOTIFICATION_ID, notification);
+        final AbstractJingleConnection.Id ongoing = ongoingCall.get();
+        if (force || mForceDuringOnCreate.get() || mForceForegroundService.get() || ongoing != null || (Compatibility.keepForegroundService(this) && hasEnabledAccounts())) {
+            final Notification notification;
+            if (ongoing != null) {
+                notification = this.mNotificationService.getOngoingCallNotification(ongoing);
+                startForeground(NotificationService.ONGOING_CALL_NOTIFICATION_ID, notification);
+                mNotificationService.cancel(NotificationService.FOREGROUND_NOTIFICATION_ID);
+            } else {
+                notification = this.mNotificationService.createForegroundNotification();
+                startForeground(NotificationService.FOREGROUND_NOTIFICATION_ID, notification);
+            }
+
             if (!mForceForegroundService.get()) {
                 mNotificationService.notify(NotificationService.FOREGROUND_NOTIFICATION_ID, notification);
             }
@@ -1241,7 +1264,10 @@ public class XmppConnectionService extends Service {
             status = false;
         }
         if (!mForceForegroundService.get()) {
-            mNotificationService.dismissForcedForegroundNotification(); //if the channel was changed the previous call might fail
+            mNotificationService.cancel(NotificationService.FOREGROUND_NOTIFICATION_ID);
+        }
+        if (ongoing == null) {
+            mNotificationService.cancel(NotificationService.ONGOING_CALL_NOTIFICATION_ID);
         }
         Log.d(Config.LOGTAG, "ForegroundService: " + (status ? "on" : "off"));
     }
@@ -1253,7 +1279,7 @@ public class XmppConnectionService extends Service {
     @Override
     public void onTaskRemoved(final Intent rootIntent) {
         super.onTaskRemoved(rootIntent);
-        if ((Compatibility.keepForegroundService(this) && hasEnabledAccounts()) || mForceForegroundService.get()) {
+        if ((Compatibility.keepForegroundService(this) && hasEnabledAccounts()) || mForceForegroundService.get() || ongoingCall.get() != null) {
             Log.d(Config.LOGTAG, "ignoring onTaskRemoved because foreground service is activated");
         } else {
             this.logoutAndSave(false);

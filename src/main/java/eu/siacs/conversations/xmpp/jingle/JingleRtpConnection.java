@@ -772,9 +772,9 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
 
     private void updateOngoingCallNotification() {
         if (STATES_SHOWING_ONGOING_CALL.contains(this.state)) {
-            xmppConnectionService.getNotificationService().showOngoingCallNotification(id);
+            xmppConnectionService.setOngoingCall(id);
         } else {
-            xmppConnectionService.getNotificationService().cancelOngoingCallNotification();
+            xmppConnectionService.removeOngoingCall(id);
         }
     }
 

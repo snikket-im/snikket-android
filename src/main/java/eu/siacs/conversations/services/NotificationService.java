@@ -76,7 +76,7 @@ public class NotificationService {
     private static final int NOTIFICATION_ID = NOTIFICATION_ID_MULTIPLIER * 2;
     private static final int ERROR_NOTIFICATION_ID = NOTIFICATION_ID_MULTIPLIER * 6;
     private static final int INCOMING_CALL_NOTIFICATION_ID = NOTIFICATION_ID_MULTIPLIER * 8;
-    private static final int ONGOING_CALL_NOTIFICATION_ID = NOTIFICATION_ID_MULTIPLIER * 10;
+    public static final int ONGOING_CALL_NOTIFICATION_ID = NOTIFICATION_ID_MULTIPLIER * 10;
     private final XmppConnectionService mXmppConnectionService;
     private final LinkedHashMap<String, ArrayList<Message>> notifications = new LinkedHashMap<>();
     private final HashMap<Conversation, AtomicInteger> mBacklogMessageCounter = new HashMap<>();
@@ -362,10 +362,10 @@ public class NotificationService {
                 .build());
         final Notification notification = builder.build();
         notification.flags = notification.flags | Notification.FLAG_INSISTENT;
-        notify(INCOMING_CALL_NOTIFICATION_ID, builder.build());
+        notify(INCOMING_CALL_NOTIFICATION_ID, notification);
     }
 
-    public void showOngoingCallNotification(final AbstractJingleConnection.Id id) {
+    public Notification getOngoingCallNotification(final AbstractJingleConnection.Id id) {
         final NotificationCompat.Builder builder = new NotificationCompat.Builder(mXmppConnectionService, "ongoing_calls");
         builder.setSmallIcon(R.drawable.ic_call_white_24dp);
         builder.setContentTitle(mXmppConnectionService.getString(R.string.ongoing_call));
@@ -380,9 +380,7 @@ public class NotificationService {
                 mXmppConnectionService.getString(R.string.hang_up),
                 createCallAction(id.sessionId, XmppConnectionService.ACTION_END_CALL, 104))
                 .build());
-        final Notification notification = builder.build();
-        notification.flags = notification.flags | Notification.FLAG_INSISTENT;
-        notify(ONGOING_CALL_NOTIFICATION_ID, builder.build());
+        return builder.build();
     }
 
     private PendingIntent createPendingRtpSession(final AbstractJingleConnection.Id id, final String action, final int requestCode) {
@@ -1129,7 +1127,7 @@ public class NotificationService {
         }
     }
 
-    private void cancel(int id) {
+    public void cancel(int id) {
         final NotificationManagerCompat notificationManager = NotificationManagerCompat.from(mXmppConnectionService);
         try {
             notificationManager.cancel(id);
