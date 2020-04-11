@@ -141,7 +141,11 @@ public class RtpSessionActivity extends XmppActivity implements XmppConnectionSe
     @Override
     public void onNewIntent(final Intent intent) {
         super.onNewIntent(intent);
-        //TODO. deal with 'pending intent' in case background service isn’t here yet.
+        setIntent(intent);
+        if (xmppConnectionService == null) {
+            Log.d(Config.LOGTAG,"RtpSessionActivity: background service wasn't bound in onNewIntent()");
+            return;
+        }
         final Account account = extractAccount(intent);
         final Jid with = Jid.of(intent.getStringExtra(EXTRA_WITH));
         final String sessionId = intent.getStringExtra(EXTRA_SESSION_ID);
@@ -238,6 +242,9 @@ public class RtpSessionActivity extends XmppActivity implements XmppConnectionSe
         if (currentState == RtpEndUserState.ENDED) {
             finish();
             return;
+        }
+        if (currentState == RtpEndUserState.INCOMING_CALL) {
+            getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         }
         if (JingleRtpConnection.STATES_SHOWING_ONGOING_CALL.contains(requireRtpConnection().getState())) {
             putScreenInCallMode();
