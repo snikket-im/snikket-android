@@ -1044,7 +1044,7 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
         while (relevantForCorrection.mergeable(relevantForCorrection.next())) {
             relevantForCorrection = relevantForCorrection.next();
         }
-        if (m.getType() != Message.TYPE_STATUS) {
+        if (m.getType() != Message.TYPE_STATUS && m.getType() != Message.TYPE_RTP_SESSION) {
 
             if (m.getEncryption() == Message.ENCRYPTION_AXOLOTL_NOT_FOR_THIS_DEVICE || m.getEncryption() == Message.ENCRYPTION_AXOLOTL_FAILED) {
                 return;

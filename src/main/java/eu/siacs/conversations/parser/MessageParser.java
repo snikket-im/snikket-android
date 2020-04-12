@@ -829,10 +829,17 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
             if (!isTypeGroupChat) {
                 for (Element child : packet.getChildren()) {
                     if (Namespace.JINGLE_MESSAGE.equals(child.getNamespace()) && JINGLE_MESSAGE_ELEMENT_NAMES.contains(child.getName())) {
+                        //TODO in this case we probably only want to send receipts for live messages
+                        //as soon as it comes from MAM it is probably too late anyway
                         if (!account.getJid().asBareJid().equals(from.asBareJid())) {
                             processMessageReceipts(account, packet, query);
                         }
+                        //TODO only live propose messages should get processed that way; however we may want to deliver 'accept' and 'reject' to stop ringing
                         mXmppConnectionService.getJingleConnectionManager().deliverMessage(account, packet.getTo(), packet.getFrom(), child, serverMsgId, timestamp);
+
+
+                        //TODO for queries we might want to process 'propose' and 'proceed'
+                        //TODO propose will trigger a 'missed call' entry; 'proceed' might update that to a non missed call
                         break;
                     }
                 }
