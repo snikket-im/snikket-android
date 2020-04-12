@@ -299,6 +299,8 @@ public class UIHelper {
 			return new Pair<>(context.getString(R.string.omemo_decryption_failed), true);
 		} else if (message.isFileOrImage()) {
 			return new Pair<>(getFileDescriptionString(context, message), true);
+		} else if (message.getType() == Message.TYPE_RTP_SESSION) {
+			return new Pair<>(context.getString(message.getStatus() == Message.STATUS_RECEIVED ? R.string.incoming_call : R.string.outgoing_call), true);
 		} else {
 			final String body = MessageUtils.filterLtrRtl(message.getBody());
 			if (body.startsWith(Message.ME_COMMAND)) {

@@ -1,5 +1,6 @@
 package eu.siacs.conversations.xmpp.jingle;
 
+import android.os.SystemClock;
 import android.util.Log;
 
 import com.google.common.base.Strings;
@@ -18,6 +19,10 @@ import java.util.List;
 import java.util.Map;
 
 import eu.siacs.conversations.Config;
+import eu.siacs.conversations.entities.Conversation;
+import eu.siacs.conversations.entities.Conversational;
+import eu.siacs.conversations.entities.Message;
+import eu.siacs.conversations.entities.RtpSessionStatus;
 import eu.siacs.conversations.xml.Element;
 import eu.siacs.conversations.xml.Namespace;
 import eu.siacs.conversations.xmpp.jingle.stanzas.Group;
@@ -94,13 +99,27 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
 
     private final WebRTCWrapper webRTCWrapper = new WebRTCWrapper(this);
     private final ArrayDeque<IceCandidate> pendingIceCandidates = new ArrayDeque<>();
+    private final Message message;
     private State state = State.NULL;
     private RtpContentMap initiatorRtpContentMap;
     private RtpContentMap responderRtpContentMap;
+    private long rtpConnectionStarted = 0; //time of 'connected'
 
 
     JingleRtpConnection(JingleConnectionManager jingleConnectionManager, Id id, Jid initiator) {
         super(jingleConnectionManager, id, initiator);
+        final Conversation conversation = jingleConnectionManager.getXmppConnectionService().findOrCreateConversation(
+                id.account,
+                id.with.asBareJid(),
+                false,
+                false
+        );
+        this.message = new Message(
+                conversation,
+                isInitiator() ? Message.STATUS_SEND : Message.STATUS_RECEIVED,
+                Message.TYPE_RTP_SESSION,
+                id.sessionId
+        );
     }
 
     private static State reasonToState(Reason reason) {
@@ -153,7 +172,9 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
             return;
         }
         webRTCWrapper.close();
-        transitionOrThrow(reasonToState(wrapper.reason));
+        final State target = reasonToState(wrapper.reason);
+        transitionOrThrow(target);
+        writeLogMessage(target);
         if (previous == State.PROPOSED || previous == State.SESSION_INITIALIZED) {
             xmppConnectionService.getNotificationService().cancelIncomingCallNotification();
         }
@@ -455,7 +476,7 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
             if (transition(State.RETRACTED)) {
                 xmppConnectionService.getNotificationService().cancelIncomingCallNotification();
                 Log.d(Config.LOGTAG, id.account.getJid().asBareJid() + ": session with " + id.with + " has been retracted");
-                //TODO create missed call notification/message
+                writeLogMessageMissed();
                 jingleConnectionManager.finishConnection(this);
             } else {
                 Log.d(Config.LOGTAG, "ignoring retract because already in " + this.state);
@@ -509,6 +530,7 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
     private void sendSessionTerminate(final Reason reason, final String text) {
         final State target = reasonToState(reason);
         transitionOrThrow(target);
+        writeLogMessage(target);
         final JinglePacket jinglePacket = new JinglePacket(JinglePacket.Action.SESSION_TERMINATE, id.sessionId);
         jinglePacket.setReason(reason, text);
         send(jinglePacket);
@@ -773,9 +795,12 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
     public void onConnectionChange(final PeerConnection.PeerConnectionState newState) {
         Log.d(Config.LOGTAG, id.account.getJid().asBareJid() + ": PeerConnectionState changed to " + newState);
         updateEndUserState();
+        if (newState == PeerConnection.PeerConnectionState.CONNECTED && this.rtpConnectionStarted == 0) {
+            this.rtpConnectionStarted = SystemClock.elapsedRealtime();
+        }
         if (newState == PeerConnection.PeerConnectionState.FAILED) {
             if (TERMINATED.contains(this.state)) {
-                Log.d(Config.LOGTAG,id.account.getJid().asBareJid()+": not sending session-terminate after connectivity error because session is already in state "+this.state);
+                Log.d(Config.LOGTAG, id.account.getJid().asBareJid() + ": not sending session-terminate after connectivity error because session is already in state " + this.state);
                 return;
             }
             sendSessionTerminate(Reason.CONNECTIVITY_ERROR);
@@ -847,6 +872,37 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
         } else {
             Log.w(Config.LOGTAG, id.account.getJid().asBareJid() + ": has no external service discovery");
             onIceServersDiscovered.onIceServersDiscovered(Collections.emptyList());
+        }
+    }
+
+    private void writeLogMessage(final State state) {
+        final long started = this.rtpConnectionStarted;
+        long duration = started <= 0 ? 0 : SystemClock.elapsedRealtime() - started;
+        if (state == State.TERMINATED_SUCCESS || (state == State.TERMINATED_CONNECTIVITY_ERROR && duration > 0)) {
+            writeLogMessageSuccess(duration);
+        } else {
+            writeLogMessageMissed();
+        }
+    }
+
+    private void writeLogMessageSuccess(final long duration) {
+        this.message.setBody(new RtpSessionStatus(true, duration).toString());
+        this.writeMessage();
+    }
+
+    private void writeLogMessageMissed() {
+        this.message.setBody(new RtpSessionStatus(false,0).toString());
+        this.writeMessage();
+    }
+
+    private void writeMessage() {
+        final Conversational conversational = message.getConversation();
+        if (conversational instanceof Conversation) {
+            ((Conversation) conversational).add(this.message);
+            xmppConnectionService.databaseBackend.createMessage(message);
+            xmppConnectionService.updateConversationUi();
+        } else {
+            throw new IllegalStateException("Somehow the conversation in a message was a stub");
         }
     }
 

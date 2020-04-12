@@ -57,6 +57,7 @@ public class Message extends AbstractEntity implements AvatarService.Avatarable 
 	public static final int TYPE_STATUS = 3;
 	public static final int TYPE_PRIVATE = 4;
 	public static final int TYPE_PRIVATE_FILE = 5;
+	public static final int TYPE_RTP_SESSION = 6;
 
 	public static final String CONVERSATION = "conversationUuid";
 	public static final String COUNTERPART = "counterpart";
@@ -138,6 +139,31 @@ public class Message extends AbstractEntity implements AvatarService.Avatarable 
 				TYPE_TEXT,
 				false,
 				null,
+				null,
+				null,
+				null,
+				true,
+				null,
+				false,
+				null,
+				null,
+				false,
+				false,
+				null);
+	}
+
+	public Message(Conversation conversation, int status, int type, final String remoteMsgId) {
+		this(conversation, java.util.UUID.randomUUID().toString(),
+				conversation.getUuid(),
+				conversation.getJid() == null ? null : conversation.getJid().asBareJid(),
+				null,
+				null,
+				System.currentTimeMillis(),
+				Message.ENCRYPTION_NONE,
+				status,
+				type,
+				false,
+				remoteMsgId,
 				null,
 				null,
 				null,
