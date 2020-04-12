@@ -245,7 +245,7 @@ public class JingleFileTransferConnection extends AbstractJingleConnection imple
         if (action == JinglePacket.Action.SESSION_INITIATE) {
             init(packet);
         } else if (action == JinglePacket.Action.SESSION_TERMINATE) {
-            final Reason reason = packet.getReason();
+            final Reason reason = packet.getReason().reason;
             switch (reason) {
                 case CANCEL:
                     this.cancelled = true;

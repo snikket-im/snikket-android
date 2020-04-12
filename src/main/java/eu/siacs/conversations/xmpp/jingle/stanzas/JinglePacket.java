@@ -69,17 +69,21 @@ public class JinglePacket extends IqPacket {
         addJingleChild(content);
     }
 
-    public Reason getReason() {
-        final Element reason = getJingleChild("reason");
-        if (reason == null) {
-            return Reason.UNKNOWN;
+    public ReasonWrapper getReason() {
+        final Element reasonElement = getJingleChild("reason");
+        if (reasonElement == null) {
+            return new ReasonWrapper(Reason.UNKNOWN,null);
         }
-        for(Element child : reason.getChildren()) {
-            if (!"text".equals(child.getName())) {
-                return Reason.of(child.getName());
+        String text = null;
+        Reason reason = Reason.UNKNOWN;
+        for(Element child : reasonElement.getChildren()) {
+            if ("text".equals(child.getName())) {
+                text = child.getContent();
+            } else {
+                reason = Reason.of(child.getName());
             }
         }
-        return Reason.UNKNOWN;
+        return new ReasonWrapper(reason, text);
     }
 
     public void setReason(final Reason reason, final String text) {
@@ -147,6 +151,17 @@ public class JinglePacket extends IqPacket {
         @NonNull
         public String toString() {
             return CaseFormat.UPPER_UNDERSCORE.to(CaseFormat.LOWER_HYPHEN, super.toString());
+        }
+    }
+
+
+    public static class ReasonWrapper {
+        public final Reason reason;
+        public final String text;
+
+        public ReasonWrapper(Reason reason, String text) {
+            this.reason = reason;
+            this.text = text;
         }
     }
 }

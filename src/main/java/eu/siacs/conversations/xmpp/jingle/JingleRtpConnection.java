@@ -36,6 +36,14 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
             State.SESSION_INITIALIZED_PRE_APPROVED,
             State.SESSION_ACCEPTED
     );
+
+    private static final List<State> TERMINATED = Arrays.asList(
+            State.TERMINATED_DECLINED_OR_BUSY,
+            State.TERMINATED_CONNECTIVITY_ERROR,
+            State.TERMINATED_CANCEL_OR_TIMEOUT,
+            State.TERMINATED_APPLICATION_FAILURE
+    );
+
     private static final Map<State, Collection<State>> VALID_TRANSITIONS;
 
     static {
@@ -137,11 +145,15 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
 
     private void receiveSessionTerminate(final JinglePacket jinglePacket) {
         respondOk(jinglePacket);
-        final Reason reason = jinglePacket.getReason();
+        final JinglePacket.ReasonWrapper wrapper = jinglePacket.getReason();
         final State previous = this.state;
-        Log.d(Config.LOGTAG, id.account.getJid().asBareJid() + ": received session terminate reason=" + reason + " while in state " + previous);
+        Log.d(Config.LOGTAG, id.account.getJid().asBareJid() + ": received session terminate reason=" + wrapper.reason + "(" + Strings.nullToEmpty(wrapper.text) + ") while in state " + previous);
+        if (TERMINATED.contains(previous)) {
+            Log.d(Config.LOGTAG, id.account.getJid().asBareJid() + ": ignoring session terminate because already in " + previous);
+            return;
+        }
         webRTCWrapper.close();
-        transitionOrThrow(reasonToState(reason));
+        transitionOrThrow(reasonToState(wrapper.reason));
         if (previous == State.PROPOSED || previous == State.SESSION_INITIALIZED) {
             xmppConnectionService.getNotificationService().cancelIncomingCallNotification();
         }
@@ -761,7 +773,11 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
     public void onConnectionChange(final PeerConnection.PeerConnectionState newState) {
         Log.d(Config.LOGTAG, id.account.getJid().asBareJid() + ": PeerConnectionState changed to " + newState);
         updateEndUserState();
-        if (newState == PeerConnection.PeerConnectionState.FAILED) { //TODO guard this in isState(initiated,initiated_approved,accepted) otherwise it might fire too late
+        if (newState == PeerConnection.PeerConnectionState.FAILED) {
+            if (TERMINATED.contains(this.state)) {
+                Log.d(Config.LOGTAG,id.account.getJid().asBareJid()+": not sending session-terminate after connectivity error because session is already in state "+this.state);
+                return;
+            }
             sendSessionTerminate(Reason.CONNECTIVITY_ERROR);
         }
     }
