@@ -232,7 +232,10 @@ public class RtpDescription extends GenericDescription {
 
         public String toSdpAttribute() {
             final int channels = getChannels();
-            return getId()+" "+getPayloadTypeName()+"/"+getClockRate()+(channels == 1 ? "" : "/"+channels);
+            final String name = getPayloadTypeName();
+            Preconditions.checkArgument(name != null, "Payload-type name must not be empty");
+            SessionDescription.checkNoWhitespace(name, "payload-type name must not contain whitespaces");
+            return getId()+" "+name+"/"+getClockRate()+(channels == 1 ? "" : "/"+channels);
         }
 
         public int getIntId() {
@@ -367,7 +370,15 @@ public class RtpDescription extends GenericDescription {
             stringBuilder.append(id).append(' ');
             for(int i = 0; i < parameters.size(); ++i) {
                 Parameter p = parameters.get(i);
-                stringBuilder.append(p.getParameterName()).append('=').append(p.getParameterValue());
+                final String name = p.getParameterName();
+                Preconditions.checkArgument(name != null, String.format("parameter for %s must have a name", id));
+                SessionDescription.checkNoWhitespace(name, String.format("parameter names for %s must not contain whitespaces", id));
+
+                final String value = p.getParameterValue();
+                Preconditions.checkArgument(value != null, String.format("parameter for %s must have a value", id));
+                SessionDescription.checkNoWhitespace(value, String.format("parameter values for %s must not contain whitespaces", id));
+
+                stringBuilder.append(name).append('=').append(value);
                 if (i != parameters.size() - 1) {
                     stringBuilder.append(';');
                 }
