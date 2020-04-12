@@ -907,6 +907,7 @@
     <string name="incoming_call_duration">Incoming call · %s</string>
     <string name="outgoing_call">Outgoing call</string>
     <string name="outgoing_call_duration">Outgoing call · %s</string>
+    <string name="missed_call">Missed call</string>
     <plurals name="view_users">
         <item quantity="one">View %1$d Participant</item>
         <item quantity="other">View %1$d Participants</item>

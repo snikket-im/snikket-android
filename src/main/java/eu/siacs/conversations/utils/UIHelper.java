@@ -31,6 +31,7 @@ import eu.siacs.conversations.entities.ListItem;
 import eu.siacs.conversations.entities.Message;
 import eu.siacs.conversations.entities.MucOptions;
 import eu.siacs.conversations.entities.Presence;
+import eu.siacs.conversations.entities.RtpSessionStatus;
 import eu.siacs.conversations.entities.Transferable;
 import eu.siacs.conversations.services.ExportBackupService;
 import rocks.xmpp.addr.Jid;
@@ -300,7 +301,13 @@ public class UIHelper {
 		} else if (message.isFileOrImage()) {
 			return new Pair<>(getFileDescriptionString(context, message), true);
 		} else if (message.getType() == Message.TYPE_RTP_SESSION) {
-			return new Pair<>(context.getString(message.getStatus() == Message.STATUS_RECEIVED ? R.string.incoming_call : R.string.outgoing_call), true);
+			RtpSessionStatus rtpSessionStatus = RtpSessionStatus.of(message.getBody());
+			final boolean received = message.getStatus() == Message.STATUS_RECEIVED;
+			if (!rtpSessionStatus.successful && received) {
+				return new Pair<>(context.getString(R.string.missed_call),true);
+			} else {
+				return new Pair<>(context.getString(received ? R.string.incoming_call : R.string.outgoing_call), true);
+			}
 		} else {
 			final String body = MessageUtils.filterLtrRtl(message.getBody());
 			if (body.startsWith(Message.ME_COMMAND)) {

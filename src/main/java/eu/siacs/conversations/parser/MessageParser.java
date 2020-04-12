@@ -832,7 +832,7 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
                         if (!account.getJid().asBareJid().equals(from.asBareJid())) {
                             processMessageReceipts(account, packet, query);
                         }
-                        mXmppConnectionService.getJingleConnectionManager().deliverMessage(account, packet.getTo(), packet.getFrom(), child);
+                        mXmppConnectionService.getJingleConnectionManager().deliverMessage(account, packet.getTo(), packet.getFrom(), child, serverMsgId, timestamp);
                         break;
                     }
                 }

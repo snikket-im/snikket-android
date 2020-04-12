@@ -371,23 +371,23 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
         send(sessionAccept);
     }
 
-    void deliveryMessage(final Jid from, final Element message) {
+    void deliveryMessage(final Jid from, final Element message, final String serverMessageId, final long timestamp) {
         Log.d(Config.LOGTAG, id.account.getJid().asBareJid() + ": delivered message to JingleRtpConnection " + message);
         switch (message.getName()) {
             case "propose":
-                receivePropose(from, message);
+                receivePropose(from, serverMessageId, timestamp);
                 break;
             case "proceed":
-                receiveProceed(from, message);
+                receiveProceed(from, serverMessageId, timestamp);
                 break;
             case "retract":
-                receiveRetract(from, message);
+                receiveRetract(from, serverMessageId, timestamp);
                 break;
             case "reject":
-                receiveReject(from, message);
+                receiveReject(from, serverMessageId, timestamp);
                 break;
             case "accept":
-                receiveAccept(from, message);
+                receiveAccept(from, serverMessageId, timestamp);
                 break;
             default:
                 break;
@@ -403,10 +403,16 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
         }
     }
 
-    private void receiveAccept(Jid from, Element message) {
+    private void receiveAccept(final Jid from, final String serverMsgId, final long timestamp) {
         final boolean originatedFromMyself = from.asBareJid().equals(id.account.getJid().asBareJid());
         if (originatedFromMyself) {
             if (transition(State.ACCEPTED)) {
+                if (serverMsgId != null) {
+                    this.message.setServerMsgId(serverMsgId);
+                }
+                this.message.setTime(timestamp);
+                this.message.setCarbon(true); //indicate that call was accepted on other device
+                this.writeLogMessageSuccess(0);
                 this.xmppConnectionService.getNotificationService().cancelIncomingCallNotification();
                 this.jingleConnectionManager.finishConnection(this);
             } else {
@@ -417,13 +423,19 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
         }
     }
 
-    private void receiveReject(Jid from, Element message) {
+    private void receiveReject(Jid from, String serverMsgId, long timestamp) {
         final boolean originatedFromMyself = from.asBareJid().equals(id.account.getJid().asBareJid());
         //reject from another one of my clients
         if (originatedFromMyself) {
             if (transition(State.REJECTED)) {
                 this.xmppConnectionService.getNotificationService().cancelIncomingCallNotification();
                 this.jingleConnectionManager.finishConnection(this);
+                if (serverMsgId != null) {
+                    this.message.setServerMsgId(serverMsgId);
+                }
+                this.message.setTime(timestamp);
+                this.message.setCarbon(true); //indicate that call was rejected on other device
+                writeLogMessageMissed();
             } else {
                 Log.d(Config.LOGTAG, "not able to transition into REJECTED because already in " + this.state);
             }
@@ -432,12 +444,15 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
         }
     }
 
-    private void receivePropose(final Jid from, final Element propose) {
+    private void receivePropose(final Jid from, final String serverMsgId, final long timestamp) {
         final boolean originatedFromMyself = from.asBareJid().equals(id.account.getJid().asBareJid());
-        //TODO we can use initiator logic here
         if (originatedFromMyself) {
             Log.d(Config.LOGTAG, id.account.getJid().asBareJid() + ": saw proposal from mysql. ignoring");
         } else if (transition(State.PROPOSED)) {
+            if (serverMsgId != null) {
+                this.message.setServerMsgId(serverMsgId);
+            }
+            this.message.setTime(timestamp);
             startRinging();
         } else {
             Log.d(Config.LOGTAG, id.account.getJid() + ": ignoring session proposal because already in " + state);
@@ -449,10 +464,14 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
         xmppConnectionService.getNotificationService().showIncomingCallNotification(id);
     }
 
-    private void receiveProceed(final Jid from, final Element proceed) {
+    private void receiveProceed(final Jid from, final String serverMsgId, final long timestamp) {
         if (from.equals(id.with)) {
             if (isInitiator()) {
                 if (transition(State.PROCEED)) {
+                    if (serverMsgId != null) {
+                        this.message.setServerMsgId(serverMsgId);
+                    }
+                    this.message.setTime(timestamp);
                     this.sendSessionInitiate(State.SESSION_INITIALIZED_PRE_APPROVED);
                 } else {
                     Log.d(Config.LOGTAG, String.format("%s: ignoring proceed because already in %s", id.account.getJid().asBareJid(), this.state));
@@ -471,11 +490,15 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
         }
     }
 
-    private void receiveRetract(final Jid from, final Element retract) {
+    private void receiveRetract(final Jid from, final String serverMsgId, final long timestamp) {
         if (from.equals(id.with)) {
             if (transition(State.RETRACTED)) {
                 xmppConnectionService.getNotificationService().cancelIncomingCallNotification();
                 Log.d(Config.LOGTAG, id.account.getJid().asBareJid() + ": session with " + id.with + " has been retracted");
+                if (serverMsgId != null) {
+                    this.message.setServerMsgId(serverMsgId);
+                }
+                this.message.setTime(timestamp);
                 writeLogMessageMissed();
                 jingleConnectionManager.finishConnection(this);
             } else {
@@ -729,6 +752,7 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
 
     private void rejectCallFromProposed() {
         transitionOrThrow(State.REJECTED);
+        writeLogMessageMissed();
         xmppConnectionService.getNotificationService().cancelIncomingCallNotification();
         this.sendJingleMessage("reject");
         jingleConnectionManager.finishConnection(this);
