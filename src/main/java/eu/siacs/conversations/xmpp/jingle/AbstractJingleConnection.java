@@ -36,6 +36,8 @@ public abstract class AbstractJingleConnection {
         return id;
     }
 
+    abstract void notifyRebound();
+
 
     public static class Id {
         public final Account account;

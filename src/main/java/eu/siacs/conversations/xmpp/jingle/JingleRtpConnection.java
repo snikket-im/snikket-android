@@ -65,7 +65,8 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
                 State.PROCEED,
                 State.REJECTED,
                 State.RETRACTED,
-                State.TERMINATED_APPLICATION_FAILURE
+                State.TERMINATED_APPLICATION_FAILURE,
+                State.TERMINATED_CONNECTIVITY_ERROR //only used when the xmpp connection rebinds
         ));
         transitionBuilder.put(State.PROCEED, ImmutableList.of(
                 State.SESSION_INITIALIZED_PRE_APPROVED,
@@ -161,6 +162,24 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
                 respondOk(jinglePacket);
                 Log.d(Config.LOGTAG, String.format("%s: received unhandled jingle action %s", id.account.getJid().asBareJid(), jinglePacket.getAction()));
                 break;
+        }
+    }
+
+    @Override
+    void notifyRebound() {
+        if (TERMINATED.contains(this.state)) {
+            return;
+        }
+        webRTCWrapper.close();
+        if (!isInitiator() && isInState(State.PROPOSED,State.SESSION_INITIALIZED)) {
+            xmppConnectionService.getNotificationService().cancelIncomingCallNotification();
+        }
+        if (isInState(State.SESSION_INITIALIZED, State.SESSION_INITIALIZED_PRE_APPROVED, State.SESSION_ACCEPTED)) {
+            //we might have already changed resources (full jid) at this point; so this might not even reach the other party
+            sendSessionTerminate(Reason.CONNECTIVITY_ERROR);
+        } else {
+            transitionOrThrow(State.TERMINATED_CONNECTIVITY_ERROR);
+            jingleConnectionManager.finishConnection(this);
         }
     }
 
@@ -496,7 +515,7 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
         if (from.equals(id.with)) {
             if (transition(State.RETRACTED)) {
                 xmppConnectionService.getNotificationService().cancelIncomingCallNotification();
-                Log.d(Config.LOGTAG, id.account.getJid().asBareJid() + ": session with " + id.with + " has been retracted (serverMsgId="+serverMsgId+")");
+                Log.d(Config.LOGTAG, id.account.getJid().asBareJid() + ": session with " + id.with + " has been retracted (serverMsgId=" + serverMsgId + ")");
                 if (serverMsgId != null) {
                     this.message.setServerMsgId(serverMsgId);
                 }
@@ -559,7 +578,6 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
         final JinglePacket jinglePacket = new JinglePacket(JinglePacket.Action.SESSION_TERMINATE, id.sessionId);
         jinglePacket.setReason(reason, text);
         send(jinglePacket);
-        Log.d(Config.LOGTAG, jinglePacket.toString());
         jingleConnectionManager.finishConnection(this);
     }
 
@@ -837,12 +855,12 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
         return webRTCWrapper.getAudioManager();
     }
 
-    public void setMicrophoneEnabled(final boolean enabled) {
-        webRTCWrapper.setMicrophoneEnabled(enabled);
-    }
-
     public boolean isMicrophoneEnabled() {
         return webRTCWrapper.isMicrophoneEnabled();
+    }
+
+    public void setMicrophoneEnabled(final boolean enabled) {
+        webRTCWrapper.setMicrophoneEnabled(enabled);
     }
 
     @Override
@@ -934,7 +952,7 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
     }
 
     private void writeLogMessageMissed() {
-        this.message.setBody(new RtpSessionStatus(false,0).toString());
+        this.message.setBody(new RtpSessionStatus(false, 0).toString());
         this.writeMessage();
     }
 

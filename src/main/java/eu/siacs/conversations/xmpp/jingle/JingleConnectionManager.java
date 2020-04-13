@@ -376,11 +376,9 @@ public class JingleConnectionManager extends AbstractConnectionManager {
         account.getXmppConnection().sendIqPacket(packet.generateResponse(IqPacket.TYPE.ERROR), null);
     }
 
-    public void cancelInTransmission() {
-        for (AbstractJingleConnection connection : this.connections.values()) {
-            /*if (connection.getJingleStatus() == JingleFileTransferConnection.JINGLE_STATUS_TRANSMITTING) {
-                connection.abort("connectivity-error");
-            }*/
+    public void notifyRebound() {
+        for (final AbstractJingleConnection connection : this.connections.values()) {
+            connection.notifyRebound();
         }
     }
 

@@ -293,6 +293,13 @@ public class JingleFileTransferConnection extends AbstractJingleConnection imple
         }
     }
 
+    @Override
+    void notifyRebound() {
+        if (getJingleStatus() == JINGLE_STATUS_TRANSMITTING) {
+            abort(Reason.CONNECTIVITY_ERROR);
+        }
+    }
+
     private void respondToIq(final IqPacket packet, final boolean result) {
         final IqPacket response;
         if (result) {

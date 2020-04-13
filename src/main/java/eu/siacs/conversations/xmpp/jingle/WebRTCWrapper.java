@@ -50,7 +50,9 @@ public class WebRTCWrapper {
         @Override
         public void onSignalingChange(PeerConnection.SignalingState signalingState) {
             Log.d(Config.LOGTAG, "onSignalingChange(" + signalingState + ")");
-
+            //this is called after removeTrack or addTrack
+            //and should then trigger a content-add or content-remove or something
+            //https://developer.mozilla.org/en-US/docs/Web/API/RTCPeerConnection/removeTrack
         }
 
         @Override

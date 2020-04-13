@@ -145,9 +145,7 @@ import eu.siacs.conversations.xmpp.chatstate.ChatState;
 import eu.siacs.conversations.xmpp.forms.Data;
 import eu.siacs.conversations.xmpp.jingle.AbstractJingleConnection;
 import eu.siacs.conversations.xmpp.jingle.JingleConnectionManager;
-import eu.siacs.conversations.xmpp.jingle.OnJinglePacketReceived;
 import eu.siacs.conversations.xmpp.jingle.RtpEndUserState;
-import eu.siacs.conversations.xmpp.jingle.stanzas.JinglePacket;
 import eu.siacs.conversations.xmpp.mam.MamReference;
 import eu.siacs.conversations.xmpp.pep.Avatar;
 import eu.siacs.conversations.xmpp.pep.PublishOptions;
@@ -314,7 +312,7 @@ public class XmppConnectionService extends Service {
             synchronized (account.inProgressConferencePings) {
                 account.inProgressConferencePings.clear();
             }
-            mJingleConnectionManager.cancelInTransmission();
+            mJingleConnectionManager.notifyRebound();
             mQuickConversationsService.considerSyncBackground(false);
             fetchRosterFromServer(account);
 
