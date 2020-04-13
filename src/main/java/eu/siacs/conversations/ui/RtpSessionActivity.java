@@ -135,9 +135,17 @@ public class RtpSessionActivity extends XmppActivity implements XmppConnectionSe
 
     private void releaseProximityWakeLock() {
         if (this.mProximityWakeLock != null && mProximityWakeLock.isHeld()) {
-            Log.d(Config.LOGTAG, "releasing wake lock");
+            Log.d(Config.LOGTAG, "releasing proximity wake lock");
             this.mProximityWakeLock.release();
             this.mProximityWakeLock = null;
+        }
+    }
+
+    private void putProximityWakeLockInProperState() {
+        if (requireRtpConnection().getAudioManager().getSelectedAudioDevice() == AppRTCAudioManager.AudioDevice.EARPIECE) {
+            acquireProximityWakeLock();
+        } else {
+            releaseProximityWakeLock();
         }
     }
 
@@ -200,6 +208,7 @@ public class RtpSessionActivity extends XmppActivity implements XmppConnectionSe
 
     private void proposeJingleRtpSession(final Account account, final Jid with) {
         xmppConnectionService.getJingleConnectionManager().proposeJingleRtpSession(account, with);
+        //TODO maybe we don’t want to acquire a wake lock just yet and wait for audio manager to discover what speaker we are using
         putScreenInCallMode();
     }
 
@@ -506,6 +515,7 @@ public class RtpSessionActivity extends XmppActivity implements XmppConnectionSe
                         requireRtpConnection().isMicrophoneEnabled()
                 );
             }
+            putProximityWakeLockInProperState();
         } catch (IllegalStateException e) {
             Log.d(Config.LOGTAG, "RTP connection was not available when audio device changed");
         }

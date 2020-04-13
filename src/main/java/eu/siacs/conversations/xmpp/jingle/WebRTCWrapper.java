@@ -145,7 +145,8 @@ public class WebRTCWrapper {
         );
         mainHandler.post(() -> {
             appRTCAudioManager = AppRTCAudioManager.create(context, AppRTCAudioManager.SpeakerPhonePreference.EARPIECE);
-        appRTCAudioManager.start(audioManagerEvents);
+            appRTCAudioManager.start(audioManagerEvents);
+            eventCallback.onAudioDeviceChanged(appRTCAudioManager.getSelectedAudioDevice(), appRTCAudioManager.getAudioDevices());
         });
     }
 
@@ -218,6 +219,7 @@ public class WebRTCWrapper {
         peerConnection.setAudioRecording(true);
         this.peerConnection = peerConnection;
     }
+
     public void close() {
         final PeerConnection peerConnection = this.peerConnection;
         if (peerConnection != null) {
