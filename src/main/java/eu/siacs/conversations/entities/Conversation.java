@@ -733,6 +733,18 @@ public class Conversation extends AbstractEntity implements Blockable, Comparabl
 		}
 	}
 
+	public Message findRtpSession(final String sessionId, final int s) {
+		synchronized (this.messages) {
+			for (int i = this.messages.size() - 1; i >= 0; --i) {
+				final Message message = this.messages.get(i);
+				if ((message.getStatus() == s) && (message.getType() == Message.TYPE_RTP_SESSION) && sessionId.equals(message.getRemoteMsgId())) {
+					return message;
+				}
+			}
+		}
+		return null;
+	}
+
 	public boolean possibleDuplicate(final String serverMsgId, final String remoteMsgId) {
 		if (serverMsgId == null || remoteMsgId == null) {
 			return false;
@@ -1007,7 +1019,7 @@ public class Conversation extends AbstractEntity implements Blockable, Comparabl
 		return UIHelper.getColorForName(getName().toString());
 	}
 
-	public interface OnMessageFound {
+    public interface OnMessageFound {
 		void onMessageFound(final Message message);
 	}
 

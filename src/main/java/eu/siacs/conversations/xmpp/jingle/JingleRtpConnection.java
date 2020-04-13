@@ -494,7 +494,7 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
         if (from.equals(id.with)) {
             if (transition(State.RETRACTED)) {
                 xmppConnectionService.getNotificationService().cancelIncomingCallNotification();
-                Log.d(Config.LOGTAG, id.account.getJid().asBareJid() + ": session with " + id.with + " has been retracted");
+                Log.d(Config.LOGTAG, id.account.getJid().asBareJid() + ": session with " + id.with + " has been retracted (serverMsgId="+serverMsgId+")");
                 if (serverMsgId != null) {
                     this.message.setServerMsgId(serverMsgId);
                 }
@@ -776,7 +776,7 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
         messagePacket.setType(MessagePacket.TYPE_CHAT); //we want to carbon copy those
         messagePacket.setTo(to);
         messagePacket.addChild(action, Namespace.JINGLE_MESSAGE).setAttribute("id", id.sessionId);
-        Log.d(Config.LOGTAG, messagePacket.toString());
+        messagePacket.addChild("store", "urn:xmpp:hints");
         xmppConnectionService.sendMessagePacket(id.account, messagePacket);
     }
 

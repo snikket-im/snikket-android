@@ -31,6 +31,7 @@ import eu.siacs.conversations.entities.Message;
 import eu.siacs.conversations.entities.MucOptions;
 import eu.siacs.conversations.entities.ReadByMarker;
 import eu.siacs.conversations.entities.ReceiptRequest;
+import eu.siacs.conversations.entities.RtpSessionStatus;
 import eu.siacs.conversations.http.HttpConnectionManager;
 import eu.siacs.conversations.http.P1S3UrlStreamHandler;
 import eu.siacs.conversations.services.MessageArchiveService;
@@ -71,6 +72,11 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
             safeToExtract = account.getXmppConnection().getFeatures().stanzaIds();
         }
         return safeToExtract ? extractStanzaId(packet, by) : null;
+    }
+
+    private static String extractStanzaId(Account account, Element packet) {
+        final boolean safeToExtract = account.getXmppConnection().getFeatures().stanzaIds();
+        return safeToExtract ? extractStanzaId(packet, account.getJid().asBareJid()) : null;
     }
 
     private static String extractStanzaId(Element packet, Jid by) {
@@ -829,17 +835,56 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
             if (!isTypeGroupChat) {
                 for (Element child : packet.getChildren()) {
                     if (Namespace.JINGLE_MESSAGE.equals(child.getNamespace()) && JINGLE_MESSAGE_ELEMENT_NAMES.contains(child.getName())) {
-                        //TODO in this case we probably only want to send receipts for live messages
-                        //as soon as it comes from MAM it is probably too late anyway
-                        if (!account.getJid().asBareJid().equals(from.asBareJid())) {
-                            processMessageReceipts(account, packet, query);
+                        final String action = child.getName();
+                        if (query == null) {
+                            if (!account.getJid().asBareJid().equals(from.asBareJid())) {
+                                processMessageReceipts(account, packet, query);
+                            }
+                            if (serverMsgId == null) {
+                                serverMsgId = extractStanzaId(account, packet);
+                            }
+                            mXmppConnectionService.getJingleConnectionManager().deliverMessage(account, packet.getTo(), packet.getFrom(), child, serverMsgId, timestamp);
+                        } else if (query.isCatchup()) {
+                            final String sessionId = child.getAttribute("id");
+                            if (sessionId == null) {
+                                break;
+                            }
+                            if ("propose".equals(action)) {
+                                final Element description = child.findChild("description");
+                                final String namespace = description == null ? null : description.getNamespace();
+                                if (Namespace.JINGLE_APPS_RTP.equals(namespace)) {
+                                    final Conversation c = mXmppConnectionService.findOrCreateConversation(account, counterpart.asBareJid(), false, false);
+                                    final Message message = new Message(
+                                            c,
+                                            status,
+                                            Message.TYPE_RTP_SESSION,
+                                            sessionId
+                                    );
+                                    message.setServerMsgId(serverMsgId);
+                                    message.setTime(timestamp);
+                                    message.setBody(new RtpSessionStatus(false, 0).toString());
+                                    c.add(message);
+                                    mXmppConnectionService.databaseBackend.createMessage(message);
+                                }
+
+                            } else if ("proceed".equals(action)) {
+                                //status needs to be flipped to find the original propose
+                                final Conversation c = mXmppConnectionService.findOrCreateConversation(account, counterpart.asBareJid(), false, false);
+                                final int s = packet.fromAccount(account) ? Message.STATUS_RECEIVED : Message.STATUS_SEND;
+                                final Message message = c.findRtpSession(sessionId, s);
+                                if (message != null) {
+                                    message.setBody(new RtpSessionStatus(true, 0).toString());
+                                    if (serverMsgId != null) {
+                                        message.setServerMsgId(serverMsgId);
+                                    }
+                                    message.setTime(timestamp);
+                                    mXmppConnectionService.updateMessage(message, true);
+                                } else {
+                                    Log.d(Config.LOGTAG, "unable to find original rtp session message for received propose");
+                                }
+
+                            }
                         }
-                        //TODO only live propose messages should get processed that way; however we may want to deliver 'accept' and 'reject' to stop ringing
-                        mXmppConnectionService.getJingleConnectionManager().deliverMessage(account, packet.getTo(), packet.getFrom(), child, serverMsgId, timestamp);
-
-
-                        //TODO for queries we might want to process 'propose' and 'proceed'
-                        //TODO propose will trigger a 'missed call' entry; 'proceed' might update that to a non missed call
                         break;
                     }
                 }
