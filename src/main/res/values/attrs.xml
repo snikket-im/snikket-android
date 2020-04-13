@@ -28,6 +28,7 @@
 
     <attr name="TextColorOnline" format="reference|color"/>
     <attr name="TextColorError" format="reference|color"/>
+    <attr name="icon_tint" format="reference|color"/>
 
     <attr name="ic_send_cancel_offline" format="reference"/>
     <attr name="ic_send_location_offline" format="reference"/>
@@ -43,6 +44,7 @@
     <attr name="ic_attach_location" format="reference"/>
     <attr name="ic_attach_photo" format="reference"/>
     <attr name="ic_attach_record" format="reference"/>
+
 
 
     <attr name="ic_cloud_download" format="reference"/>

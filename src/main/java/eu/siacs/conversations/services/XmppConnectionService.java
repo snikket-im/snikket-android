@@ -655,7 +655,7 @@ public class XmppConnectionService extends Service {
                     Log.d(Config.LOGTAG, "received intent to end call with session id " + sessionId);
                     mJingleConnectionManager.endRtpSession(sessionId);
                 }
-                    break;
+                break;
                 case ACTION_DISMISS_ERROR_NOTIFICATIONS:
                     dismissErrorNotifications();
                     break;
@@ -4017,6 +4017,12 @@ public class XmppConnectionService extends Service {
         }
     }
 
+    public void notifyJingleRtpConnectionUpdate(AppRTCAudioManager.AudioDevice selectedAudioDevice, Set<AppRTCAudioManager.AudioDevice> availableAudioDevices) {
+        for (OnJingleRtpConnectionUpdate listener : threadSafeList(this.onJingleRtpConnectionUpdate)) {
+            listener.onAudioDeviceChanged(selectedAudioDevice, availableAudioDevices);
+        }
+    }
+
     public void updateAccountUi() {
         for (OnAccountUpdate listener : threadSafeList(this.mOnAccountUpdates)) {
             listener.onAccountUpdate();
@@ -4696,6 +4702,8 @@ public class XmppConnectionService extends Service {
 
     public interface OnJingleRtpConnectionUpdate {
         void onJingleRtpConnectionUpdate(final Account account, final Jid with, final String sessionId, final RtpEndUserState state);
+
+        void onAudioDeviceChanged(AppRTCAudioManager.AudioDevice selectedAudioDevice, Set<AppRTCAudioManager.AudioDevice> availableAudioDevices);
     }
 
     public interface OnAccountUpdate {

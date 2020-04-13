@@ -17,12 +17,14 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.entities.Conversation;
 import eu.siacs.conversations.entities.Conversational;
 import eu.siacs.conversations.entities.Message;
 import eu.siacs.conversations.entities.RtpSessionStatus;
+import eu.siacs.conversations.services.AppRTCAudioManager;
 import eu.siacs.conversations.xml.Element;
 import eu.siacs.conversations.xml.Namespace;
 import eu.siacs.conversations.xmpp.jingle.stanzas.Group;
@@ -829,6 +831,11 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
             }
             sendSessionTerminate(Reason.CONNECTIVITY_ERROR);
         }
+    }
+
+    @Override
+    public void onAudioDeviceChanged(AppRTCAudioManager.AudioDevice selectedAudioDevice, Set<AppRTCAudioManager.AudioDevice> availableAudioDevices) {
+        xmppConnectionService.notifyJingleRtpConnectionUpdate(selectedAudioDevice, availableAudioDevices);
     }
 
     private void updateEndUserState() {

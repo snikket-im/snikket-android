@@ -15,6 +15,7 @@
         <item name="TextColorOnline">@color/green600</item>
         <item name="TextColorError">@color/red800</item>
         <item name="edit_text_color">@color/black87</item>
+        <item name="icon_tint">@color/black54</item>
 
         <item name="activity_background_search">@drawable/search_background_light</item>
         <item name="activity_background_no_results">@drawable/no_results_background_light</item>
@@ -136,6 +137,7 @@
         <item name="TextColorOnline">@color/green500</item>
         <item name="TextColorError">@color/red500</item>
         <item name="edit_text_color">@color/white</item>
+        <item name="icon_tint">@color/white70</item>
 
         <item name="EmojiColor">@color/white</item>
 
@@ -147,6 +149,7 @@
         <item name="TextSizeBody2">14sp</item>
         <item name="TextSizeSubhead">16sp</item>
         <item name="TextSizeTitle">20sp</item>
+        <item name="TextSizeDisplay2">45sp</item>
         <item name="TextSizeInput">16sp</item>
         <item name="TextSeparation">5sp</item>
         <item name="IconSize">18sp</item>
@@ -237,6 +240,7 @@
         <item name="TextSizeBody2">16sp</item>
         <item name="TextSizeSubhead">18sp</item>
         <item name="TextSizeTitle">22sp</item>
+        <item name="TextSizeDisplay2">47sp</item>
         <item name="TextSizeInput">18sp</item>
         <item name="TextSeparation">6sp</item>
         <item name="IconSize">20sp</item>
@@ -248,6 +252,7 @@
         <item name="TextSizeBody2">16sp</item>
         <item name="TextSizeSubhead">18sp</item>
         <item name="TextSizeTitle">22sp</item>
+        <item name="TextSizeDisplay2">47sp</item>
         <item name="TextSizeInput">18sp</item>
         <item name="TextSeparation">6sp</item>
         <item name="IconSize">20sp</item>
@@ -259,6 +264,7 @@
         <item name="TextSizeBody2">18sp</item>
         <item name="TextSizeSubhead">20sp</item>
         <item name="TextSizeTitle">24sp</item>
+        <item name="TextSizeDisplay2">48sp</item>
         <item name="TextSizeInput">20sp</item>
         <item name="TextSeparation">7sp</item>
         <item name="IconSize">22sp</item>
@@ -270,6 +276,7 @@
         <item name="TextSizeBody2">18sp</item>
         <item name="TextSizeSubhead">20sp</item>
         <item name="TextSizeTitle">24sp</item>
+        <item name="TextSizeDisplay2">48sp</item>
         <item name="TextSizeInput">20sp</item>
         <item name="TextSeparation">7sp</item>
         <item name="IconSize">22sp</item>

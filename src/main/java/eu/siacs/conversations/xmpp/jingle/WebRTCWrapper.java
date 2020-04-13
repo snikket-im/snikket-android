@@ -1,6 +1,8 @@
 package eu.siacs.conversations.xmpp.jingle;
 
 import android.content.Context;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 
 import com.google.common.collect.ImmutableList;
@@ -29,11 +31,13 @@ import org.webrtc.VideoSource;
 import org.webrtc.VideoTrack;
 
 import java.util.List;
+import java.util.Set;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import eu.siacs.conversations.Config;
+import eu.siacs.conversations.services.AppRTCAudioManager;
 
 public class WebRTCWrapper {
 
@@ -119,8 +123,16 @@ public class WebRTCWrapper {
 
         }
     };
+    private final AppRTCAudioManager.AudioManagerEvents audioManagerEvents = new AppRTCAudioManager.AudioManagerEvents() {
+        @Override
+        public void onAudioDeviceChanged(AppRTCAudioManager.AudioDevice selectedAudioDevice, Set<AppRTCAudioManager.AudioDevice> availableAudioDevices) {
+            eventCallback.onAudioDeviceChanged(selectedAudioDevice, availableAudioDevices);
+        }
+    };
     @Nullable
     private PeerConnection peerConnection = null;
+    private AppRTCAudioManager appRTCAudioManager = null;
+    private final Handler mainHandler = new Handler(Looper.getMainLooper());
 
     public WebRTCWrapper(final EventCallback eventCallback) {
         this.eventCallback = eventCallback;
@@ -130,6 +142,10 @@ public class WebRTCWrapper {
         PeerConnectionFactory.initialize(
                 PeerConnectionFactory.InitializationOptions.builder(context).createInitializationOptions()
         );
+        mainHandler.post(() -> {
+            appRTCAudioManager = AppRTCAudioManager.create(context, AppRTCAudioManager.SpeakerPhonePreference.EARPIECE);
+        appRTCAudioManager.start(audioManagerEvents);
+        });
     }
 
     public void initializePeerConnection(final List<PeerConnection.IceServer> iceServers) throws InitializationException {
@@ -202,15 +218,14 @@ public class WebRTCWrapper {
         peerConnection.setAudioRecording(true);
         this.peerConnection = peerConnection;
     }
-
-    public void closeOrThrow() {
-        requirePeerConnection().close();
-    }
-
     public void close() {
         final PeerConnection peerConnection = this.peerConnection;
         if (peerConnection != null) {
             peerConnection.close();
+        }
+        final AppRTCAudioManager audioManager = this.appRTCAudioManager;
+        if (audioManager != null) {
+            mainHandler.post(audioManager::stop);
         }
     }
 
@@ -355,5 +370,7 @@ public class WebRTCWrapper {
         void onIceCandidate(IceCandidate iceCandidate);
 
         void onConnectionChange(PeerConnection.PeerConnectionState newState);
+
+        void onAudioDeviceChanged(AppRTCAudioManager.AudioDevice selectedAudioDevice, Set<AppRTCAudioManager.AudioDevice> availableAudioDevices);
     }
 }

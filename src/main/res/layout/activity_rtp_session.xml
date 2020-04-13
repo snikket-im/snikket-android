@@ -5,7 +5,8 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="?color_background_secondary">
 
         <android.support.design.widget.AppBarLayout
             android:layout_width="match_parent"
@@ -59,17 +60,46 @@
                 tools:visibility="visible" />
 
             <android.support.design.widget.FloatingActionButton
+                android:id="@+id/in_call_action_left"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_margin="16dp"
+                android:layout_toStartOf="@+id/end_call"
+                android:layout_toLeftOf="@+id/end_call"
+                android:visibility="gone"
+                app:backgroundTint="?color_background_primary"
+                app:elevation="4dp"
+                app:fabSize="mini"
+                app:tint="?attr/icon_tint" />
+
+            <android.support.design.widget.FloatingActionButton
                 android:id="@+id/end_call"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
                 android:layout_margin="16dp"
                 android:src="@drawable/ic_call_end_white_48dp"
-                android:visibility="gone"
+                android:visibility="visible"
                 app:backgroundTint="@color/red700"
                 app:elevation="4dp"
                 app:fabCustomSize="72dp"
                 app:maxImageSize="36dp" />
+
+            <android.support.design.widget.FloatingActionButton
+                android:id="@+id/in_call_action_right"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_margin="16dp"
+                android:layout_toEndOf="@+id/end_call"
+                android:layout_toRightOf="@+id/end_call"
+                android:visibility="gone"
+                app:backgroundTint="?color_background_primary"
+                app:elevation="4dp"
+                app:fabSize="mini"
+                app:tint="?attr/icon_tint" />
+
 
             <android.support.design.widget.FloatingActionButton
                 android:id="@+id/accept_call"

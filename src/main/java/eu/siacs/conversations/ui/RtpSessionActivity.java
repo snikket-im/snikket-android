@@ -20,14 +20,17 @@ import com.google.common.collect.ImmutableList;
 
 import java.lang.ref.WeakReference;
 import java.util.Arrays;
+import java.util.Set;
 
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.databinding.ActivityRtpSessionBinding;
 import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.entities.Contact;
+import eu.siacs.conversations.services.AppRTCAudioManager;
 import eu.siacs.conversations.services.XmppConnectionService;
 import eu.siacs.conversations.utils.PermissionUtils;
+import eu.siacs.conversations.utils.ThemeHelper;
 import eu.siacs.conversations.xmpp.jingle.AbstractJingleConnection;
 import eu.siacs.conversations.xmpp.jingle.JingleRtpConnection;
 import eu.siacs.conversations.xmpp.jingle.RtpEndUserState;
@@ -56,6 +59,8 @@ public class RtpSessionActivity extends XmppActivity implements XmppConnectionSe
 
     private ActivityRtpSessionBinding binding;
     private PowerManager.WakeLock mProximityWakeLock;
+
+    private static AppRTCAudioManager audioManager;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -143,7 +148,7 @@ public class RtpSessionActivity extends XmppActivity implements XmppConnectionSe
         super.onNewIntent(intent);
         setIntent(intent);
         if (xmppConnectionService == null) {
-            Log.d(Config.LOGTAG,"RtpSessionActivity: background service wasn't bound in onNewIntent()");
+            Log.d(Config.LOGTAG, "RtpSessionActivity: background service wasn't bound in onNewIntent()");
             return;
         }
         final Account account = extractAccount(intent);
@@ -339,6 +344,16 @@ public class RtpSessionActivity extends XmppActivity implements XmppConnectionSe
             this.binding.endCall.setVisibility(View.VISIBLE);
             this.binding.acceptCall.setVisibility(View.INVISIBLE);
         }
+
+        if (state == RtpEndUserState.CONNECTED) {
+            this.binding.inCallActionLeft.setImageResource(R.drawable.ic_volume_off_black_24dp);
+            this.binding.inCallActionLeft.setVisibility(View.VISIBLE);
+            this.binding.inCallActionRight.setImageResource(R.drawable.ic_mic_black_24dp);
+            this.binding.inCallActionRight.setVisibility(View.VISIBLE);
+        } else {
+            this.binding.inCallActionLeft.setVisibility(View.GONE);
+            this.binding.inCallActionRight.setVisibility(View.GONE);
+        }
     }
 
     private void retry(View view) {
@@ -399,6 +414,11 @@ public class RtpSessionActivity extends XmppActivity implements XmppConnectionSe
             Log.d(Config.LOGTAG, "received update for other rtp session");
             //TODO if we only ever have one; we might just switch over? Maybe!
         }
+    }
+
+    @Override
+    public void onAudioDeviceChanged(AppRTCAudioManager.AudioDevice selectedAudioDevice, Set<AppRTCAudioManager.AudioDevice> availableAudioDevices) {
+        Log.d(Config.LOGTAG, "onAudioDeviceChanged in activity: selected:" + selectedAudioDevice + ", available:" + availableAudioDevices);
     }
 
     private void updateRtpSessionProposalState(final Account account, final Jid with, final RtpEndUserState state) {
