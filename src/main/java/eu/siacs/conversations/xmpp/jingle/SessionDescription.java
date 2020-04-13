@@ -139,10 +139,7 @@ public class SessionDescription {
 
         attributeMap.put("msid-semantic", " WMS my-media-stream");
 
-        for (Map.Entry<String, RtpContentMap.DescriptionTransport> entry : contentMap.contents.entrySet()) {
-
-            //TODO sprinkle in a few noWhiteSpaces checks into various parameters and types
-
+        for (final Map.Entry<String, RtpContentMap.DescriptionTransport> entry : contentMap.contents.entrySet()) {
             final String name = entry.getKey();
             RtpContentMap.DescriptionTransport descriptionTransport = entry.getValue();
             RtpDescription description = descriptionTransport.description;

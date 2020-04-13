@@ -235,7 +235,7 @@ public class RtpDescription extends GenericDescription {
             final String name = getPayloadTypeName();
             Preconditions.checkArgument(name != null, "Payload-type name must not be empty");
             SessionDescription.checkNoWhitespace(name, "payload-type name must not contain whitespaces");
-            return getId()+" "+name+"/"+getClockRate()+(channels == 1 ? "" : "/"+channels);
+            return getId() + " " + name + "/" + getClockRate() + (channels == 1 ? "" : "/" + channels);
         }
 
         public int getIntId() {
@@ -368,7 +368,7 @@ public class RtpDescription extends GenericDescription {
         public static String toSdpString(final String id, List<Parameter> parameters) {
             final StringBuilder stringBuilder = new StringBuilder();
             stringBuilder.append(id).append(' ');
-            for(int i = 0; i < parameters.size(); ++i) {
+            for (int i = 0; i < parameters.size(); ++i) {
                 Parameter p = parameters.get(i);
                 final String name = p.getParameterName();
                 Preconditions.checkArgument(name != null, String.format("parameter for %s must have a name", id));
@@ -488,7 +488,7 @@ public class RtpDescription extends GenericDescription {
 
         public List<String> getSsrcs() {
             ImmutableList.Builder<String> builder = new ImmutableList.Builder<>();
-            for(Element child : this.children) {
+            for (Element child : this.children) {
                 if ("source".equals(child.getName())) {
                     final String ssrc = child.getAttribute("ssrc");
                     if (ssrc != null) {
@@ -579,6 +579,9 @@ public class RtpDescription extends GenericDescription {
         }
         for (Map.Entry<String, Collection<Source.Parameter>> source : sourceParameterMap.asMap().entrySet()) {
             rtpDescription.addChild(new Source(source.getKey(), source.getValue()));
+        }
+        if (media.attributes.containsKey("rtcp-mux")) {
+            rtpDescription.addChild("rtcp-mux");
         }
         return rtpDescription;
     }

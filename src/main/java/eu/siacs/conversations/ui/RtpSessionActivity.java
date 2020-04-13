@@ -102,6 +102,7 @@ public class RtpSessionActivity extends XmppActivity implements XmppConnectionSe
 
     private void requestPermissionsAndAcceptCall() {
         if (PermissionUtils.hasPermission(this, ImmutableList.of(Manifest.permission.RECORD_AUDIO), REQUEST_ACCEPT_CALL)) {
+            //TODO like wise the propose; we might just wait here for the audio manager to come up
             putScreenInCallMode();
             requireRtpConnection().acceptCall();
         }
@@ -111,7 +112,8 @@ public class RtpSessionActivity extends XmppActivity implements XmppConnectionSe
     private void putScreenInCallMode() {
         getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         final JingleRtpConnection rtpConnection = rtpConnectionReference != null ? rtpConnectionReference.get() : null;
-        if (rtpConnection == null || rtpConnection.getAudioManager().getSelectedAudioDevice() == AppRTCAudioManager.AudioDevice.EARPIECE) {
+        final AppRTCAudioManager audioManager = rtpConnection == null ? null : rtpConnection.getAudioManager();
+        if (audioManager == null || audioManager.getSelectedAudioDevice() == AppRTCAudioManager.AudioDevice.EARPIECE) {
             acquireProximityWakeLock();
         }
     }
