@@ -16,6 +16,7 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.Toast;
 
+import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;
 
 import java.lang.ref.WeakReference;
@@ -344,16 +345,89 @@ public class RtpSessionActivity extends XmppActivity implements XmppConnectionSe
             this.binding.endCall.setVisibility(View.VISIBLE);
             this.binding.acceptCall.setVisibility(View.INVISIBLE);
         }
+        updateInCallButtonConfiguration(state);
+    }
 
+    private void updateInCallButtonConfiguration() {
+        updateInCallButtonConfiguration(requireRtpConnection().getEndUserState());
+    }
+
+    @SuppressLint("RestrictedApi")
+    private void updateInCallButtonConfiguration(final RtpEndUserState state) {
         if (state == RtpEndUserState.CONNECTED) {
-            this.binding.inCallActionLeft.setImageResource(R.drawable.ic_volume_off_black_24dp);
-            this.binding.inCallActionLeft.setVisibility(View.VISIBLE);
-            this.binding.inCallActionRight.setImageResource(R.drawable.ic_mic_black_24dp);
-            this.binding.inCallActionRight.setVisibility(View.VISIBLE);
+            final AppRTCAudioManager audioManager = requireRtpConnection().getAudioManager();
+            updateInCallButtonConfiguration(
+                    audioManager.getSelectedAudioDevice(),
+                    audioManager.getAudioDevices().size(),
+                    requireRtpConnection().isMicrophoneEnabled()
+            );
         } else {
             this.binding.inCallActionLeft.setVisibility(View.GONE);
             this.binding.inCallActionRight.setVisibility(View.GONE);
         }
+    }
+
+    @SuppressLint("RestrictedApi")
+    private void updateInCallButtonConfiguration(final AppRTCAudioManager.AudioDevice selectedAudioDevice, final int numberOfChoices, final boolean microphoneEnabled) {
+        switch (selectedAudioDevice) {
+            case EARPIECE:
+                this.binding.inCallActionLeft.setImageResource(R.drawable.ic_volume_off_black_24dp);
+                if (numberOfChoices >= 2) {
+                    this.binding.inCallActionLeft.setOnClickListener(this::switchToSpeaker);
+                } else {
+                    this.binding.inCallActionLeft.setOnClickListener(null);
+                    this.binding.inCallActionLeft.setClickable(false);
+                }
+                break;
+            case WIRED_HEADSET:
+                this.binding.inCallActionLeft.setImageResource(R.drawable.ic_headset_black_24dp);
+                this.binding.inCallActionLeft.setOnClickListener(null);
+                this.binding.inCallActionLeft.setClickable(false);
+                break;
+            case SPEAKER_PHONE:
+                this.binding.inCallActionLeft.setImageResource(R.drawable.ic_volume_up_black_24dp);
+                if (numberOfChoices >= 2) {
+                    this.binding.inCallActionLeft.setOnClickListener(this::switchToEarpiece);
+                } else {
+                    this.binding.inCallActionLeft.setOnClickListener(null);
+                    this.binding.inCallActionLeft.setClickable(false);
+                }
+                break;
+            case BLUETOOTH:
+                this.binding.inCallActionLeft.setImageResource(R.drawable.ic_bluetooth_audio_black_24dp);
+                this.binding.inCallActionLeft.setOnClickListener(null);
+                this.binding.inCallActionLeft.setClickable(false);
+                break;
+        }
+        this.binding.inCallActionLeft.setVisibility(View.VISIBLE);
+        if (microphoneEnabled) {
+            this.binding.inCallActionRight.setImageResource(R.drawable.ic_mic_black_24dp);
+            this.binding.inCallActionRight.setOnClickListener(this::disableMicrophone);
+        } else {
+            this.binding.inCallActionRight.setImageResource(R.drawable.ic_mic_off_black_24dp);
+            this.binding.inCallActionRight.setOnClickListener(this::enableMicrophone);
+        }
+        this.binding.inCallActionRight.setVisibility(View.VISIBLE);
+    }
+
+    private void disableMicrophone(View view) {
+        JingleRtpConnection rtpConnection = requireRtpConnection();
+        rtpConnection.setMicrophoneEnabled(false);
+        updateInCallButtonConfiguration();
+    }
+
+    private void enableMicrophone(View view) {
+        JingleRtpConnection rtpConnection = requireRtpConnection();
+        rtpConnection.setMicrophoneEnabled(true);
+        updateInCallButtonConfiguration();
+    }
+
+    private void switchToEarpiece(View view) {
+        requireRtpConnection().getAudioManager().setDefaultAudioDevice(AppRTCAudioManager.AudioDevice.EARPIECE);
+    }
+
+    private void switchToSpeaker(View view) {
+        requireRtpConnection().getAudioManager().setDefaultAudioDevice(AppRTCAudioManager.AudioDevice.SPEAKER_PHONE);
     }
 
     private void retry(View view) {
@@ -419,6 +493,18 @@ public class RtpSessionActivity extends XmppActivity implements XmppConnectionSe
     @Override
     public void onAudioDeviceChanged(AppRTCAudioManager.AudioDevice selectedAudioDevice, Set<AppRTCAudioManager.AudioDevice> availableAudioDevices) {
         Log.d(Config.LOGTAG, "onAudioDeviceChanged in activity: selected:" + selectedAudioDevice + ", available:" + availableAudioDevices);
+        try {
+            if (requireRtpConnection().getEndUserState() == RtpEndUserState.CONNECTED) {
+                final AppRTCAudioManager audioManager = requireRtpConnection().getAudioManager();
+                updateInCallButtonConfiguration(
+                        audioManager.getSelectedAudioDevice(),
+                        audioManager.getAudioDevices().size(),
+                        requireRtpConnection().isMicrophoneEnabled()
+                );
+            }
+        } catch (IllegalStateException e) {
+            Log.d(Config.LOGTAG, "RTP connection was not available when audio device changed");
+        }
     }
 
     private void updateRtpSessionProposalState(final Account account, final Jid with, final RtpEndUserState state) {

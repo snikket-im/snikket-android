@@ -131,6 +131,7 @@ public class WebRTCWrapper {
     };
     @Nullable
     private PeerConnection peerConnection = null;
+    private AudioTrack localAudioTrack = null;
     private AppRTCAudioManager appRTCAudioManager = null;
     private final Handler mainHandler = new Handler(Looper.getMainLooper());
 
@@ -201,10 +202,9 @@ public class WebRTCWrapper {
 
         final AudioSource audioSource = peerConnectionFactory.createAudioSource(new MediaConstraints());
 
-        final AudioTrack audioTrack = peerConnectionFactory.createAudioTrack("my-audio-track", audioSource);
-        Log.d(Config.LOGTAG, "audioTrack enabled:" + audioTrack.enabled() + " state=" + audioTrack.state());
+        this.localAudioTrack = peerConnectionFactory.createAudioTrack("my-audio-track", audioSource);
         final MediaStream stream = peerConnectionFactory.createLocalMediaStream("my-media-stream");
-        stream.addTrack(audioTrack);
+        stream.addTrack(this.localAudioTrack);
         //stream.addTrack(videoTrack);
 
         this.localVideoTrack = videoTrack;
@@ -227,6 +227,22 @@ public class WebRTCWrapper {
         if (audioManager != null) {
             mainHandler.post(audioManager::stop);
         }
+    }
+
+    public void setMicrophoneEnabled(final boolean enabled) {
+        final AudioTrack audioTrack = this.localAudioTrack;
+        if (audioTrack == null) {
+            throw new IllegalStateException("Local audio track does not exist (yet)");
+        }
+        audioTrack.setEnabled(enabled);
+    }
+
+    public boolean isMicrophoneEnabled() {
+        final AudioTrack audioTrack = this.localAudioTrack;
+        if (audioTrack == null) {
+            throw new IllegalStateException("Local audio track does not exist (yet)");
+        }
+        return audioTrack.enabled();
     }
 
 
@@ -328,6 +344,10 @@ public class WebRTCWrapper {
             throw new IllegalStateException("initialize PeerConnection first");
         }
         return peerConnection;
+    }
+
+    public AppRTCAudioManager getAudioManager() {
+        return appRTCAudioManager;
     }
 
     private static abstract class SetSdpObserver implements SdpObserver {
