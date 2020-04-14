@@ -18,6 +18,7 @@ import android.widget.Toast;
 import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableList;
 
+import org.webrtc.RendererCommon;
 import org.webrtc.SurfaceViewRenderer;
 import org.webrtc.VideoTrack;
 
@@ -241,6 +242,8 @@ public class RtpSessionActivity extends XmppActivity implements XmppConnectionSe
 
     @Override
     public void onStop() {
+        binding.remoteVideo.release();
+        binding.localVideo.release();
         releaseProximityWakeLock();
         //TODO maybe we want to finish if call had ended
         super.onStop();

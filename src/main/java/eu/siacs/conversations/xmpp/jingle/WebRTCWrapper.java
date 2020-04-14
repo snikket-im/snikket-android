@@ -139,6 +139,7 @@ public class WebRTCWrapper {
     private AppRTCAudioManager appRTCAudioManager = null;
     private Context context = null;
     private EglBase eglBase = null;
+    private Optional<CameraVideoCapturer> optionalCapturer;
 
     public WebRTCWrapper(final EventCallback eventCallback) {
         this.eventCallback = eventCallback;
@@ -167,10 +168,10 @@ public class WebRTCWrapper {
 
         final MediaStream stream = peerConnectionFactory.createLocalMediaStream("my-media-stream");
 
-        final Optional<CameraVideoCapturer> optionalCapturer = getVideoCapturer();
+         this.optionalCapturer = getVideoCapturer();
 
-        if (optionalCapturer.isPresent()) {
-            final CameraVideoCapturer capturer = optionalCapturer.get();
+        if (this.optionalCapturer.isPresent()) {
+            final CameraVideoCapturer capturer = this.optionalCapturer.get();
             final VideoSource videoSource = peerConnectionFactory.createVideoSource(false);
             SurfaceTextureHelper surfaceTextureHelper = SurfaceTextureHelper.create("webrtc", eglBase.getEglBaseContext());
             capturer.initialize(surfaceTextureHelper, requireContext(), videoSource.getCapturerObserver());
@@ -207,6 +208,16 @@ public class WebRTCWrapper {
         if (audioManager != null) {
             mainHandler.post(audioManager::stop);
         }
+        this.localVideoTrack = null;
+        this.remoteVideoTrack = null;
+        if (this.optionalCapturer.isPresent()) {
+            try {
+                this.optionalCapturer.get().stopCapture();
+            } catch (InterruptedException e) {
+                Log.e(Config.LOGTAG,"unable to stop capturing");
+            }
+        }
+        eglBase.release();
     }
 
     public boolean isMicrophoneEnabled() {
@@ -326,7 +337,7 @@ public class WebRTCWrapper {
     private Optional<CameraVideoCapturer> getVideoCapturer() {
         final CameraEnumerator enumerator = getCameraEnumerator();
         final String[] deviceNames = enumerator.getDeviceNames();
-        for (String deviceName : deviceNames) {
+        for (final String deviceName : deviceNames) {
             if (enumerator.isFrontFacing(deviceName)) {
                 return Optional.fromNullable(enumerator.createCapturer(deviceName, null));
             }
