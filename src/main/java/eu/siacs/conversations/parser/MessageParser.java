@@ -854,6 +854,12 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
                                 final String namespace = description == null ? null : description.getNamespace();
                                 if (Namespace.JINGLE_APPS_RTP.equals(namespace)) {
                                     final Conversation c = mXmppConnectionService.findOrCreateConversation(account, counterpart.asBareJid(), false, false);
+                                    final Message preExistingMessage = c.findRtpSession(sessionId, status);
+                                    if (preExistingMessage != null) {
+                                        preExistingMessage.setServerMsgId(serverMsgId);
+                                        mXmppConnectionService.updateMessage(preExistingMessage);
+                                        break;
+                                    }
                                     final Message message = new Message(
                                             c,
                                             status,

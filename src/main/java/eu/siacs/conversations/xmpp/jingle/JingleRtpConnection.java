@@ -349,31 +349,33 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
         sendSessionAccept(offer);
     }
 
-    private void sendSessionAccept(SessionDescription offer) {
-        discoverIceServers(iceServers -> {
-            try {
-                setupWebRTC(iceServers);
-            } catch (WebRTCWrapper.InitializationException e) {
-                sendSessionTerminate(Reason.FAILED_APPLICATION);
-                return;
-            }
-            final org.webrtc.SessionDescription sdp = new org.webrtc.SessionDescription(
-                    org.webrtc.SessionDescription.Type.OFFER,
-                    offer.toString()
-            );
-            try {
-                this.webRTCWrapper.setRemoteDescription(sdp).get();
-                addIceCandidatesFromBlackLog();
-                org.webrtc.SessionDescription webRTCSessionDescription = this.webRTCWrapper.createAnswer().get();
-                final SessionDescription sessionDescription = SessionDescription.parse(webRTCSessionDescription.description);
-                final RtpContentMap respondingRtpContentMap = RtpContentMap.of(sessionDescription);
-                sendSessionAccept(respondingRtpContentMap);
-                this.webRTCWrapper.setLocalDescription(webRTCSessionDescription);
-            } catch (Exception e) {
-                Log.d(Config.LOGTAG, "unable to send session accept", e);
+    private void sendSessionAccept(final SessionDescription offer) {
+        discoverIceServers(iceServers -> sendSessionAccept(offer,iceServers));
+    }
 
-            }
-        });
+    private void sendSessionAccept(final SessionDescription offer, final List<PeerConnection.IceServer> iceServers) {
+        try {
+            setupWebRTC(iceServers);
+        } catch (WebRTCWrapper.InitializationException e) {
+            sendSessionTerminate(Reason.FAILED_APPLICATION);
+            return;
+        }
+        final org.webrtc.SessionDescription sdp = new org.webrtc.SessionDescription(
+                org.webrtc.SessionDescription.Type.OFFER,
+                offer.toString()
+        );
+        try {
+            this.webRTCWrapper.setRemoteDescription(sdp).get();
+            addIceCandidatesFromBlackLog();
+            org.webrtc.SessionDescription webRTCSessionDescription = this.webRTCWrapper.createAnswer().get();
+            final SessionDescription sessionDescription = SessionDescription.parse(webRTCSessionDescription.description);
+            final RtpContentMap respondingRtpContentMap = RtpContentMap.of(sessionDescription);
+            sendSessionAccept(respondingRtpContentMap);
+            this.webRTCWrapper.setLocalDescription(webRTCSessionDescription);
+        } catch (Exception e) {
+            Log.d(Config.LOGTAG, "unable to send session accept", e);
+
+        }
     }
 
     private void addIceCandidatesFromBlackLog() {
@@ -532,38 +534,39 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
 
     private void sendSessionInitiate(final State targetState) {
         Log.d(Config.LOGTAG, id.account.getJid().asBareJid() + ": prepare session-initiate");
-        discoverIceServers(iceServers -> {
-            try {
-                setupWebRTC(iceServers);
-            } catch (WebRTCWrapper.InitializationException e) {
-                Log.d(Config.LOGTAG, id.account.getJid().asBareJid() + ": unable to initialize webrtc");
+        discoverIceServers(iceServers -> sendSessionInitiate(targetState, iceServers));
+    }
+
+    private void sendSessionInitiate(final State targetState, final List<PeerConnection.IceServer> iceServers) {
+        try {
+            setupWebRTC(iceServers);
+        } catch (WebRTCWrapper.InitializationException e) {
+            Log.d(Config.LOGTAG, id.account.getJid().asBareJid() + ": unable to initialize webrtc");
+            transitionOrThrow(State.TERMINATED_APPLICATION_FAILURE);
+            return;
+        }
+        try {
+            org.webrtc.SessionDescription webRTCSessionDescription = this.webRTCWrapper.createOffer().get();
+            final SessionDescription sessionDescription = SessionDescription.parse(webRTCSessionDescription.description);
+            Log.d(Config.LOGTAG, "description: " + webRTCSessionDescription.description);
+            final RtpContentMap rtpContentMap = RtpContentMap.of(sessionDescription);
+            sendSessionInitiate(rtpContentMap, targetState);
+            this.webRTCWrapper.setLocalDescription(webRTCSessionDescription).get();
+        } catch (final Exception e) {
+            Log.d(Config.LOGTAG, id.account.getJid().asBareJid() + ": unable to sendSessionInitiate", e);
+            webRTCWrapper.close();
+            if (isInState(targetState)) {
+                sendSessionTerminate(Reason.FAILED_APPLICATION);
+            } else {
                 transitionOrThrow(State.TERMINATED_APPLICATION_FAILURE);
-                return;
             }
-            try {
-                org.webrtc.SessionDescription webRTCSessionDescription = this.webRTCWrapper.createOffer().get();
-                final SessionDescription sessionDescription = SessionDescription.parse(webRTCSessionDescription.description);
-                Log.d(Config.LOGTAG, "description: " + webRTCSessionDescription.description);
-                final RtpContentMap rtpContentMap = RtpContentMap.of(sessionDescription);
-                sendSessionInitiate(rtpContentMap, targetState);
-                this.webRTCWrapper.setLocalDescription(webRTCSessionDescription).get();
-            } catch (final Exception e) {
-                Log.d(Config.LOGTAG, id.account.getJid().asBareJid() + ": unable to sendSessionInitiate", e);
-                webRTCWrapper.close();
-                if (isInState(targetState)) {
-                    sendSessionTerminate(Reason.FAILED_APPLICATION);
-                } else {
-                    transitionOrThrow(State.TERMINATED_APPLICATION_FAILURE);
-                }
-            }
-        });
+        }
     }
 
     private void sendSessionInitiate(RtpContentMap rtpContentMap, final State targetState) {
         this.initiatorRtpContentMap = rtpContentMap;
         this.transitionOrThrow(targetState);
         final JinglePacket sessionInitiate = rtpContentMap.toJinglePacket(JinglePacket.Action.SESSION_INITIATE, id.sessionId);
-        Log.d(Config.LOGTAG, sessionInitiate.toString());
         send(sessionInitiate);
     }
 
@@ -591,7 +594,6 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
             return;
         }
         final JinglePacket jinglePacket = transportInfo.toJinglePacket(JinglePacket.Action.TRANSPORT_INFO, id.sessionId);
-        Log.d(Config.LOGTAG, jinglePacket.toString());
         send(jinglePacket);
     }
 
