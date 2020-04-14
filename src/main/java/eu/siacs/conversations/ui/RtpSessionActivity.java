@@ -70,6 +70,7 @@ public class RtpSessionActivity extends XmppActivity implements XmppConnectionSe
                 | WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON);
         Log.d(Config.LOGTAG, "RtpSessionActivity.onCreate()");
         this.binding = DataBindingUtil.setContentView(this, R.layout.activity_rtp_session);
+        setSupportActionBar(binding.toolbar);
     }
 
     @Override
@@ -314,34 +315,34 @@ public class RtpSessionActivity extends XmppActivity implements XmppConnectionSe
     private void updateStateDisplay(final RtpEndUserState state) {
         switch (state) {
             case INCOMING_CALL:
-                binding.status.setText(R.string.rtp_state_incoming_call);
+                setTitle(R.string.rtp_state_incoming_call);
                 break;
             case CONNECTING:
-                binding.status.setText(R.string.rtp_state_connecting);
+                setTitle(R.string.rtp_state_connecting);
                 break;
             case CONNECTED:
-                binding.status.setText(R.string.rtp_state_connected);
+                setTitle(R.string.rtp_state_connected);
                 break;
             case ACCEPTING_CALL:
-                binding.status.setText(R.string.rtp_state_accepting_call);
+                setTitle(R.string.rtp_state_accepting_call);
                 break;
             case ENDING_CALL:
-                binding.status.setText(R.string.rtp_state_ending_call);
+                setTitle(R.string.rtp_state_ending_call);
                 break;
             case FINDING_DEVICE:
-                binding.status.setText(R.string.rtp_state_finding_device);
+                setTitle(R.string.rtp_state_finding_device);
                 break;
             case RINGING:
-                binding.status.setText(R.string.rtp_state_ringing);
+                setTitle(R.string.rtp_state_ringing);
                 break;
             case DECLINED_OR_BUSY:
-                binding.status.setText(R.string.rtp_state_declined_or_busy);
+                setTitle(R.string.rtp_state_declined_or_busy);
                 break;
             case CONNECTIVITY_ERROR:
-                binding.status.setText(R.string.rtp_state_connectivity_error);
+                setTitle(R.string.rtp_state_connectivity_error);
                 break;
             case APPLICATION_ERROR:
-                binding.status.setText(R.string.rtp_state_application_failure);
+                setTitle(R.string.rtp_state_application_failure);
                 break;
             case ENDED:
                 throw new IllegalStateException("Activity should have called finishAndReleaseWakeLock();");
