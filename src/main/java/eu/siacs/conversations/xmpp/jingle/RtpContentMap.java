@@ -120,11 +120,13 @@ public class RtpContentMap {
                 rtpDescription = (RtpDescription) description;
             } else {
                 Log.d(Config.LOGTAG, "description was " + description);
+                //todo throw unsupported application
                 throw new IllegalArgumentException("Content does not contain RtpDescription");
             }
             if (transportInfo instanceof IceUdpTransportInfo) {
                 iceUdpTransportInfo = (IceUdpTransportInfo) transportInfo;
             } else {
+                //TODO throw UNSUPPORTED_TRANSPORT exception
                 throw new IllegalArgumentException("Content does not contain ICE-UDP transport");
             }
             return new DescriptionTransport(rtpDescription, iceUdpTransportInfo);
