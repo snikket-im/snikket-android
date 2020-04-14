@@ -45,6 +45,7 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
     );
 
     private static final List<State> TERMINATED = Arrays.asList(
+            State.TERMINATED_SUCCESS,
             State.TERMINATED_DECLINED_OR_BUSY,
             State.TERMINATED_CONNECTIVITY_ERROR,
             State.TERMINATED_CANCEL_OR_TIMEOUT,
@@ -143,7 +144,7 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
     }
 
     @Override
-    void deliverPacket(final JinglePacket jinglePacket) {
+    synchronized void deliverPacket(final JinglePacket jinglePacket) {
         Log.d(Config.LOGTAG, id.account.getJid().asBareJid() + ": packet delivered to JingleRtpConnection");
         switch (jinglePacket.getAction()) {
             case SESSION_INITIATE:
@@ -166,7 +167,7 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
     }
 
     @Override
-    void notifyRebound() {
+    synchronized void notifyRebound() {
         if (TERMINATED.contains(this.state)) {
             return;
         }
@@ -353,7 +354,11 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
         discoverIceServers(iceServers -> sendSessionAccept(offer,iceServers));
     }
 
-    private void sendSessionAccept(final SessionDescription offer, final List<PeerConnection.IceServer> iceServers) {
+    private synchronized void sendSessionAccept(final SessionDescription offer, final List<PeerConnection.IceServer> iceServers) {
+        if (TERMINATED.contains(this.state)) {
+            Log.w(Config.LOGTAG,id.account.getJid().asBareJid()+": ICE servers got discovered when session was already terminated. nothing to do.");
+            return;
+        }
         try {
             setupWebRTC(iceServers);
         } catch (WebRTCWrapper.InitializationException e) {
@@ -394,7 +399,7 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
         send(sessionAccept);
     }
 
-    void deliveryMessage(final Jid from, final Element message, final String serverMessageId, final long timestamp) {
+    synchronized void deliveryMessage(final Jid from, final Element message, final String serverMessageId, final long timestamp) {
         Log.d(Config.LOGTAG, id.account.getJid().asBareJid() + ": delivered message to JingleRtpConnection " + message);
         switch (message.getName()) {
             case "propose":
@@ -537,7 +542,11 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
         discoverIceServers(iceServers -> sendSessionInitiate(targetState, iceServers));
     }
 
-    private void sendSessionInitiate(final State targetState, final List<PeerConnection.IceServer> iceServers) {
+    private synchronized void sendSessionInitiate(final State targetState, final List<PeerConnection.IceServer> iceServers) {
+        if (TERMINATED.contains(this.state)) {
+            Log.w(Config.LOGTAG,id.account.getJid().asBareJid()+": ICE servers got discovered when session was already terminated. nothing to do.");
+            return;
+        }
         try {
             setupWebRTC(iceServers);
         } catch (WebRTCWrapper.InitializationException e) {
@@ -701,7 +710,7 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
     }
 
 
-    public void acceptCall() {
+    public synchronized void acceptCall() {
         switch (this.state) {
             case PROPOSED:
                 acceptCallFromProposed();
@@ -714,7 +723,7 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
         }
     }
 
-    public void rejectCall() {
+    public synchronized void rejectCall() {
         switch (this.state) {
             case PROPOSED:
                 rejectCallFromProposed();
@@ -727,7 +736,7 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
         }
     }
 
-    public void endCall() {
+    public synchronized void endCall() {
         if (isInState(State.PROPOSED) && !isInitiator()) {
             rejectCallFromProposed();
             return;
