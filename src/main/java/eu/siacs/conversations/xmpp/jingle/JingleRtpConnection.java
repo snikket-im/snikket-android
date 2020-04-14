@@ -737,6 +737,10 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
     }
 
     public synchronized void endCall() {
+        if (TERMINATED.contains(this.state)) {
+            Log.w(Config.LOGTAG,id.account.getJid().asBareJid()+": received endCall() when session has already been terminated. nothing to do");
+            return;
+        }
         if (isInState(State.PROPOSED) && !isInitiator()) {
             rejectCallFromProposed();
             return;
