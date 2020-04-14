@@ -1,11 +1,13 @@
 package eu.siacs.conversations.xmpp.jingle;
 
 import android.content.Context;
+import android.os.Build;
 import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
 
-import com.google.common.collect.ImmutableList;
+import com.google.common.base.Optional;
+import com.google.common.base.Preconditions;
 import com.google.common.util.concurrent.Futures;
 import com.google.common.util.concurrent.ListenableFuture;
 import com.google.common.util.concurrent.MoreExecutors;
@@ -13,11 +15,15 @@ import com.google.common.util.concurrent.SettableFuture;
 
 import org.webrtc.AudioSource;
 import org.webrtc.AudioTrack;
-import org.webrtc.Camera1Capturer;
 import org.webrtc.Camera1Enumerator;
+import org.webrtc.Camera2Enumerator;
+import org.webrtc.CameraEnumerator;
 import org.webrtc.CameraVideoCapturer;
 import org.webrtc.CandidatePairChangeEvent;
 import org.webrtc.DataChannel;
+import org.webrtc.DefaultVideoDecoderFactory;
+import org.webrtc.DefaultVideoEncoderFactory;
+import org.webrtc.EglBase;
 import org.webrtc.IceCandidate;
 import org.webrtc.MediaConstraints;
 import org.webrtc.MediaStream;
@@ -26,7 +32,7 @@ import org.webrtc.PeerConnectionFactory;
 import org.webrtc.RtpReceiver;
 import org.webrtc.SdpObserver;
 import org.webrtc.SessionDescription;
-import org.webrtc.VideoCapturer;
+import org.webrtc.SurfaceTextureHelper;
 import org.webrtc.VideoSource;
 import org.webrtc.VideoTrack;
 
@@ -41,11 +47,16 @@ import eu.siacs.conversations.services.AppRTCAudioManager;
 
 public class WebRTCWrapper {
 
+    private final EventCallback eventCallback;
+    private final AppRTCAudioManager.AudioManagerEvents audioManagerEvents = new AppRTCAudioManager.AudioManagerEvents() {
+        @Override
+        public void onAudioDeviceChanged(AppRTCAudioManager.AudioDevice selectedAudioDevice, Set<AppRTCAudioManager.AudioDevice> availableAudioDevices) {
+            eventCallback.onAudioDeviceChanged(selectedAudioDevice, availableAudioDevices);
+        }
+    };
+    private final Handler mainHandler = new Handler(Looper.getMainLooper());
     private VideoTrack localVideoTrack = null;
     private VideoTrack remoteVideoTrack = null;
-
-    private final EventCallback eventCallback;
-
     private final PeerConnection.Observer peerConnectionObserver = new PeerConnection.Observer() {
         @Override
         public void onSignalingChange(PeerConnection.SignalingState signalingState) {
@@ -94,9 +105,6 @@ public class WebRTCWrapper {
         @Override
         public void onAddStream(MediaStream mediaStream) {
             Log.d(Config.LOGTAG, "onAddStream");
-            for (AudioTrack audioTrack : mediaStream.audioTracks) {
-                Log.d(Config.LOGTAG, "remote? - audioTrack enabled:" + audioTrack.enabled() + " state=" + audioTrack.state());
-            }
             final List<VideoTrack> videoTracks = mediaStream.videoTracks;
             if (videoTracks.size() > 0) {
                 Log.d(Config.LOGTAG, "more than zero remote video tracks found. using first");
@@ -125,17 +133,12 @@ public class WebRTCWrapper {
 
         }
     };
-    private final AppRTCAudioManager.AudioManagerEvents audioManagerEvents = new AppRTCAudioManager.AudioManagerEvents() {
-        @Override
-        public void onAudioDeviceChanged(AppRTCAudioManager.AudioDevice selectedAudioDevice, Set<AppRTCAudioManager.AudioDevice> availableAudioDevices) {
-            eventCallback.onAudioDeviceChanged(selectedAudioDevice, availableAudioDevices);
-        }
-    };
     @Nullable
     private PeerConnection peerConnection = null;
     private AudioTrack localAudioTrack = null;
     private AppRTCAudioManager appRTCAudioManager = null;
-    private final Handler mainHandler = new Handler(Looper.getMainLooper());
+    private Context context = null;
+    private EglBase eglBase = null;
 
     public WebRTCWrapper(final EventCallback eventCallback) {
         this.eventCallback = eventCallback;
@@ -145,6 +148,8 @@ public class WebRTCWrapper {
         PeerConnectionFactory.initialize(
                 PeerConnectionFactory.InitializationOptions.builder(context).createInitializationOptions()
         );
+        this.eglBase = EglBase.create();
+        this.context = context;
         mainHandler.post(() -> {
             appRTCAudioManager = AppRTCAudioManager.create(context, AppRTCAudioManager.SpeakerPhonePreference.EARPIECE);
             appRTCAudioManager.start(audioManagerEvents);
@@ -153,64 +158,35 @@ public class WebRTCWrapper {
     }
 
     public void initializePeerConnection(final List<PeerConnection.IceServer> iceServers) throws InitializationException {
-        PeerConnectionFactory peerConnectionFactory = PeerConnectionFactory.builder().createPeerConnectionFactory();
+        Preconditions.checkState(this.eglBase != null);
+        PeerConnectionFactory peerConnectionFactory = PeerConnectionFactory.builder()
+                .setVideoDecoderFactory(new DefaultVideoDecoderFactory(eglBase.getEglBaseContext()))
+                .setVideoEncoderFactory(new DefaultVideoEncoderFactory(eglBase.getEglBaseContext(), true, true))
+                .createPeerConnectionFactory();
 
-        CameraVideoCapturer capturer = null;
-        Camera1Enumerator camera1Enumerator = new Camera1Enumerator();
-        for (String deviceName : camera1Enumerator.getDeviceNames()) {
-            Log.d(Config.LOGTAG, "camera device name: " + deviceName);
-            if (camera1Enumerator.isFrontFacing(deviceName)) {
-                capturer = camera1Enumerator.createCapturer(deviceName, new CameraVideoCapturer.CameraEventsHandler() {
-                    @Override
-                    public void onCameraError(String s) {
 
-                    }
+        final MediaStream stream = peerConnectionFactory.createLocalMediaStream("my-media-stream");
 
-                    @Override
-                    public void onCameraDisconnected() {
+        final Optional<CameraVideoCapturer> optionalCapturer = getVideoCapturer();
 
-                    }
+        if (optionalCapturer.isPresent()) {
+            final CameraVideoCapturer capturer = optionalCapturer.get();
+            final VideoSource videoSource = peerConnectionFactory.createVideoSource(false);
+            SurfaceTextureHelper surfaceTextureHelper = SurfaceTextureHelper.create("webrtc", eglBase.getEglBaseContext());
+            capturer.initialize(surfaceTextureHelper, requireContext(), videoSource.getCapturerObserver());
+            capturer.startCapture(320, 240, 30);
 
-                    @Override
-                    public void onCameraFreezed(String s) {
+            this.localVideoTrack = peerConnectionFactory.createVideoTrack("my-video-track", videoSource);
 
-                    }
-
-                    @Override
-                    public void onCameraOpening(String s) {
-                        Log.d(Config.LOGTAG, "onCameraOpening");
-                    }
-
-                    @Override
-                    public void onFirstFrameAvailable() {
-                        Log.d(Config.LOGTAG, "onFirstFrameAvailable");
-                    }
-
-                    @Override
-                    public void onCameraClosed() {
-
-                    }
-                });
-            }
+            stream.addTrack(this.localVideoTrack);
         }
 
-        /*if (capturer != null) {
-            capturer.initialize();
-            Log.d(Config.LOGTAG,"start capturing");
-            capturer.startCapture(800,600,30);
-        }*/
 
-        final VideoSource videoSource = peerConnectionFactory.createVideoSource(false);
-        final VideoTrack videoTrack = peerConnectionFactory.createVideoTrack("my-video-track", videoSource);
-
+        //set up audio track
         final AudioSource audioSource = peerConnectionFactory.createAudioSource(new MediaConstraints());
-
         this.localAudioTrack = peerConnectionFactory.createAudioTrack("my-audio-track", audioSource);
-        final MediaStream stream = peerConnectionFactory.createLocalMediaStream("my-media-stream");
         stream.addTrack(this.localAudioTrack);
-        //stream.addTrack(videoTrack);
 
-        this.localVideoTrack = videoTrack;
 
         final PeerConnection peerConnection = peerConnectionFactory.createPeerConnection(iceServers, peerConnectionObserver);
         if (peerConnection == null) {
@@ -225,20 +201,12 @@ public class WebRTCWrapper {
     public void close() {
         final PeerConnection peerConnection = this.peerConnection;
         if (peerConnection != null) {
-            peerConnection.close();
+            peerConnection.dispose();
         }
         final AppRTCAudioManager audioManager = this.appRTCAudioManager;
         if (audioManager != null) {
             mainHandler.post(audioManager::stop);
         }
-    }
-
-    public void setMicrophoneEnabled(final boolean enabled) {
-        final AudioTrack audioTrack = this.localAudioTrack;
-        if (audioTrack == null) {
-            throw new IllegalStateException("Local audio track does not exist (yet)");
-        }
-        audioTrack.setEnabled(enabled);
     }
 
     public boolean isMicrophoneEnabled() {
@@ -249,6 +217,13 @@ public class WebRTCWrapper {
         return audioTrack.enabled();
     }
 
+    public void setMicrophoneEnabled(final boolean enabled) {
+        final AudioTrack audioTrack = this.localAudioTrack;
+        if (audioTrack == null) {
+            throw new IllegalStateException("Local audio track does not exist (yet)");
+        }
+        audioTrack.setEnabled(enabled);
+    }
 
     public ListenableFuture<SessionDescription> createOffer() {
         return Futures.transformAsync(getPeerConnectionFuture(), peerConnection -> {
@@ -261,6 +236,7 @@ public class WebRTCWrapper {
 
                 @Override
                 public void onCreateFailure(String s) {
+                    Log.d(Config.LOGTAG, "create failure" + s);
                     future.setException(new IllegalStateException("Unable to create offer: " + s));
                 }
             }, new MediaConstraints());
@@ -297,6 +273,7 @@ public class WebRTCWrapper {
 
                 @Override
                 public void onSetFailure(String s) {
+                    Log.d(Config.LOGTAG, "unable to set local " + s);
                     future.setException(new IllegalArgumentException("unable to set local session description: " + s));
 
                 }
@@ -338,8 +315,43 @@ public class WebRTCWrapper {
         requirePeerConnection().addIceCandidate(iceCandidate);
     }
 
+    private CameraEnumerator getCameraEnumerator() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            return new Camera2Enumerator(requireContext());
+        } else {
+            return new Camera1Enumerator();
+        }
+    }
+
+    private Optional<CameraVideoCapturer> getVideoCapturer() {
+        final CameraEnumerator enumerator = getCameraEnumerator();
+        final String[] deviceNames = enumerator.getDeviceNames();
+        for (String deviceName : deviceNames) {
+            if (enumerator.isFrontFacing(deviceName)) {
+                return Optional.fromNullable(enumerator.createCapturer(deviceName, null));
+            }
+        }
+        if (deviceNames.length == 0) {
+            return Optional.absent();
+        } else {
+            return Optional.fromNullable(enumerator.createCapturer(deviceNames[0], null));
+        }
+    }
+
     public PeerConnection.PeerConnectionState getState() {
         return requirePeerConnection().connectionState();
+    }
+
+    public EglBase.Context getEglBaseContext() {
+        return this.eglBase.getEglBaseContext();
+    }
+
+    public Optional<VideoTrack> getLocalVideoTrack() {
+        return Optional.fromNullable(this.localVideoTrack);
+    }
+
+    public Optional<VideoTrack> getRemoteVideoTrack() {
+        return Optional.fromNullable(this.remoteVideoTrack);
     }
 
     private PeerConnection requirePeerConnection() {
@@ -350,8 +362,24 @@ public class WebRTCWrapper {
         return peerConnection;
     }
 
+    private Context requireContext() {
+        final Context context = this.context;
+        if (context == null) {
+            throw new IllegalStateException("call setup first");
+        }
+        return context;
+    }
+
     public AppRTCAudioManager getAudioManager() {
         return appRTCAudioManager;
+    }
+
+    public interface EventCallback {
+        void onIceCandidate(IceCandidate iceCandidate);
+
+        void onConnectionChange(PeerConnection.PeerConnectionState newState);
+
+        void onAudioDeviceChanged(AppRTCAudioManager.AudioDevice selectedAudioDevice, Set<AppRTCAudioManager.AudioDevice> availableAudioDevices);
     }
 
     private static abstract class SetSdpObserver implements SdpObserver {
@@ -388,13 +416,5 @@ public class WebRTCWrapper {
         private InitializationException(String message) {
             super(message);
         }
-    }
-
-    public interface EventCallback {
-        void onIceCandidate(IceCandidate iceCandidate);
-
-        void onConnectionChange(PeerConnection.PeerConnectionState newState);
-
-        void onAudioDeviceChanged(AppRTCAudioManager.AudioDevice selectedAudioDevice, Set<AppRTCAudioManager.AudioDevice> availableAudioDevices);
     }
 }

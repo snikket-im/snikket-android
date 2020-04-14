@@ -3,13 +3,16 @@ package eu.siacs.conversations.xmpp.jingle;
 import android.os.SystemClock;
 import android.util.Log;
 
+import com.google.common.base.Optional;
 import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.primitives.Ints;
 
+import org.webrtc.EglBase;
 import org.webrtc.IceCandidate;
 import org.webrtc.PeerConnection;
+import org.webrtc.VideoTrack;
 
 import java.util.ArrayDeque;
 import java.util.Arrays;
@@ -984,6 +987,19 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
 
     public State getState() {
         return this.state;
+    }
+
+    public Optional<VideoTrack> geLocalVideoTrack() {
+        return webRTCWrapper.getLocalVideoTrack();
+    }
+
+    public Optional<VideoTrack> getRemoteVideoTrack() {
+        return webRTCWrapper.getRemoteVideoTrack();
+    }
+
+
+    public EglBase.Context getEglBaseContext() {
+        return webRTCWrapper.getEglBaseContext();
     }
 
     private interface OnIceServersDiscovered {

@@ -9,6 +9,7 @@
         android:background="?color_background_secondary">
 
         <android.support.design.widget.AppBarLayout
+            android:id="@+id/app_bar_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingLeft="16dp"
@@ -35,6 +36,20 @@
 
         </android.support.design.widget.AppBarLayout>
 
+        
+        <org.webrtc.SurfaceViewRenderer
+            android:id="@+id/local_video"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_below="@+id/app_bar_layout"
+            android:layout_alignParentRight="true"/>
+
+        <org.webrtc.SurfaceViewRenderer
+            android:id="@+id/remote_video"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_below="@+id/app_bar_layout"
+            android:layout_alignParentLeft="true"/>
 
         <RelativeLayout
             android:layout_width="288dp"

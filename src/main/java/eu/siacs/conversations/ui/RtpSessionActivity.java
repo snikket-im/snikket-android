@@ -15,7 +15,11 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.Toast;
 
+import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableList;
+
+import org.webrtc.SurfaceViewRenderer;
+import org.webrtc.VideoTrack;
 
 import java.lang.ref.WeakReference;
 import java.util.Arrays;
@@ -37,8 +41,6 @@ import rocks.xmpp.addr.Jid;
 import static eu.siacs.conversations.utils.PermissionUtils.getFirstDenied;
 import static java.util.Arrays.asList;
 
-//TODO if last state was BUSY (or RETRY); we want to reset action to view or something so we don’t automatically call again on recreate
-
 public class RtpSessionActivity extends XmppActivity implements XmppConnectionService.OnJingleRtpConnectionUpdate {
 
     private static final String PROXIMITY_WAKE_LOCK_TAG = "conversations:in-rtp-session";
@@ -52,6 +54,7 @@ public class RtpSessionActivity extends XmppActivity implements XmppConnectionSe
     public static final String ACTION_ACCEPT_CALL = "action_accept_call";
     public static final String ACTION_MAKE_VOICE_CALL = "action_make_voice_call";
     public static final String ACTION_MAKE_VIDEO_CALL = "action_make_video_call";
+
 
     private WeakReference<JingleRtpConnection> rtpConnectionReference;
 
@@ -284,6 +287,30 @@ public class RtpSessionActivity extends XmppActivity implements XmppConnectionSe
         setIntent(intent);
     }
 
+    private void updateVideoViews() {
+        final Optional<VideoTrack> localVideoTrack = requireRtpConnection().geLocalVideoTrack();
+        if (localVideoTrack.isPresent()) {
+            try {
+                binding.localVideo.init(requireRtpConnection().getEglBaseContext(), null);
+            } catch (IllegalStateException e) {
+                Log.d(Config.LOGTAG,"ignoring already init for now",e);
+            }
+            binding.localVideo.setEnableHardwareScaler(true);
+            binding.localVideo.setMirror(true);
+            localVideoTrack.get().addSink(binding.localVideo);
+        }
+        final Optional<VideoTrack> remoteVideoTrack = requireRtpConnection().getRemoteVideoTrack();
+        if (remoteVideoTrack.isPresent()) {
+            try {
+                binding.remoteVideo.init(requireRtpConnection().getEglBaseContext(), null);
+            } catch (IllegalStateException e) {
+                Log.d(Config.LOGTAG,"ignoring already init for now",e);
+            }
+            binding.remoteVideo.setEnableHardwareScaler(true);
+            remoteVideoTrack.get().addSink(binding.remoteVideo);
+        }
+    }
+
     private void updateStateDisplay(final RtpEndUserState state) {
         switch (state) {
             case INCOMING_CALL:
@@ -498,6 +525,7 @@ public class RtpSessionActivity extends XmppActivity implements XmppConnectionSe
             runOnUiThread(() -> {
                 updateStateDisplay(state);
                 updateButtonConfiguration(state);
+                updateVideoViews();
             });
         } else {
             Log.d(Config.LOGTAG, "received update for other rtp session");
