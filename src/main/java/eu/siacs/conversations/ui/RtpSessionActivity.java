@@ -333,7 +333,11 @@ public class RtpSessionActivity extends XmppActivity implements XmppConnectionSe
     private void updateStateDisplay(final RtpEndUserState state) {
         switch (state) {
             case INCOMING_CALL:
-                setTitle(R.string.rtp_state_incoming_call);
+                if (getMedia().contains(Media.VIDEO)) {
+                    setTitle(R.string.rtp_state_incoming_video_call);
+                } else {
+                    setTitle(R.string.rtp_state_incoming_call);
+                }
                 break;
             case CONNECTING:
                 setTitle(R.string.rtp_state_connecting);
@@ -367,6 +371,10 @@ public class RtpSessionActivity extends XmppActivity implements XmppConnectionSe
             default:
                 throw new IllegalStateException(String.format("State %s has not been handled in UI", state));
         }
+    }
+
+    private Set<Media> getMedia() {
+        return requireRtpConnection().getMedia();
     }
 
     @SuppressLint("RestrictedApi")

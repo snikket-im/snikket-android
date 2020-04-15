@@ -41,6 +41,7 @@ import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -63,6 +64,7 @@ import eu.siacs.conversations.utils.GeoHelper;
 import eu.siacs.conversations.utils.UIHelper;
 import eu.siacs.conversations.xmpp.XmppConnection;
 import eu.siacs.conversations.xmpp.jingle.AbstractJingleConnection;
+import eu.siacs.conversations.xmpp.jingle.Media;
 
 public class NotificationService {
 
@@ -334,7 +336,7 @@ public class NotificationService {
         }
     }
 
-    public void showIncomingCallNotification(AbstractJingleConnection.Id id) {
+    public void showIncomingCallNotification(final AbstractJingleConnection.Id id, final Set<Media> media) {
         final Intent fullScreenIntent = new Intent(mXmppConnectionService, RtpSessionActivity.class);
         fullScreenIntent.putExtra(RtpSessionActivity.EXTRA_ACCOUNT, id.account.getJid().asBareJid().toEscapedString());
         fullScreenIntent.putExtra(RtpSessionActivity.EXTRA_WITH, id.with.toEscapedString());
@@ -342,8 +344,13 @@ public class NotificationService {
         fullScreenIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         fullScreenIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         final NotificationCompat.Builder builder = new NotificationCompat.Builder(mXmppConnectionService, "incoming_calls");
-        builder.setSmallIcon(R.drawable.ic_call_white_24dp);
-        builder.setContentTitle(mXmppConnectionService.getString(R.string.rtp_state_incoming_call));
+        if (media.contains(Media.VIDEO)) {
+            builder.setSmallIcon(R.drawable.ic_videocam_white_24dp);
+            builder.setContentTitle(mXmppConnectionService.getString(R.string.rtp_state_incoming_video_call));
+        } else {
+            builder.setSmallIcon(R.drawable.ic_call_white_24dp);
+            builder.setContentTitle(mXmppConnectionService.getString(R.string.rtp_state_incoming_call));
+        }
         builder.setContentText(id.account.getRoster().getContact(id.with).getDisplayName());
         builder.setVisibility(NotificationCompat.VISIBILITY_PUBLIC);
         builder.setPriority(NotificationCompat.PRIORITY_HIGH);

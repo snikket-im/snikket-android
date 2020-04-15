@@ -278,7 +278,7 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
                     "proposed media must be set when processing pre-approved session-initiate"
             );
             if (!this.proposedMedia.equals(contentMap.getMedia())) {
-                sendSessionTerminate(Reason.SECURITY_ERROR,String.format(
+                sendSessionTerminate(Reason.SECURITY_ERROR, String.format(
                         "Your session proposal (Jingle Message Initiation) included media %s but your session-initiate was %s",
                         this.proposedMedia,
                         contentMap.getMedia()
@@ -500,7 +500,7 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
         final boolean originatedFromMyself = from.asBareJid().equals(id.account.getJid().asBareJid());
         if (originatedFromMyself) {
             Log.d(Config.LOGTAG, id.account.getJid().asBareJid() + ": saw proposal from mysql. ignoring");
-        } else if (transition(State.PROPOSED)) {
+        } else if (isInState(State.NULL)) {
             final Collection<RtpDescription> descriptions = Collections2.transform(
                     Collections2.filter(propose.getDescriptions(), d -> d instanceof RtpDescription),
                     input -> (RtpDescription) input
@@ -509,6 +509,7 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
             Preconditions.checkState(!media.contains(Media.UNKNOWN), "RTP descriptions contain unknown media");
             Log.d(Config.LOGTAG, id.account.getJid().asBareJid() + ": received session proposal from " + from + " for " + media);
             this.proposedMedia = Sets.newHashSet(media);
+            transitionOrThrow(State.PROPOSED);
             if (serverMsgId != null) {
                 this.message.setServerMsgId(serverMsgId);
             }
@@ -521,7 +522,7 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
 
     private void startRinging() {
         Log.d(Config.LOGTAG, id.account.getJid().asBareJid() + ": received call from " + id.with + ". start ringing");
-        xmppConnectionService.getNotificationService().showIncomingCallNotification(id);
+        xmppConnectionService.getNotificationService().showIncomingCallNotification(id, getMedia());
     }
 
     private void receiveProceed(final Jid from, final String serverMsgId, final long timestamp) {
@@ -623,7 +624,7 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
         writeLogMessage(target);
         final JinglePacket jinglePacket = new JinglePacket(JinglePacket.Action.SESSION_TERMINATE, id.sessionId);
         jinglePacket.setReason(reason, text);
-        Log.d(Config.LOGTAG,jinglePacket.toString());
+        Log.d(Config.LOGTAG, jinglePacket.toString());
         send(jinglePacket);
         jingleConnectionManager.finishConnection(this);
     }
@@ -742,6 +743,16 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
                 return RtpEndUserState.APPLICATION_ERROR;
         }
         throw new IllegalStateException(String.format("%s has no equivalent EndUserState", this.state));
+    }
+
+    public Set<Media> getMedia() {
+        if (isInState(State.NULL)) {
+            throw new IllegalStateException("RTP connection has not been initialized yet");
+        }
+        if (isInState(State.PROPOSED, State.PROCEED)) {
+            return Preconditions.checkNotNull(this.proposedMedia, "RTP connection has not been  initialized properly");
+        }
+        return Preconditions.checkNotNull(initiatorRtpContentMap.getMedia());
     }
 
 

@@ -889,6 +889,7 @@
     <string name="please_enable_an_account">Please enable an account</string>
     <string name="make_call">Make call</string>
     <string name="rtp_state_incoming_call">Incoming call</string>
+    <string name="rtp_state_incoming_video_call">Incoming video call</string>
     <string name="rtp_state_connecting">Connecting</string>
     <string name="rtp_state_connected">Connected</string>
     <string name="rtp_state_accepting_call">Accepting call</string>
