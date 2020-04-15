@@ -955,6 +955,7 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
         final MenuItem menuMute = menu.findItem(R.id.action_mute);
         final MenuItem menuUnmute = menu.findItem(R.id.action_unmute);
         final MenuItem menuCall = menu.findItem(R.id.action_call);
+        final MenuItem menuVideoCall = menu.findItem(R.id.action_video_call);
 
 
         if (conversation != null) {
@@ -964,7 +965,9 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
                 menuMucDetails.setTitle(conversation.getMucOptions().isPrivateAndNonAnonymous() ? R.string.action_muc_details : R.string.channel_details);
                 menuCall.setVisible(false);
             } else {
-                menuCall.setVisible(RtpCapability.check(conversation.getContact()) != RtpCapability.Capability.NONE);
+                final RtpCapability.Capability rtpCapability = RtpCapability.check(conversation.getContact());
+                menuCall.setVisible(rtpCapability != RtpCapability.Capability.NONE);
+                menuVideoCall.setVisible(rtpCapability == RtpCapability.Capability.VIDEO);
                 menuContactDetails.setVisible(!this.conversation.withSelf());
                 menuMucDetails.setVisible(false);
                 final XmppConnectionService service = activity.xmppConnectionService;
