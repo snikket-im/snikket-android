@@ -20,6 +20,7 @@ import eu.siacs.conversations.xml.Namespace;
 import eu.siacs.conversations.xmpp.chatstate.ChatState;
 import eu.siacs.conversations.xmpp.jingle.JingleConnectionManager;
 import eu.siacs.conversations.xmpp.jingle.JingleRtpConnection;
+import eu.siacs.conversations.xmpp.jingle.Media;
 import eu.siacs.conversations.xmpp.stanzas.MessagePacket;
 import rocks.xmpp.addr.Jid;
 
@@ -241,7 +242,10 @@ public class MessageGenerator extends AbstractGenerator {
         packet.setId(JingleRtpConnection.JINGLE_MESSAGE_PROPOSE_ID_PREFIX + proposal.sessionId);
         final Element propose = packet.addChild("propose", Namespace.JINGLE_MESSAGE);
         propose.setAttribute("id", proposal.sessionId);
-        propose.addChild("description", Namespace.JINGLE_APPS_RTP);
+        for (final Media media : proposal.media) {
+            propose.addChild("description", Namespace.JINGLE_APPS_RTP).setAttribute("media", media.toString());
+        }
+
         packet.addChild("request", "urn:xmpp:receipts");
         packet.addChild("store", "urn:xmpp:hints");
         return packet;

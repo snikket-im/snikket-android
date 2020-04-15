@@ -3,13 +3,21 @@ package eu.siacs.conversations.xmpp.jingle;
 import android.util.Base64;
 import android.util.Log;
 
+import com.google.common.base.Function;
 import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
+import com.google.common.collect.Collections2;
+
+import org.checkerframework.checker.nullness.compatqual.NullableDecl;
 
 import java.lang.ref.WeakReference;
 import java.security.SecureRandom;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 import eu.siacs.conversations.Config;
@@ -25,8 +33,11 @@ import eu.siacs.conversations.xml.Namespace;
 import eu.siacs.conversations.xmpp.OnIqPacketReceived;
 import eu.siacs.conversations.xmpp.jingle.stanzas.Content;
 import eu.siacs.conversations.xmpp.jingle.stanzas.FileTransferDescription;
+import eu.siacs.conversations.xmpp.jingle.stanzas.GenericDescription;
 import eu.siacs.conversations.xmpp.jingle.stanzas.JinglePacket;
+import eu.siacs.conversations.xmpp.jingle.stanzas.Propose;
 import eu.siacs.conversations.xmpp.jingle.stanzas.Reason;
+import eu.siacs.conversations.xmpp.jingle.stanzas.RtpDescription;
 import eu.siacs.conversations.xmpp.stanzas.IqPacket;
 import eu.siacs.conversations.xmpp.stanzas.MessagePacket;
 import rocks.xmpp.addr.Jid;
@@ -129,9 +140,9 @@ public class JingleConnectionManager extends AbstractConnectionManager {
             }
             return;
         }
-        final boolean addressedToSelf = from.asBareJid().equals(account.getJid().asBareJid());
+        final boolean fromSelf = from.asBareJid().equals(account.getJid().asBareJid());
         final AbstractJingleConnection.Id id;
-        if (addressedToSelf) {
+        if (fromSelf) {
             if (to.isFullJid()) {
                 id = AbstractJingleConnection.Id.of(account, to, sessionId);
             } else {
@@ -150,15 +161,26 @@ public class JingleConnectionManager extends AbstractConnectionManager {
             return;
         }
 
-        if (addressedToSelf) {
+        if (fromSelf) {
             Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": ignore jingle message from self");
+            return;
         }
 
         if ("propose".equals(message.getName())) {
-            final Element description = message.findChild("description");
-            final String namespace = description == null ? null : description.getNamespace();
-            if (Namespace.JINGLE_APPS_RTP.equals(namespace) && !usesTor(account)) {
-                if (isBusy()) {
+            final Propose propose = Propose.upgrade(message);
+            final List<GenericDescription> descriptions = propose.getDescriptions();
+            final Collection<RtpDescription> rtpDescriptions = Collections2.transform(
+                    Collections2.filter(descriptions, d -> d instanceof RtpDescription),
+                    input -> (RtpDescription) input
+            );
+            if (rtpDescriptions.size() > 0 && rtpDescriptions.size() == descriptions.size() && !usesTor(account)) {
+                final Collection<Media> media = Collections2.transform(rtpDescriptions, RtpDescription::getMedia);
+                if (media.contains(Media.UNKNOWN)) {
+                    Log.d(Config.LOGTAG,account.getJid().asBareJid()+": encountered unknown media in session proposal. "+propose);
+                    return;
+                }
+                if (isBusy()) { //TODO only if no other devices are active
+                    //TODO create
                     final MessagePacket reject = mXmppConnectionService.getMessageGenerator().sessionReject(from, sessionId);
                     mXmppConnectionService.sendMessagePacket(account, reject);
                 } else {
@@ -167,14 +189,15 @@ public class JingleConnectionManager extends AbstractConnectionManager {
                     rtpConnection.deliveryMessage(from, message, serverMsgId, timestamp);
                 }
             } else {
-                Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": unable to react to proposed " + namespace + " session");
+                Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": unable to react to proposed session with " + rtpDescriptions.size() + " rtp descriptions of " + descriptions.size() + " total descriptions");
             }
         } else if ("proceed".equals(message.getName())) {
-
-            final RtpSessionProposal proposal = new RtpSessionProposal(account, from.asBareJid(), sessionId);
             synchronized (rtpSessionProposals) {
-                if (rtpSessionProposals.remove(proposal) != null) {
+                final RtpSessionProposal proposal = getRtpSessionProposal(account,from.asBareJid(),sessionId);
+                if (proposal != null) {
+                    rtpSessionProposals.remove(proposal);
                     final JingleRtpConnection rtpConnection = new JingleRtpConnection(this, id, account.getJid());
+                    rtpConnection.setProposedMedia(proposal.media);
                     this.connections.put(id, rtpConnection);
                     rtpConnection.transitionOrThrow(AbstractJingleConnection.State.PROPOSED);
                     rtpConnection.deliveryMessage(from, message, serverMsgId, timestamp);
@@ -196,6 +219,15 @@ public class JingleConnectionManager extends AbstractConnectionManager {
             Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": retrieved out of order jingle message");
         }
 
+    }
+
+    private RtpSessionProposal getRtpSessionProposal(final Account account, Jid from, String sessionId) {
+        for(RtpSessionProposal rtpSessionProposal : rtpSessionProposals.keySet()) {
+            if (rtpSessionProposal.sessionId.equals(sessionId) && rtpSessionProposal.with.equals(from) && rtpSessionProposal.account.getJid().equals(account.getJid())) {
+                return rtpSessionProposal;
+            }
+        }
+        return null;
     }
 
     private void writeLogMissedOutgoing(final Account account, Jid with, final String sessionId, String serverMsgId, long timestamp) {
@@ -310,7 +342,7 @@ public class JingleConnectionManager extends AbstractConnectionManager {
         }
     }
 
-    public void proposeJingleRtpSession(final Account account, final Jid with) {
+    public void proposeJingleRtpSession(final Account account, final Jid with, final Set<Media> media) {
         synchronized (this.rtpSessionProposals) {
             for (Map.Entry<RtpSessionProposal, DeviceDiscoveryState> entry : this.rtpSessionProposals.entrySet()) {
                 RtpSessionProposal proposal = entry.getKey();
@@ -327,7 +359,7 @@ public class JingleConnectionManager extends AbstractConnectionManager {
                     }
                 }
             }
-            final RtpSessionProposal proposal = RtpSessionProposal.of(account, with.asBareJid());
+            final RtpSessionProposal proposal = RtpSessionProposal.of(account, with.asBareJid(), media);
             this.rtpSessionProposals.put(proposal, DeviceDiscoveryState.SEARCHING);
             mXmppConnectionService.notifyJingleRtpConnectionUpdate(
                     account,
@@ -456,15 +488,21 @@ public class JingleConnectionManager extends AbstractConnectionManager {
         public final Jid with;
         public final String sessionId;
         private final Account account;
+        public final Set<Media> media;
 
         private RtpSessionProposal(Account account, Jid with, String sessionId) {
+            this(account,with,sessionId, Collections.emptySet());
+        }
+
+        private RtpSessionProposal(Account account, Jid with, String sessionId, Set<Media> media) {
             this.account = account;
             this.with = with;
             this.sessionId = sessionId;
+            this.media = media;
         }
 
-        public static RtpSessionProposal of(Account account, Jid with) {
-            return new RtpSessionProposal(account, with, nextRandomId());
+        public static RtpSessionProposal of(Account account, Jid with, Set<Media> media) {
+            return new RtpSessionProposal(account, with, nextRandomId(), media);
         }
 
         @Override

@@ -17,6 +17,7 @@ import android.widget.Toast;
 
 import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableSet;
 
 import org.webrtc.RendererCommon;
 import org.webrtc.SurfaceViewRenderer;
@@ -36,6 +37,7 @@ import eu.siacs.conversations.services.XmppConnectionService;
 import eu.siacs.conversations.utils.PermissionUtils;
 import eu.siacs.conversations.xmpp.jingle.AbstractJingleConnection;
 import eu.siacs.conversations.xmpp.jingle.JingleRtpConnection;
+import eu.siacs.conversations.xmpp.jingle.Media;
 import eu.siacs.conversations.xmpp.jingle.RtpEndUserState;
 import rocks.xmpp.addr.Jid;
 
@@ -199,7 +201,7 @@ public class RtpSessionActivity extends XmppActivity implements XmppConnectionSe
                 resetIntent(intent.getExtras());
             }
         } else if (asList(ACTION_MAKE_VIDEO_CALL, ACTION_MAKE_VOICE_CALL).contains(intent.getAction())) {
-            proposeJingleRtpSession(account, with);
+            proposeJingleRtpSession(account, with, ImmutableSet.of(Media.AUDIO));
             binding.with.setText(account.getRoster().getContact(with).getDisplayName());
         } else if (Intent.ACTION_VIEW.equals(intent.getAction())) {
             final String extraLastState = intent.getStringExtra(EXTRA_LAST_REPORTED_STATE);
@@ -213,8 +215,8 @@ public class RtpSessionActivity extends XmppActivity implements XmppConnectionSe
         }
     }
 
-    private void proposeJingleRtpSession(final Account account, final Jid with) {
-        xmppConnectionService.getJingleConnectionManager().proposeJingleRtpSession(account, with);
+    private void proposeJingleRtpSession(final Account account, final Jid with, final Set<Media> media) {
+        xmppConnectionService.getJingleConnectionManager().proposeJingleRtpSession(account, with, media);
         //TODO maybe we don’t want to acquire a wake lock just yet and wait for audio manager to discover what speaker we are using
         putScreenInCallMode();
     }
@@ -482,7 +484,7 @@ public class RtpSessionActivity extends XmppActivity implements XmppConnectionSe
         final Account account = extractAccount(intent);
         final Jid with = Jid.of(intent.getStringExtra(EXTRA_WITH));
         this.rtpConnectionReference = null;
-        proposeJingleRtpSession(account, with);
+        proposeJingleRtpSession(account, with, ImmutableSet.of(Media.AUDIO));
     }
 
     private void exit(View view) {

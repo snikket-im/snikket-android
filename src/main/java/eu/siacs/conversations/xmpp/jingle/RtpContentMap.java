@@ -5,13 +5,16 @@ import android.util.Log;
 import com.google.common.base.Function;
 import com.google.common.base.Preconditions;
 import com.google.common.base.Strings;
+import com.google.common.collect.Collections2;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Maps;
+import com.google.common.collect.Sets;
 
 import org.checkerframework.checker.nullness.compatqual.NullableDecl;
 
 import java.util.Map;
+import java.util.Set;
 
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.xmpp.jingle.stanzas.Content;
@@ -46,6 +49,13 @@ public class RtpContentMap {
         final String groupAttribute = Iterables.getFirst(sessionDescription.attributes.get("group"), null);
         final Group group = groupAttribute == null ? null : Group.ofSdpString(groupAttribute);
         return new RtpContentMap(group, contentMapBuilder.build());
+    }
+
+    public Set<Media> getMedia() {
+        return Sets.newHashSet(Collections2.transform(contents.values(), input -> {
+            final RtpDescription rtpDescription = input == null ? null : input.description;
+            return rtpDescription == null ? Media.UNKNOWN : input.description.getMedia();
+        }));
     }
 
     public void requireContentDescriptions() {

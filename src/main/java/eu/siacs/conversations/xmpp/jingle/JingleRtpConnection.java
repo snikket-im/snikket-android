@@ -4,9 +4,12 @@ import android.os.SystemClock;
 import android.util.Log;
 
 import com.google.common.base.Optional;
+import com.google.common.base.Preconditions;
 import com.google.common.base.Strings;
+import com.google.common.collect.Collections2;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.Sets;
 import com.google.common.primitives.Ints;
 
 import org.webrtc.EglBase;
@@ -30,10 +33,13 @@ import eu.siacs.conversations.entities.RtpSessionStatus;
 import eu.siacs.conversations.services.AppRTCAudioManager;
 import eu.siacs.conversations.xml.Element;
 import eu.siacs.conversations.xml.Namespace;
+import eu.siacs.conversations.xmpp.jingle.stanzas.GenericDescription;
 import eu.siacs.conversations.xmpp.jingle.stanzas.Group;
 import eu.siacs.conversations.xmpp.jingle.stanzas.IceUdpTransportInfo;
 import eu.siacs.conversations.xmpp.jingle.stanzas.JinglePacket;
+import eu.siacs.conversations.xmpp.jingle.stanzas.Propose;
 import eu.siacs.conversations.xmpp.jingle.stanzas.Reason;
+import eu.siacs.conversations.xmpp.jingle.stanzas.RtpDescription;
 import eu.siacs.conversations.xmpp.stanzas.IqPacket;
 import eu.siacs.conversations.xmpp.stanzas.MessagePacket;
 import rocks.xmpp.addr.Jid;
@@ -108,6 +114,7 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
     private final ArrayDeque<IceCandidate> pendingIceCandidates = new ArrayDeque<>();
     private final Message message;
     private State state = State.NULL;
+    private Set<Media> proposedMedia;
     private RtpContentMap initiatorRtpContentMap;
     private RtpContentMap responderRtpContentMap;
     private long rtpConnectionStarted = 0; //time of 'connected'
@@ -406,7 +413,7 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
         Log.d(Config.LOGTAG, id.account.getJid().asBareJid() + ": delivered message to JingleRtpConnection " + message);
         switch (message.getName()) {
             case "propose":
-                receivePropose(from, serverMessageId, timestamp);
+                receivePropose(from, Propose.upgrade(message), serverMessageId, timestamp);
                 break;
             case "proceed":
                 receiveProceed(from, serverMessageId, timestamp);
@@ -475,11 +482,19 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
         }
     }
 
-    private void receivePropose(final Jid from, final String serverMsgId, final long timestamp) {
+    private void receivePropose(final Jid from, final Propose propose, final String serverMsgId, final long timestamp) {
         final boolean originatedFromMyself = from.asBareJid().equals(id.account.getJid().asBareJid());
         if (originatedFromMyself) {
             Log.d(Config.LOGTAG, id.account.getJid().asBareJid() + ": saw proposal from mysql. ignoring");
         } else if (transition(State.PROPOSED)) {
+            final Collection<RtpDescription> descriptions = Collections2.transform(
+                    Collections2.filter(propose.getDescriptions(), d -> d instanceof RtpDescription),
+                    input -> (RtpDescription) input
+            );
+            final Collection<Media> media = Collections2.transform(descriptions, RtpDescription::getMedia);
+            Preconditions.checkState(!media.contains(Media.UNKNOWN),"RTP descriptions contain unknown media");
+            Log.d(Config.LOGTAG,id.account.getJid().asBareJid()+": received session proposal from "+from+" for "+media);
+            this.proposedMedia = Sets.newHashSet(media);
             if (serverMsgId != null) {
                 this.message.setServerMsgId(serverMsgId);
             }
@@ -1000,6 +1015,10 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
 
     public EglBase.Context getEglBaseContext() {
         return webRTCWrapper.getEglBaseContext();
+    }
+
+    public void setProposedMedia(final Set<Media> media) {
+
     }
 
     private interface OnIceServersDiscovered {
