@@ -201,7 +201,7 @@ public class RtpSessionActivity extends XmppActivity implements XmppConnectionSe
                 resetIntent(intent.getExtras());
             }
         } else if (asList(ACTION_MAKE_VIDEO_CALL, ACTION_MAKE_VOICE_CALL).contains(intent.getAction())) {
-            proposeJingleRtpSession(account, with, ImmutableSet.of(Media.AUDIO));
+            proposeJingleRtpSession(account, with, ImmutableSet.of(Media.AUDIO, Media.VIDEO));
             binding.with.setText(account.getRoster().getContact(with).getDisplayName());
         } else if (Intent.ACTION_VIEW.equals(intent.getAction())) {
             final String extraLastState = intent.getStringExtra(EXTRA_LAST_REPORTED_STATE);
@@ -296,25 +296,31 @@ public class RtpSessionActivity extends XmppActivity implements XmppConnectionSe
     private void updateVideoViews() {
         final Optional<VideoTrack> localVideoTrack = requireRtpConnection().geLocalVideoTrack();
         if (localVideoTrack.isPresent()) {
-            try {
-                binding.localVideo.init(requireRtpConnection().getEglBaseContext(), null);
-            } catch (IllegalStateException e) {
-                Log.d(Config.LOGTAG,"ignoring already init for now",e);
-            }
-            binding.localVideo.setEnableHardwareScaler(true);
+            ensureSurfaceViewRendererIsSetup(binding.localVideo);
+            //paint local view over remote view
+            binding.localVideo.setZOrderMediaOverlay(true);
             binding.localVideo.setMirror(true);
             localVideoTrack.get().addSink(binding.localVideo);
+        } else {
+            binding.localVideo.setVisibility(View.GONE);
         }
         final Optional<VideoTrack> remoteVideoTrack = requireRtpConnection().getRemoteVideoTrack();
         if (remoteVideoTrack.isPresent()) {
-            try {
-                binding.remoteVideo.init(requireRtpConnection().getEglBaseContext(), null);
-            } catch (IllegalStateException e) {
-                Log.d(Config.LOGTAG,"ignoring already init for now",e);
-            }
-            binding.remoteVideo.setEnableHardwareScaler(true);
+            ensureSurfaceViewRendererIsSetup(binding.remoteVideo);
             remoteVideoTrack.get().addSink(binding.remoteVideo);
+        } else {
+            binding.remoteVideo.setVisibility(View.GONE);
         }
+    }
+
+    private void ensureSurfaceViewRendererIsSetup(final SurfaceViewRenderer surfaceViewRenderer) {
+        surfaceViewRenderer.setVisibility(View.VISIBLE);
+        try {
+            surfaceViewRenderer.init(requireRtpConnection().getEglBaseContext(), null);
+        } catch (IllegalStateException e) {
+            Log.d(Config.LOGTAG, "SurfaceViewRenderer was already initialized");
+        }
+        surfaceViewRenderer.setEnableHardwareScaler(true);
     }
 
     private void updateStateDisplay(final RtpEndUserState state) {
@@ -484,7 +490,7 @@ public class RtpSessionActivity extends XmppActivity implements XmppConnectionSe
         final Account account = extractAccount(intent);
         final Jid with = Jid.of(intent.getStringExtra(EXTRA_WITH));
         this.rtpConnectionReference = null;
-        proposeJingleRtpSession(account, with, ImmutableSet.of(Media.AUDIO));
+        proposeJingleRtpSession(account, with, ImmutableSet.of(Media.AUDIO, Media.VIDEO));
     }
 
     private void exit(View view) {
