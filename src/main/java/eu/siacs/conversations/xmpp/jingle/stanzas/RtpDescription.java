@@ -9,7 +9,6 @@ import com.google.common.collect.ImmutableList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 
 import eu.siacs.conversations.xml.Element;
@@ -479,6 +478,14 @@ public class RtpDescription extends GenericDescription {
 
     public static class SourceGroup extends Element {
 
+        public SourceGroup(final String semantics, List<String> ssrcs) {
+            this();
+            this.setAttribute("semantics", semantics);
+            for (String ssrc : ssrcs) {
+                this.addChild("source").setAttribute("ssrc", ssrc);
+            }
+        }
+
         private SourceGroup() {
             super("ssrc-group", Namespace.JINGLE_RTP_SOURCE_SPECIFIC_MEDIA_ATTRIBUTES);
         }
@@ -559,6 +566,17 @@ public class RtpDescription extends GenericDescription {
             final RtpHeaderExtension extension = RtpHeaderExtension.ofSdpString(extmap);
             if (extension != null) {
                 rtpDescription.addChild(extension);
+            }
+        }
+        for (final String ssrcGroup : media.attributes.get("ssrc-group")) {
+            final String[] parts = ssrcGroup.split(" ");
+            if (parts.length >= 2) {
+                ImmutableList.Builder<String> builder = new ImmutableList.Builder<>();
+                final String semantics = parts[0];
+                for (int i = 1; i < parts.length; ++i) {
+                    builder.add(parts[i]);
+                }
+                rtpDescription.addChild(new SourceGroup(semantics, builder.build()));
             }
         }
         for (Map.Entry<String, Collection<Source.Parameter>> source : sourceParameterMap.asMap().entrySet()) {
