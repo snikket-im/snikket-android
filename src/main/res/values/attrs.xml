@@ -45,6 +45,9 @@
     <attr name="ic_attach_photo" format="reference"/>
     <attr name="ic_attach_record" format="reference"/>
 
+    <attr name="ic_make_audio_call" format="reference"/>
+    <attr name="ic_make_video_call" format="reference"/>
+
 
 
     <attr name="ic_cloud_download" format="reference"/>

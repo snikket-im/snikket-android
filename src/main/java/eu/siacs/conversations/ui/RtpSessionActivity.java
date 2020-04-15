@@ -190,6 +190,7 @@ public class RtpSessionActivity extends XmppActivity implements XmppConnectionSe
     @Override
     void onBackendConnected() {
         final Intent intent = getIntent();
+        final String action = intent.getAction();
         final Account account = extractAccount(intent);
         final Jid with = Jid.of(intent.getStringExtra(EXTRA_WITH));
         final String sessionId = intent.getStringExtra(EXTRA_SESSION_ID);
@@ -200,10 +201,16 @@ public class RtpSessionActivity extends XmppActivity implements XmppConnectionSe
                 requestPermissionsAndAcceptCall();
                 resetIntent(intent.getExtras());
             }
-        } else if (asList(ACTION_MAKE_VIDEO_CALL, ACTION_MAKE_VOICE_CALL).contains(intent.getAction())) {
-            proposeJingleRtpSession(account, with, ImmutableSet.of(Media.AUDIO, Media.VIDEO));
+        } else if (asList(ACTION_MAKE_VIDEO_CALL, ACTION_MAKE_VOICE_CALL).contains(action)) {
+            final Set<Media> media;
+            if (ACTION_MAKE_VIDEO_CALL.equals(action)) {
+                media = ImmutableSet.of(Media.AUDIO, Media.VIDEO);
+            } else {
+                media = ImmutableSet.of(Media.AUDIO);
+            }
+            proposeJingleRtpSession(account, with, media);
             binding.with.setText(account.getRoster().getContact(with).getDisplayName());
-        } else if (Intent.ACTION_VIEW.equals(intent.getAction())) {
+        } else if (Intent.ACTION_VIEW.equals(action)) {
             final String extraLastState = intent.getStringExtra(EXTRA_LAST_REPORTED_STATE);
             if (extraLastState != null) {
                 Log.d(Config.LOGTAG, "restored last state from intent extra");

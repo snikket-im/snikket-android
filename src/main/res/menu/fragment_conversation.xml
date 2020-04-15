@@ -65,7 +65,18 @@
         android:icon="?attr/icon_call"
         android:orderInCategory="35"
         android:title="@string/make_call"
-        app:showAsAction="always" />
+        app:showAsAction="always">
+        <menu>
+            <item
+                android:id="@+id/action_audio_call"
+                android:icon="?attr/ic_make_audio_call"
+                android:title="@string/audio_call" />
+            <item
+                android:id="@+id/action_video_call"
+                android:icon="?attr/ic_make_video_call"
+                android:title="@string/video_call" />
+        </menu>
+    </item>
     <item
         android:id="@+id/action_contact_details"
         android:orderInCategory="40"

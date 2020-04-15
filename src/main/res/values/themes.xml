@@ -54,6 +54,9 @@
         <item type="reference" name="ic_attach_photo">@drawable/ic_attach_photo</item>
         <item type="reference" name="ic_attach_record">@drawable/ic_attach_record</item>
 
+        <item type="reference" name="ic_make_audio_call">@drawable/ic_call_black54_24dp</item>
+        <item type="reference" name="ic_make_video_call">@drawable/ic_videocam_black54_24dp</item>
+
         <item type="reference" name="message_bubble_received_monochrome">@drawable/message_bubble_received_white</item>
         <item type="reference" name="message_bubble_sent">@drawable/message_bubble_sent</item>
         <item type="reference" name="message_bubble_received_green">@drawable/message_bubble_received</item>
@@ -163,6 +166,9 @@
         <item type="reference" name="ic_send_text_offline">@drawable/ic_send_text_offline_white</item>
         <item type="reference" name="ic_send_videocam_offline">@drawable/ic_send_videocam_offline_white</item>
         <item type="reference" name="ic_send_voice_offline">@drawable/ic_send_voice_offline_white</item>
+
+        <item type="reference" name="ic_make_audio_call">@drawable/ic_call_white70_24dp</item>
+        <item type="reference" name="ic_make_video_call">@drawable/ic_videocam_white70_24dp</item>
 
         <item type="reference" name="ic_attach_camera">@drawable/ic_attach_camera_white</item>
         <item type="reference" name="ic_attach_videocam">@drawable/ic_attach_videocam_white</item>

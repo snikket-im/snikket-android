@@ -140,6 +140,7 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
     public static final int REQUEST_ADD_EDITOR_CONTENT = 0x0211;
     public static final int REQUEST_COMMIT_ATTACHMENTS = 0x0212;
     public static final int REQUEST_START_AUDIO_CALL = 0x213;
+    public static final int REQUEST_START_VIDEO_CALL = 0x214;
     public static final int ATTACHMENT_CHOICE_CHOOSE_IMAGE = 0x0301;
     public static final int ATTACHMENT_CHOICE_TAKE_PHOTO = 0x0302;
     public static final int ATTACHMENT_CHOICE_CHOOSE_FILE = 0x0303;
@@ -1234,8 +1235,11 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
                     BlockContactDialog.show((XmppActivity) activity, conversation);
                 }
                 break;
-            case R.id.action_call:
-                checkPermissionAndTriggerRtpSession();
+            case R.id.action_audio_call:
+                checkPermissionAndTriggerAudioCall();
+                break;
+            case R.id.action_video_call:
+                checkPermissionAndTriggerVideoCall();
                 break;
             default:
                 break;
@@ -1243,21 +1247,31 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
         return super.onOptionsItemSelected(item);
     }
 
-    private void checkPermissionAndTriggerRtpSession() {
+    private void checkPermissionAndTriggerAudioCall() {
         if (activity.xmppConnectionService.useTorToConnect() || conversation.getAccount().isOnion()) {
             Toast.makeText(activity, R.string.disable_tor_to_make_call, Toast.LENGTH_SHORT).show();
             return;
         }
         if (hasPermissions(REQUEST_START_AUDIO_CALL, Manifest.permission.RECORD_AUDIO)) {
-            triggerRtpSession();
+            triggerRtpSession(RtpSessionActivity.ACTION_MAKE_VOICE_CALL);
+        }
+    }
+
+    private void checkPermissionAndTriggerVideoCall() {
+        if (activity.xmppConnectionService.useTorToConnect() || conversation.getAccount().isOnion()) {
+            Toast.makeText(activity, R.string.disable_tor_to_make_call, Toast.LENGTH_SHORT).show();
+            return;
+        }
+        if (hasPermissions(REQUEST_START_VIDEO_CALL, Manifest.permission.RECORD_AUDIO, Manifest.permission.CAMERA)) {
+            triggerRtpSession(RtpSessionActivity.ACTION_MAKE_VIDEO_CALL);
         }
     }
 
 
-    private void triggerRtpSession() {
+    private void triggerRtpSession(final String action) {
         final Contact contact = conversation.getContact();
         final Intent intent = new Intent(activity, RtpSessionActivity.class);
-        intent.setAction(RtpSessionActivity.ACTION_MAKE_VOICE_CALL);
+        intent.setAction(action);
         intent.putExtra(RtpSessionActivity.EXTRA_ACCOUNT, contact.getAccount().getJid().toEscapedString());
         intent.putExtra(RtpSessionActivity.EXTRA_WITH, contact.getJid().asBareJid().toEscapedString());
         startActivity(intent);
@@ -1414,7 +1428,10 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
                         commitAttachments();
                         break;
                     case REQUEST_START_AUDIO_CALL:
-                        triggerRtpSession();
+                        triggerRtpSession(RtpSessionActivity.ACTION_MAKE_VOICE_CALL);
+                        break;
+                    case REQUEST_START_VIDEO_CALL:
+                        triggerRtpSession(RtpSessionActivity.ACTION_MAKE_VIDEO_CALL);
                         break;
                     default:
                         attachFile(requestCode);
