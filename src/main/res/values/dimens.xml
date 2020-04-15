@@ -1,38 +1,42 @@
 <resources>
-	<!-- Default screen margins, per the Android Design guidelines. -->
-	<dimen name="activity_horizontal_margin">8dp</dimen>
-	<dimen name="activity_vertical_margin">8dp</dimen>
-	<dimen name="card_padding_regular">16dp</dimen>
-	<dimen name="card_padding_list">8dp</dimen> <!-- card_padding_regular minus list_padding -->
-	<dimen name="list_padding">8dp</dimen>
-	<dimen name="image_button_padding">12dp</dimen>
-	<dimen name="key_action_width">48dp</dimen>  <!-- icon width (24dp) + 2 * image button padding -->
-	<dimen name="fineprint_size">11sp</dimen>
-	<dimen name="audio_player_width">224dp</dimen>
-	<dimen name="avatar_item_distance">16dp</dimen>
+    <!-- Default screen margins, per the Android Design guidelines. -->
+    <dimen name="activity_horizontal_margin">8dp</dimen>
+    <dimen name="activity_vertical_margin">8dp</dimen>
+    <dimen name="card_padding_regular">16dp</dimen>
+    <dimen name="card_padding_list">8dp</dimen> <!-- card_padding_regular minus list_padding -->
+    <dimen name="list_padding">8dp</dimen>
+    <dimen name="image_button_padding">12dp</dimen>
+    <dimen name="key_action_width">48dp
+    </dimen>  <!-- icon width (24dp) + 2 * image button padding -->
+    <dimen name="fineprint_size">11sp</dimen>
+    <dimen name="audio_player_width">224dp</dimen>
+    <dimen name="avatar_item_distance">16dp</dimen>
 
-	<dimen name="media_preview_size">80dp</dimen>
-	<dimen name="media_size">56dp</dimen> <!-- ideally not larger than avatar_on_details_screen -->
-	<dimen name="browser_media_size">96dp</dimen>
-	<dimen name="toolbar_elevation">4dp</dimen>
+    <dimen name="media_preview_size">80dp</dimen>
+    <dimen name="media_size">56dp</dimen> <!-- ideally not larger than avatar_on_details_screen -->
+    <dimen name="browser_media_size">96dp</dimen>
+    <dimen name="toolbar_elevation">4dp</dimen>
 
-	<dimen name="publish_avatar_top_margin">8dp</dimen>
-	<dimen name="publish_avatar_size">96dp</dimen>
-	<dimen name="avatar_on_status_message">32dp</dimen>
-	<dimen name="avatar">48dp</dimen>
-	<dimen name="avatar_on_details_screen_size">56dp</dimen>
-	<dimen name="avatar_on_conversation_overview">56dp</dimen>
+    <dimen name="publish_avatar_top_margin">8dp</dimen>
+    <dimen name="publish_avatar_size">96dp</dimen>
+    <dimen name="avatar_on_status_message">32dp</dimen>
+    <dimen name="avatar">48dp</dimen>
+    <dimen name="avatar_on_details_screen_size">56dp</dimen>
+    <dimen name="avatar_on_conversation_overview">56dp</dimen>
 
-	<dimen name="input_label_vertical_spacing">4dp</dimen>
-	<dimen name="input_label_horizontal_spacing">4dp</dimen>
+    <dimen name="input_label_vertical_spacing">4dp</dimen>
+    <dimen name="input_label_horizontal_spacing">4dp</dimen>
 
-	<!-- scanner -->
-	<dimen name="scan_laser_width">4dp</dimen>
-	<dimen name="scan_dot_size">8dp</dimen>
+    <!-- scanner -->
+    <dimen name="scan_laser_width">4dp</dimen>
+    <dimen name="scan_dot_size">8dp</dimen>
 
-	<dimen name="swipe_escape_velocity">1200dp</dimen> <!-- android default is 120dp -->
+    <dimen name="swipe_escape_velocity">1200dp</dimen> <!-- android default is 120dp -->
 
-	<dimen name="background_image_opacity">0.12</dimen>
+    <dimen name="background_image_opacity">0.12</dimen>
 
-	<dimen name="sd_label_max_width">256dp</dimen>
+    <dimen name="sd_label_max_width">256dp</dimen>
+
+    <dimen name="local_video_preview_height">128dp</dimen>
+    <dimen name="local_video_preview_width">96dp</dimen>
 </resources>

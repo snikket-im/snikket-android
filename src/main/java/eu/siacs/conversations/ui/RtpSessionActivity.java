@@ -304,7 +304,7 @@ public class RtpSessionActivity extends XmppActivity implements XmppConnectionSe
             putScreenInCallMode();
         }
         binding.with.setText(getWith().getDisplayName());
-        updateVideoViews();
+        updateVideoViews(currentState);
         updateStateDisplay(currentState);
         updateButtonConfiguration(currentState);
     }
@@ -508,7 +508,14 @@ public class RtpSessionActivity extends XmppActivity implements XmppConnectionSe
         this.binding.inCallActionLeft.setVisibility(View.VISIBLE);
     }
 
-    private void updateVideoViews() {
+    private void updateVideoViews(final RtpEndUserState state) {
+        if (END_CARD.contains(state) || state == RtpEndUserState.ENDING_CALL) {
+            binding.localVideo.setVisibility(View.GONE);
+            binding.remoteVideo.setVisibility(View.GONE);
+            binding.appBarLayout.setVisibility(View.VISIBLE);
+            getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
+            return;
+        }
         final Optional<VideoTrack> localVideoTrack = requireRtpConnection().geLocalVideoTrack();
         if (localVideoTrack.isPresent()) {
             ensureSurfaceViewRendererIsSetup(binding.localVideo);
@@ -523,7 +530,10 @@ public class RtpSessionActivity extends XmppActivity implements XmppConnectionSe
         if (remoteVideoTrack.isPresent()) {
             ensureSurfaceViewRendererIsSetup(binding.remoteVideo);
             remoteVideoTrack.get().addSink(binding.remoteVideo);
+            binding.appBarLayout.setVisibility(View.GONE);
+            getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
         } else {
+            getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
             binding.remoteVideo.setVisibility(View.GONE);
         }
     }
@@ -590,6 +600,10 @@ public class RtpSessionActivity extends XmppActivity implements XmppConnectionSe
             return;
         }
         if (this.rtpConnectionReference == null) {
+            if (END_CARD.contains(state)) {
+                Log.d(Config.LOGTAG,"not reinitializing session");
+                return;
+            }
             //this happens when going from proposed session to actual session
             reInitializeActivityWithRunningRapSession(account, with, sessionId);
             return;
@@ -607,7 +621,7 @@ public class RtpSessionActivity extends XmppActivity implements XmppConnectionSe
                 updateStateDisplay(state);
                 updateButtonConfiguration(state);
                 //TODO kill video when in final or error stages
-                updateVideoViews();
+                updateVideoViews(state);
             });
         } else {
             Log.d(Config.LOGTAG, "received update for other rtp session");

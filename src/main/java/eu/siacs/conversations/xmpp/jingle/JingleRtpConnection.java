@@ -910,7 +910,6 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
     @Override
     public void onConnectionChange(final PeerConnection.PeerConnectionState newState) {
         Log.d(Config.LOGTAG, id.account.getJid().asBareJid() + ": PeerConnectionState changed to " + newState);
-        updateEndUserState();
         if (newState == PeerConnection.PeerConnectionState.CONNECTED && this.rtpConnectionStarted == 0) {
             this.rtpConnectionStarted = SystemClock.elapsedRealtime();
         }
@@ -920,6 +919,8 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
                 return;
             }
             sendSessionTerminate(Reason.CONNECTIVITY_ERROR);
+        } else {
+            updateEndUserState();
         }
     }
 

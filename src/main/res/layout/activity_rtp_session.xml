@@ -11,7 +11,8 @@
         <android.support.design.widget.AppBarLayout
             android:id="@+id/app_bar_layout"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:visibility="visible">
 
             <android.support.v7.widget.Toolbar
                 android:id="@+id/toolbar"
@@ -36,9 +37,10 @@
         </android.support.design.widget.AppBarLayout>
 
         <org.webrtc.SurfaceViewRenderer
+            app:elevation="4dp"
             android:id="@+id/local_video"
-            android:layout_width="80dp"
-            android:layout_height="128dp"
+            android:layout_width="@dimen/local_video_preview_width"
+            android:layout_height="@dimen/local_video_preview_height"
             android:layout_below="@+id/app_bar_layout"
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
@@ -50,7 +52,7 @@
         <org.webrtc.SurfaceViewRenderer
             android:id="@+id/remote_video"
             android:layout_width="match_parent"
-            android:layout_height="100dp"
+            android:layout_height="match_parent"
             android:layout_below="@+id/app_bar_layout"
             android:layout_alignParentStart="true"
             android:layout_alignParentLeft="true"
