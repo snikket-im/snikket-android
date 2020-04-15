@@ -124,6 +124,7 @@ public class RtpSessionActivity extends XmppActivity implements XmppConnectionSe
 
     @SuppressLint("WakelockTimeout")
     private void putScreenInCallMode() {
+        //TODO for video calls we actually do want to keep the screen on
         getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         final JingleRtpConnection rtpConnection = rtpConnectionReference != null ? rtpConnectionReference.get() : null;
         final AppRTCAudioManager audioManager = rtpConnection == null ? null : rtpConnection.getAudioManager();
@@ -209,13 +210,7 @@ public class RtpSessionActivity extends XmppActivity implements XmppConnectionSe
                 resetIntent(intent.getExtras());
             }
         } else if (asList(ACTION_MAKE_VIDEO_CALL, ACTION_MAKE_VOICE_CALL).contains(action)) {
-            final Set<Media> media;
-            if (ACTION_MAKE_VIDEO_CALL.equals(action)) {
-                media = ImmutableSet.of(Media.AUDIO, Media.VIDEO);
-            } else {
-                media = ImmutableSet.of(Media.AUDIO);
-            }
-            proposeJingleRtpSession(account, with, media);
+            proposeJingleRtpSession(account, with, actionToMedia(action));
             binding.with.setText(account.getRoster().getContact(with).getDisplayName());
         } else if (Intent.ACTION_VIEW.equals(action)) {
             final String extraLastState = intent.getStringExtra(EXTRA_LAST_REPORTED_STATE);
@@ -226,6 +221,14 @@ public class RtpSessionActivity extends XmppActivity implements XmppConnectionSe
                 updateStateDisplay(state);
             }
             binding.with.setText(account.getRoster().getContact(with).getDisplayName());
+        }
+    }
+
+    private static Set<Media> actionToMedia(final String action) {
+        if (ACTION_MAKE_VIDEO_CALL.equals(action)) {
+            return ImmutableSet.of(Media.AUDIO, Media.VIDEO);
+        } else {
+            return ImmutableSet.of(Media.AUDIO);
         }
     }
 
@@ -586,11 +589,13 @@ public class RtpSessionActivity extends XmppActivity implements XmppConnectionSe
                 finish();
                 return;
             } else if (asList(RtpEndUserState.APPLICATION_ERROR, RtpEndUserState.DECLINED_OR_BUSY, RtpEndUserState.CONNECTIVITY_ERROR).contains(state)) {
+                //todo remember if we were video
                 resetIntent(account, with, state);
             }
             runOnUiThread(() -> {
                 updateStateDisplay(state);
                 updateButtonConfiguration(state);
+                //TODO kill video when in final or error stages
                 updateVideoViews();
             });
         } else {
