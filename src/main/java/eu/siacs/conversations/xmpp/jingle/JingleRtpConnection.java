@@ -820,7 +820,13 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
     }
 
     private void setupWebRTC(final Set<Media> media, final List<PeerConnection.IceServer> iceServers) throws WebRTCWrapper.InitializationException {
-        this.webRTCWrapper.setup(this.xmppConnectionService);
+        final AppRTCAudioManager.SpeakerPhonePreference speakerPhonePreference;
+        if (media.contains(Media.VIDEO)) {
+            speakerPhonePreference = AppRTCAudioManager.SpeakerPhonePreference.SPEAKER;
+        } else {
+            speakerPhonePreference = AppRTCAudioManager.SpeakerPhonePreference.EARPIECE;
+        }
+        this.webRTCWrapper.setup(this.xmppConnectionService, speakerPhonePreference);
         this.webRTCWrapper.initializePeerConnection(media, iceServers);
     }
 

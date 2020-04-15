@@ -25,6 +25,7 @@ import org.webrtc.VideoTrack;
 
 import java.lang.ref.WeakReference;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Set;
 
 import eu.siacs.conversations.Config;
@@ -108,7 +109,13 @@ public class RtpSessionActivity extends XmppActivity implements XmppConnectionSe
     }
 
     private void requestPermissionsAndAcceptCall() {
-        if (PermissionUtils.hasPermission(this, ImmutableList.of(Manifest.permission.RECORD_AUDIO), REQUEST_ACCEPT_CALL)) {
+        final List<String> permissions;
+        if (getMedia().contains(Media.VIDEO)) {
+            permissions = ImmutableList.of(Manifest.permission.CAMERA, Manifest.permission.RECORD_AUDIO);
+        } else {
+            permissions = ImmutableList.of(Manifest.permission.RECORD_AUDIO);
+        }
+        if (PermissionUtils.hasPermission(this, permissions, REQUEST_ACCEPT_CALL)) {
             //TODO like wise the propose; we might just wait here for the audio manager to come up
             putScreenInCallMode();
             requireRtpConnection().acceptCall();
@@ -285,6 +292,7 @@ public class RtpSessionActivity extends XmppActivity implements XmppConnectionSe
             putScreenInCallMode();
         }
         binding.with.setText(getWith().getDisplayName());
+        updateVideoViews();
         updateStateDisplay(currentState);
         updateButtonConfiguration(currentState);
     }
@@ -298,26 +306,6 @@ public class RtpSessionActivity extends XmppActivity implements XmppConnectionSe
         intent.putExtra(EXTRA_WITH, with.toEscapedString());
         intent.putExtra(EXTRA_SESSION_ID, sessionId);
         setIntent(intent);
-    }
-
-    private void updateVideoViews() {
-        final Optional<VideoTrack> localVideoTrack = requireRtpConnection().geLocalVideoTrack();
-        if (localVideoTrack.isPresent()) {
-            ensureSurfaceViewRendererIsSetup(binding.localVideo);
-            //paint local view over remote view
-            binding.localVideo.setZOrderMediaOverlay(true);
-            binding.localVideo.setMirror(true);
-            localVideoTrack.get().addSink(binding.localVideo);
-        } else {
-            binding.localVideo.setVisibility(View.GONE);
-        }
-        final Optional<VideoTrack> remoteVideoTrack = requireRtpConnection().getRemoteVideoTrack();
-        if (remoteVideoTrack.isPresent()) {
-            ensureSurfaceViewRendererIsSetup(binding.remoteVideo);
-            remoteVideoTrack.get().addSink(binding.remoteVideo);
-        } else {
-            binding.remoteVideo.setVisibility(View.GONE);
-        }
     }
 
     private void ensureSurfaceViewRendererIsSetup(final SurfaceViewRenderer surfaceViewRenderer) {
@@ -475,6 +463,26 @@ public class RtpSessionActivity extends XmppActivity implements XmppConnectionSe
             this.binding.inCallActionRight.setOnClickListener(this::enableMicrophone);
         }
         this.binding.inCallActionRight.setVisibility(View.VISIBLE);
+    }
+
+    private void updateVideoViews() {
+        final Optional<VideoTrack> localVideoTrack = requireRtpConnection().geLocalVideoTrack();
+        if (localVideoTrack.isPresent()) {
+            ensureSurfaceViewRendererIsSetup(binding.localVideo);
+            //paint local view over remote view
+            binding.localVideo.setZOrderMediaOverlay(true);
+            binding.localVideo.setMirror(true);
+            localVideoTrack.get().addSink(binding.localVideo);
+        } else {
+            binding.localVideo.setVisibility(View.GONE);
+        }
+        final Optional<VideoTrack> remoteVideoTrack = requireRtpConnection().getRemoteVideoTrack();
+        if (remoteVideoTrack.isPresent()) {
+            ensureSurfaceViewRendererIsSetup(binding.remoteVideo);
+            remoteVideoTrack.get().addSink(binding.remoteVideo);
+        } else {
+            binding.remoteVideo.setVisibility(View.GONE);
+        }
     }
 
     private void disableMicrophone(View view) {

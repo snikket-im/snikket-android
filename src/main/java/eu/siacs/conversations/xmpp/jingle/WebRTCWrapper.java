@@ -145,14 +145,14 @@ public class WebRTCWrapper {
         this.eventCallback = eventCallback;
     }
 
-    public void setup(final Context context) {
+    public void setup(final Context context, final AppRTCAudioManager.SpeakerPhonePreference speakerPhonePreference) {
         PeerConnectionFactory.initialize(
                 PeerConnectionFactory.InitializationOptions.builder(context).createInitializationOptions()
         );
         this.eglBase = EglBase.create();
         this.context = context;
         mainHandler.post(() -> {
-            appRTCAudioManager = AppRTCAudioManager.create(context, AppRTCAudioManager.SpeakerPhonePreference.EARPIECE);
+            appRTCAudioManager = AppRTCAudioManager.create(context, speakerPhonePreference);
             appRTCAudioManager.start(audioManagerEvents);
             eventCallback.onAudioDeviceChanged(appRTCAudioManager.getSelectedAudioDevice(), appRTCAudioManager.getAudioDevices());
         });
