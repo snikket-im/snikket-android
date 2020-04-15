@@ -228,7 +228,7 @@ public class WebRTCWrapper {
         }
     }
 
-    public boolean isMicrophoneEnabled() {
+    boolean isMicrophoneEnabled() {
         final AudioTrack audioTrack = this.localAudioTrack;
         if (audioTrack == null) {
             throw new IllegalStateException("Local audio track does not exist (yet)");
@@ -236,12 +236,28 @@ public class WebRTCWrapper {
         return audioTrack.enabled();
     }
 
-    public void setMicrophoneEnabled(final boolean enabled) {
+    void setMicrophoneEnabled(final boolean enabled) {
         final AudioTrack audioTrack = this.localAudioTrack;
         if (audioTrack == null) {
             throw new IllegalStateException("Local audio track does not exist (yet)");
         }
         audioTrack.setEnabled(enabled);
+    }
+
+    public boolean isVideoEnabled() {
+        final VideoTrack videoTrack = this.localVideoTrack;
+        if (videoTrack == null) {
+            throw new IllegalStateException("Local video track does not exist");
+        }
+        return videoTrack.enabled();
+    }
+
+    public void setVideoEnabled(final boolean enabled) {
+        final VideoTrack videoTrack = this.localVideoTrack;
+        if (videoTrack == null) {
+            throw new IllegalStateException("Local video track does not exist");
+        }
+        videoTrack.setEnabled(enabled);
     }
 
     public ListenableFuture<SessionDescription> createOffer() {

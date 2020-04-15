@@ -930,6 +930,14 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
         webRTCWrapper.setMicrophoneEnabled(enabled);
     }
 
+    public boolean isVideoEnabled() {
+        return webRTCWrapper.isVideoEnabled();
+    }
+
+    public void setVideoEnabled(final boolean enabled) {
+        webRTCWrapper.setVideoEnabled(enabled);
+    }
+
     @Override
     public void onAudioDeviceChanged(AppRTCAudioManager.AudioDevice selectedAudioDevice, Set<AppRTCAudioManager.AudioDevice> availableAudioDevices) {
         xmppConnectionService.notifyJingleRtpConnectionUpdate(selectedAudioDevice, availableAudioDevices);

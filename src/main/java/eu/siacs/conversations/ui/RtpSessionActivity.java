@@ -410,12 +410,16 @@ public class RtpSessionActivity extends XmppActivity implements XmppConnectionSe
     @SuppressLint("RestrictedApi")
     private void updateInCallButtonConfiguration(final RtpEndUserState state) {
         if (state == RtpEndUserState.CONNECTED) {
-            final AppRTCAudioManager audioManager = requireRtpConnection().getAudioManager();
-            updateInCallButtonConfiguration(
-                    audioManager.getSelectedAudioDevice(),
-                    audioManager.getAudioDevices().size(),
-                    requireRtpConnection().isMicrophoneEnabled()
-            );
+            if (getMedia().contains(Media.VIDEO)) {
+                updateInCallButtonConfigurationVideo(requireRtpConnection().isVideoEnabled());
+            } else {
+                final AppRTCAudioManager audioManager = requireRtpConnection().getAudioManager();
+                updateInCallButtonConfigurationSpeaker(
+                        audioManager.getSelectedAudioDevice(),
+                        audioManager.getAudioDevices().size()
+                );
+            }
+            updateInCallButtonConfigurationMicrophone(requireRtpConnection().isMicrophoneEnabled());
         } else {
             this.binding.inCallActionLeft.setVisibility(View.GONE);
             this.binding.inCallActionRight.setVisibility(View.GONE);
@@ -423,46 +427,73 @@ public class RtpSessionActivity extends XmppActivity implements XmppConnectionSe
     }
 
     @SuppressLint("RestrictedApi")
-    private void updateInCallButtonConfiguration(final AppRTCAudioManager.AudioDevice selectedAudioDevice, final int numberOfChoices, final boolean microphoneEnabled) {
+    private void updateInCallButtonConfigurationSpeaker(final AppRTCAudioManager.AudioDevice selectedAudioDevice, final int numberOfChoices) {
         switch (selectedAudioDevice) {
             case EARPIECE:
-                this.binding.inCallActionLeft.setImageResource(R.drawable.ic_volume_off_black_24dp);
+                this.binding.inCallActionRight.setImageResource(R.drawable.ic_volume_off_black_24dp);
                 if (numberOfChoices >= 2) {
-                    this.binding.inCallActionLeft.setOnClickListener(this::switchToSpeaker);
+                    this.binding.inCallActionRight.setOnClickListener(this::switchToSpeaker);
                 } else {
-                    this.binding.inCallActionLeft.setOnClickListener(null);
-                    this.binding.inCallActionLeft.setClickable(false);
+                    this.binding.inCallActionRight.setOnClickListener(null);
+                    this.binding.inCallActionRight.setClickable(false);
                 }
                 break;
             case WIRED_HEADSET:
-                this.binding.inCallActionLeft.setImageResource(R.drawable.ic_headset_black_24dp);
-                this.binding.inCallActionLeft.setOnClickListener(null);
-                this.binding.inCallActionLeft.setClickable(false);
+                this.binding.inCallActionRight.setImageResource(R.drawable.ic_headset_black_24dp);
+                this.binding.inCallActionRight.setOnClickListener(null);
+                this.binding.inCallActionRight.setClickable(false);
                 break;
             case SPEAKER_PHONE:
-                this.binding.inCallActionLeft.setImageResource(R.drawable.ic_volume_up_black_24dp);
+                this.binding.inCallActionRight.setImageResource(R.drawable.ic_volume_up_black_24dp);
                 if (numberOfChoices >= 2) {
-                    this.binding.inCallActionLeft.setOnClickListener(this::switchToEarpiece);
+                    this.binding.inCallActionRight.setOnClickListener(this::switchToEarpiece);
                 } else {
-                    this.binding.inCallActionLeft.setOnClickListener(null);
-                    this.binding.inCallActionLeft.setClickable(false);
+                    this.binding.inCallActionRight.setOnClickListener(null);
+                    this.binding.inCallActionRight.setClickable(false);
                 }
                 break;
             case BLUETOOTH:
-                this.binding.inCallActionLeft.setImageResource(R.drawable.ic_bluetooth_audio_black_24dp);
-                this.binding.inCallActionLeft.setOnClickListener(null);
-                this.binding.inCallActionLeft.setClickable(false);
+                this.binding.inCallActionRight.setImageResource(R.drawable.ic_bluetooth_audio_black_24dp);
+                this.binding.inCallActionRight.setOnClickListener(null);
+                this.binding.inCallActionRight.setClickable(false);
                 break;
         }
-        this.binding.inCallActionLeft.setVisibility(View.VISIBLE);
-        if (microphoneEnabled) {
-            this.binding.inCallActionRight.setImageResource(R.drawable.ic_mic_black_24dp);
-            this.binding.inCallActionRight.setOnClickListener(this::disableMicrophone);
-        } else {
-            this.binding.inCallActionRight.setImageResource(R.drawable.ic_mic_off_black_24dp);
-            this.binding.inCallActionRight.setOnClickListener(this::enableMicrophone);
-        }
         this.binding.inCallActionRight.setVisibility(View.VISIBLE);
+    }
+
+    @SuppressLint("RestrictedApi")
+    private void updateInCallButtonConfigurationVideo(final boolean videoEnabled) {
+        this.binding.inCallActionRight.setVisibility(View.VISIBLE);
+        if (videoEnabled) {
+            this.binding.inCallActionRight.setImageResource(R.drawable.ic_videocam_black_24dp);
+            this.binding.inCallActionRight.setOnClickListener(this::disableVideo);
+        } else {
+            this.binding.inCallActionRight.setImageResource(R.drawable.ic_videocam_off_black_24dp);
+            this.binding.inCallActionRight.setOnClickListener(this::enableVideo);
+        }
+    }
+
+    private void enableVideo(View view) {
+        requireRtpConnection().setVideoEnabled(true);
+        updateInCallButtonConfigurationVideo(true);
+    }
+
+    private void disableVideo(View view) {
+        requireRtpConnection().setVideoEnabled(false);
+        updateInCallButtonConfigurationVideo(false);
+
+    }
+
+    @SuppressLint("RestrictedApi")
+    private void updateInCallButtonConfigurationMicrophone(final boolean microphoneEnabled) {
+        if (microphoneEnabled) {
+            this.binding.inCallActionLeft.setImageResource(R.drawable.ic_mic_black_24dp);
+            this.binding.inCallActionLeft.setOnClickListener(this::disableMicrophone);
+        } else {
+            this.binding.inCallActionLeft.setImageResource(R.drawable.ic_mic_off_black_24dp);
+            this.binding.inCallActionLeft.setOnClickListener(this::enableMicrophone);
+        }
+        this.binding.inCallActionLeft.setVisibility(View.VISIBLE);
     }
 
     private void updateVideoViews() {
@@ -572,12 +603,11 @@ public class RtpSessionActivity extends XmppActivity implements XmppConnectionSe
     public void onAudioDeviceChanged(AppRTCAudioManager.AudioDevice selectedAudioDevice, Set<AppRTCAudioManager.AudioDevice> availableAudioDevices) {
         Log.d(Config.LOGTAG, "onAudioDeviceChanged in activity: selected:" + selectedAudioDevice + ", available:" + availableAudioDevices);
         try {
-            if (requireRtpConnection().getEndUserState() == RtpEndUserState.CONNECTED) {
+            if (requireRtpConnection().getEndUserState() == RtpEndUserState.CONNECTED && !getMedia().contains(Media.VIDEO)) {
                 final AppRTCAudioManager audioManager = requireRtpConnection().getAudioManager();
-                updateInCallButtonConfiguration(
+                updateInCallButtonConfigurationSpeaker(
                         audioManager.getSelectedAudioDevice(),
-                        audioManager.getAudioDevices().size(),
-                        requireRtpConnection().isMicrophoneEnabled()
+                        audioManager.getAudioDevices().size()
                 );
             }
             putProximityWakeLockInProperState();
