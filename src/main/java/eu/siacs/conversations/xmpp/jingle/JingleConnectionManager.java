@@ -7,6 +7,7 @@ import com.google.common.base.Function;
 import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Collections2;
+import com.google.common.collect.ImmutableSet;
 
 import org.checkerframework.checker.nullness.compatqual.NullableDecl;
 
@@ -163,6 +164,7 @@ public class JingleConnectionManager extends AbstractConnectionManager {
 
         if (fromSelf) {
             Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": ignore jingle message from self");
+            //TODO proceed from self should maybe dedup/change the busy that we set earlier
             return;
         }
 
@@ -176,16 +178,17 @@ public class JingleConnectionManager extends AbstractConnectionManager {
             if (rtpDescriptions.size() > 0 && rtpDescriptions.size() == descriptions.size() && !usesTor(account)) {
                 final Collection<Media> media = Collections2.transform(rtpDescriptions, RtpDescription::getMedia);
                 if (media.contains(Media.UNKNOWN)) {
-                    Log.d(Config.LOGTAG,account.getJid().asBareJid()+": encountered unknown media in session proposal. "+propose);
+                    Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": encountered unknown media in session proposal. " + propose);
                     return;
                 }
                 if (isBusy()) { //TODO only if no other devices are active
-                    //TODO create
+                    //TODO create busy
                     final MessagePacket reject = mXmppConnectionService.getMessageGenerator().sessionReject(from, sessionId);
                     mXmppConnectionService.sendMessagePacket(account, reject);
                 } else {
                     final JingleRtpConnection rtpConnection = new JingleRtpConnection(this, id, from);
                     this.connections.put(id, rtpConnection);
+                    rtpConnection.setProposedMedia(ImmutableSet.copyOf(media));
                     rtpConnection.deliveryMessage(from, message, serverMsgId, timestamp);
                 }
             } else {
@@ -193,7 +196,7 @@ public class JingleConnectionManager extends AbstractConnectionManager {
             }
         } else if ("proceed".equals(message.getName())) {
             synchronized (rtpSessionProposals) {
-                final RtpSessionProposal proposal = getRtpSessionProposal(account,from.asBareJid(),sessionId);
+                final RtpSessionProposal proposal = getRtpSessionProposal(account, from.asBareJid(), sessionId);
                 if (proposal != null) {
                     rtpSessionProposals.remove(proposal);
                     final JingleRtpConnection rtpConnection = new JingleRtpConnection(this, id, account.getJid());
@@ -222,7 +225,7 @@ public class JingleConnectionManager extends AbstractConnectionManager {
     }
 
     private RtpSessionProposal getRtpSessionProposal(final Account account, Jid from, String sessionId) {
-        for(RtpSessionProposal rtpSessionProposal : rtpSessionProposals.keySet()) {
+        for (RtpSessionProposal rtpSessionProposal : rtpSessionProposals.keySet()) {
             if (rtpSessionProposal.sessionId.equals(sessionId) && rtpSessionProposal.with.equals(from) && rtpSessionProposal.account.getJid().equals(account.getJid())) {
                 return rtpSessionProposal;
             }
@@ -424,9 +427,9 @@ public class JingleConnectionManager extends AbstractConnectionManager {
     }
 
     public void updateProposedSessionDiscovered(Account account, Jid from, String sessionId, final DeviceDiscoveryState target) {
-        final RtpSessionProposal sessionProposal = new RtpSessionProposal(account, from.asBareJid(), sessionId);
         synchronized (this.rtpSessionProposals) {
-            final DeviceDiscoveryState currentState = rtpSessionProposals.get(sessionProposal);
+            final RtpSessionProposal sessionProposal = getRtpSessionProposal(account, from.asBareJid(), sessionId);
+            final DeviceDiscoveryState currentState = sessionProposal == null ? null : rtpSessionProposals.get(sessionProposal);
             if (currentState == null) {
                 Log.d(Config.LOGTAG, "unable to find session proposal for session id " + sessionId);
                 return;
@@ -491,7 +494,7 @@ public class JingleConnectionManager extends AbstractConnectionManager {
         public final Set<Media> media;
 
         private RtpSessionProposal(Account account, Jid with, String sessionId) {
-            this(account,with,sessionId, Collections.emptySet());
+            this(account, with, sessionId, Collections.emptySet());
         }
 
         private RtpSessionProposal(Account account, Jid with, String sessionId, Set<Media> media) {

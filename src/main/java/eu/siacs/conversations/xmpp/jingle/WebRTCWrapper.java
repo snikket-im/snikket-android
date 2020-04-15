@@ -158,8 +158,10 @@ public class WebRTCWrapper {
         });
     }
 
-    public void initializePeerConnection(final List<PeerConnection.IceServer> iceServers) throws InitializationException {
+    public void initializePeerConnection(final Set<Media> media, final List<PeerConnection.IceServer> iceServers) throws InitializationException {
         Preconditions.checkState(this.eglBase != null);
+        Preconditions.checkNotNull(media);
+        Preconditions.checkArgument(media.size() > 0, "media can not be empty when initializing peer connection");
         PeerConnectionFactory peerConnectionFactory = PeerConnectionFactory.builder()
                 .setVideoDecoderFactory(new DefaultVideoDecoderFactory(eglBase.getEglBaseContext()))
                 .setVideoEncoderFactory(new DefaultVideoEncoderFactory(eglBase.getEglBaseContext(), true, true))
@@ -168,7 +170,7 @@ public class WebRTCWrapper {
 
         final MediaStream stream = peerConnectionFactory.createLocalMediaStream("my-media-stream");
 
-         this.optionalCapturer = getVideoCapturer();
+        this.optionalCapturer = media.contains(Media.VIDEO) ? getVideoCapturer() : Optional.absent();
 
         if (this.optionalCapturer.isPresent()) {
             final CameraVideoCapturer capturer = this.optionalCapturer.get();
@@ -183,10 +185,12 @@ public class WebRTCWrapper {
         }
 
 
-        //set up audio track
-        final AudioSource audioSource = peerConnectionFactory.createAudioSource(new MediaConstraints());
-        this.localAudioTrack = peerConnectionFactory.createAudioTrack("my-audio-track", audioSource);
-        stream.addTrack(this.localAudioTrack);
+        if (media.contains(Media.AUDIO)) {
+            //set up audio track
+            final AudioSource audioSource = peerConnectionFactory.createAudioSource(new MediaConstraints());
+            this.localAudioTrack = peerConnectionFactory.createAudioTrack("my-audio-track", audioSource);
+            stream.addTrack(this.localAudioTrack);
+        }
 
 
         final PeerConnection peerConnection = peerConnectionFactory.createPeerConnection(iceServers, peerConnectionObserver);
@@ -201,23 +205,27 @@ public class WebRTCWrapper {
 
     public void close() {
         final PeerConnection peerConnection = this.peerConnection;
+        final Optional<CameraVideoCapturer> optionalCapturer = this.optionalCapturer;
+        final AppRTCAudioManager audioManager = this.appRTCAudioManager;
+        final EglBase eglBase = this.eglBase;
         if (peerConnection != null) {
             peerConnection.dispose();
         }
-        final AppRTCAudioManager audioManager = this.appRTCAudioManager;
         if (audioManager != null) {
             mainHandler.post(audioManager::stop);
         }
         this.localVideoTrack = null;
         this.remoteVideoTrack = null;
-        if (this.optionalCapturer.isPresent()) {
+        if (optionalCapturer != null && optionalCapturer.isPresent()) {
             try {
-                this.optionalCapturer.get().stopCapture();
+                optionalCapturer.get().stopCapture();
             } catch (InterruptedException e) {
-                Log.e(Config.LOGTAG,"unable to stop capturing");
+                Log.e(Config.LOGTAG, "unable to stop capturing");
             }
         }
-        eglBase.release();
+        if (eglBase != null) {
+            eglBase.release();
+        }
     }
 
     public boolean isMicrophoneEnabled() {

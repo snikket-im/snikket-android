@@ -33,7 +33,6 @@ import eu.siacs.conversations.entities.RtpSessionStatus;
 import eu.siacs.conversations.services.AppRTCAudioManager;
 import eu.siacs.conversations.xml.Element;
 import eu.siacs.conversations.xml.Namespace;
-import eu.siacs.conversations.xmpp.jingle.stanzas.GenericDescription;
 import eu.siacs.conversations.xmpp.jingle.stanzas.Group;
 import eu.siacs.conversations.xmpp.jingle.stanzas.IceUdpTransportInfo;
 import eu.siacs.conversations.xmpp.jingle.stanzas.JinglePacket;
@@ -147,6 +146,9 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
             case TIMEOUT:
                 return State.TERMINATED_CANCEL_OR_TIMEOUT;
             case FAILED_APPLICATION:
+            case SECURITY_ERROR:
+            case UNSUPPORTED_TRANSPORTS:
+            case UNSUPPORTED_APPLICATIONS:
                 return State.TERMINATED_APPLICATION_FAILURE;
             default:
                 return State.TERMINATED_CONNECTIVITY_ERROR;
@@ -182,7 +184,7 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
             return;
         }
         webRTCWrapper.close();
-        if (!isInitiator() && isInState(State.PROPOSED,State.SESSION_INITIALIZED)) {
+        if (!isInitiator() && isInState(State.PROPOSED, State.SESSION_INITIALIZED)) {
             xmppConnectionService.getNotificationService().cancelIncomingCallNotification();
         }
         if (isInState(State.SESSION_INITIALIZED, State.SESSION_INITIALIZED_PRE_APPROVED, State.SESSION_ACCEPTED)) {
@@ -271,6 +273,18 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
         Log.d(Config.LOGTAG, "processing session-init with " + contentMap.contents.size() + " contents");
         final State target;
         if (this.state == State.PROCEED) {
+            Preconditions.checkState(
+                    proposedMedia != null && proposedMedia.size() > 0,
+                    "proposed media must be set when processing pre-approved session-initiate"
+            );
+            if (!this.proposedMedia.equals(contentMap.getMedia())) {
+                sendSessionTerminate(Reason.SECURITY_ERROR,String.format(
+                        "Your session proposal (Jingle Message Initiation) included media %s but your session-initiate was %s",
+                        this.proposedMedia,
+                        contentMap.getMedia()
+                ));
+                return;
+            }
             target = State.SESSION_INITIALIZED_PRE_APPROVED;
         } else {
             target = State.SESSION_INITIALIZED;
@@ -357,20 +371,20 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
             sendSessionTerminate(Reason.FAILED_APPLICATION, e.getMessage());
             return;
         }
-        sendSessionAccept(offer);
+        sendSessionAccept(rtpContentMap.getMedia(), offer);
     }
 
-    private void sendSessionAccept(final SessionDescription offer) {
-        discoverIceServers(iceServers -> sendSessionAccept(offer,iceServers));
+    private void sendSessionAccept(final Set<Media> media, final SessionDescription offer) {
+        discoverIceServers(iceServers -> sendSessionAccept(media, offer, iceServers));
     }
 
-    private synchronized void sendSessionAccept(final SessionDescription offer, final List<PeerConnection.IceServer> iceServers) {
+    private synchronized void sendSessionAccept(final Set<Media> media, final SessionDescription offer, final List<PeerConnection.IceServer> iceServers) {
         if (TERMINATED.contains(this.state)) {
-            Log.w(Config.LOGTAG,id.account.getJid().asBareJid()+": ICE servers got discovered when session was already terminated. nothing to do.");
+            Log.w(Config.LOGTAG, id.account.getJid().asBareJid() + ": ICE servers got discovered when session was already terminated. nothing to do.");
             return;
         }
         try {
-            setupWebRTC(iceServers);
+            setupWebRTC(media, iceServers);
         } catch (WebRTCWrapper.InitializationException e) {
             sendSessionTerminate(Reason.FAILED_APPLICATION);
             return;
@@ -492,8 +506,8 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
                     input -> (RtpDescription) input
             );
             final Collection<Media> media = Collections2.transform(descriptions, RtpDescription::getMedia);
-            Preconditions.checkState(!media.contains(Media.UNKNOWN),"RTP descriptions contain unknown media");
-            Log.d(Config.LOGTAG,id.account.getJid().asBareJid()+": received session proposal from "+from+" for "+media);
+            Preconditions.checkState(!media.contains(Media.UNKNOWN), "RTP descriptions contain unknown media");
+            Log.d(Config.LOGTAG, id.account.getJid().asBareJid() + ": received session proposal from " + from + " for " + media);
             this.proposedMedia = Sets.newHashSet(media);
             if (serverMsgId != null) {
                 this.message.setServerMsgId(serverMsgId);
@@ -511,6 +525,8 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
     }
 
     private void receiveProceed(final Jid from, final String serverMsgId, final long timestamp) {
+        final Set<Media> media = Preconditions.checkNotNull(this.proposedMedia, "Proposed media has to be set before handling proceed");
+        Preconditions.checkState(media.size() > 0, "Proposed media should not be empty");
         if (from.equals(id.with)) {
             if (isInitiator()) {
                 if (transition(State.PROCEED)) {
@@ -518,7 +534,7 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
                         this.message.setServerMsgId(serverMsgId);
                     }
                     this.message.setTime(timestamp);
-                    this.sendSessionInitiate(State.SESSION_INITIALIZED_PRE_APPROVED);
+                    this.sendSessionInitiate(media, State.SESSION_INITIALIZED_PRE_APPROVED);
                 } else {
                     Log.d(Config.LOGTAG, String.format("%s: ignoring proceed because already in %s", id.account.getJid().asBareJid(), this.state));
                 }
@@ -555,18 +571,18 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
         }
     }
 
-    private void sendSessionInitiate(final State targetState) {
+    private void sendSessionInitiate(final Set<Media> media, final State targetState) {
         Log.d(Config.LOGTAG, id.account.getJid().asBareJid() + ": prepare session-initiate");
-        discoverIceServers(iceServers -> sendSessionInitiate(targetState, iceServers));
+        discoverIceServers(iceServers -> sendSessionInitiate(media, targetState, iceServers));
     }
 
-    private synchronized void sendSessionInitiate(final State targetState, final List<PeerConnection.IceServer> iceServers) {
+    private synchronized void sendSessionInitiate(final Set<Media> media, final State targetState, final List<PeerConnection.IceServer> iceServers) {
         if (TERMINATED.contains(this.state)) {
-            Log.w(Config.LOGTAG,id.account.getJid().asBareJid()+": ICE servers got discovered when session was already terminated. nothing to do.");
+            Log.w(Config.LOGTAG, id.account.getJid().asBareJid() + ": ICE servers got discovered when session was already terminated. nothing to do.");
             return;
         }
         try {
-            setupWebRTC(iceServers);
+            setupWebRTC(media, iceServers);
         } catch (WebRTCWrapper.InitializationException e) {
             Log.d(Config.LOGTAG, id.account.getJid().asBareJid() + ": unable to initialize webrtc");
             transitionOrThrow(State.TERMINATED_APPLICATION_FAILURE);
@@ -607,6 +623,7 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
         writeLogMessage(target);
         final JinglePacket jinglePacket = new JinglePacket(JinglePacket.Action.SESSION_TERMINATE, id.sessionId);
         jinglePacket.setReason(reason, text);
+        Log.d(Config.LOGTAG,jinglePacket.toString());
         send(jinglePacket);
         jingleConnectionManager.finishConnection(this);
     }
@@ -756,7 +773,7 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
 
     public synchronized void endCall() {
         if (TERMINATED.contains(this.state)) {
-            Log.w(Config.LOGTAG,id.account.getJid().asBareJid()+": received endCall() when session has already been terminated. nothing to do");
+            Log.w(Config.LOGTAG, id.account.getJid().asBareJid() + ": received endCall() when session has already been terminated. nothing to do");
             return;
         }
         if (isInState(State.PROPOSED) && !isInitiator()) {
@@ -791,9 +808,9 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
         throw new IllegalStateException("called 'endCall' while in state " + this.state + ". isInitiator=" + isInitiator());
     }
 
-    private void setupWebRTC(final List<PeerConnection.IceServer> iceServers) throws WebRTCWrapper.InitializationException {
+    private void setupWebRTC(final Set<Media> media, final List<PeerConnection.IceServer> iceServers) throws WebRTCWrapper.InitializationException {
         this.webRTCWrapper.setup(this.xmppConnectionService);
-        this.webRTCWrapper.initializePeerConnection(iceServers);
+        this.webRTCWrapper.initializePeerConnection(media, iceServers);
     }
 
     private void acceptCallFromProposed() {
@@ -1018,7 +1035,7 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
     }
 
     public void setProposedMedia(final Set<Media> media) {
-
+        this.proposedMedia = media;
     }
 
     private interface OnIceServersDiscovered {
