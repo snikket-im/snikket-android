@@ -42,6 +42,7 @@ import android.util.Log;
 import android.util.LruCache;
 import android.util.Pair;
 
+import com.google.common.base.Objects;
 import com.google.common.base.Strings;
 
 import org.conscrypt.Conscrypt;
@@ -145,6 +146,7 @@ import eu.siacs.conversations.xmpp.chatstate.ChatState;
 import eu.siacs.conversations.xmpp.forms.Data;
 import eu.siacs.conversations.xmpp.jingle.AbstractJingleConnection;
 import eu.siacs.conversations.xmpp.jingle.JingleConnectionManager;
+import eu.siacs.conversations.xmpp.jingle.Media;
 import eu.siacs.conversations.xmpp.jingle.RtpEndUserState;
 import eu.siacs.conversations.xmpp.mam.MamReference;
 import eu.siacs.conversations.xmpp.pep.Avatar;
@@ -209,7 +211,7 @@ public class XmppConnectionService extends Service {
     private AtomicBoolean mInitialAddressbookSyncCompleted = new AtomicBoolean(false);
     private AtomicBoolean mForceForegroundService = new AtomicBoolean(false);
     private AtomicBoolean mForceDuringOnCreate = new AtomicBoolean(false);
-    private AtomicReference<AbstractJingleConnection.Id> ongoingCall = new AtomicReference<>();
+    private AtomicReference<OngoingCall> ongoingCall = new AtomicReference<>();
     private OnMessagePacketReceived mMessageParser = new MessageParser(this);
     private OnPresencePacketReceived mPresenceParser = new PresenceParser(this);
     private IqParser mIqParser = new IqParser(this);
@@ -1228,24 +1230,23 @@ public class XmppConnectionService extends Service {
         toggleForegroundService(false);
     }
 
-    public void setOngoingCall(AbstractJingleConnection.Id id) {
-        ongoingCall.set(id);
+    public void setOngoingCall(AbstractJingleConnection.Id id, Set<Media> media) {
+        ongoingCall.set(new OngoingCall(id, media));
         toggleForegroundService(false);
     }
 
-    public void removeOngoingCall(AbstractJingleConnection.Id id) {
-        if (ongoingCall.compareAndSet(id, null)) {
-            toggleForegroundService(false);
-        }
+    public void removeOngoingCall() {
+        ongoingCall.set(null);
+        toggleForegroundService(false);
     }
 
     private void toggleForegroundService(boolean force) {
         final boolean status;
-        final AbstractJingleConnection.Id ongoing = ongoingCall.get();
+        final OngoingCall ongoing = ongoingCall.get();
         if (force || mForceDuringOnCreate.get() || mForceForegroundService.get() || ongoing != null || (Compatibility.keepForegroundService(this) && hasEnabledAccounts())) {
             final Notification notification;
             if (ongoing != null) {
-                notification = this.mNotificationService.getOngoingCallNotification(ongoing);
+                notification = this.mNotificationService.getOngoingCallNotification(ongoing.id, ongoing.media);
                 startForeground(NotificationService.ONGOING_CALL_NOTIFICATION_ID, notification);
                 mNotificationService.cancel(NotificationService.FOREGROUND_NOTIFICATION_ID);
             } else {
@@ -4751,6 +4752,29 @@ public class XmppConnectionService extends Service {
         @Override
         public void onReceive(Context context, Intent intent) {
             onStartCommand(intent, 0, 0);
+        }
+    }
+
+    public static class OngoingCall {
+        private final AbstractJingleConnection.Id id;
+        private final Set<Media> media;
+
+        public OngoingCall(AbstractJingleConnection.Id id, Set<Media> media) {
+            this.id = id;
+            this.media = media;
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+            OngoingCall that = (OngoingCall) o;
+            return Objects.equal(id, that.id);
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hashCode(id);
         }
     }
 }

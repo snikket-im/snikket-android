@@ -47,6 +47,12 @@ import static java.util.Arrays.asList;
 
 public class RtpSessionActivity extends XmppActivity implements XmppConnectionService.OnJingleRtpConnectionUpdate {
 
+    private static final List<RtpEndUserState> END_CARD = Arrays.asList(
+            RtpEndUserState.APPLICATION_ERROR,
+            RtpEndUserState.DECLINED_OR_BUSY,
+            RtpEndUserState.CONNECTIVITY_ERROR
+    );
+
     private static final String PROXIMITY_WAKE_LOCK_TAG = "conversations:in-rtp-session";
 
     private static final int REQUEST_ACCEPT_CALL = 0x1111;
@@ -116,23 +122,27 @@ public class RtpSessionActivity extends XmppActivity implements XmppConnectionSe
             permissions = ImmutableList.of(Manifest.permission.RECORD_AUDIO);
         }
         if (PermissionUtils.hasPermission(this, permissions, REQUEST_ACCEPT_CALL)) {
-            //TODO like wise the propose; we might just wait here for the audio manager to come up
             putScreenInCallMode();
             requireRtpConnection().acceptCall();
         }
     }
 
-    @SuppressLint("WakelockTimeout")
     private void putScreenInCallMode() {
-        //TODO for video calls we actually do want to keep the screen on
-        getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-        final JingleRtpConnection rtpConnection = rtpConnectionReference != null ? rtpConnectionReference.get() : null;
-        final AppRTCAudioManager audioManager = rtpConnection == null ? null : rtpConnection.getAudioManager();
-        if (audioManager == null || audioManager.getSelectedAudioDevice() == AppRTCAudioManager.AudioDevice.EARPIECE) {
-            acquireProximityWakeLock();
+        putScreenInCallMode(requireRtpConnection().getMedia());
+    }
+
+    private void putScreenInCallMode(final Set<Media> media) {
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+        if (!media.contains(Media.VIDEO)) {
+            final JingleRtpConnection rtpConnection = rtpConnectionReference != null ? rtpConnectionReference.get() : null;
+            final AppRTCAudioManager audioManager = rtpConnection == null ? null : rtpConnection.getAudioManager();
+            if (audioManager == null || audioManager.getSelectedAudioDevice() == AppRTCAudioManager.AudioDevice.EARPIECE) {
+                acquireProximityWakeLock();
+            }
         }
     }
 
+    @SuppressLint("WakelockTimeout")
     private void acquireProximityWakeLock() {
         final PowerManager powerManager = (PowerManager) getSystemService(Context.POWER_SERVICE);
         if (powerManager == null) {
@@ -234,8 +244,7 @@ public class RtpSessionActivity extends XmppActivity implements XmppConnectionSe
 
     private void proposeJingleRtpSession(final Account account, final Jid with, final Set<Media> media) {
         xmppConnectionService.getJingleConnectionManager().proposeJingleRtpSession(account, with, media);
-        //TODO maybe we don’t want to acquire a wake lock just yet and wait for audio manager to discover what speaker we are using
-        putScreenInCallMode();
+        putScreenInCallMode(media);
     }
 
     @Override
@@ -570,10 +579,12 @@ public class RtpSessionActivity extends XmppActivity implements XmppConnectionSe
 
     @Override
     public void onJingleRtpConnectionUpdate(Account account, Jid with, final String sessionId, RtpEndUserState state) {
-        if (Arrays.asList(RtpEndUserState.APPLICATION_ERROR, RtpEndUserState.DECLINED_OR_BUSY, RtpEndUserState.DECLINED_OR_BUSY).contains(state)) {
-            releaseProximityWakeLock();
-        }
         Log.d(Config.LOGTAG, "onJingleRtpConnectionUpdate(" + state + ")");
+        if (END_CARD.contains(state)) {
+            Log.d(Config.LOGTAG,"end card reached");
+            releaseProximityWakeLock();
+            runOnUiThread(()-> getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON));
+        }
         if (with.isBareJid()) {
             updateRtpSessionProposalState(account, with, state);
             return;
@@ -588,7 +599,7 @@ public class RtpSessionActivity extends XmppActivity implements XmppConnectionSe
             if (state == RtpEndUserState.ENDED) {
                 finish();
                 return;
-            } else if (asList(RtpEndUserState.APPLICATION_ERROR, RtpEndUserState.DECLINED_OR_BUSY, RtpEndUserState.CONNECTIVITY_ERROR).contains(state)) {
+            } else if (END_CARD.contains(state)) {
                 //todo remember if we were video
                 resetIntent(account, with, state);
             }
@@ -608,14 +619,22 @@ public class RtpSessionActivity extends XmppActivity implements XmppConnectionSe
     public void onAudioDeviceChanged(AppRTCAudioManager.AudioDevice selectedAudioDevice, Set<AppRTCAudioManager.AudioDevice> availableAudioDevices) {
         Log.d(Config.LOGTAG, "onAudioDeviceChanged in activity: selected:" + selectedAudioDevice + ", available:" + availableAudioDevices);
         try {
-            if (requireRtpConnection().getEndUserState() == RtpEndUserState.CONNECTED && !getMedia().contains(Media.VIDEO)) {
+            if (getMedia().contains(Media.VIDEO)) {
+                Log.d(Config.LOGTAG,"nothing to do; in video mode");
+                return;
+            }
+            final RtpEndUserState endUserState = requireRtpConnection().getEndUserState();
+            if (endUserState == RtpEndUserState.CONNECTED) {
                 final AppRTCAudioManager audioManager = requireRtpConnection().getAudioManager();
                 updateInCallButtonConfigurationSpeaker(
                         audioManager.getSelectedAudioDevice(),
                         audioManager.getAudioDevices().size()
                 );
+            } else if (END_CARD.contains(endUserState)) {
+                Log.d(Config.LOGTAG,"onAudioDeviceChanged() nothing to do because end card has been reached");
+            } else {
+                putProximityWakeLockInProperState();
             }
-            putProximityWakeLockInProperState();
         } catch (IllegalStateException e) {
             Log.d(Config.LOGTAG, "RTP connection was not available when audio device changed");
         }

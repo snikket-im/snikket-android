@@ -372,10 +372,15 @@ public class NotificationService {
         notify(INCOMING_CALL_NOTIFICATION_ID, notification);
     }
 
-    public Notification getOngoingCallNotification(final AbstractJingleConnection.Id id) {
+    public Notification getOngoingCallNotification(final AbstractJingleConnection.Id id, final Set<Media> media) {
         final NotificationCompat.Builder builder = new NotificationCompat.Builder(mXmppConnectionService, "ongoing_calls");
-        builder.setSmallIcon(R.drawable.ic_call_white_24dp);
-        builder.setContentTitle(mXmppConnectionService.getString(R.string.ongoing_call));
+        if (media.contains(Media.VIDEO)) {
+            builder.setSmallIcon(R.drawable.ic_videocam_white_24dp);
+            builder.setContentTitle(mXmppConnectionService.getString(R.string.ongoing_video_call));
+        } else {
+            builder.setSmallIcon(R.drawable.ic_call_white_24dp);
+            builder.setContentTitle(mXmppConnectionService.getString(R.string.ongoing_call));
+        }
         builder.setContentText(id.account.getRoster().getContact(id.with).getDisplayName());
         builder.setVisibility(NotificationCompat.VISIBILITY_PUBLIC);
         builder.setPriority(NotificationCompat.PRIORITY_HIGH);

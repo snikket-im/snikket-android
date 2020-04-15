@@ -289,9 +289,8 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
         } else {
             target = State.SESSION_INITIALIZED;
         }
-        if (transition(target)) {
+        if (transition(target, () -> this.initiatorRtpContentMap = contentMap)) {
             respondOk(jinglePacket);
-            this.initiatorRtpContentMap = contentMap;
             if (target == State.SESSION_INITIALIZED_PRE_APPROVED) {
                 Log.d(Config.LOGTAG, id.account.getJid().asBareJid() + ": automatically accepting session-initiate");
                 sendSessionAccept();
@@ -323,6 +322,7 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
             sendSessionTerminate(Reason.FAILED_APPLICATION, e.getMessage());
             return;
         }
+        //TODO check that session accept content media matched ours
         Log.d(Config.LOGTAG, "processing session-accept with " + contentMap.contents.size() + " contents");
         if (transition(State.SESSION_ACCEPTED)) {
             respondOk(jinglePacket);
@@ -500,7 +500,7 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
         final boolean originatedFromMyself = from.asBareJid().equals(id.account.getJid().asBareJid());
         if (originatedFromMyself) {
             Log.d(Config.LOGTAG, id.account.getJid().asBareJid() + ": saw proposal from mysql. ignoring");
-        } else if (isInState(State.NULL)) {
+        } else if (transition(State.PROPOSED, () -> {
             final Collection<RtpDescription> descriptions = Collections2.transform(
                     Collections2.filter(propose.getDescriptions(), d -> d instanceof RtpDescription),
                     input -> (RtpDescription) input
@@ -509,7 +509,7 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
             Preconditions.checkState(!media.contains(Media.UNKNOWN), "RTP descriptions contain unknown media");
             Log.d(Config.LOGTAG, id.account.getJid().asBareJid() + ": received session proposal from " + from + " for " + media);
             this.proposedMedia = Sets.newHashSet(media);
-            transitionOrThrow(State.PROPOSED);
+        })) {
             if (serverMsgId != null) {
                 this.message.setServerMsgId(serverMsgId);
             }
@@ -720,10 +720,8 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
                     return RtpEndUserState.CONNECTING;
                 } else if (state == PeerConnection.PeerConnectionState.CLOSED) {
                     return RtpEndUserState.ENDING_CALL;
-                } else if (state == PeerConnection.PeerConnectionState.FAILED) {
-                    return RtpEndUserState.CONNECTIVITY_ERROR;
                 } else {
-                    return RtpEndUserState.ENDING_CALL;
+                    return RtpEndUserState.CONNECTIVITY_ERROR;
                 }
             case REJECTED:
             case TERMINATED_DECLINED_OR_BUSY:
@@ -876,10 +874,17 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
         return Arrays.asList(state).contains(this.state);
     }
 
-    private synchronized boolean transition(final State target) {
+    private boolean transition(final State target) {
+        return transition(target, null);
+    }
+
+    private synchronized boolean transition(final State target, final Runnable runnable) {
         final Collection<State> validTransitions = VALID_TRANSITIONS.get(this.state);
         if (validTransitions != null && validTransitions.contains(target)) {
             this.state = target;
+            if (runnable != null) {
+                runnable.run();
+            }
             Log.d(Config.LOGTAG, id.account.getJid().asBareJid() + ": transitioned into " + target);
             updateEndUserState();
             updateOngoingCallNotification();
@@ -909,7 +914,7 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
         if (newState == PeerConnection.PeerConnectionState.CONNECTED && this.rtpConnectionStarted == 0) {
             this.rtpConnectionStarted = SystemClock.elapsedRealtime();
         }
-        if (newState == PeerConnection.PeerConnectionState.FAILED) {
+        if (Arrays.asList(PeerConnection.PeerConnectionState.FAILED, PeerConnection.PeerConnectionState.DISCONNECTED).contains(newState)) {
             if (TERMINATED.contains(this.state)) {
                 Log.d(Config.LOGTAG, id.account.getJid().asBareJid() + ": not sending session-terminate after connectivity error because session is already in state " + this.state);
                 return;
@@ -949,9 +954,9 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
 
     private void updateOngoingCallNotification() {
         if (STATES_SHOWING_ONGOING_CALL.contains(this.state)) {
-            xmppConnectionService.setOngoingCall(id);
+            xmppConnectionService.setOngoingCall(id, getMedia());
         } else {
-            xmppConnectionService.removeOngoingCall(id);
+            xmppConnectionService.removeOngoingCall();
         }
     }
 
