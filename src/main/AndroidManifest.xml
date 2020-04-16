@@ -292,7 +292,9 @@
             android:name=".ui.ChannelDiscoveryActivity"
             android:label="@string/discover_channels" />
         <activity android:name=".ui.RtpSessionActivity"
-            android:launchMode="singleTop"/>
+            android:supportsPictureInPicture="true"
+            android:launchMode="singleTask"
+            android:autoRemoveFromRecents="true"/>
     </application>
 
 </manifest>
