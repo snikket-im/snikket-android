@@ -30,7 +30,9 @@ public class Compatibility {
             "led",
             "notification_ringtone",
             "notification_headsup",
-            "vibrate_on_notification");
+            "vibrate_on_notification",
+            "call_ringtone"
+    );
     private static final List<String> UNUESD_SETTINGS_PRE_TWENTYSIX = Collections.singletonList("more_notification_settings");
 
 

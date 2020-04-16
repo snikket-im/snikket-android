@@ -116,8 +116,10 @@
     <string name="pref_vibrate_summary">Vibrate when a new message arrives</string>
     <string name="pref_led">LED Notification</string>
     <string name="pref_led_summary">Blink notification light when a new message arrives</string>
-    <string name="pref_sound">Ringtone</string>
-    <string name="pref_sound_summary">Play sound when a new message arrives</string>
+    <string name="pref_ringtone">Ringtone</string>
+    <string name="pref_notification_sound">Notification sound</string>
+    <string name="pref_notification_sound_summary">Notification sound for new messages</string>
+    <string name="pref_call_ringtone_summary">Ringtone for incoming call</string>
     <string name="pref_notification_grace_period">Grace Period</string>
     <string name="pref_notification_grace_period_summary">The length of time notifications are silenced after detecting activity on one of your other devices.</string>
     <string name="pref_advanced_options">Advanced</string>

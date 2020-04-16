@@ -117,8 +117,14 @@
             android:defaultValue="@string/notification_ringtone"
             android:key="notification_ringtone"
             android:ringtoneType="notification"
-            android:summary="@string/pref_sound_summary"
-            android:title="@string/pref_sound" />
+            android:summary="@string/pref_notification_sound_summary"
+            android:title="@string/pref_notification_sound" />
+        <RingtonePreference
+            android:defaultValue="@string/notification_ringtone"
+            android:key="call_ringtone"
+            android:ringtoneType="ringtone"
+            android:summary="@string/pref_call_ringtone_summary"
+            android:title="@string/pref_ringtone" />
     </PreferenceCategory>
     <PreferenceCategory
         android:key="attachments"

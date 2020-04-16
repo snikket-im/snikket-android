@@ -14,6 +14,7 @@
     <bool name="led">true</bool>
     <bool name="enable_quiet_hours">false</bool>
     <string name="notification_ringtone">content://settings/system/notification_sound</string>
+    <string name="incoming_call_ringtone">content://settings/system/ringtone</string>
     <integer name="grace_period">144</integer>
     <integer name="auto_accept_filesize">524288</integer>
     <string name="picture_compression">auto</string>

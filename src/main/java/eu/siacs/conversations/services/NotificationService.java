@@ -355,7 +355,9 @@ public class NotificationService {
         builder.setVisibility(NotificationCompat.VISIBILITY_PUBLIC);
         builder.setPriority(NotificationCompat.PRIORITY_HIGH);
         builder.setCategory(NotificationCompat.CATEGORY_CALL);
-        builder.setFullScreenIntent(createPendingRtpSession(id, Intent.ACTION_VIEW, 101), true);
+        PendingIntent pendingIntent = createPendingRtpSession(id, Intent.ACTION_VIEW, 101);
+        builder.setFullScreenIntent(pendingIntent, true);
+        builder.setContentIntent(pendingIntent); //old androids need this?
         builder.setOngoing(true);
         builder.addAction(new NotificationCompat.Action.Builder(
                 R.drawable.ic_call_end_white_48dp,
@@ -367,6 +369,7 @@ public class NotificationService {
                 mXmppConnectionService.getString(R.string.answer_call),
                 createPendingRtpSession(id, RtpSessionActivity.ACTION_ACCEPT_CALL, 103))
                 .build());
+        modifyIncomingCall(builder);
         final Notification notification = builder.build();
         notification.flags = notification.flags | Notification.FLAG_INSISTENT;
         notify(INCOMING_CALL_NOTIFICATION_ID, notification);
@@ -568,6 +571,27 @@ public class NotificationService {
         if (led) {
             mBuilder.setLights(LED_COLOR, 2000, 3000);
         }
+    }
+
+    private void modifyIncomingCall(Builder mBuilder) {
+        final SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(mXmppConnectionService);
+        final Resources resources = mXmppConnectionService.getResources();
+        final String ringtone = preferences.getString("call_ringtone", resources.getString(R.string.incoming_call_ringtone));
+        final int dat = 70;
+        final long[] pattern = {0, 3 * dat, dat, dat, 3 * dat, dat, dat};
+        mBuilder.setVibrate(pattern);
+        Uri uri = Uri.parse(ringtone);
+        try {
+            mBuilder.setSound(fixRingtoneUri(uri));
+        } catch (SecurityException e) {
+            Log.d(Config.LOGTAG, "unable to use custom notification sound " + uri.toString());
+        }
+        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            mBuilder.setCategory(Notification.CATEGORY_MESSAGE);
+        }
+        mBuilder.setPriority(NotificationCompat.PRIORITY_HIGH);
+        setNotificationColor(mBuilder);
+        mBuilder.setLights(LED_COLOR, 2000, 3000);
     }
 
     private Uri fixRingtoneUri(Uri uri) {
