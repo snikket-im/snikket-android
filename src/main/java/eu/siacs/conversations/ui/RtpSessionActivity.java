@@ -60,6 +60,7 @@ public class RtpSessionActivity extends XmppActivity implements XmppConnectionSe
     public static final String EXTRA_WITH = "with";
     public static final String EXTRA_SESSION_ID = "session_id";
     public static final String EXTRA_LAST_REPORTED_STATE = "last_reported_state";
+    public static final String EXTRA_LAST_ACTION = "last_action";
 
     public static final String ACTION_ACCEPT_CALL = "action_accept_call";
     public static final String ACTION_MAKE_VOICE_CALL = "action_make_voice_call";
@@ -565,8 +566,11 @@ public class RtpSessionActivity extends XmppActivity implements XmppConnectionSe
         final Intent intent = getIntent();
         final Account account = extractAccount(intent);
         final Jid with = Jid.of(intent.getStringExtra(EXTRA_WITH));
+        final String lastAction = intent.getStringExtra(EXTRA_LAST_ACTION);
+        final String action = intent.getAction();
+        final Set<Media> media = actionToMedia(lastAction == null ? action : lastAction);
         this.rtpConnectionReference = null;
-        proposeJingleRtpSession(account, with, ImmutableSet.of(Media.AUDIO, Media.VIDEO));
+        proposeJingleRtpSession(account, with, media);
     }
 
     private void exit(View view) {
@@ -614,13 +618,11 @@ public class RtpSessionActivity extends XmppActivity implements XmppConnectionSe
                 finish();
                 return;
             } else if (END_CARD.contains(state)) {
-                //todo remember if we were video
-                resetIntent(account, with, state);
+                resetIntent(account, with, state, requireRtpConnection().getMedia());
             }
             runOnUiThread(() -> {
                 updateStateDisplay(state);
                 updateButtonConfiguration(state);
-                //TODO kill video when in final or error stages
                 updateVideoViews(state);
             });
         } else {
@@ -665,7 +667,7 @@ public class RtpSessionActivity extends XmppActivity implements XmppConnectionSe
                 updateStateDisplay(state);
                 updateButtonConfiguration(state);
             });
-            resetIntent(account, with, state);
+            resetIntent(account, with, state, actionToMedia(currentIntent.getAction()));
         }
     }
 
@@ -675,11 +677,12 @@ public class RtpSessionActivity extends XmppActivity implements XmppConnectionSe
         setIntent(intent);
     }
 
-    private void resetIntent(final Account account, Jid with, final RtpEndUserState state) {
+    private void resetIntent(final Account account, Jid with, final RtpEndUserState state, final Set<Media> media) {
         final Intent intent = new Intent(Intent.ACTION_VIEW);
         intent.putExtra(EXTRA_WITH, with.asBareJid().toEscapedString());
         intent.putExtra(EXTRA_ACCOUNT, account.getJid().toEscapedString());
         intent.putExtra(EXTRA_LAST_REPORTED_STATE, state.toString());
+        intent.putExtra(EXTRA_LAST_ACTION, media.contains(Media.VIDEO) ? ACTION_MAKE_VIDEO_CALL : ACTION_MAKE_VOICE_CALL);
         setIntent(intent);
     }
 }
