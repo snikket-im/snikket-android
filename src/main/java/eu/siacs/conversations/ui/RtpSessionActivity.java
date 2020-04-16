@@ -659,7 +659,6 @@ public class RtpSessionActivity extends XmppActivity implements XmppConnectionSe
         final AbstractJingleConnection.Id id = requireRtpConnection().getId();
         if (account == id.account && id.with.equals(with) && id.sessionId.equals(sessionId)) {
             if (state == RtpEndUserState.ENDED) {
-                resetIntent(account, with, state, requireRtpConnection().getMedia());
                 finish();
                 return;
             } else if (END_CARD.contains(state)) {

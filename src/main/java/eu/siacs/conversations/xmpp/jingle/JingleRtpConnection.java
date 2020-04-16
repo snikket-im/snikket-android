@@ -756,9 +756,14 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
             throw new IllegalStateException("RTP connection has not been initialized yet");
         }
         if (isInState(State.PROPOSED, State.PROCEED)) {
-            return Preconditions.checkNotNull(this.proposedMedia, "RTP connection has not been  initialized properly");
+            return Preconditions.checkNotNull(this.proposedMedia, "RTP connection has not been initialized properly");
         }
-        return Preconditions.checkNotNull(initiatorRtpContentMap.getMedia());
+        final RtpContentMap initiatorContentMap = initiatorRtpContentMap;
+        if (initiatorContentMap != null) {
+            return initiatorContentMap.getMedia();
+        } else {
+            return Preconditions.checkNotNull(this.proposedMedia, "RTP connection has not been initialized properly");
+        }
     }
 
 
