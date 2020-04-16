@@ -17,6 +17,7 @@ import org.webrtc.AudioSource;
 import org.webrtc.AudioTrack;
 import org.webrtc.Camera1Enumerator;
 import org.webrtc.Camera2Enumerator;
+import org.webrtc.CameraEnumerationAndroid;
 import org.webrtc.CameraEnumerator;
 import org.webrtc.CameraVideoCapturer;
 import org.webrtc.CandidatePairChangeEvent;
@@ -36,6 +37,9 @@ import org.webrtc.SurfaceTextureHelper;
 import org.webrtc.VideoSource;
 import org.webrtc.VideoTrack;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Set;
 
@@ -46,6 +50,9 @@ import eu.siacs.conversations.Config;
 import eu.siacs.conversations.services.AppRTCAudioManager;
 
 public class WebRTCWrapper {
+
+    private static final int CAPTURING_RESOLUTION = 1920;
+    private static final int CAPTURING_MAX_FRAME_RATE = 30;
 
     private final EventCallback eventCallback;
     private final AppRTCAudioManager.AudioManagerEvents audioManagerEvents = new AppRTCAudioManager.AudioManagerEvents() {
@@ -139,7 +146,7 @@ public class WebRTCWrapper {
     private AppRTCAudioManager appRTCAudioManager = null;
     private Context context = null;
     private EglBase eglBase = null;
-    private Optional<CameraVideoCapturer> optionalCapturer;
+    private Optional<CapturerChoice> optionalCapturer;
 
     public WebRTCWrapper(final EventCallback eventCallback) {
         this.eventCallback = eventCallback;
@@ -173,11 +180,13 @@ public class WebRTCWrapper {
         this.optionalCapturer = media.contains(Media.VIDEO) ? getVideoCapturer() : Optional.absent();
 
         if (this.optionalCapturer.isPresent()) {
-            final CameraVideoCapturer capturer = this.optionalCapturer.get();
+            final CapturerChoice choice = this.optionalCapturer.get();
+            final CameraVideoCapturer capturer = choice.cameraVideoCapturer;
             final VideoSource videoSource = peerConnectionFactory.createVideoSource(false);
             SurfaceTextureHelper surfaceTextureHelper = SurfaceTextureHelper.create("webrtc", eglBase.getEglBaseContext());
             capturer.initialize(surfaceTextureHelper, requireContext(), videoSource.getCapturerObserver());
-            capturer.startCapture(320, 240, 30);
+            Log.d(Config.LOGTAG, String.format("start capturing at %dx%d@%d", choice.captureFormat.width, choice.captureFormat.height, choice.getFrameRate()));
+            capturer.startCapture(choice.captureFormat.width, choice.captureFormat.height, choice.getFrameRate());
 
             this.localVideoTrack = peerConnectionFactory.createVideoTrack("my-video-track", videoSource);
 
@@ -205,7 +214,7 @@ public class WebRTCWrapper {
 
     public void close() {
         final PeerConnection peerConnection = this.peerConnection;
-        final Optional<CameraVideoCapturer> optionalCapturer = this.optionalCapturer;
+        final Optional<CapturerChoice> optionalCapturer = this.optionalCapturer;
         final AppRTCAudioManager audioManager = this.appRTCAudioManager;
         final EglBase eglBase = this.eglBase;
         if (peerConnection != null) {
@@ -218,7 +227,7 @@ public class WebRTCWrapper {
         this.remoteVideoTrack = null;
         if (optionalCapturer != null && optionalCapturer.isPresent()) {
             try {
-                optionalCapturer.get().stopCapture();
+                optionalCapturer.get().cameraVideoCapturer.stopCapture();
             } catch (InterruptedException e) {
                 Log.e(Config.LOGTAG, "unable to stop capturing");
             }
@@ -358,26 +367,42 @@ public class WebRTCWrapper {
         }
     }
 
-    private Optional<CameraVideoCapturer> getVideoCapturer() {
+    private Optional<CapturerChoice> getVideoCapturer() {
         final CameraEnumerator enumerator = getCameraEnumerator();
         final String[] deviceNames = enumerator.getDeviceNames();
         for (final String deviceName : deviceNames) {
             if (enumerator.isFrontFacing(deviceName)) {
-                return Optional.fromNullable(enumerator.createCapturer(deviceName, null));
+                return Optional.fromNullable(of(enumerator, deviceName));
             }
         }
         if (deviceNames.length == 0) {
             return Optional.absent();
         } else {
-            return Optional.fromNullable(enumerator.createCapturer(deviceNames[0], null));
+            return Optional.fromNullable(of(enumerator, deviceNames[0]));
         }
+    }
+
+    @Nullable
+    private static CapturerChoice of(CameraEnumerator enumerator, final String deviceName) {
+        final CameraVideoCapturer capturer = enumerator.createCapturer(deviceName, null);
+        if (capturer == null) {
+            return null;
+        }
+        final ArrayList<CameraEnumerationAndroid.CaptureFormat> choices = new ArrayList<>(enumerator.getSupportedFormats(deviceName));
+        Collections.sort(choices, (a, b) -> b.width - a.width);
+        for (final CameraEnumerationAndroid.CaptureFormat captureFormat : choices) {
+            if (captureFormat.width <= CAPTURING_RESOLUTION) {
+                return new CapturerChoice(capturer, captureFormat);
+            }
+        }
+        return null;
     }
 
     public PeerConnection.PeerConnectionState getState() {
         return requirePeerConnection().connectionState();
     }
 
-    public EglBase.Context getEglBaseContext() {
+    EglBase.Context getEglBaseContext() {
         return this.eglBase.getEglBaseContext();
     }
 
@@ -450,6 +475,20 @@ public class WebRTCWrapper {
 
         private InitializationException(String message) {
             super(message);
+        }
+    }
+
+    private static class CapturerChoice {
+        private final CameraVideoCapturer cameraVideoCapturer;
+        private final CameraEnumerationAndroid.CaptureFormat captureFormat;
+
+        public CapturerChoice(CameraVideoCapturer cameraVideoCapturer, CameraEnumerationAndroid.CaptureFormat captureFormat) {
+            this.cameraVideoCapturer = cameraVideoCapturer;
+            this.captureFormat = captureFormat;
+        }
+
+        public int getFrameRate() {
+            return Math.max(captureFormat.framerate.min, Math.min(CAPTURING_MAX_FRAME_RATE, captureFormat.framerate.max));
         }
     }
 }
