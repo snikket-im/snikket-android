@@ -1,5 +1,6 @@
 package eu.siacs.conversations.xmpp.jingle;
 
+import android.os.SystemClock;
 import android.util.Base64;
 import android.util.Log;
 
@@ -26,6 +27,7 @@ import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.entities.Conversation;
 import eu.siacs.conversations.entities.Conversational;
 import eu.siacs.conversations.entities.Message;
+import eu.siacs.conversations.entities.RtpSessionStatus;
 import eu.siacs.conversations.entities.Transferable;
 import eu.siacs.conversations.services.AbstractConnectionManager;
 import eu.siacs.conversations.services.XmppConnectionService;
@@ -163,8 +165,21 @@ public class JingleConnectionManager extends AbstractConnectionManager {
         }
 
         if (fromSelf) {
+            if ("proceed".equals(message.getName())) {
+                final Conversation c = mXmppConnectionService.findOrCreateConversation(account, id.with, false, false);
+                final Message previousBusy = c.findRtpSession(sessionId, Message.STATUS_RECEIVED);
+                if (previousBusy != null) {
+                    previousBusy.setBody(new RtpSessionStatus(true, 0).toString());
+                    if (serverMsgId != null) {
+                        previousBusy.setServerMsgId(serverMsgId);
+                    }
+                    previousBusy.setTime(timestamp);
+                    mXmppConnectionService.updateMessage(previousBusy, true);
+                    Log.d(Config.LOGTAG, id.account.getJid().asBareJid() + ": updated previous busy because call got picked up by another device");
+                    return;
+                }
+            }
             Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": ignore jingle message from self");
-            //TODO proceed from self should maybe dedup/change the busy that we set earlier
             return;
         }
 
@@ -182,9 +197,15 @@ public class JingleConnectionManager extends AbstractConnectionManager {
                     return;
                 }
                 if (isBusy()) { //TODO only if no other devices are active
-                    //TODO create busy
-                    final MessagePacket reject = mXmppConnectionService.getMessageGenerator().sessionReject(from, sessionId);
-                    mXmppConnectionService.sendMessagePacket(account, reject);
+                    writeLogMissedIncoming(account, id.with.asBareJid(), id.sessionId, serverMsgId, timestamp);
+                    final int activeDevices = account.countPresences();
+                    Log.d(Config.LOGTAG, "active devices: " + activeDevices);
+                    if (activeDevices == 0) {
+                        final MessagePacket reject = mXmppConnectionService.getMessageGenerator().sessionReject(from, sessionId);
+                        mXmppConnectionService.sendMessagePacket(account, reject);
+                    } else {
+                        Log.d(Config.LOGTAG, id.account.getJid().asBareJid() + ": ignoring proposal because busy on this device but there are other devices");
+                    }
                 } else {
                     final JingleRtpConnection rtpConnection = new JingleRtpConnection(this, id, from);
                     this.connections.put(id, rtpConnection);
@@ -246,6 +267,26 @@ public class JingleConnectionManager extends AbstractConnectionManager {
                 Message.TYPE_RTP_SESSION,
                 sessionId
         );
+        message.setBody(new RtpSessionStatus(false, 0).toString());
+        message.setServerMsgId(serverMsgId);
+        message.setTime(timestamp);
+        writeMessage(message);
+    }
+
+    private void writeLogMissedIncoming(final Account account, Jid with, final String sessionId, String serverMsgId, long timestamp) {
+        final Conversation conversation = mXmppConnectionService.findOrCreateConversation(
+                account,
+                with.asBareJid(),
+                false,
+                false
+        );
+        final Message message = new Message(
+                conversation,
+                Message.STATUS_RECEIVED,
+                Message.TYPE_RTP_SESSION,
+                sessionId
+        );
+        message.setBody(new RtpSessionStatus(false, 0).toString());
         message.setServerMsgId(serverMsgId);
         message.setTime(timestamp);
         writeMessage(message);
@@ -490,8 +531,8 @@ public class JingleConnectionManager extends AbstractConnectionManager {
     public static class RtpSessionProposal {
         public final Jid with;
         public final String sessionId;
-        private final Account account;
         public final Set<Media> media;
+        private final Account account;
 
         private RtpSessionProposal(Account account, Jid with, String sessionId) {
             this(account, with, sessionId, Collections.emptySet());
