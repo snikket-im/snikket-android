@@ -4,6 +4,8 @@ import android.support.annotation.NonNull;
 
 import com.google.common.base.CaseFormat;
 
+import eu.siacs.conversations.xmpp.jingle.RtpContentMap;
+
 public enum Reason {
     ALTERNATIVE_SESSION,
     BUSY,
@@ -36,5 +38,17 @@ public enum Reason {
     @NonNull
     public String toString() {
         return CaseFormat.UPPER_UNDERSCORE.to(CaseFormat.LOWER_HYPHEN, super.toString());
+    }
+
+    public static Reason of(final RuntimeException e) {
+        if (e instanceof SecurityException) {
+            return SECURITY_ERROR;
+        } else if (e instanceof RtpContentMap.UnsupportedTransportException) {
+            return UNSUPPORTED_TRANSPORTS;
+        } else if (e instanceof RtpContentMap.UnsupportedApplicationException) {
+            return UNSUPPORTED_APPLICATIONS;
+        } else {
+            return FAILED_APPLICATION;
+        }
     }
 }

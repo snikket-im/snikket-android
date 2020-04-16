@@ -266,7 +266,7 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
             contentMap.requireDTLSFingerprint();
         } catch (final IllegalArgumentException | IllegalStateException | NullPointerException e) {
             respondOk(jinglePacket);
-            sendSessionTerminate(Reason.FAILED_APPLICATION, e.getMessage());
+            sendSessionTerminate(Reason.of(e), e.getMessage());
             Log.d(Config.LOGTAG, id.account.getJid().asBareJid() + ": improperly formatted contents", e);
             return;
         }
@@ -315,14 +315,22 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
             contentMap = RtpContentMap.of(jinglePacket);
             contentMap.requireContentDescriptions();
             contentMap.requireDTLSFingerprint();
-        } catch (IllegalArgumentException | IllegalStateException | NullPointerException e) {
+        } catch (final IllegalArgumentException | IllegalStateException | NullPointerException e) {
             respondOk(jinglePacket);
             Log.d(Config.LOGTAG, id.account.getJid().asBareJid() + ": improperly formatted contents in session-accept", e);
             webRTCWrapper.close();
-            sendSessionTerminate(Reason.FAILED_APPLICATION, e.getMessage());
+            sendSessionTerminate(Reason.of(e), e.getMessage());
             return;
         }
-        //TODO check that session accept content media matched ours
+        final Set<Media> initiatorMedia = this.initiatorRtpContentMap.getMedia();
+        if (!initiatorMedia.equals(contentMap.getMedia())) {
+            sendSessionTerminate(Reason.SECURITY_ERROR, String.format(
+                    "Your session-included included media %s but our session-initiate was %s",
+                    this.proposedMedia,
+                    contentMap.getMedia()
+            ));
+            return;
+        }
         Log.d(Config.LOGTAG, "processing session-accept with " + contentMap.contents.size() + " contents");
         if (transition(State.SESSION_ACCEPTED)) {
             respondOk(jinglePacket);
@@ -913,6 +921,9 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
         if (newState == PeerConnection.PeerConnectionState.CONNECTED && this.rtpConnectionStarted == 0) {
             this.rtpConnectionStarted = SystemClock.elapsedRealtime();
         }
+        //TODO 'DISCONNECTED' might be an opportunity to renew the offer and send a transport-replace
+        //TODO exact syntax is yet to be determined but transport-replace sounds like the most reasonable
+        //as there is no content-replace
         if (Arrays.asList(PeerConnection.PeerConnectionState.FAILED, PeerConnection.PeerConnectionState.DISCONNECTED).contains(newState)) {
             if (TERMINATED.contains(this.state)) {
                 Log.d(Config.LOGTAG, id.account.getJid().asBareJid() + ": not sending session-terminate after connectivity error because session is already in state " + this.state);
