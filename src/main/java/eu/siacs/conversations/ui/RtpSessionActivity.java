@@ -531,8 +531,13 @@ public class RtpSessionActivity extends XmppActivity implements XmppConnectionSe
         if (remoteVideoTrack.isPresent()) {
             ensureSurfaceViewRendererIsSetup(binding.remoteVideo);
             remoteVideoTrack.get().addSink(binding.remoteVideo);
-            binding.appBarLayout.setVisibility(View.GONE);
-            getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
+            if (state == RtpEndUserState.CONNECTED) {
+                binding.appBarLayout.setVisibility(View.GONE);
+                getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
+            } else {
+                getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
+                binding.remoteVideo.setVisibility(View.GONE);
+            }
         } else {
             getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
             binding.remoteVideo.setVisibility(View.GONE);

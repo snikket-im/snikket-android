@@ -196,7 +196,7 @@ public class JingleConnectionManager extends AbstractConnectionManager {
                     Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": encountered unknown media in session proposal. " + propose);
                     return;
                 }
-                if (isBusy()) { //TODO only if no other devices are active
+                if (isBusy()) {
                     writeLogMissedIncoming(account, id.with.asBareJid(), id.sessionId, serverMsgId, timestamp);
                     final int activeDevices = account.countPresences();
                     Log.d(Config.LOGTAG, "active devices: " + activeDevices);
