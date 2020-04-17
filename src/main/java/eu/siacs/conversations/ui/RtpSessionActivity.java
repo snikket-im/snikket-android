@@ -270,9 +270,24 @@ public class RtpSessionActivity extends XmppActivity implements XmppConnectionSe
     public void onStop() {
         binding.remoteVideo.release();
         binding.localVideo.release();
+        final WeakReference<JingleRtpConnection> weakReference = this.rtpConnectionReference;
+        final JingleRtpConnection jingleRtpConnection = weakReference == null ? null : weakReference.get();
+        if (jingleRtpConnection != null) {
+            releaseVideoTracks(jingleRtpConnection);
+        }
         releaseProximityWakeLock();
-        //TODO maybe we want to finish if call had ended
         super.onStop();
+    }
+
+    private void releaseVideoTracks(final JingleRtpConnection jingleRtpConnection) {
+        final Optional<VideoTrack> remoteVideo = jingleRtpConnection.getRemoteVideoTrack();
+        if (remoteVideo.isPresent()) {
+            remoteVideo.get().removeSink(binding.remoteVideo);
+        }
+        final Optional<VideoTrack> localVideo = jingleRtpConnection.geLocalVideoTrack();
+        if (localVideo.isPresent()) {
+            localVideo.get().removeSink(binding.localVideo);
+        }
     }
 
     @Override
