@@ -39,7 +39,6 @@ import org.webrtc.VideoTrack;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Set;
 
@@ -146,7 +145,7 @@ public class WebRTCWrapper {
     private AppRTCAudioManager appRTCAudioManager = null;
     private Context context = null;
     private EglBase eglBase = null;
-    private Optional<CapturerChoice> optionalCapturer;
+    private CapturerChoice capturerChoice;
 
     public WebRTCWrapper(final EventCallback eventCallback) {
         this.eventCallback = eventCallback;
@@ -177,16 +176,16 @@ public class WebRTCWrapper {
 
         final MediaStream stream = peerConnectionFactory.createLocalMediaStream("my-media-stream");
 
-        this.optionalCapturer = media.contains(Media.VIDEO) ? getVideoCapturer() : Optional.absent();
+        final Optional<CapturerChoice> optionalCapturerChoice = media.contains(Media.VIDEO) ? getVideoCapturer() : Optional.absent();
 
-        if (this.optionalCapturer.isPresent()) {
-            final CapturerChoice choice = this.optionalCapturer.get();
-            final CameraVideoCapturer capturer = choice.cameraVideoCapturer;
+        if (optionalCapturerChoice.isPresent()) {
+            this.capturerChoice = optionalCapturerChoice.get();
+            final CameraVideoCapturer capturer = this.capturerChoice.cameraVideoCapturer;
             final VideoSource videoSource = peerConnectionFactory.createVideoSource(false);
             SurfaceTextureHelper surfaceTextureHelper = SurfaceTextureHelper.create("webrtc", eglBase.getEglBaseContext());
             capturer.initialize(surfaceTextureHelper, requireContext(), videoSource.getCapturerObserver());
-            Log.d(Config.LOGTAG, String.format("start capturing at %dx%d@%d", choice.captureFormat.width, choice.captureFormat.height, choice.getFrameRate()));
-            capturer.startCapture(choice.captureFormat.width, choice.captureFormat.height, choice.getFrameRate());
+            Log.d(Config.LOGTAG, String.format("start capturing at %dx%d@%d", capturerChoice.captureFormat.width, capturerChoice.captureFormat.height, capturerChoice.getFrameRate()));
+            capturer.startCapture(capturerChoice.captureFormat.width, capturerChoice.captureFormat.height, capturerChoice.getFrameRate());
 
             this.localVideoTrack = peerConnectionFactory.createVideoTrack("my-video-track", videoSource);
 
@@ -214,7 +213,7 @@ public class WebRTCWrapper {
 
     public void close() {
         final PeerConnection peerConnection = this.peerConnection;
-        final Optional<CapturerChoice> optionalCapturer = this.optionalCapturer;
+        final CapturerChoice capturerChoice = this.capturerChoice;
         final AppRTCAudioManager audioManager = this.appRTCAudioManager;
         final EglBase eglBase = this.eglBase;
         if (peerConnection != null) {
@@ -225,9 +224,9 @@ public class WebRTCWrapper {
         }
         this.localVideoTrack = null;
         this.remoteVideoTrack = null;
-        if (optionalCapturer != null && optionalCapturer.isPresent()) {
+        if (capturerChoice != null) {
             try {
-                optionalCapturer.get().cameraVideoCapturer.stopCapture();
+                capturerChoice.cameraVideoCapturer.stopCapture();
             } catch (InterruptedException e) {
                 Log.e(Config.LOGTAG, "unable to stop capturing");
             }

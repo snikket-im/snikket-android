@@ -1018,7 +1018,11 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
                             if (port < 0 || port > 65535) {
                                 continue;
                             }
-                            if (Arrays.asList("stun", "turn").contains(type) && Arrays.asList("udp", "tcp").contains(transport)) {
+                            if (Arrays.asList("stun", "stuns", "turn", "turns").contains(type) && Arrays.asList("udp", "tcp").contains(transport)) {
+                                if (Arrays.asList("stuns","turns").contains(type) && "udp".equals(transport)) {
+                                    Log.d(Config.LOGTAG,id.account.getJid().asBareJid()+": skipping invalid combination of udp/tls in external services");
+                                    continue;
+                                }
                                 //TODO wrap ipv6 addresses
                                 PeerConnection.IceServer.Builder iceServerBuilder = PeerConnection.IceServer.builder(String.format("%s:%s:%s?transport=%s", type, host, port, transport));
                                 if (username != null && password != null) {
