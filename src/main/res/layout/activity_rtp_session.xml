@@ -17,11 +17,21 @@
             android:orientation="horizontal"
             android:visibility="gone">
 
+            <ProgressBar
+                android:id="@+id/pip_waiting"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:indeterminate="true"
+                android:indeterminateOnly="true"
+                android:indeterminateTint="@color/white"
+                android:visibility="gone" />
+
             <ImageView
                 android:id="@+id/pip_warning"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/ic_warning_white_48dp" />
+                android:src="@drawable/ic_warning_white_48dp"
+                android:visibility="gone" />
         </LinearLayout>
 
         <android.support.design.widget.AppBarLayout

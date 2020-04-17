@@ -299,7 +299,11 @@ public class RtpSessionActivity extends XmppActivity implements XmppConnectionSe
     private boolean shouldBePictureInPicture() {
         try {
             final JingleRtpConnection rtpConnection = requireRtpConnection();
-            return rtpConnection.getMedia().contains(Media.VIDEO) && rtpConnection.getEndUserState() == RtpEndUserState.CONNECTED;
+            return rtpConnection.getMedia().contains(Media.VIDEO) && Arrays.asList(
+                    RtpEndUserState.ACCEPTING_CALL,
+                    RtpEndUserState.CONNECTING,
+                    RtpEndUserState.CONNECTED
+            ).contains(rtpConnection.getEndUserState());
         } catch (IllegalStateException e) {
             return false;
         }
@@ -546,14 +550,25 @@ public class RtpSessionActivity extends XmppActivity implements XmppConnectionSe
                 binding.pipPlaceholder.setVisibility(View.VISIBLE);
                 if (state == RtpEndUserState.APPLICATION_ERROR || state == RtpEndUserState.CONNECTIVITY_ERROR) {
                     binding.pipWarning.setVisibility(View.VISIBLE);
+                    binding.pipWaiting.setVisibility(View.GONE);
                 } else {
                     binding.pipWarning.setVisibility(View.GONE);
+                    binding.pipWaiting.setVisibility(View.GONE);
                 }
             } else {
                 binding.appBarLayout.setVisibility(View.VISIBLE);
                 binding.pipPlaceholder.setVisibility(View.GONE);
             }
             getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
+            return;
+        }
+        if (isPictureInPicture() && (state == RtpEndUserState.CONNECTING || state == RtpEndUserState.ACCEPTING_CALL)) {
+            binding.localVideo.setVisibility(View.GONE);
+            binding.remoteVideo.setVisibility(View.GONE);
+            binding.appBarLayout.setVisibility(View.GONE);
+            binding.pipPlaceholder.setVisibility(View.VISIBLE);
+            binding.pipWarning.setVisibility(View.GONE);
+            binding.pipWaiting.setVisibility(View.VISIBLE);
             return;
         }
         final Optional<VideoTrack> localVideoTrack = requireRtpConnection().geLocalVideoTrack();
