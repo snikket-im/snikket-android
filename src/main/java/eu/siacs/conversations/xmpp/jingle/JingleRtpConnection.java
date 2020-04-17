@@ -234,7 +234,13 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
             for (final Map.Entry<String, RtpContentMap.DescriptionTransport> content : contentMap.contents.entrySet()) {
                 final String ufrag = content.getValue().transport.getAttribute("ufrag");
                 for (final IceUdpTransportInfo.Candidate candidate : content.getValue().transport.getCandidates()) {
-                    final String sdp = candidate.toSdpAttribute(ufrag);
+                    final String sdp;
+                    try {
+                        sdp = candidate.toSdpAttribute(ufrag);
+                    } catch (IllegalArgumentException e) {
+                        Log.d(Config.LOGTAG,id.account.getJid().asBareJid()+": ignoring invalid ICE candidate "+e.getMessage());
+                        continue;
+                    }
                     final String sdpMid = content.getKey();
                     final int mLineIndex = identificationTags.indexOf(sdpMid);
                     final IceCandidate iceCandidate = new IceCandidate(sdpMid, mLineIndex, sdp);
@@ -418,8 +424,8 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
     private void addIceCandidatesFromBlackLog() {
         while (!this.pendingIceCandidates.isEmpty()) {
             final IceCandidate iceCandidate = this.pendingIceCandidates.poll();
-            this.webRTCWrapper.addIceCandidate(iceCandidate);
             Log.d(Config.LOGTAG, id.account.getJid().asBareJid() + ": added ICE candidate from back log " + iceCandidate);
+            this.webRTCWrapper.addIceCandidate(iceCandidate);
         }
     }
 

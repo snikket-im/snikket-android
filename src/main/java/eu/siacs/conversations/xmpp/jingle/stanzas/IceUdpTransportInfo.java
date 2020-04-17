@@ -5,6 +5,7 @@ import android.util.Log;
 import com.google.common.base.Function;
 import com.google.common.base.Joiner;
 import com.google.common.base.Preconditions;
+import com.google.common.base.Strings;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.ImmutableList;
@@ -188,11 +189,17 @@ public class IceUdpTransportInfo extends GenericTransportInfo {
 
         public String toSdpAttribute(final String ufrag) {
             final String foundation = this.getAttribute("foundation");
+            checkNotNullNoWhitespace(foundation, "foundation");
             final String component = this.getAttribute("component");
+            checkNotNullNoWhitespace(component, "component");
             final String transport = this.getAttribute("protocol");
+            checkNotNullNoWhitespace(transport, "protocol");
             final String priority = this.getAttribute("priority");
+            checkNotNullNoWhitespace(priority, "priority");
             final String connectionAddress = this.getAttribute("ip");
+            checkNotNullNoWhitespace(connectionAddress, "ip");
             final String port = this.getAttribute("port");
+            checkNotNullNoWhitespace(port, "port");
             final Map<String, String> additionalParameter = new LinkedHashMap<>();
             final String relAddr = this.getAttribute("rel-addr");
             final String type = this.getAttribute("type");
@@ -226,6 +233,13 @@ public class IceUdpTransportInfo extends GenericTransportInfo {
 
             );
         }
+    }
+
+    private static void checkNotNullNoWhitespace(final String value, final String name) {
+        if (Strings.isNullOrEmpty(value)) {
+            throw new IllegalArgumentException(String.format("Parameter %s is missing or empty", name));
+        }
+        SessionDescription.checkNoWhitespace(value, String.format("Parameter %s contains white spaces", name));
     }
 
 
