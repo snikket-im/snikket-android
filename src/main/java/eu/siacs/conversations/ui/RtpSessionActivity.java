@@ -21,8 +21,6 @@ import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
 
-import org.webrtc.PeerConnection;
-import org.webrtc.RendererCommon;
 import org.webrtc.SurfaceViewRenderer;
 import org.webrtc.VideoTrack;
 
@@ -84,7 +82,6 @@ public class RtpSessionActivity extends XmppActivity implements XmppConnectionSe
                 | WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD
                 | WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED
                 | WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON);
-        Log.d(Config.LOGTAG, "RtpSessionActivity.onCreate()");
         this.binding = DataBindingUtil.setContentView(this, R.layout.activity_rtp_session);
         setSupportActionBar(binding.toolbar);
     }
@@ -560,6 +557,7 @@ public class RtpSessionActivity extends XmppActivity implements XmppConnectionSe
         if (END_CARD.contains(state) || state == RtpEndUserState.ENDING_CALL) {
             binding.localVideo.setVisibility(View.GONE);
             binding.remoteVideo.setVisibility(View.GONE);
+            binding.pipLocalMicOffIndicator.setVisibility(View.GONE);
             if (isPictureInPicture()) {
                 binding.appBarLayout.setVisibility(View.GONE);
                 binding.pipPlaceholder.setVisibility(View.VISIBLE);
@@ -584,6 +582,7 @@ public class RtpSessionActivity extends XmppActivity implements XmppConnectionSe
             binding.pipPlaceholder.setVisibility(View.VISIBLE);
             binding.pipWarning.setVisibility(View.GONE);
             binding.pipWaiting.setVisibility(View.VISIBLE);
+            binding.pipLocalMicOffIndicator.setVisibility(View.GONE);
             return;
         }
         final Optional<VideoTrack> localVideoTrack = requireRtpConnection().geLocalVideoTrack();
@@ -607,9 +606,15 @@ public class RtpSessionActivity extends XmppActivity implements XmppConnectionSe
                 getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
                 binding.remoteVideo.setVisibility(View.GONE);
             }
+            if (isPictureInPicture() && !requireRtpConnection().isMicrophoneEnabled()) {
+                binding.pipLocalMicOffIndicator.setVisibility(View.VISIBLE);
+            } else {
+                binding.pipLocalMicOffIndicator.setVisibility(View.GONE);
+            }
         } else {
             getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
             binding.remoteVideo.setVisibility(View.GONE);
+            binding.pipLocalMicOffIndicator.setVisibility(View.GONE);
         }
     }
 
