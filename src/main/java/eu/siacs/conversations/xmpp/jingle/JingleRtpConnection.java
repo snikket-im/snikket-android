@@ -26,6 +26,7 @@ import java.util.Map;
 import java.util.Set;
 
 import eu.siacs.conversations.Config;
+import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.entities.Conversation;
 import eu.siacs.conversations.entities.Conversational;
 import eu.siacs.conversations.entities.Message;
@@ -238,7 +239,7 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
                     try {
                         sdp = candidate.toSdpAttribute(ufrag);
                     } catch (IllegalArgumentException e) {
-                        Log.d(Config.LOGTAG,id.account.getJid().asBareJid()+": ignoring invalid ICE candidate "+e.getMessage());
+                        Log.d(Config.LOGTAG, id.account.getJid().asBareJid() + ": ignoring invalid ICE candidate " + e.getMessage());
                         continue;
                     }
                     final String sdpMid = content.getKey();
@@ -658,35 +659,44 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
 
     private void send(final JinglePacket jinglePacket) {
         jinglePacket.setTo(id.with);
-        xmppConnectionService.sendIqPacket(id.account, jinglePacket, (account, response) -> {
-            if (response.getType() == IqPacket.TYPE.ERROR) {
-                final String errorCondition = response.getErrorCondition();
-                Log.d(Config.LOGTAG, id.account.getJid().asBareJid() + ": received IQ-error from " + response.getFrom() + " in RTP session. " + errorCondition);
-                this.webRTCWrapper.close();
-                final State target;
-                if (Arrays.asList(
-                        "service-unavailable",
-                        "recipient-unavailable",
-                        "remote-server-not-found",
-                        "remote-server-timeout"
-                ).contains(errorCondition)) {
-                    target = State.TERMINATED_CONNECTIVITY_ERROR;
-                } else {
-                    target = State.TERMINATED_APPLICATION_FAILURE;
-                }
-                if (transition(target)) {
-                    Log.d(Config.LOGTAG, id.account.getJid().asBareJid() + ": terminated session with " + id.with);
-                } else {
-                    Log.d(Config.LOGTAG, id.account.getJid().asBareJid() + ": not transitioning because already at state=" + this.state);
-                }
+        xmppConnectionService.sendIqPacket(id.account, jinglePacket, this::handleIqResponse);
+    }
 
-            } else if (response.getType() == IqPacket.TYPE.TIMEOUT) {
-                this.webRTCWrapper.close();
-                Log.d(Config.LOGTAG, id.account.getJid().asBareJid() + ": received IQ timeout in RTP session with " + id.with + ". terminating with connectivity error");
-                transition(State.TERMINATED_CONNECTIVITY_ERROR);
-                this.jingleConnectionManager.finishConnection(this);
+    private synchronized void handleIqResponse(final Account account, final IqPacket response) {
+        if (response.getType() == IqPacket.TYPE.ERROR) {
+            final String errorCondition = response.getErrorCondition();
+            Log.d(Config.LOGTAG, id.account.getJid().asBareJid() + ": received IQ-error from " + response.getFrom() + " in RTP session. " + errorCondition);
+            if (TERMINATED.contains(this.state)) {
+                Log.i(Config.LOGTAG, id.account.getJid().asBareJid() + ": ignoring error because session was already terminated");
+                return;
             }
-        });
+            this.webRTCWrapper.close();
+            final State target;
+            if (Arrays.asList(
+                    "service-unavailable",
+                    "recipient-unavailable",
+                    "remote-server-not-found",
+                    "remote-server-timeout"
+            ).contains(errorCondition)) {
+                target = State.TERMINATED_CONNECTIVITY_ERROR;
+            } else {
+                target = State.TERMINATED_APPLICATION_FAILURE;
+            }
+            if (transition(target)) {
+                Log.d(Config.LOGTAG, id.account.getJid().asBareJid() + ": terminated session with " + id.with);
+            } else {
+                Log.d(Config.LOGTAG, id.account.getJid().asBareJid() + ": not transitioning because already at state=" + this.state);
+            }
+        } else if (response.getType() == IqPacket.TYPE.TIMEOUT) {
+            Log.d(Config.LOGTAG, id.account.getJid().asBareJid() + ": received IQ timeout in RTP session with " + id.with + ". terminating with connectivity error");
+            if (TERMINATED.contains(this.state)) {
+                Log.i(Config.LOGTAG, id.account.getJid().asBareJid() + ": ignoring error because session was already terminated");
+                return;
+            }
+            this.webRTCWrapper.close();
+            transition(State.TERMINATED_CONNECTIVITY_ERROR);
+            this.jingleConnectionManager.finishConnection(this);
+        }
     }
 
     private void terminateWithOutOfOrder(final JinglePacket jinglePacket) {
