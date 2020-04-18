@@ -119,7 +119,6 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
     private RtpContentMap responderRtpContentMap;
     private long rtpConnectionStarted = 0; //time of 'connected'
 
-
     JingleRtpConnection(JingleConnectionManager jingleConnectionManager, Id id, Jid initiator) {
         super(jingleConnectionManager, id, initiator);
         final Conversation conversation = jingleConnectionManager.getXmppConnectionService().findOrCreateConversation(
@@ -847,6 +846,7 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
     }
 
     private void setupWebRTC(final Set<Media> media, final List<PeerConnection.IceServer> iceServers) throws WebRTCWrapper.InitializationException {
+        //TODO ensure registered with connection manager
         final AppRTCAudioManager.SpeakerPhonePreference speakerPhonePreference;
         if (media.contains(Media.VIDEO)) {
             speakerPhonePreference = AppRTCAudioManager.SpeakerPhonePreference.SPEAKER;
@@ -950,11 +950,15 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
                 Log.d(Config.LOGTAG, id.account.getJid().asBareJid() + ": not sending session-terminate after connectivity error because session is already in state " + this.state);
                 return;
             }
-            //we need to call close
-            sendSessionTerminate(Reason.CONNECTIVITY_ERROR);
+            new Thread(this::closeWebRTCSessionAfterFailedConnection).start();
         } else {
             updateEndUserState();
         }
+    }
+
+    private void closeWebRTCSessionAfterFailedConnection() {
+        this.webRTCWrapper.close();
+        sendSessionTerminate(Reason.CONNECTIVITY_ERROR);
     }
 
     public AppRTCAudioManager getAudioManager() {
