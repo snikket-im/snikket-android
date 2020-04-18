@@ -218,6 +218,7 @@ public class WebRTCWrapper {
         final EglBase eglBase = this.eglBase;
         if (peerConnection != null) {
             peerConnection.dispose();
+            this.peerConnection = null;
         }
         if (audioManager != null) {
             mainHandler.post(audioManager::stop);
@@ -233,6 +234,16 @@ public class WebRTCWrapper {
         }
         if (eglBase != null) {
             eglBase.release();
+            this.eglBase = null;
+        }
+    }
+
+    void verifyClosed() {
+        if (this.peerConnection != null
+                || this.eglBase != null
+                || this.localVideoTrack != null
+                || this.remoteVideoTrack != null) {
+            throw new IllegalStateException("WebRTCWrapper hasn't been closed properly");
         }
     }
 

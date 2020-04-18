@@ -193,7 +193,7 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
             sendSessionTerminate(Reason.CONNECTIVITY_ERROR);
         } else {
             transitionOrThrow(State.TERMINATED_CONNECTIVITY_ERROR);
-            jingleConnectionManager.finishConnection(this);
+            finish();
         }
     }
 
@@ -213,7 +213,7 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
         if (previous == State.PROPOSED || previous == State.SESSION_INITIALIZED) {
             xmppConnectionService.getNotificationService().cancelIncomingCallNotification();
         }
-        jingleConnectionManager.finishConnection(this);
+        finish();
     }
 
     private void receiveTransportInfo(final JinglePacket jinglePacket) {
@@ -466,7 +466,7 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
         if (transition(State.TERMINATED_CONNECTIVITY_ERROR)) {
             webRTCWrapper.close();
             Log.d(Config.LOGTAG, id.account.getJid().asBareJid() + ": transitioned into connectivity error");
-            this.jingleConnectionManager.finishConnection(this);
+            this.finish();
         }
     }
 
@@ -481,7 +481,7 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
                 this.message.setCarbon(true); //indicate that call was accepted on other device
                 this.writeLogMessageSuccess(0);
                 this.xmppConnectionService.getNotificationService().cancelIncomingCallNotification();
-                this.jingleConnectionManager.finishConnection(this);
+                this.finish();
             } else {
                 Log.d(Config.LOGTAG, id.account.getJid().asBareJid() + ": unable to transition to accept because already in state=" + this.state);
             }
@@ -496,7 +496,7 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
         if (originatedFromMyself) {
             if (transition(State.REJECTED)) {
                 this.xmppConnectionService.getNotificationService().cancelIncomingCallNotification();
-                this.jingleConnectionManager.finishConnection(this);
+                this.finish();
                 if (serverMsgId != null) {
                     this.message.setServerMsgId(serverMsgId);
                 }
@@ -561,7 +561,7 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
             if (transition(State.ACCEPTED)) {
                 Log.d(Config.LOGTAG, id.account.getJid().asBareJid() + ": moved session with " + id.with + " into state accepted after received carbon copied procced");
                 this.xmppConnectionService.getNotificationService().cancelIncomingCallNotification();
-                this.jingleConnectionManager.finishConnection(this);
+                this.finish();
             }
         } else {
             Log.d(Config.LOGTAG, String.format("%s: ignoring proceed from %s. was expected from %s", id.account.getJid().asBareJid(), from, id.with));
@@ -578,7 +578,7 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
                 }
                 this.message.setTime(timestamp);
                 writeLogMessageMissed();
-                jingleConnectionManager.finishConnection(this);
+                finish();
             } else {
                 Log.d(Config.LOGTAG, "ignoring retract because already in " + this.state);
             }
@@ -641,7 +641,7 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
         jinglePacket.setReason(reason, text);
         Log.d(Config.LOGTAG, jinglePacket.toString());
         send(jinglePacket);
-        jingleConnectionManager.finishConnection(this);
+        finish();
     }
 
     private void sendTransportInfo(final String contentName, IceUdpTransportInfo.Candidate candidate) {
@@ -695,16 +695,16 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
             }
             this.webRTCWrapper.close();
             transition(State.TERMINATED_CONNECTIVITY_ERROR);
-            this.jingleConnectionManager.finishConnection(this);
+            this.finish();
         }
     }
 
     private void terminateWithOutOfOrder(final JinglePacket jinglePacket) {
         Log.d(Config.LOGTAG, id.account.getJid().asBareJid() + ": terminating session with out-of-order");
-        webRTCWrapper.close();
+        this.webRTCWrapper.close();
         transitionOrThrow(State.TERMINATED_APPLICATION_FAILURE);
         respondWithOutOfOrder(jinglePacket);
-        jingleConnectionManager.finishConnection(this);
+        this.finish();
     }
 
     private void respondWithOutOfOrder(final JinglePacket jinglePacket) {
@@ -820,13 +820,13 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
         }
         if (isInState(State.PROCEED)) {
             Log.d(Config.LOGTAG, id.account.getJid().asBareJid() + ": ending call while in state PROCEED just means ending the connection");
-            webRTCWrapper.close();
-            jingleConnectionManager.finishConnection(this);
+            this.webRTCWrapper.close();
+            this.finish();
             transitionOrThrow(State.TERMINATED_SUCCESS); //arguably this wasn't success; but not a real failure either
             return;
         }
         if (isInitiator() && isInState(State.SESSION_INITIALIZED, State.SESSION_INITIALIZED_PRE_APPROVED)) {
-            webRTCWrapper.close();
+            this.webRTCWrapper.close();
             sendSessionTerminate(Reason.CANCEL);
             return;
         }
@@ -835,7 +835,7 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
             return;
         }
         if (isInState(State.SESSION_INITIALIZED_PRE_APPROVED, State.SESSION_ACCEPTED)) {
-            webRTCWrapper.close();
+            this.webRTCWrapper.close();
             sendSessionTerminate(Reason.SUCCESS);
             return;
         }
@@ -869,7 +869,7 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
         writeLogMessageMissed();
         xmppConnectionService.getNotificationService().cancelIncomingCallNotification();
         this.sendJingleMessage("reject");
-        jingleConnectionManager.finishConnection(this);
+        finish();
     }
 
     private void rejectCallFromSessionInitiate() {
@@ -1020,8 +1020,8 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
                                 continue;
                             }
                             if (Arrays.asList("stun", "stuns", "turn", "turns").contains(type) && Arrays.asList("udp", "tcp").contains(transport)) {
-                                if (Arrays.asList("stuns","turns").contains(type) && "udp".equals(transport)) {
-                                    Log.d(Config.LOGTAG,id.account.getJid().asBareJid()+": skipping invalid combination of udp/tls in external services");
+                                if (Arrays.asList("stuns", "turns").contains(type) && "udp".equals(transport)) {
+                                    Log.d(Config.LOGTAG, id.account.getJid().asBareJid() + ": skipping invalid combination of udp/tls in external services");
                                     continue;
                                 }
                                 //TODO wrap ipv6 addresses
@@ -1052,6 +1052,11 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
             Log.w(Config.LOGTAG, id.account.getJid().asBareJid() + ": has no external service discovery");
             onIceServersDiscovered.onIceServersDiscovered(Collections.emptyList());
         }
+    }
+
+    private void finish() {
+        this.webRTCWrapper.verifyClosed();
+        this.jingleConnectionManager.finishConnection(this);
     }
 
     private void writeLogMessage(final State state) {
