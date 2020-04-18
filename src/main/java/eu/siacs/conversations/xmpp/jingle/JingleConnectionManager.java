@@ -513,6 +513,13 @@ public class JingleConnectionManager extends AbstractConnectionManager {
         }
     }
 
+    void ensureConnectionIsRegistered(final AbstractJingleConnection connection) {
+        if (connections.containsValue(connection)) {
+            return;
+        }
+        throw new IllegalStateException("JingleConnection has not been registered with connection manager");
+    }
+
     public enum DeviceDiscoveryState {
         SEARCHING, DISCOVERED, FAILED;
 

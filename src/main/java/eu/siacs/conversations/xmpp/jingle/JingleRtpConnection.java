@@ -846,7 +846,7 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
     }
 
     private void setupWebRTC(final Set<Media> media, final List<PeerConnection.IceServer> iceServers) throws WebRTCWrapper.InitializationException {
-        //TODO ensure registered with connection manager
+        this.jingleConnectionManager.ensureConnectionIsRegistered(this);
         final AppRTCAudioManager.SpeakerPhonePreference speakerPhonePreference;
         if (media.contains(Media.VIDEO)) {
             speakerPhonePreference = AppRTCAudioManager.SpeakerPhonePreference.SPEAKER;
