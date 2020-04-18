@@ -15,7 +15,10 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.media.AudioDeviceInfo;
+import android.media.AudioFormat;
 import android.media.AudioManager;
+import android.media.AudioRecord;
+import android.media.MediaRecorder;
 import android.os.Build;
 import android.support.annotation.Nullable;
 import android.util.Log;
@@ -109,6 +112,40 @@ public class AppRTCAudioManager {
      */
     public static AppRTCAudioManager create(Context context, SpeakerPhonePreference speakerPhonePreference) {
         return new AppRTCAudioManager(context, speakerPhonePreference);
+    }
+
+    public static boolean isMicrophoneAvailable(final Context context) {
+        AudioRecord audioRecord = null;
+        boolean available = true;
+        try {
+            final int sampleRate = 44100;
+            final int channel = AudioFormat.CHANNEL_IN_MONO;
+            final int format = AudioFormat.ENCODING_PCM_16BIT;
+            final int bufferSize = AudioRecord.getMinBufferSize(sampleRate, channel, format);
+            audioRecord = new AudioRecord(MediaRecorder.AudioSource.MIC, sampleRate, channel, format, bufferSize);
+            audioRecord.startRecording();
+            final short[] buffer = new short[bufferSize];
+            final int audioStatus = audioRecord.read(buffer, 0, bufferSize);
+            if (audioStatus == AudioRecord.ERROR_INVALID_OPERATION || audioStatus == AudioRecord.STATE_UNINITIALIZED)
+                available = false;
+        } catch (Exception e) {
+            available = false;
+        } finally {
+            release(audioRecord);
+
+        }
+        return available;
+    }
+
+    private static void release(final AudioRecord audioRecord) {
+        if (audioRecord == null) {
+            return;
+        }
+        try {
+            audioRecord.release();
+        } catch (Exception e) {
+            //ignore
+        }
     }
 
     /**

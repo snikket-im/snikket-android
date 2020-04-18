@@ -9,6 +9,7 @@ import android.databinding.DataBindingUtil;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.PowerManager;
+import android.os.SystemClock;
 import android.support.annotation.NonNull;
 import android.support.annotation.StringRes;
 import android.util.Log;
@@ -126,7 +127,19 @@ public class RtpSessionActivity extends XmppActivity implements XmppConnectionSe
         }
         if (PermissionUtils.hasPermission(this, permissions, REQUEST_ACCEPT_CALL)) {
             putScreenInCallMode();
+            checkRecorderAndAcceptCall();
+        }
+    }
+
+    private void checkRecorderAndAcceptCall() {
+        final long start = SystemClock.elapsedRealtime();
+        final boolean isMicrophoneAvailable = AppRTCAudioManager.isMicrophoneAvailable(this);
+        final long stop = SystemClock.elapsedRealtime();
+        Log.d(Config.LOGTAG, "checking microphone availability took " + (stop - start) + "ms");
+        if (isMicrophoneAvailable) {
             requireRtpConnection().acceptCall();
+        } else {
+            Toast.makeText(this, R.string.microphone_unavailable, Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -247,7 +260,7 @@ public class RtpSessionActivity extends XmppActivity implements XmppConnectionSe
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (PermissionUtils.allGranted(grantResults)) {
             if (requestCode == REQUEST_ACCEPT_CALL) {
-                requireRtpConnection().acceptCall();
+                checkRecorderAndAcceptCall();
             }
         } else {
             @StringRes int res;

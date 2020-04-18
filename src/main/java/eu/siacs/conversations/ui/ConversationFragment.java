@@ -82,6 +82,7 @@ import eu.siacs.conversations.entities.Transferable;
 import eu.siacs.conversations.entities.TransferablePlaceholder;
 import eu.siacs.conversations.http.HttpDownloadConnection;
 import eu.siacs.conversations.persistance.FileBackend;
+import eu.siacs.conversations.services.AppRTCAudioManager;
 import eu.siacs.conversations.services.MessageArchiveService;
 import eu.siacs.conversations.services.QuickConversationsService;
 import eu.siacs.conversations.services.XmppConnectionService;
@@ -1272,12 +1273,16 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
 
 
     private void triggerRtpSession(final String action) {
-        final Contact contact = conversation.getContact();
-        final Intent intent = new Intent(activity, RtpSessionActivity.class);
-        intent.setAction(action);
-        intent.putExtra(RtpSessionActivity.EXTRA_ACCOUNT, contact.getAccount().getJid().toEscapedString());
-        intent.putExtra(RtpSessionActivity.EXTRA_WITH, contact.getJid().asBareJid().toEscapedString());
-        startActivity(intent);
+        if (AppRTCAudioManager.isMicrophoneAvailable(getActivity())) {
+            final Contact contact = conversation.getContact();
+            final Intent intent = new Intent(activity, RtpSessionActivity.class);
+            intent.setAction(action);
+            intent.putExtra(RtpSessionActivity.EXTRA_ACCOUNT, contact.getAccount().getJid().toEscapedString());
+            intent.putExtra(RtpSessionActivity.EXTRA_WITH, contact.getJid().asBareJid().toEscapedString());
+            startActivity(intent);
+        } else {
+            Toast.makeText(getActivity(), R.string.microphone_unavailable, Toast.LENGTH_SHORT).show();
+        }
     }
 
     private void handleAttachmentSelection(MenuItem item) {

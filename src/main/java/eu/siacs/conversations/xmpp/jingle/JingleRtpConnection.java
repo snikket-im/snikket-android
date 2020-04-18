@@ -950,6 +950,7 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
                 Log.d(Config.LOGTAG, id.account.getJid().asBareJid() + ": not sending session-terminate after connectivity error because session is already in state " + this.state);
                 return;
             }
+            //we need to call close
             sendSessionTerminate(Reason.CONNECTIVITY_ERROR);
         } else {
             updateEndUserState();
