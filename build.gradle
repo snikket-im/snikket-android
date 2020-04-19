@@ -1,3 +1,5 @@
+import com.android.build.OutputFile
+
 // Top-level build file where you can add configuration options common to all
 // sub-projects/modules.
 buildscript {
@@ -6,7 +8,7 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.6.1'
+        classpath 'com.android.tools.build:gradle:3.6.2'
     }
 }
 
@@ -78,12 +80,13 @@ dependencies {
     implementation 'com.squareup.okhttp3:okhttp:3.12.10'
     implementation 'com.google.guava:guava:27.1-android'
     quicksyImplementation 'io.michaelrocks:libphonenumber-android:8.11.1'
-    implementation 'org.webrtc:google-webrtc:1.0.+'
+    implementation fileTree(include: ['libwebrtc-m79.aar'], dir: 'libs')
 }
 
 ext {
     travisBuild = System.getenv("TRAVIS") == "true"
     preDexEnabled = System.getProperty("pre-dex", "true")
+    abiCodes = ['armeabi-v7a': 1, 'x86': 2, 'x86_64': 3, 'arm64-v8a': 4]
 }
 
 android {
@@ -92,13 +95,19 @@ android {
     defaultConfig {
         minSdkVersion 16
         targetSdkVersion 28
-        versionCode 372
-        versionName "2.8.0-beta.2"
+        versionCode 374
+        versionName "2.8.0-beta.3"
         archivesBaseName += "-$versionName"
         applicationId "eu.siacs.conversations"
         resValue "string", "applicationId", applicationId
         resValue "string", "app_name", "Conversations"
         buildConfigField "String", "LOGTAG", "\"conversations\""
+    }
+
+    splits {
+        abi {
+            enable true
+        }
     }
 
     dataBinding {
@@ -253,5 +262,15 @@ android {
     packagingOptions {
         exclude 'META-INF/BCKEY.DSA'
         exclude 'META-INF/BCKEY.SF'
+    }
+
+    android.applicationVariants.all { variant ->
+        variant.outputs.each { output ->
+            def baseAbiVersionCode = project.ext.abiCodes.get(output.getFilter(OutputFile.ABI))
+            if (baseAbiVersionCode != null) {
+                output.versionCodeOverride = (100 * variant.versionCode) + baseAbiVersionCode
+            }
+        }
+
     }
 }
