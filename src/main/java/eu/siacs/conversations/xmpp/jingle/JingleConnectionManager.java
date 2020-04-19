@@ -7,6 +7,8 @@ import android.util.Log;
 import com.google.common.base.Function;
 import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
+import com.google.common.cache.Cache;
+import com.google.common.cache.CacheBuilder;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.ImmutableSet;
 
@@ -21,6 +23,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.TimeUnit;
 
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.entities.Account;
@@ -48,6 +51,10 @@ import rocks.xmpp.addr.Jid;
 public class JingleConnectionManager extends AbstractConnectionManager {
     private final HashMap<RtpSessionProposal, DeviceDiscoveryState> rtpSessionProposals = new HashMap<>();
     private final Map<AbstractJingleConnection.Id, AbstractJingleConnection> connections = new ConcurrentHashMap<>();
+
+    private final Cache<PersistableSessionId, JingleRtpConnection.State> endedSessions = CacheBuilder.newBuilder()
+            .expireAfterWrite(30, TimeUnit.MINUTES)
+            .build();
 
     private HashMap<Jid, JingleCandidate> primaryCandidates = new HashMap<>();
 
@@ -79,7 +86,9 @@ public class JingleConnectionManager extends AbstractConnectionManager {
             if (FileTransferDescription.NAMESPACES.contains(descriptionNamespace)) {
                 connection = new JingleFileTransferConnection(this, id, from);
             } else if (Namespace.JINGLE_APPS_RTP.equals(descriptionNamespace) && !usesTor(account)) {
-                if (isBusy()) {
+                final boolean sessionEnded = this.endedSessions.asMap().containsKey(PersistableSessionId.of(id));
+                if (isBusy() || sessionEnded) {
+                    Log.d(Config.LOGTAG, id.account.getJid().asBareJid() + ": rejected session with " + id.with + " because busy. sessionEnded=" + sessionEnded);
                     mXmppConnectionService.sendIqPacket(account, packet.generateResponse(IqPacket.TYPE.RESULT), null);
                     final JinglePacket sessionTermination = new JinglePacket(JinglePacket.Action.SESSION_TERMINATE, id.sessionId);
                     sessionTermination.setTo(id.with);
@@ -521,6 +530,38 @@ public class JingleConnectionManager extends AbstractConnectionManager {
             return;
         }
         throw new IllegalStateException("JingleConnection has not been registered with connection manager");
+    }
+
+    public void endSession(AbstractJingleConnection.Id id, final AbstractJingleConnection.State state) {
+        this.endedSessions.put(PersistableSessionId.of(id), state);
+    }
+
+    private static class PersistableSessionId {
+        private final Jid with;
+        private final String sessionId;
+
+        private PersistableSessionId(Jid with, String sessionId) {
+            this.with = with;
+            this.sessionId = sessionId;
+        }
+
+        public static PersistableSessionId of(AbstractJingleConnection.Id id) {
+            return new PersistableSessionId(id.with, id.sessionId);
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+            PersistableSessionId that = (PersistableSessionId) o;
+            return Objects.equal(with, that.with) &&
+                    Objects.equal(sessionId, that.sessionId);
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hashCode(with, sessionId);
+        }
     }
 
     public enum DeviceDiscoveryState {

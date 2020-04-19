@@ -819,6 +819,7 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
         }
         if (isInState(State.PROCEED)) {
             Log.d(Config.LOGTAG, id.account.getJid().asBareJid() + ": ending call while in state PROCEED just means ending the connection");
+            this.jingleConnectionManager.endSession(id, State.TERMINATED_SUCCESS);
             this.webRTCWrapper.close();
             this.finish();
             transitionOrThrow(State.TERMINATED_SUCCESS); //arguably this wasn't success; but not a real failure either
