@@ -1273,11 +1273,17 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
 
 
     private void triggerRtpSession(final String action) {
+        if (activity.xmppConnectionService.getJingleConnectionManager().isBusy()) {
+            Toast.makeText(getActivity(), R.string.only_one_call_at_a_time, Toast.LENGTH_LONG).show();
+            return;
+        }
         final Contact contact = conversation.getContact();
         final Intent intent = new Intent(activity, RtpSessionActivity.class);
         intent.setAction(action);
         intent.putExtra(RtpSessionActivity.EXTRA_ACCOUNT, contact.getAccount().getJid().toEscapedString());
         intent.putExtra(RtpSessionActivity.EXTRA_WITH, contact.getJid().asBareJid().toEscapedString());
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
     }
 

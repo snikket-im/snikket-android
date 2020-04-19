@@ -104,7 +104,7 @@ public class JingleConnectionManager extends AbstractConnectionManager {
         return account.isOnion() || mXmppConnectionService.useTorToConnect();
     }
 
-    private boolean isBusy() {
+    public boolean isBusy() {
         for (AbstractJingleConnection connection : this.connections.values()) {
             if (connection instanceof JingleRtpConnection) {
                 return true;
@@ -402,6 +402,9 @@ public class JingleConnectionManager extends AbstractConnectionManager {
                         return;
                     }
                 }
+            }
+            if (isBusy()) {
+                throw new IllegalStateException("There is already a running RTP session. This should have been caught by the UI");
             }
             final RtpSessionProposal proposal = RtpSessionProposal.of(account, with.asBareJid(), media);
             this.rtpSessionProposals.put(proposal, DeviceDiscoveryState.SEARCHING);

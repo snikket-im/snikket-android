@@ -78,6 +78,7 @@ public class RtpSessionActivity extends XmppActivity implements XmppConnectionSe
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+        Log.d(Config.LOGTAG, this.getClass().getName() + ".onCreate()");
         super.onCreate(savedInstanceState);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON
                 | WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD
@@ -85,12 +86,6 @@ public class RtpSessionActivity extends XmppActivity implements XmppConnectionSe
                 | WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON);
         this.binding = DataBindingUtil.setContentView(this, R.layout.activity_rtp_session);
         setSupportActionBar(binding.toolbar);
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-        Log.d(Config.LOGTAG, "RtpSessionActivity.onStart()");
     }
 
     private void endCall(View view) {
@@ -145,7 +140,7 @@ public class RtpSessionActivity extends XmppActivity implements XmppConnectionSe
             if (isMicrophoneAvailable) {
                 return;
             }
-            runOnUiThread(() -> Toast.makeText(this, R.string.microphone_unavailable, Toast.LENGTH_SHORT).show());
+            runOnUiThread(() -> Toast.makeText(this, R.string.microphone_unavailable, Toast.LENGTH_LONG).show());
         }
         ).start();
     }
@@ -206,6 +201,7 @@ public class RtpSessionActivity extends XmppActivity implements XmppConnectionSe
 
     @Override
     public void onNewIntent(final Intent intent) {
+        Log.d(Config.LOGTAG, this.getClass().getName() + ".onNewIntent()");
         super.onNewIntent(intent);
         setIntent(intent);
         if (xmppConnectionService == null) {
