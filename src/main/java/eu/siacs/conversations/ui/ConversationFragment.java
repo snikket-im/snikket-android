@@ -1252,7 +1252,7 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
     }
 
     private void checkPermissionAndTriggerAudioCall() {
-        if (activity.xmppConnectionService.useTorToConnect() || conversation.getAccount().isOnion()) {
+        if (activity.mUseTor || conversation.getAccount().isOnion()) {
             Toast.makeText(activity, R.string.disable_tor_to_make_call, Toast.LENGTH_SHORT).show();
             return;
         }
@@ -1262,7 +1262,7 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
     }
 
     private void checkPermissionAndTriggerVideoCall() {
-        if (activity.xmppConnectionService.useTorToConnect() || conversation.getAccount().isOnion()) {
+        if (activity.mUseTor || conversation.getAccount().isOnion()) {
             Toast.makeText(activity, R.string.disable_tor_to_make_call, Toast.LENGTH_SHORT).show();
             return;
         }

@@ -383,7 +383,6 @@ public class ConversationsActivity extends XmppActivity implements OnConversatio
             if (isCameraFeatureAvailable()) {
                 Fragment fragment = getFragmentManager().findFragmentById(R.id.main_fragment);
                 boolean visible = getResources().getBoolean(R.bool.show_qr_code_scan)
-                        && fragment != null
                         && fragment instanceof ConversationsOverviewFragment;
                 qrCodeScanMenuItem.setVisible(visible);
             } else {
