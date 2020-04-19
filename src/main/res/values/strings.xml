@@ -914,7 +914,7 @@
     <string name="missed_call">Missed call</string>
     <string name="audio_call">Audio call</string>
     <string name="video_call">Video call</string>
-    <string name="microphone_unavailable">Microphone unavailable</string>
+    <string name="microphone_unavailable">Your microphone is unavailable</string>
     <plurals name="view_users">
         <item quantity="one">View %1$d Participant</item>
         <item quantity="other">View %1$d Participants</item>

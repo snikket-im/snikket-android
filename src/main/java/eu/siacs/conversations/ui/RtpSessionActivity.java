@@ -132,15 +132,22 @@ public class RtpSessionActivity extends XmppActivity implements XmppConnectionSe
     }
 
     private void checkRecorderAndAcceptCall() {
-        final long start = SystemClock.elapsedRealtime();
-        final boolean isMicrophoneAvailable = AppRTCAudioManager.isMicrophoneAvailable(this);
-        final long stop = SystemClock.elapsedRealtime();
-        Log.d(Config.LOGTAG, "checking microphone availability took " + (stop - start) + "ms");
-        if (isMicrophoneAvailable) {
-            requireRtpConnection().acceptCall();
-        } else {
-            Toast.makeText(this, R.string.microphone_unavailable, Toast.LENGTH_SHORT).show();
+        checkMicrophoneAvailability();
+        requireRtpConnection().acceptCall();
+    }
+
+    private void checkMicrophoneAvailability() {
+        new Thread(() -> {
+            final long start = SystemClock.elapsedRealtime();
+            final boolean isMicrophoneAvailable = AppRTCAudioManager.isMicrophoneAvailable();
+            final long stop = SystemClock.elapsedRealtime();
+            Log.d(Config.LOGTAG, "checking microphone availability took " + (stop - start) + "ms");
+            if (isMicrophoneAvailable) {
+                return;
+            }
+            runOnUiThread(() -> Toast.makeText(this, R.string.microphone_unavailable, Toast.LENGTH_SHORT).show());
         }
+        ).start();
     }
 
     private void putScreenInCallMode() {
@@ -251,6 +258,7 @@ public class RtpSessionActivity extends XmppActivity implements XmppConnectionSe
     }
 
     private void proposeJingleRtpSession(final Account account, final Jid with, final Set<Media> media) {
+        checkMicrophoneAvailability();
         xmppConnectionService.getJingleConnectionManager().proposeJingleRtpSession(account, with, media);
         putScreenInCallMode(media);
     }

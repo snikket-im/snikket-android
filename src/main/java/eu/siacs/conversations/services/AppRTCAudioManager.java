@@ -28,6 +28,7 @@ import org.webrtc.ThreadUtils;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.concurrent.CountDownLatch;
 
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.utils.AppRTCUtils;
@@ -36,6 +37,9 @@ import eu.siacs.conversations.utils.AppRTCUtils;
  * AppRTCAudioManager manages all audio related parts of the AppRTC demo.
  */
 public class AppRTCAudioManager {
+
+    private static CountDownLatch microphoneLatch;
+
     private final Context apprtcContext;
     // Contains speakerphone setting: auto, true or false
     @Nullable
@@ -114,7 +118,8 @@ public class AppRTCAudioManager {
         return new AppRTCAudioManager(context, speakerPhonePreference);
     }
 
-    public static boolean isMicrophoneAvailable(final Context context) {
+    public static boolean isMicrophoneAvailable() {
+        microphoneLatch = new CountDownLatch(1);
         AudioRecord audioRecord = null;
         boolean available = true;
         try {
@@ -134,6 +139,7 @@ public class AppRTCAudioManager {
             release(audioRecord);
 
         }
+        microphoneLatch.countDown();
         return available;
     }
 
@@ -181,6 +187,7 @@ public class AppRTCAudioManager {
             Log.e(Config.LOGTAG, "AudioManager is already active");
             return;
         }
+        awaitMicrophoneLatch();
         // TODO(henrika): perhaps call new method called preInitAudio() here if UNINITIALIZED.
         Log.d(Config.LOGTAG, "AudioManager starts...");
         this.audioManagerEvents = audioManagerEvents;
@@ -259,6 +266,18 @@ public class AppRTCAudioManager {
         // wired headset.
         registerReceiver(wiredHeadsetReceiver, new IntentFilter(Intent.ACTION_HEADSET_PLUG));
         Log.d(Config.LOGTAG, "AudioManager started");
+    }
+
+    private void awaitMicrophoneLatch() {
+        final CountDownLatch latch = microphoneLatch;
+        if (latch == null) {
+            return;
+        }
+        try {
+            latch.await();
+        } catch (InterruptedException e) {
+            //ignore
+        }
     }
 
     @SuppressWarnings("deprecation")

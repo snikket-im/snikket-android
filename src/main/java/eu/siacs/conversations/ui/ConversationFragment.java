@@ -1273,16 +1273,12 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
 
 
     private void triggerRtpSession(final String action) {
-        if (AppRTCAudioManager.isMicrophoneAvailable(getActivity())) {
-            final Contact contact = conversation.getContact();
-            final Intent intent = new Intent(activity, RtpSessionActivity.class);
-            intent.setAction(action);
-            intent.putExtra(RtpSessionActivity.EXTRA_ACCOUNT, contact.getAccount().getJid().toEscapedString());
-            intent.putExtra(RtpSessionActivity.EXTRA_WITH, contact.getJid().asBareJid().toEscapedString());
-            startActivity(intent);
-        } else {
-            Toast.makeText(getActivity(), R.string.microphone_unavailable, Toast.LENGTH_SHORT).show();
-        }
+        final Contact contact = conversation.getContact();
+        final Intent intent = new Intent(activity, RtpSessionActivity.class);
+        intent.setAction(action);
+        intent.putExtra(RtpSessionActivity.EXTRA_ACCOUNT, contact.getAccount().getJid().toEscapedString());
+        intent.putExtra(RtpSessionActivity.EXTRA_WITH, contact.getJid().asBareJid().toEscapedString());
+        startActivity(intent);
     }
 
     private void handleAttachmentSelection(MenuItem item) {
