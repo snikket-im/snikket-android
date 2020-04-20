@@ -28,9 +28,11 @@ import org.webrtc.EglBase;
 import org.webrtc.IceCandidate;
 import org.webrtc.MediaConstraints;
 import org.webrtc.MediaStream;
+import org.webrtc.MediaStreamTrack;
 import org.webrtc.PeerConnection;
 import org.webrtc.PeerConnectionFactory;
 import org.webrtc.RtpReceiver;
+import org.webrtc.RtpTransceiver;
 import org.webrtc.SdpObserver;
 import org.webrtc.SessionDescription;
 import org.webrtc.SurfaceTextureHelper;
@@ -68,7 +70,7 @@ public class WebRTCWrapper {
     private final PeerConnection.Observer peerConnectionObserver = new PeerConnection.Observer() {
         @Override
         public void onSignalingChange(PeerConnection.SignalingState signalingState) {
-            Log.d(Config.LOGTAG, "onSignalingChange(" + signalingState + ")");
+            Log.d(EXTENDED_LOGGING_TAG, "onSignalingChange(" + signalingState + ")");
             //this is called after removeTrack or addTrack
             //and should then trigger a content-add or content-remove or something
             //https://developer.mozilla.org/en-US/docs/Web/API/RTCPeerConnection/removeTrack
@@ -112,6 +114,7 @@ public class WebRTCWrapper {
 
         @Override
         public void onAddStream(MediaStream mediaStream) {
+            Log.d(EXTENDED_LOGGING_TAG, "onAddStream(numAudioTracks=" + mediaStream.audioTracks.size() + ",numVideoTracks=" + mediaStream.videoTracks.size() + ")");
             final List<VideoTrack> videoTracks = mediaStream.videoTracks;
             if (videoTracks.size() > 0) {
                 remoteVideoTrack = videoTracks.get(0);
@@ -138,8 +141,13 @@ public class WebRTCWrapper {
 
         @Override
         public void onAddTrack(RtpReceiver rtpReceiver, MediaStream[] mediaStreams) {
-            Log.d(Config.LOGTAG, "onAddTrack()");
+            final MediaStreamTrack track = rtpReceiver.track();
+            Log.d(EXTENDED_LOGGING_TAG, "onAddTrack(kind=" + (track == null ? "null" : track.kind()) + ",numMediaStreams=" + mediaStreams.length + ")");
+        }
 
+        @Override
+        public void onTrack(RtpTransceiver transceiver) {
+            Log.d(EXTENDED_LOGGING_TAG, "onTrack(mid=" + transceiver.getMid() + ",media=" + transceiver.getMediaType() + ")");
         }
     };
     @Nullable
