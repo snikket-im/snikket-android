@@ -6,6 +6,8 @@ import android.support.annotation.NonNull;
 import android.util.Base64;
 import android.util.Log;
 
+import com.google.common.base.Strings;
+
 import java.io.UnsupportedEncodingException;
 import java.lang.Comparable;
 import java.security.MessageDigest;
@@ -222,9 +224,9 @@ public class ServiceDiscoveryResult {
 		for (Data form : forms) {
 			s.append(clean(form.getFormType())).append("<");
 			List<Field> fields = form.getFields();
-			Collections.sort(fields, (lhs, rhs) -> lhs.getFieldName().compareTo(rhs.getFieldName()));
+			Collections.sort(fields, (lhs, rhs) -> Strings.nullToEmpty(lhs.getFieldName()).compareTo(Strings.nullToEmpty(rhs.getFieldName())));
 			for (Field field : fields) {
-				s.append(clean(field.getFieldName())).append("<");
+				s.append(Strings.nullToEmpty(field.getFieldName())).append("<");
 				List<String> values = field.getValues();
 				Collections.sort(values);
 				for (String value : values) {
