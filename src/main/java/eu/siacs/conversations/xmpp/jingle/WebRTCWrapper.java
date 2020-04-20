@@ -50,6 +50,8 @@ import eu.siacs.conversations.services.AppRTCAudioManager;
 
 public class WebRTCWrapper {
 
+    private static final String EXTENDED_LOGGING_TAG = WebRTCWrapper.class.getSimpleName();
+
     private static final int CAPTURING_RESOLUTION = 1920;
     private static final int CAPTURING_MAX_FRAME_RATE = 30;
 
@@ -110,11 +112,12 @@ public class WebRTCWrapper {
 
         @Override
         public void onAddStream(MediaStream mediaStream) {
-            Log.d(Config.LOGTAG, "onAddStream");
             final List<VideoTrack> videoTracks = mediaStream.videoTracks;
             if (videoTracks.size() > 0) {
-                Log.d(Config.LOGTAG, "more than zero remote video tracks found. using first");
                 remoteVideoTrack = videoTracks.get(0);
+                Log.d(Config.LOGTAG, "remote video track enabled?=" + remoteVideoTrack.enabled());
+            } else {
+                Log.d(Config.LOGTAG, "no remote video tracks found");
             }
         }
 
@@ -317,6 +320,10 @@ public class WebRTCWrapper {
     }
 
     public ListenableFuture<Void> setLocalDescription(final SessionDescription sessionDescription) {
+        Log.d(EXTENDED_LOGGING_TAG, "setting local description:");
+        for (final String line : sessionDescription.description.split(eu.siacs.conversations.xmpp.jingle.SessionDescription.LINE_DIVIDER)) {
+            Log.d(EXTENDED_LOGGING_TAG, line);
+        }
         return Futures.transformAsync(getPeerConnectionFuture(), peerConnection -> {
             final SettableFuture<Void> future = SettableFuture.create();
             peerConnection.setLocalDescription(new SetSdpObserver() {
@@ -337,6 +344,10 @@ public class WebRTCWrapper {
     }
 
     public ListenableFuture<Void> setRemoteDescription(final SessionDescription sessionDescription) {
+        Log.d(EXTENDED_LOGGING_TAG, "setting remote description:");
+        for (final String line : sessionDescription.description.split(eu.siacs.conversations.xmpp.jingle.SessionDescription.LINE_DIVIDER)) {
+            Log.d(EXTENDED_LOGGING_TAG, line);
+        }
         return Futures.transformAsync(getPeerConnectionFuture(), peerConnection -> {
             final SettableFuture<Void> future = SettableFuture.create();
             peerConnection.setRemoteDescription(new SetSdpObserver() {

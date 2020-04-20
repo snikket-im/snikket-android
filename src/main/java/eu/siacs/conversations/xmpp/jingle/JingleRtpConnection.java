@@ -606,7 +606,6 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
         try {
             org.webrtc.SessionDescription webRTCSessionDescription = this.webRTCWrapper.createOffer().get();
             final SessionDescription sessionDescription = SessionDescription.parse(webRTCSessionDescription.description);
-            Log.d(Config.LOGTAG, "description: " + webRTCSessionDescription.description);
             final RtpContentMap rtpContentMap = RtpContentMap.of(sessionDescription);
             sendSessionInitiate(rtpContentMap, targetState);
             this.webRTCWrapper.setLocalDescription(webRTCSessionDescription).get();

@@ -20,7 +20,7 @@ import eu.siacs.conversations.xmpp.jingle.stanzas.RtpDescription;
 
 public class SessionDescription {
 
-    private final static String LINE_DIVIDER = "\r\n";
+    public final static String LINE_DIVIDER = "\r\n";
     private final static String HARDCODED_MEDIA_PROTOCOL = "UDP/TLS/RTP/SAVPF"; //probably only true for DTLS-SRTP aka when we have a fingerprint
     private final static int HARDCODED_MEDIA_PORT = 9;
     private final static String HARDCODED_ICE_OPTIONS = "trickle renomination";
