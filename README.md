@@ -318,7 +318,7 @@ merge it if I don't at least you and like minded people get to enjoy it.
 
 #### I need a feature and I need it now!
 
-I am available for hire. Contact me via XMPP: `inputmice@siacs.eu`
+I am available for hire. Find contact information on [my website](https://gultsch.de).
 
 ### Security
 
@@ -400,6 +400,12 @@ If you bought the App on [Google Play](https://play.google.com/store/apps/detail
 you can get access to the the latest beta version by signing up using [this link](https://play.google.com/apps/testing/eu.siacs.conversations).
 
 #### How do I build Conversations
+
+**Note:** Starting with version 2.8.0 you will need to compile libwebrtc.
+[Instructions](https://webrtc.github.io/webrtc-org/native-code/android/) can be found on the WebRTC
+website. Place the resulting libwebrtc.aar in the `libs/` directory. The PlayStore release currently
+uses the stable M81 release and renamed the file name to `libwebrtc-m81.aar` put potentially you can
+reference any file name by modifying `build.gradle`.
 
 Make sure to have ANDROID_HOME point to your Android SDK. Use the Android SDK Manager to install missing dependencies.
 
