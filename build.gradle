@@ -80,7 +80,7 @@ dependencies {
     implementation 'com.squareup.okhttp3:okhttp:3.12.10'
     implementation 'com.google.guava:guava:27.1-android'
     quicksyImplementation 'io.michaelrocks:libphonenumber-android:8.11.1'
-    implementation fileTree(include: ['libwebrtc-m79.aar'], dir: 'libs')
+    implementation fileTree(include: ['libwebrtc-m81.aar'], dir: 'libs')
 }
 
 ext {
