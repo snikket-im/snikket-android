@@ -4,6 +4,7 @@ import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
 
 import eu.siacs.conversations.entities.Account;
+import eu.siacs.conversations.entities.Contact;
 import eu.siacs.conversations.entities.Message;
 import eu.siacs.conversations.services.XmppConnectionService;
 import eu.siacs.conversations.xmpp.jingle.stanzas.JinglePacket;
@@ -66,6 +67,10 @@ public abstract class AbstractJingleConnection {
                     message.getCounterpart(),
                     JingleConnectionManager.nextRandomId()
             );
+        }
+
+        public Contact getContact() {
+            return account.getRoster().getContact(with);
         }
 
         @Override

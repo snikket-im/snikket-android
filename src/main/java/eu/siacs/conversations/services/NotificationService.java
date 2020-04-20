@@ -351,6 +351,10 @@ public class NotificationService {
             builder.setSmallIcon(R.drawable.ic_call_white_24dp);
             builder.setContentTitle(mXmppConnectionService.getString(R.string.rtp_state_incoming_call));
         }
+        builder.setLargeIcon(mXmppConnectionService.getAvatarService().get(
+                id.getContact(),
+                AvatarService.getSystemUiAvatarSize(mXmppConnectionService))
+        );
         builder.setContentText(id.account.getRoster().getContact(id.with).getDisplayName());
         builder.setVisibility(NotificationCompat.VISIBILITY_PUBLIC);
         builder.setPriority(NotificationCompat.PRIORITY_HIGH);
