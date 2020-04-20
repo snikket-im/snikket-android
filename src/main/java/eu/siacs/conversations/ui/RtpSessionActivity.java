@@ -37,6 +37,7 @@ import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.entities.Contact;
 import eu.siacs.conversations.services.AppRTCAudioManager;
 import eu.siacs.conversations.services.XmppConnectionService;
+import eu.siacs.conversations.ui.util.AvatarWorkerTask;
 import eu.siacs.conversations.utils.PermissionUtils;
 import eu.siacs.conversations.xmpp.jingle.AbstractJingleConnection;
 import eu.siacs.conversations.xmpp.jingle.JingleRtpConnection;
@@ -248,6 +249,7 @@ public class RtpSessionActivity extends XmppActivity implements XmppConnectionSe
                 RtpEndUserState state = RtpEndUserState.valueOf(extraLastState);
                 updateButtonConfiguration(state);
                 updateStateDisplay(state);
+                updateProfilePicture(state);
             }
             binding.with.setText(account.getRoster().getContact(with).getDisplayName());
         }
@@ -361,6 +363,7 @@ public class RtpSessionActivity extends XmppActivity implements XmppConnectionSe
         updateVideoViews(currentState);
         updateStateDisplay(currentState);
         updateButtonConfiguration(currentState);
+        updateProfilePicture(currentState);
     }
 
     private void reInitializeActivityWithRunningRapSession(final Account account, Jid with, String sessionId) {
@@ -424,6 +427,20 @@ public class RtpSessionActivity extends XmppActivity implements XmppConnectionSe
                 throw new IllegalStateException("Activity should have called finishAndReleaseWakeLock();");
             default:
                 throw new IllegalStateException(String.format("State %s has not been handled in UI", state));
+        }
+    }
+
+    private void updateProfilePicture(final RtpEndUserState state) {
+        if (state == RtpEndUserState.INCOMING_CALL || state == RtpEndUserState.ACCEPTING_CALL) {
+            final boolean show = getResources().getBoolean(R.bool.show_avatar_incoming_call);
+            if (show) {
+                binding.contactPhoto.setVisibility(View.VISIBLE);
+                AvatarWorkerTask.loadAvatar(getWith(), binding.contactPhoto, R.dimen.publish_avatar_size);
+            } else {
+                binding.contactPhoto.setVisibility(View.GONE);
+            }
+        } else {
+            binding.contactPhoto.setVisibility(View.GONE);
         }
     }
 
@@ -720,6 +737,7 @@ public class RtpSessionActivity extends XmppActivity implements XmppConnectionSe
                 updateStateDisplay(state);
                 updateButtonConfiguration(state);
                 updateVideoViews(state);
+                updateProfilePicture(state);
             });
         } else {
             Log.d(Config.LOGTAG, "received update for other rtp session");
@@ -762,6 +780,7 @@ public class RtpSessionActivity extends XmppActivity implements XmppConnectionSe
             runOnUiThread(() -> {
                 updateStateDisplay(state);
                 updateButtonConfiguration(state);
+                updateProfilePicture(state);
             });
             resetIntent(account, with, state, actionToMedia(currentIntent.getAction()));
         }

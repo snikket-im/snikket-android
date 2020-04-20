@@ -62,6 +62,22 @@
 
         </android.support.design.widget.AppBarLayout>
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/button_row"
+            android:layout_below="@id/app_bar_layout"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <com.makeramen.roundedimageview.RoundedImageView
+                android:id="@+id/contact_photo"
+                android:layout_width="@dimen/publish_avatar_size"
+                android:layout_height="@dimen/publish_avatar_size"
+                app:riv_corner_radius="@dimen/incoming_call_radius" />
+
+        </LinearLayout>
+
 
         <org.webrtc.SurfaceViewRenderer
             android:id="@+id/local_video"
@@ -93,13 +109,14 @@
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
             android:layout_alignParentBottom="true"
-            android:alpha="0.7"
             android:layout_margin="8dp"
+            android:alpha="0.7"
             android:src="@drawable/ic_mic_off_black_24dp"
             android:tint="@color/white"
             android:visibility="gone" />
 
         <RelativeLayout
+            android:id="@+id/button_row"
             android:layout_width="288dp"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
