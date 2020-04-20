@@ -1,5 +1,10 @@
 # Changelog
 
+### Version 2.8.0
+
+* Audio/Video calls (Requires server support in form of STUN and TURN servers discoverable via XEP-0215)
+
+
 ### Version 2.7.1
 
 * Fix avatar selection on some Android 10 devices
