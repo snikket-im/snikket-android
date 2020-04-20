@@ -943,7 +943,7 @@ public class FileBackend {
             final Bitmap rendered = renderPdfDocument(fileDescriptor, size, true);
             drawOverlay(rendered, paintOverlayBlackPdf(rendered) ? R.drawable.open_pdf_black : R.drawable.open_pdf_white, 0.75f);
             return rendered;
-        } catch (IOException e) {
+        } catch (final IOException | SecurityException e) {
             Log.d(Config.LOGTAG, "unable to render PDF document preview", e);
             final Bitmap placeholder = Bitmap.createBitmap(size, size, Bitmap.Config.ARGB_8888);
             placeholder.eraseColor(0xff000000);
@@ -1357,7 +1357,7 @@ public class FileBackend {
             page.close();
             pdfRenderer.close();
             return scalePdfDimensions(new Dimensions(height, width));
-        } catch (IOException e) {
+        } catch (IOException | SecurityException e) {
             Log.d(Config.LOGTAG, "unable to get dimensions for pdf document", e);
             return new Dimensions(0, 0);
         }
