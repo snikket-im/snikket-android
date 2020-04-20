@@ -759,7 +759,7 @@ sau chiar pierderea mesajelor.\nÎn continuare veți fi rugați să dezactivați
   <string name="messages_channel_name">Mesaje</string>
   <string name="silent_messages_channel_name">Mesaje silențioase</string>
   <string name="silent_messages_channel_description">Acest grup de notificări este folosit pentru a arăta notificări care nu emit sunete. De exemplu atunci când sunteți activi pe un alt dispozitiv (Perioada de grație).</string>
-  <string name="pref_more_notification_settings">Setări notificări</string>
+  <string name="pref_message_notification_settings">Setări notificări</string>
   <string name="pref_more_notification_settings_summary">Importanță, sunete, vibrații</string>
   <string name="video_compression_channel_name">Compresie video</string>
   <string name="view_media">Vizualizare fișiere media</string>

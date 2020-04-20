@@ -749,7 +749,7 @@
   <string name="messages_channel_name">Nachrichten</string>
   <string name="silent_messages_channel_name">Lautlose Nachrichten</string>
   <string name="silent_messages_channel_description">Diese Benachrichtigungsart wird verwendet, um Benachrichtigungen anzuzeigen, die keinen Ton auslösen sollen. Zum Beispiel, wenn du auf einem anderen Gerät aktiv bist (Schonfrist).</string>
-  <string name="pref_more_notification_settings">Benachrichtigungseinstellungen</string>
+  <string name="pref_message_notification_settings">Benachrichtigungseinstellungen</string>
   <string name="pref_more_notification_settings_summary">Wichtigkeit, Klang, Vibrationen</string>
   <string name="video_compression_channel_name">Video komprimieren</string>
   <string name="view_media">Medien anzeigen</string>

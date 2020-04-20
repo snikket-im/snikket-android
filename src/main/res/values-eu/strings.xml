@@ -741,7 +741,7 @@
   <string name="messages_channel_name">Mezuak</string>
   <string name="silent_messages_channel_name">Mezu isilak</string>
   <string name="silent_messages_channel_description">Jakinarazpen talde hau inolako soinurik egin beharko ez luketen jakinarazpenak erakusteko erabiltze da. Adibidez beste gailu batean aktibo zaudenean (grazia epea).</string>
-  <string name="pref_more_notification_settings">Jakinarazpenen ezarpenak</string>
+  <string name="pref_message_notification_settings">Jakinarazpenen ezarpenak</string>
   <string name="pref_more_notification_settings_summary">Garrantzia, soinua, dardara</string>
   <string name="video_compression_channel_name">Bideoen konprimatzea</string>
   <string name="view_media">Ikusi multimedia</string>

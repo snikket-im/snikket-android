@@ -756,7 +756,7 @@
   <string name="messages_channel_name">Повідомлення</string>
   <string name="silent_messages_channel_name">Тихі повідомлення</string>
   <string name="silent_messages_channel_description">Ця група сповіщень показує сповіщення, які не повинні супроводжуватися звуком. Наприклад, у разі активності на іншому пристрої (період очікування).</string>
-  <string name="pref_more_notification_settings">Налаштування сповіщень</string>
+  <string name="pref_message_notification_settings">Налаштування сповіщень</string>
   <string name="pref_more_notification_settings_summary">Важливість, звук, вібрація</string>
   <string name="video_compression_channel_name">Стиснення відео</string>
   <string name="view_media">Перегляд медіа</string>

@@ -749,7 +749,7 @@
   <string name="messages_channel_name">Mensajes</string>
   <string name="silent_messages_channel_name">Mensajes sin sonido</string>
   <string name="silent_messages_channel_description">Este grupo de notificaciones se usa para mostrar notificaciones que no deberían emitir ningún sonido. Por ejemplo, cuando estás activo en otro dispositivo (periodo de gracia).</string>
-  <string name="pref_more_notification_settings">Ajustes de Notificación</string>
+  <string name="pref_message_notification_settings">Ajustes de Notificación</string>
   <string name="pref_more_notification_settings_summary">Importancia, Sonido, Vibración</string>
   <string name="video_compression_channel_name">Compresión de video</string>
   <string name="view_media">Ver galería</string>

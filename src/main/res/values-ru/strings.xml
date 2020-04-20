@@ -702,7 +702,7 @@
   <string name="create_dialog_group_chat_name">Название конференции</string>
   <string name="conference_destroyed">Эта конференция была уничтожена</string>
   <string name="error_channel_name">Проблемы с подключением</string>
-  <string name="pref_more_notification_settings">Настройки уведомлений</string>
+  <string name="pref_message_notification_settings">Настройки уведомлений</string>
   <string name="video_compression_channel_name">Сжатие видео</string>
   <string name="view_media">Просмотр медиа</string>
   <string name="group_chat_members">Участники</string>

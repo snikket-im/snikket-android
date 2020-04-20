@@ -620,6 +620,6 @@
   <string name="notification_group_messages">Поруке</string>
   <string name="messages_channel_name">Поруке</string>
   <string name="silent_messages_channel_name">Тихе поруке</string>
-  <string name="pref_more_notification_settings">Поставке обавештавања</string>
+  <string name="pref_message_notification_settings">Поставке обавештавања</string>
   <string name="video_compression_channel_name">Видео компресија</string>
 </resources>

@@ -749,7 +749,7 @@
   <string name="messages_channel_name">Mensagens</string>
   <string name="silent_messages_channel_name">Silenciar mensagens</string>
   <string name="silent_messages_channel_description">Essa categoria de notificação é utilizada para exibir notificações que não deveriam gerar nenhum som. Por exemplo, quando estiver ativo em outro dispositivo (Período de Espera).</string>
-  <string name="pref_more_notification_settings">Configurações de notificações</string>
+  <string name="pref_message_notification_settings">Configurações de notificações</string>
   <string name="pref_more_notification_settings_summary">Importância, som, vibração.</string>
   <string name="video_compression_channel_name">Compressão de vídeo</string>
   <string name="view_media">Ver mídia</string>

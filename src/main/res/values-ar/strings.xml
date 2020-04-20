@@ -652,7 +652,7 @@
   <string name="error_channel_name">مشاكل إتّصال</string>
   <string name="notification_group_messages">رسائل</string>
   <string name="messages_channel_name">رسائل</string>
-  <string name="pref_more_notification_settings">إعدادات الإشعار</string>
+  <string name="pref_message_notification_settings">إعدادات الإشعار</string>
   <string name="pref_more_notification_settings_summary">الأهمية ، الصوت ، الإهتزاز</string>
   <string name="video_compression_channel_name">ضغط الفيديو</string>
   <string name="view_media">اعرض الوسائط</string>

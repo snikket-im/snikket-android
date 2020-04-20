@@ -651,7 +651,7 @@
     <string name="corresponding_conversations_closed">Corresponding conversations closed.</string>
     <string name="contact_blocked_past_tense">Contact blocked.</string>
     <string name="pref_notifications_from_strangers">Notifications from strangers</string>
-    <string name="pref_notifications_from_strangers_summary">Notify for messages received from strangers.</string>
+    <string name="pref_notifications_from_strangers_summary">Notify for messages and calls received from strangers.</string>
     <string name="received_message_from_stranger">Received message from stranger</string>
     <string name="block_stranger">Block stranger</string>
     <string name="block_entire_domain">Block entire domain</string>
@@ -756,7 +756,8 @@
     <string name="ongoing_calls_channel_name">Ongoing calls</string>
     <string name="silent_messages_channel_name">Silent messages</string>
     <string name="silent_messages_channel_description">This notification group is used to display notifications that should not trigger any sound. For example when being active on another device (Grace Period).</string>
-    <string name="pref_more_notification_settings">Notification Settings</string>
+    <string name="pref_message_notification_settings">Message notification settings</string>
+    <string name="pref_incoming_call_notification_settings">Incoming calls notification settings</string>
     <string name="pref_more_notification_settings_summary">Importance, Sound, Vibrate</string>
     <string name="video_compression_channel_name">Video compression</string>
     <string name="view_media">View media</string>

@@ -767,7 +767,7 @@ Administrator twojego serwera będzie mógł czytać twoje wiadomości, ale moż
   <string name="messages_channel_name">Wiadomości</string>
   <string name="silent_messages_channel_name">Ciche wiadomości</string>
   <string name="silent_messages_channel_description">Ta kategoria powiadomień jest używana aby wyświetlać powiadomienia które nie powodują żadnych dźwięków. Na przykład w ciągu aktywności na innym urządzeniu (okres karencji).</string>
-  <string name="pref_more_notification_settings">Ustawienia powiadomień</string>
+  <string name="pref_message_notification_settings">Ustawienia powiadomień</string>
   <string name="pref_more_notification_settings_summary">Ważność, Dźwięk, Wibracja</string>
   <string name="video_compression_channel_name">Kompresja wideo</string>
   <string name="view_media">Pokaż media</string>
