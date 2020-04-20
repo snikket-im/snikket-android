@@ -224,7 +224,7 @@ public class NotificationService {
                 && (!conversation.isWithStranger() || notificationsFromStrangers());
     }
 
-    private boolean notificationsFromStrangers() {
+    public boolean notificationsFromStrangers() {
         return mXmppConnectionService.getBooleanPreference("notifications_from_strangers", R.bool.notifications_from_strangers);
     }
 

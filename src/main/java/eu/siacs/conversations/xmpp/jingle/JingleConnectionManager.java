@@ -27,6 +27,7 @@ import java.util.concurrent.TimeUnit;
 
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.entities.Account;
+import eu.siacs.conversations.entities.Contact;
 import eu.siacs.conversations.entities.Conversation;
 import eu.siacs.conversations.entities.Conversational;
 import eu.siacs.conversations.entities.Message;
@@ -87,8 +88,9 @@ public class JingleConnectionManager extends AbstractConnectionManager {
                 connection = new JingleFileTransferConnection(this, id, from);
             } else if (Namespace.JINGLE_APPS_RTP.equals(descriptionNamespace) && !usesTor(account)) {
                 final boolean sessionEnded = this.endedSessions.asMap().containsKey(PersistableSessionId.of(id));
-                if (isBusy() || sessionEnded) {
-                    Log.d(Config.LOGTAG, id.account.getJid().asBareJid() + ": rejected session with " + id.with + " because busy. sessionEnded=" + sessionEnded);
+                final boolean stranger = isWithStrangerAndStrangerNotificationsAreOff(account, id.with);
+                if (isBusy() || sessionEnded || stranger) {
+                    Log.d(Config.LOGTAG, id.account.getJid().asBareJid() + ": rejected session with " + id.with + " because busy. sessionEnded=" + sessionEnded+", stranger="+stranger);
                     mXmppConnectionService.sendIqPacket(account, packet.generateResponse(IqPacket.TYPE.RESULT), null);
                     final JinglePacket sessionTermination = new JinglePacket(JinglePacket.Action.SESSION_TERMINATE, id.sessionId);
                     sessionTermination.setTo(id.with);
@@ -122,6 +124,15 @@ public class JingleConnectionManager extends AbstractConnectionManager {
         synchronized (this.rtpSessionProposals) {
             return this.rtpSessionProposals.containsValue(DeviceDiscoveryState.DISCOVERED) || this.rtpSessionProposals.containsValue(DeviceDiscoveryState.SEARCHING);
         }
+    }
+
+    private boolean isWithStrangerAndStrangerNotificationsAreOff(final Account account, Jid with) {
+        final boolean notifyForStrangers = mXmppConnectionService.getNotificationService().notificationsFromStrangers();
+        if (notifyForStrangers) {
+            return false;
+        }
+        final Contact contact = account.getRoster().getContact(with);
+        return !contact.showInContactList();
     }
 
     public void respondWithJingleError(final Account account, final IqPacket original, String jingleCondition, String condition, String conditionType) {
@@ -205,8 +216,13 @@ public class JingleConnectionManager extends AbstractConnectionManager {
                     Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": encountered unknown media in session proposal. " + propose);
                     return;
                 }
-                if (isBusy()) {
+                final boolean stranger = isWithStrangerAndStrangerNotificationsAreOff(account, id.with);
+                if (isBusy() || stranger) {
                     writeLogMissedIncoming(account, id.with.asBareJid(), id.sessionId, serverMsgId, timestamp);
+                    if (stranger) {
+                        Log.d(Config.LOGTAG,id.account.getJid().asBareJid()+": ignoring call proposal from stranger "+id.with);
+                        return;
+                    }
                     final int activeDevices = account.countPresences();
                     Log.d(Config.LOGTAG, "active devices: " + activeDevices);
                     if (activeDevices == 0) {
