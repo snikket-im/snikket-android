@@ -524,7 +524,7 @@
   <string name="security_error_invalid_file_access">安全错误：文件访问权限无效</string>
   <string name="no_application_to_share_uri">未找到可以分享此链接的应用</string>
   <string name="share_uri_with">分享链接……</string>
-  <string name="welcome_text_quicksy">&lt;![CDATA [Quicksy是从受欢迎的XMPP客户端对话中分离出来的，具有自动联系人发现功能。&lt;br&gt;&lt;br&gt;您注册了电话号码，Quicksy就会根据您的通讯录中的电话号码自动为您建议可能的联系人。&lt;br&gt;&lt;br&gt; 签署即表示您同意我们的&lt;a href="https://quicksy.im/#privacy"&gt;隐私政策&lt;/a&gt;。]]&gt;</string>
+  <string name="welcome_text_quicksy"><![CDATA[Quicksy是从受欢迎的XMPP客户端对话中分离出来的，具有自动联系人发现功能<br><br>您注册了电话号码，Quicksy就会根据您的通讯录中的电话号码自动为您建议可能的联系人<br><br>签署即表示您同意我们的<a href="https://quicksy.im/#privacy">隐私政策</a>。]]></string>
   <string name="agree_and_continue">同意 &amp; 继续</string>
   <string name="magic_create_text">此向导将为您在conversations.im¹上创建一个账户。\n您的联系人可以通过您的XMPP完整地址与您聊天。</string>
   <string name="your_full_jid_will_be">您的XMPP完整地址将是：%s</string>
@@ -847,7 +847,7 @@
   <string name="discover_channels">发现群聊</string>
   <string name="search_channels">搜索群聊</string>
   <string name="channel_discovery_opt_in_title">可能侵犯隐私！</string>
-  <string name="channel_discover_opt_in_message">&lt;![CDATA [频道发现使用了名为&lt;a href="https://search.jabber.network"&gt;search.jabber.network&lt;/a&gt;。&lt;br&gt;&lt;br&gt;的第三方服务。使用此功能会将您的IP地址和搜索字词传输到该服务。 有关更多信息，请参见其&lt;a href="https://search.jabber.network/privacy"&gt;Privacy Policy&lt;/a&gt;。]]&gt;</string>
+  <string name="channel_discover_opt_in_message"><![CDATA[频道发现使用了名为<a href="https://search.jabber.network">search.jabber.network</a>。<br><br>的第三方服务。使用此功能会将您的IP地址和搜索字词传输到该服务。 有关更多信息，请参见其<a href="https://search.jabber.network/privacy">Privacy Policy</a>。]]></string>
   <string name="i_already_have_an_account">我已有账户</string>
   <string name="add_existing_account">添加已有账户</string>
   <string name="register_new_account">注册新账户</string>
