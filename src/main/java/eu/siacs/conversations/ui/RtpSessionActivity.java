@@ -95,14 +95,19 @@ public class RtpSessionActivity extends XmppActivity implements XmppConnectionSe
 
     private void endCall() {
         if (this.rtpConnectionReference == null) {
-            final Intent intent = getIntent();
-            final Account account = extractAccount(intent);
-            final Jid with = Jid.of(intent.getStringExtra(EXTRA_WITH));
-            xmppConnectionService.getJingleConnectionManager().retractSessionProposal(account, with.asBareJid());
+            retractSessionProposal();
             finish();
         } else {
             requireRtpConnection().endCall();
         }
+    }
+
+    private void retractSessionProposal() {
+        final Intent intent = getIntent();
+        final Account account = extractAccount(intent);
+        final Jid with = Jid.of(intent.getStringExtra(EXTRA_WITH));
+        resetIntent(account, with, RtpEndUserState.RETRACTED, actionToMedia(intent.getAction()));
+        xmppConnectionService.getJingleConnectionManager().retractSessionProposal(account, with.asBareJid());
     }
 
     private void rejectCall(View view) {
@@ -290,6 +295,8 @@ public class RtpSessionActivity extends XmppActivity implements XmppConnectionSe
         final JingleRtpConnection jingleRtpConnection = weakReference == null ? null : weakReference.get();
         if (jingleRtpConnection != null) {
             releaseVideoTracks(jingleRtpConnection);
+        } else if (!isChangingConfigurations()) {
+            retractSessionProposal();
         }
         releaseProximityWakeLock();
         super.onStop();
@@ -420,6 +427,9 @@ public class RtpSessionActivity extends XmppActivity implements XmppConnectionSe
             case CONNECTIVITY_ERROR:
                 setTitle(R.string.rtp_state_connectivity_error);
                 break;
+            case RETRACTED:
+                setTitle(R.string.rtp_state_retracted);
+                break;
             case APPLICATION_ERROR:
                 setTitle(R.string.rtp_state_application_failure);
                 break;
@@ -468,7 +478,7 @@ public class RtpSessionActivity extends XmppActivity implements XmppConnectionSe
             this.binding.endCall.setImageResource(R.drawable.ic_clear_white_48dp);
             this.binding.endCall.setVisibility(View.VISIBLE);
             this.binding.acceptCall.setVisibility(View.INVISIBLE);
-        } else if (state == RtpEndUserState.CONNECTIVITY_ERROR || state == RtpEndUserState.APPLICATION_ERROR) {
+        } else if (asList(RtpEndUserState.CONNECTIVITY_ERROR, RtpEndUserState.APPLICATION_ERROR, RtpEndUserState.RETRACTED).contains(state)) {
             this.binding.rejectCall.setOnClickListener(this::exit);
             this.binding.rejectCall.setImageResource(R.drawable.ic_clear_white_48dp);
             this.binding.rejectCall.setVisibility(View.VISIBLE);

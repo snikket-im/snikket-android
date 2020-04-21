@@ -402,11 +402,11 @@ public class JingleConnectionManager extends AbstractConnectionManager {
                 }
             }
             if (matchingProposal != null) {
+                Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": retracting rtp session proposal with " + with);
                 this.rtpSessionProposals.remove(matchingProposal);
                 final MessagePacket messagePacket = mXmppConnectionService.getMessageGenerator().sessionRetract(matchingProposal);
                 writeLogMissedOutgoing(account, matchingProposal.with, matchingProposal.sessionId, null, System.currentTimeMillis());
                 mXmppConnectionService.sendMessagePacket(account, messagePacket);
-
             }
         }
     }
