@@ -116,6 +116,10 @@
   <string name="pref_vibrate_summary">Vibra ao receber uma nova mensagem.</string>
   <string name="pref_led">Notificação via LED</string>
   <string name="pref_led_summary">Pisca a luz de notificação ao receber uma nova mensagem.</string>
+  <string name="pref_ringtone">Toque</string>
+  <string name="pref_notification_sound">Som de notificação</string>
+  <string name="pref_notification_sound_summary">Som de notificação para novas mensagens</string>
+  <string name="pref_call_ringtone_summary">Toque ao receber chamadas</string>
   <string name="pref_notification_grace_period">Período de espera</string>
   <string name="pref_notification_grace_period_summary">Espaço de tempo em que as notificações serão silenciadas, após detectar atividade em algum dos seus outros dispositivos.</string>
   <string name="pref_advanced_options">Avançado</string>
@@ -188,6 +192,7 @@
   <string name="server_info_blocking">XEP-0191: Comando de bloqueio</string>
   <string name="server_info_roster_version">XEP-0237: Versionamento da lista de contatos</string>
   <string name="server_info_stream_management">XEP-0198: Gerenciamento de fluxo</string>
+  <string name="server_info_external_service_discovery">XEP-0215: Descoberta de Serviço Externo</string>
   <string name="server_info_pep">XEP-0163: PEP (Avatares / OMEMO)</string>
   <string name="server_info_http_upload">XEP-0363: Envio de arquivos via HTTP</string>
   <string name="server_info_push">XEP-0357: Push</string>
@@ -645,6 +650,7 @@
   <string name="corresponding_conversations_closed">As conversas correspondentes foram encerradas.</string>
   <string name="contact_blocked_past_tense">O contato foi bloqueado.</string>
   <string name="pref_notifications_from_strangers">Notificações de desconhecidos</string>
+  <string name="pref_notifications_from_strangers_summary">Notificar ao receber mensagens e chamadas de desconhecidos.</string>
   <string name="received_message_from_stranger">Foi recebida uma mensagem de um desconhecido</string>
   <string name="block_stranger">Bloquear os desconhecidos</string>
   <string name="block_entire_domain">Bloquear o domínio inteiro</string>
@@ -743,6 +749,7 @@
   <string name="error_channel_name">Problemas de conectividade</string>
   <string name="error_channel_description">Essa categoria de notificação é utilizada para exibir uma notificação caso exista algum problema de conectividade com uma conta.</string>
   <string name="notification_group_messages">Mensagens</string>
+  <string name="notification_group_calls">Chamadas</string>
   <string name="messages_channel_name">Mensagens</string>
   <string name="silent_messages_channel_name">Silenciar mensagens</string>
   <string name="silent_messages_channel_description">Essa categoria de notificação é utilizada para exibir notificações que não deveriam gerar nenhum som. Por exemplo, quando estiver ativo em outro dispositivo (Período de Espera).</string>
@@ -878,6 +885,15 @@
   <string name="backup">Backup</string>
   <string name="category_about">Sobre</string>
   <string name="please_enable_an_account">Por favor, habilite uma conta</string>
+  <string name="rtp_state_connecting">Conectando</string>
+  <string name="rtp_state_connected">Conectado</string>
+  <string name="rtp_state_finding_device">Procurando dispositivos</string>
+  <string name="rtp_state_ringing">Tocando</string>
+  <string name="rtp_state_declined_or_busy">Ocupado</string>
+  <string name="missed_call">Chamada perdida</string>
+  <string name="video_call">Chamada de vídeo</string>
+  <string name="microphone_unavailable">Seu microfone não está disponível</string>
+  <string name="only_one_call_at_a_time">Você só pode ter uma chamada por vez</string>
   <plurals name="view_users">
     <item quantity="one">Ver %1$d participante</item>
     <item quantity="other">Ver %1$d participantes</item>
