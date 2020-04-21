@@ -72,6 +72,9 @@ public class NotificationService {
 
     private static final int LED_COLOR = 0xff00ff00;
 
+    private static final int CALL_DAT = 120;
+    private static final long[] CALL_PATTERN = {0, 3 * CALL_DAT, CALL_DAT, CALL_DAT, 3 * CALL_DAT, CALL_DAT, CALL_DAT};
+
     private static final String CONVERSATIONS_GROUP = "eu.siacs.conversations";
     private static final int NOTIFICATION_ID_MULTIPLIER = 1024 * 1024;
     static final int FOREGROUND_NOTIFICATION_ID = NOTIFICATION_ID_MULTIPLIER * 4;
@@ -167,6 +170,9 @@ public class NotificationService {
         incomingCallsChannel.setLightColor(LED_COLOR);
         incomingCallsChannel.enableLights(true);
         incomingCallsChannel.setGroup("calls");
+        incomingCallsChannel.setBypassDnd(true);
+        incomingCallsChannel.enableVibration(true);
+        incomingCallsChannel.setVibrationPattern(CALL_PATTERN);
         notificationManager.createNotificationChannel(incomingCallsChannel);
 
         final NotificationChannel ongoingCallsChannel = new NotificationChannel("ongoing_calls",
@@ -351,10 +357,15 @@ public class NotificationService {
             builder.setSmallIcon(R.drawable.ic_call_white_24dp);
             builder.setContentTitle(mXmppConnectionService.getString(R.string.rtp_state_incoming_call));
         }
+        final Contact contact = id.getContact();
         builder.setLargeIcon(mXmppConnectionService.getAvatarService().get(
-                id.getContact(),
+                contact,
                 AvatarService.getSystemUiAvatarSize(mXmppConnectionService))
         );
+        final Uri systemAccount = contact.getSystemAccount();
+        if (systemAccount != null) {
+            builder.addPerson(systemAccount.toString());
+        }
         builder.setContentText(id.account.getRoster().getContact(id.with).getDisplayName());
         builder.setVisibility(NotificationCompat.VISIBILITY_PUBLIC);
         builder.setPriority(NotificationCompat.PRIORITY_HIGH);
@@ -579,10 +590,8 @@ public class NotificationService {
         final SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(mXmppConnectionService);
         final Resources resources = mXmppConnectionService.getResources();
         final String ringtone = preferences.getString("call_ringtone", resources.getString(R.string.incoming_call_ringtone));
-        final int dat = 70;
-        final long[] pattern = {0, 3 * dat, dat, dat, 3 * dat, dat, dat};
-        mBuilder.setVibrate(pattern);
-        Uri uri = Uri.parse(ringtone);
+        mBuilder.setVibrate(CALL_PATTERN);
+        final Uri uri = Uri.parse(ringtone);
         try {
             mBuilder.setSound(fixRingtoneUri(uri));
         } catch (SecurityException e) {
