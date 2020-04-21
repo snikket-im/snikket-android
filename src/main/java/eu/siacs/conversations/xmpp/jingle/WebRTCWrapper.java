@@ -254,7 +254,9 @@ public class WebRTCWrapper {
                 || this.eglBase != null
                 || this.localVideoTrack != null
                 || this.remoteVideoTrack != null) {
-            throw new IllegalStateException("WebRTCWrapper hasn't been closed properly");
+            final IllegalStateException e = new IllegalStateException("WebRTCWrapper hasn't been closed properly");
+            Log.e(Config.LOGTAG, "verifyClosed() failed. Going to throw", e);
+            throw e;
         }
     }
 

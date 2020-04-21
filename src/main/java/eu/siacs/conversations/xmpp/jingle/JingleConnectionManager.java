@@ -90,7 +90,7 @@ public class JingleConnectionManager extends AbstractConnectionManager {
                 final boolean sessionEnded = this.endedSessions.asMap().containsKey(PersistableSessionId.of(id));
                 final boolean stranger = isWithStrangerAndStrangerNotificationsAreOff(account, id.with);
                 if (isBusy() || sessionEnded || stranger) {
-                    Log.d(Config.LOGTAG, id.account.getJid().asBareJid() + ": rejected session with " + id.with + " because busy. sessionEnded=" + sessionEnded+", stranger="+stranger);
+                    Log.d(Config.LOGTAG, id.account.getJid().asBareJid() + ": rejected session with " + id.with + " because busy. sessionEnded=" + sessionEnded + ", stranger=" + stranger);
                     mXmppConnectionService.sendIqPacket(account, packet.generateResponse(IqPacket.TYPE.RESULT), null);
                     final JinglePacket sessionTermination = new JinglePacket(JinglePacket.Action.SESSION_TERMINATE, id.sessionId);
                     sessionTermination.setTo(id.with);
@@ -220,7 +220,7 @@ public class JingleConnectionManager extends AbstractConnectionManager {
                 if (isBusy() || stranger) {
                     writeLogMissedIncoming(account, id.with.asBareJid(), id.sessionId, serverMsgId, timestamp);
                     if (stranger) {
-                        Log.d(Config.LOGTAG,id.account.getJid().asBareJid()+": ignoring call proposal from stranger "+id.with);
+                        Log.d(Config.LOGTAG, id.account.getJid().asBareJid() + ": ignoring call proposal from stranger " + id.with);
                         return;
                     }
                     final int activeDevices = account.countPresences();
@@ -545,7 +545,9 @@ public class JingleConnectionManager extends AbstractConnectionManager {
         if (connections.containsValue(connection)) {
             return;
         }
-        throw new IllegalStateException("JingleConnection has not been registered with connection manager");
+        final IllegalStateException e = new IllegalStateException("JingleConnection has not been registered with connection manager");
+        Log.e(Config.LOGTAG, "ensureConnectionIsRegistered() failed. Going to throw", e);
+        throw e;
     }
 
     public void endSession(AbstractJingleConnection.Id id, final AbstractJingleConnection.State state) {
