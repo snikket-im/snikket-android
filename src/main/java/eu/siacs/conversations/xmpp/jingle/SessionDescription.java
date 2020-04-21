@@ -14,6 +14,7 @@ import java.util.Locale;
 import java.util.Map;
 
 import eu.siacs.conversations.Config;
+import eu.siacs.conversations.xml.Namespace;
 import eu.siacs.conversations.xmpp.jingle.stanzas.Group;
 import eu.siacs.conversations.xmpp.jingle.stanzas.IceUdpTransportInfo;
 import eu.siacs.conversations.xmpp.jingle.stanzas.RtpDescription;
@@ -51,11 +52,6 @@ public class SessionDescription {
             }
             s.append(LINE_DIVIDER);
         }
-    }
-
-    public static SessionDescription parse(final Map<String, RtpContentMap.DescriptionTransport> contents) {
-        final SessionDescriptionBuilder sessionDescriptionBuilder = new SessionDescriptionBuilder();
-        return sessionDescriptionBuilder.createSessionDescription();
     }
 
     public static SessionDescription parse(final String input) {
@@ -251,7 +247,10 @@ public class SessionDescription {
             //random additional attributes
             mediaAttributes.put("rtcp", "9 IN IP4 0.0.0.0");
             mediaAttributes.put("sendrecv", "");
-            mediaAttributes.put("rtcp-mux", "");
+
+            if (description.hasChild("rtcp-mux", Namespace.JINGLE_APPS_RTP)) {
+                mediaAttributes.put("rtcp-mux", "");
+            }
 
             final MediaBuilder mediaBuilder = new MediaBuilder();
             mediaBuilder.setMedia(description.getMedia().toString().toLowerCase(Locale.ROOT));
