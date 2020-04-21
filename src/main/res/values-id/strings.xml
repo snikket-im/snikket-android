@@ -90,8 +90,6 @@
   <string name="pref_vibrate">Getar</string>
   <string name="pref_vibrate_summary">Aktifkan getar ketika pesan masuk</string>
   <string name="pref_led">Notifikasi LED</string>
-  <string name="pref_sound">Nada dering</string>
-  <string name="pref_sound_summary">Deringkan ketika pesan masuk</string>
   <string name="pref_advanced_options">Lanjutan</string>
   <string name="pref_never_send_crash">Jangan kirim laporan kerusakan</string>
   <string name="pref_never_send_crash_summary">Dengan mengirimkan kesalahan Anda membantu pengembangan Aplikasi Conversations</string>

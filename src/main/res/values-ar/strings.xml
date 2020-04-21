@@ -111,8 +111,6 @@
   <string name="pref_vibrate">إعداد الإهتزاز</string>
   <string name="pref_vibrate_summary">إهتز عند وصول رسالة جديدة</string>
   <string name="pref_led">إشعار ضوئي</string>
-  <string name="pref_sound">التنبيه الصوتي</string>
-  <string name="pref_sound_summary">أصدر صوتاً حال ما تصل رسالة جديدة</string>
   <string name="pref_notification_grace_period">فترة السماح</string>
   <string name="pref_advanced_options">متقدم</string>
   <string name="pref_never_send_crash">لا ترسل تقارير أخطاء</string>
@@ -584,7 +582,6 @@
   <string name="transcoding_video">ضغط الفيديو</string>
   <string name="contact_blocked_past_tense">جهة الاتصال محجوبة.</string>
   <string name="pref_notifications_from_strangers">الإشعارات من طرف غرباء</string>
-  <string name="pref_notifications_from_strangers_summary">القيام بإخطاري عندما أتلقى رسائل مِن طرف غُرباء.</string>
   <string name="received_message_from_stranger">لقد تلقيت رسالة من شخص غريب</string>
   <string name="block_stranger">حظر الغريب</string>
   <string name="block_entire_domain">حظر إسم النطاق كاملا</string>
@@ -652,7 +649,6 @@
   <string name="error_channel_name">مشاكل إتّصال</string>
   <string name="notification_group_messages">رسائل</string>
   <string name="messages_channel_name">رسائل</string>
-  <string name="pref_message_notification_settings">إعدادات الإشعار</string>
   <string name="pref_more_notification_settings_summary">الأهمية ، الصوت ، الإهتزاز</string>
   <string name="video_compression_channel_name">ضغط الفيديو</string>
   <string name="view_media">اعرض الوسائط</string>

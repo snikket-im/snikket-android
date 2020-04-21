@@ -116,8 +116,6 @@
   <string name="pref_vibrate_summary">Vibrieren bei Erhalt einer neuen Nachricht</string>
   <string name="pref_led">LED Benachrichtigung</string>
   <string name="pref_led_summary">Blinke bei Erhalt einer neuen Nachricht</string>
-  <string name="pref_sound">Benachrichtigungston</string>
-  <string name="pref_sound_summary">Benachrichtigungston wiedergeben</string>
   <string name="pref_notification_grace_period">Schonfrist</string>
   <string name="pref_notification_grace_period_summary">Die Zeitspanne, in der Benachrichtigungen nach der Erkennung von Aktivitäten auf einem deiner anderen Geräte unterdrückt werden.</string>
   <string name="pref_advanced_options">Erweitert</string>
@@ -647,7 +645,6 @@
   <string name="corresponding_conversations_closed">Zugehörige Unterhaltung beendet.</string>
   <string name="contact_blocked_past_tense">Kontakt gesperrt.</string>
   <string name="pref_notifications_from_strangers">Benachrichtigungen von Unbekannten</string>
-  <string name="pref_notifications_from_strangers_summary">Benachrichtigen bei Erhalt einer neuen Nachricht von Unbekannten.</string>
   <string name="received_message_from_stranger">Erhaltene Nachricht von einem Unbekannten</string>
   <string name="block_stranger">Unbekannten sperren</string>
   <string name="block_entire_domain">Gesamte Domain sperren</string>
@@ -749,7 +746,6 @@
   <string name="messages_channel_name">Nachrichten</string>
   <string name="silent_messages_channel_name">Lautlose Nachrichten</string>
   <string name="silent_messages_channel_description">Diese Benachrichtigungsart wird verwendet, um Benachrichtigungen anzuzeigen, die keinen Ton auslösen sollen. Zum Beispiel, wenn du auf einem anderen Gerät aktiv bist (Schonfrist).</string>
-  <string name="pref_message_notification_settings">Benachrichtigungseinstellungen</string>
   <string name="pref_more_notification_settings_summary">Wichtigkeit, Klang, Vibrationen</string>
   <string name="video_compression_channel_name">Video komprimieren</string>
   <string name="view_media">Medien anzeigen</string>
@@ -848,7 +844,7 @@
   <string name="anyone_can_invite_others">Alle können andere einladen.</string>
   <string name="jabber_ids_are_visible_to_admins">XMPP-Adressen sind für Administratoren sichtbar.</string>
   <string name="jabber_ids_are_visible_to_anyone">XMPP-Adressen sind für alle sichtbar.</string>
-  <string name="no_users_hint_channel">Dieser öffentliche Channel hat keine Teilnehmer. Lade deine Kontakte ein oder benutzt die \"Teilen\"-Schaltfläche, um die XMPP-Adresse zu verteilen.</string>
+  <string name="no_users_hint_channel">Dieser öffentliche Channel hat keine Teilnehmer. Lade deine Kontakte ein oder benutze die \"Teilen\"-Schaltfläche, um die XMPP-Adresse zu verteilen.</string>
   <string name="no_users_hint_group_chat">Dieser private Gruppenchat hat keine Teilnehmer.</string>
   <string name="manage_permission">Rechte verwalten</string>
   <string name="search_participants">Teilnehmer suchen</string>
@@ -881,6 +877,7 @@
   <string name="pref_channel_discovery">Channelsuchmethode</string>
   <string name="backup">Sicherungskopie</string>
   <string name="category_about">Über</string>
+  <string name="please_enable_an_account">Bitte aktiviere ein Konto</string>
   <plurals name="view_users">
     <item quantity="one">%1$d Teilnehmer anzeigen</item>
     <item quantity="other">%1$d Teilnehmer anzeigen</item>

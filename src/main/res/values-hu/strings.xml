@@ -116,8 +116,6 @@
   <string name="pref_vibrate_summary">Rezegés új üzenet érkezésekor</string>
   <string name="pref_led">LED értesítés</string>
   <string name="pref_led_summary">Értesítési fény villogása új üzenet érkezésekor</string>
-  <string name="pref_sound">Csengőhang</string>
-  <string name="pref_sound_summary">Hang lejátszása új üzenet érkezésekor</string>
   <string name="pref_notification_grace_period">Türelmi idő</string>
   <string name="pref_notification_grace_period_summary">Az időtartam, amíg az értesítések némítva vannak az egyéb eszközei egyikén történt tevékenység észlelése után.</string>
   <string name="pref_advanced_options">Speciális</string>
@@ -647,7 +645,6 @@
   <string name="corresponding_conversations_closed">A megfelelő beszélgetések lezárultak.</string>
   <string name="contact_blocked_past_tense">Partner tiltva.</string>
   <string name="pref_notifications_from_strangers">Értesítések idegenektől</string>
-  <string name="pref_notifications_from_strangers_summary">Értesítés az idegenektől kapott üzenetekről.</string>
   <string name="received_message_from_stranger">Üzenet érkezett egy idegentől</string>
   <string name="block_stranger">Idegen tiltása</string>
   <string name="block_entire_domain">Teljes tartomány tiltása</string>
@@ -749,7 +746,6 @@
   <string name="messages_channel_name">Üzenetek</string>
   <string name="silent_messages_channel_name">Csendes üzenetek</string>
   <string name="silent_messages_channel_description">Ezt az értesítési csoportot olyan értesítések megjelenítéséhez használják, amelyek nem aktiválhatnak hangot. Például ha aktívvá válik egy másik eszközön (türelmi idő).</string>
-  <string name="pref_message_notification_settings">Értesítési beállítások</string>
   <string name="pref_more_notification_settings_summary">Fontosság, hang, rezgés</string>
   <string name="video_compression_channel_name">Videó tömörítése</string>
   <string name="view_media">Média megtekintése</string>

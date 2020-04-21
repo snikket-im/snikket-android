@@ -116,8 +116,6 @@
   <string name="pref_vibrate_summary">Mezu berri bat heltzerakoan dardartu</string>
   <string name="pref_led">LED jakinarazpena</string>
   <string name="pref_led_summary">Mezu berri bat heltzerakoan jakinarazpenen argia keinu egin</string>
-  <string name="pref_sound">Dei-tonua</string>
-  <string name="pref_sound_summary">Mezu berri bat heltzerakoan dei-tonua jo</string>
   <string name="pref_notification_grace_period">Grazia epea</string>
   <string name="pref_advanced_options">Aurreratua</string>
   <string name="pref_never_send_crash">Gelditze txostenik ez bidali inoiz</string>
@@ -506,6 +504,7 @@
   <string name="notify_paused">Jakinarazpenak gelditu dira</string>
   <string name="pref_picture_compression">Irudiak konprimatu</string>
   <string name="always">Beti</string>
+  <string name="large_images_only">Irudi handiak soilik</string>
   <string name="battery_optimizations_enabled">Bateriaren optimizazioak gaituta</string>
   <string name="battery_optimizations_enabled_explained">Zure gailua jakinarazpen atzeratuak edota mezuen galera ekar lezaketen bateriaren optimizazio handiak egiten ari da Conversationsen.\nHoriek ezgaitzea gomendatzen da.</string>
   <string name="battery_optimizations_enabled_dialog">Zure gailua jakinarazpen atzeratuak edota mezuen galera ekar lezaketen bateriaren optimizazio handiak egiten ari da Conversationsen.\nJarraian hauek ezgaitzea eskatuko zaizu.</string>
@@ -550,6 +549,7 @@
   <string name="pref_privacy">Pribatutasuna</string>
   <string name="pref_theme_options">Gaia</string>
   <string name="pref_theme_options_summary">Kolore paleta hautatu</string>
+  <string name="pref_theme_automatic">Automatikoa</string>
   <string name="pref_theme_light">Gai argia</string>
   <string name="pref_theme_dark">Gai iluna</string>
   <string name="pref_use_green_background">Atzealde berdea</string>
@@ -639,7 +639,6 @@
   <string name="corresponding_conversations_closed">Dagokion elkarrizketa itxi egin da.</string>
   <string name="contact_blocked_past_tense">Kontaktua blokeatu da.</string>
   <string name="pref_notifications_from_strangers">Ezezagunen jakinarazpenak</string>
-  <string name="pref_notifications_from_strangers_summary">Ezezagunen mezuak jasotzerakoan jakinarazi.</string>
   <string name="received_message_from_stranger">Ezezagun baten mezu bat jaso duzu</string>
   <string name="block_stranger">Ezezaguna blokeatu</string>
   <string name="block_entire_domain">Domeinu osoa blokeatu</string>
@@ -741,7 +740,6 @@
   <string name="messages_channel_name">Mezuak</string>
   <string name="silent_messages_channel_name">Mezu isilak</string>
   <string name="silent_messages_channel_description">Jakinarazpen talde hau inolako soinurik egin beharko ez luketen jakinarazpenak erakusteko erabiltze da. Adibidez beste gailu batean aktibo zaudenean (grazia epea).</string>
-  <string name="pref_message_notification_settings">Jakinarazpenen ezarpenak</string>
   <string name="pref_more_notification_settings_summary">Garrantzia, soinua, dardara</string>
   <string name="video_compression_channel_name">Bideoen konprimatzea</string>
   <string name="view_media">Ikusi multimedia</string>
@@ -865,4 +863,15 @@
   <string name="please_enter_password">Mesedez idatzi ezazu kontu honetarako pasahitza</string>
   <string name="unable_to_perform_this_action">Ezin izan da ekintza hau burutu</string>
   <string name="open_join_dialog">Kanal publiko batean sartu…</string>
+  <string name="sharing_application_not_grant_permission">Partekatzen duen aplikazioak ez du baimenik eman fitxategi honetara sartzeko.</string>
+  <string name="jabber_network">jabber.network</string>
+  <string name="local_server">Zerbitzari lokala</string>
+  <string name="pref_channel_discovery">Kanalak aurkitzeko modua</string>
+  <string name="backup">Babeskopia</string>
+  <string name="category_about">Honi buruz</string>
+  <string name="please_enable_an_account">Mesedez kontu bat gaitu</string>
+  <plurals name="view_users">
+    <item quantity="one">Parte-hartzaile %1$d ikusi</item>
+    <item quantity="other">%1$d parte-hartzaile ikusi</item>
+  </plurals>
 </resources>

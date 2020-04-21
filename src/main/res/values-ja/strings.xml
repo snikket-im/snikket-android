@@ -112,8 +112,6 @@
   <string name="pref_vibrate_summary">新しいメッセージが届いたときに振動します</string>
   <string name="pref_led">LED 通知</string>
   <string name="pref_led_summary">新しいメッセージが届いたときに通知ライトを点滅します</string>
-  <string name="pref_sound">着信音</string>
-  <string name="pref_sound_summary">新しいメッセージが届いたときにサウンドを再生します</string>
   <string name="pref_notification_grace_period">猶予期間</string>
   <string name="pref_advanced_options">詳細</string>
   <string name="pref_never_send_crash">クラッシュレポートを送信しない</string>
@@ -589,7 +587,6 @@
   <string name="corresponding_conversations_closed">対応する会話が閉じられました。</string>
   <string name="contact_blocked_past_tense">連絡先をブロックしました</string>
   <string name="pref_notifications_from_strangers">知らない人からの通知</string>
-  <string name="pref_notifications_from_strangers_summary">知らない人から受信したメッセージを通知します。</string>
   <string name="received_message_from_stranger">知らない人からメッセージを受け取りました</string>
   <string name="block_stranger">見知らぬ人をブロック</string>
   <string name="block_entire_domain">ドメイン全体をブロック</string>

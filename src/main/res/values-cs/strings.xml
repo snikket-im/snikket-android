@@ -3,6 +3,8 @@
   <string name="action_settings">Nastavení</string>
   <string name="action_add">Nová konverzace</string>
   <string name="action_accounts">Nastavení účtů</string>
+  <string name="action_account">Nastavení účtu</string>
+  <string name="action_end_conversation">Zavřít tuto konverzaci</string>
   <string name="action_contact_details">Detaily kontaktu</string>
   <string name="action_secure">Zabezpečená konverzace</string>
   <string name="action_add_account">Přidat účet</string>
@@ -40,6 +42,7 @@
   <string name="register_account">Registrovat nový účet na serveru</string>
   <string name="change_password_on_server">Změnit heslo na serveru</string>
   <string name="share_with">Sdílet s...</string>
+  <string name="invite_contact">Pozvat kontakt</string>
   <string name="contacts">Kontakty</string>
   <string name="cancel">Zrušit</string>
   <string name="set">Nastavit</string>
@@ -95,13 +98,12 @@
   <string name="pref_vibrate_summary">Vibrovat při přijetí nové zprávy</string>
   <string name="pref_led">LED upozornění</string>
   <string name="pref_led_summary">Blikat při přijetí nové zprávy</string>
-  <string name="pref_sound">Tón upozornění</string>
-  <string name="pref_sound_summary">Přehrát zvuk při přijetí nové zprávy</string>
   <string name="pref_notification_grace_period">Časová lhůta</string>
   <string name="pref_advanced_options">Rozšířené</string>
   <string name="pref_never_send_crash">Neodesílat detaily o pádu aplikace</string>
   <string name="pref_never_send_crash_summary">Zasláním detailů o důvodu selhání pomůžete dalšímu vývoji aplikace Konverzace</string>
   <string name="pref_confirm_messages">Potvrzovat zprávy</string>
+  <string name="pref_confirm_messages_summary">Nechat kontaky vědět kdy jste dostali a přečetli jejich zprávy</string>
   <string name="pref_ui_options">UI</string>
   <string name="accept">Přijmout</string>
   <string name="error">Došlo k chybě</string>
@@ -144,6 +146,7 @@
   <string name="mgmt_account_enable">Povolit účet</string>
   <string name="mgmt_account_are_you_sure">Jste si jisti?</string>
   <string name="attach_record_voice">Nahrát hlas</string>
+  <string name="account_settings_jabber_id">Adresa XMPP</string>
   <string name="account_settings_example_jabber_id">jmeno@server.cz</string>
   <string name="password">Heslo</string>
   <string name="error_out_of_memory">Nedostatek paměti. Obrázek je příliš velký</string>
@@ -180,6 +183,7 @@
   <string name="fetching_keys">Získávání klíčů...</string>
   <string name="done">Hotovo</string>
   <string name="decrypt">Dešifrovat</string>
+  <string name="bookmarks">Záložky</string>
   <string name="search">Hledat</string>
   <string name="enter_contact">Vložit kontakt</string>
   <string name="view_contact_details">Zobrazit detaily kontaktu</string>
@@ -189,6 +193,8 @@
   <string name="select">Vybrat</string>
   <string name="contact_already_exists">Kontakt již existuje</string>
   <string name="join">Vstoupit</string>
+  <string name="channel_full_jid_example">kanál@konference.server.cz/jméno</string>
+  <string name="channel_bare_jid_example">kanál@konference.server.cz</string>
   <string name="save_as_bookmark">Uložit jako záložku</string>
   <string name="delete_bookmark">Smazat záložku</string>
   <string name="leave">Odejít</string>
@@ -239,12 +245,15 @@
   <string name="copy_original_url">Kopírovat originální URL</string>
   <string name="send_again">Poslat znovu</string>
   <string name="file_url">URL souboru</string>
+  <string name="scan_qr_code">Skenovat 2D kód</string>
+  <string name="show_qr_code">Zobrazit 2D kód</string>
   <string name="show_block_list">Zobrazit seznam blokovaných</string>
   <string name="account_details">Detaily účtu</string>
   <string name="confirm">Potvrdit</string>
   <string name="try_again">Zkusit znovu</string>
   <string name="pref_keep_foreground_service">Ponechat službu v popředí</string>
   <string name="pref_keep_foreground_service_summary">Zamezit operačnímu systému v ukončení připojení</string>
+  <string name="pref_create_backup">Vytvořit zálohu</string>
   <string name="choose_file">Vybrat soubor</string>
   <string name="receiving_x_file">Přijímám %1$s (%2$d%% dokončeno)</string>
   <string name="download_x_file">Stáhnout %s</string>
@@ -309,6 +318,7 @@
   <string name="contact_is_typing">%s píše...</string>
   <string name="contact_has_stopped_typing">%s přestal(a) psát</string>
   <string name="pref_chat_states">Upozornění při psaní</string>
+  <string name="pref_chat_states_summary">Nechat kontaky vědět když jim píšete zprávu</string>
   <string name="send_location">Poslat pozici</string>
   <string name="show_location">Zobrazit pozici</string>
   <string name="no_application_found_to_display_location">Nebyla nalezena aplikace pro zobrazení pozice</string>
@@ -333,6 +343,8 @@
   <string name="none">Žádná</string>
   <string name="recently_used">Naposledy použitá</string>
   <string name="choose_quick_action">Vybrat rychlou akci</string>
+  <string name="search_contacts">Prohledat kontakty</string>
+  <string name="search_bookmarks">Prohledat záložky</string>
   <string name="send_private_message">Poslat soukromou zprávu</string>
   <string name="username">Uživatelské jméno</string>
   <string name="username_hint">Uživatelské jméno</string>
@@ -459,4 +471,20 @@
   <string name="this_device_has_been_verified">Tento přístroj byl ověřen</string>
   <string name="copy_fingerprint">Kopírovat identifikátor</string>
   <string name="all_omemo_keys_have_been_verified">Všechny OMEMO klíče byly ověřeny</string>
+  <string name="share_as_barcode">Sdílet jako čárový kód</string>
+  <string name="share_as_uri">Sdílet jako XMPP URI</string>
+  <string name="share_as_http">Sdílet jako HTTP odkaz</string>
+  <string name="invalid_barcode">Neplatný 2D kód</string>
+  <string name="edit_status_message_title">Upravit stavovou zprávu</string>
+  <string name="edit_status_message">Upravit stavovou zprávu</string>
+  <string name="search_messages">Prohledat zprávy</string>
+  <string name="create_dialog_group_chat_name">Jméno skupinového chatu</string>
+  <string name="your_name">Vaše jméno</string>
+  <string name="create_group_chat">Vytvořit skupinový chat</string>
+  <string name="create_private_group_chat">Vytvořit soukromý skupinový chat</string>
+  <string name="create_public_channel">Vytvořit veřejný kanál</string>
+  <string name="create_dialog_channel_name">Jméno kanálu</string>
+  <string name="discover_channels">Najít kanály</string>
+  <string name="channel_discovery_opt_in_title">Možné porušení soukromí</string>
+  <string name="channel_discover_opt_in_message"><![CDATA[Vyhledávání kanálů používá službu třetí strany jménem <a href="https://search.jabber.network">search.jabber.network</a>.<br><br>Používání této služby odešle vaši IP adresu a vyhledávaný termín této službě. Pro více informací konzultujte jejich <a href="https://search.jabber.network/privacy">Zásady ochrany osobních údajů</a>.]]></string>
 </resources>

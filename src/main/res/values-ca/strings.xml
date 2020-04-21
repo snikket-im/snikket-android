@@ -112,8 +112,6 @@
   <string name="pref_vibrate_summary">Vibra quan arribi un missatge nou</string>
   <string name="pref_led">Notificació LED</string>
   <string name="pref_led_summary">Fes que la notificació lumínica parpellegi quan arribi un missatge nou</string>
-  <string name="pref_sound">So d\'avís</string>
-  <string name="pref_sound_summary">Reprodueix un so quan arribi un missatge nou</string>
   <string name="pref_notification_grace_period">Període de gràcia</string>
   <string name="pref_advanced_options">Avançat</string>
   <string name="pref_never_send_crash">Mai enviïs informes d\'errors</string>
@@ -608,7 +606,6 @@ missatges.\n\nAra se us demanarà que desactiveu-las.</string>
   <string name="corresponding_conversations_closed">S\'han tancat les converses corresponents.</string>
   <string name="contact_blocked_past_tense">Contacte bloquejat.</string>
   <string name="pref_notifications_from_strangers">Notificacions d\'estranys</string>
-  <string name="pref_notifications_from_strangers_summary">Notifica per als missatges rebuts d\'estrangers.</string>
   <string name="received_message_from_stranger">S\'ha rebut un missatge de un desconegut</string>
   <string name="block_stranger">Bloqueja al desconegut</string>
   <string name="block_entire_domain">Bloqueja tot el domini</string>

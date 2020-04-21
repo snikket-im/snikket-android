@@ -116,8 +116,6 @@
   <string name="pref_vibrate_summary">Vibra quando arriva un nuovo messaggio</string>
   <string name="pref_led">Notifica LED</string>
   <string name="pref_led_summary">Luce di notifica lampeggiante quando arriva un nuovo messaggio</string>
-  <string name="pref_sound">Suono di notifica</string>
-  <string name="pref_sound_summary">Esegui un suono quando arriva un nuovo messaggio</string>
   <string name="pref_notification_grace_period">Periodo di grazia</string>
   <string name="pref_notification_grace_period_summary">Il periodo di tempo in cui le notifiche vengono silenziate dopo aver rilevato attività su uno dei tuoi altri dispositivi.</string>
   <string name="pref_advanced_options">Avanzate</string>
@@ -647,7 +645,6 @@
   <string name="corresponding_conversations_closed">Chiuse le relative conversazioni.</string>
   <string name="contact_blocked_past_tense">Contatto bloccato.</string>
   <string name="pref_notifications_from_strangers">Notifiche da sconosciuti</string>
-  <string name="pref_notifications_from_strangers_summary">Notifica i messaggi ricevuti da sconosciuti.</string>
   <string name="received_message_from_stranger">Ricevuto messaggio da uno sconosciuto</string>
   <string name="block_stranger">Blocca sconosciuto</string>
   <string name="block_entire_domain">Blocca intero dominio</string>
@@ -749,7 +746,6 @@
   <string name="messages_channel_name">Messaggi</string>
   <string name="silent_messages_channel_name">Messaggi silenziosi</string>
   <string name="silent_messages_channel_description">Questo gruppo di notifiche è usato per mostrare notifiche che non devono riprodurre alcun suono. Ad esempio mentre si è attivi su un altro dispositivo (Periodo di grazia).</string>
-  <string name="pref_message_notification_settings">Impostazioni di notifica</string>
   <string name="pref_more_notification_settings_summary">Importanza, suono, vibrazione</string>
   <string name="video_compression_channel_name">Compressione video</string>
   <string name="view_media">Vedi i media</string>
@@ -881,6 +877,7 @@
   <string name="pref_channel_discovery">Metodo di scoperta canali</string>
   <string name="backup">Backup</string>
   <string name="category_about">Al riguardo</string>
+  <string name="please_enable_an_account">Devi attivare un account</string>
   <plurals name="view_users">
     <item quantity="one">Vedi %1$d partecipante</item>
     <item quantity="other">Vedi %1$d partecipanti</item>

@@ -103,8 +103,6 @@
   <string name="pref_vibrate_summary">Vibrar quando uma nova mensagem for recebida</string>
   <string name="pref_led">Notificação LED</string>
   <string name="pref_led_summary">Piscar luz de notificação quando uma nova mensagem for recebida</string>
-  <string name="pref_sound">Tom de toque</string>
-  <string name="pref_sound_summary">Tocar som quando uma nova mensagem for recebida</string>
   <string name="pref_advanced_options">Avançadas</string>
   <string name="pref_never_send_crash">Nunca enviar relatórios de falhas</string>
   <string name="pref_never_send_crash_summary">Ao enviar os stack traces você está a ajudar ao desenvolvimento contínuo de Conversations</string>

@@ -116,8 +116,6 @@
   <string name="pref_vibrate_summary">收到新消息时震动</string>
   <string name="pref_led">LED 灯提示</string>
   <string name="pref_led_summary">收到新消息时闪烁通知灯</string>
-  <string name="pref_sound">铃声</string>
-  <string name="pref_sound_summary">收到新消息时响铃</string>
   <string name="pref_notification_grace_period">静默期限</string>
   <string name="pref_notification_grace_period_summary">在您的其他设备之一上检测到活动之后，时间通知的长度将被静音。</string>
   <string name="pref_advanced_options">高级</string>
@@ -526,6 +524,7 @@
   <string name="security_error_invalid_file_access">安全错误：文件访问权限无效</string>
   <string name="no_application_to_share_uri">未找到可以分享此链接的应用</string>
   <string name="share_uri_with">分享链接……</string>
+  <string name="welcome_text_quicksy">&lt;![CDATA [Quicksy是从受欢迎的XMPP客户端对话中分离出来的，具有自动联系人发现功能。&lt;br&gt;&lt;br&gt;您注册了电话号码，Quicksy就会根据您的通讯录中的电话号码自动为您建议可能的联系人。&lt;br&gt;&lt;br&gt; 签署即表示您同意我们的&lt;a href="https://quicksy.im/#privacy"&gt;隐私政策&lt;/a&gt;。]]&gt;</string>
   <string name="agree_and_continue">同意 &amp; 继续</string>
   <string name="magic_create_text">此向导将为您在conversations.im¹上创建一个账户。\n您的联系人可以通过您的XMPP完整地址与您聊天。</string>
   <string name="your_full_jid_will_be">您的XMPP完整地址将是：%s</string>
@@ -640,7 +639,6 @@
   <string name="corresponding_conversations_closed">相应的对话已关闭。</string>
   <string name="contact_blocked_past_tense">联系人已屏蔽</string>
   <string name="pref_notifications_from_strangers">陌生人也通知</string>
-  <string name="pref_notifications_from_strangers_summary">收到陌生人信息时通知</string>
   <string name="received_message_from_stranger">已收到陌生人的信息</string>
   <string name="block_stranger">屏蔽陌生人</string>
   <string name="block_entire_domain">屏蔽整个域名</string>
@@ -742,7 +740,6 @@
   <string name="messages_channel_name">消息</string>
   <string name="silent_messages_channel_name">无声消息</string>
   <string name="silent_messages_channel_description">此通知组用于显示不应触发任何声音的通知。 例如，当在另一个设备上激活时（宽限期）。</string>
-  <string name="pref_message_notification_settings">通知设置</string>
   <string name="pref_more_notification_settings_summary">重要性，声音，振动</string>
   <string name="video_compression_channel_name">视频压缩</string>
   <string name="view_media">查看媒体文件</string>
@@ -850,6 +847,7 @@
   <string name="discover_channels">发现群聊</string>
   <string name="search_channels">搜索群聊</string>
   <string name="channel_discovery_opt_in_title">可能侵犯隐私！</string>
+  <string name="channel_discover_opt_in_message">&lt;![CDATA [频道发现使用了名为&lt;a href="https://search.jabber.network"&gt;search.jabber.network&lt;/a&gt;。&lt;br&gt;&lt;br&gt;的第三方服务。使用此功能会将您的IP地址和搜索字词传输到该服务。 有关更多信息，请参见其&lt;a href="https://search.jabber.network/privacy"&gt;Privacy Policy&lt;/a&gt;。]]&gt;</string>
   <string name="i_already_have_an_account">我已有账户</string>
   <string name="add_existing_account">添加已有账户</string>
   <string name="register_new_account">注册新账户</string>
@@ -867,10 +865,13 @@
   <string name="open_join_dialog">加入公开群聊</string>
   <string name="sharing_application_not_grant_permission">分享程序没有访问文件的权限</string>
   <string name="group_chats_and_channels"><![CDATA[群聊与频道]]> </string>
+  <string name="jabber_network">jabber.network</string>
   <string name="local_server">本地服务器</string>
+  <string name="pref_channel_discovery_summary">大多数用户应该选择“ jabber.network”以从整个XMPP生态系统中获得更好的建议。</string>
   <string name="pref_channel_discovery">频道发现方法</string>
   <string name="backup">备份</string>
   <string name="category_about">关于</string>
+  <string name="please_enable_an_account">请启用一个帐户</string>
   <plurals name="view_users">
     <item quantity="other">查看%1$d成员</item>
   </plurals>

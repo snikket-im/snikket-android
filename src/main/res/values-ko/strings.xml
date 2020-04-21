@@ -95,8 +95,6 @@
   <string name="pref_vibrate_summary">새 메세지 도착시 진동</string>
   <string name="pref_led">LED 알림</string>
   <string name="pref_led_summary">새 메세지 도착시 LED 깜빡이기</string>
-  <string name="pref_sound">알림음</string>
-  <string name="pref_sound_summary">새 메세지 도착시 알림음 재생</string>
   <string name="pref_notification_grace_period">유예기간</string>
   <string name="pref_advanced_options">고급</string>
   <string name="pref_never_send_crash">충돌 보고서 보내지 않음 </string>
@@ -471,5 +469,4 @@
   <string name="verify_omemo_keys">OMEMO 키를 검증</string>
   <string name="distrust_omemo_key_text">이 장치의 자격 증명을 삭제 하시겠습니까?\n장치와 해당 장치에서 메시지는 신뢰할 수없는 것으로 표시됩니다.</string>
   <string name="pref_automatically_delete_messages_description">설정된 기간보다 오래된 메시지를 장치에서 자동으로 삭제합니다.</string>
-  <string name="pref_notifications_from_strangers_summary">모르는 사람으로부터 받은 메시지를 알립니다.</string>
 </resources>

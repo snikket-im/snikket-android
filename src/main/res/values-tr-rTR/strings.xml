@@ -95,8 +95,6 @@
   <string name="pref_vibrate_summary">Yeni ileti geldiğinde titret</string>
   <string name="pref_led">LED Bildirimi</string>
   <string name="pref_led_summary">Yeni bir ileti geldiğinde bildirim ışığı yanıp sönsün</string>
-  <string name="pref_sound">Zil sesi</string>
-  <string name="pref_sound_summary">Yeni bir ileti geldiğinde sesli bildir</string>
   <string name="pref_notification_grace_period">Mühlet</string>
   <string name="pref_advanced_options">Gelişmiş</string>
   <string name="pref_never_send_crash">Asla çöküş raporu gönderme</string>
@@ -490,6 +488,5 @@
   <string name="corresponding_conversations_closed">Konuşma sonlandı</string>
   <string name="contact_blocked_past_tense">Kişi engellendi.</string>
   <string name="pref_notifications_from_strangers">Yabancılardan bildirimler</string>
-  <string name="pref_notifications_from_strangers_summary">Yabancılardan alınan iletileri bildir.</string>
   <string name="received_message_from_stranger">Yabancıdan alınmış ileti</string>
 </resources>

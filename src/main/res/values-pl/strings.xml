@@ -116,8 +116,6 @@
   <string name="pref_vibrate_summary">Wibruj gdy nadejdzie wiadomość</string>
   <string name="pref_led">Powiadomienie diodą LED</string>
   <string name="pref_led_summary">Migaj lampką powiadamiającą gdy nadejdzie wiadomość</string>
-  <string name="pref_sound">Dzwonek</string>
-  <string name="pref_sound_summary">Odtwórz dźwięk gdy nadejdzie wiadomość</string>
   <string name="pref_notification_grace_period">Czas bez powiadomień</string>
   <string name="pref_notification_grace_period_summary">Długość czasu kiedy powiadomienia są uśpione po wykryciu aktywności na jednym z twoich innych urządzeń.</string>
   <string name="pref_advanced_options">Zaawansowane</string>
@@ -664,7 +662,6 @@ Conversations będzie wciąż ograniczał transfer danych, kiedy tylko to jest m
   <string name="corresponding_conversations_closed">Odpowiadające rozmowy zostały zamknięte.</string>
   <string name="contact_blocked_past_tense">Kontakt zablokowany</string>
   <string name="pref_notifications_from_strangers">Powiadomienia od nieznajomych</string>
-  <string name="pref_notifications_from_strangers_summary">Powiadamiaj o wiadomościach otrzymanych od nieznajomych</string>
   <string name="received_message_from_stranger">Odebrano wiadomość od nieznajomego</string>
   <string name="block_stranger">Zablokuj nieznajomego</string>
   <string name="block_entire_domain">Zablokuj całą domenę</string>
@@ -767,7 +764,6 @@ Administrator twojego serwera będzie mógł czytać twoje wiadomości, ale moż
   <string name="messages_channel_name">Wiadomości</string>
   <string name="silent_messages_channel_name">Ciche wiadomości</string>
   <string name="silent_messages_channel_description">Ta kategoria powiadomień jest używana aby wyświetlać powiadomienia które nie powodują żadnych dźwięków. Na przykład w ciągu aktywności na innym urządzeniu (okres karencji).</string>
-  <string name="pref_message_notification_settings">Ustawienia powiadomień</string>
   <string name="pref_more_notification_settings_summary">Ważność, Dźwięk, Wibracja</string>
   <string name="video_compression_channel_name">Kompresja wideo</string>
   <string name="view_media">Pokaż media</string>
@@ -899,6 +895,7 @@ Administrator twojego serwera będzie mógł czytać twoje wiadomości, ale moż
   <string name="pref_channel_discovery">Metoda odkrywania kanałów</string>
   <string name="backup">Kopia zapasowa</string>
   <string name="category_about">O aplikacji</string>
+  <string name="please_enable_an_account">Proszę włączyć konto</string>
   <plurals name="view_users">
     <item quantity="one">Pokaż %1$d uczestnika</item>
     <item quantity="few">Pokaż %1$d uczestników</item>

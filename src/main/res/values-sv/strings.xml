@@ -114,8 +114,6 @@
   <string name="pref_vibrate_summary">Vibrera när meddelande tagits emot</string>
   <string name="pref_led">LED notifieringar</string>
   <string name="pref_led_summary">Blinka med notifieringsljuset när ett meddelande tagits emot</string>
-  <string name="pref_sound">Meddelandesignal</string>
-  <string name="pref_sound_summary">Spela ljud när meddelande tagits emot</string>
   <string name="pref_notification_grace_period">Notifieringsfrist</string>
   <string name="pref_advanced_options">Avancerat</string>
   <string name="pref_never_send_crash">Skicka aldrig krasch-rapporter</string>
@@ -585,7 +583,6 @@
   <string name="corresponding_conversations_closed">Motsvarande konversationer är stängda.</string>
   <string name="contact_blocked_past_tense">Kontakt blockerad.</string>
   <string name="pref_notifications_from_strangers">Notifieringar från främlingar</string>
-  <string name="pref_notifications_from_strangers_summary">Notifiera för meddelanden från främlingar.</string>
   <string name="received_message_from_stranger">Mottagna meddelanden från främlingar</string>
   <string name="block_stranger">Blockera främling</string>
   <string name="block_entire_domain">Blockera hel domän</string>

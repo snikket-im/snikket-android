@@ -94,8 +94,6 @@
   <string name="pref_vibrate_summary">هنگام دریافت پیام جدید بلرز</string>
   <string name="pref_led">اعلان از طریق LED</string>
   <string name="pref_led_summary">چشمک زدن چراغ اعلان هنگام رسیدن پیام جدید</string>
-  <string name="pref_sound">آهنگ زنگ</string>
-  <string name="pref_sound_summary">هنگام دریافت پیام جدید صدا پخش کن</string>
   <string name="pref_notification_grace_period">مهلت</string>
   <string name="pref_advanced_options">پیشرفته</string>
   <string name="pref_never_send_crash">هیچ وقت گزارش خرابی را ارسال نکن</string>

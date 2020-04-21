@@ -115,8 +115,6 @@
   <string name="pref_vibrate_summary">Вибрировать, когда приходят новые сообщения</string>
   <string name="pref_led">Светодиодное уведомление</string>
   <string name="pref_led_summary">Мерцание индикатора при получении нового сообщения</string>
-  <string name="pref_sound">Звук уведомления</string>
-  <string name="pref_sound_summary">Звук при поступлении новых сообщений</string>
   <string name="pref_notification_grace_period">Грейс-период</string>
   <string name="pref_advanced_options">Дополнительно</string>
   <string name="pref_never_send_crash">Не отправлять отчёты об ошибках</string>
@@ -634,7 +632,6 @@
   <string name="corresponding_conversations_closed">Соответствующие беседы закрыты.</string>
   <string name="contact_blocked_past_tense">Контакт заблокирован</string>
   <string name="pref_notifications_from_strangers">Уведомления от неизвестных контактов</string>
-  <string name="pref_notifications_from_strangers_summary">Уведомлять о сообщениях от незнакомых контактов.</string>
   <string name="received_message_from_stranger">Получено сообщение от неизвестного контакта</string>
   <string name="block_stranger">Заблокировать неизвестный контакт</string>
   <string name="block_entire_domain">Заблокировать весь домен</string>
@@ -702,7 +699,6 @@
   <string name="create_dialog_group_chat_name">Название конференции</string>
   <string name="conference_destroyed">Эта конференция была уничтожена</string>
   <string name="error_channel_name">Проблемы с подключением</string>
-  <string name="pref_message_notification_settings">Настройки уведомлений</string>
   <string name="video_compression_channel_name">Сжатие видео</string>
   <string name="view_media">Просмотр медиа</string>
   <string name="group_chat_members">Участники</string>

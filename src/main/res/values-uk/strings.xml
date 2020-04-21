@@ -17,6 +17,8 @@
   <string name="action_unblock_contact">Розблокувати контакт</string>
   <string name="action_block_domain">Заблокувати домен</string>
   <string name="action_unblock_domain">Розблокувати домен</string>
+  <string name="action_block_participant">Заблокувати учасника</string>
+  <string name="action_unblock_participant">Розблокувати учасника</string>
   <string name="title_activity_manage_accounts">Впорядкувати облікові записи</string>
   <string name="title_activity_settings">Налаштування</string>
   <string name="title_activity_sharewith">Поділитися в Розмови</string>
@@ -28,6 +30,7 @@
   <string name="just_now">щойно</string>
   <string name="minute_ago">1 хвилину тому</string>
   <string name="minutes_ago">%d хвилин тому</string>
+  <string name="x_unread_conversations">%d непрочитаних розмов</string>
   <string name="sending">відправляю…</string>
   <string name="message_decrypting">Розшифровую повідомлення. Зачекайте, будь ласка…</string>
   <string name="pgp_message">Повідомлення, зашифроване OpenPGP</string>
@@ -113,9 +116,8 @@
   <string name="pref_vibrate_summary">Вібрувати, коли приходять нові повідомлення</string>
   <string name="pref_led">Індикація LED</string>
   <string name="pref_led_summary">Блимати світловим індикатором, коли надходить нове повідомлення</string>
-  <string name="pref_sound">Мелодія дзвінка</string>
-  <string name="pref_sound_summary">Грати звук, коли надходить нове повідомлення</string>
   <string name="pref_notification_grace_period">Період очікування</string>
+  <string name="pref_notification_grace_period_summary">Час, протягом якого не буде сигналу про нові сповіщення, після дій користувача на іншому пристрої.</string>
   <string name="pref_advanced_options">Розширені</string>
   <string name="pref_never_send_crash">Не надсилати звіти про збої</string>
   <string name="pref_never_send_crash_summary">Надсилаючи траси стеку викликів Ви допомагаєте розробці Розмов, яка продовжується</string>
@@ -151,6 +153,7 @@
   <string name="account_status_regis_conflict">Ім\'я користувача вже використовується</string>
   <string name="account_status_regis_success">Реєстрацію виконано</string>
   <string name="account_status_regis_not_sup">Сервер не підтримує режстрацію</string>
+  <string name="account_status_regis_invalid_token">Недійсний реєстраційний токен</string>
   <string name="account_status_tls_error">Узгодження TLS не відбулося</string>
   <string name="account_status_policy_violation">Порушення політики</string>
   <string name="account_status_incompatible_server">Несумісний сервер</string>
@@ -288,6 +291,7 @@
   <string name="conference_shutdown">Цю групу закрили</string>
   <string name="conference_unknown_error">Ви більше не берете участь в цій групі</string>
   <string name="using_account">використовується обліковий запис %s</string>
+  <string name="hosted_on">розміщений на %s</string>
   <string name="checking_x">Перевіряю %s на хості HTTP</string>
   <string name="not_connected_try_again">Ви не з\'єднані. Спробуйте ще пізніше.</string>
   <string name="check_x_filesize">Перевірити %s розмір</string>
@@ -329,6 +333,7 @@
   <string name="x_file_offered_for_download">%s запропоновано для завантаження</string>
   <string name="cancel_transmission">Припинити передачу</string>
   <string name="file_transmission_failed">передача файла не вдалася</string>
+  <string name="file_transmission_cancelled">передачу файлу перервано</string>
   <string name="file_deleted">Файл видалено</string>
   <string name="no_application_found_to_open_file">Не знайдено програми для відкриття файла</string>
   <string name="no_application_found_to_open_link">Не знайдено програми, щоб відкрити посилання</string>
@@ -507,7 +512,9 @@
   <string name="notify_never">Сповіщення вимкнено</string>
   <string name="notify_paused">Сповіщення призупинено</string>
   <string name="pref_picture_compression">Стиснення зображень</string>
+  <string name="pref_picture_compression_summary">Підказка: Обирайте \"Вибрати файл\" замість \"Вибрати зображення\", щоб надіслати окремі зображення без стиснення в обхід цього налаштування.</string>
   <string name="always">Завжди</string>
+  <string name="large_images_only">Лише великі зображення</string>
   <string name="battery_optimizations_enabled">Оптимізацію батареї задіяно</string>
   <string name="battery_optimizations_enabled_explained">Ваш пристрій здійснює деяку агресивну оптимізацію Розмов для збереження заряду батареї, яка може призвести до затримки сповіщення або навіть втрати повідомлень.\nРекомендовано відключити цю оптимізацію.</string>
   <string name="battery_optimizations_enabled_dialog">Ваш пристрій здійснює деяку агресивну оптимізацію Розмов для збереження заряду батареї, яка може призвести до затримки сповіщення або навіть втрати повідомлень.\nПросимо Вас зараз відключити цю оптимзацію.</string>
@@ -553,6 +560,7 @@
   <string name="pref_privacy">Приватність</string>
   <string name="pref_theme_options">Тема</string>
   <string name="pref_theme_options_summary">Вибрати палітру кольорів</string>
+  <string name="pref_theme_automatic">Автоматично</string>
   <string name="pref_theme_light">Світла тема</string>
   <string name="pref_theme_dark">Темна тема</string>
   <string name="pref_use_green_background">Зелене тло</string>
@@ -654,7 +662,6 @@
   <string name="corresponding_conversations_closed">Відповідні розмови закрито.</string>
   <string name="contact_blocked_past_tense">Контакт заблоковано.</string>
   <string name="pref_notifications_from_strangers">Сповіщення від незнайомців</string>
-  <string name="pref_notifications_from_strangers_summary">Сповіщувати про повідомлення від незнайомців.</string>
   <string name="received_message_from_stranger">Отримано повідомлення від незнайомця</string>
   <string name="block_stranger">Заблокувати незнайомця</string>
   <string name="block_entire_domain">Заблокувати весь домен</string>
@@ -756,7 +763,6 @@
   <string name="messages_channel_name">Повідомлення</string>
   <string name="silent_messages_channel_name">Тихі повідомлення</string>
   <string name="silent_messages_channel_description">Ця група сповіщень показує сповіщення, які не повинні супроводжуватися звуком. Наприклад, у разі активності на іншому пристрої (період очікування).</string>
-  <string name="pref_message_notification_settings">Налаштування сповіщень</string>
   <string name="pref_more_notification_settings_summary">Важливість, звук, вібрація</string>
   <string name="video_compression_channel_name">Стиснення відео</string>
   <string name="view_media">Перегляд медіа</string>
@@ -864,10 +870,35 @@
   <string name="discover_channels">Знайти канали</string>
   <string name="search_channels">Шукати канали</string>
   <string name="channel_discovery_opt_in_title">Можливе порушення приватності!</string>
+  <string name="channel_discover_opt_in_message"><![CDATA[Пошук каналів використовує сторонній сервіс під назвою <a href="https://search.jabber.network">search.jabber.network</a>.<br><br>Користуючись ним, Ви передає Вашу IP адресу та пошукові запити цьому сервісу. Перегляньте їхню <a href="https://search.jabber.network/privacy">політику конфіденційності</a>, щоб отримати більше інформації.]]></string>
   <string name="i_already_have_an_account">Я вже маю обліковий запис</string>
   <string name="add_existing_account">Додати наявний обліковий запис</string>
   <string name="register_new_account">Зареєструвати новий обліковий запис</string>
   <string name="this_looks_like_a_domain">Це схоже на ім\'я домену</string>
   <string name="add_anway">Додати все одно</string>
   <string name="this_looks_like_channel">Це схоже на адресу каналу</string>
+  <string name="share_backup_files">Поділитися резервними копіями</string>
+  <string name="conversations_backup">Резервне копіювання розмов</string>
+  <string name="event">Подія</string>
+  <string name="open_backup">Відкрити резервну копію</string>
+  <string name="not_a_backup_file">Обраний файл не є резервною копією цієї програми</string>
+  <string name="account_already_setup">Цей обліковий запис уже налаштовано</string>
+  <string name="please_enter_password">Будь ласка, введіть пароль цього облікового запису</string>
+  <string name="unable_to_perform_this_action">Не можу виконати цю дію</string>
+  <string name="open_join_dialog">Приєднатися до публічного каналу…</string>
+  <string name="sharing_application_not_grant_permission">Програма, яка надає доступ, не надала дозволу на доступ до цього файлу.</string>
+  <string name="group_chats_and_channels"><![CDATA[Групи і канали]]></string>
+  <string name="jabber_network">jabber.network</string>
+  <string name="local_server">Локальний сервер</string>
+  <string name="pref_channel_discovery_summary">Пересічному користувачеві слід обрати «jabber.network» для кращих пропозицій з усієї публічної XMPP екосистеми.</string>
+  <string name="pref_channel_discovery">Спосіб пошуку каналів</string>
+  <string name="backup">Резервне копіювання</string>
+  <string name="category_about">Про</string>
+  <string name="please_enable_an_account">Будь ласка, увімкніть обліковий запис</string>
+  <plurals name="view_users">
+    <item quantity="one">Переглянути %1$d учасника</item>
+    <item quantity="few">Переглянути %1$d учасників</item>
+    <item quantity="many">Переглянути %1$d учасників</item>
+    <item quantity="other">Переглянути %1$d учасників</item>
+  </plurals>
 </resources>

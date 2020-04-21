@@ -95,8 +95,6 @@
   <string name="pref_vibrate_summary">Rung khi có tin nhắn mới</string>
   <string name="pref_led">Thông báo đèn LED</string>
   <string name="pref_led_summary">Chớp đèn thông báo khi có tin nhắn mới</string>
-  <string name="pref_sound">Âm báo</string>
-  <string name="pref_sound_summary">Chơi nhạc báo khi có tin nhắn mới</string>
   <string name="pref_notification_grace_period">Thời gian gia hạn thông báo</string>
   <string name="pref_advanced_options">Nâng cao</string>
   <string name="pref_never_send_crash">Không bao giờ gửi báo cáo dừng chạy</string>
