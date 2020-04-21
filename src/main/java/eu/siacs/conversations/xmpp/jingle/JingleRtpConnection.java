@@ -958,7 +958,13 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
 
     private void closeWebRTCSessionAfterFailedConnection() {
         this.webRTCWrapper.close();
-        sendSessionTerminate(Reason.CONNECTIVITY_ERROR);
+        synchronized (this) {
+            if (TERMINATED.contains(state)) {
+                Log.d(Config.LOGTAG, id.account.getJid().asBareJid() + ": no need to send session-terminate after failed connection. Other party already did");
+                return;
+            }
+            sendSessionTerminate(Reason.CONNECTIVITY_ERROR);
+        }
     }
 
     public AppRTCAudioManager getAudioManager() {
