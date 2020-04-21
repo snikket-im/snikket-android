@@ -192,6 +192,7 @@
     <string name="server_info_blocking">XEP-0191: Blocking Command</string>
     <string name="server_info_roster_version">XEP-0237: Roster Versioning</string>
     <string name="server_info_stream_management">XEP-0198: Stream Management</string>
+    <string name="server_info_external_service_discovery">XEP-0215: External Service Discovery</string>
     <string name="server_info_pep">XEP-0163: PEP (Avatars / OMEMO)</string>
     <string name="server_info_http_upload">XEP-0363: HTTP File Upload</string>
     <string name="server_info_push">XEP-0357: Push</string>

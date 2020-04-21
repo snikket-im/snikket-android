@@ -347,6 +347,28 @@
                                     android:layout_height="wrap_content"
                                     android:ellipsize="end"
                                     android:singleLine="true"
+                                    android:text="@string/server_info_external_service_discovery"
+                                    android:textAppearance="@style/TextAppearance.Conversations.Body1"/>
+
+                                <TextView
+                                    android:id="@+id/server_info_external_service"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="right"
+                                    android:paddingLeft="4dp"
+                                    android:textAppearance="@style/TextAppearance.Conversations.Body1"
+                                    tools:ignore="RtlHardcoded"/>
+                            </TableRow>
+
+                            <TableRow
+                                android:layout_width="fill_parent"
+                                android:layout_height="wrap_content">
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:ellipsize="end"
+                                    android:singleLine="true"
                                     android:text="@string/server_info_roster_version"
                                     android:textAppearance="@style/TextAppearance.Conversations.Body1"/>
 

@@ -3,7 +3,6 @@ package eu.siacs.conversations.ui;
 import android.app.Activity;
 import android.app.PendingIntent;
 import android.content.ActivityNotFoundException;
-import android.content.Context;
 import android.content.Intent;
 import android.content.IntentSender;
 import android.content.SharedPreferences;
@@ -63,7 +62,6 @@ import eu.siacs.conversations.ui.util.AvatarWorkerTask;
 import eu.siacs.conversations.ui.util.MenuDoubleTabUtil;
 import eu.siacs.conversations.ui.util.PendingItem;
 import eu.siacs.conversations.ui.util.SoftKeyboardUtils;
-import eu.siacs.conversations.ui.util.StyledAttributes;
 import eu.siacs.conversations.utils.CryptoHelper;
 import eu.siacs.conversations.utils.Resolver;
 import eu.siacs.conversations.utils.SignupUtils;
@@ -1059,6 +1057,11 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
                 this.binding.serverInfoSm.setText(R.string.server_info_available);
             } else {
                 this.binding.serverInfoSm.setText(R.string.server_info_unavailable);
+            }
+            if (features.externalServiceDiscovery()) {
+                this.binding.serverInfoExternalService.setText(R.string.server_info_available);
+            } else {
+                this.binding.serverInfoExternalService.setText(R.string.server_info_unavailable);
             }
             if (features.pep()) {
                 AxolotlService axolotlService = this.mAccount.getAxolotlService();

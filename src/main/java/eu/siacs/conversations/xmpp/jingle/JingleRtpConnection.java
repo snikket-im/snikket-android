@@ -999,7 +999,7 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
     }
 
     private void discoverIceServers(final OnIceServersDiscovered onIceServersDiscovered) {
-        if (id.account.getXmppConnection().getFeatures().extendedServiceDiscovery()) {
+        if (id.account.getXmppConnection().getFeatures().externalServiceDiscovery()) {
             final IqPacket request = new IqPacket(IqPacket.TYPE.GET);
             request.setTo(Jid.of(id.account.getJid().getDomain()));
             request.addChild("services", Namespace.EXTERNAL_SERVICE_DISCOVERY);
