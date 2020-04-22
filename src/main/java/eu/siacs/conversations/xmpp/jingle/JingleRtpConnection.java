@@ -789,6 +789,13 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
             case SESSION_INITIALIZED:
                 acceptCallFromSessionInitialized();
                 break;
+            case ACCEPTED:
+                Log.w(Config.LOGTAG,id.account.getJid().asBareJid()+": the call has already been accepted  with another client. UI was just lagging behind");
+                break;
+            case PROCEED:
+            case SESSION_ACCEPTED:
+                Log.w(Config.LOGTAG,id.account.getJid().asBareJid()+": the call has already been accepted. user probably double tapped the UI");
+                break;
             default:
                 throw new IllegalStateException("Can not accept call from " + this.state);
         }
