@@ -680,11 +680,8 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
             } else {
                 target = State.TERMINATED_APPLICATION_FAILURE;
             }
-            if (transition(target)) {
-                Log.d(Config.LOGTAG, id.account.getJid().asBareJid() + ": terminated session with " + id.with);
-            } else {
-                Log.d(Config.LOGTAG, id.account.getJid().asBareJid() + ": not transitioning because already at state=" + this.state);
-            }
+            transitionOrThrow(target);
+            this.finish();
         } else if (response.getType() == IqPacket.TYPE.TIMEOUT) {
             Log.d(Config.LOGTAG, id.account.getJid().asBareJid() + ": received IQ timeout in RTP session with " + id.with + ". terminating with connectivity error");
             if (TERMINATED.contains(this.state)) {
@@ -692,7 +689,7 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
                 return;
             }
             this.webRTCWrapper.close();
-            transition(State.TERMINATED_CONNECTIVITY_ERROR);
+            transitionOrThrow(State.TERMINATED_CONNECTIVITY_ERROR);
             this.finish();
         }
     }

@@ -16,8 +16,6 @@ import rocks.xmpp.addr.Jid;
 
 public class JinglePacket extends IqPacket {
 
-    //TODO add support for groups: https://xmpp.org/extensions/xep-0338.html
-
     private JinglePacket() {
         super();
     }
