@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="crash_report_title">Quicksy fallou</string>
-    <string name="crash_report_message">Ao enviar lotes de rexistro estás a axudar no desenvolvemento de Quicksy\n<b>Aviso:</b> vas utilizar a tua conta XMPP para enviar o rexistro ao equipo de desenvolvemento.</string>
-    <string name="openkeychain_required_long">Quicksy utiliza unha app de terceiros chamada <b>OpenKeychain</b> para cifrar e descifrar as mensaxes e xestionar a tuas chaves públicas.\n\nOpenKeychain ten licenza GPLv3 e está dispoñible en F-Droid e Google Play.\n\n<small>(Por favor, reinicia Quicksy ao rematar).</small></string>
-    <string name="contact_has_no_pgp_key">Quicksy non pode cifrar as tuas mensaxes porque o teu contacto non publicou as sua chave pública.\n\n<small>Por favor, solicita ao contacto que configure OpenPGP.</small></string>
-    <string name="contacts_have_no_pgp_keys">Quicksy non pode cifrar as tuas mensaxes porque os teus contactos non están a publicar a súa chave pública.\n\n<small>Por favor, pídelle aos teus contactos que configuren OpenPGP.</small></string>
+    <string name="crash_report_message">Ao enviar trazas do rexistro estás a axudar no desenvolvemento de Quicksy\n<b>Aviso:</b> vas utilizar a túa conta XMPP para enviar o rexistro ao equipo de desenvolvemento.</string>
+    <string name="openkeychain_required_long">Quicksy utiliza unha app de terceiros chamada <b>OpenKeychain</b> para cifrar e descifrar as mensaxes e xestionar a túas chaves públicas.\n\nOpenKeychain ten licenza GPLv3 e está dispoñible en F-Droid e Google Play.\n\n<small>(Por favor, reinicia Quicksy ao rematar).</small></string>
+    <string name="contact_has_no_pgp_key">Quicksy non pode cifrar as túas mensaxes porque o teu contacto non publicou as súa chave pública.\n\n<small>Por favor, solicita ao contacto que configure OpenPGP.</small></string>
+    <string name="contacts_have_no_pgp_keys">Quicksy non pode cifrar as túas mensaxes porque os teus contactos non están a publicar a súa chave pública.\n\n<small>Por favor, pídelle aos teus contactos que configuren OpenPGP.</small></string>
     <string name="pref_notification_grace_period_summary">O período de tempo que Quicksy permanece acalado tras ver actividade en outro dispositivo</string>
-    <string name="pref_never_send_crash_summary">Enviando trazas de rexistro estás axudando ao desenvolvemento de Quicksy</string>
+    <string name="pref_never_send_crash_summary">Enviando trazas do rexistro estás axudando ao desenvolvemento de Quicksy</string>
     <string name="no_storage_permission">Quicksy precisa acceso ao almacenamento externo</string>
     <string name="no_camera_permission">Quicksy precisa acceso a cámara</string>
     <string name="battery_optimizations_enabled_explained">O teu dispositivo está a realizar optimizacións de batería intensivas con Quicksy que poderían levar a que as notificacións tarden en chegar ou que as mensaxes se perdan.\nRecomendamos desactivalas.</string>

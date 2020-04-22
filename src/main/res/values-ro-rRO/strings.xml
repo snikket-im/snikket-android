@@ -912,6 +912,7 @@ sau chiar pierderea mesajelor.\nÎn continuare veți fi rugați să dezactivați
   <string name="rtp_state_ringing">Sună</string>
   <string name="rtp_state_declined_or_busy">Ocupat</string>
   <string name="rtp_state_connectivity_error">Nu s-a putut conecta apelul</string>
+  <string name="rtp_state_retracted">Apel anulat</string>
   <string name="rtp_state_application_failure">Eroare de aplicație</string>
   <string name="hang_up">Închide</string>
   <string name="ongoing_call">Apel în curs</string>
