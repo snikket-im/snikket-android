@@ -225,9 +225,10 @@
                 <data android:mimeType="*/*" />
             </intent-filter>
 
+            <!-- the value here needs to be the full class name; independent of the configured applicationId -->
             <meta-data
                 android:name="android.service.chooser.chooser_target_service"
-                android:value=".services.ContactChooserTargetService" />
+                android:value="eu.siacs.conversations.services.ContactChooserTargetService" />
         </activity>
         <activity
             android:name=".ui.TrustKeysActivity"
