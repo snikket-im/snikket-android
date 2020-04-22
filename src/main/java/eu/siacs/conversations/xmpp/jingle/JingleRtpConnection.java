@@ -24,6 +24,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.ScheduledFuture;
+import java.util.concurrent.TimeUnit;
 
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.entities.Account;
@@ -45,6 +47,8 @@ import eu.siacs.conversations.xmpp.stanzas.MessagePacket;
 import rocks.xmpp.addr.Jid;
 
 public class JingleRtpConnection extends AbstractJingleConnection implements WebRTCWrapper.EventCallback {
+
+    private static final long BUSY_TIME_OUT = 20;
 
     public static final List<State> STATES_SHOWING_ONGOING_CALL = Arrays.asList(
             State.PROCEED,
@@ -118,6 +122,7 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
     private RtpContentMap initiatorRtpContentMap;
     private RtpContentMap responderRtpContentMap;
     private long rtpConnectionStarted = 0; //time of 'connected'
+    private ScheduledFuture<?> ringingTimeoutFuture;
 
     JingleRtpConnection(JingleConnectionManager jingleConnectionManager, Id id, Jid initiator) {
         super(jingleConnectionManager, id, initiator);
@@ -536,7 +541,27 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
 
     private void startRinging() {
         Log.d(Config.LOGTAG, id.account.getJid().asBareJid() + ": received call from " + id.with + ". start ringing");
+        ringingTimeoutFuture = jingleConnectionManager.schedule(this::ringingTimeout, BUSY_TIME_OUT, TimeUnit.SECONDS);
         xmppConnectionService.getNotificationService().showIncomingCallNotification(id, getMedia());
+    }
+
+    private synchronized void ringingTimeout() {
+        Log.d(Config.LOGTAG, id.account.getJid().asBareJid() + ": timeout reached for ringing");
+        switch (this.state) {
+            case PROPOSED:
+                rejectCallFromProposed();
+                break;
+            case SESSION_INITIALIZED:
+                rejectCallFromSessionInitiate();
+                break;
+        }
+    }
+
+    private void cancelRingingTimeout() {
+        final ScheduledFuture<?> future = this.ringingTimeoutFuture;
+        if (future != null && !future.isCancelled()) {
+            future.cancel(false);
+        }
     }
 
     private void receiveProceed(final Jid from, final String serverMsgId, final long timestamp) {
@@ -781,17 +806,19 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
     public synchronized void acceptCall() {
         switch (this.state) {
             case PROPOSED:
+                cancelRingingTimeout();
                 acceptCallFromProposed();
                 break;
             case SESSION_INITIALIZED:
+                cancelRingingTimeout();
                 acceptCallFromSessionInitialized();
                 break;
             case ACCEPTED:
-                Log.w(Config.LOGTAG,id.account.getJid().asBareJid()+": the call has already been accepted  with another client. UI was just lagging behind");
+                Log.w(Config.LOGTAG, id.account.getJid().asBareJid() + ": the call has already been accepted  with another client. UI was just lagging behind");
                 break;
             case PROCEED:
             case SESSION_ACCEPTED:
-                Log.w(Config.LOGTAG,id.account.getJid().asBareJid()+": the call has already been accepted. user probably double tapped the UI");
+                Log.w(Config.LOGTAG, id.account.getJid().asBareJid() + ": the call has already been accepted. user probably double tapped the UI");
                 break;
             default:
                 throw new IllegalStateException("Can not accept call from " + this.state);
@@ -1069,6 +1096,7 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
     }
 
     private void finish() {
+        this.cancelRingingTimeout();
         this.webRTCWrapper.verifyClosed();
         this.jingleConnectionManager.finishConnection(this);
     }

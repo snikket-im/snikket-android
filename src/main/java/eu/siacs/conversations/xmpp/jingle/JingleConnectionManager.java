@@ -23,6 +23,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 
 import eu.siacs.conversations.Config;
@@ -50,6 +53,7 @@ import eu.siacs.conversations.xmpp.stanzas.MessagePacket;
 import rocks.xmpp.addr.Jid;
 
 public class JingleConnectionManager extends AbstractConnectionManager {
+    private final ScheduledExecutorService scheduledExecutorService = Executors.newSingleThreadScheduledExecutor();
     private final HashMap<RtpSessionProposal, DeviceDiscoveryState> rtpSessionProposals = new HashMap<>();
     private final Map<AbstractJingleConnection.Id, AbstractJingleConnection> connections = new ConcurrentHashMap<>();
 
@@ -133,6 +137,10 @@ public class JingleConnectionManager extends AbstractConnectionManager {
         }
         final Contact contact = account.getRoster().getContact(with);
         return !contact.showInContactList();
+    }
+
+    public ScheduledFuture<?> schedule(final Runnable runnable, final long delay, final TimeUnit timeUnit) {
+        return this.scheduledExecutorService.schedule(runnable, delay, timeUnit);
     }
 
     public void respondWithJingleError(final Account account, final IqPacket original, String jingleCondition, String condition, String conditionType) {
