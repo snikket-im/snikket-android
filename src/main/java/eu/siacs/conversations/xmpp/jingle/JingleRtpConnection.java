@@ -270,7 +270,7 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
             contentMap = RtpContentMap.of(jinglePacket);
             contentMap.requireContentDescriptions();
             contentMap.requireDTLSFingerprint();
-        } catch (final IllegalArgumentException | IllegalStateException | NullPointerException e) {
+        } catch (final RuntimeException e) {
             respondOk(jinglePacket);
             sendSessionTerminate(Reason.of(e), e.getMessage());
             Log.d(Config.LOGTAG, id.account.getJid().asBareJid() + ": improperly formatted contents", e);
@@ -321,7 +321,7 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
             contentMap = RtpContentMap.of(jinglePacket);
             contentMap.requireContentDescriptions();
             contentMap.requireDTLSFingerprint();
-        } catch (final IllegalArgumentException | IllegalStateException | NullPointerException e) {
+        } catch (final RuntimeException e) {
             respondOk(jinglePacket);
             Log.d(Config.LOGTAG, id.account.getJid().asBareJid() + ": improperly formatted contents in session-accept", e);
             webRTCWrapper.close();
