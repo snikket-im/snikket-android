@@ -106,6 +106,7 @@ android {
 
     splits {
         abi {
+            universalApk true
             enable true
         }
     }
