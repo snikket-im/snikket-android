@@ -296,7 +296,9 @@ public class RtpSessionActivity extends XmppActivity implements XmppConnectionSe
         if (jingleRtpConnection != null) {
             releaseVideoTracks(jingleRtpConnection);
         } else if (!isChangingConfigurations()) {
-            retractSessionProposal();
+            if (xmppConnectionService != null) {
+                retractSessionProposal();
+            }
         }
         releaseProximityWakeLock();
         super.onStop();
