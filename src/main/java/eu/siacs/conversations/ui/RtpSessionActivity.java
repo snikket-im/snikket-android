@@ -220,7 +220,9 @@ public class RtpSessionActivity extends XmppActivity implements XmppConnectionSe
         final String sessionId = intent.getStringExtra(EXTRA_SESSION_ID);
         if (sessionId != null) {
             Log.d(Config.LOGTAG, "reinitializing from onNewIntent()");
-            initializeActivityWithRunningRtpSession(account, with, sessionId);
+            if (initializeActivityWithRunningRtpSession(account, with, sessionId)) {
+                return;
+            }
             if (ACTION_ACCEPT_CALL.equals(intent.getAction())) {
                 Log.d(Config.LOGTAG, "accepting call from onNewIntent()");
                 requestPermissionsAndAcceptCall();
@@ -239,8 +241,9 @@ public class RtpSessionActivity extends XmppActivity implements XmppConnectionSe
         final Jid with = Jid.of(intent.getStringExtra(EXTRA_WITH));
         final String sessionId = intent.getStringExtra(EXTRA_SESSION_ID);
         if (sessionId != null) {
-            //TODO this should probably return true/false so we don’t continue to accept the call after calling finish()
-            initializeActivityWithRunningRtpSession(account, with, sessionId);
+            if (initializeActivityWithRunningRtpSession(account, with, sessionId)) {
+                return;
+            }
             if (ACTION_ACCEPT_CALL.equals(intent.getAction())) {
                 Log.d(Config.LOGTAG, "intent action was accept");
                 requestPermissionsAndAcceptCall();
@@ -357,18 +360,18 @@ public class RtpSessionActivity extends XmppActivity implements XmppConnectionSe
         }
     }
 
-    private void initializeActivityWithRunningRtpSession(final Account account, Jid with, String sessionId) {
+    private boolean initializeActivityWithRunningRtpSession(final Account account, Jid with, String sessionId) {
         final WeakReference<JingleRtpConnection> reference = xmppConnectionService.getJingleConnectionManager()
                 .findJingleRtpConnection(account, with, sessionId);
         if (reference == null || reference.get() == null) {
             finish();
-            return;
+            return true;
         }
         this.rtpConnectionReference = reference;
         final RtpEndUserState currentState = requireRtpConnection().getEndUserState();
         if (currentState == RtpEndUserState.ENDED) {
             finish();
-            return;
+            return true;
         }
         if (currentState == RtpEndUserState.INCOMING_CALL) {
             getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
@@ -381,6 +384,7 @@ public class RtpSessionActivity extends XmppActivity implements XmppConnectionSe
         updateStateDisplay(currentState);
         updateButtonConfiguration(currentState);
         updateProfilePicture(currentState);
+        return false;
     }
 
     private void reInitializeActivityWithRunningRapSession(final Account account, Jid with, String sessionId) {
