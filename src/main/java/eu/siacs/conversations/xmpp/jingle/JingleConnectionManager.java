@@ -174,7 +174,7 @@ public class JingleConnectionManager extends AbstractConnectionManager {
         final boolean fromSelf = from.asBareJid().equals(account.getJid().asBareJid());
         final AbstractJingleConnection.Id id;
         if (fromSelf) {
-            if (to.isFullJid()) {
+            if (to != null && to.isFullJid()) {
                 id = AbstractJingleConnection.Id.of(account, to, sessionId);
             } else {
                 return;
