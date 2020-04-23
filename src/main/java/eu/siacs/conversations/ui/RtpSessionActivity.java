@@ -5,6 +5,7 @@ import android.annotation.SuppressLint;
 import android.app.PictureInPictureParams;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.databinding.DataBindingUtil;
 import android.os.Build;
 import android.os.Bundle;
@@ -238,6 +239,7 @@ public class RtpSessionActivity extends XmppActivity implements XmppConnectionSe
         final Jid with = Jid.of(intent.getStringExtra(EXTRA_WITH));
         final String sessionId = intent.getStringExtra(EXTRA_SESSION_ID);
         if (sessionId != null) {
+            //TODO this should probably return true/false so we don’t continue to accept the call after calling finish()
             initializeActivityWithRunningRtpSession(account, with, sessionId);
             if (ACTION_ACCEPT_CALL.equals(intent.getAction())) {
                 Log.d(Config.LOGTAG, "intent action was accept");
@@ -323,8 +325,7 @@ public class RtpSessionActivity extends XmppActivity implements XmppConnectionSe
 
     @Override
     public void onUserLeaveHint() {
-        Log.d(Config.LOGTAG, "user leave hint");
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O && deviceSupportsPictureInPicture()) {
             if (shouldBePictureInPicture()) {
                 enterPictureInPictureMode(
                         new PictureInPictureParams.Builder()
@@ -333,7 +334,14 @@ public class RtpSessionActivity extends XmppActivity implements XmppConnectionSe
                 );
             }
         }
+    }
 
+    private boolean deviceSupportsPictureInPicture() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            return getPackageManager().hasSystemFeature(PackageManager.FEATURE_PICTURE_IN_PICTURE);
+        } else {
+            return false;
+        }
     }
 
     private boolean shouldBePictureInPicture() {
