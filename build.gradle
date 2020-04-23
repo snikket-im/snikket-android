@@ -270,6 +270,8 @@ android {
             def baseAbiVersionCode = project.ext.abiCodes.get(output.getFilter(OutputFile.ABI))
             if (baseAbiVersionCode != null) {
                 output.versionCodeOverride = (100 * variant.versionCode) + baseAbiVersionCode
+            } else {
+                output.versionCodeOverride = (100 * variant.versionCode)
             }
         }
 
