@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.os.PowerManager;
 import android.os.SystemClock;
 import android.support.annotation.NonNull;
+import android.support.annotation.RequiresApi;
 import android.support.annotation.StringRes;
 import android.util.Log;
 import android.util.Rational;
@@ -330,12 +331,23 @@ public class RtpSessionActivity extends XmppActivity implements XmppConnectionSe
     public void onUserLeaveHint() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O && deviceSupportsPictureInPicture()) {
             if (shouldBePictureInPicture()) {
-                enterPictureInPictureMode(
-                        new PictureInPictureParams.Builder()
-                                .setAspectRatio(new Rational(10, 16))
-                                .build()
-                );
+                startPictureInPicture();
             }
+        }
+    }
+
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    private void startPictureInPicture() {
+        try {
+            enterPictureInPictureMode(
+                    new PictureInPictureParams.Builder()
+                            .setAspectRatio(new Rational(10, 16))
+                            .build()
+            );
+        } catch (IllegalStateException e) {
+            //this sometimes happens on Samsung phones (possibly when Knox is enabled)
+            Log.w(Config.LOGTAG, "unable to enter picture in picture mode", e);
         }
     }
 
