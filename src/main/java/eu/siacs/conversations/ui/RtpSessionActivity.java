@@ -766,8 +766,6 @@ public class RtpSessionActivity extends XmppActivity implements XmppConnectionSe
             if (state == RtpEndUserState.ENDED) {
                 finish();
                 return;
-            } else if (END_CARD.contains(state)) {
-                resetIntent(account, with, state, requireRtpConnection().getMedia());
             }
             runOnUiThread(() -> {
                 updateStateDisplay(state);
@@ -775,9 +773,12 @@ public class RtpSessionActivity extends XmppActivity implements XmppConnectionSe
                 updateVideoViews(state);
                 updateProfilePicture(state);
             });
+            if (END_CARD.contains(state)) {
+                resetIntent(account, with, state, requireRtpConnection().getMedia());
+                this.rtpConnectionReference = null;
+            }
         } else {
             Log.d(Config.LOGTAG, "received update for other rtp session");
-            //TODO if we only ever have one; we might just switch over? Maybe!
         }
     }
 
