@@ -11,6 +11,7 @@ Features:
 
 * End-to-end encryption with either <a href="http://conversations.im/omemo/">OMEMO</a> or <a href="http://openpgp.org/about/">OpenPGP</a>
 * Sending and receiving images
+* Make audio and video calls
 * Intuitive UI that follows Android Design guidelines
 * Pictures / Avatars for your Contacts
 * Syncs with desktop client
