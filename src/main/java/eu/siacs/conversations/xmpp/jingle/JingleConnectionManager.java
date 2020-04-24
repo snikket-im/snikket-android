@@ -122,6 +122,9 @@ public class JingleConnectionManager extends AbstractConnectionManager {
     public boolean isBusy() {
         for (AbstractJingleConnection connection : this.connections.values()) {
             if (connection instanceof JingleRtpConnection) {
+                if (((JingleRtpConnection) connection).isTerminated()) {
+                    continue;
+                }
                 return true;
             }
         }
@@ -139,11 +142,11 @@ public class JingleConnectionManager extends AbstractConnectionManager {
         return !contact.showInContactList();
     }
 
-    public ScheduledFuture<?> schedule(final Runnable runnable, final long delay, final TimeUnit timeUnit) {
+    ScheduledFuture<?> schedule(final Runnable runnable, final long delay, final TimeUnit timeUnit) {
         return this.scheduledExecutorService.schedule(runnable, delay, timeUnit);
     }
 
-    public void respondWithJingleError(final Account account, final IqPacket original, String jingleCondition, String condition, String conditionType) {
+    void respondWithJingleError(final Account account, final IqPacket original, String jingleCondition, String condition, String conditionType) {
         final IqPacket response = original.generateResponse(IqPacket.TYPE.ERROR);
         final Element error = response.addChild("error");
         error.setAttribute("type", conditionType);

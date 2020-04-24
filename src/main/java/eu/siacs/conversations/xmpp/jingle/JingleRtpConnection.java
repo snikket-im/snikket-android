@@ -185,7 +185,7 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
 
     @Override
     synchronized void notifyRebound() {
-        if (TERMINATED.contains(this.state)) {
+        if (isTerminated()) {
             return;
         }
         webRTCWrapper.close();
@@ -398,7 +398,7 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
     }
 
     private synchronized void sendSessionAccept(final Set<Media> media, final SessionDescription offer, final List<PeerConnection.IceServer> iceServers) {
-        if (TERMINATED.contains(this.state)) {
+        if (isTerminated()) {
             Log.w(Config.LOGTAG, id.account.getJid().asBareJid() + ": ICE servers got discovered when session was already terminated. nothing to do.");
             return;
         }
@@ -617,7 +617,7 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
     }
 
     private synchronized void sendSessionInitiate(final Set<Media> media, final State targetState, final List<PeerConnection.IceServer> iceServers) {
-        if (TERMINATED.contains(this.state)) {
+        if (isTerminated()) {
             Log.w(Config.LOGTAG, id.account.getJid().asBareJid() + ": ICE servers got discovered when session was already terminated. nothing to do.");
             return;
         }
@@ -689,7 +689,7 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
         if (response.getType() == IqPacket.TYPE.ERROR) {
             final String errorCondition = response.getErrorCondition();
             Log.d(Config.LOGTAG, id.account.getJid().asBareJid() + ": received IQ-error from " + response.getFrom() + " in RTP session. " + errorCondition);
-            if (TERMINATED.contains(this.state)) {
+            if (isTerminated()) {
                 Log.i(Config.LOGTAG, id.account.getJid().asBareJid() + ": ignoring error because session was already terminated");
                 return;
             }
@@ -709,7 +709,7 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
             this.finish();
         } else if (response.getType() == IqPacket.TYPE.TIMEOUT) {
             Log.d(Config.LOGTAG, id.account.getJid().asBareJid() + ": received IQ timeout in RTP session with " + id.with + ". terminating with connectivity error");
-            if (TERMINATED.contains(this.state)) {
+            if (isTerminated()) {
                 Log.i(Config.LOGTAG, id.account.getJid().asBareJid() + ": ignoring error because session was already terminated");
                 return;
             }
@@ -839,7 +839,7 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
     }
 
     public synchronized void endCall() {
-        if (TERMINATED.contains(this.state)) {
+        if (isTerminated()) {
             Log.w(Config.LOGTAG, id.account.getJid().asBareJid() + ": received endCall() when session has already been terminated. nothing to do");
             return;
         }
@@ -977,7 +977,7 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
         //TODO exact syntax is yet to be determined but transport-replace sounds like the most reasonable
         //as there is no content-replace
         if (Arrays.asList(PeerConnection.PeerConnectionState.FAILED, PeerConnection.PeerConnectionState.DISCONNECTED).contains(newState)) {
-            if (TERMINATED.contains(this.state)) {
+            if (isTerminated()) {
                 Log.d(Config.LOGTAG, id.account.getJid().asBareJid() + ": not sending session-terminate after connectivity error because session is already in state " + this.state);
                 return;
             }
@@ -990,7 +990,7 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
     private void closeWebRTCSessionAfterFailedConnection() {
         this.webRTCWrapper.close();
         synchronized (this) {
-            if (TERMINATED.contains(state)) {
+            if (isTerminated()) {
                 Log.d(Config.LOGTAG, id.account.getJid().asBareJid() + ": no need to send session-terminate after failed connection. Other party already did");
                 return;
             }
@@ -1134,6 +1134,10 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
 
     public State getState() {
         return this.state;
+    }
+
+    public boolean isTerminated() {
+        return TERMINATED.contains(this.state);
     }
 
     public Optional<VideoTrack> geLocalVideoTrack() {
