@@ -920,6 +920,7 @@ Administrator twojego serwera będzie mógł czytać twoje wiadomości, ale moż
   <string name="rtp_state_ringing">Dzwonienie</string>
   <string name="rtp_state_declined_or_busy">Zajęty</string>
   <string name="rtp_state_connectivity_error">Nie można połączyć rozmowy</string>
+  <string name="rtp_state_retracted">Anulowane połączenie</string>
   <string name="rtp_state_application_failure">Błąd aplikacji</string>
   <string name="hang_up">Rozłącz</string>
   <string name="ongoing_call">Połączenie wychodzące</string>
