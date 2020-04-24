@@ -48,7 +48,7 @@ import rocks.xmpp.addr.Jid;
 
 public class JingleRtpConnection extends AbstractJingleConnection implements WebRTCWrapper.EventCallback {
 
-    private static final long BUSY_TIME_OUT = 20;
+    private static final long BUSY_TIME_OUT = 30;
 
     public static final List<State> STATES_SHOWING_ONGOING_CALL = Arrays.asList(
             State.PROCEED,
@@ -954,7 +954,7 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
         }
     }
 
-    public void transitionOrThrow(final State target) {
+    void transitionOrThrow(final State target) {
         if (!transition(target)) {
             throw new IllegalStateException(String.format("Unable to transition from %s to %s", this.state, target));
         }
@@ -1149,7 +1149,7 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
         return webRTCWrapper.getEglBaseContext();
     }
 
-    public void setProposedMedia(final Set<Media> media) {
+    void setProposedMedia(final Set<Media> media) {
         this.proposedMedia = media;
     }
 
