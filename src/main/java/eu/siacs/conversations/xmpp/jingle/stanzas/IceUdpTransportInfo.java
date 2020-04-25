@@ -194,6 +194,9 @@ public class IceUdpTransportInfo extends GenericTransportInfo {
             checkNotNullNoWhitespace(component, "component");
             final String transport = this.getAttribute("protocol");
             checkNotNullNoWhitespace(transport, "protocol");
+            if (!"udp".equals(transport)) {
+                throw new IllegalArgumentException(String.format("'%s' is not a supported protocol", transport));
+            }
             final String priority = this.getAttribute("priority");
             checkNotNullNoWhitespace(priority, "priority");
             final String connectionAddress = this.getAttribute("ip");
