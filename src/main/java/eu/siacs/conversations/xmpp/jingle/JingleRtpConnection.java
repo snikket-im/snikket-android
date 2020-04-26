@@ -657,9 +657,12 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
     }
 
     private void sendSessionTerminate(final Reason reason, final String text) {
+        final State previous = this.state;
         final State target = reasonToState(reason);
         transitionOrThrow(target);
-        writeLogMessage(target);
+        if (previous != State.NULL) {
+            writeLogMessage(target);
+        }
         final JinglePacket jinglePacket = new JinglePacket(JinglePacket.Action.SESSION_TERMINATE, id.sessionId);
         jinglePacket.setReason(reason, text);
         Log.d(Config.LOGTAG, jinglePacket.toString());
@@ -672,7 +675,7 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
         try {
             final RtpContentMap rtpContentMap = isInitiator() ? this.initiatorRtpContentMap : this.responderRtpContentMap;
             transportInfo = rtpContentMap.transportInfo(contentName, candidate);
-        } catch (Exception e) {
+        } catch (final Exception e) {
             Log.d(Config.LOGTAG, id.account.getJid().asBareJid() + ": unable to prepare transport-info from candidate for content=" + contentName);
             return;
         }
