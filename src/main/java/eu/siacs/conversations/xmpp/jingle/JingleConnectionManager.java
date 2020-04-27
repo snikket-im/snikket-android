@@ -1,18 +1,15 @@
 package eu.siacs.conversations.xmpp.jingle;
 
-import android.os.SystemClock;
 import android.util.Base64;
 import android.util.Log;
 
-import com.google.common.base.Function;
 import com.google.common.base.Objects;
+import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.ImmutableSet;
-
-import org.checkerframework.checker.nullness.compatqual.NullableDecl;
 
 import java.lang.ref.WeakReference;
 import java.security.SecureRandom;
@@ -108,6 +105,7 @@ public class JingleConnectionManager extends AbstractConnectionManager {
                 return;
             }
             connections.put(id, connection);
+            mXmppConnectionService.updateConversationUi();
             connection.deliverPacket(packet);
         } else {
             Log.d(Config.LOGTAG, "unable to route jingle packet: " + packet);
@@ -351,6 +349,18 @@ public class JingleConnectionManager extends AbstractConnectionManager {
         mXmppConnectionService.markMessage(message, Message.STATUS_WAITING);
         this.connections.put(id, connection);
         connection.init(message);
+    }
+
+    public Optional<AbstractJingleConnection.Id> getOngoingRtpConnection(final Contact contact) {
+        for(final Map.Entry<AbstractJingleConnection.Id,AbstractJingleConnection> entry : this.connections.entrySet()) {
+            if (entry.getValue() instanceof JingleRtpConnection) {
+                final AbstractJingleConnection.Id id = entry.getKey();
+                if (id.account == contact.getAccount() && id.with.asBareJid().equals(contact.getJid().asBareJid())) {
+                    return Optional.of(id);
+                }
+            }
+        }
+        return Optional.absent();
     }
 
     void finishConnection(final AbstractJingleConnection connection) {

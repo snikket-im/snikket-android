@@ -52,6 +52,8 @@ import android.widget.PopupMenu;
 import android.widget.TextView.OnEditorActionListener;
 import android.widget.Toast;
 
+import com.google.common.base.Optional;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -117,6 +119,7 @@ import eu.siacs.conversations.utils.TimeframeUtils;
 import eu.siacs.conversations.utils.UIHelper;
 import eu.siacs.conversations.xmpp.XmppConnection;
 import eu.siacs.conversations.xmpp.chatstate.ChatState;
+import eu.siacs.conversations.xmpp.jingle.AbstractJingleConnection;
 import eu.siacs.conversations.xmpp.jingle.JingleFileTransferConnection;
 import eu.siacs.conversations.xmpp.jingle.RtpCapability;
 import rocks.xmpp.addr.Jid;
@@ -956,6 +959,7 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
         final MenuItem menuMute = menu.findItem(R.id.action_mute);
         final MenuItem menuUnmute = menu.findItem(R.id.action_unmute);
         final MenuItem menuCall = menu.findItem(R.id.action_call);
+        final MenuItem menuOngoingCall = menu.findItem(R.id.action_ongoing_call);
         final MenuItem menuVideoCall = menu.findItem(R.id.action_video_call);
 
 
@@ -965,10 +969,18 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
                 menuInviteContact.setVisible(conversation.getMucOptions().canInvite());
                 menuMucDetails.setTitle(conversation.getMucOptions().isPrivateAndNonAnonymous() ? R.string.action_muc_details : R.string.channel_details);
                 menuCall.setVisible(false);
+                menuOngoingCall.setVisible(false);
             } else {
-                final RtpCapability.Capability rtpCapability = RtpCapability.check(conversation.getContact());
-                menuCall.setVisible(rtpCapability != RtpCapability.Capability.NONE);
-                menuVideoCall.setVisible(rtpCapability == RtpCapability.Capability.VIDEO);
+                final Optional<AbstractJingleConnection.Id> ongoingRtpSession = activity.xmppConnectionService.getJingleConnectionManager().getOngoingRtpConnection(conversation.getContact());
+                if (ongoingRtpSession.isPresent()) {
+                    menuOngoingCall.setVisible(true);
+                    menuCall.setVisible(false);
+                } else {
+                    menuOngoingCall.setVisible(false);
+                    final RtpCapability.Capability rtpCapability = RtpCapability.check(conversation.getContact());
+                    menuCall.setVisible(rtpCapability != RtpCapability.Capability.NONE);
+                    menuVideoCall.setVisible(rtpCapability == RtpCapability.Capability.VIDEO);
+                }
                 menuContactDetails.setVisible(!this.conversation.withSelf());
                 menuMucDetails.setVisible(false);
                 final XmppConnectionService service = activity.xmppConnectionService;
@@ -1245,10 +1257,26 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
             case R.id.action_video_call:
                 checkPermissionAndTriggerVideoCall();
                 break;
+            case R.id.action_ongoing_call:
+                returnToOngoingCall();
+                break;
             default:
                 break;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void returnToOngoingCall() {
+        final Optional<AbstractJingleConnection.Id> ongoingRtpSession = activity.xmppConnectionService.getJingleConnectionManager().getOngoingRtpConnection(conversation.getContact());
+        if (ongoingRtpSession.isPresent()) {
+            final AbstractJingleConnection.Id id = ongoingRtpSession.get();
+            final Intent intent = new Intent(getActivity(), RtpSessionActivity.class);
+            intent.putExtra(RtpSessionActivity.EXTRA_ACCOUNT, id.account.getJid().asBareJid().toEscapedString());
+            intent.putExtra(RtpSessionActivity.EXTRA_WITH, id.with.toEscapedString());
+            intent.putExtra(RtpSessionActivity.EXTRA_SESSION_ID, id.sessionId);
+            startActivity(intent);
+        }
+
     }
 
     private void checkPermissionAndTriggerAudioCall() {

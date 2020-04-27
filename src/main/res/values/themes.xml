@@ -99,6 +99,8 @@
         <item type="reference" name="icon_new_attachment">@drawable/ic_attach_file_white_24dp</item>
         <item type="reference" name="icon_not_secure">@drawable/ic_lock_open_white_24dp</item>
         <item type="reference" name="icon_call">@drawable/ic_call_white_24dp</item>
+        <item type="reference" name="icon_ongoing_call">@drawable/ic_phone_in_talk_white_24dp</item>
+        <item type="reference" name="ic_ongoing_call_hint">@drawable/ic_phone_in_talk_black_18dp</item>
         <item type="reference" name="icon_remove">@drawable/ic_delete_black_24dp</item>
         <item type="reference" name="icon_search">@drawable/ic_search_white_24dp</item>
         <item type="reference" name="icon_secure">@drawable/ic_lock_open_white_24dp</item>
@@ -219,6 +221,8 @@
         <item type="reference" name="icon_new_attachment">@drawable/ic_attach_file_white_24dp</item>
         <item type="reference" name="icon_not_secure">@drawable/ic_lock_open_white_24dp</item>
         <item type="reference" name="icon_call">@drawable/ic_call_white_24dp</item>
+        <item type="reference" name="icon_ongoing_call">@drawable/ic_phone_in_talk_white_24dp</item>
+        <item type="reference" name="ic_ongoing_call_hint">@drawable/ic_phone_in_talk_white_18dp</item>
         <item type="reference" name="icon_remove">@drawable/ic_delete_white_24dp</item>
         <item type="reference" name="icon_search">@drawable/ic_search_white_24dp</item>
         <item type="reference" name="icon_secure">@drawable/ic_lock_open_white_24dp</item>
