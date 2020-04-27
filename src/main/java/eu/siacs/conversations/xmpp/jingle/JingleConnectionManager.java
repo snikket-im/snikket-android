@@ -50,9 +50,10 @@ import eu.siacs.conversations.xmpp.stanzas.MessagePacket;
 import rocks.xmpp.addr.Jid;
 
 public class JingleConnectionManager extends AbstractConnectionManager {
-    private final ScheduledExecutorService scheduledExecutorService = Executors.newSingleThreadScheduledExecutor();
+    public static final ScheduledExecutorService SCHEDULED_EXECUTOR_SERVICE = Executors.newSingleThreadScheduledExecutor();
+    public final ToneManager toneManager = new ToneManager();
     private final HashMap<RtpSessionProposal, DeviceDiscoveryState> rtpSessionProposals = new HashMap<>();
-    private final Map<AbstractJingleConnection.Id, AbstractJingleConnection> connections = new ConcurrentHashMap<>();
+    private final ConcurrentHashMap<AbstractJingleConnection.Id, AbstractJingleConnection> connections = new ConcurrentHashMap<>();
 
     private final Cache<PersistableSessionId, JingleRtpConnection.State> endedSessions = CacheBuilder.newBuilder()
             .expireAfterWrite(30, TimeUnit.MINUTES)
@@ -141,7 +142,7 @@ public class JingleConnectionManager extends AbstractConnectionManager {
     }
 
     ScheduledFuture<?> schedule(final Runnable runnable, final long delay, final TimeUnit timeUnit) {
-        return this.scheduledExecutorService.schedule(runnable, delay, timeUnit);
+        return this.SCHEDULED_EXECUTOR_SERVICE.schedule(runnable, delay, timeUnit);
     }
 
     void respondWithJingleError(final Account account, final IqPacket original, String jingleCondition, String condition, String conditionType) {
@@ -268,6 +269,7 @@ public class JingleConnectionManager extends AbstractConnectionManager {
             synchronized (rtpSessionProposals) {
                 if (rtpSessionProposals.remove(proposal) != null) {
                     writeLogMissedOutgoing(account, proposal.with, proposal.sessionId, serverMsgId, timestamp);
+                    toneManager.transition(true, RtpEndUserState.DECLINED_OR_BUSY);
                     mXmppConnectionService.notifyJingleRtpConnectionUpdate(account, proposal.with, proposal.sessionId, RtpEndUserState.DECLINED_OR_BUSY);
                 } else {
                     Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": no rtp session proposal found for " + from + " to deliver reject");
@@ -352,7 +354,7 @@ public class JingleConnectionManager extends AbstractConnectionManager {
     }
 
     public Optional<AbstractJingleConnection.Id> getOngoingRtpConnection(final Contact contact) {
-        for(final Map.Entry<AbstractJingleConnection.Id,AbstractJingleConnection> entry : this.connections.entrySet()) {
+        for (final Map.Entry<AbstractJingleConnection.Id, AbstractJingleConnection> entry : this.connections.entrySet()) {
             if (entry.getValue() instanceof JingleRtpConnection) {
                 final AbstractJingleConnection.Id id = entry.getKey();
                 if (id.account == contact.getAccount() && id.with.asBareJid().equals(contact.getJid().asBareJid())) {
@@ -423,6 +425,7 @@ public class JingleConnectionManager extends AbstractConnectionManager {
                 }
             }
             if (matchingProposal != null) {
+                toneManager.transition(true, RtpEndUserState.ENDED);
                 Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": retracting rtp session proposal with " + with);
                 this.rtpSessionProposals.remove(matchingProposal);
                 final MessagePacket messagePacket = mXmppConnectionService.getMessageGenerator().sessionRetract(matchingProposal);
@@ -439,11 +442,13 @@ public class JingleConnectionManager extends AbstractConnectionManager {
                 if (proposal.account == account && with.asBareJid().equals(proposal.with)) {
                     final DeviceDiscoveryState preexistingState = entry.getValue();
                     if (preexistingState != null && preexistingState != DeviceDiscoveryState.FAILED) {
+                        final RtpEndUserState endUserState = preexistingState.toEndUserState();
+                        toneManager.transition(true, endUserState);
                         mXmppConnectionService.notifyJingleRtpConnectionUpdate(
                                 account,
                                 with,
                                 proposal.sessionId,
-                                preexistingState.toEndUserState()
+                                endUserState
                         );
                         return;
                     }
@@ -529,7 +534,9 @@ public class JingleConnectionManager extends AbstractConnectionManager {
                 return;
             }
             this.rtpSessionProposals.put(sessionProposal, target);
-            mXmppConnectionService.notifyJingleRtpConnectionUpdate(account, sessionProposal.with, sessionProposal.sessionId, target.toEndUserState());
+            final RtpEndUserState endUserState = target.toEndUserState();
+            toneManager.transition(true, endUserState);
+            mXmppConnectionService.notifyJingleRtpConnectionUpdate(account, sessionProposal.with, sessionProposal.sessionId, endUserState);
             Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": flagging session " + sessionId + " as " + target);
         }
     }

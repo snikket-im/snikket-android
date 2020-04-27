@@ -1027,7 +1027,11 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
     }
 
     private void updateEndUserState() {
-        xmppConnectionService.notifyJingleRtpConnectionUpdate(id.account, id.with, id.sessionId, getEndUserState());
+        final RtpEndUserState endUserState = getEndUserState();
+        final RtpContentMap contentMap = initiatorRtpContentMap;
+        final Set<Media> media = contentMap == null ? Collections.emptySet() : contentMap.getMedia();
+        jingleConnectionManager.toneManager.transition(isInitiator(), endUserState, media);
+        xmppConnectionService.notifyJingleRtpConnectionUpdate(id.account, id.with, id.sessionId, endUserState);
     }
 
     private void updateOngoingCallNotification() {
