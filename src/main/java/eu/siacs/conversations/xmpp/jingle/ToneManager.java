@@ -86,7 +86,7 @@ public class ToneManager {
 
     private void scheduleConnected() {
         this.currentTone = JingleConnectionManager.SCHEDULED_EXECUTOR_SERVICE.schedule(() -> {
-            this.toneGenerator.startTone(ToneGenerator.TONE_CDMA_ONE_MIN_BEEP, 145);
+            this.toneGenerator.startTone(ToneGenerator.TONE_PROP_PROMPT, 200);
         }, 0, TimeUnit.SECONDS);
     }
 
