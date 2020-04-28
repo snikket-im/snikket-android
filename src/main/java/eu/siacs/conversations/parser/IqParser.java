@@ -387,29 +387,6 @@ public class IqParser extends AbstractParser implements OnIqPacketReceived {
                 response = mXmppConnectionService.getIqGenerator().entityTimeResponse(packet);
             }
             mXmppConnectionService.sendIqPacket(account, response, null);
-        } else if (packet.hasChild("pubsub", Namespace.PUBSUB) && packet.getType() == IqPacket.TYPE.SET) {
-            final Jid server = packet.getFrom();
-            final Element pubsub = packet.findChild("pubsub", Namespace.PUBSUB);
-            final Element publish = pubsub == null ? null : pubsub.findChild("publish");
-            final String node = publish == null ? null : publish.getAttribute("node");
-            final Element item = publish == null ? null : publish.findChild("item");
-            final Element notification = item == null ? null : item.findChild("notification", Namespace.PUSH);
-            if (notification != null && node != null && server != null) {
-                final Conversation conversation = mXmppConnectionService.findConversationByUuid(node);
-                if (conversation != null && conversation.getAccount() == account && conversation.getJid().getDomain().equals(server.getDomain())) {
-                    Log.d(Config.LOGTAG,account.getJid().asBareJid()+": received muc push event for "+conversation.getJid().asBareJid());
-                    mXmppConnectionService.sendIqPacket(account, packet.generateResponse(IqPacket.TYPE.RESULT), null);
-                    mXmppConnectionService.mucSelfPingAndRejoin(conversation);
-                } else {
-                    Log.d(Config.LOGTAG,account.getJid().asBareJid()+": received push event for unknown conference from "+server);
-                    final IqPacket response = packet.generateResponse(IqPacket.TYPE.ERROR);
-                    final Element error = response.addChild("error");
-                    error.setAttribute("type", "cancel");
-                    error.addChild("item-not-found", "urn:ietf:params:xml:ns:xmpp-stanzas");
-                    mXmppConnectionService.sendIqPacket(account, response, null);
-                }
-            }
-
         } else {
             if (packet.getType() == IqPacket.TYPE.GET || packet.getType() == IqPacket.TYPE.SET) {
                 final IqPacket response = packet.generateResponse(IqPacket.TYPE.ERROR);

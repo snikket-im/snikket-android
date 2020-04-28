@@ -610,7 +610,6 @@ public class XmppConnectionService extends Service {
             toggleForegroundService(true);
         }
         String pushedAccountHash = null;
-        String pushedChannelHash = null;
         boolean interactive = false;
         if (action != null) {
             final String uuid = intent.getStringExtra("uuid");
@@ -735,7 +734,6 @@ public class XmppConnectionService extends Service {
                     break;
                 case ACTION_FCM_MESSAGE_RECEIVED:
                     pushedAccountHash = intent.getStringExtra("account");
-                    pushedChannelHash = intent.getStringExtra("channel");
                     Log.d(Config.LOGTAG, "push message arrived in service. account=" + pushedAccountHash);
                     break;
                 case Intent.ACTION_SEND:
@@ -758,9 +756,6 @@ public class XmppConnectionService extends Service {
                         "ui".equals(action),
                         pushWasMeantForThisAccount,
                         pingCandidates);
-                if (pushWasMeantForThisAccount && pushedChannelHash != null) {
-                    checkMucStillJoined(account, pushedAccountHash, androidId);
-                }
             }
             if (pingNow) {
                 for (Account account : pingCandidates) {
@@ -851,20 +846,6 @@ public class XmppConnectionService extends Service {
             }
         }
         return pingNow;
-    }
-
-    private void checkMucStillJoined(final Account account, final String hash, final String androidId) {
-        for (final Conversation conversation : this.conversations) {
-            if (conversation.getAccount() == account && conversation.getMode() == Conversational.MODE_MULTI) {
-                Jid jid = conversation.getJid().asBareJid();
-                final String currentHash = CryptoHelper.getFingerprint(jid, androidId);
-                if (currentHash.equals(hash)) {
-                    Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": received cloud push notification for MUC " + jid);
-                    return;
-                }
-            }
-        }
-        mPushManagementService.unregisterChannel(account, hash);
     }
 
     public void reinitializeMuclumbusService() {
@@ -2156,10 +2137,6 @@ public class XmppConnectionService extends Service {
                         }
                     }
                 }
-                if (conversation.getMucOptions().push()) {
-                    disableDirectMucPush(conversation);
-                    mPushManagementService.disablePushOnServer(conversation);
-                }
                 leaveMuc(conversation);
             } else {
                 if (conversation.getContact().getOption(Contact.Options.PENDING_SUBSCRIPTION_REQUEST)) {
@@ -2758,9 +2735,6 @@ public class XmppConnectionService extends Service {
                             }
                         }
                     }
-                    if (mucOptions.push()) {
-                        enableMucPush(conversation);
-                    }
                     synchronized (account.inProgressConferenceJoins) {
                         account.inProgressConferenceJoins.remove(conversation);
                         sendUnsentMessages(conversation);
@@ -2805,40 +2779,6 @@ public class XmppConnectionService extends Service {
             updateConversationUi();
         }
     }
-
-    private void enableDirectMucPush(final Conversation conversation) {
-        final Account account = conversation.getAccount();
-        final Jid room = conversation.getJid().asBareJid();
-        final IqPacket enable = mIqGenerator.enablePush(conversation.getAccount().getJid(), conversation.getUuid(), null);
-        enable.setTo(room);
-        sendIqPacket(account, enable, (a, response) -> {
-            if (response.getType() == IqPacket.TYPE.RESULT) {
-                Log.d(Config.LOGTAG, a.getJid().asBareJid() + ": enabled direct push for muc " + room);
-            } else if (response.getType() == IqPacket.TYPE.ERROR) {
-                Log.d(Config.LOGTAG, a.getJid().asBareJid() + ": unable to enable direct push for muc " + room + " " + response.getError());
-            }
-        });
-    }
-
-    private void enableMucPush(final Conversation conversation) {
-        enableDirectMucPush(conversation);
-        mPushManagementService.registerPushTokenOnServer(conversation);
-    }
-
-    private void disableDirectMucPush(final Conversation conversation) {
-        final Account account = conversation.getAccount();
-        final Jid room = conversation.getJid().asBareJid();
-        final IqPacket disable = mIqGenerator.disablePush(conversation.getAccount().getJid(), conversation.getUuid());
-        disable.setTo(room);
-        sendIqPacket(account, disable, (a, response) -> {
-            if (response.getType() == IqPacket.TYPE.RESULT) {
-                Log.d(Config.LOGTAG, a.getJid().asBareJid() + ": disabled direct push for muc " + room);
-            } else if (response.getType() == IqPacket.TYPE.ERROR) {
-                Log.d(Config.LOGTAG, a.getJid().asBareJid() + ": unable to disable direct push for muc " + room + " " + response.getError());
-            }
-        });
-    }
-
     private void fetchConferenceMembers(final Conversation conversation) {
         final Account account = conversation.getAccount();
         final AxolotlService axolotlService = account.getAxolotlService();

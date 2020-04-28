@@ -114,10 +114,6 @@ public class MucOptions {
         return MessageArchiveService.Version.has(getFeatures());
     }
 
-    public boolean push() {
-        return getFeatures().contains(Namespace.PUSH);
-    }
-
     public boolean updateConfiguration(ServiceDiscoveryResult serviceDiscoveryResult) {
         this.serviceDiscoveryResult = serviceDiscoveryResult;
         String name;
