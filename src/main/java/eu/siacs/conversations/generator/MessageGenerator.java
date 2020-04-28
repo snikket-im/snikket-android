@@ -12,6 +12,7 @@ import eu.siacs.conversations.crypto.axolotl.AxolotlService;
 import eu.siacs.conversations.crypto.axolotl.XmppAxolotlMessage;
 import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.entities.Conversation;
+import eu.siacs.conversations.entities.Conversational;
 import eu.siacs.conversations.entities.Message;
 import eu.siacs.conversations.http.P1S3UrlStreamHandler;
 import eu.siacs.conversations.services.XmppConnectionService;
@@ -160,15 +161,23 @@ public class MessageGenerator extends AbstractGenerator {
         return packet;
     }
 
-    public MessagePacket confirm(final Account account, final Jid to, final String id, final Jid counterpart, final boolean groupChat) {
-        MessagePacket packet = new MessagePacket();
+    public MessagePacket confirm(final Message message) {
+        final boolean groupChat = message.getConversation().getMode() == Conversational.MODE_MULTI;
+        final Jid to = message.getCounterpart();
+        final MessagePacket packet = new MessagePacket();
         packet.setType(groupChat ? MessagePacket.TYPE_GROUPCHAT : MessagePacket.TYPE_CHAT);
         packet.setTo(groupChat ? to.asBareJid() : to);
-        packet.setFrom(account.getJid());
-        Element displayed = packet.addChild("displayed", "urn:xmpp:chat-markers:0");
-        displayed.setAttribute("id", id);
-        if (groupChat && counterpart != null) {
-            displayed.setAttribute("sender", counterpart.toString());
+        final Element displayed = packet.addChild("displayed", "urn:xmpp:chat-markers:0");
+        if (groupChat) {
+            final String stanzaId = message.getServerMsgId();
+            if (stanzaId != null) {
+                displayed.setAttribute("id", stanzaId);
+            } else {
+                displayed.setAttribute("sender", to.toString());
+                displayed.setAttribute("id", message.getRemoteMsgId());
+            }
+        } else {
+            displayed.setAttribute("id", message.getRemoteMsgId());
         }
         packet.addChild("store", "urn:xmpp:hints");
         return packet;

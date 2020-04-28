@@ -4062,6 +4062,7 @@ public class XmppConnectionService extends Service {
                 }
             };
             mDatabaseWriterExecutor.execute(runnable);
+            updateConversationUi();
             updateUnreadCountBadge();
             return readMessages;
         } else {
@@ -4094,11 +4095,9 @@ public class XmppConnectionService extends Service {
                 && (markable.trusted() || isPrivateAndNonAnonymousMuc)
                 && markable.getRemoteMsgId() != null) {
             Log.d(Config.LOGTAG, conversation.getAccount().getJid().asBareJid() + ": sending read marker to " + markable.getCounterpart().toString());
-            Account account = conversation.getAccount();
-            final Jid to = markable.getCounterpart();
-            final boolean groupChat = conversation.getMode() == Conversation.MODE_MULTI;
-            MessagePacket packet = mMessageGenerator.confirm(account, to, markable.getRemoteMsgId(), markable.getCounterpart(), groupChat);
-            this.sendMessagePacket(conversation.getAccount(), packet);
+            final Account account = conversation.getAccount();
+            final MessagePacket packet = mMessageGenerator.confirm(markable);
+            this.sendMessagePacket(account, packet);
         }
     }
 

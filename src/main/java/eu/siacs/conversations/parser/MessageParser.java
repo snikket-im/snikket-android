@@ -927,22 +927,29 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
                     activateGracePeriod(account);
                 }
             } else if (isTypeGroupChat) {
-                Conversation conversation = mXmppConnectionService.find(account, counterpart.asBareJid());
-                if (conversation != null && id != null && sender != null) {
-                    Message message = conversation.findMessageWithRemoteId(id, sender);
-                    if (message != null) {
-                        final Jid fallback = conversation.getMucOptions().getTrueCounterpart(counterpart);
-                        final Jid trueJid = getTrueCounterpart((query != null && query.safeToExtractTrueCounterpart()) ? mucUserElement : null, fallback);
-                        final boolean trueJidMatchesAccount = account.getJid().asBareJid().equals(trueJid == null ? null : trueJid.asBareJid());
-                        if (trueJidMatchesAccount || conversation.getMucOptions().isSelf(counterpart)) {
-                            if (!message.isRead() && (query == null || query.isCatchup())) { //checking if message is unread fixes race conditions with reflections
-                                mXmppConnectionService.markRead(conversation);
-                            }
-                        } else if (!counterpart.isBareJid() && trueJid != null) {
-                            final ReadByMarker readByMarker = ReadByMarker.from(counterpart, trueJid);
-                            if (message.addReadByMarker(readByMarker)) {
-                                mXmppConnectionService.updateMessage(message, false);
-                            }
+                final Conversation conversation = mXmppConnectionService.find(account, counterpart.asBareJid());
+                final Message message;
+                if (conversation != null && id != null) {
+                    if (sender != null) {
+                        message = conversation.findMessageWithRemoteId(id, sender);
+                    } else {
+                        message = conversation.findMessageWithServerMsgId(id);
+                    }
+                } else {
+                    message = null;
+                }
+                if (message != null) {
+                    final Jid fallback = conversation.getMucOptions().getTrueCounterpart(counterpart);
+                    final Jid trueJid = getTrueCounterpart((query != null && query.safeToExtractTrueCounterpart()) ? mucUserElement : null, fallback);
+                    final boolean trueJidMatchesAccount = account.getJid().asBareJid().equals(trueJid == null ? null : trueJid.asBareJid());
+                    if (trueJidMatchesAccount || conversation.getMucOptions().isSelf(counterpart)) {
+                        if (!message.isRead() && (query == null || query.isCatchup())) { //checking if message is unread fixes race conditions with reflections
+                            mXmppConnectionService.markRead(conversation);
+                        }
+                    } else if (!counterpart.isBareJid() && trueJid != null) {
+                        final ReadByMarker readByMarker = ReadByMarker.from(counterpart, trueJid);
+                        if (message.addReadByMarker(readByMarker)) {
+                            mXmppConnectionService.updateMessage(message, false);
                         }
                     }
                 }
