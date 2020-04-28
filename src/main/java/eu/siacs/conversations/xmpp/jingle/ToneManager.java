@@ -48,6 +48,13 @@ public class ToneManager {
                 return ToneState.ENDING_CALL;
             }
         }
+        if (state == RtpEndUserState.CONNECTED) {
+            if (media.contains(Media.VIDEO)) {
+                return ToneState.NULL;
+            } else {
+                return ToneState.CONNECTED;
+            }
+        }
         return ToneState.NULL;
     }
 
@@ -64,6 +71,9 @@ public class ToneManager {
             case RINGING:
                 scheduleWaitingTone();
                 break;
+            case CONNECTED:
+                scheduleConnected();
+                break;
             case BUSY:
                 scheduleBusy();
                 break;
@@ -74,9 +84,15 @@ public class ToneManager {
         this.state = state;
     }
 
+    private void scheduleConnected() {
+        this.currentTone = JingleConnectionManager.SCHEDULED_EXECUTOR_SERVICE.schedule(() -> {
+            this.toneGenerator.startTone(ToneGenerator.TONE_CDMA_ONE_MIN_BEEP, 145);
+        }, 0, TimeUnit.SECONDS);
+    }
+
     private void scheduleEnding() {
         this.currentTone = JingleConnectionManager.SCHEDULED_EXECUTOR_SERVICE.schedule(() -> {
-            this.toneGenerator.startTone(ToneGenerator.TONE_CDMA_CONFIRM, 600);
+            this.toneGenerator.startTone(ToneGenerator.TONE_CDMA_CALLDROP_LITE, 375);
         }, 0, TimeUnit.SECONDS);
     }
 
@@ -100,6 +116,6 @@ public class ToneManager {
     }
 
     private enum ToneState {
-        NULL, RINGING, BUSY, ENDING_CALL
+        NULL, RINGING, CONNECTED, BUSY, ENDING_CALL
     }
 }
