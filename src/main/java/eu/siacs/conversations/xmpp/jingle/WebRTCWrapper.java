@@ -230,7 +230,7 @@ public class WebRTCWrapper {
         final AppRTCAudioManager audioManager = this.appRTCAudioManager;
         final EglBase eglBase = this.eglBase;
         if (peerConnection != null) {
-            peerConnection.dispose();
+            dispose(peerConnection);
             this.peerConnection = null;
         }
         if (audioManager != null) {
@@ -248,6 +248,14 @@ public class WebRTCWrapper {
         if (eglBase != null) {
             eglBase.release();
             this.eglBase = null;
+        }
+    }
+
+    private static void dispose(final PeerConnection peerConnection) {
+        try {
+            peerConnection.dispose();
+        } catch (final IllegalStateException e) {
+            Log.e(Config.LOGTAG,"unable to dispose of peer connection", e);
         }
     }
 
