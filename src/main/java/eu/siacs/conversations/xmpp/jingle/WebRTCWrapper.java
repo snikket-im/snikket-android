@@ -352,8 +352,7 @@ public class WebRTCWrapper {
                 }
 
                 @Override
-                public void onSetFailure(String s) {
-                    Log.d(Config.LOGTAG, "unable to set local " + s);
+                public void onSetFailure(final String s) {
                     future.setException(new IllegalArgumentException("unable to set local session description: " + s));
 
                 }

@@ -430,7 +430,7 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
             final SessionDescription sessionDescription = SessionDescription.parse(webRTCSessionDescription.description);
             final RtpContentMap respondingRtpContentMap = RtpContentMap.of(sessionDescription);
             sendSessionAccept(respondingRtpContentMap);
-            this.webRTCWrapper.setLocalDescription(webRTCSessionDescription);
+            this.webRTCWrapper.setLocalDescription(webRTCSessionDescription).get();
         } catch (final Exception e) {
             Log.d(Config.LOGTAG, "unable to send session accept", Throwables.getRootCause(e));
             webRTCWrapper.close();
@@ -647,7 +647,7 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
             sendSessionInitiate(rtpContentMap, targetState);
             this.webRTCWrapper.setLocalDescription(webRTCSessionDescription).get();
         } catch (final Exception e) {
-            Log.d(Config.LOGTAG, id.account.getJid().asBareJid() + ": unable to sendSessionInitiate", e);
+            Log.d(Config.LOGTAG, id.account.getJid().asBareJid() + ": unable to sendSessionInitiate", Throwables.getRootCause(e));
             webRTCWrapper.close();
             if (isInState(targetState)) {
                 sendSessionTerminate(Reason.FAILED_APPLICATION);
