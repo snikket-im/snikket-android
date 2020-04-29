@@ -158,7 +158,7 @@ public class WebRTCWrapper {
     private EglBase eglBase = null;
     private CapturerChoice capturerChoice;
 
-    public WebRTCWrapper(final EventCallback eventCallback) {
+    WebRTCWrapper(final EventCallback eventCallback) {
         this.eventCallback = eventCallback;
     }
 
@@ -175,7 +175,7 @@ public class WebRTCWrapper {
         });
     }
 
-    public void initializePeerConnection(final Set<Media> media, final List<PeerConnection.IceServer> iceServers) throws InitializationException {
+    synchronized void initializePeerConnection(final Set<Media> media, final List<PeerConnection.IceServer> iceServers) throws InitializationException {
         Preconditions.checkState(this.eglBase != null);
         Preconditions.checkNotNull(media);
         Preconditions.checkArgument(media.size() > 0, "media can not be empty when initializing peer connection");
@@ -224,7 +224,7 @@ public class WebRTCWrapper {
         this.peerConnection = peerConnection;
     }
 
-    public void close() {
+    synchronized void close() {
         final PeerConnection peerConnection = this.peerConnection;
         final CapturerChoice capturerChoice = this.capturerChoice;
         final AppRTCAudioManager audioManager = this.appRTCAudioManager;
@@ -259,7 +259,7 @@ public class WebRTCWrapper {
         }
     }
 
-    void verifyClosed() {
+    synchronized void verifyClosed() {
         if (this.peerConnection != null
                 || this.eglBase != null
                 || this.localVideoTrack != null
@@ -286,7 +286,7 @@ public class WebRTCWrapper {
         audioTrack.setEnabled(enabled);
     }
 
-    public boolean isVideoEnabled() {
+    boolean isVideoEnabled() {
         final VideoTrack videoTrack = this.localVideoTrack;
         if (videoTrack == null) {
             throw new IllegalStateException("Local video track does not exist");
@@ -294,7 +294,7 @@ public class WebRTCWrapper {
         return videoTrack.enabled();
     }
 
-    public void setVideoEnabled(final boolean enabled) {
+    void setVideoEnabled(final boolean enabled) {
         final VideoTrack videoTrack = this.localVideoTrack;
         if (videoTrack == null) {
             throw new IllegalStateException("Local video track does not exist");
@@ -302,7 +302,7 @@ public class WebRTCWrapper {
         videoTrack.setEnabled(enabled);
     }
 
-    public ListenableFuture<SessionDescription> createOffer() {
+    ListenableFuture<SessionDescription> createOffer() {
         return Futures.transformAsync(getPeerConnectionFuture(), peerConnection -> {
             final SettableFuture<SessionDescription> future = SettableFuture.create();
             peerConnection.createOffer(new CreateSdpObserver() {
@@ -313,7 +313,6 @@ public class WebRTCWrapper {
 
                 @Override
                 public void onCreateFailure(String s) {
-                    Log.d(Config.LOGTAG, "create failure" + s);
                     future.setException(new IllegalStateException("Unable to create offer: " + s));
                 }
             }, new MediaConstraints());
@@ -321,7 +320,7 @@ public class WebRTCWrapper {
         }, MoreExecutors.directExecutor());
     }
 
-    public ListenableFuture<SessionDescription> createAnswer() {
+    ListenableFuture<SessionDescription> createAnswer() {
         return Futures.transformAsync(getPeerConnectionFuture(), peerConnection -> {
             final SettableFuture<SessionDescription> future = SettableFuture.create();
             peerConnection.createAnswer(new CreateSdpObserver() {
@@ -339,7 +338,7 @@ public class WebRTCWrapper {
         }, MoreExecutors.directExecutor());
     }
 
-    public ListenableFuture<Void> setLocalDescription(final SessionDescription sessionDescription) {
+    ListenableFuture<Void> setLocalDescription(final SessionDescription sessionDescription) {
         Log.d(EXTENDED_LOGGING_TAG, "setting local description:");
         for (final String line : sessionDescription.description.split(eu.siacs.conversations.xmpp.jingle.SessionDescription.LINE_DIVIDER)) {
             Log.d(EXTENDED_LOGGING_TAG, line);
@@ -363,7 +362,7 @@ public class WebRTCWrapper {
         }, MoreExecutors.directExecutor());
     }
 
-    public ListenableFuture<Void> setRemoteDescription(final SessionDescription sessionDescription) {
+    ListenableFuture<Void> setRemoteDescription(final SessionDescription sessionDescription) {
         Log.d(EXTENDED_LOGGING_TAG, "setting remote description:");
         for (final String line : sessionDescription.description.split(eu.siacs.conversations.xmpp.jingle.SessionDescription.LINE_DIVIDER)) {
             Log.d(EXTENDED_LOGGING_TAG, line);
@@ -396,7 +395,7 @@ public class WebRTCWrapper {
         }
     }
 
-    public void addIceCandidate(IceCandidate iceCandidate) {
+    void addIceCandidate(IceCandidate iceCandidate) {
         requirePeerConnection().addIceCandidate(iceCandidate);
     }
 
@@ -447,11 +446,11 @@ public class WebRTCWrapper {
         return this.eglBase.getEglBaseContext();
     }
 
-    public Optional<VideoTrack> getLocalVideoTrack() {
+    Optional<VideoTrack> getLocalVideoTrack() {
         return Optional.fromNullable(this.localVideoTrack);
     }
 
-    public Optional<VideoTrack> getRemoteVideoTrack() {
+    Optional<VideoTrack> getRemoteVideoTrack() {
         return Optional.fromNullable(this.remoteVideoTrack);
     }
 
@@ -471,7 +470,7 @@ public class WebRTCWrapper {
         return context;
     }
 
-    public AppRTCAudioManager getAudioManager() {
+    AppRTCAudioManager getAudioManager() {
         return appRTCAudioManager;
     }
 
@@ -512,7 +511,7 @@ public class WebRTCWrapper {
         }
     }
 
-    public static class InitializationException extends Exception {
+    static class InitializationException extends Exception {
 
         private InitializationException(String message) {
             super(message);
@@ -523,12 +522,12 @@ public class WebRTCWrapper {
         private final CameraVideoCapturer cameraVideoCapturer;
         private final CameraEnumerationAndroid.CaptureFormat captureFormat;
 
-        public CapturerChoice(CameraVideoCapturer cameraVideoCapturer, CameraEnumerationAndroid.CaptureFormat captureFormat) {
+        CapturerChoice(CameraVideoCapturer cameraVideoCapturer, CameraEnumerationAndroid.CaptureFormat captureFormat) {
             this.cameraVideoCapturer = cameraVideoCapturer;
             this.captureFormat = captureFormat;
         }
 
-        public int getFrameRate() {
+        int getFrameRate() {
             return Math.max(captureFormat.framerate.min, Math.min(CAPTURING_MAX_FRAME_RATE, captureFormat.framerate.max));
         }
     }
