@@ -49,14 +49,12 @@ import rocks.xmpp.addr.Jid;
 
 public class JingleRtpConnection extends AbstractJingleConnection implements WebRTCWrapper.EventCallback {
 
-    private static final long BUSY_TIME_OUT = 30;
-
     public static final List<State> STATES_SHOWING_ONGOING_CALL = Arrays.asList(
             State.PROCEED,
             State.SESSION_INITIALIZED_PRE_APPROVED,
             State.SESSION_ACCEPTED
     );
-
+    private static final long BUSY_TIME_OUT = 30;
     private static final List<State> TERMINATED = Arrays.asList(
             State.TERMINATED_SUCCESS,
             State.TERMINATED_DECLINED_OR_BUSY,
@@ -236,31 +234,40 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
             if (identificationTags.size() == 0) {
                 Log.w(Config.LOGTAG, id.account.getJid().asBareJid() + ": no identification tags found in initial offer. we won't be able to calculate mLineIndices");
             }
-            for (final Map.Entry<String, RtpContentMap.DescriptionTransport> content : contentMap.contents.entrySet()) {
-                final String ufrag = content.getValue().transport.getAttribute("ufrag");
-                for (final IceUdpTransportInfo.Candidate candidate : content.getValue().transport.getCandidates()) {
-                    final String sdp;
-                    try {
-                        sdp = candidate.toSdpAttribute(ufrag);
-                    } catch (IllegalArgumentException e) {
-                        Log.d(Config.LOGTAG, id.account.getJid().asBareJid() + ": ignoring invalid ICE candidate " + e.getMessage());
-                        continue;
-                    }
-                    final String sdpMid = content.getKey();
-                    final int mLineIndex = identificationTags.indexOf(sdpMid);
-                    final IceCandidate iceCandidate = new IceCandidate(sdpMid, mLineIndex, sdp);
-                    if (isInState(State.SESSION_ACCEPTED)) {
-                        Log.d(Config.LOGTAG, "received candidate: " + iceCandidate);
-                        this.webRTCWrapper.addIceCandidate(iceCandidate);
-                    } else {
-                        this.pendingIceCandidates.offer(iceCandidate);
-                        Log.d(Config.LOGTAG, id.account.getJid().asBareJid() + ": put ICE candidate on backlog");
-                    }
+            receiveCandidates(identificationTags, contentMap.contents.entrySet());
+        } else {
+            if (isTerminated()) {
+                respondOk(jinglePacket);
+                Log.d(Config.LOGTAG, id.account.getJid().asBareJid() + ": ignoring out-of-order transport info; we where already terminated");
+            } else {
+                Log.d(Config.LOGTAG, id.account.getJid().asBareJid() + ": received transport info while in state=" + this.state);
+                terminateWithOutOfOrder(jinglePacket);
+            }
+        }
+    }
+
+    private void receiveCandidates(final List<String> identificationTags, final Set<Map.Entry<String, RtpContentMap.DescriptionTransport>> contents) {
+        for (final Map.Entry<String, RtpContentMap.DescriptionTransport> content : contents) {
+            final String ufrag = content.getValue().transport.getAttribute("ufrag");
+            for (final IceUdpTransportInfo.Candidate candidate : content.getValue().transport.getCandidates()) {
+                final String sdp;
+                try {
+                    sdp = candidate.toSdpAttribute(ufrag);
+                } catch (IllegalArgumentException e) {
+                    Log.d(Config.LOGTAG, id.account.getJid().asBareJid() + ": ignoring invalid ICE candidate " + e.getMessage());
+                    continue;
+                }
+                final String sdpMid = content.getKey();
+                final int mLineIndex = identificationTags.indexOf(sdpMid);
+                final IceCandidate iceCandidate = new IceCandidate(sdpMid, mLineIndex, sdp);
+                if (isInState(State.SESSION_ACCEPTED)) {
+                    Log.d(Config.LOGTAG, "received candidate: " + iceCandidate);
+                    this.webRTCWrapper.addIceCandidate(iceCandidate);
+                } else {
+                    this.pendingIceCandidates.offer(iceCandidate);
+                    Log.d(Config.LOGTAG, id.account.getJid().asBareJid() + ": put ICE candidate on backlog");
                 }
             }
-        } else {
-            Log.d(Config.LOGTAG, id.account.getJid().asBareJid() + ": received transport info while in state=" + this.state);
-            terminateWithOutOfOrder(jinglePacket);
         }
     }
 
@@ -302,6 +309,8 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
         }
         if (transition(target, () -> this.initiatorRtpContentMap = contentMap)) {
             respondOk(jinglePacket);
+            final List<String> identificationTags = contentMap.group == null ? Collections.emptyList() : contentMap.group.getIdentificationTags();
+            receiveCandidates(identificationTags, contentMap.contents.entrySet());
             if (target == State.SESSION_INITIALIZED_PRE_APPROVED) {
                 Log.d(Config.LOGTAG, id.account.getJid().asBareJid() + ": automatically accepting session-initiate");
                 sendSessionAccept();
@@ -346,6 +355,8 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
         if (transition(State.SESSION_ACCEPTED)) {
             respondOk(jinglePacket);
             receiveSessionAccept(contentMap);
+            final List<String> identificationTags = contentMap.group == null ? Collections.emptyList() : contentMap.group.getIdentificationTags();
+            receiveCandidates(identificationTags, contentMap.contents.entrySet());
         } else {
             Log.d(Config.LOGTAG, String.format("%s: received session-accept while in state %s", id.account.getJid().asBareJid(), state));
             respondOk(jinglePacket);
