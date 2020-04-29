@@ -645,7 +645,9 @@ public class RtpSessionActivity extends XmppActivity implements XmppConnectionSe
     private void updateVideoViews(final RtpEndUserState state) {
         if (END_CARD.contains(state) || state == RtpEndUserState.ENDING_CALL) {
             binding.localVideo.setVisibility(View.GONE);
+            binding.localVideo.release();
             binding.remoteVideo.setVisibility(View.GONE);
+            binding.remoteVideo.release();
             binding.pipLocalMicOffIndicator.setVisibility(View.GONE);
             if (isPictureInPicture()) {
                 binding.appBarLayout.setVisibility(View.GONE);
@@ -811,7 +813,9 @@ public class RtpSessionActivity extends XmppActivity implements XmppConnectionSe
                 updateProfilePicture(state, contact);
             });
             if (END_CARD.contains(state)) {
-                resetIntent(account, with, state, requireRtpConnection().getMedia());
+                final JingleRtpConnection rtpConnection = requireRtpConnection();
+                resetIntent(account, with, state, rtpConnection.getMedia());
+                releaseVideoTracks(rtpConnection);
                 this.rtpConnectionReference = null;
             }
         } else {
