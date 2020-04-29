@@ -283,9 +283,9 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
             contentMap.requireContentDescriptions();
             contentMap.requireDTLSFingerprint();
         } catch (final RuntimeException e) {
+            Log.d(Config.LOGTAG, id.account.getJid().asBareJid() + ": improperly formatted contents", Throwables.getRootCause(e));
             respondOk(jinglePacket);
             sendSessionTerminate(Reason.of(e), e.getMessage());
-            Log.d(Config.LOGTAG, id.account.getJid().asBareJid() + ": improperly formatted contents", e);
             return;
         }
         Log.d(Config.LOGTAG, "processing session-init with " + contentMap.contents.size() + " contents");
@@ -813,6 +813,8 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
         final RtpContentMap initiatorContentMap = initiatorRtpContentMap;
         if (initiatorContentMap != null) {
             return initiatorContentMap.getMedia();
+        } else if (isTerminated()) {
+            return Collections.emptySet(); //we might fail before we ever got a chance to set media
         } else {
             return Preconditions.checkNotNull(this.proposedMedia, "RTP connection has not been initialized properly");
         }

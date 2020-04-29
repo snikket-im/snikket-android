@@ -59,7 +59,7 @@ public class RtpContentMap {
         }));
     }
 
-    public void requireContentDescriptions() {
+    void requireContentDescriptions() {
         if (this.contents.size() == 0) {
             throw new IllegalStateException("No contents available");
         }
@@ -70,7 +70,7 @@ public class RtpContentMap {
         }
     }
 
-    public void requireDTLSFingerprint() {
+    void requireDTLSFingerprint() {
         if (this.contents.size() == 0) {
             throw new IllegalStateException("No contents available");
         }
@@ -80,10 +80,13 @@ public class RtpContentMap {
             if (fingerprint == null || Strings.isNullOrEmpty(fingerprint.getContent()) || Strings.isNullOrEmpty(fingerprint.getHash())) {
                 throw new SecurityException(String.format("Use of DTLS-SRTP (XEP-0320) is required for content %s", entry.getKey()));
             }
+            if (Strings.isNullOrEmpty(fingerprint.getSetup())) {
+                throw new SecurityException(String.format("Use of DTLS-SRTP (XEP-0320) is required for content %s but missing setup attribute", entry.getKey()));
+            }
         }
     }
 
-    public JinglePacket toJinglePacket(final JinglePacket.Action action, final String sessionId) {
+    JinglePacket toJinglePacket(final JinglePacket.Action action, final String sessionId) {
         final JinglePacket jinglePacket = new JinglePacket(action, sessionId);
         if (this.group != null) {
             jinglePacket.addGroup(this.group);
@@ -99,7 +102,7 @@ public class RtpContentMap {
         return jinglePacket;
     }
 
-    public RtpContentMap transportInfo(final String contentName, final IceUdpTransportInfo.Candidate candidate) {
+    RtpContentMap transportInfo(final String contentName, final IceUdpTransportInfo.Candidate candidate) {
         final RtpContentMap.DescriptionTransport descriptionTransport = contents.get(contentName);
         final IceUdpTransportInfo transportInfo = descriptionTransport == null ? null : descriptionTransport.transport;
         if (transportInfo == null) {
@@ -115,7 +118,7 @@ public class RtpContentMap {
         public final RtpDescription description;
         public final IceUdpTransportInfo transport;
 
-        public DescriptionTransport(final RtpDescription description, final IceUdpTransportInfo transport) {
+        DescriptionTransport(final RtpDescription description, final IceUdpTransportInfo transport) {
             this.description = description;
             this.transport = transport;
         }
