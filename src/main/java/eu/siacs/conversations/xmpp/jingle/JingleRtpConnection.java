@@ -6,6 +6,7 @@ import android.util.Log;
 import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
 import com.google.common.base.Strings;
+import com.google.common.base.Throwables;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
@@ -52,7 +53,6 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
 
     public static final List<State> STATES_SHOWING_ONGOING_CALL = Arrays.asList(
             State.PROCEED,
-            State.SESSION_INITIALIZED,
             State.SESSION_INITIALIZED_PRE_APPROVED,
             State.SESSION_ACCEPTED
     );
@@ -369,8 +369,8 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
         );
         try {
             this.webRTCWrapper.setRemoteDescription(answer).get();
-        } catch (Exception e) {
-            Log.d(Config.LOGTAG, id.account.getJid().asBareJid() + ": unable to set remote description after receiving session-accept", e);
+        } catch (final Exception e) {
+            Log.d(Config.LOGTAG, id.account.getJid().asBareJid() + ": unable to set remote description after receiving session-accept", Throwables.getRootCause(e));
             webRTCWrapper.close();
             sendSessionTerminate(Reason.FAILED_APPLICATION);
         }
@@ -420,9 +420,10 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
             final RtpContentMap respondingRtpContentMap = RtpContentMap.of(sessionDescription);
             sendSessionAccept(respondingRtpContentMap);
             this.webRTCWrapper.setLocalDescription(webRTCSessionDescription);
-        } catch (Exception e) {
-            Log.d(Config.LOGTAG, "unable to send session accept", e);
-
+        } catch (final Exception e) {
+            Log.d(Config.LOGTAG, "unable to send session accept", Throwables.getRootCause(e));
+            webRTCWrapper.close();
+            sendSessionTerminate(Reason.FAILED_APPLICATION);
         }
     }
 
@@ -791,10 +792,11 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
     }
 
     public Set<Media> getMedia() {
-        if (isInState(State.NULL)) {
+        final State current = getState();
+        if (current == State.NULL) {
             throw new IllegalStateException("RTP connection has not been initialized yet");
         }
-        if (isInState(State.PROPOSED, State.PROCEED)) {
+        if (Arrays.asList(State.PROPOSED, State.PROCEED).contains(current)) {
             return Preconditions.checkNotNull(this.proposedMedia, "RTP connection has not been initialized properly");
         }
         final RtpContentMap initiatorContentMap = initiatorRtpContentMap;
@@ -1028,9 +1030,7 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
 
     private void updateEndUserState() {
         final RtpEndUserState endUserState = getEndUserState();
-        final RtpContentMap contentMap = initiatorRtpContentMap;
-        final Set<Media> media = contentMap == null ? Collections.emptySet() : contentMap.getMedia();
-        jingleConnectionManager.toneManager.transition(isInitiator(), endUserState, media);
+        jingleConnectionManager.toneManager.transition(isInitiator(), endUserState, getMedia());
         xmppConnectionService.notifyJingleRtpConnectionUpdate(id.account, id.with, id.sessionId, endUserState);
     }
 
@@ -1147,7 +1147,7 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
         return TERMINATED.contains(this.state);
     }
 
-    public Optional<VideoTrack> geLocalVideoTrack() {
+    public Optional<VideoTrack> getLocalVideoTrack() {
         return webRTCWrapper.getLocalVideoTrack();
     }
 
