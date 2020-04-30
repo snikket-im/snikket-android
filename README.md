@@ -7,8 +7,8 @@
         <img src="https://inverse.chat/badge.svg?room=conversations@conference.siacs.eu"
              alt="chat on our conference room">
     </a>
-    <a href="https://travis-ci.org/siacs/Conversations">
-        <img src="https://travis-ci.org/siacs/Conversations.svg?branch=master"
+    <a href="https://travis-ci.org/inputmice/Conversations">
+        <img src="https://travis-ci.org/inputmice/Conversations.svg?branch=master"
              alt="build status">
     </a>
     <a href="https://bountysource.com/teams/siacs">
