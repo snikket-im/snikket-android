@@ -19,7 +19,7 @@
     </a>
 </p>
 
-![screenshots](https://raw.githubusercontent.com/siacs/Conversations/master/screenshots.png)
+![screenshots](https://raw.githubusercontent.com/inputmice/Conversations/master/screenshots.png)
 
 ## Design principles
 
@@ -407,7 +407,7 @@ reference any file name by modifying `build.gradle`.
 
 Make sure to have ANDROID_HOME point to your Android SDK. Use the Android SDK Manager to install missing dependencies.
 
-    git clone https://github.com/siacs/Conversations.git
+    git clone https://github.com/inputmice/Conversations.git
     cd Conversations
     ./gradlew assembleConversationsFreeSystemDebug
 
@@ -465,4 +465,4 @@ Play Store version or the current HEAD. If you are having problems connecting to
 your XMPP server your file transfer doesn’t work as expected please always
 include a logcat debug output with your issue (see above).
 
-[issues]: https://github.com/siacs/Conversations/issues
+[issues]: https://github.com/inputmice/Conversations/issues
