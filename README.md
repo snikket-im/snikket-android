@@ -11,9 +11,6 @@
         <img src="https://travis-ci.org/inputmice/Conversations.svg?branch=master"
              alt="build status">
     </a>
-    <a href="https://bountysource.com/teams/siacs">
-        <img src="https://api.bountysource.com/badge/tracker?tracker_id=519483" alt="Bountysource">
-    </a>
 </p>
 
 <p align="center">
