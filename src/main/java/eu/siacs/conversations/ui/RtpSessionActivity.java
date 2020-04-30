@@ -108,9 +108,13 @@ public class RtpSessionActivity extends XmppActivity implements XmppConnectionSe
 
     private void retractSessionProposal() {
         final Intent intent = getIntent();
+        final String action = intent.getAction();
         final Account account = extractAccount(intent);
         final Jid with = Jid.of(intent.getStringExtra(EXTRA_WITH));
-        resetIntent(account, with, RtpEndUserState.RETRACTED, actionToMedia(intent.getAction()));
+        final String state = intent.getStringExtra(EXTRA_LAST_REPORTED_STATE);
+        if (!Intent.ACTION_VIEW.equals(action) || state == null || !END_CARD.contains(RtpEndUserState.valueOf(state))) {
+            resetIntent(account, with, RtpEndUserState.RETRACTED, actionToMedia(intent.getAction()));
+        }
         xmppConnectionService.getJingleConnectionManager().retractSessionProposal(account, with.asBareJid());
     }
 
