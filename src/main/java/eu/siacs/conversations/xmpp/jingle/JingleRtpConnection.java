@@ -415,7 +415,9 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
         }
         try {
             setupWebRTC(media, iceServers);
-        } catch (WebRTCWrapper.InitializationException e) {
+        } catch (final WebRTCWrapper.InitializationException e) {
+            Log.d(Config.LOGTAG, id.account.getJid().asBareJid() + ": unable to initialize WebRTC");
+            webRTCWrapper.close();
             sendSessionTerminate(Reason.FAILED_APPLICATION);
             return;
         }
@@ -636,7 +638,10 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
         try {
             setupWebRTC(media, iceServers);
         } catch (WebRTCWrapper.InitializationException e) {
-            Log.d(Config.LOGTAG, id.account.getJid().asBareJid() + ": unable to initialize webrtc");
+            Log.d(Config.LOGTAG, id.account.getJid().asBareJid() + ": unable to initialize WebRTC");
+            webRTCWrapper.close();
+            //todo we haven’t actually initiated the session yet; so sending sessionTerminate makes no sense
+            //todo either we don’t ring ever at all or maybe we should send a retract or something
             transitionOrThrow(State.TERMINATED_APPLICATION_FAILURE);
             return;
         }
