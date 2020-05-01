@@ -338,10 +338,7 @@ public class Conversation extends AbstractEntity implements Blockable, Comparabl
                 if (mcp == null) {
                     continue;
                 }
-                final boolean counterpartMatch = mode == MODE_SINGLE ?
-                        counterpart.asBareJid().equals(mcp.asBareJid()) :
-                        counterpart.equals(mcp);
-                if (counterpartMatch && ((message.getStatus() == Message.STATUS_RECEIVED) == received)
+                if (mcp.equals(counterpart) && ((message.getStatus() == Message.STATUS_RECEIVED) == received)
                         && (carbon == message.isCarbon() || received)) {
                     final boolean idMatch = id.equals(message.getRemoteMsgId()) || message.remoteMsgIdMatchInEdit(id);
                     if (idMatch && !message.isFileOrImage() && !message.treatAsDownloadable()) {
