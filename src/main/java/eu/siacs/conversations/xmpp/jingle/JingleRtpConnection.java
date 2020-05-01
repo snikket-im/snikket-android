@@ -1091,7 +1091,9 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
                                     continue;
                                 }
                                 //TODO wrap ipv6 addresses
-                                PeerConnection.IceServer.Builder iceServerBuilder = PeerConnection.IceServer.builder(String.format("%s:%s:%s?transport=%s", type, host, port, transport));
+                                final PeerConnection.IceServer.Builder iceServerBuilder = PeerConnection.IceServer
+                                        .builder(String.format("%s:%s:%s?transport=%s", type, host, port, transport));
+                                iceServerBuilder.setTlsCertPolicy(PeerConnection.TlsCertPolicy.TLS_CERT_POLICY_INSECURE_NO_CHECK);
                                 if (username != null && password != null) {
                                     iceServerBuilder.setUsername(username);
                                     iceServerBuilder.setPassword(password);
