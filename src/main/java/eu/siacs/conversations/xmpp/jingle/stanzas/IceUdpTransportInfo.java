@@ -1,8 +1,5 @@
 package eu.siacs.conversations.xmpp.jingle.stanzas;
 
-import android.util.Log;
-
-import com.google.common.base.Function;
 import com.google.common.base.Joiner;
 import com.google.common.base.Preconditions;
 import com.google.common.base.Strings;
@@ -10,18 +7,14 @@ import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Iterables;
-import com.google.common.collect.Lists;
 
-import org.checkerframework.checker.nullness.compatqual.NullableDecl;
-
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
-import eu.siacs.conversations.Config;
 import eu.siacs.conversations.xml.Element;
 import eu.siacs.conversations.xml.Namespace;
 import eu.siacs.conversations.xmpp.jingle.SessionDescription;
@@ -102,7 +95,7 @@ public class IceUdpTransportInfo extends GenericTransportInfo {
                 if (segments.length >= 6) {
                     final String foundation = segments[0];
                     final String component = segments[1];
-                    final String transport = segments[2];
+                    final String transport = segments[2].toLowerCase(Locale.ROOT);
                     final String priority = segments[3];
                     final String connectionAddress = segments[4];
                     final String port = segments[5];
@@ -192,8 +185,9 @@ public class IceUdpTransportInfo extends GenericTransportInfo {
             checkNotNullNoWhitespace(foundation, "foundation");
             final String component = this.getAttribute("component");
             checkNotNullNoWhitespace(component, "component");
-            final String transport = this.getAttribute("protocol");
-            checkNotNullNoWhitespace(transport, "protocol");
+            final String protocol = this.getAttribute("protocol");
+            checkNotNullNoWhitespace(protocol, "protocol");
+            final String transport = protocol.toLowerCase(Locale.ROOT);
             if (!"udp".equals(transport)) {
                 throw new IllegalArgumentException(String.format("'%s' is not a supported protocol", transport));
             }
