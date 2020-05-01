@@ -50,8 +50,8 @@ import eu.siacs.conversations.xmpp.stanzas.MessagePacket;
 import rocks.xmpp.addr.Jid;
 
 public class JingleConnectionManager extends AbstractConnectionManager {
-    public static final ScheduledExecutorService SCHEDULED_EXECUTOR_SERVICE = Executors.newSingleThreadScheduledExecutor();
-    public final ToneManager toneManager = new ToneManager();
+    static final ScheduledExecutorService SCHEDULED_EXECUTOR_SERVICE = Executors.newSingleThreadScheduledExecutor();
+    final ToneManager toneManager = new ToneManager();
     private final HashMap<RtpSessionProposal, DeviceDiscoveryState> rtpSessionProposals = new HashMap<>();
     private final ConcurrentHashMap<AbstractJingleConnection.Id, AbstractJingleConnection> connections = new ConcurrentHashMap<>();
 
@@ -142,7 +142,7 @@ public class JingleConnectionManager extends AbstractConnectionManager {
     }
 
     ScheduledFuture<?> schedule(final Runnable runnable, final long delay, final TimeUnit timeUnit) {
-        return this.SCHEDULED_EXECUTOR_SERVICE.schedule(runnable, delay, timeUnit);
+        return SCHEDULED_EXECUTOR_SERVICE.schedule(runnable, delay, timeUnit);
     }
 
     void respondWithJingleError(final Account account, final IqPacket original, String jingleCondition, String condition, String conditionType) {
