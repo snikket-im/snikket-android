@@ -92,9 +92,8 @@ public class AppRTCAudioManager {
         bluetoothManager = AppRTCBluetoothManager.create(context, this);
         wiredHeadsetReceiver = new WiredHeadsetReceiver();
         amState = AudioManagerState.UNINITIALIZED;
-        Log.d(Config.LOGTAG, "speaker phone preference: " + speakerPhonePreference);
         this.speakerPhonePreference = speakerPhonePreference;
-        if (speakerPhonePreference == SpeakerPhonePreference.EARPIECE) {
+        if (speakerPhonePreference == SpeakerPhonePreference.EARPIECE && hasEarpiece()) {
             defaultAudioDevice = AudioDevice.EARPIECE;
         } else {
             defaultAudioDevice = AudioDevice.SPEAKER_PHONE;
