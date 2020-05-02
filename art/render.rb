@@ -27,6 +27,7 @@ images = {
     'open_pdf_white.svg' => ['open_pdf_white', 128],
 	'conversations_mono.svg' => ['conversations/ic_notification', 24],
     'quicksy_mono.svg' => ['quicksy/ic_notification', 24],
+    'flip_camera_android-black-24dp.svg' => ['ic_flip_camera_android_black_24dp', 24],
 	'ic_send_text_offline.svg' => ['ic_send_text_offline', 36],
 	'ic_send_text_offline_white.svg' => ['ic_send_text_offline_white', 36],
 	'ic_send_text_online.svg' => ['ic_send_text_online', 36],

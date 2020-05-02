@@ -920,6 +920,7 @@
     <string name="microphone_unavailable">Your microphone is unavailable</string>
     <string name="only_one_call_at_a_time">You can only have one call at a time.</string>
     <string name="return_to_ongoing_call">Return to ongoing call</string>
+    <string name="could_not_switch_camera">Could not switch camera</string>
     <plurals name="view_users">
         <item quantity="one">View %1$d Participant</item>
         <item quantity="other">View %1$d Participants</item>

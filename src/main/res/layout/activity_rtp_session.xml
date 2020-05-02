@@ -117,34 +117,56 @@
 
         <RelativeLayout
             android:id="@+id/button_row"
-            android:layout_width="288dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
             android:layout_marginBottom="24dp">
 
-            <android.support.design.widget.FloatingActionButton
-                android:id="@+id/reject_call"
-                android:layout_width="wrap_content"
+            <RelativeLayout
+                android:layout_width="288dp"
                 android:layout_height="wrap_content"
-                android:layout_alignParentStart="true"
-                android:layout_alignParentLeft="true"
-                android:layout_centerVertical="true"
-                android:layout_margin="16dp"
-                android:src="@drawable/ic_call_end_white_48dp"
-                android:visibility="gone"
-                app:backgroundTint="@color/red700"
-                app:elevation="4dp"
-                app:fabCustomSize="72dp"
-                app:maxImageSize="36dp"
-                tools:visibility="visible" />
+                android:layout_centerInParent="true">
+
+                <android.support.design.widget.FloatingActionButton
+                    android:id="@+id/reject_call"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentLeft="true"
+                    android:layout_margin="16dp"
+                    android:src="@drawable/ic_call_end_white_48dp"
+                    android:visibility="gone"
+                    app:backgroundTint="@color/red700"
+                    app:elevation="4dp"
+                    app:fabCustomSize="72dp"
+                    app:maxImageSize="36dp"
+                    tools:visibility="visible" />
+
+                <android.support.design.widget.FloatingActionButton
+                    android:id="@+id/accept_call"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_margin="16dp"
+                    android:src="@drawable/ic_call_white_48dp"
+                    android:visibility="gone"
+                    app:backgroundTint="@color/green700"
+                    app:elevation="4dp"
+                    app:fabCustomSize="72dp"
+                    app:maxImageSize="36dp"
+                    tools:visibility="visible" />
+
+            </RelativeLayout>
 
             <android.support.design.widget.FloatingActionButton
                 android:id="@+id/in_call_action_left"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
-                android:layout_margin="16dp"
+                android:layout_margin="12dp"
                 android:layout_toStartOf="@+id/end_call"
                 android:layout_toLeftOf="@+id/end_call"
                 android:visibility="gone"
@@ -171,7 +193,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
-                android:layout_margin="16dp"
+                android:layout_margin="12dp"
                 android:layout_toEndOf="@+id/end_call"
                 android:layout_toRightOf="@+id/end_call"
                 android:visibility="gone"
@@ -180,22 +202,19 @@
                 app:fabSize="mini"
                 app:tint="?attr/icon_tint" />
 
-
             <android.support.design.widget.FloatingActionButton
-                android:id="@+id/accept_call"
+                android:id="@+id/in_call_action_far_right"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
-                android:layout_margin="16dp"
-                android:src="@drawable/ic_call_white_48dp"
+                android:layout_margin="12dp"
+                android:layout_toEndOf="@+id/in_call_action_right"
+                android:layout_toRightOf="@+id/in_call_action_right"
                 android:visibility="gone"
-                app:backgroundTint="@color/green700"
+                app:backgroundTint="?color_background_primary"
                 app:elevation="4dp"
-                app:fabCustomSize="72dp"
-                app:maxImageSize="36dp"
-                tools:visibility="visible" />
+                app:fabSize="mini"
+                app:tint="?attr/icon_tint" />
         </RelativeLayout>
 
     </RelativeLayout>

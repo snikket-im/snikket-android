@@ -22,9 +22,14 @@ import android.widget.Toast;
 
 import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
+import com.google.common.base.Throwables;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
+import com.google.common.util.concurrent.FutureCallback;
+import com.google.common.util.concurrent.Futures;
+import com.google.common.util.concurrent.ListenableFuture;
 
+import org.checkerframework.checker.nullness.compatqual.NullableDecl;
 import org.webrtc.SurfaceViewRenderer;
 import org.webrtc.VideoTrack;
 
@@ -42,6 +47,7 @@ import eu.siacs.conversations.entities.Contact;
 import eu.siacs.conversations.services.AppRTCAudioManager;
 import eu.siacs.conversations.services.XmppConnectionService;
 import eu.siacs.conversations.ui.util.AvatarWorkerTask;
+import eu.siacs.conversations.ui.util.MainThreadExecutor;
 import eu.siacs.conversations.utils.PermissionUtils;
 import eu.siacs.conversations.xmpp.jingle.AbstractJingleConnection;
 import eu.siacs.conversations.xmpp.jingle.JingleRtpConnection;
@@ -83,7 +89,6 @@ public class RtpSessionActivity extends XmppActivity implements XmppConnectionSe
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        Log.d(Config.LOGTAG, this.getClass().getName() + ".onCreate()");
         super.onCreate(savedInstanceState);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON
                 | WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD
@@ -561,18 +566,21 @@ public class RtpSessionActivity extends XmppActivity implements XmppConnectionSe
         if (state == RtpEndUserState.CONNECTED && !isPictureInPicture()) {
             Preconditions.checkArgument(media.size() > 0, "Media must not be empty");
             if (media.contains(Media.VIDEO)) {
-                updateInCallButtonConfigurationVideo(requireRtpConnection().isVideoEnabled());
+                final JingleRtpConnection rtpConnection = requireRtpConnection();
+                updateInCallButtonConfigurationVideo(rtpConnection.isVideoEnabled(), rtpConnection.isCameraSwitchable());
             } else {
                 final AppRTCAudioManager audioManager = requireRtpConnection().getAudioManager();
                 updateInCallButtonConfigurationSpeaker(
                         audioManager.getSelectedAudioDevice(),
                         audioManager.getAudioDevices().size()
                 );
+                this.binding.inCallActionFarRight.setVisibility(View.GONE);
             }
             updateInCallButtonConfigurationMicrophone(requireRtpConnection().isMicrophoneEnabled());
         } else {
             this.binding.inCallActionLeft.setVisibility(View.GONE);
             this.binding.inCallActionRight.setVisibility(View.GONE);
+            this.binding.inCallActionFarRight.setVisibility(View.GONE);
         }
     }
 
@@ -612,8 +620,15 @@ public class RtpSessionActivity extends XmppActivity implements XmppConnectionSe
     }
 
     @SuppressLint("RestrictedApi")
-    private void updateInCallButtonConfigurationVideo(final boolean videoEnabled) {
+    private void updateInCallButtonConfigurationVideo(final boolean videoEnabled, final boolean isCameraSwitchable) {
         this.binding.inCallActionRight.setVisibility(View.VISIBLE);
+        if (isCameraSwitchable) {
+            this.binding.inCallActionFarRight.setImageResource(R.drawable.ic_flip_camera_android_black_24dp);
+            this.binding.inCallActionFarRight.setVisibility(View.VISIBLE);
+            this.binding.inCallActionFarRight.setOnClickListener(this::switchCamera);
+        } else {
+            this.binding.inCallActionFarRight.setVisibility(View.GONE);
+        }
         if (videoEnabled) {
             this.binding.inCallActionRight.setImageResource(R.drawable.ic_videocam_black_24dp);
             this.binding.inCallActionRight.setOnClickListener(this::disableVideo);
@@ -623,14 +638,29 @@ public class RtpSessionActivity extends XmppActivity implements XmppConnectionSe
         }
     }
 
+    private void switchCamera(final View view) {
+        Futures.addCallback(requireRtpConnection().switchCamera(), new FutureCallback<Void>() {
+            @Override
+            public void onSuccess(@NullableDecl Void result) {
+
+            }
+
+            @Override
+            public void onFailure(final Throwable throwable) {
+                Log.d(Config.LOGTAG,"could not switch camera", Throwables.getRootCause(throwable));
+                Toast.makeText(RtpSessionActivity.this, R.string.could_not_switch_camera, Toast.LENGTH_LONG).show();
+            }
+        }, MainThreadExecutor.getInstance());
+    }
+
     private void enableVideo(View view) {
         requireRtpConnection().setVideoEnabled(true);
-        updateInCallButtonConfigurationVideo(true);
+        updateInCallButtonConfigurationVideo(true, requireRtpConnection().isCameraSwitchable());
     }
 
     private void disableVideo(View view) {
         requireRtpConnection().setVideoEnabled(false);
-        updateInCallButtonConfigurationVideo(false);
+        updateInCallButtonConfigurationVideo(false, requireRtpConnection().isCameraSwitchable());
 
     }
 

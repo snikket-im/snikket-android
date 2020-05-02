@@ -8,6 +8,8 @@ import android.util.Log;
 
 import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
+import com.google.common.collect.ImmutableSet;
+import com.google.common.collect.Iterables;
 import com.google.common.util.concurrent.Futures;
 import com.google.common.util.concurrent.ListenableFuture;
 import com.google.common.util.concurrent.MoreExecutors;
@@ -255,7 +257,7 @@ public class WebRTCWrapper {
         try {
             peerConnection.dispose();
         } catch (final IllegalStateException e) {
-            Log.e(Config.LOGTAG,"unable to dispose of peer connection", e);
+            Log.e(Config.LOGTAG, "unable to dispose of peer connection", e);
         }
     }
 
@@ -268,6 +270,31 @@ public class WebRTCWrapper {
             Log.e(Config.LOGTAG, "verifyClosed() failed. Going to throw", e);
             throw e;
         }
+    }
+
+    boolean isCameraSwitchable() {
+        final CapturerChoice capturerChoice = this.capturerChoice;
+        return capturerChoice != null && capturerChoice.availableCameras.size() > 1;
+    }
+
+    ListenableFuture<Void> switchCamera() {
+        final CapturerChoice capturerChoice = this.capturerChoice;
+        if (capturerChoice == null) {
+            return Futures.immediateFailedFuture(new IllegalStateException("CameraCapturer has not been initialized"));
+        }
+        final SettableFuture<Void> future = SettableFuture.create();
+        capturerChoice.cameraVideoCapturer.switchCamera(new CameraVideoCapturer.CameraSwitchHandler() {
+            @Override
+            public void onCameraSwitchDone(boolean isFrontCamera) {
+                future.set(null);
+            }
+
+            @Override
+            public void onCameraSwitchError(final String message) {
+                future.setException(new IllegalStateException(String.format("Unable to switch camera %s", message)));
+            }
+        });
+        return future;
     }
 
     boolean isMicrophoneEnabled() {
@@ -408,21 +435,21 @@ public class WebRTCWrapper {
 
     private Optional<CapturerChoice> getVideoCapturer() {
         final CameraEnumerator enumerator = getCameraEnumerator();
-        final String[] deviceNames = enumerator.getDeviceNames();
+        final Set<String> deviceNames = ImmutableSet.copyOf(enumerator.getDeviceNames());
         for (final String deviceName : deviceNames) {
             if (enumerator.isFrontFacing(deviceName)) {
-                return Optional.fromNullable(of(enumerator, deviceName));
+                return Optional.fromNullable(of(enumerator, deviceName, deviceNames));
             }
         }
-        if (deviceNames.length == 0) {
+        if (deviceNames.size() == 0) {
             return Optional.absent();
         } else {
-            return Optional.fromNullable(of(enumerator, deviceNames[0]));
+            return Optional.fromNullable(of(enumerator, Iterables.get(deviceNames, 0), deviceNames));
         }
     }
 
     @Nullable
-    private static CapturerChoice of(CameraEnumerator enumerator, final String deviceName) {
+    private static CapturerChoice of(CameraEnumerator enumerator, final String deviceName, Set<String> availableCameras) {
         final CameraVideoCapturer capturer = enumerator.createCapturer(deviceName, null);
         if (capturer == null) {
             return null;
@@ -431,7 +458,7 @@ public class WebRTCWrapper {
         Collections.sort(choices, (a, b) -> b.width - a.width);
         for (final CameraEnumerationAndroid.CaptureFormat captureFormat : choices) {
             if (captureFormat.width <= CAPTURING_RESOLUTION) {
-                return new CapturerChoice(capturer, captureFormat);
+                return new CapturerChoice(capturer, captureFormat, availableCameras);
             }
         }
         return null;
@@ -520,10 +547,12 @@ public class WebRTCWrapper {
     private static class CapturerChoice {
         private final CameraVideoCapturer cameraVideoCapturer;
         private final CameraEnumerationAndroid.CaptureFormat captureFormat;
+        private final Set<String> availableCameras;
 
-        CapturerChoice(CameraVideoCapturer cameraVideoCapturer, CameraEnumerationAndroid.CaptureFormat captureFormat) {
+        CapturerChoice(CameraVideoCapturer cameraVideoCapturer, CameraEnumerationAndroid.CaptureFormat captureFormat, Set<String> cameras) {
             this.cameraVideoCapturer = cameraVideoCapturer;
             this.captureFormat = captureFormat;
+            this.availableCameras = cameras;
         }
 
         int getFrameRate() {

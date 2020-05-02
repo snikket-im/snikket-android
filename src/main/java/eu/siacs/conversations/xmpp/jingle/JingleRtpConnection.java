@@ -12,6 +12,7 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Sets;
 import com.google.common.primitives.Ints;
+import com.google.common.util.concurrent.ListenableFuture;
 
 import org.webrtc.EglBase;
 import org.webrtc.IceCandidate;
@@ -1035,6 +1036,15 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
 
     public boolean isVideoEnabled() {
         return webRTCWrapper.isVideoEnabled();
+    }
+
+
+    public boolean isCameraSwitchable() {
+        return webRTCWrapper.isCameraSwitchable();
+    }
+
+    public ListenableFuture<Void> switchCamera() {
+        return webRTCWrapper.switchCamera();
     }
 
     public void setVideoEnabled(final boolean enabled) {
