@@ -26,6 +26,7 @@ import eu.siacs.conversations.utils.EmojiWrapper;
 import eu.siacs.conversations.utils.IrregularUnicodeDetector;
 import eu.siacs.conversations.utils.UIHelper;
 import eu.siacs.conversations.xmpp.jingle.AbstractJingleConnection;
+import eu.siacs.conversations.xmpp.jingle.OngoingRtpSession;
 import rocks.xmpp.addr.Jid;
 
 public class ConversationAdapter extends RecyclerView.Adapter<ConversationAdapter.ConversationViewHolder> {
@@ -165,7 +166,7 @@ public class ConversationAdapter extends RecyclerView.Adapter<ConversationAdapte
         }
 
 
-        final Optional<AbstractJingleConnection.Id> ongoingCall;
+        final Optional<OngoingRtpSession> ongoingCall;
         if (conversation.getMode() == Conversational.MODE_MULTI) {
             ongoingCall = Optional.absent();
         } else {

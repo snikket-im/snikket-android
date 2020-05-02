@@ -1,6 +1,7 @@
 package eu.siacs.conversations.xmpp.jingle;
 
 import com.google.common.base.Objects;
+import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
 
 import eu.siacs.conversations.entities.Account;
@@ -40,7 +41,7 @@ public abstract class AbstractJingleConnection {
     abstract void notifyRebound();
 
 
-    public static class Id {
+    public static class Id implements OngoingRtpSession {
         public final Account account;
         public final Jid with;
         public final String sessionId;
@@ -86,6 +87,21 @@ public abstract class AbstractJingleConnection {
         @Override
         public int hashCode() {
             return Objects.hashCode(account.getJid(), with, sessionId);
+        }
+
+        @Override
+        public Account getAccount() {
+            return account;
+        }
+
+        @Override
+        public Jid getWith() {
+            return with;
+        }
+
+        @Override
+        public String getSessionId() {
+            return sessionId;
         }
     }
 

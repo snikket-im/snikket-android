@@ -120,7 +120,10 @@ import eu.siacs.conversations.utils.UIHelper;
 import eu.siacs.conversations.xmpp.XmppConnection;
 import eu.siacs.conversations.xmpp.chatstate.ChatState;
 import eu.siacs.conversations.xmpp.jingle.AbstractJingleConnection;
+import eu.siacs.conversations.xmpp.jingle.JingleConnectionManager;
 import eu.siacs.conversations.xmpp.jingle.JingleFileTransferConnection;
+import eu.siacs.conversations.xmpp.jingle.Media;
+import eu.siacs.conversations.xmpp.jingle.OngoingRtpSession;
 import eu.siacs.conversations.xmpp.jingle.RtpCapability;
 import rocks.xmpp.addr.Jid;
 
@@ -971,7 +974,7 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
                 menuCall.setVisible(false);
                 menuOngoingCall.setVisible(false);
             } else {
-                final Optional<AbstractJingleConnection.Id> ongoingRtpSession = activity.xmppConnectionService.getJingleConnectionManager().getOngoingRtpConnection(conversation.getContact());
+                final Optional<OngoingRtpSession> ongoingRtpSession = activity.xmppConnectionService.getJingleConnectionManager().getOngoingRtpConnection(conversation.getContact());
                 if (ongoingRtpSession.isPresent()) {
                     menuOngoingCall.setVisible(true);
                     menuCall.setVisible(false);
@@ -1267,13 +1270,22 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
     }
 
     private void returnToOngoingCall() {
-        final Optional<AbstractJingleConnection.Id> ongoingRtpSession = activity.xmppConnectionService.getJingleConnectionManager().getOngoingRtpConnection(conversation.getContact());
+        final Optional<OngoingRtpSession> ongoingRtpSession = activity.xmppConnectionService.getJingleConnectionManager().getOngoingRtpConnection(conversation.getContact());
         if (ongoingRtpSession.isPresent()) {
-            final AbstractJingleConnection.Id id = ongoingRtpSession.get();
+            final OngoingRtpSession id = ongoingRtpSession.get();
             final Intent intent = new Intent(getActivity(), RtpSessionActivity.class);
-            intent.putExtra(RtpSessionActivity.EXTRA_ACCOUNT, id.account.getJid().asBareJid().toEscapedString());
-            intent.putExtra(RtpSessionActivity.EXTRA_WITH, id.with.toEscapedString());
-            intent.putExtra(RtpSessionActivity.EXTRA_SESSION_ID, id.sessionId);
+            intent.putExtra(RtpSessionActivity.EXTRA_ACCOUNT, id.getAccount().getJid().asBareJid().toEscapedString());
+            intent.putExtra(RtpSessionActivity.EXTRA_WITH, id.getWith().toEscapedString());
+            if (id instanceof AbstractJingleConnection.Id) {
+                intent.setAction(Intent.ACTION_VIEW);
+                intent.putExtra(RtpSessionActivity.EXTRA_SESSION_ID, id.getSessionId());
+            } else if (id instanceof JingleConnectionManager.RtpSessionProposal) {
+                if (((JingleConnectionManager.RtpSessionProposal) id).media.contains(Media.VIDEO)) {
+                    intent.setAction(RtpSessionActivity.ACTION_MAKE_VIDEO_CALL);
+                } else {
+                    intent.setAction(RtpSessionActivity.ACTION_MAKE_VOICE_CALL);
+                }
+            }
             startActivity(intent);
         }
 
