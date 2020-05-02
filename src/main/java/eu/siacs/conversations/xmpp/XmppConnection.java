@@ -882,7 +882,7 @@ public class XmppConnection implements Runnable {
             final int pinnedMechanism = account.getKeyAsInt(Account.PINNED_MECHANISM_KEY, -1);
             if (pinnedMechanism > saslMechanism.getPriority()) {
                 Log.e(Config.LOGTAG, "Auth failed. Authentication mechanism " + saslMechanism.getMechanism() +
-                        " has lower priority (" + String.valueOf(saslMechanism.getPriority()) +
+                        " has lower priority (" + saslMechanism.getPriority() +
                         ") than pinned priority (" + pinnedMechanism +
                         "). Possible downgrade attack?");
                 throw new StateChangingException(Account.State.DOWNGRADE_ATTACK);
@@ -894,7 +894,7 @@ public class XmppConnection implements Runnable {
             }
             tagWriter.writeElement(auth);
         } else {
-            Log.d(Config.LOGTAG,account.getJid().asBareJid()+": unable to find SASL mechanism "+ saslMechanism.toString());
+            Log.d(Config.LOGTAG,account.getJid().asBareJid()+": unable to find supported SASL mechanism in "+mechanisms);
             throw new StateChangingException(Account.State.INCOMPATIBLE_SERVER);
         }
     }
