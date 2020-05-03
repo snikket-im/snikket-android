@@ -693,7 +693,7 @@
     <string name="disable_encryption">Disable encryption</string>
     <string name="error_trustkey_general">Conversations is unable to send encrypted messages to %1$s. This may be due to your contact using an outdated server or client that can not handle OMEMO.</string>
     <string name="error_trustkey_device_list">Could not fetch device list</string>
-    <string name="error_trustkey_bundle">Could not fetch device bundles</string>
+    <string name="error_trustkey_bundle">Could not fetch encryption keys</string>
     <string name="error_trustkey_hint_mutual">Hint: In some cases this can be fixed by adding each other your contact lists.</string>
     <string name="disable_encryption_message">Are you sure you want to disable OMEMO encryption for this conversation?\nThis will allow your server administrator to read your messages, but it might be the only way to communicate with people using outdated clients.</string>
     <string name="disable_now">Disable now</string>
