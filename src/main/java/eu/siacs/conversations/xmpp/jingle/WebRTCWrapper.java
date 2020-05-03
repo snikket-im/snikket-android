@@ -277,16 +277,22 @@ public class WebRTCWrapper {
         return capturerChoice != null && capturerChoice.availableCameras.size() > 1;
     }
 
-    ListenableFuture<Void> switchCamera() {
+    boolean isFrontCamera() {
+        final CapturerChoice capturerChoice = this.capturerChoice;
+        return capturerChoice == null || capturerChoice.isFrontCamera;
+    }
+
+    ListenableFuture<Boolean> switchCamera() {
         final CapturerChoice capturerChoice = this.capturerChoice;
         if (capturerChoice == null) {
             return Futures.immediateFailedFuture(new IllegalStateException("CameraCapturer has not been initialized"));
         }
-        final SettableFuture<Void> future = SettableFuture.create();
+        final SettableFuture<Boolean> future = SettableFuture.create();
         capturerChoice.cameraVideoCapturer.switchCamera(new CameraVideoCapturer.CameraSwitchHandler() {
             @Override
             public void onCameraSwitchDone(boolean isFrontCamera) {
-                future.set(null);
+                capturerChoice.isFrontCamera = isFrontCamera;
+                future.set(isFrontCamera);
             }
 
             @Override
@@ -438,7 +444,12 @@ public class WebRTCWrapper {
         final Set<String> deviceNames = ImmutableSet.copyOf(enumerator.getDeviceNames());
         for (final String deviceName : deviceNames) {
             if (enumerator.isFrontFacing(deviceName)) {
-                return Optional.fromNullable(of(enumerator, deviceName, deviceNames));
+                final CapturerChoice capturerChoice = of(enumerator, deviceName, deviceNames);
+                if (capturerChoice == null) {
+                    return Optional.absent();
+                }
+                capturerChoice.isFrontCamera = true;
+                return Optional.of(capturerChoice);
             }
         }
         if (deviceNames.size() == 0) {
@@ -548,6 +559,7 @@ public class WebRTCWrapper {
         private final CameraVideoCapturer cameraVideoCapturer;
         private final CameraEnumerationAndroid.CaptureFormat captureFormat;
         private final Set<String> availableCameras;
+        private boolean isFrontCamera = false;
 
         CapturerChoice(CameraVideoCapturer cameraVideoCapturer, CameraEnumerationAndroid.CaptureFormat captureFormat, Set<String> cameras) {
             this.cameraVideoCapturer = cameraVideoCapturer;

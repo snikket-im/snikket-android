@@ -639,14 +639,14 @@ public class RtpSessionActivity extends XmppActivity implements XmppConnectionSe
     }
 
     private void switchCamera(final View view) {
-        Futures.addCallback(requireRtpConnection().switchCamera(), new FutureCallback<Void>() {
+        Futures.addCallback(requireRtpConnection().switchCamera(), new FutureCallback<Boolean>() {
             @Override
-            public void onSuccess(@NullableDecl Void result) {
-
+            public void onSuccess(@NullableDecl Boolean isFrontCamera) {
+                binding.localVideo.setMirror(isFrontCamera);
             }
 
             @Override
-            public void onFailure(final Throwable throwable) {
+            public void onFailure(@NonNull final Throwable throwable) {
                 Log.d(Config.LOGTAG,"could not switch camera", Throwables.getRootCause(throwable));
                 Toast.makeText(RtpSessionActivity.this, R.string.could_not_switch_camera, Toast.LENGTH_LONG).show();
             }
@@ -715,7 +715,7 @@ public class RtpSessionActivity extends XmppActivity implements XmppConnectionSe
             ensureSurfaceViewRendererIsSetup(binding.localVideo);
             //paint local view over remote view
             binding.localVideo.setZOrderMediaOverlay(true);
-            binding.localVideo.setMirror(true);
+            binding.localVideo.setMirror(requireRtpConnection().isFrontCamera());
             localVideoTrack.get().addSink(binding.localVideo);
         } else {
             binding.localVideo.setVisibility(View.GONE);

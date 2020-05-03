@@ -1043,7 +1043,11 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
         return webRTCWrapper.isCameraSwitchable();
     }
 
-    public ListenableFuture<Void> switchCamera() {
+    public boolean isFrontCamera() {
+        return webRTCWrapper.isFrontCamera();
+    }
+
+    public ListenableFuture<Boolean> switchCamera() {
         return webRTCWrapper.switchCamera();
     }
 
