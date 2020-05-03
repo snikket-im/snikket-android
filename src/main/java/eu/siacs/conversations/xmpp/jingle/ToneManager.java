@@ -13,22 +13,22 @@ import eu.siacs.conversations.Config;
 
 import static java.util.Arrays.asList;
 
-public class ToneManager {
+class ToneManager {
 
     private final ToneGenerator toneGenerator;
 
     private ToneState state = null;
     private ScheduledFuture<?> currentTone;
 
-    public ToneManager() {
-        this.toneGenerator = new ToneGenerator(AudioManager.STREAM_VOICE_CALL, 35);
+    ToneManager() {
+        this.toneGenerator = new ToneGenerator(AudioManager.STREAM_MUSIC, 35);
     }
 
-    public void transition(final boolean isInitiator, final RtpEndUserState state) {
-        transition(of(isInitiator, state, Collections.emptySet()));
+    void transition(final RtpEndUserState state) {
+        transition(of(true, state, Collections.emptySet()));
     }
 
-    public void transition(final boolean isInitiator, final RtpEndUserState state, final Set<Media> media) {
+    void transition(final boolean isInitiator, final RtpEndUserState state, final Set<Media> media) {
         transition(of(isInitiator, state, media));
     }
 
