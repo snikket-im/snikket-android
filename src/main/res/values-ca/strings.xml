@@ -37,14 +37,12 @@
   <string name="moderator">Moderador</string>
   <string name="participant">Participant</string>
   <string name="visitor">Visitant</string>
-  <string name="remove_contact_text">Voleu eliminar a %s de la vostra llista de contactes? La conversa associada a aquest contacte no s\'eliminarà.</string>
   <string name="block_contact_text">Voleu impedir que %s us pugui enviar missatges?</string>
   <string name="unblock_contact_text">Us agradaria desbloquejar %s i permetre que us enviï missatges?</string>
   <string name="block_domain_text">Voleu bloquejar tots els contactes de %s?</string>
   <string name="unblock_domain_text">Voleu desbloquejar tots el contactes de %s?</string>
   <string name="contact_blocked">Contacte bloquejat</string>
   <string name="blocked">Bloquejats</string>
-  <string name="remove_bookmark_text">Voleu eliminar %s dels marcadors? La conversa associada amb aquest marcador no serà eliminada.</string>
   <string name="register_account">Registra un compte nou al servidor</string>
   <string name="change_password_on_server">Canvia la contrasenya al servidor</string>
   <string name="share_with">Comparteix amb…</string>
@@ -63,22 +61,14 @@
   <string name="save">Desa</string>
   <string name="ok">D\'acord</string>
   <string name="crash_report_title">El Conversations s\'ha aturat</string>
-  <string name="crash_report_message">Amb l\'enviament de bolcats de pila ajudeu al desenvolupament del Conversations\n<b>Avís:</b> Això usarà el vostre compte XMPP per enviar el bolcat de pila al desenvolupador.</string>
   <string name="send_now">Envia ara</string>
   <string name="send_never">No preguntis de nou</string>
-  <string name="problem_connecting_to_account">No s\'ha pogut connectar al compte</string>
-  <string name="problem_connecting_to_accounts">No s\'ha pogut connectar a múltiples comptes</string>
-  <string name="touch_to_fix">Premeu aquí per gestionar els vostres comptes</string>
   <string name="attach_file">Envia un fitxer</string>
-  <string name="not_in_roster">El contacte no està a la vostra llista. Voleu afegir-lo?</string>
   <string name="add_contact">Afegeix un contacte</string>
   <string name="send_failed">L\'enviament ha fallat</string>
-  <string name="preparing_image">S\'està preparant la imatge per enviar</string>
-  <string name="preparing_images">S\'estan preparant les imatges per enviar</string>
   <string name="sharing_files_please_wait">S\'estan compartint els fitxers. Espereu…</string>
   <string name="action_clear_history">Neteja l\'historial</string>
   <string name="clear_conversation_history">Neteja l\'historial de la conversa</string>
-  <string name="clear_histor_msg">Estàs segur que vols esborrar tots els missatges d\'aquesta conversa?\n\n <b> Advertiment: </b> Això no eliminarà les còpies dels missatges emmagatzemats en altres dispositius o servidors.</string>
   <string name="delete_file_dialog">Eliminar fitxer</string>
   <string name="delete_file_dialog_msg">Estàs segur que vols esborrar aquest fitxer?\n\n <b> Advertiment: </b> Això no eliminarà les còpies d\'aquest fitxer que estiguin emmagatzemades en altres dispositius o servidors.</string>
   <string name="also_end_conversation">Tanca aquesta conversa després</string>
@@ -89,20 +79,16 @@
   <string name="send_omemo_message">Envia un missatge xifrat amb OMEMO</string>
   <string name="send_omemo_x509_message">Envia un missatge xifrat amb v\\OMEMO</string>
   <string name="send_pgp_message">Envia un missatge xifrat amb OpenPGP</string>
-  <string name="your_nick_has_been_changed">S\'ha canviat el sobrenom</string>
   <string name="send_unencrypted">Envia sense xifrar</string>
   <string name="decryption_failed">El desxiframent ha fallat. Potser no teniu la clau privada apropiada.</string>
   <string name="openkeychain_required">OpenKeychain</string>
-  <string name="openkeychain_required_long">El Conversations utilitza una aplicació de tercers anomenada <b>OpenKeychain</b> per xifrar i desxifrar missatges i gestionar les vostres claus públiques.\n\nL\'OpenKeychain està publicat amb llicència GPLv3 i disponible a l\'F-Droid i la Google Play.\n\n<small>(Si us plau, reinicieu el Conversations després.)</small></string>
   <string name="restart">Reinicia</string>
   <string name="install">Instal·la</string>
   <string name="openkeychain_not_installed">Instal·leu l\'OpenKeychain</string>
   <string name="offering">s\'està oferint…</string>
   <string name="waiting">s\'està esperant…</string>
   <string name="no_pgp_key">No s\'ha trobat cap clau OpenPGP</string>
-  <string name="contact_has_no_pgp_key">El Conversations no pot xifrar els missatges perquè el vostre contacte no anuncia la seva clau pública.\n\n<small>Demaneu-li que configuri l\'OpenPGP.</small></string>
   <string name="no_pgp_keys">No s\'ha trobat cap clau OpenPGP</string>
-  <string name="contacts_have_no_pgp_keys">El Coversations no pot xifrar els missatges perquè els vostres contactes no anuncien les seves claus públiques.\n\n<small>Demaneu-los que configurin l\'OpenPGP .</small></string>
   <string name="pref_general">General</string>
   <string name="pref_accept_files">Accepta els fitxers</string>
   <string name="pref_accept_files_summary">Accepta fitxers automàticament amb una mida menor a…</string>
@@ -115,11 +101,9 @@
   <string name="pref_notification_grace_period">Període de gràcia</string>
   <string name="pref_advanced_options">Avançat</string>
   <string name="pref_never_send_crash">Mai enviïs informes d\'errors</string>
-  <string name="pref_never_send_crash_summary">Amb l\'enviament de traces d\'execució ajudeu al desenvolupament futur del Conversations</string>
   <string name="pref_confirm_messages">Confirma els missatges</string>
   <string name="pref_confirm_messages_summary">Feu saber als vostres contactes quan heu rebut i llegit els seus missatges</string>
   <string name="pref_ui_options">UI</string>
-  <string name="openpgp_error">OpenKeychain va reportar un error.</string>
   <string name="bad_key_for_encryption">Clau dolenta per encriptar.</string>
   <string name="accept">Accepta</string>
   <string name="error">S\'ha produït un error</string>
@@ -132,10 +116,8 @@
   <string name="attach_take_picture">Fes una fotografia</string>
   <string name="preemptively_grant">Accepta les peticions de subscripció preventivament</string>
   <string name="error_not_an_image_file">El fitxer triat no és una imatge</string>
-  <string name="error_compressing_image">S\'ha produït un error en convertir la imatge</string>
   <string name="error_file_not_found">No s\'ha trobat el fitxer</string>
   <string name="error_io_exception">Error d\'E/S general. Pot ser que us hagueu quedat sense espai d\'emmagatzematge.</string>
-  <string name="error_security_exception_during_image_copy">L\'aplicació que heu fet servir per triar la imatge no proporciona els permisos necessaris per llegir el fitxer.\n\n<small>Utilitzeu un gestor de fitxers diferent per triar una imatge.</small></string>
   <string name="account_status_unknown">Desconegut</string>
   <string name="account_status_disabled">Inhabilitat temporalment</string>
   <string name="account_status_online">En línia</string>
@@ -147,7 +129,6 @@
   <string name="account_status_regis_fail">El registre ha fallat</string>
   <string name="account_status_regis_conflict">El nom d\'usuari ja està en ús</string>
   <string name="account_status_regis_success">S\'ha completat el registre</string>
-  <string name="account_status_regis_not_sup">El servidor no admet registres</string>
   <string name="account_status_tls_error">S\'ha produït un error en la negociació de TLS</string>
   <string name="account_status_policy_violation">Violació de la política</string>
   <string name="account_status_incompatible_server">Servidor incompatible</string>
@@ -163,15 +144,12 @@
   <string name="mgmt_account_publish_pgp">Publica la clau pública d\'OpenPGP</string>
   <string name="unpublish_pgp">Elimina la clau pública d\'OpenPGP</string>
   <string name="unpublish_pgp_message">Esteu segur que voleu eliminar la vostra clau pública d\'OpenPGP de l\'anunci de la vostra presència?\nEls vostres contactes ja no podran enviar missatges xifrats amb OpenPGP.</string>
-  <string name="openpgp_has_been_published">S\'ha publicat la clau pública d\'OpenPGP.</string>
   <string name="mgmt_account_enable">Habilita el compte</string>
   <string name="mgmt_account_are_you_sure">N\'esteu segur?</string>
-  <string name="mgmt_account_delete_confirm_text">Si suprimiu el vostre compte, es perdrà tot l\'historial de la conversa</string>
   <string name="attach_record_voice">Enregistra veu</string>
   <string name="account_settings_jabber_id">Adreça XMPP</string>
   <string name="account_settings_example_jabber_id">username@example.com</string>
   <string name="password">Contrasenya</string>
-  <string name="error_out_of_memory">Memòria exhaurida. La imatge és massa gran.</string>
   <string name="add_phone_book_text">Voleu afegir a %s a la vostra llibreta d\'adreces?</string>
   <string name="server_info_show_more">Informació del servidor</string>
   <string name="server_info_mam">XEP-0313: Gestió d\'arxivat de missatges</string>
@@ -187,14 +165,9 @@
   <string name="server_info_unavailable">No disponible</string>
   <string name="missing_public_keys">No es troben anuncis de clau pública</string>
   <string name="last_seen_now">darrera connexió: ara mateix</string>
-  <string name="last_seen_min">darrera connexió: fa 1 minut</string>
   <string name="last_seen_mins">darrera connexió: fa %d minuts</string>
-  <string name="last_seen_hour">darrera connexió: fa 1 hora</string>
   <string name="last_seen_hours">darrera connexió: fa %d hores</string>
-  <string name="last_seen_day">darrera connexió: fa 1 dia</string>
   <string name="last_seen_days">darrera connexió: fa %d dies</string>
-  <string name="install_openkeychain">Missatge xifrat. Si us plau instal.leu l\'OpenKeychain per desxifrar-lo.</string>
-  <string name="openpgp_messages_found">S\'han trobat missatges xifrats amb OpenPGP</string>
   <string name="openpgp_key_id">Identificador de la clau d\'OpenPGP</string>
   <string name="omemo_fingerprint">Empremta digital OMEMO</string>
   <string name="omemo_fingerprint_x509">Empremta digital v\\OMEMO</string>
@@ -227,32 +200,25 @@
   <string name="add_back">Afegeix de nou</string>
   <string name="contact_has_read_up_to_this_point">%s ha llegit fins aquí</string>
   <string name="contacts_have_read_up_to_this_point">%s han llegit fins aquí</string>
-  <string name="contacts_and_n_more_have_read_up_to_this_point">%1$s i %2$d més han llegit fins aquí</string>
   <string name="everyone_has_read_up_to_this_point">Tothom ha llegit fins a aquí</string>
   <string name="publish">Publica</string>
-  <string name="touch_to_choose_picture">Toqueu l\'avatar per triar una imatge de la  galeria</string>
   <string name="publishing">S\'està publicant…</string>
   <string name="error_publish_avatar_server_reject">El servidor ha rebutjat la vostra publicació</string>
-  <string name="error_publish_avatar_converting">S\'ha produït un error en convertir la imatge</string>
   <string name="error_saving_avatar">No s\'ha pogut desar l\'avatar al disc</string>
   <string name="or_long_press_for_default">(O feu un toc llarg per restablir al valor predeterminat)</string>
-  <string name="error_publish_avatar_no_server_support">El vostre servidor no admet la publicació d\'avatars</string>
   <string name="private_message">xiuxiuejat</string>
   <string name="private_message_to">a %s</string>
   <string name="send_private_message_to">Envia un missatge privat a %s</string>
   <string name="connect">Connecta</string>
   <string name="account_already_exists">Aquest compte ja existeix</string>
   <string name="next">Següent</string>
-  <string name="server_info_session_established">S\'ha establert la sessió actual</string>
   <string name="skip">Salta</string>
   <string name="disable_notifications">Inhabilita les notificacions</string>
   <string name="enable">Habilita</string>
   <string name="conference_requires_password">El xat de grup requereix contrasenya</string>
   <string name="enter_password">Introduïu la contrasenya</string>
-  <string name="request_presence_updates">Si us plau, primer sol·liciteu les actualitzacions de presència del contacte.\n\n<small>S\'utilitzaran per determinar quin(s) client(s) està fent servir.</small></string>
   <string name="request_now">Sol·licita ara</string>
   <string name="ignore">Ignora</string>
-  <string name="without_mutual_presence_updates"><b>Avís:</b>L\'enviament sense actualitzacions de presència mútues pot causar problemes inesperats.\n\n<small>Aneu als detalls del contacte per verificar les subscripcions de presència.</small></string>
   <string name="pref_security_settings">Seguretat</string>
   <string name="pref_allow_message_correction">Permet la correcció de missatges</string>
   <string name="pref_allow_message_correction_summary">Permet que els contactes editin de manera retroactiva els missatges</string>
@@ -265,7 +231,6 @@
   <string name="title_pref_enable_quiet_hours">Habilitar hores de silenci</string>
   <string name="pref_quiet_hours_summary">Les notificacions seràn silenciades a les hores de silenci</string>
   <string name="pref_expert_options_other">Altres</string>
-  <string name="toast_message_omemo_fingerprint">S\'ha copiat l\'empremta digital d\'OMEMO al porta-retalls.</string>
   <string name="conference_banned">Estàs prohibit en aquest xat de grup</string>
   <string name="conference_members_only">Aquest xat en grup només és de membres</string>
   <string name="conference_resource_constraint">Limitació de recursos</string>
@@ -292,7 +257,6 @@
   <string name="account_details">Detalls del compte</string>
   <string name="confirm">Confirmar</string>
   <string name="try_again">Intenta una altra vegada</string>
-  <string name="pref_keep_foreground_service">Mantenir el servei en primer pla</string>
   <string name="pref_keep_foreground_service_summary">Evitar que el sistema operatiu desconnecti la connexió</string>
   <string name="pref_create_backup">Crea una còpia de seguretat</string>
   <string name="notification_backup_created_title">La còpia de seguretat s\'ha creat</string>
@@ -305,29 +269,16 @@
   <string name="file">Fitxer</string>
   <string name="open_x_file">Obert %s</string>
   <string name="sending_file">Enviant (%1$d%% completat)</string>
-  <string name="preparing_file">Preparant fitxer per la transmissió</string>
   <string name="x_file_offered_for_download">%s ofert per descarregar</string>
   <string name="cancel_transmission">Transmissió cancelada</string>
-  <string name="file_transmission_failed">Transmissió del fitxer fallida</string>
-  <string name="file_deleted">El fitxer ha sigut eliminat</string>
-  <string name="no_application_found_to_open_file">Cap aplicació trobada en obrir el fitxer</string>
-  <string name="no_application_found_to_open_link">No s\'ha trobat cap aplicació per obrir el vincle</string>
-  <string name="no_application_found_to_view_contact">No s\'ha trobat cap aplicació per veure el contacte</string>
   <string name="pref_show_dynamic_tags">Etiquetes dinàmiques</string>
   <string name="pref_show_dynamic_tags_summary">Mostra etiquetes de nomès lectura per sota dels noms dels contactes</string>
   <string name="enable_notifications">Habilitar notificació</string>
   <string name="no_conference_server_found">No s\'ha trobat cap servidor de xat de grup</string>
-  <string name="conference_creation_failed">No s\'ha pogut crear el xat de grup</string>
   <string name="account_image_description">Avatar del compte</string>
   <string name="copy_omemo_clipboard_description">Copieu l\'empremta digital OMEMO al porta-retalls</string>
   <string name="regenerate_omemo_key">Regenerar la clau OMEMO</string>
   <string name="clear_other_devices">Esborra els dispositius</string>
-  <string name="clear_other_devices_desc">Estàs segur que vols esborrar tots els altres dispositius de l\'anunci OMEMO? La
- propera vegada que connectin els vostres dispositius, es tornaran a 
-anunciar, però és possible que no rebeu missatges enviats mentre 
-mentrestant.</string>
-  <string name="error_no_keys_to_trust_server_error">No hi ha claus utilitzables per a aquest contacte.\nEls fitxers noves del servidor no han tingut èxit. Potser hi ha alguna cosa malament amb el servidor del vostre contacte.</string>
-  <string name="error_no_keys_to_trust_presence">No hi ha claus disponibles per a aquest contacte.\nAssegureu-vos que teniu una subscripció de presència mútua.</string>
   <string name="error_trustkeys_title">Alguna cosa ha anat malament</string>
   <string name="fetching_history_from_server">Anar a cercar la història als servidors</string>
   <string name="no_more_history_on_server">No hi ha més histories al servidor</string>
@@ -337,7 +288,6 @@ mentrestant.</string>
   <string name="change_password">Cambiar contrasenya</string>
   <string name="current_password">Contrasenya actual</string>
   <string name="new_password">Nova contrasenya</string>
-  <string name="password_should_not_be_empty">Les contrasenyes no poden estar buides</string>
   <string name="enable_all_accounts">Habilitar tots els comptes</string>
   <string name="disable_all_accounts">Deshabilitar tots els comptes</string>
   <string name="perform_action_with">Realitzar l\'acció amb…</string>
@@ -385,7 +335,6 @@ mentrestant.</string>
   <string name="pref_chat_states_summary">Feu saber als vostres contactes quan els escriviu missatges</string>
   <string name="send_location">Enviar localització</string>
   <string name="show_location">Mostrar localització</string>
-  <string name="no_application_found_to_display_location">No s\'ha trobat cap aplicació per mostrar la localització</string>
   <string name="location">Localització</string>
   <string name="title_undo_swipe_out_conversation">Conversa tancada</string>
   <string name="pref_dont_trust_system_cas_title">No confiar en les CAs del sistema</string>
@@ -400,14 +349,12 @@ mentrestant.</string>
     <item quantity="one">%d certificat esborrat</item>
     <item quantity="other">%d certificats esborrats</item>
   </plurals>
-  <string name="pref_quick_action_summary">Reemplaça el botó d\'enviar per una acció ràpida</string>
   <string name="pref_quick_action">Acció ràpida</string>
   <string name="none">Cap</string>
   <string name="recently_used">Ús més recent</string>
   <string name="choose_quick_action">Trieu una acció ràpida</string>
   <string name="search_contacts">Buscar contactes</string>
   <string name="send_private_message">Envia un missatge privat</string>
-  <string name="user_has_left_conference">%1$s ha deixat el xat del grup!</string>
   <string name="username">Nom d\'usuari</string>
   <string name="username_hint">Nom d\'usuari</string>
   <string name="invalid_username">Aquest no és un nom d\'usuari vàlid</string>
@@ -417,7 +364,6 @@ mentrestant.</string>
   <string name="download_failed_could_not_write_file">S\'ha produït un error en la baixada: no s\'ha pogut escriure el fitxer</string>
   <string name="account_status_tor_unavailable">La xarxa Tor no està disponible</string>
   <string name="account_status_bind_failure"> Vincular el error</string>
-  <string name="account_status_host_unknown">El servidor no es fa responsable del domini</string>
   <string name="server_info_broken">Trencat</string>
   <string name="pref_presence_settings">Disponibilitat</string>
   <string name="pref_away_when_screen_off">Fora quan la pantalla està apagada</string>
@@ -430,15 +376,11 @@ mentrestant.</string>
   <string name="pref_show_connection_options_summary">Mostra el nom de la màquina i la configuració del port quan configureu un compte</string>
   <string name="hostname_example">xmpp.example.com</string>
   <string name="action_add_account_with_certificate">Afegiu un compte amb el certificat</string>
-  <string name="unable_to_parse_certificate">No es pot analitzar el certificat</string>
   <string name="authenticate_with_certificate">Deixeu-lo en blanc per autenticar amb w/ certificat</string>
   <string name="mam_prefs">Arxivant preferències</string>
   <string name="server_side_mam_prefs">Preferències d\'arxivat al servidor</string>
   <string name="fetching_mam_prefs">S\'estan obtenint les preferències d\'arxivat. Espereu…</string>
-  <string name="unable_to_fetch_mam_prefs">No es poden obtenir les preferències d\'arxivat</string>
-  <string name="captcha_required">Es necessita Captcha</string>
   <string name="captcha_hint">Introduïu el text de la imatge de dalt</string>
-  <string name="certificate_chain_is_not_trusted">La cadena de certificats no és de confiança</string>
   <string name="action_renew_certificate">Renova el certificat</string>
   <string name="error_fetching_omemo_key">S\'ha produït un error en obtenir la clau OMEMO!.</string>
   <string name="verified_omemo_key_with_certificate">Clau OMEMO verificada amb certificat!</string>
@@ -448,7 +390,6 @@ mentrestant.</string>
   <string name="pref_use_tor_summary">Tunelar totes les connexions a través de la xarxa Tor. Requereix Orbot</string>
   <string name="account_settings_hostname">Nom del \"Host\"</string>
   <string name="account_settings_port">Port</string>
-  <string name="hostname_or_onion">Servidor- or adreça-.onion</string>
   <string name="not_a_valid_port">Aquest no és un número de port vàlid</string>
   <string name="not_valid_hostname">Aquest no és un nom de host vàlid</string>
   <string name="connected_accounts">%1$d of %2$d comptes connectats</string>
@@ -457,14 +398,7 @@ mentrestant.</string>
     <item quantity="other">%d messages</item>
   </plurals>
   <string name="load_more_messages">Carregueu més missatges</string>
-  <string name="shared_file_with_x">Fitxer compartit amb %s</string>
-  <string name="shared_image_with_x">Imatge compartida amb %s</string>
-  <string name="shared_images_with_x">Imatges compartides amb %s</string>
-  <string name="shared_text_with_x">Text compartit amb %s</string>
-  <string name="no_storage_permission">Conversations necessita accés a emmagatzematge extern</string>
-  <string name="no_camera_permission">Conversations necessita accés a la càmera</string>
   <string name="sync_with_contacts">Sincronitza amb contactes</string>
-  <string name="sync_with_contacts_long">Conversations vol fer coincidir la seva llista de contactes del costat del servidor amb la seva llibreta d\'adreces local per mostrar els noms complets dels seus contactes i avatars.\n\nConversations només llegirà els seus contactes i intentarà coincidir a nivell local sense pujar-los al seu servidor.\n\nSe li demanarà que concedeixi permís per accedir als seus contactes.</string>
   <string name="sync_with_contacts_quicksy"><![CDATA[Quicksy necessita accés als números de telèfon dels seus contactes per fer suggeriments sobre possibles contactes que ja estan en Quicksy.<br> <br> No guardarem una còpia d\'aquests números de telèfon.\n\nPer a més informació llegeixi la nostra <a href="https://quicksy.im/#privacy">política de privadesa</a> <br> <br> Ara se us demanarà que concediu permís per accedir als vostres contactes.]]></string>
   <string name="notify_on_all_messages">Notifica a tots els missatges</string>
   <string name="notify_only_when_highlighted">Notifica només quan s\'esmenta</string>
@@ -473,22 +407,13 @@ mentrestant.</string>
   <string name="pref_picture_compression">Compressió d\'imatge</string>
   <string name="always">Sempre</string>
   <string name="battery_optimizations_enabled">Optimitzacions de la bateria habilitades</string>
-  <string name="battery_optimizations_enabled_explained">El vostre dispositiu fa algunes optimitzacions pesades de la bateria i Conversations 
-pot provocar notificacions retardades o fins i tot pèrdua de 
-missatges.\nEs recomana desactivar-les.</string>
-  <string name="battery_optimizations_enabled_dialog">El vostre dispositiu fa algunes optimitzacions pesades de la bateria i Conversations 
-pot provocar notificacions retardades o fins i tot pèrdua de 
-missatges.\n\nAra se us demanarà que desactiveu-las.</string>
   <string name="disable">Desactivar</string>
   <string name="selection_too_large">L\'àrea seleccionada és massa gran</string>
   <string name="no_accounts">(Sense comptes activats)</string>
   <string name="this_field_is_required">Aquest camp és obligatori</string>
   <string name="correct_message">Corregeix el missatge</string>
   <string name="send_corrected_message">Envia el missatge corregit</string>
-  <string name="no_keys_just_confirm">Ja confieu en aquest contacte. Si seleccioneu \"fet\", només confirma que forma %s part d\'aquest xat en grup.</string>
   <string name="this_account_is_disabled">Heu desactivat aquest compte</string>
-  <string name="security_error_invalid_file_access">Error de seguretat: accés al fitxer no vàlid</string>
-  <string name="no_application_to_share_uri">No s\'ha trobat cap aplicació que comparteixi URI</string>
   <string name="share_uri_with">Comparteix l\'URI amb…</string>
   <string name="create_account">Crear compte</string>
   <string name="use_own_provider">Utilitza el meu propi proveïdor</string>
@@ -512,16 +437,11 @@ missatges.\n\nAra se us demanarà que desactiveu-las.</string>
   <string name="gp_short">Curt</string>
   <string name="gp_medium">Mitjà</string>
   <string name="gp_long">Llarg</string>
-  <string name="pref_broadcast_last_activity">Difusió de la interacció de l\'usuari anterior</string>
-  <string name="pref_broadcast_last_activity_summary">Permet que tots els contactes sàpiguen quan utilitzis Conversations</string>
   <string name="pref_privacy">Privadesa</string>
   <string name="pref_theme_options">Tema</string>
   <string name="pref_theme_options_summary">Seleccioneu la paleta de colors</string>
-  <string name="pref_theme_light">Tema clar</string>
-  <string name="pref_theme_dark">Tema fosc</string>
   <string name="pref_use_green_background">Fons verd</string>
   <string name="pref_use_green_background_summary">Utilitzeu fons verd per als missatges rebuts</string>
-  <string name="unable_to_connect_to_keychain">No es pot connectar a OpenKeychain</string>
   <string name="this_device_is_no_longer_in_use">Aquest dispositiu ja no està en ús</string>
   <string name="type_pc">Ordinador</string>
   <string name="type_phone">Telèfon mòbil</string>
@@ -529,29 +449,20 @@ missatges.\n\nAra se us demanarà que desactiveu-las.</string>
   <string name="type_web">Navegador web</string>
   <string name="type_console">Consola</string>
   <string name="payment_required">Cal fer pagament</string>
-  <string name="missing_internet_permission">Falta el permís d\'Internet</string>
   <string name="me">Jo</string>
   <string name="contact_asks_for_presence_subscription">El contacte demana la subscripció a la presència</string>
   <string name="allow">Permetre</string>
   <string name="no_permission_to_access_x">No hi ha permís per accedir %s</string>
   <string name="remote_server_not_found">El servidor remot no s\'ha trobat</string>
-  <string name="unable_to_update_account">No es pot actualitzar el compte</string>
-  <string name="report_jid_as_spammer">Informar d\'aquest JID com l\'enviament de missatges no desitjats.</string>
   <string name="pref_delete_omemo_identities">Elimineu les identitats OMEMO</string>
-  <string name="pref_delete_omemo_identities_summary">Regenereu les vostres claus OMEMO. Tots els contactes hauran de tornar-vos a verificar. Utilitzeu això només com a últim recurs.</string>
   <string name="delete_selected_keys">Elimineu les tecles seleccionades</string>
   <string name="error_publish_avatar_offline">Cal que us connecteu per publicar el vostre avatar.</string>
   <string name="show_error_message">Mostra el missatge d\'error</string>
   <string name="error_message">Missatge d\'error</string>
   <string name="data_saver_enabled">S\'ha activat el protector de dades</string>
-  <string name="data_saver_enabled_explained">El vostre sistema operatiu restringeix a Conversations d\'accedir a Internet quan en segon pla. Per
- rebre notificacions de missatges nous, haureu de permetre que l\'accés sense restriccions a Conversations quan el protector de dades estigui activat.\nConversations encara farà un esforç per guardar dades quan sigui possible.</string>
   <string name="device_does_not_support_data_saver">El vostre dispositiu no suporta desactivar el protector de dades de Conversations</string>
-  <string name="error_unable_to_create_temporary_file">No es pot crear un fitxer temporal</string>
   <string name="this_device_has_been_verified">S\'ha verificat aquest dispositiu</string>
   <string name="copy_fingerprint">Copieu l\'empremta digital</string>
-  <string name="all_omemo_keys_have_been_verified">S\'han verificat totes les claus OMEMO</string>
-  <string name="barcode_does_not_contain_fingerprints_for_this_conversation">El codi de barres no conté empremtes digitals per a aquesta conversa.</string>
   <string name="verified_fingerprints">Empremtes digitals verificades</string>
   <string name="use_camera_icon_to_scan_barcode">Utilitzeu la càmera per escanejar el codi de barres d\'un contacte</string>
   <string name="please_wait_for_keys_to_be_fetched">Espereu que es puguin obtenir les claus</string>
@@ -559,11 +470,8 @@ missatges.\n\nAra se us demanarà que desactiveu-las.</string>
   <string name="share_as_uri">Comparteix com a XMPP URI</string>
   <string name="share_as_http">Comparteix com a enllaç HTTP</string>
   <string name="pref_blind_trust_before_verification">Confiança cega abans de la verificació</string>
-  <string name="pref_blind_trust_before_verification_summary">Confiï automàticament en tots els dispositius nous de contactes que no s\'hagin verificat abans, i sol·liciteu la confirmació manual cada vegada que un contacte verificat afegeix un nou dispositiu.</string>
-  <string name="blindly_trusted_omemo_keys">Tecles OMEMO de confiança cega</string>
   <string name="not_trusted">No confiable</string>
   <string name="invalid_barcode">Codi de barres 2D no vàlid</string>
-  <string name="pref_clean_cache_summary">Carpeta de memòria cache neta (utilitzada per l\'aplicació de la càmera)</string>
   <string name="pref_clean_cache">Netejar la memòria cache</string>
   <string name="pref_clean_private_storage">Netejar l\'emmagatzematge privat</string>
   <string name="pref_clean_private_storage_summary">Netejar emmagatzematge privat on es mantenen els fitxers (es poden tornar a descarregar del servidor)</string>
@@ -573,7 +481,6 @@ missatges.\n\nAra se us demanarà que desactiveu-las.</string>
   <string name="show_inactive_devices">Mostra inactiu</string>
   <string name="hide_inactive_devices">Amaga inactiu</string>
   <string name="distrust_omemo_key">Dispositiu no confiable</string>
-  <string name="distrust_omemo_key_text">Estàs segur que vols eliminar la verificació d\'aquest dispositiu?\nAquest dispositiu i missatges procedents d\'aquest dispositiu es marcaran com a no confiables.</string>
   <plurals name="seconds">
     <item quantity="one">1%d segons</item>
     <item quantity="other">%d segons</item>
@@ -615,9 +522,7 @@ missatges.\n\nAra se us demanarà que desactiveu-las.</string>
   <string name="sasl_downgrade">Mecanisme SASL degradat</string>
   <string name="account_status_regis_web">El servidor requereix el registre al lloc web</string>
   <string name="open_website">Obre la pàgina web</string>
-  <string name="application_found_to_open_website">No s\'ha trobat cap aplicació per obrir lloc web</string>
   <string name="pref_headsup_notifications">Notificacions \"cap amunt\"</string>
-  <string name="pref_headsup_notifications_summary">Mostra les notificacions \"cap amunt\"</string>
   <string name="today">Avui</string>
   <string name="yesterday">Ahir</string>
   <string name="pref_validate_hostname">Valideu el nom del servidor amb DNSSEC</string>
@@ -645,8 +550,6 @@ d\'afegir Converses a la llista d\'aplicacions protegides.</string>
   <string name="edit_status_message">Edita el missatge d\'estat</string>
   <string name="disable_encryption">Desactiva el xifratge</string>
   <string name="error_trustkey_general">Les converses no poden enviar missatges xifrats a 1%1$s . Això pot ser degut al vostre contacte mitjançant un servidor o client obsolet que no pot gestionar OMEMO.</string>
-  <string name="error_trustkey_device_list">No es pot obtenir la llista de dispositius</string>
-  <string name="error_trustkey_bundle">No es poden obtenir paquets de dispositius</string>
   <string name="error_trustkey_hint_mutual">Suggeriment: en alguns casos això es pot resoldre afegint les vostres llistes de contactes.</string>
   <string name="disable_encryption_message">Estàs segur que vols desactivar el xifratge OMEMO per a aquesta conversa?\nAixò permetrà 
 que l\'administrador del servidor llegeixi els missatges, però pot ser l\'única forma de comunicar-se amb persones que utilitzin clients obsolets.</string>
@@ -675,9 +578,7 @@ que l\'administrador del servidor llegeixi els missatges, però pot ser l\'únic
   <string name="title_activity_share_location">Compartir ubicació</string>
   <string name="title_activity_show_location">Mostrar ubicació</string>
   <string name="share">Compartir</string>
-  <string name="unable_to_start_recording">No es pot iniciar l\'enregistrament</string>
   <string name="please_wait">Si us plau, esperi…</string>
-  <string name="no_microphone_permission">Conversations  necessita accés al micròfon</string>
   <string name="search_messages">Buscar missatges</string>
   <string name="gif">GIF</string>
   <string name="view_conversation">Veure conversa</string>

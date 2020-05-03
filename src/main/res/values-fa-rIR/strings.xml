@@ -55,15 +55,9 @@
   <string name="crash_report_title">Conversations کرش کرده است</string>
   <string name="send_now">هم اکنون ارسال کن</string>
   <string name="send_never">دیگر هرگز نپرس</string>
-  <string name="problem_connecting_to_account">ناتوانی در اتصال به حساب کاربری</string>
-  <string name="problem_connecting_to_accounts">ناتوانی در اتصال به چند تا از حساب های کاربری</string>
-  <string name="touch_to_fix">برای مدیریت حساب ها اینجا را لمس کنید</string>
   <string name="attach_file">پیوست فایل</string>
-  <string name="not_in_roster">مخاطب در فهرست شما نیست. آیا مایل به افزودن وی هستید؟</string>
   <string name="add_contact">افزودن مخاطب</string>
   <string name="send_failed">ارسال ناموفق بود</string>
-  <string name="preparing_image">آماده سازی تصویر برای ارسال</string>
-  <string name="preparing_images">آماده سازی تصاویر برای ارسال</string>
   <string name="sharing_files_please_wait">در حال به اشتراک گذاری فایل ها. لطفا صبور باشید...</string>
   <string name="action_clear_history">پاک سازی تاریخچه</string>
   <string name="clear_conversation_history">پاک سازی تاریخچه گفتگو ها</string>
@@ -74,7 +68,6 @@
   <string name="send_omemo_message">ارسال پیام رمز شده با OMEMO</string>
   <string name="send_omemo_x509_message">ارسال پیام رمز شده با OMEMO</string>
   <string name="send_pgp_message">ارسال پیام رمز شده با OpenPGP</string>
-  <string name="your_nick_has_been_changed">نام مستعار شما تغییر کرده</string>
   <string name="send_unencrypted">ارسال رمز نشده</string>
   <string name="decryption_failed">رمزگشایی موفق نبود. شاید شما کلید محرمانه صحیح را در اختیار ندارید.</string>
   <string name="openkeychain_required">OpenKeychain</string>
@@ -101,7 +94,6 @@
   <string name="pref_ui_options">رابط کاربری</string>
   <string name="accept">پذیرفتن</string>
   <string name="error_not_an_image_file">فایلی که انتخاب نموده اید تصویر نیست</string>
-  <string name="error_compressing_image">خطا در تبدیل تصویر</string>
   <string name="error_file_not_found">فایل پیدا نشد</string>
   <string name="account_status_unknown">ناشناخته</string>
   <string name="account_status_disabled">موقتا غیر فعال شد</string>
@@ -113,7 +105,6 @@
   <string name="account_status_regis_fail">ثبت نام ناموفق بود</string>
   <string name="account_status_regis_conflict">نام کاربری قبلا استفاده شده</string>
   <string name="account_status_regis_success">ثبت نام به پایان رسید</string>
-  <string name="account_status_regis_not_sup">سرور از ثبت نام پشیتبانی نمی کند</string>
   <string name="account_status_tls_error">برقرای ارتباط امن با شکست مواجه شد</string>
   <string name="account_status_policy_violation">نقض سیاست</string>
   <string name="account_status_incompatible_server">سرور ناسازگار</string>
@@ -127,27 +118,19 @@
   <string name="mgmt_account_publish_avatar">انتشار آواتار</string>
   <string name="mgmt_account_publish_pgp">انتشار کلید عمومی OpenPGP</string>
   <string name="unpublish_pgp">حذف کلید عمومی OpenPGP</string>
-  <string name="openpgp_has_been_published">کلید عمومی OpenPGP منتشر شد</string>
   <string name="mgmt_account_enable">فعال سازی حساب کاربری</string>
   <string name="mgmt_account_are_you_sure">آیا مطمئن هستید؟</string>
-  <string name="mgmt_account_delete_confirm_text">اگر حساب کاربری خود را پاک کنید، تمام سابقه مکالمه شما حذف خواهد شد</string>
   <string name="attach_record_voice">ضبط صدا</string>
   <string name="account_settings_example_jabber_id">username@example.com</string>
   <string name="password">کلمه عبور</string>
-  <string name="error_out_of_memory">عکس بیش از انداره بزرگ می باشد</string>
   <string name="add_phone_book_text">آیا می خواهید %s را به مخاطبان خود اضافه کنید؟</string>
   <string name="server_info_show_more">مشخصات سرور</string>
   <string name="server_info_available">در دسترس</string>
   <string name="server_info_unavailable">خارج از دسترس</string>
   <string name="last_seen_now">آخرین بار لحظاتی قبل مشاهده شده</string>
-  <string name="last_seen_min">آخرین قبل 1 دقیقه قبل مشاهده شده</string>
   <string name="last_seen_mins">آخرین بار %d دقیقه قبل مشاهده شده</string>
-  <string name="last_seen_hour">آخرین قبل 1 ساعت قبل مشاهده شده</string>
   <string name="last_seen_hours">آخرین بار %d ساعت قبل مشاهده شده</string>
-  <string name="last_seen_day">آخرین بار 1 روز قبل مشاهده شده</string>
   <string name="last_seen_days">آخرین بار %d روز قبل مشاهده شده</string>
-  <string name="install_openkeychain">پیام رمز گذاری شده. لطفا  OpenKeychain را نصب کنید تا رمز گشایی انجام شود.</string>
-  <string name="openpgp_messages_found">پیام های رمز شده به وسیله OpenPGP یافت شد</string>
   <string name="other_devices">دیگر دستگاه ها</string>
   <string name="fetching_keys">در حال دریافت کلید ها...</string>
   <string name="decrypt">رمز گشایی</string>
@@ -173,7 +156,6 @@
   <string name="title_activity_show_location">نمایش موقعیت</string>
   <string name="share">به اشتراک گذاری</string>
   <string name="please_wait">لطفا صبر کنید...</string>
-  <string name="no_microphone_permission">پیام رسان نیاز به دسترسی به میکروفون دارد</string>
   <string name="search_messages">جستجو در پیام ها</string>
   <string name="view_conversation">مشاهده گفتگو</string>
 </resources>
