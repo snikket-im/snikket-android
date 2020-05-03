@@ -196,13 +196,14 @@ public class Conversation extends AbstractEntity implements Blockable, Comparabl
     public void findUnreadMessages(OnMessageFound onMessageFound) {
         final ArrayList<Message> results = new ArrayList<>();
         synchronized (this.messages) {
-            for (Message message : this.messages) {
-                if (!message.isRead()) {
-                    results.add(message);
+            for (final Message message : this.messages) {
+                if (message.isRead() || message.getType() == Message.TYPE_RTP_SESSION) {
+                    continue;
                 }
+                results.add(message);
             }
         }
-        for (Message result : results) {
+        for (final Message result : results) {
             onMessageFound.onMessageFound(result);
         }
     }

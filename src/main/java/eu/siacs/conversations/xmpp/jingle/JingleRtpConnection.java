@@ -564,9 +564,11 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
         Log.d(Config.LOGTAG, id.account.getJid().asBareJid() + ": timeout reached for ringing");
         switch (this.state) {
             case PROPOSED:
+                message.markUnread();
                 rejectCallFromProposed();
                 break;
             case SESSION_INITIALIZED:
+                message.markUnread();
                 rejectCallFromSessionInitiate();
                 break;
         }
@@ -616,6 +618,7 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
                     this.message.setServerMsgId(serverMsgId);
                 }
                 this.message.setTime(timestamp);
+                this.message.markUnread();
                 writeLogMessageMissed();
                 finish();
             } else {
