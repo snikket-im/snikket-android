@@ -505,7 +505,7 @@
     <string name="no_storage_permission">Grant Conversations access to external storage</string>
     <string name="no_camera_permission">Grant Conversations access to the camera</string>
     <string name="sync_with_contacts">Synchronize with contacts</string>
-    <string name="sync_with_contacts_long">Conversations wants permission to access your contacts to match your XMPP contact list with your contacts and show their full names and avatars.\n\nIt will only read your contacts and match them locally without uploading them to your server.</string>
+    <string name="sync_with_contacts_long">Conversations wants permission to access your contacts to match your XMPP contact list with your contacts to show their full names and avatars.\n\nIt will only read your contacts and match them locally without uploading them to your server.</string>
     <string name="sync_with_contacts_quicksy"><![CDATA[Quicksy needs access to your contacts’ phone numbers to make suggestions about possible contacts who are already on Quicksy.<br><br>We will not store a copy of those phone numbers.\n\nFor more information read our <a href="https://quicksy.im/#privacy">privacy policy</a>.<br><br>You will now be asked to grant permission to access your contacts.]]></string>
     <string name="notify_on_all_messages">Notify on all messages</string>
     <string name="notify_only_when_highlighted">Notify only when mentioned</string>
