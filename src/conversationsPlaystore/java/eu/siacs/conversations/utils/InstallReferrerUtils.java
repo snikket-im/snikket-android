@@ -31,7 +31,11 @@ public class InstallReferrerUtils implements InstallReferrerStateListener {
             return;
         }
         this.installReferrerClient = InstallReferrerClient.newBuilder(welcomeActivity).build();
-        this.installReferrerClient.startConnection(this);
+        try {
+            this.installReferrerClient.startConnection(this);
+        } catch (SecurityException e) {
+            Log.e(Config.LOGTAG, "unable to start connection to InstallReferrerClient", e);
+        }
     }
 
     public static void markInstallReferrerExecuted(final Activity context) {
@@ -41,18 +45,16 @@ public class InstallReferrerUtils implements InstallReferrerStateListener {
 
     @Override
     public void onInstallReferrerSetupFinished(int responseCode) {
-        switch (responseCode) {
-            case InstallReferrerClient.InstallReferrerResponse.OK:
-                try {
-                    final ReferrerDetails referrerDetails = installReferrerClient.getInstallReferrer();
-                    final String referrer = referrerDetails.getInstallReferrer();
-                    welcomeActivity.onInstallReferrerDiscovered(referrer);
-                } catch (RemoteException e) {
-                    Log.d(Config.LOGTAG, "unable to get install referrer", e);
-                }
-                break;
-            default:
-                Log.d(Config.LOGTAG, "unable to setup install referrer client. code=" + responseCode);
+        if (responseCode == InstallReferrerClient.InstallReferrerResponse.OK) {
+            try {
+                final ReferrerDetails referrerDetails = installReferrerClient.getInstallReferrer();
+                final String referrer = referrerDetails.getInstallReferrer();
+                welcomeActivity.onInstallReferrerDiscovered(referrer);
+            } catch (final RemoteException e) {
+                Log.d(Config.LOGTAG, "unable to get install referrer", e);
+            }
+        } else {
+            Log.d(Config.LOGTAG, "unable to setup install referrer client. code=" + responseCode);
         }
     }
 
