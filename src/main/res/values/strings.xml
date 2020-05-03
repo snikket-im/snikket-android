@@ -353,7 +353,7 @@
     <string name="clear_other_devices">Clear devices</string>
     <string name="clear_other_devices_desc">Are you sure you want to clear all other devices from the OMEMO announcement? The next time your devices connect, they will reannounce themselves, but might not receive messages sent meanwhile.</string>
     <string name="error_no_keys_to_trust_server_error">There are no usable keys available for this contact.\nCould not fetch new keys from the server. Maybe there is something wrong with your contact’s server?</string>
-    <string name="error_no_keys_to_trust_presence">There are no usable keys available for this contact.\nMake sure both of you have presence subscription on.</string>
+    <string name="error_no_keys_to_trust_presence">There are no usable keys available for this contact.\nMake sure you both have presence subscription.</string>
     <string name="error_trustkeys_title">Something went wrong</string>
     <string name="fetching_history_from_server">Fetching history from server</string>
     <string name="no_more_history_on_server">No more history on server</string>
