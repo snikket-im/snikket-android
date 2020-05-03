@@ -2,11 +2,13 @@ package eu.siacs.conversations.parser;
 
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
-import android.util.Base64;
 import android.util.Log;
 import android.util.Pair;
 
+import com.google.common.io.BaseEncoding;
+
 import org.whispersystems.libsignal.IdentityKey;
+import org.whispersystems.libsignal.InvalidKeyException;
 import org.whispersystems.libsignal.ecc.Curve;
 import org.whispersystems.libsignal.ecc.ECPublicKey;
 import org.whispersystems.libsignal.state.PreKeyBundle;
@@ -27,12 +29,10 @@ import eu.siacs.conversations.Config;
 import eu.siacs.conversations.crypto.axolotl.AxolotlService;
 import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.entities.Contact;
-import eu.siacs.conversations.entities.Conversation;
 import eu.siacs.conversations.entities.Room;
-import eu.siacs.conversations.services.ChannelDiscoveryService;
 import eu.siacs.conversations.services.XmppConnectionService;
-import eu.siacs.conversations.xml.Namespace;
 import eu.siacs.conversations.xml.Element;
+import eu.siacs.conversations.xml.Namespace;
 import eu.siacs.conversations.xmpp.InvalidJid;
 import eu.siacs.conversations.xmpp.OnIqPacketReceived;
 import eu.siacs.conversations.xmpp.OnUpdateBlocklist;
@@ -44,6 +44,56 @@ public class IqParser extends AbstractParser implements OnIqPacketReceived {
 
     public IqParser(final XmppConnectionService service) {
         super(service);
+    }
+
+    public static List<Jid> items(IqPacket packet) {
+        ArrayList<Jid> items = new ArrayList<>();
+        final Element query = packet.findChild("query", Namespace.DISCO_ITEMS);
+        if (query == null) {
+            return items;
+        }
+        for (Element child : query.getChildren()) {
+            if ("item".equals(child.getName())) {
+                Jid jid = child.getAttributeAsJid("jid");
+                if (jid != null) {
+                    items.add(jid);
+                }
+            }
+        }
+        return items;
+    }
+
+    public static Room parseRoom(IqPacket packet) {
+        final Element query = packet.findChild("query", Namespace.DISCO_INFO);
+        if (query == null) {
+            return null;
+        }
+        final Element x = query.findChild("x");
+        if (x == null) {
+            return null;
+        }
+        final Element identity = query.findChild("identity");
+        Data data = Data.parse(x);
+        String address = packet.getFrom().toEscapedString();
+        String name = identity == null ? null : identity.getAttribute("name");
+        String roomName = data.getValue("muc#roomconfig_roomname");
+        String description = data.getValue("muc#roominfo_description");
+        String language = data.getValue("muc#roominfo_lang");
+        String occupants = data.getValue("muc#roominfo_occupants");
+        int nusers;
+        try {
+            nusers = occupants == null ? 0 : Integer.parseInt(occupants);
+        } catch (NumberFormatException e) {
+            nusers = 0;
+        }
+
+        return new Room(
+                address,
+                TextUtils.isEmpty(roomName) ? name : roomName,
+                description,
+                language,
+                nusers
+        );
     }
 
     private void rosterItems(final Account account, final Element query) {
@@ -130,7 +180,6 @@ public class IqParser extends AbstractParser implements OnIqPacketReceived {
                         deviceIds.add(id);
                     } catch (NumberFormatException e) {
                         Log.e(Config.LOGTAG, AxolotlService.LOGPREFIX + " : " + "Encountered invalid <device> node in PEP (" + e.getMessage() + "):" + device.toString() + ", skipping...");
-                        continue;
                     }
                 }
             }
@@ -138,7 +187,7 @@ public class IqParser extends AbstractParser implements OnIqPacketReceived {
         return deviceIds;
     }
 
-    public Integer signedPreKeyId(final Element bundle) {
+    private Integer signedPreKeyId(final Element bundle) {
         final Element signedPreKeyPublic = bundle.findChild("signedPreKeyPublic");
         if (signedPreKeyPublic == null) {
             return null;
@@ -150,45 +199,44 @@ public class IqParser extends AbstractParser implements OnIqPacketReceived {
         }
     }
 
-    public ECPublicKey signedPreKeyPublic(final Element bundle) {
+    private ECPublicKey signedPreKeyPublic(final Element bundle) {
         ECPublicKey publicKey = null;
-        final Element signedPreKeyPublic = bundle.findChild("signedPreKeyPublic");
+        final String signedPreKeyPublic = bundle.findChildContent("signedPreKeyPublic");
         if (signedPreKeyPublic == null) {
             return null;
         }
         try {
-            publicKey = Curve.decodePoint(Base64.decode(signedPreKeyPublic.getContent(), Base64.DEFAULT), 0);
-        } catch (Throwable e) {
+            publicKey = Curve.decodePoint(BaseEncoding.base64().decode(signedPreKeyPublic), 0);
+        } catch (final IllegalArgumentException | InvalidKeyException e) {
             Log.e(Config.LOGTAG, AxolotlService.LOGPREFIX + " : " + "Invalid signedPreKeyPublic in PEP: " + e.getMessage());
         }
         return publicKey;
     }
 
-    public byte[] signedPreKeySignature(final Element bundle) {
-        final Element signedPreKeySignature = bundle.findChild("signedPreKeySignature");
+    private byte[] signedPreKeySignature(final Element bundle) {
+        final String signedPreKeySignature = bundle.findChildContent("signedPreKeySignature");
         if (signedPreKeySignature == null) {
             return null;
         }
         try {
-            return Base64.decode(signedPreKeySignature.getContent(), Base64.DEFAULT);
-        } catch (Throwable e) {
+            return BaseEncoding.base64().decode(signedPreKeySignature);
+        } catch (final IllegalArgumentException e) {
             Log.e(Config.LOGTAG, AxolotlService.LOGPREFIX + " : Invalid base64 in signedPreKeySignature");
             return null;
         }
     }
 
-    public IdentityKey identityKey(final Element bundle) {
-        IdentityKey identityKey = null;
-        final Element identityKeyElement = bundle.findChild("identityKey");
-        if (identityKeyElement == null) {
+    private IdentityKey identityKey(final Element bundle) {
+        final String identityKey = bundle.findChildContent("identityKey");
+        if (identityKey == null) {
             return null;
         }
         try {
-            identityKey = new IdentityKey(Base64.decode(identityKeyElement.getContent(), Base64.DEFAULT), 0);
-        } catch (Throwable e) {
+            return new IdentityKey(BaseEncoding.base64().decode(identityKey), 0);
+        } catch (final IllegalArgumentException | InvalidKeyException e) {
             Log.e(Config.LOGTAG, AxolotlService.LOGPREFIX + " : " + "Invalid identityKey in PEP: " + e.getMessage());
+            return null;
         }
-        return identityKey;
     }
 
     public Map<Integer, ECPublicKey> preKeyPublics(final IqPacket packet) {
@@ -215,7 +263,7 @@ public class IqParser extends AbstractParser implements OnIqPacketReceived {
             Integer preKeyId = null;
             try {
                 preKeyId = Integer.valueOf(preKeyPublicElement.getAttribute("preKeyId"));
-                final ECPublicKey preKeyPublic = Curve.decodePoint(Base64.decode(preKeyPublicElement.getContent(), Base64.DEFAULT), 0);
+                final ECPublicKey preKeyPublic = Curve.decodePoint(BaseEncoding.base64().decode(preKeyPublicElement.getContent()), 0);
                 preKeyRecords.put(preKeyId, preKeyPublic);
             } catch (NumberFormatException e) {
                 Log.e(Config.LOGTAG, AxolotlService.LOGPREFIX + " : " + "could not parse preKeyId from preKey " + preKeyPublicElement.toString());
@@ -230,18 +278,22 @@ public class IqParser extends AbstractParser implements OnIqPacketReceived {
         Element item = getItem(packet);
         Element verification = item != null ? item.findChild("verification", AxolotlService.PEP_PREFIX) : null;
         Element chain = verification != null ? verification.findChild("chain") : null;
-        Element signature = verification != null ? verification.findChild("signature") : null;
+        String signature = verification != null ? verification.findChildContent("signature") : null;
         if (chain != null && signature != null) {
             List<Element> certElements = chain.getChildren();
             X509Certificate[] certificates = new X509Certificate[certElements.size()];
             try {
                 CertificateFactory certificateFactory = CertificateFactory.getInstance("X.509");
                 int i = 0;
-                for (Element cert : certElements) {
-                    certificates[i] = (X509Certificate) certificateFactory.generateCertificate(new ByteArrayInputStream(Base64.decode(cert.getContent(), Base64.DEFAULT)));
+                for (final Element certElement : certElements) {
+                    final String cert = certElement.getContent();
+                    if (cert == null) {
+                        continue;
+                    }
+                    certificates[i] = (X509Certificate) certificateFactory.generateCertificate(new ByteArrayInputStream(BaseEncoding.base64().decode(cert)));
                     ++i;
                 }
-                return new Pair<>(certificates, Base64.decode(signature.getContent(), Base64.DEFAULT));
+                return new Pair<>(certificates, BaseEncoding.base64().decode(signature));
             } catch (CertificateException e) {
                 return null;
             }
@@ -251,7 +303,7 @@ public class IqParser extends AbstractParser implements OnIqPacketReceived {
     }
 
     public PreKeyBundle bundle(final IqPacket bundle) {
-        Element bundleItem = getItem(bundle);
+        final Element bundleItem = getItem(bundle);
         if (bundleItem == null) {
             return null;
         }
@@ -259,14 +311,17 @@ public class IqParser extends AbstractParser implements OnIqPacketReceived {
         if (bundleElement == null) {
             return null;
         }
-        ECPublicKey signedPreKeyPublic = signedPreKeyPublic(bundleElement);
-        Integer signedPreKeyId = signedPreKeyId(bundleElement);
-        byte[] signedPreKeySignature = signedPreKeySignature(bundleElement);
-        IdentityKey identityKey = identityKey(bundleElement);
-        if (signedPreKeyId == null || signedPreKeyPublic == null || identityKey == null) {
+        final ECPublicKey signedPreKeyPublic = signedPreKeyPublic(bundleElement);
+        final Integer signedPreKeyId = signedPreKeyId(bundleElement);
+        final byte[] signedPreKeySignature = signedPreKeySignature(bundleElement);
+        final IdentityKey identityKey = identityKey(bundleElement);
+        if (signedPreKeyId == null
+                || signedPreKeyPublic == null
+                || identityKey == null
+                || signedPreKeySignature == null
+                || signedPreKeySignature.length == 0) {
             return null;
         }
-
         return new PreKeyBundle(0, 0, 0, null,
                 signedPreKeyId, signedPreKeyPublic, signedPreKeySignature, identityKey);
     }
@@ -396,57 +451,6 @@ public class IqParser extends AbstractParser implements OnIqPacketReceived {
                 account.getXmppConnection().sendIqPacket(response, null);
             }
         }
-    }
-
-
-    public static List<Jid> items(IqPacket packet) {
-        ArrayList<Jid> items = new ArrayList<>();
-        final Element query = packet.findChild("query", Namespace.DISCO_ITEMS);
-        if (query == null) {
-            return items;
-        }
-        for(Element child : query.getChildren()) {
-            if ("item".equals(child.getName())) {
-                Jid jid = child.getAttributeAsJid("jid");
-                if (jid != null) {
-                    items.add(jid);
-                }
-            }
-        }
-        return items;
-    }
-
-    public static Room parseRoom(IqPacket packet) {
-        final Element query = packet.findChild("query", Namespace.DISCO_INFO);
-        if(query == null) {
-            return null;
-        }
-        final Element x = query.findChild("x");
-        if (x == null) {
-            return null;
-        }
-        final Element identity = query.findChild("identity");
-        Data data = Data.parse(x);
-        String address = packet.getFrom().toEscapedString();
-        String name = identity == null ? null : identity.getAttribute("name");
-        String roomName = data.getValue("muc#roomconfig_roomname");;
-        String description = data.getValue("muc#roominfo_description");
-        String language = data.getValue("muc#roominfo_lang");
-        String occupants = data.getValue("muc#roominfo_occupants");
-        int nusers;
-        try {
-            nusers = occupants == null ? 0 : Integer.parseInt(occupants);
-        } catch (NumberFormatException e) {
-            nusers = 0;
-        }
-
-        return new Room(
-                address,
-                TextUtils.isEmpty(roomName) ? name : roomName,
-                description,
-                language,
-                nusers
-        );
     }
 
 }
