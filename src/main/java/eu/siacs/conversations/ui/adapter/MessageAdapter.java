@@ -629,12 +629,12 @@ public class MessageAdapter extends ArrayAdapter<Message> implements CopyTextVie
                     viewHolder.message_box = view.findViewById(R.id.message_box);
                     viewHolder.indicatorReceived = view.findViewById(R.id.indicator_received);
                     break;
-				case RTP_SESSION:
-					view = activity.getLayoutInflater().inflate(R.layout.message_rtp_session, parent, false);
-					viewHolder.status_message = view.findViewById(R.id.message_body);
-					viewHolder.message_box = view.findViewById(R.id.message_box);
-					viewHolder.indicatorReceived = view.findViewById(R.id.indicator_received);
-					break;
+                case RTP_SESSION:
+                    view = activity.getLayoutInflater().inflate(R.layout.message_rtp_session, parent, false);
+                    viewHolder.status_message = view.findViewById(R.id.message_body);
+                    viewHolder.message_box = view.findViewById(R.id.message_box);
+                    viewHolder.indicatorReceived = view.findViewById(R.id.indicator_received);
+                    break;
                 case SENT:
                     view = activity.getLayoutInflater().inflate(R.layout.message_sent, parent, false);
                     viewHolder.message_box = view.findViewById(R.id.message_box);
@@ -703,18 +703,20 @@ public class MessageAdapter extends ArrayAdapter<Message> implements CopyTextVie
             final long duration = rtpSessionStatus.duration;
             if (received) {
                 if (duration > 0) {
-                    viewHolder.status_message.setText(activity.getString(R.string.incoming_call_duration, TimeframeUtils.resolve(activity,duration)));
-                } else {
+                    viewHolder.status_message.setText(activity.getString(R.string.incoming_call_duration, TimeframeUtils.resolve(activity, duration)));
+                } else if (rtpSessionStatus.successful) {
                     viewHolder.status_message.setText(R.string.incoming_call);
+                } else {
+                    viewHolder.status_message.setText(activity.getString(R.string.incoming_call_duration, UIHelper.readableTimeDifferenceFull(activity, message.getTimeSent())));
                 }
             } else {
                 if (duration > 0) {
-                    viewHolder.status_message.setText(activity.getString(R.string.outgoing_call_duration, TimeframeUtils.resolve(activity,duration)));
+                    viewHolder.status_message.setText(activity.getString(R.string.outgoing_call_duration, TimeframeUtils.resolve(activity, duration)));
                 } else {
                     viewHolder.status_message.setText(R.string.outgoing_call);
                 }
             }
-            viewHolder.indicatorReceived.setImageResource(RtpSessionStatus.getDrawable(received,rtpSessionStatus.successful,isDarkTheme));
+            viewHolder.indicatorReceived.setImageResource(RtpSessionStatus.getDrawable(received, rtpSessionStatus.successful, isDarkTheme));
             viewHolder.indicatorReceived.setAlpha(isDarkTheme ? 0.7f : 0.57f);
             viewHolder.message_box.setBackgroundResource(isDarkTheme ? R.drawable.date_bubble_grey : R.drawable.date_bubble_white);
             return view;
