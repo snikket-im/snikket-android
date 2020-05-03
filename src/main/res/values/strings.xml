@@ -104,9 +104,9 @@
     <string name="offering">offering…</string>
     <string name="waiting">waiting…</string>
     <string name="no_pgp_key">No OpenPGP Key found</string>
-    <string name="contact_has_no_pgp_key">Could not encrypt your messages because your contacts are not announcing their public keys.\n\n<small>Please ask your contacts to set up OpenPGP.</small></string>
+    <string name="contact_has_no_pgp_key">Could not encrypt your message because your contact is not announcing their public key.\n\n<small>Please ask your contact to set up OpenPGP.</small></string>
     <string name="no_pgp_keys">No OpenPGP Keys found</string>
-    <string name="contacts_have_no_pgp_keys">Could not encrypt your messages, as your contacts are not announcing their public keys.\n\n<small>Please ask them to set up OpenPGP.</small></string>
+    <string name="contacts_have_no_pgp_keys">Could not encrypt your message because your contacts are not announcing their public keys.\n\n<small>Please ask them to set up OpenPGP.</small></string>
     <string name="pref_general">General</string>
     <string name="pref_accept_files">Accept files</string>
     <string name="pref_accept_files_summary">Automatically accept files smaller than…</string>
