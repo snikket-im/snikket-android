@@ -9,8 +9,6 @@
     <string name="pref_never_send_crash_summary">スタックトレースを送信することで、あなたは Quicksy の継続的な開発を支援しています</string>
     <string name="no_storage_permission">Quicksy は外部ストレージにアクセスが必要です</string>
     <string name="no_camera_permission">Quicksy はカメラにアクセスが必要です</string>
-    <string name="battery_optimizations_enabled_explained">お使いのデバイスは、Quicksy で通知の遅延やメッセージの損失につながる可能性のある、いくつかの重いバッテリーの最適化を行っています。\nそれらを無効にすることをお勧めします。</string>
-    <string name="battery_optimizations_enabled_dialog">お使いのデバイスは、Quicksy で通知の遅延やメッセージの損失につながる可能性のある、いくつかの重いバッテリーの最適化を行っています。\n\n今、それらを無効にするように求められます。</string>
     <string name="pref_broadcast_last_activity_summary">Quicksy を使用するときに、すべての連絡先に知らせましょう</string>
     <string name="data_saver_enabled_explained">お使いのオペレーティングシステムは、Quicksy がバックグラウンドのときにインターネットにアクセスすることを制限しています。新しいメッセージの通知を受信するには、データセーバーがオンになっているとき、Quicksy に無制限のアクセスを許可する必要があります。\Quicksy は可能なときにデータを保存するための努力をします。</string>
     <string name="device_does_not_support_data_saver">お使いのデバイスは、Quicksy のデータセーバーを無効にできません。</string>

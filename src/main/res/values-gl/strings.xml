@@ -104,7 +104,9 @@
   <string name="offering">ofrecendo…</string>
   <string name="waiting">agardando...</string>
   <string name="no_pgp_key">Clave OpenPGP non atopada</string>
+  <string name="contact_has_no_pgp_key">Non se cifrou a mensaxe porque o contacto non está publicando a súa chave pública.\n\n<small>Pídelle ao contacto que configure OpenPGP.</small></string>
   <string name="no_pgp_keys">Non se atoparon chaves OpenPGP</string>
+  <string name="contacts_have_no_pgp_keys">Non se cifrou a mensaxe porque os contactos non están publicando a súas chaves públicas.\n\n<small>Pídelles que configuren OpenPGP.</small></string>
   <string name="pref_general">Xeral</string>
   <string name="pref_accept_files">Aceptar ficheiros</string>
   <string name="pref_accept_files_summary">De forma automática aceptar ficheiros menores de…</string>
@@ -351,7 +353,6 @@
   <string name="clear_other_devices">Limplar dispositivos</string>
   <string name="clear_other_devices_desc">Tes a certeza de que queres eliminar os outros dispositivos OMEMO publicados? A próxima vez que un dos teus dispositivos se conecte, deberá voltar a anunciarse, mais podería non recibir mensaxes mentras tanto.</string>
   <string name="error_no_keys_to_trust_server_error">Non hai chaves utilizables dispoñibles para este contacto.\nNon se obtiveron novas chaves do servidor. ¿Podería ser que algo fallase no teu servidor de contactos?</string>
-  <string name="error_no_keys_to_trust_presence">Non hai chaves utilizables dispoñibles para o contacto.\nAsegúrate de ambas tedes activada a subscrición de presenza.</string>
   <string name="error_trustkeys_title">Algo saíu mal</string>
   <string name="fetching_history_from_server">Obtendo historial desde o servidor</string>
   <string name="no_more_history_on_server">Non hai máis historial no servidor</string>
@@ -503,7 +504,6 @@
   <string name="no_storage_permission">Permitir que Conversations acceda a almacenaxe externa</string>
   <string name="no_camera_permission">Permitir que Conversations acceda a cámara</string>
   <string name="sync_with_contacts">Sincronice con todos os contactos</string>
-  <string name="sync_with_contacts_long">Conversations quere acceder a lista de contactos para comparar a túa lista de contactos e así mostrar o nome completo e avatares.\n\nSó lerá os contactos para comparalos localmente, sen subilos ao teu servidor.</string>
   <string name="sync_with_contacts_quicksy"><![CDATA[Quicksy precisa acceder ao número de teléfono dos contactos para facer suxestións sobre posibles contactos que xa están en Quicksy.<br><br>Non gardaremos unha copia de esos números de teléfono.\n\nPara máis información lea a nosa <a href="https://quicksy.im/#privacy">política de intimidade</a>.<br><br>A continuación pediráselle permiso para acceder aos contactos.]]></string>
   <string name="notify_on_all_messages">Notificar todas as mensaxes</string>
   <string name="notify_only_when_highlighted">Notificar só cando é mencionada</string>
@@ -514,8 +514,6 @@
   <string name="always">Sempre</string>
   <string name="large_images_only">Só imaxes grandes</string>
   <string name="battery_optimizations_enabled">Optimizacións de batería activadas</string>
-  <string name="battery_optimizations_enabled_explained">O teu dispositivo está a realizar fortes optimizacións de batería para Conversations, esto podería levar que retrasos nas notificacións ou que incluso se perdesen.\nRecomendámosche desactivalas.</string>
-  <string name="battery_optimizations_enabled_dialog">O dispositivo está a realizar fortes optimizacións de batería para Conversations, esto podería facer que as notificacións se retrasen e incluso perder mensaxes.\nAgora pedirémosche desactivalas.</string>
   <string name="disable">Desactivar</string>
   <string name="selection_too_large">O área selecionada é demasiado grande</string>
   <string name="no_accounts">(Contas non activadas)</string>
@@ -689,7 +687,7 @@
   <string name="disable_encryption">Desactivar a encriptación</string>
   <string name="error_trustkey_general">Conversations non pode enviar mensaxes cifradas a %1$s Isto pode deberse a que o seu contacto utiliza un servidor ou cliente obsoleto que non pode manexar OMEMO.</string>
   <string name="error_trustkey_device_list">Non se obtivo a lista de dispositivos</string>
-  <string name="error_trustkey_bundle">Non se poden recuperar os paquetes de dispositivos</string>
+  <string name="error_trustkey_bundle">Non se obtiveron as chaves de cifrado</string>
   <string name="error_trustkey_hint_mutual">Suxestión: Nalgúns casos, isto pode solucionarse engadíndovos mutuamente as vosas listas de contactos.</string>
   <string name="disable_encryption_message">¿Tes a certeza de que queres desactivar o cifrado OMEMO para esta conversa? Isto permitirá que o administrador do teu servidor lea as túas mensaxes, pero pode ser a única forma de comunicarse con persoas que usan clientes obsoletos.</string>
   <string name="disable_now">Desactivar agora</string>

@@ -104,7 +104,9 @@
   <string name="offering">angeboten…</string>
   <string name="waiting">warten…</string>
   <string name="no_pgp_key">Kein OpenPGP-Schlüssel gefunden</string>
+  <string name="contact_has_no_pgp_key">Deine Nachricht konnte nicht verschlüsselt werden, weil dein Kontakt seinen öffentlichen Schlüssel nicht bekannt gibt.\n\n<small>Bitte sage deinem Kontakt, er möge OpenPGP einrichten.</small></string>
   <string name="no_pgp_keys">Keine OpenPGP-Schlüssel gefunden</string>
+  <string name="contacts_have_no_pgp_keys">Deine Nachrichten konnten nicht verschlüsselt werden, weil deine Kontakte ihre öffentlichen Schlüssel nicht bekannt geben.\n\n<small>Bitte sage ihnen, sie mögen OpenPGP einrichten.</small></string>
   <string name="pref_general">Allgemeines</string>
   <string name="pref_accept_files">Dateien annehmen</string>
   <string name="pref_accept_files_summary">Dateien automatisch annehmen, die kleiner sind als …</string>
@@ -146,7 +148,7 @@
   <string name="account_status_unknown">Unbekannt</string>
   <string name="account_status_disabled">Vorübergehend abgeschaltet</string>
   <string name="account_status_online">Online</string>
-  <string name="account_status_connecting">Verbinde…</string>
+  <string name="account_status_connecting">Verbinde\u2026</string>
   <string name="account_status_offline">Offline</string>
   <string name="account_status_unauthorized">Ungültige Zugangsdaten</string>
   <string name="account_status_not_found">Server nicht gefunden</string>
@@ -245,6 +247,7 @@
   <string name="add_back">Auch hinzufügen</string>
   <string name="contact_has_read_up_to_this_point">%s hat bis zu diesem Punkt gelesen</string>
   <string name="contacts_have_read_up_to_this_point">%s haben bis zu diesem Punkt gelesen</string>
+  <string name="contacts_and_n_more_have_read_up_to_this_point">%1$s +%2$d andere haben bis zu diesem Punkt gelesen</string>
   <string name="everyone_has_read_up_to_this_point">Alle haben bis zu diesem Punkt gelesen</string>
   <string name="publish">Veröffentlichen</string>
   <string name="touch_to_choose_picture">Avatar antippen, um ein Bild aus Galerie auszuwählen</string>
@@ -334,7 +337,7 @@
   <string name="x_file_offered_for_download">%s zum Herunterladen angeboten</string>
   <string name="cancel_transmission">Übertragung abbrechen</string>
   <string name="file_transmission_failed">Datei konnte nicht geteilt werden</string>
-  <string name="file_transmission_cancelled">Übertragung abgebrochen</string>
+  <string name="file_transmission_cancelled">Dateiübertragung abgebrochen</string>
   <string name="file_deleted">Datei gelöscht</string>
   <string name="no_application_found_to_open_file">Keine App zum Öffnen der Datei gefunden</string>
   <string name="no_application_found_to_open_link">Keine App zum Öffnen des Links gefunden</string>
@@ -350,7 +353,6 @@
   <string name="clear_other_devices">Geräte entfernen</string>
   <string name="clear_other_devices_desc">Bist du sicher, dass du alle anderen Geräte aus der OMEMO-Bekanntmachung entfernen willst? Die Bekanntmachung wird bei der nächsten Verbindung erneuert aber möglicherweise werden keine zwischenzeitlich gesendeten Nachrichten empfangen.</string>
   <string name="error_no_keys_to_trust_server_error">Für diesen Kontakt sind keine nutzbaren Schlüssel verfügbar.\nEs konnten keine neuen Schlüssel vom Server abgerufen werden. Gibt es vielleicht ein Problem mit dem Server deines Kontaktes?</string>
-  <string name="error_no_keys_to_trust_presence">Für diesen Kontakt sind keine benutzbaren Schlüssel verfügbar.\nStelle sicher, dass ihre beide gegenseitig den Online-Status aktiviert habt.</string>
   <string name="error_trustkeys_title">Etwas ist schief gelaufen</string>
   <string name="fetching_history_from_server">Lade Chatverlauf…</string>
   <string name="no_more_history_on_server">Keine weiteren Nachrichten vorhanden</string>
@@ -471,7 +473,7 @@
   <string name="authenticate_with_certificate">Leer lassen, um mit Zertifikat anzumelden</string>
   <string name="mam_prefs">Archivierungseinstellungen</string>
   <string name="server_side_mam_prefs">Archivierungseinstellungen des Servers</string>
-  <string name="fetching_mam_prefs">Archivierungseinstellungen werden abgerufen. Bitte warten …</string>
+  <string name="fetching_mam_prefs">Archivierungseinstellungen werden abgerufen. Bitte warten…</string>
   <string name="unable_to_fetch_mam_prefs">Archivierungseinstellungen konnten nicht abgerufen werden</string>
   <string name="captcha_required">CAPTCHA erforderlich</string>
   <string name="captcha_hint">Gib den Text von obigem Bild ein</string>
@@ -479,7 +481,7 @@
   <string name="jid_does_not_match_certificate">XMPP-Adresse stimmt nicht dem Zertifikat überein</string>
   <string name="action_renew_certificate">Zertifikat erneuern</string>
   <string name="error_fetching_omemo_key">Kann OMEMO-Schlüssel nicht empfangen!</string>
-  <string name="verified_omemo_key_with_certificate">OMEMO-Schlüssel mit Zertifikat bestätigt!</string>
+  <string name="verified_omemo_key_with_certificate">OMEMO-Schlüssel mit Zertifikat überprüft!</string>
   <string name="device_does_not_support_certificates">Dein Gerät unterstützt das Auswählen von Client-Zertifikaten nicht!</string>
   <string name="pref_connection_options">Verbindung</string>
   <string name="pref_use_tor">Über Tor verbinden</string>
@@ -518,12 +520,14 @@
   <string name="this_field_is_required">Dieses Feld ist erforderlich</string>
   <string name="correct_message">Nachricht korrigieren</string>
   <string name="send_corrected_message">Korrigierte Nachricht senden</string>
+  <string name="no_keys_just_confirm">Du hast den Fingerabdruck dieser Person bereits sicher verifiziert, um das Vertrauen zu bestätigen. Durch Auswählen von \"Fertig\" bestätigst du, dass %s Teil dieses Gruppenchats ist.</string>
   <string name="this_account_is_disabled">Du hast dieses Konto deaktiviert</string>
   <string name="security_error_invalid_file_access">Sicherheitsfehler: Dateizugriff nicht erlaubt!</string>
   <string name="no_application_to_share_uri">Keine App zum Teilen der URI gefunden</string>
   <string name="share_uri_with">Teile URI mit…</string>
   <string name="welcome_text_quicksy"><![CDATA[Quicksy ist ein Ableger des beliebten XMPP-Clients Conversations mit automatischer Kontakterkennung.<br><br>Du registrierst dich mit deiner Telefonnummer und Quicksy wird automatisch auf der Grundlage der Telefonnummern in deinem Adressbuch mögliche Kontakte vorschlagen.<br><br>Mit der Anmeldung erklärst du dich mit unserer <a href="https://quicksy.im/#privacy">Datenschutzerklärung</a> einverstanden.]]></string>
   <string name="agree_and_continue">Zustimmen und fortfahren</string>
+  <string name="magic_create_text">Ein Guide hilft bei der Kontoerstellung auf conversations.im.¹\nWenn du conversations.im als Provider wählst, kannst du mit Nutzern anderer Anbieter kommunizieren, indem du ihnen deine vollständige XMPP-Adresse gibst.</string>
   <string name="your_full_jid_will_be">Deine vollständige XMPP-Adresse lautet: %s</string>
   <string name="create_account">Konto erstellen</string>
   <string name="use_own_provider">Nutze eigenen Provider</string>
@@ -547,6 +551,8 @@
   <string name="gp_short">Kurz</string>
   <string name="gp_medium">Mittel</string>
   <string name="gp_long">Lang</string>
+  <string name="pref_broadcast_last_activity">Benutzeraktivität veröffentlichen</string>
+  <string name="pref_broadcast_last_activity_summary">Informiert deine Kontakte, wenn du Conversations nutzt</string>
   <string name="pref_privacy">Privatsphäre</string>
   <string name="pref_theme_options">Design</string>
   <string name="pref_theme_options_summary">Wähle die Farbpalette aus</string>
@@ -571,6 +577,7 @@
   <string name="remote_server_not_found">Remote-Server nicht gefunden</string>
   <string name="remote_server_timeout">Zeitüberschreitung des Remote-Servers</string>
   <string name="unable_to_update_account">Konto konnte nicht aktualisiert werden</string>
+  <string name="report_jid_as_spammer">Diese XMPP-Adresse als Spammer melden.</string>
   <string name="pref_delete_omemo_identities">OMEMO-Identitäten zurücksetzen</string>
   <string name="pref_delete_omemo_identities_summary">Erzeuge neue OMEMO-Schlüssel. Alle deine Kontakte müssen sie erneut verifizieren. Verwende dies nur als letztes Mittel.</string>
   <string name="delete_selected_keys">Ausgewählte Schlüssel löschen</string>
@@ -578,19 +585,25 @@
   <string name="show_error_message">Zeige Fehlermeldung</string>
   <string name="error_message">Fehlermeldung</string>
   <string name="data_saver_enabled">Datensparmodus aktiv</string>
+  <string name="data_saver_enabled_explained">Dein Betriebssystem verhindert, dass Conversations im Hintergrund auf das Internet zugreift. Um Benachrichtigungen erhalten zu können, solltest du Conversations den Zugang erlauben, wenn der \"Datensparmodus\" aktiv ist.\nConversations wird dennoch versuchen, so viele Daten wie möglich einzusparen.</string>
   <string name="device_does_not_support_data_saver">Dein Gerät unterstützt den Datensparmodus für Conversations nicht.</string>
   <string name="error_unable_to_create_temporary_file">Temporäre Datei konnte nicht erstellt werden</string>
   <string name="this_device_has_been_verified">Dieses Gerät wurde überprüft</string>
   <string name="copy_fingerprint">Fingerabdruck kopieren</string>
+  <string name="all_omemo_keys_have_been_verified">Du hast alle in deinem Besitz befindlichen OMEMO-Schlüssel überprüft</string>
+  <string name="barcode_does_not_contain_fingerprints_for_this_conversation">Der Barcode enthält keine Fingerabdrücke für diese Unterhaltung.</string>
   <string name="verified_fingerprints">Überprüfte Fingerabdrücke</string>
   <string name="use_camera_icon_to_scan_barcode">Nutze Kamera, um Barcodes deiner Kontakte zu scannen</string>
-  <string name="please_wait_for_keys_to_be_fetched">Bitte warten bis Schlüssel abgerufen werden …</string>
+  <string name="please_wait_for_keys_to_be_fetched">Bitte warten, bis die Schlüssel abgerufen werden</string>
   <string name="share_as_barcode">Als Barcode teilen</string>
   <string name="share_as_uri">Als XMPP URI teilen</string>
   <string name="share_as_http">Als HTTP Link teilen</string>
   <string name="pref_blind_trust_before_verification">Blind vertrauen vor der Überprüfung</string>
+  <string name="pref_blind_trust_before_verification_summary">Neuen Geräten von nicht verifizierten Kontakten vertrauen, aber bei verifizierten Kontakten eine manuelle Bestätigung der neuen Geräte verlangen.</string>
+  <string name="blindly_trusted_omemo_keys">Blind vertraute OMEMO-Schlüssel bedeutet, dass es sich um eine andere Person handeln könnte oder dass jemand sie abgehört haben könnte.</string>
   <string name="not_trusted">Nicht vertraut</string>
   <string name="invalid_barcode">Ungültiger Barcode</string>
+  <string name="pref_clean_cache_summary">Cache-Ordner löschen (von der Kamera-App genutzt)</string>
   <string name="pref_clean_cache">Lösche Cache</string>
   <string name="pref_clean_private_storage">Lösche privaten Speicher</string>
   <string name="pref_clean_private_storage_summary">Lösche privaten Speicher, in dem die Dateien gespeichert werden (sie können erneut vom Server heruntergeladen werden)</string>
@@ -600,6 +613,7 @@
   <string name="show_inactive_devices">Inaktive anzeigen</string>
   <string name="hide_inactive_devices">Inaktive ausblenden</string>
   <string name="distrust_omemo_key">Gerät nicht mehr vertrauen</string>
+  <string name="distrust_omemo_key_text">Bist du sicher, dass du die vorhandene Überprüfung dieses Gerätes löschen willst?\nDieses Gerät und gesendete Nachrichten von diesem Gerät werden als \"nicht vertrauenswürdig\" markiert.</string>
   <plurals name="seconds">
     <item quantity="one">%d Sekunde</item>
     <item quantity="other">%d Sekunden</item>
@@ -642,7 +656,9 @@
   <string name="sasl_downgrade">SASL-Mechanismus zurückgestuft</string>
   <string name="account_status_regis_web">Der Server benötigt eine Registrierung auf einer Website</string>
   <string name="open_website">Website öffnen</string>
+  <string name="application_found_to_open_website">Keine App zum Öffnen der Website gefunden</string>
   <string name="pref_headsup_notifications">Benachrichtigungsvorschau</string>
+  <string name="pref_headsup_notifications_summary">Benachrichtigungsvorschau anzeigen</string>
   <string name="today">Heute</string>
   <string name="yesterday">Gestern</string>
   <string name="pref_validate_hostname">Überprüfe den Hostnamen mit DNSSEC</string>
@@ -671,7 +687,7 @@
   <string name="disable_encryption">Verschlüsselung deaktivieren</string>
   <string name="error_trustkey_general">Conversations ist nicht in der Lage, verschlüsselte Nachrichten an %1$s zu senden. Dies kann daran liegen, dass dein Kontakt einen veralteten Server oder Client verwendet, der mit OMEMO nicht umgehen kann.</string>
   <string name="error_trustkey_device_list">Geräteliste konnte nicht abgerufen werden</string>
-  <string name="error_trustkey_bundle">Verbundene Geräte konnten nicht abgerufen werden</string>
+  <string name="error_trustkey_bundle">Verschlüsselungsschlüssel konnte nicht abgerufen werden</string>
   <string name="error_trustkey_hint_mutual">Tipp: In manchen Fällen kann dies behoben werden, indem man sich gegenseitig zu den Kontaktlisten hinzufügt.</string>
   <string name="disable_encryption_message">Bist du sicher, dass du die OMEMO-Verschlüsselung für dieses Gespräch deaktivieren möchtest?\nDies wird es deinem Serveradministrator ermöglichen, deine Nachrichten zu lesen, aber es könnte die einzige Möglichkeit sein, mit Personen zu kommunizieren, die veraltete Clients verwenden. </string>
   <string name="disable_now">Jetzt deaktivieren</string>
@@ -799,11 +815,11 @@
   <string name="install_orbot">Orbot installieren</string>
   <string name="start_orbot">Orbot starten</string>
   <string name="no_market_app_installed">Kein App-Store installiert.</string>
-  <string name="group_chat_will_make_your_jabber_id_public">Dieser Channel wird deine XMPP-Adresse veröffentlichen.</string>
+  <string name="group_chat_will_make_your_jabber_id_public">Dieser Channel wird deine XMPP-Adresse veröffentlichen</string>
   <string name="ebook">E-Book</string>
   <string name="video_original">Original (unkomprimiert)</string>
   <string name="open_with">Öffnen mit...</string>
-  <string name="set_profile_picture">Conversations-Profilbild</string>
+  <string name="set_profile_picture">Conversations Profilbild</string>
   <string name="choose_account">Konto auswählen</string>
   <string name="restore_backup">Sicherung wiederherstellen</string>
   <string name="restore">Wiederherstellung</string>
@@ -824,10 +840,10 @@
   <string name="this_is_an_xmpp_address">Dies ist eine XMPP-Adresse. Bitte einen Namen eingeben.</string>
   <string name="creating_channel">Öffentlichen Channel erstellen...</string>
   <string name="channel_already_exists">Dieser Channel existiert bereits</string>
-  <string name="joined_an_existing_channel">Du bist einem bestehenden Channel beigetreten.</string>
+  <string name="joined_an_existing_channel">Du bist einem bestehenden Channel beigetreten</string>
   <string name="unable_to_set_channel_configuration">Channeleinstellung konnte nicht gespeichert werden</string>
-  <string name="allow_participants_to_edit_subject">Erlaubt es jedem, das Thema zu bearbeiten.</string>
-  <string name="allow_participants_to_invite_others">Erlaubt es jedem, andere einzuladen.</string>
+  <string name="allow_participants_to_edit_subject">Erlaubt es jedem, das Thema zu bearbeiten</string>
+  <string name="allow_participants_to_invite_others">Erlaubt es jedem, andere einzuladen</string>
   <string name="anyone_can_edit_subject">Alle können das Thema bearbeiten.</string>
   <string name="owners_can_edit_subject">Eigentümer können das Thema bearbeiten.</string>
   <string name="admins_can_edit_subject">Administratoren können das Thema bearbeiten.</string>

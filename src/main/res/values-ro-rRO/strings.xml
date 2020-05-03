@@ -104,7 +104,9 @@
   <string name="offering">transmit...</string>
   <string name="waiting">în așteptare...</string>
   <string name="no_pgp_key">Nu am găsit cheia OpenPGP</string>
+  <string name="contact_has_no_pgp_key">Nu s-au putut cripta mesajele deoarece contactul nu își anunță cheile publice.\n\n<small>Rugați-vă contactul să își configureze OpenPGP.</small></string>
   <string name="no_pgp_keys">Nu am găsit chei OpenPGP</string>
+  <string name="contacts_have_no_pgp_keys">Nu s-au putut cripta mesajele deoarece contactele nu își anunță cheile publice.\n\n<small>Rugați-vă contactele să își configureze OpenPGP.</small></string>
   <string name="pref_general">General</string>
   <string name="pref_accept_files">Acceptă fișiere</string>
   <string name="pref_accept_files_summary">Mai mici decât...</string>
@@ -137,7 +139,7 @@
   <string name="ask_for_presence_updates">Cere actualizări de prezență</string>
   <string name="attach_choose_picture">Alege o imagine</string>
   <string name="attach_take_picture">Fă o poză</string>
-  <string name="preemptively_grant">Acorda anticipat cererea de abonare</string>
+  <string name="preemptively_grant">Acordă anticipat cererea de abonare</string>
   <string name="error_not_an_image_file">Fișierul selectat nu este o imagine</string>
   <string name="error_compressing_image">Nu s-a putut face convertirea imaginii</string>
   <string name="error_file_not_found">Fișierul nu a fost găsit</string>
@@ -267,8 +269,10 @@
   <string name="enable">Activează</string>
   <string name="conference_requires_password">Discuția de grup necesită o parolă</string>
   <string name="enter_password">Introduceți parola</string>
+  <string name="request_presence_updates">Vă rugăm să cereți mai întâi actualizări de prezență de la acest contact.\n\n<small>Acestea vor fi folosite pentru a determina ce aplicații folosește contactul dumneavoastră.</small></string>
   <string name="request_now">Cere acum</string>
   <string name="ignore">Ignora</string>
+  <string name="without_mutual_presence_updates"><b>Atenție:</b> Trimițând aceasta fără actualizări de prezență reciproce ar putea produce probleme neprevazute.\n\n<small>Mergeți la \"Detalii contact\" pentru a verifica abonările la actualizările de prezență.</small></string>
   <string name="pref_security_settings">Siguranță</string>
   <string name="pref_allow_message_correction">Permite corecția mesajelor</string>
   <string name="pref_allow_message_correction_summary">Contactele pot să își editeze mesajele scrise în trecut</string>
@@ -282,6 +286,7 @@
   <string name="pref_quiet_hours_summary">Notificările vor fi reduse la tăcere în timpul orelor de liniște</string>
   <string name="pref_expert_options_other">Altele</string>
   <string name="pref_autojoin">Sincronizează cu semnele de carte</string>
+  <string name="pref_autojoin_summary">Alătură-te discuție de grup în mod automat dacă semnul de carte este setat așa</string>
   <string name="toast_message_omemo_fingerprint">Amprentă OMEMO copiată în memorie</string>
   <string name="conference_banned">V-a fost interzis accesul la această discuție de grup</string>
   <string name="conference_members_only">Această discuție de grup este rezervată membrilor</string>
@@ -331,15 +336,23 @@
   <string name="preparing_file">Se pregătește partajarea fișierului</string>
   <string name="x_file_offered_for_download">%s - fișier oferit spre descărcare</string>
   <string name="cancel_transmission">Anulează transmisiunea</string>
+  <string name="file_transmission_failed">nu s-a putut face partajarea fișierului</string>
   <string name="file_transmission_cancelled">transmisia fișierului a fost anulată</string>
+  <string name="file_deleted">Fișier șters</string>
+  <string name="no_application_found_to_open_file">Nu s-a găsit nici o aplicație care să deschidă fișierul</string>
+  <string name="no_application_found_to_open_link">Nu s-a găsit nici o aplicație care să deschidă adresa</string>
+  <string name="no_application_found_to_view_contact">Nu s-a găsit nici o aplicație care să deschidă contactul</string>
   <string name="pref_show_dynamic_tags">Etichete dinamice</string>
   <string name="pref_show_dynamic_tags_summary">Sub contacte arată etichete dinamice</string>
   <string name="enable_notifications">Activează notificările</string>
   <string name="no_conference_server_found">Nu s-a găsit serverul pentru discuția de grup</string>
+  <string name="conference_creation_failed">Nu s-a putut crea discuția de grup</string>
   <string name="account_image_description">Avatar cont</string>
   <string name="copy_omemo_clipboard_description">Copiază amprenta OMEMO în memorie</string>
   <string name="regenerate_omemo_key">Generează din nou cheia OMEMO</string>
   <string name="clear_other_devices">Curață lista dispozitivelor</string>
+  <string name="clear_other_devices_desc">Sigur doriți să înlăturați toate celelalte dispozitive din mesajul de anunț OMEMO? Data viitoare când dispozitivele se vor conecta, vor anunța din nou că sunt accesibile, dar se poate ca ele să nu mai primească mesajele trimise între timp.</string>
+  <string name="error_no_keys_to_trust_server_error">Nu există chei utilizabile disponibile pentru acest contact.\nNu s-au putut descărca chei noi de pe server. Se poate ca serverul contactului dumneavoastră să aibă o problemă?</string>
   <string name="error_trustkeys_title">A apărut o problemă</string>
   <string name="fetching_history_from_server">Descarc istoric de pe server</string>
   <string name="no_more_history_on_server">Nu mai exista istoric pe server</string>
@@ -349,6 +362,7 @@
   <string name="change_password">Schimbare parolă</string>
   <string name="current_password">Parolă curentă</string>
   <string name="new_password">Parolă nouă</string>
+  <string name="password_should_not_be_empty">Parola nu poate să fie goală</string>
   <string name="enable_all_accounts">Activează toate conturile</string>
   <string name="disable_all_accounts">Dezactivează toate conturile</string>
   <string name="perform_action_with">Efectuaza actiune cu</string>
@@ -368,6 +382,7 @@
   <string name="could_not_change_affiliation">Nu s-a putut schimba afilierea lui %s</string>
   <string name="ban_from_conference">Interzice accesul la discuția de grup</string>
   <string name="ban_from_channel">Interzice accesul la canal</string>
+  <string name="removing_from_public_conference">Încercați să înlăturați pe %s dintr-un canal public. Singurul mod în care puteți face asta este să blocați utilizatorul pentru totdeauna.</string>
   <string name="ban_now">Interzice accesul acum</string>
   <string name="could_not_change_role">Nu s-a putut schimba rolul lui %s</string>
   <string name="conference_options">Configurare discuție de grup privată</string>
@@ -406,6 +421,7 @@
   <string name="pref_chat_states_summary">Contactul este anunțat atunci când scrieți un nou mesaj</string>
   <string name="send_location">Trimite locația</string>
   <string name="show_location">Arată locația</string>
+  <string name="no_application_found_to_display_location">Nu s-a găsit nici o aplicație care să afișeze locația</string>
   <string name="location">Locatie</string>
   <string name="title_undo_swipe_out_conversation">Conversație închisă</string>
   <string name="title_undo_swipe_out_group_chat">A părăsit discuția de grup privată</string>
@@ -423,6 +439,7 @@
     <item quantity="few">%d certificate sterse</item>
     <item quantity="other">%d certificate șterse</item>
   </plurals>
+  <string name="pref_quick_action_summary">Înlocuiește butonul de trimitere cu o acțiune rapidă</string>
   <string name="pref_quick_action">Acțiune rapidă</string>
   <string name="none">Nimic</string>
   <string name="recently_used">Folosită recent</string>
@@ -430,6 +447,7 @@
   <string name="search_contacts">Caută contacte</string>
   <string name="search_bookmarks">Caută semne de carte</string>
   <string name="send_private_message">Trimite mesaj privat</string>
+  <string name="user_has_left_conference">%1$s a părăsit discuția de grup</string>
   <string name="username">Nume utilizator</string>
   <string name="username_hint">Nume utilizator</string>
   <string name="invalid_username">Acesta nu este un nume de utilizator valabil</string>
@@ -439,6 +457,7 @@
   <string name="download_failed_could_not_write_file">Descărcare eșuată: Nu s-a putut scrie fișierul</string>
   <string name="account_status_tor_unavailable">Rețeaua Tor nu este disponibilă</string>
   <string name="account_status_bind_failure">Eroare de conexiune</string>
+  <string name="account_status_host_unknown">Serverul nu este responsabil pentru acest domeniu</string>
   <string name="server_info_broken">Deteriorat</string>
   <string name="pref_presence_settings">Setări de disponibilitate</string>
   <string name="pref_away_when_screen_off">Plecat când ecranul este oprit</string>
@@ -451,11 +470,15 @@
   <string name="pref_show_connection_options_summary">Arată opțiunea de setare a numelui de gazdă și a portului, atunci când se configurează un cont</string>
   <string name="hostname_example">xmpp.exemplu.ro</string>
   <string name="action_add_account_with_certificate">Adaugă un cont cu certificat</string>
+  <string name="unable_to_parse_certificate">Nu s-a putut analiza certificatul</string>
   <string name="authenticate_with_certificate">Lăsați gol pentru a autentifica cu un certificat</string>
   <string name="mam_prefs">Preferințe arhivare</string>
   <string name="server_side_mam_prefs">Preferințe arhivare pe server</string>
   <string name="fetching_mam_prefs">Se descarcă preferințe arhivare. Vă rugăm să așteptați...</string>
+  <string name="unable_to_fetch_mam_prefs">Nu s-au putut descărca preferințele de arhivare</string>
+  <string name="captcha_required">Text captcha de verificare necesar</string>
   <string name="captcha_hint">Introduceți textul din imaginea de mai sus</string>
+  <string name="certificate_chain_is_not_trusted">Lanțul de certificate nu este de încredere</string>
   <string name="jid_does_not_match_certificate">Adresa XMPP nu corespunde cu certificatul</string>
   <string name="action_renew_certificate">Înnoiește certificatul</string>
   <string name="error_fetching_omemo_key">Eroare la preluarea cheii OMEMO!</string>
@@ -466,6 +489,7 @@
   <string name="pref_use_tor_summary">Trimite toate conexiunile prin rețeaua Tor. Necesită aplicația Orbot</string>
   <string name="account_settings_hostname">Nume gazdă</string>
   <string name="account_settings_port">Port</string>
+  <string name="hostname_or_onion">Adresă server sau .onion</string>
   <string name="not_a_valid_port">Acesta nu este un numar de port valabil</string>
   <string name="not_valid_hostname">Acesta nu este un nume de gazdă valabil</string>
   <string name="connected_accounts">%1$d din %2$d conturi conectate</string>
@@ -475,6 +499,12 @@
     <item quantity="other">%d mesaje</item>
   </plurals>
   <string name="load_more_messages">Încarcă mai multe mesaje</string>
+  <string name="shared_file_with_x">Fișier partajat cu %s</string>
+  <string name="shared_image_with_x">Imagine partajată cu %s</string>
+  <string name="shared_images_with_x">Imagini partajate cu %s</string>
+  <string name="shared_text_with_x">Text partajat cu %s</string>
+  <string name="no_storage_permission">Permiteți Conversations acces la stocarea externă</string>
+  <string name="no_camera_permission">Permiteți Conversations acces la camera foto</string>
   <string name="sync_with_contacts">Sincronizează cu contactele</string>
   <string name="sync_with_contacts_quicksy"><![CDATA[Quicksy are nevoie să poată accesa numerele de telefon ale contactelor dumneavoastră pentru a putea sugera posibile contacte ce sunt deja pe Quicksy.<br><br>Nu vom stoca o copie a acestor numere the telefon.\n\nPentru mai multe informații puteți citii <a href="https://quicksy.im/#privacy">politica noastră de confidențialitate</a>.<br><br>Urmează să fiți întrebați dacă doriți să permiteți accesul la contacte.]]></string>
   <string name="notify_on_all_messages">Notifică la toate mesajele</string>
@@ -492,9 +522,14 @@
   <string name="this_field_is_required">Acest câmp este obligatoriu</string>
   <string name="correct_message">Corecție mesaj</string>
   <string name="send_corrected_message">Trimite text corectat</string>
+  <string name="no_keys_just_confirm">Ați validat deja amprenta acestei persoane într-un mod securizat pentru a confirma încrederea. Selectând \'Gata\' doar confirmați că %s ia parte la această discuție de grup.</string>
   <string name="this_account_is_disabled">Ați dezactivat acest cont</string>
+  <string name="security_error_invalid_file_access">Eroare de securitate.: Acces fișier invalid!</string>
+  <string name="no_application_to_share_uri">Nu s-a găsit nici o aplicație care să partajeze adresa</string>
   <string name="share_uri_with">Partajează adresa cu...</string>
   <string name="welcome_text_quicksy"><![CDATA[Quicksy este o versiune a popularului client XMPP Conversations cu descoperire automată a contactelor.<br><br>Vă înscrieți cu numărul de telefon și Quicksy—pe baza numerelor de telefon din agenda dumneavoastră—vă va sugera automat posibile contacte.<br><br>Înscriindu-vă sunteți de acord cu <a href="https://quicksy.im/#privacy">politica noastră de confidențialitate</a>.]]></string>
+  <string name="agree_and_continue">Sunt de acord și continuă</string>
+  <string name="magic_create_text">Vă vom ghida prin procesul de creare al unui cont pe conversations.im.¹\nCând alegeți conversations.im ca furnizor veți putea comunica cu utilizatorii altor furnizori oferindu-le adresa dumneavoastră completă XMPP.</string>
   <string name="your_full_jid_will_be">Adresa dumneavoastră XMPP completă va fi: %s</string>
   <string name="create_account">Creează cont</string>
   <string name="use_own_provider">Folosește furnizorul meu</string>
@@ -518,12 +553,17 @@
   <string name="gp_short">Scurtă</string>
   <string name="gp_medium">Medie</string>
   <string name="gp_long">Lungă</string>
+  <string name="pref_broadcast_last_activity">Publică utilizarea</string>
+  <string name="pref_broadcast_last_activity_summary">Contactele vă sunt informate atunci când folosiți Conversations</string>
   <string name="pref_privacy">Intimitate</string>
   <string name="pref_theme_options">Temă</string>
   <string name="pref_theme_options_summary">Selecție paletă culori interfață</string>
   <string name="pref_theme_automatic">Automată</string>
+  <string name="pref_theme_light">Luminoasă</string>
+  <string name="pref_theme_dark">Întunecată</string>
   <string name="pref_use_green_background">Fundal verde</string>
   <string name="pref_use_green_background_summary">Pentru mesajele primite</string>
+  <string name="unable_to_connect_to_keychain">Nu s-a putut face conectarea la OpenKeychain</string>
   <string name="this_device_is_no_longer_in_use">Acest dispozitiv nu mai este in uz</string>
   <string name="type_pc">PC</string>
   <string name="type_phone">Telefon mobil</string>
@@ -531,21 +571,29 @@
   <string name="type_web">Navigator internet</string>
   <string name="type_console">Consola</string>
   <string name="payment_required">Este necesar să efectuați o plată</string>
+  <string name="missing_internet_permission">Permiteți accesul la Internet</string>
   <string name="me">Eu</string>
-  <string name="contact_asks_for_presence_subscription">Contactul cere actualizări de prezență</string>
+  <string name="contact_asks_for_presence_subscription">Contactul cere abonarea la actualizări de prezență</string>
   <string name="allow">Permite</string>
   <string name="no_permission_to_access_x">Nu există permisiunea de a accesa %s</string>
   <string name="remote_server_not_found">Serverul nu a fost găsit</string>
   <string name="remote_server_timeout">A expirat termenul de așteptare răspuns de la serverul destinație</string>
+  <string name="unable_to_update_account">Nu s-a putut face actualizarea contului</string>
+  <string name="report_jid_as_spammer">Raportează că această adresă XMPP trimite mesaje spam.</string>
   <string name="pref_delete_omemo_identities">Șterge identitățile OEMO</string>
+  <string name="pref_delete_omemo_identities_summary">Regenerează cheile personale OMEMO. Toate contactele vor fi obligate să verifice cheile dumneavoastră din nou. Folosiți asta doar ca o ultimă opțiune.</string>
   <string name="delete_selected_keys">Șterge cheile selectate</string>
   <string name="error_publish_avatar_offline">Pentru a putea publica avatarul trebuie să existe o conexiune.</string>
   <string name="show_error_message">Arată mesaj de eroare</string>
   <string name="error_message">Mesaj de eroare</string>
   <string name="data_saver_enabled">Economizorul de date este activat</string>
+  <string name="data_saver_enabled_explained">Sistemul de operare restricționează accesul la Internet pentru Conversations atunci când este în fundal. Pentru a primii notificări pentru mesajele noi trebuie să acordați acces ne restricționat pentru Conversations atunci când \"Economizorul de date\" este activ.\nConversations face mereu eforturi ca să economisească consumul de date atunci când este posibil.</string>
   <string name="device_does_not_support_data_saver">Dispozitivul nu suporta dezactivarea Economizorului de date pentru Conversations.</string>
+  <string name="error_unable_to_create_temporary_file">Nu se poate crea un fișier temporar</string>
   <string name="this_device_has_been_verified">Acest dispozitiv a fost verificat</string>
   <string name="copy_fingerprint">Copiază amprenta</string>
+  <string name="all_omemo_keys_have_been_verified">Ați verificat toate cheile OMEMO pe care le aveți</string>
+  <string name="barcode_does_not_contain_fingerprints_for_this_conversation">Codul de bare nu conține amprente pentru această conversație.</string>
   <string name="verified_fingerprints">Amprente verificate</string>
   <string name="use_camera_icon_to_scan_barcode">Folosește camera pentru a scana codul de bare al contactului</string>
   <string name="please_wait_for_keys_to_be_fetched">Asteptati cat se preiau cheile</string>
@@ -553,8 +601,11 @@
   <string name="share_as_uri">Partajează ca adresă XMPP</string>
   <string name="share_as_http">Partajează ca legatură HTTP</string>
   <string name="pref_blind_trust_before_verification">Încredere Oarbă Înainte de Verificare</string>
+  <string name="pref_blind_trust_before_verification_summary">Ai încredere în toate dispozitivele noi ale contactelor care nu au fost verificate anterior, dar cere confirmarea manuală pentru dispozitivele noi ale contactelor verificate.</string>
+  <string name="blindly_trusted_omemo_keys">Încredere oarbă în aceste chei OMEMO, aceasta înseamnă că ar putea fi altcineva sau cineva și-a strecurat propriile chei.</string>
   <string name="not_trusted">De neîncredere</string>
   <string name="invalid_barcode">Cod de bare 2D invalid</string>
+  <string name="pref_clean_cache_summary">Curățare dosar temporar (folosit de aplicația cameră foto)</string>
   <string name="pref_clean_cache">Curăța memoria temporară</string>
   <string name="pref_clean_private_storage">Curăță stocarea privată</string>
   <string name="pref_clean_private_storage_summary">Locul unde sunt fișierele păstrate (pot fi descărcate de pe server din nou)</string>
@@ -564,6 +615,7 @@
   <string name="show_inactive_devices">Arată inactive</string>
   <string name="hide_inactive_devices">Ascunde inactive</string>
   <string name="distrust_omemo_key">Pierde încrederea în acest dispozitiv</string>
+  <string name="distrust_omemo_key_text">Sigur doriți să ștergeți datele de verificare pentru acest dispozitiv?\nAcest dispozitiv precum și mesajele venind de la el vor fi marcate ca ne fiind de încredere.</string>
   <plurals name="seconds">
     <item quantity="one">%d secundă</item>
     <item quantity="few">%d secunde</item>
@@ -612,7 +664,9 @@
   <string name="sasl_downgrade">Mecanism SASL degradat</string>
   <string name="account_status_regis_web">Serverul necesită înregistrarea pe website</string>
   <string name="open_website">Deschide website</string>
+  <string name="application_found_to_open_website">Nu s-a găsit nici o aplicație care să poată deschide siteul</string>
   <string name="pref_headsup_notifications">Notificare heads-up</string>
+  <string name="pref_headsup_notifications_summary">Arată notificările în prim-plan</string>
   <string name="today">Azi</string>
   <string name="yesterday">Ieri</string>
   <string name="pref_validate_hostname">Validează numele domeniului cu ajutorul DNSSEC</string>
@@ -640,6 +694,8 @@
   <string name="edit_status_message">Editare mesaj de stare</string>
   <string name="disable_encryption">Dezactivează criptarea</string>
   <string name="error_trustkey_general">Conversations nu poate trimite mesaje criptate către %1$s. Aceasta se poate întâmpla dacă acest contact folosește un server sau un client învechit ce nu suportă OMEMO.</string>
+  <string name="error_trustkey_device_list">Nu s-a putut descărca lista dispozitivelor</string>
+  <string name="error_trustkey_bundle">Nu s-au putut descărca cheile de criptare</string>
   <string name="error_trustkey_hint_mutual">Sugestie: În unele cazuri se poate rezolva dacă vă adăugați reciproc în lista de contacte.</string>
   <string name="disable_encryption_message">Sigur doriți să dezactivați criptarea OMEMO pentru această conversație?\nAstfel veți permite administratorilor serverului să vă citească mesajele, dar se poate ca ăsta să fie singurul mod în care puteți să comunicați cu persoanele care folosesc clienți învechiți.</string>
   <string name="disable_now">Dezactivează acum</string>
@@ -668,7 +724,9 @@
   <string name="title_activity_share_location">Partajare locație</string>
   <string name="title_activity_show_location">Arată locația</string>
   <string name="share">Partajare</string>
+  <string name="unable_to_start_recording">Nu s-a putut pornii înregistrarea</string>
   <string name="please_wait">Vă rugăm să așteptați...</string>
+  <string name="no_microphone_permission">Permiteți Conversations acces la microfon</string>
   <string name="search_messages">Caută mesaje</string>
   <string name="gif">GIF</string>
   <string name="view_conversation">Arată conversația</string>
@@ -688,6 +746,7 @@
   <string name="providing_a_name_is_optional">Setarea numelui este opțională</string>
   <string name="create_dialog_group_chat_name">Titlul discuției de grup</string>
   <string name="conference_destroyed">Această discuție de grup a fost distrusă</string>
+  <string name="unable_to_save_recording">Nu s-a putut salva înregistrarea</string>
   <string name="foreground_service_channel_name">Serviciul activ în prim-plan</string>
   <string name="foreground_service_channel_description">Această categorie de notificări este folosită pentru a arăta o notificare permanentă ce indică rularea Conversations</string>
   <string name="notification_group_status_information">Informații de stare</string>
@@ -743,6 +802,9 @@
   <string name="pin_expired">Codul pe care vi l-am trimis a expirat.</string>
   <string name="unknown_api_error_network">Eroare de rețea necunoscută.</string>
   <string name="unknown_api_error_response">Răspuns necunoscut de la server.</string>
+  <string name="unable_to_connect_to_server">Nu s-a putut face conectarea la server.</string>
+  <string name="unable_to_establish_secure_connection">Nu s-a putut realiza o conexiune securizată.</string>
+  <string name="unable_to_find_server">Nu s-a putut găsii serverul.</string>
   <string name="something_went_wrong_processing_your_request">Ceva nu a mers bine în timpul procesării cererii dumneavoastră.</string>
   <string name="invalid_user_input">Introducere invalidă utilizator</string>
   <string name="temporarily_unavailable">Indisponibil temporar. Încercați din nou mai târziu.</string>
@@ -771,6 +833,8 @@
   <string name="restore">Restaurează</string>
   <string name="enter_password_to_restore">Introduceți parola contului %s pentru a restaura copia de siguranță.</string>
   <string name="restore_warning">Nu folosiți funcția de restaurare a copiei de siguranță pentru a încerca clonarea (rularea simultană a) instalării. Restaurarea copiei de siguranță este gândită doar pentru a migra pe un alt dispozitiv sau în cazul în care ați pierdut dispozitivul original.</string>
+  <string name="unable_to_restore_backup">Nu s-a putut restaura copia de siguranță.</string>
+  <string name="unable_to_decrypt_backup">Nu s-a putut decripta copia de siguranță. Este parola corectă?</string>
   <string name="backup_channel_name">Copie de siguranță &amp; Restaurare</string>
   <string name="enter_jabber_id">Introduceți adresa XMPP</string>
   <string name="create_group_chat">Creează discuție de grup</string>
@@ -785,6 +849,7 @@
   <string name="creating_channel">Se creează canalul public...</string>
   <string name="channel_already_exists">Acest canal există deja</string>
   <string name="joined_an_existing_channel">V-ați alăturat unui canal existent</string>
+  <string name="unable_to_set_channel_configuration">Nu s-a putut salva configurația canalului</string>
   <string name="allow_participants_to_edit_subject">Permite oricui să editeze subiectul</string>
   <string name="allow_participants_to_invite_others">Permite oricui să invite alte persoane</string>
   <string name="anyone_can_edit_subject">Oricine poate edita subiectul.</string>
@@ -817,7 +882,9 @@
   <string name="not_a_backup_file">Fișierul selectat nu este o copie de siguranță Conversations</string>
   <string name="account_already_setup">Acest cont a fost deja configurat</string>
   <string name="please_enter_password">Va rugăm să introduceți parola pentru acest cont</string>
+  <string name="unable_to_perform_this_action">Nu s-a putut realiza această acțiune</string>
   <string name="open_join_dialog">Alătură-te unui canal public...</string>
+  <string name="sharing_application_not_grant_permission">Aplicația care a partajat nu a permis accesul la acest fișier.</string>
   <string name="group_chats_and_channels"><![CDATA[Discuții de grup & Canale]]></string>
   <string name="jabber_network">jabber.network</string>
   <string name="local_server">Server local</string>
@@ -838,7 +905,9 @@
   <string name="rtp_state_finding_device">Localizare dispozitive</string>
   <string name="rtp_state_ringing">Sună</string>
   <string name="rtp_state_declined_or_busy">Ocupat</string>
+  <string name="rtp_state_connectivity_error">Nu s-a putut conecta apelul</string>
   <string name="rtp_state_retracted">Apel anulat</string>
+  <string name="rtp_state_application_failure">Eroare de aplicație</string>
   <string name="hang_up">Închide</string>
   <string name="ongoing_call">Apel în curs</string>
   <string name="ongoing_video_call">Apel video în curs</string>
@@ -852,6 +921,8 @@
   <string name="video_call">Apel video</string>
   <string name="microphone_unavailable">Microfonul nu este disponibil</string>
   <string name="only_one_call_at_a_time">Puteți avea un singur apel simultan.</string>
+  <string name="return_to_ongoing_call">Reveniți la apelul în curs</string>
+  <string name="could_not_switch_camera">Nu s-a putut face comutarea camerei foto</string>
   <plurals name="view_users">
     <item quantity="one">Arată %1$d participant</item>
     <item quantity="few">Arată %1$d participanți</item>

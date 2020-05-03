@@ -9,8 +9,6 @@
     <string name="pref_never_send_crash_summary">Door crashrapportages te versturen help je de ontwikkeling van Quicksy</string>
     <string name="no_storage_permission">Quicksy heeft toegang nodig tot de externe opslag</string>
     <string name="no_camera_permission">Quicksy heeft toegang nodig tot de camera</string>
-    <string name="battery_optimizations_enabled_explained">Je apparaat voert sterke batterij-optimalisaties uit op Quicksy, die kunnen leiden tot vertraagde meldingen of zelfs verlies van berichten.\nHet is aangeraden deze optimalisaties uit te schakelen.</string>
-    <string name="battery_optimizations_enabled_dialog">Je apparaat voert sterke batterij-optimalisaties uit op Quicksy, die kunnen leiden tot vertraagde meldingen of zelfs verlies van berichten.\nJe zal nu gevraagd worden deze optimalisaties uit te schakelen.</string>
     <string name="pref_broadcast_last_activity_summary">Laat al je contactpersonen weten wanneer je Quicksy gebruikt</string>
     <string name="data_saver_enabled_explained">Je besturingssysteem verhindert Quicksy toegang tot het internet wanneer Quicksy zich op de achtergrond bevindt. Om meldingen van nieuwe berichten te krijgen moet je Quicksy onbeperkte toegang geven wanneer gegevensbesparing is ingeschakeld.\nQuicksy zal nog steeds proberen wanneer mogelijk gegevens te besparen.</string>
     <string name="device_does_not_support_data_saver">Je apparaat ondersteunt het uitschakelen van gegevensbesparing voor Quicksy niet.</string>

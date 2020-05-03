@@ -9,8 +9,6 @@
     <string name="pref_never_send_crash_summary">En envoyant des traces d’appels, vous aidez le développement de Quicksy</string>
     <string name="no_storage_permission">Quicksy a besoin d’accéder au stockage externe</string>
     <string name="no_camera_permission">Quicksy a besoin d’accéder à la caméra</string>
-    <string name="battery_optimizations_enabled_explained">Votre appareil applique des optimisations de batterie lourdes sur Quicksy pouvant entraîner des notifications tardives, voire la perte de messages.\nIl est recommandé de les désactiver.</string>
-    <string name="battery_optimizations_enabled_dialog">Votre appareil applique des optimisations de batterie lourdes sur Quicksy pouvant entraîner des notifications tardives, voire la perte de messages.\nVous allez maintenant être invité à les désactiver.</string>
     <string name="pref_broadcast_last_activity_summary">Faites savoir à tous vos contacts quand vous utilisez Quicksy</string>
     <string name="data_saver_enabled_explained">Votre système d’exploitation restreint l’accès à Internet à Quicksy lorsqu’il est en arrière-plan. Pour recevoir les notifications des nouveaux messages reçus, vous devriez accorder à Quicksy un accès illimité lorsque l’économie de la consommation des données est activée.\nQuicksy essaiera quand même d’économiser la consommation lorsque c’est possible.</string>
     <string name="device_does_not_support_data_saver">Votre appareil ne prend pas en charge la désactivation du mode économie de données pour Quicksy.</string>
