@@ -308,7 +308,12 @@ public class WebRTCWrapper {
         if (audioTrack == null) {
             throw new IllegalStateException("Local audio track does not exist (yet)");
         }
-        return audioTrack.enabled();
+        try {
+            return audioTrack.enabled();
+        } catch (final IllegalStateException e) {
+            //sometimes UI might still be rendering the buttons when a background thread has already ended the call
+            return false;
+        }
     }
 
     void setMicrophoneEnabled(final boolean enabled) {
