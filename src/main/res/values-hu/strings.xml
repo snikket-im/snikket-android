@@ -67,7 +67,11 @@
   <string name="crash_report_title">A Conversations összeomlott</string>
   <string name="send_now">Küldés most</string>
   <string name="send_never">Sose kérdezzen újra</string>
+  <string name="problem_connecting_to_account">Nem sikerült kapcsolódni a fiókhoz</string>
+  <string name="problem_connecting_to_accounts">Nem sikerült kapcsolódni több fiókhoz</string>
+  <string name="touch_to_fix">Koppintson a fiókjai kezeléséhez</string>
   <string name="attach_file">Fájl csatolása</string>
+  <string name="not_in_roster">Hozzáadja ezt a hiányzó partnert a partnerlistájához?</string>
   <string name="add_contact">Partner hozzáadása</string>
   <string name="send_failed">kézbesítés sikertelen</string>
   <string name="sharing_files_please_wait">Fájlok megosztása. Kérem várjon…</string>
@@ -162,6 +166,7 @@
   <string name="account_settings_example_jabber_id">felhasznalonev@pelda.hu</string>
   <string name="password">Jelszó</string>
   <string name="invalid_jid">Ez nem érvényes XMPP-cím</string>
+  <string name="error_out_of_memory">Nincs elég memória. A kép túl nagy</string>
   <string name="add_phone_book_text">Hozzá szeretné adni %s partnert a címjegyzékéhez?</string>
   <string name="server_info_show_more">Kiszolgáló-információk</string>
   <string name="server_info_mam">XEP-0313: MAM</string>
@@ -178,8 +183,11 @@
   <string name="server_info_unavailable">nem érhető el</string>
   <string name="missing_public_keys">Hiányzó nyilvános kulcs bejelentései</string>
   <string name="last_seen_now">éppen most volt aktív</string>
+  <string name="last_seen_min">egy perce volt aktív</string>
   <string name="last_seen_mins">%d perce volt aktív</string>
+  <string name="last_seen_hour">egy órája volt aktív</string>
   <string name="last_seen_hours">%d órája volt aktív</string>
+  <string name="last_seen_day">egy napja volt aktív</string>
   <string name="last_seen_days">%d napja volt aktív</string>
   <string name="openpgp_key_id">OpenPGP kulcsazonosító</string>
   <string name="omemo_fingerprint">OMEMO ujjlenyomat</string>
@@ -702,6 +710,7 @@
   <string name="pin_expired">Az általunk küldött PIN-kód lejárt.</string>
   <string name="unknown_api_error_network">Ismeretlen hálózati hiba.</string>
   <string name="unknown_api_error_response">Ismeretlen válasz a kiszolgálótól.</string>
+  <string name="unable_to_find_server">Nem sikerült megtalálni a kiszolgálót.</string>
   <string name="something_went_wrong_processing_your_request">Valami hiba történt a kérés feldolgozásakor.</string>
   <string name="invalid_user_input">Érvénytelen felhasználói bevitel</string>
   <string name="temporarily_unavailable">Átmenetileg nem érhető el. Próbálja meg később újra.</string>
@@ -730,6 +739,8 @@
   <string name="restore">Visszaállítás</string>
   <string name="enter_password_to_restore">Adja meg a(z) %s fiók jelszavát a biztonsági mentés visszaállításához.</string>
   <string name="restore_warning">Ne használja a biztonsági mentés visszaállítása funkciót egy telepítés klónozásának (egyidejűleg történő futtatásának) kísérletéhez. A biztonsági mentés visszaállítása csak költöztetésekhez való, illetve arra az esetre, ha elveszti az eredeti eszközt.</string>
+  <string name="unable_to_restore_backup">Nem sikerült visszaállítani a biztonsági mentést.</string>
+  <string name="unable_to_decrypt_backup">Nem sikerült visszafejteni a biztonsági mentést. Helyes a jelszó?</string>
   <string name="backup_channel_name">Biztonsági mentés és visszaállítás</string>
   <string name="enter_jabber_id">Adja meg az XMPP-címet</string>
   <string name="create_group_chat">Csoportos csevegés létrehozása</string>
@@ -744,6 +755,7 @@
   <string name="creating_channel">Nyilvános csatorna létrehozása…</string>
   <string name="channel_already_exists">Ez a csatorna már létezik</string>
   <string name="joined_an_existing_channel">Csatlakozott egy meglévő csatornához</string>
+  <string name="unable_to_set_channel_configuration">Nem sikerült elmenteni a csatorna beállításait</string>
   <string name="allow_participants_to_edit_subject">Bárkinek engedélyezett a téma szerkesztése</string>
   <string name="allow_participants_to_invite_others">Bárkinek engedélyezett mások meghívása</string>
   <string name="anyone_can_edit_subject">Bárki szerkesztheti a témát.</string>
@@ -776,7 +788,9 @@
   <string name="not_a_backup_file">A kiválasztott fájl nem Conversations biztonsági mentés fájl</string>
   <string name="account_already_setup">Ez a fiók már be lett állítva</string>
   <string name="please_enter_password">Adja meg a fiók jelszavát</string>
+  <string name="unable_to_perform_this_action">Nem sikerült végrehajtani ezt a műveletet</string>
   <string name="open_join_dialog">Csatlakozás nyilvános csatornához…</string>
+  <string name="sharing_application_not_grant_permission">A megosztási alkalmazás nem adott jogosultságot a fájl eléréséhez.</string>
   <string name="group_chats_and_channels"><![CDATA[Csoportos csevegések és csatornák]]></string>
   <string name="jabber_network">jabber.network</string>
   <string name="local_server">Helyi kiszolgáló</string>
@@ -797,7 +811,9 @@
   <string name="rtp_state_finding_device">Eszközök keresése</string>
   <string name="rtp_state_ringing">Csörgetés</string>
   <string name="rtp_state_declined_or_busy">Elfoglalt</string>
+  <string name="rtp_state_connectivity_error">Nem sikerült kapcsolódni a híváshoz</string>
   <string name="rtp_state_retracted">Visszavont hívás</string>
+  <string name="rtp_state_application_failure">Alkalmazáshiba</string>
   <string name="hang_up">Lerakás</string>
   <string name="ongoing_call">Kimenő hívás</string>
   <string name="ongoing_video_call">Kimenő videohívás</string>
@@ -811,6 +827,8 @@
   <string name="video_call">Videohívás</string>
   <string name="microphone_unavailable">A mikrofonja nem érhető el</string>
   <string name="only_one_call_at_a_time">Egyszerre csak egy hívásban vehet részt.</string>
+  <string name="return_to_ongoing_call">Visszatérés a kimenő híváshoz</string>
+  <string name="could_not_switch_camera">Nem sikerült átváltani a kamerát</string>
   <plurals name="view_users">
     <item quantity="one">%1$d résztvevő megtekintése</item>
     <item quantity="other">%1$d résztvevő megtekintése</item>

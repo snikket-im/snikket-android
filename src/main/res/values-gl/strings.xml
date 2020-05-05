@@ -353,6 +353,7 @@
   <string name="clear_other_devices">Limplar dispositivos</string>
   <string name="clear_other_devices_desc">Tes a certeza de que queres eliminar os outros dispositivos OMEMO publicados? A próxima vez que un dos teus dispositivos se conecte, deberá voltar a anunciarse, mais podería non recibir mensaxes mentras tanto.</string>
   <string name="error_no_keys_to_trust_server_error">Non hai chaves utilizables dispoñibles para este contacto.\nNon se obtiveron novas chaves do servidor. ¿Podería ser que algo fallase no teu servidor de contactos?</string>
+  <string name="error_no_keys_to_trust_presence">Non hai chaves utilizables para este contacto.\nAsegúrate de que ambas tedes subscrición de presenza activada.</string>
   <string name="error_trustkeys_title">Algo saíu mal</string>
   <string name="fetching_history_from_server">Obtendo historial desde o servidor</string>
   <string name="no_more_history_on_server">Non hai máis historial no servidor</string>
@@ -504,6 +505,7 @@
   <string name="no_storage_permission">Permitir que Conversations acceda a almacenaxe externa</string>
   <string name="no_camera_permission">Permitir que Conversations acceda a cámara</string>
   <string name="sync_with_contacts">Sincronice con todos os contactos</string>
+  <string name="sync_with_contacts_long">Conversations quere permiso para acceder aos teus contactos para comparar a lista de contactos XMPP e asíu poder amosar o seu nome completo e avatares.\n\nSó lerá os contactos e compararaos de xeito local, sen subilos ao teu servidor.</string>
   <string name="sync_with_contacts_quicksy"><![CDATA[Quicksy precisa acceder ao número de teléfono dos contactos para facer suxestións sobre posibles contactos que xa están en Quicksy.<br><br>Non gardaremos unha copia de esos números de teléfono.\n\nPara máis información lea a nosa <a href="https://quicksy.im/#privacy">política de intimidade</a>.<br><br>A continuación pediráselle permiso para acceder aos contactos.]]></string>
   <string name="notify_on_all_messages">Notificar todas as mensaxes</string>
   <string name="notify_only_when_highlighted">Notificar só cando é mencionada</string>
@@ -514,6 +516,8 @@
   <string name="always">Sempre</string>
   <string name="large_images_only">Só imaxes grandes</string>
   <string name="battery_optimizations_enabled">Optimizacións de batería activadas</string>
+  <string name="battery_optimizations_enabled_explained">O teu dispositivo está facendo fortes optimizacións de batería con Conversations, podería causar retraso nas notificacións ou incluso pérdida de mensaxes.\nÉ recomendable desactivalas.</string>
+  <string name="battery_optimizations_enabled_dialog">O teu dispositivo está a facer fortes optimizacións de batería con Conversations e podería causar retrasos nas notificacións e incluso perda de mensaxes.\n\nÍmosche pedir que as desactives.</string>
   <string name="disable">Desactivar</string>
   <string name="selection_too_large">O área selecionada é demasiado grande</string>
   <string name="no_accounts">(Contas non activadas)</string>

@@ -9,6 +9,8 @@
     <string name="pref_never_send_crash_summary">A veremkiíratások elküldésével segíti a Quicksy alkalmazás folyamatos fejlesztését</string>
     <string name="no_storage_permission">A Quicksy alkalmazásnak hozzáférésre van szüksége a külső tárolóhoz</string>
     <string name="no_camera_permission">A Quicksy alkalmazásnak kamera-hozzáférésre van szüksége</string>
+    <string name="battery_optimizations_enabled_explained">A készülék erős akkumulátor-optimalizálást végez a Quicksy programnál, ami késleltetett értesítésekhez, vagy akár üzenetek elvesztéséhez is vezethet.\nAjánlott kikapcsolni ezeket.</string>
+    <string name="battery_optimizations_enabled_dialog">A készülék erős akkumulátor-optimalizálást végez a Quicksy programnál, ami késleltetett értesítésekhez, vagy akár üzenetek elvesztéséhez is vezethet.\nMost arra fogják kérni, hogy tiltsa le azokat.</string>
     <string name="pref_broadcast_last_activity_summary">Tudassa az összes partnerével, hogy a Quicksy alkalmazást használja</string>
     <string name="data_saver_enabled_explained">Az operációs rendszer korlátozza a Quicksy hozzáférését az internethez, amikor az a háttérben fut. Ahhoz, hogy értesítéseket kapjon az új üzenetekről aktív adatspórolás esetén is, lehetővé kell tennie a Quicksy korlátlan hozzáférését.\nA Quicksy továbbra is arra törekszik, hogy spóroljon az adatforgalmon, ahol lehetséges.</string>
     <string name="device_does_not_support_data_saver">Az eszköze nem támogatja az adatspórolás letiltását a Quicksy alkalmazásnál.</string>

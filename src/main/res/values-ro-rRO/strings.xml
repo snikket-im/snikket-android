@@ -286,7 +286,7 @@
   <string name="pref_quiet_hours_summary">Notificările vor fi reduse la tăcere în timpul orelor de liniște</string>
   <string name="pref_expert_options_other">Altele</string>
   <string name="pref_autojoin">Sincronizează cu semnele de carte</string>
-  <string name="pref_autojoin_summary">Alătură-te discuție de grup în mod automat dacă semnul de carte este setat așa</string>
+  <string name="pref_autojoin_summary">Alătură-te discuției de grup în mod automat dacă semnul de carte este setat așa</string>
   <string name="toast_message_omemo_fingerprint">Amprentă OMEMO copiată în memorie</string>
   <string name="conference_banned">V-a fost interzis accesul la această discuție de grup</string>
   <string name="conference_members_only">Această discuție de grup este rezervată membrilor</string>
@@ -353,6 +353,7 @@
   <string name="clear_other_devices">Curață lista dispozitivelor</string>
   <string name="clear_other_devices_desc">Sigur doriți să înlăturați toate celelalte dispozitive din mesajul de anunț OMEMO? Data viitoare când dispozitivele se vor conecta, vor anunța din nou că sunt accesibile, dar se poate ca ele să nu mai primească mesajele trimise între timp.</string>
   <string name="error_no_keys_to_trust_server_error">Nu există chei utilizabile disponibile pentru acest contact.\nNu s-au putut descărca chei noi de pe server. Se poate ca serverul contactului dumneavoastră să aibă o problemă?</string>
+  <string name="error_no_keys_to_trust_presence">Nu există chei utilizabile disponibile pentru acest contact.\nAsigurați-vă că ați activat amândoi(ouă) trimiterea de actualizări de prezență reciproce.</string>
   <string name="error_trustkeys_title">A apărut o problemă</string>
   <string name="fetching_history_from_server">Descarc istoric de pe server</string>
   <string name="no_more_history_on_server">Nu mai exista istoric pe server</string>
@@ -506,6 +507,7 @@
   <string name="no_storage_permission">Permiteți Conversations acces la stocarea externă</string>
   <string name="no_camera_permission">Permiteți Conversations acces la camera foto</string>
   <string name="sync_with_contacts">Sincronizează cu contactele</string>
+  <string name="sync_with_contacts_long">Conversations dorește permisiunea de a vă accesa contactele pentru a putea potrivi lista de contacte XMPP cu cea din dispozitiv și a afișa numele lor complete și avatarele.\n\nSe va citi și potrivi local fără a fi încărcate pe serverul dumneavoastră.</string>
   <string name="sync_with_contacts_quicksy"><![CDATA[Quicksy are nevoie să poată accesa numerele de telefon ale contactelor dumneavoastră pentru a putea sugera posibile contacte ce sunt deja pe Quicksy.<br><br>Nu vom stoca o copie a acestor numere the telefon.\n\nPentru mai multe informații puteți citii <a href="https://quicksy.im/#privacy">politica noastră de confidențialitate</a>.<br><br>Urmează să fiți întrebați dacă doriți să permiteți accesul la contacte.]]></string>
   <string name="notify_on_all_messages">Notifică la toate mesajele</string>
   <string name="notify_only_when_highlighted">Notifică doar atunci când cineva vă menționează numele</string>
@@ -516,6 +518,8 @@
   <string name="always">Mereu</string>
   <string name="large_images_only">Doar imaginile mari</string>
   <string name="battery_optimizations_enabled">Optimizare baterie activată</string>
+  <string name="battery_optimizations_enabled_explained">Dispozitivul dumneavoastră încearcă să optimizeze agresiv consumul bateriei pentru Conversations, aceasta poate duce la notificări întârziate sau chiar pierderea mesajelor.\nEste recomandat sa le dezactivați.</string>
+  <string name="battery_optimizations_enabled_dialog">Dispozitivul dumneavoastră încearcă să optimizeze agresiv consumul bateriei pentru Conversations, aceasta poate duce la notificări întârziate sau chiar pierderea mesajelor.\nÎn continuare veți fi rugați să le dezactivați.</string>
   <string name="disable">Dezactivează</string>
   <string name="selection_too_large">Zona selectată este prea mare</string>
   <string name="no_accounts">(Nici un cont activat)</string>

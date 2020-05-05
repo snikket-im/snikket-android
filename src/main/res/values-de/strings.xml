@@ -353,6 +353,7 @@
   <string name="clear_other_devices">Geräte entfernen</string>
   <string name="clear_other_devices_desc">Bist du sicher, dass du alle anderen Geräte aus der OMEMO-Bekanntmachung entfernen willst? Die Bekanntmachung wird bei der nächsten Verbindung erneuert aber möglicherweise werden keine zwischenzeitlich gesendeten Nachrichten empfangen.</string>
   <string name="error_no_keys_to_trust_server_error">Für diesen Kontakt sind keine nutzbaren Schlüssel verfügbar.\nEs konnten keine neuen Schlüssel vom Server abgerufen werden. Gibt es vielleicht ein Problem mit dem Server deines Kontaktes?</string>
+  <string name="error_no_keys_to_trust_presence">Für diesen Kontakt sind keine benutzbaren Schlüssel verfügbar.\nStelle sicher, dass ihre beide gegenseitig den Online-Status aktiviert habt.</string>
   <string name="error_trustkeys_title">Etwas ist schief gelaufen</string>
   <string name="fetching_history_from_server">Lade Chatverlauf…</string>
   <string name="no_more_history_on_server">Keine weiteren Nachrichten vorhanden</string>
@@ -504,6 +505,7 @@
   <string name="no_storage_permission">Conversations den Zugriff auf den externen Speicher gewähren</string>
   <string name="no_camera_permission">Conversations den Zugriff auf die Kamera gewähren</string>
   <string name="sync_with_contacts">Mit Kontakten synchronisieren</string>
+  <string name="sync_with_contacts_long">Conversations möchte die Erlaubnis, auf deine Kontakte zuzugreifen, um deine XMPP-Kontaktliste mit deinen Kontakten abzugleichen und deren vollständigen Namen und Avatare anzuzeigen.\n\nEs wird deine Kontakte nur lesen und sie lokal abgleichen, ohne sie auf deinen Server hochzuladen.</string>
   <string name="sync_with_contacts_quicksy"><![CDATA[Quicksy benötigt Zugriff auf die Telefonnummern deiner Kontakte, um Vorschläge für mögliche Kontakte zu machen, die bereits bei Quicksy sind.<br><br>Wir werden keine Kopie dieser Telefonnummern speichern.\n\nFür weitere Informationen lies unsere <a href="https://quicksy.im/#privacy">Datenschutzerklärung</a>.<br><br>Du wirst nun gefragt, ob du den Zugriff auf deine Kontakte erlauben möchtest.]]></string>
   <string name="notify_on_all_messages">Bei allen Nachrichten benachrichtigen</string>
   <string name="notify_only_when_highlighted">Nur benachrichtigen, wenn ich erwähnt werde</string>
@@ -514,6 +516,8 @@
   <string name="always">Immer</string>
   <string name="large_images_only">Nur große Bilder</string>
   <string name="battery_optimizations_enabled">Akkuoptimierung aktiv</string>
+  <string name="battery_optimizations_enabled_explained">Dein Gerät verwendet Akkuoptimierungen für Conversations, welche verspätete Benachrichtigungen oder Nachrichtenverlust verursachen können.\nEs wird empfohlen, sie zu deaktivieren.</string>
+  <string name="battery_optimizations_enabled_dialog">Dein Gerät verwendet Akkuoptimierungen für Conversations, welche verspätete Benachrichtigungen oder Nachrichtenverlust verursachen können.\nDu wirst nun gefragt, sie zu deaktivieren. </string>
   <string name="disable">Deaktivieren</string>
   <string name="selection_too_large">Der ausgewählte Bereich ist zu groß</string>
   <string name="no_accounts">(Keine aktivierten Konten)</string>
