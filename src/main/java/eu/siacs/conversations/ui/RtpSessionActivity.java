@@ -147,7 +147,11 @@ public class RtpSessionActivity extends XmppActivity implements XmppConnectionSe
 
     private void checkRecorderAndAcceptCall() {
         checkMicrophoneAvailability();
-        requireRtpConnection().acceptCall();
+        try {
+            requireRtpConnection().acceptCall();
+        } catch (final IllegalStateException e) {
+            Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
+        }
     }
 
     private void checkMicrophoneAvailability() {
