@@ -426,10 +426,6 @@ public class NotificationService {
         cancel(INCOMING_CALL_NOTIFICATION_ID);
     }
 
-    public void cancelOngoingCallNotification() {
-        cancel(ONGOING_CALL_NOTIFICATION_ID);
-    }
-
     private void pushNow(final Message message) {
         mXmppConnectionService.updateUnreadCountBadge();
         if (!notify(message)) {

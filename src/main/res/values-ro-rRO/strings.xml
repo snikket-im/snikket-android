@@ -23,7 +23,7 @@
   <string name="title_activity_settings">Setări</string>
   <string name="title_activity_sharewith">Partajează într-o conversație</string>
   <string name="title_activity_start_conversation">Pornește o conversație</string>
-  <string name="title_activity_choose_contact">Alegeți contact</string>
+  <string name="title_activity_choose_contact">Alegeți contactul</string>
   <string name="title_activity_choose_contacts">Alegeți contactele</string>
   <string name="title_activity_share_via_account">Partajează cu cont</string>
   <string name="title_activity_block_list">Listă contacte blocate</string>
@@ -82,7 +82,7 @@
   <string name="sharing_files_please_wait">Trimitere fișiere. Te rog asteaptă...</string>
   <string name="action_clear_history">Șterge istoric</string>
   <string name="clear_conversation_history">Șterge istoricul conversației</string>
-  <string name="clear_histor_msg">Doriți să ștergeți toate mesajele din această conversație?\n\n<b>Atenție:</b> Asta nu va afecta mesajele aflate pe alte dispozitive sau servere.</string>
+  <string name="clear_histor_msg">Doriți să ștergeți toate mesajele din această conversație?\n\n<b>Atenție:</b> Această acțiune nu va afecta mesajele aflate pe alte dispozitive sau servere.</string>
   <string name="delete_file_dialog">Șterge fișierul</string>
   <string name="delete_file_dialog_msg">Sigur doriți să ștergeți acest fișier?\n\n<b>Atenție:</b> Această acțiune nu va șterge copiile acestui fișier care sunt stocate pe alte dispozitive sau servere.</string>
   <string name="also_end_conversation">Închide conversația după ștergere</string>
@@ -121,7 +121,7 @@
   <string name="pref_notification_sound_summary">Sunet de notificare pentru mesaje noi</string>
   <string name="pref_call_ringtone_summary">Ton pentru apelul primit</string>
   <string name="pref_notification_grace_period">Perioadă de grație</string>
-  <string name="pref_notification_grace_period_summary">Durata de timp cât notificările sunt ascunse după ce s-a observat activitate pe un alt dispozitiv al dumneavoastră.</string>
+  <string name="pref_notification_grace_period_summary">Durata de timp cât notificările sunt ascunse după ce s-a observat activitate pe un alt dispozitiv de al dumneavoastră.</string>
   <string name="pref_advanced_options">Opțiuni avansate</string>
   <string name="pref_never_send_crash">Nu trimite rapoarte de erori</string>
   <string name="pref_never_send_crash_summary">Trimițând date despre erori ajutați la continuarea dezvoltării aplicației</string>
@@ -262,7 +262,7 @@
   <string name="send_private_message_to">Trimite mesaj privat catre %s</string>
   <string name="connect">Conectare</string>
   <string name="account_already_exists">Acest cont există deja</string>
-  <string name="next">Următoarea</string>
+  <string name="next">Următorul</string>
   <string name="server_info_session_established">Sesiune stabilită</string>
   <string name="skip">Omite</string>
   <string name="disable_notifications">Dezactivează notificările</string>
@@ -318,7 +318,7 @@
   <string name="try_again">Încearcă din nou</string>
   <string name="pref_keep_foreground_service">Serviciul activ în prim-plan</string>
   <string name="pref_keep_foreground_service_summary">Previne închiderea conexiunii de către sistemul de operare</string>
-  <string name="pref_create_backup">Creează copie de siguranță</string>
+  <string name="pref_create_backup">Creează o copie de siguranță</string>
   <string name="pref_create_backup_summary">Fișierele copiei de siguranță vor fi salvate în %s</string>
   <string name="notification_create_backup_title">Se creează copia de siguranță</string>
   <string name="notification_backup_created_title">Copia de siguranță a fost creată</string>
@@ -343,7 +343,7 @@
   <string name="no_application_found_to_open_link">Nu s-a găsit nici o aplicație care să deschidă adresa</string>
   <string name="no_application_found_to_view_contact">Nu s-a găsit nici o aplicație care să deschidă contactul</string>
   <string name="pref_show_dynamic_tags">Etichete dinamice</string>
-  <string name="pref_show_dynamic_tags_summary">Sub contacte arată etichete dinamice</string>
+  <string name="pref_show_dynamic_tags_summary">Arată sub contacte etichete dinamice informative</string>
   <string name="enable_notifications">Activează notificările</string>
   <string name="no_conference_server_found">Nu s-a găsit serverul pentru discuția de grup</string>
   <string name="conference_creation_failed">Nu s-a putut crea discuția de grup</string>
@@ -361,7 +361,7 @@
   <string name="password_changed">Parolă schimbată</string>
   <string name="could_not_change_password">Nu s-a putut schimba parola</string>
   <string name="change_password">Schimbare parolă</string>
-  <string name="current_password">Parolă curentă</string>
+  <string name="current_password">Parola curentă</string>
   <string name="new_password">Parolă nouă</string>
   <string name="password_should_not_be_empty">Parola nu poate să fie goală</string>
   <string name="enable_all_accounts">Activează toate conturile</string>
@@ -419,7 +419,7 @@
   <string name="contacts_are_typing">%s tastează...</string>
   <string name="contacts_have_stopped_typing">%s s-au oprit din scris</string>
   <string name="pref_chat_states">Notificare tastare</string>
-  <string name="pref_chat_states_summary">Contactul este anunțat atunci când scrieți un nou mesaj</string>
+  <string name="pref_chat_states_summary">Contactele sunt anunțate atunci când le scrieți un nou mesaj</string>
   <string name="send_location">Trimite locația</string>
   <string name="show_location">Arată locația</string>
   <string name="no_application_found_to_display_location">Nu s-a găsit nici o aplicație care să afișeze locația</string>
@@ -514,7 +514,7 @@
   <string name="notify_never">Notificări dezactivate</string>
   <string name="notify_paused">Notificări suspendate</string>
   <string name="pref_picture_compression">Compresie imagini</string>
-  <string name="pref_picture_compression_summary">Notă: Folosiți \'Alegeți un fișier\' în loc de \'Alegeți o imagine\' pentru a trimite imaginile necomprimate ignorând această setare.</string>
+  <string name="pref_picture_compression_summary">Notă: Folosiți \'Alege un fișier\' în loc de \'Alege o imagine\' pentru a trimite imaginile necomprimate ignorând această setare.</string>
   <string name="always">Mereu</string>
   <string name="large_images_only">Doar imaginile mari</string>
   <string name="battery_optimizations_enabled">Optimizare baterie activată</string>
@@ -533,7 +533,7 @@
   <string name="share_uri_with">Partajează adresa cu...</string>
   <string name="welcome_text_quicksy"><![CDATA[Quicksy este o versiune a popularului client XMPP Conversations cu descoperire automată a contactelor.<br><br>Vă înscrieți cu numărul de telefon și Quicksy—pe baza numerelor de telefon din agenda dumneavoastră—vă va sugera automat posibile contacte.<br><br>Înscriindu-vă sunteți de acord cu <a href="https://quicksy.im/#privacy">politica noastră de confidențialitate</a>.]]></string>
   <string name="agree_and_continue">Sunt de acord și continuă</string>
-  <string name="magic_create_text">Vă vom ghida prin procesul de creare al unui cont pe conversations.im.¹\nCând alegeți conversations.im ca furnizor veți putea comunica cu utilizatorii altor furnizori oferindu-le adresa dumneavoastră completă XMPP.</string>
+  <string name="magic_create_text">Ghidul va configura un cont pe conversations.im.¹\nCând alegeți conversations.im ca furnizor veți putea comunica cu utilizatorii altor furnizori oferindu-le adresa dumneavoastră completă XMPP.</string>
   <string name="your_full_jid_will_be">Adresa dumneavoastră XMPP completă va fi: %s</string>
   <string name="create_account">Creează cont</string>
   <string name="use_own_provider">Folosește furnizorul meu</string>
@@ -558,10 +558,10 @@
   <string name="gp_medium">Medie</string>
   <string name="gp_long">Lungă</string>
   <string name="pref_broadcast_last_activity">Publică utilizarea</string>
-  <string name="pref_broadcast_last_activity_summary">Contactele vă sunt informate atunci când folosiți Conversations</string>
+  <string name="pref_broadcast_last_activity_summary">Contactele sunt anunțate atunci când folosiți Conversations</string>
   <string name="pref_privacy">Intimitate</string>
   <string name="pref_theme_options">Temă</string>
-  <string name="pref_theme_options_summary">Selecție paletă culori interfață</string>
+  <string name="pref_theme_options_summary">Selecție paletă de culori interfață</string>
   <string name="pref_theme_automatic">Automată</string>
   <string name="pref_theme_light">Luminoasă</string>
   <string name="pref_theme_dark">Întunecată</string>
@@ -651,16 +651,16 @@
     <item quantity="other">%d de luni</item>
   </plurals>
   <string name="pref_automatically_delete_messages">Ștergerea automată a mesajelor</string>
-  <string name="pref_automatically_delete_messages_description">De pe acest dispozitiv se vor șterge dacă sunt mai vechi de perioada selectată.</string>
+  <string name="pref_automatically_delete_messages_description">De pe acest dispozitiv se vor șterge dacă sunt mai vechi decât perioada selectată.</string>
   <string name="encrypting_message">Mesajul se criptează</string>
   <string name="not_fetching_history_retention_period">Politica de retenție locală împiedică descărcarea altor mesaje.</string>
   <string name="transcoding_video">Se comprimă clipul video</string>
   <string name="corresponding_conversations_closed">Conversațiile corespunzătoare au fost închise.</string>
   <string name="contact_blocked_past_tense">Contact blocat.</string>
   <string name="pref_notifications_from_strangers">Notificări de la persoane necunoscute</string>
-  <string name="pref_notifications_from_strangers_summary">Primire notificări pentru mesaje și apeluri de la persoane care nu sunt în lista de contacte.</string>
+  <string name="pref_notifications_from_strangers_summary">Permite notificări pentru mesaje și apeluri de la persoane care nu sunt în lista de contacte.</string>
   <string name="received_message_from_stranger">Mesaj primit de la o persoană necunoscută</string>
-  <string name="block_stranger">Blocare contact necunoscut</string>
+  <string name="block_stranger">Blocare persoană necunoscută</string>
   <string name="block_entire_domain">Blocare tot domeniu</string>
   <string name="online_right_now">conectat acum</string>
   <string name="retry_decryption">Reîncearcă decriptarea</string>
@@ -673,7 +673,7 @@
   <string name="pref_headsup_notifications_summary">Arată notificările în prim-plan</string>
   <string name="today">Azi</string>
   <string name="yesterday">Ieri</string>
-  <string name="pref_validate_hostname">Validează numele domeniului cu ajutorul DNSSEC</string>
+  <string name="pref_validate_hostname">Validează domeniul prin DNSSEC</string>
   <string name="pref_validate_hostname_summary">Certificatele serverelor care conțin nume de domenii validate sunt considerate verificate</string>
   <string name="certificate_does_not_contain_jid">Certificatul nu conține o adresă XMPP</string>
   <string name="server_info_partial">parțial</string>
@@ -772,7 +772,7 @@
   <string name="media_browser">Vizualizare fișiere media</string>
   <string name="security_violation_not_attaching_file">Fișier omis ca urmare a unei probleme de securitate.</string>
   <string name="pref_video_compression">Calitate video</string>
-  <string name="pref_video_compression_summary">O calitate mică înseamnă fișiere mai mici</string>
+  <string name="pref_video_compression_summary">O calitate mai mică înseamnă fișiere mai mici</string>
   <string name="video_360p">Medie (360p)</string>
   <string name="video_720p">Mare (720p)</string>
   <string name="cancelled">anulat</string>
@@ -833,7 +833,7 @@
   <string name="open_with">Deschide cu…</string>
   <string name="set_profile_picture">Poză profil Conversations</string>
   <string name="choose_account">Alegeți contul</string>
-  <string name="restore_backup">Restaurează copie de siguranță</string>
+  <string name="restore_backup">Restaurează o copie de siguranță</string>
   <string name="restore">Restaurează</string>
   <string name="enter_password_to_restore">Introduceți parola contului %s pentru a restaura copia de siguranță.</string>
   <string name="restore_warning">Nu folosiți funcția de restaurare a copiei de siguranță pentru a încerca clonarea (rularea simultană a) instalării. Restaurarea copiei de siguranță este gândită doar pentru a migra pe un alt dispozitiv sau în cazul în care ați pierdut dispozitivul original.</string>
@@ -906,7 +906,7 @@
   <string name="rtp_state_ending_call">Se încheie apelul</string>
   <string name="answer_call">Răspunde</string>
   <string name="dismiss_call">Respinge</string>
-  <string name="rtp_state_finding_device">Localizare dispozitive</string>
+  <string name="rtp_state_finding_device">Căutare dispozitive</string>
   <string name="rtp_state_ringing">Sună</string>
   <string name="rtp_state_declined_or_busy">Ocupat</string>
   <string name="rtp_state_connectivity_error">Nu s-a putut conecta apelul</string>
