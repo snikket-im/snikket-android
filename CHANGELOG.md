@@ -1,6 +1,12 @@
 # Changelog
 
+### Version 2.8.2
+
+* Add button to switch camea during video call
+* Fixed voice calls on tablets
+
 ### Version 2.8.1
+
 * Audible feedback (dialing, call started, call ended) for voice calls.
 * Fixed issue with retrying failed video call
 
