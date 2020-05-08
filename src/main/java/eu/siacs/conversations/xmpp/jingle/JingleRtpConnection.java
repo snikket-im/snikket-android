@@ -36,6 +36,7 @@ import eu.siacs.conversations.entities.Conversational;
 import eu.siacs.conversations.entities.Message;
 import eu.siacs.conversations.entities.RtpSessionStatus;
 import eu.siacs.conversations.services.AppRTCAudioManager;
+import eu.siacs.conversations.utils.IP;
 import eu.siacs.conversations.xml.Element;
 import eu.siacs.conversations.xml.Namespace;
 import eu.siacs.conversations.xmpp.jingle.stanzas.Group;
@@ -1109,9 +1110,8 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
                                     Log.d(Config.LOGTAG, id.account.getJid().asBareJid() + ": skipping invalid combination of udp/tls in external services");
                                     continue;
                                 }
-                                //TODO wrap ipv6 addresses
                                 final PeerConnection.IceServer.Builder iceServerBuilder = PeerConnection.IceServer
-                                        .builder(String.format("%s:%s:%s?transport=%s", type, host, port, transport));
+                                        .builder(String.format("%s:%s:%s?transport=%s", type, IP.wrapIPv6(host), port, transport));
                                 iceServerBuilder.setTlsCertPolicy(PeerConnection.TlsCertPolicy.TLS_CERT_POLICY_INSECURE_NO_CHECK);
                                 if (username != null && password != null) {
                                     iceServerBuilder.setUsername(username);
