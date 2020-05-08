@@ -9,6 +9,8 @@
     <string name="pref_never_send_crash_summary">Se scegli di inviare una segnalazione dell’errore aiuterai lo sviluppo di Quicksy</string>
     <string name="no_storage_permission">Quicksy ha bisogno di accedere all\'archiviazione esterna</string>
     <string name="no_camera_permission">Quicksy ha bisogno di accedere alla fotocamera</string>
+    <string name="battery_optimizations_enabled_explained">Il tuo dispositivo sta facendo delle ingenti ottimizzazioni della batteria per Conversations che potrebbero portare ritardi alle notifiche o anche perdita di messaggi.\nSi consiglia di disattivarle.</string>
+    <string name="battery_optimizations_enabled_dialog">Il tuo dispositivo sta facendo delle ingenti ottimizzazioni della batteria per Conversations che potrebbero portare ritardi alle notifiche o anche perdita di messaggi.\nTi verrà ora chiesto di disattivarle.</string>
     <string name="pref_broadcast_last_activity_summary">Fai sapere ai tuoi contatti quando usi Quicksy</string>
     <string name="data_saver_enabled_explained">Il tuo sistema operativo sta limitando l\'accesso internet a Quicksy quando è in background. Per ricevere le notifiche di nuovi messaggi dovresti consentire l\'accesso senza limiti a Quicksy quando il Risparmio dati è attivo.\nQuicksy cercherà comunque di risparmiare dati quando possibile.</string>
     <string name="device_does_not_support_data_saver">Il tuo dispositivo non supporta la disattivazione del Risparmio dati per Quicksy.</string>
