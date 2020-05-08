@@ -647,6 +647,7 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
             //todo we haven’t actually initiated the session yet; so sending sessionTerminate makes no sense
             //todo either we don’t ring ever at all or maybe we should send a retract or something
             transitionOrThrow(State.TERMINATED_APPLICATION_FAILURE);
+            this.finish();;
             return;
         }
         try {
@@ -662,6 +663,7 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
                 sendSessionTerminate(Reason.FAILED_APPLICATION);
             } else {
                 transitionOrThrow(State.TERMINATED_APPLICATION_FAILURE);
+                this.finish();
             }
         }
     }
@@ -878,8 +880,8 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
             Log.d(Config.LOGTAG, id.account.getJid().asBareJid() + ": ending call while in state PROCEED just means ending the connection");
             this.jingleConnectionManager.endSession(id, State.TERMINATED_SUCCESS);
             this.webRTCWrapper.close();
-            this.finish();
             transitionOrThrow(State.TERMINATED_SUCCESS); //arguably this wasn't success; but not a real failure either
+            this.finish();
             return;
         }
         if (isInitiator() && isInState(State.SESSION_INITIALIZED, State.SESSION_INITIALIZED_PRE_APPROVED)) {
@@ -1180,7 +1182,7 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
         return this.state;
     }
 
-    public boolean isTerminated() {
+    boolean isTerminated() {
         return TERMINATED.contains(this.state);
     }
 
