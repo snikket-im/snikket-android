@@ -58,6 +58,9 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
     );
     private static final long BUSY_TIME_OUT = 30;
     private static final List<State> TERMINATED = Arrays.asList(
+            State.ACCEPTED,
+            State.REJECTED,
+            State.RETRACTED,
             State.TERMINATED_SUCCESS,
             State.TERMINATED_DECLINED_OR_BUSY,
             State.TERMINATED_CONNECTIVITY_ERROR,
@@ -642,13 +645,13 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
         }
         try {
             setupWebRTC(media, iceServers);
-        } catch (WebRTCWrapper.InitializationException e) {
+        } catch (final WebRTCWrapper.InitializationException e) {
             Log.d(Config.LOGTAG, id.account.getJid().asBareJid() + ": unable to initialize WebRTC");
             webRTCWrapper.close();
             //todo we haven’t actually initiated the session yet; so sending sessionTerminate makes no sense
             //todo either we don’t ring ever at all or maybe we should send a retract or something
             transitionOrThrow(State.TERMINATED_APPLICATION_FAILURE);
-            this.finish();;
+            this.finish();
             return;
         }
         try {
@@ -1142,9 +1145,13 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
     }
 
     private void finish() {
-        this.cancelRingingTimeout();
-        this.webRTCWrapper.verifyClosed();
-        this.jingleConnectionManager.finishConnection(this);
+        if (isTerminated()) {
+            this.cancelRingingTimeout();
+            this.webRTCWrapper.verifyClosed();
+            this.jingleConnectionManager.finishConnection(this);
+        } else {
+            throw new IllegalStateException(String.format("Unable to call finish from %s", this.state));
+        }
     }
 
     private void writeLogMessage(final State state) {
