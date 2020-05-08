@@ -580,7 +580,11 @@ public class RtpSessionActivity extends XmppActivity implements XmppConnectionSe
                 );
                 this.binding.inCallActionFarRight.setVisibility(View.GONE);
             }
-            updateInCallButtonConfigurationMicrophone(requireRtpConnection().isMicrophoneEnabled());
+            if (media.contains(Media.AUDIO)) {
+                updateInCallButtonConfigurationMicrophone(requireRtpConnection().isMicrophoneEnabled());
+            } else {
+                this.binding.inCallActionLeft.setVisibility(View.GONE);
+            }
         } else {
             this.binding.inCallActionLeft.setVisibility(View.GONE);
             this.binding.inCallActionRight.setVisibility(View.GONE);
