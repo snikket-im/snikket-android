@@ -900,7 +900,7 @@
     <string name="rtp_state_ending_call">Ending call</string>
     <string name="answer_call">Answer</string>
     <string name="dismiss_call">Dismiss</string>
-    <string name="rtp_state_finding_device">Locating devices</string>
+    <string name="rtp_state_finding_device">Discovering devices</string>
     <string name="rtp_state_ringing">Ringing</string>
     <string name="rtp_state_declined_or_busy">Busy</string>
     <string name="rtp_state_connectivity_error">Could not connect call</string>
