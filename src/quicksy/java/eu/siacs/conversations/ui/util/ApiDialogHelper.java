@@ -11,7 +11,7 @@ import android.support.annotation.StringRes;
 
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.services.QuickConversationsService;
-import eu.siacs.conversations.utils.TimeframeUtils;
+import eu.siacs.conversations.utils.TimeFrameUtils;
 
 public class ApiDialogHelper {
 
@@ -79,7 +79,7 @@ public class ApiDialogHelper {
     public static Dialog createRateLimited(final Context context, final long timestamp) {
         final AlertDialog.Builder builder = new AlertDialog.Builder(context);
         builder.setTitle(R.string.rate_limited);
-        builder.setMessage(context.getString(R.string.try_again_in_x, TimeframeUtils.resolve(context, timestamp - SystemClock.elapsedRealtime())));
+        builder.setMessage(context.getString(R.string.try_again_in_x, TimeFrameUtils.resolve(context, timestamp - SystemClock.elapsedRealtime())));
         builder.setPositiveButton(R.string.ok, null);
         return builder.create();
     }
