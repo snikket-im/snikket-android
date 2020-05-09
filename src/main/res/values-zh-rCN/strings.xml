@@ -138,7 +138,7 @@
   <string name="receive_presence_updates">接收在线状态更新</string>
   <string name="ask_for_presence_updates">请求在线状态更新</string>
   <string name="attach_choose_picture">选择图片</string>
-  <string name="attach_take_picture">拍照</string>
+  <string name="attach_take_picture">拍摄图片</string>
   <string name="preemptively_grant">预先同意订阅请求</string>
   <string name="error_not_an_image_file">您选择的文件不是图像</string>
   <string name="error_compressing_image">无法转换图片</string>
@@ -177,7 +177,7 @@
   <string name="mgmt_account_enable">启用账户</string>
   <string name="mgmt_account_are_you_sure">确定?</string>
   <string name="mgmt_account_delete_confirm_text">如果您删除帐户，您的所有聊天记录将会丢失</string>
-  <string name="attach_record_voice">录音</string>
+  <string name="attach_record_voice">录制音频</string>
   <string name="account_settings_jabber_id">XMPP地址</string>
   <string name="block_jabber_id">拦截XMPP地址</string>
   <string name="account_settings_example_jabber_id">username@example.com</string>
@@ -420,7 +420,7 @@
   <string name="contacts_have_stopped_typing">%s已停止输入</string>
   <string name="pref_chat_states">输入通知</string>
   <string name="pref_chat_states_summary">让对方知道你正在输入</string>
-  <string name="send_location">位置</string>
+  <string name="send_location">发送位置</string>
   <string name="show_location">显示位置</string>
   <string name="no_application_found_to_display_location">无法找到显示位置的应用</string>
   <string name="location">位置</string>
@@ -661,7 +661,7 @@
   <string name="pref_validate_hostname_summary">包含主机名的服务器证书被认为是已验证的</string>
   <string name="certificate_does_not_contain_jid">证书不包含XMPP地址</string>
   <string name="server_info_partial">一部分</string>
-  <string name="attach_record_video">录像</string>
+  <string name="attach_record_video">录制视频</string>
   <string name="copy_to_clipboard">复制</string>
   <string name="message_copied_to_clipboard">消息已被复制</string>
   <string name="message">消息</string>

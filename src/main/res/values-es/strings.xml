@@ -269,8 +269,10 @@
   <string name="enable">Habilitar</string>
   <string name="conference_requires_password">Esta conversación en grupo requiere contraseña</string>
   <string name="enter_password">Introduce la contraseña</string>
+  <string name="request_presence_updates">Por favor, solicita la actualización de presencia a tu contacto primero.\n\n<small>Esto se usará para determinar qué aplicación de mensajería está usando tu contacto</small>.</string>
   <string name="request_now">Solicitar ahora</string>
   <string name="ignore">Ignorar</string>
+  <string name="without_mutual_presence_updates"><b>Aviso:</b> Si envías esto sin actualización de presencia mutua con tu contacto se podrían producir problemas inesperados.\n\n<small>Ve a “Detalles del contacto” para verificar las actualizaciones de presencia.</small></string>
   <string name="pref_security_settings">Seguridad</string>
   <string name="pref_allow_message_correction">Corrección de mensaje</string>
   <string name="pref_allow_message_correction_summary">Permitir a tus contactos editar mensajes previamente enviados</string>
@@ -284,6 +286,8 @@
   <string name="pref_quiet_hours_summary">Las notificaciones serán silenciadas durante el horario de silencio</string>
   <string name="pref_expert_options_other">Otros</string>
   <string name="pref_autojoin">Sincronizar marcadores</string>
+  <string name="pref_autojoin_summary">Unirse a conversaciones en grupo automáticamente si el marcador así lo indica</string>
+  <string name="toast_message_omemo_fingerprint">Huella digital OMEMO copiada al portapapeles</string>
   <string name="conference_banned">Tu entrada a esta conversación en grupo ha sido prohibida</string>
   <string name="conference_members_only">Esta conversación en grupo es solo para miembros</string>
   <string name="conference_resource_constraint">Limitación de recursos</string>
@@ -329,17 +333,27 @@
   <string name="file">archivo</string>
   <string name="open_x_file">Abrir %s</string>
   <string name="sending_file">Enviando (%1$d%% completado)</string>
+  <string name="preparing_file">Preparando para compartir archivo</string>
   <string name="x_file_offered_for_download">%s ofrecido para descarga</string>
   <string name="cancel_transmission">Cancelar transferencia</string>
+  <string name="file_transmission_failed">no se ha podido compartir el archivo</string>
   <string name="file_transmission_cancelled">transferencia del fichero cancelada</string>
+  <string name="file_deleted">Archivo eliminado</string>
+  <string name="no_application_found_to_open_file">No se ha encontrado ninguna aplicación para abrir el archivo</string>
+  <string name="no_application_found_to_open_link">No se ha encontrado aplicación para abrir el link</string>
+  <string name="no_application_found_to_view_contact">No se ha encontrado aplicación para ver el contacto</string>
   <string name="pref_show_dynamic_tags">Etiquetas dinámicas</string>
   <string name="pref_show_dynamic_tags_summary">Mostrar información en forma de etiquetas debajo de los contactos</string>
   <string name="enable_notifications">Habilitar notificaciones</string>
   <string name="no_conference_server_found">No se ha encontrado el servidor de la conversación en grupo</string>
+  <string name="conference_creation_failed">No se ha podido crear la conversación en grupo</string>
   <string name="account_image_description">Imagen de perfil</string>
   <string name="copy_omemo_clipboard_description">Copiar huella digital OMEMO al portapapeles</string>
   <string name="regenerate_omemo_key">Regenerar clave OMEMO</string>
   <string name="clear_other_devices">Limpiar dispositivos</string>
+  <string name="clear_other_devices_desc">¿Estás seguro de que quieres limpiar todos los otros dispositivos del anuncio OMEMO? La próxima vez que tus dispositivos conecten, tendrán que volver a anunciarse, pero podrían no recibir los mensajes enviados mientras tanto.</string>
+  <string name="error_no_keys_to_trust_server_error">No hay claves disponibles para este contacto.\nNo se ha podido obtener nuevas claves del servidor. ¿Es posible que haya algún problema con el servidor de tu contacto?</string>
+  <string name="error_no_keys_to_trust_presence">No hay claves disponibles para este contacto.\nAsegúrate que tenéis actualizaciones de presencia mutua. </string>
   <string name="error_trustkeys_title">Se produjo un error</string>
   <string name="fetching_history_from_server">Buscando historial en el servidor</string>
   <string name="no_more_history_on_server">No hay más historial en el servidor</string>
@@ -349,6 +363,7 @@
   <string name="change_password">Cambiar contraseña</string>
   <string name="current_password">Contraseña actual</string>
   <string name="new_password">Nueva contraseña</string>
+  <string name="password_should_not_be_empty">La contraseña no puede ser vacía</string>
   <string name="enable_all_accounts">Habilitar todas las cuentas</string>
   <string name="disable_all_accounts">Deshabilitar todas las cuentas</string>
   <string name="perform_action_with">Realizar acción con</string>
@@ -368,6 +383,7 @@
   <string name="could_not_change_affiliation">No se puede cambiar la afiliación de %s</string>
   <string name="ban_from_conference">Prohibir entrada en la conversación</string>
   <string name="ban_from_channel">Prohibir entrada al canal</string>
+  <string name="removing_from_public_conference">Estás intentando eliminar a %s de un canal público. La única manera de hacerlo es prohibir su entrada para siempre. </string>
   <string name="ban_now">Prohibir ahora</string>
   <string name="could_not_change_role">No se puede cambiar el rol de %s</string>
   <string name="conference_options">Configuración de conversación en grupo privada</string>
@@ -406,6 +422,7 @@
   <string name="pref_chat_states_summary">Permitir a tus contactos saber cuando estás escribiendo un mensaje</string>
   <string name="send_location">Enviar ubicación</string>
   <string name="show_location">Mostrar ubicación</string>
+  <string name="no_application_found_to_display_location">No se ha encontrado ninguna aplicación para mostrar la ubicación</string>
   <string name="location">Ubicación</string>
   <string name="title_undo_swipe_out_conversation">Conversación cerrada</string>
   <string name="title_undo_swipe_out_group_chat">Dejar la conversación en grupo</string>
@@ -422,6 +439,7 @@
     <item quantity="one">%d certificado eliminado</item>
     <item quantity="other">%d certificados eliminados</item>
   </plurals>
+  <string name="pref_quick_action_summary">Cambiar el botón de “Enviar” por el botón de acción rápida</string>
   <string name="pref_quick_action">Acción rápida</string>
   <string name="none">Ninguna</string>
   <string name="recently_used">Usada más recientemente</string>
@@ -429,6 +447,7 @@
   <string name="search_contacts">Buscar contactos</string>
   <string name="search_bookmarks">Buscar marcadores</string>
   <string name="send_private_message">Enviar mensaje privado</string>
+  <string name="user_has_left_conference">%1$s ha dejado la conversación</string>
   <string name="username">Usuario</string>
   <string name="username_hint">Usuario</string>
   <string name="invalid_username">Esto no es un usuario válido</string>
@@ -438,6 +457,7 @@
   <string name="download_failed_could_not_write_file">Falló la descarga: No se puede escribir el fichero</string>
   <string name="account_status_tor_unavailable">Red Tor no disponible.</string>
   <string name="account_status_bind_failure">Fallo de enlace</string>
+  <string name="account_status_host_unknown">El servidor no es responsable de este dominio</string>
   <string name="server_info_broken">Error</string>
   <string name="pref_presence_settings">Disponibilidad</string>
   <string name="pref_away_when_screen_off">Ausente con pantalla apagada</string>
@@ -450,11 +470,15 @@
   <string name="pref_show_connection_options_summary">Mostrar el hostname y el puerto cuando se está creando una cuenta</string>
   <string name="hostname_example">xmpp.ejemplo.com</string>
   <string name="action_add_account_with_certificate">Añadir cuenta con certificado</string>
+  <string name="unable_to_parse_certificate">No se ha podido leer el certificado</string>
   <string name="authenticate_with_certificate">Dejar vacío para autenticar certificado w/ </string>
   <string name="mam_prefs">Preferencias de archivado</string>
   <string name="server_side_mam_prefs">Preferencias de archivado en servidor</string>
   <string name="fetching_mam_prefs">Buscando preferencias de archivado. Por favor, espera...</string>
+  <string name="unable_to_fetch_mam_prefs">No se ha podido conseguir las preferencias de archivado</string>
+  <string name="captcha_required">Captcha requerido</string>
   <string name="captcha_hint">Introduce el texto de la imagen de arriba</string>
+  <string name="certificate_chain_is_not_trusted">El certificado no es de confianza</string>
   <string name="jid_does_not_match_certificate">La dirección XMPP no coincide con el certificado</string>
   <string name="action_renew_certificate">Renovar certificado</string>
   <string name="error_fetching_omemo_key">¡Error buscando clave OMEMO!</string>
@@ -465,6 +489,7 @@
   <string name="pref_use_tor_summary">Todas las conexiones se realizan a través de la red TOR. Requiere Orbot</string>
   <string name="account_settings_hostname">Hostname</string>
   <string name="account_settings_port">Puerto</string>
+  <string name="hostname_or_onion">Server- or .onion-address</string>
   <string name="not_a_valid_port">Éste no es un número de puerto válido</string>
   <string name="not_valid_hostname">Éste no es un hostame válido</string>
   <string name="connected_accounts">%1$d de %2$d cuentas conectadas</string>
@@ -473,7 +498,14 @@
     <item quantity="other">%d mensajes</item>
   </plurals>
   <string name="load_more_messages">Cargar más mensajes</string>
+  <string name="shared_file_with_x">Archivo compartido con %s</string>
+  <string name="shared_image_with_x">Imagen compartida con %s</string>
+  <string name="shared_images_with_x">Imágenes compartidas con %s</string>
+  <string name="shared_text_with_x">Texto compartido con %s</string>
+  <string name="no_storage_permission">Permitir a Conversations acceder al almacenamiento externo</string>
+  <string name="no_camera_permission">Permitir a Conversations acceder a la cámara</string>
   <string name="sync_with_contacts">Sincronizar contactos</string>
+  <string name="sync_with_contacts_long">Conversations quiere permisos para acceder a tus contactos y cruzarlos con tu lista de contactos de XMPP para mostrar sus nombres completos y sus fotos de perfil.\n\Solo leerá tus contactos y los cruzará localmente sin subirlos a tu servidor.</string>
   <string name="sync_with_contacts_quicksy"><![CDATA[Quicksy necesita acceso a los números de teléfonos de tu agenda de contactos para hacerte sugerencias de posibles contactos que ya estén en Quicksy.<br><br>No guardaremos una copia de estos números de teléfono.\n\nPara más información puedes leer nuestra política de privacidad<a href="https://quicksy.im/#privacy">.<br><br>El sistema te preguntará ahora para conceder los permisos de acceso a tus contactos del móvil.]]></string>
   <string name="notify_on_all_messages">Notificar para todos los mensajes</string>
   <string name="notify_only_when_highlighted">Notificar solo cuando eres mencionado</string>
