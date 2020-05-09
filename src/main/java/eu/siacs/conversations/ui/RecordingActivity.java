@@ -29,6 +29,7 @@ import eu.siacs.conversations.R;
 import eu.siacs.conversations.databinding.ActivityRecordingBinding;
 import eu.siacs.conversations.persistance.FileBackend;
 import eu.siacs.conversations.utils.ThemeHelper;
+import eu.siacs.conversations.utils.TimeFrameUtils;
 
 public class RecordingActivity extends Activity implements View.OnClickListener {
 
@@ -135,7 +136,7 @@ public class RecordingActivity extends Activity implements View.OnClickListener 
                         Log.d(Config.LOGTAG, "time out waiting for output file to be written");
                     }
                 } catch (InterruptedException e) {
-                    Log.d(Config.LOGTAG, "interrupted while waiting for output file to be written" ,e);
+                    Log.d(Config.LOGTAG, "interrupted while waiting for output file to be written", e);
                 }
                 runOnUiThread(() -> {
                     setResult(Activity.RESULT_OK, new Intent().setData(Uri.fromFile(mOutputFile)));
@@ -181,14 +182,9 @@ public class RecordingActivity extends Activity implements View.OnClickListener 
         };
         mFileObserver.startWatching();
     }
-
-    @SuppressLint("SetTextI18n")
+    
     private void tick() {
-        long time = (mStartTime < 0) ? 0 : (SystemClock.elapsedRealtime() - mStartTime);
-        int minutes = (int) (time / 60000);
-        int seconds = (int) (time / 1000) % 60;
-        int milliseconds = (int) (time / 100) % 10;
-        this.binding.timer.setText(minutes + ":" + (seconds < 10 ? "0" + seconds : seconds) + "." + milliseconds);
+        this.binding.timer.setText(TimeFrameUtils.formatTimePassed(mStartTime, true));
     }
 
     @Override

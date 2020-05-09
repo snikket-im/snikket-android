@@ -84,7 +84,6 @@ import eu.siacs.conversations.entities.Transferable;
 import eu.siacs.conversations.entities.TransferablePlaceholder;
 import eu.siacs.conversations.http.HttpDownloadConnection;
 import eu.siacs.conversations.persistance.FileBackend;
-import eu.siacs.conversations.services.AppRTCAudioManager;
 import eu.siacs.conversations.services.MessageArchiveService;
 import eu.siacs.conversations.services.QuickConversationsService;
 import eu.siacs.conversations.services.XmppConnectionService;
@@ -112,10 +111,9 @@ import eu.siacs.conversations.utils.GeoHelper;
 import eu.siacs.conversations.utils.MessageUtils;
 import eu.siacs.conversations.utils.NickValidityChecker;
 import eu.siacs.conversations.utils.Patterns;
-import eu.siacs.conversations.utils.PermissionUtils;
 import eu.siacs.conversations.utils.QuickLoader;
 import eu.siacs.conversations.utils.StylingHelper;
-import eu.siacs.conversations.utils.TimeframeUtils;
+import eu.siacs.conversations.utils.TimeFrameUtils;
 import eu.siacs.conversations.utils.UIHelper;
 import eu.siacs.conversations.xmpp.XmppConnection;
 import eu.siacs.conversations.xmpp.chatstate.ChatState;
@@ -1568,7 +1566,7 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
             if (durations[i] == -1) {
                 labels[i] = getString(R.string.until_further_notice);
             } else {
-                labels[i] = TimeframeUtils.resolve(activity, 1000L * durations[i]);
+                labels[i] = TimeFrameUtils.resolve(activity, 1000L * durations[i]);
             }
         }
         builder.setItems(labels, (dialog, which) -> {
