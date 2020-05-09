@@ -9,6 +9,7 @@ import android.content.pm.PackageManager;
 import android.databinding.DataBindingUtil;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.PowerManager;
 import android.os.SystemClock;
 import android.support.annotation.NonNull;
@@ -27,7 +28,6 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.util.concurrent.FutureCallback;
 import com.google.common.util.concurrent.Futures;
-import com.google.common.util.concurrent.ListenableFuture;
 
 import org.checkerframework.checker.nullness.compatqual.NullableDecl;
 import org.webrtc.SurfaceViewRenderer;
@@ -49,6 +49,7 @@ import eu.siacs.conversations.services.XmppConnectionService;
 import eu.siacs.conversations.ui.util.AvatarWorkerTask;
 import eu.siacs.conversations.ui.util.MainThreadExecutor;
 import eu.siacs.conversations.utils.PermissionUtils;
+import eu.siacs.conversations.utils.TimeFrameUtils;
 import eu.siacs.conversations.xmpp.jingle.AbstractJingleConnection;
 import eu.siacs.conversations.xmpp.jingle.JingleRtpConnection;
 import eu.siacs.conversations.xmpp.jingle.Media;
@@ -67,6 +68,9 @@ public class RtpSessionActivity extends XmppActivity implements XmppConnectionSe
     public static final String ACTION_ACCEPT_CALL = "action_accept_call";
     public static final String ACTION_MAKE_VOICE_CALL = "action_make_voice_call";
     public static final String ACTION_MAKE_VIDEO_CALL = "action_make_video_call";
+
+    private static final int CALL_DURATION_UPDATE_INTERVAL = 333;
+
     private static final List<RtpEndUserState> END_CARD = Arrays.asList(
             RtpEndUserState.APPLICATION_ERROR,
             RtpEndUserState.DECLINED_OR_BUSY,
@@ -78,6 +82,15 @@ public class RtpSessionActivity extends XmppActivity implements XmppConnectionSe
 
     private ActivityRtpSessionBinding binding;
     private PowerManager.WakeLock mProximityWakeLock;
+
+    private Handler mHandler = new Handler();
+    private Runnable mTickExecutor = new Runnable() {
+        @Override
+        public void run() {
+            updateCallDuration();
+            mHandler.postDelayed(mTickExecutor, CALL_DURATION_UPDATE_INTERVAL);
+        }
+    };
 
     private static Set<Media> actionToMedia(final String action) {
         if (ACTION_MAKE_VIDEO_CALL.equals(action)) {
@@ -309,7 +322,14 @@ public class RtpSessionActivity extends XmppActivity implements XmppConnectionSe
     }
 
     @Override
+    public void onStart() {
+        super.onStart();
+        mHandler.postDelayed(mTickExecutor, CALL_DURATION_UPDATE_INTERVAL);
+    }
+
+    @Override
     public void onStop() {
+        mHandler.removeCallbacks(mTickExecutor);
         binding.remoteVideo.release();
         binding.localVideo.release();
         final WeakReference<JingleRtpConnection> weakReference = this.rtpConnectionReference;
@@ -655,7 +675,7 @@ public class RtpSessionActivity extends XmppActivity implements XmppConnectionSe
 
             @Override
             public void onFailure(@NonNull final Throwable throwable) {
-                Log.d(Config.LOGTAG,"could not switch camera", Throwables.getRootCause(throwable));
+                Log.d(Config.LOGTAG, "could not switch camera", Throwables.getRootCause(throwable));
                 Toast.makeText(RtpSessionActivity.this, R.string.could_not_switch_camera, Toast.LENGTH_LONG).show();
             }
         }, MainThreadExecutor.getInstance());
@@ -682,6 +702,25 @@ public class RtpSessionActivity extends XmppActivity implements XmppConnectionSe
             this.binding.inCallActionLeft.setOnClickListener(this::enableMicrophone);
         }
         this.binding.inCallActionLeft.setVisibility(View.VISIBLE);
+    }
+
+    private void updateCallDuration() {
+        Log.d(Config.LOGTAG,"updateCallDuration()");
+        final JingleRtpConnection connection = this.rtpConnectionReference != null ? this.rtpConnectionReference.get() : null;
+        if (connection == null || connection.getMedia().contains(Media.VIDEO)) {
+            Log.d(Config.LOGTAG,"rtpConnection was null or contained video");
+            this.binding.duration.setVisibility(View.GONE);
+            return;
+        }
+        final long rtpConnectionStarted = connection.getRtpConnectionStarted();
+        final long rtpConnectionEnded = connection.getRtpConnectionEnded();
+        if (rtpConnectionStarted != 0) {
+            final long ended = rtpConnectionEnded == 0 ? SystemClock.elapsedRealtime() : rtpConnectionEnded;
+            this.binding.duration.setText(TimeFrameUtils.formatTimePassed(rtpConnectionStarted, ended, false));
+            this.binding.duration.setVisibility(View.VISIBLE);
+        } else {
+            this.binding.duration.setVisibility(View.GONE);
+        }
     }
 
     private void updateVideoViews(final RtpEndUserState state) {

@@ -182,7 +182,7 @@ public class RecordingActivity extends Activity implements View.OnClickListener 
         };
         mFileObserver.startWatching();
     }
-    
+
     private void tick() {
         this.binding.timer.setText(TimeFrameUtils.formatTimePassed(mStartTime, true));
     }

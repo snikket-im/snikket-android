@@ -125,6 +125,7 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
     private RtpContentMap initiatorRtpContentMap;
     private RtpContentMap responderRtpContentMap;
     private long rtpConnectionStarted = 0; //time of 'connected'
+    private long rtpConnectionEnded = 0;
     private ScheduledFuture<?> ringingTimeoutFuture;
 
     JingleRtpConnection(JingleConnectionManager jingleConnectionManager, Id id, Jid initiator) {
@@ -1006,6 +1007,9 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
         if (newState == PeerConnection.PeerConnectionState.CONNECTED && this.rtpConnectionStarted == 0) {
             this.rtpConnectionStarted = SystemClock.elapsedRealtime();
         }
+        if (newState == PeerConnection.PeerConnectionState.CLOSED && this.rtpConnectionEnded == 0) {
+            this.rtpConnectionEnded = SystemClock.elapsedRealtime();
+        }
         //TODO 'DISCONNECTED' might be an opportunity to renew the offer and send a transport-replace
         //TODO exact syntax is yet to be determined but transport-replace sounds like the most reasonable
         //as there is no content-replace
@@ -1029,6 +1033,14 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
             }
             sendSessionTerminate(Reason.CONNECTIVITY_ERROR);
         }
+    }
+
+    public long getRtpConnectionStarted() {
+        return this.rtpConnectionStarted;
+    }
+
+    public long getRtpConnectionEnded() {
+        return this.rtpConnectionEnded;
     }
 
     public AppRTCAudioManager getAudioManager() {
