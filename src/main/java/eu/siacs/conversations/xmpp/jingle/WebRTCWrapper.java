@@ -8,6 +8,7 @@ import android.util.Log;
 
 import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
+import com.google.common.base.Throwables;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Iterables;
 import com.google.common.util.concurrent.Futures;
@@ -164,10 +165,14 @@ public class WebRTCWrapper {
         this.eventCallback = eventCallback;
     }
 
-    public void setup(final Context context, final AppRTCAudioManager.SpeakerPhonePreference speakerPhonePreference) {
-        PeerConnectionFactory.initialize(
-                PeerConnectionFactory.InitializationOptions.builder(context).createInitializationOptions()
-        );
+    public void setup(final Context context, final AppRTCAudioManager.SpeakerPhonePreference speakerPhonePreference) throws InitializationException {
+        try {
+            PeerConnectionFactory.initialize(
+                    PeerConnectionFactory.InitializationOptions.builder(context).createInitializationOptions()
+            );
+        } catch (final UnsatisfiedLinkError e) {
+            throw new InitializationException(e);
+        }
         this.eglBase = EglBase.create();
         this.context = context;
         mainHandler.post(() -> {
@@ -555,7 +560,11 @@ public class WebRTCWrapper {
 
     static class InitializationException extends Exception {
 
-        private InitializationException(String message) {
+        private InitializationException(final Throwable throwable) {
+            super(throwable);
+        }
+
+        private InitializationException(final String message) {
             super(message);
         }
     }

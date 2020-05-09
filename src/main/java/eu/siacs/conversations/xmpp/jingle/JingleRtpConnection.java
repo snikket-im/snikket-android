@@ -486,6 +486,7 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
     }
 
     void deliverFailedProceed() {
+        //TODO do we want a special State.ITEM_NOT_FOUND to track retracted calls during network outages
         Log.d(Config.LOGTAG, id.account.getJid().asBareJid() + ": receive message error for proceed message");
         if (transition(State.TERMINATED_CONNECTIVITY_ERROR)) {
             webRTCWrapper.close();

@@ -705,10 +705,8 @@ public class RtpSessionActivity extends XmppActivity implements XmppConnectionSe
     }
 
     private void updateCallDuration() {
-        Log.d(Config.LOGTAG,"updateCallDuration()");
         final JingleRtpConnection connection = this.rtpConnectionReference != null ? this.rtpConnectionReference.get() : null;
         if (connection == null || connection.getMedia().contains(Media.VIDEO)) {
-            Log.d(Config.LOGTAG,"rtpConnection was null or contained video");
             this.binding.duration.setVisibility(View.GONE);
             return;
         }

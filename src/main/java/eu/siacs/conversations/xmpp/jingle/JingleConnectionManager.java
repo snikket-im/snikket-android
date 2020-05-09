@@ -262,6 +262,7 @@ public class JingleConnectionManager extends AbstractConnectionManager {
                     rtpConnection.deliveryMessage(from, message, serverMsgId, timestamp);
                 } else {
                     Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": no rtp session proposal found for " + from + " to deliver proceed");
+                    //TODO return error message "item-not-found"
                 }
             }
         } else if ("reject".equals(message.getName())) {
