@@ -61,6 +61,7 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
             State.ACCEPTED,
             State.REJECTED,
             State.RETRACTED,
+            State.RETRACTED_RACED,
             State.TERMINATED_SUCCESS,
             State.TERMINATED_DECLINED_OR_BUSY,
             State.TERMINATED_CONNECTIVITY_ERROR,
@@ -86,6 +87,7 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
                 State.TERMINATED_CONNECTIVITY_ERROR //only used when the xmpp connection rebinds
         ));
         transitionBuilder.put(State.PROCEED, ImmutableList.of(
+                State.RETRACTED_RACED,
                 State.SESSION_INITIALIZED_PRE_APPROVED,
                 State.TERMINATED_SUCCESS,
                 State.TERMINATED_APPLICATION_FAILURE,
@@ -486,7 +488,6 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
     }
 
     void deliverFailedProceed() {
-        //TODO do we want a special State.ITEM_NOT_FOUND to track retracted calls during network outages
         Log.d(Config.LOGTAG, id.account.getJid().asBareJid() + ": receive message error for proceed message");
         if (transition(State.TERMINATED_CONNECTIVITY_ERROR)) {
             webRTCWrapper.close();
@@ -617,14 +618,17 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
 
     private void receiveRetract(final Jid from, final String serverMsgId, final long timestamp) {
         if (from.equals(id.with)) {
-            if (transition(State.RETRACTED)) {
+            final State target = this.state == State.PROCEED ? State.RETRACTED_RACED : State.RETRACTED;
+            if (transition(target)) {
                 xmppConnectionService.getNotificationService().cancelIncomingCallNotification();
                 Log.d(Config.LOGTAG, id.account.getJid().asBareJid() + ": session with " + id.with + " has been retracted (serverMsgId=" + serverMsgId + ")");
                 if (serverMsgId != null) {
                     this.message.setServerMsgId(serverMsgId);
                 }
                 this.message.setTime(timestamp);
-                this.message.markUnread();
+                if (target == State.RETRACTED) {
+                    this.message.markUnread();
+                }
                 writeLogMessageMissed();
                 finish();
             } else {
@@ -811,6 +815,8 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
             case RETRACTED:
             case TERMINATED_CANCEL_OR_TIMEOUT:
                 return RtpEndUserState.ENDED;
+            case RETRACTED_RACED:
+                return RtpEndUserState.RETRACTED;
             case TERMINATED_CONNECTIVITY_ERROR:
                 return RtpEndUserState.CONNECTIVITY_ERROR;
             case TERMINATED_APPLICATION_FAILURE:

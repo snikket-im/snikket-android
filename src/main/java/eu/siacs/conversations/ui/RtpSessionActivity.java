@@ -74,7 +74,8 @@ public class RtpSessionActivity extends XmppActivity implements XmppConnectionSe
     private static final List<RtpEndUserState> END_CARD = Arrays.asList(
             RtpEndUserState.APPLICATION_ERROR,
             RtpEndUserState.DECLINED_OR_BUSY,
-            RtpEndUserState.CONNECTIVITY_ERROR
+            RtpEndUserState.CONNECTIVITY_ERROR,
+            RtpEndUserState.RETRACTED
     );
     private static final String PROXIMITY_WAKE_LOCK_TAG = "conversations:in-rtp-session";
     private static final int REQUEST_ACCEPT_CALL = 0x1111;

@@ -154,7 +154,7 @@ public class JingleConnectionManager extends AbstractConnectionManager {
         account.getXmppConnection().sendIqPacket(response, null);
     }
 
-    public void deliverMessage(final Account account, final Jid to, final Jid from, final Element message, String serverMsgId, long timestamp) {
+    public void deliverMessage(final Account account, final Jid to, final Jid from, final Element message, String remoteMsgId, String serverMsgId, long timestamp) {
         Preconditions.checkArgument(Namespace.JINGLE_MESSAGE.equals(message.getNamespace()));
         final String sessionId = message.getAttribute("id");
         if (sessionId == null) {
@@ -174,6 +174,7 @@ public class JingleConnectionManager extends AbstractConnectionManager {
             return;
         }
         final boolean fromSelf = from.asBareJid().equals(account.getJid().asBareJid());
+        final boolean addressedDirectly = to != null && to.equals(account.getJid());
         final AbstractJingleConnection.Id id;
         if (fromSelf) {
             if (to != null && to.isFullJid()) {
@@ -250,7 +251,7 @@ public class JingleConnectionManager extends AbstractConnectionManager {
             } else {
                 Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": unable to react to proposed session with " + rtpDescriptions.size() + " rtp descriptions of " + descriptions.size() + " total descriptions");
             }
-        } else if ("proceed".equals(message.getName())) {
+        } else if (addressedDirectly && "proceed".equals(message.getName())) {
             synchronized (rtpSessionProposals) {
                 final RtpSessionProposal proposal = getRtpSessionProposal(account, from.asBareJid(), sessionId);
                 if (proposal != null) {
@@ -262,10 +263,21 @@ public class JingleConnectionManager extends AbstractConnectionManager {
                     rtpConnection.deliveryMessage(from, message, serverMsgId, timestamp);
                 } else {
                     Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": no rtp session proposal found for " + from + " to deliver proceed");
-                    //TODO return error message "item-not-found"
+                    if (remoteMsgId == null) {
+                        return;
+                    }
+                    final MessagePacket errorMessage = new MessagePacket();
+                    errorMessage.setTo(from);
+                    errorMessage.setId(remoteMsgId);
+                    errorMessage.setType(MessagePacket.TYPE_ERROR);
+                    final Element error = errorMessage.addChild("error");
+                    error.setAttribute("code", "404");
+                    error.setAttribute("type", "cancel");
+                    error.addChild("item-not-found", "urn:ietf:params:xml:ns:xmpp-stanzas");
+                    mXmppConnectionService.sendMessagePacket(account, errorMessage);
                 }
             }
-        } else if ("reject".equals(message.getName())) {
+        } else if (addressedDirectly && "reject".equals(message.getName())) {
             final RtpSessionProposal proposal = new RtpSessionProposal(account, from.asBareJid(), sessionId);
             synchronized (rtpSessionProposals) {
                 if (rtpSessionProposals.remove(proposal) != null) {

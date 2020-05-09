@@ -113,6 +113,7 @@ public abstract class AbstractJingleConnection {
         PROCEED,
         REJECTED,
         RETRACTED,
+        RETRACTED_RACED, //used when receiving a retract after we already asked to proceed
         SESSION_INITIALIZED, //equal to 'PENDING'
         SESSION_INITIALIZED_PRE_APPROVED,
         SESSION_ACCEPTED, //equal to 'ACTIVE'
