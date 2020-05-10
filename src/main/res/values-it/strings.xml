@@ -898,7 +898,6 @@
   <string name="rtp_state_ending_call">Chiusura chiamata</string>
   <string name="answer_call">Rispondi</string>
   <string name="dismiss_call">Rifiuta</string>
-  <string name="rtp_state_finding_device">Localizzazione dispositivi</string>
   <string name="rtp_state_ringing">Sta squillando</string>
   <string name="rtp_state_declined_or_busy">Occupato</string>
   <string name="rtp_state_connectivity_error">Impossibile connettere la chiamata</string>

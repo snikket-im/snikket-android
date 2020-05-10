@@ -859,7 +859,6 @@
   <string name="rtp_state_ending_call">Terminar llamada</string>
   <string name="answer_call">Contestar</string>
   <string name="dismiss_call">Descartar</string>
-  <string name="rtp_state_finding_device">Localizando dispositivos</string>
   <string name="rtp_state_ringing">Llamando</string>
   <string name="rtp_state_declined_or_busy">Ocupado</string>
   <string name="rtp_state_retracted">Llamada rechazada</string>

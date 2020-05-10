@@ -916,7 +916,7 @@ Administrator twojego serwera będzie mógł czytać twoje wiadomości, ale moż
   <string name="rtp_state_ending_call">Kończenie połączenia</string>
   <string name="answer_call">Odbierz</string>
   <string name="dismiss_call">Odrzuć</string>
-  <string name="rtp_state_finding_device">Lokalizowanie urządzeń</string>
+  <string name="rtp_state_finding_device">Wyszukiwanie urządzeń</string>
   <string name="rtp_state_ringing">Dzwonienie</string>
   <string name="rtp_state_declined_or_busy">Zajęty</string>
   <string name="rtp_state_connectivity_error">Nie można wykonać połączenia</string>

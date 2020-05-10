@@ -898,7 +898,6 @@
   <string name="rtp_state_ending_call">Encerrando chamada</string>
   <string name="answer_call">Atender</string>
   <string name="dismiss_call">Dispensar</string>
-  <string name="rtp_state_finding_device">Procurando dispositivos</string>
   <string name="rtp_state_ringing">Tocando</string>
   <string name="rtp_state_declined_or_busy">Ocupado</string>
   <string name="rtp_state_connectivity_error">Não foi possível conectar à chamada</string>

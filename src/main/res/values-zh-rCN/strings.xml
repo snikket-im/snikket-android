@@ -890,7 +890,6 @@
   <string name="rtp_state_ending_call">正在结束来电</string>
   <string name="answer_call">应答</string>
   <string name="dismiss_call">忽略</string>
-  <string name="rtp_state_finding_device">正在确定设备位置</string>
   <string name="rtp_state_ringing">正在响铃</string>
   <string name="rtp_state_declined_or_busy">正忙</string>
   <string name="rtp_state_connectivity_error">无法接通来电</string>

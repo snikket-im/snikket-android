@@ -808,7 +808,6 @@
   <string name="rtp_state_ending_call">Hívás befejezése</string>
   <string name="answer_call">Válasz</string>
   <string name="dismiss_call">Elutasítás</string>
-  <string name="rtp_state_finding_device">Eszközök keresése</string>
   <string name="rtp_state_ringing">Csörgetés</string>
   <string name="rtp_state_declined_or_busy">Elfoglalt</string>
   <string name="rtp_state_connectivity_error">Nem sikerült kapcsolódni a híváshoz</string>

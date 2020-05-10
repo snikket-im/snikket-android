@@ -898,7 +898,7 @@
   <string name="rtp_state_ending_call">Rematando a chamada</string>
   <string name="answer_call">Responder</string>
   <string name="dismiss_call">Rexeitar</string>
-  <string name="rtp_state_finding_device">Localizando dispositivos</string>
+  <string name="rtp_state_finding_device">Atopando dispositivos</string>
   <string name="rtp_state_ringing">Sonando</string>
   <string name="rtp_state_declined_or_busy">Ocupado</string>
   <string name="rtp_state_connectivity_error">Non se pode establecer a chamada</string>

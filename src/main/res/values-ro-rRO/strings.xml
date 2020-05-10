@@ -906,7 +906,6 @@
   <string name="rtp_state_ending_call">Se încheie apelul</string>
   <string name="answer_call">Răspunde</string>
   <string name="dismiss_call">Respinge</string>
-  <string name="rtp_state_finding_device">Căutare dispozitive</string>
   <string name="rtp_state_ringing">Sună</string>
   <string name="rtp_state_declined_or_busy">Ocupat</string>
   <string name="rtp_state_connectivity_error">Nu s-a putut conecta apelul</string>

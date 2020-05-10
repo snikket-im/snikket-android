@@ -898,7 +898,7 @@
   <string name="rtp_state_ending_call">Fin d\'appel</string>
   <string name="answer_call">Décrocher</string>
   <string name="dismiss_call">Ignorer</string>
-  <string name="rtp_state_finding_device">Recherche de l\'appareil</string>
+  <string name="rtp_state_finding_device">Découverte des appareils</string>
   <string name="rtp_state_ringing">Ça sonne</string>
   <string name="rtp_state_declined_or_busy">Occupé</string>
   <string name="rtp_state_connectivity_error">Impossible de connecter l\'appel</string>
