@@ -9,6 +9,7 @@ import com.google.common.base.Preconditions;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.collect.Collections2;
+import com.google.common.collect.ComparisonChain;
 import com.google.common.collect.ImmutableSet;
 
 import java.lang.ref.WeakReference;
@@ -132,6 +133,40 @@ public class JingleConnectionManager extends AbstractConnectionManager {
         }
     }
 
+    public Optional<RtpSessionProposal> findMatchingSessionProposal(final Account account, final Jid with, final Set<Media> media) {
+        synchronized (this.rtpSessionProposals) {
+            for (Map.Entry<RtpSessionProposal, DeviceDiscoveryState> entry : this.rtpSessionProposals.entrySet()) {
+                final RtpSessionProposal proposal = entry.getKey();
+                final DeviceDiscoveryState state = entry.getValue();
+                final boolean openProposal = state == DeviceDiscoveryState.DISCOVERED || state == DeviceDiscoveryState.SEARCHING;
+                if (openProposal
+                        && proposal.account == account
+                        && proposal.with.equals(with.asBareJid())
+                        && proposal.media.equals(media)) {
+                    return Optional.of(proposal);
+                }
+            }
+        }
+        return Optional.absent();
+    }
+
+    private boolean hasMatchingRtpSession(final Account account, final Jid with, final Set<Media> media) {
+        for (AbstractJingleConnection connection : this.connections.values()) {
+            if (connection instanceof JingleRtpConnection) {
+                final JingleRtpConnection rtpConnection = (JingleRtpConnection) connection;
+                if (rtpConnection.isTerminated()) {
+                    continue;
+                }
+                if (rtpConnection.getId().account == account
+                        && rtpConnection.getId().with.asBareJid().equals(with.asBareJid())
+                        && rtpConnection.getMedia().equals(media)) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
     private boolean isWithStrangerAndStrangerNotificationsAreOff(final Account account, Jid with) {
         final boolean notifyForStrangers = mXmppConnectionService.getNotificationService().notificationsFromStrangers();
         if (notifyForStrangers) {
@@ -227,6 +262,26 @@ public class JingleConnectionManager extends AbstractConnectionManager {
                     Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": encountered unknown media in session proposal. " + propose);
                     return;
                 }
+                final Optional<RtpSessionProposal> matchingSessionProposal = findMatchingSessionProposal(account, id.with, ImmutableSet.copyOf(media));
+                if (matchingSessionProposal.isPresent()) {
+                    final String ourSessionId = matchingSessionProposal.get().sessionId;
+                    final String theirSessionId = id.sessionId;
+                    if (ComparisonChain.start()
+                            .compare(ourSessionId, theirSessionId)
+                            .compare(account.getJid().toEscapedString(), id.with.toEscapedString())
+                            .result() > 0) {
+                        Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": our session lost tie break. automatically accepting their session. winning Session=" + theirSessionId);
+                        //TODO a retract for this reason should probably include some indication of tie break
+                        retractSessionProposal(matchingSessionProposal.get());
+                        final JingleRtpConnection rtpConnection = new JingleRtpConnection(this, id, from);
+                        this.connections.put(id, rtpConnection);
+                        rtpConnection.setProposedMedia(ImmutableSet.copyOf(media));
+                        rtpConnection.deliveryMessage(from, message, serverMsgId, timestamp);
+                    } else {
+                        Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": our session won tie break. waiting for other party to accept. winningSession=" + ourSessionId);
+                    }
+                    return;
+                }
                 final boolean stranger = isWithStrangerAndStrangerNotificationsAreOff(account, id.with);
                 if (isBusy() || stranger) {
                     writeLogMissedIncoming(account, id.with.asBareJid(), id.sessionId, serverMsgId, timestamp);
@@ -289,7 +344,7 @@ public class JingleConnectionManager extends AbstractConnectionManager {
                 }
             }
         } else {
-            Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": retrieved out of order jingle message");
+            Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": retrieved out of order jingle message"+message);
         }
 
     }
@@ -449,14 +504,19 @@ public class JingleConnectionManager extends AbstractConnectionManager {
                 }
             }
             if (matchingProposal != null) {
-                toneManager.transition(RtpEndUserState.ENDED);
-                Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": retracting rtp session proposal with " + with);
-                this.rtpSessionProposals.remove(matchingProposal);
-                final MessagePacket messagePacket = mXmppConnectionService.getMessageGenerator().sessionRetract(matchingProposal);
-                writeLogMissedOutgoing(account, matchingProposal.with, matchingProposal.sessionId, null, System.currentTimeMillis());
-                mXmppConnectionService.sendMessagePacket(account, messagePacket);
+                retractSessionProposal(matchingProposal);
             }
         }
+    }
+
+    private void retractSessionProposal(RtpSessionProposal rtpSessionProposal) {
+        final Account account = rtpSessionProposal.account;
+        toneManager.transition(RtpEndUserState.ENDED);
+        Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": retracting rtp session proposal with " + rtpSessionProposal.with);
+        this.rtpSessionProposals.remove(rtpSessionProposal);
+        final MessagePacket messagePacket = mXmppConnectionService.getMessageGenerator().sessionRetract(rtpSessionProposal);
+        writeLogMissedOutgoing(account, rtpSessionProposal.with, rtpSessionProposal.sessionId, null, System.currentTimeMillis());
+        mXmppConnectionService.sendMessagePacket(account, messagePacket);
     }
 
     public void proposeJingleRtpSession(final Account account, final Jid with, final Set<Media> media) {
@@ -479,6 +539,10 @@ public class JingleConnectionManager extends AbstractConnectionManager {
                 }
             }
             if (isBusy()) {
+                if (hasMatchingRtpSession(account, with, media)) {
+                    Log.d(Config.LOGTAG, "ignoring request to propose jingle session because the other party already created one for us");
+                    return;
+                }
                 throw new IllegalStateException("There is already a running RTP session. This should have been caught by the UI");
             }
             final RtpSessionProposal proposal = RtpSessionProposal.of(account, with.asBareJid(), media);

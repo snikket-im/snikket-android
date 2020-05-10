@@ -1066,6 +1066,9 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
         return webRTCWrapper.isVideoEnabled();
     }
 
+    public void setVideoEnabled(final boolean enabled) {
+        webRTCWrapper.setVideoEnabled(enabled);
+    }
 
     public boolean isCameraSwitchable() {
         return webRTCWrapper.isCameraSwitchable();
@@ -1077,10 +1080,6 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
 
     public ListenableFuture<Boolean> switchCamera() {
         return webRTCWrapper.switchCamera();
-    }
-
-    public void setVideoEnabled(final boolean enabled) {
-        webRTCWrapper.setVideoEnabled(enabled);
     }
 
     @Override
