@@ -21,7 +21,14 @@ class ToneManager {
     private ScheduledFuture<?> currentTone;
 
     ToneManager() {
-        this.toneGenerator = new ToneGenerator(AudioManager.STREAM_MUSIC, 35);
+        ToneGenerator toneGenerator;
+        try {
+            toneGenerator = new ToneGenerator(AudioManager.STREAM_MUSIC, 35);
+        } catch (final RuntimeException e) {
+            Log.e(Config.LOGTAG, "unable to instantiate ToneGenerator", e);
+            toneGenerator = null;
+        }
+        this.toneGenerator = toneGenerator;
     }
 
     void transition(final RtpEndUserState state) {
@@ -86,25 +93,25 @@ class ToneManager {
 
     private void scheduleConnected() {
         this.currentTone = JingleConnectionManager.SCHEDULED_EXECUTOR_SERVICE.schedule(() -> {
-            this.toneGenerator.startTone(ToneGenerator.TONE_PROP_PROMPT, 200);
+            startTone(ToneGenerator.TONE_PROP_PROMPT, 200);
         }, 0, TimeUnit.SECONDS);
     }
 
     private void scheduleEnding() {
         this.currentTone = JingleConnectionManager.SCHEDULED_EXECUTOR_SERVICE.schedule(() -> {
-            this.toneGenerator.startTone(ToneGenerator.TONE_CDMA_CALLDROP_LITE, 375);
+            startTone(ToneGenerator.TONE_CDMA_CALLDROP_LITE, 375);
         }, 0, TimeUnit.SECONDS);
     }
 
     private void scheduleBusy() {
         this.currentTone = JingleConnectionManager.SCHEDULED_EXECUTOR_SERVICE.schedule(() -> {
-            this.toneGenerator.startTone(ToneGenerator.TONE_CDMA_NETWORK_BUSY, 2500);
+            startTone(ToneGenerator.TONE_CDMA_NETWORK_BUSY, 2500);
         }, 0, TimeUnit.SECONDS);
     }
 
     private void scheduleWaitingTone() {
         this.currentTone = JingleConnectionManager.SCHEDULED_EXECUTOR_SERVICE.scheduleAtFixedRate(() -> {
-            this.toneGenerator.startTone(ToneGenerator.TONE_CDMA_DIAL_TONE_LITE, 750);
+            startTone(ToneGenerator.TONE_CDMA_DIAL_TONE_LITE, 750);
         }, 0, 3, TimeUnit.SECONDS);
     }
 
@@ -112,7 +119,17 @@ class ToneManager {
         if (currentTone != null) {
             currentTone.cancel(true);
         }
-        toneGenerator.stopTone();
+        if (toneGenerator != null) {
+            toneGenerator.stopTone();
+        }
+    }
+
+    private void startTone(final int toneType, final int durationMs) {
+        if (toneGenerator != null) {
+            this.toneGenerator.startTone(toneType, durationMs);
+        } else {
+            Log.e(Config.LOGTAG, "failed to start tone. ToneGenerator doesn't exist");
+        }
     }
 
     private enum ToneState {
