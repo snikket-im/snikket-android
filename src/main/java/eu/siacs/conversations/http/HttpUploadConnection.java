@@ -105,11 +105,12 @@ public class HttpUploadConnection implements Transferable {
 		} else {
 			this.mime = this.file.getMimeType();
 		}
+		final long originalFileSize = file.getSize();
 		this.delayed = delay;
 		if (Config.ENCRYPT_ON_HTTP_UPLOADED
 				|| message.getEncryption() == Message.ENCRYPTION_AXOLOTL
 				|| message.getEncryption() == Message.ENCRYPTION_OTR) {
-			this.key = new byte[Config.TWELVE_BYTE_IV ? 44 : 48];
+			this.key = new byte[44];
 			mXmppConnectionService.getRNG().nextBytes(this.key);
 			this.file.setKeyAndIv(this.key);
 		}
@@ -128,7 +129,7 @@ public class HttpUploadConnection implements Transferable {
 			md5 = null;
 		}
 
-		this.file.setExpectedSize(file.getSize() + (file.getKey() != null ? 16 : 0));
+		this.file.setExpectedSize(originalFileSize + (file.getKey() != null ? 16 : 0));
 		message.resetFileParams();
 		this.mSlotRequester.request(method, account, file, mime, md5, new SlotRequester.OnSlotRequested() {
 			@Override

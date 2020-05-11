@@ -6,7 +6,9 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <include android:id="@+id/toolbar" layout="@layout/toolbar" />
+        <include
+            android:id="@+id/toolbar"
+            layout="@layout/toolbar" />
 
         <ScrollView
             android:layout_width="match_parent"
@@ -21,10 +23,10 @@
                     android:id="@+id/instructions"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:padding="16dp"
                     android:gravity="center_horizontal"
-                    android:textAppearance="@style/TextAppearance.Conversations.Body1"
-                    android:text="@string/enter_your_name_instructions"/>
+                    android:padding="16dp"
+                    android:text="@string/enter_your_name_instructions"
+                    android:textAppearance="@style/TextAppearance.Conversations.Body1" />
 
                 <LinearLayout
                     android:id="@+id/name_box"
@@ -36,24 +38,26 @@
                     android:orientation="vertical">
 
                     <EditText
-                        android:imeOptions="flagNoExtractUi"
                         android:id="@+id/name"
                         style="@style/Widget.Conversations.EditText"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="@string/your_name"
+                        android:imeOptions="flagNoExtractUi"
                         android:longClickable="false" />
 
                 </LinearLayout>
+
                 <Button
                     android:id="@+id/next"
-                    android:layout_alignParentBottom="true"
-                    android:layout_alignParentEnd="true"
                     style="@style/Widget.Conversations.Button.Borderless"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentBottom="true"
                     android:text="@string/next"
-                    android:textColor="?colorAccent"/>
+                    android:textColor="?colorAccent" />
             </RelativeLayout>
         </ScrollView>
     </LinearLayout>

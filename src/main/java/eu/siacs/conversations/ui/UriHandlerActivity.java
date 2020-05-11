@@ -88,7 +88,7 @@ public class UriHandlerActivity extends AppCompatActivity {
         final List<Jid> accounts = DatabaseBackend.getInstance(this).getAccountJids(true);
 
         if (SignupUtils.isSupportTokenRegistry() && xmppUri.isValidJid()) {
-            final String preauth = xmppUri.getParamater("preauth");
+            final String preauth = xmppUri.getParameter("preauth");
             final Jid jid = xmppUri.getJid();
             if (xmppUri.isAction(XmppUri.ACTION_REGISTER)) {
                 if (jid.getEscapedLocal() != null && accounts.contains(jid.asBareJid())) {
@@ -99,7 +99,7 @@ public class UriHandlerActivity extends AppCompatActivity {
                 startActivity(intent);
                 return;
             }
-            if (xmppUri.isAction(XmppUri.ACTION_ROSTER) && "y".equals(xmppUri.getParamater("ibr"))) {
+            if (xmppUri.isAction(XmppUri.ACTION_ROSTER) && "y".equals(xmppUri.getParameter("ibr"))) {
                 intent = SignupUtils.getTokenRegistrationIntent(this, Jid.ofDomain(jid.getDomain()), preauth);
                 intent.putExtra(StartConversationActivity.EXTRA_INVITE_URI, xmppUri.toString());
                 startActivity(intent);

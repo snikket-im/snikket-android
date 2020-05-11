@@ -29,6 +29,7 @@ import eu.siacs.conversations.services.XmppConnectionService;
 import eu.siacs.conversations.utils.UIHelper;
 import eu.siacs.conversations.utils.XmppUri;
 import eu.siacs.conversations.xmpp.XmppConnection;
+import eu.siacs.conversations.xmpp.jingle.RtpCapability;
 import rocks.xmpp.addr.Jid;
 
 public class Account extends AbstractEntity implements AvatarService.Avatarable {
@@ -426,6 +427,16 @@ public class Account extends AbstractEntity implements AvatarService.Avatarable 
         return this.getSelfContact().getPresences().size();
     }
 
+    public int activeDevicesWithRtpCapability() {
+        int i = 0;
+        for(Presence presence : getSelfContact().getPresences().getPresences().values()) {
+            if (RtpCapability.check(presence) != RtpCapability.Capability.NONE) {
+                i++;
+            }
+        }
+        return i;
+    }
+
     public String getPgpSignature() {
         return getKey(KEY_PGP_SIGNATURE);
     }
@@ -508,13 +519,7 @@ public class Account extends AbstractEntity implements AvatarService.Avatarable 
         }
     }
 
-    public boolean hasBookmarkFor(final Jid jid) {
-        synchronized (this.bookmarks) {
-            return this.bookmarks.containsKey(jid.asBareJid());
-        }
-    }
-
-    Bookmark getBookmark(final Jid jid) {
+    public Bookmark getBookmark(final Jid jid) {
         synchronized (this.bookmarks) {
             return this.bookmarks.get(jid.asBareJid());
         }

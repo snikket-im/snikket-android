@@ -9,8 +9,6 @@
     <string name="pref_never_send_crash_summary">Στέλνοντας ίχνη στοίβας βοηθάτε την συνεχόμενη ανάπτυξη του Quicksy</string>
     <string name="no_storage_permission">Το Quicksy χρειάζεται πρόσβαση στον εξωτερικό αποθηκευτικό χώρο</string>
     <string name="no_camera_permission">Το Quicksy χρειάζεται πρόσβαση στην φωτογραφική μηχανή</string>
-    <string name="battery_optimizations_enabled_explained">Η συσκευή σας χρησιμοποιεί βελτιστοποίηση στην χρήση μπαταρίας του Quicksy που μπορεί να οδηγήσει σε αργοπορημένες ειδοποιήσεις ή ακόμα και σε απώλεια μηνυμάτων.\nΠροτείνεται να την απενεργοποιήσετε.</string>
-    <string name="battery_optimizations_enabled_dialog">Η συσκευή σας χρησιμοποιεί βελτιστοποίηση στην χρήση μπαταρίας του Quicksy που μπορεί να οδηγήσει σε αργοπορημένες ειδοποιήσεις ή ακόμα και σε απώλεια μηνυμάτων.\nΘα σας ζητηθεί να την απενεργοποιήσετε.</string>
     <string name="pref_broadcast_last_activity_summary">Επιτρέψτε στις επαφές σας να γνωρίζουν πότε χρησιμοποιείτε το Quicksy</string>
     <string name="data_saver_enabled_explained">Το λειτουργικό σας σύστημα περιορίζει το Quicksy από το να συνδέεται στο Internet όταν βρίσκεται στο παρασκήνιο. Για να λαμβάνετε ειδοποιήσεις νέων μηνυμάτων πρέπει να επιτρέψετε στο Quicksy να έχει απεριόριστη πρόσβαση όταν ενεργοποιείται η μείωση χρήσης δεδομένων κινητής.\nΤο Quicksy θα προσπαθεί να περιορίσει τη χρήση δεδομένων όταν είναι δυνατό.</string>
     <string name="device_does_not_support_data_saver">Η συσκευή σας δεν υποστηρίζει την απενεργοποίηση μείωσης χρήσης δεδομένων κινητής για το Quicksy.</string>

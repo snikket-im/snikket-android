@@ -30,20 +30,29 @@ public class Compatibility {
             "led",
             "notification_ringtone",
             "notification_headsup",
-            "vibrate_on_notification");
-    private static final List<String> UNUESD_SETTINGS_PRE_TWENTYSIX = Collections.singletonList("more_notification_settings");
+            "vibrate_on_notification",
+            "call_ringtone"
+    );
+    private static final List<String> UNUESD_SETTINGS_PRE_TWENTYSIX = Arrays.asList(
+            "message_notification_settings",
+            "call_notification_settings"
+    );
 
 
     public static boolean hasStoragePermission(Context context) {
         return Build.VERSION.SDK_INT < Build.VERSION_CODES.M || ContextCompat.checkSelfPermission(context, android.Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED;
     }
 
-    public static boolean runsTwentySix() {
-        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.O;
+    public static boolean runsTwentyOne() {
+        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP;
     }
 
-    public static boolean runsTwentyFour() {
+    private static boolean runsTwentyFour() {
         return Build.VERSION.SDK_INT >= Build.VERSION_CODES.N;
+    }
+
+    public static boolean runsTwentySix() {
+        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.O;
     }
 
     public static boolean twentyEight() {
@@ -127,7 +136,7 @@ public class Compatibility {
                 context.startService(intent);
             }
         } catch (RuntimeException e) {
-            Log.d(Config.LOGTAG, context.getClass().getSimpleName()+" was unable to start service");
+            Log.d(Config.LOGTAG, context.getClass().getSimpleName() + " was unable to start service");
         }
     }
 }

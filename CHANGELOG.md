@@ -1,5 +1,28 @@
 # Changelog
 
+### Version 2.8.1
+* Audible feedback (dialing, call started, call ended) for voice calls.
+* Fixed issue with retrying failed video call
+
+### Version 2.8.0
+
+* Audio/Video calls (Requires server support in form of STUN and TURN servers discoverable via XEP-0215)
+
+
+### Version 2.7.1
+
+* Fix avatar selection on some Android 10 devices
+* Fix file transfer for larger files
+
+### Version 2.7.0
+
+* Provide PDF preview on Android 5+
+* Use 12 byte IVs for OMEMO
+
+### Version 2.6.4
+
+* Support automatic theme switching on Android 10
+
 ### Version 2.6.3
 
 * Support for ?register and ?register;preauth XMPP uri parameters

@@ -1,1 +1,5 @@
+<<<<<<< HEAD
 Snikket is an easy-to-use and privacy-friendly messaging app
+=======
+An encrypted, user friendly XMPP instant messaging client optimized for mobile
+>>>>>>> conversations-master

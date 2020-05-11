@@ -1,13 +1,54 @@
 package eu.siacs.conversations.xmpp.jingle.stanzas;
 
-import eu.siacs.conversations.xml.Element;
+import android.support.annotation.NonNull;
 
-public class Reason extends Element {
-	private Reason(String name) {
-		super(name);
-	}
+import com.google.common.base.CaseFormat;
 
-	public Reason() {
-		super("reason");
-	}
+import eu.siacs.conversations.xmpp.jingle.RtpContentMap;
+
+public enum Reason {
+    ALTERNATIVE_SESSION,
+    BUSY,
+    CANCEL,
+    CONNECTIVITY_ERROR,
+    DECLINE,
+    EXPIRED,
+    FAILED_APPLICATION,
+    FAILED_TRANSPORT,
+    GENERAL_ERROR,
+    GONE,
+    INCOMPATIBLE_PARAMETERS,
+    MEDIA_ERROR,
+    SECURITY_ERROR,
+    SUCCESS,
+    TIMEOUT,
+    UNSUPPORTED_APPLICATIONS,
+    UNSUPPORTED_TRANSPORTS,
+    UNKNOWN;
+
+    public static Reason of(final String value) {
+        try {
+            return Reason.valueOf(CaseFormat.LOWER_HYPHEN.to(CaseFormat.UPPER_UNDERSCORE, value));
+        } catch (Exception e) {
+            return UNKNOWN;
+        }
+    }
+
+    @Override
+    @NonNull
+    public String toString() {
+        return CaseFormat.UPPER_UNDERSCORE.to(CaseFormat.LOWER_HYPHEN, super.toString());
+    }
+
+    public static Reason of(final RuntimeException e) {
+        if (e instanceof SecurityException) {
+            return SECURITY_ERROR;
+        } else if (e instanceof RtpContentMap.UnsupportedTransportException) {
+            return UNSUPPORTED_TRANSPORTS;
+        } else if (e instanceof RtpContentMap.UnsupportedApplicationException) {
+            return UNSUPPORTED_APPLICATIONS;
+        } else {
+            return FAILED_APPLICATION;
+        }
+    }
 }

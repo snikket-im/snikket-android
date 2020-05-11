@@ -1,130 +1,121 @@
 package eu.siacs.conversations.xmpp.jingle.stanzas;
 
+import android.support.annotation.NonNull;
+
+import com.google.common.base.Preconditions;
+
+import java.util.Locale;
+
 import eu.siacs.conversations.entities.DownloadableFile;
 import eu.siacs.conversations.xml.Element;
 import eu.siacs.conversations.xml.Namespace;
 
 public class Content extends Element {
 
-    public enum Version {
-        FT_3("urn:xmpp:jingle:apps:file-transfer:3"),
-        FT_4("urn:xmpp:jingle:apps:file-transfer:4"),
-        FT_5("urn:xmpp:jingle:apps:file-transfer:5");
-
-        private final String namespace;
-
-        Version(String namespace) {
-            this.namespace = namespace;
-        }
-
-        public String getNamespace() {
-            return namespace;
-        }
-    }
-
-    private String transportId;
-
-    public Content() {
-        super("content");
-    }
-
-    public Content(String creator, String name) {
-        super("content");
-        this.setAttribute("creator", creator);
-        this.setAttribute("senders", creator);
+    public Content(final Creator creator, final String name) {
+        super("content", Namespace.JINGLE);
+        this.setAttribute("creator", creator.toString());
         this.setAttribute("name", name);
     }
 
-    public Version getVersion() {
-        if (hasChild("description", Version.FT_3.namespace)) {
-            return Version.FT_3;
-        } else if (hasChild("description", Version.FT_4.namespace)) {
-            return Version.FT_4;
-        } else if (hasChild("description", Version.FT_5.namespace)) {
-            return Version.FT_5;
-        }
-        return null;
+    private Content() {
+        super("content", Namespace.JINGLE);
     }
 
-    public void setTransportId(String sid) {
-        this.transportId = sid;
+    public static Content upgrade(final Element element) {
+        Preconditions.checkArgument("content".equals(element.getName()));
+        final Content content = new Content();
+        content.setAttributes(element.getAttributes());
+        content.setChildren(element.getChildren());
+        return content;
     }
 
-    public Element setFileOffer(DownloadableFile actualFile, boolean otr, Version version) {
-        Element description = this.addChild("description", version.namespace);
-        Element file;
-        if (version == Version.FT_3) {
-            Element offer = description.addChild("offer");
-            file = offer.addChild("file");
-        } else {
-            file = description.addChild("file");
-        }
-        file.addChild("size").setContent(Long.toString(actualFile.getExpectedSize()));
-        if (otr) {
-            file.addChild("name").setContent(actualFile.getName() + ".otr");
-        } else {
-            file.addChild("name").setContent(actualFile.getName());
-        }
-        return file;
+    public String getContentName() {
+        return this.getAttribute("name");
     }
 
-    public Element getFileOffer(Version version) {
-        Element description = this.findChild("description", version.namespace);
+    public Creator getCreator() {
+        return Creator.of(getAttribute("creator"));
+    }
+
+    public Senders getSenders() {
+        return Senders.of(getAttribute("senders"));
+    }
+
+    public void setSenders(Senders senders) {
+        this.setAttribute("senders", senders.toString());
+    }
+
+    public GenericDescription getDescription() {
+        final Element description = this.findChild("description");
         if (description == null) {
             return null;
         }
-        if (version == Version.FT_3) {
-            Element offer = description.findChild("offer");
-            if (offer == null) {
-                return null;
-            }
-            return offer.findChild("file");
+        final String namespace = description.getNamespace();
+        if (FileTransferDescription.NAMESPACES.contains(namespace)) {
+            return FileTransferDescription.upgrade(description);
+        } else if (Namespace.JINGLE_APPS_RTP.equals(namespace)) {
+            return RtpDescription.upgrade(description);
         } else {
-            return description.findChild("file");
+            return GenericDescription.upgrade(description);
         }
     }
 
-    public void setFileOffer(Element fileOffer, Version version) {
-        Element description = this.addChild("description", version.namespace);
-        if (version == Version.FT_3) {
-            description.addChild("offer").addChild(fileOffer);
+    public void setDescription(final GenericDescription description) {
+        Preconditions.checkNotNull(description);
+        this.addChild(description);
+    }
+
+    public String getDescriptionNamespace() {
+        final Element description = this.findChild("description");
+        return description == null ? null : description.getNamespace();
+    }
+
+    public GenericTransportInfo getTransport() {
+        final Element transport = this.findChild("transport");
+        final String namespace = transport == null ? null : transport.getNamespace();
+        if (Namespace.JINGLE_TRANSPORTS_IBB.equals(namespace)) {
+            return IbbTransportInfo.upgrade(transport);
+        } else if (Namespace.JINGLE_TRANSPORTS_S5B.equals(namespace)) {
+            return S5BTransportInfo.upgrade(transport);
+        } else if (Namespace.JINGLE_TRANSPORT_ICE_UDP.equals(namespace)) {
+            return IceUdpTransportInfo.upgrade(transport);
+        } else if (transport != null) {
+            return GenericTransportInfo.upgrade(transport);
         } else {
-            description.addChild(fileOffer);
+            return null;
         }
     }
 
-    public String getTransportId() {
-        if (hasSocks5Transport()) {
-            this.transportId = socks5transport().getAttribute("sid");
-        } else if (hasIbbTransport()) {
-            this.transportId = ibbTransport().getAttribute("sid");
+    public void setTransport(GenericTransportInfo transportInfo) {
+        this.addChild(transportInfo);
+    }
+
+    public enum Creator {
+        INITIATOR, RESPONDER;
+
+        public static Creator of(final String value) {
+            return Creator.valueOf(value.toUpperCase(Locale.ROOT));
         }
-        return this.transportId;
-    }
 
-    public Element socks5transport() {
-        Element transport = this.findChild("transport", Namespace.JINGLE_TRANSPORTS_S5B);
-        if (transport == null) {
-            transport = this.addChild("transport", Namespace.JINGLE_TRANSPORTS_S5B);
-            transport.setAttribute("sid", this.transportId);
+        @Override
+        @NonNull
+        public String toString() {
+            return super.toString().toLowerCase(Locale.ROOT);
         }
-        return transport;
     }
 
-    public Element ibbTransport() {
-        Element transport = this.findChild("transport", Namespace.JINGLE_TRANSPORTS_IBB);
-        if (transport == null) {
-            transport = this.addChild("transport", Namespace.JINGLE_TRANSPORTS_IBB);
-            transport.setAttribute("sid", this.transportId);
+    public enum Senders {
+        BOTH, INITIATOR, NONE, RESPONDER;
+
+        public static Senders of(final String value) {
+            return Senders.valueOf(value.toUpperCase(Locale.ROOT));
         }
-        return transport;
-    }
 
-    public boolean hasSocks5Transport() {
-        return this.hasChild("transport", Namespace.JINGLE_TRANSPORTS_S5B);
-    }
-
-    public boolean hasIbbTransport() {
-        return this.hasChild("transport", Namespace.JINGLE_TRANSPORTS_IBB);
+        @Override
+        @NonNull
+        public String toString() {
+            return super.toString().toLowerCase(Locale.ROOT);
+        }
     }
 }

@@ -81,8 +81,8 @@ public abstract class OmemoActivity extends XmppActivity {
 	}
 
 	@Override
-	public void onActivityResult(int requestCode, int resultCode, Intent intent) {
-		super.onActivityResult(requestCode, requestCode, intent);
+	public void onActivityResult(final int requestCode, final int resultCode, final Intent intent) {
+		super.onActivityResult(requestCode, resultCode, intent);
 		if (requestCode == ScanActivity.REQUEST_SCAN_QR_CODE && resultCode == RESULT_OK) {
 			String result = intent.getStringExtra(ScanActivity.INTENT_EXTRA_RESULT);
 			XmppUri uri = new XmppUri(result == null ? "" : result);

@@ -101,9 +101,9 @@
             </intent>
         </PreferenceScreen>
         <PreferenceScreen
-            android:key="more_notification_settings"
+            android:key="message_notification_settings"
             android:summary="@string/pref_more_notification_settings_summary"
-            android:title="@string/pref_more_notification_settings">
+            android:title="@string/pref_message_notification_settings">
             <intent android:action="android.settings.CHANNEL_NOTIFICATION_SETTINGS">
                 <extra
                     android:name="android.provider.extra.APP_PACKAGE"
@@ -113,12 +113,31 @@
                     android:value="messages" />
             </intent>
         </PreferenceScreen>
+        <PreferenceScreen
+            android:key="call_notification_settings"
+            android:summary="@string/pref_more_notification_settings_summary"
+            android:title="@string/pref_incoming_call_notification_settings">
+            <intent android:action="android.settings.CHANNEL_NOTIFICATION_SETTINGS">
+                <extra
+                    android:name="android.provider.extra.APP_PACKAGE"
+                    android:value="@string/applicationId" />
+                <extra
+                    android:name="android.provider.extra.CHANNEL_ID"
+                    android:value="incoming_calls" />
+            </intent>
+        </PreferenceScreen>
         <RingtonePreference
             android:defaultValue="@string/notification_ringtone"
             android:key="notification_ringtone"
             android:ringtoneType="notification"
-            android:summary="@string/pref_sound_summary"
-            android:title="@string/pref_sound" />
+            android:summary="@string/pref_notification_sound_summary"
+            android:title="@string/pref_notification_sound" />
+        <RingtonePreference
+            android:defaultValue="@string/notification_ringtone"
+            android:key="call_ringtone"
+            android:ringtoneType="ringtone"
+            android:summary="@string/pref_call_ringtone_summary"
+            android:title="@string/pref_ringtone" />
     </PreferenceCategory>
     <PreferenceCategory
         android:key="attachments"

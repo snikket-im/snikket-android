@@ -1,7 +1,10 @@
 package eu.siacs.conversations.entities;
 
+import android.util.Log;
+
 import java.io.File;
 
+import eu.siacs.conversations.Config;
 import eu.siacs.conversations.utils.MimeUtils;
 
 public class DownloadableFile extends File {
@@ -66,6 +69,7 @@ public class DownloadableFile extends File {
 			this.iv = new byte[]{ 0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09, 0x0a, 0x0b, 0x0c, 0x0d, 0x0e, 0xf };
 			System.arraycopy(keyIvCombo, 0, aeskey, 0, 32);
 		}
+		Log.d(Config.LOGTAG,"using "+this.iv.length+"-byte IV for file transmission");
 	}
 
 	public void setKey(byte[] key) {

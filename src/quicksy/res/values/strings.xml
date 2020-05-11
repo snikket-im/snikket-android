@@ -9,8 +9,8 @@
     <string name="pref_never_send_crash_summary">By sending in stack traces you are helping the ongoing development of Quicksy</string>
     <string name="no_storage_permission">Quicksy needs access to external storage</string>
     <string name="no_camera_permission">Quicksy needs access to the camera</string>
-    <string name="battery_optimizations_enabled_explained">Your device is doing some heavy battery optimizations on Quicksy that might lead to delayed notifications or even message loss.\nIt is recommended to disable those.</string>
-    <string name="battery_optimizations_enabled_dialog">Your device is doing some heavy battery optimizations on Quicksy that might lead to delayed notifications or even message loss.\n\nYou will now be asked to disable those.</string>
+    <string name="battery_optimizations_enabled_explained">Your device is employing heavy battery optimizations for Quicksy which may lead to delayed notifications or even message loss.\nIt is recommended to disable them.</string>
+    <string name="battery_optimizations_enabled_dialog">Your device is employing heavy battery optimizations for Quicksy which may lead to delayed notifications or even message loss.\n\nYou will now be asked to disable them.</string>
     <string name="pref_broadcast_last_activity_summary">Let all your contacts know when you use Quicksy</string>
     <string name="data_saver_enabled_explained">Your operating system is restricting Quicksy from accessing the Internet when in background. To receive notifications of new messages you should allow Quicksy unrestricted access when Data saver is on.\nQuicksy will still make an effort to save data when possible.</string>
     <string name="device_does_not_support_data_saver">Your device does not support disabling Data saver for Quicksy.</string>

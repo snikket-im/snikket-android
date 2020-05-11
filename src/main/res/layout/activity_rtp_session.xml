@@ -1,0 +1,221 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="?color_background_secondary">
+
+        <LinearLayout
+            android:id="@+id/pip_placeholder"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/black"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:visibility="gone">
+
+            <ProgressBar
+                android:id="@+id/pip_waiting"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:indeterminate="true"
+                android:indeterminateOnly="true"
+                android:indeterminateTint="@color/white"
+                android:visibility="gone" />
+
+            <ImageView
+                android:id="@+id/pip_warning"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_warning_white_48dp"
+                android:visibility="gone" />
+        </LinearLayout>
+
+        <android.support.design.widget.AppBarLayout
+            android:id="@+id/app_bar_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="visible">
+
+            <android.support.v7.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+                app:popupTheme="?popupOverlayStyle" />
+
+            <TextView
+                android:id="@+id/with"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/status"
+                android:layout_marginLeft="16dp"
+                android:layout_marginTop="0dp"
+                android:layout_marginRight="16dp"
+                android:layout_marginBottom="32dp"
+                android:textAppearance="@style/TextAppearance.Conversations.Display2"
+                android:textColor="@color/white"
+                tools:text="Juliet Capulet" />
+
+        </android.support.design.widget.AppBarLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/button_row"
+            android:layout_below="@id/app_bar_layout"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <com.makeramen.roundedimageview.RoundedImageView
+                android:id="@+id/contact_photo"
+                android:layout_width="@dimen/publish_avatar_size"
+                android:layout_height="@dimen/publish_avatar_size"
+                app:riv_corner_radius="@dimen/incoming_call_radius" />
+
+        </LinearLayout>
+
+
+        <org.webrtc.SurfaceViewRenderer
+            android:id="@+id/local_video"
+            android:layout_width="@dimen/local_video_preview_width"
+            android:layout_height="@dimen/local_video_preview_height"
+            android:layout_below="@+id/app_bar_layout"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginTop="24dp"
+            android:layout_marginEnd="24dp"
+            android:layout_marginRight="24dp"
+            android:visibility="gone"
+            app:elevation="4dp" />
+
+        <org.webrtc.SurfaceViewRenderer
+            android:id="@+id/remote_video"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/app_bar_layout"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentBottom="true"
+            android:visibility="gone" />
+
+        <ImageView
+            android:id="@+id/pip_local_mic_off_indicator"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentBottom="true"
+            android:layout_margin="8dp"
+            android:alpha="0.7"
+            android:src="@drawable/ic_mic_off_black_24dp"
+            android:tint="@color/white"
+            android:visibility="gone" />
+
+        <RelativeLayout
+            android:id="@+id/button_row"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="24dp">
+
+            <RelativeLayout
+                android:layout_width="288dp"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true">
+
+                <android.support.design.widget.FloatingActionButton
+                    android:id="@+id/reject_call"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentLeft="true"
+                    android:layout_margin="16dp"
+                    android:src="@drawable/ic_call_end_white_48dp"
+                    android:visibility="gone"
+                    app:backgroundTint="@color/red700"
+                    app:elevation="4dp"
+                    app:fabCustomSize="72dp"
+                    app:maxImageSize="36dp"
+                    tools:visibility="visible" />
+
+                <android.support.design.widget.FloatingActionButton
+                    android:id="@+id/accept_call"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_margin="16dp"
+                    android:src="@drawable/ic_call_white_48dp"
+                    android:visibility="gone"
+                    app:backgroundTint="@color/green700"
+                    app:elevation="4dp"
+                    app:fabCustomSize="72dp"
+                    app:maxImageSize="36dp"
+                    tools:visibility="visible" />
+
+            </RelativeLayout>
+
+            <android.support.design.widget.FloatingActionButton
+                android:id="@+id/in_call_action_left"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_margin="12dp"
+                android:layout_toStartOf="@+id/end_call"
+                android:layout_toLeftOf="@+id/end_call"
+                android:visibility="gone"
+                app:backgroundTint="?color_background_primary"
+                app:elevation="4dp"
+                app:fabSize="mini"
+                app:tint="?attr/icon_tint" />
+
+            <android.support.design.widget.FloatingActionButton
+                android:id="@+id/end_call"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:layout_margin="16dp"
+                android:src="@drawable/ic_call_end_white_48dp"
+                android:visibility="visible"
+                app:backgroundTint="@color/red700"
+                app:elevation="4dp"
+                app:fabCustomSize="72dp"
+                app:maxImageSize="36dp" />
+
+            <android.support.design.widget.FloatingActionButton
+                android:id="@+id/in_call_action_right"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_margin="12dp"
+                android:layout_toEndOf="@+id/end_call"
+                android:layout_toRightOf="@+id/end_call"
+                android:visibility="gone"
+                app:backgroundTint="?color_background_primary"
+                app:elevation="4dp"
+                app:fabSize="mini"
+                app:tint="?attr/icon_tint" />
+
+            <android.support.design.widget.FloatingActionButton
+                android:id="@+id/in_call_action_far_right"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_margin="12dp"
+                android:layout_toEndOf="@+id/in_call_action_right"
+                android:layout_toRightOf="@+id/in_call_action_right"
+                android:visibility="gone"
+                app:backgroundTint="?color_background_primary"
+                app:elevation="4dp"
+                app:fabSize="mini"
+                app:tint="?attr/icon_tint" />
+        </RelativeLayout>
+
+    </RelativeLayout>
+</layout>

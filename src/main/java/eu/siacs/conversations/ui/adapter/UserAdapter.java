@@ -111,6 +111,8 @@ public class UserAdapter extends ListAdapter<MucOptions.User, UserAdapter.ViewHo
                 }
             });
             viewHolder.binding.key.setText(OpenPgpUtils.convertKeyIdToHex(user.getPgpKeyId()));
+        } else {
+            viewHolder.binding.key.setVisibility(View.GONE);
         }
 
 

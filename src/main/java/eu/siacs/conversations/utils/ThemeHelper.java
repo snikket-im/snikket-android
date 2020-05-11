@@ -31,8 +31,10 @@ package eu.siacs.conversations.utils;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
+import android.os.Build;
 import android.preference.PreferenceManager;
 import android.support.annotation.StyleRes;
 import android.support.design.widget.Snackbar;
@@ -45,10 +47,10 @@ import eu.siacs.conversations.ui.SettingsActivity;
 
 public class ThemeHelper {
 
-	public static int find(Context context) {
+	public static int find(final Context context) {
 		final SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
 		final Resources resources = context.getResources();
-		final boolean dark = sharedPreferences.getString(SettingsActivity.THEME, resources.getString(R.string.theme)).equals("dark");
+		final boolean dark = isDark(sharedPreferences, resources);
 		final String fontSize = sharedPreferences.getString("font_size", resources.getString(R.string.default_font_size));
 		switch (fontSize) {
 			case "medium":
@@ -63,7 +65,7 @@ public class ThemeHelper {
 	public static int findDialog(Context context) {
 		final SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
 		final Resources resources = context.getResources();
-		final boolean dark = sharedPreferences.getString(SettingsActivity.THEME, resources.getString(R.string.theme)).equals("dark");
+		final boolean dark = isDark(sharedPreferences, resources);
 		final String fontSize = sharedPreferences.getString("font_size", resources.getString(R.string.default_font_size));
 		switch (fontSize) {
 			case "medium":
@@ -72,6 +74,15 @@ public class ThemeHelper {
 				return dark ? R.style.ConversationsTheme_Dark_Dialog_Large : R.style.ConversationsTheme_Dialog_Large;
 			default:
 				return dark ? R.style.ConversationsTheme_Dark_Dialog : R.style.ConversationsTheme_Dialog;
+		}
+	}
+
+	private static boolean isDark(final SharedPreferences sharedPreferences, final Resources resources) {
+		final String setting = sharedPreferences.getString(SettingsActivity.THEME, resources.getString(R.string.theme));
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q && "automatic".equals(setting)) {
+			return (resources.getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK) == Configuration.UI_MODE_NIGHT_YES;
+		} else {
+			return "dark".equals(setting);
 		}
 	}
 

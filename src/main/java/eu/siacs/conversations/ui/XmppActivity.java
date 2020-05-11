@@ -67,6 +67,7 @@ import eu.siacs.conversations.entities.Message;
 import eu.siacs.conversations.entities.Presences;
 import eu.siacs.conversations.services.AvatarService;
 import eu.siacs.conversations.services.BarcodeProvider;
+import eu.siacs.conversations.services.QuickConversationsService;
 import eu.siacs.conversations.services.XmppConnectionService;
 import eu.siacs.conversations.services.XmppConnectionService.XmppConnectionBinder;
 import eu.siacs.conversations.ui.service.EmojiService;
@@ -96,6 +97,7 @@ public abstract class XmppActivity extends ActionBarActivity {
 
 	protected int mTheme;
 	protected boolean mUsingEnterKey = false;
+	protected boolean mUseTor = false;
 	protected Toast mToast;
 	public Runnable onOpenPGPKeyPublished = () -> Toast.makeText(XmppActivity.this, R.string.openpgp_has_been_published, Toast.LENGTH_SHORT).show();
 	protected ConferenceInvite mPendingConferenceInvite = null;
@@ -211,6 +213,8 @@ public abstract class XmppActivity extends ActionBarActivity {
 			this.registerListeners();
 			this.onBackendConnected();
 		}
+		this.mUsingEnterKey = usingEnterKey();
+		this.mUseTor = useTor();
 	}
 
 	public void connectToBackend() {
@@ -305,6 +309,9 @@ public abstract class XmppActivity extends ActionBarActivity {
 		if (this instanceof OnKeyStatusUpdated) {
 			this.xmppConnectionService.setOnKeyStatusUpdatedListener((OnKeyStatusUpdated) this);
 		}
+		if (this instanceof XmppConnectionService.OnJingleRtpConnectionUpdate) {
+			this.xmppConnectionService.setOnRtpConnectionUpdateListener((XmppConnectionService.OnJingleRtpConnectionUpdate) this);
+		}
 	}
 
 	protected void unregisterListeners() {
@@ -331,6 +338,9 @@ public abstract class XmppActivity extends ActionBarActivity {
 		}
 		if (this instanceof OnKeyStatusUpdated) {
 			this.xmppConnectionService.removeOnNewKeysAvailableListener((OnKeyStatusUpdated) this);
+		}
+		if (this instanceof XmppConnectionService.OnJingleRtpConnectionUpdate) {
+			this.xmppConnectionService.removeRtpConnectionUpdateListener((XmppConnectionService.OnJingleRtpConnectionUpdate) this);
 		}
 	}
 
@@ -388,17 +398,20 @@ public abstract class XmppActivity extends ActionBarActivity {
 		}
 	}
 
+	@SuppressLint("UnsupportedChromeOsCameraSystemFeature")
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		metrics = getResources().getDisplayMetrics();
 		ExceptionHelper.init(getApplicationContext());
 		new EmojiService(this).init();
-		this.isCameraFeatureAvailable = getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA);
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+			this.isCameraFeatureAvailable = getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA_ANY);
+		} else {
+			this.isCameraFeatureAvailable = getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA);
+		}
 		this.mTheme = findTheme();
 		setTheme(this.mTheme);
-
-		this.mUsingEnterKey = usingEnterKey();
 	}
 
 	protected boolean isCameraFeatureAvailable() {
@@ -440,8 +453,12 @@ public abstract class XmppActivity extends ActionBarActivity {
 		}
 	}
 
-	protected boolean usingEnterKey() {
+	private boolean usingEnterKey() {
 		return getBooleanPreference("display_enter_key", R.bool.display_enter_key);
+	}
+
+	private boolean useTor() {
+		return QuickConversationsService.isConversations() && getBooleanPreference("use_tor", R.bool.use_tor);
 	}
 
 	protected SharedPreferences getPreferences() {
@@ -851,7 +868,7 @@ public abstract class XmppActivity extends ActionBarActivity {
 	}
 
 	protected Account extractAccount(Intent intent) {
-		String jid = intent != null ? intent.getStringExtra(EXTRA_ACCOUNT) : null;
+		final String jid = intent != null ? intent.getStringExtra(EXTRA_ACCOUNT) : null;
 		try {
 			return jid != null ? xmppConnectionService.findAccountByJid(Jid.of(jid)) : null;
 		} catch (IllegalArgumentException e) {

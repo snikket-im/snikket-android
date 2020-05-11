@@ -11,7 +11,12 @@
 -keep class com.google.android.gms.**
 
 -keep class org.openintents.openpgp.*
+-keep class org.webrtc.** { *; }
 
+-dontwarn javax.mail.internet.MimeMessage
+-dontwarn javax.mail.internet.MimeBodyPart
+-dontwarn javax.mail.internet.SharedInputStream
+-dontwarn javax.activation.DataContentHandler
 -dontwarn org.bouncycastle.mail.**
 -dontwarn org.bouncycastle.x509.util.LDAPStoreHelper
 -dontwarn org.bouncycastle.jce.provider.X509LDAPCertStoreSpi

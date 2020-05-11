@@ -1,3 +1,5 @@
+import com.android.build.OutputFile
+
 // Top-level build file where you can add configuration options common to all
 // sub-projects/modules.
 buildscript {
@@ -6,7 +8,7 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.5.3'
+        classpath 'com.android.tools.build:gradle:3.6.2'
     }
 }
 
@@ -33,13 +35,14 @@ ext {
 }
 
 dependencies {
+    //should remain that low because later versions introduce dependency to androidx (not sure exactly from what version)
     playstoreImplementation('com.google.firebase:firebase-messaging:17.3.4') {
         exclude group: 'com.google.firebase', module: 'firebase-core'
         exclude group: 'com.google.firebase', module: 'firebase-analytics'
         exclude group: 'com.google.firebase', module: 'firebase-measurement-connector'
     }
-    conversationsPlaystoreCompatImplementation("com.android.installreferrer:installreferrer:1.1")
-    conversationsPlaystoreSystemImplementation("com.android.installreferrer:installreferrer:1.1")
+    conversationsPlaystoreCompatImplementation("com.android.installreferrer:installreferrer:1.1.2")
+    conversationsPlaystoreSystemImplementation("com.android.installreferrer:installreferrer:1.1.2")
     implementation 'org.sufficientlysecure:openpgp-api:10.0'
     implementation('com.theartofdev.edmodo:android-image-cropper:2.7.+') {
         exclude group: 'com.android.support', module: 'appcompat-v7'
@@ -54,7 +57,7 @@ dependencies {
     compatImplementation "com.android.support:support-emoji-appcompat:$supportLibVersion"
     conversationsFreeCompatImplementation "com.android.support:support-emoji-bundled:$supportLibVersion"
     quicksyFreeCompatImplementation "com.android.support:support-emoji-bundled:$supportLibVersion"
-    implementation 'org.bouncycastle:bcmail-jdk15on:1.58'
+    implementation 'org.bouncycastle:bcmail-jdk15on:1.64'
     //zxing stopped supporting Java 7 so we have to stick with 3.3.3
     //https://github.com/zxing/zxing/issues/1170
     implementation 'com.google.zxing:core:3.3.3'
@@ -74,29 +77,38 @@ dependencies {
     implementation "com.squareup.retrofit2:retrofit:2.6.4"
     implementation "com.squareup.retrofit2:converter-gson:2.6.4"
     //okhttp needs to stick with 3.12.x
-    implementation 'com.squareup.okhttp3:okhttp:3.12.7'
+    implementation 'com.squareup.okhttp3:okhttp:3.12.10'
     implementation 'com.google.guava:guava:27.1-android'
     quicksyImplementation 'io.michaelrocks:libphonenumber-android:8.11.1'
+    implementation fileTree(include: ['libwebrtc-m81.aar'], dir: 'libs')
 }
 
 ext {
     travisBuild = System.getenv("TRAVIS") == "true"
     preDexEnabled = System.getProperty("pre-dex", "true")
+    abiCodes = ['armeabi-v7a': 1, 'x86': 2, 'x86_64': 3, 'arm64-v8a': 4]
 }
 
 android {
-    compileSdkVersion 28
+    compileSdkVersion 29
 
     defaultConfig {
         minSdkVersion 16
         targetSdkVersion 28
-        versionCode 360
-        versionName "2.6.3"
+        versionCode 381
+        versionName "2.8.1"
         archivesBaseName += "-$versionName"
         applicationId "org.snikket.android"
         resValue "string", "applicationId", applicationId
         resValue "string", "app_name", "Snikket"
         buildConfigField "String", "LOGTAG", "\"snikket\""
+    }
+
+    splits {
+        abi {
+            universalApk true
+            enable true
+        }
     }
 
     dataBinding {
@@ -251,5 +263,17 @@ android {
     packagingOptions {
         exclude 'META-INF/BCKEY.DSA'
         exclude 'META-INF/BCKEY.SF'
+    }
+
+    android.applicationVariants.all { variant ->
+        variant.outputs.each { output ->
+            def baseAbiVersionCode = project.ext.abiCodes.get(output.getFilter(OutputFile.ABI))
+            if (baseAbiVersionCode != null) {
+                output.versionCodeOverride = (100 * variant.versionCode) + baseAbiVersionCode
+            } else {
+                output.versionCodeOverride = (100 * variant.versionCode)
+            }
+        }
+
     }
 }

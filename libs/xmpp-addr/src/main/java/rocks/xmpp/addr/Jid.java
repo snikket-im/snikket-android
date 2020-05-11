@@ -59,7 +59,6 @@ import java.io.Serializable;
  * @author Christian Schudt
  * @see <a href="https://tools.ietf.org/html/rfc7622">RFC 7622 - Extensible Messaging and Presence Protocol (XMPP): Address Format</a>
  */
-@XmlJavaTypeAdapter(JidAdapter.class)
 public interface Jid extends Comparable<Jid>, Serializable, CharSequence {
 
     /**

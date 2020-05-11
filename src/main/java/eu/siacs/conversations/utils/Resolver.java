@@ -40,7 +40,7 @@ public class Resolver {
     public static final int DEFAULT_PORT_XMPP = 5222;
 
     private static final String DIRECT_TLS_SERVICE = "_xmpps-client";
-    private static final String STARTTLS_SERICE = "_xmpp-client";
+    private static final String STARTTLS_SERVICE = "_xmpp-client";
 
     private static XmppConnectionService SERVICE = null;
 
@@ -61,7 +61,9 @@ public class Resolver {
             final Field dnsClientField = ReliableDNSClient.class.getDeclaredField("dnsClient");
             dnsClientField.setAccessible(true);
             final DNSClient dnsClient = (DNSClient) dnsClientField.get(reliableDNSClient);
-            dnsClient.getDataSource().setTimeout(3000);
+            if (dnsClient != null) {
+                dnsClient.getDataSource().setTimeout(3000);
+            }
             final Field useHardcodedDnsServers = DNSClient.class.getDeclaredField("useHardcodedDnsServers");
             useHardcodedDnsServers.setAccessible(true);
             useHardcodedDnsServers.setBoolean(dnsClient, false);
@@ -164,7 +166,7 @@ public class Resolver {
     }
 
     private static List<Result> resolveSrv(String domain, final boolean directTls) throws IOException {
-        DNSName dnsName = DNSName.from((directTls ? DIRECT_TLS_SERVICE : STARTTLS_SERICE) + "._tcp." + domain);
+        DNSName dnsName = DNSName.from((directTls ? DIRECT_TLS_SERVICE : STARTTLS_SERVICE) + "._tcp." + domain);
         ResolverResult<SRV> result = resolveWithFallback(dnsName, SRV.class);
         final List<Result> results = new ArrayList<>();
         final List<Thread> threads = new ArrayList<>();
@@ -176,7 +178,7 @@ public class Resolver {
                 final List<Result> ipv4s = resolveIp(record, A.class, result.isAuthenticData(), directTls);
                 if (ipv4s.size() == 0) {
                     Result resolverResult = Result.fromRecord(record, directTls);
-                    resolverResult.authenticated = resolverResult.isAuthenticated();
+                    resolverResult.authenticated = result.isAuthenticData();
                     ipv4s.add(resolverResult);
                 }
                 synchronized (results) {
@@ -210,7 +212,7 @@ public class Resolver {
             ResolverResult<D> results = resolveWithFallback(srv.name, type, authenticated);
             for (D record : results.getAnswersOrEmptySet()) {
                 Result resolverResult = Result.fromRecord(srv, directTls);
-                resolverResult.authenticated = results.isAuthenticData() && authenticated;
+                resolverResult.authenticated = results.isAuthenticData() && authenticated; //TODO technically it doesn’t matter if the IP was authenticated
                 resolverResult.ip = record.getInetAddress();
                 list.add(resolverResult);
             }
@@ -368,7 +370,7 @@ public class Resolver {
         public String toString() {
             return "Result{" +
                     "ip='" + (ip == null ? null : ip.getHostAddress()) + '\'' +
-                    ", hostame='" + hostname.toString() + '\'' +
+                    ", hostame='" + (hostname == null ? null : hostname.toString()) + '\'' +
                     ", port=" + port +
                     ", directTls=" + directTls +
                     ", authenticated=" + authenticated +

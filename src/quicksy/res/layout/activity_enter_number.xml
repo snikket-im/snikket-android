@@ -6,103 +6,108 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <include android:id="@+id/toolbar" layout="@layout/toolbar" />
+        <include
+            android:id="@+id/toolbar"
+            layout="@layout/toolbar" />
+
         <android.support.design.widget.CoordinatorLayout
             android:id="@+id/coordinator"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-        <ScrollView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:fillViewport="true">
-
-            <RelativeLayout
+            <ScrollView
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="match_parent"
+                android:fillViewport="true">
 
-                <TextView
-                    android:id="@+id/instructions"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:padding="16dp"
-                    android:gravity="center_horizontal"
-                    android:textAppearance="@style/TextAppearance.Conversations.Body1"
-                    android:text="@string/enter_country_code_and_phone_number"/>
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
 
-                <LinearLayout
-                    android:id="@+id/phone_number_box"
-                    android:layout_width="256dp"
-                    android:layout_height="wrap_content"
-                    android:layout_above="@+id/next"
-                    android:layout_below="@+id/instructions"
-                    android:layout_centerHorizontal="true"
-                    android:orientation="vertical">
-
-                    <EditText
-                        android:imeOptions="flagNoExtractUi"
-                        android:id="@+id/country"
-                        style="@style/Widget.Conversations.EditText"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:cursorVisible="false"
-                        android:inputType="textNoSuggestions"
-                        android:drawableEnd="@drawable/ic_arrow_drop_down_black_18dp"
-                        android:drawableRight="@drawable/ic_arrow_drop_down_black_18dp"
-                        android:focusable="false"
-                        android:gravity="bottom|center_horizontal"
-                        android:longClickable="false" />
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal">
-
-                        <EditText
-                            android:imeOptions="flagNoExtractUi"
-                            android:id="@+id/country_code"
-                            style="@style/Widget.Conversations.EditText"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:gravity="bottom|center_horizontal"
-                            android:inputType="number"
-                            android:longClickable="false"
-                            android:maxLength="3"
-                            android:maxLines="1" />
-
-                        <EditText
-                            android:imeOptions="flagNoExtractUi"
-                            android:id="@+id/number"
-                            style="@style/Widget.Conversations.EditText"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="3"
-                            android:hint="@string/phone_number"
-                            android:inputType="number"
-                            android:gravity="bottom|start"
-                            android:longClickable="false"
-                            android:maxLines="1" />
-                    </LinearLayout>
-
-                    <ProgressBar
-                        android:id="@+id/progressBar"
-                        style="?android:attr/progressBarStyle"
+                    <TextView
+                        android:id="@+id/instructions"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="center" />
-                </LinearLayout>
-                <Button
-                    android:id="@+id/next"
-                    android:layout_alignParentBottom="true"
-                    android:layout_alignParentEnd="true"
-                    style="@style/Widget.Conversations.Button.Borderless"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/next"
-                    android:textColor="?colorAccent"/>
-            </RelativeLayout>
-        </ScrollView>
+                        android:gravity="center_horizontal"
+                        android:padding="16dp"
+                        android:text="@string/enter_country_code_and_phone_number"
+                        android:textAppearance="@style/TextAppearance.Conversations.Body1" />
+
+                    <LinearLayout
+                        android:id="@+id/phone_number_box"
+                        android:layout_width="256dp"
+                        android:layout_height="wrap_content"
+                        android:layout_above="@+id/next"
+                        android:layout_below="@+id/instructions"
+                        android:layout_centerHorizontal="true"
+                        android:orientation="vertical">
+
+                        <EditText
+                            android:id="@+id/country"
+                            style="@style/Widget.Conversations.EditText"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:cursorVisible="false"
+                            android:drawableEnd="@drawable/ic_arrow_drop_down_black_18dp"
+                            android:drawableRight="@drawable/ic_arrow_drop_down_black_18dp"
+                            android:focusable="false"
+                            android:gravity="bottom|center_horizontal"
+                            android:imeOptions="flagNoExtractUi"
+                            android:inputType="textNoSuggestions"
+                            android:longClickable="false" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+
+                            <EditText
+                                android:id="@+id/country_code"
+                                style="@style/Widget.Conversations.EditText"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:gravity="bottom|center_horizontal"
+                                android:imeOptions="flagNoExtractUi"
+                                android:inputType="number"
+                                android:longClickable="false"
+                                android:maxLength="3"
+                                android:maxLines="1" />
+
+                            <EditText
+                                android:id="@+id/number"
+                                style="@style/Widget.Conversations.EditText"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="3"
+                                android:gravity="bottom|start"
+                                android:hint="@string/phone_number"
+                                android:imeOptions="flagNoExtractUi"
+                                android:inputType="number"
+                                android:longClickable="false"
+                                android:maxLines="1" />
+                        </LinearLayout>
+
+                        <ProgressBar
+                            android:id="@+id/progressBar"
+                            style="?android:attr/progressBarStyle"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center" />
+                    </LinearLayout>
+
+                    <Button
+                        android:id="@+id/next"
+                        style="@style/Widget.Conversations.Button.Borderless"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_alignParentRight="true"
+                        android:layout_alignParentBottom="true"
+                        android:text="@string/next"
+                        android:textColor="?colorAccent" />
+                </RelativeLayout>
+            </ScrollView>
         </android.support.design.widget.CoordinatorLayout>
     </LinearLayout>
 </layout>

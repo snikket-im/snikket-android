@@ -207,7 +207,7 @@ public class ContactDetailsActivity extends OmemoActivity implements OnAccountUp
         });
         binding.addContactButton.setOnClickListener(v -> showAddToRosterDialog(contact));
 
-        mMediaAdapter = new MediaAdapter(this,R.dimen.media_size);
+        mMediaAdapter = new MediaAdapter(this, R.dimen.media_size);
         this.binding.media.setAdapter(mMediaAdapter);
         GridManager.setupLayoutManager(this, this.binding.media, R.dimen.media_size);
     }
@@ -416,7 +416,7 @@ public class ContactDetailsActivity extends OmemoActivity implements OnAccountUp
             account = contact.getAccount().getJid().asBareJid().toString();
         }
         binding.detailsAccount.setText(getString(R.string.using_account, account));
-        AvatarWorkerTask.loadAvatar(contact,binding.detailsContactBadge,R.dimen.avatar_on_details_screen_size);
+        AvatarWorkerTask.loadAvatar(contact, binding.detailsContactBadge, R.dimen.avatar_on_details_screen_size);
         binding.detailsContactBadge.setOnClickListener(this.onBadgeClick);
 
         binding.detailsContactKeys.removeAllViews();
@@ -426,7 +426,7 @@ public class ContactDetailsActivity extends OmemoActivity implements OnAccountUp
         if (Config.supportOmemo() && axolotlService != null) {
             final Collection<XmppAxolotlSession> sessions = axolotlService.findSessionsForContact(contact);
             boolean anyActive = false;
-            for(XmppAxolotlSession session : sessions) {
+            for (XmppAxolotlSession session : sessions) {
                 anyActive = session.getTrust().isActive();
                 if (anyActive) {
                     break;
@@ -434,7 +434,7 @@ public class ContactDetailsActivity extends OmemoActivity implements OnAccountUp
             }
             boolean skippedInactive = false;
             boolean showsInactive = false;
-            for (final XmppAxolotlSession session :sessions) {
+            for (final XmppAxolotlSession session : sessions) {
                 final FingerprintStatus trust = session.getTrust();
                 hasKeys |= !trust.isCompromised();
                 if (!trust.isActive() && anyActive) {
@@ -537,7 +537,7 @@ public class ContactDetailsActivity extends OmemoActivity implements OnAccountUp
     public void onMediaLoaded(List<Attachment> attachments) {
         runOnUiThread(() -> {
             int limit = GridManager.getCurrentColumnCount(binding.media);
-            mMediaAdapter.setAttachments(attachments.subList(0, Math.min(limit,attachments.size())));
+            mMediaAdapter.setAttachments(attachments.subList(0, Math.min(limit, attachments.size())));
             binding.mediaWrapper.setVisibility(attachments.size() > 0 ? View.VISIBLE : View.GONE);
         });
 

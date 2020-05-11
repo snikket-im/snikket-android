@@ -9,8 +9,6 @@
     <string name="pref_never_send_crash_summary">Изпращайки проследявания на стека, Вие помагате за непрекъснатото развитие на Quicksy</string>
     <string name="no_storage_permission">Quicksy се нуждае от достъп до външно място за съхранение</string>
     <string name="no_camera_permission">Quicksy се нуждае от достъп до камерата</string>
-    <string name="battery_optimizations_enabled_explained">Устройството Ви прилага сериозни оптимизации за използването на батерията върху Quicksy, а те може да доведат до забавени известия и дори пропуснати съобщения.\nПрепоръчително е до ги изключите.</string>
-    <string name="battery_optimizations_enabled_dialog">Устройството Ви прилага сериозни оптимизации за използването на батерията върху Quicksy, а те може да доведат до забавени известия и дори пропуснати съобщения.\n\nСега ще Ви бъде предложено да ги изключите.</string>
     <string name="pref_broadcast_last_activity_summary">Така всичките Ви контакти ще знаят кога използвате Quicksy</string>
     <string name="data_saver_enabled_explained">Операционната Ви система не позволява на Quicksy да се свързва с Интернет когато работи на заден фон. За да получавате известия за новите съобщения, трябва да дадете на Quicksy неограничен достъп когато съхранението на данни е включено.\nQuicksy ще продължи да се опитва да записва данните когато е възможно.</string>
     <string name="device_does_not_support_data_saver">Устройството Ви не поддържа изключването на съхранението на данни за Quicksy.</string>

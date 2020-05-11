@@ -1,115 +1,165 @@
 package eu.siacs.conversations.xmpp.jingle.stanzas;
 
-import android.util.Base64;
+import android.support.annotation.NonNull;
+
+import com.google.common.base.CaseFormat;
+import com.google.common.base.Preconditions;
+import com.google.common.base.Strings;
+import com.google.common.collect.ImmutableMap;
+
+import java.util.Map;
 
 import eu.siacs.conversations.xml.Element;
+import eu.siacs.conversations.xml.Namespace;
 import eu.siacs.conversations.xmpp.stanzas.IqPacket;
 import rocks.xmpp.addr.Jid;
 
 public class JinglePacket extends IqPacket {
-	Content content = null;
-	Reason reason = null;
-	Element checksum = null;
-	Element jingle = new Element("jingle");
 
-	@Override
-	public Element addChild(Element child) {
-		if ("jingle".equals(child.getName())) {
-			Element contentElement = child.findChild("content");
-			if (contentElement != null) {
-				this.content = new Content();
-				this.content.setChildren(contentElement.getChildren());
-				this.content.setAttributes(contentElement.getAttributes());
-			}
-			Element reasonElement = child.findChild("reason");
-			if (reasonElement != null) {
-				this.reason = new Reason();
-				this.reason.setChildren(reasonElement.getChildren());
-				this.reason.setAttributes(reasonElement.getAttributes());
-			}
-			this.checksum = child.findChild("checksum");
-			this.jingle.setAttributes(child.getAttributes());
-		}
-		return child;
-	}
+    private JinglePacket() {
+        super();
+    }
 
-	public JinglePacket setContent(Content content) {
-		this.content = content;
-		return this;
-	}
+    public JinglePacket(final Action action, final String sessionId) {
+        super(TYPE.SET);
+        final Element jingle = addChild("jingle", Namespace.JINGLE);
+        jingle.setAttribute("sid", sessionId);
+        jingle.setAttribute("action", action.toString());
+    }
 
-	public Content getJingleContent() {
-		if (this.content == null) {
-			this.content = new Content();
-		}
-		return this.content;
-	}
+    public static JinglePacket upgrade(final IqPacket iqPacket) {
+        Preconditions.checkArgument(iqPacket.hasChild("jingle", Namespace.JINGLE));
+        final JinglePacket jinglePacket = new JinglePacket();
+        jinglePacket.setAttributes(iqPacket.getAttributes());
+        jinglePacket.setChildren(iqPacket.getChildren());
+        return jinglePacket;
+    }
 
-	public JinglePacket setReason(Reason reason) {
-		this.reason = reason;
-		return this;
-	}
+    //TODO deprecate this somehow and make file transfer fail if there are multiple (or something)
+    public Content getJingleContent() {
+        final Element content = getJingleChild("content");
+        return content == null ? null : Content.upgrade(content);
+    }
 
-	public Reason getReason() {
-		return this.reason;
-	}
+    public Group getGroup() {
+        final Element jingle = findChild("jingle", Namespace.JINGLE);
+        final Element group = jingle.findChild("group", Namespace.JINGLE_APPS_GROUPING);
+        return group == null ? null : Group.upgrade(group);
+    }
 
-	public Element getChecksum() {
-		return this.checksum;
-	}
+    public void addGroup(final Group group) {
+        this.addJingleChild(group);
+    }
 
-	private void build() {
-		this.children.clear();
-		this.jingle.clearChildren();
-		this.jingle.setAttribute("xmlns", "urn:xmpp:jingle:1");
-		if (this.content != null) {
-			jingle.addChild(this.content);
-		}
-		if (this.reason != null) {
-			jingle.addChild(this.reason);
-		}
-		if (this.checksum != null) {
-			jingle.addChild(checksum);
-		}
-		this.children.add(jingle);
-		this.setAttribute("type", "set");
-	}
+    public Map<String, Content> getJingleContents() {
+        final Element jingle = findChild("jingle", Namespace.JINGLE);
+        ImmutableMap.Builder<String, Content> builder = new ImmutableMap.Builder<>();
+        for (final Element child : jingle.getChildren()) {
+            if ("content".equals(child.getName())) {
+                final Content content = Content.upgrade(child);
+                builder.put(content.getContentName(), content);
+            }
+        }
+        return builder.build();
+    }
 
-	public String getSessionId() {
-		return this.jingle.getAttribute("sid");
-	}
+    public void addJingleContent(final Content content) { //take content interface
+        addJingleChild(content);
+    }
 
-	public void setSessionId(String sid) {
-		this.jingle.setAttribute("sid", sid);
-	}
+    public ReasonWrapper getReason() {
+        final Element reasonElement = getJingleChild("reason");
+        if (reasonElement == null) {
+            return new ReasonWrapper(Reason.UNKNOWN,null);
+        }
+        String text = null;
+        Reason reason = Reason.UNKNOWN;
+        for(Element child : reasonElement.getChildren()) {
+            if ("text".equals(child.getName())) {
+                text = child.getContent();
+            } else {
+                reason = Reason.of(child.getName());
+            }
+        }
+        return new ReasonWrapper(reason, text);
+    }
 
-	@Override
-	public String toString() {
-		this.build();
-		return super.toString();
-	}
+    public void setReason(final Reason reason, final String text) {
+        final Element jingle = findChild("jingle", Namespace.JINGLE);
+        final Element reasonElement = jingle.addChild("reason");
+        reasonElement.addChild(reason.toString());
+        if (!Strings.isNullOrEmpty(text)) {
+            reasonElement.addChild("text").setContent(text);
+        }
+    }
 
-	public void setAction(String action) {
-		this.jingle.setAttribute("action", action);
-	}
+    //RECOMMENDED for session-initiate, NOT RECOMMENDED otherwise
+    public void setInitiator(final Jid initiator) {
+        Preconditions.checkArgument(initiator.isFullJid(), "initiator should be a full JID");
+        findChild("jingle", Namespace.JINGLE).setAttribute("initiator", initiator.toEscapedString());
+    }
 
-	public String getAction() {
-		return this.jingle.getAttribute("action");
-	}
+    //RECOMMENDED for session-accept, NOT RECOMMENDED otherwise
+    public void setResponder(Jid responder) {
+        Preconditions.checkArgument(responder.isFullJid(), "responder should be a full JID");
+        findChild("jingle", Namespace.JINGLE).setAttribute("responder", responder.toEscapedString());
+    }
 
-	public void setInitiator(final Jid initiator) {
-		this.jingle.setAttribute("initiator", initiator.toString());
-	}
+    public Element getJingleChild(final String name) {
+        final Element jingle = findChild("jingle", Namespace.JINGLE);
+        return jingle == null ? null : jingle.findChild(name);
+    }
 
-	public boolean isAction(String action) {
-		return action.equalsIgnoreCase(this.getAction());
-	}
+    public void addJingleChild(final Element child) {
+        final Element jingle = findChild("jingle", Namespace.JINGLE);
+        jingle.addChild(child);
+    }
 
-	public void addChecksum(byte[] sha1Sum, String namespace) {
-		this.checksum = new Element("checksum",namespace);
-		checksum.setAttribute("creator","initiator");
-		checksum.setAttribute("name","a-file-offer");
-		Element hash = checksum.addChild("file").addChild("hash","urn:xmpp:hashes:2");
-		hash.setAttribute("algo","sha-1").setContent(Base64.encodeToString(sha1Sum,Base64.NO_WRAP));
-	}
+    public String getSessionId() {
+        return findChild("jingle", Namespace.JINGLE).getAttribute("sid");
+    }
+
+    public Action getAction() {
+        return Action.of(findChild("jingle", Namespace.JINGLE).getAttribute("action"));
+    }
+
+    public enum Action {
+        CONTENT_ACCEPT,
+        CONTENT_ADD,
+        CONTENT_MODIFY,
+        CONTENT_REJECT,
+        CONTENT_REMOVE,
+        DESCRIPTION_INFO,
+        SECURITY_INFO,
+        SESSION_ACCEPT,
+        SESSION_INFO,
+        SESSION_INITIATE,
+        SESSION_TERMINATE,
+        TRANSPORT_ACCEPT,
+        TRANSPORT_INFO,
+        TRANSPORT_REJECT,
+        TRANSPORT_REPLACE;
+
+        public static Action of(final String value) {
+            //TODO handle invalid
+            return Action.valueOf(CaseFormat.LOWER_HYPHEN.to(CaseFormat.UPPER_UNDERSCORE, value));
+        }
+
+        @Override
+        @NonNull
+        public String toString() {
+            return CaseFormat.UPPER_UNDERSCORE.to(CaseFormat.LOWER_HYPHEN, super.toString());
+        }
+    }
+
+
+    public static class ReasonWrapper {
+        public final Reason reason;
+        public final String text;
+
+        public ReasonWrapper(Reason reason, String text) {
+            this.reason = reason;
+            this.text = text;
+        }
+    }
 }

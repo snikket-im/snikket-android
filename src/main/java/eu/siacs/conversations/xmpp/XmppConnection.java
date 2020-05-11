@@ -669,8 +669,8 @@ public class XmppConnection implements Runnable {
     }
 
     private @NonNull
-    Element processPacket(final Tag currentTag, final int packetType) throws XmlPullParserException, IOException {
-        Element element;
+    Element processPacket(final Tag currentTag, final int packetType) throws IOException {
+        final Element element;
         switch (packetType) {
             case PACKET_IQ:
                 element = new IqPacket();
@@ -691,16 +691,7 @@ public class XmppConnection implements Runnable {
         }
         while (!nextTag.isEnd(element.getName())) {
             if (!nextTag.isNo()) {
-                final Element child = tagReader.readElement(nextTag);
-                final String type = currentTag.getAttribute("type");
-                if (packetType == PACKET_IQ
-                        && "jingle".equals(child.getName())
-                        && ("set".equalsIgnoreCase(type) || "get"
-                        .equalsIgnoreCase(type))) {
-                    element = new JinglePacket();
-                    element.setAttributes(currentTag.getAttributes());
-                }
-                element.addChild(child);
+                element.addChild(tagReader.readElement(nextTag));
             }
             nextTag = tagReader.readTag();
             if (nextTag == null) {
@@ -720,10 +711,14 @@ public class XmppConnection implements Runnable {
         if (Config.BACKGROUND_STANZA_LOGGING && mXmppConnectionService.checkListeners()) {
             Log.d(Config.LOGTAG, "[background stanza] " + element);
         }
-        return element;
+        if (element instanceof IqPacket && element.hasChild("jingle", Namespace.JINGLE)) {
+            return JinglePacket.upgrade((IqPacket) element);
+        } else {
+            return element;
+        }
     }
 
-    private void processIq(final Tag currentTag) throws XmlPullParserException, IOException {
+    private void processIq(final Tag currentTag) throws IOException {
         final IqPacket packet = (IqPacket) processPacket(currentTag, PACKET_IQ);
         if (!packet.valid()) {
             Log.e(Config.LOGTAG, "encountered invalid iq from='" + packet.getFrom() + "' to='" + packet.getTo() + "'");
@@ -736,8 +731,8 @@ public class XmppConnection implements Runnable {
         } else {
             OnIqPacketReceived callback = null;
             synchronized (this.packetCallbacks) {
-                if (packetCallbacks.containsKey(packet.getId())) {
-                    final Pair<IqPacket, OnIqPacketReceived> packetCallbackDuple = packetCallbacks.get(packet.getId());
+                final Pair<IqPacket, OnIqPacketReceived> packetCallbackDuple = packetCallbacks.get(packet.getId());
+                if (packetCallbackDuple != null) {
                     // Packets to the server should have responses from the server
                     if (packetCallbackDuple.first.toServer(account)) {
                         if (packet.fromServer(account)) {
@@ -887,7 +882,7 @@ public class XmppConnection implements Runnable {
             final int pinnedMechanism = account.getKeyAsInt(Account.PINNED_MECHANISM_KEY, -1);
             if (pinnedMechanism > saslMechanism.getPriority()) {
                 Log.e(Config.LOGTAG, "Auth failed. Authentication mechanism " + saslMechanism.getMechanism() +
-                        " has lower priority (" + String.valueOf(saslMechanism.getPriority()) +
+                        " has lower priority (" + saslMechanism.getPriority() +
                         ") than pinned priority (" + pinnedMechanism +
                         "). Possible downgrade attack?");
                 throw new StateChangingException(Account.State.DOWNGRADE_ATTACK);
@@ -899,7 +894,7 @@ public class XmppConnection implements Runnable {
             }
             tagWriter.writeElement(auth);
         } else {
-            Log.d(Config.LOGTAG,account.getJid().asBareJid()+": unable to find SASL mechanism "+ saslMechanism.toString());
+            Log.d(Config.LOGTAG,account.getJid().asBareJid()+": unable to find supported SASL mechanism in "+mechanisms);
             throw new StateChangingException(Account.State.INCOMPATIBLE_SERVER);
         }
     }
@@ -1906,6 +1901,10 @@ public class XmppConnection implements Runnable {
 
         public boolean bookmarks2() {
             return Config.USE_BOOKMARKS2 /* || hasDiscoFeature(account.getJid().asBareJid(), Namespace.BOOKMARKS2_COMPAT)*/;
+        }
+
+        public boolean externalServiceDiscovery() {
+            return hasDiscoFeature(Jid.of(account.getServer()),Namespace.EXTERNAL_SERVICE_DISCOVERY);
         }
     }
 }

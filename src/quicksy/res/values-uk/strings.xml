@@ -9,8 +9,6 @@
     <string name="pref_never_send_crash_summary">Надсилаючи траси стеків виклику, ви допомагаєте розробці цієї програми.</string>
     <string name="no_storage_permission">Ця програма потребує доступу до зовнішнього сховища</string>
     <string name="no_camera_permission">Ця програма потребує доступу до камери</string>
-    <string name="battery_optimizations_enabled_explained">Пристрій застосовує до цієї програми правила оптимізації використання батареї, які можуть призвести до затримки сповіщень або навіть втрати повідомлень.\nРекомендовано їх відключити.</string>
-    <string name="battery_optimizations_enabled_dialog">Пристрій застосовує до цієї програми правила оптимізації використання батареї, які можуть призвести до затримки сповіщень або навіть втрати повідомлень.\nЗараз буде запропоновано їх відключити.</string>
     <string name="pref_broadcast_last_activity_summary">Дозволити всім вашим контактам знати, коли ви використовуєте цю програму.</string>
     <string name="data_saver_enabled_explained">Операційна система обмежує цю програму в доступі до Інтернету, коли вона не на екрані. Щоб отримувати сповіщення про нові повідомлення, слід дозволити цій програмі доступ, коли ввімкнено заощадження трафіку.\nЦя програма все одно намагатиметься заощадити трафік, коли можливо.</string>
     <string name="device_does_not_support_data_saver">Цей пристрій не надає можливості зробити виняток щодо заощадження трафіку для цієї програми.</string>
@@ -19,4 +17,8 @@
     <string name="no_microphone_permission">Програма потребує доступу до мікрофона</string>
     <string name="foreground_service_channel_description">Цей вид сповіщень показує постійне сповіщення про те, що ця програма працює.</string>
     <string name="set_profile_picture">Зображення профілю для Quicksy</string>
-    </resources>
+    <string name="not_available_in_your_country">Ця програма не доступна у Вашій країні.</string>
+    <string name="unable_to_verify_server_identity">Автентичність сервера не підтверджено</string>
+    <string name="unknown_security_error">Невідома помилка безпеки.</string>
+    <string name="timeout_while_connecting_to_server">Вичерпано час для встановлення з\'єднання із сервером.</string>
+</resources>

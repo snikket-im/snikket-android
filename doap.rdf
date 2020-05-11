@@ -12,17 +12,17 @@
 
     <homepage rdf:resource="https://conversations.im/"/>
     <download-page rdf:resource="https://play.google.com/store/apps/details?id=eu.siacs.conversations"/>
-    <bug-database rdf:resource="https://github.com/siacs/Conversations/issues"/>
+    <bug-database rdf:resource="https://github.com/iNPUTmice/Conversations/issues"/>
     <!-- See https://github.com/ewilderj/doap/issues/53 -->
     <developer-forum rdf:resource="xmpp:conversations@siacs.conference.eu?join"/>
     <support-forum rdf:resource="xmpp:conversations@siacs.conference.eu?join"/>
 
-    <license rdf:resource="https://github.com/siacs/Conversations/blob/master/LICENSE"/>
+    <license rdf:resource="https://github.com/iNPUTmice/Conversations/blob/master/LICENSE"/>
 
     <!-- See https://github.com/ewilderj/doap/issues/49 -->
     <language>en</language>
 
-    <logo rdf:resource="https://raw.githubusercontent.com/siacs/Conversations/master/doap.rdf"/>
+    <logo rdf:resource="https://raw.githubusercontent.com/iNPUTmice/Conversations/master/doap.rdf"/>
 
     <programming-language>Java</programming-language>
 
@@ -42,8 +42,8 @@
 
     <repository>
         <GitRepository>
-            <browse rdf:resource="https://github.com/siacs/Conversations"/>
-            <location rdf:resource="https://github.com/siacs/Conversations.git"/>
+            <browse rdf:resource="https://github.com/iNPUTmice/Conversations"/>
+            <location rdf:resource="https://github.com/iNPUTmice/Conversations.git"/>
         </GitRepository>
     </repository> 
 
@@ -333,7 +333,7 @@
         <Version>
             <revision>2.5.8</revision>
             <created>2019-09-12</created>
-            <file-release rdf:resource="https://github.com/siacs/Conversations/archive/2.5.8.tar.gz"/>
+            <file-release rdf:resource="https://github.com/iNPUTmice/Conversations/archive/2.5.8.tar.gz"/>
         </Version>
     </release>
 </Project>

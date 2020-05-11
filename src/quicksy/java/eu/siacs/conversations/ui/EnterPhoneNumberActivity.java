@@ -170,7 +170,7 @@ public class EnterPhoneNumberActivity extends XmppActivity implements QuickConve
     }
 
     private void onSelectCountryClick(View view) {
-        Intent intent = new Intent(this, ChooseCountryActivity.class);
+        final Intent intent = new Intent(this, ChooseCountryActivity.class);
         startActivityForResult(intent, REQUEST_CHOOSE_COUNTRY);
     }
 
@@ -194,7 +194,7 @@ public class EnterPhoneNumberActivity extends XmppActivity implements QuickConve
     public void onActivityResult(int requestCode, int resultCode, final Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK && requestCode == REQUEST_CHOOSE_COUNTRY) {
-            String region = data.getStringExtra("region");
+            final String region = data.getStringExtra("region");
             if (region != null) {
                 this.region = region;
                 final int countryCode = PhoneNumberUtilWrapper.getInstance(this).getCountryCodeForRegion(region);

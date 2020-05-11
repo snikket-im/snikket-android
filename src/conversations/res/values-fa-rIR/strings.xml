@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="pick_a_server">لطفا سرویس دهنده پیام خود را انتخاب نمائید. برای مثال artalk.im</string>
+    <string name="use_conversations.im">از Conversations.im استفاده کنید</string>
+    <string name="create_new_account">حساب کاربری جدیدی بسازید</string>
+    </resources>

@@ -1,0 +1,4 @@
+<resources>
+    <dimen name="local_video_preview_height">96dp</dimen>
+    <dimen name="local_video_preview_width">128dp</dimen>
+</resources>
