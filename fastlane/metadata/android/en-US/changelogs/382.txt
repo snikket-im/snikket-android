@@ -1,0 +1,2 @@
+* Add button to switch camea during video call
+* Fixed voice calls on tablets

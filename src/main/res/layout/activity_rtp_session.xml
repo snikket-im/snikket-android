@@ -62,21 +62,29 @@
 
         </android.support.design.widget.AppBarLayout>
 
-        <LinearLayout
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_above="@+id/button_row"
-            android:layout_below="@id/app_bar_layout"
-            android:gravity="center"
-            android:orientation="horizontal">
+            android:layout_below="@id/app_bar_layout">
+
+            <TextView
+                android:id="@+id/duration"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_margin="24dp"
+                android:textAppearance="@style/TextAppearance.Conversations.Title.Monospace"
+                tools:text="01:23" />
 
             <com.makeramen.roundedimageview.RoundedImageView
                 android:id="@+id/contact_photo"
                 android:layout_width="@dimen/publish_avatar_size"
                 android:layout_height="@dimen/publish_avatar_size"
+                android:layout_centerInParent="true"
                 app:riv_corner_radius="@dimen/incoming_call_radius" />
 
-        </LinearLayout>
+        </RelativeLayout>
 
 
         <org.webrtc.SurfaceViewRenderer

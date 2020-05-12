@@ -58,12 +58,22 @@ public class JingleSocks5Transport extends JingleTransport {
         } else {
             destBuilder.append(this.connection.getTransportId());
         }
-        if (candidate.isOurs()) {
-            destBuilder.append(this.account.getJid());
-            destBuilder.append(this.connection.getId().with);
+        if (candidate.getType() == JingleCandidate.TYPE_PROXY) {
+            if (candidate.isOurs()) {
+                destBuilder.append(this.account.getJid());
+                destBuilder.append(this.connection.getId().with);
+            } else {
+                destBuilder.append(this.connection.getId().with);
+                destBuilder.append(this.account.getJid());
+            }
         } else {
-            destBuilder.append(this.connection.getId().with);
-            destBuilder.append(this.account.getJid());
+            if (connection.isInitiator()) {
+                destBuilder.append(this.account.getJid());
+                destBuilder.append(this.connection.getId().with);
+            } else {
+                destBuilder.append(this.connection.getId().with);
+                destBuilder.append(this.account.getJid());
+            }
         }
         messageDigest.reset();
         this.destination = CryptoHelper.bytesToHex(messageDigest.digest(destBuilder.toString().getBytes()));

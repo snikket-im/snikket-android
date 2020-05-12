@@ -5,6 +5,7 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.util.Pair;
 
+import com.google.common.base.CharMatcher;
 import com.google.common.io.BaseEncoding;
 
 import org.whispersystems.libsignal.IdentityKey;
@@ -206,7 +207,7 @@ public class IqParser extends AbstractParser implements OnIqPacketReceived {
             return null;
         }
         try {
-            publicKey = Curve.decodePoint(BaseEncoding.base64().decode(signedPreKeyPublic), 0);
+            publicKey = Curve.decodePoint(base64decode(signedPreKeyPublic), 0);
         } catch (final IllegalArgumentException | InvalidKeyException e) {
             Log.e(Config.LOGTAG, AxolotlService.LOGPREFIX + " : " + "Invalid signedPreKeyPublic in PEP: " + e.getMessage());
         }
@@ -219,7 +220,7 @@ public class IqParser extends AbstractParser implements OnIqPacketReceived {
             return null;
         }
         try {
-            return BaseEncoding.base64().decode(signedPreKeySignature);
+            return base64decode(signedPreKeySignature);
         } catch (final IllegalArgumentException e) {
             Log.e(Config.LOGTAG, AxolotlService.LOGPREFIX + " : Invalid base64 in signedPreKeySignature");
             return null;
@@ -232,7 +233,7 @@ public class IqParser extends AbstractParser implements OnIqPacketReceived {
             return null;
         }
         try {
-            return new IdentityKey(BaseEncoding.base64().decode(identityKey), 0);
+            return new IdentityKey(base64decode(identityKey), 0);
         } catch (final IllegalArgumentException | InvalidKeyException e) {
             Log.e(Config.LOGTAG, AxolotlService.LOGPREFIX + " : " + "Invalid identityKey in PEP: " + e.getMessage());
             return null;
@@ -260,10 +261,14 @@ public class IqParser extends AbstractParser implements OnIqPacketReceived {
                 Log.d(Config.LOGTAG, AxolotlService.LOGPREFIX + " : " + "Encountered unexpected tag in prekeys list: " + preKeyPublicElement);
                 continue;
             }
+            final String preKey = preKeyPublicElement.getContent();
+            if (preKey == null) {
+                continue;
+            }
             Integer preKeyId = null;
             try {
                 preKeyId = Integer.valueOf(preKeyPublicElement.getAttribute("preKeyId"));
-                final ECPublicKey preKeyPublic = Curve.decodePoint(BaseEncoding.base64().decode(preKeyPublicElement.getContent()), 0);
+                final ECPublicKey preKeyPublic = Curve.decodePoint(base64decode(preKey), 0);
                 preKeyRecords.put(preKeyId, preKeyPublic);
             } catch (NumberFormatException e) {
                 Log.e(Config.LOGTAG, AxolotlService.LOGPREFIX + " : " + "could not parse preKeyId from preKey " + preKeyPublicElement.toString());
@@ -272,6 +277,10 @@ public class IqParser extends AbstractParser implements OnIqPacketReceived {
             }
         }
         return preKeyRecords;
+    }
+
+    private static byte[] base64decode(String input) {
+        return BaseEncoding.base64().decode(CharMatcher.whitespace().removeFrom(input));
     }
 
     public Pair<X509Certificate[], byte[]> verification(final IqPacket packet) {

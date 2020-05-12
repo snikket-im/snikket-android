@@ -1,6 +1,18 @@
 # Changelog
 
+### Version 2.8.3
+
+* Move call icon to the left in order to keep other toolbar icons in a consistent place
+* Show call duration during audio calls
+* Tie breaking for A/V calls (the same two people calling each other at the same time)
+
+### Version 2.8.2
+
+* Add button to switch camea during video call
+* Fixed voice calls on tablets
+
 ### Version 2.8.1
+
 * Audible feedback (dialing, call started, call ended) for voice calls.
 * Fixed issue with retrying failed video call
 

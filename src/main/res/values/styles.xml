@@ -5,6 +5,11 @@
         <item name="android:typeface">monospace</item>
     </style>
 
+    <style name="TextAppearance.Conversations.Title.Monospace" parent="TextAppearance.Conversations.Title">
+        <item name="android:fontFamily" tools:targetApi="jelly_bean">monospace</item>
+        <item name="android:typeface">monospace</item>
+    </style>
+
     <style name="TextAppearance.Conversations.Display2" parent="TextAppearance.AppCompat.Display2">
         <item name="android:textSize">?TextSizeDisplay2</item>
     </style>

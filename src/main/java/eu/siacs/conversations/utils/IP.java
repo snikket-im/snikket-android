@@ -19,4 +19,12 @@ public class IP {
                         || PATTERN_IPV6_HEXCOMPRESSED.matcher(server).matches());
     }
 
+    public static String wrapIPv6(final String host) {
+        if (matches(host)) {
+            return String.format("[%s]", host);
+        } else {
+            return host;
+        }
+    }
+
 }

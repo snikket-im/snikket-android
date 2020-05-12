@@ -9,6 +9,8 @@
     <string name="pref_never_send_crash_summary">Trimițând datele despre erori ajutați la continuarea dezvoltării aplicației Quicksy</string>
     <string name="no_storage_permission">Quicksy are nevoie de acces la stocarea externă</string>
     <string name="no_camera_permission">Quicksy are nevoie de acces la camera foto</string>
+    <string name="battery_optimizations_enabled_explained">Dispozitivul dumneavoastră încearcă să optimizeze agresiv consumul bateriei pentru Quicksy, aceasta poate duce la notificări întârziate sau chiar pierderea mesajelor.\nEste recomandat sa le dezactivați.</string>
+    <string name="battery_optimizations_enabled_dialog">Dispozitivul dumneavoastră încearcă să optimizeze agresiv consumul bateriei pentru Quicksy, aceasta poate duce la notificări întârziate sau chiar pierderea mesajelor.\nÎn continuare veți fi rugați să le dezactivați.</string>
     <string name="pref_broadcast_last_activity_summary">Contactele vă sunt anunțate atunci când folosiți Quicksy</string>
     <string name="data_saver_enabled_explained">Sistemul de operare restricționează accesul la Internet pentru Quicksy atunci când este în fundal. Pentru a primii în continuare notificări pentru mesajele noi trebuie să acordați acces ne restricționat pentru Quicksy atunci când Economizorul de date este activ.\nQuicksy totuși face eforturi ca să economisească consumul de date atunci când este posibil.</string>
     <string name="device_does_not_support_data_saver">Dispozitivul nu suporta dezactivarea Economizorului de date pentru Quicksy.</string>

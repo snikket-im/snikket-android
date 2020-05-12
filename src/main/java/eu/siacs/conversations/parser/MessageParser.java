@@ -843,7 +843,7 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
                             if (serverMsgId == null) {
                                 serverMsgId = extractStanzaId(account, packet);
                             }
-                            mXmppConnectionService.getJingleConnectionManager().deliverMessage(account, packet.getTo(), packet.getFrom(), child, serverMsgId, timestamp);
+                            mXmppConnectionService.getJingleConnectionManager().deliverMessage(account, packet.getTo(), packet.getFrom(), child, remoteMsgId, serverMsgId, timestamp);
                         } else if (query.isCatchup()) {
                             final String sessionId = child.getAttribute("id");
                             if (sessionId == null) {

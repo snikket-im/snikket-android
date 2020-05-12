@@ -9,6 +9,8 @@
     <string name="pref_never_send_crash_summary">通过发送堆栈跟踪，您可以帮助Quicksy持续发展</string>
     <string name="no_storage_permission">Quicksy需要外部存储权限</string>
     <string name="no_camera_permission">Quicksy需要摄像头权限</string>
+    <string name="battery_optimizations_enabled_explained">你的设备正在为Quicksy进行电池优化，这可能导致通知的延迟甚至消息的丢失。\n建议禁用电池优化。</string>
+    <string name="battery_optimizations_enabled_dialog">你的设备正在为Quicksy进行电池优化，这可能导致通知的延迟甚至消息的丢失。\n建议禁用电池优化。</string>
     <string name="pref_broadcast_last_activity_summary">让你的所有联系人知道你使用Quicksy的时间</string>
     <string name="data_saver_enabled_explained">您的操作系统限制Quicksy在后台访问网络。 要接收新消息的通知，您应该在启用节省流量模式时允许Quicksy不受限制的访问网络。\nQuicksy仍会尽可能地节省流量。</string>
     <string name="device_does_not_support_data_saver">该设备不支持禁用省流量模式</string>

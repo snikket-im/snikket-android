@@ -2,6 +2,29 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
+        android:id="@+id/action_ongoing_call"
+        android:icon="?attr/icon_ongoing_call"
+        android:orderInCategory="9"
+        android:title="@string/return_to_ongoing_call"
+        app:showAsAction="always" />
+    <item
+        android:id="@+id/action_call"
+        android:icon="?attr/icon_call"
+        android:orderInCategory="10"
+        android:title="@string/make_call"
+        app:showAsAction="always">
+        <menu>
+            <item
+                android:id="@+id/action_audio_call"
+                android:icon="?attr/ic_make_audio_call"
+                android:title="@string/audio_call" />
+            <item
+                android:id="@+id/action_video_call"
+                android:icon="?attr/ic_make_video_call"
+                android:title="@string/video_call" />
+        </menu>
+    </item>
+    <item
         android:id="@+id/action_security"
         android:icon="?attr/icon_not_secure"
         android:orderInCategory="20"
@@ -58,29 +81,6 @@
                 android:id="@+id/attach_location"
                 android:icon="?attr/ic_attach_location"
                 android:title="@string/send_location" />
-        </menu>
-    </item>
-    <item
-        android:id="@+id/action_ongoing_call"
-        android:icon="?attr/icon_ongoing_call"
-        android:orderInCategory="34"
-        android:title="@string/return_to_ongoing_call"
-        app:showAsAction="always" />
-    <item
-        android:id="@+id/action_call"
-        android:icon="?attr/icon_call"
-        android:orderInCategory="35"
-        android:title="@string/make_call"
-        app:showAsAction="always">
-        <menu>
-            <item
-                android:id="@+id/action_audio_call"
-                android:icon="?attr/ic_make_audio_call"
-                android:title="@string/audio_call" />
-            <item
-                android:id="@+id/action_video_call"
-                android:icon="?attr/ic_make_video_call"
-                android:title="@string/video_call" />
         </menu>
     </item>
     <item

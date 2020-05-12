@@ -426,8 +426,13 @@ public class NotificationService {
         cancel(INCOMING_CALL_NOTIFICATION_ID);
     }
 
-    public void cancelOngoingCallNotification() {
-        cancel(ONGOING_CALL_NOTIFICATION_ID);
+    public static void cancelIncomingCallNotification(final Context context) {
+        final NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);
+        try {
+            notificationManager.cancel(INCOMING_CALL_NOTIFICATION_ID);
+        } catch (RuntimeException e) {
+            Log.d(Config.LOGTAG, "unable to cancel incoming call notification after crash", e);
+        }
     }
 
     private void pushNow(final Message message) {

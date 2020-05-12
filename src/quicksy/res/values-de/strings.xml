@@ -9,6 +9,8 @@
     <string name="pref_never_send_crash_summary">Wenn du Absturzberichte einschickst, hilfst du Quicksy stetig zu verbessern</string>
     <string name="no_storage_permission">Quicksy benötigt Zugriff auf den externen Speicher</string>
     <string name="no_camera_permission">Quicksy benötigt Zugriff auf die Kamera</string>
+    <string name="battery_optimizations_enabled_explained">Dein Gerät verwendet Akkuoptimierungen für Quicksy, welche verspätete Benachrichtigungen oder Nachrichtenverlust verursachen können.\nEs wird empfohlen, sie zu deaktivieren.</string>
+    <string name="battery_optimizations_enabled_dialog">Dein Gerät verwendet Akkuoptimierungen für Quicksy, welche verspätete Benachrichtigungen oder Nachrichtenverlust verursachen können.\nDu wirst nun gefragt, sie zu deaktivieren. </string>
     <string name="pref_broadcast_last_activity_summary">Informiere deine Kontakte, wann du Quicksy nutzt</string>
     <string name="data_saver_enabled_explained">Dein Betriebssystem verhindert, dass Quicksy im Hintergrund auf das Internet zugreift. Um Benachrichtigungen erhalten zu können, solltest du Quicksy den Zugang erlauben, wenn der Datensparmodus aktiv ist. Quicksy wird dennoch versuchen, so viele Daten wie möglich einzusparen.</string>
     <string name="device_does_not_support_data_saver">Dein Gerät unterstützt den Datensparmodus für Quicksy nicht.</string>

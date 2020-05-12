@@ -36,6 +36,7 @@ import eu.siacs.conversations.entities.Conversational;
 import eu.siacs.conversations.entities.Message;
 import eu.siacs.conversations.entities.RtpSessionStatus;
 import eu.siacs.conversations.services.AppRTCAudioManager;
+import eu.siacs.conversations.utils.IP;
 import eu.siacs.conversations.xml.Element;
 import eu.siacs.conversations.xml.Namespace;
 import eu.siacs.conversations.xmpp.jingle.stanzas.Group;
@@ -57,6 +58,10 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
     );
     private static final long BUSY_TIME_OUT = 30;
     private static final List<State> TERMINATED = Arrays.asList(
+            State.ACCEPTED,
+            State.REJECTED,
+            State.RETRACTED,
+            State.RETRACTED_RACED,
             State.TERMINATED_SUCCESS,
             State.TERMINATED_DECLINED_OR_BUSY,
             State.TERMINATED_CONNECTIVITY_ERROR,
@@ -82,6 +87,7 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
                 State.TERMINATED_CONNECTIVITY_ERROR //only used when the xmpp connection rebinds
         ));
         transitionBuilder.put(State.PROCEED, ImmutableList.of(
+                State.RETRACTED_RACED,
                 State.SESSION_INITIALIZED_PRE_APPROVED,
                 State.TERMINATED_SUCCESS,
                 State.TERMINATED_APPLICATION_FAILURE,
@@ -121,6 +127,7 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
     private RtpContentMap initiatorRtpContentMap;
     private RtpContentMap responderRtpContentMap;
     private long rtpConnectionStarted = 0; //time of 'connected'
+    private long rtpConnectionEnded = 0;
     private ScheduledFuture<?> ringingTimeoutFuture;
 
     JingleRtpConnection(JingleConnectionManager jingleConnectionManager, Id id, Jid initiator) {
@@ -611,14 +618,17 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
 
     private void receiveRetract(final Jid from, final String serverMsgId, final long timestamp) {
         if (from.equals(id.with)) {
-            if (transition(State.RETRACTED)) {
+            final State target = this.state == State.PROCEED ? State.RETRACTED_RACED : State.RETRACTED;
+            if (transition(target)) {
                 xmppConnectionService.getNotificationService().cancelIncomingCallNotification();
                 Log.d(Config.LOGTAG, id.account.getJid().asBareJid() + ": session with " + id.with + " has been retracted (serverMsgId=" + serverMsgId + ")");
                 if (serverMsgId != null) {
                     this.message.setServerMsgId(serverMsgId);
                 }
                 this.message.setTime(timestamp);
-                this.message.markUnread();
+                if (target == State.RETRACTED) {
+                    this.message.markUnread();
+                }
                 writeLogMessageMissed();
                 finish();
             } else {
@@ -641,12 +651,12 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
         }
         try {
             setupWebRTC(media, iceServers);
-        } catch (WebRTCWrapper.InitializationException e) {
+        } catch (final WebRTCWrapper.InitializationException e) {
             Log.d(Config.LOGTAG, id.account.getJid().asBareJid() + ": unable to initialize WebRTC");
             webRTCWrapper.close();
-            //todo we haven’t actually initiated the session yet; so sending sessionTerminate makes no sense
-            //todo either we don’t ring ever at all or maybe we should send a retract or something
+            sendJingleMessage("retract", id.with.asBareJid());
             transitionOrThrow(State.TERMINATED_APPLICATION_FAILURE);
+            this.finish();
             return;
         }
         try {
@@ -661,7 +671,9 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
             if (isInState(targetState)) {
                 sendSessionTerminate(Reason.FAILED_APPLICATION);
             } else {
+                sendJingleMessage("retract", id.with.asBareJid());
                 transitionOrThrow(State.TERMINATED_APPLICATION_FAILURE);
+                this.finish();
             }
         }
     }
@@ -803,6 +815,8 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
             case RETRACTED:
             case TERMINATED_CANCEL_OR_TIMEOUT:
                 return RtpEndUserState.ENDED;
+            case RETRACTED_RACED:
+                return RtpEndUserState.RETRACTED;
             case TERMINATED_CONNECTIVITY_ERROR:
                 return RtpEndUserState.CONNECTIVITY_ERROR;
             case TERMINATED_APPLICATION_FAILURE:
@@ -878,8 +892,8 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
             Log.d(Config.LOGTAG, id.account.getJid().asBareJid() + ": ending call while in state PROCEED just means ending the connection");
             this.jingleConnectionManager.endSession(id, State.TERMINATED_SUCCESS);
             this.webRTCWrapper.close();
-            this.finish();
             transitionOrThrow(State.TERMINATED_SUCCESS); //arguably this wasn't success; but not a real failure either
+            this.finish();
             return;
         }
         if (isInitiator() && isInState(State.SESSION_INITIALIZED, State.SESSION_INITIALIZED_PRE_APPROVED)) {
@@ -1000,6 +1014,9 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
         if (newState == PeerConnection.PeerConnectionState.CONNECTED && this.rtpConnectionStarted == 0) {
             this.rtpConnectionStarted = SystemClock.elapsedRealtime();
         }
+        if (newState == PeerConnection.PeerConnectionState.CLOSED && this.rtpConnectionEnded == 0) {
+            this.rtpConnectionEnded = SystemClock.elapsedRealtime();
+        }
         //TODO 'DISCONNECTED' might be an opportunity to renew the offer and send a transport-replace
         //TODO exact syntax is yet to be determined but transport-replace sounds like the most reasonable
         //as there is no content-replace
@@ -1025,6 +1042,14 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
         }
     }
 
+    public long getRtpConnectionStarted() {
+        return this.rtpConnectionStarted;
+    }
+
+    public long getRtpConnectionEnded() {
+        return this.rtpConnectionEnded;
+    }
+
     public AppRTCAudioManager getAudioManager() {
         return webRTCWrapper.getAudioManager();
     }
@@ -1041,6 +1066,9 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
         return webRTCWrapper.isVideoEnabled();
     }
 
+    public void setVideoEnabled(final boolean enabled) {
+        webRTCWrapper.setVideoEnabled(enabled);
+    }
 
     public boolean isCameraSwitchable() {
         return webRTCWrapper.isCameraSwitchable();
@@ -1052,10 +1080,6 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
 
     public ListenableFuture<Boolean> switchCamera() {
         return webRTCWrapper.switchCamera();
-    }
-
-    public void setVideoEnabled(final boolean enabled) {
-        webRTCWrapper.setVideoEnabled(enabled);
     }
 
     @Override
@@ -1107,9 +1131,8 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
                                     Log.d(Config.LOGTAG, id.account.getJid().asBareJid() + ": skipping invalid combination of udp/tls in external services");
                                     continue;
                                 }
-                                //TODO wrap ipv6 addresses
                                 final PeerConnection.IceServer.Builder iceServerBuilder = PeerConnection.IceServer
-                                        .builder(String.format("%s:%s:%s?transport=%s", type, host, port, transport));
+                                        .builder(String.format("%s:%s:%s?transport=%s", type, IP.wrapIPv6(host), port, transport));
                                 iceServerBuilder.setTlsCertPolicy(PeerConnection.TlsCertPolicy.TLS_CERT_POLICY_INSECURE_NO_CHECK);
                                 if (username != null && password != null) {
                                     iceServerBuilder.setUsername(username);
@@ -1127,7 +1150,7 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
                         }
                     }
                 }
-                List<PeerConnection.IceServer> iceServers = listBuilder.build();
+                final List<PeerConnection.IceServer> iceServers = listBuilder.build();
                 if (iceServers.size() == 0) {
                     Log.w(Config.LOGTAG, id.account.getJid().asBareJid() + ": no ICE server found " + response);
                 }
@@ -1140,9 +1163,13 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
     }
 
     private void finish() {
-        this.cancelRingingTimeout();
-        this.webRTCWrapper.verifyClosed();
-        this.jingleConnectionManager.finishConnection(this);
+        if (isTerminated()) {
+            this.cancelRingingTimeout();
+            this.webRTCWrapper.verifyClosed();
+            this.jingleConnectionManager.finishConnection(this);
+        } else {
+            throw new IllegalStateException(String.format("Unable to call finish from %s", this.state));
+        }
     }
 
     private void writeLogMessage(final State state) {
@@ -1180,7 +1207,7 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
         return this.state;
     }
 
-    public boolean isTerminated() {
+    boolean isTerminated() {
         return TERMINATED.contains(this.state);
     }
 

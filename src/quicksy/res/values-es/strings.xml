@@ -9,6 +9,8 @@
     <string name="pref_never_send_crash_summary">Si envías registros de error ayudas al desarrollo de Quicksy</string>
     <string name="no_storage_permission">Quicksy necesita acceder al almacenamiento externo</string>
     <string name="no_camera_permission">Quicksy necesita acceder a la cámara</string>
+    <string name="battery_optimizations_enabled_explained">Tu dispositivo está realizando optimizaciones de uso de batería en Quicksy que pueden hacer que los mensajes se retrasen o incluso hacer que se pierdan.\nEs recomendable deshabilitarlas.</string>
+    <string name="battery_optimizations_enabled_dialog">Tu dispositivo está realizando optimizaciones de uso de batería en Quicksy que pueden hacer que los mensajes se retrasen o incluso hacer que se pierdan.\n\nA continuación se le preguntará si quiere deshabilitarlas.</string>
     <string name="pref_broadcast_last_activity_summary">Informar a tus contactos cuando usas Quicksy</string>
     <string name="data_saver_enabled_explained">Tu sistema operativo está restringiendo a Quicksy acceder a internet cuando está en segundo plano. Para recibir notificaciones de nuevos mensajes deberías permitir a Quicksy acceder a internet cuando la optimización de datos está habilitada.\nQuicksy realizará igualmente optimizaciones para ahorrar datos cuando sea posible.</string>
     <string name="device_does_not_support_data_saver">Tu dispositivo no soporta la opción de deshabilitar la optimización de datos para Quicksy</string>

@@ -25,7 +25,7 @@ import eu.siacs.conversations.ui.util.ApiDialogHelper;
 import eu.siacs.conversations.ui.util.PinEntryWrapper;
 import eu.siacs.conversations.utils.AccountUtils;
 import eu.siacs.conversations.utils.PhoneNumberUtilWrapper;
-import eu.siacs.conversations.utils.TimeframeUtils;
+import eu.siacs.conversations.utils.TimeFrameUtils;
 import io.michaelrocks.libphonenumber.android.NumberParseException;
 
 import static android.content.ClipDescription.MIMETYPE_TEXT_PLAIN;
@@ -67,7 +67,7 @@ public class VerifyActivity extends XmppActivity implements ClipboardManager.OnP
             long remaining = retrySmsAfter - SystemClock.elapsedRealtime();
             if (remaining >= 0) {
                 binding.resendSms.setEnabled(false);
-                binding.resendSms.setText(getString(R.string.resend_sms_in, TimeframeUtils.resolve(VerifyActivity.this, remaining)));
+                binding.resendSms.setText(getString(R.string.resend_sms_in, TimeFrameUtils.resolve(VerifyActivity.this, remaining)));
                 return true;
             }
         }
@@ -81,7 +81,7 @@ public class VerifyActivity extends XmppActivity implements ClipboardManager.OnP
             long remaining = retryVerificationAfter - SystemClock.elapsedRealtime();
             if (remaining >= 0) {
                 binding.next.setEnabled(false);
-                binding.next.setText(getString(R.string.wait_x, TimeframeUtils.resolve(VerifyActivity.this, remaining)));
+                binding.next.setText(getString(R.string.wait_x, TimeFrameUtils.resolve(VerifyActivity.this, remaining)));
                 return true;
             }
         }
