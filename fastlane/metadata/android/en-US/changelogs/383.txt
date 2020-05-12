@@ -1,3 +1,12 @@
-* Move call icon to the left in order to keep other toolbar icons in a consistent place
-* Show call duration during audio calls
-* Tie breaking for A/V calls (the same two people calling each other at the same time)
+Voice and video calls are here! Now you can communicate with your friends
+and family like it's 2019 again... face to (virtual) face.
+
+For the calling feature to work, both you and your contact must be using
+the latest version of the Snikket app (or other compatible software) and
+you'll need the latest version of the Snikket service running.
+
+Also included in this release:
+
+  - Add PDF preview support (available on Android 5+)
+  - Support for theme switching on Android 10
+  - Fix profile picture selection on some Android 10 devices
