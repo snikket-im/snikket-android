@@ -408,15 +408,15 @@ public class ManageAccountActivity extends XmppActivity implements OnAccountUpda
     }
 
     @Override
-    public void alias(String alias) {
+    public void alias(final String alias) {
         if (alias != null) {
             xmppConnectionService.createAccountFromKey(alias, this);
         }
     }
 
     @Override
-    public void onAccountCreated(Account account) {
-        Intent intent = new Intent(this, EditAccountActivity.class);
+    public void onAccountCreated(final Account account) {
+        final Intent intent = new Intent(this, EditAccountActivity.class);
         intent.putExtra("jid", account.getJid().asBareJid().toString());
         intent.putExtra("init", true);
         startActivity(intent);
