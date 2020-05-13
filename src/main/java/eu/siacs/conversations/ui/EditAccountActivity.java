@@ -784,12 +784,6 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
 
             this.mInitMode |= this.mAccount.isOptionSet(Account.OPTION_REGISTER);
             this.mUsernameMode |= mAccount.isOptionSet(Account.OPTION_MAGIC_CREATE) && mAccount.isOptionSet(Account.OPTION_REGISTER);
-            if (this.mAccount.getPrivateKeyAlias() != null) {
-                this.binding.accountPassword.setHint(R.string.authenticate_with_certificate);
-                if (this.mInitMode) {
-                    this.binding.accountPassword.requestFocus();
-                }
-            }
             if (mPendingFingerprintVerificationUri != null) {
                 processFingerprintVerification(mPendingFingerprintVerificationUri, false);
                 mPendingFingerprintVerificationUri = null;

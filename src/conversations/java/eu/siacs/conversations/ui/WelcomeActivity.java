@@ -1,11 +1,14 @@
 package eu.siacs.conversations.ui;
 
 import android.Manifest;
+import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
+import android.security.KeyChain;
+import android.security.KeyChainAliasCallback;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -21,6 +24,7 @@ import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.databinding.ActivityWelcomeBinding;
 import eu.siacs.conversations.entities.Account;
+import eu.siacs.conversations.services.XmppConnectionService;
 import eu.siacs.conversations.utils.InstallReferrerUtils;
 import eu.siacs.conversations.utils.SignupUtils;
 import eu.siacs.conversations.utils.XmppUri;
@@ -29,7 +33,7 @@ import rocks.xmpp.addr.Jid;
 import static eu.siacs.conversations.utils.PermissionUtils.allGranted;
 import static eu.siacs.conversations.utils.PermissionUtils.writeGranted;
 
-public class WelcomeActivity extends XmppActivity {
+public class WelcomeActivity extends XmppActivity implements XmppConnectionService.OnAccountCreated, KeyChainAliasCallback {
 
     private static final int REQUEST_IMPORT_BACKUP = 0x63fb;
 
@@ -154,8 +158,40 @@ public class WelcomeActivity extends XmppActivity {
             case R.id.action_scan_qr_code:
                 UriHandlerActivity.scan(this);
                 break;
+            case R.id.action_add_account_with_cert:
+                addAccountFromKey();
+                break;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void addAccountFromKey() {
+        try {
+            KeyChain.choosePrivateKeyAlias(this, this, null, null, null, -1, null);
+        } catch (ActivityNotFoundException e) {
+            Toast.makeText(this, R.string.device_does_not_support_certificates, Toast.LENGTH_LONG).show();
+        }
+    }
+
+    @Override
+    public void alias(final String alias) {
+        if (alias != null) {
+            xmppConnectionService.createAccountFromKey(alias, this);
+        }
+    }
+
+    @Override
+    public void onAccountCreated(final Account account) {
+        final Intent intent = new Intent(this, EditAccountActivity.class);
+        intent.putExtra("jid", account.getJid().asBareJid().toString());
+        intent.putExtra("init", true);
+        addInviteUri(intent);
+        startActivity(intent);
+    }
+
+    @Override
+    public void informUser(final int r) {
+        runOnUiThread(() -> Toast.makeText(this, r, Toast.LENGTH_LONG).show());
     }
 
     @Override

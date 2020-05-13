@@ -2199,6 +2199,7 @@ public class XmppConnectionService extends Service {
                     final Account account = new Account(info.first, "");
                     account.setPrivateKeyAlias(alias);
                     account.setOption(Account.OPTION_DISABLED, true);
+                    account.setOption(Account.OPTION_FIXED_USERNAME, true);
                     account.setDisplayName(info.second);
                     createAccount(account);
                     callback.onAccountCreated(account);
