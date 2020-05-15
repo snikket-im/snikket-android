@@ -198,7 +198,7 @@ public class MessageGenerator extends AbstractGenerator {
         packet.setTo(contact);
         packet.setFrom(conversation.getAccount().getJid());
         Element x = packet.addChild("x", "jabber:x:conference");
-        x.setAttribute("jid", conversation.getJid().asBareJid().toString());
+        x.setAttribute("jid", conversation.getJid().asBareJid());
         String password = conversation.getMucOptions().getPassword();
         if (password != null) {
             x.setAttribute("password", password);

@@ -213,7 +213,7 @@ public class TrustKeysActivity extends OmemoActivity implements OnKeyStatusUpdat
 			showCameraToast();
 		}
 
-		binding.ownKeysTitle.setText(mAccount.getJid().asBareJid().toString());
+		binding.ownKeysTitle.setText(mAccount.getJid().asBareJid().toEscapedString());
 		binding.ownKeysCard.setVisibility(hasOwnKeys ? View.VISIBLE : View.GONE);
 		binding.foreignKeys.setVisibility(hasForeignKeys ? View.VISIBLE : View.GONE);
 		if (hasPendingKeyFetches()) {

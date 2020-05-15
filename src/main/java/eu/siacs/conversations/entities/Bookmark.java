@@ -28,7 +28,7 @@ public class Bookmark extends Element implements ListItem {
 	public Bookmark(final Account account, final Jid jid) {
 		super("conference");
 		this.jid = jid;
-		this.setAttribute("jid", jid.toString());
+		this.setAttribute("jid", jid);
 		this.account = account;
 	}
 
