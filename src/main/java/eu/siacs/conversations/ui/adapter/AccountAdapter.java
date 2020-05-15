@@ -58,7 +58,7 @@ public class AccountAdapter extends ArrayAdapter<Account> {
         if (Config.DOMAIN_LOCK != null) {
             viewHolder.binding.accountJid.setText(account.getJid().getLocal());
         } else {
-            viewHolder.binding.accountJid.setText(account.getJid().asBareJid().toString());
+            viewHolder.binding.accountJid.setText(account.getJid().asBareJid().toEscapedString());
         }
         AvatarWorkerTask.loadAvatar(account, viewHolder.binding.accountImage, R.dimen.avatar);
         viewHolder.binding.accountStatus.setText(getContext().getString(account.getStatus().getReadableId()));

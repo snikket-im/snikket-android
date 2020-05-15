@@ -155,7 +155,7 @@ public class EnterJidDialog extends DialogFragment implements OnBackendConnected
 		}
 		final Jid contactJid;
 		try {
-			contactJid = Jid.of(binding.jid.getText().toString());
+			contactJid = Jid.ofEscaped(binding.jid.getText().toString());
 		} catch (final IllegalArgumentException e) {
 			binding.jidLayout.setError(getActivity().getString(R.string.invalid_jid));
 			return;

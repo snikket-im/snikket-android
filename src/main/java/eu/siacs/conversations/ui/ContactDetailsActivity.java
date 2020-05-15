@@ -136,7 +136,7 @@ public class ContactDetailsActivity extends OmemoActivity implements OnAccountUp
                 AlertDialog.Builder builder = new AlertDialog.Builder(
                         ContactDetailsActivity.this);
                 builder.setTitle(getString(R.string.action_add_phone_book));
-                builder.setMessage(getString(R.string.add_phone_book_text, contact.getJid().toString()));
+                builder.setMessage(getString(R.string.add_phone_book_text, contact.getJid().toEscapedString()));
                 builder.setNegativeButton(getString(R.string.cancel), null);
                 builder.setPositiveButton(getString(R.string.add), addToPhonebook);
                 builder.create().show();
@@ -411,9 +411,9 @@ public class ContactDetailsActivity extends OmemoActivity implements OnAccountUp
         binding.detailsContactjid.setText(IrregularUnicodeDetector.style(this, contact.getJid()));
         String account;
         if (Config.DOMAIN_LOCK != null) {
-            account = contact.getAccount().getJid().getLocal();
+            account = contact.getAccount().getJid().getEscapedLocal();
         } else {
-            account = contact.getAccount().getJid().asBareJid().toString();
+            account = contact.getAccount().getJid().asBareJid().toEscapedString();
         }
         binding.detailsAccount.setText(getString(R.string.using_account, account));
         AvatarWorkerTask.loadAvatar(contact, binding.detailsContactBadge, R.dimen.avatar_on_details_screen_size);

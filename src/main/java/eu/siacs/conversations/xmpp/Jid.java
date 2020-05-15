@@ -25,6 +25,26 @@ public interface Jid extends Comparable<Jid>, Serializable, CharSequence {
         }
     }
 
+    static Jid ofEscaped(CharSequence local, CharSequence domain, CharSequence resource) {
+        try {
+            if (resource == null) {
+                return new WrappedJid(
+                        JidCreate.bareFrom(
+                                Localpart.from(local.toString()),
+                                Domainpart.from(domain.toString())
+                        )
+                );
+            }
+            return new WrappedJid(JidCreate.entityFullFrom(
+                    Localpart.from(local.toString()),
+                    Domainpart.from(domain.toString()),
+                    Resourcepart.from(resource.toString())
+            ));
+        } catch (XmppStringprepException e) {
+            throw new IllegalArgumentException(e);
+        }
+    }
+
     /**
      * Creates a bare JID with only the domain part, e.g. <code>capulet.com</code>
      *

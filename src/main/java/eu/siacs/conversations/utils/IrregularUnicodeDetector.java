@@ -82,8 +82,8 @@ public class IrregularUnicodeDetector {
 	private static Spannable style(Jid jid, @ColorInt int color) {
 		PatternTuple patternTuple = find(jid);
 		SpannableStringBuilder builder = new SpannableStringBuilder();
-		if (jid.getLocal() != null && patternTuple.local != null) {
-			SpannableString local = new SpannableString(jid.getLocal());
+		if (jid.getEscapedLocal() != null && patternTuple.local != null) {
+			SpannableString local = new SpannableString(jid.getEscapedLocal());
 			colorize(local, patternTuple.local, color);
 			builder.append(local);
 			builder.append('@');
@@ -258,8 +258,8 @@ public class IrregularUnicodeDetector {
 
 		private static PatternTuple of(Jid jid) {
 			final Pattern localPattern;
-			if (jid.getLocal() != null) {
-				localPattern = create(findIrregularCodePoints(jid.getLocal()));
+			if (jid.getEscapedLocal() != null) {
+				localPattern = create(findIrregularCodePoints(jid.getEscapedLocal()));
 			} else {
 				localPattern = null;
 			}

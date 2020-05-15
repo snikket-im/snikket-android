@@ -201,9 +201,9 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
             final Jid jid;
             try {
                 if (mUsernameMode) {
-                    jid = Jid.of(binding.accountJid.getText().toString(), getUserModeDomain(), null);
+                    jid = Jid.ofEscaped(binding.accountJid.getText().toString(), getUserModeDomain(), null);
                 } else {
-                    jid = Jid.of(binding.accountJid.getText().toString());
+                    jid = Jid.ofEscaped(binding.accountJid.getText().toString());
                 }
             } catch (final NullPointerException | IllegalArgumentException e) {
                 if (mUsernameMode) {
@@ -959,9 +959,9 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
         if (init) {
             this.binding.accountJid.getEditableText().clear();
             if (mUsernameMode) {
-                this.binding.accountJid.getEditableText().append(this.mAccount.getJid().getLocal());
+                this.binding.accountJid.getEditableText().append(this.mAccount.getJid().getEscapedLocal());
             } else {
-                this.binding.accountJid.getEditableText().append(this.mAccount.getJid().asBareJid().toString());
+                this.binding.accountJid.getEditableText().append(this.mAccount.getJid().asBareJid().toEscapedString());
             }
             this.binding.accountPassword.getEditableText().clear();
             this.binding.accountPassword.getEditableText().append(this.mAccount.getPassword());

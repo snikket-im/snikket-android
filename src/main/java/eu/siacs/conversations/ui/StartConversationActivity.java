@@ -855,11 +855,11 @@ public class StartConversationActivity extends XmppActivity implements XmppConne
 				switchToConversationDoNotAppend(muc, invite.getBody());
 				return true;
 			} else {
-				showJoinConferenceDialog(invite.getJid().asBareJid().toString());
+				showJoinConferenceDialog(invite.getJid().asBareJid().toEscapedString());
 				return false;
 			}
 		} else if (contacts.size() == 0) {
-			showCreateContactDialog(invite.getJid().toString(), invite);
+			showCreateContactDialog(invite.getJid().toEscapedString(), invite);
 			return false;
 		} else if (contacts.size() == 1) {
 			Contact contact = contacts.get(0);
@@ -881,10 +881,10 @@ public class StartConversationActivity extends XmppActivity implements XmppConne
 			if (mMenuSearchView != null) {
 				mMenuSearchView.expandActionView();
 				mSearchEditText.setText("");
-				mSearchEditText.append(invite.getJid().toString());
-				filter(invite.getJid().toString());
+				mSearchEditText.append(invite.getJid().toEscapedString());
+				filter(invite.getJid().toEscapedString());
 			} else {
-				mInitialSearchValue.push(invite.getJid().toString());
+				mInitialSearchValue.push(invite.getJid().toEscapedString());
 			}
 			return true;
 		}
