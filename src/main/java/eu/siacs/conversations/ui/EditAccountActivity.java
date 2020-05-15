@@ -577,9 +577,9 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
     protected boolean jidEdited() {
         final String unmodified;
         if (mUsernameMode) {
-            unmodified = this.mAccount.getJid().getLocal();
+            unmodified = this.mAccount.getJid().getEscapedLocal();
         } else {
-            unmodified = this.mAccount.getJid().asBareJid().toString();
+            unmodified = this.mAccount.getJid().asBareJid().toEscapedString();
         }
         return !unmodified.equals(this.binding.accountJid.getText().toString());
     }
