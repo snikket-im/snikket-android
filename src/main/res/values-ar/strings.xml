@@ -368,8 +368,6 @@
   <string name="pref_show_connection_options">إعدادات الربط الموسعة</string>
   <string name="pref_show_connection_options_summary">عرض اسم المضيف وإعدادات المنفذ عند تنصيب حساب</string>
   <string name="hostname_example">xmpp.example.com</string>
-  <string name="action_add_account_with_certificate">أضف حساباً مرفوقاً بشهادة</string>
-  <string name="authenticate_with_certificate">أتركه فارغًا القيام بالمصادقة عبر شهادة</string>
   <string name="mam_prefs">إعدادت الأرشيف</string>
   <string name="captcha_hint">قم بإدخال الرموز المتواجدة في الصورة</string>
   <string name="action_renew_certificate">تجديد الشهادة</string>

@@ -312,8 +312,6 @@
   <string name="pref_show_connection_options">확장 연결 설정</string>
   <string name="pref_show_connection_options_summary">계정을 설정할 때 호스트 이름과 포트 설정을 표시합니다</string>
   <string name="hostname_example">xmpp.example.com</string>
-  <string name="action_add_account_with_certificate">인증서가 있는 계정 추가</string>
-  <string name="authenticate_with_certificate">공란으로 두면 인증서로 인증합니다</string>
   <string name="mam_prefs">보관 설정</string>
   <string name="server_side_mam_prefs">서버 사이드의 보관 설정</string>
   <string name="fetching_mam_prefs">보관 설정을 얻고 있습니다. 잠시 기다려주십시오 ...</string>

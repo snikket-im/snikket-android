@@ -469,9 +469,8 @@
   <string name="pref_show_connection_options">Impostazioni estese di connessione</string>
   <string name="pref_show_connection_options_summary">Mostra nome host e impostazioni della porta quando configuri un account</string>
   <string name="hostname_example">xmpp.esempio.it</string>
-  <string name="action_add_account_with_certificate">Aggiungi account con certificato</string>
+  <string name="action_add_account_with_certificate">Accedi con certificato</string>
   <string name="unable_to_parse_certificate">Impossibile analizzare il certificato</string>
-  <string name="authenticate_with_certificate">Lasciare vuoto per autenticarsi con certificato</string>
   <string name="mam_prefs">Preferenze di archiviazione</string>
   <string name="server_side_mam_prefs">Preferenze di archiviazione lato server</string>
   <string name="fetching_mam_prefs">Raccolta preferenze di archiviazione. Attendere prego...</string>
@@ -898,6 +897,7 @@
   <string name="rtp_state_ending_call">Chiusura chiamata</string>
   <string name="answer_call">Rispondi</string>
   <string name="dismiss_call">Rifiuta</string>
+  <string name="rtp_state_finding_device">Individuazione dispositivi</string>
   <string name="rtp_state_ringing">Sta squillando</string>
   <string name="rtp_state_declined_or_busy">Occupato</string>
   <string name="rtp_state_connectivity_error">Impossibile connettere la chiamata</string>

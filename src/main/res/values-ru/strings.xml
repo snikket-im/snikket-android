@@ -395,8 +395,6 @@
   <string name="pref_show_connection_options">Расширенные настройки подключения</string>
   <string name="pref_show_connection_options_summary">Показывать имя сервера и порт в настройках аккаунтов</string>
   <string name="hostname_example">xmpp.example.com</string>
-  <string name="action_add_account_with_certificate">Добавить аккаунт с сертификатом</string>
-  <string name="authenticate_with_certificate">Оставить пустым для входа с сертификатом</string>
   <string name="mam_prefs">Настройки архивирования</string>
   <string name="server_side_mam_prefs">Настройки архивирования на сервере</string>
   <string name="fetching_mam_prefs">Получение настроек архивирования. Пожалуйста, подождите…</string>

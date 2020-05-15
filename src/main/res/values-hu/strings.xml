@@ -424,8 +424,6 @@
   <string name="pref_show_connection_options">Kiterjesztett kapcsolati beállítások</string>
   <string name="pref_show_connection_options_summary">Gépnév és port beállításainak megjelenítése egy fiók beállításakor</string>
   <string name="hostname_example">xmpp.example.com</string>
-  <string name="action_add_account_with_certificate">Fiók hozzáadása tanúsítvánnyal</string>
-  <string name="authenticate_with_certificate">Hagyja üresen w/ tanúsítvánnyal történő hitelesítéshez</string>
   <string name="mam_prefs">Archiválási beállítások</string>
   <string name="server_side_mam_prefs">Kiszolgáló oldali archiválási beállítások</string>
   <string name="fetching_mam_prefs">Archiválási beállítások lekérése. Kérem várjon…</string>

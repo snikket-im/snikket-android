@@ -313,8 +313,6 @@
   <string name="pref_show_connection_options">Genişletilmiş bağlantı seçenekleri</string>
   <string name="pref_show_connection_options_summary">Hesap oluştururken sunucu adıyla bağlantı noktası seçeneğini göster</string>
   <string name="hostname_example">xmpp.ornek.com</string>
-  <string name="action_add_account_with_certificate">Sertifikalı hesap ekle</string>
-  <string name="authenticate_with_certificate">w/ sertifikasının kimlik denetimi için boş bırak </string>
   <string name="mam_prefs">Arşivleme tercihleri</string>
   <string name="server_side_mam_prefs">Sunucu tarafı arşivleme tercihleri</string>
   <string name="fetching_mam_prefs">Arşivleme tercihleri alınıyor. Lütfen bekleyin...</string>

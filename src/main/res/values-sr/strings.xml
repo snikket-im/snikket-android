@@ -358,8 +358,6 @@
   <string name="pref_show_connection_options">Проширене поставке повезивања</string>
   <string name="pref_show_connection_options_summary">Приказ домаћина и порта у поставкама налога</string>
   <string name="hostname_example">xmpp.primer.com</string>
-  <string name="action_add_account_with_certificate">Додај налог сертификатом</string>
-  <string name="authenticate_with_certificate">Оставите празно за аутентификацију сертификатом</string>
   <string name="mam_prefs">Поставке архивисања</string>
   <string name="server_side_mam_prefs">Серверске поставке архивисања</string>
   <string name="fetching_mam_prefs">Добављам поставке архивисања, сачекајте…</string>

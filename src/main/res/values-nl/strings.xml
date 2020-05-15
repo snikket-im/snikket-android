@@ -408,8 +408,6 @@
   <string name="pref_show_connection_options">Uitgebreide verbindingsinstellingen</string>
   <string name="pref_show_connection_options_summary">Toon hostnaam- en poortinstellingen bij instellen van een account</string>
   <string name="hostname_example">xmpp.voorbeeld.be</string>
-  <string name="action_add_account_with_certificate">Account met certificaat toevoegen</string>
-  <string name="authenticate_with_certificate">Laat leeg om te authenticeren met certificaat</string>
   <string name="mam_prefs">Archiefvoorkeuren</string>
   <string name="server_side_mam_prefs">Voorkeuren voor archief aan serverzijde</string>
   <string name="fetching_mam_prefs">Ophalen van archiefvoorkeuren. Even geduld…</string>

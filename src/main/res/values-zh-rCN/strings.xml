@@ -468,9 +468,8 @@
   <string name="pref_show_connection_options">高级连接设置</string>
   <string name="pref_show_connection_options_summary">注册账户时显示主机名和端口</string>
   <string name="hostname_example">xmpp.example.com</string>
-  <string name="action_add_account_with_certificate">使用证书添加账户</string>
+  <string name="action_add_account_with_certificate">用证书登录</string>
   <string name="unable_to_parse_certificate">无法解析证书</string>
-  <string name="authenticate_with_certificate">留空以使用证书认证</string>
   <string name="mam_prefs">存档设置</string>
   <string name="server_side_mam_prefs">服务端存档设置</string>
   <string name="fetching_mam_prefs">正在获取存档设置。请稍候……</string>
@@ -890,6 +889,7 @@
   <string name="rtp_state_ending_call">正在结束来电</string>
   <string name="answer_call">应答</string>
   <string name="dismiss_call">忽略</string>
+  <string name="rtp_state_finding_device">发现设备中</string>
   <string name="rtp_state_ringing">正在响铃</string>
   <string name="rtp_state_declined_or_busy">正忙</string>
   <string name="rtp_state_connectivity_error">无法接通来电</string>

@@ -368,8 +368,6 @@
   <string name="pref_show_connection_options">Utökade anslutningsinställningar</string>
   <string name="pref_show_connection_options_summary">Visa val av servernamn och port vid inställning av konto</string>
   <string name="hostname_example">xmpp.example.com</string>
-  <string name="action_add_account_with_certificate">Lägg till konto med certifikat</string>
-  <string name="authenticate_with_certificate">Lämna tom för att för att logga in med certifikat</string>
   <string name="mam_prefs">Arkiveringsinställningar</string>
   <string name="server_side_mam_prefs">Arkiveringsinställningar på servern</string>
   <string name="fetching_mam_prefs">Hämtar arkiveringsinställningar, vänta...</string>

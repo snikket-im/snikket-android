@@ -337,8 +337,6 @@
   <string name="pref_show_connection_options">Definições de conexão</string>
   <string name="pref_show_connection_options_summary">Mostrar as definições do hostname e do porto ao configurar uma conta</string>
   <string name="hostname_example">xmpp.exemplo.com</string>
-  <string name="action_add_account_with_certificate">Adicionar conta com certificado</string>
-  <string name="authenticate_with_certificate">Deixar vazio para autenticar com certificado</string>
   <string name="mam_prefs">Preferências de arquivamento</string>
   <string name="server_side_mam_prefs">Preferências de arquivamento do servidor</string>
   <string name="fetching_mam_prefs">Obtendo as preferências de arquivamento. Por favor espere...</string>
