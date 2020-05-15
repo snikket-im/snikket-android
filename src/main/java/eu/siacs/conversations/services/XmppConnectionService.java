@@ -155,7 +155,7 @@ import eu.siacs.conversations.xmpp.stanzas.IqPacket;
 import eu.siacs.conversations.xmpp.stanzas.MessagePacket;
 import eu.siacs.conversations.xmpp.stanzas.PresencePacket;
 import me.leolin.shortcutbadger.ShortcutBadger;
-import rocks.xmpp.addr.Jid;
+import eu.siacs.conversations.xmpp.Jid;
 
 public class XmppConnectionService extends Service {
 
@@ -3751,7 +3751,7 @@ public class XmppConnectionService extends Service {
         if (account.getStatus() == Account.State.ONLINE) {
             IqPacket iq = new IqPacket(IqPacket.TYPE.SET);
             Element item = iq.query(Namespace.ROSTER).addChild("item");
-            item.setAttribute("jid", contact.getJid().toString());
+            item.setAttribute("jid", contact.getJid());
             item.setAttribute("subscription", "remove");
             account.getXmppConnection().sendIqPacket(iq, mDefaultIqHandler);
         }

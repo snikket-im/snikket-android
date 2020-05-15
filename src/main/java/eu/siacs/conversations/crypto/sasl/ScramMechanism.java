@@ -173,7 +173,7 @@ abstract class ScramMechanism extends SaslMechanism {
 
                 // Map keys are "bytesToHex(JID),bytesToHex(password),bytesToHex(salt),iterations,SASL-Mechanism".
                 final KeyPair keys = CACHE.get(
-                        CryptoHelper.bytesToHex(account.getJid().asBareJid().toString().getBytes()) + ","
+                        CryptoHelper.bytesToHex(account.getJid().asBareJid().toEscapedString().getBytes()) + ","
                                 + CryptoHelper.bytesToHex(account.getPassword().getBytes()) + ","
                                 + CryptoHelper.bytesToHex(salt.getBytes()) + ","
                                 + String.valueOf(iterationCount) + ","

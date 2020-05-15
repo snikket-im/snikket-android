@@ -67,7 +67,7 @@ dependencies {
     implementation 'com.makeramen:roundedimageview:2.3.0'
     implementation "com.wefika:flowlayout:0.4.1"
     implementation 'net.ypresto.androidtranscoder:android-transcoder:0.3.0'
-    implementation project(':libs:xmpp-addr')
+    implementation 'org.jxmpp:jxmpp-jid:0.6.4'
     implementation 'org.osmdroid:osmdroid-android:6.1.5'
     implementation 'org.hsluv:hsluv:0.2'
     implementation 'org.conscrypt:conscrypt-android:2.2.1'

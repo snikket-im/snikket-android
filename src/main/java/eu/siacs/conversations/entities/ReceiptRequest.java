@@ -29,7 +29,7 @@
 
 package eu.siacs.conversations.entities;
 
-import rocks.xmpp.addr.Jid;
+import eu.siacs.conversations.xmpp.Jid;
 
 public class ReceiptRequest {
 

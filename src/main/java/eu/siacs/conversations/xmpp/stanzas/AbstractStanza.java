@@ -2,7 +2,7 @@ package eu.siacs.conversations.xmpp.stanzas;
 
 import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.xml.Element;
-import rocks.xmpp.addr.Jid;
+import eu.siacs.conversations.xmpp.Jid;
 
 public class AbstractStanza extends Element {
 
@@ -20,13 +20,13 @@ public class AbstractStanza extends Element {
 
 	public void setTo(final Jid to) {
 		if (to != null) {
-			setAttribute("to", to.toEscapedString());
+			setAttribute("to", to);
 		}
 	}
 
 	public void setFrom(final Jid from) {
 		if (from != null) {
-			setAttribute("from", from.toEscapedString());
+			setAttribute("from", from);
 		}
 	}
 

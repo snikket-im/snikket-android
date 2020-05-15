@@ -11,7 +11,7 @@ import java.util.Enumeration;
 import java.util.List;
 import java.util.UUID;
 
-import rocks.xmpp.addr.Jid;
+import eu.siacs.conversations.xmpp.Jid;
 
 public class DirectConnectionUtils {
 

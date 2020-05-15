@@ -53,7 +53,7 @@ import java.util.regex.Pattern;
 
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.ui.util.StyledAttributes;
-import rocks.xmpp.addr.Jid;
+import eu.siacs.conversations.xmpp.Jid;
 
 public class IrregularUnicodeDetector {
 

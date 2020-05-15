@@ -5,7 +5,7 @@ import android.content.Context;
 import java.util.List;
 
 import eu.siacs.conversations.services.AvatarService;
-import rocks.xmpp.addr.Jid;
+import eu.siacs.conversations.xmpp.Jid;
 
 
 public interface ListItem extends Comparable<ListItem>, AvatarService.Avatarable {

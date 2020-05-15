@@ -1,7 +1,6 @@
 package eu.siacs.conversations.xmpp.jingle;
 
 import com.google.common.base.Objects;
-import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
 
 import eu.siacs.conversations.entities.Account;
@@ -9,7 +8,7 @@ import eu.siacs.conversations.entities.Contact;
 import eu.siacs.conversations.entities.Message;
 import eu.siacs.conversations.services.XmppConnectionService;
 import eu.siacs.conversations.xmpp.jingle.stanzas.JinglePacket;
-import rocks.xmpp.addr.Jid;
+import eu.siacs.conversations.xmpp.Jid;
 
 public abstract class AbstractJingleConnection {
 

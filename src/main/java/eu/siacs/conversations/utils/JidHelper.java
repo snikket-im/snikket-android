@@ -35,7 +35,7 @@ import java.util.List;
 import java.util.Locale;
 
 import eu.siacs.conversations.xmpp.InvalidJid;
-import rocks.xmpp.addr.Jid;
+import eu.siacs.conversations.xmpp.Jid;
 
 public class JidHelper {
 

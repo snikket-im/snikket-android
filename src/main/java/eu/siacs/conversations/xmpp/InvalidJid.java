@@ -32,7 +32,6 @@ package eu.siacs.conversations.xmpp;
 import android.support.annotation.NonNull;
 
 import eu.siacs.conversations.xmpp.stanzas.AbstractStanza;
-import rocks.xmpp.addr.Jid;
 
 public class InvalidJid implements Jid {
 
@@ -78,18 +77,9 @@ public class InvalidJid implements Jid {
 		throw new AssertionError("Not implemented");
 	}
 
-	@Override
-	public Jid withLocal(CharSequence charSequence) {
-		throw new AssertionError("Not implemented");
-	}
 
 	@Override
 	public Jid withResource(CharSequence charSequence) {
-		throw new AssertionError("Not implemented");
-	}
-
-	@Override
-	public Jid atSubdomain(CharSequence charSequence) {
 		throw new AssertionError("Not implemented");
 	}
 
@@ -139,7 +129,7 @@ public class InvalidJid implements Jid {
 	}
 
 	public static Jid getNullForInvalid(Jid jid) {
-		if (jid != null && jid instanceof InvalidJid) {
+		if (jid instanceof InvalidJid) {
 			return null;
 		} else {
 			return jid;

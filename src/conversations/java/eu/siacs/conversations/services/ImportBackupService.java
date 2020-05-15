@@ -46,7 +46,7 @@ import eu.siacs.conversations.ui.ManageAccountActivity;
 import eu.siacs.conversations.utils.BackupFileHeader;
 import eu.siacs.conversations.utils.Compatibility;
 import eu.siacs.conversations.utils.SerialSingleThreadExecutor;
-import rocks.xmpp.addr.Jid;
+import eu.siacs.conversations.xmpp.Jid;
 
 import static eu.siacs.conversations.services.ExportBackupService.CIPHERMODE;
 import static eu.siacs.conversations.services.ExportBackupService.KEYTYPE;

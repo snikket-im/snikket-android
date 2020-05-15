@@ -34,7 +34,7 @@ import eu.siacs.conversations.xml.Element;
 import eu.siacs.conversations.xmpp.forms.Data;
 import eu.siacs.conversations.xmpp.pep.Avatar;
 import eu.siacs.conversations.xmpp.stanzas.IqPacket;
-import rocks.xmpp.addr.Jid;
+import eu.siacs.conversations.xmpp.Jid;
 
 public class IqGenerator extends AbstractGenerator {
 
@@ -302,7 +302,7 @@ public class IqGenerator extends AbstractGenerator {
         if (mam.muc()) {
             packet.setTo(mam.getWith());
         } else if (mam.getWith() != null) {
-            data.put("with", mam.getWith().toString());
+            data.put("with", mam.getWith().toEscapedString());
         }
         final long start = mam.getStart();
         final long end = mam.getEnd();

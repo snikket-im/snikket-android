@@ -24,7 +24,7 @@ import eu.siacs.conversations.databinding.EnterJidDialogBinding;
 import eu.siacs.conversations.ui.adapter.KnownHostsAdapter;
 import eu.siacs.conversations.ui.interfaces.OnBackendConnected;
 import eu.siacs.conversations.ui.util.DelayedHintHelper;
-import rocks.xmpp.addr.Jid;
+import eu.siacs.conversations.xmpp.Jid;
 
 public class EnterJidDialog extends DialogFragment implements OnBackendConnected, TextWatcher {
 

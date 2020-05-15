@@ -26,7 +26,7 @@ import eu.siacs.conversations.utils.JidHelper;
 import eu.siacs.conversations.utils.UIHelper;
 import eu.siacs.conversations.xml.Element;
 import eu.siacs.conversations.xmpp.pep.Avatar;
-import rocks.xmpp.addr.Jid;
+import eu.siacs.conversations.xmpp.Jid;
 
 public class Contact implements ListItem, Blockable {
 	public static final String TABLENAME = "contacts";
@@ -396,7 +396,7 @@ public class Contact implements ListItem, Blockable {
 
 	public Element asElement() {
 		final Element item = new Element("item");
-		item.setAttribute("jid", this.jid.toString());
+		item.setAttribute("jid", this.jid);
 		if (this.serverName != null) {
 			item.setAttribute("name", this.serverName);
 		}
