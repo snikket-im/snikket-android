@@ -1017,7 +1017,7 @@ public class StartConversationActivity extends XmppActivity implements XmppConne
 		final String input = jid.getText().toString();
 		Jid conferenceJid;
 		try {
-			conferenceJid = Jid.of(input);
+			conferenceJid = Jid.ofEscaped(input);
 		} catch (final IllegalArgumentException e) {
 			final XmppUri xmppUri = new XmppUri(input);
 			if (xmppUri.isValidJid() && xmppUri.isAction(XmppUri.ACTION_JOIN)) {
