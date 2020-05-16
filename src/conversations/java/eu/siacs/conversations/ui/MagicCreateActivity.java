@@ -81,13 +81,13 @@ public class MagicCreateActivity extends XmppActivity implements TextWatcher {
                 final boolean fixedUsername;
                 if (this.domain != null && this.username != null) {
                     fixedUsername = true;
-                    jid = Jid.ofLocalAndDomain(this.username, this.domain);
+                    jid = Jid.ofLocalAndDomainEscaped(this.username, this.domain);
                 } else if (this.domain != null) {
                     fixedUsername = false;
-                    jid = Jid.ofLocalAndDomain(username, this.domain);
+                    jid = Jid.ofLocalAndDomainEscaped(username, this.domain);
                 } else {
                     fixedUsername = false;
-                    jid = Jid.ofLocalAndDomain(username, Config.MAGIC_CREATE_DOMAIN);
+                    jid = Jid.ofLocalAndDomainEscaped(username, Config.MAGIC_CREATE_DOMAIN);
                 }
                 if (!jid.getEscapedLocal().equals(jid.getLocal()) || (this.username == null && username.length() < 3)) {
                     binding.username.setError(getString(R.string.invalid_username));
@@ -151,9 +151,9 @@ public class MagicCreateActivity extends XmppActivity implements TextWatcher {
                 binding.fullJid.setVisibility(View.VISIBLE);
                 final Jid jid;
                 if (this.domain == null) {
-                    jid = Jid.ofLocalAndDomain(username, Config.MAGIC_CREATE_DOMAIN);
+                    jid = Jid.ofLocalAndDomainEscaped(username, Config.MAGIC_CREATE_DOMAIN);
                 } else {
-                    jid = Jid.ofLocalAndDomain(username, this.domain);
+                    jid = Jid.ofLocalAndDomainEscaped(username, this.domain);
                 }
                 binding.fullJid.setText(getString(R.string.your_full_jid_will_be, jid.toEscapedString()));
             } catch (IllegalArgumentException e) {
