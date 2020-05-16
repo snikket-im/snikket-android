@@ -962,6 +962,7 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
         final MenuItem menuCall = menu.findItem(R.id.action_call);
         final MenuItem menuOngoingCall = menu.findItem(R.id.action_ongoing_call);
         final MenuItem menuVideoCall = menu.findItem(R.id.action_video_call);
+        final MenuItem menuTogglePinned = menu.findItem(R.id.action_toggle_pinned);
 
 
         if (conversation != null) {
@@ -994,6 +995,11 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
             }
             ConversationMenuConfigurator.configureAttachmentMenu(conversation, menu);
             ConversationMenuConfigurator.configureEncryptionMenu(conversation, menu);
+            if (conversation.getBooleanAttribute(Conversation.ATTRIBUTE_PINNED_ON_TOP, false)) {
+                menuTogglePinned.setTitle(R.string.remove_from_favorites);
+            } else {
+                menuTogglePinned.setTitle(R.string.add_to_favorites);
+            }
         }
         super.onCreateOptionsMenu(menu, menuInflater);
     }
@@ -1261,6 +1267,9 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
             case R.id.action_ongoing_call:
                 returnToOngoingCall();
                 break;
+            case R.id.action_toggle_pinned:
+                togglePinned();
+                break;
             default:
                 break;
         }
@@ -1287,6 +1296,12 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
             startActivity(intent);
         }
 
+    }
+
+    private void togglePinned() {
+        final boolean pinned = conversation.getBooleanAttribute(Conversation.ATTRIBUTE_PINNED_ON_TOP, false);
+        conversation.setAttribute(Conversation.ATTRIBUTE_PINNED_ON_TOP, !pinned);
+        activity.xmppConnectionService.updateConversation(conversation);
     }
 
     private void checkPermissionAndTriggerAudioCall() {

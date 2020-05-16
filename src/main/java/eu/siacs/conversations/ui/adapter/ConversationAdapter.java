@@ -201,6 +201,7 @@ public class ConversationAdapter extends RecyclerView.Adapter<ConversationAdapte
         } else {
             timestamp = conversation.getLatestMessage().getTimeSent();
         }
+        viewHolder.binding.pinnedOnTop.setVisibility(conversation.getBooleanAttribute(Conversation.ATTRIBUTE_PINNED_ON_TOP,false) ? View.VISIBLE : View.GONE);
         viewHolder.binding.conversationLastupdate.setText(UIHelper.readableTimeDifference(activity, timestamp));
         AvatarWorkerTask.loadAvatar(conversation, viewHolder.binding.conversationImage, R.dimen.avatar_on_conversation_overview);
         viewHolder.itemView.setOnClickListener(v -> listener.onConversationClick(v, conversation));

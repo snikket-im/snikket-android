@@ -19,7 +19,9 @@
 
         <item name="activity_background_search">@drawable/search_background_light</item>
         <item name="activity_background_no_results">@drawable/no_results_background_light</item>
-        <item name="activity_primary_background_no_results">@drawable/no_results_primary_background_light</item>
+        <item name="activity_primary_background_no_results">
+            @drawable/no_results_primary_background_light
+        </item>
         <item name="list_item_background">@drawable/list_item_background_light</item>
 
         <item name="EmojiColor">@color/black</item>
@@ -39,87 +41,108 @@
 
         <item name="divider">@color/black12</item>
 
-        <item type="reference" name="ic_send_cancel_offline">@drawable/ic_send_cancel_offline</item>
-        <item type="reference" name="ic_send_location_offline">@drawable/ic_send_location_offline</item>
-        <item type="reference" name="ic_send_photo_offline">@drawable/ic_send_photo_offline</item>
-        <item type="reference" name="ic_send_picture_offline">@drawable/ic_send_picture_offline</item>
-        <item type="reference" name="ic_send_text_offline">@drawable/ic_send_text_offline</item>
-        <item type="reference" name="ic_send_videocam_offline">@drawable/ic_send_videocam_offline</item>
-        <item type="reference" name="ic_send_voice_offline">@drawable/ic_send_voice_offline</item>
+        <item name="ic_send_cancel_offline" type="reference">@drawable/ic_send_cancel_offline</item>
+        <item name="ic_send_location_offline" type="reference">@drawable/ic_send_location_offline
+        </item>
+        <item name="ic_send_photo_offline" type="reference">@drawable/ic_send_photo_offline</item>
+        <item name="ic_send_picture_offline" type="reference">@drawable/ic_send_picture_offline
+        </item>
+        <item name="ic_send_text_offline" type="reference">@drawable/ic_send_text_offline</item>
+        <item name="ic_send_videocam_offline" type="reference">@drawable/ic_send_videocam_offline
+        </item>
+        <item name="ic_send_voice_offline" type="reference">@drawable/ic_send_voice_offline</item>
 
-        <item type="reference" name="ic_attach_camera">@drawable/ic_attach_camera</item>
-        <item type="reference" name="ic_attach_videocam">@drawable/ic_attach_videocam</item>
-        <item type="reference" name="ic_attach_document">@drawable/ic_attach_document</item>
-        <item type="reference" name="ic_attach_location">@drawable/ic_attach_location</item>
-        <item type="reference" name="ic_attach_photo">@drawable/ic_attach_photo</item>
-        <item type="reference" name="ic_attach_record">@drawable/ic_attach_record</item>
+        <item name="ic_attach_camera" type="reference">@drawable/ic_attach_camera</item>
+        <item name="ic_attach_videocam" type="reference">@drawable/ic_attach_videocam</item>
+        <item name="ic_attach_document" type="reference">@drawable/ic_attach_document</item>
+        <item name="ic_attach_location" type="reference">@drawable/ic_attach_location</item>
+        <item name="ic_attach_photo" type="reference">@drawable/ic_attach_photo</item>
+        <item name="ic_attach_record" type="reference">@drawable/ic_attach_record</item>
 
-        <item type="reference" name="ic_make_audio_call">@drawable/ic_call_black54_24dp</item>
-        <item type="reference" name="ic_make_video_call">@drawable/ic_videocam_black54_24dp</item>
+        <item name="ic_make_audio_call" type="reference">@drawable/ic_call_black54_24dp</item>
+        <item name="ic_make_video_call" type="reference">@drawable/ic_videocam_black54_24dp</item>
 
-        <item type="reference" name="message_bubble_received_monochrome">@drawable/message_bubble_received_white</item>
-        <item type="reference" name="message_bubble_sent">@drawable/message_bubble_sent</item>
-        <item type="reference" name="message_bubble_received_green">@drawable/message_bubble_received</item>
+        <item name="message_bubble_received_monochrome" type="reference">
+            @drawable/message_bubble_received_white
+        </item>
+        <item name="message_bubble_sent" type="reference">@drawable/message_bubble_sent</item>
+        <item name="message_bubble_received_green" type="reference">
+            @drawable/message_bubble_received
+        </item>
 
         <item name="unread_count">@color/green700_desaturated</item>
 
         <item name="conversations_overview_background">@color/green700</item>
 
-        <item type="float" name="icon_alpha">0.54</item>
-        <item type="float" name="delete_icon_alpha">0.70</item>
+        <item name="icon_alpha" type="float">0.54</item>
+        <item name="delete_icon_alpha" type="float">0.70</item>
 
         <item name="dialog_horizontal_padding">24dp</item>
         <item name="dialog_vertical_padding">16dp</item>
 
-        <item type="reference" name="media_preview_document">@drawable/ic_description_black_48dp</item>
-        <item type="reference" name="media_preview_recording">@drawable/ic_mic_black_48dp</item>
-        <item type="reference" name="media_preview_audio">@drawable/ic_headset_black_48dp</item>
-        <item type="reference" name="media_preview_location">@drawable/ic_room_black_48dp</item>
-        <item type="reference" name="media_preview_contact">@drawable/ic_person_black_48dp</item>
-        <item type="reference" name="media_preview_app">@drawable/ic_android_black_48dp</item>
-        <item type="reference" name="media_preview_calendar">@drawable/ic_event_black_48dp</item>
-        <item type="reference" name="media_preview_archive">@drawable/ic_archive_black_48dp</item>
-        <item type="reference" name="media_preview_ebook">@drawable/ic_book_black_48dp</item>
-        <item type="reference" name="media_preview_backup">@drawable/ic_backup_black_48dp</item>
-        <item type="reference" name="media_preview_unknown">@drawable/ic_help_black_48dp</item>
+        <item name="media_preview_document" type="reference">@drawable/ic_description_black_48dp
+        </item>
+        <item name="media_preview_recording" type="reference">@drawable/ic_mic_black_48dp</item>
+        <item name="media_preview_audio" type="reference">@drawable/ic_headset_black_48dp</item>
+        <item name="media_preview_location" type="reference">@drawable/ic_room_black_48dp</item>
+        <item name="media_preview_contact" type="reference">@drawable/ic_person_black_48dp</item>
+        <item name="media_preview_app" type="reference">@drawable/ic_android_black_48dp</item>
+        <item name="media_preview_calendar" type="reference">@drawable/ic_event_black_48dp</item>
+        <item name="media_preview_archive" type="reference">@drawable/ic_archive_black_48dp</item>
+        <item name="media_preview_ebook" type="reference">@drawable/ic_book_black_48dp</item>
+        <item name="media_preview_backup" type="reference">@drawable/ic_backup_black_48dp</item>
+        <item name="media_preview_unknown" type="reference">@drawable/ic_help_black_48dp</item>
 
-        <item type="reference" name="icon_add_group">@drawable/ic_group_add_white_24dp</item>
-        <item type="reference" name="icon_add_person">@drawable/ic_person_add_white_24dp</item>
-        <item type="reference" name="icon_cancel">@drawable/ic_cancel_black_24dp</item>
-        <item type="reference" name="icon_copy">@drawable/ic_content_copy_black_24dp</item>
-        <item type="reference" name="icon_discard">@drawable/ic_delete_white_24dp</item>
-        <item type="reference" name="icon_download">@drawable/ic_file_download_white_24dp</item>
-        <item type="reference" name="icon_edit">@drawable/ic_edit_white_24dp</item>
-        <item type="reference" name="icon_edit_body">@drawable/ic_edit_black_24dp</item>
-        <item type="reference" name="icon_save">@drawable/ic_save_black_24dp</item>
-        <item type="reference" name="icon_group">@drawable/ic_group_white_24dp</item>
-        <item type="reference" name="icon_new">@drawable/ic_add_white_24dp</item>
-        <item type="reference" name="icon_quote">@drawable/ic_reply_white_24dp</item>
-        <item type="reference" name="icon_refresh">@drawable/ic_refresh_black_24dp</item>
-        <item type="reference" name="icon_new_attachment">@drawable/ic_attach_file_white_24dp</item>
-        <item type="reference" name="icon_not_secure">@drawable/ic_lock_open_white_24dp</item>
-        <item type="reference" name="icon_call">@drawable/ic_call_white_24dp</item>
-        <item type="reference" name="icon_ongoing_call">@drawable/ic_phone_in_talk_white_24dp</item>
-        <item type="reference" name="ic_ongoing_call_hint">@drawable/ic_phone_in_talk_black_18dp</item>
-        <item type="reference" name="icon_remove">@drawable/ic_delete_black_24dp</item>
-        <item type="reference" name="icon_search">@drawable/ic_search_white_24dp</item>
-        <item type="reference" name="icon_secure">@drawable/ic_lock_open_white_24dp</item>
-        <item type="reference" name="icon_settings">@drawable/ic_settings_black_24dp</item>
-        <item type="reference" name="icon_share">@drawable/ic_share_white_24dp</item>
-        <item type="reference" name="ic_cloud_download">@drawable/ic_cloud_download_white_24dp</item>
-        <item type="reference" name="icon_scan_qr_code">@drawable/ic_qr_code_scan_white_24dp</item>
-        <item type="reference" name="icon_scroll_down">@drawable/ic_scroll_to_end_black</item>
+        <item name="icon_add_group" type="reference">@drawable/ic_group_add_white_24dp</item>
+        <item name="icon_add_person" type="reference">@drawable/ic_person_add_white_24dp</item>
+        <item name="icon_cancel" type="reference">@drawable/ic_cancel_black_24dp</item>
+        <item name="icon_copy" type="reference">@drawable/ic_content_copy_black_24dp</item>
+        <item name="icon_discard" type="reference">@drawable/ic_delete_white_24dp</item>
+        <item name="icon_download" type="reference">@drawable/ic_file_download_white_24dp</item>
+        <item name="icon_edit" type="reference">@drawable/ic_edit_white_24dp</item>
+        <item name="icon_edit_body" type="reference">@drawable/ic_edit_black_24dp</item>
+        <item name="icon_save" type="reference">@drawable/ic_save_black_24dp</item>
+        <item name="icon_group" type="reference">@drawable/ic_group_white_24dp</item>
+        <item name="icon_new" type="reference">@drawable/ic_add_white_24dp</item>
+        <item name="icon_quote" type="reference">@drawable/ic_reply_white_24dp</item>
+        <item name="icon_refresh" type="reference">@drawable/ic_refresh_black_24dp</item>
+        <item name="icon_new_attachment" type="reference">@drawable/ic_attach_file_white_24dp</item>
+        <item name="icon_not_secure" type="reference">@drawable/ic_lock_open_white_24dp</item>
+        <item name="icon_call" type="reference">@drawable/ic_call_white_24dp</item>
+        <item name="icon_ongoing_call" type="reference">@drawable/ic_phone_in_talk_white_24dp</item>
+        <item name="ic_ongoing_call_hint" type="reference">@drawable/ic_phone_in_talk_black_18dp
+        </item>
+        <item name="icon_remove" type="reference">@drawable/ic_delete_black_24dp</item>
+        <item name="icon_search" type="reference">@drawable/ic_search_white_24dp</item>
+        <item name="icon_secure" type="reference">@drawable/ic_lock_open_white_24dp</item>
+        <item name="icon_settings" type="reference">@drawable/ic_settings_black_24dp</item>
+        <item name="icon_share" type="reference">@drawable/ic_share_white_24dp</item>
+        <item name="ic_cloud_download" type="reference">@drawable/ic_cloud_download_white_24dp
+        </item>
+        <item name="icon_scan_qr_code" type="reference">@drawable/ic_qr_code_scan_white_24dp</item>
+        <item name="icon_scroll_down" type="reference">@drawable/ic_scroll_to_end_black</item>
 
-        <item type="reference" name="icon_gps_not_fixed">@drawable/ic_gps_not_fixed_black_24dp</item>
-        <item type="reference" name="icon_gps_fixed">@drawable/ic_gps_fixed_black_24dp</item>
-        <item type="reference" name="icon_directions">@drawable/ic_directions_black_24dp</item>
-        <item type="reference" name="icon_copy_bar">@drawable/ic_content_copy_white_24dp</item>
+        <item name="icon_gps_not_fixed" type="reference">@drawable/ic_gps_not_fixed_black_24dp
+        </item>
+        <item name="icon_gps_fixed" type="reference">@drawable/ic_gps_fixed_black_24dp</item>
+        <item name="icon_directions" type="reference">@drawable/ic_directions_black_24dp</item>
+        <item name="icon_copy_bar" type="reference">@drawable/ic_content_copy_white_24dp</item>
 
-        <item type="reference" name="icon_notifications">@drawable/ic_notifications_black_24dp</item>
-        <item type="reference" name="icon_notifications_off">@drawable/ic_notifications_off_black_24dp</item>
-        <item type="reference" name="icon_notifications_paused">@drawable/ic_notifications_paused_black_24dp</item>
-        <item type="reference" name="icon_notifications_none">@drawable/ic_notifications_none_black_24dp</item>
-        <item type="reference" name="icon_enable_undecided_device">@drawable/ic_new_releases_black_24dp</item>
+        <item name="icon_notifications" type="reference">@drawable/ic_notifications_black_24dp
+        </item>
+        <item name="icon_notifications_off" type="reference">
+            @drawable/ic_notifications_off_black_24dp
+        </item>
+        <item name="icon_notifications_paused" type="reference">
+            @drawable/ic_notifications_paused_black_24dp
+        </item>
+        <item name="icon_notifications_none" type="reference">
+            @drawable/ic_notifications_none_black_24dp
+        </item>
+        <item name="icon_pinned_on_top" type="reference">@drawable/ic_star_black_24dp</item>
+        <item name="icon_enable_undecided_device" type="reference">
+            @drawable/ic_new_releases_black_24dp
+        </item>
     </style>
 
     <style name="ConversationsTheme.Dark" parent="Theme.AppCompat.NoActionBar">
@@ -135,7 +158,9 @@
         <item name="color_background_overlay">@color/black26</item>
         <item name="activity_background_search">@drawable/search_background_dark</item>
         <item name="activity_background_no_results">@drawable/no_results_background_dark</item>
-        <item name="activity_primary_background_no_results">@drawable/no_results_primary_background_dark</item>
+        <item name="activity_primary_background_no_results">
+            @drawable/no_results_primary_background_dark
+        </item>
         <item name="list_item_background">@drawable/list_item_background_dark</item>
         <item name="color_warning">@color/red_a100</item>
 
@@ -161,87 +186,116 @@
 
         <item name="divider">@color/white12</item>
 
-        <item type="reference" name="ic_send_cancel_offline">@drawable/ic_send_cancel_offline_white</item>
-        <item type="reference" name="ic_send_location_offline">@drawable/ic_send_location_offline_white</item>
-        <item type="reference" name="ic_send_photo_offline">@drawable/ic_send_photo_offline_white</item>
-        <item type="reference" name="ic_send_picture_offline">@drawable/ic_send_picture_offline_white</item>
-        <item type="reference" name="ic_send_text_offline">@drawable/ic_send_text_offline_white</item>
-        <item type="reference" name="ic_send_videocam_offline">@drawable/ic_send_videocam_offline_white</item>
-        <item type="reference" name="ic_send_voice_offline">@drawable/ic_send_voice_offline_white</item>
+        <item name="ic_send_cancel_offline" type="reference">
+            @drawable/ic_send_cancel_offline_white
+        </item>
+        <item name="ic_send_location_offline" type="reference">
+            @drawable/ic_send_location_offline_white
+        </item>
+        <item name="ic_send_photo_offline" type="reference">@drawable/ic_send_photo_offline_white
+        </item>
+        <item name="ic_send_picture_offline" type="reference">
+            @drawable/ic_send_picture_offline_white
+        </item>
+        <item name="ic_send_text_offline" type="reference">@drawable/ic_send_text_offline_white
+        </item>
+        <item name="ic_send_videocam_offline" type="reference">
+            @drawable/ic_send_videocam_offline_white
+        </item>
+        <item name="ic_send_voice_offline" type="reference">@drawable/ic_send_voice_offline_white
+        </item>
 
-        <item type="reference" name="ic_make_audio_call">@drawable/ic_call_white70_24dp</item>
-        <item type="reference" name="ic_make_video_call">@drawable/ic_videocam_white70_24dp</item>
+        <item name="ic_make_audio_call" type="reference">@drawable/ic_call_white70_24dp</item>
+        <item name="ic_make_video_call" type="reference">@drawable/ic_videocam_white70_24dp</item>
 
-        <item type="reference" name="ic_attach_camera">@drawable/ic_attach_camera_white</item>
-        <item type="reference" name="ic_attach_videocam">@drawable/ic_attach_videocam_white</item>
-        <item type="reference" name="ic_attach_document">@drawable/ic_attach_document_white</item>
-        <item type="reference" name="ic_attach_location">@drawable/ic_attach_location_white</item>
-        <item type="reference" name="ic_attach_photo">@drawable/ic_attach_photo_white</item>
-        <item type="reference" name="ic_attach_record">@drawable/ic_attach_record_white</item>
+        <item name="ic_attach_camera" type="reference">@drawable/ic_attach_camera_white</item>
+        <item name="ic_attach_videocam" type="reference">@drawable/ic_attach_videocam_white</item>
+        <item name="ic_attach_document" type="reference">@drawable/ic_attach_document_white</item>
+        <item name="ic_attach_location" type="reference">@drawable/ic_attach_location_white</item>
+        <item name="ic_attach_photo" type="reference">@drawable/ic_attach_photo_white</item>
+        <item name="ic_attach_record" type="reference">@drawable/ic_attach_record_white</item>
 
-        <item type="reference" name="message_bubble_received_monochrome">@drawable/message_bubble_received_grey</item>
-        <item type="reference" name="message_bubble_sent">@drawable/message_bubble_sent_grey</item>
-        <item type="reference" name="message_bubble_received_green">@drawable/message_bubble_received_dark</item>
+        <item name="message_bubble_received_monochrome" type="reference">
+            @drawable/message_bubble_received_grey
+        </item>
+        <item name="message_bubble_sent" type="reference">@drawable/message_bubble_sent_grey</item>
+        <item name="message_bubble_received_green" type="reference">
+            @drawable/message_bubble_received_dark
+        </item>
 
         <item name="unread_count">@color/green900_desaturated</item>
 
         <item name="conversations_overview_background">@color/green900</item>
 
-        <item type="float" name="icon_alpha">0.7</item>
-        <item type="float" name="delete_icon_alpha">0.7</item>
+        <item name="icon_alpha" type="float">0.7</item>
+        <item name="delete_icon_alpha" type="float">0.7</item>
 
         <item name="dialog_horizontal_padding">24dp</item>
         <item name="dialog_vertical_padding">16dp</item>
 
-        <item type="reference" name="media_preview_document">@drawable/ic_description_white_48dp</item>
-        <item type="reference" name="media_preview_recording">@drawable/ic_mic_white_48dp</item>
-        <item type="reference" name="media_preview_audio">@drawable/ic_headset_white_48dp</item>
-        <item type="reference" name="media_preview_location">@drawable/ic_room_white_48dp</item>
-        <item type="reference" name="media_preview_contact">@drawable/ic_person_white_48dp</item>
-        <item type="reference" name="media_preview_app">@drawable/ic_android_white_48dp</item>
-        <item type="reference" name="media_preview_calendar">@drawable/ic_event_white_48dp</item>
-        <item type="reference" name="media_preview_archive">@drawable/ic_archive_white_48dp</item>
-        <item type="reference" name="media_preview_ebook">@drawable/ic_book_white_48dp</item>
-        <item type="reference" name="media_preview_backup">@drawable/ic_backup_white_48dp</item>
-        <item type="reference" name="media_preview_unknown">@drawable/ic_help_white_48dp</item>
+        <item name="media_preview_document" type="reference">@drawable/ic_description_white_48dp
+        </item>
+        <item name="media_preview_recording" type="reference">@drawable/ic_mic_white_48dp</item>
+        <item name="media_preview_audio" type="reference">@drawable/ic_headset_white_48dp</item>
+        <item name="media_preview_location" type="reference">@drawable/ic_room_white_48dp</item>
+        <item name="media_preview_contact" type="reference">@drawable/ic_person_white_48dp</item>
+        <item name="media_preview_app" type="reference">@drawable/ic_android_white_48dp</item>
+        <item name="media_preview_calendar" type="reference">@drawable/ic_event_white_48dp</item>
+        <item name="media_preview_archive" type="reference">@drawable/ic_archive_white_48dp</item>
+        <item name="media_preview_ebook" type="reference">@drawable/ic_book_white_48dp</item>
+        <item name="media_preview_backup" type="reference">@drawable/ic_backup_white_48dp</item>
+        <item name="media_preview_unknown" type="reference">@drawable/ic_help_white_48dp</item>
 
-        <item type="reference" name="icon_add_group">@drawable/ic_group_add_white_24dp</item>
-        <item type="reference" name="icon_add_person">@drawable/ic_person_add_white_24dp</item>
-        <item type="reference" name="icon_cancel">@drawable/ic_cancel_white_24dp</item>
-        <item type="reference" name="icon_copy">@drawable/ic_content_copy_white_24dp</item>
-        <item type="reference" name="icon_discard">@drawable/ic_delete_white_24dp</item>
-        <item type="reference" name="icon_download">@drawable/ic_file_download_white_24dp</item>
-        <item type="reference" name="icon_edit">@drawable/ic_edit_white_24dp</item>
-        <item type="reference" name="icon_edit_body">@drawable/ic_edit_white_24dp</item>
-        <item type="reference" name="icon_save">@drawable/ic_save_white_24dp</item>
-        <item type="reference" name="icon_group">@drawable/ic_group_white_24dp</item>
-        <item type="reference" name="icon_new">@drawable/ic_add_white_24dp</item>
-        <item type="reference" name="icon_quote">@drawable/ic_reply_white_24dp</item>
-        <item type="reference" name="icon_refresh">@drawable/ic_refresh_white_24dp</item>
-        <item type="reference" name="icon_new_attachment">@drawable/ic_attach_file_white_24dp</item>
-        <item type="reference" name="icon_not_secure">@drawable/ic_lock_open_white_24dp</item>
-        <item type="reference" name="icon_call">@drawable/ic_call_white_24dp</item>
-        <item type="reference" name="icon_ongoing_call">@drawable/ic_phone_in_talk_white_24dp</item>
-        <item type="reference" name="ic_ongoing_call_hint">@drawable/ic_phone_in_talk_white_18dp</item>
-        <item type="reference" name="icon_remove">@drawable/ic_delete_white_24dp</item>
-        <item type="reference" name="icon_search">@drawable/ic_search_white_24dp</item>
-        <item type="reference" name="icon_secure">@drawable/ic_lock_open_white_24dp</item>
-        <item type="reference" name="icon_settings">@drawable/ic_settings_white_24dp</item>
-        <item type="reference" name="icon_share">@drawable/ic_share_white_24dp</item>
-        <item type="reference" name="ic_cloud_download">@drawable/ic_cloud_download_white_24dp</item>
-        <item type="reference" name="icon_scan_qr_code">@drawable/ic_qr_code_scan_white_24dp</item>
-        <item type="reference" name="icon_scroll_down">@drawable/ic_scroll_to_end_white</item>
+        <item name="icon_add_group" type="reference">@drawable/ic_group_add_white_24dp</item>
+        <item name="icon_add_person" type="reference">@drawable/ic_person_add_white_24dp</item>
+        <item name="icon_cancel" type="reference">@drawable/ic_cancel_white_24dp</item>
+        <item name="icon_copy" type="reference">@drawable/ic_content_copy_white_24dp</item>
+        <item name="icon_discard" type="reference">@drawable/ic_delete_white_24dp</item>
+        <item name="icon_download" type="reference">@drawable/ic_file_download_white_24dp</item>
+        <item name="icon_edit" type="reference">@drawable/ic_edit_white_24dp</item>
+        <item name="icon_edit_body" type="reference">@drawable/ic_edit_white_24dp</item>
+        <item name="icon_save" type="reference">@drawable/ic_save_white_24dp</item>
+        <item name="icon_group" type="reference">@drawable/ic_group_white_24dp</item>
+        <item name="icon_new" type="reference">@drawable/ic_add_white_24dp</item>
+        <item name="icon_quote" type="reference">@drawable/ic_reply_white_24dp</item>
+        <item name="icon_refresh" type="reference">@drawable/ic_refresh_white_24dp</item>
+        <item name="icon_new_attachment" type="reference">@drawable/ic_attach_file_white_24dp</item>
+        <item name="icon_not_secure" type="reference">@drawable/ic_lock_open_white_24dp</item>
+        <item name="icon_call" type="reference">@drawable/ic_call_white_24dp</item>
+        <item name="icon_ongoing_call" type="reference">@drawable/ic_phone_in_talk_white_24dp</item>
+        <item name="ic_ongoing_call_hint" type="reference">@drawable/ic_phone_in_talk_white_18dp
+        </item>
+        <item name="icon_remove" type="reference">@drawable/ic_delete_white_24dp</item>
+        <item name="icon_search" type="reference">@drawable/ic_search_white_24dp</item>
+        <item name="icon_secure" type="reference">@drawable/ic_lock_open_white_24dp</item>
+        <item name="icon_settings" type="reference">@drawable/ic_settings_white_24dp</item>
+        <item name="icon_share" type="reference">@drawable/ic_share_white_24dp</item>
+        <item name="ic_cloud_download" type="reference">@drawable/ic_cloud_download_white_24dp
+        </item>
+        <item name="icon_scan_qr_code" type="reference">@drawable/ic_qr_code_scan_white_24dp</item>
+        <item name="icon_scroll_down" type="reference">@drawable/ic_scroll_to_end_white</item>
 
-        <item type="reference" name="icon_gps_not_fixed">@drawable/ic_gps_not_fixed_white_24dp</item>
-        <item type="reference" name="icon_gps_fixed">@drawable/ic_gps_fixed_white_24dp</item>
-        <item type="reference" name="icon_directions">@drawable/ic_directions_white_24dp</item>
-        <item type="reference" name="icon_copy_bar">@drawable/ic_content_copy_white_24dp</item>
+        <item name="icon_gps_not_fixed" type="reference">@drawable/ic_gps_not_fixed_white_24dp
+        </item>
+        <item name="icon_gps_fixed" type="reference">@drawable/ic_gps_fixed_white_24dp</item>
+        <item name="icon_directions" type="reference">@drawable/ic_directions_white_24dp</item>
+        <item name="icon_copy_bar" type="reference">@drawable/ic_content_copy_white_24dp</item>
 
-        <item type="reference" name="icon_notifications">@drawable/ic_notifications_white_24dp</item>
-        <item type="reference" name="icon_notifications_off">@drawable/ic_notifications_off_white_24dp</item>
-        <item type="reference" name="icon_notifications_paused">@drawable/ic_notifications_paused_white_24dp</item>
-        <item type="reference" name="icon_notifications_none">@drawable/ic_notifications_none_white_24dp</item>
-        <item type="reference" name="icon_enable_undecided_device">@drawable/ic_new_releases_white_24dp</item>
+        <item name="icon_notifications" type="reference">@drawable/ic_notifications_white_24dp
+        </item>
+        <item name="icon_notifications_off" type="reference">
+            @drawable/ic_notifications_off_white_24dp
+        </item>
+        <item name="icon_notifications_paused" type="reference">
+            @drawable/ic_notifications_paused_white_24dp
+        </item>
+        <item name="icon_notifications_none" type="reference">
+            @drawable/ic_notifications_none_white_24dp
+        </item>
+        <item name="icon_pinned_on_top" type="reference">@drawable/ic_star_white_24dp</item>
+        <item name="icon_enable_undecided_device" type="reference">
+            @drawable/ic_new_releases_white_24dp
+        </item>
     </style>
 
     <style name="ConversationsTheme.Medium" parent="ConversationsTheme">
