@@ -56,6 +56,7 @@ import com.google.common.base.Optional;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -863,13 +864,13 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
     }
 
     private void commitAttachments() {
-        if (!hasPermissions(REQUEST_COMMIT_ATTACHMENTS, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+        final List<Attachment> attachments = mediaPreviewAdapter.getAttachments();
+        if (anyNeedsExternalStoragePermission(attachments) && !hasPermissions(REQUEST_COMMIT_ATTACHMENTS, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
             return;
         }
         if (conversation.getNextEncryption() == Message.ENCRYPTION_AXOLOTL && trustKeysIfNeeded(REQUEST_TRUST_KEYS_ATTACHMENTS)) {
             return;
         }
-        final List<Attachment> attachments = mediaPreviewAdapter.getAttachments();
         final PresenceSelector.OnPresenceSelected callback = () -> {
             for (Iterator<Attachment> i = attachments.iterator(); i.hasNext(); i.remove()) {
                 final Attachment attachment = i.next();
@@ -894,6 +895,16 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
         } else {
             activity.selectPresence(conversation, callback);
         }
+    }
+
+
+    private static boolean anyNeedsExternalStoragePermission(final Collection<Attachment> attachments) {
+        for(final Attachment attachment : attachments) {
+            if (attachment.getType() != Attachment.Type.LOCATION) {
+                return true;
+            }
+        }
+        return false;
     }
 
     public void toggleInputMethod() {
