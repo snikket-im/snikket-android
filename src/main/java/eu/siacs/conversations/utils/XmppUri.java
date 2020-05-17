@@ -34,7 +34,7 @@ public class XmppUri {
             parse(Uri.parse(uri));
         } catch (IllegalArgumentException e) {
             try {
-                jid = Jid.of(uri).asBareJid().toString();
+                jid = Jid.ofEscaped(uri).asBareJid().toEscapedString();
             } catch (IllegalArgumentException e2) {
                 jid = null;
             }
@@ -137,7 +137,7 @@ public class XmppUri {
             if (segments.size() >= 2 && segments.get(1).contains("@")) {
                 // sample : https://conversations.im/i/foo@bar.com
                 try {
-                    jid = Jid.of(lameUrlDecode(segments.get(1))).toString();
+                    jid = Jid.ofEscaped(lameUrlDecode(segments.get(1))).toEscapedString();
                 } catch (Exception e) {
                     jid = null;
                 }
@@ -173,7 +173,7 @@ public class XmppUri {
             }
         } else {
             try {
-                jid = Jid.of(uri.toString()).asBareJid().toString();
+                jid = Jid.ofEscaped(uri.toString()).asBareJid().toEscapedString();
             } catch (final IllegalArgumentException ignored) {
                 jid = null;
             }
@@ -195,7 +195,7 @@ public class XmppUri {
 
     public Jid getJid() {
         try {
-            return this.jid == null ? null : Jid.of(this.jid);
+            return this.jid == null ? null : Jid.ofEscaped(this.jid);
         } catch (IllegalArgumentException e) {
             return null;
         }
@@ -206,7 +206,7 @@ public class XmppUri {
             return false;
         }
         try {
-            Jid.of(jid);
+            Jid.ofEscaped(jid);
             return true;
         } catch (IllegalArgumentException e) {
             return false;
