@@ -3,7 +3,7 @@
 ### Version 2.8.4
 
 * Rework Login with certificate UI
-* bug fixes
+* Add ability to pin chats on top (add to favorites)
 
 ### Version 2.8.3
 

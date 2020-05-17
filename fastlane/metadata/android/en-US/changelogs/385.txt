@@ -1,0 +1,2 @@
+* Rework Login with certificate UI
+* Add ability to pin chats on top (add to favorites)
