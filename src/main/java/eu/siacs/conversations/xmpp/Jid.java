@@ -80,14 +80,14 @@ public interface Jid extends Comparable<Jid>, Serializable, CharSequence {
 
     static Jid ofDomainAndResource(CharSequence domain, CharSequence resource) {
         try {
-                return new WrappedJid(
-                        JidCreate.domainFullFrom(
-                                Domainpart.from(domain.toString()),
-                                Resourcepart.from(resource.toString())
-                        ));
-            } catch (XmppStringprepException e) {
-                throw new IllegalArgumentException(e);
-            }
+            return new WrappedJid(
+                    JidCreate.domainFullFrom(
+                            Domainpart.from(domain.toString()),
+                            Resourcepart.from(resource.toString())
+                    ));
+        } catch (XmppStringprepException e) {
+            throw new IllegalArgumentException(e);
+        }
     }
 
     static Jid ofLocalAndDomainEscaped(CharSequence local, CharSequence domain) {
@@ -138,7 +138,7 @@ public interface Jid extends Comparable<Jid>, Serializable, CharSequence {
 
     String getEscapedLocal();
 
-    String getDomain();
+    Jid getDomain();
 
     String getResource();
 

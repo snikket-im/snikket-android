@@ -14,7 +14,7 @@ import eu.siacs.conversations.ui.EnterPhoneNumberActivity;
 import eu.siacs.conversations.ui.StartConversationActivity;
 import eu.siacs.conversations.ui.TosActivity;
 import eu.siacs.conversations.ui.VerifyActivity;
-import rocks.xmpp.addr.Jid;
+import eu.siacs.conversations.xmpp.Jid;
 
 public class SignupUtils {
 

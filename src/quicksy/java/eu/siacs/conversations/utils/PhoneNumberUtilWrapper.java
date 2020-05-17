@@ -7,10 +7,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
+import eu.siacs.conversations.xmpp.Jid;
 import io.michaelrocks.libphonenumber.android.NumberParseException;
 import io.michaelrocks.libphonenumber.android.PhoneNumberUtil;
 import io.michaelrocks.libphonenumber.android.Phonenumber;
-import rocks.xmpp.addr.Jid;
 
 public class PhoneNumberUtilWrapper {
 

@@ -94,7 +94,7 @@ public class InvalidJid implements Jid {
 	}
 
 	@Override
-	public String getDomain() {
+	public Jid getDomain() {
 		throw new AssertionError("Not implemented");
 	}
 

@@ -232,8 +232,12 @@ public class Account extends AbstractEntity implements AvatarService.Avatarable 
         return next != null && !next.equals(previousFull);
     }
 
-    public String getServer() {
+    public Jid getDomain() {
         return jid.getDomain();
+    }
+
+    public String getServer() {
+        return jid.getDomain().toEscapedString();
     }
 
     public String getPassword() {
@@ -369,7 +373,7 @@ public class Account extends AbstractEntity implements AvatarService.Avatarable 
         final ContentValues values = new ContentValues();
         values.put(UUID, uuid);
         values.put(USERNAME, jid.getLocal());
-        values.put(SERVER, jid.getDomain());
+        values.put(SERVER, jid.getDomain().toEscapedString());
         values.put(PASSWORD, password);
         values.put(OPTIONS, options);
         synchronized (this.keys) {
@@ -587,7 +591,7 @@ public class Account extends AbstractEntity implements AvatarService.Avatarable 
 
     public boolean isBlocked(final ListItem contact) {
         final Jid jid = contact.getJid();
-        return jid != null && (blocklist.contains(jid.asBareJid()) || blocklist.contains(Jid.ofDomain(jid.getDomain())));
+        return jid != null && (blocklist.contains(jid.asBareJid()) || blocklist.contains(jid.getDomain()));
     }
 
     public boolean isBlocked(final Jid jid) {

@@ -11,7 +11,7 @@ import java.util.List;
 
 import eu.siacs.conversations.android.PhoneNumberContact;
 import eu.siacs.conversations.xml.Element;
-import rocks.xmpp.addr.Jid;
+import eu.siacs.conversations.xmpp.Jid;
 
 public class Entry implements Comparable<Entry> {
     private final List<Jid> jids;

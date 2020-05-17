@@ -134,12 +134,12 @@ public class Contact implements ListItem, Blockable {
 			return this.systemName;
 		} else if (!TextUtils.isEmpty(this.serverName)) {
 			return this.serverName;
-		} else if (!TextUtils.isEmpty(this.presenceName) && ((QuickConversationsService.isQuicksy() && Config.QUICKSY_DOMAIN.equals(jid.getDomain())) ||mutualPresenceSubscription())) {
+		} else if (!TextUtils.isEmpty(this.presenceName) && ((QuickConversationsService.isQuicksy() && Config.QUICKSY_DOMAIN.equals(jid.getDomain().toEscapedString())) ||mutualPresenceSubscription())) {
 			return this.presenceName;
 		} else if (jid.getLocal() != null) {
 			return JidHelper.localPartOrFallback(jid);
 		} else {
-			return jid.getDomain();
+			return jid.getDomain().toEscapedString();
 		}
 	}
 
@@ -413,7 +413,7 @@ public class Contact implements ListItem, Blockable {
 	}
 
 	public String getServer() {
-		return getJid().getDomain();
+		return getJid().getDomain().toEscapedString();
 	}
 
 	public boolean setAvatar(Avatar avatar) {

@@ -24,9 +24,9 @@ public class SignupUtils {
     public static Intent getTokenRegistrationIntent(final Activity activity, Jid jid, String preAuth) {
         final Intent intent = new Intent(activity, MagicCreateActivity.class);
         if (jid.isDomainJid()) {
-            intent.putExtra(MagicCreateActivity.EXTRA_DOMAIN, jid.getDomain());
+            intent.putExtra(MagicCreateActivity.EXTRA_DOMAIN, jid.getDomain().toEscapedString());
         } else {
-            intent.putExtra(MagicCreateActivity.EXTRA_DOMAIN, jid.getDomain());
+            intent.putExtra(MagicCreateActivity.EXTRA_DOMAIN, jid.getDomain().toEscapedString());
             intent.putExtra(MagicCreateActivity.EXTRA_USERNAME, jid.getEscapedLocal());
         }
         intent.putExtra(MagicCreateActivity.EXTRA_PRE_AUTH, preAuth);

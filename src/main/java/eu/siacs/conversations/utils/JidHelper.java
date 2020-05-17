@@ -43,7 +43,7 @@ public class JidHelper {
 
     public static String localPartOrFallback(Jid jid) {
         if (LOCAL_PART_BLACKLIST.contains(jid.getLocal().toLowerCase(Locale.ENGLISH))) {
-            final String domain = jid.getDomain();
+            final String domain = jid.getDomain().toEscapedString();
             final int index = domain.indexOf('.');
             return index > 1 ? domain.substring(0, index) : domain;
         } else {

@@ -65,9 +65,8 @@ public class WrappedJid implements eu.siacs.conversations.xmpp.Jid {
     }
 
     @Override
-    public String getDomain() {
-        final Domainpart domainpart = inner.getDomain();
-        return domainpart == null ? null : domainpart.toString();
+    public eu.siacs.conversations.xmpp.Jid getDomain() {
+        return new WrappedJid(inner.asDomainBareJid());
     }
 
     @Override

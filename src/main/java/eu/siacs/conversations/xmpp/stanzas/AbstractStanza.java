@@ -33,7 +33,7 @@ public class AbstractStanza extends Element {
 	public boolean fromServer(final Account account) {
 		final Jid from = getFrom();
 		return from == null
-			|| from.equals(Jid.of(account.getServer()))
+			|| from.equals(account.getDomain())
 			|| from.equals(account.getJid().asBareJid())
 			|| from.equals(account.getJid());
 	}
@@ -41,7 +41,7 @@ public class AbstractStanza extends Element {
 	public boolean toServer(final Account account) {
 		final Jid to = getTo();
 		return to == null
-			|| to.equals(Jid.of(account.getServer()))
+			|| to.equals(account.getDomain())
 			|| to.equals(account.getJid().asBareJid())
 			|| to.equals(account.getJid());
 	}

@@ -601,7 +601,7 @@ public class JingleConnectionManager extends AbstractConnectionManager {
     }
 
     public WeakReference<JingleRtpConnection> findJingleRtpConnection(Account account, Jid with, String sessionId) {
-        final AbstractJingleConnection.Id id = AbstractJingleConnection.Id.of(account, Jid.ofEscaped(with), sessionId);
+        final AbstractJingleConnection.Id id = AbstractJingleConnection.Id.of(account, with, sessionId);
         final AbstractJingleConnection connection = connections.get(id);
         if (connection instanceof JingleRtpConnection) {
             return new WeakReference<>((JingleRtpConnection) connection);

@@ -617,7 +617,7 @@ public class DatabaseBackend extends SQLiteOpenHelper {
                         cursor.getString(cursor.getColumnIndex(Account.USERNAME)),
                         cursor.getString(cursor.getColumnIndex(Account.SERVER)),
                         null
-                ).getDomain();
+                ).getDomain().toEscapedString();
             } catch (IllegalArgumentException ignored) {
                 Log.e(Config.LOGTAG, "Failed to migrate Account SERVER "
                         + cursor.getString(cursor.getColumnIndex(Account.SERVER))

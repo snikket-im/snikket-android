@@ -106,7 +106,7 @@ public abstract class AbstractParser {
 
 	public static MucOptions.User parseItem(Conversation conference, Element item, Jid fullJid) {
 		final String local = conference.getJid().getLocal();
-		final String domain = conference.getJid().getDomain();
+		final String domain = conference.getJid().getDomain().toEscapedString();
 		String affiliation = item.getAttribute("affiliation");
 		String role = item.getAttribute("role");
 		String nick = item.getAttribute("nick");

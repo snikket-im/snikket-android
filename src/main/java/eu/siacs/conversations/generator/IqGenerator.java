@@ -351,7 +351,7 @@ public class IqGenerator extends AbstractGenerator {
 
     public IqPacket generateSetPassword(final Account account, final String newPassword) {
         final IqPacket packet = new IqPacket(IqPacket.TYPE.SET);
-        packet.setTo(Jid.of(account.getServer()));
+        packet.setTo(account.getDomain());
         final Element query = packet.addChild("query", Namespace.REGISTER);
         final Jid jid = account.getJid();
         query.addChild("username").setContent(jid.getLocal());
@@ -442,7 +442,7 @@ public class IqGenerator extends AbstractGenerator {
     public IqPacket generateCreateAccountWithCaptcha(Account account, String id, Data data) {
         final IqPacket register = new IqPacket(IqPacket.TYPE.SET);
         register.setFrom(account.getJid().asBareJid());
-        register.setTo(Jid.of(account.getServer()));
+        register.setTo(account.getDomain());
         register.setId(id);
         Element query = register.query(Namespace.REGISTER);
         if (data != null) {

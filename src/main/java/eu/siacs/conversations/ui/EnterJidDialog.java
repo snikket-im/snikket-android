@@ -168,7 +168,7 @@ public class EnterJidDialog extends DialogFragment implements OnBackendConnected
 				issuedWarning = true;
 				return;
 			}
-			if (suspiciousSubDomain(contactJid.getDomain())) {
+			if (suspiciousSubDomain(contactJid.getDomain().toEscapedString())) {
 				binding.jidLayout.setError(getActivity().getString(R.string.this_looks_like_channel));
 				dialog.getButton(AlertDialog.BUTTON_POSITIVE).setText(R.string.add_anway);
 				issuedWarning = true;

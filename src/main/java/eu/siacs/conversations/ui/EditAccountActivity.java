@@ -816,7 +816,7 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
 
     private String getUserModeDomain() {
         if (mAccount != null && mAccount.getJid().getDomain() != null) {
-            return mAccount.getJid().getDomain();
+            return mAccount.getServer();
         } else {
             return Config.DOMAIN_LOCK;
         }

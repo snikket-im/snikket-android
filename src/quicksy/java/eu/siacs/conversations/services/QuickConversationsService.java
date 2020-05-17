@@ -49,9 +49,9 @@ import eu.siacs.conversations.utils.PhoneNumberUtilWrapper;
 import eu.siacs.conversations.utils.SerialSingleThreadExecutor;
 import eu.siacs.conversations.xml.Element;
 import eu.siacs.conversations.xml.Namespace;
+import eu.siacs.conversations.xmpp.Jid;
 import eu.siacs.conversations.xmpp.stanzas.IqPacket;
 import io.michaelrocks.libphonenumber.android.Phonenumber;
-import rocks.xmpp.addr.Jid;
 
 public class QuickConversationsService extends AbstractQuickConversationsService {
 

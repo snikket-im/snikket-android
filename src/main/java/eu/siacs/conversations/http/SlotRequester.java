@@ -61,7 +61,7 @@ public class SlotRequester {
 			Jid host = account.getXmppConnection().findDiscoItemByFeature(Namespace.HTTP_UPLOAD_LEGACY);
 			requestHttpUploadLegacy(account, host, file, mime, callback);
 		} else {
-			requestP1S3(account, Jid.of(account.getServer()), file.getName(), md5, callback);
+			requestP1S3(account, account.getDomain(), file.getName(), md5, callback);
 		}
 	}
 

@@ -2205,7 +2205,7 @@ public class XmppConnectionService extends Service {
                     callback.onAccountCreated(account);
                     if (Config.X509_VERIFICATION) {
                         try {
-                            getMemorizingTrustManager().getNonInteractive(account.getJid().getDomain()).checkClientTrusted(chain, "RSA");
+                            getMemorizingTrustManager().getNonInteractive(account.getServer()).checkClientTrusted(chain, "RSA");
                         } catch (CertificateException e) {
                             callback.informUser(R.string.certificate_chain_is_not_trusted);
                         }
@@ -4160,7 +4160,7 @@ public class XmppConnectionService extends Service {
                 mucServers.addAll(account.getXmppConnection().getMucServers());
                 for (Bookmark bookmark : account.getBookmarks()) {
                     final Jid jid = bookmark.getJid();
-                    final String s = jid == null ? null : jid.getDomain();
+                    final String s = jid == null ? null : jid.getDomain().toEscapedString();
                     if (s != null) {
                         mucServers.add(s);
                     }

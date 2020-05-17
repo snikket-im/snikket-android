@@ -139,7 +139,7 @@ public class Conversation extends AbstractEntity implements Blockable, Comparabl
         if (conversation.getContact().isOwnServer()) {
             return false;
         }
-        final String contact = conversation.getJid().getDomain();
+        final String contact = conversation.getJid().getDomain().toEscapedString();
         final String account = conversation.getAccount().getServer();
         if (Config.OMEMO_EXCEPTIONS.CONTACT_DOMAINS.contains(contact) || Config.OMEMO_EXCEPTIONS.ACCOUNT_DOMAINS.contains(account)) {
             return false;
