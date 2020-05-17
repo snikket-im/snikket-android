@@ -918,6 +918,8 @@
   <string name="only_one_call_at_a_time">Du kannst immer nur einen Anruf zur gleichen Zeit machen.</string>
   <string name="return_to_ongoing_call">Zurück zum laufenden Aufruf</string>
   <string name="could_not_switch_camera">Kamera konnte nicht gewechselt werden</string>
+  <string name="add_to_favorites">Zu Favoriten hinzufügen</string>
+  <string name="remove_from_favorites">Von Favoriten entfernen</string>
   <plurals name="view_users">
     <item quantity="one">%1$d Teilnehmer anzeigen</item>
     <item quantity="other">%1$d Teilnehmer anzeigen</item>

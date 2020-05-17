@@ -918,6 +918,8 @@
   <string name="only_one_call_at_a_time">Só podes manter unha chamada en cada momento.</string>
   <string name="return_to_ongoing_call">Voltar á chamada activa</string>
   <string name="could_not_switch_camera">Non se puido activar a cámara</string>
+  <string name="add_to_favorites">Engadir a favoritas</string>
+  <string name="remove_from_favorites">Eliminar das favoritas</string>
   <plurals name="view_users">
     <item quantity="one">Ver %1$d Participante</item>
     <item quantity="other">Ver %1$d Participantes</item>
