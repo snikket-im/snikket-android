@@ -854,7 +854,7 @@ public class DatabaseBackend extends SQLiteOpenHelper {
     public List<FilePath> getRelativeFilePaths(String account, Jid jid, int limit) {
         SQLiteDatabase db = this.getReadableDatabase();
         final String SQL = "select uuid,relativeFilePath from messages where type in (1,2,5) and deleted=0 and "+Message.RELATIVE_FILE_PATH+" is not null and conversationUuid=(select uuid from conversations where accountUuid=? and (contactJid=? or contactJid like ?)) order by timeSent desc";
-        final String[] args = {account, jid.toEscapedString(), jid.toEscapedString() + "/%"};
+        final String[] args = {account, jid.toString(), jid.toString() + "/%"};
         Cursor cursor = db.rawQuery(SQL + (limit > 0 ? " limit " + String.valueOf(limit) : ""), args);
         List<FilePath> filesPaths = new ArrayList<>();
         while (cursor.moveToNext()) {
