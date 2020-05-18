@@ -451,13 +451,13 @@ public class Contact implements ListItem, Blockable {
 
 	@Override
 	public boolean isDomainBlocked() {
-		return getAccount().isBlocked(Jid.ofDomain(this.getJid().getDomain()));
+		return getAccount().isBlocked(this.getJid().getDomain());
 	}
 
 	@Override
 	public Jid getBlockedJid() {
 		if (isDomainBlocked()) {
-			return Jid.ofDomain(getJid().getDomain());
+			return getJid().getDomain();
 		} else {
 			return getJid();
 		}

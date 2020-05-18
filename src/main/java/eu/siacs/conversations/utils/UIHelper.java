@@ -520,7 +520,7 @@ public class UIHelper {
 				return ((Conversation) conversation).getMucOptions().getSelf().getName();
 			} else {
 				final Jid jid = conversation.getAccount().getJid();
-				return jid.getLocal() != null ? jid.getLocal() : Jid.ofDomain(jid.getDomain()).toString();
+				return jid.getLocal() != null ? jid.getLocal() : jid.getDomain().toString();
 			}
 		}
 	}

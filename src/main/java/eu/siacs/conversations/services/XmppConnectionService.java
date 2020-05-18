@@ -2821,7 +2821,7 @@ public class XmppConnectionService extends Service {
                         boolean changed = false;
                         for (ListIterator<Jid> iterator = cryptoTargets.listIterator(); iterator.hasNext(); ) {
                             Jid jid = iterator.next();
-                            if (!members.contains(jid) && !members.contains(Jid.ofDomain(jid.getDomain()))) {
+                            if (!members.contains(jid) && !members.contains(jid.getDomain())) {
                                 iterator.remove();
                                 Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": removed " + jid + " from crypto targets of " + conversation.getName());
                                 changed = true;

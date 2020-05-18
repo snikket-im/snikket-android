@@ -1276,7 +1276,7 @@ public class XmppConnection implements Runnable {
     private void sendServiceDiscoveryItems(final Jid server) {
         mPendingServiceDiscoveries.incrementAndGet();
         final IqPacket iq = new IqPacket(IqPacket.TYPE.GET);
-        iq.setTo(Jid.ofDomain(server.getDomain()));
+        iq.setTo(server.getDomain());
         iq.query("http://jabber.org/protocol/disco#items");
         this.sendIqPacket(iq, (account, packet) -> {
             if (packet.getType() == IqPacket.TYPE.RESULT) {
@@ -1641,7 +1641,7 @@ public class XmppConnection implements Runnable {
 
     public Identity getServerIdentity() {
         synchronized (this.disco) {
-            ServiceDiscoveryResult result = disco.get(Jid.ofDomain(account.getJid().getDomain()));
+            ServiceDiscoveryResult result = disco.get(account.getJid().getDomain());
             if (result == null) {
                 return Identity.UNKNOWN;
             }

@@ -40,13 +40,19 @@ public class WrappedJid implements eu.siacs.conversations.xmpp.Jid {
 
     @Override
     public eu.siacs.conversations.xmpp.Jid withResource(CharSequence resource) {
+        final Localpart localpart = inner.getLocalpartOrNull();
         try {
-            return new WrappedJid(
-                    JidCreate.fullFrom(
-                            inner.getLocalpartOrThrow(),
-                            inner.getDomain(),
-                            Resourcepart.from(resource.toString())
-                    ));
+            final Resourcepart resourcepart = Resourcepart.from(resource.toString());
+            if (localpart == null) {
+                return new WrappedJid(JidCreate.domainFullFrom(inner.getDomain(),resourcepart));
+            } else {
+                return new WrappedJid(
+                        JidCreate.fullFrom(
+                                localpart,
+                                inner.getDomain(),
+                                resourcepart
+                        ));
+            }
         } catch (XmppStringprepException e) {
             throw new IllegalArgumentException(e);
         }
