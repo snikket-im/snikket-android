@@ -361,9 +361,9 @@ public class ChooseContactActivity extends AbstractSearchableListItemActivity im
         for (Account account : xmppConnectionService.getAccounts()) {
             if (account.getStatus() != Account.State.DISABLED) {
                 if (Config.DOMAIN_LOCK != null) {
-                    this.mActivatedAccounts.add(account.getJid().getLocal());
+                    this.mActivatedAccounts.add(account.getJid().getEscapedLocal());
                 } else {
-                    this.mActivatedAccounts.add(account.getJid().asBareJid().toString());
+                    this.mActivatedAccounts.add(account.getJid().asBareJid().toEscapedString());
                 }
             }
         }

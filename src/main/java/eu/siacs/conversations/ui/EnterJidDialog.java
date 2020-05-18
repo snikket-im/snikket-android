@@ -146,9 +146,9 @@ public class EnterJidDialog extends DialogFragment implements OnBackendConnected
 		}
 		try {
 			if (Config.DOMAIN_LOCK != null) {
-				accountJid = Jid.of((String) binding.account.getSelectedItem(), Config.DOMAIN_LOCK, null);
+				accountJid = Jid.ofEscaped((String) binding.account.getSelectedItem(), Config.DOMAIN_LOCK, null);
 			} else {
-				accountJid = Jid.of((String) binding.account.getSelectedItem());
+				accountJid = Jid.ofEscaped((String) binding.account.getSelectedItem());
 			}
 		} catch (final IllegalArgumentException e) {
 			return;

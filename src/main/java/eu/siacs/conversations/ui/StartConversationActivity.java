@@ -577,9 +577,9 @@ public class StartConversationActivity extends XmppActivity implements XmppConne
 			Jid jid;
 			try {
 				if (Config.DOMAIN_LOCK != null) {
-					jid = Jid.of((String) spinner.getSelectedItem(), Config.DOMAIN_LOCK, null);
+					jid = Jid.ofEscaped((String) spinner.getSelectedItem(), Config.DOMAIN_LOCK, null);
 				} else {
-					jid = Jid.of((String) spinner.getSelectedItem());
+					jid = Jid.ofEscaped((String) spinner.getSelectedItem());
 				}
 			} catch (final IllegalArgumentException e) {
 				return null;
