@@ -34,11 +34,11 @@ abstract class ScramMechanism extends SaslMechanism {
                 // Map keys are "bytesToHex(JID),bytesToHex(password),bytesToHex(salt),iterations,SASL-Mechanism".
                 // Changing any of these values forces a cache miss. `CryptoHelper.bytesToHex()'
                 // is applied to prevent commas in the strings breaking things.
-                final String[] kparts = k.split(",", 5);
+                final String[] kParts = k.split(",", 5);
                 try {
                     final byte[] saltedPassword, serverKey, clientKey;
-                    saltedPassword = hi(CryptoHelper.hexToString(kparts[1]).getBytes(),
-                            Base64.decode(CryptoHelper.hexToString(kparts[2]), Base64.DEFAULT), Integer.valueOf(kparts[3]));
+                    saltedPassword = hi(CryptoHelper.hexToString(kParts[1]).getBytes(),
+                            Base64.decode(CryptoHelper.hexToString(kParts[2]), Base64.DEFAULT), Integer.parseInt(kParts[3]));
                     serverKey = hmac(saltedPassword, SERVER_KEY_BYTES);
                     clientKey = hmac(saltedPassword, CLIENT_KEY_BYTES);
 
@@ -173,10 +173,10 @@ abstract class ScramMechanism extends SaslMechanism {
 
                 // Map keys are "bytesToHex(JID),bytesToHex(password),bytesToHex(salt),iterations,SASL-Mechanism".
                 final KeyPair keys = CACHE.get(
-                        CryptoHelper.bytesToHex(account.getJid().asBareJid().toEscapedString().getBytes()) + ","
-                                + CryptoHelper.bytesToHex(account.getPassword().getBytes()) + ","
+                        CryptoHelper.bytesToHex(CryptoHelper.saslPrep(account.getJid().asBareJid().toEscapedString()).getBytes()) + ","
+                                + CryptoHelper.bytesToHex(CryptoHelper.saslPrep(account.getPassword()).getBytes()) + ","
                                 + CryptoHelper.bytesToHex(salt.getBytes()) + ","
-                                + String.valueOf(iterationCount) + ","
+                                + iterationCount + ","
                                 + getMechanism()
                 );
                 if (keys == null) {
