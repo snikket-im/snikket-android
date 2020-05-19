@@ -1313,6 +1313,7 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
         final boolean pinned = conversation.getBooleanAttribute(Conversation.ATTRIBUTE_PINNED_ON_TOP, false);
         conversation.setAttribute(Conversation.ATTRIBUTE_PINNED_ON_TOP, !pinned);
         activity.xmppConnectionService.updateConversation(conversation);
+        activity.invalidateOptionsMenu();
     }
 
     private void checkPermissionAndTriggerAudioCall() {
