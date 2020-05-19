@@ -32,7 +32,7 @@
 
 * End-to-end encryption with [OMEMO](http://conversations.im/omemo/) or [OpenPGP](http://openpgp.org/about/)
 * Send and receive images as well as other kind of files
-* Make audio and video calls
+* Encrypted audio and video calls (DLTS-SRTP)
 * Share your location
 * Send voice messages
 * Indication when your contact has read your message
