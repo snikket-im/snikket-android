@@ -522,8 +522,8 @@ public abstract class XmppActivity extends ActionBarActivity {
 	public void switchToContactDetails(Contact contact, String messageFingerprint) {
 		Intent intent = new Intent(this, ContactDetailsActivity.class);
 		intent.setAction(ContactDetailsActivity.ACTION_VIEW_CONTACT);
-		intent.putExtra(EXTRA_ACCOUNT, contact.getAccount().getJid().asBareJid().toString());
-		intent.putExtra("contact", contact.getJid().toString());
+		intent.putExtra(EXTRA_ACCOUNT, contact.getAccount().getJid().asBareJid().toEscapedString());
+		intent.putExtra("contact", contact.getJid().toEscapedString());
 		intent.putExtra("fingerprint", messageFingerprint);
 		startActivity(intent);
 	}
@@ -538,7 +538,7 @@ public abstract class XmppActivity extends ActionBarActivity {
 
 	public void switchToAccount(Account account, boolean init, String fingerprint) {
 		Intent intent = new Intent(this, EditAccountActivity.class);
-		intent.putExtra("jid", account.getJid().asBareJid().toString());
+		intent.putExtra("jid", account.getJid().asBareJid().toEscapedString());
 		intent.putExtra("init", init);
 		if (init) {
 			intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NO_ANIMATION);

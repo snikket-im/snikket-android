@@ -165,7 +165,7 @@ public class ShareWithActivity extends XmppActivity implements XmppConnectionSer
         final Conversation conversation;
             Account account;
             try {
-                account = xmppConnectionService.findAccountByJid(Jid.of(share.account));
+                account = xmppConnectionService.findAccountByJid(Jid.ofEscaped(share.account));
             } catch (final IllegalArgumentException e) {
                 account = null;
             }

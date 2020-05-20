@@ -188,11 +188,11 @@ public class ContactDetailsActivity extends OmemoActivity implements OnAccountUp
         showInactiveOmemo = savedInstanceState != null && savedInstanceState.getBoolean("show_inactive_omemo", false);
         if (getIntent().getAction().equals(ACTION_VIEW_CONTACT)) {
             try {
-                this.accountJid = Jid.of(getIntent().getExtras().getString(EXTRA_ACCOUNT));
+                this.accountJid = Jid.ofEscaped(getIntent().getExtras().getString(EXTRA_ACCOUNT));
             } catch (final IllegalArgumentException ignored) {
             }
             try {
-                this.contactJid = Jid.of(getIntent().getExtras().getString("contact"));
+                this.contactJid = Jid.ofEscaped(getIntent().getExtras().getString("contact"));
             } catch (final IllegalArgumentException ignored) {
             }
         }

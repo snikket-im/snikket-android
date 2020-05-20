@@ -73,7 +73,7 @@ public class ChooseAccountForProfilePictureActivity extends XmppActivity {
         final Uri uri = startIntent == null ? null : startIntent.getData();
         if (uri != null) {
             Intent intent = new Intent(this, PublishProfilePictureActivity.class);
-            intent.putExtra(EXTRA_ACCOUNT, account.getJid().asBareJid().toString());
+            intent.putExtra(EXTRA_ACCOUNT, account.getJid().asBareJid().toEscapedString());
             intent.setData(uri);
             intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
             try {

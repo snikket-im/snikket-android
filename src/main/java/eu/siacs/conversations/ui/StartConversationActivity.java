@@ -1000,7 +1000,7 @@ public class StartConversationActivity extends XmppActivity implements XmppConne
 		intent.putExtra(ChooseContactActivity.EXTRA_SHOW_ENTER_JID, false);
 		intent.putExtra(ChooseContactActivity.EXTRA_SELECT_MULTIPLE, true);
 		intent.putExtra(ChooseContactActivity.EXTRA_GROUP_CHAT_NAME, name.trim());
-		intent.putExtra(ChooseContactActivity.EXTRA_ACCOUNT, account.getJid().asBareJid().toString());
+		intent.putExtra(ChooseContactActivity.EXTRA_ACCOUNT, account.getJid().asBareJid().toEscapedString());
 		intent.putExtra(ChooseContactActivity.EXTRA_TITLE_RES_ID, R.string.choose_participants);
 		startActivityForResult(intent, REQUEST_CREATE_CONFERENCE);
 	}

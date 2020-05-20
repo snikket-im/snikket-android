@@ -75,7 +75,7 @@ public class ChooseContactActivity extends AbstractSearchableListItemActivity im
         intent.putExtra(EXTRA_CONVERSATION, conversation.getUuid());
         intent.putExtra(EXTRA_SELECT_MULTIPLE, true);
         intent.putExtra(EXTRA_SHOW_ENTER_JID, true);
-        intent.putExtra(EXTRA_ACCOUNT, conversation.getAccount().getJid().asBareJid().toString());
+        intent.putExtra(EXTRA_ACCOUNT, conversation.getAccount().getJid().asBareJid().toEscapedString());
         return intent;
     }
 
@@ -321,7 +321,7 @@ public class ChooseContactActivity extends AbstractSearchableListItemActivity im
             final Intent request = getIntent();
             final Intent data = new Intent();
             data.putExtra("contact", contactJid.toString());
-            data.putExtra(EXTRA_ACCOUNT, accountJid.toString());
+            data.putExtra(EXTRA_ACCOUNT, accountJid.toEscapedString());
             data.putExtra(EXTRA_SELECT_MULTIPLE, false);
             copy(request, data);
             setResult(RESULT_OK, data);
@@ -401,7 +401,7 @@ public class ChooseContactActivity extends AbstractSearchableListItemActivity im
         data.putExtra("contact", item.getJid().toString());
         String account = request.getStringExtra(EXTRA_ACCOUNT);
         if (account == null && item instanceof Contact) {
-            account = ((Contact) item).getAccount().getJid().asBareJid().toString();
+            account = ((Contact) item).getAccount().getJid().asBareJid().toEscapedString();
         }
         data.putExtra(EXTRA_ACCOUNT, account);
         data.putExtra(EXTRA_SELECT_MULTIPLE, false);

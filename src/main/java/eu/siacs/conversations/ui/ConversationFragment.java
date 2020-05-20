@@ -772,7 +772,7 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
                 contacts[i] = targets.get(i).toString();
             }
             intent.putExtra("contacts", contacts);
-            intent.putExtra(EXTRA_ACCOUNT, conversation.getAccount().getJid().asBareJid().toString());
+            intent.putExtra(EXTRA_ACCOUNT, conversation.getAccount().getJid().asBareJid().toEscapedString());
             intent.putExtra("conversation", conversation.getUuid());
             startActivityForResult(intent, requestCode);
             return true;
