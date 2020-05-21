@@ -217,7 +217,7 @@ public class MessageGenerator extends AbstractGenerator {
         Element x = new Element("x");
         x.setAttribute("xmlns", "http://jabber.org/protocol/muc#user");
         Element invite = new Element("invite");
-        invite.setAttribute("to", contact.asBareJid().toString());
+        invite.setAttribute("to", contact.asBareJid());
         x.addChild(invite);
         packet.addChild(x);
         return packet;
