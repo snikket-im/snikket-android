@@ -870,7 +870,7 @@ public class XmppConnection implements Runnable {
             saslMechanism = new ScramSha256(tagWriter, account, mXmppConnectionService.getRNG());
         } else if (mechanisms.contains("SCRAM-SHA-1")) {
             saslMechanism = new ScramSha1(tagWriter, account, mXmppConnectionService.getRNG());
-        } else if (mechanisms.contains("PLAIN") && !account.getJid().getDomain().equals("nimbuzz.com")) {
+        } else if (mechanisms.contains("PLAIN") && !account.getJid().getDomain().toEscapedString().equals("nimbuzz.com")) {
             saslMechanism = new Plain(tagWriter, account);
         } else if (mechanisms.contains("DIGEST-MD5")) {
             saslMechanism = new DigestMd5(tagWriter, account, mXmppConnectionService.getRNG());
@@ -1155,7 +1155,7 @@ public class XmppConnection implements Runnable {
         }
         Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": starting service discovery");
         mPendingServiceDiscoveries.set(0);
-        if (smVersion == 0 || Patches.DISCO_EXCEPTIONS.contains(account.getJid().getDomain())) {
+        if (smVersion == 0 || Patches.DISCO_EXCEPTIONS.contains(account.getJid().getDomain().toEscapedString())) {
             Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": do not wait for service discovery");
             mWaitForDisco.set(false);
         } else {

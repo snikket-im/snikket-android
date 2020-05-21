@@ -409,7 +409,7 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
             if (mAccount.isOptionSet(Account.OPTION_FIXED_USERNAME)) {
                 preset = jid.asBareJid();
             } else {
-                preset = Jid.ofDomain(jid.getDomain());
+                preset = jid.getDomain();
             }
             final Intent intent = SignupUtils.getTokenRegistrationIntent(this, preset, mAccount.getKey(Account.PRE_AUTH_REGISTRATION_TOKEN));
             StartConversationActivity.addInviteUri(intent, getIntent());

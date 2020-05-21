@@ -100,7 +100,7 @@ public class UriHandlerActivity extends AppCompatActivity {
                 return;
             }
             if (xmppUri.isAction(XmppUri.ACTION_ROSTER) && "y".equals(xmppUri.getParameter("ibr"))) {
-                intent = SignupUtils.getTokenRegistrationIntent(this, Jid.ofDomain(jid.getDomain()), preauth);
+                intent = SignupUtils.getTokenRegistrationIntent(this, jid.getDomain(), preauth);
                 intent.putExtra(StartConversationActivity.EXTRA_INVITE_URI, xmppUri.toString());
                 startActivity(intent);
                 return;

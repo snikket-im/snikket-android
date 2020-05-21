@@ -2207,7 +2207,7 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
                     updateSnackBar(conversation);
                     return true;
                 case R.id.block_domain:
-                    blockable = conversation.getAccount().getRoster().getContact(Jid.ofDomain(jid.getDomain()));
+                    blockable = conversation.getAccount().getRoster().getContact(jid.getDomain());
                     break;
                 default:
                     blockable = conversation;

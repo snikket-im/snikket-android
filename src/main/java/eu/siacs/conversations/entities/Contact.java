@@ -468,7 +468,7 @@ public class Contact implements ListItem, Blockable {
 	}
 
 	boolean isOwnServer() {
-		return account.getJid().getDomain().equals(jid.asBareJid().toString());
+		return account.getJid().getDomain().equals(jid.asBareJid());
 	}
 
 	public void setCommonName(String cn) {

@@ -42,7 +42,7 @@ public abstract class AbstractParser {
 		for(Element child : element.getChildren()) {
 			if ("delay".equals(child.getName()) && "urn:xmpp:delay".equals(child.getNamespace())) {
 				final Jid f = to == null ? null : InvalidJid.getNullForInvalid(child.getAttributeAsJid("from"));
-				if (f != null && (to.asBareJid().equals(f) || to.getDomain().equals(f.toString()))) {
+				if (f != null && (to.asBareJid().equals(f) || to.getDomain().equals(f))) {
 					continue;
 				}
 				final String stamp = child.getAttribute("stamp");
