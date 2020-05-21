@@ -53,6 +53,7 @@ import javax.annotation.Nullable;
 
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.services.AppRTCAudioManager;
+import eu.siacs.conversations.services.XmppConnectionService;
 
 public class WebRTCWrapper {
 
@@ -174,6 +175,7 @@ public class WebRTCWrapper {
     private PeerConnection peerConnection = null;
     private AudioTrack localAudioTrack = null;
     private AppRTCAudioManager appRTCAudioManager = null;
+    private ToneManager toneManager = null;
     private Context context = null;
     private EglBase eglBase = null;
     private CapturerChoice capturerChoice;
@@ -206,18 +208,20 @@ public class WebRTCWrapper {
         return null;
     }
 
-    public void setup(final Context context, final AppRTCAudioManager.SpeakerPhonePreference speakerPhonePreference) throws InitializationException {
+    public void setup(final XmppConnectionService service, final AppRTCAudioManager.SpeakerPhonePreference speakerPhonePreference) throws InitializationException {
         try {
             PeerConnectionFactory.initialize(
-                    PeerConnectionFactory.InitializationOptions.builder(context).createInitializationOptions()
+                    PeerConnectionFactory.InitializationOptions.builder(service).createInitializationOptions()
             );
         } catch (final UnsatisfiedLinkError e) {
             throw new InitializationException(e);
         }
         this.eglBase = EglBase.create();
-        this.context = context;
+        this.context = service;
+        this.toneManager = service.getJingleConnectionManager().toneManager;
         mainHandler.post(() -> {
-            appRTCAudioManager = AppRTCAudioManager.create(context, speakerPhonePreference);
+            appRTCAudioManager = AppRTCAudioManager.create(service, speakerPhonePreference);
+            toneManager.setAppRtcAudioManagerHasControl(true);
             appRTCAudioManager.start(audioManagerEvents);
             eventCallback.onAudioDeviceChanged(appRTCAudioManager.getSelectedAudioDevice(), appRTCAudioManager.getAudioDevices());
         });
@@ -288,6 +292,7 @@ public class WebRTCWrapper {
             this.peerConnection = null;
         }
         if (audioManager != null) {
+            toneManager.setAppRtcAudioManagerHasControl(false);
             mainHandler.post(audioManager::stop);
         }
         this.localVideoTrack = null;
