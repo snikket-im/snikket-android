@@ -20,6 +20,7 @@ class ToneManager {
 
     private ToneState state = null;
     private ScheduledFuture<?> currentTone;
+    private ScheduledFuture<?> currentResetFuture;
     private boolean appRtcAudioManagerHasControl = false;
 
     ToneManager(final Context context) {
@@ -93,6 +94,13 @@ class ToneManager {
             case ENDING_CALL:
                 scheduleEnding();
                 break;
+            case NULL:
+                if (noResetScheduled()) {
+                    resetAudioManager();
+                }
+                break;
+            default:
+                throw new IllegalStateException("Unable to handle transition to "+state);
         }
         this.state = state;
     }
@@ -111,20 +119,24 @@ class ToneManager {
         this.currentTone = JingleConnectionManager.SCHEDULED_EXECUTOR_SERVICE.schedule(() -> {
             startTone(ToneGenerator.TONE_CDMA_CALLDROP_LITE, 375);
         }, 0, TimeUnit.SECONDS);
-        JingleConnectionManager.SCHEDULED_EXECUTOR_SERVICE.schedule(this::resetAudioManager, 375, TimeUnit.MILLISECONDS);
+        this.currentResetFuture = JingleConnectionManager.SCHEDULED_EXECUTOR_SERVICE.schedule(this::resetAudioManager, 375, TimeUnit.MILLISECONDS);
     }
 
     private void scheduleBusy() {
         this.currentTone = JingleConnectionManager.SCHEDULED_EXECUTOR_SERVICE.schedule(() -> {
             startTone(ToneGenerator.TONE_CDMA_NETWORK_BUSY, 2500);
         }, 0, TimeUnit.SECONDS);
-        JingleConnectionManager.SCHEDULED_EXECUTOR_SERVICE.schedule(this::resetAudioManager, 2500, TimeUnit.MILLISECONDS);
+        this.currentResetFuture = JingleConnectionManager.SCHEDULED_EXECUTOR_SERVICE.schedule(this::resetAudioManager, 2500, TimeUnit.MILLISECONDS);
     }
 
     private void scheduleWaitingTone() {
         this.currentTone = JingleConnectionManager.SCHEDULED_EXECUTOR_SERVICE.scheduleAtFixedRate(() -> {
             startTone(ToneGenerator.TONE_CDMA_DIAL_TONE_LITE, 750);
         }, 0, 3, TimeUnit.SECONDS);
+    }
+
+    private boolean noResetScheduled() {
+        return this.currentResetFuture == null || this.currentResetFuture.isDone();
     }
 
     private void cancelCurrentTone() {
