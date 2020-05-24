@@ -29,10 +29,13 @@
 
 package eu.siacs.conversations.utils;
 
+import com.google.common.base.Strings;
+
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.regex.Pattern;
 
+import eu.siacs.conversations.entities.Conversational;
 import eu.siacs.conversations.entities.Message;
 import eu.siacs.conversations.http.AesGcmURLStreamHandler;
 import eu.siacs.conversations.http.P1S3UrlStreamHandler;
@@ -45,7 +48,22 @@ public class MessageUtils {
 
 	public static String prepareQuote(Message message) {
 		final StringBuilder builder = new StringBuilder();
-		final String body = message.getMergedBody().toString();
+		final String body;
+		if (message.hasMeCommand()) {
+			final String nick;
+			if (message.getStatus() == Message.STATUS_RECEIVED) {
+				if (message.getConversation().getMode() == Conversational.MODE_MULTI) {
+					nick = Strings.nullToEmpty(message.getCounterpart().getResource());
+				} else {
+					nick = message.getContact().getPublicDisplayName();
+				}
+			} else {
+				nick =  UIHelper.getMessageDisplayName(message);
+			}
+			body = nick + " " + message.getBody().substring(Message.ME_COMMAND.length());
+		} else {
+			body = message.getMergedBody().toString();;
+		}
 		for (String line : body.split("\n")) {
 			if (line.length() <= 0) {
 				continue;

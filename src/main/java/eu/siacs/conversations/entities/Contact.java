@@ -143,6 +143,16 @@ public class Contact implements ListItem, Blockable {
 		}
 	}
 
+	public String getPublicDisplayName() {
+		if (!TextUtils.isEmpty(this.presenceName)) {
+			return this.presenceName;
+		} else if (jid.getLocal() != null) {
+			return JidHelper.localPartOrFallback(jid);
+		} else {
+			return jid.getDomain().toEscapedString();
+		}
+	}
+
 	public String getProfilePhoto() {
 		return this.photoUri;
 	}
