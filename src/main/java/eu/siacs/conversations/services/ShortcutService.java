@@ -20,7 +20,7 @@ import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.entities.Contact;
 import eu.siacs.conversations.ui.StartConversationActivity;
 import eu.siacs.conversations.utils.ReplacingSerialSingleThreadExecutor;
-import rocks.xmpp.addr.Jid;
+import eu.siacs.conversations.xmpp.Jid;
 
 public class ShortcutService {
 
@@ -116,13 +116,13 @@ public class ShortcutService {
     }
 
     private static String getShortcutId(Contact contact) {
-        return contact.getAccount().getJid().asBareJid().toString()+"#"+contact.getJid().asBareJid().toString();
+        return contact.getAccount().getJid().asBareJid().toEscapedString()+"#"+contact.getJid().asBareJid().toEscapedString();
     }
 
     private Intent getShortcutIntent(Contact contact) {
         Intent intent = new Intent(xmppConnectionService, StartConversationActivity.class);
         intent.setAction(Intent.ACTION_VIEW);
-        intent.setData(Uri.parse("xmpp:"+contact.getJid().asBareJid().toString()));
+        intent.setData(Uri.parse("xmpp:"+contact.getJid().asBareJid().toEscapedString()));
         intent.putExtra("account",contact.getAccount().getJid().asBareJid().toString());
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP| Intent.FLAG_ACTIVITY_SINGLE_TOP);
         return intent;

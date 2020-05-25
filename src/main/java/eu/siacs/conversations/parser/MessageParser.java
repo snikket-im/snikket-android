@@ -48,7 +48,7 @@ import eu.siacs.conversations.xmpp.jingle.JingleConnectionManager;
 import eu.siacs.conversations.xmpp.jingle.JingleRtpConnection;
 import eu.siacs.conversations.xmpp.pep.Avatar;
 import eu.siacs.conversations.xmpp.stanzas.MessagePacket;
-import rocks.xmpp.addr.Jid;
+import eu.siacs.conversations.xmpp.Jid;
 
 public class MessageParser extends AbstractParser implements OnMessagePacketReceived {
 
@@ -452,7 +452,7 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
         }
 
         if ((body != null || pgpEncrypted != null || (axolotlEncrypted != null && axolotlEncrypted.hasChild("payload")) || oobUrl != null || xP1S3 != null) && !isMucStatusMessage) {
-            final boolean conversationIsProbablyMuc = isTypeGroupChat || mucUserElement != null || account.getXmppConnection().getMucServersWithholdAccount().contains(counterpart.getDomain());
+            final boolean conversationIsProbablyMuc = isTypeGroupChat || mucUserElement != null || account.getXmppConnection().getMucServersWithholdAccount().contains(counterpart.getDomain().toEscapedString());
             final Conversation conversation = mXmppConnectionService.findOrCreateConversation(account, counterpart.asBareJid(), conversationIsProbablyMuc, false, query, false);
             final boolean conversationMultiMode = conversation.getMode() == Conversation.MODE_MULTI;
 
@@ -837,13 +837,13 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
                     if (Namespace.JINGLE_MESSAGE.equals(child.getNamespace()) && JINGLE_MESSAGE_ELEMENT_NAMES.contains(child.getName())) {
                         final String action = child.getName();
                         if (query == null) {
-                            if (!account.getJid().asBareJid().equals(from.asBareJid())) {
-                                processMessageReceipts(account, packet, query);
-                            }
                             if (serverMsgId == null) {
                                 serverMsgId = extractStanzaId(account, packet);
                             }
                             mXmppConnectionService.getJingleConnectionManager().deliverMessage(account, packet.getTo(), packet.getFrom(), child, remoteMsgId, serverMsgId, timestamp);
+                            if (!account.getJid().asBareJid().equals(from.asBareJid())) {
+                                processMessageReceipts(account, packet, query);
+                            }
                         } else if (query.isCatchup()) {
                             final String sessionId = child.getAttribute("id");
                             if (sessionId == null) {

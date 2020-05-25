@@ -23,7 +23,7 @@ import eu.siacs.conversations.xmpp.jingle.JingleConnectionManager;
 import eu.siacs.conversations.xmpp.jingle.JingleRtpConnection;
 import eu.siacs.conversations.xmpp.jingle.Media;
 import eu.siacs.conversations.xmpp.stanzas.MessagePacket;
-import rocks.xmpp.addr.Jid;
+import eu.siacs.conversations.xmpp.Jid;
 
 public class MessageGenerator extends AbstractGenerator {
     private static final String OMEMO_FALLBACK_MESSAGE = "I sent you an OMEMO encrypted message but your client doesn’t seem to support that. Find more information on https://conversations.im/omemo";
@@ -198,7 +198,7 @@ public class MessageGenerator extends AbstractGenerator {
         packet.setTo(contact);
         packet.setFrom(conversation.getAccount().getJid());
         Element x = packet.addChild("x", "jabber:x:conference");
-        x.setAttribute("jid", conversation.getJid().asBareJid().toString());
+        x.setAttribute("jid", conversation.getJid().asBareJid());
         String password = conversation.getMucOptions().getPassword();
         if (password != null) {
             x.setAttribute("password", password);
@@ -217,7 +217,7 @@ public class MessageGenerator extends AbstractGenerator {
         Element x = new Element("x");
         x.setAttribute("xmlns", "http://jabber.org/protocol/muc#user");
         Element invite = new Element("invite");
-        invite.setAttribute("to", contact.asBareJid().toString());
+        invite.setAttribute("to", contact.asBareJid());
         x.addChild(invite);
         packet.addChild(x);
         return packet;

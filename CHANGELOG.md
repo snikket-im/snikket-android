@@ -1,5 +1,10 @@
 # Changelog
 
+### Version 2.8.4
+
+* Rework Login with certificate UI
+* Add ability to pin chats on top (add to favorites)
+
 ### Version 2.8.3
 
 * Move call icon to the left in order to keep other toolbar icons in a consistent place

@@ -469,9 +469,8 @@
   <string name="pref_show_connection_options">Impostazioni estese di connessione</string>
   <string name="pref_show_connection_options_summary">Mostra nome host e impostazioni della porta quando configuri un account</string>
   <string name="hostname_example">xmpp.esempio.it</string>
-  <string name="action_add_account_with_certificate">Aggiungi account con certificato</string>
+  <string name="action_add_account_with_certificate">Accedi con certificato</string>
   <string name="unable_to_parse_certificate">Impossibile analizzare il certificato</string>
-  <string name="authenticate_with_certificate">Lasciare vuoto per autenticarsi con certificato</string>
   <string name="mam_prefs">Preferenze di archiviazione</string>
   <string name="server_side_mam_prefs">Preferenze di archiviazione lato server</string>
   <string name="fetching_mam_prefs">Raccolta preferenze di archiviazione. Attendere prego...</string>
@@ -898,6 +897,7 @@
   <string name="rtp_state_ending_call">Chiusura chiamata</string>
   <string name="answer_call">Rispondi</string>
   <string name="dismiss_call">Rifiuta</string>
+  <string name="rtp_state_finding_device">Individuazione dispositivi</string>
   <string name="rtp_state_ringing">Sta squillando</string>
   <string name="rtp_state_declined_or_busy">Occupato</string>
   <string name="rtp_state_connectivity_error">Impossibile connettere la chiamata</string>
@@ -918,6 +918,8 @@
   <string name="only_one_call_at_a_time">Puoi fare solo una chiamata alla volta.</string>
   <string name="return_to_ongoing_call">Torna alla chiamata in corso</string>
   <string name="could_not_switch_camera">Impossibile cambiare fotocamera</string>
+  <string name="add_to_favorites">Aggiungi ai preferiti</string>
+  <string name="remove_from_favorites">Rimuovi dai preferiti</string>
   <plurals name="view_users">
     <item quantity="one">Vedi %1$d partecipante</item>
     <item quantity="other">Vedi %1$d partecipanti</item>

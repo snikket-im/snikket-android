@@ -38,7 +38,7 @@ import eu.siacs.conversations.ui.util.PendingItem;
 import eu.siacs.conversations.ui.util.SoftKeyboardUtils;
 import eu.siacs.conversations.ui.util.StyledAttributes;
 import eu.siacs.conversations.utils.AccountUtils;
-import rocks.xmpp.addr.Jid;
+import eu.siacs.conversations.xmpp.Jid;
 
 public class ChannelDiscoveryActivity extends XmppActivity implements MenuItem.OnActionExpandListener, TextView.OnEditorActionListener, ChannelDiscoveryService.OnChannelSearchResultsFound, ChannelSearchResultAdapter.OnChannelSearchResultSelected {
 
@@ -263,7 +263,7 @@ public class ChannelDiscoveryActivity extends XmppActivity implements MenuItem.O
     }
 
     public void joinChannelSearchResult(String selectedAccount, Room result) {
-        final Jid jid = Config.DOMAIN_LOCK == null ? Jid.of(selectedAccount) : Jid.of(selectedAccount, Config.DOMAIN_LOCK, null);
+        final Jid jid = Config.DOMAIN_LOCK == null ? Jid.ofEscaped(selectedAccount) : Jid.ofEscaped(selectedAccount, Config.DOMAIN_LOCK, null);
         final boolean syncAutoJoin = getBooleanPreference("autojoin", R.bool.autojoin);
         final Account account = xmppConnectionService.findAccountByJid(jid);
         final Conversation conversation = xmppConnectionService.findOrCreateConversation(account, result.getRoom(), true, true, true);

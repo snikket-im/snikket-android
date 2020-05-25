@@ -56,6 +56,7 @@ import com.google.common.base.Optional;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -123,7 +124,7 @@ import eu.siacs.conversations.xmpp.jingle.JingleFileTransferConnection;
 import eu.siacs.conversations.xmpp.jingle.Media;
 import eu.siacs.conversations.xmpp.jingle.OngoingRtpSession;
 import eu.siacs.conversations.xmpp.jingle.RtpCapability;
-import rocks.xmpp.addr.Jid;
+import eu.siacs.conversations.xmpp.Jid;
 
 import static eu.siacs.conversations.ui.XmppActivity.EXTRA_ACCOUNT;
 import static eu.siacs.conversations.ui.XmppActivity.REQUEST_INVITE_TO_CONVERSATION;
@@ -771,7 +772,7 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
                 contacts[i] = targets.get(i).toString();
             }
             intent.putExtra("contacts", contacts);
-            intent.putExtra(EXTRA_ACCOUNT, conversation.getAccount().getJid().asBareJid().toString());
+            intent.putExtra(EXTRA_ACCOUNT, conversation.getAccount().getJid().asBareJid().toEscapedString());
             intent.putExtra("conversation", conversation.getUuid());
             startActivityForResult(intent, requestCode);
             return true;
@@ -863,13 +864,13 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
     }
 
     private void commitAttachments() {
-        if (!hasPermissions(REQUEST_COMMIT_ATTACHMENTS, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+        final List<Attachment> attachments = mediaPreviewAdapter.getAttachments();
+        if (anyNeedsExternalStoragePermission(attachments) && !hasPermissions(REQUEST_COMMIT_ATTACHMENTS, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
             return;
         }
         if (conversation.getNextEncryption() == Message.ENCRYPTION_AXOLOTL && trustKeysIfNeeded(REQUEST_TRUST_KEYS_ATTACHMENTS)) {
             return;
         }
-        final List<Attachment> attachments = mediaPreviewAdapter.getAttachments();
         final PresenceSelector.OnPresenceSelected callback = () -> {
             for (Iterator<Attachment> i = attachments.iterator(); i.hasNext(); i.remove()) {
                 final Attachment attachment = i.next();
@@ -894,6 +895,16 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
         } else {
             activity.selectPresence(conversation, callback);
         }
+    }
+
+
+    private static boolean anyNeedsExternalStoragePermission(final Collection<Attachment> attachments) {
+        for(final Attachment attachment : attachments) {
+            if (attachment.getType() != Attachment.Type.LOCATION) {
+                return true;
+            }
+        }
+        return false;
     }
 
     public void toggleInputMethod() {
@@ -962,6 +973,7 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
         final MenuItem menuCall = menu.findItem(R.id.action_call);
         final MenuItem menuOngoingCall = menu.findItem(R.id.action_ongoing_call);
         final MenuItem menuVideoCall = menu.findItem(R.id.action_video_call);
+        final MenuItem menuTogglePinned = menu.findItem(R.id.action_toggle_pinned);
 
 
         if (conversation != null) {
@@ -994,6 +1006,11 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
             }
             ConversationMenuConfigurator.configureAttachmentMenu(conversation, menu);
             ConversationMenuConfigurator.configureEncryptionMenu(conversation, menu);
+            if (conversation.getBooleanAttribute(Conversation.ATTRIBUTE_PINNED_ON_TOP, false)) {
+                menuTogglePinned.setTitle(R.string.remove_from_favorites);
+            } else {
+                menuTogglePinned.setTitle(R.string.add_to_favorites);
+            }
         }
         super.onCreateOptionsMenu(menu, menuInflater);
     }
@@ -1261,6 +1278,9 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
             case R.id.action_ongoing_call:
                 returnToOngoingCall();
                 break;
+            case R.id.action_toggle_pinned:
+                togglePinned();
+                break;
             default:
                 break;
         }
@@ -1287,6 +1307,13 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
             startActivity(intent);
         }
 
+    }
+
+    private void togglePinned() {
+        final boolean pinned = conversation.getBooleanAttribute(Conversation.ATTRIBUTE_PINNED_ON_TOP, false);
+        conversation.setAttribute(Conversation.ATTRIBUTE_PINNED_ON_TOP, !pinned);
+        activity.xmppConnectionService.updateConversation(conversation);
+        activity.invalidateOptionsMenu();
     }
 
     private void checkPermissionAndTriggerAudioCall() {
@@ -2180,7 +2207,7 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
                     updateSnackBar(conversation);
                     return true;
                 case R.id.block_domain:
-                    blockable = conversation.getAccount().getRoster().getContact(Jid.ofDomain(jid.getDomain()));
+                    blockable = conversation.getAccount().getRoster().getContact(jid.getDomain());
                     break;
                 default:
                     blockable = conversation;

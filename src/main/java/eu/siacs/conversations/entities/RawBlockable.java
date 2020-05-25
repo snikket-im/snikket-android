@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Locale;
 
 import eu.siacs.conversations.utils.UIHelper;
-import rocks.xmpp.addr.Jid;
+import eu.siacs.conversations.xmpp.Jid;
 
 public class RawBlockable implements ListItem, Blockable {
 

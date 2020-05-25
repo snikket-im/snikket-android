@@ -26,7 +26,7 @@ import eu.siacs.conversations.services.AvatarService;
 import eu.siacs.conversations.services.ImportBackupService;
 import eu.siacs.conversations.utils.BackupFileHeader;
 import eu.siacs.conversations.utils.UIHelper;
-import rocks.xmpp.addr.Jid;
+import eu.siacs.conversations.xmpp.Jid;
 
 public class BackupFileAdapter extends RecyclerView.Adapter<BackupFileAdapter.BackupFileViewHolder> {
 

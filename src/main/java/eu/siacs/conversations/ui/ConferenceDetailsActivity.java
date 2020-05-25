@@ -3,7 +3,6 @@ package eu.siacs.conversations.ui;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
-import android.content.IntentSender.SendIntentException;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
@@ -23,7 +22,6 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
-import eu.siacs.conversations.crypto.PgpEngine;
 import eu.siacs.conversations.databinding.ActivityMucDetailsBinding;
 import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.entities.Bookmark;
@@ -51,7 +49,7 @@ import eu.siacs.conversations.utils.StringUtils;
 import eu.siacs.conversations.utils.StylingHelper;
 import eu.siacs.conversations.utils.XmppUri;
 import me.drakeet.support.toast.ToastCompat;
-import rocks.xmpp.addr.Jid;
+import eu.siacs.conversations.xmpp.Jid;
 
 import static eu.siacs.conversations.entities.Bookmark.printableValue;
 import static eu.siacs.conversations.utils.StringUtils.changed;
@@ -447,9 +445,9 @@ public class ConferenceDetailsActivity extends XmppActivity implements OnConvers
         final User self = mucOptions.getSelf();
         String account;
         if (Config.DOMAIN_LOCK != null) {
-            account = mConversation.getAccount().getJid().getLocal();
+            account = mConversation.getAccount().getJid().getEscapedLocal();
         } else {
-            account = mConversation.getAccount().getJid().asBareJid().toString();
+            account = mConversation.getAccount().getJid().asBareJid().toEscapedString();
         }
         setTitle(mucOptions.isPrivateAndNonAnonymous() ? R.string.action_muc_details : R.string.channel_details);
         this.binding.editMucNameButton.setVisibility((self.getAffiliation().ranks(MucOptions.Affiliation.OWNER) || mucOptions.canChangeSubject()) ? View.VISIBLE : View.GONE);
@@ -586,7 +584,7 @@ public class ConferenceDetailsActivity extends XmppActivity implements OnConvers
 
     @Override
     public void onAffiliationChangeFailed(Jid jid, int resId) {
-        displayToast(getString(resId, jid.asBareJid().toString()));
+        displayToast(getString(resId, jid.asBareJid().toEscapedString()));
     }
 
     @Override

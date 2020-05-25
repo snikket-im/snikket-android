@@ -12,7 +12,7 @@ import java.util.Map;
 import eu.siacs.conversations.xml.Element;
 import eu.siacs.conversations.xml.Namespace;
 import eu.siacs.conversations.xmpp.stanzas.IqPacket;
-import rocks.xmpp.addr.Jid;
+import eu.siacs.conversations.xmpp.Jid;
 
 public class JinglePacket extends IqPacket {
 
@@ -96,13 +96,13 @@ public class JinglePacket extends IqPacket {
     //RECOMMENDED for session-initiate, NOT RECOMMENDED otherwise
     public void setInitiator(final Jid initiator) {
         Preconditions.checkArgument(initiator.isFullJid(), "initiator should be a full JID");
-        findChild("jingle", Namespace.JINGLE).setAttribute("initiator", initiator.toEscapedString());
+        findChild("jingle", Namespace.JINGLE).setAttribute("initiator", initiator);
     }
 
     //RECOMMENDED for session-accept, NOT RECOMMENDED otherwise
     public void setResponder(Jid responder) {
         Preconditions.checkArgument(responder.isFullJid(), "responder should be a full JID");
-        findChild("jingle", Namespace.JINGLE).setAttribute("responder", responder.toEscapedString());
+        findChild("jingle", Namespace.JINGLE).setAttribute("responder", responder);
     }
 
     public Element getJingleChild(final String name) {

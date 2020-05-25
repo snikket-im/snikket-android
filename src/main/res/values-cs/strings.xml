@@ -322,8 +322,6 @@
   <string name="pref_show_connection_options">Rozšířená nastavení připojení</string>
   <string name="pref_show_connection_options_summary">Zobrazovat nastavení hostname a port  při vytváření účtu</string>
   <string name="hostname_example">xmpp.server.cz</string>
-  <string name="action_add_account_with_certificate">Přidat účet s certifikátem</string>
-  <string name="authenticate_with_certificate">Nechat prázdné pro ověření s certifikátem</string>
   <string name="mam_prefs">Nastavení archivace</string>
   <string name="server_side_mam_prefs">Nastavení archivace na serveru</string>
   <string name="fetching_mam_prefs">Získávání nastavení archivace. Chvíli strpení...</string>

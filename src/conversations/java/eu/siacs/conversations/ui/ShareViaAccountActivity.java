@@ -1,10 +1,6 @@
 package eu.siacs.conversations.ui;
 
 import android.os.Bundle;
-import android.support.v7.app.ActionBar;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 
 import java.util.ArrayList;
@@ -14,7 +10,7 @@ import eu.siacs.conversations.R;
 import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.entities.Conversation;
 import eu.siacs.conversations.ui.adapter.AccountAdapter;
-import rocks.xmpp.addr.Jid;
+import eu.siacs.conversations.xmpp.Jid;
 
 public class ShareViaAccountActivity extends XmppActivity {
     public static final String EXTRA_CONTACT = "contact";

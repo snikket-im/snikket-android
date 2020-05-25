@@ -411,8 +411,6 @@
   <string name="pref_show_connection_options">Περισσότερες ρυθμίσεις σύνδεσης</string>
   <string name="pref_show_connection_options_summary">Εμφάνιση ονόματος μηχανήματος και ρυθμίσεων πόρτας όταν δημιουργείται ένας νέος λογαριασμός</string>
   <string name="hostname_example">xmpp.example.com</string>
-  <string name="action_add_account_with_certificate">Προσθήκη λογαριασμού με πιστοποιητικό</string>
-  <string name="authenticate_with_certificate">Αφήστε κενό για ταυτοποίηση με πιστοποιητικό</string>
   <string name="mam_prefs">Επιλογές αρχειοθέτησης</string>
   <string name="server_side_mam_prefs">Επιλογές αρχειοθέτησης στον διακομιστή</string>
   <string name="fetching_mam_prefs">Μεταφόρτωση επιλογών αρχειοθέτησης. Παρακαλώ περιμένετε...</string>

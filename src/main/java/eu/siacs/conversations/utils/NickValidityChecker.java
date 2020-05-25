@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.Set;
 
 import eu.siacs.conversations.entities.Conversation;
-import rocks.xmpp.addr.Jid;
+import eu.siacs.conversations.xmpp.Jid;
 
 public class NickValidityChecker {
 

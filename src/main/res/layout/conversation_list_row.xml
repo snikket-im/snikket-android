@@ -98,12 +98,24 @@
                             android:id="@+id/notification_status"
                             android:layout_width="?attr/IconSize"
                             android:layout_height="?attr/IconSize"
-                            android:layout_toLeftOf="@+id/unread_count"
+                            android:layout_toLeftOf="@+id/pinned_on_top"
                             android:layout_alignWithParentIfMissing="true"
                             android:layout_centerVertical="true"
                             android:layout_marginLeft="4dp"
                             android:alpha="?attr/icon_alpha"
                             android:src="?attr/icon_notifications" />
+
+                        <ImageView
+                            android:visibility="visible"
+                            android:id="@+id/pinned_on_top"
+                            android:layout_width="?attr/IconSize"
+                            android:layout_height="?attr/IconSize"
+                            android:layout_toLeftOf="@+id/unread_count"
+                            android:layout_alignWithParentIfMissing="true"
+                            android:layout_centerVertical="true"
+                            android:layout_marginLeft="4dp"
+                            android:alpha="?attr/icon_alpha"
+                            android:src="?attr/icon_pinned_on_top" />
 
                         <eu.siacs.conversations.ui.widget.UnreadCountCustomView
                             android:id="@+id/unread_count"

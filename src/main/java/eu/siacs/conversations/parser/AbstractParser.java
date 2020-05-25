@@ -16,7 +16,7 @@ import eu.siacs.conversations.services.XmppConnectionService;
 import eu.siacs.conversations.xml.Element;
 import eu.siacs.conversations.xmpp.InvalidJid;
 import eu.siacs.conversations.xmpp.stanzas.AbstractStanza;
-import rocks.xmpp.addr.Jid;
+import eu.siacs.conversations.xmpp.Jid;
 
 public abstract class AbstractParser {
 
@@ -42,7 +42,7 @@ public abstract class AbstractParser {
 		for(Element child : element.getChildren()) {
 			if ("delay".equals(child.getName()) && "urn:xmpp:delay".equals(child.getNamespace())) {
 				final Jid f = to == null ? null : InvalidJid.getNullForInvalid(child.getAttributeAsJid("from"));
-				if (f != null && (to.asBareJid().equals(f) || to.getDomain().equals(f.toString()))) {
+				if (f != null && (to.asBareJid().equals(f) || to.getDomain().equals(f))) {
 					continue;
 				}
 				final String stamp = child.getAttribute("stamp");
@@ -106,7 +106,7 @@ public abstract class AbstractParser {
 
 	public static MucOptions.User parseItem(Conversation conference, Element item, Jid fullJid) {
 		final String local = conference.getJid().getLocal();
-		final String domain = conference.getJid().getDomain();
+		final String domain = conference.getJid().getDomain().toEscapedString();
 		String affiliation = item.getAttribute("affiliation");
 		String role = item.getAttribute("role");
 		String nick = item.getAttribute("nick");

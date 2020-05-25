@@ -5,7 +5,7 @@ import java.util.List;
 
 import eu.siacs.conversations.xml.Element;
 import eu.siacs.conversations.xmpp.InvalidJid;
-import rocks.xmpp.addr.Jid;
+import eu.siacs.conversations.xmpp.Jid;
 
 public class JingleCandidate {
 
@@ -127,7 +127,7 @@ public class JingleCandidate {
 		element.setAttribute("host", this.getHost());
 		element.setAttribute("port", Integer.toString(this.getPort()));
 		if (jid != null) {
-			element.setAttribute("jid", jid.toEscapedString());
+			element.setAttribute("jid", jid);
 		}
 		element.setAttribute("priority", Integer.toString(this.getPriority()));
 		if (this.getType() == TYPE_DIRECT) {

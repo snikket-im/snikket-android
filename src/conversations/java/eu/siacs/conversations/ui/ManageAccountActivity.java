@@ -14,9 +14,7 @@ import android.view.ContextMenu.ContextMenuInfo;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.AdapterView.AdapterContextMenuInfo;
-import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -34,7 +32,7 @@ import eu.siacs.conversations.services.XmppConnectionService.OnAccountUpdate;
 import eu.siacs.conversations.ui.adapter.AccountAdapter;
 import eu.siacs.conversations.ui.util.MenuDoubleTabUtil;
 import eu.siacs.conversations.xmpp.XmppConnection;
-import rocks.xmpp.addr.Jid;
+import eu.siacs.conversations.xmpp.Jid;
 
 import static eu.siacs.conversations.utils.PermissionUtils.allGranted;
 import static eu.siacs.conversations.utils.PermissionUtils.writeGranted;
@@ -87,7 +85,7 @@ public class ManageAccountActivity extends XmppActivity implements OnAccountUpda
             String jid = savedInstanceState.getString(STATE_SELECTED_ACCOUNT);
             if (jid != null) {
                 try {
-                    this.selectedAccountJid = Jid.of(jid);
+                    this.selectedAccountJid = Jid.ofEscaped(jid);
                 } catch (IllegalArgumentException e) {
                     this.selectedAccountJid = null;
                 }
@@ -113,7 +111,7 @@ public class ManageAccountActivity extends XmppActivity implements OnAccountUpda
     @Override
     public void onSaveInstanceState(final Bundle savedInstanceState) {
         if (selectedAccount != null) {
-            savedInstanceState.putString(STATE_SELECTED_ACCOUNT, selectedAccount.getJid().asBareJid().toString());
+            savedInstanceState.putString(STATE_SELECTED_ACCOUNT, selectedAccount.getJid().asBareJid().toEscapedString());
         }
         super.onSaveInstanceState(savedInstanceState);
     }
@@ -133,7 +131,7 @@ public class ManageAccountActivity extends XmppActivity implements OnAccountUpda
             menu.findItem(R.id.mgmt_account_announce_pgp).setVisible(false);
             menu.findItem(R.id.mgmt_account_publish_avatar).setVisible(false);
         }
-        menu.setHeaderTitle(this.selectedAccount.getJid().asBareJid().toString());
+        menu.setHeaderTitle(this.selectedAccount.getJid().asBareJid().toEscapedString());
     }
 
     @Override
@@ -288,7 +286,7 @@ public class ManageAccountActivity extends XmppActivity implements OnAccountUpda
     private void publishAvatar(Account account) {
         Intent intent = new Intent(getApplicationContext(),
                 PublishProfilePictureActivity.class);
-        intent.putExtra(EXTRA_ACCOUNT, account.getJid().toString());
+        intent.putExtra(EXTRA_ACCOUNT, account.getJid().asBareJid().toEscapedString());
         startActivity(intent);
     }
 
@@ -369,7 +367,7 @@ public class ManageAccountActivity extends XmppActivity implements OnAccountUpda
     }
 
     private void deleteAccount(final Account account) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        final AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle(getString(R.string.mgmt_account_are_you_sure));
         builder.setIconAttribute(android.R.attr.alertDialogIcon);
         builder.setMessage(getString(R.string.mgmt_account_delete_confirm_text));
@@ -408,15 +406,15 @@ public class ManageAccountActivity extends XmppActivity implements OnAccountUpda
     }
 
     @Override
-    public void alias(String alias) {
+    public void alias(final String alias) {
         if (alias != null) {
             xmppConnectionService.createAccountFromKey(alias, this);
         }
     }
 
     @Override
-    public void onAccountCreated(Account account) {
-        Intent intent = new Intent(this, EditAccountActivity.class);
+    public void onAccountCreated(final Account account) {
+        final Intent intent = new Intent(this, EditAccountActivity.class);
         intent.putExtra("jid", account.getJid().asBareJid().toString());
         intent.putExtra("init", true);
         startActivity(intent);

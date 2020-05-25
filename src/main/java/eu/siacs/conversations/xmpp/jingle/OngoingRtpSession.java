@@ -1,9 +1,7 @@
 package eu.siacs.conversations.xmpp.jingle;
 
-import com.google.common.base.Optional;
-
 import eu.siacs.conversations.entities.Account;
-import rocks.xmpp.addr.Jid;
+import eu.siacs.conversations.xmpp.Jid;
 
 public interface OngoingRtpSession {
     Account getAccount();

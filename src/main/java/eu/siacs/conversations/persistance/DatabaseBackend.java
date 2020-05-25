@@ -58,7 +58,7 @@ import eu.siacs.conversations.utils.MimeUtils;
 import eu.siacs.conversations.utils.Resolver;
 import eu.siacs.conversations.xmpp.InvalidJid;
 import eu.siacs.conversations.xmpp.mam.MamReference;
-import rocks.xmpp.addr.Jid;
+import eu.siacs.conversations.xmpp.Jid;
 
 public class DatabaseBackend extends SQLiteOpenHelper {
 
@@ -617,7 +617,7 @@ public class DatabaseBackend extends SQLiteOpenHelper {
                         cursor.getString(cursor.getColumnIndex(Account.USERNAME)),
                         cursor.getString(cursor.getColumnIndex(Account.SERVER)),
                         null
-                ).getDomain();
+                ).getDomain().toEscapedString();
             } catch (IllegalArgumentException ignored) {
                 Log.e(Config.LOGTAG, "Failed to migrate Account SERVER "
                         + cursor.getString(cursor.getColumnIndex(Account.SERVER))
@@ -854,7 +854,7 @@ public class DatabaseBackend extends SQLiteOpenHelper {
     public List<FilePath> getRelativeFilePaths(String account, Jid jid, int limit) {
         SQLiteDatabase db = this.getReadableDatabase();
         final String SQL = "select uuid,relativeFilePath from messages where type in (1,2,5) and deleted=0 and "+Message.RELATIVE_FILE_PATH+" is not null and conversationUuid=(select uuid from conversations where accountUuid=? and (contactJid=? or contactJid like ?)) order by timeSent desc";
-        final String[] args = {account, jid.toEscapedString(), jid.toEscapedString() + "/%"};
+        final String[] args = {account, jid.toString(), jid.toString() + "/%"};
         Cursor cursor = db.rawQuery(SQL + (limit > 0 ? " limit " + String.valueOf(limit) : ""), args);
         List<FilePath> filesPaths = new ArrayList<>();
         while (cursor.moveToNext()) {

@@ -344,8 +344,6 @@
   <string name="pref_show_connection_options">Utvidede tilkoblingsinnst.</string>
   <string name="pref_show_connection_options_summary">Vis vertsnavn og portinnstillinger når du setter opp en ny konto</string>
   <string name="hostname_example">xmpp.eksempel.no</string>
-  <string name="action_add_account_with_certificate">Legg til konto med sertifikat</string>
-  <string name="authenticate_with_certificate">La stå tom for bekreftelse med sertifikat</string>
   <string name="mam_prefs">Arkiveringsinnstillinger</string>
   <string name="server_side_mam_prefs">Arkiveringsinnstillinger på tjenersiden</string>
   <string name="fetching_mam_prefs">Henter inn arkiveringsinnstillinger. Vent…</string>

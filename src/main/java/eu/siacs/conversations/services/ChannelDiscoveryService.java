@@ -10,7 +10,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.Executors;
@@ -23,8 +22,6 @@ import eu.siacs.conversations.entities.Room;
 import eu.siacs.conversations.http.HttpConnectionManager;
 import eu.siacs.conversations.http.services.MuclumbusService;
 import eu.siacs.conversations.parser.IqParser;
-import eu.siacs.conversations.utils.LanguageUtils;
-import eu.siacs.conversations.utils.UIHelper;
 import eu.siacs.conversations.xmpp.OnIqPacketReceived;
 import eu.siacs.conversations.xmpp.XmppConnection;
 import eu.siacs.conversations.xmpp.stanzas.IqPacket;
@@ -35,7 +32,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
-import rocks.xmpp.addr.Jid;
+import eu.siacs.conversations.xmpp.Jid;
 
 public class ChannelDiscoveryService {
 
@@ -225,7 +222,7 @@ public class ChannelDiscoveryService {
                     continue;
                 }
                 for (final String mucService : xmppConnection.getMucServers()) {
-                    Jid jid = Jid.of(mucService);
+                    Jid jid = Jid.ofEscaped(mucService);
                     if (!localMucServices.containsKey(jid)) {
                         localMucServices.put(jid, account);
                     }

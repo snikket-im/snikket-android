@@ -471,9 +471,8 @@
   <string name="pref_show_connection_options">Rozszerzone ustawienia połączenia</string>
   <string name="pref_show_connection_options_summary">Pokaż nazwę hosta i ustawienia portu przy dodawaniu konta</string>
   <string name="hostname_example">xmpp.example.com</string>
-  <string name="action_add_account_with_certificate">Dodaj konto przy pomocy certyfikatu</string>
+  <string name="action_add_account_with_certificate">Zaloguj przy użyciu certyfikatu</string>
   <string name="unable_to_parse_certificate">Nie mogę odczytać certyfikatu</string>
-  <string name="authenticate_with_certificate">Pozostaw puste by autoryzować za pomocą certyfikatu</string>
   <string name="mam_prefs">Preferencje archiwizacji</string>
   <string name="server_side_mam_prefs">Preferencje archiwizacji po stronie serwera</string>
   <string name="fetching_mam_prefs">Pobieranie preferencji archiwizacji. Proszę czekać...</string>
@@ -937,6 +936,8 @@ Administrator twojego serwera będzie mógł czytać twoje wiadomości, ale moż
   <string name="only_one_call_at_a_time">Możesz mieć tylko jedno połączenie na raz.</string>
   <string name="return_to_ongoing_call">Powróć do trwającego połączenia</string>
   <string name="could_not_switch_camera">Nie można zmienić aparatu</string>
+  <string name="add_to_favorites">Dodaj do ulubionych</string>
+  <string name="remove_from_favorites">Usuń z ulubionych</string>
   <plurals name="view_users">
     <item quantity="one">Pokaż %1$d uczestnika</item>
     <item quantity="few">Pokaż %1$d uczestników</item>

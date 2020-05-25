@@ -1,15 +1,13 @@
 package eu.siacs.conversations.xml;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.List;
-import java.util.Locale;
 
 import eu.siacs.conversations.utils.XmlHelper;
 import eu.siacs.conversations.xmpp.InvalidJid;
 import eu.siacs.conversations.xmpp.stanzas.MessagePacket;
-import rocks.xmpp.addr.Jid;
+import eu.siacs.conversations.xmpp.Jid;
 
 public class Element {
 	private final String name;
@@ -122,6 +120,13 @@ public class Element {
 	public Element setAttribute(String name, String value) {
 		if (name != null && value != null) {
 			this.attributes.put(name, value);
+		}
+		return this;
+	}
+
+	public Element setAttribute(String name, Jid value) {
+		if (name != null && value != null) {
+			this.attributes.put(name, value.toEscapedString());
 		}
 		return this;
 	}

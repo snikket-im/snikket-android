@@ -376,8 +376,6 @@
   <string name="pref_show_connection_options">拡張接続設定</string>
   <string name="pref_show_connection_options_summary">アカウントを設定するときにホスト名とポートの設定を表示します</string>
   <string name="hostname_example">xmpp.example.com</string>
-  <string name="action_add_account_with_certificate">アカウントに証明書を追加</string>
-  <string name="authenticate_with_certificate">空にすると、証明書で認証します</string>
   <string name="mam_prefs">アーカイブの設定</string>
   <string name="server_side_mam_prefs">サーバーサイドのアーカイブの設定</string>
   <string name="fetching_mam_prefs">アーカイブの設定を取得しています。しばらくお待ちください…</string>

@@ -32,7 +32,7 @@ import eu.siacs.conversations.utils.CryptoHelper;
 import eu.siacs.conversations.utils.FileWriterException;
 import eu.siacs.conversations.utils.WakeLockHelper;
 import eu.siacs.conversations.xmpp.stanzas.IqPacket;
-import rocks.xmpp.addr.Jid;
+import eu.siacs.conversations.xmpp.Jid;
 
 public class HttpDownloadConnection implements Transferable {
 
@@ -265,7 +265,7 @@ public class HttpDownloadConnection implements Transferable {
         private void retrieveUrl() {
             changeStatus(STATUS_CHECKING);
             final Account account = message.getConversation().getAccount();
-            IqPacket request = mXmppConnectionService.getIqGenerator().requestP1S3Url(Jid.of(account.getJid().getDomain()), mUrl.getHost());
+            IqPacket request = mXmppConnectionService.getIqGenerator().requestP1S3Url(account.getDomain(), mUrl.getHost());
             mXmppConnectionService.sendIqPacket(message.getConversation().getAccount(), request, (a, packet) -> {
                 if (packet.getType() == IqPacket.TYPE.RESULT) {
                     String download = packet.query().getAttribute("download");

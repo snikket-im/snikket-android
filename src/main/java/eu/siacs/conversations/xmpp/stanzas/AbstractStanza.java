@@ -2,7 +2,7 @@ package eu.siacs.conversations.xmpp.stanzas;
 
 import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.xml.Element;
-import rocks.xmpp.addr.Jid;
+import eu.siacs.conversations.xmpp.Jid;
 
 public class AbstractStanza extends Element {
 
@@ -20,20 +20,20 @@ public class AbstractStanza extends Element {
 
 	public void setTo(final Jid to) {
 		if (to != null) {
-			setAttribute("to", to.toEscapedString());
+			setAttribute("to", to);
 		}
 	}
 
 	public void setFrom(final Jid from) {
 		if (from != null) {
-			setAttribute("from", from.toEscapedString());
+			setAttribute("from", from);
 		}
 	}
 
 	public boolean fromServer(final Account account) {
 		final Jid from = getFrom();
 		return from == null
-			|| from.equals(Jid.of(account.getServer()))
+			|| from.equals(account.getDomain())
 			|| from.equals(account.getJid().asBareJid())
 			|| from.equals(account.getJid());
 	}
@@ -41,7 +41,7 @@ public class AbstractStanza extends Element {
 	public boolean toServer(final Account account) {
 		final Jid to = getTo();
 		return to == null
-			|| to.equals(Jid.of(account.getServer()))
+			|| to.equals(account.getDomain())
 			|| to.equals(account.getJid().asBareJid())
 			|| to.equals(account.getJid());
 	}

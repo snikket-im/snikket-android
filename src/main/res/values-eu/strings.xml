@@ -408,8 +408,6 @@
   <string name="pref_show_connection_options">Konexioaren ezarpen luzatuak</string>
   <string name="pref_show_connection_options_summary">Ostalariaren izena eta ataka ezarpenak erakutsi kontu bat ezartzerakoan</string>
   <string name="hostname_example">xmpp.adibidea.com</string>
-  <string name="action_add_account_with_certificate">Kontua ziurtagiriarekin gehitu</string>
-  <string name="authenticate_with_certificate">Utzi hutsik ziurtagiririk gabe autentifikatzeko</string>
   <string name="mam_prefs">Artxibatze hobespenak</string>
   <string name="server_side_mam_prefs">Zerbitzariaren aldeko artxibatze hobespenak</string>
   <string name="fetching_mam_prefs">Artxibatze hobespenak eskuratzen. Mesedez itxaron...</string>

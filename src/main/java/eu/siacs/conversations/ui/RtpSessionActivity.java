@@ -54,7 +54,7 @@ import eu.siacs.conversations.xmpp.jingle.AbstractJingleConnection;
 import eu.siacs.conversations.xmpp.jingle.JingleRtpConnection;
 import eu.siacs.conversations.xmpp.jingle.Media;
 import eu.siacs.conversations.xmpp.jingle.RtpEndUserState;
-import rocks.xmpp.addr.Jid;
+import eu.siacs.conversations.xmpp.Jid;
 
 import static eu.siacs.conversations.utils.PermissionUtils.getFirstDenied;
 import static java.util.Arrays.asList;
@@ -129,7 +129,7 @@ public class RtpSessionActivity extends XmppActivity implements XmppConnectionSe
         final Intent intent = getIntent();
         final String action = intent.getAction();
         final Account account = extractAccount(intent);
-        final Jid with = Jid.of(intent.getStringExtra(EXTRA_WITH));
+        final Jid with = Jid.ofEscaped(intent.getStringExtra(EXTRA_WITH));
         final String state = intent.getStringExtra(EXTRA_LAST_REPORTED_STATE);
         if (!Intent.ACTION_VIEW.equals(action) || state == null || !END_CARD.contains(RtpEndUserState.valueOf(state))) {
             resetIntent(account, with, RtpEndUserState.RETRACTED, actionToMedia(intent.getAction()));
@@ -246,7 +246,7 @@ public class RtpSessionActivity extends XmppActivity implements XmppConnectionSe
             return;
         }
         final Account account = extractAccount(intent);
-        final Jid with = Jid.of(intent.getStringExtra(EXTRA_WITH));
+        final Jid with = Jid.ofEscaped(intent.getStringExtra(EXTRA_WITH));
         final String sessionId = intent.getStringExtra(EXTRA_SESSION_ID);
         if (sessionId != null) {
             Log.d(Config.LOGTAG, "reinitializing from onNewIntent()");
@@ -268,7 +268,7 @@ public class RtpSessionActivity extends XmppActivity implements XmppConnectionSe
         final Intent intent = getIntent();
         final String action = intent.getAction();
         final Account account = extractAccount(intent);
-        final Jid with = Jid.of(intent.getStringExtra(EXTRA_WITH));
+        final Jid with = Jid.ofEscaped(intent.getStringExtra(EXTRA_WITH));
         final String sessionId = intent.getStringExtra(EXTRA_SESSION_ID);
         if (sessionId != null) {
             if (initializeActivityWithRunningRtpSession(account, with, sessionId)) {
@@ -831,7 +831,7 @@ public class RtpSessionActivity extends XmppActivity implements XmppConnectionSe
         Log.d(Config.LOGTAG, "attempting retry");
         final Intent intent = getIntent();
         final Account account = extractAccount(intent);
-        final Jid with = Jid.of(intent.getStringExtra(EXTRA_WITH));
+        final Jid with = Jid.ofEscaped(intent.getStringExtra(EXTRA_WITH));
         final String lastAction = intent.getStringExtra(EXTRA_LAST_ACTION);
         final String action = intent.getAction();
         final Set<Media> media = actionToMedia(lastAction == null ? action : lastAction);

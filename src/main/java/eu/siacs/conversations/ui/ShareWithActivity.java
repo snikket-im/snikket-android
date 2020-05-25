@@ -12,7 +12,6 @@ import android.view.MenuItem;
 import android.widget.Toast;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import eu.siacs.conversations.Config;
@@ -21,9 +20,7 @@ import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.entities.Conversation;
 import eu.siacs.conversations.services.XmppConnectionService;
 import eu.siacs.conversations.ui.adapter.ConversationAdapter;
-import eu.siacs.conversations.ui.service.EmojiService;
-import eu.siacs.conversations.utils.GeoHelper;
-import rocks.xmpp.addr.Jid;
+import eu.siacs.conversations.xmpp.Jid;
 
 public class ShareWithActivity extends XmppActivity implements XmppConnectionService.OnConversationUpdate {
 
@@ -168,7 +165,7 @@ public class ShareWithActivity extends XmppActivity implements XmppConnectionSer
         final Conversation conversation;
             Account account;
             try {
-                account = xmppConnectionService.findAccountByJid(Jid.of(share.account));
+                account = xmppConnectionService.findAccountByJid(Jid.ofEscaped(share.account));
             } catch (final IllegalArgumentException e) {
                 account = null;
             }

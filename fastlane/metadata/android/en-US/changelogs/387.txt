@@ -1,0 +1,3 @@
+* Add ability to pin favorite chats to the top of the chat list
+* Fix echo during calls on some devices
+* Improve reliability when changing networks during calls

@@ -3,9 +3,6 @@ package eu.siacs.conversations.ui;
 import android.databinding.DataBindingUtil;
 import android.support.annotation.StringRes;
 import android.support.v7.app.AlertDialog;
-import android.text.SpannableString;
-import android.text.Spanned;
-import android.text.style.TypefaceSpan;
 import android.view.View;
 import android.widget.Toast;
 
@@ -14,7 +11,7 @@ import eu.siacs.conversations.databinding.DialogBlockContactBinding;
 import eu.siacs.conversations.entities.Blockable;
 import eu.siacs.conversations.entities.Conversation;
 import eu.siacs.conversations.ui.util.JidDialog;
-import rocks.xmpp.addr.Jid;
+import eu.siacs.conversations.xmpp.Jid;
 
 public final class BlockContactDialog {
 	public static void show(final XmppActivity xmppActivity, final Blockable blockable) {
@@ -32,9 +29,9 @@ public final class BlockContactDialog {
 			builder.setTitle(isBlocked ? R.string.action_unblock_participant : R.string.action_block_participant);
 			value = blockable.getJid().toEscapedString();
 			res = isBlocked ? R.string.unblock_contact_text : R.string.block_contact_text;
-		} else if (blockable.getJid().getLocal() == null || blockable.getAccount().isBlocked(Jid.ofDomain(blockable.getJid().getDomain()))) {
+		} else if (blockable.getJid().getLocal() == null || blockable.getAccount().isBlocked(blockable.getJid().getDomain())) {
 			builder.setTitle(isBlocked ? R.string.action_unblock_domain : R.string.action_block_domain);
-			value = Jid.ofDomain(blockable.getJid().getDomain()).toString();
+			value =blockable.getJid().getDomain().toEscapedString();
 			res = isBlocked ? R.string.unblock_domain_text : R.string.block_domain_text;
 		} else {
 			int resBlockAction = blockable instanceof Conversation && ((Conversation) blockable).isWithStranger() ? R.string.block_stranger : R.string.action_block_contact;

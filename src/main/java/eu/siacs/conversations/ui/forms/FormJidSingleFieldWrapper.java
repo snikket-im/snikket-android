@@ -7,7 +7,7 @@ import java.util.List;
 
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.xmpp.forms.Field;
-import rocks.xmpp.addr.Jid;
+import eu.siacs.conversations.xmpp.Jid;
 
 public class FormJidSingleFieldWrapper extends FormTextFieldWrapper {
 

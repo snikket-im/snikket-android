@@ -120,4 +120,10 @@
         android:orderInCategory="71"
         android:title="@string/enable_notifications"
         app:showAsAction="never" />
+
+    <item
+        android:id="@+id/action_toggle_pinned"
+        android:orderInCategory="72"
+        android:title="@string/add_to_favorites"
+        app:showAsAction="never"/>
 </menu>

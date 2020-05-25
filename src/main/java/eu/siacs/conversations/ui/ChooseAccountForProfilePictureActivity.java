@@ -3,7 +3,6 @@ package eu.siacs.conversations.ui;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.v7.app.ActionBar;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -12,9 +11,7 @@ import java.util.List;
 
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.entities.Account;
-import eu.siacs.conversations.entities.Conversation;
 import eu.siacs.conversations.ui.adapter.AccountAdapter;
-import rocks.xmpp.addr.Jid;
 
 public class ChooseAccountForProfilePictureActivity extends XmppActivity {
 
@@ -76,7 +73,7 @@ public class ChooseAccountForProfilePictureActivity extends XmppActivity {
         final Uri uri = startIntent == null ? null : startIntent.getData();
         if (uri != null) {
             Intent intent = new Intent(this, PublishProfilePictureActivity.class);
-            intent.putExtra(EXTRA_ACCOUNT, account.getJid().asBareJid().toString());
+            intent.putExtra(EXTRA_ACCOUNT, account.getJid().asBareJid().toEscapedString());
             intent.setData(uri);
             intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
             try {

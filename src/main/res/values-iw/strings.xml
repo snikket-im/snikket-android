@@ -268,8 +268,6 @@
   <string name="server_info_broken">לא עובד</string>
   <string name="pref_away_when_screen_off">העבר למצב \"לא נמצא\" כאשר המסך כבוי</string>
   <string name="pref_away_when_screen_off_summary">מעביר את המכשיר לסטטוס \"לא נמצא\" כאשר המסך כבוי</string>
-  <string name="action_add_account_with_certificate">הוסף חשבון עם תעודה</string>
-  <string name="authenticate_with_certificate">השאר ריק כדי להזדהות בלי תעודה</string>
   <string name="action_renew_certificate">חידוש תעודה</string>
   <string name="error_fetching_omemo_key">שגיאה בתפיסת OMEMO!</string>
   <string name="pref_use_tor">התחבר דרך Tor</string>

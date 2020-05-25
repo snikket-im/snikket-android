@@ -8,7 +8,6 @@ import android.util.Log;
 
 import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
-import com.google.common.base.Throwables;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Iterables;
 import com.google.common.util.concurrent.Futures;
@@ -41,6 +40,8 @@ import org.webrtc.SessionDescription;
 import org.webrtc.SurfaceTextureHelper;
 import org.webrtc.VideoSource;
 import org.webrtc.VideoTrack;
+import org.webrtc.audio.JavaAudioDeviceModule;
+import org.webrtc.voiceengine.WebRtcAudioEffects;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -52,10 +53,27 @@ import javax.annotation.Nullable;
 
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.services.AppRTCAudioManager;
+import eu.siacs.conversations.services.XmppConnectionService;
 
 public class WebRTCWrapper {
 
     private static final String EXTENDED_LOGGING_TAG = WebRTCWrapper.class.getSimpleName();
+
+    //we should probably keep this in sync with: https://github.com/signalapp/Signal-Android/blob/master/app/src/main/java/org/thoughtcrime/securesms/ApplicationContext.java#L296
+    private static final Set<String> HARDWARE_AEC_BLACKLIST = new ImmutableSet.Builder<String>()
+            .add("Pixel")
+            .add("Pixel XL")
+            .add("Moto G5")
+            .add("Moto G (5S) Plus")
+            .add("Moto G4")
+            .add("TA-1053")
+            .add("Mi A1")
+            .add("Mi A2")
+            .add("E5823") // Sony z5 compact
+            .add("Redmi Note 5")
+            .add("FP2") // Fairphone FP2
+            .add("MI 5")
+            .build();
 
     private static final int CAPTURING_RESOLUTION = 1920;
     private static final int CAPTURING_MAX_FRAME_RATE = 30;
@@ -157,6 +175,7 @@ public class WebRTCWrapper {
     private PeerConnection peerConnection = null;
     private AudioTrack localAudioTrack = null;
     private AppRTCAudioManager appRTCAudioManager = null;
+    private ToneManager toneManager = null;
     private Context context = null;
     private EglBase eglBase = null;
     private CapturerChoice capturerChoice;
@@ -165,18 +184,44 @@ public class WebRTCWrapper {
         this.eventCallback = eventCallback;
     }
 
-    public void setup(final Context context, final AppRTCAudioManager.SpeakerPhonePreference speakerPhonePreference) throws InitializationException {
+    private static void dispose(final PeerConnection peerConnection) {
+        try {
+            peerConnection.dispose();
+        } catch (final IllegalStateException e) {
+            Log.e(Config.LOGTAG, "unable to dispose of peer connection", e);
+        }
+    }
+
+    @Nullable
+    private static CapturerChoice of(CameraEnumerator enumerator, final String deviceName, Set<String> availableCameras) {
+        final CameraVideoCapturer capturer = enumerator.createCapturer(deviceName, null);
+        if (capturer == null) {
+            return null;
+        }
+        final ArrayList<CameraEnumerationAndroid.CaptureFormat> choices = new ArrayList<>(enumerator.getSupportedFormats(deviceName));
+        Collections.sort(choices, (a, b) -> b.width - a.width);
+        for (final CameraEnumerationAndroid.CaptureFormat captureFormat : choices) {
+            if (captureFormat.width <= CAPTURING_RESOLUTION) {
+                return new CapturerChoice(capturer, captureFormat, availableCameras);
+            }
+        }
+        return null;
+    }
+
+    public void setup(final XmppConnectionService service, final AppRTCAudioManager.SpeakerPhonePreference speakerPhonePreference) throws InitializationException {
         try {
             PeerConnectionFactory.initialize(
-                    PeerConnectionFactory.InitializationOptions.builder(context).createInitializationOptions()
+                    PeerConnectionFactory.InitializationOptions.builder(service).createInitializationOptions()
             );
         } catch (final UnsatisfiedLinkError e) {
             throw new InitializationException(e);
         }
         this.eglBase = EglBase.create();
-        this.context = context;
+        this.context = service;
+        this.toneManager = service.getJingleConnectionManager().toneManager;
         mainHandler.post(() -> {
-            appRTCAudioManager = AppRTCAudioManager.create(context, speakerPhonePreference);
+            appRTCAudioManager = AppRTCAudioManager.create(service, speakerPhonePreference);
+            toneManager.setAppRtcAudioManagerHasControl(true);
             appRTCAudioManager.start(audioManagerEvents);
             eventCallback.onAudioDeviceChanged(appRTCAudioManager.getSelectedAudioDevice(), appRTCAudioManager.getAudioDevices());
         });
@@ -186,9 +231,15 @@ public class WebRTCWrapper {
         Preconditions.checkState(this.eglBase != null);
         Preconditions.checkNotNull(media);
         Preconditions.checkArgument(media.size() > 0, "media can not be empty when initializing peer connection");
+        final boolean setUseHardwareAcousticEchoCanceler = WebRtcAudioEffects.canUseAcousticEchoCanceler() && !HARDWARE_AEC_BLACKLIST.contains(Build.MODEL);
+        Log.d(Config.LOGTAG, String.format("setUseHardwareAcousticEchoCanceler(%s) model=%s", setUseHardwareAcousticEchoCanceler, Build.MODEL));
         PeerConnectionFactory peerConnectionFactory = PeerConnectionFactory.builder()
                 .setVideoDecoderFactory(new DefaultVideoDecoderFactory(eglBase.getEglBaseContext()))
                 .setVideoEncoderFactory(new DefaultVideoEncoderFactory(eglBase.getEglBaseContext(), true, true))
+                .setAudioDeviceModule(JavaAudioDeviceModule.builder(context)
+                        .setUseHardwareAcousticEchoCanceler(setUseHardwareAcousticEchoCanceler)
+                        .createAudioDeviceModule()
+                )
                 .createPeerConnectionFactory();
 
 
@@ -221,6 +272,7 @@ public class WebRTCWrapper {
 
         final PeerConnection.RTCConfiguration rtcConfig = new PeerConnection.RTCConfiguration(iceServers);
         rtcConfig.tcpCandidatePolicy = PeerConnection.TcpCandidatePolicy.DISABLED; //XEP-0176 doesn't support tcp
+        rtcConfig.continualGatheringPolicy = PeerConnection.ContinualGatheringPolicy.GATHER_CONTINUALLY;
         final PeerConnection peerConnection = peerConnectionFactory.createPeerConnection(rtcConfig, peerConnectionObserver);
         if (peerConnection == null) {
             throw new InitializationException("Unable to create PeerConnection");
@@ -241,6 +293,7 @@ public class WebRTCWrapper {
             this.peerConnection = null;
         }
         if (audioManager != null) {
+            toneManager.setAppRtcAudioManagerHasControl(false);
             mainHandler.post(audioManager::stop);
         }
         this.localVideoTrack = null;
@@ -255,14 +308,6 @@ public class WebRTCWrapper {
         if (eglBase != null) {
             eglBase.release();
             this.eglBase = null;
-        }
-    }
-
-    private static void dispose(final PeerConnection peerConnection) {
-        try {
-            peerConnection.dispose();
-        } catch (final IllegalStateException e) {
-            Log.e(Config.LOGTAG, "unable to dispose of peer connection", e);
         }
     }
 
@@ -467,22 +512,6 @@ public class WebRTCWrapper {
         } else {
             return Optional.fromNullable(of(enumerator, Iterables.get(deviceNames, 0), deviceNames));
         }
-    }
-
-    @Nullable
-    private static CapturerChoice of(CameraEnumerator enumerator, final String deviceName, Set<String> availableCameras) {
-        final CameraVideoCapturer capturer = enumerator.createCapturer(deviceName, null);
-        if (capturer == null) {
-            return null;
-        }
-        final ArrayList<CameraEnumerationAndroid.CaptureFormat> choices = new ArrayList<>(enumerator.getSupportedFormats(deviceName));
-        Collections.sort(choices, (a, b) -> b.width - a.width);
-        for (final CameraEnumerationAndroid.CaptureFormat captureFormat : choices) {
-            if (captureFormat.width <= CAPTURING_RESOLUTION) {
-                return new CapturerChoice(capturer, captureFormat, availableCameras);
-            }
-        }
-        return null;
     }
 
     public PeerConnection.PeerConnectionState getState() {

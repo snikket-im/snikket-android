@@ -79,7 +79,7 @@ import eu.siacs.conversations.utils.AccountUtils;
 import eu.siacs.conversations.utils.XmppUri;
 import eu.siacs.conversations.xmpp.OnUpdateBlocklist;
 import eu.siacs.conversations.xmpp.XmppConnection;
-import rocks.xmpp.addr.Jid;
+import eu.siacs.conversations.xmpp.Jid;
 
 public class StartConversationActivity extends XmppActivity implements XmppConnectionService.OnConversationUpdate, OnRosterUpdate, OnUpdateBlocklist, CreatePrivateGroupChatDialog.CreateConferenceDialogListener, JoinConferenceDialog.JoinConferenceDialogListener, SwipeRefreshLayout.OnRefreshListener, CreatePublicChannelDialog.CreatePublicChannelDialogListener {
 
@@ -577,9 +577,9 @@ public class StartConversationActivity extends XmppActivity implements XmppConne
 			Jid jid;
 			try {
 				if (Config.DOMAIN_LOCK != null) {
-					jid = Jid.of((String) spinner.getSelectedItem(), Config.DOMAIN_LOCK, null);
+					jid = Jid.ofEscaped((String) spinner.getSelectedItem(), Config.DOMAIN_LOCK, null);
 				} else {
-					jid = Jid.of((String) spinner.getSelectedItem());
+					jid = Jid.ofEscaped((String) spinner.getSelectedItem());
 				}
 			} catch (final IllegalArgumentException e) {
 				return null;
@@ -855,11 +855,11 @@ public class StartConversationActivity extends XmppActivity implements XmppConne
 				switchToConversationDoNotAppend(muc, invite.getBody());
 				return true;
 			} else {
-				showJoinConferenceDialog(invite.getJid().asBareJid().toString());
+				showJoinConferenceDialog(invite.getJid().asBareJid().toEscapedString());
 				return false;
 			}
 		} else if (contacts.size() == 0) {
-			showCreateContactDialog(invite.getJid().toString(), invite);
+			showCreateContactDialog(invite.getJid().toEscapedString(), invite);
 			return false;
 		} else if (contacts.size() == 1) {
 			Contact contact = contacts.get(0);
@@ -881,10 +881,10 @@ public class StartConversationActivity extends XmppActivity implements XmppConne
 			if (mMenuSearchView != null) {
 				mMenuSearchView.expandActionView();
 				mSearchEditText.setText("");
-				mSearchEditText.append(invite.getJid().toString());
-				filter(invite.getJid().toString());
+				mSearchEditText.append(invite.getJid().toEscapedString());
+				filter(invite.getJid().toEscapedString());
 			} else {
-				mInitialSearchValue.push(invite.getJid().toString());
+				mInitialSearchValue.push(invite.getJid().toEscapedString());
 			}
 			return true;
 		}
@@ -1000,7 +1000,7 @@ public class StartConversationActivity extends XmppActivity implements XmppConne
 		intent.putExtra(ChooseContactActivity.EXTRA_SHOW_ENTER_JID, false);
 		intent.putExtra(ChooseContactActivity.EXTRA_SELECT_MULTIPLE, true);
 		intent.putExtra(ChooseContactActivity.EXTRA_GROUP_CHAT_NAME, name.trim());
-		intent.putExtra(ChooseContactActivity.EXTRA_ACCOUNT, account.getJid().asBareJid().toString());
+		intent.putExtra(ChooseContactActivity.EXTRA_ACCOUNT, account.getJid().asBareJid().toEscapedString());
 		intent.putExtra(ChooseContactActivity.EXTRA_TITLE_RES_ID, R.string.choose_participants);
 		startActivityForResult(intent, REQUEST_CREATE_CONFERENCE);
 	}
@@ -1017,7 +1017,7 @@ public class StartConversationActivity extends XmppActivity implements XmppConne
 		final String input = jid.getText().toString();
 		Jid conferenceJid;
 		try {
-			conferenceJid = Jid.of(input);
+			conferenceJid = Jid.ofEscaped(input);
 		} catch (final IllegalArgumentException e) {
 			final XmppUri xmppUri = new XmppUri(input);
 			if (xmppUri.isValidJid() && xmppUri.isAction(XmppUri.ACTION_JOIN)) {

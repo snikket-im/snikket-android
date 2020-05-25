@@ -25,7 +25,7 @@ import eu.siacs.conversations.xmpp.InvalidJid;
 import eu.siacs.conversations.xmpp.OnPresencePacketReceived;
 import eu.siacs.conversations.xmpp.pep.Avatar;
 import eu.siacs.conversations.xmpp.stanzas.PresencePacket;
-import rocks.xmpp.addr.Jid;
+import eu.siacs.conversations.xmpp.Jid;
 
 public class PresenceParser extends AbstractParser implements
 		OnPresencePacketReceived {

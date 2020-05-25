@@ -46,7 +46,7 @@ import eu.siacs.conversations.ui.ManageAccountActivity;
 import eu.siacs.conversations.utils.BackupFileHeader;
 import eu.siacs.conversations.utils.Compatibility;
 import eu.siacs.conversations.utils.SerialSingleThreadExecutor;
-import rocks.xmpp.addr.Jid;
+import eu.siacs.conversations.xmpp.Jid;
 
 import static eu.siacs.conversations.services.ExportBackupService.CIPHERMODE;
 import static eu.siacs.conversations.services.ExportBackupService.KEYTYPE;
@@ -208,7 +208,7 @@ public class ImportBackupService extends Service {
                 }
             }
             final Jid jid = backupFileHeader.getJid();
-            Cursor countCursor = db.rawQuery("select count(messages.uuid) from messages join conversations on conversations.uuid=messages.conversationUuid join accounts on conversations.accountUuid=accounts.uuid where accounts.username=? and accounts.server=?", new String[]{jid.getEscapedLocal(), jid.getDomain()});
+            Cursor countCursor = db.rawQuery("select count(messages.uuid) from messages join conversations on conversations.uuid=messages.conversationUuid join accounts on conversations.accountUuid=accounts.uuid where accounts.username=? and accounts.server=?", new String[]{jid.getEscapedLocal(), jid.getDomain().toEscapedString()});
             countCursor.moveToFirst();
             int count = countCursor.getInt(0);
             Log.d(Config.LOGTAG, "restored " + count + " messages");

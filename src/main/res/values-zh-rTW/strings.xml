@@ -315,8 +315,6 @@
   <string name="pref_show_connection_options">高級連接設置</string>
   <string name="pref_show_connection_options_summary">註冊帳戶時顯示主機名稱和埠</string>
   <string name="hostname_example">xmpp.example.com</string>
-  <string name="action_add_account_with_certificate">使用證書添加帳戶</string>
-  <string name="authenticate_with_certificate">留空以認證 w/ 證書</string>
   <string name="mam_prefs">壓縮設置</string>
   <string name="server_side_mam_prefs">服務端壓縮設置</string>
   <string name="fetching_mam_prefs">正在獲取壓縮設置。請稍後...</string>

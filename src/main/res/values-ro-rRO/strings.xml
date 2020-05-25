@@ -470,9 +470,8 @@
   <string name="pref_show_connection_options">Opțiuni avansate conexiune</string>
   <string name="pref_show_connection_options_summary">Arată opțiunea de setare a numelui de gazdă și a portului, atunci când se configurează un cont</string>
   <string name="hostname_example">xmpp.exemplu.ro</string>
-  <string name="action_add_account_with_certificate">Adaugă un cont cu certificat</string>
+  <string name="action_add_account_with_certificate">Autentificare cu certificat</string>
   <string name="unable_to_parse_certificate">Nu s-a putut analiza certificatul</string>
-  <string name="authenticate_with_certificate">Lăsați gol pentru a autentifica cu un certificat</string>
   <string name="mam_prefs">Preferințe arhivare</string>
   <string name="server_side_mam_prefs">Preferințe arhivare pe server</string>
   <string name="fetching_mam_prefs">Se descarcă preferințe arhivare. Vă rugăm să așteptați...</string>
@@ -906,6 +905,7 @@
   <string name="rtp_state_ending_call">Se încheie apelul</string>
   <string name="answer_call">Răspunde</string>
   <string name="dismiss_call">Respinge</string>
+  <string name="rtp_state_finding_device">Descoperire dispozitive</string>
   <string name="rtp_state_ringing">Sună</string>
   <string name="rtp_state_declined_or_busy">Ocupat</string>
   <string name="rtp_state_connectivity_error">Nu s-a putut conecta apelul</string>
@@ -926,6 +926,8 @@
   <string name="only_one_call_at_a_time">Puteți avea un singur apel simultan.</string>
   <string name="return_to_ongoing_call">Reveniți la apelul în curs</string>
   <string name="could_not_switch_camera">Nu s-a putut face comutarea camerei foto</string>
+  <string name="add_to_favorites">Adaugă la favorite</string>
+  <string name="remove_from_favorites">Înlătură din favorite</string>
   <plurals name="view_users">
     <item quantity="one">Arată %1$d participant</item>
     <item quantity="few">Arată %1$d participanți</item>

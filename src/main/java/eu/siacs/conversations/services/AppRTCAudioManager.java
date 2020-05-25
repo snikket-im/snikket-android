@@ -51,7 +51,6 @@ public class AppRTCAudioManager {
     @Nullable
     private AudioManagerEvents audioManagerEvents;
     private AudioManagerState amState;
-    private int savedAudioMode = AudioManager.MODE_INVALID;
     private boolean savedIsSpeakerPhoneOn;
     private boolean savedIsMicrophoneMute;
     private boolean hasWiredHeadset;
@@ -178,21 +177,17 @@ public class AppRTCAudioManager {
     }
 
     @SuppressWarnings("deprecation")
-    // TODO(henrika): audioManager.requestAudioFocus() is deprecated.
     public void start(AudioManagerEvents audioManagerEvents) {
-        Log.d(Config.LOGTAG, "start");
+        Log.d(Config.LOGTAG, AppRTCAudioManager.class.getName() + ".start()");
         ThreadUtils.checkIsOnMainThread();
         if (amState == AudioManagerState.RUNNING) {
             Log.e(Config.LOGTAG, "AudioManager is already active");
             return;
         }
         awaitMicrophoneLatch();
-        // TODO(henrika): perhaps call new method called preInitAudio() here if UNINITIALIZED.
-        Log.d(Config.LOGTAG, "AudioManager starts...");
         this.audioManagerEvents = audioManagerEvents;
         amState = AudioManagerState.RUNNING;
         // Store current audio state so we can restore it when stop() is called.
-        savedAudioMode = audioManager.getMode();
         savedIsSpeakerPhoneOn = audioManager.isSpeakerphoneOn();
         savedIsMicrophoneMute = audioManager.isMicrophoneMute();
         hasWiredHeadset = hasWiredHeadset();
@@ -280,9 +275,8 @@ public class AppRTCAudioManager {
     }
 
     @SuppressWarnings("deprecation")
-    // TODO(henrika): audioManager.abandonAudioFocus() is deprecated.
     public void stop() {
-        Log.d(Config.LOGTAG, "stop");
+        Log.d(Config.LOGTAG, AppRTCAudioManager.class.getName() + ".stop()");
         ThreadUtils.checkIsOnMainThread();
         if (amState != AudioManagerState.RUNNING) {
             Log.e(Config.LOGTAG, "Trying to stop AudioManager in incorrect state: " + amState);
@@ -294,7 +288,7 @@ public class AppRTCAudioManager {
         // Restore previously stored audio states.
         setSpeakerphoneOn(savedIsSpeakerPhoneOn);
         setMicrophoneMute(savedIsMicrophoneMute);
-        audioManager.setMode(savedAudioMode);
+        audioManager.setMode(AudioManager.MODE_NORMAL);
         // Abandon audio focus. Gives the previous focus owner, if any, focus.
         audioManager.abandonAudioFocus(audioFocusChangeListener);
         audioFocusChangeListener = null;
@@ -304,7 +298,6 @@ public class AppRTCAudioManager {
             proximitySensor = null;
         }
         audioManagerEvents = null;
-        Log.d(Config.LOGTAG, "AudioManager stopped");
     }
 
     /**
@@ -318,11 +311,7 @@ public class AppRTCAudioManager {
                 setSpeakerphoneOn(true);
                 break;
             case EARPIECE:
-                setSpeakerphoneOn(false);
-                break;
             case WIRED_HEADSET:
-                setSpeakerphoneOn(false);
-                break;
             case BLUETOOTH:
                 setSpeakerphoneOn(false);
                 break;

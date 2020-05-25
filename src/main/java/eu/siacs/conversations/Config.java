@@ -6,7 +6,7 @@ import java.util.Collections;
 import java.util.List;
 
 import eu.siacs.conversations.xmpp.chatstate.ChatState;
-import rocks.xmpp.addr.Jid;
+import eu.siacs.conversations.xmpp.Jid;
 
 public final class Config {
     private static final int UNENCRYPTED = 1;

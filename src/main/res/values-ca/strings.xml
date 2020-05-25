@@ -375,8 +375,6 @@
   <string name="pref_show_connection_options">Configuració de connexió estesa</string>
   <string name="pref_show_connection_options_summary">Mostra el nom de la màquina i la configuració del port quan configureu un compte</string>
   <string name="hostname_example">xmpp.example.com</string>
-  <string name="action_add_account_with_certificate">Afegiu un compte amb el certificat</string>
-  <string name="authenticate_with_certificate">Deixeu-lo en blanc per autenticar amb w/ certificat</string>
   <string name="mam_prefs">Arxivant preferències</string>
   <string name="server_side_mam_prefs">Preferències d\'arxivat al servidor</string>
   <string name="fetching_mam_prefs">S\'estan obtenint les preferències d\'arxivat. Espereu…</string>

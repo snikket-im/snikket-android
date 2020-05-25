@@ -18,7 +18,7 @@ import eu.siacs.conversations.ui.adapter.MediaAdapter;
 import eu.siacs.conversations.ui.interfaces.OnMediaLoaded;
 import eu.siacs.conversations.ui.util.Attachment;
 import eu.siacs.conversations.ui.util.GridManager;
-import rocks.xmpp.addr.Jid;
+import eu.siacs.conversations.xmpp.Jid;
 
 public class MediaBrowserActivity extends XmppActivity implements OnMediaLoaded {
 
@@ -49,7 +49,7 @@ public class MediaBrowserActivity extends XmppActivity implements OnMediaLoaded 
         String account = intent == null ? null : intent.getStringExtra("account");
         String jid = intent == null ? null : intent.getStringExtra("jid");
         if (account != null && jid != null) {
-            xmppConnectionService.getAttachments(account, Jid.of(jid), 0, this);
+            xmppConnectionService.getAttachments(account, Jid.ofEscaped(jid), 0, this);
         }
     }
 

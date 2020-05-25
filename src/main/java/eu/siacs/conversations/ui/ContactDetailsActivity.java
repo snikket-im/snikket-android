@@ -60,7 +60,7 @@ import eu.siacs.conversations.xml.Namespace;
 import eu.siacs.conversations.xmpp.OnKeyStatusUpdated;
 import eu.siacs.conversations.xmpp.OnUpdateBlocklist;
 import eu.siacs.conversations.xmpp.XmppConnection;
-import rocks.xmpp.addr.Jid;
+import eu.siacs.conversations.xmpp.Jid;
 
 public class ContactDetailsActivity extends OmemoActivity implements OnAccountUpdate, OnRosterUpdate, OnUpdateBlocklist, OnKeyStatusUpdated, OnMediaLoaded {
     public static final String ACTION_VIEW_CONTACT = "view_contact";
@@ -136,7 +136,7 @@ public class ContactDetailsActivity extends OmemoActivity implements OnAccountUp
                 AlertDialog.Builder builder = new AlertDialog.Builder(
                         ContactDetailsActivity.this);
                 builder.setTitle(getString(R.string.action_add_phone_book));
-                builder.setMessage(getString(R.string.add_phone_book_text, contact.getJid().toString()));
+                builder.setMessage(getString(R.string.add_phone_book_text, contact.getJid().toEscapedString()));
                 builder.setNegativeButton(getString(R.string.cancel), null);
                 builder.setPositiveButton(getString(R.string.add), addToPhonebook);
                 builder.create().show();
@@ -188,11 +188,11 @@ public class ContactDetailsActivity extends OmemoActivity implements OnAccountUp
         showInactiveOmemo = savedInstanceState != null && savedInstanceState.getBoolean("show_inactive_omemo", false);
         if (getIntent().getAction().equals(ACTION_VIEW_CONTACT)) {
             try {
-                this.accountJid = Jid.of(getIntent().getExtras().getString(EXTRA_ACCOUNT));
+                this.accountJid = Jid.ofEscaped(getIntent().getExtras().getString(EXTRA_ACCOUNT));
             } catch (final IllegalArgumentException ignored) {
             }
             try {
-                this.contactJid = Jid.of(getIntent().getExtras().getString("contact"));
+                this.contactJid = Jid.ofEscaped(getIntent().getExtras().getString("contact"));
             } catch (final IllegalArgumentException ignored) {
             }
         }
@@ -411,9 +411,9 @@ public class ContactDetailsActivity extends OmemoActivity implements OnAccountUp
         binding.detailsContactjid.setText(IrregularUnicodeDetector.style(this, contact.getJid()));
         String account;
         if (Config.DOMAIN_LOCK != null) {
-            account = contact.getAccount().getJid().getLocal();
+            account = contact.getAccount().getJid().getEscapedLocal();
         } else {
-            account = contact.getAccount().getJid().asBareJid().toString();
+            account = contact.getAccount().getJid().asBareJid().toEscapedString();
         }
         binding.detailsAccount.setText(getString(R.string.using_account, account));
         AvatarWorkerTask.loadAvatar(contact, binding.detailsContactBadge, R.dimen.avatar_on_details_screen_size);

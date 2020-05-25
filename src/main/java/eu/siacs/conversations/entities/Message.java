@@ -27,7 +27,7 @@ import eu.siacs.conversations.utils.GeoHelper;
 import eu.siacs.conversations.utils.MessageUtils;
 import eu.siacs.conversations.utils.MimeUtils;
 import eu.siacs.conversations.utils.UIHelper;
-import rocks.xmpp.addr.Jid;
+import eu.siacs.conversations.xmpp.Jid;
 
 public class Message extends AbstractEntity implements AvatarService.Avatarable  {
 
@@ -643,8 +643,8 @@ public class Message extends AbstractEntity implements AvatarService.Avatarable 
 						!this.isOOb() &&
 						!message.treatAsDownloadable() &&
 						!this.treatAsDownloadable() &&
-						!message.getBody().startsWith(ME_COMMAND) &&
-						!this.getBody().startsWith(ME_COMMAND) &&
+						!message.hasMeCommand() &&
+						!this.hasMeCommand() &&
 						!this.bodyIsOnlyEmojis() &&
 						!message.bodyIsOnlyEmojis() &&
 						((this.axolotlFingerprint == null && message.axolotlFingerprint == null) || this.axolotlFingerprint.equals(message.getFingerprint())) &&

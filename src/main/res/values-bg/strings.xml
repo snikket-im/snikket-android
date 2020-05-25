@@ -377,8 +377,6 @@
   <string name="pref_show_connection_options">Разширени настройки за връзката</string>
   <string name="pref_show_connection_options_summary">Показване на настройките за сървър и порт при установка на профил</string>
   <string name="hostname_example">xmpp.example.com</string>
-  <string name="action_add_account_with_certificate">Добавяне на профил със сертификат</string>
-  <string name="authenticate_with_certificate">Оставете празно за удостоверяване със сертификат</string>
   <string name="mam_prefs">Настройки за архивирането</string>
   <string name="server_side_mam_prefs">Настройки за архивирането на сървъра</string>
   <string name="fetching_mam_prefs">Получаване на настройките за архивирането. Моля, изчакайте…</string>

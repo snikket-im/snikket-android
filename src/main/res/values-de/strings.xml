@@ -32,7 +32,7 @@
   <string name="minutes_ago">vor %d Minuten</string>
   <string name="x_unread_conversations">%d ungelesene Unterhaltungen</string>
   <string name="sending">senden…</string>
-  <string name="message_decrypting">Nachricht wird entschlüsselt. Bitte warten …</string>
+  <string name="message_decrypting">Nachricht wird entschlüsselt. Bitte warten…</string>
   <string name="pgp_message">OpenPGP-verschlüsselte Nachricht</string>
   <string name="nick_in_use">Nickname wird bereits verwendet</string>
   <string name="invalid_muc_nick">Ungültiger Nickname</string>
@@ -469,9 +469,8 @@
   <string name="pref_show_connection_options">Erweiterte Verbindungsoptionen</string>
   <string name="pref_show_connection_options_summary">Hostname- und Port-Optionen bei Kontoeinrichtung anzeigen</string>
   <string name="hostname_example">xmpp.domain.de</string>
-  <string name="action_add_account_with_certificate">Konto mit Zertifikat hinzufügen</string>
+  <string name="action_add_account_with_certificate">Mit Zertifikat anmelden</string>
   <string name="unable_to_parse_certificate">Zertifikat konnte nicht ausgewertet werden</string>
-  <string name="authenticate_with_certificate">Leer lassen, um mit Zertifikat anzumelden</string>
   <string name="mam_prefs">Archivierungseinstellungen</string>
   <string name="server_side_mam_prefs">Archivierungseinstellungen des Servers</string>
   <string name="fetching_mam_prefs">Archivierungseinstellungen werden abgerufen. Bitte warten…</string>
@@ -919,6 +918,8 @@
   <string name="only_one_call_at_a_time">Du kannst immer nur einen Anruf zur gleichen Zeit machen.</string>
   <string name="return_to_ongoing_call">Zurück zum laufenden Aufruf</string>
   <string name="could_not_switch_camera">Kamera konnte nicht gewechselt werden</string>
+  <string name="add_to_favorites">Zu Favoriten hinzufügen</string>
+  <string name="remove_from_favorites">Von Favoriten entfernen</string>
   <plurals name="view_users">
     <item quantity="one">%1$d Teilnehmer anzeigen</item>
     <item quantity="other">%1$d Teilnehmer anzeigen</item>

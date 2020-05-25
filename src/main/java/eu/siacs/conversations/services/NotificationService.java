@@ -1109,7 +1109,7 @@ public class NotificationService {
             return;
         } else if (errors.size() == 1) {
             mBuilder.setContentTitle(mXmppConnectionService.getString(R.string.problem_connecting_to_account));
-            mBuilder.setContentText(errors.get(0).getJid().asBareJid().toString());
+            mBuilder.setContentText(errors.get(0).getJid().asBareJid().toEscapedString());
         } else {
             mBuilder.setContentTitle(mXmppConnectionService.getString(R.string.problem_connecting_to_accounts));
             mBuilder.setContentText(mXmppConnectionService.getString(R.string.touch_to_fix));

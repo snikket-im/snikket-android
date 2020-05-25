@@ -10,6 +10,7 @@ android:
   licenses:
     - '.+'
 before_script:
+    - mkdir libs
     - wget -O libs/libwebrtc-m81.aar http://gultsch.de/files/libwebrtc-m81.aar
 script:
     - ./gradlew assembleConversationsFreeSystemRelease

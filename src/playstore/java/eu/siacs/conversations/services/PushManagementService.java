@@ -10,15 +10,13 @@ import com.google.firebase.iid.InstanceIdResult;
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.entities.Account;
-import eu.siacs.conversations.entities.Conversation;
 import eu.siacs.conversations.utils.PhoneHelper;
 import eu.siacs.conversations.xml.Element;
 import eu.siacs.conversations.xml.Namespace;
-import eu.siacs.conversations.xmpp.OnIqPacketReceived;
+import eu.siacs.conversations.xmpp.Jid;
 import eu.siacs.conversations.xmpp.XmppConnection;
 import eu.siacs.conversations.xmpp.forms.Data;
 import eu.siacs.conversations.xmpp.stanzas.IqPacket;
-import rocks.xmpp.addr.Jid;
 
 public class PushManagementService {
 
@@ -63,18 +61,6 @@ public class PushManagementService {
         });
     }
 
-    public void unregisterChannel(final Account account, final String channel) {
-        final String androidId = PhoneHelper.getAndroidId(mXmppConnectionService);
-        final Jid appServer = getAppServer();
-        final IqPacket packet = mXmppConnectionService.getIqGenerator().unregisterChannelOnAppServer(appServer, androidId, channel);
-        mXmppConnectionService.sendIqPacket(account, packet, (a, response) -> {
-            if (response.getType() == IqPacket.TYPE.RESULT) {
-                Log.d(Config.LOGTAG,a.getJid().asBareJid()+": successfully unregistered channel");
-            } else if (response.getType() == IqPacket.TYPE.ERROR) {
-                Log.d(Config.LOGTAG, a.getJid().asBareJid()+": unable to unregister channel with hash "+channel);
-            }
-        });
-    }
     private void enablePushOnServer(final Account account, final Jid appServer, final String node, final String secret) {
         final IqPacket enable = mXmppConnectionService.getIqGenerator().enablePush(appServer, node, secret);
         mXmppConnectionService.sendIqPacket(account, enable, (a, p) -> {

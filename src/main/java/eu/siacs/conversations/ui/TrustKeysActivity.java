@@ -38,7 +38,7 @@ import eu.siacs.conversations.utils.CryptoHelper;
 import eu.siacs.conversations.utils.IrregularUnicodeDetector;
 import eu.siacs.conversations.utils.XmppUri;
 import eu.siacs.conversations.xmpp.OnKeyStatusUpdated;
-import rocks.xmpp.addr.Jid;
+import eu.siacs.conversations.xmpp.Jid;
 
 
 public class TrustKeysActivity extends OmemoActivity implements OnKeyStatusUpdated {
@@ -213,7 +213,7 @@ public class TrustKeysActivity extends OmemoActivity implements OnKeyStatusUpdat
 			showCameraToast();
 		}
 
-		binding.ownKeysTitle.setText(mAccount.getJid().asBareJid().toString());
+		binding.ownKeysTitle.setText(mAccount.getJid().asBareJid().toEscapedString());
 		binding.ownKeysCard.setVisibility(hasOwnKeys ? View.VISIBLE : View.GONE);
 		binding.foreignKeys.setVisibility(hasForeignKeys ? View.VISIBLE : View.GONE);
 		if (hasPendingKeyFetches()) {
