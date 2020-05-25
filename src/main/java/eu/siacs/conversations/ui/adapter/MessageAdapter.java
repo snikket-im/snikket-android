@@ -75,8 +75,8 @@ import eu.siacs.conversations.utils.MessageUtils;
 import eu.siacs.conversations.utils.StylingHelper;
 import eu.siacs.conversations.utils.TimeFrameUtils;
 import eu.siacs.conversations.utils.UIHelper;
-import eu.siacs.conversations.xmpp.mam.MamReference;
 import eu.siacs.conversations.xmpp.Jid;
+import eu.siacs.conversations.xmpp.mam.MamReference;
 
 public class MessageAdapter extends ArrayAdapter<Message> implements CopyTextView.CopyHandler {
 
@@ -117,6 +117,10 @@ public class MessageAdapter extends ArrayAdapter<Message> implements CopyTextVie
 
     public void flagScreenOff() {
         activity.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+    }
+
+    public void setVolumeControl(final int stream) {
+        activity.setVolumeControlStream(stream);
     }
 
     public void setOnContactPictureClicked(OnContactPictureClicked listener) {

@@ -363,12 +363,13 @@ public class AudioPlayer implements View.OnClickListener, MediaPlayer.OnCompleti
         if (AudioPlayer.player == null || !AudioPlayer.player.isPlaying()) {
             return;
         }
-        int streamType;
+        final int streamType;
         if (event.values[0] < 5f && event.values[0] != proximitySensor.getMaximumRange()) {
             streamType = AudioManager.STREAM_VOICE_CALL;
         } else {
             streamType = AudioManager.STREAM_MUSIC;
         }
+        messageAdapter.setVolumeControl(streamType);
         double position = AudioPlayer.player.getCurrentPosition();
         double duration = AudioPlayer.player.getDuration();
         double progress = position / duration;
@@ -407,6 +408,7 @@ public class AudioPlayer implements View.OnClickListener, MediaPlayer.OnCompleti
                 wakeLock.release();
             }
         }
+        messageAdapter.setVolumeControl(AudioManager.STREAM_MUSIC);
     }
 
     private ViewHolder getCurrentViewHolder() {
