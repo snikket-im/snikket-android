@@ -469,6 +469,7 @@
   <string name="pref_show_connection_options">Paramètres de connexion avancés</string>
   <string name="pref_show_connection_options_summary">Montrer le nom d\'hôte et le port lors du paramétrage d\'un compte</string>
   <string name="hostname_example">xmpp.example.com</string>
+  <string name="action_add_account_with_certificate">Se connecter avec certificat</string>
   <string name="unable_to_parse_certificate">Impossible d\'analyser le certificat</string>
   <string name="mam_prefs">Paramètres d\'archivage</string>
   <string name="server_side_mam_prefs">Paramètres d\'archivage du serveur</string>
