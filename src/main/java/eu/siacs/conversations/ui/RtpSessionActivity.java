@@ -764,14 +764,14 @@ public class RtpSessionActivity extends XmppActivity implements XmppConnectionSe
             //paint local view over remote view
             binding.localVideo.setZOrderMediaOverlay(true);
             binding.localVideo.setMirror(requireRtpConnection().isFrontCamera());
-            localVideoTrack.get().addSink(binding.localVideo);
+            addSink(localVideoTrack.get(), binding.localVideo);
         } else {
             binding.localVideo.setVisibility(View.GONE);
         }
         final Optional<VideoTrack> remoteVideoTrack = getRemoteVideoTrack();
         if (remoteVideoTrack.isPresent()) {
             ensureSurfaceViewRendererIsSetup(binding.remoteVideo);
-            remoteVideoTrack.get().addSink(binding.remoteVideo);
+            addSink(remoteVideoTrack.get(), binding.remoteVideo);
             if (state == RtpEndUserState.CONNECTED) {
                 binding.appBarLayout.setVisibility(View.GONE);
                 getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
@@ -788,6 +788,14 @@ public class RtpSessionActivity extends XmppActivity implements XmppConnectionSe
             getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
             binding.remoteVideo.setVisibility(View.GONE);
             binding.pipLocalMicOffIndicator.setVisibility(View.GONE);
+        }
+    }
+
+    private static void addSink(final VideoTrack videoTrack, final SurfaceViewRenderer surfaceViewRenderer) {
+        try {
+            videoTrack.addSink(surfaceViewRenderer);
+        } catch (final IllegalStateException e) {
+            Log.e(Config.LOGTAG,"possible race condition on trying to display video track. ignoring",e);
         }
     }
 
