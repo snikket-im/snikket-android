@@ -134,7 +134,7 @@ public class JingleConnectionManager extends AbstractConnectionManager {
         }
     }
 
-    public Optional<RtpSessionProposal> findMatchingSessionProposal(final Account account, final Jid with, final Set<Media> media) {
+    private Optional<RtpSessionProposal> findMatchingSessionProposal(final Account account, final Jid with, final Set<Media> media) {
         synchronized (this.rtpSessionProposals) {
             for (Map.Entry<RtpSessionProposal, DeviceDiscoveryState> entry : this.rtpSessionProposals.entrySet()) {
                 final RtpSessionProposal proposal = entry.getKey();
@@ -446,7 +446,10 @@ public class JingleConnectionManager extends AbstractConnectionManager {
     }
 
     void finishConnection(final AbstractJingleConnection connection) {
-        this.connections.remove(connection.getId());
+        final AbstractJingleConnection.Id id = connection.getId();
+        if (this.connections.remove(id) == null) {
+            throw new IllegalStateException(String.format("Unable to finish connection with id=%s", id.toString()));
+        }
     }
 
     void getPrimaryCandidate(final Account account, final boolean initiator, final OnPrimaryCandidateFound listener) {
@@ -667,7 +670,7 @@ public class JingleConnectionManager extends AbstractConnectionManager {
         throw e;
     }
 
-    public void endSession(AbstractJingleConnection.Id id, final AbstractJingleConnection.State state) {
+    void endSession(AbstractJingleConnection.Id id, final AbstractJingleConnection.State state) {
         this.endedSessions.put(PersistableSessionId.of(id), state);
     }
 

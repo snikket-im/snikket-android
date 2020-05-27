@@ -412,12 +412,14 @@ public class RtpSessionActivity extends XmppActivity implements XmppConnectionSe
         final WeakReference<JingleRtpConnection> reference = xmppConnectionService.getJingleConnectionManager()
                 .findJingleRtpConnection(account, with, sessionId);
         if (reference == null || reference.get() == null) {
+            Log.e(Config.LOGTAG,"failed to initialize activity with running rtp session. session not found");
             finish();
             return true;
         }
         this.rtpConnectionReference = reference;
         final RtpEndUserState currentState = requireRtpConnection().getEndUserState();
         if (currentState == RtpEndUserState.ENDED) {
+            Log.e(Config.LOGTAG,"failed to initialize activity with running rtp session. session had ended");
             finish();
             return true;
         }
