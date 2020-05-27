@@ -1,5 +1,11 @@
 # Changelog
 
+### Version 2.8.5
+
+* Reduce echo during calls on some devices
+* Fix login when passwords contains special characters
+* Play dial and busy tones on speaker during video calls
+
 ### Version 2.8.4
 
 * Rework Login with certificate UI

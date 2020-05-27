@@ -77,7 +77,7 @@ dependencies {
     implementation "com.squareup.retrofit2:retrofit:2.6.4"
     implementation "com.squareup.retrofit2:converter-gson:2.6.4"
     //okhttp needs to stick with 3.12.x
-    implementation 'com.squareup.okhttp3:okhttp:3.12.10'
+    implementation 'com.squareup.okhttp3:okhttp:3.12.12'
     implementation 'com.google.guava:guava:27.1-android'
     quicksyImplementation 'io.michaelrocks:libphonenumber-android:8.11.1'
     implementation fileTree(include: ['libwebrtc-m81.aar'], dir: 'libs')
@@ -95,8 +95,8 @@ android {
     defaultConfig {
         minSdkVersion 16
         targetSdkVersion 28
-        versionCode 387
-        versionName "2.8.4"
+        versionCode 388
+        versionName "2.8.5"
         archivesBaseName += "-$versionName"
         applicationId "eu.siacs.conversations"
         resValue "string", "applicationId", applicationId
