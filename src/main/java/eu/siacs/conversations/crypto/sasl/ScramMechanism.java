@@ -195,6 +195,10 @@ abstract class ScramMechanism extends SaslMechanism {
 
                 final byte[] clientProof = new byte[keys.clientKey.length];
 
+                if (clientSignature.length < keys.clientKey.length) {
+                    throw new AuthenticationException("client signature was shorter than clientKey");
+                }
+
                 for (int i = 0; i < clientProof.length; i++) {
                     clientProof[i] = (byte) (keys.clientKey[i] ^ clientSignature[i]);
                 }
