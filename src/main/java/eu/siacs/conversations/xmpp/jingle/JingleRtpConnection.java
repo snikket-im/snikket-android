@@ -123,6 +123,7 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
     private final ArrayDeque<IceCandidate> pendingIceCandidates = new ArrayDeque<>();
     private final Message message;
     private State state = State.NULL;
+    private StateTransitionException stateTransitionException;
     private Set<Media> proposedMedia;
     private RtpContentMap initiatorRtpContentMap;
     private RtpContentMap responderRtpContentMap;
@@ -771,6 +772,13 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
         xmppConnectionService.sendIqPacket(id.account, jinglePacket.generateResponse(IqPacket.TYPE.RESULT), null);
     }
 
+    public void throwStateTransitionException() {
+        final StateTransitionException exception = this.stateTransitionException;
+        if (exception != null) {
+            throw new IllegalStateException(String.format("Transition to %s did not call finish", exception.state), exception);
+        }
+    }
+
     public RtpEndUserState getEndUserState() {
         switch (this.state) {
             case PROPOSED:
@@ -983,6 +991,7 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
         final Collection<State> validTransitions = VALID_TRANSITIONS.get(this.state);
         if (validTransitions != null && validTransitions.contains(target)) {
             this.state = target;
+            this.stateTransitionException = new StateTransitionException(target);
             if (runnable != null) {
                 runnable.run();
             }
@@ -1230,5 +1239,13 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
 
     private interface OnIceServersDiscovered {
         void onIceServersDiscovered(List<PeerConnection.IceServer> iceServers);
+    }
+
+    private static class StateTransitionException extends Exception {
+        private final State state;
+
+        private StateTransitionException(final State state) {
+            this.state = state;
+        }
     }
 }

@@ -412,14 +412,12 @@ public class RtpSessionActivity extends XmppActivity implements XmppConnectionSe
         final WeakReference<JingleRtpConnection> reference = xmppConnectionService.getJingleConnectionManager()
                 .findJingleRtpConnection(account, with, sessionId);
         if (reference == null || reference.get() == null) {
-            Log.e(Config.LOGTAG,"failed to initialize activity with running rtp session. session not found");
-            finish();
-            return true;
+            throw new IllegalStateException("failed to initialize activity with running rtp session. session not found");
         }
         this.rtpConnectionReference = reference;
         final RtpEndUserState currentState = requireRtpConnection().getEndUserState();
         if (currentState == RtpEndUserState.ENDED) {
-            Log.e(Config.LOGTAG,"failed to initialize activity with running rtp session. session had ended");
+            reference.get().throwStateTransitionException();
             finish();
             return true;
         }
@@ -795,7 +793,7 @@ public class RtpSessionActivity extends XmppActivity implements XmppConnectionSe
         try {
             videoTrack.addSink(surfaceViewRenderer);
         } catch (final IllegalStateException e) {
-            Log.e(Config.LOGTAG,"possible race condition on trying to display video track. ignoring",e);
+            Log.e(Config.LOGTAG, "possible race condition on trying to display video track. ignoring", e);
         }
     }
 
