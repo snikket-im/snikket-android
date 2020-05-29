@@ -398,7 +398,7 @@
   <string name="until_further_notice">Jusqu\'à nouvel ordre</string>
   <string name="snooze">Répéter les notifications</string>
   <string name="reply">Répondre</string>
-  <string name="mark_as_read">Marqué comme lu</string>
+  <string name="mark_as_read">Marquer comme lu</string>
   <string name="pref_input_options">Saisie</string>
   <string name="pref_enter_is_send">Touche Entrée pour envoyer</string>
   <string name="pref_enter_is_send_summary">Utiliser la touche Entrée pour envoyer un message.</string>
