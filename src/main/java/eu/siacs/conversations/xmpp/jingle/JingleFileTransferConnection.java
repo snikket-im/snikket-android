@@ -417,7 +417,7 @@ public class JingleFileTransferConnection extends AbstractJingleConnection imple
         final Jid jid = this.id.with;
         String resource = jid != null ? jid.getResource() : null;
         if (resource != null) {
-            Presence presence = this.id.account.getRoster().getContact(jid).getPresences().getPresences().get(resource);
+            Presence presence = this.id.account.getRoster().getContact(jid).getPresences().get(resource);
             ServiceDiscoveryResult result = presence != null ? presence.getServiceDiscoveryResult() : null;
             return result == null ? Collections.emptyList() : result.getFeatures();
         } else {

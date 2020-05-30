@@ -11,8 +11,16 @@ import java.util.Map;
 public class Presences {
 	private final Hashtable<String, Presence> presences = new Hashtable<>();
 
-	public Hashtable<String, Presence> getPresences() {
-		return this.presences;
+	public List<Presence> getPresences() {
+		synchronized (this.presences) {
+			return new ArrayList<>(this.presences.values());
+		}
+	}
+
+	public Presence get(String resource) {
+		synchronized (this.presences) {
+			return this.presences.get(resource);
+		}
 	}
 
 	public void updatePresence(String resource, Presence presence) {

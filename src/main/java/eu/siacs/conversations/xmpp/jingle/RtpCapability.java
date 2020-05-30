@@ -40,7 +40,7 @@ public class RtpCapability {
     public static Capability check(final Contact contact) {
         final Presences presences = contact.getPresences();
         Capability result = Capability.NONE;
-        for(Presence presence : presences.getPresences().values()) {
+        for(Presence presence : presences.getPresences()) {
             Capability capability = check(presence);
             if (capability == Capability.VIDEO) {
                 result = capability;

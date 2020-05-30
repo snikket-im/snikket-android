@@ -432,7 +432,7 @@ public class Account extends AbstractEntity implements AvatarService.Avatarable 
 
     public int activeDevicesWithRtpCapability() {
         int i = 0;
-        for(Presence presence : getSelfContact().getPresences().getPresences().values()) {
+        for(Presence presence : getSelfContact().getPresences().getPresences()) {
             if (RtpCapability.check(presence) != RtpCapability.Capability.NONE) {
                 i++;
             }

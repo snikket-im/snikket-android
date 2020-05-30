@@ -4468,8 +4468,8 @@ public class XmppConnectionService extends Service {
     }
 
     private void injectServiceDiscoveryResult(Roster roster, String hash, String ver, ServiceDiscoveryResult disco) {
-        for (Contact contact : roster.getContacts()) {
-            for (Presence presence : contact.getPresences().getPresences().values()) {
+        for (final Contact contact : roster.getContacts()) {
+            for (final Presence presence : contact.getPresences().getPresences()) {
                 if (hash.equals(presence.getHash()) && ver.equals(presence.getVer())) {
                     presence.setServiceDiscoveryResult(disco);
                 }
