@@ -62,6 +62,10 @@ public abstract class AbstractJingleConnection {
             return new Id(account, with, sessionId);
         }
 
+        public static Id of(Account account, Jid with) {
+            return new Id(account, with, JingleConnectionManager.nextRandomId());
+        }
+
         public static Id of(Message message) {
             return new Id(
                     message.getConversation().getAccount(),

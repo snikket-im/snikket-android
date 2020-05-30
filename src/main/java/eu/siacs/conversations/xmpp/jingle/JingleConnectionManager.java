@@ -11,6 +11,7 @@ import com.google.common.cache.CacheBuilder;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.ComparisonChain;
 import com.google.common.collect.ImmutableSet;
+import com.google.j2objc.annotations.Weak;
 
 import java.lang.ref.WeakReference;
 import java.security.SecureRandom;
@@ -521,6 +522,15 @@ public class JingleConnectionManager extends AbstractConnectionManager {
         final MessagePacket messagePacket = mXmppConnectionService.getMessageGenerator().sessionRetract(rtpSessionProposal);
         writeLogMissedOutgoing(account, rtpSessionProposal.with, rtpSessionProposal.sessionId, null, System.currentTimeMillis());
         mXmppConnectionService.sendMessagePacket(account, messagePacket);
+    }
+
+    public String initializeRtpSession(final Account account, final Jid with, final Set<Media> media) {
+        final AbstractJingleConnection.Id id = AbstractJingleConnection.Id.of(account, with);
+        final JingleRtpConnection rtpConnection = new JingleRtpConnection(this, id, account.getJid());
+        rtpConnection.setProposedMedia(media);
+        this.connections.put(id, rtpConnection);
+        rtpConnection.sendSessionInitiate();
+        return id.sessionId;
     }
 
     public void proposeJingleRtpSession(final Account account, final Jid with, final Set<Media> media) {

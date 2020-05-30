@@ -51,6 +51,7 @@ import eu.siacs.conversations.ui.util.AvatarWorkerTask;
 import eu.siacs.conversations.ui.util.MainThreadExecutor;
 import eu.siacs.conversations.utils.PermissionUtils;
 import eu.siacs.conversations.utils.TimeFrameUtils;
+import eu.siacs.conversations.xml.Namespace;
 import eu.siacs.conversations.xmpp.jingle.AbstractJingleConnection;
 import eu.siacs.conversations.xmpp.jingle.JingleRtpConnection;
 import eu.siacs.conversations.xmpp.jingle.Media;
@@ -306,7 +307,13 @@ public class RtpSessionActivity extends XmppActivity implements XmppConnectionSe
 
     private void proposeJingleRtpSession(final Account account, final Jid with, final Set<Media> media) {
         checkMicrophoneAvailability();
-        xmppConnectionService.getJingleConnectionManager().proposeJingleRtpSession(account, with, media);
+        if (with.isBareJid()) {
+            xmppConnectionService.getJingleConnectionManager().proposeJingleRtpSession(account, with, media);
+        } else {
+            final String sessionId = xmppConnectionService.getJingleConnectionManager().initializeRtpSession(account, with, media);
+            initializeActivityWithRunningRtpSession(account, with, sessionId);
+            resetIntent(account, with, sessionId);
+        }
         putScreenInCallMode(media);
     }
 
@@ -444,8 +451,12 @@ public class RtpSessionActivity extends XmppActivity implements XmppConnectionSe
         return false;
     }
 
-    private void reInitializeActivityWithRunningRapSession(final Account account, Jid with, String sessionId) {
+    private void reInitializeActivityWithRunningRtpSession(final Account account, Jid with, String sessionId) {
         runOnUiThread(() -> initializeActivityWithRunningRtpSession(account, with, sessionId));
+        resetIntent(account, with, sessionId);
+    }
+
+    private void resetIntent(final Account account, final Jid with, final String sessionId) {
         final Intent intent = new Intent(Intent.ACTION_VIEW);
         intent.putExtra(EXTRA_ACCOUNT, account.getJid().toEscapedString());
         intent.putExtra(EXTRA_WITH, with.toEscapedString());
@@ -838,7 +849,6 @@ public class RtpSessionActivity extends XmppActivity implements XmppConnectionSe
     }
 
     private void retry(View view) {
-        Log.d(Config.LOGTAG, "attempting retry");
         final Intent intent = getIntent();
         final Account account = extractAccount(intent);
         final Jid with = Jid.ofEscaped(intent.getStringExtra(EXTRA_WITH));
@@ -846,6 +856,7 @@ public class RtpSessionActivity extends XmppActivity implements XmppConnectionSe
         final String action = intent.getAction();
         final Set<Media> media = actionToMedia(lastAction == null ? action : lastAction);
         this.rtpConnectionReference = null;
+        Log.d(Config.LOGTAG, "attempting retry with " + with.toEscapedString());
         proposeJingleRtpSession(account, with, media);
     }
 
@@ -899,7 +910,7 @@ public class RtpSessionActivity extends XmppActivity implements XmppConnectionSe
                 return;
             }
             //this happens when going from proposed session to actual session
-            reInitializeActivityWithRunningRapSession(account, with, sessionId);
+            reInitializeActivityWithRunningRtpSession(account, with, sessionId);
             return;
         }
         final AbstractJingleConnection.Id id = requireRtpConnection().getId();
@@ -976,8 +987,12 @@ public class RtpSessionActivity extends XmppActivity implements XmppConnectionSe
 
     private void resetIntent(final Account account, Jid with, final RtpEndUserState state, final Set<Media> media) {
         final Intent intent = new Intent(Intent.ACTION_VIEW);
-        intent.putExtra(EXTRA_WITH, with.asBareJid().toEscapedString());
         intent.putExtra(EXTRA_ACCOUNT, account.getJid().toEscapedString());
+        if (account.getRoster().getContact(with).getPresences().anySupport(Namespace.JINGLE_MESSAGE)) {
+            intent.putExtra(EXTRA_WITH, with.asBareJid().toEscapedString());
+        } else {
+            intent.putExtra(EXTRA_WITH, with.toEscapedString());
+        }
         intent.putExtra(EXTRA_LAST_REPORTED_STATE, state.toString());
         intent.putExtra(EXTRA_LAST_ACTION, media.contains(Media.VIDEO) ? ACTION_MAKE_VIDEO_CALL : ACTION_MAKE_VOICE_CALL);
         setIntent(intent);

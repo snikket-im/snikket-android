@@ -640,6 +640,10 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
         }
     }
 
+    public void sendSessionInitiate() {
+        sendSessionInitiate(this.proposedMedia, State.SESSION_INITIALIZED);
+    }
+
     private void sendSessionInitiate(final Set<Media> media, final State targetState) {
         Log.d(Config.LOGTAG, id.account.getJid().asBareJid() + ": prepare session-initiate");
         discoverIceServers(iceServers -> sendSessionInitiate(media, targetState, iceServers));
@@ -781,6 +785,7 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
 
     public RtpEndUserState getEndUserState() {
         switch (this.state) {
+            case NULL:
             case PROPOSED:
             case SESSION_INITIALIZED:
                 if (isInitiator()) {
@@ -836,10 +841,19 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
     public Set<Media> getMedia() {
         final State current = getState();
         if (current == State.NULL) {
+            if (isInitiator()) {
+                return Preconditions.checkNotNull(
+                        this.proposedMedia,
+                        "RTP connection has not been initialized properly"
+                );
+            }
             throw new IllegalStateException("RTP connection has not been initialized yet");
         }
         if (Arrays.asList(State.PROPOSED, State.PROCEED).contains(current)) {
-            return Preconditions.checkNotNull(this.proposedMedia, "RTP connection has not been initialized properly");
+            return Preconditions.checkNotNull(
+                    this.proposedMedia,
+                    "RTP connection has not been initialized properly"
+            );
         }
         final RtpContentMap initiatorContentMap = initiatorRtpContentMap;
         if (initiatorContentMap != null) {
