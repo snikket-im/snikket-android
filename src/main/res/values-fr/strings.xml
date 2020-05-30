@@ -246,7 +246,7 @@
   <string name="contact_added_you">Votre correspondant vous a ajouté dans sa liste de contacts</string>
   <string name="add_back">Ajouter en retour</string>
   <string name="contact_has_read_up_to_this_point">%s a tout lu jusqu\'ici</string>
-  <string name="contacts_have_read_up_to_this_point">%s a tout lu jusqu\'ici</string>
+  <string name="contacts_have_read_up_to_this_point">%s ont tout lu jusqu\'ici</string>
   <string name="contacts_and_n_more_have_read_up_to_this_point">%1$s+%2$d autres ont tout lu jusqu\'ici</string>
   <string name="everyone_has_read_up_to_this_point">Tout le monde a lu jusqu\'ici</string>
   <string name="publish">Publier</string>
@@ -918,6 +918,8 @@
   <string name="only_one_call_at_a_time">Vous ne pouvez prendre qu\'un appel à la fois.</string>
   <string name="return_to_ongoing_call">Reprendre l\'appel en cours</string>
   <string name="could_not_switch_camera">Impossible de changer de caméra</string>
+  <string name="add_to_favorites">Ajouter aux favoris</string>
+  <string name="remove_from_favorites">Enlever des favoris</string>
   <plurals name="view_users">
     <item quantity="one">Voir %1$d participant</item>
     <item quantity="other">Voir %1$d participants</item>
