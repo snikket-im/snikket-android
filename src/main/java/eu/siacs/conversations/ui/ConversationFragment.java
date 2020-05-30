@@ -2121,6 +2121,7 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
         final String downloadUuid = extras.getString(ConversationsActivity.EXTRA_DOWNLOAD_UUID);
         final String text = extras.getString(Intent.EXTRA_TEXT);
         final String nick = extras.getString(ConversationsActivity.EXTRA_NICK);
+        final String postInitAction = extras.getString(ConversationsActivity.EXTRA_POST_INIT_ACTION);
         final boolean asQuote = extras.getBoolean(ConversationsActivity.EXTRA_AS_QUOTE);
         final boolean pm = extras.getBoolean(ConversationsActivity.EXTRA_IS_PRIVATE_MESSAGE, false);
         final boolean doNotAppend = extras.getBoolean(ConversationsActivity.EXTRA_DO_NOT_APPEND, false);
@@ -2160,6 +2161,10 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
             } else {
                 appendText(text, doNotAppend);
             }
+        }
+        if (ConversationsActivity.POST_ACTION_RECORD_VOICE.equals(postInitAction)) {
+            attachFile(ATTACHMENT_CHOICE_RECORD_VOICE);
+            return;
         }
         final Message message = downloadUuid == null ? null : conversation.findMessageWithFileAndUuid(downloadUuid);
         if (message != null) {

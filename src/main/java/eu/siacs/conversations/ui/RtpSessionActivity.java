@@ -44,6 +44,7 @@ import eu.siacs.conversations.R;
 import eu.siacs.conversations.databinding.ActivityRtpSessionBinding;
 import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.entities.Contact;
+import eu.siacs.conversations.entities.Conversation;
 import eu.siacs.conversations.services.AppRTCAudioManager;
 import eu.siacs.conversations.services.XmppConnectionService;
 import eu.siacs.conversations.ui.util.AvatarWorkerTask;
@@ -98,6 +99,14 @@ public class RtpSessionActivity extends XmppActivity implements XmppConnectionSe
             return ImmutableSet.of(Media.AUDIO, Media.VIDEO);
         } else {
             return ImmutableSet.of(Media.AUDIO);
+        }
+    }
+
+    private static void addSink(final VideoTrack videoTrack, final SurfaceViewRenderer surfaceViewRenderer) {
+        try {
+            videoTrack.addSink(surfaceViewRenderer);
+        } catch (final IllegalStateException e) {
+            Log.e(Config.LOGTAG, "possible race condition on trying to display video track. ignoring", e);
         }
     }
 
@@ -372,7 +381,6 @@ public class RtpSessionActivity extends XmppActivity implements XmppConnectionSe
         }
     }
 
-
     @RequiresApi(api = Build.VERSION_CODES.O)
     private void startPictureInPicture() {
         try {
@@ -551,11 +559,13 @@ public class RtpSessionActivity extends XmppActivity implements XmppConnectionSe
             this.binding.acceptCall.setImageResource(R.drawable.ic_call_white_48dp);
             this.binding.acceptCall.setVisibility(View.VISIBLE);
         } else if (state == RtpEndUserState.DECLINED_OR_BUSY) {
-            this.binding.rejectCall.setVisibility(View.INVISIBLE);
-            this.binding.endCall.setOnClickListener(this::exit);
-            this.binding.endCall.setImageResource(R.drawable.ic_clear_white_48dp);
-            this.binding.endCall.setVisibility(View.VISIBLE);
-            this.binding.acceptCall.setVisibility(View.INVISIBLE);
+            this.binding.rejectCall.setOnClickListener(this::exit);
+            this.binding.rejectCall.setImageResource(R.drawable.ic_clear_white_48dp);
+            this.binding.rejectCall.setVisibility(View.VISIBLE);
+            this.binding.endCall.setVisibility(View.INVISIBLE);
+            this.binding.acceptCall.setOnClickListener(this::recordVoiceMail);
+            this.binding.acceptCall.setImageResource(R.drawable.ic_voicemail_white_24dp);
+            this.binding.acceptCall.setVisibility(View.VISIBLE);
         } else if (asList(RtpEndUserState.CONNECTIVITY_ERROR, RtpEndUserState.APPLICATION_ERROR, RtpEndUserState.RETRACTED).contains(state)) {
             this.binding.rejectCall.setOnClickListener(this::exit);
             this.binding.rejectCall.setImageResource(R.drawable.ic_clear_white_48dp);
@@ -789,14 +799,6 @@ public class RtpSessionActivity extends XmppActivity implements XmppConnectionSe
         }
     }
 
-    private static void addSink(final VideoTrack videoTrack, final SurfaceViewRenderer surfaceViewRenderer) {
-        try {
-            videoTrack.addSink(surfaceViewRenderer);
-        } catch (final IllegalStateException e) {
-            Log.e(Config.LOGTAG, "possible race condition on trying to display video track. ignoring", e);
-        }
-    }
-
     private Optional<VideoTrack> getLocalVideoTrack() {
         final JingleRtpConnection connection = this.rtpConnectionReference != null ? this.rtpConnectionReference.get() : null;
         if (connection == null) {
@@ -847,7 +849,21 @@ public class RtpSessionActivity extends XmppActivity implements XmppConnectionSe
         proposeJingleRtpSession(account, with, media);
     }
 
-    private void exit(View view) {
+    private void exit(final View view) {
+        finish();
+    }
+
+    private void recordVoiceMail(final View view) {
+        final Intent intent = getIntent();
+        final Account account = extractAccount(intent);
+        final Jid with = Jid.ofEscaped(intent.getStringExtra(EXTRA_WITH));
+        final Conversation conversation = xmppConnectionService.findOrCreateConversation(account, with, false, true);
+        final Intent launchIntent = new Intent(this, ConversationsActivity.class);
+        launchIntent.setAction(ConversationsActivity.ACTION_VIEW_CONVERSATION);
+        launchIntent.putExtra(ConversationsActivity.EXTRA_CONVERSATION, conversation.getUuid());
+        launchIntent.setFlags(intent.getFlags() | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        launchIntent.putExtra(ConversationsActivity.EXTRA_POST_INIT_ACTION, ConversationsActivity.POST_ACTION_RECORD_VOICE);
+        startActivity(launchIntent);
         finish();
     }
 
