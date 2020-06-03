@@ -1,5 +1,9 @@
 # Changelog
 
+### Version 2.8.6
+
+* Offer to record voice message when callee is busy
+
 ### Version 2.8.5
 
 * Reduce echo during calls on some devices
