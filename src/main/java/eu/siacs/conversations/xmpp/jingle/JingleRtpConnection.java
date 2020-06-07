@@ -1189,7 +1189,7 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
         if (isTerminated()) {
             this.cancelRingingTimeout();
             this.webRTCWrapper.verifyClosed();
-            this.jingleConnectionManager.finishConnection(this);
+            this.jingleConnectionManager.finishConnectionOrThrow(this);
         } else {
             throw new IllegalStateException(String.format("Unable to call finish from %s", this.state));
         }

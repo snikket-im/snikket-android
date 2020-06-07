@@ -447,6 +447,10 @@ public class JingleConnectionManager extends AbstractConnectionManager {
     }
 
     void finishConnection(final AbstractJingleConnection connection) {
+        this.connections.remove(connection.getId());
+    }
+
+    void finishConnectionOrThrow(final AbstractJingleConnection connection) {
         final AbstractJingleConnection.Id id = connection.getId();
         if (this.connections.remove(id) == null) {
             throw new IllegalStateException(String.format("Unable to finish connection with id=%s", id.toString()));
