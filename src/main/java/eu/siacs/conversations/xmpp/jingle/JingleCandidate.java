@@ -147,7 +147,6 @@ public class JingleCandidate {
 	}
 
 	public String toString() {
-		return this.getHost() + ":" + this.getPort() + " (prio="
-				+ this.getPriority() + ")";
+		return String.format("%s:%s (priority=%s,ours=%s)", getHost(), getPort(), getPriority(), isOurs());
 	}
 }

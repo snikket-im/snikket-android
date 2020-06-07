@@ -5,6 +5,8 @@ import android.util.Log;
 
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Collections2;
+import com.google.common.collect.FluentIterable;
+import com.google.common.collect.Iterables;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -442,7 +444,7 @@ public class JingleFileTransferConnection extends AbstractJingleConnection imple
         try {
             senders = content.getSenders();
         } catch (final Exception e) {
-             senders = Content.Senders.INITIATOR;
+            senders = Content.Senders.INITIATOR;
         }
         this.contentSenders = senders;
         this.contentName = content.getAttribute("name");
@@ -825,8 +827,9 @@ public class JingleFileTransferConnection extends AbstractJingleConnection imple
                 this.sendFallbackToIbb();
             }
         } else {
+            //TODO at this point we can already close other connections to free some resources
             final JingleCandidate candidate = connection.getCandidate();
-            Log.d(Config.LOGTAG, id.account.getJid().asBareJid() + ": elected candidate " + candidate.getHost() + ":" + candidate.getPort());
+            Log.d(Config.LOGTAG, id.account.getJid().asBareJid() + ": elected candidate " + candidate.toString());
             this.mJingleStatus = JINGLE_STATUS_TRANSMITTING;
             if (connection.needsActivation()) {
                 if (connection.getCandidate().isOurs()) {
@@ -875,38 +878,23 @@ public class JingleFileTransferConnection extends AbstractJingleConnection imple
     }
 
     private JingleSocks5Transport chooseConnection() {
-        JingleSocks5Transport connection = null;
-        for (Entry<String, JingleSocks5Transport> cursor : connections
-                .entrySet()) {
-            JingleSocks5Transport currentConnection = cursor.getValue();
-            // Log.d(Config.LOGTAG,"comparing candidate: "+currentConnection.getCandidate().toString());
-            if (currentConnection.isEstablished()
-                    && (currentConnection.getCandidate().isUsedByCounterpart() || (!currentConnection
-                    .getCandidate().isOurs()))) {
-                // Log.d(Config.LOGTAG,"is usable");
-                if (connection == null) {
-                    connection = currentConnection;
-                } else {
-                    if (connection.getCandidate().getPriority() < currentConnection
-                            .getCandidate().getPriority()) {
-                        connection = currentConnection;
-                    } else if (connection.getCandidate().getPriority() == currentConnection
-                            .getCandidate().getPriority()) {
-                        // Log.d(Config.LOGTAG,"found two candidates with same priority");
+        final List<JingleSocks5Transport> establishedConnections = FluentIterable.from(connections.entrySet())
+                .transform(Entry::getValue)
+                .filter(c -> (c != null && c.isEstablished() && (c.getCandidate().isUsedByCounterpart() || !c.getCandidate().isOurs())))
+                .toSortedList((a, b) -> {
+                    final int compare = Integer.compare(b.getCandidate().getPriority(), a.getCandidate().getPriority());
+                    if (compare == 0) {
                         if (isInitiator()) {
-                            if (currentConnection.getCandidate().isOurs()) {
-                                connection = currentConnection;
-                            }
+                            //pick the one we sent a candidate-used for (meaning not ours)
+                            return a.getCandidate().isOurs() ? 1 : -1;
                         } else {
-                            if (!currentConnection.getCandidate().isOurs()) {
-                                connection = currentConnection;
-                            }
+                            //pick the one they sent a candidate-used for (meaning ours)
+                            return a.getCandidate().isOurs() ? -1 : 1;
                         }
                     }
-                }
-            }
-        }
-        return connection;
+                    return compare;
+                });
+        return Iterables.getFirst(establishedConnections, null);
     }
 
     private void sendSuccess() {
