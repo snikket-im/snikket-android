@@ -11,7 +11,6 @@ import com.google.common.cache.CacheBuilder;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.ComparisonChain;
 import com.google.common.collect.ImmutableSet;
-import com.google.j2objc.annotations.Weak;
 
 import java.lang.ref.WeakReference;
 import java.security.SecureRandom;
@@ -57,8 +56,8 @@ public class JingleConnectionManager extends AbstractConnectionManager {
     private final HashMap<RtpSessionProposal, DeviceDiscoveryState> rtpSessionProposals = new HashMap<>();
     private final ConcurrentHashMap<AbstractJingleConnection.Id, AbstractJingleConnection> connections = new ConcurrentHashMap<>();
 
-    private final Cache<PersistableSessionId, JingleRtpConnection.State> endedSessions = CacheBuilder.newBuilder()
-            .expireAfterWrite(30, TimeUnit.MINUTES)
+    private final Cache<PersistableSessionId, TerminatedRtpSession> terminatedSessions = CacheBuilder.newBuilder()
+            .expireAfterWrite(24, TimeUnit.HOURS)
             .build();
 
     private HashMap<Jid, JingleCandidate> primaryCandidates = new HashMap<>();
@@ -92,7 +91,7 @@ public class JingleConnectionManager extends AbstractConnectionManager {
             if (FileTransferDescription.NAMESPACES.contains(descriptionNamespace)) {
                 connection = new JingleFileTransferConnection(this, id, from);
             } else if (Namespace.JINGLE_APPS_RTP.equals(descriptionNamespace) && !usesTor(account)) {
-                final boolean sessionEnded = this.endedSessions.asMap().containsKey(PersistableSessionId.of(id));
+                final boolean sessionEnded = this.terminatedSessions.asMap().containsKey(PersistableSessionId.of(id));
                 final boolean stranger = isWithStrangerAndStrangerNotificationsAreOff(account, id.with);
                 if (isBusy() || sessionEnded || stranger) {
                     Log.d(Config.LOGTAG, id.account.getJid().asBareJid() + ": rejected session with " + id.with + " because busy. sessionEnded=" + sessionEnded + ", stranger=" + stranger);
@@ -684,8 +683,12 @@ public class JingleConnectionManager extends AbstractConnectionManager {
         throw e;
     }
 
-    void endSession(AbstractJingleConnection.Id id, final AbstractJingleConnection.State state) {
-        this.endedSessions.put(PersistableSessionId.of(id), state);
+    void setTerminalSessionState(AbstractJingleConnection.Id id, final RtpEndUserState state, final Set<Media> media) {
+        this.terminatedSessions.put(PersistableSessionId.of(id), new TerminatedRtpSession(state, media));
+    }
+
+    public TerminatedRtpSession getTerminalSessionState(final Jid with, final String sessionId) {
+        return this.terminatedSessions.getIfPresent(new PersistableSessionId(with, sessionId));
     }
 
     private static class PersistableSessionId {
@@ -713,6 +716,16 @@ public class JingleConnectionManager extends AbstractConnectionManager {
         @Override
         public int hashCode() {
             return Objects.hashCode(with, sessionId);
+        }
+    }
+
+    public static class TerminatedRtpSession {
+        public final RtpEndUserState state;
+        public final Set<Media> media;
+
+        TerminatedRtpSession(RtpEndUserState state, Set<Media> media) {
+            this.state = state;
+            this.media = media;
         }
     }
 

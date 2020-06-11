@@ -912,7 +912,6 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
         }
         if (isInState(State.PROCEED)) {
             Log.d(Config.LOGTAG, id.account.getJid().asBareJid() + ": ending call while in state PROCEED just means ending the connection");
-            this.jingleConnectionManager.endSession(id, State.TERMINATED_SUCCESS);
             this.webRTCWrapper.close();
             transitionOrThrow(State.TERMINATED_SUCCESS); //arguably this wasn't success; but not a real failure either
             this.finish();
@@ -1189,6 +1188,7 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
         if (isTerminated()) {
             this.cancelRingingTimeout();
             this.webRTCWrapper.verifyClosed();
+            this.jingleConnectionManager.setTerminalSessionState(id, getEndUserState(), getMedia());
             this.jingleConnectionManager.finishConnectionOrThrow(this);
         } else {
             throw new IllegalStateException(String.format("Unable to call finish from %s", this.state));

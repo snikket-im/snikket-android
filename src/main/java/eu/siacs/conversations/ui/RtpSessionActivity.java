@@ -53,6 +53,7 @@ import eu.siacs.conversations.utils.PermissionUtils;
 import eu.siacs.conversations.utils.TimeFrameUtils;
 import eu.siacs.conversations.xml.Namespace;
 import eu.siacs.conversations.xmpp.jingle.AbstractJingleConnection;
+import eu.siacs.conversations.xmpp.jingle.JingleConnectionManager;
 import eu.siacs.conversations.xmpp.jingle.JingleRtpConnection;
 import eu.siacs.conversations.xmpp.jingle.Media;
 import eu.siacs.conversations.xmpp.jingle.RtpEndUserState;
@@ -427,7 +428,13 @@ public class RtpSessionActivity extends XmppActivity implements XmppConnectionSe
         final WeakReference<JingleRtpConnection> reference = xmppConnectionService.getJingleConnectionManager()
                 .findJingleRtpConnection(account, with, sessionId);
         if (reference == null || reference.get() == null) {
-            throw new IllegalStateException("failed to initialize activity with running rtp session. session not found");
+            final JingleConnectionManager.TerminatedRtpSession terminatedRtpSession = xmppConnectionService
+                    .getJingleConnectionManager().getTerminalSessionState(with, sessionId);
+            if (terminatedRtpSession == null) {
+                throw new IllegalStateException("failed to initialize activity with running rtp session. session not found");
+            }
+            initializeWithTerminatedSessionState(account, with, terminatedRtpSession);
+            return true;
         }
         this.rtpConnectionReference = reference;
         final RtpEndUserState currentState = requireRtpConnection().getEndUserState();
@@ -449,6 +456,20 @@ public class RtpSessionActivity extends XmppActivity implements XmppConnectionSe
         updateButtonConfiguration(currentState, media);
         updateProfilePicture(currentState);
         return false;
+    }
+
+    private void initializeWithTerminatedSessionState(final Account account, final Jid with, final JingleConnectionManager.TerminatedRtpSession terminatedRtpSession) {
+        Log.d(Config.LOGTAG,"initializeWithTerminatedSessionState()");
+        if (terminatedRtpSession.state == RtpEndUserState.ENDED) {
+            finish();
+            return;
+        }
+        RtpEndUserState state = terminatedRtpSession.state;
+        resetIntent(account, with, terminatedRtpSession.state, terminatedRtpSession.media);
+        updateButtonConfiguration(state);
+        updateStateDisplay(state);
+        updateProfilePicture(state);
+        binding.with.setText(account.getRoster().getContact(with).getDisplayName());
     }
 
     private void reInitializeActivityWithRunningRtpSession(final Account account, Jid with, String sessionId) {
