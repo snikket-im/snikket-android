@@ -78,6 +78,7 @@ public class RtpSessionActivity extends XmppActivity implements XmppConnectionSe
             RtpEndUserState.APPLICATION_ERROR,
             RtpEndUserState.DECLINED_OR_BUSY,
             RtpEndUserState.CONNECTIVITY_ERROR,
+            RtpEndUserState.CONNECTIVITY_LOST_ERROR,
             RtpEndUserState.RETRACTED
     );
     private static final String PROXIMITY_WAKE_LOCK_TAG = "conversations:in-rtp-session";
@@ -533,6 +534,9 @@ public class RtpSessionActivity extends XmppActivity implements XmppConnectionSe
             case CONNECTIVITY_ERROR:
                 setTitle(R.string.rtp_state_connectivity_error);
                 break;
+            case CONNECTIVITY_LOST_ERROR:
+                setTitle(R.string.rtp_state_connectivity_lost_error);
+                break;
             case RETRACTED:
                 setTitle(R.string.rtp_state_retracted);
                 break;
@@ -598,7 +602,12 @@ public class RtpSessionActivity extends XmppActivity implements XmppConnectionSe
             this.binding.acceptCall.setOnClickListener(this::recordVoiceMail);
             this.binding.acceptCall.setImageResource(R.drawable.ic_voicemail_white_24dp);
             this.binding.acceptCall.setVisibility(View.VISIBLE);
-        } else if (asList(RtpEndUserState.CONNECTIVITY_ERROR, RtpEndUserState.APPLICATION_ERROR, RtpEndUserState.RETRACTED).contains(state)) {
+        } else if (asList(
+                RtpEndUserState.CONNECTIVITY_ERROR,
+                RtpEndUserState.CONNECTIVITY_LOST_ERROR,
+                RtpEndUserState.APPLICATION_ERROR,
+                RtpEndUserState.RETRACTED
+        ).contains(state)) {
             this.binding.rejectCall.setOnClickListener(this::exit);
             this.binding.rejectCall.setImageResource(R.drawable.ic_clear_white_48dp);
             this.binding.rejectCall.setVisibility(View.VISIBLE);

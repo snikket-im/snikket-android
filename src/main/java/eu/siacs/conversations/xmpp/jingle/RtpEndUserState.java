@@ -11,6 +11,7 @@ public enum RtpEndUserState {
     ENDED, //close UI
     DECLINED_OR_BUSY, //other party declined; no retry button
     CONNECTIVITY_ERROR, //network error; retry button
+    CONNECTIVITY_LOST_ERROR, //network error but for call duration > 0
     RETRACTED, //user pressed home or power button during 'ringing' - shows retry button
     APPLICATION_ERROR //something rather bad happened; libwebrtc failed or we got in IQ-error
 }

@@ -814,7 +814,7 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
                 } else if (state == PeerConnection.PeerConnectionState.CLOSED) {
                     return RtpEndUserState.ENDING_CALL;
                 } else {
-                    return RtpEndUserState.CONNECTIVITY_ERROR;
+                    return rtpConnectionStarted == 0 ? RtpEndUserState.CONNECTIVITY_ERROR : RtpEndUserState.CONNECTIVITY_LOST_ERROR;
                 }
             case REJECTED:
             case TERMINATED_DECLINED_OR_BUSY:
@@ -831,7 +831,7 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
             case RETRACTED_RACED:
                 return RtpEndUserState.RETRACTED;
             case TERMINATED_CONNECTIVITY_ERROR:
-                return RtpEndUserState.CONNECTIVITY_ERROR;
+                return rtpConnectionStarted == 0 ? RtpEndUserState.CONNECTIVITY_ERROR : RtpEndUserState.CONNECTIVITY_LOST_ERROR;
             case TERMINATED_APPLICATION_FAILURE:
                 return RtpEndUserState.APPLICATION_ERROR;
         }
