@@ -3303,6 +3303,10 @@ public class XmppConnectionService extends Service {
         updateConversationUi();
     }
 
+    public void createMessageAsync(final Message message) {
+        mDatabaseWriterExecutor.execute(()-> databaseBackend.createMessage(message));
+    }
+
     public void updateMessage(Message message, String uuid) {
         if (!databaseBackend.updateMessage(message, uuid)) {
             Log.e(Config.LOGTAG, "error updated message in DB after edit");

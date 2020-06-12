@@ -1219,7 +1219,7 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
         final Conversational conversational = message.getConversation();
         if (conversational instanceof Conversation) {
             ((Conversation) conversational).add(this.message);
-            xmppConnectionService.databaseBackend.createMessage(message);
+            xmppConnectionService.createMessageAsync(message);
             xmppConnectionService.updateConversationUi();
         } else {
             throw new IllegalStateException("Somehow the conversation in a message was a stub");
