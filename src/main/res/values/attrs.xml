@@ -96,6 +96,7 @@
     <attr name="icon_refresh" format="reference" />
     <attr name="icon_remove" format="reference" />
     <attr name="icon_search" format="reference" />
+    <attr name="icon_help" format="reference" />
     <attr name="icon_secure" format="reference" />
     <attr name="icon_settings" format="reference" />
     <attr name="icon_share" format="reference" />

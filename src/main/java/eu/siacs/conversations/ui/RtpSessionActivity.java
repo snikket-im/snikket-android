@@ -3,6 +3,7 @@ package eu.siacs.conversations.ui;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.PictureInPictureParams;
+import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -17,6 +18,8 @@ import android.support.annotation.RequiresApi;
 import android.support.annotation.StringRes;
 import android.util.Log;
 import android.util.Rational;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Toast;
@@ -81,6 +84,10 @@ public class RtpSessionActivity extends XmppActivity implements XmppConnectionSe
             RtpEndUserState.CONNECTIVITY_LOST_ERROR,
             RtpEndUserState.RETRACTED
     );
+    private static final List<RtpEndUserState> STATES_SHOWING_HELP_BUTTON = Arrays.asList(
+            RtpEndUserState.APPLICATION_ERROR,
+            RtpEndUserState.CONNECTIVITY_ERROR
+    );
     private static final String PROXIMITY_WAKE_LOCK_TAG = "conversations:in-rtp-session";
     private static final int REQUEST_ACCEPT_CALL = 0x1111;
     private WeakReference<JingleRtpConnection> rtpConnectionReference;
@@ -122,6 +129,45 @@ public class RtpSessionActivity extends XmppActivity implements XmppConnectionSe
                 | WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON);
         this.binding = DataBindingUtil.setContentView(this, R.layout.activity_rtp_session);
         setSupportActionBar(binding.toolbar);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(final Menu menu) {
+        getMenuInflater().inflate(R.menu.activity_rtp_session, menu);
+        final MenuItem help = menu.findItem(R.id.action_help);
+        help.setVisible(isHelpButtonVisible());
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    private boolean isHelpButtonVisible() {
+        try {
+            return STATES_SHOWING_HELP_BUTTON.contains(requireRtpConnection().getEndUserState());
+        } catch (IllegalStateException e) {
+            final Intent intent = getIntent();
+            final String state = intent != null ? intent.getStringExtra(EXTRA_LAST_REPORTED_STATE) : null;
+            if (state != null) {
+                return STATES_SHOWING_HELP_BUTTON.contains(RtpEndUserState.valueOf(state));
+            } else {
+                return false;
+            }
+        }
+    }
+
+    public boolean onOptionsItemSelected(final MenuItem item) {
+        if (item.getItemId() == R.id.action_help) {
+            launchHelpInBrowser();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    private void launchHelpInBrowser() {
+        final Intent intent = new Intent(Intent.ACTION_VIEW, Config.HELP);
+        try {
+            startActivity(intent);
+        } catch (final ActivityNotFoundException e) {
+            Toast.makeText(this, R.string.no_application_found_to_open_link, Toast.LENGTH_LONG).show();
+        }
     }
 
     private void endCall(View view) {
@@ -302,6 +348,7 @@ public class RtpSessionActivity extends XmppActivity implements XmppConnectionSe
                 updateButtonConfiguration(state);
                 updateStateDisplay(state);
                 updateProfilePicture(state);
+                invalidateOptionsMenu();
             }
             binding.with.setText(account.getRoster().getContact(with).getDisplayName());
         }
@@ -456,11 +503,12 @@ public class RtpSessionActivity extends XmppActivity implements XmppConnectionSe
         updateStateDisplay(currentState, media);
         updateButtonConfiguration(currentState, media);
         updateProfilePicture(currentState);
+        invalidateOptionsMenu();
         return false;
     }
 
     private void initializeWithTerminatedSessionState(final Account account, final Jid with, final JingleConnectionManager.TerminatedRtpSession terminatedRtpSession) {
-        Log.d(Config.LOGTAG,"initializeWithTerminatedSessionState()");
+        Log.d(Config.LOGTAG, "initializeWithTerminatedSessionState()");
         if (terminatedRtpSession.state == RtpEndUserState.ENDED) {
             finish();
             return;
@@ -470,6 +518,8 @@ public class RtpSessionActivity extends XmppActivity implements XmppConnectionSe
         updateButtonConfiguration(state);
         updateStateDisplay(state);
         updateProfilePicture(state);
+        updateCallDuration();
+        invalidateOptionsMenu();
         binding.with.setText(account.getRoster().getContact(with).getDisplayName());
     }
 
@@ -956,6 +1006,7 @@ public class RtpSessionActivity extends XmppActivity implements XmppConnectionSe
                 updateButtonConfiguration(state, media);
                 updateVideoViews(state);
                 updateProfilePicture(state, contact);
+                invalidateOptionsMenu();
             });
             if (END_CARD.contains(state)) {
                 final JingleRtpConnection rtpConnection = requireRtpConnection();
@@ -1004,6 +1055,7 @@ public class RtpSessionActivity extends XmppActivity implements XmppConnectionSe
                 updateStateDisplay(state);
                 updateButtonConfiguration(state);
                 updateProfilePicture(state);
+                invalidateOptionsMenu();
             });
             resetIntent(account, with, state, actionToMedia(currentIntent.getAction()));
         }

@@ -1,6 +1,7 @@
 package eu.siacs.conversations;
 
 import android.graphics.Bitmap;
+import android.net.Uri;
 
 import java.util.Collections;
 import java.util.List;
@@ -35,6 +36,7 @@ public final class Config {
     public static final String LOGTAG = BuildConfig.LOGTAG;
 
     public static final Jid BUG_REPORTS = Jid.of("bugs@conversations.im");
+    public static final Uri HELP = Uri.parse("https://help.conversations.im");
 
 
     public static final String DOMAIN_LOCK = null; //only allow account creation for this domain
