@@ -901,7 +901,7 @@
   <string name="rtp_state_ringing">Klingelt</string>
   <string name="rtp_state_declined_or_busy">Besetzt</string>
   <string name="rtp_state_connectivity_error">Verbindungsaufbau fehlgeschlagen</string>
-  <string name="rtp_state_retracted">Rückrufruf</string>
+  <string name="rtp_state_retracted">Anruf zurückgenommen</string>
   <string name="rtp_state_application_failure">App-Fehler</string>
   <string name="hang_up">Auflegen</string>
   <string name="ongoing_call">Laufender Anruf</string>
