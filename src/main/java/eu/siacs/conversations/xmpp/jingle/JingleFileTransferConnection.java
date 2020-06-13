@@ -4,6 +4,7 @@ import android.util.Base64;
 import android.util.Log;
 
 import com.google.common.base.Preconditions;
+import com.google.common.base.Strings;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.FluentIterable;
 import com.google.common.collect.Iterables;
@@ -416,15 +417,10 @@ public class JingleFileTransferConnection extends AbstractJingleConnection imple
     }
 
     private List<String> getRemoteFeatures() {
-        final Jid jid = this.id.with;
-        String resource = jid != null ? jid.getResource() : null;
-        if (resource != null) {
-            Presence presence = this.id.account.getRoster().getContact(jid).getPresences().get(resource);
-            ServiceDiscoveryResult result = presence != null ? presence.getServiceDiscoveryResult() : null;
-            return result == null ? Collections.emptyList() : result.getFeatures();
-        } else {
-            return Collections.emptyList();
-        }
+        final String resource = Strings.nullToEmpty(this.id.with.getResource());
+        final Presence presence = this.id.account.getRoster().getContact(id.with).getPresences().get(resource);
+        final ServiceDiscoveryResult result = presence != null ? presence.getServiceDiscoveryResult() : null;
+        return result == null ? Collections.emptyList() : result.getFeatures();
     }
 
     private void init(JinglePacket packet) { //should move to deliverPacket

@@ -112,12 +112,15 @@ public class PresenceSelector {
         builder.create().show();
     }
 
-
     public static Jid getNextCounterpart(final Contact contact, final String resource) {
+        return getNextCounterpart(contact.getJid(), resource);
+    }
+
+    public static Jid getNextCounterpart(final Jid jid, final String resource) {
         if (resource.isEmpty()) {
-            return contact.getJid().asBareJid();
+            return jid.asBareJid();
         } else {
-            return contact.getJid().withResource(resource);
+            return jid.withResource(resource);
         }
     }
 
