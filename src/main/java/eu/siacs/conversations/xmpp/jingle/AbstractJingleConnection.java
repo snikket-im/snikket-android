@@ -16,10 +16,10 @@ public abstract class AbstractJingleConnection {
     public static final String JINGLE_MESSAGE_PROPOSE_ID_PREFIX = "jm-propose-";
     public static final String JINGLE_MESSAGE_PROCEED_ID_PREFIX = "jm-proceed-";
 
-    protected final JingleConnectionManager jingleConnectionManager;
+    final JingleConnectionManager jingleConnectionManager;
     protected final XmppConnectionService xmppConnectionService;
     protected final Id id;
-    protected final Jid initiator;
+    private final Jid initiator;
 
     AbstractJingleConnection(final JingleConnectionManager jingleConnectionManager, final Id id, final Jid initiator) {
         this.jingleConnectionManager = jingleConnectionManager;
@@ -47,8 +47,9 @@ public abstract class AbstractJingleConnection {
         public final String sessionId;
 
         private Id(final Account account, final Jid with, final String sessionId) {
+            Preconditions.checkNotNull(account);
             Preconditions.checkNotNull(with);
-            Preconditions.checkArgument(with.isFullJid());
+            Preconditions.checkNotNull(sessionId);
             this.account = account;
             this.with = with;
             this.sessionId = sessionId;
