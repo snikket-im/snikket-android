@@ -39,7 +39,7 @@ public class AccountUtils {
         for (Account account : service.getAccounts()) {
             if (account.getStatus() != Account.State.DISABLED) {
                 if (Config.DOMAIN_LOCK != null) {
-                    accounts.add(account.getJid().toEscapedString());
+                    accounts.add(account.getJid().getEscapedLocal());
                 } else {
                     accounts.add(account.getJid().asBareJid().toEscapedString());
                 }
