@@ -7,6 +7,7 @@ import android.text.SpannableStringBuilder;
 import android.util.Log;
 
 import com.google.common.base.Strings;
+import com.google.common.collect.ImmutableSet;
 
 import org.json.JSONException;
 
@@ -534,7 +535,7 @@ public class Message extends AbstractEntity implements AvatarService.Avatarable 
 	}
 
 	public Set<ReadByMarker> getReadByMarkers() {
-		return Collections.unmodifiableSet(this.readByMarkers);
+		return ImmutableSet.copyOf(this.readByMarkers);
 	}
 
 	boolean similar(Message message) {
