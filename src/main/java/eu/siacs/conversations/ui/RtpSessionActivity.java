@@ -280,9 +280,9 @@ public class RtpSessionActivity extends XmppActivity implements XmppConnectionSe
             this.mProximityWakeLock = null;
         }
     }
-
-    private void putProximityWakeLockInProperState() {
-        if (requireRtpConnection().getAudioManager().getSelectedAudioDevice() == AppRTCAudioManager.AudioDevice.EARPIECE) {
+    
+    private void putProximityWakeLockInProperState(final AppRTCAudioManager.AudioDevice audioDevice) {
+        if (audioDevice == AppRTCAudioManager.AudioDevice.EARPIECE) {
             acquireProximityWakeLock();
         } else {
             releaseProximityWakeLock();
@@ -1037,7 +1037,7 @@ public class RtpSessionActivity extends XmppActivity implements XmppConnectionSe
             } else if (END_CARD.contains(endUserState)) {
                 Log.d(Config.LOGTAG, "onAudioDeviceChanged() nothing to do because end card has been reached");
             } else {
-                putProximityWakeLockInProperState();
+                putProximityWakeLockInProperState(selectedAudioDevice);
             }
         } catch (IllegalStateException e) {
             Log.d(Config.LOGTAG, "RTP connection was not available when audio device changed");
