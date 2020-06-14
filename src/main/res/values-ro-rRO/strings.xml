@@ -909,6 +909,7 @@
   <string name="rtp_state_ringing">Sună</string>
   <string name="rtp_state_declined_or_busy">Ocupat</string>
   <string name="rtp_state_connectivity_error">Nu s-a putut conecta apelul</string>
+  <string name="rtp_state_connectivity_lost_error">Conexiune pierdută</string>
   <string name="rtp_state_retracted">Apel anulat</string>
   <string name="rtp_state_application_failure">Eroare de aplicație</string>
   <string name="hang_up">Închide</string>
@@ -922,6 +923,7 @@
   <string name="missed_call">Apel pierdut</string>
   <string name="audio_call">Apel audio</string>
   <string name="video_call">Apel video</string>
+  <string name="help">Ajutor</string>
   <string name="microphone_unavailable">Microfonul nu este disponibil</string>
   <string name="only_one_call_at_a_time">Puteți avea un singur apel simultan.</string>
   <string name="return_to_ongoing_call">Reveniți la apelul în curs</string>

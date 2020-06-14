@@ -919,6 +919,7 @@ Administrator twojego serwera będzie mógł czytać twoje wiadomości, ale moż
   <string name="rtp_state_ringing">Dzwonienie</string>
   <string name="rtp_state_declined_or_busy">Zajęty</string>
   <string name="rtp_state_connectivity_error">Nie można wykonać połączenia</string>
+  <string name="rtp_state_connectivity_lost_error">Utracono połączenie</string>
   <string name="rtp_state_retracted">Anulowane połączenie</string>
   <string name="rtp_state_application_failure">Błąd aplikacji</string>
   <string name="hang_up">Rozłącz</string>
@@ -932,6 +933,7 @@ Administrator twojego serwera będzie mógł czytać twoje wiadomości, ale moż
   <string name="missed_call">Nieodebrane połączenie</string>
   <string name="audio_call">Połączenie audio</string>
   <string name="video_call">Połączenie wideo</string>
+  <string name="help">Pomoc</string>
   <string name="microphone_unavailable">Twój mikrofon jest niedostępny</string>
   <string name="only_one_call_at_a_time">Możesz mieć tylko jedno połączenie na raz.</string>
   <string name="return_to_ongoing_call">Powróć do trwającego połączenia</string>

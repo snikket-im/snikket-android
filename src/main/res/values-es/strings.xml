@@ -901,6 +901,7 @@
   <string name="rtp_state_ringing">Llamando</string>
   <string name="rtp_state_declined_or_busy">Ocupado</string>
   <string name="rtp_state_connectivity_error">No se ha podido realizar la llamada</string>
+  <string name="rtp_state_connectivity_lost_error">Conexión perdida</string>
   <string name="rtp_state_retracted">Llamada rechazada</string>
   <string name="rtp_state_application_failure">Fallo en la aplicación</string>
   <string name="hang_up">Colgar</string>
@@ -914,6 +915,7 @@
   <string name="missed_call">Llamada perdida</string>
   <string name="audio_call">Audio llamada</string>
   <string name="video_call">Video llamada</string>
+  <string name="help">Ayuda</string>
   <string name="microphone_unavailable">Tu micrófono no está disponible</string>
   <string name="only_one_call_at_a_time">Solo puedes hacer una llamada a la vez</string>
   <string name="return_to_ongoing_call">Volver a la llamada en curso</string>
