@@ -41,7 +41,7 @@
   <string name="moderator">Moderator</string>
   <string name="participant">Teilnehmer</string>
   <string name="visitor">Besucher</string>
-  <string name="remove_contact_text">Möchtest du  %svon deiner Kontaktliste entfernen? Unterhaltungen mit diesem Kontakt werden dabei nicht entfernt.</string>
+  <string name="remove_contact_text">Möchtest du  %s von deiner Kontaktliste entfernen? Unterhaltungen mit diesem Kontakt werden dabei nicht entfernt.</string>
   <string name="block_contact_text">Möchtest du %s sperren und keine Nachrichten mehr erhalten?</string>
   <string name="unblock_contact_text">Möchtest du %s entsperren und wieder Nachrichten empfangen?</string>
   <string name="block_domain_text">Alle Kontakte von %s sperren?</string>
