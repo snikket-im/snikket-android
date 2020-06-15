@@ -263,7 +263,7 @@ public class ChannelDiscoveryActivity extends XmppActivity implements MenuItem.O
     }
 
     public void joinChannelSearchResult(String selectedAccount, Room result) {
-        final Jid jid = Config.DOMAIN_LOCK == null ? Jid.ofEscaped(selectedAccount) : Jid.ofEscaped(selectedAccount, Config.DOMAIN_LOCK, null);
+        final Jid jid = Config.DOMAIN_LOCK == null ? Jid.ofEscaped(selectedAccount) : Jid.ofLocalAndDomainEscaped(selectedAccount, Config.DOMAIN_LOCK);
         final boolean syncAutoJoin = getBooleanPreference("autojoin", R.bool.autojoin);
         final Account account = xmppConnectionService.findAccountByJid(jid);
         final Conversation conversation = xmppConnectionService.findOrCreateConversation(account, result.getRoom(), true, true, true);
