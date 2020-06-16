@@ -3,6 +3,7 @@
   <string name="action_settings">Inställningar</string>
   <string name="action_add">Ny konversation</string>
   <string name="action_accounts">Kontoinställningar</string>
+  <string name="action_account">Hantera konto</string>
   <string name="action_end_conversation">Stäng denna konversation</string>
   <string name="action_contact_details">Kontaktdetaljer</string>
   <string name="action_muc_details">Gruppchattdetaljer</string>
@@ -34,18 +35,20 @@
   <string name="message_decrypting">Avkrypterar meddelande. Vänta…</string>
   <string name="pgp_message">OpenPGP-krypterat meddelande</string>
   <string name="nick_in_use">Nick används redan</string>
-  <string name="invalid_muc_nick">Ogiltigt nick</string>
+  <string name="invalid_muc_nick">Ogiltigt smeknamn</string>
   <string name="admin">Admin</string>
   <string name="owner">Ägare</string>
   <string name="moderator">Moderator</string>
   <string name="participant">Deltagare</string>
   <string name="visitor">Besökare</string>
+  <string name="remove_contact_text">Vill du ta bort %s från din kontaktlista? Konversationer med denna kontakt kommer inte tas bort.</string>
   <string name="block_contact_text">Vill du blockera %s från att skicka dig meddelanden?</string>
   <string name="unblock_contact_text">Vill du avblockera %s och tillåta denne att skicka dig meddelanden?</string>
   <string name="block_domain_text">Blockera alla kontakter från %s?</string>
   <string name="unblock_domain_text">Avblockera alla kontakter från %s?</string>
   <string name="contact_blocked">Kontakt blockerad</string>
   <string name="blocked">Blockerad</string>
+  <string name="remove_bookmark_text">Vill du ta bort %s som ett bokmärke? Konversationer med detta bokmärke kommer inte tas bort.</string>
   <string name="register_account">Registrera nytt konto på servern</string>
   <string name="change_password_on_server">Byt lösenord på server</string>
   <string name="share_with">Dela med…</string>
@@ -66,9 +69,13 @@
   <string name="crash_report_title">Conversations har kraschat</string>
   <string name="send_now">Skicka nu</string>
   <string name="send_never">Fråga aldrig igen</string>
+  <string name="problem_connecting_to_account">Kunde inte ansluta till konto</string>
+  <string name="problem_connecting_to_accounts">Kunde inte ansluta till flera konton</string>
   <string name="attach_file">Bifoga fil</string>
   <string name="add_contact">Lägg till kontakt</string>
   <string name="send_failed">sändning misslyckades</string>
+  <string name="preparing_image">Förbereder att skicka bild</string>
+  <string name="preparing_images">Förbereder att skicka bilder</string>
   <string name="sharing_files_please_wait">Delar filer. Vänta...</string>
   <string name="action_clear_history">Rensa historik</string>
   <string name="clear_conversation_history">Rensa konversationshistorik</string>
@@ -81,6 +88,7 @@
   <string name="send_omemo_message">Skicka OMEMO-krypterat meddelande</string>
   <string name="send_omemo_x509_message">Skicka v\\OMEMO-krypterat meddelande</string>
   <string name="send_pgp_message">Skicka OpenPGP-krypterat meddelande</string>
+  <string name="your_nick_has_been_changed">Nytt smeknamn används</string>
   <string name="send_unencrypted">Skicka okrypterat</string>
   <string name="decryption_failed">Avkryptering misslyckades. Du har kanske kanske inte rätt privat nyckel.</string>
   <string name="openkeychain_required">OpenKeychain</string>
@@ -304,6 +312,7 @@
   <string name="ban_now">Bannlys nu</string>
   <string name="could_not_change_role">Kunde inte ändra rollen för %s</string>
   <string name="members_only">Privat, medlemsskap krävs</string>
+  <string name="non_anonymous">Gör XMPP-adresser synliga för alla</string>
   <string name="you_are_not_participating">Du deltar ej</string>
   <string name="never">Aldrig</string>
   <string name="until_further_notice">Tills vidare</string>
@@ -389,6 +398,8 @@
     <item quantity="other">%d meddelanden</item>
   </plurals>
   <string name="load_more_messages">Ladda fler meddelanden</string>
+  <string name="no_storage_permission">Ge Conversations tillgång till extern lagring</string>
+  <string name="no_camera_permission">Ge Conversations tillgång till kameran</string>
   <string name="sync_with_contacts">Synkronisera med kontakter</string>
   <string name="notify_on_all_messages">Notifiera för alla meddelanden</string>
   <string name="notify_never">Notifieringar deaktiverade</string>
@@ -442,6 +453,7 @@
   <string name="allow">Tillåt</string>
   <string name="no_permission_to_access_x">Saknar rättigheter för access till %s</string>
   <string name="remote_server_not_found">Fjärrserver hittas inte</string>
+  <string name="unable_to_update_account">Kunde inte uppdatera konto</string>
   <string name="pref_delete_omemo_identities">Ta bort OMEMO identiteter</string>
   <string name="delete_selected_keys">Ta bort valda nycklar</string>
   <string name="error_publish_avatar_offline">Du måste vara ansluten för att publicera din avatarbild</string>
@@ -451,6 +463,7 @@
   <string name="device_does_not_support_data_saver">Din enhet stödjer inte att deaktivera databesparing för Conversations.</string>
   <string name="this_device_has_been_verified">Denna enhet har verifierats</string>
   <string name="copy_fingerprint">Kopiera fingeravtryck</string>
+  <string name="barcode_does_not_contain_fingerprints_for_this_conversation">Streckkoden innehåller inte fingeravtryck för denna konversation.</string>
   <string name="verified_fingerprints">Verifierade fingeravtryck</string>
   <string name="use_camera_icon_to_scan_barcode">Använd kameran för att scanna en kontakts streckkod</string>
   <string name="please_wait_for_keys_to_be_fetched">Vänta medans nycklar hämtas</string>
@@ -554,6 +567,7 @@
   <string name="ebook">e-bok</string>
   <string name="open_with">Öppna med...</string>
   <string name="choose_account">Välj konto</string>
+  <string name="enter_password_to_restore">Ange ditt lösenord till kontot %s för att återställa säkerhetskopian.</string>
   <string name="create_group_chat">Skapa gruppchatt</string>
   <string name="create_private_group_chat">Skapa sluten gruppchatt</string>
   <string name="create_dialog_channel_name">Kanalnamn</string>
@@ -576,5 +590,7 @@
   <string name="this_looks_like_a_domain">Detta verkar vara ett domännamn</string>
   <string name="add_anway">Lägg till ändå</string>
   <string name="this_looks_like_channel">Detta ser ut som en kanaladress</string>
+  <string name="not_a_backup_file">Filen du valde är inte en säkerhetskopia till Conversations</string>
   <string name="category_about">Om</string>
+  <string name="please_enable_an_account">Aktivera ett konto</string>
 </resources>
