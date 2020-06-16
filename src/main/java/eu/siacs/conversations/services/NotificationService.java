@@ -602,9 +602,6 @@ public class NotificationService {
         } catch (SecurityException e) {
             Log.d(Config.LOGTAG, "unable to use custom notification sound " + uri.toString());
         }
-        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            mBuilder.setCategory(Notification.CATEGORY_MESSAGE);
-        }
         mBuilder.setPriority(NotificationCompat.PRIORITY_HIGH);
         setNotificationColor(mBuilder);
         mBuilder.setLights(LED_COLOR, 2000, 3000);
