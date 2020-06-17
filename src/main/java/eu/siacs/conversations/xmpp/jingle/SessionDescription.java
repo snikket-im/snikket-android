@@ -168,8 +168,10 @@ public class SessionDescription {
                 }
                 formatBuilder.add(payloadType.getIntId());
                 mediaAttributes.put("rtpmap", payloadType.toSdpAttribute());
-                List<RtpDescription.Parameter> parameters = payloadType.getParameters();
-                if (parameters.size() > 0) {
+                final List<RtpDescription.Parameter> parameters = payloadType.getParameters();
+                if (parameters.size() == 1) {
+                    mediaAttributes.put("fmtp", RtpDescription.Parameter.toSdpString(id, parameters.get(0)));
+                } else if (parameters.size() > 0) {
                     mediaAttributes.put("fmtp", RtpDescription.Parameter.toSdpString(id, parameters));
                 }
                 for (RtpDescription.FeedbackNegotiation feedbackNegotiation : payloadType.getFeedbackNegotiations()) {

@@ -3,6 +3,7 @@ package eu.siacs.conversations.xmpp.jingle.stanzas;
 import android.util.Pair;
 
 import com.google.common.base.Preconditions;
+import com.google.common.base.Strings;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.ImmutableList;
 
@@ -369,7 +370,7 @@ public class RtpDescription extends GenericDescription {
             final StringBuilder stringBuilder = new StringBuilder();
             stringBuilder.append(id).append(' ');
             for (int i = 0; i < parameters.size(); ++i) {
-                Parameter p = parameters.get(i);
+                final Parameter p = parameters.get(i);
                 final String name = p.getParameterName();
                 Preconditions.checkArgument(name != null, String.format("parameter for %s must have a name", id));
                 SessionDescription.checkNoWhitespace(name, String.format("parameter names for %s must not contain whitespaces", id));
@@ -386,11 +387,23 @@ public class RtpDescription extends GenericDescription {
             return stringBuilder.toString();
         }
 
-        public static Pair<String, List<Parameter>> ofSdpString(final String sdp) {
+        public static String toSdpString(final String id, final Parameter parameter) {
+            final String name = parameter.getParameterName();
+            final String value = parameter.getParameterValue();
+            Preconditions.checkArgument(value != null, String.format("parameter for %s must have a value", id));
+            SessionDescription.checkNoWhitespace(value, String.format("parameter values for %s must not contain whitespaces", id));
+            if (Strings.isNullOrEmpty(name)) {
+                return String.format("%s %s", id, value);
+            } else {
+                return String.format("%s %s=%s", id, name, value);
+            }
+        }
+
+        static Pair<String, List<Parameter>> ofSdpString(final String sdp) {
             final String[] pair = sdp.split(" ");
             if (pair.length == 2) {
                 final String id = pair[0];
-                ImmutableList.Builder<Parameter> builder = new ImmutableList.Builder<>();
+                final ImmutableList.Builder<Parameter> builder = new ImmutableList.Builder<>();
                 for (final String parameter : pair[1].split(";")) {
                     final String[] parts = parameter.split("=", 2);
                     if (parts.length == 2) {
