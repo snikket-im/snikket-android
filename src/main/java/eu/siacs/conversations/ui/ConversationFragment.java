@@ -2879,12 +2879,12 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
     private void clearPending() {
         if (postponedActivityResult.clear()) {
             Log.e(Config.LOGTAG, "cleared pending intent with unhandled result left");
+            if (pendingTakePhotoUri.clear()) {
+                Log.e(Config.LOGTAG, "cleared pending photo uri");
+            }
         }
         if (pendingScrollState.clear()) {
             Log.e(Config.LOGTAG, "cleared scroll state");
-        }
-        if (pendingTakePhotoUri.clear()) {
-            Log.e(Config.LOGTAG, "cleared pending photo uri");
         }
         if (pendingConversationsUuid.clear()) {
             Log.e(Config.LOGTAG, "cleared pending conversations uuid");
