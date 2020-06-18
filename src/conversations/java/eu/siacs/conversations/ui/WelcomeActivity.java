@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.databinding.DataBindingUtil;
+import android.net.Uri;
 import android.os.Bundle;
 import android.security.KeyChain;
 import android.security.KeyChainAliasCallback;
@@ -46,35 +47,37 @@ public class WelcomeActivity extends XmppActivity implements XmppConnectionServi
         activity.overridePendingTransition(0, 0);
     }
 
-    public void onInstallReferrerDiscovered(final String referrer) {
+    public void onInstallReferrerDiscovered(final Uri referrer) {
         Log.d(Config.LOGTAG, "welcome activity: on install referrer discovered " + referrer);
-        if (referrer != null) {
+        if ("xmpp".equalsIgnoreCase(referrer.getScheme())) {
             final XmppUri xmppUri = new XmppUri(referrer);
             runOnUiThread(() -> processXmppUri(xmppUri));
+        } else {
+            Log.i(Config.LOGTAG, "install referrer was not an XMPP uri");
         }
     }
 
-    private boolean processXmppUri(final XmppUri xmppUri) {
-        if (xmppUri.isValidJid()) {
-            final String preauth = xmppUri.getParameter("preauth");
-            final Jid jid = xmppUri.getJid();
-            final Intent intent;
-            if (xmppUri.isAction(XmppUri.ACTION_REGISTER)) {
-                intent = SignupUtils.getTokenRegistrationIntent(this, jid, preauth);
-            } else if (xmppUri.isAction(XmppUri.ACTION_ROSTER) && "y".equals(xmppUri.getParameter("ibr"))) {
-                intent = SignupUtils.getTokenRegistrationIntent(this, jid.getDomain(), preauth);
-                intent.putExtra(StartConversationActivity.EXTRA_INVITE_URI, xmppUri.toString());
-            } else {
-                intent = null;
-            }
-            if (intent != null) {
-                startActivity(intent);
-                finish();
-                return true;
-            }
-            this.inviteUri = xmppUri;
+    private void processXmppUri(final XmppUri xmppUri) {
+        if (!xmppUri.isValidJid()) {
+            return;
         }
-        return false;
+        final String preAuth = xmppUri.getParameter("preauth");
+        final Jid jid = xmppUri.getJid();
+        final Intent intent;
+        if (xmppUri.isAction(XmppUri.ACTION_REGISTER)) {
+            intent = SignupUtils.getTokenRegistrationIntent(this, jid, preAuth);
+        } else if (xmppUri.isAction(XmppUri.ACTION_ROSTER) && "y".equals(xmppUri.getParameter("ibr"))) {
+            intent = SignupUtils.getTokenRegistrationIntent(this, jid.getDomain(), preAuth);
+            intent.putExtra(StartConversationActivity.EXTRA_INVITE_URI, xmppUri.toString());
+        } else {
+            intent = null;
+        }
+        if (intent != null) {
+            startActivity(intent);
+            finish();
+            return;
+        }
+        this.inviteUri = xmppUri;
     }
 
     @Override
