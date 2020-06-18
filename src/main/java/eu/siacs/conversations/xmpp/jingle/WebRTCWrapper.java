@@ -214,9 +214,13 @@ public class WebRTCWrapper {
                     PeerConnectionFactory.InitializationOptions.builder(service).createInitializationOptions()
             );
         } catch (final UnsatisfiedLinkError e) {
-            throw new InitializationException(e);
+            throw new InitializationException("Unable to initialize PeerConnectionFactory", e);
         }
-        this.eglBase = EglBase.create();
+        try {
+            this.eglBase = EglBase.create();
+        } catch (final RuntimeException e) {
+            throw new InitializationException("Unable to create EGL base", e);
+        }
         this.context = service;
         this.toneManager = service.getJingleConnectionManager().toneManager;
         mainHandler.post(() -> {
@@ -589,8 +593,8 @@ public class WebRTCWrapper {
 
     static class InitializationException extends Exception {
 
-        private InitializationException(final Throwable throwable) {
-            super(throwable);
+        private InitializationException(final String message, final Throwable throwable) {
+            super(message, throwable);
         }
 
         private InitializationException(final String message) {
