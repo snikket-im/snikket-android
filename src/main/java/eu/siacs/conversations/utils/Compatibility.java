@@ -1,5 +1,6 @@
 package eu.siacs.conversations.utils;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -137,6 +138,17 @@ public class Compatibility {
             }
         } catch (RuntimeException e) {
             Log.d(Config.LOGTAG, context.getClass().getSimpleName() + " was unable to start service");
+        }
+    }
+
+
+    @SuppressLint("UnsupportedChromeOsCameraSystemFeature")
+    public static boolean hasFeatureCamera(final Context context) {
+        final PackageManager packageManager = context.getPackageManager();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+            return packageManager.hasSystemFeature(PackageManager.FEATURE_CAMERA_ANY);
+        } else {
+            return packageManager.hasSystemFeature(PackageManager.FEATURE_CAMERA);
         }
     }
 }
