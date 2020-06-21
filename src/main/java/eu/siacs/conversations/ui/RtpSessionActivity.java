@@ -276,7 +276,7 @@ public class RtpSessionActivity extends XmppActivity implements XmppConnectionSe
     private void releaseProximityWakeLock() {
         if (this.mProximityWakeLock != null && mProximityWakeLock.isHeld()) {
             Log.d(Config.LOGTAG, "releasing proximity wake lock");
-            this.mProximityWakeLock.release();
+            this.mProximityWakeLock.release(PowerManager.RELEASE_FLAG_WAIT_FOR_NO_PROXIMITY);
             this.mProximityWakeLock = null;
         }
     }
