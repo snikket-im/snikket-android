@@ -900,7 +900,7 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
 
 
     private static boolean anyNeedsExternalStoragePermission(final Collection<Attachment> attachments) {
-        for(final Attachment attachment : attachments) {
+        for (final Attachment attachment : attachments) {
             if (attachment.getType() != Attachment.Type.LOCATION) {
                 return true;
             }
@@ -1346,7 +1346,7 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
 
         final Contact contact = conversation.getContact();
         if (contact.getPresences().anySupport(Namespace.JINGLE_MESSAGE)) {
-            triggerRtpSession(contact.getAccount(),contact.getJid().asBareJid(),action);
+            triggerRtpSession(contact.getAccount(), contact.getJid().asBareJid(), action);
         } else {
             final RtpCapability.Capability capability;
             if (action.equals(RtpSessionActivity.ACTION_MAKE_VIDEO_CALL)) {
@@ -1436,6 +1436,10 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
     }
 
     public void attachFile(final int attachmentChoice) {
+        attachFile(attachmentChoice, true);
+    }
+
+    public void attachFile(final int attachmentChoice, final boolean updateRecentlyUsed) {
         if (attachmentChoice == ATTACHMENT_CHOICE_RECORD_VOICE) {
             if (!hasPermissions(attachmentChoice, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.RECORD_AUDIO)) {
                 return;
@@ -1449,12 +1453,8 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
                 return;
             }
         }
-        try {
-            activity.getPreferences().edit()
-                    .putString(RECENTLY_USED_QUICK_ACTION, SendButtonAction.of(attachmentChoice).toString())
-                    .apply();
-        } catch (IllegalArgumentException e) {
-            //just do not save
+        if (updateRecentlyUsed) {
+            storeRecentlyUsedQuickAction(attachmentChoice);
         }
         final int encryption = conversation.getNextEncryption();
         final int mode = conversation.getMode();
@@ -1499,6 +1499,16 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
             }
         } else {
             invokeAttachFileIntent(attachmentChoice);
+        }
+    }
+
+    private void storeRecentlyUsedQuickAction(final int attachmentChoice) {
+        try {
+            activity.getPreferences().edit()
+                    .putString(RECENTLY_USED_QUICK_ACTION, SendButtonAction.of(attachmentChoice).toString())
+                    .apply();
+        } catch (IllegalArgumentException e) {
+            //just do not save
         }
     }
 
@@ -2135,7 +2145,7 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
         return this.binding != null && scrolledToBottom(this.binding.messagesView);
     }
 
-    private void processExtras(Bundle extras) {
+    private void processExtras(final Bundle extras) {
         final String downloadUuid = extras.getString(ConversationsActivity.EXTRA_DOWNLOAD_UUID);
         final String text = extras.getString(Intent.EXTRA_TEXT);
         final String nick = extras.getString(ConversationsActivity.EXTRA_NICK);
@@ -2181,7 +2191,7 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
             }
         }
         if (ConversationsActivity.POST_ACTION_RECORD_VOICE.equals(postInitAction)) {
-            attachFile(ATTACHMENT_CHOICE_RECORD_VOICE);
+            attachFile(ATTACHMENT_CHOICE_RECORD_VOICE, false);
             return;
         }
         final Message message = downloadUuid == null ? null : conversation.findMessageWithFileAndUuid(downloadUuid);
@@ -2190,7 +2200,7 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
         }
     }
 
-    private List<Uri> extractUris(Bundle extras) {
+    private List<Uri> extractUris(final Bundle extras) {
         final List<Uri> uris = extras.getParcelableArrayList(Intent.EXTRA_STREAM);
         if (uris != null) {
             return uris;
@@ -2203,7 +2213,7 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
         }
     }
 
-    private List<Uri> cleanUris(List<Uri> uris) {
+    private List<Uri> cleanUris(final List<Uri> uris) {
         Iterator<Uri> iterator = uris.iterator();
         while (iterator.hasNext()) {
             final Uri uri = iterator.next();
