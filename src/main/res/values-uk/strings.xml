@@ -70,7 +70,7 @@
   <string name="crash_report_message">Надсиланням звіту про відмову ви допомагаєте удосконаленню месенджера.\n<b>Увага:</b> Звіти надсилатимуться розробниками з вашого облікового запису XMPP.</string>
   <string name="send_now">Надіслати зараз</string>
   <string name="send_never">Ніколи не питати знову</string>
-  <string name="problem_connecting_to_account">Не можу з\'єднатися з обліковим записом</string>
+  <string name="problem_connecting_to_account">Неможливо з\'єднатися з обліковим записом</string>
   <string name="problem_connecting_to_accounts">Не можу увімкнути режим багатьох облікових записів</string>
   <string name="touch_to_fix">Перейти для керування обліковими записами</string>
   <string name="attach_file">Долучити файл</string>
@@ -149,14 +149,14 @@
   <string name="account_status_disabled">Тимчасово вимкнено</string>
   <string name="account_status_online">У мережі</string>
   <string name="account_status_connecting">З\'єднання\u2026</string>
-  <string name="account_status_offline">Не в мережі</string>
+  <string name="account_status_offline">Поза мережею</string>
   <string name="account_status_unauthorized">Не авторизовано</string>
   <string name="account_status_not_found">Сервер не знайдено</string>
   <string name="account_status_no_internet">Немає зв\'язку із мережею</string>
   <string name="account_status_regis_fail">Не вдалося зареєструватися</string>
   <string name="account_status_regis_conflict">Ім\'я користувача вже використовується</string>
   <string name="account_status_regis_success">Реєстрацію виконано</string>
-  <string name="account_status_regis_not_sup">Сервер не підтримує режстрацію</string>
+  <string name="account_status_regis_not_sup">Сервер не підтримує реєстрацію</string>
   <string name="account_status_regis_invalid_token">Неправильний реєстраційний токен</string>
   <string name="account_status_tls_error">Узгодження TLS не відбулося</string>
   <string name="account_status_policy_violation">Порушення політики</string>
@@ -182,7 +182,7 @@
   <string name="block_jabber_id">Заблокувати адресу XMPP</string>
   <string name="account_settings_example_jabber_id">username@example.com</string>
   <string name="password">Пароль</string>
-  <string name="invalid_jid">Це неправильна адреса XMPP</string>
+  <string name="invalid_jid">Це недійсна адреса XMPP</string>
   <string name="error_out_of_memory">Пам\'ять вичерпано. Завелике зображення.</string>
   <string name="add_phone_book_text">Бажаєте додати %s до своєї книги контактів?</string>
   <string name="server_info_show_more">Інформація про сервер</string>
@@ -196,10 +196,10 @@
   <string name="server_info_pep">XEP-0163: Персональне (піктограми користувачів, OMEMO)</string>
   <string name="server_info_http_upload">XEP-0363: Обмін файлами через HTTP</string>
   <string name="server_info_push">XEP-0357: Push-повідомлення</string>
-  <string name="server_info_available">є</string>
-  <string name="server_info_unavailable">нема</string>
-  <string name="missing_public_keys">Не вистачає повідомлення публічного ключа.</string>
-  <string name="last_seen_now">у мережі</string>
+  <string name="server_info_available">так</string>
+  <string name="server_info_unavailable">ні</string>
+  <string name="missing_public_keys">Бракує інформації про публічний ключ</string>
+  <string name="last_seen_now">зараз у мережі</string>
   <string name="last_seen_min">у мережі 1 хвилину тому</string>
   <string name="last_seen_mins">у мережі %d хвилин тому</string>
   <string name="last_seen_hour">у мережі 1 годину тому</string>
@@ -368,7 +368,7 @@
   <string name="disable_all_accounts">Вимкнути всі облікові записи</string>
   <string name="perform_action_with">Здійснити дію з</string>
   <string name="no_affiliation">Непов\'язаний</string>
-  <string name="no_role">Не в мережі</string>
+  <string name="no_role">Поза мережею</string>
   <string name="outcast">Вигнанець</string>
   <string name="member">Учасник</string>
   <string name="advanced_mode">Розширений режим</string>
@@ -669,7 +669,7 @@
   <string name="received_message_from_stranger">Отримано повідомлення від незнайомця</string>
   <string name="block_stranger">Заблокувати невідомий контакт</string>
   <string name="block_entire_domain">Заблокувати весь домен</string>
-  <string name="online_right_now">у мережі просто зараз</string>
+  <string name="online_right_now">зараз у мережі</string>
   <string name="retry_decryption">Спробувати знову розшифрувати</string>
   <string name="session_failure">Помилка сесії</string>
   <string name="sasl_downgrade">Застарілий механізм SASL</string>
@@ -838,7 +838,7 @@
   <string name="ebook">Електронна книга</string>
   <string name="video_original">Оригінал (не стиснений)</string>
   <string name="open_with">Відкрити</string>
-  <string name="set_profile_picture">Фото профілю чату</string>
+  <string name="set_profile_picture">Світлана профілю</string>
   <string name="choose_account">Виберіть обліковий запис</string>
   <string name="restore_backup">Відновити з резервної копії</string>
   <string name="restore">Відновити</string>
@@ -902,7 +902,7 @@
   <string name="pref_channel_discovery_summary">Більшість користувачів вибирають \'jabber.network\' як одну з кращих пропозицій зі всіх публічних середовищ XMPP.</string>
   <string name="pref_channel_discovery">Спосіб пошуку каналів</string>
   <string name="backup">Резервне копіювання</string>
-  <string name="category_about">Про</string>
+  <string name="category_about">Про застосунок</string>
   <string name="please_enable_an_account">Будь ласка, активуйте обліковий запис</string>
   <string name="make_call">Здійснити виклик</string>
   <string name="rtp_state_incoming_call">Вхідний виклик</string>
@@ -917,6 +917,7 @@
   <string name="rtp_state_ringing">Викликаю</string>
   <string name="rtp_state_declined_or_busy">Зайнято</string>
   <string name="rtp_state_connectivity_error">Неможливо здійснити виклик</string>
+  <string name="rtp_state_connectivity_lost_error">З\'єднання втрачено</string>
   <string name="rtp_state_retracted">Відхилені виклики</string>
   <string name="rtp_state_application_failure">Помилка застосунку</string>
   <string name="hang_up">Завершити</string>
@@ -930,6 +931,7 @@
   <string name="missed_call">Пропущені виклики</string>
   <string name="audio_call">Голосовий виклик</string>
   <string name="video_call">Відеовиклик</string>
+  <string name="help">Допомога</string>
   <string name="microphone_unavailable">Недоступний мікрофон</string>
   <string name="only_one_call_at_a_time">Водночас можливо здійснювати лише один виклик.</string>
   <string name="return_to_ongoing_call">Назад до активного виклику</string>
