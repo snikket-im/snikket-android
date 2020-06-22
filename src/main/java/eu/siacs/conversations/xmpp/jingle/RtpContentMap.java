@@ -6,6 +6,7 @@ import com.google.common.base.Function;
 import com.google.common.base.Preconditions;
 import com.google.common.base.Strings;
 import com.google.common.collect.Collections2;
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Maps;
@@ -13,6 +14,7 @@ import com.google.common.collect.Sets;
 
 import org.checkerframework.checker.nullness.compatqual.NullableDecl;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -23,7 +25,6 @@ import eu.siacs.conversations.xmpp.jingle.stanzas.GenericTransportInfo;
 import eu.siacs.conversations.xmpp.jingle.stanzas.Group;
 import eu.siacs.conversations.xmpp.jingle.stanzas.IceUdpTransportInfo;
 import eu.siacs.conversations.xmpp.jingle.stanzas.JinglePacket;
-import eu.siacs.conversations.xmpp.jingle.stanzas.Reason;
 import eu.siacs.conversations.xmpp.jingle.stanzas.RtpDescription;
 
 public class RtpContentMap {
@@ -57,6 +58,10 @@ public class RtpContentMap {
             final RtpDescription rtpDescription = input == null ? null : input.description;
             return rtpDescription == null ? Media.UNKNOWN : input.description.getMedia();
         }));
+    }
+
+    public List<String> getNames() {
+        return ImmutableList.copyOf(contents.keySet());
     }
 
     void requireContentDescriptions() {

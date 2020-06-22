@@ -39,6 +39,7 @@ import eu.siacs.conversations.services.AppRTCAudioManager;
 import eu.siacs.conversations.utils.IP;
 import eu.siacs.conversations.xml.Element;
 import eu.siacs.conversations.xml.Namespace;
+import eu.siacs.conversations.xmpp.Jid;
 import eu.siacs.conversations.xmpp.jingle.stanzas.Group;
 import eu.siacs.conversations.xmpp.jingle.stanzas.IceUdpTransportInfo;
 import eu.siacs.conversations.xmpp.jingle.stanzas.JinglePacket;
@@ -47,7 +48,6 @@ import eu.siacs.conversations.xmpp.jingle.stanzas.Reason;
 import eu.siacs.conversations.xmpp.jingle.stanzas.RtpDescription;
 import eu.siacs.conversations.xmpp.stanzas.IqPacket;
 import eu.siacs.conversations.xmpp.stanzas.MessagePacket;
-import eu.siacs.conversations.xmpp.Jid;
 
 public class JingleRtpConnection extends AbstractJingleConnection implements WebRTCWrapper.EventCallback {
 
@@ -120,7 +120,7 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
     }
 
     private final WebRTCWrapper webRTCWrapper = new WebRTCWrapper(this);
-    private final ArrayDeque<IceCandidate> pendingIceCandidates = new ArrayDeque<>();
+    private final ArrayDeque<Set<Map.Entry<String, RtpContentMap.DescriptionTransport>>> pendingIceCandidates = new ArrayDeque<>();
     private final Message message;
     private State state = State.NULL;
     private StateTransitionException stateTransitionException;
@@ -237,13 +237,12 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
                 Log.d(Config.LOGTAG, id.account.getJid().asBareJid() + ": improperly formatted contents; ignoring", e);
                 return;
             }
-            final RtpContentMap rtpContentMap = isInitiator() ? this.responderRtpContentMap : this.initiatorRtpContentMap;
-            final Group originalGroup = rtpContentMap != null ? rtpContentMap.group : null;
-            final List<String> identificationTags = originalGroup == null ? Collections.emptyList() : originalGroup.getIdentificationTags();
-            if (identificationTags.size() == 0) {
-                Log.w(Config.LOGTAG, id.account.getJid().asBareJid() + ": no identification tags found in initial offer. we won't be able to calculate mLineIndices");
+            final Set<Map.Entry<String, RtpContentMap.DescriptionTransport>> candidates = contentMap.contents.entrySet();
+            if (this.state == State.SESSION_ACCEPTED) {
+                processCandidates(candidates);
+            } else {
+                pendingIceCandidates.push(candidates);
             }
-            receiveCandidates(identificationTags, contentMap.contents.entrySet());
         } else {
             if (isTerminated()) {
                 respondOk(jinglePacket);
@@ -255,7 +254,17 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
         }
     }
 
-    private void receiveCandidates(final List<String> identificationTags, final Set<Map.Entry<String, RtpContentMap.DescriptionTransport>> contents) {
+    private void processCandidates(final Set<Map.Entry<String, RtpContentMap.DescriptionTransport>> contents) {
+        final RtpContentMap rtpContentMap = isInitiator() ? this.responderRtpContentMap : this.initiatorRtpContentMap;
+        final Group originalGroup = rtpContentMap.group;
+        final List<String> identificationTags = originalGroup == null ? rtpContentMap.getNames() : originalGroup.getIdentificationTags();
+        if (identificationTags.size() == 0) {
+            Log.w(Config.LOGTAG, id.account.getJid().asBareJid() + ": no identification tags found in initial offer. we won't be able to calculate mLineIndices");
+        }
+        processCandidates(identificationTags, contents);
+    }
+
+    private void processCandidates(final List<String> indices, final Set<Map.Entry<String, RtpContentMap.DescriptionTransport>> contents) {
         for (final Map.Entry<String, RtpContentMap.DescriptionTransport> content : contents) {
             final String ufrag = content.getValue().transport.getAttribute("ufrag");
             for (final IceUdpTransportInfo.Candidate candidate : content.getValue().transport.getCandidates()) {
@@ -267,15 +276,10 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
                     continue;
                 }
                 final String sdpMid = content.getKey();
-                final int mLineIndex = identificationTags.indexOf(sdpMid);
+                final int mLineIndex = indices.indexOf(sdpMid);
                 final IceCandidate iceCandidate = new IceCandidate(sdpMid, mLineIndex, sdp);
-                if (isInState(State.SESSION_ACCEPTED)) {
-                    Log.d(Config.LOGTAG, "received candidate: " + iceCandidate);
-                    this.webRTCWrapper.addIceCandidate(iceCandidate);
-                } else {
-                    this.pendingIceCandidates.offer(iceCandidate);
-                    Log.d(Config.LOGTAG, id.account.getJid().asBareJid() + ": put ICE candidate on backlog");
-                }
+                Log.d(Config.LOGTAG, "received candidate: " + iceCandidate);
+                this.webRTCWrapper.addIceCandidate(iceCandidate);
             }
         }
     }
@@ -318,8 +322,7 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
         }
         if (transition(target, () -> this.initiatorRtpContentMap = contentMap)) {
             respondOk(jinglePacket);
-            final List<String> identificationTags = contentMap.group == null ? Collections.emptyList() : contentMap.group.getIdentificationTags();
-            receiveCandidates(identificationTags, contentMap.contents.entrySet());
+            pendingIceCandidates.push(contentMap.contents.entrySet());
             if (target == State.SESSION_INITIALIZED_PRE_APPROVED) {
                 Log.d(Config.LOGTAG, id.account.getJid().asBareJid() + ": automatically accepting session-initiate");
                 sendSessionAccept();
@@ -364,8 +367,8 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
         if (transition(State.SESSION_ACCEPTED)) {
             respondOk(jinglePacket);
             receiveSessionAccept(contentMap);
-            final List<String> identificationTags = contentMap.group == null ? Collections.emptyList() : contentMap.group.getIdentificationTags();
-            receiveCandidates(identificationTags, contentMap.contents.entrySet());
+            final List<String> identificationTags = contentMap.group == null ? contentMap.getNames() : contentMap.group.getIdentificationTags();
+            processCandidates(identificationTags, contentMap.contents.entrySet());
         } else {
             Log.d(Config.LOGTAG, String.format("%s: received session-accept while in state %s", id.account.getJid().asBareJid(), state));
             respondOk(jinglePacket);
@@ -451,9 +454,8 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
 
     private void addIceCandidatesFromBlackLog() {
         while (!this.pendingIceCandidates.isEmpty()) {
-            final IceCandidate iceCandidate = this.pendingIceCandidates.poll();
-            Log.d(Config.LOGTAG, id.account.getJid().asBareJid() + ": added ICE candidate from back log " + iceCandidate);
-            this.webRTCWrapper.addIceCandidate(iceCandidate);
+            processCandidates(this.pendingIceCandidates.poll());
+            Log.d(Config.LOGTAG, id.account.getJid().asBareJid() + ": added candidates from back log");
         }
     }
 
@@ -461,7 +463,6 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
         this.responderRtpContentMap = rtpContentMap;
         this.transitionOrThrow(State.SESSION_ACCEPTED);
         final JinglePacket sessionAccept = rtpContentMap.toJinglePacket(JinglePacket.Action.SESSION_ACCEPT, id.sessionId);
-        Log.d(Config.LOGTAG, sessionAccept.toString());
         send(sessionAccept);
     }
 
@@ -890,7 +891,7 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
 
     public synchronized void rejectCall() {
         if (isTerminated()) {
-            Log.w(Config.LOGTAG,id.account.getJid().asBareJid()+": received rejectCall() when session has already been terminated. nothing to do");
+            Log.w(Config.LOGTAG, id.account.getJid().asBareJid() + ": received rejectCall() when session has already been terminated. nothing to do");
             return;
         }
         switch (this.state) {
