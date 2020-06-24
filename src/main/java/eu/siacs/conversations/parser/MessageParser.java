@@ -837,9 +837,9 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
                     if (Namespace.JINGLE_MESSAGE.equals(child.getNamespace()) && JINGLE_MESSAGE_ELEMENT_NAMES.contains(child.getName())) {
                         final String action = child.getName();
                         final String sessionId = child.getAttribute("id");
-                            if (sessionId == null) {
-                                break;
-                            }
+                        if (sessionId == null) {
+                            break;
+                        }
                         if (query == null) {
                             if (serverMsgId == null) {
                                 serverMsgId = extractStanzaId(account, packet);
@@ -952,7 +952,7 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
             final String id = displayed.getAttribute("id");
             final Jid sender = InvalidJid.getNullForInvalid(displayed.getAttributeAsJid("sender"));
             if (packet.fromAccount(account) && !selfAddressed) {
-                dismissNotification(account, counterpart, query);
+                dismissNotification(account, counterpart, query, id);
                 if (query == null) {
                     activateGracePeriod(account);
                 }
@@ -993,7 +993,7 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
                     message = message.prev();
                 }
                 if (displayedMessage != null && selfAddressed) {
-                    dismissNotification(account, counterpart, query);
+                    dismissNotification(account, counterpart, query, id);
                 }
             }
         }
@@ -1018,10 +1018,15 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
         }
     }
 
-    private void dismissNotification(Account account, Jid counterpart, MessageArchiveService.Query query) {
-        Conversation conversation = mXmppConnectionService.find(account, counterpart.asBareJid());
+    private void dismissNotification(Account account, Jid counterpart, MessageArchiveService.Query query, final String id) {
+        final Conversation conversation = mXmppConnectionService.find(account, counterpart.asBareJid());
         if (conversation != null && (query == null || query.isCatchup())) {
-            mXmppConnectionService.markRead(conversation); //TODO only mark messages read that are older than timestamp
+            final String displayableId = conversation.findMostRecentRemoteDisplayableId();
+            if (displayableId != null && displayableId.equals(id)) {
+                mXmppConnectionService.markRead(conversation);
+            } else {
+                Log.w(Config.LOGTAG, account.getJid().asBareJid() + ": received dismissing display marker that did not match our last id in that conversation");
+            }
         }
     }
 

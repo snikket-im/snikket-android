@@ -7,6 +7,7 @@ import android.support.annotation.Nullable;
 import android.text.TextUtils;
 
 import com.google.common.collect.ComparisonChain;
+import com.google.common.collect.Lists;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -167,6 +168,22 @@ public class Conversation extends AbstractEntity implements Blockable, Comparabl
             }
         }
         return first;
+    }
+
+    public String findMostRecentRemoteDisplayableId() {
+        final boolean multi = mode == Conversation.MODE_MULTI;
+        synchronized (this.messages) {
+            for(final Message message : Lists.reverse(this.messages)) {
+                if (message.getStatus() == Message.STATUS_RECEIVED) {
+                    final String serverMsgId = message.getServerMsgId();
+                    if (serverMsgId != null && multi) {
+                        return serverMsgId;
+                    }
+                    return message.getRemoteMsgId();
+                }
+            }
+        }
+        return null;
     }
 
     public Message findUnsentMessageWithUuid(String uuid) {
