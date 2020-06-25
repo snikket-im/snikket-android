@@ -1,5 +1,9 @@
 # Changelog
 
+### Version 2.8.8
+* Fixed notifications not showing up under certain conditions
+* Fixed compatibility issues and crashes related to A/V calls
+
 ### Version 2.8.7
 
 * Show help button if A/V call fails
