@@ -3,4 +3,6 @@
     <string name="pick_a_server">Выберите своего XMPP-провайдера</string>
     <string name="use_conversations.im">Использовать conversations.im</string>
     <string name="create_new_account">Создать новый аккаунт</string>
+    <string name="do_you_have_an_account">У вас есть аккаунт XMPP? Если вы использовали Conversations или другой XMPP-клиент в прошлом, то скорее всего, он у вас есть. Если у вас нет аккаунта, вы можете создать его прямо сейчас.\nНекоторые провайдеры электронной почты также регистрируют аккаунты XMPP. </string>
+    <string name="server_select_text">XMPP - это независимая сеть обмена сообщениями. Conversations позволяет вам подключиться к любому XMPP-серверу на ваш выбор.\nЕсли у вас нет сервера, предлагаем вам зарегистрировать аккаунт на conversations.im, сервер, специально предназначеный для работы с приложением Conversations.</string>
     </resources>
