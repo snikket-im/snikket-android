@@ -33,7 +33,7 @@
 
 ### Version 2.8.2
 
-* Add button to switch camea during video call
+* Add button to switch camera during video call
 * Fixed voice calls on tablets
 
 ### Version 2.8.1
