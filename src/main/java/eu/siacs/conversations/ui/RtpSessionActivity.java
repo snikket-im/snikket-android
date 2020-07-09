@@ -910,15 +910,17 @@ public class RtpSessionActivity extends XmppActivity implements XmppConnectionSe
     }
 
     private void disableMicrophone(View view) {
-        JingleRtpConnection rtpConnection = requireRtpConnection();
-        rtpConnection.setMicrophoneEnabled(false);
-        updateInCallButtonConfiguration();
+        final JingleRtpConnection rtpConnection = requireRtpConnection();
+        if (rtpConnection.setMicrophoneEnabled(false)) {
+            updateInCallButtonConfiguration();
+        }
     }
 
     private void enableMicrophone(View view) {
-        JingleRtpConnection rtpConnection = requireRtpConnection();
-        rtpConnection.setMicrophoneEnabled(true);
-        updateInCallButtonConfiguration();
+        final JingleRtpConnection rtpConnection = requireRtpConnection();
+        if (rtpConnection.setMicrophoneEnabled(true)) {
+            updateInCallButtonConfiguration();
+        }
     }
 
     private void switchToEarpiece(View view) {

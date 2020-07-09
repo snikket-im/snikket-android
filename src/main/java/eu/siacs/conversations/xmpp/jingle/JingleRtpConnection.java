@@ -1085,8 +1085,8 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
         return webRTCWrapper.isMicrophoneEnabled();
     }
 
-    public void setMicrophoneEnabled(final boolean enabled) {
-        webRTCWrapper.setMicrophoneEnabled(enabled);
+    public boolean setMicrophoneEnabled(final boolean enabled) {
+        return webRTCWrapper.setMicrophoneEnabled(enabled);
     }
 
     public boolean isVideoEnabled() {

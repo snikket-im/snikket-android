@@ -370,12 +370,19 @@ public class WebRTCWrapper {
         }
     }
 
-    void setMicrophoneEnabled(final boolean enabled) {
+    boolean setMicrophoneEnabled(final boolean enabled) {
         final AudioTrack audioTrack = this.localAudioTrack;
         if (audioTrack == null) {
             throw new IllegalStateException("Local audio track does not exist (yet)");
         }
-        audioTrack.setEnabled(enabled);
+        try {
+            audioTrack.setEnabled(enabled);
+            return true;
+        } catch (final IllegalStateException e) {
+            Log.d(Config.LOGTAG, "unable to toggle microphone", e);
+            //ignoring race condition in case MediaStreamTrack has been disposed
+            return false;
+        }
     }
 
     boolean isVideoEnabled() {
