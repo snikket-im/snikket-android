@@ -509,7 +509,7 @@ public class WebRTCWrapper {
         final CameraEnumerator enumerator = getCameraEnumerator();
         final Set<String> deviceNames = ImmutableSet.copyOf(enumerator.getDeviceNames());
         for (final String deviceName : deviceNames) {
-            if (enumerator.isFrontFacing(deviceName)) {
+            if (isFrontFacing(enumerator, deviceName)) {
                 final CapturerChoice capturerChoice = of(enumerator, deviceName, deviceNames);
                 if (capturerChoice == null) {
                     return Optional.absent();
@@ -522,6 +522,14 @@ public class WebRTCWrapper {
             return Optional.absent();
         } else {
             return Optional.fromNullable(of(enumerator, Iterables.get(deviceNames, 0), deviceNames));
+        }
+    }
+
+    private static boolean isFrontFacing(final CameraEnumerator cameraEnumerator, final String deviceName) {
+        try {
+            return cameraEnumerator.isFrontFacing(deviceName);
+        } catch (final NullPointerException e) {
+            return false;
         }
     }
 
