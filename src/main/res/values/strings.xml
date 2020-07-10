@@ -918,6 +918,7 @@
     <string name="audio_call">Audio call</string>
     <string name="video_call">Video call</string>
     <string name="help">Help</string>
+    <string name="switch_to_conversation">Switch to conversation</string>
     <string name="microphone_unavailable">Your microphone is unavailable</string>
     <string name="only_one_call_at_a_time">You can only have one call at a time.</string>
     <string name="return_to_ongoing_call">Return to ongoing call</string>

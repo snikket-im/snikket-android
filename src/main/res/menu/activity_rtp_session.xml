@@ -1,11 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
-      xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
         android:id="@+id/action_help"
         android:icon="?attr/icon_help"
         android:title="@string/help"
-        app:showAsAction="always"/>
+        app:showAsAction="always" />
+    <item
+        android:id="@+id/action_goto_chat"
+        android:icon="?attr/icon_goto_chat"
+        android:title="@string/switch_to_conversation"
+        app:showAsAction="always" />
 </menu>

@@ -88,6 +88,10 @@ public class RtpSessionActivity extends XmppActivity implements XmppConnectionSe
             RtpEndUserState.APPLICATION_ERROR,
             RtpEndUserState.CONNECTIVITY_ERROR
     );
+    private static final List<RtpEndUserState> STATES_SHOWING_SWITCH_TO_CHAT = Arrays.asList(
+            RtpEndUserState.CONNECTING,
+            RtpEndUserState.CONNECTED
+    );
     private static final String PROXIMITY_WAKE_LOCK_TAG = "conversations:in-rtp-session";
     private static final int REQUEST_ACCEPT_CALL = 0x1111;
     private WeakReference<JingleRtpConnection> rtpConnectionReference;
@@ -135,7 +139,9 @@ public class RtpSessionActivity extends XmppActivity implements XmppConnectionSe
     public boolean onCreateOptionsMenu(final Menu menu) {
         getMenuInflater().inflate(R.menu.activity_rtp_session, menu);
         final MenuItem help = menu.findItem(R.id.action_help);
+        final MenuItem gotoChat = menu.findItem(R.id.action_goto_chat);
         help.setVisible(isHelpButtonVisible());
+        gotoChat.setVisible(isSwitchToConversationVisible());
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -153,10 +159,25 @@ public class RtpSessionActivity extends XmppActivity implements XmppConnectionSe
         }
     }
 
+    private boolean isSwitchToConversationVisible() {
+        final JingleRtpConnection connection = this.rtpConnectionReference != null ? this.rtpConnectionReference.get() : null;
+        return connection != null && STATES_SHOWING_SWITCH_TO_CHAT.contains(connection.getEndUserState());
+    }
+
+    private void switchToConversation() {
+        final Contact contact = getWith();
+        final Conversation conversation = xmppConnectionService.findOrCreateConversation(contact.getAccount(), contact.getJid(), false, true);
+        switchToConversation(conversation);
+    }
+
     public boolean onOptionsItemSelected(final MenuItem item) {
-        if (item.getItemId() == R.id.action_help) {
-            launchHelpInBrowser();
-            return true;
+        switch (item.getItemId()) {
+            case R.id.action_help:
+                launchHelpInBrowser();
+                break;
+            case R.id.action_goto_chat:
+                switchToConversation();
+                break;
         }
         return super.onOptionsItemSelected(item);
     }
