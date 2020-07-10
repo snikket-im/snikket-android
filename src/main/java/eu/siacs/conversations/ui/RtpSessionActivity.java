@@ -308,6 +308,7 @@ public class RtpSessionActivity extends XmppActivity implements XmppConnectionSe
             return;
         }
         final Account account = extractAccount(intent);
+        final String action = intent.getAction();
         final Jid with = Jid.ofEscaped(intent.getStringExtra(EXTRA_WITH));
         final String sessionId = intent.getStringExtra(EXTRA_SESSION_ID);
         if (sessionId != null) {
@@ -320,6 +321,9 @@ public class RtpSessionActivity extends XmppActivity implements XmppConnectionSe
                 requestPermissionsAndAcceptCall();
                 resetIntent(intent.getExtras());
             }
+        } else if (asList(ACTION_MAKE_VIDEO_CALL, ACTION_MAKE_VOICE_CALL).contains(action)) {
+            proposeJingleRtpSession(account, with, actionToMedia(action));
+            binding.with.setText(account.getRoster().getContact(with).getDisplayName());
         } else {
             throw new IllegalStateException("received onNewIntent without sessionId");
         }
@@ -437,7 +441,11 @@ public class RtpSessionActivity extends XmppActivity implements XmppConnectionSe
                 return;
             }
         }
-        retractSessionProposal();
+        //TODO apparently this method is not getting called on Android 10 when using the task switcher
+        final boolean emptyReference = rtpConnectionReference == null || rtpConnectionReference.get() == null;
+        if (emptyReference && xmppConnectionService != null) {
+            retractSessionProposal();
+        }
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
