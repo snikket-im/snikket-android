@@ -11,7 +11,7 @@ android:
     - '.+'
 before_script:
     - mkdir libs
-    - wget -O libs/libwebrtc-m83.aar http://gultsch.de/files/libwebrtc-m83.aar
+    - wget -O libs/libwebrtc-m84.aar http://gultsch.de/files/libwebrtc-m84.aar
 script:
     - ./gradlew assembleConversationsFreeSystemRelease
     - ./gradlew assembleQuicksyFreeCompatRelease
