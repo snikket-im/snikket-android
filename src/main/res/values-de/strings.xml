@@ -916,6 +916,7 @@
   <string name="audio_call">Audioanruf</string>
   <string name="video_call">Videoanruf</string>
   <string name="help">Hilfe</string>
+  <string name="switch_to_conversation">Zur Unterhaltung wechseln</string>
   <string name="microphone_unavailable">Dein Mikrofon ist nicht verfügbar</string>
   <string name="only_one_call_at_a_time">Du kannst immer nur einen Anruf zur gleichen Zeit machen.</string>
   <string name="return_to_ongoing_call">Zurück zum laufenden Aufruf</string>

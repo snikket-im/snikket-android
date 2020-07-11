@@ -8,4 +8,4 @@
     <string name="magic_create_text_on_x">Je ontving een uitnodiging voor %1$s. We zullen je helpen een account aan te maken.\nWanneer je %1$s als je provider kiest kan je met gebruikers van andere providers communiceren door hen je volledige XMPP-adres te geven.</string>
     <string name="magic_create_text_fixed">Je ontving een uitnodiging voor %1$s. Er werd reeds een gebruikersnaam voor jou gekozen. We zullen je helpen een account aan te maken.\nJe zal met gebruikers van andere providers communiceren door hen je volledige XMPP-adres te geven.</string>
     <string name="your_server_invitation">Je server uitnodiging</string>
-</resources>
+    </resources>
