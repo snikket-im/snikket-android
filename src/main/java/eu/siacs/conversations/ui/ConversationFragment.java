@@ -2735,15 +2735,17 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
     }
 
     @Override
-    public boolean onEnterPressed(KeyEvent event) {
-        SharedPreferences p = PreferenceManager.getDefaultSharedPreferences(getActivity());
-        final boolean enterIsSend = p.getBoolean("enter_is_send", getResources().getBoolean(R.bool.enter_is_send));
-        if (enterIsSend || event.isCtrlPressed()) {
+    public boolean onEnterPressed(final boolean isCtrlPressed) {
+        if (isCtrlPressed || enterIsSend()) {
             sendMessage();
             return true;
-        } else {
-            return false;
         }
+        return false;
+    }
+
+    private boolean enterIsSend() {
+        final SharedPreferences p = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        return p.getBoolean("enter_is_send", getResources().getBoolean(R.bool.enter_is_send));
     }
 
     @Override
