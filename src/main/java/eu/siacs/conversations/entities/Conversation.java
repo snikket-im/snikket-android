@@ -173,7 +173,7 @@ public class Conversation extends AbstractEntity implements Blockable, Comparabl
     public String findMostRecentRemoteDisplayableId() {
         final boolean multi = mode == Conversation.MODE_MULTI;
         synchronized (this.messages) {
-            for(final Message message : Lists.reverse(this.messages)) {
+            for (final Message message : Lists.reverse(this.messages)) {
                 if (message.getStatus() == Message.STATUS_RECEIVED) {
                     final String serverMsgId = message.getServerMsgId();
                     if (serverMsgId != null && multi) {
@@ -188,7 +188,7 @@ public class Conversation extends AbstractEntity implements Blockable, Comparabl
 
     public Message getLastEditableMessage() {
         synchronized (this.messages) {
-            for(final Message message : Lists.reverse(this.messages)) {
+            for (final Message message : Lists.reverse(this.messages)) {
                 if (message.isEditable()) {
                     if (message.isGeoUri() || message.getType() != Message.TYPE_TEXT) {
                         return null;
@@ -514,7 +514,7 @@ public class Conversation extends AbstractEntity implements Blockable, Comparabl
     @Override
     public int compareTo(@NonNull Conversation another) {
         return ComparisonChain.start()
-                .compareFalseFirst(another.getBooleanAttribute(ATTRIBUTE_PINNED_ON_TOP, false), getBooleanAttribute(ATTRIBUTE_PINNED_ON_TOP,false))
+                .compareFalseFirst(another.getBooleanAttribute(ATTRIBUTE_PINNED_ON_TOP, false), getBooleanAttribute(ATTRIBUTE_PINNED_ON_TOP, false))
                 .compare(another.getSortableTime(), getSortableTime())
                 .result();
     }

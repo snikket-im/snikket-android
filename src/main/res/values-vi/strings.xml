@@ -246,7 +246,6 @@
   <string name="never">Chưa từng</string>
   <string name="until_further_notice">Cho đến thông báo tiếp theo</string>
   <string name="pref_enter_is_send">Bấm Enter để gửi</string>
-  <string name="pref_enter_is_send_summary">Bấm nút Enter để gửi tin nhắn</string>
   <string name="pref_display_enter_key">Hiện nút Enter</string>
   <string name="pref_display_enter_key_summary">Đổi nút biểu tượng cảm xúc thành nút Enter</string>
   <string name="audio">âm thanh</string>

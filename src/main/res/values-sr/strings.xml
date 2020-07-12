@@ -296,7 +296,6 @@
   <string name="mark_as_read">Означи прочитаним</string>
   <string name="pref_input_options">Унос</string>
   <string name="pref_enter_is_send">Ентер шаље</string>
-  <string name="pref_enter_is_send_summary">Користи Ентер тастер за слање порука</string>
   <string name="pref_display_enter_key">Прикажи Ентер тастер</string>
   <string name="pref_display_enter_key_summary">Промени тастер за емотиконе у ентер тастер</string>
   <string name="audio">звук</string>

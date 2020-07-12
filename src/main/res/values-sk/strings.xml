@@ -216,7 +216,6 @@
   <string name="never">Nikdy</string>
   <string name="until_further_notice">Až do odvolania</string>
   <string name="pref_enter_is_send">Enter odosiela</string>
-  <string name="pref_enter_is_send_summary">Použiť klávesu enter na odoslanie správy</string>
   <string name="pref_display_enter_key">Zobraziť klávesu enter</string>
   <string name="pref_display_enter_key_summary">Zmeniť klávesu s emotikonmi na klávesu enter</string>
   <string name="audio">audio</string>

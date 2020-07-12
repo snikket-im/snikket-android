@@ -271,7 +271,6 @@
   <string name="until_further_notice">İkinci bildirime kadar</string>
   <string name="pref_input_options">Girdi</string>
   <string name="pref_enter_is_send">Enter=gönder</string>
-  <string name="pref_enter_is_send_summary">İleti göndermek için \"enter\" tuşunu kullan</string>
   <string name="pref_display_enter_key">\"Enter\" tuşunu göster</string>
   <string name="pref_display_enter_key_summary">İfade simgesi tuşunu \"enter\" tuşu olarak değiştir</string>
   <string name="audio">ses</string>

@@ -316,7 +316,6 @@
   <string name="reply">الرد</string>
   <string name="mark_as_read">إعتباره كمقروء</string>
   <string name="pref_enter_is_send">أدخل للإرسال</string>
-  <string name="pref_enter_is_send_summary">استخدام مفتاح الدخول لإرسال رسالة</string>
   <string name="pref_display_enter_key">عرض مفتاح الادخال</string>
   <string name="pref_display_enter_key_summary">تغيير مفتاح الرموز إلى مفتاح الدخول</string>
   <string name="audio">صوت</string>

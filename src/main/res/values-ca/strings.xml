@@ -314,7 +314,6 @@
   <string name="mark_as_read">Marcar com llegit</string>
   <string name="pref_input_options">Entrada</string>
   <string name="pref_enter_is_send">Entra per enviar</string>
-  <string name="pref_enter_is_send_summary">Utilitza el botó enter per enviar el missatge</string>
   <string name="pref_display_enter_key">Mostra el botó enter</string>
   <string name="pref_display_enter_key_summary">Canviar la clau dels emoticones per un botó d\'entrada </string>
   <string name="audio">audio</string>

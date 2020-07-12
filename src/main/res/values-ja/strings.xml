@@ -316,7 +316,6 @@
   <string name="mark_as_read">既読にする</string>
   <string name="pref_input_options">入力</string>
   <string name="pref_enter_is_send">Enter は送信</string>
-  <string name="pref_enter_is_send_summary">Enter キーをメッセージの送信に使用します</string>
   <string name="pref_display_enter_key">Enter キーを表示</string>
   <string name="pref_display_enter_key_summary">絵文字キーを Enter キーに変更</string>
   <string name="audio">オーディオ</string>

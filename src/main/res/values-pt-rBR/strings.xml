@@ -401,7 +401,6 @@
   <string name="mark_as_read">Marcar como lida</string>
   <string name="pref_input_options">Entrada</string>
   <string name="pref_enter_is_send">Enter envia</string>
-  <string name="pref_enter_is_send_summary">Usa o botão Enter para enviar a mensagem.</string>
   <string name="pref_display_enter_key">Exibir o botão Enter</string>
   <string name="pref_display_enter_key_summary">Altera o botão de emoticons para um botão Enter.</string>
   <string name="audio">áudio</string>

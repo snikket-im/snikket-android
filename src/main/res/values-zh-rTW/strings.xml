@@ -260,7 +260,6 @@
   <string name="until_further_notice">直到新的通知</string>
   <string name="pref_input_options">輸入</string>
   <string name="pref_enter_is_send">回車是發送</string>
-  <string name="pref_enter_is_send_summary">用 Enter 鍵來發送訊息</string>
   <string name="pref_display_enter_key">顯示回車鍵</string>
   <string name="pref_display_enter_key_summary">改變表情鍵為回車鍵</string>
   <string name="audio">音訊</string>

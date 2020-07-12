@@ -319,7 +319,6 @@
   <string name="mark_as_read">Läsmarkera</string>
   <string name="pref_input_options">Input</string>
   <string name="pref_enter_is_send">Skicka med enter</string>
-  <string name="pref_enter_is_send_summary">Använd enter-knappen för att skicka meddelande</string>
   <string name="pref_display_enter_key">Visa enter-knappen</string>
   <string name="pref_display_enter_key_summary">Byt ut emoticons-tangenten mot en enter-tangent</string>
   <string name="audio">ljud</string>

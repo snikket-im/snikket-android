@@ -384,7 +384,6 @@
   <string name="mark_as_read">Megjelölés olvasottként</string>
   <string name="pref_input_options">Bevitel</string>
   <string name="pref_enter_is_send">Küldés enterrel</string>
-  <string name="pref_enter_is_send_summary">Az enter billentyű használata az üzenet küldéséhez</string>
   <string name="pref_display_enter_key">Enter billentyű megjelenítése</string>
   <string name="pref_display_enter_key_summary">Hangulatjelek billentyű megváltoztatása az enter billentyűre</string>
   <string name="audio">hang</string>

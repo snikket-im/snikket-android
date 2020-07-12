@@ -226,7 +226,6 @@
   <string name="until_further_notice">Sampai pemberitahuan selanjutnya</string>
   <string name="pref_input_options">Masukan</string>
   <string name="pref_enter_is_send">Enter untuk mengirim</string>
-  <string name="pref_enter_is_send_summary">Gunakan enter untuk mengrim pesan</string>
   <string name="pref_display_enter_key">Tampilkan masukan kunci</string>
   <string name="pref_display_enter_key_summary">Mengubah kunci emoji untuk memasukan kunci</string>
   <string name="audio">audio</string>

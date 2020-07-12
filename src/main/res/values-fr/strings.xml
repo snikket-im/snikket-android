@@ -401,7 +401,6 @@
   <string name="mark_as_read">Marquer comme lu</string>
   <string name="pref_input_options">Saisie</string>
   <string name="pref_enter_is_send">Touche Entrée pour envoyer</string>
-  <string name="pref_enter_is_send_summary">Utiliser la touche Entrée pour envoyer un message.</string>
   <string name="pref_display_enter_key">Afficher la touche Entrée</string>
   <string name="pref_display_enter_key_summary">Remplacer la touche Émoticônes par une touche Entrée.</string>
   <string name="audio">audio</string>

@@ -264,7 +264,6 @@
   <string name="until_further_notice">Než opět změním</string>
   <string name="pref_input_options">Vstup</string>
   <string name="pref_enter_is_send">Enter odesílá</string>
-  <string name="pref_enter_is_send_summary">Použít klávesu enter pro odesílání zpráv</string>
   <string name="pref_display_enter_key">Zobrazit klávesu enter</string>
   <string name="pref_display_enter_key_summary">Změnit klávesu emotikon na klávesu enter</string>
   <string name="audio">audio</string>

@@ -401,7 +401,6 @@
   <string name="mark_as_read">Marcar como leído</string>
   <string name="pref_input_options">Entrada</string>
   <string name="pref_enter_is_send">Intro para enviar</string>
-  <string name="pref_enter_is_send_summary">Usar la tecla intro para enviar el mensaje</string>
   <string name="pref_display_enter_key">Mostrar tecla Intro</string>
   <string name="pref_display_enter_key_summary">Cambiar la tecla de emoticonos por la tecla Intro</string>
   <string name="audio">audio</string>
@@ -916,6 +915,7 @@
   <string name="audio_call">Audio llamada</string>
   <string name="video_call">Video llamada</string>
   <string name="help">Ayuda</string>
+  <string name="switch_to_conversation">Cambiar a conversación</string>
   <string name="microphone_unavailable">Tu micrófono no está disponible</string>
   <string name="only_one_call_at_a_time">Solo puedes hacer una llamada a la vez</string>
   <string name="return_to_ongoing_call">Volver a la llamada en curso</string>

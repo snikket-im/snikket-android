@@ -399,7 +399,6 @@
   <string name="mark_as_read">Прочитано</string>
   <string name="pref_input_options">Ввод</string>
   <string name="pref_enter_is_send">Отправить на \"Enter\"</string>
-  <string name="pref_enter_is_send_summary">Клавиша \"Enter\" отправляет сообщение</string>
   <string name="pref_display_enter_key">Показывать клавишу ввода</string>
   <string name="pref_display_enter_key_summary">Поменять кнопку смайликов на кнопку ввода</string>
   <string name="audio">аудио</string>
@@ -930,6 +929,7 @@
   <string name="audio_call">Аудиозвонок</string>
   <string name="video_call">Видеозвонок</string>
   <string name="help">Помощь</string>
+  <string name="switch_to_conversation">Переключиться на беседу</string>
   <string name="microphone_unavailable">Микрофон недоступен</string>
   <string name="only_one_call_at_a_time">Нельзя одновременно совершать больше одного звонка.</string>
   <string name="return_to_ongoing_call">Вернуться к текущему звонку</string>

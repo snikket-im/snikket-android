@@ -401,7 +401,6 @@
   <string name="mark_as_read">Als gelesen markieren</string>
   <string name="pref_input_options">Eingabe</string>
   <string name="pref_enter_is_send">Eingabe-Taste (Enter) sendet Nachricht</string>
-  <string name="pref_enter_is_send_summary">Eingabe-Taste (Enter) zum Versenden einer Nachricht verwenden</string>
   <string name="pref_display_enter_key">Zeige Eingabe-Taste (Enter)</string>
   <string name="pref_display_enter_key_summary">Emoji-Taste durch Eingabe-Taste ersetzen</string>
   <string name="audio">Audio</string>

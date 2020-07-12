@@ -220,7 +220,6 @@
   <string name="never">לעולם לא</string>
   <string name="until_further_notice">עד אחרית הימים</string>
   <string name="pref_enter_is_send">לחצן Enter שולח את ההודעה</string>
-  <string name="pref_enter_is_send_summary">השתמש בלחצן ה-Enter כלחצן השליחה</string>
   <string name="pref_display_enter_key">הראה את לחצן ה Enter</string>
   <string name="pref_display_enter_key_summary">שנה את לחצן האימוג\'י ללחצן Enter</string>
   <string name="audio">קול</string>

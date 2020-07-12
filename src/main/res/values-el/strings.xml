@@ -347,7 +347,6 @@
   <string name="mark_as_read">Σημείωμα ως αναγνωσμένο</string>
   <string name="pref_input_options">Είσοδος</string>
   <string name="pref_enter_is_send">Αποστολή με το πλήκτρο Enter</string>
-  <string name="pref_enter_is_send_summary">Χρήση του πλήκτρου Enter για την αποστολή μηνύματος</string>
   <string name="pref_display_enter_key">Εμφάνιση του πλήκτρου Enter</string>
   <string name="pref_display_enter_key_summary">Αλλαγή του πλήκτρου emoticons σε πλήκτρο Enter</string>
   <string name="audio">ήχος</string>

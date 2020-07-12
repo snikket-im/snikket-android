@@ -401,7 +401,6 @@
   <string name="mark_as_read">标记为已读</string>
   <string name="pref_input_options">输入</string>
   <string name="pref_enter_is_send">点击回车发送</string>
-  <string name="pref_enter_is_send_summary">回车键发送消息</string>
   <string name="pref_display_enter_key">显示回车键</string>
   <string name="pref_display_enter_key_summary">将表情键改为回车键</string>
   <string name="audio">音频</string>

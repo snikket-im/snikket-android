@@ -316,7 +316,6 @@
   <string name="mark_as_read">Отбелязване като прочетено</string>
   <string name="pref_input_options">Въвеждане</string>
   <string name="pref_enter_is_send">Enter изпраща</string>
-  <string name="pref_enter_is_send_summary">Натискането на клавиша Enter изпраща съобщението</string>
   <string name="pref_display_enter_key">Показване на клавиша Enter</string>
   <string name="pref_display_enter_key_summary">Смяна на клавиша за емотикони с клавиша Enter</string>
   <string name="audio">аудио</string>

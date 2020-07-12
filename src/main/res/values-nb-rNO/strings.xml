@@ -285,7 +285,6 @@
   <string name="mark_as_read">Merk som lest</string>
   <string name="pref_input_options">Inndata</string>
   <string name="pref_enter_is_send">Enter-forsendelsesknapp</string>
-  <string name="pref_enter_is_send_summary">Bruk enter for å sende en melding</string>
   <string name="pref_display_enter_key">Vis enter-tast</string>
   <string name="pref_display_enter_key_summary">Endre smilefjas-tast til en enter-tast</string>
   <string name="audio">lyd</string>
