@@ -10,6 +10,7 @@
     </dimen>  <!-- icon width (24dp) + 2 * image button padding -->
     <dimen name="fineprint_size">11sp</dimen>
     <dimen name="audio_player_width">224dp</dimen>
+    <dimen name="image_preview_width">224dp</dimen>
     <dimen name="avatar_item_distance">16dp</dimen>
 
     <dimen name="media_preview_size">80dp</dimen>
