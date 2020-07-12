@@ -57,7 +57,7 @@ public class EditMessage extends EmojiWrapperEditText {
     public boolean onKeyDown(int keyCode, KeyEvent e) {
         if (keyCode == KeyEvent.KEYCODE_ENTER && !e.isShiftPressed()) {
             lastInputWasTab = false;
-            if (keyboardListener != null && keyboardListener.onEnterPressed()) {
+            if (keyboardListener != null && keyboardListener.onEnterPressed(e)) {
                 return true;
             }
         } else if (keyCode == KeyEvent.KEYCODE_TAB && !e.isAltPressed() && !e.isCtrlPressed()) {
@@ -191,7 +191,7 @@ public class EditMessage extends EmojiWrapperEditText {
     }
 
     public interface KeyboardListener {
-        boolean onEnterPressed();
+        boolean onEnterPressed(KeyEvent event);
 
         void onTypingStarted();
 

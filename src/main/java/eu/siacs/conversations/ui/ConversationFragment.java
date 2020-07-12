@@ -32,6 +32,7 @@ import android.util.Log;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.Gravity;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -2734,10 +2735,10 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
     }
 
     @Override
-    public boolean onEnterPressed() {
+    public boolean onEnterPressed(KeyEvent event) {
         SharedPreferences p = PreferenceManager.getDefaultSharedPreferences(getActivity());
         final boolean enterIsSend = p.getBoolean("enter_is_send", getResources().getBoolean(R.bool.enter_is_send));
-        if (enterIsSend) {
+        if (enterIsSend || event.isCtrlPressed()) {
             sendMessage();
             return true;
         } else {
