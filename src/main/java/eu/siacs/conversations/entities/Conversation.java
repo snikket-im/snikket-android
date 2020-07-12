@@ -186,6 +186,21 @@ public class Conversation extends AbstractEntity implements Blockable, Comparabl
         return null;
     }
 
+    public Message getLastEditableMessage() {
+        synchronized (this.messages) {
+            for(final Message message : Lists.reverse(this.messages)) {
+                if (message.isEditable()) {
+                    if (message.isGeoUri() || message.getType() != Message.TYPE_TEXT) {
+                        return null;
+                    }
+                    return message;
+                }
+            }
+        }
+        return null;
+    }
+
+
     public Message findUnsentMessageWithUuid(String uuid) {
         synchronized (this.messages) {
             for (final Message message : this.messages) {

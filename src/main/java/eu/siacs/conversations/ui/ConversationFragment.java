@@ -2748,6 +2748,15 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
         return p.getBoolean("enter_is_send", getResources().getBoolean(R.bool.enter_is_send));
     }
 
+    public boolean onArrowUpCtrlPressed() {
+        final Message lastEditableMessage = conversation == null ? null : conversation.getLastEditableMessage();
+        if (lastEditableMessage != null) {
+            correctMessage(lastEditableMessage);
+            return true;
+        }
+        return false;
+    }
+
     @Override
     public void onTypingStarted() {
         final XmppConnectionService service = activity == null ? null : activity.xmppConnectionService;

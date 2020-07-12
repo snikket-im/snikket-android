@@ -49,6 +49,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
@@ -493,8 +494,19 @@ public class ConversationsActivity extends XmppActivity implements OnConversatio
     }
 
     @Override
-    public void onSaveInstanceState(Bundle savedInstanceState) {
-        Intent pendingIntent = pendingViewIntent.peek();
+    public boolean onKeyDown(final int keyCode, final KeyEvent keyEvent) {
+        if (keyCode == KeyEvent.KEYCODE_DPAD_UP && keyEvent.isCtrlPressed()) {
+            final ConversationFragment conversationFragment = ConversationFragment.get(this);
+            if (conversationFragment != null && conversationFragment.onArrowUpCtrlPressed()) {
+                return true;
+            }
+        }
+        return super.onKeyDown(keyCode, keyEvent);
+    }
+
+    @Override
+    public void onSaveInstanceState(final Bundle savedInstanceState) {
+        final Intent pendingIntent = pendingViewIntent.peek();
         savedInstanceState.putParcelable("intent", pendingIntent != null ? pendingIntent : getIntent());
         super.onSaveInstanceState(savedInstanceState);
     }

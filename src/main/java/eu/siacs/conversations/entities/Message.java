@@ -15,7 +15,6 @@ import java.lang.ref.WeakReference;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -613,15 +612,15 @@ public class Message extends AbstractEntity implements AvatarService.Avatarable 
 	public boolean isLastCorrectableMessage() {
 		Message next = next();
 		while (next != null) {
-			if (next.isCorrectable()) {
+			if (next.isEditable()) {
 				return false;
 			}
 			next = next.next();
 		}
-		return isCorrectable();
+		return isEditable();
 	}
 
-	private boolean isCorrectable() {
+	public boolean isEditable() {
 		return getStatus() != STATUS_RECEIVED && !isCarbon();
 	}
 
