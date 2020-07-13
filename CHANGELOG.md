@@ -1,6 +1,13 @@
 # Changelog
 
+### Version 2.8.9
+
+* add 'Return to chat' to audio call screen
+* Improve keyboard shortcuts
+* bug fixes
+
 ### Version 2.8.8
+
 * Fixed notifications not showing up under certain conditions
 * Fixed compatibility issues and crashes related to A/V calls
 
