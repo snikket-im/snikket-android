@@ -400,9 +400,10 @@
   <string name="reply">Antworten</string>
   <string name="mark_as_read">Als gelesen markieren</string>
   <string name="pref_input_options">Eingabe</string>
-  <string name="pref_enter_is_send">Eingabe-Taste (Enter) sendet Nachricht</string>
-  <string name="pref_display_enter_key">Zeige Eingabe-Taste (Enter)</string>
-  <string name="pref_display_enter_key_summary">Emoji-Taste durch Eingabe-Taste ersetzen</string>
+  <string name="pref_enter_is_send">Eingabetaste sendet Nachricht</string>
+  <string name="pref_enter_is_send_summary">Nutze die Eingabetaste zum Versenden einer Nachricht. Strg+Eingabetaste sendet die Nachricht unabhängig von dieser Einstellung.</string>
+  <string name="pref_display_enter_key">Zeige Eingabetaste</string>
+  <string name="pref_display_enter_key_summary">Emoji-Taste durch Eingabetaste ersetzen</string>
   <string name="audio">Audio</string>
   <string name="video">Video</string>
   <string name="image">Bild</string>

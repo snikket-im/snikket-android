@@ -401,6 +401,7 @@
   <string name="mark_as_read">Marchează ca citit</string>
   <string name="pref_input_options">Opțiuni introducere text</string>
   <string name="pref_enter_is_send">ENTER trimite</string>
+  <string name="pref_enter_is_send_summary">Apasă tasta Enter pentru a trimite mesajul. Puteți mereu apăsa Ctrl-Enter pentru a trimite mesajul, chiar dacă această opțiune nu este activată.</string>
   <string name="pref_display_enter_key">Arată tasta ENTER</string>
   <string name="pref_display_enter_key_summary">Preschimbă tasta emoticon în ENTER</string>
   <string name="audio">audio</string>

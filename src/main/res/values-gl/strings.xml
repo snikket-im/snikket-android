@@ -401,6 +401,7 @@
   <string name="mark_as_read">Marcar como lido</string>
   <string name="pref_input_options">Entrada</string>
   <string name="pref_enter_is_send">Enter envía</string>
+  <string name="pref_enter_is_send_summary">Usa a tecla Enter para enviar a mensaxe. Igualmente poderás usar Ctrl+Enter para enviar, incluso se esta opción está desactivada.</string>
   <string name="pref_display_enter_key">Mostrar a tecla Enter</string>
   <string name="pref_display_enter_key_summary">Cambiar a chave de emoticonas pola tecla Enter</string>
   <string name="audio">son</string>
@@ -915,6 +916,7 @@
   <string name="audio_call">Chamada de audio</string>
   <string name="video_call">Chamada de vídeo</string>
   <string name="help">Axuda</string>
+  <string name="switch_to_conversation">Ir á conversa</string>
   <string name="microphone_unavailable">O micrófono non está dispoñible</string>
   <string name="only_one_call_at_a_time">Só podes manter unha chamada en cada momento.</string>
   <string name="return_to_ongoing_call">Voltar á chamada activa</string>

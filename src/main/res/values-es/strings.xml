@@ -401,6 +401,7 @@
   <string name="mark_as_read">Marcar como leído</string>
   <string name="pref_input_options">Entrada</string>
   <string name="pref_enter_is_send">Intro para enviar</string>
+  <string name="pref_enter_is_send_summary">Utilizar la tecla Enter para enviar un mensaje. Siempre puedes usar Ctrl+Enter para enviar un mensaje, incluso si esta opción está deshabilitada.</string>
   <string name="pref_display_enter_key">Mostrar tecla Intro</string>
   <string name="pref_display_enter_key_summary">Cambiar la tecla de emoticonos por la tecla Intro</string>
   <string name="audio">audio</string>
