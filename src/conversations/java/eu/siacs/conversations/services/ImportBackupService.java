@@ -17,6 +17,7 @@ import android.support.v4.app.NotificationManagerCompat;
 import android.util.Log;
 
 import com.google.common.base.Charsets;
+import com.google.common.base.Stopwatch;
 import com.google.common.io.CountingInputStream;
 
 import org.bouncycastle.crypto.engines.AESEngine;
@@ -189,6 +190,7 @@ public class ImportBackupService extends Service {
 
     private boolean importBackup(final Uri uri, final String password) {
         Log.d(Config.LOGTAG, "importing backup from " + uri);
+        final Stopwatch stopwatch = Stopwatch.createStarted();
         try {
             final SQLiteDatabase db = mDatabaseBackend.getWritableDatabase();
             final InputStream inputStream;
@@ -233,12 +235,13 @@ public class ImportBackupService extends Service {
 
             final byte[] key = ExportBackupService.getKey(password, backupFileHeader.getSalt());
 
-            AEADBlockCipher cipher = new GCMBlockCipher(new AESEngine());
+            final AEADBlockCipher cipher = new GCMBlockCipher(new AESEngine());
             cipher.init(false, new AEADParameters(new KeyParameter(key), 128, backupFileHeader.getIv()));
             final CipherInputStream cipherInputStream = new CipherInputStream(countingInputStream, cipher);
 
             final GZIPInputStream gzipInputStream = new GZIPInputStream(cipherInputStream);
-            BufferedReader reader = new BufferedReader(new InputStreamReader(gzipInputStream, Charsets.UTF_8));
+            final BufferedReader reader = new BufferedReader(new InputStreamReader(gzipInputStream, Charsets.UTF_8));
+            db.beginTransaction();
             String line;
             StringBuilder multiLineQuery = null;
             while ((line = reader.readLine()) != null) {
@@ -260,11 +263,13 @@ public class ImportBackupService extends Service {
                     }
                 }
             }
+            db.setTransactionSuccessful();
+            db.endTransaction();
             final Jid jid = backupFileHeader.getJid();
-            Cursor countCursor = db.rawQuery("select count(messages.uuid) from messages join conversations on conversations.uuid=messages.conversationUuid join accounts on conversations.accountUuid=accounts.uuid where accounts.username=? and accounts.server=?", new String[]{jid.getEscapedLocal(), jid.getDomain().toEscapedString()});
+            final Cursor countCursor = db.rawQuery("select count(messages.uuid) from messages join conversations on conversations.uuid=messages.conversationUuid join accounts on conversations.accountUuid=accounts.uuid where accounts.username=? and accounts.server=?", new String[]{jid.getEscapedLocal(), jid.getDomain().toEscapedString()});
             countCursor.moveToFirst();
-            int count = countCursor.getInt(0);
-            Log.d(Config.LOGTAG, "restored " + count + " messages");
+            final int count = countCursor.getInt(0);
+            Log.d(Config.LOGTAG, String.format("restored %d messages in %s", count, stopwatch.stop().toString()));
             countCursor.close();
             stopBackgroundService();
             synchronized (mOnBackupProcessedListeners) {
@@ -274,7 +279,7 @@ public class ImportBackupService extends Service {
             }
             return true;
         } catch (final Exception e) {
-            Throwable throwable = e.getCause();
+            final Throwable throwable = e.getCause();
             final boolean reasonWasCrypto = throwable instanceof BadPaddingException || e instanceof ZipException;
             synchronized (mOnBackupProcessedListeners) {
                 for (OnBackupProcessed l : mOnBackupProcessedListeners) {
