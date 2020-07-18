@@ -710,7 +710,9 @@ public class XmppConnection implements Runnable {
         if (Config.BACKGROUND_STANZA_LOGGING && mXmppConnectionService.checkListeners()) {
             Log.d(Config.LOGTAG, "[background stanza] " + element);
         }
-        if (element instanceof IqPacket && element.hasChild("jingle", Namespace.JINGLE)) {
+        if (element instanceof IqPacket
+                && (((IqPacket) element).getType() == IqPacket.TYPE.SET)
+                && element.hasChild("jingle", Namespace.JINGLE)) {
             return JinglePacket.upgrade((IqPacket) element);
         } else {
             return element;

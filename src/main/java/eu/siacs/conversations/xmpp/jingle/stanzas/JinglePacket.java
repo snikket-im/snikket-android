@@ -29,6 +29,7 @@ public class JinglePacket extends IqPacket {
 
     public static JinglePacket upgrade(final IqPacket iqPacket) {
         Preconditions.checkArgument(iqPacket.hasChild("jingle", Namespace.JINGLE));
+        Preconditions.checkArgument(iqPacket.getType() == TYPE.SET);
         final JinglePacket jinglePacket = new JinglePacket();
         jinglePacket.setAttributes(iqPacket.getAttributes());
         jinglePacket.setChildren(iqPacket.getChildren());
@@ -70,11 +71,11 @@ public class JinglePacket extends IqPacket {
     public ReasonWrapper getReason() {
         final Element reasonElement = getJingleChild("reason");
         if (reasonElement == null) {
-            return new ReasonWrapper(Reason.UNKNOWN,null);
+            return new ReasonWrapper(Reason.UNKNOWN, null);
         }
         String text = null;
         Reason reason = Reason.UNKNOWN;
-        for(Element child : reasonElement.getChildren()) {
+        for (Element child : reasonElement.getChildren()) {
             if ("text".equals(child.getName())) {
                 text = child.getContent();
             } else {
