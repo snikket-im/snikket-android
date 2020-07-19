@@ -36,6 +36,8 @@ import android.net.Uri;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.google.common.base.MoreObjects;
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -85,6 +87,16 @@ public class Attachment implements Parcelable {
 
     public Type getType() {
         return type;
+    }
+
+    @Override
+    public String toString() {
+        return MoreObjects.toStringHelper(this)
+                .add("uri", uri)
+                .add("type", type)
+                .add("uuid", uuid)
+                .add("mime", mime)
+                .toString();
     }
 
     public enum Type {

@@ -85,6 +85,7 @@
         <item name="media_preview_recording" type="reference">@drawable/ic_mic_black_48dp</item>
         <item name="media_preview_audio" type="reference">@drawable/ic_headset_black_48dp</item>
         <item name="media_preview_location" type="reference">@drawable/ic_room_black_48dp</item>
+        <item name="media_preview_tour" type="reference">@drawable/baseline_tour_black_48</item>
         <item name="media_preview_contact" type="reference">@drawable/ic_person_black_48dp</item>
         <item name="media_preview_app" type="reference">@drawable/ic_android_black_48dp</item>
         <item name="media_preview_calendar" type="reference">@drawable/ic_event_black_48dp</item>
@@ -240,6 +241,7 @@
         <item name="media_preview_recording" type="reference">@drawable/ic_mic_white_48dp</item>
         <item name="media_preview_audio" type="reference">@drawable/ic_headset_white_48dp</item>
         <item name="media_preview_location" type="reference">@drawable/ic_room_white_48dp</item>
+        <item name="media_preview_tour" type="reference">@drawable/baseline_tour_white_48</item>
         <item name="media_preview_contact" type="reference">@drawable/ic_person_white_48dp</item>
         <item name="media_preview_app" type="reference">@drawable/ic_android_white_48dp</item>
         <item name="media_preview_calendar" type="reference">@drawable/ic_event_white_48dp</item>

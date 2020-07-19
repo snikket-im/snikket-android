@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 package eu.siacs.conversations.utils;
+
 import android.content.Context;
 import android.net.Uri;
 import android.util.Log;
@@ -38,6 +39,7 @@ import eu.siacs.conversations.services.ExportBackupService;
 public final class MimeUtils {
     private static final Map<String, String> mimeTypeToExtensionMap = new HashMap<>();
     private static final Map<String, String> extensionToMimeTypeMap = new HashMap<>();
+
     static {
         // The following table is based on /etc/mime.types data minus
         // chemical/* MIME types and MIME types that don't map to any
@@ -52,7 +54,8 @@ public final class MimeUtils {
         // by guessExtensionFromMimeType.
         add("application/andrew-inset", "ez");
         add("application/dsptype", "tsp");
-        add("application/epub+zip","epub");
+        add("application/epub+zip", "epub");
+        add("application/gpx+xml", "gpx");
         add("application/hta", "hta");
         add("application/mac-binhex40", "hqx");
         add("application/mathematica", "nb");
@@ -68,9 +71,9 @@ public final class MimeUtils {
         add("application/rdf+xml", "rdf");
         add("application/rss+xml", "rss");
         add("application/zip", "zip");
-        add("application/vnd.amazon.mobi8-ebook","azw3");
-        add("application/vnd.amazon.mobi8-ebook","azw");
-        add("application/vnd.amazon.mobi8-ebook","kfx");
+        add("application/vnd.amazon.mobi8-ebook", "azw3");
+        add("application/vnd.amazon.mobi8-ebook", "azw");
+        add("application/vnd.amazon.mobi8-ebook", "kfx");
         add("application/vnd.android.package-archive", "apk");
         add("application/vnd.cinderella", "cdy");
         add(ExportBackupService.MIME_TYPE, "ceb");
@@ -183,7 +186,7 @@ public final class MimeUtils {
         add("application/x-maker", "book");
         add("application/x-maker", "fbdoc");
         add("application/x-mif", "mif");
-        add("application/x-mobipocket-ebook","mobi");
+        add("application/x-mobipocket-ebook", "mobi");
         add("application/x-ms-wmd", "wmd");
         add("application/x-ms-wmz", "wmz");
         add("application/x-msi", "msi");
@@ -242,7 +245,7 @@ public final class MimeUtils {
         add("audio/mpeg", "mp2");
         add("audio/mpeg", "m4a");
         add("audio/mpegurl", "m3u");
-        add("audio/ogg","oga");
+        add("audio/ogg", "oga");
         add("audio/prs.sid", "sid");
         add("audio/x-aiff", "aif");
         add("audio/x-aiff", "aiff");
@@ -268,7 +271,7 @@ public final class MimeUtils {
         add("image/ico", "cur");
         add("image/ico", "ico");
         add("image/ief", "ief");
-        add("image/heic","heic");
+        add("image/heic", "heic");
         // add ".jpg" first so it will be the default for guessExtensionFromMimeType
         add("image/jpeg", "jpg");
         add("image/jpeg", "jpeg");
@@ -367,7 +370,7 @@ public final class MimeUtils {
         add("video/fli", "fli");
         add("video/m4v", "m4v");
         add("video/mp2ts", "ts");
-        add("video/ogg","ogv");
+        add("video/ogg", "ogv");
         add("video/mpeg", "mpeg");
         add("video/mpeg", "mpg");
         add("video/mpeg", "mpe");
@@ -393,6 +396,7 @@ public final class MimeUtils {
         add("x-epoc/x-sisx-app", "sisx");
         applyOverrides();
     }
+
     private static void add(String mimeType, String extension) {
         // If we have an existing x -> y mapping, we do not want to
         // override it with another mapping x -> y2.
@@ -406,6 +410,7 @@ public final class MimeUtils {
             extensionToMimeTypeMap.put(extension, mimeType);
         }
     }
+
     private static InputStream getContentTypesPropertiesStream() {
         // User override?
         String userTable = System.getProperty("content.types.user.table");
@@ -428,6 +433,7 @@ public final class MimeUtils {
         }
         return null;
     }
+
     /**
      * This isn't what the RI does. The RI doesn't have hard-coded defaults, so supplying your
      * own "content.types.user.table" means you don't get any of the built-ins, and the built-ins
@@ -456,10 +462,13 @@ public final class MimeUtils {
         } catch (IOException ignored) {
         }
     }
+
     private MimeUtils() {
     }
+
     /**
      * Returns true if the given MIME type has an entry in the map.
+     *
      * @param mimeType A MIME type (i.e. text/plain)
      * @return True iff there is a mimeType entry in the map.
      */
@@ -469,8 +478,10 @@ public final class MimeUtils {
         }
         return mimeTypeToExtensionMap.containsKey(mimeType);
     }
+
     /**
      * Returns the MIME type for the given extension.
+     *
      * @param extension A file extension without the leading '.'
      * @return The MIME type for the given extension or null iff there is none.
      */
@@ -480,8 +491,10 @@ public final class MimeUtils {
         }
         return extensionToMimeTypeMap.get(extension.toLowerCase());
     }
+
     /**
      * Returns true if the given extension has a registered MIME type.
+     *
      * @param extension A file extension without the leading '.'
      * @return True iff there is an extension entry in the map.
      */
@@ -491,10 +504,12 @@ public final class MimeUtils {
         }
         return extensionToMimeTypeMap.containsKey(extension);
     }
+
     /**
      * Returns the registered extension for the given MIME type. Note that some
      * MIME types map to multiple extensions. This call will return the most
      * common extension for the given MIME type.
+     *
      * @param mimeType A MIME type (i.e. text/plain)
      * @return The extension for the given MIME type or null iff there is none.
      */
@@ -506,7 +521,7 @@ public final class MimeUtils {
     }
 
     public static String guessMimeTypeFromUriAndMime(final Context context, final Uri uri, final String mime) {
-        Log.d(Config.LOGTAG,"guessMimeTypeFromUriAndMime "+uri+" and mime="+mime);
+        Log.d(Config.LOGTAG, "guessMimeTypeFromUriAndMime " + uri + " and mime=" + mime);
         if (mime == null || mime.equals("application/octet-stream")) {
             final String guess = guessMimeTypeFromUri(context, uri);
             if (guess != null) {
@@ -515,7 +530,7 @@ public final class MimeUtils {
                 return mime;
             }
         }
-        return guessMimeTypeFromUri(context ,uri);
+        return guessMimeTypeFromUri(context, uri);
     }
 
     public static String guessMimeTypeFromUri(Context context, Uri uri) {
@@ -565,7 +580,7 @@ public final class MimeUtils {
             String extension = filename.substring(dotPosition + 1);
             // we want the real file extension, not the crypto one
             if (ignoreCryptoExtension && Transferable.VALID_CRYPTO_EXTENSIONS.contains(extension)) {
-                return extractRelevantExtension(filename.substring(0,dotPosition));
+                return extractRelevantExtension(filename.substring(0, dotPosition));
             } else {
                 return extension;
             }
