@@ -16,7 +16,9 @@
 package eu.siacs.conversations.utils;
 
 import android.content.Context;
+import android.database.Cursor;
 import android.net.Uri;
+import android.provider.OpenableColumns;
 import android.util.Log;
 
 import java.io.File;
@@ -538,18 +540,20 @@ public final class MimeUtils {
         String mimeType;
         try {
             mimeType = context.getContentResolver().getType(uri);
-        } catch (Throwable throwable) {
+        } catch (final Throwable throwable) {
             mimeType = null;
         }
         // try the extension
-        if ((mimeType == null || mimeType.equals("application/octet-stream")) && uri.getPath() != null) {
-            String path = uri.getPath();
-            int start = path.lastIndexOf('.') + 1;
-            if (start < path.length()) {
-                final String guess = MimeUtils.guessMimeTypeFromExtension(path.substring(start));
-                if (guess != null) {
-                    mimeType = guess;
-                }
+        if (mimeType == null || mimeType.equals("application/octet-stream")) {
+            final String path = uri.getPath();
+            if (path != null) {
+                mimeType = guessFromPath(path);
+            }
+        }
+        if (mimeType == null && "content".equals(uri.getScheme())) {
+            final String name = getDisplayName(context, uri);
+            if (name != null) {
+                mimeType = guessFromPath(name);
             }
         }
         // sometimes this works (as with the commit content api)
@@ -557,6 +561,23 @@ public final class MimeUtils {
             mimeType = uri.getQueryParameter("mimeType");
         }
         return mimeType;
+    }
+
+    private static String getDisplayName(final Context context, final Uri uri) {
+        try (Cursor cursor = context.getContentResolver().query(uri, null, null, null, null)) {
+            if (cursor != null && cursor.moveToFirst()) {
+                return cursor.getString(cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME));
+            }
+        }
+        return null;
+    }
+
+    private static String guessFromPath(final String path) {
+        final int start = path.lastIndexOf('.') + 1;
+        if (start < path.length()) {
+            return MimeUtils.guessMimeTypeFromExtension(path.substring(start));
+        }
+        return null;
     }
 
     public static String extractRelevantExtension(URL url) {
