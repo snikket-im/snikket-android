@@ -2753,8 +2753,10 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
         if (lastEditableMessage != null) {
             correctMessage(lastEditableMessage);
             return true;
+        } else {
+            Toast.makeText(getActivity(),R.string.could_not_correct_message, Toast.LENGTH_LONG).show();
+            return false;
         }
-        return false;
     }
 
     @Override
@@ -2763,7 +2765,7 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
         if (service == null) {
             return;
         }
-        Account.State status = conversation.getAccount().getStatus();
+        final Account.State status = conversation.getAccount().getStatus();
         if (status == Account.State.ONLINE && conversation.setOutgoingChatState(ChatState.COMPOSING)) {
             service.sendChatState(conversation);
         }
@@ -2776,7 +2778,7 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
         if (service == null) {
             return;
         }
-        Account.State status = conversation.getAccount().getStatus();
+        final Account.State status = conversation.getAccount().getStatus();
         if (status == Account.State.ONLINE && conversation.setOutgoingChatState(ChatState.PAUSED)) {
             service.sendChatState(conversation);
         }
@@ -2788,7 +2790,7 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
         if (service == null) {
             return;
         }
-        Account.State status = conversation.getAccount().getStatus();
+        final Account.State status = conversation.getAccount().getStatus();
         if (status == Account.State.ONLINE && conversation.setOutgoingChatState(Config.DEFAULT_CHAT_STATE)) {
             service.sendChatState(conversation);
         }
