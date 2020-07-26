@@ -621,7 +621,7 @@ public class Message extends AbstractEntity implements AvatarService.Avatarable 
 	}
 
 	public boolean isEditable() {
-		return getStatus() != STATUS_RECEIVED && !isCarbon();
+		return status != STATUS_RECEIVED && !isCarbon() && type != Message.TYPE_RTP_SESSION;
 	}
 
 	public boolean mergeable(final Message message) {
