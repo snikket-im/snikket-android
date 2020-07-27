@@ -1,5 +1,11 @@
 # Changelog
 
+### Version 2.8.10
+
+* Handle GPX files
+* Improve performance for backup restore
+* bug fixes
+
 ### Version 2.8.9
 
 * add 'Return to chat' to audio call screen
