@@ -239,8 +239,8 @@ public class XmppConnectionService extends Service {
             Environment.getExternalStorageDirectory().getAbsolutePath()
     ) {
         @Override
-        public void onEvent(int event, String path) {
-            markFileDeleted(path);
+        public void onEvent(final int event, final File file) {
+            markFileDeleted(file);
         }
     };
     private final OnMessageAcknowledged mOnMessageAcknowledgedListener = new OnMessageAcknowledged() {
@@ -1859,17 +1859,16 @@ public class XmppConnectionService extends Service {
         return this.conversations;
     }
 
-    private void markFileDeleted(final String path) {
+    private void markFileDeleted(final File file) {
         synchronized (FILENAMES_TO_IGNORE_DELETION) {
-            if (FILENAMES_TO_IGNORE_DELETION.remove(path)) {
-                Log.d(Config.LOGTAG, "ignored deletion of " + path);
+            if (FILENAMES_TO_IGNORE_DELETION.remove(file.getAbsolutePath())) {
+                Log.d(Config.LOGTAG, "ignored deletion of " + file.getAbsolutePath());
                 return;
             }
         }
-        final File file = new File(path);
         final boolean isInternalFile = fileBackend.isInternalFile(file);
         final List<String> uuids = databaseBackend.markFileAsDeleted(file, isInternalFile);
-        Log.d(Config.LOGTAG, "deleted file " + path + " internal=" + isInternalFile + ", database hits=" + uuids.size());
+        Log.d(Config.LOGTAG, "deleted file " + file.getAbsolutePath() + " internal=" + isInternalFile + ", database hits=" + uuids.size());
         markUuidsAsDeletedFiles(uuids);
     }
 
