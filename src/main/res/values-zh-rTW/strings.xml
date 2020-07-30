@@ -309,7 +309,6 @@
   <string name="account_status_bind_failure">綁定失敗</string>
   <string name="server_info_broken">損壞</string>
   <string name="pref_away_when_screen_off">關閉螢幕時離開</string>
-  <string name="pref_away_when_screen_off_summary">當螢幕關閉時將標記您的資源為離開狀態</string>
   <string name="pref_treat_vibrate_as_silent">靜音模式開啟振動</string>
   <string name="pref_show_connection_options">高級連接設置</string>
   <string name="pref_show_connection_options_summary">註冊帳戶時顯示主機名稱和埠</string>

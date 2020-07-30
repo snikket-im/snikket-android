@@ -463,10 +463,10 @@
   <string name="pref_presence_settings">Setări de disponibilitate</string>
   <string name="pref_away_when_screen_off">Plecat când ecranul este oprit</string>
   <string name="pref_away_when_screen_off_summary">Prezintă clientul drept \"Plecat\" atunci când ecranul este oprit</string>
-  <string name="pref_dnd_on_silent_mode">\"Nu deranja\" în modul silențios</string>
-  <string name="pref_dnd_on_silent_mode_summary">Prezintă clientul drept \"Nu deranja\" atunci când dispozitivul este în mod silențios</string>
+  <string name="pref_dnd_on_silent_mode">\"Ocupat\" în modul silențios</string>
+  <string name="pref_dnd_on_silent_mode_summary">Prezintă clientul drept \"Ocupat\" atunci când dispozitivul este în mod silențios</string>
   <string name="pref_treat_vibrate_as_silent">Tratează modul vibrație ca silențios</string>
-  <string name="pref_treat_vibrate_as_dnd_summary">Prezintă clientul drept \"Nu deranja\" atunci când dispozitivul este în mod vibrație</string>
+  <string name="pref_treat_vibrate_as_dnd_summary">Prezintă clientul drept \"Ocupat\" atunci când dispozitivul este în mod vibrație</string>
   <string name="pref_show_connection_options">Opțiuni avansate conexiune</string>
   <string name="pref_show_connection_options_summary">Arată opțiunea de setare a numelui de gazdă și a portului, atunci când se configurează un cont</string>
   <string name="hostname_example">xmpp.exemplu.ro</string>
@@ -931,6 +931,8 @@
   <string name="could_not_switch_camera">Nu s-a putut face comutarea camerei foto</string>
   <string name="add_to_favorites">Adaugă la favorite</string>
   <string name="remove_from_favorites">Înlătură din favorite</string>
+  <string name="gpx_track">Traseu GPX</string>
+  <string name="could_not_correct_message">Nu s-a putut corecta mesajul</string>
   <plurals name="view_users">
     <item quantity="one">Arată %1$d participant</item>
     <item quantity="few">Arată %1$d participanți</item>

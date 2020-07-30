@@ -461,11 +461,11 @@
   <string name="server_info_broken">Roto</string>
   <string name="pref_presence_settings">Disponibilidade</string>
   <string name="pref_away_when_screen_off">Non dispoñible cando se apaga a pantalla</string>
-  <string name="pref_away_when_screen_off_summary">Marca o seu recurso como non dipoñíble cando se apaga a pantalla</string>
-  <string name="pref_dnd_on_silent_mode">\"Non molestar\" en modo silencioso</string>
-  <string name="pref_dnd_on_silent_mode_summary">Marca o seu recurso como \"Non molestar\" cando o dispositivo está en modo silencioso</string>
+  <string name="pref_away_when_screen_off_summary">Mostrar como Fóra cando se apaga a pantalla</string>
+  <string name="pref_dnd_on_silent_mode">En modolo silencioso, Ocupado</string>
+  <string name="pref_dnd_on_silent_mode_summary">Mostrar como Ocupado se o dispositivo está en silencio</string>
   <string name="pref_treat_vibrate_as_silent">Trata a vibración como modo silencioso</string>
-  <string name="pref_treat_vibrate_as_dnd_summary">Marca o seu recurso como \"Non molestar\" cando o dispositivo está en modo vibración</string>
+  <string name="pref_treat_vibrate_as_dnd_summary">Mostrar como Ocupado cando o dispositivo está en vibración</string>
   <string name="pref_show_connection_options">Axustes ampliados de conexión</string>
   <string name="pref_show_connection_options_summary">Mostar axustes de servidor e porto cando se configura unha conta</string>
   <string name="hostname_example">xmpp.exemplo.com</string>
@@ -923,6 +923,8 @@
   <string name="could_not_switch_camera">Non se puido activar a cámara</string>
   <string name="add_to_favorites">Engadir a favoritas</string>
   <string name="remove_from_favorites">Eliminar das favoritas</string>
+  <string name="gpx_track">Ruta GPX</string>
+  <string name="could_not_correct_message">No se pode correxir a mensaxe</string>
   <plurals name="view_users">
     <item quantity="one">Ver %1$d Participante</item>
     <item quantity="other">Ver %1$d Participantes</item>

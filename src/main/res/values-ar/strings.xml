@@ -363,7 +363,6 @@
   <string name="server_info_broken">مكسر</string>
   <string name="pref_presence_settings">حالة الحضور</string>
   <string name="pref_away_when_screen_off">غائب عند إطفاء الشاشة</string>
-  <string name="pref_dnd_on_silent_mode">\"لا تزعجني\" في وضع السكوت</string>
   <string name="pref_show_connection_options">إعدادات الربط الموسعة</string>
   <string name="pref_show_connection_options_summary">عرض اسم المضيف وإعدادات المنفذ عند تنصيب حساب</string>
   <string name="hostname_example">xmpp.example.com</string>

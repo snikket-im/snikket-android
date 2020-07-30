@@ -460,12 +460,12 @@
   <string name="account_status_host_unknown">Der Server ist nicht für diese Domain verantwortlich</string>
   <string name="server_info_broken">Fehlerhaft</string>
   <string name="pref_presence_settings">Status</string>
-  <string name="pref_away_when_screen_off">Abwesend bei abgeschaltetem Bildschirm</string>
-  <string name="pref_away_when_screen_off_summary">Setzt deinen Status auf \"abwesend\", solange dein Bildschirm abgeschaltet ist</string>
-  <string name="pref_dnd_on_silent_mode">\"Bitte nicht stören\" bei Stummschaltung</string>
-  <string name="pref_dnd_on_silent_mode_summary">Setzt deinen Status auf \"Bitte nicht stören\", solange dein Gerät stummgeschaltet ist </string>
+  <string name="pref_away_when_screen_off">Abwesend bei ausgeschaltetem Bildschirm</string>
+  <string name="pref_away_when_screen_off_summary">Als abwesend anzeigen, wenn der Bildschirm ausgeschaltet ist</string>
+  <string name="pref_dnd_on_silent_mode">Beschäftigt im lautlosen Modus</string>
+  <string name="pref_dnd_on_silent_mode_summary">Als Beschäftigt anzeigen, wenn sich das Gerät im lautlosen Modus befindet</string>
   <string name="pref_treat_vibrate_as_silent">Vibration als Lautlos behandeln</string>
-  <string name="pref_treat_vibrate_as_dnd_summary">Setzt deinen Status auf \"Bitte nicht stören\", solange das Gerät auf Vibration geschaltet ist</string>
+  <string name="pref_treat_vibrate_as_dnd_summary">Als Beschäftigt anzeigen, wenn das Gerät auf Vibration eingestellt ist</string>
   <string name="pref_show_connection_options">Erweiterte Verbindungsoptionen</string>
   <string name="pref_show_connection_options_summary">Hostname- und Port-Optionen bei Kontoeinrichtung anzeigen</string>
   <string name="hostname_example">xmpp.domain.de</string>
@@ -923,6 +923,8 @@
   <string name="could_not_switch_camera">Kamera konnte nicht gewechselt werden</string>
   <string name="add_to_favorites">Zu Favoriten hinzufügen</string>
   <string name="remove_from_favorites">Von Favoriten entfernen</string>
+  <string name="gpx_track">GPX-Strecke</string>
+  <string name="could_not_correct_message">Nachricht konnte nicht korrigiert werden</string>
   <plurals name="view_users">
     <item quantity="one">%1$d Teilnehmer anzeigen</item>
     <item quantity="other">%1$d Teilnehmer anzeigen</item>

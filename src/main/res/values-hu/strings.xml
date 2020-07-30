@@ -443,11 +443,7 @@
   <string name="server_info_broken">Törött</string>
   <string name="pref_presence_settings">Elérhetőség</string>
   <string name="pref_away_when_screen_off">„Távol”, ha a kijelző ki van kapcsolva</string>
-  <string name="pref_away_when_screen_off_summary">„Távol” állapotként jelöli az erőforrást, ha a kijelző ki van kapcsolva</string>
-  <string name="pref_dnd_on_silent_mode">„Ne zavarjon” csendes módban</string>
-  <string name="pref_dnd_on_silent_mode_summary">„Ne zavarjon” állapotként jelöli az erőforrást, ha az eszköz csendes módban van</string>
   <string name="pref_treat_vibrate_as_silent">Rezgés kezelése csendes módként</string>
-  <string name="pref_treat_vibrate_as_dnd_summary">„Ne zavarjon” állapotként jelöli az erőforrást, ha az eszköz rezgő módban van</string>
   <string name="pref_show_connection_options">Kiterjesztett kapcsolati beállítások</string>
   <string name="pref_show_connection_options_summary">Gépnév és port beállításainak megjelenítése egy fiók beállításakor</string>
   <string name="hostname_example">xmpp.example.com</string>

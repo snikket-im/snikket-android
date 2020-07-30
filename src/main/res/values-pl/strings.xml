@@ -462,11 +462,7 @@
   <string name="server_info_broken">Zepsute</string>
   <string name="pref_presence_settings">Dostępność</string>
   <string name="pref_away_when_screen_off">Status \"Oddalony\" gdy wyświetlacz jest wyłączony</string>
-  <string name="pref_away_when_screen_off_summary">Oznacza twój zasób jako \"Oddalony\", gdy wyświetlacz jest wyłączony</string>
-  <string name="pref_dnd_on_silent_mode">\"Nie przeszkadzać\" w trybie cichym</string>
-  <string name="pref_dnd_on_silent_mode_summary">Oznacza twój zasób jako \"Nie przeszkadzać\", gdy urządzenie jest w trybie cichym</string>
   <string name="pref_treat_vibrate_as_silent">Traktuj tryb wibracji jak tryb cichy</string>
-  <string name="pref_treat_vibrate_as_dnd_summary">Oznacza twój zasób jako \"Nie przeszkadzać\", gdy urządzenie jest w trybie wibracji</string>
   <string name="pref_show_connection_options">Rozszerzone ustawienia połączenia</string>
   <string name="pref_show_connection_options_summary">Pokaż nazwę hosta i ustawienia portu przy dodawaniu konta</string>
   <string name="hostname_example">xmpp.example.com</string>

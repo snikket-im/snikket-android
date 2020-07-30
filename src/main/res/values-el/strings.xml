@@ -402,11 +402,7 @@
   <string name="server_info_broken">Χαλασμένος</string>
   <string name="pref_presence_settings">Διαθεσιμότητα</string>
   <string name="pref_away_when_screen_off">Εκτός χρήσης όταν η οθόνη είναι σβηστή</string>
-  <string name="pref_away_when_screen_off_summary">Σημειώνει την παρουσία σας ως εκτός χρήσης όταν σβήνει η οθόνη</string>
-  <string name="pref_dnd_on_silent_mode">\"Μην ενοχλείτε\" όταν βρίσκεται σε σιωπηρή λειτουργία</string>
-  <string name="pref_dnd_on_silent_mode_summary">Σημειώνει την παρουσία σας ως \"Μην ενοχλείτε\" όταν η συσκευή είναι σε κατάσταση σιωπής</string>
   <string name="pref_treat_vibrate_as_silent">Χρήση της κατάστασης δόνησης ως σιωπηρή κατάσταση</string>
-  <string name="pref_treat_vibrate_as_dnd_summary">Σημειώνει την παρουσία σας ως \"Μην ενοχλείτε\" όταν η συσκευή είναι σε κατάσταση δόνησης</string>
   <string name="pref_show_connection_options">Περισσότερες ρυθμίσεις σύνδεσης</string>
   <string name="pref_show_connection_options_summary">Εμφάνιση ονόματος μηχανήματος και ρυθμίσεων πόρτας όταν δημιουργείται ένας νέος λογαριασμός</string>
   <string name="hostname_example">xmpp.example.com</string>

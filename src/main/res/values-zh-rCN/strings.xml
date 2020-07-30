@@ -401,6 +401,7 @@
   <string name="mark_as_read">标记为已读</string>
   <string name="pref_input_options">输入</string>
   <string name="pref_enter_is_send">点击回车发送</string>
+  <string name="pref_enter_is_send_summary">使用Enter键发送消息。即使禁用此选项，也可以使用Ctrl+Enter发送消息。</string>
   <string name="pref_display_enter_key">显示回车键</string>
   <string name="pref_display_enter_key_summary">将表情键改为回车键</string>
   <string name="audio">音频</string>
@@ -459,11 +460,7 @@
   <string name="server_info_broken">损坏</string>
   <string name="pref_presence_settings">可用性</string>
   <string name="pref_away_when_screen_off">锁屏时显示离开</string>
-  <string name="pref_away_when_screen_off_summary">锁屏时标记为离开状态</string>
-  <string name="pref_dnd_on_silent_mode">静音模式时设为“请勿打扰”</string>
-  <string name="pref_dnd_on_silent_mode_summary">当设备静音时标记为“请勿打扰”状态</string>
   <string name="pref_treat_vibrate_as_silent">将振动看作静音</string>
-  <string name="pref_treat_vibrate_as_dnd_summary">使用振动模式时标记为“请勿打扰”状态</string>
   <string name="pref_show_connection_options">高级连接设置</string>
   <string name="pref_show_connection_options_summary">注册账户时显示主机名和端口</string>
   <string name="hostname_example">xmpp.example.com</string>
@@ -907,6 +904,7 @@
   <string name="audio_call">语音通话</string>
   <string name="video_call">视频通话</string>
   <string name="help">帮助</string>
+  <string name="switch_to_conversation">切换到对话</string>
   <string name="microphone_unavailable">麦克风不可用</string>
   <string name="only_one_call_at_a_time">只能同时打一通电话</string>
   <string name="return_to_ongoing_call">返回正在进行的通话</string>

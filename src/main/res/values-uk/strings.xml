@@ -367,7 +367,7 @@
   <string name="enable_all_accounts">Увімкнути всі облікові записи</string>
   <string name="disable_all_accounts">Вимкнути всі облікові записи</string>
   <string name="perform_action_with">Здійснити дію з</string>
-  <string name="no_affiliation">Непов\'язаний</string>
+  <string name="no_affiliation">Учасник</string>
   <string name="no_role">Поза мережею</string>
   <string name="outcast">Вигнанець</string>
   <string name="member">Учасник</string>
@@ -380,7 +380,7 @@
   <string name="remove_owner_privileges">Відкликати права власника</string>
   <string name="remove_from_room">Вилучити з групи</string>
   <string name="remove_from_channel">Прибрати з каналу</string>
-  <string name="could_not_change_affiliation">Неможливо змінити статус приєднання з %s</string>
+  <string name="could_not_change_affiliation">Неможливо змінити статус участі %s</string>
   <string name="ban_from_conference">Заборонити доступ до групи</string>
   <string name="ban_from_channel">Вилучити з каналу</string>
   <string name="removing_from_public_conference">Ви намагаєтеся вилучити %s з публічного каналу. Єдиним способом для цього є заблокувати користувача назавжди.</string>
@@ -401,6 +401,7 @@
   <string name="mark_as_read">Позначити як прочитане</string>
   <string name="pref_input_options">Введення</string>
   <string name="pref_enter_is_send">Enter для надсилання</string>
+  <string name="pref_enter_is_send_summary">Використовувати кнопку Enter для надсилання повідомлень. Якщо цей параметр вимкнено, повідомлення можна надсилати за допомогою комбінації Ctrl-Enter. </string>
   <string name="pref_display_enter_key">Показувати кнопку Enter</string>
   <string name="pref_display_enter_key_summary">Змінити клавішу емоційок на кнопку Enter</string>
   <string name="audio">аудіо</string>
@@ -462,11 +463,7 @@
   <string name="server_info_broken">Поламано</string>
   <string name="pref_presence_settings">Доступність</string>
   <string name="pref_away_when_screen_off">Відійшов, якщо екран вимкнено</string>
-  <string name="pref_away_when_screen_off_summary">Показувати стан \"відійшов\", якщо екран вимкнено</string>
-  <string name="pref_dnd_on_silent_mode">\"Не турбувати\" в режимі тиші</string>
-  <string name="pref_dnd_on_silent_mode_summary">Додавати \"Не турбувати\" до імені вашого пристрою, коли пристрій в режимі тиші</string>
   <string name="pref_treat_vibrate_as_silent">Вважати вібро за безшумний режим</string>
-  <string name="pref_treat_vibrate_as_dnd_summary">Додавати \"Не турбувати\" до імені вашого пристрою, коли пристрій в режимі вібрації</string>
   <string name="pref_show_connection_options">Розширені налаштування з\'єднання</string>
   <string name="pref_show_connection_options_summary">Показати налаштування імені вузла та порту при налаштуванні облікового запису</string>
   <string name="hostname_example">xmpp.example.com</string>

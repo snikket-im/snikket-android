@@ -330,8 +330,6 @@
   <string name="server_info_broken">Existe um problema</string>
   <string name="pref_presence_settings">Disponibilidade</string>
   <string name="pref_away_when_screen_off">Ausente quando o ecrã está desligado</string>
-  <string name="pref_away_when_screen_off_summary">Define o seu recurso como ausente quando o ecrã está desligado</string>
-  <string name="pref_dnd_on_silent_mode">\"Não incomodar\" em modo silencioso</string>
   <string name="pref_treat_vibrate_as_silent">Tratar vibrar como modo silencioso</string>
   <string name="pref_show_connection_options">Definições de conexão</string>
   <string name="pref_show_connection_options_summary">Mostrar as definições do hostname e do porto ao configurar uma conta</string>

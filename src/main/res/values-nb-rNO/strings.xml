@@ -335,11 +335,7 @@
   <string name="account_status_bind_failure">Klarte ikke å binde</string>
   <string name="server_info_broken">Knekt</string>
   <string name="pref_away_when_screen_off">Borte når skjermen er av</string>
-  <string name="pref_away_when_screen_off_summary">Markerer din ressurs som borte når skjermen er avskrudd</string>
-  <string name="pref_dnd_on_silent_mode">“Ikke forstyrr” i stillemodus.</string>
-  <string name="pref_dnd_on_silent_mode_summary">Merker din ressurs som \"Ikke forstyrr\" når enheten er i stillemodus.</string>
   <string name="pref_treat_vibrate_as_silent">Behandle vibrering som stille-modus</string>
-  <string name="pref_treat_vibrate_as_dnd_summary">Merker din ressurs som \"Ikke forstyrr\" når enheten er skrudd til vibrering</string>
   <string name="pref_show_connection_options">Utvidede tilkoblingsinnst.</string>
   <string name="pref_show_connection_options_summary">Vis vertsnavn og portinnstillinger når du setter opp en ny konto</string>
   <string name="hostname_example">xmpp.eksempel.no</string>

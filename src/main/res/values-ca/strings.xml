@@ -366,11 +366,7 @@
   <string name="server_info_broken">Trencat</string>
   <string name="pref_presence_settings">Disponibilitat</string>
   <string name="pref_away_when_screen_off">Fora quan la pantalla està apagada</string>
-  <string name="pref_away_when_screen_off_summary">Marqueu el vostre recurs quan la pantalla estigui desactivada</string>
-  <string name="pref_dnd_on_silent_mode">\"No molesteu\" en modo silenciós</string>
-  <string name="pref_dnd_on_silent_mode_summary">Marqueu el vostre recurs com \"No molesteu\" quan el dispositiu estigui en modo silenciós</string>
   <string name="pref_treat_vibrate_as_silent">Tracteu de vibrar al modo silenciós</string>
-  <string name="pref_treat_vibrate_as_dnd_summary">Marqueu el vostre recurs com \"No molesteu\" quan el dispositiu estigui en vibració</string>
   <string name="pref_show_connection_options">Configuració de connexió estesa</string>
   <string name="pref_show_connection_options_summary">Mostra el nom de la màquina i la configuració del port quan configureu un compte</string>
   <string name="hostname_example">xmpp.example.com</string>

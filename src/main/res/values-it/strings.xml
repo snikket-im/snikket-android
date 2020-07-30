@@ -401,6 +401,7 @@
   <string name="mark_as_read">Segna come già letto</string>
   <string name="pref_input_options">Input</string>
   <string name="pref_enter_is_send">Invio spedisce</string>
+  <string name="pref_enter_is_send_summary">Usa il tasto Invio per spedire il messaggio. Puoi sempre usare Ctrl+Invio per spedire, anche se questa opzione è disattivata.</string>
   <string name="pref_display_enter_key">Mostra il tasto invio</string>
   <string name="pref_display_enter_key_summary">Cambia il tasto delle faccine nel tasto di invio</string>
   <string name="audio">audio</string>
@@ -460,11 +461,7 @@
   <string name="server_info_broken">Rotto</string>
   <string name="pref_presence_settings">Disponibilità</string>
   <string name="pref_away_when_screen_off">\"Non disponibile\" a schermo spento</string>
-  <string name="pref_away_when_screen_off_summary">Imposta la tua risorsa come non disponibile quando lo schermo è spento</string>
-  <string name="pref_dnd_on_silent_mode">\"Non disturbare\" in modalità silenziosa</string>
-  <string name="pref_dnd_on_silent_mode_summary">Segna la tua risorsa come \"Non disturbare\" quando il dispositivo è in modalità silenziosa</string>
   <string name="pref_treat_vibrate_as_silent">Tratta vibrazione come modalità silenziosa</string>
-  <string name="pref_treat_vibrate_as_dnd_summary">Segna la tua risorsa come \"Non disturbare\" quando il dispositivo ha solo la vibrazione</string>
   <string name="pref_show_connection_options">Impostazioni estese di connessione</string>
   <string name="pref_show_connection_options_summary">Mostra nome host e impostazioni della porta quando configuri un account</string>
   <string name="hostname_example">xmpp.esempio.it</string>
@@ -915,6 +912,7 @@
   <string name="audio_call">Chiamata vocale</string>
   <string name="video_call">Chiamata video</string>
   <string name="help">Aiuto</string>
+  <string name="switch_to_conversation">Passa alla conversazione</string>
   <string name="microphone_unavailable">Il tuo microfono non è disponibile</string>
   <string name="only_one_call_at_a_time">Puoi fare solo una chiamata alla volta.</string>
   <string name="return_to_ongoing_call">Torna alla chiamata in corso</string>

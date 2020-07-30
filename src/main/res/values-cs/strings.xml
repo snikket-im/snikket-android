@@ -316,7 +316,6 @@
   <string name="account_status_bind_failure">Bind chyba</string>
   <string name="server_info_broken">Rozbité</string>
   <string name="pref_away_when_screen_off">Pryč při vypnuté obrazovce</string>
-  <string name="pref_away_when_screen_off_summary">Při vypnuté obrazovce označí váš stav jako pryč</string>
   <string name="pref_treat_vibrate_as_silent">Vibrační mód brát stejně jako tichý</string>
   <string name="pref_show_connection_options">Rozšířená nastavení připojení</string>
   <string name="pref_show_connection_options_summary">Zobrazovat nastavení hostname a port  při vytváření účtu</string>

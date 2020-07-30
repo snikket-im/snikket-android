@@ -321,7 +321,6 @@
   <string name="account_status_bind_failure">Bağlantı başarısız</string>
   <string name="server_info_broken">Bozuk</string>
   <string name="pref_away_when_screen_off">Ekran kapandığında uzakta</string>
-  <string name="pref_away_when_screen_off_summary">Ekran kapandığında çevrim içi durum bildiriminizi uzakta olarak değiştirir</string>
   <string name="pref_treat_vibrate_as_silent">Titreşim kipini sessiz kip olarak değerlendir</string>
   <string name="pref_show_connection_options">Genişletilmiş bağlantı seçenekleri</string>
   <string name="pref_show_connection_options_summary">Hesap oluştururken sunucu adıyla bağlantı noktası seçeneğini göster</string>

@@ -266,7 +266,6 @@
   <string name="download_failed_could_not_connect">ההורדה נכשלה: נכשל ביצוע חיבור לשרת</string>
   <string name="server_info_broken">לא עובד</string>
   <string name="pref_away_when_screen_off">העבר למצב \"לא נמצא\" כאשר המסך כבוי</string>
-  <string name="pref_away_when_screen_off_summary">מעביר את המכשיר לסטטוס \"לא נמצא\" כאשר המסך כבוי</string>
   <string name="action_renew_certificate">חידוש תעודה</string>
   <string name="error_fetching_omemo_key">שגיאה בתפיסת OMEMO!</string>
   <string name="pref_use_tor">התחבר דרך Tor</string>

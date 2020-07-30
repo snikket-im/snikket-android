@@ -368,11 +368,7 @@
   <string name="server_info_broken">Повредено</string>
   <string name="pref_presence_settings">Присъствие</string>
   <string name="pref_away_when_screen_off">Отсъстващ, когато екранът е изключен</string>
-  <string name="pref_away_when_screen_off_summary">Преминава в състояние „отсъстващ“ когато екранът бъде изключен</string>
-  <string name="pref_dnd_on_silent_mode">„Отпочиващ“ в тих режим</string>
-  <string name="pref_dnd_on_silent_mode_summary">Преминава в състояние „отсъстващ“, когато устройството е в тих режим</string>
   <string name="pref_treat_vibrate_as_silent">Тих режим при режим на вибриране</string>
-  <string name="pref_treat_vibrate_as_dnd_summary">Преминава в състояние „отсъстващ“, когато устройството е в режим на вибриране.</string>
   <string name="pref_show_connection_options">Разширени настройки за връзката</string>
   <string name="pref_show_connection_options_summary">Показване на настройките за сървър и порт при установка на профил</string>
   <string name="hostname_example">xmpp.example.com</string>
