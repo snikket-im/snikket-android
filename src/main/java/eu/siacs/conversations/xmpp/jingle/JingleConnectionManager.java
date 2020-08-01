@@ -456,6 +456,21 @@ public class JingleConnectionManager extends AbstractConnectionManager {
         }
     }
 
+    public boolean fireJingleRtpConnectionStateUpdates() {
+        boolean firedUpdates = false;
+        for (final AbstractJingleConnection connection : this.connections.values()) {
+            if (connection instanceof JingleRtpConnection) {
+                final JingleRtpConnection jingleRtpConnection = (JingleRtpConnection) connection;
+                if (jingleRtpConnection.isTerminated()) {
+                    continue;
+                }
+                jingleRtpConnection.fireStateUpdate();
+                firedUpdates = true;
+            }
+        }
+        return firedUpdates;
+    }
+
     void getPrimaryCandidate(final Account account, final boolean initiator, final OnPrimaryCandidateFound listener) {
         if (Config.DISABLE_PROXY_LOOKUP) {
             listener.onPrimaryCandidateFound(false, null);
@@ -574,6 +589,18 @@ public class JingleConnectionManager extends AbstractConnectionManager {
             Log.d(Config.LOGTAG, messagePacket.toString());
             mXmppConnectionService.sendMessagePacket(account, messagePacket);
         }
+    }
+
+    public boolean hasMatchingProposal(final Account account, final Jid with) {
+        synchronized (this.rtpSessionProposals) {
+            for (Map.Entry<RtpSessionProposal, DeviceDiscoveryState> entry : this.rtpSessionProposals.entrySet()) {
+                final RtpSessionProposal proposal = entry.getKey();
+                if (proposal.account == account && with.asBareJid().equals(proposal.with)) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
     public void deliverIbbPacket(Account account, IqPacket packet) {

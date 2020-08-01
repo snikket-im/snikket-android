@@ -1263,6 +1263,11 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
         this.proposedMedia = media;
     }
 
+    public void fireStateUpdate() {
+        final RtpEndUserState endUserState = getEndUserState();
+        xmppConnectionService.notifyJingleRtpConnectionUpdate(id.account, id.with, id.sessionId, endUserState);
+    }
+
     private interface OnIceServersDiscovered {
         void onIceServersDiscovered(List<PeerConnection.IceServer> iceServers);
     }

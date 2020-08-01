@@ -371,15 +371,23 @@ public class RtpSessionActivity extends XmppActivity implements XmppConnectionSe
             binding.with.setText(account.getRoster().getContact(with).getDisplayName());
         } else if (Intent.ACTION_VIEW.equals(action)) {
             final String extraLastState = intent.getStringExtra(EXTRA_LAST_REPORTED_STATE);
-            if (extraLastState != null) {
+            final RtpEndUserState state = extraLastState == null ? null : RtpEndUserState.valueOf(extraLastState);
+            if (state != null) {
                 Log.d(Config.LOGTAG, "restored last state from intent extra");
-                RtpEndUserState state = RtpEndUserState.valueOf(extraLastState);
                 updateButtonConfiguration(state);
                 updateStateDisplay(state);
                 updateProfilePicture(state);
                 invalidateOptionsMenu();
             }
             binding.with.setText(account.getRoster().getContact(with).getDisplayName());
+            if (xmppConnectionService.getJingleConnectionManager().fireJingleRtpConnectionStateUpdates()) {
+                return;
+            }
+            if (END_CARD.contains(state) || xmppConnectionService.getJingleConnectionManager().hasMatchingProposal(account, with)) {
+                return;
+            }
+            Log.d(Config.LOGTAG, "restored state (" + state + ") was not an end card. finishing");
+            finish();
         }
     }
 
