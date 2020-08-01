@@ -74,13 +74,22 @@ public class Resolver {
         }
     }
 
-    public static List<Result> fromHardCoded(String hostname, int port) {
-        Result result = new Result();
+    public static List<Result> fromHardCoded(final String hostname, final int port) {
+        final Result result = new Result();
         result.hostname = DNSName.from(hostname);
         result.port = port;
         result.directTls = useDirectTls(port);
         result.authenticated = true;
         return Collections.singletonList(result);
+    }
+
+    public static boolean invalidHostname(final String hostname) {
+        try {
+            DNSName.from(hostname);
+            return false;
+        } catch (IllegalArgumentException e) {
+            return true;
+        }
     }
 
 
