@@ -552,7 +552,7 @@ public class WebRTCWrapper {
     private PeerConnection requirePeerConnection() {
         final PeerConnection peerConnection = this.peerConnection;
         if (peerConnection == null) {
-            throw new IllegalStateException("initialize PeerConnection first");
+            throw new PeerConnectionNotInitialized();
         }
         return peerConnection;
     }
@@ -615,6 +615,14 @@ public class WebRTCWrapper {
         private InitializationException(final String message) {
             super(message);
         }
+    }
+
+    public static class PeerConnectionNotInitialized extends IllegalStateException {
+
+        private PeerConnectionNotInitialized() {
+            super("initialize PeerConnection first");
+        }
+
     }
 
     private static class CapturerChoice {

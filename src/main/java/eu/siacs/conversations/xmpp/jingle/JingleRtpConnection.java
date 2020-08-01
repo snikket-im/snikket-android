@@ -239,7 +239,11 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
             }
             final Set<Map.Entry<String, RtpContentMap.DescriptionTransport>> candidates = contentMap.contents.entrySet();
             if (this.state == State.SESSION_ACCEPTED) {
-                processCandidates(candidates);
+                try {
+                    processCandidates(candidates);
+                } catch (final WebRTCWrapper.PeerConnectionNotInitialized e) {
+                    Log.w(Config.LOGTAG, id.account.getJid().asBareJid() + ": PeerConnection was not initialized when processing transport info. this usually indicates a race condition that can be ignored");
+                }
             } else {
                 pendingIceCandidates.push(candidates);
             }
@@ -810,7 +814,7 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
                 final PeerConnection.PeerConnectionState state;
                 try {
                     state = webRTCWrapper.getState();
-                } catch (final IllegalStateException e) {
+                } catch (final WebRTCWrapper.PeerConnectionNotInitialized e) {
                     //We usually close the WebRTCWrapper *before* transitioning so we might still
                     //be in SESSION_ACCEPTED even though the peerConnection has been torn down
                     return RtpEndUserState.ENDING_CALL;
