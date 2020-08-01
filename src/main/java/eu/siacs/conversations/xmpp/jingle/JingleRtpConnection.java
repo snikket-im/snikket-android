@@ -807,7 +807,14 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
                     return RtpEndUserState.CONNECTING;
                 }
             case SESSION_ACCEPTED:
-                final PeerConnection.PeerConnectionState state = webRTCWrapper.getState();
+                final PeerConnection.PeerConnectionState state;
+                try {
+                    state = webRTCWrapper.getState();
+                } catch (final IllegalStateException e) {
+                    //We usually close the WebRTCWrapper *before* transitioning so we might still
+                    //be in SESSION_ACCEPTED even though the peerConnection has been torn down
+                    return RtpEndUserState.ENDING_CALL;
+                }
                 if (state == PeerConnection.PeerConnectionState.CONNECTED) {
                     return RtpEndUserState.CONNECTED;
                 } else if (state == PeerConnection.PeerConnectionState.NEW || state == PeerConnection.PeerConnectionState.CONNECTING) {
