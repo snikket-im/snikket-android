@@ -2034,9 +2034,12 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
         toggleInputMethod();
     }
 
-    public void reInit(Conversation conversation, Bundle extras) {
+    public void reInit(final Conversation conversation, final Bundle extras) {
         QuickLoader.set(conversation.getUuid());
-        this.saveMessageDraftStopAudioPlayer();
+        final boolean changedConversation = this.conversation != conversation;
+        if (changedConversation) {
+            this.saveMessageDraftStopAudioPlayer();
+        }
         this.clearPending();
         if (this.reInit(conversation, extras != null)) {
             if (extras != null) {
