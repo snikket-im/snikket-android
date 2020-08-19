@@ -55,7 +55,7 @@ public class PushManagementService {
                         e.printStackTrace();
                     }
                 } else {
-                    Log.d(Config.LOGTAG, a.getJid().asBareJid() + ": invalid response from app server");
+                    Log.d(Config.LOGTAG, a.getJid().asBareJid() + ": failed to enable push. invalid response from app server "+response);
                 }
             });
         });
