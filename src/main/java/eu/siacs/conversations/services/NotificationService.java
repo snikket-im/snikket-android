@@ -61,6 +61,7 @@ import eu.siacs.conversations.ui.TimePreference;
 import eu.siacs.conversations.utils.AccountUtils;
 import eu.siacs.conversations.utils.Compatibility;
 import eu.siacs.conversations.utils.GeoHelper;
+import eu.siacs.conversations.utils.TorServiceUtils;
 import eu.siacs.conversations.utils.UIHelper;
 import eu.siacs.conversations.xmpp.XmppConnection;
 import eu.siacs.conversations.xmpp.jingle.AbstractJingleConnection;
@@ -1092,9 +1093,11 @@ public class NotificationService {
         }
         final boolean showAllErrors = QuickConversationsService.isConversations();
         final List<Account> errors = new ArrayList<>();
+        boolean torNotAvailable = false;
         for (final Account account : mXmppConnectionService.getAccounts()) {
             if (account.hasErrorStatus() && account.showErrorNotification() && (showAllErrors || account.getLastErrorStatus() == Account.State.UNAUTHORIZED)) {
                 errors.add(account);
+                torNotAvailable |= account.getStatus() == Account.State.TOR_NOT_AVAILABLE;
             }
         }
         if (mXmppConnectionService.foregroundNotificationNeedsUpdatingWhenErrorStateChanges()) {
@@ -1113,7 +1116,23 @@ public class NotificationService {
         }
         mBuilder.addAction(R.drawable.ic_autorenew_white_24dp,
                 mXmppConnectionService.getString(R.string.try_again),
-                createTryAgainIntent());
+                createTryAgainIntent()
+        );
+        if (torNotAvailable) {
+            if (TorServiceUtils.isOrbotInstalled(mXmppConnectionService)) {
+                mBuilder.addAction(
+                        R.drawable.ic_play_circle_filled_white_48dp,
+                        mXmppConnectionService.getString(R.string.start_orbot),
+                        PendingIntent.getActivity(mXmppConnectionService, 147, TorServiceUtils.LAUNCH_INTENT, 0)
+                );
+            } else {
+                mBuilder.addAction(
+                        R.drawable.ic_file_download_white_24dp,
+                        mXmppConnectionService.getString(R.string.install_orbot),
+                        PendingIntent.getActivity(mXmppConnectionService, 146, TorServiceUtils.INSTALL_INTENT, 0)
+                );
+            }
+        }
         mBuilder.setDeleteIntent(createDismissErrorIntent());
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             mBuilder.setVisibility(Notification.VISIBILITY_PRIVATE);

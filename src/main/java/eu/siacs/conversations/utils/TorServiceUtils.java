@@ -16,6 +16,9 @@ public class TorServiceUtils {
     private static final Uri ORBOT_PLAYSTORE_URI = Uri.parse("market://details?id=" + URI_ORBOT);
     private final static String ACTION_START_TOR = "org.torproject.android.START_TOR";
 
+    public static final Intent INSTALL_INTENT = new Intent(Intent.ACTION_VIEW, ORBOT_PLAYSTORE_URI);
+    public static final Intent LAUNCH_INTENT = new Intent(ACTION_START_TOR);
+
     public final static String ACTION_STATUS = "org.torproject.android.intent.action.STATUS";
     public final static String EXTRA_STATUS = "org.torproject.android.intent.extra.STATUS";
 
@@ -30,17 +33,14 @@ public class TorServiceUtils {
 
 
     public static void downloadOrbot(Activity activity, int requestCode) {
-        final Intent intent = new Intent(Intent.ACTION_VIEW, ORBOT_PLAYSTORE_URI);
         try {
-            activity.startActivityForResult(intent, requestCode);
+            activity.startActivityForResult(INSTALL_INTENT, requestCode);
         } catch (ActivityNotFoundException e) {
             ToastCompat.makeText(activity, R.string.no_market_app_installed, ToastCompat.LENGTH_SHORT).show();
         }
     }
 
     public static void startOrbot(Activity activity, int requestCode) {
-        final Intent launchIntent = new Intent(URI_ORBOT);
-        launchIntent.setAction(ACTION_START_TOR);
-        activity.startActivityForResult(launchIntent, requestCode);
+        activity.startActivityForResult(LAUNCH_INTENT, requestCode);
     }
 }
