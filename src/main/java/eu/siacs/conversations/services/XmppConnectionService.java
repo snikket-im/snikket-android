@@ -127,6 +127,7 @@ import eu.siacs.conversations.utils.ReplacingTaskManager;
 import eu.siacs.conversations.utils.Resolver;
 import eu.siacs.conversations.utils.SerialSingleThreadExecutor;
 import eu.siacs.conversations.utils.StringUtils;
+import eu.siacs.conversations.utils.TorServiceUtils;
 import eu.siacs.conversations.utils.WakeLockHelper;
 import eu.siacs.conversations.utils.XmppUri;
 import eu.siacs.conversations.xml.Element;
@@ -652,8 +653,15 @@ public class XmppConnectionService extends Service {
                     final String sessionId = intent.getStringExtra(RtpSessionActivity.EXTRA_SESSION_ID);
                     Log.d(Config.LOGTAG, "received intent to dismiss call with session id " + sessionId);
                     mJingleConnectionManager.rejectRtpSession(sessionId);
+                    break;
                 }
-                break;
+                case TorServiceUtils.ACTION_STATUS:
+                    final String status = intent.getStringExtra(TorServiceUtils.EXTRA_STATUS);
+                    if ("ON".equals(status)) {
+                        handleOrbotStartedEvent();
+                        return START_STICKY;
+                    }
+                    break;
                 case ACTION_END_CALL: {
                     final String sessionId = intent.getStringExtra(RtpSessionActivity.EXTRA_SESSION_ID);
                     Log.d(Config.LOGTAG, "received intent to end call with session id " + sessionId);
@@ -785,6 +793,14 @@ public class XmppConnectionService extends Service {
             expireOldMessages();
         }
         return START_STICKY;
+    }
+
+    private void handleOrbotStartedEvent() {
+        for (final Account account : accounts) {
+            if (account.getStatus() == Account.State.TOR_NOT_AVAILABLE) {
+                reconnectAccount(account, true, false);
+            }
+        }
     }
 
     private boolean processAccountState(Account account, boolean interactive, boolean isUiAction, boolean isAccountPushed, HashSet<Account> pingCandidates) {
@@ -1128,15 +1144,16 @@ public class XmppConnectionService extends Service {
         toggleForegroundService();
         updateUnreadCountBadge();
         toggleScreenEventReceiver();
+        final IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction(TorServiceUtils.ACTION_STATUS);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             scheduleNextIdlePing();
-            IntentFilter intentFilter = new IntentFilter();
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
                 intentFilter.addAction(ConnectivityManager.CONNECTIVITY_ACTION);
             }
             intentFilter.addAction(NotificationManager.ACTION_INTERRUPTION_FILTER_CHANGED);
-            registerReceiver(this.mInternalEventReceiver, intentFilter);
         }
+        registerReceiver(this.mInternalEventReceiver, intentFilter);
         mForceDuringOnCreate.set(false);
         toggleForegroundService();
     }
@@ -1192,7 +1209,7 @@ public class XmppConnectionService extends Service {
     public void onDestroy() {
         try {
             unregisterReceiver(this.mInternalEventReceiver);
-        } catch (IllegalArgumentException e) {
+        } catch (final IllegalArgumentException e) {
             //ignored
         }
         destroyed = false;
@@ -2193,7 +2210,7 @@ public class XmppConnectionService extends Service {
         final Jid jid = Jid.ofEscaped(address);
         final Account account = new Account(jid, password);
         account.setOption(Account.OPTION_DISABLED, true);
-        Log.d(Config.LOGTAG,jid.asBareJid().toEscapedString()+": provisioning account");
+        Log.d(Config.LOGTAG, jid.asBareJid().toEscapedString() + ": provisioning account");
         createAccount(account);
     }
 

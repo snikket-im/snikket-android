@@ -16,6 +16,9 @@ public class TorServiceUtils {
     private static final Uri ORBOT_PLAYSTORE_URI = Uri.parse("market://details?id=" + URI_ORBOT);
     private final static String ACTION_START_TOR = "org.torproject.android.START_TOR";
 
+    public final static String ACTION_STATUS = "org.torproject.android.intent.action.STATUS";
+    public final static String EXTRA_STATUS = "org.torproject.android.intent.extra.STATUS";
+
     public static boolean isOrbotInstalled(Context context) {
         try {
             context.getPackageManager().getPackageInfo(URI_ORBOT, PackageManager.GET_ACTIVITIES);

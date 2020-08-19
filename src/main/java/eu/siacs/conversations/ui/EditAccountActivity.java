@@ -89,7 +89,6 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
     private static final int REQUEST_CHANGE_STATUS = 0xee11;
     private static final int REQUEST_ORBOT = 0xff22;
     private final PendingItem<PresenceTemplate> mPendingPresenceTemplate = new PendingItem<>();
-    private final AtomicBoolean mPendingReconnect = new AtomicBoolean(false);
     private AlertDialog mCaptchaDialog = null;
     private Jid jidToEdit;
     private boolean mInitMode = false;
@@ -475,13 +474,6 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
                 Log.d(Config.LOGTAG, "pgp result not ok");
             }
         }
-        if (requestCode == REQUEST_ORBOT) {
-            if (xmppConnectionService != null && mAccount != null) {
-                xmppConnectionService.reconnectAccountInBackground(mAccount);
-            } else {
-                mPendingReconnect.set(true);
-            }
-        }
     }
 
     @Override
@@ -781,11 +773,6 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
         }
 
         if (mAccount != null) {
-
-            if (mPendingReconnect.compareAndSet(true, false)) {
-                xmppConnectionService.reconnectAccountInBackground(mAccount);
-            }
-
             this.mInitMode |= this.mAccount.isOptionSet(Account.OPTION_REGISTER);
             this.mUsernameMode |= mAccount.isOptionSet(Account.OPTION_MAGIC_CREATE) && mAccount.isOptionSet(Account.OPTION_REGISTER);
             if (mPendingFingerprintVerificationUri != null) {
