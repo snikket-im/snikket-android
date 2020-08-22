@@ -371,8 +371,6 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
         if (transition(State.SESSION_ACCEPTED)) {
             respondOk(jinglePacket);
             receiveSessionAccept(contentMap);
-            final List<String> identificationTags = contentMap.group == null ? contentMap.getNames() : contentMap.group.getIdentificationTags();
-            processCandidates(identificationTags, contentMap.contents.entrySet());
         } else {
             Log.d(Config.LOGTAG, String.format("%s: received session-accept while in state %s", id.account.getJid().asBareJid(), state));
             respondOk(jinglePacket);
@@ -390,7 +388,7 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
             sendSessionTerminate(Reason.FAILED_APPLICATION, e.getMessage());
             return;
         }
-        org.webrtc.SessionDescription answer = new org.webrtc.SessionDescription(
+        final org.webrtc.SessionDescription answer = new org.webrtc.SessionDescription(
                 org.webrtc.SessionDescription.Type.ANSWER,
                 sessionDescription.toString()
         );
@@ -400,7 +398,10 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
             Log.d(Config.LOGTAG, id.account.getJid().asBareJid() + ": unable to set remote description after receiving session-accept", Throwables.getRootCause(e));
             webRTCWrapper.close();
             sendSessionTerminate(Reason.FAILED_APPLICATION);
+            return;
         }
+        final List<String> identificationTags = contentMap.group == null ? contentMap.getNames() : contentMap.group.getIdentificationTags();
+        processCandidates(identificationTags, contentMap.contents.entrySet());
     }
 
     private void sendSessionAccept() {
