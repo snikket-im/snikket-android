@@ -36,6 +36,8 @@ import android.support.annotation.BoolRes;
 import android.support.annotation.IntegerRes;
 import android.support.v4.app.RemoteInput;
 import android.support.v4.content.ContextCompat;
+import android.telephony.PhoneStateListener;
+import android.telephony.TelephonyManager;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -260,6 +262,13 @@ public class XmppConnectionService extends Service {
                 }
             }
             return false;
+        }
+    };
+    private final AtomicBoolean isPhoneInCall = new AtomicBoolean(false);
+    private final PhoneStateListener phoneStateListener = new PhoneStateListener() {
+        @Override
+        public void onCallStateChanged(final int state, final String phoneNumber) {
+            isPhoneInCall.set(state != 0);
         }
     };
 
@@ -1156,6 +1165,19 @@ public class XmppConnectionService extends Service {
         registerReceiver(this.mInternalEventReceiver, intentFilter);
         mForceDuringOnCreate.set(false);
         toggleForegroundService();
+        setupPhoneStateListener();
+    }
+
+
+    private void setupPhoneStateListener() {
+        final TelephonyManager telephonyManager = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
+        if (telephonyManager != null) {
+            telephonyManager.listen(phoneStateListener, PhoneStateListener.LISTEN_CALL_STATE);
+        }
+    }
+
+    public boolean isPhoneInCall() {
+        return isPhoneInCall.get();
     }
 
     private void checkForDeletedFiles() {
