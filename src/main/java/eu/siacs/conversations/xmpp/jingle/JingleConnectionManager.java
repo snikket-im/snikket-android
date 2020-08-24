@@ -14,6 +14,7 @@ import com.google.common.collect.ImmutableSet;
 
 import java.lang.ref.WeakReference;
 import java.security.SecureRandom;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
@@ -134,6 +135,18 @@ public class JingleConnectionManager extends AbstractConnectionManager {
         }
         synchronized (this.rtpSessionProposals) {
             return this.rtpSessionProposals.containsValue(DeviceDiscoveryState.DISCOVERED) || this.rtpSessionProposals.containsValue(DeviceDiscoveryState.SEARCHING);
+        }
+    }
+
+    public void notifyPhoneCallStarted() {
+        for (AbstractJingleConnection connection : connections.values()) {
+            if (connection instanceof JingleRtpConnection) {
+                final JingleRtpConnection rtpConnection = (JingleRtpConnection) connection;
+                if (rtpConnection.isTerminated()) {
+                    continue;
+                }
+                rtpConnection.notifyPhoneCall();
+            }
         }
     }
 

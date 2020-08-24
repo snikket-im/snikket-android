@@ -901,6 +901,16 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
         }
     }
 
+
+    public void notifyPhoneCall() {
+        Log.d(Config.LOGTAG, "a phone call has just been started. killing jingle rtp connections");
+        if (Arrays.asList(State.PROPOSED, State.SESSION_INITIALIZED).contains(this.state)) {
+            rejectCall();
+        } else {
+            endCall();
+        }
+    }
+
     public synchronized void rejectCall() {
         if (isTerminated()) {
             Log.w(Config.LOGTAG, id.account.getJid().asBareJid() + ": received rejectCall() when session has already been terminated. nothing to do");

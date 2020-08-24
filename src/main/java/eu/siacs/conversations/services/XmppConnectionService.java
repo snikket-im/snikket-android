@@ -268,7 +268,10 @@ public class XmppConnectionService extends Service {
     private final PhoneStateListener phoneStateListener = new PhoneStateListener() {
         @Override
         public void onCallStateChanged(final int state, final String phoneNumber) {
-            isPhoneInCall.set(state != 0);
+            isPhoneInCall.set(state != TelephonyManager.CALL_STATE_IDLE);
+            if (state == TelephonyManager.CALL_STATE_OFFHOOK) {
+                mJingleConnectionManager.notifyPhoneCallStarted();
+            }
         }
     };
 
