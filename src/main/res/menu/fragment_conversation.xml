@@ -100,6 +100,12 @@
         android:title="@string/invite_contact"
         app:showAsAction="never" />
     <item
+        android:id="@+id/action_search"
+        android:orderInCategory="48"
+        android:title="@string/search_messages"
+        android:visible="@bool/show_individual_search_options"
+        app:showAsAction="never" />
+    <item
         android:id="@+id/action_clear_history"
         android:orderInCategory="50"
         android:title="@string/action_clear_history"
@@ -125,5 +131,5 @@
         android:id="@+id/action_toggle_pinned"
         android:orderInCategory="72"
         android:title="@string/add_to_favorites"
-        app:showAsAction="never"/>
+        app:showAsAction="never" />
 </menu>

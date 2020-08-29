@@ -489,6 +489,18 @@ public class ConversationsActivity extends XmppActivity implements OnConversatio
             case R.id.action_scan_qr_code:
                 UriHandlerActivity.scan(this);
                 return true;
+            case R.id.action_search_all_conversations:
+                startActivity(new Intent(this, SearchActivity.class));
+                return true;
+            case R.id.action_search_this_conversation:
+                final Conversation conversation = ConversationFragment.getConversation(this);
+                if (conversation == null) {
+                    return true;
+                }
+                final Intent intent = new Intent(this, SearchActivity.class);
+                intent.putExtra(SearchActivity.EXTRA_CONVERSATION_UUID, conversation.getUuid());
+                startActivity(intent);
+                return true;
         }
         return super.onOptionsItemSelected(item);
     }

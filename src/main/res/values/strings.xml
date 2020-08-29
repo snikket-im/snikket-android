@@ -927,6 +927,8 @@
     <string name="remove_from_favorites">Remove from favorites</string>
     <string name="gpx_track">GPX track</string>
     <string name="could_not_correct_message">Could not correct message</string>
+    <string name="search_all_conversations">All conversations</string>
+    <string name="search_this_conversation">This conversation</string>
     <plurals name="view_users">
         <item quantity="one">View %1$d Participant</item>
         <item quantity="other">View %1$d Participants</item>

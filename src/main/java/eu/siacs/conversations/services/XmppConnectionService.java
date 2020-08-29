@@ -615,8 +615,8 @@ public class XmppConnectionService extends Service {
         return c != null && c.getMode() == Conversational.MODE_MULTI;
     }
 
-    public void search(List<String> term, OnSearchResultsAvailable onSearchResultsAvailable) {
-        MessageSearchTask.search(this, term, onSearchResultsAvailable);
+    public void search(final List<String> term, final String uuid, final OnSearchResultsAvailable onSearchResultsAvailable) {
+        MessageSearchTask.search(this, term, uuid, onSearchResultsAvailable);
     }
 
     @Override
