@@ -4,7 +4,7 @@
     <style name="ConversationsTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="colorPrimary">@color/green600</item>
         <item name="colorPrimaryDark">@color/green800</item>
-        <item name="colorAccent">@color/blue_a200</item>
+        <item name="colorAccent">@color/blue_a400</item>
         <item name="popupOverlayStyle">@style/ThemeOverlay.AppCompat.Light</item>
 
         <item name="color_background_primary">@color/grey50</item>
@@ -371,7 +371,7 @@
     <style name="ConversationsTheme.Dialog" parent="@style/Theme.AppCompat.Light.Dialog">
         <item name="colorPrimary">@color/green600</item>
         <item name="colorPrimaryDark">@color/green700</item>
-        <item name="colorAccent">@color/blue_a200</item>
+        <item name="colorAccent">@color/blue_a400</item>
         <item name="color_background_primary">@color/grey50</item>
         <item name="divider">@color/black12</item>
         <item name="TextSizeTitle">18sp</item>

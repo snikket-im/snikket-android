@@ -26,6 +26,8 @@
 	<color name="orange500">#ffff9800</color>
 	<color name="blue_a100">#ff82B1FF</color>
 	<color name="blue_a200">#ff448AFF</color>
+	<color name="blue_a400">#ff2979FF</color>
+	<color name="blue_a700">#ff2962FF</color>
 	<color name="green500">#ff4CAF50</color>
 	<color name="green600">#ff43A047</color>
 	<color name="green700">#ff388E3C</color>
