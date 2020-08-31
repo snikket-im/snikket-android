@@ -112,17 +112,21 @@ public class AudioPlayer implements View.OnClickListener, MediaPlayer.OnCompleti
         }
         viewHolder.playPause.setAlpha(viewHolder.darkBackground ? 0.7f : 0.57f);
         viewHolder.playPause.setOnClickListener(this);
+        final Context context = viewHolder.playPause.getContext();
         if (message == currentlyPlayingMessage) {
             if (AudioPlayer.player != null && AudioPlayer.player.isPlaying()) {
                 viewHolder.playPause.setImageResource(viewHolder.darkBackground ? R.drawable.ic_pause_white_36dp : R.drawable.ic_pause_black_36dp);
+                viewHolder.playPause.setContentDescription(context.getString(R.string.pause_audio));
                 viewHolder.progress.setEnabled(true);
             } else {
+                viewHolder.playPause.setContentDescription(context.getString(R.string.play_audio));
                 viewHolder.playPause.setImageResource(viewHolder.darkBackground ? R.drawable.ic_play_arrow_white_36dp : R.drawable.ic_play_arrow_black_36dp);
                 viewHolder.progress.setEnabled(false);
             }
             return true;
         } else {
             viewHolder.playPause.setImageResource(viewHolder.darkBackground ? R.drawable.ic_play_arrow_white_36dp : R.drawable.ic_play_arrow_black_36dp);
+            viewHolder.playPause.setContentDescription(context.getString(R.string.play_audio));
             viewHolder.runtime.setText(formatTime(message.getFileParams().runtime));
             viewHolder.progress.setProgress(0);
             viewHolder.progress.setEnabled(false);
@@ -156,7 +160,8 @@ public class AudioPlayer implements View.OnClickListener, MediaPlayer.OnCompleti
         }
     }
 
-    private boolean playPauseCurrent(ViewHolder viewHolder) {
+    private boolean playPauseCurrent(final ViewHolder viewHolder) {
+        final Context context = viewHolder.playPause.getContext();
         viewHolder.playPause.setAlpha(viewHolder.darkBackground ? 0.7f : 0.57f);
         if (player.isPlaying()) {
             viewHolder.progress.setEnabled(false);
@@ -164,6 +169,7 @@ public class AudioPlayer implements View.OnClickListener, MediaPlayer.OnCompleti
             messageAdapter.flagScreenOff();
             releaseProximityWakeLock();
             viewHolder.playPause.setImageResource(viewHolder.darkBackground ? R.drawable.ic_play_arrow_white_36dp : R.drawable.ic_play_arrow_black_36dp);
+            viewHolder.playPause.setContentDescription(context.getString(R.string.play_audio));
         } else {
             viewHolder.progress.setEnabled(true);
             player.start();
@@ -171,6 +177,7 @@ public class AudioPlayer implements View.OnClickListener, MediaPlayer.OnCompleti
             acquireProximityWakeLock();
             this.stopRefresher(true);
             viewHolder.playPause.setImageResource(viewHolder.darkBackground ? R.drawable.ic_pause_white_36dp : R.drawable.ic_pause_black_36dp);
+            viewHolder.playPause.setContentDescription(context.getString(R.string.pause_audio));
         }
         return false;
     }
@@ -194,6 +201,7 @@ public class AudioPlayer implements View.OnClickListener, MediaPlayer.OnCompleti
             acquireProximityWakeLock();
             viewHolder.progress.setEnabled(true);
             viewHolder.playPause.setImageResource(viewHolder.darkBackground ? R.drawable.ic_pause_white_36dp : R.drawable.ic_pause_black_36dp);
+            viewHolder.playPause.setContentDescription(viewHolder.playPause.getContext().getString(R.string.pause_audio));
             sensorManager.registerListener(this, proximitySensor, SensorManager.SENSOR_DELAY_NORMAL);
             return true;
         } catch (Exception e) {
@@ -248,6 +256,7 @@ public class AudioPlayer implements View.OnClickListener, MediaPlayer.OnCompleti
         }
         final ViewHolder viewHolder = ViewHolder.get(audioPlayer);
         final Message message = (Message) audioPlayer.getTag();
+        viewHolder.playPause.setContentDescription(viewHolder.playPause.getContext().getString(R.string.play_audio));
         viewHolder.playPause.setImageResource(viewHolder.darkBackground ? R.drawable.ic_play_arrow_white_36dp : R.drawable.ic_play_arrow_black_36dp);
         if (message != null) {
             viewHolder.runtime.setText(formatTime(message.getFileParams().runtime));

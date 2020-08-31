@@ -935,6 +935,8 @@
     <string name="not_encrypted">Not encrypted</string>
     <string name="exit">Exit</string>
     <string name="record_voice_mail">Record voice mail</string>
+    <string name="play_audio">Play audio</string>
+    <string name="pause_audio">Pause audio</string>
     <plurals name="view_users">
         <item quantity="one">View %1$d Participant</item>
         <item quantity="other">View %1$d Participants</item>
