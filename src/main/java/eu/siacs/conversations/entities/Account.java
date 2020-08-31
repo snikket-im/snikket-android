@@ -615,6 +615,11 @@ public class Account extends AbstractEntity implements AvatarService.Avatarable 
         return UIHelper.getColorForName(jid.asBareJid().toString());
     }
 
+    @Override
+    public String getAvatarName() {
+        throw new IllegalStateException("This method should not be called");
+    }
+
     public enum State {
         DISABLED(false, false),
         OFFLINE(false),

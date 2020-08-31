@@ -1066,6 +1066,11 @@ public class Conversation extends AbstractEntity implements Blockable, Comparabl
         return UIHelper.getColorForName(getName().toString());
     }
 
+    @Override
+    public String getAvatarName() {
+        return getName().toString();
+    }
+
     public interface OnMessageFound {
         void onMessageFound(final Message message);
     }

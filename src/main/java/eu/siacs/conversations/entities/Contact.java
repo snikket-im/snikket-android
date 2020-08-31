@@ -558,6 +558,11 @@ public class Contact implements ListItem, Blockable {
 		return UIHelper.getColorForName(jid != null ? jid.asBareJid().toString() : getDisplayName());
 	}
 
+	@Override
+	public String getAvatarName() {
+		return getDisplayName();
+	}
+
 	public boolean hasAvatarOrPresenceName() {
 		return (avatar != null && avatar.getFilename() != null) || presenceName != null;
 	}

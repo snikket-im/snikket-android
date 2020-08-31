@@ -684,6 +684,11 @@ public class Message extends AbstractEntity implements AvatarService.Avatarable 
 		}
 	}
 
+	@Override
+	public String getAvatarName() {
+		return UIHelper.getMessageDisplayName(this);
+	}
+
 	public boolean isOOb() {
 		return oob;
 	}
