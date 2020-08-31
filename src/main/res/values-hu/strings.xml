@@ -8,7 +8,6 @@
   <string name="action_contact_details">Partner részletei</string>
   <string name="action_muc_details">Csoportos csevegés részletei</string>
   <string name="channel_details">Csatorna részletei</string>
-  <string name="action_secure">Biztonságos beszélgetés</string>
   <string name="action_add_account">Fiók hozzáadása</string>
   <string name="action_edit_contact">Név szerkesztése</string>
   <string name="action_add_phone_book">Hozzáadás a címjegyzékhez</string>

@@ -8,7 +8,6 @@
   <string name="action_contact_details">Contactgegevens</string>
   <string name="action_muc_details">Gespreksgegevens</string>
   <string name="channel_details">Kanaalinformatie</string>
-  <string name="action_secure">Beveiligd gesprek</string>
   <string name="action_add_account">Account toevoegen</string>
   <string name="action_edit_contact">Naam veranderen</string>
   <string name="action_add_phone_book">Toevoegen aan adresboek</string>

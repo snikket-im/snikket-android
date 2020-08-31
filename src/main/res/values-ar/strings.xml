@@ -8,7 +8,6 @@
   <string name="action_contact_details">بيانات جهة الإتصال</string>
   <string name="action_muc_details">تفاصيل مجموعة المحادثة</string>
   <string name="channel_details">تفاصيل القناة</string>
-  <string name="action_secure">تشفير المحادثة</string>
   <string name="action_add_account">إضافة حساب</string>
   <string name="action_edit_contact">تعديل الإسم</string>
   <string name="action_add_phone_book">أضف إلى دفتر العناوين</string>

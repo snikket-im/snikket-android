@@ -7,7 +7,6 @@
   <string name="action_end_conversation">Tancar aquesta conversa</string>
   <string name="action_contact_details">Detalls del contacte</string>
   <string name="action_muc_details">Detalls del xat de grup</string>
-  <string name="action_secure">Conversa segura</string>
   <string name="action_add_account">Afegeix un compte</string>
   <string name="action_edit_contact">Edita el nom</string>
   <string name="action_add_phone_book">Afegeix a la llibreta d\'adreces</string>

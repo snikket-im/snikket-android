@@ -8,7 +8,6 @@
   <string name="action_contact_details">Kişi bilgileri</string>
   <string name="action_muc_details">Küme konuşması ayrıntıları</string>
   <string name="channel_details">Kanal ayrıntıları</string>
-  <string name="action_secure">Güvenli konuşma</string>
   <string name="action_add_account">Hesap ekle</string>
   <string name="action_edit_contact">İsmi düzenle</string>
   <string name="action_add_phone_book">Telefon rehberine ekle</string>

@@ -8,7 +8,6 @@
   <string name="action_contact_details">Szczegóły kontaktu</string>
   <string name="action_muc_details">Szczegóły konferencji</string>
   <string name="channel_details">Szczegóły kanału</string>
-  <string name="action_secure">Konwersacja szyfrowana</string>
   <string name="action_add_account">Dodaj konto</string>
   <string name="action_edit_contact">Edytuj nazwę</string>
   <string name="action_add_phone_book">Dodaj do kontaktów</string>
@@ -401,6 +400,7 @@
   <string name="mark_as_read">Oznacz jako przeczytane</string>
   <string name="pref_input_options">Ustawienia wprowadzania</string>
   <string name="pref_enter_is_send">Enter wysyła</string>
+  <string name="pref_enter_is_send_summary">Użyj klawisza Enter aby wysłać wiadomość. Możesz zawsze użyć Ctrl+Enter do wysyłania wiadomości, nawet jeśli ta opcja jest wyłączona.</string>
   <string name="pref_display_enter_key">Pokaż klawisz Enter</string>
   <string name="pref_display_enter_key_summary">Zamień klawisz emotikon na klawisz Enter</string>
   <string name="audio">plik audio</string>
@@ -462,7 +462,11 @@
   <string name="server_info_broken">Zepsute</string>
   <string name="pref_presence_settings">Dostępność</string>
   <string name="pref_away_when_screen_off">Status \"Oddalony\" gdy wyświetlacz jest wyłączony</string>
+  <string name="pref_away_when_screen_off_summary">Pokaż jako Oddalony kiedy ekran jest wyłączony.</string>
+  <string name="pref_dnd_on_silent_mode">Zajęty w trybie cichym</string>
+  <string name="pref_dnd_on_silent_mode_summary">Pokaż jako Zajęty jeśli urządzenie jest w trybie cichym</string>
   <string name="pref_treat_vibrate_as_silent">Traktuj tryb wibracji jak tryb cichy</string>
+  <string name="pref_treat_vibrate_as_dnd_summary">Pokaż jako Zajęty kiedy urządzenie jest w trybie wibracji</string>
   <string name="pref_show_connection_options">Rozszerzone ustawienia połączenia</string>
   <string name="pref_show_connection_options_summary">Pokaż nazwę hosta i ustawienia portu przy dodawaniu konta</string>
   <string name="hostname_example">xmpp.example.com</string>
@@ -929,12 +933,15 @@ Administrator twojego serwera będzie mógł czytać twoje wiadomości, ale moż
   <string name="audio_call">Połączenie audio</string>
   <string name="video_call">Połączenie wideo</string>
   <string name="help">Pomoc</string>
+  <string name="switch_to_conversation">Przełącz do rozmowy</string>
   <string name="microphone_unavailable">Twój mikrofon jest niedostępny</string>
   <string name="only_one_call_at_a_time">Możesz mieć tylko jedno połączenie na raz.</string>
   <string name="return_to_ongoing_call">Powróć do trwającego połączenia</string>
   <string name="could_not_switch_camera">Nie można zmienić aparatu</string>
   <string name="add_to_favorites">Dodaj do ulubionych</string>
   <string name="remove_from_favorites">Usuń z ulubionych</string>
+  <string name="gpx_track">Ścieżka GPX</string>
+  <string name="could_not_correct_message">Nie można poprawić wiadomości</string>
   <plurals name="view_users">
     <item quantity="one">Pokaż %1$d uczestnika</item>
     <item quantity="few">Pokaż %1$d uczestników</item>

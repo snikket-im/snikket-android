@@ -8,7 +8,6 @@
   <string name="action_contact_details">Dettagli del contatto</string>
   <string name="action_muc_details">Dettagli chat di gruppo</string>
   <string name="channel_details">Dettagli canale</string>
-  <string name="action_secure">Conversazione sicura</string>
   <string name="action_add_account">Aggiungi account</string>
   <string name="action_edit_contact">Modifica il nome</string>
   <string name="action_add_phone_book">Aggiungi alla rubrica</string>
@@ -461,7 +460,11 @@
   <string name="server_info_broken">Rotto</string>
   <string name="pref_presence_settings">Disponibilità</string>
   <string name="pref_away_when_screen_off">\"Non disponibile\" a schermo spento</string>
+  <string name="pref_away_when_screen_off_summary">Imposta come non disponibile quando lo schermo è spento</string>
+  <string name="pref_dnd_on_silent_mode">\"Occupato\" in modalità silenziosa</string>
+  <string name="pref_dnd_on_silent_mode_summary">Imposta come occupato quando il dispositivo è in modalità silenziosa</string>
   <string name="pref_treat_vibrate_as_silent">Tratta vibrazione come modalità silenziosa</string>
+  <string name="pref_treat_vibrate_as_dnd_summary">Imposta come occupato quando il dispositivo è in modalità vibrazione</string>
   <string name="pref_show_connection_options">Impostazioni estese di connessione</string>
   <string name="pref_show_connection_options_summary">Mostra nome host e impostazioni della porta quando configuri un account</string>
   <string name="hostname_example">xmpp.esempio.it</string>
@@ -919,6 +922,8 @@
   <string name="could_not_switch_camera">Impossibile cambiare fotocamera</string>
   <string name="add_to_favorites">Aggiungi ai preferiti</string>
   <string name="remove_from_favorites">Rimuovi dai preferiti</string>
+  <string name="gpx_track">Traccia GPX</string>
+  <string name="could_not_correct_message">Impossibile correggere il messaggio</string>
   <plurals name="view_users">
     <item quantity="one">Vedi %1$d partecipante</item>
     <item quantity="other">Vedi %1$d partecipanti</item>

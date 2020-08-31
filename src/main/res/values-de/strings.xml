@@ -8,7 +8,6 @@
   <string name="action_contact_details">Kontaktdetails</string>
   <string name="action_muc_details">Gruppenchatdetails</string>
   <string name="channel_details">Channeldetails</string>
-  <string name="action_secure">Verschlüsselte Unterhaltung</string>
   <string name="action_add_account">Konto hinzufügen</string>
   <string name="action_edit_contact">Namen bearbeiten</string>
   <string name="action_add_phone_book">Zum Telefonbuch hinzufügen</string>

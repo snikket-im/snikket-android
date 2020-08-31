@@ -8,7 +8,6 @@
   <string name="action_contact_details">联系人详情</string>
   <string name="action_muc_details">群聊详情</string>
   <string name="channel_details">频道详情</string>
-  <string name="action_secure">加密对话</string>
   <string name="action_add_account">添加账户</string>
   <string name="action_edit_contact">编辑名称</string>
   <string name="action_add_phone_book">添加到通讯录</string>
@@ -460,7 +459,11 @@
   <string name="server_info_broken">损坏</string>
   <string name="pref_presence_settings">可用性</string>
   <string name="pref_away_when_screen_off">锁屏时显示离开</string>
+  <string name="pref_away_when_screen_off_summary">屏幕关闭时显示为“离开”</string>
+  <string name="pref_dnd_on_silent_mode">在静音模式显示为忙碌</string>
+  <string name="pref_dnd_on_silent_mode_summary">设备处于静音模式时显示为忙碌</string>
   <string name="pref_treat_vibrate_as_silent">将振动看作静音</string>
+  <string name="pref_treat_vibrate_as_dnd_summary">设备振动时显示为忙碌</string>
   <string name="pref_show_connection_options">高级连接设置</string>
   <string name="pref_show_connection_options_summary">注册账户时显示主机名和端口</string>
   <string name="hostname_example">xmpp.example.com</string>
@@ -911,6 +914,8 @@
   <string name="could_not_switch_camera">无法切换摄像头</string>
   <string name="add_to_favorites">添加到收藏夹</string>
   <string name="remove_from_favorites">从收藏夹删除</string>
+  <string name="gpx_track">GPX轨迹</string>
+  <string name="could_not_correct_message">无法更正消息</string>
   <plurals name="view_users">
     <item quantity="other">查看%1$d成员</item>
   </plurals>

@@ -5,7 +5,6 @@
   <string name="action_accounts">Kontobehandling</string>
   <string name="action_contact_details">Kontaktdetaljer</string>
   <string name="action_muc_details">Gruppesludringsdetaljer</string>
-  <string name="action_secure">Sikret samtale</string>
   <string name="action_add_account">Legg til samtale</string>
   <string name="action_edit_contact">Rediger navn</string>
   <string name="action_add_phone_book">Legg til i kontaktliste</string>

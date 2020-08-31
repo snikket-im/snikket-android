@@ -8,7 +8,6 @@
   <string name="action_contact_details">Подробности за контакта</string>
   <string name="action_muc_details">Подробности за груповия разговор</string>
   <string name="channel_details">Подробности за канала</string>
-  <string name="action_secure">Защитен разговор</string>
   <string name="action_add_account">Добавяне на профил</string>
   <string name="action_edit_contact">Редактиране на името</string>
   <string name="action_add_phone_book">Добавяне към адресния указател</string>
