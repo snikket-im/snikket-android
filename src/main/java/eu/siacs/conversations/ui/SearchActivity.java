@@ -121,6 +121,7 @@ public class SearchActivity extends XmppActivity implements TextWatcher, OnSearc
 		}
 		searchField.addTextChangedListener(this);
 		searchField.setHint(R.string.search_messages);
+		searchField.setContentDescription(getString(R.string.search_messages));
 		searchField.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_AUTO_COMPLETE);
 		if (term == null) {
 			showKeyboard(searchField);

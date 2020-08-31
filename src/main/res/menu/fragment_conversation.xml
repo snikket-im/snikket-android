@@ -28,7 +28,7 @@
         android:id="@+id/action_security"
         android:icon="?attr/icon_not_secure"
         android:orderInCategory="20"
-        android:title="@string/action_secure"
+        android:title="@string/encrypted_with_omemo"
         app:showAsAction="always">
         <menu>
             <group android:checkableBehavior="single">
