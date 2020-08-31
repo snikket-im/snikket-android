@@ -4,7 +4,7 @@
     <string name="action_add">New conversation</string>
     <string name="action_accounts">Manage accounts</string>
     <string name="action_account">Manage account</string>
-    <string name="action_end_conversation">Close this conversation</string>
+    <string name="action_end_conversation">Close conversation</string>
     <string name="action_contact_details">Contact details</string>
     <string name="action_muc_details">Group chat details</string>
     <string name="channel_details">Channel details</string>
