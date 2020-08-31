@@ -308,8 +308,14 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
         mXmppConnectionService.updateAccountUi();
     }
 
-    private boolean handleErrorMessage(Account account, MessagePacket packet) {
+    private boolean handleErrorMessage(final Account account, final MessagePacket packet) {
         if (packet.getType() == MessagePacket.TYPE_ERROR) {
+            if (packet.fromServer(account)) {
+                final Pair<MessagePacket, Long> forwarded = packet.getForwardedMessagePacket("received", "urn:xmpp:carbons:2");
+                if (forwarded != null) {
+                    return handleErrorMessage(account, forwarded.first);
+                }
+            }
             final Jid from = packet.getFrom();
             final String id = packet.getId();
             if (from != null && id != null) {
