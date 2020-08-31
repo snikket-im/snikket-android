@@ -8,7 +8,6 @@
     <string name="action_contact_details">Contact details</string>
     <string name="action_muc_details">Group chat details</string>
     <string name="channel_details">Channel details</string>
-    <string name="action_secure">Secure conversation</string>
     <string name="action_add_account">Add account</string>
     <string name="action_edit_contact">Edit name</string>
     <string name="action_add_phone_book">Add to address book</string>
@@ -931,6 +930,9 @@
     <string name="search_this_conversation">This conversation</string>
     <string name="your_avatar">Your avatar</string>
     <string name="avatar_for_x">Avatar for %s</string>
+    <string name="encrypted_with_omemo">Encrypted with OMEMO</string>
+    <string name="encrypted_with_openpgp">Encrypted with OpenPGP</string>
+    <string name="not_encrypted">Not encrypted</string>
     <plurals name="view_users">
         <item quantity="one">View %1$d Participant</item>
         <item quantity="other">View %1$d Participants</item>
