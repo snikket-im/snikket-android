@@ -6,7 +6,7 @@
         android:orderInCategory="10"
         android:title="@string/scan_qr_code"
         android:visible="@bool/show_qr_code_scan"
-        app:showAsAction="always" />
+        app:showAsAction="always"/>
     <item
         android:icon="?attr/icon_search"
         android:orderInCategory="11"
