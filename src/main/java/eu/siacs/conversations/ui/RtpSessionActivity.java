@@ -677,18 +677,22 @@ public class RtpSessionActivity extends XmppActivity implements XmppConnectionSe
             this.binding.endCall.setVisibility(View.INVISIBLE);
             this.binding.acceptCall.setVisibility(View.INVISIBLE);
         } else if (state == RtpEndUserState.INCOMING_CALL) {
+            this.binding.rejectCall.setContentDescription(getString(R.string.dismiss_call));
             this.binding.rejectCall.setOnClickListener(this::rejectCall);
             this.binding.rejectCall.setImageResource(R.drawable.ic_call_end_white_48dp);
             this.binding.rejectCall.setVisibility(View.VISIBLE);
             this.binding.endCall.setVisibility(View.INVISIBLE);
+            this.binding.acceptCall.setContentDescription(getString(R.string.answer_call));
             this.binding.acceptCall.setOnClickListener(this::acceptCall);
             this.binding.acceptCall.setImageResource(R.drawable.ic_call_white_48dp);
             this.binding.acceptCall.setVisibility(View.VISIBLE);
         } else if (state == RtpEndUserState.DECLINED_OR_BUSY) {
+            this.binding.rejectCall.setContentDescription(getString(R.string.exit));
             this.binding.rejectCall.setOnClickListener(this::exit);
             this.binding.rejectCall.setImageResource(R.drawable.ic_clear_white_48dp);
             this.binding.rejectCall.setVisibility(View.VISIBLE);
             this.binding.endCall.setVisibility(View.INVISIBLE);
+            this.binding.acceptCall.setContentDescription(getString(R.string.record_voice_mail));
             this.binding.acceptCall.setOnClickListener(this::recordVoiceMail);
             this.binding.acceptCall.setImageResource(R.drawable.ic_voicemail_white_24dp);
             this.binding.acceptCall.setVisibility(View.VISIBLE);
@@ -698,15 +702,18 @@ public class RtpSessionActivity extends XmppActivity implements XmppConnectionSe
                 RtpEndUserState.APPLICATION_ERROR,
                 RtpEndUserState.RETRACTED
         ).contains(state)) {
+            this.binding.rejectCall.setContentDescription(getString(R.string.exit));
             this.binding.rejectCall.setOnClickListener(this::exit);
             this.binding.rejectCall.setImageResource(R.drawable.ic_clear_white_48dp);
             this.binding.rejectCall.setVisibility(View.VISIBLE);
             this.binding.endCall.setVisibility(View.INVISIBLE);
+            this.binding.acceptCall.setContentDescription(getString(R.string.try_again));
             this.binding.acceptCall.setOnClickListener(this::retry);
             this.binding.acceptCall.setImageResource(R.drawable.ic_replay_white_48dp);
             this.binding.acceptCall.setVisibility(View.VISIBLE);
         } else {
             this.binding.rejectCall.setVisibility(View.INVISIBLE);
+            this.binding.endCall.setContentDescription(getString(R.string.hang_up));
             this.binding.endCall.setOnClickListener(this::endCall);
             this.binding.endCall.setImageResource(R.drawable.ic_call_end_white_48dp);
             this.binding.endCall.setVisibility(View.VISIBLE);

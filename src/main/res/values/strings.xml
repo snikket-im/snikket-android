@@ -933,6 +933,8 @@
     <string name="encrypted_with_omemo">Encrypted with OMEMO</string>
     <string name="encrypted_with_openpgp">Encrypted with OpenPGP</string>
     <string name="not_encrypted">Not encrypted</string>
+    <string name="exit">Exit</string>
+    <string name="record_voice_mail">Record voice mail</string>
     <plurals name="view_users">
         <item quantity="one">View %1$d Participant</item>
         <item quantity="other">View %1$d Participants</item>
