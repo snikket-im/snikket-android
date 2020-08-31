@@ -33,6 +33,7 @@ public class Contact implements ListItem, Blockable {
 
 	public static final String SYSTEMNAME = "systemname";
 	public static final String SERVERNAME = "servername";
+	public static final String PRESENCE_NAME = "presence_name";
 	public static final String JID = "jid";
 	public static final String OPTIONS = "options";
 	public static final String SYSTEMACCOUNT = "systemaccount";
@@ -62,13 +63,14 @@ public class Contact implements ListItem, Blockable {
 	private long mLastseen = 0;
 	private String mLastPresence = null;
 
-	public Contact(final String account, final String systemName, final String serverName,
+	public Contact(final String account, final String systemName, final String serverName, final String presenceName,
 	               final Jid jid, final int subscription, final String photoUri,
 	               final Uri systemAccount, final String keys, final String avatar, final long lastseen,
 	               final String presence, final String groups) {
 		this.accountUuid = account;
 		this.systemName = systemName;
 		this.serverName = serverName;
+		this.presenceName = presenceName;
 		this.jid = jid;
 		this.subscription = subscription;
 		this.photoUri = photoUri;
@@ -116,6 +118,7 @@ public class Contact implements ListItem, Blockable {
 		return new Contact(cursor.getString(cursor.getColumnIndex(ACCOUNT)),
 				cursor.getString(cursor.getColumnIndex(SYSTEMNAME)),
 				cursor.getString(cursor.getColumnIndex(SERVERNAME)),
+				cursor.getString(cursor.getColumnIndex(PRESENCE_NAME)),
 				jid,
 				cursor.getInt(cursor.getColumnIndex(OPTIONS)),
 				cursor.getString(cursor.getColumnIndex(PHOTOURI)),
@@ -213,6 +216,7 @@ public class Contact implements ListItem, Blockable {
 			values.put(ACCOUNT, accountUuid);
 			values.put(SYSTEMNAME, systemName);
 			values.put(SERVERNAME, serverName);
+			values.put(PRESENCE_NAME, presenceName);
 			values.put(JID, jid.toString());
 			values.put(OPTIONS, subscription);
 			values.put(SYSTEMACCOUNT, systemAccount != null ? systemAccount.toString() : null);
@@ -552,6 +556,10 @@ public class Contact implements ListItem, Blockable {
 	@Override
 	public int getAvatarBackgroundColor() {
 		return UIHelper.getColorForName(jid != null ? jid.asBareJid().toString() : getDisplayName());
+	}
+
+	public boolean hasAvatarOrPresenceName() {
+		return (avatar != null && avatar.getFilename() != null) || presenceName != null;
 	}
 
 	public final class Options {

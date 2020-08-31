@@ -63,11 +63,12 @@ import eu.siacs.conversations.xmpp.Jid;
 public class DatabaseBackend extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "history";
-    private static final int DATABASE_VERSION = 46;
+    private static final int DATABASE_VERSION = 47;
     private static DatabaseBackend instance = null;
     private static String CREATE_CONTATCS_STATEMENT = "create table "
             + Contact.TABLENAME + "(" + Contact.ACCOUNT + " TEXT, "
             + Contact.SERVERNAME + " TEXT, " + Contact.SYSTEMNAME + " TEXT,"
+            + Contact.PRESENCE_NAME + " TEXT,"
             + Contact.JID + " TEXT," + Contact.KEYS + " TEXT,"
             + Contact.PHOTOURI + " TEXT," + Contact.OPTIONS + " NUMBER,"
             + Contact.SYSTEMACCOUNT + " NUMBER, " + Contact.AVATAR + " TEXT, "
@@ -555,6 +556,9 @@ public class DatabaseBackend extends SQLiteOpenHelper {
             final long diff = SystemClock.elapsedRealtime() - start;
             Log.d(Config.LOGTAG,"deleted old edit information in "+diff+"ms");
         }
+        if (oldVersion < 47 && newVersion >= 47) {
+            db.execSQL("ALTER TABLE " + Contact.TABLENAME + " ADD COLUMN " + Contact.PRESENCE_NAME + " TEXT");
+        }
     }
 
     private void canonicalizeJids(SQLiteDatabase db) {
@@ -573,7 +577,7 @@ public class DatabaseBackend extends SQLiteOpenHelper {
                 continue;
             }
 
-            String updateArgs[] = {
+            final String[] updateArgs = {
                     newJid,
                     cursor.getString(cursor.getColumnIndex(Conversation.UUID)),
             };
@@ -1011,7 +1015,7 @@ public class DatabaseBackend extends SQLiteOpenHelper {
         final SQLiteDatabase db = this.getWritableDatabase();
         db.beginTransaction();
         for (Contact contact : roster.getContacts()) {
-            if (contact.getOption(Contact.Options.IN_ROSTER) || contact.getAvatarFilename() != null || contact.getOption(Contact.Options.SYNCED_VIA_OTHER)) {
+            if (contact.getOption(Contact.Options.IN_ROSTER) || contact.hasAvatarOrPresenceName() || contact.getOption(Contact.Options.SYNCED_VIA_OTHER)) {
                 db.insert(Contact.TABLENAME, null, contact.getContentValues());
             } else {
                 String where = Contact.ACCOUNT + "=? AND " + Contact.JID + "=?";

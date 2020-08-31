@@ -300,6 +300,7 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
         } else {
             Contact contact = account.getRoster().getContact(user);
             if (contact.setPresenceName(nick)) {
+                mXmppConnectionService.syncRoster(account);
                 mXmppConnectionService.getAvatarService().clear(contact);
             }
         }
@@ -1011,8 +1012,9 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
 
         final String nick = packet.findChildContent("nick", Namespace.NICK);
         if (nick != null && InvalidJid.hasValidFrom(original)) {
-            Contact contact = account.getRoster().getContact(from);
+            final Contact contact = account.getRoster().getContact(from);
             if (contact.setPresenceName(nick)) {
+                mXmppConnectionService.syncRoster(account);
                 mXmppConnectionService.getAvatarService().clear(contact);
             }
         }
