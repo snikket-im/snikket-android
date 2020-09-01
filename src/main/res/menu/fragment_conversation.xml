@@ -116,20 +116,27 @@
         android:title="@string/action_end_conversation"
         app:showAsAction="never" />
     <item
-        android:id="@+id/action_mute"
         android:orderInCategory="70"
-        android:title="@string/disable_notifications"
-        app:showAsAction="never" />
+        android:title="@string/more_options">
+        <menu>
+            <item
+                android:id="@+id/action_mute"
+                android:orderInCategory="71"
+                android:title="@string/disable_notifications"
+                app:showAsAction="never" />
+            <item
+                android:id="@+id/action_unmute"
+                android:orderInCategory="72"
+                android:title="@string/enable_notifications"
+                app:showAsAction="never" />
 
-    <item
-        android:id="@+id/action_unmute"
-        android:orderInCategory="71"
-        android:title="@string/enable_notifications"
-        app:showAsAction="never" />
+            <item
+                android:id="@+id/action_toggle_pinned"
+                android:orderInCategory="73"
+                android:title="@string/add_to_favorites"
+                app:showAsAction="never" />
+        </menu>
+    </item>
 
-    <item
-        android:id="@+id/action_toggle_pinned"
-        android:orderInCategory="72"
-        android:title="@string/add_to_favorites"
-        app:showAsAction="never" />
+
 </menu>

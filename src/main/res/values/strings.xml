@@ -948,4 +948,5 @@
         <item quantity="other">Some messages could not be delivered</item>
     </plurals>
     <string name="failed_deliveries">Failed deliveries</string>
+    <string name="more_options">More options</string>
 </resources>

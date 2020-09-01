@@ -380,8 +380,7 @@ public class ConversationsActivity extends XmppActivity implements OnConversatio
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.activity_conversations, menu);
-        AccountUtils.showHideMenuItems(menu);
-        MenuItem qrCodeScanMenuItem = menu.findItem(R.id.action_scan_qr_code);
+        final MenuItem qrCodeScanMenuItem = menu.findItem(R.id.action_scan_qr_code);
         if (qrCodeScanMenuItem != null) {
             if (isCameraFeatureAvailable()) {
                 Fragment fragment = getFragmentManager().findFragmentById(R.id.main_fragment);
