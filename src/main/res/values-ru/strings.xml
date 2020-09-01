@@ -4,7 +4,6 @@
   <string name="action_add">Новая беседа</string>
   <string name="action_accounts">Управление аккаунтами</string>
   <string name="action_account">Управление аккаунтом</string>
-  <string name="action_end_conversation">Закрыть текущую беседу</string>
   <string name="action_contact_details">Сведения о контакте</string>
   <string name="action_muc_details">Подробности конференции</string>
   <string name="channel_details">Сведения о канале</string>

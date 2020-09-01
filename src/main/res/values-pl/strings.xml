@@ -4,7 +4,7 @@
   <string name="action_add">Nowa konwersacja</string>
   <string name="action_accounts">Zarządzaj kontami</string>
   <string name="action_account">Zarządzaj kontem</string>
-  <string name="action_end_conversation">Zamknij konwersację</string>
+  <string name="action_end_conversation">Zamknij rozmowę</string>
   <string name="action_contact_details">Szczegóły kontaktu</string>
   <string name="action_muc_details">Szczegóły konferencji</string>
   <string name="channel_details">Szczegóły kanału</string>
@@ -942,6 +942,18 @@ Administrator twojego serwera będzie mógł czytać twoje wiadomości, ale moż
   <string name="remove_from_favorites">Usuń z ulubionych</string>
   <string name="gpx_track">Ścieżka GPX</string>
   <string name="could_not_correct_message">Nie można poprawić wiadomości</string>
+  <string name="search_all_conversations">Wszystkie rozmowy</string>
+  <string name="search_this_conversation">Ta rozmowa</string>
+  <string name="your_avatar">Twój awatar</string>
+  <string name="avatar_for_x">Awatar dla %s</string>
+  <string name="encrypted_with_omemo">Zaszyfrowane OMEMO</string>
+  <string name="encrypted_with_openpgp">Zaszyfrowane OpenPGP</string>
+  <string name="not_encrypted">Niezaszyfrowane</string>
+  <string name="exit">Wyjście</string>
+  <string name="record_voice_mail">Zapisz pocztę głosową</string>
+  <string name="play_audio">Odtwórz audio</string>
+  <string name="pause_audio">Spauzuj audio</string>
+  <string name="add_contact_or_create_or_join_group_chat">Dodaj kontakt, stwórz lub dołącz do rozmowy grupowej lub odkryj kanały</string>
   <plurals name="view_users">
     <item quantity="one">Pokaż %1$d uczestnika</item>
     <item quantity="few">Pokaż %1$d uczestników</item>

@@ -4,7 +4,6 @@
   <string name="action_add">Conversație nouă</string>
   <string name="action_accounts">Configurează conturile</string>
   <string name="action_account">Configurează contul</string>
-  <string name="action_end_conversation">Închide conversația</string>
   <string name="action_contact_details">Detalii contact</string>
   <string name="action_muc_details">Detalii discuție de grup</string>
   <string name="channel_details">Detalii canal</string>
@@ -932,6 +931,13 @@
   <string name="remove_from_favorites">Înlătură din favorite</string>
   <string name="gpx_track">Traseu GPX</string>
   <string name="could_not_correct_message">Nu s-a putut corecta mesajul</string>
+  <string name="search_all_conversations">Toate conversațiile</string>
+  <string name="search_this_conversation">Această conversație</string>
+  <string name="your_avatar">Avatarul dumneavoastră</string>
+  <string name="avatar_for_x">Avatar pentru %s</string>
+  <string name="encrypted_with_omemo">Criptare OMEMO</string>
+  <string name="encrypted_with_openpgp">Criptare OpenPGP</string>
+  <string name="not_encrypted">Fără criptare</string>
   <plurals name="view_users">
     <item quantity="one">Arată %1$d participant</item>
     <item quantity="few">Arată %1$d participanți</item>

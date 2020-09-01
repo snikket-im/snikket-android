@@ -4,7 +4,7 @@
   <string name="action_add">Neue Unterhaltung</string>
   <string name="action_accounts">Konten verwalten</string>
   <string name="action_account">Konto verwalten</string>
-  <string name="action_end_conversation">Diese Unterhaltung beenden</string>
+  <string name="action_end_conversation">Unterhaltung beenden</string>
   <string name="action_contact_details">Kontaktdetails</string>
   <string name="action_muc_details">Gruppenchatdetails</string>
   <string name="channel_details">Channeldetails</string>
@@ -924,6 +924,18 @@
   <string name="remove_from_favorites">Von Favoriten entfernen</string>
   <string name="gpx_track">GPX-Strecke</string>
   <string name="could_not_correct_message">Nachricht konnte nicht korrigiert werden</string>
+  <string name="search_all_conversations">Alle Unterhaltungen</string>
+  <string name="search_this_conversation">Diese Unterhaltung</string>
+  <string name="your_avatar">Dein Avatar</string>
+  <string name="avatar_for_x">Avatar für %s</string>
+  <string name="encrypted_with_omemo">Verschlüsselt mit OMEMO</string>
+  <string name="encrypted_with_openpgp">Verschlüsselt mit OpenPGP</string>
+  <string name="not_encrypted">Nicht verschlüsselt</string>
+  <string name="exit">Beenden</string>
+  <string name="record_voice_mail">Sprachnachricht aufzeichnen</string>
+  <string name="play_audio">Audio abspielen</string>
+  <string name="pause_audio">Audio anhalten</string>
+  <string name="add_contact_or_create_or_join_group_chat">Kontakt hinzufügen, Gruppenchat erstellen oder beitreten oder Channels entdecken</string>
   <plurals name="view_users">
     <item quantity="one">%1$d Teilnehmer anzeigen</item>
     <item quantity="other">%1$d Teilnehmer anzeigen</item>

@@ -4,7 +4,6 @@
   <string name="action_add">Нова розмова</string>
   <string name="action_accounts">Мої облікові записи</string>
   <string name="action_account">Мій обліковий запис</string>
-  <string name="action_end_conversation">Завершити розмову</string>
   <string name="action_contact_details">Деталі контакту</string>
   <string name="action_muc_details">Деталі групи</string>
   <string name="channel_details">Деталі каналу</string>

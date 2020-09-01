@@ -4,7 +4,6 @@
   <string name="action_add">新しい会話</string>
   <string name="action_accounts">アカウントの管理</string>
   <string name="action_account">アカウントの管理</string>
-  <string name="action_end_conversation">この会話を閉じる</string>
   <string name="action_contact_details">連絡先の詳細</string>
   <string name="action_muc_details">談話室の詳細</string>
   <string name="channel_details">チャンネルの詳細</string>

@@ -4,7 +4,6 @@
   <string name="action_add">Νέα συζήτηση</string>
   <string name="action_accounts">Διαχείριση λογαριασμών</string>
   <string name="action_account">Διαχείριση λογαριασμού</string>
-  <string name="action_end_conversation">Κλείσιμο συζήτησης</string>
   <string name="action_contact_details">Λεπτομέρειες επαφής</string>
   <string name="action_muc_details">Λεπτομέρειες ομαδικής συζήτησης</string>
   <string name="channel_details">Λεπτομέρειες καναλιού</string>

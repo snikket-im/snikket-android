@@ -4,7 +4,6 @@
   <string name="action_add">Nieuw gesprek</string>
   <string name="action_accounts">Accounts beheren</string>
   <string name="action_account">Account beheren</string>
-  <string name="action_end_conversation">Dit gesprek sluiten</string>
   <string name="action_contact_details">Contactgegevens</string>
   <string name="action_muc_details">Gespreksgegevens</string>
   <string name="channel_details">Kanaalinformatie</string>

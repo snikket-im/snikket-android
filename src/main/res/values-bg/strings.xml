@@ -4,7 +4,6 @@
   <string name="action_add">Нов разговор</string>
   <string name="action_accounts">Управление на профилите</string>
   <string name="action_account">Управление на профила</string>
-  <string name="action_end_conversation">Затваряне на този разговор</string>
   <string name="action_contact_details">Подробности за контакта</string>
   <string name="action_muc_details">Подробности за груповия разговор</string>
   <string name="channel_details">Подробности за канала</string>

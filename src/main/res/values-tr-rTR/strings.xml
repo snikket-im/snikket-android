@@ -4,7 +4,6 @@
   <string name="action_add">Yeni konuşma</string>
   <string name="action_accounts">Hesapları yönet</string>
   <string name="action_account">Hesabı yönet</string>
-  <string name="action_end_conversation">Bu konuşmayı kapat</string>
   <string name="action_contact_details">Kişi bilgileri</string>
   <string name="action_muc_details">Küme konuşması ayrıntıları</string>
   <string name="channel_details">Kanal ayrıntıları</string>

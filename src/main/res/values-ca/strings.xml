@@ -4,7 +4,6 @@
   <string name="action_add">Nova conversa</string>
   <string name="action_accounts">Gestiona els comptes</string>
   <string name="action_account">Administrar compte</string>
-  <string name="action_end_conversation">Tancar aquesta conversa</string>
   <string name="action_contact_details">Detalls del contacte</string>
   <string name="action_muc_details">Detalls del xat de grup</string>
   <string name="action_add_account">Afegeix un compte</string>

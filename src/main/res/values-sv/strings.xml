@@ -4,7 +4,6 @@
   <string name="action_add">Ny konversation</string>
   <string name="action_accounts">Kontoinställningar</string>
   <string name="action_account">Hantera konto</string>
-  <string name="action_end_conversation">Stäng denna konversation</string>
   <string name="action_contact_details">Kontaktdetaljer</string>
   <string name="action_muc_details">Gruppchattdetaljer</string>
   <string name="channel_details">Kanaldetaljer</string>
