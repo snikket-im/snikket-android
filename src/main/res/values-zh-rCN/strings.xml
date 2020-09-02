@@ -911,8 +911,6 @@
   <string name="only_one_call_at_a_time">只能同时打一通电话</string>
   <string name="return_to_ongoing_call">返回正在进行的通话</string>
   <string name="could_not_switch_camera">无法切换摄像头</string>
-  <string name="add_to_favorites">添加到收藏夹</string>
-  <string name="remove_from_favorites">从收藏夹删除</string>
   <string name="gpx_track">GPX轨迹</string>
   <string name="could_not_correct_message">无法更正消息</string>
   <plurals name="view_users">

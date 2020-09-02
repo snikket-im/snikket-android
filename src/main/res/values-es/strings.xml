@@ -920,8 +920,6 @@
   <string name="only_one_call_at_a_time">Solo puedes hacer una llamada a la vez</string>
   <string name="return_to_ongoing_call">Volver a la llamada en curso</string>
   <string name="could_not_switch_camera">No se ha podido cambiar de cámara</string>
-  <string name="add_to_favorites">Añadir a los favoritos</string>
-  <string name="remove_from_favorites">Eliminar de favoritos</string>
   <string name="gpx_track">Recorrido GPX</string>
   <string name="could_not_correct_message">No se pudo corregir el mensaje</string>
   <string name="search_all_conversations">Todas las conversaciones</string>

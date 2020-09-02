@@ -938,8 +938,6 @@ Administrator twojego serwera będzie mógł czytać twoje wiadomości, ale moż
   <string name="only_one_call_at_a_time">Możesz mieć tylko jedno połączenie na raz.</string>
   <string name="return_to_ongoing_call">Powróć do trwającego połączenia</string>
   <string name="could_not_switch_camera">Nie można zmienić aparatu</string>
-  <string name="add_to_favorites">Dodaj do ulubionych</string>
-  <string name="remove_from_favorites">Usuń z ulubionych</string>
   <string name="gpx_track">Ścieżka GPX</string>
   <string name="could_not_correct_message">Nie można poprawić wiadomości</string>
   <string name="search_all_conversations">Wszystkie rozmowy</string>

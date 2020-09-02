@@ -881,8 +881,6 @@
   <string name="only_one_call_at_a_time">Egyszerre csak egy hívásban vehet részt.</string>
   <string name="return_to_ongoing_call">Visszatérés a kimenő híváshoz</string>
   <string name="could_not_switch_camera">Nem sikerült átváltani a kamerát</string>
-  <string name="add_to_favorites">Hozzáadás a kedvencekhez</string>
-  <string name="remove_from_favorites">Eltávolítás a kedvencekből</string>
   <plurals name="view_users">
     <item quantity="one">%1$d résztvevő megtekintése</item>
     <item quantity="other">%1$d résztvevő megtekintése</item>

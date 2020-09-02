@@ -923,8 +923,8 @@
     <string name="only_one_call_at_a_time">You can only have one call at a time.</string>
     <string name="return_to_ongoing_call">Return to ongoing call</string>
     <string name="could_not_switch_camera">Could not switch camera</string>
-    <string name="add_to_favorites">Add to favorites</string>
-    <string name="remove_from_favorites">Remove from favorites</string>
+    <string name="add_to_favorites">Pin to top</string>
+    <string name="remove_from_favorites">Unpin from top</string>
     <string name="gpx_track">GPX track</string>
     <string name="could_not_correct_message">Could not correct message</string>
     <string name="search_all_conversations">All conversations</string>

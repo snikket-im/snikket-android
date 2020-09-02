@@ -931,8 +931,6 @@
   <string name="only_one_call_at_a_time">Нельзя одновременно совершать больше одного звонка.</string>
   <string name="return_to_ongoing_call">Вернуться к текущему звонку</string>
   <string name="could_not_switch_camera">Не удалось переключить камеру</string>
-  <string name="add_to_favorites">Добавить в избранные</string>
-  <string name="remove_from_favorites">Убрать из избранных</string>
   <plurals name="view_users">
     <item quantity="one">Просмотр %1$d участника</item>
     <item quantity="few">Просмотр %1$d участников</item>
