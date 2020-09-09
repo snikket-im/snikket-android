@@ -1,5 +1,12 @@
 # Changelog
 
+### Version 2.9.0
+
+* Search individual conversations
+* Notify user if message delivery fails
+* Remember display names (nicks) from Quicksy users across restarts
+* Add button to start Orbot (Tor) from notification if necessary
+
 ### Version 2.8.10
 
 * Handle GPX files
