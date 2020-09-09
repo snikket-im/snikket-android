@@ -929,6 +929,8 @@
   <string name="only_one_call_at_a_time">Puteți avea un singur apel simultan.</string>
   <string name="return_to_ongoing_call">Reveniți la apelul în curs</string>
   <string name="could_not_switch_camera">Nu s-a putut face comutarea camerei foto</string>
+  <string name="add_to_favorites">Fixează sus</string>
+  <string name="remove_from_favorites">Anulează fixarea</string>
   <string name="gpx_track">Traseu GPX</string>
   <string name="could_not_correct_message">Nu s-a putut corecta mesajul</string>
   <string name="search_all_conversations">Toate conversațiile</string>

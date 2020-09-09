@@ -921,6 +921,8 @@
   <string name="only_one_call_at_a_time">Du kannst immer nur einen Anruf zur gleichen Zeit machen.</string>
   <string name="return_to_ongoing_call">Zurück zum laufenden Aufruf</string>
   <string name="could_not_switch_camera">Kamera konnte nicht gewechselt werden</string>
+  <string name="add_to_favorites">Oben anheften</string>
+  <string name="remove_from_favorites">Von oben ablösen</string>
   <string name="gpx_track">GPX-Strecke</string>
   <string name="could_not_correct_message">Nachricht konnte nicht korrigiert werden</string>
   <string name="search_all_conversations">Alle Unterhaltungen</string>
@@ -944,4 +946,5 @@
     <item quantity="other">Einige Nachrichten konnten nicht zugestellt werden</item>
   </plurals>
   <string name="failed_deliveries">Fehlgeschlagene Zustellungen</string>
+  <string name="more_options">Weitere Optionen</string>
 </resources>

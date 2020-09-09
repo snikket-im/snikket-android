@@ -921,6 +921,8 @@
   <string name="only_one_call_at_a_time">Só podes manter unha chamada en cada momento.</string>
   <string name="return_to_ongoing_call">Voltar á chamada activa</string>
   <string name="could_not_switch_camera">Non se puido activar a cámara</string>
+  <string name="add_to_favorites">Fixar enriba</string>
+  <string name="remove_from_favorites">Desafixar de enriba</string>
   <string name="gpx_track">Ruta GPX</string>
   <string name="could_not_correct_message">No se pode correxir a mensaxe</string>
   <string name="search_all_conversations">Todas as conversas</string>
