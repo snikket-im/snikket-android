@@ -1048,6 +1048,14 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
 
         return binding.getRoot();
     }
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        Log.d(Config.LOGTAG,"ConversationFragment.onDestroyView()");
+        messageListAdapter.setOnContactPictureClicked(null);
+        messageListAdapter.setOnContactPictureLongClicked(null);
+        messageListAdapter.setOnQuoteListener(null);
+    }
 
     private void quoteText(String text) {
         if (binding.textinput.isEnabled()) {
