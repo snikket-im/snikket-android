@@ -367,7 +367,8 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
             return;
         }
         final Element result = MessageArchiveService.Version.findResult(original);
-        final MessageArchiveService.Query query = result == null ? null : mXmppConnectionService.getMessageArchiveService().findQuery(result.getAttribute("queryid"));
+        final String queryId = result == null ? null : result.getAttribute("queryid");
+        final MessageArchiveService.Query query = queryId == null ? null : mXmppConnectionService.getMessageArchiveService().findQuery(queryId);
         if (query != null && query.validFrom(original.getFrom())) {
             final Pair<MessagePacket, Long> f = original.getForwardedMessagePacket("result", query.version.namespace);
             if (f == null) {
@@ -381,7 +382,7 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
                 return;
             }
         } else if (query != null) {
-            Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": received mam result from invalid sender");
+            Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": received mam result with invalid from ("+original.getFrom()+") or queryId ("+queryId+")");
             return;
         } else if (original.fromServer(account)) {
             Pair<MessagePacket, Long> f;
