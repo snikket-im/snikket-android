@@ -100,10 +100,13 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
         ChatState state = ChatState.parse(packet);
         if (state != null && c != null) {
             final Account account = c.getAccount();
-            Jid from = packet.getFrom();
+            final Jid from = packet.getFrom();
             if (from.asBareJid().equals(account.getJid().asBareJid())) {
                 c.setOutgoingChatState(state);
                 if (state == ChatState.ACTIVE || state == ChatState.COMPOSING) {
+                    if (c.getContact().isSelf()) {
+                        return false;
+                    }
                     mXmppConnectionService.markRead(c);
                     activateGracePeriod(account);
                 }
