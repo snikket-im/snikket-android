@@ -6,8 +6,11 @@ import android.util.Log;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Stack;
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import eu.siacs.conversations.Config;
@@ -19,6 +22,9 @@ import eu.siacs.conversations.Config;
  */
 
 public abstract class ConversationsFileObserver {
+    private static final Executor EVENT_EXECUTOR = Executors.newSingleThreadExecutor();
+    private static final int MASK = FileObserver.DELETE | FileObserver.MOVED_FROM | FileObserver.CREATE;
+
 
     private final String path;
     private final List<SingleFileObserver> mObservers = new ArrayList<>();
@@ -34,50 +40,47 @@ public abstract class ConversationsFileObserver {
     }
 
     private synchronized void startWatchingInternal() {
-        Stack<String> stack = new Stack<>();
+        final Stack<String> stack = new Stack<>();
         stack.push(path);
 
         while (!stack.empty()) {
             if (shouldStop.get()) {
-                Log.d(Config.LOGTAG,"file observer received command to stop");
+                Log.d(Config.LOGTAG, "file observer received command to stop");
                 return;
             }
-            String parent = stack.pop();
-            mObservers.add(new SingleFileObserver(parent, FileObserver.DELETE| FileObserver.MOVED_FROM));
+            final String parent = stack.pop();
             final File path = new File(parent);
+            mObservers.add(new SingleFileObserver(path, MASK));
             final File[] files = path.listFiles();
-            if (files == null) {
-                continue;
-            }
-            for(File file : files) {
+            for (final File file : (files == null ? new File[0] : files)) {
                 if (shouldStop.get()) {
-                    Log.d(Config.LOGTAG,"file observer received command to stop");
+                    Log.d(Config.LOGTAG, "file observer received command to stop");
                     return;
                 }
                 if (file.isDirectory() && file.getName().charAt(0) != '.') {
                     final String currentPath = file.getAbsolutePath();
-                    if (depth(file) <= 8 && !stack.contains(currentPath) && !observing(currentPath)) {
+                    if (depth(file) <= 8 && !stack.contains(currentPath) && !observing(file)) {
                         stack.push(currentPath);
                     }
                 }
             }
         }
-        for(FileObserver observer : mObservers) {
+        for (FileObserver observer : mObservers) {
             observer.startWatching();
         }
     }
 
     private static int depth(File file) {
         int depth = 0;
-        while((file = file.getParentFile()) != null) {
+        while ((file = file.getParentFile()) != null) {
             depth++;
         }
         return depth;
     }
 
-    private boolean observing(String path) {
-        for(SingleFileObserver observer : mObservers) {
-            if(path.equals(observer.path)) {
+    private boolean observing(final File path) {
+        for (final SingleFileObserver observer : mObservers) {
+            if (path.equals(observer.path)) {
                 return true;
             }
         }
@@ -90,13 +93,13 @@ public abstract class ConversationsFileObserver {
     }
 
     private synchronized void stopWatchingInternal() {
-        for(FileObserver observer : mObservers) {
+        for (FileObserver observer : mObservers) {
             observer.stopWatching();
         }
         mObservers.clear();
     }
 
-    abstract public void onEvent(int event, String path);
+    abstract public void onEvent(final int event, File path);
 
     public void restartWatching() {
         stopWatching();
@@ -104,21 +107,33 @@ public abstract class ConversationsFileObserver {
     }
 
     private class SingleFileObserver extends FileObserver {
-        private final String path;
+        private final File path;
 
-        SingleFileObserver(String path, int mask) {
-            super(path, mask);
+        SingleFileObserver(final File path, final int mask) {
+            super(path.getAbsolutePath(), mask);
             this.path = path;
         }
 
         @Override
-        public void onEvent(int event, String filename) {
+        public void onEvent(final int event, final String filename) {
             if (filename == null) {
-                Log.d(Config.LOGTAG,"ignored file event with NULL filename (event="+event+")");
+                Log.d(Config.LOGTAG, "ignored file event with NULL filename (event=" + event + ")");
                 return;
             }
-            ConversationsFileObserver.this.onEvent(event, path+'/'+filename);
+            EVENT_EXECUTOR.execute(() -> {
+                final File file = new File(this.path, filename);
+                if ((event & FileObserver.ALL_EVENTS) == FileObserver.CREATE) {
+                    if (file.isDirectory()) {
+                        Log.d(Config.LOGTAG, "file observer observed new directory creation " + file);
+                        if (!observing(file)) {
+                            final SingleFileObserver observer = new SingleFileObserver(file, MASK);
+                            observer.startWatching();
+                        }
+                    }
+                    return;
+                }
+                ConversationsFileObserver.this.onEvent(event, file);
+            });
         }
-
     }
 }

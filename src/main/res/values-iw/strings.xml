@@ -4,7 +4,6 @@
   <string name="action_add">שיחה חדשה</string>
   <string name="action_accounts">נהל חשבונות</string>
   <string name="action_contact_details">פרטי איש קשר</string>
-  <string name="action_secure">דיון מאובטח</string>
   <string name="action_add_account">הוסף חשבון</string>
   <string name="action_edit_contact">ערוך שם</string>
   <string name="action_delete_contact">מחק מרשימת אנשי הקשר</string>
@@ -220,7 +219,6 @@
   <string name="never">לעולם לא</string>
   <string name="until_further_notice">עד אחרית הימים</string>
   <string name="pref_enter_is_send">לחצן Enter שולח את ההודעה</string>
-  <string name="pref_enter_is_send_summary">השתמש בלחצן ה-Enter כלחצן השליחה</string>
   <string name="pref_display_enter_key">הראה את לחצן ה Enter</string>
   <string name="pref_display_enter_key_summary">שנה את לחצן האימוג\'י ללחצן Enter</string>
   <string name="audio">קול</string>
@@ -267,7 +265,6 @@
   <string name="download_failed_could_not_connect">ההורדה נכשלה: נכשל ביצוע חיבור לשרת</string>
   <string name="server_info_broken">לא עובד</string>
   <string name="pref_away_when_screen_off">העבר למצב \"לא נמצא\" כאשר המסך כבוי</string>
-  <string name="pref_away_when_screen_off_summary">מעביר את המכשיר לסטטוס \"לא נמצא\" כאשר המסך כבוי</string>
   <string name="action_renew_certificate">חידוש תעודה</string>
   <string name="error_fetching_omemo_key">שגיאה בתפיסת OMEMO!</string>
   <string name="pref_use_tor">התחבר דרך Tor</string>

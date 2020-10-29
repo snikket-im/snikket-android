@@ -7,6 +7,7 @@ import android.support.annotation.Nullable;
 import android.text.TextUtils;
 
 import com.google.common.collect.ComparisonChain;
+import com.google.common.collect.Lists;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -168,6 +169,49 @@ public class Conversation extends AbstractEntity implements Blockable, Comparabl
         }
         return first;
     }
+
+    public String findMostRecentRemoteDisplayableId() {
+        final boolean multi = mode == Conversation.MODE_MULTI;
+        synchronized (this.messages) {
+            for (final Message message : Lists.reverse(this.messages)) {
+                if (message.getStatus() == Message.STATUS_RECEIVED) {
+                    final String serverMsgId = message.getServerMsgId();
+                    if (serverMsgId != null && multi) {
+                        return serverMsgId;
+                    }
+                    return message.getRemoteMsgId();
+                }
+            }
+        }
+        return null;
+    }
+
+    public int countFailedDeliveries() {
+        int count = 0;
+        synchronized (this.messages) {
+            for(final Message message : this.messages) {
+                if (message.getStatus() == Message.STATUS_SEND_FAILED) {
+                    ++count;
+                }
+            }
+        }
+        return count;
+    }
+
+    public Message getLastEditableMessage() {
+        synchronized (this.messages) {
+            for (final Message message : Lists.reverse(this.messages)) {
+                if (message.isEditable()) {
+                    if (message.isGeoUri() || message.getType() != Message.TYPE_TEXT) {
+                        return null;
+                    }
+                    return message;
+                }
+            }
+        }
+        return null;
+    }
+
 
     public Message findUnsentMessageWithUuid(String uuid) {
         synchronized (this.messages) {
@@ -482,7 +526,7 @@ public class Conversation extends AbstractEntity implements Blockable, Comparabl
     @Override
     public int compareTo(@NonNull Conversation another) {
         return ComparisonChain.start()
-                .compareFalseFirst(another.getBooleanAttribute(ATTRIBUTE_PINNED_ON_TOP, false), getBooleanAttribute(ATTRIBUTE_PINNED_ON_TOP,false))
+                .compareFalseFirst(another.getBooleanAttribute(ATTRIBUTE_PINNED_ON_TOP, false), getBooleanAttribute(ATTRIBUTE_PINNED_ON_TOP, false))
                 .compare(another.getSortableTime(), getSortableTime())
                 .result();
     }
@@ -1006,7 +1050,7 @@ public class Conversation extends AbstractEntity implements Blockable, Comparabl
                 && !contact.isOwnServer()
                 && !contact.showInContactList()
                 && !contact.isSelf()
-                && !Config.QUICKSY_DOMAIN.equals(contact.getJid().toEscapedString())
+                && !JidHelper.isQuicksyDomain(contact.getJid())
                 && sentMessagesCount() == 0;
     }
 
@@ -1032,6 +1076,11 @@ public class Conversation extends AbstractEntity implements Blockable, Comparabl
     @Override
     public int getAvatarBackgroundColor() {
         return UIHelper.getColorForName(getName().toString());
+    }
+
+    @Override
+    public String getAvatarName() {
+        return getName().toString();
     }
 
     public interface OnMessageFound {

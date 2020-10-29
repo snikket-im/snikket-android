@@ -1,6 +1,7 @@
 package eu.siacs.conversations;
 
 import android.graphics.Bitmap;
+import android.net.Uri;
 
 import java.util.Collections;
 import java.util.List;
@@ -35,11 +36,12 @@ public final class Config {
     public static final String LOGTAG = BuildConfig.LOGTAG;
 
     public static final Jid BUG_REPORTS = Jid.of("bugs@snikket.org");
+    public static final Uri HELP = Uri.parse("https://snikket.org/faq/");
 
 
     public static final String DOMAIN_LOCK = null; //only allow account creation for this domain
     public static final String MAGIC_CREATE_DOMAIN = "snikket.im";
-    public static final String QUICKSY_DOMAIN = "quicksy.im";
+    public static final Jid QUICKSY_DOMAIN = Jid.of("quicksy.im");
 
     public static final String CHANNEL_DISCOVERY = "https://search.jabber.network";
 
@@ -117,7 +119,7 @@ public final class Config {
     public static final boolean ONLY_INTERNAL_STORAGE = false; //use internal storage instead of sdcard to save attachments
 
     public static final boolean IGNORE_ID_REWRITE_IN_MUC = true;
-    public static final boolean MUC_LEAVE_BEFORE_JOIN = true;
+    public static final boolean MUC_LEAVE_BEFORE_JOIN = false;
 
     public static final boolean USE_LMC_VERSION_1_1 = true;
 

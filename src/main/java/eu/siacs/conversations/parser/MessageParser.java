@@ -300,6 +300,7 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
         } else {
             Contact contact = account.getRoster().getContact(user);
             if (contact.setPresenceName(nick)) {
+                mXmppConnectionService.syncRoster(account);
                 mXmppConnectionService.getAvatarService().clear(contact);
             }
         }
@@ -307,8 +308,14 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
         mXmppConnectionService.updateAccountUi();
     }
 
-    private boolean handleErrorMessage(Account account, MessagePacket packet) {
+    private boolean handleErrorMessage(final Account account, final MessagePacket packet) {
         if (packet.getType() == MessagePacket.TYPE_ERROR) {
+            if (packet.fromServer(account)) {
+                final Pair<MessagePacket, Long> forwarded = packet.getForwardedMessagePacket("received", "urn:xmpp:carbons:2");
+                if (forwarded != null) {
+                    return handleErrorMessage(account, forwarded.first);
+                }
+            }
             final Jid from = packet.getFrom();
             final String id = packet.getId();
             if (from != null && id != null) {
@@ -362,7 +369,7 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
         final Element result = MessageArchiveService.Version.findResult(original);
         final MessageArchiveService.Query query = result == null ? null : mXmppConnectionService.getMessageArchiveService().findQuery(result.getAttribute("queryid"));
         if (query != null && query.validFrom(original.getFrom())) {
-            Pair<MessagePacket, Long> f = original.getForwardedMessagePacket("result", query.version.namespace);
+            final Pair<MessagePacket, Long> f = original.getForwardedMessagePacket("result", query.version.namespace);
             if (f == null) {
                 return;
             }
@@ -370,6 +377,9 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
             packet = f.first;
             serverMsgId = result.getAttribute("id");
             query.incrementMessageCount();
+            if (handleErrorMessage(account, packet)) {
+                return;
+            }
         } else if (query != null) {
             Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": received mam result from invalid sender");
             return;
@@ -836,6 +846,10 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
                 for (Element child : packet.getChildren()) {
                     if (Namespace.JINGLE_MESSAGE.equals(child.getNamespace()) && JINGLE_MESSAGE_ELEMENT_NAMES.contains(child.getName())) {
                         final String action = child.getName();
+                        final String sessionId = child.getAttribute("id");
+                        if (sessionId == null) {
+                            break;
+                        }
                         if (query == null) {
                             if (serverMsgId == null) {
                                 serverMsgId = extractStanzaId(account, packet);
@@ -845,10 +859,6 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
                                 processMessageReceipts(account, packet, query);
                             }
                         } else if (query.isCatchup()) {
-                            final String sessionId = child.getAttribute("id");
-                            if (sessionId == null) {
-                                break;
-                            }
                             if ("propose".equals(action)) {
                                 final Element description = child.findChild("description");
                                 final String namespace = description == null ? null : description.getNamespace();
@@ -872,7 +882,6 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
                                     c.add(message);
                                     mXmppConnectionService.databaseBackend.createMessage(message);
                                 }
-
                             } else if ("proceed".equals(action)) {
                                 //status needs to be flipped to find the original propose
                                 final Conversation c = mXmppConnectionService.findOrCreateConversation(account, counterpart.asBareJid(), false, false);
@@ -889,6 +898,37 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
                                     Log.d(Config.LOGTAG, "unable to find original rtp session message for received propose");
                                 }
 
+                            }
+                        } else {
+                            //MAM reloads (non catchups
+                            if ("propose".equals(action)) {
+                                final Element description = child.findChild("description");
+                                final String namespace = description == null ? null : description.getNamespace();
+                                if (Namespace.JINGLE_APPS_RTP.equals(namespace)) {
+                                    final Conversation c = mXmppConnectionService.findOrCreateConversation(account, counterpart.asBareJid(), false, false);
+                                    final Message preExistingMessage = c.findRtpSession(sessionId, status);
+                                    if (preExistingMessage != null) {
+                                        preExistingMessage.setServerMsgId(serverMsgId);
+                                        mXmppConnectionService.updateMessage(preExistingMessage);
+                                        break;
+                                    }
+                                    final Message message = new Message(
+                                            c,
+                                            status,
+                                            Message.TYPE_RTP_SESSION,
+                                            sessionId
+                                    );
+                                    message.setServerMsgId(serverMsgId);
+                                    message.setTime(timestamp);
+                                    message.setBody(new RtpSessionStatus(true, 0).toString());
+                                    if (query.getPagingOrder() == MessageArchiveService.PagingOrder.REVERSE) {
+                                        c.prepend(query.getActualInThisQuery(), message);
+                                    } else {
+                                        c.add(message);
+                                    }
+                                    query.incrementActualMessageCount();
+                                    mXmppConnectionService.databaseBackend.createMessage(message);
+                                }
                             }
                         }
                         break;
@@ -922,7 +962,7 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
             final String id = displayed.getAttribute("id");
             final Jid sender = InvalidJid.getNullForInvalid(displayed.getAttributeAsJid("sender"));
             if (packet.fromAccount(account) && !selfAddressed) {
-                dismissNotification(account, counterpart, query);
+                dismissNotification(account, counterpart, query, id);
                 if (query == null) {
                     activateGracePeriod(account);
                 }
@@ -963,7 +1003,7 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
                     message = message.prev();
                 }
                 if (displayedMessage != null && selfAddressed) {
-                    dismissNotification(account, counterpart, query);
+                    dismissNotification(account, counterpart, query, id);
                 }
             }
         }
@@ -981,17 +1021,23 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
 
         final String nick = packet.findChildContent("nick", Namespace.NICK);
         if (nick != null && InvalidJid.hasValidFrom(original)) {
-            Contact contact = account.getRoster().getContact(from);
+            final Contact contact = account.getRoster().getContact(from);
             if (contact.setPresenceName(nick)) {
+                mXmppConnectionService.syncRoster(account);
                 mXmppConnectionService.getAvatarService().clear(contact);
             }
         }
     }
 
-    private void dismissNotification(Account account, Jid counterpart, MessageArchiveService.Query query) {
-        Conversation conversation = mXmppConnectionService.find(account, counterpart.asBareJid());
+    private void dismissNotification(Account account, Jid counterpart, MessageArchiveService.Query query, final String id) {
+        final Conversation conversation = mXmppConnectionService.find(account, counterpart.asBareJid());
         if (conversation != null && (query == null || query.isCatchup())) {
-            mXmppConnectionService.markRead(conversation); //TODO only mark messages read that are older than timestamp
+            final String displayableId = conversation.findMostRecentRemoteDisplayableId();
+            if (displayableId != null && displayableId.equals(id)) {
+                mXmppConnectionService.markRead(conversation);
+            } else {
+                Log.w(Config.LOGTAG, account.getJid().asBareJid() + ": received dismissing display marker that did not match our last id in that conversation");
+            }
         }
     }
 

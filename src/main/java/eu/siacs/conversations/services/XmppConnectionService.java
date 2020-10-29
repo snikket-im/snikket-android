@@ -36,6 +36,8 @@ import android.support.annotation.BoolRes;
 import android.support.annotation.IntegerRes;
 import android.support.v4.app.RemoteInput;
 import android.support.v4.content.ContextCompat;
+import android.telephony.PhoneStateListener;
+import android.telephony.TelephonyManager;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -127,6 +129,7 @@ import eu.siacs.conversations.utils.ReplacingTaskManager;
 import eu.siacs.conversations.utils.Resolver;
 import eu.siacs.conversations.utils.SerialSingleThreadExecutor;
 import eu.siacs.conversations.utils.StringUtils;
+import eu.siacs.conversations.utils.TorServiceUtils;
 import eu.siacs.conversations.utils.WakeLockHelper;
 import eu.siacs.conversations.utils.XmppUri;
 import eu.siacs.conversations.xml.Element;
@@ -170,6 +173,7 @@ public class XmppConnectionService extends Service {
     public static final String ACTION_FCM_MESSAGE_RECEIVED = "fcm_message_received";
     public static final String ACTION_DISMISS_CALL = "dismiss_call";
     public static final String ACTION_END_CALL = "end_call";
+    public static final String ACTION_PROVISION_ACCOUNT = "provision_account";
     private static final String ACTION_POST_CONNECTIVITY_CHANGE = "eu.siacs.conversations.POST_CONNECTIVITY_CHANGE";
 
     private static final String SETTING_LAST_ACTIVITY_TS = "last_activity_timestamp";
@@ -238,8 +242,8 @@ public class XmppConnectionService extends Service {
             Environment.getExternalStorageDirectory().getAbsolutePath()
     ) {
         @Override
-        public void onEvent(int event, String path) {
-            markFileDeleted(path);
+        public void onEvent(final int event, final File file) {
+            markFileDeleted(file);
         }
     };
     private final OnMessageAcknowledged mOnMessageAcknowledgedListener = new OnMessageAcknowledged() {
@@ -258,6 +262,16 @@ public class XmppConnectionService extends Service {
                 }
             }
             return false;
+        }
+    };
+    private final AtomicBoolean isPhoneInCall = new AtomicBoolean(false);
+    private final PhoneStateListener phoneStateListener = new PhoneStateListener() {
+        @Override
+        public void onCallStateChanged(final int state, final String phoneNumber) {
+            isPhoneInCall.set(state != TelephonyManager.CALL_STATE_IDLE);
+            if (state == TelephonyManager.CALL_STATE_OFFHOOK) {
+                mJingleConnectionManager.notifyPhoneCallStarted();
+            }
         }
     };
 
@@ -567,19 +581,23 @@ public class XmppConnectionService extends Service {
         mFileAddingExecutor.execute(() -> {
             try {
                 getFileBackend().copyImageToPrivateStorage(message, uri);
-                if (conversation.getNextEncryption() == Message.ENCRYPTION_PGP) {
-                    final PgpEngine pgpEngine = getPgpEngine();
-                    if (pgpEngine != null) {
-                        pgpEngine.encrypt(message, callback);
-                    } else if (callback != null) {
-                        callback.error(R.string.unable_to_connect_to_keychain, null);
-                    }
-                } else {
-                    sendMessage(message);
-                    callback.success(message);
-                }
+            } catch (FileBackend.NotAnImageFileException e) {
+                attachFileToConversation(conversation, uri, mimeType, callback);
+                return;
             } catch (final FileBackend.FileCopyException e) {
                 callback.error(e.getResId(), message);
+                return;
+            }
+            if (conversation.getNextEncryption() == Message.ENCRYPTION_PGP) {
+                final PgpEngine pgpEngine = getPgpEngine();
+                if (pgpEngine != null) {
+                    pgpEngine.encrypt(message, callback);
+                } else if (callback != null) {
+                    callback.error(R.string.unable_to_connect_to_keychain, null);
+                }
+            } else {
+                sendMessage(message);
+                callback.success(message);
             }
         });
     }
@@ -597,8 +615,8 @@ public class XmppConnectionService extends Service {
         return c != null && c.getMode() == Conversational.MODE_MULTI;
     }
 
-    public void search(List<String> term, OnSearchResultsAvailable onSearchResultsAvailable) {
-        MessageSearchTask.search(this, term, onSearchResultsAvailable);
+    public void search(final List<String> term, final String uuid, final OnSearchResultsAvailable onSearchResultsAvailable) {
+        MessageSearchTask.search(this, term, uuid, onSearchResultsAvailable);
     }
 
     @Override
@@ -647,14 +665,30 @@ public class XmppConnectionService extends Service {
                     final String sessionId = intent.getStringExtra(RtpSessionActivity.EXTRA_SESSION_ID);
                     Log.d(Config.LOGTAG, "received intent to dismiss call with session id " + sessionId);
                     mJingleConnectionManager.rejectRtpSession(sessionId);
+                    break;
                 }
-                break;
+                case TorServiceUtils.ACTION_STATUS:
+                    final String status = intent.getStringExtra(TorServiceUtils.EXTRA_STATUS);
+                    if ("ON".equals(status)) {
+                        handleOrbotStartedEvent();
+                        return START_STICKY;
+                    }
+                    break;
                 case ACTION_END_CALL: {
                     final String sessionId = intent.getStringExtra(RtpSessionActivity.EXTRA_SESSION_ID);
                     Log.d(Config.LOGTAG, "received intent to end call with session id " + sessionId);
                     mJingleConnectionManager.endRtpSession(sessionId);
                 }
                 break;
+                case ACTION_PROVISION_ACCOUNT: {
+                    final String address = intent.getStringExtra("address");
+                    final String password = intent.getStringExtra("password");
+                    if (QuickConversationsService.isQuicksy() || Strings.isNullOrEmpty(address) || Strings.isNullOrEmpty(password)) {
+                        break;
+                    }
+                    provisionAccount(address, password);
+                    break;
+                }
                 case ACTION_DISMISS_ERROR_NOTIFICATIONS:
                     dismissErrorNotifications();
                     break;
@@ -771,6 +805,14 @@ public class XmppConnectionService extends Service {
             expireOldMessages();
         }
         return START_STICKY;
+    }
+
+    private void handleOrbotStartedEvent() {
+        for (final Account account : accounts) {
+            if (account.getStatus() == Account.State.TOR_NOT_AVAILABLE) {
+                reconnectAccount(account, true, false);
+            }
+        }
     }
 
     private boolean processAccountState(Account account, boolean interactive, boolean isUiAction, boolean isAccountPushed, HashSet<Account> pingCandidates) {
@@ -1114,17 +1156,31 @@ public class XmppConnectionService extends Service {
         toggleForegroundService();
         updateUnreadCountBadge();
         toggleScreenEventReceiver();
+        final IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction(TorServiceUtils.ACTION_STATUS);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             scheduleNextIdlePing();
-            IntentFilter intentFilter = new IntentFilter();
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
                 intentFilter.addAction(ConnectivityManager.CONNECTIVITY_ACTION);
             }
             intentFilter.addAction(NotificationManager.ACTION_INTERRUPTION_FILTER_CHANGED);
-            registerReceiver(this.mInternalEventReceiver, intentFilter);
         }
+        registerReceiver(this.mInternalEventReceiver, intentFilter);
         mForceDuringOnCreate.set(false);
         toggleForegroundService();
+        setupPhoneStateListener();
+    }
+
+
+    private void setupPhoneStateListener() {
+        final TelephonyManager telephonyManager = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
+        if (telephonyManager != null) {
+            telephonyManager.listen(phoneStateListener, PhoneStateListener.LISTEN_CALL_STATE);
+        }
+    }
+
+    public boolean isPhoneInCall() {
+        return isPhoneInCall.get();
     }
 
     private void checkForDeletedFiles() {
@@ -1178,7 +1234,7 @@ public class XmppConnectionService extends Service {
     public void onDestroy() {
         try {
             unregisterReceiver(this.mInternalEventReceiver);
-        } catch (IllegalArgumentException e) {
+        } catch (final IllegalArgumentException e) {
             //ignored
         }
         destroyed = false;
@@ -1845,17 +1901,16 @@ public class XmppConnectionService extends Service {
         return this.conversations;
     }
 
-    private void markFileDeleted(final String path) {
+    private void markFileDeleted(final File file) {
         synchronized (FILENAMES_TO_IGNORE_DELETION) {
-            if (FILENAMES_TO_IGNORE_DELETION.remove(path)) {
-                Log.d(Config.LOGTAG, "ignored deletion of " + path);
+            if (FILENAMES_TO_IGNORE_DELETION.remove(file.getAbsolutePath())) {
+                Log.d(Config.LOGTAG, "ignored deletion of " + file.getAbsolutePath());
                 return;
             }
         }
-        final File file = new File(path);
         final boolean isInternalFile = fileBackend.isInternalFile(file);
         final List<String> uuids = databaseBackend.markFileAsDeleted(file, isInternalFile);
-        Log.d(Config.LOGTAG, "deleted file " + path + " internal=" + isInternalFile + ", database hits=" + uuids.size());
+        Log.d(Config.LOGTAG, "deleted file " + file.getAbsolutePath() + " internal=" + isInternalFile + ", database hits=" + uuids.size());
         markUuidsAsDeletedFiles(uuids);
     }
 
@@ -2174,6 +2229,14 @@ public class XmppConnectionService extends Service {
         } catch (IllegalStateException e) {
             Log.d(Config.LOGTAG, "unable to toggle profile picture actvitiy");
         }
+    }
+
+    private void provisionAccount(final String address, final String password) {
+        final Jid jid = Jid.ofEscaped(address);
+        final Account account = new Account(jid, password);
+        account.setOption(Account.OPTION_DISABLED, true);
+        Log.d(Config.LOGTAG, jid.asBareJid().toEscapedString() + ": provisioning account");
+        createAccount(account);
     }
 
     public void createAccountFromKey(final String alias, final OnAccountCreated callback) {
@@ -2774,6 +2837,7 @@ public class XmppConnectionService extends Service {
             updateConversationUi();
         }
     }
+
     private void fetchConferenceMembers(final Conversation conversation) {
         final Account account = conversation.getAccount();
         final AxolotlService axolotlService = account.getAxolotlService();
@@ -3297,6 +3361,10 @@ public class XmppConnectionService extends Service {
     public void updateMessage(Message message, boolean includeBody) {
         databaseBackend.updateMessage(message, includeBody);
         updateConversationUi();
+    }
+
+    public void createMessageAsync(final Message message) {
+        mDatabaseWriterExecutor.execute(() -> databaseBackend.createMessage(message));
     }
 
     public void updateMessage(Message message, String uuid) {
@@ -3854,7 +3922,7 @@ public class XmppConnectionService extends Service {
     }
 
 
-    public void markMessage(Message message, int status, String errorMessage) {
+    public void markMessage(final Message message, final int status, final String errorMessage) {
         final int oldStatus = message.getStatus();
         if (status == Message.STATUS_SEND_FAILED && (oldStatus == Message.STATUS_SEND_RECEIVED || oldStatus == Message.STATUS_SEND_DISPLAYED)) {
             return;
@@ -3866,6 +3934,9 @@ public class XmppConnectionService extends Service {
         message.setStatus(status);
         databaseBackend.updateMessage(message, false);
         updateConversationUi();
+        if (oldStatus != status && status == Message.STATUS_SEND_FAILED) {
+            mNotificationService.pushFailedDelivery(message);
+        }
     }
 
     private SharedPreferences getPreferences() {
@@ -4137,7 +4208,7 @@ public class XmppConnectionService extends Service {
             }
         }
         if (Config.QUICKSY_DOMAIN != null) {
-            hosts.remove(Config.QUICKSY_DOMAIN); //we only want to show this when we type a e164 number
+            hosts.remove(Config.QUICKSY_DOMAIN.toEscapedString()); //we only want to show this when we type a e164 number
         }
         if (Config.DOMAIN_LOCK != null) {
             hosts.add(Config.DOMAIN_LOCK);
@@ -4436,40 +4507,44 @@ public class XmppConnectionService extends Service {
 
     public void fetchCaps(Account account, final Jid jid, final Presence presence) {
         final Pair<String, String> key = new Pair<>(presence.getHash(), presence.getVer());
-        ServiceDiscoveryResult disco = getCachedServiceDiscoveryResult(key);
+        final ServiceDiscoveryResult disco = getCachedServiceDiscoveryResult(key);
         if (disco != null) {
             presence.setServiceDiscoveryResult(disco);
         } else {
-            if (!account.inProgressDiscoFetches.contains(key)) {
-                account.inProgressDiscoFetches.add(key);
-                IqPacket request = new IqPacket(IqPacket.TYPE.GET);
-                request.setTo(jid);
-                final String node = presence.getNode();
-                final String ver = presence.getVer();
-                final Element query = request.query(Namespace.DISCO_INFO);
-                if (node != null && ver != null) {
-                    query.setAttribute("node", node + "#" + ver);
-                }
-                Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": making disco request for " + key.second + " to " + jid);
-                sendIqPacket(account, request, (a, response) -> {
-                    if (response.getType() == IqPacket.TYPE.RESULT) {
-                        ServiceDiscoveryResult discoveryResult = new ServiceDiscoveryResult(response);
-                        if (presence.getVer().equals(discoveryResult.getVer())) {
-                            databaseBackend.insertDiscoveryResult(discoveryResult);
-                            injectServiceDiscoveryResult(a.getRoster(), presence.getHash(), presence.getVer(), discoveryResult);
-                        } else {
-                            Log.d(Config.LOGTAG, a.getJid().asBareJid() + ": mismatch in caps for contact " + jid + " " + presence.getVer() + " vs " + discoveryResult.getVer());
-                        }
-                    }
-                    a.inProgressDiscoFetches.remove(key);
-                });
+            if (account.inProgressDiscoFetches.contains(key)) {
+                Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": skipping duplicate disco request for " + key.second + " to " + jid);
+                return;
             }
+            account.inProgressDiscoFetches.add(key);
+            final IqPacket request = new IqPacket(IqPacket.TYPE.GET);
+            request.setTo(jid);
+            final String node = presence.getNode();
+            final String ver = presence.getVer();
+            final Element query = request.query(Namespace.DISCO_INFO);
+            if (node != null && ver != null) {
+                query.setAttribute("node", node + "#" + ver);
+            }
+            Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": making disco request for " + key.second + " to " + jid);
+            sendIqPacket(account, request, (a, response) -> {
+                if (response.getType() == IqPacket.TYPE.RESULT) {
+                    ServiceDiscoveryResult discoveryResult = new ServiceDiscoveryResult(response);
+                    if (presence.getVer().equals(discoveryResult.getVer())) {
+                        databaseBackend.insertDiscoveryResult(discoveryResult);
+                        injectServiceDiscoveryResult(a.getRoster(), presence.getHash(), presence.getVer(), discoveryResult);
+                    } else {
+                        Log.d(Config.LOGTAG, a.getJid().asBareJid() + ": mismatch in caps for contact " + jid + " " + presence.getVer() + " vs " + discoveryResult.getVer());
+                    }
+                } else {
+                    Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": unable to fetch caps from " + jid);
+                }
+                a.inProgressDiscoFetches.remove(key);
+            });
         }
     }
 
     private void injectServiceDiscoveryResult(Roster roster, String hash, String ver, ServiceDiscoveryResult disco) {
-        for (Contact contact : roster.getContacts()) {
-            for (Presence presence : contact.getPresences().getPresences().values()) {
+        for (final Contact contact : roster.getContacts()) {
+            for (final Presence presence : contact.getPresences().getPresences()) {
                 if (hash.equals(presence.getHash()) && ver.equals(presence.getVer())) {
                     presence.setServiceDiscoveryResult(disco);
                 }

@@ -4,11 +4,10 @@
     <string name="action_add">New conversation</string>
     <string name="action_accounts">Manage accounts</string>
     <string name="action_account">Manage account</string>
-    <string name="action_end_conversation">Close this conversation</string>
+    <string name="action_end_conversation">Close conversation</string>
     <string name="action_contact_details">Contact details</string>
     <string name="action_muc_details">Group chat details</string>
     <string name="channel_details">Channel details</string>
-    <string name="action_secure">Secure conversation</string>
     <string name="action_add_account">Add account</string>
     <string name="action_edit_contact">Edit name</string>
     <string name="action_add_phone_book">Add to address book</string>
@@ -401,7 +400,7 @@
     <string name="mark_as_read">Mark as read</string>
     <string name="pref_input_options">Input</string>
     <string name="pref_enter_is_send">Enter is send</string>
-    <string name="pref_enter_is_send_summary">Use enter key to send message</string>
+    <string name="pref_enter_is_send_summary">Use Enter key to send message. You can always use Ctrl+Enter to send message, even if this option is disabled.</string>
     <string name="pref_display_enter_key">Show enter key</string>
     <string name="pref_display_enter_key_summary">Change the emoticons key to an enter key</string>
     <string name="audio">audio</string>
@@ -461,11 +460,11 @@
     <string name="server_info_broken">Broken</string>
     <string name="pref_presence_settings">Availability</string>
     <string name="pref_away_when_screen_off">Away when screen is off</string>
-    <string name="pref_away_when_screen_off_summary">Marks your resource as away when the screen is turned off</string>
-    <string name="pref_dnd_on_silent_mode">“Do not disturb” in silent mode</string>
-    <string name="pref_dnd_on_silent_mode_summary">Marks your resource as “Do not disturb” when device is in silent mode</string>
+    <string name="pref_away_when_screen_off_summary">Show as Away when the screen is turned off</string>
+    <string name="pref_dnd_on_silent_mode">Busy in silent mode</string>
+    <string name="pref_dnd_on_silent_mode_summary">Show as Busy when device is in silent mode</string>
     <string name="pref_treat_vibrate_as_silent">Treat vibrate as silent mode</string>
-    <string name="pref_treat_vibrate_as_dnd_summary">Marks your resource as “Do not disturb” when device is on vibrate</string>
+    <string name="pref_treat_vibrate_as_dnd_summary">Show as Busy when device is on vibrate</string>
     <string name="pref_show_connection_options">Extended connection settings</string>
     <string name="pref_show_connection_options_summary">Show hostname and port settings when setting up an account</string>
     <string name="hostname_example">xmpp.example.com</string>
@@ -756,6 +755,7 @@
     <string name="ongoing_calls_channel_name">Ongoing calls</string>
     <string name="silent_messages_channel_name">Silent messages</string>
     <string name="silent_messages_channel_description">This notification group is used to display notifications that should not trigger any sound. For example when being active on another device (Grace Period).</string>
+    <string name="delivery_failed_channel_name">Failed deliveries</string>
     <string name="pref_message_notification_settings">Message notification settings</string>
     <string name="pref_incoming_call_notification_settings">Incoming calls notification settings</string>
     <string name="pref_more_notification_settings_summary">Importance, Sound, Vibrate</string>
@@ -903,6 +903,7 @@
     <string name="rtp_state_ringing">Ringing</string>
     <string name="rtp_state_declined_or_busy">Busy</string>
     <string name="rtp_state_connectivity_error">Could not connect call</string>
+    <string name="rtp_state_connectivity_lost_error">Connection lost</string>
     <string name="rtp_state_retracted">Retracted call</string>
     <string name="rtp_state_application_failure">App failure</string>
     <string name="hang_up">Hang up</string>
@@ -916,14 +917,36 @@
     <string name="missed_call">Missed call</string>
     <string name="audio_call">Audio call</string>
     <string name="video_call">Video call</string>
+    <string name="help">Help</string>
+    <string name="switch_to_conversation">Switch to conversation</string>
     <string name="microphone_unavailable">Your microphone is unavailable</string>
     <string name="only_one_call_at_a_time">You can only have one call at a time.</string>
     <string name="return_to_ongoing_call">Return to ongoing call</string>
     <string name="could_not_switch_camera">Could not switch camera</string>
-    <string name="add_to_favorites">Add to favorites</string>
-    <string name="remove_from_favorites">Remove from favorites</string>
+    <string name="add_to_favorites">Pin to top</string>
+    <string name="remove_from_favorites">Unpin from top</string>
+    <string name="gpx_track">GPX track</string>
+    <string name="could_not_correct_message">Could not correct message</string>
+    <string name="search_all_conversations">All conversations</string>
+    <string name="search_this_conversation">This conversation</string>
+    <string name="your_avatar">Your avatar</string>
+    <string name="avatar_for_x">Avatar for %s</string>
+    <string name="encrypted_with_omemo">Encrypted with OMEMO</string>
+    <string name="encrypted_with_openpgp">Encrypted with OpenPGP</string>
+    <string name="not_encrypted">Not encrypted</string>
+    <string name="exit">Exit</string>
+    <string name="record_voice_mail">Record voice mail</string>
+    <string name="play_audio">Play audio</string>
+    <string name="pause_audio">Pause audio</string>
+    <string name="add_contact_or_create_or_join_group_chat">Add contact, create or join group chat, or discover channels</string>
     <plurals name="view_users">
         <item quantity="one">View %1$d Participant</item>
         <item quantity="other">View %1$d Participants</item>
     </plurals>
+    <plurals name="some_messages_could_not_be_delivered">
+        <item quantity="one">A message could not be delivered</item>
+        <item quantity="other">Some messages could not be delivered</item>
+    </plurals>
+    <string name="failed_deliveries">Failed deliveries</string>
+    <string name="more_options">More options</string>
 </resources>

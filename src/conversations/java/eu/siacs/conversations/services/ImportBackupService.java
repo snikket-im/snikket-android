@@ -1,5 +1,6 @@
 package eu.siacs.conversations.services;
 
+import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
@@ -10,8 +11,21 @@ import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.os.Binder;
 import android.os.IBinder;
+import android.provider.OpenableColumns;
 import android.support.v4.app.NotificationCompat;
+import android.support.v4.app.NotificationManagerCompat;
 import android.util.Log;
+
+import com.google.common.base.Charsets;
+import com.google.common.base.Stopwatch;
+import com.google.common.io.CountingInputStream;
+
+import org.bouncycastle.crypto.engines.AESEngine;
+import org.bouncycastle.crypto.io.CipherInputStream;
+import org.bouncycastle.crypto.modes.AEADBlockCipher;
+import org.bouncycastle.crypto.modes.GCMBlockCipher;
+import org.bouncycastle.crypto.params.AEADParameters;
+import org.bouncycastle.crypto.params.KeyParameter;
 
 import java.io.BufferedReader;
 import java.io.DataInputStream;
@@ -33,10 +47,6 @@ import java.util.zip.GZIPInputStream;
 import java.util.zip.ZipException;
 
 import javax.crypto.BadPaddingException;
-import javax.crypto.Cipher;
-import javax.crypto.CipherInputStream;
-import javax.crypto.spec.IvParameterSpec;
-import javax.crypto.spec.SecretKeySpec;
 
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
@@ -44,13 +54,8 @@ import eu.siacs.conversations.persistance.DatabaseBackend;
 import eu.siacs.conversations.persistance.FileBackend;
 import eu.siacs.conversations.ui.ManageAccountActivity;
 import eu.siacs.conversations.utils.BackupFileHeader;
-import eu.siacs.conversations.utils.Compatibility;
 import eu.siacs.conversations.utils.SerialSingleThreadExecutor;
 import eu.siacs.conversations.xmpp.Jid;
-
-import static eu.siacs.conversations.services.ExportBackupService.CIPHERMODE;
-import static eu.siacs.conversations.services.ExportBackupService.KEYTYPE;
-import static eu.siacs.conversations.services.ExportBackupService.PROVIDER;
 
 public class ImportBackupService extends Service {
 
@@ -117,9 +122,9 @@ public class ImportBackupService extends Service {
         return running.get();
     }
 
-    public void loadBackupFiles(OnBackupFilesLoaded onBackupFilesLoaded) {
+    public void loadBackupFiles(final OnBackupFilesLoaded onBackupFilesLoaded) {
         executor.execute(() -> {
-            List<Jid> accounts = mDatabaseBackend.getAccountJids(false);
+            final List<Jid> accounts = mDatabaseBackend.getAccountJids(false);
             final ArrayList<BackupFile> backupFiles = new ArrayList<>();
             final Set<String> apps = new HashSet<>(Arrays.asList("Conversations", "Quicksy", getString(R.string.app_name)));
             for (String app : apps) {
@@ -128,7 +133,12 @@ public class ImportBackupService extends Service {
                     Log.d(Config.LOGTAG, "directory not found: " + directory.getAbsolutePath());
                     continue;
                 }
-                for (File file : directory.listFiles()) {
+                final File[] files = directory.listFiles();
+                if (files == null) {
+                    onBackupFilesLoaded.onBackupFilesLoaded(backupFiles);
+                    return;
+                }
+                for (final File file : files) {
                     if (file.isFile() && file.getName().endsWith(".ceb")) {
                         try {
                             final BackupFile backupFile = BackupFile.read(file);
@@ -149,24 +159,68 @@ public class ImportBackupService extends Service {
     }
 
     private void startForegroundService() {
+        startForeground(NOTIFICATION_ID, createImportBackupNotification(1, 0));
+    }
+
+    private void updateImportBackupNotification(final long total, final long current) {
+        final int max;
+        final int progress;
+        if (total == 0) {
+            max = 1;
+            progress = 0;
+        } else {
+            max = 100;
+            progress = (int) (current * 100 / total);
+        }
+        final NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
+        try {
+            notificationManager.notify(NOTIFICATION_ID, createImportBackupNotification(max, progress));
+        } catch (final RuntimeException e) {
+            Log.d(Config.LOGTAG, "unable to make notification", e);
+        }
+    }
+
+    private Notification createImportBackupNotification(final int max, final int progress) {
         NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(getBaseContext(), "backup");
         mBuilder.setContentTitle(getString(R.string.restoring_backup))
                 .setSmallIcon(R.drawable.ic_unarchive_white_24dp)
-                .setProgress(1, 0, true);
-        startForeground(NOTIFICATION_ID, mBuilder.build());
+                .setProgress(max, progress, max == 1 && progress == 0);
+        return mBuilder.build();
     }
 
-    private boolean importBackup(Uri uri, String password) {
+    private boolean importBackup(final Uri uri, final String password) {
         Log.d(Config.LOGTAG, "importing backup from " + uri);
+        final Stopwatch stopwatch = Stopwatch.createStarted();
         try {
-            SQLiteDatabase db = mDatabaseBackend.getWritableDatabase();
+            final SQLiteDatabase db = mDatabaseBackend.getWritableDatabase();
             final InputStream inputStream;
-            if ("file".equals(uri.getScheme())) {
-                inputStream = new FileInputStream(new File(uri.getPath()));
+            final String path = uri.getPath();
+            final long fileSize;
+            if ("file".equals(uri.getScheme()) && path != null) {
+                final File file = new File(path);
+                inputStream = new FileInputStream(file);
+                fileSize = file.length();
             } else {
+                final Cursor returnCursor = getContentResolver().query(uri, null, null, null, null);
+                if (returnCursor == null) {
+                    fileSize = 0;
+                } else {
+                    returnCursor.moveToFirst();
+                    fileSize = returnCursor.getLong(returnCursor.getColumnIndex(OpenableColumns.SIZE));
+                    returnCursor.close();
+                }
                 inputStream = getContentResolver().openInputStream(uri);
             }
-            final DataInputStream dataInputStream = new DataInputStream(inputStream);
+            if (inputStream == null) {
+                synchronized (mOnBackupProcessedListeners) {
+                    for (final OnBackupProcessed l : mOnBackupProcessedListeners) {
+                        l.onBackupRestoreFailed();
+                    }
+                }
+                return false;
+            }
+            final CountingInputStream countingInputStream = new CountingInputStream(inputStream);
+            final DataInputStream dataInputStream = new DataInputStream(countingInputStream);
             final BackupFileHeader backupFileHeader = BackupFileHeader.read(dataInputStream);
             Log.d(Config.LOGTAG, backupFileHeader.toString());
 
@@ -179,15 +233,15 @@ public class ImportBackupService extends Service {
                 return false;
             }
 
-            final Cipher cipher = Compatibility.twentyEight() ? Cipher.getInstance(CIPHERMODE) : Cipher.getInstance(CIPHERMODE, PROVIDER);
-            byte[] key = ExportBackupService.getKey(password, backupFileHeader.getSalt());
-            SecretKeySpec keySpec = new SecretKeySpec(key, KEYTYPE);
-            IvParameterSpec ivSpec = new IvParameterSpec(backupFileHeader.getIv());
-            cipher.init(Cipher.DECRYPT_MODE, keySpec, ivSpec);
-            CipherInputStream cipherInputStream = new CipherInputStream(inputStream, cipher);
+            final byte[] key = ExportBackupService.getKey(password, backupFileHeader.getSalt());
 
-            GZIPInputStream gzipInputStream = new GZIPInputStream(cipherInputStream);
-            BufferedReader reader = new BufferedReader(new InputStreamReader(gzipInputStream, "UTF-8"));
+            final AEADBlockCipher cipher = new GCMBlockCipher(new AESEngine());
+            cipher.init(false, new AEADParameters(new KeyParameter(key), 128, backupFileHeader.getIv()));
+            final CipherInputStream cipherInputStream = new CipherInputStream(countingInputStream, cipher);
+
+            final GZIPInputStream gzipInputStream = new GZIPInputStream(cipherInputStream);
+            final BufferedReader reader = new BufferedReader(new InputStreamReader(gzipInputStream, Charsets.UTF_8));
+            db.beginTransaction();
             String line;
             StringBuilder multiLineQuery = null;
             while ((line = reader.readLine()) != null) {
@@ -198,20 +252,24 @@ public class ImportBackupService extends Service {
                     if (count % 2 == 1) {
                         db.execSQL(multiLineQuery.toString());
                         multiLineQuery = null;
+                        updateImportBackupNotification(fileSize, countingInputStream.getCount());
                     }
                 } else {
                     if (count % 2 == 0) {
                         db.execSQL(line);
+                        updateImportBackupNotification(fileSize, countingInputStream.getCount());
                     } else {
                         multiLineQuery = new StringBuilder(line);
                     }
                 }
             }
+            db.setTransactionSuccessful();
+            db.endTransaction();
             final Jid jid = backupFileHeader.getJid();
-            Cursor countCursor = db.rawQuery("select count(messages.uuid) from messages join conversations on conversations.uuid=messages.conversationUuid join accounts on conversations.accountUuid=accounts.uuid where accounts.username=? and accounts.server=?", new String[]{jid.getEscapedLocal(), jid.getDomain().toEscapedString()});
+            final Cursor countCursor = db.rawQuery("select count(messages.uuid) from messages join conversations on conversations.uuid=messages.conversationUuid join accounts on conversations.accountUuid=accounts.uuid where accounts.username=? and accounts.server=?", new String[]{jid.getEscapedLocal(), jid.getDomain().toEscapedString()});
             countCursor.moveToFirst();
-            int count = countCursor.getInt(0);
-            Log.d(Config.LOGTAG, "restored " + count + " messages");
+            final int count = countCursor.getInt(0);
+            Log.d(Config.LOGTAG, String.format("restored %d messages in %s", count, stopwatch.stop().toString()));
             countCursor.close();
             stopBackgroundService();
             synchronized (mOnBackupProcessedListeners) {
@@ -220,8 +278,8 @@ public class ImportBackupService extends Service {
                 }
             }
             return true;
-        } catch (Exception e) {
-            Throwable throwable = e.getCause();
+        } catch (final Exception e) {
+            final Throwable throwable = e.getCause();
             final boolean reasonWasCrypto = throwable instanceof BadPaddingException || e instanceof ZipException;
             synchronized (mOnBackupProcessedListeners) {
                 for (OnBackupProcessed l : mOnBackupProcessedListeners) {

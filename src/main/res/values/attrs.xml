@@ -66,6 +66,7 @@
     <attr name="media_preview_recording" format="reference" />
     <attr name="media_preview_audio" format="reference" />
     <attr name="media_preview_location" format="reference" />
+    <attr name="media_preview_tour" format="reference" />
     <attr name="media_preview_contact" format="reference" />
     <attr name="media_preview_app" format="reference" />
     <attr name="media_preview_calendar" format="reference" />
@@ -96,6 +97,8 @@
     <attr name="icon_refresh" format="reference" />
     <attr name="icon_remove" format="reference" />
     <attr name="icon_search" format="reference" />
+    <attr name="icon_help" format="reference" />
+    <attr name="icon_goto_chat" format="reference" />
     <attr name="icon_secure" format="reference" />
     <attr name="icon_settings" format="reference" />
     <attr name="icon_share" format="reference" />

@@ -29,6 +29,7 @@
 
 package eu.siacs.conversations.ui;
 
+import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -41,6 +42,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.EditText;
+
+import com.google.common.base.Strings;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
@@ -70,17 +73,21 @@ import static eu.siacs.conversations.ui.util.SoftKeyboardUtils.showKeyboard;
 public class SearchActivity extends XmppActivity implements TextWatcher, OnSearchResultsAvailable, MessageAdapter.OnContactPictureClicked {
 
 	private static final String EXTRA_SEARCH_TERM = "search-term";
+	public static final String EXTRA_CONVERSATION_UUID = "uuid";
 
 	private ActivitySearchBinding binding;
 	private MessageAdapter messageListAdapter;
 	private final List<Message> messages = new ArrayList<>();
 	private WeakReference<Message> selectedMessageReference = new WeakReference<>(null);
+	private String uuid;
 	private final ChangeWatcher<List<String>> currentSearch = new ChangeWatcher<>();
 	private final PendingItem<String> pendingSearchTerm = new PendingItem<>();
 	private final PendingItem<List<String>> pendingSearch = new PendingItem<>();
 
 	@Override
 	public void onCreate(final Bundle bundle) {
+		final Intent intent = getIntent();
+		this.uuid = intent == null ? null : Strings.emptyToNull(intent.getStringExtra(EXTRA_CONVERSATION_UUID));
 		final String searchTerm = bundle == null ? null : bundle.getString(EXTRA_SEARCH_TERM);
 		if (searchTerm != null) {
 			pendingSearchTerm.push(searchTerm);
@@ -103,10 +110,10 @@ public class SearchActivity extends XmppActivity implements TextWatcher, OnSearc
 		final String term = pendingSearchTerm.pop();
 		if (term != null) {
 			searchField.append(term);
-			List<String> searchTerm = FtsUtils.parse(term);
+			final List<String> searchTerm = FtsUtils.parse(term);
 			if (xmppConnectionService != null) {
 				if (currentSearch.watch(searchTerm)) {
-					xmppConnectionService.search(searchTerm, this);
+					xmppConnectionService.search(searchTerm, uuid, this);
 				}
 			} else {
 				pendingSearch.push(searchTerm);
@@ -114,6 +121,7 @@ public class SearchActivity extends XmppActivity implements TextWatcher, OnSearc
 		}
 		searchField.addTextChangedListener(this);
 		searchField.setHint(R.string.search_messages);
+		searchField.setContentDescription(getString(R.string.search_messages));
 		searchField.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_AUTO_COMPLETE);
 		if (term == null) {
 			showKeyboard(searchField);
@@ -206,7 +214,7 @@ public class SearchActivity extends XmppActivity implements TextWatcher, OnSearc
 	void onBackendConnected() {
 		final List<String> searchTerm = pendingSearch.pop();
 		if (searchTerm != null && currentSearch.watch(searchTerm)) {
-			xmppConnectionService.search(searchTerm, this);
+			xmppConnectionService.search(searchTerm, uuid,this);
 		}
 	}
 
@@ -239,7 +247,7 @@ public class SearchActivity extends XmppActivity implements TextWatcher, OnSearc
 			return;
 		}
 		if (term.size() > 0) {
-			xmppConnectionService.search(term, this);
+			xmppConnectionService.search(term, uuid,this);
 		} else {
 			MessageSearchTask.cancelRunningTasks();
 			this.messages.clear();

@@ -4,7 +4,6 @@
   <string name="action_add">Nova conversa</string>
   <string name="action_accounts">Gerir contas</string>
   <string name="action_contact_details">Detalhes do contacto</string>
-  <string name="action_secure">Conversa segura</string>
   <string name="action_add_account">Adicionar conta</string>
   <string name="action_edit_contact">Editar nome</string>
   <string name="action_add_phone_book">Adicionar ao livro de endereços</string>
@@ -279,7 +278,6 @@
   <string name="mark_as_read">Marcar como lida</string>
   <string name="pref_input_options">Introdução</string>
   <string name="pref_enter_is_send">O enter envia</string>
-  <string name="pref_enter_is_send_summary">Use o enter para enviar a mensagem</string>
   <string name="pref_display_enter_key">Exibir tecla enter</string>
   <string name="pref_display_enter_key_summary">Alterar a tecla dos emoticons para uma tecla enter</string>
   <string name="audio">áudio</string>
@@ -331,8 +329,6 @@
   <string name="server_info_broken">Existe um problema</string>
   <string name="pref_presence_settings">Disponibilidade</string>
   <string name="pref_away_when_screen_off">Ausente quando o ecrã está desligado</string>
-  <string name="pref_away_when_screen_off_summary">Define o seu recurso como ausente quando o ecrã está desligado</string>
-  <string name="pref_dnd_on_silent_mode">\"Não incomodar\" em modo silencioso</string>
   <string name="pref_treat_vibrate_as_silent">Tratar vibrar como modo silencioso</string>
   <string name="pref_show_connection_options">Definições de conexão</string>
   <string name="pref_show_connection_options_summary">Mostrar as definições do hostname e do porto ao configurar uma conta</string>

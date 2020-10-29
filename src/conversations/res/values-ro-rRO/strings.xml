@@ -8,4 +8,5 @@
     <string name="magic_create_text_on_x">Ați fost invitați la %1$s. Vă vom ghida prin procesul de creare al unui cont.\nCând alegeți %1$s ca furnizor veți putea comunica cu utilizatorii altor furnizori oferindu-le adresa dumneavoastră completă XMPP.</string>
     <string name="magic_create_text_fixed">Ați fost invitați la %1$s. Un nume de utilizator a fost deja ales pentru dumneavoastră. Vă vom ghida prin procesul de creare al unui cont.\nVeți putea comunica cu utilizatorii altor furnizori oferindu-le adresa dumneavoastră completă XMPP.</string>
     <string name="your_server_invitation">Invitația serverului dumneavoastră</string>
+    <string name="improperly_formatted_provisioning">Cod de acces formatat necorespunzător</string>
 </resources>

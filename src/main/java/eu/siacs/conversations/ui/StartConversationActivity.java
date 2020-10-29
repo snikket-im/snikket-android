@@ -621,8 +621,10 @@ public class StartConversationActivity extends XmppActivity implements XmppConne
 		}
 		if (binding.startConversationViewPager.getCurrentItem() == 0) {
 			mSearchEditText.setHint(R.string.search_contacts);
+			mSearchEditText.setContentDescription(getString(R.string.search_contacts));
 		} else {
 			mSearchEditText.setHint(R.string.search_bookmarks);
+			mSearchEditText.setContentDescription(getString(R.string.search_bookmarks));
 		}
 	}
 

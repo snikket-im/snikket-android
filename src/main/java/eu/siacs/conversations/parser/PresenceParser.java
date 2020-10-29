@@ -337,6 +337,7 @@ public class PresenceParser extends AbstractParser implements
 			mXmppConnectionService.onContactStatusChanged.onContactStatusChanged(contact, false);
 		} else if (type.equals("subscribe")) {
 			if (contact.setPresenceName(packet.findChildContent("nick", Namespace.NICK))) {
+				mXmppConnectionService.syncRoster(account);
 				mXmppConnectionService.getAvatarService().clear(contact);
 			}
 			if (contact.getOption(Contact.Options.PREEMPTIVE_GRANT)) {

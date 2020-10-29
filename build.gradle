@@ -8,7 +8,7 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.6.2'
+        classpath 'com.android.tools.build:gradle:4.0.1'
     }
 }
 
@@ -77,10 +77,10 @@ dependencies {
     implementation "com.squareup.retrofit2:retrofit:2.6.4"
     implementation "com.squareup.retrofit2:converter-gson:2.6.4"
     //okhttp needs to stick with 3.12.x
-    implementation 'com.squareup.okhttp3:okhttp:3.12.10'
+    implementation 'com.squareup.okhttp3:okhttp:3.12.12'
     implementation 'com.google.guava:guava:27.1-android'
     quicksyImplementation 'io.michaelrocks:libphonenumber-android:8.11.1'
-    implementation fileTree(include: ['libwebrtc-m81.aar'], dir: 'libs')
+    implementation fileTree(include: ['libwebrtc-m85.aar'], dir: 'libs')
 }
 
 ext {
@@ -95,8 +95,8 @@ android {
     defaultConfig {
         minSdkVersion 16
         targetSdkVersion 28
-        versionCode 387
-        versionName "2.8.4"
+        versionCode 398
+        versionName "2.9.0"
         archivesBaseName += "-$versionName"
         applicationId "org.snikket.android"
         resValue "string", "applicationId", applicationId
@@ -243,7 +243,7 @@ android {
     }
 
     lintOptions {
-        disable 'ExtraTranslation', 'MissingTranslation', 'InvalidPackage', 'MissingQuantity', 'AppCompatResource'
+        disable 'MissingTranslation', 'InvalidPackage','AppCompatResource'
     }
 
     subprojects {

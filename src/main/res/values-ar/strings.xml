@@ -4,11 +4,9 @@
   <string name="action_add">محادثة جديدة</string>
   <string name="action_accounts">إدارة الحسابات</string>
   <string name="action_account">إدارة الحساب</string>
-  <string name="action_end_conversation">أغلق هذه المحادثة</string>
   <string name="action_contact_details">بيانات جهة الإتصال</string>
   <string name="action_muc_details">تفاصيل مجموعة المحادثة</string>
   <string name="channel_details">تفاصيل القناة</string>
-  <string name="action_secure">تشفير المحادثة</string>
   <string name="action_add_account">إضافة حساب</string>
   <string name="action_edit_contact">تعديل الإسم</string>
   <string name="action_add_phone_book">أضف إلى دفتر العناوين</string>
@@ -316,7 +314,6 @@
   <string name="reply">الرد</string>
   <string name="mark_as_read">إعتباره كمقروء</string>
   <string name="pref_enter_is_send">أدخل للإرسال</string>
-  <string name="pref_enter_is_send_summary">استخدام مفتاح الدخول لإرسال رسالة</string>
   <string name="pref_display_enter_key">عرض مفتاح الادخال</string>
   <string name="pref_display_enter_key_summary">تغيير مفتاح الرموز إلى مفتاح الدخول</string>
   <string name="audio">صوت</string>
@@ -364,7 +361,6 @@
   <string name="server_info_broken">مكسر</string>
   <string name="pref_presence_settings">حالة الحضور</string>
   <string name="pref_away_when_screen_off">غائب عند إطفاء الشاشة</string>
-  <string name="pref_dnd_on_silent_mode">\"لا تزعجني\" في وضع السكوت</string>
   <string name="pref_show_connection_options">إعدادات الربط الموسعة</string>
   <string name="pref_show_connection_options_summary">عرض اسم المضيف وإعدادات المنفذ عند تنصيب حساب</string>
   <string name="hostname_example">xmpp.example.com</string>

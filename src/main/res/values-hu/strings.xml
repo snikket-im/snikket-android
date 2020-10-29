@@ -4,11 +4,9 @@
   <string name="action_add">Új beszélgetés</string>
   <string name="action_accounts">Fiókok kezelése</string>
   <string name="action_account">Fiók kezelése</string>
-  <string name="action_end_conversation">Beszélgetés bezárása</string>
   <string name="action_contact_details">Partner részletei</string>
   <string name="action_muc_details">Csoportos csevegés részletei</string>
   <string name="channel_details">Csatorna részletei</string>
-  <string name="action_secure">Biztonságos beszélgetés</string>
   <string name="action_add_account">Fiók hozzáadása</string>
   <string name="action_edit_contact">Név szerkesztése</string>
   <string name="action_add_phone_book">Hozzáadás a címjegyzékhez</string>
@@ -272,6 +270,8 @@
   <string name="pref_quiet_hours_summary">Az értesítések el lesznek némítva a csendes órák alatt</string>
   <string name="pref_expert_options_other">Egyéb</string>
   <string name="pref_autojoin">Szinkronizálás a könyvjelzőkkel</string>
+  <string name="pref_autojoin_summary">Automatikusan csatlakozzon a csoportos csevegésekhez, ha ez szerepel a könyvjelzőben</string>
+  <string name="toast_message_omemo_fingerprint">OMEMO ujjlenyomat a vágólapra lett másolva</string>
   <string name="conference_banned">Ki van tiltva ebből a csoportos csevegésből</string>
   <string name="conference_members_only">Ez a csoportos csevegés csak tagoknak szól</string>
   <string name="conference_resource_constraint">Erőforráskényszer</string>
@@ -382,7 +382,6 @@
   <string name="mark_as_read">Megjelölés olvasottként</string>
   <string name="pref_input_options">Bevitel</string>
   <string name="pref_enter_is_send">Küldés enterrel</string>
-  <string name="pref_enter_is_send_summary">Az enter billentyű használata az üzenet küldéséhez</string>
   <string name="pref_display_enter_key">Enter billentyű megjelenítése</string>
   <string name="pref_display_enter_key_summary">Hangulatjelek billentyű megváltoztatása az enter billentyűre</string>
   <string name="audio">hang</string>
@@ -442,11 +441,7 @@
   <string name="server_info_broken">Törött</string>
   <string name="pref_presence_settings">Elérhetőség</string>
   <string name="pref_away_when_screen_off">„Távol”, ha a kijelző ki van kapcsolva</string>
-  <string name="pref_away_when_screen_off_summary">„Távol” állapotként jelöli az erőforrást, ha a kijelző ki van kapcsolva</string>
-  <string name="pref_dnd_on_silent_mode">„Ne zavarjon” csendes módban</string>
-  <string name="pref_dnd_on_silent_mode_summary">„Ne zavarjon” állapotként jelöli az erőforrást, ha az eszköz csendes módban van</string>
   <string name="pref_treat_vibrate_as_silent">Rezgés kezelése csendes módként</string>
-  <string name="pref_treat_vibrate_as_dnd_summary">„Ne zavarjon” állapotként jelöli az erőforrást, ha az eszköz rezgő módban van</string>
   <string name="pref_show_connection_options">Kiterjesztett kapcsolati beállítások</string>
   <string name="pref_show_connection_options_summary">Gépnév és port beállításainak megjelenítése egy fiók beállításakor</string>
   <string name="hostname_example">xmpp.example.com</string>

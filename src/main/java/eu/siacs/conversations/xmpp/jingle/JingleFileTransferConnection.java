@@ -4,7 +4,10 @@ import android.util.Base64;
 import android.util.Log;
 
 import com.google.common.base.Preconditions;
+import com.google.common.base.Strings;
 import com.google.common.collect.Collections2;
+import com.google.common.collect.FluentIterable;
+import com.google.common.collect.Iterables;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -197,7 +200,7 @@ public class JingleFileTransferConnection extends AbstractJingleConnection imple
         }
     };
 
-    public JingleFileTransferConnection(JingleConnectionManager jingleConnectionManager, Id id, Jid initiator) {
+    JingleFileTransferConnection(JingleConnectionManager jingleConnectionManager, Id id, Jid initiator) {
         super(jingleConnectionManager, id, initiator);
     }
 
@@ -414,15 +417,10 @@ public class JingleFileTransferConnection extends AbstractJingleConnection imple
     }
 
     private List<String> getRemoteFeatures() {
-        final Jid jid = this.id.with;
-        String resource = jid != null ? jid.getResource() : null;
-        if (resource != null) {
-            Presence presence = this.id.account.getRoster().getContact(jid).getPresences().getPresences().get(resource);
-            ServiceDiscoveryResult result = presence != null ? presence.getServiceDiscoveryResult() : null;
-            return result == null ? Collections.emptyList() : result.getFeatures();
-        } else {
-            return Collections.emptyList();
-        }
+        final String resource = Strings.nullToEmpty(this.id.with.getResource());
+        final Presence presence = this.id.account.getRoster().getContact(id.with).getPresences().get(resource);
+        final ServiceDiscoveryResult result = presence != null ? presence.getServiceDiscoveryResult() : null;
+        return result == null ? Collections.emptyList() : result.getFeatures();
     }
 
     private void init(JinglePacket packet) { //should move to deliverPacket
@@ -442,7 +440,7 @@ public class JingleFileTransferConnection extends AbstractJingleConnection imple
         try {
             senders = content.getSenders();
         } catch (final Exception e) {
-             senders = Content.Senders.INITIATOR;
+            senders = Content.Senders.INITIATOR;
         }
         this.contentSenders = senders;
         this.contentName = content.getAttribute("name");
@@ -632,10 +630,14 @@ public class JingleFileTransferConnection extends AbstractJingleConnection imple
 
         final JinglePacket packet = this.bootstrapPacket(JinglePacket.Action.SESSION_INFO);
         packet.addJingleChild(checksum);
-        this.sendJinglePacket(packet);
+        xmppConnectionService.sendIqPacket(id.account, packet, (account, response) -> {
+            if (response.getType() == IqPacket.TYPE.ERROR) {
+                Log.d(Config.LOGTAG,account.getJid().asBareJid()+": ignoring error response to our session-info (hash transmission)");
+            }
+        });
     }
 
-    public Collection<JingleCandidate> getOurCandidates() {
+    private Collection<JingleCandidate> getOurCandidates() {
         return Collections2.filter(this.candidates, c -> c != null && c.isOurs());
     }
 
@@ -825,8 +827,9 @@ public class JingleFileTransferConnection extends AbstractJingleConnection imple
                 this.sendFallbackToIbb();
             }
         } else {
+            //TODO at this point we can already close other connections to free some resources
             final JingleCandidate candidate = connection.getCandidate();
-            Log.d(Config.LOGTAG, id.account.getJid().asBareJid() + ": elected candidate " + candidate.getHost() + ":" + candidate.getPort());
+            Log.d(Config.LOGTAG, id.account.getJid().asBareJid() + ": elected candidate " + candidate.toString());
             this.mJingleStatus = JINGLE_STATUS_TRANSMITTING;
             if (connection.needsActivation()) {
                 if (connection.getCandidate().isOurs()) {
@@ -875,38 +878,23 @@ public class JingleFileTransferConnection extends AbstractJingleConnection imple
     }
 
     private JingleSocks5Transport chooseConnection() {
-        JingleSocks5Transport connection = null;
-        for (Entry<String, JingleSocks5Transport> cursor : connections
-                .entrySet()) {
-            JingleSocks5Transport currentConnection = cursor.getValue();
-            // Log.d(Config.LOGTAG,"comparing candidate: "+currentConnection.getCandidate().toString());
-            if (currentConnection.isEstablished()
-                    && (currentConnection.getCandidate().isUsedByCounterpart() || (!currentConnection
-                    .getCandidate().isOurs()))) {
-                // Log.d(Config.LOGTAG,"is usable");
-                if (connection == null) {
-                    connection = currentConnection;
-                } else {
-                    if (connection.getCandidate().getPriority() < currentConnection
-                            .getCandidate().getPriority()) {
-                        connection = currentConnection;
-                    } else if (connection.getCandidate().getPriority() == currentConnection
-                            .getCandidate().getPriority()) {
-                        // Log.d(Config.LOGTAG,"found two candidates with same priority");
+        final List<JingleSocks5Transport> establishedConnections = FluentIterable.from(connections.entrySet())
+                .transform(Entry::getValue)
+                .filter(c -> (c != null && c.isEstablished() && (c.getCandidate().isUsedByCounterpart() || !c.getCandidate().isOurs())))
+                .toSortedList((a, b) -> {
+                    final int compare = Integer.compare(b.getCandidate().getPriority(), a.getCandidate().getPriority());
+                    if (compare == 0) {
                         if (isInitiator()) {
-                            if (currentConnection.getCandidate().isOurs()) {
-                                connection = currentConnection;
-                            }
+                            //pick the one we sent a candidate-used for (meaning not ours)
+                            return a.getCandidate().isOurs() ? 1 : -1;
                         } else {
-                            if (!currentConnection.getCandidate().isOurs()) {
-                                connection = currentConnection;
-                            }
+                            //pick the one they sent a candidate-used for (meaning ours)
+                            return a.getCandidate().isOurs() ? -1 : 1;
                         }
                     }
-                }
-            }
-        }
-        return connection;
+                    return compare;
+                });
+        return Iterables.getFirst(establishedConnections, null);
     }
 
     private void sendSuccess() {
@@ -1035,7 +1023,7 @@ public class JingleFileTransferConnection extends AbstractJingleConnection imple
         abort(Reason.CANCEL);
     }
 
-    void abort(final Reason reason) {
+    private void abort(final Reason reason) {
         this.disconnectSocks5Connections();
         if (this.transport instanceof JingleInBandTransport) {
             this.transport.disconnect();
@@ -1179,7 +1167,7 @@ public class JingleFileTransferConnection extends AbstractJingleConnection imple
         }
     }
 
-    public int getJingleStatus() {
+    private int getJingleStatus() {
         return this.mJingleStatus;
     }
 
@@ -1222,11 +1210,11 @@ public class JingleFileTransferConnection extends AbstractJingleConnection imple
         jingleConnectionManager.updateConversationUi(false);
     }
 
-    public String getTransportId() {
+    String getTransportId() {
         return this.transportId;
     }
 
-    public FileTransferDescription.Version getFtVersion() {
+    FileTransferDescription.Version getFtVersion() {
         return this.description.getVersion();
     }
 

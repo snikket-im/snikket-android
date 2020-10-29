@@ -1,5 +1,23 @@
 # Changelog
 
+### Version 2.9.0
+
+* Calls: Play dial and busy tones on speaker during video calls
+* Calls: Offer to record voice message when callee is busy
+* Calls: Add 'Return to chat' to audio call screen
+* Calls: Fixed some compatibility and stability issues
+* Calls: Show help button if call fails
+* Calls: Reduce echo during calls on some devices
+* File sharing: Handle GPX files
+* Search: Add ability to search within conversations
+* Notifications: Show notification if message delivery fails
+* Notifications: Fixed notifications not showing up under certain conditions
+* Tor: Add button to start Orbot from notification if necessary
+* Backup/restore: Improve performance for backup restore
+* Usability: Improve keyboard shortcuts
+* Account: Fix login when passwords contains special characters
+* Many bug fixes and stability improvements
+
 ### Version 2.8.4
 
 * Rework Login with certificate UI
@@ -13,7 +31,7 @@
 
 ### Version 2.8.2
 
-* Add button to switch camea during video call
+* Add button to switch camera during video call
 * Fixed voice calls on tablets
 
 ### Version 2.8.1

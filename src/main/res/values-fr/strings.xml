@@ -4,11 +4,9 @@
   <string name="action_add">Nouvelle conversation</string>
   <string name="action_accounts">Gérer les comptes</string>
   <string name="action_account">Gérer le compte</string>
-  <string name="action_end_conversation">Fermer cette conversation</string>
   <string name="action_contact_details">Détails du contact</string>
   <string name="action_muc_details">Détails du groupe</string>
   <string name="channel_details">Détails du canal</string>
-  <string name="action_secure">Conversation sécurisée</string>
   <string name="action_add_account">Ajouter un compte</string>
   <string name="action_edit_contact">Modifier le nom</string>
   <string name="action_add_phone_book">Ajouter au carnet d\'adresses</string>
@@ -246,7 +244,7 @@
   <string name="contact_added_you">Votre correspondant vous a ajouté dans sa liste de contacts</string>
   <string name="add_back">Ajouter en retour</string>
   <string name="contact_has_read_up_to_this_point">%s a tout lu jusqu\'ici</string>
-  <string name="contacts_have_read_up_to_this_point">%s a tout lu jusqu\'ici</string>
+  <string name="contacts_have_read_up_to_this_point">%s ont tout lu jusqu\'ici</string>
   <string name="contacts_and_n_more_have_read_up_to_this_point">%1$s+%2$d autres ont tout lu jusqu\'ici</string>
   <string name="everyone_has_read_up_to_this_point">Tout le monde a lu jusqu\'ici</string>
   <string name="publish">Publier</string>
@@ -398,10 +396,9 @@
   <string name="until_further_notice">Jusqu\'à nouvel ordre</string>
   <string name="snooze">Répéter les notifications</string>
   <string name="reply">Répondre</string>
-  <string name="mark_as_read">Marqué comme lu</string>
+  <string name="mark_as_read">Marquer comme lu</string>
   <string name="pref_input_options">Saisie</string>
   <string name="pref_enter_is_send">Touche Entrée pour envoyer</string>
-  <string name="pref_enter_is_send_summary">Utiliser la touche Entrée pour envoyer un message.</string>
   <string name="pref_display_enter_key">Afficher la touche Entrée</string>
   <string name="pref_display_enter_key_summary">Remplacer la touche Émoticônes par une touche Entrée.</string>
   <string name="audio">audio</string>
@@ -461,11 +458,7 @@
   <string name="server_info_broken">Détraqué</string>
   <string name="pref_presence_settings">Disponibilité</string>
   <string name="pref_away_when_screen_off">Absent quand l\'écran est éteint</string>
-  <string name="pref_away_when_screen_off_summary">Marquer cette ressource comme absente quand l\'écran est éteint.</string>
-  <string name="pref_dnd_on_silent_mode">Indisponible en mode silencieux</string>
-  <string name="pref_dnd_on_silent_mode_summary">Marquer cette ressource comme Indisponible quand l\'appareil est en mode silencieux</string>
   <string name="pref_treat_vibrate_as_silent">Indisponible en mode vibreur</string>
-  <string name="pref_treat_vibrate_as_dnd_summary">Marquer cette ressource comme Indisponible quand l\'appareil est en mode vibreur</string>
   <string name="pref_show_connection_options">Paramètres de connexion avancés</string>
   <string name="pref_show_connection_options_summary">Montrer le nom d\'hôte et le port lors du paramétrage d\'un compte</string>
   <string name="hostname_example">xmpp.example.com</string>

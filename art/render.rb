@@ -119,7 +119,7 @@ images.each do |source_filename, settings|
         else
             path = "../src/#{output_parts[0]}/res/drawable-#{resolution}/#{output_parts[1]}.png"
         end
-		execute_cmd "#{inkscape} -f #{source_filename} -z -C -w #{width} -h #{height} -e #{path}"
+		execute_cmd "#{inkscape} #{source_filename} -C -w #{width} -h #{height} -o #{path}"
 
 		top = []
 		right = []

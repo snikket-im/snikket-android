@@ -4,11 +4,9 @@
   <string name="action_add">Nieuw gesprek</string>
   <string name="action_accounts">Accounts beheren</string>
   <string name="action_account">Account beheren</string>
-  <string name="action_end_conversation">Dit gesprek sluiten</string>
   <string name="action_contact_details">Contactgegevens</string>
   <string name="action_muc_details">Gespreksgegevens</string>
   <string name="channel_details">Kanaalinformatie</string>
-  <string name="action_secure">Beveiligd gesprek</string>
   <string name="action_add_account">Account toevoegen</string>
   <string name="action_edit_contact">Naam veranderen</string>
   <string name="action_add_phone_book">Toevoegen aan adresboek</string>
@@ -356,7 +354,6 @@
   <string name="mark_as_read">Markeren als gelezen</string>
   <string name="pref_input_options">Invoer</string>
   <string name="pref_enter_is_send">Enter is versturen</string>
-  <string name="pref_enter_is_send_summary">Gebruik de enter-toets om berichten te versturen</string>
   <string name="pref_display_enter_key">Toon enter-toets</string>
   <string name="pref_display_enter_key_summary">Verander de emoticon-toets in een enter-toets</string>
   <string name="audio">audio</string>
@@ -412,11 +409,7 @@
   <string name="server_info_broken">Gebroken</string>
   <string name="pref_presence_settings">Aanwezigheid</string>
   <string name="pref_away_when_screen_off">Even weg wanneer scherm uit staat</string>
-  <string name="pref_away_when_screen_off_summary">Stelt je bron in als even weg wanneer het scherm uitgeschakeld is</string>
-  <string name="pref_dnd_on_silent_mode">“Niet storen” in stille modus</string>
-  <string name="pref_dnd_on_silent_mode_summary">Stelt je bron in als “Niet storen” wanneer je apparaat in stille modus staat</string>
   <string name="pref_treat_vibrate_as_silent">Trillen behandelen als stille modus</string>
-  <string name="pref_treat_vibrate_as_dnd_summary">Stelt je bron in als “Niet storen” wanneer je apparaat in trilmodus staat</string>
   <string name="pref_show_connection_options">Uitgebreide verbindingsinstellingen</string>
   <string name="pref_show_connection_options_summary">Toon hostnaam- en poortinstellingen bij instellen van een account</string>
   <string name="hostname_example">xmpp.voorbeeld.be</string>

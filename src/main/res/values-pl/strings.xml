@@ -4,11 +4,10 @@
   <string name="action_add">Nowa konwersacja</string>
   <string name="action_accounts">Zarządzaj kontami</string>
   <string name="action_account">Zarządzaj kontem</string>
-  <string name="action_end_conversation">Zamknij konwersację</string>
+  <string name="action_end_conversation">Zamknij rozmowę</string>
   <string name="action_contact_details">Szczegóły kontaktu</string>
   <string name="action_muc_details">Szczegóły konferencji</string>
   <string name="channel_details">Szczegóły kanału</string>
-  <string name="action_secure">Konwersacja szyfrowana</string>
   <string name="action_add_account">Dodaj konto</string>
   <string name="action_edit_contact">Edytuj nazwę</string>
   <string name="action_add_phone_book">Dodaj do kontaktów</string>
@@ -401,7 +400,7 @@
   <string name="mark_as_read">Oznacz jako przeczytane</string>
   <string name="pref_input_options">Ustawienia wprowadzania</string>
   <string name="pref_enter_is_send">Enter wysyła</string>
-  <string name="pref_enter_is_send_summary">Używaj klawisza Enter do wysyłania wiadomości</string>
+  <string name="pref_enter_is_send_summary">Użyj klawisza Enter aby wysłać wiadomość. Możesz zawsze użyć Ctrl+Enter do wysyłania wiadomości, nawet jeśli ta opcja jest wyłączona.</string>
   <string name="pref_display_enter_key">Pokaż klawisz Enter</string>
   <string name="pref_display_enter_key_summary">Zamień klawisz emotikon na klawisz Enter</string>
   <string name="audio">plik audio</string>
@@ -425,8 +424,8 @@
   <string name="no_application_found_to_display_location">Nie odnaleziono aplikacji do wyświetlenia lokalizacji</string>
   <string name="location">Lokalizacja</string>
   <string name="title_undo_swipe_out_conversation">Zamknięto konwersację</string>
-  <string name="title_undo_swipe_out_group_chat">Opuść prywatną rozmowę grupową</string>
-  <string name="title_undo_swipe_out_channel">Opuść publiczny kanał</string>
+  <string name="title_undo_swipe_out_group_chat">Opuszczono prywatną rozmowę grupową</string>
+  <string name="title_undo_swipe_out_channel">Opuszczono publiczny kanał</string>
   <string name="pref_dont_trust_system_cas_title">Nie ufaj certyfikatom systemowym</string>
   <string name="pref_dont_trust_system_cas_summary">Wymagaj ręcznego potwierdzania certyfikatów</string>
   <string name="pref_remove_trusted_certificates_title">Usuń certyfikaty</string>
@@ -463,11 +462,11 @@
   <string name="server_info_broken">Zepsute</string>
   <string name="pref_presence_settings">Dostępność</string>
   <string name="pref_away_when_screen_off">Status \"Oddalony\" gdy wyświetlacz jest wyłączony</string>
-  <string name="pref_away_when_screen_off_summary">Oznacza twój zasób jako \"Oddalony\", gdy wyświetlacz jest wyłączony</string>
-  <string name="pref_dnd_on_silent_mode">\"Nie przeszkadzać\" w trybie cichym</string>
-  <string name="pref_dnd_on_silent_mode_summary">Oznacza twój zasób jako \"Nie przeszkadzać\", gdy urządzenie jest w trybie cichym</string>
+  <string name="pref_away_when_screen_off_summary">Pokaż jako Oddalony kiedy ekran jest wyłączony.</string>
+  <string name="pref_dnd_on_silent_mode">Zajęty w trybie cichym</string>
+  <string name="pref_dnd_on_silent_mode_summary">Pokaż jako Zajęty jeśli urządzenie jest w trybie cichym</string>
   <string name="pref_treat_vibrate_as_silent">Traktuj tryb wibracji jak tryb cichy</string>
-  <string name="pref_treat_vibrate_as_dnd_summary">Oznacza twój zasób jako \"Nie przeszkadzać\", gdy urządzenie jest w trybie wibracji</string>
+  <string name="pref_treat_vibrate_as_dnd_summary">Pokaż jako Zajęty kiedy urządzenie jest w trybie wibracji</string>
   <string name="pref_show_connection_options">Rozszerzone ustawienia połączenia</string>
   <string name="pref_show_connection_options_summary">Pokaż nazwę hosta i ustawienia portu przy dodawaniu konta</string>
   <string name="hostname_example">xmpp.example.com</string>
@@ -772,6 +771,7 @@ Administrator twojego serwera będzie mógł czytać twoje wiadomości, ale moż
   <string name="ongoing_calls_channel_name">Połączenia wychodzące</string>
   <string name="silent_messages_channel_name">Ciche wiadomości</string>
   <string name="silent_messages_channel_description">Ta kategoria powiadomień jest używana aby wyświetlać powiadomienia które nie powodują żadnych dźwięków. Na przykład w ciągu aktywności na innym urządzeniu (okres karencji).</string>
+  <string name="delivery_failed_channel_name">Nie dostarczone wiadomości</string>
   <string name="pref_message_notification_settings">Ustawienia powiadomień wiadomości</string>
   <string name="pref_incoming_call_notification_settings">Ustawienia powiadomień dla przychodzących połączeń</string>
   <string name="pref_more_notification_settings_summary">Ważność, Dźwięk, Wibracja</string>
@@ -919,6 +919,7 @@ Administrator twojego serwera będzie mógł czytać twoje wiadomości, ale moż
   <string name="rtp_state_ringing">Dzwonienie</string>
   <string name="rtp_state_declined_or_busy">Zajęty</string>
   <string name="rtp_state_connectivity_error">Nie można wykonać połączenia</string>
+  <string name="rtp_state_connectivity_lost_error">Utracono połączenie</string>
   <string name="rtp_state_retracted">Anulowane połączenie</string>
   <string name="rtp_state_application_failure">Błąd aplikacji</string>
   <string name="hang_up">Rozłącz</string>
@@ -932,16 +933,40 @@ Administrator twojego serwera będzie mógł czytać twoje wiadomości, ale moż
   <string name="missed_call">Nieodebrane połączenie</string>
   <string name="audio_call">Połączenie audio</string>
   <string name="video_call">Połączenie wideo</string>
+  <string name="help">Pomoc</string>
+  <string name="switch_to_conversation">Przełącz do rozmowy</string>
   <string name="microphone_unavailable">Twój mikrofon jest niedostępny</string>
   <string name="only_one_call_at_a_time">Możesz mieć tylko jedno połączenie na raz.</string>
   <string name="return_to_ongoing_call">Powróć do trwającego połączenia</string>
   <string name="could_not_switch_camera">Nie można zmienić aparatu</string>
-  <string name="add_to_favorites">Dodaj do ulubionych</string>
-  <string name="remove_from_favorites">Usuń z ulubionych</string>
+  <string name="add_to_favorites">Przypnij</string>
+  <string name="remove_from_favorites">Odepnij</string>
+  <string name="gpx_track">Ścieżka GPX</string>
+  <string name="could_not_correct_message">Nie można poprawić wiadomości</string>
+  <string name="search_all_conversations">Wszystkie rozmowy</string>
+  <string name="search_this_conversation">Ta rozmowa</string>
+  <string name="your_avatar">Twój awatar</string>
+  <string name="avatar_for_x">Awatar dla %s</string>
+  <string name="encrypted_with_omemo">Zaszyfrowane OMEMO</string>
+  <string name="encrypted_with_openpgp">Zaszyfrowane OpenPGP</string>
+  <string name="not_encrypted">Niezaszyfrowane</string>
+  <string name="exit">Wyjście</string>
+  <string name="record_voice_mail">Zapisz pocztę głosową</string>
+  <string name="play_audio">Odtwórz audio</string>
+  <string name="pause_audio">Spauzuj audio</string>
+  <string name="add_contact_or_create_or_join_group_chat">Dodaj kontakt, stwórz lub dołącz do rozmowy grupowej lub odkryj kanały</string>
   <plurals name="view_users">
     <item quantity="one">Pokaż %1$d uczestnika</item>
     <item quantity="few">Pokaż %1$d uczestników</item>
     <item quantity="many">Pokaż %1$d uczestników</item>
     <item quantity="other">Pokaż %1$d uczestników</item>
   </plurals>
+  <plurals name="some_messages_could_not_be_delivered">
+    <item quantity="one">Wiadomość nie mogła zostać dostarczona</item>
+    <item quantity="few">Niektóre wiadomości nie mogły być dostarczone</item>
+    <item quantity="many">Niektóre wiadomości nie mogły być dostarczone</item>
+    <item quantity="other">Niektóre wiadomości nie mogły być dostarczone</item>
+  </plurals>
+  <string name="failed_deliveries">Nie dostarczone wiadomości</string>
+  <string name="more_options">Więcej ustawień</string>
 </resources>

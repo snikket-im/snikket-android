@@ -4,7 +4,6 @@
   <string name="action_add">새 대화</string>
   <string name="action_accounts">계정 </string>
   <string name="action_contact_details">연락처 정보</string>
-  <string name="action_secure">안전한 대화 </string>
   <string name="action_add_account">계정 추가 </string>
   <string name="action_edit_contact">이름 편집 </string>
   <string name="action_add_phone_book">주소록에 추가</string>
@@ -257,7 +256,6 @@
   <string name="until_further_notice">나중에 알릴때까지 </string>
   <string name="pref_input_options">입력</string>
   <string name="pref_enter_is_send">엔터 키로 전송  </string>
-  <string name="pref_enter_is_send_summary">엔터 키로 메세지를 보냅니다 </string>
   <string name="pref_display_enter_key">엔터 키 표시 </string>
   <string name="pref_display_enter_key_summary">이모티콘 키를 엔터 키로 바꿉니다 </string>
   <string name="audio">오디오 </string>
@@ -307,7 +305,6 @@
   <string name="account_status_bind_failure">바인드 실패</string>
   <string name="server_info_broken">손상됨</string>
   <string name="pref_away_when_screen_off">화면이 꺼져있을 경우 자리 비움으로 표시</string>
-  <string name="pref_away_when_screen_off_summary">화면이 꺼져있을 경우에 자리 비움으로 상태를 표시함</string>
   <string name="pref_treat_vibrate_as_silent">진동을 자동으로 처리</string>
   <string name="pref_show_connection_options">확장 연결 설정</string>
   <string name="pref_show_connection_options_summary">계정을 설정할 때 호스트 이름과 포트 설정을 표시합니다</string>

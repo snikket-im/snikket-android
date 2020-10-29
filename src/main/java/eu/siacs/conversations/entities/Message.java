@@ -6,13 +6,15 @@ import android.graphics.Color;
 import android.text.SpannableStringBuilder;
 import android.util.Log;
 
+import com.google.common.base.Strings;
+import com.google.common.collect.ImmutableSet;
+
 import org.json.JSONException;
 
 import java.lang.ref.WeakReference;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -21,6 +23,7 @@ import java.util.Set;
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.crypto.axolotl.FingerprintStatus;
 import eu.siacs.conversations.services.AvatarService;
+import eu.siacs.conversations.ui.util.PresenceSelector;
 import eu.siacs.conversations.utils.CryptoHelper;
 import eu.siacs.conversations.utils.Emoticons;
 import eu.siacs.conversations.utils.GeoHelper;
@@ -531,7 +534,7 @@ public class Message extends AbstractEntity implements AvatarService.Avatarable 
 	}
 
 	public Set<ReadByMarker> getReadByMarkers() {
-		return Collections.unmodifiableSet(this.readByMarkers);
+		return ImmutableSet.copyOf(this.readByMarkers);
 	}
 
 	boolean similar(Message message) {
@@ -609,16 +612,16 @@ public class Message extends AbstractEntity implements AvatarService.Avatarable 
 	public boolean isLastCorrectableMessage() {
 		Message next = next();
 		while (next != null) {
-			if (next.isCorrectable()) {
+			if (next.isEditable()) {
 				return false;
 			}
 			next = next.next();
 		}
-		return isCorrectable();
+		return isEditable();
 	}
 
-	private boolean isCorrectable() {
-		return getStatus() != STATUS_RECEIVED && !isCarbon();
+	public boolean isEditable() {
+		return status != STATUS_RECEIVED && !isCarbon() && type != Message.TYPE_RTP_SESSION;
 	}
 
 	public boolean mergeable(final Message message) {
@@ -679,6 +682,11 @@ public class Message extends AbstractEntity implements AvatarService.Avatarable 
 		} else {
 			return UIHelper.getColorForName(UIHelper.getMessageDisplayName(this));
 		}
+	}
+
+	@Override
+	public String getAvatarName() {
+		return UIHelper.getMessageDisplayName(this);
 	}
 
 	public boolean isOOb() {
@@ -745,19 +753,12 @@ public class Message extends AbstractEntity implements AvatarService.Avatarable 
 	}
 
 	public boolean fixCounterpart() {
-		Presences presences = conversation.getContact().getPresences();
-		if (counterpart != null && presences.has(counterpart.getResource())) {
+		final Presences presences = conversation.getContact().getPresences();
+		if (counterpart != null && presences.has(Strings.nullToEmpty(counterpart.getResource()))) {
 			return true;
 		} else if (presences.size() >= 1) {
-			try {
-				counterpart = Jid.of(conversation.getJid().getLocal(),
-						conversation.getJid().getDomain(),
-						presences.toResourceArray()[0]);
-				return true;
-			} catch (IllegalArgumentException e) {
-				counterpart = null;
-				return false;
-			}
+			counterpart = PresenceSelector.getNextCounterpart(getContact(),presences.toResourceArray()[0]);
+			return true;
 		} else {
 			counterpart = null;
 			return false;

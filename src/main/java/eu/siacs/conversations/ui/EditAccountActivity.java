@@ -33,6 +33,8 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.google.common.base.CharMatcher;
+
 import org.openintents.openpgp.util.OpenPgpUtils;
 
 import java.net.URL;
@@ -69,13 +71,13 @@ import eu.siacs.conversations.utils.TorServiceUtils;
 import eu.siacs.conversations.utils.UIHelper;
 import eu.siacs.conversations.utils.XmppUri;
 import eu.siacs.conversations.xml.Element;
+import eu.siacs.conversations.xmpp.Jid;
 import eu.siacs.conversations.xmpp.OnKeyStatusUpdated;
 import eu.siacs.conversations.xmpp.OnUpdateBlocklist;
 import eu.siacs.conversations.xmpp.XmppConnection;
 import eu.siacs.conversations.xmpp.XmppConnection.Features;
 import eu.siacs.conversations.xmpp.forms.Data;
 import eu.siacs.conversations.xmpp.pep.Avatar;
-import eu.siacs.conversations.xmpp.Jid;
 
 public class EditAccountActivity extends OmemoActivity implements OnAccountUpdate, OnUpdateBlocklist,
         OnKeyStatusUpdated, OnCaptchaRequested, KeyChainAliasCallback, XmppConnectionService.OnShowErrorToast, XmppConnectionService.OnMamPreferencesFetched {
@@ -87,7 +89,6 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
     private static final int REQUEST_CHANGE_STATUS = 0xee11;
     private static final int REQUEST_ORBOT = 0xff22;
     private final PendingItem<PresenceTemplate> mPendingPresenceTemplate = new PendingItem<>();
-    private final AtomicBoolean mPendingReconnect = new AtomicBoolean(false);
     private AlertDialog mCaptchaDialog = null;
     private Jid jidToEdit;
     private boolean mInitMode = false;
@@ -215,12 +216,12 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
                 removeErrorsOnAllBut(binding.accountJidLayout);
                 return;
             }
-            String hostname = null;
+            final String hostname;
             int numericPort = 5222;
             if (mShowOptions) {
-                hostname = binding.hostname.getText().toString().replaceAll("\\s", "");
-                final String port = binding.port.getText().toString().replaceAll("\\s", "");
-                if (hostname.contains(" ")) {
+                hostname = CharMatcher.whitespace().removeFrom(binding.hostname.getText());
+                final String port = CharMatcher.whitespace().removeFrom(binding.port.getText());
+                if (Resolver.invalidHostname(hostname)) {
                     binding.hostnameLayout.setError(getString(R.string.not_valid_hostname));
                     binding.hostname.requestFocus();
                     removeErrorsOnAllBut(binding.hostnameLayout);
@@ -243,6 +244,8 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
                         return;
                     }
                 }
+            } else {
+                hostname = null;
             }
 
             if (jid.getLocal() == null) {
@@ -469,13 +472,6 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
                 generateSignature(data, template);
             } else {
                 Log.d(Config.LOGTAG, "pgp result not ok");
-            }
-        }
-        if (requestCode == REQUEST_ORBOT) {
-            if (xmppConnectionService != null && mAccount != null) {
-                xmppConnectionService.reconnectAccountInBackground(mAccount);
-            } else {
-                mPendingReconnect.set(true);
             }
         }
     }
@@ -777,11 +773,6 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
         }
 
         if (mAccount != null) {
-
-            if (mPendingReconnect.compareAndSet(true, false)) {
-                xmppConnectionService.reconnectAccountInBackground(mAccount);
-            }
-
             this.mInitMode |= this.mAccount.isOptionSet(Account.OPTION_REGISTER);
             this.mUsernameMode |= mAccount.isOptionSet(Account.OPTION_MAGIC_CREATE) && mAccount.isOptionSet(Account.OPTION_REGISTER);
             if (mPendingFingerprintVerificationUri != null) {

@@ -11,6 +11,7 @@ import android.support.annotation.AttrRes;
 import android.support.annotation.DimenRes;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -21,6 +22,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.RejectedExecutionException;
 
+import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.databinding.MediaBinding;
 import eu.siacs.conversations.services.ExportBackupService;
@@ -51,14 +53,16 @@ public class MediaAdapter extends RecyclerView.Adapter<MediaAdapter.MediaViewHol
         this.mediaSize = Math.round(activity.getResources().getDimension(mediaSize));
     }
 
+    @SuppressWarnings("rawtypes")
     public static void setMediaSize(RecyclerView recyclerView, int mediaSize) {
-        RecyclerView.Adapter adapter = recyclerView.getAdapter();
+        final RecyclerView.Adapter adapter = recyclerView.getAdapter();
         if (adapter instanceof MediaAdapter) {
             ((MediaAdapter) adapter).setMediaSize(mediaSize);
         }
     }
 
-    private static @AttrRes int getImageAttr(Attachment attachment) {
+    private static @AttrRes
+    int getImageAttr(Attachment attachment) {
         final @AttrRes int attr;
         if (attachment.getType() == Attachment.Type.LOCATION) {
             attr = R.attr.media_preview_location;
@@ -66,6 +70,7 @@ public class MediaAdapter extends RecyclerView.Adapter<MediaAdapter.MediaViewHol
             attr = R.attr.media_preview_recording;
         } else {
             final String mime = attachment.getMime();
+            Log.d(Config.LOGTAG, "mime=" + mime);
             if (mime == null) {
                 attr = R.attr.media_preview_unknown;
             } else if (mime.startsWith("audio/")) {
@@ -84,6 +89,8 @@ public class MediaAdapter extends RecyclerView.Adapter<MediaAdapter.MediaViewHol
                 attr = R.attr.media_preview_backup;
             } else if (DOCUMENT_MIMES.contains(mime)) {
                 attr = R.attr.media_preview_document;
+            } else if (mime.equals("application/gpx+xml")) {
+                attr = R.attr.media_preview_tour;
             } else {
                 attr = R.attr.media_preview_unknown;
             }
@@ -155,7 +162,7 @@ public class MediaAdapter extends RecyclerView.Adapter<MediaAdapter.MediaViewHol
 
     private void loadPreview(Attachment attachment, ImageView imageView) {
         if (cancelPotentialWork(attachment, imageView)) {
-            final Bitmap bm = activity.xmppConnectionService.getFileBackend().getPreviewForUri(attachment,mediaSize,true);
+            final Bitmap bm = activity.xmppConnectionService.getFileBackend().getPreviewForUri(attachment, mediaSize, true);
             if (bm != null) {
                 cancelPotentialWork(attachment, imageView);
                 imageView.setImageBitmap(bm);

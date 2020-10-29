@@ -63,11 +63,12 @@ import eu.siacs.conversations.xmpp.Jid;
 public class DatabaseBackend extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "history";
-    private static final int DATABASE_VERSION = 46;
+    private static final int DATABASE_VERSION = 47;
     private static DatabaseBackend instance = null;
     private static String CREATE_CONTATCS_STATEMENT = "create table "
             + Contact.TABLENAME + "(" + Contact.ACCOUNT + " TEXT, "
             + Contact.SERVERNAME + " TEXT, " + Contact.SYSTEMNAME + " TEXT,"
+            + Contact.PRESENCE_NAME + " TEXT,"
             + Contact.JID + " TEXT," + Contact.KEYS + " TEXT,"
             + Contact.PHOTOURI + " TEXT," + Contact.OPTIONS + " NUMBER,"
             + Contact.SYSTEMACCOUNT + " NUMBER, " + Contact.AVATAR + " TEXT, "
@@ -555,6 +556,9 @@ public class DatabaseBackend extends SQLiteOpenHelper {
             final long diff = SystemClock.elapsedRealtime() - start;
             Log.d(Config.LOGTAG,"deleted old edit information in "+diff+"ms");
         }
+        if (oldVersion < 47 && newVersion >= 47) {
+            db.execSQL("ALTER TABLE " + Contact.TABLENAME + " ADD COLUMN " + Contact.PRESENCE_NAME + " TEXT");
+        }
     }
 
     private void canonicalizeJids(SQLiteDatabase db) {
@@ -573,7 +577,7 @@ public class DatabaseBackend extends SQLiteOpenHelper {
                 continue;
             }
 
-            String updateArgs[] = {
+            final String[] updateArgs = {
                     newJid,
                     cursor.getString(cursor.getColumnIndex(Conversation.UUID)),
             };
@@ -776,11 +780,20 @@ public class DatabaseBackend extends SQLiteOpenHelper {
         return list;
     }
 
-    public Cursor getMessageSearchCursor(List<String> term) {
-        SQLiteDatabase db = this.getReadableDatabase();
-        String SQL = "SELECT " + Message.TABLENAME + ".*," + Conversation.TABLENAME + '.' + Conversation.CONTACTJID + ',' + Conversation.TABLENAME + '.' + Conversation.ACCOUNT + ',' + Conversation.TABLENAME + '.' + Conversation.MODE + " FROM " + Message.TABLENAME + " join " + Conversation.TABLENAME + " on " + Message.TABLENAME + '.' + Message.CONVERSATION + '=' + Conversation.TABLENAME + '.' + Conversation.UUID + " join messages_index ON messages_index.uuid=messages.uuid where " + Message.ENCRYPTION + " NOT IN(" + Message.ENCRYPTION_AXOLOTL_NOT_FOR_THIS_DEVICE + ',' + Message.ENCRYPTION_PGP + ',' + Message.ENCRYPTION_DECRYPTION_FAILED + ',' + Message.ENCRYPTION_AXOLOTL_FAILED + ") AND " + Message.TYPE + " IN(" + Message.TYPE_TEXT + ',' + Message.TYPE_PRIVATE + ") AND messages_index.body MATCH ? ORDER BY " + Message.TIME_SENT + " DESC limit " + Config.MAX_SEARCH_RESULTS;
+    public Cursor getMessageSearchCursor(final List<String> term, final String uuid) {
+        final SQLiteDatabase db = this.getReadableDatabase();
+        final StringBuilder SQL = new StringBuilder();
+        final String[] selectionArgs;
+        SQL.append("SELECT " + Message.TABLENAME + ".*," + Conversation.TABLENAME + '.' + Conversation.CONTACTJID + ',' + Conversation.TABLENAME + '.' + Conversation.ACCOUNT + ',' + Conversation.TABLENAME + '.' + Conversation.MODE + " FROM " + Message.TABLENAME + " join " + Conversation.TABLENAME + " on " + Message.TABLENAME + '.' + Message.CONVERSATION + '=' + Conversation.TABLENAME + '.' + Conversation.UUID + " join messages_index ON messages_index.uuid=messages.uuid where " + Message.ENCRYPTION + " NOT IN(" + Message.ENCRYPTION_AXOLOTL_NOT_FOR_THIS_DEVICE + ',' + Message.ENCRYPTION_PGP + ',' + Message.ENCRYPTION_DECRYPTION_FAILED + ',' + Message.ENCRYPTION_AXOLOTL_FAILED + ") AND " + Message.TYPE + " IN(" + Message.TYPE_TEXT + ',' + Message.TYPE_PRIVATE + ") AND messages_index.body MATCH ?");
+        if (uuid == null) {
+            selectionArgs = new String[]{FtsUtils.toMatchString(term)};
+        } else {
+            selectionArgs = new String[]{FtsUtils.toMatchString(term), uuid};
+            SQL.append(" AND "+Conversation.TABLENAME+'.'+Conversation.UUID+"=?");
+        }
+        SQL.append(" ORDER BY " + Message.TIME_SENT + " DESC limit " + Config.MAX_SEARCH_RESULTS);
         Log.d(Config.LOGTAG, "search term: " + FtsUtils.toMatchString(term));
-        return db.rawQuery(SQL, new String[]{FtsUtils.toMatchString(term)});
+        return db.rawQuery(SQL.toString(), selectionArgs);
     }
 
     public List<String> markFileAsDeleted(final File file, final boolean internal) {
@@ -1002,7 +1015,7 @@ public class DatabaseBackend extends SQLiteOpenHelper {
         final SQLiteDatabase db = this.getWritableDatabase();
         db.beginTransaction();
         for (Contact contact : roster.getContacts()) {
-            if (contact.getOption(Contact.Options.IN_ROSTER) || contact.getAvatarFilename() != null || contact.getOption(Contact.Options.SYNCED_VIA_OTHER)) {
+            if (contact.getOption(Contact.Options.IN_ROSTER) || contact.hasAvatarOrPresenceName() || contact.getOption(Contact.Options.SYNCED_VIA_OTHER)) {
                 db.insert(Contact.TABLENAME, null, contact.getContentValues());
             } else {
                 String where = Contact.ACCOUNT + "=? AND " + Contact.JID + "=?";

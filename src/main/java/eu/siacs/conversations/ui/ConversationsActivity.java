@@ -49,6 +49,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
@@ -94,6 +95,8 @@ public class ConversationsActivity extends XmppActivity implements OnConversatio
     public static final String EXTRA_NICK = "nick";
     public static final String EXTRA_IS_PRIVATE_MESSAGE = "pm";
     public static final String EXTRA_DO_NOT_APPEND = "do_not_append";
+    public static final String EXTRA_POST_INIT_ACTION = "post_init_action";
+    public static final String POST_ACTION_RECORD_VOICE = "record_voice";
 
     private static List<String> VIEW_AND_SHARE_ACTIONS = Arrays.asList(
             ACTION_VIEW_CONVERSATION,
@@ -263,8 +266,8 @@ public class ConversationsActivity extends XmppActivity implements OnConversatio
     }
 
     private boolean processViewIntent(Intent intent) {
-        String uuid = intent.getStringExtra(EXTRA_CONVERSATION);
-        Conversation conversation = uuid != null ? xmppConnectionService.findConversationByUuid(uuid) : null;
+        final String uuid = intent.getStringExtra(EXTRA_CONVERSATION);
+        final Conversation conversation = uuid != null ? xmppConnectionService.findConversationByUuid(uuid) : null;
         if (conversation == null) {
             Log.d(Config.LOGTAG, "unable to view conversation with uuid:" + uuid);
             return false;
@@ -377,8 +380,7 @@ public class ConversationsActivity extends XmppActivity implements OnConversatio
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.activity_conversations, menu);
-        AccountUtils.showHideMenuItems(menu);
-        MenuItem qrCodeScanMenuItem = menu.findItem(R.id.action_scan_qr_code);
+        final MenuItem qrCodeScanMenuItem = menu.findItem(R.id.action_scan_qr_code);
         if (qrCodeScanMenuItem != null) {
             if (isCameraFeatureAvailable()) {
                 Fragment fragment = getFragmentManager().findFragmentById(R.id.main_fragment);
@@ -486,13 +488,36 @@ public class ConversationsActivity extends XmppActivity implements OnConversatio
             case R.id.action_scan_qr_code:
                 UriHandlerActivity.scan(this);
                 return true;
+            case R.id.action_search_all_conversations:
+                startActivity(new Intent(this, SearchActivity.class));
+                return true;
+            case R.id.action_search_this_conversation:
+                final Conversation conversation = ConversationFragment.getConversation(this);
+                if (conversation == null) {
+                    return true;
+                }
+                final Intent intent = new Intent(this, SearchActivity.class);
+                intent.putExtra(SearchActivity.EXTRA_CONVERSATION_UUID, conversation.getUuid());
+                startActivity(intent);
+                return true;
         }
         return super.onOptionsItemSelected(item);
     }
 
     @Override
-    public void onSaveInstanceState(Bundle savedInstanceState) {
-        Intent pendingIntent = pendingViewIntent.peek();
+    public boolean onKeyDown(final int keyCode, final KeyEvent keyEvent) {
+        if (keyCode == KeyEvent.KEYCODE_DPAD_UP && keyEvent.isCtrlPressed()) {
+            final ConversationFragment conversationFragment = ConversationFragment.get(this);
+            if (conversationFragment != null && conversationFragment.onArrowUpCtrlPressed()) {
+                return true;
+            }
+        }
+        return super.onKeyDown(keyCode, keyEvent);
+    }
+
+    @Override
+    public void onSaveInstanceState(final Bundle savedInstanceState) {
+        final Intent pendingIntent = pendingViewIntent.peek();
         savedInstanceState.putParcelable("intent", pendingIntent != null ? pendingIntent : getIntent());
         super.onSaveInstanceState(savedInstanceState);
     }

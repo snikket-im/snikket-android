@@ -4,11 +4,9 @@
   <string name="action_add">Νέα συζήτηση</string>
   <string name="action_accounts">Διαχείριση λογαριασμών</string>
   <string name="action_account">Διαχείριση λογαριασμού</string>
-  <string name="action_end_conversation">Κλείσιμο συζήτησης</string>
   <string name="action_contact_details">Λεπτομέρειες επαφής</string>
   <string name="action_muc_details">Λεπτομέρειες ομαδικής συζήτησης</string>
   <string name="channel_details">Λεπτομέρειες καναλιού</string>
-  <string name="action_secure">Ασφαλής συζήτηση</string>
   <string name="action_add_account">Προσθήκη λογαριασμού</string>
   <string name="action_edit_contact">Επεξεργασία ονόματος</string>
   <string name="action_add_phone_book">Προσθήκη στην ατζέντα</string>
@@ -347,7 +345,6 @@
   <string name="mark_as_read">Σημείωμα ως αναγνωσμένο</string>
   <string name="pref_input_options">Είσοδος</string>
   <string name="pref_enter_is_send">Αποστολή με το πλήκτρο Enter</string>
-  <string name="pref_enter_is_send_summary">Χρήση του πλήκτρου Enter για την αποστολή μηνύματος</string>
   <string name="pref_display_enter_key">Εμφάνιση του πλήκτρου Enter</string>
   <string name="pref_display_enter_key_summary">Αλλαγή του πλήκτρου emoticons σε πλήκτρο Enter</string>
   <string name="audio">ήχος</string>
@@ -403,11 +400,7 @@
   <string name="server_info_broken">Χαλασμένος</string>
   <string name="pref_presence_settings">Διαθεσιμότητα</string>
   <string name="pref_away_when_screen_off">Εκτός χρήσης όταν η οθόνη είναι σβηστή</string>
-  <string name="pref_away_when_screen_off_summary">Σημειώνει την παρουσία σας ως εκτός χρήσης όταν σβήνει η οθόνη</string>
-  <string name="pref_dnd_on_silent_mode">\"Μην ενοχλείτε\" όταν βρίσκεται σε σιωπηρή λειτουργία</string>
-  <string name="pref_dnd_on_silent_mode_summary">Σημειώνει την παρουσία σας ως \"Μην ενοχλείτε\" όταν η συσκευή είναι σε κατάσταση σιωπής</string>
   <string name="pref_treat_vibrate_as_silent">Χρήση της κατάστασης δόνησης ως σιωπηρή κατάσταση</string>
-  <string name="pref_treat_vibrate_as_dnd_summary">Σημειώνει την παρουσία σας ως \"Μην ενοχλείτε\" όταν η συσκευή είναι σε κατάσταση δόνησης</string>
   <string name="pref_show_connection_options">Περισσότερες ρυθμίσεις σύνδεσης</string>
   <string name="pref_show_connection_options_summary">Εμφάνιση ονόματος μηχανήματος και ρυθμίσεων πόρτας όταν δημιουργείται ένας νέος λογαριασμός</string>
   <string name="hostname_example">xmpp.example.com</string>

@@ -5,7 +5,6 @@
   <string name="action_accounts">Kontobehandling</string>
   <string name="action_contact_details">Kontaktdetaljer</string>
   <string name="action_muc_details">Gruppesludringsdetaljer</string>
-  <string name="action_secure">Sikret samtale</string>
   <string name="action_add_account">Legg til samtale</string>
   <string name="action_edit_contact">Rediger navn</string>
   <string name="action_add_phone_book">Legg til i kontaktliste</string>
@@ -285,7 +284,6 @@
   <string name="mark_as_read">Merk som lest</string>
   <string name="pref_input_options">Inndata</string>
   <string name="pref_enter_is_send">Enter-forsendelsesknapp</string>
-  <string name="pref_enter_is_send_summary">Bruk enter for å sende en melding</string>
   <string name="pref_display_enter_key">Vis enter-tast</string>
   <string name="pref_display_enter_key_summary">Endre smilefjas-tast til en enter-tast</string>
   <string name="audio">lyd</string>
@@ -336,11 +334,7 @@
   <string name="account_status_bind_failure">Klarte ikke å binde</string>
   <string name="server_info_broken">Knekt</string>
   <string name="pref_away_when_screen_off">Borte når skjermen er av</string>
-  <string name="pref_away_when_screen_off_summary">Markerer din ressurs som borte når skjermen er avskrudd</string>
-  <string name="pref_dnd_on_silent_mode">“Ikke forstyrr” i stillemodus.</string>
-  <string name="pref_dnd_on_silent_mode_summary">Merker din ressurs som \"Ikke forstyrr\" når enheten er i stillemodus.</string>
   <string name="pref_treat_vibrate_as_silent">Behandle vibrering som stille-modus</string>
-  <string name="pref_treat_vibrate_as_dnd_summary">Merker din ressurs som \"Ikke forstyrr\" når enheten er skrudd til vibrering</string>
   <string name="pref_show_connection_options">Utvidede tilkoblingsinnst.</string>
   <string name="pref_show_connection_options_summary">Vis vertsnavn og portinnstillinger når du setter opp en ny konto</string>
   <string name="hostname_example">xmpp.eksempel.no</string>

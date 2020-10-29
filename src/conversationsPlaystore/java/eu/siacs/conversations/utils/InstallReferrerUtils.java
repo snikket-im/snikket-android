@@ -2,6 +2,7 @@ package eu.siacs.conversations.utils;
 
 import android.app.Activity;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.RemoteException;
 import android.preference.PreferenceManager;
 import android.util.Log;
@@ -9,6 +10,7 @@ import android.util.Log;
 import com.android.installreferrer.api.InstallReferrerClient;
 import com.android.installreferrer.api.InstallReferrerStateListener;
 import com.android.installreferrer.api.ReferrerDetails;
+import com.google.common.base.Strings;
 
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.ui.WelcomeActivity;
@@ -49,8 +51,11 @@ public class InstallReferrerUtils implements InstallReferrerStateListener {
             try {
                 final ReferrerDetails referrerDetails = installReferrerClient.getInstallReferrer();
                 final String referrer = referrerDetails.getInstallReferrer();
-                welcomeActivity.onInstallReferrerDiscovered(referrer);
-            } catch (final RemoteException e) {
+                if (Strings.isNullOrEmpty(referrer)) {
+                    return;
+                }
+                welcomeActivity.onInstallReferrerDiscovered(Uri.parse(referrer));
+            } catch (final RemoteException | IllegalArgumentException e) {
                 Log.d(Config.LOGTAG, "unable to get install referrer", e);
             }
         } else {

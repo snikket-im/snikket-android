@@ -4,10 +4,8 @@
   <string name="action_add">Nova conversa</string>
   <string name="action_accounts">Gestiona els comptes</string>
   <string name="action_account">Administrar compte</string>
-  <string name="action_end_conversation">Tancar aquesta conversa</string>
   <string name="action_contact_details">Detalls del contacte</string>
   <string name="action_muc_details">Detalls del xat de grup</string>
-  <string name="action_secure">Conversa segura</string>
   <string name="action_add_account">Afegeix un compte</string>
   <string name="action_edit_contact">Edita el nom</string>
   <string name="action_add_phone_book">Afegeix a la llibreta d\'adreces</string>
@@ -314,7 +312,6 @@
   <string name="mark_as_read">Marcar com llegit</string>
   <string name="pref_input_options">Entrada</string>
   <string name="pref_enter_is_send">Entra per enviar</string>
-  <string name="pref_enter_is_send_summary">Utilitza el botó enter per enviar el missatge</string>
   <string name="pref_display_enter_key">Mostra el botó enter</string>
   <string name="pref_display_enter_key_summary">Canviar la clau dels emoticones per un botó d\'entrada </string>
   <string name="audio">audio</string>
@@ -367,11 +364,7 @@
   <string name="server_info_broken">Trencat</string>
   <string name="pref_presence_settings">Disponibilitat</string>
   <string name="pref_away_when_screen_off">Fora quan la pantalla està apagada</string>
-  <string name="pref_away_when_screen_off_summary">Marqueu el vostre recurs quan la pantalla estigui desactivada</string>
-  <string name="pref_dnd_on_silent_mode">\"No molesteu\" en modo silenciós</string>
-  <string name="pref_dnd_on_silent_mode_summary">Marqueu el vostre recurs com \"No molesteu\" quan el dispositiu estigui en modo silenciós</string>
   <string name="pref_treat_vibrate_as_silent">Tracteu de vibrar al modo silenciós</string>
-  <string name="pref_treat_vibrate_as_dnd_summary">Marqueu el vostre recurs com \"No molesteu\" quan el dispositiu estigui en vibració</string>
   <string name="pref_show_connection_options">Configuració de connexió estesa</string>
   <string name="pref_show_connection_options_summary">Mostra el nom de la màquina i la configuració del port quan configureu un compte</string>
   <string name="hostname_example">xmpp.example.com</string>

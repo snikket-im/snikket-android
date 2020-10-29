@@ -4,11 +4,9 @@
   <string name="action_add">Нов разговор</string>
   <string name="action_accounts">Управление на профилите</string>
   <string name="action_account">Управление на профила</string>
-  <string name="action_end_conversation">Затваряне на този разговор</string>
   <string name="action_contact_details">Подробности за контакта</string>
   <string name="action_muc_details">Подробности за груповия разговор</string>
   <string name="channel_details">Подробности за канала</string>
-  <string name="action_secure">Защитен разговор</string>
   <string name="action_add_account">Добавяне на профил</string>
   <string name="action_edit_contact">Редактиране на името</string>
   <string name="action_add_phone_book">Добавяне към адресния указател</string>
@@ -316,7 +314,6 @@
   <string name="mark_as_read">Отбелязване като прочетено</string>
   <string name="pref_input_options">Въвеждане</string>
   <string name="pref_enter_is_send">Enter изпраща</string>
-  <string name="pref_enter_is_send_summary">Натискането на клавиша Enter изпраща съобщението</string>
   <string name="pref_display_enter_key">Показване на клавиша Enter</string>
   <string name="pref_display_enter_key_summary">Смяна на клавиша за емотикони с клавиша Enter</string>
   <string name="audio">аудио</string>
@@ -369,11 +366,7 @@
   <string name="server_info_broken">Повредено</string>
   <string name="pref_presence_settings">Присъствие</string>
   <string name="pref_away_when_screen_off">Отсъстващ, когато екранът е изключен</string>
-  <string name="pref_away_when_screen_off_summary">Преминава в състояние „отсъстващ“ когато екранът бъде изключен</string>
-  <string name="pref_dnd_on_silent_mode">„Отпочиващ“ в тих режим</string>
-  <string name="pref_dnd_on_silent_mode_summary">Преминава в състояние „отсъстващ“, когато устройството е в тих режим</string>
   <string name="pref_treat_vibrate_as_silent">Тих режим при режим на вибриране</string>
-  <string name="pref_treat_vibrate_as_dnd_summary">Преминава в състояние „отсъстващ“, когато устройството е в режим на вибриране.</string>
   <string name="pref_show_connection_options">Разширени настройки за връзката</string>
   <string name="pref_show_connection_options_summary">Показване на настройките за сървър и порт при установка на профил</string>
   <string name="hostname_example">xmpp.example.com</string>

@@ -5,7 +5,6 @@
   <string name="action_accounts">Управљај налозима</string>
   <string name="action_contact_details">Детаљи контакта</string>
   <string name="action_muc_details">Детаљи групног ћаскања</string>
-  <string name="action_secure">Безбедна преписка</string>
   <string name="action_add_account">Додај налог</string>
   <string name="action_edit_contact">Уреди име</string>
   <string name="action_add_phone_book">Додај у именик</string>
@@ -296,7 +295,6 @@
   <string name="mark_as_read">Означи прочитаним</string>
   <string name="pref_input_options">Унос</string>
   <string name="pref_enter_is_send">Ентер шаље</string>
-  <string name="pref_enter_is_send_summary">Користи Ентер тастер за слање порука</string>
   <string name="pref_display_enter_key">Прикажи Ентер тастер</string>
   <string name="pref_display_enter_key_summary">Промени тастер за емотиконе у ентер тастер</string>
   <string name="audio">звук</string>
@@ -350,11 +348,7 @@
   <string name="server_info_broken">Оштећен</string>
   <string name="pref_presence_settings">Доступност</string>
   <string name="pref_away_when_screen_off">Одсутан кад је екран искључен</string>
-  <string name="pref_away_when_screen_off_summary">Означавање вашег ресурса као одсутан кад је екран искључен</string>
-  <string name="pref_dnd_on_silent_mode">„Не ометај“ у нечујном режиму</string>
-  <string name="pref_dnd_on_silent_mode_summary">Означавање вашег ресурса као „не ометај“ кад је уређај у нечујном режиму</string>
   <string name="pref_treat_vibrate_as_silent">Вибрација је нечујни режим</string>
-  <string name="pref_treat_vibrate_as_dnd_summary">Означавање вашег ресурса као „не ометај“ кад је уређај у режиму вибрирања</string>
   <string name="pref_show_connection_options">Проширене поставке повезивања</string>
   <string name="pref_show_connection_options_summary">Приказ домаћина и порта у поставкама налога</string>
   <string name="hostname_example">xmpp.primer.com</string>

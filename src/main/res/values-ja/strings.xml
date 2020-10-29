@@ -4,11 +4,9 @@
   <string name="action_add">新しい会話</string>
   <string name="action_accounts">アカウントの管理</string>
   <string name="action_account">アカウントの管理</string>
-  <string name="action_end_conversation">この会話を閉じる</string>
   <string name="action_contact_details">連絡先の詳細</string>
   <string name="action_muc_details">談話室の詳細</string>
   <string name="channel_details">チャンネルの詳細</string>
-  <string name="action_secure">安全に会話</string>
   <string name="action_add_account">アカウントを追加</string>
   <string name="action_edit_contact">名前の編集</string>
   <string name="action_add_phone_book">アドレス帳に追加</string>
@@ -316,7 +314,6 @@
   <string name="mark_as_read">既読にする</string>
   <string name="pref_input_options">入力</string>
   <string name="pref_enter_is_send">Enter は送信</string>
-  <string name="pref_enter_is_send_summary">Enter キーをメッセージの送信に使用します</string>
   <string name="pref_display_enter_key">Enter キーを表示</string>
   <string name="pref_display_enter_key_summary">絵文字キーを Enter キーに変更</string>
   <string name="audio">オーディオ</string>
@@ -368,11 +365,7 @@
   <string name="server_info_broken">壊れています</string>
   <string name="pref_presence_settings">可用性</string>
   <string name="pref_away_when_screen_off">画面がオフのときは離席</string>
-  <string name="pref_away_when_screen_off_summary">画面がオフになっているとき、リソースを離席としてマークします</string>
-  <string name="pref_dnd_on_silent_mode">サイレントモード時 “邪魔しないで”</string>
-  <string name="pref_dnd_on_silent_mode_summary">デバイスがサイレントモードの時に、リソースを “邪魔しないで” としてマークします</string>
   <string name="pref_treat_vibrate_as_silent">バイブレートをサイレントモードとして扱う</string>
-  <string name="pref_treat_vibrate_as_dnd_summary">デバイスがバイブレートの時に、リソースを “邪魔しないで” としてマークします</string>
   <string name="pref_show_connection_options">拡張接続設定</string>
   <string name="pref_show_connection_options_summary">アカウントを設定するときにホスト名とポートの設定を表示します</string>
   <string name="hostname_example">xmpp.example.com</string>

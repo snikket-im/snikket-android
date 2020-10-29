@@ -61,6 +61,7 @@ import eu.siacs.conversations.ui.TimePreference;
 import eu.siacs.conversations.utils.AccountUtils;
 import eu.siacs.conversations.utils.Compatibility;
 import eu.siacs.conversations.utils.GeoHelper;
+import eu.siacs.conversations.utils.TorServiceUtils;
 import eu.siacs.conversations.utils.UIHelper;
 import eu.siacs.conversations.xmpp.XmppConnection;
 import eu.siacs.conversations.xmpp.jingle.AbstractJingleConnection;
@@ -82,6 +83,7 @@ public class NotificationService {
     private static final int ERROR_NOTIFICATION_ID = NOTIFICATION_ID_MULTIPLIER * 6;
     private static final int INCOMING_CALL_NOTIFICATION_ID = NOTIFICATION_ID_MULTIPLIER * 8;
     public static final int ONGOING_CALL_NOTIFICATION_ID = NOTIFICATION_ID_MULTIPLIER * 10;
+    private static final int DELIVERY_FAILED_NOTIFICATION_ID = NOTIFICATION_ID_MULTIPLIER * 12;
     private final XmppConnectionService mXmppConnectionService;
     private final LinkedHashMap<String, ArrayList<Message>> notifications = new LinkedHashMap<>();
     private final HashMap<Conversation, AtomicInteger> mBacklogMessageCounter = new HashMap<>();
@@ -220,9 +222,20 @@ public class NotificationService {
         quietHoursChannel.setSound(null, null);
 
         notificationManager.createNotificationChannel(quietHoursChannel);
+
+        final NotificationChannel deliveryFailedChannel = new NotificationChannel("delivery_failed",
+                c.getString(R.string.delivery_failed_channel_name),
+                NotificationManager.IMPORTANCE_DEFAULT);
+        deliveryFailedChannel.setShowBadge(false);
+        deliveryFailedChannel.setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION), new AudioAttributes.Builder()
+                .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
+                .setUsage(AudioAttributes.USAGE_NOTIFICATION_COMMUNICATION_INSTANT)
+                .build());
+        deliveryFailedChannel.setGroup("chats");
+        notificationManager.createNotificationChannel(deliveryFailedChannel);
     }
 
-    public boolean notify(final Message message) {
+    private boolean notify(final Message message) {
         final Conversation conversation = (Conversation) message.getConversation();
         return message.getStatus() == Message.STATUS_RECEIVED
                 && !conversation.isMuted()
@@ -340,6 +353,37 @@ public class NotificationService {
                 pushNow(message);
             }
         }
+    }
+
+    public void pushFailedDelivery(final Message message) {
+        final Conversation conversation = (Conversation) message.getConversation();
+        final boolean isScreenOn = mXmppConnectionService.isInteractive();
+        if (this.mIsInForeground && isScreenOn && this.mOpenConversation == message.getConversation()) {
+            Log.d(Config.LOGTAG, message.getConversation().getAccount().getJid().asBareJid() + ": suppressing failed delivery notification because conversation is open");
+            return;
+        }
+        final PendingIntent pendingIntent = createContentIntent(conversation);
+        final int notificationId = generateRequestCode(conversation, 0) + DELIVERY_FAILED_NOTIFICATION_ID;
+        final int failedDeliveries = conversation.countFailedDeliveries();
+        final Notification notification =
+                new Builder(mXmppConnectionService, "delivery_failed")
+                        .setContentTitle(conversation.getName())
+                        .setAutoCancel(true)
+                        .setSmallIcon(R.drawable.ic_error_white_24dp)
+                        .setContentText(mXmppConnectionService.getResources().getQuantityText(R.plurals.some_messages_could_not_be_delivered, failedDeliveries))
+                        .setGroup("delivery_failed")
+                        .setContentIntent(pendingIntent).build();
+        final Notification summaryNotification =
+                new Builder(mXmppConnectionService, "delivery_failed")
+                        .setContentTitle(mXmppConnectionService.getString(R.string.failed_deliveries))
+                        .setContentText(mXmppConnectionService.getResources().getQuantityText(R.plurals.some_messages_could_not_be_delivered, 1024))
+                        .setSmallIcon(R.drawable.ic_error_white_24dp)
+                        .setGroup("delivery_failed")
+                        .setGroupSummary(true)
+                        .setAutoCancel(true)
+                        .build();
+        notify(notificationId, notification);
+        notify(DELIVERY_FAILED_NOTIFICATION_ID, summaryNotification);
     }
 
     public void showIncomingCallNotification(final AbstractJingleConnection.Id id, final Set<Media> media) {
@@ -601,9 +645,6 @@ public class NotificationService {
             mBuilder.setSound(fixRingtoneUri(uri));
         } catch (SecurityException e) {
             Log.d(Config.LOGTAG, "unable to use custom notification sound " + uri.toString());
-        }
-        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            mBuilder.setCategory(Notification.CATEGORY_MESSAGE);
         }
         mBuilder.setPriority(NotificationCompat.PRIORITY_HIGH);
         setNotificationColor(mBuilder);
@@ -1095,9 +1136,11 @@ public class NotificationService {
         }
         final boolean showAllErrors = QuickConversationsService.isConversations();
         final List<Account> errors = new ArrayList<>();
+        boolean torNotAvailable = false;
         for (final Account account : mXmppConnectionService.getAccounts()) {
             if (account.hasErrorStatus() && account.showErrorNotification() && (showAllErrors || account.getLastErrorStatus() == Account.State.UNAUTHORIZED)) {
                 errors.add(account);
+                torNotAvailable |= account.getStatus() == Account.State.TOR_NOT_AVAILABLE;
             }
         }
         if (mXmppConnectionService.foregroundNotificationNeedsUpdatingWhenErrorStateChanges()) {
@@ -1116,7 +1159,23 @@ public class NotificationService {
         }
         mBuilder.addAction(R.drawable.ic_autorenew_white_24dp,
                 mXmppConnectionService.getString(R.string.try_again),
-                createTryAgainIntent());
+                createTryAgainIntent()
+        );
+        if (torNotAvailable) {
+            if (TorServiceUtils.isOrbotInstalled(mXmppConnectionService)) {
+                mBuilder.addAction(
+                        R.drawable.ic_play_circle_filled_white_48dp,
+                        mXmppConnectionService.getString(R.string.start_orbot),
+                        PendingIntent.getActivity(mXmppConnectionService, 147, TorServiceUtils.LAUNCH_INTENT, 0)
+                );
+            } else {
+                mBuilder.addAction(
+                        R.drawable.ic_file_download_white_24dp,
+                        mXmppConnectionService.getString(R.string.install_orbot),
+                        PendingIntent.getActivity(mXmppConnectionService, 146, TorServiceUtils.INSTALL_INTENT, 0)
+                );
+            }
+        }
         mBuilder.setDeleteIntent(createDismissErrorIntent());
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             mBuilder.setVisibility(Notification.VISIBILITY_PRIVATE);

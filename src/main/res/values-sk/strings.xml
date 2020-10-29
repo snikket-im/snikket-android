@@ -4,7 +4,6 @@
   <string name="action_add">Nová konverzácia</string>
   <string name="action_accounts">Nastavenie účtov</string>
   <string name="action_contact_details">Detaily kontaktu</string>
-  <string name="action_secure">Zabezpečená konverzácia</string>
   <string name="action_add_account">Pridať účet</string>
   <string name="action_edit_contact">Upraviť meno</string>
   <string name="action_delete_contact">Vymazať zo zoznamu</string>
@@ -216,7 +215,6 @@
   <string name="never">Nikdy</string>
   <string name="until_further_notice">Až do odvolania</string>
   <string name="pref_enter_is_send">Enter odosiela</string>
-  <string name="pref_enter_is_send_summary">Použiť klávesu enter na odoslanie správy</string>
   <string name="pref_display_enter_key">Zobraziť klávesu enter</string>
   <string name="pref_display_enter_key_summary">Zmeniť klávesu s emotikonmi na klávesu enter</string>
   <string name="audio">audio</string>

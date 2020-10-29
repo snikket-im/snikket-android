@@ -8,4 +8,5 @@
     <string name="magic_create_text_on_x">You have been invited to %1$s. We will guide you through the process of creating an account.\nWhen picking %1$s as a provider you will be able to communicate with users of other providers by giving them your full XMPP address.</string>
     <string name="magic_create_text_fixed">You have been invited to %1$s. A username has already been picked for you. We will guide you through the process of creating an account.\nYou will be able to communicate with users of other providers by giving them your full XMPP address.</string>
     <string name="your_server_invitation">Your server invitation</string>
+    <string name="improperly_formatted_provisioning">Improperly formatted provisioning code</string>
 </resources>

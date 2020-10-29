@@ -4,9 +4,7 @@
   <string name="action_add">Nová konverzace</string>
   <string name="action_accounts">Nastavení účtů</string>
   <string name="action_account">Nastavení účtu</string>
-  <string name="action_end_conversation">Zavřít tuto konverzaci</string>
   <string name="action_contact_details">Detaily kontaktu</string>
-  <string name="action_secure">Zabezpečená konverzace</string>
   <string name="action_add_account">Přidat účet</string>
   <string name="action_edit_contact">Upravit jméno</string>
   <string name="action_add_phone_book">Přidat do adresáře</string>
@@ -264,7 +262,6 @@
   <string name="until_further_notice">Než opět změním</string>
   <string name="pref_input_options">Vstup</string>
   <string name="pref_enter_is_send">Enter odesílá</string>
-  <string name="pref_enter_is_send_summary">Použít klávesu enter pro odesílání zpráv</string>
   <string name="pref_display_enter_key">Zobrazit klávesu enter</string>
   <string name="pref_display_enter_key_summary">Změnit klávesu emotikon na klávesu enter</string>
   <string name="audio">audio</string>
@@ -317,7 +314,6 @@
   <string name="account_status_bind_failure">Bind chyba</string>
   <string name="server_info_broken">Rozbité</string>
   <string name="pref_away_when_screen_off">Pryč při vypnuté obrazovce</string>
-  <string name="pref_away_when_screen_off_summary">Při vypnuté obrazovce označí váš stav jako pryč</string>
   <string name="pref_treat_vibrate_as_silent">Vibrační mód brát stejně jako tichý</string>
   <string name="pref_show_connection_options">Rozšířená nastavení připojení</string>
   <string name="pref_show_connection_options_summary">Zobrazovat nastavení hostname a port  při vytváření účtu</string>

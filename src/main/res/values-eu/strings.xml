@@ -4,11 +4,9 @@
   <string name="action_add">Elkarrizketa berria</string>
   <string name="action_accounts">Kontuak kudeatu</string>
   <string name="action_account">Kontua kudeatu</string>
-  <string name="action_end_conversation">Elkarrizketa hau itxi</string>
   <string name="action_contact_details">Kontaktuaren xehetasunak</string>
   <string name="action_muc_details">Taldearen xehetasunak</string>
   <string name="channel_details">Kanalaren xehetasunak</string>
-  <string name="action_secure">Elkarrizketa segurua</string>
   <string name="action_add_account">Kontua gehitu</string>
   <string name="action_edit_contact">Izena editatu</string>
   <string name="action_add_phone_book">Helbideen liburura gehitu</string>
@@ -344,7 +342,6 @@
   <string name="mark_as_read">Irakurrita bezala markatu</string>
   <string name="pref_input_options">Sarrera</string>
   <string name="pref_enter_is_send">Sartu teklak bidaltzen du</string>
-  <string name="pref_enter_is_send_summary">Sartu tekla erabili mezua bidaltzeko</string>
   <string name="pref_display_enter_key">Sartu tekla erakutsi</string>
   <string name="pref_display_enter_key_summary">Aurpegieren tekla sartu teklarekin aldatu</string>
   <string name="audio">audioa</string>
@@ -400,11 +397,7 @@
   <string name="server_info_broken">Hondatuta</string>
   <string name="pref_presence_settings">Eskuragarritasuna</string>
   <string name="pref_away_when_screen_off">Urrun pantaila itzalita dagoenean</string>
-  <string name="pref_away_when_screen_off_summary">Zure baliabidea urrun bezala markatzen du pantaila itzalita dagoenean</string>
-  <string name="pref_dnd_on_silent_mode">\"Ez gogaitu\" modu isilean</string>
-  <string name="pref_dnd_on_silent_mode_summary">Zure baliabidea \"Ez gogaitu\" bezala markatzen du gailua modu isilean dagoenean</string>
   <string name="pref_treat_vibrate_as_silent">Dardara modu isila bezala tratatu</string>
-  <string name="pref_treat_vibrate_as_dnd_summary">Zure baliabidea \"Ez gogaitu\" bezala markatzen du gailua dardara moduan dagoenean</string>
   <string name="pref_show_connection_options">Konexioaren ezarpen luzatuak</string>
   <string name="pref_show_connection_options_summary">Ostalariaren izena eta ataka ezarpenak erakutsi kontu bat ezartzerakoan</string>
   <string name="hostname_example">xmpp.adibidea.com</string>

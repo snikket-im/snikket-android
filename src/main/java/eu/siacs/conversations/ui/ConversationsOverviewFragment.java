@@ -64,6 +64,7 @@ import eu.siacs.conversations.ui.util.PendingActionHelper;
 import eu.siacs.conversations.ui.util.PendingItem;
 import eu.siacs.conversations.ui.util.ScrollState;
 import eu.siacs.conversations.ui.util.StyledAttributes;
+import eu.siacs.conversations.utils.AccountUtils;
 import eu.siacs.conversations.utils.ThemeHelper;
 
 import static android.support.v7.widget.helper.ItemTouchHelper.LEFT;
@@ -284,6 +285,7 @@ public class ConversationsOverviewFragment extends XmppFragment {
 	@Override
 	public void onCreateOptionsMenu(Menu menu, MenuInflater menuInflater) {
 		menuInflater.inflate(R.menu.fragment_conversations_overview, menu);
+		AccountUtils.showHideMenuItems(menu);
 	}
 
 	@Override

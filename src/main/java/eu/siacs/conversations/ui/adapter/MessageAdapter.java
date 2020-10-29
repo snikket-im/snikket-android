@@ -555,7 +555,7 @@ public class MessageAdapter extends ArrayAdapter<Message> implements CopyTextVie
         viewHolder.audioPlayer.setVisibility(View.GONE);
         viewHolder.image.setVisibility(View.VISIBLE);
         final FileParams params = message.getFileParams();
-        final double target = metrics.density * 288;
+        final float target = activity.getResources().getDimension(R.dimen.image_preview_width);
         final int scaledW;
         final int scaledH;
         if (Math.max(params.height, params.width) * metrics.density <= target) {
@@ -571,7 +571,7 @@ public class MessageAdapter extends ArrayAdapter<Message> implements CopyTextVie
             scaledW = (int) target;
             scaledH = (int) (params.height / ((double) params.width / target));
         }
-        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(scaledW, scaledH);
+        final LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(scaledW, scaledH);
         layoutParams.setMargins(0, (int) (metrics.density * 4), 0, (int) (metrics.density * 4));
         viewHolder.image.setLayoutParams(layoutParams);
         activity.loadBitmap(message, viewHolder.image);

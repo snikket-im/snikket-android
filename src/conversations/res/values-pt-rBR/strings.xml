@@ -8,4 +8,5 @@
     <string name="magic_create_text_on_x">Você foi convidado para %1$s. Nós iremos guiá-lo ao longo do processo de criação de uma conta.\nAo escolher %1$s como um provedor você conseguirá se comunicar com usuários de outros provedores dando a eles seu endereço XMPP completo.</string>
     <string name="magic_create_text_fixed">Você foi convidado para %1$s. Um nome de usuário já foi escolhido para você. Nós iremos guiá-lo ao longo do processo de criação de uma conta.\nVocê conseguirá se comunicar com usuários de outros provedores dando a eles seu endereço XMPP completo.</string>
     <string name="your_server_invitation">Seu convite do servidor</string>
+    <string name="improperly_formatted_provisioning">Código de provisionamento formatado de maneira imprópria</string>
 </resources>

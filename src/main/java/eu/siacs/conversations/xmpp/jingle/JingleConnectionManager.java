@@ -14,6 +14,7 @@ import com.google.common.collect.ImmutableSet;
 
 import java.lang.ref.WeakReference;
 import java.security.SecureRandom;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
@@ -56,8 +57,8 @@ public class JingleConnectionManager extends AbstractConnectionManager {
     private final HashMap<RtpSessionProposal, DeviceDiscoveryState> rtpSessionProposals = new HashMap<>();
     private final ConcurrentHashMap<AbstractJingleConnection.Id, AbstractJingleConnection> connections = new ConcurrentHashMap<>();
 
-    private final Cache<PersistableSessionId, JingleRtpConnection.State> endedSessions = CacheBuilder.newBuilder()
-            .expireAfterWrite(30, TimeUnit.MINUTES)
+    private final Cache<PersistableSessionId, TerminatedRtpSession> terminatedSessions = CacheBuilder.newBuilder()
+            .expireAfterWrite(24, TimeUnit.HOURS)
             .build();
 
     private HashMap<Jid, JingleCandidate> primaryCandidates = new HashMap<>();
@@ -90,8 +91,8 @@ public class JingleConnectionManager extends AbstractConnectionManager {
             final AbstractJingleConnection connection;
             if (FileTransferDescription.NAMESPACES.contains(descriptionNamespace)) {
                 connection = new JingleFileTransferConnection(this, id, from);
-            } else if (Namespace.JINGLE_APPS_RTP.equals(descriptionNamespace) && !usesTor(account)) {
-                final boolean sessionEnded = this.endedSessions.asMap().containsKey(PersistableSessionId.of(id));
+            } else if (Namespace.JINGLE_APPS_RTP.equals(descriptionNamespace) && isUsingClearNet(account)) {
+                final boolean sessionEnded = this.terminatedSessions.asMap().containsKey(PersistableSessionId.of(id));
                 final boolean stranger = isWithStrangerAndStrangerNotificationsAreOff(account, id.with);
                 if (isBusy() || sessionEnded || stranger) {
                     Log.d(Config.LOGTAG, id.account.getJid().asBareJid() + ": rejected session with " + id.with + " because busy. sessionEnded=" + sessionEnded + ", stranger=" + stranger);
@@ -116,11 +117,14 @@ public class JingleConnectionManager extends AbstractConnectionManager {
         }
     }
 
-    private boolean usesTor(final Account account) {
-        return account.isOnion() || mXmppConnectionService.useTorToConnect();
+    private boolean isUsingClearNet(final Account account) {
+        return !account.isOnion() && !mXmppConnectionService.useTorToConnect();
     }
 
     public boolean isBusy() {
+        if (mXmppConnectionService.isPhoneInCall()) {
+            return true;
+        }
         for (AbstractJingleConnection connection : this.connections.values()) {
             if (connection instanceof JingleRtpConnection) {
                 if (((JingleRtpConnection) connection).isTerminated()) {
@@ -134,7 +138,19 @@ public class JingleConnectionManager extends AbstractConnectionManager {
         }
     }
 
-    public Optional<RtpSessionProposal> findMatchingSessionProposal(final Account account, final Jid with, final Set<Media> media) {
+    public void notifyPhoneCallStarted() {
+        for (AbstractJingleConnection connection : connections.values()) {
+            if (connection instanceof JingleRtpConnection) {
+                final JingleRtpConnection rtpConnection = (JingleRtpConnection) connection;
+                if (rtpConnection.isTerminated()) {
+                    continue;
+                }
+                rtpConnection.notifyPhoneCall();
+            }
+        }
+    }
+
+    private Optional<RtpSessionProposal> findMatchingSessionProposal(final Account account, final Jid with, final Set<Media> media) {
         synchronized (this.rtpSessionProposals) {
             for (Map.Entry<RtpSessionProposal, DeviceDiscoveryState> entry : this.rtpSessionProposals.entrySet()) {
                 final RtpSessionProposal proposal = entry.getKey();
@@ -257,7 +273,7 @@ public class JingleConnectionManager extends AbstractConnectionManager {
                     Collections2.filter(descriptions, d -> d instanceof RtpDescription),
                     input -> (RtpDescription) input
             );
-            if (rtpDescriptions.size() > 0 && rtpDescriptions.size() == descriptions.size() && !usesTor(account)) {
+            if (rtpDescriptions.size() > 0 && rtpDescriptions.size() == descriptions.size() && isUsingClearNet(account)) {
                 final Collection<Media> media = Collections2.transform(rtpDescriptions, RtpDescription::getMedia);
                 if (media.contains(Media.UNKNOWN)) {
                     Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": encountered unknown media in session proposal. " + propose);
@@ -449,6 +465,28 @@ public class JingleConnectionManager extends AbstractConnectionManager {
         this.connections.remove(connection.getId());
     }
 
+    void finishConnectionOrThrow(final AbstractJingleConnection connection) {
+        final AbstractJingleConnection.Id id = connection.getId();
+        if (this.connections.remove(id) == null) {
+            throw new IllegalStateException(String.format("Unable to finish connection with id=%s", id.toString()));
+        }
+    }
+
+    public boolean fireJingleRtpConnectionStateUpdates() {
+        boolean firedUpdates = false;
+        for (final AbstractJingleConnection connection : this.connections.values()) {
+            if (connection instanceof JingleRtpConnection) {
+                final JingleRtpConnection jingleRtpConnection = (JingleRtpConnection) connection;
+                if (jingleRtpConnection.isTerminated()) {
+                    continue;
+                }
+                jingleRtpConnection.fireStateUpdate();
+                firedUpdates = true;
+            }
+        }
+        return firedUpdates;
+    }
+
     void getPrimaryCandidate(final Account account, final boolean initiator, final OnPrimaryCandidateFound listener) {
         if (Config.DISABLE_PROXY_LOOKUP) {
             listener.onPrimaryCandidateFound(false, null);
@@ -520,6 +558,15 @@ public class JingleConnectionManager extends AbstractConnectionManager {
         mXmppConnectionService.sendMessagePacket(account, messagePacket);
     }
 
+    public String initializeRtpSession(final Account account, final Jid with, final Set<Media> media) {
+        final AbstractJingleConnection.Id id = AbstractJingleConnection.Id.of(account, with);
+        final JingleRtpConnection rtpConnection = new JingleRtpConnection(this, id, account.getJid());
+        rtpConnection.setProposedMedia(media);
+        this.connections.put(id, rtpConnection);
+        rtpConnection.sendSessionInitiate();
+        return id.sessionId;
+    }
+
     public void proposeJingleRtpSession(final Account account, final Jid with, final Set<Media> media) {
         synchronized (this.rtpSessionProposals) {
             for (Map.Entry<RtpSessionProposal, DeviceDiscoveryState> entry : this.rtpSessionProposals.entrySet()) {
@@ -558,6 +605,18 @@ public class JingleConnectionManager extends AbstractConnectionManager {
             Log.d(Config.LOGTAG, messagePacket.toString());
             mXmppConnectionService.sendMessagePacket(account, messagePacket);
         }
+    }
+
+    public boolean hasMatchingProposal(final Account account, final Jid with) {
+        synchronized (this.rtpSessionProposals) {
+            for (Map.Entry<RtpSessionProposal, DeviceDiscoveryState> entry : this.rtpSessionProposals.entrySet()) {
+                final RtpSessionProposal proposal = entry.getKey();
+                if (proposal.account == account && with.asBareJid().equals(proposal.with)) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
     public void deliverIbbPacket(Account account, IqPacket packet) {
@@ -667,8 +726,12 @@ public class JingleConnectionManager extends AbstractConnectionManager {
         throw e;
     }
 
-    public void endSession(AbstractJingleConnection.Id id, final AbstractJingleConnection.State state) {
-        this.endedSessions.put(PersistableSessionId.of(id), state);
+    void setTerminalSessionState(AbstractJingleConnection.Id id, final RtpEndUserState state, final Set<Media> media) {
+        this.terminatedSessions.put(PersistableSessionId.of(id), new TerminatedRtpSession(state, media));
+    }
+
+    public TerminatedRtpSession getTerminalSessionState(final Jid with, final String sessionId) {
+        return this.terminatedSessions.getIfPresent(new PersistableSessionId(with, sessionId));
     }
 
     private static class PersistableSessionId {
@@ -696,6 +759,16 @@ public class JingleConnectionManager extends AbstractConnectionManager {
         @Override
         public int hashCode() {
             return Objects.hashCode(with, sessionId);
+        }
+    }
+
+    public static class TerminatedRtpSession {
+        public final RtpEndUserState state;
+        public final Set<Media> media;
+
+        TerminatedRtpSession(RtpEndUserState state, Set<Media> media) {
+            this.state = state;
+            this.media = media;
         }
     }
 

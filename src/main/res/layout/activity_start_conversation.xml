@@ -50,6 +50,7 @@
             app:sdMainFabClosedBackgroundColor="?colorPrimary"
             app:sdMainFabOpenedBackgroundColor="?colorPrimaryDark"
             app:sdUseReverseAnimationOnClose="true"
+            android:contentDescription="@string/add_contact_or_create_or_join_group_chat"
             app:sdOverlayLayout="@id/overlay"/>
     </RelativeLayout>
 </layout>

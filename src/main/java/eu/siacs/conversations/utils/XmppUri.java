@@ -22,6 +22,8 @@ public class XmppUri {
     public static final String ACTION_MESSAGE = "message";
     public static final String ACTION_REGISTER = "register";
     public static final String ACTION_ROSTER = "roster";
+    public static final String PARAMETER_PRE_AUTH = "preauth";
+    public static final String PARAMETER_IBR = "ibr";
     private static final String OMEMO_URI_PARAM = "omemo-sid-";
     protected Uri uri;
     protected String jid;

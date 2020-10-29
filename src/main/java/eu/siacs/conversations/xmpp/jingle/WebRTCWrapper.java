@@ -214,9 +214,13 @@ public class WebRTCWrapper {
                     PeerConnectionFactory.InitializationOptions.builder(service).createInitializationOptions()
             );
         } catch (final UnsatisfiedLinkError e) {
-            throw new InitializationException(e);
+            throw new InitializationException("Unable to initialize PeerConnectionFactory", e);
         }
-        this.eglBase = EglBase.create();
+        try {
+            this.eglBase = EglBase.create();
+        } catch (final RuntimeException e) {
+            throw new InitializationException("Unable to create EGL base", e);
+        }
         this.context = service;
         this.toneManager = service.getJingleConnectionManager().toneManager;
         mainHandler.post(() -> {
@@ -366,12 +370,19 @@ public class WebRTCWrapper {
         }
     }
 
-    void setMicrophoneEnabled(final boolean enabled) {
+    boolean setMicrophoneEnabled(final boolean enabled) {
         final AudioTrack audioTrack = this.localAudioTrack;
         if (audioTrack == null) {
             throw new IllegalStateException("Local audio track does not exist (yet)");
         }
-        audioTrack.setEnabled(enabled);
+        try {
+            audioTrack.setEnabled(enabled);
+            return true;
+        } catch (final IllegalStateException e) {
+            Log.d(Config.LOGTAG, "unable to toggle microphone", e);
+            //ignoring race condition in case MediaStreamTrack has been disposed
+            return false;
+        }
     }
 
     boolean isVideoEnabled() {
@@ -498,7 +509,7 @@ public class WebRTCWrapper {
         final CameraEnumerator enumerator = getCameraEnumerator();
         final Set<String> deviceNames = ImmutableSet.copyOf(enumerator.getDeviceNames());
         for (final String deviceName : deviceNames) {
-            if (enumerator.isFrontFacing(deviceName)) {
+            if (isFrontFacing(enumerator, deviceName)) {
                 final CapturerChoice capturerChoice = of(enumerator, deviceName, deviceNames);
                 if (capturerChoice == null) {
                     return Optional.absent();
@@ -511,6 +522,14 @@ public class WebRTCWrapper {
             return Optional.absent();
         } else {
             return Optional.fromNullable(of(enumerator, Iterables.get(deviceNames, 0), deviceNames));
+        }
+    }
+
+    private static boolean isFrontFacing(final CameraEnumerator cameraEnumerator, final String deviceName) {
+        try {
+            return cameraEnumerator.isFrontFacing(deviceName);
+        } catch (final NullPointerException e) {
+            return false;
         }
     }
 
@@ -533,7 +552,7 @@ public class WebRTCWrapper {
     private PeerConnection requirePeerConnection() {
         final PeerConnection peerConnection = this.peerConnection;
         if (peerConnection == null) {
-            throw new IllegalStateException("initialize PeerConnection first");
+            throw new PeerConnectionNotInitialized();
         }
         return peerConnection;
     }
@@ -589,13 +608,21 @@ public class WebRTCWrapper {
 
     static class InitializationException extends Exception {
 
-        private InitializationException(final Throwable throwable) {
-            super(throwable);
+        private InitializationException(final String message, final Throwable throwable) {
+            super(message, throwable);
         }
 
         private InitializationException(final String message) {
             super(message);
         }
+    }
+
+    public static class PeerConnectionNotInitialized extends IllegalStateException {
+
+        private PeerConnectionNotInitialized() {
+            super("initialize PeerConnection first");
+        }
+
     }
 
     private static class CapturerChoice {

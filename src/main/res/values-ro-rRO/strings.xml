@@ -8,7 +8,6 @@
   <string name="action_contact_details">Detalii contact</string>
   <string name="action_muc_details">Detalii discuție de grup</string>
   <string name="channel_details">Detalii canal</string>
-  <string name="action_secure">Securizează conferința</string>
   <string name="action_add_account">Adaugă cont</string>
   <string name="action_edit_contact">Editează nume</string>
   <string name="action_add_phone_book">Adaugă la lista de contacte</string>
@@ -401,7 +400,7 @@
   <string name="mark_as_read">Marchează ca citit</string>
   <string name="pref_input_options">Opțiuni introducere text</string>
   <string name="pref_enter_is_send">ENTER trimite</string>
-  <string name="pref_enter_is_send_summary">Apasă tasta ENTER pentru a trimite mesajul</string>
+  <string name="pref_enter_is_send_summary">Apasă tasta Enter pentru a trimite mesajul. Puteți mereu apăsa Ctrl-Enter pentru a trimite mesajul, chiar dacă această opțiune nu este activată.</string>
   <string name="pref_display_enter_key">Arată tasta ENTER</string>
   <string name="pref_display_enter_key_summary">Preschimbă tasta emoticon în ENTER</string>
   <string name="audio">audio</string>
@@ -463,10 +462,10 @@
   <string name="pref_presence_settings">Setări de disponibilitate</string>
   <string name="pref_away_when_screen_off">Plecat când ecranul este oprit</string>
   <string name="pref_away_when_screen_off_summary">Prezintă clientul drept \"Plecat\" atunci când ecranul este oprit</string>
-  <string name="pref_dnd_on_silent_mode">\"Nu deranja\" în modul silențios</string>
-  <string name="pref_dnd_on_silent_mode_summary">Prezintă clientul drept \"Nu deranja\" atunci când dispozitivul este în mod silențios</string>
+  <string name="pref_dnd_on_silent_mode">\"Ocupat\" în modul silențios</string>
+  <string name="pref_dnd_on_silent_mode_summary">Prezintă clientul drept \"Ocupat\" atunci când dispozitivul este în mod silențios</string>
   <string name="pref_treat_vibrate_as_silent">Tratează modul vibrație ca silențios</string>
-  <string name="pref_treat_vibrate_as_dnd_summary">Prezintă clientul drept \"Nu deranja\" atunci când dispozitivul este în mod vibrație</string>
+  <string name="pref_treat_vibrate_as_dnd_summary">Prezintă clientul drept \"Ocupat\" atunci când dispozitivul este în mod vibrație</string>
   <string name="pref_show_connection_options">Opțiuni avansate conexiune</string>
   <string name="pref_show_connection_options_summary">Arată opțiunea de setare a numelui de gazdă și a portului, atunci când se configurează un cont</string>
   <string name="hostname_example">xmpp.exemplu.ro</string>
@@ -762,6 +761,7 @@
   <string name="ongoing_calls_channel_name">Apeluri în curs</string>
   <string name="silent_messages_channel_name">Mesaje silențioase</string>
   <string name="silent_messages_channel_description">Acest grup de notificări este folosit pentru a arăta notificări care nu emit sunete. De exemplu atunci când sunteți activi pe un alt dispozitiv (Perioada de grație).</string>
+  <string name="delivery_failed_channel_name">Trimiteri eșuate</string>
   <string name="pref_message_notification_settings">Setări de notificare ale mesajelor</string>
   <string name="pref_incoming_call_notification_settings">Setări de notificare ale apelurilor primite</string>
   <string name="pref_more_notification_settings_summary">Importanță, sunete, vibrații</string>
@@ -909,6 +909,7 @@
   <string name="rtp_state_ringing">Sună</string>
   <string name="rtp_state_declined_or_busy">Ocupat</string>
   <string name="rtp_state_connectivity_error">Nu s-a putut conecta apelul</string>
+  <string name="rtp_state_connectivity_lost_error">Conexiune pierdută</string>
   <string name="rtp_state_retracted">Apel anulat</string>
   <string name="rtp_state_application_failure">Eroare de aplicație</string>
   <string name="hang_up">Închide</string>
@@ -922,15 +923,38 @@
   <string name="missed_call">Apel pierdut</string>
   <string name="audio_call">Apel audio</string>
   <string name="video_call">Apel video</string>
+  <string name="help">Ajutor</string>
+  <string name="switch_to_conversation">Comutare la discuție</string>
   <string name="microphone_unavailable">Microfonul nu este disponibil</string>
   <string name="only_one_call_at_a_time">Puteți avea un singur apel simultan.</string>
   <string name="return_to_ongoing_call">Reveniți la apelul în curs</string>
   <string name="could_not_switch_camera">Nu s-a putut face comutarea camerei foto</string>
-  <string name="add_to_favorites">Adaugă la favorite</string>
-  <string name="remove_from_favorites">Înlătură din favorite</string>
+  <string name="add_to_favorites">Fixează sus</string>
+  <string name="remove_from_favorites">Anulează fixarea</string>
+  <string name="gpx_track">Traseu GPX</string>
+  <string name="could_not_correct_message">Nu s-a putut corecta mesajul</string>
+  <string name="search_all_conversations">Toate conversațiile</string>
+  <string name="search_this_conversation">Această conversație</string>
+  <string name="your_avatar">Avatarul dumneavoastră</string>
+  <string name="avatar_for_x">Avatar pentru %s</string>
+  <string name="encrypted_with_omemo">Criptare OMEMO</string>
+  <string name="encrypted_with_openpgp">Criptare OpenPGP</string>
+  <string name="not_encrypted">Fără criptare</string>
+  <string name="exit">Ieșire</string>
+  <string name="record_voice_mail">Înregistrare mesaj vocal</string>
+  <string name="play_audio">Redare audio</string>
+  <string name="pause_audio">Pauză audio</string>
+  <string name="add_contact_or_create_or_join_group_chat">Adaugă contact, creează sau alătură-te discuției de grup, sau descoperă canale</string>
   <plurals name="view_users">
     <item quantity="one">Arată %1$d participant</item>
     <item quantity="few">Arată %1$d participanți</item>
     <item quantity="other">Arată %1$d de participanți</item>
   </plurals>
+  <plurals name="some_messages_could_not_be_delivered">
+    <item quantity="one">Un mesaj nu a putut fi livrat</item>
+    <item quantity="few">Niște mesaje nu au putut fi livrate</item>
+    <item quantity="other">Niște mesaje nu au putut fi livrate</item>
+  </plurals>
+  <string name="failed_deliveries">Trimiteri eșuate</string>
+  <string name="more_options">Mai multe</string>
 </resources>

@@ -85,6 +85,7 @@
         <item name="media_preview_recording" type="reference">@drawable/ic_mic_black_48dp</item>
         <item name="media_preview_audio" type="reference">@drawable/ic_headset_black_48dp</item>
         <item name="media_preview_location" type="reference">@drawable/ic_room_black_48dp</item>
+        <item name="media_preview_tour" type="reference">@drawable/baseline_tour_black_48</item>
         <item name="media_preview_contact" type="reference">@drawable/ic_person_black_48dp</item>
         <item name="media_preview_app" type="reference">@drawable/ic_android_black_48dp</item>
         <item name="media_preview_calendar" type="reference">@drawable/ic_event_black_48dp</item>
@@ -114,6 +115,8 @@
         </item>
         <item name="icon_remove" type="reference">@drawable/ic_delete_black_24dp</item>
         <item name="icon_search" type="reference">@drawable/ic_search_white_24dp</item>
+        <item name="icon_help" type="reference">@drawable/ic_help_white_24dp</item>
+        <item name="icon_goto_chat" type="reference">@drawable/ic_question_answer_white_24dp</item>
         <item name="icon_secure" type="reference">@drawable/ic_lock_open_white_24dp</item>
         <item name="icon_settings" type="reference">@drawable/ic_settings_black_24dp</item>
         <item name="icon_share" type="reference">@drawable/ic_share_white_24dp</item>
@@ -238,6 +241,7 @@
         <item name="media_preview_recording" type="reference">@drawable/ic_mic_white_48dp</item>
         <item name="media_preview_audio" type="reference">@drawable/ic_headset_white_48dp</item>
         <item name="media_preview_location" type="reference">@drawable/ic_room_white_48dp</item>
+        <item name="media_preview_tour" type="reference">@drawable/baseline_tour_white_48</item>
         <item name="media_preview_contact" type="reference">@drawable/ic_person_white_48dp</item>
         <item name="media_preview_app" type="reference">@drawable/ic_android_white_48dp</item>
         <item name="media_preview_calendar" type="reference">@drawable/ic_event_white_48dp</item>
@@ -267,6 +271,8 @@
         </item>
         <item name="icon_remove" type="reference">@drawable/ic_delete_white_24dp</item>
         <item name="icon_search" type="reference">@drawable/ic_search_white_24dp</item>
+        <item name="icon_help" type="reference">@drawable/ic_help_white_24dp</item>
+        <item name="icon_goto_chat" type="reference">@drawable/ic_question_answer_white_24dp</item>
         <item name="icon_secure" type="reference">@drawable/ic_lock_open_white_24dp</item>
         <item name="icon_settings" type="reference">@drawable/ic_settings_white_24dp</item>
         <item name="icon_share" type="reference">@drawable/ic_share_white_24dp</item>
@@ -365,7 +371,7 @@
     <style name="ConversationsTheme.Dialog" parent="@style/Theme.AppCompat.Light.Dialog">
         <item name="colorPrimary">@color/green600</item>
         <item name="colorPrimaryDark">@color/green700</item>
-        <item name="colorAccent">@color/blue_a200</item>
+        <item name="colorAccent">@color/blue_a400</item>
         <item name="color_background_primary">@color/grey50</item>
         <item name="divider">@color/black12</item>
         <item name="TextSizeTitle">18sp</item>

@@ -1,8 +1,10 @@
 package eu.siacs.conversations.xmpp.jingle;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 import eu.siacs.conversations.entities.Contact;
 import eu.siacs.conversations.entities.Presence;
@@ -37,10 +39,25 @@ public class RtpCapability {
         return Capability.NONE;
     }
 
+    public static String[] filterPresences(final Contact contact, Capability required) {
+        final Presences presences = contact.getPresences();
+        final ArrayList<String> resources = new ArrayList<>();
+        for(final Map.Entry<String,Presence> presence : presences.getPresencesMap().entrySet()) {
+            final Capability capability = check(presence.getValue());
+            if (capability == Capability.NONE) {
+                continue;
+            }
+            if (required == Capability.AUDIO || capability == required) {
+                resources.add(presence.getKey());
+            }
+        }
+        return resources.toArray(new String[0]);
+    }
+
     public static Capability check(final Contact contact) {
         final Presences presences = contact.getPresences();
         Capability result = Capability.NONE;
-        for(Presence presence : presences.getPresences().values()) {
+        for(Presence presence : presences.getPresences()) {
             Capability capability = check(presence);
             if (capability == Capability.VIDEO) {
                 result = capability;

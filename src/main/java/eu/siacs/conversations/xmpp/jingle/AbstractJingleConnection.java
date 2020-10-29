@@ -1,5 +1,6 @@
 package eu.siacs.conversations.xmpp.jingle;
 
+import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
 
@@ -15,10 +16,10 @@ public abstract class AbstractJingleConnection {
     public static final String JINGLE_MESSAGE_PROPOSE_ID_PREFIX = "jm-propose-";
     public static final String JINGLE_MESSAGE_PROCEED_ID_PREFIX = "jm-proceed-";
 
-    protected final JingleConnectionManager jingleConnectionManager;
+    final JingleConnectionManager jingleConnectionManager;
     protected final XmppConnectionService xmppConnectionService;
     protected final Id id;
-    protected final Jid initiator;
+    private final Jid initiator;
 
     AbstractJingleConnection(final JingleConnectionManager jingleConnectionManager, final Id id, final Jid initiator) {
         this.jingleConnectionManager = jingleConnectionManager;
@@ -46,8 +47,9 @@ public abstract class AbstractJingleConnection {
         public final String sessionId;
 
         private Id(final Account account, final Jid with, final String sessionId) {
+            Preconditions.checkNotNull(account);
             Preconditions.checkNotNull(with);
-            Preconditions.checkArgument(with.isFullJid());
+            Preconditions.checkNotNull(sessionId);
             this.account = account;
             this.with = with;
             this.sessionId = sessionId;
@@ -59,6 +61,10 @@ public abstract class AbstractJingleConnection {
 
         public static Id of(Account account, Jid with, final String sessionId) {
             return new Id(account, with, sessionId);
+        }
+
+        public static Id of(Account account, Jid with) {
+            return new Id(account, with, JingleConnectionManager.nextRandomId());
         }
 
         public static Id of(Message message) {
@@ -78,14 +84,14 @@ public abstract class AbstractJingleConnection {
             if (this == o) return true;
             if (o == null || getClass() != o.getClass()) return false;
             Id id = (Id) o;
-            return Objects.equal(account.getJid(), id.account.getJid()) &&
+            return Objects.equal(account.getUuid(), id.account.getUuid()) &&
                     Objects.equal(with, id.with) &&
                     Objects.equal(sessionId, id.sessionId);
         }
 
         @Override
         public int hashCode() {
-            return Objects.hashCode(account.getJid(), with, sessionId);
+            return Objects.hashCode(account.getUuid(), with, sessionId);
         }
 
         @Override
@@ -101,6 +107,15 @@ public abstract class AbstractJingleConnection {
         @Override
         public String getSessionId() {
             return sessionId;
+        }
+
+        @Override
+        public String toString() {
+            return MoreObjects.toStringHelper(this)
+                    .add("account", account.getJid())
+                    .add("with", with)
+                    .add("sessionId", sessionId)
+                    .toString();
         }
     }
 
