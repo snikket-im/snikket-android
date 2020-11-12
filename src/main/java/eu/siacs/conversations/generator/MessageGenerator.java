@@ -223,13 +223,13 @@ public class MessageGenerator extends AbstractGenerator {
         return packet;
     }
 
-    public MessagePacket received(Account account, MessagePacket originalMessage, ArrayList<String> namespaces, int type) {
-        MessagePacket receivedPacket = new MessagePacket();
+    public MessagePacket received(Account account, final Jid from, final String id,  ArrayList<String> namespaces, int type) {
+        final MessagePacket receivedPacket = new MessagePacket();
         receivedPacket.setType(type);
-        receivedPacket.setTo(originalMessage.getFrom());
+        receivedPacket.setTo(from);
         receivedPacket.setFrom(account.getJid());
-        for (String namespace : namespaces) {
-            receivedPacket.addChild("received", namespace).setAttribute("id", originalMessage.getId());
+        for (final String namespace : namespaces) {
+            receivedPacket.addChild("received", namespace).setAttribute("id", id);
         }
         receivedPacket.addChild("store", "urn:xmpp:hints");
         return receivedPacket;

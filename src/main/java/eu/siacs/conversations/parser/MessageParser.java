@@ -660,7 +660,7 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
                                     && remoteMsgId != null
                                     && !selfAddressed
                                     && !isTypeGroupChat) {
-                                processMessageReceipts(account, packet, query);
+                                processMessageReceipts(account, packet, remoteMsgId, query);
                             }
                             if (replacedMessage.getEncryption() == Message.ENCRYPTION_PGP) {
                                 conversation.getAccount().getPgpDecryptionService().discard(replacedMessage);
@@ -746,7 +746,7 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
                     && remoteMsgId != null
                     && !selfAddressed
                     && !isTypeGroupChat) {
-                processMessageReceipts(account, packet, query);
+                processMessageReceipts(account, packet, remoteMsgId, query);
             }
 
             mXmppConnectionService.databaseBackend.createMessage(message);
@@ -859,8 +859,8 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
                                 serverMsgId = extractStanzaId(account, packet);
                             }
                             mXmppConnectionService.getJingleConnectionManager().deliverMessage(account, packet.getTo(), packet.getFrom(), child, remoteMsgId, serverMsgId, timestamp);
-                            if (!account.getJid().asBareJid().equals(from.asBareJid())) {
-                                processMessageReceipts(account, packet, query);
+                            if (!account.getJid().asBareJid().equals(from.asBareJid()) && remoteMsgId != null) {
+                                processMessageReceipts(account, packet, remoteMsgId, query);
                             }
                         } else if (query.isCatchup()) {
                             if ("propose".equals(action)) {
@@ -1045,7 +1045,7 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
         }
     }
 
-    private void processMessageReceipts(Account account, MessagePacket packet, MessageArchiveService.Query query) {
+    private void processMessageReceipts(final Account account, final MessagePacket packet, final String remoteMsgId, MessageArchiveService.Query query) {
         final boolean markable = packet.hasChild("markable", "urn:xmpp:chat-markers:0");
         final boolean request = packet.hasChild("request", "urn:xmpp:receipts");
         if (query == null) {
@@ -1057,15 +1057,16 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
                 receiptsNamespaces.add("urn:xmpp:receipts");
             }
             if (receiptsNamespaces.size() > 0) {
-                MessagePacket receipt = mXmppConnectionService.getMessageGenerator().received(account,
-                        packet,
+                final MessagePacket receipt = mXmppConnectionService.getMessageGenerator().received(account,
+                        packet.getFrom(),
+                        remoteMsgId,
                         receiptsNamespaces,
                         packet.getType());
                 mXmppConnectionService.sendMessagePacket(account, receipt);
             }
         } else if (query.isCatchup()) {
             if (request) {
-                query.addPendingReceiptRequest(new ReceiptRequest(packet.getFrom(), packet.getId()));
+                query.addPendingReceiptRequest(new ReceiptRequest(packet.getFrom(), remoteMsgId));
             }
         }
     }
