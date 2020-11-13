@@ -15,10 +15,10 @@ import java.lang.ref.WeakReference;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
+import java.util.concurrent.CopyOnWriteArraySet;
 
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.crypto.axolotl.FingerprintStatus;
@@ -113,7 +113,7 @@ public class Message extends AbstractEntity implements AvatarService.Avatarable 
 	private Message mPreviousMessage = null;
 	private String axolotlFingerprint = null;
 	private String errorMessage = null;
-	private Set<ReadByMarker> readByMarkers = new HashSet<>();
+	private Set<ReadByMarker> readByMarkers = new CopyOnWriteArraySet<>();
 
 	private Boolean isGeoUri = null;
 	private Boolean isEmojisOnly = null;
@@ -206,7 +206,7 @@ public class Message extends AbstractEntity implements AvatarService.Avatarable 
 		this.edits = Edit.fromJson(edited);
 		this.oob = oob;
 		this.errorMessage = errorMessage;
-		this.readByMarkers = readByMarkers == null ? new HashSet<>() : readByMarkers;
+		this.readByMarkers = readByMarkers == null ? new CopyOnWriteArraySet<>() : readByMarkers;
 		this.markable = markable;
 		this.deleted = deleted;
 		this.bodyLanguage = bodyLanguage;
