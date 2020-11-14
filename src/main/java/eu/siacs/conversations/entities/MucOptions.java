@@ -211,6 +211,10 @@ public class MucOptions {
         return conversation.getBooleanAttribute(Conversation.ATTRIBUTE_MODERATED, false);
     }
 
+    public boolean stableId() {
+        return getFeatures().contains("http://jabber.org/protocol/muc#stable_id");
+    }
+
     public User deleteUser(Jid jid) {
         User user = findUserByFullJid(jid);
         if (user != null) {
