@@ -58,7 +58,7 @@ public class ExportBackupService extends Service {
 
     private static final int NOTIFICATION_ID = 19;
     private static final int PAGE_SIZE = 20;
-    private static AtomicBoolean running = new AtomicBoolean(false);
+    private static final AtomicBoolean RUNNING = new AtomicBoolean(false);
     private DatabaseBackend mDatabaseBackend;
     private List<Account> mAccounts;
     private NotificationManager notificationManager;
@@ -67,7 +67,7 @@ public class ExportBackupService extends Service {
 
         //http://www.openintents.org/action/android-intent-action-view/file-directory
         //do not use 'vnd.android.document/directory' since this will trigger system file manager
-        Intent openIntent = new Intent(Intent.ACTION_VIEW);
+        final Intent openIntent = new Intent(Intent.ACTION_VIEW);
         openIntent.addCategory(Intent.CATEGORY_DEFAULT);
         if (Compatibility.runsAndTargetsTwentyFour(context)) {
             openIntent.setType("resource/folder");
@@ -76,17 +76,15 @@ public class ExportBackupService extends Service {
         }
         openIntent.putExtra("org.openintents.extra.ABSOLUTE_PATH", path);
 
-        Intent amazeIntent = new Intent(Intent.ACTION_VIEW);
+        final Intent amazeIntent = new Intent(Intent.ACTION_VIEW);
         amazeIntent.setDataAndType(Uri.parse("com.amaze.filemanager:" + path), "resource/folder");
 
         //will open a file manager at root and user can navigate themselves
-        Intent systemFallBack = new Intent(Intent.ACTION_VIEW);
+        final Intent systemFallBack = new Intent(Intent.ACTION_VIEW);
         systemFallBack.addCategory(Intent.CATEGORY_DEFAULT);
         systemFallBack.setData(Uri.parse("content://com.android.externalstorage.documents/root/primary"));
 
         return Arrays.asList(openIntent, amazeIntent, systemFallBack);
-
-
     }
 
     private static void accountExport(final SQLiteDatabase db, final String uuid, final PrintWriter writer) {
@@ -218,7 +216,7 @@ public class ExportBackupService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        if (running.compareAndSet(false, true)) {
+        if (RUNNING.compareAndSet(false, true)) {
             new Thread(() -> {
                 boolean success;
                 List<File> files;
@@ -231,7 +229,7 @@ public class ExportBackupService extends Service {
                     files = Collections.emptyList();
                 }
                 stopForeground(true);
-                running.set(false);
+                RUNNING.set(false);
                 if (success) {
                     notifySuccess(files);
                 }
@@ -322,10 +320,17 @@ public class ExportBackupService extends Service {
             }
             writer.flush();
             writer.close();
+            mediaScannerScanFile(file);
             Log.d(Config.LOGTAG, "written backup to " + file.getAbsoluteFile());
             count++;
         }
         return files;
+    }
+
+    private void mediaScannerScanFile(final File file) {
+        final Intent intent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
+        intent.setData(Uri.fromFile(file));
+        sendBroadcast(intent);
     }
 
     private void notifySuccess(final List<File> files) {
