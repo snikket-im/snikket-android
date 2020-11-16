@@ -1,5 +1,10 @@
 # Changelog
 
+### Version 2.9.1
+
+* fixed search on Android <= 5
+* optimize memory consumption
+
 ### Version 2.9.0
 
 * Search individual conversations
