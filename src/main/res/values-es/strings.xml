@@ -941,6 +941,11 @@
     <item quantity="one">Ver %1$d Participante</item>
     <item quantity="other">Ver %1$d Participantes</item>
   </plurals>
+  <plurals name="some_messages_could_not_be_delivered">
+    <item quantity="one">Un mensaje no se ha podido entregar</item>
+    <item quantity="other">Algunos mensajes no se han podido entregar</item>
+  </plurals>
   <string name="failed_deliveries">Envíos fallidos</string>
   <string name="more_options">Más opciones</string>
+  <string name="no_application_found">No se ha encontrado aplicación</string>
 </resources>
