@@ -969,4 +969,5 @@ Administrator twojego serwera będzie mógł czytać twoje wiadomości, ale moż
   </plurals>
   <string name="failed_deliveries">Nie dostarczone wiadomości</string>
   <string name="more_options">Więcej ustawień</string>
+  <string name="no_application_found">Nie znaleziono żadnej aplikacji</string>
 </resources>
