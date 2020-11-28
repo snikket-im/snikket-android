@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="pick_a_server">XMPPプロバイダーを選択してください</string>
+    <string name="use_conversations.im">conversations.imを利用する</string>
+    <string name="create_new_account">アカウントを作成</string>
+    <string name="do_you_have_an_account">XMPPアカウントをお持ちですか？既にほかのXMPPクライアントを利用しているか、Conversationsを利用したことがある場合はこちら。初めての方は、今すぐ新しいXMPPアカウントを作成できます。\nヒント: eメールのプロバイダーがXMPPアカウントも提供している場合があります。</string>
+    <string name="server_select_text">XMPPは、プロバイダーに依存しないインスタントメッセージのプロトコルです。XMPPサーバーならどこでも、このクライアントを使用することができます。\nよろしければ、Conversationsに最適化されたプロバイダーconversations.im¹で簡単にアカウントを作成することもできます。</string>
+    <string name="magic_create_text_on_x">%1$sへ招待されました。アカウント作成手順をご案内します。 \n%1$sをプロバイダーに選択してほかのプロバイダーのユーザーと会話するには、XMPPのフルアドレスを相手にお知らせください。</string>
+    <string name="magic_create_text_fixed">%1$sへ招待されました。ユーザーネームは既に選択されています。アカウント作成手順をご案内します。 \nほかのプロバイダーのユーザーと会話するには、XMPPのフルアドレスを相手にお知らせください。</string>
+    <string name="your_server_invitation">サーバーの招待</string>
+    <string name="improperly_formatted_provisioning">仮コードの書式が不正です</string>
+</resources>

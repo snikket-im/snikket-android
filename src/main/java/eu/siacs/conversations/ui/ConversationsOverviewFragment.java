@@ -192,7 +192,7 @@ public class ConversationsOverviewFragment extends XmppFragment {
 		}
 	};
 
-	private ItemTouchHelper touchHelper = new ItemTouchHelper(callback);
+	private ItemTouchHelper touchHelper;
 
 	public static Conversation getSuggestion(Activity activity) {
 		final Conversation exception;
@@ -242,7 +242,20 @@ public class ConversationsOverviewFragment extends XmppFragment {
 			throw new IllegalStateException("Trying to attach fragment to activity that is not an XmppActivity");
 		}
 	}
+	@Override
+	public void onDestroyView() {
+		Log.d(Config.LOGTAG,"ConversationsOverviewFragment.onDestroyView()");
+		super.onDestroyView();
+		this.binding = null;
+		this.conversationsAdapter = null;
+		this.touchHelper = null;
+	}
+	@Override
+	public void onDestroy() {
+		Log.d(Config.LOGTAG,"ConversationsOverviewFragment.onDestroy()");
+		super.onDestroy();
 
+	}
 	@Override
 	public void onPause() {
 		Log.d(Config.LOGTAG,"ConversationsOverviewFragment.onPause()");
@@ -278,6 +291,7 @@ public class ConversationsOverviewFragment extends XmppFragment {
 		});
 		this.binding.list.setAdapter(this.conversationsAdapter);
 		this.binding.list.setLayoutManager(new LinearLayoutManager(getActivity(),LinearLayoutManager.VERTICAL,false));
+		this.touchHelper = new ItemTouchHelper(this.callback);
 		this.touchHelper.attachToRecyclerView(this.binding.list);
 		return binding.getRoot();
 	}

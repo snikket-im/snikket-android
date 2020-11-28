@@ -8,7 +8,7 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:4.0.1'
+        classpath 'com.android.tools.build:gradle:4.1.1'
     }
 }
 
@@ -94,9 +94,9 @@ android {
 
     defaultConfig {
         minSdkVersion 16
-        targetSdkVersion 28
-        versionCode 398
-        versionName "2.9.0"
+        targetSdkVersion 29
+        versionCode 401
+        versionName "2.9.1"
         archivesBaseName += "-$versionName"
         applicationId "org.snikket.android"
         resValue "string", "applicationId", applicationId

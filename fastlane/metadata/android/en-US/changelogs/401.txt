@@ -1,0 +1,3 @@
+* Search: Fixed message search on Android 5 and earlier
+* Optimize memory consumption of the app
+* Tweaks to improve the in-call UI on small screens

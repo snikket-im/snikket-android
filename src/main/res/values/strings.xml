@@ -951,4 +951,5 @@
     </plurals>
     <string name="failed_deliveries">Failed deliveries</string>
     <string name="more_options">More options</string>
+    <string name="no_application_found">No application found</string>
 </resources>

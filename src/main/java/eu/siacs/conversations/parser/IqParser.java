@@ -75,7 +75,7 @@ public class IqParser extends AbstractParser implements OnIqPacketReceived {
         }
         final Element identity = query.findChild("identity");
         Data data = Data.parse(x);
-        String address = packet.getFrom().toEscapedString();
+        String address = packet.getFrom().toString();
         String name = identity == null ? null : identity.getAttribute("name");
         String roomName = data.getValue("muc#roomconfig_roomname");
         String description = data.getValue("muc#roominfo_description");

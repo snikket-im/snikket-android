@@ -18,12 +18,12 @@ import eu.siacs.conversations.http.P1S3UrlStreamHandler;
 import eu.siacs.conversations.services.XmppConnectionService;
 import eu.siacs.conversations.xml.Element;
 import eu.siacs.conversations.xml.Namespace;
+import eu.siacs.conversations.xmpp.Jid;
 import eu.siacs.conversations.xmpp.chatstate.ChatState;
 import eu.siacs.conversations.xmpp.jingle.JingleConnectionManager;
 import eu.siacs.conversations.xmpp.jingle.JingleRtpConnection;
 import eu.siacs.conversations.xmpp.jingle.Media;
 import eu.siacs.conversations.xmpp.stanzas.MessagePacket;
-import eu.siacs.conversations.xmpp.Jid;
 
 public class MessageGenerator extends AbstractGenerator {
     private static final String OMEMO_FALLBACK_MESSAGE = "I sent you an OMEMO encrypted message but your client doesn’t seem to support that. Find more information on https://conversations.im/omemo";
@@ -58,7 +58,9 @@ public class MessageGenerator extends AbstractGenerator {
         }
         packet.setFrom(account.getJid());
         packet.setId(message.getUuid());
-        packet.addChild("origin-id", Namespace.STANZA_IDS).setAttribute("id", message.getUuid());
+        if (conversation.getMode() == Conversational.MODE_SINGLE || message.isPrivateMessage() || !conversation.getMucOptions().stableId()) {
+            packet.addChild("origin-id", Namespace.STANZA_IDS).setAttribute("id", message.getUuid());
+        }
         if (message.edited()) {
             packet.addChild("replace", "urn:xmpp:message-correct:0").setAttribute("id", message.getEditedIdWireFormat());
         }
@@ -223,13 +225,13 @@ public class MessageGenerator extends AbstractGenerator {
         return packet;
     }
 
-    public MessagePacket received(Account account, MessagePacket originalMessage, ArrayList<String> namespaces, int type) {
-        MessagePacket receivedPacket = new MessagePacket();
+    public MessagePacket received(Account account, final Jid from, final String id,  ArrayList<String> namespaces, int type) {
+        final MessagePacket receivedPacket = new MessagePacket();
         receivedPacket.setType(type);
-        receivedPacket.setTo(originalMessage.getFrom());
+        receivedPacket.setTo(from);
         receivedPacket.setFrom(account.getJid());
-        for (String namespace : namespaces) {
-            receivedPacket.addChild("received", namespace).setAttribute("id", originalMessage.getId());
+        for (final String namespace : namespaces) {
+            receivedPacket.addChild("received", namespace).setAttribute("id", id);
         }
         receivedPacket.addChild("store", "urn:xmpp:hints");
         return receivedPacket;

@@ -550,7 +550,15 @@ public class Conversation extends AbstractEntity implements Blockable, Comparabl
     }
 
     public boolean isRead() {
-        return (this.messages.size() == 0) || this.messages.get(this.messages.size() - 1).isRead();
+        synchronized (this.messages) {
+            for(final Message message : Lists.reverse(this.messages)) {
+                if (message.isRead() && message.getType() == Message.TYPE_RTP_SESSION) {
+                    continue;
+                }
+                return message.isRead();
+            }
+            return true;
+        }
     }
 
     public List<Message> markRead(String upToUuid) {
@@ -1010,8 +1018,11 @@ public class Conversation extends AbstractEntity implements Blockable, Comparabl
     public int unreadCount() {
         synchronized (this.messages) {
             int count = 0;
-            for (int i = this.messages.size() - 1; i >= 0; --i) {
-                if (this.messages.get(i).isRead()) {
+            for(final Message message : Lists.reverse(this.messages)) {
+                if (message.isRead()) {
+                    if (message.getType() == Message.TYPE_RTP_SESSION) {
+                        continue;
+                    }
                     return count;
                 }
                 ++count;

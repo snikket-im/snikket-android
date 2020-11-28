@@ -4,6 +4,7 @@
   <string name="action_add">Új beszélgetés</string>
   <string name="action_accounts">Fiókok kezelése</string>
   <string name="action_account">Fiók kezelése</string>
+  <string name="action_end_conversation">Beszélgetés bezárása</string>
   <string name="action_contact_details">Partner részletei</string>
   <string name="action_muc_details">Csoportos csevegés részletei</string>
   <string name="channel_details">Csatorna részletei</string>
@@ -39,6 +40,7 @@
   <string name="moderator">Moderátor</string>
   <string name="participant">Résztvevő</string>
   <string name="visitor">Látogató</string>
+  <string name="remove_contact_text">Szeretné eltávolítani %s partnerét a partnerlistájából? Beszélgetései ezzel a partnerrel nem lesznek eltávolítva.</string>
   <string name="block_contact_text">Szeretné tiltani %s partnert, hogy ne tudjon üzeneteket küldeni?</string>
   <string name="unblock_contact_text">Szeretné feloldani %s partner tiltását és lehetővé tenni számára az üzenetek küldését?</string>
   <string name="block_domain_text">%s összes partnerét tiltja?</string>
@@ -63,6 +65,7 @@
   <string name="save">Mentés</string>
   <string name="ok">Rendben</string>
   <string name="crash_report_title">A Conversations összeomlott</string>
+  <string name="crash_report_message">Azzal, hogy az XMPP fiókja használatával beküldi a veremkiíratásokat, elősegítheti a Conversations alkalmazás folyamatos fejlesztését.</string>
   <string name="send_now">Küldés most</string>
   <string name="send_never">Sose kérdezzen újra</string>
   <string name="problem_connecting_to_account">Nem sikerült kapcsolódni a fiókhoz</string>
@@ -77,6 +80,7 @@
   <string name="sharing_files_please_wait">Fájlok megosztása. Kérem várjon…</string>
   <string name="action_clear_history">Előzmények törlése</string>
   <string name="clear_conversation_history">Beszélgetés előzményeinek törlése</string>
+  <string name="clear_histor_msg">Biztosan törölni szeretné az összes üzenetet a beszélgetésen belül?\n\n<b>Figyelmeztetés:</b> Ez nem fogja érinteni a más eszközökön vagy kiszolgálókon tárolt üzeneteket.</string>
   <string name="delete_file_dialog">Fájl törlése</string>
   <string name="delete_file_dialog_msg">Biztosan törölni szeretné ezt a fájlt?\n\n<b>Figyelmeztetés:</b> Ez nem fogja törölni a fájlnak azon másolatait, amelyek más eszközökön vagy kiszolgálókon vannak tárolva.</string>
   <string name="also_end_conversation">A beszélgetés bezárása azután</string>
@@ -91,13 +95,16 @@
   <string name="send_unencrypted">Küldés titkosítatlanul</string>
   <string name="decryption_failed">A visszafejtés sikertelen. Talán nem rendelkezik a megfelelő személyes kulccsal.</string>
   <string name="openkeychain_required">OpenKeychain</string>
+  <string name="openkeychain_required_long">A Conversations az <b>OpenKeychain</b>-t használja az üzenetek titkosításához és visszafejtéséhez, valamint a személyes kulcsai kezeléséhez.\n\nEz GPLv3+ szerint licencelt, és elérhető az F-Droid és a Google Play szoftveráruházakban.\n\n<small>(Ezután indítsa újra a Conversations alkalmazást.)</small></string>
   <string name="restart">Újraindítás</string>
   <string name="install">Telepítés</string>
   <string name="openkeychain_not_installed">Telepítse az OpenKeychain alkalmazás</string>
   <string name="offering">felajánlás…</string>
   <string name="waiting">várakozás…</string>
   <string name="no_pgp_key">Nem található OpenPGP kulcs</string>
+  <string name="contact_has_no_pgp_key">Nem lehet titkosítani az üzenetét, mert a partnere nem közölte a nyilvános kulcsát.\n\n<small>Kérje meg a partnerét, hogy állítsa be az OpenPGP-t.</small></string>
   <string name="no_pgp_keys">Nem találhatók OpenPGP kulcsok</string>
+  <string name="contacts_have_no_pgp_keys">Nem lehet titkosítani az üzenetét, mert a partnerei nem közölték a nyilvános kulcsukat.\n\n<small>Kérje meg a partnereit, hogy állítsák be az OpenPGP-t.</small></string>
   <string name="pref_general">Általános</string>
   <string name="pref_accept_files">Fájlok fogadása</string>
   <string name="pref_accept_files_summary">Fájlok automatikus fogadása, amelyek kisebbek mint…</string>

@@ -1049,6 +1049,15 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
         return binding.getRoot();
     }
 
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        Log.d(Config.LOGTAG, "ConversationFragment.onDestroyView()");
+        messageListAdapter.setOnContactPictureClicked(null);
+        messageListAdapter.setOnContactPictureLongClicked(null);
+        messageListAdapter.setOnQuoteListener(null);
+    }
+
     private void quoteText(String text) {
         if (binding.textinput.isEnabled()) {
             binding.textinput.insertAsQuote(text);
@@ -1721,7 +1730,10 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
                 break;
         }
         final Context context = getActivity();
-        if (context != null && intent.resolveActivity(context.getPackageManager()) != null) {
+        if (context == null) {
+            return;
+        }
+        if (intent.resolveActivity(context.getPackageManager()) != null) {
             if (chooser) {
                 startActivityForResult(
                         Intent.createChooser(intent, getString(R.string.perform_action_with)),
@@ -1729,6 +1741,8 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
             } else {
                 startActivityForResult(intent, attachmentChoice);
             }
+        } else {
+            Toast.makeText(context, R.string.no_application_found, Toast.LENGTH_LONG).show();
         }
     }
 

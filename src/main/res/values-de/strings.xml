@@ -947,4 +947,5 @@
   </plurals>
   <string name="failed_deliveries">Fehlgeschlagene Zustellungen</string>
   <string name="more_options">Weitere Optionen</string>
+  <string name="no_application_found">Keine Anwendung gefunden</string>
 </resources>

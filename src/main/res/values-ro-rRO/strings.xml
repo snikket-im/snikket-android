@@ -957,4 +957,5 @@
   </plurals>
   <string name="failed_deliveries">Trimiteri eșuate</string>
   <string name="more_options">Mai multe</string>
+  <string name="no_application_found">Nu s-a găsit nici o aplicație</string>
 </resources>
