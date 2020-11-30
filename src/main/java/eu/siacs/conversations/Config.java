@@ -36,7 +36,7 @@ public final class Config {
     public static final String LOGTAG = BuildConfig.LOGTAG;
 
     public static final Jid BUG_REPORTS = Jid.of("bugs@snikket.org");
-    public static final Uri HELP = Uri.parse("https://snikket.org/faq/");
+    public static final Uri HELP = Uri.parse("https://snikket.org/faq/?ref=app");
 
 
     public static final String DOMAIN_LOCK = null; //only allow account creation for this domain
