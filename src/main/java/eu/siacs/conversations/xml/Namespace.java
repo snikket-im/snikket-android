@@ -52,4 +52,5 @@ public final class Namespace {
     public static final String BOOKMARKS2_COMPAT = BOOKMARKS2 + "#compat";
     public static final String INVITE = "urn:xmpp:invite";
     public static final String PARS = "urn:xmpp:pars:0";
+    public static final String EASY_ONBOARDING_INVITE = "urn:xmpp:invite#invite";
 }

@@ -131,6 +131,7 @@ public class ConversationsActivity extends XmppActivity implements OnConversatio
 
     @Override
     protected void refreshUiReal() {
+        invalidateOptionsMenu();
         for (@IdRes int id : FRAGMENT_ID_NOTIFICATION_ORDER) {
             refreshFragment(id);
         }

@@ -36,6 +36,10 @@
         android:visible="@bool/show_individual_search_options"
         app:showAsAction="never" />
     <item
+        android:id="@+id/action_easy_invite"
+        android:orderInCategory="89"
+        android:title="@string/invite_to_app" />
+    <item
         android:id="@+id/action_accounts"
         android:orderInCategory="90"
         android:title="@string/action_accounts"
