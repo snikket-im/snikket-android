@@ -137,6 +137,7 @@ public class XmppConnection implements Runnable {
     protected final Account account;
     private final Features features = new Features(this);
     private final HashMap<Jid, ServiceDiscoveryResult> disco = new HashMap<>();
+    private final HashMap<String, Jid> commands = new HashMap<>();
     private final SparseArray<AbstractAcknowledgeableStanza> mStanzaQueue = new SparseArray<>();
     private final Hashtable<String, Pair<IqPacket, OnIqPacketReceived>> packetCallbacks = new Hashtable<>();
     private final Set<OnAdvancedStreamFeaturesLoaded> advancedStreamFeaturesLoadedListeners = new HashSet<>();
@@ -225,6 +226,12 @@ public class XmppConnection implements Runnable {
         }
         if (statusListener != null) {
             statusListener.onStatusChanged(account);
+        }
+    }
+
+    public Jid getJidForCommand(final String node) {
+        synchronized (this.commands) {
+            return this.commands.get(node);
         }
     }
 
@@ -1028,6 +1035,9 @@ public class XmppConnection implements Runnable {
         synchronized (this.disco) {
             disco.clear();
         }
+        synchronized (this.commands) {
+            this.commands.clear();
+        }
     }
 
     private void sendBindRequest() {
@@ -1250,6 +1260,35 @@ public class XmppConnection implements Runnable {
         });
     }
 
+    private void discoverCommands() {
+        final IqPacket request = new IqPacket(IqPacket.TYPE.GET);
+        request.setTo(account.getDomain());
+        request.addChild("query", Namespace.DISCO_ITEMS).setAttribute("node", Namespace.COMMANDS);
+        sendIqPacket(request, (account, response) -> {
+           if (response.getType() == IqPacket.TYPE.RESULT) {
+               final Element query = response.findChild("query",Namespace.DISCO_ITEMS);
+               if (query == null) {
+                   return;
+               }
+               final HashMap<String, Jid> commands = new HashMap<>();
+               for(final Element child : query.getChildren()) {
+                   if ("item".equals(child.getName())) {
+                       final String node = child.getAttribute("node");
+                       final Jid jid = child.getAttributeAsJid("jid");
+                       if (node != null && jid != null) {
+                           commands.put(node, jid);
+                       }
+                   }
+               }
+               Log.d(Config.LOGTAG,commands.toString());
+               synchronized (this.commands) {
+                   this.commands.clear();
+                   this.commands.putAll(commands);
+               }
+           }
+        });
+    }
+
     public boolean isMamPreferenceAlways() {
         return isMamPreferenceAlways;
     }
@@ -1272,6 +1311,9 @@ public class XmppConnection implements Runnable {
         }
         if (getFeatures().carbons() && !features.carbonsEnabled) {
             sendEnableCarbons();
+        }
+        if (getFeatures().commands()) {
+            discoverCommands();
         }
     }
 
@@ -1786,6 +1828,16 @@ public class XmppConnection implements Runnable {
 
         public boolean carbons() {
             return hasDiscoFeature(account.getDomain(), "urn:xmpp:carbons:2");
+        }
+
+        public boolean commands() {
+            return hasDiscoFeature(account.getDomain(), Namespace.COMMANDS);
+        }
+
+        public boolean easyOnboardingInvites() {
+            synchronized (commands) {
+                return commands.containsKey(Namespace.EASY_ONBOARDING_INVITE);
+            }
         }
 
         public boolean bookmarksConversion() {
