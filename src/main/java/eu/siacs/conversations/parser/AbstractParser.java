@@ -141,6 +141,20 @@ public abstract class AbstractParser {
 		return null;
 	}
 
+	public static String errorMessage(Element packet) {
+		final Element error = packet.findChild("error");
+		if (error != null && error.getChildren().size() > 0) {
+			final List<String> errorNames = orderedElementNames(error.getChildren());
+			final String text = error.findChildContent("text");
+			if (text != null && !text.trim().isEmpty()) {
+				return text;
+			} else if (errorNames.size() > 0){
+				return errorNames.get(0).replace("-"," ");
+			}
+		}
+		return null;
+	}
+
 	private static String prefixError(List<String> errorNames) {
 		if (errorNames.size() > 0) {
 			return errorNames.get(0)+'\u001f';

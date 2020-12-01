@@ -1630,7 +1630,7 @@ public class XmppConnectionService extends Service {
         final IqPacket request = new IqPacket(IqPacket.TYPE.SET);
         request.setTo(jid);
         final Element command = request.addChild("command", Namespace.COMMANDS);
-        command.setAttribute("node", Namespace.COMMANDS);
+        command.setAttribute("node", Namespace.EASY_ONBOARDING_INVITE);
         command.setAttribute("action", "execute");
         sendIqPacket(account, request, (a, response) -> {
             if (response.getType() == IqPacket.TYPE.RESULT) {
@@ -1649,7 +1649,7 @@ public class XmppConnectionService extends Service {
                 callback.inviteRequestFailed(getString(R.string.unable_to_parse_invite));
                 Log.d(Config.LOGTAG, response.toString());
             } else if (response.getType() == IqPacket.TYPE.ERROR) {
-                callback.inviteRequestFailed(IqParser.extractErrorMessage(response));
+                callback.inviteRequestFailed(IqParser.errorMessage(response));
             } else {
                 callback.inviteRequestFailed(getString(R.string.remote_server_timeout));
             }
