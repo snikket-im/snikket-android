@@ -21,6 +21,8 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.google.common.base.Strings;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -347,7 +349,7 @@ public class ChooseContactActivity extends AbstractSearchableListItemActivity im
     private void handleActivityResult(ActivityResult activityResult) {
         if (activityResult.resultCode == RESULT_OK && activityResult.requestCode == ScanActivity.REQUEST_SCAN_QR_CODE) {
             String result = activityResult.data.getStringExtra(ScanActivity.INTENT_EXTRA_RESULT);
-            XmppUri uri = new XmppUri(result == null ? "" : result);
+            XmppUri uri = new XmppUri(Strings.nullToEmpty(result));
             if (uri.isValidJid()) {
                 showEnterJidDialog(uri);
             }
