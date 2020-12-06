@@ -3,6 +3,7 @@ package eu.siacs.conversations.utils;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableList;
 
 import java.util.Collections;
@@ -75,13 +76,11 @@ public class EasyOnboardingInvite implements Parcelable {
         return supportingAccountsBuilder.build();
     }
 
-    public String getUri() {
-        return uri;
+
+    public String getShareableLink() {
+        return Strings.isNullOrEmpty(landingUrl) ? uri : landingUrl;
     }
 
-    public String getLandingUrl() {
-        return landingUrl;
-    }
 
     public String getDomain() {
         return domain;
