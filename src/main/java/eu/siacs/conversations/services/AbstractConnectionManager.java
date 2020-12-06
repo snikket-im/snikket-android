@@ -30,6 +30,8 @@ import eu.siacs.conversations.R;
 import eu.siacs.conversations.entities.DownloadableFile;
 import eu.siacs.conversations.utils.Compatibility;
 
+import static eu.siacs.conversations.entities.Transferable.VALID_CRYPTO_EXTENSIONS;
+
 public class AbstractConnectionManager {
 
     private static final int UI_REFRESH_THRESHOLD = 250;
@@ -104,6 +106,14 @@ public class AbstractConnectionManager {
         private Extension(String main, String secondary) {
             this.main = main;
             this.secondary = secondary;
+        }
+
+        public String getExtension() {
+            if (VALID_CRYPTO_EXTENSIONS.contains(main)) {
+                return secondary;
+            } else {
+                return main;
+            }
         }
 
         public static Extension of(String path) {

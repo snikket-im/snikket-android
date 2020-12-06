@@ -4,6 +4,7 @@ import android.os.PowerManager;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
+import com.google.common.base.Strings;
 import com.google.common.io.ByteStreams;
 
 import java.io.BufferedInputStream;
@@ -30,16 +31,16 @@ import eu.siacs.conversations.services.AbstractConnectionManager;
 import eu.siacs.conversations.services.XmppConnectionService;
 import eu.siacs.conversations.utils.CryptoHelper;
 import eu.siacs.conversations.utils.FileWriterException;
+import eu.siacs.conversations.utils.MimeUtils;
 import eu.siacs.conversations.utils.WakeLockHelper;
 import eu.siacs.conversations.xmpp.stanzas.IqPacket;
-import eu.siacs.conversations.xmpp.Jid;
 
 public class HttpDownloadConnection implements Transferable {
 
     private final Message message;
     private final boolean mUseTor;
-    private HttpConnectionManager mHttpConnectionManager;
-    private XmppConnectionService mXmppConnectionService;
+    private final HttpConnectionManager mHttpConnectionManager;
+    private final XmppConnectionService mXmppConnectionService;
     private URL mUrl;
     private DownloadableFile file;
     private int mStatus = Transferable.STATUS_UNKNOWN;
@@ -97,23 +98,13 @@ public class HttpDownloadConnection implements Transferable {
                     && message.getEncryption() != Message.ENCRYPTION_AXOLOTL) {
                 this.message.setEncryption(Message.ENCRYPTION_NONE);
             }
-            final String ext;
-            if (VALID_CRYPTO_EXTENSIONS.contains(extension.main)) {
-                ext = extension.secondary;
-            } else {
-                ext = extension.main;
+            final String ext = extension.getExtension();
+            if (ext != null) {
+                message.setRelativeFilePath(String.format("%s.%s", message.getUuid(), ext));
+            } else if (Strings.isNullOrEmpty(message.getRelativeFilePath())) {
+                message.setRelativeFilePath(message.getUuid());
             }
-            message.setRelativeFilePath(message.getUuid() + (ext != null ? ("." + ext) : ""));
-            final String reference = mUrl.getRef();
-            if (reference != null && AesGcmURLStreamHandler.IV_KEY.matcher(reference).matches()) {
-                this.file = new DownloadableFile(mXmppConnectionService.getCacheDir().getAbsolutePath() + "/" + message.getUuid());
-                this.file.setKeyAndIv(CryptoHelper.hexToBytes(reference));
-                Log.d(Config.LOGTAG, "create temporary OMEMO encrypted file: " + this.file.getAbsolutePath() + "(" + message.getMimeType() + ")");
-            } else {
-                this.file = mXmppConnectionService.getFileBackend().getFile(message, false);
-            }
-
-
+            setupFile();
             if (this.message.getEncryption() == Message.ENCRYPTION_AXOLOTL && this.file.getKey() == null) {
                 this.message.setEncryption(Message.ENCRYPTION_NONE);
             }
@@ -127,6 +118,17 @@ public class HttpDownloadConnection implements Transferable {
             }
         } catch (MalformedURLException e) {
             this.cancel();
+        }
+    }
+
+    private void setupFile() {
+        final String reference = mUrl.getRef();
+        if (reference != null && AesGcmURLStreamHandler.IV_KEY.matcher(reference).matches()) {
+            this.file = new DownloadableFile(mXmppConnectionService.getCacheDir().getAbsolutePath() + "/" + message.getUuid());
+            this.file.setKeyAndIv(CryptoHelper.hexToBytes(reference));
+            Log.d(Config.LOGTAG, "create temporary OMEMO encrypted file: " + this.file.getAbsolutePath() + "(" + message.getMimeType() + ")");
+        } else {
+            this.file = mXmppConnectionService.getFileBackend().getFile(message, false);
         }
     }
 
@@ -362,6 +364,16 @@ public class HttpDownloadConnection implements Transferable {
                     }
                 } else {
                     contentLength = connection.getHeaderField("Content-Length");
+                }
+                final String contentType = connection.getContentType();
+                final AbstractConnectionManager.Extension extension = AbstractConnectionManager.Extension.of(mUrl.getPath());
+                if (Strings.isNullOrEmpty(extension.getExtension()) && contentType != null) {
+                    final String fileExtension = MimeUtils.guessExtensionFromMimeType(contentType);
+                    if (fileExtension != null) {
+                        message.setRelativeFilePath(String.format("%s.%s", message.getUuid(), fileExtension));
+                        Log.d(Config.LOGTAG, "rewriting name after not finding extension in url but in content type");
+                        setupFile();
+                    }
                 }
                 connection.disconnect();
                 if (contentLength == null) {
