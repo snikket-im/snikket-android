@@ -246,6 +246,7 @@ public class UriHandlerActivity extends AppCompatActivity {
     }
 
     private static boolean looksLikeJsonObject(final String input) {
-        return input.charAt(0) == '{' && input.charAt(input.length() - 1) == '}';
+        final String trimmed = Strings.emptyToNull(input).trim();
+        return trimmed.charAt(0) == '{' && trimmed.charAt(trimmed.length() - 1) == '}';
     }
 }
