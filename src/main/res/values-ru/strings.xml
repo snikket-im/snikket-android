@@ -4,6 +4,7 @@
   <string name="action_add">Новая беседа</string>
   <string name="action_accounts">Управление аккаунтами</string>
   <string name="action_account">Управление аккаунтом</string>
+  <string name="action_end_conversation">Закрыть беседу</string>
   <string name="action_contact_details">Сведения о контакте</string>
   <string name="action_muc_details">Подробности конференции</string>
   <string name="channel_details">Сведения о канале</string>
@@ -296,8 +297,8 @@
   <string name="hosted_on">размещено на %s</string>
   <string name="checking_x">Проверка %s на сервере HTTP</string>
   <string name="not_connected_try_again">Вы неподключены. Попробуйте позже</string>
-  <string name="check_x_filesize">Проверить размер %s</string>
-  <string name="check_x_filesize_on_host">Проверить размер %1$s на %2$s</string>
+  <string name="check_x_filesize">Проверить размер (%s)</string>
+  <string name="check_x_filesize_on_host">Проверить размер на %2$s (%1$s)</string>
   <string name="message_options">Опции сообщения</string>
   <string name="quote">Цитировать</string>
   <string name="paste_as_quote">Вставить как цитату</string>
@@ -764,6 +765,7 @@
   <string name="ongoing_calls_channel_name">Активные вызовы</string>
   <string name="silent_messages_channel_name">Тихие сообщения</string>
   <string name="silent_messages_channel_description">Эта группа уведомлений используется для отображения беззвучных оповещений. Например, при активности на другом устройстве (Грейс-период).</string>
+  <string name="delivery_failed_channel_name">Недоставленные сообщения</string>
   <string name="pref_message_notification_settings">Настройки уведомлений о сообщениях</string>
   <string name="pref_incoming_call_notification_settings">Настройки уведомлений о входящих вызовах</string>
   <string name="pref_more_notification_settings_summary">Приоритет, звук, вибрация</string>
@@ -931,10 +933,35 @@
   <string name="only_one_call_at_a_time">Нельзя одновременно совершать больше одного звонка.</string>
   <string name="return_to_ongoing_call">Вернуться к текущему звонку</string>
   <string name="could_not_switch_camera">Не удалось переключить камеру</string>
+  <string name="add_to_favorites">Прикрепить</string>
+  <string name="remove_from_favorites">Открепить</string>
+  <string name="gpx_track">GPX-трек</string>
+  <string name="could_not_correct_message">Не удалось исправить сообщение</string>
+  <string name="search_all_conversations">Все беседы</string>
+  <string name="search_this_conversation">Эта беседа</string>
+  <string name="your_avatar">Ваш аватар</string>
+  <string name="avatar_for_x">Аватар для %s</string>
+  <string name="encrypted_with_omemo">Зашифровано с помощью OMEMO</string>
+  <string name="encrypted_with_openpgp">Зашифровано с помощью OpenPGP</string>
+  <string name="not_encrypted">Не зашифровано</string>
+  <string name="exit">Выйти</string>
+  <string name="record_voice_mail">Записать голосовое сообщение</string>
+  <string name="play_audio">Воспроизвести аудио</string>
+  <string name="pause_audio">Остановить воспроизведение</string>
+  <string name="add_contact_or_create_or_join_group_chat">Добавить контакт, создать или присоединиться к конференции, или найти каналы</string>
   <plurals name="view_users">
     <item quantity="one">Просмотр %1$d участника</item>
     <item quantity="few">Просмотр %1$d участников</item>
     <item quantity="many">Просмотр %1$d участников</item>
     <item quantity="other">Просмотр %1$d участников</item>
   </plurals>
+  <plurals name="some_messages_could_not_be_delivered">
+    <item quantity="one">Не удалось доставить сообщение</item>
+    <item quantity="few">Не удалось доставить сообщения</item>
+    <item quantity="many">Не удалось доставить сообщения</item>
+    <item quantity="other">Не удалось доставить некоторые сообщения</item>
+  </plurals>
+  <string name="failed_deliveries">Недоставленные сообщения</string>
+  <string name="more_options">Ещё</string>
+  <string name="no_application_found">Не найдено приложения</string>
 </resources>

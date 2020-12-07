@@ -9,4 +9,4 @@
     <string name="magic_create_text_fixed">%1$sへ招待されました。ユーザーネームは既に選択されています。アカウント作成手順をご案内します。 \nほかのプロバイダーのユーザーと会話するには、XMPPのフルアドレスを相手にお知らせください。</string>
     <string name="your_server_invitation">サーバーの招待</string>
     <string name="improperly_formatted_provisioning">仮コードの書式が不正です</string>
-</resources>
+    </resources>

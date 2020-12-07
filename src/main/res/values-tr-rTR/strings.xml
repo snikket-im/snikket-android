@@ -828,6 +828,7 @@
   <string name="temporarily_unavailable">Geçici olarak ulaşılamıyor. Daha sonra tekrar deneyiniz.</string>
   <string name="no_network_connection">Ağ bağlantısı yok</string>
   <string name="try_again_in_x">Lütfen %s içerisinde tekrar deneyiniz.</string>
+  <string name="rate_limited">Sınırlandınız</string>
   <string name="too_many_attempts">Çok fazla girişim</string>
   <string name="the_app_is_out_of_date">Bu uygulamamının tarihi geçmiş bir versiyonunu kullanıyorsunuz.</string>
   <string name="update">Güncelle</string>

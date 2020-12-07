@@ -550,7 +550,7 @@
   <string name="creating_conference">Creando unha conversa en grupo...</string>
   <string name="invite_again">Invitar de novo</string>
   <string name="gp_disable">Desactivar</string>
-  <string name="gp_short">Corto</string>
+  <string name="gp_short">Breve</string>
   <string name="gp_medium">Medio</string>
   <string name="gp_long">Longo</string>
   <string name="pref_broadcast_last_activity">Publicar utilización</string>

@@ -9,4 +9,4 @@
     <string name="magic_create_text_fixed">Du wurdest zu %1$seingeladen. Ein Benutzername ist bereits für dich ausgewählt worden. Wir führen dich durch den Prozess der Kontoerstellung.\nDu kannst mit Nutzern anderer Anbieter kommunizieren, indem du ihnen deine vollständige XMPP-Adresse gibst.</string>
     <string name="your_server_invitation">Deine Einladung für den Server</string>
     <string name="improperly_formatted_provisioning">Falsch formatierter Provisionierungscode</string>
-</resources>
+    </resources>

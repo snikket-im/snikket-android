@@ -9,4 +9,4 @@
     <string name="magic_create_text_fixed">您已受邀参加%1$s。 已经为您选择了一个用户名。 我们将指导您完成创建帐户的过程。\n您可以通过向其他提供商的用户提供完整的XMPP地址来与他们进行交流。</string>
     <string name="your_server_invitation">你的服务器邀请</string>
     <string name="improperly_formatted_provisioning">格式不正确的配置代码</string>
-</resources>
+    </resources>
