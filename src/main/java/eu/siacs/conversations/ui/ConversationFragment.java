@@ -1075,6 +1075,8 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
 
     @Override
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenuInfo menuInfo) {
+        //This should cancel any remaining click events that would otherwise trigger links
+        v.dispatchTouchEvent(MotionEvent.obtain(0, 0, MotionEvent.ACTION_CANCEL, 0f, 0f, 0));
         synchronized (this.messageList) {
             super.onCreateContextMenu(menu, v, menuInfo);
             AdapterView.AdapterContextMenuInfo acmi = (AdapterContextMenuInfo) menuInfo;
