@@ -1,5 +1,11 @@
 # Changelog
 
+### Version 2.9.2
+
+* Offer Easy Invite generation on supporting servers
+* Display GIFs send from Movim
+* store avatars in cache
+
 ### Version 2.9.1
 
 * fixed search on Android <= 5
