@@ -948,4 +948,7 @@
   <string name="failed_deliveries">Fehlgeschlagene Zustellungen</string>
   <string name="more_options">Weitere Optionen</string>
   <string name="no_application_found">Keine Anwendung gefunden</string>
+  <string name="invite_to_app">Einladung zu Conversations</string>
+  <string name="unable_to_parse_invite">Einladung kann nicht gelesen werden</string>
+  <string name="server_does_not_support_easy_onboarding_invites">Server unterstützt keine Generierung von Einladungen</string>
 </resources>

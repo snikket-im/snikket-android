@@ -958,4 +958,7 @@
   <string name="failed_deliveries">Trimiteri eșuate</string>
   <string name="more_options">Mai multe</string>
   <string name="no_application_found">Nu s-a găsit nici o aplicație</string>
+  <string name="invite_to_app">Invitați la Conversations</string>
+  <string name="unable_to_parse_invite">Nu s-a putut procesa invitația</string>
+  <string name="server_does_not_support_easy_onboarding_invites">Serverul nu suportă generarea de invitații</string>
 </resources>

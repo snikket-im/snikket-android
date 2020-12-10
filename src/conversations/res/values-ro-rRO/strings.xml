@@ -9,4 +9,8 @@
     <string name="magic_create_text_fixed">Ați fost invitați la %1$s. Un nume de utilizator a fost deja ales pentru dumneavoastră. Vă vom ghida prin procesul de creare al unui cont.\nVeți putea comunica cu utilizatorii altor furnizori oferindu-le adresa dumneavoastră completă XMPP.</string>
     <string name="your_server_invitation">Invitația serverului dumneavoastră</string>
     <string name="improperly_formatted_provisioning">Cod de acces formatat necorespunzător</string>
-    </resources>
+    <string name="tap_share_button_send_invite">Atingeți butonul de partajare pentru a trimite contactului o invitație la %1$s.</string>
+    <string name="if_contact_is_nearby_use_qr">Dacă e în apropiere, contactul poate scana codul de mai jos pentru a vă accepta invitația.</string>
+    <string name="easy_invite_share_text">Alătură-te %1$s și discută cu mine: %2$s</string>
+    <string name="share_invite_with">Partajează invitația cu…</string>
+</resources>

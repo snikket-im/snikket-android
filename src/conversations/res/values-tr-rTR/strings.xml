@@ -9,4 +9,8 @@
     <string name="magic_create_text_fixed">%1$s sağlayıcısına davet edildiniz. Sizin için zaten bir kullanıcı adı seçildi. Sizi hesap oluşturulması konusunda yönlendireceğiz.\nBaşka sağlayıcılar kullanan kullanıcılarla, onlara tam XMPP adresinizi vererek iletişim kurabileceksiniz.</string>
     <string name="your_server_invitation">Sunucu davetiyeniz</string>
     <string name="improperly_formatted_provisioning">Yanlış ayarlanmış düzenleme kodu</string>
-    </resources>
+    <string name="tap_share_button_send_invite">Kişinize, %1$s grubuna davet etmek için Paylaş düğmesine basın.</string>
+    <string name="if_contact_is_nearby_use_qr">Kişiniz yakınınızda ise, aşağıdaki kodu tarayak daveti kabul edebilirler.</string>
+    <string name="easy_invite_share_text">%1$s grubuna katıl ve benimle sohpet et: %2$s</string>
+    <string name="share_invite_with">Daveti şununla paylaş...</string>
+</resources>

@@ -971,4 +971,7 @@
   <string name="failed_deliveries">Başarısız gönderiler</string>
   <string name="more_options">Daha fazla seçenek</string>
   <string name="no_application_found">Herhangi bir uygulama bulunamadı</string>
+  <string name="invite_to_app">Conversations\'a davet et</string>
+  <string name="unable_to_parse_invite">Davet iletilemedi</string>
+  <string name="server_does_not_support_easy_onboarding_invites">Sunucu, davet oluşturulmasını desteklemiyor</string>
 </resources>
