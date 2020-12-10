@@ -118,12 +118,11 @@ public class PresenceParser extends AbstractParser implements
 									mXmppConnectionService.getAvatarService().clear(user);
 								}
 								if (user.getRealJid() != null) {
-									Contact c = conversation.getAccount().getRoster().getContact(user.getRealJid());
-									if (c.setAvatar(avatar)) {
-										mXmppConnectionService.syncRoster(conversation.getAccount());
-										mXmppConnectionService.getAvatarService().clear(c);
-										mXmppConnectionService.updateRosterUi();
-									}
+									final Contact c = conversation.getAccount().getRoster().getContact(user.getRealJid());
+									c.setAvatar(avatar);
+									mXmppConnectionService.syncRoster(conversation.getAccount());
+									mXmppConnectionService.getAvatarService().clear(c);
+									mXmppConnectionService.updateRosterUi();
 								}
 							} else if (mXmppConnectionService.isDataSaverDisabled()) {
 								mXmppConnectionService.fetchAvatar(mucOptions.getAccount(), avatar);
@@ -268,7 +267,8 @@ public class PresenceParser extends AbstractParser implements
 						mXmppConnectionService.getAvatarService().clear(account);
 						mXmppConnectionService.updateConversationUi();
 						mXmppConnectionService.updateAccountUi();
-					} else if (contact.setAvatar(avatar)) {
+					} else {
+						contact.setAvatar(avatar);
 						mXmppConnectionService.syncRoster(account);
 						mXmppConnectionService.getAvatarService().clear(contact);
 						mXmppConnectionService.updateConversationUi();

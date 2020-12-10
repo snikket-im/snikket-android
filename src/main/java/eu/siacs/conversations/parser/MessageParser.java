@@ -214,13 +214,12 @@ public class MessageParser extends AbstractParser implements OnMessagePacketRece
                         mXmppConnectionService.updateConversationUi();
                         mXmppConnectionService.updateAccountUi();
                     } else {
-                        Contact contact = account.getRoster().getContact(from);
-                        if (contact.setAvatar(avatar)) {
-                            mXmppConnectionService.syncRoster(account);
-                            mXmppConnectionService.getAvatarService().clear(contact);
-                            mXmppConnectionService.updateConversationUi();
-                            mXmppConnectionService.updateRosterUi();
-                        }
+                        final Contact contact = account.getRoster().getContact(from);
+                        contact.setAvatar(avatar);
+                        mXmppConnectionService.syncRoster(account);
+                        mXmppConnectionService.getAvatarService().clear(contact);
+                        mXmppConnectionService.updateConversationUi();
+                        mXmppConnectionService.updateRosterUi();
                     }
                 } else if (mXmppConnectionService.isDataSaverDisabled()) {
                     mXmppConnectionService.fetchAvatar(account, avatar);
