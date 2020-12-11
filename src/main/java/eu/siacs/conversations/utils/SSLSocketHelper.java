@@ -29,7 +29,7 @@ public class SSLSocketHelper {
         final Collection<String> supportedProtocols = new LinkedList<>(
                 Arrays.asList(sslSocket.getSupportedProtocols()));
         supportedProtocols.remove("SSLv3");
-        supportProtocols = supportedProtocols.toArray(new String[supportedProtocols.size()]);
+        supportProtocols = supportedProtocols.toArray(new String[0]);
 
         sslSocket.setEnabledProtocols(supportProtocols);
 
