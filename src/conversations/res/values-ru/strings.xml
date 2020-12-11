@@ -9,4 +9,4 @@
     <string name="magic_create_text_fixed">Вас пригласили на %1$s. Вам уже назначили имя пользователя. Мы проведём вас через процесс создания аккаунта. Этот аккаунт позволит вам общаться с пользователями и на этом, и на других серверах, используя ваш полный XMPP-адрес.</string>
     <string name="your_server_invitation">Ваше приглашение</string>
     <string name="improperly_formatted_provisioning">Неправильный формат кода</string>
-</resources>
+    </resources>

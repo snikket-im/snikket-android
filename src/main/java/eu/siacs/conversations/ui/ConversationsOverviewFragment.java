@@ -48,6 +48,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.google.common.collect.Collections2;
 
@@ -371,7 +372,10 @@ public class ConversationsOverviewFragment extends XmppFragment {
 
 	private void selectAccountToStartEasyInvite() {
 		final List<Account> accounts = EasyOnboardingInvite.getSupportingAccounts(activity.xmppConnectionService);
-		if (accounts.size() == 1) {
+		if (accounts.size() == 0) {
+			//This can technically happen if opening the menu item races with accounts reconnecting or something
+			Toast.makeText(getActivity(),R.string.no_active_accounts_support_this, Toast.LENGTH_LONG).show();
+		} else if (accounts.size() == 1) {
 			openEasyInviteScreen(accounts.get(0));
 		} else {
 			final AtomicReference<Account> selectedAccount = new AtomicReference<>(accounts.get(0));

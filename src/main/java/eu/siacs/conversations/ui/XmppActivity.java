@@ -368,12 +368,13 @@ public abstract class XmppActivity extends ActionBarActivity {
 
     public void selectPresence(final Conversation conversation, final PresenceSelector.OnPresenceSelected listener) {
         final Contact contact = conversation.getContact();
-        if (!contact.showInRoster()) {
-            showAddToRosterDialog(conversation.getContact());
-        } else {
+        if (contact.showInRoster() || contact.isSelf()) {
             final Presences presences = contact.getPresences();
             if (presences.size() == 0) {
-                if (!contact.getOption(Contact.Options.TO)
+                if (contact.isSelf()) {
+                    conversation.setNextCounterpart(null);
+                    listener.onPresenceSelected();
+                } else if (!contact.getOption(Contact.Options.TO)
                         && !contact.getOption(Contact.Options.ASKING)
                         && contact.getAccount().getStatus() == Account.State.ONLINE) {
                     showAskForPresenceDialog(contact);
@@ -391,6 +392,8 @@ public abstract class XmppActivity extends ActionBarActivity {
             } else {
                 PresenceSelector.showPresenceSelectionDialog(this, conversation, listener);
             }
+        } else {
+            showAddToRosterDialog(conversation.getContact());
         }
     }
 

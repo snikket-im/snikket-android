@@ -2,6 +2,8 @@ package eu.siacs.conversations.services;
 
 import android.util.Log;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -615,6 +617,7 @@ public class MessageArchiveService implements OnAdvancedStreamFeaturesLoaded {
 			}
 		}
 
+		@NotNull
 		@Override
 		public String toString() {
 			StringBuilder builder = new StringBuilder();

@@ -174,11 +174,7 @@ public class XmppUri {
                 jid = null;
             }
         } else {
-            try {
-                jid = Jid.ofEscaped(uri.toString()).asBareJid().toEscapedString();
-            } catch (final IllegalArgumentException ignored) {
-                jid = null;
-            }
+            jid = null;
         }
     }
 

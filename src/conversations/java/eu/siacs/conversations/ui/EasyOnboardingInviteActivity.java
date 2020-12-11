@@ -68,7 +68,7 @@ public class EasyOnboardingInviteActivity extends XmppActivity implements EasyOn
         final String shareText = getString(
                 R.string.easy_invite_share_text,
                 easyOnboardingInvite.getDomain(),
-                easyOnboardingInvite.getLandingUrl()
+                easyOnboardingInvite.getShareableLink()
         );
         final Intent sendIntent = new Intent();
         sendIntent.setAction(Intent.ACTION_SEND);
@@ -99,13 +99,7 @@ public class EasyOnboardingInviteActivity extends XmppActivity implements EasyOn
         final Point size = new Point();
         getWindowManager().getDefaultDisplay().getSize(size);
         final int width = Math.min(size.x, size.y);
-        final String content;
-        if (Strings.isNullOrEmpty(invite.getLandingUrl())) {
-            content = invite.getUri();
-        } else {
-            content = invite.getLandingUrl();
-        }
-        final Bitmap bitmap = BarcodeProvider.create2dBarcodeBitmap(content, width);
+        final Bitmap bitmap = BarcodeProvider.create2dBarcodeBitmap(invite.getShareableLink(), width);
         binding.qrCode.setImageBitmap(bitmap);
     }
 

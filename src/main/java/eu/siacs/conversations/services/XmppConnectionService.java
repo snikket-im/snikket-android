@@ -1127,6 +1127,7 @@ public class XmppConnectionService extends Service {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M || ContextCompat.checkSelfPermission(this, Manifest.permission.READ_CONTACTS) == PackageManager.PERMISSION_GRANTED) {
             startContactObserver();
         }
+        mFileAddingExecutor.execute(fileBackend::deleteHistoricAvatarPath);
         if (Compatibility.hasStoragePermission(this)) {
             Log.d(Config.LOGTAG, "starting file observer");
             mFileAddingExecutor.execute(this.fileObserver::startWatching);
@@ -3696,19 +3697,17 @@ public class XmppConnectionService extends Service {
                             updateConversationUi();
                             updateAccountUi();
                         } else {
-                            Contact contact = a.getRoster().getContact(avatar.owner);
-                            if (contact.setAvatar(avatar)) {
-                                syncRoster(account);
-                                getAvatarService().clear(contact);
-                                updateConversationUi();
-                                updateRosterUi();
-                            }
+                            final Contact contact = a.getRoster().getContact(avatar.owner);
+                            contact.setAvatar(avatar);
+                            syncRoster(account);
+                            getAvatarService().clear(contact);
+                            updateConversationUi();
+                            updateRosterUi();
                         }
                         if (callback != null) {
                             callback.success(avatar);
                         }
-                        Log.d(Config.LOGTAG, a.getJid().asBareJid()
-                                + ": successfully fetched pep avatar for " + avatar.owner);
+                        Log.d(Config.LOGTAG, a.getJid().asBareJid() + ": successfully fetched pep avatar for " + avatar.owner);
                         return;
                     }
                 } else {
@@ -3758,12 +3757,11 @@ public class XmppConnectionService extends Service {
                                     getAvatarService().clear(account);
                                     updateAccountUi();
                                 } else {
-                                    Contact contact = account.getRoster().getContact(avatar.owner);
-                                    if (contact.setAvatar(avatar, previouslyOmittedPepFetch)) {
-                                        syncRoster(account);
-                                        getAvatarService().clear(contact);
-                                        updateRosterUi();
-                                    }
+                                    final Contact contact = account.getRoster().getContact(avatar.owner);
+                                    contact.setAvatar(avatar, previouslyOmittedPepFetch);
+                                    syncRoster(account);
+                                    getAvatarService().clear(contact);
+                                    updateRosterUi();
                                 }
                                 updateConversationUi();
                             } else {
@@ -3778,11 +3776,10 @@ public class XmppConnectionService extends Service {
                                         }
                                         if (user.getRealJid() != null) {
                                             Contact contact = account.getRoster().getContact(user.getRealJid());
-                                            if (contact.setAvatar(avatar)) {
-                                                syncRoster(account);
-                                                getAvatarService().clear(contact);
-                                                updateRosterUi();
-                                            }
+                                            contact.setAvatar(avatar);
+                                            syncRoster(account);
+                                            getAvatarService().clear(contact);
+                                            updateRosterUi();
                                         }
                                     }
                                 }

@@ -828,6 +828,7 @@
   <string name="temporarily_unavailable">Geçici olarak ulaşılamıyor. Daha sonra tekrar deneyiniz.</string>
   <string name="no_network_connection">Ağ bağlantısı yok</string>
   <string name="try_again_in_x">Lütfen %s içerisinde tekrar deneyiniz.</string>
+  <string name="rate_limited">Sınırlandınız</string>
   <string name="too_many_attempts">Çok fazla girişim</string>
   <string name="the_app_is_out_of_date">Bu uygulamamının tarihi geçmiş bir versiyonunu kullanıyorsunuz.</string>
   <string name="update">Güncelle</string>
@@ -970,4 +971,7 @@
   <string name="failed_deliveries">Başarısız gönderiler</string>
   <string name="more_options">Daha fazla seçenek</string>
   <string name="no_application_found">Herhangi bir uygulama bulunamadı</string>
+  <string name="invite_to_app">Conversations\'a davet et</string>
+  <string name="unable_to_parse_invite">Davet iletilemedi</string>
+  <string name="server_does_not_support_easy_onboarding_invites">Sunucu, davet oluşturulmasını desteklemiyor</string>
 </resources>

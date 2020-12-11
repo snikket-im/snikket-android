@@ -938,4 +938,7 @@
   <string name="failed_deliveries">发送失败</string>
   <string name="more_options">更多选项</string>
   <string name="no_application_found">没有找到应用程序</string>
+  <string name="invite_to_app">邀请到 Conversations</string>
+  <string name="unable_to_parse_invite">无法解析邀请</string>
+  <string name="server_does_not_support_easy_onboarding_invites">服务器不支持生成邀请</string>
 </resources>
