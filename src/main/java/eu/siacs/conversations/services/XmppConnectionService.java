@@ -206,23 +206,26 @@ public class XmppConnectionService extends Service {
         }
     };
     public DatabaseBackend databaseBackend;
-    private ReplacingSerialSingleThreadExecutor mContactMergerExecutor = new ReplacingSerialSingleThreadExecutor("ContactMerger");
+    private final ReplacingSerialSingleThreadExecutor mContactMergerExecutor = new ReplacingSerialSingleThreadExecutor("ContactMerger");
     private long mLastActivity = 0;
-    private FileBackend fileBackend = new FileBackend(this);
+    private final FileBackend fileBackend = new FileBackend(this);
     private MemorizingTrustManager mMemorizingTrustManager;
-    private NotificationService mNotificationService = new NotificationService(this);
-    private ChannelDiscoveryService mChannelDiscoveryService = new ChannelDiscoveryService(this);
-    private ShortcutService mShortcutService = new ShortcutService(this);
-    private AtomicBoolean mInitialAddressbookSyncCompleted = new AtomicBoolean(false);
-    private AtomicBoolean mForceForegroundService = new AtomicBoolean(false);
-    private AtomicBoolean mForceDuringOnCreate = new AtomicBoolean(false);
-    private AtomicReference<OngoingCall> ongoingCall = new AtomicReference<>();
-    private OnMessagePacketReceived mMessageParser = new MessageParser(this);
-    private OnPresencePacketReceived mPresenceParser = new PresenceParser(this);
-    private IqParser mIqParser = new IqParser(this);
-    private MessageGenerator mMessageGenerator = new MessageGenerator(this);
+    private final NotificationService mNotificationService = new NotificationService(this);
+    private final ChannelDiscoveryService mChannelDiscoveryService = new ChannelDiscoveryService(this);
+    private final ShortcutService mShortcutService = new ShortcutService(this);
+    private final AtomicBoolean mInitialAddressbookSyncCompleted = new AtomicBoolean(false);
+    private final AtomicBoolean mForceForegroundService = new AtomicBoolean(false);
+    private final AtomicBoolean mForceDuringOnCreate = new AtomicBoolean(false);
+    private final AtomicReference<OngoingCall> ongoingCall = new AtomicReference<>();
+    private final OnMessagePacketReceived mMessageParser = new MessageParser(this);
+    private final OnPresencePacketReceived mPresenceParser = new PresenceParser(this);
+    private final IqParser mIqParser = new IqParser(this);
+    private final MessageGenerator mMessageGenerator = new MessageGenerator(this);
     public OnContactStatusChanged onContactStatusChanged = (contact, online) -> {
-        Conversation conversation = find(getConversations(), contact);
+        if (!online) {
+            getJingleConnectionManager().failProposedSessions(contact.getAccount(), contact.getJid().asBareJid());
+        }
+        final Conversation conversation = find(getConversations(), contact);
         if (conversation != null) {
             if (online) {
                 if (contact.getPresences().size() == 1) {
@@ -231,14 +234,14 @@ public class XmppConnectionService extends Service {
             }
         }
     };
-    private PresenceGenerator mPresenceGenerator = new PresenceGenerator(this);
+    private final PresenceGenerator mPresenceGenerator = new PresenceGenerator(this);
     private List<Account> accounts;
-    private JingleConnectionManager mJingleConnectionManager = new JingleConnectionManager(this);
-    private HttpConnectionManager mHttpConnectionManager = new HttpConnectionManager(this);
-    private AvatarService mAvatarService = new AvatarService(this);
-    private MessageArchiveService mMessageArchiveService = new MessageArchiveService(this);
-    private PushManagementService mPushManagementService = new PushManagementService(this);
-    private QuickConversationsService mQuickConversationsService = new QuickConversationsService(this);
+    private final JingleConnectionManager mJingleConnectionManager = new JingleConnectionManager(this);
+    private final HttpConnectionManager mHttpConnectionManager = new HttpConnectionManager(this);
+    private final AvatarService mAvatarService = new AvatarService(this);
+    private final MessageArchiveService mMessageArchiveService = new MessageArchiveService(this);
+    private final PushManagementService mPushManagementService = new PushManagementService(this);
+    private final QuickConversationsService mQuickConversationsService = new QuickConversationsService(this);
     private final ConversationsFileObserver fileObserver = new ConversationsFileObserver(
             Environment.getExternalStorageDirectory().getAbsolutePath()
     ) {
