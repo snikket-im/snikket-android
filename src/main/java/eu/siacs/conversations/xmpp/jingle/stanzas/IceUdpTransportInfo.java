@@ -14,6 +14,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.UUID;
 
 import eu.siacs.conversations.xml.Element;
 import eu.siacs.conversations.xml.Namespace;
@@ -93,6 +94,7 @@ public class IceUdpTransportInfo extends GenericTransportInfo {
             if (pair.length == 2 && "candidate".equals(pair[0])) {
                 final String[] segments = pair[1].split(" ");
                 if (segments.length >= 6) {
+                    final String id = UUID.randomUUID().toString();
                     final String foundation = segments[0];
                     final String component = segments[1];
                     final String transport = segments[2].toLowerCase(Locale.ROOT);
@@ -109,6 +111,7 @@ public class IceUdpTransportInfo extends GenericTransportInfo {
                     candidate.setAttribute("generation", additional.get("generation"));
                     candidate.setAttribute("rel-addr", additional.get("raddr"));
                     candidate.setAttribute("rel-port", additional.get("rport"));
+                    candidate.setAttribute("id", id);
                     candidate.setAttribute("ip", connectionAddress);
                     candidate.setAttribute("port", port);
                     candidate.setAttribute("priority", priority);
