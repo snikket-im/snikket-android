@@ -1,7 +1,5 @@
 package eu.siacs.conversations.crypto.sasl;
 
-import android.annotation.TargetApi;
-import android.os.Build;
 import android.util.Base64;
 
 import com.google.common.base.Objects;
@@ -21,7 +19,6 @@ import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.utils.CryptoHelper;
 import eu.siacs.conversations.xml.TagWriter;
 
-@TargetApi(Build.VERSION_CODES.HONEYCOMB_MR1)
 abstract class ScramMechanism extends SaslMechanism {
     // TODO: When channel binding (SCRAM-SHA1-PLUS) is supported in future, generalize this to indicate support and/or usage.
     private final static String GS2_HEADER = "n,,";

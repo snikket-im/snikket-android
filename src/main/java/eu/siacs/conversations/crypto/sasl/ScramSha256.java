@@ -11,27 +11,29 @@ import eu.siacs.conversations.xml.TagWriter;
 
 public class ScramSha256 extends ScramMechanism {
 
-	@Override
-	protected HMac getHMAC() {
-		return new HMac(new SHA256Digest());
-	}
+    public static final String MECHANISM = "SCRAM-SHA-256";
 
-	@Override
-	protected Digest getDigest() {
-		return new SHA256Digest();
-	}
+    @Override
+    protected HMac getHMAC() {
+        return new HMac(new SHA256Digest());
+    }
 
-	public ScramSha256(final TagWriter tagWriter, final Account account, final SecureRandom rng) {
-		super(tagWriter, account, rng);
-	}
+    @Override
+    protected Digest getDigest() {
+        return new SHA256Digest();
+    }
 
-	@Override
-	public int getPriority() {
-		return 25;
-	}
+    public ScramSha256(final TagWriter tagWriter, final Account account, final SecureRandom rng) {
+        super(tagWriter, account, rng);
+    }
 
-	@Override
-	public String getMechanism() {
-		return "SCRAM-SHA-256";
-	}
+    @Override
+    public int getPriority() {
+        return 25;
+    }
+
+    @Override
+    public String getMechanism() {
+        return MECHANISM;
+    }
 }

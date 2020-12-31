@@ -64,6 +64,7 @@ import eu.siacs.conversations.crypto.sasl.Plain;
 import eu.siacs.conversations.crypto.sasl.SaslMechanism;
 import eu.siacs.conversations.crypto.sasl.ScramSha1;
 import eu.siacs.conversations.crypto.sasl.ScramSha256;
+import eu.siacs.conversations.crypto.sasl.ScramSha512;
 import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.entities.Message;
 import eu.siacs.conversations.entities.ServiceDiscoveryResult;
@@ -870,20 +871,21 @@ public class XmppConnection implements Runnable {
     }
 
     private void authenticate() throws IOException {
-        final List<String> mechanisms = extractMechanisms(streamFeatures
-                .findChild("mechanisms"));
+        final List<String> mechanisms = extractMechanisms(streamFeatures.findChild("mechanisms"));
         final Element auth = new Element("auth", Namespace.SASL);
-        if (mechanisms.contains("EXTERNAL") && account.getPrivateKeyAlias() != null) {
+        if (mechanisms.contains(External.MECHANISM) && account.getPrivateKeyAlias() != null) {
             saslMechanism = new External(tagWriter, account, mXmppConnectionService.getRNG());
-        } else if (mechanisms.contains("SCRAM-SHA-256")) {
+        } else if (mechanisms.contains(ScramSha512.MECHANISM)) {
+            saslMechanism = new ScramSha512(tagWriter, account, mXmppConnectionService.getRNG());
+        } else if (mechanisms.contains(ScramSha256.MECHANISM)) {
             saslMechanism = new ScramSha256(tagWriter, account, mXmppConnectionService.getRNG());
-        } else if (mechanisms.contains("SCRAM-SHA-1")) {
+        } else if (mechanisms.contains(ScramSha1.MECHANISM)) {
             saslMechanism = new ScramSha1(tagWriter, account, mXmppConnectionService.getRNG());
-        } else if (mechanisms.contains("PLAIN") && !account.getJid().getDomain().toEscapedString().equals("nimbuzz.com")) {
+        } else if (mechanisms.contains(Plain.MECHANISM) && !account.getJid().getDomain().toEscapedString().equals("nimbuzz.com")) {
             saslMechanism = new Plain(tagWriter, account);
-        } else if (mechanisms.contains("DIGEST-MD5")) {
+        } else if (mechanisms.contains(DigestMd5.MECHANISM)) {
             saslMechanism = new DigestMd5(tagWriter, account, mXmppConnectionService.getRNG());
-        } else if (mechanisms.contains("ANONYMOUS")) {
+        } else if (mechanisms.contains(Anonymous.MECHANISM)) {
             saslMechanism = new Anonymous(tagWriter, account, mXmppConnectionService.getRNG());
         }
         if (saslMechanism != null) {
@@ -1265,27 +1267,27 @@ public class XmppConnection implements Runnable {
         request.setTo(account.getDomain());
         request.addChild("query", Namespace.DISCO_ITEMS).setAttribute("node", Namespace.COMMANDS);
         sendIqPacket(request, (account, response) -> {
-           if (response.getType() == IqPacket.TYPE.RESULT) {
-               final Element query = response.findChild("query",Namespace.DISCO_ITEMS);
-               if (query == null) {
-                   return;
-               }
-               final HashMap<String, Jid> commands = new HashMap<>();
-               for(final Element child : query.getChildren()) {
-                   if ("item".equals(child.getName())) {
-                       final String node = child.getAttribute("node");
-                       final Jid jid = child.getAttributeAsJid("jid");
-                       if (node != null && jid != null) {
-                           commands.put(node, jid);
-                       }
-                   }
-               }
-               Log.d(Config.LOGTAG,commands.toString());
-               synchronized (this.commands) {
-                   this.commands.clear();
-                   this.commands.putAll(commands);
-               }
-           }
+            if (response.getType() == IqPacket.TYPE.RESULT) {
+                final Element query = response.findChild("query", Namespace.DISCO_ITEMS);
+                if (query == null) {
+                    return;
+                }
+                final HashMap<String, Jid> commands = new HashMap<>();
+                for (final Element child : query.getChildren()) {
+                    if ("item".equals(child.getName())) {
+                        final String node = child.getAttribute("node");
+                        final Jid jid = child.getAttributeAsJid("jid");
+                        if (node != null && jid != null) {
+                            commands.put(node, jid);
+                        }
+                    }
+                }
+                Log.d(Config.LOGTAG, commands.toString());
+                synchronized (this.commands) {
+                    this.commands.clear();
+                    this.commands.putAll(commands);
+                }
+            }
         });
     }
 
