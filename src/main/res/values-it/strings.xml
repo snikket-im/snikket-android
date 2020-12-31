@@ -948,4 +948,7 @@
   <string name="failed_deliveries">Recapiti falliti</string>
   <string name="more_options">Altre opzioni</string>
   <string name="no_application_found">Nessuna applicazione trovata</string>
+  <string name="invite_to_app">Invita su Conversations</string>
+  <string name="unable_to_parse_invite">Impossibile analizzare l\'invito</string>
+  <string name="server_does_not_support_easy_onboarding_invites">Il server non supporta la generazione di inviti</string>
 </resources>
