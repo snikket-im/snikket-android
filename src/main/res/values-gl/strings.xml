@@ -951,4 +951,5 @@
   <string name="invite_to_app">Convida a Conversations</string>
   <string name="unable_to_parse_invite">Non se puido enviar o convite</string>
   <string name="server_does_not_support_easy_onboarding_invites">O servidor non soporta a creación de convites</string>
+  <string name="no_active_accounts_support_this">Ningunha conta activa soporta esta función</string>
 </resources>
