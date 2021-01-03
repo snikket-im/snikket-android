@@ -1,7 +1,10 @@
 <?xml version="1.0"?>
 <?xml-stylesheet href="../style.xsl" type="text/xsl"?>
 <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
-<Project xmlns="http://usefulinc.com/ns/doap#" xmlns:foaf="http://xmlns.com/foaf/0.1/" xmlns:xmpp="https://linkmauve.fr/ns/xmpp-doap#">
+<Project xmlns="http://usefulinc.com/ns/doap#"
+         xmlns:foaf="http://xmlns.com/foaf/0.1/"
+         xmlns:xmpp="https://linkmauve.fr/ns/xmpp-doap#"
+         xmlns:schema="https://schema.org/">
     <name>Conversations</name>
 
     <created>2014-01-14</created>
@@ -22,13 +25,12 @@
     <!-- See https://github.com/ewilderj/doap/issues/49 -->
     <language>en</language>
 
-    <logo rdf:resource="https://raw.githubusercontent.com/iNPUTmice/Conversations/master/doap.rdf"/>
+    <schema:logo rdf:resource="https://raw.githubusercontent.com/iNPUTmice/Conversations/master/art/ic_launcher.svg"/>
 
     <programming-language>Java</programming-language>
 
     <os>Android</os>
 
-    <!-- TODO: Categories are URIs, find a better location for them. -->
     <category rdf:resource="https://linkmauve.fr/ns/xmpp-doap#category-xmpp"/>
     <category rdf:resource="https://linkmauve.fr/ns/xmpp-doap#category-jabber"/>
     <category rdf:resource="https://linkmauve.fr/ns/xmpp-doap#category-client"/>
