@@ -77,7 +77,7 @@ public class FileBackend {
 
     private static final String FILE_PROVIDER = ".files";
     private static final float IGNORE_PADDING = 0.15f;
-    private XmppConnectionService mXmppConnectionService;
+    private final XmppConnectionService mXmppConnectionService;
 
     public FileBackend(XmppConnectionService service) {
         this.mXmppConnectionService = service;
