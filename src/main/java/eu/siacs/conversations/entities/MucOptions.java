@@ -158,8 +158,11 @@ public class MucOptions {
     }
 
     public boolean allowInvites() {
-        final Field field = getRoomInfoForm().getFieldByName("muc#roomconfig_allowinvites");
-        return field != null && "1".equals(field.getValue());
+        final Field allowInvitesField = getRoomInfoForm().getFieldByName("muc#roomconfig_allowinvites");
+        final boolean allowInvites = allowInvitesField != null && "1".equals(allowInvitesField.getValue());
+        final Field allowMemberInvitesField = getRoomInfoForm().getFieldByName("muc#roomconfig_allowmemberinvites");
+        final boolean allowMemberInvites = allowMemberInvitesField != null && "1".equals(allowMemberInvitesField.getValue());
+        return allowInvites || allowMemberInvites;
     }
 
     public boolean canChangeSubject() {
