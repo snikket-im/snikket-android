@@ -974,4 +974,5 @@
   <string name="invite_to_app">Conversations\'a davet et</string>
   <string name="unable_to_parse_invite">Davet iletilemedi</string>
   <string name="server_does_not_support_easy_onboarding_invites">Sunucu, davet oluşturulmasını desteklemiyor</string>
+  <string name="no_active_accounts_support_this">Bu özelliği destekleyen aktif bir hesap yok</string>
 </resources>
