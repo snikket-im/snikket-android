@@ -1,5 +1,8 @@
 # Changelog
 
+### Version 2.9.4
+* minor stability improvements for A/V calls
+
 ### Version 2.9.3
 
 * Fixed connectivity issues when different accounts used different SCRAM mechanisms
