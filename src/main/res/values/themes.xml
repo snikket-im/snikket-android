@@ -72,7 +72,7 @@
 
         <item name="unread_count">@color/green700_desaturated</item>
 
-        <item name="conversations_overview_background">@color/green700</item>
+        <item name="conversations_overview_background">@color/snikket700</item>
 
         <item name="icon_alpha" type="float">0.54</item>
         <item name="delete_icon_alpha" type="float">0.70</item>
@@ -228,7 +228,7 @@
 
         <item name="unread_count">@color/green900_desaturated</item>
 
-        <item name="conversations_overview_background">@color/green900</item>
+        <item name="conversations_overview_background">@color/snikket900</item>
 
         <item name="icon_alpha" type="float">0.7</item>
         <item name="delete_icon_alpha" type="float">0.7</item>
