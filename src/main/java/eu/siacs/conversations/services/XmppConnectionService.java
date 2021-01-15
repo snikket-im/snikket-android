@@ -1284,17 +1284,20 @@ public class XmppConnectionService extends Service {
         final OngoingCall ongoing = ongoingCall.get();
         if (force || mForceDuringOnCreate.get() || mForceForegroundService.get() || ongoing != null || (Compatibility.keepForegroundService(this) && hasEnabledAccounts())) {
             final Notification notification;
+            final int id;
             if (ongoing != null) {
                 notification = this.mNotificationService.getOngoingCallNotification(ongoing.id, ongoing.media);
-                startForeground(NotificationService.ONGOING_CALL_NOTIFICATION_ID, notification);
+                id = NotificationService.ONGOING_CALL_NOTIFICATION_ID;
+                startForeground(id, notification);
                 mNotificationService.cancel(NotificationService.FOREGROUND_NOTIFICATION_ID);
             } else {
                 notification = this.mNotificationService.createForegroundNotification();
-                startForeground(NotificationService.FOREGROUND_NOTIFICATION_ID, notification);
+                id = NotificationService.FOREGROUND_NOTIFICATION_ID;
+                startForeground(id, notification);
             }
 
             if (!mForceForegroundService.get()) {
-                mNotificationService.notify(NotificationService.FOREGROUND_NOTIFICATION_ID, notification);
+                mNotificationService.notify(id, notification);
             }
             status = true;
         } else {
