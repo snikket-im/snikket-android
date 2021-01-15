@@ -87,7 +87,7 @@ public class MessageAdapter extends ArrayAdapter<Message> {
     private final XmppActivity activity;
     private final AudioPlayer audioPlayer;
     private List<String> highlightedTerm = null;
-    private DisplayMetrics metrics;
+    private final DisplayMetrics metrics;
     private OnContactPictureClicked mOnContactPictureClickedListener;
     private OnContactPictureLongClicked mOnContactPictureLongClickedListener;
     private boolean mUseGreenBackground = false;

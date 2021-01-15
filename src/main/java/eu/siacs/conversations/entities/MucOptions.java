@@ -37,7 +37,7 @@ public class MucOptions {
     private final Conversation conversation;
     public OnRenameListener onRenameListener = null;
     private boolean mAutoPushConfiguration = true;
-    private Account account;
+    private final Account account;
     private ServiceDiscoveryResult serviceDiscoveryResult;
     private boolean isOnline = false;
     private Error error = Error.NONE;
