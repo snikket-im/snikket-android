@@ -26,6 +26,15 @@
     <language>en</language>
 
     <schema:logo rdf:resource="https://raw.githubusercontent.com/iNPUTmice/Conversations/master/art/ic_launcher.svg"/>
+    <schema:screenshot rdf:resource='https://raw.githubusercontent.com/iNPUTmice/Conversations/master/fastlane/metadata/android/en-US/images/phoneScreenshots/01.png'/>
+    <schema:screenshot rdf:resource='https://raw.githubusercontent.com/iNPUTmice/Conversations/master/fastlane/metadata/android/en-US/images/phoneScreenshots/02.png'/>
+    <schema:screenshot rdf:resource='https://raw.githubusercontent.com/iNPUTmice/Conversations/master/fastlane/metadata/android/en-US/images/phoneScreenshots/03.png'/>
+    <schema:screenshot rdf:resource='https://raw.githubusercontent.com/iNPUTmice/Conversations/master/fastlane/metadata/android/en-US/images/phoneScreenshots/04.png'/>
+    <schema:screenshot rdf:resource='https://raw.githubusercontent.com/iNPUTmice/Conversations/master/fastlane/metadata/android/en-US/images/phoneScreenshots/05.png'/>
+    <schema:screenshot rdf:resource='https://raw.githubusercontent.com/iNPUTmice/Conversations/master/fastlane/metadata/android/en-US/images/phoneScreenshots/06.png'/>
+    <schema:screenshot rdf:resource='https://raw.githubusercontent.com/iNPUTmice/Conversations/master/fastlane/metadata/android/en-US/images/phoneScreenshots/07.png'/>
+    <schema:screenshot rdf:resource='https://raw.githubusercontent.com/iNPUTmice/Conversations/master/fastlane/metadata/android/en-US/images/phoneScreenshots/08.png'/>
+    <schema:screenshot rdf:resource='https://raw.githubusercontent.com/iNPUTmice/Conversations/master/fastlane/metadata/android/en-US/images/phoneScreenshots/09.png'/>
 
     <programming-language>Java</programming-language>
 
@@ -84,6 +93,28 @@
     </implements>
     <implements>
         <xmpp:SupportedXep>
+            <xmpp:xep rdf:resource="https://xmpp.org/extensions/xep-0048.html"/>
+            <xmpp:status>complete</xmpp:status>
+            <xmpp:version>1.1</xmpp:version>
+        </xmpp:SupportedXep>
+    </implements>
+    <implements>
+        <xmpp:SupportedXep>
+            <xmpp:xep rdf:resource="https://xmpp.org/extensions/xep-0049.html"/>
+            <xmpp:status>complete</xmpp:status>
+            <xmpp:version>1.2</xmpp:version>
+        </xmpp:SupportedXep>
+    </implements>
+    <implements>
+        <xmpp:SupportedXep>
+            <xmpp:xep rdf:resource="https://xmpp.org/extensions/xep-0054.html"/>
+            <xmpp:status>partial</xmpp:status>
+            <xmpp:version>1.2</xmpp:version>
+            <xmpp:note xml:lang='en'>Avatars only</xmpp:note>
+        </xmpp:SupportedXep>
+    </implements>
+    <implements>
+        <xmpp:SupportedXep>
             <xmpp:xep rdf:resource="https://xmpp.org/extensions/xep-0084.html"/>
             <xmpp:status>complete</xmpp:status>
             <xmpp:version>1.1.3</xmpp:version>
@@ -112,6 +143,14 @@
     </implements>
     <implements>
         <xmpp:SupportedXep>
+            <xmpp:xep rdf:resource="https://xmpp.org/extensions/xep-0153.html"/>
+            <xmpp:status>partial</xmpp:status>
+            <xmpp:version>1.1</xmpp:version>
+            <xmpp:note xml:lang='en'>Read only. Publication via XEP-0398</xmpp:note>
+        </xmpp:SupportedXep>
+    </implements>
+    <implements>
+        <xmpp:SupportedXep>
             <xmpp:xep rdf:resource="https://xmpp.org/extensions/xep-0163.html"/>
             <xmpp:status>complete</xmpp:status>
             <xmpp:version>1.2.1</xmpp:version>
@@ -123,7 +162,14 @@
             <xmpp:xep rdf:resource="https://xmpp.org/extensions/xep-0166.html"/>
             <xmpp:status>complete</xmpp:status>
             <xmpp:version>1.1.2</xmpp:version>
-            <xmpp:note>File transfer only</xmpp:note>
+            <xmpp:note>File transfer + A/V calls</xmpp:note>
+        </xmpp:SupportedXep>
+    </implements>
+    <implements>
+        <xmpp:SupportedXep>
+            <xmpp:xep rdf:resource="https://xmpp.org/extensions/xep-0167.html"/>
+            <xmpp:status>complete</xmpp:status>
+            <xmpp:version>1.2.1</xmpp:version>
         </xmpp:SupportedXep>
     </implements>
     <implements>
@@ -132,6 +178,13 @@
             <xmpp:status>complete</xmpp:status>
             <xmpp:version>1.1</xmpp:version>
             <xmpp:note>read only</xmpp:note>
+        </xmpp:SupportedXep>
+    </implements>
+    <implements>
+        <xmpp:SupportedXep>
+            <xmpp:xep rdf:resource="https://xmpp.org/extensions/xep-0176.html"/>
+            <xmpp:status>complete</xmpp:status>
+            <xmpp:version>1.1</xmpp:version>
         </xmpp:SupportedXep>
     </implements>
     <implements>
@@ -160,6 +213,27 @@
             <xmpp:xep rdf:resource="https://xmpp.org/extensions/xep-0199.html"/>
             <xmpp:status>complete</xmpp:status>
             <xmpp:version>2.0.1</xmpp:version>
+        </xmpp:SupportedXep>
+    </implements>
+    <implements>
+        <xmpp:SupportedXep>
+            <xmpp:xep rdf:resource="https://xmpp.org/extensions/xep-0199.html"/>
+            <xmpp:status>complete</xmpp:status>
+            <xmpp:version>2.0.1</xmpp:version>
+        </xmpp:SupportedXep>
+    </implements>
+    <implements>
+        <xmpp:SupportedXep>
+            <xmpp:xep rdf:resource="https://xmpp.org/extensions/xep-0215.html"/>
+            <xmpp:status>complete</xmpp:status>
+            <xmpp:version>0.7</xmpp:version>
+        </xmpp:SupportedXep>
+    </implements>
+    <implements>
+        <xmpp:SupportedXep>
+            <xmpp:xep rdf:resource="https://xmpp.org/extensions/xep-0223.html"/>
+            <xmpp:status>complete</xmpp:status>
+            <xmpp:version>1.1</xmpp:version>
         </xmpp:SupportedXep>
     </implements>
     <implements>
@@ -213,9 +287,23 @@
     </implements>
     <implements>
         <xmpp:SupportedXep>
-            <xmpp:xep rdf:resource="https://xmpp.org/extensions/xep-0308.html"/>
+            <xmpp:xep rdf:resource="https://xmpp.org/extensions/xep-0293.html"/>
+            <xmpp:status>complete</xmpp:status>
+            <xmpp:version>1.0.1</xmpp:version>
+        </xmpp:SupportedXep>
+    </implements>
+    <implements>
+        <xmpp:SupportedXep>
+            <xmpp:xep rdf:resource="https://xmpp.org/extensions/xep-0294.html"/>
             <xmpp:status>complete</xmpp:status>
             <xmpp:version>1.0</xmpp:version>
+        </xmpp:SupportedXep>
+    </implements>
+    <implements>
+        <xmpp:SupportedXep>
+            <xmpp:xep rdf:resource="https://xmpp.org/extensions/xep-0308.html"/>
+            <xmpp:status>complete</xmpp:status>
+            <xmpp:version>1.2.0</xmpp:version>
         </xmpp:SupportedXep>
     </implements>
     <implements>
@@ -235,9 +323,30 @@
     </implements>
     <implements>
         <xmpp:SupportedXep>
+            <xmpp:xep rdf:resource="https://xmpp.org/extensions/xep-0320.html"/>
+            <xmpp:status>complete</xmpp:status>
+            <xmpp:version>1.0.0</xmpp:version>
+        </xmpp:SupportedXep>
+    </implements>
+    <implements>
+        <xmpp:SupportedXep>
             <xmpp:xep rdf:resource="https://xmpp.org/extensions/xep-0333.html"/>
             <xmpp:status>complete</xmpp:status>
             <xmpp:version>0.3</xmpp:version>
+        </xmpp:SupportedXep>
+    </implements>
+    <implements>
+        <xmpp:SupportedXep>
+            <xmpp:xep rdf:resource="https://xmpp.org/extensions/xep-0338.html"/>
+            <xmpp:status>complete</xmpp:status>
+            <xmpp:version>1.0.0</xmpp:version>
+        </xmpp:SupportedXep>
+    </implements>
+    <implements>
+        <xmpp:SupportedXep>
+            <xmpp:xep rdf:resource="https://xmpp.org/extensions/xep-0339.html"/>
+            <xmpp:status>complete</xmpp:status>
+            <xmpp:version>1.0.0</xmpp:version>
         </xmpp:SupportedXep>
     </implements>
     <implements>
@@ -249,10 +358,24 @@
     </implements>
     <implements>
         <xmpp:SupportedXep>
+            <xmpp:xep rdf:resource="https://xmpp.org/extensions/xep-0353.html"/>
+            <xmpp:status>complete</xmpp:status>
+            <xmpp:version>0.3.0</xmpp:version>
+        </xmpp:SupportedXep>
+    </implements>
+    <implements>
+        <xmpp:SupportedXep>
             <xmpp:xep rdf:resource="https://xmpp.org/extensions/xep-0357.html"/>
             <xmpp:status>complete</xmpp:status>
             <xmpp:version>0.4.0</xmpp:version>
             <xmpp:note>Only available in the version distributed over Google Play</xmpp:note>
+        </xmpp:SupportedXep>
+    </implements>
+    <implements>
+        <xmpp:SupportedXep>
+            <xmpp:xep rdf:resource="https://xmpp.org/extensions/xep-0363.html"/>
+            <xmpp:status>complete</xmpp:status>
+            <xmpp:version>1.0.0</xmpp:version>
         </xmpp:SupportedXep>
     </implements>
     <implements>
