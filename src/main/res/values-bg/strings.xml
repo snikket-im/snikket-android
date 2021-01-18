@@ -4,6 +4,7 @@
   <string name="action_add">Нов разговор</string>
   <string name="action_accounts">Управление на профилите</string>
   <string name="action_account">Управление на профила</string>
+  <string name="action_end_conversation">Затваряне на разговора</string>
   <string name="action_contact_details">Подробности за контакта</string>
   <string name="action_muc_details">Подробности за груповия разговор</string>
   <string name="channel_details">Подробности за канала</string>
@@ -15,6 +16,8 @@
   <string name="action_unblock_contact">Деблокиране на контакта</string>
   <string name="action_block_domain">Блокиране на домейна</string>
   <string name="action_unblock_domain">Деблокиране на домейна</string>
+  <string name="action_block_participant">Блокиране на участника</string>
+  <string name="action_unblock_participant">Деблокиране на участника</string>
   <string name="title_activity_manage_accounts">Управление на профилите</string>
   <string name="title_activity_settings">Настройки</string>
   <string name="title_activity_sharewith">Споделяне в разговора</string>
@@ -26,6 +29,7 @@
   <string name="just_now">току-що</string>
   <string name="minute_ago">преди 1 минута</string>
   <string name="minutes_ago">преди %d минути</string>
+  <string name="x_unread_conversations">%d непрочетени разговора</string>
   <string name="sending">изпращане…</string>
   <string name="message_decrypting">Дешифроване на съобщението. Моля, изчакайте…</string>
   <string name="pgp_message">Съобщение, шифр. чрез OpenPGP</string>
@@ -36,12 +40,14 @@
   <string name="moderator">Модератор</string>
   <string name="participant">Участник</string>
   <string name="visitor">Посетител</string>
+  <string name="remove_contact_text">Искате ли да премахнете %s от списъка си с контакти? Разговорите с него няма да бъдат премахнати.</string>
   <string name="block_contact_text">Искате ли да блокирате %s, така че да не може да Ви праща съобщения?</string>
   <string name="unblock_contact_text">Искате ли да деблокирате %s, така че отново да може да Ви праща съобщения?</string>
   <string name="block_domain_text">Блокиране на всички контакти от %s?</string>
   <string name="unblock_domain_text">Деблокиране на всички контакти от %s?</string>
   <string name="contact_blocked">Контактът е блокиран</string>
   <string name="blocked">Блокиран</string>
+  <string name="remove_bookmark_text">Искате ли да премахнете отметката за %s? Разговорите, свързани с тази отметка, няма да бъдат премахнати.</string>
   <string name="register_account">Регистриране на нов профил на сървъра</string>
   <string name="change_password_on_server">Промяна на паролата в сървъра</string>
   <string name="share_with">Споделяне с…</string>
