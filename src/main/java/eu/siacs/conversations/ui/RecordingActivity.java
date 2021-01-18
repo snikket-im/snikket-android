@@ -1,10 +1,9 @@
 package eu.siacs.conversations.ui;
 
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.databinding.DataBindingUtil;
+import androidx.databinding.DataBindingUtil;
 import android.media.MediaRecorder;
 import android.net.Uri;
 import android.os.Bundle;

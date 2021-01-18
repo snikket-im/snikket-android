@@ -2,7 +2,7 @@ package eu.siacs.conversations.ui.util;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.support.annotation.StringRes;
+import androidx.annotation.StringRes;
 
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.entities.MucOptions;

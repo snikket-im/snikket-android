@@ -1,6 +1,6 @@
 package eu.siacs.conversations.xmpp.jingle.stanzas;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import com.google.common.base.CaseFormat;
 

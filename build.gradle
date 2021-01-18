@@ -30,11 +30,9 @@ configurations {
     quicksyImplementation
 }
 
-ext {
-    supportLibVersion = '28.0.0'
-}
-
 dependencies {
+    implementation 'androidx.viewpager:viewpager:1.0.0'
+
     //should remain that low because later versions introduce dependency to androidx (not sure exactly from what version)
     playstoreImplementation('com.google.firebase:firebase-messaging:17.3.4') {
         exclude group: 'com.google.firebase', module: 'firebase-core'
@@ -48,15 +46,15 @@ dependencies {
         exclude group: 'com.android.support', module: 'appcompat-v7'
         exclude group: 'com.android.support', module: 'exifinterface'
     }
-    implementation "com.android.support:support-v13:$supportLibVersion"
-    implementation "com.android.support:appcompat-v7:$supportLibVersion"
-    implementation "com.android.support:exifinterface:$supportLibVersion"
-    implementation "com.android.support:cardview-v7:$supportLibVersion"
-    implementation "com.android.support:support-emoji:$supportLibVersion"
-    implementation "com.android.support:design:$supportLibVersion"
-    compatImplementation "com.android.support:support-emoji-appcompat:$supportLibVersion"
-    conversationsFreeCompatImplementation "com.android.support:support-emoji-bundled:$supportLibVersion"
-    quicksyFreeCompatImplementation "com.android.support:support-emoji-bundled:$supportLibVersion"
+    //implementation 'androidx.legacy:legacy-support-v13:1.0.0'
+    implementation 'androidx.appcompat:appcompat:1.0.0'
+    implementation 'androidx.exifinterface:exifinterface:1.0.0'
+    implementation 'androidx.cardview:cardview:1.0.0'
+    implementation 'androidx.emoji:emoji:1.0.0'
+    implementation 'com.google.android.material:material:1.0.0'
+    compatImplementation 'androidx.emoji:emoji-appcompat:1.0.0'
+    conversationsFreeCompatImplementation 'androidx.emoji:emoji-bundled:1.0.0'
+    quicksyFreeCompatImplementation 'androidx.emoji:emoji-bundled:1.0.0'
     implementation 'org.bouncycastle:bcmail-jdk15on:1.64'
     //zxing stopped supporting Java 7 so we have to stick with 3.3.3
     //https://github.com/zxing/zxing/issues/1170
