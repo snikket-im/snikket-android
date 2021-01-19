@@ -16,7 +16,7 @@ script:
     - ./gradlew assembleQuicksyFreeCompatDebug
     - ./gradlew assembleQuicksyFreeSystemDebug
     - ./gradlew assembleConversationsFreeCompatDebug
-    - ./gradlew assembleConversationsSystemDebug
+    - ./gradlew assembleConversationsFreeSystemDebug
 
 before_install:
     - yes | sdkmanager "platforms;android-28"
