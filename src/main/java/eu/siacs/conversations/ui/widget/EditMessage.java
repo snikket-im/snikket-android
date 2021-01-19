@@ -2,9 +2,9 @@ package eu.siacs.conversations.ui.widget;
 
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
-import android.support.v13.view.inputmethod.EditorInfoCompat;
-import android.support.v13.view.inputmethod.InputConnectionCompat;
-import android.support.v13.view.inputmethod.InputContentInfoCompat;
+import androidx.core.view.inputmethod.EditorInfoCompat;
+import androidx.core.view.inputmethod.InputConnectionCompat;
+import androidx.core.view.inputmethod.InputContentInfoCompat;
 
 import android.content.Context;
 import android.os.Build;

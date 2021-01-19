@@ -1,7 +1,7 @@
 package eu.siacs.conversations.http;
 
 import android.os.PowerManager;
-import android.support.annotation.Nullable;
+import androidx.annotation.Nullable;
 import android.util.Log;
 
 import com.google.common.base.Strings;

@@ -1,7 +1,7 @@
 package eu.siacs.conversations.xmpp;
 
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import org.jxmpp.jid.Jid;
 import org.jxmpp.jid.impl.JidCreate;

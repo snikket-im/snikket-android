@@ -29,7 +29,7 @@
 
 package eu.siacs.conversations.utils;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 import android.util.LruCache;
 
 import java.util.ArrayList;
