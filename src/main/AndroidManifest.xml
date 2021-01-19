@@ -72,12 +72,14 @@
 
         <service android:name=".services.XmppConnectionService" />
 
-        <receiver android:name=".services.EventReceiver">
+        <receiver android:name=".services.EventReceiver"
+            android:permission="com.google.android.gms.auth.api.phone.permission.SEND">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
                 <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
                 <action android:name="android.intent.action.ACTION_SHUTDOWN" />
                 <action android:name="android.media.RINGER_MODE_CHANGED" />
+                <action android:name="com.google.android.gms.auth.api.phone.SMS_RETRIEVED"/>
             </intent-filter>
         </receiver>
 

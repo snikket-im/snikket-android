@@ -27,7 +27,7 @@ public class EventReceiver extends BroadcastReceiver {
         if (extras != null) {
             intentForService.putExtras(extras);
         }
-        if ("ui".equals(action) || hasEnabledAccounts(context)) {
+        if ("ui".equals(action) || QuickConversationsService.SMS_RETRIEVED_ACTION.equals(action)  || hasEnabledAccounts(context)) {
             Compatibility.startService(context, intentForService);
         } else {
             Log.d(Config.LOGTAG, "EventReceiver ignored action " + intentForService.getAction());

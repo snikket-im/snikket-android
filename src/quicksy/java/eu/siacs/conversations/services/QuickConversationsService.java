@@ -1,8 +1,10 @@
 package eu.siacs.conversations.services;
 
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
+import android.os.Bundle;
 import android.os.SystemClock;
 import android.preference.PreferenceManager;
 import android.util.Log;
@@ -47,6 +49,7 @@ import eu.siacs.conversations.utils.AccountUtils;
 import eu.siacs.conversations.utils.CryptoHelper;
 import eu.siacs.conversations.utils.PhoneNumberUtilWrapper;
 import eu.siacs.conversations.utils.SerialSingleThreadExecutor;
+import eu.siacs.conversations.utils.SmsRetrieverWrapper;
 import eu.siacs.conversations.xml.Element;
 import eu.siacs.conversations.xml.Namespace;
 import eu.siacs.conversations.xmpp.Jid;
@@ -122,6 +125,7 @@ public class QuickConversationsService extends AbstractQuickConversationsService
     public void requestVerification(Phonenumber.PhoneNumber phoneNumber) {
         final String e164 = PhoneNumberUtilWrapper.normalize(service, phoneNumber);
         if (mVerificationRequestInProgress.compareAndSet(false, true)) {
+            SmsRetrieverWrapper.start(service);
             new Thread(() -> {
                 try {
                     final URL url = new URL(BASE_URL + "/authentication/" + e164);
@@ -322,6 +326,28 @@ public class QuickConversationsService extends AbstractQuickConversationsService
         });
     }
 
+    @Override
+    public void handleSmsReceived(final Intent intent) {
+        final Bundle extras = intent.getExtras();
+        final String pin = SmsRetrieverWrapper.extractPin(extras);
+        if (pin == null) {
+            Log.d(Config.LOGTAG, "unable to extract Pin from received SMS");
+            return;
+        }
+        final Account account = AccountUtils.getFirst(service);
+        if (account == null) {
+            Log.d(Config.LOGTAG, "no account configured to process PIN received by SMS");
+            return;
+        }
+        verify(account, pin);
+        synchronized (mOnVerification) {
+            for (OnVerification onVerification : mOnVerification) {
+                onVerification.startBackgroundVerification(pin);
+            }
+        }
+
+    }
+
 
     private void considerSync(boolean forced) {
         Map<String, PhoneNumberContact> contacts = PhoneNumberContact.load(service);
@@ -429,11 +455,13 @@ public class QuickConversationsService extends AbstractQuickConversationsService
         void onVerificationSucceeded();
 
         void onVerificationRetryAt(long timestamp);
+
+        void startBackgroundVerification(String pin);
     }
 
     private static class Attempt {
         private final long timestamp;
-        private int hash;
+        private final int hash;
 
         private static final Attempt NULL = new Attempt(0, 0);
 

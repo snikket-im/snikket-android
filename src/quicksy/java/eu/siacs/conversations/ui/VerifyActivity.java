@@ -316,6 +316,12 @@ public class VerifyActivity extends XmppActivity implements ClipboardManager.OnP
         runOnUiThread(VERIFICATION_TIMEOUT_UPDATER);
     }
 
+    @Override
+    public void startBackgroundVerification(String pin) {
+        pinEntryWrapper.setPin(pin);
+        setVerifyingState(true);
+    }
+
     //send sms again button callback
     @Override
     public void onVerificationRequestFailed(int code) {
@@ -329,6 +335,7 @@ public class VerifyActivity extends XmppActivity implements ClipboardManager.OnP
     @Override
     public void onVerificationRequested() {
         runOnUiThread(() -> {
+            pinEntryWrapper.clear();
             setRequestingVerificationState(false);
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             builder.setMessage(R.string.we_have_sent_you_another_sms);

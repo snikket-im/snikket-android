@@ -13,8 +13,7 @@ before_script:
     - mkdir libs
     - wget -O libs/libwebrtc-m87.aar https://gultsch.de/files/libwebrtc-m87.aar
 script:
-    - ./gradlew assembleConversationsFreeSystemRelease
-    - ./gradlew assembleQuicksyFreeCompatRelease
+    - ./gradlew assembleDebug
 
 before_install:
     - yes | sdkmanager "platforms;android-28"

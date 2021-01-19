@@ -32,10 +32,6 @@ import android.os.SystemClock;
 import android.preference.PreferenceManager;
 import android.provider.ContactsContract;
 import android.security.KeyChain;
-import androidx.annotation.BoolRes;
-import androidx.annotation.IntegerRes;
-import androidx.core.app.RemoteInput;
-import androidx.core.content.ContextCompat;
 import android.telephony.PhoneStateListener;
 import android.telephony.TelephonyManager;
 import android.text.TextUtils;
@@ -43,6 +39,11 @@ import android.util.DisplayMetrics;
 import android.util.Log;
 import android.util.LruCache;
 import android.util.Pair;
+
+import androidx.annotation.BoolRes;
+import androidx.annotation.IntegerRes;
+import androidx.core.app.RemoteInput;
+import androidx.core.content.ContextCompat;
 
 import com.google.common.base.Objects;
 import com.google.common.base.Strings;
@@ -135,6 +136,7 @@ import eu.siacs.conversations.utils.WakeLockHelper;
 import eu.siacs.conversations.utils.XmppUri;
 import eu.siacs.conversations.xml.Element;
 import eu.siacs.conversations.xml.Namespace;
+import eu.siacs.conversations.xmpp.Jid;
 import eu.siacs.conversations.xmpp.OnBindListener;
 import eu.siacs.conversations.xmpp.OnContactStatusChanged;
 import eu.siacs.conversations.xmpp.OnIqPacketReceived;
@@ -159,7 +161,6 @@ import eu.siacs.conversations.xmpp.stanzas.IqPacket;
 import eu.siacs.conversations.xmpp.stanzas.MessagePacket;
 import eu.siacs.conversations.xmpp.stanzas.PresencePacket;
 import me.leolin.shortcutbadger.ShortcutBadger;
-import eu.siacs.conversations.xmpp.Jid;
 
 public class XmppConnectionService extends Service {
 
@@ -633,6 +634,9 @@ public class XmppConnectionService extends Service {
         if (action != null) {
             final String uuid = intent.getStringExtra("uuid");
             switch (action) {
+                case QuickConversationsService.SMS_RETRIEVED_ACTION:
+                    mQuickConversationsService.handleSmsReceived(intent);
+                break;
                 case ConnectivityManager.CONNECTIVITY_ACTION:
                     if (hasInternetConnection()) {
                         if (Config.POST_CONNECTIVITY_CHANGE_PING_INTERVAL > 0) {

@@ -26,6 +26,8 @@ configurations {
     conversationsFreeCompatImplementation
     conversationsPlaystoreCompatImplementation
     conversationsPlaystoreSystemImplementation
+    quicksyPlaystoreCompatImplementation
+    quicksyPlaystoreSystemImplementation
     quicksyFreeCompatImplementation
     quicksyImplementation
 }
@@ -41,6 +43,8 @@ dependencies {
     }
     conversationsPlaystoreCompatImplementation("com.android.installreferrer:installreferrer:2.2")
     conversationsPlaystoreSystemImplementation("com.android.installreferrer:installreferrer:2.2")
+    quicksyPlaystoreCompatImplementation 'com.google.android.gms:play-services-auth-api-phone:17.0.0'
+    quicksyPlaystoreSystemImplementation 'com.google.android.gms:play-services-auth-api-phone:17.0.0'
     implementation 'org.sufficientlysecure:openpgp-api:10.0'
     implementation 'com.theartofdev.edmodo:android-image-cropper:2.8.0'
     implementation 'androidx.appcompat:appcompat:1.2.0'
@@ -156,14 +160,21 @@ android {
     }
 
     sourceSets {
+        quicksyFreeSystem {
+            java {
+                srcDir 'src/quicksyFree/java'
+            }
+        }
         quicksyFreeCompat {
             java {
                 srcDir 'src/freeCompat/java'
+                srcDir 'src/quicksyFree/java'
             }
         }
         quicksyPlaystoreCompat {
             java {
                 srcDir 'src/playstoreCompat/java'
+                srcDir 'src/quicksyPlaystore/java'
             }
             res {
                 srcDir 'src/playstoreCompat/res'
@@ -171,6 +182,9 @@ android {
             }
         }
         quicksyPlaystoreSystem {
+            java {
+                srcDir 'src/quicksyPlaystore/java'
+            }
             res {
                 srcDir 'src/quicksyPlaystore/res'
             }
