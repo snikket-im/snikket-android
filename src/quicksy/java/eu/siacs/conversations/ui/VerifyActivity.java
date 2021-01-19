@@ -246,6 +246,8 @@ public class VerifyActivity extends XmppActivity implements ClipboardManager.OnP
     public void onResume() {
         super.onResume();
         if (pinEntryWrapper.isEmpty()) {
+            //starting with Android P we need input focus
+            pinEntryWrapper.requestFocus();
             pastePinFromClipboard();
         }
     }
