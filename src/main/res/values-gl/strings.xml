@@ -254,7 +254,7 @@
   <string name="error_publish_avatar_server_reject">O servidor rexeitou a túa publicación</string>
   <string name="error_publish_avatar_converting">Non se puido converter a imaxe</string>
   <string name="error_saving_avatar">Non se puido salvar o avatar no disco</string>
-  <string name="or_long_press_for_default">(ou pulsación longa para voltar ao valor por omisión)</string>
+  <string name="or_long_press_for_default">(ou pulsación longa para volver ao valor por defecto)</string>
   <string name="error_publish_avatar_no_server_support">O servidor non soporta a publicación de avatares</string>
   <string name="private_message">murmurado</string>
   <string name="private_message_to">a %s</string>
