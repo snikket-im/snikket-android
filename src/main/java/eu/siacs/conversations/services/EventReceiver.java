@@ -5,7 +5,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+
 import androidx.core.content.ContextCompat;
+
 import android.util.Log;
 
 import com.google.common.base.Strings;
@@ -27,7 +29,7 @@ public class EventReceiver extends BroadcastReceiver {
         if (extras != null) {
             intentForService.putExtras(extras);
         }
-        if ("ui".equals(action) || QuickConversationsService.SMS_RETRIEVED_ACTION.equals(action)  || hasEnabledAccounts(context)) {
+        if ("ui".equals(action) || hasEnabledAccounts(context)) {
             Compatibility.startService(context, intentForService);
         } else {
             Log.d(Config.LOGTAG, "EventReceiver ignored action " + intentForService.getAction());

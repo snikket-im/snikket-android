@@ -32,5 +32,14 @@
             android:label="@string/enter_your_name"
             android:launchMode="singleTask" />
 
+        <receiver
+            android:name=".services.SMSReceiver"
+            android:exported="true"
+            android:permission="com.google.android.gms.auth.api.phone.permission.SEND">
+            <intent-filter>
+                <action android:name="com.google.android.gms.auth.api.phone.SMS_RETRIEVED" />
+            </intent-filter>
+        </receiver>
+
     </application>
 </manifest>

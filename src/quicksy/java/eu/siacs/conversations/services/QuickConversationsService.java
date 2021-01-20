@@ -134,7 +134,7 @@ public class QuickConversationsService extends AbstractQuickConversationsService
                     connection.setReadTimeout(Config.SOCKET_TIMEOUT * 1000);
                     setHeader(connection);
                     final int code = connection.getResponseCode();
-                    if (code == 200 || code == 201) {
+                    if (code == 200) {
                         createAccountAndWait(phoneNumber, 0L);
                     } else if (code == 429) {
                         createAccountAndWait(phoneNumber, retryAfter(connection));
