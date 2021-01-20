@@ -7,6 +7,8 @@ import android.net.Uri;
 import androidx.annotation.NonNull;
 import android.text.TextUtils;
 
+import com.google.common.base.Strings;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -131,6 +133,12 @@ public class Contact implements ListItem, Blockable {
     }
 
     public String getDisplayName() {
+        if (isSelf()) {
+            final String displayName = account.getDisplayName();
+            if (!Strings.isNullOrEmpty(displayName)) {
+                return displayName;
+            }
+        }
         if (Config.X509_VERIFICATION && !TextUtils.isEmpty(this.commonName)) {
             return this.commonName;
         } else if (!TextUtils.isEmpty(this.systemName)) {
