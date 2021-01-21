@@ -7,7 +7,7 @@ import java.util.Locale;
 
 import eu.siacs.conversations.xml.Element;
 
-public class Presence implements Comparable {
+public class Presence implements Comparable<Presence> {
 
 	public enum Status {
 		CHAT, ONLINE, AWAY, XA, DND, OFFLINE;
@@ -64,7 +64,7 @@ public class Presence implements Comparable {
 		return new Presence(Status.fromShowString(show), ver, hash, node, message);
 	}
 
-	public int compareTo(@NonNull Object other) {
+	public int compareTo(@NonNull Presence other) {
 		return this.status.compareTo(((Presence)other).status);
 	}
 

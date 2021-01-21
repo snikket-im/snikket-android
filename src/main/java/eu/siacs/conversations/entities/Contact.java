@@ -18,6 +18,7 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
+import java.util.Objects;
 
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
@@ -27,6 +28,7 @@ import eu.siacs.conversations.services.QuickConversationsService;
 import eu.siacs.conversations.utils.JidHelper;
 import eu.siacs.conversations.utils.UIHelper;
 import eu.siacs.conversations.xml.Element;
+import eu.siacs.conversations.xmpp.jingle.RtpCapability;
 import eu.siacs.conversations.xmpp.pep.Avatar;
 import eu.siacs.conversations.xmpp.Jid;
 
@@ -46,6 +48,7 @@ public class Contact implements ListItem, Blockable {
     public static final String LAST_PRESENCE = "last_presence";
     public static final String LAST_TIME = "last_time";
     public static final String GROUPS = "groups";
+    public static final String RTP_CAPABILITY = "rtpCapability";
     private String accountUuid;
     private String systemName;
     private String serverName;
@@ -64,11 +67,12 @@ public class Contact implements ListItem, Blockable {
     private boolean mActive = false;
     private long mLastseen = 0;
     private String mLastPresence = null;
+    private RtpCapability.Capability rtpCapability;
 
     public Contact(final String account, final String systemName, final String serverName, final String presenceName,
                    final Jid jid, final int subscription, final String photoUri,
                    final Uri systemAccount, final String keys, final String avatar, final long lastseen,
-                   final String presence, final String groups) {
+                   final String presence, final String groups, final RtpCapability.Capability rtpCapability) {
         this.accountUuid = account;
         this.systemName = systemName;
         this.serverName = serverName;
@@ -96,6 +100,7 @@ public class Contact implements ListItem, Blockable {
         }
         this.mLastseen = lastseen;
         this.mLastPresence = presence;
+        this.rtpCapability = rtpCapability;
     }
 
     public Contact(final Jid jid) {
@@ -129,7 +134,8 @@ public class Contact implements ListItem, Blockable {
                 cursor.getString(cursor.getColumnIndex(AVATAR)),
                 cursor.getLong(cursor.getColumnIndex(LAST_TIME)),
                 cursor.getString(cursor.getColumnIndex(LAST_PRESENCE)),
-                cursor.getString(cursor.getColumnIndex(GROUPS)));
+                cursor.getString(cursor.getColumnIndex(GROUPS)),
+                RtpCapability.Capability.of(cursor.getString(cursor.getColumnIndex(RTP_CAPABILITY))));
     }
 
     public String getDisplayName() {
@@ -234,6 +240,7 @@ public class Contact implements ListItem, Blockable {
             values.put(LAST_PRESENCE, mLastPresence);
             values.put(LAST_TIME, mLastseen);
             values.put(GROUPS, groups.toString());
+            values.put(RTP_CAPABILITY, rtpCapability == null ? null : rtpCapability.toString());
             return values;
         }
     }
@@ -573,7 +580,18 @@ public class Contact implements ListItem, Blockable {
         return (avatar != null && avatar.getFilename() != null) || presenceName != null;
     }
 
-    public final class Options {
+    public boolean refreshRtpCapability() {
+        final RtpCapability.Capability previous = this.rtpCapability;
+        this.rtpCapability = RtpCapability.check(this, false);
+        return !Objects.equals(previous, this.rtpCapability);
+    }
+
+    public RtpCapability.Capability getRtpCapability() {
+
+        return this.rtpCapability;
+    }
+
+    public static final class Options {
         public static final int TO = 0;
         public static final int FROM = 1;
         public static final int ASKING = 2;

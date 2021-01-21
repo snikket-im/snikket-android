@@ -63,9 +63,9 @@ import eu.siacs.conversations.xmpp.Jid;
 public class DatabaseBackend extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "history";
-    private static final int DATABASE_VERSION = 47;
+    private static final int DATABASE_VERSION = 48;
     private static DatabaseBackend instance = null;
-    private static String CREATE_CONTATCS_STATEMENT = "create table "
+    private static final String CREATE_CONTATCS_STATEMENT = "create table "
             + Contact.TABLENAME + "(" + Contact.ACCOUNT + " TEXT, "
             + Contact.SERVERNAME + " TEXT, " + Contact.SYSTEMNAME + " TEXT,"
             + Contact.PRESENCE_NAME + " TEXT,"
@@ -73,12 +73,13 @@ public class DatabaseBackend extends SQLiteOpenHelper {
             + Contact.PHOTOURI + " TEXT," + Contact.OPTIONS + " NUMBER,"
             + Contact.SYSTEMACCOUNT + " NUMBER, " + Contact.AVATAR + " TEXT, "
             + Contact.LAST_PRESENCE + " TEXT, " + Contact.LAST_TIME + " NUMBER, "
+            + Contact.RTP_CAPABILITY + " TEXT,"
             + Contact.GROUPS + " TEXT, FOREIGN KEY(" + Contact.ACCOUNT + ") REFERENCES "
             + Account.TABLENAME + "(" + Account.UUID
             + ") ON DELETE CASCADE, UNIQUE(" + Contact.ACCOUNT + ", "
             + Contact.JID + ") ON CONFLICT REPLACE);";
 
-    private static String CREATE_DISCOVERY_RESULTS_STATEMENT = "create table "
+    private static final String CREATE_DISCOVERY_RESULTS_STATEMENT = "create table "
             + ServiceDiscoveryResult.TABLENAME + "("
             + ServiceDiscoveryResult.HASH + " TEXT, "
             + ServiceDiscoveryResult.VER + " TEXT, "
@@ -86,7 +87,7 @@ public class DatabaseBackend extends SQLiteOpenHelper {
             + "UNIQUE(" + ServiceDiscoveryResult.HASH + ", "
             + ServiceDiscoveryResult.VER + ") ON CONFLICT REPLACE);";
 
-    private static String CREATE_PRESENCE_TEMPLATES_STATEMENT = "CREATE TABLE "
+    private static final String CREATE_PRESENCE_TEMPLATES_STATEMENT = "CREATE TABLE "
             + PresenceTemplate.TABELNAME + "("
             + PresenceTemplate.UUID + " TEXT, "
             + PresenceTemplate.LAST_USED + " NUMBER,"
@@ -94,7 +95,7 @@ public class DatabaseBackend extends SQLiteOpenHelper {
             + PresenceTemplate.STATUS + " TEXT,"
             + "UNIQUE(" + PresenceTemplate.MESSAGE + "," + PresenceTemplate.STATUS + ") ON CONFLICT REPLACE);";
 
-    private static String CREATE_PREKEYS_STATEMENT = "CREATE TABLE "
+    private static final String CREATE_PREKEYS_STATEMENT = "CREATE TABLE "
             + SQLiteAxolotlStore.PREKEY_TABLENAME + "("
             + SQLiteAxolotlStore.ACCOUNT + " TEXT,  "
             + SQLiteAxolotlStore.ID + " INTEGER, "
@@ -558,6 +559,9 @@ public class DatabaseBackend extends SQLiteOpenHelper {
         }
         if (oldVersion < 47 && newVersion >= 47) {
             db.execSQL("ALTER TABLE " + Contact.TABLENAME + " ADD COLUMN " + Contact.PRESENCE_NAME + " TEXT");
+        }
+        if (oldVersion < 48 && newVersion >= 48) {
+            db.execSQL("ALTER TABLE " + Contact.TABLENAME + " ADD COLUMN " + Contact.RTP_CAPABILITY + " TEXT");
         }
     }
 
