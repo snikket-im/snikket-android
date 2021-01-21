@@ -1120,8 +1120,9 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
             MenuItem cancelTransmission = menu.findItem(R.id.cancel_transmission);
             MenuItem deleteFile = menu.findItem(R.id.delete_file);
             MenuItem showErrorMessage = menu.findItem(R.id.show_error_message);
+            final boolean unInitiatedButKnownSize = MessageUtils.unInitiatedButKnownSize(m);
             final boolean showError = m.getStatus() == Message.STATUS_SEND_FAILED && m.getErrorMessage() != null && !Message.ERROR_MESSAGE_CANCELLED.equals(m.getErrorMessage());
-            if (!m.isFileOrImage() && !encrypted && !m.isGeoUri() && !m.treatAsDownloadable()) {
+            if (!m.isFileOrImage() && !encrypted && !m.isGeoUri() && !m.treatAsDownloadable() && !unInitiatedButKnownSize && t == null) {
                 copyMessage.setVisible(true);
                 quoteMessage.setVisible(!showError && MessageUtils.prepareQuote(m).length() > 0);
                 String body = m.getMergedBody().toString();
@@ -1142,7 +1143,7 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
                     && m.getConversation() instanceof Conversation) {
                 correctMessage.setVisible(true);
             }
-            if ((m.isFileOrImage() && !deleted && !receiving) || (m.getType() == Message.TYPE_TEXT && !m.treatAsDownloadable())) {
+            if ((m.isFileOrImage() && !deleted && !receiving) || (m.getType() == Message.TYPE_TEXT && !m.treatAsDownloadable()) && !unInitiatedButKnownSize && t == null) {
                 shareWith.setVisible(true);
             }
             if (m.getStatus() == Message.STATUS_SEND_FAILED) {
@@ -1151,6 +1152,7 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
             if (m.hasFileOnRemoteHost()
                     || m.isGeoUri()
                     || m.treatAsDownloadable()
+                    || unInitiatedButKnownSize
                     || t instanceof HttpDownloadConnection) {
                 copyUrl.setVisible(true);
             }
