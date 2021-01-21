@@ -1,5 +1,9 @@
 # Changelog
 
+### Version 2.9.5
+
+* Quicksy: Automatically receive verification SMS
+
 ### Version 2.9.4
 * minor stability improvements for A/V calls
 

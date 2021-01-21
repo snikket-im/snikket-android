@@ -78,7 +78,7 @@ dependencies {
     //okhttp needs to stick with 3.12.x
     implementation 'com.squareup.okhttp3:okhttp:3.12.12'
     implementation 'com.google.guava:guava:27.1-android'
-    quicksyImplementation 'io.michaelrocks:libphonenumber-android:8.11.1'
+    quicksyImplementation 'io.michaelrocks:libphonenumber-android:8.12.16'
     implementation fileTree(include: ['libwebrtc-m87.aar'], dir: 'libs')
 }
 
@@ -94,8 +94,8 @@ android {
     defaultConfig {
         minSdkVersion 21
         targetSdkVersion 29
-        versionCode 404
-        versionName "2.9.4"
+        versionCode 405
+        versionName "2.9.5"
         archivesBaseName += "-$versionName"
         applicationId "eu.siacs.conversations"
         resValue "string", "applicationId", applicationId
