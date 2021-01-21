@@ -18,6 +18,7 @@ import java.util.Locale;
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.crypto.axolotl.AxolotlService;
+import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.entities.Contact;
 import eu.siacs.conversations.entities.Conversation;
 import eu.siacs.conversations.entities.Conversational;
@@ -521,7 +522,11 @@ public class UIHelper {
             if (conversation instanceof Conversation && conversation.getMode() == Conversation.MODE_MULTI) {
                 return ((Conversation) conversation).getMucOptions().getSelf().getName();
             } else {
-                final Jid jid = conversation.getAccount().getJid();
+                final Account account = conversation.getAccount();
+                final Jid jid = account.getJid();
+                if (account.getDisplayName() != null) {
+                    return account.getDisplayName();
+                }
                 return jid.getLocal() != null ? jid.getLocal() : jid.getDomain().toString();
             }
         }
