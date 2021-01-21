@@ -1,8 +1,9 @@
 package eu.siacs.conversations.ui.widget;
 
 import android.content.Context;
-import androidx.emoji.widget.EmojiAppCompatEditText;
 import android.util.AttributeSet;
+
+import androidx.emoji.widget.EmojiAppCompatEditText;
 
 public class EmojiWrapperEditText extends EmojiAppCompatEditText {
 

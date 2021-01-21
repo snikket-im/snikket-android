@@ -9,6 +9,8 @@ import android.os.SystemClock;
 import android.preference.PreferenceManager;
 import android.util.Log;
 
+import com.google.common.collect.ImmutableMap;
+
 import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -24,6 +26,7 @@ import java.security.cert.CertificateException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -350,13 +353,26 @@ public class QuickConversationsService extends AbstractQuickConversationsService
 
 
     private void considerSync(boolean forced) {
-        Map<String, PhoneNumberContact> contacts = PhoneNumberContact.load(service);
-        for (Account account : service.getAccounts()) {
+        final ImmutableMap<String, PhoneNumberContact> allContacts = PhoneNumberContact.load(service);
+        for (final Account account : service.getAccounts()) {
+            final Map<String, PhoneNumberContact> contacts = filtered(allContacts, account.getJid().getLocal());
+            if (contacts.size() < allContacts.size()) {
+                Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": found own phone number in address book. ignoring...");
+            }
             refresh(account, contacts.values());
             if (!considerSync(account, contacts, forced)) {
                 service.syncRoster(account);
             }
         }
+    }
+
+    @SafeVarargs
+    private static <A, B> Map<A, B> filtered(final Map<A, B> input, final A... filters) {
+        final HashMap<A, B> result = new HashMap<>(input);
+        for (final A filtered : filters) {
+            result.remove(filtered);
+        }
+        return result;
     }
 
     private void refresh(Account account, Collection<PhoneNumberContact> contacts) {
@@ -379,7 +395,7 @@ public class QuickConversationsService extends AbstractQuickConversationsService
         }
     }
 
-    private boolean considerSync(Account account, final Map<String, PhoneNumberContact> contacts, final boolean forced) {
+    private boolean considerSync(final Account account, final Map<String, PhoneNumberContact> contacts, final boolean forced) {
         final int hash = contacts.keySet().hashCode();
         Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": consider sync of " + hash);
         if (!mLastSyncAttempt.retry(hash) && !forced) {
@@ -389,14 +405,14 @@ public class QuickConversationsService extends AbstractQuickConversationsService
         mRunningSyncJobs.incrementAndGet();
         final Jid syncServer = Jid.of(API_DOMAIN);
         Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": sending phone list to " + syncServer);
-        List<Element> entries = new ArrayList<>();
-        for (PhoneNumberContact c : contacts.values()) {
+        final List<Element> entries = new ArrayList<>();
+        for (final PhoneNumberContact c : contacts.values()) {
             entries.add(new Element("entry").setAttribute("number", c.getPhoneNumber()));
         }
-        IqPacket query = new IqPacket(IqPacket.TYPE.GET);
+        final IqPacket query = new IqPacket(IqPacket.TYPE.GET);
         query.setTo(syncServer);
-        Element book = new Element("phone-book", Namespace.SYNCHRONIZATION).setChildren(entries);
-        String statusQuo = Entry.statusQuo(contacts.values(), account.getRoster().getWithSystemAccounts(PhoneNumberContact.class));
+        final Element book = new Element("phone-book", Namespace.SYNCHRONIZATION).setChildren(entries);
+        final String statusQuo = Entry.statusQuo(contacts.values(), account.getRoster().getWithSystemAccounts(PhoneNumberContact.class));
         book.setAttribute("ver", statusQuo);
         query.addChild(book);
         mLastSyncAttempt = Attempt.create(hash);
@@ -404,14 +420,14 @@ public class QuickConversationsService extends AbstractQuickConversationsService
             if (response.getType() == IqPacket.TYPE.RESULT) {
                 final Element phoneBook = response.findChild("phone-book", Namespace.SYNCHRONIZATION);
                 if (phoneBook != null) {
-                    List<Contact> withSystemAccounts = account.getRoster().getWithSystemAccounts(PhoneNumberContact.class);
+                    final List<Contact> withSystemAccounts = account.getRoster().getWithSystemAccounts(PhoneNumberContact.class);
                     for (Entry entry : Entry.ofPhoneBook(phoneBook)) {
-                        PhoneNumberContact phoneContact = contacts.get(entry.getNumber());
+                        final PhoneNumberContact phoneContact = contacts.get(entry.getNumber());
                         if (phoneContact == null) {
                             continue;
                         }
-                        for (Jid jid : entry.getJids()) {
-                            Contact contact = account.getRoster().getContact(jid);
+                        for (final Jid jid : entry.getJids()) {
+                            final Contact contact = account.getRoster().getContact(jid);
                             final boolean needsCacheClean = contact.setPhoneContact(phoneContact);
                             if (needsCacheClean) {
                                 service.getAvatarService().clear(contact);
@@ -419,7 +435,7 @@ public class QuickConversationsService extends AbstractQuickConversationsService
                             withSystemAccounts.remove(contact);
                         }
                     }
-                    for (Contact contact : withSystemAccounts) {
+                    for (final Contact contact : withSystemAccounts) {
                         final boolean needsCacheClean = contact.unsetPhoneContact(PhoneNumberContact.class);
                         if (needsCacheClean) {
                             service.getAvatarService().clear(contact);
