@@ -7,6 +7,8 @@ import android.text.format.DateFormat;
 import android.text.format.DateUtils;
 import android.util.Pair;
 
+import com.google.common.base.Strings;
+
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.util.Arrays;
@@ -33,7 +35,7 @@ import eu.siacs.conversations.xmpp.Jid;
 
 public class UIHelper {
 
-    private static int[] UNSAFE_COLORS = {
+    private static final int[] UNSAFE_COLORS = {
             0xFFF44336, //red 500
             0xFFE53935, //red 600
             0xFFD32F2F, //red 700
@@ -46,7 +48,7 @@ public class UIHelper {
             0xFFD84315, //deep orange 800,
     };
 
-    private static int[] SAFE_COLORS = {
+    private static final int[] SAFE_COLORS = {
             0xFFE91E63, //pink 500
             0xFFD81B60, //pink 600
             0xFFC2185B, //pink 700
@@ -524,10 +526,13 @@ public class UIHelper {
             } else {
                 final Account account = conversation.getAccount();
                 final Jid jid = account.getJid();
-                if (account.getDisplayName() != null) {
-                    return account.getDisplayName();
+                final String displayName = account.getDisplayName();
+                if (Strings.isNullOrEmpty(displayName)) {
+                    return jid.getLocal() != null ? jid.getLocal() : jid.getDomain().toString();
+                } else {
+                    return displayName;
                 }
-                return jid.getLocal() != null ? jid.getLocal() : jid.getDomain().toString();
+
             }
         }
     }
@@ -564,14 +569,16 @@ public class UIHelper {
         }
     }
 
-    public static boolean receivedLocationQuestion(Message message) {
+    public static boolean receivedLocationQuestion(final Message message) {
         if (message == null
                 || message.getStatus() != Message.STATUS_RECEIVED
                 || message.getType() != Message.TYPE_TEXT) {
             return false;
         }
-        String body = message.getBody() == null ? null : message.getBody().trim().toLowerCase(Locale.getDefault());
-        body = body.replace("?", "").replace("¿", "");
+        final String body = Strings.nullToEmpty(message.getBody())
+                .trim()
+                .toLowerCase(Locale.getDefault())
+                .replace("?", "").replace("¿", "");
         return LOCATION_QUESTIONS.contains(body);
     }
 
