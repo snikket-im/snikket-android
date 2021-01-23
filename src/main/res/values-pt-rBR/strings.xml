@@ -29,7 +29,6 @@
   <string name="just_now">agora</string>
   <string name="minute_ago">1 minuto atrás</string>
   <string name="minutes_ago">%d minutos atrás</string>
-  <string name="x_unread_conversations">%d conversas não lidas</string>
   <string name="sending">enviando...</string>
   <string name="message_decrypting">Descriptografando a mensagem. Por favor, aguarde...</string>
   <string name="pgp_message">Mensagem criptografada via OpenPGP</string>

@@ -29,7 +29,6 @@
   <string name="just_now">刚刚</string>
   <string name="minute_ago">1分钟前</string>
   <string name="minutes_ago">%d分钟前</string>
-  <string name="x_unread_conversations">%d条未读消息</string>
   <string name="sending">发送中…</string>
   <string name="message_decrypting">正在解密信息。请稍候……</string>
   <string name="pgp_message">OpenPGP加密的信息</string>

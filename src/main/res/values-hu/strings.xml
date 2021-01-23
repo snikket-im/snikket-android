@@ -29,7 +29,6 @@
   <string name="just_now">éppen most</string>
   <string name="minute_ago">1 perce</string>
   <string name="minutes_ago">%d perce</string>
-  <string name="x_unread_conversations">%d olvasatlan beszélgetés</string>
   <string name="sending">küldés…</string>
   <string name="message_decrypting">Üzenet visszafejtése. Kérem várjon…</string>
   <string name="pgp_message">OpenPGP-vel titkosított üzenet</string>
