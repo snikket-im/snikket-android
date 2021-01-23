@@ -2,7 +2,6 @@ package eu.siacs.conversations.entities;
 
 import androidx.annotation.NonNull;
 
-import java.lang.Comparable;
 import java.util.Locale;
 
 import eu.siacs.conversations.xml.Element;
@@ -65,7 +64,7 @@ public class Presence implements Comparable<Presence> {
 	}
 
 	public int compareTo(@NonNull Presence other) {
-		return this.status.compareTo(((Presence)other).status);
+		return this.status.compareTo(other.status);
 	}
 
 	public Status getStatus() {

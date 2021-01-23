@@ -17,6 +17,11 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.SystemClock;
 import android.preference.PreferenceManager;
+import android.text.SpannableString;
+import android.text.style.StyleSpan;
+import android.util.DisplayMetrics;
+import android.util.Log;
+
 import androidx.annotation.RequiresApi;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationCompat.BigPictureStyle;
@@ -26,10 +31,6 @@ import androidx.core.app.Person;
 import androidx.core.app.RemoteInput;
 import androidx.core.content.ContextCompat;
 import androidx.core.graphics.drawable.IconCompat;
-import android.text.SpannableString;
-import android.text.style.StyleSpan;
-import android.util.DisplayMetrics;
-import android.util.Log;
 
 import java.io.File;
 import java.io.IOException;

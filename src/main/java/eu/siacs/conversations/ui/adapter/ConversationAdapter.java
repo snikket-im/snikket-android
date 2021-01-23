@@ -1,13 +1,14 @@
 package eu.siacs.conversations.ui.adapter;
 
-import androidx.databinding.DataBindingUtil;
 import android.graphics.Typeface;
-import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.RecyclerView;
 import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import androidx.annotation.NonNull;
+import androidx.databinding.DataBindingUtil;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.common.base.Optional;
 
@@ -25,13 +26,13 @@ import eu.siacs.conversations.ui.util.StyledAttributes;
 import eu.siacs.conversations.utils.EmojiWrapper;
 import eu.siacs.conversations.utils.IrregularUnicodeDetector;
 import eu.siacs.conversations.utils.UIHelper;
-import eu.siacs.conversations.xmpp.jingle.OngoingRtpSession;
 import eu.siacs.conversations.xmpp.Jid;
+import eu.siacs.conversations.xmpp.jingle.OngoingRtpSession;
 
 public class ConversationAdapter extends RecyclerView.Adapter<ConversationAdapter.ConversationViewHolder> {
 
-    private XmppActivity activity;
-    private List<Conversation> conversations;
+    private final XmppActivity activity;
+    private final List<Conversation> conversations;
     private OnConversationClickListener listener;
 
     public ConversationAdapter(XmppActivity activity, List<Conversation> conversations) {

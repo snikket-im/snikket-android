@@ -1,8 +1,9 @@
 package eu.siacs.conversations.http;
 
 import android.os.PowerManager;
-import androidx.annotation.Nullable;
 import android.util.Log;
+
+import androidx.annotation.Nullable;
 
 import com.google.common.base.Strings;
 import com.google.common.io.ByteStreams;
@@ -328,7 +329,7 @@ public class HttpDownloadConnection implements Transferable {
 
         private long retrieveFileSize() throws IOException {
             try {
-                Log.d(Config.LOGTAG, "retrieve file size. interactive:" + String.valueOf(interactive));
+                Log.d(Config.LOGTAG, "retrieve file size. interactive:" + interactive);
                 changeStatus(STATUS_CHECKING);
                 HttpURLConnection connection;
                 final String hostname = mUrl.getHost();

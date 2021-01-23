@@ -42,12 +42,12 @@ import eu.siacs.conversations.parser.IqParser;
 import eu.siacs.conversations.services.XmppConnectionService;
 import eu.siacs.conversations.xml.Element;
 import eu.siacs.conversations.xml.Namespace;
-import eu.siacs.conversations.xmpp.stanzas.IqPacket;
 import eu.siacs.conversations.xmpp.Jid;
+import eu.siacs.conversations.xmpp.stanzas.IqPacket;
 
 public class SlotRequester {
 
-	private XmppConnectionService service;
+	private final XmppConnectionService service;
 
 	public SlotRequester(XmppConnectionService service) {
 		this.service = service;

@@ -37,7 +37,7 @@ import java.util.Locale;
 
 public class FtsUtils {
 
-	private static List<String> KEYWORDS = Arrays.asList("OR", "AND");
+	private static final List<String> KEYWORDS = Arrays.asList("OR", "AND");
 
 	public static List<String> parse(String input) {
 		List<String> term = new ArrayList<>();

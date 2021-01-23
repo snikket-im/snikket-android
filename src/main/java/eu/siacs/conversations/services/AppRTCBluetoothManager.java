@@ -23,13 +23,14 @@ import android.media.AudioManager;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Process;
-import androidx.annotation.Nullable;
 import android.util.Log;
+
+import androidx.annotation.Nullable;
+
+import org.webrtc.ThreadUtils;
 
 import java.util.List;
 import java.util.Set;
-
-import org.webrtc.ThreadUtils;
 
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.utils.AppRTCUtils;

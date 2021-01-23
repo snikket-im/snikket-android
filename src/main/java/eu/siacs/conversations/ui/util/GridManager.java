@@ -1,11 +1,12 @@
 package eu.siacs.conversations.ui.util;
 
 import android.content.Context;
+import android.util.Log;
+import android.view.ViewTreeObserver;
+
 import androidx.annotation.DimenRes;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import android.util.Log;
-import android.view.ViewTreeObserver;
 
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.ui.adapter.MediaAdapter;

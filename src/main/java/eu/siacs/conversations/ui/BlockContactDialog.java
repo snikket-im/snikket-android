@@ -1,10 +1,11 @@
 package eu.siacs.conversations.ui;
 
-import androidx.databinding.DataBindingUtil;
-import androidx.annotation.StringRes;
-import androidx.appcompat.app.AlertDialog;
 import android.view.View;
 import android.widget.Toast;
+
+import androidx.annotation.StringRes;
+import androidx.appcompat.app.AlertDialog;
+import androidx.databinding.DataBindingUtil;
 
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.databinding.DialogBlockContactBinding;

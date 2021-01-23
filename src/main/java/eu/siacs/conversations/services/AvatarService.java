@@ -12,15 +12,15 @@ import android.graphics.Typeface;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
-import androidx.annotation.ColorInt;
-import androidx.annotation.Nullable;
-import androidx.core.content.res.ResourcesCompat;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.util.LruCache;
 
-import java.util.ArrayList;
+import androidx.annotation.ColorInt;
+import androidx.annotation.Nullable;
+import androidx.core.content.res.ResourcesCompat;
+
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -40,9 +40,9 @@ import eu.siacs.conversations.entities.MucOptions;
 import eu.siacs.conversations.entities.RawBlockable;
 import eu.siacs.conversations.entities.Room;
 import eu.siacs.conversations.utils.UIHelper;
+import eu.siacs.conversations.xmpp.Jid;
 import eu.siacs.conversations.xmpp.OnAdvancedStreamFeaturesLoaded;
 import eu.siacs.conversations.xmpp.XmppConnection;
-import eu.siacs.conversations.xmpp.Jid;
 
 public class AvatarService implements OnAdvancedStreamFeaturesLoaded {
 
@@ -519,7 +519,7 @@ public class AvatarService implements OnAdvancedStreamFeaturesLoaded {
 			this.sizes.add(size);
 		}
 		return PREFIX_ACCOUNT + "_" + account.getUuid() + "_"
-				+ String.valueOf(size);
+				+ size;
 	}
 
 	/*public Bitmap get(String name, int size) {

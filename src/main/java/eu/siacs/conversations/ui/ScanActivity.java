@@ -17,18 +17,6 @@
 
 package eu.siacs.conversations.ui;
 
-import java.util.EnumMap;
-import java.util.Map;
-
-import com.google.zxing.BinaryBitmap;
-import com.google.zxing.DecodeHintType;
-import com.google.zxing.PlanarYUVLuminanceSource;
-import com.google.zxing.ReaderException;
-import com.google.zxing.Result;
-import com.google.zxing.ResultPointCallback;
-import com.google.zxing.common.HybridBinarizer;
-import com.google.zxing.qrcode.QRCodeReader;
-
 import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
@@ -45,8 +33,6 @@ import android.os.Handler;
 import android.os.HandlerThread;
 import android.os.Process;
 import android.os.Vibrator;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Surface;
@@ -55,6 +41,21 @@ import android.view.TextureView.SurfaceTextureListener;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Toast;
+
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+
+import com.google.zxing.BinaryBitmap;
+import com.google.zxing.DecodeHintType;
+import com.google.zxing.PlanarYUVLuminanceSource;
+import com.google.zxing.ReaderException;
+import com.google.zxing.Result;
+import com.google.zxing.ResultPointCallback;
+import com.google.zxing.common.HybridBinarizer;
+import com.google.zxing.qrcode.QRCodeReader;
+
+import java.util.EnumMap;
+import java.util.Map;
 
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
@@ -73,7 +74,7 @@ public final class ScanActivity extends Activity implements SurfaceTextureListen
 
 	private static final long VIBRATE_DURATION = 50L;
 	private static final long AUTO_FOCUS_INTERVAL_MS = 2500L;
-	private static boolean DISABLE_CONTINUOUS_AUTOFOCUS = Build.MODEL.equals("GT-I9100") // Galaxy S2
+	private static final boolean DISABLE_CONTINUOUS_AUTOFOCUS = Build.MODEL.equals("GT-I9100") // Galaxy S2
 			|| Build.MODEL.equals("SGH-T989") // Galaxy S2
 			|| Build.MODEL.equals("SGH-T989D") // Galaxy S2 X
 			|| Build.MODEL.equals("SAMSUNG-SGH-I727") // Galaxy S2 Skyrocket

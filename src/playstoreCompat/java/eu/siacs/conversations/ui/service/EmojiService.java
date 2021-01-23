@@ -2,10 +2,11 @@ package eu.siacs.conversations.ui.service;
 
 import android.content.Context;
 import android.os.Build;
+import android.util.Log;
+
+import androidx.core.provider.FontRequest;
 import androidx.emoji.text.EmojiCompat;
 import androidx.emoji.text.FontRequestEmojiCompatConfig;
-import androidx.core.provider.FontRequest;
-import android.util.Log;
 
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;

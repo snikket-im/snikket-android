@@ -33,14 +33,9 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Fragment;
 import android.content.Intent;
-import androidx.databinding.DataBindingUtil;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.os.Bundle;
-import com.google.android.material.snackbar.Snackbar;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.recyclerview.widget.ItemTouchHelper;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -50,6 +45,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import androidx.databinding.DataBindingUtil;
+import androidx.recyclerview.widget.ItemTouchHelper;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.google.android.material.snackbar.Snackbar;
 import com.google.common.collect.Collections2;
 
 import java.util.ArrayList;
@@ -88,9 +89,9 @@ public class ConversationsOverviewFragment extends XmppFragment {
 	private ConversationAdapter conversationsAdapter;
 	private XmppActivity activity;
 	private float mSwipeEscapeVelocity = 0f;
-	private PendingActionHelper pendingActionHelper = new PendingActionHelper();
+	private final PendingActionHelper pendingActionHelper = new PendingActionHelper();
 
-	private ItemTouchHelper.SimpleCallback callback = new ItemTouchHelper.SimpleCallback(0,LEFT|RIGHT) {
+	private final ItemTouchHelper.SimpleCallback callback = new ItemTouchHelper.SimpleCallback(0,LEFT|RIGHT) {
 		@Override
 		public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
 			//todo maybe we can manually changing the position of the conversation

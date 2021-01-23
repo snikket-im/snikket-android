@@ -11,11 +11,12 @@ import android.os.SystemClock;
 import android.util.Base64;
 import android.util.Log;
 
+import org.json.JSONException;
 import org.json.JSONObject;
-import org.whispersystems.libsignal.SignalProtocolAddress;
 import org.whispersystems.libsignal.IdentityKey;
 import org.whispersystems.libsignal.IdentityKeyPair;
 import org.whispersystems.libsignal.InvalidKeyException;
+import org.whispersystems.libsignal.SignalProtocolAddress;
 import org.whispersystems.libsignal.state.PreKeyRecord;
 import org.whispersystems.libsignal.state.SessionRecord;
 import org.whispersystems.libsignal.state.SignedPreKeyRecord;
@@ -36,8 +37,6 @@ import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-import org.json.JSONException;
-
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.crypto.axolotl.AxolotlService;
 import eu.siacs.conversations.crypto.axolotl.FingerprintStatus;
@@ -57,8 +56,8 @@ import eu.siacs.conversations.utils.FtsUtils;
 import eu.siacs.conversations.utils.MimeUtils;
 import eu.siacs.conversations.utils.Resolver;
 import eu.siacs.conversations.xmpp.InvalidJid;
-import eu.siacs.conversations.xmpp.mam.MamReference;
 import eu.siacs.conversations.xmpp.Jid;
+import eu.siacs.conversations.xmpp.mam.MamReference;
 
 public class DatabaseBackend extends SQLiteOpenHelper {
 
@@ -107,7 +106,7 @@ public class DatabaseBackend extends SQLiteOpenHelper {
             + ") ON CONFLICT REPLACE"
             + ");";
 
-    private static String CREATE_SIGNED_PREKEYS_STATEMENT = "CREATE TABLE "
+    private static final String CREATE_SIGNED_PREKEYS_STATEMENT = "CREATE TABLE "
             + SQLiteAxolotlStore.SIGNED_PREKEY_TABLENAME + "("
             + SQLiteAxolotlStore.ACCOUNT + " TEXT,  "
             + SQLiteAxolotlStore.ID + " INTEGER, "
@@ -119,7 +118,7 @@ public class DatabaseBackend extends SQLiteOpenHelper {
             + ") ON CONFLICT REPLACE" +
             ");";
 
-    private static String CREATE_SESSIONS_STATEMENT = "CREATE TABLE "
+    private static final String CREATE_SESSIONS_STATEMENT = "CREATE TABLE "
             + SQLiteAxolotlStore.SESSION_TABLENAME + "("
             + SQLiteAxolotlStore.ACCOUNT + " TEXT,  "
             + SQLiteAxolotlStore.NAME + " TEXT, "
@@ -133,7 +132,7 @@ public class DatabaseBackend extends SQLiteOpenHelper {
             + ") ON CONFLICT REPLACE"
             + ");";
 
-    private static String CREATE_IDENTITIES_STATEMENT = "CREATE TABLE "
+    private static final String CREATE_IDENTITIES_STATEMENT = "CREATE TABLE "
             + SQLiteAxolotlStore.IDENTITIES_TABLENAME + "("
             + SQLiteAxolotlStore.ACCOUNT + " TEXT,  "
             + SQLiteAxolotlStore.NAME + " TEXT, "
@@ -152,9 +151,9 @@ public class DatabaseBackend extends SQLiteOpenHelper {
             + ") ON CONFLICT IGNORE"
             + ");";
 
-    private static String RESOLVER_RESULTS_TABLENAME = "resolver_results";
+    private static final String RESOLVER_RESULTS_TABLENAME = "resolver_results";
 
-    private static String CREATE_RESOLVER_RESULTS_TABLE = "create table " + RESOLVER_RESULTS_TABLENAME + "("
+    private static final String CREATE_RESOLVER_RESULTS_TABLE = "create table " + RESOLVER_RESULTS_TABLENAME + "("
             + Resolver.Result.DOMAIN + " TEXT,"
             + Resolver.Result.HOSTNAME + " TEXT,"
             + Resolver.Result.IP + " BLOB,"
@@ -165,16 +164,16 @@ public class DatabaseBackend extends SQLiteOpenHelper {
             + "UNIQUE(" + Resolver.Result.DOMAIN + ") ON CONFLICT REPLACE"
             + ");";
 
-    private static String CREATE_MESSAGE_TIME_INDEX = "create INDEX message_time_index ON " + Message.TABLENAME + "(" + Message.TIME_SENT + ")";
-    private static String CREATE_MESSAGE_CONVERSATION_INDEX = "create INDEX message_conversation_index ON " + Message.TABLENAME + "(" + Message.CONVERSATION + ")";
-    private static String CREATE_MESSAGE_DELETED_INDEX = "create index message_deleted_index ON " + Message.TABLENAME + "(" + Message.DELETED + ")";
-    private static String CREATE_MESSAGE_RELATIVE_FILE_PATH_INDEX = "create INDEX message_file_path_index ON " + Message.TABLENAME + "(" + Message.RELATIVE_FILE_PATH + ")";
-    private static String CREATE_MESSAGE_TYPE_INDEX = "create INDEX message_type_index ON " + Message.TABLENAME + "(" + Message.TYPE + ")";
+    private static final String CREATE_MESSAGE_TIME_INDEX = "create INDEX message_time_index ON " + Message.TABLENAME + "(" + Message.TIME_SENT + ")";
+    private static final String CREATE_MESSAGE_CONVERSATION_INDEX = "create INDEX message_conversation_index ON " + Message.TABLENAME + "(" + Message.CONVERSATION + ")";
+    private static final String CREATE_MESSAGE_DELETED_INDEX = "create index message_deleted_index ON " + Message.TABLENAME + "(" + Message.DELETED + ")";
+    private static final String CREATE_MESSAGE_RELATIVE_FILE_PATH_INDEX = "create INDEX message_file_path_index ON " + Message.TABLENAME + "(" + Message.RELATIVE_FILE_PATH + ")";
+    private static final String CREATE_MESSAGE_TYPE_INDEX = "create INDEX message_type_index ON " + Message.TABLENAME + "(" + Message.TYPE + ")";
 
-    private static String CREATE_MESSAGE_INDEX_TABLE = "CREATE VIRTUAL TABLE messages_index USING FTS4(uuid TEXT PRIMARY KEY, body TEXT)";
-    private static String CREATE_MESSAGE_INSERT_TRIGGER = "CREATE TRIGGER after_message_insert AFTER INSERT ON " + Message.TABLENAME + " BEGIN INSERT INTO messages_index (uuid,body) VALUES (new.uuid,new.body); END;";
-    private static String CREATE_MESSAGE_UPDATE_TRIGGER = "CREATE TRIGGER after_message_update UPDATE of uuid,body ON " + Message.TABLENAME + " BEGIN update messages_index set body=new.body,uuid=new.uuid WHERE uuid=old.uuid; END;";
-    private static String COPY_PREEXISTING_ENTRIES = "INSERT into messages_index(uuid,body) select uuid,body FROM " + Message.TABLENAME + ";";
+    private static final String CREATE_MESSAGE_INDEX_TABLE = "CREATE VIRTUAL TABLE messages_index USING FTS4(uuid TEXT PRIMARY KEY, body TEXT)";
+    private static final String CREATE_MESSAGE_INSERT_TRIGGER = "CREATE TRIGGER after_message_insert AFTER INSERT ON " + Message.TABLENAME + " BEGIN INSERT INTO messages_index (uuid,body) VALUES (new.uuid,new.body); END;";
+    private static final String CREATE_MESSAGE_UPDATE_TRIGGER = "CREATE TRIGGER after_message_update UPDATE of uuid,body ON " + Message.TABLENAME + " BEGIN update messages_index set body=new.body,uuid=new.uuid WHERE uuid=old.uuid; END;";
+    private static final String COPY_PREEXISTING_ENTRIES = "INSERT into messages_index(uuid,body) select uuid,body FROM " + Message.TABLENAME + ";";
 
     private DatabaseBackend(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -633,7 +632,7 @@ public class DatabaseBackend extends SQLiteOpenHelper {
                 continue;
             }
 
-            String updateArgs[] = {
+            String[] updateArgs = {
                     newServer,
                     cursor.getString(cursor.getColumnIndex(Account.UUID)),
             };
@@ -872,7 +871,7 @@ public class DatabaseBackend extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getReadableDatabase();
         final String SQL = "select uuid,relativeFilePath from messages where type in (1,2,5) and deleted=0 and "+Message.RELATIVE_FILE_PATH+" is not null and conversationUuid=(select uuid from conversations where accountUuid=? and (contactJid=? or contactJid like ?)) order by timeSent desc";
         final String[] args = {account, jid.toString(), jid.toString() + "/%"};
-        Cursor cursor = db.rawQuery(SQL + (limit > 0 ? " limit " + String.valueOf(limit) : ""), args);
+        Cursor cursor = db.rawQuery(SQL + (limit > 0 ? " limit " + limit : ""), args);
         List<FilePath> filesPaths = new ArrayList<>();
         while (cursor.moveToNext()) {
             filesPaths.add(new FilePath(cursor.getString(0), cursor.getString(1)));
@@ -1005,7 +1004,7 @@ public class DatabaseBackend extends SQLiteOpenHelper {
     public void readRoster(Roster roster) {
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor;
-        String args[] = {roster.getAccount().getUuid()};
+        String[] args = {roster.getAccount().getUuid()};
         cursor = db.query(Contact.TABLENAME, null, Contact.ACCOUNT + "=?", args, null, null, null);
         while (cursor.moveToNext()) {
             roster.initContact(Contact.fromCursor(cursor));

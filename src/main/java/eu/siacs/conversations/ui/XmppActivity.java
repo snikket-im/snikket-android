@@ -19,7 +19,6 @@ import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
-import androidx.databinding.DataBindingUtil;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.Point;
@@ -35,12 +34,6 @@ import android.os.IBinder;
 import android.os.PowerManager;
 import android.os.SystemClock;
 import android.preference.PreferenceManager;
-import androidx.annotation.BoolRes;
-import androidx.annotation.NonNull;
-import androidx.annotation.StringRes;
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AlertDialog.Builder;
-import androidx.appcompat.app.AppCompatDelegate;
 import android.text.InputType;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -49,6 +42,14 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.Toast;
+
+import androidx.annotation.BoolRes;
+import androidx.annotation.NonNull;
+import androidx.annotation.StringRes;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AlertDialog.Builder;
+import androidx.appcompat.app.AppCompatDelegate;
+import androidx.databinding.DataBindingUtil;
 
 import java.io.IOException;
 import java.lang.ref.WeakReference;
@@ -77,9 +78,9 @@ import eu.siacs.conversations.ui.util.SoftKeyboardUtils;
 import eu.siacs.conversations.utils.AccountUtils;
 import eu.siacs.conversations.utils.ExceptionHelper;
 import eu.siacs.conversations.utils.ThemeHelper;
+import eu.siacs.conversations.xmpp.Jid;
 import eu.siacs.conversations.xmpp.OnKeyStatusUpdated;
 import eu.siacs.conversations.xmpp.OnUpdateBlocklist;
-import eu.siacs.conversations.xmpp.Jid;
 
 public abstract class XmppActivity extends ActionBarActivity {
 
@@ -119,12 +120,12 @@ public abstract class XmppActivity extends ActionBarActivity {
     };
     private DisplayMetrics metrics;
     private long mLastUiRefresh = 0;
-    private Handler mRefreshUiHandler = new Handler();
-    private Runnable mRefreshUiRunnable = () -> {
+    private final Handler mRefreshUiHandler = new Handler();
+    private final Runnable mRefreshUiRunnable = () -> {
         mLastUiRefresh = SystemClock.elapsedRealtime();
         refreshUiReal();
     };
-    private UiCallback<Conversation> adhocCallback = new UiCallback<Conversation>() {
+    private final UiCallback<Conversation> adhocCallback = new UiCallback<Conversation>() {
         @Override
         public void success(final Conversation conversation) {
             runOnUiThread(() -> {
@@ -913,7 +914,7 @@ public abstract class XmppActivity extends ActionBarActivity {
 
     public static class ConferenceInvite {
         private String uuid;
-        private List<Jid> jids = new ArrayList<>();
+        private final List<Jid> jids = new ArrayList<>();
 
         public static ConferenceInvite parse(Intent data) {
             ConferenceInvite invite = new ConferenceInvite();

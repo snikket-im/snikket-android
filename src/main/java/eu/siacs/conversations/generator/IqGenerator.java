@@ -29,12 +29,12 @@ import eu.siacs.conversations.entities.Conversation;
 import eu.siacs.conversations.entities.DownloadableFile;
 import eu.siacs.conversations.services.MessageArchiveService;
 import eu.siacs.conversations.services.XmppConnectionService;
-import eu.siacs.conversations.xml.Namespace;
 import eu.siacs.conversations.xml.Element;
+import eu.siacs.conversations.xml.Namespace;
+import eu.siacs.conversations.xmpp.Jid;
 import eu.siacs.conversations.xmpp.forms.Data;
 import eu.siacs.conversations.xmpp.pep.Avatar;
 import eu.siacs.conversations.xmpp.stanzas.IqPacket;
-import eu.siacs.conversations.xmpp.Jid;
 
 public class IqGenerator extends AbstractGenerator {
 
@@ -430,7 +430,7 @@ public class IqGenerator extends AbstractGenerator {
                 ByteBuffer bb = ByteBuffer.wrap(new byte[16]);
                 bb.putLong(uuid.getMostSignificantBits());
                 bb.putLong(uuid.getLeastSignificantBits());
-                return Base64.encodeToString(bb.array(), Base64.URL_SAFE | Base64.NO_PADDING | Base64.NO_WRAP) + name.substring(pos, name.length());
+                return Base64.encodeToString(bb.array(), Base64.URL_SAFE | Base64.NO_PADDING | Base64.NO_WRAP) + name.substring(pos);
             } catch (Exception e) {
                 return name;
             }

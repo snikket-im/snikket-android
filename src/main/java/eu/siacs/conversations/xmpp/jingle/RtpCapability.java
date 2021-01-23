@@ -16,7 +16,7 @@ import eu.siacs.conversations.xml.Namespace;
 
 public class RtpCapability {
 
-    private static List<String> BASIC_RTP_REQUIREMENTS = Arrays.asList(
+    private static final List<String> BASIC_RTP_REQUIREMENTS = Arrays.asList(
             Namespace.JINGLE,
             Namespace.JINGLE_TRANSPORT_ICE_UDP,
             Namespace.JINGLE_APPS_RTP,

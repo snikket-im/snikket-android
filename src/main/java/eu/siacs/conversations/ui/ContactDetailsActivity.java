@@ -6,7 +6,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
-import androidx.databinding.DataBindingUtil;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -14,9 +13,6 @@ import android.preference.PreferenceManager;
 import android.provider.ContactsContract.CommonDataKinds;
 import android.provider.ContactsContract.Contacts;
 import android.provider.ContactsContract.Intents;
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.widget.Toolbar;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.style.RelativeSizeSpan;
@@ -29,6 +25,10 @@ import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
+import androidx.databinding.DataBindingUtil;
 
 import org.openintents.openpgp.util.OpenPgpUtils;
 
@@ -73,14 +73,14 @@ public class ContactDetailsActivity extends OmemoActivity implements OnAccountUp
     private MediaAdapter mMediaAdapter;
 
     private Contact contact;
-    private DialogInterface.OnClickListener removeFromRoster = new DialogInterface.OnClickListener() {
+    private final DialogInterface.OnClickListener removeFromRoster = new DialogInterface.OnClickListener() {
 
         @Override
         public void onClick(DialogInterface dialog, int which) {
             xmppConnectionService.deleteContactOnServer(contact);
         }
     };
-    private OnCheckedChangeListener mOnSendCheckedChange = new OnCheckedChangeListener() {
+    private final OnCheckedChangeListener mOnSendCheckedChange = new OnCheckedChangeListener() {
 
         @Override
         public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -96,7 +96,7 @@ public class ContactDetailsActivity extends OmemoActivity implements OnAccountUp
             }
         }
     };
-    private OnCheckedChangeListener mOnReceiveCheckedChange = new OnCheckedChangeListener() {
+    private final OnCheckedChangeListener mOnReceiveCheckedChange = new OnCheckedChangeListener() {
 
         @Override
         public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -197,7 +197,7 @@ public class ContactDetailsActivity extends OmemoActivity implements OnAccountUp
         this.messageFingerprint = getIntent().getStringExtra("fingerprint");
         this.binding = DataBindingUtil.setContentView(this, R.layout.activity_contact_details);
 
-        setSupportActionBar((Toolbar) binding.toolbar);
+        setSupportActionBar(binding.toolbar);
         configureActionBar(getSupportActionBar());
         binding.showInactiveDevices.setOnClickListener(v -> {
             showInactiveOmemo = !showInactiveOmemo;
@@ -232,7 +232,7 @@ public class ContactDetailsActivity extends OmemoActivity implements OnAccountUp
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String permissions[], @NonNull int[] grantResults) {
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         if (grantResults.length > 0)
             if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 if (requestCode == REQUEST_SYNC_CONTACTS && xmppConnectionServiceBound) {
@@ -371,22 +371,14 @@ public class ContactDetailsActivity extends OmemoActivity implements OnAccountUp
                 binding.detailsSendPresence.setText(R.string.send_presence_updates);
             } else {
                 binding.detailsSendPresence.setText(R.string.preemptively_grant);
-                if (contact.getOption(Contact.Options.PREEMPTIVE_GRANT)) {
-                    binding.detailsSendPresence.setChecked(true);
-                } else {
-                    binding.detailsSendPresence.setChecked(false);
-                }
+                binding.detailsSendPresence.setChecked(contact.getOption(Contact.Options.PREEMPTIVE_GRANT));
             }
             if (contact.getOption(Contact.Options.TO)) {
                 binding.detailsReceivePresence.setText(R.string.receive_presence_updates);
                 binding.detailsReceivePresence.setChecked(true);
             } else {
                 binding.detailsReceivePresence.setText(R.string.ask_for_presence_updates);
-                if (contact.getOption(Contact.Options.ASKING)) {
-                    binding.detailsReceivePresence.setChecked(true);
-                } else {
-                    binding.detailsReceivePresence.setChecked(false);
-                }
+                binding.detailsReceivePresence.setChecked(contact.getOption(Contact.Options.ASKING));
             }
             if (contact.getAccount().isOnlineAndConnected()) {
                 binding.detailsReceivePresence.setEnabled(true);
@@ -476,8 +468,8 @@ public class ContactDetailsActivity extends OmemoActivity implements OnAccountUp
         if (Config.supportOpenPgp() && contact.getPgpKeyId() != 0) {
             hasKeys = true;
             View view = inflater.inflate(R.layout.contact_key, binding.detailsContactKeys, false);
-            TextView key = (TextView) view.findViewById(R.id.key);
-            TextView keyType = (TextView) view.findViewById(R.id.key_type);
+            TextView key = view.findViewById(R.id.key);
+            TextView keyType = view.findViewById(R.id.key_type);
             keyType.setText(R.string.openpgp_key_id);
             if ("pgp".equals(messageFingerprint)) {
                 keyType.setTextAppearance(this, R.style.TextAppearance_Conversations_Caption_Highlight);

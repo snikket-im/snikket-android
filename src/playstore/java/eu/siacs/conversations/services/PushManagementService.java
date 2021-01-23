@@ -75,7 +75,6 @@ public class PushManagementService {
         final FirebaseMessaging firebaseMessaging;
         try {
             firebaseMessaging = FirebaseMessaging.getInstance();
-            ;
         } catch (IllegalStateException e) {
             Log.d(Config.LOGTAG, "unable to get firebase instance token ", e);
             return;

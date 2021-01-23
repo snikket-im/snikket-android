@@ -30,9 +30,7 @@
 package eu.siacs.conversations.ui;
 
 import android.content.Intent;
-import androidx.databinding.DataBindingUtil;
 import android.os.Bundle;
-import androidx.appcompat.widget.Toolbar;
 import android.text.Editable;
 import android.text.InputType;
 import android.text.TextWatcher;
@@ -43,6 +41,8 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.EditText;
+
+import androidx.databinding.DataBindingUtil;
 
 import com.google.common.base.Strings;
 
@@ -61,10 +61,10 @@ import eu.siacs.conversations.ui.adapter.MessageAdapter;
 import eu.siacs.conversations.ui.interfaces.OnSearchResultsAvailable;
 import eu.siacs.conversations.ui.util.ChangeWatcher;
 import eu.siacs.conversations.ui.util.DateSeparator;
-import eu.siacs.conversations.ui.util.StyledAttributes;
 import eu.siacs.conversations.ui.util.ListViewUtils;
 import eu.siacs.conversations.ui.util.PendingItem;
 import eu.siacs.conversations.ui.util.ShareUtil;
+import eu.siacs.conversations.ui.util.StyledAttributes;
 import eu.siacs.conversations.utils.FtsUtils;
 import eu.siacs.conversations.utils.MessageUtils;
 
@@ -95,7 +95,7 @@ public class SearchActivity extends XmppActivity implements TextWatcher, OnSearc
 		}
 		super.onCreate(bundle);
 		this.binding = DataBindingUtil.setContentView(this, R.layout.activity_search);
-		setSupportActionBar((Toolbar) this.binding.toolbar);
+		setSupportActionBar(this.binding.toolbar);
 		configureActionBar(getSupportActionBar());
 		this.messageListAdapter = new MessageAdapter(this, this.messages);
 		this.messageListAdapter.setOnContactPictureClicked(this);

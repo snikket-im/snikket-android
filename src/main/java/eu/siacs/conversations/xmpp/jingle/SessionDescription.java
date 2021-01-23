@@ -88,7 +88,6 @@ public class SessionDescription {
                 case 'm':
                     if (currentMediaBuilder == null) {
                         sessionDescriptionBuilder.setAttributes(attributeMap);
-                        ;
                     } else {
                         currentMediaBuilder.setAttributes(attributeMap);
                         mediaBuilder.add(currentMediaBuilder.createMedia());

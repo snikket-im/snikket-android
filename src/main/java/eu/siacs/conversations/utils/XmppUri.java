@@ -1,6 +1,7 @@
 package eu.siacs.conversations.utils;
 
 import android.net.Uri;
+
 import androidx.annotation.NonNull;
 
 import com.google.common.collect.ImmutableList;

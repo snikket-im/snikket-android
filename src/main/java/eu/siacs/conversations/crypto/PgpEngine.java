@@ -2,8 +2,9 @@ package eu.siacs.conversations.crypto;
 
 import android.app.PendingIntent;
 import android.content.Intent;
-import androidx.annotation.StringRes;
 import android.util.Log;
+
+import androidx.annotation.StringRes;
 
 import org.openintents.openpgp.OpenPgpError;
 import org.openintents.openpgp.OpenPgpSignatureResult;
@@ -30,8 +31,8 @@ import eu.siacs.conversations.services.XmppConnectionService;
 import eu.siacs.conversations.ui.UiCallback;
 
 public class PgpEngine {
-	private OpenPgpApi api;
-	private XmppConnectionService mXmppConnectionService;
+	private final OpenPgpApi api;
+	private final XmppConnectionService mXmppConnectionService;
 
 	public PgpEngine(OpenPgpApi api, XmppConnectionService service) {
 		this.api = api;

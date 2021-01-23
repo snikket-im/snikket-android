@@ -7,15 +7,11 @@ import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import androidx.databinding.DataBindingUtil;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.PowerManager;
 import android.os.SystemClock;
-import androidx.annotation.NonNull;
-import androidx.annotation.RequiresApi;
-import androidx.annotation.StringRes;
 import android.util.Log;
 import android.util.Rational;
 import android.view.Menu;
@@ -23,6 +19,11 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
+import androidx.annotation.StringRes;
+import androidx.databinding.DataBindingUtil;
 
 import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
@@ -55,12 +56,12 @@ import eu.siacs.conversations.ui.util.MainThreadExecutor;
 import eu.siacs.conversations.utils.PermissionUtils;
 import eu.siacs.conversations.utils.TimeFrameUtils;
 import eu.siacs.conversations.xml.Namespace;
+import eu.siacs.conversations.xmpp.Jid;
 import eu.siacs.conversations.xmpp.jingle.AbstractJingleConnection;
 import eu.siacs.conversations.xmpp.jingle.JingleConnectionManager;
 import eu.siacs.conversations.xmpp.jingle.JingleRtpConnection;
 import eu.siacs.conversations.xmpp.jingle.Media;
 import eu.siacs.conversations.xmpp.jingle.RtpEndUserState;
-import eu.siacs.conversations.xmpp.Jid;
 
 import static eu.siacs.conversations.utils.PermissionUtils.getFirstDenied;
 import static java.util.Arrays.asList;
@@ -99,8 +100,8 @@ public class RtpSessionActivity extends XmppActivity implements XmppConnectionSe
     private ActivityRtpSessionBinding binding;
     private PowerManager.WakeLock mProximityWakeLock;
 
-    private Handler mHandler = new Handler();
-    private Runnable mTickExecutor = new Runnable() {
+    private final Handler mHandler = new Handler();
+    private final Runnable mTickExecutor = new Runnable() {
         @Override
         public void run() {
             updateCallDuration();

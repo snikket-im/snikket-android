@@ -1,11 +1,12 @@
 package eu.siacs.conversations.utils;
 
 import android.content.Context;
-import androidx.annotation.ColorInt;
 import android.text.SpannableStringBuilder;
 import android.text.format.DateFormat;
 import android.text.format.DateUtils;
 import android.util.Pair;
+
+import androidx.annotation.ColorInt;
 
 import com.google.common.base.Strings;
 

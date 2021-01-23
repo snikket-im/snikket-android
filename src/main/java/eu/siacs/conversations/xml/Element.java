@@ -6,8 +6,8 @@ import java.util.List;
 
 import eu.siacs.conversations.utils.XmlHelper;
 import eu.siacs.conversations.xmpp.InvalidJid;
-import eu.siacs.conversations.xmpp.stanzas.MessagePacket;
 import eu.siacs.conversations.xmpp.Jid;
+import eu.siacs.conversations.xmpp.stanzas.MessagePacket;
 
 public class Element {
 	private final String name;

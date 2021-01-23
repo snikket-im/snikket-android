@@ -3,7 +3,6 @@ package eu.siacs.conversations.ui;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import androidx.databinding.DataBindingUtil;
 import android.media.MediaRecorder;
 import android.net.Uri;
 import android.os.Bundle;
@@ -14,6 +13,8 @@ import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Toast;
+
+import androidx.databinding.DataBindingUtil;
 
 import java.io.File;
 import java.io.IOException;
@@ -39,10 +40,10 @@ public class RecordingActivity extends Activity implements View.OnClickListener 
     private MediaRecorder mRecorder;
     private long mStartTime = 0;
 
-    private CountDownLatch outputFileWrittenLatch = new CountDownLatch(1);
+    private final CountDownLatch outputFileWrittenLatch = new CountDownLatch(1);
 
-    private Handler mHandler = new Handler();
-    private Runnable mTickExecutor = new Runnable() {
+    private final Handler mHandler = new Handler();
+    private final Runnable mTickExecutor = new Runnable() {
         @Override
         public void run() {
             tick();

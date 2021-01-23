@@ -1,12 +1,12 @@
 package eu.siacs.conversations.ui.adapter;
 
-import androidx.databinding.DataBindingUtil;
-
-import androidx.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+
+import androidx.annotation.NonNull;
+import androidx.databinding.DataBindingUtil;
 
 import java.util.List;
 
@@ -20,8 +20,8 @@ import eu.siacs.conversations.ui.util.StyledAttributes;
 
 public class AccountAdapter extends ArrayAdapter<Account> {
 
-    private XmppActivity activity;
-    private boolean showStateButton;
+    private final XmppActivity activity;
+    private final boolean showStateButton;
 
     public AccountAdapter(XmppActivity activity, List<Account> objects, boolean showStateButton) {
         super(activity, 0, objects);

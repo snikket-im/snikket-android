@@ -1,7 +1,6 @@
 package eu.siacs.conversations.services;
 
 import android.content.Intent;
-import androidx.core.content.ContextCompat;
 import android.util.Log;
 
 import com.google.firebase.messaging.FirebaseMessagingService;

@@ -14,7 +14,6 @@ import com.google.common.collect.ImmutableSet;
 
 import java.lang.ref.WeakReference;
 import java.security.SecureRandom;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
@@ -61,7 +60,7 @@ public class JingleConnectionManager extends AbstractConnectionManager {
             .expireAfterWrite(24, TimeUnit.HOURS)
             .build();
 
-    private HashMap<Jid, JingleCandidate> primaryCandidates = new HashMap<>();
+    private final HashMap<Jid, JingleCandidate> primaryCandidates = new HashMap<>();
 
     public JingleConnectionManager(XmppConnectionService service) {
         super(service);

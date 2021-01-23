@@ -460,8 +460,8 @@ public class XmppConnectionService extends Service {
     private WakeLock wakeLock;
     private PowerManager pm;
     private LruCache<String, Bitmap> mBitmapCache;
-    private BroadcastReceiver mInternalEventReceiver = new InternalEventReceiver();
-    private BroadcastReceiver mInternalScreenEventReceiver = new InternalEventReceiver();
+    private final BroadcastReceiver mInternalEventReceiver = new InternalEventReceiver();
+    private final BroadcastReceiver mInternalScreenEventReceiver = new InternalEventReceiver();
 
     private static String generateFetchKey(Account account, final Avatar avatar) {
         return account.getJid().asBareJid() + "_" + avatar.owner + "_" + avatar.sha1sum;
@@ -800,7 +800,7 @@ public class XmppConnectionService extends Service {
                 for (Account account : pingCandidates) {
                     final boolean lowTimeout = isInLowPingTimeoutMode(account);
                     account.getXmppConnection().sendPing();
-                    Log.d(Config.LOGTAG, account.getJid().asBareJid() + " send ping (action=" + action + ",lowTimeout=" + Boolean.toString(lowTimeout) + ")");
+                    Log.d(Config.LOGTAG, account.getJid().asBareJid() + " send ping (action=" + action + ",lowTimeout=" + lowTimeout + ")");
                     scheduleWakeUpCall(lowTimeout ? Config.LOW_PING_TIMEOUT : Config.PING_TIMEOUT, account.getUuid().hashCode());
                 }
             }
@@ -1840,7 +1840,7 @@ public class XmppConnectionService extends Service {
                     }
                 });
             } else {
-                Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": error publishing bookmarks (retry=" + Boolean.toString(retry) + ") " + response);
+                Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": error publishing bookmarks (retry=" + retry + ") " + response);
             }
         });
     }

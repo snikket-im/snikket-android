@@ -20,8 +20,6 @@ import android.os.Environment;
 import android.os.ParcelFileDescriptor;
 import android.provider.MediaStore;
 import android.provider.OpenableColumns;
-import androidx.annotation.RequiresApi;
-import androidx.core.content.FileProvider;
 import android.system.Os;
 import android.system.StructStat;
 import android.util.Base64;
@@ -29,6 +27,9 @@ import android.util.Base64OutputStream;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.util.LruCache;
+
+import androidx.annotation.RequiresApi;
+import androidx.core.content.FileProvider;
 
 import java.io.ByteArrayOutputStream;
 import java.io.Closeable;
@@ -277,7 +278,6 @@ public class FileBackend {
         } finally {
             if (bitmap != null) {
                 bitmap.recycle();
-                ;
             }
         }
     }
@@ -982,9 +982,9 @@ public class FileBackend {
     public Uri getTakePhotoUri() {
         File file;
         if (Config.ONLY_INTERNAL_STORAGE) {
-            file = new File(mXmppConnectionService.getCacheDir().getAbsolutePath(), "Camera/IMG_" + this.IMAGE_DATE_FORMAT.format(new Date()) + ".jpg");
+            file = new File(mXmppConnectionService.getCacheDir().getAbsolutePath(), "Camera/IMG_" + IMAGE_DATE_FORMAT.format(new Date()) + ".jpg");
         } else {
-            file = new File(getTakePhotoPath() + "IMG_" + this.IMAGE_DATE_FORMAT.format(new Date()) + ".jpg");
+            file = new File(getTakePhotoPath() + "IMG_" + IMAGE_DATE_FORMAT.format(new Date()) + ".jpg");
         }
         file.getParentFile().mkdirs();
         return getUriForFile(mXmppConnectionService, file);
@@ -1408,9 +1408,6 @@ public class FileBackend {
             return null;
         }
         Bitmap bm = cropCenter(getAvatarUri(avatar), size, size);
-        if (bm == null) {
-            return null;
-        }
         return bm;
     }
 
@@ -1447,7 +1444,7 @@ public class FileBackend {
     }
 
     public static class FileCopyException extends Exception {
-        private int resId;
+        private final int resId;
 
         private FileCopyException(int resId) {
             this.resId = resId;

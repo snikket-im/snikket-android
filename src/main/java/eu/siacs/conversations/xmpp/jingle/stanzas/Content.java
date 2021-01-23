@@ -6,7 +6,6 @@ import com.google.common.base.Preconditions;
 
 import java.util.Locale;
 
-import eu.siacs.conversations.entities.DownloadableFile;
 import eu.siacs.conversations.xml.Element;
 import eu.siacs.conversations.xml.Namespace;
 

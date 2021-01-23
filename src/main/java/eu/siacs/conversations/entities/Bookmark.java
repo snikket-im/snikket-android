@@ -1,6 +1,7 @@
 package eu.siacs.conversations.entities;
 
 import android.content.Context;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
@@ -21,7 +22,7 @@ import eu.siacs.conversations.xmpp.Jid;
 
 public class Bookmark extends Element implements ListItem {
 
-	private Account account;
+	private final Account account;
 	private WeakReference<Conversation> conversation;
 	private Jid jid;
 

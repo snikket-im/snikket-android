@@ -2,11 +2,11 @@ package eu.siacs.conversations.ui;
 
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
-import androidx.databinding.DataBindingUtil;
 import android.os.Bundle;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 import android.view.MenuItem;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.databinding.DataBindingUtil;
 
 import java.util.List;
 
@@ -66,7 +66,7 @@ public class PickServerActivity extends XmppActivity {
         }
         super.onCreate(savedInstanceState);
         ActivityPickServerBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_pick_server);
-        setSupportActionBar((Toolbar) binding.toolbar);
+        setSupportActionBar(binding.toolbar);
         configureActionBar(getSupportActionBar());
         binding.useCim.setOnClickListener(v -> {
             final Intent intent = new Intent(this, MagicCreateActivity.class);

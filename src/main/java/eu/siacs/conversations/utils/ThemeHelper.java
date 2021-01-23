@@ -36,11 +36,13 @@ import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.os.Build;
 import android.preference.PreferenceManager;
-import androidx.annotation.StyleRes;
-import com.google.android.material.snackbar.Snackbar;
-import androidx.core.content.ContextCompat;
 import android.util.TypedValue;
 import android.widget.TextView;
+
+import androidx.annotation.StyleRes;
+import androidx.core.content.ContextCompat;
+
+import com.google.android.material.snackbar.Snackbar;
 
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.ui.SettingsActivity;
