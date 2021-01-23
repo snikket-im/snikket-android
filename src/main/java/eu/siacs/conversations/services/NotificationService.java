@@ -663,7 +663,7 @@ public class NotificationService {
     private Builder buildMultipleConversation(final boolean notify, final boolean quietHours) {
         final Builder mBuilder = new NotificationCompat.Builder(mXmppConnectionService, quietHours ? "quiet_hours" : (notify ? "messages" : "silent_messages"));
         final NotificationCompat.InboxStyle style = new NotificationCompat.InboxStyle();
-        style.setBigContentTitle(mXmppConnectionService.getString(R.string.x_unread_conversations, notifications.size()));
+        style.setBigContentTitle(mXmppConnectionService.getResources().getQuantityString(R.plurals.x_unread_conversations, notifications.size(), notifications.size()));
         final StringBuilder names = new StringBuilder();
         Conversation conversation = null;
         for (final ArrayList<Message> messages : notifications.values()) {
@@ -688,8 +688,9 @@ public class NotificationService {
         if (names.length() >= 2) {
             names.delete(names.length() - 2, names.length());
         }
-        mBuilder.setContentTitle(mXmppConnectionService.getString(R.string.x_unread_conversations, notifications.size()));
-        mBuilder.setTicker(mXmppConnectionService.getString(R.string.x_unread_conversations, notifications.size()));
+        final String contentTitle = mXmppConnectionService.getResources().getQuantityString(R.plurals.x_unread_conversations, notifications.size(), notifications.size());
+        mBuilder.setContentTitle(contentTitle);
+        mBuilder.setTicker(contentTitle);
         mBuilder.setContentText(names.toString());
         mBuilder.setStyle(style);
         if (conversation != null) {

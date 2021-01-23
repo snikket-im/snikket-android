@@ -29,7 +29,11 @@
     <string name="just_now">just now</string>
     <string name="minute_ago">1 min ago</string>
     <string name="minutes_ago">%d mins ago</string>
-    <string name="x_unread_conversations">%d unread conversations</string>
+    <plurals name="x_unread_conversations">
+        <item quantity="one">%d unread conversation</item>
+        <item quantity="other">%d unread conversations</item>
+
+    </plurals>
     <string name="sending">sending…</string>
     <string name="message_decrypting">Decrypting message. Please wait…</string>
     <string name="pgp_message">OpenPGP encrypted message</string>
