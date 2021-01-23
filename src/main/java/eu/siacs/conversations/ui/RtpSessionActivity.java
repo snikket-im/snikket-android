@@ -458,24 +458,42 @@ public class RtpSessionActivity extends XmppActivity implements XmppConnectionSe
 
     @Override
     public void onBackPressed() {
+        if (isConnected()) {
+            if (switchToPictureInPicture()) {
+                return;
+            }
+        } else {
+            endCall();
+        }
         super.onBackPressed();
-        endCall();
     }
 
     @Override
     public void onUserLeaveHint() {
         super.onUserLeaveHint();
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O && deviceSupportsPictureInPicture()) {
-            if (shouldBePictureInPicture()) {
-                startPictureInPicture();
-                return;
-            }
+        if (switchToPictureInPicture()) {
+            return;
         }
         //TODO apparently this method is not getting called on Android 10 when using the task switcher
         final boolean emptyReference = rtpConnectionReference == null || rtpConnectionReference.get() == null;
         if (emptyReference && xmppConnectionService != null) {
             retractSessionProposal();
         }
+    }
+
+    private boolean isConnected() {
+        final JingleRtpConnection connection = this.rtpConnectionReference != null ? this.rtpConnectionReference.get() : null;
+        return connection != null && connection.getEndUserState() == RtpEndUserState.CONNECTED;
+    }
+
+    private boolean switchToPictureInPicture() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O && deviceSupportsPictureInPicture()) {
+            if (shouldBePictureInPicture()) {
+                startPictureInPicture();
+                return true;
+            }
+        }
+        return false;
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
