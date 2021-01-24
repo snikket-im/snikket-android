@@ -29,6 +29,10 @@
   <string name="just_now">Ara</string>
   <string name="minute_ago">fa 1 min</string>
   <string name="minutes_ago">fa %d mins</string>
+  <plurals name="x_unread_conversations">
+    <item quantity="one">%dconverses no llegides </item>
+    <item quantity="other">%d converses no llegides</item>
+  </plurals>
   <string name="sending">enviant…</string>
   <string name="message_decrypting">Desxifrant el missatge. Espereu…</string>
   <string name="pgp_message">Missatge xifrat amb OpenPGP</string>
@@ -938,6 +942,10 @@ que l\'administrador del servidor llegeixi els missatges, però pot ser l\'únic
   <string name="play_audio">Reproduir àudio</string>
   <string name="pause_audio">Pausar l\'àudio</string>
   <string name="add_contact_or_create_or_join_group_chat">Afegir contacte, crear o unir-se a un xat de grup, o descobrir canals</string>
+  <plurals name="view_users">
+    <item quantity="one">View %1$d Participant</item>
+    <item quantity="other">Veure %1$d Participants</item>
+  </plurals>
   <plurals name="some_messages_could_not_be_delivered">
     <item quantity="one">Alguns missatges no han pogut ser lliurats</item>
     <item quantity="other">Alguns missatges no han pogut ser lliurats</item>

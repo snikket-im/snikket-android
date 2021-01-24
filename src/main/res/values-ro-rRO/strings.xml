@@ -29,6 +29,11 @@
   <string name="just_now">acum</string>
   <string name="minute_ago">acum un minut</string>
   <string name="minutes_ago">acum %d minute</string>
+  <plurals name="x_unread_conversations">
+    <item quantity="one">%d conversație necitită</item>
+    <item quantity="few">%d conversații necitite</item>
+    <item quantity="other">%d de conversații necitite</item>
+  </plurals>
   <string name="sending">trimitere...</string>
   <string name="message_decrypting">Decriptez mesaj. Te rog așteaptă...</string>
   <string name="pgp_message">Mesaj criptat cu OpenPGP</string>

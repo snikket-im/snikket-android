@@ -29,6 +29,10 @@
   <string name="just_now">agora</string>
   <string name="minute_ago">Hai 1 min</string>
   <string name="minutes_ago">hai %d minutos</string>
+  <plurals name="x_unread_conversations">
+    <item quantity="one">%d conversa sen ler</item>
+    <item quantity="other">%d conversas sen ler</item>
+  </plurals>
   <string name="sending">enviando…</string>
   <string name="message_decrypting">Descifrando a mensaxe. Por favor agarde...</string>
   <string name="pgp_message">Mensaxe cifrado con OpenPGP</string>

@@ -106,6 +106,7 @@
   <string name="pref_ringtone">Vyzváněcí tón</string>
   <string name="pref_call_ringtone_summary">Vyzváněcí tón pro příchozí hovor</string>
   <string name="pref_notification_grace_period">Časová lhůta</string>
+  <string name="pref_notification_grace_period_summary">Časová lhůta po kterou bude Conversations v tichém režimu při zaznamenání aktivity na jiném přístroji</string>
   <string name="pref_advanced_options">Rozšířené</string>
   <string name="pref_never_send_crash">Neodesílat detaily o pádu aplikace</string>
   <string name="pref_confirm_messages">Potvrzovat zprávy</string>
@@ -113,6 +114,7 @@
   <string name="pref_ui_options">UI</string>
   <string name="accept">Přijmout</string>
   <string name="error">Došlo k chybě</string>
+  <string name="recording_error">Chyba</string>
   <string name="your_account">Váš účet</string>
   <string name="send_presence_updates">Zasílat změny stavu</string>
   <string name="receive_presence_updates">Přijímat změny stavu</string>
@@ -145,6 +147,7 @@
   <string name="mgmt_account_disable">Dočasně vypnout</string>
   <string name="mgmt_account_publish_avatar">Zveřejnit avatar</string>
   <string name="mgmt_account_publish_pgp">Zveřejnit OpenPGP klíč</string>
+  <string name="openpgp_has_been_published">OpenPGP veřejný klíč zveřejněn.</string>
   <string name="mgmt_account_enable">Povolit účet</string>
   <string name="mgmt_account_are_you_sure">Jste si jisti?</string>
   <string name="attach_record_voice">Nahrát hlas</string>
@@ -370,6 +373,7 @@
     <item quantity="other">%d zpráv</item>
   </plurals>
   <string name="load_more_messages">Načíst více zpráv</string>
+  <string name="no_camera_permission">Povolit Conversations přístup ke kameře</string>
   <string name="sync_with_contacts">Synchronizovat s kontakty</string>
   <string name="notify_on_all_messages">Upozorňovat na všechny zprávy</string>
   <string name="notify_never">Upozornění vypnuta</string>
