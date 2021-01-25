@@ -1,5 +1,11 @@
 # Changelog
 
+### Version 2.9.6
+
+* Show call button for offline contacts if they previously announced support
+* Back button no longer ends call when call is connected
+* bug fixes
+
 ### Version 2.9.5
 
 * Quicksy: Automatically receive verification SMS
