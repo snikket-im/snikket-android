@@ -40,5 +40,8 @@
 	<!-- scanner -->
 	<color name="scan_result_dots">#c04CAF50</color>
 
+	<color name="splash_screen_background">#fffafafa</color> <!-- gray50 -->
+	<color name="splash_screen_status_bar">#ffe0e0e0</color> <!-- gray300 -->
+
 	<color name="blue500">#ff2196f3</color>
 </resources>
