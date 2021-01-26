@@ -29,6 +29,12 @@
   <string name="just_now">przed chwilą</string>
   <string name="minute_ago">minutę temu</string>
   <string name="minutes_ago">%d minut temu</string>
+  <plurals name="x_unread_conversations">
+    <item quantity="one">%d nieprzeczytana konwersacja</item>
+    <item quantity="few">%d nieprzeczytane konwersacje</item>
+    <item quantity="many">%d nieprzeczytanych konwersacji</item>
+    <item quantity="other">%d nieprzeczytanych konwersacji</item>
+  </plurals>
   <string name="sending">wysyłanie...</string>
   <string name="message_decrypting">Odszyfrowywanie wiadomości. To zajmie tylko chwilę...</string>
   <string name="pgp_message">Wiadomość zaszyfrowana OpenPGP</string>
