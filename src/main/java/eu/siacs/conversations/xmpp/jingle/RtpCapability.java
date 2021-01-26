@@ -62,7 +62,7 @@ public class RtpCapability {
 
     public static Capability check(final Contact contact, final boolean allowFallback) {
         final Presences presences = contact.getPresences();
-        if (presences.size() == 0 && allowFallback) {
+        if (presences.size() == 0 && allowFallback && contact.getAccount().isEnabled()) {
             return contact.getRtpCapability();
         }
         Capability result = Capability.NONE;
