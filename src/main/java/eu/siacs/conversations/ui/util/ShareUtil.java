@@ -96,7 +96,8 @@ public class ShareUtil {
 			resId = R.string.file_url;
 			url = message.getFileParams().url.toString();
 		} else {
-			url = message.getBody().trim();
+			final Message.FileParams fileParams = message.getFileParams();
+			url = (fileParams != null && fileParams.url != null) ? fileParams.url.toString() : message.getBody().trim();
 			resId = R.string.file_url;
 		}
 		if (activity.copyTextToClipboard(url, resId)) {
