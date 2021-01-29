@@ -583,7 +583,8 @@ public class XmppConnectionService extends Service {
         mFileAddingExecutor.execute(() -> {
             try {
                 getFileBackend().copyImageToPrivateStorage(message, uri);
-            } catch (FileBackend.NotAnImageFileException e) {
+            } catch (FileBackend.ImageCompressionException e) {
+                Log.d(Config.LOGTAG, "unable to compress image. fall back to file transfer", e);
                 attachFileToConversation(conversation, uri, mimeType, callback);
                 return;
             } catch (final FileBackend.FileCopyException e) {
@@ -636,7 +637,7 @@ public class XmppConnectionService extends Service {
             switch (action) {
                 case QuickConversationsService.SMS_RETRIEVED_ACTION:
                     mQuickConversationsService.handleSmsReceived(intent);
-                break;
+                    break;
                 case ConnectivityManager.CONNECTIVITY_ACTION:
                     if (hasInternetConnection()) {
                         if (Config.POST_CONNECTIVITY_CHANGE_PING_INTERVAL > 0) {
