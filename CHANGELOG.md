@@ -12,6 +12,7 @@
 
 ### Version 2.9.4
 * minor stability improvements for A/V calls
+* Conversations releases from here on forward require Android 5
 
 ### Version 2.9.3
 
