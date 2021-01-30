@@ -588,8 +588,7 @@ public class Contact implements ListItem, Blockable {
     }
 
     public RtpCapability.Capability getRtpCapability() {
-
-        return this.rtpCapability;
+        return this.rtpCapability == null ? RtpCapability.Capability.NONE : this.rtpCapability;
     }
 
     public static final class Options {
