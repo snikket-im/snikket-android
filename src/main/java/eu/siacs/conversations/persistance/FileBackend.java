@@ -18,6 +18,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
 import android.os.ParcelFileDescriptor;
+import android.os.SystemClock;
 import android.provider.MediaStore;
 import android.provider.OpenableColumns;
 import android.system.Os;
@@ -223,8 +224,12 @@ public class FileBackend {
     }
 
     private static boolean hasAlpha(final Bitmap bitmap) {
-        for (int x = 0; x < bitmap.getWidth(); ++x) {
-            for (int y = 0; y < bitmap.getWidth(); ++y) {
+        final int w = bitmap.getWidth();
+        final int h = bitmap.getHeight();
+        final int yStep = Math.max(1, w / 100);
+        final int xStep = Math.max(1, h / 100);
+        for (int x = 0; x < w; x += xStep) {
+            for (int y = 0; y < h; y += yStep) {
                 if (Color.alpha(bitmap.getPixel(x, y)) < 255) {
                     return true;
                 }
@@ -707,7 +712,7 @@ public class FileBackend {
     private void copyImageToPrivateStorage(File file, Uri image, int sampleSize) throws FileCopyException, ImageCompressionException {
         final File parent = file.getParentFile();
         if (parent.mkdirs()) {
-            Log.d(Config.LOGTAG,"created parent directory");
+            Log.d(Config.LOGTAG, "created parent directory");
         }
         InputStream is = null;
         OutputStream os = null;
@@ -1180,7 +1185,7 @@ public class FileBackend {
             }
         }
         if (file.delete()) {
-            Log.d(Config.LOGTAG,"deleted "+file.getAbsolutePath());
+            Log.d(Config.LOGTAG, "deleted " + file.getAbsolutePath());
         }
     }
 
