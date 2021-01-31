@@ -1295,7 +1295,9 @@ public class FileBackend {
     private int calcSampleSize(Uri image, int size) throws FileNotFoundException, SecurityException {
         BitmapFactory.Options options = new BitmapFactory.Options();
         options.inJustDecodeBounds = true;
-        BitmapFactory.decodeStream(mXmppConnectionService.getContentResolver().openInputStream(image), null, options);
+        InputStream inputStream = mXmppConnectionService.getContentResolver().openInputStream(image);
+        BitmapFactory.decodeStream(inputStream, null, options);
+        close(inputStream);
         return calcSampleSize(options, size);
     }
 
