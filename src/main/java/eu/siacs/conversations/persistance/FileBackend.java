@@ -601,12 +601,12 @@ public class FileBackend {
         }
     }
 
-    public boolean useImageAsIs(Uri uri) {
-        String path = getOriginalPath(uri);
+    public boolean useImageAsIs(final Uri uri) {
+        final String path = getOriginalPath(uri);
         if (path == null || isPathBlacklisted(path)) {
             return false;
         }
-        File file = new File(path);
+        final File file = new File(path);
         long size = file.length();
         if (size == 0 || size >= mXmppConnectionService.getResources().getInteger(R.integer.auto_accept_filesize)) {
             return false;
@@ -614,12 +614,15 @@ public class FileBackend {
         BitmapFactory.Options options = new BitmapFactory.Options();
         options.inJustDecodeBounds = true;
         try {
-            BitmapFactory.decodeStream(mXmppConnectionService.getContentResolver().openInputStream(uri), null, options);
+            final InputStream inputStream = mXmppConnectionService.getContentResolver().openInputStream(uri);
+            BitmapFactory.decodeStream(inputStream, null, options);
+            close(inputStream);
             if (options.outMimeType == null || options.outHeight <= 0 || options.outWidth <= 0) {
                 return false;
             }
             return (options.outWidth <= Config.IMAGE_SIZE && options.outHeight <= Config.IMAGE_SIZE && options.outMimeType.contains(Config.IMAGE_FORMAT.name().toLowerCase()));
         } catch (FileNotFoundException e) {
+            Log.d(Config.LOGTAG, "unable to get image dimensions", e);
             return false;
         }
     }
@@ -796,14 +799,17 @@ public class FileBackend {
         updateFileParams(message);
     }
 
-    public boolean unusualBounds(Uri image) {
+    public boolean unusualBounds(final Uri image) {
         try {
-            BitmapFactory.Options options = new BitmapFactory.Options();
+            final BitmapFactory.Options options = new BitmapFactory.Options();
             options.inJustDecodeBounds = true;
-            BitmapFactory.decodeStream(mXmppConnectionService.getContentResolver().openInputStream(image), null, options);
+            final InputStream inputStream = mXmppConnectionService.getContentResolver().openInputStream(image);
+            BitmapFactory.decodeStream(inputStream, null, options);
+            close(inputStream);
             float ratio = (float) options.outHeight / options.outWidth;
             return ratio > (21.0f / 9.0f) || ratio < (9.0f / 21.0f);
-        } catch (Exception e) {
+        } catch (final Exception e) {
+            Log.w(Config.LOGTAG, "unable to detect image bounds", e);
             return false;
         }
     }
@@ -1293,9 +1299,11 @@ public class FileBackend {
     }
 
     private int calcSampleSize(Uri image, int size) throws FileNotFoundException, SecurityException {
-        BitmapFactory.Options options = new BitmapFactory.Options();
+        final BitmapFactory.Options options = new BitmapFactory.Options();
         options.inJustDecodeBounds = true;
-        BitmapFactory.decodeStream(mXmppConnectionService.getContentResolver().openInputStream(image), null, options);
+        final InputStream inputStream = mXmppConnectionService.getContentResolver().openInputStream(image);
+        BitmapFactory.decodeStream(inputStream, null, options);
+        close(inputStream);
         return calcSampleSize(options, size);
     }
 
