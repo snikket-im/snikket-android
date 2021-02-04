@@ -65,8 +65,8 @@
   <string name="unblock">Odblokuj</string>
   <string name="save">Zapisz</string>
   <string name="ok">Ok</string>
-  <string name="crash_report_title">Conversations uległo awarii</string>
-  <string name="crash_report_message">Używając swojego konta XMPP do wysyłania śladów stosu pomagasz w rozwoju Conversations.</string>
+  <string name="crash_report_title">Snikket uległo awarii</string>
+  <string name="crash_report_message">Używając swojego konta XMPP do wysyłania śladów stosu pomagasz w rozwoju Snikket.</string>
   <string name="send_now">Wyślij teraz</string>
   <string name="send_never">Nie pytaj ponownie</string>
   <string name="problem_connecting_to_account">Nie można połączyć z kontem</string>
@@ -96,7 +96,7 @@
   <string name="send_unencrypted">Wyślij bez szyfrowania</string>
   <string name="decryption_failed">Nie można odszyfrować. Sprawdź poprawność klucza prywatnego.</string>
   <string name="openkeychain_required">OpenKeychain</string>
-  <string name="openkeychain_required_long">Conversations używa <b>OpenKeychain</b> aby szyfrować i odszyfrowywać wiadomości i zarządzać twoimi kluczami publicznymi.\n\nOpenKeychain jest na licencji GPLv3+ i jest dostępny przez F-Droid lub Google Play.\n\n<small>(Proszę zrestartować Conversations po zainstalowaniu.)</small></string>
+  <string name="openkeychain_required_long">Snikket używa <b>OpenKeychain</b> aby szyfrować i odszyfrowywać wiadomości i zarządzać twoimi kluczami publicznymi.\n\nOpenKeychain jest na licencji GPLv3+ i jest dostępny przez F-Droid lub Google Play.\n\n<small>(Proszę zrestartować Conversations po zainstalowaniu.)</small></string>
   <string name="restart">Zrestartuj</string>
   <string name="install">Zainstaluj</string>
   <string name="openkeychain_not_installed">Proszę zainstalować OpenKeychain</string>
@@ -504,10 +504,10 @@
   <string name="shared_image_with_x">Obraz udostępniony %s</string>
   <string name="shared_images_with_x">Obrazy udostępnione %s</string>
   <string name="shared_text_with_x">Tekst udostępniony %s</string>
-  <string name="no_storage_permission">Pozwól Conversations na dostęp do zewnętrznego magazynu</string>
-  <string name="no_camera_permission">Pozwól Conversations na dostępu do aparatu</string>
+  <string name="no_storage_permission">Pozwól Snikket na dostęp do zewnętrznego magazynu</string>
+  <string name="no_camera_permission">Pozwól Snikket na dostępu do aparatu</string>
   <string name="sync_with_contacts">Synchronizuj z kontaktami</string>
-  <string name="sync_with_contacts_long">Conversations potrzebuje twojego pozwolenia na dopasowanie twoich kontaktów XMPP z listą kontaktów w telefonie aby uzupełnić ich pełne imiona oraz awatary.\nConversations jedynie przeczyta Twoje kontakty i dopasuje je lokalnie, bez wysyłania na twój serwer.</string>
+  <string name="sync_with_contacts_long">Snikket potrzebuje twojego pozwolenia na dopasowanie twoich kontaktów XMPP z listą kontaktów w telefonie aby uzupełnić ich pełne imiona oraz awatary.\nConversations jedynie przeczyta Twoje kontakty i dopasuje je lokalnie, bez wysyłania na twój serwer.</string>
   <string name="sync_with_contacts_quicksy"><![CDATA[Quicksy potrzebuje dostępu do numerów telefonów twoich kontaktów aby zasugerować ci kontakty które już używają Quicksy. <br><br> Nie przechowujemy kopii tych numerów.\n\nAby uzyskać więcej informacji przeczytaj naszą <a href="https://quicksy.im/#privacy">politykę prywatności</a>. <br><br>Zostaniesz poproszony o pozwolenie na dostęp do twoich kontaktów.]]></string>
   <string name="notify_on_all_messages">Powiadom o wszystkich wiadomościach</string>
   <string name="notify_only_when_highlighted">Powiadamiaj tylko w przypadku wzmianki o mnie</string>
@@ -518,8 +518,8 @@
   <string name="always">Zawsze</string>
   <string name="large_images_only">Tylko duże obrazki</string>
   <string name="battery_optimizations_enabled">Optymalizacje zużycia baterii włączone</string>
-  <string name="battery_optimizations_enabled_explained">Twoje urządzenie ma włączone agresywne oszczędzanie baterii przez co Conversations może odbierać wiadomości z opóźnieniem.\nZalecamy wyłączenie tych optymalizacji. </string>
-  <string name="battery_optimizations_enabled_dialog">Twoje urządzenie ma włączone agresywne oszczędzanie baterii przez co Conversations może odbierać wiadomości z opóźnieniem.\nZostaniesz poproszony o wyłączenie ich.</string>
+  <string name="battery_optimizations_enabled_explained">Twoje urządzenie ma włączone agresywne oszczędzanie baterii przez co Snikket może odbierać wiadomości z opóźnieniem.\nZalecamy wyłączenie tych optymalizacji. </string>
+  <string name="battery_optimizations_enabled_dialog">Twoje urządzenie ma włączone agresywne oszczędzanie baterii przez co Snikket może odbierać wiadomości z opóźnieniem.\nZostaniesz poproszony o wyłączenie ich.</string>
   <string name="disable">Wyłącz</string>
   <string name="selection_too_large">Zaznaczony obszar jest zbyt duży</string>
   <string name="no_accounts">(Brak aktywynych kont)</string>
@@ -558,15 +558,15 @@
   <string name="gp_medium">Średni</string>
   <string name="gp_long">Długi</string>
   <string name="pref_broadcast_last_activity">Ogłaszaj użycie</string>
-  <string name="pref_broadcast_last_activity_summary">Powiadamiaj kontakty o tym, że używasz Conversations</string>
+  <string name="pref_broadcast_last_activity_summary">Powiadamiaj kontakty o tym, że używasz Snikket</string>
   <string name="pref_privacy">Prywatność</string>
   <string name="pref_theme_options">Skórka</string>
   <string name="pref_theme_options_summary">Wybierz paletę kolorów</string>
   <string name="pref_theme_automatic">Automatycznie</string>
   <string name="pref_theme_light">Jasny</string>
   <string name="pref_theme_dark">Ciemny</string>
-  <string name="pref_use_green_background">Zielone tło</string>
-  <string name="pref_use_green_background_summary">Używaj zielonego tła dla otrzymanych wiadomości</string>
+  <string name="pref_use_yellow_background">Żółte tło</string>
+  <string name="pref_use_yellow_background_summary">Używaj żółtego tła dla otrzymanych wiadomości</string>
   <string name="unable_to_connect_to_keychain">Nie można połączyć się z OpenKeychain</string>
   <string name="this_device_is_no_longer_in_use">Urządzenie to nie jest już używane</string>
   <string name="type_pc">Komputer</string>
@@ -591,9 +591,9 @@
   <string name="show_error_message">Pokaż komunikaty błędów</string>
   <string name="error_message">Komunikat o błędzie</string>
   <string name="data_saver_enabled">Oszczędzanie danych jest włączone</string>
-  <string name="data_saver_enabled_explained">Twój system operacyjny blokuje dostęp do internetu Conversations, kiedy jest w tle. Aby dostawać powiadomienia dla nowych wiadomości powinieneś/powinnaś dać Conversations nieograniczony dostęp do internetu, kiedy Oszczędzanie danych jest włączone.
-Conversations będzie wciąż ograniczał transfer danych, kiedy tylko to jest możliwe.</string>
-  <string name="device_does_not_support_data_saver">Twoje urządzenie nie wspiera wyłączenia Oszczędzania danych dla Conversations.</string>
+  <string name="data_saver_enabled_explained">Twój system operacyjny blokuje dostęp do internetu Snikket, kiedy jest w tle. Aby dostawać powiadomienia dla nowych wiadomości powinieneś/powinnaś dać Conversations nieograniczony dostęp do internetu, kiedy Oszczędzanie danych jest włączone.
+Snikket będzie wciąż ograniczał transfer danych, kiedy tylko to jest możliwe.</string>
+  <string name="device_does_not_support_data_saver">Twoje urządzenie nie wspiera wyłączenia Oszczędzania danych dla Snikket.</string>
   <string name="error_unable_to_create_temporary_file">Niemożna utworzyć pliku tymczasowego</string>
   <string name="this_device_has_been_verified">To urządzenie zostało zweryfikowane</string>
   <string name="copy_fingerprint">Skopiuj odcisk</string>
@@ -690,7 +690,7 @@ Conversations będzie wciąż ograniczał transfer danych, kiedy tylko to jest m
   <string name="message">Wiadomość</string>
   <string name="private_messages_are_disabled">Prywatne wiadomości są wyłączone</string>
   <string name="huawei_protected_apps">Aplikacje chronione</string>
-  <string name="huawei_protected_apps_summary">Aby otrzymywać wiadomości kiedy ekran jest wyłączony musisz dodać Conversations do listy aplikacji chronionych.</string>
+  <string name="huawei_protected_apps_summary">Aby otrzymywać wiadomości kiedy ekran jest wyłączony musisz dodać Snikket do listy aplikacji chronionych.</string>
   <string name="mtm_accept_cert">Zaakceptować nieznany certyfikat?</string>
   <string name="mtm_trust_anchor">Certyfikat serwera nie jest podpisany przez znany Urząd Certyfikacji</string>
   <string name="mtm_accept_servername">Czy zaakceptować niepasującą nazwę serwera?</string>
@@ -704,7 +704,7 @@ Conversations będzie wciąż ograniczał transfer danych, kiedy tylko to jest m
   <string name="edit_status_message_title">Edytuj komunikat statusu</string>
   <string name="edit_status_message">Edytuj komunikat statusu</string>
   <string name="disable_encryption">Wyłącz szyfrowanie</string>
-  <string name="error_trustkey_general">Conversations nie mogło wysłać zaszyfrowanej wiadomości do %1$s. Możliwe, że kontakt używa starego serwera lub klienta który nie wspiera OMEMO.</string>
+  <string name="error_trustkey_general">Snikket nie mogło wysłać zaszyfrowanej wiadomości do %1$s. Możliwe, że kontakt używa starego serwera lub klienta który nie wspiera OMEMO.</string>
   <string name="error_trustkey_device_list">Nie powiodło się pobranie listy urządzeń</string>
   <string name="error_trustkey_bundle">Nie powiodło się pobranie kluczy szyfrowania</string>
   <string name="error_trustkey_hint_mutual">Podpowiedź: W niektórych przypadkach może pomóc wzajemne dodanie się do listy kontaktów.</string>
@@ -738,7 +738,7 @@ Administrator twojego serwera będzie mógł czytać twoje wiadomości, ale moż
   <string name="share">Udostępnij</string>
   <string name="unable_to_start_recording">Nie można rozpocząć nagrywania</string>
   <string name="please_wait">Proszę czekać...</string>
-  <string name="no_microphone_permission">Pozwól Conversations na dostęp do mikrofonu</string>
+  <string name="no_microphone_permission">Pozwól Snikket na dostęp do mikrofonu</string>
   <string name="search_messages">Wyszukaj wiadomości</string>
   <string name="gif">GIF</string>
   <string name="view_conversation">Pokaż konwersację</string>
@@ -760,10 +760,10 @@ Administrator twojego serwera będzie mógł czytać twoje wiadomości, ale moż
   <string name="conference_destroyed">Ta konferencja została usunięta</string>
   <string name="unable_to_save_recording">Nie można rozpocząć nagrywania</string>
   <string name="foreground_service_channel_name">Usługa na pierwszym planie</string>
-  <string name="foreground_service_channel_description">Ta kategoria powiadomień jest używana aby wyświetlać stałe powiadomienie oznaczające, że Conversations działa</string>
+  <string name="foreground_service_channel_description">Ta kategoria powiadomień jest używana aby wyświetlać stałe powiadomienie oznaczające, że Snikket działa</string>
   <string name="notification_group_status_information">Wiadomość Statusu</string>
   <string name="error_channel_name">Problemy z połączeniem</string>
-  <string name="error_channel_description">Ta kategoria powiadomień jest używana aby wyświetlać powiadomienia oznaczające, że Conversations ma problemy z połączeniem.</string>
+  <string name="error_channel_description">Ta kategoria powiadomień jest używana aby wyświetlać powiadomienia oznaczające, że Snikket ma problemy z połączeniem.</string>
   <string name="notification_group_messages">Wiadomości</string>
   <string name="notification_group_calls">Połączenia</string>
   <string name="messages_channel_name">Wiadomości</string>
@@ -840,7 +840,7 @@ Administrator twojego serwera będzie mógł czytać twoje wiadomości, ale moż
   <string name="ebook">e-book</string>
   <string name="video_original">Oryginalne (nieskompresowane)</string>
   <string name="open_with">Otwórz za pomocą...</string>
-  <string name="set_profile_picture">Obrazek profilowy Conversations</string>
+  <string name="set_profile_picture">Obrazek profilowy Snikket</string>
   <string name="choose_account">Wybierz konto</string>
   <string name="restore_backup">Przywróć kopię zapasową</string>
   <string name="restore">Przywróć</string>
@@ -889,10 +889,10 @@ Administrator twojego serwera będzie mógł czytać twoje wiadomości, ale moż
   <string name="add_anway">Dodaj i tak</string>
   <string name="this_looks_like_channel">To wygląda jak adres kanału</string>
   <string name="share_backup_files">Udostępnij pliki kopii zapasowych</string>
-  <string name="conversations_backup">Kopia zapasowa Conversations</string>
+  <string name="conversations_backup">Kopia zapasowa Snikket</string>
   <string name="event">Zdarzenie</string>
   <string name="open_backup">Otwórz kopię zapasową</string>
-  <string name="not_a_backup_file">Plik, który otworzyłeś, nie jest plikiem kopii zapasowej Conversations</string>
+  <string name="not_a_backup_file">Plik, który otworzyłeś, nie jest plikiem kopii zapasowej Snikket</string>
   <string name="account_already_setup">To konto zostało już ustawione</string>
   <string name="please_enter_password">Proszę podać hasło dla tego konta</string>
   <string name="unable_to_perform_this_action">Nie można wykonać tej akcji</string>
