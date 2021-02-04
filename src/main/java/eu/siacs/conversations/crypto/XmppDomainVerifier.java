@@ -16,6 +16,7 @@ import org.bouncycastle.asn1.x500.style.IETFUtils;
 import org.bouncycastle.cert.jcajce.JcaX509CertificateHolder;
 
 import java.io.IOException;
+import java.net.IDN;
 import java.security.cert.Certificate;
 import java.security.cert.CertificateEncodingException;
 import java.security.cert.X509Certificate;
@@ -98,24 +99,26 @@ public class XmppDomainVerifier implements DomainHostnameVerifier {
     }
 
     @Override
-    public boolean verify(String domain, String hostname, SSLSession sslSession) {
+    public boolean verify(final String unicodeDomain,final  String unicodeHostname, SSLSession sslSession) {
+        final String domain = IDN.toASCII(unicodeDomain);
+        final String hostname = unicodeHostname == null ? null : IDN.toASCII(unicodeHostname);
         try {
-            Certificate[] chain = sslSession.getPeerCertificates();
+            final Certificate[] chain = sslSession.getPeerCertificates();
             if (chain.length == 0 || !(chain[0] instanceof X509Certificate)) {
                 return false;
             }
-            X509Certificate certificate = (X509Certificate) chain[0];
+            final X509Certificate certificate = (X509Certificate) chain[0];
             final List<String> commonNames = getCommonNames(certificate);
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT && isSelfSigned(certificate)) {
+            if (isSelfSigned(certificate)) {
                 if (commonNames.size() == 1 && matchDomain(domain, commonNames)) {
                     Log.d(LOGTAG, "accepted CN in self signed cert as work around for " + domain);
                     return true;
                 }
             }
-            Collection<List<?>> alternativeNames = certificate.getSubjectAlternativeNames();
-            List<String> xmppAddrs = new ArrayList<>();
-            List<String> srvNames = new ArrayList<>();
-            List<String> domains = new ArrayList<>();
+            final Collection<List<?>> alternativeNames = certificate.getSubjectAlternativeNames();
+            final List<String> xmppAddrs = new ArrayList<>();
+            final List<String> srvNames = new ArrayList<>();
+            final List<String> domains = new ArrayList<>();
             if (alternativeNames != null) {
                 for (List<?> san : alternativeNames) {
                     final Integer type = (Integer) san.get(0);
@@ -152,7 +155,7 @@ public class XmppDomainVerifier implements DomainHostnameVerifier {
                     || srvNames.contains("_xmpp-client." + domain)
                     || matchDomain(domain, domains)
                     || (hostname != null && matchDomain(hostname, domains));
-        } catch (Exception e) {
+        } catch (final Exception e) {
             return false;
         }
     }
