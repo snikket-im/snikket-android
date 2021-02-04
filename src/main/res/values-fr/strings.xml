@@ -561,8 +561,8 @@
   <string name="pref_theme_automatic">Automatique</string>
   <string name="pref_theme_light">Clair</string>
   <string name="pref_theme_dark">Sombre</string>
-  <string name="pref_use_green_background">Fond vert</string>
-  <string name="pref_use_green_background_summary">Utiliser un fond vert pour les messages reçus</string>
+  <string name="pref_use_yellow_background">Fond jaune</string>
+  <string name="pref_use_yellow_background_summary">Utiliser un fond jaune pour les messages reçus</string>
   <string name="unable_to_connect_to_keychain">Impossible de se connecter à OpenKeyChain</string>
   <string name="this_device_is_no_longer_in_use">Cet appareil n\'est plus utilisé</string>
   <string name="type_pc">Ordinateur</string>
