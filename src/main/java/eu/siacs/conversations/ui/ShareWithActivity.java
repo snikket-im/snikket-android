@@ -75,7 +75,7 @@ public class ShareWithActivity extends XmppActivity implements XmppConnectionSer
                     }
                 }
             } else {
-                Toast.makeText(this, R.string.no_storage_permission, Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, getString(R.string.no_storage_permission, getString(R.string.app_name)), Toast.LENGTH_SHORT).show();
             }
     }
 

@@ -69,8 +69,8 @@
     <string name="unblock">Unblock</string>
     <string name="save">Save</string>
     <string name="ok">OK</string>
-    <string name="crash_report_title">Conversations has crashed</string>
-    <string name="crash_report_message">Using your XMPP account to send in stack traces helps the ongoing development of Conversations.</string>
+    <string name="crash_report_title">%1$s has crashed</string>
+    <string name="crash_report_message">Using your XMPP account to send in stack traces helps the ongoing development of %1$s.</string>
     <string name="send_now">Send now</string>
     <string name="send_never">Never ask again</string>
     <string name="problem_connecting_to_account">Could not connect to account</string>
@@ -100,7 +100,7 @@
     <string name="send_unencrypted">Send unencrypted</string>
     <string name="decryption_failed">Decryption failed. Maybe you don’t have the proper private key.</string>
     <string name="openkeychain_required">OpenKeychain</string>
-    <string name="openkeychain_required_long">Conversations uses <b>OpenKeychain</b> to encrypt and decrypt messages and manage your public keys.\n\nIt is licensed under GPLv3+ and available on F-Droid and Google Play.\n\n<small>(Please restart Conversations afterwards.)</small></string>
+    <string name="openkeychain_required_long">%1$s uses <b>OpenKeychain</b> to encrypt and decrypt messages and manage your public keys.\n\nIt is licensed under GPLv3+ and available on F-Droid and Google Play.\n\n<small>(Please restart %1$s afterwards.)</small></string>
     <string name="restart">Restart</string>
     <string name="install">Install</string>
     <string name="openkeychain_not_installed">Please install OpenKeychain</string>
@@ -504,10 +504,10 @@
     <string name="shared_image_with_x">Image shared with %s</string>
     <string name="shared_images_with_x">Images shared with %s</string>
     <string name="shared_text_with_x">Text shared with %s</string>
-    <string name="no_storage_permission">Grant Conversations access to external storage</string>
-    <string name="no_camera_permission">Grant Conversations access to the camera</string>
+    <string name="no_storage_permission">Grant %1$s access to external storage</string>
+    <string name="no_camera_permission">Grant %1$s access to the camera</string>
     <string name="sync_with_contacts">Synchronize with contacts</string>
-    <string name="sync_with_contacts_long">Conversations wants permission to access your contacts to match your XMPP contact list with your contacts to show their full names and avatars.\n\nIt will only read your contacts and match them locally without uploading them to your server.</string>
+    <string name="sync_with_contacts_long">%1$s wants permission to access your contacts to match your XMPP contact list with your contacts to show their full names and avatars.\n\nIt will only read your contacts and match them locally without uploading them to your server.</string>
     <string name="sync_with_contacts_quicksy"><![CDATA[Quicksy needs access to your contacts’ phone numbers to make suggestions about possible contacts who are already on Quicksy.<br><br>We will not store a copy of those phone numbers.\n\nFor more information read our <a href="https://quicksy.im/#privacy">privacy policy</a>.<br><br>You will now be asked to grant permission to access your contacts.]]></string>
     <string name="notify_on_all_messages">Notify on all messages</string>
     <string name="notify_only_when_highlighted">Notify only when mentioned</string>
@@ -518,8 +518,8 @@
     <string name="always">Always</string>
     <string name="large_images_only">Large images only</string>
     <string name="battery_optimizations_enabled">Battery optimizations enabled</string>
-    <string name="battery_optimizations_enabled_explained">Your device is employing heavy battery optimizations for Conversations which may lead to delayed notifications or even message loss.\nIt is recommended to disable them.</string>
-    <string name="battery_optimizations_enabled_dialog">Your device is employing heavy battery optimizations for Conversations which may lead to delayed notifications or even message loss.\n\nYou will now be asked to disable them.</string>
+    <string name="battery_optimizations_enabled_explained">Your device is employing heavy battery optimizations for %1$s which may lead to delayed notifications or even message loss.\nIt is recommended to disable them.</string>
+    <string name="battery_optimizations_enabled_dialog">Your device is employing heavy battery optimizations for %1$s which may lead to delayed notifications or even message loss.\n\nYou will now be asked to disable them.</string>
     <string name="disable">Disable</string>
     <string name="selection_too_large">The selected area is too large</string>
     <string name="no_accounts">(No activated accounts)</string>
@@ -593,8 +593,8 @@
     <string name="show_error_message">Show error message</string>
     <string name="error_message">Error Message</string>
     <string name="data_saver_enabled">Data saver enabled</string>
-    <string name="data_saver_enabled_explained">Your operating system is restricting Conversations from accessing the Internet when in background. To receive notifications of new messages you should allow Conversations unrestricted access when “Data saver” is on.\nConversations will still make an effort to save data when possible.</string>
-    <string name="device_does_not_support_data_saver">Your device does not support disabling Data saver for Conversations.</string>
+    <string name="data_saver_enabled_explained">Your operating system is restricting %1$s from accessing the Internet when in background. To receive notifications of new messages you should allow Conversations unrestricted access when “Data saver” is on.\nConversations will still make an effort to save data when possible.</string>
+    <string name="device_does_not_support_data_saver">Your device does not support disabling Data saver for %1$s.</string>
     <string name="error_unable_to_create_temporary_file">Could not create temporary file</string>
     <string name="this_device_has_been_verified">This device has been verified</string>
     <string name="copy_fingerprint">Copy fingerprint</string>
@@ -693,7 +693,7 @@
     <string name="edit_status_message_title">Edit Status Message</string>
     <string name="edit_status_message">Edit status message</string>
     <string name="disable_encryption">Disable encryption</string>
-    <string name="error_trustkey_general">Conversations is unable to send encrypted messages to %1$s. This may be due to your contact using an outdated server or client that can not handle OMEMO.</string>
+    <string name="error_trustkey_general">%1$s is unable to send encrypted messages to %2$s. This may be due to your contact using an outdated server or client that can not handle OMEMO.</string>
     <string name="error_trustkey_device_list">Could not fetch device list</string>
     <string name="error_trustkey_bundle">Could not fetch encryption keys</string>
     <string name="error_trustkey_hint_mutual">Hint: In some cases this can be fixed by adding each other your contact lists.</string>
@@ -726,7 +726,7 @@
     <string name="share">Share</string>
     <string name="unable_to_start_recording">Could not start recording</string>
     <string name="please_wait">Please wait…</string>
-    <string name="no_microphone_permission">Grant Conversations access to the microphone</string>
+    <string name="no_microphone_permission">Grant %1$s access to the microphone</string>
     <string name="search_messages">Search messages</string>
     <string name="gif">GIF</string>
     <string name="view_conversation">View conversation</string>
@@ -748,7 +748,7 @@
     <string name="conference_destroyed">This group chat has been destroyed</string>
     <string name="unable_to_save_recording">Could not save recording</string>
     <string name="foreground_service_channel_name">Foreground service</string>
-    <string name="foreground_service_channel_description">This notification category is used to display a permanent notification indicating that Conversations is running.</string>
+    <string name="foreground_service_channel_description">This notification category is used to display a permanent notification indicating that %1$s is running.</string>
     <string name="notification_group_status_information">Status Information</string>
     <string name="error_channel_name">Connectivity Problems</string>
     <string name="error_channel_description">This notification category is used to display a notification in case there is a problem connecting to an account.</string>

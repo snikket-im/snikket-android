@@ -237,7 +237,7 @@ public class TrustKeysActivity extends OmemoActivity implements OnKeyStatusUpdat
 				}
 				this.binding.keyErrorHintMutual.setVisibility(anyWithoutMutualPresenceSubscription ? View.VISIBLE : View.GONE);
 				Contact contact = mAccount.getRoster().getContact(contactJids.get(0));
-				binding.keyErrorGeneral.setText(getString(R.string.error_trustkey_general, contact.getDisplayName()));
+				binding.keyErrorGeneral.setText(getString(R.string.error_trustkey_general, getString(R.string.app_name), contact.getDisplayName()));
 				binding.ownKeysDetails.removeAllViews();
 				if (OmemoSetting.isAlways()) {
 					binding.disableButton.setVisibility(View.GONE);

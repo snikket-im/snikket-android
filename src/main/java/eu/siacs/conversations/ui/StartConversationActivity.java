@@ -737,7 +737,7 @@ public class StartConversationActivity extends XmppActivity implements XmppConne
 						if (QuickConversationsService.isQuicksy()) {
 							builder.setMessage(Html.fromHtml(getString(R.string.sync_with_contacts_quicksy)));
                         } else {
-                            builder.setMessage(R.string.sync_with_contacts_long);
+                            builder.setMessage(getString(R.string.sync_with_contacts_long, getString(R.string.app_name)));
                         }
 						builder.setPositiveButton(R.string.next, (dialog, which) -> requestPermissions(new String[]{Manifest.permission.READ_CONTACTS}, REQUEST_SYNC_CONTACTS));
 						builder.setOnDismissListener(dialog -> requestPermissions(new String[]{Manifest.permission.READ_CONTACTS}, REQUEST_SYNC_CONTACTS));

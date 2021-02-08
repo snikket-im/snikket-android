@@ -136,7 +136,7 @@ public class NotificationService {
         final NotificationChannel foregroundServiceChannel = new NotificationChannel("foreground",
                 c.getString(R.string.foreground_service_channel_name),
                 NotificationManager.IMPORTANCE_MIN);
-        foregroundServiceChannel.setDescription(c.getString(R.string.foreground_service_channel_description));
+        foregroundServiceChannel.setDescription(c.getString(R.string.foreground_service_channel_description, c.getString(R.string.app_name)));
         foregroundServiceChannel.setShowBadge(false);
         foregroundServiceChannel.setGroup("status");
         notificationManager.createNotificationChannel(foregroundServiceChannel);

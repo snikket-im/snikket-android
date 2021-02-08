@@ -421,7 +421,7 @@ public class RtpSessionActivity extends XmppActivity implements XmppConnectionSe
             } else {
                 throw new IllegalStateException("Invalid permission result request");
             }
-            Toast.makeText(this, res, Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getString(res, getString(R.string.app_name)), Toast.LENGTH_SHORT).show();
         }
     }
 

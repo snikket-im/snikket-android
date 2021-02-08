@@ -1209,7 +1209,7 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
         this.binding.osOptimization.setVisibility(showBatteryWarning || showDataSaverWarning ? View.VISIBLE : View.GONE);
         if (showDataSaverWarning && android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
             this.binding.osOptimizationHeadline.setText(R.string.data_saver_enabled);
-            this.binding.osOptimizationBody.setText(R.string.data_saver_enabled_explained);
+            this.binding.osOptimizationBody.setText(getString(R.string.data_saver_enabled_explained, getString(R.string.app_name)));
             this.binding.osOptimizationDisable.setText(R.string.allow);
             this.binding.osOptimizationDisable.setOnClickListener(v -> {
                 Intent intent = new Intent(Settings.ACTION_IGNORE_BACKGROUND_DATA_RESTRICTIONS_SETTINGS);
@@ -1218,13 +1218,13 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
                 try {
                     startActivityForResult(intent, REQUEST_DATA_SAVER);
                 } catch (ActivityNotFoundException e) {
-                    Toast.makeText(EditAccountActivity.this, R.string.device_does_not_support_data_saver, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(EditAccountActivity.this, getString(R.string.device_does_not_support_data_saver, getString(R.string.app_name)), Toast.LENGTH_SHORT).show();
                 }
             });
         } else if (showBatteryWarning && android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
             this.binding.osOptimizationDisable.setText(R.string.disable);
             this.binding.osOptimizationHeadline.setText(R.string.battery_optimizations_enabled);
-            this.binding.osOptimizationBody.setText(R.string.battery_optimizations_enabled_explained);
+            this.binding.osOptimizationBody.setText(getString(R.string.battery_optimizations_enabled_explained, getString(R.string.app_name)));
             this.binding.osOptimizationDisable.setOnClickListener(v -> {
                 Intent intent = new Intent(Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS);
                 Uri uri = Uri.parse("package:" + getPackageName());
