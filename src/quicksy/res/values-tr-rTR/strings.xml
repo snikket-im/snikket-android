@@ -1,23 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="crash_report_title">Quicksy çalışmayı durdurdu</string>
-    <string name="crash_report_message">Çöküş raporu yollayarak Quicksy\'nin halihazırda devam eden gelişimine katkıda bulunuyorsunuz.\<b>Uyarı:</b>Çöküş raporları geliştiricilere gönderiminde XMPP hesabınız kullanılacak. </string>
-    <string name="openkeychain_required_long">Quicksy;  iletileri şifrelemek ve herkese açık anahtarlarınızı yönetmek için<b>OpenKeychain</b> isimli bir üçüncü parti uygulaması kullanmaktadır.\n\nOpenKeychain GPLv3 altında lisanslıdır ve F-Droid ile Google Play üzerinden indirilebilir.\n\n <small>(Lütfen sonrasında Quicksy\'i tekrar başlatın</small></string>
-    <string name="contact_has_no_pgp_key">Bağlantınız ortak anahatarını paylaşmıyor olduğu için Quicksy iletilerinizi şifreliyemiyor.\n\n<small>Lütfen bağlantınızdan OpenPGP kurmasını isteyin.</small></string>
-    <string name="contacts_have_no_pgp_keys">Kişileriniz ortak anahtarlarını yayımlamadığı için Conversations iletilerinizi şifreleyemiyor.\n\n<small>Lütfen kişilerden OpenPGP’yi ayarlamalarını isteyin.</small></string>
     <string name="pref_notification_grace_period_summary">Başka bir aygıt üstünde etkinlik algılandığında Quicksy\'nin sessiz kalma süresi</string>
     <string name="pref_never_send_crash_summary">Çöküş raporu göndermeniz Quicksy\'nin geliştirlmesinde katkıda bulunacaktır.</string>
-    <string name="no_storage_permission">Quicksy\'nin haricii depolamaya erişmesi gerekiyor</string>
-    <string name="no_camera_permission">Quicksy\'nin kameraya erişmesi gerekiyor</string>
-    <string name="battery_optimizations_enabled_explained">Telefonunuz Quicksy için ağır pil optimizasyonları yürütüyor. Bu gecikmiş bildirimlere ve hatta mesaj kaybına neden olabilir.\nlt Optimizasyonların devre dış bırakılması tavsiye edilir.</string>
-    <string name="battery_optimizations_enabled_dialog">Telefonunuz Quicksy için ağır pil optimizasyonları yürütüyor. Bu gecikmiş bildirimlere ve hatta mesaj kaybına neden olabilir.\n\nSizden şimdi onları devre dışı bırakmanız istenilecek.</string>
     <string name="pref_broadcast_last_activity_summary">Tüm kişileriniz ne zaman Quicksy kullandığınızı görsün</string>
-    <string name="data_saver_enabled_explained">İşletim sisteminiz Quicksy arka planda çalışırken İnternet erişimini sınırlıyor. Yeni ileti alındığında uyarı gelmesi için Quicksy\'e veri tasarrufu etkin durumdayken sınırsız erişim vermeniz gerekiyor.\nQuicksy mümkün olan durumlarda veri tasarrufu için çaba harcar.</string>
-    <string name="device_does_not_support_data_saver">Aygıtınız Quicksy için Veri tasarrufunu devre dışı bırakmayı desteklemiyor</string>
     <string name="huawei_protected_apps_summary">Ekranınız kapalıyken bile bildirim almak için Quicksy\'i korunan uygulamalara eklemelisiniz.</string>
-    <string name="error_trustkey_general">Quicksy %1$skişisine şifrelenmiş ileti gönderemiyor. Bunun sebebi, kişinizin tarihi geçmiş bir sunucu veya OMEMO çalıştıramayan bir istemci kullanıyor olması olabilir.</string>
-    <string name="no_microphone_permission">Quicksy\'nin mikrofona erişmesi gerekiyor</string>
-    <string name="foreground_service_channel_description">Bu bildirim kategorisi Quicksy\'nin çalıştığını sürekli belirtmekte kullanmaktadır.</string>
     <string name="set_profile_picture">Quicksy profil resmi</string>
     <string name="not_available_in_your_country">Quicksy ülkenizde kullanılamıyor.</string>
     <string name="unable_to_verify_server_identity">Sunucu kimliği belirlenemiyor.</string>

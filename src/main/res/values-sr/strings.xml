@@ -69,8 +69,6 @@
   <string name="unblock">Одблокирај</string>
   <string name="save">Сачувај</string>
   <string name="ok">У реду</string>
-  <string name="crash_report_title">Конверзација се срушила</string>
-  <string name="crash_report_message">Слањем контратрага путем свог ИксМПП налога помажете развоју Конверзација.</string>
   <string name="send_now">Пошаљи одмах</string>
   <string name="send_never">Не питај више</string>
   <string name="problem_connecting_to_account">Не могу да се повежем са налогом</string>
@@ -454,7 +452,6 @@
   <string name="show_error_message">Прикажи поруку грешке</string>
   <string name="error_message">Порука грешке</string>
   <string name="data_saver_enabled">Чувар протока укључен</string>
-  <string name="device_does_not_support_data_saver">Ваш уређај не подржава искључење Чувара протока за Конверзацију.</string>
   <string name="this_device_has_been_verified">Овај уређај је оверен.</string>
   <string name="copy_fingerprint">Копирај отисак</string>
   <string name="verified_fingerprints">Оверени отисци</string>

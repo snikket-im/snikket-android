@@ -53,7 +53,6 @@
   <string name="unblock">Avblokker</string>
   <string name="save">Lagre</string>
   <string name="ok">OK</string>
-  <string name="crash_report_title">Conversations har kræsjet</string>
   <string name="send_now">Send nå</string>
   <string name="send_never">Aldri spør igjen</string>
   <string name="attach_file">Legg til fil</string>
@@ -416,7 +415,6 @@
   <string name="show_error_message">Vis feilmelding</string>
   <string name="error_message">Feilmelding</string>
   <string name="data_saver_enabled">Datasparing påskrudd</string>
-  <string name="device_does_not_support_data_saver">Din enhet støtter ikke å skru av datasparing for Conversations.</string>
   <string name="this_device_has_been_verified">Denne enheten har blitt bekreftet</string>
   <string name="copy_fingerprint">Kopier fingeravtrykk</string>
   <string name="verified_fingerprints">Bekreftede fingeravtrykk</string>

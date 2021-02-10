@@ -63,8 +63,6 @@
   <string name="unblock">Deblokkeren</string>
   <string name="save">Opslaan</string>
   <string name="ok">Oké</string>
-  <string name="crash_report_title">Conversations is gecrasht</string>
-  <string name="crash_report_message">Door crashrapportages via uw XMPP account te sturen help je de ontwikkeling van Conversations.</string>
   <string name="send_now">Nu versturen</string>
   <string name="send_never">Niet opnieuw vragen</string>
   <string name="problem_connecting_to_account">Verbinding maken met account mislukt</string>
@@ -501,7 +499,6 @@
   <string name="show_error_message">Toon foutbericht</string>
   <string name="error_message">Foutbericht</string>
   <string name="data_saver_enabled">Gegevensbesparing ingeschakeld</string>
-  <string name="device_does_not_support_data_saver">Je apparaat ondersteunt het uitschakelen van gegevensbesparing voor Conversations niet.</string>
   <string name="this_device_has_been_verified">Dit apparaat is geverifieerd</string>
   <string name="copy_fingerprint">Vingerafdruk kopiëren</string>
   <string name="verified_fingerprints">Geverifieerde vingerafdrukken</string>
@@ -590,7 +587,6 @@
   <string name="edit_status_message_title">Statusbericht bewerken</string>
   <string name="edit_status_message">Statusbericht bewerken</string>
   <string name="disable_encryption">Versleuteling uitschakelen</string>
-  <string name="error_trustkey_general">Conversations kan geen versleutelde berichten sturen naar %1$s. Dit komt mogelijk omdat je contact gebruik maakt van een verouderde server, of een cliënt die geen ondersteuning biedt voor OMEMO.</string>
   <string name="error_trustkey_hint_mutual">Tip: in sommige gevallen kan dit opgelost worden door elkaar toe te voegen aan je contacten.</string>
   <string name="disable_encryption_message">Weet je zeker dat je OMEMO-versleuteling voor dit gesprek wil uitschakelen?\nDit zal je serverbeheerder de mogelijkheid geven je berichten in te kijken, maar is mogelijk de enige manier om te communiceren met anderen die gebruik maken van verouderde cliënten.</string>
   <string name="disable_now">Nu uitschakelen</string>
@@ -640,7 +636,6 @@
   <string name="create_dialog_group_chat_name">Gespreksnaam</string>
   <string name="conference_destroyed">Dit groepsgesprek is verwijderd</string>
   <string name="foreground_service_channel_name">Voorgronddienst</string>
-  <string name="foreground_service_channel_description">Deze meldingscategorie wordt gebruikt om een permanente melding weer te geven dat Conversations wordt uitgevoerd.</string>
   <string name="notification_group_status_information">Statusinformatie</string>
   <string name="error_channel_name">Verbindingsproblemen</string>
   <string name="error_channel_description">Deze meldingscategorie wordt gebruikt om een melding weer te geven ingeval er een probleem is bij het verbinden met een account.</string>

@@ -61,7 +61,6 @@
   <string name="unblock">Odblokovat</string>
   <string name="save">Uložit</string>
   <string name="ok">OK</string>
-  <string name="crash_report_title">Aplikace Konverzace přestala reagovat</string>
   <string name="send_now">Odeslat teď</string>
   <string name="send_never">Již se neptat</string>
   <string name="problem_connecting_to_account">Nelze se připojit k účtu</string>
@@ -373,7 +372,6 @@
     <item quantity="other">%d zpráv</item>
   </plurals>
   <string name="load_more_messages">Načíst více zpráv</string>
-  <string name="no_camera_permission">Povolit Conversations přístup ke kameře</string>
   <string name="sync_with_contacts">Synchronizovat s kontakty</string>
   <string name="notify_on_all_messages">Upozorňovat na všechny zprávy</string>
   <string name="notify_never">Upozornění vypnuta</string>
@@ -429,7 +427,6 @@
   <string name="show_error_message">Zobrazit chybovou zprávu</string>
   <string name="error_message">Chybová zpráva</string>
   <string name="data_saver_enabled">Zapnuta úspora dat</string>
-  <string name="device_does_not_support_data_saver">Tento přístroj nepodporuje vypnutí šetření dat pro aplikaci Conversations.</string>
   <string name="this_device_has_been_verified">Tento přístroj byl ověřen</string>
   <string name="copy_fingerprint">Kopírovat identifikátor</string>
   <string name="share_as_barcode">Sdílet jako čárový kód</string>

@@ -70,8 +70,6 @@
   <string name="unblock">Odblokuj</string>
   <string name="save">Zapisz</string>
   <string name="ok">Ok</string>
-  <string name="crash_report_title">Conversations uległo awarii</string>
-  <string name="crash_report_message">Używając swojego konta XMPP do wysyłania śladów stosu pomagasz w rozwoju Conversations.</string>
   <string name="send_now">Wyślij teraz</string>
   <string name="send_never">Nie pytaj ponownie</string>
   <string name="problem_connecting_to_account">Nie można połączyć z kontem</string>
@@ -101,7 +99,6 @@
   <string name="send_unencrypted">Wyślij bez szyfrowania</string>
   <string name="decryption_failed">Nie można odszyfrować. Sprawdź poprawność klucza prywatnego.</string>
   <string name="openkeychain_required">OpenKeychain</string>
-  <string name="openkeychain_required_long">Conversations używa <b>OpenKeychain</b> aby szyfrować i odszyfrowywać wiadomości i zarządzać twoimi kluczami publicznymi.\n\nOpenKeychain jest na licencji GPLv3+ i jest dostępny przez F-Droid lub Google Play.\n\n<small>(Proszę zrestartować Conversations po zainstalowaniu.)</small></string>
   <string name="restart">Zrestartuj</string>
   <string name="install">Zainstaluj</string>
   <string name="openkeychain_not_installed">Proszę zainstalować OpenKeychain</string>
@@ -509,10 +506,7 @@
   <string name="shared_image_with_x">Obraz udostępniony %s</string>
   <string name="shared_images_with_x">Obrazy udostępnione %s</string>
   <string name="shared_text_with_x">Tekst udostępniony %s</string>
-  <string name="no_storage_permission">Pozwól Conversations na dostęp do zewnętrznego magazynu</string>
-  <string name="no_camera_permission">Pozwól Conversations na dostępu do aparatu</string>
   <string name="sync_with_contacts">Synchronizuj z kontaktami</string>
-  <string name="sync_with_contacts_long">Conversations potrzebuje twojego pozwolenia na dopasowanie twoich kontaktów XMPP z listą kontaktów w telefonie aby uzupełnić ich pełne imiona oraz awatary.\nConversations jedynie przeczyta Twoje kontakty i dopasuje je lokalnie, bez wysyłania na twój serwer.</string>
   <string name="sync_with_contacts_quicksy"><![CDATA[Quicksy potrzebuje dostępu do numerów telefonów twoich kontaktów aby zasugerować ci kontakty które już używają Quicksy. <br><br> Nie przechowujemy kopii tych numerów.\n\nAby uzyskać więcej informacji przeczytaj naszą <a href="https://quicksy.im/#privacy">politykę prywatności</a>. <br><br>Zostaniesz poproszony o pozwolenie na dostęp do twoich kontaktów.]]></string>
   <string name="notify_on_all_messages">Powiadom o wszystkich wiadomościach</string>
   <string name="notify_only_when_highlighted">Powiadamiaj tylko w przypadku wzmianki o mnie</string>
@@ -523,8 +517,6 @@
   <string name="always">Zawsze</string>
   <string name="large_images_only">Tylko duże obrazki</string>
   <string name="battery_optimizations_enabled">Optymalizacje zużycia baterii włączone</string>
-  <string name="battery_optimizations_enabled_explained">Twoje urządzenie ma włączone agresywne oszczędzanie baterii przez co Conversations może odbierać wiadomości z opóźnieniem.\nZalecamy wyłączenie tych optymalizacji. </string>
-  <string name="battery_optimizations_enabled_dialog">Twoje urządzenie ma włączone agresywne oszczędzanie baterii przez co Conversations może odbierać wiadomości z opóźnieniem.\nZostaniesz poproszony o wyłączenie ich.</string>
   <string name="disable">Wyłącz</string>
   <string name="selection_too_large">Zaznaczony obszar jest zbyt duży</string>
   <string name="no_accounts">(Brak aktywynych kont)</string>
@@ -536,7 +528,7 @@
   <string name="security_error_invalid_file_access">Błąd bezpieczeństwa: nieprawidłowy dostęp do pliku!</string>
   <string name="no_application_to_share_uri">Nie odnaleziono aplikacji do udostępnienia URI</string>
   <string name="share_uri_with">Udostępnij URI za pomocą...</string>
-  <string name="welcome_text_quicksy"><![CDATA[Quicksy to modyfikacja poparnego klienta XMPP Conversations, z automatycznym wykrywaniem kontaktów.<br><br>Zapisujesz się przy użyciu numeru telefonu i Quicksy automatycznie - na podstawie numerów telefonów w książce adresowej - zasugeruje potencjalne kontakty dla ciebie.<br><br>Zapisując się zgadzasz się na naszą <a href="https://quicksy.im/#privacy">politykę prywatności</a>.]]></string>
+  <string name="welcome_text_quicksy"><![CDATA[Quicksy to modyfikacja popularnego klienta XMPP Conversations, z automatycznym wykrywaniem kontaktów.<br><br>Zapisujesz się przy użyciu numeru telefonu i Quicksy automatycznie - na podstawie numerów telefonów w książce adresowej - zasugeruje potencjalne kontakty dla ciebie.<br><br>Zapisując się zgadzasz się na naszą <a href="https://quicksy.im/#privacy">politykę prywatności</a>.]]></string>
   <string name="agree_and_continue">Zgoda i kontynuuj</string>
   <string name="magic_create_text">Poprowadzimy ciebie przez proces tworzenia konta na conversations.im.¹\nKiedy wybierzesz conversations.im jako dostawcę będziesz mógł komunikować się z innymi osobami jeśli podasz im swój pełen adres XMPP.</string>
   <string name="your_full_jid_will_be">Twój pełen adres XMPP to: %s</string>
@@ -596,9 +588,6 @@
   <string name="show_error_message">Pokaż komunikaty błędów</string>
   <string name="error_message">Komunikat o błędzie</string>
   <string name="data_saver_enabled">Oszczędzanie danych jest włączone</string>
-  <string name="data_saver_enabled_explained">Twój system operacyjny blokuje dostęp do internetu Conversations, kiedy jest w tle. Aby dostawać powiadomienia dla nowych wiadomości powinieneś/powinnaś dać Conversations nieograniczony dostęp do internetu, kiedy Oszczędzanie danych jest włączone.
-Conversations będzie wciąż ograniczał transfer danych, kiedy tylko to jest możliwe.</string>
-  <string name="device_does_not_support_data_saver">Twoje urządzenie nie wspiera wyłączenia Oszczędzania danych dla Conversations.</string>
   <string name="error_unable_to_create_temporary_file">Niemożna utworzyć pliku tymczasowego</string>
   <string name="this_device_has_been_verified">To urządzenie zostało zweryfikowane</string>
   <string name="copy_fingerprint">Skopiuj odcisk</string>
@@ -709,7 +698,6 @@ Conversations będzie wciąż ograniczał transfer danych, kiedy tylko to jest m
   <string name="edit_status_message_title">Edytuj komunikat statusu</string>
   <string name="edit_status_message">Edytuj komunikat statusu</string>
   <string name="disable_encryption">Wyłącz szyfrowanie</string>
-  <string name="error_trustkey_general">Conversations nie mogło wysłać zaszyfrowanej wiadomości do %1$s. Możliwe, że kontakt używa starego serwera lub klienta który nie wspiera OMEMO.</string>
   <string name="error_trustkey_device_list">Nie powiodło się pobranie listy urządzeń</string>
   <string name="error_trustkey_bundle">Nie powiodło się pobranie kluczy szyfrowania</string>
   <string name="error_trustkey_hint_mutual">Podpowiedź: W niektórych przypadkach może pomóc wzajemne dodanie się do listy kontaktów.</string>
@@ -743,7 +731,6 @@ Administrator twojego serwera będzie mógł czytać twoje wiadomości, ale moż
   <string name="share">Udostępnij</string>
   <string name="unable_to_start_recording">Nie można rozpocząć nagrywania</string>
   <string name="please_wait">Proszę czekać...</string>
-  <string name="no_microphone_permission">Pozwól Conversations na dostęp do mikrofonu</string>
   <string name="search_messages">Wyszukaj wiadomości</string>
   <string name="gif">GIF</string>
   <string name="view_conversation">Pokaż konwersację</string>
@@ -765,7 +752,6 @@ Administrator twojego serwera będzie mógł czytać twoje wiadomości, ale moż
   <string name="conference_destroyed">Ta konferencja została usunięta</string>
   <string name="unable_to_save_recording">Nie można rozpocząć nagrywania</string>
   <string name="foreground_service_channel_name">Usługa na pierwszym planie</string>
-  <string name="foreground_service_channel_description">Ta kategoria powiadomień jest używana aby wyświetlać stałe powiadomienie oznaczające, że Conversations działa</string>
   <string name="notification_group_status_information">Wiadomość Statusu</string>
   <string name="error_channel_name">Problemy z połączeniem</string>
   <string name="error_channel_description">Ta kategoria powiadomień jest używana aby wyświetlać powiadomienia oznaczające, że Conversations ma problemy z połączeniem.</string>
@@ -796,7 +782,7 @@ Administrator twojego serwera będzie mógł czytać twoje wiadomości, ale moż
   <string name="choose_a_country">Wybierz kraj</string>
   <string name="phone_number">numer telefonu</string>
   <string name="verify_your_phone_number">Zweryfikuj swój numer telefonu</string>
-  <string name="enter_country_code_and_phone_number">Quicksy wyśle SMS (mogą być naliczane koszty) aby zweryfikować numer telefonu. Wpisz kod kraju i numer telefonu.</string>
+  <string name="enter_country_code_and_phone_number">Quicksy wyśle SMS (operator może naliczyć koszty) aby zweryfikować numer telefonu. Wpisz kod kraju i numer telefonu.</string>
   <string name="we_will_be_verifying"><![CDATA[Zweryfikujemy numer telefonu <br/><br/><b>%s</b><br/><br/>Czy wszystko się zgadza czy też chciałbyś zmienić numer?]]></string>
   <string name="not_a_valid_phone_number">%s nie jest prawidłowym numerem telefonu</string>
   <string name="please_enter_your_phone_number">Proszę wpisać swój numer telefonu.</string>

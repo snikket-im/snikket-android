@@ -61,7 +61,6 @@
   <string name="unblock">Desblokeatu</string>
   <string name="save">Gorde</string>
   <string name="ok">Ados</string>
-  <string name="crash_report_title">Conversations gelditu da</string>
   <string name="send_now">Bidali orain</string>
   <string name="send_never">Ez galdetu berriz</string>
   <string name="attach_file">Fitxategia erantsi</string>
@@ -487,7 +486,6 @@
   <string name="show_error_message">Akatsaren mezua erakutsi</string>
   <string name="error_message">Akatsaren mezua</string>
   <string name="data_saver_enabled">Datuen aurreztailea gaituta</string>
-  <string name="device_does_not_support_data_saver">Zure gailuak ez du Datuen aurreztailea ezgaitzea baimentzen Conversationserako</string>
   <string name="this_device_has_been_verified">Gailu hau egiaztatu da</string>
   <string name="copy_fingerprint">Hatz-marka kopiatu</string>
   <string name="verified_fingerprints">Egiaztatutako hatz-markak</string>
@@ -576,7 +574,6 @@
   <string name="edit_status_message_title">Egoera mezua editatu</string>
   <string name="edit_status_message">Egoera mezua editatu</string>
   <string name="disable_encryption">Enkriptazioa ezgaitu</string>
-  <string name="error_trustkey_general">Conversationsek ezin du %1$s(r)i enkriptatutako mezuak bidali. Hau gerta daiteke zure kontaktuak zaharkitutako zerbitzari bat erabiltzen duelako edo erabiltzen ari den aplikazioak OMEMO ezin duelako kudeatu.</string>
   <string name="error_trustkey_hint_mutual">Lagungarria: kasu batzuetan bakoitzak bestea bere kontaktuen zerrendara gehituz konpon daiteke.</string>
   <string name="disable_encryption_message">Ziur al zaude OMEMO enkriptazioa ezgaitu nahi duzula elkarrizketa honetarako?\nHonek zure zerbitzariaren administratzaileari zure mezuak irakurtzea ahalbidetuko dio, baina aplikazio zaharrak erabiltzen dituzten pertsonekin komunikatzeko modu bakarra izan daiteke.</string>
   <string name="disable_now">Orain ezgaitu</string>
@@ -626,7 +623,6 @@
   <string name="create_dialog_group_chat_name">Taldearen izena</string>
   <string name="conference_destroyed">Talde hau suntsitu egin da</string>
   <string name="foreground_service_channel_name">Aurreko planoko zerbitzua</string>
-  <string name="foreground_service_channel_description">Jakinarazpen maila hau Conversations exekutatzen ari dela adierazten duen jakinarazpen iraunkor bat erakusteko erabiltzen da.</string>
   <string name="notification_group_status_information">Egoeraren informazioa</string>
   <string name="error_channel_name">Konektagarritasun arazoak</string>
   <string name="error_channel_description">Jakinarazpen maila hau kontu batera konektatzeko arazoak daudenean jakinarazpen bat erakusteko erabiltzen da.</string>

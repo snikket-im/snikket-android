@@ -64,8 +64,6 @@
   <string name="unblock">Engellemeyi kaldır</string>
   <string name="save">Kaydet</string>
   <string name="ok">Tamam</string>
-  <string name="crash_report_title">Conversations çöktü</string>
-  <string name="crash_report_message">XMPP hesabınız ile yığın izleri göndermeniz Conversations\'ın devam eden gelişimine yardımcı oluyor.</string>
   <string name="send_now">Şimdi gönder</string>
   <string name="send_never">Bir daha sorma</string>
   <string name="problem_connecting_to_account">Hesaba bağlanılamadı</string>
@@ -95,7 +93,6 @@
   <string name="send_unencrypted">Şifrelenmemiş gönder</string>
   <string name="decryption_failed">Deşifre edilemedi. Uygun bir özel anahtarınız olmayabilir.</string>
   <string name="openkeychain_required">OpenKeychain</string>
-  <string name="openkeychain_required_long">Conversations mesajları şifrelemek ve çözmek ve genel anahtarlarınızı yönetmek için <b>OpenKeychain</b> kullanmaktadır. \n\nlt GPLv3+ altında lisanslıdır ve F-Droid ve Google Play\'de mevcuttur. \n\n<small>(Lütfen devamında Conversations\'ı yeniden başlatın.)</small></string>
   <string name="restart">Yeniden başlat</string>
   <string name="install">Kur</string>
   <string name="openkeychain_not_installed">Lütfen OpenKeychain’i kur</string>
@@ -499,10 +496,7 @@
   <string name="shared_image_with_x">Resim %sile paylaşıldı</string>
   <string name="shared_images_with_x">Resimler %s ile paylaşıldı</string>
   <string name="shared_text_with_x">Metin %s ile paylaşıldı</string>
-  <string name="no_storage_permission">Conversations\'ın haricii depolama erişimine izin ver</string>
-  <string name="no_camera_permission">Conversations\'ın kamera erişimine izin ver</string>
   <string name="sync_with_contacts">Kişilerle senkronize et</string>
-  <string name="sync_with_contacts_long">Conversations XMPP listenizi kişi listesi ile eşleştirmek ve kişileri tam isimleri ve avatarları ile görüntülemek için listenize erişim izni istiyor. \n\nlt kişilerinizi sadece yerel olarak okuyup eşleştirmekte olup sunucunuza yüklemeyecektir.</string>
   <string name="sync_with_contacts_quicksy"><![CDATA[Quicksy kişilerinizin telefon numarasına; Quicksy üzerinde olabiliecek bağlantılar hakkında tavsiyede bulunmak için ulaşması gerekmektedir. <br><br>Bu telefon numaralarının  herhangi bir kopyasını depolamayacağız. \n\nDaha fazla bilgi için <a href="https://quicksy.im/#privacy">gizlilik sözleşmemizi</a> okuyun.<br><br>Şimdi kişilerinize ulaşılması için sizden izin istenecek.</string>
   <string name=\"notify_on_all_messages\">Tüm iletilerde uyar</string>
   <string name=\"notify_only_when_highlighted\">Yalnızca bahsedilğinde haber ver</string>
@@ -536,8 +530,6 @@
   <string name="always">Her zaman</string>
   <string name="large_images_only">Sadece büyük resimler</string>
   <string name="battery_optimizations_enabled">Pil optimizasyonu devrede</string>
-  <string name="battery_optimizations_enabled_explained">Telefonunuz Conversations için ağır pil optimizasyonları yürütüyor. Bu gecikmiş bildirimlere ve hatta mesaj kaybına neden olabilir.\nlt Optimizasyonların devre dış bırakılması tavsiye edilir.</string>
-  <string name="battery_optimizations_enabled_dialog">Telefonunuz Conversations için ağır pil optimizasyonları yürütüyor. Bu gecikmiş bildirimlere ve hatta mesaj kaybına neden olabilir.\n\nSizden şimdi onları devre dışı bırakmanız istenilecek.</string>
   <string name="disable">Devre dışı</string>
   <string name="selection_too_large">Seçilen alan çok büyük</string>
   <string name="no_accounts">(Etkin hesap bulunmuyor)</string>
@@ -609,8 +601,6 @@
   <string name="show_error_message">Hata iletisini göster</string>
   <string name="error_message">Hata İletisi</string>
   <string name="data_saver_enabled">Veri tasarrufu etkin</string>
-  <string name="data_saver_enabled_explained">İşletim sisteminiz Conversations arka planda çalışırken İnternet erişimini sınırlıyor. Yeni ileti alındığında uyarı gelmesi için Conversations\'a veri tasarrufu etkin durumdayken sınırsız erişim vermeniz gerekiyor.\nConversations mümkün olan durumlarda veri tasarrufu için çaba harcar.</string>
-  <string name="device_does_not_support_data_saver">Aygıtınız Conversations için Veri tasarrufunu devre dışı bırakmayı desteklemiyor</string>
   <string name="error_unable_to_create_temporary_file">Geçici dosya oluşturulamadı</string>
   <string name="this_device_has_been_verified">Bu aygıt doğrulandı</string>
   <string name="copy_fingerprint">Parmak izini kopyala</string>
@@ -709,7 +699,6 @@
   <string name="edit_status_message_title">Durum mesajını düzenle</string>
   <string name="edit_status_message">Durum mesajını düzenle</string>
   <string name="disable_encryption">Şifrelemeyi devre dışı bırak</string>
-  <string name="error_trustkey_general">Conversations %1$skişisine şifrelenmiş ileti gönderemiyor. Bunun sebebi, kişinizin tarihi geçmiş bir sunucu veya OMEMO çalıştıramayan bir istemci kullanıyor olması olabilir.</string>
   <string name="error_trustkey_device_list">Aygıt listesi alınamadı</string>
   <string name="error_trustkey_bundle">Şifreleme anahtarları alınamadı</string>
   <string name="error_trustkey_hint_mutual">İpucu: Kimi durumlarda bu sorun, birbirinizi kişi listenize eklemenizle çözülebilir.</string>
@@ -742,7 +731,6 @@
   <string name="share">Paylaş</string>
   <string name="unable_to_start_recording">Kayıt başlatılamadı</string>
   <string name="please_wait">Lütfen bekleyin...</string>
-  <string name="no_microphone_permission">Conversations\'ın mikrofon erişimine izin ver</string>
   <string name="search_messages">İleti ara</string>
   <string name="gif">GIF</string>
   <string name="view_conversation">Konuşma görüntüle</string>
@@ -764,7 +752,6 @@
   <string name="conference_destroyed">Bu grup konuşması yokedildi</string>
   <string name="unable_to_save_recording">Kayıt kaydedilemedi</string>
   <string name="foreground_service_channel_name">Ön planda çalışması</string>
-  <string name="foreground_service_channel_description">Bu bildirim kategorisi Conversations\'ın çalıştığını sürekli belirtmekte kullanmaktadır.</string>
   <string name="notification_group_status_information">Durum bilgisi</string>
   <string name="error_channel_name">Bağlantı Sorunları</string>
   <string name="error_channel_description">Bu bildirim kategorisi, bir hesaba bağlanmakta sorun olduğunu belirtmekte kullanılır</string>

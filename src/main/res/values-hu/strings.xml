@@ -63,8 +63,6 @@
   <string name="unblock">Tiltás feloldása</string>
   <string name="save">Mentés</string>
   <string name="ok">Rendben</string>
-  <string name="crash_report_title">A Conversations összeomlott</string>
-  <string name="crash_report_message">Azzal, hogy az XMPP fiókja használatával beküldi a veremkiíratásokat, elősegítheti a Conversations alkalmazás folyamatos fejlesztését.</string>
   <string name="send_now">Küldés most</string>
   <string name="send_never">Sose kérdezzen újra</string>
   <string name="problem_connecting_to_account">Nem sikerült kapcsolódni a fiókhoz</string>
@@ -94,7 +92,6 @@
   <string name="send_unencrypted">Küldés titkosítatlanul</string>
   <string name="decryption_failed">A visszafejtés sikertelen. Talán nem rendelkezik a megfelelő személyes kulccsal.</string>
   <string name="openkeychain_required">OpenKeychain</string>
-  <string name="openkeychain_required_long">A Conversations az <b>OpenKeychain</b>-t használja az üzenetek titkosításához és visszafejtéséhez, valamint a személyes kulcsai kezeléséhez.\n\nEz GPLv3+ szerint licencelt, és elérhető az F-Droid és a Google Play szoftveráruházakban.\n\n<small>(Ezután indítsa újra a Conversations alkalmazást.)</small></string>
   <string name="restart">Újraindítás</string>
   <string name="install">Telepítés</string>
   <string name="openkeychain_not_installed">Telepítse az OpenKeychain alkalmazás</string>
@@ -482,8 +479,6 @@
   <string name="shared_image_with_x">%s partnerrel megosztott kép</string>
   <string name="shared_images_with_x">%s partnerrel megosztott képek</string>
   <string name="shared_text_with_x">%s partnerrel megosztott szöveg</string>
-  <string name="no_storage_permission">A Conversations alkalmazásnak hozzáférésre van szüksége a külső tárolóhoz</string>
-  <string name="no_camera_permission">A Conversations alkalmazásnak hozzáférés engedélyezése a kamerához</string>
   <string name="sync_with_contacts">Szinkronizálás a partnerekkel</string>
   <string name="sync_with_contacts_quicksy"><![CDATA[A Quicksy alkalmazásnak hozzáférés szükséges a partnerei telefonszámához, hogy javaslatokat tegyen a lehetséges partnerekről, akik már csatlakoztak a Quicksy-hez.<br><br>A telefonszámok másolatát nem fogjuk eltárolni.\n\nTovábbi információkért olvassa el az <a href="https://quicksy.im/#privacy">adatvédelmi irányelveinket</a>.<br><br>Most arra fogják kérni, hogy adjon jogosultságot a névjegyek eléréséhez.]]></string>
   <string name="notify_on_all_messages">Értesítés az összes üzenetről</string>
@@ -562,8 +557,6 @@
   <string name="show_error_message">Hibaüzenet megjelenítése</string>
   <string name="error_message">Hibaüzenet</string>
   <string name="data_saver_enabled">Adatsporolás engedélyezve</string>
-  <string name="data_saver_enabled_explained">Az operációs rendszer korlátozza a Conversations hozzáférését az internethez, amikor az a háttérben fut. Ahhoz, hogy értesítéseket kapjon az új üzenetekről, lehetővé kell tennie a Conversations korlátlan hozzáférését amikor aktív az \"adatspórolás\".\nA Conversations továbbra is arra törekszik, hogy spóroljon az adatforgalmon, ahol lehetséges.</string>
-  <string name="device_does_not_support_data_saver">Az eszköze nem támogatja az adatspórolás letiltását a Conversations alkalmazásnál.</string>
   <string name="error_unable_to_create_temporary_file">Nem sikerült létrehozni átmeneti fájlt</string>
   <string name="this_device_has_been_verified">Ez a készülék ellenőrizve lett</string>
   <string name="copy_fingerprint">Ujjlenyomat másolása</string>
@@ -657,7 +650,6 @@
   <string name="edit_status_message_title">Állapotüzenet szerkesztése</string>
   <string name="edit_status_message">Állapotüzenet szerkesztése</string>
   <string name="disable_encryption">Titkosítás letiltása</string>
-  <string name="error_trustkey_general">A Conversations nem tud titkosított üzeneteket küldeni %1$s részére. Ez amiatt lehet, hogy a partnere elavult kiszolgálót vagy kliensprogramot használ, amely nem tudja kezelni az OMEMO-t.</string>
   <string name="error_trustkey_device_list">Nem sikerült lekérni az eszközlistát</string>
   <string name="error_trustkey_bundle">Nem sikerült lekérni a titkosítási kulcsokat</string>
   <string name="error_trustkey_hint_mutual">Tipp: bizonyos esetekben ez megoldható azzal, hogy hozzáadják egymást a partnerlistákhoz.</string>
@@ -690,7 +682,6 @@
   <string name="share">Megosztás</string>
   <string name="unable_to_start_recording">Nem sikerült elindítani a rögzítést</string>
   <string name="please_wait">Kérem várjon…</string>
-  <string name="no_microphone_permission">A Conversations alkalmazásnak mikrofon-hozzáférésre van szüksége</string>
   <string name="search_messages">Üzenetek keresése</string>
   <string name="gif">GIF</string>
   <string name="view_conversation">Beszélgetés megtekintése</string>
@@ -712,7 +703,6 @@
   <string name="conference_destroyed">Ezt a csoportos csevegést megszüntették</string>
   <string name="unable_to_save_recording">Nem sikerült elmenteni a felvételt</string>
   <string name="foreground_service_channel_name">Előtér szolgáltatás</string>
-  <string name="foreground_service_channel_description">Ezt az értesítési kategóriát egy állandó értesítés megjelenítéséhez használják, jelezve azt, hogy a Conversations fut.</string>
   <string name="notification_group_status_information">Állapotinformációk</string>
   <string name="error_channel_name">Kapcsolódási problémák</string>
   <string name="error_channel_description">Ezt az értesítési kategóriát egy értesítés megjelenítéséhez használják abban az esetben, ha probléma merül fel a fiókhoz való kapcsolódásnál.</string>

@@ -29,6 +29,12 @@
   <string name="just_now">только что</string>
   <string name="minute_ago">1 минуту назад</string>
   <string name="minutes_ago">%d мин. назад</string>
+  <plurals name="x_unread_conversations">
+    <item quantity="one">%d непрочитанная беседа</item>
+    <item quantity="few">%d непрочитанные беседы</item>
+    <item quantity="many">%d непрочитанных бесед</item>
+    <item quantity="other">%d непрочитанных бесед</item>
+  </plurals>
   <string name="sending">отправка…</string>
   <string name="message_decrypting">Расшифровка сообщения. Подождите…</string>
   <string name="pgp_message">OpenPGP зашифр. сообщение</string>
@@ -64,8 +70,6 @@
   <string name="unblock">Разблокировать</string>
   <string name="save">Сохранить</string>
   <string name="ok">ОК</string>
-  <string name="crash_report_title">Conversations был неожиданно остановлен</string>
-  <string name="crash_report_message">Отправляя отчёты об ошибках, вы помогаете совершенствованию Conversations.</string>
   <string name="send_now">Отправить сейчас</string>
   <string name="send_never">Больше не спрашивать</string>
   <string name="problem_connecting_to_account">Не удалось подключиться к учетной записи</string>
@@ -95,7 +99,6 @@
   <string name="send_unencrypted">Отправить в незашифрованном виде</string>
   <string name="decryption_failed">Расшифровка не удалась. Вероятно, что у вас нет надлежащего ключа.</string>
   <string name="openkeychain_required">Установите OpenKeychain</string>
-  <string name="openkeychain_required_long">Conversations использует <b>OpenKeychain</b> для шифрования и дешифрования сообщений и управления открытыми ключами.\n\nOpenKeychain распространяется под лицензией GPLv3 и доступна для загрузки через F-Droid или Google Play.\n\n<small>(Потребуется перезапуск Conversations после установки.)</small></string>
   <string name="restart">Перезапуск</string>
   <string name="install">Установка</string>
   <string name="openkeychain_not_installed">Пожалуйста, установите OpenKeychain</string>
@@ -461,7 +464,11 @@
   <string name="server_info_broken">Повреждено</string>
   <string name="pref_presence_settings">Доступность</string>
   <string name="pref_away_when_screen_off">\"Отошёл\" когда экран выключен</string>
+  <string name="pref_away_when_screen_off_summary">Устанавливает статус \"Отошёл\", когда экран выключен</string>
+  <string name="pref_dnd_on_silent_mode">\"Не беспокоить\" в беззвучном режиме</string>
+  <string name="pref_dnd_on_silent_mode_summary">Устанавливает статус \"Не беспокоить\", когда устройство в беззвучном режиме</string>
   <string name="pref_treat_vibrate_as_silent">Не доступен в режиме вибрации</string>
+  <string name="pref_treat_vibrate_as_dnd_summary">Устанавливает статус \"Не беспокоить\", когда устройство в режиме вибрации</string>
   <string name="pref_show_connection_options">Расширенные настройки подключения</string>
   <string name="pref_show_connection_options_summary">Показывать имя сервера и порт в настройках аккаунтов</string>
   <string name="hostname_example">xmpp.example.com</string>
@@ -499,10 +506,7 @@
   <string name="shared_image_with_x">Изображение отправлено %s</string>
   <string name="shared_images_with_x">Изображения отправлены %s</string>
   <string name="shared_text_with_x">Текст отправлен %s</string>
-  <string name="no_storage_permission">Предоставить Conversations разрешение на использование внешнего накопителя</string>
-  <string name="no_camera_permission">Предоставить Conversations разрешение на использование камеры</string>
   <string name="sync_with_contacts">Синхронизировать с контактами</string>
-  <string name="sync_with_contacts_long">Conversations нужны права на доступ к вашим контактам, чтобы соотнести лист XMPP-контактов с основным листом контактов устройства и отобразить полные имена и аватары.\n\nЭта операция не передаст информации о контактах на сервер.</string>
   <string name="sync_with_contacts_quicksy"><![CDATA[Quicksy необходим доступ к телефонным номерам ваших контактов, для обнаружения тех, кто уже использует Quicksy.<br><br>Мы не будем хранить у себя копии этих номеров.\n\nДля более подробной информации читайте нашу <a href="https://quicksy.im/#privacy">политику конфиденциальности</a>.<br><br>Сейчас будет сделан запрос на разрешение доступа к контактам.]]></string>
   <string name="notify_on_all_messages">Все сообщения</string>
   <string name="notify_only_when_highlighted">Уведомлять только при упоминании</string>
@@ -513,8 +517,6 @@
   <string name="always">Всегда</string>
   <string name="large_images_only">Только большие изображения</string>
   <string name="battery_optimizations_enabled">Оптимизации энергопотребления разрешены</string>
-  <string name="battery_optimizations_enabled_explained">Ваше устройство использует агрессивную оптимизацию энергопотребления Conversations, что может привести к задержке уведомлений и даже потере сообщений.\nРекомендуем ее отключить.</string>
-  <string name="battery_optimizations_enabled_dialog">Ваше устройство использует агрессивную оптимизацию энергопотребления Conversations, что может привести к задержке уведомлений и даже потере сообщений.\nСейчас появится предложение ее отключить.</string>
   <string name="disable">Запретить</string>
   <string name="selection_too_large">Выбранная область слишком большая</string>
   <string name="no_accounts">(Нет активных аккаунтов)</string>
@@ -586,8 +588,6 @@
   <string name="show_error_message">Показать текст ошибки</string>
   <string name="error_message">Текст ошибки</string>
   <string name="data_saver_enabled">Режим экономии трафика включен</string>
-  <string name="data_saver_enabled_explained">Ваша операционная система не позволяет Conversations получать доступ в Интернет в фоновом режиме. Для получения уведомлений вы должны дать Conversations неограниченный доступ в режиме экономии трафика.\nConversations постарается экономить трафик по возможности.</string>
-  <string name="device_does_not_support_data_saver">Ваше устройство не поддерживает отключение режима экономии трафика для Conversations.</string>
   <string name="error_unable_to_create_temporary_file">Не удалось создать временный файл</string>
   <string name="this_device_has_been_verified">Это устройство было подтверждено</string>
   <string name="copy_fingerprint">Копировать отпечаток</string>
@@ -698,7 +698,6 @@
   <string name="edit_status_message_title">Редактировать статусное сообщение</string>
   <string name="edit_status_message">Редактировать статусное сообщение</string>
   <string name="disable_encryption">Отключить шифрование</string>
-  <string name="error_trustkey_general">Conversations не удалось отправить зашифрованные сообщения для %1$s. Причиной этому может быть использование получателем устаревшего клиента, который не работает с OMEMO.</string>
   <string name="error_trustkey_device_list">Не удалось получить список устройств</string>
   <string name="error_trustkey_bundle">Не удалось получить ключи шифрования</string>
   <string name="error_trustkey_hint_mutual">Подсказка: в некоторых случаях это может исправлено добавлением друг друга в список контактов.</string>
@@ -731,7 +730,6 @@
   <string name="share">Поделиться</string>
   <string name="unable_to_start_recording">Не удалось начать запись</string>
   <string name="please_wait">Пожалуйста, подождите…</string>
-  <string name="no_microphone_permission">Предоставить Conversations разрешение на использование микрофона</string>
   <string name="search_messages">Поиск сообщений</string>
   <string name="gif">GIF</string>
   <string name="view_conversation">Посмотреть беседу</string>
@@ -753,7 +751,6 @@
   <string name="conference_destroyed">Эта конференция была уничтожена</string>
   <string name="unable_to_save_recording">Не удалось сохранить запись</string>
   <string name="foreground_service_channel_name">Процесс переднего плана</string>
-  <string name="foreground_service_channel_description">Эта категория уведомлений используется для постоянного отображения оповещения о том, что Conversations запущен.</string>
   <string name="notification_group_status_information">Информация о статусе</string>
   <string name="error_channel_name">Проблемы с подключением</string>
   <string name="error_channel_description">Эта категория уведомлений используется для отображения оповещений, в случае если есть проблема с соединением.</string>
@@ -963,4 +960,8 @@
   <string name="failed_deliveries">Недоставленные сообщения</string>
   <string name="more_options">Ещё</string>
   <string name="no_application_found">Не найдено приложения</string>
+  <string name="invite_to_app">Пригласить в Conversations</string>
+  <string name="unable_to_parse_invite">Невозможно разобрать приглашение</string>
+  <string name="server_does_not_support_easy_onboarding_invites">Сервер не поддерживает создание приглашений</string>
+  <string name="no_active_accounts_support_this">Ни один активный аккаунт не поддерживает эту функцию</string>
 </resources>

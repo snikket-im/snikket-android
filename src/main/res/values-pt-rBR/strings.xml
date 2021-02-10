@@ -68,8 +68,6 @@
   <string name="unblock">Desbloquear</string>
   <string name="save">Salvar</string>
   <string name="ok">Ok</string>
-  <string name="crash_report_title">Ocorreu um erro no Conversations</string>
-  <string name="crash_report_message">Usar a sua conta XMPP para enviar stack traces ajuda no desenvolvimento do Conversations.</string>
   <string name="send_now">Enviar agora</string>
   <string name="send_never">Não pergunte novamente</string>
   <string name="problem_connecting_to_account">Não foi possível se conectar à conta</string>
@@ -99,7 +97,6 @@
   <string name="send_unencrypted">Enviar descriptografada</string>
   <string name="decryption_failed">Não foi possível descriptografar. Talvez você não tenha a chave privada apropriada.</string>
   <string name="openkeychain_required">OpenKeychain</string>
-  <string name="openkeychain_required_long">O Conversations utiliza o <b>OpenKeychain</b> para criptografar e descriptografar as mensagens e gerenciar suas chaves públicas.\n\nO OpenKeychain é licenciado sob a GPLv3+ e está disponível no F-Droid e na Google Play.\n\n<small>(Por favor reinicie o Conversations em seguida)</small></string>
   <string name="restart">Reiniciar</string>
   <string name="install">Instalar</string>
   <string name="openkeychain_not_installed">Por favor, instale o OpenKeychain</string>
@@ -503,10 +500,7 @@
   <string name="shared_image_with_x">Imagem compartilhada com %s</string>
   <string name="shared_images_with_x">Imagens compartilhadas com %s</string>
   <string name="shared_text_with_x">Texto compartilhado com %s</string>
-  <string name="no_storage_permission">Permita o acesso do Conversations ao armazenamento externo</string>
-  <string name="no_camera_permission">Permita o acesso do Conversations à câmera</string>
   <string name="sync_with_contacts">Sincronizar com os contatos</string>
-  <string name="sync_with_contacts_long">O Conversations deseja permissão para acessar seus contatos e procurar por correspondências entre eles e sua lista de contatos XMPP, à fim de exibir seus nomes completos e avatares.\n\nO Conversations fará a consulta e correspondência localmente, sem enviar os seus contatos para o servidor.</string>
   <string name="sync_with_contacts_quicksy"><![CDATA[Quicksy precisa acessar os números de telefone dos seus contatos para sugerir possíveis contatos que já estejam no Quicksy.<br><br>Nós não armazenaremos nenhuma cópia desses números de telefone.\n\nPara maiores informações, leia nossa  <a href="https://quicksy.im/#privacy">política de privacidade</a>.<br><br>Agora você será solicitado a fornecer permissões de acesso aos seus contatos.]]></string>
   <string name="notify_on_all_messages">Notificar em todas as mensagens</string>
   <string name="notify_only_when_highlighted">Notificar somente quando for mencionado</string>
@@ -517,8 +511,6 @@
   <string name="always">Sempre</string>
   <string name="large_images_only">Apenas imagens grandes</string>
   <string name="battery_optimizations_enabled">Otimizações de bateria habilitadas</string>
-  <string name="battery_optimizations_enabled_explained">O seu dispositivo está empregando uma otimização intensa de bateria para o Conversations, o que pode levar a atrasos nas notificações ou mesmo perda de mensagens.\nÉ recomendável desabilitar essa otimização.</string>
-  <string name="battery_optimizations_enabled_dialog">O seu dispositivo está empregando uma otimização intensa de bateria para o Conversations, o que pode levar a atrasos nas notificações ou mesmo perda de mensagens.\nAgora você será consultado para desabilitar essa otimização.</string>
   <string name="disable">Desabilitar</string>
   <string name="selection_too_large">A área selecionada é muito grande</string>
   <string name="no_accounts">(Nenhuma conta ativa)</string>
@@ -590,8 +582,6 @@
   <string name="show_error_message">Exibir a mensagem de erro</string>
   <string name="error_message">Mensagem de erro</string>
   <string name="data_saver_enabled">Economia de dados habilitada</string>
-  <string name="data_saver_enabled_explained">O seu sistema operacional está restringindo o acesso à internet ao Conversations quando ele está em segundo plano. Para receber notificações de novas mensagens você deve permitir que o Conversations tenha acesso irrestrito quando a economia de dados estiver ativada.\nO Conversations fará um esforço para economizar dados sempre que possível.</string>
-  <string name="device_does_not_support_data_saver">O seu dispositivo não permite que a economia de dados seja desativada para o Conversations.</string>
   <string name="error_unable_to_create_temporary_file">Não foi possível criar o arquivo temporário</string>
   <string name="this_device_has_been_verified">Este dispositivo foi verificado</string>
   <string name="copy_fingerprint">Copiar impressão digital</string>
@@ -690,7 +680,6 @@
   <string name="edit_status_message_title">Editar a mensagem de status</string>
   <string name="edit_status_message">Editar a mensagem de status</string>
   <string name="disable_encryption">Desabilitar a criptografia</string>
-  <string name="error_trustkey_general">O Conversations é incapaz de enviar mensagens criptografadas para %1$s. Isso pode ocorrer caso o seu contato esteja usando um servidor desatualizado ou o cliente não consiga lidar com OMEMO.</string>
   <string name="error_trustkey_device_list">Não foi possível obter a lista de dispositivos</string>
   <string name="error_trustkey_bundle">Não foi possível obter as chaves de criptografia</string>
   <string name="error_trustkey_hint_mutual">Dica: Em alguns casos isso pode ser resolvido adicionando-se um ao outro na lista de contatos.</string>
@@ -723,7 +712,6 @@
   <string name="share">Compartilhar</string>
   <string name="unable_to_start_recording">Não foi possível iniciar a gravação</string>
   <string name="please_wait">Por favor, aguarde...</string>
-  <string name="no_microphone_permission">Permita o acesso do Conversations ao microfone</string>
   <string name="search_messages">Pesquisar mensagens</string>
   <string name="gif">GIF</string>
   <string name="view_conversation">Ver conversa</string>
@@ -745,7 +733,6 @@
   <string name="conference_destroyed">Essa conversa em grupo foi destruída</string>
   <string name="unable_to_save_recording">Não foi possível salvar a gravação</string>
   <string name="foreground_service_channel_name">Serviço ativo</string>
-  <string name="foreground_service_channel_description">Essa categoria de notificação é utilizada para exibir uma notificação permanente indicando que o Conversations está em execução.</string>
   <string name="notification_group_status_information">Informação de status</string>
   <string name="error_channel_name">Problemas de conectividade</string>
   <string name="error_channel_description">Essa categoria de notificação é utilizada para exibir uma notificação caso exista algum problema de conectividade com uma conta.</string>

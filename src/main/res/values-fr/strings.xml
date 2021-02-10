@@ -64,8 +64,6 @@
   <string name="unblock">Débloquer</string>
   <string name="save">Enregistrer</string>
   <string name="ok">OK</string>
-  <string name="crash_report_title">Conversations a planté</string>
-  <string name="crash_report_message">En utilisant votre compte XMPP pour envoyer des rapports de crash, vous aidez le développement de Conversations.</string>
   <string name="send_now">Envoyer</string>
   <string name="send_never">Ne plus me demander</string>
   <string name="problem_connecting_to_account">Impossible de se connecter au compte.</string>
@@ -95,7 +93,6 @@
   <string name="send_unencrypted">Envoyer en clair</string>
   <string name="decryption_failed">Échec du déchiffrement. Avez-vous la bonne clé privée ?</string>
   <string name="openkeychain_required">OpenKeychain</string>
-  <string name="openkeychain_required_long">Conversations utilise <b>OpenKeychain</b> pour chiffrer et déchiffrer les messages et pour gérer vos clés publiques.\n\nOpenKeychain est sous licence GPLv3 et est disponible sur F-Droid et Google Play.\n\n<small>(Veuillez redémarrer Conversations après l\'installation de l\'application.)</small></string>
   <string name="restart">Redémarrer</string>
   <string name="install">Installer</string>
   <string name="openkeychain_not_installed">Veuillez installer OpenKeychain</string>
@@ -499,10 +496,7 @@
   <string name="shared_image_with_x">Image partagée avec %s</string>
   <string name="shared_images_with_x">Images partagées avec %s</string>
   <string name="shared_text_with_x">Texte partagé avec %s</string>
-  <string name="no_storage_permission">Autoriser Conversations à accéder au stockage externe</string>
-  <string name="no_camera_permission">Autoriser Conversations à accéder à la caméra</string>
   <string name="sync_with_contacts">Synchroniser avec contacts</string>
-  <string name="sync_with_contacts_long">Conversations souhaite associer vos contacts XMPP avec les contacts de votre appareil, pour utiliser leur nom complet et leur avatar.\n\nConversations va uniquement lire vos contacts et les associer localement, sans les envoyer à votre serveur XMPP.</string>
   <string name="sync_with_contacts_quicksy"><![CDATA[Quicksy a besoin d\'accéder aux numéros de téléphone de vos contacts pour vous suggérer des contacts éventuels déjà connectés.<br><br> Nous ne stockerons pas de copie de ces numéros.\n\nPour plus d\'informations, lisez notre <a href="https://quicksy.im/#privacy">politique de confidentialité</a>. <br><br>maintenant être invité à donner la permission d\'accéder à vos contacts.]]></string>
   <string name="notify_on_all_messages">Notifier pour tous les messages</string>
   <string name="notify_only_when_highlighted">Notifier seulement en cas de mention</string>
@@ -513,8 +507,6 @@
   <string name="always">Toujours</string>
   <string name="large_images_only">Grandes images seulement</string>
   <string name="battery_optimizations_enabled">Optimisations de batterie activées</string>
-  <string name="battery_optimizations_enabled_explained">Votre appareil applique d\'importantes optimisations de batterie pour Conversations pouvant entraîner des retards de notifications, voire des pertes de messages.\nIl est recommandé de les désactiver.</string>
-  <string name="battery_optimizations_enabled_dialog">Votre appareil applique d\'importantes optimisations de batterie pour Conversations pouvant entraîner des retards de notifications, voire des pertes de messages.\nVous allez être invité à les désactiver.</string>
   <string name="disable">Désactiver</string>
   <string name="selection_too_large">La zone sélectionnée est trop grande</string>
   <string name="no_accounts">(Aucun compte activé)</string>
@@ -586,8 +578,6 @@
   <string name="show_error_message">Afficher le message d\'erreur</string>
   <string name="error_message">Message d\'erreur</string>
   <string name="data_saver_enabled">Économiseur de données activé</string>
-  <string name="data_saver_enabled_explained">Votre système d\'exploitation empêche Conversations d’accéder à Internet lorsque l\'application est en arrière plan. Pour recevoir les notifications de nouveaux messages, vous devez autoriser Conversations à accéder au réseau sans restriction quand l\'économiseur de données est activé.\n Conversations tentera de consommer le moins de données possible.</string>
-  <string name="device_does_not_support_data_saver">Votre appareil ne prend pas en charge la désactivation de l\'Économiseur de données pour Conversations.</string>
   <string name="error_unable_to_create_temporary_file">Impossible de créer un fichier temporaire</string>
   <string name="this_device_has_been_verified">Cet appareil a été vérifié</string>
   <string name="copy_fingerprint">Copier l\'empreinte</string>
@@ -686,7 +676,6 @@
   <string name="edit_status_message_title">Modifier le message de l\'état</string>
   <string name="edit_status_message">Modifier le message de statut</string>
   <string name="disable_encryption">Désactiver le chiffrement</string>
-  <string name="error_trustkey_general">Conversations n\'est pas capable d\'envoyer un message chiffré à %1$s. Ceci peut être lié au fait que votre contact utilise un serveur obsolète ou un client qui ne gère par OMEMO. </string>
   <string name="error_trustkey_device_list">Impossible de récupérer la liste des appareils</string>
   <string name="error_trustkey_bundle">Impossible de récupérer les clés de chiffrement</string>
   <string name="error_trustkey_hint_mutual">Indication : Dans certains cas, cela peut être résolu en vous ajoutant respectivement dans votre liste de contacts.</string>
@@ -719,7 +708,6 @@
   <string name="share">Partager</string>
   <string name="unable_to_start_recording">Impossible de démarrer l\'enregistrement</string>
   <string name="please_wait">Veuillez patienter…</string>
-  <string name="no_microphone_permission">Autoriser Conversations à accéder au microphone</string>
   <string name="search_messages">Rechercher dans les messages</string>
   <string name="gif">GIF</string>
   <string name="view_conversation">Voir la conversation</string>
@@ -741,7 +729,6 @@
   <string name="conference_destroyed">Ce groupe a été supprimé</string>
   <string name="unable_to_save_recording">Impossible de sauvegarder l\'enregistrement</string>
   <string name="foreground_service_channel_name">Service au premier plan</string>
-  <string name="foreground_service_channel_description">Cette catégorie de notification est utilisée pour afficher une notification permanente indiquant que Conversations est en cours.</string>
   <string name="notification_group_status_information">Information sur l\'état</string>
   <string name="error_channel_name">Problèmes de connectivité</string>
   <string name="error_channel_description">Cette catégorie de notification est utilisée pour afficher une notification lors d\'un problème de connexion avec un compte.</string>

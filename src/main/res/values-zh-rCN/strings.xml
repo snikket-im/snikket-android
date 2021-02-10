@@ -67,8 +67,6 @@
   <string name="unblock">解封</string>
   <string name="save">保存</string>
   <string name="ok">完成</string>
-  <string name="crash_report_title">Conversations已崩溃</string>
-  <string name="crash_report_message">使用您的XMPP帐户发送堆栈跟踪信息有助于Conversations的持续发展。</string>
   <string name="send_now">立即发送</string>
   <string name="send_never">不再询问</string>
   <string name="problem_connecting_to_account">账户无法连接</string>
@@ -98,7 +96,6 @@
   <string name="send_unencrypted">不加密发送</string>
   <string name="decryption_failed">解密失败，可能是私钥不正确。</string>
   <string name="openkeychain_required">OpenKeychain</string>
-  <string name="openkeychain_required_long">Conversations使用<b>OpenKeychain</b>加密和解密消息以及管理您的公钥。\n\nOpenKeychain遵循GPLv3许可并且可在F-Droid和Google Play上获取。\n\n<small>（请稍后重启Conversations。）</small></string>
   <string name="restart">重启</string>
   <string name="install">安装</string>
   <string name="openkeychain_not_installed">请安装OpenKeychain以解密</string>
@@ -500,10 +497,7 @@
   <string name="shared_image_with_x">图片已分享给%s</string>
   <string name="shared_images_with_x">图片已分享给%s</string>
   <string name="shared_text_with_x">文本已分享给%s</string>
-  <string name="no_storage_permission">允许Conversations访问外部存储</string>
-  <string name="no_camera_permission">允许Conversations使用摄像头</string>
   <string name="sync_with_contacts">同步联系人</string>
-  <string name="sync_with_contacts_long">将服务器端联系人与本地联系人匹配可以显示联系人的全名与头像。\n\n此应用只在本地读取并匹配联系人。\n\n现在应用将请求联系人权限。</string>
   <string name="sync_with_contacts_quicksy"><![CDATA[Quicksy可以匹配您的通讯录以确定哪些人已经在使用此应用。<br><br>我们并不储存这些号码。\n\n更多信息请阅读<a href="https://quicksy.im/#privacy">隐私政策</a>。接下来将请求通讯录权限。]]></string>
   <string name="notify_on_all_messages">为所有信息显示通知</string>
   <string name="notify_only_when_highlighted">只在被提到时通知</string>
@@ -514,8 +508,6 @@
   <string name="always">总是</string>
   <string name="large_images_only">仅大图片</string>
   <string name="battery_optimizations_enabled">已启用节电模式</string>
-  <string name="battery_optimizations_enabled_explained">你的设备正在对Conversations进行电池优化，这可能会导致通知延迟甚至消息丢失。\n建议禁用电池优化。</string>
-  <string name="battery_optimizations_enabled_dialog">你的设备正在对Conversations进行电池优化，这可能会导致通知延迟甚至消息丢失。\n你将会被提示禁用该功能。</string>
   <string name="disable">禁用</string>
   <string name="selection_too_large">选择区域过大</string>
   <string name="no_accounts">（没有启用的账户）</string>
@@ -587,8 +579,6 @@
   <string name="show_error_message">显示出错消息</string>
   <string name="error_message">出错信息</string>
   <string name="data_saver_enabled">省流量模式已启用</string>
-  <string name="data_saver_enabled_explained">您的操作系统禁止本程序在后台运行时访问互联网。为了收到新消息提示，您需要在省流量模式下允许本程序不受限制地访问互联网。\n本程序仍会尽可能节省流量。</string>
-  <string name="device_does_not_support_data_saver">该设备不支持禁用省流量模式</string>
   <string name="error_unable_to_create_temporary_file">无法创建临时文件</string>
   <string name="this_device_has_been_verified">已验证此设备</string>
   <string name="copy_fingerprint">复制指纹</string>
@@ -681,7 +671,6 @@
   <string name="edit_status_message_title">编辑状态信息</string>
   <string name="edit_status_message">编辑状态信息</string>
   <string name="disable_encryption">禁用加密</string>
-  <string name="error_trustkey_general">Conversations无法向%1$s发送加密信息。这可能是由于您的联系人使用了无法处理OMEMO的过时服务器或客户端。</string>
   <string name="error_trustkey_device_list">无法获取设备列表</string>
   <string name="error_trustkey_bundle">无法获取密钥</string>
   <string name="error_trustkey_hint_mutual">提示：某些情况下，可以将对方加入联系人列表，以解决此问题。</string>
@@ -714,7 +703,6 @@
   <string name="share">分享</string>
   <string name="unable_to_start_recording">无法开始录制</string>
   <string name="please_wait">请等待…</string>
-  <string name="no_microphone_permission">允许Conversations使用麦克风</string>
   <string name="search_messages">搜索消息</string>
   <string name="gif">GIF动图</string>
   <string name="view_conversation">查看聊天</string>
@@ -736,7 +724,6 @@
   <string name="conference_destroyed">群聊已被解散</string>
   <string name="unable_to_save_recording">无法保存录制的文件</string>
   <string name="foreground_service_channel_name">前台服务</string>
-  <string name="foreground_service_channel_description">此通知类别用于显示表明Conversations正在运行的永久通知。</string>
   <string name="notification_group_status_information">状态信息</string>
   <string name="error_channel_name">连接问题</string>
   <string name="error_channel_description">此通知类别用于显示帐户连接问题通知。</string>

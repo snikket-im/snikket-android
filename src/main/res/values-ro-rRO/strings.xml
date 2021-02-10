@@ -69,8 +69,6 @@
   <string name="unblock">Deblochează</string>
   <string name="save">Salvează</string>
   <string name="ok">BINE</string>
-  <string name="crash_report_title">Conversations s-a oprit neașteptat</string>
-  <string name="crash_report_message">Trimițând date despre erori folosind contul dumneavoastră XMPP ajutați la continuarea dezvoltării aplicației Conversations.</string>
   <string name="send_now">Trimite acum</string>
   <string name="send_never">Nu mă mai întreba</string>
   <string name="problem_connecting_to_account">Nu s-a putut face conectarea la cont</string>
@@ -100,7 +98,6 @@
   <string name="send_unencrypted">Trimite necriptat</string>
   <string name="decryption_failed">Decriptarea a eșuat. Poate nu aveți cheia privată corectă.</string>
   <string name="openkeychain_required">OpenKeychain</string>
-  <string name="openkeychain_required_long">Conversations utilizează <b>OpenKeychain</b> pentru a cripta și decripta mesaje și a administra cheile publice.\n\nOpenKeychain este licențiat sub GPLv3+ și este disponibil în F-Droid și Google Play.\n\n<small>(Vă rugăm să reporniți Conversations după instalare.)</small></string>
   <string name="restart">Repornește</string>
   <string name="install">Instalare</string>
   <string name="openkeychain_not_installed">Va rugăm să instalați OpenKeychain</string>
@@ -506,10 +503,7 @@
   <string name="shared_image_with_x">Imagine partajată cu %s</string>
   <string name="shared_images_with_x">Imagini partajate cu %s</string>
   <string name="shared_text_with_x">Text partajat cu %s</string>
-  <string name="no_storage_permission">Permiteți Conversations acces la stocarea externă</string>
-  <string name="no_camera_permission">Permiteți Conversations acces la camera foto</string>
   <string name="sync_with_contacts">Sincronizează cu contactele</string>
-  <string name="sync_with_contacts_long">Conversations dorește permisiunea de a vă accesa contactele pentru a putea potrivi lista de contacte XMPP cu cea din dispozitiv și a afișa numele lor complete și avatarele.\n\nSe va citi și potrivi local fără a fi încărcate pe serverul dumneavoastră.</string>
   <string name="sync_with_contacts_quicksy"><![CDATA[Quicksy are nevoie să poată accesa numerele de telefon ale contactelor dumneavoastră pentru a putea sugera posibile contacte ce sunt deja pe Quicksy.<br><br>Nu vom stoca o copie a acestor numere the telefon.\n\nPentru mai multe informații puteți citii <a href="https://quicksy.im/#privacy">politica noastră de confidențialitate</a>.<br><br>Urmează să fiți întrebați dacă doriți să permiteți accesul la contacte.]]></string>
   <string name="notify_on_all_messages">Notifică la toate mesajele</string>
   <string name="notify_only_when_highlighted">Notifică doar atunci când cineva vă menționează numele</string>
@@ -520,8 +514,6 @@
   <string name="always">Mereu</string>
   <string name="large_images_only">Doar imaginile mari</string>
   <string name="battery_optimizations_enabled">Optimizare baterie activată</string>
-  <string name="battery_optimizations_enabled_explained">Dispozitivul dumneavoastră încearcă să optimizeze agresiv consumul bateriei pentru Conversations, aceasta poate duce la notificări întârziate sau chiar pierderea mesajelor.\nEste recomandat sa le dezactivați.</string>
-  <string name="battery_optimizations_enabled_dialog">Dispozitivul dumneavoastră încearcă să optimizeze agresiv consumul bateriei pentru Conversations, aceasta poate duce la notificări întârziate sau chiar pierderea mesajelor.\nÎn continuare veți fi rugați să le dezactivați.</string>
   <string name="disable">Dezactivează</string>
   <string name="selection_too_large">Zona selectată este prea mare</string>
   <string name="no_accounts">(Nici un cont activat)</string>
@@ -593,8 +585,6 @@
   <string name="show_error_message">Arată mesaj de eroare</string>
   <string name="error_message">Mesaj de eroare</string>
   <string name="data_saver_enabled">Economizorul de date este activat</string>
-  <string name="data_saver_enabled_explained">Sistemul de operare restricționează accesul la Internet pentru Conversations atunci când este în fundal. Pentru a primii notificări pentru mesajele noi trebuie să acordați acces ne restricționat pentru Conversations atunci când \"Economizorul de date\" este activ.\nConversations face mereu eforturi ca să economisească consumul de date atunci când este posibil.</string>
-  <string name="device_does_not_support_data_saver">Dispozitivul nu suporta dezactivarea Economizorului de date pentru Conversations.</string>
   <string name="error_unable_to_create_temporary_file">Nu se poate crea un fișier temporar</string>
   <string name="this_device_has_been_verified">Acest dispozitiv a fost verificat</string>
   <string name="copy_fingerprint">Copiază amprenta</string>
@@ -699,7 +689,6 @@
   <string name="edit_status_message_title">Editare mesaj de stare</string>
   <string name="edit_status_message">Editare mesaj de stare</string>
   <string name="disable_encryption">Dezactivează criptarea</string>
-  <string name="error_trustkey_general">Conversations nu poate trimite mesaje criptate către %1$s. Aceasta se poate întâmpla dacă acest contact folosește un server sau un client învechit ce nu suportă OMEMO.</string>
   <string name="error_trustkey_device_list">Nu s-a putut descărca lista dispozitivelor</string>
   <string name="error_trustkey_bundle">Nu s-au putut descărca cheile de criptare</string>
   <string name="error_trustkey_hint_mutual">Sugestie: În unele cazuri se poate rezolva dacă vă adăugați reciproc în lista de contacte.</string>
@@ -732,7 +721,6 @@
   <string name="share">Partajare</string>
   <string name="unable_to_start_recording">Nu s-a putut pornii înregistrarea</string>
   <string name="please_wait">Vă rugăm să așteptați...</string>
-  <string name="no_microphone_permission">Permiteți Conversations acces la microfon</string>
   <string name="search_messages">Caută mesaje</string>
   <string name="gif">GIF</string>
   <string name="view_conversation">Arată conversația</string>
@@ -754,7 +742,6 @@
   <string name="conference_destroyed">Această discuție de grup a fost distrusă</string>
   <string name="unable_to_save_recording">Nu s-a putut salva înregistrarea</string>
   <string name="foreground_service_channel_name">Serviciul activ în prim-plan</string>
-  <string name="foreground_service_channel_description">Această categorie de notificări este folosită pentru a arăta o notificare permanentă ce indică rularea Conversations</string>
   <string name="notification_group_status_information">Informații de stare</string>
   <string name="error_channel_name">Probleme de conectare</string>
   <string name="error_channel_description">Această categorie de notificări este folosită pentru a arăta o notificare în cazul în care există o problemă la conectarea unui cont.</string>

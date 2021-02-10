@@ -64,7 +64,6 @@
   <string name="unblock">ブロックを解除</string>
   <string name="save">保存</string>
   <string name="ok">OK</string>
-  <string name="crash_report_title">Conversations がクラッシュしました</string>
   <string name="send_now">今すぐ送信</string>
   <string name="send_never">今後表示しない</string>
   <string name="problem_connecting_to_account">アカウントに接続できません</string>
@@ -94,7 +93,6 @@
   <string name="send_unencrypted">暗号化されていない送信</string>
   <string name="decryption_failed">復号化に失敗しました。おそらく秘密鍵が正しくないようです。</string>
   <string name="openkeychain_required">OpenKeychain</string>
-  <string name="openkeychain_required_long">Conversations は <b>OpenKeychain</b> を利用して、メッセージの暗号化および復号化、そしてあなたの公開鍵を管理します。\n\nOpenKeychain は GPLv3+ ライセンスの下で、F-Droid および Google Play から利用可能です。\n\n<small>(後で Conversations を再起動してください。)</small></string>
   <string name="restart">再起動</string>
   <string name="install">インストール</string>
   <string name="openkeychain_not_installed">OpenKeychain をインストールしてください</string>
@@ -518,7 +516,6 @@
   <string name="show_error_message">エラーメッセージを表示</string>
   <string name="error_message">エラーメッセージ</string>
   <string name="data_saver_enabled">データセーバーを有効にしました</string>
-  <string name="device_does_not_support_data_saver">お使いのデバイスは、Conversationsのデータセーバーを無効にすることはできません。</string>
   <string name="this_device_has_been_verified">このデバイスは検証済です</string>
   <string name="copy_fingerprint">フィンガープリントをコピー</string>
   <string name="verified_fingerprints">フィンガープリントを検証しました</string>
@@ -587,7 +584,6 @@
   <string name="edit_status_message_title">在席状況メッセージを編集</string>
   <string name="edit_status_message">在席状況メッセージを編集</string>
   <string name="disable_encryption">暗号化をしない</string>
-  <string name="error_trustkey_general">Conversations は %1$s に暗号化メッセージを送れません。この連絡先が利用しているサーバーが古すぎるか、クライアントが OMEMO を扱えません。</string>
   <string name="error_trustkey_hint_mutual">ヒント: お互いが名簿に加えれば解決するでしょう。</string>
   <string name="draft">下書き:</string>
   <string name="pref_omemo_setting">OMEMO 暗号化</string>

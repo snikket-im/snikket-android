@@ -63,7 +63,6 @@
   <string name="unblock">Деблокиране</string>
   <string name="save">Запазване</string>
   <string name="ok">Добре</string>
-  <string name="crash_report_title">Conversations се срина</string>
   <string name="send_now">Изпращане сега</string>
   <string name="send_never">Не ме питайте повече</string>
   <string name="attach_file">Прикачане на файл</string>
@@ -459,7 +458,6 @@
   <string name="show_error_message">Показване на грешка</string>
   <string name="error_message">Съобщение за грешка</string>
   <string name="data_saver_enabled">Съхранението на данни е включено</string>
-  <string name="device_does_not_support_data_saver">Устройството Ви не поддържа изключването на съхранението на данни за Conversations.</string>
   <string name="this_device_has_been_verified">Това устройство е потвърдено</string>
   <string name="copy_fingerprint">Копиране на отпечатъка</string>
   <string name="verified_fingerprints">Потвърдени отпечатъци</string>
@@ -547,7 +545,6 @@
   <string name="edit_status_message_title">Редактиране на съобщението за състоянието</string>
   <string name="edit_status_message">Редактиране на съобщението за състоянието</string>
   <string name="disable_encryption">Изключване на шифроването</string>
-  <string name="error_trustkey_general">Conversations не може да изпраща шифровани съобщения до %1$s. Възможно е Вашият контакт да използва остарял сървър или клиент, който не може да работи с OMEMO.</string>
   <string name="error_trustkey_hint_mutual">Съвет: В някои случаи това може да се оправи, ако се добавите един друг в списъците си с контакти.</string>
   <string name="disable_encryption_message">Наистина ли искате да изключите шифроването чрез OMEMO за този разговор?\nТова ще позволи на администратора Ви да чете съобщенията Ви, но пък най-вероятно е единственият начин за общуване с хората, използващи стари клиенти.</string>
   <string name="disable_now">Изключване сега</string>
@@ -596,7 +593,6 @@
   <string name="create_dialog_group_chat_name">Име на груповия разговор</string>
   <string name="conference_destroyed">Този групов разговор е унищожен</string>
   <string name="foreground_service_channel_name">Услуга на преден план</string>
-  <string name="foreground_service_channel_description">Тази категория известия се използва за показване на постоянно известие, което показва, че Conversations работи.</string>
   <string name="notification_group_status_information">Информация за състоянието</string>
   <string name="error_channel_name">Проблеми с връзката</string>
   <string name="error_channel_description">Тази категория известия се използва за показване на известие, в случай че има проблем със свързването с профил.</string>

@@ -1,23 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="crash_report_title">Quicksy mengalami kegagalan sistem</string>
-    <string name="crash_report_message">Dengan mengirimkan data log, Anda membantu pengembangan Quicksy \n<b>Peringatan:</b> Ini akan menggunakan akun XMPP Anda untuk mengirim data log ke pengembang.</string>
-    <string name="openkeychain_required_long">Quicksy menggunakan aplikasi pihak ketiga bernama <b>OpenKeychain</b> untuk mengenkripsi dan mendekripsi pesan dan untuk mengelola kunci publik Anda.\n\nOpenKeychain dilisensikan di bawah GPLv3 dan tersedia di F-Droid dan Google Play.\n\n <small>(Harap restart Quicksy instalasi.)</small></string>
-    <string name="contact_has_no_pgp_key">Quicksy tidak dapat mengenkripsi pesan Anda karena kontak Anda tidak mengumumkan kunci publiknya.\n\n<small>Minta kontak Anda untuk setting OpenPGP.</small></string>
-    <string name="contacts_have_no_pgp_keys">Quicksy tidak dapat mengenkripsi pesan Anda karena kontak-kontak Anda tidak mengumumkan kunci publiknya.\n\n<small>Minta mereka untuk setting OpenPGP.</small></string>
     <string name="pref_notification_grace_period_summary">Durasi Quicksy tetap diam setelah melihat aktivitas di perangkat lain</string>
     <string name="pref_never_send_crash_summary">Dengan mengirimkan data log, Anda sedang membantu pengembangan Quicksy</string>
-    <string name="no_storage_permission">Quicksy memerlukan akses ke penyimpanan data</string>
-    <string name="no_camera_permission">Quicksy memerlukan akses ke kamera</string>
-    <string name="battery_optimizations_enabled_explained">Perangkat Anda mengaktifkan fitur pengoptimalan baterai maksimal untuk Quicksy yang dapat menyebabkan notifikasi tertunda atau bahkan kehilangan pesan. \nDisarankan untuk menonaktifkan fiturnya.</string>
-    <string name="battery_optimizations_enabled_dialog">Perangkat Anda menggunakan pengoptimalan baterai maksimal untuk Quicksy yang dapat menyebabkan notifikasi tertunda atau bahkan kehilangan pesan. \n\nAnda akan diminta untuk menonaktifkannya.</string>
     <string name="pref_broadcast_last_activity_summary">Ijinkan kontak anda mengetahui kapan anda menggunakan Quicksy</string>
-    <string name="data_saver_enabled_explained">OS Anda membatasi Quicksy untuk mengakses Internet saat berada di latar belakang. Untuk menerima pemberitahuan pesan baru, Anda harus mengizinkan akses tak terbatas Quicksy saat Penghemat data aktif.\nQuicksy berusaha untuk menghemat data jika memungkinkan.</string>
-    <string name="device_does_not_support_data_saver">Perangkat Anda tidak mendukung penonaktifan Penghemat data untuk Quicksy.</string>
     <string name="huawei_protected_apps_summary">Untuk tetap menerima notifikasi, bahkan saat layar mati, Anda perlu menambahkan Quicksy ke daftar aplikasi yang dilindungi.</string>
-    <string name="error_trustkey_general">Quicksy tidak dapat mengirim pesan terenkripsi ke %1$s. Ini mungkin karena kontak Anda menggunakan server atau aplikasi usang yang tidak dapat menggunakan OMEMO.</string>
-    <string name="no_microphone_permission">Quicksy memerlukan akses ke mikrofon</string>
-    <string name="foreground_service_channel_description">Kategori notifikasi ini digunakan untuk menampilkan notifikasi permanen yang menunjukkan bahwa Quicksy sedang berjalan.</string>
     <string name="set_profile_picture">Gambar profil Quicksy</string>
     <string name="not_available_in_your_country">Quicksy tidak tersedia di negara anda.</string>
     <string name="unable_to_verify_server_identity">Gagal memverifikasi identitas server</string>

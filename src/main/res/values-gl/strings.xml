@@ -68,8 +68,6 @@
   <string name="unblock">Desbloquear</string>
   <string name="save">Gardar</string>
   <string name="ok">OK</string>
-  <string name="crash_report_title">Conversations deteuse.</string>
-  <string name="crash_report_message">Ao utilizar a conta XMPP para enviar trazas do sistema axudarás o continuo desenvolvemento de Conversations.</string>
   <string name="send_now">Enviar agora</string>
   <string name="send_never">Non preguntar de novo</string>
   <string name="problem_connecting_to_account">Non se puido conectar a conta</string>
@@ -99,7 +97,6 @@
   <string name="send_unencrypted">Enviar sen cifrar</string>
   <string name="decryption_failed">Fallou o descifrado. Quizais non teñas a chave privada apropiada.</string>
   <string name="openkeychain_required">OpenKeychain</string>
-  <string name="openkeychain_required_long">Conversations utiliza <b>OpenKeychain</b> para cifrar e descifrar mensaxes e xestionar as túas chaves públicas.\n\nTen licenza GPLv3+ e está dispoñible en F-Droid e Google Play.\n\n<small>(Por favor, após reinicia Conversations.)</small></string>
   <string name="restart">Reiniciar</string>
   <string name="install">Instalar</string>
   <string name="openkeychain_not_installed">Por favor instale OpenKeychain</string>
@@ -246,7 +243,7 @@
   <string name="joining_conference">Entrando na conversa en grupo</string>
   <string name="leave">Saír</string>
   <string name="contact_added_you">Contacto engadido a túa lista de contactos</string>
-  <string name="add_back">Voltar a engadir</string>
+  <string name="add_back">Volver a engadir</string>
   <string name="contact_has_read_up_to_this_point">%s leeu ate este punto</string>
   <string name="contacts_have_read_up_to_this_point">%s leu ate este punto</string>
   <string name="contacts_and_n_more_have_read_up_to_this_point">%1$s + %2$d outras leron ata este punto</string>
@@ -352,8 +349,8 @@
   <string name="account_image_description">Avatar da conta</string>
   <string name="copy_omemo_clipboard_description">Copiar impresión OMEMO ao portapapeis</string>
   <string name="regenerate_omemo_key">Rexenerar a chave OMEMO</string>
-  <string name="clear_other_devices">Limplar dispositivos</string>
-  <string name="clear_other_devices_desc">Tes a certeza de que queres eliminar os outros dispositivos OMEMO publicados? A próxima vez que un dos teus dispositivos se conecte, deberá voltar a anunciarse, mais podería non recibir mensaxes mentras tanto.</string>
+  <string name="clear_other_devices">Desconectar dispositivos</string>
+  <string name="clear_other_devices_desc">Tes a certeza de que queres eliminar os outros dispositivos OMEMO publicados? A próxima vez que un dos teus dispositivos se conecte, deberá volver a anunciarse, mais podería non recibir mensaxes mentras tanto.</string>
   <string name="error_no_keys_to_trust_server_error">Non hai chaves utilizables dispoñibles para este contacto.\nNon se obtiveron novas chaves do servidor. ¿Podería ser que algo fallase no teu servidor de contactos?</string>
   <string name="error_no_keys_to_trust_presence">Non hai chaves utilizables para este contacto.\nAsegúrate de que ambas tedes subscrición de presenza activada.</string>
   <string name="error_trustkeys_title">Algo saíu mal</string>
@@ -503,10 +500,7 @@
   <string name="shared_image_with_x">Imaxe compartida con %s</string>
   <string name="shared_images_with_x">Imaxes compartidas con %s</string>
   <string name="shared_text_with_x">Texto compartido con %s</string>
-  <string name="no_storage_permission">Permitir que Conversations acceda a almacenaxe externa</string>
-  <string name="no_camera_permission">Permitir que Conversations acceda a cámara</string>
   <string name="sync_with_contacts">Sincronice con todos os contactos</string>
-  <string name="sync_with_contacts_long">Conversations quere permiso para acceder aos teus contactos para comparar a lista de contactos XMPP e asíu poder amosar o seu nome completo e avatares.\n\nSó lerá os contactos e compararaos de xeito local, sen subilos ao teu servidor.</string>
   <string name="sync_with_contacts_quicksy"><![CDATA[Quicksy precisa acceder ao número de teléfono dos contactos para facer suxestións sobre posibles contactos que xa están en Quicksy.<br><br>Non gardaremos unha copia de esos números de teléfono.\n\nPara máis información lea a nosa <a href="https://quicksy.im/#privacy">política de intimidade</a>.<br><br>A continuación pediráselle permiso para acceder aos contactos.]]></string>
   <string name="notify_on_all_messages">Notificar todas as mensaxes</string>
   <string name="notify_only_when_highlighted">Notificar só cando é mencionada</string>
@@ -517,8 +511,6 @@
   <string name="always">Sempre</string>
   <string name="large_images_only">Só imaxes grandes</string>
   <string name="battery_optimizations_enabled">Optimizacións de batería activadas</string>
-  <string name="battery_optimizations_enabled_explained">O teu dispositivo está facendo fortes optimizacións de batería con Conversations, podería causar retraso nas notificacións ou incluso pérdida de mensaxes.\nÉ recomendable desactivalas.</string>
-  <string name="battery_optimizations_enabled_dialog">O teu dispositivo está a facer fortes optimizacións de batería con Conversations e podería causar retrasos nas notificacións e incluso perda de mensaxes.\n\nÍmosche pedir que as desactives.</string>
   <string name="disable">Desactivar</string>
   <string name="selection_too_large">O área selecionada é demasiado grande</string>
   <string name="no_accounts">(Contas non activadas)</string>
@@ -590,8 +582,6 @@
   <string name="show_error_message">Mostrar mensaxe do fallo</string>
   <string name="error_message">Mensaxe de fallo</string>
   <string name="data_saver_enabled">Aforrador de datos habilitado</string>
-  <string name="data_saver_enabled_explained">O teu sistema operativo está restrinxindo o acceso de Conversations a Internet en segundo plano. Para recibir notificacións de novas mensaxes debes permitir que Conversations teña acceso sen límite cando o \"Aforrador de datos\" está activado.\nConversations fará o posible para aforrar datos.</string>
-  <string name="device_does_not_support_data_saver">O seu dispositivo non admite deshabilitar o aforro de datos para Conversations.</string>
   <string name="error_unable_to_create_temporary_file">Non se puido crear o ficheiro temporal</string>
   <string name="this_device_has_been_verified">Este dispositivo foi verificado</string>
   <string name="copy_fingerprint">Copiar impresión dixital</string>
@@ -610,8 +600,8 @@
   <string name="invalid_barcode">Código de barras 2D non válido</string>
   <string name="pref_clean_cache_summary">Baleirar o cartafol da caché (utilizado pola cámara)</string>
   <string name="pref_clean_cache">Limpar caché</string>
-  <string name="pref_clean_private_storage">Limpar almacenamento privado</string>
-  <string name="pref_clean_private_storage_summary">Limpar o almacenamento privado onde se gardan os ficheiros (poderán voltar a descargarse desde o servidor)</string>
+  <string name="pref_clean_private_storage">Baleirar almacenaxe privada</string>
+  <string name="pref_clean_private_storage_summary">Baleirar a almacenaxe privada onde se gardan os ficheiros (poderán volver a descargarse desde o servidor)</string>
   <string name="i_followed_this_link_from_a_trusted_source">Seguín esta ligazón desde unha fonte de confianza</string>
   <string name="verifying_omemo_keys_trusted_source">Vai verificar as chaves OMEMO de %1$s despois de pulsar na ligazón. Esto só é seguro si sigueu esta ligazón desde unha fonte de confianza onde só %2$s a podería ter publicado.</string>
   <string name="verify_omemo_keys">Validar chaves OMEMO</string>
@@ -656,7 +646,7 @@
   <string name="block_stranger">Bloquear estraño</string>
   <string name="block_entire_domain">Bloquear o dominio ao completo</string>
   <string name="online_right_now">En liña neste momento</string>
-  <string name="retry_decryption">Voltar a intentar o descifrado</string>
+  <string name="retry_decryption">Volver a intentar o descifrado</string>
   <string name="session_failure">Fallo na sesión</string>
   <string name="sasl_downgrade">Downgraded SASL mechanism</string>
   <string name="account_status_regis_web">O servidor require rexistro no sitio web</string>
@@ -690,7 +680,6 @@
   <string name="edit_status_message_title">Editar a Menxase de Estado</string>
   <string name="edit_status_message">Editar a menxase de estado</string>
   <string name="disable_encryption">Desactivar a encriptación</string>
-  <string name="error_trustkey_general">Conversations non pode enviar mensaxes cifradas a %1$s Isto pode deberse a que o seu contacto utiliza un servidor ou cliente obsoleto que non pode manexar OMEMO.</string>
   <string name="error_trustkey_device_list">Non se obtivo a lista de dispositivos</string>
   <string name="error_trustkey_bundle">Non se obtiveron as chaves de cifrado</string>
   <string name="error_trustkey_hint_mutual">Suxestión: Nalgúns casos, isto pode solucionarse engadíndovos mutuamente as vosas listas de contactos.</string>
@@ -723,7 +712,6 @@
   <string name="share">Compartir</string>
   <string name="unable_to_start_recording">Non comezou a gravación</string>
   <string name="please_wait">Por favor, agarde...</string>
-  <string name="no_microphone_permission">Concederlle acceso ao micrófono a Conversations</string>
   <string name="search_messages">Buscar mensaxes</string>
   <string name="gif">GIF</string>
   <string name="view_conversation">Ver conversa</string>
@@ -745,7 +733,6 @@
   <string name="conference_destroyed">Esta conversa de grupo foi destruída</string>
   <string name="unable_to_save_recording">Non se gardou a gravación</string>
   <string name="foreground_service_channel_name">Servizo en segundo plano</string>
-  <string name="foreground_service_channel_description">Esta categoría de notificacións utilízase para mostrar unha notificación permanente indicando que Conversations está a funcionar.</string>
   <string name="notification_group_status_information">Información do estado</string>
   <string name="error_channel_name">Problemas de conexión</string>
   <string name="error_channel_description">Esta categoría de notificación utilízase para mostrar unha notificación en caso de que houbese un problema ao conectar a conta.</string>
@@ -922,7 +909,7 @@
   <string name="switch_to_conversation">Ir á conversa</string>
   <string name="microphone_unavailable">O micrófono non está dispoñible</string>
   <string name="only_one_call_at_a_time">Só podes manter unha chamada en cada momento.</string>
-  <string name="return_to_ongoing_call">Voltar á chamada activa</string>
+  <string name="return_to_ongoing_call">Volver á chamada activa</string>
   <string name="could_not_switch_camera">Non se puido activar a cámara</string>
   <string name="add_to_favorites">Fixar enriba</string>
   <string name="remove_from_favorites">Desafixar de enriba</string>

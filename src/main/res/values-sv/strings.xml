@@ -63,7 +63,6 @@
   <string name="unblock">Avblockera</string>
   <string name="save">Spara</string>
   <string name="ok">Ok</string>
-  <string name="crash_report_title">Conversations har kraschat</string>
   <string name="send_now">Skicka nu</string>
   <string name="send_never">Fråga aldrig igen</string>
   <string name="problem_connecting_to_account">Kunde inte ansluta till konto</string>
@@ -392,8 +391,6 @@
     <item quantity="other">%d meddelanden</item>
   </plurals>
   <string name="load_more_messages">Ladda fler meddelanden</string>
-  <string name="no_storage_permission">Ge Conversations tillgång till extern lagring</string>
-  <string name="no_camera_permission">Ge Conversations tillgång till kameran</string>
   <string name="sync_with_contacts">Synkronisera med kontakter</string>
   <string name="notify_on_all_messages">Notifiera för alla meddelanden</string>
   <string name="notify_never">Notifieringar deaktiverade</string>
@@ -454,7 +451,6 @@
   <string name="show_error_message">Visa felmeddelande</string>
   <string name="error_message">Felmeddelande</string>
   <string name="data_saver_enabled">Databesparing</string>
-  <string name="device_does_not_support_data_saver">Din enhet stödjer inte att deaktivera databesparing för Conversations.</string>
   <string name="this_device_has_been_verified">Denna enhet har verifierats</string>
   <string name="copy_fingerprint">Kopiera fingeravtryck</string>
   <string name="barcode_does_not_contain_fingerprints_for_this_conversation">Streckkoden innehåller inte fingeravtryck för denna konversation.</string>

@@ -47,7 +47,6 @@
   <string name="unblock">차단 해제 </string>
   <string name="save">저장 </string>
   <string name="ok">확인 </string>
-  <string name="crash_report_title">Conversations가 작동 중지되었습니다 </string>
   <string name="send_now">지금 보내기 </string>
   <string name="send_never">더이상 묻지 않기 </string>
   <string name="attach_file">파일 첨부 </string>
@@ -383,7 +382,6 @@
   <string name="show_error_message">에러 메세지 보이기</string>
   <string name="error_message">에러 메세지</string>
   <string name="data_saver_enabled">데이터 서버 활성화됨</string>
-  <string name="device_does_not_support_data_saver">장치는 Conversations 데이터 보호기를 해제 할 수 없습니다.</string>
   <string name="this_device_has_been_verified">해당 장치가 인증되었습니다</string>
   <string name="copy_fingerprint">핑거프린트 복사</string>
   <string name="verified_fingerprints">인증된 핑거프린트</string>

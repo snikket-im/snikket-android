@@ -63,8 +63,6 @@
   <string name="unblock">Розблокувати</string>
   <string name="save">Зберегти</string>
   <string name="ok">Гаразд</string>
-  <string name="crash_report_title">Відмова в обслуговуванні</string>
-  <string name="crash_report_message">Надсиланням звіту про відмову ви допомагаєте удосконаленню месенджера.\n<b>Увага:</b> Звіти надсилатимуться розробниками з вашого облікового запису XMPP.</string>
   <string name="send_now">Надіслати зараз</string>
   <string name="send_never">Ніколи не питати знову</string>
   <string name="problem_connecting_to_account">Неможливо з\'єднатися з обліковим записом</string>
@@ -94,7 +92,6 @@
   <string name="send_unencrypted">Надіслати без шифрування</string>
   <string name="decryption_failed">Не вдалося розшифрувати. Можливо, у вас відсутній потрібний приватний ключ.</string>
   <string name="openkeychain_required">OpenKeychain</string>
-  <string name="openkeychain_required_long">Застосунок використовує сторонній застосунок <b>OpenKeychain</b> для шифрування та розшифровування повідомлень й упорядкування ваших публічних ключів.\n\nOpenKeychain ліцензовано під GPLv3 й доступний у F-Droid та Google Play.\n\n<small>Будь ласка, перезапустіть месенджер після встановлення.</small></string>
   <string name="restart">Перезапустити</string>
   <string name="install">Встановити</string>
   <string name="openkeychain_not_installed">Будь ласка, встановіть OpenKeychain</string>
@@ -498,10 +495,7 @@
   <string name="shared_image_with_x">Поділитися зображенням з %s</string>
   <string name="shared_images_with_x">Поділитися зображеннями з %s</string>
   <string name="shared_text_with_x">Текстом поділилися з %s</string>
-  <string name="no_storage_permission">Надати доступ до зовнішнього сховища даних</string>
-  <string name="no_camera_permission">Надати доступ до камери</string>
   <string name="sync_with_contacts">Синхронізувати контакти</string>
-  <string name="sync_with_contacts_long">Застосунку потрібний доступ до ваших контактів для відображення повних імен контактів та їхніх піктограм. \n\nДля цього буде прочитано ваші контакти та співставлено їх зі списком контактів XMPP. При цьому дані не надсилатимуться на сервер.</string>
   <string name="sync_with_contacts_quicksy"><![CDATA[Застосунку потрібний доступ до телефонних номерів ваших контактів, щоб запропонувати обмінятися контактами, які уже присутні у застосунку Quicksy.<br><br>Ми не зберігатимемо копію цих телефонних номерів.\n\nДокладна інформація про <a href="https://quicksy.im/#privacy">Політику конфіденційності</a>.<br><br>Зараз ви побачите запит на надання доступу до ваших контактів.]]></string>
   <string name="notify_on_all_messages">Сповіщати про всі повідомлення</string>
   <string name="notify_only_when_highlighted">Повідомляти, лише якщо згадують</string>
@@ -512,8 +506,6 @@
   <string name="always">Завжди</string>
   <string name="large_images_only">Лише великі зображення</string>
   <string name="battery_optimizations_enabled">Оптимізацію батареї задіяно</string>
-  <string name="battery_optimizations_enabled_explained">Ваш пристрій здійснює деяку агресивну оптимізацію Розмов для збереження заряду батареї, яка може призвести до затримки сповіщення або навіть втрати повідомлень.\nРекомендовано відключити цю оптимізацію.</string>
-  <string name="battery_optimizations_enabled_dialog">Ваш пристрій здійснює деяку агресивну оптимізацію Розмов для збереження заряду батареї, яка може призвести до затримки сповіщення або навіть втрати повідомлень.\nПросимо Вас зараз відключити цю оптимзацію.</string>
   <string name="disable">Вимкнути</string>
   <string name="selection_too_large">Вибрана ділянка завелика</string>
   <string name="no_accounts">(Немає активних облікових засобів)</string>
@@ -585,8 +577,6 @@
   <string name="show_error_message">Показати повідомлення про помилку</string>
   <string name="error_message">Повідомлення про помилку</string>
   <string name="data_saver_enabled">Увімкнено заощадження передачі даних</string>
-  <string name="data_saver_enabled_explained">Ваша операційна система обмежує застосунку доступ до мережі Інтернету під час снуна екрані. Щоб отримувати сповіщення про нові повідомлення, вам слід дозволити застосунку необмежений доступ, коли увімкнено заощадження передачі даних.\nЗастосунок Conversations все одно буде намагатися заощаджувати трафік, коли це можливо.</string>
-  <string name="device_does_not_support_data_saver">Ваш пристрій не дає можливості вимкнути заощадження передачі даних для Conversations</string>
   <string name="error_unable_to_create_temporary_file">Неможливо створити тимчасовий файл</string>
   <string name="this_device_has_been_verified">Цей пристрій перевірено</string>
   <string name="copy_fingerprint">Копіювати цифровий підпис</string>
@@ -697,7 +687,6 @@
   <string name="edit_status_message_title">Редагувати повідомлення стану</string>
   <string name="edit_status_message">Редагувати повідомлення стану</string>
   <string name="disable_encryption">Вимкнути шифрування</string>
-  <string name="error_trustkey_general">Застосунок не може відправляти зашифровані повідомлення до %1$s. Можливо, що ваш контакт використовує застарілий сервер або застосунок, який не підтримує OMEMO.</string>
   <string name="error_trustkey_device_list">Неможливо отримати перелік пристроїв</string>
   <string name="error_trustkey_bundle">Неможливо отримати пакети пристроїв</string>
   <string name="error_trustkey_hint_mutual">Підказка: В деяких випадках це можна виправити, якщо додати один до одного у ваших списках контактів.</string>
@@ -730,7 +719,6 @@
   <string name="share">Поділитися</string>
   <string name="unable_to_start_recording">Не можу почати запис</string>
   <string name="please_wait">Прошу зачекайте…</string>
-  <string name="no_microphone_permission">Програма потребує доступу до мікрофона</string>
   <string name="search_messages">Шукати в повідомленнях</string>
   <string name="gif">GIF</string>
   <string name="view_conversation">Переглянути розмову</string>
@@ -752,7 +740,6 @@
   <string name="conference_destroyed">Цю групу закрито</string>
   <string name="unable_to_save_recording">Неможливо зберегти запис</string>
   <string name="foreground_service_channel_name">Процес на передньому плані</string>
-  <string name="foreground_service_channel_description">Цей вид сповіщень буде постійно показувати, що застоунок працює.</string>
   <string name="notification_group_status_information">Інформація про стан</string>
   <string name="error_channel_name">Проблеми зі з\'єднанням</string>
   <string name="error_channel_description">Цей вид сповіщень показує проблеми під час з\'єднання з обліковим записом.</string>

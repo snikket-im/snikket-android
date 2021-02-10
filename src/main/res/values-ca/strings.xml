@@ -68,8 +68,6 @@
   <string name="unblock">Desbloqueja</string>
   <string name="save">Desa</string>
   <string name="ok">D\'acord</string>
-  <string name="crash_report_title">El Conversations s\'ha aturat</string>
-  <string name="crash_report_message">Usar el teu compte XMPP per a enviar seguiments de pila ajuda al desenvolupament continu de Conversations.</string>
   <string name="send_now">Envia ara</string>
   <string name="send_never">No preguntis de nou</string>
   <string name="problem_connecting_to_account">No es va poder connectar al compte</string>
@@ -99,7 +97,6 @@
   <string name="send_unencrypted">Envia sense xifrar</string>
   <string name="decryption_failed">El desxiframent ha fallat. Potser no teniu la clau privada apropiada.</string>
   <string name="openkeychain_required">OpenKeychain</string>
-  <string name="openkeychain_required_long">Conversations usa <b> OpenKeychain</b>  per a xifrar i desxifrar missatges i gestionar les seves claus públiques.\n\n Està llicenciat baix GPLv3+ i disponible en F-Droid i Google Play.\n\n <small> (Si us plau, reiniciï Conversations després.)</small></string>
   <string name="restart">Reinicia</string>
   <string name="install">Instal·la</string>
   <string name="openkeychain_not_installed">Instal·leu l\'OpenKeychain</string>
@@ -503,10 +500,7 @@
   <string name="shared_image_with_x">Imatge compartida amb %s</string>
   <string name="shared_images_with_x">Imatges compartides amb %s</string>
   <string name="shared_text_with_x">Text compartit amb %s</string>
-  <string name="no_storage_permission">Concedir a Conversations accés a l\'emmagatzematge extern</string>
-  <string name="no_camera_permission">Concedir accés a la càmera a Conversations</string>
   <string name="sync_with_contacts">Sincronitza amb contactes</string>
-  <string name="sync_with_contacts_long">Converses vol permís per a accedir als teus contactes per a aparellar la teva llista de contactes XMPP amb els teus contactes per a mostrar els seus noms complets i avatars.\nNomés llegirà els teus contactes i els aparellarà localment sense pujar-los al teu servidor.</string>
   <string name="sync_with_contacts_quicksy"><![CDATA[Quicksy necessita accés als números de telèfon dels seus contactes per fer suggeriments sobre possibles contactes que ja estan en Quicksy.<br> <br> No guardarem una còpia d\'aquests números de telèfon.\n\nPer a més informació llegeixi la nostra <a href="https://quicksy.im/#privacy">política de privadesa</a> <br> <br> Ara se us demanarà que concediu permís per accedir als vostres contactes.]]></string>
   <string name="notify_on_all_messages">Notifica a tots els missatges</string>
   <string name="notify_only_when_highlighted">Notifica només quan s\'esmenta</string>
@@ -517,8 +511,6 @@
   <string name="always">Sempre</string>
   <string name="large_images_only">Només imatges grans</string>
   <string name="battery_optimizations_enabled">Optimitzacions de la bateria habilitades</string>
-  <string name="battery_optimizations_enabled_explained">El seu dispositiu està emprant fortes optimitzacions de la bateria per a les Converses, la qual cosa pot provocar retards en les notificacions o fins i tot la pèrdua de missatges.\nEs recomana desactivar-les.</string>
-  <string name="battery_optimizations_enabled_dialog">El seu dispositiu està emprant fortes optimitzacions de la bateria per a les Converses, la qual cosa pot provocar retards en les notificacions o fins i tot la pèrdua de missatges.\nEs recomana desactivar-les.</string>
   <string name="disable">Desactivar</string>
   <string name="selection_too_large">L\'àrea seleccionada és massa gran</string>
   <string name="no_accounts">(Sense comptes activats)</string>
@@ -590,8 +582,6 @@
   <string name="show_error_message">Mostra el missatge d\'error</string>
   <string name="error_message">Missatge d\'error</string>
   <string name="data_saver_enabled">S\'ha activat el protector de dades</string>
-  <string name="data_saver_enabled_explained">El seu sistema operatiu està restringint l\'accés de Converses a Internet quan està en segon pla. Per a rebre notificacions de nous missatges ha de permetre l\'accés sense restriccions de Converses quan l\'\"Estalvi de dades\" està activat.\nConversations continuarà fent un esforç per estalviar dades quan sigui possible.</string>
-  <string name="device_does_not_support_data_saver">El vostre dispositiu no suporta desactivar el protector de dades de Conversations</string>
   <string name="error_unable_to_create_temporary_file">No s\'ha pogut crear l\'arxiu temporal</string>
   <string name="this_device_has_been_verified">S\'ha verificat aquest dispositiu</string>
   <string name="copy_fingerprint">Copieu l\'empremta digital</string>
@@ -691,7 +681,6 @@ d\'afegir Converses a la llista d\'aplicacions protegides.</string>
   <string name="edit_status_message_title">Edita el missatge d\'estat</string>
   <string name="edit_status_message">Edita el missatge d\'estat</string>
   <string name="disable_encryption">Desactiva el xifratge</string>
-  <string name="error_trustkey_general">Les converses no poden enviar missatges xifrats a 1%1$s . Això pot ser degut al vostre contacte mitjançant un servidor o client obsolet que no pot gestionar OMEMO.</string>
   <string name="error_trustkey_device_list">No s\'ha pogut obtenir la llista de dispositius</string>
   <string name="error_trustkey_bundle">No s\'han pogut obtenir les claus d\'encriptació</string>
   <string name="error_trustkey_hint_mutual">Suggeriment: en alguns casos això es pot resoldre afegint les vostres llistes de contactes.</string>
@@ -725,7 +714,6 @@ que l\'administrador del servidor llegeixi els missatges, però pot ser l\'únic
   <string name="share">Compartir</string>
   <string name="unable_to_start_recording">No s\'ha pogut iniciar l\'enregistrament</string>
   <string name="please_wait">Si us plau, esperi…</string>
-  <string name="no_microphone_permission">Concedir accés al micròfon a Conversations</string>
   <string name="search_messages">Buscar missatges</string>
   <string name="gif">GIF</string>
   <string name="view_conversation">Veure conversa</string>
@@ -747,7 +735,6 @@ que l\'administrador del servidor llegeixi els missatges, però pot ser l\'únic
   <string name="conference_destroyed">Aquest xat en grup ha estat destruït</string>
   <string name="unable_to_save_recording">No s\'ha pogut guardar l\'enregistrament</string>
   <string name="foreground_service_channel_name">Servei de primer pla</string>
-  <string name="foreground_service_channel_description">Aquesta categoria de notificació s\'utilitza per a mostrar una notificació permanent que indica que les Converses s\'estan executant.</string>
   <string name="notification_group_status_information">Informació d\'estat</string>
   <string name="error_channel_name">Problemes de connectivitat</string>
   <string name="error_channel_description">Aquesta categoria de notificació s\'utilitza per a mostrar una notificació en cas que hi hagi un problema de connexió a un compte.</string>

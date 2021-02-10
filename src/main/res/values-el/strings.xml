@@ -64,8 +64,6 @@
   <string name="unblock">Άρση αποκλεισμού</string>
   <string name="save">Αποθήκευση</string>
   <string name="ok">Εντάξει</string>
-  <string name="crash_report_title">Το Conversations έκλεισε απροσδόκητα</string>
-  <string name="crash_report_message">Η χρήση του XMPP λογαριασμού σας για την αποστολή ίχνους στοίβας προωθεί την συνεχή ανάπτυξη του Conversations.</string>
   <string name="send_now">Αποστολή τώρα</string>
   <string name="send_never">Χωρίς ερώτηση την επόμενη φορά</string>
   <string name="problem_connecting_to_account">Δεν ήταν δυνατή η σύνδεση στον λογαριασμό</string>
@@ -95,7 +93,6 @@
   <string name="send_unencrypted">Αποστολή χωρίς κρυπτογράφηση</string>
   <string name="decryption_failed">Η αποκρυπτογράφηση απέτυχε. Ίσως δεν κατέχετε το σωστό ιδιωτικό κλειδί.</string>
   <string name="openkeychain_required">OpenKeychain</string>
-  <string name="openkeychain_required_long">Το Conversations χρησιμοποιεί το <b>OpenKeychain</b> για να κρυπτογραφεί και να αποκρυπτογραφεί μηνύματα και να διαχειρίζεται τα δημόσια κλειδιά σας.\n\nΕίναι δημοσιευμένο με άδεια GPLv3+ και είναι διαθέσιμο στο F-Droid και το Google Play.\n\n<small>(Παρακαλώ επανεκκινήστε το Conversations αμέσως μετά.)</small></string>
   <string name="restart">Επανεκκίνηση</string>
   <string name="install">Εγκατάσταση</string>
   <string name="openkeychain_not_installed">Παρακαλώ εγκαταστήστε το OpenKeychain</string>
@@ -499,10 +496,7 @@
   <string name="shared_image_with_x">Η εικόνα διαμοιράστηκε με την επαφή %s</string>
   <string name="shared_images_with_x">Η εικόνες διαμοιράστηκαν με την επαφή %s</string>
   <string name="shared_text_with_x">Το κείμενο διαμοιράστηκε με την επαφή %s</string>
-  <string name="no_storage_permission">Απόδοση δικαιώματος πρόσβασης του Conversations στον εξωτερικό αποθηκευτικό χώρο</string>
-  <string name="no_camera_permission">Απόδοση δικαιώματος πρόσβασης στην φωτογραφική μηχανή για το Conversations</string>
   <string name="sync_with_contacts">Συγχρονισμός με επαφές</string>
-  <string name="sync_with_contacts_long">Το Conversations χρειάζεται δικαίωμα πρόσβασης στις επαφές σας για να ταιριάξει τη λίστα επαφών σας στον διακομιστή με το τοπικό βιβλίο διευθύνσεών σας για να σας δείξει τα πλήρη ονόματα και εικόνες προφίλ των επαφών σας.\n\nΘα διαβάσει τις επαφές σας και θα τις ταιριάξει τοπικά χωρίς να τις μεταφορτώσει στον διακομιστή σας.</string>
   <string name="sync_with_contacts_quicksy"><![CDATA[Το Quicksy χρειάζεται να έχει πρόσβαση στους τηλεφωνικούς αριθμούς των επαφών σας για να προτείνει πιθανές επαφές που χρησιμοποιούν ήδη το Quicksy.<br><br>Δεν θα αποθηκευτεί αντίγραφο αυτών των τηλεφωνικών αριθμών.\n\nΓια περισσότερες πληροφορίες διαβάστε την <a href="https://quicksy.im/#privacy">πολιτική απορρήτου</a> μας.<br><br>Θα σας ζητηθεί τώρα να δώσετε το δικαίωμα για πρόσβαση στις επαφές σας.]]></string>
   <string name="notify_on_all_messages">Ειδοποίηση για όλα τα μηνύματα</string>
   <string name="notify_only_when_highlighted">Ειδοποίηση μόνο όταν αναφέρεται το όνομά μου</string>
@@ -513,8 +507,6 @@
   <string name="always">Πάντα</string>
   <string name="large_images_only">Μεγάλες εικόνες μόνο</string>
   <string name="battery_optimizations_enabled">Η βελτιστοποίηση χρήσης μπαταρίας είναι ενεργοποιημένη</string>
-  <string name="battery_optimizations_enabled_explained">Η συσκευή σας χρησιμοποιεί έντονη βελτιστοποίηση στην χρήση μπαταρίας του Conversations που μπορεί να οδηγήσει σε αργοπορημένες ειδοποιήσεις ή ακόμα και σε απώλεια μηνυμάτων.\nΠροτείνεται να την απενεργοποιήσετε.</string>
-  <string name="battery_optimizations_enabled_dialog">Η συσκευή σας χρησιμοποιεί έντονη βελτιστοποίηση στην χρήση μπαταρίας του Conversations που μπορεί να οδηγήσει σε αργοπορημένες ειδοποιήσεις ή ακόμα και σε απώλεια μηνυμάτων.\nΘα σας ζητηθεί να την απενεργοποιήσετε.</string>
   <string name="disable">Απενεργοποίηση</string>
   <string name="selection_too_large">Η επιλεγμένη περιοχή είναι πολύ μεγάλη</string>
   <string name="no_accounts">(δεν υπάρχουν ενεργοί λογαριασμοί)</string>
@@ -586,8 +578,6 @@
   <string name="show_error_message">Εμφάνιση μηνύματος λάθους</string>
   <string name="error_message">Μήνυμα λάθους</string>
   <string name="data_saver_enabled">Ενεργοποίηση μείωσης χρήσης δεδομένων</string>
-  <string name="data_saver_enabled_explained">Το λειτουργικό σας σύστημα περιορίζει το Conversations από το να συνδέεται στο Internet όταν βρίσκεται στο παρασκήνιο. Για να λαμβάνετε ειδοποιήσεις νέων μηνυμάτων πρέπει να επιτρέψετε στο Conversations να έχει απεριόριστη πρόσβαση όταν ενεργοποιείται η μείωση χρήσης δεδομένων.\nΤο Conversations θα προσπαθεί να περιορίσει τη χρήση δεδομένων όταν είναι δυνατό.</string>
-  <string name="device_does_not_support_data_saver">Η συσκευή σας δεν υποστηρίζει την απενεργοποίηση μείωσης χρήσης δεδομένων για το Conversations.</string>
   <string name="error_unable_to_create_temporary_file">Αδυναμία δημιουργίας προσωρινού αρχείου</string>
   <string name="this_device_has_been_verified">Αυτή η συσκευή έχει επαληθευτεί</string>
   <string name="copy_fingerprint">Αντιγραφή αποτυπώματος</string>
@@ -686,7 +676,6 @@
   <string name="edit_status_message_title">Διόρθωση μηνύματος κατάστασης</string>
   <string name="edit_status_message">Διόρθωση μηνύματος κατάστασης</string>
   <string name="disable_encryption">Απενεργοποίηση κρυπτογράφησης</string>
-  <string name="error_trustkey_general">Το Conversations δεν είναι δυνατό να στείλει κρυπτογραφημένα μηνύματα στην επαφή %1$s. Αυτό μπορεί να συμβαίνει γιατί η επαφή σας χρησιμοποιεί παλιότερο διακομιστή ή πρόγραμμα που δε μπορεί να χειριστεί κρυπτογράφηση OMEMO.</string>
   <string name="error_trustkey_device_list">Αδύναμια μεταφόρτωσης λίστας συσκευών</string>
   <string name="error_trustkey_bundle">Αδυναμία ανάσυρσης κλειδιών κρυπτογράφησης</string>
   <string name="error_trustkey_hint_mutual">Συμβουλή: Σε κάποιες περιπτώσεις αυτό μπορεί να διορθωθεί αν αμοιβαία προστεθείτε στους καταλόγους επαφών σας.</string>
@@ -719,7 +708,6 @@
   <string name="share">Διαμοιρασμός</string>
   <string name="unable_to_start_recording">Αδυναμία έναρξης εγγραφής</string>
   <string name="please_wait">Παρακαλώ περιμένετε...</string>
-  <string name="no_microphone_permission">Απόδοση δικαιώματος πρόσβασης στο μικρόφωνο για το Conversations</string>
   <string name="search_messages">Αναζήτηση μηνυμάτων</string>
   <string name="gif">GIF</string>
   <string name="view_conversation">Εμφάνιση συζήτησης</string>
@@ -741,7 +729,6 @@
   <string name="conference_destroyed">Αυτή η ομαδική συζήτηση έχει καταστραφεί</string>
   <string name="unable_to_save_recording">Αδυναμία αποθήκευσης εγγραφής</string>
   <string name="foreground_service_channel_name">Υπηρεσία στο προσκήνιο</string>
-  <string name="foreground_service_channel_description">Αυτή η κατηγορία ειδοποιήσεων χρησιμοποιείται για την εμφάνιση μιας μόνιμης ειδοποίησης που δείχνει πως εκτελείται το Conversations.</string>
   <string name="notification_group_status_information">Πληροφορίες κατάστασης</string>
   <string name="error_channel_name">Προβλήματα συνδεσιμότητας</string>
   <string name="error_channel_description">Αυτή η κατηγορία ειδοποιήσεων χρησιμοποιείται για να εμφανίσει μια ειδοποίηση σε περίπτωση που υπάρχει πρόβλημα σύνδεσης σε κάποιον λογαριασμό.</string>

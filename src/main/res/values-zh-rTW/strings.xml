@@ -47,7 +47,6 @@
   <string name="unblock">解除封鎖</string>
   <string name="save">保存</string>
   <string name="ok">完成</string>
-  <string name="crash_report_title">Conversations 崩潰</string>
   <string name="send_now">現在發送</string>
   <string name="send_never">不再詢問</string>
   <string name="attach_file">附加檔案</string>
@@ -387,7 +386,6 @@
   <string name="show_error_message">顯示錯誤訊息</string>
   <string name="error_message">錯誤訊息</string>
   <string name="data_saver_enabled">省流量模式已啟動</string>
-  <string name="device_does_not_support_data_saver">該設備不支援禁用省流量模式</string>
   <string name="this_device_has_been_verified">已經驗證這個設備了</string>
   <string name="copy_fingerprint">複製指紋</string>
   <string name="verified_fingerprints">驗證過的指紋</string>
