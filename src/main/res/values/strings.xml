@@ -100,7 +100,7 @@
     <string name="send_unencrypted">Send unencrypted</string>
     <string name="decryption_failed">Decryption failed. Maybe you don’t have the proper private key.</string>
     <string name="openkeychain_required">OpenKeychain</string>
-    <string name="openkeychain_required_long">%1$s uses <b>OpenKeychain</b> to encrypt and decrypt messages and manage your public keys.\n\nIt is licensed under GPLv3+ and available on F-Droid and Google Play.\n\n<small>(Please restart %1$s afterwards.)</small></string>
+    <string name="openkeychain_required_long"><![CDATA[%1$s uses <b>OpenKeychain</b> to encrypt and decrypt messages and manage your public keys.<br><br>It is licensed under GPLv3+ and available on F-Droid and Google Play.<br><br><small>(Please restart %1$s afterwards.)</small>]]></string>
     <string name="restart">Restart</string>
     <string name="install">Install</string>
     <string name="openkeychain_not_installed">Please install OpenKeychain</string>

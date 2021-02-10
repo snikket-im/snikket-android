@@ -34,6 +34,7 @@ import android.os.IBinder;
 import android.os.PowerManager;
 import android.os.SystemClock;
 import android.preference.PreferenceManager;
+import android.text.Html;
 import android.text.InputType;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -248,7 +249,7 @@ public abstract class XmppActivity extends ActionBarActivity {
         Builder builder = new AlertDialog.Builder(this);
         builder.setTitle(getString(R.string.openkeychain_required));
         builder.setIconAttribute(android.R.attr.alertDialogIcon);
-        builder.setMessage(getString(R.string.openkeychain_required_long, getString(R.string.app_name)));
+        builder.setMessage(Html.fromHtml(getString(R.string.openkeychain_required_long, getString(R.string.app_name))));
         builder.setNegativeButton(getString(R.string.cancel), null);
         builder.setNeutralButton(getString(R.string.restart),
                 (dialog, which) -> {
