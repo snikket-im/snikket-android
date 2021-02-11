@@ -60,6 +60,7 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
     private static final List<State> TERMINATED = Arrays.asList(
             State.ACCEPTED,
             State.REJECTED,
+            State.REJECTED_RACED,
             State.RETRACTED,
             State.RETRACTED_RACED,
             State.TERMINATED_SUCCESS,
@@ -87,6 +88,7 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
                 State.TERMINATED_CONNECTIVITY_ERROR //only used when the xmpp connection rebinds
         ));
         transitionBuilder.put(State.PROCEED, ImmutableList.of(
+                State.REJECTED_RACED,
                 State.RETRACTED_RACED,
                 State.SESSION_INITIALIZED_PRE_APPROVED,
                 State.TERMINATED_SUCCESS,
@@ -523,31 +525,55 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
         }
     }
 
-    private void receiveReject(Jid from, String serverMsgId, long timestamp) {
+    private void receiveReject(final Jid from, final String serverMsgId, final long timestamp) {
         final boolean originatedFromMyself = from.asBareJid().equals(id.account.getJid().asBareJid());
         //reject from another one of my clients
         if (originatedFromMyself) {
-            if (transition(State.REJECTED)) {
-                this.xmppConnectionService.getNotificationService().cancelIncomingCallNotification();
-                this.finish();
-                if (serverMsgId != null) {
-                    this.message.setServerMsgId(serverMsgId);
-                }
-                this.message.setTime(timestamp);
-                this.message.setCarbon(true); //indicate that call was rejected on other device
-                writeLogMessageMissed();
+            receiveRejectFromMyself(serverMsgId, timestamp);
+        } else if (isInitiator()) {
+            if (from.equals(id.with)) {
+                receiveRejectFromResponder();
             } else {
-                Log.d(Config.LOGTAG, "not able to transition into REJECTED because already in " + this.state);
+                Log.d(Config.LOGTAG, id.account.getJid() + ": ignoring reject from " + from + " for session with " + id.with);
             }
         } else {
             Log.d(Config.LOGTAG, id.account.getJid() + ": ignoring reject from " + from + " for session with " + id.with);
         }
     }
 
+    private void receiveRejectFromMyself(String serverMsgId, long timestamp) {
+        if (transition(State.REJECTED)) {
+            this.xmppConnectionService.getNotificationService().cancelIncomingCallNotification();
+            this.finish();
+            if (serverMsgId != null) {
+                this.message.setServerMsgId(serverMsgId);
+            }
+            this.message.setTime(timestamp);
+            this.message.setCarbon(true); //indicate that call was rejected on other device
+            writeLogMessageMissed();
+        } else {
+            Log.d(Config.LOGTAG, "not able to transition into REJECTED because already in " + this.state);
+        }
+    }
+
+    private void receiveRejectFromResponder() {
+        if (isInState(State.PROCEED)) {
+            Log.d(Config.LOGTAG, id.account.getJid() + ": received reject while still in proceed. callee reconsidered");
+            closeTransitionLogFinish(State.REJECTED_RACED);
+            return;
+        }
+        if (isInState(State.SESSION_INITIALIZED_PRE_APPROVED)) {
+            Log.d(Config.LOGTAG, id.account.getJid() + ": received reject while in SESSION_INITIATED_PRE_APPROVED. callee reconsidered before receiving session-init");
+            closeTransitionLogFinish(State.TERMINATED_DECLINED_OR_BUSY);
+            return;
+        }
+        Log.d(Config.LOGTAG, id.account.getJid() + ": ignoring reject from responder because already in state " + this.state);
+    }
+
     private void receivePropose(final Jid from, final Propose propose, final String serverMsgId, final long timestamp) {
         final boolean originatedFromMyself = from.asBareJid().equals(id.account.getJid().asBareJid());
         if (originatedFromMyself) {
-            Log.d(Config.LOGTAG, id.account.getJid().asBareJid() + ": saw proposal from mysql. ignoring");
+            Log.d(Config.LOGTAG, id.account.getJid().asBareJid() + ": saw proposal from myself. ignoring");
         } else if (transition(State.PROPOSED, () -> {
             final Collection<RtpDescription> descriptions = Collections2.transform(
                     Collections2.filter(propose.getDescriptions(), d -> d instanceof RtpDescription),
@@ -830,6 +856,7 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
                     return rtpConnectionStarted == 0 ? RtpEndUserState.CONNECTIVITY_ERROR : RtpEndUserState.CONNECTIVITY_LOST_ERROR;
                 }
             case REJECTED:
+            case REJECTED_RACED:
             case TERMINATED_DECLINED_OR_BUSY:
                 if (isInitiator()) {
                     return RtpEndUserState.DECLINED_OR_BUSY;
@@ -842,7 +869,11 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
             case TERMINATED_CANCEL_OR_TIMEOUT:
                 return RtpEndUserState.ENDED;
             case RETRACTED_RACED:
-                return RtpEndUserState.RETRACTED;
+                if (isInitiator()) {
+                    return RtpEndUserState.ENDED;
+                } else {
+                    return RtpEndUserState.RETRACTED;
+                }
             case TERMINATED_CONNECTIVITY_ERROR:
                 return rtpConnectionStarted == 0 ? RtpEndUserState.CONNECTIVITY_ERROR : RtpEndUserState.CONNECTIVITY_LOST_ERROR;
             case TERMINATED_APPLICATION_FAILURE:
@@ -938,10 +969,11 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
             return;
         }
         if (isInState(State.PROCEED)) {
-            Log.d(Config.LOGTAG, id.account.getJid().asBareJid() + ": ending call while in state PROCEED just means ending the connection");
-            this.webRTCWrapper.close();
-            transitionOrThrow(State.TERMINATED_SUCCESS); //arguably this wasn't success; but not a real failure either
-            this.finish();
+            if (isInitiator()) {
+                retractFromProceed();
+            } else {
+                rejectCallFromProceed();
+            }
             return;
         }
         if (isInitiator() && isInState(State.SESSION_INITIALIZED, State.SESSION_INITIALIZED_PRE_APPROVED)) {
@@ -963,6 +995,19 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
             return;
         }
         throw new IllegalStateException("called 'endCall' while in state " + this.state + ". isInitiator=" + isInitiator());
+    }
+
+    private void retractFromProceed() {
+        Log.d(Config.LOGTAG, "retract from proceed");
+        this.sendJingleMessage("retract");
+        closeTransitionLogFinish(State.RETRACTED_RACED);
+    }
+
+    private void closeTransitionLogFinish(final State state) {
+        this.webRTCWrapper.close();
+        transitionOrThrow(state);
+        writeLogMessage(state);
+        finish();
     }
 
     private void setupWebRTC(final Set<Media> media, final List<PeerConnection.IceServer> iceServers) throws WebRTCWrapper.InitializationException {
@@ -990,6 +1035,11 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
         xmppConnectionService.getNotificationService().cancelIncomingCallNotification();
         this.sendJingleMessage("reject");
         finish();
+    }
+
+    private void rejectCallFromProceed() {
+        this.sendJingleMessage("reject");
+        closeTransitionLogFinish(State.REJECTED_RACED);
     }
 
     private void rejectCallFromSessionInitiate() {
