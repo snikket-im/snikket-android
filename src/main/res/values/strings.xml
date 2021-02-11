@@ -593,7 +593,7 @@
     <string name="show_error_message">Show error message</string>
     <string name="error_message">Error Message</string>
     <string name="data_saver_enabled">Data saver enabled</string>
-    <string name="data_saver_enabled_explained">Your operating system is restricting %1$s from accessing the Internet when in background. To receive notifications of new messages you should allow %1$s unrestricted access when “Data saver” is on.\%1$s will still make an effort to save data when possible.</string>
+    <string name="data_saver_enabled_explained">Your operating system is restricting %1$s from accessing the Internet when in background. To receive notifications of new messages you should allow %1$s unrestricted access when “Data saver” is on.\n%1$s will still make an effort to save data when possible.</string>
     <string name="device_does_not_support_data_saver">Your device does not support disabling Data saver for %1$s.</string>
     <string name="error_unable_to_create_temporary_file">Could not create temporary file</string>
     <string name="this_device_has_been_verified">This device has been verified</string>
