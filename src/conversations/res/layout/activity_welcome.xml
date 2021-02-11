@@ -47,8 +47,17 @@
                         android:layout_height="wrap_content"
                         android:paddingLeft="0dp"
                         android:paddingRight="0dp"
-                        android:layout_gravity="left"
+                        android:layout_gravity="center"
                         android:text="@string/learn_more"
+                        android:textColor="?colorAccent" />
+
+                    <Button
+                        android:id="@+id/use_existing"
+                        style="@style/Widget.Conversations.Button.Borderless"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:text="@string/i_already_have_an_account"
                         android:textColor="?colorAccent" />
 
                 </LinearLayout>
