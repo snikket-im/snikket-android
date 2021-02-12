@@ -661,10 +661,14 @@ public class XmppConnection implements Runnable {
                 if (Config.EXTENDED_SM_LOGGING) {
                     Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": server acknowledged stanza #" + mStanzaQueue.keyAt(i));
                 }
-                AbstractAcknowledgeableStanza stanza = mStanzaQueue.valueAt(i);
+                final AbstractAcknowledgeableStanza stanza = mStanzaQueue.valueAt(i);
                 if (stanza instanceof MessagePacket && acknowledgedListener != null) {
-                    MessagePacket packet = (MessagePacket) stanza;
-                    acknowledgedMessages |= acknowledgedListener.onMessageAcknowledged(account, packet.getId());
+                    final MessagePacket packet = (MessagePacket) stanza;
+                    final String id = packet.getId();
+                    final Jid to = packet.getTo();
+                    if (id != null && to != null) {
+                        acknowledgedMessages |= acknowledgedListener.onMessageAcknowledged(account, to, id);
+                    }
                 }
                 mStanzaQueue.removeAt(i);
                 i--;

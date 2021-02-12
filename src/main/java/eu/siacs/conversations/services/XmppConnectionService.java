@@ -152,6 +152,7 @@ import eu.siacs.conversations.xmpp.chatstate.ChatState;
 import eu.siacs.conversations.xmpp.forms.Data;
 import eu.siacs.conversations.xmpp.jingle.AbstractJingleConnection;
 import eu.siacs.conversations.xmpp.jingle.JingleConnectionManager;
+import eu.siacs.conversations.xmpp.jingle.JingleRtpConnection;
 import eu.siacs.conversations.xmpp.jingle.Media;
 import eu.siacs.conversations.xmpp.jingle.RtpEndUserState;
 import eu.siacs.conversations.xmpp.mam.MamReference;
@@ -251,10 +252,23 @@ public class XmppConnectionService extends Service {
     private final OnMessageAcknowledged mOnMessageAcknowledgedListener = new OnMessageAcknowledged() {
 
         @Override
-        public boolean onMessageAcknowledged(Account account, String uuid) {
+        public boolean onMessageAcknowledged(final Account account, final Jid to, final String id) {
+            if (id.startsWith(JingleRtpConnection.JINGLE_MESSAGE_PROPOSE_ID_PREFIX)) {
+                final String sessionId = id.substring(JingleRtpConnection.JINGLE_MESSAGE_PROPOSE_ID_PREFIX.length());
+                mJingleConnectionManager.updateProposedSessionDiscovered(
+                        account,
+                        to,
+                        sessionId,
+                        JingleConnectionManager.DeviceDiscoveryState.SEARCHING_ACKNOWLEDGED
+                );
+            }
+
+
+            final Jid bare = to.asBareJid();
+
             for (final Conversation conversation : getConversations()) {
-                if (conversation.getAccount() == account) {
-                    Message message = conversation.findUnsentMessageWithUuid(uuid);
+                if (conversation.getAccount() == account && conversation.getJid().asBareJid().equals(bare)) {
+                    final Message message = conversation.findUnsentMessageWithUuid(id);
                     if (message != null) {
                         message.setStatus(Message.STATUS_SEND);
                         message.setErrorMessage(null);
@@ -4281,7 +4295,7 @@ public class XmppConnectionService extends Service {
     }
 
     public void sendMessagePacket(Account account, MessagePacket packet) {
-        XmppConnection connection = account.getXmppConnection();
+        final XmppConnection connection = account.getXmppConnection();
         if (connection != null) {
             connection.sendMessagePacket(packet);
         }

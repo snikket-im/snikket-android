@@ -133,7 +133,9 @@ public class JingleConnectionManager extends AbstractConnectionManager {
             }
         }
         synchronized (this.rtpSessionProposals) {
-            return this.rtpSessionProposals.containsValue(DeviceDiscoveryState.DISCOVERED) || this.rtpSessionProposals.containsValue(DeviceDiscoveryState.SEARCHING);
+            return this.rtpSessionProposals.containsValue(DeviceDiscoveryState.DISCOVERED)
+                    || this.rtpSessionProposals.containsValue(DeviceDiscoveryState.SEARCHING)
+                    || this.rtpSessionProposals.containsValue(DeviceDiscoveryState.SEARCHING_ACKNOWLEDGED);
         }
     }
 
@@ -154,7 +156,9 @@ public class JingleConnectionManager extends AbstractConnectionManager {
             for (Map.Entry<RtpSessionProposal, DeviceDiscoveryState> entry : this.rtpSessionProposals.entrySet()) {
                 final RtpSessionProposal proposal = entry.getKey();
                 final DeviceDiscoveryState state = entry.getValue();
-                final boolean openProposal = state == DeviceDiscoveryState.DISCOVERED || state == DeviceDiscoveryState.SEARCHING;
+                final boolean openProposal = state == DeviceDiscoveryState.DISCOVERED
+                        || state == DeviceDiscoveryState.SEARCHING
+                        || state == DeviceDiscoveryState.SEARCHING_ACKNOWLEDGED;
                 if (openProposal
                         && proposal.account == account
                         && proposal.with.equals(with.asBareJid())
@@ -772,11 +776,12 @@ public class JingleConnectionManager extends AbstractConnectionManager {
     }
 
     public enum DeviceDiscoveryState {
-        SEARCHING, DISCOVERED, FAILED;
+        SEARCHING, SEARCHING_ACKNOWLEDGED, DISCOVERED, FAILED;
 
         public RtpEndUserState toEndUserState() {
             switch (this) {
                 case SEARCHING:
+                case SEARCHING_ACKNOWLEDGED:
                     return RtpEndUserState.FINDING_DEVICE;
                 case DISCOVERED:
                     return RtpEndUserState.RINGING;
