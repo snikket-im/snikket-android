@@ -344,7 +344,7 @@ public class XmppConnectionService extends Service {
             synchronized (account.inProgressConferencePings) {
                 account.inProgressConferencePings.clear();
             }
-            mJingleConnectionManager.notifyRebound();
+            mJingleConnectionManager.notifyRebound(account);
             mQuickConversationsService.considerSyncBackground(false);
             fetchRosterFromServer(account);
 
@@ -370,6 +370,7 @@ public class XmppConnectionService extends Service {
             }
             connectMultiModeConversations(account);
             syncDirtyContacts(account);
+
         }
     };
     private final AtomicLong mLastExpiryRun = new AtomicLong(0);

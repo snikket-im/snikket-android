@@ -364,7 +364,7 @@ public class JingleConnectionManager extends AbstractConnectionManager {
                 }
             }
         } else {
-            Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": retrieved out of order jingle message"+message);
+            Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": retrieved out of order jingle message" + message);
         }
 
     }
@@ -605,7 +605,6 @@ public class JingleConnectionManager extends AbstractConnectionManager {
                     RtpEndUserState.FINDING_DEVICE
             );
             final MessagePacket messagePacket = mXmppConnectionService.getMessageGenerator().sessionProposal(proposal);
-            Log.d(Config.LOGTAG, messagePacket.toString());
             mXmppConnectionService.sendMessagePacket(account, messagePacket);
         }
     }
@@ -657,10 +656,11 @@ public class JingleConnectionManager extends AbstractConnectionManager {
         account.getXmppConnection().sendIqPacket(packet.generateResponse(IqPacket.TYPE.ERROR), null);
     }
 
-    public void notifyRebound() {
+    public void notifyRebound(final Account account) {
         for (final AbstractJingleConnection connection : this.connections.values()) {
             connection.notifyRebound();
         }
+        resendSessionProposals(account);
     }
 
     public WeakReference<JingleRtpConnection> findJingleRtpConnection(Account account, Jid with, String sessionId) {
@@ -670,6 +670,19 @@ public class JingleConnectionManager extends AbstractConnectionManager {
             return new WeakReference<>((JingleRtpConnection) connection);
         }
         return null;
+    }
+
+    private void resendSessionProposals(final Account account) {
+        synchronized (this.rtpSessionProposals) {
+            for (final Map.Entry<RtpSessionProposal, DeviceDiscoveryState> entry : this.rtpSessionProposals.entrySet()) {
+                final RtpSessionProposal proposal = entry.getKey();
+                if (entry.getValue() == DeviceDiscoveryState.SEARCHING && proposal.account == account) {
+                    Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": resending session proposal to " + proposal.with);
+                    final MessagePacket messagePacket = mXmppConnectionService.getMessageGenerator().sessionProposal(proposal);
+                    mXmppConnectionService.sendMessagePacket(account, messagePacket);
+                }
+            }
+        }
     }
 
     public void updateProposedSessionDiscovered(Account account, Jid from, String sessionId, final DeviceDiscoveryState target) {
