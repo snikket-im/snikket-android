@@ -52,6 +52,8 @@ import androidx.appcompat.app.AlertDialog.Builder;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.databinding.DataBindingUtil;
 
+import com.google.common.base.Strings;
+
 import java.io.IOException;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
@@ -573,13 +575,7 @@ public abstract class XmppActivity extends ActionBarActivity {
         if (account.getPgpId() == 0) {
             choosePgpSignId(account);
         } else {
-            String status = null;
-            if (manuallyChangePresence()) {
-                status = account.getPresenceStatusMessage();
-            }
-            if (status == null) {
-                status = "";
-            }
+            final String status = Strings.nullToEmpty(account.getPresenceStatusMessage());
             xmppConnectionService.getPgpEngine().generateSignature(intent, account, status, new UiCallback<String>() {
 
                 @Override

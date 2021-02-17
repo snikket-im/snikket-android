@@ -2,6 +2,8 @@ package eu.siacs.conversations.parser;
 
 import android.util.Log;
 
+import org.openintents.openpgp.util.OpenPgpUtils;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,6 +19,7 @@ import eu.siacs.conversations.entities.Presence;
 import eu.siacs.conversations.generator.IqGenerator;
 import eu.siacs.conversations.generator.PresenceGenerator;
 import eu.siacs.conversations.services.XmppConnectionService;
+import eu.siacs.conversations.utils.CryptoHelper;
 import eu.siacs.conversations.utils.XmppUri;
 import eu.siacs.conversations.xml.Element;
 import eu.siacs.conversations.xml.Namespace;
@@ -313,9 +316,10 @@ public class PresenceParser extends AbstractParser implements
 			PgpEngine pgp = mXmppConnectionService.getPgpEngine();
 			Element x = packet.findChild("x", "jabber:x:signed");
 			if (pgp != null && x != null) {
-				Element status = packet.findChild("status");
-				String msg = status != null ? status.getContent() : "";
-				if (contact.setPgpKeyId(pgp.fetchKeyId(account, msg, x.getContent()))) {
+				final String status = packet.findChildContent("status");
+				final long keyId = pgp.fetchKeyId(account, status, x.getContent());
+				if (keyId != 0 && contact.setPgpKeyId(keyId)) {
+					Log.d(Config.LOGTAG,account.getJid().asBareJid()+": found OpenPGP key id for "+contact.getJid()+" "+OpenPgpUtils.convertKeyIdToHex(keyId));
 					mXmppConnectionService.syncRoster(account);
 				}
 			}
