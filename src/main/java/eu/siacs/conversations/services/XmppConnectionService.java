@@ -4574,11 +4574,6 @@ public class XmppConnectionService extends Service {
                 syncRoster(account);
             }
         } else {
-            if (account.inProgressDiscoFetches.contains(key)) {
-                Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": skipping duplicate disco request for " + key.second + " to " + jid);
-                return;
-            }
-            account.inProgressDiscoFetches.add(key);
             final IqPacket request = new IqPacket(IqPacket.TYPE.GET);
             request.setTo(jid);
             final String node = presence.getNode();
@@ -4590,7 +4585,7 @@ public class XmppConnectionService extends Service {
             Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": making disco request for " + key.second + " to " + jid);
             sendIqPacket(account, request, (a, response) -> {
                 if (response.getType() == IqPacket.TYPE.RESULT) {
-                    ServiceDiscoveryResult discoveryResult = new ServiceDiscoveryResult(response);
+                    final ServiceDiscoveryResult discoveryResult = new ServiceDiscoveryResult(response);
                     if (presence.getVer().equals(discoveryResult.getVer())) {
                         databaseBackend.insertDiscoveryResult(discoveryResult);
                         injectServiceDiscoveryResult(a.getRoster(), presence.getHash(), presence.getVer(), discoveryResult);
@@ -4600,7 +4595,6 @@ public class XmppConnectionService extends Service {
                 } else {
                     Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": unable to fetch caps from " + jid);
                 }
-                a.inProgressDiscoFetches.remove(key);
             });
         }
     }
