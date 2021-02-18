@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="not_available_in_your_country">Quicksy er ikke tilgængelig i dit land.</string>
+    <string name="unable_to_verify_server_identity">Kan ikke bekræfte server identitet.</string>
+    <string name="unknown_security_error">Ukendt sikkerhedsfejl.</string>
+    </resources>
