@@ -265,6 +265,7 @@ public class JingleConnectionManager extends AbstractConnectionManager {
                     return;
                 }
             }
+            //TODO handle reject for cases where we don’t have carbon copies (normally reject is to be sent to own bare jid as well)
             Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": ignore jingle message from self");
             return;
         }

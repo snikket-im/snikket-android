@@ -668,6 +668,7 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
                 Log.d(Config.LOGTAG, "ignoring retract because already in " + this.state);
             }
         } else {
+            //TODO parse retract from self
             Log.d(Config.LOGTAG, id.account.getJid().asBareJid() + ": received retract from " + from + ". expected retract from" + id.with + ". ignoring");
         }
     }
