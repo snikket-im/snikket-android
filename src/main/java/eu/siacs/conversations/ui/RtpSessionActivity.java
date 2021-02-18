@@ -151,7 +151,9 @@ public class RtpSessionActivity extends XmppActivity implements XmppConnectionSe
     public boolean onKeyDown(final int keyCode, final KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_VOLUME_DOWN){
             if (xmppConnectionService != null) {
-                xmppConnectionService.getNotificationService().stopSoundAndVibration();
+                if (xmppConnectionService.getNotificationService().stopSoundAndVibration()) {
+                    return true;
+                }
             }
         }
         return super.onKeyDown(keyCode, event);

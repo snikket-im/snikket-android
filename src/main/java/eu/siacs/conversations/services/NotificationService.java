@@ -498,17 +498,21 @@ public class NotificationService {
         cancel(INCOMING_CALL_NOTIFICATION_ID);
     }
 
-    public void stopSoundAndVibration() {
+    public boolean stopSoundAndVibration() {
+        int stopped = 0;
         if (this.currentlyPlayingRingtone != null) {
             if (this.currentlyPlayingRingtone.isPlaying()) {
                 Log.d(Config.LOGTAG, "stop playing ring tone");
+                ++stopped;
             }
             this.currentlyPlayingRingtone.stop();
         }
         if (this.vibrationFuture != null && !this.vibrationFuture.isCancelled()) {
-            Log.d(Config.LOGTAG, "cancel vibration");
+            Log.d(Config.LOGTAG, "stop vibration");
             this.vibrationFuture.cancel(true);
+            ++stopped;
         }
+        return stopped > 0;
     }
 
     public static void cancelIncomingCallNotification(final Context context) {
