@@ -126,7 +126,6 @@
   <string name="last_seen_hours">נראה לאחרונה לפני %d שעות</string>
   <string name="last_seen_days">נראה לאחרונה לפני %d ימים</string>
   <string name="omemo_fingerprint">טביעת אצבע של OMEMO</string>
-  <string name="omemo_fingerprint_selected_message">טביעת אצבע OMEMO של ההודעה</string>
   <string name="other_devices">מכשירים אחרים</string>
   <string name="trust_omemo_fingerprints">סמוך על טביעות אצבע OMEMO</string>
   <string name="done">בוצע</string>

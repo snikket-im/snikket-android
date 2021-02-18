@@ -173,8 +173,6 @@
   <string name="openpgp_key_id">OpenPGP gakoaren nortasuna</string>
   <string name="omemo_fingerprint">OMEMO hatz-marka</string>
   <string name="omemo_fingerprint_x509">v\\OMEMO hatz-marka</string>
-  <string name="omemo_fingerprint_selected_message">Mezuaren OMEMO hatz-marka</string>
-  <string name="omemo_fingerprint_x509_selected_message">Mezuaren v\\OMEMO hatz-marka</string>
   <string name="other_devices">Beste gailuak</string>
   <string name="trust_omemo_fingerprints">OMEMO hatz-marketaz fidatu</string>
   <string name="fetching_keys">Gakoak eskuratzen...</string>

@@ -178,8 +178,6 @@
   <string name="openpgp_key_id">OpenPGP-nyckel-ID</string>
   <string name="omemo_fingerprint">OMEMO-fingeravtryck</string>
   <string name="omemo_fingerprint_x509">v\\OMEMO-fingeravtryck</string>
-  <string name="omemo_fingerprint_selected_message">Meddelandets OMEMO-fingeravtryck</string>
-  <string name="omemo_fingerprint_x509_selected_message">Meddelandets v\\OMEMO-fingeravtryck</string>
   <string name="other_devices">Andra enheter</string>
   <string name="trust_omemo_fingerprints">Lita på OMEMO-fingeravtryck</string>
   <string name="fetching_keys">Hämtar nycklar...</string>

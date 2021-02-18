@@ -184,8 +184,6 @@
   <string name="openpgp_key_id">OpenPGP-sleutel-ID</string>
   <string name="omemo_fingerprint">OMEMO-vingerafdruk</string>
   <string name="omemo_fingerprint_x509">v\\OMEMO-vingerafdruk</string>
-  <string name="omemo_fingerprint_selected_message">OMEMO-vingerafdruk van bericht</string>
-  <string name="omemo_fingerprint_x509_selected_message">v\\OMEMO-vingerafdruk van bericht</string>
   <string name="other_devices">Andere apparaten</string>
   <string name="trust_omemo_fingerprints">Vertrouw OMEMO-vingerafdrukken</string>
   <string name="fetching_keys">Sleutels ophalen…</string>

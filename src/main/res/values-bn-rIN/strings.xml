@@ -1,0 +1,48 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<resources>
+  <string name="action_settings">সেটিংস</string>
+  <string name="action_add">নতুন কথোপকথন</string>
+  <string name="action_accounts">অ্যকাউন্টগুলো নিয়ন্ত্রণ করা যাক</string>
+  <string name="action_account">অ্যকাউন্টটি নিয়ন্ত্রণ করা যাক</string>
+  <string name="action_end_conversation">কথা বন্ধ করা যাক</string>
+  <string name="action_contact_details">বিশদ বিবরণ</string>
+  <string name="action_muc_details">গ্রুপ চ্যাটের বিশদ বিবরণ</string>
+  <string name="channel_details">চ্যনেলের বিশদ বিবরণ</string>
+  <string name="action_add_account">একটা অ্যকাউন্ট তৈরী করা যাক</string>
+  <string name="action_edit_contact">নামটা বদল করা যাক</string>
+  <string name="action_add_phone_book">অ্যড্রেসবুকে সংরক্ষণ করা যাক</string>
+  <string name="action_delete_contact">তালিকা থেকে মুছে ফেলা যাক</string>
+  <string name="action_block_contact">এই ব্যক্তিকে ব্লক্ করা যাক</string>
+  <string name="action_unblock_contact">ব্লকটা সরিয়ে ফেলা যাক</string>
+  <string name="action_block_domain">পুরো domain-টাই ব্লক করা হোক</string>
+  <string name="action_unblock_domain">Domainটি আর ব্লক্ করার দরকার নেই</string>
+  <string name="action_block_participant">ব্যক্তিটিকে ব্লক্ করা যাক</string>
+  <string name="action_unblock_participant">ব্যক্তিটিকে ব্লক্ করার আর দরকার নেই</string>
+  <string name="title_activity_manage_accounts">অ্যকাউন্টগুলো নিয়ন্ত্রণ করা যাক</string>
+  <string name="title_activity_settings">সেটিংস</string>
+  <string name="title_activity_sharewith">Conversations-এর মাধ্যমে share করা হোক</string>
+  <string name="title_activity_start_conversation">কথোপকথন শুরু করা যাক</string>
+  <string name="title_activity_choose_contact">Contact নির্বাচন করুন</string>
+  <string name="title_activity_choose_contacts">Contact সমূহ নির্বাচন করুন</string>
+  <string name="title_activity_share_via_account">অ্যকাউন্টের মাধ্যমে share করা যাক</string>
+  <string name="title_activity_block_list">তালিকা ব্লক্ করা হোক</string>
+  <string name="just_now">এক্ষুণি</string>
+  <string name="minute_ago">এক মিনিট আগে</string>
+  <string name="minutes_ago">%d মিনিট আগে</string>
+  <plurals name="x_unread_conversations">
+    <item quantity="one">%dটাই কথোপকথন পড়া বাকি</item>
+    <item quantity="other">%dকথোেকথন পড়া হয়নি</item>
+  </plurals>
+  <string name="sending">পাঠানো হচ্ছে...</string>
+  <string name="message_decrypting">অপেক্ষা করুন, সাঙ্কেতিক সন্দেশ পঠিত হচ্ছে...</string>
+  <string name="pgp_message">OpenPGP দ্বারা তৈরী সাঙ্কেতিক সন্দেশ</string>
+  <string name="nick_in_use">নামটা অন্য কেউ ব্যবহার করছেন</string>
+  <string name="invalid_muc_nick">নামটা সঠিক নয়</string>
+  <string name="admin">নিয়ন্ত্রক</string>
+  <string name="owner">মালিক</string>
+  <string name="moderator">নির্ধারক</string>
+  <string name="participant">অংশগ্রহণকারী</string>
+  <string name="visitor">অতিথি</string>
+  <string name="block_contact">এই ব্যক্তিকে ব্লক্ করা যাক</string>
+  <string name="unblock_contact">ব্লকটা সরিয়ে ফেলা যাক</string>
+</resources>

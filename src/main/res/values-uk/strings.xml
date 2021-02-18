@@ -205,8 +205,6 @@
   <string name="openpgp_key_id">Ідентифікатор ключа OpenPGP</string>
   <string name="omemo_fingerprint">Цифровий підпис OMEMO</string>
   <string name="omemo_fingerprint_x509">Цифровий підпис v\\OMEMO</string>
-  <string name="omemo_fingerprint_selected_message">Цифровий підпис повідомлення OMEMO</string>
-  <string name="omemo_fingerprint_x509_selected_message">Цифровий підпис повідомлення v\\OMEMO</string>
   <string name="other_devices">Інші пристрої</string>
   <string name="trust_omemo_fingerprints">Довіряти цифровим підписам OMEMO</string>
   <string name="fetching_keys">Отримую ключі…</string>
@@ -580,7 +578,6 @@
   <string name="error_unable_to_create_temporary_file">Неможливо створити тимчасовий файл</string>
   <string name="this_device_has_been_verified">Цей пристрій перевірено</string>
   <string name="copy_fingerprint">Копіювати цифровий підпис</string>
-  <string name="all_omemo_keys_have_been_verified">Усі ключі OMEMO перевірено</string>
   <string name="barcode_does_not_contain_fingerprints_for_this_conversation">QR-код не містить цифрових підписів для цієї розмови.</string>
   <string name="verified_fingerprints">Перевірені цифрові підписи</string>
   <string name="use_camera_icon_to_scan_barcode">Використайте камеру для сканування QR-коду контакту</string>

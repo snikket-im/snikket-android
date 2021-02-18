@@ -212,8 +212,6 @@
   <string name="openpgp_key_id">ID OpenPGP ключа</string>
   <string name="omemo_fingerprint">OMEMO отпечаток</string>
   <string name="omemo_fingerprint_x509">v\\OMEMO отпечаток</string>
-  <string name="omemo_fingerprint_selected_message">OMEMO отпечаток сообщения</string>
-  <string name="omemo_fingerprint_x509_selected_message">v\\OMEMO отпечаток сообщения</string>
   <string name="other_devices">Другие устройства</string>
   <string name="trust_omemo_fingerprints">Доверенные отпечатки OMEMO</string>
   <string name="fetching_keys">Получение ключей…</string>
@@ -591,7 +589,6 @@
   <string name="error_unable_to_create_temporary_file">Не удалось создать временный файл</string>
   <string name="this_device_has_been_verified">Это устройство было подтверждено</string>
   <string name="copy_fingerprint">Копировать отпечаток</string>
-  <string name="all_omemo_keys_have_been_verified">Все имеющиеся у вас OMEMO-ключи были подтверждены</string>
   <string name="barcode_does_not_contain_fingerprints_for_this_conversation">Штрих-код не содержит цифрового отпечатка для этой беседы.</string>
   <string name="verified_fingerprints">Подтверждённые отпечатки</string>
   <string name="use_camera_icon_to_scan_barcode">Используйте камеру для сканирования штрихкода контакта</string>

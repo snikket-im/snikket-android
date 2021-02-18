@@ -206,8 +206,6 @@
   <string name="openpgp_key_id">Ταυτότητα κλειδιού OpenPGP</string>
   <string name="omemo_fingerprint">Αποτύπωμα OMEMO</string>
   <string name="omemo_fingerprint_x509">v\\Αποτύπωμα OMEMO</string>
-  <string name="omemo_fingerprint_selected_message">Αποτύπωμα OMEMO μηνύματος</string>
-  <string name="omemo_fingerprint_x509_selected_message">v\\Αποτύπωμα OMEMO μηνύματος</string>
   <string name="other_devices">\'Αλλες συσκευές</string>
   <string name="trust_omemo_fingerprints">Επαλήθευση των αποτυπωμάτων OMEMO</string>
   <string name="fetching_keys">Μεταφόρτωση κλειδιών...</string>
@@ -581,7 +579,6 @@
   <string name="error_unable_to_create_temporary_file">Αδυναμία δημιουργίας προσωρινού αρχείου</string>
   <string name="this_device_has_been_verified">Αυτή η συσκευή έχει επαληθευτεί</string>
   <string name="copy_fingerprint">Αντιγραφή αποτυπώματος</string>
-  <string name="all_omemo_keys_have_been_verified">Έχετε επαληθεύσει όλα τα κλειδιά OMEMO που κατέχετε</string>
   <string name="barcode_does_not_contain_fingerprints_for_this_conversation">Ο γραμμοκώδικας δεν περιέχει αποτυπώματα για την συζήτηση αυτή.</string>
   <string name="verified_fingerprints">Επαληθευμένα αποτυπώματα</string>
   <string name="use_camera_icon_to_scan_barcode">Χρήση της φωτογραφικής μηχανής για την σάρωση του γραμμοκώδικα της επαφής</string>

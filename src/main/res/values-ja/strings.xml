@@ -205,8 +205,6 @@
   <string name="openpgp_key_id">OpenPGP 鍵 ID</string>
   <string name="omemo_fingerprint">OMEMO フィンガープリント</string>
   <string name="omemo_fingerprint_x509">v\\OMEMO フィンガープリント</string>
-  <string name="omemo_fingerprint_selected_message">メッセージの OMEMO フィンガープリント</string>
-  <string name="omemo_fingerprint_x509_selected_message">メッセージの v\\OMEMO フィンガープリント</string>
   <string name="other_devices">他のデバイス</string>
   <string name="trust_omemo_fingerprints">OMEMO フィンガープリントを信頼</string>
   <string name="fetching_keys">鍵の取得中…</string>

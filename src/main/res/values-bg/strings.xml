@@ -174,8 +174,6 @@
   <string name="openpgp_key_id">Ид. на OpenPGP ключа</string>
   <string name="omemo_fingerprint">Отпечатък OMEMO</string>
   <string name="omemo_fingerprint_x509">Отпечатък v\\OMEMO</string>
-  <string name="omemo_fingerprint_selected_message">Отпечатък OMEMO на съобщението</string>
-  <string name="omemo_fingerprint_x509_selected_message">Отпечатък v\\OMEMO на съобщението</string>
   <string name="other_devices">Други устройства</string>
   <string name="trust_omemo_fingerprints">Доверяване на отпечатъци OMEMO</string>
   <string name="fetching_keys">Изтегляне на ключове…</string>

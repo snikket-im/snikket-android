@@ -67,6 +67,8 @@
   <string name="unblock">解封</string>
   <string name="save">保存</string>
   <string name="ok">完成</string>
+  <string name="crash_report_title">%1$s已崩溃</string>
+  <string name="crash_report_message">用你的 XMPP 账户发送堆栈跟踪来帮助持续开发 %1$s</string>
   <string name="send_now">立即发送</string>
   <string name="send_never">不再询问</string>
   <string name="problem_connecting_to_account">账户无法连接</string>
@@ -96,6 +98,7 @@
   <string name="send_unencrypted">不加密发送</string>
   <string name="decryption_failed">解密失败，可能是私钥不正确。</string>
   <string name="openkeychain_required">OpenKeychain</string>
+  <string name="openkeychain_required_long"><![CDATA[%1$s使用 <b>OpenKeychain</b>来加密和解密消息并管理你的公钥。<br><br>它在 GPLv3+ 许可证下授权并可在 F-Droid 和 Google Play 上获得。<br><br><small>(请之后重启 %1$s)</small>]]></string>
   <string name="restart">重启</string>
   <string name="install">安装</string>
   <string name="openkeychain_not_installed">请安装OpenKeychain以解密</string>
@@ -209,8 +212,6 @@
   <string name="openpgp_key_id">OpenPGP密钥ID</string>
   <string name="omemo_fingerprint">OMEMO指纹</string>
   <string name="omemo_fingerprint_x509">v\\OMEMO指纹</string>
-  <string name="omemo_fingerprint_selected_message">消息的OMEMO指纹</string>
-  <string name="omemo_fingerprint_x509_selected_message">消息的OMEMO指纹</string>
   <string name="other_devices">其他设备</string>
   <string name="trust_omemo_fingerprints">信任的OMEMO指纹</string>
   <string name="fetching_keys">获取密钥中</string>
@@ -497,7 +498,10 @@
   <string name="shared_image_with_x">图片已分享给%s</string>
   <string name="shared_images_with_x">图片已分享给%s</string>
   <string name="shared_text_with_x">文本已分享给%s</string>
+  <string name="no_storage_permission">授予 %1$s 访问外部存储的权限</string>
+  <string name="no_camera_permission">授予 %1$s 相机访问权限</string>
   <string name="sync_with_contacts">同步联系人</string>
+  <string name="sync_with_contacts_long">%1$s想要访问通讯录的权限来将它与你的 XMPP 联系人列表相匹配。\n这会显示你的联系人的完整姓名和头像。\n\n%1$s只会读取你的通讯录并在本地进行匹配，不会将信息上传到你的服务器。</string>
   <string name="sync_with_contacts_quicksy"><![CDATA[Quicksy可以匹配您的通讯录以确定哪些人已经在使用此应用。<br><br>我们并不储存这些号码。\n\n更多信息请阅读<a href="https://quicksy.im/#privacy">隐私政策</a>。接下来将请求通讯录权限。]]></string>
   <string name="notify_on_all_messages">为所有信息显示通知</string>
   <string name="notify_only_when_highlighted">只在被提到时通知</string>
@@ -508,6 +512,8 @@
   <string name="always">总是</string>
   <string name="large_images_only">仅大图片</string>
   <string name="battery_optimizations_enabled">已启用节电模式</string>
+  <string name="battery_optimizations_enabled_explained">你的设备正对 %1$s 实施强力电池优化，这可能导致通知延迟甚至消息丢失。\n建议禁用这些优化。</string>
+  <string name="battery_optimizations_enabled_dialog">你的设备正对 %1$s 实施强力电池优化，这可能导致通知延迟甚至消息丢失。\n你将被请求禁用这些优化。</string>
   <string name="disable">禁用</string>
   <string name="selection_too_large">选择区域过大</string>
   <string name="no_accounts">（没有启用的账户）</string>
@@ -579,10 +585,12 @@
   <string name="show_error_message">显示出错消息</string>
   <string name="error_message">出错信息</string>
   <string name="data_saver_enabled">省流量模式已启用</string>
+  <string name="data_saver_enabled_explained">你的操作系统正限制 %1$s 在后台时访问互联网。要接收新消息通知，你应当在 \'数据节省\' 处于启用状态时允许 %1$s 不受限制的访问。\n%1$s 在可能的时候仍会试图节省数据。</string>
+  <string name="device_does_not_support_data_saver">你的设备不支持对 %1$s 禁用数据节省器。</string>
   <string name="error_unable_to_create_temporary_file">无法创建临时文件</string>
   <string name="this_device_has_been_verified">已验证此设备</string>
   <string name="copy_fingerprint">复制指纹</string>
-  <string name="all_omemo_keys_have_been_verified">所有OMEMO密钥都已验证</string>
+  <string name="all_omemo_keys_have_been_verified">你已验证了你拥有的所有 OMEMO 密钥</string>
   <string name="barcode_does_not_contain_fingerprints_for_this_conversation">条码不包含用于聊天的指纹。</string>
   <string name="verified_fingerprints">已验证的指纹</string>
   <string name="use_camera_icon_to_scan_barcode">使用相机扫描联系人条码</string>
@@ -671,6 +679,7 @@
   <string name="edit_status_message_title">编辑状态信息</string>
   <string name="edit_status_message">编辑状态信息</string>
   <string name="disable_encryption">禁用加密</string>
+  <string name="error_trustkey_general">%1$s 无法发送加密消息到 %2$s。这可能是因为你的联系人使用了过期的服务器或者无法处理 OMEMO 的客户端。</string>
   <string name="error_trustkey_device_list">无法获取设备列表</string>
   <string name="error_trustkey_bundle">无法获取密钥</string>
   <string name="error_trustkey_hint_mutual">提示：某些情况下，可以将对方加入联系人列表，以解决此问题。</string>
@@ -703,6 +712,7 @@
   <string name="share">分享</string>
   <string name="unable_to_start_recording">无法开始录制</string>
   <string name="please_wait">请等待…</string>
+  <string name="no_microphone_permission">授权 %1$s 访问麦克风</string>
   <string name="search_messages">搜索消息</string>
   <string name="gif">GIF动图</string>
   <string name="view_conversation">查看聊天</string>
@@ -724,6 +734,7 @@
   <string name="conference_destroyed">群聊已被解散</string>
   <string name="unable_to_save_recording">无法保存录制的文件</string>
   <string name="foreground_service_channel_name">前台服务</string>
+  <string name="foreground_service_channel_description">这个通知类别用于展示一条表明 %1$s 正在运行的永久通知。</string>
   <string name="notification_group_status_information">状态信息</string>
   <string name="error_channel_name">连接问题</string>
   <string name="error_channel_description">此通知类别用于显示帐户连接问题通知。</string>
@@ -891,6 +902,7 @@
   <string name="disable_tor_to_make_call">禁用Tor以拨打电话</string>
   <string name="incoming_call">来电</string>
   <string name="incoming_call_duration">来电 · %s</string>
+  <string name="missed_call_timestamp">错过的通话 · %s</string>
   <string name="outgoing_call">去电</string>
   <string name="outgoing_call_duration">去电 · %s</string>
   <string name="missed_call">未接电话</string>

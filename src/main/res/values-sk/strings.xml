@@ -123,7 +123,6 @@
   <string name="last_seen_hours">naposledy prihlásený pred %d hodinami</string>
   <string name="last_seen_days">naposledy prihlásený pred %d dňami</string>
   <string name="omemo_fingerprint">OMEMO identifikátor</string>
-  <string name="omemo_fingerprint_selected_message">OMEMO identifkátor správy</string>
   <string name="other_devices">Ostatné zariadenia</string>
   <string name="trust_omemo_fingerprints">Dôverovať OMEMO identifikátoru</string>
   <string name="done">Dokončený</string>

@@ -68,6 +68,8 @@
   <string name="unblock">Desbloquear</string>
   <string name="save">Gardar</string>
   <string name="ok">OK</string>
+  <string name="crash_report_title">%1$s fallou</string>
+  <string name="crash_report_message">Ao utilizar a túa conta XMPP para enviar trazas do sistema axudas ao desenvolvemento de %1$s.</string>
   <string name="send_now">Enviar agora</string>
   <string name="send_never">Non preguntar de novo</string>
   <string name="problem_connecting_to_account">Non se puido conectar a conta</string>
@@ -97,6 +99,7 @@
   <string name="send_unencrypted">Enviar sen cifrar</string>
   <string name="decryption_failed">Fallou o descifrado. Quizais non teñas a chave privada apropiada.</string>
   <string name="openkeychain_required">OpenKeychain</string>
+  <string name="openkeychain_required_long"><![CDATA[%1$s utiliza <b>OpenKeychain</b> para cifrar e descifrar as mensaxes e xestionar a túas chaves públicas.<br><br>Está baixo licenza  GPLv3+ e dispoñible en F-Droid e Google Play.<br><br><small>(Reinicia %1$s após a instalación.)</small>]]></string>
   <string name="restart">Reiniciar</string>
   <string name="install">Instalar</string>
   <string name="openkeychain_not_installed">Por favor instale OpenKeychain</string>
@@ -210,8 +213,6 @@
   <string name="openpgp_key_id">ID da chave OpenPGP</string>
   <string name="omemo_fingerprint">Impresión dixital OMEMO</string>
   <string name="omemo_fingerprint_x509">v\\impresión OMEMO </string>
-  <string name="omemo_fingerprint_selected_message">Impresión OMEMO da mensaxe</string>
-  <string name="omemo_fingerprint_x509_selected_message">v\\Impresión OMEMO da mensaxe</string>
   <string name="other_devices">Outros dispositivos</string>
   <string name="trust_omemo_fingerprints">Confiar en impresións dixitais OMEMO</string>
   <string name="fetching_keys">Obtendo chaves...</string>
@@ -500,7 +501,10 @@
   <string name="shared_image_with_x">Imaxe compartida con %s</string>
   <string name="shared_images_with_x">Imaxes compartidas con %s</string>
   <string name="shared_text_with_x">Texto compartido con %s</string>
+  <string name="no_storage_permission">Permitir que %1$s acceda ao almacenaxe externo</string>
+  <string name="no_camera_permission">Permitir que %1$s acceda á cámara</string>
   <string name="sync_with_contacts">Sincronice con todos os contactos</string>
+  <string name="sync_with_contacts_long">%1$s quere ter permiso para acceder á túa libreta de enderezos para comparala coa lista de contactos XMPP.\nDeste xeito poderá mostrar o nome completo e avatares dos teus contactos.\n\n%1$s só utilizará de xeito local a túa lista de contactos, sen subila a ningún servidor.</string>
   <string name="sync_with_contacts_quicksy"><![CDATA[Quicksy precisa acceder ao número de teléfono dos contactos para facer suxestións sobre posibles contactos que xa están en Quicksy.<br><br>Non gardaremos unha copia de esos números de teléfono.\n\nPara máis información lea a nosa <a href="https://quicksy.im/#privacy">política de intimidade</a>.<br><br>A continuación pediráselle permiso para acceder aos contactos.]]></string>
   <string name="notify_on_all_messages">Notificar todas as mensaxes</string>
   <string name="notify_only_when_highlighted">Notificar só cando é mencionada</string>
@@ -511,6 +515,8 @@
   <string name="always">Sempre</string>
   <string name="large_images_only">Só imaxes grandes</string>
   <string name="battery_optimizations_enabled">Optimizacións de batería activadas</string>
+  <string name="battery_optimizations_enabled_explained">O dispositivo está facendo optimizacións de batería fortes para %1$s e podería retrasar as notificacións ou incluso perder mensaxes.\nÉ recomendable desactivalas.</string>
+  <string name="battery_optimizations_enabled_dialog">O dispositivo está facendo fortes optimizacións de batería para %1$s e podería causar retrasos nas notificacións e incluso perda de mensaxes\n\nAgora ímosche pedir que as desactives.</string>
   <string name="disable">Desactivar</string>
   <string name="selection_too_large">O área selecionada é demasiado grande</string>
   <string name="no_accounts">(Contas non activadas)</string>
@@ -582,10 +588,12 @@
   <string name="show_error_message">Mostrar mensaxe do fallo</string>
   <string name="error_message">Mensaxe de fallo</string>
   <string name="data_saver_enabled">Aforrador de datos habilitado</string>
+  <string name="data_saver_enabled_explained">O teu sistema operativo está limitando o acceso a internet en segundo plano para %1$s. Para recibir notificacións de novas mensaxes deberías permitir que %1$s teña acceso sen restricións cando o \"Economizador de datos\" está activo.\n%1$s continuará aforrando datos cando fose posible.</string>
+  <string name="device_does_not_support_data_saver">O dispositivo non ten soporte para desactivar o aforrador de datos para %1$s.</string>
   <string name="error_unable_to_create_temporary_file">Non se puido crear o ficheiro temporal</string>
   <string name="this_device_has_been_verified">Este dispositivo foi verificado</string>
   <string name="copy_fingerprint">Copiar impresión dixital</string>
-  <string name="all_omemo_keys_have_been_verified">Verificaches todas as chaves OMEMO no teu poder</string>
+  <string name="all_omemo_keys_have_been_verified">Verificaches tódalas chaves OMEMO da túa propiedade</string>
   <string name="barcode_does_not_contain_fingerprints_for_this_conversation">O código de barras non contén impresións dixitais para esta conversa.</string>
   <string name="verified_fingerprints">Impresións dixitais verificadas</string>
   <string name="use_camera_icon_to_scan_barcode">Utilice a cámara para escanear o código de barras do contacto</string>
@@ -680,6 +688,7 @@
   <string name="edit_status_message_title">Editar a Menxase de Estado</string>
   <string name="edit_status_message">Editar a menxase de estado</string>
   <string name="disable_encryption">Desactivar a encriptación</string>
+  <string name="error_trustkey_general">%1$s non pode enviar mensaxes cifradas a %2$s. Podería deberse a que o teu contacto utiliza un servidor sen actualizar ou un cliente que non pode xestionar OMEMO.</string>
   <string name="error_trustkey_device_list">Non se obtivo a lista de dispositivos</string>
   <string name="error_trustkey_bundle">Non se obtiveron as chaves de cifrado</string>
   <string name="error_trustkey_hint_mutual">Suxestión: Nalgúns casos, isto pode solucionarse engadíndovos mutuamente as vosas listas de contactos.</string>
@@ -712,6 +721,7 @@
   <string name="share">Compartir</string>
   <string name="unable_to_start_recording">Non comezou a gravación</string>
   <string name="please_wait">Por favor, agarde...</string>
+  <string name="no_microphone_permission">Permitir que %1$s acceda ao micrófono</string>
   <string name="search_messages">Buscar mensaxes</string>
   <string name="gif">GIF</string>
   <string name="view_conversation">Ver conversa</string>
@@ -733,6 +743,7 @@
   <string name="conference_destroyed">Esta conversa de grupo foi destruída</string>
   <string name="unable_to_save_recording">Non se gardou a gravación</string>
   <string name="foreground_service_channel_name">Servizo en segundo plano</string>
+  <string name="foreground_service_channel_description">Esta categoría de notificacións utilízase para mostrar unha notificación permanente indicando que %1$s está a funcionar.</string>
   <string name="notification_group_status_information">Información do estado</string>
   <string name="error_channel_name">Problemas de conexión</string>
   <string name="error_channel_description">Esta categoría de notificación utilízase para mostrar unha notificación en caso de que houbese un problema ao conectar a conta.</string>
@@ -900,6 +911,7 @@
   <string name="disable_tor_to_make_call">Desactivar Tor para facer chamadas</string>
   <string name="incoming_call">Chamada entrante</string>
   <string name="incoming_call_duration">Conversa de · %s</string>
+  <string name="missed_call_timestamp">Chamada perdida · %s</string>
   <string name="outgoing_call">Chamada realizada</string>
   <string name="outgoing_call_duration">Conversa de · %s</string>
   <string name="missed_call">Chamada perdida</string>

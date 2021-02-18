@@ -210,8 +210,6 @@
   <string name="openpgp_key_id">Identificador de la clau d\'OpenPGP</string>
   <string name="omemo_fingerprint">Empremta digital OMEMO</string>
   <string name="omemo_fingerprint_x509">Empremta digital v\\OMEMO</string>
-  <string name="omemo_fingerprint_selected_message">Empremta digital OMEMO del missatge</string>
-  <string name="omemo_fingerprint_x509_selected_message">Empremta digital v\\OMEMO del missatge</string>
   <string name="other_devices">Altres dispositius</string>
   <string name="trust_omemo_fingerprints">Confia en les empremtes digitals d\'OMEMO</string>
   <string name="fetching_keys">S\'estan obtenint les claus…</string>
@@ -585,7 +583,6 @@
   <string name="error_unable_to_create_temporary_file">No s\'ha pogut crear l\'arxiu temporal</string>
   <string name="this_device_has_been_verified">S\'ha verificat aquest dispositiu</string>
   <string name="copy_fingerprint">Copieu l\'empremta digital</string>
-  <string name="all_omemo_keys_have_been_verified">S\'han verificat totes les claus OMEMO que tens en el teu poder</string>
   <string name="barcode_does_not_contain_fingerprints_for_this_conversation">El codi de barres no conté empremtes dactilars per a aquesta conversa.</string>
   <string name="verified_fingerprints">Empremtes digitals verificades</string>
   <string name="use_camera_icon_to_scan_barcode">Utilitzeu la càmera per escanejar el codi de barres d\'un contacte</string>

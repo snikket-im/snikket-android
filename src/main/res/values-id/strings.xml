@@ -209,8 +209,6 @@
   <string name="openpgp_key_id">ID Kunci OpenPGP</string>
   <string name="omemo_fingerprint">Sidik jari OMEMO</string>
   <string name="omemo_fingerprint_x509">v\\Sidik jari OMEMO</string>
-  <string name="omemo_fingerprint_selected_message">Sidik jari OMEMO sebuah pesan</string>
-  <string name="omemo_fingerprint_x509_selected_message">v\\Sidik jari OMEMO sebuah pesan</string>
   <string name="other_devices">Perangkat lainnya</string>
   <string name="trust_omemo_fingerprints">Percayai Sidik Jari OMEMO</string>
   <string name="fetching_keys">Mengambil kunci…</string>
@@ -266,7 +264,9 @@
   <string name="ignore">Abaikan</string>
   <string name="pref_security_settings">Keamanan</string>
   <string name="pref_allow_message_correction">Ijinkan mengedit pesan</string>
+  <string name="pref_expert_options">Pengaturan lanjutan</string>
   <string name="pref_expert_options_summary">Harap berhati-hati dengan ini</string>
+  <string name="title_activity_about_x">Tentang %s</string>
   <string name="title_pref_quiet_hours">Waktu sunyi</string>
   <string name="title_pref_quiet_hours_start_time">Waktu mulai</string>
   <string name="title_pref_quiet_hours_end_time">Waktu selesai</string>
@@ -283,11 +283,22 @@
   <string name="copy_original_url">Salin URL asli</string>
   <string name="send_again">Kirim lagi</string>
   <string name="file_url">URL Berkas</string>
+  <string name="url_copied_to_clipboard">Salin URL ke papan klip</string>
+  <string name="jabber_id_copied_to_clipboard">Salin alamat XMPP ke papan klip</string>
+  <string name="error_message_copied_to_clipboard">Salin pesan kesalahan ke papan klip</string>
+  <string name="web_address">alamat web</string>
+  <string name="scan_qr_code">Pindai kode 2D</string>
+  <string name="show_qr_code">Tampilkan kode 2D</string>
   <string name="show_block_list">Tampilkan daftar blokir</string>
   <string name="account_details">Detil akun</string>
   <string name="confirm">Konfirmasi</string>
   <string name="try_again">Coba lagi</string>
   <string name="pref_keep_foreground_service_summary">Cegah sistem operasi mematikan koneksi</string>
+  <string name="pref_create_backup">Buat backup</string>
+  <string name="pref_create_backup_summary">File backup akan disimpan di %s</string>
+  <string name="notification_create_backup_title">Membuat file backup</string>
+  <string name="notification_backup_created_title">File backup sudah dibuat</string>
+  <string name="notification_backup_created_subtitle">File backup sudah disimpan di %s</string>
   <string name="choose_file">Pilih berkas</string>
   <string name="receiving_x_file">Menerima %1$s (%2$d%% terselesaikan)</string>
   <string name="download_x_file">Mengunduh %s</string>
@@ -297,6 +308,8 @@
   <string name="sending_file">mengirim (%1$d%% terselesaikan)</string>
   <string name="x_file_offered_for_download">%s ditawarkan untuk mengunduh</string>
   <string name="cancel_transmission">batalkan pengiriman</string>
+  <string name="file_transmission_cancelled">Transmisi file dibatalkan</string>
+  <string name="file_deleted">File dihapus</string>
   <string name="pref_show_dynamic_tags_summary">Tampilan read-only tag di bawah kontak</string>
   <string name="enable_notifications">Aktifkan notifikasi</string>
   <string name="account_image_description">Avatar akun</string>
@@ -388,6 +401,7 @@
   <string name="this_field_is_required">Bagian ini wajib diisi</string>
   <string name="correct_message">Perbaiki pesan</string>
   <string name="send_corrected_message">Kirim perbaikan pesan</string>
+  <string name="this_account_is_disabled">Anda telah menonaktifkan akun ini</string>
   <string name="share_uri_with">Bagikan URI dengan...</string>
   <string name="create_account">Buat Akun</string>
   <string name="pick_your_username">Pilih username anda</string>
@@ -399,29 +413,78 @@
   <string name="presence_dnd">Sibuk</string>
   <string name="secure_password_generated">Password aman berhasil dibuat</string>
   <string name="registration_please_wait">Registrasi gagal: Coba lagi nanti</string>
+  <string name="registration_password_too_weak">Registrasi gagal: kata sandi terlalu lemah</string>
   <string name="choose_participants">Undang user</string>
+  <string name="creating_conference">Membuat percakapan grup...</string>
   <string name="invite_again">Undang lagi</string>
   <string name="gp_short">Pendek</string>
   <string name="gp_medium">Sedang</string>
   <string name="gp_long">Panjang</string>
+  <string name="pref_privacy">Privasi</string>
   <string name="pref_theme_options">Tema</string>
+  <string name="pref_theme_automatic">Otomatis</string>
   <string name="pref_use_green_background">Latar Hijau</string>
   <string name="pref_use_green_background_summary">Gunakan latar hijau untuk pesan masuk</string>
+  <string name="this_device_is_no_longer_in_use">Perangkat ini tidak dipergunakan lagi</string>
+  <string name="type_pc">Komputer</string>
+  <string name="type_phone">Ponsel</string>
+  <string name="type_tablet">Tablet</string>
+  <string name="type_console">Konsol</string>
+  <string name="allow">Ijinkan</string>
+  <string name="pref_delete_omemo_identities">Hapus identitas OMEMO</string>
+  <string name="delete_selected_keys">Hapus kunci terpilih</string>
+  <string name="show_error_message">Tampilkan pesan kesalahan</string>
+  <plurals name="seconds">
+    <item quantity="other">%d detik</item>
+  </plurals>
+  <plurals name="minutes">
+    <item quantity="other">%d menit</item>
+  </plurals>
+  <plurals name="hours">
+    <item quantity="other">%d jam</item>
+  </plurals>
+  <plurals name="days">
+    <item quantity="other">%d hari</item>
+  </plurals>
+  <plurals name="weeks">
+    <item quantity="other">%d minggu</item>
+  </plurals>
+  <plurals name="months">
+    <item quantity="other">%d bulan</item>
+  </plurals>
+  <string name="contact_blocked_past_tense">Kontak diblokir</string>
+  <string name="server_info_partial">sebagian</string>
   <string name="small">Kecil</string>
   <string name="medium">Sedang</string>
   <string name="large">Besar</string>
+  <string name="action_share_location">Bagikan Lokasi</string>
+  <string name="title_activity_share_location">Bagikan lokasi</string>
+  <string name="title_activity_show_location">Tampilkan lokasi</string>
   <string name="share">Bagikan</string>
   <string name="please_wait">Silahkan menunggu…</string>
   <string name="search_messages">Cari pesan</string>
+  <string name="view_conversation">Tampilkan percakapan</string>
   <string name="copy_link">Kopi alamat website</string>
   <string name="copy_jabber_id">Kopi alamat XMPP</string>
   <string name="pref_start_search">Pencarian langsung</string>
   <string name="contact_name">Nama kontak</string>
   <string name="nickname">Panggilan</string>
   <string name="group_chat_name">Nama</string>
+  <string name="create_dialog_group_chat_name">Nama percakapan grup</string>
   <string name="notification_group_messages">Pesan</string>
   <string name="notification_group_calls">Telepon</string>
   <string name="messages_channel_name">Pesan</string>
   <string name="incoming_calls_channel_name">Telepon masuk</string>
   <string name="ongoing_calls_channel_name">Telepon keluar</string>
+  <string name="resend_sms">Kirim ulang SMS</string>
+  <string name="resend_sms_in">Kirim ulang SMS (%s)</string>
+  <string name="wait_x">Silahkan menunggu (%s)</string>
+  <string name="back">kembali</string>
+  <string name="yes">Ya</string>
+  <string name="reject_request">Tolak permintaan</string>
+  <string name="enter_jabber_id">Masukkan alamat XMPP</string>
+  <string name="create_group_chat">Buat percakapan grup</string>
+  <string name="create_dialog_channel_name">Nama Channel</string>
+  <string name="xmpp_address">alamat XMPP</string>
+  <string name="creating_channel">Buat channel publik...</string>
 </resources>

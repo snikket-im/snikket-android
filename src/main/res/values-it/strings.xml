@@ -68,6 +68,8 @@
   <string name="unblock">Sblocca</string>
   <string name="save">Salva</string>
   <string name="ok">OK</string>
+  <string name="crash_report_title">Errore di %1$s</string>
+  <string name="crash_report_message">Usare il tuo account XMPP per inviare segnalazioni di errore aiuta lo sviluppo in corso di %1$s.</string>
   <string name="send_now">Invia adesso</string>
   <string name="send_never">Non chiedere più</string>
   <string name="problem_connecting_to_account">Impossibile connettersi all\'account</string>
@@ -97,6 +99,7 @@
   <string name="send_unencrypted">Invia non cifrato</string>
   <string name="decryption_failed">Decifrazione fallita. Forse non disponi della chiave privata corretta.</string>
   <string name="openkeychain_required">OpenKeychain</string>
+  <string name="openkeychain_required_long"><![CDATA[%1$s usa <b>OpenKeychain</b> per cifrare e decifrare i messaggi e gestire le tue chiavi pubbliche.<br><br>È pubblicato secondo i termini della GPLv3+ ed è disponibile su F-Droid e Google Play.<br><br><small>(Riavvia %1$s in seguito.)</small>]]></string>
   <string name="restart">Riavvia</string>
   <string name="install">Installa</string>
   <string name="openkeychain_not_installed">Per favore installa OpenKeychain</string>
@@ -210,8 +213,6 @@
   <string name="openpgp_key_id">ID chiave OpenPGP</string>
   <string name="omemo_fingerprint">Impronta OMEMO</string>
   <string name="omemo_fingerprint_x509">v\\OMEMO impronta</string>
-  <string name="omemo_fingerprint_selected_message">Impronta OMEMO del messaggio</string>
-  <string name="omemo_fingerprint_x509_selected_message">Impronta v\\OMEMO del messaggio</string>
   <string name="other_devices">Altri dispositivi</string>
   <string name="trust_omemo_fingerprints">Fidati delle impronte OMEMO</string>
   <string name="fetching_keys">Ricezione chiavi...</string>
@@ -500,7 +501,10 @@
   <string name="shared_image_with_x">Immagine condivisa con %s</string>
   <string name="shared_images_with_x">Immagini condivise con %s</string>
   <string name="shared_text_with_x">Testo condiviso con %s</string>
+  <string name="no_storage_permission">Dai a %1$s l\'accesso all\'archiviazione esterna</string>
+  <string name="no_camera_permission">Dai a %1$s l\'accesso alla fotocamera</string>
   <string name="sync_with_contacts">Sincronizza con i contatti</string>
+  <string name="sync_with_contacts_long">%1$s vuole l\'autorizzazione ad accedere alla tua rubrica per confrontarla con la lista di contatti in XMPP.\nCiò mostrerà i nomi ed avatar dei contatti.\n\n%1$s leggerà solamente la rubrica e la confronterà localmente senza inviare nulla al tuo server.</string>
   <string name="sync_with_contacts_quicksy"><![CDATA[Quicksy richiede l\'accesso ai numeri di telefono dei tuoi contatti per dare suggerimenti su possibili contatti già presenti su Quicksy.<br><br>Non salveremo una copia di quei numeri di telefono.\n\nPer maggiori informazioni leggi la nostra <a href="https://quicksy.im/#privacy">politica sulla privacy</a>.<br><br>Ti verrà ora chiesta l\'autorizzazione di accedere ai tuoi contatti.]]></string>
   <string name="notify_on_all_messages">Notifica per tutti i messaggi</string>
   <string name="notify_only_when_highlighted">Notifica solo quando menzionato</string>
@@ -511,6 +515,8 @@
   <string name="always">Sempre</string>
   <string name="large_images_only">Solo immagini grandi</string>
   <string name="battery_optimizations_enabled">Ottimizzazioni batteria attivate</string>
+  <string name="battery_optimizations_enabled_explained">Il tuo dispositivo sta facendo delle ingenti ottimizzazioni della batteria per %1$s che potrebbero portare ritardi alle notifiche o anche perdita di messaggi.\nSi consiglia di disattivarle.</string>
+  <string name="battery_optimizations_enabled_dialog">Il tuo dispositivo sta facendo delle ingenti ottimizzazioni della batteria per %1$s che potrebbero portare ritardi alle notifiche o anche perdita di messaggi.\n\nTi verrà ora chiesto di disattivarle.</string>
   <string name="disable">Disattiva</string>
   <string name="selection_too_large">L\'area selezionata è troppo grande</string>
   <string name="no_accounts">(Nessun account attivo)</string>
@@ -582,6 +588,8 @@
   <string name="show_error_message">Mostra messaggio di errore</string>
   <string name="error_message">Messaggio di errore</string>
   <string name="data_saver_enabled">Risparmio dati attivato</string>
+  <string name="data_saver_enabled_explained">Il tuo sistema operativo sta limitando l\'accesso internet a %1$s quando è in secondo piano. Per ricevere le notifiche di nuovi messaggi dovresti consentire l\'accesso senza limiti a %1$s quando il \"Risparmio dati\" è attivo.\n%1$s cercherà comunque di risparmiare dati quando possibile.</string>
+  <string name="device_does_not_support_data_saver">Il tuo dispositivo non supporta la disattivazione del Risparmio dati per %1$s.</string>
   <string name="error_unable_to_create_temporary_file">Impossibile creare il file temporaneo</string>
   <string name="this_device_has_been_verified">Questo dispositivo è stato verificato</string>
   <string name="copy_fingerprint">Copia impronta</string>
@@ -680,6 +688,7 @@
   <string name="edit_status_message_title">Modifica messaggio di stato</string>
   <string name="edit_status_message">Modifica il messaggio di stato</string>
   <string name="disable_encryption">Disattiva la cifratura</string>
+  <string name="error_trustkey_general">%1$s non riesce a inviare messaggi cifrati a %2$s. Potrebbe essere dovuto al tuo contatto che usa un server obsoleto o un client che non supporta OMEMO.</string>
   <string name="error_trustkey_device_list">Impossibile ricevere l\'elenco dispositivi</string>
   <string name="error_trustkey_bundle">Impossibile ricevere le chiavi di cifratura</string>
   <string name="error_trustkey_hint_mutual">Suggerimento: in alcuni casi può essere risolto aggiungendo a vicenda la vostra lista di contatti.</string>
@@ -712,6 +721,7 @@
   <string name="share">Condividi</string>
   <string name="unable_to_start_recording">Impossibile avviare la registrazione</string>
   <string name="please_wait">Attendere prego...</string>
+  <string name="no_microphone_permission">Dai a %1$s l\'accesso al microfono</string>
   <string name="search_messages">Cerca messaggi</string>
   <string name="gif">GIF</string>
   <string name="view_conversation">Vedi conversazione</string>
@@ -733,6 +743,7 @@
   <string name="conference_destroyed">Questa chat di gruppo è stata distrutta</string>
   <string name="unable_to_save_recording">Impossibile salvare la registrazione</string>
   <string name="foreground_service_channel_name">Servizio in primo piano</string>
+  <string name="foreground_service_channel_description">Questa categoria di notifiche è usata per mostrare una notifica permanente per indicare che %1$s è in esecuzione.</string>
   <string name="notification_group_status_information">Informazioni di stato</string>
   <string name="error_channel_name">Problemi di connettività</string>
   <string name="error_channel_description">Questa categoria di notifiche è usata per mostrare un notifica in caso si verifichi un problema nella connessione ad un account.</string>
@@ -900,6 +911,7 @@
   <string name="disable_tor_to_make_call">Disattiva Tor per le chiamate</string>
   <string name="incoming_call">Chiamata in arrivo</string>
   <string name="incoming_call_duration">Chiamata in arrivo · %s</string>
+  <string name="missed_call_timestamp">Chiamata persa · %s</string>
   <string name="outgoing_call">Chiamata in uscita</string>
   <string name="outgoing_call_duration">Chiamata in uscita · %s</string>
   <string name="missed_call">Chiamata persa</string>
