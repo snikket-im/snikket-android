@@ -597,7 +597,7 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
     private void startRinging() {
         Log.d(Config.LOGTAG, id.account.getJid().asBareJid() + ": received call from " + id.with + ". start ringing");
         ringingTimeoutFuture = jingleConnectionManager.schedule(this::ringingTimeout, BUSY_TIME_OUT, TimeUnit.SECONDS);
-        xmppConnectionService.getNotificationService().showIncomingCallNotification(id, getMedia());
+        xmppConnectionService.getNotificationService().startRinging(id, getMedia());
     }
 
     private synchronized void ringingTimeout() {

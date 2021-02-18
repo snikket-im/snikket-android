@@ -14,6 +14,7 @@ import android.os.PowerManager;
 import android.os.SystemClock;
 import android.util.Log;
 import android.util.Rational;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -144,6 +145,16 @@ public class RtpSessionActivity extends XmppActivity implements XmppConnectionSe
         help.setVisible(isHelpButtonVisible());
         gotoChat.setVisible(isSwitchToConversationVisible());
         return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onKeyDown(final int keyCode, final KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_VOLUME_DOWN){
+            if (xmppConnectionService != null) {
+                xmppConnectionService.getNotificationService().stopSoundAndVibration();
+            }
+        }
+        return super.onKeyDown(keyCode, event);
     }
 
     private boolean isHelpButtonVisible() {

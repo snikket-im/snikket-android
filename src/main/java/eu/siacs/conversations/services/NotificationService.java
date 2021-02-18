@@ -12,10 +12,12 @@ import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.Typeface;
 import android.media.AudioAttributes;
+import android.media.Ringtone;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.SystemClock;
+import android.os.Vibrator;
 import android.preference.PreferenceManager;
 import android.text.SpannableString;
 import android.text.style.StyleSpan;
@@ -43,6 +45,10 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.ScheduledFuture;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -70,12 +76,13 @@ import eu.siacs.conversations.xmpp.jingle.Media;
 
 public class NotificationService {
 
+    private static final ScheduledExecutorService SCHEDULED_EXECUTOR_SERVICE = Executors.newSingleThreadScheduledExecutor();
+
     public static final Object CATCHUP_LOCK = new Object();
 
     private static final int LED_COLOR = 0xff00ff00;
 
-    private static final int CALL_DAT = 120;
-    private static final long[] CALL_PATTERN = {0, 3 * CALL_DAT, CALL_DAT, CALL_DAT, 3 * CALL_DAT, CALL_DAT, CALL_DAT};
+    private static final long[] CALL_PATTERN = {0, 500, 300, 600};
 
     private static final String CONVERSATIONS_GROUP = "eu.siacs.conversations";
     private static final int NOTIFICATION_ID_MULTIPLIER = 1024 * 1024;
@@ -91,6 +98,10 @@ public class NotificationService {
     private Conversation mOpenConversation;
     private boolean mIsInForeground;
     private long mLastNotification;
+
+    private static final String INCOMING_CALLS_NOTIFICATION_CHANNEL = "incoming_calls_channel";
+    private Ringtone currentlyPlayingRingtone = null;
+    private ScheduledFuture<?> vibrationFuture;
 
     NotificationService(final XmppConnectionService service) {
         this.mXmppConnectionService = service;
@@ -129,6 +140,7 @@ public class NotificationService {
         }
 
         notificationManager.deleteNotificationChannel("export");
+        notificationManager.deleteNotificationChannel("incoming_calls");
 
         notificationManager.createNotificationChannelGroup(new NotificationChannelGroup("status", c.getString(R.string.notification_group_status_information)));
         notificationManager.createNotificationChannelGroup(new NotificationChannelGroup("chats", c.getString(R.string.notification_group_messages)));
@@ -162,20 +174,16 @@ public class NotificationService {
         exportChannel.setGroup("status");
         notificationManager.createNotificationChannel(exportChannel);
 
-        final NotificationChannel incomingCallsChannel = new NotificationChannel("incoming_calls",
+        final NotificationChannel incomingCallsChannel = new NotificationChannel(INCOMING_CALLS_NOTIFICATION_CHANNEL,
                 c.getString(R.string.incoming_calls_channel_name),
                 NotificationManager.IMPORTANCE_HIGH);
-        incomingCallsChannel.setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_RINGTONE), new AudioAttributes.Builder()
-                .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
-                .setUsage(AudioAttributes.USAGE_NOTIFICATION_RINGTONE)
-                .build());
+        incomingCallsChannel.setSound(null, null);
         incomingCallsChannel.setShowBadge(false);
         incomingCallsChannel.setLightColor(LED_COLOR);
         incomingCallsChannel.enableLights(true);
         incomingCallsChannel.setGroup("calls");
         incomingCallsChannel.setBypassDnd(true);
-        incomingCallsChannel.enableVibration(true);
-        incomingCallsChannel.setVibrationPattern(CALL_PATTERN);
+        incomingCallsChannel.enableVibration(false);
         notificationManager.createNotificationChannel(incomingCallsChannel);
 
         final NotificationChannel ongoingCallsChannel = new NotificationChannel("ongoing_calls",
@@ -387,14 +395,32 @@ public class NotificationService {
         notify(DELIVERY_FAILED_NOTIFICATION_ID, summaryNotification);
     }
 
-    public void showIncomingCallNotification(final AbstractJingleConnection.Id id, final Set<Media> media) {
+    public void startRinging(final AbstractJingleConnection.Id id, final Set<Media> media) {
+        showIncomingCallNotification(id, media);
+        final SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(mXmppConnectionService);
+        final Resources resources = mXmppConnectionService.getResources();
+        final Uri uri = Uri.parse(preferences.getString("call_ringtone", resources.getString(R.string.incoming_call_ringtone)));
+        this.currentlyPlayingRingtone = RingtoneManager.getRingtone(mXmppConnectionService, uri);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+            this.currentlyPlayingRingtone.setLooping(true);
+        }
+        this.currentlyPlayingRingtone.play();
+        this.vibrationFuture = SCHEDULED_EXECUTOR_SERVICE.scheduleAtFixedRate(
+                new VibrationRunnable(),
+                0,
+                3,
+                TimeUnit.SECONDS
+        );
+    }
+
+    private void showIncomingCallNotification(final AbstractJingleConnection.Id id, final Set<Media> media) {
         final Intent fullScreenIntent = new Intent(mXmppConnectionService, RtpSessionActivity.class);
         fullScreenIntent.putExtra(RtpSessionActivity.EXTRA_ACCOUNT, id.account.getJid().asBareJid().toEscapedString());
         fullScreenIntent.putExtra(RtpSessionActivity.EXTRA_WITH, id.with.toEscapedString());
         fullScreenIntent.putExtra(RtpSessionActivity.EXTRA_SESSION_ID, id.sessionId);
         fullScreenIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         fullScreenIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        final NotificationCompat.Builder builder = new NotificationCompat.Builder(mXmppConnectionService, "incoming_calls");
+        final NotificationCompat.Builder builder = new NotificationCompat.Builder(mXmppConnectionService, INCOMING_CALLS_NOTIFICATION_CHANNEL);
         if (media.contains(Media.VIDEO)) {
             builder.setSmallIcon(R.drawable.ic_videocam_white_24dp);
             builder.setContentTitle(mXmppConnectionService.getString(R.string.rtp_state_incoming_video_call));
@@ -468,7 +494,21 @@ public class NotificationService {
     }
 
     public void cancelIncomingCallNotification() {
+        stopSoundAndVibration();
         cancel(INCOMING_CALL_NOTIFICATION_ID);
+    }
+
+    public void stopSoundAndVibration() {
+        if (this.currentlyPlayingRingtone != null) {
+            if (this.currentlyPlayingRingtone.isPlaying()) {
+                Log.d(Config.LOGTAG, "stop playing ring tone");
+            }
+            this.currentlyPlayingRingtone.stop();
+        }
+        if (this.vibrationFuture != null && !this.vibrationFuture.isCancelled()) {
+            Log.d(Config.LOGTAG, "cancel vibration");
+            this.vibrationFuture.cancel(true);
+        }
     }
 
     public static void cancelIncomingCallNotification(final Context context) {
@@ -636,17 +676,7 @@ public class NotificationService {
         }
     }
 
-    private void modifyIncomingCall(Builder mBuilder) {
-        final SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(mXmppConnectionService);
-        final Resources resources = mXmppConnectionService.getResources();
-        final String ringtone = preferences.getString("call_ringtone", resources.getString(R.string.incoming_call_ringtone));
-        mBuilder.setVibrate(CALL_PATTERN);
-        final Uri uri = Uri.parse(ringtone);
-        try {
-            mBuilder.setSound(fixRingtoneUri(uri));
-        } catch (SecurityException e) {
-            Log.d(Config.LOGTAG, "unable to use custom notification sound " + uri.toString());
-        }
+    private void modifyIncomingCall(final Builder mBuilder) {
         mBuilder.setPriority(NotificationCompat.PRIORITY_HIGH);
         setNotificationColor(mBuilder);
         mBuilder.setLights(LED_COLOR, 2000, 3000);
@@ -1251,6 +1281,15 @@ public class NotificationService {
             notificationManager.cancel(tag, id);
         } catch (RuntimeException e) {
             Log.d(Config.LOGTAG, "unable to cancel notification", e);
+        }
+    }
+
+    private class VibrationRunnable implements Runnable {
+
+        @Override
+        public void run() {
+            final Vibrator vibrator = (Vibrator) mXmppConnectionService.getSystemService(Context.VIBRATOR_SERVICE);
+            vibrator.vibrate(CALL_PATTERN, -1);
         }
     }
 }
