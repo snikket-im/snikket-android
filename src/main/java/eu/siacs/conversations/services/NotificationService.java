@@ -34,6 +34,8 @@ import androidx.core.app.RemoteInput;
 import androidx.core.content.ContextCompat;
 import androidx.core.graphics.drawable.IconCompat;
 
+import com.google.common.base.Strings;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -397,20 +399,25 @@ public class NotificationService {
 
     public void startRinging(final AbstractJingleConnection.Id id, final Set<Media> media) {
         showIncomingCallNotification(id, media);
-        final SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(mXmppConnectionService);
-        final Resources resources = mXmppConnectionService.getResources();
-        final Uri uri = Uri.parse(preferences.getString("call_ringtone", resources.getString(R.string.incoming_call_ringtone)));
-        this.currentlyPlayingRingtone = RingtoneManager.getRingtone(mXmppConnectionService, uri);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
-            this.currentlyPlayingRingtone.setLooping(true);
-        }
-        this.currentlyPlayingRingtone.play();
         this.vibrationFuture = SCHEDULED_EXECUTOR_SERVICE.scheduleAtFixedRate(
                 new VibrationRunnable(),
                 0,
                 3,
                 TimeUnit.SECONDS
         );
+        final SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(mXmppConnectionService);
+        final Resources resources = mXmppConnectionService.getResources();
+        final String ringtonePreference = preferences.getString("call_ringtone", resources.getString(R.string.incoming_call_ringtone));
+        if (Strings.isNullOrEmpty(ringtonePreference)) {
+            Log.d(Config.LOGTAG,"ringtone has been set to none");
+            return;
+        }
+        final Uri uri = Uri.parse(ringtonePreference);
+        this.currentlyPlayingRingtone = RingtoneManager.getRingtone(mXmppConnectionService, uri);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+            this.currentlyPlayingRingtone.setLooping(true);
+        }
+        this.currentlyPlayingRingtone.play();
     }
 
     private void showIncomingCallNotification(final AbstractJingleConnection.Id id, final Set<Media> media) {
