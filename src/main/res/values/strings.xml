@@ -463,8 +463,8 @@
     <string name="account_status_host_unknown">The server is not responsible for this domain</string>
     <string name="server_info_broken">Broken</string>
     <string name="pref_presence_settings">Availability</string>
-    <string name="pref_away_when_screen_off">Away when screen is off</string>
-    <string name="pref_away_when_screen_off_summary">Show as Away when the screen is turned off</string>
+    <string name="pref_away_when_screen_off">Away when device is locked</string>
+    <string name="pref_away_when_screen_off_summary">Show as Away when the device is locked</string>
     <string name="pref_dnd_on_silent_mode">Busy in silent mode</string>
     <string name="pref_dnd_on_silent_mode_summary">Show as Busy when device is in silent mode</string>
     <string name="pref_treat_vibrate_as_silent">Treat vibrate as silent mode</string>

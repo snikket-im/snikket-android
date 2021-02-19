@@ -4,6 +4,7 @@ import android.Manifest;
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.app.AlarmManager;
+import android.app.KeyguardManager;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -774,8 +775,9 @@ public class XmppConnectionService extends Service {
                     break;
                 case Intent.ACTION_SCREEN_ON:
                     deactivateGracePeriod();
+                case Intent.ACTION_USER_PRESENT:
                 case Intent.ACTION_SCREEN_OFF:
-                    if (awayWhenScreenOff()) {
+                    if (awayWhenScreenLocked()) {
                         refreshAllPresences();
                     }
                     break;
@@ -975,7 +977,7 @@ public class XmppConnectionService extends Service {
         return getBooleanPreference(SettingsActivity.TREAT_VIBRATE_AS_SILENT, R.bool.treat_vibrate_as_silent);
     }
 
-    private boolean awayWhenScreenOff() {
+    private boolean awayWhenScreenLocked() {
         return getBooleanPreference(SettingsActivity.AWAY_WHEN_SCREEN_IS_OFF, R.bool.away_when_screen_off);
     }
 
@@ -986,29 +988,16 @@ public class XmppConnectionService extends Service {
     private Presence.Status getTargetPresence() {
         if (dndOnSilentMode() && isPhoneSilenced()) {
             return Presence.Status.DND;
-        } else if (awayWhenScreenOff() && !isInteractive()) {
+        } else if (awayWhenScreenLocked() && isScreenLocked()) {
             return Presence.Status.AWAY;
         } else {
             return Presence.Status.ONLINE;
         }
     }
 
-    @SuppressLint("NewApi")
-    @SuppressWarnings("deprecation")
-    public boolean isInteractive() {
-        try {
-            final PowerManager pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
-
-            final boolean isScreenOn;
-            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
-                isScreenOn = pm.isScreenOn();
-            } else {
-                isScreenOn = pm.isInteractive();
-            }
-            return isScreenOn;
-        } catch (RuntimeException e) {
-            return false;
-        }
+    public boolean isScreenLocked() {
+        final KeyguardManager keyguardManager = (KeyguardManager) getSystemService(Context.KEYGUARD_SERVICE);
+        return keyguardManager != null && keyguardManager.inKeyguardRestrictedInputMode();
     }
 
     private boolean isPhoneSilenced() {
@@ -1272,10 +1261,11 @@ public class XmppConnectionService extends Service {
     }
 
     public void toggleScreenEventReceiver() {
-        if (awayWhenScreenOff() && !manuallyChangePresence()) {
+        if (awayWhenScreenLocked() && !manuallyChangePresence()) {
             final IntentFilter filter = new IntentFilter();
             filter.addAction(Intent.ACTION_SCREEN_ON);
             filter.addAction(Intent.ACTION_SCREEN_OFF);
+            filter.addAction(Intent.ACTION_USER_PRESENT);
             registerReceiver(this.mInternalScreenEventReceiver, filter);
         } else {
             try {

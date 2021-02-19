@@ -368,8 +368,8 @@ public class NotificationService {
 
     public void pushFailedDelivery(final Message message) {
         final Conversation conversation = (Conversation) message.getConversation();
-        final boolean isScreenOn = mXmppConnectionService.isInteractive();
-        if (this.mIsInForeground && isScreenOn && this.mOpenConversation == message.getConversation()) {
+        final boolean isScreenLocked = !mXmppConnectionService.isScreenLocked();
+        if (this.mIsInForeground && isScreenLocked && this.mOpenConversation == message.getConversation()) {
             Log.d(Config.LOGTAG, message.getConversation().getAccount().getJid().asBareJid() + ": suppressing failed delivery notification because conversation is open");
             return;
         }
@@ -537,8 +537,8 @@ public class NotificationService {
             Log.d(Config.LOGTAG, message.getConversation().getAccount().getJid().asBareJid() + ": suppressing notification because turned off");
             return;
         }
-        final boolean isScreenOn = mXmppConnectionService.isInteractive();
-        if (this.mIsInForeground && isScreenOn && this.mOpenConversation == message.getConversation()) {
+        final boolean isScreenLocked = mXmppConnectionService.isScreenLocked();
+        if (this.mIsInForeground && !isScreenLocked && this.mOpenConversation == message.getConversation()) {
             Log.d(Config.LOGTAG, message.getConversation().getAccount().getJid().asBareJid() + ": suppressing notification because conversation is open");
             return;
         }
@@ -546,7 +546,7 @@ public class NotificationService {
             pushToStack(message);
             final Conversational conversation = message.getConversation();
             final Account account = conversation.getAccount();
-            final boolean doNotify = (!(this.mIsInForeground && this.mOpenConversation == null) || !isScreenOn)
+            final boolean doNotify = (!(this.mIsInForeground && this.mOpenConversation == null) || isScreenLocked)
                     && !account.inGracePeriod()
                     && !this.inMiniGracePeriod(account);
             updateNotification(doNotify, Collections.singletonList(conversation.getUuid()));
