@@ -425,7 +425,7 @@ public class HttpDownloadConnection implements Transferable {
         private void download() throws Exception {
             InputStream is = null;
             HttpURLConnection connection = null;
-            PowerManager.WakeLock wakeLock = mHttpConnectionManager.createWakeLock("http_download_" + message.getUuid());
+            final PowerManager.WakeLock wakeLock = mHttpConnectionManager.createWakeLock("http_download_" + message.getUuid());
             try {
                 wakeLock.acquire();
                 if (mUseTor || message.getConversation().getAccount().isOnion()) {

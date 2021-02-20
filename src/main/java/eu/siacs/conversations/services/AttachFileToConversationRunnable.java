@@ -54,7 +54,7 @@ public class AttachFileToConversationRunnable implements Runnable, MediaTranscod
 	}
 
 	boolean isVideoMessage() {
-		return this.isVideoMessage && Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2;
+		return this.isVideoMessage;
 	}
 
 	private void processAsFile() {
@@ -89,7 +89,6 @@ public class AttachFileToConversationRunnable implements Runnable, MediaTranscod
 		}
 	}
 
-	@RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR2)
 	private void processAsVideo() throws FileNotFoundException {
 		Log.d(Config.LOGTAG,"processing file as video");
 		mXmppConnectionService.startForcingForegroundNotification();

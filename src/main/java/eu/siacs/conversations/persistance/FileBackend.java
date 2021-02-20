@@ -296,12 +296,7 @@ public class FileBackend {
         if (dimensions != null) {
             return dimensions;
         }
-        final int rotation;
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.JELLY_BEAN_MR1) {
-            rotation = extractRotationFromMediaRetriever(metadataRetriever);
-        } else {
-            rotation = 0;
-        }
+        final int rotation = extractRotationFromMediaRetriever(metadataRetriever);
         boolean rotated = rotation == 90 || rotation == 270;
         int height;
         try {
@@ -322,7 +317,6 @@ public class FileBackend {
         return rotated ? new Dimensions(width, height) : new Dimensions(height, width);
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
     private static int extractRotationFromMediaRetriever(MediaMetadataRetriever metadataRetriever) {
         String r = metadataRetriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_VIDEO_ROTATION);
         try {
@@ -727,9 +721,9 @@ public class FileBackend {
             if (is == null) {
                 throw new FileCopyException(R.string.error_not_an_image_file);
             }
-            Bitmap originalBitmap;
-            BitmapFactory.Options options = new BitmapFactory.Options();
-            int inSampleSize = (int) Math.pow(2, sampleSize);
+            final Bitmap originalBitmap;
+            final BitmapFactory.Options options = new BitmapFactory.Options();
+            final int inSampleSize = (int) Math.pow(2, sampleSize);
             Log.d(Config.LOGTAG, "reading bitmap with sample size " + inSampleSize);
             options.inSampleSize = inSampleSize;
             originalBitmap = BitmapFactory.decodeStream(is, null, options);
@@ -737,12 +731,12 @@ public class FileBackend {
             if (originalBitmap == null) {
                 throw new ImageCompressionException("Source file was not an image");
             }
-            if (hasAlpha(originalBitmap)) {
+            if (!"image/jpeg".equals(options.outMimeType) && hasAlpha(originalBitmap)) {
                 originalBitmap.recycle();
                 throw new ImageCompressionException("Source file had alpha channel");
             }
             Bitmap scaledBitmap = resize(originalBitmap, Config.IMAGE_SIZE);
-            int rotation = getRotation(image);
+            final int rotation = getRotation(image);
             scaledBitmap = rotate(scaledBitmap, rotation);
             boolean targetSizeReached = false;
             int quality = Config.IMAGE_QUALITY;
@@ -758,7 +752,7 @@ public class FileBackend {
                 quality -= 5;
             }
             scaledBitmap.recycle();
-        } catch (FileNotFoundException e) {
+        } catch (final FileNotFoundException e) {
             throw new FileCopyException(R.string.error_file_not_found);
         } catch (IOException e) {
             e.printStackTrace();
