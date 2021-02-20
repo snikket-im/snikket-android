@@ -29,6 +29,13 @@
     <string name="just_now">μόλις τώρα</string>
     <string name="minute_ago">πριν από 1 λεπτό</string>
     <string name="minutes_ago">πριν από %d λεπτά</string>
+    <plurals name="x_unread_conversations">
+        <item quantity="one">%d μη αναγνωσμένη συζήτηση</item>
+
+    
+        <item quantity="other">%d μη αναγνωσμένες συζητήσεις</item>
+
+    </plurals>
     <string name="sending">αποστολή...</string>
     <string name="message_decrypting">Αποκρυπτογράφηση μηνύματος. Παρακαλώ περιμένετε...</string>
     <string name="pgp_message">Κρυπτογραφημένο μήνυμα OpenPGP</string>
@@ -64,6 +71,8 @@
     <string name="unblock">Άρση αποκλεισμού</string>
     <string name="save">Αποθήκευση</string>
     <string name="ok">Εντάξει</string>
+    <string name="crash_report_title">Το %1$s έχει τερματιστεί απρόσμενα</string>
+    <string name="crash_report_message">Χρησιμοποιώνας τον λογαριασμό XMPP σας για να στέιλετε ίχνη στοίβας βοηθάτε την συνεχιζόμενη ανάπτυξη του %1$s.</string>
     <string name="send_now">Αποστολή τώρα</string>
     <string name="send_never">Χωρίς ερώτηση την επόμενη φορά</string>
     <string name="problem_connecting_to_account">Δεν ήταν δυνατή η σύνδεση στον λογαριασμό</string>
@@ -93,6 +102,7 @@
     <string name="send_unencrypted">Αποστολή χωρίς κρυπτογράφηση</string>
     <string name="decryption_failed">Η αποκρυπτογράφηση απέτυχε. Ίσως δεν κατέχετε το σωστό ιδιωτικό κλειδί.</string>
     <string name="openkeychain_required">OpenKeychain</string>
+    <string name="openkeychain_required_long"><![CDATA[Το %1$s χρησιμοποιεί το <b>OpenKeychain</b> για να κρυπτογραφήσει και αποκρυπτογραφήσει μηνύματα και να διαχειριστεί τα δημόσια κλειδιά σας.<br><br>Η άδειά του βασίζεται στο GPLv3+ και είναι διαθέσιμο στο F-Droid και το Google Play.<br><br><small>(Παρακαλώ επανεκκινήστε το %1$s μετά.)</small>]]></string>
     <string name="restart">Επανεκκίνηση</string>
     <string name="install">Εγκατάσταση</string>
     <string name="openkeychain_not_installed">Παρακαλώ εγκαταστήστε το OpenKeychain</string>
@@ -114,7 +124,6 @@
     <string name="pref_ringtone">Κουδούνισμα</string>
     <string name="pref_notification_sound">Ήχος ειδοποίησης</string>
     <string name="pref_notification_sound_summary">Ήχος ειδοποίησης για νέα μηνύματα</string>
-    <string name="pref_call_ringtone_summary">Κουδούνισμα για εισερχόμενη κλήση</string>
     <string name="pref_notification_grace_period">Περίοδος Χάριτος</string>
     <string name="pref_notification_grace_period_summary">Ο χρόνος σίγασης ειδοποιήσεων αφότου ανιχνευθεί δραστηριότητα σε μια από τις άλλες συσκευές σας.</string>
     <string name="pref_advanced_options">Για προχωρημένους</string>
@@ -206,6 +215,8 @@
     <string name="openpgp_key_id">Ταυτότητα κλειδιού OpenPGP</string>
     <string name="omemo_fingerprint">Αποτύπωμα OMEMO</string>
     <string name="omemo_fingerprint_x509">v\\Αποτύπωμα OMEMO</string>
+    <string name="omemo_fingerprint_selected_message">Αποτύπωμα OMEMO (πηγή μηνύματος)</string>
+    <string name="omemo_fingerprint_x509_selected_message">v\\Αποτύπωμα OMEMO (πηγή μηνύματος)</string>
     <string name="other_devices">\'Αλλες συσκευές</string>
     <string name="trust_omemo_fingerprints">Επαλήθευση των αποτυπωμάτων OMEMO</string>
     <string name="fetching_keys">Μεταφόρτωση κλειδιών...</string>
@@ -453,8 +464,6 @@
     <string name="account_status_host_unknown">Ο διακομιστής δεν είναι υπεύθυνος για αυτόν τον τομέα</string>
     <string name="server_info_broken">Χαλασμένος</string>
     <string name="pref_presence_settings">Διαθεσιμότητα</string>
-    <string name="pref_away_when_screen_off">Εκτός χρήσης όταν η οθόνη είναι σβηστή</string>
-    <string name="pref_away_when_screen_off_summary">Εμφάνιση παρουσίας ως εκτός χρήσης όταν σβήνει η οθόνη</string>
     <string name="pref_dnd_on_silent_mode">Απασχολημένος/η όταν βρίσκεται σε σιωπηρή λειτουργία</string>
     <string name="pref_dnd_on_silent_mode_summary">Σημειώνει την παρουσία σας ως Απασχολημένος/η όταν η συσκευή είναι σε κατάσταση σιωπής</string>
     <string name="pref_treat_vibrate_as_silent">Χρήση της κατάστασης δόνησης ως σιωπηρή κατάσταση</string>
@@ -494,7 +503,10 @@
     <string name="shared_image_with_x">Η εικόνα διαμοιράστηκε με την επαφή %s</string>
     <string name="shared_images_with_x">Η εικόνες διαμοιράστηκαν με την επαφή %s</string>
     <string name="shared_text_with_x">Το κείμενο διαμοιράστηκε με την επαφή %s</string>
+    <string name="no_storage_permission">Απόδοση δικαιώματος στο %1$s για πρόσβαση στον εξωτερικό αποθηκευτικό χώρο</string>
+    <string name="no_camera_permission">Απόδοση δικαιώματος στο %1$s για πρόσβαση στην φωτογραφική μηχανή</string>
     <string name="sync_with_contacts">Συγχρονισμός με επαφές</string>
+    <string name="sync_with_contacts_long">Το %1$s ζητάει το δικαίωμα να έχει πρόσβαση στο βιβλίο διευθύνσεων για να το ταιριάξει με την λίστα επαφών XMPP σας.\nΑυτή η ενέργεια θα εμφανίσει τα πλήρη ονόματα και τις εικόνες προφίλ των επαφών σας.\n\nΤο %1$s θα διαβάσει μόνο το βιβλίο διευθύνσεών σας και θα το ταιριάξει τοπικά χωρίς να μεταφορτώσει κανένα στοιχείο στον διακομιστή σας. </string>
     <string name="sync_with_contacts_quicksy"><![CDATA[Το Quicksy χρειάζεται να έχει πρόσβαση στους τηλεφωνικούς αριθμούς των επαφών σας για να προτείνει πιθανές επαφές που χρησιμοποιούν ήδη το Quicksy.<br><br>Δεν θα αποθηκευτεί αντίγραφο αυτών των τηλεφωνικών αριθμών.\n\nΓια περισσότερες πληροφορίες διαβάστε την <a href="https://quicksy.im/#privacy">πολιτική απορρήτου</a> μας.<br><br>Θα σας ζητηθεί τώρα να δώσετε το δικαίωμα για πρόσβαση στις επαφές σας.]]></string>
     <string name="notify_on_all_messages">Ειδοποίηση για όλα τα μηνύματα</string>
     <string name="notify_only_when_highlighted">Ειδοποίηση μόνο όταν αναφέρεται το όνομά μου</string>
@@ -505,6 +517,8 @@
     <string name="always">Πάντα</string>
     <string name="large_images_only">Μεγάλες εικόνες μόνο</string>
     <string name="battery_optimizations_enabled">Η βελτιστοποίηση χρήσης μπαταρίας είναι ενεργοποιημένη</string>
+    <string name="battery_optimizations_enabled_explained">Η συσκευή σας χρησιμοποιεί έντονη βελτιστοποίηση στην χρήση μπαταρίας του %1$s, πράγμα που μπορεί να οδηγήσει σε αργοπορημένες ειδοποιήσεις ή ακόμα και σε απώλεια μηνυμάτων.\nΠροτείνεται να την απενεργοποιήσετε.</string>
+    <string name="battery_optimizations_enabled_dialog">Η συσκευή σας χρησιμοποιεί έντονη βελτιστοποίηση στην χρήση μπαταρίας του %1$s, πράγμα που μπορεί να οδηγήσει σε αργοπορημένες ειδοποιήσεις ή ακόμα και σε απώλεια μηνυμάτων.\nΘα σας ζητηθεί τώρα να την απενεργοποιήσετε.</string>
     <string name="disable">Απενεργοποίηση</string>
     <string name="selection_too_large">Η επιλεγμένη περιοχή είναι πολύ μεγάλη</string>
     <string name="no_accounts">(δεν υπάρχουν ενεργοί λογαριασμοί)</string>
@@ -576,9 +590,12 @@
     <string name="show_error_message">Εμφάνιση μηνύματος λάθους</string>
     <string name="error_message">Μήνυμα λάθους</string>
     <string name="data_saver_enabled">Ενεργοποίηση μείωσης χρήσης δεδομένων</string>
+    <string name="data_saver_enabled_explained">Το λειτουργικό σας σύστημα περιορίζει το %1$s από το να συνδέεται στο Internet όταν βρίσκεται στο παρασκήνιο. Για να λαμβάνετε ειδοποιήσεις νέων μηνυμάτων πρέπει να επιτρέψετε στο %1$s να έχει απεριόριστη πρόσβαση όταν ενεργοποιείται η μείωση χρήσης δεδομένων.\nΤο %1$s θα προσπαθεί να περιορίσει τη χρήση δεδομένων όταν είναι δυνατό.</string>
+    <string name="device_does_not_support_data_saver">Η συσκευή σας δεν υποστηρίζει την απενεργοποίηση μείωσης χρήσης δεδομένων για το %1$s.</string>
     <string name="error_unable_to_create_temporary_file">Αδυναμία δημιουργίας προσωρινού αρχείου</string>
     <string name="this_device_has_been_verified">Αυτή η συσκευή έχει επαληθευτεί</string>
     <string name="copy_fingerprint">Αντιγραφή αποτυπώματος</string>
+    <string name="all_omemo_keys_have_been_verified">Έχετε επαληθεύσει όλα τα κλειδιά OMEMO που κατέχετε</string>
     <string name="barcode_does_not_contain_fingerprints_for_this_conversation">Ο γραμμοκώδικας δεν περιέχει αποτυπώματα για την συζήτηση αυτή.</string>
     <string name="verified_fingerprints">Επαληθευμένα αποτυπώματα</string>
     <string name="use_camera_icon_to_scan_barcode">Χρήση της φωτογραφικής μηχανής για την σάρωση του γραμμοκώδικα της επαφής</string>
@@ -673,6 +690,7 @@
     <string name="edit_status_message_title">Διόρθωση μηνύματος κατάστασης</string>
     <string name="edit_status_message">Διόρθωση μηνύματος κατάστασης</string>
     <string name="disable_encryption">Απενεργοποίηση κρυπτογράφησης</string>
+    <string name="error_trustkey_general">Το %1$s αδυνατεί να στείλει κρυπτογραφημένα μηνύματα στην επαφή %2$s . Αυτό μπορεί να συμβαίνει γιατί η επαφή σας χρησιμοποιεί παλιότερο διακομιστή ή πρόγραμμα που δε μπορεί να χειριστεί κρυπτογράφηση OMEMO.</string>
     <string name="error_trustkey_device_list">Αδύναμια μεταφόρτωσης λίστας συσκευών</string>
     <string name="error_trustkey_bundle">Αδυναμία ανάσυρσης κλειδιών κρυπτογράφησης</string>
     <string name="error_trustkey_hint_mutual">Συμβουλή: Σε κάποιες περιπτώσεις αυτό μπορεί να διορθωθεί αν αμοιβαία προστεθείτε στους καταλόγους επαφών σας.</string>
@@ -705,6 +723,7 @@
     <string name="share">Διαμοιρασμός</string>
     <string name="unable_to_start_recording">Αδυναμία έναρξης εγγραφής</string>
     <string name="please_wait">Παρακαλώ περιμένετε...</string>
+    <string name="no_microphone_permission">Απόδοση δικαιώματος στο %1$s για πρόσβαση στο μικρόφωνο</string>
     <string name="search_messages">Αναζήτηση μηνυμάτων</string>
     <string name="gif">GIF</string>
     <string name="view_conversation">Εμφάνιση συζήτησης</string>
@@ -726,6 +745,7 @@
     <string name="conference_destroyed">Αυτή η ομαδική συζήτηση έχει καταστραφεί</string>
     <string name="unable_to_save_recording">Αδυναμία αποθήκευσης εγγραφής</string>
     <string name="foreground_service_channel_name">Υπηρεσία στο προσκήνιο</string>
+    <string name="foreground_service_channel_description">Αυτή η κατηγορία ειδοποιήσεων χρησιμοποιείται για την εμφάνιση μιας μόνιμης ειδοποίησης που δείχνει πως εκτελείται το %1$s.</string>
     <string name="notification_group_status_information">Πληροφορίες κατάστασης</string>
     <string name="error_channel_name">Προβλήματα συνδεσιμότητας</string>
     <string name="error_channel_description">Αυτή η κατηγορία ειδοποιήσεων χρησιμοποιείται για να εμφανίσει μια ειδοποίηση σε περίπτωση που υπάρχει πρόβλημα σύνδεσης σε κάποιον λογαριασμό.</string>
@@ -893,6 +913,7 @@
     <string name="disable_tor_to_make_call">Απενεργοποίηστε το Tor για να κάνετε κλήσεις</string>
     <string name="incoming_call">Εισερχόμενη κλήση</string>
     <string name="incoming_call_duration">Εισερχόμενη κλήση · %s</string>
+    <string name="missed_call_timestamp">Αναπάντηση κλήση · %s</string>
     <string name="outgoing_call">Εξερχόμενη κλήση</string>
     <string name="outgoing_call_duration">Εξερχόμενη κλήση · %s</string>
     <string name="missed_call">Αναπάντηση κλήση</string>
@@ -930,4 +951,9 @@
     </plurals>
     <string name="failed_deliveries">Αποτυχημένες διανομές</string>
     <string name="more_options">Περισσότερες επιλογές</string>
-    </resources>
+    <string name="no_application_found">Δεν βρέθηκε εφαρμογή</string>
+    <string name="invite_to_app">Πρόσκληση στο Conversations</string>
+    <string name="unable_to_parse_invite">Αδυναμία ανάγνωσης πρόσκλησης</string>
+    <string name="server_does_not_support_easy_onboarding_invites">Ο διακομιστής δεν υποστηρίζει την δημιουργία προσκλήσεων</string>
+    <string name="no_active_accounts_support_this">Κανένας από τους ενεργούς λογαριασμούς δεν υποστηρίζει αυτό το χαρακτηριστικό</string>
+</resources>

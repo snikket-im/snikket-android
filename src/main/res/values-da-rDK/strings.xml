@@ -112,7 +112,6 @@
     <string name="pref_ringtone">Ringetone</string>
     <string name="pref_notification_sound">Notifikationslyd</string>
     <string name="pref_notification_sound_summary">Lydnotifikation for nye beskeder</string>
-    <string name="pref_call_ringtone_summary">Ringetone for indkommende opkald</string>
     <string name="pref_advanced_options">Advanceret</string>
     <string name="pref_never_send_crash">Send aldrig fejlrapporter</string>
     <string name="pref_never_send_crash_summary">Ved at indsende \"stack traces\" hjælper du udviklingen</string>
@@ -382,8 +381,6 @@
     <string name="account_status_tor_unavailable">TOR netværk er utilgængelig</string>
     <string name="account_status_host_unknown">Serveren er ikke ansvarlig for dette domæne</string>
     <string name="pref_presence_settings">Tilgængelighed</string>
-    <string name="pref_away_when_screen_off">Væk når er skærm er slukket</string>
-    <string name="pref_away_when_screen_off_summary">Vis som Væk når skærmen er slukket</string>
     <string name="pref_dnd_on_silent_mode">Optaget i lydløs tilstand</string>
     <string name="pref_dnd_on_silent_mode_summary">Vis som Optaget når enhed er i lydløs tilstand</string>
     <string name="pref_treat_vibrate_as_silent">Behandl vibration som lydløs tilstand</string>

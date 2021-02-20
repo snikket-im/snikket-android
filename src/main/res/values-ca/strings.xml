@@ -121,7 +121,6 @@
     <string name="pref_ringtone">To de trucada</string>
     <string name="pref_notification_sound">So de notificació</string>
     <string name="pref_notification_sound_summary">So de notificació per als nous missatges</string>
-    <string name="pref_call_ringtone_summary">To de trucada entrant</string>
     <string name="pref_notification_grace_period">Període de gràcia</string>
     <string name="pref_notification_grace_period_summary">La durada de les notificacions se silencia després de detectar activitat en un dels seus altres dispositius.</string>
     <string name="pref_advanced_options">Avançat</string>
@@ -460,8 +459,6 @@
     <string name="account_status_host_unknown">El servidor no és responsable d\'aquest domini</string>
     <string name="server_info_broken">Trencat</string>
     <string name="pref_presence_settings">Disponibilitat</string>
-    <string name="pref_away_when_screen_off">Fora quan la pantalla està apagada</string>
-    <string name="pref_away_when_screen_off_summary">Mostrar com a Absent quan la pantalla està apagada</string>
     <string name="pref_dnd_on_silent_mode">Ocupat en manera silenciosa</string>
     <string name="pref_dnd_on_silent_mode_summary">Mostrar com ocupat quan el dispositiu està en manera silenciosa</string>
     <string name="pref_treat_vibrate_as_silent">Tracteu de vibrar al modo silenciós</string>

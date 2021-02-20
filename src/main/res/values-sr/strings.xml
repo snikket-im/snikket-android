@@ -373,7 +373,6 @@
     <string name="account_status_bind_failure">Неуспех свезивања</string>
     <string name="server_info_broken">Оштећен</string>
     <string name="pref_presence_settings">Доступност</string>
-    <string name="pref_away_when_screen_off">Одсутан кад је екран искључен</string>
     <string name="pref_treat_vibrate_as_silent">Вибрација је нечујни режим</string>
     <string name="pref_show_connection_options">Проширене поставке повезивања</string>
     <string name="pref_show_connection_options_summary">Приказ домаћина и порта у поставкама налога</string>

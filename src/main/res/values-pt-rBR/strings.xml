@@ -124,7 +124,6 @@
     <string name="pref_ringtone">Toque</string>
     <string name="pref_notification_sound">Som de notificação</string>
     <string name="pref_notification_sound_summary">Som de notificação para novas mensagens</string>
-    <string name="pref_call_ringtone_summary">Toque para chamadas recebidas</string>
     <string name="pref_notification_grace_period">Período de espera</string>
     <string name="pref_notification_grace_period_summary">Espaço de tempo em que as notificações serão silenciadas, após detectar atividade em algum dos seus outros dispositivos.</string>
     <string name="pref_advanced_options">Avançado</string>
@@ -463,8 +462,6 @@
     <string name="account_status_host_unknown">O servidor não responde por esse domínio</string>
     <string name="server_info_broken">Quebrado</string>
     <string name="pref_presence_settings">Disponibilidade</string>
-    <string name="pref_away_when_screen_off">\"Afastado\" quando a tela estiver desligada</string>
-    <string name="pref_away_when_screen_off_summary">Exibe como Afastado quando a tela for desligada</string>
     <string name="pref_dnd_on_silent_mode">\"Ocupado\" no modo silencioso</string>
     <string name="pref_dnd_on_silent_mode_summary">Exibe como Ocupado quando o dispositivo estiver em modo silencioso</string>
     <string name="pref_treat_vibrate_as_silent">Considerar o modo de vibração como silencioso</string>

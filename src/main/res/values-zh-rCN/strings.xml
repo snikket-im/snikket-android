@@ -121,7 +121,6 @@
     <string name="pref_ringtone">铃声</string>
     <string name="pref_notification_sound">通知铃声</string>
     <string name="pref_notification_sound_summary">新消息通知铃声</string>
-    <string name="pref_call_ringtone_summary">来电铃声</string>
     <string name="pref_notification_grace_period">静默时间段</string>
     <string name="pref_notification_grace_period_summary">在其他设备上检测到活动之后，通知在此时间段内将被静音。</string>
     <string name="pref_advanced_options">高级</string>
@@ -461,8 +460,6 @@
     <string name="account_status_host_unknown">服务器不能为域名做出响应</string>
     <string name="server_info_broken">损坏</string>
     <string name="pref_presence_settings">可用性</string>
-    <string name="pref_away_when_screen_off">锁屏时显示离开</string>
-    <string name="pref_away_when_screen_off_summary">屏幕关闭时显示为“离开”</string>
     <string name="pref_dnd_on_silent_mode">在静音模式显示为忙碌</string>
     <string name="pref_dnd_on_silent_mode_summary">设备处于静音模式时显示为忙碌</string>
     <string name="pref_treat_vibrate_as_silent">将振动看作静音</string>

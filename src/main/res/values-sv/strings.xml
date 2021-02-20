@@ -364,7 +364,6 @@
     <string name="account_status_bind_failure">Bind-fel</string>
     <string name="server_info_broken">Sönder</string>
     <string name="pref_presence_settings">Tillgänglighet</string>
-    <string name="pref_away_when_screen_off">Status borta när skärmen är av</string>
     <string name="pref_treat_vibrate_as_silent">Hantera vibrationsläge som tyst läge</string>
     <string name="pref_show_connection_options">Utökade anslutningsinställningar</string>
     <string name="pref_show_connection_options_summary">Visa val av servernamn och port vid inställning av konto</string>

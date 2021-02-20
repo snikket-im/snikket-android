@@ -288,7 +288,6 @@
     <string name="download_failed_could_not_connect">Tải xuống thất bại: Không thể kết nối đến máy chủ</string>
     <string name="account_status_tor_unavailable">Mạng Tor chưa sẵn sàng</string>
     <string name="server_info_broken">Bị hỏng</string>
-    <string name="pref_away_when_screen_off">Vắng mặt khi màn hình tắt</string>
     <string name="action_renew_certificate">Gia hạn chứng nhận</string>
     <string name="error_fetching_omemo_key">Lỗi nhập khoá OMEMO!</string>
     <string name="verified_omemo_key_with_certificate">Khoá OMEMO đã xác minh với chứng nhận!</string>

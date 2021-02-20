@@ -113,7 +113,6 @@
     <string name="pref_ringtone">Мелодія</string>
     <string name="pref_notification_sound">Звук сповіщень</string>
     <string name="pref_notification_sound_summary">Звук сповіщень для нових повідомлень</string>
-    <string name="pref_call_ringtone_summary">Мелодія вхідного виклику</string>
     <string name="pref_notification_grace_period">Час до блокування</string>
     <string name="pref_notification_grace_period_summary">Час надсилання сповіщень не буде враховано у разі активності користувача на іншому пристрої</string>
     <string name="pref_advanced_options">Розширені</string>
@@ -454,7 +453,6 @@
     <string name="account_status_host_unknown">Сервер не відповідає за цей домен</string>
     <string name="server_info_broken">Поламано</string>
     <string name="pref_presence_settings">Доступність</string>
-    <string name="pref_away_when_screen_off">Відійшов, якщо екран вимкнено</string>
     <string name="pref_treat_vibrate_as_silent">Вважати вібро за безшумний режим</string>
     <string name="pref_show_connection_options">Розширені налаштування з\'єднання</string>
     <string name="pref_show_connection_options_summary">Показати налаштування імені вузла та порту при налаштуванні облікового запису</string>

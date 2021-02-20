@@ -29,6 +29,13 @@
     <string name="just_now">şimdi</string>
     <string name="minute_ago">1 dakika önce</string>
     <string name="minutes_ago">%d dakika önc</string>
+    <plurals name="x_unread_conversations">
+        <item quantity="one">%d okunmamış konuşma</item>
+
+    
+        <item quantity="other">%d okunmamış konuşmalar</item>
+
+    </plurals>
     <string name="sending">gönderiyor…</string>
     <string name="message_decrypting">İleti deşifre ediliyor. Lütfen bekleyin…</string>
     <string name="pgp_message">OpenPGP şifreli ileti</string>
@@ -117,7 +124,6 @@
     <string name="pref_ringtone">Zil sesi</string>
     <string name="pref_notification_sound">Bildirim sesi</string>
     <string name="pref_notification_sound_summary">Yeni mesajlar için bildirim sesi</string>
-    <string name="pref_call_ringtone_summary">Gelen çağrılar için zil sesi</string>
     <string name="pref_notification_grace_period">Mühlet</string>
     <string name="pref_notification_grace_period_summary">Cihazlarınızın birinde faaliyet tespit edilmesinden sonra  zaman hatırlatmalarının susturulma uzunluğu.</string>
     <string name="pref_advanced_options">Gelişmiş</string>
@@ -458,8 +464,6 @@
     <string name="account_status_host_unknown">Sunucu bu alan adı için sorumlu değil</string>
     <string name="server_info_broken">Bozuk</string>
     <string name="pref_presence_settings">Mevcudiyet</string>
-    <string name="pref_away_when_screen_off">Ekran kapandığında uzakta</string>
-    <string name="pref_away_when_screen_off_summary">Ekran kapalı olduğund Uzakta olarak göster</string>
     <string name="pref_dnd_on_silent_mode">Müsait değilken sessiz kipte olur</string>
     <string name="pref_dnd_on_silent_mode_summary">Telefonunuz sessizdeyken, durum bildiriminizi müsait değil olarak gösterir.</string>
     <string name="pref_treat_vibrate_as_silent">Titreşim kipini sessiz kip olarak değerlendir</string>

@@ -124,7 +124,6 @@
     <string name="pref_ringtone">Suoneria</string>
     <string name="pref_notification_sound">Suono di notifica</string>
     <string name="pref_notification_sound_summary">Suono di notifica per i nuovi messaggi</string>
-    <string name="pref_call_ringtone_summary">Suoneria per chiamate in arrivo</string>
     <string name="pref_notification_grace_period">Periodo di grazia</string>
     <string name="pref_notification_grace_period_summary">Il periodo di tempo in cui le notifiche vengono silenziate dopo aver rilevato attività su uno dei tuoi altri dispositivi.</string>
     <string name="pref_advanced_options">Avanzate</string>
@@ -216,6 +215,8 @@
     <string name="openpgp_key_id">ID chiave OpenPGP</string>
     <string name="omemo_fingerprint">Impronta OMEMO</string>
     <string name="omemo_fingerprint_x509">v\\OMEMO impronta</string>
+    <string name="omemo_fingerprint_selected_message">OMEMO fingerprint (messaggio originatore)</string>
+    <string name="omemo_fingerprint_x509_selected_message">v\\OMEMO fingerprint (messaggio originatore)</string>
     <string name="other_devices">Altri dispositivi</string>
     <string name="trust_omemo_fingerprints">Fidati delle impronte OMEMO</string>
     <string name="fetching_keys">Ricezione chiavi...</string>
@@ -463,8 +464,6 @@
     <string name="account_status_host_unknown">Il server non è responsabile per questo dominio</string>
     <string name="server_info_broken">Rotto</string>
     <string name="pref_presence_settings">Disponibilità</string>
-    <string name="pref_away_when_screen_off">\"Non disponibile\" a schermo spento</string>
-    <string name="pref_away_when_screen_off_summary">Imposta come non disponibile quando lo schermo è spento</string>
     <string name="pref_dnd_on_silent_mode">\"Occupato\" in modalità silenziosa</string>
     <string name="pref_dnd_on_silent_mode_summary">Imposta come occupato quando il dispositivo è in modalità silenziosa</string>
     <string name="pref_treat_vibrate_as_silent">Tratta vibrazione come modalità silenziosa</string>

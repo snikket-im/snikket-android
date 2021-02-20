@@ -124,7 +124,6 @@
     <string name="pref_ringtone">Tono de llamada</string>
     <string name="pref_notification_sound">Sonido de notificación</string>
     <string name="pref_notification_sound_summary">Sonido de notificación para nuevos mensajes</string>
-    <string name="pref_call_ringtone_summary">Tono para las nuevas llamadas</string>
     <string name="pref_notification_grace_period">Periodo de gracia</string>
     <string name="pref_notification_grace_period_summary">El periodo de tiempo en el que las notificaciones están silenciadas tras  detectar actividad en otro de tus dispositivos.</string>
     <string name="pref_advanced_options">Avanzado</string>
@@ -463,8 +462,6 @@
     <string name="account_status_host_unknown">El servidor no es responsable de este dominio</string>
     <string name="server_info_broken">Error</string>
     <string name="pref_presence_settings">Disponibilidad</string>
-    <string name="pref_away_when_screen_off">Ausente con pantalla apagada</string>
-    <string name="pref_away_when_screen_off_summary">Mostrar como Ausente cuando la pantalla esté apagada</string>
     <string name="pref_dnd_on_silent_mode">Ocupado en modo silencio</string>
     <string name="pref_dnd_on_silent_mode_summary">Mostrar como Ocupado cuando el dispositivo esté en modo silencio</string>
     <string name="pref_treat_vibrate_as_silent">Modo vibración como modo silencio</string>

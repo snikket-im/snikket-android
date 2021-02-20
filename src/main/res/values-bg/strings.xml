@@ -369,7 +369,6 @@
     <string name="account_status_bind_failure">Грешка при свързване</string>
     <string name="server_info_broken">Повредено</string>
     <string name="pref_presence_settings">Присъствие</string>
-    <string name="pref_away_when_screen_off">Отсъстващ, когато екранът е изключен</string>
     <string name="pref_treat_vibrate_as_silent">Тих режим при режим на вибриране</string>
     <string name="pref_show_connection_options">Разширени настройки за връзката</string>
     <string name="pref_show_connection_options_summary">Показване на настройките за сървър и порт при установка на профил</string>

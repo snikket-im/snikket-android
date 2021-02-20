@@ -114,7 +114,6 @@
     <string name="pref_ringtone">着信音</string>
     <string name="pref_notification_sound">通知音</string>
     <string name="pref_notification_sound_summary">新着メッセージの通知音</string>
-    <string name="pref_call_ringtone_summary">音声通話の着信音</string>
     <string name="pref_notification_grace_period">猶予期間</string>
     <string name="pref_notification_grace_period_summary">別のデバイスでの操作を検知した際に、通知を止める時間の長さ</string>
     <string name="pref_advanced_options">詳細</string>
@@ -431,7 +430,6 @@
     <string name="account_status_bind_failure">バインド失敗</string>
     <string name="server_info_broken">壊れています</string>
     <string name="pref_presence_settings">可用性</string>
-    <string name="pref_away_when_screen_off">画面がオフのときは離席</string>
     <string name="pref_treat_vibrate_as_silent">バイブレートをサイレントモードとして扱う</string>
     <string name="pref_show_connection_options">拡張接続設定</string>
     <string name="pref_show_connection_options_summary">アカウントを設定するときにホスト名とポートの設定を表示します</string>

@@ -29,6 +29,13 @@
     <string name="just_now">éppen most</string>
     <string name="minute_ago">1 perce</string>
     <string name="minutes_ago">%d perce</string>
+    <plurals name="x_unread_conversations">
+        <item quantity="one">%d olvasatlan beszélgetés</item>
+
+    
+        <item quantity="other">%d olvasatlan beszélgetés</item>
+
+    </plurals>
     <string name="sending">küldés…</string>
     <string name="message_decrypting">Üzenet visszafejtése. Kérem várjon…</string>
     <string name="pgp_message">OpenPGP-vel titkosított üzenet</string>
@@ -113,7 +120,6 @@
     <string name="pref_ringtone">Csengőhang</string>
     <string name="pref_notification_sound">Értesítési hang</string>
     <string name="pref_notification_sound_summary">Értesítési hang új üzeneteknél</string>
-    <string name="pref_call_ringtone_summary">Csengőhang bejövő hívásnál</string>
     <string name="pref_notification_grace_period">Türelmi idő</string>
     <string name="pref_notification_grace_period_summary">Az időtartam, amíg az értesítések némítva vannak az egyéb eszközei egyikén történt tevékenység észlelése után.</string>
     <string name="pref_advanced_options">Speciális</string>
@@ -441,7 +447,6 @@
     <string name="account_status_host_unknown">A kiszolgáló nem felelős a tartományért</string>
     <string name="server_info_broken">Törött</string>
     <string name="pref_presence_settings">Elérhetőség</string>
-    <string name="pref_away_when_screen_off">„Távol”, ha a kijelző ki van kapcsolva</string>
     <string name="pref_treat_vibrate_as_silent">Rezgés kezelése csendes módként</string>
     <string name="pref_show_connection_options">Kiterjesztett kapcsolati beállítások</string>
     <string name="pref_show_connection_options_summary">Gépnév és port beállításainak megjelenítése egy fiók beállításakor</string>

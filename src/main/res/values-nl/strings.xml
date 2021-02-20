@@ -107,7 +107,6 @@
     <string name="pref_led">LED-melding</string>
     <string name="pref_led_summary">Meldingslicht knipperen wanneer een nieuw bericht ontvangen wordt</string>
     <string name="pref_ringtone">Meldingstoon</string>
-    <string name="pref_call_ringtone_summary">Beltoon voor inkomende gesprekken</string>
     <string name="pref_notification_grace_period">Uitstelperiode</string>
     <string name="pref_advanced_options">Geavanceerd</string>
     <string name="pref_never_send_crash">Verstuur nooit crashrapportages</string>
@@ -405,7 +404,6 @@
     <string name="account_status_bind_failure">Bindingsfout</string>
     <string name="server_info_broken">Gebroken</string>
     <string name="pref_presence_settings">Aanwezigheid</string>
-    <string name="pref_away_when_screen_off">Even weg wanneer scherm uit staat</string>
     <string name="pref_treat_vibrate_as_silent">Trillen behandelen als stille modus</string>
     <string name="pref_show_connection_options">Uitgebreide verbindingsinstellingen</string>
     <string name="pref_show_connection_options_summary">Toon hostnaam- en poortinstellingen bij instellen van een account</string>

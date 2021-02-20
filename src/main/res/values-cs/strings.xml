@@ -103,7 +103,6 @@
     <string name="pref_led">LED upozornění</string>
     <string name="pref_led_summary">Blikat při přijetí nové zprávy</string>
     <string name="pref_ringtone">Vyzváněcí tón</string>
-    <string name="pref_call_ringtone_summary">Vyzváněcí tón pro příchozí hovor</string>
     <string name="pref_notification_grace_period">Časová lhůta</string>
     <string name="pref_notification_grace_period_summary">Časová lhůta po kterou bude Conversations v tichém režimu při zaznamenání aktivity na jiném přístroji</string>
     <string name="pref_advanced_options">Rozšířené</string>
@@ -342,7 +341,6 @@
     <string name="account_status_tor_unavailable">Tor síť není dostupná</string>
     <string name="account_status_bind_failure">Bind chyba</string>
     <string name="server_info_broken">Rozbité</string>
-    <string name="pref_away_when_screen_off">Pryč při vypnuté obrazovce</string>
     <string name="pref_treat_vibrate_as_silent">Vibrační mód brát stejně jako tichý</string>
     <string name="pref_show_connection_options">Rozšířená nastavení připojení</string>
     <string name="pref_show_connection_options_summary">Zobrazovat nastavení hostname a port  při vytváření účtu</string>
