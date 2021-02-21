@@ -40,6 +40,7 @@ import eu.siacs.conversations.xml.Element;
 import eu.siacs.conversations.xml.Namespace;
 import eu.siacs.conversations.xmpp.Jid;
 import eu.siacs.conversations.xmpp.OnIqPacketReceived;
+import eu.siacs.conversations.xmpp.XmppConnection;
 import eu.siacs.conversations.xmpp.jingle.stanzas.Content;
 import eu.siacs.conversations.xmpp.jingle.stanzas.FileTransferDescription;
 import eu.siacs.conversations.xmpp.jingle.stanzas.GenericDescription;
@@ -661,7 +662,10 @@ public class JingleConnectionManager extends AbstractConnectionManager {
         for (final AbstractJingleConnection connection : this.connections.values()) {
             connection.notifyRebound();
         }
-        resendSessionProposals(account);
+        final XmppConnection xmppConnection = account.getXmppConnection();
+        if (xmppConnection != null && xmppConnection.getFeatures().sm()) {
+            resendSessionProposals(account);
+        }
     }
 
     public WeakReference<JingleRtpConnection> findJingleRtpConnection(Account account, Jid with, String sessionId) {
