@@ -124,6 +124,7 @@
     <string name="pref_ringtone">Klingelton</string>
     <string name="pref_notification_sound">Benachrichtigungston</string>
     <string name="pref_notification_sound_summary">Benachrichtigungston für neue Nachrichten</string>
+    <string name="pref_call_ringtone_summary">Klingelton für eingehende Anrufe</string>
     <string name="pref_notification_grace_period">Schonfrist</string>
     <string name="pref_notification_grace_period_summary">Die Zeitspanne, in der Benachrichtigungen nach der Erkennung von Aktivitäten auf einem deiner anderen Geräte unterdrückt werden.</string>
     <string name="pref_advanced_options">Erweitert</string>
@@ -464,6 +465,8 @@
     <string name="account_status_host_unknown">Der Server ist nicht für diese Domain verantwortlich</string>
     <string name="server_info_broken">Fehlerhaft</string>
     <string name="pref_presence_settings">Status</string>
+    <string name="pref_away_when_screen_off">Abwesend bei gesperrtem Gerät</string>
+    <string name="pref_away_when_screen_off_summary">Als abwesend anzeigen, wenn das Gerät gesperrt ist.</string>
     <string name="pref_dnd_on_silent_mode">Beschäftigt im lautlosen Modus</string>
     <string name="pref_dnd_on_silent_mode_summary">Als Beschäftigt anzeigen, wenn sich das Gerät im lautlosen Modus befindet</string>
     <string name="pref_treat_vibrate_as_silent">Vibration als Lautlos behandeln</string>

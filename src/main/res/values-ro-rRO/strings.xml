@@ -127,6 +127,7 @@
     <string name="pref_ringtone">Ton de apel</string>
     <string name="pref_notification_sound">Sunet de notificare</string>
     <string name="pref_notification_sound_summary">Sunet de notificare pentru mesaje noi</string>
+    <string name="pref_call_ringtone_summary">Ton pentru apelurile primite</string>
     <string name="pref_notification_grace_period">Perioadă de grație</string>
     <string name="pref_notification_grace_period_summary">Durata de timp cât notificările sunt ascunse după ce s-a observat activitate pe un alt dispozitiv de al dumneavoastră.</string>
     <string name="pref_advanced_options">Opțiuni avansate</string>
@@ -468,6 +469,8 @@
     <string name="account_status_host_unknown">Serverul nu este responsabil pentru acest domeniu</string>
     <string name="server_info_broken">Deteriorat</string>
     <string name="pref_presence_settings">Setări de disponibilitate</string>
+    <string name="pref_away_when_screen_off">Plecat când dispozitivul este blocat</string>
+    <string name="pref_away_when_screen_off_summary">Prezintă clientul drept \"Plecat\" atunci când dispozitivul este blocat</string>
     <string name="pref_dnd_on_silent_mode">\"Ocupat\" în modul silențios</string>
     <string name="pref_dnd_on_silent_mode_summary">Prezintă clientul drept \"Ocupat\" atunci când dispozitivul este în mod silențios</string>
     <string name="pref_treat_vibrate_as_silent">Tratează modul vibrație ca silențios</string>
