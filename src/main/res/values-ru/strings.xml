@@ -130,6 +130,7 @@
     <string name="pref_ringtone">Мелодия звонка</string>
     <string name="pref_notification_sound">Звук уведомления</string>
     <string name="pref_notification_sound_summary">Звук уведомления о новых сообщениях</string>
+    <string name="pref_call_ringtone_summary">Мелодия входящего звонка</string>
     <string name="pref_notification_grace_period">Грейс-период</string>
     <string name="pref_notification_grace_period_summary">Время, на которое уведомления будут отключены, когда вы пользуетесь аккаунтом на другом устройстве.</string>
     <string name="pref_advanced_options">Дополнительно</string>
@@ -221,8 +222,8 @@
     <string name="openpgp_key_id">ID OpenPGP ключа</string>
     <string name="omemo_fingerprint">OMEMO-отпечаток</string>
     <string name="omemo_fingerprint_x509">v\\OMEMO-отпечаток</string>
-    <string name="omemo_fingerprint_selected_message">OMEMO-отпечаток (из сообщения)</string>
-    <string name="omemo_fingerprint_x509_selected_message">v\\OMEMO-отпечаток (из сообщения)</string>
+    <string name="omemo_fingerprint_selected_message">OMEMO-отпечаток (выбранного сообщения)</string>
+    <string name="omemo_fingerprint_x509_selected_message">v\\OMEMO-отпечаток (выбранного сообщения)</string>
     <string name="other_devices">Другие устройства</string>
     <string name="trust_omemo_fingerprints">Доверенные отпечатки OMEMO</string>
     <string name="fetching_keys">Получение ключей…</string>
@@ -472,6 +473,8 @@
     <string name="account_status_host_unknown">Сервер не ответственен за этот домен</string>
     <string name="server_info_broken">Повреждено</string>
     <string name="pref_presence_settings">Доступность</string>
+    <string name="pref_away_when_screen_off">\"Отошёл\" когда экран заблокирован</string>
+    <string name="pref_away_when_screen_off_summary">Устанавливает статус \"Отошёл\", когда устройство заблокировано</string>
     <string name="pref_dnd_on_silent_mode">\"Не беспокоить\" в беззвучном режиме</string>
     <string name="pref_dnd_on_silent_mode_summary">Устанавливает статус \"Не беспокоить\", когда устройство в беззвучном режиме</string>
     <string name="pref_treat_vibrate_as_silent">Не доступен в режиме вибрации</string>

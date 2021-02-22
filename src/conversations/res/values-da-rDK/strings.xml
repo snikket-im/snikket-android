@@ -4,5 +4,7 @@
     <string name="use_conversations.im">Brug conversations.im</string>
     <string name="create_new_account">Opret ny konto</string>
     <string name="your_server_invitation">Din server invitation</string>
+    <string name="tap_share_button_send_invite">Tryk på deleknappen for at sende din kontakt en invitation til %1$s.</string>
+    <string name="if_contact_is_nearby_use_qr">Hvis din kontakt er i nærheden, kan de også scanne koden nedenfor for at acceptere din invitation.</string>
     <string name="share_invite_with">Del invitation med...</string>
 </resources>

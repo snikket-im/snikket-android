@@ -130,6 +130,7 @@
     <string name="pref_ringtone">Dzwonek</string>
     <string name="pref_notification_sound">Dźwięk powiadomień</string>
     <string name="pref_notification_sound_summary">Dźwięk powiadomień dla nowych wiadomości</string>
+    <string name="pref_call_ringtone_summary">Dzwonek dla przychodzących rozmów</string>
     <string name="pref_notification_grace_period">Czas bez powiadomień</string>
     <string name="pref_notification_grace_period_summary">Długość czasu kiedy powiadomienia są uśpione po wykryciu aktywności na jednym z twoich innych urządzeń.</string>
     <string name="pref_advanced_options">Zaawansowane</string>
@@ -221,6 +222,8 @@
     <string name="openpgp_key_id">ID klucza OpenPGP</string>
     <string name="omemo_fingerprint">Odcisk OMEMO</string>
     <string name="omemo_fingerprint_x509">Odcisk v\\OMEMO</string>
+    <string name="omemo_fingerprint_selected_message">Odcisk OMEMO (pochodzenie wiadomości)</string>
+    <string name="omemo_fingerprint_x509_selected_message">v\\Odcisk OMEMO (pochodzenie wiadomości)</string>
     <string name="other_devices">Pozostałe urządzenia</string>
     <string name="trust_omemo_fingerprints">Zaufane odciski OMEMO</string>
     <string name="fetching_keys">Pobieranie kluczy...</string>
@@ -470,6 +473,8 @@
     <string name="account_status_host_unknown">Serwer nie odpowiada domenie</string>
     <string name="server_info_broken">Zepsute</string>
     <string name="pref_presence_settings">Dostępność</string>
+    <string name="pref_away_when_screen_off">Niedostępny kiedy urządzenie jest zablokowane</string>
+    <string name="pref_away_when_screen_off_summary">Pokaż jako Niedostępny kiedy urządzenie jest zablokowane</string>
     <string name="pref_dnd_on_silent_mode">Zajęty w trybie cichym</string>
     <string name="pref_dnd_on_silent_mode_summary">Pokaż jako Zajęty jeśli urządzenie jest w trybie cichym</string>
     <string name="pref_treat_vibrate_as_silent">Traktuj tryb wibracji jak tryb cichy</string>
