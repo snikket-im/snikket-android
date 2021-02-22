@@ -580,7 +580,7 @@
     <string name="this_looks_like_a_domain">Detta verkar vara ett domännamn</string>
     <string name="add_anway">Lägg till ändå</string>
     <string name="this_looks_like_channel">Detta ser ut som en kanaladress</string>
-    <string name="not_a_backup_file">Filen du valde är inte en säkerhetskopia till Conversations</string>
+    <string name="not_a_backup_file">Filen du valde är inte en säkerhetskopia till Snikket</string>
     <string name="category_about">Om</string>
     <string name="please_enable_an_account">Aktivera ett konto</string>
     <string name="rtp_state_declined_or_busy">Upptagen</string>

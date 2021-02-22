@@ -594,7 +594,7 @@
     <string name="ebook">e-bog</string>
     <string name="video_original">Original (ukomprimeret)</string>
     <string name="open_with">Åbn med...</string>
-    <string name="set_profile_picture">Conversations profil billede</string>
+    <string name="set_profile_picture">Snikket profil billede</string>
     <string name="choose_account">Vælg konto</string>
     <string name="restore_backup">Gendan backup</string>
     <string name="restore">Gendan</string>
@@ -675,5 +675,5 @@
     <string name="add_contact_or_create_or_join_group_chat">Tilføj kontakt, opret eller deltag i gruppechat, eller find kanaler</string>
     <string name="more_options">Flere muligheder</string>
     <string name="no_application_found">Intet program fundet</string>
-    <string name="invite_to_app">Inviter til Conversations</string>
+    <string name="invite_to_app">Inviter til Snikket</string>
     </resources>

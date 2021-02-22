@@ -557,7 +557,7 @@
     <string name="gp_medium">Medio</string>
     <string name="gp_long">Longo</string>
     <string name="pref_broadcast_last_activity">Publicar utilización</string>
-    <string name="pref_broadcast_last_activity_summary">Permitelle aos teus contactos saber cando estás a usar Conversations</string>
+    <string name="pref_broadcast_last_activity_summary">Permitelle aos teus contactos saber cando estás a usar Snikket</string>
     <string name="pref_privacy">Intimidade</string>
     <string name="pref_theme_options">Decorado</string>
     <string name="pref_theme_options_summary">Escolle a gama de cores</string>
@@ -676,7 +676,7 @@
     <string name="message">Mensaxe</string>
     <string name="private_messages_are_disabled">As mensaxes privadas están desactivadas</string>
     <string name="huawei_protected_apps">Apps protexidos</string>
-    <string name="huawei_protected_apps_summary">Para seguir recibindo notificacións, incluso cando a pantalla está apagada, precisa engadir Conversations a lista de apps protexidos.</string>
+    <string name="huawei_protected_apps_summary">Para seguir recibindo notificacións, incluso cando a pantalla está apagada, precisa engadir Snikket a lista de apps protexidos.</string>
     <string name="mtm_accept_cert">¿Aceptar certificado descoñecido?</string>
     <string name="mtm_trust_anchor">O certificado do servidor non está asinado por unha autoridade de certificación coñecida.</string>
     <string name="mtm_accept_servername">¿Aceptar un nome de servidor que non coincida?</string>
@@ -825,7 +825,7 @@
     <string name="ebook">e-book</string>
     <string name="video_original">Orixinal (non comprimido)</string>
     <string name="open_with">Abrir con...</string>
-    <string name="set_profile_picture">Imaxe de perfil en Conversations</string>
+    <string name="set_profile_picture">Imaxe de perfil en Snikket</string>
     <string name="choose_account">Escoller conta</string>
     <string name="restore_backup">Restablecer copia de apoio</string>
     <string name="restore">Restablecer</string>
@@ -877,7 +877,7 @@
     <string name="conversations_backup">Respaldar Conversations</string>
     <string name="event">Evento</string>
     <string name="open_backup">Abrir copia de apoio</string>
-    <string name="not_a_backup_file">O ficheiro seleccionado non é un ficheiro de apoio Conversations</string>
+    <string name="not_a_backup_file">O ficheiro seleccionado non é un ficheiro de apoio Snikket</string>
     <string name="account_already_setup">Esta conta xa foi configurada</string>
     <string name="please_enter_password">Introduza o contrasinal de esta conta</string>
     <string name="unable_to_perform_this_action">Non se puido completar a acción</string>
@@ -952,7 +952,7 @@
     <string name="failed_deliveries">Entregas fallidas</string>
     <string name="more_options">Máis opcións</string>
     <string name="no_application_found">Non se atopa unha aplicación</string>
-    <string name="invite_to_app">Convida a Conversations</string>
+    <string name="invite_to_app">Convida a Snikket</string>
     <string name="unable_to_parse_invite">Non se puido enviar o convite</string>
     <string name="server_does_not_support_easy_onboarding_invites">O servidor non soporta a creación de convites</string>
     <string name="no_active_accounts_support_this">Ningunha conta activa soporta esta función</string>

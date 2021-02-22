@@ -562,7 +562,7 @@
     <string name="gp_medium">Medie</string>
     <string name="gp_long">Lungă</string>
     <string name="pref_broadcast_last_activity">Publică utilizarea</string>
-    <string name="pref_broadcast_last_activity_summary">Contactele sunt anunțate atunci când folosiți Conversations</string>
+    <string name="pref_broadcast_last_activity_summary">Contactele sunt anunțate atunci când folosiți Snikket</string>
     <string name="pref_privacy">Intimitate</string>
     <string name="pref_theme_options">Temă</string>
     <string name="pref_theme_options_summary">Selecție paletă de culori interfață</string>
@@ -687,7 +687,7 @@
     <string name="message">Mesaj</string>
     <string name="private_messages_are_disabled">Mesajele private sunt dezactivate</string>
     <string name="huawei_protected_apps">Aplicații protejate</string>
-    <string name="huawei_protected_apps_summary">Pentru a continua să primiți notificări, chiar și când ecranul este oprit, trebuie să adăugați Conversations în lista de aplicații protejate.</string>
+    <string name="huawei_protected_apps_summary">Pentru a continua să primiți notificări, chiar și când ecranul este oprit, trebuie să adăugați Snikket în lista de aplicații protejate.</string>
     <string name="mtm_accept_cert">Acceptați certificatul necunoscut?</string>
     <string name="mtm_trust_anchor">Certificatul serverului nu este semnat de o autoritate de certificare (CA) cunoscută.</string>
     <string name="mtm_accept_servername">Acceptați numele serverului ce nu corespunde?</string>
@@ -836,7 +836,7 @@
     <string name="ebook">carte electronică</string>
     <string name="video_original">Original (necompresat)</string>
     <string name="open_with">Deschide cu…</string>
-    <string name="set_profile_picture">Poză profil Conversations</string>
+    <string name="set_profile_picture">Poză profil Snikket</string>
     <string name="choose_account">Alegeți contul</string>
     <string name="restore_backup">Restaurează o copie de siguranță</string>
     <string name="restore">Restaurează</string>
@@ -888,7 +888,7 @@
     <string name="conversations_backup">Copie de siguranță Conversations</string>
     <string name="event">Eveniment</string>
     <string name="open_backup">Deschide o copie de siguranță</string>
-    <string name="not_a_backup_file">Fișierul selectat nu este o copie de siguranță Conversations</string>
+    <string name="not_a_backup_file">Fișierul selectat nu este o copie de siguranță Snikket</string>
     <string name="account_already_setup">Acest cont a fost deja configurat</string>
     <string name="please_enter_password">Va rugăm să introduceți parola pentru acest cont</string>
     <string name="unable_to_perform_this_action">Nu s-a putut realiza această acțiune</string>
@@ -965,7 +965,7 @@
     <string name="failed_deliveries">Trimiteri eșuate</string>
     <string name="more_options">Mai multe</string>
     <string name="no_application_found">Nu s-a găsit nici o aplicație</string>
-    <string name="invite_to_app">Invitați la Conversations</string>
+    <string name="invite_to_app">Invitați la Snikket</string>
     <string name="unable_to_parse_invite">Nu s-a putut procesa invitația</string>
     <string name="server_does_not_support_easy_onboarding_invites">Serverul nu suportă generarea de invitații</string>
     <string name="no_active_accounts_support_this">Nici un cont activ nu suporta această caracteristică</string>

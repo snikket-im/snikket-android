@@ -557,7 +557,7 @@
     <string name="gp_medium">Μεσαίος</string>
     <string name="gp_long">Μεγάλος</string>
     <string name="pref_broadcast_last_activity">Δημοσιοποίηση της τελευταίας χρήσης</string>
-    <string name="pref_broadcast_last_activity_summary">Επιτρέψτε στις επαφές σας να γνωρίζουν πότε χρησιμοποιείτε το Conversations</string>
+    <string name="pref_broadcast_last_activity_summary">Επιτρέψτε στις επαφές σας να γνωρίζουν πότε χρησιμοποιείτε το Snikket</string>
     <string name="pref_privacy">Ιδιωτικότητα</string>
     <string name="pref_theme_options">Θέμα</string>
     <string name="pref_theme_options_summary">Επιλογή παλέτας χρωμάτων</string>
@@ -676,7 +676,7 @@
     <string name="message">Μήνυμα</string>
     <string name="private_messages_are_disabled">Τα ιδιωτικά μηνύματα είναι απενεργοποιημένα</string>
     <string name="huawei_protected_apps">Προστατευμένες εφαρμογές</string>
-    <string name="huawei_protected_apps_summary">Για να συνεχίσετε να λαμβάνετε ειδοποιήσεις, ακόμα κι όταν η οθόνη είναι σβηστή, χρειάζεται να προσθέσετε το Conversations στον κατάλογο με τις προστατευμένες εφαρμογές.</string>
+    <string name="huawei_protected_apps_summary">Για να συνεχίσετε να λαμβάνετε ειδοποιήσεις, ακόμα κι όταν η οθόνη είναι σβηστή, χρειάζεται να προσθέσετε το Snikket στον κατάλογο με τις προστατευμένες εφαρμογές.</string>
     <string name="mtm_accept_cert">Αποδοχή άγνωστου πιστοποιητικού;</string>
     <string name="mtm_trust_anchor">Το πιστοποιητικό του διακομιστή δεν είναι υπογεγραμμένο από κάποια γνωστή Αρχή Πιστοποίησης.</string>
     <string name="mtm_accept_servername">Αποδοχή αναντίστοιχου ονόματος διακομιστή;</string>
@@ -825,7 +825,7 @@
     <string name="ebook">ηλεκτρονικό βιβλίο</string>
     <string name="video_original">Αρχικό (μη συμπιεσμένο)</string>
     <string name="open_with">Άνοιγμα με...</string>
-    <string name="set_profile_picture">Φωτογραφία προφίλ του Conversations</string>
+    <string name="set_profile_picture">Φωτογραφία προφίλ του Snikket</string>
     <string name="choose_account">Επιλογή λογαριασμού</string>
     <string name="restore_backup">Επαναφορά αντιγράφου ασφαλείας</string>
     <string name="restore">Επαναφορά</string>
@@ -877,7 +877,7 @@
     <string name="conversations_backup">Αντίγραφο ασφαλείας Conversations</string>
     <string name="event">Γεγονός</string>
     <string name="open_backup">Άνοιγμα αντιγράφου ασφαλείας</string>
-    <string name="not_a_backup_file">Το αρχείο που επιλέξατε δεν είναι αντίγραφο ασφαλείας του Conversations</string>
+    <string name="not_a_backup_file">Το αρχείο που επιλέξατε δεν είναι αντίγραφο ασφαλείας του Snikket</string>
     <string name="account_already_setup">Αυτός ο λογαριασμός έχει προστεθεί ήδη</string>
     <string name="please_enter_password">Παρακαλώ εισάγετε τον κωδικό για αυτό το λογαριασμό</string>
     <string name="unable_to_perform_this_action">Αδυναμία εκτέλεσης αυτής της λειτουργίας</string>
@@ -952,7 +952,7 @@
     <string name="failed_deliveries">Αποτυχημένες διανομές</string>
     <string name="more_options">Περισσότερες επιλογές</string>
     <string name="no_application_found">Δεν βρέθηκε εφαρμογή</string>
-    <string name="invite_to_app">Πρόσκληση στο Conversations</string>
+    <string name="invite_to_app">Πρόσκληση στο Snikket</string>
     <string name="unable_to_parse_invite">Αδυναμία ανάγνωσης πρόσκλησης</string>
     <string name="server_does_not_support_easy_onboarding_invites">Ο διακομιστής δεν υποστηρίζει την δημιουργία προσκλήσεων</string>
     <string name="no_active_accounts_support_this">Κανένας από τους ενεργούς λογαριασμούς δεν υποστηρίζει αυτό το χαρακτηριστικό</string>

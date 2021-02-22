@@ -571,7 +571,7 @@
     <string name="message">Bericht</string>
     <string name="private_messages_are_disabled">Privéberichten zijn uitgeschakeld</string>
     <string name="huawei_protected_apps">Beschermde apps</string>
-    <string name="huawei_protected_apps_summary">Om meldingen te blijven ontvangen, zelfs wanneer het scherm uit staat, moet je Conversations toevoegen aan de lijst met beschermde apps.</string>
+    <string name="huawei_protected_apps_summary">Om meldingen te blijven ontvangen, zelfs wanneer het scherm uit staat, moet je Snikket toevoegen aan de lijst met beschermde apps.</string>
     <string name="mtm_accept_cert">Onbekend certificaat aanvaarden?</string>
     <string name="mtm_trust_anchor">Het servercertificaat is niet ondertekend door een gekende certificaatautoriteit.</string>
     <string name="mtm_accept_servername">Verkeerde servernaam aanvaarden?</string>
@@ -704,7 +704,7 @@
     <string name="ebook">e-boek</string>
     <string name="video_original">Origineel (zonder compressie)</string>
     <string name="open_with">Openen met…</string>
-    <string name="set_profile_picture">Conversations-profielafbeelding</string>
+    <string name="set_profile_picture">Snikket-profielafbeelding</string>
     <string name="choose_account">Kies een account</string>
     <string name="restore_backup">Back-up herstellen</string>
     <string name="restore">Herstellen</string>
@@ -753,7 +753,7 @@
     <string name="conversations_backup">Back-up van Conversations</string>
     <string name="event">Gebeurtenis</string>
     <string name="open_backup">Back-up openen</string>
-    <string name="not_a_backup_file">Het geselecteerde bestand is geen Conversations-back-upbestand</string>
+    <string name="not_a_backup_file">Het geselecteerde bestand is geen Snikket-back-upbestand</string>
     <string name="account_already_setup">Deze account is al ingesteld</string>
     <string name="please_enter_password">Voer het wachtwoord voor deze account in</string>
     <string name="open_join_dialog">Deelnemen aan openbaar kanaal…</string>

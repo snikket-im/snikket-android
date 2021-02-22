@@ -530,7 +530,7 @@
     <string name="message">Съобщение</string>
     <string name="private_messages_are_disabled">Личните съобщения са изключени</string>
     <string name="huawei_protected_apps">Защитени приложения</string>
-    <string name="huawei_protected_apps_summary">Ако искате да продължите да получавате известия дори когато екранът е заключен, трябва да добавите „Conversations“ към списъка от защитени приложения.</string>
+    <string name="huawei_protected_apps_summary">Ако искате да продължите да получавате известия дори когато екранът е заключен, трябва да добавите „Snikket“ към списъка от защитени приложения.</string>
     <string name="mtm_accept_cert">Приемане на непознатия сертификат?</string>
     <string name="mtm_trust_anchor">Сървърният сертификат не е подписан от познат център за сертификация.</string>
     <string name="mtm_accept_servername">Приемане на несъвпадащото име на сървъра?</string>
@@ -660,7 +660,7 @@
     <string name="ebook">е-книга</string>
     <string name="video_original">Оригинално (некомпресирано)</string>
     <string name="open_with">Отваряне с…</string>
-    <string name="set_profile_picture">Профилна снимка за Conversations</string>
+    <string name="set_profile_picture">Профилна снимка за Snikket</string>
     <string name="choose_account">Изберете профил</string>
     <string name="restore_backup">Възстановяване от резервно копие</string>
     <string name="restore">Възстановяване</string>

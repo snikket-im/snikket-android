@@ -557,7 +557,7 @@
     <string name="gp_medium">Medio</string>
     <string name="gp_long">Lungo</string>
     <string name="pref_broadcast_last_activity">Trasmissione</string>
-    <string name="pref_broadcast_last_activity_summary">Fa sapere ai tuoi contatti quando usi Conversations</string>
+    <string name="pref_broadcast_last_activity_summary">Fa sapere ai tuoi contatti quando usi Snikket</string>
     <string name="pref_privacy">Privacy</string>
     <string name="pref_theme_options">Tema</string>
     <string name="pref_theme_options_summary">Seleziona il colore</string>
@@ -676,7 +676,7 @@
     <string name="message">Messaggio</string>
     <string name="private_messages_are_disabled">I messaggi privati sono disattivati</string>
     <string name="huawei_protected_apps">App protette</string>
-    <string name="huawei_protected_apps_summary">Per ricevere notifiche anche quando lo schermo è spento, devi aggiungere Conversations all\'elenco delle app protette.</string>
+    <string name="huawei_protected_apps_summary">Per ricevere notifiche anche quando lo schermo è spento, devi aggiungere Snikket all\'elenco delle app protette.</string>
     <string name="mtm_accept_cert">Accetti il certificato sconosciuto?</string>
     <string name="mtm_trust_anchor">Il certificato del server non è firmato da una Certificate Authority nota.</string>
     <string name="mtm_accept_servername">Accetti il nome del server non corrispondente?</string>
@@ -825,7 +825,7 @@
     <string name="ebook">e-book</string>
     <string name="video_original">Originale (non compresso)</string>
     <string name="open_with">Apri con…</string>
-    <string name="set_profile_picture">Immagine profilo di Conversations</string>
+    <string name="set_profile_picture">Immagine profilo di Snikket</string>
     <string name="choose_account">Scegli account</string>
     <string name="restore_backup">Ripristina backup</string>
     <string name="restore">Ripristina</string>
@@ -877,7 +877,7 @@
     <string name="conversations_backup">Backup di Conversations</string>
     <string name="event">Evento</string>
     <string name="open_backup">Apri backup</string>
-    <string name="not_a_backup_file">Il file selezionato non è un file di backup di Conversations</string>
+    <string name="not_a_backup_file">Il file selezionato non è un file di backup di Snikket</string>
     <string name="account_already_setup">Questo account è già stato configurato</string>
     <string name="please_enter_password">Inserisci la password per questo account</string>
     <string name="unable_to_perform_this_action">Impossibile eseguire questa azione</string>
@@ -952,7 +952,7 @@
     <string name="failed_deliveries">Recapiti falliti</string>
     <string name="more_options">Altre opzioni</string>
     <string name="no_application_found">Nessuna applicazione trovata</string>
-    <string name="invite_to_app">Invita su Conversations</string>
+    <string name="invite_to_app">Invita su Snikket</string>
     <string name="unable_to_parse_invite">Impossibile analizzare l\'invito</string>
     <string name="server_does_not_support_easy_onboarding_invites">Il server non supporta la generazione di inviti</string>
     <string name="no_active_accounts_support_this">Nessun account attivo supporta questa funzione</string>
