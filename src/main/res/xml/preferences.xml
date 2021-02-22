@@ -120,7 +120,7 @@
             android:summary="@string/pref_notification_sound_summary"
             android:title="@string/pref_notification_sound" />
         <RingtonePreference
-            android:defaultValue="@string/notification_ringtone"
+            android:defaultValue="@string/incoming_call_ringtone"
             android:key="call_ringtone"
             android:ringtoneType="ringtone"
             android:summary="@string/pref_call_ringtone_summary"
