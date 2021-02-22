@@ -1,2 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <string name="learn_more">Dowiedz się więcej…</string>
+    <string name="snikket_intro"><b>Snikket</b> jest bezpieczną i prywatną aplikacją do chatowania.
+\n
+\nAby rozpocząć, potrzebujesz zaproszenia od znajomego, który już używa Snikket.
+\n
+\nJeśli masz już zaproszenie, to dobry moment aby je otworzyć i kliknąć na przycisk \'otwórz w aplikacji\'!</string>
+</resources>
