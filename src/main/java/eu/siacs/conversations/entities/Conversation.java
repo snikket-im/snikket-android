@@ -2,9 +2,10 @@ package eu.siacs.conversations.entities;
 
 import android.content.ContentValues;
 import android.database.Cursor;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.text.TextUtils;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import com.google.common.collect.ComparisonChain;
 import com.google.common.collect.Lists;
@@ -28,9 +29,9 @@ import eu.siacs.conversations.services.AvatarService;
 import eu.siacs.conversations.services.QuickConversationsService;
 import eu.siacs.conversations.utils.JidHelper;
 import eu.siacs.conversations.utils.UIHelper;
+import eu.siacs.conversations.xmpp.Jid;
 import eu.siacs.conversations.xmpp.chatstate.ChatState;
 import eu.siacs.conversations.xmpp.mam.MamReference;
-import eu.siacs.conversations.xmpp.Jid;
 
 import static eu.siacs.conversations.entities.Bookmark.printableValue;
 
@@ -68,12 +69,12 @@ public class Conversation extends AbstractEntity implements Blockable, Comparabl
     public AtomicBoolean messagesLoaded = new AtomicBoolean(true);
     protected Account account = null;
     private String draftMessage;
-    private String name;
-    private String contactUuid;
-    private String accountUuid;
+    private final String name;
+    private final String contactUuid;
+    private final String accountUuid;
     private Jid contactJid;
     private int status;
-    private long created;
+    private final long created;
     private int mode;
     private JSONObject attributes;
     private Jid nextCounterpart;
@@ -487,7 +488,7 @@ public class Conversation extends AbstractEntity implements Blockable, Comparabl
 
     public void setLastClearHistory(long time, String reference) {
         if (reference != null) {
-            setAttribute(ATTRIBUTE_LAST_CLEAR_HISTORY, String.valueOf(time) + ":" + reference);
+            setAttribute(ATTRIBUTE_LAST_CLEAR_HISTORY, time + ":" + reference);
         } else {
             setAttribute(ATTRIBUTE_LAST_CLEAR_HISTORY, time);
         }

@@ -2,8 +2,9 @@ package eu.siacs.conversations.utils;
 
 import android.content.ContentValues;
 import android.database.Cursor;
-import android.support.annotation.NonNull;
 import android.util.Log;
+
+import androidx.annotation.NonNull;
 
 import java.io.IOException;
 import java.lang.reflect.Field;

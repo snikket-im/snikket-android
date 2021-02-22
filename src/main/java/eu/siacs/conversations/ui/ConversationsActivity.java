@@ -39,20 +39,20 @@ import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.databinding.DataBindingUtil;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.Settings;
-import android.support.annotation.IdRes;
-import android.support.annotation.NonNull;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
+
+import androidx.annotation.IdRes;
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AlertDialog;
+import androidx.databinding.DataBindingUtil;
 
 import org.openintents.openpgp.util.OpenPgpApi;
 
@@ -76,13 +76,12 @@ import eu.siacs.conversations.ui.util.ActivityResult;
 import eu.siacs.conversations.ui.util.ConversationMenuConfigurator;
 import eu.siacs.conversations.ui.util.MenuDoubleTabUtil;
 import eu.siacs.conversations.ui.util.PendingItem;
-import eu.siacs.conversations.utils.AccountUtils;
 import eu.siacs.conversations.utils.EmojiWrapper;
 import eu.siacs.conversations.utils.ExceptionHelper;
 import eu.siacs.conversations.utils.SignupUtils;
 import eu.siacs.conversations.utils.XmppUri;
-import eu.siacs.conversations.xmpp.OnUpdateBlocklist;
 import eu.siacs.conversations.xmpp.Jid;
+import eu.siacs.conversations.xmpp.OnUpdateBlocklist;
 
 import static eu.siacs.conversations.ui.ConversationFragment.REQUEST_DECRYPT_PGP;
 
@@ -98,7 +97,7 @@ public class ConversationsActivity extends XmppActivity implements OnConversatio
     public static final String EXTRA_POST_INIT_ACTION = "post_init_action";
     public static final String POST_ACTION_RECORD_VOICE = "record_voice";
 
-    private static List<String> VIEW_AND_SHARE_ACTIONS = Arrays.asList(
+    private static final List<String> VIEW_AND_SHARE_ACTIONS = Arrays.asList(
             ACTION_VIEW_CONVERSATION,
             Intent.ACTION_SEND,
             Intent.ACTION_SEND_MULTIPLE
@@ -115,7 +114,7 @@ public class ConversationsActivity extends XmppActivity implements OnConversatio
     private final PendingItem<ActivityResult> postponedActivityResult = new PendingItem<>();
     private ActivityConversationsBinding binding;
     private boolean mActivityPaused = true;
-    private AtomicBoolean mRedirectInProcess = new AtomicBoolean(false);
+    private final AtomicBoolean mRedirectInProcess = new AtomicBoolean(false);
 
     private static boolean isViewOrShareIntent(Intent i) {
         Log.d(Config.LOGTAG, "action: " + (i == null ? null : i.getAction()));
@@ -225,7 +224,7 @@ public class ConversationsActivity extends XmppActivity implements OnConversatio
                 && getPreferences().getBoolean(getBatteryOptimizationPreferenceKey(), true)) {
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             builder.setTitle(R.string.battery_optimizations_enabled);
-            builder.setMessage(R.string.battery_optimizations_enabled_dialog);
+            builder.setMessage(getString(R.string.battery_optimizations_enabled_dialog, getString(R.string.app_name)));
             builder.setPositiveButton(R.string.next, (dialog, which) -> {
                 Intent intent = new Intent(Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS);
                 Uri uri = Uri.parse("package:" + getPackageName());
@@ -360,7 +359,7 @@ public class ConversationsActivity extends XmppActivity implements OnConversatio
         ConversationMenuConfigurator.reloadFeatures(this);
         OmemoSetting.load(this);
         this.binding = DataBindingUtil.setContentView(this, R.layout.activity_conversations);
-        setSupportActionBar((Toolbar) binding.toolbar);
+        setSupportActionBar(binding.toolbar);
         configureActionBar(getSupportActionBar());
         this.getFragmentManager().addOnBackStackChangedListener(this::invalidateActionBarTitle);
         this.getFragmentManager().addOnBackStackChangedListener(this::showDialogsIfMainIsOverview);
@@ -538,6 +537,7 @@ public class ConversationsActivity extends XmppActivity implements OnConversatio
 
     @Override
     protected void onNewIntent(final Intent intent) {
+        super.onNewIntent(intent);
         if (isViewOrShareIntent(intent)) {
             if (xmppConnectionService != null) {
                 clearPendingViewIntent();
@@ -661,7 +661,7 @@ public class ConversationsActivity extends XmppActivity implements OnConversatio
         if (!mActivityPaused && pendingViewIntent.peek() == null) {
             xmppConnectionService.sendReadMarker(conversation, upToUuid);
         } else {
-            Log.d(Config.LOGTAG, "ignoring read callback. mActivityPaused=" + Boolean.toString(mActivityPaused));
+            Log.d(Config.LOGTAG, "ignoring read callback. mActivityPaused=" + mActivityPaused);
         }
     }
 

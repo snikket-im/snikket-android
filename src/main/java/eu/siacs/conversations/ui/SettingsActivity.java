@@ -1,19 +1,15 @@
 package eu.siacs.conversations.ui;
 
-import android.preference.CheckBoxPreference;
-import android.support.annotation.NonNull;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AlertDialog;
 import android.app.FragmentManager;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.content.pm.PackageManager;
-
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.preference.CheckBoxPreference;
 import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.PreferenceCategory;
@@ -22,6 +18,10 @@ import android.preference.PreferenceScreen;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
+import androidx.core.content.ContextCompat;
 
 import java.io.File;
 import java.security.KeyStoreException;
@@ -188,11 +188,7 @@ public class SettingsActivity extends XmppActivity implements
 							} else if (selectedItems.contains(indexSelected)) {
 								selectedItems.remove(Integer.valueOf(indexSelected));
 							}
-							if (selectedItems.size() > 0)
-								((AlertDialog) dialog).getButton(DialogInterface.BUTTON_POSITIVE).setEnabled(true);
-							else {
-								((AlertDialog) dialog).getButton(DialogInterface.BUTTON_POSITIVE).setEnabled(false);
-							}
+                            ((AlertDialog) dialog).getButton(DialogInterface.BUTTON_POSITIVE).setEnabled(selectedItems.size() > 0);
 						});
 
 				dialogBuilder.setPositiveButton(
@@ -409,7 +405,7 @@ public class SettingsActivity extends XmppActivity implements
 					createBackup();
 				}
 			} else {
-				Toast.makeText(this, R.string.no_storage_permission, Toast.LENGTH_SHORT).show();
+				Toast.makeText(this, getString(R.string.no_storage_permission, getString(R.string.app_name)), Toast.LENGTH_SHORT).show();
 			}
 	}
 

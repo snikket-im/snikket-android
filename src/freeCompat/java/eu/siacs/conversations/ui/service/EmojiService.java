@@ -2,14 +2,9 @@ package eu.siacs.conversations.ui.service;
 
 import android.content.Context;
 import android.os.Build;
-import android.support.text.emoji.EmojiCompat;
-import android.support.text.emoji.FontRequestEmojiCompatConfig;
-import android.support.text.emoji.bundled.BundledEmojiCompatConfig;
-import android.support.v4.provider.FontRequest;
-import android.util.Log;
-
-import eu.siacs.conversations.Config;
-import eu.siacs.conversations.R;
+import androidx.emoji.text.EmojiCompat;
+import androidx.emoji.text.FontRequestEmojiCompatConfig;
+import androidx.emoji.bundled.BundledEmojiCompatConfig;
 
 public class EmojiService {
 

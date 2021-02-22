@@ -3,19 +3,12 @@ package eu.siacs.conversations.utils;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.content.CursorLoader;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Build;
-import android.os.Bundle;
-import android.provider.ContactsContract;
 import android.provider.ContactsContract.Profile;
 import android.provider.Settings;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.concurrent.RejectedExecutionException;
 
 public class PhoneHelper {
 

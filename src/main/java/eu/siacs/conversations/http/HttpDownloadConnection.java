@@ -1,8 +1,9 @@
 package eu.siacs.conversations.http;
 
 import android.os.PowerManager;
-import android.support.annotation.Nullable;
 import android.util.Log;
+
+import androidx.annotation.Nullable;
 
 import com.google.common.base.Strings;
 import com.google.common.io.ByteStreams;
@@ -328,7 +329,7 @@ public class HttpDownloadConnection implements Transferable {
 
         private long retrieveFileSize() throws IOException {
             try {
-                Log.d(Config.LOGTAG, "retrieve file size. interactive:" + String.valueOf(interactive));
+                Log.d(Config.LOGTAG, "retrieve file size. interactive:" + interactive);
                 changeStatus(STATUS_CHECKING);
                 HttpURLConnection connection;
                 final String hostname = mUrl.getHost();
@@ -424,7 +425,7 @@ public class HttpDownloadConnection implements Transferable {
         private void download() throws Exception {
             InputStream is = null;
             HttpURLConnection connection = null;
-            PowerManager.WakeLock wakeLock = mHttpConnectionManager.createWakeLock("http_download_" + message.getUuid());
+            final PowerManager.WakeLock wakeLock = mHttpConnectionManager.createWakeLock("http_download_" + message.getUuid());
             try {
                 wakeLock.acquire();
                 if (mUseTor || message.getConversation().getAccount().isOnion()) {

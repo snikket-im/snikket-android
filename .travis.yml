@@ -11,10 +11,12 @@ android:
     - '.+'
 before_script:
     - mkdir libs
-    - wget -O libs/libwebrtc-m85.aar https://gultsch.de/files/libwebrtc-m85.aar
+    - wget -O libs/libwebrtc-m87.aar https://gultsch.de/files/libwebrtc-m87.aar
 script:
-    - ./gradlew assembleConversationsFreeSystemRelease
-    - ./gradlew assembleQuicksyFreeCompatRelease
+    - ./gradlew assembleQuicksyFreeCompatDebug
+    - ./gradlew assembleQuicksyFreeSystemDebug
+    - ./gradlew assembleConversationsFreeCompatDebug
+    - ./gradlew assembleConversationsFreeSystemDebug
 
 before_install:
     - yes | sdkmanager "platforms;android-28"

@@ -10,9 +10,10 @@ import android.os.Build;
 import android.preference.Preference;
 import android.preference.PreferenceCategory;
 import android.preference.PreferenceManager;
-import android.support.annotation.BoolRes;
-import android.support.v4.content.ContextCompat;
 import android.util.Log;
+
+import androidx.annotation.BoolRes;
+import androidx.core.content.ContextCompat;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -31,12 +32,10 @@ public class Compatibility {
             "led",
             "notification_ringtone",
             "notification_headsup",
-            "vibrate_on_notification",
-            "call_ringtone"
+            "vibrate_on_notification"
     );
-    private static final List<String> UNUESD_SETTINGS_PRE_TWENTYSIX = Arrays.asList(
-            "message_notification_settings",
-            "call_notification_settings"
+    private static final List<String> UNUESD_SETTINGS_PRE_TWENTYSIX = Collections.singletonList(
+            "message_notification_settings"
     );
 
 

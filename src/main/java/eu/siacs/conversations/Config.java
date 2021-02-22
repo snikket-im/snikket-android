@@ -6,8 +6,8 @@ import android.net.Uri;
 import java.util.Collections;
 import java.util.List;
 
-import eu.siacs.conversations.xmpp.chatstate.ChatState;
 import eu.siacs.conversations.xmpp.Jid;
+import eu.siacs.conversations.xmpp.chatstate.ChatState;
 
 public final class Config {
     private static final int UNENCRYPTED = 1;

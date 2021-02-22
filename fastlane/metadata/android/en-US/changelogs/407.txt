@@ -1,0 +1,8 @@
+More audio/video call enhancements!
+
+* The button to start a call is now shown more consistently, this should especially help with calling people using iOS apps (including the Snikket beta app).
+* Pressing the back key no longer interrupts a call, so you can continue talking while looking something up.
+* Sssh! Quickly silence incoming call notifications immediately with the volume down button.
+* Fixed some minor call reliability bugs, and also improved the display of missed calls in a chat.
+
+One more thing... It is now also possible to invite new contacts to your Snikket server from within the app! Check the main menu. Currently this feature is restricted to admins only, but this will be configurable in the future.

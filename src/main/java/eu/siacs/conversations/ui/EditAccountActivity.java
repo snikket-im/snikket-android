@@ -6,7 +6,6 @@ import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.content.IntentSender;
 import android.content.SharedPreferences;
-import android.databinding.DataBindingUtil;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Build;
@@ -16,11 +15,6 @@ import android.preference.PreferenceManager;
 import android.provider.Settings;
 import android.security.KeyChain;
 import android.security.KeyChainAliasCallback;
-import android.support.design.widget.TextInputLayout;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AlertDialog.Builder;
-import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -34,6 +28,12 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AlertDialog.Builder;
+import androidx.databinding.DataBindingUtil;
+
+import com.google.android.material.textfield.TextInputLayout;
 import com.google.common.base.CharMatcher;
 
 import org.openintents.openpgp.util.OpenPgpUtils;
@@ -42,7 +42,6 @@ import java.net.URL;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
-import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import eu.siacs.conversations.Config;
@@ -65,7 +64,6 @@ import eu.siacs.conversations.ui.util.AvatarWorkerTask;
 import eu.siacs.conversations.ui.util.MenuDoubleTabUtil;
 import eu.siacs.conversations.ui.util.PendingItem;
 import eu.siacs.conversations.ui.util.SoftKeyboardUtils;
-import eu.siacs.conversations.utils.CharSequenceUtils;
 import eu.siacs.conversations.utils.CryptoHelper;
 import eu.siacs.conversations.utils.Resolver;
 import eu.siacs.conversations.utils.SignupUtils;
@@ -319,7 +317,7 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
 
         }
     };
-    private View.OnFocusChangeListener mEditTextFocusListener = new View.OnFocusChangeListener() {
+    private final View.OnFocusChangeListener mEditTextFocusListener = new View.OnFocusChangeListener() {
         @Override
         public void onFocusChange(View view, boolean b) {
             EditText et = (EditText) view;
@@ -599,7 +597,7 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
             this.mSavedInstanceInit = savedInstanceState.getBoolean("initMode", false);
         }
         this.binding = DataBindingUtil.setContentView(this, R.layout.activity_edit_account);
-        setSupportActionBar((Toolbar) binding.toolbar);
+        setSupportActionBar(binding.toolbar);
         binding.accountJid.addTextChangedListener(this.mTextWatcher);
         binding.accountJid.setOnFocusChangeListener(this.mEditTextFocusListener);
         this.binding.accountPassword.addTextChangedListener(this.mTextWatcher);
@@ -1211,7 +1209,7 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
         this.binding.osOptimization.setVisibility(showBatteryWarning || showDataSaverWarning ? View.VISIBLE : View.GONE);
         if (showDataSaverWarning && android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
             this.binding.osOptimizationHeadline.setText(R.string.data_saver_enabled);
-            this.binding.osOptimizationBody.setText(R.string.data_saver_enabled_explained);
+            this.binding.osOptimizationBody.setText(getString(R.string.data_saver_enabled_explained, getString(R.string.app_name)));
             this.binding.osOptimizationDisable.setText(R.string.allow);
             this.binding.osOptimizationDisable.setOnClickListener(v -> {
                 Intent intent = new Intent(Settings.ACTION_IGNORE_BACKGROUND_DATA_RESTRICTIONS_SETTINGS);
@@ -1220,13 +1218,13 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
                 try {
                     startActivityForResult(intent, REQUEST_DATA_SAVER);
                 } catch (ActivityNotFoundException e) {
-                    Toast.makeText(EditAccountActivity.this, R.string.device_does_not_support_data_saver, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(EditAccountActivity.this, getString(R.string.device_does_not_support_data_saver, getString(R.string.app_name)), Toast.LENGTH_SHORT).show();
                 }
             });
         } else if (showBatteryWarning && android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
             this.binding.osOptimizationDisable.setText(R.string.disable);
             this.binding.osOptimizationHeadline.setText(R.string.battery_optimizations_enabled);
-            this.binding.osOptimizationBody.setText(R.string.battery_optimizations_enabled_explained);
+            this.binding.osOptimizationBody.setText(getString(R.string.battery_optimizations_enabled_explained, getString(R.string.app_name)));
             this.binding.osOptimizationDisable.setOnClickListener(v -> {
                 Intent intent = new Intent(Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS);
                 Uri uri = Uri.parse("package:" + getPackageName());

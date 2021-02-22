@@ -14,7 +14,6 @@ import com.google.common.collect.ImmutableSet;
 
 import java.lang.ref.WeakReference;
 import java.security.SecureRandom;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
@@ -61,7 +60,7 @@ public class JingleConnectionManager extends AbstractConnectionManager {
             .expireAfterWrite(24, TimeUnit.HOURS)
             .build();
 
-    private HashMap<Jid, JingleCandidate> primaryCandidates = new HashMap<>();
+    private final HashMap<Jid, JingleCandidate> primaryCandidates = new HashMap<>();
 
     public JingleConnectionManager(XmppConnectionService service) {
         super(service);
@@ -134,7 +133,9 @@ public class JingleConnectionManager extends AbstractConnectionManager {
             }
         }
         synchronized (this.rtpSessionProposals) {
-            return this.rtpSessionProposals.containsValue(DeviceDiscoveryState.DISCOVERED) || this.rtpSessionProposals.containsValue(DeviceDiscoveryState.SEARCHING);
+            return this.rtpSessionProposals.containsValue(DeviceDiscoveryState.DISCOVERED)
+                    || this.rtpSessionProposals.containsValue(DeviceDiscoveryState.SEARCHING)
+                    || this.rtpSessionProposals.containsValue(DeviceDiscoveryState.SEARCHING_ACKNOWLEDGED);
         }
     }
 
@@ -155,7 +156,9 @@ public class JingleConnectionManager extends AbstractConnectionManager {
             for (Map.Entry<RtpSessionProposal, DeviceDiscoveryState> entry : this.rtpSessionProposals.entrySet()) {
                 final RtpSessionProposal proposal = entry.getKey();
                 final DeviceDiscoveryState state = entry.getValue();
-                final boolean openProposal = state == DeviceDiscoveryState.DISCOVERED || state == DeviceDiscoveryState.SEARCHING;
+                final boolean openProposal = state == DeviceDiscoveryState.DISCOVERED
+                        || state == DeviceDiscoveryState.SEARCHING
+                        || state == DeviceDiscoveryState.SEARCHING_ACKNOWLEDGED;
                 if (openProposal
                         && proposal.account == account
                         && proposal.with.equals(with.asBareJid())
@@ -262,6 +265,7 @@ public class JingleConnectionManager extends AbstractConnectionManager {
                     return;
                 }
             }
+            //TODO handle reject for cases where we don’t have carbon copies (normally reject is to be sent to own bare jid as well)
             Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": ignore jingle message from self");
             return;
         }
@@ -361,7 +365,7 @@ public class JingleConnectionManager extends AbstractConnectionManager {
                 }
             }
         } else {
-            Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": retrieved out of order jingle message"+message);
+            Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": retrieved out of order jingle message" + message);
         }
 
     }
@@ -602,7 +606,6 @@ public class JingleConnectionManager extends AbstractConnectionManager {
                     RtpEndUserState.FINDING_DEVICE
             );
             final MessagePacket messagePacket = mXmppConnectionService.getMessageGenerator().sessionProposal(proposal);
-            Log.d(Config.LOGTAG, messagePacket.toString());
             mXmppConnectionService.sendMessagePacket(account, messagePacket);
         }
     }
@@ -654,10 +657,11 @@ public class JingleConnectionManager extends AbstractConnectionManager {
         account.getXmppConnection().sendIqPacket(packet.generateResponse(IqPacket.TYPE.ERROR), null);
     }
 
-    public void notifyRebound() {
+    public void notifyRebound(final Account account) {
         for (final AbstractJingleConnection connection : this.connections.values()) {
             connection.notifyRebound();
         }
+        resendSessionProposals(account);
     }
 
     public WeakReference<JingleRtpConnection> findJingleRtpConnection(Account account, Jid with, String sessionId) {
@@ -667,6 +671,19 @@ public class JingleConnectionManager extends AbstractConnectionManager {
             return new WeakReference<>((JingleRtpConnection) connection);
         }
         return null;
+    }
+
+    private void resendSessionProposals(final Account account) {
+        synchronized (this.rtpSessionProposals) {
+            for (final Map.Entry<RtpSessionProposal, DeviceDiscoveryState> entry : this.rtpSessionProposals.entrySet()) {
+                final RtpSessionProposal proposal = entry.getKey();
+                if (entry.getValue() == DeviceDiscoveryState.SEARCHING && proposal.account == account) {
+                    Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": resending session proposal to " + proposal.with);
+                    final MessagePacket messagePacket = mXmppConnectionService.getMessageGenerator().sessionProposal(proposal);
+                    mXmppConnectionService.sendMessagePacket(account, messagePacket);
+                }
+            }
+        }
     }
 
     public void updateProposedSessionDiscovered(Account account, Jid from, String sessionId, final DeviceDiscoveryState target) {
@@ -773,11 +790,12 @@ public class JingleConnectionManager extends AbstractConnectionManager {
     }
 
     public enum DeviceDiscoveryState {
-        SEARCHING, DISCOVERED, FAILED;
+        SEARCHING, SEARCHING_ACKNOWLEDGED, DISCOVERED, FAILED;
 
         public RtpEndUserState toEndUserState() {
             switch (this) {
                 case SEARCHING:
+                case SEARCHING_ACKNOWLEDGED:
                     return RtpEndUserState.FINDING_DEVICE;
                 case DISCOVERED:
                     return RtpEndUserState.RINGING;

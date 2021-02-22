@@ -34,10 +34,11 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Handler;
 import android.preference.PreferenceManager;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Base64;
 import android.util.Log;
 import android.util.SparseArray;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -114,14 +115,14 @@ public class MemorizingTrustManager {
     static String KEYSTORE_DIR = "KeyStore";
     static String KEYSTORE_FILE = "KeyStore.bks";
     private static int decisionId = 0;
-    private static SparseArray<MTMDecision> openDecisions = new SparseArray<MTMDecision>();
+    private static final SparseArray<MTMDecision> openDecisions = new SparseArray<MTMDecision>();
     Context master;
     AppCompatActivity foregroundAct;
     NotificationManager notificationManager;
     Handler masterHandler;
     private File keyStoreFile;
     private KeyStore appKeyStore;
-    private X509TrustManager defaultTrustManager;
+    private final X509TrustManager defaultTrustManager;
     private X509TrustManager appTrustManager;
     private String poshCacheDir;
 
@@ -699,7 +700,7 @@ public class MemorizingTrustManager {
                 Object name = altName.get(1);
                 if (name instanceof String) {
                     si.append("[");
-                    si.append((Integer) altName.get(0));
+                    si.append(altName.get(0));
                     si.append("] ");
                     si.append(name);
                     si.append("\n");

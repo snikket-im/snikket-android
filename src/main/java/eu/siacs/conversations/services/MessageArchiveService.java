@@ -18,11 +18,11 @@ import eu.siacs.conversations.entities.Conversational;
 import eu.siacs.conversations.entities.ReceiptRequest;
 import eu.siacs.conversations.generator.AbstractGenerator;
 import eu.siacs.conversations.xml.Element;
+import eu.siacs.conversations.xmpp.Jid;
 import eu.siacs.conversations.xmpp.OnAdvancedStreamFeaturesLoaded;
 import eu.siacs.conversations.xmpp.mam.MamReference;
 import eu.siacs.conversations.xmpp.stanzas.IqPacket;
 import eu.siacs.conversations.xmpp.stanzas.MessagePacket;
-import eu.siacs.conversations.xmpp.Jid;
 
 public class MessageArchiveService implements OnAdvancedStreamFeaturesLoaded {
 
@@ -89,9 +89,9 @@ public class MessageArchiveService implements OnAdvancedStreamFeaturesLoaded {
 			return null;
 		}
 
-	};
+	}
 
-	MessageArchiveService(final XmppConnectionService service) {
+    MessageArchiveService(final XmppConnectionService service) {
 		this.mXmppConnectionService = service;
 	}
 
@@ -370,7 +370,7 @@ public class MessageArchiveService implements OnAdvancedStreamFeaturesLoaded {
 			done = done || (query.getActualMessageCount() == 0 && !query.isCatchup());
 			this.finalizeQuery(query, done);
 
-			Log.d(Config.LOGTAG, query.getAccount().getJid().asBareJid() + ": finished mam after " + query.getTotalCount() + "(" + query.getActualMessageCount() + ") messages. messages left=" + Boolean.toString(!done) + " count=" + count);
+			Log.d(Config.LOGTAG, query.getAccount().getJid().asBareJid() + ": finished mam after " + query.getTotalCount() + "(" + query.getActualMessageCount() + ") messages. messages left=" + !done + " count=" + count);
 			if (query.isCatchup() && query.getActualMessageCount() > 0) {
 				mXmppConnectionService.getNotificationService().finishBacklog(true, query.getAccount());
 			}
@@ -459,10 +459,10 @@ public class MessageArchiveService implements OnAdvancedStreamFeaturesLoaded {
 		private int actualCount = 0;
 		private int actualInThisQuery = 0;
 		private long start;
-		private long end;
-		private String queryId;
+		private final long end;
+		private final String queryId;
 		private String reference = null;
-		private Account account;
+		private final Account account;
 		private Conversation conversation;
 		private PagingOrder pagingOrder = PagingOrder.NORMAL;
 		private XmppConnectionService.OnMoreMessagesLoaded callback = null;
@@ -649,7 +649,7 @@ public class MessageArchiveService implements OnAdvancedStreamFeaturesLoaded {
 				}
 				builder.append(this.reference);
 			}
-			builder.append(", catchup=").append(Boolean.toString(catchup));
+			builder.append(", catchup=").append(catchup);
 			builder.append(", ns=").append(version.namespace);
 			return builder.toString();
 		}

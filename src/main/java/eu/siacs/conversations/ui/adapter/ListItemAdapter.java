@@ -1,7 +1,6 @@
 package eu.siacs.conversations.ui.adapter;
 
 import android.content.SharedPreferences;
-import android.databinding.DataBindingUtil;
 import android.preference.PreferenceManager;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,6 +8,8 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import androidx.databinding.DataBindingUtil;
 
 import com.wefika.flowlayout.FlowLayout;
 
@@ -30,7 +31,7 @@ public class ListItemAdapter extends ArrayAdapter<ListItem> {
 	protected XmppActivity activity;
 	private boolean showDynamicTags = false;
 	private OnTagClickedListener mOnTagClickedListener = null;
-	private View.OnClickListener onTagTvClick = view -> {
+	private final View.OnClickListener onTagTvClick = view -> {
 		if (view instanceof TextView && mOnTagClickedListener != null) {
 			TextView tv = (TextView) view;
 			final String tag = tv.getText().toString();

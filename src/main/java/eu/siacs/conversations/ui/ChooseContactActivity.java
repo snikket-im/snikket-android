@@ -5,11 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.StringRes;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v7.app.ActionBar;
 import android.view.ActionMode;
 import android.view.KeyEvent;
 import android.view.Menu;
@@ -20,6 +15,12 @@ import android.widget.AbsListView.MultiChoiceModeListener;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.StringRes;
+import androidx.appcompat.app.ActionBar;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.google.common.base.Strings;
 
@@ -50,15 +51,15 @@ public class ChooseContactActivity extends AbstractSearchableListItemActivity im
     public static final String EXTRA_SHOW_ENTER_JID = "extra_show_enter_jid";
     public static final String EXTRA_CONVERSATION = "extra_conversation";
     private static final String EXTRA_FILTERED_CONTACTS = "extra_filtered_contacts";
-    private List<String> mActivatedAccounts = new ArrayList<>();
-    private Set<String> selected = new HashSet<>();
+    private final List<String> mActivatedAccounts = new ArrayList<>();
+    private final Set<String> selected = new HashSet<>();
     private Set<String> filterContacts;
 
     private boolean showEnterJid = false;
     private boolean startSearching = false;
     private boolean multiple = false;
 
-    private PendingItem<ActivityResult> postponedActivityResult = new PendingItem<>();
+    private final PendingItem<ActivityResult> postponedActivityResult = new PendingItem<>();
 
     public static Intent create(Activity activity, Conversation conversation) {
         final Intent intent = new Intent(activity, ChooseContactActivity.class);
@@ -380,7 +381,7 @@ public class ChooseContactActivity extends AbstractSearchableListItemActivity im
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String permissions[], @NonNull int[] grantResults) {
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         ScanActivity.onRequestPermissionResult(this, requestCode, grantResults);
     }
 

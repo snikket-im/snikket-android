@@ -6,19 +6,18 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.ParcelFileDescriptor;
 import android.preference.PreferenceManager;
-import android.support.annotation.RequiresApi;
 import android.util.Log;
+
+import androidx.annotation.RequiresApi;
 
 import net.ypresto.androidtranscoder.MediaTranscoder;
 import net.ypresto.androidtranscoder.format.MediaFormatStrategy;
-import net.ypresto.androidtranscoder.format.MediaFormatStrategyPresets;
 
 import java.io.File;
 import java.io.FileDescriptor;
 import java.io.FileNotFoundException;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
-import java.util.concurrent.atomic.AtomicInteger;
 
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
@@ -55,7 +54,7 @@ public class AttachFileToConversationRunnable implements Runnable, MediaTranscod
 	}
 
 	boolean isVideoMessage() {
-		return this.isVideoMessage && Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2;
+		return this.isVideoMessage;
 	}
 
 	private void processAsFile() {
@@ -90,7 +89,6 @@ public class AttachFileToConversationRunnable implements Runnable, MediaTranscod
 		}
 	}
 
-	@RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR2)
 	private void processAsVideo() throws FileNotFoundException {
 		Log.d(Config.LOGTAG,"processing file as video");
 		mXmppConnectionService.startForcingForegroundNotification();

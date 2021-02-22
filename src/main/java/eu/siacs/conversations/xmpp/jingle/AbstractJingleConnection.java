@@ -8,8 +8,8 @@ import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.entities.Contact;
 import eu.siacs.conversations.entities.Message;
 import eu.siacs.conversations.services.XmppConnectionService;
-import eu.siacs.conversations.xmpp.jingle.stanzas.JinglePacket;
 import eu.siacs.conversations.xmpp.Jid;
+import eu.siacs.conversations.xmpp.jingle.stanzas.JinglePacket;
 
 public abstract class AbstractJingleConnection {
 
@@ -126,6 +126,7 @@ public abstract class AbstractJingleConnection {
         ACCEPTED,
         PROCEED,
         REJECTED,
+        REJECTED_RACED, //used when we want to reject but haven’t received session init yet
         RETRACTED,
         RETRACTED_RACED, //used when receiving a retract after we already asked to proceed
         SESSION_INITIALIZED, //equal to 'PENDING'

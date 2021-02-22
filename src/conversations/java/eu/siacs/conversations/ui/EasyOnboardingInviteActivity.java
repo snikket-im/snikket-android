@@ -2,16 +2,16 @@ package eu.siacs.conversations.ui;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.databinding.DataBindingUtil;
 import android.graphics.Bitmap;
 import android.graphics.Point;
 import android.os.Bundle;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
+
+import androidx.databinding.DataBindingUtil;
 
 import com.google.common.base.Strings;
 
@@ -34,7 +34,7 @@ public class EasyOnboardingInviteActivity extends XmppActivity implements EasyOn
     public void onCreate(final Bundle bundle) {
         super.onCreate(bundle);
         this.binding = DataBindingUtil.setContentView(this, R.layout.activity_easy_invite);
-        setSupportActionBar((Toolbar) binding.toolbar);
+        setSupportActionBar(binding.toolbar);
         configureActionBar(getSupportActionBar(), true);
         this.binding.shareButton.setOnClickListener(v -> share());
         if (bundle != null && bundle.containsKey("invite")) {

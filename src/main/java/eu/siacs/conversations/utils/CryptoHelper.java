@@ -11,6 +11,7 @@ import org.bouncycastle.cert.jcajce.JcaX509CertificateHolder;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
@@ -256,7 +257,7 @@ public final class CryptoHelper {
     public static String getFingerprint(String value) {
         try {
             MessageDigest md = MessageDigest.getInstance("SHA-1");
-            return bytesToHex(md.digest(value.getBytes("UTF-8")));
+            return bytesToHex(md.digest(value.getBytes(StandardCharsets.UTF_8)));
         } catch (Exception e) {
             return "";
         }

@@ -7,20 +7,14 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Typeface;
 import android.preference.PreferenceManager;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.SpannableStringBuilder;
-import android.text.Spanned;
 import android.text.format.DateUtils;
 import android.text.style.ForegroundColorSpan;
 import android.text.style.RelativeSizeSpan;
 import android.text.style.StyleSpan;
 import android.util.DisplayMetrics;
-import android.view.ActionMode;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
@@ -31,6 +25,9 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
 import com.google.common.base.Strings;
 
@@ -87,11 +84,10 @@ public class MessageAdapter extends ArrayAdapter<Message> {
     private final XmppActivity activity;
     private final AudioPlayer audioPlayer;
     private List<String> highlightedTerm = null;
-    private DisplayMetrics metrics;
+    private final DisplayMetrics metrics;
     private OnContactPictureClicked mOnContactPictureClickedListener;
     private OnContactPictureLongClicked mOnContactPictureLongClickedListener;
     private boolean mUseGreenBackground = false;
-    private OnQuoteListener onQuoteListener;
 
     public MessageAdapter(XmppActivity activity, List<Message> messages) {
         super(activity, 0, messages);
@@ -131,10 +127,6 @@ public class MessageAdapter extends ArrayAdapter<Message> {
     public void setOnContactPictureLongClicked(
             OnContactPictureLongClicked listener) {
         this.mOnContactPictureLongClickedListener = listener;
-    }
-
-    public void setOnQuoteListener(OnQuoteListener listener) {
-        this.onQuoteListener = listener;
     }
 
     @Override
@@ -701,7 +693,7 @@ public class MessageAdapter extends ArrayAdapter<Message> {
                 } else if (rtpSessionStatus.successful) {
                     viewHolder.status_message.setText(R.string.incoming_call);
                 } else {
-                    viewHolder.status_message.setText(activity.getString(R.string.incoming_call_duration, UIHelper.readableTimeDifferenceFull(activity, message.getTimeSent())));
+                    viewHolder.status_message.setText(activity.getString(R.string.missed_call_timestamp, UIHelper.readableTimeDifferenceFull(activity, message.getTimeSent())));
                 }
             } else {
                 if (duration > 0) {
@@ -864,7 +856,7 @@ public class MessageAdapter extends ArrayAdapter<Message> {
     private void promptOpenKeychainInstall(View view) {
         activity.showInstallPgpDialog();
     }
-    
+
     public FileBackend getFileBackend() {
         return activity.xmppConnectionService.getFileBackend();
     }

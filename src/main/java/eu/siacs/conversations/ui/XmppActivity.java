@@ -19,7 +19,6 @@ import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
-import android.databinding.DataBindingUtil;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.Point;
@@ -35,12 +34,7 @@ import android.os.IBinder;
 import android.os.PowerManager;
 import android.os.SystemClock;
 import android.preference.PreferenceManager;
-import android.support.annotation.BoolRes;
-import android.support.annotation.NonNull;
-import android.support.annotation.StringRes;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AlertDialog.Builder;
-import android.support.v7.app.AppCompatDelegate;
+import android.text.Html;
 import android.text.InputType;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -49,6 +43,16 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.Toast;
+
+import androidx.annotation.BoolRes;
+import androidx.annotation.NonNull;
+import androidx.annotation.StringRes;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AlertDialog.Builder;
+import androidx.appcompat.app.AppCompatDelegate;
+import androidx.databinding.DataBindingUtil;
+
+import com.google.common.base.Strings;
 
 import java.io.IOException;
 import java.lang.ref.WeakReference;
@@ -77,9 +81,9 @@ import eu.siacs.conversations.ui.util.SoftKeyboardUtils;
 import eu.siacs.conversations.utils.AccountUtils;
 import eu.siacs.conversations.utils.ExceptionHelper;
 import eu.siacs.conversations.utils.ThemeHelper;
+import eu.siacs.conversations.xmpp.Jid;
 import eu.siacs.conversations.xmpp.OnKeyStatusUpdated;
 import eu.siacs.conversations.xmpp.OnUpdateBlocklist;
-import eu.siacs.conversations.xmpp.Jid;
 
 public abstract class XmppActivity extends ActionBarActivity {
 
@@ -119,12 +123,12 @@ public abstract class XmppActivity extends ActionBarActivity {
     };
     private DisplayMetrics metrics;
     private long mLastUiRefresh = 0;
-    private Handler mRefreshUiHandler = new Handler();
-    private Runnable mRefreshUiRunnable = () -> {
+    private final Handler mRefreshUiHandler = new Handler();
+    private final Runnable mRefreshUiRunnable = () -> {
         mLastUiRefresh = SystemClock.elapsedRealtime();
         refreshUiReal();
     };
-    private UiCallback<Conversation> adhocCallback = new UiCallback<Conversation>() {
+    private final UiCallback<Conversation> adhocCallback = new UiCallback<Conversation>() {
         @Override
         public void success(final Conversation conversation) {
             runOnUiThread(() -> {
@@ -247,7 +251,7 @@ public abstract class XmppActivity extends ActionBarActivity {
         Builder builder = new AlertDialog.Builder(this);
         builder.setTitle(getString(R.string.openkeychain_required));
         builder.setIconAttribute(android.R.attr.alertDialogIcon);
-        builder.setMessage(getText(R.string.openkeychain_required_long));
+        builder.setMessage(Html.fromHtml(getString(R.string.openkeychain_required_long, getString(R.string.app_name))));
         builder.setNegativeButton(getString(R.string.cancel), null);
         builder.setNeutralButton(getString(R.string.restart),
                 (dialog, which) -> {
@@ -571,13 +575,7 @@ public abstract class XmppActivity extends ActionBarActivity {
         if (account.getPgpId() == 0) {
             choosePgpSignId(account);
         } else {
-            String status = null;
-            if (manuallyChangePresence()) {
-                status = account.getPresenceStatusMessage();
-            }
-            if (status == null) {
-                status = "";
-            }
+            final String status = Strings.nullToEmpty(account.getPresenceStatusMessage());
             xmppConnectionService.getPgpEngine().generateSignature(intent, account, status, new UiCallback<String>() {
 
                 @Override
@@ -913,7 +911,7 @@ public abstract class XmppActivity extends ActionBarActivity {
 
     public static class ConferenceInvite {
         private String uuid;
-        private List<Jid> jids = new ArrayList<>();
+        private final List<Jid> jids = new ArrayList<>();
 
         public static ConferenceInvite parse(Intent data) {
             ConferenceInvite invite = new ConferenceInvite();

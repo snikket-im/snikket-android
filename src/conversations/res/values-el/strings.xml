@@ -9,4 +9,8 @@
     <string name="magic_create_text_fixed">Έχετε προσκληθεί στο %1$s. Ένα όνομα χρήστη έχει ήδη επιλεγεί για εσάς. Θα σας καθοδηγήσουμε στη διαδικασία δημιουργίας λογαριασμού.\nΘα μπορείτε να επικοινωνείτε με χρήστες άλλων παρόχων δίνοντάς τους την πλήρη διεύθυνση XMPP σας.</string>
     <string name="your_server_invitation">Η πρόσκλησή σας στον διακομιστή</string>
     <string name="improperly_formatted_provisioning">Λάθος μορφοποίηση κώδικα παροχής</string>
-    </resources>
+    <string name="tap_share_button_send_invite">Πατήστε το πλήκτρο διαμοιρασμού για να στείλετε στην επαφή σας μια πρόσκληση στο %1$s.</string>
+    <string name="if_contact_is_nearby_use_qr">Αν η επαφή σας βρίσκεται κοντά σας, μπορεί επίσης να σκανάρει τον κωδικό παρακάτω για να αποδεχτεί την πρόσκλησή σας.</string>
+    <string name="easy_invite_share_text">Μπείτε στο %1$s και συνομιλήστε μαζί μου: %2$s</string>
+    <string name="share_invite_with">Διαμοιρασμός πρόσκλησης με...</string>
+</resources>

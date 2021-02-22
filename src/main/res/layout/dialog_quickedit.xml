@@ -8,7 +8,7 @@
         android:orientation="vertical"
         android:padding="?dialogPreferredPadding">
 
-        <android.support.design.widget.TextInputLayout
+        <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/input_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -27,6 +27,6 @@
                 <requestFocus/>
             </eu.siacs.conversations.ui.widget.EmojiWrapperEditText>
 
-        </android.support.design.widget.TextInputLayout>
+        </com.google.android.material.textfield.TextInputLayout>
     </LinearLayout>
 </layout>

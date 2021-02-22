@@ -2,13 +2,13 @@ package eu.siacs.conversations.ui;
 
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
-import android.databinding.DataBindingUtil;
 import android.os.Bundle;
-import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Toast;
+
+import androidx.databinding.DataBindingUtil;
 
 import java.security.SecureRandom;
 
@@ -61,7 +61,7 @@ public class MagicCreateActivity extends XmppActivity implements TextWatcher {
         }
         super.onCreate(savedInstanceState);
         this.binding = DataBindingUtil.setContentView(this, R.layout.magic_create);
-        setSupportActionBar((Toolbar) this.binding.toolbar);
+        setSupportActionBar(this.binding.toolbar);
         configureActionBar(getSupportActionBar(), this.domain == null);
         if (username != null && domain != null) {
             binding.title.setText(R.string.your_server_invitation);

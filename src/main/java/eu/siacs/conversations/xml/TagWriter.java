@@ -16,10 +16,10 @@ public class TagWriter {
 
 	private OutputStreamWriter outputStream;
 	private boolean finished = false;
-	private LinkedBlockingQueue<AbstractStanza> writeQueue = new LinkedBlockingQueue<AbstractStanza>();
+	private final LinkedBlockingQueue<AbstractStanza> writeQueue = new LinkedBlockingQueue<AbstractStanza>();
 	private CountDownLatch stanzaWriterCountDownLatch = null;
 
-	private Thread asyncStanzaWriter = new Thread() {
+	private final Thread asyncStanzaWriter = new Thread() {
 
 		@Override
 		public void run() {

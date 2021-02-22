@@ -12,9 +12,10 @@ import android.net.Uri;
 import android.os.Binder;
 import android.os.IBinder;
 import android.provider.OpenableColumns;
-import android.support.v4.app.NotificationCompat;
-import android.support.v4.app.NotificationManagerCompat;
 import android.util.Log;
+
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
 
 import com.google.common.base.Charsets;
 import com.google.common.base.Stopwatch;
@@ -60,7 +61,7 @@ import eu.siacs.conversations.xmpp.Jid;
 public class ImportBackupService extends Service {
 
     private static final int NOTIFICATION_ID = 21;
-    private static AtomicBoolean running = new AtomicBoolean(false);
+    private static final AtomicBoolean running = new AtomicBoolean(false);
     private final ImportBackupServiceBinder binder = new ImportBackupServiceBinder();
     private final SerialSingleThreadExecutor executor = new SerialSingleThreadExecutor(getClass().getSimpleName());
     private final Set<OnBackupProcessed> mOnBackupProcessedListeners = Collections.newSetFromMap(new WeakHashMap<>());

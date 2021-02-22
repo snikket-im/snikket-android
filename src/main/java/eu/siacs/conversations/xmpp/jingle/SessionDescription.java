@@ -88,7 +88,6 @@ public class SessionDescription {
                 case 'm':
                     if (currentMediaBuilder == null) {
                         sessionDescriptionBuilder.setAttributes(attributeMap);
-                        ;
                     } else {
                         currentMediaBuilder.setAttributes(attributeMap);
                         mediaBuilder.add(currentMediaBuilder.createMedia());
@@ -143,14 +142,16 @@ public class SessionDescription {
             final ArrayListMultimap<String, String> mediaAttributes = ArrayListMultimap.create();
             final String ufrag = transport.getAttribute("ufrag");
             final String pwd = transport.getAttribute("pwd");
-            if (!Strings.isNullOrEmpty(ufrag)) {
-                mediaAttributes.put("ice-ufrag", ufrag);
+            if (Strings.isNullOrEmpty(ufrag)) {
+                throw new IllegalArgumentException("Transport element is missing required ufrag attribute");
             }
             checkNoWhitespace(ufrag, "ufrag value must not contain any whitespaces");
-            if (!Strings.isNullOrEmpty(pwd)) {
-                mediaAttributes.put("ice-pwd", pwd);
+            mediaAttributes.put("ice-ufrag", ufrag);
+            if (Strings.isNullOrEmpty(pwd)) {
+                throw new IllegalArgumentException("Transport element is missing required pwd attribute");
             }
             checkNoWhitespace(pwd, "pwd value must not contain any whitespaces");
+            mediaAttributes.put("ice-pwd", pwd);
             mediaAttributes.put("ice-options", HARDCODED_ICE_OPTIONS);
             final IceUdpTransportInfo.Fingerprint fingerprint = transport.getFingerprint();
             if (fingerprint != null) {

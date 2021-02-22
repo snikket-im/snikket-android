@@ -6,7 +6,6 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.StringRes;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnLongClickListener;
@@ -14,6 +13,8 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.annotation.StringRes;
 
 import com.theartofdev.edmodo.cropper.CropImage;
 
@@ -40,8 +41,8 @@ public class PublishProfilePictureActivity extends XmppActivity implements XmppC
     private Account account;
     private boolean support = false;
     private boolean publishing = false;
-    private AtomicBoolean handledExternalUri = new AtomicBoolean(false);
-    private OnLongClickListener backToDefaultListener = new OnLongClickListener() {
+    private final AtomicBoolean handledExternalUri = new AtomicBoolean(false);
+    private final OnLongClickListener backToDefaultListener = new OnLongClickListener() {
 
         @Override
         public boolean onLongClick(View v) {
@@ -130,6 +131,7 @@ public class PublishProfilePictureActivity extends XmppActivity implements XmppC
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
             CropImage.ActivityResult result = CropImage.getActivityResult(data);
             if (resultCode == RESULT_OK) {

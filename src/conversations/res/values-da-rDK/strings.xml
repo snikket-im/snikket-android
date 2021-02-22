@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="pick_a_server">Vælg din XMPP udbyder</string>
+    <string name="create_new_account">Opret ny konto</string>
+    <string name="share_invite_with">Del invitation med...</string>
+</resources>

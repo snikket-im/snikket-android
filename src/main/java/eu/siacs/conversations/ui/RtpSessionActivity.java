@@ -7,22 +7,24 @@ import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.databinding.DataBindingUtil;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.PowerManager;
 import android.os.SystemClock;
-import android.support.annotation.NonNull;
-import android.support.annotation.RequiresApi;
-import android.support.annotation.StringRes;
 import android.util.Log;
 import android.util.Rational;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
+import androidx.annotation.StringRes;
+import androidx.databinding.DataBindingUtil;
 
 import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
@@ -55,12 +57,12 @@ import eu.siacs.conversations.ui.util.MainThreadExecutor;
 import eu.siacs.conversations.utils.PermissionUtils;
 import eu.siacs.conversations.utils.TimeFrameUtils;
 import eu.siacs.conversations.xml.Namespace;
+import eu.siacs.conversations.xmpp.Jid;
 import eu.siacs.conversations.xmpp.jingle.AbstractJingleConnection;
 import eu.siacs.conversations.xmpp.jingle.JingleConnectionManager;
 import eu.siacs.conversations.xmpp.jingle.JingleRtpConnection;
 import eu.siacs.conversations.xmpp.jingle.Media;
 import eu.siacs.conversations.xmpp.jingle.RtpEndUserState;
-import eu.siacs.conversations.xmpp.Jid;
 
 import static eu.siacs.conversations.utils.PermissionUtils.getFirstDenied;
 import static java.util.Arrays.asList;
@@ -99,8 +101,8 @@ public class RtpSessionActivity extends XmppActivity implements XmppConnectionSe
     private ActivityRtpSessionBinding binding;
     private PowerManager.WakeLock mProximityWakeLock;
 
-    private Handler mHandler = new Handler();
-    private Runnable mTickExecutor = new Runnable() {
+    private final Handler mHandler = new Handler();
+    private final Runnable mTickExecutor = new Runnable() {
         @Override
         public void run() {
             updateCallDuration();
@@ -143,6 +145,18 @@ public class RtpSessionActivity extends XmppActivity implements XmppConnectionSe
         help.setVisible(isHelpButtonVisible());
         gotoChat.setVisible(isSwitchToConversationVisible());
         return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onKeyDown(final int keyCode, final KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_VOLUME_DOWN){
+            if (xmppConnectionService != null) {
+                if (xmppConnectionService.getNotificationService().stopSoundAndVibration()) {
+                    return true;
+                }
+            }
+        }
+        return super.onKeyDown(keyCode, event);
     }
 
     private boolean isHelpButtonVisible() {
@@ -420,7 +434,7 @@ public class RtpSessionActivity extends XmppActivity implements XmppConnectionSe
             } else {
                 throw new IllegalStateException("Invalid permission result request");
             }
-            Toast.makeText(this, res, Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getString(res, getString(R.string.app_name)), Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -457,24 +471,42 @@ public class RtpSessionActivity extends XmppActivity implements XmppConnectionSe
 
     @Override
     public void onBackPressed() {
+        if (isConnected()) {
+            if (switchToPictureInPicture()) {
+                return;
+            }
+        } else {
+            endCall();
+        }
         super.onBackPressed();
-        endCall();
     }
 
     @Override
     public void onUserLeaveHint() {
         super.onUserLeaveHint();
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O && deviceSupportsPictureInPicture()) {
-            if (shouldBePictureInPicture()) {
-                startPictureInPicture();
-                return;
-            }
+        if (switchToPictureInPicture()) {
+            return;
         }
         //TODO apparently this method is not getting called on Android 10 when using the task switcher
         final boolean emptyReference = rtpConnectionReference == null || rtpConnectionReference.get() == null;
         if (emptyReference && xmppConnectionService != null) {
             retractSessionProposal();
         }
+    }
+
+    private boolean isConnected() {
+        final JingleRtpConnection connection = this.rtpConnectionReference != null ? this.rtpConnectionReference.get() : null;
+        return connection != null && connection.getEndUserState() == RtpEndUserState.CONNECTED;
+    }
+
+    private boolean switchToPictureInPicture() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O && deviceSupportsPictureInPicture()) {
+            if (shouldBePictureInPicture()) {
+                startPictureInPicture();
+                return true;
+            }
+        }
+        return false;
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)

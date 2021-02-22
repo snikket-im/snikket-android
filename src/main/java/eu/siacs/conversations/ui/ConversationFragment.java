@@ -3,36 +3,28 @@ package eu.siacs.conversations.ui;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.app.FragmentManager;
-import android.content.SharedPreferences;
-import android.content.pm.PackageManager;
-import android.databinding.DataBindingUtil;
-import android.net.Uri;
-import android.os.Build;
-import android.preference.PreferenceManager;
-import android.provider.MediaStore;
-import android.support.annotation.IdRes;
-import android.support.annotation.NonNull;
-import android.support.annotation.StringRes;
-import android.support.v7.app.AlertDialog;
 import android.app.Fragment;
+import android.app.FragmentManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentSender.SendIntentException;
+import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.SystemClock;
-import android.support.v13.view.inputmethod.InputConnectionCompat;
-import android.support.v13.view.inputmethod.InputContentInfoCompat;
+import android.preference.PreferenceManager;
+import android.provider.MediaStore;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.Gravity;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -52,6 +44,14 @@ import android.widget.ListView;
 import android.widget.PopupMenu;
 import android.widget.TextView.OnEditorActionListener;
 import android.widget.Toast;
+
+import androidx.annotation.IdRes;
+import androidx.annotation.NonNull;
+import androidx.annotation.StringRes;
+import androidx.appcompat.app.AlertDialog;
+import androidx.core.view.inputmethod.InputConnectionCompat;
+import androidx.core.view.inputmethod.InputContentInfoCompat;
+import androidx.databinding.DataBindingUtil;
 
 import com.google.common.base.Optional;
 
@@ -118,6 +118,7 @@ import eu.siacs.conversations.utils.StylingHelper;
 import eu.siacs.conversations.utils.TimeFrameUtils;
 import eu.siacs.conversations.utils.UIHelper;
 import eu.siacs.conversations.xml.Namespace;
+import eu.siacs.conversations.xmpp.Jid;
 import eu.siacs.conversations.xmpp.XmppConnection;
 import eu.siacs.conversations.xmpp.chatstate.ChatState;
 import eu.siacs.conversations.xmpp.jingle.AbstractJingleConnection;
@@ -126,7 +127,6 @@ import eu.siacs.conversations.xmpp.jingle.JingleFileTransferConnection;
 import eu.siacs.conversations.xmpp.jingle.Media;
 import eu.siacs.conversations.xmpp.jingle.OngoingRtpSession;
 import eu.siacs.conversations.xmpp.jingle.RtpCapability;
-import eu.siacs.conversations.xmpp.Jid;
 
 import static eu.siacs.conversations.ui.XmppActivity.EXTRA_ACCOUNT;
 import static eu.siacs.conversations.ui.XmppActivity.REQUEST_INVITE_TO_CONVERSATION;
@@ -182,7 +182,7 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
     private Toast messageLoaderToast;
     private ConversationsActivity activity;
     private boolean reInitRequiredOnStart = true;
-    private OnClickListener clickToMuc = new OnClickListener() {
+    private final OnClickListener clickToMuc = new OnClickListener() {
 
         @Override
         public void onClick(View v) {
@@ -192,14 +192,14 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
             startActivity(intent);
         }
     };
-    private OnClickListener leaveMuc = new OnClickListener() {
+    private final OnClickListener leaveMuc = new OnClickListener() {
 
         @Override
         public void onClick(View v) {
             activity.xmppConnectionService.archiveConversation(conversation);
         }
     };
-    private OnClickListener joinMuc = new OnClickListener() {
+    private final OnClickListener joinMuc = new OnClickListener() {
 
         @Override
         public void onClick(View v) {
@@ -207,7 +207,7 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
         }
     };
 
-    private OnClickListener acceptJoin = new OnClickListener() {
+    private final OnClickListener acceptJoin = new OnClickListener() {
         @Override
         public void onClick(View v) {
             conversation.setAttribute("accept_non_anonymous", true);
@@ -216,7 +216,7 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
         }
     };
 
-    private OnClickListener enterPassword = new OnClickListener() {
+    private final OnClickListener enterPassword = new OnClickListener() {
 
         @Override
         public void onClick(View v) {
@@ -231,7 +231,7 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
             });
         }
     };
-    private OnScrollListener mOnScrollListener = new OnScrollListener() {
+    private final OnScrollListener mOnScrollListener = new OnScrollListener() {
 
         @Override
         public void onScrollStateChanged(AbsListView view, int scrollState) {
@@ -310,7 +310,7 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
             }
         }
     };
-    private EditMessage.OnCommitContentListener mEditorContentListener = new EditMessage.OnCommitContentListener() {
+    private final EditMessage.OnCommitContentListener mEditorContentListener = new EditMessage.OnCommitContentListener() {
         @Override
         public boolean onCommitContent(InputContentInfoCompat inputContentInfo, int flags, Bundle opts, String[] contentMimeTypes) {
             // try to get permission to read the image, if applicable
@@ -333,7 +333,7 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
         }
     };
     private Message selectedMessage;
-    private OnClickListener mEnableAccountListener = new OnClickListener() {
+    private final OnClickListener mEnableAccountListener = new OnClickListener() {
         @Override
         public void onClick(View v) {
             final Account account = conversation == null ? null : conversation.getAccount();
@@ -343,7 +343,7 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
             }
         }
     };
-    private OnClickListener mUnblockClickListener = new OnClickListener() {
+    private final OnClickListener mUnblockClickListener = new OnClickListener() {
         @Override
         public void onClick(final View v) {
             v.post(() -> v.setVisibility(View.INVISIBLE));
@@ -354,8 +354,8 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
             }
         }
     };
-    private OnClickListener mBlockClickListener = this::showBlockSubmenu;
-    private OnClickListener mAddBackClickListener = new OnClickListener() {
+    private final OnClickListener mBlockClickListener = this::showBlockSubmenu;
+    private final OnClickListener mAddBackClickListener = new OnClickListener() {
 
         @Override
         public void onClick(View v) {
@@ -366,8 +366,8 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
             }
         }
     };
-    private View.OnLongClickListener mLongPressBlockListener = this::showBlockSubmenu;
-    private OnClickListener mAllowPresenceSubscription = new OnClickListener() {
+    private final View.OnLongClickListener mLongPressBlockListener = this::showBlockSubmenu;
+    private final OnClickListener mAllowPresenceSubscription = new OnClickListener() {
         @Override
         public void onClick(View v) {
             final Contact contact = conversation == null ? null : conversation.getContact();
@@ -400,8 +400,8 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
             updateSnackBar(conversation);
         }
     };
-    private AtomicBoolean mSendingPgpMessage = new AtomicBoolean(false);
-    private OnEditorActionListener mEditorActionListener = (v, actionId, event) -> {
+    private final AtomicBoolean mSendingPgpMessage = new AtomicBoolean(false);
+    private final OnEditorActionListener mEditorActionListener = (v, actionId, event) -> {
         if (actionId == EditorInfo.IME_ACTION_SEND) {
             InputMethodManager imm = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
             if (imm != null && imm.isFullscreenMode()) {
@@ -413,7 +413,7 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
             return false;
         }
     };
-    private OnClickListener mScrollButtonListener = new OnClickListener() {
+    private final OnClickListener mScrollButtonListener = new OnClickListener() {
 
         @Override
         public void onClick(View v) {
@@ -421,7 +421,7 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
             setSelection(binding.messagesView.getCount() - 1, true);
         }
     };
-    private OnClickListener mSendButtonListener = new OnClickListener() {
+    private final OnClickListener mSendButtonListener = new OnClickListener() {
 
         @Override
         public void onClick(View v) {
@@ -517,7 +517,7 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
 
     private static Conversation getConversation(Activity activity, @IdRes int res) {
         final Fragment fragment = activity.getFragmentManager().findFragmentById(res);
-        if (fragment != null && fragment instanceof ConversationFragment) {
+        if (fragment instanceof ConversationFragment) {
             return ((ConversationFragment) fragment).getConversation();
         } else {
             return null;
@@ -527,11 +527,11 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
     public static ConversationFragment get(Activity activity) {
         FragmentManager fragmentManager = activity.getFragmentManager();
         Fragment fragment = fragmentManager.findFragmentById(R.id.main_fragment);
-        if (fragment != null && fragment instanceof ConversationFragment) {
+        if (fragment instanceof ConversationFragment) {
             return (ConversationFragment) fragment;
         } else {
             fragment = fragmentManager.findFragmentById(R.id.secondary_fragment);
-            return fragment != null && fragment instanceof ConversationFragment ? (ConversationFragment) fragment : null;
+            return fragment instanceof ConversationFragment ? (ConversationFragment) fragment : null;
         }
     }
 
@@ -849,7 +849,7 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
             case ATTACHMENT_CHOICE_LOCATION:
                 double latitude = data.getDoubleExtra("latitude", 0);
                 double longitude = data.getDoubleExtra("longitude", 0);
-                Uri geo = Uri.parse("geo:" + String.valueOf(latitude) + "," + String.valueOf(longitude));
+                Uri geo = Uri.parse("geo:" + latitude + "," + longitude);
                 mediaPreviewAdapter.addMediaPreviews(Attachment.of(getActivity(), geo, Attachment.Type.LOCATION));
                 toggleInputMethod();
                 break;
@@ -986,7 +986,8 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
                 menuCall.setVisible(false);
                 menuOngoingCall.setVisible(false);
             } else {
-                final Optional<OngoingRtpSession> ongoingRtpSession = activity.xmppConnectionService.getJingleConnectionManager().getOngoingRtpConnection(conversation.getContact());
+                final XmppConnectionService service = activity.xmppConnectionService;
+                final Optional<OngoingRtpSession> ongoingRtpSession = service == null ? Optional.absent() : service.getJingleConnectionManager().getOngoingRtpConnection(conversation.getContact());
                 if (ongoingRtpSession.isPresent()) {
                     menuOngoingCall.setVisible(true);
                     menuCall.setVisible(false);
@@ -998,7 +999,6 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
                 }
                 menuContactDetails.setVisible(!this.conversation.withSelf());
                 menuMucDetails.setVisible(false);
-                final XmppConnectionService service = activity.xmppConnectionService;
                 menuInviteContact.setVisible(service != null && service.findConferenceServer(conversation.getAccount()) != null);
             }
             if (conversation.isMuted()) {
@@ -1037,7 +1037,6 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
         messageListAdapter = new MessageAdapter((XmppActivity) getActivity(), this.messageList);
         messageListAdapter.setOnContactPictureClicked(this);
         messageListAdapter.setOnContactPictureLongClicked(this);
-        messageListAdapter.setOnQuoteListener(this::quoteText);
         binding.messagesView.setAdapter(messageListAdapter);
 
         registerForContextMenu(binding.messagesView);
@@ -1055,7 +1054,6 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
         Log.d(Config.LOGTAG, "ConversationFragment.onDestroyView()");
         messageListAdapter.setOnContactPictureClicked(null);
         messageListAdapter.setOnContactPictureLongClicked(null);
-        messageListAdapter.setOnQuoteListener(null);
     }
 
     private void quoteText(String text) {
@@ -1121,8 +1119,9 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
             MenuItem cancelTransmission = menu.findItem(R.id.cancel_transmission);
             MenuItem deleteFile = menu.findItem(R.id.delete_file);
             MenuItem showErrorMessage = menu.findItem(R.id.show_error_message);
+            final boolean unInitiatedButKnownSize = MessageUtils.unInitiatedButKnownSize(m);
             final boolean showError = m.getStatus() == Message.STATUS_SEND_FAILED && m.getErrorMessage() != null && !Message.ERROR_MESSAGE_CANCELLED.equals(m.getErrorMessage());
-            if (!m.isFileOrImage() && !encrypted && !m.isGeoUri() && !m.treatAsDownloadable()) {
+            if (!m.isFileOrImage() && !encrypted && !m.isGeoUri() && !m.treatAsDownloadable() && !unInitiatedButKnownSize && t == null) {
                 copyMessage.setVisible(true);
                 quoteMessage.setVisible(!showError && MessageUtils.prepareQuote(m).length() > 0);
                 String body = m.getMergedBody().toString();
@@ -1143,7 +1142,7 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
                     && m.getConversation() instanceof Conversation) {
                 correctMessage.setVisible(true);
             }
-            if ((m.isFileOrImage() && !deleted && !receiving) || (m.getType() == Message.TYPE_TEXT && !m.treatAsDownloadable())) {
+            if ((m.isFileOrImage() && !deleted && !receiving) || (m.getType() == Message.TYPE_TEXT && !m.treatAsDownloadable()) && !unInitiatedButKnownSize && t == null) {
                 shareWith.setVisible(true);
             }
             if (m.getStatus() == Message.STATUS_SEND_FAILED) {
@@ -1152,6 +1151,7 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
             if (m.hasFileOnRemoteHost()
                     || m.isGeoUri()
                     || m.treatAsDownloadable()
+                    || unInitiatedButKnownSize
                     || t instanceof HttpDownloadConnection) {
                 copyUrl.setVisible(true);
             }
@@ -1571,7 +1571,7 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
                 } else {
                     res = R.string.no_storage_permission;
                 }
-                Toast.makeText(getActivity(), res, Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(), getString(res, getString(R.string.app_name)), Toast.LENGTH_SHORT).show();
             }
         }
         if (writeGranted(grantResults, permissions)) {
@@ -2098,7 +2098,7 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
         }
 
         stopScrolling();
-        Log.d(Config.LOGTAG, "reInit(hasExtras=" + Boolean.toString(hasExtras) + ")");
+        Log.d(Config.LOGTAG, "reInit(hasExtras=" + hasExtras + ")");
 
         if (this.conversation.isRead() && hasExtras) {
             Log.d(Config.LOGTAG, "trimming conversation");
@@ -2121,7 +2121,7 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
         refresh(false);
         activity.invalidateOptionsMenu();
         this.conversation.messagesLoaded.set(true);
-        Log.d(Config.LOGTAG, "scrolledToBottomAndNoPending=" + Boolean.toString(scrolledToBottomAndNoPending));
+        Log.d(Config.LOGTAG, "scrolledToBottomAndNoPending=" + scrolledToBottomAndNoPending);
 
         if (hasExtras || scrolledToBottomAndNoPending) {
             resetUnreadMessagesCount();

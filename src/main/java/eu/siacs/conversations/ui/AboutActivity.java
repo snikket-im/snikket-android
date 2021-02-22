@@ -1,8 +1,8 @@
 package eu.siacs.conversations.ui;
 
 import android.os.Bundle;
-import android.preference.PreferenceManager;
-import android.support.v7.app.AppCompatActivity;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.utils.ThemeHelper;

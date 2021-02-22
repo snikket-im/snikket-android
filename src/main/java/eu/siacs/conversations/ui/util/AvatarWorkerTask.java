@@ -6,8 +6,9 @@ import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
-import android.support.annotation.DimenRes;
 import android.widget.ImageView;
+
+import androidx.annotation.DimenRes;
 
 import java.lang.ref.WeakReference;
 import java.util.concurrent.RejectedExecutionException;
@@ -20,7 +21,8 @@ import eu.siacs.conversations.ui.XmppActivity;
 public class AvatarWorkerTask extends AsyncTask<AvatarService.Avatarable, Void, Bitmap> {
     private final WeakReference<ImageView> imageViewReference;
     private AvatarService.Avatarable avatarable = null;
-    private @DimenRes int size;
+    private @DimenRes
+    final int size;
 
     public AvatarWorkerTask(ImageView imageView, @DimenRes int size) {
         imageViewReference = new WeakReference<>(imageView);

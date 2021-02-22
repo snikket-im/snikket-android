@@ -27,9 +27,9 @@ import eu.siacs.conversations.services.AvatarService;
 import eu.siacs.conversations.services.XmppConnectionService;
 import eu.siacs.conversations.utils.UIHelper;
 import eu.siacs.conversations.utils.XmppUri;
+import eu.siacs.conversations.xmpp.Jid;
 import eu.siacs.conversations.xmpp.XmppConnection;
 import eu.siacs.conversations.xmpp.jingle.RtpCapability;
-import eu.siacs.conversations.xmpp.Jid;
 
 public class Account extends AbstractEntity implements AvatarService.Avatarable {
 
@@ -64,7 +64,6 @@ public class Account extends AbstractEntity implements AvatarService.Avatarable 
     public static final int OPTION_FIXED_USERNAME = 9;
     private static final String KEY_PGP_SIGNATURE = "pgp_signature";
     private static final String KEY_PGP_ID = "pgp_id";
-    public final HashSet<Pair<String, String>> inProgressDiscoFetches = new HashSet<>();
     protected final JSONObject keys;
     private final Roster roster = new Roster(this);
     private final Collection<Jid> blocklist = new CopyOnWriteArraySet<>();
