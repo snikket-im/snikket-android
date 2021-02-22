@@ -559,7 +559,7 @@
     <string name="message">Mezua</string>
     <string name="private_messages_are_disabled">Mezu pribatuak ezgaituta daude</string>
     <string name="huawei_protected_apps">Babestutako aplikazioak</string>
-    <string name="huawei_protected_apps_summary">Jakinarazpenak jasotzen jarraitu nahi naduzu, baita pantaila itzalita dagoenean ere, Conversations babestutako aplikazioen zerrendan gehitu behar duzu.</string>
+    <string name="huawei_protected_apps_summary">Jakinarazpenak jasotzen jarraitu nahi naduzu, baita pantaila itzalita dagoenean ere, Snikket babestutako aplikazioen zerrendan gehitu behar duzu.</string>
     <string name="mtm_accept_cert">Ziurtagiri ezezaguna onartu?</string>
     <string name="mtm_trust_anchor">Zerbitzariaren ziurtagiria ez dago ezaguna den Ziurtagiri jaulkitzaile batez sinatuta.</string>
     <string name="mtm_accept_servername">Bat ez datorren zerbitzari izena onartu?</string>
@@ -692,7 +692,7 @@
     <string name="ebook">e-booka</string>
     <string name="video_original">Jatorrizkoa (konprimatu gabea)</string>
     <string name="open_with">Ireki honekin…</string>
-    <string name="set_profile_picture">Conversations profil argazkia</string>
+    <string name="set_profile_picture">Snikket profil argazkia</string>
     <string name="choose_account">Kontua hautatu</string>
     <string name="restore_backup">Babes-kopia berrezarri</string>
     <string name="restore">Berrezarri</string>
@@ -741,7 +741,7 @@
     <string name="conversations_backup">Conversations babes-kopia</string>
     <string name="event">Gertaera</string>
     <string name="open_backup">Babes-kopia ireki</string>
-    <string name="not_a_backup_file">Hautatu duzun fitxategia ez da Conversations babes-kopia bat</string>
+    <string name="not_a_backup_file">Hautatu duzun fitxategia ez da Snikket babes-kopia bat</string>
     <string name="account_already_setup">Kontu hau konfiguratuta dago jada</string>
     <string name="please_enter_password">Mesedez idatzi ezazu kontu honetarako pasahitza</string>
     <string name="open_join_dialog">Kanal publiko batean sartu…</string>

@@ -557,7 +557,7 @@
     <string name="gp_medium">Orta</string>
     <string name="gp_long">Uzun</string>
     <string name="pref_broadcast_last_activity">Kullanımı yayınla</string>
-    <string name="pref_broadcast_last_activity_summary">Kişiler Conversations\'ı kullandığınız zaman bundan haberdar olur.</string>
+    <string name="pref_broadcast_last_activity_summary">Kişiler Snikket\'ı kullandığınız zaman bundan haberdar olur.</string>
     <string name="pref_privacy">Gizlilik</string>
     <string name="pref_theme_options">Gövde</string>
     <string name="pref_theme_options_summary">Renk paletini seçin</string>
@@ -676,7 +676,7 @@
     <string name="message">İleti</string>
     <string name="private_messages_are_disabled">Özel iletiler devre dışı bırakıldı</string>
     <string name="huawei_protected_apps">Korunan uygulamalar</string>
-    <string name="huawei_protected_apps_summary">Ekranınız kapalıyken bile bildirim almak için Conversations\'ı korunan uygulamalara eklemelisiniz.</string>
+    <string name="huawei_protected_apps_summary">Ekranınız kapalıyken bile bildirim almak için Snikket\'ı korunan uygulamalara eklemelisiniz.</string>
     <string name="mtm_accept_cert">Bilinmeyen sertifikayı kabul et?</string>
     <string name="mtm_trust_anchor">Sunucu sertifikası bilinen bir Sertifika Yetkilisi tarafından imzalanmamış.</string>
     <string name="mtm_accept_servername">Uyuşmayan Sunucu isimlerini kabul et?</string>
@@ -825,7 +825,7 @@
     <string name="ebook">e-kitap</string>
     <string name="video_original">Orijinal (sıkıştırılmamış)</string>
     <string name="open_with">Şununla aç...</string>
-    <string name="set_profile_picture">Conversations profil resmi</string>
+    <string name="set_profile_picture">Snikket profil resmi</string>
     <string name="choose_account">Hesap seç</string>
     <string name="restore_backup">Yedekleri yükle</string>
     <string name="restore">Geri getir</string>
@@ -877,7 +877,7 @@
     <string name="conversations_backup">Conversations yedeklemesi</string>
     <string name="event">Faaliyet</string>
     <string name="open_backup">Yedeklemeyi aç</string>
-    <string name="not_a_backup_file">Seçtioiniz dosya bir Conversations yedekleme dosyası değildir</string>
+    <string name="not_a_backup_file">Seçtioiniz dosya bir Snikket yedekleme dosyası değildir</string>
     <string name="account_already_setup">Bu hesap zaten kurulu vaziyette</string>
     <string name="please_enter_password">Lütfen bu hesabın şifresini girin</string>
     <string name="unable_to_perform_this_action">Eylem gerçekleştirilemedi</string>
@@ -952,7 +952,7 @@
     <string name="failed_deliveries">Başarısız gönderiler</string>
     <string name="more_options">Daha fazla seçenek</string>
     <string name="no_application_found">Herhangi bir uygulama bulunamadı</string>
-    <string name="invite_to_app">Conversations\'a davet et</string>
+    <string name="invite_to_app">Snikket\'a davet et</string>
     <string name="unable_to_parse_invite">Davet iletilemedi</string>
     <string name="server_does_not_support_easy_onboarding_invites">Sunucu, davet oluşturulmasını desteklemiyor</string>
     <string name="no_active_accounts_support_this">Bu özelliği destekleyen aktif bir hesap yok</string>

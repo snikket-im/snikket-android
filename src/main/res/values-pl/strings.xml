@@ -565,7 +565,7 @@
     <string name="gp_medium">Średni</string>
     <string name="gp_long">Długi</string>
     <string name="pref_broadcast_last_activity">Ogłaszaj użycie</string>
-    <string name="pref_broadcast_last_activity_summary">Powiadamiaj kontakty o tym, że używasz Conversations</string>
+    <string name="pref_broadcast_last_activity_summary">Powiadamiaj kontakty o tym, że używasz Snikket</string>
     <string name="pref_privacy">Prywatność</string>
     <string name="pref_theme_options">Skórka</string>
     <string name="pref_theme_options_summary">Wybierz paletę kolorów</string>
@@ -696,7 +696,7 @@
     <string name="message">Wiadomość</string>
     <string name="private_messages_are_disabled">Prywatne wiadomości są wyłączone</string>
     <string name="huawei_protected_apps">Aplikacje chronione</string>
-    <string name="huawei_protected_apps_summary">Aby otrzymywać wiadomości kiedy ekran jest wyłączony musisz dodać Conversations do listy aplikacji chronionych.</string>
+    <string name="huawei_protected_apps_summary">Aby otrzymywać wiadomości kiedy ekran jest wyłączony musisz dodać Snikket do listy aplikacji chronionych.</string>
     <string name="mtm_accept_cert">Zaakceptować nieznany certyfikat?</string>
     <string name="mtm_trust_anchor">Certyfikat serwera nie jest podpisany przez znany Urząd Certyfikacji</string>
     <string name="mtm_accept_servername">Czy zaakceptować niepasującą nazwę serwera?</string>
@@ -846,7 +846,7 @@ Administrator twojego serwera będzie mógł czytać twoje wiadomości, ale moż
     <string name="ebook">e-book</string>
     <string name="video_original">Oryginalne (nieskompresowane)</string>
     <string name="open_with">Otwórz za pomocą...</string>
-    <string name="set_profile_picture">Obrazek profilowy Conversations</string>
+    <string name="set_profile_picture">Obrazek profilowy Snikket</string>
     <string name="choose_account">Wybierz konto</string>
     <string name="restore_backup">Przywróć kopię zapasową</string>
     <string name="restore">Przywróć</string>
@@ -898,7 +898,7 @@ Administrator twojego serwera będzie mógł czytać twoje wiadomości, ale moż
     <string name="conversations_backup">Kopia zapasowa Conversations</string>
     <string name="event">Zdarzenie</string>
     <string name="open_backup">Otwórz kopię zapasową</string>
-    <string name="not_a_backup_file">Plik, który otworzyłeś, nie jest plikiem kopii zapasowej Conversations</string>
+    <string name="not_a_backup_file">Plik, który otworzyłeś, nie jest plikiem kopii zapasowej Snikket</string>
     <string name="account_already_setup">To konto zostało już ustawione</string>
     <string name="please_enter_password">Proszę podać hasło dla tego konta</string>
     <string name="unable_to_perform_this_action">Nie można wykonać tej akcji</string>
@@ -977,7 +977,7 @@ Administrator twojego serwera będzie mógł czytać twoje wiadomości, ale moż
     <string name="failed_deliveries">Nie dostarczone wiadomości</string>
     <string name="more_options">Więcej ustawień</string>
     <string name="no_application_found">Nie znaleziono żadnej aplikacji</string>
-    <string name="invite_to_app">Zaproś do Conversations</string>
+    <string name="invite_to_app">Zaproś do Snikket</string>
     <string name="unable_to_parse_invite">Nie można przetworzyć zaproszenia</string>
     <string name="server_does_not_support_easy_onboarding_invites">Serwer nie wspiera tworzenia zaproszeń</string>
     <string name="no_active_accounts_support_this">Nie ma aktywnych kont wspierających tę funkcję</string>
