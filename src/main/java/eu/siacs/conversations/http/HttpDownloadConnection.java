@@ -36,6 +36,8 @@ import eu.siacs.conversations.utils.MimeUtils;
 import eu.siacs.conversations.utils.WakeLockHelper;
 import eu.siacs.conversations.xmpp.stanzas.IqPacket;
 
+import static eu.siacs.conversations.http.HttpConnectionManager.EXECUTOR;
+
 public class HttpDownloadConnection implements Transferable {
 
     private final Message message;
@@ -133,12 +135,12 @@ public class HttpDownloadConnection implements Transferable {
         }
     }
 
-    private void download(boolean interactive) {
-        new Thread(new FileDownloader(interactive)).start();
+    private void download(final boolean interactive) {
+        EXECUTOR.execute(new FileDownloader(interactive));
     }
 
-    private void checkFileSize(boolean interactive) {
-        new Thread(new FileSizeChecker(interactive)).start();
+    private void checkFileSize(final boolean interactive) {
+        EXECUTOR.execute(new FileSizeChecker(interactive));
     }
 
     @Override
@@ -425,7 +427,7 @@ public class HttpDownloadConnection implements Transferable {
         private void download() throws Exception {
             InputStream is = null;
             HttpURLConnection connection = null;
-            final PowerManager.WakeLock wakeLock = mHttpConnectionManager.createWakeLock("http_download_" + message.getUuid());
+            final PowerManager.WakeLock wakeLock = mHttpConnectionManager.createWakeLock(Thread.currentThread());
             try {
                 wakeLock.acquire();
                 if (mUseTor || message.getConversation().getAccount().isOnion()) {

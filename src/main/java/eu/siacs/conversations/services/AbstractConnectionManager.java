@@ -94,8 +94,12 @@ public class AbstractConnectionManager {
         }
     }
 
-    public PowerManager.WakeLock createWakeLock(String name) {
-        PowerManager powerManager = (PowerManager) mXmppConnectionService.getSystemService(Context.POWER_SERVICE);
+    public PowerManager.WakeLock createWakeLock(final Thread thread) {
+        return createWakeLock("conversations:" + thread.getName());
+    }
+
+    public PowerManager.WakeLock createWakeLock(final String name) {
+        final PowerManager powerManager = (PowerManager) mXmppConnectionService.getSystemService(Context.POWER_SERVICE);
         return powerManager.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, name);
     }
 

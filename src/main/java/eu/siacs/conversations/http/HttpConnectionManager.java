@@ -13,6 +13,8 @@ import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
 
 import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.HttpsURLConnection;
@@ -30,6 +32,8 @@ public class HttpConnectionManager extends AbstractConnectionManager {
 
     private final List<HttpDownloadConnection> downloadConnections = new ArrayList<>();
     private final List<HttpUploadConnection> uploadConnections = new ArrayList<>();
+
+    public static final Executor EXECUTOR = Executors.newFixedThreadPool(4);
 
     public HttpConnectionManager(XmppConnectionService service) {
         super(service);
