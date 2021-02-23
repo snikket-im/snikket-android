@@ -1,2 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <string name="learn_more">Pelajari lebih lanjut</string>
+    <string name="snikket_intro"><b>Snikket </b> adalah aplikasi percakapan yang aman dan ramah privasi.
+\n
+\nUntuk memulai, Anda membutuhkan undangan dari teman yang menggunakan Snikket.
+\n
+\nJika Anda sudah memiliki undangan, sekarang saat yang tepat untuk membukanya lalu klik tombol \'buka aplikasi\'!</string>
+</resources>
