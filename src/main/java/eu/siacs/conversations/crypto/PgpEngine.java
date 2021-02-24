@@ -164,7 +164,7 @@ public class PgpEngine {
         params.setAction(OpenPgpApi.ACTION_DECRYPT_VERIFY);
         try {
             params.putExtra(OpenPgpApi.RESULT_DETACHED_SIGNATURE, AsciiArmor.decode(signature));
-        } catch (final IllegalArgumentException e) {
+        } catch (final Exception e) {
             Log.d(Config.LOGTAG, "unable to parse signature", e);
             return 0;
         }
