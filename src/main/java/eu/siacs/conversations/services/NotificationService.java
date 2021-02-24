@@ -399,6 +399,17 @@ public class NotificationService {
 
     public void startRinging(final AbstractJingleConnection.Id id, final Set<Media> media) {
         showIncomingCallNotification(id, media);
+        final NotificationManager notificationManager = (NotificationManager) mXmppConnectionService.getSystemService(Context.NOTIFICATION_SERVICE);
+        final int currentInterruptionFilter;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && notificationManager != null) {
+            currentInterruptionFilter = notificationManager.getCurrentInterruptionFilter();
+        } else {
+            currentInterruptionFilter = 1; //INTERRUPTION_FILTER_ALL
+        }
+        if (currentInterruptionFilter != 1) {
+            Log.d(Config.LOGTAG,"do not ring or vibrate because interruption filter has been set to "+currentInterruptionFilter);
+            return;
+        }
         this.vibrationFuture = SCHEDULED_EXECUTOR_SERVICE.scheduleAtFixedRate(
                 new VibrationRunnable(),
                 0,
